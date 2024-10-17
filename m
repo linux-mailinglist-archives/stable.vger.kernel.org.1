@@ -1,183 +1,181 @@
-Return-Path: <stable+bounces-86595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B33079A2016
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 12:34:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A3C79A205B
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 12:54:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15427B22007
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 10:34:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB5141C2146F
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 10:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DAD01DA62E;
-	Thu, 17 Oct 2024 10:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15DF1D9359;
+	Thu, 17 Oct 2024 10:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fitoWWqw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W0Y2EuV2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839441D966B;
-	Thu, 17 Oct 2024 10:34:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D895478E
+	for <stable@vger.kernel.org>; Thu, 17 Oct 2024 10:53:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729161275; cv=none; b=cvE/e+DHwojIUBmWLnMaijEdFYQ47NAjJf+V2ue3qHAceE5CWyvbWlAOYfGXyx2Y0/wZhrAEpg3+cp9mpOOLtrGmNMDtLWde6pcj5ZOXsWBYyIwB80g68utrAfDUosuVUSmczi2zGpES3gm3wBCFVvG7cbu7oNGQy1BhFv+7MF8=
+	t=1729162435; cv=none; b=SEzww8mZGhfyUxfIZXCWjWcEoA0KL4wmoAZkgztHbSnmFsOKbQBgI6fmZ2FRUOhNZgkUSfb3XYraQU+S7maIXHpsSmXeoemWUlTvsYZJ/Rgu3wiUTGVvfZqk+baupl1DsgabQiF7QyR6k3QBrqiZzBqKXILv6xhuaqYC8es8x4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729161275; c=relaxed/simple;
-	bh=2HKS+YmD5B2Dly0sLQmjE7gavsagPyykmQJ+lhyDz5k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XTrvuRdvKqrSLfKw5FnHIF/BGl1OkXl6nxcYBuGh+uFqkiv0iPnNvw3a/myBaWJWEeJq71ouOgLjf37OA95UsbvgnbHMy2toxW08QKGc6SZ5t2cuOP/DDR2IRRybKSX2ZBmWrreiFKbyoS5W4dIr8kzr7fGOGDVwZSGPpa9jris=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fitoWWqw; arc=none smtp.client-ip=209.85.218.52
+	s=arc-20240116; t=1729162435; c=relaxed/simple;
+	bh=1TUkqv7Gp7ZtnWJ/xeGylgVX1duGnifDUVRBhrk//po=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=FeOcAhwC5tDYVZwGcucXcaJGiYMXs3MqWLzGMLTnSZcN9dXPQhXEMHEnaZVvAmUjnomTy7Vb96wJRS/pc3iJMN5FxvhaIfMrG8jUDY6LSTpX1zgvOB5NO2JYnyNoGzi6jVLBFrqh/uOD2BSEyzM1l8ly+TJmW8xRlMUrDHDs5F8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W0Y2EuV2; arc=none smtp.client-ip=209.85.160.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a9a1b71d7ffso111795766b.1;
-        Thu, 17 Oct 2024 03:34:33 -0700 (PDT)
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4609d8874b1so4901841cf.3
+        for <stable@vger.kernel.org>; Thu, 17 Oct 2024 03:53:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729161272; x=1729766072; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RI5Duu0ie0BXr5/GSCqGUartM+TPyPW+SIijWcsO3Pg=;
-        b=fitoWWqwV2dKskn7T4b+rzk4XaaruQYNJfE4+39RQRKa/xt/GTm3GkZ9RCK8Decqcq
-         GJjkLxJeD+V4fkV/wnM+x7Qf0QHFFvbJWxylW9RdfwRgpAagZluOYRz5X6MW1zYxOOxs
-         iiUX6KeLY6ro9Jg2TSlPTTJWulVmLUPFzLs8O34rDBt05ec2ZUU6KXhJpWcFfqNKqdbZ
-         zxQMGyOi1nsCueMCNChNxhlRLbnvW8/sDFzi7AxP6Q2t4GmFnd1n7q2kMfoyHVNxAB+r
-         TbMTbXLQEQugrxR2rHMvv5ImwTOWVPfG4ZnSYVP6jHWp2TahJdjxZ/2MxESJCQk6aQC0
-         xI0Q==
+        d=gmail.com; s=20230601; t=1729162431; x=1729767231; darn=vger.kernel.org;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=7P+wyGAjVV69248FHlxBMSlRo73uJ0o3HnqvI2HQuCQ=;
+        b=W0Y2EuV2lXsaWl22rr0TY5fbJb9VLvSubrxTq4tw5/YOLcc20wEae4heOUIh6+Du5I
+         mvbK8YMX/AYaJEK5r303eKmpvdxT8qjrWkd/YlghJfq+rmJzUzWu45D/JOejw1aTbnkC
+         wf+BxtgEyRsx9ZvFtPfmlhhwdpNyIYMcoQU/8L4L9i+YtKENUpOAANOD1fKWIMlAEB0l
+         cu9HJDWw6SfDtdxTF6BLtgK5Yki0tyVk/6TXOdcVxkP2ty1SBEzoV0TI2NTL+91l89IU
+         zdBDQanWxVUcf3djQO8tNdlJIKmPLzVuy8wWAOp9HWjIGUgWdZKIgK7RfI0M/jp1q6C+
+         cR7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729161272; x=1729766072;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1729162431; x=1729767231;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RI5Duu0ie0BXr5/GSCqGUartM+TPyPW+SIijWcsO3Pg=;
-        b=dGIRopKhodWDSFkRobsN3k7ZD30pG8tXO3wu9YgQPCXxTJz/8thT57df90ZNZUQSuD
-         We7aspxA7a6t8ZyG+5urvqTfz+sEUgPpWChjQaCQNCP5ENReLIdG14j/uJN2koFSmckS
-         PuUHRO91P2dHc5qc3thJ3QuY1mjr1ayno9VudIspLEeP2JDR41mqYpPYLYnBuSK4WRhK
-         nRiACt/TweBTxxe4hR+37lAfY9j7vrXqM5rzdq4DdmThopKXYvbwj3irGGJiyrMC2xW8
-         hu4UoPgawGYZOit3zOtkt65ZZfwCbFRdccvZxQUs77Tw+BWQ8zSMbSRfcIRkyHtp8fTL
-         A4XA==
-X-Forwarded-Encrypted: i=1; AJvYcCUNOBdItzJtCR8QN+dnakKlg+dNSJPf6xhPdifclGTj6qKKXoXI2krwQj5lTmJQxjV0eUoE7mVe@vger.kernel.org, AJvYcCVvr+oMhh2FiinQIJ8IUOup4pkFnrj0DVdW5Sub5ZJGz4al29JpmAsaL3BFi+2s89mdzvt2WQlQHyGEXsc=@vger.kernel.org, AJvYcCXbgYL9F2YzOI+7HuFiMWxWNf4uMbss75BVM+e+1QZdUAjgzIsSHD6vaB/C0r0z5DL6ZzeREFGTsgoUqGA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOyOFxNgLQylr4ZHJ+EobmkOkY2mbnLUEWUDjA0NNnbxLK38ba
-	HafhV64U12CtbyvJ0/QygS9QJsWducVABpbHJHAVKCCKzBShEmzV
-X-Google-Smtp-Source: AGHT+IHRVOJYobAlUFIv1wiiXYcuRBS4ZuRqxfY4PRApRdzrHhuzQvlH24VlwuZQCRC6AMhLM/PzzQ==
-X-Received: by 2002:a17:907:930d:b0:a9a:dac:2ab9 with SMTP id a640c23a62f3a-a9a0dac2ec0mr1424435566b.42.1729161271476;
-        Thu, 17 Oct 2024 03:34:31 -0700 (PDT)
-Received: from [192.168.0.131] ([194.183.54.57])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a29718b84sm282176466b.29.2024.10.17.03.34.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Oct 2024 03:34:30 -0700 (PDT)
-Message-ID: <48d9f9b4-8b28-f24b-c0bd-d899c59bd247@gmail.com>
-Date: Thu, 17 Oct 2024 12:34:28 +0200
+        bh=7P+wyGAjVV69248FHlxBMSlRo73uJ0o3HnqvI2HQuCQ=;
+        b=h/DYftN8YpcMDlUsbRpF8IBnDgtkwfIMugKQT5MIyM/uyOh8xgN4LrIEOhphw7xd9O
+         BNP8PHzndKFqC98kvK4PXsxz3qKZksNEIYbQbdaktnVc9Okup25Ll2Syie6z8JkJGFpc
+         fNOsvFj49lGqTWQWkd5kp3dXFTLj0ni61FwOmX53b7XVUFeZIYcUn98p3xCLZ6EqI25h
+         rpxI+17mwWvcrfcuT8svMiBcau/ab80NPraMQjnY2n24ngEp6bYXM5FnDMw6SezNVVoc
+         FZcmsEHs0QySsIPfn7I4KMxW9+UKN/ooFsGemPTzYwXd7ZNN66P1hhYKWp38RUwNBZgY
+         QSRg==
+X-Gm-Message-State: AOJu0YyogovQE9qfyGHTTHbqI7d/wLkdozPAlIgk4db4fu2U8DNTDdYG
+	LBJLIEwPWbjWr23solbkPs+VbVuZ2SrxSW/uA+4cNtUPnEhCg29HI38F2zBB
+X-Google-Smtp-Source: AGHT+IE7X9f0U4R2AR8B6MMknx28oiuuWL5gtbZJ8PFPdj4tuOvyLl6qJQlng+wFqQ8qlh3y/3d2DA==
+X-Received: by 2002:a05:622a:1a09:b0:45d:920e:ce86 with SMTP id d75a77b69052e-4604ba7faa6mr293155821cf.0.1729162431267;
+        Thu, 17 Oct 2024 03:53:51 -0700 (PDT)
+Received: from localhost.localdomain ([66.198.16.131])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4609bc1f0b4sm7409081cf.50.2024.10.17.03.53.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Oct 2024 03:53:50 -0700 (PDT)
+From: Vimal Agrawal <avimalin@gmail.com>
+X-Google-Original-From: Vimal Agrawal <vimal.agrawal@sophos.com>
+To: vimal.agrawal@sophos.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH v3 1/2] misc: misc_minor_alloc to use ida for all dynamic/misc dynamic minors
+Date: Thu, 17 Oct 2024 10:53:25 +0000
+Message-Id: <20241017105325.18266-2-vimal.agrawal@sophos.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20241017105325.18266-1-vimal.agrawal@sophos.com>
+References: <20241017105325.18266-1-vimal.agrawal@sophos.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 07/13] media: s5p-jpeg: prevent buffer overflows
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
- Hans Verkuil <hans.verkuil@cisco.com>,
- Sylwester Nawrocki <s.nawrocki@samsung.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, stable@vger.kernel.org
-References: <cover.1729074076.git.mchehab+huawei@kernel.org>
- <16ccf3d588665a5a0dda91cbb04374d6aea99ca6.1729074076.git.mchehab+huawei@kernel.org>
-Content-Language: en-US
-From: Jacek Anaszewski <jacek.anaszewski@gmail.com>
-In-Reply-To: <16ccf3d588665a5a0dda91cbb04374d6aea99ca6.1729074076.git.mchehab+huawei@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-Hi Mauro,
+misc_minor_alloc was allocating id using ida for minor only in case of
+MISC_DYNAMIC_MINOR but misc_minor_free was always freeing ids
+using ida_free causing a mismatch and following warn:
+> > WARNING: CPU: 0 PID: 159 at lib/idr.c:525 ida_free+0x3e0/0x41f
+> > ida_free called for id=127 which is not allocated.
+> > <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+...
+> > [<60941eb4>] ida_free+0x3e0/0x41f
+> > [<605ac993>] misc_minor_free+0x3e/0xbc
+> > [<605acb82>] misc_deregister+0x171/0x1b3
 
-On 10/16/24 12:22, Mauro Carvalho Chehab wrote:
-> The current logic allows word to be less than 2. If this happens,
-> there will be buffer overflows. Add extra checks to prevent it.
-> 
-> While here, remove an unused word = 0 assignment.
-> 
-> Fixes: 6c96dbbc2aa9 ("[media] s5p-jpeg: add support for 5433")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> ---
->   .../media/platform/samsung/s5p-jpeg/jpeg-core.c | 17 +++++++++++------
->   1 file changed, 11 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/media/platform/samsung/s5p-jpeg/jpeg-core.c b/drivers/media/platform/samsung/s5p-jpeg/jpeg-core.c
-> index d2c4a0178b3c..1db4609b3557 100644
-> --- a/drivers/media/platform/samsung/s5p-jpeg/jpeg-core.c
-> +++ b/drivers/media/platform/samsung/s5p-jpeg/jpeg-core.c
-> @@ -775,11 +775,14 @@ static void exynos4_jpeg_parse_decode_h_tbl(struct s5p_jpeg_ctx *ctx)
->   		(unsigned long)vb2_plane_vaddr(&vb->vb2_buf, 0) + ctx->out_q.sos + 2;
->   	jpeg_buffer.curr = 0;
->   
-> -	word = 0;
-> -
->   	if (get_word_be(&jpeg_buffer, &word))
->   		return;
-> -	jpeg_buffer.size = (long)word - 2;
-> +
-> +	if (word < 2)
-> +		jpeg_buffer.size = 0;
-> +	else
-> +		jpeg_buffer.size = (long)word - 2;
-> +
->   	jpeg_buffer.data += 2;
->   	jpeg_buffer.curr = 0;
->   
-> @@ -1058,6 +1061,7 @@ static int get_word_be(struct s5p_jpeg_buffer *buf, unsigned int *word)
->   	if (byte == -1)
->   		return -1;
->   	*word = (unsigned int)byte | temp;
-> +
->   	return 0;
->   }
->   
-> @@ -1145,7 +1149,7 @@ static bool s5p_jpeg_parse_hdr(struct s5p_jpeg_q_data *result,
->   			if (get_word_be(&jpeg_buffer, &word))
->   				break;
->   			length = (long)word - 2;
-> -			if (!length)
-> +			if (length <= 0)
->   				return false;
->   			sof = jpeg_buffer.curr; /* after 0xffc0 */
->   			sof_len = length;
-> @@ -1176,7 +1180,7 @@ static bool s5p_jpeg_parse_hdr(struct s5p_jpeg_q_data *result,
->   			if (get_word_be(&jpeg_buffer, &word))
->   				break;
->   			length = (long)word - 2;
-> -			if (!length)
-> +			if (length <= 0)
->   				return false;
->   			if (n_dqt >= S5P_JPEG_MAX_MARKER)
->   				return false;
-> @@ -1189,7 +1193,7 @@ static bool s5p_jpeg_parse_hdr(struct s5p_jpeg_q_data *result,
->   			if (get_word_be(&jpeg_buffer, &word))
->   				break;
->   			length = (long)word - 2;
-> -			if (!length)
-> +			if (length <= 0)
->   				return false;
->   			if (n_dht >= S5P_JPEG_MAX_MARKER)
->   				return false;
-> @@ -1214,6 +1218,7 @@ static bool s5p_jpeg_parse_hdr(struct s5p_jpeg_q_data *result,
->   			if (get_word_be(&jpeg_buffer, &word))
->   				break;
->   			length = (long)word - 2;
-> +			/* No need to check underflows as skip() does it  */
->   			skip(&jpeg_buffer, length);
->   			break;
->   		}
+misc_minor_alloc is changed to allocate id from ida for all minors
+falling in the range of dynamic/ misc dynamic minors
 
-Seems reasonable.
+Fixes: ab760791c0cf ("char: misc: Increase the maximum number of dynamic misc devices to 1048448")
+Signed-off-by: Vimal Agrawal <vimal.agrawal@sophos.com>
+Cc: stable@vger.kernel.org
+---
+v2: Added Fixes:
+    added missed case for static minor in misc_minor_alloc
+v3: removed kunit changes as that will be added as second patch in this two patch series
 
-Reviewed-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+ drivers/char/misc.c | 35 ++++++++++++++++++++++++++++-------
+ 1 file changed, 28 insertions(+), 7 deletions(-)
 
+diff --git a/drivers/char/misc.c b/drivers/char/misc.c
+index 541edc26ec89..9d0cd3459b4f 100644
+--- a/drivers/char/misc.c
++++ b/drivers/char/misc.c
+@@ -63,16 +63,30 @@ static DEFINE_MUTEX(misc_mtx);
+ #define DYNAMIC_MINORS 128 /* like dynamic majors */
+ static DEFINE_IDA(misc_minors_ida);
+ 
+-static int misc_minor_alloc(void)
++static int misc_minor_alloc(int minor)
+ {
+ 	int ret;
+ 
+-	ret = ida_alloc_max(&misc_minors_ida, DYNAMIC_MINORS - 1, GFP_KERNEL);
+-	if (ret >= 0) {
+-		ret = DYNAMIC_MINORS - ret - 1;
+-	} else {
+-		ret = ida_alloc_range(&misc_minors_ida, MISC_DYNAMIC_MINOR + 1,
++	if (minor == MISC_DYNAMIC_MINOR) {
++		/* allocate free id */
++		ret = ida_alloc_max(&misc_minors_ida, DYNAMIC_MINORS - 1, GFP_KERNEL);
++		if (ret >= 0) {
++			ret = DYNAMIC_MINORS - ret - 1;
++		} else {
++			ret = ida_alloc_range(&misc_minors_ida, MISC_DYNAMIC_MINOR + 1,
+ 				      MINORMASK, GFP_KERNEL);
++		}
++	} else {
++		/* specific minor, check if it is in dynamic or misc dynamic range  */
++		if (minor < DYNAMIC_MINORS) {
++			minor = DYNAMIC_MINORS - minor - 1;
++			ret = ida_alloc_range(&misc_minors_ida, minor, minor, GFP_KERNEL);
++		} else if (minor > MISC_DYNAMIC_MINOR) {
++			ret = ida_alloc_range(&misc_minors_ida, minor, minor, GFP_KERNEL);
++		} else {
++			/* case of non-dynamic minors, no need to allocate id */
++			ret = 0;
++		}
+ 	}
+ 	return ret;
+ }
+@@ -219,7 +233,7 @@ int misc_register(struct miscdevice *misc)
+ 	mutex_lock(&misc_mtx);
+ 
+ 	if (is_dynamic) {
+-		int i = misc_minor_alloc();
++		int i = misc_minor_alloc(misc->minor);
+ 
+ 		if (i < 0) {
+ 			err = -EBUSY;
+@@ -228,6 +242,7 @@ int misc_register(struct miscdevice *misc)
+ 		misc->minor = i;
+ 	} else {
+ 		struct miscdevice *c;
++		int i;
+ 
+ 		list_for_each_entry(c, &misc_list, list) {
+ 			if (c->minor == misc->minor) {
+@@ -235,6 +250,12 @@ int misc_register(struct miscdevice *misc)
+ 				goto out;
+ 			}
+ 		}
++
++		i = misc_minor_alloc(misc->minor);
++		if (i < 0) {
++			err = -EBUSY;
++			goto out;
++		}
+ 	}
+ 
+ 	dev = MKDEV(MISC_MAJOR, misc->minor);
 -- 
-Best regards,
-Jacek Anaszewski
+2.17.1
+
 
