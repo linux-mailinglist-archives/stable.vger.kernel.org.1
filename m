@@ -1,245 +1,289 @@
-Return-Path: <stable+bounces-86564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8E9E9A1B71
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 09:12:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B258A9A1BA6
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 09:28:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78950284963
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 07:12:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 719592814BC
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 07:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734D01C231F;
-	Thu, 17 Oct 2024 07:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD061C3F25;
+	Thu, 17 Oct 2024 07:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OJsqnWmf"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Rh0EePMv"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF42155A24;
-	Thu, 17 Oct 2024 07:12:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F771925B2;
+	Thu, 17 Oct 2024 07:28:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729149139; cv=none; b=top0KS0cH+FkxAhVO52QZO30TccMjI3awZ6vpGh92cRjZ2mLAVvm51ruHnxv1oIIUCT4ULJY5l1w3nsmfvv4K1Y777mosfVrSXsGKZSnPAJjoWN/uSp3mzB4YcPYJFmBBArcoKuxzAPTBhhAUWOUi9AW6UCxkBA6S/WhpGSK+y8=
+	t=1729150116; cv=none; b=l9axk/iXrlOYZ2r8q8USTVfqpDEZ9Gt1L3+xbRdMcMqZEv55axNnRrpXqTb5IBfznjJ9tewQWG7vLkOAzTLqHYWLxQDczezuo8oaSCrEnknhK1819tJW5AHwQF8cYwbUlPdipJyLqgnxnS0I1gvka45AilPUF9IlREObSps//wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729149139; c=relaxed/simple;
-	bh=42g5tVEQu2XF9M+6+sCwBJngAcYz5fH+z4CcJnsK0Ls=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q99tkwg13PpHv7ITtDbYzb5cB8WiK0fRVCojq+9O0q69acG8tKuTxRFGqZKk1jF9dxFhApvpMw1AgtRfFvUaXMCjeuOJknsDMEOg7e5g/NWl29IK19g/wCNN8KSGAar81IKvIkymOSKK2eSuUqNjkfWgHG/036qtjkelt+ppDa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OJsqnWmf; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729149136; x=1760685136;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=42g5tVEQu2XF9M+6+sCwBJngAcYz5fH+z4CcJnsK0Ls=;
-  b=OJsqnWmfZL5sC8BM0a6jaOEQ7ccryjkYJvz16fhZn3IbeNoT+INujzWf
-   27bC02k2NLzYURE97D54xfazMvM3kTxuMLaB16xuDzmKfBqRu+N9dUgzd
-   qgk1TEO1dPFgjtgWYeymQd/Lb0Wy+qc7iH701gYxgLaGJmR6L6aKekumB
-   8T8xPo+hIjPS0WC6zkMmBs+miqlh3fN1fuYnZ6/aIZ8anO6C84HyLO5r7
-   Z+DU8eVi+dp2etMsyC2DIfjwaLIDMlZh+i0yPWErry8GZKoCIPcd7eVxb
-   HENXVPkrZckc91rCUyvlScSd+jd7R1wTP30vqYRp7cmpOzdkXNkALf8Aa
-   A==;
-X-CSE-ConnectionGUID: l4T9FsLqSequ+O0F++itzA==
-X-CSE-MsgGUID: m5QE0+VlRr2z3opKTMCxMg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11227"; a="16241321"
-X-IronPort-AV: E=Sophos;i="6.11,210,1725346800"; 
-   d="scan'208";a="16241321"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2024 00:12:15 -0700
-X-CSE-ConnectionGUID: heUNPcFNQwqnvINBVZmcaw==
-X-CSE-MsgGUID: IKkiIo2+QqiDuo/gMAvMLw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,210,1725346800"; 
-   d="scan'208";a="83238536"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 17 Oct 2024 00:12:04 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t1Kfx-000Lrf-0P;
-	Thu, 17 Oct 2024 07:12:01 +0000
-Date: Thu, 17 Oct 2024 15:11:14 +0800
-From: kernel test robot <lkp@intel.com>
-To: Christian Heusel <christian@heusel.eu>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Dirk Holten <dirk.holten@gmx.de>,
-	stable@vger.kernel.org, Christian Heusel <christian@heusel.eu>
-Subject: Re: [PATCH] ACPI: resource: Add LG 16T90SP to
- irq1_level_low_skip_override[]
-Message-ID: <202410171432.vrXoRLhw-lkp@intel.com>
-References: <20241016-lg-gram-pro-keyboard-v1-1-34306123102f@heusel.eu>
+	s=arc-20240116; t=1729150116; c=relaxed/simple;
+	bh=tqoCckHsGnMB5txpfwlKy2Z0eJEwwceVoFK4MqrzpLs=;
+	h=Date:To:From:Subject:Message-Id; b=sVWEEwxnuBDMy6F1YtfkbHBl12an/7qYvOH7+jfEtSV5NBd1FPIJtdcTEh20Qz0/XLdJzw3IGZbws6F+6nRqeH4t3MkMV4GNDgeJH+BPxdE8o9BAKF7q+RjVdIf5Yzkh1ExYyiLf1hCof1H3gdyb7cXcRfPHKVZ1tj94TfEmlxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Rh0EePMv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 159A6C4CEC3;
+	Thu, 17 Oct 2024 07:28:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1729150116;
+	bh=tqoCckHsGnMB5txpfwlKy2Z0eJEwwceVoFK4MqrzpLs=;
+	h=Date:To:From:Subject:From;
+	b=Rh0EePMvYrmDZv/xUQkif/5mHeX8vPS5ICTwcFOgcE6reELqTA/RjuhwktLSr1Tf1
+	 wOfhpKH+zBZKkh1MmeYM8x0uaXSpxCmYDTkXK/lBv/m2tu6DiELZY2CmGo6Qg+zNaB
+	 m3XqPnvsX0NBNpLZ+HPN2s3I2swvL4D+ZWMXOVUU=
+Date: Thu, 17 Oct 2024 00:28:35 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,lizhi.xu@windriver.com,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] nilfs2-propagate-directory-read-errors-from-nilfs_find_entry.patch removed from -mm tree
+Message-Id: <20241017072836.159A6C4CEC3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241016-lg-gram-pro-keyboard-v1-1-34306123102f@heusel.eu>
 
-Hi Christian,
 
-kernel test robot noticed the following build warnings:
+The quilt patch titled
+     Subject: nilfs2: propagate directory read errors from nilfs_find_entry()
+has been removed from the -mm tree.  Its filename was
+     nilfs2-propagate-directory-read-errors-from-nilfs_find_entry.patch
 
-[auto build test WARNING on 8e929cb546ee42c9a61d24fae60605e9e3192354]
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Christian-Heusel/ACPI-resource-Add-LG-16T90SP-to-irq1_level_low_skip_override/20241016-224929
-base:   8e929cb546ee42c9a61d24fae60605e9e3192354
-patch link:    https://lore.kernel.org/r/20241016-lg-gram-pro-keyboard-v1-1-34306123102f%40heusel.eu
-patch subject: [PATCH] ACPI: resource: Add LG 16T90SP to irq1_level_low_skip_override[]
-config: x86_64-randconfig-122-20241017 (https://download.01.org/0day-ci/archive/20241017/202410171432.vrXoRLhw-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241017/202410171432.vrXoRLhw-lkp@intel.com/reproduce)
+------------------------------------------------------
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Subject: nilfs2: propagate directory read errors from nilfs_find_entry()
+Date: Fri, 4 Oct 2024 12:35:31 +0900
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410171432.vrXoRLhw-lkp@intel.com/
+Syzbot reported that a task hang occurs in vcs_open() during a fuzzing
+test for nilfs2.
 
-sparse warnings: (new ones prefixed by >>)
->> drivers/acpi/resource.c:501:18: sparse: sparse: Initializer entry defined twice
-   drivers/acpi/resource.c:506:18: sparse:   also defined here
-   drivers/acpi/resource.c: note: in included file (through include/linux/resource_ext.h, include/linux/acpi.h):
-   include/linux/list.h:83:21: sparse: sparse: self-comparison always evaluates to true
+The root cause of this problem is that in nilfs_find_entry(), which
+searches for directory entries, ignores errors when loading a directory
+page/folio via nilfs_get_folio() fails.
 
-vim +501 drivers/acpi/resource.c
+If the filesystem images is corrupted, and the i_size of the directory
+inode is large, and the directory page/folio is successfully read but
+fails the sanity check, for example when it is zero-filled,
+nilfs_check_folio() may continue to spit out error messages in bursts.
 
-55a93417c27c6ad Christophe Ricard 2015-12-23  387  
-d37273af0e428e9 Hans de Goede     2023-09-13  388  /*
-d37273af0e428e9 Hans de Goede     2023-09-13  389   * DMI matches for boards where the DSDT specifies the kbd IRQ as
-d37273af0e428e9 Hans de Goede     2023-09-13  390   * level active-low and using the override changes this to rising edge,
-d37273af0e428e9 Hans de Goede     2023-09-13  391   * stopping the keyboard from working.
-d37273af0e428e9 Hans de Goede     2023-09-13  392   */
-d37273af0e428e9 Hans de Goede     2023-09-13  393  static const struct dmi_system_id irq1_level_low_skip_override[] = {
-892a012699fc0b9 Hui Wang          2021-09-15  394  	{
-424009ab2030862 Hans de Goede     2023-09-13  395  		/* MEDION P15651 */
-892a012699fc0b9 Hui Wang          2021-09-15  396  		.matches = {
-892a012699fc0b9 Hui Wang          2021-09-15  397  			DMI_MATCH(DMI_SYS_VENDOR, "MEDION"),
-892a012699fc0b9 Hui Wang          2021-09-15  398  			DMI_MATCH(DMI_BOARD_NAME, "M15T"),
-892a012699fc0b9 Hui Wang          2021-09-15  399  		},
-892a012699fc0b9 Hui Wang          2021-09-15  400  	},
-1b26ae40092b43b Hui Wang          2021-10-25  401  	{
-424009ab2030862 Hans de Goede     2023-09-13  402  		/* MEDION S17405 */
-1b26ae40092b43b Hui Wang          2021-10-25  403  		.matches = {
-1b26ae40092b43b Hui Wang          2021-10-25  404  			DMI_MATCH(DMI_SYS_VENDOR, "MEDION"),
-1b26ae40092b43b Hui Wang          2021-10-25  405  			DMI_MATCH(DMI_BOARD_NAME, "M17T"),
-1b26ae40092b43b Hui Wang          2021-10-25  406  		},
-1b26ae40092b43b Hui Wang          2021-10-25  407  	},
-2d0ab14634a26e5 Aymeric Wibo      2023-03-19  408  	{
-424009ab2030862 Hans de Goede     2023-09-13  409  		/* MEDION S17413 */
-2d0ab14634a26e5 Aymeric Wibo      2023-03-19  410  		.matches = {
-2d0ab14634a26e5 Aymeric Wibo      2023-03-19  411  			DMI_MATCH(DMI_SYS_VENDOR, "MEDION"),
-2d0ab14634a26e5 Aymeric Wibo      2023-03-19  412  			DMI_MATCH(DMI_BOARD_NAME, "M1xA"),
-2d0ab14634a26e5 Aymeric Wibo      2023-03-19  413  		},
-2d0ab14634a26e5 Aymeric Wibo      2023-03-19  414  	},
-e12dee3736731e2 Tamim Khan        2022-08-28  415  	{
-424009ab2030862 Hans de Goede     2023-09-13  416  		/* Asus Vivobook K3402ZA */
-e12dee3736731e2 Tamim Khan        2022-08-28  417  		.matches = {
-e12dee3736731e2 Tamim Khan        2022-08-28  418  			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-e12dee3736731e2 Tamim Khan        2022-08-28  419  			DMI_MATCH(DMI_BOARD_NAME, "K3402ZA"),
-e12dee3736731e2 Tamim Khan        2022-08-28  420  		},
-e12dee3736731e2 Tamim Khan        2022-08-28  421  	},
-e12dee3736731e2 Tamim Khan        2022-08-28  422  	{
-424009ab2030862 Hans de Goede     2023-09-13  423  		/* Asus Vivobook K3502ZA */
-e12dee3736731e2 Tamim Khan        2022-08-28  424  		.matches = {
-e12dee3736731e2 Tamim Khan        2022-08-28  425  			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-e12dee3736731e2 Tamim Khan        2022-08-28  426  			DMI_MATCH(DMI_BOARD_NAME, "K3502ZA"),
-e12dee3736731e2 Tamim Khan        2022-08-28  427  		},
-e12dee3736731e2 Tamim Khan        2022-08-28  428  	},
-6e5cbe7c4b41824 Kellen Renshaw    2022-09-21  429  	{
-424009ab2030862 Hans de Goede     2023-09-13  430  		/* Asus Vivobook S5402ZA */
-6e5cbe7c4b41824 Kellen Renshaw    2022-09-21  431  		.matches = {
-6e5cbe7c4b41824 Kellen Renshaw    2022-09-21  432  			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-6e5cbe7c4b41824 Kellen Renshaw    2022-09-21  433  			DMI_MATCH(DMI_BOARD_NAME, "S5402ZA"),
-6e5cbe7c4b41824 Kellen Renshaw    2022-09-21  434  		},
-6e5cbe7c4b41824 Kellen Renshaw    2022-09-21  435  	},
-b5f9223a105d9b5 Tamim Khan        2022-10-14  436  	{
-424009ab2030862 Hans de Goede     2023-09-13  437  		/* Asus Vivobook S5602ZA */
-b5f9223a105d9b5 Tamim Khan        2022-10-14  438  		.matches = {
-b5f9223a105d9b5 Tamim Khan        2022-10-14  439  			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-b5f9223a105d9b5 Tamim Khan        2022-10-14  440  			DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
-b5f9223a105d9b5 Tamim Khan        2022-10-14  441  		},
-b5f9223a105d9b5 Tamim Khan        2022-10-14  442  	},
-2f80ce0b78c340e Hans de Goede     2024-09-27  443  	{
-2f80ce0b78c340e Hans de Goede     2024-09-27  444  		/* Asus Vivobook X1704VAP */
-2f80ce0b78c340e Hans de Goede     2024-09-27  445  		.matches = {
-2f80ce0b78c340e Hans de Goede     2024-09-27  446  			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-2f80ce0b78c340e Hans de Goede     2024-09-27  447  			DMI_MATCH(DMI_BOARD_NAME, "X1704VAP"),
-2f80ce0b78c340e Hans de Goede     2024-09-27  448  		},
-2f80ce0b78c340e Hans de Goede     2024-09-27  449  	},
-c1ed72171ed580f Hans de Goede     2023-09-12  450  	{
-158d0f3700fd719 Hans de Goede     2024-10-05  451  		/* Asus ExpertBook B1402C* */
-c1ed72171ed580f Hans de Goede     2023-09-12  452  		.matches = {
-c1ed72171ed580f Hans de Goede     2023-09-12  453  			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-158d0f3700fd719 Hans de Goede     2024-10-05  454  			DMI_MATCH(DMI_BOARD_NAME, "B1402C"),
-c1ed72171ed580f Hans de Goede     2023-09-12  455  		},
-c1ed72171ed580f Hans de Goede     2023-09-12  456  	},
-bd911485294a6f0 Hans de Goede     2023-11-15  457  	{
-158d0f3700fd719 Hans de Goede     2024-10-05  458  		/* Asus ExpertBook B1502C* */
-bd911485294a6f0 Hans de Goede     2023-11-15  459  		.matches = {
-bd911485294a6f0 Hans de Goede     2023-11-15  460  			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-158d0f3700fd719 Hans de Goede     2024-10-05  461  			DMI_MATCH(DMI_BOARD_NAME, "B1502C"),
-ca3afc2806046f6 Nicolas Haye      2024-01-30  462  		},
-ca3afc2806046f6 Nicolas Haye      2024-01-30  463  	},
-77c724888238539 Tamim Khan        2022-12-30  464  	{
-564a278573783cd Hans de Goede     2024-10-05  465  		/* Asus ExpertBook B2402 (B2402CBA / B2402FBA / B2402CVA / B2402FVA) */
-77c724888238539 Tamim Khan        2022-12-30  466  		.matches = {
-77c724888238539 Tamim Khan        2022-12-30  467  			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-564a278573783cd Hans de Goede     2024-10-05  468  			DMI_MATCH(DMI_BOARD_NAME, "B2402"),
-65eb2867f5bf460 Vojtech Hejsek    2023-02-16  469  		},
-65eb2867f5bf460 Vojtech Hejsek    2023-02-16  470  	},
-7203481fd12b125 Hans de Goede     2022-12-15  471  	{
-435f2d87579e240 Hans de Goede     2024-10-05  472  		/* Asus ExpertBook B2502 (B2502CBA / B2502FBA / B2502CVA / B2502FVA) */
-7203481fd12b125 Hans de Goede     2022-12-15  473  		.matches = {
-7203481fd12b125 Hans de Goede     2022-12-15  474  			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-435f2d87579e240 Hans de Goede     2024-10-05  475  			DMI_MATCH(DMI_BOARD_NAME, "B2502"),
-056301e7c7c886f Hans de Goede     2024-09-27  476  		},
-056301e7c7c886f Hans de Goede     2024-09-27  477  	},
-49e9cc315604972 Tamim Khan        2024-09-02  478  	{
-63539defee17bf0 Hans de Goede     2024-09-27  479  		/* Asus Vivobook Go E1404GA* */
-49e9cc315604972 Tamim Khan        2024-09-02  480  		.matches = {
-49e9cc315604972 Tamim Khan        2024-09-02  481  			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-63539defee17bf0 Hans de Goede     2024-09-27  482  			DMI_MATCH(DMI_BOARD_NAME, "E1404GA"),
-49e9cc315604972 Tamim Khan        2024-09-02  483  		},
-49e9cc315604972 Tamim Khan        2024-09-02  484  	},
-d2aaf19965045f7 Ben Mayo          2024-01-06  485  	{
-65bdebf38e5fac7 Hans de Goede     2024-09-27  486  		/* Asus Vivobook E1504GA* */
-d2aaf19965045f7 Ben Mayo          2024-01-06  487  		.matches = {
-d2aaf19965045f7 Ben Mayo          2024-01-06  488  			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-d2aaf19965045f7 Ben Mayo          2024-01-06  489  			DMI_MATCH(DMI_BOARD_NAME, "E1504GA"),
-d2aaf19965045f7 Ben Mayo          2024-01-06  490  		},
-d2aaf19965045f7 Ben Mayo          2024-01-06  491  	},
-7c52c7071bd403a Tamim Khan        2024-04-28  492  	{
-1af7e441feb08cd Hans de Goede     2024-10-05  493  		/* Asus Vivobook Pro N6506M* */
-7c52c7071bd403a Tamim Khan        2024-04-28  494  		.matches = {
-7c52c7071bd403a Tamim Khan        2024-04-28  495  			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-1af7e441feb08cd Hans de Goede     2024-10-05  496  			DMI_MATCH(DMI_BOARD_NAME, "N6506M"),
-e2e7f037b400aeb Tamim Khan        2024-07-07  497  		},
-e2e7f037b400aeb Tamim Khan        2024-07-07  498  	},
-d37273af0e428e9 Hans de Goede     2023-09-13  499  	{
-424009ab2030862 Hans de Goede     2023-09-13  500  		/* LG Electronics 17U70P */
-d37273af0e428e9 Hans de Goede     2023-09-13 @501  		.matches = {
-d37273af0e428e9 Hans de Goede     2023-09-13  502  			DMI_MATCH(DMI_SYS_VENDOR, "LG Electronics"),
-d37273af0e428e9 Hans de Goede     2023-09-13  503  			DMI_MATCH(DMI_BOARD_NAME, "17U70P"),
-d37273af0e428e9 Hans de Goede     2023-09-13  504  		},
-6576e827971bb3b Christian Heusel  2024-10-16  505  		/* LG Electronics 16T90SP */
-6576e827971bb3b Christian Heusel  2024-10-16  506  		.matches = {
-6576e827971bb3b Christian Heusel  2024-10-16  507  			DMI_MATCH(DMI_SYS_VENDOR, "LG Electronics"),
-6576e827971bb3b Christian Heusel  2024-10-16  508  			DMI_MATCH(DMI_BOARD_NAME, "16T90SP"),
-6576e827971bb3b Christian Heusel  2024-10-16  509  		},
-d37273af0e428e9 Hans de Goede     2023-09-13  510  	},
-e12dee3736731e2 Tamim Khan        2022-08-28  511  	{ }
-e12dee3736731e2 Tamim Khan        2022-08-28  512  };
-e12dee3736731e2 Tamim Khan        2022-08-28  513  
+Fix this issue by propagating the error to the callers when loading a
+page/folio fails in nilfs_find_entry().
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+The current interface of nilfs_find_entry() and its callers is outdated
+and cannot propagate error codes such as -EIO and -ENOMEM returned via
+nilfs_find_entry(), so fix it together.
+
+Link: https://lkml.kernel.org/r/20241004033640.6841-1-konishi.ryusuke@gmail.com
+Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: Lizhi Xu <lizhi.xu@windriver.com>
+Closes: https://lkml.kernel.org/r/20240927013806.3577931-1-lizhi.xu@windriver.com
+Reported-by: syzbot+8a192e8d090fa9a31135@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=8a192e8d090fa9a31135
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/nilfs2/dir.c   |   48 ++++++++++++++++++++++----------------------
+ fs/nilfs2/namei.c |   39 +++++++++++++++++++++++------------
+ fs/nilfs2/nilfs.h |    2 -
+ 3 files changed, 52 insertions(+), 37 deletions(-)
+
+--- a/fs/nilfs2/dir.c~nilfs2-propagate-directory-read-errors-from-nilfs_find_entry
++++ a/fs/nilfs2/dir.c
+@@ -289,7 +289,7 @@ static int nilfs_readdir(struct file *fi
+  * The folio is mapped and unlocked.  When the caller is finished with
+  * the entry, it should call folio_release_kmap().
+  *
+- * On failure, returns NULL and the caller should ignore foliop.
++ * On failure, returns an error pointer and the caller should ignore foliop.
+  */
+ struct nilfs_dir_entry *nilfs_find_entry(struct inode *dir,
+ 		const struct qstr *qstr, struct folio **foliop)
+@@ -312,22 +312,24 @@ struct nilfs_dir_entry *nilfs_find_entry
+ 	do {
+ 		char *kaddr = nilfs_get_folio(dir, n, foliop);
+ 
+-		if (!IS_ERR(kaddr)) {
+-			de = (struct nilfs_dir_entry *)kaddr;
+-			kaddr += nilfs_last_byte(dir, n) - reclen;
+-			while ((char *) de <= kaddr) {
+-				if (de->rec_len == 0) {
+-					nilfs_error(dir->i_sb,
+-						"zero-length directory entry");
+-					folio_release_kmap(*foliop, kaddr);
+-					goto out;
+-				}
+-				if (nilfs_match(namelen, name, de))
+-					goto found;
+-				de = nilfs_next_entry(de);
++		if (IS_ERR(kaddr))
++			return ERR_CAST(kaddr);
++
++		de = (struct nilfs_dir_entry *)kaddr;
++		kaddr += nilfs_last_byte(dir, n) - reclen;
++		while ((char *)de <= kaddr) {
++			if (de->rec_len == 0) {
++				nilfs_error(dir->i_sb,
++					    "zero-length directory entry");
++				folio_release_kmap(*foliop, kaddr);
++				goto out;
+ 			}
+-			folio_release_kmap(*foliop, kaddr);
++			if (nilfs_match(namelen, name, de))
++				goto found;
++			de = nilfs_next_entry(de);
+ 		}
++		folio_release_kmap(*foliop, kaddr);
++
+ 		if (++n >= npages)
+ 			n = 0;
+ 		/* next folio is past the blocks we've got */
+@@ -340,7 +342,7 @@ struct nilfs_dir_entry *nilfs_find_entry
+ 		}
+ 	} while (n != start);
+ out:
+-	return NULL;
++	return ERR_PTR(-ENOENT);
+ 
+ found:
+ 	ei->i_dir_start_lookup = n;
+@@ -384,18 +386,18 @@ fail:
+ 	return NULL;
+ }
+ 
+-ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
++int nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr, ino_t *ino)
+ {
+-	ino_t res = 0;
+ 	struct nilfs_dir_entry *de;
+ 	struct folio *folio;
+ 
+ 	de = nilfs_find_entry(dir, qstr, &folio);
+-	if (de) {
+-		res = le64_to_cpu(de->inode);
+-		folio_release_kmap(folio, de);
+-	}
+-	return res;
++	if (IS_ERR(de))
++		return PTR_ERR(de);
++
++	*ino = le64_to_cpu(de->inode);
++	folio_release_kmap(folio, de);
++	return 0;
+ }
+ 
+ void nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
+--- a/fs/nilfs2/namei.c~nilfs2-propagate-directory-read-errors-from-nilfs_find_entry
++++ a/fs/nilfs2/namei.c
+@@ -55,12 +55,20 @@ nilfs_lookup(struct inode *dir, struct d
+ {
+ 	struct inode *inode;
+ 	ino_t ino;
++	int res;
+ 
+ 	if (dentry->d_name.len > NILFS_NAME_LEN)
+ 		return ERR_PTR(-ENAMETOOLONG);
+ 
+-	ino = nilfs_inode_by_name(dir, &dentry->d_name);
+-	inode = ino ? nilfs_iget(dir->i_sb, NILFS_I(dir)->i_root, ino) : NULL;
++	res = nilfs_inode_by_name(dir, &dentry->d_name, &ino);
++	if (res) {
++		if (res != -ENOENT)
++			return ERR_PTR(res);
++		inode = NULL;
++	} else {
++		inode = nilfs_iget(dir->i_sb, NILFS_I(dir)->i_root, ino);
++	}
++
+ 	return d_splice_alias(inode, dentry);
+ }
+ 
+@@ -263,10 +271,11 @@ static int nilfs_do_unlink(struct inode
+ 	struct folio *folio;
+ 	int err;
+ 
+-	err = -ENOENT;
+ 	de = nilfs_find_entry(dir, &dentry->d_name, &folio);
+-	if (!de)
++	if (IS_ERR(de)) {
++		err = PTR_ERR(de);
+ 		goto out;
++	}
+ 
+ 	inode = d_inode(dentry);
+ 	err = -EIO;
+@@ -362,10 +371,11 @@ static int nilfs_rename(struct mnt_idmap
+ 	if (unlikely(err))
+ 		return err;
+ 
+-	err = -ENOENT;
+ 	old_de = nilfs_find_entry(old_dir, &old_dentry->d_name, &old_folio);
+-	if (!old_de)
++	if (IS_ERR(old_de)) {
++		err = PTR_ERR(old_de);
+ 		goto out;
++	}
+ 
+ 	if (S_ISDIR(old_inode->i_mode)) {
+ 		err = -EIO;
+@@ -382,10 +392,12 @@ static int nilfs_rename(struct mnt_idmap
+ 		if (dir_de && !nilfs_empty_dir(new_inode))
+ 			goto out_dir;
+ 
+-		err = -ENOENT;
+-		new_de = nilfs_find_entry(new_dir, &new_dentry->d_name, &new_folio);
+-		if (!new_de)
++		new_de = nilfs_find_entry(new_dir, &new_dentry->d_name,
++					  &new_folio);
++		if (IS_ERR(new_de)) {
++			err = PTR_ERR(new_de);
+ 			goto out_dir;
++		}
+ 		nilfs_set_link(new_dir, new_de, new_folio, old_inode);
+ 		folio_release_kmap(new_folio, new_de);
+ 		nilfs_mark_inode_dirty(new_dir);
+@@ -440,12 +452,13 @@ out:
+  */
+ static struct dentry *nilfs_get_parent(struct dentry *child)
+ {
+-	unsigned long ino;
++	ino_t ino;
++	int res;
+ 	struct nilfs_root *root;
+ 
+-	ino = nilfs_inode_by_name(d_inode(child), &dotdot_name);
+-	if (!ino)
+-		return ERR_PTR(-ENOENT);
++	res = nilfs_inode_by_name(d_inode(child), &dotdot_name, &ino);
++	if (res)
++		return ERR_PTR(res);
+ 
+ 	root = NILFS_I(d_inode(child))->i_root;
+ 
+--- a/fs/nilfs2/nilfs.h~nilfs2-propagate-directory-read-errors-from-nilfs_find_entry
++++ a/fs/nilfs2/nilfs.h
+@@ -254,7 +254,7 @@ static inline __u32 nilfs_mask_flags(umo
+ 
+ /* dir.c */
+ int nilfs_add_link(struct dentry *, struct inode *);
+-ino_t nilfs_inode_by_name(struct inode *, const struct qstr *);
++int nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr, ino_t *ino);
+ int nilfs_make_empty(struct inode *, struct inode *);
+ struct nilfs_dir_entry *nilfs_find_entry(struct inode *, const struct qstr *,
+ 		struct folio **);
+_
+
+Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
+
+nilfs2-fix-kernel-bug-due-to-missing-clearing-of-buffer-delay-flag.patch
+
 
