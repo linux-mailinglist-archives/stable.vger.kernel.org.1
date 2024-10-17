@@ -1,112 +1,98 @@
-Return-Path: <stable+bounces-86576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12F2B9A1BB1
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 09:29:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A7A19A1BBC
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 09:35:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B216E1F22583
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 07:29:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 315051F22D16
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 07:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1F81C8FD4;
-	Thu, 17 Oct 2024 07:29:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GKDaQ4EC"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDDB017BB03;
+	Thu, 17 Oct 2024 07:34:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B47E1CBE9E;
-	Thu, 17 Oct 2024 07:29:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A83C144D21;
+	Thu, 17 Oct 2024 07:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729150146; cv=none; b=iJPWRFfqx3Ox/BkZlwuDXyRK9bVnHDxccanNoc+ssWbFQhPU1qZtjjpADo07eNgQ9gOHickccNstnM0EooY3WKVq+H3jX8Rts3D1f56pudDzHtokBArUJl9A3+2iOfS5JxSowwxp+O4zikm1chS1D0WR2KGdtzNUXsd+P+6pmqw=
+	t=1729150499; cv=none; b=mbINf1rkmthP4ysJMsNWLOWxkPerwS8Gy84khiKsLbRZ2T5h3mLpb30MuWM0fVsEaAYRZZFazmEUt5lbpg+D6kcy8ZlW5LWEHy16IkexboZG8YuiwElnzWUUzLWnLAdoKa2NXk7sVbzZs0iYp+Bj7au2EKaPn+TH8tRepBAXdB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729150146; c=relaxed/simple;
-	bh=e6tCHMbfsCTFd/ITJ/vm6s/793AgZAesqK0Jf8z7Fb4=;
-	h=Date:To:From:Subject:Message-Id; b=gLyFA2V4GtbP6GiGI+F1Ow73kFFurhA8bvIP5dINOlJcAn4FTEmsjnXhexZ10r8+EjUfMFF+ORGG+PVqiFFHqgmGNMNjCpgtGXo9aJm+eoWyEIpw9L47vBxADwl7UPbiw2IApxdyHgC+G35j0yV8xTOj6/u/7Dd1rgvVfFBpNPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=GKDaQ4EC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27785C4CEC3;
-	Thu, 17 Oct 2024 07:29:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1729150146;
-	bh=e6tCHMbfsCTFd/ITJ/vm6s/793AgZAesqK0Jf8z7Fb4=;
-	h=Date:To:From:Subject:From;
-	b=GKDaQ4ECHCpNiMXg/eSAaoWuMMtuKuU+rMANnLrjFddxTd2Tr1k4vzPpD+xKSjBHx
-	 yrhfhUIjoERnm1101Vgw2pag3/BV0WubXt2bPGO4ucBGU4CmtWYU267R2tWOT9BUm1
-	 o2kWV8BoWJzoxakep90WNegWu7if6CHYVMthndjU=
-Date: Thu, 17 Oct 2024 00:29:05 -0700
-To: mm-commits@vger.kernel.org,yuzhao@google.com,suleiman@google.com,stable@vger.kernel.org,heftig@archlinux.org,bgeffon@google.com,axelrasmussen@google.com,weixugc@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-mglru-only-clear-kswapd_failures-if-reclaimable.patch removed from -mm tree
-Message-Id: <20241017072906.27785C4CEC3@smtp.kernel.org>
+	s=arc-20240116; t=1729150499; c=relaxed/simple;
+	bh=XUbV0oCgOYoz7NcUb/PwQakpU+YQNjrval7Oi1EcL3k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=chGp3q5Rhsq5V1H/fxl2hmTZAPekkEvAQUIX82MO8txf9YCo/yQ1RqY0y74xA8TNntDXdR8NfpLALjC1IEz4s0x7jecmBKBqG0pquNE3jv/3WzNEtmtgjchEI6TPh7dhPl+48cBPTDVXVCY3HysoNW3za2Tr3VCUiB1en1OkI3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 701301C0095; Thu, 17 Oct 2024 09:34:55 +0200 (CEST)
+Date: Thu, 17 Oct 2024 09:34:54 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Pavel Machek <pavel@denx.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	chris.paterson2@renesas.com, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com, broonie@kernel.org,
+	Gabriel Krisman Bertazi <krisman@suse.de>
+Subject: Re: [PATCH 6.11 000/212] 6.11.4-rc2 review
+Message-ID: <ZxC+HkGcgdCg5gtE@duo.ucw.cz>
+References: <20241015112329.364617631@linuxfoundation.org>
+ <Zw+IXqfj5IA1KXj+@duo.ucw.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="TOxLUA0/PC+9647U"
+Content-Disposition: inline
+In-Reply-To: <Zw+IXqfj5IA1KXj+@duo.ucw.cz>
 
 
-The quilt patch titled
-     Subject: mm/mglru: only clear kswapd_failures if reclaimable
-has been removed from the -mm tree.  Its filename was
-     mm-mglru-only-clear-kswapd_failures-if-reclaimable.patch
+--TOxLUA0/PC+9647U
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Hi!
 
-------------------------------------------------------
-From: Wei Xu <weixugc@google.com>
-Subject: mm/mglru: only clear kswapd_failures if reclaimable
-Date: Mon, 14 Oct 2024 22:12:11 +0000
+> According to our testing, it breaks boot on de0-nano-soc.
+>=20
+> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/pipelines=
+/1497863060
+=2E..
+> Quick test showed that 5.10-cip kernel still works on that target, so
+> it seems to be real issue.
 
-lru_gen_shrink_node() unconditionally clears kswapd_failures, which can
-prevent kswapd from sleeping and cause 100% kswapd cpu usage even when
-kswapd repeatedly fails to make progress in reclaim.
+So now it looks like we have misconfigured addresses in
+u-boot.
 
-Only clear kswap_failures in lru_gen_shrink_node() if reclaim makes some
-progress, similar to shrink_node().
+Best regards,
+								Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
-I happened to run into this problem in one of my tests recently.  It
-requires a combination of several conditions: The allocator needs to
-allocate a right amount of pages such that it can wake up kswapd
-without itself being OOM killed; there is no memory for kswapd to
-reclaim (My test disables swap and cleans page cache first); no other
-process frees enough memory at the same time.
+--TOxLUA0/PC+9647U
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Link: https://lkml.kernel.org/r/20241014221211.832591-1-weixugc@google.com
-Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
-Signed-off-by: Wei Xu <weixugc@google.com>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Brian Geffon <bgeffon@google.com>
-Cc: Jan Alexander Steffens <heftig@archlinux.org>
-Cc: Suleiman Souhlal <suleiman@google.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+-----BEGIN PGP SIGNATURE-----
 
- mm/vmscan.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZxC+HgAKCRAw5/Bqldv6
+8h/kAKCsJZTT8g90wJln5cBPCyLqdCM3vACcDdykqw0jiHA3q5FUz6c2XTqK0tE=
+=QAdR
+-----END PGP SIGNATURE-----
 
---- a/mm/vmscan.c~mm-mglru-only-clear-kswapd_failures-if-reclaimable
-+++ a/mm/vmscan.c
-@@ -4963,8 +4963,8 @@ static void lru_gen_shrink_node(struct p
- 
- 	blk_finish_plug(&plug);
- done:
--	/* kswapd should never fail */
--	pgdat->kswapd_failures = 0;
-+	if (sc->nr_reclaimed > reclaimed)
-+		pgdat->kswapd_failures = 0;
- }
- 
- /******************************************************************************
-_
-
-Patches currently in -mm which might be from weixugc@google.com are
-
-
+--TOxLUA0/PC+9647U--
 
