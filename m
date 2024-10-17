@@ -1,176 +1,161 @@
-Return-Path: <stable+bounces-86598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C8BB9A207A
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 13:03:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99A3A9A20C9
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 13:17:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE7DC1F276A2
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 11:03:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 448231F227F6
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 11:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E101E1DACBE;
-	Thu, 17 Oct 2024 11:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659711DC1AB;
+	Thu, 17 Oct 2024 11:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tVYvrOQj"
+	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="hA98FVAK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07041D517A
-	for <stable@vger.kernel.org>; Thu, 17 Oct 2024 11:03:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC9D1DB928;
+	Thu, 17 Oct 2024 11:16:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729163009; cv=none; b=NNXkqxz5/V9mXMGGu9WorIMpY8dBg+oN8Zv6T/TLd7OqtbzeByAUa3moIzmREQIZyLZmQhnHdqhBtDvsMpV0dImu0jwSnFeULE/afhbrb/pDI2YfBs9ITIipLR2SAz5UfvIKuMnQv7ZWGprmP14q/+xdqFnAu+KzusF6ayyfjuc=
+	t=1729163823; cv=none; b=COh27maJOfH4H4VCazN8fEdCofeua/pT41hbjDwFnJ2/XY9Fo/Iw+hent9Iv0cn4HNsF/FBxGZuwfK9fFz2DAgWSCoXiE15yPbz+l2G0eGs1qJ/hsIYp8I/ZjEgRVW0qsCv1N0SZ/AqXRPm4AjUQi4E/4evfi9q5TBkRArMTnrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729163009; c=relaxed/simple;
-	bh=BxzV3Q3Kns6mqX5qJ4uWTj9fdHOeg+aLWIck9ypRMSs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TpfgqI+b5omvt51X+rxHNa3MrRKdTcDAWZacjjZUHOLHWyYR54myh9BG05w3atM8K/4jCL7+1i/uR1wCvvf+H22MqIqSW0Ii3Q5FpymSWTGjUpP5JAdhypq6NhR48YzkMnWc6r3VwWsEm/ywiQA9ccj38c/nn8osijQ1GRmMWNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tVYvrOQj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A9FDC4CED1
-	for <stable@vger.kernel.org>; Thu, 17 Oct 2024 11:03:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729163009;
-	bh=BxzV3Q3Kns6mqX5qJ4uWTj9fdHOeg+aLWIck9ypRMSs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=tVYvrOQjfb9J1ThETVIdg5sr9FRMFoz4f30y5VzDusV59u8M51EObHvPfofUhnkjw
-	 nlrEmc529zZt1OlbTcf0eJwjKru1jtv8w8snl/0+nMRqFSEr0Zqzr3JtkTkdxOI1GH
-	 aOda9FhIAqHIp6rEvCOq3VKqdFPtULWprrrp3ZJSyeLaJV+bqgCe06d934rJnnomrP
-	 4QMGwgZLWhSozgMM8V8zCS2nvvs9Q8tFjA+4aU9gPPw25m9hLJw5GLETlW/FkUFN8S
-	 xXS6J0AhwXMiHDDU7v5S7LgbCa5OuQJePCRAPSh1w1Vx0zRv+BvkOLKCktljIxIZjC
-	 Xl8a7FqnMe1jg==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-539f58c68c5so1335709e87.3
-        for <stable@vger.kernel.org>; Thu, 17 Oct 2024 04:03:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUA3ixmDqDPX1BFb1Co3LjmolWT8O+h1rpKaSY2s6Bybp4k5fbcT1agktMGX+mP4i4xZt7w9/w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHThU52SWL9tI9j2SlfLRbu7O1Kz17n6k5wqCnsFH3j8Taq/bk
-	9g+9fJhRubIJdGWoOgioB1qUZKE/oiSKF2TMdIz5+iym5Yy2ipvWTNA2YpEibGZD0Syx/HXRcnF
-	USmfnlnCs08tXscDNxni1s68CD54=
-X-Google-Smtp-Source: AGHT+IGCO8vS29Sa5K89HG8yPcVAVf4A86d08xdVfeLGJGg8X8cFtVrgc8q8oFI8bwatzVhSSwEl1zXdJj1pRyFe+co=
-X-Received: by 2002:a05:6512:3e06:b0:536:a7a4:c3d4 with SMTP id
- 2adb3069b0e04-539e571c959mr14127110e87.39.1729163007547; Thu, 17 Oct 2024
- 04:03:27 -0700 (PDT)
+	s=arc-20240116; t=1729163823; c=relaxed/simple;
+	bh=0yaoLxJbOxWyLtPANIsfLD1xW9iR9qHzQjahbw5tjtg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=p00S3wqxVzzcI1U3ok6/HInYVje5U/qMcX2m7vqVtrOhunK9Lm9mj9fdXtB4UnpD3uoVlAk6ij/Mev7tFDq0Um6wRuu0u0zMM1CpZmlHNqVZfAnke3nGsx2c2myXq5rVj7JSMHt/NjjDN+MniC1+8f0ZfMTcCUQLqxTQqvxKNTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=hA98FVAK; arc=none smtp.client-ip=212.227.126.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
+	s=s1-ionos; t=1729163799; x=1729768599; i=christian@heusel.eu;
+	bh=b4RFWUlG95a7zzsAjfo+11QIK8fFjg8ifanQBIduRjQ=;
+	h=X-UI-Sender-Class:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:To:Cc:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=hA98FVAKBN3Gp4rtXfiKutwYuROAFoZhenm3pOZp7g8uPq/60MBBFw9a+tpoi0Uu
+	 5ujSstECBlp0bV2rIjsDoFJQSS6/UbQdexJUt4aJoLA89jmyR4iqi+9g9XnjLlgpM
+	 OL8I19n8SGQ4RsO4rmrV2YZNYnSI2VYlxIV3moK/tYU4aepU06VRR7qb+/irZdy8K
+	 6yrCdS2L1sNEPOKWFTdQERBfBsrwhWV5Jrj80b/5xmp7aDztmbd27L7davE/Ig5/a
+	 XNOd8DMuCpGxuWkuPpjpW4Cb2zaD+WhG/Y9urd0XkjNuIsr5iDxNmg+vLNUWX0Sfn
+	 K/4nt0f8lIp5+Kva5A==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from meterpeter.localdomain ([141.70.80.5]) by
+ mrelayeu.kundenserver.de (mreue012 [212.227.15.167]) with ESMTPSA (Nemesis)
+ id 1MFJfN-1t8E7r3Ak5-009h76; Thu, 17 Oct 2024 13:16:39 +0200
+From: Christian Heusel <christian@heusel.eu>
+Date: Thu, 17 Oct 2024 13:16:26 +0200
+Subject: [PATCH v2] ACPI: resource: Add LG 16T90SP to
+ irq1_level_low_skip_override[]
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241016-arm-kasan-vmalloc-crash-v2-0-0a52fd086eef@linaro.org>
- <20241016-arm-kasan-vmalloc-crash-v2-1-0a52fd086eef@linaro.org> <ZxDnP3rAAHLHgEXc@J2N7QTR9R3>
-In-Reply-To: <ZxDnP3rAAHLHgEXc@J2N7QTR9R3>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 17 Oct 2024 13:03:16 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFpR7MNTTLxdURE7k+PZ0vStQD_BMk92kjSbneqN3WnZQ@mail.gmail.com>
-Message-ID: <CAMj1kXFpR7MNTTLxdURE7k+PZ0vStQD_BMk92kjSbneqN3WnZQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] ARM: ioremap: Sync PGDs for VMALLOC shadow
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, 
-	Clement LE GOFFIC <clement.legoffic@foss.st.com>, Russell King <linux@armlinux.org.uk>, 
-	Kees Cook <kees@kernel.org>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Mark Brown <broonie@kernel.org>, 
-	Antonio Borneo <antonio.borneo@foss.st.com>, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <20241017-lg-gram-pro-keyboard-v2-1-7c8fbf6ff718@heusel.eu>
+X-B4-Tracking: v=1; b=H4sIAAnyEGcC/4WNQQ6CMBBFr0Jm7ZhOISiuuIdhUWRoG5GSqRAJ4
+ e5WLuDyveS/v0Fk8Rzhlm0gvPjow5hAnzJ4ODNaRt8lBq10QYpKHCxaMS+cJOCT1zYY6bAyVXd
+ tK2PK4gJpOgn3/nNk701i5+M7yHq8LPSzf4ILIWFe5KoknZPSfe14jjyceYZm3/cvcqF/a7gAA
+ AA=
+X-Change-ID: 20241016-lg-gram-pro-keyboard-9a9d8b9aa647
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Dirk Holten <dirk.holten@gmx.de>, stable@vger.kernel.org, 
+ Christian Heusel <christian@heusel.eu>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1662; i=christian@heusel.eu;
+ h=from:subject:message-id; bh=rZN8elJMVtQyGlS6orsu87BDGXA7zxYzT7zBW/Dz9VQ=;
+ b=owEBbQKS/ZANAwAIAcBH1PMotSWFAcsmYgBnEPIV+QDlBBuBK4fORkG9/uE4mHysS8/bIBjmB
+ d+PUI+otx2JAjMEAAEIAB0WIQRvd5reJHprig9yzBPAR9TzKLUlhQUCZxDyFQAKCRDAR9TzKLUl
+ hYXqEAC/trxyBAnvxmYa+r6axrbmcXsknvXkyUOsRMrdMzx8WPR+q7bqzoI0L64pKgpPnEtZd6f
+ EH9kUdFcNcSqCYgKWU+/XQMQmipsCN/cklG9bk65zlzRmoLITUDshrJSQA+IHWRKyB+e7bbRbXt
+ yNmA3eAKU5AUZoyBlXZJJ8x1D+szcxeRM/yhBJ44vjTObRS39SKtYyw6CeK9BS5T9T9oCvhDqYQ
+ OMAzVKx3dLP05yuBEqVdJl5iJsIjqEFmP3AZBffDtU48E+SwyPSe9zkOR5vDrKIFRolzxrk8UVo
+ n9jF8RZ+whFkbnG5LwuTWSt39ge8IUOkjOULmDknds79KEX4J1KCLQsSPsa4siKnBesFEaKeOgF
+ cjkRnqHZzYCRWH+IX1LW6OlBEcY/QQNx8jaQXZh5v9mD1/UELn5zaEkS0ip8NbkRwE8teewytRW
+ gkniwd3yO+Jo6xa4/v0xLqd4NFuloGJQfpOgEzZzV6AbN8FspxjkWhRpobDs+tOHwYw38IEWYJi
+ HqVoQCY/90vhpvQcG0hSzMj0EyW5nMYz2s+jQKPs22YnZli5zGExXbYnAUZvHb+OKEtS0X16Laz
+ C7bSb6dbmgQjCba61bTnhNkiIFNhEoTuAt4KH+9cGISrBt0e2G7WcCWNbKFmi5GyQIFpH/Qkgor
+ XQnPhq+eK8nf85Q==
+X-Developer-Key: i=christian@heusel.eu; a=openpgp;
+ fpr=6F779ADE247A6B8A0F72CC13C047D4F328B52585
+X-Provags-ID: V03:K1:8m5gqzHmb8w/7qAya6krWjEb94H5jQZUUaEuDTdlJugTx5FSnDf
+ vNyMgYADKegCEh3K76sgbqezR5VHAA7Sjbbq60fiy9B/iS0KmBlQ3j3+Q/g278M70y/pNrg
+ FcqD7F0i90vrLV16//nVbLynn7zZv9NfVu6IKQ4sdT55GaOCj2S36Xex866byvv9ZORWggS
+ v8GyC2i7FdluZBQ/Fq0ZQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:36TsXbwSJXw=;xmDtvzDO4PqqmMpo7yFIQUWFmSa
+ 6p87oVTMLhjmCS7KbFKgAT7BsWomWma0b7l7bP1MWh2spVa4dC+67Dn0n57CARrlyFz0cbatG
+ 2Hv0TFVFvs+lrEl8V06O2XzMSc8fNG9cVz220iCE4apyBwdsYe+WIO+tZC/NzUyktDRqz3Itx
+ 9+hzHmyRKdWBycZKHM9pOkUO5d7ZfmuW9eKhC4yyBvhnU6DxYM/XxkKv+8acNyS7vs0soiVA8
+ lWAR4h5Om/sBXCAu26AziGB1EBxPG7x80nJObHe7M2uEmrYChtA/MOy1YEIYj1WjR1uXSgaqA
+ 4NhNpgUIbQDyfMsGW2M6PLu4lzhAET6MWIikXuE62aAhKpUF3+XfungWhCcmQr4iF1Q5FZFXo
+ BaI8lRVjc9fW4tWyImLDNU+Cb/PojXCsqqGzkq62dD1ZqigP80mI0Hw76Pb0n3niFunZeDHeA
+ nqZCEvffvrhFhKY1sIhh/YS7GxHhMRFc74detyMWrCPjzWQ8IvfFzTPIW9/cUequ2NOSxUtqy
+ JE45neqJG/bBQ38fqHWuCJ1isseHH3bc2ROGoI/rPVfJoKtM/PQbYFAfORD20tGsR/+uDbDzz
+ EMDJ/kXdzz9jI15fQL4Y3UDuCntyU3xScOn02aYt4OkT8FX3xKOlWSd+VftaxXHp04vl7QDel
+ WoUKbQAVIRc0YTkLDgx3iRz/zGFWA/yJbxoCM7OpyPw+bA/JtC28HJfOcJ3x4GS+6pLFMc492
+ 9nyK0ce5Qbvxz8LRbfZpGrILV6+U7neeA==
 
-On Thu, 17 Oct 2024 at 12:30, Mark Rutland <mark.rutland@arm.com> wrote:
->
-> On Wed, Oct 16, 2024 at 09:15:21PM +0200, Linus Walleij wrote:
-> > When sync:ing the VMALLOC area to other CPUs, make sure to also
-> > sync the KASAN shadow memory for the VMALLOC area, so that we
-> > don't get stale entries for the shadow memory in the top level PGD.
-> >
-> > Since we are now copying PGDs in two instances, create a helper
-> > function named memcpy_pgd() to do the actual copying, and
-> > create a helper to map the addresses of VMALLOC_START and
-> > VMALLOC_END into the corresponding shadow memory.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: 565cbaad83d8 ("ARM: 9202/1: kasan: support CONFIG_KASAN_VMALLOC")
-> > Link: https://lore.kernel.org/linux-arm-kernel/a1a1d062-f3a2-4d05-9836-3b098de9db6d@foss.st.com/
-> > Reported-by: Clement LE GOFFIC <clement.legoffic@foss.st.com>
-> > Suggested-by: Mark Rutland <mark.rutland@arm.com>
-> > Suggested-by: Russell King (Oracle) <linux@armlinux.org.uk>
-> > Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> > ---
-> >  arch/arm/mm/ioremap.c | 25 +++++++++++++++++++++----
-> >  1 file changed, 21 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/arch/arm/mm/ioremap.c b/arch/arm/mm/ioremap.c
-> > index 794cfea9f9d4..94586015feed 100644
-> > --- a/arch/arm/mm/ioremap.c
-> > +++ b/arch/arm/mm/ioremap.c
-> > @@ -23,6 +23,7 @@
-> >   */
-> >  #include <linux/module.h>
-> >  #include <linux/errno.h>
-> > +#include <linux/kasan.h>
-> >  #include <linux/mm.h>
-> >  #include <linux/vmalloc.h>
-> >  #include <linux/io.h>
-> > @@ -115,16 +116,32 @@ int ioremap_page(unsigned long virt, unsigned long phys,
-> >  }
-> >  EXPORT_SYMBOL(ioremap_page);
-> >
-> > +static unsigned long arm_kasan_mem_to_shadow(unsigned long addr)
-> > +{
-> > +     return (unsigned long)kasan_mem_to_shadow((void *)addr);
-> > +}
-> > +
-> > +static void memcpy_pgd(struct mm_struct *mm, unsigned long start,
-> > +                    unsigned long end)
-> > +{
-> > +     memcpy(pgd_offset(mm, start), pgd_offset_k(start),
-> > +            sizeof(pgd_t) * (pgd_index(end) - pgd_index(start)));
-> > +}
-> > +
-> >  void __check_vmalloc_seq(struct mm_struct *mm)
-> >  {
-> >       int seq;
-> >
-> >       do {
-> >               seq = atomic_read(&init_mm.context.vmalloc_seq);
-> > -             memcpy(pgd_offset(mm, VMALLOC_START),
-> > -                    pgd_offset_k(VMALLOC_START),
-> > -                    sizeof(pgd_t) * (pgd_index(VMALLOC_END) -
-> > -                                     pgd_index(VMALLOC_START)));
-> > +             memcpy_pgd(mm, VMALLOC_START, VMALLOC_END);
-> > +             if (IS_ENABLED(CONFIG_KASAN_VMALLOC)) {
-> > +                     unsigned long start =
-> > +                             arm_kasan_mem_to_shadow(VMALLOC_START);
-> > +                     unsigned long end =
-> > +                             arm_kasan_mem_to_shadow(VMALLOC_END);
-> > +                     memcpy_pgd(mm, start, end);
-> > +             }
->
-> This looks good; FWIW:
->
-> Acked-by: Mark Rutland <mark.rutland@arm.com>
->
-> As a separate thing, I believe we also need to use atomic_read_acquire()
-> for the reads of vmalloc_seq to pair with the atomic_*_release() on each
-> update.
->
-> Otherwise, this can be reordered, e.g.
->
->         do {
->                 memcpy_pgd(...);
->                 seq = atomic_read(&init_mm.context.vmalloc_seq);
->                 atomic_set_release(&mm->context.vmalloc_seq, seq);
->         } while (seq != atomic_read(&init_mm.context.vmalloc_seq)
->
-> ... and we might fail to copy the relevant table entries from init_mm,
-> but still think we're up-to-date and update mm's vmalloc_seq.
->
+The LG Gram Pro 16 2-in-1 (2024) the 16T90SP has its keybopard IRQ (1)
+described as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh
+which breaks the keyboard.
 
-The compiler cannot reorder this as it has to assume that the memcpy()
-may have side effects that affect the result of the atomic read.
+Add the 16T90SP to the irq1_level_low_skip_override[] quirk table to fix
+this.
 
-So the question is whether this CPU can observe the new value of
-init_mm.context.vmalloc_seq but still see the old contents of its page
-tables in case another CPU is modifying init_mm concurrently.
-atomic_read_acquire() definitely seems more appropriate here to
-prevent that from happening, and I don't recall why I didn't use that
-at the time.
+Reported-by: Dirk Holten <dirk.holten@gmx.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219382
+Cc: stable@vger.kernel.org
+Suggested-by: Dirk Holten <dirk.holten@gmx.de>
+Signed-off-by: Christian Heusel <christian@heusel.eu>
+=2D--
+Note that I do not have the relevant hardware since I'm sending in this
+quirk at the request of someone else.
+=2D--
+Changes in v2:
+- fix the double initialization warning reported by the kernel test
+  robot, which accidentially overwrote another quirk
+- Link to v1: https://lore.kernel.org/r/20241016-lg-gram-pro-keyboard-v1-1=
+-34306123102f@heusel.eu
+=2D--
+ drivers/acpi/resource.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 129bceb1f4a27df93439bcefdb27fd9c91258028..7fe842dae1ec05ce6726af2ae4=
+fcc8eff3698dcb 100644
+=2D-- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -503,6 +503,13 @@ static const struct dmi_system_id irq1_level_low_skip=
+_override[] =3D {
+ 			DMI_MATCH(DMI_BOARD_NAME, "17U70P"),
+ 		},
+ 	},
++	{
++		/* LG Electronics 16T90SP */
++		.matches =3D {
++			DMI_MATCH(DMI_SYS_VENDOR, "LG Electronics"),
++			DMI_MATCH(DMI_BOARD_NAME, "16T90SP"),
++		},
++	},
+ 	{ }
+ };
+
+
+=2D--
+base-commit: 8e929cb546ee42c9a61d24fae60605e9e3192354
+change-id: 20241016-lg-gram-pro-keyboard-9a9d8b9aa647
+
+Best regards,
+=2D-
+Christian Heusel <christian@heusel.eu>
+
 
