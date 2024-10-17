@@ -1,133 +1,151 @@
-Return-Path: <stable+bounces-86591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF2F19A1F9F
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 12:20:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A86E9A200C
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 12:30:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E18BB21B78
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 10:20:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CCE11C21EBA
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 10:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3B4B1DA618;
-	Thu, 17 Oct 2024 10:20:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vLQCcGFy"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5182F1D31A8;
+	Thu, 17 Oct 2024 10:30:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890031D935A;
-	Thu, 17 Oct 2024 10:20:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B861B0F08
+	for <stable@vger.kernel.org>; Thu, 17 Oct 2024 10:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729160428; cv=none; b=hLALI2B4V/NieSTNp1tPCmINUMgsa3/Wal3hm16V8ombUDvdT9ec4zdt/fTFU3hcZ3CLfqvHgTEIIydHaiSZ6Qk5JGsaF35HK66zM2uNTkItXPARt608oeK/eIj4ZC5CjxKDhX1la2ygtwyPRcd32pHdvH1luTxK9GwujI4zIDI=
+	t=1729161032; cv=none; b=fDeybJRa/p/uniKO1ES/Ch+8EkHzJ4cojguQsj7Pg3zZ3RTooExif26XRdGcqDQoww0O2eX2MWnvz/mo6ew7+iwfFvqQRcz0nKvpa6C+CFlSZ9ic8xIZx5hULnBlPhQoYSiHg2bdZUs+OvMv8MOaGheKqQC4Q0pe3cMkn1VzBrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729160428; c=relaxed/simple;
-	bh=ndP+iB2hmNRCPOi06NCrya9V0ZRJHgRycSPwBDTjQas=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=nn2LXvFhZ6Vs4QNSs2upQgQHPP7v9tKmrcmA+ppuklQnp3GmPTDOPq7qN2Khk6kmsislWrDtblVhPdbHJu+u9AHINbhFa5nyblUSYssK4GiR58Dmf5jG1h6kfN0xv+zs6lk+cUywceUTt92yH5NnV8jmtqdNQKqMqJ9Z7WH6qwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vLQCcGFy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FFBC4CEC3;
-	Thu, 17 Oct 2024 10:20:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729160426;
-	bh=ndP+iB2hmNRCPOi06NCrya9V0ZRJHgRycSPwBDTjQas=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=vLQCcGFylaz/L4zohdXOi/zPUjYY3gjwCpPLi5d5x26q/Fgsw1800u8wBTPNNFIwj
-	 2qNi3DzWQZsqgYESY5w9G+gm2fQT7cdHNYbdK0aEhRb4iULaj4m01Hpjdh9s8RvqZ/
-	 6qRQ4I6TZzWIQQi6Q4pMTZpKeexHT6sV1LqTs/1+yzaWWg/ZydiCByqxhMyIWRbZWI
-	 zh081GcdQ6zuDgt7IfMbc5mL+U7WRdlY+qeNSpxv+7RuqpXruMRMbuyyEkdcTIph3X
-	 sFlcLGWZm/X9kRPuesFIYzAz6wbpSIJ7TOjwJ++1LoHcBrEhDA678wKR6SYZv3Vwk9
-	 VVyeVh9MZiirA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE24F3805CC0;
-	Thu, 17 Oct 2024 10:20:32 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1729161032; c=relaxed/simple;
+	bh=O1F0Nb7e0VeCZvYWYViC43sVpZP1jYDo/g+ajhGoObY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pugW40ywwrDQLUIqFpfBXWU7bsB7iS5bjIwQ8kAVeOx70mVyAypCkmb+8+HwSNfNcE9FWqQ5ayE0sUauD51/PQxrlZ0qIKS9a3A3N0u/MXIEviIdADqP+MHCVFS6LVtQFevEyAUl7lKuogZN7twq8X8gcFAYZJrR5jfxhO06G6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B00F7FEC;
+	Thu, 17 Oct 2024 03:30:57 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D4DD43F71E;
+	Thu, 17 Oct 2024 03:30:25 -0700 (PDT)
+Date: Thu, 17 Oct 2024 11:30:23 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Linus Walleij <linus.walleij@linaro.org>,
+	Ard Biesheuvel <ardb@kernel.org>
+Cc: Clement LE GOFFIC <clement.legoffic@foss.st.com>,
+	Russell King <linux@armlinux.org.uk>, Kees Cook <kees@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
+	Antonio Borneo <antonio.borneo@foss.st.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] ARM: ioremap: Sync PGDs for VMALLOC shadow
+Message-ID: <ZxDnP3rAAHLHgEXc@J2N7QTR9R3>
+References: <20241016-arm-kasan-vmalloc-crash-v2-0-0a52fd086eef@linaro.org>
+ <20241016-arm-kasan-vmalloc-crash-v2-1-0a52fd086eef@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] mptcp: pm: fix UaF read in
- mptcp_pm_nl_rm_addr_or_subflow
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <172916043148.2424677.15397767732397939566.git-patchwork-notify@kernel.org>
-Date: Thu, 17 Oct 2024 10:20:31 +0000
-References: <20241015-net-mptcp-uaf-pm-rm-v1-1-c4ee5d987a64@kernel.org>
-In-Reply-To: <20241015-net-mptcp-uaf-pm-rm-v1-1-c4ee5d987a64@kernel.org>
-To: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- syzbot+3c8b7a8e7df6a2a226ca@syzkaller.appspotmail.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241016-arm-kasan-vmalloc-crash-v2-1-0a52fd086eef@linaro.org>
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Tue, 15 Oct 2024 10:38:47 +0200 you wrote:
-> Syzkaller reported this splat:
+On Wed, Oct 16, 2024 at 09:15:21PM +0200, Linus Walleij wrote:
+> When sync:ing the VMALLOC area to other CPUs, make sure to also
+> sync the KASAN shadow memory for the VMALLOC area, so that we
+> don't get stale entries for the shadow memory in the top level PGD.
 > 
->   ==================================================================
->   BUG: KASAN: slab-use-after-free in mptcp_pm_nl_rm_addr_or_subflow+0xb44/0xcc0 net/mptcp/pm_netlink.c:881
->   Read of size 4 at addr ffff8880569ac858 by task syz.1.2799/14662
+> Since we are now copying PGDs in two instances, create a helper
+> function named memcpy_pgd() to do the actual copying, and
+> create a helper to map the addresses of VMALLOC_START and
+> VMALLOC_END into the corresponding shadow memory.
 > 
->   CPU: 0 UID: 0 PID: 14662 Comm: syz.1.2799 Not tainted 6.12.0-rc2-syzkaller-00307-g36c254515dc6 #0
->   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
->   Call Trace:
->    <TASK>
->    __dump_stack lib/dump_stack.c:94 [inline]
->    dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
->    print_address_description mm/kasan/report.c:377 [inline]
->    print_report+0xc3/0x620 mm/kasan/report.c:488
->    kasan_report+0xd9/0x110 mm/kasan/report.c:601
->    mptcp_pm_nl_rm_addr_or_subflow+0xb44/0xcc0 net/mptcp/pm_netlink.c:881
->    mptcp_pm_nl_rm_subflow_received net/mptcp/pm_netlink.c:914 [inline]
->    mptcp_nl_remove_id_zero_address+0x305/0x4a0 net/mptcp/pm_netlink.c:1572
->    mptcp_pm_nl_del_addr_doit+0x5c9/0x770 net/mptcp/pm_netlink.c:1603
->    genl_family_rcv_msg_doit+0x202/0x2f0 net/netlink/genetlink.c:1115
->    genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
->    genl_rcv_msg+0x565/0x800 net/netlink/genetlink.c:1210
->    netlink_rcv_skb+0x165/0x410 net/netlink/af_netlink.c:2551
->    genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
->    netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
->    netlink_unicast+0x53c/0x7f0 net/netlink/af_netlink.c:1357
->    netlink_sendmsg+0x8b8/0xd70 net/netlink/af_netlink.c:1901
->    sock_sendmsg_nosec net/socket.c:729 [inline]
->    __sock_sendmsg net/socket.c:744 [inline]
->    ____sys_sendmsg+0x9ae/0xb40 net/socket.c:2607
->    ___sys_sendmsg+0x135/0x1e0 net/socket.c:2661
->    __sys_sendmsg+0x117/0x1f0 net/socket.c:2690
->    do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
->    __do_fast_syscall_32+0x73/0x120 arch/x86/entry/common.c:386
->    do_fast_syscall_32+0x32/0x80 arch/x86/entry/common.c:411
->    entry_SYSENTER_compat_after_hwframe+0x84/0x8e
->   RIP: 0023:0xf7fe4579
->   Code: b8 01 10 06 03 74 b4 01 10 07 03 74 b0 01 10 08 03 74 d8 01 00 00 00 00 00 00 00 00 00 00 00 00 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 8d b4 26 00 00 00 00 8d b4 26 00 00 00 00
->   RSP: 002b:00000000f574556c EFLAGS: 00000296 ORIG_RAX: 0000000000000172
->   RAX: ffffffffffffffda RBX: 000000000000000b RCX: 0000000020000140
->   RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
->   RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
->   R10: 0000000000000000 R11: 0000000000000296 R12: 0000000000000000
->   R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
->    </TASK>
+> Cc: stable@vger.kernel.org
+> Fixes: 565cbaad83d8 ("ARM: 9202/1: kasan: support CONFIG_KASAN_VMALLOC")
+> Link: https://lore.kernel.org/linux-arm-kernel/a1a1d062-f3a2-4d05-9836-3b098de9db6d@foss.st.com/
+> Reported-by: Clement LE GOFFIC <clement.legoffic@foss.st.com>
+> Suggested-by: Mark Rutland <mark.rutland@arm.com>
+> Suggested-by: Russell King (Oracle) <linux@armlinux.org.uk>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+>  arch/arm/mm/ioremap.c | 25 +++++++++++++++++++++----
+>  1 file changed, 21 insertions(+), 4 deletions(-)
 > 
-> [...]
+> diff --git a/arch/arm/mm/ioremap.c b/arch/arm/mm/ioremap.c
+> index 794cfea9f9d4..94586015feed 100644
+> --- a/arch/arm/mm/ioremap.c
+> +++ b/arch/arm/mm/ioremap.c
+> @@ -23,6 +23,7 @@
+>   */
+>  #include <linux/module.h>
+>  #include <linux/errno.h>
+> +#include <linux/kasan.h>
+>  #include <linux/mm.h>
+>  #include <linux/vmalloc.h>
+>  #include <linux/io.h>
+> @@ -115,16 +116,32 @@ int ioremap_page(unsigned long virt, unsigned long phys,
+>  }
+>  EXPORT_SYMBOL(ioremap_page);
+>  
+> +static unsigned long arm_kasan_mem_to_shadow(unsigned long addr)
+> +{
+> +	return (unsigned long)kasan_mem_to_shadow((void *)addr);
+> +}
+> +
+> +static void memcpy_pgd(struct mm_struct *mm, unsigned long start,
+> +		       unsigned long end)
+> +{
+> +	memcpy(pgd_offset(mm, start), pgd_offset_k(start),
+> +	       sizeof(pgd_t) * (pgd_index(end) - pgd_index(start)));
+> +}
+> +
+>  void __check_vmalloc_seq(struct mm_struct *mm)
+>  {
+>  	int seq;
+>  
+>  	do {
+>  		seq = atomic_read(&init_mm.context.vmalloc_seq);
+> -		memcpy(pgd_offset(mm, VMALLOC_START),
+> -		       pgd_offset_k(VMALLOC_START),
+> -		       sizeof(pgd_t) * (pgd_index(VMALLOC_END) -
+> -					pgd_index(VMALLOC_START)));
+> +		memcpy_pgd(mm, VMALLOC_START, VMALLOC_END);
+> +		if (IS_ENABLED(CONFIG_KASAN_VMALLOC)) {
+> +			unsigned long start =
+> +				arm_kasan_mem_to_shadow(VMALLOC_START);
+> +			unsigned long end =
+> +				arm_kasan_mem_to_shadow(VMALLOC_END);
+> +			memcpy_pgd(mm, start, end);
+> +		}
 
-Here is the summary with links:
-  - [net] mptcp: pm: fix UaF read in mptcp_pm_nl_rm_addr_or_subflow
-    https://git.kernel.org/netdev/net/c/7decd1f5904a
+This looks good; FWIW:
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Acked-by: Mark Rutland <mark.rutland@arm.com>
 
+As a separate thing, I believe we also need to use atomic_read_acquire()
+for the reads of vmalloc_seq to pair with the atomic_*_release() on each
+update.
 
+Otherwise, this can be reordered, e.g.
+
+	do {
+		memcpy_pgd(...);
+		seq = atomic_read(&init_mm.context.vmalloc_seq);
+		atomic_set_release(&mm->context.vmalloc_seq, seq);
+	} while (seq != atomic_read(&init_mm.context.vmalloc_seq)
+
+... and we might fail to copy the relevant table entries from init_mm,
+but still think we're up-to-date and update mm's vmalloc_seq.
+
+Ard, does that sound right to you, or am I missing something?
+
+Mark.
 
