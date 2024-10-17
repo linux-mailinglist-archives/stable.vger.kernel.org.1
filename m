@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-86650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE6669A2AA7
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 19:19:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3274A9A2AA8
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 19:19:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E2B8282D82
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 17:19:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5340283050
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 17:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D9691DF99F;
-	Thu, 17 Oct 2024 17:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B7C1DF993;
+	Thu, 17 Oct 2024 17:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="qeQFnmPo"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="BOqerRDq"
 X-Original-To: stable@vger.kernel.org
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68D91DFD9D
-	for <stable@vger.kernel.org>; Thu, 17 Oct 2024 17:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324AD1DF995
+	for <stable@vger.kernel.org>; Thu, 17 Oct 2024 17:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729185573; cv=none; b=axkYx8U+n25z0oFkhn7RfunQhDers10OAeQONhU2iRSAkYb1pt5q/drJtJX1I8/NtWNRmcD3yFArbJl4sfQmuwBasl8Dj7VEpfe8KADpJGNG8NY1tgAOa14yJ9jz+UtxdVoyz/KJL3yj/9piHPt1nburt37JmlyakLwLdNSQ7wU=
+	t=1729185577; cv=none; b=IVO/WqvUnLOZy5ZPbUqSrDd/sFgxImIJ5uKxbTmQODTsA/1gHqwg870MA8+10BQTavEqdnVD19etYlJHAWWu7vjCx9/wg2AfUGESYU5NN/pv4JCudGY2JH10tZ6SEucYw4VMRlCbXQw9urtN6FU8qnC3V7ULUjPyDp84ztga6Xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729185573; c=relaxed/simple;
-	bh=60yfYtKugCRlh0OHVPrmi5MVVT1Ma+QPnC7Vylc8lL0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AQSPfkNK3gpx5Sr/USgD+oBURzrhiBYl6T4MRN+pr/P06X0n5B+mcsN1PFcF2HQ7V1SC7GQ63ukye4//zZuRo76/fibgbrWhBRACPPlycizwK+nunkjn+6F7XpLmjqxKRk2u469k87KPWwD6ksOxQDbPeYYup3slVUP9/HW7bcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=qeQFnmPo; arc=none smtp.client-ip=178.60.130.6
+	s=arc-20240116; t=1729185577; c=relaxed/simple;
+	bh=Tay2z3K1TL5qtziNiCn6vkFSbUo7ZjxGa9K2KkjEim4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=OaR1sGR7/IwBW0y9TYHKVshWaXPxu2ilFyPLw2qmVPN8IE6QkGrOT3CDUmA8w7Istss0/ugIjKBp9XZJoyq9ZjuguJH9X2bw12snWBtCQqD1Cc3OAH3WIrgHNfK/Cf2P51T4EgF1tkqy9jeQui28T+GxUP9Z8qzG9uVtqwMfYpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=BOqerRDq; arc=none smtp.client-ip=178.60.130.6
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=LG9BIIqLcW0ZLmlBWHnDVy3ilvP/X1z4TCg1AQ3NP9s=; b=qeQFnmPojWl2wlBfgeiGVKq+K7
-	FgmVhgH/s0UfHrxOTGZifZK7L8wdzhzSiadbw336DM+ssWgwGTwQwVwfKEEjsAKUj7MpjVkbOu1PV
-	a7nJ+gPocMsPnoOYV/6jK2O0SrZ6b0VZKSYhxBkOq3YbBdLgD557pagEmEq+6YpptkXNhNd5nC/vT
-	nFznjgr+K6+zRShLEJFRx7scfiQxiAF8n4FtQ+e0lNJEDYJRxUPkZPmSFCEvD+8aTStfw3GSBaOfH
-	HeFNNbRGoQRQzjYwQqwiB4IvXatIHFzHHx3MOfVVVy39pcPlqqhkooFL6CKMqmnRPt0Q03YI3E6Ml
-	p6BEgMaw==;
+	bh=Tum2pS7oAEDLteviozV4U3jepff5MuU1nR+M9DvjbF8=; b=BOqerRDq9gRI6P3KGMcsQs+Ksk
+	LeStT6djEfM4sott/5Bnpvk38MqIwMVQKVyLwnIgqzEgayoUR9rCQ4CPxZxmTj2WeCf9bgFlO+Xqn
+	ceDL9jfcnDYCNNstCDSosciu34xbkYvVSLzqWxTSP3n2gPwinbmhlv1hsXfX0JgN2iSuZaWGeW0Fb
+	qduzoEGrb/ds4rFtxvIDQ2ZQDfaSQZt756nT2RzCGLGSiWAovYUEPhhvLlrfs68JyJK38TmFGioAg
+	r4A/4RM03QvNlAwP8EEF8+mHHTMH/Yrl5G+3h5PJunMjkc5ELexjC8PZPwMcJUx73Qy1/8yayXxRt
+	9ZTjGZfg==;
 Received: from 179-125-64-237-dinamico.pombonet.net.br ([179.125.64.237] helo=quatroqueijos.lan)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1t1U9m-00Biqr-El; Thu, 17 Oct 2024 19:19:27 +0200
+	id 1t1U9o-00Biqr-Eo; Thu, 17 Oct 2024 19:19:29 +0200
 From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 To: stable@vger.kernel.org
 Cc: Jan Kara <jack@suse.cz>,
 	kernel-dev@igalia.com,
 	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 6.1 00/19] Fix NULL pointer dereference for corrupted UDF filesystems
-Date: Thu, 17 Oct 2024 14:18:56 -0300
-Message-Id: <20241017171915.311132-1-cascardo@igalia.com>
+Subject: [PATCH 6.1 01/19] udf: New directory iteration code
+Date: Thu, 17 Oct 2024 14:18:57 -0300
+Message-Id: <20241017171915.311132-2-cascardo@igalia.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241017171915.311132-1-cascardo@igalia.com>
+References: <20241017171915.311132-1-cascardo@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,102 +66,468 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-UDF filesystems which have relocated blocks past the end of the device may
-lead to a dcache without an inode that would lead to a NULL pointer
-dereference, like this:
+From: Jan Kara <jack@suse.cz>
 
-[   65.938826] repro: attempt to access beyond end of device
-[   65.938826] loop0: rw=2049, sector=2052, nr_sectors = 2 limit=2048
-[   65.939476] Buffer I/O error on dev loop0, logical block 1026, lost async page write
-[   65.940426] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[   65.940894] #PF: supervisor read access in kernel mode
-[   65.941280] #PF: error_code(0x0000) - not-present page
-[   65.941552] PGD 8691067 P4D 8691067 PUD 84cb067 PMD 0
-[   65.941830] Oops: 0000 [#1] PREEMPT SMP NOPTI
-[   65.942069] CPU: 0 PID: 460 Comm: repro Not tainted 6.1.113-rc2-00792-g7e3aa874350e #618
-[   65.942490] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-[   65.942906] RIP: 0010:path_openat+0x3ae/0x5db
-[   65.943136] Code: 89 c0 b8 eb ff ff ff 45 84 c0 0f 85 50 ff ff ff 83 3d da 24 3d 01 00 48 8b 4a 70 44 8b ad e4 00 00 00 8b 95 e0 00 00 00 75 0c <8b> 01 66 25 00 f0 66 3d 00 10 74 95 83 3d b0 24 3d 01 00 75 0c 8b
-[   65.944078] RSP: 0018:ffffc900001c7d50 EFLAGS: 00010246
-[   65.944387] RAX: 00000000ffffffeb RBX: ffffc900001c7edc RCX: 0000000000000000
-[   65.945072] RDX: 0000000000000000 RSI: 0000000000000132 RDI: 0000000000000000
-[   65.945948] RBP: ffffc900001c7dc0 R08: 000000000622c100 R09: 0000000000000000
-[   65.946412] R10: ffffc900001c7b30 R11: 0000000000000002 R12: ffff888009533a00
-[   65.946833] R13: 00000000000041ed R14: 0000000000008241 R15: ffffffff82450ca0
-[   65.947257] FS:  00007c48054c4740(0000) GS:ffff88803ea00000(0000) knlGS:0000000000000000
-[   65.947702] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   65.947997] CR2: 0000000000000000 CR3: 0000000008c40000 CR4: 0000000000750ef0
-[   65.948361] PKRU: 55555554
-[   65.948503] Call Trace:
-[   65.948631]  <TASK>
-[   65.948799]  ? __die_body+0x1a/0x5d
-[   65.949079]  ? page_fault_oops+0x2ca/0x358
-[   65.949370]  ? exc_page_fault+0x15f/0x18b
-[   65.949654]  ? asm_exc_page_fault+0x26/0x30
-[   65.949953]  ? path_openat+0x3ae/0x5db
-[   65.950228]  do_filp_open+0x52/0xb3
-[   65.950480]  ? lock_release+0x17a/0x25f
-[   65.950759]  ? _raw_spin_unlock+0x1e/0x32
-[   65.951044]  do_sys_openat2+0x6d/0xe0
-[   65.951305]  do_sys_open+0x39/0x57
-[   65.951479]  do_syscall_64+0x71/0x88
-[   65.951660]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-[   65.951913] RIP: 0033:0x7c48055ecc7d
-[   65.952100] Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 73 81 0d 00 f7 d8 64 89 01 48
-[   65.953002] RSP: 002b:00007fff38c48918 EFLAGS: 00000202 ORIG_RAX: 0000000000000055
-[   65.953378] RAX: ffffffffffffffda RBX: 00007fff38c48a48 RCX: 00007c48055ecc7d
-[   65.953733] RDX: 00007c48055ecc7d RSI: 0000000000000000 RDI: 0000000020000d00
-[   65.954128] RBP: 00007fff38c48930 R08: 0000000000000000 R09: 0000000000000000
-[   65.954492] R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
-[   65.955122] R13: 00007fff38c48a58 R14: 00005661cd1ccd10 R15: 00007c480572d000
-[   65.955666]  </TASK>
-[   65.955843] Modules linked in:
-[   65.956054] CR2: 0000000000000000
-[   65.956285] ---[ end trace 0000000000000000 ]---
-[   65.956610] RIP: 0010:path_openat+0x3ae/0x5db
-[   65.956886] Code: 89 c0 b8 eb ff ff ff 45 84 c0 0f 85 50 ff ff ff 83 3d da 24 3d 01 00 48 8b 4a 70 44 8b ad e4 00 00 00 8b 95 e0 00 00 00 75 0c <8b> 01 66 25 00 f0 66 3d 00 10 74 95 83 3d b0 24 3d 01 00 75 0c 8b
-[   65.957973] RSP: 0018:ffffc900001c7d50 EFLAGS: 00010246
-[   65.958255] RAX: 00000000ffffffeb RBX: ffffc900001c7edc RCX: 0000000000000000
-[   65.958636] RDX: 0000000000000000 RSI: 0000000000000132 RDI: 0000000000000000
-[   65.959111] RBP: ffffc900001c7dc0 R08: 000000000622c100 R09: 0000000000000000
-[   65.959601] R10: ffffc900001c7b30 R11: 0000000000000002 R12: ffff888009533a00
-[   65.960095] R13: 00000000000041ed R14: 0000000000008241 R15: ffffffff82450ca0
-[   65.960539] FS:  00007c48054c4740(0000) GS:ffff88803ea00000(0000) knlGS:0000000000000000
-[   65.960971] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   65.961283] CR2: 0000000000000000 CR3: 0000000008c40000 CR4: 0000000000750ef0
-[   65.961664] PKRU: 55555554
-[   65.961820] Kernel panic - not syncing: Fatal exception
+[ Upstream commit d16076d9b684b7c8d3ccbe9c33d5ea9fe8fcca09 ]
 
+Add new support code for iterating directory entries. The code is also
+more carefully verifying validity of on-disk directory entries to avoid
+crashes on malicious media.
 
-Jan Kara (19):
-  udf: New directory iteration code
-  udf: Convert udf_expand_dir_adinicb() to new directory iteration
-  udf: Move udf_expand_dir_adinicb() to its callsite
-  udf: Implement searching for directory entry using new iteration code
-  udf: Provide function to mark entry as deleted using new directory
-    iteration code
-  udf: Convert udf_rename() to new directory iteration code
-  udf: Convert udf_readdir() to new directory iteration
-  udf: Convert udf_lookup() to use new directory iteration code
-  udf: Convert udf_get_parent() to new directory iteration code
-  udf: Convert empty_dir() to new directory iteration code
-  udf: Convert udf_rmdir() to new directory iteration code
-  udf: Convert udf_unlink() to new directory iteration code
-  udf: Implement adding of dir entries using new iteration code
-  udf: Convert udf_add_nondir() to new directory iteration
-  udf: Convert udf_mkdir() to new directory iteration code
-  udf: Convert udf_link() to new directory iteration code
-  udf: Remove old directory iteration code
-  udf: Handle error when expanding directory
-  udf: Don't return bh from udf_expand_dir_adinicb()
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+---
+ fs/udf/directory.c | 395 +++++++++++++++++++++++++++++++++++++++++++++
+ fs/udf/udfdecl.h   |  23 +++
+ 2 files changed, 418 insertions(+)
 
- fs/udf/dir.c       |  148 ++-----
- fs/udf/directory.c |  564 ++++++++++++++++++------
- fs/udf/inode.c     |   90 ----
- fs/udf/namei.c     | 1049 +++++++++++++++-----------------------------
- fs/udf/udfdecl.h   |   45 +-
- 5 files changed, 823 insertions(+), 1073 deletions(-)
-
+diff --git a/fs/udf/directory.c b/fs/udf/directory.c
+index 16bcf2c6b8b3..2842c463725c 100644
+--- a/fs/udf/directory.c
++++ b/fs/udf/directory.c
+@@ -17,6 +17,401 @@
+ #include <linux/fs.h>
+ #include <linux/string.h>
+ #include <linux/bio.h>
++#include <linux/crc-itu-t.h>
++#include <linux/iversion.h>
++
++static int udf_verify_fi(struct udf_fileident_iter *iter)
++{
++	unsigned int len;
++
++	if (iter->fi.descTag.tagIdent != cpu_to_le16(TAG_IDENT_FID)) {
++		udf_err(iter->dir->i_sb,
++			"directory (ino %lu) has entry at pos %llu with incorrect tag %x\n",
++			iter->dir->i_ino, (unsigned long long)iter->pos,
++			le16_to_cpu(iter->fi.descTag.tagIdent));
++		return -EFSCORRUPTED;
++	}
++	len = udf_dir_entry_len(&iter->fi);
++	if (le16_to_cpu(iter->fi.lengthOfImpUse) & 3) {
++		udf_err(iter->dir->i_sb,
++			"directory (ino %lu) has entry at pos %llu with unaligned lenght of impUse field\n",
++			iter->dir->i_ino, (unsigned long long)iter->pos);
++		return -EFSCORRUPTED;
++	}
++	/*
++	 * This is in fact allowed by the spec due to long impUse field but
++	 * we don't support it. If there is real media with this large impUse
++	 * field, support can be added.
++	 */
++	if (len > 1 << iter->dir->i_blkbits) {
++		udf_err(iter->dir->i_sb,
++			"directory (ino %lu) has too big (%u) entry at pos %llu\n",
++			iter->dir->i_ino, len, (unsigned long long)iter->pos);
++		return -EFSCORRUPTED;
++	}
++	if (iter->pos + len > iter->dir->i_size) {
++		udf_err(iter->dir->i_sb,
++			"directory (ino %lu) has entry past directory size at pos %llu\n",
++			iter->dir->i_ino, (unsigned long long)iter->pos);
++		return -EFSCORRUPTED;
++	}
++	if (udf_dir_entry_len(&iter->fi) !=
++	    sizeof(struct tag) + le16_to_cpu(iter->fi.descTag.descCRCLength)) {
++		udf_err(iter->dir->i_sb,
++			"directory (ino %lu) has entry where CRC length (%u) does not match entry length (%u)\n",
++			iter->dir->i_ino,
++			(unsigned)le16_to_cpu(iter->fi.descTag.descCRCLength),
++			(unsigned)(udf_dir_entry_len(&iter->fi) -
++							sizeof(struct tag)));
++		return -EFSCORRUPTED;
++	}
++	return 0;
++}
++
++static int udf_copy_fi(struct udf_fileident_iter *iter)
++{
++	struct udf_inode_info *iinfo = UDF_I(iter->dir);
++	int blksize = 1 << iter->dir->i_blkbits;
++	int err, off, len, nameoff;
++
++	/* Skip copying when we are at EOF */
++	if (iter->pos >= iter->dir->i_size) {
++		iter->name = NULL;
++		return 0;
++	}
++	if (iter->dir->i_size < iter->pos + sizeof(struct fileIdentDesc)) {
++		udf_err(iter->dir->i_sb,
++			"directory (ino %lu) has entry straddling EOF\n",
++			iter->dir->i_ino);
++		return -EFSCORRUPTED;
++	}
++	if (iinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB) {
++		memcpy(&iter->fi, iinfo->i_data + iinfo->i_lenEAttr + iter->pos,
++		       sizeof(struct fileIdentDesc));
++		err = udf_verify_fi(iter);
++		if (err < 0)
++			return err;
++		iter->name = iinfo->i_data + iinfo->i_lenEAttr + iter->pos +
++			sizeof(struct fileIdentDesc) +
++			le16_to_cpu(iter->fi.lengthOfImpUse);
++		return 0;
++	}
++
++	off = iter->pos & (blksize - 1);
++	len = min_t(int, sizeof(struct fileIdentDesc), blksize - off);
++	memcpy(&iter->fi, iter->bh[0]->b_data + off, len);
++	if (len < sizeof(struct fileIdentDesc))
++		memcpy((char *)(&iter->fi) + len, iter->bh[1]->b_data,
++		       sizeof(struct fileIdentDesc) - len);
++	err = udf_verify_fi(iter);
++	if (err < 0)
++		return err;
++
++	/* Handle directory entry name */
++	nameoff = off + sizeof(struct fileIdentDesc) +
++				le16_to_cpu(iter->fi.lengthOfImpUse);
++	if (off + udf_dir_entry_len(&iter->fi) <= blksize) {
++		iter->name = iter->bh[0]->b_data + nameoff;
++	} else if (nameoff >= blksize) {
++		iter->name = iter->bh[1]->b_data + (nameoff - blksize);
++	} else {
++		iter->name = iter->namebuf;
++		len = blksize - nameoff;
++		memcpy(iter->name, iter->bh[0]->b_data + nameoff, len);
++		memcpy(iter->name + len, iter->bh[1]->b_data,
++		       iter->fi.lengthFileIdent - len);
++	}
++	return 0;
++}
++
++/* Readahead 8k once we are at 8k boundary */
++static void udf_readahead_dir(struct udf_fileident_iter *iter)
++{
++	unsigned int ralen = 16 >> (iter->dir->i_blkbits - 9);
++	struct buffer_head *tmp, *bha[16];
++	int i, num;
++	udf_pblk_t blk;
++
++	if (iter->loffset & (ralen - 1))
++		return;
++
++	if (iter->loffset + ralen > (iter->elen >> iter->dir->i_blkbits))
++		ralen = (iter->elen >> iter->dir->i_blkbits) - iter->loffset;
++	num = 0;
++	for (i = 0; i < ralen; i++) {
++		blk = udf_get_lb_pblock(iter->dir->i_sb, &iter->eloc,
++					iter->loffset + i);
++		tmp = udf_tgetblk(iter->dir->i_sb, blk);
++		if (tmp && !buffer_uptodate(tmp) && !buffer_locked(tmp))
++			bha[num++] = tmp;
++		else
++			brelse(tmp);
++	}
++	if (num) {
++		bh_readahead_batch(num, bha, REQ_RAHEAD);
++		for (i = 0; i < num; i++)
++			brelse(bha[i]);
++	}
++}
++
++static struct buffer_head *udf_fiiter_bread_blk(struct udf_fileident_iter *iter)
++{
++	udf_pblk_t blk;
++
++	udf_readahead_dir(iter);
++	blk = udf_get_lb_pblock(iter->dir->i_sb, &iter->eloc, iter->loffset);
++	return udf_tread(iter->dir->i_sb, blk);
++}
++
++/*
++ * Updates loffset to point to next directory block; eloc, elen & epos are
++ * updated if we need to traverse to the next extent as well.
++ */
++static int udf_fiiter_advance_blk(struct udf_fileident_iter *iter)
++{
++	iter->loffset++;
++	if (iter->loffset < iter->elen >> iter->dir->i_blkbits)
++		return 0;
++
++	iter->loffset = 0;
++	if (udf_next_aext(iter->dir, &iter->epos, &iter->eloc, &iter->elen, 1)
++			!= (EXT_RECORDED_ALLOCATED >> 30)) {
++		if (iter->pos == iter->dir->i_size) {
++			iter->elen = 0;
++			return 0;
++		}
++		udf_err(iter->dir->i_sb,
++			"extent after position %llu not allocated in directory (ino %lu)\n",
++			(unsigned long long)iter->pos, iter->dir->i_ino);
++		return -EFSCORRUPTED;
++	}
++	return 0;
++}
++
++static int udf_fiiter_load_bhs(struct udf_fileident_iter *iter)
++{
++	int blksize = 1 << iter->dir->i_blkbits;
++	int off = iter->pos & (blksize - 1);
++	int err;
++	struct fileIdentDesc *fi;
++
++	/* Is there any further extent we can map from? */
++	if (!iter->bh[0] && iter->elen) {
++		iter->bh[0] = udf_fiiter_bread_blk(iter);
++		if (!iter->bh[0]) {
++			err = -ENOMEM;
++			goto out_brelse;
++		}
++		if (!buffer_uptodate(iter->bh[0])) {
++			err = -EIO;
++			goto out_brelse;
++		}
++	}
++	/* There's no next block so we are done */
++	if (iter->pos >= iter->dir->i_size)
++		return 0;
++	/* Need to fetch next block as well? */
++	if (off + sizeof(struct fileIdentDesc) > blksize)
++		goto fetch_next;
++	fi = (struct fileIdentDesc *)(iter->bh[0]->b_data + off);
++	/* Need to fetch next block to get name? */
++	if (off + udf_dir_entry_len(fi) > blksize) {
++fetch_next:
++		udf_fiiter_advance_blk(iter);
++		iter->bh[1] = udf_fiiter_bread_blk(iter);
++		if (!iter->bh[1]) {
++			err = -ENOMEM;
++			goto out_brelse;
++		}
++		if (!buffer_uptodate(iter->bh[1])) {
++			err = -EIO;
++			goto out_brelse;
++		}
++	}
++	return 0;
++out_brelse:
++	brelse(iter->bh[0]);
++	brelse(iter->bh[1]);
++	iter->bh[0] = iter->bh[1] = NULL;
++	return err;
++}
++
++int udf_fiiter_init(struct udf_fileident_iter *iter, struct inode *dir,
++		    loff_t pos)
++{
++	struct udf_inode_info *iinfo = UDF_I(dir);
++	int err = 0;
++
++	iter->dir = dir;
++	iter->bh[0] = iter->bh[1] = NULL;
++	iter->pos = pos;
++	iter->elen = 0;
++	iter->epos.bh = NULL;
++	iter->name = NULL;
++
++	if (iinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB)
++		return udf_copy_fi(iter);
++
++	if (inode_bmap(dir, iter->pos >> dir->i_blkbits, &iter->epos,
++		       &iter->eloc, &iter->elen, &iter->loffset) !=
++	    (EXT_RECORDED_ALLOCATED >> 30)) {
++		if (pos == dir->i_size)
++			return 0;
++		udf_err(dir->i_sb,
++			"position %llu not allocated in directory (ino %lu)\n",
++			(unsigned long long)pos, dir->i_ino);
++		return -EFSCORRUPTED;
++	}
++	err = udf_fiiter_load_bhs(iter);
++	if (err < 0)
++		return err;
++	err = udf_copy_fi(iter);
++	if (err < 0) {
++		udf_fiiter_release(iter);
++		return err;
++	}
++	return 0;
++}
++
++int udf_fiiter_advance(struct udf_fileident_iter *iter)
++{
++	unsigned int oldoff, len;
++	int blksize = 1 << iter->dir->i_blkbits;
++	int err;
++
++	oldoff = iter->pos & (blksize - 1);
++	len = udf_dir_entry_len(&iter->fi);
++	iter->pos += len;
++	if (UDF_I(iter->dir)->i_alloc_type != ICBTAG_FLAG_AD_IN_ICB) {
++		if (oldoff + len >= blksize) {
++			brelse(iter->bh[0]);
++			iter->bh[0] = NULL;
++			/* Next block already loaded? */
++			if (iter->bh[1]) {
++				iter->bh[0] = iter->bh[1];
++				iter->bh[1] = NULL;
++			} else {
++				udf_fiiter_advance_blk(iter);
++			}
++		}
++		err = udf_fiiter_load_bhs(iter);
++		if (err < 0)
++			return err;
++	}
++	return udf_copy_fi(iter);
++}
++
++void udf_fiiter_release(struct udf_fileident_iter *iter)
++{
++	iter->dir = NULL;
++	brelse(iter->bh[0]);
++	brelse(iter->bh[1]);
++	iter->bh[0] = iter->bh[1] = NULL;
++}
++
++static void udf_copy_to_bufs(void *buf1, int len1, void *buf2, int len2,
++			     int off, void *src, int len)
++{
++	int copy;
++
++	if (off >= len1) {
++		off -= len1;
++	} else {
++		copy = min(off + len, len1) - off;
++		memcpy(buf1 + off, src, copy);
++		src += copy;
++		len -= copy;
++		off = 0;
++	}
++	if (len > 0) {
++		if (WARN_ON_ONCE(off + len > len2 || !buf2))
++			return;
++		memcpy(buf2 + off, src, len);
++	}
++}
++
++static uint16_t udf_crc_fi_bufs(void *buf1, int len1, void *buf2, int len2,
++				int off, int len)
++{
++	int copy;
++	uint16_t crc = 0;
++
++	if (off >= len1) {
++		off -= len1;
++	} else {
++		copy = min(off + len, len1) - off;
++		crc = crc_itu_t(crc, buf1 + off, copy);
++		len -= copy;
++		off = 0;
++	}
++	if (len > 0) {
++		if (WARN_ON_ONCE(off + len > len2 || !buf2))
++			return 0;
++		crc = crc_itu_t(crc, buf2 + off, len);
++	}
++	return crc;
++}
++
++static void udf_copy_fi_to_bufs(char *buf1, int len1, char *buf2, int len2,
++				int off, struct fileIdentDesc *fi,
++				uint8_t *impuse, uint8_t *name)
++{
++	uint16_t crc;
++	int fioff = off;
++	int crcoff = off + sizeof(struct tag);
++	unsigned int crclen = udf_dir_entry_len(fi) - sizeof(struct tag);
++
++	udf_copy_to_bufs(buf1, len1, buf2, len2, off, fi,
++			 sizeof(struct fileIdentDesc));
++	off += sizeof(struct fileIdentDesc);
++	if (impuse)
++		udf_copy_to_bufs(buf1, len1, buf2, len2, off, impuse,
++				 le16_to_cpu(fi->lengthOfImpUse));
++	off += le16_to_cpu(fi->lengthOfImpUse);
++	if (name)
++		udf_copy_to_bufs(buf1, len1, buf2, len2, off, name,
++				 fi->lengthFileIdent);
++
++	crc = udf_crc_fi_bufs(buf1, len1, buf2, len2, crcoff, crclen);
++	fi->descTag.descCRC = cpu_to_le16(crc);
++	fi->descTag.descCRCLength = cpu_to_le16(crclen);
++	fi->descTag.tagChecksum = udf_tag_checksum(&fi->descTag);
++
++	udf_copy_to_bufs(buf1, len1, buf2, len2, fioff, fi, sizeof(struct tag));
++}
++
++void udf_fiiter_write_fi(struct udf_fileident_iter *iter, uint8_t *impuse)
++{
++	struct udf_inode_info *iinfo = UDF_I(iter->dir);
++	void *buf1, *buf2 = NULL;
++	int len1, len2 = 0, off;
++	int blksize = 1 << iter->dir->i_blkbits;
++
++	off = iter->pos & (blksize - 1);
++	if (iinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB) {
++		buf1 = iinfo->i_data + iinfo->i_lenEAttr;
++		len1 = iter->dir->i_size;
++	} else {
++		buf1 = iter->bh[0]->b_data;
++		len1 = blksize;
++		if (iter->bh[1]) {
++			buf2 = iter->bh[1]->b_data;
++			len2 = blksize;
++		}
++	}
++
++	udf_copy_fi_to_bufs(buf1, len1, buf2, len2, off, &iter->fi, impuse,
++			    iter->name == iter->namebuf ? iter->name : NULL);
++
++	if (iinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB) {
++		mark_inode_dirty(iter->dir);
++	} else {
++		mark_buffer_dirty_inode(iter->bh[0], iter->dir);
++		if (iter->bh[1])
++			mark_buffer_dirty_inode(iter->bh[1], iter->dir);
++	}
++	inode_inc_iversion(iter->dir);
++}
+ 
+ struct fileIdentDesc *udf_fileident_read(struct inode *dir, loff_t *nf_pos,
+ 					 struct udf_fileident_bh *fibh,
+diff --git a/fs/udf/udfdecl.h b/fs/udf/udfdecl.h
+index 7e258f15b8ef..22a8466e335c 100644
+--- a/fs/udf/udfdecl.h
++++ b/fs/udf/udfdecl.h
+@@ -86,6 +86,24 @@ extern const struct address_space_operations udf_aops;
+ extern const struct address_space_operations udf_adinicb_aops;
+ extern const struct address_space_operations udf_symlink_aops;
+ 
++struct udf_fileident_iter {
++	struct inode *dir;		/* Directory we are working with */
++	loff_t pos;			/* Logical position in a dir */
++	struct buffer_head *bh[2];	/* Buffer containing 'pos' and possibly
++					 * next buffer if entry straddles
++					 * blocks */
++	struct kernel_lb_addr eloc;	/* Start of extent containing 'pos' */
++	uint32_t elen;			/* Length of extent containing 'pos' */
++	sector_t loffset;		/* Block offset of 'pos' within above
++					 * extent */
++	struct extent_position epos;	/* Position after the above extent */
++	struct fileIdentDesc fi;	/* Copied directory entry */
++	uint8_t *name;			/* Pointer to entry name */
++	uint8_t namebuf[UDF_NAME_LEN_CS0]; /* Storage for entry name in case
++					 * the name is split between two blocks
++					 */
++};
++
+ struct udf_fileident_bh {
+ 	struct buffer_head *sbh;
+ 	struct buffer_head *ebh;
+@@ -243,6 +261,11 @@ extern udf_pblk_t udf_new_block(struct super_block *sb, struct inode *inode,
+ 				 uint16_t partition, uint32_t goal, int *err);
+ 
+ /* directory.c */
++int udf_fiiter_init(struct udf_fileident_iter *iter, struct inode *dir,
++		    loff_t pos);
++int udf_fiiter_advance(struct udf_fileident_iter *iter);
++void udf_fiiter_release(struct udf_fileident_iter *iter);
++void udf_fiiter_write_fi(struct udf_fileident_iter *iter, uint8_t *impuse);
+ extern struct fileIdentDesc *udf_fileident_read(struct inode *, loff_t *,
+ 						struct udf_fileident_bh *,
+ 						struct fileIdentDesc *,
 -- 
 2.34.1
 
