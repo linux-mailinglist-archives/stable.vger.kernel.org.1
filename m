@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-86664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 015869A2AB2
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 19:20:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 754E49A2AB3
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 19:20:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 257BF1C214A8
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 17:20:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 214CA1F22E57
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 17:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228011DF98A;
-	Thu, 17 Oct 2024 17:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D5A51DF995;
+	Thu, 17 Oct 2024 17:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="Kl1agQce"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="eZyVBpiL"
 X-Original-To: stable@vger.kernel.org
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDB61DF995
-	for <stable@vger.kernel.org>; Thu, 17 Oct 2024 17:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB0E1DF991
+	for <stable@vger.kernel.org>; Thu, 17 Oct 2024 17:20:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729185604; cv=none; b=AxdGTettvkyi0h2stL/MTt4q2OJwvKriyi6Bqny4vo6XGszdiiVcxQbfN+WnHxzUPYudVEisavmZmdsYgkcPH6qAhPQNutnX/ylkc95hcoCEt6+mt4VaYh2CP1Bn/wM/S6IT66meYhc8lFckhEnOunW/gjmrwXhtLejXop0x5QE=
+	t=1729185606; cv=none; b=Kvj08/aY9lDiiGhYbsNZjl+U6eO3oIVcEvvxuSkYvgYRXn76y18KV91nJylm1nnq4cGGa4bsF0MD0q8FPJj/N0rqVOLZ3FJXOaKDOFRyc0xlzMWEMMQXkHVfW/6n/scIiwTquMq1tSZaLnHgMm6jBFit3xJNXjoZw8NJYnjp2h4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729185604; c=relaxed/simple;
-	bh=Kevl6O6I/tNr+DKDOxwamhoL50oap43DRlg/0gSb/oE=;
+	s=arc-20240116; t=1729185606; c=relaxed/simple;
+	bh=eJnMhdMCbgJOzUf5AnbhhVamj6qweDTSuICY3wkDUbE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IdZsir50YhfK5lx3wuiIbI9E/KWYZoTmqq9VTA9fn79FPZ7Z04qAOT6CqjLqXv0aaovCNceefp3ylUbe4eoGbXH5hBwCQXPoGMwJ6CjnlEGjCGSIgJq4p1NOtMqqpAs55nVBoGYDPSwWbyWEi/8SqTfWUw09KH9j433ilkic5JA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=Kl1agQce; arc=none smtp.client-ip=178.60.130.6
+	 MIME-Version; b=AJ6N4x4s1PVjCFXbL9taQ9/nuj1Yujwu2AkanXFG+4+lXzqMyrg0vyqNuanWdjBaY/VD5rk6ENkNJ/PRF8mj7tEkJeGXGkFCpZAuzyhFXDkwxpXwCiKkHSgfdXckqF6JA5BBGz/fVuCxKL1mPq5f8YdpBg1GE5GgA6HKqt4jCh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=eZyVBpiL; arc=none smtp.client-ip=178.60.130.6
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
@@ -37,24 +37,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=SOxCrfRlacU1cJ0HV6uwSsBvbaDOu952trePZVcWoiE=; b=Kl1agQceMpC0EQvOUeAxezzGQ6
-	Xh27PVd5AvvS7CQ1edEc4n+9CDwku04mWB+ul1AKf3cT1MHJ+LSWL3J0mnHwUQ8GsFKC9x75psSfK
-	XRfk0u9fwhK88zxrX/JxMXJTd6LSpQB9+6GBG9stgqygj1lgwmRBGgIRme9yQADHdUqlZZlRYw/7T
-	//lxWBkeUnzAcu0HMPhH+H+1+1JV++FzQBvonP45i9q+qIMuhopXEsSmrmaimXBf9XAf9nc4vgnXr
-	JbTp+Nup/4QzBUTnaku0s5Cy0F5NQD3Fqr9X0YmZ17fgGqmSmtHwXja1/WWsqGOhMnUMkyFBmC7/Q
-	9kjuDtuw==;
+	bh=GBP+CaMEl7MnqmxMwGqUJojqh1ffnB2fUKJYzNuvtes=; b=eZyVBpiLh56Nr8RM4dbBcQz3rm
+	JN94LvAhDy5C1hltr5vf+jivnYAmwbDBlF6t7oigcwX+LClrGnstpdRXNJTpY/82gta/gAgXclF0Z
+	UkAVxbo+2oKCa4nSKZ8+bfFuXAN1fjsbOYNvut/sQcTudrvh0ZSL6jx6LNG2fd99OJbFu+iRPwtYy
+	HotoM48UtbVAbAeZFbiZZ4tEc6LEZus3Ea4CJ4mrKLr/SwZHC1+qgNnkdvYMwe6zU+g9tzxZAJYkz
+	DP1jw6t08eJRcssvb4F3c+VoqWydgnSX4TaNKpNZb4kp1Krr1Qv+CdwZNhdFI8rukSPP2BtgDiZFI
+	OQn7l6EA==;
 Received: from 179-125-64-237-dinamico.pombonet.net.br ([179.125.64.237] helo=quatroqueijos.lan)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1t1UAG-00Biqr-IB; Thu, 17 Oct 2024 19:19:57 +0200
+	id 1t1UAI-00Biqr-QM; Thu, 17 Oct 2024 19:19:59 +0200
 From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 To: stable@vger.kernel.org
 Cc: Jan Kara <jack@suse.cz>,
 	kernel-dev@igalia.com,
 	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 6.1 13/19] udf: Implement adding of dir entries using new iteration code
-Date: Thu, 17 Oct 2024 14:19:09 -0300
-Message-Id: <20241017171915.311132-14-cascardo@igalia.com>
+Subject: [PATCH 6.1 14/19] udf: Convert udf_add_nondir() to new directory iteration
+Date: Thu, 17 Oct 2024 14:19:10 -0300
+Message-Id: <20241017171915.311132-15-cascardo@igalia.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241017171915.311132-1-cascardo@igalia.com>
 References: <20241017171915.311132-1-cascardo@igalia.com>
@@ -68,221 +68,55 @@ Content-Transfer-Encoding: 8bit
 
 From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit f2844803404d9729f893e279ddea12678710e7fb ]
+[ Upstream commit ef91f9998bece00cf7f82ad26177f910a7124b25 ]
 
-Implement function udf_fiiter_add_entry() adding new directory entries
-using new directory iteration code.
+Convert udf_add_nondir() to new directory iteration code.
 
 Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 ---
- fs/udf/directory.c |  57 +++++++++++++++++++++++
- fs/udf/namei.c     | 110 +++++++++++++++++++++++++++++++++++++++++++++
- fs/udf/udfdecl.h   |   2 +
- 3 files changed, 169 insertions(+)
+ fs/udf/namei.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/fs/udf/directory.c b/fs/udf/directory.c
-index 2842c463725c..be85d1b2a6cf 100644
---- a/fs/udf/directory.c
-+++ b/fs/udf/directory.c
-@@ -413,6 +413,63 @@ void udf_fiiter_write_fi(struct udf_fileident_iter *iter, uint8_t *impuse)
- 	inode_inc_iversion(iter->dir);
- }
- 
-+void udf_fiiter_update_elen(struct udf_fileident_iter *iter, uint32_t new_elen)
-+{
-+	struct udf_inode_info *iinfo = UDF_I(iter->dir);
-+	int diff = new_elen - iter->elen;
-+
-+	/* Skip update when we already went past the last extent */
-+	if (!iter->elen)
-+		return;
-+	iter->elen = new_elen;
-+	if (iinfo->i_alloc_type == ICBTAG_FLAG_AD_SHORT)
-+		iter->epos.offset -= sizeof(struct short_ad);
-+	else if (iinfo->i_alloc_type == ICBTAG_FLAG_AD_LONG)
-+		iter->epos.offset -= sizeof(struct long_ad);
-+	udf_write_aext(iter->dir, &iter->epos, &iter->eloc, iter->elen, 1);
-+	iinfo->i_lenExtents += diff;
-+	mark_inode_dirty(iter->dir);
-+}
-+
-+/* Append new block to directory. @iter is expected to point at EOF */
-+int udf_fiiter_append_blk(struct udf_fileident_iter *iter)
-+{
-+	struct udf_inode_info *iinfo = UDF_I(iter->dir);
-+	int blksize = 1 << iter->dir->i_blkbits;
-+	struct buffer_head *bh;
-+	sector_t block;
-+	uint32_t old_elen = iter->elen;
-+	int err;
-+
-+	if (WARN_ON_ONCE(iinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB))
-+		return -EINVAL;
-+
-+	/* Round up last extent in the file */
-+	udf_fiiter_update_elen(iter, ALIGN(iter->elen, blksize));
-+
-+	/* Allocate new block and refresh mapping information */
-+	block = iinfo->i_lenExtents >> iter->dir->i_blkbits;
-+	bh = udf_bread(iter->dir, block, 1, &err);
-+	if (!bh) {
-+		udf_fiiter_update_elen(iter, old_elen);
-+		return err;
-+	}
-+	if (inode_bmap(iter->dir, block, &iter->epos, &iter->eloc, &iter->elen,
-+		       &iter->loffset) != (EXT_RECORDED_ALLOCATED >> 30)) {
-+		udf_err(iter->dir->i_sb,
-+			"block %llu not allocated in directory (ino %lu)\n",
-+			(unsigned long long)block, iter->dir->i_ino);
-+		return -EFSCORRUPTED;
-+	}
-+	if (!(iter->pos & (blksize - 1))) {
-+		brelse(iter->bh[0]);
-+		iter->bh[0] = bh;
-+	} else {
-+		iter->bh[1] = bh;
-+	}
-+	return 0;
-+}
-+
- struct fileIdentDesc *udf_fileident_read(struct inode *dir, loff_t *nf_pos,
- 					 struct udf_fileident_bh *fibh,
- 					 struct fileIdentDesc *cfi,
 diff --git a/fs/udf/namei.c b/fs/udf/namei.c
-index 39508a2e25c9..bdf237dee120 100644
+index bdf237dee120..0c3b06030f9d 100644
 --- a/fs/udf/namei.c
 +++ b/fs/udf/namei.c
-@@ -472,6 +472,116 @@ static struct buffer_head *udf_expand_dir_adinicb(struct inode *inode,
- 	return dbh;
- }
+@@ -847,26 +847,23 @@ static int udf_add_nondir(struct dentry *dentry, struct inode *inode)
+ {
+ 	struct udf_inode_info *iinfo = UDF_I(inode);
+ 	struct inode *dir = d_inode(dentry->d_parent);
+-	struct udf_fileident_bh fibh;
+-	struct fileIdentDesc cfi, *fi;
++	struct udf_fileident_iter iter;
+ 	int err;
  
-+static int udf_fiiter_add_entry(struct inode *dir, struct dentry *dentry,
-+				struct udf_fileident_iter *iter)
-+{
-+	struct udf_inode_info *dinfo = UDF_I(dir);
-+	int nfidlen, namelen = 0;
-+	int ret;
-+	int off, blksize = 1 << dir->i_blkbits;
-+	udf_pblk_t block;
-+	char name[UDF_NAME_LEN_CS0];
-+
-+	if (dentry) {
-+		if (!dentry->d_name.len)
-+			return -EINVAL;
-+		namelen = udf_put_filename(dir->i_sb, dentry->d_name.name,
-+					   dentry->d_name.len,
-+					   name, UDF_NAME_LEN_CS0);
-+		if (!namelen)
-+			return -ENAMETOOLONG;
-+	}
-+	nfidlen = ALIGN(sizeof(struct fileIdentDesc) + namelen, UDF_NAME_PAD);
-+
-+	for (ret = udf_fiiter_init(iter, dir, 0);
-+	     !ret && iter->pos < dir->i_size;
-+	     ret = udf_fiiter_advance(iter)) {
-+		if (iter->fi.fileCharacteristics & FID_FILE_CHAR_DELETED) {
-+			if (udf_dir_entry_len(&iter->fi) == nfidlen) {
-+				iter->fi.descTag.tagSerialNum = cpu_to_le16(1);
-+				iter->fi.fileVersionNum = cpu_to_le16(1);
-+				iter->fi.fileCharacteristics = 0;
-+				iter->fi.lengthFileIdent = namelen;
-+				iter->fi.lengthOfImpUse = cpu_to_le16(0);
-+				memcpy(iter->namebuf, name, namelen);
-+				iter->name = iter->namebuf;
-+				return 0;
-+			}
-+		}
-+	}
-+	if (ret) {
-+		udf_fiiter_release(iter);
-+		return ret;
-+	}
-+	if (dinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB &&
-+	    blksize - udf_ext0_offset(dir) - iter->pos < nfidlen) {
-+		struct buffer_head *retbh;
-+
-+		udf_fiiter_release(iter);
-+		/*
-+		 * FIXME: udf_expand_dir_adinicb does not need to return bh
-+		 * once other users are gone
-+		 */
-+		retbh = udf_expand_dir_adinicb(dir, &block, &ret);
-+		if (!retbh)
-+			return ret;
-+		brelse(retbh);
-+		ret = udf_fiiter_init(iter, dir, dir->i_size);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	/* Get blocknumber to use for entry tag */
-+	if (dinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB) {
-+		block = dinfo->i_location.logicalBlockNum;
-+	} else {
-+		block = iter->eloc.logicalBlockNum +
-+				((iter->elen - 1) >> dir->i_blkbits);
-+	}
-+	off = iter->pos & (blksize - 1);
-+	if (!off)
-+		off = blksize;
-+	/* Entry fits into current block? */
-+	if (blksize - udf_ext0_offset(dir) - off >= nfidlen)
-+		goto store_fi;
-+
-+	ret = udf_fiiter_append_blk(iter);
-+	if (ret) {
-+		udf_fiiter_release(iter);
-+		return ret;
-+	}
-+
-+	/* Entry will be completely in the new block? Update tag location... */
-+	if (!(iter->pos & (blksize - 1)))
-+		block = iter->eloc.logicalBlockNum +
-+				((iter->elen - 1) >> dir->i_blkbits);
-+store_fi:
-+	memset(&iter->fi, 0, sizeof(struct fileIdentDesc));
-+	if (UDF_SB(dir->i_sb)->s_udfrev >= 0x0200)
-+		udf_new_tag((char *)(&iter->fi), TAG_IDENT_FID, 3, 1, block,
-+			    sizeof(struct tag));
-+	else
-+		udf_new_tag((char *)(&iter->fi), TAG_IDENT_FID, 2, 1, block,
-+			    sizeof(struct tag));
-+	iter->fi.fileVersionNum = cpu_to_le16(1);
-+	iter->fi.lengthFileIdent = namelen;
-+	iter->fi.lengthOfImpUse = cpu_to_le16(0);
-+	memcpy(iter->namebuf, name, namelen);
-+	iter->name = iter->namebuf;
-+
-+	dir->i_size += nfidlen;
-+	if (dinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB) {
-+		dinfo->i_lenAlloc += nfidlen;
-+	} else {
-+		/* Truncate last extent to proper size */
-+		udf_fiiter_update_elen(iter, iter->elen -
-+					(dinfo->i_lenExtents - dir->i_size));
-+	}
-+	mark_inode_dirty(dir);
-+
-+	return 0;
-+}
-+
- static struct fileIdentDesc *udf_add_entry(struct inode *dir,
- 					   struct dentry *dentry,
- 					   struct udf_fileident_bh *fibh,
-diff --git a/fs/udf/udfdecl.h b/fs/udf/udfdecl.h
-index 676fa2996ffe..e47b2f0c3e05 100644
---- a/fs/udf/udfdecl.h
-+++ b/fs/udf/udfdecl.h
-@@ -264,6 +264,8 @@ int udf_fiiter_init(struct udf_fileident_iter *iter, struct inode *dir,
- int udf_fiiter_advance(struct udf_fileident_iter *iter);
- void udf_fiiter_release(struct udf_fileident_iter *iter);
- void udf_fiiter_write_fi(struct udf_fileident_iter *iter, uint8_t *impuse);
-+void udf_fiiter_update_elen(struct udf_fileident_iter *iter, uint32_t new_elen);
-+int udf_fiiter_append_blk(struct udf_fileident_iter *iter);
- extern struct fileIdentDesc *udf_fileident_read(struct inode *, loff_t *,
- 						struct udf_fileident_bh *,
- 						struct fileIdentDesc *,
+-	fi = udf_add_entry(dir, dentry, &fibh, &cfi, &err);
+-	if (unlikely(!fi)) {
++	err = udf_fiiter_add_entry(dir, dentry, &iter);
++	if (err) {
+ 		inode_dec_link_count(inode);
+ 		discard_new_inode(inode);
+ 		return err;
+ 	}
+-	cfi.icb.extLength = cpu_to_le32(inode->i_sb->s_blocksize);
+-	cfi.icb.extLocation = cpu_to_lelb(iinfo->i_location);
+-	*(__le32 *)((struct allocDescImpUse *)cfi.icb.impUse)->impUse =
++	iter.fi.icb.extLength = cpu_to_le32(inode->i_sb->s_blocksize);
++	iter.fi.icb.extLocation = cpu_to_lelb(iinfo->i_location);
++	*(__le32 *)((struct allocDescImpUse *)iter.fi.icb.impUse)->impUse =
+ 		cpu_to_le32(iinfo->i_unique & 0x00000000FFFFFFFFUL);
+-	udf_write_fi(dir, &cfi, fi, &fibh, NULL, NULL);
++	udf_fiiter_write_fi(&iter, NULL);
+ 	dir->i_ctime = dir->i_mtime = current_time(dir);
+ 	mark_inode_dirty(dir);
+-	if (fibh.sbh != fibh.ebh)
+-		brelse(fibh.ebh);
+-	brelse(fibh.sbh);
++	udf_fiiter_release(&iter);
+ 	d_instantiate_new(dentry, inode);
+ 
+ 	return 0;
 -- 
 2.34.1
 
