@@ -1,126 +1,123 @@
-Return-Path: <stable+bounces-86590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 797609A1E74
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 11:33:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 631A99A1FD9
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 12:26:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB1711C2315D
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 09:33:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05AAC1F2322B
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 10:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D201D8E01;
-	Thu, 17 Oct 2024 09:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB451DA61E;
+	Thu, 17 Oct 2024 10:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrHOcOFd"
+	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="jfsS9CBm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp77.iad3a.emailsrvr.com (smtp77.iad3a.emailsrvr.com [173.203.187.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20F914E2FD;
-	Thu, 17 Oct 2024 09:33:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74101D432D
+	for <stable@vger.kernel.org>; Thu, 17 Oct 2024 10:26:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.203.187.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729157583; cv=none; b=DhI5ewrDaWIx2RH0dDjf5OA0sk4YwakrBsmbqyrm6VdMactlFDe2G2zVRS+ZErJ+zxfxKMA1x9v29N9G7fkKIOFSB5VzGTPV3hHk7J8yTVeiZUWCtcxCftufpC46Qx5yGThw/BJUkNgqpYnS+ubjYnP1+YCAkr8b7yTK93N6kCQ=
+	t=1729160812; cv=none; b=loujJC4tg978wfDDGqvYcUmn749yWgxD/dNOkSv7gLWjF2hk1kbtvWUPkBR0UmlvSpF3Vdlgc30Qw73Cki1ANVdEz4HnjU24wg+Bwf/2vXHjx9arHa21EcjowmFf4YR0XrPtfKW/cAXFKeGs32x+bkljeir8WjKzZHAhxDjDmvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729157583; c=relaxed/simple;
-	bh=D6/Jvo3xqgUbUh/A+cETPsA/qFf9R6GI4grfqu5dVJE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JQa70lmPXm7l+3z3YAsvhaQ13SV2RV6uLIwJDX+BU6QIa5okG81Bc7Xrn2o+k/LJ9s2ityYYB4UtdJ5LObiAv3CjeTA99e2zlU49wK18k86EGjgUv53NnjY8COAGnQCDo+lWlf8v9H4DB1f27PNo8TkKPv7Nd7lli8rbl5Hv/Fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrHOcOFd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE90EC4CEC3;
-	Thu, 17 Oct 2024 09:33:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729157582;
-	bh=D6/Jvo3xqgUbUh/A+cETPsA/qFf9R6GI4grfqu5dVJE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=wrHOcOFd1aAJ6t66tLGavzqOI+l+gFcoEWQEHNBeqx80GuHXLuj1VTeHJmwistmqJ
-	 e3HYagSnZR7FwSiJqxzup7thIbj6pghiu2Yj4Ldc6e1pMqn4MMhK4yVwNJUUXpWjw5
-	 AlTnBp697MjES/YCUTvRFtEowSOHUM3ojO+mGQaE=
-Date: Thu, 17 Oct 2024 11:32:59 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org,
-	clang-built-linux <llvm@lists.linux.dev>,
-	Anders Roxell <anders.roxell@linaro.org>
-Subject: Re: [PATCH 5.10 000/518] 5.10.227-rc1 review
-Message-ID: <2024101747-undivided-uselessly-0d44@gregkh>
-References: <20241015123916.821186887@linuxfoundation.org>
- <CA+G9fYuZun789CY2rZ6WqxzdFswDYCf_fMpT9d-4M0bzJfJrhw@mail.gmail.com>
+	s=arc-20240116; t=1729160812; c=relaxed/simple;
+	bh=k+nJSUkwk5gDdPhRVLKpnQy8rkKfStfm9+TBQpiqX7M=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=GIncXP3w2Mvrt5SmgV1E6Nz2zb1EU6WHNz+6lWhF1LgIMS8CEZxSUsFjEa8lFZ5KX6W3YHPVy6vwLko+71bRGXICstezQIaXsi1jNuFXvk3ItCqLxe4uTgcQjl+6Jv6guO2kr5wo0ppQdkD7Go0r1/kvh8Xu2p2OSiOHrwBoxeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=jfsS9CBm; arc=none smtp.client-ip=173.203.187.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+	s=20221208-6x11dpa4; t=1729158491;
+	bh=k+nJSUkwk5gDdPhRVLKpnQy8rkKfStfm9+TBQpiqX7M=;
+	h=Date:Subject:From:To:From;
+	b=jfsS9CBm45aNY1mKc97yZw9PK64OCkqTc8SJy9NIquwJIG/1PNpJYOVZH3kA4XiHP
+	 ixurmWBREX3f16b9u62tEtgliUrORSCQeoiO9qtaC48npzJ//F59LMXSoYoi7hff9/
+	 Hfqk63J59qSpkBH2RwYe0m8g5kL2+btilOoGLenA=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp18.relay.iad3a.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id D4DCF25258;
+	Thu, 17 Oct 2024 05:48:10 -0400 (EDT)
+Message-ID: <cf1a2818-1b78-4422-bb76-421732c428c0@mev.co.uk>
+Date: Thu, 17 Oct 2024 10:48:10 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYuZun789CY2rZ6WqxzdFswDYCf_fMpT9d-4M0bzJfJrhw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] comedi: Flush partial mappings in error case
+From: Ian Abbott <abbotti@mev.co.uk>
+To: Jann Horn <jannh@google.com>, kernel test robot <lkp@intel.com>
+Cc: H Hartley Sweeten <hsweeten@visionengravers.com>,
+ Frank Mori Hess <fmh6jj@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20241015-comedi-tlb-v2-1-cafb0e27dd9a@google.com>
+ <202410170111.K30oyTWa-lkp@intel.com>
+ <CAG48ez2T7i_qCAcGi3nZqQeT8A3x42YSdL=rWqXOUDy5Eyaf6A@mail.gmail.com>
+ <ccc4e0a3-34f5-4793-bd05-ee0955c9c87b@mev.co.uk>
+Content-Language: en-GB
+Organization: MEV Ltd.
+In-Reply-To: <ccc4e0a3-34f5-4793-bd05-ee0955c9c87b@mev.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Classification-ID: ce5d4bf1-6887-48ca-a9be-2492341b77e4-1-1
 
-On Tue, Oct 15, 2024 at 07:22:46PM +0530, Naresh Kamboju wrote:
-> On Tue, 15 Oct 2024 at 18:25, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 5.10.227 release.
-> > There are 518 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Thu, 17 Oct 2024 12:37:45 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.227-rc1.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
+On 17/10/2024 10:29, Ian Abbott wrote:
+> On 16/10/2024 23:05, Jann Horn wrote:
+>> On Wed, Oct 16, 2024 at 8:05 PM kernel test robot <lkp@intel.com> wrote:
+>>> [auto build test ERROR on 6485cf5ea253d40d507cd71253c9568c5470cd27]
+>>>
+>>> url:    https://github.com/intel-lab-lkp/linux/commits/Jann-Horn/ 
+>>> comedi-Flush-partial-mappings-in-error-case/20241016-022809
+>>> base:   6485cf5ea253d40d507cd71253c9568c5470cd27
+>>> patch link:    https://lore.kernel.org/r/20241015-comedi-tlb-v2-1- 
+>>> cafb0e27dd9a%40google.com
+>>> patch subject: [PATCH v2] comedi: Flush partial mappings in error case
+>>> config: arm-randconfig-004-20241016 (https://download.01.org/0day-ci/ 
+>>> archive/20241017/202410170111.K30oyTWa-lkp@intel.com/config)
+>>> compiler: arm-linux-gnueabi-gcc (GCC) 14.1.0
+>>> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/ 
+>>> archive/20241017/202410170111.K30oyTWa-lkp@intel.com/reproduce)
+>>>
+>>> If you fix the issue in a separate patch/commit (i.e. not just a new 
+>>> version of
+>>> the same patch/commit), kindly add following tags
+>>> | Reported-by: kernel test robot <lkp@intel.com>
+>>> | Closes: https://lore.kernel.org/oe-kbuild- 
+>>> all/202410170111.K30oyTWa-lkp@intel.com/
+>>>
+>>> All errors (new ones prefixed by >>):
+>>>
+>>>     arm-linux-gnueabi-ld: drivers/comedi/comedi_fops.o: in function 
+>>> `comedi_mmap':
+>>>>> comedi_fops.c:(.text+0x4be): undefined reference to `zap_vma_ptes'
+>>
+>> Ugh, this one is from a nommu build ("# CONFIG_MMU is not set"), it
+>> makes sense that you can't zap PTEs when you don't have any PTEs at
+>> all... what really impresses me about this is that the rest of the
+>> code compiles on nommu. I'm pretty sure this codepath wouldn't
+>> actually _work_ on nommu, but apparently compiling it works?
+>>
+>> I don't know what the right fix is here - should the entire comedi
+>> driver be gated on CONFIG_MMU, or only a subset of the mmap handler,
+>> or something else?
 > 
-> A larger set of clang-19 builds failed on arm, i386 and x86 due to
-> following stable-rc linux-5.10.y.
-> 
-> And gcc-13 and gcc-12 builds passed.
-> 
-> List of build regressions,
-> * arm, build
->   - clang-19-at91_dt_defconfig
->   - clang-19-axm55xx_defconfig
->   - clang-19-bcm2835_defconfig
->   - clang-19-clps711x_defconfig
->   - clang-19-davinci_all_defconfig
->   - clang-19-defconfig
-> ...
-> 
-> * x86_64, build
->   - clang-19-lkftconfig
->   - clang-19-lkftconfig-kcsan
->   - clang-19-lkftconfig-no-kselftest-frag
->   - clang-19-x86_64_defconfig
->   - clang-nightly-lkftconfig-kselftest
-> 
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> 
-> The bisect points to,
->   da1084f5722a9a46bdcadc09429dc4b56ac31de4
->   i2c: Add i2c_get_match_data()
->     [ Upstream commit 564d73c4d9201526bd976b9379d2aaf1a7133e84 ]
+> Given that it would also affect a lot of fbdev drivers that would also 
+> benefit from zapping partial mappings, I suggest that gating on 
+> CONFIG_MMU would not be the correct fix.
 
-Thanks, commit aade55c86033 ("device property: Add const qualifier to
-device_get_match_data() parameter") was missing, I've queued that up
-now.
+Perhaps just add an #ifdef CONFIG_MMU around the affected call for now?
 
-greg k-h
+-- 
+-=( Ian Abbott <abbotti@mev.co.uk> || MEV Ltd. is a company  )=-
+-=( registered in England & Wales.  Regd. number: 02862268.  )=-
+-=( Regd. addr.: S11 & 12 Building 67, Europa Business Park, )=-
+-=( Bird Hall Lane, STOCKPORT, SK3 0XA, UK. || www.mev.co.uk )=-
 
