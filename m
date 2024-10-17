@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-86570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B5399A1BAB
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 09:28:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 226389A1BAD
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 09:29:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F689B20DCE
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 07:28:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B86FB20D36
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 07:28:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0007F1C7B7F;
-	Thu, 17 Oct 2024 07:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA631CDFB8;
+	Thu, 17 Oct 2024 07:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="WbanNbVb"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FpDj+NTP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BB51925B2;
-	Thu, 17 Oct 2024 07:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B9B1C32EB;
+	Thu, 17 Oct 2024 07:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729150123; cv=none; b=TVYKawQwNtw7bnVQJctxcBRD3mqH6JN905t9j4loiT27Sl3ZOvhXEAHUJ+990KlQE3LKUIbnHdRwstWfgezhC7oiMsv6NkDL4BVBkNqex9Wumk8JDaNXfRo52aw0A7Z3xJSnn4ySZPWaUKumBpJpmz+a45rt1Vs/rvrZ4fsKDfE=
+	t=1729150130; cv=none; b=X0pmncwov7QO+/Z8pnwO9JR0+D126u/bpNg4tzmcB5ko3bgibBuP0IkfuujAsjxsIKNTJ9pmCWFOJMsgKwrR4OsYCW4Zh50vv6MewTl3Hsr2Hkvobnr7W75YTBUGV/kLR7/SaBmLUY6BoJnPvaqc+521PzccWDPq7g2ldAwMLHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729150123; c=relaxed/simple;
-	bh=8EKO0Y82HvG1xz85HYxViHr0O7bvTke/J4Shz6cc4es=;
-	h=Date:To:From:Subject:Message-Id; b=ZXTli/mKWjYlXYBsEuk9LSvR7DxIjsOEJqjHi4xolZh8yq5WJXgo8kSWdjJ/C01HErpzhrPAldwkSz/+UiOJ/DMioYFPXHGRm04IE3K/+ca+OiP+/jQqCK4cP+es3ms4/PWUiacWw3jOoiB49Reuo/yG4McyDwtddJ+7vkpUPfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=WbanNbVb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C76EC4CEC7;
-	Thu, 17 Oct 2024 07:28:43 +0000 (UTC)
+	s=arc-20240116; t=1729150130; c=relaxed/simple;
+	bh=KXYKNEoyCR9y/8ZrswmZwno/cJ0KqVQHK1X2M9icTzk=;
+	h=Date:To:From:Subject:Message-Id; b=bi8PUZDjIVp4vn/bylbnvYIpiKT8XJeXa7OabWNdg0yobRQ1JyOxlz+3+HblHl3wMbs9EwP7rmF9r+yqN8T3lm6egPtmXZpye2MsYEJQGsUMteaU8S2mmGatePmZD9nLYngjzzc86ZiyWzaa/xt7kEOxohdlKLHoeYyjn9dE3d8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FpDj+NTP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5EE5C4CEC7;
+	Thu, 17 Oct 2024 07:28:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1729150123;
-	bh=8EKO0Y82HvG1xz85HYxViHr0O7bvTke/J4Shz6cc4es=;
+	s=korg; t=1729150129;
+	bh=KXYKNEoyCR9y/8ZrswmZwno/cJ0KqVQHK1X2M9icTzk=;
 	h=Date:To:From:Subject:From;
-	b=WbanNbVbjTzgroqwdbc0LIb1R2j31UfzCdC2j/SLpv1WzG/Vezi1fr5YFZJz5SbG0
-	 hxzLEQQDT+G2IAdAI55ekWXNEtgNaZaaEJI3pfDJySd0uPOsa+r5cBRutAkN0TzXia
-	 YwIEIh7UzVwkxEw7/+chSOlPF64tlwVkHsMOpVBQ=
-Date: Thu, 17 Oct 2024 00:28:42 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,urezki@gmail.com,surenb@google.com,stable@vger.kernel.org,kent.overstreet@linux.dev,greearb@candelatech.com,fw@strlen.de,akpm@linux-foundation.org
+	b=FpDj+NTPFt7PQv1nBhirMzcuNFqddw8XAJ6mPcqKybFrhYJZRgH6a9bBM6hx2P7Nd
+	 2Mm4qQmZkAkXeMJAxnPh7ObWpverQFcWlfYbu/tV2q1NyPs3qxRE+hTZ24hNv2atK/
+	 eqOtAczit1TZV/Xwe13d72K3iR5gYMe+PHhw2Ztw=
+Date: Thu, 17 Oct 2024 00:28:49 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,ruanjinjie@huawei.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] lib-alloc_tag_module_unload-must-wait-for-pending-kfree_rcu-calls.patch removed from -mm tree
-Message-Id: <20241017072843.3C76EC4CEC7@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-damon-fix-memory-leak-in-damon_sysfs_test_add_targets.patch removed from -mm tree
+Message-Id: <20241017072849.B5EE5C4CEC7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,73 +50,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: lib: alloc_tag_module_unload must wait for pending kfree_rcu calls
+     Subject: mm/damon/tests/sysfs-kunit.h: fix memory leak in damon_sysfs_test_add_targets()
 has been removed from the -mm tree.  Its filename was
-     lib-alloc_tag_module_unload-must-wait-for-pending-kfree_rcu-calls.patch
+     mm-damon-fix-memory-leak-in-damon_sysfs_test_add_targets.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Florian Westphal <fw@strlen.de>
-Subject: lib: alloc_tag_module_unload must wait for pending kfree_rcu calls
-Date: Mon, 7 Oct 2024 22:52:24 +0200
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+Subject: mm/damon/tests/sysfs-kunit.h: fix memory leak in damon_sysfs_test_add_targets()
+Date: Thu, 10 Oct 2024 20:53:23 +0800
 
-Ben Greear reports following splat:
- ------------[ cut here ]------------
- net/netfilter/nf_nat_core.c:1114 module nf_nat func:nf_nat_register_fn has 256 allocated at module unload
- WARNING: CPU: 1 PID: 10421 at lib/alloc_tag.c:168 alloc_tag_module_unload+0x22b/0x3f0
- Modules linked in: nf_nat(-) btrfs ufs qnx4 hfsplus hfs minix vfat msdos fat
-...
- Hardware name: Default string Default string/SKYBAY, BIOS 5.12 08/04/2020
- RIP: 0010:alloc_tag_module_unload+0x22b/0x3f0
-  codetag_unload_module+0x19b/0x2a0
-  ? codetag_load_module+0x80/0x80
+The sysfs_target->regions allocated in damon_sysfs_regions_alloc() is not
+freed in damon_sysfs_test_add_targets(), which cause the following memory
+leak, free it to fix it.
 
-nf_nat module exit calls kfree_rcu on those addresses, but the free
-operation is likely still pending by the time alloc_tag checks for leaks.
+	unreferenced object 0xffffff80c2a8db80 (size 96):
+	  comm "kunit_try_catch", pid 187, jiffies 4294894363
+	  hex dump (first 32 bytes):
+	    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	  backtrace (crc 0):
+	    [<0000000001e3714d>] kmemleak_alloc+0x34/0x40
+	    [<000000008e6835c1>] __kmalloc_cache_noprof+0x26c/0x2f4
+	    [<000000001286d9f8>] damon_sysfs_test_add_targets+0x1cc/0x738
+	    [<0000000032ef8f77>] kunit_try_run_case+0x13c/0x3ac
+	    [<00000000f3edea23>] kunit_generic_run_threadfn_adapter+0x80/0xec
+	    [<00000000adf936cf>] kthread+0x2e8/0x374
+	    [<0000000041bb1628>] ret_from_fork+0x10/0x20
 
-Wait for outstanding kfree_rcu operations to complete before checking
-resolves this warning.
-
-Reproducer:
-unshare -n iptables-nft -t nat -A PREROUTING -p tcp
-grep nf_nat /proc/allocinfo # will list 4 allocations
-rmmod nft_chain_nat
-rmmod nf_nat                # will WARN.
-
-[akpm@linux-foundation.org: add comment]
-Link: https://lkml.kernel.org/r/20241007205236.11847-1-fw@strlen.de
-Fixes: a473573964e5 ("lib: code tagging module support")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reported-by: Ben Greear <greearb@candelatech.com>
-Closes: https://lore.kernel.org/netdev/bdaaef9d-4364-4171-b82b-bcfc12e207eb@candelatech.com/
-Cc: Uladzislau Rezki <urezki@gmail.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Link: https://lkml.kernel.org/r/20241010125323.3127187-1-ruanjinjie@huawei.com
+Fixes: b8ee5575f763 ("mm/damon/sysfs-test: add a unit test for damon_sysfs_set_targets()")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- lib/codetag.c |    3 +++
- 1 file changed, 3 insertions(+)
+ mm/damon/tests/sysfs-kunit.h |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/lib/codetag.c~lib-alloc_tag_module_unload-must-wait-for-pending-kfree_rcu-calls
-+++ a/lib/codetag.c
-@@ -228,6 +228,9 @@ bool codetag_unload_module(struct module
- 	if (!mod)
- 		return true;
+--- a/mm/damon/tests/sysfs-kunit.h~mm-damon-fix-memory-leak-in-damon_sysfs_test_add_targets
++++ a/mm/damon/tests/sysfs-kunit.h
+@@ -67,6 +67,7 @@ static void damon_sysfs_test_add_targets
+ 	damon_destroy_ctx(ctx);
+ 	kfree(sysfs_targets->targets_arr);
+ 	kfree(sysfs_targets);
++	kfree(sysfs_target->regions);
+ 	kfree(sysfs_target);
+ }
  
-+	/* await any module's kfree_rcu() operations to complete */
-+	kvfree_rcu_barrier();
-+
- 	mutex_lock(&codetag_lock);
- 	list_for_each_entry(cttype, &codetag_types, link) {
- 		struct codetag_module *found = NULL;
 _
 
-Patches currently in -mm which might be from fw@strlen.de are
+Patches currently in -mm which might be from ruanjinjie@huawei.com are
 
 
 
