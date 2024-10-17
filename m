@@ -1,332 +1,200 @@
-Return-Path: <stable+bounces-86677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA59D9A2C25
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 20:27:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 428F79A2C68
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 20:46:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09C4E1C24B13
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 18:27:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3F32B25958
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 18:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0DAC1E00B5;
-	Thu, 17 Oct 2024 18:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 337D8216A29;
+	Thu, 17 Oct 2024 18:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8fE7MtD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iZTGMBap"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700DA45008
-	for <stable@vger.kernel.org>; Thu, 17 Oct 2024 18:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E326D216A11;
+	Thu, 17 Oct 2024 18:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729189626; cv=none; b=GAASF6mUnBLeuSyOPyz8puGMXrkFyYNLN5bVNfXcynuOOq1OZbJlAmXQsGrG/N8ga5QxYdg8qPwBgX/A/mbZDEKMcgphnypjK8mx0CGKoEqfKUOX9bkthRtP8dmYB5jya+quFVrL9KHGgFnW1LEunNvkcfZndklW6yrA40CFNGA=
+	t=1729190807; cv=none; b=FBjvSKTx/a14X0fooO5zGMoHdwLNGZCFaPSungf6zZQB1+jqOTw5KTBGSuw9JZ1B9XKlMZauRFLnUgjc0P2QVS5aBeQWm9Km5TnLcJMPYjiyY2C7YDmqV4zJSIOlU06/1VraQ4zBBRsPGvjOmImZZ1yY6md+U64bo625FcbKR7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729189626; c=relaxed/simple;
-	bh=o0dKSK0O9HgAOrE2iJsg8PuMciW2sLbkTcWxjKZFmHQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qAL+8QciUljEogjfW8g23svrw+XXJlJ9G6edLHIw1Oj/i8d7yp7v0cDcsLaSsEDAXYRQoSawuvRoO8TClJb9d219UX9pVEvER8lC0lqXe2ZJv/WC/wxr5Sw7hJbqnky/keYgMmfjQzaAnl8M864Vr/8tXmKf1HymQ89Z+USAyUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8fE7MtD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1EFBC4CEC3;
-	Thu, 17 Oct 2024 18:27:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729189626;
-	bh=o0dKSK0O9HgAOrE2iJsg8PuMciW2sLbkTcWxjKZFmHQ=;
-	h=Subject:To:Cc:From:Date:From;
-	b=Z8fE7MtD1Avv2lkGc+hPJRAaRlnFIC3lGLdD828ssx3xAWfvsXXXh2jFVTsRqnw2s
-	 bk/tOLlJ+seNc3rcDagtaeIp5nLJ2CjEZSovIrZh8xzLKAT1Z5OqPZnWmxur8ZRX6J
-	 lgKIm0dgZONN/b4ovC7RJBzwuL+tB6doEucWqVH8=
-Subject: FAILED: patch "[PATCH] mptcp: pm: fix UaF read in mptcp_pm_nl_rm_addr_or_subflow" failed to apply to 5.15-stable tree
-To: matttbe@kernel.org,pabeni@redhat.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 17 Oct 2024 20:26:49 +0200
-Message-ID: <2024101748-uneasy-framing-a214@gregkh>
+	s=arc-20240116; t=1729190807; c=relaxed/simple;
+	bh=aAHhJYYkCr39H6W4p52AUYa9rY6tExa8dCWnMZsuckU=;
+	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=o1HHdKUlFBd92KLq8gU9knAr2vzpBuaH680q4jCRhQZkB58dkwuWufmI/6y50dQAhfIoJ5INb9GDDKGXuqJkQ7HDwlJd3Sbft6qraNV9OpNWO0Rp0Q+VkasdGvgoCZeQL5IV8by2BEY48GW/+jqvrdJnhDiU6IG7v28TWqCd2uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iZTGMBap; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F6BDC4CEC3;
+	Thu, 17 Oct 2024 18:46:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729190805;
+	bh=aAHhJYYkCr39H6W4p52AUYa9rY6tExa8dCWnMZsuckU=;
+	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
+	b=iZTGMBaptI1XkEGdLvD1awXISqDeub0Bpvt8nnP87B+aEwmsEw8GidUh+c5N4YvWK
+	 oOeyP6nQvCXNxZywWvhgt2tzMHbEz+vjFH6LWhoPX3jMgiH8N7TjswVxI8I0xk811b
+	 N8ws18BJ5BcS/gzFegVxr8bMtYevXyjxs0ukLT3rOjkJa2CT7RQSNn5GiPOJzLqx9W
+	 r0rDLYblmOZPTihAgrbsVX2HUQELffU2I0hEwH55lSCpCjbRbddE01mPgUT0mqsDbB
+	 QuOTWV+r4nJM+OwIusRQH2UAISXqO8JbRkeRW5ZlV1DhSzdqSf8jUxLDL2uX/lfQe8
+	 Y/TQ1qPEqVMNw==
+Date: Thu, 17 Oct 2024 11:46:45 -0700
+Subject: [PATCHSET v5.1 3/9] xfs: metadata inode directory trees
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: djwong@kernel.org
+Cc: stable@vger.kernel.org, linux-xfs@vger.kernel.org, hch@lst.de
+Message-ID: <172919069364.3451313.14303329469780278917.stgit@frogsfrogsfrogs>
+In-Reply-To: <20241017184009.GV21853@frogsfrogsfrogs>
+References: <20241017184009.GV21853@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
+Hi all,
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+This series delivers a new feature -- metadata inode directories.  This
+is a separate directory tree (rooted in the superblock) that contains
+only inodes that contain filesystem metadata.  Different metadata
+objects can be looked up with regular paths.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Start by creating xfs_imeta{dir,file}* functions to mediate access to
+the metadata directory tree.  By the end of this mega series, all
+existing metadata inodes (rt+quota) will use this directory tree instead
+of the superblock.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 7decd1f5904a489d3ccdcf131972f94645681689
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024101748-uneasy-framing-a214@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+Next, define the metadir on-disk format, which consists of marking
+inodes with a new iflag that says they're metadata.  This prevents
+bulkstat and friends from ever getting their hands on fs metadata files.
 
-Possible dependencies:
+If you're going to start using this code, I strongly recommend pulling
+from my git trees, which are linked below.
 
+This has been running on the djcloud for months with no problems.  Enjoy!
+Comments and questions are, as always, welcome.
 
+--D
 
-thanks,
+kernel git tree:
+https://git.kernel.org/cgit/linux/kernel/git/djwong/xfs-linux.git/log/?h=metadata-directory-tree
 
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 7decd1f5904a489d3ccdcf131972f94645681689 Mon Sep 17 00:00:00 2001
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Tue, 15 Oct 2024 10:38:47 +0200
-Subject: [PATCH] mptcp: pm: fix UaF read in mptcp_pm_nl_rm_addr_or_subflow
-
-Syzkaller reported this splat:
-
-  ==================================================================
-  BUG: KASAN: slab-use-after-free in mptcp_pm_nl_rm_addr_or_subflow+0xb44/0xcc0 net/mptcp/pm_netlink.c:881
-  Read of size 4 at addr ffff8880569ac858 by task syz.1.2799/14662
-
-  CPU: 0 UID: 0 PID: 14662 Comm: syz.1.2799 Not tainted 6.12.0-rc2-syzkaller-00307-g36c254515dc6 #0
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-  Call Trace:
-   <TASK>
-   __dump_stack lib/dump_stack.c:94 [inline]
-   dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
-   print_address_description mm/kasan/report.c:377 [inline]
-   print_report+0xc3/0x620 mm/kasan/report.c:488
-   kasan_report+0xd9/0x110 mm/kasan/report.c:601
-   mptcp_pm_nl_rm_addr_or_subflow+0xb44/0xcc0 net/mptcp/pm_netlink.c:881
-   mptcp_pm_nl_rm_subflow_received net/mptcp/pm_netlink.c:914 [inline]
-   mptcp_nl_remove_id_zero_address+0x305/0x4a0 net/mptcp/pm_netlink.c:1572
-   mptcp_pm_nl_del_addr_doit+0x5c9/0x770 net/mptcp/pm_netlink.c:1603
-   genl_family_rcv_msg_doit+0x202/0x2f0 net/netlink/genetlink.c:1115
-   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
-   genl_rcv_msg+0x565/0x800 net/netlink/genetlink.c:1210
-   netlink_rcv_skb+0x165/0x410 net/netlink/af_netlink.c:2551
-   genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
-   netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
-   netlink_unicast+0x53c/0x7f0 net/netlink/af_netlink.c:1357
-   netlink_sendmsg+0x8b8/0xd70 net/netlink/af_netlink.c:1901
-   sock_sendmsg_nosec net/socket.c:729 [inline]
-   __sock_sendmsg net/socket.c:744 [inline]
-   ____sys_sendmsg+0x9ae/0xb40 net/socket.c:2607
-   ___sys_sendmsg+0x135/0x1e0 net/socket.c:2661
-   __sys_sendmsg+0x117/0x1f0 net/socket.c:2690
-   do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
-   __do_fast_syscall_32+0x73/0x120 arch/x86/entry/common.c:386
-   do_fast_syscall_32+0x32/0x80 arch/x86/entry/common.c:411
-   entry_SYSENTER_compat_after_hwframe+0x84/0x8e
-  RIP: 0023:0xf7fe4579
-  Code: b8 01 10 06 03 74 b4 01 10 07 03 74 b0 01 10 08 03 74 d8 01 00 00 00 00 00 00 00 00 00 00 00 00 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 8d b4 26 00 00 00 00 8d b4 26 00 00 00 00
-  RSP: 002b:00000000f574556c EFLAGS: 00000296 ORIG_RAX: 0000000000000172
-  RAX: ffffffffffffffda RBX: 000000000000000b RCX: 0000000020000140
-  RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-  RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000296 R12: 0000000000000000
-  R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-   </TASK>
-
-  Allocated by task 5387:
-   kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
-   kasan_save_track+0x14/0x30 mm/kasan/common.c:68
-   poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
-   __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:394
-   kmalloc_noprof include/linux/slab.h:878 [inline]
-   kzalloc_noprof include/linux/slab.h:1014 [inline]
-   subflow_create_ctx+0x87/0x2a0 net/mptcp/subflow.c:1803
-   subflow_ulp_init+0xc3/0x4d0 net/mptcp/subflow.c:1956
-   __tcp_set_ulp net/ipv4/tcp_ulp.c:146 [inline]
-   tcp_set_ulp+0x326/0x7f0 net/ipv4/tcp_ulp.c:167
-   mptcp_subflow_create_socket+0x4ae/0x10a0 net/mptcp/subflow.c:1764
-   __mptcp_subflow_connect+0x3cc/0x1490 net/mptcp/subflow.c:1592
-   mptcp_pm_create_subflow_or_signal_addr+0xbda/0x23a0 net/mptcp/pm_netlink.c:642
-   mptcp_pm_nl_fully_established net/mptcp/pm_netlink.c:650 [inline]
-   mptcp_pm_nl_work+0x3a1/0x4f0 net/mptcp/pm_netlink.c:943
-   mptcp_worker+0x15a/0x1240 net/mptcp/protocol.c:2777
-   process_one_work+0x958/0x1b30 kernel/workqueue.c:3229
-   process_scheduled_works kernel/workqueue.c:3310 [inline]
-   worker_thread+0x6c8/0xf00 kernel/workqueue.c:3391
-   kthread+0x2c1/0x3a0 kernel/kthread.c:389
-   ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
-   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-  Freed by task 113:
-   kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
-   kasan_save_track+0x14/0x30 mm/kasan/common.c:68
-   kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:579
-   poison_slab_object mm/kasan/common.c:247 [inline]
-   __kasan_slab_free+0x51/0x70 mm/kasan/common.c:264
-   kasan_slab_free include/linux/kasan.h:230 [inline]
-   slab_free_hook mm/slub.c:2342 [inline]
-   slab_free mm/slub.c:4579 [inline]
-   kfree+0x14f/0x4b0 mm/slub.c:4727
-   kvfree+0x47/0x50 mm/util.c:701
-   kvfree_rcu_list+0xf5/0x2c0 kernel/rcu/tree.c:3423
-   kvfree_rcu_drain_ready kernel/rcu/tree.c:3563 [inline]
-   kfree_rcu_monitor+0x503/0x8b0 kernel/rcu/tree.c:3632
-   kfree_rcu_shrink_scan+0x245/0x3a0 kernel/rcu/tree.c:3966
-   do_shrink_slab+0x44f/0x11c0 mm/shrinker.c:435
-   shrink_slab+0x32b/0x12a0 mm/shrinker.c:662
-   shrink_one+0x47e/0x7b0 mm/vmscan.c:4818
-   shrink_many mm/vmscan.c:4879 [inline]
-   lru_gen_shrink_node mm/vmscan.c:4957 [inline]
-   shrink_node+0x2452/0x39d0 mm/vmscan.c:5937
-   kswapd_shrink_node mm/vmscan.c:6765 [inline]
-   balance_pgdat+0xc19/0x18f0 mm/vmscan.c:6957
-   kswapd+0x5ea/0xbf0 mm/vmscan.c:7226
-   kthread+0x2c1/0x3a0 kernel/kthread.c:389
-   ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
-   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-  Last potentially related work creation:
-   kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
-   __kasan_record_aux_stack+0xba/0xd0 mm/kasan/generic.c:541
-   kvfree_call_rcu+0x74/0xbe0 kernel/rcu/tree.c:3810
-   subflow_ulp_release+0x2ae/0x350 net/mptcp/subflow.c:2009
-   tcp_cleanup_ulp+0x7c/0x130 net/ipv4/tcp_ulp.c:124
-   tcp_v4_destroy_sock+0x1c5/0x6a0 net/ipv4/tcp_ipv4.c:2541
-   inet_csk_destroy_sock+0x1a3/0x440 net/ipv4/inet_connection_sock.c:1293
-   tcp_done+0x252/0x350 net/ipv4/tcp.c:4870
-   tcp_rcv_state_process+0x379b/0x4f30 net/ipv4/tcp_input.c:6933
-   tcp_v4_do_rcv+0x1ad/0xa90 net/ipv4/tcp_ipv4.c:1938
-   sk_backlog_rcv include/net/sock.h:1115 [inline]
-   __release_sock+0x31b/0x400 net/core/sock.c:3072
-   __tcp_close+0x4f3/0xff0 net/ipv4/tcp.c:3142
-   __mptcp_close_ssk+0x331/0x14d0 net/mptcp/protocol.c:2489
-   mptcp_close_ssk net/mptcp/protocol.c:2543 [inline]
-   mptcp_close_ssk+0x150/0x220 net/mptcp/protocol.c:2526
-   mptcp_pm_nl_rm_addr_or_subflow+0x2be/0xcc0 net/mptcp/pm_netlink.c:878
-   mptcp_pm_nl_rm_subflow_received net/mptcp/pm_netlink.c:914 [inline]
-   mptcp_nl_remove_id_zero_address+0x305/0x4a0 net/mptcp/pm_netlink.c:1572
-   mptcp_pm_nl_del_addr_doit+0x5c9/0x770 net/mptcp/pm_netlink.c:1603
-   genl_family_rcv_msg_doit+0x202/0x2f0 net/netlink/genetlink.c:1115
-   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
-   genl_rcv_msg+0x565/0x800 net/netlink/genetlink.c:1210
-   netlink_rcv_skb+0x165/0x410 net/netlink/af_netlink.c:2551
-   genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
-   netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
-   netlink_unicast+0x53c/0x7f0 net/netlink/af_netlink.c:1357
-   netlink_sendmsg+0x8b8/0xd70 net/netlink/af_netlink.c:1901
-   sock_sendmsg_nosec net/socket.c:729 [inline]
-   __sock_sendmsg net/socket.c:744 [inline]
-   ____sys_sendmsg+0x9ae/0xb40 net/socket.c:2607
-   ___sys_sendmsg+0x135/0x1e0 net/socket.c:2661
-   __sys_sendmsg+0x117/0x1f0 net/socket.c:2690
-   do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
-   __do_fast_syscall_32+0x73/0x120 arch/x86/entry/common.c:386
-   do_fast_syscall_32+0x32/0x80 arch/x86/entry/common.c:411
-   entry_SYSENTER_compat_after_hwframe+0x84/0x8e
-
-  The buggy address belongs to the object at ffff8880569ac800
-   which belongs to the cache kmalloc-512 of size 512
-  The buggy address is located 88 bytes inside of
-   freed 512-byte region [ffff8880569ac800, ffff8880569aca00)
-
-  The buggy address belongs to the physical page:
-  page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x569ac
-  head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-  flags: 0x4fff00000000040(head|node=1|zone=1|lastcpupid=0x7ff)
-  page_type: f5(slab)
-  raw: 04fff00000000040 ffff88801ac42c80 dead000000000100 dead000000000122
-  raw: 0000000000000000 0000000080100010 00000001f5000000 0000000000000000
-  head: 04fff00000000040 ffff88801ac42c80 dead000000000100 dead000000000122
-  head: 0000000000000000 0000000080100010 00000001f5000000 0000000000000000
-  head: 04fff00000000002 ffffea00015a6b01 ffffffffffffffff 0000000000000000
-  head: 0000000000000004 0000000000000000 00000000ffffffff 0000000000000000
-  page dumped because: kasan: bad access detected
-  page_owner tracks the page as allocated
-  page last allocated via order 2, migratetype Unmovable, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 10238, tgid 10238 (kworker/u32:6), ts 597403252405, free_ts 597177952947
-   set_page_owner include/linux/page_owner.h:32 [inline]
-   post_alloc_hook+0x2d1/0x350 mm/page_alloc.c:1537
-   prep_new_page mm/page_alloc.c:1545 [inline]
-   get_page_from_freelist+0x101e/0x3070 mm/page_alloc.c:3457
-   __alloc_pages_noprof+0x223/0x25a0 mm/page_alloc.c:4733
-   alloc_pages_mpol_noprof+0x2c9/0x610 mm/mempolicy.c:2265
-   alloc_slab_page mm/slub.c:2412 [inline]
-   allocate_slab mm/slub.c:2578 [inline]
-   new_slab+0x2ba/0x3f0 mm/slub.c:2631
-   ___slab_alloc+0xd1d/0x16f0 mm/slub.c:3818
-   __slab_alloc.constprop.0+0x56/0xb0 mm/slub.c:3908
-   __slab_alloc_node mm/slub.c:3961 [inline]
-   slab_alloc_node mm/slub.c:4122 [inline]
-   __kmalloc_cache_noprof+0x2c5/0x310 mm/slub.c:4290
-   kmalloc_noprof include/linux/slab.h:878 [inline]
-   kzalloc_noprof include/linux/slab.h:1014 [inline]
-   mld_add_delrec net/ipv6/mcast.c:743 [inline]
-   igmp6_leave_group net/ipv6/mcast.c:2625 [inline]
-   igmp6_group_dropped+0x4ab/0xe40 net/ipv6/mcast.c:723
-   __ipv6_dev_mc_dec+0x281/0x360 net/ipv6/mcast.c:979
-   addrconf_leave_solict net/ipv6/addrconf.c:2253 [inline]
-   __ipv6_ifa_notify+0x3f6/0xc30 net/ipv6/addrconf.c:6283
-   addrconf_ifdown.isra.0+0xef9/0x1a20 net/ipv6/addrconf.c:3982
-   addrconf_notify+0x220/0x19c0 net/ipv6/addrconf.c:3781
-   notifier_call_chain+0xb9/0x410 kernel/notifier.c:93
-   call_netdevice_notifiers_info+0xbe/0x140 net/core/dev.c:1996
-   call_netdevice_notifiers_extack net/core/dev.c:2034 [inline]
-   call_netdevice_notifiers net/core/dev.c:2048 [inline]
-   dev_close_many+0x333/0x6a0 net/core/dev.c:1589
-  page last free pid 13136 tgid 13136 stack trace:
-   reset_page_owner include/linux/page_owner.h:25 [inline]
-   free_pages_prepare mm/page_alloc.c:1108 [inline]
-   free_unref_page+0x5f4/0xdc0 mm/page_alloc.c:2638
-   stack_depot_save_flags+0x2da/0x900 lib/stackdepot.c:666
-   kasan_save_stack+0x42/0x60 mm/kasan/common.c:48
-   kasan_save_track+0x14/0x30 mm/kasan/common.c:68
-   unpoison_slab_object mm/kasan/common.c:319 [inline]
-   __kasan_slab_alloc+0x89/0x90 mm/kasan/common.c:345
-   kasan_slab_alloc include/linux/kasan.h:247 [inline]
-   slab_post_alloc_hook mm/slub.c:4085 [inline]
-   slab_alloc_node mm/slub.c:4134 [inline]
-   kmem_cache_alloc_noprof+0x121/0x2f0 mm/slub.c:4141
-   skb_clone+0x190/0x3f0 net/core/skbuff.c:2084
-   do_one_broadcast net/netlink/af_netlink.c:1462 [inline]
-   netlink_broadcast_filtered+0xb11/0xef0 net/netlink/af_netlink.c:1540
-   netlink_broadcast+0x39/0x50 net/netlink/af_netlink.c:1564
-   uevent_net_broadcast_untagged lib/kobject_uevent.c:331 [inline]
-   kobject_uevent_net_broadcast lib/kobject_uevent.c:410 [inline]
-   kobject_uevent_env+0xacd/0x1670 lib/kobject_uevent.c:608
-   device_del+0x623/0x9f0 drivers/base/core.c:3882
-   snd_card_disconnect.part.0+0x58a/0x7c0 sound/core/init.c:546
-   snd_card_disconnect+0x1f/0x30 sound/core/init.c:495
-   snd_usx2y_disconnect+0xe9/0x1f0 sound/usb/usx2y/usbusx2y.c:417
-   usb_unbind_interface+0x1e8/0x970 drivers/usb/core/driver.c:461
-   device_remove drivers/base/dd.c:569 [inline]
-   device_remove+0x122/0x170 drivers/base/dd.c:561
-
-That's because 'subflow' is used just after 'mptcp_close_ssk(subflow)',
-which will initiate the release of its memory. Even if it is very likely
-the release and the re-utilisation will be done later on, it is of
-course better to avoid any issues and read the content of 'subflow'
-before closing it.
-
-Fixes: 1c1f72137598 ("mptcp: pm: only decrement add_addr_accepted for MPJ req")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+3c8b7a8e7df6a2a226ca@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/670d7337.050a0220.4cbc0.004f.GAE@google.com
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://patch.msgid.link/20241015-net-mptcp-uaf-pm-rm-v1-1-c4ee5d987a64@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 1a78998fe1f4..db586a5b3866 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -873,12 +873,12 @@ static void mptcp_pm_nl_rm_addr_or_subflow(struct mptcp_sock *msk,
- 				 i, rm_id, id, remote_id, msk->mpc_endpoint_id);
- 			spin_unlock_bh(&msk->pm.lock);
- 			mptcp_subflow_shutdown(sk, ssk, how);
-+			removed |= subflow->request_join;
- 
- 			/* the following takes care of updating the subflows counter */
- 			mptcp_close_ssk(sk, ssk, subflow);
- 			spin_lock_bh(&msk->pm.lock);
- 
--			removed |= subflow->request_join;
- 			if (rm_type == MPTCP_MIB_RMSUBFLOW)
- 				__MPTCP_INC_STATS(sock_net(sk), rm_type);
- 		}
+xfsprogs git tree:
+https://git.kernel.org/cgit/linux/kernel/git/djwong/xfsprogs-dev.git/log/?h=metadata-directory-tree
+---
+Commits in this patchset:
+ * xfs: constify the xfs_sb predicates
+ * xfs: constify the xfs_inode predicates
+ * xfs: rename metadata inode predicates
+ * xfs: standardize EXPERIMENTAL warning generation
+ * xfs: define the on-disk format for the metadir feature
+ * xfs: iget for metadata inodes
+ * xfs: load metadata directory root at mount time
+ * xfs: enforce metadata inode flag
+ * xfs: read and write metadata inode directory tree
+ * xfs: disable the agi rotor for metadata inodes
+ * xfs: hide metadata inodes from everyone because they are special
+ * xfs: advertise metadata directory feature
+ * xfs: allow bulkstat to return metadata directories
+ * xfs: don't count metadata directory files to quota
+ * xfs: mark quota inodes as metadata files
+ * xfs: adjust xfs_bmap_add_attrfork for metadir
+ * xfs: record health problems with the metadata directory
+ * xfs: refactor directory tree root predicates
+ * xfs: do not count metadata directory files when doing online quotacheck
+ * xfs: don't fail repairs on metadata files with no attr fork
+ * xfs: metadata files can have xattrs if metadir is enabled
+ * xfs: adjust parent pointer scrubber for sb-rooted metadata files
+ * xfs: fix di_metatype field of inodes that won't load
+ * xfs: scrub metadata directories
+ * xfs: check the metadata directory inumber in superblocks
+ * xfs: move repair temporary files to the metadata directory tree
+ * xfs: check metadata directory file path connectivity
+ * xfs: confirm dotdot target before replacing it during a repair
+ * xfs: repair metadata directory file path connectivity
+---
+ fs/xfs/Makefile                 |    5 
+ fs/xfs/libxfs/xfs_attr.c        |    5 
+ fs/xfs/libxfs/xfs_bmap.c        |    5 
+ fs/xfs/libxfs/xfs_format.h      |  121 +++++++--
+ fs/xfs/libxfs/xfs_fs.h          |   25 ++
+ fs/xfs/libxfs/xfs_health.h      |    6 
+ fs/xfs/libxfs/xfs_ialloc.c      |   58 +++-
+ fs/xfs/libxfs/xfs_inode_buf.c   |   90 ++++++-
+ fs/xfs/libxfs/xfs_inode_buf.h   |    3 
+ fs/xfs/libxfs/xfs_inode_util.c  |    2 
+ fs/xfs/libxfs/xfs_log_format.h  |    2 
+ fs/xfs/libxfs/xfs_metadir.c     |  481 ++++++++++++++++++++++++++++++++++++
+ fs/xfs/libxfs/xfs_metadir.h     |   47 ++++
+ fs/xfs/libxfs/xfs_metafile.c    |   52 ++++
+ fs/xfs/libxfs/xfs_metafile.h    |   31 ++
+ fs/xfs/libxfs/xfs_ondisk.h      |    2 
+ fs/xfs/libxfs/xfs_sb.c          |   12 +
+ fs/xfs/libxfs/xfs_types.c       |    4 
+ fs/xfs/libxfs/xfs_types.h       |    2 
+ fs/xfs/scrub/agheader.c         |    5 
+ fs/xfs/scrub/common.c           |   65 ++++-
+ fs/xfs/scrub/common.h           |    5 
+ fs/xfs/scrub/dir.c              |   10 +
+ fs/xfs/scrub/dir_repair.c       |   20 +
+ fs/xfs/scrub/dirtree.c          |   32 ++
+ fs/xfs/scrub/dirtree.h          |   12 -
+ fs/xfs/scrub/findparent.c       |   28 ++
+ fs/xfs/scrub/health.c           |    1 
+ fs/xfs/scrub/inode.c            |   35 ++-
+ fs/xfs/scrub/inode_repair.c     |   34 ++-
+ fs/xfs/scrub/metapath.c         |  521 +++++++++++++++++++++++++++++++++++++++
+ fs/xfs/scrub/nlinks.c           |    4 
+ fs/xfs/scrub/nlinks_repair.c    |    4 
+ fs/xfs/scrub/orphanage.c        |    4 
+ fs/xfs/scrub/parent.c           |   39 ++-
+ fs/xfs/scrub/parent_repair.c    |   37 ++-
+ fs/xfs/scrub/quotacheck.c       |    7 -
+ fs/xfs/scrub/refcount_repair.c  |    2 
+ fs/xfs/scrub/repair.c           |   22 +-
+ fs/xfs/scrub/repair.h           |    3 
+ fs/xfs/scrub/scrub.c            |   12 +
+ fs/xfs/scrub/scrub.h            |    2 
+ fs/xfs/scrub/stats.c            |    1 
+ fs/xfs/scrub/tempfile.c         |  105 ++++++++
+ fs/xfs/scrub/tempfile.h         |    3 
+ fs/xfs/scrub/trace.c            |    1 
+ fs/xfs/scrub/trace.h            |   42 +++
+ fs/xfs/xfs_dquot.c              |    1 
+ fs/xfs/xfs_fsops.c              |    4 
+ fs/xfs/xfs_health.c             |    2 
+ fs/xfs/xfs_icache.c             |   74 ++++++
+ fs/xfs/xfs_inode.c              |   19 +
+ fs/xfs/xfs_inode.h              |   36 ++-
+ fs/xfs/xfs_inode_item.c         |    7 -
+ fs/xfs/xfs_inode_item_recover.c |    2 
+ fs/xfs/xfs_ioctl.c              |    7 +
+ fs/xfs/xfs_iops.c               |   15 +
+ fs/xfs/xfs_itable.c             |   33 ++
+ fs/xfs/xfs_itable.h             |    3 
+ fs/xfs/xfs_message.c            |   47 ++++
+ fs/xfs/xfs_message.h            |   19 +
+ fs/xfs/xfs_mount.c              |   31 ++
+ fs/xfs/xfs_mount.h              |   11 +
+ fs/xfs/xfs_qm.c                 |   36 +++
+ fs/xfs/xfs_quota.h              |    5 
+ fs/xfs/xfs_rtalloc.c            |   38 ++-
+ fs/xfs/xfs_super.c              |   13 -
+ fs/xfs/xfs_trace.c              |    2 
+ fs/xfs/xfs_trace.h              |  102 ++++++++
+ fs/xfs/xfs_trans_dquot.c        |    6 
+ fs/xfs/xfs_xattr.c              |    3 
+ 71 files changed, 2324 insertions(+), 201 deletions(-)
+ create mode 100644 fs/xfs/libxfs/xfs_metadir.c
+ create mode 100644 fs/xfs/libxfs/xfs_metadir.h
+ create mode 100644 fs/xfs/libxfs/xfs_metafile.c
+ create mode 100644 fs/xfs/libxfs/xfs_metafile.h
+ create mode 100644 fs/xfs/scrub/metapath.c
 
 
