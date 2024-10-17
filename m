@@ -1,145 +1,146 @@
-Return-Path: <stable+bounces-86649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 565219A2A6B
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 19:11:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEF409A2AB1
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 19:20:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C51C11F29673
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 17:11:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89297282FBD
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 17:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74E91DFE15;
-	Thu, 17 Oct 2024 17:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A041DFD8B;
+	Thu, 17 Oct 2024 17:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pua+mYqJ"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="I78Z2Gw6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981291DFE06;
-	Thu, 17 Oct 2024 17:09:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E161DF98A
+	for <stable@vger.kernel.org>; Thu, 17 Oct 2024 17:19:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729184968; cv=none; b=Gv66/nZNxWxAlDQtyywZ3g/c45JrSB64AK/ZO/njOvaryNZVvcYtjXKMFOx6IqzyxS1TXWnzoumQqZfe3QCdrlcz1Veu7ZRESs0BR+htl44tX4yYzs6FS6XoMjO9TbeK/XBx0pOpCcuRZMj2W65OSJ1JNE1jY0kFH/FAR0a2pGM=
+	t=1729185601; cv=none; b=Kz+GWpW0mzrACBLXnBPyZZ0xXIq8WHLu3yBI4ElQ6fn2ke3Db3GwVjSU5Nnb/T1jlbSQEiu5rWkJCzjxKBlAr+AbWnMGSZSR8v2EQUhEWneWT3lgZjBTnfj2z2jYB//8y0LK3F7hJCaVXyIDwEnNUd+lNxstuiVNltnr7yNpiFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729184968; c=relaxed/simple;
-	bh=m/EkYw2s59ro8v1uZNnuDskZpSm80+cYs5IMSQ2weqM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=YYY77m22uRjJRwfPrCkrxe/Vuks2Z6euMSBYimQotuqqiMVULX2n9D+5ziQnXbs5JSHsBYmemVSiic++RJFyjsVFXuOOw2Xp2KuGuOidDawk1XiIPQ7NfhgV8QKc2Dw6dPSe4gkqbpBoKfk0cQsXnhHPjTAt/IvLiUxXkFfkhd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pua+mYqJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E892C4CECD;
-	Thu, 17 Oct 2024 17:09:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729184968;
-	bh=m/EkYw2s59ro8v1uZNnuDskZpSm80+cYs5IMSQ2weqM=;
-	h=From:Date:Subject:To:Cc:From;
-	b=Pua+mYqJLoNh+RDMls9nHh47VkCBtx0Z6qNwUxJRFavT/4z3wW4udsyzim87WtxR0
-	 MopPUu+rsQ5I5h35/UoD4GFtg/WD7DNLDW0UP2UKAV3ZM4PLFZD5nMWJtcIFGXSbKi
-	 g6X+oxFN/JyehtYm8rymAZ7kGjw5FyHbQcbQqVbXEcDt+JUxykg+9YgMHsl25yqoXo
-	 mWM3aj5QR0E92SuuHd1s/Hqbg2mAEUSf60uxU+30dAWduGtq0gnNss1oJnz1N1n/sd
-	 jCdoxThuJaEEpJWq90GMP12T5jEoy5/TcH0CKj/0gUuFQJHIykEPRIpOufxe7hWKHC
-	 /ucwMxjONORZQ==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Thu, 17 Oct 2024 10:09:22 -0700
-Subject: [PATCH v2] kbuild: Move -Wenum-enum-conversion to W=2
+	s=arc-20240116; t=1729185601; c=relaxed/simple;
+	bh=L0oUIu3i9Y0p96prkLwEv2h7xFMWNvbDQna5kke0TuQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dLdXLHR+7qtbd14V0KbS/rkGuoNY6hWLOAQQT19yOMbksStRZfa6l6oo2qNdzw1K4Ilfsmxprty8Pj06boocYRR6aVNI2gnLOz4oxj8ANOEFRWo0QmVs/RYlMQWMVRiMF1+6nGSbvZOMYEGvASif1sYXIHOzzBnx+nsZZehIbrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=I78Z2Gw6; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HFBvVM024511;
+	Thu, 17 Oct 2024 17:19:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=corp-2023-11-20; bh=HoQeT3SgaN9L471L
+	cezcIf5/EBROW1NoTvRSHmPXg28=; b=I78Z2Gw6dk4FnZCN2w8dCRlZDh6XuRSZ
+	iEjICJjMkUghp75REq+mW7+VtsDse51RjuKh4K4G6elMCbtXPfn0kYGLmMhdKwF9
+	J2Asj9MgJzH4R0kXHrMy34iaBeNAJ+4OsUB7cZMsAOnaql4ZKIfC+ggRxQxF5vtI
+	1zkk26tajDsQiCCx4x28xzr6iDGUAwllsxEkRTf1g28cPJTvJUj3Eyfx04WQzXih
+	NdvZpExAldLYyKtzcG8tfd4Te4fnIaBF4VfFA8+1pURh1lmDtDh533zclNBst2pA
+	lbL8NR2CWZ8nAC3c1t6hZyd5BwutC2xJlDk0d9cEfHRNwGvh3L0Y1A==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 427fhcpkaj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 17 Oct 2024 17:19:34 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 49HGel0Q026284;
+	Thu, 17 Oct 2024 17:19:33 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 427fjaj205-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 17 Oct 2024 17:19:33 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49HHJVQY028140;
+	Thu, 17 Oct 2024 17:19:31 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 427fjaj0v2-1;
+	Thu, 17 Oct 2024 17:19:31 +0000
+From: Sherry Yang <sherry.yang@oracle.com>
+To: stable@vger.kernel.org, sashal@kernel.org, gregkh@linuxfoundation.org
+Cc: sherry.yang@oracle.com, maarten.lankhorst@linux.intel.com,
+        mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+        daniel@ffwll.ch, eric@anholt.net, robh@kernel.org, noralf@tronnes.org,
+        dri-devel@lists.freedesktop.org
+Subject: [PATCH 6.1.y 5.15.y] drm/shmem-helper: Fix BUG_ON() on mmap(PROT_WRITE, MAP_PRIVATE)
+Date: Thu, 17 Oct 2024 10:18:29 -0700
+Message-ID: <20241017171829.2040531-1-sherry.yang@oracle.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241017-disable-two-clang-enum-warnings-v2-1-163ac04346ae@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAMFEEWcC/42NQQ6CMBBFr0Jm7RjaNEBdeQ/DotIRJmJrpggaw
- t2tnMDl+/l5b4VEwpTgVKwgNHPiGDLoQwHd4EJPyD4z6FIbVaoKPSd3HQmnJWI35gdSeD1wcRI
- 49AmpttZ4Y27WNJAtT6Ebv/fCpc08cJqifPbgrH7r/+5ZoUJHTVP52pW6suc7SaDxGKWHdtu2L
- 5iU4GXPAAAA
-X-Change-ID: 20241016-disable-two-clang-enum-warnings-e7994d44f948
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>, 
- Nick Desaulniers <ndesaulniers@google.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
- Arnd Bergmann <arnd@arndb.de>, Aleksei Vetrov <vvvvvv@google.com>, 
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
- llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org, 
- Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2857; i=nathan@kernel.org;
- h=from:subject:message-id; bh=m/EkYw2s59ro8v1uZNnuDskZpSm80+cYs5IMSQ2weqM=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDOmCLsc1Q+du8D5w+Vl7NoeOedrz8lO6juJzsu9rfNU/5
- WoWdqaho5SFQYyLQVZMkaX6sepxQ8M5ZxlvnJoEM4eVCWQIAxenAExkvgYjw9eT/9m+/1nAdpSn
- +WzLtTdvdNSm/CiftlahejmbF+/BB6oMfzi7ZT3WLpuYGXzqSvS/LIVzmooRLvnS/oz/H+8MDA0
- S5gMA
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-17_19,2024-10-17_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 adultscore=0
+ bulkscore=0 spamscore=0 mlxlogscore=999 phishscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2409260000
+ definitions=main-2410170118
+X-Proofpoint-GUID: RqwDI7KlPtEgxUq6is0XhZVBd-_qjKGC
+X-Proofpoint-ORIG-GUID: RqwDI7KlPtEgxUq6is0XhZVBd-_qjKGC
 
--Wenum-enum-conversion was strengthened in clang-19 to warn for C, which
-caused the kernel to move it to W=1 in commit 75b5ab134bb5 ("kbuild:
-Move -Wenum-{compare-conditional,enum-conversion} into W=1") because
-there were numerous instances that would break builds with -Werror.
-Unfortunately, this is not a full solution, as more and more developers,
-subsystems, and distributors are building with W=1 as well, so they
-continue to see the numerous instances of this warning.
+From: "Wachowski, Karol" <karol.wachowski@intel.com>
 
-Since the move to W=1, there have not been many new instances that have
-appeared through various build reports and the ones that have appeared
-seem to be following similar existing patterns, suggesting that most
-instances of this warning will not be real issues. The only alternatives
-for silencing this warning are adding casts (which is generally seen as
-an ugly practice) or refactoring the enums to macro defines or a unified
-enum (which may be undesirable because of type safety in other parts of
-the code).
+commit 39bc27bd688066a63e56f7f64ad34fae03fbe3b8 upstream.
 
-Move the warning to W=2, where warnings that occur frequently but may be
-relevant should reside.
+Lack of check for copy-on-write (COW) mapping in drm_gem_shmem_mmap
+allows users to call mmap with PROT_WRITE and MAP_PRIVATE flag
+causing a kernel panic due to BUG_ON in vmf_insert_pfn_prot:
+BUG_ON((vma->vm_flags & VM_PFNMAP) && is_cow_mapping(vma->vm_flags));
 
-Cc: stable@vger.kernel.org
-Fixes: 75b5ab134bb5 ("kbuild: Move -Wenum-{compare-conditional,enum-conversion} into W=1")
-Link: https://lore.kernel.org/ZwRA9SOcOjjLJcpi@google.com/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Return -EINVAL early if COW mapping is detected.
+
+This bug affects all drm drivers using default shmem helpers.
+It can be reproduced by this simple example:
+void *ptr = mmap(0, size, PROT_WRITE, MAP_PRIVATE, fd, mmap_offset);
+ptr[0] = 0;
+
+Fixes: 2194a63a818d ("drm: Add library for shmem backed GEM objects")
+Cc: Noralf Trønnes <noralf@tronnes.org>
+Cc: Eric Anholt <eric@anholt.net>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.2+
+Signed-off-by: Wachowski, Karol <karol.wachowski@intel.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240520100514.925681-1-jacek.lawrynowicz@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Sherry: bp to fix CVE-2024-39497, ignore context change due to missing
+commit 21aa27ddc582 ("drm/shmem-helper: Switch to reservation lock")]
+Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
 ---
-Changes in v2:
-- Move -Wenum-enum-conversion to W=2, instead of disabling it
-  outright (Arnd)
-- Leave -Wenum-compare-conditional in W=1, as there are not that
-  many instances, so it can be turned on fully at some point (Arnd)
-- Link to v1: https://lore.kernel.org/r/20241016-disable-two-clang-enum-warnings-v1-1-ae886d7a0269@kernel.org
----
- scripts/Makefile.extrawarn | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_gem_shmem_helper.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
-index 1d13cecc7cc7808610e635ddc03476cf92b3a8c1..04faf15ed316a9c291dc952b6cc40fb6c8c330cf 100644
---- a/scripts/Makefile.extrawarn
-+++ b/scripts/Makefile.extrawarn
-@@ -130,7 +130,6 @@ KBUILD_CFLAGS += $(call cc-disable-warning, pointer-to-enum-cast)
- KBUILD_CFLAGS += -Wno-tautological-constant-out-of-range-compare
- KBUILD_CFLAGS += $(call cc-disable-warning, unaligned-access)
- KBUILD_CFLAGS += -Wno-enum-compare-conditional
--KBUILD_CFLAGS += -Wno-enum-enum-conversion
- endif
+diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
+index e33f06bb66eb..fb8093577245 100644
+--- a/drivers/gpu/drm/drm_gem_shmem_helper.c
++++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+@@ -638,6 +638,9 @@ int drm_gem_shmem_mmap(struct drm_gem_shmem_object *shmem, struct vm_area_struct
+ 		return ret;
+ 	}
  
- endif
-@@ -154,6 +153,10 @@ KBUILD_CFLAGS += -Wno-missing-field-initializers
- KBUILD_CFLAGS += -Wno-type-limits
- KBUILD_CFLAGS += -Wno-shift-negative-value
- 
-+ifdef CONFIG_CC_IS_CLANG
-+KBUILD_CFLAGS += -Wno-enum-enum-conversion
-+endif
++	if (is_cow_mapping(vma->vm_flags))
++		return -EINVAL;
 +
- ifdef CONFIG_CC_IS_GCC
- KBUILD_CFLAGS += -Wno-maybe-uninitialized
- endif
-
----
-base-commit: 8e929cb546ee42c9a61d24fae60605e9e3192354
-change-id: 20241016-disable-two-clang-enum-warnings-e7994d44f948
-
-Best regards,
+ 	ret = drm_gem_shmem_get_pages(shmem);
+ 	if (ret)
+ 		return ret;
 -- 
-Nathan Chancellor <nathan@kernel.org>
+2.46.0
 
 
