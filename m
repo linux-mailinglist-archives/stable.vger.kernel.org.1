@@ -1,114 +1,151 @@
-Return-Path: <stable+bounces-86603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3231B9A216C
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 13:51:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 651E29A2207
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 14:18:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE4B728932E
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 11:51:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29D8C283467
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 12:18:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D8771DA614;
-	Thu, 17 Oct 2024 11:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192411DBB2C;
+	Thu, 17 Oct 2024 12:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b="JcJ6vBvc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PsyAghQ0"
 X-Original-To: stable@vger.kernel.org
-Received: from mta-64-225.siemens.flowmailer.net (mta-64-225.siemens.flowmailer.net [185.136.64.225])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C4BE1D517F
-	for <stable@vger.kernel.org>; Thu, 17 Oct 2024 11:51:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB6B1DD0DB;
+	Thu, 17 Oct 2024 12:18:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729165872; cv=none; b=pShjjk9BT/IJKgq+I+hxaLg6XlmW+bvosyArgMjnRIaGEhDgsZgV3F6iml43Cmz4+Khnn7Jbw8RVlPAUOwzxjhou1qkp9Kqadc4Wr2MnP6GoN5oS0wVmXTBSskSJ1i8vFZYFsqGNUP0SW/PuzbE2U38udovsCFmDbIMlTv+762s=
+	t=1729167529; cv=none; b=W7KrTqL/x1E+r7PeDo4dSrKHHCafMb1sYjDA7N4wR+9VFm3p2xAnJl3epwKrfOVTbNLEv4F/YIiQr4m8yzF3DMUu5wzrsSxAL/p8ng+Kl93bo7TTeIUjOmJ1oZBuhqqq5Z0Ggvttfv4GxPwa2no66ukIzkZ+wT+F3EYpCmyhuts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729165872; c=relaxed/simple;
-	bh=8N3OEu5OoqKc7PPo9W/J+iXedXuNXE+FSfbf5A8TwvI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=D9V5+0WL5oZv7lVo8W8mXXK9NIaLSFr58hvMvR5PFIcL+OOCijEjhLspNecUFB8HtjIWEPQQwM7pf2L6M2mG6oNveiBhsE4Hi/8vR1R0WpivO5NpZn46B3xxm3PAujJ1YhrR8oWmMRuygahQ5vpEIPecPLYd9kFRm5Jpt5DGfD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b=JcJ6vBvc; arc=none smtp.client-ip=185.136.64.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-64-225.siemens.flowmailer.net with ESMTPSA id 202410171151019e3adf446d388d1173
-        for <stable@vger.kernel.org>;
-        Thu, 17 Oct 2024 13:51:01 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=felix.moessbauer@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=OdKYBXRZ9q61qLOIwiokUTQ4LNVDE3ItPS4tRRh0Knw=;
- b=JcJ6vBvcrtDTL+mqxTm7s7pSe+WScQ5gLFgkqux55va0lcwIII9kV/Bh5+JnnVg0ux76br
- I8mwVMTVOeDLXtopcsdAiMd49KtAumlsZGk/hgfNhJYTx8k7nw8GFuGDzfSKyQPyDZY46WkC
- hHF11Cv9/rl0r1RL//xZEEgwhFpJTy1TqMLtayn/7SuJrjvpwbIzfi6MC+Xni+0F5wi7d6Zn
- x4ySykXGIpCsxvpipTVCGEy1+ctWwe0LVed7+PmlP8Bu7sOBQCeddX9s5TGu2FAFsEZjqDvJ
- JmGxfywmX/PsWs29K/mYOjzDwBQyHvNIsgcyil71evxnib4Y/C3IGixQ==;
-From: Felix Moessbauer <felix.moessbauer@siemens.com>
-To: stable@vger.kernel.org
-Cc: io-uring@vger.kernel.org,
-	axboe@kernel.dk,
-	gregkh@linuxfoundation.org,
-	Felix Moessbauer <felix.moessbauer@siemens.com>
-Subject: [PATCH 5.10 5.15 3/3] io_uring/sqpoll: do not put cpumask on stack
-Date: Thu, 17 Oct 2024 13:50:29 +0200
-Message-Id: <20241017115029.178246-3-felix.moessbauer@siemens.com>
-In-Reply-To: <20241017115029.178246-1-felix.moessbauer@siemens.com>
-References: <20241017115029.178246-1-felix.moessbauer@siemens.com>
+	s=arc-20240116; t=1729167529; c=relaxed/simple;
+	bh=A7eEhjsXo+WCet5U3z24IGzwdxHmXpfehW2kecLy1CY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KSRxBjXjvmgJLphSeV8P/yJ+i75+VGSZv2Q2vR2g22oVL5skKEVYVV8oWDuT8qUOHnOYjU3zEgNN3nqui8g6ICyevp6PzG73outOlCHI9IMlNM06ZaeAyoEOwxZleik35yNGy4X0J2rl8Nw6EkNqWRFoN/cDW7W0snIS8BkRw4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PsyAghQ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5708C4CEC3;
+	Thu, 17 Oct 2024 12:18:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729167529;
+	bh=A7eEhjsXo+WCet5U3z24IGzwdxHmXpfehW2kecLy1CY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PsyAghQ08GDSHb5TEFOvDroJedniaripuOM7ZbdzbtFZpzy2u8r0hRK/OgHIxy5r4
+	 DY3HHbKOXd2xyr7UORc7B5shk1uE8Zi3W1wTXG9ky+ntlnk19qSWO67jKvJfNVMGLn
+	 MvfL8f06Ku1htEX4W9aMvsWxk34A7vhq8okELltIHZaHKOn9jqgpGDMJndta+tR/q0
+	 e5IS86n5wvyVPia6Kxtlj5urjoCe4x0k9vvSbXV2weJfOjyr2GuQ405HveI25eysjr
+	 M1e6cKQIIRmYykpwrRP3/3/bkk23h9Hj7X0/zW4UrqQPn61kr9/lTQJj+E1ZKMzgUL
+	 Rr7/xVHp9OT+Q==
+Date: Thu, 17 Oct 2024 17:48:45 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Mathias Nyman <mathias.nyman@intel.com>,
+	Moritz Fischer <mdf@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10 257/518] usb: renesas-xhci: Remove
+ renesas_xhci_pci_exit()
+Message-ID: <ZxEApUzFuY6eFQUW@vaman>
+References: <20241015123916.821186887@linuxfoundation.org>
+ <20241015123926.907865055@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-1321639:519-21489:flowmailer
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241015123926.907865055@linuxfoundation.org>
 
-commit 7f44beadcc11adb98220556d2ddbe9c97aa6d42d upstream.
+On 15-10-24, 14:42, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Moritz Fischer <mdf@kernel.org>
+> 
+> [ Upstream commit 884c274408296e7e0f56545f909b3d3a671104aa ]
+> 
+> Remove empty function renesas_xhci_pci_exit() that does not
+> actually do anything.
 
-Putting the cpumask on the stack is deprecated for a long time (since
-2d3854a37e8), as these can be big. Given that, change the on-stack
-allocation of allowed_mask to be dynamically allocated.
+Does this really belong to stable? Removing an empty function should not
+be ported to stable kernels right...?
 
-Fixes: f011c9cf04c0 ("io_uring/sqpoll: do not allow pinning outside of cpuset")
-Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
-Link: https://lore.kernel.org/r/20240916111150.1266191-1-felix.moessbauer@siemens.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
----
- io_uring/io_uring.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index a260852a0490c..12aade2ac68ea 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -8747,15 +8747,22 @@ static int io_sq_offload_create(struct io_ring_ctx *ctx,
- 			return 0;
- 
- 		if (p->flags & IORING_SETUP_SQ_AFF) {
--			struct cpumask allowed_mask;
-+			cpumask_var_t allowed_mask;
- 			int cpu = p->sq_thread_cpu;
- 
- 			ret = -EINVAL;
- 			if (cpu >= nr_cpu_ids || !cpu_online(cpu))
- 				goto err_sqpoll;
--			cpuset_cpus_allowed(current, &allowed_mask);
--			if (!cpumask_test_cpu(cpu, &allowed_mask))
-+			ret = -ENOMEM;
-+			if (!alloc_cpumask_var(&allowed_mask, GFP_KERNEL))
-+				goto err_sqpoll;
-+			ret = -EINVAL;
-+			cpuset_cpus_allowed(current, allowed_mask);
-+			if (!cpumask_test_cpu(cpu, allowed_mask)) {
-+				free_cpumask_var(allowed_mask);
- 				goto err_sqpoll;
-+			}
-+			free_cpumask_var(allowed_mask);
- 			sqd->sq_cpu = cpu;
- 		} else {
- 			sqd->sq_cpu = -1;
+> 
+> Cc: Mathias Nyman <mathias.nyman@intel.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Vinod Koul <vkoul@kernel.org>
+> Signed-off-by: Moritz Fischer <mdf@kernel.org>
+> Link: https://lore.kernel.org/r/20210718015111.389719-3-mdf@kernel.org
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Stable-dep-of: f81dfa3b57c6 ("xhci: Set quirky xHC PCI hosts to D3 _after_ stopping and freeing them.")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/usb/host/xhci-pci-renesas.c | 5 -----
+>  drivers/usb/host/xhci-pci.c         | 2 --
+>  drivers/usb/host/xhci-pci.h         | 3 ---
+>  3 files changed, 10 deletions(-)
+> 
+> diff --git a/drivers/usb/host/xhci-pci-renesas.c b/drivers/usb/host/xhci-pci-renesas.c
+> index 96692dbbd4dad..01ad6fc1adcaf 100644
+> --- a/drivers/usb/host/xhci-pci-renesas.c
+> +++ b/drivers/usb/host/xhci-pci-renesas.c
+> @@ -631,9 +631,4 @@ int renesas_xhci_check_request_fw(struct pci_dev *pdev,
+>  }
+>  EXPORT_SYMBOL_GPL(renesas_xhci_check_request_fw);
+>  
+> -void renesas_xhci_pci_exit(struct pci_dev *dev)
+> -{
+> -}
+> -EXPORT_SYMBOL_GPL(renesas_xhci_pci_exit);
+> -
+>  MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+> index 88f223b975d34..4a88e75cd9586 100644
+> --- a/drivers/usb/host/xhci-pci.c
+> +++ b/drivers/usb/host/xhci-pci.c
+> @@ -533,8 +533,6 @@ static void xhci_pci_remove(struct pci_dev *dev)
+>  	struct xhci_hcd *xhci;
+>  
+>  	xhci = hcd_to_xhci(pci_get_drvdata(dev));
+> -	if (xhci->quirks & XHCI_RENESAS_FW_QUIRK)
+> -		renesas_xhci_pci_exit(dev);
+>  
+>  	xhci->xhc_state |= XHCI_STATE_REMOVING;
+>  
+> diff --git a/drivers/usb/host/xhci-pci.h b/drivers/usb/host/xhci-pci.h
+> index acd7cf0a1706e..cb9a8f331a446 100644
+> --- a/drivers/usb/host/xhci-pci.h
+> +++ b/drivers/usb/host/xhci-pci.h
+> @@ -7,7 +7,6 @@
+>  #if IS_ENABLED(CONFIG_USB_XHCI_PCI_RENESAS)
+>  int renesas_xhci_check_request_fw(struct pci_dev *dev,
+>  				  const struct pci_device_id *id);
+> -void renesas_xhci_pci_exit(struct pci_dev *dev);
+>  
+>  #else
+>  static int renesas_xhci_check_request_fw(struct pci_dev *dev,
+> @@ -16,8 +15,6 @@ static int renesas_xhci_check_request_fw(struct pci_dev *dev,
+>  	return 0;
+>  }
+>  
+> -static void renesas_xhci_pci_exit(struct pci_dev *dev) { };
+> -
+>  #endif
+>  
+>  struct xhci_driver_data {
+> -- 
+> 2.43.0
+> 
+> 
+
 -- 
-2.39.5
-
+~Vinod
 
