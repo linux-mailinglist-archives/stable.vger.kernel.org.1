@@ -1,192 +1,144 @@
-Return-Path: <stable+bounces-86684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F4FD9A2D29
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 21:04:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E5919A2D4C
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 21:08:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 301DA1F24D94
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 19:04:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0211EB2323F
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 19:08:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F23DB21BB06;
-	Thu, 17 Oct 2024 19:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8508021C18B;
+	Thu, 17 Oct 2024 19:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="XWZH4gXD"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eVBuHu+3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F3821B42B
-	for <stable@vger.kernel.org>; Thu, 17 Oct 2024 19:03:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A85921BAFB
+	for <stable@vger.kernel.org>; Thu, 17 Oct 2024 19:07:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729191842; cv=none; b=MxgaOdXI+mN+e8yJZMwHLH8ZgHwJFBW57Klb6LsfwPfZfrpOeZU068npH7+aWqmWSs5DiH0CV0YCIiNN9JJcSFhvWbaa7PEbkq1HfsO7n+CofWdJHwh6PMkNUDXdP3BE5EPZvqw0ljueziFa7N1081wxD2qkEiEgyQgsc+3CZ74=
+	t=1729192075; cv=none; b=clwJbBPN/6VRU9DK7D5aIxzW2kK6mfOlKBUbFsrNIrfGMhURUINZm1NSng06XWSL26yWB/SoX6XIfel6UXWtjlZAvTx5xFzprdjzl9z6TZT+OxlPn0TdzBMdCgimroBlWEdjuDiA3NIaRBPGxv5ej18dOb4sFnmzNpwN9hZRDpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729191842; c=relaxed/simple;
-	bh=1iJ9CO/sJUeY8BJ77Z1oy2osckCfCBDy55nkuGRtof0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZlbwliZ8H43BsOnxrGNKQvRp6+ltXnRyr/Ri8n43iZZMloFztBngCvBLC1eSmjtMMmalXPN66VzRcNSwImIyDg6H2KTntfetnwqFI1ldrAhzKzBQhxWo5+h7gt5De7y/eXHqONM+woTTAThKsKzAycG2b+jlE5PYThG+Kc/T4Yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=XWZH4gXD; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7b1467af9dbso89689785a.0
-        for <stable@vger.kernel.org>; Thu, 17 Oct 2024 12:03:57 -0700 (PDT)
+	s=arc-20240116; t=1729192075; c=relaxed/simple;
+	bh=4+ixJyekF1jl6uiAyjfdWox0tZfOmu1tTOx5QFEdE0s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u2ex9w0ESSbfmcu8rfntJnggh32aFJyVWtk+l5rphgjTzBFyYA4iZp1vhEaFxAWlqINO1OlucmxJvN4r6CCNUeb0ciq8Uu4r2dPZ7fIXbvVDim84vhcpT8UyEA6RXdP77lbRBWHgy/mhTxs02OkvOW29hSezydf8Kla0DKvrAjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eVBuHu+3; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5c93e9e701fso3875a12.1
+        for <stable@vger.kernel.org>; Thu, 17 Oct 2024 12:07:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1729191836; x=1729796636; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qH11hcxNbwY7wx+W/7cRdf6NRA7wQzbx43qz3yjVmc4=;
-        b=XWZH4gXDUM4zzm774t56vn7a1gz07NHD4f3YWaDzjwr1ktrC4Y3w4G+wRJe1qUJm9T
-         CUWCyXznccb5tuzKSHs5Vp6I5iBpwPQAzsd2P3YRD3SvFOXyfJaRXKP94h3JfPpwTgye
-         gfUdJNsiVMANrQeYAekspuoRGNPoQCV4FlbUFEHbTArW2LxMK+2izEPeBtY5/MZGlWRG
-         xD9Axl+QA8oyvbBHO4GBaNxeleTi14IaB0+pqU+3abzZU7VxjR2KmNqAlPn2MxV2nQ7V
-         F8hQ2X2TA7/TgiI9LLmrGrtiFqkumVi4+a+TxISu+0gcaVZJ/GXqvx96rKHo4o9BHBHQ
-         RtJQ==
+        d=google.com; s=20230601; t=1729192067; x=1729796867; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uixfl2jtVqbJqFwF+ymcJ/PUl6a3StJk/DrSTA+CVC0=;
+        b=eVBuHu+3iIsWKuaLIQweQNQ6zGI9Ek5ZllO41IKg3KRNgGfDumdXWGf9JZLWU0d9JF
+         FYaM5BatJ3Sgh8YD1fWV8Vute3gbEdyyKkK54vSPNqsD1tC3aEfUXu6HKsIIP/dwAe+5
+         d1dJTD1qb7vNjX7CaK19thK3es6jUuVtCXB5zF+PZdgBFNlE2hC1VyMSZiYvFk7qfZHw
+         j7LiTEE/c4oCWtg94qW+KQ5KwzhVtXidwhlTa6NtiWbBsdIBexWvOpXHKd3EsO4tH5rQ
+         O4+iD4fn96Fw8OiDhu39edtw2Q5HO4AbiYzXziR8gPJO1VMzLTCKBNYXQ/iqEobxn75e
+         ALSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729191836; x=1729796636;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qH11hcxNbwY7wx+W/7cRdf6NRA7wQzbx43qz3yjVmc4=;
-        b=eb/4Xvs38wBH153lKnzc6DhQO742iWgpUiY2vJF/iRKQUkDmHL2D2IonO71479SO5q
-         us0B9074qaCPWC0jUKTqgwzDY0nMoSEyELWZ2WjzH6ER5JcDXI9GrU1mu/cK8nat3njy
-         RiS+kk2rkhnSgHaYRdZSrbTExtIdQGu27O+W8ht77vsN136s5onj9TcccDO47mA5M8SF
-         mdLkikhpbgWECrNrtaKlbGVgz3ssbWeoUSZRFjoTVkZNTyncCq9JoaT0RU3IY3ojtnCx
-         QpuZ3vAL25iYuNjO15Hz+vqnS/V63BwK4MEiZ7033iP1jTuxut8Mj6KQeb4yXlVG2sX3
-         hVoA==
-X-Forwarded-Encrypted: i=1; AJvYcCUXt8I84Ptd184Mp7aOioHyBHGo2+qgSkXWFYtFFy6TkVbr5SEIIbc0OZ+TXPEGvOz0FRL9twg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxrE51QbHP/7YAHPXSNZBtUsoqFZmgLpO7HdSGDjAq4MNVrs5Rn
-	VMuV+t2JlTShShdq6GrN1sD+hGnUDIgQrqr+k1MO5yqdpHLGmuM1ESVrfJXucqXdySuKqsyDLmA
-	s
-X-Google-Smtp-Source: AGHT+IHmvZWzsm6C2/haXl1uVw6bseyVtbDuR+pZu1yr4xkN1vYFqbrNK9ZkLR/bbOALsetjNvUchg==
-X-Received: by 2002:a05:620a:2453:b0:7b1:4cc0:5e1f with SMTP id af79cd13be357-7b14cc05ec0mr590409285a.7.1729191836065;
-        Thu, 17 Oct 2024 12:03:56 -0700 (PDT)
-Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4607b0e22dfsm30211241cf.35.2024.10.17.12.03.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Oct 2024 12:03:55 -0700 (PDT)
-From: Gregory Price <gourry@gourry.net>
-To: kexec@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	bhelgaas@google.com,
-	andriy.shevchenko@linux.intel.com,
-	ilpo.jarvinen@linux.intel.com,
-	mika.westerberg@linux.intel.com,
-	ying.huang@intel.com,
-	bhe@redhat.com,
-	gourry@gourry.net,
-	tglx@linutronix.de,
-	takahiro.akashi@linaro.org,
-	stable@vger.kernel.org
-Subject: [PATCH] resource,kexec: walk_system_ram_res_rev must retain resource flags
-Date: Thu, 17 Oct 2024 15:03:47 -0400
-Message-ID: <20241017190347.5578-1-gourry@gourry.net>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1729192067; x=1729796867;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uixfl2jtVqbJqFwF+ymcJ/PUl6a3StJk/DrSTA+CVC0=;
+        b=AT+5daQut5O0CDZuE/OJ8BSOK+yks2vy1x6ErrZDDhu5gODxj7F5+aQwKeu3OzkMKk
+         VHkAzYyu+zOn1RqaEeube57Enxwl/Er3Keltv+QJJKm5YbThgHVjdlxUaHVYF9G3EkQ8
+         ws1roOazDgmykfLXNtUEwKW1m4ipcXBfFCUOIa3mkIveX9cwrXw/Vl3B1A/sUhkiQdVd
+         fyeyc1Dfue5ICeWCUMXQra0bxE4vhtV+xfWdsk47oZQTvwPvMfpVSpw7636Q7NDftYrn
+         XUuCHXzpBVgnJeieHBWkKM0IxMpZl0Ou3BPURSyx56eamrqXgB/Y3CSQpgoDpZkJOiAl
+         I07A==
+X-Forwarded-Encrypted: i=1; AJvYcCX9EXUu0s/5bW6WrblcIpHp9rGee5fZgE1pb8fH+RziPYme0/zpZVlOI1SwxkRzh7uSl8uaLGg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxM5Dse/481uouNitJZakYjNHQ4k6zrwuXf3crE/BQGMMr8tdjR
+	brBzIljalrMgmRo4wxckwTzDpK4h7fXlcEqXN+fbzyVTXdELxhll4yE7FPFB73bjUcTki9GiSWY
+	NBz386zFHT4lCYoGMNUTLVzypz+zJU8ildTGx
+X-Google-Smtp-Source: AGHT+IGJ5bOtzlZwtV+s5IaY9jBglbZpjiJuoBwT3AgW89JKzeUwi0aGlcdr06htRSmxbUTs1hCk4iI1TzT9Wa0QxxI=
+X-Received: by 2002:a05:6402:2709:b0:5c8:84b5:7e78 with SMTP id
+ 4fb4d7f45d1cf-5ca0a186b93mr58751a12.4.1729192066673; Thu, 17 Oct 2024
+ 12:07:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241015-comedi-tlb-v2-1-cafb0e27dd9a@google.com>
+ <202410170111.K30oyTWa-lkp@intel.com> <CAG48ez2T7i_qCAcGi3nZqQeT8A3x42YSdL=rWqXOUDy5Eyaf6A@mail.gmail.com>
+ <ccc4e0a3-34f5-4793-bd05-ee0955c9c87b@mev.co.uk> <cf1a2818-1b78-4422-bb76-421732c428c0@mev.co.uk>
+In-Reply-To: <cf1a2818-1b78-4422-bb76-421732c428c0@mev.co.uk>
+From: Jann Horn <jannh@google.com>
+Date: Thu, 17 Oct 2024 21:07:10 +0200
+Message-ID: <CAG48ez1RWTEW_ZJBYbt6WWJX90haM61pwqqb3u9Pq8C_q71bQQ@mail.gmail.com>
+Subject: Re: [PATCH v2] comedi: Flush partial mappings in error case
+To: Ian Abbott <abbotti@mev.co.uk>
+Cc: kernel test robot <lkp@intel.com>, H Hartley Sweeten <hsweeten@visionengravers.com>, 
+	Frank Mori Hess <fmh6jj@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-walk_system_ram_res_rev() erroneously discards resource flags when
-passing the information to the callback.
+On Thu, Oct 17, 2024 at 11:48=E2=80=AFAM Ian Abbott <abbotti@mev.co.uk> wro=
+te:
+> On 17/10/2024 10:29, Ian Abbott wrote:
+> > On 16/10/2024 23:05, Jann Horn wrote:
+> >> On Wed, Oct 16, 2024 at 8:05=E2=80=AFPM kernel test robot <lkp@intel.c=
+om> wrote:
+> >>> [auto build test ERROR on 6485cf5ea253d40d507cd71253c9568c5470cd27]
+> >>>
+> >>> url:    https://github.com/intel-lab-lkp/linux/commits/Jann-Horn/
+> >>> comedi-Flush-partial-mappings-in-error-case/20241016-022809
+> >>> base:   6485cf5ea253d40d507cd71253c9568c5470cd27
+> >>> patch link:    https://lore.kernel.org/r/20241015-comedi-tlb-v2-1-
+> >>> cafb0e27dd9a%40google.com
+> >>> patch subject: [PATCH v2] comedi: Flush partial mappings in error cas=
+e
+> >>> config: arm-randconfig-004-20241016 (https://download.01.org/0day-ci/
+> >>> archive/20241017/202410170111.K30oyTWa-lkp@intel.com/config)
+> >>> compiler: arm-linux-gnueabi-gcc (GCC) 14.1.0
+> >>> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/
+> >>> archive/20241017/202410170111.K30oyTWa-lkp@intel.com/reproduce)
+> >>>
+> >>> If you fix the issue in a separate patch/commit (i.e. not just a new
+> >>> version of
+> >>> the same patch/commit), kindly add following tags
+> >>> | Reported-by: kernel test robot <lkp@intel.com>
+> >>> | Closes: https://lore.kernel.org/oe-kbuild-
+> >>> all/202410170111.K30oyTWa-lkp@intel.com/
+> >>>
+> >>> All errors (new ones prefixed by >>):
+> >>>
+> >>>     arm-linux-gnueabi-ld: drivers/comedi/comedi_fops.o: in function
+> >>> `comedi_mmap':
+> >>>>> comedi_fops.c:(.text+0x4be): undefined reference to `zap_vma_ptes'
+> >>
+> >> Ugh, this one is from a nommu build ("# CONFIG_MMU is not set"), it
+> >> makes sense that you can't zap PTEs when you don't have any PTEs at
+> >> all... what really impresses me about this is that the rest of the
+> >> code compiles on nommu. I'm pretty sure this codepath wouldn't
+> >> actually _work_ on nommu, but apparently compiling it works?
+> >>
+> >> I don't know what the right fix is here - should the entire comedi
+> >> driver be gated on CONFIG_MMU, or only a subset of the mmap handler,
+> >> or something else?
+> >
+> > Given that it would also affect a lot of fbdev drivers that would also
+> > benefit from zapping partial mappings, I suggest that gating on
+> > CONFIG_MMU would not be the correct fix.
+>
+> Perhaps just add an #ifdef CONFIG_MMU around the affected call for now?
 
-This causes systems with IORESOURCE_SYSRAM_DRIVER_MANAGED memory to
-have these resources selected during kexec to store kexec buffers
-if that memory happens to be at placed above normal system ram.
+Sure, I guess that works, though it's not particularly pretty.
+(And this codepath looks like it won't really work on nommu either way...)
 
-This leads to undefined behavior after reboot. If the kexec buffer
-is never touched, nothing happens. If the kexec buffer is touched,
-it could lead to a crash (like below) or undefined behavior.
-
-Tested on a system with CXL memory expanders with driver managed
-memory, TPM enabled, and CONFIG_IMA_KEXEC=y. Adding printk's
-showed the flags were being discarded and as a result the check
-for IORESOURCE_SYSRAM_DRIVER_MANAGED passes.
-
-find_next_iomem_res: name(System RAM (kmem))
-		     start(10000000000)
-		     end(1034fffffff)
-		     flags(83000200)
-
-locate_mem_hole_top_down: start(10000000000) end(1034fffffff) flags(0)
-
-[.] BUG: unable to handle page fault for address: ffff89834ffff000
-[.] #PF: supervisor read access in kernel mode
-[.] #PF: error_code(0x0000) - not-present page
-[.] PGD c04c8bf067 P4D c04c8bf067 PUD c04c8be067 PMD 0
-[.] Oops: 0000 [#1] SMP
-[.] RIP: 0010:ima_restore_measurement_list+0x95/0x4b0
-[.] RSP: 0018:ffffc900000d3a80 EFLAGS: 00010286
-[.] RAX: 0000000000001000 RBX: 0000000000000000 RCX: ffff89834ffff000
-[.] RDX: 0000000000000018 RSI: ffff89834ffff000 RDI: ffff89834ffff018
-[.] RBP: ffffc900000d3ba0 R08: 0000000000000020 R09: ffff888132b8a900
-[.] R10: 4000000000000000 R11: 000000003a616d69 R12: 0000000000000000
-[.] R13: ffffffff8404ac28 R14: 0000000000000000 R15: ffff89834ffff000
-[.] FS:  0000000000000000(0000) GS:ffff893d44640000(0000) knlGS:0000000000000000
-[.] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[.] ata5: SATA link down (SStatus 0 SControl 300)
-[.] CR2: ffff89834ffff000 CR3: 000001034d00f001 CR4: 0000000000770ef0
-[.] PKRU: 55555554
-[.] Call Trace:
-[.]  <TASK>
-[.]  ? __die+0x78/0xc0
-[.]  ? page_fault_oops+0x2a8/0x3a0
-[.]  ? exc_page_fault+0x84/0x130
-[.]  ? asm_exc_page_fault+0x22/0x30
-[.]  ? ima_restore_measurement_list+0x95/0x4b0
-[.]  ? template_desc_init_fields+0x317/0x410
-[.]  ? crypto_alloc_tfm_node+0x9c/0xc0
-[.]  ? init_ima_lsm+0x30/0x30
-[.]  ima_load_kexec_buffer+0x72/0xa0
-[.]  ima_init+0x44/0xa0
-[.]  __initstub__kmod_ima__373_1201_init_ima7+0x1e/0xb0
-[.]  ? init_ima_lsm+0x30/0x30
-[.]  do_one_initcall+0xad/0x200
-[.]  ? idr_alloc_cyclic+0xaa/0x110
-[.]  ? new_slab+0x12c/0x420
-[.]  ? new_slab+0x12c/0x420
-[.]  ? number+0x12a/0x430
-[.]  ? sysvec_apic_timer_interrupt+0xa/0x80
-[.]  ? asm_sysvec_apic_timer_interrupt+0x16/0x20
-[.]  ? parse_args+0xd4/0x380
-[.]  ? parse_args+0x14b/0x380
-[.]  kernel_init_freeable+0x1c1/0x2b0
-[.]  ? rest_init+0xb0/0xb0
-[.]  kernel_init+0x16/0x1a0
-[.]  ret_from_fork+0x2f/0x40
-[.]  ? rest_init+0xb0/0xb0
-[.]  ret_from_fork_asm+0x11/0x20
-[.]  </TASK>
-
-Link: https://lore.kernel.org/all/20231114091658.228030-1-bhe@redhat.com/
-Fixes: 7acf164b259d ("resource: add walk_system_ram_res_rev()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gregory Price <gourry@gourry.net>
----
- kernel/resource.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/kernel/resource.c b/kernel/resource.c
-index b730bd28b422..4101016e8b20 100644
---- a/kernel/resource.c
-+++ b/kernel/resource.c
-@@ -459,9 +459,7 @@ int walk_system_ram_res_rev(u64 start, u64 end, void *arg,
- 			rams_size += 16;
- 		}
- 
--		rams[i].start = res.start;
--		rams[i++].end = res.end;
--
-+		rams[i++] = res;
- 		start = res.end + 1;
- 	}
- 
--- 
-2.43.0
-
+I'll change it that way for now.
 
