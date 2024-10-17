@@ -1,161 +1,92 @@
-Return-Path: <stable+bounces-86599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99A3A9A20C9
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 13:17:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3BD49A20F7
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 13:31:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 448231F227F6
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 11:17:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 895B428130E
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 11:31:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659711DC1AB;
-	Thu, 17 Oct 2024 11:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6E61D27B3;
+	Thu, 17 Oct 2024 11:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="hA98FVAK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3uWKe0T"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC9D1DB928;
-	Thu, 17 Oct 2024 11:16:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6F0134A8
+	for <stable@vger.kernel.org>; Thu, 17 Oct 2024 11:31:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729163823; cv=none; b=COh27maJOfH4H4VCazN8fEdCofeua/pT41hbjDwFnJ2/XY9Fo/Iw+hent9Iv0cn4HNsF/FBxGZuwfK9fFz2DAgWSCoXiE15yPbz+l2G0eGs1qJ/hsIYp8I/ZjEgRVW0qsCv1N0SZ/AqXRPm4AjUQi4E/4evfi9q5TBkRArMTnrk=
+	t=1729164684; cv=none; b=PNIBEC6YffX8nXlvcztPWtPy909yVIOr4aT/7DQTGkxuN1F/W9W7TGangA0FSSyKrKmSzTd9bPF54QQoGV3QFcZS45DMDoapS/GoJ8jg0GdZFOvrYwmROF3hTZaBS0MWXXKfNFeZHLJhgef1CT4v4JUlpFBGVh0UsWix67IPjco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729163823; c=relaxed/simple;
-	bh=0yaoLxJbOxWyLtPANIsfLD1xW9iR9qHzQjahbw5tjtg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=p00S3wqxVzzcI1U3ok6/HInYVje5U/qMcX2m7vqVtrOhunK9Lm9mj9fdXtB4UnpD3uoVlAk6ij/Mev7tFDq0Um6wRuu0u0zMM1CpZmlHNqVZfAnke3nGsx2c2myXq5rVj7JSMHt/NjjDN+MniC1+8f0ZfMTcCUQLqxTQqvxKNTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=hA98FVAK; arc=none smtp.client-ip=212.227.126.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1729163799; x=1729768599; i=christian@heusel.eu;
-	bh=b4RFWUlG95a7zzsAjfo+11QIK8fFjg8ifanQBIduRjQ=;
-	h=X-UI-Sender-Class:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:To:Cc:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=hA98FVAKBN3Gp4rtXfiKutwYuROAFoZhenm3pOZp7g8uPq/60MBBFw9a+tpoi0Uu
-	 5ujSstECBlp0bV2rIjsDoFJQSS6/UbQdexJUt4aJoLA89jmyR4iqi+9g9XnjLlgpM
-	 OL8I19n8SGQ4RsO4rmrV2YZNYnSI2VYlxIV3moK/tYU4aepU06VRR7qb+/irZdy8K
-	 6yrCdS2L1sNEPOKWFTdQERBfBsrwhWV5Jrj80b/5xmp7aDztmbd27L7davE/Ig5/a
-	 XNOd8DMuCpGxuWkuPpjpW4Cb2zaD+WhG/Y9urd0XkjNuIsr5iDxNmg+vLNUWX0Sfn
-	 K/4nt0f8lIp5+Kva5A==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from meterpeter.localdomain ([141.70.80.5]) by
- mrelayeu.kundenserver.de (mreue012 [212.227.15.167]) with ESMTPSA (Nemesis)
- id 1MFJfN-1t8E7r3Ak5-009h76; Thu, 17 Oct 2024 13:16:39 +0200
-From: Christian Heusel <christian@heusel.eu>
-Date: Thu, 17 Oct 2024 13:16:26 +0200
-Subject: [PATCH v2] ACPI: resource: Add LG 16T90SP to
- irq1_level_low_skip_override[]
+	s=arc-20240116; t=1729164684; c=relaxed/simple;
+	bh=aDFDW2aODb68J4EsWWYEzOi95uoV4PvlThicoqSiH1g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cuK7U1vzDBBX7hVw23QaqBriptIqdKCpPTb4pNegL5ne+RHdNBTRYU1UHIyBLHr/7hDRR/uj6CC26ILKJ4WUIE3nMimLADh+802vpfK3xc9HZum0VCxyOE6ODl00q0W28HB8PiX54lg8/i+/FpaTuwTXEW5WNDCmBDJdY+m05ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3uWKe0T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85BAFC4CEC3;
+	Thu, 17 Oct 2024 11:31:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1729164684;
+	bh=aDFDW2aODb68J4EsWWYEzOi95uoV4PvlThicoqSiH1g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=L3uWKe0Tkr3x2wHhEZIhZTHTwOm9fsmfX2t0e45xoszmU0xNc+fKr+X648BF5aHjc
+	 x0J2WBiV/OtyMYIFQyGHxI8CDu77DLXapKo7Skkd8Ox4iEoZ2uo0vye5VDxEO2cXPy
+	 LczR+Tzq3FgZY9CYe4ySFu6szTDuuMofRfXTlVc8=
+Date: Thu, 17 Oct 2024 13:31:20 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Vimal Agrawal <avimalin@gmail.com>
+Cc: vimal.agrawal@sophos.com, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] misc: misc_minor_alloc to use ida for all
+ dynamic/misc dynamic minors
+Message-ID: <2024101702-moody-suspect-702e@gregkh>
+References: <20241017105325.18266-1-vimal.agrawal@sophos.com>
+ <20241017105325.18266-2-vimal.agrawal@sophos.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <20241017-lg-gram-pro-keyboard-v2-1-7c8fbf6ff718@heusel.eu>
-X-B4-Tracking: v=1; b=H4sIAAnyEGcC/4WNQQ6CMBBFr0Jm7ZhOISiuuIdhUWRoG5GSqRAJ4
- e5WLuDyveS/v0Fk8Rzhlm0gvPjow5hAnzJ4ODNaRt8lBq10QYpKHCxaMS+cJOCT1zYY6bAyVXd
- tK2PK4gJpOgn3/nNk701i5+M7yHq8LPSzf4ILIWFe5KoknZPSfe14jjyceYZm3/cvcqF/a7gAA
- AA=
-X-Change-ID: 20241016-lg-gram-pro-keyboard-9a9d8b9aa647
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Dirk Holten <dirk.holten@gmx.de>, stable@vger.kernel.org, 
- Christian Heusel <christian@heusel.eu>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1662; i=christian@heusel.eu;
- h=from:subject:message-id; bh=rZN8elJMVtQyGlS6orsu87BDGXA7zxYzT7zBW/Dz9VQ=;
- b=owEBbQKS/ZANAwAIAcBH1PMotSWFAcsmYgBnEPIV+QDlBBuBK4fORkG9/uE4mHysS8/bIBjmB
- d+PUI+otx2JAjMEAAEIAB0WIQRvd5reJHprig9yzBPAR9TzKLUlhQUCZxDyFQAKCRDAR9TzKLUl
- hYXqEAC/trxyBAnvxmYa+r6axrbmcXsknvXkyUOsRMrdMzx8WPR+q7bqzoI0L64pKgpPnEtZd6f
- EH9kUdFcNcSqCYgKWU+/XQMQmipsCN/cklG9bk65zlzRmoLITUDshrJSQA+IHWRKyB+e7bbRbXt
- yNmA3eAKU5AUZoyBlXZJJ8x1D+szcxeRM/yhBJ44vjTObRS39SKtYyw6CeK9BS5T9T9oCvhDqYQ
- OMAzVKx3dLP05yuBEqVdJl5iJsIjqEFmP3AZBffDtU48E+SwyPSe9zkOR5vDrKIFRolzxrk8UVo
- n9jF8RZ+whFkbnG5LwuTWSt39ge8IUOkjOULmDknds79KEX4J1KCLQsSPsa4siKnBesFEaKeOgF
- cjkRnqHZzYCRWH+IX1LW6OlBEcY/QQNx8jaQXZh5v9mD1/UELn5zaEkS0ip8NbkRwE8teewytRW
- gkniwd3yO+Jo6xa4/v0xLqd4NFuloGJQfpOgEzZzV6AbN8FspxjkWhRpobDs+tOHwYw38IEWYJi
- HqVoQCY/90vhpvQcG0hSzMj0EyW5nMYz2s+jQKPs22YnZli5zGExXbYnAUZvHb+OKEtS0X16Laz
- C7bSb6dbmgQjCba61bTnhNkiIFNhEoTuAt4KH+9cGISrBt0e2G7WcCWNbKFmi5GyQIFpH/Qkgor
- XQnPhq+eK8nf85Q==
-X-Developer-Key: i=christian@heusel.eu; a=openpgp;
- fpr=6F779ADE247A6B8A0F72CC13C047D4F328B52585
-X-Provags-ID: V03:K1:8m5gqzHmb8w/7qAya6krWjEb94H5jQZUUaEuDTdlJugTx5FSnDf
- vNyMgYADKegCEh3K76sgbqezR5VHAA7Sjbbq60fiy9B/iS0KmBlQ3j3+Q/g278M70y/pNrg
- FcqD7F0i90vrLV16//nVbLynn7zZv9NfVu6IKQ4sdT55GaOCj2S36Xex866byvv9ZORWggS
- v8GyC2i7FdluZBQ/Fq0ZQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:36TsXbwSJXw=;xmDtvzDO4PqqmMpo7yFIQUWFmSa
- 6p87oVTMLhjmCS7KbFKgAT7BsWomWma0b7l7bP1MWh2spVa4dC+67Dn0n57CARrlyFz0cbatG
- 2Hv0TFVFvs+lrEl8V06O2XzMSc8fNG9cVz220iCE4apyBwdsYe+WIO+tZC/NzUyktDRqz3Itx
- 9+hzHmyRKdWBycZKHM9pOkUO5d7ZfmuW9eKhC4yyBvhnU6DxYM/XxkKv+8acNyS7vs0soiVA8
- lWAR4h5Om/sBXCAu26AziGB1EBxPG7x80nJObHe7M2uEmrYChtA/MOy1YEIYj1WjR1uXSgaqA
- 4NhNpgUIbQDyfMsGW2M6PLu4lzhAET6MWIikXuE62aAhKpUF3+XfungWhCcmQr4iF1Q5FZFXo
- BaI8lRVjc9fW4tWyImLDNU+Cb/PojXCsqqGzkq62dD1ZqigP80mI0Hw76Pb0n3niFunZeDHeA
- nqZCEvffvrhFhKY1sIhh/YS7GxHhMRFc74detyMWrCPjzWQ8IvfFzTPIW9/cUequ2NOSxUtqy
- JE45neqJG/bBQ38fqHWuCJ1isseHH3bc2ROGoI/rPVfJoKtM/PQbYFAfORD20tGsR/+uDbDzz
- EMDJ/kXdzz9jI15fQL4Y3UDuCntyU3xScOn02aYt4OkT8FX3xKOlWSd+VftaxXHp04vl7QDel
- WoUKbQAVIRc0YTkLDgx3iRz/zGFWA/yJbxoCM7OpyPw+bA/JtC28HJfOcJ3x4GS+6pLFMc492
- 9nyK0ce5Qbvxz8LRbfZpGrILV6+U7neeA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241017105325.18266-2-vimal.agrawal@sophos.com>
 
-The LG Gram Pro 16 2-in-1 (2024) the 16T90SP has its keybopard IRQ (1)
-described as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh
-which breaks the keyboard.
+On Thu, Oct 17, 2024 at 10:53:25AM +0000, Vimal Agrawal wrote:
+> misc_minor_alloc was allocating id using ida for minor only in case of
+> MISC_DYNAMIC_MINOR but misc_minor_free was always freeing ids
+> using ida_free causing a mismatch and following warn:
+> > > WARNING: CPU: 0 PID: 159 at lib/idr.c:525 ida_free+0x3e0/0x41f
+> > > ida_free called for id=127 which is not allocated.
+> > > <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+> ...
+> > > [<60941eb4>] ida_free+0x3e0/0x41f
+> > > [<605ac993>] misc_minor_free+0x3e/0xbc
+> > > [<605acb82>] misc_deregister+0x171/0x1b3
+> 
+> misc_minor_alloc is changed to allocate id from ida for all minors
+> falling in the range of dynamic/ misc dynamic minors
+> 
+> Fixes: ab760791c0cf ("char: misc: Increase the maximum number of dynamic misc devices to 1048448")
+> Signed-off-by: Vimal Agrawal <vimal.agrawal@sophos.com>
+> Cc: stable@vger.kernel.org
+> ---
+> v2: Added Fixes:
+>     added missed case for static minor in misc_minor_alloc
+> v3: removed kunit changes as that will be added as second patch in this two patch series
+> 
+>  drivers/char/misc.c | 35 ++++++++++++++++++++++++++++-------
+>  1 file changed, 28 insertions(+), 7 deletions(-)
 
-Add the 16T90SP to the irq1_level_low_skip_override[] quirk table to fix
-this.
+Did you mean to send this only to stable and yourself and not the
+maintainers involved here?
 
-Reported-by: Dirk Holten <dirk.holten@gmx.de>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219382
-Cc: stable@vger.kernel.org
-Suggested-by: Dirk Holten <dirk.holten@gmx.de>
-Signed-off-by: Christian Heusel <christian@heusel.eu>
-=2D--
-Note that I do not have the relevant hardware since I'm sending in this
-quirk at the request of someone else.
-=2D--
-Changes in v2:
-- fix the double initialization warning reported by the kernel test
-  robot, which accidentially overwrote another quirk
-- Link to v1: https://lore.kernel.org/r/20241016-lg-gram-pro-keyboard-v1-1=
--34306123102f@heusel.eu
-=2D--
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+confused,
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 129bceb1f4a27df93439bcefdb27fd9c91258028..7fe842dae1ec05ce6726af2ae4=
-fcc8eff3698dcb 100644
-=2D-- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -503,6 +503,13 @@ static const struct dmi_system_id irq1_level_low_skip=
-_override[] =3D {
- 			DMI_MATCH(DMI_BOARD_NAME, "17U70P"),
- 		},
- 	},
-+	{
-+		/* LG Electronics 16T90SP */
-+		.matches =3D {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LG Electronics"),
-+			DMI_MATCH(DMI_BOARD_NAME, "16T90SP"),
-+		},
-+	},
- 	{ }
- };
-
-
-=2D--
-base-commit: 8e929cb546ee42c9a61d24fae60605e9e3192354
-change-id: 20241016-lg-gram-pro-keyboard-9a9d8b9aa647
-
-Best regards,
-=2D-
-Christian Heusel <christian@heusel.eu>
-
+greg k-h
 
