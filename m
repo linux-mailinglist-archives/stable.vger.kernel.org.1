@@ -1,103 +1,150 @@
-Return-Path: <stable+bounces-86630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035A39A2437
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 15:47:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BFC19A245D
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 15:55:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D6D3B2534C
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 13:47:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51B5F285960
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 13:55:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9E11DE3BC;
-	Thu, 17 Oct 2024 13:47:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=collabora.co.uk header.i=@collabora.co.uk header.b="XhGRtdwR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088C81DDA24;
+	Thu, 17 Oct 2024 13:54:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FB71DE2B6;
-	Thu, 17 Oct 2024 13:47:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B611B1DDA0F;
+	Thu, 17 Oct 2024 13:54:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729172836; cv=none; b=h4HnEbMxo9/pYIWlnAPvTVh5hP+UtDQ3o/wJFKtWwu/JEwA+iFWWVR/6/QTpVc/2V7axnCiCosZtkJPX/1YDdhPT+uWz6RsSVOMKxng9j3nepfFgmifPQscwqkHNrXkAdG4m8/oBTBDgb9HEosunWOxBkN1ArHZYRTWE7JTGbRo=
+	t=1729173280; cv=none; b=fVU+d37ENo66TLr9+iOM7j1E4UJraFdKdqAZyjC1mIZZt58BcZDcvuP8bafJdSTJwTBcs6Off1UyktU0p4dpYAqOhrn59Zi7ZIRDcvjhLaIWp7RAtGeEwZCEKmAksMdnDYYIcs7Uo2zm8yi29si0vwLtizO68nWKH+wKWeJ5Yd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729172836; c=relaxed/simple;
-	bh=wAgx7NQSaDA+Q1cPdWZM+QeAuPDAlF1WphFS/446Co0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pkt6vMBCcnHkqtV8/gWRku7hDgcNqI+ernYNdh0dEK7i3HYPYKCIykGDgT6uYg13JCzfXegR3kaWD5LmQV3noudkB5sDzEeLnuzyNR+CQnUbmq3Zgo1Vpr76S4x9Bi1WmRbU4AKFVp1yz34TTMyRRhi20gqUbb3Z/GIPSHp5iAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.co.uk; spf=pass smtp.mailfrom=collabora.co.uk; dkim=temperror (0-bit key) header.d=collabora.co.uk header.i=@collabora.co.uk header.b=XhGRtdwR; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.co.uk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.co.uk;
-	s=mail; t=1729172832;
-	bh=wAgx7NQSaDA+Q1cPdWZM+QeAuPDAlF1WphFS/446Co0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=XhGRtdwRZ5IUQb2vfklPHyssadN/SCuUfdizEBtt5teb/gmJ9ChSDF6VXDPzUMHij
-	 kByvCO8cgEPvrpQEprqPznj5F4Pgl7/1Bq4hno/81kiIL8e8P4uaj+HxeJfpYxJcxL
-	 t2FWKLQwSY/6LWillNzbj1pyo2Lc7cAyy93g0+upf55Gk8PgVUKNtctMcoyYIR2Rbu
-	 MGnYy7YebSXiEutD0JxqkH/v55c8EQk/QDvIcp9W9996KojmlsnHnKR2UskAcDQ98g
-	 70Jr0roaWm0UKmqG10iWlXyVm83T194lJQIQJD0zan8Ag8tUxAi09+r5hmQSnmJ2I+
-	 QTUjQfOcLNHAQ==
-Received: from nuevo (unknown [IPv6:2a01:c846:1a49:2b00:4bd7:ad27:a4f1:789c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: andrewsh)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id F18F317E360B;
-	Thu, 17 Oct 2024 15:47:11 +0200 (CEST)
-Date: Thu, 17 Oct 2024 15:46:54 +0200
-From: Andrej Shadura <andrew.shadura@collabora.co.uk>
-To: linux-bluetooth@vger.kernel.org
-Cc: Nathan Chancellor <nathan@kernel.org>, Justin Stitt
- <justinstitt@google.com>, Aleksei Vetrov <vvvvvv@google.com>,
- llvm@lists.linux.dev, kernel@collabora.com, George Burgess
- <gbiv@chromium.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] Bluetooth: Fix type of len in
- rfcomm_sock_getsockopt{,_old}()
-Message-ID: <1e450049-d173-4a6f-b857-71b7c6f50e6f@collabora.co.uk>
-In-Reply-To: <20241009121424.1472485-1-andrew.shadura@collabora.co.uk>
-References: <20241009121424.1472485-1-andrew.shadura@collabora.co.uk>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1729173280; c=relaxed/simple;
+	bh=dR1/iF0hamAmACkYIu6ORSod6DVPZnh+qVKWQ1c6eVQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NwTxOod+OcjzoYGh/6SczIX9ku+VUIvQV0UU2C81wWu9Giwuyc3Ls8RNNFKpsAZYjz8xUsk7eOth/eEAoWLW87D5XgMd+rmhlASNdmJN0BnGmaGq72ZOZuFIFPIWYCIp6pg2c9G/9wrnQxC66DkgoS4qN0p+oRXt0o1EgUFfJ50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D5ACCDA7;
+	Thu, 17 Oct 2024 06:55:03 -0700 (PDT)
+Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CD09A3F528;
+	Thu, 17 Oct 2024 06:54:31 -0700 (PDT)
+Message-ID: <3925d2f0-3b1f-4200-acc4-8f991616ec0f@arm.com>
+Date: Thu, 17 Oct 2024 14:54:29 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] iommu/arm-smmu: Defer probe of clients after smmu
+ device bound
+To: Pratyush Brahma <quic_pbrahma@quicinc.com>, will@kernel.org
+Cc: joro@8bytes.org, jgg@ziepe.ca, jsnitsel@redhat.com,
+ robdclark@chromium.org, quic_c_gdjako@quicinc.com,
+ dmitry.baryshkov@linaro.org, linux-arm-kernel@lists.infradead.org,
+ iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+ quic_charante@quicinc.com, stable@vger.kernel.org,
+ Prakash Gupta <quic_guptap@quicinc.com>
+References: <20241004090428.2035-1-quic_pbrahma@quicinc.com>
+ <d4a52579-0e2a-4df3-a1fa-e8e154ff1e90@quicinc.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <d4a52579-0e2a-4df3-a1fa-e8e154ff1e90@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 09/10/2024 14:14, Andrej Shadura wrote:
-> Commit 9bf4e919ccad worked around an issue introduced after an
-> innocuous optimisation change in LLVM main:
+On 15/10/2024 2:31 pm, Pratyush Brahma wrote:
 > 
->> len is defined as an 'int' because it is assigned from
->> '__user int *optlen'. However, it is clamped against the result of
->> sizeof(), which has a type of 'size_t' ('unsigned long' for 64-bit
->> platforms). This is done with min_t() because min() requires
->> compatible types, which results in both len and the result of
->> sizeof() being casted to 'unsigned int', meaning len changes signs
->> and the result of sizeof() is truncated. From there, len is passed
->> to copy_to_user(), which has a third parameter type of 'unsigned
->> long', so it is widened and changes signs again. This excessive
->> casting in combination with the KCSAN instrumentation causes LLVM to
->> fail to eliminate the __bad_copy_from() call, failing the build.
+> On 10/4/2024 2:34 PM, Pratyush Brahma wrote:
+>> Null pointer dereference occurs due to a race between smmu
+>> driver probe and client driver probe, when of_dma_configure()
+>> for client is called after the iommu_device_register() for smmu driver
+>> probe has executed but before the driver_bound() for smmu driver
+>> has been called.
+>>
+>> Following is how the race occurs:
+>>
+>> T1:Smmu device probe        T2: Client device probe
+>>
+>> really_probe()
+>> arm_smmu_device_probe()
+>> iommu_device_register()
+>>                     really_probe()
+>>                     platform_dma_configure()
+>>                     of_dma_configure()
+>>                     of_dma_configure_id()
+>>                     of_iommu_configure()
+>>                     iommu_probe_device()
+>>                     iommu_init_device()
+>>                     arm_smmu_probe_device()
+>>                     arm_smmu_get_by_fwnode()
+>>                         driver_find_device_by_fwnode()
+>>                         driver_find_device()
+>>                         next_device()
+>>                         klist_next()
+>>                             /* null ptr
+>>                                assigned to smmu */
+>>                     /* null ptr dereference
+>>                        while smmu->streamid_mask */
+>> driver_bound()
+>>     klist_add_tail()
+>>
+>> When this null smmu pointer is dereferenced later in
+>> arm_smmu_probe_device, the device crashes.
+>>
+>> Fix this by deferring the probe of the client device
+>> until the smmu device has bound to the arm smmu driver.
+>>
+>> Fixes: 021bb8420d44 ("iommu/arm-smmu: Wire up generic configuration 
+>> support")
+>> Cc: stable@vger.kernel.org
+>> Co-developed-by: Prakash Gupta <quic_guptap@quicinc.com>
+>> Signed-off-by: Prakash Gupta <quic_guptap@quicinc.com>
+>> Signed-off-by: Pratyush Brahma <quic_pbrahma@quicinc.com>
+>> ---
+>> Changes in v2:
+>>   Fix kernel test robot warning
+>>   Add stable kernel list in cc
+>>   Link to v1: 
+>> https://lore.kernel.org/all/20241001055633.21062-1-quic_pbrahma@quicinc.com/
+>>
+>>   drivers/iommu/arm/arm-smmu/arm-smmu.c | 3 +++
+>>   1 file changed, 3 insertions(+)
+>>
+>> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c 
+>> b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+>> index 723273440c21..7c778b7eb8c8 100644
+>> --- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
+>> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+>> @@ -1437,6 +1437,9 @@ static struct iommu_device 
+>> *arm_smmu_probe_device(struct device *dev)
+>>               goto out_free;
+>>       } else {
+>>           smmu = arm_smmu_get_by_fwnode(fwspec->iommu_fwnode);
+>> +        if (!smmu)
+>> +            return ERR_PTR(dev_err_probe(dev, -EPROBE_DEFER,
+>> +                        "smmu dev has not bound yet\n"));
+>>       }
+>>       ret = -EINVAL;
 > 
-> The same issue occurs in rfcomm in functions rfcomm_sock_getsockopt
-> and rfcomm_sock_getsockopt_old.
 > 
-> Change the type of len to size_t in both rfcomm_sock_getsockopt and
-> rfcomm_sock_getsockopt_old and replace min_t() with min().
+> Hi
+> Can someone please review this patch? Let me know if any further 
+> information is required.
 
-Any more reviews please? It would be great to have this fix merged :)
+This really shouldn't be leaking into drivers... :(
 
-Thanks in advance.
+Honestly, I'm now so fed up of piling on hacks around the fundamental 
+mis-design here, I think it's finally time to blow everything else off 
+and spend a few days figuring out the most expedient way to fix it 
+properly once and for all. Watch this space...
 
--- 
-Cheers,
-   Andrej
+Thanks,
+Robin.
 
