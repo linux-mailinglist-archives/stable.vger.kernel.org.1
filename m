@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-86572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64BCE9A1BAC
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 09:29:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99BE29A1BAE
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 09:29:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A34D1F2226D
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 07:29:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8807B2112D
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 07:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5677D1CEABB;
-	Thu, 17 Oct 2024 07:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01251CF5E7;
+	Thu, 17 Oct 2024 07:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="AVKY++n/"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GjvekOSS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E1F1C32EB;
-	Thu, 17 Oct 2024 07:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDF11C32EB;
+	Thu, 17 Oct 2024 07:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729150131; cv=none; b=nrss5QtXqmQnfKo6Hbp4ZIIqeNvkzyGFplt1Ejt0Rr2hh/iRdPeOy3MsgPySmyfvehPEF1Ay5ZuN6i1ACFVAgxESDAS9jBxAhzULRQTxP7GGHi86C6qLGBRtBBE0joURKW+lmYW6kRABZz9jKjiudlOvORtZ9Sd9aH+AdeeujQE=
+	t=1729150135; cv=none; b=sFLBg3t12P9VkW8DuS6+RVOjnmoDq69Sf8Mk3pv9gGKufLQmXim++7SyP5J+Dhc06AB60pjOpIO/Exzeb6ZgGadLtjie/df3oDMhVH8bN9jvWQCCSR7bjajvwncXc08+7ZlvieNnkPIU1A7cRxpv8B+RyAcyaLG+ogeEKqvI6qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729150131; c=relaxed/simple;
-	bh=cn4PPHh6EHyfE0NKYV98rWcBuGUfWadVcw1jdEUAf0w=;
-	h=Date:To:From:Subject:Message-Id; b=K58Cm/vQBS1NqQPDCFk/396fpR4bz9aRPXR2n6BybgA0ESH/PEd31F5TyQtWvJ7XSSzhFLRkIs8gU7WiMtjHVvz68L6ElhkX3RzyPVmj3igscEOR/TZSZcCW0Eq7P7A6QMr1gRpS84xWVwpEoVTN1N7CucBMJ1eTBHV/nJC7u/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=AVKY++n/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A7DC4CEC5;
-	Thu, 17 Oct 2024 07:28:50 +0000 (UTC)
+	s=arc-20240116; t=1729150135; c=relaxed/simple;
+	bh=lkcBWSZPSXTTYwnaf8JQwHMDwesBbpSrGyfJgJNj31s=;
+	h=Date:To:From:Subject:Message-Id; b=lMOXyXUNh0nHkwuuEVGpbPqODWMFxYi/1P/ZNzmI2VPcojjWWy9yLSl5eAG4BpV3tRxpaDoJUYXMQ5uykYhb09SzheS5kHKmNiKePbP2ErtARKNhkZuGVoKGetS55yGsMtk+Qo2nPCstVeDgyaFptoRWBzt8n4cKUqz1Ne9KKs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=GjvekOSS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6207EC4CEC3;
+	Thu, 17 Oct 2024 07:28:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1729150130;
-	bh=cn4PPHh6EHyfE0NKYV98rWcBuGUfWadVcw1jdEUAf0w=;
+	s=korg; t=1729150135;
+	bh=lkcBWSZPSXTTYwnaf8JQwHMDwesBbpSrGyfJgJNj31s=;
 	h=Date:To:From:Subject:From;
-	b=AVKY++n/60Kv/QbaJzZfLOkr0kZLRmCu2HVeKuRdAIzGG58wn/+Jg5jGobAU+RZ9/
-	 zaYpiF8Ni3Z7xTOlngQAL1KobxkUgb0x0YcZ/q52mLy/aLUua1X9R/hwWlwyiJd7Vn
-	 bJiIqNPqo2I9hMG5PQiyJvNRdjL7j/gVug5o+OmQ=
-Date: Thu, 17 Oct 2024 00:28:50 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,rostedt@goodmis.org,gautammenghani201@gmail.com,yang@os.amperecomputing.com,akpm@linux-foundation.org
+	b=GjvekOSSB9lRuwrSyM5M7UhCn9MxoLJ6YWg38cBoT1/QOMkh1Sxawx3DyLD5eQ/XH
+	 fGw232DZmp+Kh8ychN2c8Raazuu0SdwXuvk1ZaVbTDxdGpccqHRLBrl/mxJBK0mboE
+	 VgaOpEALFX3CGvbTZyaB11oPa+V96WgDEJLVjD+8=
+Date: Thu, 17 Oct 2024 00:28:54 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,thuth@redhat.com,stable@vger.kernel.org,ryan.roberts@arm.com,imbrenda@linux.ibm.com,hughd@google.com,frankja@linux.ibm.com,david@redhat.com,borntraeger@linux.ibm.com,bfu@redhat.com,wangkefeng.wang@huawei.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-khugepaged-fix-the-arguments-order-in-khugepaged_collapse_file-trace-point.patch removed from -mm tree
-Message-Id: <20241017072850.D5A7DC4CEC5@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-huge_memory-add-vma_thp_disabled-and-thp_disabled_by_hw.patch removed from -mm tree
+Message-Id: <20241017072855.6207EC4CEC3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,87 +50,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm: khugepaged: fix the arguments order in khugepaged_collapse_file trace point
+     Subject: mm: huge_memory: add vma_thp_disabled() and thp_disabled_by_hw()
 has been removed from the -mm tree.  Its filename was
-     mm-khugepaged-fix-the-arguments-order-in-khugepaged_collapse_file-trace-point.patch
+     mm-huge_memory-add-vma_thp_disabled-and-thp_disabled_by_hw.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Yang Shi <yang@os.amperecomputing.com>
-Subject: mm: khugepaged: fix the arguments order in khugepaged_collapse_file trace point
-Date: Fri, 11 Oct 2024 18:17:02 -0700
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: mm: huge_memory: add vma_thp_disabled() and thp_disabled_by_hw()
+Date: Fri, 11 Oct 2024 12:24:44 +0200
 
-The "addr" and "is_shmem" arguments have different order in TP_PROTO and
-TP_ARGS.  This resulted in the incorrect trace result:
+Patch series "mm: don't install PMD mappings when THPs are disabled by the
+hw/process/vma".
 
-text-hugepage-644429 [276] 392092.878683: mm_khugepaged_collapse_file:
-mm=0xffff20025d52c440, hpage_pfn=0x200678c00, index=512, addr=1, is_shmem=0,
-filename=text-hugepage, nr=512, result=failed
+During testing, it was found that we can get PMD mappings in processes
+where THP (and more precisely, PMD mappings) are supposed to be disabled. 
+While it works as expected for anon+shmem, the pagecache is the
+problematic bit.
 
-The value of "addr" is wrong because it was treated as bool value, the
-type of is_shmem.
+For s390 KVM this currently means that a VM backed by a file located on
+filesystem with large folio support can crash when KVM tries accessing the
+problematic page, because the readahead logic might decide to use a
+PMD-sized THP and faulting it into the page tables will install a PMD
+mapping, something that s390 KVM cannot tolerate.
 
-Fix the order in TP_PROTO to keep "addr" is before "is_shmem" since the
-original patch review suggested this order to achieve best packing.
+This might also be a problem with HW that does not support PMD mappings,
+but I did not try reproducing it.
 
-And use "lx" for "addr" instead of "ld" in TP_printk because address is
-typically shown in hex.
+Fix it by respecting the ways to disable THPs when deciding whether we can
+install a PMD mapping.  khugepaged should already be taking care of not
+collapsing if THPs are effectively disabled for the hw/process/vma.
 
-After the fix, the trace result looks correct:
 
-text-hugepage-7291  [004]   128.627251: mm_khugepaged_collapse_file:
-mm=0xffff0001328f9500, hpage_pfn=0x20016ea00, index=512, addr=0x400000,
-is_shmem=0, filename=text-hugepage, nr=512, result=failed
+This patch (of 2):
 
-Link: https://lkml.kernel.org/r/20241012011702.1084846-1-yang@os.amperecomputing.com
-Fixes: 4c9473e87e75 ("mm/khugepaged: add tracepoint to collapse_file()")
-Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
-Cc: Gautam Menghani <gautammenghani201@gmail.com>
-Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
-Cc: <stable@vger.kernel.org>    [6.2+]
+Add vma_thp_disabled() and thp_disabled_by_hw() helpers to be shared by
+shmem_allowable_huge_orders() and __thp_vma_allowable_orders().
+
+[david@redhat.com: rename to vma_thp_disabled(), split out thp_disabled_by_hw() ]
+Link: https://lkml.kernel.org/r/20241011102445.934409-2-david@redhat.com
+Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reported-by: Leo Fu <bfu@redhat.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Boqiao Fu <bfu@redhat.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Janosch Frank <frankja@linux.ibm.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/trace/events/huge_memory.h |    4 ++--
- mm/khugepaged.c                    |    2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ include/linux/huge_mm.h |   18 ++++++++++++++++++
+ mm/huge_memory.c        |   13 +------------
+ mm/shmem.c              |    7 +------
+ 3 files changed, 20 insertions(+), 18 deletions(-)
 
---- a/include/trace/events/huge_memory.h~mm-khugepaged-fix-the-arguments-order-in-khugepaged_collapse_file-trace-point
-+++ a/include/trace/events/huge_memory.h
-@@ -208,7 +208,7 @@ TRACE_EVENT(mm_khugepaged_scan_file,
+--- a/include/linux/huge_mm.h~mm-huge_memory-add-vma_thp_disabled-and-thp_disabled_by_hw
++++ a/include/linux/huge_mm.h
+@@ -322,6 +322,24 @@ struct thpsize {
+ 	(transparent_hugepage_flags &					\
+ 	 (1<<TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG))
  
- TRACE_EVENT(mm_khugepaged_collapse_file,
- 	TP_PROTO(struct mm_struct *mm, struct folio *new_folio, pgoff_t index,
--			bool is_shmem, unsigned long addr, struct file *file,
-+			unsigned long addr, bool is_shmem, struct file *file,
- 			int nr, int result),
- 	TP_ARGS(mm, new_folio, index, addr, is_shmem, file, nr, result),
- 	TP_STRUCT__entry(
-@@ -233,7 +233,7 @@ TRACE_EVENT(mm_khugepaged_collapse_file,
- 		__entry->result = result;
- 	),
++static inline bool vma_thp_disabled(struct vm_area_struct *vma,
++		unsigned long vm_flags)
++{
++	/*
++	 * Explicitly disabled through madvise or prctl, or some
++	 * architectures may disable THP for some mappings, for
++	 * example, s390 kvm.
++	 */
++	return (vm_flags & VM_NOHUGEPAGE) ||
++	       test_bit(MMF_DISABLE_THP, &vma->vm_mm->flags);
++}
++
++static inline bool thp_disabled_by_hw(void)
++{
++	/* If the hardware/firmware marked hugepage support disabled. */
++	return transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_UNSUPPORTED);
++}
++
+ unsigned long thp_get_unmapped_area(struct file *filp, unsigned long addr,
+ 		unsigned long len, unsigned long pgoff, unsigned long flags);
+ unsigned long thp_get_unmapped_area_vmflags(struct file *filp, unsigned long addr,
+--- a/mm/huge_memory.c~mm-huge_memory-add-vma_thp_disabled-and-thp_disabled_by_hw
++++ a/mm/huge_memory.c
+@@ -109,18 +109,7 @@ unsigned long __thp_vma_allowable_orders
+ 	if (!vma->vm_mm)		/* vdso */
+ 		return 0;
  
--	TP_printk("mm=%p, hpage_pfn=0x%lx, index=%ld, addr=%ld, is_shmem=%d, filename=%s, nr=%d, result=%s",
-+	TP_printk("mm=%p, hpage_pfn=0x%lx, index=%ld, addr=%lx, is_shmem=%d, filename=%s, nr=%d, result=%s",
- 		__entry->mm,
- 		__entry->hpfn,
- 		__entry->index,
---- a/mm/khugepaged.c~mm-khugepaged-fix-the-arguments-order-in-khugepaged_collapse_file-trace-point
-+++ a/mm/khugepaged.c
-@@ -2227,7 +2227,7 @@ rollback:
- 	folio_put(new_folio);
- out:
- 	VM_BUG_ON(!list_empty(&pagelist));
--	trace_mm_khugepaged_collapse_file(mm, new_folio, index, is_shmem, addr, file, HPAGE_PMD_NR, result);
-+	trace_mm_khugepaged_collapse_file(mm, new_folio, index, addr, is_shmem, file, HPAGE_PMD_NR, result);
- 	return result;
- }
+-	/*
+-	 * Explicitly disabled through madvise or prctl, or some
+-	 * architectures may disable THP for some mappings, for
+-	 * example, s390 kvm.
+-	 * */
+-	if ((vm_flags & VM_NOHUGEPAGE) ||
+-	    test_bit(MMF_DISABLE_THP, &vma->vm_mm->flags))
+-		return 0;
+-	/*
+-	 * If the hardware/firmware marked hugepage support disabled.
+-	 */
+-	if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_UNSUPPORTED))
++	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vm_flags))
+ 		return 0;
  
+ 	/* khugepaged doesn't collapse DAX vma, but page fault is fine. */
+--- a/mm/shmem.c~mm-huge_memory-add-vma_thp_disabled-and-thp_disabled_by_hw
++++ a/mm/shmem.c
+@@ -1664,12 +1664,7 @@ unsigned long shmem_allowable_huge_order
+ 	loff_t i_size;
+ 	int order;
+ 
+-	if (vma && ((vm_flags & VM_NOHUGEPAGE) ||
+-	    test_bit(MMF_DISABLE_THP, &vma->vm_mm->flags)))
+-		return 0;
+-
+-	/* If the hardware/firmware marked hugepage support disabled. */
+-	if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_UNSUPPORTED))
++	if (thp_disabled_by_hw() || (vma && vma_thp_disabled(vma, vm_flags)))
+ 		return 0;
+ 
+ 	global_huge = shmem_huge_global_enabled(inode, index, write_end,
 _
 
-Patches currently in -mm which might be from yang@os.amperecomputing.com are
+Patches currently in -mm which might be from wangkefeng.wang@huawei.com are
 
+mm-remove-unused-hugepage-for-vma_alloc_folio.patch
 
 
