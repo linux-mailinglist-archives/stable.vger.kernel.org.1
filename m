@@ -1,140 +1,149 @@
-Return-Path: <stable+bounces-86613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBF6F9A22DE
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 14:59:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15C089A2336
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 15:13:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E6EC287CA9
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 12:59:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C27291F23104
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 13:13:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9E51DDA15;
-	Thu, 17 Oct 2024 12:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 483CC1DDC13;
+	Thu, 17 Oct 2024 13:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XFXiNzpf"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b="X/Gu63v+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FAAC1DB346
-	for <stable@vger.kernel.org>; Thu, 17 Oct 2024 12:59:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729169956; cv=none; b=TP9zoTEyt0Aolkj90Z2LLaxCAbeX2VKgru10poG9ozl4PUwD/4epQbgtkHu7nVaFG/EuSugHaSuNE6PeyZQffiSUuPxXpJEkqBf4rW93VZQDv1+md7Ic44VpHg9kXZDsNwkjRJg/OvGjq9ivWoyUnuZ4ydo46WnXukoCt7F8lHs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729169956; c=relaxed/simple;
-	bh=r4qhLAR0mFL9DLTElWYipOIkEnIgzbNhJaYFeciUgZ8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FGdLSzIMLwxUsf+9ZrCXxbdEkMZxkLnfPJuSAlwFHAxlJBM+mRZ40EwiOdP6SI0yuoqWVuzOkzhvfaX3N63XdN1zqifqopyFUhTwT7gBgPFFNLTRK7JIbDKr6A8s3jyAbnXt2SIeB1jRbR5nek7CcanhjJcYS5ps7e6/nbemdFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XFXiNzpf; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-539f7606199so1100555e87.0
-        for <stable@vger.kernel.org>; Thu, 17 Oct 2024 05:59:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729169951; x=1729774751; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=o4FvxagpzjxZSStnbXoR4/Vp7sTpyCwQgUO0IG3vegk=;
-        b=XFXiNzpf+dEFNRDf3W1w+1AiP75srJr46Gbe05xi/WfeJXLRD7k8nlxt2Ck4uyul3F
-         pELWROcNtwj0dR6lMtsd8j7xnThTK91aN7NVtiK9oWFxr+EKEVeK3muwRwmReGIbUwVj
-         xxMTiwOBTci1mPXTRR4p0lE2JQ3XhbdICrldY5zrk1K/Y0595GfbwurcrO4xG8IMHwOR
-         vC54rNyKdOSFnOTRjPy13zxz9kgcMg1NP9zodlGoswOHL/KZNznKsDYRGIlqLewC4OPK
-         6N9uxO9MbbnmqGHGK+uiLVYqMmAzUpSNYya1vrlhxTPjYpsDgWrkJYnmAtBLOw8PcL4D
-         n1bQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729169951; x=1729774751;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=o4FvxagpzjxZSStnbXoR4/Vp7sTpyCwQgUO0IG3vegk=;
-        b=C/Z7VPBH5s6Bu8pRIPzjha/I5Tg+GS7jkLdQ1KUiafYwpjSuRlKV9Ku8sZVD5PPBty
-         Lh9nUbOXsVj8Chp9HyfkPXL+TRKX0Utq74C5LYPeiMV12CaeMyvfNJwWAn5VMb+ieDRH
-         Ly++xb3eo9R9OExurt33UhNbH14TYAYJBA0MD8dpVWamzfY2D4m0h/vLDT1rOGnmKLL/
-         4ZQ1huldh0hPaWLff0hZrT7s2B+mgdindm+y1uHa7WbTtbI8vNOs2nkhP0Zi9ZjH5mM3
-         RrjUrqvZ/5BSwV5hSf4diRpUVzPRNNqD0kodpnEu+TPqqS59RFcvn4VTRxh9Zug7LM1Z
-         idTA==
-X-Forwarded-Encrypted: i=1; AJvYcCWXQ4hdW09UZU+KZGb31w48HcQWFmPuGcqsIaf4fx+qhg/vvTlvUQfVBWV5ryhjE3y6PuJXTPI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXrOrdXOlinwWhE8YV1OarZl4NseeaZKNHknl0qMrFqa3xRwaw
-	jL8XsfIXScyLqMbRu8QkuT435n+uwCFDqP+2uwH471WWmTGwdE+gQ1kC5fuGZBo=
-X-Google-Smtp-Source: AGHT+IHksrS7dvOIDDGppfbJwtTEWzde9JRlEqQc3/BUDREnjrOEyYKmsLetBYGEXTlb5TlTBzfCXg==
-X-Received: by 2002:a05:6512:31cb:b0:539:fbf7:38d1 with SMTP id 2adb3069b0e04-539fbf73b9emr7534245e87.2.1729169951111;
-        Thu, 17 Oct 2024 05:59:11 -0700 (PDT)
-Received: from lino.lan ([85.235.12.238])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53a00013c21sm763349e87.270.2024.10.17.05.59.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Oct 2024 05:59:09 -0700 (PDT)
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 17 Oct 2024 14:59:06 +0200
-Subject: [PATCH v3 2/2] ARM: entry: Do a dummy read from VMAP shadow
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB15E1DDA2E;
+	Thu, 17 Oct 2024 13:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729170691; cv=pass; b=tOIoFXWDOISilKLMzkpkDY+irddRdFqUwuc1gxtsd2WsKWtjlVcLbGuzUXExsPRuyJkoLK/A64ND0tfp9+x7tWqZMwRrFmziKQgQewCVxkGediE4k8nrLMxvcl0ncyoUS6f8g+SOTtbrTLdvV9TjMP/BlrV4xzgBUKORePklseU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729170691; c=relaxed/simple;
+	bh=VV3G8kk0MTCBQENc3kPb0qtSqYzGlVt+3CFlerf4hI8=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=I5/vTLU/+T6UJERN6BgR5rcZ0T85yXHp2wd2JoAQr+HStV/fvV2Db+3DxUsR2fX5K5cAcLvT9xE9V90j5h8g8yrc0uSjZB0fPSQvj8Ke2/Qs3F1wCMP+fnpa1iW4XmnpRf5+ELSzMhiaEpd3XSyTYX5qZb/hjA2WkHTTcvw7sh0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b=X/Gu63v+; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1729170648; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=JWXLYm4SJERwqe2sW6tsWT0mmhYHT2WaMuE8DyIuTtgKRK961wAIVtIsiHf667Kw1jbWlMa5HBHLwxuYireJMzyFgA9kKz+80NHc8AKn+rObegQ9PYepoWSXdJavRgfAoTO1Vi1WSF2K+xDq3+H9HpmzNq7gLxo4VPsjTOCs33c=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1729170648; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=FnaAKukhsjvuGKX8Vxza369r8BbCp2F9MMnF3AL10MA=; 
+	b=LqN1kxLNM8GlW1JSKTTV2H6VYxDQ1vLA9hpO0oqmn28ebVbt6kzesJ3yxGyp1DtGASTT8DSxElfZMRcr56f2ZDSwtEh6jSF25PJENoGBz8ChsdC68Wt0MbTxgvd0sfP2MNWfYg0Zv4xw+EuQVCDtWBNRGJfxoFhDbjeeUM+B0u8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=Usama.Anjum@collabora.com;
+	dmarc=pass header.from=<Usama.Anjum@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1729170648;
+	s=zohomail; d=collabora.com; i=Usama.Anjum@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=FnaAKukhsjvuGKX8Vxza369r8BbCp2F9MMnF3AL10MA=;
+	b=X/Gu63v+z/fMcX/+mBc7+IHCA3/wxTRxoBe2Zcs1Z3whkdpAcKZT0yG4xi/l6wld
+	3c0QU4BOD2XtBDXfkmJlvLNBEEJ9//UNDWIKIU3K4dc+vn89NUVfIA5BV548dbj+oh3
+	XwD69F5B+ltH/nuaB6SkO0kj3vU5pPnDJD3JRNhE=
+Received: by mx.zohomail.com with SMTPS id 1729170645105389.88507980663735;
+	Thu, 17 Oct 2024 06:10:45 -0700 (PDT)
+Message-ID: <8e0e267b-34cf-47a8-8669-473a22bbd523@collabora.com>
+Date: Thu, 17 Oct 2024 18:10:32 +0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Cc: Usama.Anjum@collabora.com, patches@lists.linux.dev,
+ linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+ akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+ allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 5.10 000/518] 5.10.227-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+References: <20241015123916.821186887@linuxfoundation.org>
+Content-Language: en-US
+From: Muhammad Usama Anjum <Usama.Anjum@collabora.com>
+In-Reply-To: <20241015123916.821186887@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241017-arm-kasan-vmalloc-crash-v3-2-d2a34cd5b663@linaro.org>
-References: <20241017-arm-kasan-vmalloc-crash-v3-0-d2a34cd5b663@linaro.org>
-In-Reply-To: <20241017-arm-kasan-vmalloc-crash-v3-0-d2a34cd5b663@linaro.org>
-To: Clement LE GOFFIC <clement.legoffic@foss.st.com>, 
- Russell King <linux@armlinux.org.uk>, Kees Cook <kees@kernel.org>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Mark Brown <broonie@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
- Ard Biesheuvel <ardb@kernel.org>
-Cc: Antonio Borneo <antonio.borneo@foss.st.com>, 
- linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, 
- Linus Walleij <linus.walleij@linaro.org>, stable@vger.kernel.org
-X-Mailer: b4 0.14.0
+X-ZohoMailClient: External
 
-When switching task, in addition to a dummy read from the new
-VMAP stack, also do a dummy read from the VMAP stack's
-corresponding KASAN shadow memory to sync things up in
-the new MM context.
+On 10/15/24 5:38 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.227 release.
+> There are 518 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 17 Oct 2024 12:37:45 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.227-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
+> -------------
+Hi,
 
-Cc: stable@vger.kernel.org
-Fixes: a1c510d0adc6 ("ARM: implement support for vmap'ed stacks")
-Link: https://lore.kernel.org/linux-arm-kernel/a1a1d062-f3a2-4d05-9836-3b098de9db6d@foss.st.com/
-Reported-by: Clement LE GOFFIC <clement.legoffic@foss.st.com>
-Suggested-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
- arch/arm/kernel/entry-armv.S | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Please find the KernelCI report below :-
 
-diff --git a/arch/arm/kernel/entry-armv.S b/arch/arm/kernel/entry-armv.S
-index 1dfae1af8e31..ef6a657c8d13 100644
---- a/arch/arm/kernel/entry-armv.S
-+++ b/arch/arm/kernel/entry-armv.S
-@@ -25,6 +25,7 @@
- #include <asm/tls.h>
- #include <asm/system_info.h>
- #include <asm/uaccess-asm.h>
-+#include <asm/kasan_def.h>
- 
- #include "entry-header.S"
- #include <asm/probes.h>
-@@ -561,6 +562,13 @@ ENTRY(__switch_to)
- 	@ entries covering the vmalloc region.
- 	@
- 	ldr	r2, [ip]
-+#ifdef CONFIG_KASAN_VMALLOC
-+	@ Also dummy read from the KASAN shadow memory for the new stack if we
-+	@ are using KASAN
-+	mov_l	r2, KASAN_SHADOW_OFFSET
-+	add	r2, r2, ip, lsr #KASAN_SHADOW_SCALE_SHIFT
-+	ldr	r2, [r2]
-+#endif
- #endif
- 
- 	@ When CONFIG_THREAD_INFO_IN_TASK=n, the update of SP itself is what
 
--- 
-2.46.2
+OVERVIEW
+
+    Builds: 24 passed, 1 failed
+
+    Boot tests: 52 passed, 2 failed
+
+    CI systems: maestro
+
+REVISION
+
+    Commit
+        name: 
+        hash: 5807510dd5773e507a5ba5ca98fce623d87256a0
+    Checked out from
+        https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+
+
+BUILDS
+
+    Failures
+      - x86_64 (x86_64_defconfig)
+      Build detail: https://kcidb.kernelci.org/d/build/build?var-datasource=edquppk2ghfcwc&var-origin=maestro&var-build_architecture=All&var-build_config_name=All&var-id=maestro:670e6dd25c0f1c2335e57199&var-test-path=boot&orgId=1
+      Build error: drivers/i2c/i2c-core-base.c:101:31: error: passing 'const struct device *' to parameter of type 'struct device *' discards qualifiers [-Werror,-Wincompatible-pointer-types-discards-qualifiers]
+      data = device_get_match_data(&client->dev);
+
+
+BOOT TESTS
+
+    Failures
+      - i386 (defconfig)
+      Error detail: [   15.624317] BUG: kernel NULL pointer dereference, address: 00000000
+      Build error: https://kcidb.kernelci.org/d/test/test?var-datasource=edquppk2ghfcwc&var-origin=maestro&var-build_architecture=All&var-build_config_name=All&var-id=maestro:670e713c5c0f1c2335e57a48&orgId=1
+      - i386 (defconfig)
+      Error detail:     [   15.008295] BUG: kernel NULL pointer dereference, address: 00000000
+      Build error: https://kcidb.kernelci.org/d/test/test?var-datasource=edquppk2ghfcwc&var-origin=maestro&var-build_architecture=All&var-build_config_name=All&var-id=maestro:670e71405c0f1c2335e57a4e&orgId=1
+
+See complete and up-to-date report at:
+ https://kcidb.kernelci.org/d/revision/revision?orgId=1&var-datasource=edquppk2ghfcwc&var-git_commit_hash=5807510dd5773e507a5ba5ca98fce623d87256a0&var-patchset_hash=&var-origin=maestro&var-build_architecture=All&var-build_config_name=All&var-test_path=boot
+
+Tested-by: kernelci.org bot <bot@kernelci.org>
+
+Thanks,
+KernelCI team
 
 
