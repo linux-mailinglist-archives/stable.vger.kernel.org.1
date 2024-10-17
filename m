@@ -1,50 +1,49 @@
-Return-Path: <stable+bounces-86722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A3E39A3170
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 01:35:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F2AA9A3171
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 01:35:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CC99B21023
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 23:35:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03BC9B2116E
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 23:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C1120E30C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00BD20E311;
 	Thu, 17 Oct 2024 23:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eKdoQl5k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rKqsz3kL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4AE20E30B
-	for <stable@vger.kernel.org>; Thu, 17 Oct 2024 23:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB1620E30B
+	for <stable@vger.kernel.org>; Thu, 17 Oct 2024 23:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729208138; cv=none; b=Wab6ATNf31adAYv4bdNsSf0ln0YsKm0CQwT+JuG7R4UJOlhgs23paseKWDc622Q03TOWYraMW2bPfMOpQJMOnLVlPSYHKRiaV+/SWGMt6iM7Tq1LO9dALQlJHcTkYHFslumUC1itX2f8344q8FkHwts7pyj7CJYoI975lU1Ahmo=
+	t=1729208139; cv=none; b=qyTfm/V9wLsq5b0+Qj4YV1LyzNti4xFvgDpAy3YH6vHLUuRVnJFHMN6vQ4CaSdr0wlDu0NGIjj9sR6OBmgiUYE1gNitcrFHDlbSsVR1eSLmC2UUe8Lo0s+S8NhjDNse/mFpUWKq/WWm7+9eY3OiP0OKxNOJT7kTyjgfGm3lbbBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729208138; c=relaxed/simple;
-	bh=H6GYpJaB5ABTG4Exa0NNnFg+AyjK7xMGjsZjM2zUyaI=;
+	s=arc-20240116; t=1729208139; c=relaxed/simple;
+	bh=vf4wn3VvLVFPuZmjst+8Vryz22b9RqmvZ3kWmScf8JQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KUAtFiZ0PLhzQNkXCOyRDha2LoXuKyb4dcCxZhExP1CuWbf1haB5BdGh5fC3wA8VBE21qpAQXh4ap33Aa0koHZYdj9pqFBFCs6ehKBaTehqJu6ErM0kAEn9/aDmZscFdLejQkjEPbVvWr8VGEgfhidvC0wSQCf3/lKZ8mIcPVTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eKdoQl5k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47008C4CEC7;
+	 In-Reply-To:To:Cc; b=krmkaMEmhyMoVhrDeqzHAcT/UOm3x7rl9FTjYta74GonZNNWJ68I/xdgU0B4GTlZrdxLnd+FkPRRbLRTcgAGgl8Vl7MbyqHc10rEF1HT5tixh2yELpUruHjR2Y/dbVaskZIJ4KvfoHHaRvEOLDUfnTXVBnHuyTTwrh2P3X3L5iM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rKqsz3kL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B520DC4CEC3;
 	Thu, 17 Oct 2024 23:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729208138;
-	bh=H6GYpJaB5ABTG4Exa0NNnFg+AyjK7xMGjsZjM2zUyaI=;
+	s=k20201202; t=1729208139;
+	bh=vf4wn3VvLVFPuZmjst+8Vryz22b9RqmvZ3kWmScf8JQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=eKdoQl5kNpaD069UAfA5NR1q52Ap5TdycoFppF1TO6k3gAeMyIoaXd9jL5f2i+mMQ
-	 BnKmiFOgsW+rYuIUzKX90sLYXWKAB5dvXpVquhfOFNeHDa69leiufoeAigi/KSz9uK
-	 bv8Xa8dDiQfbPZ/W806oSoG1PJLDMs3RqjcmrRWt+CQWXkTC7MeTekVkkGDFNNL17h
-	 s9Xk3MsMBzpTvlDQhaXHntXlG5fJx56DTnzfmOWUfCG+y+WnVYs69es55q47X3mSP9
-	 QLRY2dWU/+PE4QaPBcfqye111oO/fd3M3yz+haftS4fB7xc0I06UcTe9MIg4/Lq8+h
-	 ffQNoDVxV+dbQ==
+	b=rKqsz3kLjZjaidzPdJUYseysFZR8RIZmLRfIqWf2jooabOGA81aSfFylRReAhH19E
+	 m+V8RMQbfc8vCxSr5CJuQogX91yIi/iFs2zlVD6iNXd7sRjxL0Iw4nURWqaH3awPfU
+	 VnzObIQ3lCXG382WFRDiGL0ltqjXU9dI3vyD/VwcQw+vjkWlCgn0BuQmHWKTomxAKl
+	 sv979qE5OkoT0pHi9HGvJpRew8T3A0FxIhQvUDqR58dGlmVnWymfoJBC0MwP/PuZSI
+	 Y4zxgHlum3TDO0o3nJZ1OZDRAahw0lwSLwWhbb1zKPyuHgGbS4tS56QkOIcvhhe2PD
+	 pK+Cwdy61ti1A==
 From: chrisl@kernel.org
-Date: Thu, 17 Oct 2024 16:35:36 -0700
-Subject: [PATCH 6.10.y 1/3] mm/hugetlb_vmemmap: don't synchronize_rcu()
- without HVO
+Date: Thu, 17 Oct 2024 16:35:37 -0700
+Subject: [PATCH 6.10.y 2/3] mm/codetag: fix pgalloc_tag_split()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,7 +52,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241017-stable-yuzhao-6.10-v1-1-4827ff1e64ce@kernel.org>
+Message-Id: <20241017-stable-yuzhao-6.10-v1-2-4827ff1e64ce@kernel.org>
 References: <20241017-stable-yuzhao-6.10-v1-0-4827ff1e64ce@kernel.org>
 In-Reply-To: <20241017-stable-yuzhao-6.10-v1-0-4827ff1e64ce@kernel.org>
 To: stable@vger.kernel.org
@@ -62,150 +61,186 @@ Cc: Greg KH <gregkh@linuxfoundation.org>,
  Andrew Morton <akpm@linux-foundation.org>, Yu Zhao <yuzhao@google.com>, 
  Suren Baghdasaryan <surenb@google.com>, 
  Kent Overstreet <kent.overstreet@linux.dev>, 
- Vlastimil Babka <vbabka@suse.cz>, kernel test robot <oliver.sang@intel.com>, 
- Janosch Frank <frankja@linux.ibm.com>, 
- Marc Hartmayer <mhartmay@linux.ibm.com>
+ Vlastimil Babka <vbabka@suse.cz>
 X-Mailer: b4 0.13.0
 
 From: Yu Zhao <yuzhao@google.com>
 
-[ Upstream commit c2a967f6ab0ec896648c0497d3dc15d8f136b148 ]
+[ Upstream commit 95599ef684d01136a8b77c16a7c853496786e173 ]
 
-hugetlb_vmemmap_optimize_folio() and hugetlb_vmemmap_restore_folio() are
-wrappers meant to be called regardless of whether HVO is enabled.
-Therefore, they should not call synchronize_rcu().  Otherwise, it
-regresses use cases not enabling HVO.
+The current assumption is that a large folio can only be split into
+order-0 folios.  That is not the case for hugeTLB demotion, nor for THP
+split: see commit c010d47f107f ("mm: thp: split huge page to any lower
+order pages").
 
-So move synchronize_rcu() to __hugetlb_vmemmap_optimize_folio() and
-__hugetlb_vmemmap_restore_folio(), and call it once for each batch of
-folios when HVO is enabled.
+When a large folio is split into ones of a lower non-zero order, only the
+new head pages should be tagged.  Tagging tail pages can cause imbalanced
+"calls" counters, since only head pages are untagged by pgalloc_tag_sub()
+and the "calls" counts on tail pages are leaked, e.g.,
 
-Link: https://lkml.kernel.org/r/20240719042503.2752316-1-yuzhao@google.com
-Fixes: bd225530a4c7 ("mm/hugetlb_vmemmap: fix race with speculative PFN walkers")
+  # echo 2048kB >/sys/kernel/mm/hugepages/hugepages-1048576kB/demote_size
+  # echo 700 >/sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+  # time echo 700 >/sys/kernel/mm/hugepages/hugepages-1048576kB/demote
+  # echo 0 >/sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
+  # grep alloc_gigantic_folio /proc/allocinfo
+
+Before this patch:
+  0  549427200  mm/hugetlb.c:1549 func:alloc_gigantic_folio
+
+  real  0m2.057s
+  user  0m0.000s
+  sys   0m2.051s
+
+After this patch:
+  0          0  mm/hugetlb.c:1549 func:alloc_gigantic_folio
+
+  real  0m1.711s
+  user  0m0.000s
+  sys   0m1.704s
+
+Not tagging tail pages also improves the splitting time, e.g., by about
+15% when demoting 1GB hugeTLB folios to 2MB ones, as shown above.
+
+Link: https://lkml.kernel.org/r/20240906042108.1150526-2-yuzhao@google.com
+Fixes: be25d1d4e822 ("mm: create new codetag references during page splitting")
 Signed-off-by: Yu Zhao <yuzhao@google.com>
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202407091001.1250ad4a-oliver.sang@intel.com
-Reported-by: Janosch Frank <frankja@linux.ibm.com>
-Tested-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Acked-by: Muchun Song <muchun.song@linux.dev>
+Acked-by: Suren Baghdasaryan <surenb@google.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- mm/hugetlb_vmemmap.c | 40 ++++++++++++++++++++--------------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+ include/linux/mm.h          | 32 ++++++++++++++++++++++++++++++++
+ include/linux/pgalloc_tag.h | 31 -------------------------------
+ mm/huge_memory.c            |  2 +-
+ mm/page_alloc.c             |  4 ++--
+ 4 files changed, 35 insertions(+), 34 deletions(-)
 
-diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-index 8193906515c6e..f40d5ad36d1e4 100644
---- a/mm/hugetlb_vmemmap.c
-+++ b/mm/hugetlb_vmemmap.c
-@@ -43,6 +43,8 @@ struct vmemmap_remap_walk {
- #define VMEMMAP_SPLIT_NO_TLB_FLUSH	BIT(0)
- /* Skip the TLB flush when we remap the PTE */
- #define VMEMMAP_REMAP_NO_TLB_FLUSH	BIT(1)
-+/* synchronize_rcu() to avoid writes from page_ref_add_unless() */
-+#define VMEMMAP_SYNCHRONIZE_RCU		BIT(2)
- 	unsigned long		flags;
- };
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 81562397e8347..a7783b57c90eb 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4262,4 +4262,36 @@ static inline bool pfn_is_unaccepted_memory(unsigned long pfn)
+ void vma_pgtable_walk_begin(struct vm_area_struct *vma);
+ void vma_pgtable_walk_end(struct vm_area_struct *vma);
  
-@@ -451,6 +453,9 @@ static int __hugetlb_vmemmap_restore_folio(const struct hstate *h,
- 	if (!folio_test_hugetlb_vmemmap_optimized(folio))
- 		return 0;
- 
-+	if (flags & VMEMMAP_SYNCHRONIZE_RCU)
-+		synchronize_rcu();
++int reserve_mem_find_by_name(const char *name, phys_addr_t *start, phys_addr_t *size);
 +
- 	vmemmap_end	= vmemmap_start + hugetlb_vmemmap_size(h);
- 	vmemmap_reuse	= vmemmap_start;
- 	vmemmap_start	+= HUGETLB_VMEMMAP_RESERVE_SIZE;
-@@ -483,10 +488,7 @@ static int __hugetlb_vmemmap_restore_folio(const struct hstate *h,
-  */
- int hugetlb_vmemmap_restore_folio(const struct hstate *h, struct folio *folio)
- {
--	/* avoid writes from page_ref_add_unless() while unfolding vmemmap */
--	synchronize_rcu();
--
--	return __hugetlb_vmemmap_restore_folio(h, folio, 0);
-+	return __hugetlb_vmemmap_restore_folio(h, folio, VMEMMAP_SYNCHRONIZE_RCU);
- }
- 
- /**
-@@ -509,14 +511,14 @@ long hugetlb_vmemmap_restore_folios(const struct hstate *h,
- 	struct folio *folio, *t_folio;
- 	long restored = 0;
- 	long ret = 0;
--
--	/* avoid writes from page_ref_add_unless() while unfolding vmemmap */
--	synchronize_rcu();
-+	unsigned long flags = VMEMMAP_REMAP_NO_TLB_FLUSH | VMEMMAP_SYNCHRONIZE_RCU;
- 
- 	list_for_each_entry_safe(folio, t_folio, folio_list, lru) {
- 		if (folio_test_hugetlb_vmemmap_optimized(folio)) {
--			ret = __hugetlb_vmemmap_restore_folio(h, folio,
--							      VMEMMAP_REMAP_NO_TLB_FLUSH);
-+			ret = __hugetlb_vmemmap_restore_folio(h, folio, flags);
-+			/* only need to synchronize_rcu() once for each batch */
-+			flags &= ~VMEMMAP_SYNCHRONIZE_RCU;
++#ifdef CONFIG_MEM_ALLOC_PROFILING
++static inline void pgalloc_tag_split(struct folio *folio, int old_order, int new_order)
++{
++	int i;
++	struct alloc_tag *tag;
++	unsigned int nr_pages = 1 << new_order;
 +
- 			if (ret)
- 				break;
- 			restored++;
-@@ -564,6 +566,9 @@ static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
- 		return ret;
- 
- 	static_branch_inc(&hugetlb_optimize_vmemmap_key);
++	if (!mem_alloc_profiling_enabled())
++		return;
 +
-+	if (flags & VMEMMAP_SYNCHRONIZE_RCU)
-+		synchronize_rcu();
- 	/*
- 	 * Very Subtle
- 	 * If VMEMMAP_REMAP_NO_TLB_FLUSH is set, TLB flushing is not performed
-@@ -611,10 +616,7 @@ void hugetlb_vmemmap_optimize_folio(const struct hstate *h, struct folio *folio)
- {
- 	LIST_HEAD(vmemmap_pages);
- 
--	/* avoid writes from page_ref_add_unless() while folding vmemmap */
--	synchronize_rcu();
--
--	__hugetlb_vmemmap_optimize_folio(h, folio, &vmemmap_pages, 0);
-+	__hugetlb_vmemmap_optimize_folio(h, folio, &vmemmap_pages, VMEMMAP_SYNCHRONIZE_RCU);
- 	free_vmemmap_page_list(&vmemmap_pages);
- }
- 
-@@ -641,6 +643,7 @@ void hugetlb_vmemmap_optimize_folios(struct hstate *h, struct list_head *folio_l
- {
- 	struct folio *folio;
- 	LIST_HEAD(vmemmap_pages);
-+	unsigned long flags = VMEMMAP_REMAP_NO_TLB_FLUSH | VMEMMAP_SYNCHRONIZE_RCU;
- 
- 	list_for_each_entry(folio, folio_list, lru) {
- 		int ret = hugetlb_vmemmap_split_folio(h, folio);
-@@ -657,14 +660,12 @@ void hugetlb_vmemmap_optimize_folios(struct hstate *h, struct list_head *folio_l
- 
- 	flush_tlb_all();
- 
--	/* avoid writes from page_ref_add_unless() while folding vmemmap */
--	synchronize_rcu();
--
- 	list_for_each_entry(folio, folio_list, lru) {
- 		int ret;
- 
--		ret = __hugetlb_vmemmap_optimize_folio(h, folio, &vmemmap_pages,
--						       VMEMMAP_REMAP_NO_TLB_FLUSH);
-+		ret = __hugetlb_vmemmap_optimize_folio(h, folio, &vmemmap_pages, flags);
-+		/* only need to synchronize_rcu() once for each batch */
-+		flags &= ~VMEMMAP_SYNCHRONIZE_RCU;
- 
- 		/*
- 		 * Pages to be freed may have been accumulated.  If we
-@@ -678,8 +679,7 @@ void hugetlb_vmemmap_optimize_folios(struct hstate *h, struct list_head *folio_l
- 			flush_tlb_all();
- 			free_vmemmap_page_list(&vmemmap_pages);
- 			INIT_LIST_HEAD(&vmemmap_pages);
--			__hugetlb_vmemmap_optimize_folio(h, folio, &vmemmap_pages,
--							 VMEMMAP_REMAP_NO_TLB_FLUSH);
-+			__hugetlb_vmemmap_optimize_folio(h, folio, &vmemmap_pages, flags);
- 		}
++	tag = pgalloc_tag_get(&folio->page);
++	if (!tag)
++		return;
++
++	for (i = nr_pages; i < (1 << old_order); i += nr_pages) {
++		union codetag_ref *ref = get_page_tag_ref(folio_page(folio, i));
++
++		if (ref) {
++			/* Set new reference to point to the original tag */
++			alloc_tag_ref_set(ref, tag);
++			put_page_tag_ref(ref);
++		}
++	}
++}
++#else /* !CONFIG_MEM_ALLOC_PROFILING */
++static inline void pgalloc_tag_split(struct folio *folio, int old_order, int new_order)
++{
++}
++#endif /* CONFIG_MEM_ALLOC_PROFILING */
++
+ #endif /* _LINUX_MM_H */
+diff --git a/include/linux/pgalloc_tag.h b/include/linux/pgalloc_tag.h
+index 207f0c83c8e97..59a3deb792a8d 100644
+--- a/include/linux/pgalloc_tag.h
++++ b/include/linux/pgalloc_tag.h
+@@ -80,36 +80,6 @@ static inline void pgalloc_tag_sub(struct page *page, unsigned int nr)
  	}
+ }
  
+-static inline void pgalloc_tag_split(struct page *page, unsigned int nr)
+-{
+-	int i;
+-	struct page_ext *first_page_ext;
+-	struct page_ext *page_ext;
+-	union codetag_ref *ref;
+-	struct alloc_tag *tag;
+-
+-	if (!mem_alloc_profiling_enabled())
+-		return;
+-
+-	first_page_ext = page_ext = page_ext_get(page);
+-	if (unlikely(!page_ext))
+-		return;
+-
+-	ref = codetag_ref_from_page_ext(page_ext);
+-	if (!ref->ct)
+-		goto out;
+-
+-	tag = ct_to_alloc_tag(ref->ct);
+-	page_ext = page_ext_next(page_ext);
+-	for (i = 1; i < nr; i++) {
+-		/* Set new reference to point to the original tag */
+-		alloc_tag_ref_set(codetag_ref_from_page_ext(page_ext), tag);
+-		page_ext = page_ext_next(page_ext);
+-	}
+-out:
+-	page_ext_put(first_page_ext);
+-}
+-
+ static inline struct alloc_tag *pgalloc_tag_get(struct page *page)
+ {
+ 	struct alloc_tag *tag = NULL;
+@@ -142,7 +112,6 @@ static inline void clear_page_tag_ref(struct page *page) {}
+ static inline void pgalloc_tag_add(struct page *page, struct task_struct *task,
+ 				   unsigned int nr) {}
+ static inline void pgalloc_tag_sub(struct page *page, unsigned int nr) {}
+-static inline void pgalloc_tag_split(struct page *page, unsigned int nr) {}
+ static inline struct alloc_tag *pgalloc_tag_get(struct page *page) { return NULL; }
+ static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr) {}
+ 
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index cedc93028894c..68d1da39d2a91 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2896,7 +2896,7 @@ static void __split_huge_page(struct page *page, struct list_head *list,
+ 	/* Caller disabled irqs, so they are still disabled here */
+ 
+ 	split_page_owner(head, order, new_order);
+-	pgalloc_tag_split(head, 1 << order);
++	pgalloc_tag_split(folio, order, new_order);
+ 
+ 	/* See comment in __split_huge_page_tail() */
+ 	if (folio_test_anon(folio)) {
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 21016573f1870..3707b022395a1 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -2745,7 +2745,7 @@ void split_page(struct page *page, unsigned int order)
+ 	for (i = 1; i < (1 << order); i++)
+ 		set_page_refcounted(page + i);
+ 	split_page_owner(page, order, 0);
+-	pgalloc_tag_split(page, 1 << order);
++	pgalloc_tag_split(page_folio(page), order, 0);
+ 	split_page_memcg(page, order, 0);
+ }
+ EXPORT_SYMBOL_GPL(split_page);
+@@ -4937,7 +4937,7 @@ static void *make_alloc_exact(unsigned long addr, unsigned int order,
+ 		struct page *last = page + nr;
+ 
+ 		split_page_owner(page, order, 0);
+-		pgalloc_tag_split(page, 1 << order);
++		pgalloc_tag_split(page_folio(page), order, 0);
+ 		split_page_memcg(page, order, 0);
+ 		while (page < --last)
+ 			set_page_refcounted(last);
 
 -- 
 2.47.0.rc1.288.g06298d1525-goog
