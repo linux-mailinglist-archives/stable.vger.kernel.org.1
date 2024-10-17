@@ -1,96 +1,113 @@
-Return-Path: <stable+bounces-86647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92CCC9A2942
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 18:43:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C593B9A2985
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 18:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C269F1C21B79
-	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 16:43:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 711C31F297A9
+	for <lists+stable@lfdr.de>; Thu, 17 Oct 2024 16:49:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A101DFE08;
-	Thu, 17 Oct 2024 16:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315401DF754;
+	Thu, 17 Oct 2024 16:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VskhPH9C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="quqVDQH/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5921DF989;
-	Thu, 17 Oct 2024 16:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5D71DF727;
+	Thu, 17 Oct 2024 16:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729183320; cv=none; b=fnKldrZ4fIv1WLxo/8xJCnF6rqyY7hlan18t+4bW8MYuS6njtNkT7YVit3SUJ4/W3kfhC184j1lJrGVtNs4afb4+SPP/fg3JWmS2SVg6ScTc1MUcy2ZXx42VMBlqBsPfBlzb1h3brRzFXdCL3/M6jTKaeySNMZlRWtvmOaGcGPE=
+	t=1729183744; cv=none; b=LFYbBMEF5Fo9KUcTcRjwGE2TZV1L/sECZFwWJ78nKHBTrfPZDHp35sQB+AJDpNlwwo5igyLTbvBwBMnLMxYNBeTiU0truRjhwyNxNbl7ryDWk9ck/viStkPdaFgTG5jqEJ8ATBju9uFgc+aJZQp2rR0bEYokuTrPXrV6yVJzahA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729183320; c=relaxed/simple;
-	bh=QqrRnUwymrsqzMxSXyNZsLuECVKOAXLr+MYFiH2M1Yg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FC2Cxb6eFhUn8+xjSGgLQQZMbQtLpPK/ESLDKDj9l3kEt1B3hAOzeIZXJ5uRrrPNk7d2SorYtHc+K1NDPMOF3IufpvTIBEIj/KXJe2TbPlOsNWHLZMuBPXFYWCdth+h+SkyVP4P/7loChCwuzVFZK0GpRcRydGcqcC8UOb17hoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VskhPH9C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E96C4CECE;
-	Thu, 17 Oct 2024 16:41:57 +0000 (UTC)
+	s=arc-20240116; t=1729183744; c=relaxed/simple;
+	bh=eYGcyuOSxC14ybADTjktACHOwvhQLE7zko6r6geGqf0=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=GegLWtTT8AlKwMXwoBgSYsviV2W8oWqC//nmJaL2eoYGV31OU8JX4Y7Il1vFhASl6LZNA+xCU6zTuqKm9YIVNISb8iqtUz8YgQSQHgtdO8NclH5rHKdhVQVSC7OISkdCzHl6GkG96coru0ayw06ve8HpU91ZR9Uaa50A5yu91lE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=quqVDQH/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE874C4CEC3;
+	Thu, 17 Oct 2024 16:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729183320;
-	bh=QqrRnUwymrsqzMxSXyNZsLuECVKOAXLr+MYFiH2M1Yg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VskhPH9C8+8Fezn+LmplL1DfXkP9BLZ/ZD3N4w/dUsQiEprnLoOGCxGOpmNfMWyKk
-	 kjYCZSYWvtlhD7zm03OIwq/8GqyrcEVM5Z64X7bBdx6watf8/hKNp/dh1p6ASjc2AM
-	 HiWovBrs99Gi8T8r0Ww2KFtIxrwCEXeEI/8AnLuMeaFcDlqUrfrb272WpXO5nywzF9
-	 l1krSKNY64SFg6rTq/LbS7TQf/WF3vDR2wGJ5ws16MtzOqlm0ZjDmt+OML8kXS6F/6
-	 DOSj72YczCYh8ZzQZXH6RPJgVEEqnuZup57T1zZHA1xcx0Zr0sGNpwh2uEQWdWR5y6
-	 vrkbfagBbH0ew==
-From: Conor Dooley <conor@kernel.org>
-To: Conor Dooley <conor@kernel.org>,
-	linux-riscv@lists.infradead.org
-Cc: Conor Dooley <conor.dooley@microchip.com>,
-	Jamie Gibbons <jamie.gibbons@microchip.com>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Aurelien Jarno <aurelien@aurel32.net>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Changhuang Liang <changhuang.liang@starfivetech.com>,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v1] riscv: dts: starfive: disable unused csi/camss nodes
-Date: Thu, 17 Oct 2024 17:41:50 +0100
-Message-ID: <20241017-bagpipe-mouse-340040a59684@spud>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241016-moonscape-tremor-8d41e6f741ff@spud>
-References: <20241016-moonscape-tremor-8d41e6f741ff@spud>
+	s=k20201202; t=1729183743;
+	bh=eYGcyuOSxC14ybADTjktACHOwvhQLE7zko6r6geGqf0=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=quqVDQH/ay3YKK8MhzDmcYEli4oQnOrOyfOAz8t+0oJ8ubdnLuZrKQ4SWKIy5qlIc
+	 qwah4K0uglQNtQTUqi7Mbq1uWKbO4WGknVGRMZkMW98guxQ8d6Cd5po4XYredIwkd0
+	 0CPeYWNgLyWQA5QZdosL/nBwWjJg8W7T2DH48GeSiqDJT5acpTJ6nhWOzzx5ATz6Qm
+	 6MH41uP0R9tR/XGKx55a1ejOd9IIAu7F089v2ngOO+IOzGjmDJ+f5sgV8CRJeDYOdY
+	 Rknb/vWsZiV3PWAV8PEW0QOVDPi9BiD/OEO9lXzyI7ueTtHM6f0OFiwkAlSG4u6aCY
+	 3R0fhoX7U5h3w==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=697; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=YRrnZgb3occ2u8F1+5WNnbGzA5NEL9mMGByZT9UlAU4=; b=owGbwMvMwCFWscWwfUFT0iXG02pJDOmCdn67Nm1hWLZiqfJBtfWsu/6yPHs4P0n3wqnlR4KXf +tvuD11UUcpC4MYB4OsmCJL4u2+Fqn1f1x2OPe8hZnDygQyhIGLUwAmcuYkw/8qm3eLzFzcGY0n /HxurFnOJ7f21uGHi7deOHuo/0KkS8hxRoZG7iksD76eLff4ez/jcp3kiqnOVYH+Dmd397pUvpr 6u4ELAA==
-X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2] wifi: wilc1000: Set MAC after operation mode
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20241003132504.52233-1-marex@denx.de>
+References: <20241003132504.52233-1-marex@denx.de>
+To: Marek Vasut <marex@denx.de>
+Cc: linux-wireless@vger.kernel.org, Marek Vasut <marex@denx.de>,
+ =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+ Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, stable@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <172918374043.970100.2764180936900141438.kvalo@kernel.org>
+Date: Thu, 17 Oct 2024 16:49:01 +0000 (UTC)
 
-From: Conor Dooley <conor.dooley@microchip.com>
+Marek Vasut <marex@denx.de> wrote:
 
-On Wed, 16 Oct 2024 21:11:15 +0100, Conor Dooley wrote:
-> Aurelien reported probe failures due to the csi node being enabled
-> without having a camera attached to it. A camera was in the initial
-> submissions, but was removed from the dts, as it had not actually been
-> present on the board, but was from an addon board used by the
-> developer of the relevant drivers. The non-camera pipeline nodes were
-> not disabled when this happened and the probe failures are problematic
-> for Debian. Disable them.
+> It seems it is necessary to set WILC MAC address after operation mode,
+> otherwise the MAC address of the WILC MAC is reset back to what is in
+> nvmem. This causes a failure to associate with AP after the WILC MAC
+> address was overridden by userspace.
 > 
-> [...]
+> Test case:
+> "
+> ap$ cat << EOF > hostap.conf
+> interface=wlan0
+> ssid=ssid
+> hw_mode=g
+> channel=6
+> wpa=2
+> wpa_passphrase=pass
+> wpa_key_mgmt=WPA-PSK
+> EOF
+> ap$ hostapd -d hostap.conf
+> ap$ ifconfig wlan0 10.0.0.1
+> "
+> 
+> "
+> sta$ ifconfig wlan0 hw ether 00:11:22:33:44:55
+> sta$ wpa_supplicant -i wlan0 -c <(wpa_passphrase ssid pass)
+> sta$ ifconfig wlan0 10.0.0.2
+> sta$ ping 10.0.0.1 # fails without this patch
+> "
+> 
+> AP still indicates SA with original MAC address from nvmem without this patch:
+> "
+> nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=60:01:23:45:67:89 bssid=ff:ff:ff:ff:ff:ff ...
+>                                           ^^^^^^^^^^^^^^^^^
+> "
+> 
+> Fixes: 83d9b54ee5d4 ("wifi: wilc1000: read MAC address from fuse at probe")
+> Tested-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+> Signed-off-by: Marek Vasut <marex@denx.de>
 
-Applied to riscv-soc-fixes, thanks!
+Patch applied to wireless-next.git, thanks.
 
-[1/1] riscv: dts: starfive: disable unused csi/camss nodes
-      https://git.kernel.org/conor/c/2e11e78667db
+29dd3e48b9bd wifi: wilc1000: Set MAC after operation mode
 
-Thanks,
-Conor.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20241003132504.52233-1-marex@denx.de/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
