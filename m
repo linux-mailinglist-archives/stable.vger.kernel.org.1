@@ -1,145 +1,103 @@
-Return-Path: <stable+bounces-86867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D1529A446D
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 19:15:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59DE19A448F
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 19:27:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 331FB1F22A03
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 17:15:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6A5FB21047
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 17:27:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F25204099;
-	Fri, 18 Oct 2024 17:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A332F20400F;
+	Fri, 18 Oct 2024 17:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PmkstWnq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CJxflyKr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1AE204007
-	for <stable@vger.kernel.org>; Fri, 18 Oct 2024 17:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA8314F136
+	for <stable@vger.kernel.org>; Fri, 18 Oct 2024 17:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729271721; cv=none; b=R9j6hnBqFtpMOBQsr5Xa3gjU6xDnZZJlxjHKHbFVnxAmCoRaDysjG/VDMenwDftj0tmcT3xpL+xFLdQGqd8qHkrxKluCCGYgN3hdp5K7PoxV8lXIpWg5xBe7+cvPOOVNyL8dMIDgr/b/Oc5jSfX+jCv95OPPxuj7ny63/LLNQ2A=
+	t=1729272425; cv=none; b=P6Q7rE8yVSCUktv5sC7STxkJSvk+3p9JRMyretSnmBP3HO/h7YN02zDGBt8A6TqP5fPzrcFAzFMgVj00I9GOQFsco8uIM2Q/6IPMghmvw7JG+7eTFeviWzOWceWL6c9dx7ma4mzvrlKl3FEMoQLJWy20YW/g+Rf06DEWtTKKQaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729271721; c=relaxed/simple;
-	bh=0ALLVjy8iC9H/pCEIRkmJNJyhi+/TN8pkI0KN1fzMhE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e78N9awU2MMUiF+tKJWldd3dRmQV4SSUwXbPXRtdIzoe2vNLMVTTQ/jWqtWw7U5qMVPGNPjNKKSfLD4KTFJigxlIJ3e6FmAOfFGj2mK7cph7uYBPE5VAKdaqgsVmS3Sptrz9kizKTHrAOo1mvpREOWcN9x/Ftnv61hoISQPGmew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PmkstWnq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA896C4CEC3
-	for <stable@vger.kernel.org>; Fri, 18 Oct 2024 17:15:20 +0000 (UTC)
+	s=arc-20240116; t=1729272425; c=relaxed/simple;
+	bh=x+4ci1Q3huRNBQV0foigVogZfkPl6tV1ELjMzgD/51Q=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=FKG0aFrdApf8wYtsRQHeiwOyxVfK9yyic5dB2lqIGO/GpjF8j9nuQ06pAmlbwIKtpwC/I2XVoIhsYsj2iBCsw7SJHH9qBZKW5+02ICYgDWAWFtsLM6FW5lTc6jmKHLH/nmcEVdldQIGNdxLDCAM5A4fymXBUiTToDFfRUze3lm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CJxflyKr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B23D2C4CEC3;
+	Fri, 18 Oct 2024 17:27:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729271720;
-	bh=0ALLVjy8iC9H/pCEIRkmJNJyhi+/TN8pkI0KN1fzMhE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=PmkstWnqIx0yIDONgr/czYGMwMIP1OrY8sz1OEzGatCoWT72v8J8LxoYNfhUqkG0P
-	 w9PfMFU05SZbv38jijWkgq+VdhntWVqos/4+p6eI44eD/erzOMaxAkAH1QSnXm4XJI
-	 92J4JUnoy4P0/xjgjXjUfdme5NlTsxOLDSN1M7kz4JgWSbDGxOEzzUpbiUhMQGSU7l
-	 rGgEVj5NGbixUv5GiOaHrYJump9JXtVrj0V9O227UmG97WsjUqupLsB33aEDnZNBy4
-	 1z3JyAuUiPvQXRe4hYBbh8tyPJsZabG6m4J+tLEPVDhPhQ5CvNq05hAfSEy3UMDyLl
-	 3hNmnJpFxkjcg==
-Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-e290d5f83bcso2244289276.0
-        for <stable@vger.kernel.org>; Fri, 18 Oct 2024 10:15:20 -0700 (PDT)
-X-Gm-Message-State: AOJu0YxffksxZmJLRW9jHW4TNhxpfBqGIodzvcZGA71dRfGmLOuqKwwf
-	yfPOCWG5gpMsyzWhzm9nPN/S8jjDtZed0wJNRWn8zu8BaFNNuYb17BllkP3CbD+3Oozob2xupl+
-	4Hx53Ms+X7w4/65pDIi7xC1EPADHi+1LlAJXqFA==
-X-Google-Smtp-Source: AGHT+IHduZkvqyerJwsAMOCT2rb6Erz8X9/RH+zEAGV5BIDhI4cTWY9qe48/tvTEiJWC2yOxD8kQs2LKq8Eb6uFTrMQ=
-X-Received: by 2002:a05:690c:2e86:b0:6db:3b2f:a18a with SMTP id
- 00721157ae682-6e5bfc8ca98mr25565857b3.11.1729271719995; Fri, 18 Oct 2024
- 10:15:19 -0700 (PDT)
+	s=k20201202; t=1729272425;
+	bh=x+4ci1Q3huRNBQV0foigVogZfkPl6tV1ELjMzgD/51Q=;
+	h=From:Subject:Date:To:Cc:From;
+	b=CJxflyKr+W7O+0pZPmroN38DGVsdrCm3reHAiUyoMMYGQQe5ZjSnvd2JPW9ECZzoR
+	 4rCfzY5PwKbwvoofLlDSq4mZcd+nrrwFR5Yh5yg6mbsPvFObnu/76e28rYV0OD1d1w
+	 fJtvtjiuZl0g7UJAa4eA9P3mVr3B93k4NxEDiEeVQdgNGAwYrIlCaMeNaq1oufB08C
+	 ufd2F/6agOMjBuPYqLhoHuL2kxu4aPLU8+xQsG7i/xbtcc56Ri5wfrvdIo8oRHJ7vi
+	 2JVsW5mHYzjvIiXEWUrEi3vav5J5MYPzyFq8fMR4RcNDf3WxX7I6vDQQ70SBxUo36k
+	 GlJ98O374tghg==
+From: chrisl@kernel.org
+Subject: [PATCH 6.11.y v2 0/3] Yu Zhao's memory fix backport
+Date: Fri, 18 Oct 2024 10:27:03 -0700
+Message-Id: <20241018-stable-yuzhao-v2-0-1fd556716eda@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241017-stable-yuzhao-v1-0-3a4566660d44@kernel.org>
- <20241017-stable-yuzhao-v1-2-3a4566660d44@kernel.org> <2024101850-dwarf-payday-8d15@gregkh>
-In-Reply-To: <2024101850-dwarf-payday-8d15@gregkh>
-From: Chris Li <chrisl@kernel.org>
-Date: Fri, 18 Oct 2024 10:15:09 -0700
-X-Gmail-Original-Message-ID: <CACePvbUXDRBgkU6c1oEsbd_JaZ+ymHN_ecHjirKtHNQ6W2wneA@mail.gmail.com>
-Message-ID: <CACePvbUXDRBgkU6c1oEsbd_JaZ+ymHN_ecHjirKtHNQ6W2wneA@mail.gmail.com>
-Subject: Re: [PATCH 6.11.y 2/3] mm/codetag: fix pgalloc_tag_split()
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Muchun Song <muchun.song@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Yu Zhao <yuzhao@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	Vlastimil Babka <vbabka@suse.cz>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGeaEmcC/13MQQ7CIBCF4as0sxYDiKV15T1MF2jHQmygGSqxN
+ txdbOLG2f2TvG+FiOQwwqlagTC56IIvIXcV3KzxAzLXlwbJpRJc1CzO5joiW55vawLTWret4Kq
+ R2EDZTIR399q8S1faujgHWjY+ie/3J+k/KQnG2cGoY12O90qdH0gex32gAbqc8wd5sxm3qwAAA
+ A==
+To: stable@vger.kernel.org
+Cc: Greg KH <gregkh@linuxfoundation.org>, 
+ Muchun Song <muchun.song@linux.dev>, 
+ Andrew Morton <akpm@linux-foundation.org>, Yu Zhao <yuzhao@google.com>, 
+ Suren Baghdasaryan <surenb@google.com>, 
+ Kent Overstreet <kent.overstreet@linux.dev>, 
+ Vlastimil Babka <vbabka@suse.cz>, kernel test robot <oliver.sang@intel.com>, 
+ Janosch Frank <frankja@linux.ibm.com>, 
+ Marc Hartmayer <mhartmay@linux.ibm.com>, Chris Li <chrisl@kernel.org>
+X-Mailer: b4 0.13.0
 
-Hi Greg,
+A few commits from Yu Zhao have been merged into 6.12.
+They need to be backported to 6.11.
+- c2a967f6ab0ec ("mm/hugetlb_vmemmap: don't synchronize_rcu() without HVO")
+- 95599ef684d01 ("mm/codetag: fix pgalloc_tag_split()")
+- e0a955bf7f61c ("mm/codetag: add pgalloc_tag_copy()")
 
-On Fri, Oct 18, 2024 at 1:29=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Thu, Oct 17, 2024 at 02:58:03PM -0700, chrisl@kernel.org wrote:
-> > From: Yu Zhao <yuzhao@google.com>
-> >
-> > [ Upstream commit 95599ef684d01136a8b77c16a7c853496786e173 ]
-> >
-> > The current assumption is that a large folio can only be split into
-> > order-0 folios.  That is not the case for hugeTLB demotion, nor for THP
-> > split: see commit c010d47f107f ("mm: thp: split huge page to any lower
-> > order pages").
-> >
-> > When a large folio is split into ones of a lower non-zero order, only t=
-he
-> > new head pages should be tagged.  Tagging tail pages can cause imbalanc=
-ed
-> > "calls" counters, since only head pages are untagged by pgalloc_tag_sub=
-()
-> > and the "calls" counts on tail pages are leaked, e.g.,
-> >
-> >   # echo 2048kB >/sys/kernel/mm/hugepages/hugepages-1048576kB/demote_si=
-ze
-> >   # echo 700 >/sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
-> >   # time echo 700 >/sys/kernel/mm/hugepages/hugepages-1048576kB/demote
-> >   # echo 0 >/sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
-> >   # grep alloc_gigantic_folio /proc/allocinfo
-> >
-> > Before this patch:
-> >   0  549427200  mm/hugetlb.c:1549 func:alloc_gigantic_folio
-> >
-> >   real  0m2.057s
-> >   user  0m0.000s
-> >   sys   0m2.051s
-> >
-> > After this patch:
-> >   0          0  mm/hugetlb.c:1549 func:alloc_gigantic_folio
-> >
-> >   real  0m1.711s
-> >   user  0m0.000s
-> >   sys   0m1.704s
-> >
-> > Not tagging tail pages also improves the splitting time, e.g., by about
-> > 15% when demoting 1GB hugeTLB folios to 2MB ones, as shown above.
-> >
-> > Link: https://lkml.kernel.org/r/20240906042108.1150526-2-yuzhao@google.=
-com
-> > Fixes: be25d1d4e822 ("mm: create new codetag references during page spl=
-itting")
-> > Signed-off-by: Yu Zhao <yuzhao@google.com>
-> > Acked-by: Suren Baghdasaryan <surenb@google.com>
-> > Cc: Kent Overstreet <kent.overstreet@linux.dev>
-> > Cc: Muchun Song <muchun.song@linux.dev>
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
->
-> You did not sign off on this backport, so even if I wanted to take it, I
-> couldn't :(
+---
+Changes in v2:
+- Add signed off tag
+- Link to v1: https://lore.kernel.org/r/20241017-stable-yuzhao-v1-0-3a4566660d44@kernel.org
 
-My bad, sorry my first attempt back port some patches for someone else.
+---
+Yu Zhao (3):
+      mm/hugetlb_vmemmap: don't synchronize_rcu() without HVO
+      mm/codetag: fix pgalloc_tag_split()
+      mm/codetag: add pgalloc_tag_copy()
 
-> Please fix this, and patch 3/3 up, and just send those.
+ include/linux/alloc_tag.h   | 24 ++++++++-----------
+ include/linux/mm.h          | 57 +++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/pgalloc_tag.h | 31 ------------------------
+ mm/huge_memory.c            |  2 +-
+ mm/hugetlb_vmemmap.c        | 40 +++++++++++++++----------------
+ mm/migrate.c                |  1 +
+ mm/page_alloc.c             |  4 ++--
+ 7 files changed, 91 insertions(+), 68 deletions(-)
+---
+base-commit: 8e24a758d14c0b1cd42ab0aea980a1030eea811f
+change-id: 20241016-stable-yuzhao-7779910482e8
 
-I will add sign off to all 3 patches and send out the v2. I haven't
-found an easy way to skip the cover letter in b4 yet. It might be
-easier just to refresh the whole series.
+Best regards,
+-- 
+Chris Li <chrisl@kernel.org>
 
-Chris
 
