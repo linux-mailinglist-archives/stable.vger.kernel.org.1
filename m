@@ -1,193 +1,101 @@
-Return-Path: <stable+bounces-86885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2C729A48CA
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 23:14:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B73229A48FE
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 23:37:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D865BB21F49
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 21:14:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F36DB23726
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 21:37:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7FC2038AD;
-	Fri, 18 Oct 2024 21:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E892B18E34E;
+	Fri, 18 Oct 2024 21:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="NjCq2MUT"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Sx3P6vRe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC21213A244;
-	Fri, 18 Oct 2024 21:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5B418D640
+	for <stable@vger.kernel.org>; Fri, 18 Oct 2024 21:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729286042; cv=none; b=KzrpD3VSXavmYWYdZrtGdcqUcgNyj47y/oLdJCJt7woivSvdTRED+nthi3/wSNgKgUpkarvKrYedFxo8isc4MDxVxjbOHyztg47sKBYK4C2gBd85E+MMRnk3eFwUTKWPtwTtNJkD/TV2vPCeFCcyyr1vhrbK62CID5trtaw63Bc=
+	t=1729287426; cv=none; b=JKzRLchxIXzWzLK0DH3e4ImjHwiPVm4pWqsDvfZTWe491RwNOdxixREssasXy2cZX8aWTxqykWqq8Odlyz2e7bXiEK8i5ebGyiBp+PdEe67C9B8VwlT3qlyqHoKJS78hwnXawNwZkQsF37Zxp0eTrazoGxazbQpk2NZrBHWo6yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729286042; c=relaxed/simple;
-	bh=IYnPDUnk+qNTrxolcfnIVuM4O7wrsLiAcIhotmiAfSs=;
-	h=Date:To:From:Subject:Message-Id; b=LMi99iBQ9/s+9LPfOyWHk8eIizwTYUvuTG5W8Q+U6M/RZqSwuhuz/s5jJYEd2eIdf8AMVFosWB6b+ZfW5Qpe+bP2JvWOhrMHbtqY+NGNX7leGXbBILTHX9Qw9Y2gE0Pwc5FzpxMRCOTI8VLw/PEpCTa+vtJ6HgQ69F7Z7h2eTGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=NjCq2MUT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ABAAC4CEC3;
-	Fri, 18 Oct 2024 21:14:02 +0000 (UTC)
+	s=arc-20240116; t=1729287426; c=relaxed/simple;
+	bh=7uArWuu662YLX+5+NeTQNX9c5XCJkAt5M9yXKh/syS0=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=tasoJEsWmoJLev5u6Y1KSQXj1Hk/zdN3MkRsKm/hHYsI+c060KLqy2Yyb7Aj1La16vg6yAp0nZej1VjJhbVj30fZEDcnVuQQf8lAo/lN3ijoMR1hq7MxLvRYLN59s72pupoowmyG2MoihjNJZORFmFOkDDyXN/a38kvwCYDQUWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Sx3P6vRe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB4D6C4CEC3;
+	Fri, 18 Oct 2024 21:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1729286042;
-	bh=IYnPDUnk+qNTrxolcfnIVuM4O7wrsLiAcIhotmiAfSs=;
-	h=Date:To:From:Subject:From;
-	b=NjCq2MUT0Teg15CpgxSs283L762FbcE0Db+6nls4xh4kEy1eSotGBQfRV1aml+Awl
-	 VKQMicVEwsLuvUj/pyahGB7lbe7+F2svWWqa6/tKUPjVxuQ5EYGpYsPJXtwE5gdKbx
-	 75Fr8eHl1FpQ8lZ+aYS/Xcz/lHbotquFaRWwErAQ=
-Date: Fri, 18 Oct 2024 14:14:01 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,ryan.roberts@arm.com,peterx@redhat.com,edliaw@google.com,akpm@linux-foundation.org
+	s=korg; t=1729287426;
+	bh=7uArWuu662YLX+5+NeTQNX9c5XCJkAt5M9yXKh/syS0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Sx3P6vRexMD2esFE4t2cmPdc+tNf9CM9mZJlAZ+f/B6m7XHaRca4M4+6M3lN8pIfx
+	 miII3ONy1cr05vj4HJqa9hiYZjzNF4yKF09pdSDuvWfbGoVymPXd0VoBl2pAwUrDSr
+	 3+5LvZ0m1SE1gntrmHDY8/EU2ue8taPeSb1Kpj7I=
+Date: Fri, 18 Oct 2024 14:37:05 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + revert-selftests-mm-replace-atomic_bool-with-pthread_barrier_t.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241018211402.3ABAAC4CEC3@smtp.kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Chris Li <chrisl@kernel.org>, stable@vger.kernel.org, yangge
+ <yangge1116@126.com>, Yu Zhao <yuzhao@google.com>, David Hildenbrand
+ <david@redhat.com>, Hugh Dickins <hughd@google.com>,
+ baolin.wang@linux.alibaba.com, Kairui Song <ryncsn@gmail.com>
+Subject: Re: [PATCH 6.11.y] mm: vmscan.c: fix OOM on swap stress test
+Message-Id: <20241018143705.73954d6c3451770240a5da09@linux-foundation.org>
+In-Reply-To: <2024101800-resurface-edginess-1fcf@gregkh>
+References: <20241016-stable-oom-fix-v1-1-ca604a36a2b6@kernel.org>
+	<2024101800-resurface-edginess-1fcf@gregkh>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Fri, 18 Oct 2024 10:51:30 +0200 Greg KH <gregkh@linuxfoundation.org> wrote:
 
-The patch titled
-     Subject: Revert "selftests/mm: replace atomic_bool with pthread_barrier_t"
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     revert-selftests-mm-replace-atomic_bool-with-pthread_barrier_t.patch
+> On Wed, Oct 16, 2024 at 09:49:49AM -0700, Chris Li wrote:
+> > [ Upstream commit 0885ef4705607936fc36a38fd74356e1c465b023 ]
+> > 
+> > I found a regression on mm-unstable during my swap stress test, using
+> > tmpfs to compile linux.  The test OOM very soon after the make spawns many
+> > cc processes.
+> > 
+> > It bisects down to this change: 33dfe9204f29b415bbc0abb1a50642d1ba94f5e9
+> > (mm/gup: clear the LRU flag of a page before adding to LRU batch)
+> > 
+> > Yu Zhao propose the fix: "I think this is one of the potential side
+> > effects -- Huge mentioned earlier about isolate_lru_folios():"
+> > 
+> > I test that with it the swap stress test no longer OOM.
+> > 
+> > Link: https://lore.kernel.org/r/CAOUHufYi9h0kz5uW3LHHS3ZrVwEq-kKp8S6N-MZUmErNAXoXmw@mail.gmail.com/
+> > Link: https://lkml.kernel.org/r/20240905-lru-flag-v2-1-8a2d9046c594@kernel.org
+> > Fixes: 33dfe9204f29 ("mm/gup: clear the LRU flag of a page before adding to LRU batch")
+> > Signed-off-by: Chris Li <chrisl@kernel.org>
+> > Suggested-by: Yu Zhao <yuzhao@google.com>
+> > Suggested-by: Hugh Dickins <hughd@google.com>
+> > Closes: https://lore.kernel.org/all/CAF8kJuNP5iTj2p07QgHSGOJsiUfYpJ2f4R1Q5-3BN9JiD9W_KA@mail.gmail.com/
+> > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> > ---
+> >  mm/vmscan.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> Again, for mm changes, we need an explicit ack from the mm maintainers
+> before we can take them.  I'll wait for that.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/revert-selftests-mm-replace-atomic_bool-with-pthread_barrier_t.patch
+Yes, please proceed with the backport.  It looks like the cc:stable got
+lost because it wasn't in the original commit.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Edward Liaw <edliaw@google.com>
-Subject: Revert "selftests/mm: replace atomic_bool with pthread_barrier_t"
-Date: Fri, 18 Oct 2024 17:17:23 +0000
-
-This reverts commit e61ef21e27e8deed8c474e9f47f4aa7bc37e138c.
-
-uffd_poll_thread may be called by other tests that do not initialize the
-pthread_barrier, so this approach is not correct.  This will revert to
-using atomic_bool instead.
-
-Link: https://lkml.kernel.org/r/20241018171734.2315053-3-edliaw@google.com
-Fixes: e61ef21e27e8 ("selftests/mm: replace atomic_bool with pthread_barrier_t")
-Signed-off-by: Edward Liaw <edliaw@google.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- tools/testing/selftests/mm/uffd-common.c     |    5 ++---
- tools/testing/selftests/mm/uffd-common.h     |    3 ++-
- tools/testing/selftests/mm/uffd-unit-tests.c |   14 ++++++--------
- 3 files changed, 10 insertions(+), 12 deletions(-)
-
---- a/tools/testing/selftests/mm/uffd-common.c~revert-selftests-mm-replace-atomic_bool-with-pthread_barrier_t
-+++ a/tools/testing/selftests/mm/uffd-common.c
-@@ -18,7 +18,7 @@ bool test_uffdio_wp = true;
- unsigned long long *count_verify;
- uffd_test_ops_t *uffd_test_ops;
- uffd_test_case_ops_t *uffd_test_case_ops;
--pthread_barrier_t ready_for_fork;
-+atomic_bool ready_for_fork;
- 
- static int uffd_mem_fd_create(off_t mem_size, bool hugetlb)
- {
-@@ -519,8 +519,7 @@ void *uffd_poll_thread(void *arg)
- 	pollfd[1].fd = pipefd[cpu*2];
- 	pollfd[1].events = POLLIN;
- 
--	/* Ready for parent thread to fork */
--	pthread_barrier_wait(&ready_for_fork);
-+	ready_for_fork = true;
- 
- 	for (;;) {
- 		ret = poll(pollfd, 2, -1);
---- a/tools/testing/selftests/mm/uffd-common.h~revert-selftests-mm-replace-atomic_bool-with-pthread_barrier_t
-+++ a/tools/testing/selftests/mm/uffd-common.h
-@@ -33,6 +33,7 @@
- #include <inttypes.h>
- #include <stdint.h>
- #include <sys/random.h>
-+#include <stdatomic.h>
- 
- #include "../kselftest.h"
- #include "vm_util.h"
-@@ -104,7 +105,7 @@ extern bool map_shared;
- extern bool test_uffdio_wp;
- extern unsigned long long *count_verify;
- extern volatile bool test_uffdio_copy_eexist;
--extern pthread_barrier_t ready_for_fork;
-+extern atomic_bool ready_for_fork;
- 
- extern uffd_test_ops_t anon_uffd_test_ops;
- extern uffd_test_ops_t shmem_uffd_test_ops;
---- a/tools/testing/selftests/mm/uffd-unit-tests.c~revert-selftests-mm-replace-atomic_bool-with-pthread_barrier_t
-+++ a/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -774,7 +774,7 @@ static void uffd_sigbus_test_common(bool
- 	char c;
- 	struct uffd_args args = { 0 };
- 
--	pthread_barrier_init(&ready_for_fork, NULL, 2);
-+	ready_for_fork = false;
- 
- 	fcntl(uffd, F_SETFL, uffd_flags | O_NONBLOCK);
- 
-@@ -791,9 +791,8 @@ static void uffd_sigbus_test_common(bool
- 	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &args))
- 		err("uffd_poll_thread create");
- 
--	/* Wait for child thread to start before forking */
--	pthread_barrier_wait(&ready_for_fork);
--	pthread_barrier_destroy(&ready_for_fork);
-+	while (!ready_for_fork)
-+		; /* Wait for the poll_thread to start executing before forking */
- 
- 	pid = fork();
- 	if (pid < 0)
-@@ -834,7 +833,7 @@ static void uffd_events_test_common(bool
- 	char c;
- 	struct uffd_args args = { 0 };
- 
--	pthread_barrier_init(&ready_for_fork, NULL, 2);
-+	ready_for_fork = false;
- 
- 	fcntl(uffd, F_SETFL, uffd_flags | O_NONBLOCK);
- 	if (uffd_register(uffd, area_dst, nr_pages * page_size,
-@@ -845,9 +844,8 @@ static void uffd_events_test_common(bool
- 	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &args))
- 		err("uffd_poll_thread create");
- 
--	/* Wait for child thread to start before forking */
--	pthread_barrier_wait(&ready_for_fork);
--	pthread_barrier_destroy(&ready_for_fork);
-+	while (!ready_for_fork)
-+		; /* Wait for the poll_thread to start executing before forking */
- 
- 	pid = fork();
- 	if (pid < 0)
-_
-
-Patches currently in -mm which might be from edliaw@google.com are
-
-revert-selftests-mm-fix-deadlock-for-fork-after-pthread_create-on-arm.patch
-revert-selftests-mm-replace-atomic_bool-with-pthread_barrier_t.patch
-selftests-mm-fix-deadlock-for-fork-after-pthread_create-with-atomic_bool.patch
+btw Chris, that was a quite poor changelog.  It didn't explain the code
+change at all!
 
 
