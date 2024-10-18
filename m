@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-86870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B81F9A4490
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 19:27:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5572A9A4491
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 19:27:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA0151C22CBB
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 17:27:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B31E1F22F56
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 17:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8BE204011;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A888A204012;
 	Fri, 18 Oct 2024 17:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OiygzGmG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QTDd9hlp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169E8204012
-	for <stable@vger.kernel.org>; Fri, 18 Oct 2024 17:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D20204021
+	for <stable@vger.kernel.org>; Fri, 18 Oct 2024 17:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729272426; cv=none; b=DSr+7U+D0keuMG5jv/9V/YZf2y0YFozKd1BKhqh02mbSkZReGnq49KZfhfhmhSynDDsnKfGrWMRtzjxOyZvtZtwJZPs9reCkZ+9Y50p+61IKbNAq/VE3qHlDwSW1TCBIiAyL+Tm+9wUmE69qtrF8xZELfMHvVcX4Y9jkM2uYP44=
+	t=1729272426; cv=none; b=MskI9Tv9DG2eKx38ON7eDSEuiI/o5isJ4vlC+1YGTrx0b3+wCmdC9+wTwafnYQGsnk0MAvZogS5HQTYtmBP+PPHnRMN7KiyrJoyC2EI3/rcAUiBIEXYRrA4KOAf2LLblweHytU/tAS+grs+6srSLpH6KH2ReN8Go2rHgfdhOUZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1729272426; c=relaxed/simple;
-	bh=BjT4yUEif/C7ZnutetNR54/CQEs/PxSVu6rHWzDZz40=;
+	bh=psG8/z/USQpSlbxCcVowNhZZ7cvZiKehgVTmZhOCEyw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CxlQC+gbUS8zn2KAA5aszBN7bSjgLkd5+1VpidtK/3xQ9hMYmcpw5M+aedmmL219aDVTsslq+efqxdca+KPRinscRh2PydIjIeBfGKWVg5vXctDdPV/5rIt4dOSe6xlkAS3KHTke2y4227wZsGNABNbFalrHN1cAXgoddHZX8AU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OiygzGmG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC77C4CEC3;
+	 In-Reply-To:To:Cc; b=bCK/eCZvZ9xqClMyJ3eqRNaZMCDJZ37YoDFOIdp71/KNr8eve0IHuG8r8opm9FPqxqpyuf8Bgn7jaiNODorGf2C3xF+PhTm447siLClJaT9R/CMEXzU9bxAt1J+rvaiezp0gcF8bKDhZ9shr0DE+ac1LhAWgxBPjC+0OpC4BpOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QTDd9hlp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE4F7C4CED3;
 	Fri, 18 Oct 2024 17:27:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729272425;
-	bh=BjT4yUEif/C7ZnutetNR54/CQEs/PxSVu6rHWzDZz40=;
+	s=k20201202; t=1729272426;
+	bh=psG8/z/USQpSlbxCcVowNhZZ7cvZiKehgVTmZhOCEyw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=OiygzGmG+rsXe5oF+DX14kRuCiXHjanSNf4JE/rhG41Xbo7CUfZqTP6tycZbdqmKy
-	 V6kJqLWcJC8uqPNkv/IBsjufGvvfgIpXK6lCREdgTiLEoHBp4S+gBnCT8+O+w/Y/2V
-	 VEwLOZDsxbIYZXWNIiATdAShbM54iIO7T8cbZuw2OcijXH0jwlmXDoABx+2g4J4d+1
-	 gP3KU+bpzu9Ki4jNgeTfur+LLHCYRVV+r/6UUyYf61jnMYhdp4LFV6RGmEO755q9ob
-	 WmhEc7jsSx6XHoiQ3rABvKyYvzzejMGz+0F/R0meGpGMS1ZBnyIP9fFcc2esc6P5j6
-	 LA5UZF0NymmcA==
+	b=QTDd9hlpVoMQPyzeYxBXGJRki/rxriJtsMpBOlNuhkXAr6YLghuJ1vRIdF+KD0v9X
+	 b4oXqSQmodWKWA5PsihoZl8YSy9u0N5H+tuQ6sWo1ET+fcrtN8W+aRUx0kKRXyqliE
+	 TzrS6Vys6wcmMhLj13cggruVBu1nbrNjpixr0PZvcatrY1GpQwqipPdbws/sfuoNeO
+	 AWPE4c6w1hGIjF4Yy64G0+F32JJrgwZVQRP7TYk6cYJD7C7kuf3QQmLveQ1DkDNMeP
+	 KuFOR/yxhvw11En0IYuHERgI6hrHbMMHK8adY0NwguZGytE5mxnakBwJLUMUl3oPA4
+	 oQMJLD47i6R2g==
 From: chrisl@kernel.org
-Date: Fri, 18 Oct 2024 10:27:05 -0700
-Subject: [PATCH 6.11.y v2 2/3] mm/codetag: fix pgalloc_tag_split()
+Date: Fri, 18 Oct 2024 10:27:06 -0700
+Subject: [PATCH 6.11.y v2 3/3] mm/codetag: add pgalloc_tag_copy()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,7 +52,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241018-stable-yuzhao-v2-2-1fd556716eda@kernel.org>
+Message-Id: <20241018-stable-yuzhao-v2-3-1fd556716eda@kernel.org>
 References: <20241018-stable-yuzhao-v2-0-1fd556716eda@kernel.org>
 In-Reply-To: <20241018-stable-yuzhao-v2-0-1fd556716eda@kernel.org>
 To: stable@vger.kernel.org
@@ -66,43 +66,24 @@ X-Mailer: b4 0.13.0
 
 From: Yu Zhao <yuzhao@google.com>
 
-[ Upstream commit 95599ef684d01136a8b77c16a7c853496786e173 ]
+[ Upstream commit e0a955bf7f61cb034d228736d81c1ab3a47a3dca ]
 
-The current assumption is that a large folio can only be split into
-order-0 folios.  That is not the case for hugeTLB demotion, nor for THP
-split: see commit c010d47f107f ("mm: thp: split huge page to any lower
-order pages").
+Add pgalloc_tag_copy() to transfer the codetag from the old folio to the
+new one during migration.  This makes original allocation sites persist
+cross migration rather than lump into the get_new_folio callbacks passed
+into migrate_pages(), e.g., compaction_alloc():
 
-When a large folio is split into ones of a lower non-zero order, only the
-new head pages should be tagged.  Tagging tail pages can cause imbalanced
-"calls" counters, since only head pages are untagged by pgalloc_tag_sub()
-and the "calls" counts on tail pages are leaked, e.g.,
-
-  # echo 2048kB >/sys/kernel/mm/hugepages/hugepages-1048576kB/demote_size
-  # echo 700 >/sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
-  # time echo 700 >/sys/kernel/mm/hugepages/hugepages-1048576kB/demote
-  # echo 0 >/sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
-  # grep alloc_gigantic_folio /proc/allocinfo
+  # echo 1 >/proc/sys/vm/compact_memory
+  # grep compaction_alloc /proc/allocinfo
 
 Before this patch:
-  0  549427200  mm/hugetlb.c:1549 func:alloc_gigantic_folio
-
-  real  0m2.057s
-  user  0m0.000s
-  sys   0m2.051s
+  132968448  32463  mm/compaction.c:1880 func:compaction_alloc
 
 After this patch:
-  0          0  mm/hugetlb.c:1549 func:alloc_gigantic_folio
+          0      0  mm/compaction.c:1880 func:compaction_alloc
 
-  real  0m1.711s
-  user  0m0.000s
-  sys   0m1.704s
-
-Not tagging tail pages also improves the splitting time, e.g., by about
-15% when demoting 1GB hugeTLB folios to 2MB ones, as shown above.
-
-Link: https://lkml.kernel.org/r/20240906042108.1150526-2-yuzhao@google.com
-Fixes: be25d1d4e822 ("mm: create new codetag references during page splitting")
+Link: https://lkml.kernel.org/r/20240906042108.1150526-3-yuzhao@google.com
+Fixes: dcfe378c81f7 ("lib: introduce support for page allocation tagging")
 Signed-off-by: Yu Zhao <yuzhao@google.com>
 Acked-by: Suren Baghdasaryan <surenb@google.com>
 Cc: Kent Overstreet <kent.overstreet@linux.dev>
@@ -111,135 +92,110 @@ Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Chris Li <chrisl@kernel.org>
 ---
- include/linux/mm.h          | 30 ++++++++++++++++++++++++++++++
- include/linux/pgalloc_tag.h | 31 -------------------------------
- mm/huge_memory.c            |  2 +-
- mm/page_alloc.c             |  4 ++--
- 4 files changed, 33 insertions(+), 34 deletions(-)
+ include/linux/alloc_tag.h | 24 ++++++++++--------------
+ include/linux/mm.h        | 27 +++++++++++++++++++++++++++
+ mm/migrate.c              |  1 +
+ 3 files changed, 38 insertions(+), 14 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 1470736017168..8330363126918 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4216,4 +4216,34 @@ void vma_pgtable_walk_end(struct vm_area_struct *vma);
- 
- int reserve_mem_find_by_name(const char *name, phys_addr_t *start, phys_addr_t *size);
- 
-+#ifdef CONFIG_MEM_ALLOC_PROFILING
-+static inline void pgalloc_tag_split(struct folio *folio, int old_order, int new_order)
-+{
-+	int i;
-+	struct alloc_tag *tag;
-+	unsigned int nr_pages = 1 << new_order;
-+
-+	if (!mem_alloc_profiling_enabled())
+diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
+index 8c61ccd161ba3..39a7fd60e389a 100644
+--- a/include/linux/alloc_tag.h
++++ b/include/linux/alloc_tag.h
+@@ -137,7 +137,16 @@ static inline void alloc_tag_sub_check(union codetag_ref *ref) {}
+ /* Caller should verify both ref and tag to be valid */
+ static inline void __alloc_tag_ref_set(union codetag_ref *ref, struct alloc_tag *tag)
+ {
++	alloc_tag_add_check(ref, tag);
++	if (!ref || !tag)
 +		return;
 +
-+	tag = pgalloc_tag_get(&folio->page);
+ 	ref->ct = &tag->ct;
++}
++
++static inline void alloc_tag_ref_set(union codetag_ref *ref, struct alloc_tag *tag)
++{
++	__alloc_tag_ref_set(ref, tag);
+ 	/*
+ 	 * We need in increment the call counter every time we have a new
+ 	 * allocation or when we split a large allocation into smaller ones.
+@@ -147,22 +156,9 @@ static inline void __alloc_tag_ref_set(union codetag_ref *ref, struct alloc_tag
+ 	this_cpu_inc(tag->counters->calls);
+ }
+ 
+-static inline void alloc_tag_ref_set(union codetag_ref *ref, struct alloc_tag *tag)
+-{
+-	alloc_tag_add_check(ref, tag);
+-	if (!ref || !tag)
+-		return;
+-
+-	__alloc_tag_ref_set(ref, tag);
+-}
+-
+ static inline void alloc_tag_add(union codetag_ref *ref, struct alloc_tag *tag, size_t bytes)
+ {
+-	alloc_tag_add_check(ref, tag);
+-	if (!ref || !tag)
+-		return;
+-
+-	__alloc_tag_ref_set(ref, tag);
++	alloc_tag_ref_set(ref, tag);
+ 	this_cpu_add(tag->counters->bytes, bytes);
+ }
+ 
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 8330363126918..a3a86fc407385 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4240,10 +4240,37 @@ static inline void pgalloc_tag_split(struct folio *folio, int old_order, int new
+ 		}
+ 	}
+ }
++
++static inline void pgalloc_tag_copy(struct folio *new, struct folio *old)
++{
++	struct alloc_tag *tag;
++	union codetag_ref *ref;
++
++	tag = pgalloc_tag_get(&old->page);
 +	if (!tag)
 +		return;
 +
-+	for (i = nr_pages; i < (1 << old_order); i += nr_pages) {
-+		union codetag_ref *ref = get_page_tag_ref(folio_page(folio, i));
++	ref = get_page_tag_ref(&new->page);
++	if (!ref)
++		return;
 +
-+		if (ref) {
-+			/* Set new reference to point to the original tag */
-+			alloc_tag_ref_set(ref, tag);
-+			put_page_tag_ref(ref);
-+		}
-+	}
++	/* Clear the old ref to the original allocation tag. */
++	clear_page_tag_ref(&old->page);
++	/* Decrement the counters of the tag on get_new_folio. */
++	alloc_tag_sub(ref, folio_nr_pages(new));
++
++	__alloc_tag_ref_set(ref, tag);
++
++	put_page_tag_ref(ref);
 +}
-+#else /* !CONFIG_MEM_ALLOC_PROFILING */
-+static inline void pgalloc_tag_split(struct folio *folio, int old_order, int new_order)
+ #else /* !CONFIG_MEM_ALLOC_PROFILING */
+ static inline void pgalloc_tag_split(struct folio *folio, int old_order, int new_order)
+ {
+ }
++
++static inline void pgalloc_tag_copy(struct folio *new, struct folio *old)
 +{
 +}
-+#endif /* CONFIG_MEM_ALLOC_PROFILING */
-+
+ #endif /* CONFIG_MEM_ALLOC_PROFILING */
+ 
  #endif /* _LINUX_MM_H */
-diff --git a/include/linux/pgalloc_tag.h b/include/linux/pgalloc_tag.h
-index 207f0c83c8e97..59a3deb792a8d 100644
---- a/include/linux/pgalloc_tag.h
-+++ b/include/linux/pgalloc_tag.h
-@@ -80,36 +80,6 @@ static inline void pgalloc_tag_sub(struct page *page, unsigned int nr)
- 	}
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 368ab3878fa6e..028282b28242e 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -666,6 +666,7 @@ void folio_migrate_flags(struct folio *newfolio, struct folio *folio)
+ 		folio_set_readahead(newfolio);
+ 
+ 	folio_copy_owner(newfolio, folio);
++	pgalloc_tag_copy(newfolio, folio);
+ 
+ 	mem_cgroup_migrate(folio, newfolio);
  }
- 
--static inline void pgalloc_tag_split(struct page *page, unsigned int nr)
--{
--	int i;
--	struct page_ext *first_page_ext;
--	struct page_ext *page_ext;
--	union codetag_ref *ref;
--	struct alloc_tag *tag;
--
--	if (!mem_alloc_profiling_enabled())
--		return;
--
--	first_page_ext = page_ext = page_ext_get(page);
--	if (unlikely(!page_ext))
--		return;
--
--	ref = codetag_ref_from_page_ext(page_ext);
--	if (!ref->ct)
--		goto out;
--
--	tag = ct_to_alloc_tag(ref->ct);
--	page_ext = page_ext_next(page_ext);
--	for (i = 1; i < nr; i++) {
--		/* Set new reference to point to the original tag */
--		alloc_tag_ref_set(codetag_ref_from_page_ext(page_ext), tag);
--		page_ext = page_ext_next(page_ext);
--	}
--out:
--	page_ext_put(first_page_ext);
--}
--
- static inline struct alloc_tag *pgalloc_tag_get(struct page *page)
- {
- 	struct alloc_tag *tag = NULL;
-@@ -142,7 +112,6 @@ static inline void clear_page_tag_ref(struct page *page) {}
- static inline void pgalloc_tag_add(struct page *page, struct task_struct *task,
- 				   unsigned int nr) {}
- static inline void pgalloc_tag_sub(struct page *page, unsigned int nr) {}
--static inline void pgalloc_tag_split(struct page *page, unsigned int nr) {}
- static inline struct alloc_tag *pgalloc_tag_get(struct page *page) { return NULL; }
- static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr) {}
- 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 99b146d16a185..837d41906f2ac 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2976,7 +2976,7 @@ static void __split_huge_page(struct page *page, struct list_head *list,
- 	/* Caller disabled irqs, so they are still disabled here */
- 
- 	split_page_owner(head, order, new_order);
--	pgalloc_tag_split(head, 1 << order);
-+	pgalloc_tag_split(folio, order, new_order);
- 
- 	/* See comment in __split_huge_page_tail() */
- 	if (folio_test_anon(folio)) {
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 91ace8ca97e21..72b710566cdbc 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2764,7 +2764,7 @@ void split_page(struct page *page, unsigned int order)
- 	for (i = 1; i < (1 << order); i++)
- 		set_page_refcounted(page + i);
- 	split_page_owner(page, order, 0);
--	pgalloc_tag_split(page, 1 << order);
-+	pgalloc_tag_split(page_folio(page), order, 0);
- 	split_page_memcg(page, order, 0);
- }
- EXPORT_SYMBOL_GPL(split_page);
-@@ -4950,7 +4950,7 @@ static void *make_alloc_exact(unsigned long addr, unsigned int order,
- 		struct page *last = page + nr;
- 
- 		split_page_owner(page, order, 0);
--		pgalloc_tag_split(page, 1 << order);
-+		pgalloc_tag_split(page_folio(page), order, 0);
- 		split_page_memcg(page, order, 0);
- 		while (page < --last)
- 			set_page_refcounted(last);
 
 -- 
 2.47.0.rc1.288.g06298d1525-goog
