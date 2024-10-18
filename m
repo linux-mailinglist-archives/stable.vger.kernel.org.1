@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-86793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296D29A391C
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 10:50:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADBA39A3920
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 10:51:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5E111F2421B
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 08:50:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F24F2847A9
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 08:51:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E55618F2DA;
-	Fri, 18 Oct 2024 08:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C3118F2DA;
+	Fri, 18 Oct 2024 08:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B1aifIBL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hsqJscs0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F71218E74D;
-	Fri, 18 Oct 2024 08:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2676C18E028
+	for <stable@vger.kernel.org>; Fri, 18 Oct 2024 08:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729241447; cv=none; b=OMJUIUDXgAkkFWa6BhXWQ3UNn2SzQMqC2/IPqdJ4CasyduYnL5EP7P9WWVhocAO7JEk3s7UmbqUIx3DNCqBgzk0ScOo0FjX7Gc6bVHgKatxIpbRRws2KqAGKL3Vm5LE5NNa8UhVPSC03kRGK5X/6hIpSbHxb4/Q6MiWBHt3ujyE=
+	t=1729241495; cv=none; b=lEFaUD8azQP54ct5OiNg1/VhfnMpDtYWQW/xNoqS1OpKUdBvFJwWiAgvV6lCJb1NzViTcU1nyhLcodZI2WchF0Zo1K5b1iIVaf9TwIgLEqon5qQzUKyZcdS4XxIEkdyni3x4BmQeafT5lqGDFhuiki+76ZOOCh0yD9mUAgdixUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729241447; c=relaxed/simple;
-	bh=6h58gmhvH19+l1HmL8w0zIeXa7o5pPUxEE3u/i7chHw=;
+	s=arc-20240116; t=1729241495; c=relaxed/simple;
+	bh=WOWNRVdsuEOQOnhBsh295Biz4P8Acd/nVMwn4wyQX8Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oDlqw5w9CFQaHoLheLJGxiRPKAL8NqR6CUL4zvrVF2y8V8EbSYsjDN02zNQZFUk10RHVxbTe7boFzUVWRxRAvm06UeuKy1SaRR7D+6Af/vSipmd+CFrslkeW2eS5f6OvBWW33mvdJWIu/XDdUw/7OELbtx4bUEdNL/iAknQfso0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B1aifIBL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F7F7C4CEC7;
-	Fri, 18 Oct 2024 08:50:45 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=NN+I+LSCR+Tjn3/2kbB92EXKhJjdUZajOpDb8POw48JHunRPDzeztRTNFWb/lSu0Q/Guc9A9WamM2I/dSLnMH8+Dn5Iol8wJrNsy4kZetSEAXn4Z5NwEIjHaA8OuP8iY5yGrEq2qtNC/BX5pKljjeo9rYWvQMoZ9Mlo+6Ydn1f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hsqJscs0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 136D3C4CEC3;
+	Fri, 18 Oct 2024 08:51:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729241446;
-	bh=6h58gmhvH19+l1HmL8w0zIeXa7o5pPUxEE3u/i7chHw=;
+	s=korg; t=1729241493;
+	bh=WOWNRVdsuEOQOnhBsh295Biz4P8Acd/nVMwn4wyQX8Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B1aifIBLfda4gEYe3iCknDkikfpKCFcV4s1rq0bU5yRneUxvldn6UyFYlOry2uPBV
-	 yad+Y5j2oNoaADnoUXxV1l5nkAR/zGgd6MGsBz0mbIk0PQ0SouBJ3wUo3AZwZlp/Mp
-	 m2anFgMQvkWc0l7Ewp4puKp+9EvxZ7h610Omuwho=
-Date: Fri, 18 Oct 2024 10:50:42 +0200
+	b=hsqJscs0ABThIzisyUQhT6lcvfWTUbbz/B7w+svnUJGHNFUpKoonWToqoE0eg9d+P
+	 SD3SgyVbgtEmbdCTD/HsmMgnk+avW2goLL1k3fArGyG94AX2FkTKG9wc3eeKMoAiQf
+	 sxblsqpgHxsKn4YuM6U05+oTm1vasLHlUhFCWdOs=
+Date: Fri, 18 Oct 2024 10:51:30 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Sherry Yang <sherry.yang@oracle.com>
-Cc: stable@vger.kernel.org, sashal@kernel.org, johannes@sipsolutions.net,
-	davem@davemloft.net, kuba@kernel.org,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 5.15.y 5.10.y 5.4.y] wifi: mac80211: fix potential key
- use-after-free
-Message-ID: <2024101836-unsavory-snowdrift-1f2c@gregkh>
-References: <20241015222030.1105765-1-sherry.yang@oracle.com>
+To: Chris Li <chrisl@kernel.org>
+Cc: stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+	yangge <yangge1116@126.com>, Yu Zhao <yuzhao@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	Hugh Dickins <hughd@google.com>, baolin.wang@linux.alibaba.com,
+	Kairui Song <ryncsn@gmail.com>
+Subject: Re: [PATCH 6.11.y] mm: vmscan.c: fix OOM on swap stress test
+Message-ID: <2024101800-resurface-edginess-1fcf@gregkh>
+References: <20241016-stable-oom-fix-v1-1-ca604a36a2b6@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,34 +57,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241015222030.1105765-1-sherry.yang@oracle.com>
+In-Reply-To: <20241016-stable-oom-fix-v1-1-ca604a36a2b6@kernel.org>
 
-On Tue, Oct 15, 2024 at 03:20:30PM -0700, Sherry Yang wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
+On Wed, Oct 16, 2024 at 09:49:49AM -0700, Chris Li wrote:
+> [ Upstream commit 0885ef4705607936fc36a38fd74356e1c465b023 ]
 > 
-> [ Upstream commit 31db78a4923ef5e2008f2eed321811ca79e7f71b ]
+> I found a regression on mm-unstable during my swap stress test, using
+> tmpfs to compile linux.  The test OOM very soon after the make spawns many
+> cc processes.
 > 
-> When ieee80211_key_link() is called by ieee80211_gtk_rekey_add()
-> but returns 0 due to KRACK protection (identical key reinstall),
-> ieee80211_gtk_rekey_add() will still return a pointer into the
-> key, in a potential use-after-free. This normally doesn't happen
-> since it's only called by iwlwifi in case of WoWLAN rekey offload
-> which has its own KRACK protection, but still better to fix, do
-> that by returning an error code and converting that to success on
-> the cfg80211 boundary only, leaving the error for bad callers of
-> ieee80211_gtk_rekey_add().
+> It bisects down to this change: 33dfe9204f29b415bbc0abb1a50642d1ba94f5e9
+> (mm/gup: clear the LRU flag of a page before adding to LRU batch)
 > 
-> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Fixes: fdf7cb4185b6 ("mac80211: accept key reinstall without changing anything")
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> [Sherry: bp to fix CVE-2023-52530, resolved minor conflicts in 
-> net/mac80211/cfg.c because of context change due to missing commit
-> 23a5f0af6ff4 ("wifi: mac80211: remove cipher scheme support")
-> ccdde7c74ffd ("wifi: mac80211: properly implement MLO key handling")]
-> Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
+> Yu Zhao propose the fix: "I think this is one of the potential side
+> effects -- Huge mentioned earlier about isolate_lru_folios():"
+> 
+> I test that with it the swap stress test no longer OOM.
+> 
+> Link: https://lore.kernel.org/r/CAOUHufYi9h0kz5uW3LHHS3ZrVwEq-kKp8S6N-MZUmErNAXoXmw@mail.gmail.com/
+> Link: https://lkml.kernel.org/r/20240905-lru-flag-v2-1-8a2d9046c594@kernel.org
+> Fixes: 33dfe9204f29 ("mm/gup: clear the LRU flag of a page before adding to LRU batch")
+> Signed-off-by: Chris Li <chrisl@kernel.org>
+> Suggested-by: Yu Zhao <yuzhao@google.com>
+> Suggested-by: Hugh Dickins <hughd@google.com>
+> Closes: https://lore.kernel.org/all/CAF8kJuNP5iTj2p07QgHSGOJsiUfYpJ2f4R1Q5-3BN9JiD9W_KA@mail.gmail.com/
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> ---
+>  mm/vmscan.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Now queued up, thanks.
+Again, for mm changes, we need an explicit ack from the mm maintainers
+before we can take them.  I'll wait for that.
+
+thanks,
 
 greg k-h
 
