@@ -1,276 +1,238 @@
-Return-Path: <stable+bounces-86862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B52099A4321
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 18:01:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F08109A4372
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 18:15:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 377411F243A3
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 16:01:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CAAE1C23460
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 16:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8AA1FF5F7;
-	Fri, 18 Oct 2024 16:01:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="qUkuwihx"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9316202F6C;
+	Fri, 18 Oct 2024 16:15:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455F74207A;
-	Fri, 18 Oct 2024 16:01:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E4A56B81;
+	Fri, 18 Oct 2024 16:15:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729267294; cv=none; b=S3RnBKCpjqtNvaxzDwYhBXIxSKX/6aAA/xGPKEVpideE/J3fu113Z4MQAjkb6dV35VBKMJ6hOwoztKV5qDLU3lVRObSZWkxqNzBIRSwGWDrBRl/APsQRp8zD5VCdNVlkOmSJqjPt6cmWcQMQrvdsmAV9AIPrF/Kc+uDBIhoH7nk=
+	t=1729268124; cv=none; b=M6xe5Btxn/wYGO3w8YBRaiHoZx4Iauysg26oVlRSlDjf1C/s9sIJWO1nJlT8ZQg3qrGukA1VOSosgDPcdQlvtfZ7TAXuQyGKJOaqPTMY0tknhWAcrhzILH0XlJFCzlg5g9/uNwu2Pu4HWaCnrWSzJfxqOEO1QMNUOwYBhXg0Eq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729267294; c=relaxed/simple;
-	bh=DSH5ljZ8L1mmviwfX60USPqc3+8AOtMoEvMWfwHVDQU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J74qZHZKFqWy9IEKLZNQ6/dm4IzE79RAauMFrSwHji5VMgrIfxlg0XSISN9voEi7npugmofNXDfG8KD+pOsv7lXoDB340WTdMmGTX0mDtbhiX9XcpbfiBpxIXvWeRFo4fDd3MroTZJ6PRumUIcfZPElpJodYz5uEzW0Zoh1Hf3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=qUkuwihx; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2f75c56f16aso24286441fa.0;
-        Fri, 18 Oct 2024 09:01:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1729267290; x=1729872090; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+qa6/zrxAijZfZ594gtPgZYTFwJ6heFddsJmIF0526Q=;
-        b=qUkuwihx/GvjLGCRk445WfKobhbPtLwqQnH0tkmp8cOXqb7YRyAYqWv7LPLmYPLlr1
-         B1w9S6lRg+vKw/XMjCgOyQlOUZSceK86Vm3bQjEeNtY//d58vhHw3InhyU1GgR5hvKKR
-         mytcJQ58SUn5d/SFKnD7PTf3SpMR/W/LpziqnxRonDc/AUfbWH5KDitRFsf6oQg9daIh
-         XrkQUvKoKTOvNe455Hak2tZCyikiQWmsZRIS6UXLYtN14P2qbF0b2axszi4LiWeau2pE
-         DQHzxWwKozORocyLMZ3Zzwd6Xl4LSYOVe2Uq+Thz6PN778M9gzjhY0H8Un7n2isZJ3J5
-         BuGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729267290; x=1729872090;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+qa6/zrxAijZfZ594gtPgZYTFwJ6heFddsJmIF0526Q=;
-        b=GicgZo9R2LfKfbw9kXUtlCtqvIqQDzk5EoqCAMkG1DlDSE1VL3ttTW4FIj0Esw8610
-         ULfkFTMOolA9JRUUtq81K9qswMUMKvFsLRFI2odkNKtDHjnX1iLiJdTTXPbW4sRzB0EO
-         FvstIX/yQWPIpXpAdZi5MhFxyTtbA4J94vwb5yi5docLPJTg4SejmGLD1PlotHMJNlny
-         dPvz0ZsTd3yRf1X5QxU8IgiqA5/78/oPtY3yNz96V6sIlMN5Y5b3DddM1oELc4BmS/oI
-         r1ckFsrPTsCXpOcG+v/7d+1smBPKMvVXLtilTAD8406HsSIXUDVM3ysgcYcIlVaXsnef
-         5fRA==
-X-Forwarded-Encrypted: i=1; AJvYcCVao+KTmROp99vGHggBPK5U1eKlzfmwELL1chmMIVhoC1PRz8+ExrwQlWxCq6fyGVqb2A3ydtGn@vger.kernel.org, AJvYcCVeeteHp1bH0gaXT9HD17bCGhEkRueBeshp994VwEAaayXDihfHyTf9nRknb5aNd+6RLwKvuxo9PEw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgrzBgvjRYqtMplyaMgdOKBf5QibKM4XlJpgyiZds5B374eaRL
-	sNaG5TUTRycSDVlbZ3hhx3ZSS6GFOLdcixXCbuKkJSs+uSwEHm2N3BKb0a5CaoWsjSQpIIdqqR5
-	WRCueO+VUP7tB4spRBTpfRLhLqhaJJw==
-X-Google-Smtp-Source: AGHT+IFmnIBjLw07PLoWWJfjIblQm0rk07ULgqC6n11PzzV9UFs7V5ASqZzmHDR6hcX2gqoMS+ki9gJeWslsSKW91vY=
-X-Received: by 2002:a2e:be84:0:b0:2fb:4abb:7001 with SMTP id
- 38308e7fff4ca-2fb82e8ece5mr15773711fa.2.1729267288285; Fri, 18 Oct 2024
- 09:01:28 -0700 (PDT)
+	s=arc-20240116; t=1729268124; c=relaxed/simple;
+	bh=NYJbSUC7fmb8x7A/KtOI5Vy3tZbgLqj8fj+8r53CnXk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DjXr+Yg1RE2NcolvmZ9It+ZJmCusTBPmXWLEYMhfU7+oP2MU/DKWAEZUDy7T3qQD/oqkDW3/UBdcB2aCoofZxhHGrHUGgSh8LmqnM3I0TPtnOmr3gws0xuoC3fX4Si35NrEBuLRIPdRUuPm986WTvwWL79ioqzU0S6v+6JG7Xzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.18.186.51])
+	by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4XVTml1RfXz9v7JC;
+	Fri, 18 Oct 2024 23:55:03 +0800 (CST)
+Received: from mail02.huawei.com (unknown [7.182.16.47])
+	by mail.maildlp.com (Postfix) with ESMTP id 4C0DC1407B1;
+	Sat, 19 Oct 2024 00:15:12 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.204.63.22])
+	by APP1 (Coremail) with SMTP id LxC2BwC3+zJ_iRJnh0oaAw--.43081S2;
+	Fri, 18 Oct 2024 17:15:11 +0100 (CET)
+From: Roberto Sassu <roberto.sassu@huaweicloud.com>
+To: akpm@linux-foundation.org,
+	Liam.Howlett@oracle.com,
+	lorenzo.stoakes@oracle.com,
+	vbabka@suse.cz,
+	jannh@google.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	ebpqwerty472123@gmail.com,
+	paul@paul-moore.com,
+	zohar@linux.ibm.com,
+	dmitry.kasatkin@gmail.com,
+	eric.snowberg@oracle.com,
+	jmorris@namei.org,
+	serge@hallyn.com,
+	linux-integrity@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	stable@vger.kernel.org,
+	syzbot+1cd571a672400ef3a930@syzkaller.appspotmail.com,
+	Roberto Sassu <roberto.sassu@huawei.com>
+Subject: [PATCH v2] mm: Split critical region in remap_file_pages() and invoke LSMs in between
+Date: Fri, 18 Oct 2024 18:14:15 +0200
+Message-Id: <20241018161415.3845146-1-roberto.sassu@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241017222459.79104-1-okorniev@redhat.com> <833fbf2425229ad351e660e7840c67009a3a0ac0.camel@kernel.org>
-In-Reply-To: <833fbf2425229ad351e660e7840c67009a3a0ac0.camel@kernel.org>
-From: Olga Kornievskaia <aglo@umich.edu>
-Date: Fri, 18 Oct 2024 12:01:16 -0400
-Message-ID: <CAN-5tyFkt_-KZwCusRO6D2C7TVdG6z71V4hCeD=EEM-wYbdMWg@mail.gmail.com>
-Subject: Re: [PATCH v2] nfsd: fix race between laundromat and free_stateid
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Olga Kornievskaia <okorniev@redhat.com>, chuck.lever@oracle.com, linux-nfs@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:LxC2BwC3+zJ_iRJnh0oaAw--.43081S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3Wry5Zr4kXF4UXF1fZFWfAFb_yoW7Gw17pF
+	naqas0gFWkXF97Xrs2q3WDWFWYyryrKFyUurWagr1rC3sFqF1SgrWfGFW5ZF4DArykZFZ5
+	ZF4jyr9YkF4UJFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvIb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
+	AFwI0_Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
+	n4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I
+	0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8
+	ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcV
+	CY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAF
+	wI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf
+	9x07jIksgUUUUU=
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQAABGcRw-kMAAAAsF
 
-On Fri, Oct 18, 2024 at 9:44=E2=80=AFAM Jeff Layton <jlayton@kernel.org> wr=
-ote:
->
-> On Thu, 2024-10-17 at 18:24 -0400, Olga Kornievskaia wrote:
-> > There is a race between laundromat handling of revoked delegations
-> > and a client sending free_stateid operation. Laundromat thread
-> > finds that delegation has expired and needs to be revoked so it
-> > marks the delegation stid revoked and it puts it on a reaper list
-> > but then it unlock the state lock and the actual delegation revocation
-> > happens without the lock. Once the stid is marked revoked a racing
-> > free_stateid processing thread does the following (1) it calls
-> > list_del_init() which removes it from the reaper list and (2) frees
-> > the delegation stid structure. The laundromat thread ends up not
-> > calling the revoke_delegation() function for this particular delegation
-> > but that means it will no release the lock lease that exists on
-> > the file.
-> >
-> > Now, a new open for this file comes in and ends up finding that
-> > lease list isn't empty and calls nfsd_breaker_owns_lease() which ends
-> > up trying to derefence a freed delegation stateid. Leading to the
-> > followint use-after-free KASAN warning:
-> >
-> > kernel: =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > kernel: BUG: KASAN: slab-use-after-free in nfsd_breaker_owns_lease+0x14=
-0/0x160 [nfsd]
-> > kernel: Read of size 8 at addr ffff0000e73cd0c8 by task nfsd/6205
-> > kernel:
-> > kernel: CPU: 2 UID: 0 PID: 6205 Comm: nfsd Kdump: loaded Not tainted 6.=
-11.0-rc7+ #9
-> > kernel: Hardware name: Apple Inc. Apple Virtualization Generic Platform=
-, BIOS 2069.0.0.0.0 08/03/2024
-> > kernel: Call trace:
-> > kernel: dump_backtrace+0x98/0x120
-> > kernel: show_stack+0x1c/0x30
-> > kernel: dump_stack_lvl+0x80/0xe8
-> > kernel: print_address_description.constprop.0+0x84/0x390
-> > kernel: print_report+0xa4/0x268
-> > kernel: kasan_report+0xb4/0xf8
-> > kernel: __asan_report_load8_noabort+0x1c/0x28
-> > kernel: nfsd_breaker_owns_lease+0x140/0x160 [nfsd]
-> > kernel: leases_conflict+0x68/0x370
-> > kernel: __break_lease+0x204/0xc38
-> > kernel: nfsd_open_break_lease+0x8c/0xf0 [nfsd]
-> > kernel: nfsd_file_do_acquire+0xb3c/0x11d0 [nfsd]
-> > kernel: nfsd_file_acquire_opened+0x84/0x110 [nfsd]
-> > kernel: nfs4_get_vfs_file+0x634/0x958 [nfsd]
-> > kernel: nfsd4_process_open2+0xa40/0x1a40 [nfsd]
-> > kernel: nfsd4_open+0xa08/0xe80 [nfsd]
-> > kernel: nfsd4_proc_compound+0xb8c/0x2130 [nfsd]
-> > kernel: nfsd_dispatch+0x22c/0x718 [nfsd]
-> > kernel: svc_process_common+0x8e8/0x1960 [sunrpc]
-> > kernel: svc_process+0x3d4/0x7e0 [sunrpc]
-> > kernel: svc_handle_xprt+0x828/0xe10 [sunrpc]
-> > kernel: svc_recv+0x2cc/0x6a8 [sunrpc]
-> > kernel: nfsd+0x270/0x400 [nfsd]
-> > kernel: kthread+0x288/0x310
-> > kernel: ret_from_fork+0x10/0x20
-> >
-> > This patch proposes a fix that's based on adding 2 new additional
-> > stid's sc_status values that help coordinate between the laundromat
-> > and other operations (nfsd4_free_stateid() and nfsd4_delegreturn()).
-> >
-> > First to make sure, that once the stid is marked revoked, it is not
-> > removed by the nfsd4_free_stateid(), the laundromat take a reference
-> > on the stateid. Then, coordinating whether the stid has been put
-> > on the cl_revoked list or we are processing FREE_STATEID and need to
-> > make sure to remove it from the list, each check that state and act
-> > accordingly. If laundromat has added to the cl_revoke list before
-> > the arrival of FREE_STATEID, then nfsd4_free_stateid() knows to remove
-> > it from the list. If nfsd4_free_stateid() finds that operations arrived
-> > before laundromat has placed it on cl_revoke list, it marks the state
-> > freed and then laundromat will no longer add it to the list.
-> >
-> > Also, for nfsd4_delegreturn() when looking for the specified stid,
-> > we need to access stid that are marked removed or freeable, it means
-> > the laundromat has started processing it but hasn't finished and this
-> > delegreturn needs to return nfserr_deleg_revoked and not
-> > nfserr_bad_stateid. The latter will not trigger a FREE_STATEID and the
-> > lack of it will leave this stid on the cl_revoked list indefinitely.
-> >
-> > Fixes: 2d4a532d385f ("nfsd: ensure that clp->cl_revoked list is
-> > protected by clp->cl_lock")
-> > CC: stable@vger.kernel.org
-> > Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-> > ---
-> >  fs/nfsd/nfs4state.c | 15 ++++++++++++---
-> >  fs/nfsd/state.h     |  2 ++
-> >  2 files changed, 14 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-> > index ac1859c7cc9d..cb989802e896 100644
-> > --- a/fs/nfsd/nfs4state.c
-> > +++ b/fs/nfsd/nfs4state.c
-> > @@ -1370,10 +1370,16 @@ static void revoke_delegation(struct nfs4_deleg=
-ation *dp)
-> >       if (dp->dl_stid.sc_status &
-> >           (SC_STATUS_REVOKED | SC_STATUS_ADMIN_REVOKED)) {
->
-> Now that I look, we'll never call revoke_delegation() without one of
-> these bits set. Maybe we should turn that if statement into a
-> WARN_ON_ONCE check, and then just do the rest unconditionally.
->
-> >               spin_lock(&clp->cl_lock);
-> > -             refcount_inc(&dp->dl_stid.sc_count);
->
-> If you're going to remove this, then I think you also need to add a
-> recount_inc() to nfs4_revoke_states() before the call to
-> revoke_delegation().
->
-> > +             if (dp->dl_stid.sc_status & SC_STATUS_FREED) {
-> > +                     list_del_init(&dp->dl_recall_lru);
-> > +                     spin_unlock(&clp->cl_lock);
-> > +                     goto out;
-> > +             }
->
-> The FREEABLE/FREED dance is pretty complex. It'd be nice to have some
-> documentation around it. Maybe consider adding a kerneldoc header over
-> this function that explains that, and the requirement that you need to
-> take an extra reference to the stateid before calling this.
->
-> >               list_add(&dp->dl_recall_lru, &clp->cl_revoked);
-> > +             dp->dl_stid.sc_status |=3D SC_STATUS_FREEABLE;
-> >               spin_unlock(&clp->cl_lock);
-> >       }
-> > +out:
->
-> I'd just move the spin_unlock to here and get rid of the two above.
->
-> >       destroy_unhashed_deleg(dp);
-> >  }
->
->
-> >
-> > @@ -6545,6 +6551,7 @@ nfs4_laundromat(struct nfsd_net *nn)
-> >               dp =3D list_entry (pos, struct nfs4_delegation, dl_recall=
-_lru);
-> >               if (!state_expired(&lt, dp->dl_time))
-> >                       break;
-> > +             refcount_inc(&dp->dl_stid.sc_count);
-> >               unhash_delegation_locked(dp, SC_STATUS_REVOKED);
-> >               list_add(&dp->dl_recall_lru, &reaplist);
-> >       }
-> > @@ -7156,7 +7163,9 @@ nfsd4_free_stateid(struct svc_rqst *rqstp, struct=
- nfsd4_compound_state *cstate,
-> >               if (s->sc_status & SC_STATUS_REVOKED) {
-> >                       spin_unlock(&s->sc_lock);
-> >                       dp =3D delegstateid(s);
-> > -                     list_del_init(&dp->dl_recall_lru);
-> > +                     if (s->sc_status & SC_STATUS_FREEABLE)
-> > +                             list_del_init(&dp->dl_recall_lru);
-> > +                     s->sc_status |=3D SC_STATUS_FREED;
-> >                       spin_unlock(&cl->cl_lock);
-> >                       nfs4_put_stid(s);
-> >                       ret =3D nfs_ok;
-> > @@ -7486,7 +7495,7 @@ nfsd4_delegreturn(struct svc_rqst *rqstp, struct =
-nfsd4_compound_state *cstate,
-> >       if ((status =3D fh_verify(rqstp, &cstate->current_fh, S_IFREG, 0)=
-))
-> >               return status;
-> >
-> > -     status =3D nfsd4_lookup_stateid(cstate, stateid, SC_TYPE_DELEG, 0=
-, &s, nn);
-> > +     status =3D nfsd4_lookup_stateid(cstate, stateid, SC_TYPE_DELEG, S=
-C_STATUS_REVOKED|SC_STATUS_FREEABLE, &s, nn);
-> >       if (status)
-> >               goto out;
-> >       dp =3D delegstateid(s);
-> > diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
-> > index 79c743c01a47..35b3564c065f 100644
-> > --- a/fs/nfsd/state.h
-> > +++ b/fs/nfsd/state.h
-> > @@ -114,6 +114,8 @@ struct nfs4_stid {
-> >  /* For a deleg stateid kept around only to process free_stateid's: */
-> >  #define SC_STATUS_REVOKED    BIT(1)
-> >  #define SC_STATUS_ADMIN_REVOKED      BIT(2)
-> > +#define SC_STATUS_FREEABLE   BIT(3)
-> > +#define SC_STATUS_FREED              BIT(4)
-> >       unsigned short          sc_status;
-> >
-> >       struct list_head        sc_cp_list;
->
-> Other than the problems above, this looks reasonable. Nice work!
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 
-Thank you for the comments Jeff! I'll address them all in v3.
+Commit ea7e2d5e49c0 ("mm: call the security_mmap_file() LSM hook in
+remap_file_pages()") fixed a security issue, it added an LSM check when
+trying to remap file pages, so that LSMs have the opportunity to evaluate
+such action like for other memory operations such as mmap() and mprotect().
 
-> --
-> Jeff Layton <jlayton@kernel.org>
->
+However, that commit called security_mmap_file() inside the mmap_lock lock,
+while the other calls do it before taking the lock, after commit
+8b3ec6814c83 ("take security_mmap_file() outside of ->mmap_sem").
+
+This caused lock inversion issue with IMA which was taking the mmap_lock
+and i_mutex lock in the opposite way when the remap_file_pages() system
+call was called.
+
+Solve the issue by splitting the critical region in remap_file_pages() in
+two regions: the first takes a read lock of mmap_lock, retrieves the VMA
+and the file descriptor associated, and calculates the 'prot' and 'flags'
+variables; the second takes a write lock on mmap_lock, checks that the VMA
+flags and the VMA file descriptor are the same as the ones obtained in the
+first critical region (otherwise the system call fails), and calls
+do_mmap().
+
+In between, after releasing the read lock and before taking the write lock,
+call security_mmap_file(), and solve the lock inversion issue.
+
+Cc: stable@vger.kernel.org # v6.12-rcx
+Fixes: ea7e2d5e49c0 ("mm: call the security_mmap_file() LSM hook in remap_file_pages()")
+Reported-by: syzbot+1cd571a672400ef3a930@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-security-module/66f7b10e.050a0220.46d20.0036.GAE@google.com/
+Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
+Reviewed-by: Jann Horn <jannh@google.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Tested-by: Roberto Sassu <roberto.sassu@huawei.com>
+Tested-by: syzbot+1cd571a672400ef3a930@syzkaller.appspotmail.com
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+---
+ mm/mmap.c | 69 +++++++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 52 insertions(+), 17 deletions(-)
+
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 9c0fb43064b5..f731dd69e162 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -1640,6 +1640,7 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
+ 	unsigned long populate = 0;
+ 	unsigned long ret = -EINVAL;
+ 	struct file *file;
++	vm_flags_t vm_flags;
+ 
+ 	pr_warn_once("%s (%d) uses deprecated remap_file_pages() syscall. See Documentation/mm/remap_file_pages.rst.\n",
+ 		     current->comm, current->pid);
+@@ -1656,12 +1657,60 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
+ 	if (pgoff + (size >> PAGE_SHIFT) < pgoff)
+ 		return ret;
+ 
+-	if (mmap_write_lock_killable(mm))
++	if (mmap_read_lock_killable(mm))
+ 		return -EINTR;
+ 
++	/*
++	 * Look up VMA under read lock first so we can perform the security
++	 * without holding locks (which can be problematic). We reacquire a
++	 * write lock later and check nothing changed underneath us.
++	 */
+ 	vma = vma_lookup(mm, start);
+ 
+-	if (!vma || !(vma->vm_flags & VM_SHARED))
++	if (!vma || !(vma->vm_flags & VM_SHARED)) {
++		mmap_read_unlock(mm);
++		return -EINVAL;
++	}
++
++	prot |= vma->vm_flags & VM_READ ? PROT_READ : 0;
++	prot |= vma->vm_flags & VM_WRITE ? PROT_WRITE : 0;
++	prot |= vma->vm_flags & VM_EXEC ? PROT_EXEC : 0;
++
++	flags &= MAP_NONBLOCK;
++	flags |= MAP_SHARED | MAP_FIXED | MAP_POPULATE;
++	if (vma->vm_flags & VM_LOCKED)
++		flags |= MAP_LOCKED;
++
++	/* Save vm_flags used to calculate prot and flags, and recheck later. */
++	vm_flags = vma->vm_flags;
++	file = get_file(vma->vm_file);
++
++	mmap_read_unlock(mm);
++
++	/* Call outside mmap_lock to be consistent with other callers. */
++	ret = security_mmap_file(file, prot, flags);
++	if (ret) {
++		fput(file);
++		return ret;
++	}
++
++	ret = -EINVAL;
++
++	/* OK security check passed, take write lock + let it rip. */
++	if (mmap_write_lock_killable(mm)) {
++		fput(file);
++		return -EINTR;
++	}
++
++	vma = vma_lookup(mm, start);
++
++	if (!vma)
++		goto out;
++
++	/* Make sure things didn't change under us. */
++	if (vma->vm_flags != vm_flags)
++		goto out;
++	if (vma->vm_file != file)
+ 		goto out;
+ 
+ 	if (start + size > vma->vm_end) {
+@@ -1689,25 +1738,11 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
+ 			goto out;
+ 	}
+ 
+-	prot |= vma->vm_flags & VM_READ ? PROT_READ : 0;
+-	prot |= vma->vm_flags & VM_WRITE ? PROT_WRITE : 0;
+-	prot |= vma->vm_flags & VM_EXEC ? PROT_EXEC : 0;
+-
+-	flags &= MAP_NONBLOCK;
+-	flags |= MAP_SHARED | MAP_FIXED | MAP_POPULATE;
+-	if (vma->vm_flags & VM_LOCKED)
+-		flags |= MAP_LOCKED;
+-
+-	file = get_file(vma->vm_file);
+-	ret = security_mmap_file(vma->vm_file, prot, flags);
+-	if (ret)
+-		goto out_fput;
+ 	ret = do_mmap(vma->vm_file, start, size,
+ 			prot, flags, 0, pgoff, &populate, NULL);
+-out_fput:
+-	fput(file);
+ out:
+ 	mmap_write_unlock(mm);
++	fput(file);
+ 	if (populate)
+ 		mm_populate(ret, populate);
+ 	if (!IS_ERR_VALUE(ret))
+-- 
+2.34.1
+
 
