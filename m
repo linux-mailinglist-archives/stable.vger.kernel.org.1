@@ -1,168 +1,129 @@
-Return-Path: <stable+bounces-86846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 553489A41AD
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 16:51:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 552B89A41BA
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 16:52:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 767391C24B22
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 14:51:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0206289655
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 14:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE9D1FF619;
-	Fri, 18 Oct 2024 14:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14F01FF5F9;
+	Fri, 18 Oct 2024 14:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XQwzxIfv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oIt+JL7L"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568451FF606
-	for <stable@vger.kernel.org>; Fri, 18 Oct 2024 14:49:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF9E10E4;
+	Fri, 18 Oct 2024 14:51:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729262983; cv=none; b=jcwubwADIznerlFESnZdXgPmjB6GqHMfOs9nbzo4pgBcXmE87fA9ln1j9y+AhaIc+VrWYXRMPZLDXiGcfKxJX1eHO4AHXXtrqIqrp6uw48xP7ZOhbn0Fw2Soyy/SnzPtP/fCI5O1zT+cHRtxBkZOWtOAFkehfey7lqXtJMS+tGY=
+	t=1729263078; cv=none; b=Pf36+ZPH+b2+2QB42fpfzGj9o4PX/hpzmdj8QLG6t/UENwL4j9NR6Unxh4nPcdTjXhlb0zzhwU5DDrAPwMfiJrD5ILD7zCiAbrLLUinUFRDk8tB8NRmOzze/sfjmI1sKFQKr37DcWtl1qEUhWuz+bb/+Up/wDhNASajyxwww4cI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729262983; c=relaxed/simple;
-	bh=OFVzv/Bzy5SEVC2fr38Gqy63G+CyJt1NjMHppf2By3o=;
+	s=arc-20240116; t=1729263078; c=relaxed/simple;
+	bh=SvFFtXDRxbY5FZUBQWKu5jXQobvklQTQdXW0nWSFaTk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lEgXBxRwce1irZhf/bf8/rqSeoD9JhWSgjyWIh5/FJybTPKykzPd9xYbF52olxhgy+dtCIXLhm7mV4FLI0cj5NKQpoFLiywf5CQJM5P/I1gyUIlt+QVkXSwn2SafBAJw6Nf5DFAIQJ6eAnGq3ABt72J/ceeGYHI23evH7rR0n/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XQwzxIfv; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729262980;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PLK06kjenlDOhOsBFo7iWO+e34B5cBf5XFw1B3ccV2U=;
-	b=XQwzxIfvhaJCADgCHi3rzqwbF7wjlFFVbaOR0JWnj7WtyuTtTMxqt04ux5D7k2EYIQ4eFM
-	1CB983WsC9+YrTSD5OSBKfcQ6mdF+YPK+M9FcJT87DgfrpabROvJHv5X1/PNpdEP5Hg5TN
-	LEDp8wQ24faGmGG3/GtV3OHz5EX+bGE=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-116-MXpGk7g5PnSk6kN3kBg-bQ-1; Fri, 18 Oct 2024 10:49:38 -0400
-X-MC-Unique: MXpGk7g5PnSk6kN3kBg-bQ-1
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7b154948b29so231438085a.0
-        for <stable@vger.kernel.org>; Fri, 18 Oct 2024 07:49:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729262978; x=1729867778;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PLK06kjenlDOhOsBFo7iWO+e34B5cBf5XFw1B3ccV2U=;
-        b=Xk+qxC49wX13MAx0gW/rCUZjSEnjic3vfvw4lKITY0iC8UHtw8FpXBe5edVb2iPozp
-         FlEUn6/97AxfIblESi5VEXldprvJeandjfEnjPyiORE0NGg9fregASWq7rDMnW1YvrTJ
-         WK/aMiQhfYA+Kv27k96TvlPnMiVHsOVu30dr+jW73Ge641PNm+BOWzEX95PBUShjr8y5
-         Z9LhlKh2h4rrVhU+uApm1AwuXHOI5Wmsn3Timc0PXHGPBZdeo6DjJFilKkrSE9I8vsxm
-         IKTHhXeZqMRR8Ecv5+LPT9SEkWbHe/wP9aLXa90+Lan7Rxmj8spWn5RBVx2bB0fbumHe
-         UsOw==
-X-Forwarded-Encrypted: i=1; AJvYcCUADZ3QzRXbgbdznJESrASvwo7Onwxp1ePCviCSA2VmGpLdbyYGs7PsylRZZpWlVDCLMAlIg2A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAXihEka2/D5dyjvfhSyd7V0P4JmWsalmo9TE+aWdd5dh6csUI
-	nMiG65RWUXZLOJQpTgWV1u3ignzlqdT29qzvabvSbKbGF20SGOFfqyV8jv/sXGN++f2oJ48jLvQ
-	lCizb0H3XbV2s6CzFJ7IuS54FKxvFPHYDP0Gk957plkTshS3BD/VMKQ==
-X-Received: by 2002:a05:620a:28ca:b0:7ac:b3bf:c30c with SMTP id af79cd13be357-7b157be329dmr296849885a.45.1729262978352;
-        Fri, 18 Oct 2024 07:49:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGdfckV/4mq/+sa6eyJY9yg4483MucXF6w+/neilLz6xBQ/bACL6PpfbLYrwxMWUXC6aOTZ6A==
-X-Received: by 2002:a05:620a:28ca:b0:7ac:b3bf:c30c with SMTP id af79cd13be357-7b157be329dmr296846185a.45.1729262977922;
-        Fri, 18 Oct 2024 07:49:37 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-46-200-231.retail.telecomitalia.it. [79.46.200.231])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b156f9509fsm75604885a.30.2024.10.18.07.49.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Oct 2024 07:49:37 -0700 (PDT)
-Date: Fri, 18 Oct 2024 16:49:33 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Philipp Stanner <pstanner@redhat.com>
-Cc: Alvaro Karsz <alvaro.karsz@solid-run.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Andy Shevchenko <andy@kernel.org>
-Subject: Re: [PATCH RESEND] vdpa: solidrun: Fix UB bug with devres
-Message-ID: <xyv4vzeq7tqq6qqfafaqxfohgmwu5tx4sb4pgg6dilpgqou32m@l4c5il7euzpb>
-References: <20241016072553.8891-2-pstanner@redhat.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=TIdchyj1D5vbCwlOv6UaIOzhaLOaqs9Mzk3WTDrCv7cCb+pYdbMUOennpbyo1jwhvc37vDUe0PlxfY5oEUREb3j8VcJlUgiXYbjAgVbIagILp/dW3zhezI8FcQilMLwt5fRfoI0+LbXJxnb9N4RYmWs+S+tXem/1Ss/9rHjxAMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oIt+JL7L; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729263077; x=1760799077;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SvFFtXDRxbY5FZUBQWKu5jXQobvklQTQdXW0nWSFaTk=;
+  b=oIt+JL7LA7ZPBve5xMAADAM7LYwGuNjpD9MHNLLA/3SjVUcdIAmdSQA4
+   aVOV7lexTBGkpPEMvJcHYA3QzOmWgbm4H/seBfQM+PorMaXBqNh+ykJoj
+   oSKb88RMU7RwnfLoBcpW5SLLjk4WI4CWD0TJvWS3lrVywWPt56J39vsRe
+   OCua6B6DxhbB3j8IdfqT0/iCpWRVLeiHAAfliCPnYNWdCXgSeM+XaaeHv
+   JTk0rxMhb05FGXTDlk38H/uLHBreG1Ks0iMa0+Ocl8qSuK420iPbLM6JO
+   6BL+v/9Gcz98HkgWS3yvFO9VJKzmqW2Z8EvK181FoVPFIZvaTk1GzHrht
+   g==;
+X-CSE-ConnectionGUID: XQ0X5kJmS3a8T8PRYInoKg==
+X-CSE-MsgGUID: ABHinBqzQLKxAUd3GIHDDg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11229"; a="32723765"
+X-IronPort-AV: E=Sophos;i="6.11,214,1725346800"; 
+   d="scan'208";a="32723765"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2024 07:51:16 -0700
+X-CSE-ConnectionGUID: GtEjq0w+RiC9vSvLGh+Orw==
+X-CSE-MsgGUID: Ei+TJ5/0TPudtRSBGS+kzQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,214,1725346800"; 
+   d="scan'208";a="78845662"
+Received: from smile.fi.intel.com ([10.237.72.154])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2024 07:51:14 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1t1oJp-00000004VH8-3nZe;
+	Fri, 18 Oct 2024 17:51:09 +0300
+Date: Fri, 18 Oct 2024 17:51:09 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Baoquan He <bhe@redhat.com>
+Cc: Gregory Price <gourry@gourry.net>, kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+	bhelgaas@google.com, ilpo.jarvinen@linux.intel.com,
+	mika.westerberg@linux.intel.com, ying.huang@intel.com,
+	tglx@linutronix.de, takahiro.akashi@linaro.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] resource,kexec: walk_system_ram_res_rev must retain
+ resource flags
+Message-ID: <ZxJ13aKBqEotI593@smile.fi.intel.com>
+References: <20241017190347.5578-1-gourry@gourry.net>
+ <ZxHFgmHPe3Cow2n8@MiWiFi-R3L-srv>
+ <ZxJTDq-PxxxIgzfv@smile.fi.intel.com>
+ <ZxJoLxyfAHxd18UM@MiWiFi-R3L-srv>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241016072553.8891-2-pstanner@redhat.com>
+In-Reply-To: <ZxJoLxyfAHxd18UM@MiWiFi-R3L-srv>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Wed, Oct 16, 2024 at 09:25:54AM +0200, Philipp Stanner wrote:
->In psnet_open_pf_bar() and snet_open_vf_bar() a string later passed to
->pcim_iomap_regions() is placed on the stack. Neither
->pcim_iomap_regions() nor the functions it calls copy that string.
->
->Should the string later ever be used, this, consequently, causes
->undefined behavior since the stack frame will by then have disappeared.
->
->Fix the bug by allocating the strings on the heap through
->devm_kasprintf().
->
->Cc: stable@vger.kernel.org	# v6.3
->Fixes: 51a8f9d7f587 ("virtio: vdpa: new SolidNET DPU driver.")
->Reported-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->Closes: https://lore.kernel.org/all/74e9109a-ac59-49e2-9b1d-d825c9c9f891@wanadoo.fr/
->Suggested-by: Andy Shevchenko <andy@kernel.org>
->Signed-off-by: Philipp Stanner <pstanner@redhat.com>
->---
-> drivers/vdpa/solidrun/snet_main.c | 14 ++++++++++----
-> 1 file changed, 10 insertions(+), 4 deletions(-)
+On Fri, Oct 18, 2024 at 09:52:47PM +0800, Baoquan He wrote:
+> On 10/18/24 at 03:22pm, Andy Shevchenko wrote:
+> > On Fri, Oct 18, 2024 at 10:18:42AM +0800, Baoquan He wrote:
+> > > On 10/17/24 at 03:03pm, Gregory Price wrote:
+> > > > walk_system_ram_res_rev() erroneously discards resource flags when
+> > > > passing the information to the callback.
+> > > > 
+> > > > This causes systems with IORESOURCE_SYSRAM_DRIVER_MANAGED memory to
+> > > > have these resources selected during kexec to store kexec buffers
+> > > > if that memory happens to be at placed above normal system ram.
+> > > 
+> > > Sorry about that. I haven't checked IORESOURCE_SYSRAM_DRIVER_MANAGED
+> > > memory carefully, wondering if res could be set as
+> > > 'IORESOURCE_SYSTEM_RAM | IORESOURCE_BUSY' plus
+> > > IORESOURCE_SYSRAM_DRIVER_MANAGED in iomem_resource tree.
+> > > 
+> > > Anyway, the change in this patch is certainly better. Thanks.
+> > 
+> > Can we get more test cases in the respective module, please?
+> 
+> Do you mean testing CXL memory in kexec/kdump? No, we can't. Kexec/kdump
+> test cases basically is system testing, not unit test or module test. It
+> needs run system and then jump to 2nd kernel, vm can be used but it
+> can't cover many cases existing only on baremetal. Currenly, Redhat's
+> CKI is heavily relied on to test them, however I am not sure if system
+> with CXL support is available in our LAB.
+> 
+> Not sure if I got you right.
 
-LGTM!
+I meant since we touch resource.c, we should really touch resource_kunit.c
+*in addition to*.
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+-- 
+With Best Regards,
+Andy Shevchenko
 
->
->diff --git a/drivers/vdpa/solidrun/snet_main.c b/drivers/vdpa/solidrun/snet_main.c
->index 99428a04068d..c8b74980dbd1 100644
->--- a/drivers/vdpa/solidrun/snet_main.c
->+++ b/drivers/vdpa/solidrun/snet_main.c
->@@ -555,7 +555,7 @@ static const struct vdpa_config_ops snet_config_ops = {
->
-> static int psnet_open_pf_bar(struct pci_dev *pdev, struct psnet *psnet)
-> {
->-	char name[50];
->+	char *name;
-> 	int ret, i, mask = 0;
-> 	/* We don't know which BAR will be used to communicate..
-> 	 * We will map every bar with len > 0.
->@@ -573,7 +573,10 @@ static int psnet_open_pf_bar(struct pci_dev *pdev, struct psnet *psnet)
-> 		return -ENODEV;
-> 	}
->
->-	snprintf(name, sizeof(name), "psnet[%s]-bars", pci_name(pdev));
->+	name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "psnet[%s]-bars", pci_name(pdev));
->+	if (!name)
->+		return -ENOMEM;
->+
-> 	ret = pcim_iomap_regions(pdev, mask, name);
-> 	if (ret) {
-> 		SNET_ERR(pdev, "Failed to request and map PCI BARs\n");
->@@ -590,10 +593,13 @@ static int psnet_open_pf_bar(struct pci_dev *pdev, struct psnet *psnet)
->
-> static int snet_open_vf_bar(struct pci_dev *pdev, struct snet *snet)
-> {
->-	char name[50];
->+	char *name;
-> 	int ret;
->
->-	snprintf(name, sizeof(name), "snet[%s]-bar", pci_name(pdev));
->+	name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "snet[%s]-bars", pci_name(pdev));
->+	if (!name)
->+		return -ENOMEM;
->+
-> 	/* Request and map BAR */
-> 	ret = pcim_iomap_regions(pdev, BIT(snet->psnet->cfg.vf_bar), name);
-> 	if (ret) {
->-- 
->2.46.1
->
->
 
 
