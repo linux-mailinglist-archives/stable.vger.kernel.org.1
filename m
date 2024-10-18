@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-86809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A6A79A3B7C
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 12:28:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 254BA9A3B86
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 12:29:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E5001C23FF6
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 10:28:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 549D91C210CA
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 10:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0051201251;
-	Fri, 18 Oct 2024 10:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43876201260;
+	Fri, 18 Oct 2024 10:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P37ZQDP5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQiL5YnY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803BF168C3F;
-	Fri, 18 Oct 2024 10:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02156168C3F
+	for <stable@vger.kernel.org>; Fri, 18 Oct 2024 10:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729247291; cv=none; b=TiwvU8i8wijoCivo27ydVr6R0w+eHvUM6+bl2pEV3Bln/VuPezHU3mRJ0ItoH0fTxiFftWF+Z/ZZDaXShykkA+BBVHawF0j8sEgJPi4NUpE7Cw4mqDxnvLmTU0f1nMhCizmjkqSwMDKIKJlsYHwqzJW8jxCi5Pq3OvWWCiPp3YE=
+	t=1729247339; cv=none; b=syQZiVXWO34+k8mGXIGDfcMYuCYzJmbg+cxdFFpHlmX1m439Q6FeUFKVjHnI84TTi1TZBBFOYRoWHMxFVp6qeOivlJdTy4jEpzPAASeU8o74VJBOmE+fVz3/MxOYYwuCg/D4BniMg0b2z9jD0pnEmyq1CumPyM2vJ+wzQKV99OU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729247291; c=relaxed/simple;
-	bh=2ydi4xpyLhuUxVf5xZR3h0Khm/4a9TI3tUL2cCB0hDo=;
+	s=arc-20240116; t=1729247339; c=relaxed/simple;
+	bh=REWg+DJcLyxWQwSgmCkjX3Xts0CxpAY3QlIkvgz2udE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aXIKl0IbygsrZVm2Q3aeY4gsXDPXhMCIuzyynluAjTv8WE5nN7md4Ug6A/HLwyJfGAO08dodjZ25Np2p/8i9W3mOvisBG9cImL29zh3tw9q9i4QGLydrOwsmUxxZyUJe+zkPmzlymV1zEq+3PqArffKdWwMRcB9HraDMvrcfhjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P37ZQDP5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF55EC4CEC3;
-	Fri, 18 Oct 2024 10:28:10 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=QSnU62MZaaQ9zESeMVyb8ybZT4bLc8psaYdOtZwMmawpz+/bQsfu9JvvWkrBnutn8dDBzgGI1A8/m+PcqzAHHZs116HaG1CxDzFalPx+iRjk7VkbYJ80SkA5cwFT0XkiqUUdfY9ub9UWC1yjxPPpc7PBfT+kLS3/OCOMqHC9Khw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cQiL5YnY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D37C4CECF;
+	Fri, 18 Oct 2024 10:28:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729247291;
-	bh=2ydi4xpyLhuUxVf5xZR3h0Khm/4a9TI3tUL2cCB0hDo=;
+	s=korg; t=1729247338;
+	bh=REWg+DJcLyxWQwSgmCkjX3Xts0CxpAY3QlIkvgz2udE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P37ZQDP5/525xkXwSNG16z7sLKcETMMyJvEeEPNFpJfEnV4IMnCmEmNs6EWEz7pUf
-	 kRASfk8HFPsaP/SYNG5yjgZS1RQsFj6g2mkcA/xi8qxz9VMLUYdY3Uxlmseh6A3faj
-	 TbGH1grsBDWx5Kf21eOiyBGYETOboT3BXIzNTAS4=
-Date: Fri, 18 Oct 2024 12:28:08 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Saeed Mirzamohammadi <saeed.mirzamohammadi@oracle.com>
-Cc: Breno Leitao <leitao@debian.org>, stable@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5.15, 5.10, 5.4, 4.19 1/1] KVM: Fix a data race on
- last_boosted_vcpu in kvm_vcpu_on_spin()
-Message-ID: <2024101802-unlearned-bullish-3ca2@gregkh>
-References: <20241017175623.2045625-1-saeed.mirzamohammadi@oracle.com>
+	b=cQiL5YnYYObn8WGM1v2tkJTEgXR5mPsX4C3ph5p4orSVsOzOqDj44vgXhLdX8C6mv
+	 ZKm99uxHdyLWb9pjjk4OySF0c7Ab8L19FNCVl8s+sbGScKUPVRnkesxthRYDO5sx/w
+	 YWrPb44Bpp2A9U57VUfsOci3Ow6tBBg0sym3VtNw=
+Date: Fri, 18 Oct 2024 12:28:51 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Sherry Yang <sherry.yang@oracle.com>
+Cc: stable@vger.kernel.org, sashal@kernel.org,
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+	tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch,
+	eric@anholt.net, robh@kernel.org, noralf@tronnes.org,
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH 6.1.y 5.15.y] drm/shmem-helper: Fix BUG_ON() on
+ mmap(PROT_WRITE, MAP_PRIVATE)
+Message-ID: <2024101845-dictator-contusion-bf29@gregkh>
+References: <20241017171829.2040531-1-sherry.yang@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,13 +58,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241017175623.2045625-1-saeed.mirzamohammadi@oracle.com>
+In-Reply-To: <20241017171829.2040531-1-sherry.yang@oracle.com>
 
-On Thu, Oct 17, 2024 at 10:56:13AM -0700, Saeed Mirzamohammadi wrote:
-> From: Breno Leitao <leitao@debian.org>
+On Thu, Oct 17, 2024 at 10:18:29AM -0700, Sherry Yang wrote:
+> From: "Wachowski, Karol" <karol.wachowski@intel.com>
 > 
-> commit 49f683b41f28918df3e51ddc0d928cb2e934ccdb upstream.
-> 
+> commit 39bc27bd688066a63e56f7f64ad34fae03fbe3b8 upstream.
 
 Now queued up, thanks.
 
