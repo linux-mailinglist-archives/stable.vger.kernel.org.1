@@ -1,71 +1,58 @@
-Return-Path: <stable+bounces-86811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94E339A3B8B
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 12:29:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AFFF9A3B9A
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 12:33:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC6AF1C24057
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 10:29:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35DEB1F2594D
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 10:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409AA2010FB;
-	Fri, 18 Oct 2024 10:29:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MI6ZdORb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 645E0201254;
+	Fri, 18 Oct 2024 10:32:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-out.aladdin-rd.ru (mail-out.aladdin-rd.ru [91.199.251.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E667520103B;
-	Fri, 18 Oct 2024 10:29:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A51200B8E;
+	Fri, 18 Oct 2024 10:32:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.199.251.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729247374; cv=none; b=QuTE+LVTfF2rEDSM/tUAUUqNKe3m9MWh7+Yhz0H1tePCOvwnPWhVizpiQR/CJf2/U6jrA6Q9jAWeCwnj7D5ALiYdoZ6HtAhs/vKcU42ArzaSjBHAe5Um7+JajUAp8pHbaAw7fK4W+RKNUnzbrLC+ZnibSia2eZkX1I7VueyXvOA=
+	t=1729247574; cv=none; b=bdNbrq7nlBEOC9kGqRL5jVMgpoEWKtGWZWYLVgE46i6sjkOaNL8ZU5nnf2pomqC8ujqvLQU96+pwlvglm95i8hs2/p7s1ulCfjKvo5UVdC2Qoqf+CQIMD9mqX2faN9/rNtzpr7JvMQkPQKvG8bSHiOWbVohF4lW2O0KQKM3hDmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729247374; c=relaxed/simple;
-	bh=KxC407iqGQu5Kl3AgihBTSCL5x5o2hiNEM47kDNTr1o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rT0i2mBC4ilorERMzzGPUB8H502SynTIHZ0rOA3qYM1QWQ3Wh1ccqfGE5Wgiw7FanbgOlKXXenO5PHwuF9nWisydiN6wSgsuSfV6nlvMogmrG1kSqWYkvOiJSMk2NBQ6IhGyGV+ZPsu5/Gz3+bStT6JNW1Itdq4X0ygFmq1KMAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MI6ZdORb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E51A1C4CEC6;
-	Fri, 18 Oct 2024 10:29:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729247373;
-	bh=KxC407iqGQu5Kl3AgihBTSCL5x5o2hiNEM47kDNTr1o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MI6ZdORb9N9BOF0U/VKTXzSMLqJ+anzjZ+So4A2L3JqC4xjuA9WMDMkZuEQLnK0ZR
-	 1k6SzddLo/gy9ZuykSi9lhplTfj15j8fSAHixzb7+XptzxySxVzcwZYKjhpBi74pW+
-	 UsQlmLd97Y8GWRAUxvM8jRvm6ATh5uPPawwu5p/s=
-Date: Fri, 18 Oct 2024 12:29:30 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Cc: stable@vger.kernel.org, MPTCP Upstream <mptcp@lists.linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	syzbot+d1bff73460e33101f0e7@syzkaller.appspotmail.com,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH 6.11.y] tcp: fix mptcp DSS corruption due to large pmtu
- xmit
-Message-ID: <2024101823-tartar-chaplain-f675@gregkh>
-References: <2024101432-shucking-snagged-7c42@gregkh>
- <20241017143218.1428691-2-matttbe@kernel.org>
+	s=arc-20240116; t=1729247574; c=relaxed/simple;
+	bh=okMYu5Tc60lHAN7IyBOAyiG/fgxCIIqv7EXvuRYZN0A=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LEVY178PC90K5+ZxODp260Y4P/qncxu51Fd979MQypKfE7HaE0N6PJbsZ7UBXRByu+bIEkuzYQdZiDK446LgnHs47wEJLSMFcv22hAgJ7dCmaj/4HCBccqVLZtqLxF2CB/C8DKIy7SunFkAQc2E8NSjlCQsLgIdinDrkcL0pysE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru; spf=pass smtp.mailfrom=aladdin.ru; arc=none smtp.client-ip=91.199.251.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aladdin.ru
+From: Daniil Dulov <d.dulov@aladdin.ru>
+To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Daniil Dulov <d.dulov@aladdin.ru>, Jes Sorensen <Jes.Sorensen@gmail.com>,
+	Kalle Valo <kvalo@codeaurora.org>, "David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, <linux-wireless@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>
+Subject: [PATCH 5.10 0/1] wifi: rtl8xxxu: Fix the error handling of the probe function
+Date: Fri, 18 Oct 2024 13:32:29 +0300
+Message-ID: <20241018103230.437496-1-d.dulov@aladdin.ru>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241017143218.1428691-2-matttbe@kernel.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EXCH-2016-04.aladdin.ru (192.168.1.104) To
+ EXCH-2016-02.aladdin.ru (192.168.1.102)
 
-On Thu, Oct 17, 2024 at 04:32:19PM +0200, Matthieu Baerts (NGI0) wrote:
-> From: Paolo Abeni <pabeni@redhat.com>
-> 
-> commit 4dabcdf581217e60690467a37c956a5b8dbc6bd9 upstream.
-
-Now queued up, thanks.
-
-greg k-h
+Svacer reports a NULL-pointer dereference in rtl8xxxu_probe().
+After having been compared to a NULL value, pointer hw is passed as
+1st parameter in call to ieee80211_free_hw(), where it is dereferenced.
+The problem is present in 5.10 stable release and can be fixed by the
+following upstream patch that can be cleanly applied to 5.10 branch.
 
