@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-86733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0A629A33DB
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 06:32:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CAEC9A3403
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 07:01:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D4E8284222
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 04:32:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED2E91F24186
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 05:01:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A5FA16DEA9;
-	Fri, 18 Oct 2024 04:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E96176AB7;
+	Fri, 18 Oct 2024 05:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W8ji2qLC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KPyE/E/x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC79A20E31F;
-	Fri, 18 Oct 2024 04:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E166F15F3FF;
+	Fri, 18 Oct 2024 05:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729225937; cv=none; b=P/wUwCb1SXlS9dgDTzbTwSbVaim91WcGqUrbtQR1DEtz2U1oFBxsgpsObojp83TX+sS3dlNVcxG4vL1vmWd0GulQRCiq+JcDp9OUjGvKHl9Ys50rPGZWpsMOmkIiiWAs3D4bRCb/nwSvYqjAgDDaIAiZDbdHlziNs2ogMjWiYpw=
+	t=1729227687; cv=none; b=pJbIgQAf9t/H2H5MX0ECszoCK+kFDQNBeq/Uan7skgo227B4gBEHmQIkGaq3UKBDO2z1U2rGFBiiW0e4yMAriKDA9W5T1JaZs8TOP6nbQHk/ms8l5jGp9XMVMqHIW/4PWCLXJlNS9xY9ZaFYl9DTBCm3IUpBUhwKpI9p69XQ2pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729225937; c=relaxed/simple;
-	bh=l4ggZ3ZuNybj5hJCbt5R/5ZHKRtxVoVJSgTqAUuXJBY=;
+	s=arc-20240116; t=1729227687; c=relaxed/simple;
+	bh=r0Fhyd9JehchlqW6mZ+ZEgy9xDeIQ6PrnJVT+qBQq7U=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f+9qAiywQWj58W5hFJ+M7lbRGXYHYPFdn5A35oUi+Z23MHa8xO7MPaaSmIyeYaNSAnXUUu2+lsr5lbryGCcVmhc4sVYXfbSK6HkV2p4ZVWoD4l1qgkaSXReHOCXCl7PrRfIGA0sy3b8AFsuKHlpnFLyxG9hVMt/vv7rRCdW7Q+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W8ji2qLC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE5A1C4CEC3;
-	Fri, 18 Oct 2024 04:32:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=h0/dK8ktQg0xJcQyyYPbZC5jwmc3went/fLwkO5kIjX2SPOOgfe57G/28nlRcfWqtZTWleyM2QlXAJ6YJhqcpl3zDVczJQ4pOYGTRdHLjNHlRFASC/3qC3t0LDqyTXhegDhER7M2qsTfGsfQSuyMkRT3Y3feNlJr6EMq5Xrn++w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KPyE/E/x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65154C4CEC3;
+	Fri, 18 Oct 2024 05:01:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729225936;
-	bh=l4ggZ3ZuNybj5hJCbt5R/5ZHKRtxVoVJSgTqAUuXJBY=;
+	s=k20201202; t=1729227686;
+	bh=r0Fhyd9JehchlqW6mZ+ZEgy9xDeIQ6PrnJVT+qBQq7U=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=W8ji2qLCWma5PeMgN+jaey2PpjQ0ditQIRLMrxjP43CMTPD7M2m3dMx/nLqWoogkt
-	 +Ey9MzOJ9hpPnjyPb6YQFPmktlPOD8+dZ+3s7BX/60DrmhoCboKTqg7dEW7Xl/ezrj
-	 BQVd+9Ikwkm8D2BvebFsGxIPkZrZD4tzHhsDLN2QbnBpSk8Zt4ThPcK1if45x1g3/T
-	 Jvwuj8pLy/zYZiHAbx95LM0m93n/whT8GQV7dWoGb2mQ07ZGRHeJuY4fBtL0UOkMuA
-	 KsnbkfJTqW0o8skzacX1y5f8ytVLOOnDHIKFuzmdqVKRRxwV3KH6OWBCqBAitBNrGG
-	 39cYbAYqlLZgQ==
-Date: Fri, 18 Oct 2024 06:32:09 +0200
+	b=KPyE/E/xCtbWmKp5+6eidKeyy99yoi5i5nyTKAJZvcGwowPypixLksS85yJMnXbm2
+	 UbeCsgaahtVVhm2ihcp7hIripijtD/7eGTShxDE5MwgSo+meH7ED/+/RjSD7AcYbVH
+	 Vg8E1oBVmCKoL0C537B01ylUpcAOrll3WkMGpi7USrq4lKoYjuvci3P9OWv3YJ7QJv
+	 xgVguw8i1KudhJjoB0o+m+M9d0LSnnHbr34wkkC6YiQfkRGYoYIUVrHJ2HSOeyc+LH
+	 66VlWvT7kxToTpgJ1ekA8UDxrD3DS6L4pIzuwQXfcSJjOD+qSwGIB6TjELNPUNqk0r
+	 0OG+sV/Oipfjw==
+Date: Fri, 18 Oct 2024 07:01:21 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Martin =?UTF-8?B?VMWvbWE=?= <tumic@gpxsee.org>
-Cc: Hans Verkuil <hverkuil@xs4all.nl>, Martin Tuma
- <martin.tuma@digiteqautomotive.com>, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 05/13] media: mgb4: protect driver against spectre
-Message-ID: <20241018063209.69a76bb1@foz.lan>
-In-Reply-To: <b5fcb290-5374-4ff3-b74c-a1bd3c802ef0@gpxsee.org>
+To: Hans Verkuil <hverkuil@xs4all.nl>
+Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH 10/13] media: adv7604 prevent underflow condition when
+ reporting colorspace
+Message-ID: <20241018070121.5883b2e5@foz.lan>
+In-Reply-To: <c04c22f5-cafa-4618-ad7c-319a8afc6214@xs4all.nl>
 References: <cover.1729074076.git.mchehab+huawei@kernel.org>
-	<4675c8e726c7d55bbecf9f4772370daa8b46ccd3.1729074076.git.mchehab+huawei@kernel.org>
-	<b5fcb290-5374-4ff3-b74c-a1bd3c802ef0@gpxsee.org>
+	<41d12c1afd6571f9cc56c1b920df6ba558d0b927.1729074076.git.mchehab+huawei@kernel.org>
+	<e591ffa7-4214-4ec0-91f3-65c809aedce9@xs4all.nl>
+	<20241016132448.15e5a4fa@foz.lan>
+	<c04c22f5-cafa-4618-ad7c-319a8afc6214@xs4all.nl>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -60,67 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Em Wed, 16 Oct 2024 13:59:18 +0200
-Martin T=C5=AFma <tumic@gpxsee.org> escreveu:
+Em Wed, 16 Oct 2024 13:58:48 +0200
+Hans Verkuil <hverkuil@xs4all.nl> escreveu:
 
-> On 16. 10. 24 12:22 odp., Mauro Carvalho Chehab wrote:
-> > Frequency range is set from sysfs via frequency_range_store(),
-> > being vulnerable to spectre, as reported by smatch:
-> >=20
-> > 	drivers/media/pci/mgb4/mgb4_cmt.c:231 mgb4_cmt_set_vin_freq_range() wa=
-rn: potential spectre issue 'cmt_vals_in' [r]
-> > 	drivers/media/pci/mgb4/mgb4_cmt.c:238 mgb4_cmt_set_vin_freq_range() wa=
-rn: possible spectre second half.  'reg_set'
-> >=20
-> > Fix it.
-> >=20
-> > Fixes: 0ab13674a9bd ("media: pci: mgb4: Added Digiteq Automotive MGB4 d=
-river")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> > ---
-> >   drivers/media/pci/mgb4/mgb4_cmt.c | 2 ++
-> >   1 file changed, 2 insertions(+)
-> >=20
-> > diff --git a/drivers/media/pci/mgb4/mgb4_cmt.c b/drivers/media/pci/mgb4=
-/mgb4_cmt.c
-> > index 70dc78ef193c..a25b68403bc6 100644
-> > --- a/drivers/media/pci/mgb4/mgb4_cmt.c
-> > +++ b/drivers/media/pci/mgb4/mgb4_cmt.c
-> > @@ -227,6 +227,8 @@ void mgb4_cmt_set_vin_freq_range(struct mgb4_vin_de=
-v *vindev,
-> >   	u32 config;
-> >   	size_t i;
-> >  =20
-> > +	freq_range =3D array_index_nospec(freq_range, ARRAY_SIZE(cmt_vals_in)=
-);
-> > +
-> >   	addr =3D cmt_addrs_in[vindev->config->id];
-> >   	reg_set =3D cmt_vals_in[freq_range];
-> >    =20
->=20
-> I still do not fully understand the exact vulnerability here, but the=20
-> patch should definitely not do any harm, so I'm ok with it even if it's=20
-> real purpose would only be to silence the smatch warning :-)
+> On 16/10/2024 13:24, Mauro Carvalho Chehab wrote:
+> > Em Wed, 16 Oct 2024 12:57:53 +0200
+> > Hans Verkuil <hverkuil@xs4all.nl> escreveu:
+> >   
+> >> On 16/10/2024 12:22, Mauro Carvalho Chehab wrote:  
+> >>> Currently, adv76xx_log_status() reads some date using
+> >>> io_read() which may return negative values. The current logi
+> >>> doesn't check such errors, causing colorspace to be reported
+> >>> on a wrong way at adv76xx_log_status().
+> >>>
+> >>> If I/O error happens there, print a different message, instead
+> >>> of reporting bogus messages to userspace.
+> >>>
+> >>> Fixes: 54450f591c99 ("[media] adv7604: driver for the Analog Devices ADV7604 video decoder")
+> >>> Cc: stable@vger.kernel.org    
+> >>
+> >> Not really a fix since this would just affect logging for debugging
+> >> purposes. I would personally just drop the Fixes and Cc tag.  
+> > 
+> > The issue is on a VIDIOC_ ioctl, so part of media API. Ok, this is
+> > used only for debugging purposes and should, instead be implemented
+> > via debugfs, etc, but, in summary: it is what it is: part of the V4L2
+> > uAPI.  
+> 
+> The ioctl, yes, but what it logs to the kernel log isn't part of the ABI.
+> That can change.
 
-With Spectre, just checking if freq_range is between 0 and the
-size of the array is not enough, as malicious code could use CPU
-speculative logic to retrieve data from memory outside the limits
-of the array.
+Sure, logs can change, but this is an user-visible bug.
 
-As freq_range is specified by the user via sysfs attribute
-frequency_range, it is subject to Spectre v1 attack as described
-at Documentation/admin-guide/hw-vuln/spectre.rst.=20
+> I think it is overkill to send this to stable for an old chip that almost
+> nobody uses, and that requires an i2c read to go wrong for it to produce
+> a wrong debug message. It seems an unnecessary waste of time.
 
-Silencing smatch is a plus.
+Agreed. Will drop cc stable.
 
->=20
-> Reviewed-by: Martin T=C5=AFma <martin.tuma@digiteqautomotive.com>
+> > 
+> > -
+> > 
+> > Now, the question about what should have Fixes: tag and what
+> > shouldn't is a different matter. I've saw long discussions about
+> > that at the kernel mailing lists. In the particular case of y2038,
+> > I'm pretty sure I saw some of them with Fixes tag on it.  
+> 
+> But patch 13/13 doesn't affect the operation either, again it is just
+> an incorrect log message that can only go wrong if Pulse-Eight still
+> sells that device in 2038 with a firmware build date >= 2038. 
 
-Thanks!
+> And v6.12 is guaranteed to be EOL in 2038 :-)
+
+We can't count on it. Civil infrastructure is now working with a 10 years
+SLTS:
+
+	https://www.linuxfoundation.org/press/civil-infrastructure-platform-expands-slt-stable-kernel-program
+
+I heard somewhere that having a 15 years or 20 years stable Kernel is a
+need for certain usages.
+
+Even commercial distros have a minimum of 10 years as LTS.
+
+Suse is now working with a 13-years support. Both Canonical and Red Hat
+announced a 12-years ELTS support. As they usually takes the last year's 
+LTS Kernel, it means support will end with a 14 years old Kernel (so, 
+support will end in 2037 or 2038 if they release an LTS distro next year),
+and don't decide to extend it further.
+
+I also heard during LPC that there's an increased pressure from Linux
+customers from commercial distros to extend it even further.
+
 
 Thanks,
 Mauro
