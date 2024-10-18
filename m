@@ -1,226 +1,168 @@
-Return-Path: <stable+bounces-86845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F33BC9A418E
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 16:48:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 553489A41AD
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 16:51:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADEEB2888FF
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 14:48:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 767391C24B22
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 14:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146761FF60E;
-	Fri, 18 Oct 2024 14:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE9D1FF619;
+	Fri, 18 Oct 2024 14:49:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XQwzxIfv"
 X-Original-To: stable@vger.kernel.org
-Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BF210E4;
-	Fri, 18 Oct 2024 14:48:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568451FF606
+	for <stable@vger.kernel.org>; Fri, 18 Oct 2024 14:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729262905; cv=none; b=Oga1vcQPj7mA8UqXwfhAijWrALx2xxRhF3n2I5YpyB5aV4A93TKcrW+HxtuQ8/0DLh8RcS9BtoQdApX3vHGVE7ZUbGYUhxSSZXwoK7yeZZfFSuEHUaTade6j2e04ewaO9F4MW0be64dn3rTZfJiqTRzi8B8IkjqBwJfFXhG2z1Q=
+	t=1729262983; cv=none; b=jcwubwADIznerlFESnZdXgPmjB6GqHMfOs9nbzo4pgBcXmE87fA9ln1j9y+AhaIc+VrWYXRMPZLDXiGcfKxJX1eHO4AHXXtrqIqrp6uw48xP7ZOhbn0Fw2Soyy/SnzPtP/fCI5O1zT+cHRtxBkZOWtOAFkehfey7lqXtJMS+tGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729262905; c=relaxed/simple;
-	bh=UXd+esrUeJSXPyif7uLs6JTFMTdmCWFT4O/0ozmKKXs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mDekq9qaLsctCc+rBZHGIcdNTrG83ZuMnTBRIVGju4hgw/tKYEn0MSsDPH/VN+EH183fDFzeGvSBExELLkG+vuFMQ1Y3QQN1cBjWIjvMtPfNVk59kpdzVXFoN7LpkYEvM+P/IFk0KwvSyeeBwQ86t3rnbdMSb/7eBIL8VSMyjbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.186.51])
-	by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4XVRjP5Z26z9v7JP;
-	Fri, 18 Oct 2024 22:22:01 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.47])
-	by mail.maildlp.com (Postfix) with ESMTP id 3731B1404DA;
-	Fri, 18 Oct 2024 22:48:16 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.204.63.22])
-	by APP1 (Coremail) with SMTP id LxC2BwCnNS0hdRJnhEoZAw--.54084S2;
-	Fri, 18 Oct 2024 15:48:15 +0100 (CET)
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-To: akpm@linux-foundation.org,
-	Liam.Howlett@oracle.com,
-	lorenzo.stoakes@oracle.com,
-	vbabka@suse.cz,
-	jannh@google.com
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	ebpqwerty472123@gmail.com,
-	paul@paul-moore.com,
-	zohar@linux.ibm.com,
-	dmitry.kasatkin@gmail.com,
-	eric.snowberg@oracle.com,
-	jmorris@namei.org,
-	serge@hallyn.com,
-	linux-integrity@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	stable@vger.kernel.org,
-	syzbot+91ae49e1c1a2634d20c0@syzkaller.appspotmail.com,
-	Roberto Sassu <roberto.sassu@huawei.com>
-Subject: [RFC][PATCH] mm: Split locks in remap_file_pages()
-Date: Fri, 18 Oct 2024 16:47:10 +0200
-Message-Id: <20241018144710.3800385-1-roberto.sassu@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1729262983; c=relaxed/simple;
+	bh=OFVzv/Bzy5SEVC2fr38Gqy63G+CyJt1NjMHppf2By3o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lEgXBxRwce1irZhf/bf8/rqSeoD9JhWSgjyWIh5/FJybTPKykzPd9xYbF52olxhgy+dtCIXLhm7mV4FLI0cj5NKQpoFLiywf5CQJM5P/I1gyUIlt+QVkXSwn2SafBAJw6Nf5DFAIQJ6eAnGq3ABt72J/ceeGYHI23evH7rR0n/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XQwzxIfv; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729262980;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PLK06kjenlDOhOsBFo7iWO+e34B5cBf5XFw1B3ccV2U=;
+	b=XQwzxIfvhaJCADgCHi3rzqwbF7wjlFFVbaOR0JWnj7WtyuTtTMxqt04ux5D7k2EYIQ4eFM
+	1CB983WsC9+YrTSD5OSBKfcQ6mdF+YPK+M9FcJT87DgfrpabROvJHv5X1/PNpdEP5Hg5TN
+	LEDp8wQ24faGmGG3/GtV3OHz5EX+bGE=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-116-MXpGk7g5PnSk6kN3kBg-bQ-1; Fri, 18 Oct 2024 10:49:38 -0400
+X-MC-Unique: MXpGk7g5PnSk6kN3kBg-bQ-1
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7b154948b29so231438085a.0
+        for <stable@vger.kernel.org>; Fri, 18 Oct 2024 07:49:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729262978; x=1729867778;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PLK06kjenlDOhOsBFo7iWO+e34B5cBf5XFw1B3ccV2U=;
+        b=Xk+qxC49wX13MAx0gW/rCUZjSEnjic3vfvw4lKITY0iC8UHtw8FpXBe5edVb2iPozp
+         FlEUn6/97AxfIblESi5VEXldprvJeandjfEnjPyiORE0NGg9fregASWq7rDMnW1YvrTJ
+         WK/aMiQhfYA+Kv27k96TvlPnMiVHsOVu30dr+jW73Ge641PNm+BOWzEX95PBUShjr8y5
+         Z9LhlKh2h4rrVhU+uApm1AwuXHOI5Wmsn3Timc0PXHGPBZdeo6DjJFilKkrSE9I8vsxm
+         IKTHhXeZqMRR8Ecv5+LPT9SEkWbHe/wP9aLXa90+Lan7Rxmj8spWn5RBVx2bB0fbumHe
+         UsOw==
+X-Forwarded-Encrypted: i=1; AJvYcCUADZ3QzRXbgbdznJESrASvwo7Onwxp1ePCviCSA2VmGpLdbyYGs7PsylRZZpWlVDCLMAlIg2A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAXihEka2/D5dyjvfhSyd7V0P4JmWsalmo9TE+aWdd5dh6csUI
+	nMiG65RWUXZLOJQpTgWV1u3ignzlqdT29qzvabvSbKbGF20SGOFfqyV8jv/sXGN++f2oJ48jLvQ
+	lCizb0H3XbV2s6CzFJ7IuS54FKxvFPHYDP0Gk957plkTshS3BD/VMKQ==
+X-Received: by 2002:a05:620a:28ca:b0:7ac:b3bf:c30c with SMTP id af79cd13be357-7b157be329dmr296849885a.45.1729262978352;
+        Fri, 18 Oct 2024 07:49:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGdfckV/4mq/+sa6eyJY9yg4483MucXF6w+/neilLz6xBQ/bACL6PpfbLYrwxMWUXC6aOTZ6A==
+X-Received: by 2002:a05:620a:28ca:b0:7ac:b3bf:c30c with SMTP id af79cd13be357-7b157be329dmr296846185a.45.1729262977922;
+        Fri, 18 Oct 2024 07:49:37 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-46-200-231.retail.telecomitalia.it. [79.46.200.231])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b156f9509fsm75604885a.30.2024.10.18.07.49.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Oct 2024 07:49:37 -0700 (PDT)
+Date: Fri, 18 Oct 2024 16:49:33 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Philipp Stanner <pstanner@redhat.com>
+Cc: Alvaro Karsz <alvaro.karsz@solid-run.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Andy Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH RESEND] vdpa: solidrun: Fix UB bug with devres
+Message-ID: <xyv4vzeq7tqq6qqfafaqxfohgmwu5tx4sb4pgg6dilpgqou32m@l4c5il7euzpb>
+References: <20241016072553.8891-2-pstanner@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:LxC2BwCnNS0hdRJnhEoZAw--.54084S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxAFW3XrW7tw45uFyfXw4Utwb_yoWrZFWrpF
-	naqas0gF4kXF97Zrs2q3WUWFWYyry8KFyUu3yagr1rA3sFqF1SgrWfGFW5ZF4DArykZF95
-	ZF4UAr95KF4UJFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvIb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
-	AFwI0_Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
-	n4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I
-	0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8
-	ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcV
-	CY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAF
-	wI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf
-	9x07jIksgUUUUU=
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAABGcRxH8K1wAAsW
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20241016072553.8891-2-pstanner@redhat.com>
 
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+On Wed, Oct 16, 2024 at 09:25:54AM +0200, Philipp Stanner wrote:
+>In psnet_open_pf_bar() and snet_open_vf_bar() a string later passed to
+>pcim_iomap_regions() is placed on the stack. Neither
+>pcim_iomap_regions() nor the functions it calls copy that string.
+>
+>Should the string later ever be used, this, consequently, causes
+>undefined behavior since the stack frame will by then have disappeared.
+>
+>Fix the bug by allocating the strings on the heap through
+>devm_kasprintf().
+>
+>Cc: stable@vger.kernel.org	# v6.3
+>Fixes: 51a8f9d7f587 ("virtio: vdpa: new SolidNET DPU driver.")
+>Reported-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>Closes: https://lore.kernel.org/all/74e9109a-ac59-49e2-9b1d-d825c9c9f891@wanadoo.fr/
+>Suggested-by: Andy Shevchenko <andy@kernel.org>
+>Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+>---
+> drivers/vdpa/solidrun/snet_main.c | 14 ++++++++++----
+> 1 file changed, 10 insertions(+), 4 deletions(-)
 
-Commit ea7e2d5e49c0 ("mm: call the security_mmap_file() LSM hook in
-remap_file_pages()") fixed a security issue, it added an LSM check when
-trying to remap file pages, so that LSMs have the opportunity to evaluate
-such action like for other memory operations such as mmap() and mprotect().
+LGTM!
 
-However, that commit called security_mmap_file() inside the mmap_lock lock,
-while the other calls do it before taking the lock, after commit
-8b3ec6814c83 ("take security_mmap_file() outside of ->mmap_sem").
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
-This caused lock inversion issue with IMA which was taking the mmap_lock
-and i_mutex lock in the opposite way when the remap_file_pages() system
-call was called.
-
-Solve the issue by splitting the critical region in remap_file_pages() in
-two regions: the first takes a read lock of mmap_lock and retrieves the VMA
-and the file associated, and calculate the 'prot' and 'flags' variable; the
-second takes a write lock on mmap_lock, checks that the VMA flags and the
-VMA file descriptor are the same as the ones obtained in the first critical
-region (otherwise the system call fails), and calls do_mmap().
-
-In between, after releasing the read lock and taking the write lock, call
-security_mmap_file(), and solve the lock inversion issue.
-
-Cc: stable@vger.kernel.org
-Fixes: ea7e2d5e49c0 ("mm: call the security_mmap_file() LSM hook in remap_file_pages()")
-Reported-by: syzbot+91ae49e1c1a2634d20c0@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-security-module/66f7b10e.050a0220.46d20.0036.GAE@google.com/
-Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com> (Calculate prot and flags earlier)
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
----
- mm/mmap.c | 62 ++++++++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 45 insertions(+), 17 deletions(-)
-
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 9c0fb43064b5..762944427e03 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1640,6 +1640,7 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
- 	unsigned long populate = 0;
- 	unsigned long ret = -EINVAL;
- 	struct file *file;
-+	vm_flags_t vm_flags;
- 
- 	pr_warn_once("%s (%d) uses deprecated remap_file_pages() syscall. See Documentation/mm/remap_file_pages.rst.\n",
- 		     current->comm, current->pid);
-@@ -1656,12 +1657,53 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
- 	if (pgoff + (size >> PAGE_SHIFT) < pgoff)
- 		return ret;
- 
--	if (mmap_write_lock_killable(mm))
-+	if (mmap_read_lock_killable(mm))
-+		return -EINTR;
-+
-+	vma = vma_lookup(mm, start);
-+
-+	if (!vma || !(vma->vm_flags & VM_SHARED)) {
-+		mmap_read_unlock(mm);
-+		return -EINVAL;
-+	}
-+
-+	prot |= vma->vm_flags & VM_READ ? PROT_READ : 0;
-+	prot |= vma->vm_flags & VM_WRITE ? PROT_WRITE : 0;
-+	prot |= vma->vm_flags & VM_EXEC ? PROT_EXEC : 0;
-+
-+	flags &= MAP_NONBLOCK;
-+	flags |= MAP_SHARED | MAP_FIXED | MAP_POPULATE;
-+	if (vma->vm_flags & VM_LOCKED)
-+		flags |= MAP_LOCKED;
-+
-+	/* Save vm_flags used to calculate prot and flags, and recheck later. */
-+	vm_flags = vma->vm_flags;
-+	file = get_file(vma->vm_file);
-+
-+	mmap_read_unlock(mm);
-+
-+	ret = security_mmap_file(file, prot, flags);
-+	if (ret) {
-+		fput(file);
-+		return ret;
-+	}
-+
-+	ret = -EINVAL;
-+
-+	if (mmap_write_lock_killable(mm)) {
-+		fput(file);
- 		return -EINTR;
-+	}
- 
- 	vma = vma_lookup(mm, start);
- 
--	if (!vma || !(vma->vm_flags & VM_SHARED))
-+	if (!vma)
-+		goto out;
-+
-+	if (vma->vm_flags != vm_flags)
-+		goto out;
-+
-+	if (vma->vm_file != file)
- 		goto out;
- 
- 	if (start + size > vma->vm_end) {
-@@ -1689,25 +1731,11 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
- 			goto out;
- 	}
- 
--	prot |= vma->vm_flags & VM_READ ? PROT_READ : 0;
--	prot |= vma->vm_flags & VM_WRITE ? PROT_WRITE : 0;
--	prot |= vma->vm_flags & VM_EXEC ? PROT_EXEC : 0;
--
--	flags &= MAP_NONBLOCK;
--	flags |= MAP_SHARED | MAP_FIXED | MAP_POPULATE;
--	if (vma->vm_flags & VM_LOCKED)
--		flags |= MAP_LOCKED;
--
--	file = get_file(vma->vm_file);
--	ret = security_mmap_file(vma->vm_file, prot, flags);
--	if (ret)
--		goto out_fput;
- 	ret = do_mmap(vma->vm_file, start, size,
- 			prot, flags, 0, pgoff, &populate, NULL);
--out_fput:
--	fput(file);
- out:
- 	mmap_write_unlock(mm);
-+	fput(file);
- 	if (populate)
- 		mm_populate(ret, populate);
- 	if (!IS_ERR_VALUE(ret))
--- 
-2.34.1
+>
+>diff --git a/drivers/vdpa/solidrun/snet_main.c b/drivers/vdpa/solidrun/snet_main.c
+>index 99428a04068d..c8b74980dbd1 100644
+>--- a/drivers/vdpa/solidrun/snet_main.c
+>+++ b/drivers/vdpa/solidrun/snet_main.c
+>@@ -555,7 +555,7 @@ static const struct vdpa_config_ops snet_config_ops = {
+>
+> static int psnet_open_pf_bar(struct pci_dev *pdev, struct psnet *psnet)
+> {
+>-	char name[50];
+>+	char *name;
+> 	int ret, i, mask = 0;
+> 	/* We don't know which BAR will be used to communicate..
+> 	 * We will map every bar with len > 0.
+>@@ -573,7 +573,10 @@ static int psnet_open_pf_bar(struct pci_dev *pdev, struct psnet *psnet)
+> 		return -ENODEV;
+> 	}
+>
+>-	snprintf(name, sizeof(name), "psnet[%s]-bars", pci_name(pdev));
+>+	name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "psnet[%s]-bars", pci_name(pdev));
+>+	if (!name)
+>+		return -ENOMEM;
+>+
+> 	ret = pcim_iomap_regions(pdev, mask, name);
+> 	if (ret) {
+> 		SNET_ERR(pdev, "Failed to request and map PCI BARs\n");
+>@@ -590,10 +593,13 @@ static int psnet_open_pf_bar(struct pci_dev *pdev, struct psnet *psnet)
+>
+> static int snet_open_vf_bar(struct pci_dev *pdev, struct snet *snet)
+> {
+>-	char name[50];
+>+	char *name;
+> 	int ret;
+>
+>-	snprintf(name, sizeof(name), "snet[%s]-bar", pci_name(pdev));
+>+	name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "snet[%s]-bars", pci_name(pdev));
+>+	if (!name)
+>+		return -ENOMEM;
+>+
+> 	/* Request and map BAR */
+> 	ret = pcim_iomap_regions(pdev, BIT(snet->psnet->cfg.vf_bar), name);
+> 	if (ret) {
+>-- 
+>2.46.1
+>
+>
 
 
