@@ -1,93 +1,101 @@
-Return-Path: <stable+bounces-86804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 667FD9A3A7A
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 11:51:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03BF69A3A89
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 11:53:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECAE8283CCA
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 09:51:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7FBB28450F
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 09:53:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D285201027;
-	Fri, 18 Oct 2024 09:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B73200CAD;
+	Fri, 18 Oct 2024 09:53:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GyNlub/m"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-out.aladdin-rd.ru (mail-out.aladdin-rd.ru [91.199.251.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8595C200CB7;
-	Fri, 18 Oct 2024 09:51:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.199.251.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8194200CBC
+	for <stable@vger.kernel.org>; Fri, 18 Oct 2024 09:53:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729245100; cv=none; b=WywxemffNIgCGQQAq2WDnLYmTRysVHnybjxLapzxtcqhBYKICD9d5x5+LRZ+ONoKhbHF88tJCflX/goEVTxJ3T2NY6VLMALNqt/D0FhiCX6614wkqgbuXFoRQR04O8yEvYt+tzqrROQkB9XeJ8XZ21uKeu0hUQipA0I3jasy9tc=
+	t=1729245206; cv=none; b=hcRIlwHcWIO/4Lg6UJo/TlqSEWL32gIVZ5NW/XfhdvUkxEtwY8sPH4Udqe3IOteR8sUHJixcGpf7rXjjVLHK0fQ+ZyqPZ4ZuC+rCp4+upYH6Y0+fclaZYJUFBZHQ4RTuJo9cbSV7RqYZGCJ4Fm3b+asqXu/qYFatV0ilQoGp2vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729245100; c=relaxed/simple;
-	bh=PxzUmdXNHgEZJkbEy8BdAR2H6oI/oOlnob544rXFLNA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hf/6m53D06uxCCpaE6IzUxbBDA1dAS7Tg81C/hLkIxcDQwDPNVCD+EJ2/5vJLsIw3tfnEAThl6Pr4H5TRkEAmfNAhJCoU/Vbe0XSHF7Uwmsalnjh4QCgohE+khIWScO4J6MdpagCjFFFYKWewmNz7j68icpvqGtsFFZrf9HtBKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru; spf=pass smtp.mailfrom=aladdin.ru; arc=none smtp.client-ip=91.199.251.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aladdin.ru
-From: Daniil Dulov <d.dulov@aladdin.ru>
-To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Daniil Dulov <d.dulov@aladdin.ru>, Joerg Roedel <joro@8bytes.org>, Will
- Deacon <will@kernel.org>, "open list:AMD IOMMU (AMD-VI)"
-	<iommu@lists.linux-foundation.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>, Robin Murphy <robin.murphy@arm.com>, Joerg
- Roedel <jroedel@suse.de>
-Subject: [PATCH 5.10 1/1] iommu/amd: Prepare for multiple DMA domain types
-Date: Fri, 18 Oct 2024 12:51:22 +0300
-Message-ID: <20241018095122.437330-2-d.dulov@aladdin.ru>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241018095122.437330-1-d.dulov@aladdin.ru>
-References: <20241018095122.437330-1-d.dulov@aladdin.ru>
+	s=arc-20240116; t=1729245206; c=relaxed/simple;
+	bh=f3Fvwalzig4Xw7bYWqFWf5/T+480AGCq/fMgFd1CL3Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=OUyjdN7J4nc7F6JGV5vZrsPMhKaPBluQf0MhLCYu2qoI+hrJZKLtTnFzD3dkEJgyXZQvPbwy/PeEsHvsyz/TbcJwUOTDLW3PWfV1MPSrlpZKGUCIAA9QIh8UiYh+nj9aTxtTP5U7YgRfh9kND+Ym3fQ7NN3CwduIxtKS1dq9VJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GyNlub/m; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729245205; x=1760781205;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=f3Fvwalzig4Xw7bYWqFWf5/T+480AGCq/fMgFd1CL3Y=;
+  b=GyNlub/mCct1dO7/WcOUF27EwFQGgOU5mxr1SXnC9e1NQBdHFCOMaAoh
+   GBXwXTr7w2sk5yTlWqeKJ1S0rfWFUxYWqgWX25RdxqbmvjM1wkYBxrDgh
+   qWRiJ09MMuXDQCFxuqYy4Rg4MrjZRK/i1OuicWNF2rFiTLPdLi8pIXg11
+   vPdPMaTxHcgcXXx9E3CTvfLHX5tDlrhRTOCdso1WRhWRT7vp97Cxkoas9
+   nJrjkkMTG3p+RbaZNXkOSWnOlWnGdJouaSR55Bc7CQCnJyW2wCVSqoe0Z
+   gaOCJRtujESA5jJycM/OqkxapqJTugu502fRqdSz3l5OFwDnrIhwS7K/o
+   w==;
+X-CSE-ConnectionGUID: yLcIDXxcTzSzPvGdxfTPdA==
+X-CSE-MsgGUID: LTb0r+tBRBOdrBOFg5ApUQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11228"; a="28862487"
+X-IronPort-AV: E=Sophos;i="6.11,213,1725346800"; 
+   d="scan'208";a="28862487"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2024 02:53:25 -0700
+X-CSE-ConnectionGUID: ON8/I0P2QpOK8NoZhrfjNw==
+X-CSE-MsgGUID: /fccewSBSluHARbSyXmTqw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,213,1725346800"; 
+   d="scan'208";a="109641206"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 18 Oct 2024 02:53:24 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t1jfc-000NZj-3A;
+	Fri, 18 Oct 2024 09:53:20 +0000
+Date: Fri, 18 Oct 2024 17:52:35 +0800
+From: kernel test robot <lkp@intel.com>
+To: Daniil Dulov <d.dulov@aladdin.ru>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 5.10 1/1] iommu/amd: Prepare for multiple DMA domain types
+Message-ID: <ZxIv469lHr06zCCO@594376e94b8d>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EXCH-2016-02.aladdin.ru (192.168.1.102) To
- EXCH-2016-02.aladdin.ru (192.168.1.102)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241018095122.437330-2-d.dulov@aladdin.ru>
 
-From: Robin Murphy <robin.murphy@arm.com>
+Hi,
 
-commit 6d596039392bac2a0160fb71300d314943411e2a  upstream.
+Thanks for your patch.
 
-The DMA ops reset/setup can simply be unconditional, since
-iommu-dma already knows only to touch DMA domains.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/6450b4f39a5a086d505297b4a53ff1e4a7a0fe7c.1628682049.git.robin.murphy@arm.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
----
- drivers/iommu/amd/iommu.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 0a061a196b53..16a1c2a44bce 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -2257,12 +2257,9 @@ static struct iommu_device *amd_iommu_probe_device(struct device *dev)
- 
- static void amd_iommu_probe_finalize(struct device *dev)
- {
--	struct iommu_domain *domain;
--
- 	/* Domains are initialized for this device - have a look what we ended up with */
--	domain = iommu_get_domain_for_dev(dev);
--	if (domain->type == IOMMU_DOMAIN_DMA)
--		iommu_setup_dma_ops(dev, IOVA_START_PFN << PAGE_SHIFT, 0);
-+	set_dma_ops(dev, NULL);
-+	iommu_setup_dma_ops(dev, 0, U64_MAX);
- }
- 
- static void amd_iommu_release_device(struct device *dev)
+Rule: The upstream commit ID must be specified with a separate line above the commit text.
+Subject: [PATCH 5.10 1/1] iommu/amd: Prepare for multiple DMA domain types
+Link: https://lore.kernel.org/stable/20241018095122.437330-2-d.dulov%40aladdin.ru
+
+Please ignore this mail if the patch is not relevant for upstream.
+
 -- 
-2.25.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
