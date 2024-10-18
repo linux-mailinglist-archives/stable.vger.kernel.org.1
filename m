@@ -1,236 +1,234 @@
-Return-Path: <stable+bounces-86875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C9F29A45DB
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 20:26:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A6009A4678
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 21:05:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB58F28551E
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 18:26:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48F9EB21BFF
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 19:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B943F20513E;
-	Fri, 18 Oct 2024 18:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741B1204920;
+	Fri, 18 Oct 2024 19:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="WsDnDGek"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q5uvTqpE"
 X-Original-To: stable@vger.kernel.org
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11020082.outbound.protection.outlook.com [52.101.56.82])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CC42040B2;
-	Fri, 18 Oct 2024 18:25:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.82
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729275939; cv=fail; b=YGUEW9z5U/Iotw8UoFmPKwV+767XdfOUetuzPxuXtjyf846M1g4WR6r0xVMd5umICvkpvQTjy+ykKH+HFoGFxuFeuOTQCYJJ5Pop/Dc0drC12RKBfipSAcygzPtAYhMTfwWEUt1RGDqtZhbKUMzTx6YW09HX4BgrPGtt/sfqo5o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729275939; c=relaxed/simple;
-	bh=c6DB9xS7MRcLqZIxINVRaAbmf/GxDb/O6l8n5lOkfvs=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=QIm7xlb8zhlSvYFkfECHoVdwEtkuk/WE3hVUOpyG0S8upcDrabYusYHgBJrT6UPk3nTa08cwzrI9vCn29opaejZTH/SFvh4dd8Xoj3qhoswF3HwNwO6pbp7kMpXyVOk1nvIGRQOtsEYo3FQQ4KVEYSgZx79HmvANXj2TYwT7Cws=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=WsDnDGek; arc=fail smtp.client-ip=52.101.56.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wsGag66tGwIXGB286rLt0roU58QOXagXAd5RrC182FiFqV0T4MFu/DFM68hQ4XwLueGjgKs89ScVMtQHPoj0abESNxco0VEBkkCzLBXQ2Bbvsm+/CJ0FBsJGfA8fLfN/ieGcgD0OjUwVj6oUw5Z7cEaevLEGSeQGFgXLkgUu2wUUfuBX2JzuOV1pNaQZor2XAf9/JozmBX6omPzebG+Ls4uhD88WuHKjg2udXomWfxjNremHodPaYHQRYXaEE2clc8pO9uaR55JNszSs6EfOtTrfB0iJgZxcqPZFK8T9IyyLCWBzzkvF/ckDZHTTqBHJBF+EYMFWhYvSgOCk4c0Lmg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=il99dkPd0kNT29Ru6xUAHWsS81Z3wRoyekGNbgkUCWc=;
- b=u8zzQ7n40ZWOhB9nLLvYWC/ooNeNi1/NIE7FjPnDhsJGPZI4DR7Mp91n944fA41yoBLZS0+3+2ttGNgMtWb86kwwjBHQ+svaXMjfX3tAG4mHWIGDlIeJfcR4fLXbdHwdTQfA+kZPW9kR4YY2xxE+k8tB29jbtq9aCKgMUHzVMpVX7bOuh9q4j65U+m3MXGG4harz4z6LSmtKdpZys8vg0NB7ZxjUWWdFToMoSwp8R9Bp2Urf2Gq2ABq9tulgDAPUtKaar+35FpGR+ti+ufQFa+hzekC2DPRNW/DWjCY7MlxrkY9x8FM82bu1OTVSV/TDUdpHJXGno0D6mGeVuMJGTw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=il99dkPd0kNT29Ru6xUAHWsS81Z3wRoyekGNbgkUCWc=;
- b=WsDnDGekYYjrFMIxi9baWx04X0YjlQf+pg0vLbqSSRWrk6lTmQsUR1PyFKzKFcukhSTHB579NGmtbw88nvIZzIawtjIWusS099c03af8SIGbSLk7MXlgNqqRbhG6KFwNorNCgW3MJGAV0pgz9GVtNZfLOwsWp9etluFxszfbU5o=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-Received: from BY5PR21MB1443.namprd21.prod.outlook.com (2603:10b6:a03:21f::18)
- by BY1PR21MB3893.namprd21.prod.outlook.com (2603:10b6:a03:52d::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.11; Fri, 18 Oct
- 2024 18:25:35 +0000
-Received: from BY5PR21MB1443.namprd21.prod.outlook.com
- ([fe80::2c5a:1a34:2c8d:48ef]) by BY5PR21MB1443.namprd21.prod.outlook.com
- ([fe80::2c5a:1a34:2c8d:48ef%7]) with mapi id 15.20.8093.011; Fri, 18 Oct 2024
- 18:25:35 +0000
-From: Haiyang Zhang <haiyangz@microsoft.com>
-To: linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: haiyangz@microsoft.com,
-	kys@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	stephen@networkplumber.org,
-	davem@davemloft.net,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net,v3] hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event
-Date: Fri, 18 Oct 2024 11:25:22 -0700
-Message-Id: <1729275922-17595-1-git-send-email-haiyangz@microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-Content-Type: text/plain
-X-ClientProxiedBy: MW4P223CA0022.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:303:80::27) To BY5PR21MB1443.namprd21.prod.outlook.com
- (2603:10b6:a03:21f::18)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045E1185B48;
+	Fri, 18 Oct 2024 19:05:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729278302; cv=none; b=qZbchbqTRHckq7z0Fez8GeqyT65fRy3DCKnH4xgDM54K17t3TcuiPMGIr0zeGCxQIfND6ne0msO4ZbCdwaghBeVBjMSz64hwOWteijB3+pnw3W83lruwCB+bNLlyexwSokzQIjS//bO+h06JeGVOqnCXjru8njD2tWcNWtrVRbc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729278302; c=relaxed/simple;
+	bh=FPm25//FWOl+CC1MWzk9hQUI9w5QiPt15s8anu8dklE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=PtZZpCKiUiDW2GhcM3rSnXGO+n3vLYmwIbeNOpdHWDW4UGAsKxjEcvET+Rx0RbnJBsXqNafBIXdi6bzpWzdyM3oaji9cuGWK60bC02mrT0ZOKhLR3JnhA+zgmm77vC2Kzj/KCK7JUTJNM6/Kt9m0Hw82ehDRPoBHsm9LEjUcWcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q5uvTqpE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12FA0C4CEC3;
+	Fri, 18 Oct 2024 19:05:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729278301;
+	bh=FPm25//FWOl+CC1MWzk9hQUI9w5QiPt15s8anu8dklE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Q5uvTqpERQM/xf087llem64Geo2ZtGqg+DGlihon2UFTSlgjhC5vcPMah+RtPR5jM
+	 V9+ZHf5VFZjTmcJKtPceJvVyS89pTxSHtXENhw0ugAcvlBG6zaDYCdpiePQ9T4NkJw
+	 yYakgWahYaH/gaXTAb0ZaK9Vl26Y4TZHqqw28s36BYO6YrF6GxaiOZZWpK4raV87ID
+	 0ysPDESKTrAl8uBRXz//pA6XT++5p9W6jOADfciBCpAsxs9lJEyR+z9SP5o3THMssx
+	 tyXLYLe23fAQn89EO4XXbpUekwhntYEad85YicmT7GWnJqiLCAR0TKmHOIvH3/pNMO
+	 E7PgKiSEfhCCw==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Sender: LKML haiyangz <lkmlhyz@microsoft.com>
-X-MS-Exchange-MessageSentRepresentingType: 2
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY5PR21MB1443:EE_|BY1PR21MB3893:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2b31f0b3-9d6a-4a26-92e9-08dcefa241ce
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|7416014|376014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?T8ZoJBogi0YT4pkDrQmgxdebHVgXw5E72Y42jO4adUDWWizAFIBuEMyVKmmX?=
- =?us-ascii?Q?+JmFQ9WcNsm3OVieS9qsQTapT0FANYjmxUo1yXge7JqYjpB9KWobCxTk/I76?=
- =?us-ascii?Q?QgygDlCLPGHhcN2Eaoi/uYQNPNnuNi8ZfJ2Skg0wUWqwJ15Wox0OANdCwL07?=
- =?us-ascii?Q?VX/pIuUsReiArsU7lOibZd3hS4JwZfCRkVZJeT0s9q8NKeQuQlCx/Z1F/1Pq?=
- =?us-ascii?Q?XqUgi1v1jVLjuh8BMoWmul7iO0Sn1ZsfYJbv2DQ7/vgR4PWTPnno/0MBWLRu?=
- =?us-ascii?Q?/5Ql6bd5BBVED3+CgPSW5E2IykGbhX9cYy6Rbt3ABX71uFNgSv7CDmA7GG9q?=
- =?us-ascii?Q?W7TQFaZ2D1YCPbvQQNrqr2v1mzuDs2S2JDjTdXNtQ+1vmHqDC6Z3frVVN7Ks?=
- =?us-ascii?Q?we8niXC8b8Zg6UZxghFsfygpMJ0JQeLqtLwDFrk2vG6fP9G7pN7eV1u6SjdY?=
- =?us-ascii?Q?ds0RJAolYGpcO9eq2/XSXx06Ss64P2flXsUM3NZzghTLlCn2D4TVyfIFEkfQ?=
- =?us-ascii?Q?fH1NHO1+RTKLZ/z+NZfFEJ5maqRkkfTD/5rIBCtr4spho7FI/mIoLYFbUVcH?=
- =?us-ascii?Q?eLx8gQRT1TO7L4QAyozlfQLW+waCz2erNkvmC3rBXpcMOvgZTkNkWX50JeC0?=
- =?us-ascii?Q?KBQVL8sOXYX9VN+ZOOYrquRivR1zSqzqwEa7na5AO3RdswyYq9I/4Wi9CBx8?=
- =?us-ascii?Q?Pa5ttjEpDc4mA9IQ/gjxccPFHFwEYghmq2bnEbSnFi55H1+AXLMfBlLfTBt+?=
- =?us-ascii?Q?PGJ+X3WqYiJ8KF8blfkeQcabpM/kYqWPJwjD1A7rHWETspmBDCwtpXkt9fTQ?=
- =?us-ascii?Q?B6+4G0L21kKkWVyHxcljwC771XV0PHAxb3LDP4Hhmty+tpNSpDSj/J2rkfi0?=
- =?us-ascii?Q?4CUso3q1FNhY7hE5xe2ubt6dsHsw0DF/STMGA73yd58tYWUrFgyoFachHucV?=
- =?us-ascii?Q?oviZxlJRLRviNFW0HcBGhMmYmU43AMoVIV/wXqLnuRlP/dJYM6MQnFg+5mW1?=
- =?us-ascii?Q?G6BBnsxZ7xJp9fiKA39fguxx6yYvDFFIxBkHmyOlZ7z08l938qLmb8E386gB?=
- =?us-ascii?Q?E4pjfU6xuD5X14vMuKwViBHsmadsCfFlep6HjhDwHumUpb9qyqqorpz3nBcc?=
- =?us-ascii?Q?MP0gUW8CsqZn526a2oVmhhf55mSWXNYkkgXrzV7awHr25Y9n5VqiL2iDwwke?=
- =?us-ascii?Q?PMRZ85m1YAaL1uc+CW7nU4kBsGd9Co+oTqrpBh9NBrGFTn9mJSzQ55XnV9Ga?=
- =?us-ascii?Q?N13RqaruXEbvlsKw0odGcLHgklef1lQ1ZZJRBzxm/G0vd9M3ZVF+hrHB0WiQ?=
- =?us-ascii?Q?4WmDglKV6eCKaqz9sWPAsQkpLENS5MFVJCXG4lf1T8URieAIPZq7a6Hv1mov?=
- =?us-ascii?Q?U6zkzuk=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR21MB1443.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(7416014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?43BPD4eORsNx6/e/C9acdBOX0nEqxwn7RaJfuMfUeiI5SDcnUD9yWECoNFH1?=
- =?us-ascii?Q?kpMn+mN45PDxZ12nD+RvUa7OCodiUEYOcmWvmbpW6ZVXaQQr1e+WIm0olHRz?=
- =?us-ascii?Q?CXaAmT471LvLZvN+Z9mO37LdD/5NmUlor9NijP/Pon7OucbId3pj8pkXzqHh?=
- =?us-ascii?Q?IRMfitdbOaktKeFVAMIYmRCC0UBerKeQi1PhIFCV4igjRj1tNMuCwenIc4dr?=
- =?us-ascii?Q?etdLUViTPWAH7YzEnnX3B04aK5y3QzLOhoch3Cf69PmFzsR1NZCrm/rBzeW1?=
- =?us-ascii?Q?fnZDpYlHG5NqZlnSw9EFXScZZLrevXuvkn9y5u6nOlfQHHCMB/Ffo37khV1P?=
- =?us-ascii?Q?csY/evUv2o04QmF6qNkOKO7629CDKgaf6POu3Ucn58isKVvbnI3oeh2fw0Wn?=
- =?us-ascii?Q?llOFCHa1U57LpDAR04YzRFDiYeeyw6kKdL3Ic/8LGIfnfqy/ElY1HCyKvUcr?=
- =?us-ascii?Q?V0+3Urx+muIEw3WNSFNby/kVjp+OQ1sETjY13wglupqt/346qcqkkXjx7KCD?=
- =?us-ascii?Q?d9h7g0gbVvHJBqAQavGdgpU1tbcgIjdsczp2U3WFRjIIeuES7CcKvMNRd2+3?=
- =?us-ascii?Q?rDxkoNkPBiPKeOeyRH7ZCZu4d9729iFNAXCTo15Iyl+/rhxqTgM01Owz1SXz?=
- =?us-ascii?Q?lwSM5hF4vXMjbPFak10eZSOwxylvUYzfrGlKtXYaLx9ofCUIt+A2g1klpDIR?=
- =?us-ascii?Q?vJJPHQVLL9KhVbS2lxkzwPBqJkbE4iczjmv4wd6P2ytkNXcvkQAblQH2k/AJ?=
- =?us-ascii?Q?NfFq3nedwYxYmA5BoPdnrxPVB5NjDL6cc0QTnXBkpNRV1aUlH77tZuzGMt97?=
- =?us-ascii?Q?VnaSCY+r+T2mKufIlsKY68yDKWScMBnr+NL+TK6pbYLYUOkblDfD3AKiG5NW?=
- =?us-ascii?Q?W71LXaG4hWAHZ0TZxss71Nz8kiP7CxU8d8DC3tKb+uqOoOWMKT28p9SvvAYT?=
- =?us-ascii?Q?25tBH9aWYG3fEi10wKJtP2GbRRrhZXt7EH5t4omZd31asc6Y47uaHmlc9rr3?=
- =?us-ascii?Q?YdF8JqIjPG4PdFpZAtcwz97S/mR6Vre/PBoDkbM2OnZyA9lLpQdzJ/1vceZe?=
- =?us-ascii?Q?Kwtewbk6CCv6mJsoeNqfXOZUueC7xCbUIbDgA9VLOMkSZVUTUa7fBtVfy7u1?=
- =?us-ascii?Q?wYljWJOs2DD2ocy1R3hf6nVwTJtwrAiVpK6Wnk1dSajbMab78MwRzgDTiYzm?=
- =?us-ascii?Q?wegKzuSHZP7gMxO2ePsW8XshWOKKpdukC3DZv2P+hzuHc4N4lEjXlKbu3/8K?=
- =?us-ascii?Q?rNSUCRQ9ygFVJPMywal4NB2HKA1mimEhbE3UDmb9F6YV1FYDAGWHBHkvKjv3?=
- =?us-ascii?Q?OU70E0JDLE9OBQG9Rcg4NpeSuN1NAPgnp8HQ/6Tir6tvyKnKRKpKO4L5Ap+8?=
- =?us-ascii?Q?DYT+DzEso/1aoTOJnDZlPwyFmb5LaCLIlWCGW9n7gdqvwZ/JF/zX9Tghchj3?=
- =?us-ascii?Q?jDDOTmaLjNSb68ZQPE8J7VbchsS+vvDGtNr7hQSs+XClSQq0S/abmcnnPeGf?=
- =?us-ascii?Q?GTtSw4+lQxrVg98dnlTRF6+ZFfuhXMthfIwAPiAn14m8joDNd9l2wiX+N43v?=
- =?us-ascii?Q?GvyoCGsGRV0lh5DAJuVKMBvtBTtJuRT894dsuOpo?=
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2b31f0b3-9d6a-4a26-92e9-08dcefa241ce
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR21MB1443.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Oct 2024 18:25:35.0270
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eSYngAH+iEb54bJoN6FAtVJgKvntaNtWkPRsiDHVZfB13l88y2JB9q6iU2o2jjs1DsE1TUGVaaQMOCwk0vjZfQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY1PR21MB3893
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 18 Oct 2024 22:04:56 +0300
+Message-Id: <D4Z5ZUHK76A8.18SJLAWKCZ5IX@kernel.org>
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Roberto Sassu" <roberto.sassu@huaweicloud.com>,
+ <akpm@linux-foundation.org>, <Liam.Howlett@oracle.com>,
+ <lorenzo.stoakes@oracle.com>, <vbabka@suse.cz>, <jannh@google.com>
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <ebpqwerty472123@gmail.com>, <paul@paul-moore.com>, <zohar@linux.ibm.com>,
+ <dmitry.kasatkin@gmail.com>, <eric.snowberg@oracle.com>,
+ <jmorris@namei.org>, <serge@hallyn.com>, <linux-integrity@vger.kernel.org>,
+ <linux-security-module@vger.kernel.org>, <bpf@vger.kernel.org>,
+ <linux-fsdevel@vger.kernel.org>, "Kirill A. Shutemov"
+ <kirill.shutemov@linux.intel.com>, <stable@vger.kernel.org>,
+ <syzbot+1cd571a672400ef3a930@syzkaller.appspotmail.com>, "Roberto Sassu"
+ <roberto.sassu@huawei.com>
+Subject: Re: [PATCH v2] mm: Split critical region in remap_file_pages() and
+ invoke LSMs in between
+X-Mailer: aerc 0.18.2
+References: <20241018161415.3845146-1-roberto.sassu@huaweicloud.com>
+In-Reply-To: <20241018161415.3845146-1-roberto.sassu@huaweicloud.com>
 
-The existing code moves VF to the same namespace as the synthetic NIC
-during netvsc_register_vf(). But, if the synthetic device is moved to a
-new namespace after the VF registration, the VF won't be moved together.
+On Fri Oct 18, 2024 at 7:14 PM EEST, Roberto Sassu wrote:
+> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+>
+> Commit ea7e2d5e49c0 ("mm: call the security_mmap_file() LSM hook in
+> remap_file_pages()") fixed a security issue, it added an LSM check when
+> trying to remap file pages, so that LSMs have the opportunity to evaluate
+> such action like for other memory operations such as mmap() and mprotect(=
+).
+>
+> However, that commit called security_mmap_file() inside the mmap_lock loc=
+k,
+> while the other calls do it before taking the lock, after commit
+> 8b3ec6814c83 ("take security_mmap_file() outside of ->mmap_sem").
+>
+> This caused lock inversion issue with IMA which was taking the mmap_lock
+> and i_mutex lock in the opposite way when the remap_file_pages() system
+> call was called.
+>
+> Solve the issue by splitting the critical region in remap_file_pages() in
+> two regions: the first takes a read lock of mmap_lock, retrieves the VMA
+> and the file descriptor associated, and calculates the 'prot' and 'flags'
+> variables; the second takes a write lock on mmap_lock, checks that the VM=
+A
+> flags and the VMA file descriptor are the same as the ones obtained in th=
+e
+> first critical region (otherwise the system call fails), and calls
+> do_mmap().
+>
+> In between, after releasing the read lock and before taking the write loc=
+k,
+> call security_mmap_file(), and solve the lock inversion issue.
+>
+> Cc: stable@vger.kernel.org # v6.12-rcx
+> Fixes: ea7e2d5e49c0 ("mm: call the security_mmap_file() LSM hook in remap=
+_file_pages()")
+> Reported-by: syzbot+1cd571a672400ef3a930@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/linux-security-module/66f7b10e.050a0220.4=
+6d20.0036.GAE@google.com/
+> Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
+> Reviewed-by: Jann Horn <jannh@google.com>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Tested-by: Roberto Sassu <roberto.sassu@huawei.com>
+> Tested-by: syzbot+1cd571a672400ef3a930@syzkaller.appspotmail.com
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> ---
+>  mm/mmap.c | 69 +++++++++++++++++++++++++++++++++++++++++--------------
+>  1 file changed, 52 insertions(+), 17 deletions(-)
+>
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index 9c0fb43064b5..f731dd69e162 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -1640,6 +1640,7 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, st=
+art, unsigned long, size,
+>  	unsigned long populate =3D 0;
+>  	unsigned long ret =3D -EINVAL;
+>  	struct file *file;
+> +	vm_flags_t vm_flags;
+> =20
+>  	pr_warn_once("%s (%d) uses deprecated remap_file_pages() syscall. See D=
+ocumentation/mm/remap_file_pages.rst.\n",
+>  		     current->comm, current->pid);
+> @@ -1656,12 +1657,60 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, =
+start, unsigned long, size,
+>  	if (pgoff + (size >> PAGE_SHIFT) < pgoff)
+>  		return ret;
+> =20
+> -	if (mmap_write_lock_killable(mm))
+> +	if (mmap_read_lock_killable(mm))
+>  		return -EINTR;
+> =20
+> +	/*
+> +	 * Look up VMA under read lock first so we can perform the security
+> +	 * without holding locks (which can be problematic). We reacquire a
+> +	 * write lock later and check nothing changed underneath us.
+> +	 */
+>  	vma =3D vma_lookup(mm, start);
+> =20
+> -	if (!vma || !(vma->vm_flags & VM_SHARED))
+> +	if (!vma || !(vma->vm_flags & VM_SHARED)) {
+> +		mmap_read_unlock(mm);
+> +		return -EINVAL;
+> +	}
+> +
+> +	prot |=3D vma->vm_flags & VM_READ ? PROT_READ : 0;
+> +	prot |=3D vma->vm_flags & VM_WRITE ? PROT_WRITE : 0;
+> +	prot |=3D vma->vm_flags & VM_EXEC ? PROT_EXEC : 0;
 
-To make the behavior more consistent, add a namespace check for synthetic
-NIC's NETDEV_REGISTER event (generated during its move), and move the VF
-if it is not in the same namespace.
+Not an actual review comment but we don't have a conversion macro and/or
+inline for this, do we (and opposite direction)?
 
-Cc: stable@vger.kernel.org
-Fixes: c0a41b887ce6 ("hv_netvsc: move VF to same namespace as netvsc device")
-Suggested-by: Stephen Hemminger <stephen@networkplumber.org>
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
----
-v3: Use RCT order as suggested by Simon.
-v2: Move my fix to synthetic NIC's NETDEV_REGISTER event as suggested by Stephen.
+> +
+> +	flags &=3D MAP_NONBLOCK;
+> +	flags |=3D MAP_SHARED | MAP_FIXED | MAP_POPULATE;
+> +	if (vma->vm_flags & VM_LOCKED)
+> +		flags |=3D MAP_LOCKED;
+> +
+> +	/* Save vm_flags used to calculate prot and flags, and recheck later. *=
+/
+> +	vm_flags =3D vma->vm_flags;
+> +	file =3D get_file(vma->vm_file);
+> +
+> +	mmap_read_unlock(mm);
+> +
+> +	/* Call outside mmap_lock to be consistent with other callers. */
+> +	ret =3D security_mmap_file(file, prot, flags);
+> +	if (ret) {
+> +		fput(file);
+> +		return ret;
+> +	}
+> +
+> +	ret =3D -EINVAL;
+> +
+> +	/* OK security check passed, take write lock + let it rip. */
+> +	if (mmap_write_lock_killable(mm)) {
+> +		fput(file);
+> +		return -EINTR;
+> +	}
+> +
+> +	vma =3D vma_lookup(mm, start);
+> +
+> +	if (!vma)
+> +		goto out;
+> +
+> +	/* Make sure things didn't change under us. */
+> +	if (vma->vm_flags !=3D vm_flags)
+> +		goto out;
+> +	if (vma->vm_file !=3D file)
+>  		goto out;
+> =20
+>  	if (start + size > vma->vm_end) {
+> @@ -1689,25 +1738,11 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, =
+start, unsigned long, size,
+>  			goto out;
+>  	}
+> =20
+> -	prot |=3D vma->vm_flags & VM_READ ? PROT_READ : 0;
+> -	prot |=3D vma->vm_flags & VM_WRITE ? PROT_WRITE : 0;
+> -	prot |=3D vma->vm_flags & VM_EXEC ? PROT_EXEC : 0;
+> -
+> -	flags &=3D MAP_NONBLOCK;
+> -	flags |=3D MAP_SHARED | MAP_FIXED | MAP_POPULATE;
+> -	if (vma->vm_flags & VM_LOCKED)
+> -		flags |=3D MAP_LOCKED;
+> -
+> -	file =3D get_file(vma->vm_file);
+> -	ret =3D security_mmap_file(vma->vm_file, prot, flags);
+> -	if (ret)
+> -		goto out_fput;
+>  	ret =3D do_mmap(vma->vm_file, start, size,
+>  			prot, flags, 0, pgoff, &populate, NULL);
+> -out_fput:
+> -	fput(file);
+>  out:
+>  	mmap_write_unlock(mm);
+> +	fput(file);
+>  	if (populate)
+>  		mm_populate(ret, populate);
+>  	if (!IS_ERR_VALUE(ret))
 
----
- drivers/net/hyperv/netvsc_drv.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
-
-diff --git a/drivers/net/hyperv/netvsc_drv.c b/drivers/net/hyperv/netvsc_drv.c
-index 153b97f8ec0d..23180f7b67b6 100644
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -2798,6 +2798,31 @@ static struct  hv_driver netvsc_drv = {
- 	},
- };
- 
-+/* Set VF's namespace same as the synthetic NIC */
-+static void netvsc_event_set_vf_ns(struct net_device *ndev)
-+{
-+	struct net_device_context *ndev_ctx = netdev_priv(ndev);
-+	struct net_device *vf_netdev;
-+	int ret;
-+
-+	vf_netdev = rtnl_dereference(ndev_ctx->vf_netdev);
-+	if (!vf_netdev)
-+		return;
-+
-+	if (!net_eq(dev_net(ndev), dev_net(vf_netdev))) {
-+		ret = dev_change_net_namespace(vf_netdev, dev_net(ndev),
-+					       "eth%d");
-+		if (ret)
-+			netdev_err(vf_netdev,
-+				   "Cannot move to same namespace as %s: %d\n",
-+				   ndev->name, ret);
-+		else
-+			netdev_info(vf_netdev,
-+				    "Moved VF to namespace with: %s\n",
-+				    ndev->name);
-+	}
-+}
-+
- /*
-  * On Hyper-V, every VF interface is matched with a corresponding
-  * synthetic interface. The synthetic interface is presented first
-@@ -2810,6 +2835,11 @@ static int netvsc_netdev_event(struct notifier_block *this,
- 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
- 	int ret = 0;
- 
-+	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
-+		netvsc_event_set_vf_ns(event_dev);
-+		return NOTIFY_DONE;
-+	}
-+
- 	ret = check_dev_is_matching_vf(event_dev);
- 	if (ret != 0)
- 		return NOTIFY_DONE;
--- 
-2.34.1
-
+BR, Jarkko
 
