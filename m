@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-86791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E952B9A390E
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 10:48:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 989D79A3911
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 10:49:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A162B22F12
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 08:48:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 392281F21B02
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 08:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1B018EFFB;
-	Fri, 18 Oct 2024 08:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D285418EFDC;
+	Fri, 18 Oct 2024 08:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iC3IdWCL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EaaKvKW8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852C418E76B
-	for <stable@vger.kernel.org>; Fri, 18 Oct 2024 08:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7144F18E74D
+	for <stable@vger.kernel.org>; Fri, 18 Oct 2024 08:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729241309; cv=none; b=f8Uo1ydrq253s/UyBvxpWz1+obn+I1nQmbnfIRJTKayUywmvoBTFCftyfUMNOSRDLb8ugtX+KS/3fBgaw42DFA4FaV0UoAYgvmX+WgtSQ8pvM5SfTh4BeQH22bREA6KAA1bA8KbFb/9t7wPqLEzBHUaN/09RdGJ+yqcVHoLgsgU=
+	t=1729241378; cv=none; b=bRXJCikz8WFB/WtlTSTamWo/vOVmo1JWoT5Q1TfAd5IRHSQ3mxc7bJL0MmhonU/jevwrJmMlUXWPg1/VWSI+JHdS9OnoVz/GNlAtRFCuZZ7XK+lLP3AIt0g6msyczaQh11L6ogxq3ma80mSXx2k3FdVsLAdezCV5NYY8zCPvaPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729241309; c=relaxed/simple;
-	bh=UlEqRQRIlloUct5IQsJ7hOsjyuK3sE/ul8hrb86Rg6o=;
+	s=arc-20240116; t=1729241378; c=relaxed/simple;
+	bh=c0GpjwIsbZdM9CRxEhlW+x8BR4baY6JErWFjliDA0bA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KR8Sb/ZPo5cLpnkz8WI6X6due8O/FBCtJAcnPxujFjRKVRs6PaYmn1oR4O5At4fSGaqy0h/C3tx4kVStG/K3sp++D2MjUb3QyWYC13dc0FmHpLmbX8YbN6VOEWaRTTB2GTiZr4n9iBTUD3u2a0+YMYp3BC9I+wgEFq6xqaRMfdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iC3IdWCL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87221C4CEC7;
-	Fri, 18 Oct 2024 08:48:28 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=FoYRK+Uekpflv/K6ed2WHbCazDqpKztososDY3ruy3Z38MWO1aPAgZIQrQVVAa9HsNVn5K+5j22NSz3b0Lu5yLjth3uY/TnH0qlyelBgOlvbi2sky0fsWOI1tfR7wi/UtrLoYCYkx7LpfYKfMb1DHcF1pyuQdk0LuXRycsmB32I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EaaKvKW8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E077C4CEC3;
+	Fri, 18 Oct 2024 08:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729241309;
-	bh=UlEqRQRIlloUct5IQsJ7hOsjyuK3sE/ul8hrb86Rg6o=;
+	s=korg; t=1729241377;
+	bh=c0GpjwIsbZdM9CRxEhlW+x8BR4baY6JErWFjliDA0bA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iC3IdWCLy/tfC472bDL2mJG6HXBJ8SDUKgonFtpPXE9PmT179FSGtrbCON93GQs3X
-	 Zyd0ebpPbKcpp+uMiKQg30Z2bMPFpODS8zEUhykC/Au0UxzldDUYHiGt7akfSMXUVC
-	 0JZKrHqm0+dldZO2x63B1UHW650oY2UTwP0x62yk=
-Date: Fri, 18 Oct 2024 10:48:26 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: stable@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
-	pabeni@redhat.com, edumazet@google.com, jiri@nvidia.com,
-	jacob.e.keller@intel.com, sashal@kernel.org, vkarri@nvidia.com,
-	nogikh@google.com
-Subject: Re: [PATCH stable 6.1 0/2] devlink: Fix RCU stall when unregistering
- a devlink instance
-Message-ID: <2024101821-bankroll-edge-2205@gregkh>
-References: <20241015113625.613416-1-idosch@nvidia.com>
+	b=EaaKvKW8Qthz0BoczJXbaz3kedq+83YcWBOmGC9JPMPLgHOEvwTk3HqYHgoqHVTTJ
+	 J6UqnxTY6WlVJNpVfKjqtjsoEz9REx8ZElmzhFoOvf4XFmQVNvoa2j4KOsgCbJ1s3z
+	 EZz/Hj7zwqM6rP7w3A4uwAv10tcEAr5gAQIqGq8Q=
+Date: Fri, 18 Oct 2024 10:49:34 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Puranjay Mohan <pjy@amazon.com>
+Cc: Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
+	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+	linux-nvme@lists.infradead.org, stable@vger.kernel.org,
+	puranjay12@gmail.com, amazon-linux-kernel@amazon.com
+Subject: Re: [PATCH 6.1.y] nvme: fix metadata handling in nvme-passthrough
+Message-ID: <2024101848-paparazzi-cornea-6389@gregkh>
+References: <20241016090739.43470-1-pjy@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,41 +56,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241015113625.613416-1-idosch@nvidia.com>
+In-Reply-To: <20241016090739.43470-1-pjy@amazon.com>
 
-On Tue, Oct 15, 2024 at 02:36:23PM +0300, Ido Schimmel wrote:
-> Upstream commit c2368b19807a ("net: devlink: introduce "unregistering"
-> mark and use it during devlinks iteration") in v6.0 introduced a race
-> when unregistering a devlink instance that can result in RCU stalls and
-> in the system completely locking up. Exact details and reproducer can be
-> found here [1]. The bug was inadvertently fixed in v6.3 by upstream
-> commit d77278196441 ("devlink: bump the instance index directly when
-> iterating").
+On Wed, Oct 16, 2024 at 09:07:39AM +0000, Puranjay Mohan wrote:
+> [ Upstream commit 7c2fd76048e95dd267055b5f5e0a48e6e7c81fd9 ]
 > 
-> This patchset fixes the bug by backporting the second commit and a
-> related dependency from v6.3 to v6.1.y while adjusting them to the
-> devlink file structure in v6.1.y (net/devlink/{core.c,devl_internal.h}
-> -> net/devlink/leftover.c).
+> On an NVMe namespace that does not support metadata, it is possible to
+> send an IO command with metadata through io-passthru. This allows issues
+> like [1] to trigger in the completion code path.
+> nvme_map_user_request() doesn't check if the namespace supports metadata
+> before sending it forward. It also allows admin commands with metadata to
+> be processed as it ignores metadata when bdev == NULL and may report
+> success.
 > 
-> Tested by running the devlink tests under
-> tools/testing/selftests/drivers/net/netdevsim/ and the reproducer
-> mentioned in [1].
+> Reject an IO command with metadata when the NVMe namespace doesn't
+> support it and reject an admin command if it has metadata.
 > 
-> [1] https://lore.kernel.org/stable/20241001112035.973187-1-idosch@nvidia.com/
+> [1] https://lore.kernel.org/all/mb61pcylvnym8.fsf@amazon.com/
 > 
-> Jakub Kicinski (2):
->   devlink: drop the filter argument from devlinks_xa_find_get
->   devlink: bump the instance index directly when iterating
-> 
->  net/devlink/leftover.c | 40 ++++++++++------------------------------
->  1 file changed, 10 insertions(+), 30 deletions(-)
-> 
-> -- 
-> 2.47.0
-> 
-> 
+> Suggested-by: Christoph Hellwig <hch@lst.de>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+> Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
+> Signed-off-by: Keith Busch <kbusch@kernel.org>
+> [ Minor changes to make it work on 6.1 ]
 
-Both now queued up, thanks.
+What about 6.6?  And 5.15?  We can't take patches for only some
+branches, otherwise when you upgrade you would have regressions.
+
+Please send ALL needed patches and then we will be glad to queue them
+up.  I've dropped the two submissions you sent for now.
+
+thanks,
 
 greg k-h
 
