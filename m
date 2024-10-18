@@ -1,211 +1,212 @@
-Return-Path: <stable+bounces-86783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 264FA9A3854
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 10:16:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A61AF9A3859
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 10:18:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CF661F2957C
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 08:16:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18D4CB2163A
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 08:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600CE18C903;
-	Fri, 18 Oct 2024 08:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551B218C91A;
+	Fri, 18 Oct 2024 08:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YpBfGMMR"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Nkd6oen4";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="hlZgUtwK";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="XJd/9J/8";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="/hQmSrY3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B5117BB25;
-	Fri, 18 Oct 2024 08:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6FB17BB25
+	for <stable@vger.kernel.org>; Fri, 18 Oct 2024 08:18:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729239408; cv=none; b=cWJb2LmeWWkkQ74sH5gkk7Mj4u537m3oMDFzqzYxAdexKQFxxoUG9F4dzeR0GufyOoHIA40ixQn48pKpvNhAIWC1UVzrH4U2tBi5Wcmh80j2/ZP7yS/jScGr2/Dqfur7efw5sQsIKdz2HdOmookV98LEVzwszaa8TnXhAiVrByE=
+	t=1729239511; cv=none; b=dZXKMgBDs0dlldV53UkwNYlp+jugTobRkDFkPNPYs//Bld0PN2XRGVfS2XME2mT4JWHFy+465M2PYIWHrqwO+1wnbMqFSmoZaMA/M8hX9eiOgm1wvS7lqVZzxL1a4u/bxUgEb05j7ckwmAhpgOuHBcsrbtd4wKwriS/XQs0zrRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729239408; c=relaxed/simple;
-	bh=MalrlWnAKRodxO9JH/NF0CvJPl/3eu5Z/kkI/o59bqc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uX5l/RpeCV3DrInx/+aqnDyuREj89o/DGdotKgXkoEW5YVDNjtwa9ZnW5366L38J+mKhcq/KWZsyQ9i5Kg36aHNVULSvAp/l+od5iuHDwk/hdpkzr46xmCbRqQ4TqEreR4OhZltfVXXA4Ce5QMMzI93G/5FboulwVOQ95pKAX7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YpBfGMMR; arc=none smtp.client-ip=209.85.210.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-71e7086c231so1357768b3a.0;
-        Fri, 18 Oct 2024 01:16:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729239406; x=1729844206; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MGoRSOJcQ6469sYxhK1PaAZHs8nFmvAts7UKrLL8raw=;
-        b=YpBfGMMRkPD/5Ez6mBCOBsp1fvoWwm2r1sYuQjbjsaIoVOxiwWlD8Zg3aWjbyty0QD
-         i2flwkKmKsAGAMpaYU9cvpFkwPjvgWbYJskIkvJYV97zE8ZAAIWKNjeuzyyUnuhKgQEX
-         5BJJH6TwnxfKNY2iKT6FaaBu+7kCixd+0mIu5CFkD3YCNLgsMuvpTLg4sbn0p9dKMI8l
-         FpCIXWYHOvQSvynkrPHbNuJSFqbwUylJSCmHRe6tErGHzzsHjJR7ccCGNvR/CwoUFC+p
-         DUPlrURQBHPKig9E2Zd3dG1/VNmCeX0ILJpCY+0az25ML8JxsQhOyjk4qHYaeEk/So1u
-         iiqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729239406; x=1729844206;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MGoRSOJcQ6469sYxhK1PaAZHs8nFmvAts7UKrLL8raw=;
-        b=Oz/GLxavYH23kDJ9W8D8B5bZAWSfpq2m1LcHB8ld6H24xRJGPagL+l1/SPaihhcoB0
-         fbnRjIYAc2YIRk494m/OBirBEB0ACgcdPbCZXTYd1pwUxU+nr0rkfpMFUrTJP8bHN1hw
-         MMLEZcFNVgbsAyU9glR+p7CCEi2NvTkhbCLT7vHGFojr7Rn+LzpTl+fIdcVvc3VqeYYM
-         uPHRqzruStwi0WfnwkMiSLRCMR2F8zAfPrIFYZNGArDQBNwT9HMQSNpy8vA4BnQsYN3H
-         TId1Ie6EuJKITOerJvMTQiAr7nbIEo3eXrQGhr8ADByNSmO6LO6nNXn3DTcaxX5HEjoQ
-         dp6w==
-X-Forwarded-Encrypted: i=1; AJvYcCX/V+/E8yCrKTdhsWv4vOPoXmHlyi0bMcid27XroHhGMm3p4KRbXr0bF0S7QdRUtsS185HUlac=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFsrXKqVP8SEoIUJ33t8DLq7IZy8cR/sQ4bz2SEkqRiBEu0Iry
-	yPf8s3qEU2MW+xB+VdjTWWCRXBD8yDsJNwf2+P7rCKd4xVcPz92IhnClC6wxjb8=
-X-Google-Smtp-Source: AGHT+IF9en4qw2LNVlM3dSfg39+nc2hG4Bpg6PU2WGXmdrtS/Ssqzqf+zxyBWvnFpb5/DzUJEj848Q==
-X-Received: by 2002:a05:6a21:3a94:b0:1cf:499c:f918 with SMTP id adf61e73a8af0-1d92c4e047emr2810709637.18.1729239406009;
-        Fri, 18 Oct 2024 01:16:46 -0700 (PDT)
-Received: from tom-QiTianM540-A739.. ([106.39.42.164])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71ea34094b8sm900868b3a.134.2024.10.18.01.16.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Oct 2024 01:16:45 -0700 (PDT)
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
-To: nipun.gupta@amd.com,
-	nikhil.agarwal@amd.com
-Cc: linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] cdx: Fix atomicity violation in cdx_bus_match() and cdx_probe()
-Date: Fri, 18 Oct 2024 16:16:36 +0800
-Message-Id: <20241018081636.1379390-1-chenqiuji666@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1729239511; c=relaxed/simple;
+	bh=AqwgOeD8E/cWiJNQ3gnwmcaMoELcWsId0Z6kgZel6qI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=E997Nfsst5uVs5CsTCCcf9yOcBpqzNy5IOxmoIYtX4CIUhUzuZvRWwhkaAeIQtQVEcB/Nh7oWJay51jeLxe0Mu6zW22JYfaJdxKEhsop3l3kdq54uu3aNJqD7efMdGsyWxAoC5DpagMtSTMUXkXcpwEbPY93Uq0f1yXgTGcaTgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Nkd6oen4; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=hlZgUtwK; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=XJd/9J/8; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=/hQmSrY3; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0534521E72;
+	Fri, 18 Oct 2024 08:18:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1729239501; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=pGkzZepfTq7Y965rMBR9RHWTsIlvnr1JyTr5g3fh330=;
+	b=Nkd6oen4ZgDQV4lsxfavGZ35rac0sIqhRCC4EpAB4K0M2PicXzSClpCtSpeU8wX73YnY6O
+	z+QXcQOUZsGlBnvNPe/A+qvnQJix+Ll9ng/SnCYe2UdolxU5y7kXh0O0Tq19WkU/0vaNKh
+	egfYiFFb+BjOjd+F+OF6ifie/8GY7D8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1729239501;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=pGkzZepfTq7Y965rMBR9RHWTsIlvnr1JyTr5g3fh330=;
+	b=hlZgUtwKljumjOQ/3w31xMg5CogQyuyASZPPCTyVfLGy16WhUhzGtPVCpKzusB3m9KMwmC
+	eR0K/b2mwjzInIDA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="XJd/9J/8";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/hQmSrY3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1729239500; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=pGkzZepfTq7Y965rMBR9RHWTsIlvnr1JyTr5g3fh330=;
+	b=XJd/9J/8BDWGq4q/fLQH+jqisVMIU2WjkE541p3vv6xUfiUiLtCH5+iPELLO0lqZ+Ush1t
+	pKNHudH/6gdW1LIkuSD5BP/rC+DYcoEefcU4JT/ZpIgJ7zyn9HadFw2ZPG6BwaJI5IgOQZ
+	tkmU5sW8gYzVznDlJcy5xOuKk6Fp/N0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1729239500;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=pGkzZepfTq7Y965rMBR9RHWTsIlvnr1JyTr5g3fh330=;
+	b=/hQmSrY3TjO4uUzLO0PBirD2gE741hyIba17GZrgHv+I3/lHvXZW9i264xqY5bF0+D1oZ4
+	Q23/5XpTZyrSyFBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DF60E13433;
+	Fri, 18 Oct 2024 08:18:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id AVw3NssZEmcBRQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 18 Oct 2024 08:18:19 +0000
+Message-ID: <3b8915df-2327-4054-ab68-0521f9c1bb74@suse.cz>
+Date: Fri, 18 Oct 2024 10:18:19 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.11.y 0/3] : Yu Zhao's memory fix backport
+To: Greg KH <gregkh@linuxfoundation.org>, chrisl@kernel.org
+Cc: stable@vger.kernel.org, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Yu Zhao <yuzhao@google.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Kent Overstreet <kent.overstreet@linux.dev>,
+ kernel test robot <oliver.sang@intel.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Marc Hartmayer <mhartmay@linux.ibm.com>
+References: <20241017-stable-yuzhao-v1-0-3a4566660d44@kernel.org>
+ <2024101856-avoid-unsorted-fc33@gregkh>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ EP+ylKVEKb0Q2A==
+In-Reply-To: <2024101856-avoid-unsorted-fc33@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 0534521E72
+X-Spam-Score: -4.51
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:mid,suse.cz:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.cz:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-An atomicity violation occurs during consecutive reads of the variable 
-cdx_dev->driver_override. Imagine a scenario: while evaluating the 
-statement if (cdx_dev->driver_override && strcmp(cdx_dev->driver_override, 
-drv->name)), the value of cdx_dev->driver_override changes, leading to an 
-inconsistency where the value of cdx_dev->driver_override is the old value 
-when passing the non-null check, but the new value when evaluated by 
-strcmp(). This causes an inconsistency.
+On 10/18/24 07:58, Greg KH wrote:
+> On Thu, Oct 17, 2024 at 02:58:01PM -0700, chrisl@kernel.org wrote:
+>> A few commits from Yu Zhao have been merged into 6.12.
+>> They need to be backported to 6.11.
+> 
+> Why?
+> 
+>> - c2a967f6ab0ec ("mm/hugetlb_vmemmap: don't synchronize_rcu() without HVO")
+>> - 95599ef684d01 ("mm/codetag: fix pgalloc_tag_split()")
+>> - e0a955bf7f61c ("mm/codetag: add pgalloc_tag_copy()")
+> 
+> For mm changes, we need an explicit ack from the mm maintainers to take
+> patches into the stable tree.  Why were these not tagged with the normal
+> "cc: stable@" tag in the first place?
 
-The second error occurs during the validation of cdx_dev->driver_override. 
-The logic of this error is similar to the first one, as the entire process 
-is not protected by a lock, leading to an inconsistency in the values of 
-cdx_dev->driver_override before and after the reads.
+The two codetags commit actually were tagged. c2a967f6ab0ec seems to me an
+unrelated performance optimization, could make sense in a LTS kernel but is
+there a lot of benefit expected for the lifetime of 6.11?
 
-The third error occurs in driver_override_show() when executing the 
-statement return sysfs_emit(buf, "%s\n", cdx_dev->driver_override);. 
-Since the string changes byte by byte, it is possible for a partially 
-modified cdx_dev->driver_override value to be used in this statement, 
-leading to an incorrect return value from the program.
 
-To fix these issues, for the first and second problems, since we need to 
-protect the entire process of reading the variable cdx_dev->driver_override
-with a lock, we introduced a variable ret and an out block. For each branch
-in this section, we replaced the return statements with assignments to the
-variable ret, and then used a goto statement to directly execute the out 
-block, making the code overall more concise.
-
-For the third problem, we adopted a similar approach to the one used in the
-modalias_show() function, protecting the process of reading 
-cdx_dev->driver_override with a lock, ensuring that the program runs 
-correctly.
-
-This possible bug is found by an experimental static analysis tool
-developed by our team. This tool analyzes the locking APIs to extract
-function pairs that can be concurrently executed, and then analyzes the
-instructions in the paired functions to identify possible concurrency bugs
-including data races and atomicity violations.
-
-Fixes: 2959ab247061 ("cdx: add the cdx bus driver")
-Fixes: 48a6c7bced2a ("cdx: add device attributes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
----
- drivers/cdx/cdx.c | 37 +++++++++++++++++++++++++++----------
- 1 file changed, 27 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/cdx/cdx.c b/drivers/cdx/cdx.c
-index 07371cb653d3..fae03c89f818 100644
---- a/drivers/cdx/cdx.c
-+++ b/drivers/cdx/cdx.c
-@@ -268,6 +268,7 @@ static int cdx_bus_match(struct device *dev, const struct device_driver *drv)
- 	const struct cdx_driver *cdx_drv = to_cdx_driver(drv);
- 	const struct cdx_device_id *found_id = NULL;
- 	const struct cdx_device_id *ids;
-+	int ret = false;
- 
- 	if (cdx_dev->is_bus)
- 		return false;
-@@ -275,28 +276,40 @@ static int cdx_bus_match(struct device *dev, const struct device_driver *drv)
- 	ids = cdx_drv->match_id_table;
- 
- 	/* When driver_override is set, only bind to the matching driver */
--	if (cdx_dev->driver_override && strcmp(cdx_dev->driver_override, drv->name))
--		return false;
-+	device_lock(dev);
-+	if (cdx_dev->driver_override && strcmp(cdx_dev->driver_override, drv->name)) {
-+		ret = false;
-+		goto out;
-+	}
- 
- 	found_id = cdx_match_id(ids, cdx_dev);
--	if (!found_id)
--		return false;
-+	if (!found_id) {
-+		ret = false;
-+		goto out;
-+	}
- 
- 	do {
- 		/*
- 		 * In case override_only was set, enforce driver_override
- 		 * matching.
- 		 */
--		if (!found_id->override_only)
--			return true;
--		if (cdx_dev->driver_override)
--			return true;
-+		if (!found_id->override_only) {
-+			ret = true;
-+			goto out;
-+		}
-+		if (cdx_dev->driver_override) {
-+			ret = true;
-+			goto out;
-+		}
- 
- 		ids = found_id + 1;
- 		found_id = cdx_match_id(ids, cdx_dev);
- 	} while (found_id);
- 
--	return false;
-+	ret = false;
-+out:
-+	device_unlock(dev);
-+	return ret;
- }
- 
- static int cdx_probe(struct device *dev)
-@@ -470,8 +483,12 @@ static ssize_t driver_override_show(struct device *dev,
- 				    struct device_attribute *attr, char *buf)
- {
- 	struct cdx_device *cdx_dev = to_cdx_device(dev);
-+	ssize_t len;
- 
--	return sysfs_emit(buf, "%s\n", cdx_dev->driver_override);
-+	device_lock(dev);
-+	len = sysfs_emit(buf, "%s\n", cdx_dev->driver_override);
-+	device_unlock(dev);
-+	return len;
- }
- static DEVICE_ATTR_RW(driver_override);
- 
--- 
-2.34.1
+> thanks,
+> 
+> greg k-h
 
 
