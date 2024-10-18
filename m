@@ -1,101 +1,108 @@
-Return-Path: <stable+bounces-86886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B73229A48FE
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 23:37:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B339A491D
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 23:48:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F36DB23726
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 21:37:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E2DC285846
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 21:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E892B18E34E;
-	Fri, 18 Oct 2024 21:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5DDA18E354;
+	Fri, 18 Oct 2024 21:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Sx3P6vRe"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="xU+mrdqr"
+X-Original-To: Stable@vger.kernel.org
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5B418D640
-	for <stable@vger.kernel.org>; Fri, 18 Oct 2024 21:37:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C996916D4E6;
+	Fri, 18 Oct 2024 21:47:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729287426; cv=none; b=JKzRLchxIXzWzLK0DH3e4ImjHwiPVm4pWqsDvfZTWe491RwNOdxixREssasXy2cZX8aWTxqykWqq8Odlyz2e7bXiEK8i5ebGyiBp+PdEe67C9B8VwlT3qlyqHoKJS78hwnXawNwZkQsF37Zxp0eTrazoGxazbQpk2NZrBHWo6yY=
+	t=1729288076; cv=none; b=cJe6UZ/JSjH4CZKr+dgL0Y36tS5rR0TtRS6hMcuKOLkXoG9ZTivhvumw3iUGaEYrtZLdVT5fxT5Fq7Cev6CRyfPWs6reSzRtapjnYhlWcvMSvzJWn07d9N3A7eEU4AyA+xWEijF8z5YdMJrjhMoZ4NogbSlxGtIV5zbr73vOWoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729287426; c=relaxed/simple;
-	bh=7uArWuu662YLX+5+NeTQNX9c5XCJkAt5M9yXKh/syS0=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=tasoJEsWmoJLev5u6Y1KSQXj1Hk/zdN3MkRsKm/hHYsI+c060KLqy2Yyb7Aj1La16vg6yAp0nZej1VjJhbVj30fZEDcnVuQQf8lAo/lN3ijoMR1hq7MxLvRYLN59s72pupoowmyG2MoihjNJZORFmFOkDDyXN/a38kvwCYDQUWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Sx3P6vRe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB4D6C4CEC3;
-	Fri, 18 Oct 2024 21:37:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1729287426;
-	bh=7uArWuu662YLX+5+NeTQNX9c5XCJkAt5M9yXKh/syS0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Sx3P6vRexMD2esFE4t2cmPdc+tNf9CM9mZJlAZ+f/B6m7XHaRca4M4+6M3lN8pIfx
-	 miII3ONy1cr05vj4HJqa9hiYZjzNF4yKF09pdSDuvWfbGoVymPXd0VoBl2pAwUrDSr
-	 3+5LvZ0m1SE1gntrmHDY8/EU2ue8taPeSb1Kpj7I=
-Date: Fri, 18 Oct 2024 14:37:05 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Chris Li <chrisl@kernel.org>, stable@vger.kernel.org, yangge
- <yangge1116@126.com>, Yu Zhao <yuzhao@google.com>, David Hildenbrand
- <david@redhat.com>, Hugh Dickins <hughd@google.com>,
- baolin.wang@linux.alibaba.com, Kairui Song <ryncsn@gmail.com>
-Subject: Re: [PATCH 6.11.y] mm: vmscan.c: fix OOM on swap stress test
-Message-Id: <20241018143705.73954d6c3451770240a5da09@linux-foundation.org>
-In-Reply-To: <2024101800-resurface-edginess-1fcf@gregkh>
-References: <20241016-stable-oom-fix-v1-1-ca604a36a2b6@kernel.org>
-	<2024101800-resurface-edginess-1fcf@gregkh>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1729288076; c=relaxed/simple;
+	bh=GCembOxXqoxGHyKB6sZTgd5drl5OE2YOvO0Wl2XLd7E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TFZqSit3zE3LVtNHS9EWXTirLJ5lXEt1L3ZdOnQ9/HyZd4mf/iNI8G0twCcwKPhl+DNFb3vL2xBPUcfcK5ZX+bTTBKp4mGwuOF8+67+ftLQJ6PmZD97zr/wfF1TphplP9J6NCaTBZsU+Zy0lR8DaFN86tqJYH20b++b5UmimQ10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=xU+mrdqr; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=Cc:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=K5aAZ4qh0AEAbu5qvWu/4QCvE+diJotq5vEmByCm7xk=; b=xU+mrdqrcM3zxXqe1PV5eBfrQ6
+	eWl5vuzcRRFUqDmlOKUwlfVUNTpQ+mW3iugHuHCuZvrOCn+ewRiOEH8Nxi21GgbwqqjMTb1IRSAuK
+	YR8x1xyb/L/3XLWEFrl3Ay7CInmRrm3q4Zit1uzDBIpzXyXBezIoxHO/hXHysZsbZx5f2QHURsWdC
+	c6M3bnM2fJAfpFgR6XghgPQTWcG6kV7VQwTiDORA0dSNIx3LfoteQfSMo4KE8pUWWJYwn7OI77ccY
+	FZixz1eUVOeUJ2wnl2y836dHZx6NohAZEQB8q0H+TvEFG3FddIt5Iv9cDxdUO/smUiYIH+iVvF+0V
+	vUJaojMg==;
+From: Andreas Kemnade <andreas@kemnade.info>
+To: tony@atomide.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	aford173@gmail.com,
+	linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	aaro.koskinen@iki.fi,
+	khilman@baylibre.com,
+	Roger Quadros <rogerq@kernel.org>
+Cc: Andreas Kemnade <andreas@kemnade.info>,
+	Stable@vger.kernel.org
+Subject: [PATCH] ARM: dts: omap36xx: declare 1GHz OPP as turbo again
+Date: Fri, 18 Oct 2024 23:47:27 +0200
+Message-Id: <20241018214727.275162-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri, 18 Oct 2024 10:51:30 +0200 Greg KH <gregkh@linuxfoundation.org> wrote:
+Operating stable without reduced chip life at 1Ghz needs several
+technologies working: The technologies involve
+- SmartReflex
+- DVFS
 
-> On Wed, Oct 16, 2024 at 09:49:49AM -0700, Chris Li wrote:
-> > [ Upstream commit 0885ef4705607936fc36a38fd74356e1c465b023 ]
-> > 
-> > I found a regression on mm-unstable during my swap stress test, using
-> > tmpfs to compile linux.  The test OOM very soon after the make spawns many
-> > cc processes.
-> > 
-> > It bisects down to this change: 33dfe9204f29b415bbc0abb1a50642d1ba94f5e9
-> > (mm/gup: clear the LRU flag of a page before adding to LRU batch)
-> > 
-> > Yu Zhao propose the fix: "I think this is one of the potential side
-> > effects -- Huge mentioned earlier about isolate_lru_folios():"
-> > 
-> > I test that with it the swap stress test no longer OOM.
-> > 
-> > Link: https://lore.kernel.org/r/CAOUHufYi9h0kz5uW3LHHS3ZrVwEq-kKp8S6N-MZUmErNAXoXmw@mail.gmail.com/
-> > Link: https://lkml.kernel.org/r/20240905-lru-flag-v2-1-8a2d9046c594@kernel.org
-> > Fixes: 33dfe9204f29 ("mm/gup: clear the LRU flag of a page before adding to LRU batch")
-> > Signed-off-by: Chris Li <chrisl@kernel.org>
-> > Suggested-by: Yu Zhao <yuzhao@google.com>
-> > Suggested-by: Hugh Dickins <hughd@google.com>
-> > Closes: https://lore.kernel.org/all/CAF8kJuNP5iTj2p07QgHSGOJsiUfYpJ2f4R1Q5-3BN9JiD9W_KA@mail.gmail.com/
-> > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> > ---
-> >  mm/vmscan.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> Again, for mm changes, we need an explicit ack from the mm maintainers
-> before we can take them.  I'll wait for that.
+As this cannot directly specified in the OPP table as dependecies in the
+devicetree yet, use the turbo flag again to mark this OPP as something
+special to have some kind of opt-in.
 
-Yes, please proceed with the backport.  It looks like the cc:stable got
-lost because it wasn't in the original commit.
+So revert commit
+5f1bf7ae8481 ("ARM: dts: omap36xx: Remove turbo mode for 1GHz variants")
 
-btw Chris, that was a quite poor changelog.  It didn't explain the code
-change at all!
+Practical reasoning:
+At least the GTA04A5 (DM3730) has become unstable with that OPP enabled.
+Furthermore nothing enforces the availability of said technologies,
+even in the kernel configuration, so allow users to rather opt-in.
+
+Cc: Stable@vger.kernel.org
+Fixes: 5f1bf7ae8481 ("ARM: dts: omap36xx: Remove turbo mode for 1GHz variants")
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+---
+ arch/arm/boot/dts/ti/omap/omap36xx.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/boot/dts/ti/omap/omap36xx.dtsi b/arch/arm/boot/dts/ti/omap/omap36xx.dtsi
+index c3d79ecd56e39..c217094b50abc 100644
+--- a/arch/arm/boot/dts/ti/omap/omap36xx.dtsi
++++ b/arch/arm/boot/dts/ti/omap/omap36xx.dtsi
+@@ -72,6 +72,7 @@ opp-1000000000 {
+ 					 <1375000 1375000 1375000>;
+ 			/* only on am/dm37x with speed-binned bit set */
+ 			opp-supported-hw = <0xffffffff 2>;
++			turbo-mode;
+ 		};
+ 	};
+ 
+-- 
+2.39.2
 
 
