@@ -1,79 +1,136 @@
-Return-Path: <stable+bounces-86764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901699A3609
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 08:50:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ABF99A3763
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 09:39:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 247AEB212BB
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 06:50:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A8C0B21DEE
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 07:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D02C18E74D;
-	Fri, 18 Oct 2024 06:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BEBE185B6F;
+	Fri, 18 Oct 2024 07:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LP+MT9zC"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="RyEtbPf2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313C8187339
-	for <stable@vger.kernel.org>; Fri, 18 Oct 2024 06:48:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A7B2BAEF;
+	Fri, 18 Oct 2024 07:39:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729234107; cv=none; b=dGua3vduq4RAH2xd8BEXC++AyY0alxK+MVzzt40KyuCKscMJLSrLHeSyrGdgvghqF2wR/UN9KNPAb6mtjziGKVaSWLI/KCHDmH8cMmz1+OCRWYw1AvgmdIh5GAf/v0Gxmjp+eFfUKdKhzTlFIH+0Ir+3QOyf6Zgbs0cm5rb/KHg=
+	t=1729237187; cv=none; b=KPW8J+RylZz/rsJbkxoWwKc3CHp5+KP8OydyQ+mRmRgwQnZb7/hh2TXODTvxEdCFZ9oyV9tulKoHr/QwfXxqtoGKfqYnSwQmjS230BPO64OwD6jD3ZjlKUgg5qtamgGPFdZwcT0qsOt9qYmBnOTnC2w9FBxdJY8Ta5TvXuyFGBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729234107; c=relaxed/simple;
-	bh=W8pFXMmk4xoVAWXNf1BLNUOMcuWTep2YmypRo5aTkQ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b1nKxypj4OtF/KtD0lK3dCABp9/Lh4gXAQ4jfwOTPN5oTrsxr3TyFY3OlEHJr4YfrAHfgTmIVnXFl/HfLMhEDpGzzyNTWWfuf10tl8IRj+pjJUyaWA9s7GpfGyDXCrcDgBDYTi1zN4iLcn/+7jZd8uFDolzPz3noz+5TMJZmgRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LP+MT9zC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58430C4CEC5;
-	Fri, 18 Oct 2024 06:48:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729234106;
-	bh=W8pFXMmk4xoVAWXNf1BLNUOMcuWTep2YmypRo5aTkQ8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LP+MT9zCR2Ujg3uyHdrsfFnaQPodYmDUclEByYfaJ9EW0oDi+Pv//GzeICdwLbau0
-	 IyZNlXC5uiWxA2ap5cZX+3aOVAQ2gO54u0p380nZ+jQP4uf/R5qzldGtSECrd6P1UW
-	 3/fKtAqAa8cle/sV82XbzOe+hHS4OpMLyy3wKpH4=
-Date: Fri, 18 Oct 2024 08:48:23 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Zenghui Yu <yuzenghui@huawei.com>
-Cc: Sasha Levin <sashal@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>, tangnianyao@huawei.com,
-	stable@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: Request to backport "irqchip/gic-v3-its: Fix VSYNC referencing
- an unmapped VPE on GIC v4.1"
-Message-ID: <2024101816-paternity-curable-42fc@gregkh>
-References: <1057d0bc-f4a5-3ea1-b281-c78e74bc8b85@huawei.com>
+	s=arc-20240116; t=1729237187; c=relaxed/simple;
+	bh=Z5lqgdu3QSwVsuXkMGkVZ3xJQKisy5Du43JgtY5KHNk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZG2jfzukRUlhmfy/YdmXCvhMLRjqZ5c5yjfvye4GL0S6BkUe/ewn1ZFpt7QigXKgagt3QS6I2R6xbUCu9KCnS/DcMHFm4O7G+mq+qcw+Mfy5Jo8U61jSmlJexOSVCGeQNZJVOR2Ag2/89+iRwcXwMetI7V/cZGyBoiiC9pH6s2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=RyEtbPf2; arc=none smtp.client-ip=18.169.211.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1729237124;
+	bh=goLD3c2EsP+Ks0KHFgizL7VRQZT50MHFMUI14wvatVk=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=RyEtbPf2M06iJTQcEknwZvOdrPEdaDsHpnYYOzljS1F9vf2wKPU4tVLbrazTSo7CO
+	 z+QB5n+Pp/qDVkUqTqNV5hOc5aQ/ITwj/VdM7oE8KoL/neZFZZgjbKkXlaX7AyaQJC
+	 +Yrg4XMk/Eb8zTDEsRFz+AwHKoWDsQV3ZA5HzE3A=
+X-QQ-mid: bizesmtpsz9t1729237109tab4vls
+X-QQ-Originating-IP: 4YMVo5aBURMdTnar6yySxjTeT+t7YqnD3e0o3vNJffk=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 18 Oct 2024 15:38:27 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 9120631587002057877
+From: WangYuli <wangyuli@uniontech.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org,
+	sashal@kernel.org
+Cc: bhelgaas@google.com,
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	WangYuli <wangyuli@uniontech.com>,
+	SiyuLi <siyuli@glenfly.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 4.19/5.4] PCI: Add function 0 DMA alias quirk for Glenfly Arise chip
+Date: Fri, 18 Oct 2024 15:37:49 +0800
+Message-ID: <B7F5C8CEDD17AEFB+20241018073750.48527-1-wangyuli@uniontech.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1057d0bc-f4a5-3ea1-b281-c78e74bc8b85@huawei.com>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: ONJthgsgJlmJASbrSi6l3AMb7a38Jzf7ne1N56oxisjy0163boZsX72A
+	pnr7wyXbGpB5+oEhyzJ7HRp9y22y91m4oGswVOFNZgWl83j5MwD1TS4ONnj/Jvm4liKRWLG
+	3bp+s2viQ38zqse+nU9JIP1tmvp2WpHNqI4N3dIuIsq7qkbtTzSBLdTLmlIqajVuUcst9g8
+	6HNZBQxTSaXtyPwd4rZUQIcjr+knzAG9rkByxxVTdVYq4NXlAE2/ZhJrfj4FG8286oTh8mv
+	YnW0mXjkdQjRq6hEg9IKZM6MLFxlrrcroyz9iCwATCD9gy2bLeMIK9oRDkyU2veKUX+X6Yw
+	IWJurc+rKMfDvMiBnLfj/J6k0rnJ533IqJuXUGt3nwKwgmgtlHl3owxG/aGpbuEdpSGfE7b
+	ZL1AWlwvEmPjW6zdZ+c41nmZKR6amLWViE2r9p2mq4qH5QzngClxMIroPX8EBW2L0bqMaYO
+	vsU1WSzhh7Fi2VnTtIu59yIWtadeXUU5hjpgZfY6VPMZih2UVMrrMnYqsiUrErIZQTDN0Sz
+	nljsRn4b0oxWH1I6yvfjX8V6CRD2eTitqW19UmFC3+/S2agZRlL1tXYLwT1LGnQ9E+YH8N6
+	2IIJRmtgrOyCFbH/3ND8bykDS26aw1WXPjSN5dzqt1G17fhXl9K6bKUG4WzIR15yl/Q6jaQ
+	qIXXnpXt5v28yUQOf+/gpMQixoWiGcd3yq731R6yieIMnyRnas7szqB1p09O1vtM0G/sLol
+	L+ReFuPUNpawY4vmikJpCaM+iFGwOZSGrSx8MwuHHfrrn3ss+kSq7syErSCgTtgkEKTvNHy
+	4q4m01/1OODWk+1Fvvlfzs5pApMXCGsSDC/oc81sY3memypOHABJsqzvnhBiS07/+KmUQQy
+	bBb7zdmTfyL3RupzjGMo3r65p7VKOelVsAL4PSroF29A6gsOqma+LyEuGazopknNMzmWLWy
+	GNvj6BmtY0ARrCYh5setikXfn5H9NXslVcJ7M8MQ0SbhtdzF7eT2YeVWeoU653iZiPxo=
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+X-QQ-RECHKSPAM: 0
 
-On Tue, Oct 15, 2024 at 03:16:32PM +0800, Zenghui Yu wrote:
-> Hi Greg, Sasha,
-> 
-> Could you please help to backport the upstream commit
-> 80e9963fb3b5509dfcabe9652d56bf4b35542055 ("irqchip/gic-v3-its: Fix VSYNC
-> referencing an unmapped VPE on GIC v4.1") to
-> 
-> * 5.10
-> * 5.15
-> * 6.1
-> * 6.6
-> 
-> trees? It can be applied and built (with arm64's defconfig) cleanly on
-> top of the mentioned stable branches.
+[ Upstream commit 9246b487ab3c3b5993aae7552b7a4c541cc14a49 ]
 
-Now queued up, thanks.
+Add DMA support for audio function of Glenfly Arise chip, which uses
+Requester ID of function 0.
 
-greg k-h
+Link: https://lore.kernel.org/r/CA2BBD087345B6D1+20240823095708.3237375-1-wangyuli@uniontech.com
+Signed-off-by: SiyuLi <siyuli@glenfly.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+[bhelgaas: lower-case hex to match local code, drop unused Device IDs]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+---
+ drivers/pci/quirks.c    | 4 ++++
+ include/linux/pci_ids.h | 2 ++
+ 2 files changed, 6 insertions(+)
+
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index bb5182089096..566bedc5836b 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4042,6 +4042,10 @@ static void quirk_dma_func0_alias(struct pci_dev *dev)
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_RICOH, 0xe832, quirk_dma_func0_alias);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_RICOH, 0xe476, quirk_dma_func0_alias);
+ 
++/* Some Glenfly chips use function 0 as the PCIe Requester ID for DMA */
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_GLENFLY, 0x3d40, quirk_dma_func0_alias);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_GLENFLY, 0x3d41, quirk_dma_func0_alias);
++
+ static void quirk_dma_func1_alias(struct pci_dev *dev)
+ {
+ 	if (PCI_FUNC(dev->devfn) != 1)
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index 91193284710f..5f996cf93c13 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -2647,6 +2647,8 @@
+ #define PCI_DEVICE_ID_DCI_PCCOM8	0x0002
+ #define PCI_DEVICE_ID_DCI_PCCOM2	0x0004
+ 
++#define PCI_VENDOR_ID_GLENFLY		0x6766
++
+ #define PCI_VENDOR_ID_INTEL		0x8086
+ #define PCI_DEVICE_ID_INTEL_EESSC	0x0008
+ #define PCI_DEVICE_ID_INTEL_PXHD_0	0x0320
+-- 
+2.45.2
+
 
