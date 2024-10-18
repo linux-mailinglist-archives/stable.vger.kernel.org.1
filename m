@@ -1,189 +1,146 @@
-Return-Path: <stable+bounces-86785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F929A3863
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 10:21:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8CD39A387A
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 10:26:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FF48285C3C
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 08:21:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 936821F2A183
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 08:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EEDA18CBE6;
-	Fri, 18 Oct 2024 08:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC05218CBEE;
+	Fri, 18 Oct 2024 08:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="j0ke+elu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNgW8BM1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996C315445B
-	for <stable@vger.kernel.org>; Fri, 18 Oct 2024 08:21:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A918215445B
+	for <stable@vger.kernel.org>; Fri, 18 Oct 2024 08:26:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729239687; cv=none; b=LX6sI0rHWpz5ggETY2bE8LqG7EuPHeAyoTM/Nf5T++84v1BxK8NLhqTs85FQenCbi9z+Fp8lYlKgQCDmcys7UCRZLaIBXe+KoCwQVt1NLCxQW5+7Gc/e/yXdVM4w/936HgzShoDJcDwZJrCDP7FFWFz+aFntvxYE9SE/jCMe66M=
+	t=1729240004; cv=none; b=D3aQ7xx1Dfc5g6v2dfiXU1dQDV22fqdLgxOQ6HWs25Ei46GS8oorS37ZklRJP9DcUd0k/Ml3lqN/6WNPZvxDSSgLjqG+95e7JfmT99+Lu/Bnsbeaz7JEwIRH6hvWkK4HV7ofkLArkSiPQ0JpHOOBCZwDiQHa4vR3VREyLkpORqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729239687; c=relaxed/simple;
-	bh=+b1cMWRvd2/m165u4jRfl6bdFWmMjC5X8GKJ0se5ktk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=paobO7bGshPfMCHHmRg9xJEXegN6nw2RYPca8IRf8RWGlWF3TIo7k9EXyZbAsKZVLuUVYGCIKNqwmpHypHc4Gwfg07J+cvZyswg6rRMGamATTH7m2HpFKa4FXaxi0bJY+I3KSsZsuyN2bujJ3Rc2ck1TpZtjlpZC3tu8m7f24ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=j0ke+elu; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-20c8b557f91so19751745ad.2
-        for <stable@vger.kernel.org>; Fri, 18 Oct 2024 01:21:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1729239685; x=1729844485; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2sw2cnvD53O5L8zKGOZV5sbNVDe/+IEjxX86rJilqAk=;
-        b=j0ke+elu0OGjMHJZKJ1aG2SpcsTrrfMvjw6NL7rEsL1w1LkjZjpPbqxilX2wbkIpk9
-         cmJKA0AIrz09fbFyrINYIbETOVEzdm4uYtrS+lOYqoUXC3NEcN4lRUWyH0DnMMg9KXDl
-         /xuSsUT4W/LfHHR8PKU5j5UxPqRvbgKUDdLNE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729239685; x=1729844485;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2sw2cnvD53O5L8zKGOZV5sbNVDe/+IEjxX86rJilqAk=;
-        b=bUfVhI2PGxqy/upNKfcvWlOR0EmPP0J0EFMDLCie9yNDOvS27UqA0HmsO+yxEuDZrf
-         zR9wlS/csh2LVHR5uk7xpzpHVs8qTGmXvgndJeQiVfylrf9RTKZcyyIc+ONGyBfKvbHg
-         0rp7tL6W5gO4NmOZ5jpZz5UUDlzE2Y5a9DY3jxU8vnatP+sXriFjbiGo54ySoL7MfLwV
-         lt5s6crCMdj71DXDpdvAEtlfHjt+uOLwhGVrmbOQ94O4u5JL7XQ8ZToQi7l939jVIJls
-         ov2lG0Gz6T6Na97JXkH2STngnvI1oAtiCxrtBzPrcrgCVcN2b6gDVKVA76NDWWFyDIg7
-         +lig==
-X-Forwarded-Encrypted: i=1; AJvYcCXRwRPv+0YrqcfecRCB8xHBlO1JXjRsHX3qvt/qiZ4KLPTpzwBcSxkKQpzibH9l2qXsI+bJHCQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIGkyYFNi9mJDzNdGO47jwG+PgAgrZibreuVFd4kER67zY+QkL
-	naX9C1EJNjB6iYYevTAwZAlqXNdjTqizWb0kOCdmHgC31BH2YjG01I6RGewxcA==
-X-Google-Smtp-Source: AGHT+IFOJPmAyaUnxkdtc6GJUuyr1a/qUKidE/urORfJ7bfMi/Vu+97DNhgccSxR9H9P6CXOMHrp/w==
-X-Received: by 2002:a17:90b:814:b0:2e2:a96c:f00d with SMTP id 98e67ed59e1d1-2e56185d15bmr1863982a91.21.1729239684929;
-        Fri, 18 Oct 2024 01:21:24 -0700 (PDT)
-Received: from wenstp920.tpe.corp.google.com ([2401:fa00:1:10:5e77:354e:2385:7baa])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e55da79303sm1315149a91.52.2024.10.18.01.21.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Oct 2024 01:21:24 -0700 (PDT)
-From: Chen-Yu Tsai <wenst@chromium.org>
-To: Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Chen-Yu Tsai <wenst@chromium.org>,
-	devicetree@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] arm64: dts: mediatek: mt8186-corsola-voltorb: Merge speaker codec nodes
-Date: Fri, 18 Oct 2024 16:21:11 +0800
-Message-ID: <20241018082113.1297268-1-wenst@chromium.org>
-X-Mailer: git-send-email 2.47.0.rc1.288.g06298d1525-goog
+	s=arc-20240116; t=1729240004; c=relaxed/simple;
+	bh=wci6fe4axmFU8+4QKLAt36NvQa04HAGAdHfI4rbwJeY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FaIhm4aAuWRUDmN2JVl6Q1p7xrVrcttVAbEDzqLjl7m3k1HTh3fBq/fW7JB4m/a54o7G+M0mPyDouEdVHDqnZr58by8Y0nN38Myckj6+M38HpRMToane8+t7Tsyy1AaOZAwMxmbrHL/Bbkv4rZ+VeLztdmHmsh5hGA9Kzc+HZcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNgW8BM1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF02C4CEC3;
+	Fri, 18 Oct 2024 08:26:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1729240004;
+	bh=wci6fe4axmFU8+4QKLAt36NvQa04HAGAdHfI4rbwJeY=;
+	h=Subject:To:Cc:From:Date:From;
+	b=SNgW8BM1BLebnfMT+1xkT4oDMZFoDPN61Yi52QVXK2dTaiQV6vTUXPowOzk/rKN8t
+	 BMkdoAfwbsM055l0Xm2f354PGBPcvylKY1xtF7Pw0VeGN7fojc5AVEk/FKuzKj7cC2
+	 KzxPdz6ly4ot6KfLEiSrDa4vl1TRN3SSnxjyTzh0=
+Subject: FAILED: patch "[PATCH] mm: don't install PMD mappings when THPs are disabled by the" failed to apply to 6.11-stable tree
+To: david@redhat.com,akpm@linux-foundation.org,bfu@redhat.com,borntraeger@linux.ibm.com,frankja@linux.ibm.com,hughd@google.com,imbrenda@linux.ibm.com,ryan.roberts@arm.com,stable@vger.kernel.org,thuth@redhat.com,wangkefeng.wang@huawei.com,willy@infradead.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 18 Oct 2024 10:26:41 +0200
+Message-ID: <2024101841-keep-coma-4963@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-The Voltorb device uses a speaker codec different from the original
-Corsola device. When the Voltorb device tree was first added, the new
-codec was added as a separate node when it should have just replaced the
-existing one.
 
-Merge the two nodes. The only differences are the compatible string and
-the GPIO line property name. This keeps the device node path for the
-speaker codec the same across the MT8186 Chromebook line. Also rename
-the related labels and node names from having rt1019p to speaker codec.
+The patch below does not apply to the 6.11-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Cc: <stable@vger.kernel.org> # v6.11+
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
----
-This is technically not a fix, but having the same device tree structure
-in stable kernels would be more consistent for consumers of the device
-tree. Hence the request for a stable backport.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Changes since v1:
-- Dropped Fixes tag, since this is technically a cleanup, not a fix
-- Rename existing rt1019p related node names and labels to the generic
-  "speaker codec" name
----
- .../dts/mediatek/mt8186-corsola-voltorb.dtsi  | 21 +++++--------------
- .../boot/dts/mediatek/mt8186-corsola.dtsi     |  8 +++----
- 2 files changed, 9 insertions(+), 20 deletions(-)
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.11.y
+git checkout FETCH_HEAD
+git cherry-pick -x 2b0f922323ccfa76219bcaacd35cd50aeaa1359
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024101841-keep-coma-4963@gregkh' --subject-prefix 'PATCH 6.11.y' HEAD^..
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8186-corsola-voltorb.dtsi b/arch/arm64/boot/dts/mediatek/mt8186-corsola-voltorb.dtsi
-index 52ec58128d56..b495a241b443 100644
---- a/arch/arm64/boot/dts/mediatek/mt8186-corsola-voltorb.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8186-corsola-voltorb.dtsi
-@@ -10,12 +10,6 @@
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 2b0f922323ccfa76219bcaacd35cd50aeaa13592 Mon Sep 17 00:00:00 2001
+From: David Hildenbrand <david@redhat.com>
+Date: Fri, 11 Oct 2024 12:24:45 +0200
+Subject: [PATCH] mm: don't install PMD mappings when THPs are disabled by the
+ hw/process/vma
+
+We (or rather, readahead logic :) ) might be allocating a THP in the
+pagecache and then try mapping it into a process that explicitly disabled
+THP: we might end up installing PMD mappings.
+
+This is a problem for s390x KVM, which explicitly remaps all PMD-mapped
+THPs to be PTE-mapped in s390_enable_sie()->thp_split_mm(), before
+starting the VM.
+
+For example, starting a VM backed on a file system with large folios
+supported makes the VM crash when the VM tries accessing such a mapping
+using KVM.
+
+Is it also a problem when the HW disabled THP using
+TRANSPARENT_HUGEPAGE_UNSUPPORTED?  At least on x86 this would be the case
+without X86_FEATURE_PSE.
+
+In the future, we might be able to do better on s390x and only disallow
+PMD mappings -- what s390x and likely TRANSPARENT_HUGEPAGE_UNSUPPORTED
+really wants.  For now, fix it by essentially performing the same check as
+would be done in __thp_vma_allowable_orders() or in shmem code, where this
+works as expected, and disallow PMD mappings, making us fallback to PTE
+mappings.
+
+Link: https://lkml.kernel.org/r/20241011102445.934409-3-david@redhat.com
+Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reported-by: Leo Fu <bfu@redhat.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Janosch Frank <frankja@linux.ibm.com>
+Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/memory.c b/mm/memory.c
+index c0869a962ddd..30feedabc932 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4920,6 +4920,15 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct page *page)
+ 	pmd_t entry;
+ 	vm_fault_t ret = VM_FAULT_FALLBACK;
  
- / {
- 	chassis-type = "laptop";
--
--	max98360a: max98360a {
--		compatible = "maxim,max98360a";
--		sdmode-gpios = <&pio 150 GPIO_ACTIVE_HIGH>;
--		#sound-dai-cells = <0>;
--	};
- };
++	/*
++	 * It is too late to allocate a small folio, we already have a large
++	 * folio in the pagecache: especially s390 KVM cannot tolerate any
++	 * PMD mappings, but PTE-mapped THP are fine. So let's simply refuse any
++	 * PMD mappings if THPs are disabled.
++	 */
++	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vma->vm_flags))
++		return ret;
++
+ 	if (!thp_vma_suitable_order(vma, haddr, PMD_ORDER))
+ 		return ret;
  
- &cpu6 {
-@@ -59,19 +53,14 @@ &cluster1_opp_15 {
- 	opp-hz = /bits/ 64 <2200000000>;
- };
- 
--&rt1019p{
--	status = "disabled";
--};
--
- &sound {
- 	compatible = "mediatek,mt8186-mt6366-rt5682s-max98360-sound";
--	status = "okay";
-+};
- 
--	spk-hdmi-playback-dai-link {
--		codec {
--			sound-dai = <&it6505dptx>, <&max98360a>;
--		};
--	};
-+&speaker_codec {
-+	compatible = "maxim,max98360a";
-+	sdmode-gpios = <&pio 150 GPIO_ACTIVE_HIGH>;
-+	/delete-property/ sdb-gpios;
- };
- 
- &spmi {
-diff --git a/arch/arm64/boot/dts/mediatek/mt8186-corsola.dtsi b/arch/arm64/boot/dts/mediatek/mt8186-corsola.dtsi
-index c7580ac1e2d4..cf288fe7a238 100644
---- a/arch/arm64/boot/dts/mediatek/mt8186-corsola.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8186-corsola.dtsi
-@@ -259,15 +259,15 @@ spk-hdmi-playback-dai-link {
- 			mediatek,clk-provider = "cpu";
- 			/* RT1019P and IT6505 connected to the same I2S line */
- 			codec {
--				sound-dai = <&it6505dptx>, <&rt1019p>;
-+				sound-dai = <&it6505dptx>, <&speaker_codec>;
- 			};
- 		};
- 	};
- 
--	rt1019p: speaker-codec {
-+	speaker_codec: speaker-codec {
- 		compatible = "realtek,rt1019p";
- 		pinctrl-names = "default";
--		pinctrl-0 = <&rt1019p_pins_default>;
-+		pinctrl-0 = <&speaker_codec_pins_default>;
- 		#sound-dai-cells = <0>;
- 		sdb-gpios = <&pio 150 GPIO_ACTIVE_HIGH>;
- 	};
-@@ -1195,7 +1195,7 @@ pins {
- 		};
- 	};
- 
--	rt1019p_pins_default: rt1019p-default-pins {
-+	speaker_codec_pins_default: speaker-codec-default-pins {
- 		pins-sdb {
- 			pinmux = <PINMUX_GPIO150__FUNC_GPIO150>;
- 			output-low;
--- 
-2.47.0.rc1.288.g06298d1525-goog
 
 
