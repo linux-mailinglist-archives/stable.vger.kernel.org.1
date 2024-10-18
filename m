@@ -1,325 +1,236 @@
-Return-Path: <stable+bounces-86874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E3499A44D4
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 19:37:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C9F29A45DB
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 20:26:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CBE81F239D1
-	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 17:37:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB58F28551E
+	for <lists+stable@lfdr.de>; Fri, 18 Oct 2024 18:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3595E204037;
-	Fri, 18 Oct 2024 17:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B943F20513E;
+	Fri, 18 Oct 2024 18:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lDN3hfnx"
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="WsDnDGek"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11020082.outbound.protection.outlook.com [52.101.56.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBDCA2022D6;
-	Fri, 18 Oct 2024 17:37:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729273027; cv=none; b=W2uBW9+FODLoJXbzB8vgDWmaM/CxG5ARKGxQsumlgs3UAjAlxz4Qi2LYVw9ROfIwf7X5q07GZ2yDFdede7KQLFXGScOzi8ImmU5gfhmWR5wD0jQB6UInGMlhYJKYRm1rtRZyC6Gd1kWgnyRCAmd6FSzsUTArfkDaPmzya2QG2yk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729273027; c=relaxed/simple;
-	bh=T7sV6cS9AVOpbMvuUrx6xIfy4KhE8KAAl48hPy0R40Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TpoES2wDH8VlJFdv43VxNsIGvrJlipemFxHKpMcDF/bufbgSSb9XVdsXBR11BVd37WCIpRGZb7ZRc0qllRY6VLhqOJ9sSV+7+1bg6YbiMH2SWh247AudlBBLIV/bklxDGAzZvMSvuIE6X+DSSbK3eZ1z1ebd2Ye8gSAGMaaDZBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lDN3hfnx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AEDBC4CEC3;
-	Fri, 18 Oct 2024 17:37:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729273026;
-	bh=T7sV6cS9AVOpbMvuUrx6xIfy4KhE8KAAl48hPy0R40Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lDN3hfnxaQtU2DYkTMrx0/cWbe66dNIcLgGKLBXFDtzoQHL3ABXPQFbbAQ0kULQei
-	 rg0o6lbMgx4lB2oFlrmXt8f5W+Z4rvotfDfGxc7Qlzqqc3nejklAjJNyuvzQhPB+ZZ
-	 oy9MaCxnOdXmfNBda6sbN4QaVBXVyII56bFpkyiqJOeEwlLu/w5jW304EThlhDbGmH
-	 RVnAF9a8cPtMnX3SQoTMXe2rJoRzvi/llrc0lg4G/QQSDacavQAmrNGER1orNORr+w
-	 Io9VxUlZagdKeSALDOSiNSChCS3p6fk4Zda9N4PUBE3nHaWrDJElv123yGahju7QsM
-	 0g1Vkk8WbgxKw==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: mptcp@lists.linux.dev,
-	stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: Paolo Abeni <pabeni@redhat.com>,
-	sashal@kernel.org,
-	syzbot+f4aacdfef2c6a6529c3e@syzkaller.appspotmail.com,
-	Cong Wang <cong.wang@bytedance.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1.y 2/2] mptcp: prevent MPC handshake on port-based signal endpoints
-Date: Fri, 18 Oct 2024 19:36:59 +0200
-Message-ID: <20241018173656.2813913-6-matttbe@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241018173656.2813913-4-matttbe@kernel.org>
-References: <20241018173656.2813913-4-matttbe@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CC42040B2;
+	Fri, 18 Oct 2024 18:25:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.82
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729275939; cv=fail; b=YGUEW9z5U/Iotw8UoFmPKwV+767XdfOUetuzPxuXtjyf846M1g4WR6r0xVMd5umICvkpvQTjy+ykKH+HFoGFxuFeuOTQCYJJ5Pop/Dc0drC12RKBfipSAcygzPtAYhMTfwWEUt1RGDqtZhbKUMzTx6YW09HX4BgrPGtt/sfqo5o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729275939; c=relaxed/simple;
+	bh=c6DB9xS7MRcLqZIxINVRaAbmf/GxDb/O6l8n5lOkfvs=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=QIm7xlb8zhlSvYFkfECHoVdwEtkuk/WE3hVUOpyG0S8upcDrabYusYHgBJrT6UPk3nTa08cwzrI9vCn29opaejZTH/SFvh4dd8Xoj3qhoswF3HwNwO6pbp7kMpXyVOk1nvIGRQOtsEYo3FQQ4KVEYSgZx79HmvANXj2TYwT7Cws=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=WsDnDGek; arc=fail smtp.client-ip=52.101.56.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wsGag66tGwIXGB286rLt0roU58QOXagXAd5RrC182FiFqV0T4MFu/DFM68hQ4XwLueGjgKs89ScVMtQHPoj0abESNxco0VEBkkCzLBXQ2Bbvsm+/CJ0FBsJGfA8fLfN/ieGcgD0OjUwVj6oUw5Z7cEaevLEGSeQGFgXLkgUu2wUUfuBX2JzuOV1pNaQZor2XAf9/JozmBX6omPzebG+Ls4uhD88WuHKjg2udXomWfxjNremHodPaYHQRYXaEE2clc8pO9uaR55JNszSs6EfOtTrfB0iJgZxcqPZFK8T9IyyLCWBzzkvF/ckDZHTTqBHJBF+EYMFWhYvSgOCk4c0Lmg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=il99dkPd0kNT29Ru6xUAHWsS81Z3wRoyekGNbgkUCWc=;
+ b=u8zzQ7n40ZWOhB9nLLvYWC/ooNeNi1/NIE7FjPnDhsJGPZI4DR7Mp91n944fA41yoBLZS0+3+2ttGNgMtWb86kwwjBHQ+svaXMjfX3tAG4mHWIGDlIeJfcR4fLXbdHwdTQfA+kZPW9kR4YY2xxE+k8tB29jbtq9aCKgMUHzVMpVX7bOuh9q4j65U+m3MXGG4harz4z6LSmtKdpZys8vg0NB7ZxjUWWdFToMoSwp8R9Bp2Urf2Gq2ABq9tulgDAPUtKaar+35FpGR+ti+ufQFa+hzekC2DPRNW/DWjCY7MlxrkY9x8FM82bu1OTVSV/TDUdpHJXGno0D6mGeVuMJGTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=il99dkPd0kNT29Ru6xUAHWsS81Z3wRoyekGNbgkUCWc=;
+ b=WsDnDGekYYjrFMIxi9baWx04X0YjlQf+pg0vLbqSSRWrk6lTmQsUR1PyFKzKFcukhSTHB579NGmtbw88nvIZzIawtjIWusS099c03af8SIGbSLk7MXlgNqqRbhG6KFwNorNCgW3MJGAV0pgz9GVtNZfLOwsWp9etluFxszfbU5o=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+Received: from BY5PR21MB1443.namprd21.prod.outlook.com (2603:10b6:a03:21f::18)
+ by BY1PR21MB3893.namprd21.prod.outlook.com (2603:10b6:a03:52d::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.11; Fri, 18 Oct
+ 2024 18:25:35 +0000
+Received: from BY5PR21MB1443.namprd21.prod.outlook.com
+ ([fe80::2c5a:1a34:2c8d:48ef]) by BY5PR21MB1443.namprd21.prod.outlook.com
+ ([fe80::2c5a:1a34:2c8d:48ef%7]) with mapi id 15.20.8093.011; Fri, 18 Oct 2024
+ 18:25:35 +0000
+From: Haiyang Zhang <haiyangz@microsoft.com>
+To: linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: haiyangz@microsoft.com,
+	kys@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	stephen@networkplumber.org,
+	davem@davemloft.net,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net,v3] hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event
+Date: Fri, 18 Oct 2024 11:25:22 -0700
+Message-Id: <1729275922-17595-1-git-send-email-haiyangz@microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+Content-Type: text/plain
+X-ClientProxiedBy: MW4P223CA0022.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:303:80::27) To BY5PR21MB1443.namprd21.prod.outlook.com
+ (2603:10b6:a03:21f::18)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12952; i=matttbe@kernel.org; h=from:subject; bh=Zp0A3XnWGfNazXTKRaOc4diTorXtgxd1zLsS9cpuXF0=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnEpy4KArvoLAdo4uNzHRLMu/ERXIBbnpkqNjcZ mqxgk5o0uWJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZxKcuAAKCRD2t4JPQmmg c3BOEACbYESRmmt7CP6fOcDMU04RmgcSkN7eJm40YcQrA+U9hiUg/E57k2ZT840k9auow/RU7x6 tlAPPW/byMaOqdy+Y9LejQwwT1p7VN52PcCCTqIQroBRLhgtqqI3xeidI/Y8KyeUp6kWBKgKpeu yU1pIHiwbW7PvXSancWnieszXzl91wO2d+hS/APHT1JVIp+gV83cCekj1HaGnX1K5THU+xQoOuV TAprpRVFF/BkStPsmiAJnTIBQm5fCO7XqWpOuxOxvmCFa0XOWd4Z9hCa44FWsnF8OJaQRcw+zBO n84TuF122N+6CtN9WDoGKw0O9Q7FyunbSkdtGHDfk40yFjewoqJSSkeXIf0z+xg0F9poo5JGsJa 16YrgXLXNGJf1FiBz3DWfvlCOHAeJV6w5VVCHI0N7eCVWbYK1YNc4tuTfPAQse5Q7XuxF7IIVIQ K92J15i+iLXKkHBq49TFh8PcV0NigvqwgZlpO3rzjRJiIuDdRAOOCb2U71g1iIawYoTE2RjUqmy c6psyE8tCjTMeZHEn+2UNvVKz79xYYTOphNfcADRG72NrKXpo0HwUNvWwd7YTJwfxnodioT1oBq KGfu7Bdqtfgv5jR+DAT1EE1Mo9t0aYXu8RSj8Mh60yJ2P1yx/SEmvQh0bSSjB4cdX9RUMYZhpNe f6fBdyKnRnDinsA==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-Content-Transfer-Encoding: 8bit
+Sender: LKML haiyangz <lkmlhyz@microsoft.com>
+X-MS-Exchange-MessageSentRepresentingType: 2
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR21MB1443:EE_|BY1PR21MB3893:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2b31f0b3-9d6a-4a26-92e9-08dcefa241ce
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|52116014|7416014|376014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?T8ZoJBogi0YT4pkDrQmgxdebHVgXw5E72Y42jO4adUDWWizAFIBuEMyVKmmX?=
+ =?us-ascii?Q?+JmFQ9WcNsm3OVieS9qsQTapT0FANYjmxUo1yXge7JqYjpB9KWobCxTk/I76?=
+ =?us-ascii?Q?QgygDlCLPGHhcN2Eaoi/uYQNPNnuNi8ZfJ2Skg0wUWqwJ15Wox0OANdCwL07?=
+ =?us-ascii?Q?VX/pIuUsReiArsU7lOibZd3hS4JwZfCRkVZJeT0s9q8NKeQuQlCx/Z1F/1Pq?=
+ =?us-ascii?Q?XqUgi1v1jVLjuh8BMoWmul7iO0Sn1ZsfYJbv2DQ7/vgR4PWTPnno/0MBWLRu?=
+ =?us-ascii?Q?/5Ql6bd5BBVED3+CgPSW5E2IykGbhX9cYy6Rbt3ABX71uFNgSv7CDmA7GG9q?=
+ =?us-ascii?Q?W7TQFaZ2D1YCPbvQQNrqr2v1mzuDs2S2JDjTdXNtQ+1vmHqDC6Z3frVVN7Ks?=
+ =?us-ascii?Q?we8niXC8b8Zg6UZxghFsfygpMJ0JQeLqtLwDFrk2vG6fP9G7pN7eV1u6SjdY?=
+ =?us-ascii?Q?ds0RJAolYGpcO9eq2/XSXx06Ss64P2flXsUM3NZzghTLlCn2D4TVyfIFEkfQ?=
+ =?us-ascii?Q?fH1NHO1+RTKLZ/z+NZfFEJ5maqRkkfTD/5rIBCtr4spho7FI/mIoLYFbUVcH?=
+ =?us-ascii?Q?eLx8gQRT1TO7L4QAyozlfQLW+waCz2erNkvmC3rBXpcMOvgZTkNkWX50JeC0?=
+ =?us-ascii?Q?KBQVL8sOXYX9VN+ZOOYrquRivR1zSqzqwEa7na5AO3RdswyYq9I/4Wi9CBx8?=
+ =?us-ascii?Q?Pa5ttjEpDc4mA9IQ/gjxccPFHFwEYghmq2bnEbSnFi55H1+AXLMfBlLfTBt+?=
+ =?us-ascii?Q?PGJ+X3WqYiJ8KF8blfkeQcabpM/kYqWPJwjD1A7rHWETspmBDCwtpXkt9fTQ?=
+ =?us-ascii?Q?B6+4G0L21kKkWVyHxcljwC771XV0PHAxb3LDP4Hhmty+tpNSpDSj/J2rkfi0?=
+ =?us-ascii?Q?4CUso3q1FNhY7hE5xe2ubt6dsHsw0DF/STMGA73yd58tYWUrFgyoFachHucV?=
+ =?us-ascii?Q?oviZxlJRLRviNFW0HcBGhMmYmU43AMoVIV/wXqLnuRlP/dJYM6MQnFg+5mW1?=
+ =?us-ascii?Q?G6BBnsxZ7xJp9fiKA39fguxx6yYvDFFIxBkHmyOlZ7z08l938qLmb8E386gB?=
+ =?us-ascii?Q?E4pjfU6xuD5X14vMuKwViBHsmadsCfFlep6HjhDwHumUpb9qyqqorpz3nBcc?=
+ =?us-ascii?Q?MP0gUW8CsqZn526a2oVmhhf55mSWXNYkkgXrzV7awHr25Y9n5VqiL2iDwwke?=
+ =?us-ascii?Q?PMRZ85m1YAaL1uc+CW7nU4kBsGd9Co+oTqrpBh9NBrGFTn9mJSzQ55XnV9Ga?=
+ =?us-ascii?Q?N13RqaruXEbvlsKw0odGcLHgklef1lQ1ZZJRBzxm/G0vd9M3ZVF+hrHB0WiQ?=
+ =?us-ascii?Q?4WmDglKV6eCKaqz9sWPAsQkpLENS5MFVJCXG4lf1T8URieAIPZq7a6Hv1mov?=
+ =?us-ascii?Q?U6zkzuk=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR21MB1443.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(7416014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?43BPD4eORsNx6/e/C9acdBOX0nEqxwn7RaJfuMfUeiI5SDcnUD9yWECoNFH1?=
+ =?us-ascii?Q?kpMn+mN45PDxZ12nD+RvUa7OCodiUEYOcmWvmbpW6ZVXaQQr1e+WIm0olHRz?=
+ =?us-ascii?Q?CXaAmT471LvLZvN+Z9mO37LdD/5NmUlor9NijP/Pon7OucbId3pj8pkXzqHh?=
+ =?us-ascii?Q?IRMfitdbOaktKeFVAMIYmRCC0UBerKeQi1PhIFCV4igjRj1tNMuCwenIc4dr?=
+ =?us-ascii?Q?etdLUViTPWAH7YzEnnX3B04aK5y3QzLOhoch3Cf69PmFzsR1NZCrm/rBzeW1?=
+ =?us-ascii?Q?fnZDpYlHG5NqZlnSw9EFXScZZLrevXuvkn9y5u6nOlfQHHCMB/Ffo37khV1P?=
+ =?us-ascii?Q?csY/evUv2o04QmF6qNkOKO7629CDKgaf6POu3Ucn58isKVvbnI3oeh2fw0Wn?=
+ =?us-ascii?Q?llOFCHa1U57LpDAR04YzRFDiYeeyw6kKdL3Ic/8LGIfnfqy/ElY1HCyKvUcr?=
+ =?us-ascii?Q?V0+3Urx+muIEw3WNSFNby/kVjp+OQ1sETjY13wglupqt/346qcqkkXjx7KCD?=
+ =?us-ascii?Q?d9h7g0gbVvHJBqAQavGdgpU1tbcgIjdsczp2U3WFRjIIeuES7CcKvMNRd2+3?=
+ =?us-ascii?Q?rDxkoNkPBiPKeOeyRH7ZCZu4d9729iFNAXCTo15Iyl+/rhxqTgM01Owz1SXz?=
+ =?us-ascii?Q?lwSM5hF4vXMjbPFak10eZSOwxylvUYzfrGlKtXYaLx9ofCUIt+A2g1klpDIR?=
+ =?us-ascii?Q?vJJPHQVLL9KhVbS2lxkzwPBqJkbE4iczjmv4wd6P2ytkNXcvkQAblQH2k/AJ?=
+ =?us-ascii?Q?NfFq3nedwYxYmA5BoPdnrxPVB5NjDL6cc0QTnXBkpNRV1aUlH77tZuzGMt97?=
+ =?us-ascii?Q?VnaSCY+r+T2mKufIlsKY68yDKWScMBnr+NL+TK6pbYLYUOkblDfD3AKiG5NW?=
+ =?us-ascii?Q?W71LXaG4hWAHZ0TZxss71Nz8kiP7CxU8d8DC3tKb+uqOoOWMKT28p9SvvAYT?=
+ =?us-ascii?Q?25tBH9aWYG3fEi10wKJtP2GbRRrhZXt7EH5t4omZd31asc6Y47uaHmlc9rr3?=
+ =?us-ascii?Q?YdF8JqIjPG4PdFpZAtcwz97S/mR6Vre/PBoDkbM2OnZyA9lLpQdzJ/1vceZe?=
+ =?us-ascii?Q?Kwtewbk6CCv6mJsoeNqfXOZUueC7xCbUIbDgA9VLOMkSZVUTUa7fBtVfy7u1?=
+ =?us-ascii?Q?wYljWJOs2DD2ocy1R3hf6nVwTJtwrAiVpK6Wnk1dSajbMab78MwRzgDTiYzm?=
+ =?us-ascii?Q?wegKzuSHZP7gMxO2ePsW8XshWOKKpdukC3DZv2P+hzuHc4N4lEjXlKbu3/8K?=
+ =?us-ascii?Q?rNSUCRQ9ygFVJPMywal4NB2HKA1mimEhbE3UDmb9F6YV1FYDAGWHBHkvKjv3?=
+ =?us-ascii?Q?OU70E0JDLE9OBQG9Rcg4NpeSuN1NAPgnp8HQ/6Tir6tvyKnKRKpKO4L5Ap+8?=
+ =?us-ascii?Q?DYT+DzEso/1aoTOJnDZlPwyFmb5LaCLIlWCGW9n7gdqvwZ/JF/zX9Tghchj3?=
+ =?us-ascii?Q?jDDOTmaLjNSb68ZQPE8J7VbchsS+vvDGtNr7hQSs+XClSQq0S/abmcnnPeGf?=
+ =?us-ascii?Q?GTtSw4+lQxrVg98dnlTRF6+ZFfuhXMthfIwAPiAn14m8joDNd9l2wiX+N43v?=
+ =?us-ascii?Q?GvyoCGsGRV0lh5DAJuVKMBvtBTtJuRT894dsuOpo?=
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2b31f0b3-9d6a-4a26-92e9-08dcefa241ce
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR21MB1443.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Oct 2024 18:25:35.0270
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eSYngAH+iEb54bJoN6FAtVJgKvntaNtWkPRsiDHVZfB13l88y2JB9q6iU2o2jjs1DsE1TUGVaaQMOCwk0vjZfQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY1PR21MB3893
 
-From: Paolo Abeni <pabeni@redhat.com>
+The existing code moves VF to the same namespace as the synthetic NIC
+during netvsc_register_vf(). But, if the synthetic device is moved to a
+new namespace after the VF registration, the VF won't be moved together.
 
-commit 3d041393ea8c815f773020fb4a995331a69c0139 upstream.
+To make the behavior more consistent, add a namespace check for synthetic
+NIC's NETDEV_REGISTER event (generated during its move), and move the VF
+if it is not in the same namespace.
 
-Syzkaller reported a lockdep splat:
-
-  ============================================
-  WARNING: possible recursive locking detected
-  6.11.0-rc6-syzkaller-00019-g67784a74e258 #0 Not tainted
-  --------------------------------------------
-  syz-executor364/5113 is trying to acquire lock:
-  ffff8880449f1958 (k-slock-AF_INET){+.-.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
-  ffff8880449f1958 (k-slock-AF_INET){+.-.}-{2:2}, at: sk_clone_lock+0x2cd/0xf40 net/core/sock.c:2328
-
-  but task is already holding lock:
-  ffff88803fe3cb58 (k-slock-AF_INET){+.-.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
-  ffff88803fe3cb58 (k-slock-AF_INET){+.-.}-{2:2}, at: sk_clone_lock+0x2cd/0xf40 net/core/sock.c:2328
-
-  other info that might help us debug this:
-   Possible unsafe locking scenario:
-
-         CPU0
-         ----
-    lock(k-slock-AF_INET);
-    lock(k-slock-AF_INET);
-
-   *** DEADLOCK ***
-
-   May be due to missing lock nesting notation
-
-  7 locks held by syz-executor364/5113:
-   #0: ffff8880449f0e18 (sk_lock-AF_INET){+.+.}-{0:0}, at: lock_sock include/net/sock.h:1607 [inline]
-   #0: ffff8880449f0e18 (sk_lock-AF_INET){+.+.}-{0:0}, at: mptcp_sendmsg+0x153/0x1b10 net/mptcp/protocol.c:1806
-   #1: ffff88803fe39ad8 (k-sk_lock-AF_INET){+.+.}-{0:0}, at: lock_sock include/net/sock.h:1607 [inline]
-   #1: ffff88803fe39ad8 (k-sk_lock-AF_INET){+.+.}-{0:0}, at: mptcp_sendmsg_fastopen+0x11f/0x530 net/mptcp/protocol.c:1727
-   #2: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire include/linux/rcupdate.h:326 [inline]
-   #2: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: rcu_read_lock include/linux/rcupdate.h:838 [inline]
-   #2: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: __ip_queue_xmit+0x5f/0x1b80 net/ipv4/ip_output.c:470
-   #3: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire include/linux/rcupdate.h:326 [inline]
-   #3: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: rcu_read_lock include/linux/rcupdate.h:838 [inline]
-   #3: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: ip_finish_output2+0x45f/0x1390 net/ipv4/ip_output.c:228
-   #4: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: local_lock_acquire include/linux/local_lock_internal.h:29 [inline]
-   #4: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: process_backlog+0x33b/0x15b0 net/core/dev.c:6104
-   #5: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire include/linux/rcupdate.h:326 [inline]
-   #5: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: rcu_read_lock include/linux/rcupdate.h:838 [inline]
-   #5: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: ip_local_deliver_finish+0x230/0x5f0 net/ipv4/ip_input.c:232
-   #6: ffff88803fe3cb58 (k-slock-AF_INET){+.-.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
-   #6: ffff88803fe3cb58 (k-slock-AF_INET){+.-.}-{2:2}, at: sk_clone_lock+0x2cd/0xf40 net/core/sock.c:2328
-
-  stack backtrace:
-  CPU: 0 UID: 0 PID: 5113 Comm: syz-executor364 Not tainted 6.11.0-rc6-syzkaller-00019-g67784a74e258 #0
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-  Call Trace:
-   <IRQ>
-   __dump_stack lib/dump_stack.c:93 [inline]
-   dump_stack_lvl+0x241/0x360 lib/dump_stack.c:119
-   check_deadlock kernel/locking/lockdep.c:3061 [inline]
-   validate_chain+0x15d3/0x5900 kernel/locking/lockdep.c:3855
-   __lock_acquire+0x137a/0x2040 kernel/locking/lockdep.c:5142
-   lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5759
-   __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
-   _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
-   spin_lock include/linux/spinlock.h:351 [inline]
-   sk_clone_lock+0x2cd/0xf40 net/core/sock.c:2328
-   mptcp_sk_clone_init+0x32/0x13c0 net/mptcp/protocol.c:3279
-   subflow_syn_recv_sock+0x931/0x1920 net/mptcp/subflow.c:874
-   tcp_check_req+0xfe4/0x1a20 net/ipv4/tcp_minisocks.c:853
-   tcp_v4_rcv+0x1c3e/0x37f0 net/ipv4/tcp_ipv4.c:2267
-   ip_protocol_deliver_rcu+0x22e/0x440 net/ipv4/ip_input.c:205
-   ip_local_deliver_finish+0x341/0x5f0 net/ipv4/ip_input.c:233
-   NF_HOOK+0x3a4/0x450 include/linux/netfilter.h:314
-   NF_HOOK+0x3a4/0x450 include/linux/netfilter.h:314
-   __netif_receive_skb_one_core net/core/dev.c:5661 [inline]
-   __netif_receive_skb+0x2bf/0x650 net/core/dev.c:5775
-   process_backlog+0x662/0x15b0 net/core/dev.c:6108
-   __napi_poll+0xcb/0x490 net/core/dev.c:6772
-   napi_poll net/core/dev.c:6841 [inline]
-   net_rx_action+0x89b/0x1240 net/core/dev.c:6963
-   handle_softirqs+0x2c4/0x970 kernel/softirq.c:554
-   do_softirq+0x11b/0x1e0 kernel/softirq.c:455
-   </IRQ>
-   <TASK>
-   __local_bh_enable_ip+0x1bb/0x200 kernel/softirq.c:382
-   local_bh_enable include/linux/bottom_half.h:33 [inline]
-   rcu_read_unlock_bh include/linux/rcupdate.h:908 [inline]
-   __dev_queue_xmit+0x1763/0x3e90 net/core/dev.c:4450
-   dev_queue_xmit include/linux/netdevice.h:3105 [inline]
-   neigh_hh_output include/net/neighbour.h:526 [inline]
-   neigh_output include/net/neighbour.h:540 [inline]
-   ip_finish_output2+0xd41/0x1390 net/ipv4/ip_output.c:235
-   ip_local_out net/ipv4/ip_output.c:129 [inline]
-   __ip_queue_xmit+0x118c/0x1b80 net/ipv4/ip_output.c:535
-   __tcp_transmit_skb+0x2544/0x3b30 net/ipv4/tcp_output.c:1466
-   tcp_rcv_synsent_state_process net/ipv4/tcp_input.c:6542 [inline]
-   tcp_rcv_state_process+0x2c32/0x4570 net/ipv4/tcp_input.c:6729
-   tcp_v4_do_rcv+0x77d/0xc70 net/ipv4/tcp_ipv4.c:1934
-   sk_backlog_rcv include/net/sock.h:1111 [inline]
-   __release_sock+0x214/0x350 net/core/sock.c:3004
-   release_sock+0x61/0x1f0 net/core/sock.c:3558
-   mptcp_sendmsg_fastopen+0x1ad/0x530 net/mptcp/protocol.c:1733
-   mptcp_sendmsg+0x1884/0x1b10 net/mptcp/protocol.c:1812
-   sock_sendmsg_nosec net/socket.c:730 [inline]
-   __sock_sendmsg+0x1a6/0x270 net/socket.c:745
-   ____sys_sendmsg+0x525/0x7d0 net/socket.c:2597
-   ___sys_sendmsg net/socket.c:2651 [inline]
-   __sys_sendmmsg+0x3b2/0x740 net/socket.c:2737
-   __do_sys_sendmmsg net/socket.c:2766 [inline]
-   __se_sys_sendmmsg net/socket.c:2763 [inline]
-   __x64_sys_sendmmsg+0xa0/0xb0 net/socket.c:2763
-   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-   do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  RIP: 0033:0x7f04fb13a6b9
-  Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 01 1a 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-  RSP: 002b:00007ffd651f42d8 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
-  RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f04fb13a6b9
-  RDX: 0000000000000001 RSI: 0000000020000d00 RDI: 0000000000000004
-  RBP: 00007ffd651f4310 R08: 0000000000000001 R09: 0000000000000001
-  R10: 0000000020000080 R11: 0000000000000246 R12: 00000000000f4240
-  R13: 00007f04fb187449 R14: 00007ffd651f42f4 R15: 00007ffd651f4300
-   </TASK>
-
-As noted by Cong Wang, the splat is false positive, but the code
-path leading to the report is an unexpected one: a client is
-attempting an MPC handshake towards the in-kernel listener created
-by the in-kernel PM for a port based signal endpoint.
-
-Such connection will be never accepted; many of them can make the
-listener queue full and preventing the creation of MPJ subflow via
-such listener - its intended role.
-
-Explicitly detect this scenario at initial-syn time and drop the
-incoming MPC request.
-
-Fixes: 1729cf186d8a ("mptcp: create the listening socket for new port")
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+f4aacdfef2c6a6529c3e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f4aacdfef2c6a6529c3e
-Cc: Cong Wang <cong.wang@bytedance.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241014-net-mptcp-mpc-port-endp-v2-1-7faea8e6b6ae@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in mib.[ch], because commit 6982826fe5e5 ("mptcp: fallback
-  to TCP after SYN+MPC drops"), and commit 27069e7cb3d1 ("mptcp: disable
-  active MPTCP in case of blackhole") are linked to new features, not
-  available in this version. Resolving the conflicts is easy, simply
-  adding the new lines declaring the new "endpoint attempt" MIB entry.
-  Also a conflict in protocol.h, because commit fce68b03086f ("mptcp:
-  add scheduled in mptcp_subflow_context") is not in this version, and
-  changes the context by introducing 'scheduled' variable just before.
-  Also a conflict in pm_netlink.c, because commit 3aa362494170 ("mptcp:
-  avoid ssock usage in mptcp_pm_nl_create_listen_socket()") is not in
-  this version, and refactor the function: that's fine, we can still set
-  pm_listener before doing the 'listen()', taking 'ssock->sk' as 'ssk'
-  is not defined before this refactoring. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: c0a41b887ce6 ("hv_netvsc: move VF to same namespace as netvsc device")
+Suggested-by: Stephen Hemminger <stephen@networkplumber.org>
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
 ---
- net/mptcp/mib.c        |  1 +
- net/mptcp/mib.h        |  1 +
- net/mptcp/pm_netlink.c |  1 +
- net/mptcp/protocol.h   |  1 +
- net/mptcp/subflow.c    | 11 +++++++++++
- 5 files changed, 15 insertions(+)
+v3: Use RCT order as suggested by Simon.
+v2: Move my fix to synthetic NIC's NETDEV_REGISTER event as suggested by Stephen.
 
-diff --git a/net/mptcp/mib.c b/net/mptcp/mib.c
-index 691d7c1e8504..fbac6f652701 100644
---- a/net/mptcp/mib.c
-+++ b/net/mptcp/mib.c
-@@ -15,6 +15,7 @@ static const struct snmp_mib mptcp_snmp_list[] = {
- 	SNMP_MIB_ITEM("MPCapableACKRX", MPTCP_MIB_MPCAPABLEPASSIVEACK),
- 	SNMP_MIB_ITEM("MPCapableFallbackACK", MPTCP_MIB_MPCAPABLEPASSIVEFALLBACK),
- 	SNMP_MIB_ITEM("MPCapableFallbackSYNACK", MPTCP_MIB_MPCAPABLEACTIVEFALLBACK),
-+	SNMP_MIB_ITEM("MPCapableEndpAttempt", MPTCP_MIB_MPCAPABLEENDPATTEMPT),
- 	SNMP_MIB_ITEM("MPFallbackTokenInit", MPTCP_MIB_TOKENFALLBACKINIT),
- 	SNMP_MIB_ITEM("MPTCPRetrans", MPTCP_MIB_RETRANSSEGS),
- 	SNMP_MIB_ITEM("MPJoinNoTokenFound", MPTCP_MIB_JOINNOTOKEN),
-diff --git a/net/mptcp/mib.h b/net/mptcp/mib.h
-index bd3d72e1eb24..ff08d41149f4 100644
---- a/net/mptcp/mib.h
-+++ b/net/mptcp/mib.h
-@@ -8,6 +8,7 @@ enum linux_mptcp_mib_field {
- 	MPTCP_MIB_MPCAPABLEPASSIVEACK,	/* Received third ACK with MP_CAPABLE */
- 	MPTCP_MIB_MPCAPABLEPASSIVEFALLBACK,/* Server-side fallback during 3-way handshake */
- 	MPTCP_MIB_MPCAPABLEACTIVEFALLBACK, /* Client-side fallback during 3-way handshake */
-+	MPTCP_MIB_MPCAPABLEENDPATTEMPT,	/* Prohibited MPC to port-based endp */
- 	MPTCP_MIB_TOKENFALLBACKINIT,	/* Could not init/allocate token */
- 	MPTCP_MIB_RETRANSSEGS,		/* Segments retransmitted at the MPTCP-level */
- 	MPTCP_MIB_JOINNOTOKEN,		/* Received MP_JOIN but the token was not found */
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 34fab06af744..c5743dc6d18f 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1111,6 +1111,7 @@ static int mptcp_pm_nl_create_listen_socket(struct sock *sk,
- 	}
+---
+ drivers/net/hyperv/netvsc_drv.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
+
+diff --git a/drivers/net/hyperv/netvsc_drv.c b/drivers/net/hyperv/netvsc_drv.c
+index 153b97f8ec0d..23180f7b67b6 100644
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -2798,6 +2798,31 @@ static struct  hv_driver netvsc_drv = {
+ 	},
+ };
  
- 	inet_sk_state_store(newsk, TCP_LISTEN);
-+	WRITE_ONCE(mptcp_subflow_ctx(ssock->sk)->pm_listener, true);
- 	err = kernel_listen(ssock, backlog);
- 	if (err) {
- 		pr_warn("kernel_listen error, err=%d", err);
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index ee3974b10ef0..d39ad72ac8e8 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -483,6 +483,7 @@ struct mptcp_subflow_context {
- 		close_event_done : 1,       /* has done the post-closed part */
- 		__unused : 9;
- 	enum mptcp_data_avail data_avail;
-+	bool	pm_listener;	    /* a listener managed by the kernel PM? */
- 	u32	remote_nonce;
- 	u64	thmac;
- 	u32	local_nonce;
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index e77b4e6021e8..884abe3cde53 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -131,6 +131,13 @@ static void subflow_add_reset_reason(struct sk_buff *skb, u8 reason)
- 	}
- }
- 
-+static int subflow_reset_req_endp(struct request_sock *req, struct sk_buff *skb)
++/* Set VF's namespace same as the synthetic NIC */
++static void netvsc_event_set_vf_ns(struct net_device *ndev)
 +{
-+	SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_MPCAPABLEENDPATTEMPT);
-+	subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
-+	return -EPERM;
++	struct net_device_context *ndev_ctx = netdev_priv(ndev);
++	struct net_device *vf_netdev;
++	int ret;
++
++	vf_netdev = rtnl_dereference(ndev_ctx->vf_netdev);
++	if (!vf_netdev)
++		return;
++
++	if (!net_eq(dev_net(ndev), dev_net(vf_netdev))) {
++		ret = dev_change_net_namespace(vf_netdev, dev_net(ndev),
++					       "eth%d");
++		if (ret)
++			netdev_err(vf_netdev,
++				   "Cannot move to same namespace as %s: %d\n",
++				   ndev->name, ret);
++		else
++			netdev_info(vf_netdev,
++				    "Moved VF to namespace with: %s\n",
++				    ndev->name);
++	}
 +}
 +
- /* Init mptcp request socket.
-  *
-  * Returns an error code if a JOIN has failed and a TCP reset
-@@ -162,6 +169,8 @@ static int subflow_check_req(struct request_sock *req,
- 	if (opt_mp_capable) {
- 		SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_MPCAPABLEPASSIVE);
+ /*
+  * On Hyper-V, every VF interface is matched with a corresponding
+  * synthetic interface. The synthetic interface is presented first
+@@ -2810,6 +2835,11 @@ static int netvsc_netdev_event(struct notifier_block *this,
+ 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
+ 	int ret = 0;
  
-+		if (unlikely(listener->pm_listener))
-+			return subflow_reset_req_endp(req, skb);
- 		if (opt_mp_join)
- 			return 0;
- 	} else if (opt_mp_join) {
-@@ -169,6 +178,8 @@ static int subflow_check_req(struct request_sock *req,
- 
- 		if (mp_opt.backup)
- 			SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINSYNBACKUPRX);
-+	} else if (unlikely(listener->pm_listener)) {
-+		return subflow_reset_req_endp(req, skb);
- 	}
- 
- 	if (opt_mp_capable && listener->request_mptcp) {
++	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
++		netvsc_event_set_vf_ns(event_dev);
++		return NOTIFY_DONE;
++	}
++
+ 	ret = check_dev_is_matching_vf(event_dev);
+ 	if (ret != 0)
+ 		return NOTIFY_DONE;
 -- 
-2.45.2
+2.34.1
 
 
