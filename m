@@ -1,139 +1,152 @@
-Return-Path: <stable+bounces-86921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22AEB9A503A
-	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 20:13:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 267139A5046
+	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 20:19:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 573931F25DAB
-	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 18:13:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A22C9B21582
+	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 18:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FCC218DF6B;
-	Sat, 19 Oct 2024 18:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF09719067A;
+	Sat, 19 Oct 2024 18:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="f2NTHUPH"
+	dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b="hspbFWW3"
 X-Original-To: stable@vger.kernel.org
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+Received: from forward204a.mail.yandex.net (forward204a.mail.yandex.net [178.154.239.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9EB6EB7D
-	for <stable@vger.kernel.org>; Sat, 19 Oct 2024 18:13:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093862772A;
+	Sat, 19 Oct 2024 18:19:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729361619; cv=none; b=tToFLWJm0obZyBlDJWOSycTzIzmZHcjf8jSzmF5hPvJKdO11zLK3rLY/0mvDyA04iVCkQZ0zTSkoNrElGgN3van/cTkTzpwPxaZe2ASRdodPi1Yzji32gOr9WWWfRLa2DOvH42uzcDfQae12lLcpYA7u0PmCNEtttFfwHVjSRpg=
+	t=1729361960; cv=none; b=THCOuHvbe+WUQERdcdADNnqcOAAfaPbehPeGqmlovUTvr/DeNDIKSpUaklIA1tfL26bZejNCdYWAgWZ+GAjsrT3d8PCYKx+cW/FAc5246lO7zj97H26yBIDrRDlW4/LiDozL0mT5vZj8XaQUA9fsbK6NB0Cg0uNiQe3QpUZ8JuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729361619; c=relaxed/simple;
-	bh=gv/Fc3K2etqb3T5ihWl4mkBfiR4mgcXvoDPJyHXkzoE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FIhZlYLH5A+kAd5fv++2bmyJbMJawu7lk36nfiMD3hq8SFfj2yxJ0xf1JXzYHtg+TDfsxZNKlZFZljrh0bp5WlzVdOot0agHFlC/03zQDql914F0hM3HWihDbR3lc5xa26sBrgxuBEwDPQv5v80q68DSZNghQNA5qazmR/jpw/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=f2NTHUPH; arc=none smtp.client-ip=95.215.58.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Sat, 19 Oct 2024 11:13:28 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1729361615;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6VuaQrZ4FuiIb3nOlt5Tbznvi9XZK+qQbtHOMZTcWQ8=;
-	b=f2NTHUPHtkSFmeeT/vX/tBppGgpbZ75HxYjVHe5SN2iKBRTfegrPDN3ohGWaBWsClImb9b
-	0AJMnXMRQgr+tlAx86a8B68XWLX2Ko4vsTly1wjT4J36IdxqtgqgbtaRf54zAN/8CZzrgn
-	cmBfnIjs0UJ9xM99kg+Fh5WEX6lC1qo=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Oliver Upton <oliver.upton@linux.dev>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>, stable@vger.kernel.org,
-	Alexander Potapenko <glider@google.com>
-Subject: Re: [PATCH 1/2] KVM: arm64: Don't retire aborted MMIO instruction
-Message-ID: <ZxP2yCs5IkFznpER@linux.dev>
-References: <20241018194757.3685856-1-oliver.upton@linux.dev>
- <20241018194757.3685856-2-oliver.upton@linux.dev>
- <87zfn0tq4z.wl-maz@kernel.org>
+	s=arc-20240116; t=1729361960; c=relaxed/simple;
+	bh=ba0PMHBh4hhco6hEKIyZrHz4w5DvWH+aoE7VQQbkzKg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Vb51JJwCxNmg8NSTKTTxK36h8b4E/9oEaEfs1drPJz+avJFcLabcJKAbIcvmNDbcJWAEDrqB8uvvO90tpC0eWb2oHbq3sRXKr+y4QI+LUUV4bjqEkbMp6MMxL3E9r3VkSARPMif9DDa6s1UEkYEp4xHtDch+zNrJ0KndRVJde4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me; spf=pass smtp.mailfrom=0upti.me; dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b=hspbFWW3; arc=none smtp.client-ip=178.154.239.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0upti.me
+Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d102])
+	by forward204a.mail.yandex.net (Yandex) with ESMTPS id 613E865EE3;
+	Sat, 19 Oct 2024 21:19:09 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-18.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-18.vla.yp-c.yandex.net [IPv6:2a02:6b8:c2b:1d5:0:640:773e:0])
+	by forward102a.mail.yandex.net (Yandex) with ESMTPS id 1A62F60929;
+	Sat, 19 Oct 2024 21:19:01 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-18.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id uIUibWLNqCg0-ix3uVImu;
+	Sat, 19 Oct 2024 21:19:00 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0upti.me; s=mail;
+	t=1729361940; bh=g4i8i7ZDRuEetTlOlV3vjQxEOMpZ2Ny6wy/nHvTRQm4=;
+	h=Cc:Message-Id:To:From:Date:Subject;
+	b=hspbFWW3Hfj+Oqqfwyt4M1RRpSmBWI1Gr1jrsh/L4Xnn9Dcc6HrfvqT+R1ajeKAqv
+	 6uaL/0zR5uWLoOuJ1bzyAFMiM+tCg4chxKnppDdfZ5PwZR/TiDNEfjwE8uD9PS8l/z
+	 xOtNBKx/PKbz/mZtuv/CI9U2ecXeanP/83Utl9y4=
+Authentication-Results: mail-nwsmtp-smtp-production-main-18.vla.yp-c.yandex.net; dkim=pass header.i=@0upti.me
+From: Ilya Katsnelson <me@0upti.me>
+Date: Sat, 19 Oct 2024 21:18:38 +0300
+Subject: [PATCH v3] netfilter: xtables: fix a bunch of typos causing some
+ targets to not load on IPv6
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87zfn0tq4z.wl-maz@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241019-xtables-typos-v3-1-66dd2eaacf2f@0upti.me>
+X-B4-Tracking: v=1; b=H4sIAP33E2cC/3WOwQqDMBAFf0Vybko21ho99T9KDzFZ60KrkqRBE
+ f+90ZMUepwHM7yFeXSEntXZwhxG8jT0CfJTxkyn+ydysomZFPICAhSfgm5e6HmYx8Fz26K2jWp
+ ASsuSMzpsadp790fijnwY3LznI2zrv1IEDlxIXUCpKiPQ3MRnDHR+I9tCUR7l6leWSb5uP8q8s
+ EbhQV7X9Qufs1Yc5gAAAA==
+X-Change-ID: 20241018-xtables-typos-dfeadb8b122d
+To: Pablo Neira Ayuso <pablo@netfilter.org>, 
+ Jozsef Kadlecsik <kadlec@netfilter.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Florian Westphal <fw@strlen.de>, Sasha Levin <sashal@kernel.org>
+Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, ignat@cloudflare.com, 
+ stable@vger.kernel.org, Phil Sutter <phil@nwl.cc>, 
+ Ilya Katsnelson <me@0upti.me>
+X-Mailer: b4 0.14.2
+X-Yandex-Filter: 1
 
-On Sat, Oct 19, 2024 at 10:10:04AM +0100, Marc Zyngier wrote:
-> On Fri, 18 Oct 2024 20:47:56 +0100,
-> Oliver Upton <oliver.upton@linux.dev> wrote:
-> > 
-> > Returning an abort to the guest for an unsupported MMIO access is a
-> > documented feature of the KVM UAPI. Nevertheless, it's clear that this
-> > plumbing has seen limited testing, since userspace can trivially cause a
-> > WARN in the MMIO return:
-> > 
-> >   WARNING: CPU: 0 PID: 30558 at arch/arm64/include/asm/kvm_emulate.h:536 kvm_handle_mmio_return+0x46c/0x5c4 arch/arm64/include/asm/kvm_emulate.h:536
-> >   Call trace:
-> >    kvm_handle_mmio_return+0x46c/0x5c4 arch/arm64/include/asm/kvm_emulate.h:536
-> >    kvm_arch_vcpu_ioctl_run+0x98/0x15b4 arch/arm64/kvm/arm.c:1133
-> >    kvm_vcpu_ioctl+0x75c/0xa78 virt/kvm/kvm_main.c:4487
-> >    __do_sys_ioctl fs/ioctl.c:51 [inline]
-> >    __se_sys_ioctl fs/ioctl.c:893 [inline]
-> >    __arm64_sys_ioctl+0x14c/0x1c8 fs/ioctl.c:893
-> >    __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
-> >    invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
-> >    el0_svc_common+0x1e0/0x23c arch/arm64/kernel/syscall.c:132
-> >    do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
-> >    el0_svc+0x38/0x68 arch/arm64/kernel/entry-common.c:712
-> >    el0t_64_sync_handler+0x90/0xfc arch/arm64/kernel/entry-common.c:730
-> >    el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
-> > 
-> > The splat is complaining that KVM is advancing PC while an exception is
-> > pending, i.e. that KVM is retiring the MMIO instruction despite a
-> > pending external abort. Womp womp.
-> 
-> nit: *synchronous* external abort.
+The xt_NFLOG and xt_MARK changes were added with the wrong family
+in 0bfcb7b71e73, which seems to just have been a typo,
+but now ip6tables rules with --set-mark don't work anymore,
+which is pretty bad.
 
-Doh!
+Pablo spotted another typo introduced in the same commit in xt_TRACE.
 
-> > +static inline bool kvm_pending_sync_exception(struct kvm_vcpu *vcpu)
-> > +{
-> > +	if (!vcpu_get_flag(vcpu, PENDING_EXCEPTION))
-> > +		return false;
-> > +
-> > +	if (vcpu_el1_is_32bit(vcpu)) {
-> > +		switch (vcpu_get_flag(vcpu, EXCEPT_MASK)) {
-> > +		case unpack_vcpu_flag(EXCEPT_AA32_UND):
-> > +		case unpack_vcpu_flag(EXCEPT_AA32_IABT):
-> > +		case unpack_vcpu_flag(EXCEPT_AA32_DABT):
-> > +			return true;
-> > +		default:
-> > +			return false;
-> > +		}
-> > +	} else {
-> > +		switch (vcpu_get_flag(vcpu, EXCEPT_MASK)) {
-> > +		case unpack_vcpu_flag(EXCEPT_AA64_EL1_SYNC):
-> > +		case unpack_vcpu_flag(EXCEPT_AA64_EL2_SYNC):
-> > +			return true;
-> > +		default:
-> > +			return false;
-> > +		}
-> > +	}
-> > +}
-> > +
-> 
-> Is there any advantage in adding this to an otherwise unsuspecting
-> include file, given that this is only used in a single spot?
+Fixes: 0bfcb7b71e73 ("netfilter: xtables: avoid NFPROTO_UNSPEC where needed")
+Reviewed-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Ilya Katsnelson <me@0upti.me>
+---
+Changes in v3:
+- Fix another typo spotted by Pablo, adjust text accordingly.
+- CCing stable because it's a pretty bad regression.
+- Link to v2: https://lore.kernel.org/r/20241019-xtables-typos-v2-1-6b8b1735dc8e@0upti.me
 
-v0 of this was a bit more involved, which is why I had this in a header.
-I'll move it.
+Changes in v2:
+- Fixed a typo in the commit message (that's karma).
+- Replaced a reference to backport commit.
+- Link to v1: https://lore.kernel.org/r/20241018-xtables-typos-v1-1-02a51789c0ec@0upti.me
+---
+ net/netfilter/xt_NFLOG.c | 2 +-
+ net/netfilter/xt_TRACE.c | 1 +
+ net/netfilter/xt_mark.c  | 2 +-
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
-> Otherwise looks good to me!
+diff --git a/net/netfilter/xt_NFLOG.c b/net/netfilter/xt_NFLOG.c
+index d80abd6ccaf8f71fa70605fef7edada827a19ceb..6dcf4bc7e30b2ae364a1cd9ac8df954a90905c52 100644
+--- a/net/netfilter/xt_NFLOG.c
++++ b/net/netfilter/xt_NFLOG.c
+@@ -79,7 +79,7 @@ static struct xt_target nflog_tg_reg[] __read_mostly = {
+ 	{
+ 		.name       = "NFLOG",
+ 		.revision   = 0,
+-		.family     = NFPROTO_IPV4,
++		.family     = NFPROTO_IPV6,
+ 		.checkentry = nflog_tg_check,
+ 		.destroy    = nflog_tg_destroy,
+ 		.target     = nflog_tg,
+diff --git a/net/netfilter/xt_TRACE.c b/net/netfilter/xt_TRACE.c
+index f3fa4f11348cd8ad796ce94f012cd48aa7a9020f..2a029b4adbcadf95e493b153f613a210624a9101 100644
+--- a/net/netfilter/xt_TRACE.c
++++ b/net/netfilter/xt_TRACE.c
+@@ -49,6 +49,7 @@ static struct xt_target trace_tg_reg[] __read_mostly = {
+ 		.target		= trace_tg,
+ 		.checkentry	= trace_tg_check,
+ 		.destroy	= trace_tg_destroy,
++		.me         = THIS_MODULE,
+ 	},
+ #endif
+ };
+diff --git a/net/netfilter/xt_mark.c b/net/netfilter/xt_mark.c
+index f76fe04fc9a4e19f18ac323349ba6f22a00eafd7..65b965ca40ea7ea5d9feff381b433bf267a424c4 100644
+--- a/net/netfilter/xt_mark.c
++++ b/net/netfilter/xt_mark.c
+@@ -62,7 +62,7 @@ static struct xt_target mark_tg_reg[] __read_mostly = {
+ 	{
+ 		.name           = "MARK",
+ 		.revision       = 2,
+-		.family         = NFPROTO_IPV4,
++		.family         = NFPROTO_IPV6,
+ 		.target         = mark_tg,
+ 		.targetsize     = sizeof(struct xt_mark_tginfo2),
+ 		.me             = THIS_MODULE,
 
-Thanks!
+---
+base-commit: 75aa74d52f43e75d0beb20572f98529071b700e5
+change-id: 20241018-xtables-typos-dfeadb8b122d
 
+Best regards,
 -- 
-Best,
-Oliver
+Ilya Katsnelson <me@0upti.me>
+
 
