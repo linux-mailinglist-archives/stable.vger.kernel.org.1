@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-86905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 321869A4C99
-	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 11:31:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF2229A4C9A
+	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 11:31:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA88B284C36
-	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 09:31:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 428E01F23613
+	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 09:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79431DEFDB;
-	Sat, 19 Oct 2024 09:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6866518DF7B;
+	Sat, 19 Oct 2024 09:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kzjauBfK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hnMfBsKs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEF520E30B;
-	Sat, 19 Oct 2024 09:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED8C20E30B;
+	Sat, 19 Oct 2024 09:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729330266; cv=none; b=sMrLLTt5Hj4o3n/SjbqBjHqMtXoE7aswg+UP1I7Lne1uLJ59byYXqWa5diBaAo1QQVFH74UeDEjsVlPB2Og1d640kmBW/d+dLdJM7knKEhMBKez8Tj0IJm9vKqAYH3U99qZYtXa/9YcAdLxwbx/BpG1fX6DBO7fWXplzyRd3eP4=
+	t=1729330269; cv=none; b=b3G0/J3XyEi0Fu/+8QsP7upoeCjs/n0dIV48lId8gQkg96dS3AfRZ4y2iluA8/aI8qYkRw6HpRrw5FR+EKER5YxzlSLBJ15D1qFm4F01qRSYcCii54blIIwjTwo47m2cIh02r0KEUVvpM+M9qz9ISXKS3kqpVYllxlH1qiIK3+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729330266; c=relaxed/simple;
-	bh=DiI5yoyAVXYkzIN4I6oTmmSGJq6ibVz2tE1CypiP6ts=;
+	s=arc-20240116; t=1729330269; c=relaxed/simple;
+	bh=zlogGTnvb7AMvpzZonk8dFYbaTlgUY02Wyx1RXhK7GA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hOW2ZNxnzpfTr+TLv17cNqeqg0+h50esKfg+cErLPEM76eSh3g6MtBoaYdjxE+3YOZm/3p6gEppreSq++X+iwBdIHR9vV+HCtvQDlTgoriHUsyDiBNpB7vBtBsOBmUskrZcl57mAKfx8zbW7s3lzY2zayt6fyjFRNdAOkxzasC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kzjauBfK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE36C4CECF;
-	Sat, 19 Oct 2024 09:31:04 +0000 (UTC)
+	 MIME-Version; b=MUMy7vjJd9gZwVAwp/T5AfVQFlEWfe2qxCoxL15/C3u60t/ZHFx0qtulxbACkLUJ5XVRzc9gqhmh/CyC7S+bZOO3yRMvDWIuG+cVRKH1xHoZQQkMqlnrxDdaahk9+Roc+CSYj+mWTUcrqHxFKGuG30fbTddG+BAkfv31V5ouHg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hnMfBsKs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D2A5C4CED0;
+	Sat, 19 Oct 2024 09:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729330266;
-	bh=DiI5yoyAVXYkzIN4I6oTmmSGJq6ibVz2tE1CypiP6ts=;
+	s=k20201202; t=1729330268;
+	bh=zlogGTnvb7AMvpzZonk8dFYbaTlgUY02Wyx1RXhK7GA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kzjauBfKBbgG2HI1042dY9PO52jgyVRiEGOJasmRzftWYZYqN8ZSJA0pPLbR4cKdD
-	 +GR3p825GT1jF7HPJ1wiekMsColTCQrJtf6HnOZZhXRZwLedGTHW1/wbSH/jNGoHh9
-	 GV+nrUNZ2gwy7PbUvxUIxLfEM2Il7U8M4v2JO2nEW03wCB4DFaTDVQrQX37UpG48ud
-	 Qy468DuwjA//wbP0hH5Y/+jzQdNqnZytjtvOKYJZ5DDewRQoc/2sY+FLuZHf7Bym+D
-	 mDQi7rBUPE+e3qGEUeQ7ANEbhO+iU43V8f7cz045otouNRmxvOIxQrMnQDbspMmZ+n
-	 H0AjPrKFVBKDg==
+	b=hnMfBsKsOH692ii7EMtHgXehcPjQxkg3MQEDRUMYvtOlGGpYgk7LvMSkJlZfTBELc
+	 YLAgpgjE9Wte55CPK4P93ZNXijEn1RO7ohmZzGK4KYmtjJLNRucZG215R+sKy102Ob
+	 nWaw9eCBKRCZaECr0k0xh1bhGcG1o4tFa2D4rL/vy4Vay11/SHjyHoGM0a1/oLwtus
+	 iG0EKM94EdtG+O9ElEfc8ClSjt8fjXxx/sn0vqtQQPoo3Q2l4iJa4hLhfNREX7tRM2
+	 QrQRVcZkemhDUv9BOx8h14UMzaGB3v2H4Abe088SVSvWkjnK2xqSEunJLPpa8DYMVk
+	 Siirt1TaqaiYg==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 To: mptcp@lists.linux.dev,
 	stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+Cc: Paolo Abeni <pabeni@redhat.com>,
 	sashal@kernel.org,
-	syzbot+3c8b7a8e7df6a2a226ca@syzkaller.appspotmail.com,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.15.y 5/6] mptcp: pm: fix UaF read in mptcp_pm_nl_rm_addr_or_subflow
-Date: Sat, 19 Oct 2024 11:30:51 +0200
-Message-ID: <20241019093045.3181989-13-matttbe@kernel.org>
+	syzbot+f4aacdfef2c6a6529c3e@syzkaller.appspotmail.com,
+	Cong Wang <cong.wang@bytedance.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15.y 6/6] mptcp: prevent MPC handshake on port-based signal endpoints
+Date: Sat, 19 Oct 2024 11:30:52 +0200
+Message-ID: <20241019093045.3181989-14-matttbe@kernel.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241019093045.3181989-8-matttbe@kernel.org>
 References: <20241019093045.3181989-8-matttbe@kernel.org>
@@ -61,266 +64,263 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=14029; i=matttbe@kernel.org; h=from:subject; bh=DiI5yoyAVXYkzIN4I6oTmmSGJq6ibVz2tE1CypiP6ts=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnE3xFb4HfiLOqxC4+a/HbXTdIKClEHe8hbPGCw b5+6nQNIHyJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZxN8RQAKCRD2t4JPQmmg c2heEADVDA67rjjxJEWKXhyYNDFO48xJINd2fi/Nt9aJEVkJkyWIIMIFeWPW8yZh9SjzUkkcbN1 YGTnpzuf7pw5QUMD9kTLt8kGPh/t7a3qGN0FMF2G7s819+coa+PTjrYqc6Yl6TuI8kyeRYM0Mrg 3ef6gPxgMGP7t5PKXmOq/5wE0Fy3/qH6Mgjwa34rgZQGprM50mszmcxA1oeSU6ZjKhQdLMo6JAx g3Xb5sxFVrcqLbNp69JAijVb7e0P3dDmHCcB/sVfZ7B1lW+r9uRi2EBRFuoeOSVaK19FVUetxDh JwHMHKXGSG2bokuQxj5YxOEfTbySRFEsTDqwJJFx0pIKLyLQDTv0kAUMVNXR5bVjm1wXhYK0eP8 Jqps5koxwZg4UpxmCcPZFqiAJ0sIaCi9xRBqk7VNTHTTlGM0CLJPtj/TgK47ffRYch/5vLXtCZL TSBcq+leX0XcFEBMVozOnkvmamXc1GGwFiIaHUoDlnGgre4hjLhl5DDElQVMGtLnMn6uFwvjYQI Sw8+z0lbfrtwCeqw3/yfodAnbZNnCmpXhqrW8/bihzbU5kpBfht1CCRr8zPGBY97Pprz/3P9/l2 rhO4ME274q8WhufozWjWRuQj4Si2JvptIsWkL+/dknA376XhOIkFMuotkDDPHhEm81lFrL8zw1c lSbpKYLxzYRy3zA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=13089; i=matttbe@kernel.org; h=from:subject; bh=5y6o2mi/HAJaSf2m//aSYWbZafFkkLyfVThYSoI/AFM=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnE3xFUoJluAmpWW2JdkuirHQB5QybVr5gZLkNz MtNNZqS/oaJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZxN8RQAKCRD2t4JPQmmg c/GsD/9SaI1XWrtM05gr644zs64mBN8cdrhGSOlfPnrHyu7zPzVhdXbnliLolZH2clBjZQE2ec9 59UArO9AEbpj5C+Q0oHCyoKaHxTcTQg1m3NKB9D2cBmbszKVaFUxLzpkyKvRyPIiSWcF6hXzvHm brEwSYle208XPckpPfag8tZyfKr1nnh/E6LZbnpncLkXCKhv3d5gFl6pGKItOLtyNlzwtf/08f/ HyepPLhuYypHZJbNmZSw0JSX8sQO22T51I8I6Z+Bq08n35f+w+QYZOxrF3ZFhgVocO1s7iGEePP A+gdzyfWdgzGDok5ADjt1AMp5KjXxQl7VYSSUistGBkMJ4C+ujS/24hpgYiSCdbekK1HQC55Kdm fIVNGOdNLSXc9eWDI3b4IkuijTNsEEVo8QwM3mQqZ9vfElDYxW7oJN2zu28Rq2gtRAyLWbxrKjX cqdBq50DSI2NYw33lvG9RuV9A44WWF9THo4NWHQOP3N3VVuwGll1aK+ZJEHcbixwOYsFAJrp3MG a7YPepzkGBze/P85y+cVyiHLrLHCIOXG8ByJl0SA1wSuE5h2Vrsn8g0RH7cVWYL4f9GVG6bNDFI 9H1QWUUGcJq/Zublaih7wko1NDf1j63Rp1rFJqgc9PhE0YdQDKD/wNoigG7apk5fgK+XS0fHDMa Cff3xaqCRobVLQg==
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
-commit 7decd1f5904a489d3ccdcf131972f94645681689 upstream.
+From: Paolo Abeni <pabeni@redhat.com>
 
-Syzkaller reported this splat:
+commit 3d041393ea8c815f773020fb4a995331a69c0139 upstream.
 
-  ==================================================================
-  BUG: KASAN: slab-use-after-free in mptcp_pm_nl_rm_addr_or_subflow+0xb44/0xcc0 net/mptcp/pm_netlink.c:881
-  Read of size 4 at addr ffff8880569ac858 by task syz.1.2799/14662
+Syzkaller reported a lockdep splat:
 
-  CPU: 0 UID: 0 PID: 14662 Comm: syz.1.2799 Not tainted 6.12.0-rc2-syzkaller-00307-g36c254515dc6 #0
+  ============================================
+  WARNING: possible recursive locking detected
+  6.11.0-rc6-syzkaller-00019-g67784a74e258 #0 Not tainted
+  --------------------------------------------
+  syz-executor364/5113 is trying to acquire lock:
+  ffff8880449f1958 (k-slock-AF_INET){+.-.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
+  ffff8880449f1958 (k-slock-AF_INET){+.-.}-{2:2}, at: sk_clone_lock+0x2cd/0xf40 net/core/sock.c:2328
+
+  but task is already holding lock:
+  ffff88803fe3cb58 (k-slock-AF_INET){+.-.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
+  ffff88803fe3cb58 (k-slock-AF_INET){+.-.}-{2:2}, at: sk_clone_lock+0x2cd/0xf40 net/core/sock.c:2328
+
+  other info that might help us debug this:
+   Possible unsafe locking scenario:
+
+         CPU0
+         ----
+    lock(k-slock-AF_INET);
+    lock(k-slock-AF_INET);
+
+   *** DEADLOCK ***
+
+   May be due to missing lock nesting notation
+
+  7 locks held by syz-executor364/5113:
+   #0: ffff8880449f0e18 (sk_lock-AF_INET){+.+.}-{0:0}, at: lock_sock include/net/sock.h:1607 [inline]
+   #0: ffff8880449f0e18 (sk_lock-AF_INET){+.+.}-{0:0}, at: mptcp_sendmsg+0x153/0x1b10 net/mptcp/protocol.c:1806
+   #1: ffff88803fe39ad8 (k-sk_lock-AF_INET){+.+.}-{0:0}, at: lock_sock include/net/sock.h:1607 [inline]
+   #1: ffff88803fe39ad8 (k-sk_lock-AF_INET){+.+.}-{0:0}, at: mptcp_sendmsg_fastopen+0x11f/0x530 net/mptcp/protocol.c:1727
+   #2: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire include/linux/rcupdate.h:326 [inline]
+   #2: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: rcu_read_lock include/linux/rcupdate.h:838 [inline]
+   #2: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: __ip_queue_xmit+0x5f/0x1b80 net/ipv4/ip_output.c:470
+   #3: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire include/linux/rcupdate.h:326 [inline]
+   #3: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: rcu_read_lock include/linux/rcupdate.h:838 [inline]
+   #3: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: ip_finish_output2+0x45f/0x1390 net/ipv4/ip_output.c:228
+   #4: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: local_lock_acquire include/linux/local_lock_internal.h:29 [inline]
+   #4: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: process_backlog+0x33b/0x15b0 net/core/dev.c:6104
+   #5: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire include/linux/rcupdate.h:326 [inline]
+   #5: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: rcu_read_lock include/linux/rcupdate.h:838 [inline]
+   #5: ffffffff8e938320 (rcu_read_lock){....}-{1:2}, at: ip_local_deliver_finish+0x230/0x5f0 net/ipv4/ip_input.c:232
+   #6: ffff88803fe3cb58 (k-slock-AF_INET){+.-.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
+   #6: ffff88803fe3cb58 (k-slock-AF_INET){+.-.}-{2:2}, at: sk_clone_lock+0x2cd/0xf40 net/core/sock.c:2328
+
+  stack backtrace:
+  CPU: 0 UID: 0 PID: 5113 Comm: syz-executor364 Not tainted 6.11.0-rc6-syzkaller-00019-g67784a74e258 #0
   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
   Call Trace:
+   <IRQ>
+   __dump_stack lib/dump_stack.c:93 [inline]
+   dump_stack_lvl+0x241/0x360 lib/dump_stack.c:119
+   check_deadlock kernel/locking/lockdep.c:3061 [inline]
+   validate_chain+0x15d3/0x5900 kernel/locking/lockdep.c:3855
+   __lock_acquire+0x137a/0x2040 kernel/locking/lockdep.c:5142
+   lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5759
+   __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
+   _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
+   spin_lock include/linux/spinlock.h:351 [inline]
+   sk_clone_lock+0x2cd/0xf40 net/core/sock.c:2328
+   mptcp_sk_clone_init+0x32/0x13c0 net/mptcp/protocol.c:3279
+   subflow_syn_recv_sock+0x931/0x1920 net/mptcp/subflow.c:874
+   tcp_check_req+0xfe4/0x1a20 net/ipv4/tcp_minisocks.c:853
+   tcp_v4_rcv+0x1c3e/0x37f0 net/ipv4/tcp_ipv4.c:2267
+   ip_protocol_deliver_rcu+0x22e/0x440 net/ipv4/ip_input.c:205
+   ip_local_deliver_finish+0x341/0x5f0 net/ipv4/ip_input.c:233
+   NF_HOOK+0x3a4/0x450 include/linux/netfilter.h:314
+   NF_HOOK+0x3a4/0x450 include/linux/netfilter.h:314
+   __netif_receive_skb_one_core net/core/dev.c:5661 [inline]
+   __netif_receive_skb+0x2bf/0x650 net/core/dev.c:5775
+   process_backlog+0x662/0x15b0 net/core/dev.c:6108
+   __napi_poll+0xcb/0x490 net/core/dev.c:6772
+   napi_poll net/core/dev.c:6841 [inline]
+   net_rx_action+0x89b/0x1240 net/core/dev.c:6963
+   handle_softirqs+0x2c4/0x970 kernel/softirq.c:554
+   do_softirq+0x11b/0x1e0 kernel/softirq.c:455
+   </IRQ>
    <TASK>
-   __dump_stack lib/dump_stack.c:94 [inline]
-   dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
-   print_address_description mm/kasan/report.c:377 [inline]
-   print_report+0xc3/0x620 mm/kasan/report.c:488
-   kasan_report+0xd9/0x110 mm/kasan/report.c:601
-   mptcp_pm_nl_rm_addr_or_subflow+0xb44/0xcc0 net/mptcp/pm_netlink.c:881
-   mptcp_pm_nl_rm_subflow_received net/mptcp/pm_netlink.c:914 [inline]
-   mptcp_nl_remove_id_zero_address+0x305/0x4a0 net/mptcp/pm_netlink.c:1572
-   mptcp_pm_nl_del_addr_doit+0x5c9/0x770 net/mptcp/pm_netlink.c:1603
-   genl_family_rcv_msg_doit+0x202/0x2f0 net/netlink/genetlink.c:1115
-   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
-   genl_rcv_msg+0x565/0x800 net/netlink/genetlink.c:1210
-   netlink_rcv_skb+0x165/0x410 net/netlink/af_netlink.c:2551
-   genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
-   netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
-   netlink_unicast+0x53c/0x7f0 net/netlink/af_netlink.c:1357
-   netlink_sendmsg+0x8b8/0xd70 net/netlink/af_netlink.c:1901
-   sock_sendmsg_nosec net/socket.c:729 [inline]
-   __sock_sendmsg net/socket.c:744 [inline]
-   ____sys_sendmsg+0x9ae/0xb40 net/socket.c:2607
-   ___sys_sendmsg+0x135/0x1e0 net/socket.c:2661
-   __sys_sendmsg+0x117/0x1f0 net/socket.c:2690
-   do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
-   __do_fast_syscall_32+0x73/0x120 arch/x86/entry/common.c:386
-   do_fast_syscall_32+0x32/0x80 arch/x86/entry/common.c:411
-   entry_SYSENTER_compat_after_hwframe+0x84/0x8e
-  RIP: 0023:0xf7fe4579
-  Code: b8 01 10 06 03 74 b4 01 10 07 03 74 b0 01 10 08 03 74 d8 01 00 00 00 00 00 00 00 00 00 00 00 00 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 8d b4 26 00 00 00 00 8d b4 26 00 00 00 00
-  RSP: 002b:00000000f574556c EFLAGS: 00000296 ORIG_RAX: 0000000000000172
-  RAX: ffffffffffffffda RBX: 000000000000000b RCX: 0000000020000140
-  RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-  RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000296 R12: 0000000000000000
-  R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+   __local_bh_enable_ip+0x1bb/0x200 kernel/softirq.c:382
+   local_bh_enable include/linux/bottom_half.h:33 [inline]
+   rcu_read_unlock_bh include/linux/rcupdate.h:908 [inline]
+   __dev_queue_xmit+0x1763/0x3e90 net/core/dev.c:4450
+   dev_queue_xmit include/linux/netdevice.h:3105 [inline]
+   neigh_hh_output include/net/neighbour.h:526 [inline]
+   neigh_output include/net/neighbour.h:540 [inline]
+   ip_finish_output2+0xd41/0x1390 net/ipv4/ip_output.c:235
+   ip_local_out net/ipv4/ip_output.c:129 [inline]
+   __ip_queue_xmit+0x118c/0x1b80 net/ipv4/ip_output.c:535
+   __tcp_transmit_skb+0x2544/0x3b30 net/ipv4/tcp_output.c:1466
+   tcp_rcv_synsent_state_process net/ipv4/tcp_input.c:6542 [inline]
+   tcp_rcv_state_process+0x2c32/0x4570 net/ipv4/tcp_input.c:6729
+   tcp_v4_do_rcv+0x77d/0xc70 net/ipv4/tcp_ipv4.c:1934
+   sk_backlog_rcv include/net/sock.h:1111 [inline]
+   __release_sock+0x214/0x350 net/core/sock.c:3004
+   release_sock+0x61/0x1f0 net/core/sock.c:3558
+   mptcp_sendmsg_fastopen+0x1ad/0x530 net/mptcp/protocol.c:1733
+   mptcp_sendmsg+0x1884/0x1b10 net/mptcp/protocol.c:1812
+   sock_sendmsg_nosec net/socket.c:730 [inline]
+   __sock_sendmsg+0x1a6/0x270 net/socket.c:745
+   ____sys_sendmsg+0x525/0x7d0 net/socket.c:2597
+   ___sys_sendmsg net/socket.c:2651 [inline]
+   __sys_sendmmsg+0x3b2/0x740 net/socket.c:2737
+   __do_sys_sendmmsg net/socket.c:2766 [inline]
+   __se_sys_sendmmsg net/socket.c:2763 [inline]
+   __x64_sys_sendmmsg+0xa0/0xb0 net/socket.c:2763
+   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+   do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  RIP: 0033:0x7f04fb13a6b9
+  Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 01 1a 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+  RSP: 002b:00007ffd651f42d8 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
+  RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f04fb13a6b9
+  RDX: 0000000000000001 RSI: 0000000020000d00 RDI: 0000000000000004
+  RBP: 00007ffd651f4310 R08: 0000000000000001 R09: 0000000000000001
+  R10: 0000000020000080 R11: 0000000000000246 R12: 00000000000f4240
+  R13: 00007f04fb187449 R14: 00007ffd651f42f4 R15: 00007ffd651f4300
    </TASK>
 
-  Allocated by task 5387:
-   kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
-   kasan_save_track+0x14/0x30 mm/kasan/common.c:68
-   poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
-   __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:394
-   kmalloc_noprof include/linux/slab.h:878 [inline]
-   kzalloc_noprof include/linux/slab.h:1014 [inline]
-   subflow_create_ctx+0x87/0x2a0 net/mptcp/subflow.c:1803
-   subflow_ulp_init+0xc3/0x4d0 net/mptcp/subflow.c:1956
-   __tcp_set_ulp net/ipv4/tcp_ulp.c:146 [inline]
-   tcp_set_ulp+0x326/0x7f0 net/ipv4/tcp_ulp.c:167
-   mptcp_subflow_create_socket+0x4ae/0x10a0 net/mptcp/subflow.c:1764
-   __mptcp_subflow_connect+0x3cc/0x1490 net/mptcp/subflow.c:1592
-   mptcp_pm_create_subflow_or_signal_addr+0xbda/0x23a0 net/mptcp/pm_netlink.c:642
-   mptcp_pm_nl_fully_established net/mptcp/pm_netlink.c:650 [inline]
-   mptcp_pm_nl_work+0x3a1/0x4f0 net/mptcp/pm_netlink.c:943
-   mptcp_worker+0x15a/0x1240 net/mptcp/protocol.c:2777
-   process_one_work+0x958/0x1b30 kernel/workqueue.c:3229
-   process_scheduled_works kernel/workqueue.c:3310 [inline]
-   worker_thread+0x6c8/0xf00 kernel/workqueue.c:3391
-   kthread+0x2c1/0x3a0 kernel/kthread.c:389
-   ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
-   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+As noted by Cong Wang, the splat is false positive, but the code
+path leading to the report is an unexpected one: a client is
+attempting an MPC handshake towards the in-kernel listener created
+by the in-kernel PM for a port based signal endpoint.
 
-  Freed by task 113:
-   kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
-   kasan_save_track+0x14/0x30 mm/kasan/common.c:68
-   kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:579
-   poison_slab_object mm/kasan/common.c:247 [inline]
-   __kasan_slab_free+0x51/0x70 mm/kasan/common.c:264
-   kasan_slab_free include/linux/kasan.h:230 [inline]
-   slab_free_hook mm/slub.c:2342 [inline]
-   slab_free mm/slub.c:4579 [inline]
-   kfree+0x14f/0x4b0 mm/slub.c:4727
-   kvfree+0x47/0x50 mm/util.c:701
-   kvfree_rcu_list+0xf5/0x2c0 kernel/rcu/tree.c:3423
-   kvfree_rcu_drain_ready kernel/rcu/tree.c:3563 [inline]
-   kfree_rcu_monitor+0x503/0x8b0 kernel/rcu/tree.c:3632
-   kfree_rcu_shrink_scan+0x245/0x3a0 kernel/rcu/tree.c:3966
-   do_shrink_slab+0x44f/0x11c0 mm/shrinker.c:435
-   shrink_slab+0x32b/0x12a0 mm/shrinker.c:662
-   shrink_one+0x47e/0x7b0 mm/vmscan.c:4818
-   shrink_many mm/vmscan.c:4879 [inline]
-   lru_gen_shrink_node mm/vmscan.c:4957 [inline]
-   shrink_node+0x2452/0x39d0 mm/vmscan.c:5937
-   kswapd_shrink_node mm/vmscan.c:6765 [inline]
-   balance_pgdat+0xc19/0x18f0 mm/vmscan.c:6957
-   kswapd+0x5ea/0xbf0 mm/vmscan.c:7226
-   kthread+0x2c1/0x3a0 kernel/kthread.c:389
-   ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
-   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+Such connection will be never accepted; many of them can make the
+listener queue full and preventing the creation of MPJ subflow via
+such listener - its intended role.
 
-  Last potentially related work creation:
-   kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
-   __kasan_record_aux_stack+0xba/0xd0 mm/kasan/generic.c:541
-   kvfree_call_rcu+0x74/0xbe0 kernel/rcu/tree.c:3810
-   subflow_ulp_release+0x2ae/0x350 net/mptcp/subflow.c:2009
-   tcp_cleanup_ulp+0x7c/0x130 net/ipv4/tcp_ulp.c:124
-   tcp_v4_destroy_sock+0x1c5/0x6a0 net/ipv4/tcp_ipv4.c:2541
-   inet_csk_destroy_sock+0x1a3/0x440 net/ipv4/inet_connection_sock.c:1293
-   tcp_done+0x252/0x350 net/ipv4/tcp.c:4870
-   tcp_rcv_state_process+0x379b/0x4f30 net/ipv4/tcp_input.c:6933
-   tcp_v4_do_rcv+0x1ad/0xa90 net/ipv4/tcp_ipv4.c:1938
-   sk_backlog_rcv include/net/sock.h:1115 [inline]
-   __release_sock+0x31b/0x400 net/core/sock.c:3072
-   __tcp_close+0x4f3/0xff0 net/ipv4/tcp.c:3142
-   __mptcp_close_ssk+0x331/0x14d0 net/mptcp/protocol.c:2489
-   mptcp_close_ssk net/mptcp/protocol.c:2543 [inline]
-   mptcp_close_ssk+0x150/0x220 net/mptcp/protocol.c:2526
-   mptcp_pm_nl_rm_addr_or_subflow+0x2be/0xcc0 net/mptcp/pm_netlink.c:878
-   mptcp_pm_nl_rm_subflow_received net/mptcp/pm_netlink.c:914 [inline]
-   mptcp_nl_remove_id_zero_address+0x305/0x4a0 net/mptcp/pm_netlink.c:1572
-   mptcp_pm_nl_del_addr_doit+0x5c9/0x770 net/mptcp/pm_netlink.c:1603
-   genl_family_rcv_msg_doit+0x202/0x2f0 net/netlink/genetlink.c:1115
-   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
-   genl_rcv_msg+0x565/0x800 net/netlink/genetlink.c:1210
-   netlink_rcv_skb+0x165/0x410 net/netlink/af_netlink.c:2551
-   genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
-   netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
-   netlink_unicast+0x53c/0x7f0 net/netlink/af_netlink.c:1357
-   netlink_sendmsg+0x8b8/0xd70 net/netlink/af_netlink.c:1901
-   sock_sendmsg_nosec net/socket.c:729 [inline]
-   __sock_sendmsg net/socket.c:744 [inline]
-   ____sys_sendmsg+0x9ae/0xb40 net/socket.c:2607
-   ___sys_sendmsg+0x135/0x1e0 net/socket.c:2661
-   __sys_sendmsg+0x117/0x1f0 net/socket.c:2690
-   do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
-   __do_fast_syscall_32+0x73/0x120 arch/x86/entry/common.c:386
-   do_fast_syscall_32+0x32/0x80 arch/x86/entry/common.c:411
-   entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+Explicitly detect this scenario at initial-syn time and drop the
+incoming MPC request.
 
-  The buggy address belongs to the object at ffff8880569ac800
-   which belongs to the cache kmalloc-512 of size 512
-  The buggy address is located 88 bytes inside of
-   freed 512-byte region [ffff8880569ac800, ffff8880569aca00)
-
-  The buggy address belongs to the physical page:
-  page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x569ac
-  head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-  flags: 0x4fff00000000040(head|node=1|zone=1|lastcpupid=0x7ff)
-  page_type: f5(slab)
-  raw: 04fff00000000040 ffff88801ac42c80 dead000000000100 dead000000000122
-  raw: 0000000000000000 0000000080100010 00000001f5000000 0000000000000000
-  head: 04fff00000000040 ffff88801ac42c80 dead000000000100 dead000000000122
-  head: 0000000000000000 0000000080100010 00000001f5000000 0000000000000000
-  head: 04fff00000000002 ffffea00015a6b01 ffffffffffffffff 0000000000000000
-  head: 0000000000000004 0000000000000000 00000000ffffffff 0000000000000000
-  page dumped because: kasan: bad access detected
-  page_owner tracks the page as allocated
-  page last allocated via order 2, migratetype Unmovable, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 10238, tgid 10238 (kworker/u32:6), ts 597403252405, free_ts 597177952947
-   set_page_owner include/linux/page_owner.h:32 [inline]
-   post_alloc_hook+0x2d1/0x350 mm/page_alloc.c:1537
-   prep_new_page mm/page_alloc.c:1545 [inline]
-   get_page_from_freelist+0x101e/0x3070 mm/page_alloc.c:3457
-   __alloc_pages_noprof+0x223/0x25a0 mm/page_alloc.c:4733
-   alloc_pages_mpol_noprof+0x2c9/0x610 mm/mempolicy.c:2265
-   alloc_slab_page mm/slub.c:2412 [inline]
-   allocate_slab mm/slub.c:2578 [inline]
-   new_slab+0x2ba/0x3f0 mm/slub.c:2631
-   ___slab_alloc+0xd1d/0x16f0 mm/slub.c:3818
-   __slab_alloc.constprop.0+0x56/0xb0 mm/slub.c:3908
-   __slab_alloc_node mm/slub.c:3961 [inline]
-   slab_alloc_node mm/slub.c:4122 [inline]
-   __kmalloc_cache_noprof+0x2c5/0x310 mm/slub.c:4290
-   kmalloc_noprof include/linux/slab.h:878 [inline]
-   kzalloc_noprof include/linux/slab.h:1014 [inline]
-   mld_add_delrec net/ipv6/mcast.c:743 [inline]
-   igmp6_leave_group net/ipv6/mcast.c:2625 [inline]
-   igmp6_group_dropped+0x4ab/0xe40 net/ipv6/mcast.c:723
-   __ipv6_dev_mc_dec+0x281/0x360 net/ipv6/mcast.c:979
-   addrconf_leave_solict net/ipv6/addrconf.c:2253 [inline]
-   __ipv6_ifa_notify+0x3f6/0xc30 net/ipv6/addrconf.c:6283
-   addrconf_ifdown.isra.0+0xef9/0x1a20 net/ipv6/addrconf.c:3982
-   addrconf_notify+0x220/0x19c0 net/ipv6/addrconf.c:3781
-   notifier_call_chain+0xb9/0x410 kernel/notifier.c:93
-   call_netdevice_notifiers_info+0xbe/0x140 net/core/dev.c:1996
-   call_netdevice_notifiers_extack net/core/dev.c:2034 [inline]
-   call_netdevice_notifiers net/core/dev.c:2048 [inline]
-   dev_close_many+0x333/0x6a0 net/core/dev.c:1589
-  page last free pid 13136 tgid 13136 stack trace:
-   reset_page_owner include/linux/page_owner.h:25 [inline]
-   free_pages_prepare mm/page_alloc.c:1108 [inline]
-   free_unref_page+0x5f4/0xdc0 mm/page_alloc.c:2638
-   stack_depot_save_flags+0x2da/0x900 lib/stackdepot.c:666
-   kasan_save_stack+0x42/0x60 mm/kasan/common.c:48
-   kasan_save_track+0x14/0x30 mm/kasan/common.c:68
-   unpoison_slab_object mm/kasan/common.c:319 [inline]
-   __kasan_slab_alloc+0x89/0x90 mm/kasan/common.c:345
-   kasan_slab_alloc include/linux/kasan.h:247 [inline]
-   slab_post_alloc_hook mm/slub.c:4085 [inline]
-   slab_alloc_node mm/slub.c:4134 [inline]
-   kmem_cache_alloc_noprof+0x121/0x2f0 mm/slub.c:4141
-   skb_clone+0x190/0x3f0 net/core/skbuff.c:2084
-   do_one_broadcast net/netlink/af_netlink.c:1462 [inline]
-   netlink_broadcast_filtered+0xb11/0xef0 net/netlink/af_netlink.c:1540
-   netlink_broadcast+0x39/0x50 net/netlink/af_netlink.c:1564
-   uevent_net_broadcast_untagged lib/kobject_uevent.c:331 [inline]
-   kobject_uevent_net_broadcast lib/kobject_uevent.c:410 [inline]
-   kobject_uevent_env+0xacd/0x1670 lib/kobject_uevent.c:608
-   device_del+0x623/0x9f0 drivers/base/core.c:3882
-   snd_card_disconnect.part.0+0x58a/0x7c0 sound/core/init.c:546
-   snd_card_disconnect+0x1f/0x30 sound/core/init.c:495
-   snd_usx2y_disconnect+0xe9/0x1f0 sound/usb/usx2y/usbusx2y.c:417
-   usb_unbind_interface+0x1e8/0x970 drivers/usb/core/driver.c:461
-   device_remove drivers/base/dd.c:569 [inline]
-   device_remove+0x122/0x170 drivers/base/dd.c:561
-
-That's because 'subflow' is used just after 'mptcp_close_ssk(subflow)',
-which will initiate the release of its memory. Even if it is very likely
-the release and the re-utilisation will be done later on, it is of
-course better to avoid any issues and read the content of 'subflow'
-before closing it.
-
-Fixes: 1c1f72137598 ("mptcp: pm: only decrement add_addr_accepted for MPJ req")
+Fixes: 1729cf186d8a ("mptcp: create the listening socket for new port")
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+3c8b7a8e7df6a2a226ca@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/670d7337.050a0220.4cbc0.004f.GAE@google.com
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://patch.msgid.link/20241015-net-mptcp-uaf-pm-rm-v1-1-c4ee5d987a64@kernel.org
+Reported-by: syzbot+f4aacdfef2c6a6529c3e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f4aacdfef2c6a6529c3e
+Cc: Cong Wang <cong.wang@bytedance.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Conflicts in pm_netlink.c, because commit a88c9e496937 ("mptcp: do not
-  block subflows creation on errors") is linked to a new feature, not
-  available in this version. This commit modifies the context. Resolving
-  the conflicts is easy, simply moving the lines the same way it was
-  done in the original patch, ignoring the comment that is not in this
-  version. ]
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20241014-net-mptcp-mpc-port-endp-v2-1-7faea8e6b6ae@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in mib.[ch], because commit 6982826fe5e5 ("mptcp: fallback
+  to TCP after SYN+MPC drops"), and commit 27069e7cb3d1 ("mptcp: disable
+  active MPTCP in case of blackhole") are linked to new features, not
+  available in this version. Resolving the conflicts is easy, simply
+  adding the new lines declaring the new "endpoint attempt" MIB entry.
+  Also a conflict in protocol.h, because commit fce68b03086f ("mptcp:
+  add scheduled in mptcp_subflow_context") is not in this version, and
+  changes the context by introducing 'scheduled' variable just before.
+  Also a conflict in pm_netlink.c, because commit 3aa362494170 ("mptcp:
+  avoid ssock usage in mptcp_pm_nl_create_listen_socket()") is not in
+  this version, and refactor the function: that's fine, we can still set
+  pm_listener before doing the 'listen()', taking 'ssock->sk' as 'ssk'
+  is not defined before this refactoring. There is also a conflict
+  because the context has been changed later in commit 69925a346acb
+  ("mptcp: ensure listener is unhashed before updating the sk status"). ]
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- net/mptcp/pm_netlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/mib.c        |  1 +
+ net/mptcp/mib.h        |  1 +
+ net/mptcp/pm_netlink.c |  1 +
+ net/mptcp/protocol.h   |  1 +
+ net/mptcp/subflow.c    | 11 +++++++++++
+ 5 files changed, 15 insertions(+)
 
+diff --git a/net/mptcp/mib.c b/net/mptcp/mib.c
+index 08f82e1ca2f7..3e773259fa83 100644
+--- a/net/mptcp/mib.c
++++ b/net/mptcp/mib.c
+@@ -15,6 +15,7 @@ static const struct snmp_mib mptcp_snmp_list[] = {
+ 	SNMP_MIB_ITEM("MPCapableACKRX", MPTCP_MIB_MPCAPABLEPASSIVEACK),
+ 	SNMP_MIB_ITEM("MPCapableFallbackACK", MPTCP_MIB_MPCAPABLEPASSIVEFALLBACK),
+ 	SNMP_MIB_ITEM("MPCapableFallbackSYNACK", MPTCP_MIB_MPCAPABLEACTIVEFALLBACK),
++	SNMP_MIB_ITEM("MPCapableEndpAttempt", MPTCP_MIB_MPCAPABLEENDPATTEMPT),
+ 	SNMP_MIB_ITEM("MPFallbackTokenInit", MPTCP_MIB_TOKENFALLBACKINIT),
+ 	SNMP_MIB_ITEM("MPTCPRetrans", MPTCP_MIB_RETRANSSEGS),
+ 	SNMP_MIB_ITEM("MPJoinNoTokenFound", MPTCP_MIB_JOINNOTOKEN),
+diff --git a/net/mptcp/mib.h b/net/mptcp/mib.h
+index 1b7f6d24904b..0690db18fc95 100644
+--- a/net/mptcp/mib.h
++++ b/net/mptcp/mib.h
+@@ -8,6 +8,7 @@ enum linux_mptcp_mib_field {
+ 	MPTCP_MIB_MPCAPABLEPASSIVEACK,	/* Received third ACK with MP_CAPABLE */
+ 	MPTCP_MIB_MPCAPABLEPASSIVEFALLBACK,/* Server-side fallback during 3-way handshake */
+ 	MPTCP_MIB_MPCAPABLEACTIVEFALLBACK, /* Client-side fallback during 3-way handshake */
++	MPTCP_MIB_MPCAPABLEENDPATTEMPT,	/* Prohibited MPC to port-based endp */
+ 	MPTCP_MIB_TOKENFALLBACKINIT,	/* Could not init/allocate token */
+ 	MPTCP_MIB_RETRANSSEGS,		/* Segments retransmitted at the MPTCP-level */
+ 	MPTCP_MIB_JOINNOTOKEN,		/* Received MP_JOIN but the token was not found */
 diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index e524171291bc..133c5f2b3ba6 100644
+index 133c5f2b3ba6..a7a46d99d5a3 100644
 --- a/net/mptcp/pm_netlink.c
 +++ b/net/mptcp/pm_netlink.c
-@@ -793,10 +793,10 @@ static void mptcp_pm_nl_rm_addr_or_subflow(struct mptcp_sock *msk,
- 				 i, rm_list->ids[i], subflow->local_id, subflow->remote_id);
- 			spin_unlock_bh(&msk->pm.lock);
- 			mptcp_subflow_shutdown(sk, ssk, how);
-+			removed |= subflow->request_join;
- 			mptcp_close_ssk(sk, ssk, subflow);
- 			spin_lock_bh(&msk->pm.lock);
+@@ -991,6 +991,7 @@ static int mptcp_pm_nl_create_listen_socket(struct sock *sk,
+ 		goto out;
+ 	}
  
--			removed |= subflow->request_join;
- 			msk->pm.subflows--;
- 			if (rm_type == MPTCP_MIB_RMSUBFLOW)
- 				__MPTCP_INC_STATS(sock_net(sk), rm_type);
++	WRITE_ONCE(mptcp_subflow_ctx(ssock->sk)->pm_listener, true);
+ 	err = kernel_listen(ssock, backlog);
+ 	if (err) {
+ 		pr_warn("kernel_listen error, err=%d", err);
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index 5d458c3161cd..8f5e5a66babf 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -446,6 +446,7 @@ struct mptcp_subflow_context {
+ 		close_event_done : 1,       /* has done the post-closed part */
+ 		__unused : 11;
+ 	enum mptcp_data_avail data_avail;
++	bool	pm_listener;	    /* a listener managed by the kernel PM? */
+ 	u32	remote_nonce;
+ 	u64	thmac;
+ 	u32	local_nonce;
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index feb146a62f97..d8b33e10750b 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -129,6 +129,13 @@ static void subflow_add_reset_reason(struct sk_buff *skb, u8 reason)
+ 	}
+ }
+ 
++static int subflow_reset_req_endp(struct request_sock *req, struct sk_buff *skb)
++{
++	SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_MPCAPABLEENDPATTEMPT);
++	subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
++	return -EPERM;
++}
++
+ /* Init mptcp request socket.
+  *
+  * Returns an error code if a JOIN has failed and a TCP reset
+@@ -160,6 +167,8 @@ static int subflow_check_req(struct request_sock *req,
+ 	if (opt_mp_capable) {
+ 		SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_MPCAPABLEPASSIVE);
+ 
++		if (unlikely(listener->pm_listener))
++			return subflow_reset_req_endp(req, skb);
+ 		if (opt_mp_join)
+ 			return 0;
+ 	} else if (opt_mp_join) {
+@@ -167,6 +176,8 @@ static int subflow_check_req(struct request_sock *req,
+ 
+ 		if (mp_opt.backup)
+ 			SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINSYNBACKUPRX);
++	} else if (unlikely(listener->pm_listener)) {
++		return subflow_reset_req_endp(req, skb);
+ 	}
+ 
+ 	if (opt_mp_capable && listener->request_mptcp) {
 -- 
 2.45.2
 
