@@ -1,141 +1,125 @@
-Return-Path: <stable+bounces-86925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 458DE9A506C
-	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 21:14:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6B9C9A507E
+	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 21:37:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7D52283A06
-	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 19:14:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67F48285944
+	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 19:37:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39BB9191494;
-	Sat, 19 Oct 2024 19:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79BD61917E9;
+	Sat, 19 Oct 2024 19:36:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VfXrjdqK"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [194.107.17.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A02E320E;
-	Sat, 19 Oct 2024 19:14:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6D219149F;
+	Sat, 19 Oct 2024 19:36:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729365250; cv=none; b=OVCWxFjq9igdVAgHuazj4fgF2j23S4MapvaopqfjGAVaHaaZhdwTz0QVLG5mcj+U8WeN3KxRKQv6nZxB1hcMQFGY9LutvXN2SHVeB7W2PqLl6/QsQpxvqqkEZ+ZEHRgLYS2A/Xf9r5ZDx1H9qs8rmL2yGKW0xY+dQaoWL46VvG8=
+	t=1729366618; cv=none; b=REuYWKOL4WGnyzSubKppbtmmi96bi1RzROJuqvDHxbCJCz8NBO/2yWn3JixH0CqE667bTkJF7LteqOEHF4M4qjP1IrQvLJ8uNC2d9IG829lMsSokL4Gyc3X/gZ1UGlu3mS0+VTZcAgCAMjF6qLQFs1pzlspAfaK3WPx2dvAWGjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729365250; c=relaxed/simple;
-	bh=1PmlXZ08rwRzhTA6Y6VmiDm2MHi60DUvNyiBGaJrRAw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JkhlNNKtj3pDMfXf3j6iaHRskPCNBwAKcxjufRJapTGjyny3VDk2bleEL4MgYFIwSh5S38rh+Wn+R6QyCNiGCVvOQR/sbT2Uit4KrbVtK+SBGqddC2EyRXTShUGQEqY+0zJNv7FkLZ3SxTgPan7WpXZoIkCWD8246uzu4loyj98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: by air.basealt.ru (Postfix, from userid 490)
-	id B8EC62F20246; Sat, 19 Oct 2024 19:13:57 +0000 (UTC)
-X-Spam-Level: 
-Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
-	by air.basealt.ru (Postfix) with ESMTPSA id C4E1D2F20226;
-	Sat, 19 Oct 2024 19:13:56 +0000 (UTC)
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-To: linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: kovalev@altlinux.org,
-	lvc-patches@linuxtesting.org,
-	dutyrok@altlinux.org,
-	gerben@altlinux.org,
-	syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH] hfs/hfsplus: fix slab-out-of-bounds in hfs_bnode_read_key
-Date: Sat, 19 Oct 2024 22:13:03 +0300
-Message-Id: <20241019191303.24048-1-kovalev@altlinux.org>
-X-Mailer: git-send-email 2.33.8
+	s=arc-20240116; t=1729366618; c=relaxed/simple;
+	bh=sRhWhBOKZi1ss4zw4+0+/y1VvPKZuQbq0qeeG1W5FdQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=WR2PQ20hrzF5iIj+EiFuWyfIN+bgP/Js6KlZWPanQGdkiUuXPhkmKSz6YrjvLPbxFV0k/WfRdQ77CjaYWdXJ1JrUfW/p1AMEeeKWIgn36wCQGK7Tt8aOaqQbzs0saMA11dFvP8Ye1PQyyjSx6LP5Q+J7bMwBC6CNnzNecskRKMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VfXrjdqK; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-431695fa98bso6632025e9.3;
+        Sat, 19 Oct 2024 12:36:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729366614; x=1729971414; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=v0OYkXB8VktlSdTAQ14RoH3fm6PKpbJT3bfx/sl5TJ4=;
+        b=VfXrjdqK4JTc3B+07gAR94OIguNdO0nekxVZALECinuAAW2bYOqsZjepvMu/+hVErp
+         p6lZSV3+R7elFnbQEsGN5TSJOCgOx4+82lUhSMJRDBP4LNADoczY4FEmLuO37PQAx6dr
+         fP5k51C0oY56Y//nMsLN7af3ARKkTqvURduv8H10afVhQBDV840nRx5n1OGrwKr9plMU
+         6h6quA03xl+NFTuc+O7M24+0MthUfeDPjmj8CQnJ5LZqaPsbCe9UaZQMjMBgl43eE+0H
+         AjZJ28fPhKdcIjAEizOLqmy28buvGf3vlIDM/+ZPg0pBU+OIVvvL6EWjWhUCbV2WBCJm
+         lfVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729366614; x=1729971414;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=v0OYkXB8VktlSdTAQ14RoH3fm6PKpbJT3bfx/sl5TJ4=;
+        b=HThBEPcjnN8Jn8sdAC7SVknMiI9VS6vv4ogpXkkS7no4azR7C3FKmNw3X6qwTL5AOH
+         LB/tPXNJiHLT5ICcVeNRNfdzwpSRJd5hbwohzAj/G9cGj6/8Saqv16xE5bLuxZjZA/jl
+         uLLONOzVC3iiBUzf5IYuI7wneOcJMBJeAnqEiFq0BY2qyYEvUQVYflMsXZcHvRuFEcDf
+         db/bcHc/Ypbp4wb54wv3vk2vG9ZnBssnKOrDyPnRYg90/IkfdD5yDRXVWANeXHVoFg9U
+         3yOaeojTn0d3ZLFqLUe8FLXLT7d0096yYI2UiBbBKCsA3ajEY77fnh9rw7LQvg4g12Z/
+         j/6A==
+X-Forwarded-Encrypted: i=1; AJvYcCVn1KaVfTysOs+Edfo55xgZZ6hlQqkBtTIBgrTNcRjXWnvRZPo+eheg6MeES+sgUWLIZ8LlrwqC@vger.kernel.org, AJvYcCWEPWX3OSuyaojOUBapiDrVUp+q06Bl9KjsbdXdzebFEq8Jxm0JqPxQLZv8PDfEGLPzCLKGZVVKIpAQd7M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpOxbCcjouYMDDzD1YwQu0zPOz7cfYpy6dMtZfHn0NOwanCR+P
+	/WBzJyC/bHLserzO1QwPC/AazVI5357dy/zmbnBotYKiya/2/WZdoiDAGg==
+X-Google-Smtp-Source: AGHT+IE0/S8eytgT1eHaj9W0XwDlbdYQcRqhAh40I/BHjWepzAUmpIEq8SRagpi6Ey+XdCGMXR6Tnw==
+X-Received: by 2002:a05:600c:4ed2:b0:426:8884:2c58 with SMTP id 5b1f17b1804b1-43161622989mr40845435e9.4.1729366614238;
+        Sat, 19 Oct 2024 12:36:54 -0700 (PDT)
+Received: from [127.0.1.1] (2a02-8389-41cf-e200-f8f1-d6d3-1513-aa34.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:f8f1:d6d3:1513:aa34])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4316f57e66asm2671335e9.13.2024.10.19.12.36.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Oct 2024 12:36:53 -0700 (PDT)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH 0/2] leds: max5970: fix unreleased fwnode_handle in probe
+ function
+Date: Sat, 19 Oct 2024 21:36:42 +0200
+Message-Id: <20241019-max5970-of_node_put-v1-0-e6ce4af4119b@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEoKFGcC/x3MQQqAIBBA0avErBNGK8KuEhGVY80iDa0QorsnL
+ d/i/wciBaYIXfFAoJsje5chywKWbXIrCTbZoFDVEqUW+5Qa3aLwdnTe0Hhcp9CVnhFr27RGQS6
+ PQJbTf+2H9/0AniVNtWUAAAA=
+To: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>, 
+ Patrick Rudolph <patrick.rudolph@9elements.com>, 
+ Naresh Solanki <Naresh.Solanki@9elements.com>
+Cc: linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1729366612; l=1107;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=sRhWhBOKZi1ss4zw4+0+/y1VvPKZuQbq0qeeG1W5FdQ=;
+ b=4wgMAXy1dfChy3MPsn7rKpKgmnkxltf/D0dSE32bJ/8Lmi+uI5TLt3+UMPZisl7m+WN6kKPft
+ tOZwczxCT36DQCNKEIoEJM6cHD+D3sOZLW+9rlRV2EAMgpkouea22Y5
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-Syzbot reported an issue in hfs subsystem:
+This series fixes the wrong management of the 'led_node' fwnode_handle,
+which is not released after it is no longer required. This affects both
+the normal path of execution and the existing error paths (currently
+two) in max5970_led_probe().
 
-BUG: KASAN: slab-out-of-bounds in memcpy_from_page include/linux/highmem.h:423 [inline]
-BUG: KASAN: slab-out-of-bounds in hfs_bnode_read fs/hfs/bnode.c:35 [inline]
-BUG: KASAN: slab-out-of-bounds in hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
-Write of size 94 at addr ffff8880123cd100 by task syz-executor237/5102
+First, the missing callst to fwnode_handle_put() in the different code
+paths are added, to make the patch available for stable kernels. Then,
+the code gets updated to a more robust approach by means of the __free()
+macro to automatically release the node when it goes out of scope,
+removing the need for explicit calls to fwnode_handle_put().
 
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0x169/0x550 mm/kasan/report.c:488
- kasan_report+0x143/0x180 mm/kasan/report.c:601
- kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
- __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
- memcpy_from_page include/linux/highmem.h:423 [inline]
- hfs_bnode_read fs/hfs/bnode.c:35 [inline]
- hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
- hfs_brec_insert+0x7f3/0xbd0 fs/hfs/brec.c:159
- hfs_cat_create+0x41d/0xa50 fs/hfs/catalog.c:118
- hfs_mkdir+0x6c/0xe0 fs/hfs/dir.c:232
- vfs_mkdir+0x2f9/0x4f0 fs/namei.c:4257
- do_mkdirat+0x264/0x3a0 fs/namei.c:4280
- __do_sys_mkdir fs/namei.c:4300 [inline]
- __se_sys_mkdir fs/namei.c:4298 [inline]
- __x64_sys_mkdir+0x6c/0x80 fs/namei.c:4298
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fbdd6057a99
-
-Add a check for key length in hfs_bnode_read_key to prevent
-out-of-bounds memory access. If the key length is invalid, the
-key buffer is cleared, improving stability and reliability.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=5f3a973ed3dfb85a6683
-Cc: stable@vger.kernel.org
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- fs/hfs/bnode.c     | 6 ++++++
- fs/hfsplus/bnode.c | 6 ++++++
- 2 files changed, 12 insertions(+)
+Javier Carrasco (2):
+      leds: max5970: fix unreleased fwnode_handle in probe function
+      leds: max5970: use cleanup facility for fwnode_handle led_node
 
-diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
-index 6add6ebfef8967..cb823a8a6ba960 100644
---- a/fs/hfs/bnode.c
-+++ b/fs/hfs/bnode.c
-@@ -67,6 +67,12 @@ void hfs_bnode_read_key(struct hfs_bnode *node, void *key, int off)
- 	else
- 		key_len = tree->max_key_len + 1;
- 
-+	if (key_len > sizeof(hfs_btree_key) || key_len < 1) {
-+		memset(key, 0, sizeof(hfs_btree_key));
-+		pr_err("hfs: Invalid key length: %d\n", key_len);
-+		return;
-+	}
-+
- 	hfs_bnode_read(node, key, off, key_len);
- }
- 
-diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
-index 87974d5e679156..079ea80534f7de 100644
---- a/fs/hfsplus/bnode.c
-+++ b/fs/hfsplus/bnode.c
-@@ -67,6 +67,12 @@ void hfs_bnode_read_key(struct hfs_bnode *node, void *key, int off)
- 	else
- 		key_len = tree->max_key_len + 2;
- 
-+	if (key_len > sizeof(hfsplus_btree_key) || key_len < 1) {
-+		memset(key, 0, sizeof(hfsplus_btree_key));
-+		pr_err("hfsplus: Invalid key length: %d\n", key_len);
-+		return;
-+	}
-+
- 	hfs_bnode_read(node, key, off, key_len);
- }
- 
+ drivers/leds/leds-max5970.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+---
+base-commit: f2493655d2d3d5c6958ed996b043c821c23ae8d3
+change-id: 20241019-max5970-of_node_put-939b004f57d2
+
+Best regards,
 -- 
-2.33.8
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
 
