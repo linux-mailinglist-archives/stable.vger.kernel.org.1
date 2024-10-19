@@ -1,144 +1,114 @@
-Return-Path: <stable+bounces-86899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8B899A4C85
-	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 11:24:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 273CC9A4C94
+	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 11:30:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FCDF1C212A5
-	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 09:24:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 303B81C21125
+	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 09:30:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3A51DED69;
-	Sat, 19 Oct 2024 09:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5108118DF7B;
+	Sat, 19 Oct 2024 09:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lWEN378y"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990651DD0FE;
-	Sat, 19 Oct 2024 09:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024A120E30B;
+	Sat, 19 Oct 2024 09:30:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729329892; cv=none; b=uVn4TyI6KgOkU79J8/W8S9LTskWLMNLa5Ry1dio01VGAEyVfXRePa5DBYgULX8VxvkQ36SNHygDeVzcs28hpP6uePtaSrP21B816wWhbMHzLYgRaUg9MlQRNCfs6gWhAwX2r3IHit6q3l0Fs0WFBBu6WVwI2JROzUy8jwvXCynw=
+	t=1729330255; cv=none; b=eMgdfEDQ77Jrf57LDdh0kg2oxc9FzGt9qaIqhFKfMyi/O9fvop5zofKEwguJ+BWl3SeQV2M4Ey8uSNkprykPsKu8UkvfwsHHhfyxrFSB7Pk5Yt+dpEMcWGZ28nuUx6hRDdAwqm9qrWSjJOkaM8+Rf3x234LbSc847dc0dJqWGmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729329892; c=relaxed/simple;
-	bh=+F84iLEU0t2jLjlpXp7S6SyQwR+80SpRqt0QKt/Ie+o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j3CFCcCqnMVFzHFugXcO5KHg7FzibaO8PQqVjEUiB4so/t5Qch0DaznHz2wN46eAzOZVwP/Kp1+BrerjLOIWXsDARbSliRLyPb3CDHBzcZoP3BzmyCY5a5hK2VFtQ1odOK/ODlXw3/gGlJoHQ/3SvDUONZ2cf0kqIZtFZ/5ZP4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4XVx3d14Kpz4f3jM1;
-	Sat, 19 Oct 2024 17:24:29 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.252])
-	by mail.maildlp.com (Postfix) with ESMTP id 6281F1A0568;
-	Sat, 19 Oct 2024 17:24:46 +0800 (CST)
-Received: from [10.67.111.192] (unknown [10.67.111.192])
-	by APP3 (Coremail) with SMTP id _Ch0CgDXdoPbehNnDdZ_EQ--.27148S2;
-	Sat, 19 Oct 2024 17:24:44 +0800 (CST)
-Message-ID: <4d7a35f8-2d03-4cf6-af6a-9e8e8b374618@huaweicloud.com>
-Date: Sat, 19 Oct 2024 17:24:42 +0800
+	s=arc-20240116; t=1729330255; c=relaxed/simple;
+	bh=0My0whXDQH06lynWlRyLmzuIXr/nPZNmBYCppcqKwIc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sJBwI3bIE1Zsi6mcZP5ssgApPh+6KXYeCavLacK1KZ4iJdoLj5EWM3KrN3/GhiXKWZncvlNSGrH6qptTP9WlvX2W/t8rT21fALR3pperGBXnAcIl7251nuWuhJcvB1HcpGE25KDHkrsklgRwicd2LG6Nnxj49uXH4qG3skLL82o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lWEN378y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3E9C4CEC5;
+	Sat, 19 Oct 2024 09:30:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729330254;
+	bh=0My0whXDQH06lynWlRyLmzuIXr/nPZNmBYCppcqKwIc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=lWEN378yWETs1F6NxPtvJVTkQPa8FAY54mqYNV2eYq/PJLkNw8Hw2V/yumXq+pM7F
+	 YT6LKa+vpdVqW7+LG6NFPZH0H6+f1BZoTkwYv09JR6i5gBdFc4m+Q26+H7G1jxL1xn
+	 8ZZWHPwPDRq50YBUQ7icyauUuKw53Qrzqb7PtSLde6MDeneFdCzPX4tB4yyMR2PfBl
+	 5CKp1uQ40TvM1EL3WcetYcJogsJavij0Ph1x+3eozES8ISAmJ4r5b0UsrwJiDYsdNT
+	 9vrwsS4HVZNEfIyZxja89fWve+IwDjuWYJDKDLlY4O1GwOl0xWtDsmD0HtaMgm869d
+	 mdMrXdjjYxNfA==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: mptcp@lists.linux.dev,
+	stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	sashal@kernel.org
+Subject: [PATCH 5.15.y 0/6] mptcp: fix recent failed backports
+Date: Sat, 19 Oct 2024 11:30:46 +0200
+Message-ID: <20241019093045.3181989-8-matttbe@kernel.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] bpf, arm64: Fix address emission with tag-based KASAN
- enabled
-Content-Language: en-US
-To: Peter Collingbourne <pcc@google.com>, Alexei Starovoitov
- <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
- <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
- Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, Puranjay Mohan <puranjay12@gmail.com>,
- Xu Kuohai <xukuohai@huaweicloud.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>, bpf@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc: Alexander Potapenko <glider@google.com>,
- Andrey Konovalov <andreyknvl@gmail.com>, stable@vger.kernel.org
-References: <20241018221644.3240898-1-pcc@google.com>
-From: Xu Kuohai <xukuohai@huaweicloud.com>
-In-Reply-To: <20241018221644.3240898-1-pcc@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:_Ch0CgDXdoPbehNnDdZ_EQ--.27148S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJF1UKF1kCr1DZFWDAr1xGrg_yoW8Kr4rpF
-	ykC3y3CFWvqrn3u3WkJw4UXF1Yk3ykKF4a9FW5C3yF9an8Xr97KF1rKwsrGrW5trykCw1r
-	XrZFkF1DCas5J37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvK14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kI
-	c2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
-	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
-	67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
-	IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
-	0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxh
-	VjvjDU0xZFpf9x0pRHUDLUUUUU=
-X-CM-SenderInfo: 50xn30hkdlqx5xdzvxpfor3voofrz/
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1890; i=matttbe@kernel.org; h=from:subject; bh=0My0whXDQH06lynWlRyLmzuIXr/nPZNmBYCppcqKwIc=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnE3xFZkZVKZ4ojbiF8Y5rbmUWiUyjEC9yWCJIm Llk/DKdf2mJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZxN8RQAKCRD2t4JPQmmg c9/zD/0VLZkYBGNhUvkqvxduBXbHggSRoAOJ9oBw6u0RoV3SrtU5z1gP5Du+VsgX72wJU6RCGYc 1uYWQGgk0FuPjkdcNMWcCemVY8uLx+lQr38cqk3LgCx9+Rl+4IgqPoQQZDDqKVhVpjXVSM/bX7W 5au/k73U3GSTPx05quDHy0pZ158doSLvDPGD7corUwlH93mj/rimFGZsLObeqm9Kny9PrdlSf+o ZDlIwmjoA8w8Xvt5FbXx1rMUcUKDZV3WdBKe5pJlpnv+tPOfcn/s/6f2n6q6BaXjK1I6p9ug6uH ueqtRls5ffhE4oxPCalnKMpNbPQrcyrAbHgHF4sxrsfkdBy2qCY7u0RS3fkelgtmFkZmpPkayQd tMhH7+Xb5wg5b6ZvTamCpunlJ5DAkvqYCtz1o6wAXj1IrrqPUI1qen1U1EmI4R3kReQE6yWdeKG smZPgVh5bzS8fUpHsLKcEd2s+ARxe915Nupk8HboX4iiQF0fBDPWn8Penp7iKTPMSP9emYHffyX mol5ylyqklO2AzTh3i9amuTm61dLUL+JqliuKYU3xFiPwDQEV/bZPP1HxOKX82W2AdQeZohohD/ c+Dm1P3SrBZZxwGQ6scmCybqUtnBcCrykDBSZTxg2Yf/n1IJNWTZ8eDcn4RciWZO5xEZ9joME0J UjjTZKpbG2mVm0g==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
 
-On 10/19/2024 6:16 AM, Peter Collingbourne wrote:
-> When BPF_TRAMP_F_CALL_ORIG is enabled, the address of a bpf_tramp_image
-> struct on the stack is passed during the size calculation pass and
-> an address on the heap is passed during code generation. This may
-> cause a heap buffer overflow if the heap address is tagged because
-> emit_a64_mov_i64() will emit longer code than it did during the size
-> calculation pass. The same problem could occur without tag-based
-> KASAN if one of the 16-bit words of the stack address happened to
-> be all-ones during the size calculation pass. Fix the problem by
-> assuming the worst case (4 instructions) when calculating the size
-> of the bpf_tramp_image address emission.
-> 
-> Fixes: 19d3c179a377 ("bpf, arm64: Fix trampoline for BPF_TRAMP_F_CALL_ORIG")
-> Signed-off-by: Peter Collingbourne <pcc@google.com>
-> Link: https://linux-review.googlesource.com/id/I1496f2bc24fba7a1d492e16e2b94cf43714f2d3c
-> Cc: stable@vger.kernel.org
-> ---
->   arch/arm64/net/bpf_jit_comp.c | 12 ++++++++++--
->   1 file changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
-> index 8bbd0b20136a8..5db82bfc9dc11 100644
-> --- a/arch/arm64/net/bpf_jit_comp.c
-> +++ b/arch/arm64/net/bpf_jit_comp.c
-> @@ -2220,7 +2220,11 @@ static int prepare_trampoline(struct jit_ctx *ctx, struct bpf_tramp_image *im,
->   	emit(A64_STR64I(A64_R(20), A64_SP, regs_off + 8), ctx);
->   
->   	if (flags & BPF_TRAMP_F_CALL_ORIG) {
-> -		emit_a64_mov_i64(A64_R(0), (const u64)im, ctx);
-> +		/* for the first pass, assume the worst case */
-> +		if (!ctx->image)
-> +			ctx->idx += 4;
-> +		else
-> +			emit_a64_mov_i64(A64_R(0), (const u64)im, ctx);
->   		emit_call((const u64)__bpf_tramp_enter, ctx);
->   	}
->   
-> @@ -2264,7 +2268,11 @@ static int prepare_trampoline(struct jit_ctx *ctx, struct bpf_tramp_image *im,
->   
->   	if (flags & BPF_TRAMP_F_CALL_ORIG) {
->   		im->ip_epilogue = ctx->ro_image + ctx->idx;
-> -		emit_a64_mov_i64(A64_R(0), (const u64)im, ctx);
-> +		/* for the first pass, assume the worst case */
-> +		if (!ctx->image)
-> +			ctx->idx += 4;
-> +		else
-> +			emit_a64_mov_i64(A64_R(0), (const u64)im, ctx);
->   		emit_call((const u64)__bpf_tramp_exit, ctx);
->   	}
->
+Greg recently reported 6 patches that could not be applied without
+conflicts in v5.15:
 
-Acked-by: Xu Kuohai <xukuohai@huawei.com>
+ - e32d262c89e2 ("mptcp: handle consistently DSS corruption")
+ - 4dabcdf58121 ("tcp: fix mptcp DSS corruption due to large pmtu xmit")
+ - 119d51e225fe ("mptcp: fallback when MPTCP opts are dropped after 1st
+   data")
+ - 7decd1f5904a ("mptcp: pm: fix UaF read in mptcp_pm_nl_rm_addr_or_subflow")
+ - 3d041393ea8c ("mptcp: prevent MPC handshake on port-based signal
+   endpoints")
+ - 5afca7e996c4 ("selftests: mptcp: join: test for prohibited MPC to
+   port-based endp")
+
+Conflicts have been resolved for the 5 first ones, and documented in
+each patch.
+
+The last patch has not been backported: this is an extra test for the
+selftests validating the previous commit, and there are a lot of
+conflicts. That's fine not to backport this test, it is still possible
+to use the selftests from a newer version and run them on this older
+kernel.
+
+One extra commit has been backported, to support allow_infinite_fallback
+which is used by two commits from the list above:
+
+ - 0530020a7c8f ("mptcp: track and update contiguous data status")
+
+Geliang Tang (1):
+  mptcp: track and update contiguous data status
+
+Matthieu Baerts (NGI0) (2):
+  mptcp: fallback when MPTCP opts are dropped after 1st data
+  mptcp: pm: fix UaF read in mptcp_pm_nl_rm_addr_or_subflow
+
+Paolo Abeni (3):
+  mptcp: handle consistently DSS corruption
+  tcp: fix mptcp DSS corruption due to large pmtu xmit
+  mptcp: prevent MPC handshake on port-based signal endpoints
+
+ net/ipv4/tcp_output.c  |  2 +-
+ net/mptcp/mib.c        |  3 +++
+ net/mptcp/mib.h        |  3 +++
+ net/mptcp/pm_netlink.c |  3 ++-
+ net/mptcp/protocol.c   | 23 ++++++++++++++++++++---
+ net/mptcp/protocol.h   |  2 ++
+ net/mptcp/subflow.c    | 19 ++++++++++++++++---
+ 7 files changed, 47 insertions(+), 8 deletions(-)
+
+-- 
+2.45.2
 
 
