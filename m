@@ -1,194 +1,144 @@
-Return-Path: <stable+bounces-86898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AAE89A4C79
-	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 11:10:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8B899A4C85
+	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 11:24:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02E241C20E1A
-	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 09:10:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FCDF1C212A5
+	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 09:24:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AC01DE2AE;
-	Sat, 19 Oct 2024 09:10:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k+Yd59vY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3A51DED69;
+	Sat, 19 Oct 2024 09:24:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF02918DF6F;
-	Sat, 19 Oct 2024 09:10:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990651DD0FE;
+	Sat, 19 Oct 2024 09:24:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729329007; cv=none; b=oB+GoOzf29hoO/IgrQkWg9HE4j0DM/qroso4gSyFD02LVoxxoEKmL136auuDARkurKT15CmLU+6twUqZ0Eq8ZABs/DT4qkBPPrRYUYjRHWhv55HdrXYVkT5NQfD2j5ZmAY7LTZiI36AQwQLTx6Ja9cgmYonHD2STr0IqfCv32XM=
+	t=1729329892; cv=none; b=uVn4TyI6KgOkU79J8/W8S9LTskWLMNLa5Ry1dio01VGAEyVfXRePa5DBYgULX8VxvkQ36SNHygDeVzcs28hpP6uePtaSrP21B816wWhbMHzLYgRaUg9MlQRNCfs6gWhAwX2r3IHit6q3l0Fs0WFBBu6WVwI2JROzUy8jwvXCynw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729329007; c=relaxed/simple;
-	bh=IZ2pH0/q1s32xpIKI3v25LXBOHgeQc9PYVEhOR1YKbs=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ONNCaSJ8UQduzyhL+4XPssGJBJZpY8agv2njcOJbvq7gl3fErAicTJo4WC7A2nK/dEcME6iAGOhJMcnTdZP6gPSPpDj+8GfrIE2CXo1x9N1BIHvVlpt/g5pY/jAS5Pwa2Yij34XsuYYmX+o/bE+jCV0xkMwUPOj0xe99Sqvu9rA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k+Yd59vY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF03C4CEC5;
-	Sat, 19 Oct 2024 09:10:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729329007;
-	bh=IZ2pH0/q1s32xpIKI3v25LXBOHgeQc9PYVEhOR1YKbs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=k+Yd59vYbcWW+Cc8PG3UPELv4PPzh/oxT/JGhH0OrSA9aqA66goIQYsiWBfW9x4X/
-	 aCVG8eoPLPl7Lr4Pmgw6jyLQCaCnfo38olXVWXXeqVLMHbKyJh5HwQdEXxNlDXMoVL
-	 LXYOMm3P3MecfSIU55Xm0cl3U4SbDBIMa0jajNSMCf1eaAnJNVHf913+b48X/v08lD
-	 fidpzhP0t8jWx7MbVeFYSSiXXtqoaEDADxYp8NoIso1CTdkyjpVEi8zmziMjNtmeOU
-	 vhC1cXWLIWk1DLcpFerueLMyG46cvJg22YTN37epHM3KBIqqGT7K7cHQTpMpfWYWEA
-	 w+iaGnTukvtgQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=wait-a-minute.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1t25TI-004zRw-Jc;
-	Sat, 19 Oct 2024 10:10:04 +0100
-Date: Sat, 19 Oct 2024 10:10:04 +0100
-Message-ID: <87zfn0tq4z.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Oliver Upton <oliver.upton@linux.dev>
-Cc: kvmarm@lists.linux.dev,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	stable@vger.kernel.org,
-	Alexander Potapenko <glider@google.com>
-Subject: Re: [PATCH 1/2] KVM: arm64: Don't retire aborted MMIO instruction
-In-Reply-To: <20241018194757.3685856-2-oliver.upton@linux.dev>
-References: <20241018194757.3685856-1-oliver.upton@linux.dev>
-	<20241018194757.3685856-2-oliver.upton@linux.dev>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1729329892; c=relaxed/simple;
+	bh=+F84iLEU0t2jLjlpXp7S6SyQwR+80SpRqt0QKt/Ie+o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=j3CFCcCqnMVFzHFugXcO5KHg7FzibaO8PQqVjEUiB4so/t5Qch0DaznHz2wN46eAzOZVwP/Kp1+BrerjLOIWXsDARbSliRLyPb3CDHBzcZoP3BzmyCY5a5hK2VFtQ1odOK/ODlXw3/gGlJoHQ/3SvDUONZ2cf0kqIZtFZ/5ZP4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4XVx3d14Kpz4f3jM1;
+	Sat, 19 Oct 2024 17:24:29 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.252])
+	by mail.maildlp.com (Postfix) with ESMTP id 6281F1A0568;
+	Sat, 19 Oct 2024 17:24:46 +0800 (CST)
+Received: from [10.67.111.192] (unknown [10.67.111.192])
+	by APP3 (Coremail) with SMTP id _Ch0CgDXdoPbehNnDdZ_EQ--.27148S2;
+	Sat, 19 Oct 2024 17:24:44 +0800 (CST)
+Message-ID: <4d7a35f8-2d03-4cf6-af6a-9e8e8b374618@huaweicloud.com>
+Date: Sat, 19 Oct 2024 17:24:42 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: oliver.upton@linux.dev, kvmarm@lists.linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, stable@vger.kernel.org, glider@google.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] bpf, arm64: Fix address emission with tag-based KASAN
+ enabled
+Content-Language: en-US
+To: Peter Collingbourne <pcc@google.com>, Alexei Starovoitov
+ <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
+ <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
+ Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+ Jiri Olsa <jolsa@kernel.org>, Puranjay Mohan <puranjay12@gmail.com>,
+ Xu Kuohai <xukuohai@huaweicloud.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>, bpf@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: Alexander Potapenko <glider@google.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, stable@vger.kernel.org
+References: <20241018221644.3240898-1-pcc@google.com>
+From: Xu Kuohai <xukuohai@huaweicloud.com>
+In-Reply-To: <20241018221644.3240898-1-pcc@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_Ch0CgDXdoPbehNnDdZ_EQ--.27148S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxJF1UKF1kCr1DZFWDAr1xGrg_yoW8Kr4rpF
+	ykC3y3CFWvqrn3u3WkJw4UXF1Yk3ykKF4a9FW5C3yF9an8Xr97KF1rKwsrGrW5trykCw1r
+	XrZFkF1DCas5J37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvK14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kI
+	c2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
+	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
+	67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
+	IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
+	0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxh
+	VjvjDU0xZFpf9x0pRHUDLUUUUU=
+X-CM-SenderInfo: 50xn30hkdlqx5xdzvxpfor3voofrz/
 
-On Fri, 18 Oct 2024 20:47:56 +0100,
-Oliver Upton <oliver.upton@linux.dev> wrote:
+On 10/19/2024 6:16 AM, Peter Collingbourne wrote:
+> When BPF_TRAMP_F_CALL_ORIG is enabled, the address of a bpf_tramp_image
+> struct on the stack is passed during the size calculation pass and
+> an address on the heap is passed during code generation. This may
+> cause a heap buffer overflow if the heap address is tagged because
+> emit_a64_mov_i64() will emit longer code than it did during the size
+> calculation pass. The same problem could occur without tag-based
+> KASAN if one of the 16-bit words of the stack address happened to
+> be all-ones during the size calculation pass. Fix the problem by
+> assuming the worst case (4 instructions) when calculating the size
+> of the bpf_tramp_image address emission.
 > 
-> Returning an abort to the guest for an unsupported MMIO access is a
-> documented feature of the KVM UAPI. Nevertheless, it's clear that this
-> plumbing has seen limited testing, since userspace can trivially cause a
-> WARN in the MMIO return:
-> 
->   WARNING: CPU: 0 PID: 30558 at arch/arm64/include/asm/kvm_emulate.h:536 kvm_handle_mmio_return+0x46c/0x5c4 arch/arm64/include/asm/kvm_emulate.h:536
->   Call trace:
->    kvm_handle_mmio_return+0x46c/0x5c4 arch/arm64/include/asm/kvm_emulate.h:536
->    kvm_arch_vcpu_ioctl_run+0x98/0x15b4 arch/arm64/kvm/arm.c:1133
->    kvm_vcpu_ioctl+0x75c/0xa78 virt/kvm/kvm_main.c:4487
->    __do_sys_ioctl fs/ioctl.c:51 [inline]
->    __se_sys_ioctl fs/ioctl.c:893 [inline]
->    __arm64_sys_ioctl+0x14c/0x1c8 fs/ioctl.c:893
->    __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
->    invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
->    el0_svc_common+0x1e0/0x23c arch/arm64/kernel/syscall.c:132
->    do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
->    el0_svc+0x38/0x68 arch/arm64/kernel/entry-common.c:712
->    el0t_64_sync_handler+0x90/0xfc arch/arm64/kernel/entry-common.c:730
->    el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
-> 
-> The splat is complaining that KVM is advancing PC while an exception is
-> pending, i.e. that KVM is retiring the MMIO instruction despite a
-> pending external abort. Womp womp.
-
-nit: *synchronous* external abort.
-
-> 
-> Fix the glaring UAPI bug by skipping over all the MMIO emulation in
-> case there is a pending synchronous exception. Note that while userspace
-> is capable of pending an asynchronous exception (SError, IRQ, or FIQ),
-> it is still safe to retire the MMIO instruction in this case as (1) they
-> are by definition asynchronous, and (2) KVM relies on hardware support
-> for pending/delivering these exceptions instead of the software state
-> machine for advancing PC.
-> 
+> Fixes: 19d3c179a377 ("bpf, arm64: Fix trampoline for BPF_TRAMP_F_CALL_ORIG")
+> Signed-off-by: Peter Collingbourne <pcc@google.com>
+> Link: https://linux-review.googlesource.com/id/I1496f2bc24fba7a1d492e16e2b94cf43714f2d3c
 > Cc: stable@vger.kernel.org
-> Fixes: da345174ceca ("KVM: arm/arm64: Allow user injection of external data aborts")
-> Reported-by: Alexander Potapenko <glider@google.com>
-> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 > ---
->  arch/arm64/include/asm/kvm_emulate.h | 25 +++++++++++++++++++++++++
->  arch/arm64/kvm/mmio.c                |  7 +++++--
->  2 files changed, 30 insertions(+), 2 deletions(-)
+>   arch/arm64/net/bpf_jit_comp.c | 12 ++++++++++--
+>   1 file changed, 10 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
-> index a601a9305b10..1b229099f684 100644
-> --- a/arch/arm64/include/asm/kvm_emulate.h
-> +++ b/arch/arm64/include/asm/kvm_emulate.h
-> @@ -544,6 +544,31 @@ static __always_inline void kvm_incr_pc(struct kvm_vcpu *vcpu)
->  		vcpu_set_flag((v), e);					\
->  	} while (0)
->  
-> +static inline bool kvm_pending_sync_exception(struct kvm_vcpu *vcpu)
-> +{
-> +	if (!vcpu_get_flag(vcpu, PENDING_EXCEPTION))
-> +		return false;
-> +
-> +	if (vcpu_el1_is_32bit(vcpu)) {
-> +		switch (vcpu_get_flag(vcpu, EXCEPT_MASK)) {
-> +		case unpack_vcpu_flag(EXCEPT_AA32_UND):
-> +		case unpack_vcpu_flag(EXCEPT_AA32_IABT):
-> +		case unpack_vcpu_flag(EXCEPT_AA32_DABT):
-> +			return true;
-> +		default:
-> +			return false;
-> +		}
-> +	} else {
-> +		switch (vcpu_get_flag(vcpu, EXCEPT_MASK)) {
-> +		case unpack_vcpu_flag(EXCEPT_AA64_EL1_SYNC):
-> +		case unpack_vcpu_flag(EXCEPT_AA64_EL2_SYNC):
-> +			return true;
-> +		default:
-> +			return false;
-> +		}
-> +	}
-> +}
-> +
+> diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+> index 8bbd0b20136a8..5db82bfc9dc11 100644
+> --- a/arch/arm64/net/bpf_jit_comp.c
+> +++ b/arch/arm64/net/bpf_jit_comp.c
+> @@ -2220,7 +2220,11 @@ static int prepare_trampoline(struct jit_ctx *ctx, struct bpf_tramp_image *im,
+>   	emit(A64_STR64I(A64_R(20), A64_SP, regs_off + 8), ctx);
+>   
+>   	if (flags & BPF_TRAMP_F_CALL_ORIG) {
+> -		emit_a64_mov_i64(A64_R(0), (const u64)im, ctx);
+> +		/* for the first pass, assume the worst case */
+> +		if (!ctx->image)
+> +			ctx->idx += 4;
+> +		else
+> +			emit_a64_mov_i64(A64_R(0), (const u64)im, ctx);
+>   		emit_call((const u64)__bpf_tramp_enter, ctx);
+>   	}
+>   
+> @@ -2264,7 +2268,11 @@ static int prepare_trampoline(struct jit_ctx *ctx, struct bpf_tramp_image *im,
+>   
+>   	if (flags & BPF_TRAMP_F_CALL_ORIG) {
+>   		im->ip_epilogue = ctx->ro_image + ctx->idx;
+> -		emit_a64_mov_i64(A64_R(0), (const u64)im, ctx);
+> +		/* for the first pass, assume the worst case */
+> +		if (!ctx->image)
+> +			ctx->idx += 4;
+> +		else
+> +			emit_a64_mov_i64(A64_R(0), (const u64)im, ctx);
+>   		emit_call((const u64)__bpf_tramp_exit, ctx);
+>   	}
+>
 
-Is there any advantage in adding this to an otherwise unsuspecting
-include file, given that this is only used in a single spot?
+Acked-by: Xu Kuohai <xukuohai@huawei.com>
 
->  #define __build_check_all_or_none(r, bits)				\
->  	BUILD_BUG_ON(((r) & (bits)) && ((r) & (bits)) != (bits))
->  
-> diff --git a/arch/arm64/kvm/mmio.c b/arch/arm64/kvm/mmio.c
-> index cd6b7b83e2c3..0155ba665717 100644
-> --- a/arch/arm64/kvm/mmio.c
-> +++ b/arch/arm64/kvm/mmio.c
-> @@ -84,8 +84,11 @@ int kvm_handle_mmio_return(struct kvm_vcpu *vcpu)
->  	unsigned int len;
->  	int mask;
->  
-> -	/* Detect an already handled MMIO return */
-> -	if (unlikely(!vcpu->mmio_needed))
-> +	/*
-> +	 * Detect if the MMIO return was already handled or if userspace aborted
-> +	 * the MMIO access.
-> +	 */
-> +	if (unlikely(!vcpu->mmio_needed || kvm_pending_sync_exception(vcpu)))
->  		return 1;
->  
->  	vcpu->mmio_needed = 0;
-
-Otherwise looks good to me!
-
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
 
