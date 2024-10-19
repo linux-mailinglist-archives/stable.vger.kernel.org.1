@@ -1,197 +1,329 @@
-Return-Path: <stable+bounces-86916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E477C9A4F0D
-	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 17:17:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 499829A4F13
+	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 17:21:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4EA39B2194C
-	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 15:17:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 056AE282E90
+	for <lists+stable@lfdr.de>; Sat, 19 Oct 2024 15:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BFBF47A60;
-	Sat, 19 Oct 2024 15:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E4347A60;
+	Sat, 19 Oct 2024 15:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a9VGyUSt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FM7HZo46"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27DD82770E;
-	Sat, 19 Oct 2024 15:17:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C66710E4
+	for <stable@vger.kernel.org>; Sat, 19 Oct 2024 15:21:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729351057; cv=none; b=UZ2KKvKrJPwBizE/lamkJatZOdTDH/Y9gqj21sDnSq0DhVABTI8CLj7py+HOFAIUtlVwpfk5XLH7Hx0U2qcLbr7684FiePFDcTW85LZ/wZexz1LTtnMKBxjcAoKz+JQjala48Bhb2YNHvpmMpuU+/gNXR7N3NZl26xifK8JFjNA=
+	t=1729351305; cv=none; b=qkSmZPFL3I5/Rovm6bqjBeTxYmOiOoDpu5mUpSqDgWVeWyjXqNC65XjmZDxq42peOnn3AmphQjZMRz6rS+bw0MdS4UYSGX8s3Ta5CP+fV2hjJ+rP8xvamtSvgPUhp6DdADzpSwyfHz/qqmAP2DOHpTyhLNfd74eusxKX3oTLWuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729351057; c=relaxed/simple;
-	bh=qlYxZ/mutiFyZglQTOt+FaPUID/Hkn0Wn85xFGqh1rc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uGkn2Hbj2BWjuv0LlETmMm49Re6mwZLj428bzFajnVcxnf5K3yGjj2zl8TzTuVqCjSEOcSs9hoPQOEIeZBWaFWbdUY0IzALLtN2ghFCfiqzrqljyG96L/y7w9BGRqRBJzVxEJYXauw/FWeSy5+sX0WKGLkmEa37TqQR4iGzQ56o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a9VGyUSt; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+	s=arc-20240116; t=1729351305; c=relaxed/simple;
+	bh=zzsUF0HinlkRV8KzwdO//M31rObOdgKgPlWAiT2ke/g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dE8sGWdO0ZfL1zkKxa3dxfL7PetR0/PCghAFTLyVgmNu+CVpYqN4AENAYezI3OYsM03J3Okvv8zSV/B7RpPDE56iOHD+6fLV9fWAdyfx5ra5AqsqKuckX8Y3ZVHwT+rwnKsXTVWfD8x9gkK6Sn6J2jLeGuzbQTz28q7+gmQ5Joo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FM7HZo46; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-71e67d12d04so2400580b3a.1;
-        Sat, 19 Oct 2024 08:17:34 -0700 (PDT)
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-20c693b68f5so33990425ad.1
+        for <stable@vger.kernel.org>; Sat, 19 Oct 2024 08:21:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729351054; x=1729955854; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=AaKPVphA6VOFY1TbMrOg1qFr2iQWaxZBWL1Sz95ALok=;
-        b=a9VGyUStwmOjT/CMVfZ2tBcJIkniO4vyqO2qVPyXZpFtoewlyeY2xYpb4EZh0ldxWN
-         Gx0T4ji1UGz6/zOkLmN3q9VJmMvFcdoIzORoHLIhS8qAVGpB/QJ2TNFG8LVm+/Hp7ODA
-         GM2JkmlmKKISZQGQa/ToH/mfJHdTvZgBA4OOI6a2FTOCDCQDZ7G5HrVyjsGUZM3EzxDB
-         oonA4XqkDQTjrZCZFi3GgIDq+RZQSFwtqLjRnUOK+3QLRoj7buhW3jyGp7JYdBYb15kw
-         G2B8PwzyQurHFHML79wVYIFc0L5At3NUXOk5CWlRVHW7Yl7iuhw23D03z9R5wcxAcIr2
-         PzWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729351054; x=1729955854;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1729351302; x=1729956102; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AaKPVphA6VOFY1TbMrOg1qFr2iQWaxZBWL1Sz95ALok=;
-        b=KE8ebs5iZSUx7COpwfxMz5NlN8vRTGdaRk9l8giIuZCKjbkk7fHErxMuJhFLeIou38
-         0L8vDa7nd23+9x7wsZcx9EsI3ddPNL9RerLKop1fkHz3m7kosk2+S8CIuHKRzAklNetR
-         9qX08hOEJXWBhH2/jZaL3u1VxnzqHMNOTcKZp19KJGEXb9IgbPlQURVZP1WMD4yynh4P
-         qH8mYj9/UPdFvbB9R01IREOpeNBE0YQD7+svU9IGPcGKFAoP/Ul3bu3CpO4sq23Z99DL
-         LSaONonduI8loUXcw61JACIop5jas8dHnyh8SZIU1YhlrX/BXbLsn9GM1lnVZtxNDseb
-         5skw==
-X-Forwarded-Encrypted: i=1; AJvYcCWML40eHK+QTo2vWf8ld1Xp/9IirFknwWMYsZRGeEBlQKLxMzn5DNpTreIASZXEljktpPChYPIPEphWYcE=@vger.kernel.org, AJvYcCXHSLyGQvJJvMW0Srcvv6JPkwdcpBOH/FJPa6O+AIL1Pw/Sloq78tiRTUKf5XRVRdLz/IDS6qNr@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJYogT7aOspdjoKhK2yQxQqr17L8IAjNNMBSRfIa3+yb5LEiGc
-	B9ev1z/tOYePK8Yrklg/vdk+88gDXZ7hRivAVkpLGTJcDsij2Z/Z
-X-Google-Smtp-Source: AGHT+IGVmd48wCb4OfOnkBW4/lrP8cPYon+iJQwsqlHmHRPSx7svPiI5fzsxZphXuazsL46X/CdWFA==
-X-Received: by 2002:a05:6a00:1913:b0:71e:4c01:b3da with SMTP id d2e1a72fcca58-71ea31d28dfmr8098510b3a.5.1729351054222;
-        Sat, 19 Oct 2024 08:17:34 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7eacc2a5c9esm2992255a12.94.2024.10.19.08.17.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 19 Oct 2024 08:17:33 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <f035e6ef-32e1-45a2-962e-dc27fa54271b@roeck-us.net>
-Date: Sat, 19 Oct 2024 08:17:31 -0700
+        bh=KcdT0IB2H+nZj2bYUoxe8he2CAv8okyz2p4Zs9Y203w=;
+        b=FM7HZo46FwhlC1IxoqymfGEVkGPnzSUJ9f4xslY81BiAo9RwbaW6SDgi/sGwmzcvVv
+         /FXe4avqgHD40XmMd5hAE0H71Y9KRgELHVOx0Mq88j8zDAMgU5B4mnmNr9UukEu1lEd4
+         BwvMV9OUEmhB0uUw2qqCKdwfgKt8oY1H+zrefCxd0MZr0vuM28ieveBRhvftoydlEYo+
+         oDSvj1paqLAVxxh0VMYXP1DiYv/G6yNrVCCgYBIHmqvBr2JpPBcQlYUakQnY46j4Dx80
+         FBl07JtKioEXOZBKf7+XcYKYv3EqlA7AIxKDvhjpg5JyjSEiV6jgekshpDzM5t50vdHf
+         nQBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729351302; x=1729956102;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KcdT0IB2H+nZj2bYUoxe8he2CAv8okyz2p4Zs9Y203w=;
+        b=qlbgrunacWmb/BQAd7RrtIUO/3x7jC+U/Mxxnb0luFhz0+ZG8tcW/ZIuZfiKBh0xc5
+         46Lx20pDZeYRUvzTs+56aE6MkPSPKGDwLxk7l76v0mpgF1EAeRqVOwmt3RkWvfn0/wME
+         iF4YkQ+/1WbDfBYTr2qlpjyxRTj7zQ+tLpaw5L4xscX5X2nv0ohchjBVJJYWbWyEyCGt
+         6XxXei036yzIS6ZfmtDh+UgPeLfLMjLOP7CYiKCOwAUmaet//xd1og/Wa/AizT4ovdBN
+         5MpJos8/8O0uT/N6IIQ7aGFMIeHbvmKV41mv0Eosw8hFCVAZ4zAfXpislcWbZiAjniDA
+         q+aw==
+X-Gm-Message-State: AOJu0YzKAbWBg87NDn3Pb+yuxyUZlxezYlMaCq6SjcWfyMNO3LZzk0rL
+	CrJp5505YY/jgpxEa/waZ38U1o6yb0CtSr4DY9oU2Gv4+7djn+9/V31JeQ==
+X-Google-Smtp-Source: AGHT+IFOg59QW3w36T1RTgXXUZVm5WEQMmqtMz4/1gIGNRjwmUH3JcKMmeAGauyykZF1/OcyMAxSkg==
+X-Received: by 2002:a17:903:2447:b0:20c:ee48:94f3 with SMTP id d9443c01a7336-20e5a73e706mr76961955ad.14.1729351301660;
+        Sat, 19 Oct 2024 08:21:41 -0700 (PDT)
+Received: from carrot.. (i118-19-49-33.s41.a014.ap.plala.or.jp. [118.19.49.33])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20e5a8f1b45sm28816825ad.206.2024.10.19.08.21.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Oct 2024 08:21:40 -0700 (PDT)
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Lizhi Xu <lizhi.xu@windriver.com>
+Subject: [PATCH 4.19 5.4 5.10] nilfs2: propagate directory read errors from nilfs_find_entry()
+Date: Sun, 20 Oct 2024 00:21:15 +0900
+Message-ID: <20241019152136.5829-1-konishi.ryusuke@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2024101853-recall-payee-2d9d@gregkh>
+References: <2024101853-recall-payee-2d9d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/791] 6.1.113-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org, shuah@kernel.org,
- patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
- jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
- srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
- allen.lkml@gmail.com, broonie@kernel.org
-References: <20241015112501.498328041@linuxfoundation.org>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
- RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
- nyFiKxUehbNF3r9qlJgPqONwX5vJy4/GvDHdddSCxV41P/ejsZ8PykxyJs98UWhF54tGRWFl
- 7i1xvaDB9lN5WTLRKSO7wICuLiSz5WZHXMkyF4d+/O5ll7yz/o/JxK5vO/sduYDIlFTvBZDh
- gzaEtNf5tQjsjG4io8E0Yq0ViobLkS2RTNZT8ICq/Jmvl0SpbHRvYwa2DhNsK0YjHFQBB0FX
- IdhdUEzNefcNcYvqigJpdICoP2e4yJSyflHFO4dr0OrdnGLe1Zi/8Xo/2+M1dSSEt196rXaC
- kwu2KgIgmkRBb3cp2vIBBIIowU8W3qC1+w+RdMUrZxKGWJ3juwcgveJlzMpMZNyM1jobSXZ0
- VHGMNJ3MwXlrEFPXaYJgibcg6brM6wGfX/LBvc/haWw4yO24lT5eitm4UBdIy9pKkKmHHh7s
- jfZJkB5fWKVdoCv/omy6UyH6ykLOPFugl+hVL2Prf8xrXuZe1CMS7ID9Lc8FaL1ROIN/W8Vk
- BIsJMaWOhks//7d92Uf3EArDlDShwR2+D+AMon8NULuLBHiEUQARAQABzTJHdWVudGVyIFJv
- ZWNrIChMaW51eCBhY2NvdW50KSA8bGludXhAcm9lY2stdXMubmV0PsLBgQQTAQIAKwIbAwYL
- CQgHAwIGFQgCCQoLBBYCAwECHgECF4ACGQEFAlVcphcFCRmg06EACgkQyx8mb86fmYFg0RAA
- nzXJzuPkLJaOmSIzPAqqnutACchT/meCOgMEpS5oLf6xn5ySZkl23OxuhpMZTVX+49c9pvBx
- hpvl5bCWFu5qC1jC2eWRYU+aZZE4sxMaAGeWenQJsiG9lP8wkfCJP3ockNu0ZXXAXwIbY1O1
- c+l11zQkZw89zNgWgKobKzrDMBFOYtAh0pAInZ9TSn7oA4Ctejouo5wUugmk8MrDtUVXmEA9
- 7f9fgKYSwl/H7dfKKsS1bDOpyJlqhEAH94BHJdK/b1tzwJCFAXFhMlmlbYEk8kWjcxQgDWMu
- GAthQzSuAyhqyZwFcOlMCNbAcTSQawSo3B9yM9mHJne5RrAbVz4TWLnEaX8gA5xK3uCNCeyI
- sqYuzA4OzcMwnnTASvzsGZoYHTFP3DQwf2nzxD6yBGCfwNGIYfS0i8YN8XcBgEcDFMWpOQhT
- Pu3HeztMnF3HXrc0t7e5rDW9zCh3k2PA6D2NV4fews9KDFhLlTfCVzf0PS1dRVVWM+4jVl6l
- HRIAgWp+2/f8dx5vPc4Ycp4IsZN0l1h9uT7qm1KTwz+sSl1zOqKD/BpfGNZfLRRxrXthvvY8
- BltcuZ4+PGFTcRkMytUbMDFMF9Cjd2W9dXD35PEtvj8wnEyzIos8bbgtLrGTv/SYhmPpahJA
- l8hPhYvmAvpOmusUUyB30StsHIU2LLccUPPOwU0ETofVZwEQALlLbQeBDTDbwQYrj0gbx3bq
- 7kpKABxN2MqeuqGr02DpS9883d/t7ontxasXoEz2GTioevvRmllJlPQERVxM8gQoNg22twF7
- pB/zsrIjxkE9heE4wYfN1AyzT+AxgYN6f8hVQ7Nrc9XgZZe+8IkuW/Nf64KzNJXnSH4u6nJM
- J2+Dt274YoFcXR1nG76Q259mKwzbCukKbd6piL+VsT/qBrLhZe9Ivbjq5WMdkQKnP7gYKCAi
- pNVJC4enWfivZsYupMd9qn7Uv/oCZDYoBTdMSBUblaLMwlcjnPpOYK5rfHvC4opxl+P/Vzyz
- 6WC2TLkPtKvYvXmdsI6rnEI4Uucg0Au/Ulg7aqqKhzGPIbVaL+U0Wk82nz6hz+WP2ggTrY1w
- ZlPlRt8WM9w6WfLf2j+PuGklj37m+KvaOEfLsF1v464dSpy1tQVHhhp8LFTxh/6RWkRIR2uF
- I4v3Xu/k5D0LhaZHpQ4C+xKsQxpTGuYh2tnRaRL14YMW1dlI3HfeB2gj7Yc8XdHh9vkpPyuT
- nY/ZsFbnvBtiw7GchKKri2gDhRb2QNNDyBnQn5mRFw7CyuFclAksOdV/sdpQnYlYcRQWOUGY
- HhQ5eqTRZjm9z+qQe/T0HQpmiPTqQcIaG/edgKVTUjITfA7AJMKLQHgp04Vylb+G6jocnQQX
- JqvvP09whbqrABEBAAHCwWUEGAECAA8CGwwFAlVcpi8FCRmg08MACgkQyx8mb86fmYHNRQ/+
- J0OZsBYP4leJvQF8lx9zif+v4ZY/6C9tTcUv/KNAE5leyrD4IKbnV4PnbrVhjq861it/zRQW
- cFpWQszZyWRwNPWUUz7ejmm9lAwPbr8xWT4qMSA43VKQ7ZCeTQJ4TC8kjqtcbw41SjkjrcTG
- wF52zFO4bOWyovVAPncvV9eGA/vtnd3xEZXQiSt91kBSqK28yjxAqK/c3G6i7IX2rg6pzgqh
- hiH3/1qM2M/LSuqAv0Rwrt/k+pZXE+B4Ud42hwmMr0TfhNxG+X7YKvjKC+SjPjqp0CaztQ0H
- nsDLSLElVROxCd9m8CAUuHplgmR3seYCOrT4jriMFBtKNPtj2EE4DNV4s7k0Zy+6iRQ8G8ng
- QjsSqYJx8iAR8JRB7Gm2rQOMv8lSRdjva++GT0VLXtHULdlzg8VjDnFZ3lfz5PWEOeIMk7Rj
- trjv82EZtrhLuLjHRCaG50OOm0hwPSk1J64R8O3HjSLdertmw7eyAYOo4RuWJguYMg5DRnBk
- WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
- HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20241015112501.498328041@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/15/24 04:26, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.113 release.
-> There are 791 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 17 Oct 2024 11:22:41 +0000.
-> Anything received after that time might be too late.
-> 
-...
+commit 08cfa12adf888db98879dbd735bc741360a34168 upstream.
 
-> Nicholas Piggin <npiggin@gmail.com>
->      powerpc/64: Option to build big-endian with ELFv2 ABI
-> 
+Syzbot reported that a task hang occurs in vcs_open() during a fuzzing
+test for nilfs2.
 
-With this patch in the tree, trying to build ppc:allmodconfig
-with gcc version 13.3 and binutils version 2.42 results in:
+The root cause of this problem is that in nilfs_find_entry(), which
+searches for directory entries, ignores errors when loading a directory
+page/folio via nilfs_get_folio() fails.
 
-Error log:
-/tmp/cccUl45i.s: Assembler messages:
-/tmp/cccUl45i.s: Error: .size expression for gcm_init_p8 does not evaluate to a constant
+If the filesystem images is corrupted, and the i_size of the directory
+inode is large, and the directory page/folio is successfully read but
+fails the sanity check, for example when it is zero-filled,
+nilfs_check_folio() may continue to spit out error messages in bursts.
 
-and many other similar messages. The problem affects various drivers in
-drivers/crypto/vmx/. The problem afects all configurations with CRYPTO_DEV_VMX_ENCRYPT
-enabled.
+Fix this issue by propagating the error to the callers when loading a
+page/folio fails in nilfs_find_entry().
 
-Reverting the patch doesn't work because this patch is part of a larger series. However,
-I found that applying upstream commit 505ea33089dc ("powerpc/64: Add big-endian ELFv2
-flavour to crypto VMX asm generation") fixes the problem.
+The current interface of nilfs_find_entry() and its callers is outdated
+and cannot propagate error codes such as -EIO and -ENOMEM returned via
+nilfs_find_entry(), so fix it together.
 
-Guenter
-
+Link: https://lkml.kernel.org/r/20241004033640.6841-1-konishi.ryusuke@gmail.com
+Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: Lizhi Xu <lizhi.xu@windriver.com>
+Closes: https://lkml.kernel.org/r/20240927013806.3577931-1-lizhi.xu@windriver.com
+Reported-by: syzbot+8a192e8d090fa9a31135@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=8a192e8d090fa9a31135
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
-# bad: [54d90d17e8cee20b163d395829162cec92b583f4] Linux 6.1.113
-# good: [aa4cd140bba57b7064b4c7a7141bebd336d32087] Linux 6.1.112
-git bisect start 'HEAD' 'v6.1.112'
-# bad: [2bf4c101d7c99483b8b15a0c8f881e3f399f7e18] net: ethernet: lantiq_etop: fix memory disclosure
-git bisect bad 2bf4c101d7c99483b8b15a0c8f881e3f399f7e18
-# good: [f88f1145e134fe1da3966d86adb5d813ce2d7c1a] PCI/PM: Increase wait time after resume
-git bisect good f88f1145e134fe1da3966d86adb5d813ce2d7c1a
-# good: [12aea49495d99bebf185275e7ff33deee4d849a9] fs: Create a generic is_dot_dotdot() utility
-git bisect good 12aea49495d99bebf185275e7ff33deee4d849a9
-# bad: [f8a29300150e2b18405ff62cc4ed1554bc9c431d] usb: yurex: Replace snprintf() with the safer scnprintf() variant
-git bisect bad f8a29300150e2b18405ff62cc4ed1554bc9c431d
-# good: [5410d1529047dd32039a2796ea9bd955c6f38b1d] ACPI: resource: Add another DMI match for the TongFang GMxXGxx
-git bisect good 5410d1529047dd32039a2796ea9bd955c6f38b1d
-# good: [85868884298a81078f5be51be75ad46c14c6e831] hwrng: cctrng - Add missing clk_disable_unprepare in cctrng_resume
-git bisect good 85868884298a81078f5be51be75ad46c14c6e831
-# good: [41fbdd452460341399757b4db3cd12a67951fb83] EDAC/igen6: Fix conversion of system address to physical memory address
-git bisect good 41fbdd452460341399757b4db3cd12a67951fb83
-# good: [b986ec200f9fb5c4d863d789e28f45cd2f253656] soc: versatile: realview: fix soc_dev leak during device remove
-git bisect good b986ec200f9fb5c4d863d789e28f45cd2f253656
-# bad: [9eb76d5168c10a46647df5514acc863039a44885] powerpc/64: Add support to build with prefixed instructions
-git bisect bad 9eb76d5168c10a46647df5514acc863039a44885
-# bad: [8b9f7d8d71bf9b91ad4cb1ff589d7cdf4bc0673a] powerpc/64: Option to build big-endian with ELFv2 ABI
-git bisect bad 8b9f7d8d71bf9b91ad4cb1ff589d7cdf4bc0673a
-# first bad commit: [8b9f7d8d71bf9b91ad4cb1ff589d7cdf4bc0673a] powerpc/64: Option to build big-endian with ELFv2 ABI
+Please apply this patch to the stable trees indicated by the subject
+prefix instead of the failed patches.
+
+This patch is tailored to take page/folio conversion into account and
+avoid a few conflicts.  Compiled and tested successfully.
+
+Thanks,
+Ryusuke Konishi
+
+ fs/nilfs2/dir.c   | 50 +++++++++++++++++++++++++----------------------
+ fs/nilfs2/namei.c | 39 ++++++++++++++++++++++++------------
+ fs/nilfs2/nilfs.h |  2 +-
+ 3 files changed, 54 insertions(+), 37 deletions(-)
+
+diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
+index 5c0e280c83ee..365cae5c3e35 100644
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -331,6 +331,8 @@ static int nilfs_readdir(struct file *file, struct dir_context *ctx)
+  * returns the page in which the entry was found, and the entry itself
+  * (as a parameter - res_dir). Page is returned mapped and unlocked.
+  * Entry is guaranteed to be valid.
++ *
++ * On failure, returns an error pointer and the caller should ignore res_page.
+  */
+ struct nilfs_dir_entry *
+ nilfs_find_entry(struct inode *dir, const struct qstr *qstr,
+@@ -358,22 +360,24 @@ nilfs_find_entry(struct inode *dir, const struct qstr *qstr,
+ 	do {
+ 		char *kaddr = nilfs_get_page(dir, n, &page);
+ 
+-		if (!IS_ERR(kaddr)) {
+-			de = (struct nilfs_dir_entry *)kaddr;
+-			kaddr += nilfs_last_byte(dir, n) - reclen;
+-			while ((char *) de <= kaddr) {
+-				if (de->rec_len == 0) {
+-					nilfs_error(dir->i_sb,
+-						"zero-length directory entry");
+-					nilfs_put_page(page);
+-					goto out;
+-				}
+-				if (nilfs_match(namelen, name, de))
+-					goto found;
+-				de = nilfs_next_entry(de);
++		if (IS_ERR(kaddr))
++			return ERR_CAST(kaddr);
++
++		de = (struct nilfs_dir_entry *)kaddr;
++		kaddr += nilfs_last_byte(dir, n) - reclen;
++		while ((char *)de <= kaddr) {
++			if (de->rec_len == 0) {
++				nilfs_error(dir->i_sb,
++					    "zero-length directory entry");
++				nilfs_put_page(page);
++				goto out;
+ 			}
+-			nilfs_put_page(page);
++			if (nilfs_match(namelen, name, de))
++				goto found;
++			de = nilfs_next_entry(de);
+ 		}
++		nilfs_put_page(page);
++
+ 		if (++n >= npages)
+ 			n = 0;
+ 		/* next page is past the blocks we've got */
+@@ -386,7 +390,7 @@ nilfs_find_entry(struct inode *dir, const struct qstr *qstr,
+ 		}
+ 	} while (n != start);
+ out:
+-	return NULL;
++	return ERR_PTR(-ENOENT);
+ 
+ found:
+ 	*res_page = page;
+@@ -431,19 +435,19 @@ struct nilfs_dir_entry *nilfs_dotdot(struct inode *dir, struct page **p)
+ 	return NULL;
+ }
+ 
+-ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
++int nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr, ino_t *ino)
+ {
+-	ino_t res = 0;
+ 	struct nilfs_dir_entry *de;
+ 	struct page *page;
+ 
+ 	de = nilfs_find_entry(dir, qstr, &page);
+-	if (de) {
+-		res = le64_to_cpu(de->inode);
+-		kunmap(page);
+-		put_page(page);
+-	}
+-	return res;
++	if (IS_ERR(de))
++		return PTR_ERR(de);
++
++	*ino = le64_to_cpu(de->inode);
++	kunmap(page);
++	put_page(page);
++	return 0;
+ }
+ 
+ /* Releases the page */
+diff --git a/fs/nilfs2/namei.c b/fs/nilfs2/namei.c
+index a6ec7961d4f5..08c6d985edeb 100644
+--- a/fs/nilfs2/namei.c
++++ b/fs/nilfs2/namei.c
+@@ -55,12 +55,20 @@ nilfs_lookup(struct inode *dir, struct dentry *dentry, unsigned int flags)
+ {
+ 	struct inode *inode;
+ 	ino_t ino;
++	int res;
+ 
+ 	if (dentry->d_name.len > NILFS_NAME_LEN)
+ 		return ERR_PTR(-ENAMETOOLONG);
+ 
+-	ino = nilfs_inode_by_name(dir, &dentry->d_name);
+-	inode = ino ? nilfs_iget(dir->i_sb, NILFS_I(dir)->i_root, ino) : NULL;
++	res = nilfs_inode_by_name(dir, &dentry->d_name, &ino);
++	if (res) {
++		if (res != -ENOENT)
++			return ERR_PTR(res);
++		inode = NULL;
++	} else {
++		inode = nilfs_iget(dir->i_sb, NILFS_I(dir)->i_root, ino);
++	}
++
+ 	return d_splice_alias(inode, dentry);
+ }
+ 
+@@ -261,10 +269,11 @@ static int nilfs_do_unlink(struct inode *dir, struct dentry *dentry)
+ 	struct page *page;
+ 	int err;
+ 
+-	err = -ENOENT;
+ 	de = nilfs_find_entry(dir, &dentry->d_name, &page);
+-	if (!de)
++	if (IS_ERR(de)) {
++		err = PTR_ERR(de);
+ 		goto out;
++	}
+ 
+ 	inode = d_inode(dentry);
+ 	err = -EIO;
+@@ -358,10 +367,11 @@ static int nilfs_rename(struct inode *old_dir, struct dentry *old_dentry,
+ 	if (unlikely(err))
+ 		return err;
+ 
+-	err = -ENOENT;
+ 	old_de = nilfs_find_entry(old_dir, &old_dentry->d_name, &old_page);
+-	if (!old_de)
++	if (IS_ERR(old_de)) {
++		err = PTR_ERR(old_de);
+ 		goto out;
++	}
+ 
+ 	if (S_ISDIR(old_inode->i_mode)) {
+ 		err = -EIO;
+@@ -378,10 +388,12 @@ static int nilfs_rename(struct inode *old_dir, struct dentry *old_dentry,
+ 		if (dir_de && !nilfs_empty_dir(new_inode))
+ 			goto out_dir;
+ 
+-		err = -ENOENT;
+-		new_de = nilfs_find_entry(new_dir, &new_dentry->d_name, &new_page);
+-		if (!new_de)
++		new_de = nilfs_find_entry(new_dir, &new_dentry->d_name,
++					  &new_page);
++		if (IS_ERR(new_de)) {
++			err = PTR_ERR(new_de);
+ 			goto out_dir;
++		}
+ 		nilfs_set_link(new_dir, new_de, new_page, old_inode);
+ 		nilfs_mark_inode_dirty(new_dir);
+ 		new_inode->i_ctime = current_time(new_inode);
+@@ -435,14 +447,15 @@ static int nilfs_rename(struct inode *old_dir, struct dentry *old_dentry,
+  */
+ static struct dentry *nilfs_get_parent(struct dentry *child)
+ {
+-	unsigned long ino;
++	ino_t ino;
++	int res;
+ 	struct inode *inode;
+ 	struct qstr dotdot = QSTR_INIT("..", 2);
+ 	struct nilfs_root *root;
+ 
+-	ino = nilfs_inode_by_name(d_inode(child), &dotdot);
+-	if (!ino)
+-		return ERR_PTR(-ENOENT);
++	res = nilfs_inode_by_name(d_inode(child), &dotdot, &ino);
++	if (res)
++		return ERR_PTR(res);
+ 
+ 	root = NILFS_I(d_inode(child))->i_root;
+ 
+diff --git a/fs/nilfs2/nilfs.h b/fs/nilfs2/nilfs.h
+index 3f3971e0292d..e1b230a5011a 100644
+--- a/fs/nilfs2/nilfs.h
++++ b/fs/nilfs2/nilfs.h
+@@ -233,7 +233,7 @@ static inline __u32 nilfs_mask_flags(umode_t mode, __u32 flags)
+ 
+ /* dir.c */
+ extern int nilfs_add_link(struct dentry *, struct inode *);
+-extern ino_t nilfs_inode_by_name(struct inode *, const struct qstr *);
++int nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr, ino_t *ino);
+ extern int nilfs_make_empty(struct inode *, struct inode *);
+ extern struct nilfs_dir_entry *
+ nilfs_find_entry(struct inode *, const struct qstr *, struct page **);
+-- 
+2.43.5
 
 
