@@ -1,119 +1,81 @@
-Return-Path: <stable+bounces-86966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 469B29A5409
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 14:41:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C23C9A5414
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 14:51:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECA801F22351
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 12:41:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06EBA1F2233D
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 12:51:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670BA1922CC;
-	Sun, 20 Oct 2024 12:41:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rskqu2BG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31E81192599;
+	Sun, 20 Oct 2024 12:50:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [213.95.27.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A32C82866;
-	Sun, 20 Oct 2024 12:41:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422F8EAF1;
+	Sun, 20 Oct 2024 12:50:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.27.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729428069; cv=none; b=f5iMalkB8NYBmWspoPC7GzgvAsPPBCNktSpO/dOkgn4CUWdghsr34oWchCA56TVN47jgaqcIhU5MN6547nAJXNX0uINMz8c86yytSUsr4Lu3BJrpm7xFFt+uSXXqpyo1VpBB4cDuTwMn+8aurq7aHXH1pDcQcXa952IqdeV2fUY=
+	t=1729428654; cv=none; b=IGC25THb1Tc31xoPIMU+zxT4cUZOXiFhPut5UWT0uLJwwbguBclL08qQ2Vggblqjt3QyW5BfI746OxHcN+drIJ6vVQE3qpQdWp9L9yNSQ4ShHK5UugzO6ZyI6H2srw6WEZVNrLh1JzgVEldsdYIEsJ8yrBMkftzKmcCIJHbU7gQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729428069; c=relaxed/simple;
-	bh=Baade9IKPollAouHiEUvWPoWWKIQzZxCSNVwIWgogSg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t/g+CIw44FQ+yQinWVmxRqsKh0SaQiktKi80EhslNPJTAlAM2P3DGO8g1wiR89VpXWpVIwMsDFU+rX9aucli504Dt/iaLTnxYYjuPpv4CEw8BygGt9KDbfFY59XqToQa5LinrzdNcryUjqBoMzH0KAS7rAc6OUlPvDW78/gzMFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rskqu2BG; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4315e9e9642so27304975e9.0;
-        Sun, 20 Oct 2024 05:41:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729428065; x=1730032865; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TOiYzcydyONfO3p9U5vZxO4Orz89dL+ERRC773edJCg=;
-        b=Rskqu2BGcLEv+9Iri4d0ajEQzm3NvsZQLbkU3x673uWlc+5nqcGxrDX6ilxYx2WRCD
-         duz1dP+jPvp7cqhMBepz88buBgPIM///C64GPw/TnAlC+HtLERcqn9ZPSvc2azz95lPG
-         4fpTwA66zRnw0IYsApq9cpZCi55VSFxWtbpPVpc1bd8lShfPc8uRske+EyEpHg0CsPZY
-         xtZJDP1r2RpVxTx5X+3ebnzR5aOOKfcYfEL6FELsYkw0JQtCLCChJGEs2ea8w1UtKNJV
-         B6SbxlUINozMtHAWlJsp292p28KG0INgepd+Wa2BZJXWsNBihqP0D//GyhhWdWf8ZsLM
-         H06g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729428065; x=1730032865;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TOiYzcydyONfO3p9U5vZxO4Orz89dL+ERRC773edJCg=;
-        b=nMLMEV+D24pE9ixLPds+vjeUm0B7A1we2O/x0ems9wBvnEuY9+ZPIqIB1GoWUeF3rW
-         ufVdtVM7S4Dq5hCEEWMfqZ46329ICZN8HnLvlxW3gVGhjy3YhBKISyXL+jZX0YTmy+DS
-         qHr5mIyt1a4iNLL2+7xtuiIvRlExQ6Jes3Ra+i6muv6R/eyvpXcFCsxAcBjRzVQlGMbz
-         DgUbpdsE/iINq0FVSuqBHzR6wwqBaARg6FqXnIL3XL+Z0oFf/aOTf5rN95p/kPID3oEA
-         M2APby63BEAEIsnAj6rGl9RpCs2wbAR9qE9UTfGOB7AaJibvyWIMmNlW2ipGlx5dzBg8
-         fD1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVhkkufeyL1sCv34A197trN9u4HMHasi4J3nLl8F9IKuI9bd6FEJz+iF/sq/MXxWMM3m7i5pe57BwVB3cmQ@vger.kernel.org, AJvYcCWEr69P0XFRC884KvuYiNlYlq/scGUpcdDRKkWurUHWJTK5QJFYk+tNFEp5s7Ge/TKW1J0ZIUDKcQZB@vger.kernel.org, AJvYcCWawxZwcXwkRvZgqFfJkQbWNTK6knFQucndk4OYiGddPYhTYr6Tp8AzevWuK4zeeEEbinlvMgwb66mjrF6L@vger.kernel.org, AJvYcCXsZDYr0Jp4V5u84tSKILt8pVOAWjd1P82ah1OHKKckKHHfPM0Z4ExlrXn/0EP5A2lXZjMIDL3D@vger.kernel.org
-X-Gm-Message-State: AOJu0YwfrrBTv7ixNhTf4f8R5/EQ3kW7h6nCsJmmYhai8wNyVdCQmjcW
-	S7pqJ+Gr4DLud7rQ/qrKM5mcBfuAYg7eMjVMvXMuakGZjWPSjCgw
-X-Google-Smtp-Source: AGHT+IEB2QSrzuka0jaj1gBdAqECmptGTd+307mQ5Q9pRfa1hiWkZsRT7Z1FpumQNgTVmo2czr5AHA==
-X-Received: by 2002:adf:f092:0:b0:37d:395a:bb7 with SMTP id ffacd0b85a97d-37ea21c75d8mr5397334f8f.31.1729428065071;
-        Sun, 20 Oct 2024 05:41:05 -0700 (PDT)
-Received: from ?IPV6:2a02:8389:41cf:e200:5fe4:91f7:fa4f:9c21? (2a02-8389-41cf-e200-5fe4-91f7-fa4f-9c21.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:5fe4:91f7:fa4f:9c21])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4316f57fbb5sm22505435e9.17.2024.10.20.05.41.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 20 Oct 2024 05:41:04 -0700 (PDT)
-Message-ID: <5355d837-4777-40cf-8a9a-08c9509d3fc5@gmail.com>
-Date: Sun, 20 Oct 2024 14:41:02 +0200
+	s=arc-20240116; t=1729428654; c=relaxed/simple;
+	bh=5NoiOWSGjB70ADUGlkznvbky5DNSmBZn+X2aeN9vnpk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TMS+ijURT5zg/VagneZ0a5IX2mLCNTz0nBHE+ZpcrnhmBMCsmwca1sFqGtEuq6f1YrvUxQNUUvC5W4HKxXDtzaODExOKPti3A/357KpTv+g3oLT0p8t6HYkTjUET2LgghQFhdDjqR50xdHcOvb6xYXMy6SQFr1x4qHLRzFbiXhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=gnumonks.org; arc=none smtp.client-ip=213.95.27.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gnumonks.org
+Received: from [78.30.37.63] (port=46920 helo=gnumonks.org)
+	by ganesha.gnumonks.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <pablo@gnumonks.org>)
+	id 1t2VOO-006uEz-8s; Sun, 20 Oct 2024 14:50:46 +0200
+Date: Sun, 20 Oct 2024 14:50:43 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Ilya Katsnelson <me@0upti.me>
+Cc: Jozsef Kadlecsik <kadlec@netfilter.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Florian Westphal <fw@strlen.de>, Sasha Levin <sashal@kernel.org>,
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	ignat@cloudflare.com, stable@vger.kernel.org,
+	Phil Sutter <phil@nwl.cc>
+Subject: Re: [PATCH v3] netfilter: xtables: fix a bunch of typos causing some
+ targets to not load on IPv6
+Message-ID: <ZxT8ow0auDTe-TDA@calendula>
+References: <20241019-xtables-typos-v3-1-66dd2eaacf2f@0upti.me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] usb: typec: qcom-pmic-typec: fix missing fwnode removal
- in error path
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20241019-qcom_pmic_typec-fwnode_remove-v1-1-884968902979@gmail.com>
- <nsmpyy736kfdn5h727bfgfd6lufecyi5kz6kfiyzndgz3xiei5@7uzrrve4q3fb>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <nsmpyy736kfdn5h727bfgfd6lufecyi5kz6kfiyzndgz3xiei5@7uzrrve4q3fb>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241019-xtables-typos-v3-1-66dd2eaacf2f@0upti.me>
+X-Spam-Score: -1.9 (-)
 
-On 20/10/2024 12:40, Dmitry Baryshkov wrote:
-> On Sat, Oct 19, 2024 at 11:10:51PM +0200, Javier Carrasco wrote:
->> If drm_dp_hpd_bridge_register() fails, the probe function returns
->> without removing the fwnode via fwnode_remove_software_node(), leaking
->> the resource.
->>
->> Jump to fwnode_remove if drm_dp_hpd_bridge_register() fails to remove
->> the software node acquired with device_get_named_child_node().
-> 
-> I think the fwnode_remove_software_node() is not a proper cleanup
-> function here (and was most likely c&p from some other driver). See the
-> comment in front of device_get_named_child_node().
-> 
-> Please add another patch before this one, replacing
-> fwnode_remove_software_node() with fwnode_handle_put().
-> 
+On Sat, Oct 19, 2024 at 09:18:38PM +0300, Ilya Katsnelson wrote:
+> diff --git a/net/netfilter/xt_TRACE.c b/net/netfilter/xt_TRACE.c
+> index f3fa4f11348cd8ad796ce94f012cd48aa7a9020f..2a029b4adbcadf95e493b153f613a210624a9101 100644
+> --- a/net/netfilter/xt_TRACE.c
+> +++ b/net/netfilter/xt_TRACE.c
+> @@ -49,6 +49,7 @@ static struct xt_target trace_tg_reg[] __read_mostly = {
+>  		.target		= trace_tg,
+>  		.checkentry	= trace_tg_check,
+>  		.destroy	= trace_tg_destroy,
+> +		.me         = THIS_MODULE,
 
-That is right, it was probably copied from a driver that called
-fwnode_create_software_node() to initialize the fwnode. I will replace
-it in the probe function as well as in qcom_pmic_typec_remove(), where
-the fwnode is again released via fwnode_remove_software_node().
+indentation is not correct.
+>  	},
+>  #endif
+>  };
 
-Thanks and best regards,
-Javier Carrasco
+https://patchwork.ozlabs.org/project/netfilter-devel/patch/20241020124951.180350-1-pablo@netfilter.org/
 
