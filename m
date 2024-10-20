@@ -1,129 +1,117 @@
-Return-Path: <stable+bounces-86961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB209A5356
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 11:34:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0C279A5365
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 11:57:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CC2C1F21DB1
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 09:34:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84C0D283099
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 09:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5580A14B970;
-	Sun, 20 Oct 2024 09:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2645B84A4E;
+	Sun, 20 Oct 2024 09:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpDo60F+"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="ksgRFxqm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pv50p00im-ztdg10011901.me.com (pv50p00im-ztdg10011901.me.com [17.58.6.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E33285270
-	for <stable@vger.kernel.org>; Sun, 20 Oct 2024 09:34:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C9379F6
+	for <stable@vger.kernel.org>; Sun, 20 Oct 2024 09:57:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729416871; cv=none; b=LEy9O36otpfrKanotswEy+QjgNTtezSXb6dkrq7lq/KAcTNGbigFPwjTKDGFDtymsr1gxlIOAGxH/pID5oZ/TUbUl/OesydkVTxlJ57qGG/Lvj+1uBNT3lePpJa0IEMlh9Kss7a+4eVOr6ckLRaxGEvuW+ITbM/APPYX0/XnCTI=
+	t=1729418250; cv=none; b=T1IlWJrfuD1iCcqPB41uwlg9HT6z2fy3m3bd4gELUVrRE2Kut3DUJPU9evY3BmkZVh42ZElgn3wPzse6v57eOkX6A88M6bkzgXML9aTHDMOFzcRaKsq/uTtSo/BGdCwLl0JXxuQm9GfDffWa0jL1r0VdrYTFClSP9UVUS55k814=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729416871; c=relaxed/simple;
-	bh=xkLrp1kJESLeJmKtVDLLle+fDobg7CGd4z/2FD6zz6c=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=T4T4hZMjfzeohAVCM8JvkuOwjk6aTj7qIlhfirNBRy5FUyGozZjt1SxYv5VavzZSk9A0D+WqO9CLXyJN6M/3iaftClh8Tr02yCLVWbj9S+kzV306PjdtjILk17o1PmvvaurP6q2ENiRs/5v1jR0Lttgr29FmbRK2mJuAzMOOz0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpDo60F+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DCCDC4CEC6;
-	Sun, 20 Oct 2024 09:34:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729416870;
-	bh=xkLrp1kJESLeJmKtVDLLle+fDobg7CGd4z/2FD6zz6c=;
-	h=Subject:To:Cc:From:Date:From;
-	b=cpDo60F+T4QCGZfkUEBuFtoFPhUtMXe6jLqVDYRRQ9c2U/vxB/FBA+f2cdog0G/B/
-	 SLiV3x5tkXNgk2ZZviXcG5w868xE1A8Qxf0PHBc63SWkgvrB2V5zus6m4ywLcm3bdY
-	 BXdFKYDqGKXRE95zU2QAzoNCmSP7kW9Gc+hgLGqs=
-Subject: FAILED: patch "[PATCH] drm/amdgpu/smu13: always apply the powersave optimization" failed to apply to 6.1-stable tree
-To: alexander.deucher@amd.com,kenneth.feng@amd.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sun, 20 Oct 2024 11:34:19 +0200
-Message-ID: <2024102019-mummy-veteran-1b27@gregkh>
+	s=arc-20240116; t=1729418250; c=relaxed/simple;
+	bh=LgPXBjzX8PbJLbITTYq2V2BJykeardUriI373knrMQg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=dk3g1Xrn0wHGc6E3V7LQkT4AVtAWQihZ+ZWzqu4d7P6TMQpEEHavYCfZb8Kqhd4deraDrRhvFmPur4XrfMYcWN23a2KC6/ODl+XiLZEpvbRk0NRHND/fIooWrTZtWBUfG4MbEEqc56owzUrTQTaHcwvr2H5c19dBXzPaI8qupEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=ksgRFxqm; arc=none smtp.client-ip=17.58.6.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; t=1729418248;
+	bh=FhrdYFOvstRecP2ZKmMJqGaEIjevtvQvDh2O0fTXTbM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To;
+	b=ksgRFxqmpf7BJskMZUFm37BEgWBH6aojJuT9UohySRjZnrbrIgKlDMXKYDLgIqZiK
+	 unpm+u0QycRvx63P23gIDZH2ooaeH5WeQV2O2LWqXarEIetWXjMFcQFhD5VE7sSYpk
+	 B97FQM3IM8B5frxvjkgcyhf1I0YMUCs1p5coUV93wL5U2EcI9e25dQPXWVs16X67BP
+	 pAF/BFKszqkTFvoYcYD/RupOwpxgeBLS7klmDq5LsbHsxDizJGaidFHNOm/TwP+cWz
+	 x8jCLI9UDHlDFX44zNLkfXp2RehsT2PgxlhvvQBai3qlFx6lyQtTVKRkX/m/3M7+Ok
+	 IpV5nE0mf4LSA==
+Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
+	by pv50p00im-ztdg10011901.me.com (Postfix) with ESMTPSA id 51DE23A016A;
+	Sun, 20 Oct 2024 09:57:23 +0000 (UTC)
+From: Zijun Hu <zijun_hu@icloud.com>
+Date: Sun, 20 Oct 2024 17:56:58 +0800
+Subject: [PATCH] PCI: endpoint: Fix API devm_pci_epc_destroy() can not
+ destroy the EPC device
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241020-pci-epc-core_fix-v1-1-3899705e3537@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAOnTFGcC/x2MQQqAIBAAvxJ7bkGXOthXIkJ0rb2oKEQg/j3pO
+ AMzDSoX4Qrb1KDwI1VSHKDnCdxt48UofjCQokUrUpidIGeHLhU+g7xoDa2agjVeGxhZLjz0v9y
+ P3j8Yve5VYgAAAA==
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, Joao Pinto <jpinto@synopsys.com>
+Cc: Zijun Hu <zijun_hu@icloud.com>, linux-pci@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.1
+X-Proofpoint-ORIG-GUID: BdJXf0YaDzhouuutKbfZLhYBHe0r3UQo
+X-Proofpoint-GUID: BdJXf0YaDzhouuutKbfZLhYBHe0r3UQo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-20_07,2024-10-17_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=586
+ bulkscore=0 phishscore=0 mlxscore=0 adultscore=0 spamscore=0 clxscore=1011
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2410200066
+X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
 
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+For devm_pci_epc_destroy(), its comment says it needs to destroy the EPC
+device, but it does not do that actually, so it can not fully undo what
+the API devm_pci_epc_create() does, that is wrong, fixed by using
+devres_release() instead of devres_destroy() within the API.
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 7a1613e47e65ba6967085ad99dee95420346a0ce
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024102019-mummy-veteran-1b27@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 7a1613e47e65ba6967085ad99dee95420346a0ce Mon Sep 17 00:00:00 2001
-From: Alex Deucher <alexander.deucher@amd.com>
-Date: Thu, 3 Oct 2024 10:09:50 -0400
-Subject: [PATCH] drm/amdgpu/smu13: always apply the powersave optimization
-
-It can avoid margin issues in some very demanding applications.
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3618
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3131
-Fixes: c50fe289ed72 ("drm/amdgpu/swsmu: always force a state reprogram on init")
-Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 62f38b4ccaa6aa063ca781d80b10aacd39dc5c76)
+Fixes: 5e8cb4033807 ("PCI: endpoint: Add EP core layer to enable EP controller and EP functions")
 Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+---
+ drivers/pci/endpoint/pci-epc-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-index 1d024b122b0c..cb923e33fd6f 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-@@ -2555,18 +2555,16 @@ static int smu_v13_0_0_set_power_profile_mode(struct smu_context *smu,
- 	workload_mask = 1 << workload_type;
+diff --git a/drivers/pci/endpoint/pci-epc-core.c b/drivers/pci/endpoint/pci-epc-core.c
+index 17f007109255..71b6d100056e 100644
+--- a/drivers/pci/endpoint/pci-epc-core.c
++++ b/drivers/pci/endpoint/pci-epc-core.c
+@@ -857,7 +857,7 @@ void devm_pci_epc_destroy(struct device *dev, struct pci_epc *epc)
+ {
+ 	int r;
  
- 	/* Add optimizations for SMU13.0.0/10.  Reuse the power saving profile */
--	if (smu->power_profile_mode == PP_SMC_POWER_PROFILE_COMPUTE) {
--		if ((amdgpu_ip_version(smu->adev, MP1_HWIP, 0) == IP_VERSION(13, 0, 0) &&
--			((smu->adev->pm.fw_version == 0x004e6601) ||
--			(smu->adev->pm.fw_version >= 0x004e7300))) ||
--			(amdgpu_ip_version(smu->adev, MP1_HWIP, 0) == IP_VERSION(13, 0, 10) &&
--			 smu->adev->pm.fw_version >= 0x00504500)) {
--			workload_type = smu_cmn_to_asic_specific_index(smu,
--								CMN2ASIC_MAPPING_WORKLOAD,
--								PP_SMC_POWER_PROFILE_POWERSAVING);
--			if (workload_type >= 0)
--				workload_mask |= 1 << workload_type;
--		}
-+	if ((amdgpu_ip_version(smu->adev, MP1_HWIP, 0) == IP_VERSION(13, 0, 0) &&
-+	     ((smu->adev->pm.fw_version == 0x004e6601) ||
-+	      (smu->adev->pm.fw_version >= 0x004e7300))) ||
-+	    (amdgpu_ip_version(smu->adev, MP1_HWIP, 0) == IP_VERSION(13, 0, 10) &&
-+	     smu->adev->pm.fw_version >= 0x00504500)) {
-+		workload_type = smu_cmn_to_asic_specific_index(smu,
-+							       CMN2ASIC_MAPPING_WORKLOAD,
-+							       PP_SMC_POWER_PROFILE_POWERSAVING);
-+		if (workload_type >= 0)
-+			workload_mask |= 1 << workload_type;
- 	}
- 
- 	ret = smu_cmn_send_smc_msg_with_param(smu,
+-	r = devres_destroy(dev, devm_pci_epc_release, devm_pci_epc_match,
++	r = devres_release(dev, devm_pci_epc_release, devm_pci_epc_match,
+ 			   epc);
+ 	dev_WARN_ONCE(dev, r, "couldn't find PCI EPC resource\n");
+ }
+
+---
+base-commit: 715ca9dd687f89ddaac8ec8ccb3b5e5a30311a99
+change-id: 20241020-pci-epc-core_fix-a92512fa9d19
+
+Best regards,
+-- 
+Zijun Hu <quic_zijuhu@quicinc.com>
 
 
