@@ -1,111 +1,129 @@
-Return-Path: <stable+bounces-86962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B54C9A5358
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 11:34:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E58119A5355
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 11:34:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AC061C20C8F
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 09:34:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 170731C20BF2
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 09:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9B42942A;
-	Sun, 20 Oct 2024 09:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46E514A08D;
+	Sun, 20 Oct 2024 09:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="o0PrbTs7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4T+eolM"
 X-Original-To: stable@vger.kernel.org
-Received: from st43p00im-zteg10072001.me.com (st43p00im-zteg10072001.me.com [17.58.63.167])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7FC14A08D
-	for <stable@vger.kernel.org>; Sun, 20 Oct 2024 09:34:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.63.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7CB2942A
+	for <stable@vger.kernel.org>; Sun, 20 Oct 2024 09:34:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729416883; cv=none; b=LaPWoTDeSkOJNeWW5of5Lyl7SHpJ8JU/zN/Md08DMWudE1iaSKLghpTmqwoRt5aDZa8xnKNrrAUGNEDbR3xpYgV8GPe5tFXaTuucdF7rrp3cLiGvQgz4qeMng7f4bcmgUi9F7mC6NdvdDTaW1Qz60S8sYEo3hoTfzzywcborodc=
+	t=1729416862; cv=none; b=AIBwquuemEX54aRUsoKtrtbZs7iRFCbkXKa15KFhDHcq6pE2hxd1zmpmmpMT4l7K91ZFQl+P+OlNDc84l9/Fq0m0gPK6/6QwmrogA9kGdttOVI7nzdTYaDf8qRCLlelHDYYwJruIWUMzkmdmqZggcNf9VeJyAGuzHRSep22d6j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729416883; c=relaxed/simple;
-	bh=7Nm7nRSbLLyNZ2RqYx5uMGbxBgzfASTKa2l6cmlJeYY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=q2Y+VmUXCvGugdVRsK27yJFeMyYffrwLiySZbHWU/K1PsVfuOMm7iiKoSWYZR5De33T9/7NSQN1qfRbf5DSJlAzVWYHuW8rO3ht0OYWmfjkL7fcUvksa08pwx08j5aALZ51KOIpPmhC1/1l6DVLDdeM/WR0PZapSq0Fa0rJYeqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=o0PrbTs7; arc=none smtp.client-ip=17.58.63.167
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1729416880;
-	bh=PrNAGZjnmK7jN0fRs2s2KJ+MNWHEA/Daolze1eLHVSg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To;
-	b=o0PrbTs7fn6UCGGYaAd5Nm2gsDqXAW8nMkNuNKSuPnzQrKwJZN24wtxPlt5Cjm+/E
-	 i/x/kIIhZcsyWiRl6hEHeN3a/4kvxybP5doF689noGdUHbKM6Ve7ujGg9FGzj5zHOa
-	 OMhFb5yLKzQbYxR0LpbJbPDbKqBK02wYWoyWF/IFTt3oP58opKHk0o6X6y9M8b7sFt
-	 cou8vKrlYrLSqZRPVQhVWlrBl6u1EomUm3BebmUYj5ovc7NmL1OfD5dEX/swI6H5Kp
-	 nYpFqWTliAH/inKeJUXLuFAQHDXWvQscptD5HGAM3/Fo0VyxNRYFDvtUGEBSXeL4kc
-	 LavepkB3j0wGw==
-Received: from [192.168.1.26] (st43p00im-dlb-asmtp-mailmevip.me.com [17.42.251.41])
-	by st43p00im-zteg10072001.me.com (Postfix) with ESMTPSA id 150351202EC;
-	Sun, 20 Oct 2024 09:34:36 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Sun, 20 Oct 2024 17:33:42 +0800
-Subject: [PATCH] usb: phy: Fix API devm_usb_put_phy() can not release the
- phy
+	s=arc-20240116; t=1729416862; c=relaxed/simple;
+	bh=qyBc0WwKn7Zsvpj6YgGY2aD5tBtPg9Cg1hPNvdy9DHc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eN0DZIPc2+UTwkZ+oCf1XU/IjsEUt1vSUYV/R8FcSPnkrnZl7dvqtBHl8rtWtpMUE8b1dPnS8agK3ryHJR3hYSkL2Vzn2KaFTg8f/hFe/RujaWuhMSe2oJDN5zkP3BPnHJMEzdvjELYV6tX3TEzP/poyCDr1/gv0d3tEnOPVz4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4T+eolM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B887DC4CEC6;
+	Sun, 20 Oct 2024 09:34:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1729416862;
+	bh=qyBc0WwKn7Zsvpj6YgGY2aD5tBtPg9Cg1hPNvdy9DHc=;
+	h=Subject:To:Cc:From:Date:From;
+	b=v4T+eolMj109xGzgUgf4gCOosAt1absGX4zBf4Kt94cAUE5tw3InNkAN4JJFOKSta
+	 NejQ+CerdumkOtO6voQ/d2HWdtmujBt2epq40RklYJL4FV+KWtWw4kvbU8XnAz+onl
+	 WGBAvv5fzsc2bWKc/Kg5kBPYkcxmSZSuz1+XCmws=
+Subject: FAILED: patch "[PATCH] drm/amdgpu/smu13: always apply the powersave optimization" failed to apply to 6.6-stable tree
+To: alexander.deucher@amd.com,kenneth.feng@amd.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sun, 20 Oct 2024 11:34:18 +0200
+Message-ID: <2024102018-distrust-unworthy-142c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241020-usb_phy_fix-v1-1-7f79243b8e1e@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAHXOFGcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxNDAyMD3dLipPiCjMr4tMwKXcsU82Qz89Q0k8QkEyWgjoKiVKAw2LTo2Np
- aAEHJtd9dAAAA
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Marc Kleine-Budde <mkl@pengutronix.de>, 
- Sascha Hauer <s.hauer@pengutronix.de>, Felipe Balbi <balbi@ti.com>
-Cc: Zijun Hu <zijun_hu@icloud.com>, linux-arm-kernel@lists.infradead.org, 
- linux-sunxi@lists.linux.dev, linux-usb@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.1
-X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-For devm_usb_put_phy(), its comment says it needs to invoke usb_put_phy()
-to release the phy, but it does not do that actually, so it can not fully
-undo what the API devm_usb_get_phy() does, that is wrong, fixed by using
-devres_release() instead of devres_destroy() within the API.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Fixes: cedf8602373a ("usb: phy: move bulk of otg/otg.c to phy/phy.c")
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 7a1613e47e65ba6967085ad99dee95420346a0ce
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024102018-distrust-unworthy-142c@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 7a1613e47e65ba6967085ad99dee95420346a0ce Mon Sep 17 00:00:00 2001
+From: Alex Deucher <alexander.deucher@amd.com>
+Date: Thu, 3 Oct 2024 10:09:50 -0400
+Subject: [PATCH] drm/amdgpu/smu13: always apply the powersave optimization
+
+It can avoid margin issues in some very demanding applications.
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3618
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3131
+Fixes: c50fe289ed72 ("drm/amdgpu/swsmu: always force a state reprogram on init")
+Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 62f38b4ccaa6aa063ca781d80b10aacd39dc5c76)
 Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
----
-The API is directly used by drivers/usb/musb/sunxi.c, sorry for that
-i can't evaluate relevant impact since i know nothing about sunxi.
----
- drivers/usb/phy/phy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/phy/phy.c b/drivers/usb/phy/phy.c
-index 06e0fb23566c..06f789097989 100644
---- a/drivers/usb/phy/phy.c
-+++ b/drivers/usb/phy/phy.c
-@@ -628,7 +628,7 @@ void devm_usb_put_phy(struct device *dev, struct usb_phy *phy)
- {
- 	int r;
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+index 1d024b122b0c..cb923e33fd6f 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+@@ -2555,18 +2555,16 @@ static int smu_v13_0_0_set_power_profile_mode(struct smu_context *smu,
+ 	workload_mask = 1 << workload_type;
  
--	r = devres_destroy(dev, devm_usb_phy_release, devm_usb_phy_match, phy);
-+	r = devres_release(dev, devm_usb_phy_release, devm_usb_phy_match, phy);
- 	dev_WARN_ONCE(dev, r, "couldn't find PHY resource\n");
- }
- EXPORT_SYMBOL_GPL(devm_usb_put_phy);
-
----
-base-commit: 07b887f8236eb3ed52f1fe83e385e6436dc4b052
-change-id: 20241020-usb_phy_fix-9d7c67ef4ab4
-
-Best regards,
--- 
-Zijun Hu <quic_zijuhu@quicinc.com>
+ 	/* Add optimizations for SMU13.0.0/10.  Reuse the power saving profile */
+-	if (smu->power_profile_mode == PP_SMC_POWER_PROFILE_COMPUTE) {
+-		if ((amdgpu_ip_version(smu->adev, MP1_HWIP, 0) == IP_VERSION(13, 0, 0) &&
+-			((smu->adev->pm.fw_version == 0x004e6601) ||
+-			(smu->adev->pm.fw_version >= 0x004e7300))) ||
+-			(amdgpu_ip_version(smu->adev, MP1_HWIP, 0) == IP_VERSION(13, 0, 10) &&
+-			 smu->adev->pm.fw_version >= 0x00504500)) {
+-			workload_type = smu_cmn_to_asic_specific_index(smu,
+-								CMN2ASIC_MAPPING_WORKLOAD,
+-								PP_SMC_POWER_PROFILE_POWERSAVING);
+-			if (workload_type >= 0)
+-				workload_mask |= 1 << workload_type;
+-		}
++	if ((amdgpu_ip_version(smu->adev, MP1_HWIP, 0) == IP_VERSION(13, 0, 0) &&
++	     ((smu->adev->pm.fw_version == 0x004e6601) ||
++	      (smu->adev->pm.fw_version >= 0x004e7300))) ||
++	    (amdgpu_ip_version(smu->adev, MP1_HWIP, 0) == IP_VERSION(13, 0, 10) &&
++	     smu->adev->pm.fw_version >= 0x00504500)) {
++		workload_type = smu_cmn_to_asic_specific_index(smu,
++							       CMN2ASIC_MAPPING_WORKLOAD,
++							       PP_SMC_POWER_PROFILE_POWERSAVING);
++		if (workload_type >= 0)
++			workload_mask |= 1 << workload_type;
+ 	}
+ 
+ 	ret = smu_cmn_send_smc_msg_with_param(smu,
 
 
