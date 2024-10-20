@@ -1,193 +1,133 @@
-Return-Path: <stable+bounces-86945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D00939A52FE
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 09:18:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17F609A5314
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 10:18:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A6C9B2138C
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 07:18:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51EB41F21EF7
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 08:18:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9736525771;
-	Sun, 20 Oct 2024 07:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1CFC3B2BB;
+	Sun, 20 Oct 2024 08:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="c8GP7jYy";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="W2dPVKAD";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="c8GP7jYy";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="W2dPVKAD"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="jo2crYfQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mr85p00im-ztdg06011801.me.com (mr85p00im-ztdg06011801.me.com [17.58.23.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E6CBA2D;
-	Sun, 20 Oct 2024 07:18:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3555C29406
+	for <stable@vger.kernel.org>; Sun, 20 Oct 2024 08:18:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729408729; cv=none; b=Y+aKpyM9a5Q3dvnJ1T/cOW+zdK9LUF5oWRKcY1ifKy3cOd1EhRn96KgAJQ7rfTZmtdW+9KLhZdKcW5cyP3p0YaaoWEf55TfxBPENrftdlqs9RtJATaC9opPFdYn7xHdy9lfFhatosoGA8YdVsD/5JmSmEv8t9QVZFNRnLfQdRUU=
+	t=1729412295; cv=none; b=Ga2eiwW2X1ZIJbj8Do75pbr7FrPdxt73gHXC6K5jbHU3WFjbZDOtZgoeGVIiXZDh+hk6Mhf4uovyDzaE+aQOKWEfwpECXPhNxawzz064gvVUu+oogaYAxnBgtlnIXgBI5Kvky3F6Hb1BASCndFUBDGAxW+MAH8SRFvSoXJZi7ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729408729; c=relaxed/simple;
-	bh=7T8jIq9N8C0DJGZ91eyFAZd2P2AtqTLtY7CHEzjm+dM=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y90VNswwadSLD7Q8//R87TUs/mzeooEi1gQd2F6j6YESWmXhIEP83s+dQqFChDTaDAM0oQomHQyTwRyF34X/lFYRcuc/CnOFFcp531QuYNGoxmTnkwOsM88LjI+u4GSZYLTubNsW/rtp5/Gaos1YXbLo4ELMaCByMxIb1awv+3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=c8GP7jYy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=W2dPVKAD; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=c8GP7jYy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=W2dPVKAD; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3D6471FDA7;
-	Sun, 20 Oct 2024 07:18:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1729408720; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nFtbtmULMnSG3ZeJX/CQ1Cnqql0kK3sTI0bMhJ/FxrY=;
-	b=c8GP7jYykFI93i08I6K6+dvUhyIpVMe0Xzb8O2w7q69km+gk08hvybznHE828WA8INg3JY
-	+N4VY5IklA7jgyEtaX9nwVE8axTzxiqomcF6EpebrlNrPcGqVzvj3EWnqaRhqRwevywkxo
-	uJOmXQT0qGeuXs2t6am1m5K3060XSmk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1729408720;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nFtbtmULMnSG3ZeJX/CQ1Cnqql0kK3sTI0bMhJ/FxrY=;
-	b=W2dPVKAD29f+HGL46xp9OYI9TbfcuJENxAMas+OhxR9gipDyK79eVmty0D4qZhZGiRJijY
-	tYMqoTWTQ1JMizDQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1729408720; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nFtbtmULMnSG3ZeJX/CQ1Cnqql0kK3sTI0bMhJ/FxrY=;
-	b=c8GP7jYykFI93i08I6K6+dvUhyIpVMe0Xzb8O2w7q69km+gk08hvybznHE828WA8INg3JY
-	+N4VY5IklA7jgyEtaX9nwVE8axTzxiqomcF6EpebrlNrPcGqVzvj3EWnqaRhqRwevywkxo
-	uJOmXQT0qGeuXs2t6am1m5K3060XSmk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1729408720;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nFtbtmULMnSG3ZeJX/CQ1Cnqql0kK3sTI0bMhJ/FxrY=;
-	b=W2dPVKAD29f+HGL46xp9OYI9TbfcuJENxAMas+OhxR9gipDyK79eVmty0D4qZhZGiRJijY
-	tYMqoTWTQ1JMizDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 051DC13894;
-	Sun, 20 Oct 2024 07:18:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GcUQANCuFGf/egAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Sun, 20 Oct 2024 07:18:40 +0000
-Date: Sun, 20 Oct 2024 09:19:39 +0200
-Message-ID: <87h697jl6c.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Dean Matthew Menezes <dean.menezes@utexas.edu>
-Cc: Takashi Iwai <tiwai@suse.de>,
-	stable@vger.kernel.org,
-	regressions@lists.linux.dev,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Linux Sound System <linux-sound@vger.kernel.org>,
-	Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: No sound on speakers X1 Carbon Gen 12
-In-Reply-To: <CAEkK70RAWRjRp6_=bSrecSXXMfnepC2P2YriaHUqicv5x5wJWw@mail.gmail.com>
-References: <CAEkK70Tke7UxMEEKgRLMntSYeMqiv0PC8st72VYnBVQD-KcqVw@mail.gmail.com>
-	<2024101613-giggling-ceremony-aae7@gregkh>
-	<433b8579-e181-40e6-9eac-815d73993b23@leemhuis.info>
-	<87bjzktncb.wl-tiwai@suse.de>
-	<CAEkK70TAk26HFgrz4ZS0jz4T2Eu3LWcG-JD1Ov_2ffMp66oO-g@mail.gmail.com>
-	<87cyjzrutw.wl-tiwai@suse.de>
-	<CAEkK70T7NBRA1dZHBwAC7mNeXPo-dby4c7Nn=SYg0vzeHHt-1A@mail.gmail.com>
-	<87ttd8jyu3.wl-tiwai@suse.de>
-	<CAEkK70RAWRjRp6_=bSrecSXXMfnepC2P2YriaHUqicv5x5wJWw@mail.gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	s=arc-20240116; t=1729412295; c=relaxed/simple;
+	bh=4rRN2upErJXwVYOa3zXJGtjNIRKub+rjNK9urqCnwp8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kDepjBmHtRKXM/YGzKQEe3qGPZod2NKl7Re3FNGXkRxHRTL/3AsV2LCEcaYJxTrhYGYBf8bcz/pSo25aIOzK/hleS5gjj1y2RKN7f97zr8z+k2M9ePDGTiwM0DYt5RReZWVIxyWEr97/LrXZpy0uIgtlDn9PGuYJg598pldJ38E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=jo2crYfQ; arc=none smtp.client-ip=17.58.23.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; t=1729412292;
+	bh=+UZzz+z7p55a5+mo6TK6JWnhlOW39+wGGfYZPaGJKtY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	b=jo2crYfQmO8Gv4wwWh41gOlsWA5WRua3SyRkVzwCl9CHc41gRxVeoXCAUKr4xLXMp
+	 VSWgVsmXvAfAZDXbWaMXKu9GNy6QDSIM+DyoRwPaZOFhRKGxIG54rfMmdgec2yGWlR
+	 44WLL6D+j7r548/avuiEpX1yZSN5XIWsAe7FuX18jUHLN5ZbFEc3kMY6B/iAklUUX3
+	 OT++rFGJwxAR96T3RliTcxgfTiBadAXXlATuxaPLYRDvh7bKy4DQF1ESQVYD3gsitN
+	 dtxkkdPztAgqkaRaDK+mK3bPfXui3gsZt6eDYdb+gj6b9JuvIA85Hbc4sG5EG2PGup
+	 6aiekBiHLHDCw==
+Received: from [192.168.1.26] (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
+	by mr85p00im-ztdg06011801.me.com (Postfix) with ESMTPSA id 0679AAC56DC;
+	Sun, 20 Oct 2024 08:18:08 +0000 (UTC)
+Message-ID: <e165fb81-8d96-49dc-9bfd-85ae79ef4f64@icloud.com>
+Date: Sun, 20 Oct 2024 16:18:03 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Score: -3.30
-X-Spamd-Result: default: False [-3.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.986];
-	MIME_GOOD(-0.10)[text/plain];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	ARC_NA(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_DN_SOME(0.00)[]
-X-Spam-Flag: NO
-X-Spam-Level: 
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/6] phy: core: Add missing of_node_put() in
+ of_phy_provider_lookup()
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>,
+ Felipe Balbi <balbi@ti.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Rob Herring <robh@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Lee Jones <lee@kernel.org>
+Cc: stable@vger.kernel.org, linux-phy@lists.infradead.org,
+ netdev@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>
+References: <20241020-phy_core_fix-v1-0-078062f7da71@quicinc.com>
+ <20241020-phy_core_fix-v1-5-078062f7da71@quicinc.com>
+ <5e828a43-9365-4ac5-b411-0be7188ab8f2@wanadoo.fr>
+Content-Language: en-US
+From: Zijun Hu <zijun_hu@icloud.com>
+In-Reply-To: <5e828a43-9365-4ac5-b411-0be7188ab8f2@wanadoo.fr>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: 6BrM4yrglDgG8u6czpMYQdRccmjjapAH
+X-Proofpoint-GUID: 6BrM4yrglDgG8u6czpMYQdRccmjjapAH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-20_05,2024-10-17_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011 adultscore=0
+ malwarescore=0 spamscore=0 mlxlogscore=999 suspectscore=0 mlxscore=0
+ phishscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2410200052
 
-On Sun, 20 Oct 2024 01:11:39 +0200,
-Dean Matthew Menezes wrote:
+On 2024/10/20 15:23, Christophe JAILLET wrote:
+> Le 20/10/2024 à 07:27, Zijun Hu a écrit :
+>> From: Zijun Hu <quic_zijuhu@quicinc.com>
+
+[snip]
+
+>> ---
+>>   drivers/phy/phy-core.c | 5 +++--
+>>   1 file changed, 3 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
+>> index 967878b78797..24bd619a33dd 100644
+>> --- a/drivers/phy/phy-core.c
+>> +++ b/drivers/phy/phy-core.c
+>> @@ -143,10 +143,11 @@ static struct phy_provider
+>> *of_phy_provider_lookup(struct device_node *node)
+>>       list_for_each_entry(phy_provider, &phy_provider_list, list) {
+>>           if (phy_provider->dev->of_node == node)
+>>               return phy_provider;
+>> -
+>>           for_each_child_of_node(phy_provider->children, child)
+>> -            if (child == node)
+>> +            if (child == node) {
+>> +                of_node_put(child);
+>>                   return phy_provider;
+>> +            }
 > 
-> With the patch I get this alsa-info.sh
+> Hi,
+> 
+> Maybe for_each_child_of_node_scoped() to slightly simplify things at the
+> same time?
+> 
 
-The status looks OK; at least the DAC assignment is identical with the
-working case with 6.8 kernel.  But I noticed that your device doesn't
-seem needing the I2S amp, judging from the module list.  Please give 
-the dmesg outputs from both working and non-working cases, as
-requested earlier, for further analysis, too.
+thank you for code review.
 
-Then check the following change instead of the previous one:
+it does not use _scoped() since for_each_child_of_node() usage here is
+very simple and only has one early exit, _scoped() normally is for
+complex case.
 
--- 8< --
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10754,8 +10754,8 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x17aa, 0x2318, "Thinkpad Z13 Gen2", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
- 	SND_PCI_QUIRK(0x17aa, 0x2319, "Thinkpad Z16 Gen2", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
- 	SND_PCI_QUIRK(0x17aa, 0x231a, "Thinkpad Z16 Gen2", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
--	SND_PCI_QUIRK(0x17aa, 0x231e, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_ALC1318),
--	SND_PCI_QUIRK(0x17aa, 0x231f, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_ALC1318),
-+	SND_PCI_QUIRK(0x17aa, 0x231e, "Thinkpad", ALC287_FIXUP_THINKPAD_I2S_SPK),
-+	SND_PCI_QUIRK(0x17aa, 0x231f, "Thinkpad", ALC287_FIXUP_THINKPAD_I2S_SPK),
- 	SND_PCI_QUIRK(0x17aa, 0x2326, "Hera2", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x30bb, "ThinkCentre AIO", ALC233_FIXUP_LENOVO_LINE2_MIC_HOTKEY),
- 	SND_PCI_QUIRK(0x17aa, 0x30e2, "ThinkCentre AIO", ALC233_FIXUP_LENOVO_LINE2_MIC_HOTKEY),
--- 8< --
+i maybe use _scoped() in next revision if one more reviewer also prefers
+it.
 
-If this doesn't work, let's try to get rid of those entries, instead:
+thank you.
 
--- 8< --
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10754,8 +10754,8 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x17aa, 0x2318, "Thinkpad Z13 Gen2", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
- 	SND_PCI_QUIRK(0x17aa, 0x2319, "Thinkpad Z16 Gen2", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
- 	SND_PCI_QUIRK(0x17aa, 0x231a, "Thinkpad Z16 Gen2", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
--	SND_PCI_QUIRK(0x17aa, 0x231e, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_ALC1318),
--	SND_PCI_QUIRK(0x17aa, 0x231f, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_ALC1318),
-+//	SND_PCI_QUIRK(0x17aa, 0x231e, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_ALC1318),
-+//	SND_PCI_QUIRK(0x17aa, 0x231f, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_ALC1318),
- 	SND_PCI_QUIRK(0x17aa, 0x2326, "Hera2", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x30bb, "ThinkCentre AIO", ALC233_FIXUP_LENOVO_LINE2_MIC_HOTKEY),
- 	SND_PCI_QUIRK(0x17aa, 0x30e2, "ThinkCentre AIO", ALC233_FIXUP_LENOVO_LINE2_MIC_HOTKEY),
--- 8< --
+>>       }
+>>         return ERR_PTR(-EPROBE_DEFER);
+>>
+> 
 
-If neither of the above brings back the sound, I must have looked at a
-wrong place.
-
-
-thanks,
-
-Takashi
 
