@@ -1,102 +1,176 @@
-Return-Path: <stable+bounces-86980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DF5B9A5599
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 19:57:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 231379A55DB
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 20:31:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 404C52829F0
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 17:57:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62D31B235DD
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 18:31:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30BFC194C9D;
-	Sun, 20 Oct 2024 17:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49D4197A7E;
+	Sun, 20 Oct 2024 18:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PYyBhPam"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OgSyavW6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD777320E;
-	Sun, 20 Oct 2024 17:57:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A456B194AD6;
+	Sun, 20 Oct 2024 18:31:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729447057; cv=none; b=r2rDafGDhZrnbuxvN6Bo7tgLBbMrpHK2yvh8TGOHlltxt8ekvFekYle+lxX5na1v2YWCSleclHY63J+pTn8Ldl6wybO96QteBMqmzc76txFXmv0LsEtvCKTVAMJIFQTOqDkjRpJmQKCghAPQpWgvpbVX9IBtC1HhFKCicTgzljQ=
+	t=1729449067; cv=none; b=N4NH49B7X34gsoCNMEJfAr87UvHZrB5TiD3mso2oDvZHQPtpYtwzsGXMUVOFFxtPsr31mSN+vTonjJ1wTnaVeouo4rSn2cMepuEDqGob1wl9Zi0vZ6hblQm6xz1r1XTDUyEbRHMZFnViaV3B/260bvD5+dlTY2fot4pX2/PZq3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729447057; c=relaxed/simple;
-	bh=4zQj6Y+b1upLSDxYwWSPMbK0sSE7AnUQaW0OlxZUmdg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Tsfp/d0hFSjtdrmWvDzbH//laQfD5jN8nAu/cPYNzjq1ZOpzwffHM6qzRHwXKNZCgCeTEfD2fxZzJjqZ3TKjw8nLKxnzSP6+cw4DRbMtBNm12EVdrLIfqWA7Ki03wdvlPfnDgNNiFhiYtUd4ooxOaWG8eUTYDOuRWw+fViTw9r4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PYyBhPam; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B4CC4CEC6;
-	Sun, 20 Oct 2024 17:57:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729447056;
-	bh=4zQj6Y+b1upLSDxYwWSPMbK0sSE7AnUQaW0OlxZUmdg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=PYyBhPamDwm9YthcN4jvCE8TzhoHRkZDhfyD2lbbdBR+eeHMprC9JTDutUQt1wm1u
-	 Dp5rvJ2NEBP32IXx/o8+mOlvjCLAqgbX5n9oHumCkkYeXqkI5uAOgWBmTJEuRTsoAx
-	 I2QEdSpEqLYgx3i8Xy9a2aZQhY4uh5ExozBqZN7G2j8GFqGq9K3NkcUMPD+x0fEFI8
-	 44AMFCB6Wr0JRNLOLJdQxgDob9QEUzPNYBcMtZ8I37c6hKVN6F7pGY11Xv4VTq/lZV
-	 Bla9+cZoatYvyixGc0e3O9GWLspQ/WKtH/00G8BjiAARLVeoghhZqFXcMbQVcR/+ZQ
-	 c98ekQqtiGxoQ==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-sound@vger.kernel.org,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>
-Cc: linux-kernel@vger.kernel.org,
-	Shenghao Ding <shenghao-ding@ti.com>,
-	Kevin Lu <kevin-lu@ti.com>,
-	Baojun Xu <baojun.xu@ti.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] ALSA: hda/tas2781: select CRC32 instead of CRC32_SARWATE
-Date: Sun, 20 Oct 2024 10:56:24 -0700
-Message-ID: <20241020175624.7095-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1729449067; c=relaxed/simple;
+	bh=v39Rr5eF3eWe0K5Su3ujXYO57zb/mrOvhsFkm+1e1nU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sY+RCFK1KOcCRkcAdXdvybnNrfQyFLiPJXglGdMir/ZOGx3k/UCRiF92HToBkzmeP7ufrLKVNzocmXTuXoyTKZzRnShCnaYLyww9oLI9A1UZwSWHL6rD+vz28GNAmCfOf4JwvGwJwMzQeZbhM0YBPVD7LtDOPs6H3unltsRsbxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OgSyavW6; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729449065; x=1760985065;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=v39Rr5eF3eWe0K5Su3ujXYO57zb/mrOvhsFkm+1e1nU=;
+  b=OgSyavW6TdS2Hu03Fyl1SeYcvOCrEyXPdXqj8R7aYQCecRS0bx1bV8OO
+   odvtZ77Pduno001HMZxnotJCPmzKs1k/LvjkwYBN6Siajhowmsil0Dtzo
+   n3czd4hRjB6DIYzuBAxYQ+qEPufqcFbMyrLfNS0IbrTOVu2PJ1a9pY5i3
+   g4laPKmknQ5YmZqd0wzVy4zwNRaxcG/bfvFomMlGQ+gzyvn2OFl8LK6ND
+   o3HHzjg5M1rLGuC54fLO5w4GQM1CGyRuklZ6wYP64Os/kufTuej/JbeDw
+   URlMLPX+/BxDwQTeyLDtlEQgn1kMW2Ev/oE958PqEbdzR7jTOf6ZZeCtG
+   Q==;
+X-CSE-ConnectionGUID: r0ndL4RfQl6axx+phGfxeQ==
+X-CSE-MsgGUID: MqNBRm1nQ5ysCbfX3xeacA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11231"; a="32840925"
+X-IronPort-AV: E=Sophos;i="6.11,219,1725346800"; 
+   d="scan'208";a="32840925"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2024 11:31:05 -0700
+X-CSE-ConnectionGUID: OzBYEk6pRU2avgDpHiDMBQ==
+X-CSE-MsgGUID: G8xMv0IUThyf5uIazvRcLQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,219,1725346800"; 
+   d="scan'208";a="116786918"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 20 Oct 2024 11:31:03 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t2ahg-000Qgy-1Q;
+	Sun, 20 Oct 2024 18:31:00 +0000
+Date: Mon, 21 Oct 2024 02:30:28 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Subject: Re: [PATCH] iio: invensense: fix multiple odr switch when FIFO is off
+Message-ID: <202410210200.tPt6CQU4-lkp@intel.com>
+References: <20241017-invn-inv-sensors-timestamp-fix-switch-fifo-off-v1-1-1bcfa70a747b@tdk.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241017-invn-inv-sensors-timestamp-fix-switch-fifo-off-v1-1-1bcfa70a747b@tdk.com>
 
-From: Eric Biggers <ebiggers@google.com>
+Hi Jean-Baptiste,
 
-Fix the kconfig option for the tas2781 HDA driver to select CRC32 rather
-than CRC32_SARWATE.  CRC32_SARWATE is an option from the kconfig
-'choice' that selects the specific CRC32 implementation.  Selecting a
-'choice' option seems to have no effect, but even if it did work, it
-would be incorrect for a random driver to override the user's choice.
-CRC32 is the correct option to select for crc32() to be available.
+kernel test robot noticed the following build warnings:
 
-Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@google.com>
----
- sound/pci/hda/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+[auto build test WARNING on c3e9df514041ec6c46be83801b1891392f4522f7]
 
-diff --git a/sound/pci/hda/Kconfig b/sound/pci/hda/Kconfig
-index bb15a0248250c..68f1eee9e5c93 100644
---- a/sound/pci/hda/Kconfig
-+++ b/sound/pci/hda/Kconfig
-@@ -196,11 +196,11 @@ config SND_HDA_SCODEC_TAS2781_I2C
- 	depends on ACPI
- 	depends on EFI
- 	depends on SND_SOC
- 	select SND_SOC_TAS2781_COMLIB
- 	select SND_SOC_TAS2781_FMWLIB
--	select CRC32_SARWATE
-+	select CRC32
- 	help
- 	  Say Y or M here to include TAS2781 I2C HD-audio side codec support
- 	  in snd-hda-intel driver, such as ALC287.
- 
- comment "Set to Y if you want auto-loading the side codec driver"
+url:    https://github.com/intel-lab-lkp/linux/commits/Jean-Baptiste-Maneyrol-via-B4-Relay/iio-invensense-fix-multiple-odr-switch-when-FIFO-is-off/20241017-220821
+base:   c3e9df514041ec6c46be83801b1891392f4522f7
+patch link:    https://lore.kernel.org/r/20241017-invn-inv-sensors-timestamp-fix-switch-fifo-off-v1-1-1bcfa70a747b%40tdk.com
+patch subject: [PATCH] iio: invensense: fix multiple odr switch when FIFO is off
+config: i386-allyesconfig (https://download.01.org/0day-ci/archive/20241021/202410210200.tPt6CQU4-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241021/202410210200.tPt6CQU4-lkp@intel.com/reproduce)
 
-base-commit: 715ca9dd687f89ddaac8ec8ccb3b5e5a30311a99
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410210200.tPt6CQU4-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c: In function 'inv_icm42600_gyro_update_scan_mode':
+>> drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c:103:39: warning: unused variable 'ts' [-Wunused-variable]
+     103 |         struct inv_sensors_timestamp *ts = &gyro_st->ts;
+         |                                       ^~
+--
+   drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c: In function 'inv_icm42600_accel_update_scan_mode':
+>> drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c:203:39: warning: unused variable 'ts' [-Wunused-variable]
+     203 |         struct inv_sensors_timestamp *ts = &accel_st->ts;
+         |                                       ^~
+
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for GET_FREE_REGION
+   Depends on [n]: SPARSEMEM [=n]
+   Selected by [y]:
+   - RESOURCE_KUNIT_TEST [=y] && RUNTIME_TESTING_MENU [=y] && KUNIT [=y]
+
+
+vim +/ts +103 drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
+
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22   96  
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22   97  /* enable gyroscope sensor and FIFO write */
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22   98  static int inv_icm42600_gyro_update_scan_mode(struct iio_dev *indio_dev,
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22   99  					      const unsigned long *scan_mask)
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  100  {
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  101  	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+a1432b5b4f4c44 Jean-Baptiste Maneyrol    2024-04-22  102  	struct inv_icm42600_sensor_state *gyro_st = iio_priv(indio_dev);
+a1432b5b4f4c44 Jean-Baptiste Maneyrol    2024-04-22 @103  	struct inv_sensors_timestamp *ts = &gyro_st->ts;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  104  	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  105  	unsigned int fifo_en = 0;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  106  	unsigned int sleep_gyro = 0;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  107  	unsigned int sleep_temp = 0;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  108  	unsigned int sleep;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  109  	int ret;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  110  
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  111  	mutex_lock(&st->lock);
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  112  
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  113  	if (*scan_mask & INV_ICM42600_SCAN_MASK_TEMP) {
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  114  		/* enable temp sensor */
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  115  		ret = inv_icm42600_set_temp_conf(st, true, &sleep_temp);
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  116  		if (ret)
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  117  			goto out_unlock;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  118  		fifo_en |= INV_ICM42600_SENSOR_TEMP;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  119  	}
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  120  
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  121  	if (*scan_mask & INV_ICM42600_SCAN_MASK_GYRO_3AXIS) {
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  122  		/* enable gyro sensor */
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  123  		conf.mode = INV_ICM42600_SENSOR_MODE_LOW_NOISE;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  124  		ret = inv_icm42600_set_gyro_conf(st, &conf, &sleep_gyro);
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  125  		if (ret)
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  126  			goto out_unlock;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  127  		fifo_en |= INV_ICM42600_SENSOR_GYRO;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  128  	}
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  129  
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  130  	/* update data FIFO write */
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  131  	ret = inv_icm42600_buffer_set_fifo_en(st, fifo_en | st->fifo.en);
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  132  
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  133  out_unlock:
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  134  	mutex_unlock(&st->lock);
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  135  	/* sleep maximum required time */
+c788b9e56acd46 Bragatheswaran Manickavel 2023-10-27  136  	sleep = max(sleep_gyro, sleep_temp);
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  137  	if (sleep)
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  138  		msleep(sleep);
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  139  	return ret;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  140  }
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  141  
+
 -- 
-2.47.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
