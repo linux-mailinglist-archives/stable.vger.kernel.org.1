@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-86957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F6A9A5352
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 11:31:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE8919A5353
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 11:31:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D37B41C20BC3
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 09:31:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BECD2821DC
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 09:31:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB21A3EA64;
-	Sun, 20 Oct 2024 09:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E52E3EA64;
+	Sun, 20 Oct 2024 09:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xoq8WLwx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0kHioe94"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B4328F4
-	for <stable@vger.kernel.org>; Sun, 20 Oct 2024 09:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257993A27E
+	for <stable@vger.kernel.org>; Sun, 20 Oct 2024 09:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729416700; cv=none; b=RjnCZIaOMxuFfCOc12lyiSHL0Z0BuhWsgsPEiMgRAduOw4AIxOAQgd/uIOBO/uX4OGsITYWfHsp/XcYLbxaYQBxgci1IGQxi+Aa9X3woo5ndJxuuBTi8RI0Jfk2mmc0jF34ARTfo96hyvAgjAt9VH+piRv+li7RWSkE5DHtcNTk=
+	t=1729416714; cv=none; b=RCu3cgBOcLE4yVC13odCCzGfEoAA3NQjlRewtpfAh62EDPdLzeaZHjkj/DlYJ66W0h3vPWEJnf3S1uERPsLeGqAme6YLYlbHEG2k+5LQd8vLncDGHBaCtQT+5+iTuwOU8OS0nld9b8HoIimpSF1hl6BM2KroEAvafVE6Er3Cij0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729416700; c=relaxed/simple;
-	bh=gxOBYtRpOCnIwld8Yk6IQL+I1srdg1vCl+Pte6Scsz0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ErmVMJgqPrrxBh61/QqDVPCaVnvhKhZD2vLaJICjYhWjluUK7GIsBdeLDrZJ7662qGsWtPQPS/OCCjKh7eeX8e+wpy/KoEb/bCPO1Yth51M/ZhtMiy7x39wPOKHx6G/JO0coydIyIXUvkH0e60hS7MNb2fsl4dXiZ2Z2CSBnnzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xoq8WLwx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E529C4CEC6;
-	Sun, 20 Oct 2024 09:31:39 +0000 (UTC)
+	s=arc-20240116; t=1729416714; c=relaxed/simple;
+	bh=rcuXbXhofN4ySyTUaXlhSCWzjL42ximTgshFT91elHg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=c2ANUQkiFUEoeiJjNF4EyDWMVAQUekByOPi4ZMK4HHrJuVPRjr+xluFxaUHFui1jQvSWVnUQPDo996XkizbwlVHoKbCx2YXYBpwKnQip0IyBy6Kwdd9uAHzFwbJmYal8Ate/pSYGzgEeZsUhZv96eIonsZ6n5YyAn3XWmBEdUbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0kHioe94; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BFC1C4CEC6;
+	Sun, 20 Oct 2024 09:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729416700;
-	bh=gxOBYtRpOCnIwld8Yk6IQL+I1srdg1vCl+Pte6Scsz0=;
+	s=korg; t=1729416713;
+	bh=rcuXbXhofN4ySyTUaXlhSCWzjL42ximTgshFT91elHg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Xoq8WLwxghTK5W6Mm514ppazKqNhA96gLQxgk8Q7yxjpiDn1AsQ5yQm85M11PAeiF
-	 z6gqfVeWqV2UsC5owQo8Y6hKOmWnm11aq4PlriAGNLMnmpqdLPE5vc+KV+IwvTbocn
-	 YVlfddt+EXF7k2CAIDFYpK4Dbt2YvSHEonVHLIdY=
-Subject: FAILED: patch "[PATCH] scsi: mpi3mr: Validate SAS port assignments" failed to apply to 6.1-stable tree
-To: ranjan.kumar@broadcom.com,lkp@intel.com,martin.petersen@oracle.com,mav@ixsystems.com
+	b=0kHioe94oL761JlbHtvG+4UgpsSFSkE9wRSzFp1y42Gg8+dyxIxYnba0QqYev7gxH
+	 H2N6O1fGzZ1CuIKWE3nIgI7DSJv5KV01ZUnuwyCf+WF2XnaxjTtya8YbhINuACvgbL
+	 nq0IDlNEWy1ovvfm86ML2CWcibvR2chS0V4SAnnc=
+Subject: FAILED: patch "[PATCH] scsi: ufs: core: Set SDEV_OFFLINE when UFS is shut down" failed to apply to 5.15-stable tree
+To: sh8267.baek@samsung.com,bvanassche@acm.org,martin.petersen@oracle.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 20 Oct 2024 11:31:28 +0200
-Message-ID: <2024102028-henchman-favorable-6119@gregkh>
+Date: Sun, 20 Oct 2024 11:31:50 +0200
+Message-ID: <2024102050-unequal-radiator-f679@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x b9e63d6c7c0e94a99e1af7c9c0c7fad13a2f2453
+git cherry-pick -x 19a198b67767d952c8f3d0cf24eb3100522a8223
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024102028-henchman-favorable-6119@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024102050-unequal-radiator-f679@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,180 +77,70 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b9e63d6c7c0e94a99e1af7c9c0c7fad13a2f2453 Mon Sep 17 00:00:00 2001
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Date: Tue, 8 Oct 2024 13:13:53 +0530
-Subject: [PATCH] scsi: mpi3mr: Validate SAS port assignments
+From 19a198b67767d952c8f3d0cf24eb3100522a8223 Mon Sep 17 00:00:00 2001
+From: Seunghwan Baek <sh8267.baek@samsung.com>
+Date: Thu, 29 Aug 2024 18:39:13 +0900
+Subject: [PATCH] scsi: ufs: core: Set SDEV_OFFLINE when UFS is shut down
 
-A sanity check on phy_mask was added in commit 3668651def2c ("scsi:
-mpi3mr: Sanitise num_phys"). This causes warning messages when more than
-64 phys are detected and devices connected to phys greater than 64 are
-dropped.
+There is a history of deadlock if reboot is performed at the beginning
+of booting. SDEV_QUIESCE was set for all LU's scsi_devices by UFS
+shutdown, and at that time the audio driver was waiting on
+blk_mq_submit_bio() holding a mutex_lock while reading the fw binary.
+After that, a deadlock issue occurred while audio driver shutdown was
+waiting for mutex_unlock of blk_mq_submit_bio(). To solve this, set
+SDEV_OFFLINE for all LUs except WLUN, so that any I/O that comes down
+after a UFS shutdown will return an error.
 
-The phy_mask bitmap is only needed for controller phys and not required
-for expander phys. Controller phys can go up to a maximum of 64 and
-therefore u64 is good enough to contain phy_mask bitmap.
+[   31.907781]I[0:      swapper/0:    0]        1        130705007       1651079834      11289729804                0 D(   2) 3 ffffff882e208000 *             init [device_shutdown]
+[   31.907793]I[0:      swapper/0:    0] Mutex: 0xffffff8849a2b8b0: owner[0xffffff882e28cb00 kworker/6:0 :49]
+[   31.907806]I[0:      swapper/0:    0] Call trace:
+[   31.907810]I[0:      swapper/0:    0]  __switch_to+0x174/0x338
+[   31.907819]I[0:      swapper/0:    0]  __schedule+0x5ec/0x9cc
+[   31.907826]I[0:      swapper/0:    0]  schedule+0x7c/0xe8
+[   31.907834]I[0:      swapper/0:    0]  schedule_preempt_disabled+0x24/0x40
+[   31.907842]I[0:      swapper/0:    0]  __mutex_lock+0x408/0xdac
+[   31.907849]I[0:      swapper/0:    0]  __mutex_lock_slowpath+0x14/0x24
+[   31.907858]I[0:      swapper/0:    0]  mutex_lock+0x40/0xec
+[   31.907866]I[0:      swapper/0:    0]  device_shutdown+0x108/0x280
+[   31.907875]I[0:      swapper/0:    0]  kernel_restart+0x4c/0x11c
+[   31.907883]I[0:      swapper/0:    0]  __arm64_sys_reboot+0x15c/0x280
+[   31.907890]I[0:      swapper/0:    0]  invoke_syscall+0x70/0x158
+[   31.907899]I[0:      swapper/0:    0]  el0_svc_common+0xb4/0xf4
+[   31.907909]I[0:      swapper/0:    0]  do_el0_svc+0x2c/0xb0
+[   31.907918]I[0:      swapper/0:    0]  el0_svc+0x34/0xe0
+[   31.907928]I[0:      swapper/0:    0]  el0t_64_sync_handler+0x68/0xb4
+[   31.907937]I[0:      swapper/0:    0]  el0t_64_sync+0x1a0/0x1a4
 
-To suppress those warnings and allow devices to be discovered as before
-the offending commit, restrict the phy_mask setting and lowest phy
-setting only to the controller phys.
+[   31.908774]I[0:      swapper/0:    0]       49                0         11960702      11236868007                0 D(   2) 6 ffffff882e28cb00 *      kworker/6:0 [__bio_queue_enter]
+[   31.908783]I[0:      swapper/0:    0] Call trace:
+[   31.908788]I[0:      swapper/0:    0]  __switch_to+0x174/0x338
+[   31.908796]I[0:      swapper/0:    0]  __schedule+0x5ec/0x9cc
+[   31.908803]I[0:      swapper/0:    0]  schedule+0x7c/0xe8
+[   31.908811]I[0:      swapper/0:    0]  __bio_queue_enter+0xb8/0x178
+[   31.908818]I[0:      swapper/0:    0]  blk_mq_submit_bio+0x194/0x67c
+[   31.908827]I[0:      swapper/0:    0]  __submit_bio+0xb8/0x19c
 
-Fixes: 3668651def2c ("scsi: mpi3mr: Sanitise num_phys")
+Fixes: b294ff3e3449 ("scsi: ufs: core: Enable power management for wlun")
 Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202410051943.Mp9o5DlF-lkp@intel.com/
-Reported-by: Alexander Motin <mav@ixsystems.com>
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://lore.kernel.org/r/20241008074353.200379-1-ranjan.kumar@broadcom.com
+Signed-off-by: Seunghwan Baek <sh8267.baek@samsung.com>
+Link: https://lore.kernel.org/r/20240829093913.6282-2-sh8267.baek@samsung.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr.h b/drivers/scsi/mpi3mr/mpi3mr.h
-index fcb0fa31536b..16e0baeb8799 100644
---- a/drivers/scsi/mpi3mr/mpi3mr.h
-+++ b/drivers/scsi/mpi3mr/mpi3mr.h
-@@ -542,8 +542,8 @@ struct mpi3mr_hba_port {
-  * @port_list: List of ports belonging to a SAS node
-  * @num_phys: Number of phys associated with port
-  * @marked_responding: used while refresing the sas ports
-- * @lowest_phy: lowest phy ID of current sas port
-- * @phy_mask: phy_mask of current sas port
-+ * @lowest_phy: lowest phy ID of current sas port, valid for controller port
-+ * @phy_mask: phy_mask of current sas port, valid for controller port
-  * @hba_port: HBA port entry
-  * @remote_identify: Attached device identification
-  * @rphy: SAS transport layer rphy object
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_transport.c b/drivers/scsi/mpi3mr/mpi3mr_transport.c
-index ccd23def2e0c..0ba9e6a6a13c 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_transport.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_transport.c
-@@ -590,12 +590,13 @@ static enum sas_linkrate mpi3mr_convert_phy_link_rate(u8 link_rate)
-  * @mrioc: Adapter instance reference
-  * @mr_sas_port: Internal Port object
-  * @mr_sas_phy: Internal Phy object
-+ * @host_node: Flag to indicate this is a host_node
-  *
-  * Return: None.
-  */
- static void mpi3mr_delete_sas_phy(struct mpi3mr_ioc *mrioc,
- 	struct mpi3mr_sas_port *mr_sas_port,
--	struct mpi3mr_sas_phy *mr_sas_phy)
-+	struct mpi3mr_sas_phy *mr_sas_phy, u8 host_node)
- {
- 	u64 sas_address = mr_sas_port->remote_identify.sas_address;
- 
-@@ -605,9 +606,13 @@ static void mpi3mr_delete_sas_phy(struct mpi3mr_ioc *mrioc,
- 
- 	list_del(&mr_sas_phy->port_siblings);
- 	mr_sas_port->num_phys--;
--	mr_sas_port->phy_mask &= ~(1 << mr_sas_phy->phy_id);
--	if (mr_sas_port->lowest_phy == mr_sas_phy->phy_id)
--		mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
-+
-+	if (host_node) {
-+		mr_sas_port->phy_mask &= ~(1 << mr_sas_phy->phy_id);
-+
-+		if (mr_sas_port->lowest_phy == mr_sas_phy->phy_id)
-+			mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
-+	}
- 	sas_port_delete_phy(mr_sas_port->port, mr_sas_phy->phy);
- 	mr_sas_phy->phy_belongs_to_port = 0;
- }
-@@ -617,12 +622,13 @@ static void mpi3mr_delete_sas_phy(struct mpi3mr_ioc *mrioc,
-  * @mrioc: Adapter instance reference
-  * @mr_sas_port: Internal Port object
-  * @mr_sas_phy: Internal Phy object
-+ * @host_node: Flag to indicate this is a host_node
-  *
-  * Return: None.
-  */
- static void mpi3mr_add_sas_phy(struct mpi3mr_ioc *mrioc,
- 	struct mpi3mr_sas_port *mr_sas_port,
--	struct mpi3mr_sas_phy *mr_sas_phy)
-+	struct mpi3mr_sas_phy *mr_sas_phy, u8 host_node)
- {
- 	u64 sas_address = mr_sas_port->remote_identify.sas_address;
- 
-@@ -632,9 +638,12 @@ static void mpi3mr_add_sas_phy(struct mpi3mr_ioc *mrioc,
- 
- 	list_add_tail(&mr_sas_phy->port_siblings, &mr_sas_port->phy_list);
- 	mr_sas_port->num_phys++;
--	mr_sas_port->phy_mask |= (1 << mr_sas_phy->phy_id);
--	if (mr_sas_phy->phy_id < mr_sas_port->lowest_phy)
--		mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
-+	if (host_node) {
-+		mr_sas_port->phy_mask |= (1 << mr_sas_phy->phy_id);
-+
-+		if (mr_sas_phy->phy_id < mr_sas_port->lowest_phy)
-+			mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
-+	}
- 	sas_port_add_phy(mr_sas_port->port, mr_sas_phy->phy);
- 	mr_sas_phy->phy_belongs_to_port = 1;
- }
-@@ -675,7 +684,7 @@ static void mpi3mr_add_phy_to_an_existing_port(struct mpi3mr_ioc *mrioc,
- 			if (srch_phy == mr_sas_phy)
- 				return;
- 		}
--		mpi3mr_add_sas_phy(mrioc, mr_sas_port, mr_sas_phy);
-+		mpi3mr_add_sas_phy(mrioc, mr_sas_port, mr_sas_phy, mr_sas_node->host_node);
- 		return;
- 	}
- }
-@@ -736,7 +745,7 @@ static void mpi3mr_del_phy_from_an_existing_port(struct mpi3mr_ioc *mrioc,
- 				mpi3mr_delete_sas_port(mrioc, mr_sas_port);
- 			else
- 				mpi3mr_delete_sas_phy(mrioc, mr_sas_port,
--				    mr_sas_phy);
-+				    mr_sas_phy, mr_sas_node->host_node);
- 			return;
- 		}
- 	}
-@@ -1028,7 +1037,7 @@ mpi3mr_alloc_hba_port(struct mpi3mr_ioc *mrioc, u16 port_id)
- /**
-  * mpi3mr_get_hba_port_by_id - find hba port by id
-  * @mrioc: Adapter instance reference
-- * @port_id - Port ID to search
-+ * @port_id: Port ID to search
-  *
-  * Return: mpi3mr_hba_port reference for the matched port
-  */
-@@ -1367,7 +1376,8 @@ static struct mpi3mr_sas_port *mpi3mr_sas_port_add(struct mpi3mr_ioc *mrioc,
- 	mpi3mr_sas_port_sanity_check(mrioc, mr_sas_node,
- 	    mr_sas_port->remote_identify.sas_address, hba_port);
- 
--	if (mr_sas_node->num_phys >= sizeof(mr_sas_port->phy_mask) * 8)
-+	if (mr_sas_node->host_node && mr_sas_node->num_phys >=
-+			sizeof(mr_sas_port->phy_mask) * 8)
- 		ioc_info(mrioc, "max port count %u could be too high\n",
- 		    mr_sas_node->num_phys);
- 
-@@ -1377,7 +1387,7 @@ static struct mpi3mr_sas_port *mpi3mr_sas_port_add(struct mpi3mr_ioc *mrioc,
- 		    (mr_sas_node->phy[i].hba_port != hba_port))
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index f845166dc0d7..706dc81eb924 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -10197,7 +10197,9 @@ static void ufshcd_wl_shutdown(struct device *dev)
+ 	shost_for_each_device(sdev, hba->host) {
+ 		if (sdev == hba->ufs_device_wlun)
  			continue;
- 
--		if (i >= sizeof(mr_sas_port->phy_mask) * 8) {
-+		if (mr_sas_node->host_node && (i >= sizeof(mr_sas_port->phy_mask) * 8)) {
- 			ioc_warn(mrioc, "skipping port %u, max allowed value is %zu\n",
- 			    i, sizeof(mr_sas_port->phy_mask) * 8);
- 			goto out_fail;
-@@ -1385,7 +1395,8 @@ static struct mpi3mr_sas_port *mpi3mr_sas_port_add(struct mpi3mr_ioc *mrioc,
- 		list_add_tail(&mr_sas_node->phy[i].port_siblings,
- 		    &mr_sas_port->phy_list);
- 		mr_sas_port->num_phys++;
--		mr_sas_port->phy_mask |= (1 << i);
-+		if (mr_sas_node->host_node)
-+			mr_sas_port->phy_mask |= (1 << i);
+-		scsi_device_quiesce(sdev);
++		mutex_lock(&sdev->state_mutex);
++		scsi_device_set_state(sdev, SDEV_OFFLINE);
++		mutex_unlock(&sdev->state_mutex);
  	}
+ 	__ufshcd_wl_suspend(hba, UFS_SHUTDOWN_PM);
  
- 	if (!mr_sas_port->num_phys) {
-@@ -1394,7 +1405,8 @@ static struct mpi3mr_sas_port *mpi3mr_sas_port_add(struct mpi3mr_ioc *mrioc,
- 		goto out_fail;
- 	}
- 
--	mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
-+	if (mr_sas_node->host_node)
-+		mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
- 
- 	if (mr_sas_port->remote_identify.device_type == SAS_END_DEVICE) {
- 		tgtdev = mpi3mr_get_tgtdev_by_addr(mrioc,
 
 
