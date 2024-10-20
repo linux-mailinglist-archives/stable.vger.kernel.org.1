@@ -1,114 +1,114 @@
-Return-Path: <stable+bounces-86943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18CE09A52AB
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 07:34:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 680FB9A528F
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 07:28:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46C4B1C214ED
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 05:34:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94B3F1C21181
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 05:28:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32B39BE5E;
-	Sun, 20 Oct 2024 05:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA359DDA9;
+	Sun, 20 Oct 2024 05:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ans.pl header.i=@ans.pl header.b="Bygoib5S"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="rjcm4E9b"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.emenem.pl (cmyk.emenem.pl [217.79.154.63])
+Received: from pv50p00im-hyfv10021501.me.com (pv50p00im-hyfv10021501.me.com [17.58.6.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BEDD26D;
-	Sun, 20 Oct 2024 05:34:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.79.154.63
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86098DF59
+	for <stable@vger.kernel.org>; Sun, 20 Oct 2024 05:28:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729402449; cv=none; b=frek3q7hqB6vZGLDB5MrfYV/eNRCtyZPlsFh7zep+70Mw3cMa3Qb33cD/ztBs+rgk6GV5q2pv5x9OGKQUBPVEKmbbaoVHdAnO0b91bw6xsWctEXOj/+Z+OiIMXIk39ixhjeaYnIumO7yHm6U3zVIGsIxfwt2H/mIjUb42S5zzcw=
+	t=1729402105; cv=none; b=lv+kRghzPwIn1ZO/srJTLAMnkQlmfKgSJljl7DAbZ2F9lBJrM+pDUVzUs9sf/S0NQr5CR/PXyZ708aApsqZL+wPPLJex45PSaz7yX1C+TyUvrXSn2BFUlgrDsGUpJ92VLIosPh7VIYByiXpiof756karuYeSWtWWnSfGnCU2FAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729402449; c=relaxed/simple;
-	bh=67WXJCg9R4GR0zcOVJJJjWaadN4fzsti+3L9kPB6TJw=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=Dge7gNM+VoMg+GjF54Giu0Yobbq1/rl5V/Rs1dvGGwea7hdpfAGKrPMrsjxWzzM3lTTzM7c0SLjf361YzCVY1NIb3BjoxPVQ+s/AHQiYuf/LNxpCug6cc5GXg8A02f0+tNNsMMBPSU54HP3vKv3ClgyolLAvOb4iI+Hn9qv45Vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ans.pl; spf=none smtp.mailfrom=ans.pl; dkim=pass (1024-bit key) header.d=ans.pl header.i=@ans.pl header.b=Bygoib5S; arc=none smtp.client-ip=217.79.154.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ans.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ans.pl
-X-Virus-Scanned: amavisd-new at emenem.pl
-Received: from [192.168.1.10] (c-98-45-176-131.hsd1.ca.comcast.net [98.45.176.131])
-	(authenticated bits=0)
-	by cmyk.emenem.pl (8.17.1.9/8.17.1.9) with ESMTPSA id 49K5M31L014914
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Sun, 20 Oct 2024 07:22:05 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ans.pl; s=20190507;
-	t=1729401726; bh=be54kpTFzAbFpBrYrKaH6Cm7QGzCJ1NxCsxHd8m+gA4=;
-	h=Date:From:To:Cc:Subject;
-	b=Bygoib5SC89kuxgPSwvG2bk96Mr5xRz8gKSiP0k/p98vfsvX+M+LaZ1jfiuAvHiNQ
-	 077FhBbnH24NLQfyJgfZSHIrP41f5AyByE4A2gD1lthVjFFGqYSSdnJXxWWs0PxmB5
-	 ekKBkBpDyfVtMICa3AokODQB7YctxbB4dQN8n/Rg=
-Message-ID: <8eb81c74-4311-4d87-9c13-be6a99c94e2f@ans.pl>
-Date: Sat, 19 Oct 2024 22:22:01 -0700
+	s=arc-20240116; t=1729402105; c=relaxed/simple;
+	bh=lWpKg7cZlxk5+I5dEu0m2KWp7mH0jRj5PAELGzya32s=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=pv7V7iM6TIQWZnUkjdGCQpqG2OpR5Zbdtyy/N/rO+3SYMfx5HNum+rFebY9r07HMEuM1wHOcwj6LzBFc+32mhJF3tF735gRVTQnkCfqnm8HliSyOhQSQk7er8ueLfh7bOUU7jvoLr382JFrI5qRADsj0zEhe12WtoK2jkfZNlZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=rjcm4E9b; arc=none smtp.client-ip=17.58.6.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; t=1729402102;
+	bh=+3UjV7BU0TIkt4Lhwy86UL8JylbnLsp4ODES3JsnJc0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To;
+	b=rjcm4E9be/d88baHvpjEDFn5al/Fz/NXhsYtKGzKnafVfMRwuJdWdaetj2P298Uol
+	 TTjVNcX4qkwkOuO2C5BiGI5I2wGfoc0zs4c1cIUIpLvkIGG3DowwSWqEgEkzsDi2iz
+	 QnGnkHDTsXLBUiIKEAcHctWo9CDJRdYITP/6k6r1usb+LdEniQeLKz6herCHFcRu+q
+	 JM1CHMn+QvmHDDojbnjvnQkSKWBPEDASEqMufPPBrATP5w1XuU6w0Xlmnp04eIRBAi
+	 VnwOewVctf8wtkcUAlcNflBPxT8gHwsJJqv1N65Ls8/D9+DM469oRyzZDOlrRUxvIf
+	 6+1IYBnTg2ybw==
+Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
+	by pv50p00im-hyfv10021501.me.com (Postfix) with ESMTPSA id 515E72C0141;
+	Sun, 20 Oct 2024 05:28:16 +0000 (UTC)
+From: Zijun Hu <zijun_hu@icloud.com>
+Subject: [PATCH 0/6] phy: core: Fix bugs for several APIs and simplify an
+ API
+Date: Sun, 20 Oct 2024 13:27:45 +0800
+Message-Id: <20241020-phy_core_fix-v1-0-078062f7da71@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-From: =?UTF-8?Q?Krzysztof_Ol=C4=99dzki?= <ole@ans.pl>
-To: Florian Westphal <fw@strlen.de>, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, netfilter-devel <netfilter-devel@vger.kernel.org>
-Subject: 6.6.57-stable regression: "netfilter: xtables: avoid NFPROTO_UNSPEC
- where needed" broke NFLOG on IPv6
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANGUFGcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxNDAyMD3YKMyvjk/KLU+LTMCt1U48QUM9OUJEuLNHMloJaColSgMNi46Nj
+ aWgDfOHg9XgAAAA==
+To: Vinod Koul <vkoul@kernel.org>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, Felipe Balbi <balbi@ti.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Rob Herring <robh@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+ Lee Jones <lee@kernel.org>
+Cc: Zijun Hu <zijun_hu@icloud.com>, stable@vger.kernel.org, 
+ linux-phy@lists.infradead.org, netdev@vger.kernel.org, 
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Zijun Hu <quic_zijuhu@quicinc.com>
+X-Mailer: b4 0.14.1
+X-Proofpoint-ORIG-GUID: cUMa0O_M1qQTEfDmNyMtrVfExnK6Tj1_
+X-Proofpoint-GUID: cUMa0O_M1qQTEfDmNyMtrVfExnK6Tj1_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-20_02,2024-10-17_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011 spamscore=0
+ malwarescore=0 phishscore=0 mlxscore=0 adultscore=0 bulkscore=0
+ mlxlogscore=574 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2308100000 definitions=main-2410200032
+X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
 
-Hi,
+This patch series is to fix bugs for below APIs:
 
-After upgrading to 6.6.57 I noticed that my IPv6 firewall config failed to load.
+devm_phy_put()
+devm_of_phy_provider_unregister()
+devm_phy_destroy()
+phy_get()
+of_phy_get()
+devm_of_phy_get_by_index()
 
-Quick investigation flagged NFLOG to be the issue:
+And simplify API of_phy_simple_xlate().
 
-# ip6tables -I INPUT -j NFLOG
-Warning: Extension NFLOG revision 0 not supported, missing kernel module?
-ip6tables: No chain/target/match by that name.
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+---
+Zijun Hu (6):
+      phy: core: Fix API devm_phy_put() can not release the phy
+      phy: core: Fix API devm_of_phy_provider_unregister() can not unregister the phy provider
+      phy: core: Fix API devm_phy_destroy() can not destroy the phy
+      phy: core: Add missing of_node_put() for an error handling path of _of_phy_get()
+      phy: core: Add missing of_node_put() in of_phy_provider_lookup()
+      phy: core: Simplify API of_phy_simple_xlate() implementation
 
-The regression is caused by the following commit:
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit/?h=linux-6.6.y&id=997f67d813ce0cf5eb3cdb8f124da68141e91b6c
-
-More precisely, the bug is in the change below:
-
-+#if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
-+	{
-+		.name       = "NFLOG",
-+		.revision   = 0,
-+		.family     = NFPROTO_IPV4,
-+		.checkentry = nflog_tg_check,
-+		.destroy    = nflog_tg_destroy,
-+		.target     = nflog_tg,
-+		.targetsize = sizeof(struct xt_nflog_info),
-+		.me         = THIS_MODULE,
-+	},
-+#endif
-
-Replacing NFPROTO_IPV4 with NFPROTO_IPV6 fixed the issue.
-
-Looking at the commit, it seems that at least one more target (MARK) may be also impacted:
-
-+#if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
-+	{
-+		.name           = "MARK",
-+		.revision       = 2,
-+		.family         = NFPROTO_IPV4,
-+		.target         = mark_tg,
-+		.targetsize     = sizeof(struct xt_mark_tginfo2),
-+		.me             = THIS_MODULE,
-+	},
-+#endif
-
-The same errors seem to be present in the main tree:
- https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0bfcb7b71e735560077a42847f69597ec7dcc326
-
-I also suspect other -stable trees may be impacted by the same issue.
+ drivers/phy/phy-core.c | 39 ++++++++++++++++++---------------------
+ 1 file changed, 18 insertions(+), 21 deletions(-)
+---
+base-commit: d8f9d6d826fc15780451802796bb88ec52978f17
+change-id: 20241020-phy_core_fix-e3ad65db98f7
 
 Best regards,
- Krzysztof Olędzki
+-- 
+Zijun Hu <quic_zijuhu@quicinc.com>
+
 
