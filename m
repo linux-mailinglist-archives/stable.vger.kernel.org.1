@@ -1,113 +1,111 @@
-Return-Path: <stable+bounces-86974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B5389A5443
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 15:16:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E147D9A5480
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 16:30:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA34A1C20336
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 13:16:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53FBC282182
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 14:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16FE8192597;
-	Sun, 20 Oct 2024 13:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F52F192B88;
+	Sun, 20 Oct 2024 14:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SRZyw5aJ"
+	dkim=pass (2048-bit key) header.d=aurel32.net header.i=@aurel32.net header.b="dAyw6bpQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from hall.aurel32.net (hall.aurel32.net [195.154.113.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E662319149F
-	for <stable@vger.kernel.org>; Sun, 20 Oct 2024 13:15:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F57219259F;
+	Sun, 20 Oct 2024 14:30:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.154.113.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729430159; cv=none; b=JSs1K5GvybbTv49mZkwdkOKEwqkdLZ12h1whFJYo/CQGgzHH78mfBwM6GDA+VxeatS5Wk4Ionuse+96myPxc5Q8eFOx+l9NQNRmSYcWVVfPrWHkxx1fILVnpgzftYJEbW8KSg5yqyNI6pU2lTY8CBVSvLz+lRqDFRO7DVyPU4hE=
+	t=1729434630; cv=none; b=mmNPkR0ch+hp7C7myWFGpZiZTt0x8yy+yonPkzDqfLEYSWK4qrarIzA7VOjnvpryTfdYPHtM5WXs2TwPcIumoAfCOIl5oBq4v3AHTcuKFncGlwWPVgq2/ivZ+KBLYCa5G5x8rQ8ouyX25V/NJvQbQX+PZnvpw7hwmXaIWSZKVP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729430159; c=relaxed/simple;
-	bh=uKgjva+0ctCwkivt4M+aYeVvXG0QvbFTOwa82+8Ezoc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C/EtpU7E5d4EIm2p8gTfCmSuQRYYPFqTMM8WpgO6FCy15IrhxpV6Y/ilt53WhbRGQD+a6JWMUBSxwfMHaMdJajRglC/E7qHy+4WOWA1Uyo6ICfmKu9WMgg0KVlWinD8tmWeA7L5G9MtX1lznbl134TcJ89K7m6AEle1hhsur220=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SRZyw5aJ; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-539e7e73740so3205990e87.3
-        for <stable@vger.kernel.org>; Sun, 20 Oct 2024 06:15:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729430156; x=1730034956; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SYwZIeGEIc7VnkIRXpz4d+bHytScBmaxexHgM4ooyL4=;
-        b=SRZyw5aJZwxgCJteX331J+Ygei7AymiR84aR8o5Q7YN5BGBacHK88kqyr5ieXzFx+s
-         GKb5nMNlUYnw+nNs4GgIkY1mp52Zt+J3HhYPDvjB3+NKW4VBg9GTeLDl2p7j+xTxuN+c
-         5LvREnzVK8DDp5X3biwTPEs45WqYUpRoglTr/z3OPyZw4v0L3t4OxypzvIKQjMJC2VmS
-         7InkRCQ7CLwckxh1xlQJJbKoNL0mhdlwblfhXe6RxkKU/4A0IuDQDaOrdYWfqr7PxK/z
-         EdUB2kEHtB0JVJCsMk4LCwNuhF9hEZDPRpuH1PiWwR+ZXq92v3mjtckhGFwwM8PFNOKv
-         P1Nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729430156; x=1730034956;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SYwZIeGEIc7VnkIRXpz4d+bHytScBmaxexHgM4ooyL4=;
-        b=HbULmoptJ4D19tuFQ1SfBJ4/jvqwQY+gR30XTjujqda9Z9Sn4miFU5Ooja9s7T9WYP
-         QH70b3Pj344Ye8hhjZuRyKFOl+BGjQ6olpDCg9AtxYNQUZ5hEffBa7ymbQsOUQVASl5E
-         5IrvzW6IY7ZKQimeudj3OdZd89oJAsVDMLRI+bFu4q/R3hNygFuDUGv3vRPLo/lzN+AT
-         RRVr8gUHQwznwFcUI6Wg6SuTIuXXgLia48sIpw6YD66QkhMkiburqogMHhWm/W/tdq6s
-         bJFw0/VQwn5qQ6dl8lwc0gtTHTBXCuPgO1OokABBEXzIApD4g1Pj6hrwNqKyS4zPwyV2
-         f7cA==
-X-Forwarded-Encrypted: i=1; AJvYcCV6ne4XS8ar6A7ti0MmqwuJI84RI9MmUJ38OUiv7vUmPgxpSGc/vNoKCWcKBjMUkqEnE8BTXW0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBGo5PKDHbhnwlOTlm7kj4buVmdAiQ3dYlmwyA/U/RrQVTm2mx
-	c1kBIIkZ57zFVTnqWTgyzXG9zwwCcWVciWii9eVoY5NtClnIfXfWZqBRzTXNg7E=
-X-Google-Smtp-Source: AGHT+IELxOsBj0URcEerkg6VeNl2eSHEE8fsdZdOVwEJm1At+CtbZCT/15/LMiNV6gF6vzcZLfV0qA==
-X-Received: by 2002:a05:6512:2399:b0:539:f7de:df6a with SMTP id 2adb3069b0e04-53a15459fc3mr4475921e87.52.1729430155912;
-        Sun, 20 Oct 2024 06:15:55 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53a223e55f5sm220175e87.34.2024.10.20.06.15.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Oct 2024 06:15:54 -0700 (PDT)
-Date: Sun, 20 Oct 2024 16:15:53 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Caleb Connolly <caleb.connolly@linaro.org>, Guenter Roeck <linux@roeck-us.net>, 
-	linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	s=arc-20240116; t=1729434630; c=relaxed/simple;
+	bh=sjC3FAXtWg6O06Pv1zwqwzO4mh/+6hnyFfe6tqV1uzA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k2a9XL//WkAqUmQRwIOxfvmGV5R8gl2f5PL0fno0/Z9p/mFG6cQOJNw3qrxOCqg6I9NyrnJQPXKu2+uA26KTNGVYpJmjZsLxewtQb8O+W+wWT2ermrJtdTHl6WZWFUTcWT7jRZTabVjS+Wf/WxOGOawCJtz1uCffDuBJRNGx5po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aurel32.net; spf=pass smtp.mailfrom=aurel32.net; dkim=pass (2048-bit key) header.d=aurel32.net header.i=@aurel32.net header.b=dAyw6bpQ; arc=none smtp.client-ip=195.154.113.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aurel32.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aurel32.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=aurel32.net
+	; s=202004.hall; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:
+	Subject:Cc:To:From:Content-Type:From:Reply-To:Subject:Content-ID:
+	Content-Description:In-Reply-To:References:X-Debbugs-Cc;
+	bh=c8OwalKN/einu7unYL2zrwmG3433Cw/yB0G2xU4t9rQ=; b=dAyw6bpQ+Wz1leHkH9cvdO39Nm
+	fngPmqnv1U4CWTTIkFui4x2R+PFoROQhuVLhj659h1deKyEfSjcIv/2Wc5Y3GJeXKXWKE/X2WuSRY
+	vmkvBvC6Ef9hWP3IEdXH5iMpogNeruNwuvX5DmqQEnLg1G50gKANYOaEpBXnE+SUQEeVgGIbSVdu2
+	Q9bD3ubEO+YER73zUeya0qIq9jBCSRQXYu5PxcXIWkiEuP5aIBW99Vr1ywMWI5hTxtufH+gaj1taP
+	0NIa9BE+GvYhy/y12MMtbXQ9eskley/iKQUldCt36i6cqR+DpF40tgarIFCQ49hFe5dz9IOCNz40D
+	xYGicPbA==;
+Received: from ohm.aurel32.net ([2001:bc8:30d7:111::2] helo=ohm.rr44.fr)
+	by hall.aurel32.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <aurelien@aurel32.net>)
+	id 1t2WwJ-00BfVt-0V;
+	Sun, 20 Oct 2024 16:29:51 +0200
+From: Aurelien Jarno <aurelien@aurel32.net>
+To: William Qiu <william.qiu@starfivetech.com>,
+	linux-riscv@lists.infradead.org (open list:RISC-V MISC SOC SUPPORT),
+	Jaehoon Chung <jh80.chung@samsung.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	linux-mmc@vger.kernel.org (open list:SYNOPSYS DESIGNWARE MMC/SD/SDIO DRIVER),
+	linux-kernel@vger.kernel.org (open list)
+Cc: Aurelien Jarno <aurelien@aurel32.net>,
+	Ron Economos <re@w6rz.net>,
+	Jing Luo <jing@jing.rocks>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] usb: typec: qcom-pmic-typec: fix missing fwnode
- removal in error path
-Message-ID: <hw2m5c5wakwm4jcihammegpuydm3cbhxyzaln4p57w6ybkaaea@fx6thktwjuty>
-References: <20241020-qcom_pmic_typec-fwnode_remove-v2-0-7054f3d2e215@gmail.com>
- <20241020-qcom_pmic_typec-fwnode_remove-v2-2-7054f3d2e215@gmail.com>
+Subject: [PATCH] mmc: dw_mmc: take SWIOTLB memory size limitation into account
+Date: Sun, 20 Oct 2024 16:29:31 +0200
+Message-ID: <20241020142931.138277-1-aurelien@aurel32.net>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241020-qcom_pmic_typec-fwnode_remove-v2-2-7054f3d2e215@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Oct 20, 2024 at 02:56:35PM +0200, Javier Carrasco wrote:
-> If drm_dp_hpd_bridge_register() fails, the probe function returns
-> without removing the fwnode via fwnode_handle_put(), leaking the
-> resource.
-> 
-> Jump to fwnode_remove if drm_dp_hpd_bridge_register() fails to remove
-> the fwnode acquired with device_get_named_child_node().
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 7d9f1b72b296 ("usb: typec: qcom-pmic-typec: switch to DRM_AUX_HPD_BRIDGE")
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> ---
->  drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
+The Synopsys DesignWare mmc controller on the JH7110 SoC
+(dw_mmc-starfive.c driver) is using a 32-bit IDMAC address bus width,
+and thus requires the use of SWIOTLB.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+The commit 8396c793ffdf ("mmc: dw_mmc: Fix IDMAC operation with pages
+bigger than 4K") increased the max_seq_size, even for 4K pages, causing
+"swiotlb buffer is full" to happen because swiotlb can only handle a
+memory size up to 256kB only.
 
+Fix the issue, by making sure the dw_mmc driver doesn't use segments
+bigger than what SWIOTLB can handle.
+
+Reported-by: Ron Economos <re@w6rz.net>
+Reported-by: Jing Luo <jing@jing.rocks>
+Fixes: 8396c793ffdf ("mmc: dw_mmc: Fix IDMAC operation with pages bigger than 4K")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+---
+ drivers/mmc/host/dw_mmc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
+index 41e451235f637..dc0d6201f7b73 100644
+--- a/drivers/mmc/host/dw_mmc.c
++++ b/drivers/mmc/host/dw_mmc.c
+@@ -2958,7 +2958,8 @@ static int dw_mci_init_slot(struct dw_mci *host)
+ 		mmc->max_segs = host->ring_size;
+ 		mmc->max_blk_size = 65535;
+ 		mmc->max_req_size = DW_MCI_DESC_DATA_LENGTH * host->ring_size;
+-		mmc->max_seg_size = mmc->max_req_size;
++		mmc->max_seg_size =
++		    min_t(size_t, mmc->max_req_size, dma_max_mapping_size(host->dev));
+ 		mmc->max_blk_count = mmc->max_req_size / 512;
+ 	} else if (host->use_dma == TRANS_MODE_EDMAC) {
+ 		mmc->max_segs = 64;
 -- 
-With best wishes
-Dmitry
+2.45.2
+
 
