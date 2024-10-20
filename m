@@ -1,138 +1,115 @@
-Return-Path: <stable+bounces-86972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C97C89A542E
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 14:57:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7A299A543F
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 15:15:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F7001F223C1
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 12:57:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFADE1C20B22
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 13:15:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB3D19342F;
-	Sun, 20 Oct 2024 12:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A80192B8A;
+	Sun, 20 Oct 2024 13:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fHMg+Ibj"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PdvTe2dj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565E1192D87;
-	Sun, 20 Oct 2024 12:56:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E1D178372
+	for <stable@vger.kernel.org>; Sun, 20 Oct 2024 13:15:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729429007; cv=none; b=IS+FpKE1jiBJMzW/OTSZIKeTry+6CfpoIlS30r+Hzo0NcAU5Wvb7w8Ocej1xLlqt7v7TNzrLG6KMnAyOIYprfv/FBwz7cR0OxjBHO4Bxg6WzAPmsHd/n4lZYKgy2bq08NV9+M9PPZyzAutO3vnh7x2//g8O61dDLhyjLmsjEVxQ=
+	t=1729430123; cv=none; b=Ayk676AHfjNLNVvLhfW0FUaubcnTMB/ObASCkx9WGaA4icLvvyMxTLmr0mwjOwQZ3QTWgyA9DHFl2qtvYJJYpOLkJ7z/ogRPcnJj6vRbiQZ2+e3WJqdFRkqFSg8hGewcJTmkhXRQiigRAsBAT79YFzqylEcSNUMLaCXfCbdr9ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729429007; c=relaxed/simple;
-	bh=UlTDYWZVsPjmFXqO3SuPTCeEP1M0s4v2VqV1L8OcrJ0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NvLwi3FPjig1AGzwAr16GRWF3gqW5oiVIJe6qHBvKmy8i3UqrOlaY9xSXlZ8BZ2LFh3jx4T8WAF53wBe3sDIQjbpNEyskoYBHgKX5Y0rH72cbZNr38LxH8kz/FSvlQ1RJ5ULW41z1bwHPGck8Ft2Bs9emlz0aVZLWxQcHZZ/G7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fHMg+Ibj; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43158625112so34611825e9.3;
-        Sun, 20 Oct 2024 05:56:45 -0700 (PDT)
+	s=arc-20240116; t=1729430123; c=relaxed/simple;
+	bh=poO/hwuPggMCfKMtN6J/IKMRK8KmxYpxlq0aLtC6rXw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fkhc8zFLRa7EsAh50dOzfDBFM0W4s+Qs/8163rPS1Zgf/29j9z2XqrQdiQ5bVLWLcbR53nO+vBOqLU1HRmfj0UpFuUZtT3ZG7yGWXZOmdjNPjGLTojRuMNMCuzvkDfol0oTK35hzUw8fR24m26PXbawpIDk4eQx7DpDeFqS/4AU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PdvTe2dj; arc=none smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2fb51e00c05so48970521fa.0
+        for <stable@vger.kernel.org>; Sun, 20 Oct 2024 06:15:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729429003; x=1730033803; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oDGKjKx/RHrvUZiVAr/5RFcyku1oUCaohmQwoCH6bXE=;
-        b=fHMg+Ibjue1aenv7UspJgM76LTa0CL8Ab2gMeo/uf1MOAp56byJSoRcROXYExByDvP
-         D35PGyx13dVVpnqzTFyYd23MgME+g8zt4CJEw08mmUc9o9G7E+GnWqm/gFC3LrB56w7m
-         hIAQkPWA0IuKYNa0rlT5PxQGZ3J9BFWs1gKR08YUP4sxXFjxnNcycnqJwZvBsRccRZs+
-         4RitlJwZB8Ua9jhw4QKUGzb3Se0XdbZx4fQ4BggDcCC1nJpLaI6pi93hz9Nvej/EpPT8
-         uZr5MokhSSPhDsCBXqX9IO9OAR3KRp/QkfGdqhI70U4VaQzaWpYgTMAfDN49Sku+nDTe
-         lAwA==
+        d=linaro.org; s=google; t=1729430119; x=1730034919; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9gXL56oVVchWDXVTsVXRD1GEhyc86fnULmJY57/IB98=;
+        b=PdvTe2djFMDCmA4Y8a0ThWYOIEWy78iCaAORlTJhhmrdcDG3u8CZAOD/bD2KSaQQ8T
+         2RWrnVdtcD4p1ghxOyxphjWX/LH3KSZ71UtQFeLv8A0wD4Sd5zVu/81jGWC1NqJjlmq8
+         MqhaD/tEKGXYekiRZNSZ5Mu77ctdba2sQSLNIOP8f1A/JwoQuT+ujG9Pp30LJXM6xTWc
+         e5LfinwG8eUMVRMZYShAAV1yi7Gsdjymj9TdjLkGfv4FJPHD1v6DXPlN5ylDjR39U58j
+         sb2+fvo5fQlRo24rSE1bCKlU63mAYwvwrOzdzPntJtfrOA5djJBtYNfoK4C8UG4VhtZt
+         k+Uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729429003; x=1730033803;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oDGKjKx/RHrvUZiVAr/5RFcyku1oUCaohmQwoCH6bXE=;
-        b=UX+BOJI7XQ1LjYYGGifiAVBQC4YB6VsHhnEg67ftn5anT0Ur7ZOsYksb+XYtkKtFMS
-         S/dYbHCtiiqQm45yDzGkayHHVm7Dp7nidevFr8sGzRcKaqbv4G4lhtH5Q/hudw3S1PwJ
-         Nqkm8oK2xCSSArr1xitjlKxSHAHL+X/ue1gDWBnCUg3jGzKDZkD1FujarYJX+zjtf/t2
-         gsu4/WoYIGU4X/POVcBBbo0dOG0ILjcsarU4OfGLs5VGIaR5h3wXZnZfnpRrzf4nUYq7
-         FT/8rCdDGwm+6dq6aJLZk485rIPOnQc+Wvpnr39WTMORR+67PuToPniwOZnWZShRSnQ0
-         BQaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVKw/ggI42bh8ftn3R1pXVMiHS1RoJArmFwjn0exgYCq2TZWWWqv+LEzrr7LtuN8CCR6xMC7Su7@vger.kernel.org, AJvYcCVZnI2mKb0krzai+lLTvbuHWAwGwWIN0Mpi1Ede5YlRrI8PFOi8j20W+b5SYn/Ov0p08gh+FbMW/6Ey@vger.kernel.org, AJvYcCXSmVMOQNxkV+/ZAXY0BYzhHCcOAaD3QC40SMKDM2h8EzgSKMlcvw6CodJToaLpdo5hVe9Jr7oLuppwJN0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7vly+lvAiNytoNCksgmXF79zoD7p9KA5rdbnWiQNP6o4x4fHp
-	7h0a4WF1hQPocBuio/OeWTDI/Jj3xOv+rfsN5E19AYaFJv6m3wcRxg1FYOBW
-X-Google-Smtp-Source: AGHT+IE6u6+iI/Gmf76CwKGO0v/6Wqkc1oAzj5zIWD5wrVd1yU38i/mMS/GCJ/xijz9k2kT8i/jyeg==
-X-Received: by 2002:a05:600c:3592:b0:431:586e:7e7 with SMTP id 5b1f17b1804b1-43161634f28mr65353065e9.1.1729429002910;
-        Sun, 20 Oct 2024 05:56:42 -0700 (PDT)
-Received: from [127.0.1.1] (2a02-8389-41cf-e200-5fe4-91f7-fa4f-9c21.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:5fe4:91f7:fa4f:9c21])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4316f57fe00sm23010755e9.20.2024.10.20.05.56.41
+        d=1e100.net; s=20230601; t=1729430119; x=1730034919;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9gXL56oVVchWDXVTsVXRD1GEhyc86fnULmJY57/IB98=;
+        b=aRueyTVgEyfIW32wsLTuC0HrTaZ7ubpYJ6FDz1Z0/lH3gw7pfkC0QjmSXK7JNkcyaa
+         WJWlNjwOGrh+snVEqui5/ES+1BLuX42LTYhKa3cHi3cpBQF9xTbG5IlAK6on/Qek4RE9
+         FjH6uHi2fS4mLippOSwyU79W/CYkb6fDHgIB/yUnhJ84o2sC3+meDrlvE5JHC6m/0v4V
+         GcDnijECsCCZq0Dlaxc3GefJKVSf8u/JgC4y+zU6aYMRkyMaCscISBQdGlG+Jx73ndHz
+         U3Mwy8cATlIWrAWFzeayMj3Xl1H+gml2cOkZwU5B0xndXJPZzZ9MIw/W+MWR/8Tw75l1
+         6dfg==
+X-Forwarded-Encrypted: i=1; AJvYcCWHgOjhqINpIq2uyTmcgNHbycz15Rv/SUUbZ/laNZe9wspTQ3MVTnbr+y866t55JxQi5OSHCm4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxjx0JtYeTOvY3TDYlNp4gXkNhqkIhQ5Rz1uqu2US0AeODFFl2L
+	75/QY/UzAV2VCfaCMmzLqA0mYBXXy/i/fMaEmptyv/ydVzWsT5McUS0aDyy238Y=
+X-Google-Smtp-Source: AGHT+IGuzJyisFPDCA07ZQb5NEcQD2ZqMQRQA//tQSzjdBOhWj0uTeILAHaOSrId8jri4G7h0VDyGQ==
+X-Received: by 2002:a2e:80a:0:b0:2fb:5ae7:24e7 with SMTP id 38308e7fff4ca-2fb82e90ee3mr44660631fa.4.1729430119150;
+        Sun, 20 Oct 2024 06:15:19 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2fb9ae24b58sm2270571fa.128.2024.10.20.06.15.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Oct 2024 05:56:42 -0700 (PDT)
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Sun, 20 Oct 2024 14:56:35 +0200
-Subject: [PATCH v2 2/2] usb: typec: qcom-pmic-typec: fix missing fwnode
- removal in error path
+        Sun, 20 Oct 2024 06:15:17 -0700 (PDT)
+Date: Sun, 20 Oct 2024 16:15:15 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Caleb Connolly <caleb.connolly@linaro.org>, Guenter Roeck <linux@roeck-us.net>, 
+	linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] usb: typec: qcom-pmic-typec: use
+ fwnode_handle_put() to release fwnodes
+Message-ID: <upegry45eqmt6nton6whtvlbg2wjoh5uvocmq46rlv5xhg5qf6@pacgknliknsx>
+References: <20241020-qcom_pmic_typec-fwnode_remove-v2-0-7054f3d2e215@gmail.com>
+ <20241020-qcom_pmic_typec-fwnode_remove-v2-1-7054f3d2e215@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241020-qcom_pmic_typec-fwnode_remove-v2-2-7054f3d2e215@gmail.com>
-References: <20241020-qcom_pmic_typec-fwnode_remove-v2-0-7054f3d2e215@gmail.com>
-In-Reply-To: <20241020-qcom_pmic_typec-fwnode_remove-v2-0-7054f3d2e215@gmail.com>
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
- Caleb Connolly <caleb.connolly@linaro.org>, 
- Guenter Roeck <linux@roeck-us.net>
-Cc: linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1729428996; l=1282;
- i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=UlTDYWZVsPjmFXqO3SuPTCeEP1M0s4v2VqV1L8OcrJ0=;
- b=yj+qfs4BY5cWpTg2VSEdKCRIJIqlhUmi9BfW2D40RyfMwQy6UtY9S9XSJKEMFrlJnxaLfmvgM
- fheWUnR655RDk74d/hJZ591Ylz2t5YhDvKCnyDNIZEZ/0+KdKufUoTo
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241020-qcom_pmic_typec-fwnode_remove-v2-1-7054f3d2e215@gmail.com>
 
-If drm_dp_hpd_bridge_register() fails, the probe function returns
-without removing the fwnode via fwnode_handle_put(), leaking the
-resource.
+On Sun, Oct 20, 2024 at 02:56:34PM +0200, Javier Carrasco wrote:
+> The right function to release a fwnode acquired via
+> device_get_named_child_node() is fwnode_handle_put(), and not
+> fwnode_remove_software_node(), as no software node is being handled.
+> 
+> Replace the calls to fwnode_remove_software_node() with
+> fwnode_handle_put() in qcom_pmic_typec_probe() and
+> qcom_pmic_typec_remove().
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: a4422ff22142 ("usb: typec: qcom: Add Qualcomm PMIC Type-C driver")
+> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> ---
+>  drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
 
-Jump to fwnode_remove if drm_dp_hpd_bridge_register() fails to remove
-the fwnode acquired with device_get_named_child_node().
-
-Cc: stable@vger.kernel.org
-Fixes: 7d9f1b72b296 ("usb: typec: qcom-pmic-typec: switch to DRM_AUX_HPD_BRIDGE")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
----
- drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
-index 73a159e67ec2..3766790c1548 100644
---- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
-+++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
-@@ -93,8 +93,10 @@ static int qcom_pmic_typec_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 
- 	bridge_dev = devm_drm_dp_hpd_bridge_alloc(tcpm->dev, to_of_node(tcpm->tcpc.fwnode));
--	if (IS_ERR(bridge_dev))
--		return PTR_ERR(bridge_dev);
-+	if (IS_ERR(bridge_dev)) {
-+		ret = PTR_ERR(bridge_dev);
-+		goto fwnode_remove;
-+	}
- 
- 	tcpm->tcpm_port = tcpm_register_port(tcpm->dev, &tcpm->tcpc);
- 	if (IS_ERR(tcpm->tcpm_port)) {
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
 -- 
-2.43.0
-
+With best wishes
+Dmitry
 
