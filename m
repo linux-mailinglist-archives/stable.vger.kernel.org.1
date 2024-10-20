@@ -1,144 +1,143 @@
-Return-Path: <stable+bounces-86964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A48A99A5374
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 12:19:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E904C9A537D
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 12:40:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EF881F226DA
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 10:19:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1693281A24
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 10:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1D24188A3B;
-	Sun, 20 Oct 2024 10:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B69186E58;
+	Sun, 20 Oct 2024 10:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="QqVdEdWg"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HZIS2PZh"
 X-Original-To: stable@vger.kernel.org
-Received: from pv50p00im-zteg10011501.me.com (pv50p00im-zteg10011501.me.com [17.58.6.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0677485
-	for <stable@vger.kernel.org>; Sun, 20 Oct 2024 10:19:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29D23B2BB
+	for <stable@vger.kernel.org>; Sun, 20 Oct 2024 10:40:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729419588; cv=none; b=aLkp1MN5rvuejAdv/vhsR1nWQUOJpVy4C3EBSfEb0ClJ70vtVoBlTmweN2BQtU+7Ro+xpdaGCzpFcHnAYNyUGAJm+YaBSF49KQGqV74XEmx0l0yqOiqRt5x8MlrZFFJwQTj+kRCsFvvb6x5LJrEwlnMqj3M1VZPzvTSA4tJUJlc=
+	t=1729420840; cv=none; b=Aev3ldmlj7QwAV/BzitGFzunn+14uHeoBnf+ln2wE69oa93VsFz3rj3qVvhAeH/SwYY+EtRNnQrSqqLIEQ+8BodFeDwUMuD3ZiQ6DIzw0AZ3eOCMzcElTZtWH6GyHDY3/f6b6KiZfgsEZcXe0j8STJjQ6yRHNEbteRcdF1oz2lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729419588; c=relaxed/simple;
-	bh=l1S0Oc4Vc+ZVohAA151UdXjpKQfwMpMbOn4+f3lXQvM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uaojXVP2eRmiilE0rwUM/qkaE9P2NncZHt3/qDeUs7qPZOkiCqDtk4PtL+xvM0kRz8QzHo3TD88GGiBv8PF+KrxA33TgaBECVM/E3iDI1OKOURknuiqQME/kpu/zkyxaI43CoXVlD6dunTFmae3dCMIrPQScI267rKSleFgaLKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=QqVdEdWg; arc=none smtp.client-ip=17.58.6.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1729419585;
-	bh=yVKYWzMebxw4JY7NKUStkDyKnGs9EY56GyMpc/ew/5s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	b=QqVdEdWgDfwnj7sF608eoKseidVyEc9MnjcbtIetM2ltCo7znHh6/zw/rNtMoWxKB
-	 zSfhIRGERY4m5CBmGapmGnHc1mYt/xCg1k7JTt7VDBitn670tYo0pSDNAAeZgWnvsS
-	 OAoY8NZHSRrC2LoibpeFxwXOp47ROFjTuG6pZV8TH5gUkuT3Vnx6qSai15tKQIDkrp
-	 nVarkPmuVFPUQ/snUHmLnzVrPrhNK7CXLx95oQTENFmMQqiEZQ8a2fuXYQTVTdWjHs
-	 QFvIVBBMySAYWSOoMie1YL6gdCyvxHTxfuUPoJC5ZsvJeHDbHdmjRtWwdU7tWy4+wC
-	 sasAFyyMjGu1g==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-zteg10011501.me.com (Postfix) with ESMTPSA id 67C964A02BE;
-	Sun, 20 Oct 2024 10:19:38 +0000 (UTC)
-Message-ID: <8adbf600-b8c1-4d3d-a6b0-8f18482742aa@icloud.com>
-Date: Sun, 20 Oct 2024 18:19:09 +0800
+	s=arc-20240116; t=1729420840; c=relaxed/simple;
+	bh=e6Zx+YooRSyCvyeXZGGGQhAAfGoOuT2cf3p2UYYwbfE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ug72X+dvv/i820PSRaGGSlWTlxTnM/tqLmHejX/qXA3ZqYC9Mtppi5dJ5vHvMflUyxmPaHwirAm6j6x994yn5iA6qnsbbqtyMLhvZq5FEIXO7+UDUFDfIjojP2yCLGg2Sy4/SUELiO46n8339ET0gPOK2jWdL28v1emBZ7GE11g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HZIS2PZh; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2fb58980711so36498901fa.0
+        for <stable@vger.kernel.org>; Sun, 20 Oct 2024 03:40:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1729420836; x=1730025636; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Big7GRyU+UAfruB67dvDyIF5xLwYENedGA5XWw38ccM=;
+        b=HZIS2PZhnWzv4IJs7BMXfbMz0ge8OFJmcUmGx+y3mme3E0yxQt4v4tFNl65ypfnKzA
+         0iIqzZ/U3ioS4KHo6/iwfuW30Uum13VCOC9JJismiU0h56/B67PKHBy1VzzzRRWy7YUD
+         ZpfuccJ9nMzIUWf+OOmlEf6gw5omZKZzAOJGyw8g0HavQs8sY3CF3LglMa+uaNN3nVKo
+         7M1UO4vZp/7OufcCYdTHZYCffcbmdmTMn/6oUW9FD45RThOUInALO66x8EdUdE/twcHT
+         Dkk2fB3bDJNA3GOMPZwiAkkjrP8gn/SMethvC/MlQDIOns2R1ZcEl5N10hRTZwXSV+l5
+         qKhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729420836; x=1730025636;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Big7GRyU+UAfruB67dvDyIF5xLwYENedGA5XWw38ccM=;
+        b=o15S9Uoko/UrTTfhiW8RcW3YOMZK8YimIzV2rVGzt2FnjAoTx+5IXJYWogOlOxTFsw
+         GPgNs7vm7wnEg1cV1fzHXnbcew0QdyTE49zVArVFt8CNL2/GUHtjWwYusfTDrq0YyHFv
+         ioO+SALBwQ7UvzMTau0Cbfdg3zFqqdn1SWrJV6WKFwbZzjA+Z2XAddPi90ikw0Nm6eot
+         lX8+CANYxiyX9AmVPDRIXUMcrDXozi0Pt2PPjxiRm9VqJOyZhtQX7CtLUvKSMzqIrvVm
+         sEg1rdrzEUA0zumjCJ8p2JFvKite2fck4BTkSiOgKOhvCaOL/8bYRUHoI3+psCyb9r3P
+         RNYg==
+X-Forwarded-Encrypted: i=1; AJvYcCXYa31IQJIxXjBnHagnK77k1Y/uJKTbsnQFMLqSLHtbRbmkOd4lUwcdrnGFaHp6hlm4xFhirLg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJaIUgRF9xXOu9ieFPKKO8faaVNo5hjd/1V/Tw/uN8dTle3VYw
+	k3bty5cN93IkbYU+Q1FGH/7kcnn5sf1ZiOmH8ke1Gn92Lc+BoAMH1jMpJMK2ebU=
+X-Google-Smtp-Source: AGHT+IF7RhC0ss4D/GUbjaVcpKS0Kwjy6EO8ydxnPbYU8S1RzlzA0UxTIbmGS1nJrZQfTQTYhR/O+Q==
+X-Received: by 2002:a05:651c:1986:b0:2fa:bb5d:db67 with SMTP id 38308e7fff4ca-2fb83260f85mr36077151fa.32.1729420834784;
+        Sun, 20 Oct 2024 03:40:34 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2fb9ad91535sm1978321fa.72.2024.10.20.03.40.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Oct 2024 03:40:33 -0700 (PDT)
+Date: Sun, 20 Oct 2024 13:40:30 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] usb: typec: qcom-pmic-typec: fix missing fwnode removal
+ in error path
+Message-ID: <nsmpyy736kfdn5h727bfgfd6lufecyi5kz6kfiyzndgz3xiei5@7uzrrve4q3fb>
+References: <20241019-qcom_pmic_typec-fwnode_remove-v1-1-884968902979@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/6] phy: core: Simplify API of_phy_simple_xlate()
- implementation
-To: Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I
- <kishon@kernel.org>, Felipe Balbi <balbi@ti.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Rob Herring <robh@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Lee Jones <lee@kernel.org>
-Cc: stable@vger.kernel.org, linux-phy@lists.infradead.org,
- netdev@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>
-References: <20241020-phy_core_fix-v1-0-078062f7da71@quicinc.com>
- <20241020-phy_core_fix-v1-6-078062f7da71@quicinc.com>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <20241020-phy_core_fix-v1-6-078062f7da71@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: VuuRnmVBSFD8Lq-91SJTDLikCykcND8L
-X-Proofpoint-GUID: VuuRnmVBSFD8Lq-91SJTDLikCykcND8L
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-20_07,2024-10-17_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 clxscore=1015 mlxscore=0
- spamscore=0 malwarescore=0 phishscore=0 bulkscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2410200068
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241019-qcom_pmic_typec-fwnode_remove-v1-1-884968902979@gmail.com>
 
-On 2024/10/20 13:27, Zijun Hu wrote:
-> From: Zijun Hu <quic_zijuhu@quicinc.com>
+On Sat, Oct 19, 2024 at 11:10:51PM +0200, Javier Carrasco wrote:
+> If drm_dp_hpd_bridge_register() fails, the probe function returns
+> without removing the fwnode via fwnode_remove_software_node(), leaking
+> the resource.
 > 
-> Simplify of_phy_simple_xlate() implementation by API
-> class_find_device_by_of_node() which is also safer since it
-> subsys_get() @phy_class subsystem firstly then iterates devices.
-> 
-> Also comment its parameter @dev with unused in passing since the parameter
-> provides no available input info but acts as an auto variable.
-> 
-i am not sure which parameter is unused. @dev or @args
+> Jump to fwnode_remove if drm_dp_hpd_bridge_register() fails to remove
+> the software node acquired with device_get_named_child_node().
 
-comment says @args is not used here
-but code actually uses @args but does not use @dev
+I think the fwnode_remove_software_node() is not a proper cleanup
+function here (and was most likely c&p from some other driver). See the
+comment in front of device_get_named_child_node().
 
-> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Please add another patch before this one, replacing
+fwnode_remove_software_node() with fwnode_handle_put().
+
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 7d9f1b72b296 ("usb: typec: qcom-pmic-typec: switch to DRM_AUX_HPD_BRIDGE")
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 > ---
->  drivers/phy/phy-core.c | 19 ++++++-------------
->  1 file changed, 6 insertions(+), 13 deletions(-)
+>  drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
-> index 24bd619a33dd..102fc6b6ff71 100644
-> --- a/drivers/phy/phy-core.c
-> +++ b/drivers/phy/phy-core.c
-> @@ -748,7 +748,7 @@ EXPORT_SYMBOL_GPL(devm_phy_put);
+> diff --git a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
+> index 2201eeae5a99..776fc7f93f37 100644
+> --- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
+> +++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
+> @@ -93,8 +93,10 @@ static int qcom_pmic_typec_probe(struct platform_device *pdev)
+>  		return -EINVAL;
 >  
->  /**
->   * of_phy_simple_xlate() - returns the phy instance from phy provider
-> - * @dev: the PHY provider device
-> + * @dev: the PHY provider device unused
->   * @args: of_phandle_args (not used here)
->   *
->   * Intended to be used by phy provider for the common case where #phy-cells is
-> @@ -759,20 +759,13 @@ EXPORT_SYMBOL_GPL(devm_phy_put);
->  struct phy *of_phy_simple_xlate(struct device *dev,
->  				const struct of_phandle_args *args)
->  {
-> -	struct phy *phy;
-> -	struct class_dev_iter iter;
-> -
-> -	class_dev_iter_init(&iter, &phy_class, NULL, NULL);
-> -	while ((dev = class_dev_iter_next(&iter))) {
-> -		phy = to_phy(dev);
-> -		if (args->np != phy->dev.of_node)
-> -			continue;
-> +	struct device *target_dev;
+>  	bridge_dev = devm_drm_dp_hpd_bridge_alloc(tcpm->dev, to_of_node(tcpm->tcpc.fwnode));
+> -	if (IS_ERR(bridge_dev))
+> -		return PTR_ERR(bridge_dev);
+> +	if (IS_ERR(bridge_dev)) {
+> +		ret = PTR_ERR(bridge_dev);
+> +		goto fwnode_remove;
+> +	}
 >  
-> -		class_dev_iter_exit(&iter);
-> -		return phy;
-> +	target_dev = class_find_device_by_of_node(&phy_class, args->np);
-> +	if (target_dev) {
-> +		put_device(target_dev);
-> +		return to_phy(target_dev);
->  	}
-> -
-> -	class_dev_iter_exit(&iter);
->  	return ERR_PTR(-ENODEV);
->  }
->  EXPORT_SYMBOL_GPL(of_phy_simple_xlate);
+>  	tcpm->tcpm_port = tcpm_register_port(tcpm->dev, &tcpm->tcpc);
+>  	if (IS_ERR(tcpm->tcpm_port)) {
+> 
+> ---
+> base-commit: f2493655d2d3d5c6958ed996b043c821c23ae8d3
+> change-id: 20241019-qcom_pmic_typec-fwnode_remove-00dc49054cf7
+> 
+> Best regards,
+> -- 
+> Javier Carrasco <javier.carrasco.cruz@gmail.com>
 > 
 
+-- 
+With best wishes
+Dmitry
 
