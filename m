@@ -1,138 +1,193 @@
-Return-Path: <stable+bounces-86944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B445C9A52D8
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 08:10:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D00939A52FE
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 09:18:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EF001F22212
-	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 06:10:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A6C9B2138C
+	for <lists+stable@lfdr.de>; Sun, 20 Oct 2024 07:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148D0D53F;
-	Sun, 20 Oct 2024 06:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9736525771;
+	Sun, 20 Oct 2024 07:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="aB/jlrpL"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="c8GP7jYy";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="W2dPVKAD";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="c8GP7jYy";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="W2dPVKAD"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACEA717543;
-	Sun, 20 Oct 2024 06:10:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E6CBA2D;
+	Sun, 20 Oct 2024 07:18:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729404608; cv=none; b=RJ/mdQDwa/KJfb1QaA53EuGlhOqLfGaI8YJnWE8hWTEzGj7TYMtsH7p8cjH3inDsySp1IEgKFO8QfS4rdwz1Nfehjqt3rdl7rgt1yOLAHQhHBOwbUOogeF5oQ2P9TAw3TieoCwJsXw0B0C5nTkzpqeGSW1xLAgc1h64QDNxE5Sk=
+	t=1729408729; cv=none; b=Y+aKpyM9a5Q3dvnJ1T/cOW+zdK9LUF5oWRKcY1ifKy3cOd1EhRn96KgAJQ7rfTZmtdW+9KLhZdKcW5cyP3p0YaaoWEf55TfxBPENrftdlqs9RtJATaC9opPFdYn7xHdy9lfFhatosoGA8YdVsD/5JmSmEv8t9QVZFNRnLfQdRUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729404608; c=relaxed/simple;
-	bh=F3grSouN+TZpsaEREplq00cTbboxFvzZ7+5mcLi7Qws=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sRhyOePANfx1+V5vXZKsaioXvBwXNlrkhVOXArAYStLK4DeEgqXHIsWaoBY9qvnrwTOKpAM6SEUAmBQ/bxfWcdlr4Cq4HHJRVBP3SIuyKxvDs/p4qBlJld+iXnBb10RUm4eFMDP5pW+V5afsmAIdYhNGFw8ROZ/GyxgSJssdg+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=aB/jlrpL; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=cx6s8aoEP6mh4BZD5a9PwPy6TZKM720Amha8z1oJXV4=;
-	t=1729404606; x=1729836606; b=aB/jlrpLXo+Put0ibDiMj/RLx1PJQSbR6dRVjDXSxG3c3CD
-	aUqmczPkynz74ntVVT4YyeFiaxkk5sd9x6wjWF/UMtd8ghojm6uP8Il5cx5BWyEWdZsNUfoPLPjmb
-	qHaptiB2e5AgFdl03sJ8ZR3EEixWdWMAQsm4DPZy4U+RUIBc4xL4wL3paesM6U7GWDUyvyEY02oZS
-	FX8lAVD7/g+XOH5mk6JTPZkWV9EXvGDjRyx8P709aiLIzsJ4AoQYh+PzmtEcnTMqsqr3oND1wV/Vi
-	CeUUX/vU79cdqjuMIU/uS5IIusFaoYN9P8a5hDAY+Nro/ZwL9npG0qHBh8Ebz1qw==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1t2P8W-0005yr-TA; Sun, 20 Oct 2024 08:09:56 +0200
-Message-ID: <64702a91-e8c8-4d9e-92a0-e53c58e5ff77@leemhuis.info>
-Date: Sun, 20 Oct 2024 08:09:55 +0200
+	s=arc-20240116; t=1729408729; c=relaxed/simple;
+	bh=7T8jIq9N8C0DJGZ91eyFAZd2P2AtqTLtY7CHEzjm+dM=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Y90VNswwadSLD7Q8//R87TUs/mzeooEi1gQd2F6j6YESWmXhIEP83s+dQqFChDTaDAM0oQomHQyTwRyF34X/lFYRcuc/CnOFFcp531QuYNGoxmTnkwOsM88LjI+u4GSZYLTubNsW/rtp5/Gaos1YXbLo4ELMaCByMxIb1awv+3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=c8GP7jYy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=W2dPVKAD; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=c8GP7jYy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=W2dPVKAD; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 3D6471FDA7;
+	Sun, 20 Oct 2024 07:18:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1729408720; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nFtbtmULMnSG3ZeJX/CQ1Cnqql0kK3sTI0bMhJ/FxrY=;
+	b=c8GP7jYykFI93i08I6K6+dvUhyIpVMe0Xzb8O2w7q69km+gk08hvybznHE828WA8INg3JY
+	+N4VY5IklA7jgyEtaX9nwVE8axTzxiqomcF6EpebrlNrPcGqVzvj3EWnqaRhqRwevywkxo
+	uJOmXQT0qGeuXs2t6am1m5K3060XSmk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1729408720;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nFtbtmULMnSG3ZeJX/CQ1Cnqql0kK3sTI0bMhJ/FxrY=;
+	b=W2dPVKAD29f+HGL46xp9OYI9TbfcuJENxAMas+OhxR9gipDyK79eVmty0D4qZhZGiRJijY
+	tYMqoTWTQ1JMizDQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1729408720; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nFtbtmULMnSG3ZeJX/CQ1Cnqql0kK3sTI0bMhJ/FxrY=;
+	b=c8GP7jYykFI93i08I6K6+dvUhyIpVMe0Xzb8O2w7q69km+gk08hvybznHE828WA8INg3JY
+	+N4VY5IklA7jgyEtaX9nwVE8axTzxiqomcF6EpebrlNrPcGqVzvj3EWnqaRhqRwevywkxo
+	uJOmXQT0qGeuXs2t6am1m5K3060XSmk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1729408720;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nFtbtmULMnSG3ZeJX/CQ1Cnqql0kK3sTI0bMhJ/FxrY=;
+	b=W2dPVKAD29f+HGL46xp9OYI9TbfcuJENxAMas+OhxR9gipDyK79eVmty0D4qZhZGiRJijY
+	tYMqoTWTQ1JMizDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 051DC13894;
+	Sun, 20 Oct 2024 07:18:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id GcUQANCuFGf/egAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Sun, 20 Oct 2024 07:18:40 +0000
+Date: Sun, 20 Oct 2024 09:19:39 +0200
+Message-ID: <87h697jl6c.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Dean Matthew Menezes <dean.menezes@utexas.edu>
+Cc: Takashi Iwai <tiwai@suse.de>,
+	stable@vger.kernel.org,
+	regressions@lists.linux.dev,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Linux Sound System <linux-sound@vger.kernel.org>,
+	Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: No sound on speakers X1 Carbon Gen 12
+In-Reply-To: <CAEkK70RAWRjRp6_=bSrecSXXMfnepC2P2YriaHUqicv5x5wJWw@mail.gmail.com>
+References: <CAEkK70Tke7UxMEEKgRLMntSYeMqiv0PC8st72VYnBVQD-KcqVw@mail.gmail.com>
+	<2024101613-giggling-ceremony-aae7@gregkh>
+	<433b8579-e181-40e6-9eac-815d73993b23@leemhuis.info>
+	<87bjzktncb.wl-tiwai@suse.de>
+	<CAEkK70TAk26HFgrz4ZS0jz4T2Eu3LWcG-JD1Ov_2ffMp66oO-g@mail.gmail.com>
+	<87cyjzrutw.wl-tiwai@suse.de>
+	<CAEkK70T7NBRA1dZHBwAC7mNeXPo-dby4c7Nn=SYg0vzeHHt-1A@mail.gmail.com>
+	<87ttd8jyu3.wl-tiwai@suse.de>
+	<CAEkK70RAWRjRp6_=bSrecSXXMfnepC2P2YriaHUqicv5x5wJWw@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: 6.6.57-stable regression: "netfilter: xtables: avoid
- NFPROTO_UNSPEC where needed" broke NFLOG on IPv6
-To: =?UTF-8?Q?Krzysztof_Ol=C4=99dzki?= <ole@ans.pl>,
- Florian Westphal <fw@strlen.de>, Pablo Neira Ayuso <pablo@netfilter.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ilya Katsnelson <me@0upti.me>
-Cc: stable@vger.kernel.org, netfilter-devel
- <netfilter-devel@vger.kernel.org>,
- Linux kernel regressions list <regressions@lists.linux.dev>
-References: <8eb81c74-4311-4d87-9c13-be6a99c94e2f@ans.pl>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <8eb81c74-4311-4d87-9c13-be6a99c94e2f@ans.pl>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1729404606;71981361;
-X-HE-SMSGID: 1t2P8W-0005yr-TA
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Score: -3.30
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.986];
+	MIME_GOOD(-0.10)[text/plain];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	ARC_NA(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-[CCing Ilya and the regression list, as it should be in the loop for
-regressions: https://docs.kernel.org/admin-guide/reporting-regressions.html]
+On Sun, 20 Oct 2024 01:11:39 +0200,
+Dean Matthew Menezes wrote:
+> 
+> With the patch I get this alsa-info.sh
 
-> Hi,
-> 
-> After upgrading to 6.6.57 I noticed that my IPv6 firewall config failed to load.
-> 
-> Quick investigation flagged NFLOG to be the issue:
-> 
-> # ip6tables -I INPUT -j NFLOG
-> Warning: Extension NFLOG revision 0 not supported, missing kernel module?
-> ip6tables: No chain/target/match by that name.
-> 
-> The regression is caused by the following commit:
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit/?h=linux-6.6.y&id=997f67d813ce0cf5eb3cdb8f124da68141e91b6c
+The status looks OK; at least the DAC assignment is identical with the
+working case with 6.8 kernel.  But I noticed that your device doesn't
+seem needing the I2S amp, judging from the module list.  Please give 
+the dmesg outputs from both working and non-working cases, as
+requested earlier, for further analysis, too.
 
-Not my area of expertise, but from a quick look is seems to be a known
-problem due to some typos and people are working on a fix here:
+Then check the following change instead of the previous one:
 
-https://lore.kernel.org/all/20241019-xtables-typos-v3-1-66dd2eaacf2f@0upti.me/
+-- 8< --
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10754,8 +10754,8 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x17aa, 0x2318, "Thinkpad Z13 Gen2", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
+ 	SND_PCI_QUIRK(0x17aa, 0x2319, "Thinkpad Z16 Gen2", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
+ 	SND_PCI_QUIRK(0x17aa, 0x231a, "Thinkpad Z16 Gen2", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
+-	SND_PCI_QUIRK(0x17aa, 0x231e, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_ALC1318),
+-	SND_PCI_QUIRK(0x17aa, 0x231f, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_ALC1318),
++	SND_PCI_QUIRK(0x17aa, 0x231e, "Thinkpad", ALC287_FIXUP_THINKPAD_I2S_SPK),
++	SND_PCI_QUIRK(0x17aa, 0x231f, "Thinkpad", ALC287_FIXUP_THINKPAD_I2S_SPK),
+ 	SND_PCI_QUIRK(0x17aa, 0x2326, "Hera2", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x30bb, "ThinkCentre AIO", ALC233_FIXUP_LENOVO_LINE2_MIC_HOTKEY),
+ 	SND_PCI_QUIRK(0x17aa, 0x30e2, "ThinkCentre AIO", ALC233_FIXUP_LENOVO_LINE2_MIC_HOTKEY),
+-- 8< --
 
-Ciao, Thorsten
+If this doesn't work, let's try to get rid of those entries, instead:
 
-> More precisely, the bug is in the change below:
-> 
-> +#if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
-> +	{
-> +		.name       = "NFLOG",
-> +		.revision   = 0,
-> +		.family     = NFPROTO_IPV4,
-> +		.checkentry = nflog_tg_check,
-> +		.destroy    = nflog_tg_destroy,
-> +		.target     = nflog_tg,
-> +		.targetsize = sizeof(struct xt_nflog_info),
-> +		.me         = THIS_MODULE,
-> +	},
-> +#endif
-> 
-> Replacing NFPROTO_IPV4 with NFPROTO_IPV6 fixed the issue.
-> 
-> Looking at the commit, it seems that at least one more target (MARK) may be also impacted:
-> 
-> +#if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
-> +	{
-> +		.name           = "MARK",
-> +		.revision       = 2,
-> +		.family         = NFPROTO_IPV4,
-> +		.target         = mark_tg,
-> +		.targetsize     = sizeof(struct xt_mark_tginfo2),
-> +		.me             = THIS_MODULE,
-> +	},
-> +#endif
-> 
-> The same errors seem to be present in the main tree:
->  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0bfcb7b71e735560077a42847f69597ec7dcc326
-> 
-> I also suspect other -stable trees may be impacted by the same issue.
-> 
-> Best regards,
->  Krzysztof Olędzki
+-- 8< --
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10754,8 +10754,8 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x17aa, 0x2318, "Thinkpad Z13 Gen2", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
+ 	SND_PCI_QUIRK(0x17aa, 0x2319, "Thinkpad Z16 Gen2", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
+ 	SND_PCI_QUIRK(0x17aa, 0x231a, "Thinkpad Z16 Gen2", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
+-	SND_PCI_QUIRK(0x17aa, 0x231e, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_ALC1318),
+-	SND_PCI_QUIRK(0x17aa, 0x231f, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_ALC1318),
++//	SND_PCI_QUIRK(0x17aa, 0x231e, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_ALC1318),
++//	SND_PCI_QUIRK(0x17aa, 0x231f, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_ALC1318),
+ 	SND_PCI_QUIRK(0x17aa, 0x2326, "Hera2", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x30bb, "ThinkCentre AIO", ALC233_FIXUP_LENOVO_LINE2_MIC_HOTKEY),
+ 	SND_PCI_QUIRK(0x17aa, 0x30e2, "ThinkCentre AIO", ALC233_FIXUP_LENOVO_LINE2_MIC_HOTKEY),
+-- 8< --
 
+If neither of the above brings back the sound, I must have looked at a
+wrong place.
+
+
+thanks,
+
+Takashi
 
