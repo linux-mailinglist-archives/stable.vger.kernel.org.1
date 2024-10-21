@@ -1,125 +1,123 @@
-Return-Path: <stable+bounces-87549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3547C9A68BF
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 14:40:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9983B9A68F4
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 14:47:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C92D2B23FC0
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:40:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BC1C1F21C10
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF0A1F1310;
-	Mon, 21 Oct 2024 12:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C191A1F4FD1;
+	Mon, 21 Oct 2024 12:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l+WDe/rS"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RPuj8Rbf"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1BC41F4FC4;
-	Mon, 21 Oct 2024 12:39:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6602B1F8903
+	for <stable@vger.kernel.org>; Mon, 21 Oct 2024 12:46:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729514381; cv=none; b=K8ONkDKtprSsWvIo0mPzyhTmJ3P1aqxw+tD2gaz4FugOeE02/0octdDxXVlmkxiz6x09WJHoab6PXnlWjmx4NzG1m1Zkv5HGOAoD8uux/mHWR3dEIisKX5Fau5ioY1wyGjkgC9wBXtrNLDDwN2om1sKFk8jH59JNwc8ALOTQgLk=
+	t=1729514794; cv=none; b=RJfD0HGNg6hd84vmGJ+lZt3eaqM5sl/oQWsVK4fQ1DEWyCrEKOSATNKg3Ivzn92K9M1BmeSSSODYJV6SKj4tjLzLs9aEiVoNm32xpnYsDNOLic7u8RpZ105x7COF6R1vkuvyLglNJ92wUAff71fx1lBEKMrcdJ/W9FOAdqcgK9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729514381; c=relaxed/simple;
-	bh=N6inumPa8oPCKpveca58697EayFfJqdOgAyl9WnGfoc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EjD/iOA2CNU/EHVpVhhloW64M50J/u3nKWqzhCwzRQMHXz5DzJon509m5ktF9pfzQ34BMvvfGJRzRJ2pBrEiBOK4mIrKRJnPCcmQdrIhTJ069mgMYlneEJ2Xtt98ex5AlDa3cjJj+2TDHopGgL5JUOhQwOXq8+CGLEx4TFBuczQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l+WDe/rS; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729514379; x=1761050379;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=N6inumPa8oPCKpveca58697EayFfJqdOgAyl9WnGfoc=;
-  b=l+WDe/rSepjgbyhM1Q6L4C3XXHnEh9imIBP7TD5LJbCpZvan4HImFgQY
-   trW3fAhgOp0mDCUL8Xl4z9TNHspJmckxYTohwy4BB5QkSbije7DPZfuDx
-   1ee3I/a77tvMUzhSjtTjLvx/zOWq8i4eljWx1EOEgN7V4C95sfdeXYfaQ
-   g4O90PMB0zUtMLtbVCcsZLbGhb5cAtWkotpb/12eHF/czXfav/JhMdnVo
-   WOrpYdSt99qc2br45dIx0pWXpRjGa9sJkUNNz13bWqV5qRiQ8Si0A+9hF
-   Le/uDO6bbbFxdkF9h88Dslm7bj61MSzufbCd9KLultkFWXUW7KvlfPvBC
-   g==;
-X-CSE-ConnectionGUID: zHMhO4vLSCa4vwbtmJcf3w==
-X-CSE-MsgGUID: uRb0yfn2TLqERrJcqg+6+A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="40120083"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="40120083"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 05:39:38 -0700
-X-CSE-ConnectionGUID: dKFWS3z9SWCXxMLsPmPd2Q==
-X-CSE-MsgGUID: g77htEcCSWWK2FV3dP2Dew==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,220,1725346800"; 
-   d="scan'208";a="83528480"
-Received: from silpixa00400314.ir.intel.com (HELO silpixa00400314.ger.corp.intel.com) ([10.237.223.156])
-  by fmviesa003.fm.intel.com with ESMTP; 21 Oct 2024 05:39:35 -0700
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-To: alex.williamson@redhat.com
-Cc: jgg@ziepe.ca,
-	yishaih@nvidia.com,
-	shameerali.kolothum.thodi@huawei.com,
-	kevin.tian@intel.com,
-	xin.zeng@intel.com,
-	kvm@vger.kernel.org,
-	qat-linux@intel.com,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	stable@vger.kernel.org,
-	Zijie Zhao <zzjas98@gmail.com>
-Subject: [PATCH] vfio/qat: fix overflow check in qat_vf_resume_write()
-Date: Mon, 21 Oct 2024 13:37:53 +0100
-Message-ID: <20241021123843.42979-1-giovanni.cabiddu@intel.com>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1729514794; c=relaxed/simple;
+	bh=GipNeiHlWq01xxl6JBssY7r/CVBRMaxGJfNsqJ4td1E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uP0bjoJrZUMGnnC8k/js+c/va+wc4eR22JXrZU9e+0yU2a247Ct7nulriXIYPahubJm52EmJq6+JhBdNsfYsL4Ov2SIR80MFpQDwr402ZyWHC08+JZvWX5cKZ2cw+PIe3o8yQAJce/Tm99L2aLfXBat1++kvQohF6fPdQbaYnSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RPuj8Rbf; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-539e4b7409fso4430737e87.0
+        for <stable@vger.kernel.org>; Mon, 21 Oct 2024 05:46:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1729514790; x=1730119590; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=00OOYAye7Y8Jmp2eoWZbqWaZ8JNNBAOvgechpLDPNLM=;
+        b=RPuj8RbfJhOc2DYVbhHSgbjzjf5uqWkIUXINkOP8zFUkeNZ0lNxWYHemgox7FLynbi
+         01fw9GisVNdrMAruc5qKbx7uBvCWc2738iDCUWXWk8TCDnXCnXvt5CJFKx85qNoyvpgj
+         ZgYlYmb6ybQ/nhZkiHclaDy5Ro6udzDGosUNHk6A5UP5D2uOk8vYx9G2bxykEDC8pNEJ
+         U2VNvHdNhP/sfclnaM/qTVTAp2IFxA9E3LFKKk2pTvHMiH+mJZAH3+9YHdutZToGc+v/
+         tblUbW0oBLERRzaCApZR66fDoIZ+/tV8V1w8Zp3I5/WvQUpK6xmVSHJ4wxbrHbhY4t1B
+         aNeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729514790; x=1730119590;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=00OOYAye7Y8Jmp2eoWZbqWaZ8JNNBAOvgechpLDPNLM=;
+        b=E0J+lmOp8oT/NBKfZDi1Ld0PEta4gOsBqlsxFwxzxaWHzuvs/+z52n5B95cylbxiRy
+         4BnuU20jpNYPeCf8qyiD6fBsB1guIX7/WTMrqA8vbc7SXLbmF55ZN4pfdVA/IiQsaExj
+         3x3h5Tr9gyWqhaK7wAmxCJ/wYhQJqXzcvCp/ZhFFN3qFg+ETymfqWEzOcsjYK1OhQPsS
+         GOnsx/xB/K77hpwci881UOjiBYS+nb41CAEf3FcCvUxYzRSKy+lRzNgD4RipN/jwuS7l
+         9foR3xi6OTjmogNazULRP3rCKhjJxtpq2GlI26HeZUQUTYfAZjlb4JxyE3STeWbprD9R
+         qVkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVQu0riFJjzH9PIWwCOInllNBob1RNt7KG3khjFrXfs5lgChsijS2NGGsqYq7T+32fab3wmmA8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxohJctbSpNlAVKEjq+2n47fCcESl3RVpDzmH/tycz+roc7FUvX
+	6Rt92gErjuPCxfgR3KN/d4I2Umr3x7RSGQKeEzoozTxX8Q/lncPftlJQmBIr08KGXLogfSDBu3y
+	dkMZm8ZPelfKDQ4i3Ip3gH57jGOVGmVbN0syMCQ==
+X-Google-Smtp-Source: AGHT+IGe3S4BwA+pOP/cQq7I1CjxxDBUjVQoZRmQ7W4PP8hKLPc100e8nJIIOd6Yg8yfMAsZvsSBWYHMIieC1vxcEJw=
+X-Received: by 2002:a05:6512:1392:b0:539:e67e:7db8 with SMTP id
+ 2adb3069b0e04-53a0c6ae65bmr4990352e87.12.1729514790318; Mon, 21 Oct 2024
+ 05:46:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Research and Development Ireland Ltd - Co. Reg. #308263 - Collinstown Industrial Park, Leixlip, County Kildare - Ireland
-Content-Transfer-Encoding: 8bit
+References: <20241017-arm-kasan-vmalloc-crash-v3-0-d2a34cd5b663@linaro.org>
+ <20241017-arm-kasan-vmalloc-crash-v3-1-d2a34cd5b663@linaro.org>
+ <69f71ac8-4ba6-46ed-b2ab-e575dcada47b@foss.st.com> <CACRpkdYvgZj1R4gAmzFhf4GmFOxZXhpHVTOio+hVP52OBAJP0A@mail.gmail.com>
+ <46336aba-e7dd-49dd-aa1c-c5f765006e3c@foss.st.com>
+In-Reply-To: <46336aba-e7dd-49dd-aa1c-c5f765006e3c@foss.st.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Mon, 21 Oct 2024 14:46:18 +0200
+Message-ID: <CACRpkdaiwt3aHmRKbR5e-hbd3VpR_Zxd95N3CmcAtFV-mjw_tg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] ARM: ioremap: Sync PGDs for VMALLOC shadow
+To: Clement LE GOFFIC <clement.legoffic@foss.st.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, 
+	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev <kasan-dev@googlegroups.com>, 
+	Russell King <linux@armlinux.org.uk>, Kees Cook <kees@kernel.org>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Mark Brown <broonie@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	Antonio Borneo <antonio.borneo@foss.st.com>, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The unsigned variable `size_t len` is cast to the signed type `loff_t`
-when passed to the function check_add_overflow(). This function considers
-the type of the destination, which is of type loff_t (signed),
-potentially leading to an overflow. This issue is similar to the one
-described in the link below.
+On Mon, Oct 21, 2024 at 2:12=E2=80=AFPM Clement LE GOFFIC
+<clement.legoffic@foss.st.com> wrote:
 
-Remove the cast.
+> I saw your email about Melon's patch targeting the same subject.
+> If we don't enable KASAN either you patch or Melon's one do not compile.
+>
+> [...]
+> +       if (IS_ENABLED(CONFIG_KASAN_VMALLOC))
+> [...]
+>
+> Should be replaced with an #ifdef directive.
+> `kasan_mem_to_shadow` symbol is hiden behind :
+>
+> include/linux/kasan.h:32:#if defined(CONFIG_KASAN_GENERIC) ||
+> defined(CONFIG_KASAN_SW_TAGS)
+>
+> So symbol doesn't exist without KASAN enabled.
 
-Note that even if check_add_overflow() is bypassed, by setting `len` to
-a value that is greater than LONG_MAX (which is considered as a negative
-value after the cast), the function copy_from_user(), invoked a few lines
-later, will not perform any copy and return `len` as (len > INT_MAX)
-causing qat_vf_resume_write() to fail with -EFAULT.
+Yeah sorry for missing this. :(
 
-Fixes: bb208810b1ab ("vfio/qat: Add vfio_pci driver for Intel QAT SR-IOV VF devices")
-CC: stable@vger.kernel.org # 6.10+
-Link: https://lore.kernel.org/all/138bd2e2-ede8-4bcc-aa7b-f3d9de167a37@moroto.mountain
-Reported-by: Zijie Zhao <zzjas98@gmail.com>
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Xin Zeng <xin.zeng@intel.com>
----
- drivers/vfio/pci/qat/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The absence of stubs in the Kasan header makes it necessary to rely
+on ifdefs.
 
-diff --git a/drivers/vfio/pci/qat/main.c b/drivers/vfio/pci/qat/main.c
-index e36740a282e7..1e3563fe7cab 100644
---- a/drivers/vfio/pci/qat/main.c
-+++ b/drivers/vfio/pci/qat/main.c
-@@ -305,7 +305,7 @@ static ssize_t qat_vf_resume_write(struct file *filp, const char __user *buf,
- 	offs = &filp->f_pos;
- 
- 	if (*offs < 0 ||
--	    check_add_overflow((loff_t)len, *offs, &end))
-+	    check_add_overflow(len, *offs, &end))
- 		return -EOVERFLOW;
- 
- 	if (end > mig_dev->state_size)
--- 
-2.47.0
+I will fold the ideas from Melon's patch into mine and also develop
+a version that works with ifdefs.
 
+Yours,
+Linus Walleij
 
