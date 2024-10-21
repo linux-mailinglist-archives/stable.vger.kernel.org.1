@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-87439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FE129A64F7
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9B799A651D
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:54:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 117E228182C
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B75F2B2C62B
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242821EABBB;
-	Mon, 21 Oct 2024 10:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC47A1E766E;
+	Mon, 21 Oct 2024 10:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oc1FV7j6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lwDCMhVl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7E41E9098;
-	Mon, 21 Oct 2024 10:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C58D1E47D3;
+	Mon, 21 Oct 2024 10:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507609; cv=none; b=Mu0aWickw02fm0pOI6R4vhwb5XIcnG0wRA29nsYEdPpIBuzVCtjyeoMPKOpoLm3t1dJQheZDdDNjrBSYBFDIS7n4HFpYBY4bC68ij8n4zXAY3t9lNGUwTCCJIHF2TxDRJBvstpoiQOWymYMC5MGi8vrMezSaZiMywhbQfXaLVwE=
+	t=1729507189; cv=none; b=WskOHP2LM/gER0eRRjT7BQbeT6fB5RrQOdnkxw5K1MeTeUACNfBhvWNzb42dNDlpLFnhhOMooQWR2+4HyFZg1pGlFpTVlyI0+puGaz/J9pmi3WDHWZltaK9VuaXIn8FYcoqIYGynm5SENhVibfz0KLFdBJrjwtY3lBkBY/61h/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507609; c=relaxed/simple;
-	bh=xsqhomVptL5ey5nCRxov4+ZhmBBGoom+tUNG0h87OwE=;
+	s=arc-20240116; t=1729507189; c=relaxed/simple;
+	bh=qqKJUV22mxvzwT5WBTCPrmvRxOthtUu68gzjFHovz10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rh08qnGZYg35c5QlONBNo1yntBrXHpLDGjEgz/W3X4C7DNyzqNl2gtnrzt/gmF0odQ2TSsOakR4hhTdiIHiwYJMeZ+eVieusp/UPPTRn9m4UsAIH3+cGwlCliJ1mtReZ+5beYu0N8pjB1k+vbjzBzUX4Wvtp4Hy5qYP94FrqEJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oc1FV7j6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9E9C4CEC3;
-	Mon, 21 Oct 2024 10:46:49 +0000 (UTC)
+	 MIME-Version; b=YwqwywmRlqb/X33QJNScLkyAcf2aTxxh9s/Laxwkw9GX7vI+dR7I5rzzFMV6Wzg0O9yq6czsRacEZ5APTqIa7sIJmFv3JRCJguR2L9RE+rZWQs5BMi03FxfuEX13PdoIGZoyh/1+ynZd9F1sf/dCUVb21O/O/9ejFxvTVLEcFBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwDCMhVl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2FB5C4CEC3;
+	Mon, 21 Oct 2024 10:39:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507609;
-	bh=xsqhomVptL5ey5nCRxov4+ZhmBBGoom+tUNG0h87OwE=;
+	s=korg; t=1729507189;
+	bh=qqKJUV22mxvzwT5WBTCPrmvRxOthtUu68gzjFHovz10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oc1FV7j6yRSL2k6rdDfIi2cnbOEVAkxuCNXGTYD7QhiKzNmY89IGWFfHB76rjCLAM
-	 c1TxxwerovVJkdZhCKc2Hp0cnRYxaLxTlmL/Lp+YBP8c622jamjk9rn7V91fzk2pEW
-	 6NHOL/eNKXu6EkKWujm9+4b7lCfTDTVlKAt5F21Q=
+	b=lwDCMhVl4GUXsSzDBN73fjnEePT1er3MPvm9EtuFgP+gciLCXzcXkVbT0hVmAvkfN
+	 +f3DqqpWeWk1NDrl972XIS0AKSiz5jJl0JbI+UqulkzdpYf44+jBdXj0O58eaaxsT8
+	 DO94GIGNjxk6lOPSCm6SBnd57MTa8JELoIfbhFPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Michael Mueller <mimu@linux.ibm.com>,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>
-Subject: [PATCH 5.15 41/82] KVM: s390: Change virtual to physical address access in diag 0x258 handler
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>
+Subject: [PATCH 6.6 118/124] serial: qcom-geni: fix receiver enable
 Date: Mon, 21 Oct 2024 12:25:22 +0200
-Message-ID: <20241021102248.863574596@linuxfoundation.org>
+Message-ID: <20241021102301.284425440@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Mueller <mimu@linux.ibm.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit cad4b3d4ab1f062708fff33f44d246853f51e966 upstream.
+commit fa103d2599e11e802c818684cff821baefe7f206 upstream.
 
-The parameters for the diag 0x258 are real addresses, not virtual, but
-KVM was using them as virtual addresses. This only happened to work, since
-the Linux kernel as a guest used to have a 1:1 mapping for physical vs
-virtual addresses.
+The receiver is supposed to be enabled in the startup() callback and not
+in set_termios() which is called also during console setup.
 
-Fix KVM so that it correctly uses the addresses as real addresses.
+This specifically avoids accepting input before the port has been opened
+(and interrupts enabled), something which can also break the GENI
+firmware (cancel fails and after abort, the "stale" counter handling
+appears to be broken so that later input is not processed until twelve
+chars have been received).
 
-Cc: stable@vger.kernel.org
-Fixes: 8ae04b8f500b ("KVM: s390: Guest's memory access functions get access registers")
-Suggested-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Michael Mueller <mimu@linux.ibm.com>
-Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240917151904.74314-3-nrb@linux.ibm.com
-Acked-by: Janosch Frank <frankja@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+There also does not appear to be any need to keep the receiver disabled
+while updating the port settings.
+
+Since commit 6f3c3cafb115 ("serial: qcom-geni: disable interrupts during
+console writes") the calls to manipulate the secondary interrupts, which
+were done without holding the port lock, can also lead to the receiver
+being left disabled when set_termios() races with the console code (e.g.
+when init opens the tty during boot). This can manifest itself as a
+serial getty not accepting input.
+
+The calls to stop and start rx in set_termios() can similarly race with
+DMA completion and, for example, cause the DMA buffer to be unmapped
+twice or the mapping to be leaked.
+
+Fix this by only enabling the receiver during startup and while holding
+the port lock to avoid racing with the console code.
+
+Fixes: 6f3c3cafb115 ("serial: qcom-geni: disable interrupts during console writes")
+Fixes: 2aaa43c70778 ("tty: serial: qcom-geni-serial: add support for serial engine DMA")
+Fixes: c4f528795d1a ("tty: serial: msm_geni_serial: Add serial driver support for GENI based QUP")
+Cc: stable@vger.kernel.org      # 6.3
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20241009145110.16847-6-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kvm/diag.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/qcom_geni_serial.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/arch/s390/kvm/diag.c
-+++ b/arch/s390/kvm/diag.c
-@@ -77,7 +77,7 @@ static int __diag_page_ref_service(struc
- 	vcpu->stat.instruction_diagnose_258++;
- 	if (vcpu->run->s.regs.gprs[rx] & 7)
- 		return kvm_s390_inject_program_int(vcpu, PGM_SPECIFICATION);
--	rc = read_guest(vcpu, vcpu->run->s.regs.gprs[rx], rx, &parm, sizeof(parm));
-+	rc = read_guest_real(vcpu, vcpu->run->s.regs.gprs[rx], &parm, sizeof(parm));
- 	if (rc)
- 		return kvm_s390_inject_prog_cond(vcpu, rc);
- 	if (parm.parm_version != 2 || parm.parm_len < 5 || parm.code != 0x258)
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -1159,6 +1159,11 @@ static int qcom_geni_serial_startup(stru
+ 		if (ret)
+ 			return ret;
+ 	}
++
++	uart_port_lock_irq(uport);
++	qcom_geni_serial_start_rx(uport);
++	uart_port_unlock_irq(uport);
++
+ 	enable_irq(uport->irq);
+ 
+ 	return 0;
+@@ -1244,7 +1249,6 @@ static void qcom_geni_serial_set_termios
+ 	unsigned int avg_bw_core;
+ 	unsigned long timeout;
+ 
+-	qcom_geni_serial_stop_rx(uport);
+ 	/* baud rate */
+ 	baud = uart_get_baud_rate(uport, termios, old, 300, 4000000);
+ 
+@@ -1260,7 +1264,7 @@ static void qcom_geni_serial_set_termios
+ 		dev_err(port->se.dev,
+ 			"Couldn't find suitable clock rate for %u\n",
+ 			baud * sampling_rate);
+-		goto out_restart_rx;
++		return;
+ 	}
+ 
+ 	dev_dbg(port->se.dev, "desired_rate = %u, clk_rate = %lu, clk_div = %u\n",
+@@ -1351,8 +1355,6 @@ static void qcom_geni_serial_set_termios
+ 	writel(stop_bit_len, uport->membase + SE_UART_TX_STOP_BIT_LEN);
+ 	writel(ser_clk_cfg, uport->membase + GENI_SER_M_CLK_CFG);
+ 	writel(ser_clk_cfg, uport->membase + GENI_SER_S_CLK_CFG);
+-out_restart_rx:
+-	qcom_geni_serial_start_rx(uport);
+ }
+ 
+ #ifdef CONFIG_SERIAL_QCOM_GENI_CONSOLE
 
 
 
