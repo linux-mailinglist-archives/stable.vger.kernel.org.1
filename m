@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-87253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B32179A6419
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:43:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FD9D9A637B
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D04B1F219D3
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 316EB281FF4
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF5B1F426F;
-	Mon, 21 Oct 2024 10:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D411E8851;
+	Mon, 21 Oct 2024 10:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gyKkMkwF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKyUztHN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8476B1EB9E1;
-	Mon, 21 Oct 2024 10:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD26C16F27E;
+	Mon, 21 Oct 2024 10:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507052; cv=none; b=f6cvUQRzvY36LCfyAMEil7JctlgsxaOS/FP2o349TxPasc16b8FggWrMtyv6pFQC3Umbz81/kO2gduBxKNDhg6flWoiDlT+Tx9VDGyPoAw6G7ForRKnOas8ruZBHM2WGCdQpNUy6NAEIx5COdAaoVex0Erg9qJX5TQ3GqGERJ/g=
+	t=1729506784; cv=none; b=Ju9k9+YP4wAkj0BTS7Gcy7qrlScZxyr0OYRzl4ErGcLPoHdSlF3+i4CSMqol711K+nvmKM48fe1TQLpJyXkfn5jfnl4LQixhIh/Faf9K5q4VFxlKCleFg0xYtYwsyGvv+zlnXK3ev69XlDSNPSUnthe8jW2H9sxlTUv68T+CnnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507052; c=relaxed/simple;
-	bh=9WVsF3ADFCMeb7iTHjguHakoBB3iMkvoVIx6s20Imlc=;
+	s=arc-20240116; t=1729506784; c=relaxed/simple;
+	bh=94GxdMmeznr+am3gvyzm8KOHP0l2jHetUhVwVgRUh38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hire9rUqzxQDsu+ZfqPJPIKSYUFuiiVWj3+EB6/iLT9RrGEesdYDX0aWGJY7Mqxq88Z1p7+0Xmnp4KLjb+HWYYJN2/aD6v5Q9M2ee5pppkDFvDXXQlVdWM0NFIRPdcd9YggnDdC876ncjT9JK2HqQ8o5XiwfeadJq3GkO38kpd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gyKkMkwF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03240C4CEC7;
-	Mon, 21 Oct 2024 10:37:31 +0000 (UTC)
+	 MIME-Version; b=HdKwRU8HF3/EtQbOtT8FLbxbr2LZjUznOKrphZCKWWT0hVdxzBaC9O/+a/8u1YXS1giGagApJvot57ciBO6IWWHAcQaEDHymWW4Qnwi9R76qcjkFVIqvxfnkcy0zm5qrw66YVLIi+ncnL0+ti9UOdVG2XMkU8hvFJowi+wvaGnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKyUztHN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC6EC4CEC3;
+	Mon, 21 Oct 2024 10:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507052;
-	bh=9WVsF3ADFCMeb7iTHjguHakoBB3iMkvoVIx6s20Imlc=;
+	s=korg; t=1729506784;
+	bh=94GxdMmeznr+am3gvyzm8KOHP0l2jHetUhVwVgRUh38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gyKkMkwF9XUw7jcs3XoKTArCnPvVYpohL5vwsZfOX3WlEJ8ywtV2fMtYDC3uzs62C
-	 7ahI+X/DxPFDTbrTccs9V7DPCqv+Q9kg9ytT/IXO/r2DwWSH3tk1cVRAMAMhSh+cIA
-	 lh9Ha7WxHJHiznoIle82EomqFzNv2INNa0U8tntM=
+	b=vKyUztHNIHdAOgk2QjbpUr3YV1PpX4YwaJgOI9zavhVPq5qC+wLhmtD8Mp0tnG4q1
+	 mDYHzRY/SiAFM7EFaZ2rTiwjN4Tb1VMRE1IKaV0UJ2VE1/9JbFdkB8U21+Wwcn3ds+
+	 4Jik9rtayPQRWMWS1CZtTWP0UT3Q7u/LH4Bn9UTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 073/124] iio: adc: ti-ads8688: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.11 121/135] pinctrl: nuvoton: fix a double free in ma35_pinctrl_dt_node_to_map_func()
 Date: Mon, 21 Oct 2024 12:24:37 +0200
-Message-ID: <20241021102259.557449827@linuxfoundation.org>
+Message-ID: <20241021102304.066261122@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-commit 4c4834fd8696a949d1b1f1c2c5b96e1ad2083b02 upstream.
+commit 3fd976afe9743110f20a23f93b7ff9693f2be4bf upstream.
 
-This driver makes use of triggered buffers, but does not select the
-required modules.
+'new_map' is allocated using devm_* which takes care of freeing the
+allocated data on device removal, call to
 
-Fixes: 2a86487786b5 ("iio: adc: ti-ads8688: add trigger and buffer support")
-Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
+	.dt_free_map = pinconf_generic_dt_free_map
 
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Reviewed-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20241003-iio-select-v1-4-67c0385197cd@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+double frees the map as pinconf_generic_dt_free_map() calls
+pinctrl_utils_free_map().
+
+Fix this by using kcalloc() instead of auto-managed devm_kcalloc().
+
+Cc: stable@vger.kernel.org
+Fixes: f805e356313b ("pinctrl: nuvoton: Add ma35d1 pinctrl and GPIO driver")
+Reported-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Link: https://lore.kernel.org/20241010205237.1245318-1-harshit.m.mogalapalli@oracle.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/Kconfig |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pinctrl/nuvoton/pinctrl-ma35.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -1286,6 +1286,8 @@ config TI_ADS8344
- config TI_ADS8688
- 	tristate "Texas Instruments ADS8688"
- 	depends on SPI
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
- 	help
- 	  If you say yes here you get support for Texas Instruments ADS8684 and
- 	  and ADS8688 ADC chips
+diff --git a/drivers/pinctrl/nuvoton/pinctrl-ma35.c b/drivers/pinctrl/nuvoton/pinctrl-ma35.c
+index 1fa00a23534a..59c4e7c6cdde 100644
+--- a/drivers/pinctrl/nuvoton/pinctrl-ma35.c
++++ b/drivers/pinctrl/nuvoton/pinctrl-ma35.c
+@@ -218,7 +218,7 @@ static int ma35_pinctrl_dt_node_to_map_func(struct pinctrl_dev *pctldev,
+ 	}
+ 
+ 	map_num += grp->npins;
+-	new_map = devm_kcalloc(pctldev->dev, map_num, sizeof(*new_map), GFP_KERNEL);
++	new_map = kcalloc(map_num, sizeof(*new_map), GFP_KERNEL);
+ 	if (!new_map)
+ 		return -ENOMEM;
+ 
+-- 
+2.47.0
+
 
 
 
