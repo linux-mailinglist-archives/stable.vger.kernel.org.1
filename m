@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-87174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E82B09A639A
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:37:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5AA59A6524
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:54:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68F0B1F22E21
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:37:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67A52B29FEC
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 625281EB9F7;
-	Mon, 21 Oct 2024 10:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 903181F473F;
+	Mon, 21 Oct 2024 10:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIIz7er7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2omc14a2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC321E570F;
-	Mon, 21 Oct 2024 10:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4945A1F472E;
+	Mon, 21 Oct 2024 10:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506816; cv=none; b=DKm2IPp3ikBWf7p5SYONXm+0SpLzxObGnYs/NOFkLmvArCBZQEBC8jIWaeK2gsxTV24qBOKJkwJ67TM1FJ1ll3wecvGpbidFKo1ysOkeKUryjLdlnxrmDgusNgZSpeuDxLioumKdFmFDHNyVvF96itqxqYua9cAmEu8gM4ehJ60=
+	t=1729507301; cv=none; b=V2iLDxTqQxkMDGIHwx3Ynk+yiiq+3WBlU4E+yvAvelDZaIdaWKecoF7/2NVB81uTd32WrdbJ00wqDW/xF4IPTtrbLMFos8/Il2rUW0Z2WNIA7d56xI5hxNqBqu8VYTiSBFHlknCZ7FZoFsKcUgmflJICSpZqG23OHDUTzEPfNJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506816; c=relaxed/simple;
-	bh=9TtFgVmDIiWfcn1DUg2KUG9uaTZZWMCTNFHFJ1bBDLI=;
+	s=arc-20240116; t=1729507301; c=relaxed/simple;
+	bh=hsjPfk90fLfS9Tjd5gEA5YptzFBHerY7aWjbwS4OjXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZwMGQnI1gBcezbqUILBhccZ5UNcNNSduLPv/iPZ/8VMakHgJP6JnnYHC4kl1yGftJNVGCIW4uvKI5YrJRyXkB5U5MO8gg8jjLdPtocrOJJSm+UxhBWKLRK1hBusccrSK3YXXU3+Nv0s9zZjDGXB1VDZNtd+yQ0jk9mCqI0eyGWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIIz7er7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C485C4CEC3;
-	Mon, 21 Oct 2024 10:33:35 +0000 (UTC)
+	 MIME-Version; b=hywPiNg3r3GuqA8G9rTsECFAJBqO/7gmmTwJnW4M9gQOly9gb/0+atMGKBcQ19foAXJfYETyLVi/wm+/1StIqGHe96mS7rPdvxunJTMc7Rb0c3S8vT6xB1Zl2qUsB4s+almjlkb/pdAXGxUX0bFSt/mDZMgG4f7uhGa+LF23W8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2omc14a2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD827C4CEC3;
+	Mon, 21 Oct 2024 10:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506815;
-	bh=9TtFgVmDIiWfcn1DUg2KUG9uaTZZWMCTNFHFJ1bBDLI=;
+	s=korg; t=1729507301;
+	bh=hsjPfk90fLfS9Tjd5gEA5YptzFBHerY7aWjbwS4OjXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jIIz7er79EIOMka3BBshoJaLSmKd3GXemfPMf60+VeSEXuWN1il2HgxMXm2oIU8Cd
-	 3SW7XNg1MtOv3monhAhjCt2kyeAu+CH0ww21pYgZ3WgZEM7F3LCRN0lfuVwezL4o6h
-	 aS2zlS7LUObfa3rPrAluW1m/SFsYXrfJicdd3V20=
+	b=2omc14a2KLSHQTRk/whQ/DOtuNsdWw+OFJH8EYJJZE91ovDtQOVS+HOD17JfU2UFp
+	 AXt8bQ6jpwi5dbfeHxy+H7DzJoYxQkDwtXWQUZSswnRNr04fbvAtbnNUnn83DYlC6v
+	 e4hLJNBQ/sZY9HDz2qFeivCIsgRnqC8PEPb2VrNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aniket Randive <quic_arandive@quicinc.com>,
-	Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH 6.11 130/135] serial: qcom-geni: revert broken hibernation support
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	syzbot+ef0d7bc412553291aa86@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 32/91] fat: fix uninitialized variable
 Date: Mon, 21 Oct 2024 12:24:46 +0200
-Message-ID: <20241021102304.430907341@linuxfoundation.org>
+Message-ID: <20241021102251.079326176@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,105 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
 
-commit 19df76662a33d2f2fc41a66607cb8285fc02d6ec upstream.
+commit 963a7f4d3b90ee195b895ca06b95757fcba02d1a upstream.
 
-This reverts commit 35781d8356a2eecaa6074ceeb80ee22e252fcdae.
+syszbot produced this with a corrupted fs image.  In theory, however an IO
+error would trigger this also.
 
-Hibernation is not supported on Qualcomm platforms with mainline
-kernels yet a broken vendor implementation for the GENI serial driver
-made it upstream.
+This affects just an error report, so should not be a serious error.
 
-This is effectively dead code that cannot be tested and should just be
-removed, but if these paths were ever hit for an open non-console port
-they would crash the machine as the driver would fail to enable clocks
-during restore() (i.e. all ports would have to be closed by drivers and
-user space before hibernating the system to avoid this as a comment in
-the code hinted at).
-
-The broken implementation also added a random call to enable the
-receiver in the port setup code where it does not belong and which
-enables the receiver prematurely for console ports.
-
-Fixes: 35781d8356a2 ("tty: serial: qcom-geni-serial: Add support for Hibernation feature")
-Cc: stable@vger.kernel.org	# 6.2
-Cc: Aniket Randive <quic_arandive@quicinc.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20241009145110.16847-3-johan+linaro@kernel.org
+Link: https://lkml.kernel.org/r/87r08wjsnh.fsf@mail.parknet.co.jp
+Link: https://lkml.kernel.org/r/66ff2c95.050a0220.49194.03e9.GAE@google.com
+Signed-off-by: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+Reported-by: syzbot+ef0d7bc412553291aa86@syzkaller.appspotmail.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/qcom_geni_serial.c |   41 +---------------------------------
- 1 file changed, 2 insertions(+), 39 deletions(-)
+ fs/fat/namei_vfat.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/qcom_geni_serial.c
-+++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -1152,7 +1152,6 @@ static int qcom_geni_serial_port_setup(s
- 			       false, true, true);
- 	geni_se_init(&port->se, UART_RX_WM, port->rx_fifo_depth - 2);
- 	geni_se_select_mode(&port->se, port->dev_data->mode);
--	qcom_geni_serial_start_rx(uport);
- 	port->setup = true;
- 
- 	return 0;
-@@ -1781,38 +1780,6 @@ static int qcom_geni_serial_sys_resume(s
- 	return ret;
+--- a/fs/fat/namei_vfat.c
++++ b/fs/fat/namei_vfat.c
+@@ -1037,7 +1037,7 @@ error_inode:
+ 	if (corrupt < 0) {
+ 		fat_fs_error(new_dir->i_sb,
+ 			     "%s: Filesystem corrupted (i_pos %lld)",
+-			     __func__, sinfo.i_pos);
++			     __func__, new_i_pos);
+ 	}
+ 	goto out;
  }
- 
--static int qcom_geni_serial_sys_hib_resume(struct device *dev)
--{
--	int ret = 0;
--	struct uart_port *uport;
--	struct qcom_geni_private_data *private_data;
--	struct qcom_geni_serial_port *port = dev_get_drvdata(dev);
--
--	uport = &port->uport;
--	private_data = uport->private_data;
--
--	if (uart_console(uport)) {
--		geni_icc_set_tag(&port->se, QCOM_ICC_TAG_ALWAYS);
--		geni_icc_set_bw(&port->se);
--		ret = uart_resume_port(private_data->drv, uport);
--		/*
--		 * For hibernation usecase clients for
--		 * console UART won't call port setup during restore,
--		 * hence call port setup for console uart.
--		 */
--		qcom_geni_serial_port_setup(uport);
--	} else {
--		/*
--		 * Peripheral register settings are lost during hibernation.
--		 * Update setup flag such that port setup happens again
--		 * during next session. Clients of HS-UART will close and
--		 * open the port during hibernation.
--		 */
--		port->setup = false;
--	}
--	return ret;
--}
--
- static const struct qcom_geni_device_data qcom_geni_console_data = {
- 	.console = true,
- 	.mode = GENI_SE_FIFO,
-@@ -1824,12 +1791,8 @@ static const struct qcom_geni_device_dat
- };
- 
- static const struct dev_pm_ops qcom_geni_serial_pm_ops = {
--	.suspend = pm_sleep_ptr(qcom_geni_serial_sys_suspend),
--	.resume = pm_sleep_ptr(qcom_geni_serial_sys_resume),
--	.freeze = pm_sleep_ptr(qcom_geni_serial_sys_suspend),
--	.poweroff = pm_sleep_ptr(qcom_geni_serial_sys_suspend),
--	.restore = pm_sleep_ptr(qcom_geni_serial_sys_hib_resume),
--	.thaw = pm_sleep_ptr(qcom_geni_serial_sys_hib_resume),
-+	SYSTEM_SLEEP_PM_OPS(qcom_geni_serial_sys_suspend,
-+					qcom_geni_serial_sys_resume)
- };
- 
- static const struct of_device_id qcom_geni_serial_match_table[] = {
 
 
 
