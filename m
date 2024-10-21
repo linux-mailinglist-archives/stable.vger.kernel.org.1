@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-87427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A565C9A64EC
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 459D49A64A8
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:49:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D479A1C21151
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 088B92833FA
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CBB81E8858;
-	Mon, 21 Oct 2024 10:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4AFA1EBA0C;
+	Mon, 21 Oct 2024 10:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mr5rrwGm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMaUeMx9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039A41E884E;
-	Mon, 21 Oct 2024 10:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6681E25E3;
+	Mon, 21 Oct 2024 10:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507574; cv=none; b=HlpUHt4UBB69iYTJH3PgHUsdt1pLxB1JgvHIlFSjTtiOqnbsbvy5YqeibufkEIX7Ddd/hVY5uIHnsafERlpOKy7yH57izWb/kq1DHpuiPvGAhbLs/FiEbVvN+Eu9evpRAO0ej2PtoK1gsx0Q7XsehDj+j/OHiGe78lFOJCfcFCI=
+	t=1729507430; cv=none; b=WyxgnB4r7t7af0HiH3rB9x5d38bTYdbpayvKieT9wp2vvsE6cqh1AMZqmbfbHOAJJ6zb8N1b4BHdK4BQvAkS5B1mCumFlgRatP1rm5yIen4jHojD6vieT7hrUh78TZtJFuninvNzbAF1UZS9CpJ5N3j8xPCs/67zdOgHwb73kqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507574; c=relaxed/simple;
-	bh=gpMNXYy/6dtmDryJzVGuPBZ3Xz67dVxqNZL9u9aDr2o=;
+	s=arc-20240116; t=1729507430; c=relaxed/simple;
+	bh=fZUAUfO4BUmq9irQz3qbpcna9swZd6+hWrr5Ta0+//w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=daifoUAvBpjE7nIqdaULty1nM/+L2BJU422D4sPqp6YBNxgvDexUH+o5PtVHdNjTGKfH/WuW5OYxYyI2J0SJxeOXibo178ZrTonk3yxRjghZ//F07yUe//Un5GzFgjOOmKQKGZx87LR25qQMyTvof7E3W0hXJnFinVC4VTQ+4Lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mr5rrwGm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732C5C4CEC3;
-	Mon, 21 Oct 2024 10:46:13 +0000 (UTC)
+	 MIME-Version; b=UmRo4KFOyiXrBrhojGVH/90yrom03sddaT1o9b8g/qKCBNQnikSsTM1yKDONizHAjqKV4OlctLlLQKFa7dB+tWKXgxnndJJl/42jn0u2CWSFUvDqkbsGra/+asq1RMfWN4cxtglBuNm1QmHzf5Rrqzgv0FxBFG/lhG6RibUahWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMaUeMx9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E206AC4CEC3;
+	Mon, 21 Oct 2024 10:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507573;
-	bh=gpMNXYy/6dtmDryJzVGuPBZ3Xz67dVxqNZL9u9aDr2o=;
+	s=korg; t=1729507430;
+	bh=fZUAUfO4BUmq9irQz3qbpcna9swZd6+hWrr5Ta0+//w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mr5rrwGmpPQxjYfVpnv7EPFgqvv1Si463tMmQN1QkGmuvwBGc1lUCLLt+bNyNJAkT
-	 6onRX5Sb3IQp9WFivW705IwQDbhqbuvyhpYI2cU7LK1Kwh5VWHNZnNYGMYRd069aaV
-	 H2w8bADAjsBtXeeFc0Tkl/ZYp9Lh3cDz2VtcBGlU=
+	b=TMaUeMx9NpsgSmTtbDppxVvt4JE24Prt2auiBdLTHTEK96TT9w3zh5je+1dLVLD4x
+	 PVyACo2pYhijSJWIm8PTDV/KwCyUcuXpjkz9oDLks0fL2e8111YM+JXThzG0kcmuIn
+	 7DImxUrsUkgjcXlbB2+dC4CDpiFXhobaAsQBxwL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Shixin <liushixin2@huawei.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 30/82] mm/swapfile: skip HugeTLB pages for unuse_vma
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 57/91] iio: dac: stm32-dac-core: add missing select REGMAP_MMIO in Kconfig
 Date: Mon, 21 Oct 2024 12:25:11 +0200
-Message-ID: <20241021102248.438753441@linuxfoundation.org>
+Message-ID: <20241021102252.046045287@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Shixin <liushixin2@huawei.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 7528c4fb1237512ee18049f852f014eba80bbe8d upstream.
+commit 27b6aa68a68105086aef9f0cb541cd688e5edea8 upstream.
 
-I got a bad pud error and lost a 1GB HugeTLB when calling swapoff.  The
-problem can be reproduced by the following steps:
+This driver makes use of regmap_mmio, but does not select the required
+module.
+Add the missing 'select REGMAP_MMIO'.
 
- 1. Allocate an anonymous 1GB HugeTLB and some other anonymous memory.
- 2. Swapout the above anonymous memory.
- 3. run swapoff and we will get a bad pud error in kernel message:
-
-  mm/pgtable-generic.c:42: bad pud 00000000743d215d(84000001400000e7)
-
-We can tell that pud_clear_bad is called by pud_none_or_clear_bad in
-unuse_pud_range() by ftrace.  And therefore the HugeTLB pages will never
-be freed because we lost it from page table.  We can skip HugeTLB pages
-for unuse_vma to fix it.
-
-Link: https://lkml.kernel.org/r/20241015014521.570237-1-liushixin2@huawei.com
-Fixes: 0fe6e20b9c4c ("hugetlb, rmap: add reverse mapping for hugepage")
-Signed-off-by: Liu Shixin <liushixin2@huawei.com>
-Acked-by: Muchun Song <muchun.song@linux.dev>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 4d4b30526eb8 ("iio: dac: add support for stm32 DAC")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241003-ad2s1210-select-v1-8-4019453f8c33@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/swapfile.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/dac/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -2125,7 +2125,7 @@ static int unuse_mm(struct mm_struct *mm
+--- a/drivers/iio/dac/Kconfig
++++ b/drivers/iio/dac/Kconfig
+@@ -401,6 +401,7 @@ config STM32_DAC
  
- 	mmap_read_lock(mm);
- 	for (vma = mm->mmap; vma; vma = vma->vm_next) {
--		if (vma->anon_vma) {
-+		if (vma->anon_vma && !is_vm_hugetlb_page(vma)) {
- 			ret = unuse_vma(vma, type, frontswap,
- 					fs_pages_to_unuse);
- 			if (ret)
+ config STM32_DAC_CORE
+ 	tristate
++	select REGMAP_MMIO
+ 
+ config TI_DAC082S085
+ 	tristate "Texas Instruments 8/10/12-bit 2/4-channel DAC driver"
 
 
 
