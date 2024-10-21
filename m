@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-87497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAC339A65F5
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:09:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 348219A64B7
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:49:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA61BB2131F
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:55:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E06E4282A00
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 823C51E573E;
-	Mon, 21 Oct 2024 10:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB0E1F429B;
+	Mon, 21 Oct 2024 10:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TghOY+hM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hS+E6VeM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA621E573A;
-	Mon, 21 Oct 2024 10:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC8F1F427B;
+	Mon, 21 Oct 2024 10:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507781; cv=none; b=dxQzzvertJA/J7np4XVs8s9hUTx5m7yz1jegbhm/YD7gb21eB3AyzOGhcSKTv/uIwoHQeQYlOcj0iL3ajrCKygXKK2nGhhoi+eQ10S6ReNMlga9QitQ5eFZbRKsMPtlpjdkBwq0C55BGNH+/ZIslGh1QRWkrNKd84xu1tnFhGV4=
+	t=1729507460; cv=none; b=BgBD6SwquIuR5iEqf8wSXnEcQTWfU3IFHApLJ9lSK+Kqrm5XUnJNR+qw69EMEvOjirpQHd94ZFDwXWffEsS07SdoP4xzxLQyaEFkO2S+WgYxTLyh8lCpDvSaPKm0axaUKh0mut5OG/YGGvuFrnz93vK8JKJyMvIVmqmBafzH91s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507781; c=relaxed/simple;
-	bh=ce1RPFsfsMgcPkjnqpoI0i2w/a78nekwmeYB1QxUy4Y=;
+	s=arc-20240116; t=1729507460; c=relaxed/simple;
+	bh=hZFqZQPabrfFsZTLWxHCR8YflLaZdtYnTk2/OsBunis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dZTfITSC1/ZSSLzfPZ9begQZQmp9hJcy326p8+fvl4AWfBULR9cO8aYlOgHbxIZ2wKSXkuOEdpgxrohA7eiGEHjgd8RSD9aSm0vpoHZdcyUU21qpO7LOkFETImOXcqmBXR5pOAiBqdCP7YZYGHSDr4kG2zkXcaT09zYGV55k+8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TghOY+hM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B007C4CEC3;
-	Mon, 21 Oct 2024 10:49:40 +0000 (UTC)
+	 MIME-Version; b=ktgQkq/rWuIJUFEwriUAlNI4/TgQWEO/Uwr7+zv/vdKFuF3Ro28bG8IE8y935D6C+RVkrzqU32q7SCicXdHPqmwWxF8XIMcbPqH7BxShaP+qBl2nvGPixbEXH229wArn5OIOEhhU5q61didLfoZZPiemukX1BThDes8hsAd+YC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hS+E6VeM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1178C4CEC7;
+	Mon, 21 Oct 2024 10:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507780;
-	bh=ce1RPFsfsMgcPkjnqpoI0i2w/a78nekwmeYB1QxUy4Y=;
+	s=korg; t=1729507460;
+	bh=hZFqZQPabrfFsZTLWxHCR8YflLaZdtYnTk2/OsBunis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TghOY+hMHEDQ+GJ7WdB6Abna3DGmIExD6/rXOBhvPX++75H1zKC7L6wJWCE9UpLYW
-	 i+xAQp+JFgzDZFS7NL+owYibR5+mNIFFRMOmpPdSPUmeu7StGfFwM+ferGfVYwaZhc
-	 E+juDsAaNdwRSyTSGgB5APLqqkjczPzA50FfF6Fo=
+	b=hS+E6VeMkhYVcZzthsrH6qPzhzyf+RXTBg+cVINflPlSdfwCmgvG95SxXoo4hrhDR
+	 iL+q5vIoRG/HzC+N18MRT8cAdRkmo4teyzAn+y7bvEHMnPK9n5GJZ6dz+i8hnZXZLn
+	 6s9H8H4e6UMF6BGrMkSFiw8mIj7sQQMpmHXiiN9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkatesh Srinivas <venkateshs@chromium.org>,
-	Jim Mattson <jmattson@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	stable@kernel.org
-Subject: [PATCH 5.10 17/52] x86/cpufeatures: Define X86_FEATURE_AMD_IBPB_RET
+	Ma Ke <make24@iscas.ac.cn>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.1 84/91] pinctrl: apple: check devm_kasprintf() returned value
 Date: Mon, 21 Oct 2024 12:25:38 +0200
-Message-ID: <20241021102242.300792216@linuxfoundation.org>
+Message-ID: <20241021102253.091217788@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
-References: <20241021102241.624153108@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Mattson <jmattson@google.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit ff898623af2ed564300752bba83a680a1e4fec8d upstream.
+commit 665a58fe663ac7a9ea618dc0b29881649324b116 upstream.
 
-AMD's initial implementation of IBPB did not clear the return address
-predictor. Beginning with Zen4, AMD's IBPB *does* clear the return address
-predictor. This behavior is enumerated by CPUID.80000008H:EBX.IBPB_RET[30].
+devm_kasprintf() can return a NULL pointer on failure but this returned
+value is not checked. Fix this lack and check the returned value.
 
-Define X86_FEATURE_AMD_IBPB_RET for use in KVM_GET_SUPPORTED_CPUID,
-when determining cross-vendor capabilities.
+Found by code review.
 
-Suggested-by: Venkatesh Srinivas <venkateshs@chromium.org>
-Signed-off-by: Jim Mattson <jmattson@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: <stable@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: a0f160ffcb83 ("pinctrl: add pinctrl/GPIO driver for Apple SoCs")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Reviewed-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/20240905020917.356534-1-make24@iscas.ac.cn
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/cpufeatures.h |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-apple-gpio.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -217,7 +217,7 @@
- #define X86_FEATURE_SPEC_STORE_BYPASS_DISABLE	( 7*32+23) /* "" Disable Speculative Store Bypass. */
- #define X86_FEATURE_LS_CFG_SSBD		( 7*32+24)  /* "" AMD SSBD implementation via LS_CFG MSR */
- #define X86_FEATURE_IBRS		( 7*32+25) /* Indirect Branch Restricted Speculation */
--#define X86_FEATURE_IBPB		( 7*32+26) /* Indirect Branch Prediction Barrier */
-+#define X86_FEATURE_IBPB		( 7*32+26) /* "ibpb" Indirect Branch Prediction Barrier without a guaranteed RSB flush */
- #define X86_FEATURE_STIBP		( 7*32+27) /* Single Thread Indirect Branch Predictors */
- #define X86_FEATURE_ZEN			( 7*32+28) /* "" CPU is AMD family 0x17 or above (Zen) */
- #define X86_FEATURE_L1TF_PTEINV		( 7*32+29) /* "" L1TF workaround PTE inversion */
-@@ -324,6 +324,7 @@
- #define X86_FEATURE_VIRT_SSBD		(13*32+25) /* Virtualized Speculative Store Bypass Disable */
- #define X86_FEATURE_AMD_SSB_NO		(13*32+26) /* "" Speculative Store Bypass is fixed in hardware. */
- #define X86_FEATURE_BTC_NO		(13*32+29) /* "" Not vulnerable to Branch Type Confusion */
-+#define X86_FEATURE_AMD_IBPB_RET	(13*32+30) /* "" IBPB clears return address predictor */
- 
- /* Thermal and Power Management Leaf, CPUID level 0x00000006 (EAX), word 14 */
- #define X86_FEATURE_DTHERM		(14*32+ 0) /* Digital Thermal Sensor */
+--- a/drivers/pinctrl/pinctrl-apple-gpio.c
++++ b/drivers/pinctrl/pinctrl-apple-gpio.c
+@@ -471,6 +471,9 @@ static int apple_gpio_pinctrl_probe(stru
+ 	for (i = 0; i < npins; i++) {
+ 		pins[i].number = i;
+ 		pins[i].name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "PIN%u", i);
++		if (!pins[i].name)
++			return -ENOMEM;
++
+ 		pins[i].drv_data = pctl;
+ 		pin_names[i] = pins[i].name;
+ 		pin_nums[i] = i;
 
 
 
