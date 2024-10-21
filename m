@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-87249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EEE39A6416
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:43:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F309A649D
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:48:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2E481F2100A
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3284C1C21C72
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F2BE1953B9;
-	Mon, 21 Oct 2024 10:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F381F12E5;
+	Mon, 21 Oct 2024 10:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yhiQqopn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4lJVR/y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E2B1EB9E0;
-	Mon, 21 Oct 2024 10:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2B51EABB6;
+	Mon, 21 Oct 2024 10:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507041; cv=none; b=TVmdaHPYji1EPupou5JzVnZUqSo1Bfc4CkKFXP/CBHn3K1cQioqalzHd939Kd9sJ33+36GLED0sRsHckAGvRpHC1bWXacw0tMh7bkLQ14Ks8uLe+o9Mu7SJTlr5HfsLjN3gPe2EzIXexrgpHTEaHMRfpFPSaogar66jAyyybrSY=
+	t=1729507394; cv=none; b=aY6n0m4XBibkLSFFeG+1WbEz4/1cWZezgdUeGh02NdyNT5Cf2YVHkunPm0xfgr8JEr8suHWU7Hi3O3TY+0bXhpEzskNFmRO9tghIvy9MZCUyU0z54x5zq2xUTDR8JCRZM2pPMQ8KIW6dhf8QTMe+p0wGmJSgvM/bjEJNkWn5peE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507041; c=relaxed/simple;
-	bh=iqFjCN275NQEt8X8OCSiQTWc24M/YnN1LyULYltA7c4=;
+	s=arc-20240116; t=1729507394; c=relaxed/simple;
+	bh=cbCuTr+85qYw5XD883Lmh9cY3JzA9nyWQvK8/feXo6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DwFzH27mkSIGSayIl7i+FI9KhfFHRZrCQv1yuhHY+Sl3nvx+MeQW5LaCV22bM31Nb6Hh56mxnMCrK8Zfm/5xXhj8ItPQGYUfoUu/FlST0hq2/yNYbwysKNLQFEf1mHbBJ6b04dJ8JppPgPp0vsncEp52wnlTqKH5z13yiF2JYZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yhiQqopn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ECAAC4CEC3;
-	Mon, 21 Oct 2024 10:37:20 +0000 (UTC)
+	 MIME-Version; b=MYMJqDdHVnoUbEkRvOZEDmYfxQ9fz+D9m2O9i1Ge3h4J0AjPrnBUoSH1rJZcLgga6KShpx1mm+rke3FG7KIpobOecJ/h5xGClU4hxjMQhUkzciZr8E3ZRmqeOJ4BgIcpc7nA/o1zOTmkPM/3eRD64QZMWkNzf8WBivmGSZDsjJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4lJVR/y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED777C4CEC3;
+	Mon, 21 Oct 2024 10:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507040;
-	bh=iqFjCN275NQEt8X8OCSiQTWc24M/YnN1LyULYltA7c4=;
+	s=korg; t=1729507394;
+	bh=cbCuTr+85qYw5XD883Lmh9cY3JzA9nyWQvK8/feXo6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yhiQqopn02wKLMOS4RB24/NLhnc2ipy6RdDZtCdsNni5hqzZIk8pYqFPTQaUd5p83
-	 m+twcp4UpuwzZI4eZ6AKFxV0DZiSEW3PbJ4sttMTdxto3pzGkP4QUxWGX6XnnnTeT1
-	 RoQhd2pCWNsCB6g37L9JrHGJVjk+PiQIyb9m33nI=
+	b=J4lJVR/yXwzlxKEInEXK1kaC0VgmrZFWXkZApVWztX6J9cTgF0uF3DD0ety8bE7co
+	 Td0+k57eOSCvsKP/6RZUzDon9SUrbPz6I139jQCVNghFGbdZEuHn7gJ5ROyJ8LRoH9
+	 ge+CZTz/fp5Vpq3v2x51glLSrIgXFOlBnlqXXZ+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 070/124] iio: dac: ad5770r: add missing select REGMAP_SPI in Kconfig
-Date: Mon, 21 Oct 2024 12:24:34 +0200
-Message-ID: <20241021102259.442187573@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 6.1 21/91] udf: Convert udf_link() to new directory iteration code
+Date: Mon, 21 Oct 2024 12:24:35 +0200
+Message-ID: <20241021102250.645223156@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Jan Kara <jack@suse.cz>
 
-commit bcdab6f74c91cda19714354fd4e9e3ef3c9a78b3 upstream.
+[ Upstream commit dbfb102d16fb780c84f41adbaeb7eac907c415dc ]
 
-This driver makes use of regmap_spi, but does not select the required
-module.
-Add the missing 'select REGMAP_SPI'.
+Convert udf_link() to use new directory iteration code for adding entry
+into the directory.
 
-Fixes: cbbb819837f6 ("iio: dac: ad5770r: Add AD5770R support")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241003-ad2s1210-select-v1-6-4019453f8c33@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ fs/udf/namei.c |   22 ++++++++--------------
+ 1 file changed, 8 insertions(+), 14 deletions(-)
 
---- a/drivers/iio/dac/Kconfig
-+++ b/drivers/iio/dac/Kconfig
-@@ -224,6 +224,7 @@ config AD5766
- config AD5770R
- 	tristate "Analog Devices AD5770R IDAC driver"
- 	depends on SPI_MASTER
-+	select REGMAP_SPI
- 	help
- 	  Say yes here to build support for Analog Devices AD5770R Digital to
- 	  Analog Converter.
+--- a/fs/udf/namei.c
++++ b/fs/udf/namei.c
+@@ -1222,27 +1222,21 @@ static int udf_link(struct dentry *old_d
+ 		    struct dentry *dentry)
+ {
+ 	struct inode *inode = d_inode(old_dentry);
+-	struct udf_fileident_bh fibh;
+-	struct fileIdentDesc cfi, *fi;
++	struct udf_fileident_iter iter;
+ 	int err;
+ 
+-	fi = udf_add_entry(dir, dentry, &fibh, &cfi, &err);
+-	if (!fi) {
++	err = udf_fiiter_add_entry(dir, dentry, &iter);
++	if (err)
+ 		return err;
+-	}
+-	cfi.icb.extLength = cpu_to_le32(inode->i_sb->s_blocksize);
+-	cfi.icb.extLocation = cpu_to_lelb(UDF_I(inode)->i_location);
++	iter.fi.icb.extLength = cpu_to_le32(inode->i_sb->s_blocksize);
++	iter.fi.icb.extLocation = cpu_to_lelb(UDF_I(inode)->i_location);
+ 	if (UDF_SB(inode->i_sb)->s_lvid_bh) {
+-		*(__le32 *)((struct allocDescImpUse *)cfi.icb.impUse)->impUse =
++		*(__le32 *)((struct allocDescImpUse *)iter.fi.icb.impUse)->impUse =
+ 			cpu_to_le32(lvid_get_unique_id(inode->i_sb));
+ 	}
+-	udf_write_fi(dir, &cfi, fi, &fibh, NULL, NULL);
+-	if (UDF_I(dir)->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB)
+-		mark_inode_dirty(dir);
++	udf_fiiter_write_fi(&iter, NULL);
++	udf_fiiter_release(&iter);
+ 
+-	if (fibh.sbh != fibh.ebh)
+-		brelse(fibh.ebh);
+-	brelse(fibh.sbh);
+ 	inc_nlink(inode);
+ 	inode->i_ctime = current_time(inode);
+ 	mark_inode_dirty(inode);
 
 
 
