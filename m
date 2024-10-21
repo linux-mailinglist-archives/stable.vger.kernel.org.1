@@ -1,164 +1,119 @@
-Return-Path: <stable+bounces-87646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD8CC9A9361
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 00:33:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0DBE9A9364
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 00:33:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F92DB229D8
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 22:33:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE3DE283FDE
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 22:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49AC1FEFB3;
-	Mon, 21 Oct 2024 22:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B95A1FEFC1;
+	Mon, 21 Oct 2024 22:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dcVxStV8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnmyeHZ+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897761FDF98;
-	Mon, 21 Oct 2024 22:32:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD9E1E130F
+	for <stable@vger.kernel.org>; Mon, 21 Oct 2024 22:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729549980; cv=none; b=FksWQ28auqyN8nXhXxgrM9hwYhgsElGJuS0Mobo3fM7M8SnMmAAQaJuLCJ4PDHAdJmNxozuWvsqbZAa4T2hrGhAsva1GiSTJWjevxWgyc3vtxyFultb4HjOvwrifO6nCb3DwIAr9QKcPfHYTRZ3B3i2jr69Iw+JXynwBcvpBHnY=
+	t=1729549998; cv=none; b=GgVdJTHp91R+SGhE3XjTLNcGkUvu9ZzEvIu9hTIFy6uMDYaKEf0HX5NKMq1DTFlTx8XDYGWtmtDIVkoC4ZP3O8wVVzOZi2WaLjmxpIEqK+UmuzSlzgELuKdQMGBn3rzMniLWtZF8P6MqH67gP82NkweM9QJSb7LnCiIpWc6xsyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729549980; c=relaxed/simple;
-	bh=xcaPgMt6Eh+JAUE6Xnkx1fugjyKVgIbuhtZ3W6j70r8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tZj0CLt6RYSXEuTtiwNTf0KejZNrRUFvAQuEge/WyjCb8agiipPBOcp4ictC3/Efrv0RcLQ2BA35N2UdHdlgiuVfV5Jkw5RAgIIom50VWtvnlqD0pB+wrKnSPIPvCHLFN8lZHKnjEfev5z0qwtXVvbKUouxDFgF16/ImniL3uAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dcVxStV8; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729549977; x=1761085977;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xcaPgMt6Eh+JAUE6Xnkx1fugjyKVgIbuhtZ3W6j70r8=;
-  b=dcVxStV8w8ybzYVAafiPFbmIwWZb2HG8jZ1AS0yE+yKHFNiT9PeYQkZa
-   EZIccRs/NKZXIvyRXjcFdNiQCmSRcvysSn6+TWwS90DZUWnJcCyUXYLc+
-   7ZCn9b1sbSaQTOHyM34qd8KYQ+6GZKvXFE+wo/b16y9sOzz0m0b0FReLf
-   VvpftDluQSYt3hO0plACV8T5YKPx+6lTmGeNjW4MQHxwZ2VA0BWS/ei/J
-   Oa6ou9UTZMGl2sZLSv45U19KGmbu6E9z+81snLx5La+MDSlytZTNZI8Qi
-   BrWxsY3WVVR/r3ZYRvCH8w3nAxZKbn7AW4TZgm1Lsw2ggwbas/9ccRdin
-   Q==;
-X-CSE-ConnectionGUID: QARMfs6lSxiOS466upMKGA==
-X-CSE-MsgGUID: 5hgfkNcUSoOmrzPXu/ddGw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11232"; a="54463005"
-X-IronPort-AV: E=Sophos;i="6.11,221,1725346800"; 
-   d="scan'208";a="54463005"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 15:32:56 -0700
-X-CSE-ConnectionGUID: ncZ4DteBTZmTJNx2lCew7g==
-X-CSE-MsgGUID: Wi6SHKTgRaS5AI7x27aXWA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,221,1725346800"; 
-   d="scan'208";a="80068730"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 21 Oct 2024 15:32:54 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t30xH-000Sgw-1b;
-	Mon, 21 Oct 2024 22:32:51 +0000
-Date: Tue, 22 Oct 2024 06:32:42 +0800
-From: kernel test robot <lkp@intel.com>
-To: Matt Johnston <matt@codeconstruct.com.au>,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Wolfram Sang <wsa-dev@sang-engineering.com>
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Dung Cao <dung@os.amperecomputing.com>
-Subject: Re: [PATCH net v2] mctp i2c: handle NULL header address
-Message-ID: <202410220659.hh4B9jRO-lkp@intel.com>
-References: <20241021-mctp-i2c-null-dest-v2-1-4503e478517c@codeconstruct.com.au>
+	s=arc-20240116; t=1729549998; c=relaxed/simple;
+	bh=lrwrnJ9sxyVS/b/WeRQ1zGC+n8IdJHwc/MYSyhOj034=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=etSxBgOQh9HdgPbIL+ks5Pavl69fMCb47agCBd+7TaIweu2N+1rx8tHrRvwrtnlax0LXKBZzzSW+g/er03NIY7PVb0PQ87lzMBb+8RhjrR5NaAoIp7co1nsSz8Aa5ZLvYYXLP7/86Tb4XgUnKQUu/z75iR+V8BhvrC60mQr9Q/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SnmyeHZ+; arc=none smtp.client-ip=209.85.166.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-3a3b63596e0so14682605ab.0
+        for <stable@vger.kernel.org>; Mon, 21 Oct 2024 15:33:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1729549995; x=1730154795; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Uml1sKj+kvUwOGLK6/8asmpMwnvEywtfjt6wk3MU/qE=;
+        b=SnmyeHZ+wxvHx7MBg3X7MPHT18KOlp6/gB6Ennjtj1tIFq5rtr3sGM0KZ3fqbK8d8p
+         L/qyyyjiCCEuPNqtJRtt9fWBF6WYvMXMlxKJrlL+9rJnv6YZnO4ZYgq5uM01qzakI0yJ
+         LUeBGMyCv2uT6QRcJA4y+8IFTM2SIFdpT5EmY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729549995; x=1730154795;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Uml1sKj+kvUwOGLK6/8asmpMwnvEywtfjt6wk3MU/qE=;
+        b=HqxwsOqeYaa04UtyvWxUXzMJvfGiYZ+gIj3hQbntNkR0RGRoJX8CcxjqbCmfO0hb2j
+         +zMqDLiSs95XXsmQY01PEVgft7PE8leBGlCC7Xjin4Q6QEYuZmuTXAsLL+bejPbXl/Nj
+         9OgKLG7l0OyubUf0fZj2RkuHsNHqQmRBBZZge9v7c96G+iSgc25KnnxtFgdht1OmATp4
+         ESaBWGNs/TwVEy1xurtXkWUYKC+ITM4SSeJRO3MCsRBRsKvznMUYoGFIeUS/N5ycwjEO
+         a5kmGhntS1UR9eKL+wRa7PlV9QN8uZKgEbOnQdvBB2A3TxbgdbvynVlyAV1VoSkBJ7Wx
+         YxDw==
+X-Forwarded-Encrypted: i=1; AJvYcCW6Prtw4JBTms8TFKa3kPA40CVxOWTyGnwg5tkRcUlgvRb3e3gvIA+9YqyUcZM8zD8I+KGLe1s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPWFM7LtwWyFOIqauLh20PJ5z33wJVHqcHKnHKh40gOi18cQpz
+	eBdMx00gMAAOyncE/7OVdu8WiHQA6BsJMQ2mai7ygF9UVsjdJ8SErTnkvz/TtT6N9Qd0G690Xo+
+	Z
+X-Google-Smtp-Source: AGHT+IEJprBi/nPg63JepMRPm5U+FNcv/3C07TNfOCy2tNezSx/w6E0jpGj3z7mxPWwwP8k1cseGRw==
+X-Received: by 2002:a05:6e02:1e07:b0:3a0:ce5a:1817 with SMTP id e9e14a558f8ab-3a4cbe359demr8268155ab.0.1729549994578;
+        Mon, 21 Oct 2024 15:33:14 -0700 (PDT)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4dc2a65c936sm1258671173.157.2024.10.21.15.33.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Oct 2024 15:33:14 -0700 (PDT)
+Message-ID: <86e869fa-4435-4fe6-a669-4b7a6f1f78cb@linuxfoundation.org>
+Date: Mon, 21 Oct 2024 16:33:13 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241021-mctp-i2c-null-dest-v2-1-4503e478517c@codeconstruct.com.au>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 000/124] 6.6.58-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Matt,
+On 10/21/24 04:23, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.58 release.
+> There are 124 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 23 Oct 2024 10:22:25 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.58-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-kernel test robot noticed the following build errors:
+Compiled and booted on my test system. No dmesg regressions.
 
-[auto build test ERROR on cb560795c8c2ceca1d36a95f0d1b2eafc4074e37]
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Matt-Johnston/mctp-i2c-handle-NULL-header-address/20241021-123741
-base:   cb560795c8c2ceca1d36a95f0d1b2eafc4074e37
-patch link:    https://lore.kernel.org/r/20241021-mctp-i2c-null-dest-v2-1-4503e478517c%40codeconstruct.com.au
-patch subject: [PATCH net v2] mctp i2c: handle NULL header address
-config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20241022/202410220659.hh4B9jRO-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 14.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241022/202410220659.hh4B9jRO-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410220659.hh4B9jRO-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/net/mctp/mctp-i2c.c: In function 'mctp_i2c_header_create':
->> drivers/net/mctp/mctp-i2c.c:599:23: error: assignment to 'u8' {aka 'unsigned char'} from 'const unsigned char *' makes integer from pointer without a cast [-Wint-conversion]
-     599 |                 llsrc = dev->dev_addr;
-         |                       ^
-
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for GET_FREE_REGION
-   Depends on [n]: SPARSEMEM [=n]
-   Selected by [m]:
-   - RESOURCE_KUNIT_TEST [=m] && RUNTIME_TESTING_MENU [=y] && KUNIT [=m]
-
-
-vim +599 drivers/net/mctp/mctp-i2c.c
-
-   579	
-   580	static int mctp_i2c_header_create(struct sk_buff *skb, struct net_device *dev,
-   581					  unsigned short type, const void *daddr,
-   582					  const void *saddr, unsigned int len)
-   583	{
-   584		struct mctp_i2c_hdr *hdr;
-   585		struct mctp_hdr *mhdr;
-   586		u8 lldst, llsrc;
-   587	
-   588		if (len > MCTP_I2C_MAXMTU)
-   589			return -EMSGSIZE;
-   590	
-   591		if (daddr)
-   592			lldst = *((u8 *)daddr);
-   593		else
-   594			return -EINVAL;
-   595	
-   596		if (saddr)
-   597			llsrc = *((u8 *)saddr);
-   598		else
- > 599			llsrc = dev->dev_addr;
-   600	
-   601		skb_push(skb, sizeof(struct mctp_i2c_hdr));
-   602		skb_reset_mac_header(skb);
-   603		hdr = (void *)skb_mac_header(skb);
-   604		mhdr = mctp_hdr(skb);
-   605		hdr->dest_slave = (lldst << 1) & 0xff;
-   606		hdr->command = MCTP_I2C_COMMANDCODE;
-   607		hdr->byte_count = len + 1;
-   608		hdr->source_slave = ((llsrc << 1) & 0xff) | 0x01;
-   609		mhdr->ver = 0x01;
-   610	
-   611		return sizeof(struct mctp_i2c_hdr);
-   612	}
-   613	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+thanks,
+-- Shuah
 
