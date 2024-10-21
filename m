@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-87441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75A5F9A64F8
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1623D9A6478
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B74A1F21053
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1445B2C5B4
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154391EABBC;
-	Mon, 21 Oct 2024 10:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4BE01E7C2D;
+	Mon, 21 Oct 2024 10:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DE1/dQOB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tM3TY7Lo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20B3195FEC;
-	Mon, 21 Oct 2024 10:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B68C1E1C11;
+	Mon, 21 Oct 2024 10:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507615; cv=none; b=IfiF8cJlhrj7m6kry5/pHJQbaggxKNkM5ra8Y29Br+aZZMmKa3WbSFgABUjg/Ok2bxO6KQ4KAriVsnCzVAAhnPCC1GNmbp19cT8qB6C9s690k69Vfxfmf6FR4CjgCL/jfUfIvU51bIbtg4LpoTOp7inqWrU+6cMUGojdhiNNqXg=
+	t=1729507183; cv=none; b=IK4CZ2PITozyyxlQZPyErFXHuIVr+icFnwGuxtD5cftmAHRrr6uzOrJq3utdN1dVDNzqJ+/5DlDkqQ6Yw6sfMNFeXk2g+A0npLwmBzPI1HkeZ5dZSpJxsxDtOCQaXTZWFERNfCfIR6npVMsx3oI3OgNlfC0yzUveyegmNE3YyxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507615; c=relaxed/simple;
-	bh=Fu63ExRNxcTO+9bynOxhxctXBxo03ipb3khbMJpHudE=;
+	s=arc-20240116; t=1729507183; c=relaxed/simple;
+	bh=9zedyoK74UfpqQGFdWEUavyCqplK81KwkQWs+Znq2Mg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DOPb16oiZ3yxyEhaPPwxaIFzy/DGpXgI6Zo1/X+eF4c5jW7b6hJlfKzqJS0AKDBJKxdhpyw+KGfA+Kvo07gWSnYq8NXBX8eccplTjgoxDWR1Y6fhIQ+8+DkR4pvGZmnEv3t3Vxvujz3B0m1Vl0rTHm/5pW6k3k3w91II6n5zlEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DE1/dQOB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4090EC4CEC3;
-	Mon, 21 Oct 2024 10:46:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P3vX8moGcclZ+AIlWHAwEilndD5Gt/UzoGfV/+ioEUOMfS1P0oGd2HRr0ix0w3SJwToBg/xuE//8yBG06rJoLWmXm9Q31PFapiQC+xNGiuuVs8zg0DAkq9loZ2EuTu2fPjBypPJR8mMQ3o04cLzscxeJhVqdzqw1BwFA8TwgcDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tM3TY7Lo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B6AC4CEC3;
+	Mon, 21 Oct 2024 10:39:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507615;
-	bh=Fu63ExRNxcTO+9bynOxhxctXBxo03ipb3khbMJpHudE=;
+	s=korg; t=1729507183;
+	bh=9zedyoK74UfpqQGFdWEUavyCqplK81KwkQWs+Znq2Mg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DE1/dQOBxpssdFbMMWvdJCL3iC/6oF5MqPrqc7chmgjYKhvhAOJlVJBAflUo0S8kx
-	 7Jgi0kwifR/TgD7NC9L0ldZ7E5lHBnyHPDLqiuTV5W4b3SJDr90Ut/LVU4s3NxlmzT
-	 oc9eG2hW/v7NoiGdWeViBF1QrINUiF4tVkzDzxA0=
+	b=tM3TY7Lo3GT55L8HMKVi/jkeWrcBI588MlBZhDB3aPiYbNVZXALC+1F8eEsi3fMUh
+	 x1BD7ZlKrImbJ3UekjCekR1cLZWvBXE8kz0RxFiIRoNuYWNnfEVbWdvXsnKLvJlgJ8
+	 PP9Zww+cTElIPUWXlgiqo011HKjQEQb7da1WOT4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.15 13/82] udf: Convert udf_unlink() to new directory iteration code
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 090/124] Bluetooth: btusb: Fix regression with fake CSR controllers 0a12:0001
 Date: Mon, 21 Oct 2024 12:24:54 +0200
-Message-ID: <20241021102247.754378226@linuxfoundation.org>
+Message-ID: <20241021102300.208459475@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,85 +58,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 6ec01a8020b54e278fecd1efe8603f8eb38fed84 ]
+commit 2c1dda2acc4192d826e84008d963b528e24d12bc upstream.
 
-Convert udf_unlink() to new directory iteration code.
+Fake CSR controllers don't seem to handle short-transfer properly which
+cause command to time out:
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+kernel: usb 1-1: new full-speed USB device number 19 using xhci_hcd
+kernel: usb 1-1: New USB device found, idVendor=0a12, idProduct=0001, bcdDevice=88.91
+kernel: usb 1-1: New USB device strings: Mfr=0, Product=2, SerialNumber=0
+kernel: usb 1-1: Product: BT DONGLE10
+...
+Bluetooth: hci1: Opcode 0x1004 failed: -110
+kernel: Bluetooth: hci1: command 0x1004 tx timeout
+
+According to USB Spec 2.0 Section 5.7.3 Interrupt Transfer Packet Size
+Constraints a interrupt transfer is considered complete when the size is 0
+(ZPL) or < wMaxPacketSize:
+
+ 'When an interrupt transfer involves more data than can fit in one
+ data payload of the currently established maximum size, all data
+ payloads are required to be maximum-sized except for the last data
+ payload, which will contain the remaining data. An interrupt transfer
+ is complete when the endpoint does one of the following:
+
+ • Has transferred exactly the amount of data expected
+ • Transfers a packet with a payload size less than wMaxPacketSize or
+ transfers a zero-length packet'
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219365
+Fixes: 7b05933340f4 ("Bluetooth: btusb: Fix not handling ZPL/short-transfer")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/namei.c |   33 ++++++++++-----------------------
- 1 file changed, 10 insertions(+), 23 deletions(-)
+ drivers/bluetooth/btusb.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/fs/udf/namei.c
-+++ b/fs/udf/namei.c
-@@ -933,24 +933,17 @@ out:
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -1354,10 +1354,15 @@ static int btusb_submit_intr_urb(struct
+ 	if (!urb)
+ 		return -ENOMEM;
  
- static int udf_unlink(struct inode *dir, struct dentry *dentry)
- {
--	int retval;
-+	int ret;
- 	struct inode *inode = d_inode(dentry);
--	struct udf_fileident_bh fibh;
--	struct fileIdentDesc *fi;
--	struct fileIdentDesc cfi;
-+	struct udf_fileident_iter iter;
- 	struct kernel_lb_addr tloc;
+-	/* Use maximum HCI Event size so the USB stack handles
+-	 * ZPL/short-transfer automatically.
+-	 */
+-	size = HCI_MAX_EVENT_SIZE;
++	if (le16_to_cpu(data->udev->descriptor.idVendor)  == 0x0a12 &&
++	    le16_to_cpu(data->udev->descriptor.idProduct) == 0x0001)
++		/* Fake CSR devices don't seem to support sort-transter */
++		size = le16_to_cpu(data->intr_ep->wMaxPacketSize);
++	else
++		/* Use maximum HCI Event size so the USB stack handles
++		 * ZPL/short-transfer automatically.
++		 */
++		size = HCI_MAX_EVENT_SIZE;
  
--	retval = -ENOENT;
--	fi = udf_find_entry(dir, &dentry->d_name, &fibh, &cfi);
--
--	if (IS_ERR_OR_NULL(fi)) {
--		if (fi)
--			retval = PTR_ERR(fi);
-+	ret = udf_fiiter_find_entry(dir, &dentry->d_name, &iter);
-+	if (ret)
- 		goto out;
--	}
- 
--	retval = -EIO;
--	tloc = lelb_to_cpu(cfi.icb.extLocation);
-+	ret = -EFSCORRUPTED;
-+	tloc = lelb_to_cpu(iter.fi.icb.extLocation);
- 	if (udf_get_lb_pblock(dir->i_sb, &tloc, 0) != inode->i_ino)
- 		goto end_unlink;
- 
-@@ -959,22 +952,16 @@ static int udf_unlink(struct inode *dir,
- 			  inode->i_ino, inode->i_nlink);
- 		set_nlink(inode, 1);
- 	}
--	retval = udf_delete_entry(dir, fi, &fibh, &cfi);
--	if (retval)
--		goto end_unlink;
-+	udf_fiiter_delete_entry(&iter);
- 	dir->i_ctime = dir->i_mtime = current_time(dir);
- 	mark_inode_dirty(dir);
- 	inode_dec_link_count(inode);
- 	inode->i_ctime = dir->i_ctime;
--	retval = 0;
--
-+	ret = 0;
- end_unlink:
--	if (fibh.sbh != fibh.ebh)
--		brelse(fibh.ebh);
--	brelse(fibh.sbh);
--
-+	udf_fiiter_release(&iter);
- out:
--	return retval;
-+	return ret;
- }
- 
- static int udf_symlink(struct user_namespace *mnt_userns, struct inode *dir,
+ 	buf = kmalloc(size, mem_flags);
+ 	if (!buf) {
 
 
 
