@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-87409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D2A49A64D2
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:51:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF62A9A647E
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:47:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C6FE1C22078
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:51:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A52C1F2128C
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638611E410E;
-	Mon, 21 Oct 2024 10:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C6F81F1300;
+	Mon, 21 Oct 2024 10:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rj3ie8SF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0vCxrVFh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A367194085;
-	Mon, 21 Oct 2024 10:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B1E1EABD4;
+	Mon, 21 Oct 2024 10:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507520; cv=none; b=CY+AwgjAycz2PMlnB6NZ4yXrVM9P09mDlfTQvX2HDAWxW3rwsMhtMYHRp7/HG4WYklWdO+69/mqwIfM3I06tJVc7l0BfDRiyzb05LK9/Zp0cEqMDnROE5bgJXp6uI0LzqUod3satKvkBenVWJAWLLbJu3ttwyEnD56ovk9N9WUQ=
+	t=1729507304; cv=none; b=bLyDHeH9/Sb7WdGRldE13aNbcrCIcx4EiTzef9tMcJxBTCix+lcWQvUh844CSWcJtBuUj3ys1G7ea6IlX3KFAa+vzU9vayX6q5aL0jvQ0iG2dH2R65FydpkMPI46FT3C/wQ8kvQZyoMTcFL4PsKr7VXSi9Uj1UiOubZKEHwKyxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507520; c=relaxed/simple;
-	bh=jEht6G4Nj5uJWr0GkswdfC6fu3VG67MblecGNiHZecU=;
+	s=arc-20240116; t=1729507304; c=relaxed/simple;
+	bh=WOchI3moU7LmVUGlWg5z/ph6qDoYU2cLaKCUhMoguqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U5dytj2jjbVsjhBFHVDdvGC6S4syiECbixnVBkFYGA2VMRjY71xLlDXThRf16is1BcNnWZ5y1qfEgV3MkSOxn/y/o3FZG8C5H2k8VkTzlaJa/O5o7kDq6pKWIDpoEQ/kYKo8w5eQjxXKdhDq2QKZlbCA61nQJ0r00Una5rijQR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rj3ie8SF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F0BCC4CEC3;
-	Mon, 21 Oct 2024 10:45:19 +0000 (UTC)
+	 MIME-Version; b=L/JOIEde3XsqmYG12sb8PE1CAXEGm7oT99G2C2L+9ZBdFIe2Q+nFvVuQAoWRCHJp2nK04kQiGELb6pepMm1kAyIAwqyc/3mjVoKC8lZCzXIm9IpXeJ4r8Oe1E5mY6ztc/rBk67qurT2gnLaUXlAH1vtsIM/JHi25TAaJtbITwXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0vCxrVFh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E6EC4CEC3;
+	Mon, 21 Oct 2024 10:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507519;
-	bh=jEht6G4Nj5uJWr0GkswdfC6fu3VG67MblecGNiHZecU=;
+	s=korg; t=1729507304;
+	bh=WOchI3moU7LmVUGlWg5z/ph6qDoYU2cLaKCUhMoguqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rj3ie8SFo8nk7JP4WPzCMIwS2fvFdD5WLS5FnjzIpWiDJzlJX7n/nPGM/EaixNG+a
-	 m253+1rB4ImGqIvNvHKf8DsSLBF7AmGApFGgavEYIC6eAlH2iyg5iXbQnUl+e8nau2
-	 k9McadbqE8zl0GzyH14XfTUxv/yPRigVYR7AJl6o=
+	b=0vCxrVFh1FdtkjomJOmxAf/2iFcxgRKddiPccTgKOzSP9/ezcLtNxJH4FGDqjDOfS
+	 klvhVEi0IWJz1kvl/KZNOvdhDvGUAIt3MM+SZ9AuZb8xQ535W+saPanOjtuPd1f7se
+	 5yIbGvYvokURSOWFkPIb0VS8m6rqdg8QuSAyL/Jw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+69c9fdccc6dd08961d34@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.15 05/82] udf: Implement searching for directory entry using new iteration code
-Date: Mon, 21 Oct 2024 12:24:46 +0200
-Message-ID: <20241021102247.428735020@linuxfoundation.org>
+	Liu Shixin <liushixin2@huawei.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 33/91] mm/swapfile: skip HugeTLB pages for unuse_vma
+Date: Mon, 21 Oct 2024 12:24:47 +0200
+Message-ID: <20241021102251.117719100@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Liu Shixin <liushixin2@huawei.com>
 
-[ Upstream commit 1c80afa04db39c98aebea9aabfafa37a208cdfee ]
+commit 7528c4fb1237512ee18049f852f014eba80bbe8d upstream.
 
-Implement searching for directory entry - udf_fiiter_find_entry() -
-using new directory iteration code.
+I got a bad pud error and lost a 1GB HugeTLB when calling swapoff.  The
+problem can be reproduced by the following steps:
 
-Reported-by: syzbot+69c9fdccc6dd08961d34@syzkaller.appspotmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+ 1. Allocate an anonymous 1GB HugeTLB and some other anonymous memory.
+ 2. Swapout the above anonymous memory.
+ 3. run swapoff and we will get a bad pud error in kernel message:
+
+  mm/pgtable-generic.c:42: bad pud 00000000743d215d(84000001400000e7)
+
+We can tell that pud_clear_bad is called by pud_none_or_clear_bad in
+unuse_pud_range() by ftrace.  And therefore the HugeTLB pages will never
+be freed because we lost it from page table.  We can skip HugeTLB pages
+for unuse_vma to fix it.
+
+Link: https://lkml.kernel.org/r/20241015014521.570237-1-liushixin2@huawei.com
+Fixes: 0fe6e20b9c4c ("hugetlb, rmap: add reverse mapping for hugepage")
+Signed-off-by: Liu Shixin <liushixin2@huawei.com>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/namei.c |   67 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
+ mm/swapfile.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/udf/namei.c
-+++ b/fs/udf/namei.c
-@@ -141,6 +141,73 @@ int udf_write_fi(struct inode *inode, st
- }
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -2006,7 +2006,7 @@ static int unuse_mm(struct mm_struct *mm
  
- /**
-+ * udf_fiiter_find_entry - find entry in given directory.
-+ *
-+ * @dir:	directory inode to search in
-+ * @child:	qstr of the name
-+ * @iter:	iter to use for searching
-+ *
-+ * This function searches in the directory @dir for a file name @child. When
-+ * found, @iter points to the position in the directory with given entry.
-+ *
-+ * Returns 0 on success, < 0 on error (including -ENOENT).
-+ */
-+static int udf_fiiter_find_entry(struct inode *dir, const struct qstr *child,
-+				 struct udf_fileident_iter *iter)
-+{
-+	int flen;
-+	unsigned char *fname = NULL;
-+	struct super_block *sb = dir->i_sb;
-+	int isdotdot = child->len == 2 &&
-+		child->name[0] == '.' && child->name[1] == '.';
-+	int ret;
-+
-+	fname = kmalloc(UDF_NAME_LEN, GFP_NOFS);
-+	if (!fname)
-+		return -ENOMEM;
-+
-+	for (ret = udf_fiiter_init(iter, dir, 0);
-+	     !ret && iter->pos < dir->i_size;
-+	     ret = udf_fiiter_advance(iter)) {
-+		if (iter->fi.fileCharacteristics & FID_FILE_CHAR_DELETED) {
-+			if (!UDF_QUERY_FLAG(sb, UDF_FLAG_UNDELETE))
-+				continue;
-+		}
-+
-+		if (iter->fi.fileCharacteristics & FID_FILE_CHAR_HIDDEN) {
-+			if (!UDF_QUERY_FLAG(sb, UDF_FLAG_UNHIDE))
-+				continue;
-+		}
-+
-+		if ((iter->fi.fileCharacteristics & FID_FILE_CHAR_PARENT) &&
-+		    isdotdot)
-+			goto out_ok;
-+
-+		if (!iter->fi.lengthFileIdent)
-+			continue;
-+
-+		flen = udf_get_filename(sb, iter->name,
-+				iter->fi.lengthFileIdent, fname, UDF_NAME_LEN);
-+		if (flen < 0) {
-+			ret = flen;
-+			goto out_err;
-+		}
-+
-+		if (udf_match(flen, fname, child->len, child->name))
-+			goto out_ok;
-+	}
-+	if (!ret)
-+		ret = -ENOENT;
-+
-+out_err:
-+	udf_fiiter_release(iter);
-+out_ok:
-+	kfree(fname);
-+
-+	return ret;
-+}
-+
-+/**
-  * udf_find_entry - find entry in given directory.
-  *
-  * @dir:	directory inode to search in
+ 	mmap_read_lock(mm);
+ 	for_each_vma(vmi, vma) {
+-		if (vma->anon_vma) {
++		if (vma->anon_vma && !is_vm_hugetlb_page(vma)) {
+ 			ret = unuse_vma(vma, type);
+ 			if (ret)
+ 				break;
 
 
 
