@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-87360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 674FA9A64B5
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:49:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C23B9A643E
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:44:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0E80B26743
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:48:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD23628431E
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:44:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B1F1F4FAA;
-	Mon, 21 Oct 2024 10:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EA1C1E7657;
+	Mon, 21 Oct 2024 10:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGXdGOzL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGDlctNo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B3F1F1308;
-	Mon, 21 Oct 2024 10:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C823D1E3DD8;
+	Mon, 21 Oct 2024 10:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507373; cv=none; b=E0GOQEjp84nTCPNPD0gO6BUgGAnt76wFVtWaPNs3Xx0eAS8PZpVdbG4se5+QBacT6UKS+G0qgOtVTM/oAtfSGQT6RFGibsk1EyY1jJLxafHF+9ysNtJXlQalYVQkntxjX3fL5NF+XN0RH7+DNsuMKSkKrFmvYkK3foU1WoRhPoA=
+	t=1729507141; cv=none; b=JY63pc0g7ggpgo7j4P7lbrYNO1xidgd3sTp19nZvpjAo4WE+qgvsliyPxBm9EMAds7m4YS3rtqF/Agcu/d61mEQWHOmqUE+QrWqih3NJJp8FnI7NRPWaKO45kOECWnC1fLVhgYl8vZnh00M8gprjOvSeJD3JUV0yewHFFONBd5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507373; c=relaxed/simple;
-	bh=WA1snQf3UWFR4x+ZxycEuE2nvnq3s/42MKO/AaHUpAg=;
+	s=arc-20240116; t=1729507141; c=relaxed/simple;
+	bh=RSzahBSj9fpNb1CpC1InpnTKrF0FwIh4W3Vr/MCGll4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iRN36OOTTKQVe/I4y/mEnu5NsiGW5CjG/VQBFpyNYn8ZSaDjFzPmBoe6/J+F2SanhuvJVZXh7bm1ZJ7MWphq06s1lQ2fhUuePk6YBNIIMB3lOmimCPc+qbYnv6FAmNFSz0wSD/Cx7bi1fomir4YIkmY1Bnx6U5vpQEL+q1lxmGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGXdGOzL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9CDEC4CEC3;
-	Mon, 21 Oct 2024 10:42:52 +0000 (UTC)
+	 MIME-Version; b=rtt4HqtFgdIKh0QCUkK86vCx17jp2kp3PEthsjtIIslatqpqMbKFX2Y/oV2YfyEjPH1x+YANTdzj9E4imv6aq8WvpUPHR8Fsg9UstmCvU3nMyqHco9u9T6S+PpTnF7dmzydJm1Zo0N2gwznWMKLhUMM2WS9jBidglSwn4YpGR5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGDlctNo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E96C4CEC3;
+	Mon, 21 Oct 2024 10:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507373;
-	bh=WA1snQf3UWFR4x+ZxycEuE2nvnq3s/42MKO/AaHUpAg=;
+	s=korg; t=1729507141;
+	bh=RSzahBSj9fpNb1CpC1InpnTKrF0FwIh4W3Vr/MCGll4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VGXdGOzL4gQvZpNte45HYRtKi1vua/TN9rQr7vPSfM1vO3s9JNYAia2tDP0g1CbLX
-	 y7IJgrybWorLEIhowpbM3eiDQBQjUQh3qcaI0dNoBF9rKFgEv4Z3efQxcPbSc2tuJw
-	 9UjLxj+Pzt1a8Tnw7dmjB/BCnYp7cnfdhcP23hZw=
+	b=DGDlctNogy+3w2dmltSqoPyeYnuwNlvn/FQLG1+nD5AZWTUkzk3GCE0SN30k1oXZd
+	 2ZZNgDiEzUevA9EXJZwaB+upe8MKQ7CaPtTTuPFXHcDKmPImijiXswzpniD3D+MoT8
+	 2rpGmqm9bdcGkj4WYEI90qN8wyN6GGtT6pWZUbeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohammed Anees <pvmohammedanees2003@gmail.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 54/91] drm/amdgpu: prevent BO_HANDLES error from being overwritten
+	Dave Hansen <dave.hansen@intel.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Todd Brandt <todd.e.brandt@intel.com>
+Subject: [PATCH 6.6 104/124] x86/apic: Always explicitly disarm TSC-deadline timer
 Date: Mon, 21 Oct 2024 12:25:08 +0200
-Message-ID: <20241021102251.927480167@linuxfoundation.org>
+Message-ID: <20241021102300.741838345@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohammed Anees <pvmohammedanees2003@gmail.com>
+From: Zhang Rui <rui.zhang@intel.com>
 
-commit c0ec082f10b7a1fd25e8c1e2a686440da913b7a3 upstream.
+commit ffd95846c6ec6cf1f93da411ea10d504036cab42 upstream.
 
-Before this patch, if multiple BO_HANDLES chunks were submitted,
-the error -EINVAL would be correctly set but could be overwritten
-by the return value from amdgpu_cs_p1_bo_handles(). This patch
-ensures that if there are multiple BO_HANDLES, we stop.
+New processors have become pickier about the local APIC timer state
+before entering low power modes. These low power modes are used (for
+example) when you close your laptop lid and suspend. If you put your
+laptop in a bag and it is not in this low power mode, it is likely
+to get quite toasty while it quickly sucks the battery dry.
 
-Fixes: fec5f8e8c6bc ("drm/amdgpu: disallow multiple BO_HANDLES chunks in one submit")
-Signed-off-by: Mohammed Anees <pvmohammedanees2003@gmail.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 40f2cd98828f454bdc5006ad3d94330a5ea164b7)
+The problem boils down to some CPUs' inability to power down until the
+CPU recognizes that the local APIC timer is shut down. The current
+kernel code works in one-shot and periodic modes but does not work for
+deadline mode. Deadline mode has been the supported and preferred mode
+on Intel CPUs for over a decade and uses an MSR to drive the timer
+instead of an APIC register.
+
+Disable the TSC Deadline timer in lapic_timer_shutdown() by writing to
+MSR_IA32_TSC_DEADLINE when in TSC-deadline mode. Also avoid writing
+to the initial-count register (APIC_TMICT) which is ignored in
+TSC-deadline mode.
+
+Note: The APIC_LVTT|=APIC_LVT_MASKED operation should theoretically be
+enough to tell the hardware that the timer will not fire in any of the
+timer modes. But mitigating AMD erratum 411[1] also requires clearing
+out APIC_TMICT. Solely setting APIC_LVT_MASKED is also ineffective in
+practice on Intel Lunar Lake systems, which is the motivation for this
+change.
+
+1. 411 Processor May Exit Message-Triggered C1E State Without an Interrupt if Local APIC Timer Reaches Zero - https://www.amd.com/content/dam/amd/en/documents/archived-tech-docs/revision-guides/41322_10h_Rev_Gd.pdf
+
+Fixes: 279f1461432c ("x86: apic: Use tsc deadline for oneshot when available")
+Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Tested-by: Todd Brandt <todd.e.brandt@intel.com>
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241015061522.25288-1-rui.zhang%40intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/apic/apic.c |   14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-@@ -259,7 +259,7 @@ static int amdgpu_cs_pass1(struct amdgpu
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -473,7 +473,19 @@ static int lapic_timer_shutdown(struct c
+ 	v = apic_read(APIC_LVTT);
+ 	v |= (APIC_LVT_MASKED | LOCAL_TIMER_VECTOR);
+ 	apic_write(APIC_LVTT, v);
+-	apic_write(APIC_TMICT, 0);
++
++	/*
++	 * Setting APIC_LVT_MASKED (above) should be enough to tell
++	 * the hardware that this timer will never fire. But AMD
++	 * erratum 411 and some Intel CPU behavior circa 2024 say
++	 * otherwise.  Time for belt and suspenders programming: mask
++	 * the timer _and_ zero the counter registers:
++	 */
++	if (v & APIC_LVT_TIMER_TSCDEADLINE)
++		wrmsrl(MSR_IA32_TSC_DEADLINE, 0);
++	else
++		apic_write(APIC_TMICT, 0);
++
+ 	return 0;
+ }
  
- 			/* Only a single BO list is allowed to simplify handling. */
- 			if (p->bo_list)
--				ret = -EINVAL;
-+				goto free_partial_kdata;
- 
- 			ret = amdgpu_cs_p1_bo_handles(p, p->chunks[i].kdata);
- 			if (ret)
 
 
 
