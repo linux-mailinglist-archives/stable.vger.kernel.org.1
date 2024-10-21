@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-87366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B37DA9A64DC
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:51:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 381A59A64D1
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:51:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C15D1B2DCC6
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:48:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8B60280940
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:51:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF72D1F1310;
-	Mon, 21 Oct 2024 10:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA6E194A74;
+	Mon, 21 Oct 2024 10:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2EJCKiG1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdTVx49R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B001EF95E;
-	Mon, 21 Oct 2024 10:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BFC1E47A3;
+	Mon, 21 Oct 2024 10:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507391; cv=none; b=PrhnYCFktCfEE0jif0FSyh/RPSMbbNmFln9L4dixLGf96IiA1SKligRlfYDh/bcxo2QP13qJ69TdFpRjlW37RcaHz0uI7ABJKyXIzEPya6XUTDg3oPtysfsaT3m0JQQ92X80q/wYt7as6jv9X7+TRp1X6AEb2ygkB+YrzeS+QbI=
+	t=1729507515; cv=none; b=R9xD9Q0z8PxktH+0B0xWz1JAwDeKHP7jSayHPZRfIF4zKhOpc3koGmdT+UMuAW5/FWxPharAYL9dMbTHXldgqOTszzpdYAApWiXbkRiaTbhl4Ck+mv5s8usu+9QhnvwbEYOTA+8YXxpw/iDL0tQPYMRRx+bpHLS9R67Z7Bqg6AE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507391; c=relaxed/simple;
-	bh=ZPl3GwxPNCYzrXA5cQROJAkeuUxRhkX/yRVXwHcgqg8=;
+	s=arc-20240116; t=1729507515; c=relaxed/simple;
+	bh=kBdQElYC76VAXJ0iR+h90Yq8ERJ6JOmILlOEwT8w6w4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lyy1tcSuqAIV2RjQIxuZztNX+l1FlPZ6xLkSYksr7IMp3v5PUbEhAtmNkpMV68BK7YrkBEhlF7TK4cTMkxIdPmQi9Allv8kFVxp01z4Vo/wAPdnMDS6tZi7LYN5pds6Q/Xq6uvCXZU9l3v4SBrnjwTedp23ITZ6xrECW2ggTtJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2EJCKiG1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D3DC4CEC3;
-	Mon, 21 Oct 2024 10:43:10 +0000 (UTC)
+	 MIME-Version; b=mD4510Jk7yWqSeauBOQUYe2V8llqcsHg5YoERZxTT4OJQXYoagwjCy9F0aQQqpQbLbvRFNHGNw5/v1pmPCLdVS9IDw/hWo1xDaLZcIW4Br3VICbfR8wvYixqG5+zaVs/+mYC+b0XSvl6Ff1jxM4d4ItOlHP7NRoKfvuxs2KcqVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdTVx49R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941C0C4CEC3;
+	Mon, 21 Oct 2024 10:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507391;
-	bh=ZPl3GwxPNCYzrXA5cQROJAkeuUxRhkX/yRVXwHcgqg8=;
+	s=korg; t=1729507514;
+	bh=kBdQElYC76VAXJ0iR+h90Yq8ERJ6JOmILlOEwT8w6w4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2EJCKiG1+oqVbhFaVnfiaLJaBiUzQp3AbEgn+neo9mbGiV80uzk36iCSSWtkXj0ax
-	 NlctTie+0QQXkvDk1kQSyr01rYMHhwHPAbmrptWhCpZN31s/JDRopM8SKkMmfH6l8u
-	 qkaL0Zp2CchP8I2LWS1eUtzQImRVhZr/AhkK24wQ=
+	b=fdTVx49RdPS0lnHVqI9g0fUa2PXUUYk4z8mvpZVPj0XFuoUqsrwccI+1leLKUlp9U
+	 ny2oUZ34cqmAU4CDiKeoSBfDo99EETJd8U5MLHf2VNfeQQidffAVZ11XuEIN/tL1Mp
+	 9V0gNtN4dCdTNy9ntw3WN+yA9/J4RDoNltsqjMuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 30/91] net: macb: Avoid 20s boot delay by skipping MDIO bus registration for fixed-link PHY
+	Jan Kara <jack@suse.cz>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 5.15 03/82] udf: Convert udf_expand_dir_adinicb() to new directory iteration
 Date: Mon, 21 Oct 2024 12:24:44 +0200
-Message-ID: <20241021102251.000687298@linuxfoundation.org>
+Message-ID: <20241021102247.348079558@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +61,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Jan Kara <jack@suse.cz>
 
-commit d0c3601f2c4e12e7689b0f46ebc17525250ea8c3 upstream.
+[ Upstream commit 57bda9fb169d689bff4108265a897d324b5fb8c3 ]
 
-A boot delay was introduced by commit 79540d133ed6 ("net: macb: Fix
-handling of fixed-link node"). This delay was caused by the call to
-`mdiobus_register()` in cases where a fixed-link PHY was present. The
-MDIO bus registration triggered unnecessary PHY address scans, leading
-to a 20-second delay due to attempts to detect Clause 45 (C45)
-compatible PHYs, despite no MDIO bus being attached.
+Convert udf_expand_dir_adinicb() to new directory iteration code.
 
-The commit 79540d133ed6 ("net: macb: Fix handling of fixed-link node")
-was originally introduced to fix a regression caused by commit
-7897b071ac3b4 ("net: macb: convert to phylink"), which caused the driver
-to misinterpret fixed-link nodes as PHY nodes. This resulted in warnings
-like:
-mdio_bus f0028000.ethernet-ffffffff: fixed-link has invalid PHY address
-mdio_bus f0028000.ethernet-ffffffff: scan phy fixed-link at address 0
-...
-mdio_bus f0028000.ethernet-ffffffff: scan phy fixed-link at address 31
-
-This patch reworks the logic to avoid registering and allocation of the
-MDIO bus when:
-  - The device tree contains a fixed-link node.
-  - There is no "mdio" child node in the device tree.
-
-If a child node named "mdio" exists, the MDIO bus will be registered to
-support PHYs  attached to the MACB's MDIO bus. Otherwise, with only a
-fixed-link, the MDIO bus is skipped.
-
-Tested on a sama5d35 based system with a ksz8863 switch attached to
-macb0.
-
-Fixes: 79540d133ed6 ("net: macb: Fix handling of fixed-link node")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: stable@vger.kernel.org
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20241013052916.3115142-1-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ fs/udf/inode.c |   66 +++++++++++++++++++++++++--------------------------------
+ 1 file changed, 29 insertions(+), 37 deletions(-)
 
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -878,9 +878,6 @@ static int macb_mdiobus_register(struct
- 		return ret;
- 	}
- 
--	if (of_phy_is_fixed_link(np))
--		return mdiobus_register(bp->mii_bus);
+--- a/fs/udf/inode.c
++++ b/fs/udf/inode.c
+@@ -330,14 +330,12 @@ struct buffer_head *udf_expand_dir_adini
+ 	udf_pblk_t newblock;
+ 	struct buffer_head *dbh = NULL;
+ 	struct kernel_lb_addr eloc;
+-	uint8_t alloctype;
+ 	struct extent_position epos;
 -
- 	/* Only create the PHY from the device tree if at least one PHY is
- 	 * described. Otherwise scan the entire MDIO bus. We do this to support
- 	 * old device tree that did not follow the best practices and did not
-@@ -901,8 +898,19 @@ static int macb_mdiobus_register(struct
+-	struct udf_fileident_bh sfibh, dfibh;
+-	loff_t f_pos = udf_ext0_offset(inode);
+-	int size = udf_ext0_offset(inode) + inode->i_size;
+-	struct fileIdentDesc cfi, *sfi, *dfi;
++	uint8_t alloctype;
+ 	struct udf_inode_info *iinfo = UDF_I(inode);
++	struct udf_fileident_iter iter;
++	uint8_t *impuse;
++	int ret;
  
- static int macb_mii_init(struct macb *bp)
- {
-+	struct device_node *child, *np = bp->pdev->dev.of_node;
- 	int err = -ENXIO;
+ 	if (UDF_QUERY_FLAG(inode->i_sb, UDF_FLAG_USE_SHORT_AD))
+ 		alloctype = ICBTAG_FLAG_AD_SHORT;
+@@ -365,38 +363,14 @@ struct buffer_head *udf_expand_dir_adini
+ 	if (!dbh)
+ 		return NULL;
+ 	lock_buffer(dbh);
+-	memset(dbh->b_data, 0x00, inode->i_sb->s_blocksize);
++	memcpy(dbh->b_data, iinfo->i_data, inode->i_size);
++	memset(dbh->b_data + inode->i_size, 0,
++	       inode->i_sb->s_blocksize - inode->i_size);
+ 	set_buffer_uptodate(dbh);
+ 	unlock_buffer(dbh);
+-	mark_buffer_dirty_inode(dbh, inode);
+-
+-	sfibh.soffset = sfibh.eoffset =
+-			f_pos & (inode->i_sb->s_blocksize - 1);
+-	sfibh.sbh = sfibh.ebh = NULL;
+-	dfibh.soffset = dfibh.eoffset = 0;
+-	dfibh.sbh = dfibh.ebh = dbh;
+-	while (f_pos < size) {
+-		iinfo->i_alloc_type = ICBTAG_FLAG_AD_IN_ICB;
+-		sfi = udf_fileident_read(inode, &f_pos, &sfibh, &cfi, NULL,
+-					 NULL, NULL, NULL);
+-		if (!sfi) {
+-			brelse(dbh);
+-			return NULL;
+-		}
+-		iinfo->i_alloc_type = alloctype;
+-		sfi->descTag.tagLocation = cpu_to_le32(*block);
+-		dfibh.soffset = dfibh.eoffset;
+-		dfibh.eoffset += (sfibh.eoffset - sfibh.soffset);
+-		dfi = (struct fileIdentDesc *)(dbh->b_data + dfibh.soffset);
+-		if (udf_write_fi(inode, sfi, dfi, &dfibh, sfi->impUse,
+-				 udf_get_fi_ident(sfi))) {
+-			iinfo->i_alloc_type = ICBTAG_FLAG_AD_IN_ICB;
+-			brelse(dbh);
+-			return NULL;
+-		}
+-	}
+-	mark_buffer_dirty_inode(dbh, inode);
  
-+	/* With fixed-link, we don't need to register the MDIO bus,
-+	 * except if we have a child named "mdio" in the device tree.
-+	 * In that case, some devices may be attached to the MACB's MDIO bus.
-+	 */
-+	child = of_get_child_by_name(np, "mdio");
-+	if (child)
-+		of_node_put(child);
-+	else if (of_phy_is_fixed_link(np))
-+		return macb_mii_probe(bp->dev);
++	/* Drop inline data, add block instead */
++	iinfo->i_alloc_type = alloctype;
+ 	memset(iinfo->i_data + iinfo->i_lenEAttr, 0, iinfo->i_lenAlloc);
+ 	iinfo->i_lenAlloc = 0;
+ 	eloc.logicalBlockNum = *block;
+@@ -407,10 +381,28 @@ struct buffer_head *udf_expand_dir_adini
+ 	epos.block = iinfo->i_location;
+ 	epos.offset = udf_file_entry_alloc_offset(inode);
+ 	udf_add_aext(inode, &epos, &eloc, inode->i_size, 0);
+-	/* UniqueID stuff */
+-
+ 	brelse(epos.bh);
+ 	mark_inode_dirty(inode);
 +
- 	/* Enable management port */
- 	macb_writel(bp, NCR, MACB_BIT(MPE));
++	/* Now fixup tags in moved directory entries */
++	for (ret = udf_fiiter_init(&iter, inode, 0);
++	     !ret && iter.pos < inode->i_size;
++	     ret = udf_fiiter_advance(&iter)) {
++		iter.fi.descTag.tagLocation = cpu_to_le32(*block);
++		if (iter.fi.lengthOfImpUse != cpu_to_le16(0))
++			impuse = dbh->b_data + iter.pos +
++						sizeof(struct fileIdentDesc);
++		else
++			impuse = NULL;
++		udf_fiiter_write_fi(&iter, impuse);
++	}
++	/*
++	 * We don't expect the iteration to fail as the directory has been
++	 * already verified to be correct
++	 */
++	WARN_ON_ONCE(ret);
++	udf_fiiter_release(&iter);
++
+ 	return dbh;
+ }
  
 
 
