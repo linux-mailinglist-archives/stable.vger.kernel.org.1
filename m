@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-87107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA2C69A6312
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:30:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD4419A63CA
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:39:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4623EB21149
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:30:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 261B6B28A7F
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7241E3DDB;
-	Mon, 21 Oct 2024 10:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F3D1E5733;
+	Mon, 21 Oct 2024 10:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="stgRhb2D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnc9eYBu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A2E1E32D7;
-	Mon, 21 Oct 2024 10:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6341E5705;
+	Mon, 21 Oct 2024 10:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506614; cv=none; b=DGqHpUQu0xWmuBKzZ9TL1KyhTiXROUOG1hjOUGgI8AXRRDHasPdhUYpQyaKWSe7jX+k5OK8qqe13qjowNVJ9x0kf7z4HzFozOlR3Sd4qHVpWOTAnNwuM0FVembgcaP69TRapDRTpsZFVBx+yfmT8UvJSu3CA48co9z8BPk0FSEc=
+	t=1729506875; cv=none; b=OZd+nhEy+DIQoiG4+8kPGHiQbKGpBZlMAa/P5Gc+TEkgrtanHxi8J1nVWcrLo/xvOj9jhrX1IKiLOIRBT5O1ERvYgDTfPE8LcYAA+WccPCdQpPsD8RBChSv2X6lELLaf14kMnAdDAyoveSdhk2uDNGLDfGLgFzAmZrY4zdUlGpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506614; c=relaxed/simple;
-	bh=uORyptvjRf+siv0NNKFmtJ2Teb2sY3PxRS42kmdBtVU=;
+	s=arc-20240116; t=1729506875; c=relaxed/simple;
+	bh=/gDQq5Ap8fIvaZvY4/xDghFze65mvXwXN/Eywj99QDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MAls6YQNYXds/ceseKwSKmZ5PsgCqMjTItVmfGLX0obwlySLtTJQoq22o5FRgi+aLmnIDaXUs5SUa7KF4gqbrFe0DnvLhR7VTnzhGgGLzYyoX3W82yZmxda1JBB0XpwvGZHNyKnJUDmdcdYWbih2zwVi6N9YxCmBiAJTH/Krzp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=stgRhb2D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D7CC4CEC3;
-	Mon, 21 Oct 2024 10:30:13 +0000 (UTC)
+	 MIME-Version; b=Lxm5Bz8NH5G/5txyjsEIeVnsgn+K9PNtGQ3oGZUu0eWzUBYaYZx4m1pDYahTACaOByfObxy1PL7/plOsiD3ADMQjlixW4fQ116D72yHhw/85Z+M7oN+mga8zRjk6rKt8O74M5WPwWfxNylj4TQYKZi7TSKdj+yNdUEY/32PgjVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnc9eYBu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA46C4CEC3;
+	Mon, 21 Oct 2024 10:34:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506614;
-	bh=uORyptvjRf+siv0NNKFmtJ2Teb2sY3PxRS42kmdBtVU=;
+	s=korg; t=1729506875;
+	bh=/gDQq5Ap8fIvaZvY4/xDghFze65mvXwXN/Eywj99QDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=stgRhb2DkD1z8obu4A5KbNe2hJfpiSX8Yy8BtxuangaDxN32s2QhzUNTTazfzVr5v
-	 nLKu+w4L3K/leL1i1jztOvuAkd7L302IsSSyV4jOOAbhD63Q0TcioG+1TwcyLvHR+B
-	 DQYshiCS2qR3DBfg/rf+vY70KHLgdAno6Ei3+mvY=
+	b=lnc9eYBuzOehI44upzdMvjrs7j8GEnkwThiM0lciBpgVy70g18tNUmPy1tV8jrtUj
+	 fsw2qp5+HHw18giKIqlsw480UVZ1Xz22xZHXYNMXCwT088Dmal87laKK0Z/tVS+m22
+	 Tmy4QRzWvwWXuLIhN04DsSdAvpkory/gtGyHSJEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bommu Krishnaiah <krishnaiah.bommu@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.11 063/135] drm/xe/ufence: ufence can be signaled right after wait_woken
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 015/124] net: macb: Avoid 20s boot delay by skipping MDIO bus registration for fixed-link PHY
 Date: Mon, 21 Oct 2024 12:23:39 +0200
-Message-ID: <20241021102301.793751743@linuxfoundation.org>
+Message-ID: <20241021102257.312650825@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nirmoy Das <nirmoy.das@intel.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit 4e8b5a165160e2f521cc10bae58ce0b72b2e22b5 upstream.
+commit d0c3601f2c4e12e7689b0f46ebc17525250ea8c3 upstream.
 
-do_comapre() can return success after a timedout wait_woken() which was
-treated as -ETIME. The loop calling wait_woken() sets correct err so
-there is no need to re-evaluate err.
+A boot delay was introduced by commit 79540d133ed6 ("net: macb: Fix
+handling of fixed-link node"). This delay was caused by the call to
+`mdiobus_register()` in cases where a fixed-link PHY was present. The
+MDIO bus registration triggered unnecessary PHY address scans, leading
+to a 20-second delay due to attempts to detect Clause 45 (C45)
+compatible PHYs, despite no MDIO bus being attached.
 
-v2: Remove entire check that reevaluate err at the end(Matt)
+The commit 79540d133ed6 ("net: macb: Fix handling of fixed-link node")
+was originally introduced to fix a regression caused by commit
+7897b071ac3b4 ("net: macb: convert to phylink"), which caused the driver
+to misinterpret fixed-link nodes as PHY nodes. This resulted in warnings
+like:
+mdio_bus f0028000.ethernet-ffffffff: fixed-link has invalid PHY address
+mdio_bus f0028000.ethernet-ffffffff: scan phy fixed-link at address 0
+...
+mdio_bus f0028000.ethernet-ffffffff: scan phy fixed-link at address 31
 
-Fixes: e670f0b4ef24 ("drm/xe/uapi: Return correct error code for xe_wait_user_fence_ioctl")
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1630
-Cc: stable@vger.kernel.org # v6.8+
-Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241011151029.4160630-1-nirmoy.das@intel.com
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-(cherry picked from commit ec7e6a1d527755fc3c7a3303eaa5577aac5cf6be)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+This patch reworks the logic to avoid registering and allocation of the
+MDIO bus when:
+  - The device tree contains a fixed-link node.
+  - There is no "mdio" child node in the device tree.
+
+If a child node named "mdio" exists, the MDIO bus will be registered to
+support PHYs  attached to the MACB's MDIO bus. Otherwise, with only a
+fixed-link, the MDIO bus is skipped.
+
+Tested on a sama5d35 based system with a ksz8863 switch attached to
+macb0.
+
+Fixes: 79540d133ed6 ("net: macb: Fix handling of fixed-link node")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: stable@vger.kernel.org
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20241013052916.3115142-1-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_wait_user_fence.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_wait_user_fence.c b/drivers/gpu/drm/xe/xe_wait_user_fence.c
-index d46fa8374980..f5deb81eba01 100644
---- a/drivers/gpu/drm/xe/xe_wait_user_fence.c
-+++ b/drivers/gpu/drm/xe/xe_wait_user_fence.c
-@@ -169,9 +169,6 @@ int xe_wait_user_fence_ioctl(struct drm_device *dev, void *data,
- 			args->timeout = 0;
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -930,9 +930,6 @@ static int macb_mdiobus_register(struct
+ 		return ret;
  	}
  
--	if (!timeout && !(err < 0))
--		err = -ETIME;
+-	if (of_phy_is_fixed_link(np))
+-		return mdiobus_register(bp->mii_bus);
 -
- 	if (q)
- 		xe_exec_queue_put(q);
+ 	/* Only create the PHY from the device tree if at least one PHY is
+ 	 * described. Otherwise scan the entire MDIO bus. We do this to support
+ 	 * old device tree that did not follow the best practices and did not
+@@ -953,8 +950,19 @@ static int macb_mdiobus_register(struct
  
--- 
-2.47.0
-
+ static int macb_mii_init(struct macb *bp)
+ {
++	struct device_node *child, *np = bp->pdev->dev.of_node;
+ 	int err = -ENXIO;
+ 
++	/* With fixed-link, we don't need to register the MDIO bus,
++	 * except if we have a child named "mdio" in the device tree.
++	 * In that case, some devices may be attached to the MACB's MDIO bus.
++	 */
++	child = of_get_child_by_name(np, "mdio");
++	if (child)
++		of_node_put(child);
++	else if (of_phy_is_fixed_link(np))
++		return macb_mii_probe(bp->dev);
++
+ 	/* Enable management port */
+ 	macb_writel(bp, NCR, MACB_BIT(MPE));
+ 
 
 
 
