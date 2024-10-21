@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-87391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 650F89A64B9
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:49:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B8539A654F
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:55:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 267972817B4
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:49:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CC162823DC
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:55:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B561E32B1;
-	Mon, 21 Oct 2024 10:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21C6B1F9421;
+	Mon, 21 Oct 2024 10:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNf8i9Mv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvmy8skI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539FA1E6DD4;
-	Mon, 21 Oct 2024 10:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD43C1F941B;
+	Mon, 21 Oct 2024 10:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507466; cv=none; b=pvYK5iy6wAI4rlzbiPpOI26uPQLxjhXt2kzc0L4yJLjJEmn+Uo8hvSZ+SEudSGpMTlCeW6HMAd1D68HkAjZRFiaQfmV1WssN7hT9HjgjBYIv88zR/Gj7opqXgJBJLeLoZH1kqlE5E2z1rg24QUYBXOgdKyxIaf1lwhMRbnv8Gnc=
+	t=1729507786; cv=none; b=lLYhWX4S1h2Gu1rNoMQN1eQEgJqQC0S/HR+UWMItD5+IKZgWbn3uzrCLOtCLrFS6VcT6edJyBZyhcHibvNT6W6MJjrrKw1mHei0r946P91uF+jYgF9Q6kB3ZNmb9CchQ8xHxIAvIjgB3Z6z6J4ImJ1NimhIla3IN8cLRbfnr+tU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507466; c=relaxed/simple;
-	bh=glC2GvosGK8IoRupjDL5O/WV67poAvXV9gjpJi7aUPU=;
+	s=arc-20240116; t=1729507786; c=relaxed/simple;
+	bh=+wH1MyFEyFPqEKiRhNuZh3xbfRAazDi7Wf2QrPgdkiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RcKZeWHnyn8jSCrcU1Plw/r0iEO45Bq+2ZboRQCAuDKy3OYKk1UMqGdtP6dH3XC+/LHYNzaSXAoZDzYxm/gR5o1GhUYcsfPAvG51l/qKtezsITHhD9PN6ql+tKVXlJvtzso8QY80rv1j1YkcOSofC4SAHSeye0FsN2fODZQjVgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNf8i9Mv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA61C4CEC7;
-	Mon, 21 Oct 2024 10:44:25 +0000 (UTC)
+	 MIME-Version; b=BVsfaO+69HK9V9Xa7moaSH9dTc15aLc3DPe24efszf3it09PeptkW3a1GDkfqNjy9h1X+KKjMnlT2NDk6E4xKZjYXzd+8IFMQTjEGJz4GFS4mgS5ESY9PXnPMc2yPZ8vu4SeyfuPh9CrY7P6ZzsM6WNqhPXi8zOBX0Uf7j1XSsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvmy8skI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB68C4CEC3;
+	Mon, 21 Oct 2024 10:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507466;
-	bh=glC2GvosGK8IoRupjDL5O/WV67poAvXV9gjpJi7aUPU=;
+	s=korg; t=1729507786;
+	bh=+wH1MyFEyFPqEKiRhNuZh3xbfRAazDi7Wf2QrPgdkiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CNf8i9MvrpA77vwg8LC220j344avsP7wRLp93zYqLVRYalRaxp1D7MFtbjSNKmisM
-	 SpOZD05ziVrsh1gwKmtl5iD5VM1NgrpIMgNLxABDMmERbU8LbWrKwhW4VJNNVDagSd
-	 ZLpYs2Ja7Vypsiex1qQsCUcnGJPn1iW4Zjk8YR/Q=
+	b=dvmy8skId69V7TdlL/WmoFwub1Ve5n4gIc9ZvdYCHts8DwTqXcKwwj1tUYBJE/23V
+	 /VgxFiF14eV4NvGakOE24BiO/MgdhAzZx7MXphuftksicggoXN0uw82lfWdwd/GPKb
+	 BOElm3jLJYqmcLiDoRYkp2+q4ZSIXLOeg+jqsyp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunkun Jiang <jiangkunkun@huawei.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.1 85/91] irqchip/gic-v4: Dont allow a VMOVP on a dying VPE
-Date: Mon, 21 Oct 2024 12:25:39 +0200
-Message-ID: <20241021102253.129389596@linuxfoundation.org>
+	Johannes Wikner <kwikner@ethz.ch>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 5.10 19/52] x86/entry: Have entry_ibpb() invalidate return predictions
+Date: Mon, 21 Oct 2024 12:25:40 +0200
+Message-ID: <20241021102242.378149241@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
+References: <20241021102241.624153108@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Johannes Wikner <kwikner@ethz.ch>
 
-commit 1442ee0011983f0c5c4b92380e6853afb513841a upstream.
+commit 50e4b3b94090babe8d4bb85c95f0d3e6b07ea86e upstream.
 
-Kunkun Jiang reported that there is a small window of opportunity for
-userspace to force a change of affinity for a VPE while the VPE has already
-been unmapped, but the corresponding doorbell interrupt still visible in
-/proc/irq/.
+entry_ibpb() should invalidate all indirect predictions, including return
+target predictions. Not all IBPB implementations do this, in which case the
+fallback is RSB filling.
 
-Plug the race by checking the value of vmapp_count, which tracks whether
-the VPE is mapped ot not, and returning an error in this case.
+Prevent SRSO-style hijacks of return predictions following IBPB, as the return
+target predictor can be corrupted before the IBPB completes.
 
-This involves making vmapp_count common to both GICv4.1 and its v4.0
-ancestor.
+  [ bp: Massage. ]
 
-Fixes: 64edfaa9a234 ("irqchip/gic-v4.1: Implement the v4.1 flavour of VMAPP")
-Reported-by: Kunkun Jiang <jiangkunkun@huawei.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/c182ece6-2ba0-ce4f-3404-dba7a3ab6c52@huawei.com
-Link: https://lore.kernel.org/all/20241002204959.2051709-1-maz@kernel.org
+Signed-off-by: Johannes Wikner <kwikner@ethz.ch>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c   |   18 ++++++++++++------
- include/linux/irqchip/arm-gic-v4.h |    4 +++-
- 2 files changed, 15 insertions(+), 7 deletions(-)
+ arch/x86/entry/entry.S |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -793,8 +793,8 @@ static struct its_vpe *its_build_vmapp_c
- 	its_encode_valid(cmd, desc->its_vmapp_cmd.valid);
+--- a/arch/x86/entry/entry.S
++++ b/arch/x86/entry/entry.S
+@@ -9,6 +9,8 @@
+ #include <asm/unwind_hints.h>
+ #include <asm/segment.h>
+ #include <asm/cache.h>
++#include <asm/cpufeatures.h>
++#include <asm/nospec-branch.h>
  
- 	if (!desc->its_vmapp_cmd.valid) {
-+		alloc = !atomic_dec_return(&desc->its_vmapp_cmd.vpe->vmapp_count);
- 		if (is_v4_1(its)) {
--			alloc = !atomic_dec_return(&desc->its_vmapp_cmd.vpe->vmapp_count);
- 			its_encode_alloc(cmd, alloc);
- 			/*
- 			 * Unmapping a VPE is self-synchronizing on GICv4.1,
-@@ -813,13 +813,13 @@ static struct its_vpe *its_build_vmapp_c
- 	its_encode_vpt_addr(cmd, vpt_addr);
- 	its_encode_vpt_size(cmd, LPI_NRBITS - 1);
+ .pushsection .noinstr.text, "ax"
  
-+	alloc = !atomic_fetch_inc(&desc->its_vmapp_cmd.vpe->vmapp_count);
+@@ -17,6 +19,9 @@ SYM_FUNC_START(entry_ibpb)
+ 	movl	$PRED_CMD_IBPB, %eax
+ 	xorl	%edx, %edx
+ 	wrmsr
 +
- 	if (!is_v4_1(its))
- 		goto out;
- 
- 	vconf_addr = virt_to_phys(page_address(desc->its_vmapp_cmd.vpe->its_vm->vprop_page));
- 
--	alloc = !atomic_fetch_inc(&desc->its_vmapp_cmd.vpe->vmapp_count);
--
- 	its_encode_alloc(cmd, alloc);
- 
- 	/*
-@@ -3796,6 +3796,13 @@ static int its_vpe_set_affinity(struct i
- 	int from, cpu;
- 
- 	/*
-+	 * Check if we're racing against a VPE being destroyed, for
-+	 * which we don't want to allow a VMOVP.
-+	 */
-+	if (!atomic_read(&vpe->vmapp_count))
-+		return -EINVAL;
-+
-+	/*
- 	 * Changing affinity is mega expensive, so let's be as lazy as
- 	 * we can and only do it if we really have to. Also, if mapped
- 	 * into the proxy device, we need to move the doorbell
-@@ -4431,9 +4438,8 @@ static int its_vpe_init(struct its_vpe *
- 	raw_spin_lock_init(&vpe->vpe_lock);
- 	vpe->vpe_id = vpe_id;
- 	vpe->vpt_page = vpt_page;
--	if (gic_rdists->has_rvpeid)
--		atomic_set(&vpe->vmapp_count, 0);
--	else
-+	atomic_set(&vpe->vmapp_count, 0);
-+	if (!gic_rdists->has_rvpeid)
- 		vpe->vpe_proxy_event = -1;
- 
- 	return 0;
---- a/include/linux/irqchip/arm-gic-v4.h
-+++ b/include/linux/irqchip/arm-gic-v4.h
-@@ -58,10 +58,12 @@ struct its_vpe {
- 				bool	enabled;
- 				bool	group;
- 			}			sgi_config[16];
--			atomic_t vmapp_count;
- 		};
- 	};
- 
-+	/* Track the VPE being mapped */
-+	atomic_t vmapp_count;
-+
- 	/*
- 	 * Ensures mutual exclusion between affinity setting of the
- 	 * vPE and vLPI operations using vpe->col_idx.
++	/* Make sure IBPB clears return stack preductions too. */
++	FILL_RETURN_BUFFER %rax, RSB_CLEAR_LOOPS, X86_BUG_IBPB_NO_RET
+ 	RET
+ SYM_FUNC_END(entry_ibpb)
+ /* For KVM */
 
 
 
