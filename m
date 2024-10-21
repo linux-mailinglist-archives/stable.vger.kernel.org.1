@@ -1,127 +1,118 @@
-Return-Path: <stable+bounces-87644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C5169A9327
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 00:16:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A42E9A9352
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 00:29:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6ACA1F23029
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 22:16:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BEC2283B5D
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 22:29:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E037D1FF031;
-	Mon, 21 Oct 2024 22:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFBE21FEFC1;
+	Mon, 21 Oct 2024 22:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cSx5KWTL";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="c0wDeuB8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dU3avb9D"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46CF1FEFD2;
-	Mon, 21 Oct 2024 22:16:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A281FDF98
+	for <stable@vger.kernel.org>; Mon, 21 Oct 2024 22:29:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729548975; cv=none; b=RSjq+pxpc5EsRC86hIPbV6+jSldcxzYPAm19SO27saSc/FLr35CWGJ1d0wDoHUzyJt/AOgVKSfA8h9rItNaVbQZ30B+wonMg7TOIxfUYG5ZDBW3YTl6mckk23y8ARQAWQWi8e/iH3JS7MxQKhwmvQ4A+49PLGc/Jz1FmKwBkuZo=
+	t=1729549761; cv=none; b=FJ0iuFD0w5Q7md82W0xCBfzxywdZ1mxB1bXame1oiuBtu/fHgLqyRyO86PFOrhsui3VXuTdu1gR9fKY9v1eQGeIdGbT7fwrR3+xSoxGvgFAd/nkB6D40VjttqOokFvpOhCosBUhCmY0+51bB+2XN/7DZGUjx+/2gJFg3fjdvIL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729548975; c=relaxed/simple;
-	bh=o/21IDi3z+3r/CfWZohnh+gwI8lcHwVWkH/yH95StvA=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=VOOf8tb0jgyKDQeod5TvzmWs0DZ6idZDO1xtJIIHqRQRBRO928D0zrrmVPbfIkr/33Z5tMfnZKHf6TxX1QQpI2uJ5rWIaxQJCV7TlA+ao7lIyFB+rhhYm8eQ5M56rXbFscDEHYEWHqsYZklcN0DgqDCd/ObS5tHKjgRe2M++rkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cSx5KWTL; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=c0wDeuB8; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 21 Oct 2024 22:16:09 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1729548970;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=F/VQH6ij6E//+e6oHqxact1RCWdlNziDjscxF7SHn/A=;
-	b=cSx5KWTLQfVlVsanarHTdIPWf0b2r7oSvQGO8goTivqT115Hvof/Xo/jnfWgO1HDZhTxPY
-	YalStZhRT2tYj63JDs+KOhWrwuLVX2Rz8h8ZionNCS/PldjTtDSwyfVbEXrh4XD24x5S2y
-	ti5k2FeAeNIuASee2ZeAIADX9q2irKfg2XAdKP1a393Bm/aozcBKoVrTP2MsPZ/gTKIlYM
-	5tkUkyuc9OFaCejjhyFGfP2ROkGLpgK6QWhUKOfJpHNlzq4l01dU2hQqMkNp7HyJYayqoV
-	uEozhMY7ukCVrWrQYYIZA3DdeuXw7gNK/jR9f5Vh2bO7JGjX4ARULELTRkQM9w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1729548970;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=F/VQH6ij6E//+e6oHqxact1RCWdlNziDjscxF7SHn/A=;
-	b=c0wDeuB8QM+B/AbKR/7i28++aq2WdmwkDQW5LAOVemEEL7dJyOOldKtA3pd0erhV5WbJZm
-	WGc4Hzxbfui4cXDQ==
-From: "tip-bot2 for Pawan Gupta" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/lam: Disable ADDRESS_MASKING in most cases
-Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Sohil Mehta <sohil.mehta@intel.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1729549761; c=relaxed/simple;
+	bh=DK5cAoaLipLQJ1Qq11dmR38yV4BdPfJO6Co5qz6yZms=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SN/Y3PUFX5ye+vf/pdR5rO0MPR0o34RKHZ9gi5WqzZ0EDyb8bHkuYkzaE8p16ob9/MBsalTuKEa2GADOAb5rlUJD+30qNAu/OXtZuwXROWwY0l94qUPQbHrz6HAeowe1AyB8J8Te3yEIfSzky2KmZnMhJaziU/O1FKWJ7FXA22w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dU3avb9D; arc=none smtp.client-ip=209.85.166.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-83ac05206e8so122929939f.3
+        for <stable@vger.kernel.org>; Mon, 21 Oct 2024 15:29:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1729549757; x=1730154557; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TA4XM5hTiGNOd+KQ3u3JDVeWEwmpgPZoFJVi0gICoWw=;
+        b=dU3avb9DlJ5lt7m1IhWT0B0X0PRM9XWtSThrVY1rHd1jwO0XBOf9wB9FeH+eAJDzcx
+         YERoORGw2jyZ0afLaG0mNh2tWZEfQCVO9+u8nEBwq931ZsbTyU/cuyhCduzSi2GTKz8b
+         eiA9OSmNgUOqTlKFLuAO4SX1eW73ANAHLszPE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729549757; x=1730154557;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TA4XM5hTiGNOd+KQ3u3JDVeWEwmpgPZoFJVi0gICoWw=;
+        b=d7VZJJWZV8ZGoH2Un4bltz5TS71U8e5u1ai1rUJztbHtq6FkQR89SKY8eB+mjT3TrS
+         0AbrlH23SFSdN3BvYZFkRPw2ADCQLfDSbuL1Hbk+Z2xZHOilIEah5/9w3w8OIJxf1B+N
+         keNDAK2FhyViW/gDnlhrVpTn8a4GQFisLQGU3cD19j5Sb65QeWvftx5fdOklYytUKt/A
+         2NBPKgbaJpU5Lvx58G6GUPFmTNecQm1lvl1nbOfffMYtHyhj3DjPPY2DHIB4N+r4lKRl
+         HKIHZ9JbyemBYwxHd2IcHqQmTdUhQ8d24LWvY8Va+zMx/6FzRZShpXK2lJp/QqYUChJt
+         Ra1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXSiCGJarvpOs4tdUsp8mMTKvDTjxBe6UOAdBV/vOUJ268R937NLyOq/bh6FMfADm+b+VDpOF8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6GqLdOLPKGcH/E+nAUnsRh1xWc4WuM/ISC/oniQw5t1V8zNyk
+	9JTZLysKHmnprYSjkkQM4j0kFT0fAqYoC6vP+jLukvBN8Q5oHlwh4AjVWcQ+pv0=
+X-Google-Smtp-Source: AGHT+IE+r2Sv2Vi8956gLES8UxPVDLR8WmGuc8PVr3WktKjFjqRF4T4ZtzxG0LU9kkxugixlftUMTA==
+X-Received: by 2002:a05:6602:6d16:b0:835:4d27:edf6 with SMTP id ca18e2360f4ac-83aba5f2764mr1039351939f.7.1729549757368;
+        Mon, 21 Oct 2024 15:29:17 -0700 (PDT)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4dc2a60947bsm1235916173.116.2024.10.21.15.29.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Oct 2024 15:29:16 -0700 (PDT)
+Message-ID: <6049fc80-b936-496b-b1d0-134de9fc19dc@linuxfoundation.org>
+Date: Mon, 21 Oct 2024 16:29:15 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172954896978.1442.12851270945186118443.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.11 000/135] 6.11.5-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+On 10/21/24 04:22, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.11.5 release.
+> There are 135 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 23 Oct 2024 10:22:25 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.11.5-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.11.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-Commit-ID:     3267cb6d3a174ff83d6287dcd5b0047bbd912452
-Gitweb:        https://git.kernel.org/tip/3267cb6d3a174ff83d6287dcd5b0047bbd912452
-Author:        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-AuthorDate:    Tue, 23 Jan 2024 19:55:21 -08:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Mon, 21 Oct 2024 15:05:43 -07:00
+Compiled and booted on my test system. No dmesg regressions.
 
-x86/lam: Disable ADDRESS_MASKING in most cases
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-Linear Address Masking (LAM) has a weakness related to transient
-execution as described in the SLAM paper[1]. Unless Linear Address
-Space Separation (LASS) is enabled this weakness may be exploitable.
-
-Until kernel adds support for LASS[2], only allow LAM for COMPILE_TEST,
-or when speculation mitigations have been disabled at compile time,
-otherwise keep LAM disabled.
-
-There are no processors in market that support LAM yet, so currently
-nobody is affected by this issue.
-
-[1] SLAM: https://download.vusec.net/papers/slam_sp24.pdf
-[2] LASS: https://lore.kernel.org/lkml/20230609183632.48706-1-alexander.shishkin@linux.intel.com/
-
-[ dhansen: update SPECULATION_MITIGATIONS -> CPU_MITIGATIONS ]
-
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/5373262886f2783f054256babdf5a98545dc986b.1706068222.git.pawan.kumar.gupta%40linux.intel.com
----
- arch/x86/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 2852fcd..16354df 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2257,6 +2257,7 @@ config RANDOMIZE_MEMORY_PHYSICAL_PADDING
- config ADDRESS_MASKING
- 	bool "Linear Address Masking support"
- 	depends on X86_64
-+	depends on COMPILE_TEST || !CPU_MITIGATIONS # wait for LASS
- 	help
- 	  Linear Address Masking (LAM) modifies the checking that is applied
- 	  to 64-bit linear addresses, allowing software to use of the
+thanks,
+-- Shuah
 
