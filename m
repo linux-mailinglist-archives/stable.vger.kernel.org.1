@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-87362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A639A649A
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:48:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 257189A6386
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8153D1C21BD5
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:48:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE5081F226C4
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A82B51F130A;
-	Mon, 21 Oct 2024 10:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 812281E9091;
+	Mon, 21 Oct 2024 10:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ep9ckNw2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uuL2stc+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548CE1F76D0;
-	Mon, 21 Oct 2024 10:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F6B1E9081;
+	Mon, 21 Oct 2024 10:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507379; cv=none; b=RcUen5ZS/o16mA0n9WoNtVQul9+G7r/xyvyUJVdcAWa61i0dGvWB49SwfjFD1KXRJU8iBKkisPPrU87ZW6EuBlwuka67JSpkt/xnoVrWkoLbLA2q/MeSMx9cfpjMCNP+BFLloNTs66TLyyzzdfxV6Ok0Hs4O5OvRBbJMsolBNbw=
+	t=1729506797; cv=none; b=cPIn+YkYz+qup4VNMFmHqWFv4l85BFszZExWwNoU1Ct+iuzysFtEBbe77P0BFR/owAIwpivClzbdKqzabUbFMU7wxzMmKW07TXApfdZsiKobZ+WnL83G5xcd6B1RY9fE+nZL/lu4kf/N58lMS8/NA7SiLc4c/A2CkD9gfLpvTO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507379; c=relaxed/simple;
-	bh=p2L/RJAcczu6SRVRkud4QeaSvh5mzxO/s+npFoA3VHU=;
+	s=arc-20240116; t=1729506797; c=relaxed/simple;
+	bh=yDt+2hAXwCWjUVuI6BzqmSUUv9JQn9jMTQh4yZA9Qqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hlI0NALTFNpVHmL5M4nbJczKbNPd3LkBgVioDQISBANWJq/pAlYmLNXvqwiYLxAtAX5MQ4pXWhmBnF3bDPJpzZBnyHvjvfX1OVOXxQSAjXW4g6NFo9hIQt3iYr+/vhkT/NjZSHi0Fpvtmnb1jXCclHCntARGEnAj8qR6LTuVS8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ep9ckNw2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8091C4CEC3;
-	Mon, 21 Oct 2024 10:42:58 +0000 (UTC)
+	 MIME-Version; b=kg9+uw+KA4e7fSr9kR3AozejCQV0aObaf1jCPXWIs9MiBQYiak62uvXd03xEI3jjZ32e01riAQ0TbcvqyaOg4p196puGVu3TbGGfVt+Ecz8KJQLe296GUZLU73j2QLyadOOYQuPCNSEtTWH970cahjV7gGHE/UzmA3twesFcdAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uuL2stc+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF10C4CEEF;
+	Mon, 21 Oct 2024 10:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507379;
-	bh=p2L/RJAcczu6SRVRkud4QeaSvh5mzxO/s+npFoA3VHU=;
+	s=korg; t=1729506796;
+	bh=yDt+2hAXwCWjUVuI6BzqmSUUv9JQn9jMTQh4yZA9Qqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ep9ckNw2s+cKjzihEOasSPD5s3+phrummPbOe4PwLYgeoC6+2y1CvnCHJnLR9JZ1A
-	 Y0wSrsOCKViOMya2TsHP0d06VOukRg+SaeGs2PMgOCd/9xcTLIuzlav78QDyGEuB6z
-	 uB3ps8wm4lHOssra9UfmhMy5l0rPOqGt60rcNb3k=
+	b=uuL2stc+f//yU9im5Q7Rrwq/A5feIs1spR41MeeBxsJFdseVOSu4t4fjeEBKdwj96
+	 zuA6bhTIKg17ORaHcOM/4Y/tNQvp9YfBgqpMq41S9Vl8cAlSt4SGLsKJUheCaHytE7
+	 qM86MdHRWbVcj4yLs9HwofZfYQDJuh9alXDYXBxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 26/91] net: enetc: add missing static descriptor and inline keyword
+	Ma Ke <make24@iscas.ac.cn>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.11 124/135] pinctrl: stm32: check devm_kasprintf() returned value
 Date: Mon, 21 Oct 2024 12:24:40 +0200
-Message-ID: <20241021102250.846094217@linuxfoundation.org>
+Message-ID: <20241021102304.184189327@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 1d7b2ce43d2c22a21dadaf689cb36a69570346a6 upstream.
+commit b0f0e3f0552a566def55c844b0d44250c58e4df6 upstream.
 
-Fix the build warnings when CONFIG_FSL_ENETC_MDIO is not enabled.
-The detailed warnings are shown as follows.
+devm_kasprintf() can return a NULL pointer on failure but this returned
+value is not checked. Fix this lack and check the returned value.
 
-include/linux/fsl/enetc_mdio.h:62:18: warning: no previous prototype for function 'enetc_hw_alloc' [-Wmissing-prototypes]
-      62 | struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
-         |                  ^
-include/linux/fsl/enetc_mdio.h:62:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-      62 | struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
-         | ^
-         | static
-8 warnings generated.
+Found by code review.
 
-Fixes: 6517798dd343 ("enetc: Make MDIO accessors more generic and export to include/linux/fsl")
 Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202410102136.jQHZOcS4-lkp@intel.com/
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20241011030103.392362-1-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 32c170ff15b0 ("pinctrl: stm32: set default gpio line names using pin names")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://lore.kernel.org/20240906100326.624445-1-make24@iscas.ac.cn
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/fsl/enetc_mdio.h |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pinctrl/stm32/pinctrl-stm32.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/include/linux/fsl/enetc_mdio.h
-+++ b/include/linux/fsl/enetc_mdio.h
-@@ -48,7 +48,8 @@ static inline int enetc_mdio_read(struct
- static inline int enetc_mdio_write(struct mii_bus *bus, int phy_id, int regnum,
- 				   u16 value)
- { return -EINVAL; }
--struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
-+static inline struct enetc_hw *enetc_hw_alloc(struct device *dev,
-+					      void __iomem *port_regs)
- { return ERR_PTR(-EINVAL); }
+--- a/drivers/pinctrl/stm32/pinctrl-stm32.c
++++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
+@@ -1374,10 +1374,15 @@ static int stm32_gpiolib_register_bank(s
  
- #endif
+ 	for (i = 0; i < npins; i++) {
+ 		stm32_pin = stm32_pctrl_get_desc_pin_from_gpio(pctl, bank, i);
+-		if (stm32_pin && stm32_pin->pin.name)
++		if (stm32_pin && stm32_pin->pin.name) {
+ 			names[i] = devm_kasprintf(dev, GFP_KERNEL, "%s", stm32_pin->pin.name);
+-		else
++			if (!names[i]) {
++				err = -ENOMEM;
++				goto err_clk;
++			}
++		} else {
+ 			names[i] = NULL;
++		}
+ 	}
+ 
+ 	bank->gpio_chip.names = (const char * const *)names;
 
 
 
