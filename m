@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-87494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87FC09A6541
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:55:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAA2A9A64B1
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:49:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B75B91C22359
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:55:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 636262814E2
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377AC1F80B5;
-	Mon, 21 Oct 2024 10:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40291E5728;
+	Mon, 21 Oct 2024 10:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUwtpAWX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xOb8DxCH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E611F76D0;
-	Mon, 21 Oct 2024 10:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDEE1E32B1;
+	Mon, 21 Oct 2024 10:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507772; cv=none; b=CW5ri4hAE9QkCp0/JTj9gKLp1QVyoHzOe2JmmLYa97wZBUBkPm0/fIEEMkCl3jn2juw7hUTKU+iVd33UIYgLLsqmE7R0coq/Bt3i7v/IoUamZ0oBM5TXd3klIj0h59T6T2lcnF9/LVs55Foog7ojg26QXoozNW4PYbZtXq2Iw+g=
+	t=1729507451; cv=none; b=Mr44HSBe44fvEYRfvboUwt80jo2Ljo7jcjGJ3BOmFzXcKvbLpSXpLEAePK+ZPunQDdfRWgb/zWOVKNgqYd4LfNiGQ90bFRNgrJL2tLa9ymAQzcfaUc0OYRA/gerVLUhaUfucMLQkqSijzOgaXE8e09q1NvdYIaJDTXofSoJR1J0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507772; c=relaxed/simple;
-	bh=LAeMJwizzVBi1qjkOTe+4Sfs6Y23yr3VDUrc+pN8hEc=;
+	s=arc-20240116; t=1729507451; c=relaxed/simple;
+	bh=FMWfARCzb14AOIQmjml4gtPtJ7ZtqNbHd6/fD9aqNb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DMCukIdBSNrmjEC6EWGr55zn0QShsTxHP5T5KgqdcN0REGn8Ag85PmmKVtejxJwFKutxfWrhU4LXDwyQZFeqe2pqagPT5XVKunx+2eukzcZXM5sGPUXHGOrnhbsOqZ00AeKbWkdS9Kv8Q51DKx80N9hIicOdtqmaM9sLnHq3IS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUwtpAWX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 645DBC4CEE5;
-	Mon, 21 Oct 2024 10:49:31 +0000 (UTC)
+	 MIME-Version; b=tT002UfUSmwrjDe18z2Y5u8jzBqDG+jS6H1o2eNyLKxHsCYkkjMq8ifRMDzOzD8EhM5UxzIlReI2j8KRXmHRxtPhSfan7ipYvurd0OOeLA2hpTX74hrLvBM/wo5WyknrsR0J5Di3lEagdWE8vnEZ9n/MwvLIwSm0otq38k4l/4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xOb8DxCH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB4DCC4CEE5;
+	Mon, 21 Oct 2024 10:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507771;
-	bh=LAeMJwizzVBi1qjkOTe+4Sfs6Y23yr3VDUrc+pN8hEc=;
+	s=korg; t=1729507451;
+	bh=FMWfARCzb14AOIQmjml4gtPtJ7ZtqNbHd6/fD9aqNb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BUwtpAWX2jJVk2EHxf21XYZ/x1e3AqzrR/Ryi6UXmH17dxYI4vG28jOsLXQT/k1uS
-	 i17ET0VRvbUml35gw8Dpp+GJ99fUWBlEKpwehq1xbmMQ87bFmNatj3qjvzsNwLRRaH
-	 OUbmQcW7r1bMmmgjbo8XPbBhRv3ZB4wZ6KXO4o7M=
+	b=xOb8DxCHGRsnw855NRGkEBH/h1Ly4dA94fYtSIFs7BAPXzg1JxDyUkjjGJOF3O/Q1
+	 Hq12q/Va90hL2MeDYe26EG5WWBqfXOS2HW1hXstgsY9WDAL1j+csGTBfpaV3vJwcPU
+	 u/C31gEYN9dl7aP3aRnibPIpLfZxk4K4WxMEpIBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Moessbauer <felix.moessbauer@siemens.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.10 14/52] io_uring/sqpoll: do not put cpumask on stack
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Subject: [PATCH 6.1 81/91] x86/entry_32: Clear CPU buffers after register restore in NMI return
 Date: Mon, 21 Oct 2024 12:25:35 +0200
-Message-ID: <20241021102242.184442551@linuxfoundation.org>
+Message-ID: <20241021102252.974311517@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
-References: <20241021102241.624153108@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Moessbauer <felix.moessbauer@siemens.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-commit 7f44beadcc11adb98220556d2ddbe9c97aa6d42d upstream.
+commit 48a2440d0f20c826b884e04377ccc1e4696c84e9 upstream.
 
-Putting the cpumask on the stack is deprecated for a long time (since
-2d3854a37e8), as these can be big. Given that, change the on-stack
-allocation of allowed_mask to be dynamically allocated.
+CPU buffers are currently cleared after call to exc_nmi, but before
+register state is restored. This may be okay for MDS mitigation but not for
+RDFS. Because RDFS mitigation requires CPU buffers to be cleared when
+registers don't have any sensitive data.
 
-Fixes: f011c9cf04c0 ("io_uring/sqpoll: do not allow pinning outside of cpuset")
-Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
-Link: https://lore.kernel.org/r/20240916111150.1266191-1-felix.moessbauer@siemens.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Move CLEAR_CPU_BUFFERS after RESTORE_ALL_NMI.
+
+Fixes: a0e2dab44d22 ("x86/entry_32: Add VERW just before userspace transition")
+Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240925-fix-dosemu-vm86-v7-2-1de0daca2d42%40linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ arch/x86/entry/entry_32.S |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -8572,15 +8572,22 @@ static int io_sq_offload_create(struct i
- 			return 0;
+--- a/arch/x86/entry/entry_32.S
++++ b/arch/x86/entry/entry_32.S
+@@ -1176,7 +1176,6 @@ SYM_CODE_START(asm_exc_nmi)
  
- 		if (p->flags & IORING_SETUP_SQ_AFF) {
--			struct cpumask allowed_mask;
-+			cpumask_var_t allowed_mask;
- 			int cpu = p->sq_thread_cpu;
+ 	/* Not on SYSENTER stack. */
+ 	call	exc_nmi
+-	CLEAR_CPU_BUFFERS
+ 	jmp	.Lnmi_return
  
- 			ret = -EINVAL;
- 			if (cpu >= nr_cpu_ids || !cpu_online(cpu))
- 				goto err_sqpoll;
--			cpuset_cpus_allowed(current, &allowed_mask);
--			if (!cpumask_test_cpu(cpu, &allowed_mask))
-+			ret = -ENOMEM;
-+			if (!alloc_cpumask_var(&allowed_mask, GFP_KERNEL))
- 				goto err_sqpoll;
-+			ret = -EINVAL;
-+			cpuset_cpus_allowed(current, allowed_mask);
-+			if (!cpumask_test_cpu(cpu, allowed_mask)) {
-+				free_cpumask_var(allowed_mask);
-+				goto err_sqpoll;
-+			}
-+			free_cpumask_var(allowed_mask);
- 			sqd->sq_cpu = cpu;
- 		} else {
- 			sqd->sq_cpu = -1;
+ .Lnmi_from_sysenter_stack:
+@@ -1197,6 +1196,7 @@ SYM_CODE_START(asm_exc_nmi)
+ 
+ 	CHECK_AND_APPLY_ESPFIX
+ 	RESTORE_ALL_NMI cr3_reg=%edi pop=4
++	CLEAR_CPU_BUFFERS
+ 	jmp	.Lirq_return
+ 
+ #ifdef CONFIG_X86_ESPFIX32
+@@ -1238,6 +1238,7 @@ SYM_CODE_START(asm_exc_nmi)
+ 	 *  1 - orig_ax
+ 	 */
+ 	lss	(1+5+6)*4(%esp), %esp			# back to espfix stack
++	CLEAR_CPU_BUFFERS
+ 	jmp	.Lirq_return
+ #endif
+ SYM_CODE_END(asm_exc_nmi)
 
 
 
