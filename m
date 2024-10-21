@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-87093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E0809A6302
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:30:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4035E9A646E
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:46:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26F4B281D82
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:30:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA431B28FB1
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151E01E572C;
-	Mon, 21 Oct 2024 10:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C2361E6DE1;
+	Mon, 21 Oct 2024 10:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hBT3EK79"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="So/7Hopk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3DD1E5020;
-	Mon, 21 Oct 2024 10:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03221E630C;
+	Mon, 21 Oct 2024 10:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506572; cv=none; b=qzuTerctn6kRhl/wLSkeOFApvVh8g5nPRJVtTy3VSsDTd0GIFyrJMY8tdZUiQQFSFt3iRA0HJUCqNPufRGB31v8hs1epa3R0Y0PpW75HlHEhKNRIcdN4tmrxSHRQRoy8f+NnH5rAW5wY2A1Js0qIWTRqEzwSHdUiynBzIHiWLb8=
+	t=1729506890; cv=none; b=Mz/oMW6UXllGX4L8ew7H9K8MAGiwY9Iv2cPeKqNGA82YAZAD+1YlgfOsv1Fu7eeGfmVKEXTkui4Fadz/HSskLCJwT6rvV59z32MZU87ZkXVKxHugSagSA3hUWJkcXbOJYGBNVf4dSxyL+1HLqnVLm4Ns/O+KfGWTqI8HggBCjPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506572; c=relaxed/simple;
-	bh=M8O4PdmL7N6K2gt8uJbYNy/EvDPjH/3lG+LXO4iKtFI=;
+	s=arc-20240116; t=1729506890; c=relaxed/simple;
+	bh=p/5Ou8mxr7HH36yAjLRFsAELMG8c+QBR1Pn5bgR8x4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c5vZjcxg+pyMnv32xwPEL7FGPemaFuLwST5RtutdjJSbt1vOcMOOGehSPTtJAPVrv24+TAQ6Vg+UCvkXH76l9DegjHjQIXpcjsoOv0WCdaP2rbo6Qh5WAl8/d6TUZLLBcegVJ2epNLuEJm3sI/EIulSy6VRvrfBWdMsNbDkzqc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hBT3EK79; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A91DC4CEC3;
-	Mon, 21 Oct 2024 10:29:32 +0000 (UTC)
+	 MIME-Version; b=fxk2je74o5NU58/Bjw/Ang9czCoZiSy+V6mzSFa2OSqzdIxFO5VTVao3R4lR3XcDpYe1nqOEqeK34Xniwtk2FotNRpuJzORwH+xL8xNCqrcs2cyKIWnzwYh9MivgKWkm4bguIObmP8bna7TH9RL0zZpbpxuKOXumyPLF+TDsQbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=So/7Hopk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E04C4CEC3;
+	Mon, 21 Oct 2024 10:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506572;
-	bh=M8O4PdmL7N6K2gt8uJbYNy/EvDPjH/3lG+LXO4iKtFI=;
+	s=korg; t=1729506890;
+	bh=p/5Ou8mxr7HH36yAjLRFsAELMG8c+QBR1Pn5bgR8x4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hBT3EK79NU3nQliz1n4KJRo+2rOf6tDbof6Vi8WrUQhcFOJpwMbIt/5FfUvJaPiYr
-	 yefclcp4ilZt3bStDJviYXsKlJv+0cqJmx0LCi/GBpWARKGmGI2ZRs+NY4WmKx2Ama
-	 zxxZy8x4iYY4AbpFRjq4qGzAOhYQJy/HzDBE4a6o=
+	b=So/7HopksKZ49r58NfTwPU4mG/fubfORCgomdIrSbbDHw7nVE1G/h+azrUM+s8nyE
+	 qO7j5OkOtuqXxWvaQyG+ieI3CCi30tH5XmhTVFSA/801E+0Dpp7ethc9xRBbV65iKk
+	 +8iQjofTQ0WB9V1Ox+PGj6rjG43gXTV0vXVBP46E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	John Garry <john.g.garry@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Rick Koch <mr.rickkoch@gmail.com>
-Subject: [PATCH 6.11 050/135] blk-mq: setup queue ->tag_set before initializing hctx
+	Anand Jain <anand.jain@oracle.com>,
+	Roi Martin <jroi.martin@gmail.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 002/124] btrfs: fix uninitialized pointer free on read_alloc_one_name() error
 Date: Mon, 21 Oct 2024 12:23:26 +0200
-Message-ID: <20241021102301.289839871@linuxfoundation.org>
+Message-ID: <20241021102256.808229649@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Roi Martin <jroi.martin@gmail.com>
 
-commit c25c0c9035bb8b28c844dfddeda7b8bdbcfcae95 upstream.
+commit 2ab5e243c2266c841e0f6904fad1514b18eaf510 upstream.
 
-Commit 7b815817aa58 ("blk-mq: add helper for checking if one CPU is mapped to specified hctx")
-needs to check queue mapping via tag set in hctx's cpuhp handler.
+The function read_alloc_one_name() does not initialize the name field of
+the passed fscrypt_str struct if kmalloc fails to allocate the
+corresponding buffer.  Thus, it is not guaranteed that
+fscrypt_str.name is initialized when freeing it.
 
-However, q->tag_set may not be setup yet when the cpuhp handler is
-enabled, then kernel oops is triggered.
+This is a follow-up to the linked patch that fixes the remaining
+instances of the bug introduced by commit e43eec81c516 ("btrfs: use
+struct qstr instead of name and namelen pairs").
 
-Fix the issue by setup queue tag_set before initializing hctx.
-
-Cc: stable@vger.kernel.org
-Reported-and-tested-by: Rick Koch <mr.rickkoch@gmail.com>
-Closes: https://lore.kernel.org/linux-block/CANa58eeNDozLaBHKPLxSAhEy__FPfJT_F71W=sEQw49UCrC9PQ@mail.gmail.com
-Fixes: 7b815817aa58 ("blk-mq: add helper for checking if one CPU is mapped to specified hctx")
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20241014005115.2699642-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lore.kernel.org/linux-btrfs/20241009080833.1355894-1-jroi.martin@gmail.com/
+Fixes: e43eec81c516 ("btrfs: use struct qstr instead of name and namelen pairs")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Roi Martin <jroi.martin@gmail.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-mq.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/btrfs/tree-log.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -4307,6 +4307,12 @@ int blk_mq_init_allocated_queue(struct b
- 	/* mark the queue as mq asap */
- 	q->mq_ops = set->ops;
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -1846,7 +1846,7 @@ static noinline int replay_one_name(stru
+ 				    struct btrfs_dir_item *di,
+ 				    struct btrfs_key *key)
+ {
+-	struct fscrypt_str name;
++	struct fscrypt_str name = { 0 };
+ 	struct btrfs_dir_item *dir_dst_di;
+ 	struct btrfs_dir_item *index_dst_di;
+ 	bool dir_dst_matches = false;
+@@ -2126,7 +2126,7 @@ static noinline int check_item_in_log(st
+ 	struct extent_buffer *eb;
+ 	int slot;
+ 	struct btrfs_dir_item *di;
+-	struct fscrypt_str name;
++	struct fscrypt_str name = { 0 };
+ 	struct inode *inode = NULL;
+ 	struct btrfs_key location;
  
-+	/*
-+	 * ->tag_set has to be setup before initialize hctx, which cpuphp
-+	 * handler needs it for checking queue mapping
-+	 */
-+	q->tag_set = set;
-+
- 	if (blk_mq_alloc_ctxs(q))
- 		goto err_exit;
- 
-@@ -4325,8 +4331,6 @@ int blk_mq_init_allocated_queue(struct b
- 	INIT_WORK(&q->timeout_work, blk_mq_timeout_work);
- 	blk_queue_rq_timeout(q, set->timeout ? set->timeout : 30 * HZ);
- 
--	q->tag_set = set;
--
- 	q->queue_flags |= QUEUE_FLAG_MQ_DEFAULT;
- 
- 	INIT_DELAYED_WORK(&q->requeue_work, blk_mq_requeue_work);
 
 
 
