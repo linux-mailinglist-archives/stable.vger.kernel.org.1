@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-87246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB2419A6412
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:43:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D74079A6382
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BEC81C202F9
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40AFDB2779F
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25BEF1F1314;
-	Mon, 21 Oct 2024 10:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47C7F1E7C2D;
+	Mon, 21 Oct 2024 10:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYamFc26"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOQi1gFs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D149F1EABB6;
-	Mon, 21 Oct 2024 10:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F291139FD6;
+	Mon, 21 Oct 2024 10:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507031; cv=none; b=qli7EZCxnr9g2alzrsXqwk8EhQCqWyZBaq8Xw8eBV9PNAwSb8lakQRRuUHbqlGNDQWvrIjQbrq0ByfKjoU9bWXO0aVqMsOwKmvPYCjawe4X5xj7IvpcPQaKpKlathMRg0EHTaCKbG4vjk714gP123tDkT2GqyLzyuJ6Tazp+aAU=
+	t=1729506767; cv=none; b=ooFtVr3tz+kb/fVgtVZMaWIIXBwGg8oeWVtF10Ug8kF4RBqNl4rRWGC5amoDf3l1dc4nR40qlRuPPBTw7CIlHdTY5WaawbvrBBT9dxq1IJPXydQNFBusR24VkAVZ9lO3LnHYR6dbR/Uxk0Sgdg646a++P9Tn+i2sq3rQLhgDk1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507031; c=relaxed/simple;
-	bh=uDoKHkzRX5ViTXoc0765LQXkIWRYvxpO/v5dRLN4BOY=;
+	s=arc-20240116; t=1729506767; c=relaxed/simple;
+	bh=jhfVmdL53pyKjWtkacl7ML7pxqXLunyjdzPDlMFNB/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HuBs/WHnzCCmEpGdPis9UJk91Qko/EnxD0ajF7mJ2ol3+2DXo99ZWaw7SbpWydlvx5zf2b0biKrjFzrVZUJKLfIlb+cTARuTFGfqLDzipfeJ8LMaLDzqotp572KZewihERPLWIbjh3hz68uOnsON3HQJMzvQ8nJDCHb1ZhaeJ30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYamFc26; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53929C4CEC3;
-	Mon, 21 Oct 2024 10:37:11 +0000 (UTC)
+	 MIME-Version; b=ZRbMNk72IT9uyX0c4n1mSn27IvUnOyMzz+GS0UE6nh5dbWxJIwO6WIyY9auCEUVmVCJ0vQTZ0lF3ilgLYpCC1J8OUCsYPbthmDmaOjMVtFOUZZ2n7gW6gzQTF1/gFQqRz/sc1GinYMR2CZ2vp9rFAuv/iKNabL7EzGbRE3mnVQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOQi1gFs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A31DC4CEC3;
+	Mon, 21 Oct 2024 10:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507031;
-	bh=uDoKHkzRX5ViTXoc0765LQXkIWRYvxpO/v5dRLN4BOY=;
+	s=korg; t=1729506766;
+	bh=jhfVmdL53pyKjWtkacl7ML7pxqXLunyjdzPDlMFNB/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cYamFc26oB2WNKecyiD9NaihvAXWwNKnLaqyQeHNJLD42QQWc1X1MSwlHiEqiexh7
-	 oUo32M853YU+t/cYfUtNH2eWrkFRhI1Yj0DWIgEwOGJeLpS9O82d7UOgLYopkTUzZC
-	 g0pYbID6oP6jEFJkMpElkRc8djwRMpaTNzfPNgnQ=
+	b=YOQi1gFsPkrAHy1HEz4xNncg2CzTox2gNGjcVzxfN8cm0jxJ/Sqjy1F0Oqvk2o0te
+	 XiNqNqGLsxvO6VSYclEHw1AKY9mebfVUwnq7imRxpwDa93l3qjTY3CsTY2A2VDKL4f
+	 18COSW0AHZiaho5UwlnKY65YYbTzALIVH1OzXLd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Kuratov <kniv@yandex-team.ru>,
-	Zack Rusin <zack.rusin@broadcom.com>
-Subject: [PATCH 6.6 067/124] drm/vmwgfx: Handle surface check failure correctly
+	Dave Hansen <dave.hansen@intel.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Todd Brandt <todd.e.brandt@intel.com>
+Subject: [PATCH 6.11 115/135] x86/apic: Always explicitly disarm TSC-deadline timer
 Date: Mon, 21 Oct 2024 12:24:31 +0200
-Message-ID: <20241021102259.326434132@linuxfoundation.org>
+Message-ID: <20241021102303.827715379@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +65,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Kuratov <kniv@yandex-team.ru>
+From: Zhang Rui <rui.zhang@intel.com>
 
-commit 26498b8d54373d31a621d7dec95c4bd842563b3b upstream.
+commit ffd95846c6ec6cf1f93da411ea10d504036cab42 upstream.
 
-Currently if condition (!bo and !vmw_kms_srf_ok()) was met
-we go to err_out with ret == 0.
-err_out dereferences vfb if ret == 0, but in our case vfb is still NULL.
+New processors have become pickier about the local APIC timer state
+before entering low power modes. These low power modes are used (for
+example) when you close your laptop lid and suspend. If you put your
+laptop in a bag and it is not in this low power mode, it is likely
+to get quite toasty while it quickly sucks the battery dry.
 
-Fix this by assigning sensible error to ret.
+The problem boils down to some CPUs' inability to power down until the
+CPU recognizes that the local APIC timer is shut down. The current
+kernel code works in one-shot and periodic modes but does not work for
+deadline mode. Deadline mode has been the supported and preferred mode
+on Intel CPUs for over a decade and uses an MSR to drive the timer
+instead of an APIC register.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE
+Disable the TSC Deadline timer in lapic_timer_shutdown() by writing to
+MSR_IA32_TSC_DEADLINE when in TSC-deadline mode. Also avoid writing
+to the initial-count register (APIC_TMICT) which is ignored in
+TSC-deadline mode.
 
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Note: The APIC_LVTT|=APIC_LVT_MASKED operation should theoretically be
+enough to tell the hardware that the timer will not fire in any of the
+timer modes. But mitigating AMD erratum 411[1] also requires clearing
+out APIC_TMICT. Solely setting APIC_LVT_MASKED is also ineffective in
+practice on Intel Lunar Lake systems, which is the motivation for this
+change.
+
+1. 411 Processor May Exit Message-Triggered C1E State Without an Interrupt if Local APIC Timer Reaches Zero - https://www.amd.com/content/dam/amd/en/documents/archived-tech-docs/revision-guides/41322_10h_Rev_Gd.pdf
+
+Fixes: 279f1461432c ("x86: apic: Use tsc deadline for oneshot when available")
+Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Tested-by: Todd Brandt <todd.e.brandt@intel.com>
 Cc: stable@vger.kernel.org
-Fixes: 810b3e1683d0 ("drm/vmwgfx: Support topology greater than texture size")
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241002122429.1981822-1-kniv@yandex-team.ru
+Link: https://lore.kernel.org/all/20241015061522.25288-1-rui.zhang%40intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/apic/apic.c |   14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-@@ -1659,6 +1659,7 @@ static struct drm_framebuffer *vmw_kms_f
- 		DRM_ERROR("Surface size cannot exceed %dx%d\n",
- 			dev_priv->texture_max_width,
- 			dev_priv->texture_max_height);
-+		ret = -EINVAL;
- 		goto err_out;
- 	}
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -440,7 +440,19 @@ static int lapic_timer_shutdown(struct c
+ 	v = apic_read(APIC_LVTT);
+ 	v |= (APIC_LVT_MASKED | LOCAL_TIMER_VECTOR);
+ 	apic_write(APIC_LVTT, v);
+-	apic_write(APIC_TMICT, 0);
++
++	/*
++	 * Setting APIC_LVT_MASKED (above) should be enough to tell
++	 * the hardware that this timer will never fire. But AMD
++	 * erratum 411 and some Intel CPU behavior circa 2024 say
++	 * otherwise.  Time for belt and suspenders programming: mask
++	 * the timer _and_ zero the counter registers:
++	 */
++	if (v & APIC_LVT_TIMER_TSCDEADLINE)
++		wrmsrl(MSR_IA32_TSC_DEADLINE, 0);
++	else
++		apic_write(APIC_TMICT, 0);
++
+ 	return 0;
+ }
  
 
 
