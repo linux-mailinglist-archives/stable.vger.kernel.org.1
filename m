@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-87171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44D1B9A6397
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:37:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B37DA9A64DC
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:51:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEAA61F22AF8
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:37:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C15D1B2DCC6
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07FAB1EABDA;
-	Mon, 21 Oct 2024 10:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF72D1F1310;
+	Mon, 21 Oct 2024 10:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1ExPhFJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2EJCKiG1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF21D1F429E;
-	Mon, 21 Oct 2024 10:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B001EF95E;
+	Mon, 21 Oct 2024 10:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506806; cv=none; b=GZlognBzUJfhzCFk4Fo9i7LCo9dDYwlF/VB/zAoYzkFg2Q5XrW9XW4OEqNRuHy6LY7WMd9/5RJ8qqpyzlvPI3TFUY61Bl443Oy3ZRiCvwJG6PFBhIJ/Mzj4hh93UrIpZF9cgQcoM1DnfW2P8XIHO4jLfEY8r43PZv+1m4ENONIY=
+	t=1729507391; cv=none; b=PrhnYCFktCfEE0jif0FSyh/RPSMbbNmFln9L4dixLGf96IiA1SKligRlfYDh/bcxo2QP13qJ69TdFpRjlW37RcaHz0uI7ABJKyXIzEPya6XUTDg3oPtysfsaT3m0JQQ92X80q/wYt7as6jv9X7+TRp1X6AEb2ygkB+YrzeS+QbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506806; c=relaxed/simple;
-	bh=OwuA1SZIgFvmJsaujaG2pSjJb0vLAdDdFhGh6UxL/RI=;
+	s=arc-20240116; t=1729507391; c=relaxed/simple;
+	bh=ZPl3GwxPNCYzrXA5cQROJAkeuUxRhkX/yRVXwHcgqg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WYG4iiOjpXUezMKWWiVzNkKrsunf1uIoIntlr3YKBJSCHgm28ilFgP7bk1pjDPx4httl5HLscN0qODL5yT8kX/AmmdZM1yBeUENl49/rAShYDktLJ59DBBAeNP4rRXOyOhaJQLVkU+3I5Mx4GlZdW1RGcGAZSAG/oheXTc4SMTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1ExPhFJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FADEC4CEEE;
-	Mon, 21 Oct 2024 10:33:25 +0000 (UTC)
+	 MIME-Version; b=Lyy1tcSuqAIV2RjQIxuZztNX+l1FlPZ6xLkSYksr7IMp3v5PUbEhAtmNkpMV68BK7YrkBEhlF7TK4cTMkxIdPmQi9Allv8kFVxp01z4Vo/wAPdnMDS6tZi7LYN5pds6Q/Xq6uvCXZU9l3v4SBrnjwTedp23ITZ6xrECW2ggTtJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2EJCKiG1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D3DC4CEC3;
+	Mon, 21 Oct 2024 10:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506806;
-	bh=OwuA1SZIgFvmJsaujaG2pSjJb0vLAdDdFhGh6UxL/RI=;
+	s=korg; t=1729507391;
+	bh=ZPl3GwxPNCYzrXA5cQROJAkeuUxRhkX/yRVXwHcgqg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S1ExPhFJz0m/d+7BtAfc8XbpvXzaJCci7hrYkVR9mLxLefjNiakaXi0gSFVovBZnd
-	 lRD7/4dbEcXMr72HssLmcpUzYkYvWvB3UOQeYcMibqutov/smtVhU0RWrFroh69JiJ
-	 DygP/Pv7k5T3+Fv/702gGGbZzVobweBCxinZsjhc=
+	b=2EJCKiG1+oqVbhFaVnfiaLJaBiUzQp3AbEgn+neo9mbGiV80uzk36iCSSWtkXj0ax
+	 NlctTie+0QQXkvDk1kQSyr01rYMHhwHPAbmrptWhCpZN31s/JDRopM8SKkMmfH6l8u
+	 qkaL0Zp2CchP8I2LWS1eUtzQImRVhZr/AhkK24wQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.11 127/135] irqchip/sifive-plic: Unmask interrupt in plic_irq_enable()
-Date: Mon, 21 Oct 2024 12:24:43 +0200
-Message-ID: <20241021102304.311323656@linuxfoundation.org>
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 30/91] net: macb: Avoid 20s boot delay by skipping MDIO bus registration for fixed-link PHY
+Date: Mon, 21 Oct 2024 12:24:44 +0200
+Message-ID: <20241021102251.000687298@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit 6b1e0651e9ce8ce418ad4ff360e7b9925dc5da79 upstream.
+commit d0c3601f2c4e12e7689b0f46ebc17525250ea8c3 upstream.
 
-It is possible that an interrupt is disabled and masked at the same time.
-When the interrupt is enabled again by enable_irq(), only plic_irq_enable()
-is called, not plic_irq_unmask(). The interrupt remains masked and never
-raises.
+A boot delay was introduced by commit 79540d133ed6 ("net: macb: Fix
+handling of fixed-link node"). This delay was caused by the call to
+`mdiobus_register()` in cases where a fixed-link PHY was present. The
+MDIO bus registration triggered unnecessary PHY address scans, leading
+to a 20-second delay due to attempts to detect Clause 45 (C45)
+compatible PHYs, despite no MDIO bus being attached.
 
-An example where interrupt is both disabled and masked is when
-handle_fasteoi_irq() is the handler, and IRQS_ONESHOT is set. The interrupt
-handler:
+The commit 79540d133ed6 ("net: macb: Fix handling of fixed-link node")
+was originally introduced to fix a regression caused by commit
+7897b071ac3b4 ("net: macb: convert to phylink"), which caused the driver
+to misinterpret fixed-link nodes as PHY nodes. This resulted in warnings
+like:
+mdio_bus f0028000.ethernet-ffffffff: fixed-link has invalid PHY address
+mdio_bus f0028000.ethernet-ffffffff: scan phy fixed-link at address 0
+...
+mdio_bus f0028000.ethernet-ffffffff: scan phy fixed-link at address 31
 
-  1. Mask the interrupt
-  2. Handle the interrupt
-  3. Check if interrupt is still enabled, and unmask it (see
-     cond_unmask_eoi_irq())
+This patch reworks the logic to avoid registering and allocation of the
+MDIO bus when:
+  - The device tree contains a fixed-link node.
+  - There is no "mdio" child node in the device tree.
 
-If another task disables the interrupt in the middle of the above steps,
-the interrupt will not get unmasked, and will remain masked when it is
-enabled in the future.
+If a child node named "mdio" exists, the MDIO bus will be registered to
+support PHYs  attached to the MACB's MDIO bus. Otherwise, with only a
+fixed-link, the MDIO bus is skipped.
 
-The problem is occasionally observed when PREEMPT_RT is enabled, because
-PREEMPT_RT adds the IRQS_ONESHOT flag. But PREEMPT_RT only makes the problem
-more likely to appear, the bug has been around since commit a1706a1c5062
-("irqchip/sifive-plic: Separate the enable and mask operations").
+Tested on a sama5d35 based system with a ksz8863 switch attached to
+macb0.
 
-Fix it by unmasking interrupt in plic_irq_enable().
-
-Fixes: a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask operations")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Fixes: 79540d133ed6 ("net: macb: Fix handling of fixed-link node")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20241003084152.2422969-1-namcao@linutronix.de
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20241013052916.3115142-1-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-sifive-plic.c |   21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/drivers/irqchip/irq-sifive-plic.c
-+++ b/drivers/irqchip/irq-sifive-plic.c
-@@ -123,16 +123,6 @@ static inline void plic_irq_toggle(const
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -878,9 +878,6 @@ static int macb_mdiobus_register(struct
+ 		return ret;
  	}
- }
  
--static void plic_irq_enable(struct irq_data *d)
--{
--	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 1);
--}
+-	if (of_phy_is_fixed_link(np))
+-		return mdiobus_register(bp->mii_bus);
 -
--static void plic_irq_disable(struct irq_data *d)
--{
--	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 0);
--}
--
- static void plic_irq_unmask(struct irq_data *d)
- {
- 	struct plic_priv *priv = irq_data_get_irq_chip_data(d);
-@@ -147,6 +137,17 @@ static void plic_irq_mask(struct irq_dat
- 	writel(0, priv->regs + PRIORITY_BASE + d->hwirq * PRIORITY_PER_ID);
- }
+ 	/* Only create the PHY from the device tree if at least one PHY is
+ 	 * described. Otherwise scan the entire MDIO bus. We do this to support
+ 	 * old device tree that did not follow the best practices and did not
+@@ -901,8 +898,19 @@ static int macb_mdiobus_register(struct
  
-+static void plic_irq_enable(struct irq_data *d)
-+{
-+	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 1);
-+	plic_irq_unmask(d);
-+}
-+
-+static void plic_irq_disable(struct irq_data *d)
-+{
-+	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 0);
-+}
-+
- static void plic_irq_eoi(struct irq_data *d)
+ static int macb_mii_init(struct macb *bp)
  {
- 	struct plic_handler *handler = this_cpu_ptr(&plic_handlers);
++	struct device_node *child, *np = bp->pdev->dev.of_node;
+ 	int err = -ENXIO;
+ 
++	/* With fixed-link, we don't need to register the MDIO bus,
++	 * except if we have a child named "mdio" in the device tree.
++	 * In that case, some devices may be attached to the MACB's MDIO bus.
++	 */
++	child = of_get_child_by_name(np, "mdio");
++	if (child)
++		of_node_put(child);
++	else if (of_phy_is_fixed_link(np))
++		return macb_mii_probe(bp->dev);
++
+ 	/* Enable management port */
+ 	macb_writel(bp, NCR, MACB_BIT(MPE));
+ 
 
 
 
