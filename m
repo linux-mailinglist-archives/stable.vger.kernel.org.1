@@ -1,141 +1,137 @@
-Return-Path: <stable+bounces-87453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F2EE9A65CC
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:04:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A81B89A66FB
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:49:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31C1AB2888B
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:53:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D30DA1C217BA
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 11:49:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83751F12FB;
-	Mon, 21 Oct 2024 10:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE2E1E4929;
+	Mon, 21 Oct 2024 11:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gkOGWAGu"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="X5U62lAj"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101B41F12E4;
-	Mon, 21 Oct 2024 10:47:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F667581A;
+	Mon, 21 Oct 2024 11:49:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507650; cv=none; b=Ak7IchrJd5KWQ9emolyNnZwgJaE6bl6SSagR5HGhU0WbVyAQn6IRO8d1LRG6YU4W+SEeUYDXqwaWuSTevdzCC/zA318oP1KhoVqKWozX/7Cu6wwFbx8lUhIaBtuVxtDJH6j/dG5+SadDhotbRbGpBQ+S8/5+nokxoM+sYy15cJs=
+	t=1729511370; cv=none; b=sOWz4kbIkVy8sQRkpVxKquDc4CF0EGFo2FOthRuIxtgpEm90//ekgtLYr9NaBOLuls2AhVAwRy45GK3g1mdR32r0RREvYsWToiENCmEANxF+h5f49gBQ7msUtFwb+N7+AETzTStri5drWj2Gu26A+2E0med3Ec6uWUj5T5fMNTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507650; c=relaxed/simple;
-	bh=8+aCw08J+IitHIZPJ6yBKdfACnb42TiH1BFfVCDni+E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EvK3tLh1FG5z5Y+V3NZXMQb9be//dxv1/fi+e0JXrfapr978xW98k2NiEYFvmUIxLFMDduNQ5ATSS85RZ/XnFx3mpNMGgrU6WYyUr+xI84sZ5Y+Mek3pzjCCHcBRWnxkWQeIFx7vYWM2EN6Vsk5jYJdOtQlXxB0CLvFZOKMmgSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gkOGWAGu; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729507648; x=1761043648;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=8+aCw08J+IitHIZPJ6yBKdfACnb42TiH1BFfVCDni+E=;
-  b=gkOGWAGuX23f0bYeSYTkinhHnGUYgz4Koy2r17pCP4Tubv0POf2xMrHT
-   A5PeDfaeEMxC1AYIcZaH6efzuuCrfb6R0G8tiXzkXXZyMqAJPOaP7l9+m
-   EILAl+jlbErqBOysPBvuozOYo6YII1mBXj9VeiZonUN5xLh8t614Wjr6G
-   zV90fmFeR+OVEIPWkNGjbn1UXT3xe8Og9n0Z8s5SvpqTVE7D+LYs/Q/Kx
-   TSf2il22kwl07yKChHPahbYY/OqoLDveL1lhAHokaL+/4Vn1dwApJGZlQ
-   3eGthZ9BYyx76zkF9knFd5eChHxdTerxB5f4WKTZUT91Ths0HGFDEOJ3W
-   Q==;
-X-CSE-ConnectionGUID: ls2VtkUtT5SyOeH5wEHwVA==
-X-CSE-MsgGUID: jw1dzxMUTkWqCufgVDtO2w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11231"; a="28439678"
-X-IronPort-AV: E=Sophos;i="6.11,220,1725346800"; 
-   d="scan'208";a="28439678"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 03:47:27 -0700
-X-CSE-ConnectionGUID: ixXPU/fqTqCYYkOqxoaOSw==
-X-CSE-MsgGUID: i1ammzECSRuv7qNfpVeSPw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,220,1725346800"; 
-   d="scan'208";a="110325579"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.246.16.81])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 03:47:24 -0700
-Message-ID: <59f6c217-d84e-4626-9265-ce5cd8a043f4@intel.com>
-Date: Mon, 21 Oct 2024 13:47:19 +0300
+	s=arc-20240116; t=1729511370; c=relaxed/simple;
+	bh=uyNblGNDjcEEEdZiYPjjBd4JM1pjG241newOSWQDLFE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=qcOJlLKXaEfwX9iUm0J6mkR1f6H0UnIRFwc/6UesOsjNHDZiRntrFEn7WU3IY/ZFUeEh26zDl9BuNwaQi+w4JXhd5kPV9iomkvpcsTF0Crf76BJwt9XkCLnNh3HbPAQftvjTUHm1HMsDMIT6cmK2agu45CGaGtxCnduksu7zU9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=X5U62lAj; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1729511366;
+	bh=ynpv70LgynLfXwRzZBGijnfOVKcOlHyDivF6n67p/a0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=X5U62lAjpHb52sbnM+thpFoqHhHFqlG9am9kjKDaxlO+/ehGQolqSyXJOI3Az3xQI
+	 sFWWxe+8i4h0FwU0H14eXpD2cpx4gX7SmSNe5c/S0VQzAs7T4p4WA1fLpCNQ2xww2d
+	 M9DFsjeGwTH0ETddbtUE6qNxAzXvxchl2KFKk2LIjtBtKStHsQRB6QkQVHkOp/Nyf1
+	 PBlXVBBjLqqr/h05iPP8lbAEKOJq8ese96ov4FOSUgLaTNgut+Ng5rYZUghs9fFgrd
+	 +g1D4GOWbL3c8RCeNXOLwg7XhOTxGMGYiOg20RbxheS0+B/MgxkmirdJTcVClOTlRO
+	 v369jtIGiTipA==
+Received: from [192.168.68.112] (58-7-152-218.dyn.iinet.net.au [58.7.152.218])
+	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id E91DC684AD;
+	Mon, 21 Oct 2024 19:49:22 +0800 (AWST)
+Message-ID: <e06a0db538bf62d4aeb7352ecc81a3a679fb9eec.camel@codeconstruct.com.au>
+Subject: Re: [PATCH] i2c: aspeed: Consider i2c reset for muti-master case
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
+To: Tommy Huang <tommy_huang@aspeedtech.com>, brendanhiggins@google.com, 
+	benh@kernel.crashing.org, joel@jms.id.au, andi.shyti@kernel.org
+Cc: BMC-SW@aspeedtech.com, linux-aspeed@lists.ozlabs.org, 
+ openbmc@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org,  linux-i2c@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+Date: Mon, 21 Oct 2024 22:19:22 +1030
+In-Reply-To: <20241018034919.974025-1-tommy_huang@aspeedtech.com>
+References: <20241018034919.974025-1-tommy_huang@aspeedtech.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mmc: core: Use GFP_NOIO in ACMD22
-To: Avri Altman <avri.altman@wdc.com>, Ulf Hansson <ulf.hansson@linaro.org>,
- linux-mmc@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20241018052901.446638-1-avri.altman@wdc.com>
-Content-Language: en-US
-From: Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-In-Reply-To: <20241018052901.446638-1-avri.altman@wdc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 18/10/24 08:29, Avri Altman wrote:
-> While reviewing the SDUC series, Adrian made a comment concerning the
-> memory allocation code in mmc_sd_num_wr_blocks() - see [1].
-> Prevent memory allocations from triggering I/O operations while ACMD22
-> is in progress.
-> 
-> [1] https://www.spinics.net/lists/linux-mmc/msg82199.html
-> 
-> Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
-> Signed-off-by: Avri Altman <avri.altman@wdc.com>
-> Cc: stable@vger.kernel.org
+Hi Tommy,
 
-Some checkpatch warnings:
+On Fri, 2024-10-18 at 11:49 +0800, Tommy Huang wrote:
+> In the original code, the device reset would not be triggered
+> when the driver is set to multi-master and bus is free.
 
-  WARNING: Use lore.kernel.org archive links when possible - see https://lore.kernel.org/lists.html
-  #12: 
-  [1] https://www.spinics.net/lists/linux-mmc/msg82199.html
+That's not how I read the existing code. As it stands, if it's multi-
+master and busy we do the recovery, however, if it's multi-master and
+free, or busy but not multi-master, or free and not multi-master, then
+we do the reset.
 
-  WARNING: The commit message has 'stable@', perhaps it also needs a 'Fixes:' tag?
+> It needs to be considered with multi-master condition.
 
-  total: 0 errors, 2 warnings, 17 lines checked
+Is there a specific circumstance you've found that's problematic? Can
+you provide some more details about that scenario?
 
-Otherwise:
-
-Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
-
-> 
+>=20
+> Fixes: <f327c686d3ba> ("i2c: aspeed: Reset the i2c controller when timeou=
+t occurs")
+>=20
+> Signed-off-by: Tommy Huang <tommy_huang@aspeedtech.com>
 > ---
-> Changes since v1:
->  - Move memalloc_noio_restore around (Adrian)
-> ---
->  drivers/mmc/core/block.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-> index 04f3165cf9ae..a813fd7f39cc 100644
-> --- a/drivers/mmc/core/block.c
-> +++ b/drivers/mmc/core/block.c
-> @@ -995,6 +995,8 @@ static int mmc_sd_num_wr_blocks(struct mmc_card *card, u32 *written_blocks)
->  	u32 result;
->  	__be32 *blocks;
->  	u8 resp_sz = mmc_card_ult_capacity(card) ? 8 : 4;
-> +	unsigned int noio_flag;
-> +
->  	struct mmc_request mrq = {};
->  	struct mmc_command cmd = {};
->  	struct mmc_data data = {};
-> @@ -1018,7 +1020,9 @@ static int mmc_sd_num_wr_blocks(struct mmc_card *card, u32 *written_blocks)
->  	mrq.cmd = &cmd;
->  	mrq.data = &data;
->  
-> +	noio_flag = memalloc_noio_save();
->  	blocks = kmalloc(resp_sz, GFP_KERNEL);
-> +	memalloc_noio_restore(noio_flag);
->  	if (!blocks)
->  		return -ENOMEM;
->  
+>  drivers/i2c/busses/i2c-aspeed.c | 15 ++++++++-------
+>  1 file changed, 8 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/drivers/i2c/busses/i2c-aspeed.c b/drivers/i2c/busses/i2c-asp=
+eed.c
+> index cc5a26637fd5..7639ae3ace67 100644
+> --- a/drivers/i2c/busses/i2c-aspeed.c
+> +++ b/drivers/i2c/busses/i2c-aspeed.c
+> @@ -716,14 +716,15 @@ static int aspeed_i2c_master_xfer(struct i2c_adapte=
+r *adap,
+>  	if (time_left =3D=3D 0) {
+>  		/*
+>  		 * In a multi-master setup, if a timeout occurs, attempt
+> -		 * recovery. But if the bus is idle, we still need to reset the
+> -		 * i2c controller to clear the remaining interrupts.
+> +		 * recovery device. But if the bus is idle,
+> +		 * we still need to reset the i2c controller to clear
+> +		 * the remaining interrupts or reset device abnormal condition.
+>  		 */
+> -		if (bus->multi_master &&
+> -		    (readl(bus->base + ASPEED_I2C_CMD_REG) &
+> -		     ASPEED_I2CD_BUS_BUSY_STS))
+> -			aspeed_i2c_recover_bus(bus);
+> -		else
+> +		if ((readl(bus->base + ASPEED_I2C_CMD_REG) &
+> +			ASPEED_I2CD_BUS_BUSY_STS)){
+> +			if (bus->multi_master)
+> +				aspeed_i2c_recover_bus(bus);
 
+The change doesn't seem match the commit message. In this case you've
+punched a hole - if the bus is busy but _not_ multi-master, we neither
+do the reset _nor_ the recovery.
+
+Which is what you intended? The implementation? Or the prose
+description?
+
+Now, back to the implementation, punching this hole seems reasonable on
+the surface, but I guess we need to keep in mind that time_left has
+also expired...
+
+> +		} else
+>  			aspeed_i2c_reset(bus);
+> =20
+>  		/*
+
+Andrew
 
