@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-87383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 368839A65F4
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:09:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D019A6533
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:54:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79094B2E461
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:49:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BD8928277F
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:54:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BFF31EBA1A;
-	Mon, 21 Oct 2024 10:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E64C1E47A5;
+	Mon, 21 Oct 2024 10:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bdE7Qnyo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PIEdppGS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2283E1E5722;
-	Mon, 21 Oct 2024 10:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166941E3DF0;
+	Mon, 21 Oct 2024 10:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507442; cv=none; b=W21uT1uaC/rS3XZ/7LDS4X9n2lkOV7E/ojtS3WbotBtOSo6rBedPFodhDmO6Qc005HuwPckg5rcZ6jeThuGXh/vwNHioOYNBEqLtXabyQdn4enFbv7KqMauZ9E1rXtPKYVugWhFXmSGETpBFGQI6zQSpsWajGkX8+M68NUG9J2s=
+	t=1729507763; cv=none; b=Bz6gtoVB9VPaYOPUToCgGNZPcS65XfsSFKk5pVTY6RhJhn7MIAGnh8AEOCIwrRaqIgkCdzzZTLkqwKZrQEh5oAKt9FYJ6FZC+3jeTPsxvWLkcEpum6/z+BdlqzmsFny2onifDemuXi9GrUmsRzAPsXZtpz/N2MjIh70qcInSx7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507442; c=relaxed/simple;
-	bh=z1oq3G3Xl3SZ0GHN2I4AK6+OUHQpjECITI+vSfXYjUA=;
+	s=arc-20240116; t=1729507763; c=relaxed/simple;
+	bh=evC+SJpD+zFCFu9Ux7qB9NsiuT7o6ArcGQxGRduwiwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n6yzMH1JxFvO9QM+6TbD+mM8fCB8JZa2aYAHWIow+h2J8kf3DybsHDAXh1v9oD0Hur3CZe4e8w3IwEQEXxFPB8ekpCCzN47iO8wIEJIVjT2nARCSXIOZkp0VZy++meeRWLr6/9XhNnZHfWpvvl4N2VJ6nUeLA08B+IiNygg3XSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bdE7Qnyo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98DA8C4CEC3;
-	Mon, 21 Oct 2024 10:44:01 +0000 (UTC)
+	 MIME-Version; b=aPWls1AOaPeUQmyMO9BEwooKUduY3R9sxVQmhMWU/kgxhHYbKL+Kw5WCuqtMG1q5belv8T4UixDg/5IyyTsIG1Tnfcu0CFfxpqWcLqzkXs2QeHXu0bHqXwjX3GJuM621EW106V9tH5saD0je/P/TkQQQFcrKfdT4U1x1FPa1aXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PIEdppGS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B6B1C4CEC3;
+	Mon, 21 Oct 2024 10:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507442;
-	bh=z1oq3G3Xl3SZ0GHN2I4AK6+OUHQpjECITI+vSfXYjUA=;
+	s=korg; t=1729507762;
+	bh=evC+SJpD+zFCFu9Ux7qB9NsiuT7o6ArcGQxGRduwiwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bdE7Qnyo1h9n2THYWXD/V6McrpqG2yiLfGDfdp3PUA9dB5Ydes47ceWcvcRVsFJkZ
-	 3KrA4d9vpVlMay4BXWSyiKojc/T5lholikFCiD+QXt20vEY3OSbk2O92beZ9rjNjrB
-	 ERgOqc2PxGhboCxA+GDBsevvRb/k2sfQ+kSI7X8c=
+	b=PIEdppGSICl/wBBKTTrw3sxjmu9eeQsW5xtrGJO1P5XpT/3AxJdSGY8yUy9uwj9kR
+	 73YdlQ6eL8khBefBqFdsCHwW7kh1EAo5xo/HhIvTNUwkm2XKaLvlWCvgu/CllbmPcF
+	 jG8RxfWtwo4jrUt3/qaKS7P5Yh9GRFxrdG81dXPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	stable@kernel.org
-Subject: [PATCH 6.1 78/91] x86/resctrl: Annotate get_mem_config() functions as __init
+	Breno Leitao <leitao@debian.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Saeed Mirzamohammadi <saeed.mirzamohammadi@oracle.com>
+Subject: [PATCH 5.10 11/52] KVM: Fix a data race on last_boosted_vcpu in kvm_vcpu_on_spin()
 Date: Mon, 21 Oct 2024 12:25:32 +0200
-Message-ID: <20241021102252.861017308@linuxfoundation.org>
+Message-ID: <20241021102242.069895603@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
+References: <20241021102241.624153108@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Breno Leitao <leitao@debian.org>
 
-commit d5fd042bf4cfb557981d65628e1779a492cd8cfa upstream.
+commit 49f683b41f28918df3e51ddc0d928cb2e934ccdb upstream.
 
-After a recent LLVM change [1] that deduces __cold on functions that only call
-cold code (such as __init functions), there is a section mismatch warning from
-__get_mem_config_intel(), which got moved to .text.unlikely. as a result of
-that optimization:
+Use {READ,WRITE}_ONCE() to access kvm->last_boosted_vcpu to ensure the
+loads and stores are atomic.  In the extremely unlikely scenario the
+compiler tears the stores, it's theoretically possible for KVM to attempt
+to get a vCPU using an out-of-bounds index, e.g. if the write is split
+into multiple 8-bit stores, and is paired with a 32-bit load on a VM with
+257 vCPUs:
 
-  WARNING: modpost: vmlinux: section mismatch in reference: \
-  __get_mem_config_intel+0x77 (section: .text.unlikely.) -> thread_throttle_mode_init (section: .init.text)
+  CPU0                              CPU1
+  last_boosted_vcpu = 0xff;
 
-Mark __get_mem_config_intel() as __init as well since it is only called
-from __init code, which clears up the warning.
+                                    (last_boosted_vcpu = 0x100)
+                                    last_boosted_vcpu[15:8] = 0x01;
+  i = (last_boosted_vcpu = 0x1ff)
+                                    last_boosted_vcpu[7:0] = 0x00;
 
-While __rdt_get_mem_config_amd() does not exhibit a warning because it
-does not call any __init code, it is a similar function that is only
-called from __init code like __get_mem_config_intel(), so mark it __init
-as well to keep the code symmetrical.
+  vcpu = kvm->vcpu_array[0x1ff];
 
-CONFIG_SECTION_MISMATCH_WARN_ONLY=n would turn this into a fatal error.
+As detected by KCSAN:
 
-Fixes: 05b93417ce5b ("x86/intel_rdt/mba: Add primary support for Memory Bandwidth Allocation (MBA)")
-Fixes: 4d05bf71f157 ("x86/resctrl: Introduce AMD QOS feature")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Cc: <stable@kernel.org>
-Link: https://github.com/llvm/llvm-project/commit/6b11573b8c5e3d36beee099dbe7347c2a007bf53 [1]
-Link: https://lore.kernel.org/r/20240917-x86-restctrl-get_mem_config_intel-init-v3-1-10d521256284@kernel.org
+  BUG: KCSAN: data-race in kvm_vcpu_on_spin [kvm] / kvm_vcpu_on_spin [kvm]
+
+  write to 0xffffc90025a92344 of 4 bytes by task 4340 on cpu 16:
+  kvm_vcpu_on_spin (arch/x86/kvm/../../../virt/kvm/kvm_main.c:4112) kvm
+  handle_pause (arch/x86/kvm/vmx/vmx.c:5929) kvm_intel
+  vmx_handle_exit (arch/x86/kvm/vmx/vmx.c:?
+		 arch/x86/kvm/vmx/vmx.c:6606) kvm_intel
+  vcpu_run (arch/x86/kvm/x86.c:11107 arch/x86/kvm/x86.c:11211) kvm
+  kvm_arch_vcpu_ioctl_run (arch/x86/kvm/x86.c:?) kvm
+  kvm_vcpu_ioctl (arch/x86/kvm/../../../virt/kvm/kvm_main.c:?) kvm
+  __se_sys_ioctl (fs/ioctl.c:52 fs/ioctl.c:904 fs/ioctl.c:890)
+  __x64_sys_ioctl (fs/ioctl.c:890)
+  x64_sys_call (arch/x86/entry/syscall_64.c:33)
+  do_syscall_64 (arch/x86/entry/common.c:?)
+  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+
+  read to 0xffffc90025a92344 of 4 bytes by task 4342 on cpu 4:
+  kvm_vcpu_on_spin (arch/x86/kvm/../../../virt/kvm/kvm_main.c:4069) kvm
+  handle_pause (arch/x86/kvm/vmx/vmx.c:5929) kvm_intel
+  vmx_handle_exit (arch/x86/kvm/vmx/vmx.c:?
+			arch/x86/kvm/vmx/vmx.c:6606) kvm_intel
+  vcpu_run (arch/x86/kvm/x86.c:11107 arch/x86/kvm/x86.c:11211) kvm
+  kvm_arch_vcpu_ioctl_run (arch/x86/kvm/x86.c:?) kvm
+  kvm_vcpu_ioctl (arch/x86/kvm/../../../virt/kvm/kvm_main.c:?) kvm
+  __se_sys_ioctl (fs/ioctl.c:52 fs/ioctl.c:904 fs/ioctl.c:890)
+  __x64_sys_ioctl (fs/ioctl.c:890)
+  x64_sys_call (arch/x86/entry/syscall_64.c:33)
+  do_syscall_64 (arch/x86/entry/common.c:?)
+  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+
+  value changed: 0x00000012 -> 0x00000000
+
+Fixes: 217ece6129f2 ("KVM: use yield_to instead of sleep in kvm_vcpu_on_spin")
+Cc: stable@vger.kernel.org
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://lore.kernel.org/r/20240510092353.2261824-1-leitao@debian.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Saeed Mirzamohammadi <saeed.mirzamohammadi@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/resctrl/core.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ virt/kvm/kvm_main.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kernel/cpu/resctrl/core.c
-+++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -174,7 +174,7 @@ static inline bool rdt_get_mb_table(stru
- 	return false;
- }
- 
--static bool __get_mem_config_intel(struct rdt_resource *r)
-+static __init bool __get_mem_config_intel(struct rdt_resource *r)
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -3090,12 +3090,13 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *m
  {
- 	struct rdt_hw_resource *hw_res = resctrl_to_arch_res(r);
- 	union cpuid_0x10_3_eax eax;
-@@ -208,7 +208,7 @@ static bool __get_mem_config_intel(struc
- 	return true;
- }
+ 	struct kvm *kvm = me->kvm;
+ 	struct kvm_vcpu *vcpu;
+-	int last_boosted_vcpu = me->kvm->last_boosted_vcpu;
++	int last_boosted_vcpu;
+ 	int yielded = 0;
+ 	int try = 3;
+ 	int pass;
+ 	int i;
  
--static bool __rdt_get_mem_config_amd(struct rdt_resource *r)
-+static __init bool __rdt_get_mem_config_amd(struct rdt_resource *r)
- {
- 	struct rdt_hw_resource *hw_res = resctrl_to_arch_res(r);
- 	union cpuid_0x10_3_eax eax;
++	last_boosted_vcpu = READ_ONCE(kvm->last_boosted_vcpu);
+ 	kvm_vcpu_set_in_spin_loop(me, true);
+ 	/*
+ 	 * We boost the priority of a VCPU that is runnable but not
+@@ -3126,7 +3127,7 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *m
+ 
+ 			yielded = kvm_vcpu_yield_to(vcpu);
+ 			if (yielded > 0) {
+-				kvm->last_boosted_vcpu = i;
++				WRITE_ONCE(kvm->last_boosted_vcpu, i);
+ 				break;
+ 			} else if (yielded < 0) {
+ 				try--;
 
 
 
