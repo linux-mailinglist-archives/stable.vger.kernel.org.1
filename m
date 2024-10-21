@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-87308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF9C89A6458
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:45:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8731C9A64EA
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 996E41F21860
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:45:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 308C71F2126C
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14141E884F;
-	Mon, 21 Oct 2024 10:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F771E884B;
+	Mon, 21 Oct 2024 10:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DrFjEae3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glFJqyWu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591581E0087;
-	Mon, 21 Oct 2024 10:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1911239FD6;
+	Mon, 21 Oct 2024 10:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507216; cv=none; b=fCv+xHyR9NWr0d6IDaZk2FVzdBWbqt38I0LD8i4BxYCz5leF379OuOALjFN8MuXSEkPyZJYsdfG89NcLYGF59udOp2Aaet82poOffX4XwmpenODTnv9z5cIgFws779c8jxqcZYoEJJso01Cy34cJ3B9p2LDPQC1DRPOyvOkBiBM=
+	t=1729507568; cv=none; b=ovEt2+jGmSn9JaqCiDq9fKrpsYU2WBqKeXcU8qM6qLThVa2pNfCf1hD3jXU8uW5jGCAkG0w/6930zL2+e6QjBYWJTaE/C8IV7R/AIJl2bqAA4ZWafSUjk/KV5kvbjKTpxA5+O+3/pbD8Lbty1jH5ZkLE5Rsfqy1Pc0g34pqfPKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507216; c=relaxed/simple;
-	bh=Efrk8ivpdQgvHFnCPkW+LkAkjUjlFSUJPhbEefwOg6k=;
+	s=arc-20240116; t=1729507568; c=relaxed/simple;
+	bh=zzuedcecjQLLE3iAVELXdv3AUqE5HS1aj3SRf1qXlVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bs1dlQSs0YWvqF+vhzITR93txw9I+8hwlqiom7TnAiz+9/xbiegQ/itex5gC8YJIJtVBeDjFkp5LrwjVQ5fpSFpRFmsBhpF/pcdXET9BuLQDdKGflubbz857haFhx6jxXnjdo+C8mDlilK09Fs8pY/t+pqe4kXM+/hPqXjCHKSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DrFjEae3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1B4C4CEC3;
-	Mon, 21 Oct 2024 10:40:15 +0000 (UTC)
+	 MIME-Version; b=PA2iw48vRVqj9urQNOGbvinwUGjNCou3HSRDs2sZZFYORKHpGoEpByk9c7fx7rXwzvVEFU/8NQ3xzkf/loUR1abwFDtfdWKuZX8ex852HF/F6kjTgIhI5yhoJcL782acaJ1yrY6FQZLCiJPAJyZsqfAWzMUUqXCp4vgChCPRePA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glFJqyWu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8951DC4CEC7;
+	Mon, 21 Oct 2024 10:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507216;
-	bh=Efrk8ivpdQgvHFnCPkW+LkAkjUjlFSUJPhbEefwOg6k=;
+	s=korg; t=1729507567;
+	bh=zzuedcecjQLLE3iAVELXdv3AUqE5HS1aj3SRf1qXlVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DrFjEae3uw7lVDp5aKrdV0vm14LNgjS2LpJRWUCaecYhj0I8+xWRawc6MMeRCoZLa
-	 /26JQ+c/LgyM86VnaYY1Liaclnu8d+36mlwa5MH9wT5OrNZLRqqL2Y47w9wRLxCRDE
-	 Dol50iRSIqyni21xpqirrLHwukeAOn1v8AVTiTc8=
+	b=glFJqyWuFciybb6Z2hL2HwJrA1mF+jUFgxBmiL2oHDE2C67mWCIuEqJuZwc+zUWaD
+	 iucy2gBP75FZaO1LVvk+ISBfbt9FxkezK1Q2KX8/bVXF3eiTUZ1nrr5QMMGXK21VE5
+	 CnRgbEG0ce2wtFp2ZjM2iI4LJ6evwm2mqplZDK4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Thompson <dev@aaront.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 087/124] Bluetooth: Call iso_exit() on module unload
-Date: Mon, 21 Oct 2024 12:24:51 +0200
-Message-ID: <20241021102300.094930548@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 5.15 11/82] udf: Convert empty_dir() to new directory iteration code
+Date: Mon, 21 Oct 2024 12:24:52 +0200
+Message-ID: <20241021102247.673170229@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +61,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Thompson <dev@aaront.org>
+From: Jan Kara <jack@suse.cz>
 
-commit d458cd1221e9e56da3b2cc5518ad3225caa91f20 upstream.
+[ Upstream commit afb525f466f9fdc140b975221cb43fbb5c59314e ]
 
-If iso_init() has been called, iso_exit() must be called on module
-unload. Without that, the struct proto that iso_init() registered with
-proto_register() becomes invalid, which could cause unpredictable
-problems later. In my case, with CONFIG_LIST_HARDENED and
-CONFIG_BUG_ON_DATA_CORRUPTION enabled, loading the module again usually
-triggers this BUG():
+Convert empty_dir() to new directory iteration code.
 
-  list_add corruption. next->prev should be prev (ffffffffb5355fd0),
-    but was 0000000000000068. (next=ffffffffc0a010d0).
-  ------------[ cut here ]------------
-  kernel BUG at lib/list_debug.c:29!
-  Oops: invalid opcode: 0000 [#1] PREEMPT SMP PTI
-  CPU: 1 PID: 4159 Comm: modprobe Not tainted 6.10.11-4+bt2-ao-desktop #1
-  RIP: 0010:__list_add_valid_or_report+0x61/0xa0
-  ...
-    __list_add_valid_or_report+0x61/0xa0
-    proto_register+0x299/0x320
-    hci_sock_init+0x16/0xc0 [bluetooth]
-    bt_init+0x68/0xd0 [bluetooth]
-    __pfx_bt_init+0x10/0x10 [bluetooth]
-    do_one_initcall+0x80/0x2f0
-    do_init_module+0x8b/0x230
-    __do_sys_init_module+0x15f/0x190
-    do_syscall_64+0x68/0x110
-  ...
-
-Cc: stable@vger.kernel.org
-Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
-Signed-off-by: Aaron Thompson <dev@aaront.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/af_bluetooth.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/udf/namei.c |   68 +++++++--------------------------------------------------
+ 1 file changed, 9 insertions(+), 59 deletions(-)
 
---- a/net/bluetooth/af_bluetooth.c
-+++ b/net/bluetooth/af_bluetooth.c
-@@ -830,6 +830,8 @@ cleanup_led:
+--- a/fs/udf/namei.c
++++ b/fs/udf/namei.c
+@@ -879,69 +879,19 @@ out:
  
- static void __exit bt_exit(void)
+ static int empty_dir(struct inode *dir)
  {
-+	iso_exit();
-+
- 	mgmt_exit();
+-	struct fileIdentDesc *fi, cfi;
+-	struct udf_fileident_bh fibh;
+-	loff_t f_pos;
+-	loff_t size = udf_ext0_offset(dir) + dir->i_size;
+-	udf_pblk_t block;
+-	struct kernel_lb_addr eloc;
+-	uint32_t elen;
+-	sector_t offset;
+-	struct extent_position epos = {};
+-	struct udf_inode_info *dinfo = UDF_I(dir);
++	struct udf_fileident_iter iter;
++	int ret;
  
- 	sco_exit();
+-	f_pos = udf_ext0_offset(dir);
+-	fibh.soffset = fibh.eoffset = f_pos & (dir->i_sb->s_blocksize - 1);
+-
+-	if (dinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB)
+-		fibh.sbh = fibh.ebh = NULL;
+-	else if (inode_bmap(dir, f_pos >> dir->i_sb->s_blocksize_bits,
+-			      &epos, &eloc, &elen, &offset) ==
+-					(EXT_RECORDED_ALLOCATED >> 30)) {
+-		block = udf_get_lb_pblock(dir->i_sb, &eloc, offset);
+-		if ((++offset << dir->i_sb->s_blocksize_bits) < elen) {
+-			if (dinfo->i_alloc_type == ICBTAG_FLAG_AD_SHORT)
+-				epos.offset -= sizeof(struct short_ad);
+-			else if (dinfo->i_alloc_type == ICBTAG_FLAG_AD_LONG)
+-				epos.offset -= sizeof(struct long_ad);
+-		} else
+-			offset = 0;
+-
+-		fibh.sbh = fibh.ebh = udf_tread(dir->i_sb, block);
+-		if (!fibh.sbh) {
+-			brelse(epos.bh);
+-			return 0;
+-		}
+-	} else {
+-		brelse(epos.bh);
+-		return 0;
+-	}
+-
+-	while (f_pos < size) {
+-		fi = udf_fileident_read(dir, &f_pos, &fibh, &cfi, &epos, &eloc,
+-					&elen, &offset);
+-		if (!fi) {
+-			if (fibh.sbh != fibh.ebh)
+-				brelse(fibh.ebh);
+-			brelse(fibh.sbh);
+-			brelse(epos.bh);
+-			return 0;
+-		}
+-
+-		if (cfi.lengthFileIdent &&
+-		    (cfi.fileCharacteristics & FID_FILE_CHAR_DELETED) == 0) {
+-			if (fibh.sbh != fibh.ebh)
+-				brelse(fibh.ebh);
+-			brelse(fibh.sbh);
+-			brelse(epos.bh);
++	for (ret = udf_fiiter_init(&iter, dir, 0);
++	     !ret && iter.pos < dir->i_size;
++	     ret = udf_fiiter_advance(&iter)) {
++		if (iter.fi.lengthFileIdent &&
++		    !(iter.fi.fileCharacteristics & FID_FILE_CHAR_DELETED)) {
++			udf_fiiter_release(&iter);
+ 			return 0;
+ 		}
+ 	}
+-
+-	if (fibh.sbh != fibh.ebh)
+-		brelse(fibh.ebh);
+-	brelse(fibh.sbh);
+-	brelse(epos.bh);
++	udf_fiiter_release(&iter);
+ 
+ 	return 1;
+ }
 
 
 
