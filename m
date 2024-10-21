@@ -1,176 +1,95 @@
-Return-Path: <stable+bounces-87594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67D899A6FEE
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 18:43:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6517B9A6FF7
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 18:45:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC57B1F21EB6
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 16:43:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24821284839
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 16:45:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA621D0153;
-	Mon, 21 Oct 2024 16:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C9E199223;
+	Mon, 21 Oct 2024 16:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="3RY4IRvg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VU9YB7Vu"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2072.outbound.protection.outlook.com [40.107.220.72])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2511DF754
-	for <stable@vger.kernel.org>; Mon, 21 Oct 2024 16:43:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.72
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729529033; cv=fail; b=VyLgfB2J+nu54b/yCiRbbtpqkriDe1qtzS5KbLHGI5tphBTdXg06505Bezv8Y9X3IKWvzn03jgptplZO0xfOH6bbVow0qNoNuRUWmSc5sZp9XS5Z9O6tudpQcno5Gz/3WLYveISdnglOC06ZrcgARQlhRCJRAzAl5YxLkTr5ask=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729529033; c=relaxed/simple;
-	bh=kvpsoKFWebFshbRxiOG3rW22T/r/q32lzQCXYBjxSMw=;
-	h=Message-ID:Date:To:From:Subject:Content-Type:MIME-Version; b=YPKlOW8M/dauc5G6LNqUvzAygsZ3FKbQAV0QTAfVgTZb+RV27RMclijobkE6r3lwd5K0Ouqyugvg6/GiUjFYAFhigjJudIxj0mXZedpIsy7i9b0mTFLD3Tk0ygBYbk8irvPXVhA5e76+MfIltpbWEgOeGI96ZY9cdmWTVJZA5TY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=3RY4IRvg; arc=fail smtp.client-ip=40.107.220.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wYcwFp7GQyP+swS/1xyWxSiabhWDxpig7mkAUrd+FC7yVwl/6Qa9JVLu8ZXNGlO67Wt0oi2/pCtw9ChY+fBhLnp0+aYpLB+MrFb7uMxBWZX9Xy/DqilGNVBqwXfrzJduhr/ONbplYz/vZs55KcdT3LvclSLsbhuSkmRagyUUX8IUPMFqXB9JWdnq6eQwC6avNxZa8LHvuPux+r8kDjSfgqbOyRF+zojZhoLjGgs+gMS6ByjmvxOEpMv9OqKrFAtADA+DRnLEQJ30yAcFFJJNqER84C9V0EM1zcB2e5IUAxk+ac145R3CswTW1zxMUuHvxGCuI4o3t82dD2vCeih9EQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kvpsoKFWebFshbRxiOG3rW22T/r/q32lzQCXYBjxSMw=;
- b=vvRBSxddoPqCSaRq35zY/NkAAcoDg8ZVQZZH/y8YacCw9tLK61rr62Eox55ScR6oXfj+hQoRHF77M8mXSMudq8flXYrwfxE/soOHgRAziBV/8cdmUD/ZWycvw5QZ1a3HW1eSw/qxq49TR8e+BLbnUHdhJRyOoSyPVkAcU+hKqUbfHKCmNC8DeCM83spLqTYCPGFkF5pL2lkN6BJsBBadS54ws+ISxBM7JNOespdSPOY4KfcUzdtB5XEfHkNd3p4FFN//WChGgKt4pOJ3M3VQx9Ve6yRezk4EXPRC4tyfkj0eooP3C0tZ6ZZFg+5d03JA2bA6L6JZgwFAork6lR/HbA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kvpsoKFWebFshbRxiOG3rW22T/r/q32lzQCXYBjxSMw=;
- b=3RY4IRvgoE/H/YM6Eldsu5RrJ2GaCqWENvUK50ccyAWwPcjLdShkv4XCDXW25BqR1L9oV1o2z8oXXxIu0aY7bMKlEp+UKpLqrQCbodjvJBuee40CedWvCBlOFTcar/yhfOetrZafWy8FzLckwznrHLyhxV2yAJru6YntlJlLqoM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB6253.namprd12.prod.outlook.com (2603:10b6:8:a6::12) by
- PH7PR12MB6833.namprd12.prod.outlook.com (2603:10b6:510:1af::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.28; Mon, 21 Oct
- 2024 16:43:48 +0000
-Received: from DM4PR12MB6253.namprd12.prod.outlook.com
- ([fe80::53b9:484d:7e14:de59]) by DM4PR12MB6253.namprd12.prod.outlook.com
- ([fe80::53b9:484d:7e14:de59%4]) with mapi id 15.20.8069.027; Mon, 21 Oct 2024
- 16:43:48 +0000
-Message-ID: <481fc86d-4ff1-41aa-9476-11be73e6cb45@amd.com>
-Date: Mon, 21 Oct 2024 11:43:47 -0500
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: stable@vger.kernel.org
-From: "Gong, Richard" <richard.gong@amd.com>
-Subject: Add 2 commits to kernel 6.11.y
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1PR02CA0014.namprd02.prod.outlook.com
- (2603:10b6:806:2cf::21) To DM4PR12MB6253.namprd12.prod.outlook.com
- (2603:10b6:8:a6::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C964A433AD
+	for <stable@vger.kernel.org>; Mon, 21 Oct 2024 16:45:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729529119; cv=none; b=h+VAlOEZaLrZuTxZaXVGunlETrpUgj0e+rLhYa8UL0r43s9umNxTClWhznnVzH30WB78Pg2c/Ag0gtJTjFON6BFmp+tb/pgnCHWVPA9i086X03X9X3wfxxc9BfkjkDUNuaz8N4KBGhJWwAjz8G+EjYMccfkUCmnJn5CUPhuiHls=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729529119; c=relaxed/simple;
+	bh=9S5XWeDimO7T8Z8cx7YkEdx1zBb59Jbi24biI3eiu6U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X68vVknTPW0GFecAcsLQ3xXhSMgqEqfw+yFCWo4aI5DpCjDdtHtgNkEk3+tv6zJzGqE93jqmjjsuC9yoGKxrEDNHW3frunzmrRoAcYHmDgXbwBIexCKogM/x/sr15naUt2Qb+2lCrndrjJT4438h96PbIZrW438ym1Yf/YmxWQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VU9YB7Vu; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729529118; x=1761065118;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=9S5XWeDimO7T8Z8cx7YkEdx1zBb59Jbi24biI3eiu6U=;
+  b=VU9YB7VuBthdMXHqnAwC0RU47fUaABbvRsCFBNnMbEjXoRq8/CO83fLs
+   yfy4atN1yI14fTLmIlyJYRvgmoDijgG7VqqGMnq0/09W17TIRTxB02SVh
+   hX8IjAFwnxB0AbdjZST7EGsSFX9XsUJVAP6sdF2wiyRbYG/U75aEFQFnY
+   imJY8Xy8SEQdLUWB3Bo1xaKyZCOHFe4NDqHpRCXpfi2MNFc+AattujaNP
+   qGhM/pr5Sd2yKDrSvScDSaxxp7tL+DC65IqXLY7c+r11ES5H+LVqS7w0/
+   d1XjQt3Cl3xLihafsPGenhxBTKff5V3Awx0b6b5Z+X1hJDQW7pTh5ZNXD
+   A==;
+X-CSE-ConnectionGUID: 9CoacWK9SKywRKDGiA+6kg==
+X-CSE-MsgGUID: Sd6Iz+LbS3GNBWIZ8mTz3w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29186538"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="29186538"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 09:45:17 -0700
+X-CSE-ConnectionGUID: 7K0B0aKcRKGHohFlsYWy1w==
+X-CSE-MsgGUID: mowclFgpT4uxwqF6Dnz5ZQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="84401460"
+Received: from cphoward-mobl.amr.corp.intel.com (HELO desk) ([10.125.147.124])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 09:45:17 -0700
+Date: Mon, 21 Oct 2024 09:45:07 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: gregkh@linuxfoundation.org
+Cc: andrew.cooper3@citrix.com, brgerst@gmail.com,
+	dave.hansen@linux.intel.com, mingo@kernel.org, rtgill82@gmail.com,
+	stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] x86/bugs: Use code segment selector for
+ VERW operand" failed to apply to 6.1-stable tree
+Message-ID: <20241021164507.vp6zd5tzyrmzhwc3@desk>
+References: <2024102128-omega-phosphate-db6c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB6253:EE_|PH7PR12MB6833:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0c1ea70f-e5e0-40ee-ac37-08dcf1ef8930
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SVUybzZ3VEJBTXltakZqMUxuWmp0REVMZWwvb0lwSEY2dnlPcFFnZHdXckJr?=
- =?utf-8?B?elM3TXRtUDdTVTRBSU5UeEFEcC9qa2lSa3J4TjVZWG85ckVkRm8zR0lTWnUv?=
- =?utf-8?B?K3p6alJtREVjbFQ2d0NubC90ZjNXU0VjakVLcFpPaEVwbGQ3Q0E5MmQwb3lC?=
- =?utf-8?B?SFBHVm5PWkpNdXgyMHNueVNFRHpmYk5GRHVFMHlWb0xIVXQ3M3NkT1BTM1Qz?=
- =?utf-8?B?WGhraXd0SUVxYkRkdVQyNVJkdmVUQ1VTNFJMbCsvLzZiYm1oNUduMFEvcVNs?=
- =?utf-8?B?clo4ZXgvL3RRSXRVclNoR1V6ajNBZWtaSGZKMFR3dlBrQTkwVUp2cTR6TW1N?=
- =?utf-8?B?UFBQODlqVTREbEJRNCtrbFpTR1k0K0JtMTNNWHRxbkxEZCtxYlg3Ym1LMUNQ?=
- =?utf-8?B?eFM4cVJzaWhaQmNiZDFGZHFWWnRReVZFSHVTNTc4ZUpnZXBMKy9JaGN5MTlB?=
- =?utf-8?B?Q09vT0RiRUk4VU8xM1JUaER4elhOWE54NnpDVUs1NlZoVkJKRkRUUUdHZGxq?=
- =?utf-8?B?a2krdTFmMjI3WXpZK04rVTdoZGxHYkx6eE5FRGNJbVR6ckVXU3YrN0h6UUVD?=
- =?utf-8?B?WnhhMHY2L2xiUkViNHpVZjhNNks2Q0NQRStIYyt4MHBoWjNLVjVkTUttNVBq?=
- =?utf-8?B?RVN1elc5L3hQOVVJbEFHTmVTTjFwYnJnVTNiTzdRajlhL3E0dXMyejd0Nyt1?=
- =?utf-8?B?OXNtOXVxVm1NRUU4SXVGd0MyeGQ5c3NEdVNVbWhVS291cXhCZy9SakxMTGpX?=
- =?utf-8?B?NlMyMWhNZnByd1R6UFhSZVh2MnlTUGJsbmVlc2k3aC9ualJMeGEwUmE1dDZM?=
- =?utf-8?B?aG9KVTh3Nlc2eldnRE9LQ0EvMmhBNjYyL3JGVW96SHlMMS9aTHdBQWI2Vk1z?=
- =?utf-8?B?S3Q0ZEYrclVnMGlnMmoybUdZd0NBTWVyTThUQVdyQWZuV3pxZVdKa0dnY2N1?=
- =?utf-8?B?cmJTcEwxWmdRaU1qdFRTNi9hZXBBbzRiNXUwWWI0ZWZzKytXcnVLY0RnVnpC?=
- =?utf-8?B?YUE4WkN3dmp3NHVhbTBYR1E3VWdHVFFOZmVTOE42RjFCNVBPb0Fxai9aLzR5?=
- =?utf-8?B?RURHeVZzNFFaSDhyRFIzZUEyQmI0NHh0TTg3MHZtNHpFT1JMR1FkQXJDRlp6?=
- =?utf-8?B?NUFadkg3bFdXT3Fhc2pHdzErY1dPeC8rMUZtNE8wczNralcyTEpkTmdmd0po?=
- =?utf-8?B?cVZyQjNSM2Z6SWQyVEhvdmxHK0dYRkFxTHp2emY5aUlHWlhzTDhTN2xmZ2hk?=
- =?utf-8?B?UGhIQU5pUnBiaWZEUHNOSjhod2o4VTN5MEtGb253T0FIdGhHSVJWTzM2Q0Zn?=
- =?utf-8?B?WUV6V2JhcG4wcGhMaFRjMkxxMWxTVUg5MEZDMElyWllzT0VWKysybVBNb0o4?=
- =?utf-8?B?TDJwdW0wWXYvSlViUzIvOXhTWnRnc2RNazNxWms0OVpqUmVibTg1WjUxaXRx?=
- =?utf-8?B?ZFpaVHhDd1M3U2FLa09zMTVBZDdiRWF3L01jbVlFUGZHNk4ydVIveXhQeGli?=
- =?utf-8?B?RUtyTWhOWWZBK1JsSzdKSUozV3JqRlltSlMrQ0htb3NMc0tSaGowM3UyVGx1?=
- =?utf-8?B?RWxzUUZWNXNyN09JV3B0SzllNFdtZFpOZm5aZ0pyVzRpTzNQcFlmMFhqenRw?=
- =?utf-8?B?SmRKL2pNd0I3Mk1jWDNzTktjS2tSUkhlT2ErS1h5SXpHeW43VzVSYlVuUGgw?=
- =?utf-8?B?K0VRcVN4TkJ4OGg3KytLSTBzaXd6NW5NNzJzV2RvS1JlbTFmQXJ6WHJabmhG?=
- =?utf-8?Q?TJuPPnDR73uB1x/Futw8DqW5+N7wPZNSoUvlUY1?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6253.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aVluL2I5V3RESUhzYmFnVFNaRFlpSXRzczRlVk9zYVB5aUF3aTE3Y1NscnJp?=
- =?utf-8?B?dlEzUzhBclhLNWowTFVYKy9SVzJIT2NhMGVUdzd2N01kVWFmTm9NYmtHclF2?=
- =?utf-8?B?dHZHaDlvQk5WMW9UejZzUnVGYzhLVzdQdGRFNW1qWGpGeXgvdmV2YlRIbkIr?=
- =?utf-8?B?bTNZelZscEpBelJ1eVpJcWloKytvZU5COVBrWjRXb2xCMWlMcGkwWmlvRGt0?=
- =?utf-8?B?TnNCTHI4SmR5VXloNE8yUFhxYnExSDBqYXdZVHRCeFU5Um1QSnk2eUlLZEtl?=
- =?utf-8?B?RUU3QWM1cEJyakRoNHFGOUNjSWhVUVJxbDVOWGJqdndUVmRrT3JjYm8xcERW?=
- =?utf-8?B?S3hETGxSVXNYQ2pyTVQwYngxS1I2SU4vWlo4SVIzZlVpeDAzb3NESE5NY1Ev?=
- =?utf-8?B?b0FiOFlmR1NkYW9uY0UyUFpoaERNb1h1SUxPcTlpcEtkY0VHS0lpZkVhRFpC?=
- =?utf-8?B?R0lLTkplVlRRZDRXUjNJUTIvMlRtcDlDTE5uM2IxNDR2dDRDSGEyeTRCOTRU?=
- =?utf-8?B?UEhlNE1BNVVpYXBvdDErbStqRTRPMElaaGVUaXJDQSsrNG5RYWFLY0dUOEpo?=
- =?utf-8?B?Z0txNC9LRFRQc3QyWUxmMlZ6WkRZR09YK0NMaW44RThJWTNnUGxEUzVFRVBi?=
- =?utf-8?B?VjVsNDJiU3dUcCtJTEllSVRTNjdoZ0VDSjQ2bk15ayt6R0EvSnBWN21VKzdI?=
- =?utf-8?B?RUFDSnpPS1NkbXBDaS81dXpBVHh5U1QyRUNPeWtaK0NPcmZZaW1Wak9tNERG?=
- =?utf-8?B?QXBpbXlIbTVacWJwNk1Rc1JoZjNWeHZiU29sQ2drZm85dC9DbVNYT0UzejJE?=
- =?utf-8?B?cnl2VVQydGFRb1Y1cmJIK2UzaE5wZVArTGV4YUZZQmlHZWJFaWVPdXRHY2Ur?=
- =?utf-8?B?elJPUTJwL1l4THRqeGhKd0dHa0Z6d0xxNnNCNFRqYmkwOCt3Umo2RDBudk05?=
- =?utf-8?B?MXNXMzZ1WlZDS244RHdlYWZ6ZWtlc29tajhVOVZFTzlDOGZ6eVZRRXR2U3dp?=
- =?utf-8?B?Z2dXaDBaUlB0blVBYW1NdUhIT3FXdll1QnVZbCtJTEhOWDk4YkdQNkdodmFW?=
- =?utf-8?B?NU9IdmlYWm90cGxTNDM3aVFTazBTYU95SWozRnZualBqQk9Xc1gyWGd2SnVQ?=
- =?utf-8?B?cEgyeStpalFiNkNPdDVHcUhRRmxEMGxnWWcyUWhCb2d6bzA3Tmp0K3QyT20x?=
- =?utf-8?B?Qys0eHpYR3czbE9nbndZMjlDd1N3NElSUmp2ZVl4bXJiL0R0UWpTTmU3RlNq?=
- =?utf-8?B?RkpHcDdRQUYrR2RROVp1Zi9KNVZvTkdOR3p4dWlKcjBnWXd1bjgzWjMvYTRs?=
- =?utf-8?B?bHoxN214N1pwUHk0ZFA3bVFUdExzRnpadlF1TGtPVFJ2dWNKTngzYlJVb3lV?=
- =?utf-8?B?SjZqbTJqZ0VSYklIQXJiNy8yenhRclQ3TzZDejNraWxuTUxoOUcvNjdqRUdE?=
- =?utf-8?B?NTRhalpuM0N6Mll6clNVbkY2anJ1cVl0SjNQNjM3V1hzRHFDS2dqTy9kMGZC?=
- =?utf-8?B?bUJJaVgvYTZyVmNzRlNKMjcybWV6SnFTcjRmMlkwK3NGdWt4VWNWYmpVVVYz?=
- =?utf-8?B?QjhKRERaMEIxWVd3UjJoU3oyV0FMSDlTM0FOVWdMWVdZNjhRcGprbkNVeVVT?=
- =?utf-8?B?WmRucDBOZnJIWURKNGs3K2h3eFVBbktVZkJNYjJRUnpST1hVYVpmUWpBVCth?=
- =?utf-8?B?ZHZOTWYwbm9jRVRzSzBYSEZ2ZzJBVTREenhkOUk2MFdWRVFtUEdncWE1ZHZm?=
- =?utf-8?B?SCtmeUJleXZTMkdLd2FXWlhPZi81QXdiVDdrdERKQ0VMRkIzWDhkNlRtSzlV?=
- =?utf-8?B?bGVqaUIrVmRLNnh1elB2Y1B5VW4vUWRHbDFjVDdWTXdVcmlRNzNUdzB6MU5X?=
- =?utf-8?B?VnJxaVNsRU93MDl2S25SejlQb3dJQ2t6ci92MEJjNXlPWHlQd3NackdWN0N1?=
- =?utf-8?B?UnpMdG9xS21ZZXZ5bHBZaXlDeWJ6TThNV0tvS0o5M1lXRDdRRkhJRUdWeHFH?=
- =?utf-8?B?VVdpb1J0VHUybENrYVVRYzZCTHlBNXFPYUZjNi9QSE9XWEozV2hMUFpGMXNC?=
- =?utf-8?B?c0JmQXFFVi9nbCtsYmJoK01vS2Y3aEMwUFNTb1lmRDBiaGtpZjJkaUc1ZldT?=
- =?utf-8?Q?fzz6yeSronpU2814sPBFvCxfd?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0c1ea70f-e5e0-40ee-ac37-08dcf1ef8930
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6253.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2024 16:43:48.3165
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: S/4zIOUrOME5Kxc1XUqS1gxJdpDajPQwIhARlwUlTcms4tym0bRGATeITVbypIyyfM1rqFVcLc/SXBasA9fQRg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6833
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2024102128-omega-phosphate-db6c@gregkh>
 
-Hi,
+Hi Greg,
 
-The commits below are required to enable amd_atl driver on AMD processors.
+On Mon, Oct 21, 2024 at 10:13:29AM +0200, gregkh@linuxfoundation.org wrote:
+> 
+> The patch below does not apply to the 6.1-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
 
-0f70fdd42559 x86/amd_nb: Add new PCI IDs for AMD family 1Ah model 60h-70
-f8bc84b6096f x86/amd_nb: Add new PCI ID for AMD family 1Ah model 20h
+I will send the backport for this and the older kernels where the patch
+fails to apply.
 
-Please add those 2 commits to stable kernel 6.11.y. Thanks!
-
-Regards,
-Richard
+Thanks,
+Pawan
 
