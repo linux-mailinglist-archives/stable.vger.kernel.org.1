@@ -1,89 +1,139 @@
-Return-Path: <stable+bounces-86986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74A409A593D
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 05:28:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90CFA9A5994
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 06:36:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3BDA1C20D6A
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 03:28:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 461A71F22119
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 04:36:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467391CF292;
-	Mon, 21 Oct 2024 03:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842E61940B2;
+	Mon, 21 Oct 2024 04:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="de0dWJBn"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="Twem3gfa"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F92A197531;
-	Mon, 21 Oct 2024 03:28:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0322C95;
+	Mon, 21 Oct 2024 04:36:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729481310; cv=none; b=dVp3yoUfTTYvnBBXqecX9eLyOqUSwtlgcfFh6t3AAye7puCc5Wn7xckLIYurMK2T3ZAiCuCj3LQgbu9O4ifgj29FEEfbWynPCr3I0OQ73mnTjurq1JlJSu3yO+xeUZVSMvDlbOmW3/DEyuCFbMYs7EwkymMSumTLgONSHbuZiqg=
+	t=1729485364; cv=none; b=WOA1i/1aM21yHkuH2gKv3nBnnUyYaZeUFgyXI5z3ifuXCLplcYqYu87zMxM1UeOLPoQWRMReKDuf/MRpqhRln9W6dpDy4l6ZqlSzPjnn+BmiU2nSHsNA0akaTXkloQn9svHGzYjt0Iyu7TjUFDKF6NYltSXppigbEJyw5BZKeeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729481310; c=relaxed/simple;
-	bh=WoyJUMtHDLbZHs8erOMKOVbMxOKaZr9THOlDK5ZZCfQ=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=I6BS/MxFdS14/lILoSRl9hiFMIYYv4mc5i/eNqcp2hpLgbhgbDdJ2Xl+zyYUdqnfO+odIiLu6qOK7YsToZI1tu0K4zPG5hQGJeF4ZrBuOIk91fsTrsbbZc2wfbAqSNxCHKok3psg4Ez1IyqWWl4AeuUqnwQH7nOxSGdIkGm+xGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=de0dWJBn; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:Subject
-	:Cc:To:From:MIME-Version:Date:Message-ID:From:Sender:Reply-To:Subject:Date:
-	Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=WoyJUMtHDLbZHs8erOMKOVbMxOKaZr9THOlDK5ZZCfQ=; t=1729481308; x=1729913308;
-	 b=de0dWJBnDacWB6TbOYzSppT7vv8j9Dos/07rwvsAJa6IJUUG/lEptAhTiBGXK6LX818HfMW0PM
-	jzIcYbPyWbZz6ViKdKpOchgy5EiTf9dgCZUGgSCEJtvIDWfrH8BZhBZaKVU+/LWbNtyUQXORtWKDK
-	i+w9vfKwqv1S+3i9ecWc896FlfaM/7BjZjOsXaNaapuVGl2YPHTlyx0dfBt+CylfoTi1S5/at9+Tu
-	HzWCl7QOzfInIxXCRFw4iXxGcCsFmVFpPc9L+0pKOw2v4LJYAZ2hy/td2V8yK4RDNFx1B9aBHZ91F
-	VMkGS/PcDnW/ji+nQlKqt6VLSwwShx6/PPUUQ==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1t2j5l-0002lk-Qn; Mon, 21 Oct 2024 05:28:25 +0200
-Message-ID: <2fad9d09-c328-4353-be0b-cfcfef33ed01@leemhuis.info>
-Date: Mon, 21 Oct 2024 05:28:25 +0200
+	s=arc-20240116; t=1729485364; c=relaxed/simple;
+	bh=kfyBl89qi07l58LqgOVh/E+t7hT9q6eZ/J9aUMqlDdU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=sJ/GT4iZ4kOQV/GJe2HVQLsQ9RmU78aNybGbzY2jLgPNXYigi51qGTdpGYLnarhsFtaRXVlsNUVfkmCj0sqCHNJ8zhb1rNU4gv2cU24Rd2c/ChS2o8C4fLmLGn19vaH9WPxhJRiHfJaK2yPzBMQDYVdOWginGdkRoEMmvxpaRT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=Twem3gfa; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1729485353;
+	bh=SWW3lLflcZSTt/7kAMirXY1p2/5OZLkG+On5G9EG8/A=;
+	h=From:Date:Subject:To:Cc;
+	b=Twem3gfa9XF7vZ9+LBBoBs/KVaTjd5iDwmUpGIHcQHNvjpk+k42dMqotBhFknCfC/
+	 tn1EeUwJY4ONJGbsmFGyMCpXAV6hf4cnVktpwRPC/KL6ht8Y4KjXFHbWKKgwRgApbj
+	 9JjEIBPUbnh+ikgxFIx8xvHYlfpthwrGsMKpq908znJ991vx8KhJhnDM9P//cerDbr
+	 IloAw5RWtSw6n2iYsC1Wl0TAA3ChCf8jQ4DFJ+21o7HWP4LGL/CP2YkmN8vN9E0q/S
+	 okSsvfRvgA9arsO3NPMcA1BnMHHwweMgMocF8imL0QKUgIhVdf0OqISw+kCZO4YpA9
+	 pAKVP50bRZ5Ag==
+Received: by codeconstruct.com.au (Postfix, from userid 10001)
+	id D2D4368607; Mon, 21 Oct 2024 12:35:53 +0800 (AWST)
+From: Matt Johnston <matt@codeconstruct.com.au>
+Date: Mon, 21 Oct 2024 12:35:26 +0800
+Subject: [PATCH net v2] mctp i2c: handle NULL header address
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Sasha Levin <sashal@kernel.org>,
- Linux kernel regressions list <regressions@lists.linux.dev>,
- LKML <linux-kernel@vger.kernel.org>,
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org
-Subject: Pls pick up two bluetooth fixes
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1729481308;323c1754;
-X-HE-SMSGID: 1t2j5l-0002lk-Qn
+Message-Id: <20241021-mctp-i2c-null-dest-v2-1-4503e478517c@codeconstruct.com.au>
+X-B4-Tracking: v=1; b=H4sIAA3aFWcC/32NQQqDMBBFryKz7kgSrNWueo/iIo7TOqCJJFFax
+ Ls3eIAu3//893eIHIQj3IsdAm8SxbsM5lIAjda9GWXIDEaZSivd4ExpQTGEbp0mHDgmtKq35qZ
+ ZUdVAHi6BX/I5pU9wnKDL4Sgx+fA9jzZ9Vv+cm0aNvdW2v5q2rrl9kB+YvIsprJRK8nNpV+iO4
+ /gBy/ICRcQAAAA=
+X-Change-ID: 20241018-mctp-i2c-null-dest-a0ba271e0c48
+To: Jeremy Kerr <jk@codeconstruct.com.au>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Matt Johnston <matt@codeconstruct.com.au>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, Wolfram Sang <wsa@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Dung Cao <dung@os.amperecomputing.com>
+X-Mailer: b4 0.15-dev-cbbb4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1729485352; l=2035;
+ i=matt@codeconstruct.com.au; s=20241018; h=from:subject:message-id;
+ bh=kfyBl89qi07l58LqgOVh/E+t7hT9q6eZ/J9aUMqlDdU=;
+ b=g8pthMSNyYuR426kRcv+rNB5vPq1JTxfSaNyB/pLReNKQr30VxaDqtwxBo/x6cHU755b1KqIm
+ NS1QpeuuzdbDZMqYl6SqN+gNnn/6WS1F7p8opuPbPhlo58ziKBBOG/3
+X-Developer-Key: i=matt@codeconstruct.com.au; a=ed25519;
+ pk=exersTcCYD/pEBOzXGO6HkLd6kKXRuWxHhj+LXn3DYE=
 
-Hi Greg! Please consider picking up the following two bluetooth fixes
-for the next round of stable updates, they fix problems quite a few
-users hit in various stable series due to backports:
+daddr can be NULL if there is no neighbour table entry present,
+in that case the tx packet should be dropped.
 
-4084286151fc91 ("Bluetooth: btusb: Fix not being able to reconnect after
-suspend") [v6.12-rc4] for 6.11.y
+saddr will normally be set by MCTP core, but in case it is NULL it
+should be set to the device address.
 
-and
+Incorrect indent of the function arguments is also fixed.
 
-2c1dda2acc4192 ("Bluetooth: btusb: Fix regression with fake CSR
-controllers 0a12:0001") [v6.12-rc4] for 5.10.y and later
+Fixes: f5b8abf9fc3d ("mctp i2c: MCTP I2C binding driver")
+Cc: stable@vger.kernel.org
+Reported-by: Dung Cao <dung@os.amperecomputing.com>
+Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
+---
+Changes in v2:
+- Set saddr to device address if NULL, mention in commit message
+- Fix patch prefix formatting
+- Link to v1: https://lore.kernel.org/r/20241018-mctp-i2c-null-dest-v1-1-ba1ab52966e9@codeconstruct.com.au
+---
+ drivers/net/mctp/mctp-i2c.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-For details see also:
-https://lore.kernel.org/all/CABBYNZL0_j4EDWzDS=kXc1Vy0D6ToU+oYnP_uBWTKoXbEagHhw@mail.gmail.com/
+diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
+index 4dc057c121f5d0fb9c9c48bf16b6933ae2f7b2ac..c909254e03c21518c17daf8b813e610558e074c1 100644
+--- a/drivers/net/mctp/mctp-i2c.c
++++ b/drivers/net/mctp/mctp-i2c.c
+@@ -579,7 +579,7 @@ static void mctp_i2c_flow_release(struct mctp_i2c_dev *midev)
+ 
+ static int mctp_i2c_header_create(struct sk_buff *skb, struct net_device *dev,
+ 				  unsigned short type, const void *daddr,
+-	   const void *saddr, unsigned int len)
++				  const void *saddr, unsigned int len)
+ {
+ 	struct mctp_i2c_hdr *hdr;
+ 	struct mctp_hdr *mhdr;
+@@ -588,8 +588,15 @@ static int mctp_i2c_header_create(struct sk_buff *skb, struct net_device *dev,
+ 	if (len > MCTP_I2C_MAXMTU)
+ 		return -EMSGSIZE;
+ 
+-	lldst = *((u8 *)daddr);
+-	llsrc = *((u8 *)saddr);
++	if (daddr)
++		lldst = *((u8 *)daddr);
++	else
++		return -EINVAL;
++
++	if (saddr)
++		llsrc = *((u8 *)saddr);
++	else
++		llsrc = dev->dev_addr;
+ 
+ 	skb_push(skb, sizeof(struct mctp_i2c_hdr));
+ 	skb_reset_mac_header(skb);
 
-tia!
+---
+base-commit: cb560795c8c2ceca1d36a95f0d1b2eafc4074e37
+change-id: 20241018-mctp-i2c-null-dest-a0ba271e0c48
 
-Ciao, Thorsten
+Best regards,
+-- 
+Matt Johnston <matt@codeconstruct.com.au>
+
 
