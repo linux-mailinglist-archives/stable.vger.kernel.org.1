@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-87382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D88D9A64AD
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:49:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F5B9A6532
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:54:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21AEE1F20C89
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:49:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B5C21C221D2
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:54:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9B71EBFE1;
-	Mon, 21 Oct 2024 10:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB2E31EB9FE;
+	Mon, 21 Oct 2024 10:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4uWn7Xn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KEZymAjy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A181E5722;
-	Mon, 21 Oct 2024 10:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A381E571E;
+	Mon, 21 Oct 2024 10:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507439; cv=none; b=LRcRo2VRUpZkhN1ZWyKi3yuDC5SdcT3Ffo2M6ev75mwfv1NspjGg8hCDW3YPKtnz+nTu95p28aY8ESiApDwidTRo6V0jQLDbfFX2W7RHixiM22HiimkrluFsOUBtwwTP44kMMYW7K5v+lCeyoPlFAfPE0ZaGFszP4bDXpxfnEfo=
+	t=1729507760; cv=none; b=EXVFDEukkP44U3kcmSaNgeq/LThjRhveTQMraa6WAwpKwsvvuvuPwBomtWAV7C1JgQy4Q+YZoq13zu0VwSE7fqZx3fV+leg0o3Ac9dshoTaZWxccHE/zONx2HzUoOcdIdCnwFI+yFsuovhK6y+Aie4dE4Hvc8wMpULiuNg91fNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507439; c=relaxed/simple;
-	bh=zbfS5Q3Cwvn8oHqJQKiTFSHh3SM1laEGOaz4vdK3k/Y=;
+	s=arc-20240116; t=1729507760; c=relaxed/simple;
+	bh=GaH8gdxDxvlInyLWwNn9WL9eFXRWmUfp4IbW4IbAG0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FEcCyW6ZNDf5lxEQRMXnjEeeTukZphy2FDn6/CObjWiENwLz7u/Scnto20clmJEf7Eeogp0YP8iKFowQ0HU+SKUQf5B6enmQy7iI5yIeNDiipgRv8vLC9NAj4s1bCFhBUnGgvZv9E70cv6kI9cgCuh5XR1XVTPh7bY2VKgChKl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4uWn7Xn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4246C4CEC3;
-	Mon, 21 Oct 2024 10:43:58 +0000 (UTC)
+	 MIME-Version; b=RroKZ9IOX2PlMNKqypu401jMX1uUBS2asZzdj6IBAHneyHYPUFYkNtLztRX8A7q2EaZbkLraYFH5xBJJMRn/IGzbsRturXBY9E/3KYpo71QYG/aQKUrxNnuBKSWqyQ5p/HFWidYwrb5OKVDT5/jjtGuoFe4ldg5ZImUPC5r8lp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KEZymAjy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4077C4CEC3;
+	Mon, 21 Oct 2024 10:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507439;
-	bh=zbfS5Q3Cwvn8oHqJQKiTFSHh3SM1laEGOaz4vdK3k/Y=;
+	s=korg; t=1729507760;
+	bh=GaH8gdxDxvlInyLWwNn9WL9eFXRWmUfp4IbW4IbAG0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E4uWn7Xn1evaAyNo2XgGjql9O6pEIieFtzkO1HbAfFJgCs62BRxMTPT0a5PM+NRO2
-	 Muwr5V2SmrD/9mfhtHqley/QDFgRfdPEhIZORtSyEc2aOsYM36MjijWkGkTyZQ6mKM
-	 JH4UwcX0oki7YERFUq9Cn0oUy/pe0hS6QzTmQwzQ=
+	b=KEZymAjyAENDh5iYrHMVLwRB39rUNwQPYRDykTKCF8LugZcfa6BdpTiV9vk5wDnGB
+	 gH+puFooiythVbPty28kGFyYTL+oRYBrmwlhph/7Kx7IeB3ESKNscZBTxIL9ImbwwP
+	 McGgr25qKuSoybCjnzkkAoZay6i3h6WQxoUkzFIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 77/91] parport: Proper fix for array out-of-bounds access
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Sherry Yang <sherry.yang@oracle.com>
+Subject: [PATCH 5.10 10/52] wifi: mac80211: fix potential key use-after-free
 Date: Mon, 21 Oct 2024 12:25:31 +0200
-Message-ID: <20241021102252.822450095@linuxfoundation.org>
+Message-ID: <20241021102242.030800433@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
+References: <20241021102241.624153108@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,110 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 02ac3a9ef3a18b58d8f3ea2b6e46de657bf6c4f9 upstream.
+commit 31db78a4923ef5e2008f2eed321811ca79e7f71b upstream.
 
-The recent fix for array out-of-bounds accesses replaced sprintf()
-calls blindly with snprintf().  However, since snprintf() returns the
-would-be-printed size, not the actually output size, the length
-calculation can still go over the given limit.
+When ieee80211_key_link() is called by ieee80211_gtk_rekey_add()
+but returns 0 due to KRACK protection (identical key reinstall),
+ieee80211_gtk_rekey_add() will still return a pointer into the
+key, in a potential use-after-free. This normally doesn't happen
+since it's only called by iwlwifi in case of WoWLAN rekey offload
+which has its own KRACK protection, but still better to fix, do
+that by returning an error code and converting that to success on
+the cfg80211 boundary only, leaving the error for bad callers of
+ieee80211_gtk_rekey_add().
 
-Use scnprintf() instead of snprintf(), which returns the actually
-output letters, for addressing the potential out-of-bounds access
-properly.
-
-Fixes: ab11dac93d2d ("dev/parport: fix the array out-of-bounds risk")
-Cc: stable@vger.kernel.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20240920103318.19271-1-tiwai@suse.de
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: fdf7cb4185b6 ("mac80211: accept key reinstall without changing anything")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ Sherry: bp to fix CVE-2023-52530, resolved minor conflicts in
+  net/mac80211/cfg.c because of context change due to missing commit
+  23a5f0af6ff4 ("wifi: mac80211: remove cipher scheme support")
+  ccdde7c74ffd ("wifi: mac80211: properly implement MLO key handling")]
+Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parport/procfs.c |   22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ net/mac80211/cfg.c |    3 +++
+ net/mac80211/key.c |    2 +-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/parport/procfs.c
-+++ b/drivers/parport/procfs.c
-@@ -51,12 +51,12 @@ static int do_active_device(struct ctl_t
- 	
- 	for (dev = port->devices; dev ; dev = dev->next) {
- 		if(dev == port->cad) {
--			len += snprintf(buffer, sizeof(buffer), "%s\n", dev->name);
-+			len += scnprintf(buffer, sizeof(buffer), "%s\n", dev->name);
- 		}
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -509,6 +509,9 @@ static int ieee80211_add_key(struct wiph
+ 		sta->cipher_scheme = cs;
+ 
+ 	err = ieee80211_key_link(key, sdata, sta);
++	/* KRACK protection, shouldn't happen but just silently accept key */
++	if (err == -EALREADY)
++		err = 0;
+ 
+  out_unlock:
+ 	mutex_unlock(&local->sta_mtx);
+--- a/net/mac80211/key.c
++++ b/net/mac80211/key.c
+@@ -843,7 +843,7 @@ int ieee80211_key_link(struct ieee80211_
+ 	 */
+ 	if (ieee80211_key_identical(sdata, old_key, key)) {
+ 		ieee80211_key_free_unused(key);
+-		ret = 0;
++		ret = -EALREADY;
+ 		goto out;
  	}
  
- 	if(!len) {
--		len += snprintf(buffer, sizeof(buffer), "%s\n", "none");
-+		len += scnprintf(buffer, sizeof(buffer), "%s\n", "none");
- 	}
- 
- 	if (len > *lenp)
-@@ -87,19 +87,19 @@ static int do_autoprobe(struct ctl_table
- 	}
- 	
- 	if ((str = info->class_name) != NULL)
--		len += snprintf (buffer + len, sizeof(buffer) - len, "CLASS:%s;\n", str);
-+		len += scnprintf (buffer + len, sizeof(buffer) - len, "CLASS:%s;\n", str);
- 
- 	if ((str = info->model) != NULL)
--		len += snprintf (buffer + len, sizeof(buffer) - len, "MODEL:%s;\n", str);
-+		len += scnprintf (buffer + len, sizeof(buffer) - len, "MODEL:%s;\n", str);
- 
- 	if ((str = info->mfr) != NULL)
--		len += snprintf (buffer + len, sizeof(buffer) - len, "MANUFACTURER:%s;\n", str);
-+		len += scnprintf (buffer + len, sizeof(buffer) - len, "MANUFACTURER:%s;\n", str);
- 
- 	if ((str = info->description) != NULL)
--		len += snprintf (buffer + len, sizeof(buffer) - len, "DESCRIPTION:%s;\n", str);
-+		len += scnprintf (buffer + len, sizeof(buffer) - len, "DESCRIPTION:%s;\n", str);
- 
- 	if ((str = info->cmdset) != NULL)
--		len += snprintf (buffer + len, sizeof(buffer) - len, "COMMAND SET:%s;\n", str);
-+		len += scnprintf (buffer + len, sizeof(buffer) - len, "COMMAND SET:%s;\n", str);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -128,7 +128,7 @@ static int do_hardware_base_addr(struct
- 	if (write) /* permissions prevent this anyway */
- 		return -EACCES;
- 
--	len += snprintf (buffer, sizeof(buffer), "%lu\t%lu\n", port->base, port->base_hi);
-+	len += scnprintf (buffer, sizeof(buffer), "%lu\t%lu\n", port->base, port->base_hi);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -155,7 +155,7 @@ static int do_hardware_irq(struct ctl_ta
- 	if (write) /* permissions prevent this anyway */
- 		return -EACCES;
- 
--	len += snprintf (buffer, sizeof(buffer), "%d\n", port->irq);
-+	len += scnprintf (buffer, sizeof(buffer), "%d\n", port->irq);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -182,7 +182,7 @@ static int do_hardware_dma(struct ctl_ta
- 	if (write) /* permissions prevent this anyway */
- 		return -EACCES;
- 
--	len += snprintf (buffer, sizeof(buffer), "%d\n", port->dma);
-+	len += scnprintf (buffer, sizeof(buffer), "%d\n", port->dma);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -213,7 +213,7 @@ static int do_hardware_modes(struct ctl_
- #define printmode(x)							\
- do {									\
- 	if (port->modes & PARPORT_MODE_##x)				\
--		len += snprintf(buffer + len, sizeof(buffer) - len, "%s%s", f++ ? "," : "", #x); \
-+		len += scnprintf(buffer + len, sizeof(buffer) - len, "%s%s", f++ ? "," : "", #x); \
- } while (0)
- 		int f = 0;
- 		printmode(PCSPP);
 
 
 
