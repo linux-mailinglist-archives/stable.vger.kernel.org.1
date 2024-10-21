@@ -1,179 +1,186 @@
-Return-Path: <stable+bounces-87596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DF569A6FFD
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 18:46:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFCED9A700F
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 18:49:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7B94B211C6
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 16:46:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF8861C219F0
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 16:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 326BA1CF5EC;
-	Mon, 21 Oct 2024 16:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D136E19939E;
+	Mon, 21 Oct 2024 16:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DD+rLbws"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="uL3ruZF8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F0547A73;
-	Mon, 21 Oct 2024 16:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1581C7B81;
+	Mon, 21 Oct 2024 16:48:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729529197; cv=none; b=tdlCbl9okBccslgldPqt1QJu4AI2O+0nJNLnsDfq7KckPXZXLEHXiknFEgE2I6l9e/XbYM/syUo6cPDpuHCbdD9GuAM1alyKr+vkTKMvmrcl9aF+p8TTrtQXDssoki+AUg4XdhEs3jwGS9/pN3140RyCtq97HTMbav4dRqO6FB0=
+	t=1729529339; cv=none; b=BDaKqlAdH4NmTSNxZR7ZT2/uwndHL5IxqfXm+nqYmN+7mdZQ2oqS82tPstlWIp2Aj0efoXjBATvfGv7TFJToJA+f4Ufora3/IJZ7S1MK0pJ+WYEEgPrO2Rg/BOYvDeL3jOOmnzUQIVUZ0Hi0lcbcgZnIot3ZJXWbdU1KFpAFehc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729529197; c=relaxed/simple;
-	bh=A0FkUr4PZGC3BJ8Tf522Ac9/Uph3gtwc+TMsH4zYyVU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=W47+OSksDWYzwyLpkJOWj6n/MX3UBOb3SzEpbkPeSugiSuRKnl9ItLXC0qx1LhtKUM6yGCPWb7fO1zHXvfO6y7zL3vJLD2DdIFTC9G5fHiMdHgOHubplaIaE7Br/qUcHEcap+EqFKtLLea9U+RHWZY/hvl/9d9KzDJucquJaZXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DD+rLbws; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F7FC4CEC3;
-	Mon, 21 Oct 2024 16:46:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729529196;
-	bh=A0FkUr4PZGC3BJ8Tf522Ac9/Uph3gtwc+TMsH4zYyVU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=DD+rLbwstiSB8PKB5/d1WjmMXMFhcAAK58egPR6pUSAR3H3bqmc2t8dv68/I4/hsR
-	 QAKEb4CcfzaE5hYedcmChP6/cdE9WGdnHoIRn1Bz/gUBP3XFE8W1ZegxGy5L7c7OSQ
-	 uXEas5hD9Jx9hPkS1K+fj/mOIZUPIwO0RP60EBm+VU/xXxdF5LrnhlQ3ebjeCwrWvx
-	 C6BlN7joE6wD3MvhkxOKQCvXYVK0yo5WJsYgwUqweHTBq9D/HCPmS+00tgmRSWyCWw
-	 hCFxcHWljR2xjQQWcCD5rYOGhK1kZnewuH3s3nds5QegnmTrzopmuHAqyryC9rEDqp
-	 vVYrjxlbJ3f6g==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: Celeste Liu <coelacanthushex@gmail.com>, Celeste Liu via B4 Relay
- <devnull+CoelacanthusHex.gmail.com@kernel.org>, Paul Walmsley
- <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
- <aou@eecs.berkeley.edu>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@rivosinc.com>
-Cc: Palmer Dabbelt <palmer@rivosinc.com>, Alexandre Ghiti <alex@ghiti.fr>,
- "Dmitry V. Levin" <ldv@strace.io>, Andrea Bolognani <abologna@redhat.com>,
- Felix Yan <felixonmars@archlinux.org>, Ruizhe Pan <c141028@gmail.com>,
- Shiqi Zhang <shiqi@isrc.iscas.ac.cn>, Guo Ren <guoren@kernel.org>, Yao Zi
- <ziyao@disroot.org>, Han Gao <gaohan@iscas.ac.cn>,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH] riscv/entry: get correct syscall number from
- syscall_get_nr()
-In-Reply-To: <b72e3d2b-d540-47bf-adec-0ab6eda135d8@gmail.com>
-References: <20241017-fix-riscv-syscall-nr-v1-1-4edb4ca07f07@gmail.com>
- <87a5exy2rx.fsf@all.your.base.are.belong.to.us>
- <b72e3d2b-d540-47bf-adec-0ab6eda135d8@gmail.com>
-Date: Mon, 21 Oct 2024 09:46:35 -0700
-Message-ID: <8734kpqu8k.fsf@all.your.base.are.belong.to.us>
+	s=arc-20240116; t=1729529339; c=relaxed/simple;
+	bh=gR4UnDBoTyoO8LMDwZAKLoYw/q0TwI5fU2hybcdxb7E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EFUwK2DTOMBVzafeyrHhsSGr1EfjYYWt8CKEttMISTCcAvk28mSbi0vPCgM5jlSLdeutlYF5SjyQIttvalTjG9B+8SkTqSseMYc+HKULYu8/Udvws51NZaBSbXdeewDICpjsXmQl/pi5D75V7jaESLbLkk9oEChVKZc2FnzPBTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=uL3ruZF8; arc=none smtp.client-ip=95.215.58.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1729529334;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=VM62Ppuaj9ExI8TZbSZPXIH7o5k8upPR7JSKZv9bTk8=;
+	b=uL3ruZF8Uc9ag0vqVwIbqMohY2DljJYsG9RM8UBAGRKBWdOr+NyfYsKUAmSvoDI1+dLWub
+	Mp+UEO76kTcRiUCWEjmJ/4nLAJd9xpFC1t/3+Oe8icCNL7CNJUNoPSb6w6e2PtUNR3lpyR
+	86m09p40dBnsXw8qLGNxE8SLdcM8f2I=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	Vlastimil Babka <vbabka@suse.cz>,
+	linux-kernel@vger.kernel.org,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	stable@vger.kernel.org,
+	Hugh Dickins <hughd@google.com>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: [PATCH] mm: page_alloc: move mlocked flag clearance into free_pages_prepare()
+Date: Mon, 21 Oct 2024 16:48:36 +0000
+Message-ID: <20241021164837.2681358-1-roman.gushchin@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Celeste Liu <coelacanthushex@gmail.com> writes:
+Syzbot reported [1] a bad page state problem caused by a page
+being freed using free_page() still having a mlocked flag at
+free_pages_prepare() stage:
 
->>> diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
->>> index 51ebfd23e0076447518081d137102a9a11ff2e45..3125fab8ee4af468ace9f69=
-2dd34e1797555cce3 100644
->>> --- a/arch/riscv/kernel/traps.c
->>> +++ b/arch/riscv/kernel/traps.c
->>> @@ -316,18 +316,25 @@ void do_trap_ecall_u(struct pt_regs *regs)
->>>  {
->>>  	if (user_mode(regs)) {
->>>  		long syscall =3D regs->a7;
->>> +		long res;
->>>=20=20
->>>  		regs->epc +=3D 4;
->>>  		regs->orig_a0 =3D regs->a0;
->>> -		regs->a0 =3D -ENOSYS;
->>>=20=20
->>>  		riscv_v_vstate_discard(regs);
->>>=20=20
->>> -		syscall =3D syscall_enter_from_user_mode(regs, syscall);
->>> +		res =3D syscall_enter_from_user_mode(regs, syscall);
->>> +		/*
->>> +		 * Call syscall_get_nr() again because syscall_enter_from_user_mode()
->>> +		 * may change a7 register.
->>> +		 */
->>> +		syscall =3D syscall_get_nr(current, regs);
->>>=20=20
->>>  		add_random_kstack_offset();
->>>=20=20
->>> -		if (syscall >=3D 0 && syscall < NR_syscalls)
->>> +		if (syscall < 0 || syscall >=3D NR_syscalls)
->>> +			regs->a0 =3D -ENOSYS;
->>> +		else if (res !=3D -1)
->>>  			syscall_handler(regs, syscall);
->>=20
->> Here we can perform the syscall, even if res is -1. E.g., if this path
->> [2] is taken, we might have a valid syscall number in a7, but the
->> syscall should not be performed.
->
-> I may misunderstand what you said, but I can't see the issue you pointed.
-> A syscall is performed iff
->
-> 1) syscall number in a7 must be valid, so it can reach "else if" branch.
-> 2) res !=3D -1, so syscall_enter_from_user_mode() doesn't return -1 to
->    inform the syscall should be skipped.
+  BUG: Bad page state in process syz.0.15  pfn:1137bb
+  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff8881137bb870 pfn:0x1137bb
+  flags: 0x400000000080000(mlocked|node=0|zone=1)
+  raw: 0400000000080000 0000000000000000 dead000000000122 0000000000000000
+  raw: ffff8881137bb870 0000000000000000 00000000ffffffff 0000000000000000
+  page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
+  page_owner tracks the page as allocated
+  page last allocated via order 0, migratetype Unmovable, gfp_mask
+  0x400dc0(GFP_KERNEL_ACCOUNT|__GFP_ZERO), pid 3005, tgid
+  3004 (syz.0.15), ts 61546  608067, free_ts 61390082085
+   set_page_owner include/linux/page_owner.h:32 [inline]
+   post_alloc_hook+0x1f3/0x230 mm/page_alloc.c:1537
+   prep_new_page mm/page_alloc.c:1545 [inline]
+   get_page_from_freelist+0x3008/0x31f0 mm/page_alloc.c:3457
+   __alloc_pages_noprof+0x292/0x7b0 mm/page_alloc.c:4733
+   alloc_pages_mpol_noprof+0x3e8/0x630 mm/mempolicy.c:2265
+   kvm_coalesced_mmio_init+0x1f/0xf0 virt/kvm/coalesced_mmio.c:99
+   kvm_create_vm virt/kvm/kvm_main.c:1235 [inline]
+   kvm_dev_ioctl_create_vm virt/kvm/kvm_main.c:5500 [inline]
+   kvm_dev_ioctl+0x13bb/0x2320 virt/kvm/kvm_main.c:5542
+   vfs_ioctl fs/ioctl.c:51 [inline]
+   __do_sys_ioctl fs/ioctl.c:907 [inline]
+   __se_sys_ioctl+0xf9/0x170 fs/ioctl.c:893
+   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+   do_syscall_64+0x69/0x110 arch/x86/entry/common.c:83
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  page last free pid 951 tgid 951 stack trace:
+   reset_page_owner include/linux/page_owner.h:25 [inline]
+   free_pages_prepare mm/page_alloc.c:1108 [inline]
+   free_unref_page+0xcb1/0xf00 mm/page_alloc.c:2638
+   vfree+0x181/0x2e0 mm/vmalloc.c:3361
+   delayed_vfree_work+0x56/0x80 mm/vmalloc.c:3282
+   process_one_work kernel/workqueue.c:3229 [inline]
+   process_scheduled_works+0xa5c/0x17a0 kernel/workqueue.c:3310
+   worker_thread+0xa2b/0xf70 kernel/workqueue.c:3391
+   kthread+0x2df/0x370 kernel/kthread.c:389
+   ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
 
-Ah, indeed. Apologies, that'll work!
+The problem was originally introduced by
+commit b109b87050df ("mm/munlock: replace clear_page_mlock() by final
+clearance"): it was handling focused on handling pagecache
+and anonymous memory and wasn't suitable for lower level
+get_page()/free_page() API's used for example by KVM, as with
+this reproducer.
 
-Related, now wont this reintroduce the seccomp filtering problem? Say,
-res is -1 *and* syscall invalid, then a0 updated by seccomp will be
-overwritten here?
+Fix it by moving the mlocked flag clearance down to
+free_page_prepare().
 
->> Also, one reason for the generic entry is so that it should be less
->> work. Here, you pull (IMO) details that belong to the common entry
->> implementation/API up the common entry user. Wdyt about pushing it down
->> to common entry? Something like:
->
-> Yeah, we can. But I pull it out of common entry to get more simple API se=
-mantic:
->
-> 1. syscall_enter_from_user_mode() will do two things:
->    1) the return value is only to inform whether the syscall should be sk=
-ipped.
->    2) regs will be modified by filters (seccomp or ptrace and so on).
-> 2. for common entry user, there is two informations: syscall number and
->    the return value of syscall_enter_from_user_mode() (called is_skipped =
-below).
->    so there is three situations:
->    1) if syscall number is invalid, the syscall should not be performed, =
-and
->       we set a0 to -ENOSYS to inform userspace the syscall doesn't exist.
->    2) if syscall number is valid, is_skipped will be used:
->       a) if is_skipped is -1, which means there are some filters reject t=
-his syscall,
->          so the syscall should not performed. (Of course, we can use bool=
- instead to
->          get better semantic)
->       b) if is_skipped !=3D -1, which means the filters approved this sys=
-call,
->          so we invoke syscall handler with modified regs.
->
-> In your design, the logical condition is not obvious. Why syscall_enter_f=
-rom_user_mode()
-> informed the syscall will be skipped but the syscall handler will be call=
-ed
-> when syscall number is invalid? The users need to think two things to get=
- result:
-> a) -1 means skip
-> b) -1 < 0 in signed integer, so the skip condition is always a invalid sy=
-scall number.
->
-> In may way, the users only need to think one thing: The syscall_enter_fro=
-m_user_mode()
-> said -1 means the syscall should not be performed, so use it as a conditi=
-on of reject
-> directly. They just need to combine the informations that they get from A=
-PI as the
-> condition of control flow.
+The bug itself if fairly old and harmless (aside from generating these
+warnings), so the stable backport is likely not justified.
 
-I'm all-in for simpler API usage! Maybe massage the
-syscall_enter_from_user_mode() (or a new one), so that additional
-syscall_get_nr() call is not needed?
+Closes: https://syzkaller.appspot.com/x/report.txt?x=169a47d0580000
+Fixes: b109b87050df ("mm/munlock: replace clear_page_mlock() by final clearance")
+Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: <stable@vger.kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+---
+ mm/page_alloc.c |  9 +++++++++
+ mm/swap.c       | 14 --------------
+ 2 files changed, 9 insertions(+), 14 deletions(-)
 
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index bc55d39eb372..24200651ad92 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1044,6 +1044,7 @@ __always_inline bool free_pages_prepare(struct page *page,
+ 	bool skip_kasan_poison = should_skip_kasan_poison(page);
+ 	bool init = want_init_on_free();
+ 	bool compound = PageCompound(page);
++	struct folio *folio = page_folio(page);
+ 
+ 	VM_BUG_ON_PAGE(PageTail(page), page);
+ 
+@@ -1053,6 +1054,14 @@ __always_inline bool free_pages_prepare(struct page *page,
+ 	if (memcg_kmem_online() && PageMemcgKmem(page))
+ 		__memcg_kmem_uncharge_page(page, order);
+ 
++	if (unlikely(folio_test_mlocked(folio))) {
++		long nr_pages = folio_nr_pages(folio);
++
++		__folio_clear_mlocked(folio);
++		zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
++		count_vm_events(UNEVICTABLE_PGCLEARED, nr_pages);
++	}
++
+ 	if (unlikely(PageHWPoison(page)) && !order) {
+ 		/* Do not let hwpoison pages hit pcplists/buddy */
+ 		reset_page_owner(page, order);
+diff --git a/mm/swap.c b/mm/swap.c
+index 835bdf324b76..7cd0f4719423 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -78,20 +78,6 @@ static void __page_cache_release(struct folio *folio, struct lruvec **lruvecp,
+ 		lruvec_del_folio(*lruvecp, folio);
+ 		__folio_clear_lru_flags(folio);
+ 	}
+-
+-	/*
+-	 * In rare cases, when truncation or holepunching raced with
+-	 * munlock after VM_LOCKED was cleared, Mlocked may still be
+-	 * found set here.  This does not indicate a problem, unless
+-	 * "unevictable_pgs_cleared" appears worryingly large.
+-	 */
+-	if (unlikely(folio_test_mlocked(folio))) {
+-		long nr_pages = folio_nr_pages(folio);
+-
+-		__folio_clear_mlocked(folio);
+-		zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
+-		count_vm_events(UNEVICTABLE_PGCLEARED, nr_pages);
+-	}
+ }
+ 
+ /*
+-- 
+2.47.0.rc1.288.g06298d1525-goog
 
-Bj=C3=B6rn
 
