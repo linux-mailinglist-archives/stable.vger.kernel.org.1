@@ -1,56 +1,66 @@
-Return-Path: <stable+bounces-87398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 925529A65DD
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:06:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED8B9A64F1
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A325B2F298
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:50:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06E641F21F66
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD901F470E;
-	Mon, 21 Oct 2024 10:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE3E1E906E;
+	Mon, 21 Oct 2024 10:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qEuUJ8zj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNuTxnKB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B591EF099;
-	Mon, 21 Oct 2024 10:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E341E0087;
+	Mon, 21 Oct 2024 10:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507487; cv=none; b=aBqkCR+eylEs3CFCzrowKSKchECpaoRY+0NRmy9pl257N0N0JvN3JoVerzkQaYkP1Wz0adwhDX2Rfw9Ac4aGoJtwu6FmSRw+8jZCvg03l9RMqEPr0DsvpjTxi8u6dU0Jt2VNQffacYpRnG3mvP3lpFPoOnzyPHz9fPTeoHWGDGk=
+	t=1729507589; cv=none; b=D4+B2KlVJohLKP+1Rej/f6H/U7sxAt7jzU8FhV6pCeuJm8cTRxyvzO1aaKtlouylwaSQfgGnDzLRpXBzi81G8SaHCTk7BdFxC4MgPimqytL+o4vlyCPrmRuYRMDbTrt41FwN+foBxu8ciT63Lba7YnNEf6T7/JZfCeP48JIG/dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507487; c=relaxed/simple;
-	bh=2Cm6eRgA1BQkZupsc/6ZrPdsUusB1I/djzebI3rOC9k=;
+	s=arc-20240116; t=1729507589; c=relaxed/simple;
+	bh=qzytvI6X6dYy7p2w81r5U/ZElz8EZ4aONiOBsJPLfUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fweIhPCkQZVW4FQJkZKkpXGzO1jaTtvkNQCW5xEGVHrZSY1j1TNkGXDNzJpV7kJjQYH6/GT9zJzfYTO6A26fHde/3lSppBUVX4WYShf9luVN1/cGDIqrv+mZalrGYLqwMQodrNRwR/A94thRtLH+GknXstsHAHCQvrKwOBat//U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qEuUJ8zj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6825C4CEE5;
-	Mon, 21 Oct 2024 10:44:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jKzbdIxlq3+Hn07nz29wo13LhSRi1h8Tiw2WQvgi3ThDsaByOEpXRi+p04Y5wH8ou1GZuy+hWs4DEeK0L4z/3247GB/mfCz24sXdjHyIqmscD/qG4cK49OiPUbe4NtQZqUuTL+zE8uSGrihyec9f9z25qAdOlQ/pd2V75W+ATa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNuTxnKB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA97C4CEC3;
+	Mon, 21 Oct 2024 10:46:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507487;
-	bh=2Cm6eRgA1BQkZupsc/6ZrPdsUusB1I/djzebI3rOC9k=;
+	s=korg; t=1729507588;
+	bh=qzytvI6X6dYy7p2w81r5U/ZElz8EZ4aONiOBsJPLfUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qEuUJ8zjr5EJvWqvNSfLOG+Pir8yt2c60oSgZBav+biu/jhBGPV46InLDAtEkGX4E
-	 YKm2S/vCSNNhriT92OO6sqYTJrE+TwudRfBlakP39Dze2oTRC2eWIqvkJoH7pQpw8u
-	 T+ZJhKGxf1pgxfWC60YQrJPKKIELnYWBzUhLbmj8=
+	b=TNuTxnKB7WN9vYFSQmHZ33h9rDDFRG9ZBuSZuTSKfFCLhP0obQBaiKB7pkGv4+gWC
+	 42YT/bDOd3wJLx0ypigJ5zgddmkvoh5azT+bDr5HXOI7DWqUG+3Szfex6qQAmHV+oY
+	 YxDZEA0YmIKrjVRyR4eaH4fnj7yqU69OrZpkAZVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emil Gedenryd <emil.gedenryd@axis.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 62/91] iio: light: opt3001: add missing full-scale range value
+	=?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
+	Eric Anholt <eric@anholt.net>,
+	Rob Herring <robh@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	dri-devel@lists.freedesktop.org,
+	"Wachowski, Karol" <karol.wachowski@intel.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Sherry Yang <sherry.yang@oracle.com>
+Subject: [PATCH 5.15 35/82] drm/shmem-helper: Fix BUG_ON() on mmap(PROT_WRITE, MAP_PRIVATE)
 Date: Mon, 21 Oct 2024 12:25:16 +0200
-Message-ID: <20241021102252.236829340@linuxfoundation.org>
+Message-ID: <20241021102248.630465317@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +70,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Gedenryd <emil.gedenryd@axis.com>
+From: Wachowski, Karol <karol.wachowski@intel.com>
 
-commit 530688e39c644543b71bdd9cb45fdfb458a28eaa upstream.
+commit 39bc27bd688066a63e56f7f64ad34fae03fbe3b8 upstream.
 
-The opt3001 driver uses predetermined full-scale range values to
-determine what exponent to use for event trigger threshold values.
-The problem is that one of the values specified in the datasheet is
-missing from the implementation. This causes larger values to be
-scaled down to an incorrect exponent, effectively reducing the
-maximum settable threshold value by a factor of 2.
+Lack of check for copy-on-write (COW) mapping in drm_gem_shmem_mmap
+allows users to call mmap with PROT_WRITE and MAP_PRIVATE flag
+causing a kernel panic due to BUG_ON in vmf_insert_pfn_prot:
+BUG_ON((vma->vm_flags & VM_PFNMAP) && is_cow_mapping(vma->vm_flags));
 
-Add missing full-scale range array value.
+Return -EINVAL early if COW mapping is detected.
 
-Fixes: 94a9b7b1809f ("iio: light: add support for TI's opt3001 light sensor")
-Signed-off-by: Emil Gedenryd <emil.gedenryd@axis.com>
-Cc: <Stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240913-add_opt3002-v2-1-69e04f840360@axis.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+This bug affects all drm drivers using default shmem helpers.
+It can be reproduced by this simple example:
+void *ptr = mmap(0, size, PROT_WRITE, MAP_PRIVATE, fd, mmap_offset);
+ptr[0] = 0;
+
+Fixes: 2194a63a818d ("drm: Add library for shmem backed GEM objects")
+Cc: Noralf Trønnes <noralf@tronnes.org>
+Cc: Eric Anholt <eric@anholt.net>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.2+
+Signed-off-by: Wachowski, Karol <karol.wachowski@intel.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240520100514.925681-1-jacek.lawrynowicz@linux.intel.com
+[ Sherry: bp to fix CVE-2024-39497, ignore context change due to missing
+  commit 21aa27ddc582 ("drm/shmem-helper: Switch to reservation lock")  ]
+Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/opt3001.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/drm_gem_shmem_helper.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iio/light/opt3001.c
-+++ b/drivers/iio/light/opt3001.c
-@@ -139,6 +139,10 @@ static const struct opt3001_scale opt300
- 		.val2 = 400000,
- 	},
- 	{
-+		.val = 41932,
-+		.val2 = 800000,
-+	},
-+	{
- 		.val = 83865,
- 		.val2 = 600000,
- 	},
+--- a/drivers/gpu/drm/drm_gem_shmem_helper.c
++++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+@@ -607,6 +607,9 @@ int drm_gem_shmem_mmap(struct drm_gem_sh
+ 		return ret;
+ 	}
+ 
++	if (is_cow_mapping(vma->vm_flags))
++		return -EINVAL;
++
+ 	ret = drm_gem_shmem_get_pages(shmem);
+ 	if (ret)
+ 		return ret;
 
 
 
