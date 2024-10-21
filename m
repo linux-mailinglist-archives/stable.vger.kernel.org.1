@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-87230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42BAF9A63DE
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:40:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD5479A6364
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:34:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0497B28496F
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:40:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 082B51C2180C
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BFC11E908C;
-	Mon, 21 Oct 2024 10:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4DB1E7C0C;
+	Mon, 21 Oct 2024 10:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pdT0X02Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ya4OjBze"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12CA1E570A;
-	Mon, 21 Oct 2024 10:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918581E47A6;
+	Mon, 21 Oct 2024 10:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506984; cv=none; b=NPEFCUJeEo3ovGxvLdydzGjr6zpAhLXWJ+yk94N1SLbmHnFt0k27fI7YTrfmgaCqT8YQsXe+WL7IxZNykQq13lehXyW1hwAqsiOnK6mWdVJkamEzdl692WIh9vIWAyUqRA+TeYGKckWJpJstN5VrmDDHEcqIGC+6QbpBi8+HFW8=
+	t=1729506719; cv=none; b=VAzvrHtkad/8E8GTR+t5IGv/wYXR4Rb8p9imxRny5MAfktaCCH2q411gHq9/dMAlKUCHNfBP8uXX61SRDW4Qy0E1IefVkeN8A/nyln0eall7VH25SK+ck2WSgKeUk2obcxuDRkDLqCiIP6WR7h8jhrxetVJxsmS7Cwx4lnBZC4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506984; c=relaxed/simple;
-	bh=AtKAaJivpLsxIWtEmhF0pAcF+z9byZNnrUh1oVUc1pU=;
+	s=arc-20240116; t=1729506719; c=relaxed/simple;
+	bh=Mxm5sz/9AG1BdCBsMcS31zaCSdZResGK+tgID/8Pbzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aOZAfKm2wo9N4V5o0iloVbVePu0+H9df7tYBicM3fuQADg4RiBq9w3z/AgQYX11rk+/fGuhgS1fUQdweRIkabl1S7+eYzssiMYOCxeWTaRp9BFtkH0u4RzmFdezCNWBDh+Z835yPnwaoxpDyRZH+RwMGpXh+BARCYo3xNOF1QqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pdT0X02Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D493C4CEC7;
-	Mon, 21 Oct 2024 10:36:23 +0000 (UTC)
+	 MIME-Version; b=kTyx4mdZ97vLZw68yFSjTWx1OIajD1JoJmU7ZScBpD2XyPPmlN+Lku94N0rRgVhWMszhPpVcnf1xqP4jisFntF48smLGDWdycjuJ+cOe2rooLS1coFxWs6rOWwhbKYjnIae1ytvKbK9/eWz8JkjOHPixsqTyBrJOuOaGE5gt/0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ya4OjBze; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA7FC4CEE5;
+	Mon, 21 Oct 2024 10:31:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506983;
-	bh=AtKAaJivpLsxIWtEmhF0pAcF+z9byZNnrUh1oVUc1pU=;
+	s=korg; t=1729506719;
+	bh=Mxm5sz/9AG1BdCBsMcS31zaCSdZResGK+tgID/8Pbzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pdT0X02QNZlM0a2Y/p8mS8NI5RpacpsS+POWoRKJflc3niqM0HTd+m2VoASyfukUT
-	 kjEdtQM8y8mDQkjKOERvH5rjMElvqTc7xsrn+0sXpZkB4sowvzEDuLeo7gCyQoWOD0
-	 qJee/mhoX+rlkXf6vx+TxLKH5VM2mmrc6L+r3C7s=
+	b=Ya4OjBzepk7ATFdgX9yPQdH+bNmtZ5Q/2qtBbibPBmvEX6v7Vv1kLvZMTogoIFQrT
+	 V3nj2Gyqthye4G+dE+I5zfs4jzfjA6YK1gpSv8cHSYLTRr94no5tfIhFAiGujBsVaF
+	 G1RgNcFPX1zi1T233L+5obrGbsRwXrLyXKVYcu9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Shixin <liushixin2@huawei.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 023/124] mm/swapfile: skip HugeTLB pages for unuse_vma
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.11 071/135] iio: dac: ltc1660: add missing select REGMAP_SPI in Kconfig
 Date: Mon, 21 Oct 2024 12:23:47 +0200
-Message-ID: <20241021102257.621312655@linuxfoundation.org>
+Message-ID: <20241021102302.108683558@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Shixin <liushixin2@huawei.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 7528c4fb1237512ee18049f852f014eba80bbe8d upstream.
+commit 252ff06a4cb4e572cb3c7fcfa697db96b08a7781 upstream.
 
-I got a bad pud error and lost a 1GB HugeTLB when calling swapoff.  The
-problem can be reproduced by the following steps:
+This driver makes use of regmap_spi, but does not select the required
+module.
+Add the missing 'select REGMAP_SPI'.
 
- 1. Allocate an anonymous 1GB HugeTLB and some other anonymous memory.
- 2. Swapout the above anonymous memory.
- 3. run swapoff and we will get a bad pud error in kernel message:
-
-  mm/pgtable-generic.c:42: bad pud 00000000743d215d(84000001400000e7)
-
-We can tell that pud_clear_bad is called by pud_none_or_clear_bad in
-unuse_pud_range() by ftrace.  And therefore the HugeTLB pages will never
-be freed because we lost it from page table.  We can skip HugeTLB pages
-for unuse_vma to fix it.
-
-Link: https://lkml.kernel.org/r/20241015014521.570237-1-liushixin2@huawei.com
-Fixes: 0fe6e20b9c4c ("hugetlb, rmap: add reverse mapping for hugepage")
-Signed-off-by: Liu Shixin <liushixin2@huawei.com>
-Acked-by: Muchun Song <muchun.song@linux.dev>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 8316cebd1e59 ("iio: dac: add support for ltc1660")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241003-ad2s1210-select-v1-7-4019453f8c33@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/swapfile.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/dac/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -2003,7 +2003,7 @@ static int unuse_mm(struct mm_struct *mm
- 
- 	mmap_read_lock(mm);
- 	for_each_vma(vmi, vma) {
--		if (vma->anon_vma) {
-+		if (vma->anon_vma && !is_vm_hugetlb_page(vma)) {
- 			ret = unuse_vma(vma, type);
- 			if (ret)
- 				break;
+--- a/drivers/iio/dac/Kconfig
++++ b/drivers/iio/dac/Kconfig
+@@ -354,6 +354,7 @@ config LPC18XX_DAC
+ config LTC1660
+ 	tristate "Linear Technology LTC1660/LTC1665 DAC SPI driver"
+ 	depends on SPI
++	select REGMAP_SPI
+ 	help
+ 	  Say yes here to build support for Linear Technology
+ 	  LTC1660 and LTC1665 Digital to Analog Converters.
 
 
 
