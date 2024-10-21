@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-87429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 038929A64EF
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EA129A64C7
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:50:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9554281800
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE5221F21488
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:50:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28B01E9093;
-	Mon, 21 Oct 2024 10:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A7E1F8F01;
+	Mon, 21 Oct 2024 10:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0fPHSNG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZz5zMRj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1D91E9081;
-	Mon, 21 Oct 2024 10:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1C11F8EF7;
+	Mon, 21 Oct 2024 10:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507580; cv=none; b=VI5SHR+SbxmFz6zRz6xTktn2KDGY7TVb+qOn41tqpm+I9EDyQpiLZwxj3oEHnnMkst0CHxrWlNXYsIv3E+a/BAO+oahah72Jozy396OWtFkBsJKdrNTRCVoomU3rLz3yB7/PKuTaiiBAoUDa63+R3R2Ihrg9MsJJIMespJ9QEa4=
+	t=1729507478; cv=none; b=bjN1Hl2ZZmzAcYcWby5rUTJhn549KfEzzbB0JOMVml5x4oxWg+r17Grj/5K8B42U//yVUOJFtS9OP9RShtj2YfvASS/eGhGbm+6ICLl9w9mrzWBdE8okPeSsy8fJ51E86c3803hOkNzm0uSluKlS6iwuUXzSGm6RWcmgbrX/4dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507580; c=relaxed/simple;
-	bh=H7DoioIL9Kc8dXU5TPeIy6ZLJsdxKnRVOTKvDfykPYo=;
+	s=arc-20240116; t=1729507478; c=relaxed/simple;
+	bh=S4oWmPfrB9l39OGcFwT0nFnKGqTxGdm306yVX7pZDMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jcA8u9+0h87Fojvd/QMs1k2sGorji7wXixa7/pqbPHqUiom1fHc+UmM5F5VOgjJv2+r8dvBToYSrxFDlEGkPT+6nfZEn8q659puqoMv3MbXdbufAIOrZffZwu5RDexApUnnLQzqImZhYkvamLZ8c0beaKm2M22EiFpj1XHGmgcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0fPHSNG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86D58C4CEC7;
-	Mon, 21 Oct 2024 10:46:19 +0000 (UTC)
+	 MIME-Version; b=CIE99NU8x4ma49nBYSt88SqAa69y4SM/MVgLBkxwQMsIyL5S+CC2uhwHpzj9Gop1N6fg9hk06F17S+q4FY3nTXxRhVByGRVBt/HgiLYdM0/Cd0FMHTsH71fUNyPnKQsTxvKDpK+Cnsdjo5FFGcx41Wekdhu5InP2aML/TQR6Uic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZz5zMRj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E96C4CEE5;
+	Mon, 21 Oct 2024 10:44:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507579;
-	bh=H7DoioIL9Kc8dXU5TPeIy6ZLJsdxKnRVOTKvDfykPYo=;
+	s=korg; t=1729507478;
+	bh=S4oWmPfrB9l39OGcFwT0nFnKGqTxGdm306yVX7pZDMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U0fPHSNGgAQFvnHrqzIT0lOZN6D7J1j85ws20UVZ/p5VjASHC0KoBP5ykdiwR0dNH
-	 l46wNd2EoW10TRQQQ1toARdNbw2p4YfOJxDy4RQE2o9lDQEsyYBKvqis7lGJr6+7AJ
-	 DZS9oQ5lDPI3/Ssg23UU2LJsfTQ8UtVK+Os38nZg=
+	b=qZz5zMRjADAU5URxVjpgeC9JOBy6pFHvhTe6Yp/DOlad6YKnjvEMB0t/LfjZ4lVaU
+	 R+NKAjm4aDKC4muyTD2kxOSuCZOI9auw33SSkY+awzjapxZtLOuR3EcU3WnahfGeHN
+	 s4VklAES8pcvsMBmNNTfv9LsFV5rdxVBinfo3LaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Sherry Yang <sherry.yang@oracle.com>
-Subject: [PATCH 5.15 32/82] wifi: mac80211: fix potential key use-after-free
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 59/91] iio: hid-sensors: Fix an error handling path in _hid_sensor_set_report_latency()
 Date: Mon, 21 Oct 2024 12:25:13 +0200
-Message-ID: <20241021102248.515694729@linuxfoundation.org>
+Message-ID: <20241021102252.122058664@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 31db78a4923ef5e2008f2eed321811ca79e7f71b upstream.
+commit 3a29b84cf7fbf912a6ab1b9c886746f02b74ea25 upstream.
 
-When ieee80211_key_link() is called by ieee80211_gtk_rekey_add()
-but returns 0 due to KRACK protection (identical key reinstall),
-ieee80211_gtk_rekey_add() will still return a pointer into the
-key, in a potential use-after-free. This normally doesn't happen
-since it's only called by iwlwifi in case of WoWLAN rekey offload
-which has its own KRACK protection, but still better to fix, do
-that by returning an error code and converting that to success on
-the cfg80211 boundary only, leaving the error for bad callers of
-ieee80211_gtk_rekey_add().
+If hid_sensor_set_report_latency() fails, the error code should be returned
+instead of a value likely to be interpreted as 'success'.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Fixes: fdf7cb4185b6 ("mac80211: accept key reinstall without changing anything")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ Sherry: bp to fix CVE-2023-52530, resolved minor conflicts in
-  net/mac80211/cfg.c because of context change due to missing commit
-  23a5f0af6ff4 ("wifi: mac80211: remove cipher scheme support")
-  ccdde7c74ffd ("wifi: mac80211: properly implement MLO key handling")]
-Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
+Fixes: 138bc7969c24 ("iio: hid-sensor-hub: Implement batch mode")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://patch.msgid.link/c50640665f091a04086e5092cf50f73f2055107a.1727980825.git.christophe.jaillet@wanadoo.fr
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/cfg.c |    3 +++
- net/mac80211/key.c |    2 +-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/iio/common/hid-sensors/hid-sensor-trigger.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -511,6 +511,9 @@ static int ieee80211_add_key(struct wiph
- 		sta->cipher_scheme = cs;
+--- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
++++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+@@ -32,7 +32,7 @@ static ssize_t _hid_sensor_set_report_la
+ 	latency = integer * 1000 + fract / 1000;
+ 	ret = hid_sensor_set_report_latency(attrb, latency);
+ 	if (ret < 0)
+-		return len;
++		return ret;
  
- 	err = ieee80211_key_link(key, sdata, sta);
-+	/* KRACK protection, shouldn't happen but just silently accept key */
-+	if (err == -EALREADY)
-+		err = 0;
- 
-  out_unlock:
- 	mutex_unlock(&local->sta_mtx);
---- a/net/mac80211/key.c
-+++ b/net/mac80211/key.c
-@@ -843,7 +843,7 @@ int ieee80211_key_link(struct ieee80211_
- 	 */
- 	if (ieee80211_key_identical(sdata, old_key, key)) {
- 		ieee80211_key_free_unused(key);
--		ret = 0;
-+		ret = -EALREADY;
- 		goto out;
- 	}
+ 	attrb->latency_ms = hid_sensor_get_report_latency(attrb);
  
 
 
