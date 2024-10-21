@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-87410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5C2E9A64D3
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:51:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0252E9A647F
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:47:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 970052813B2
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:51:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8BAA28122C
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC3D1E6DC5;
-	Mon, 21 Oct 2024 10:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96ED1F4FA4;
+	Mon, 21 Oct 2024 10:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Beu0A20Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6YAw0w0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A9B1E47A6;
-	Mon, 21 Oct 2024 10:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76EA51EABD4;
+	Mon, 21 Oct 2024 10:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507523; cv=none; b=dR9ceP2vDU7SxIDcJmoIfEOXKto27IaKzJ/aCnHOd/IUI9tg30OAMAyjYIg4KdpgW1aUsuh7RIo2KDbnNmLI8mHy1jd8skQzqOVTg7Bu3E0TqKhtX35vAYsySqc+L5k75YnmEbOKlLUVhA/G7bE68LV+tsPHOIzjvKS40fNqK8w=
+	t=1729507307; cv=none; b=BdFDfr/XsUjPt4DM2eXMUCKy2IamZup6oq+0+Yum6qLLVwqOfcIN+qHsWDYn9C/ctXfxwJDZLT33XC1EOlhCLzbZ9QFgvypl+0Lbj+naQHeDcxvhv90VCTl8S10dgAxQsELcbhgbLAKl15L/wv3/LoYWxsUgCgh5B8MN2s4ENlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507523; c=relaxed/simple;
-	bh=erN4E4uoHRlrXUEQvBFzMH1ovlpGMfwTmlopfY5WtX4=;
+	s=arc-20240116; t=1729507307; c=relaxed/simple;
+	bh=AQlfZEGWnmhPQ3PicZ0mHQoAQVP5Z1TYCrt0B3+OVQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Avhl2HeRn/0WdZeyxlfMx7yuTCYVtRHnlxdAjYbY8fsVARxb89NEKJoYXyVdp82F6b5CUWhIKcXEUB6VsytJt08NHjWpAhzaKIqsq5AI6Ms2NHy6WorUgb7FwsqXwZk2u313/yqeLR4jy7Bn3DwmBDgoRs+Dg9FZAyQoDf5nKfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Beu0A20Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D11AC4CEC7;
-	Mon, 21 Oct 2024 10:45:22 +0000 (UTC)
+	 MIME-Version; b=KoE13GEpDB6rn739BcCd1ot47bpWCisouJcs6wbRbErliujAFth2qPWp10TxRvHJSD+kw2z8wCrwAIyyUkKWn7Q5ktZxc6f+FnirHU50/Pf48DulvwsaucUkWiFxD9S90ZSUokX+BT1ixFZEm5bkTTxn3cM9EaggXxomGNE1puY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6YAw0w0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB8FBC4CEC3;
+	Mon, 21 Oct 2024 10:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507522;
-	bh=erN4E4uoHRlrXUEQvBFzMH1ovlpGMfwTmlopfY5WtX4=;
+	s=korg; t=1729507307;
+	bh=AQlfZEGWnmhPQ3PicZ0mHQoAQVP5Z1TYCrt0B3+OVQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Beu0A20QFAOCuNCtJJe0C5bz+pJZwZixlbU2K4wyQ9i9CviHVW9Qco7JALNU5jJ5/
-	 32DpsANJq/O72qW0EkNhfg4wIdmxY0YN9lq0MhuNgaUtTueuoivvng4DlNifzzPCvT
-	 G5AZpZ8j2wUP4PJuhdSoipzBctz9HGlg2nAJ4Tuo=
+	b=x6YAw0w0p1BnXM2MEXdUziHi85SPaY+XpXluMZHE9BNOEY3Zqt2mUmGJBkPN3+i6j
+	 XGL0piC9jIG8MiFgi0L37L0BrQVIO3jp8/nqKhujrj2E6WctTv9XzshTLOeV9fWVrD
+	 6tst9IW3OKPSRMT8LuYBUBMqrNLrUMA7tIasV+fQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.15 06/82] udf: Provide function to mark entry as deleted using new directory iteration code
-Date: Mon, 21 Oct 2024 12:24:47 +0200
-Message-ID: <20241021102247.469656878@linuxfoundation.org>
+	Jiri Pirko <jiri@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>
+Subject: [PATCH 6.1 34/91] devlink: drop the filter argument from devlinks_xa_find_get
+Date: Mon, 21 Oct 2024 12:24:48 +0200
+Message-ID: <20241021102251.155479379@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 4cca7e3df7bea8661a0c2a70c0d250e9aa5cedb4 ]
+commit 8861c0933c78e3631fe752feadc0d2a6e5eab1e1 upstream.
 
-Provide function udf_fiiter_delete_entry() to mark directory entry as
-deleted using new directory iteration code.
+Looks like devlinks_xa_find_get() was intended to get the mark
+from the @filter argument. It doesn't actually use @filter, passing
+DEVLINK_REGISTERED to xa_find_fn() directly. Walking marks other
+than registered is unlikely so drop @filter argument completely.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Ido: Moved the changes from core.c and devl_internal.h to leftover.c ]
+Stable-dep-of: d77278196441 ("devlink: bump the instance index directly when iterating")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/namei.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/devlink/leftover.c |   21 ++++++++-------------
+ 1 file changed, 8 insertions(+), 13 deletions(-)
 
---- a/fs/udf/namei.c
-+++ b/fs/udf/namei.c
-@@ -714,6 +714,16 @@ out_ok:
- 	return fi;
+--- a/net/devlink/leftover.c
++++ b/net/devlink/leftover.c
+@@ -289,7 +289,7 @@ void devl_unlock(struct devlink *devlink
+ EXPORT_SYMBOL_GPL(devl_unlock);
+ 
+ static struct devlink *
+-devlinks_xa_find_get(struct net *net, unsigned long *indexp, xa_mark_t filter,
++devlinks_xa_find_get(struct net *net, unsigned long *indexp,
+ 		     void * (*xa_find_fn)(struct xarray *, unsigned long *,
+ 					  unsigned long, xa_mark_t))
+ {
+@@ -322,30 +322,25 @@ unlock:
  }
  
-+static void udf_fiiter_delete_entry(struct udf_fileident_iter *iter)
-+{
-+	iter->fi.fileCharacteristics |= FID_FILE_CHAR_DELETED;
-+
-+	if (UDF_QUERY_FLAG(iter->dir->i_sb, UDF_FLAG_STRICT))
-+		memset(&iter->fi.icb, 0x00, sizeof(struct long_ad));
-+
-+	udf_fiiter_write_fi(iter, NULL);
-+}
-+
- static int udf_delete_entry(struct inode *inode, struct fileIdentDesc *fi,
- 			    struct udf_fileident_bh *fibh,
- 			    struct fileIdentDesc *cfi)
+ static struct devlink *devlinks_xa_find_get_first(struct net *net,
+-						  unsigned long *indexp,
+-						  xa_mark_t filter)
++						  unsigned long *indexp)
+ {
+-	return devlinks_xa_find_get(net, indexp, filter, xa_find);
++	return devlinks_xa_find_get(net, indexp, xa_find);
+ }
+ 
+ static struct devlink *devlinks_xa_find_get_next(struct net *net,
+-						 unsigned long *indexp,
+-						 xa_mark_t filter)
++						 unsigned long *indexp)
+ {
+-	return devlinks_xa_find_get(net, indexp, filter, xa_find_after);
++	return devlinks_xa_find_get(net, indexp, xa_find_after);
+ }
+ 
+ /* Iterate over devlink pointers which were possible to get reference to.
+  * devlink_put() needs to be called for each iterated devlink pointer
+  * in loop body in order to release the reference.
+  */
+-#define devlinks_xa_for_each_get(net, index, devlink, filter)			\
+-	for (index = 0,								\
+-	     devlink = devlinks_xa_find_get_first(net, &index, filter);		\
+-	     devlink; devlink = devlinks_xa_find_get_next(net, &index, filter))
+-
+ #define devlinks_xa_for_each_registered_get(net, index, devlink)		\
+-	devlinks_xa_for_each_get(net, index, devlink, DEVLINK_REGISTERED)
++	for (index = 0,								\
++	     devlink = devlinks_xa_find_get_first(net, &index);	\
++	     devlink; devlink = devlinks_xa_find_get_next(net, &index))
+ 
+ static struct devlink *devlink_get_from_attrs(struct net *net,
+ 					      struct nlattr **attrs)
 
 
 
