@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-87370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FBB79A6559
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:56:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE629A64F5
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07A69B2DDBC
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:48:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 397821F21FE1
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8EA1EF95D;
-	Mon, 21 Oct 2024 10:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22AAF1EABA5;
+	Mon, 21 Oct 2024 10:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RVlkk/JG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXDWqcyw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DA61953B9;
-	Mon, 21 Oct 2024 10:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5BB1E9098;
+	Mon, 21 Oct 2024 10:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507403; cv=none; b=M4XvD8eTgHEaxFgePZFNoRRPLpgTzCaLBGjQuwkYfx1qVyRmkJ6qKQr21ZZvAL/J1rFcuBeeaycXZeChyWdV5WmF4IDv82hROmgo55KsC7yd+Hodsd1GWi/qHPF9tItAJh9y57J2juUVFEWVfE2OWQdvwj9nN8m3FXc4GSHK0ec=
+	t=1729507603; cv=none; b=G6opzv0M6VSSdvq3yiVfO2/UiGWXWTLs9KjJT4r01Ar3QsfikttQC+G5wYzBrUnTZlgSh4ikt0wybsYem1sQtJJLFtrUCOeX0MtijneUKdSh6oVv+0a8k6U0hBbFO97ze45nDpZYZKc8UpBBC6pj8Hlh5ugiWFZpfNRyqDiA7x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507403; c=relaxed/simple;
-	bh=ID2o3hR4iTdYQfx9AidhZ5OkaUBE6NfKO4DdnP1f6/c=;
+	s=arc-20240116; t=1729507603; c=relaxed/simple;
+	bh=Fwq76tkRvqoif28uROWPY1s+2bJe7ksZRxyHYkkTWCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OBs2lY4+X1x1X+QEyBhHKX3F/bOwbrwCWMYkaxoBsT9gEuYMfwjy5HyrCNA1l4Uqa5MU2N+V/M6kjubHfX+GOXEW2zFwEHEBHkEr3NFj+QQnQ/ADPUnZE6Ad2PoS7eVlW24ss9Dm5YqiwcKUfBfWyzfm3m9+iuUS2rAKb814iTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RVlkk/JG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6829C4CEC3;
-	Mon, 21 Oct 2024 10:43:22 +0000 (UTC)
+	 MIME-Version; b=MJ/TCbX8eJPfw9RREy8E24vJTRcXRocMqPKhCz9P8U0SdNBxxoQOkLmPpeysWcIALKYGcWLV3UsG3Fmuwk2J1JAlW8VAiCJp9wlWqUSEhUCDV+36fELFP2x5e+2H4iSf2huz0jOiVhHDP43GulZgaiGCgWCB4ezkEZYSf4K8SNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXDWqcyw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA42C4CEC3;
+	Mon, 21 Oct 2024 10:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507403;
-	bh=ID2o3hR4iTdYQfx9AidhZ5OkaUBE6NfKO4DdnP1f6/c=;
+	s=korg; t=1729507603;
+	bh=Fwq76tkRvqoif28uROWPY1s+2bJe7ksZRxyHYkkTWCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RVlkk/JGqInoCnRFs8mPXE6NtLAxN/lyRpynAp4ABLD3S5ng6I84sMDADlHn4qLik
-	 b+r7HJ3zH8RlW38jWGd1iWTEfQaxnLD0+DtwOP+K/nRTBmI027WTa0eTPke/8h8KLD
-	 iUq/T83uZIEKVawsSr4EYxG5uMxQvigwmt0efF6k=
+	b=wXDWqcywtClZbhZyxG6TspQEiON65JNH5vwvuvbWdwaqEiplEWwSQxz+okCtBFU8s
+	 CvCaAVThd7abw4ACHHk5/JZRIfq1m1YK2xlXfcxApNtRsXKhcNW1Jr1TuV22PeiZ+d
+	 pT2hbz+nn3ypVYtz/1Hx12YwvOizoRNMN45b8+sA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 66/91] iio: dac: ad3552r: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+	Todd Brandt <todd.e.brandt@intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 5.15 39/82] iommu/vt-d: Fix incorrect pci_for_each_dma_alias() for non-PCI devices
 Date: Mon, 21 Oct 2024 12:25:20 +0200
-Message-ID: <20241021102252.391293424@linuxfoundation.org>
+Message-ID: <20241021102248.786836165@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-commit 5bede948670f447154df401458aef4e2fd446ba8 upstream.
+commit 6e02a277f1db24fa039e23783c8921c7b0e5b1b3 upstream.
 
-This driver makes use of triggered buffers, but does not select the
-required modules.
+Previously, the domain_context_clear() function incorrectly called
+pci_for_each_dma_alias() to set up context entries for non-PCI devices.
+This could lead to kernel hangs or other unexpected behavior.
 
-Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
+Add a check to only call pci_for_each_dma_alias() for PCI devices. For
+non-PCI devices, domain_context_clear_one() is called directly.
 
-Fixes: 8f2b54824b28 ("drivers:iio:dac: Add AD3552R driver support")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241003-iio-select-v1-7-67c0385197cd@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reported-by: Todd Brandt <todd.e.brandt@intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219363
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219349
+Fixes: 9a16ab9d6402 ("iommu/vt-d: Make context clearing consistent with context mapping")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/20241014013744.102197-2-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/Kconfig | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iommu/intel/iommu.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-index 1cfd7e2a622f..9d4600ce0427 100644
---- a/drivers/iio/dac/Kconfig
-+++ b/drivers/iio/dac/Kconfig
-@@ -9,6 +9,8 @@ menu "Digital to analog converters"
- config AD3552R
- 	tristate "Analog Devices AD3552R DAC driver"
- 	depends on SPI_MASTER
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
- 	help
- 	  Say yes here to build support for Analog Devices AD3552R
- 	  Digital to Analog Converter.
--- 
-2.47.0
-
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -4465,8 +4465,10 @@ static int domain_context_clear_one_cb(s
+  */
+ static void domain_context_clear(struct device_domain_info *info)
+ {
+-	if (!dev_is_pci(info->dev))
++	if (!dev_is_pci(info->dev)) {
+ 		domain_context_clear_one(info, info->bus, info->devfn);
++		return;
++	}
+ 
+ 	pci_for_each_dma_alias(to_pci_dev(info->dev),
+ 			       &domain_context_clear_one_cb, info);
 
 
 
