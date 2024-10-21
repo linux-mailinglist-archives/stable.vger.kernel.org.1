@@ -1,134 +1,136 @@
-Return-Path: <stable+bounces-87543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70D19A6736
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:57:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAB489A676A
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 14:00:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 784C12823D1
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 11:57:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25D761C221EC
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:00:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D13101E885B;
-	Mon, 21 Oct 2024 11:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF1AB1EABD4;
+	Mon, 21 Oct 2024 11:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GPtKl6Bg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t9TgoNEQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786FD1E884E;
-	Mon, 21 Oct 2024 11:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CD41D7E5B;
+	Mon, 21 Oct 2024 11:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729511798; cv=none; b=nBVVvYw6Kwc7ec6WjVaXBpvcedKckg3Z3vNcZMAuSItN1CAuBtIseTchs4Q4P5m6GrvdRxJxgnqNEDiWss53v35so07DH3L06qQNt0nPLFF22K3CtJfFpf8nEzNX6EQ2BfFK1KTYKkZqQAIiAPOXpa1Si9/gW5Zypcocdy3lT7k=
+	t=1729511918; cv=none; b=Qxkp9us1b9/RepWHFGFRMbcde3ehP1pACWojbal8KMLVzp8amMDSKyhKiDCH2UgFXGghQ1J6fmRR1iQEjAxOpiEzc+e0D3wVKfU5Em0dJhOs4Q67iecckNh1WkNcfCx9nqhizGcfls8QBubQCaRxF0C7qIhGqvL/m152CHC+mDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729511798; c=relaxed/simple;
-	bh=iZKzS4vmBiEZsEttEtxZcIb92mfcq/gi05eIuco9YVA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iUHwda2d8VLiNRTPBIBzdyOgxTtmo1ad7c8L/1h/RT8SSEiGJ/1uhHfsC9rVKnM1IvcwBBhlO7fyg1fYKOxdCLudKOGdryw/MxcovJGN8cCSiqBkghWAp318vOx1fBPPe47lSWNAPK0Qci7qJ6jQSsfTzz3Pwf82kt0Tnp8qwYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GPtKl6Bg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C44EC4CEE8;
-	Mon, 21 Oct 2024 11:56:38 +0000 (UTC)
+	s=arc-20240116; t=1729511918; c=relaxed/simple;
+	bh=9a5VFldN6zVh/rUpVFfhNFaXH3Rcgz+fBDNfZCeivAM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eXJNbcBxr+uvsr7/1Oh9Jmy8PWYT76Fa/2j2EaU+MxV3G93L/JUWDSmAnQbFkQHKXqfy0rPGzzw+oFhcKPl/G5nh8lQyPk2EJHDYLSkwbzam6zntp+Ll/WZF0t6nOcl1bMYCCTJayemm1/X+3fVfF/ZIgjM9xVXprwDTPpo3U7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t9TgoNEQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911EEC4CEE4;
+	Mon, 21 Oct 2024 11:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729511798;
-	bh=iZKzS4vmBiEZsEttEtxZcIb92mfcq/gi05eIuco9YVA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=GPtKl6Bggt4/TamihrTZBB77XXeeJpGHQQXXlzjlEZKJsozvj2Agb8oOpdfFEhHP5
-	 /zCWStUHugubB24PJxmQXJdvgtMhwxMvXUVKcyfD8ru0bvCBIYUUxJfT+MZfKsmKDc
-	 f16aEDpzRJ3CkV+e2dizG+4/aCHSNSJD9GaI0Qxl/QeDdAqxDD3xTFJSfR65jyNGU4
-	 HTOD/YuqWJhbOm3uAYUWLqXarDdM6dT/LI+PuVvi72JOwitrLkBqF7guAxaZG0kOYg
-	 a2xuMBZ0w6MnBxy+uEc83TPLO9xrdlISEStDlXNMqIOLI3Vhn0YnDR01I3pN5GvYi9
-	 HAyvCdcW3W2fg==
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3e5f9712991so2075948b6e.2;
-        Mon, 21 Oct 2024 04:56:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU25diKch/9lrvlhuHyH2Wvnn0h661i/OZpfP5hKVTLZrfBGOhHq789yxoqGAXGREZp8S7sU2qlpKks@vger.kernel.org, AJvYcCU3ufUWMwhKo9ZZs6a3jXJS9t/l8qAK+H37FtAl9enmaGsdThmqSYgnm8Z8gei59VnsRHRX7idgyVwL11Dl@vger.kernel.org, AJvYcCWPeqMcbm2JHiUhqicYX+WhsmiO1PYwkUNuU/dT7O5FWiz7G2QG0ekUonOTFWgZpkvxUCZGgCjB@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDR36VDb1o/0ZDdg3g/Dy2fD/DL4xTMNufRB2X6vJGMFFTIC4L
-	XyKqhGv0MVjujfYje1NY2kQEuISdylgLeBwVoLooLISLqaf2yF9skD8Nr319zyyNha6AJ+98GKr
-	oRL5087oa2GtVoNJ2qky+ybIjf5c=
-X-Google-Smtp-Source: AGHT+IG5XhnUvagQdAMqem7+z6gKQWhQFAFH3ahh4zbsV1c6ekkCAHEo7YEbfB1J8j3e+1DzqVdfJ0Kk90T2t2VoakA=
-X-Received: by 2002:a05:6871:5824:b0:277:c28c:147e with SMTP id
- 586e51a60fabf-2892c352bb2mr8523011fac.21.1729511797250; Mon, 21 Oct 2024
- 04:56:37 -0700 (PDT)
+	s=k20201202; t=1729511917;
+	bh=9a5VFldN6zVh/rUpVFfhNFaXH3Rcgz+fBDNfZCeivAM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=t9TgoNEQ2vEfk8EA7n/XJotulaqvMrlvm4VbZ5QYar3HxoJzzwQpG4YE8Dud+vadN
+	 OuoGnJGtzjc4Rpobz2+ib1g/CaqKBw8Cjy2VqqWummqVBobVsGh8dPs+80qJBJs0Ft
+	 AlUONhHl2G8/cEDuaQ4aESXZR1BvTJb3hw0/ydlJlvsWOq8pPbNEyBUVng9n2+TLGh
+	 Iw0xgMsmuwk3EazIX6hmnqNzMbbsqKPPhLQ2LJbPKodXB0K83hEH+SJgoibU+hcZPh
+	 HIwe7iwpf11BUJmqyVfndbiwSGqZIRVADmkdfftlFnpj5eUHgMPpQX+Kwkpbw4lITC
+	 PVXkRhVflHhqg==
+Date: Mon, 21 Oct 2024 12:58:33 +0100
+From: Simon Horman <horms@kernel.org>
+To: Matt Johnston <matt@codeconstruct.com.au>
+Cc: Jeremy Kerr <jk@codeconstruct.com.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, Wolfram Sang <wsa@kernel.org>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Dung Cao <dung@os.amperecomputing.com>
+Subject: Re: [PATCH net v2] mctp i2c: handle NULL header address
+Message-ID: <20241021115833.GG402847@kernel.org>
+References: <20241021-mctp-i2c-null-dest-v2-1-4503e478517c@codeconstruct.com.au>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241017-lg-gram-pro-keyboard-v2-1-7c8fbf6ff718@heusel.eu>
-In-Reply-To: <20241017-lg-gram-pro-keyboard-v2-1-7c8fbf6ff718@heusel.eu>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 21 Oct 2024 13:56:21 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hkNWNb912Ye7cgPVhLyCEHynNFtf0=xWiv0hBbPPwsAw@mail.gmail.com>
-Message-ID: <CAJZ5v0hkNWNb912Ye7cgPVhLyCEHynNFtf0=xWiv0hBbPPwsAw@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: resource: Add LG 16T90SP to irq1_level_low_skip_override[]
-To: Christian Heusel <christian@heusel.eu>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Dirk Holten <dirk.holten@gmx.de>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241021-mctp-i2c-null-dest-v2-1-4503e478517c@codeconstruct.com.au>
 
-On Thu, Oct 17, 2024 at 1:16=E2=80=AFPM Christian Heusel <christian@heusel.=
-eu> wrote:
->
-> The LG Gram Pro 16 2-in-1 (2024) the 16T90SP has its keybopard IRQ (1)
-> described as ActiveLow in the DSDT, which the kernel overrides to EdgeHig=
-h
-> which breaks the keyboard.
->
-> Add the 16T90SP to the irq1_level_low_skip_override[] quirk table to fix
-> this.
->
-> Reported-by: Dirk Holten <dirk.holten@gmx.de>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219382
+On Mon, Oct 21, 2024 at 12:35:26PM +0800, Matt Johnston wrote:
+> daddr can be NULL if there is no neighbour table entry present,
+> in that case the tx packet should be dropped.
+> 
+> saddr will normally be set by MCTP core, but in case it is NULL it
+> should be set to the device address.
+> 
+> Incorrect indent of the function arguments is also fixed.
+> 
+> Fixes: f5b8abf9fc3d ("mctp i2c: MCTP I2C binding driver")
 > Cc: stable@vger.kernel.org
-> Suggested-by: Dirk Holten <dirk.holten@gmx.de>
-> Signed-off-by: Christian Heusel <christian@heusel.eu>
-> ---
-> Note that I do not have the relevant hardware since I'm sending in this
-> quirk at the request of someone else.
+> Reported-by: Dung Cao <dung@os.amperecomputing.com>
+> Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
 > ---
 > Changes in v2:
-> - fix the double initialization warning reported by the kernel test
->   robot, which accidentially overwrote another quirk
-
-Applied as 6.12-rc material, thanks!
-
-> - Link to v1: https://lore.kernel.org/r/20241016-lg-gram-pro-keyboard-v1-=
-1-34306123102f@heusel.eu
+> - Set saddr to device address if NULL, mention in commit message
+> - Fix patch prefix formatting
+> - Link to v1: https://lore.kernel.org/r/20241018-mctp-i2c-null-dest-v1-1-ba1ab52966e9@codeconstruct.com.au
 > ---
->  drivers/acpi/resource.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-> index 129bceb1f4a27df93439bcefdb27fd9c91258028..7fe842dae1ec05ce6726af2ae=
-4fcc8eff3698dcb 100644
-> --- a/drivers/acpi/resource.c
-> +++ b/drivers/acpi/resource.c
-> @@ -503,6 +503,13 @@ static const struct dmi_system_id irq1_level_low_ski=
-p_override[] =3D {
->                         DMI_MATCH(DMI_BOARD_NAME, "17U70P"),
->                 },
->         },
-> +       {
-> +               /* LG Electronics 16T90SP */
-> +               .matches =3D {
-> +                       DMI_MATCH(DMI_SYS_VENDOR, "LG Electronics"),
-> +                       DMI_MATCH(DMI_BOARD_NAME, "16T90SP"),
-> +               },
-> +       },
->         { }
->  };
->
->
-> ---
-> base-commit: 8e929cb546ee42c9a61d24fae60605e9e3192354
-> change-id: 20241016-lg-gram-pro-keyboard-9a9d8b9aa647
->
-> Best regards,
-> --
-> Christian Heusel <christian@heusel.eu>
->
+>  drivers/net/mctp/mctp-i2c.c | 13 ++++++++++---
+>  1 file changed, 10 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
+> index 4dc057c121f5d0fb9c9c48bf16b6933ae2f7b2ac..c909254e03c21518c17daf8b813e610558e074c1 100644
+> --- a/drivers/net/mctp/mctp-i2c.c
+> +++ b/drivers/net/mctp/mctp-i2c.c
+> @@ -579,7 +579,7 @@ static void mctp_i2c_flow_release(struct mctp_i2c_dev *midev)
+>  
+>  static int mctp_i2c_header_create(struct sk_buff *skb, struct net_device *dev,
+>  				  unsigned short type, const void *daddr,
+> -	   const void *saddr, unsigned int len)
+> +				  const void *saddr, unsigned int len)
+>  {
+>  	struct mctp_i2c_hdr *hdr;
+>  	struct mctp_hdr *mhdr;
+
+Hi Matt,
+
+I think you should drop this hunk.
+While it's nice to clean things up, in the context of other work [1],
+this isn't really appropriate as part of a fix for net.
+
+[1] https://docs.kernel.org/process/maintainer-netdev.html#clean-up-patches
+
+> @@ -588,8 +588,15 @@ static int mctp_i2c_header_create(struct sk_buff *skb, struct net_device *dev,
+>  	if (len > MCTP_I2C_MAXMTU)
+>  		return -EMSGSIZE;
+>  
+> -	lldst = *((u8 *)daddr);
+> -	llsrc = *((u8 *)saddr);
+> +	if (daddr)
+> +		lldst = *((u8 *)daddr);
+> +	else
+> +		return -EINVAL;
+> +
+> +	if (saddr)
+> +		llsrc = *((u8 *)saddr);
+> +	else
+> +		llsrc = dev->dev_addr;
+
+This last line doesn't seem right, as llsrc is a u8,
+while dev->dev_addr is a pointer to unsigned char.
+
+>  
+>  	skb_push(skb, sizeof(struct mctp_i2c_hdr));
+>  	skb_reset_mac_header(skb);
+
+-- 
+pw-bot: changes-requested
 
