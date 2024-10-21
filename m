@@ -1,155 +1,164 @@
-Return-Path: <stable+bounces-87019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07E7D9A5DBF
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 09:56:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12CEC9A5DD1
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:00:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 374C21C215E4
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 07:56:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92BC31F2178A
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 08:00:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61FEE1E1026;
-	Mon, 21 Oct 2024 07:56:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="dR2SPeVM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93871E1323;
+	Mon, 21 Oct 2024 07:59:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EEAF1E1022;
-	Mon, 21 Oct 2024 07:56:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFA71E1302;
+	Mon, 21 Oct 2024 07:59:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729497406; cv=none; b=A4f5RRhVdehITMjYDmm3du4/Fd6YrNnDlJyBHOfiMbS28q1uBpyia+FN4hppnsuYuUd8l7uOOpew6xlV0KXDIUPKIYt9aq1ZoLlpSxItdpCSfuvn41PW0DLJ0qlBggJCrFJ5FRrct6OddnemPZc1zQ/2vBJjnIfAu/E4F+1hBKo=
+	t=1729497592; cv=none; b=EmyeXLVd2oZZvQ4eibJgNg/aUSbmRowERCL1Ltpfyh7yMEAQQlOyGIMhwfJyxQEXi3Jyw+PUoBe/ic7AioI7Z+hOxvOzAqURWh53icTEDZlgGtVqR7ZIM/JP3h4uGkwdf+04+rwZXoNlGhIssczXIGggdUqy8eZaIMbCAI/xVwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729497406; c=relaxed/simple;
-	bh=OQ8rJdgVEyrXGuuW4HbA/wAE8d62CqGOzxmvfsDM7uE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=qoppG+WO1zWjUvBZ/NV51Jk9l7yAgULpxO3fsuam0Pt/8Pv0eC9VFauyTWaB1uICQo9udd7O4VvPXEbOYN31/wdZL0yqAX5SwfOS5SBvCc2dvdrqRcCQHZV7ln6IZnNMcNIEdTYnBcd4InTyO5ZeIcg8QekhXwWO5+VSO8p4yvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=dR2SPeVM; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49L7uXutD2108098, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1729497393; bh=OQ8rJdgVEyrXGuuW4HbA/wAE8d62CqGOzxmvfsDM7uE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=dR2SPeVMQh3kk4XKaVq7WzA5kZqxG5ae70G9KmrK1qQcDdVy1LQ07VfHzZZjhqyBC
-	 Y9zPdKHFLAHTRP3gcEzvvAVVs7p16DfSMwqYqb4H0iYmd0wjC1YWK25jPI8Zoz0aBq
-	 s1GcrR2BvoXOq6GBpIGPDwzbKsMXTefAntam8JOdKt1ypJEt+Q+0K5U5oUyEJVnuGR
-	 f8HuAbgPO1Cn15tEKSfAtV2W9ChVxmlAL47pDwV3TFKz46lqUKzF/xum4XkS2Bv/Nf
-	 JqfQAZOP5Nteo5e9LbyHAwo2LrOJNEq67gBjF+0C73h6aJC3G3uwzzX9jajQBus38P
-	 NKgJ1YRvoI6aA==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49L7uXutD2108098
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 21 Oct 2024 15:56:33 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 21 Oct 2024 15:56:33 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 21 Oct 2024 15:56:32 +0800
-Received: from RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2]) by
- RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2%7]) with mapi id
- 15.01.2507.035; Mon, 21 Oct 2024 15:56:32 +0800
-From: Kailang <kailang@realtek.com>
-To: Takashi Iwai <tiwai@suse.de>,
-        Dean Matthew Menezes
-	<dean.menezes@utexas.edu>
-CC: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-        Jaroslav Kysela
-	<perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-        Linux Sound System
-	<linux-sound@vger.kernel.org>,
-        Greg KH <gregkh@linuxfoundation.org>
-Subject: RE: No sound on speakers X1 Carbon Gen 12
-Thread-Topic: No sound on speakers X1 Carbon Gen 12
-Thread-Index: AQHbIwVT/23eeZo4dEmkKtnQN51H6bKP5WWAgABb9wCAAJQEMA==
-Date: Mon, 21 Oct 2024 07:56:32 +0000
-Message-ID: <325719ad24c24f1faee12a4cdceec87b@realtek.com>
-References: <CAEkK70Tke7UxMEEKgRLMntSYeMqiv0PC8st72VYnBVQD-KcqVw@mail.gmail.com>
-	<2024101613-giggling-ceremony-aae7@gregkh>
-	<433b8579-e181-40e6-9eac-815d73993b23@leemhuis.info>
-	<87bjzktncb.wl-tiwai@suse.de>
-	<CAEkK70TAk26HFgrz4ZS0jz4T2Eu3LWcG-JD1Ov_2ffMp66oO-g@mail.gmail.com>
-	<87cyjzrutw.wl-tiwai@suse.de>
-	<CAEkK70T7NBRA1dZHBwAC7mNeXPo-dby4c7Nn=SYg0vzeHHt-1A@mail.gmail.com>
-	<87ttd8jyu3.wl-tiwai@suse.de>
-	<CAEkK70RAWRjRp6_=bSrecSXXMfnepC2P2YriaHUqicv5x5wJWw@mail.gmail.com>
-	<87h697jl6c.wl-tiwai@suse.de>
-	<CAEkK70TWL_me58QZXeJSq+=Ry3jA+CgZJttsgAPz1wP7ywqj6A@mail.gmail.com>
-	<87ed4akd2a.wl-tiwai@suse.de>	<87bjzekcva.wl-tiwai@suse.de>
-	<CAEkK70SgwaFNcxni2JUAfz7Ne9a_kdkdLRTOR53uhNzJkBQ3+A@mail.gmail.com>
- <877ca2j60l.wl-tiwai@suse.de>
-In-Reply-To: <877ca2j60l.wl-tiwai@suse.de>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
+	s=arc-20240116; t=1729497592; c=relaxed/simple;
+	bh=lyQWXd8tZ+cJL5EJxSB+u2xZemaLQGSuAwwZhKQD8JQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=so0tKROT/2JP+sPNpLFBclwbPPOe47bIqvogi4OExYosWlpeADYaKWu1LTqcxfgjrq7IfO5TScYUOdAL4bTil5x9QofUJMJLA6UrBVKsYsNGfdkO7cOKHpeeKyiD/s7J9um7w6jsW7UcJN+uem3ljhpmyEOuR8eskd8VI2UZyx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.18.186.29])
+	by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4XX6dS3JbXz9v7NX;
+	Mon, 21 Oct 2024 15:39:24 +0800 (CST)
+Received: from mail02.huawei.com (unknown [7.182.16.27])
+	by mail.maildlp.com (Postfix) with ESMTP id 3DEE8140134;
+	Mon, 21 Oct 2024 15:59:40 +0800 (CST)
+Received: from [127.0.0.1] (unknown [10.204.63.22])
+	by APP2 (Coremail) with SMTP id GxC2BwCXsYDdCRZnfdwkAA--.41168S2;
+	Mon, 21 Oct 2024 08:59:39 +0100 (CET)
+Message-ID: <c0e85aaa89283d5e4b742d23299f286a2e3eeaad.camel@huaweicloud.com>
+Subject: Re: [PATCH v2] mm: Split critical region in remap_file_pages() and
+ invoke LSMs in between
+From: Roberto Sassu <roberto.sassu@huaweicloud.com>
+To: Paul Moore <paul@paul-moore.com>, "Kirill A. Shutemov"
+	 <kirill.shutemov@linux.intel.com>, akpm@linux-foundation.org
+Cc: Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, vbabka@suse.cz, 
+ jannh@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ ebpqwerty472123@gmail.com, zohar@linux.ibm.com, dmitry.kasatkin@gmail.com, 
+ eric.snowberg@oracle.com, jmorris@namei.org, serge@hallyn.com, 
+ linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org, 
+ bpf@vger.kernel.org, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org,
+  syzbot+1cd571a672400ef3a930@syzkaller.appspotmail.com, Roberto Sassu
+ <roberto.sassu@huawei.com>
+Date: Mon, 21 Oct 2024 09:59:22 +0200
+In-Reply-To: <CAHC9VhQP7gBa4AV-Hbh4Bq4fRU6toRmjccv52dGoU-s+MqsmfQ@mail.gmail.com>
+References: <20241018161415.3845146-1-roberto.sassu@huaweicloud.com>
+	 <CAHC9VhQP7gBa4AV-Hbh4Bq4fRU6toRmjccv52dGoU-s+MqsmfQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-CM-TRANSID:GxC2BwCXsYDdCRZnfdwkAA--.41168S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxAF1rZr18XFyrCw1xCryrXrb_yoW5Cw1DpF
+	ZxK3Z0kr1vqryxur1aqFy7WFWrC3yfGrW7WrZ7Xr1ruasrXF1fKr1fGF45Wa4DWrZ7CFWF
+	vF1jkr93Ka1DArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
+	wI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
+	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5
+	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
+	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
+	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUIa
+	0PDUUUU
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQADBGcVvDAFpgADsY
 
+On Sat, 2024-10-19 at 11:34 -0400, Paul Moore wrote:
+> On Fri, Oct 18, 2024 at 12:15=E2=80=AFPM Roberto Sassu
+> <roberto.sassu@huaweicloud.com> wrote:
+> > From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+> >=20
+> > Commit ea7e2d5e49c0 ("mm: call the security_mmap_file() LSM hook in
+> > remap_file_pages()") fixed a security issue, it added an LSM check when
+> > trying to remap file pages, so that LSMs have the opportunity to evalua=
+te
+> > such action like for other memory operations such as mmap() and mprotec=
+t().
+> >=20
+> > However, that commit called security_mmap_file() inside the mmap_lock l=
+ock,
+> > while the other calls do it before taking the lock, after commit
+> > 8b3ec6814c83 ("take security_mmap_file() outside of ->mmap_sem").
+> >=20
+> > This caused lock inversion issue with IMA which was taking the mmap_loc=
+k
+> > and i_mutex lock in the opposite way when the remap_file_pages() system
+> > call was called.
+> >=20
+> > Solve the issue by splitting the critical region in remap_file_pages() =
+in
+> > two regions: the first takes a read lock of mmap_lock, retrieves the VM=
+A
+> > and the file descriptor associated, and calculates the 'prot' and 'flag=
+s'
+> > variables; the second takes a write lock on mmap_lock, checks that the =
+VMA
+> > flags and the VMA file descriptor are the same as the ones obtained in =
+the
+> > first critical region (otherwise the system call fails), and calls
+> > do_mmap().
+> >=20
+> > In between, after releasing the read lock and before taking the write l=
+ock,
+> > call security_mmap_file(), and solve the lock inversion issue.
+> >=20
+> > Cc: stable@vger.kernel.org # v6.12-rcx
+> > Fixes: ea7e2d5e49c0 ("mm: call the security_mmap_file() LSM hook in rem=
+ap_file_pages()")
+> > Reported-by: syzbot+1cd571a672400ef3a930@syzkaller.appspotmail.com
+> > Closes: https://lore.kernel.org/linux-security-module/66f7b10e.050a0220=
+.46d20.0036.GAE@google.com/
+> > Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
+> > Reviewed-by: Jann Horn <jannh@google.com>
+> > Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > Tested-by: Roberto Sassu <roberto.sassu@huawei.com>
+> > Tested-by: syzbot+1cd571a672400ef3a930@syzkaller.appspotmail.com
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > ---
+> >  mm/mmap.c | 69 +++++++++++++++++++++++++++++++++++++++++--------------
+> >  1 file changed, 52 insertions(+), 17 deletions(-)
+>=20
+> Thanks for working on this Roberto, Kirill, and everyone else who had
+> a hand in reviewing and testing.
 
+Welcome!
 
-> -----Original Message-----
-> From: Takashi Iwai <tiwai@suse.de>
-> Sent: Monday, October 21, 2024 2:59 PM
-> To: Dean Matthew Menezes <dean.menezes@utexas.edu>
-> Cc: Takashi Iwai <tiwai@suse.de>; Kailang <kailang@realtek.com>;
-> stable@vger.kernel.org; regressions@lists.linux.dev; Jaroslav Kysela
-> <perex@perex.cz>; Takashi Iwai <tiwai@suse.com>; Linux Sound System
-> <linux-sound@vger.kernel.org>; Greg KH <gregkh@linuxfoundation.org>
-> Subject: Re: No sound on speakers X1 Carbon Gen 12
+> Reviewed-by: Paul Moore <paul@paul-moore.com>
 >=20
+> Andrew, I see you're pulling this into the MM/hotfixes-unstable
+> branch, do you also plan to send this up to Linus soon/next-week?  If
+> so, great, if not let me know and I can send it up via the LSM tree.
 >=20
-> External mail.
->=20
->=20
->=20
-> On Mon, 21 Oct 2024 03:30:13 +0200,
-> Dean Matthew Menezes wrote:
-> >
-> > I can confirm that the original fix does not bring back the speaker
-> > output.  I have attached both outputs for alsa-info.sh
->=20
-> Thanks!  This confirms that the only significant difference is the COEF d=
-ata
-> between working and patched-non-working cases.
->=20
-> Kailang, I guess this model (X1 Carbon Gen 12) isn't with ALC1318, hence =
-your
-> quirk rather influences badly.  Or may the GPIO3 workaround have the simi=
-lar
-> effect?
+> We need to get clarity around Roberto's sign-off, but I think that is
+> more of an administrative mistake rather than an intentional omission
+> :)
 
-No, I check with our AE. It's ALC1318 include.
-And This fixed was testing with Lenovo.
+Ops, I just thought that I would not need to add it, since I'm not the
+author of the patch. Please add my:
 
->=20
-> As of now, the possible fix is to simply remove the quirk entries for ALC=
-1318.
-> But I'd need to know which model was targeted for your original fix in co=
-mmit
-> 1e707769df07 and whether the regressed model is with ALC1318.
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
 
-+	SND_PCI_QUIRK(0x17aa, 0x231e, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_A=
-LC1318),
-+	SND_PCI_QUIRK(0x17aa, 0x231f, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_A=
-LC1318),
+Roberto
 
-Yes, this model include ALC1318.
-
-> =09
->=20
-> Takashi
 
