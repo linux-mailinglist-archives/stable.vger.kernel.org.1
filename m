@@ -1,190 +1,259 @@
-Return-Path: <stable+bounces-87031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CB069A5F20
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:50:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E8939A5F87
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:55:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07472283F54
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 08:50:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF7AC1C2146D
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 08:55:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BA01E1C06;
-	Mon, 21 Oct 2024 08:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A9C1E25EC;
+	Mon, 21 Oct 2024 08:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="iFcx6QVj"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="J/sjWRqW";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PYOySvM4";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="rWAIu1+e";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="cWITReUf"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1C51E105F
-	for <stable@vger.kernel.org>; Mon, 21 Oct 2024 08:50:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE218200CD;
+	Mon, 21 Oct 2024 08:55:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729500604; cv=none; b=kSlqTE6W4Kk3NlniQP3/BzIvTwOAxqmeGEW8+4p76Ad0d87UERtbDwU8Kz5oS95TUbxxGWcOLmeT+vbjFStjOfNyCXqDa19NhMroMiDmnDv+qivyPjxvgBKcfSIOIOxmaQPt2nLSG4K3PzeEMfarvQCR4UsnjTSQoANhcj4OZfE=
+	t=1729500952; cv=none; b=AHKfAwssWK6o/k3hTknfvtZEsTR+lSp6WF5TRENDr0bXqsKjwbMexj5duNm0ylcbxiyUhGDW4hQFoCqvHbYMkt0wfmaXRfiW435ZN05lMzgphsTsJ8AhV+Rp6S4v6Jh1qOyxL8Op+yDj5H5hgdEGHz+r1eadm7/B7R8XTBrY/1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729500604; c=relaxed/simple;
-	bh=y4+95gWLrOM8hs6Lz5Oi1tFjUoNRKKizyR4I6dFfy1k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sQ98Nnom+euS+Y4NmGvh8Aqd8DdFWYbkXgBsMd6UdEZbmwULNXnCmrLcZBn+CTvyUuHqLFZXnNl4Ehdf5AtwAcjfahGqLrGvD8KXKPJYa4DhKqczC4DcbPt9aQ2wYtgLXk6IWtd4DFvfshD4RcGSHXsdCW4Pju4Zonpihrk9ZaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=iFcx6QVj; arc=none smtp.client-ip=115.124.30.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1729500594; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=CI2IO2w1zARuj9xj4CaUPdugLON1s/s7SFz+eWwBHnY=;
-	b=iFcx6QVjnFlDg1Fvm3JKfXBioqaEbAxnM/2LiR8hiwr2W0pAG22gDmGeBQ0V99NiLGw99wq1agWd3AdlxwUen3UxVJcEli4uGXxGh5Ikx6jMBF4TUQgQaoCXWxfzDywmu4wRXj/uYpUMp4C/6IK0sxpAZ71ySpV7POGg7zFFueU=
-Received: from x31i01179.sqa.na131.tbsite.net(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0WHZK12o_1729500270 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 21 Oct 2024 16:44:36 +0800
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: linux-erofs@lists.ozlabs.org,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Juhyung Park <qkrwngud825@gmail.com>,
-	Yifan Zhao <zhaoyifan@sjtu.edu.cn>
-Subject: [PATCH 5.4.y] erofs: fix lz4 inplace decompression
-Date: Mon, 21 Oct 2024 16:44:29 +0800
-Message-ID: <20241021084429.3742972-1-hsiangkao@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.5
+	s=arc-20240116; t=1729500952; c=relaxed/simple;
+	bh=76fz11Oe3oAYmd5xsOC93YnWfyUPM6piti0NZHxWffc=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=njFV8jzbb5td3qlODeoMLTddquPl/PE2UduSMK/4+NTDAzq7IAQ0jmzxsQOtRvKjxTS7M/1ntV3+XsZeBq7xwmYioB0hdeUpIxSf18JjHIPYc0N5gYCMaXlGCLH0XlBV5Nqfitei1Lw89firtnSUcs1caZleamvKX32mvouDSIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=J/sjWRqW; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PYOySvM4; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=rWAIu1+e; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=cWITReUf; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D3AE71F832;
+	Mon, 21 Oct 2024 08:55:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1729500949; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t0UCHS3qdi6CAbkR64+pZQd67AsM6UsTqkrW7M62NZQ=;
+	b=J/sjWRqWh2YnAAfj/5MwrCdgBTWswkX5GIwr4vSGXAEnIbZ9pGUF48PvzMWynAAb/urMqU
+	aBQDSYSoERpUVU6uqui1czwGtE16ZTsxwhQkO+dKZhBlFiJ0p3d1T0MzbbPTrx+NB0hjsZ
+	eul78adF8C2ZjK/MQcjtYor4fSMJrkY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1729500949;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t0UCHS3qdi6CAbkR64+pZQd67AsM6UsTqkrW7M62NZQ=;
+	b=PYOySvM4lt4LrD9ZyCVBlNTOxIUqDke3TY8QoPUac56IGYOgrEUQbt6m/FIkfd2g5daL7A
+	dU89RL3CkgCV9yDA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1729500948; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t0UCHS3qdi6CAbkR64+pZQd67AsM6UsTqkrW7M62NZQ=;
+	b=rWAIu1+e0IjfvgT96+a1oKasd3fnm21yVFOrdH+gINPcRuUKi0C60bRu5i03/4wOI64DI0
+	V3eZgLxasd/8LSz4NdLqBmj+6sTGXCXpz3iFIauMGMZyEazquVjw9xt/SGmKXxi5sUEdxc
+	5Tcwwg1UsNrTVK9B4w5+gjNfzjmvoBU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1729500948;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t0UCHS3qdi6CAbkR64+pZQd67AsM6UsTqkrW7M62NZQ=;
+	b=cWITReUfKTsTkGJSAzYuJxhcx+zlugVS/7WisqdfY7ku8jUi+w6v/iyQuNhNtbST6IrIw2
+	MpvL6Ng5CZqJ70Ag==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 92748136DC;
+	Mon, 21 Oct 2024 08:55:48 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id FzdWIhQXFmd2bAAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Mon, 21 Oct 2024 08:55:48 +0000
+Date: Mon, 21 Oct 2024 10:56:49 +0200
+Message-ID: <87h6956dgu.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Kailang <kailang@realtek.com>
+Cc: Takashi Iwai <tiwai@suse.de>,
+	Dean Matthew Menezes <dean.menezes@utexas.edu>,
+	"stable@vger.kernel.org"
+	<stable@vger.kernel.org>,
+	"regressions@lists.linux.dev"
+	<regressions@lists.linux.dev>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai
+	<tiwai@suse.com>,
+	Linux Sound System <linux-sound@vger.kernel.org>,
+	Greg KH
+	<gregkh@linuxfoundation.org>
+Subject: Re: No sound on speakers X1 Carbon Gen 12
+In-Reply-To: <18d07dccef894f4cb87b78dd548c5bdd@realtek.com>
+References: <CAEkK70Tke7UxMEEKgRLMntSYeMqiv0PC8st72VYnBVQD-KcqVw@mail.gmail.com>
+	<2024101613-giggling-ceremony-aae7@gregkh>
+	<433b8579-e181-40e6-9eac-815d73993b23@leemhuis.info>
+	<87bjzktncb.wl-tiwai@suse.de>
+	<CAEkK70TAk26HFgrz4ZS0jz4T2Eu3LWcG-JD1Ov_2ffMp66oO-g@mail.gmail.com>
+	<87cyjzrutw.wl-tiwai@suse.de>
+	<CAEkK70T7NBRA1dZHBwAC7mNeXPo-dby4c7Nn=SYg0vzeHHt-1A@mail.gmail.com>
+	<87ttd8jyu3.wl-tiwai@suse.de>
+	<CAEkK70RAWRjRp6_=bSrecSXXMfnepC2P2YriaHUqicv5x5wJWw@mail.gmail.com>
+	<87h697jl6c.wl-tiwai@suse.de>
+	<CAEkK70TWL_me58QZXeJSq+=Ry3jA+CgZJttsgAPz1wP7ywqj6A@mail.gmail.com>
+	<87ed4akd2a.wl-tiwai@suse.de>
+	<87bjzekcva.wl-tiwai@suse.de>
+	<CAEkK70SgwaFNcxni2JUAfz7Ne9a_kdkdLRTOR53uhNzJkBQ3+A@mail.gmail.com>
+	<877ca2j60l.wl-tiwai@suse.de>
+	<43fe74e10d1d470e80dc2ae937bc1a43@realtek.com>
+	<87ldyh6eyu.wl-tiwai@suse.de>
+	<18d07dccef894f4cb87b78dd548c5bdd@realtek.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,suse.com:email]
+X-Spam-Score: -3.30
+X-Spam-Flag: NO
 
-commit 3c12466b6b7bf1e56f9b32c366a3d83d87afb4de upstream.
+On Mon, 21 Oct 2024 10:38:48 +0200,
+Kailang wrote:
+> 
+> But this platform need to assign model ALC287_FIXUP_LENOVO_THKPAD_WH_ALC1318.
+> It has a chance to broken amp IC.
 
-Currently EROFS can map another compressed buffer for inplace
-decompression, that was used to handle the cases that some pages of
-compressed data are actually not in-place I/O.
+Yes, if X1 Carbon Gen 12 is indeed the targeted model of the fix, it
+must be applied.  But we seem still missing some small piece...
 
-However, like most simple LZ77 algorithms, LZ4 expects the compressed
-data is arranged at the end of the decompressed buffer and it
-explicitly uses memmove() to handle overlapping:
-  __________________________________________________________
- |_ direction of decompression --> ____ |_ compressed data _|
+> But I don't know why it doesn't have output from speaker.
 
-Although EROFS arranges compressed data like this, it typically maps two
-individual virtual buffers so the relative order is uncertain.
-Previously, it was hardly observed since LZ4 only uses memmove() for
-short overlapped literals and x86/arm64 memmove implementations seem to
-completely cover it up and they don't have this issue.  Juhyung reported
-that EROFS data corruption can be found on a new Intel x86 processor.
-After some analysis, it seems that recent x86 processors with the new
-FSRM feature expose this issue with "rep movsb".
+The diff of COEF dump showed at NID 0x20:
+(working)    Coeff 0x10: 0x8006
+(broken)     Coeff 0x10: 0x8806
+(working)    Coeff 0x46: 0x0004
+(broken)     Coeff 0x46: 0x0404
+It shouldn't be a problem to leave the bit 0x800 to COEF 0x10, I
+suppose?
 
-Let's strictly use the decompressed buffer for lz4 inplace
-decompression for now.  Later, as an useful improvement, we could try
-to tie up these two buffers together in the correct order.
+> Maybe could run hda_verb to get COEF value. To get NID 0x5A index 0 value.
 
-Reported-and-tested-by: Juhyung Park <qkrwngud825@gmail.com>
-Closes: https://lore.kernel.org/r/CAD14+f2AVKf8Fa2OO1aAUdDNTDsVzzR6ctU_oJSmTyd6zSYR2Q@mail.gmail.com
-Fixes: 0ffd71bcc3a0 ("staging: erofs: introduce LZ4 decompression inplace")
-Fixes: 598162d05080 ("erofs: support decompress big pcluster for lz4 backend")
-Cc: stable <stable@vger.kernel.org> # 5.4+
-Tested-by: Yifan Zhao <zhaoyifan@sjtu.edu.cn>
-Link: https://lore.kernel.org/r/20231206045534.3920847-1-hsiangkao@linux.alibaba.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
----
-The remaining stable patch to address the issue "CVE-2023-52497" for
-5.4.y, which is the same as the 5.10.y one [1].
+Dean, please run hda-verb program (as root) like:
+  hda-verb /dev/snd/hwC0D0 0x5a SET_COEF_INDEX 0x00
+  hda-verb /dev/snd/hwC0D0 0x5a GET_PROC_COEF 0
 
-[1] https://lore.kernel.org/r/20240224063248.2157885-1-hsiangkao@linux.alibaba.com
+and give the outputs on both working and non-working cases.
 
- fs/erofs/decompressor.c | 24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+hda-verb should be included in alsa-utils.
 
-diff --git a/fs/erofs/decompressor.c b/fs/erofs/decompressor.c
-index 38eeec5e3032..d06a3b77fb39 100644
---- a/fs/erofs/decompressor.c
-+++ b/fs/erofs/decompressor.c
-@@ -24,7 +24,8 @@ struct z_erofs_decompressor {
- 	 */
- 	int (*prepare_destpages)(struct z_erofs_decompress_req *rq,
- 				 struct list_head *pagepool);
--	int (*decompress)(struct z_erofs_decompress_req *rq, u8 *out);
-+	int (*decompress)(struct z_erofs_decompress_req *rq, u8 *out,
-+			  u8 *obase);
- 	char *name;
- };
- 
-@@ -114,10 +115,13 @@ static void *generic_copy_inplace_data(struct z_erofs_decompress_req *rq,
- 	return tmp;
- }
- 
--static int z_erofs_lz4_decompress(struct z_erofs_decompress_req *rq, u8 *out)
-+static int z_erofs_lz4_decompress(struct z_erofs_decompress_req *rq, u8 *out,
-+				  u8 *obase)
- {
-+	const uint nrpages_out = PAGE_ALIGN(rq->pageofs_out +
-+					    rq->outputsize) >> PAGE_SHIFT;
- 	unsigned int inputmargin, inlen;
--	u8 *src;
-+	u8 *src, *src2;
- 	bool copied, support_0padding;
- 	int ret;
- 
-@@ -125,6 +129,7 @@ static int z_erofs_lz4_decompress(struct z_erofs_decompress_req *rq, u8 *out)
- 		return -EOPNOTSUPP;
- 
- 	src = kmap_atomic(*rq->in);
-+	src2 = src;
- 	inputmargin = 0;
- 	support_0padding = false;
- 
-@@ -148,16 +153,15 @@ static int z_erofs_lz4_decompress(struct z_erofs_decompress_req *rq, u8 *out)
- 	if (rq->inplace_io) {
- 		const uint oend = (rq->pageofs_out +
- 				   rq->outputsize) & ~PAGE_MASK;
--		const uint nr = PAGE_ALIGN(rq->pageofs_out +
--					   rq->outputsize) >> PAGE_SHIFT;
--
- 		if (rq->partial_decoding || !support_0padding ||
--		    rq->out[nr - 1] != rq->in[0] ||
-+		    rq->out[nrpages_out - 1] != rq->in[0] ||
- 		    rq->inputsize - oend <
- 		      LZ4_DECOMPRESS_INPLACE_MARGIN(inlen)) {
- 			src = generic_copy_inplace_data(rq, src, inputmargin);
- 			inputmargin = 0;
- 			copied = true;
-+		} else {
-+			src = obase + ((nrpages_out - 1) << PAGE_SHIFT);
- 		}
- 	}
- 
-@@ -178,7 +182,7 @@ static int z_erofs_lz4_decompress(struct z_erofs_decompress_req *rq, u8 *out)
- 	if (copied)
- 		erofs_put_pcpubuf(src);
- 	else
--		kunmap_atomic(src);
-+		kunmap_atomic(src2);
- 	return ret;
- }
- 
-@@ -248,7 +252,7 @@ static int z_erofs_decompress_generic(struct z_erofs_decompress_req *rq,
- 			return PTR_ERR(dst);
- 
- 		rq->inplace_io = false;
--		ret = alg->decompress(rq, dst);
-+		ret = alg->decompress(rq, dst, NULL);
- 		if (!ret)
- 			copy_from_pcpubuf(rq->out, dst, rq->pageofs_out,
- 					  rq->outputsize);
-@@ -282,7 +286,7 @@ static int z_erofs_decompress_generic(struct z_erofs_decompress_req *rq,
- 	dst_maptype = 2;
- 
- dstmap_out:
--	ret = alg->decompress(rq, dst + rq->pageofs_out);
-+	ret = alg->decompress(rq, dst + rq->pageofs_out, dst);
- 
- 	if (!dst_maptype)
- 		kunmap_atomic(dst);
--- 
-2.43.5
 
+Takashi
+
+> 
+> > -----Original Message-----
+> > From: Takashi Iwai <tiwai@suse.de>
+> > Sent: Monday, October 21, 2024 4:24 PM
+> > To: Kailang <kailang@realtek.com>
+> > Cc: Takashi Iwai <tiwai@suse.de>; Dean Matthew Menezes
+> > <dean.menezes@utexas.edu>; stable@vger.kernel.org;
+> > regressions@lists.linux.dev; Jaroslav Kysela <perex@perex.cz>; Takashi Iwai
+> > <tiwai@suse.com>; Linux Sound System <linux-sound@vger.kernel.org>; Greg
+> > KH <gregkh@linuxfoundation.org>
+> > Subject: Re: No sound on speakers X1 Carbon Gen 12
+> > 
+> > 
+> > External mail.
+> > 
+> > 
+> > 
+> > On Mon, 21 Oct 2024 10:19:53 +0200,
+> > Kailang wrote:
+> > >
+> > > Change to below model.
+> > > +     SND_PCI_QUIRK(0x17aa, 0x231e, "Thinkpad",
+> > ALC287_FIXUP_THINKPAD_I2S_SPK),
+> > > +     SND_PCI_QUIRK(0x17aa, 0x231f, "Thinkpad",
+> > > + ALC287_FIXUP_THINKPAD_I2S_SPK),
+> > >
+> > > The speaker will have output. Right?
+> > 
+> > FWIW, that was what I asked in
+> >   https://lore.kernel.org/87h697jl6c.wl-tiwai@suse.de
+> > and Dean replied that the speaker worked with it.
+> > (His reply missed Cc, so it didn't appear in the thread, unfortunately).
+> > 
+> > 
+> > Takashi
+> > 
+> > > > -----Original Message-----
+> > > > From: Takashi Iwai <tiwai@suse.de>
+> > > > Sent: Monday, October 21, 2024 2:59 PM
+> > > > To: Dean Matthew Menezes <dean.menezes@utexas.edu>
+> > > > Cc: Takashi Iwai <tiwai@suse.de>; Kailang <kailang@realtek.com>;
+> > > > stable@vger.kernel.org; regressions@lists.linux.dev; Jaroslav Kysela
+> > > > <perex@perex.cz>; Takashi Iwai <tiwai@suse.com>; Linux Sound System
+> > > > <linux-sound@vger.kernel.org>; Greg KH <gregkh@linuxfoundation.org>
+> > > > Subject: Re: No sound on speakers X1 Carbon Gen 12
+> > > >
+> > > >
+> > > > External mail.
+> > > >
+> > > >
+> > > >
+> > > > On Mon, 21 Oct 2024 03:30:13 +0200,
+> > > > Dean Matthew Menezes wrote:
+> > > > >
+> > > > > I can confirm that the original fix does not bring back the
+> > > > > speaker output.  I have attached both outputs for alsa-info.sh
+> > > >
+> > > > Thanks!  This confirms that the only significant difference is the
+> > > > COEF data between working and patched-non-working cases.
+> > > >
+> > > > Kailang, I guess this model (X1 Carbon Gen 12) isn't with ALC1318,
+> > > > hence your quirk rather influences badly.  Or may the GPIO3
+> > > > workaround have the similar effect?
+> > > >
+> > > > As of now, the possible fix is to simply remove the quirk entries for
+> > ALC1318.
+> > > > But I'd need to know which model was targeted for your original fix
+> > > > in commit
+> > > > 1e707769df07 and whether the regressed model is with ALC1318.
+> > > >
+> > > >
+> > > > Takashi
 
