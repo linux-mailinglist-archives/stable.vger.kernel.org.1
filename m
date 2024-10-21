@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-87447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03A239A64FD
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADDBF9A639F
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:38:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B967428178D
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D868F1C21CA9
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD1B1EF0A2;
-	Mon, 21 Oct 2024 10:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF071EBA05;
+	Mon, 21 Oct 2024 10:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9SFMuHa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bT4tcnYf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C3B1E5731;
-	Mon, 21 Oct 2024 10:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C72C1EBA16;
+	Mon, 21 Oct 2024 10:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507633; cv=none; b=DeBxJ1J/V4Gbm4GYy9WBdZhFkSusmFbzl3/LwDxSZDBbPkYRXqK8KEYN+AIoWbVFUJSzJOf0FJrsOntDH/iT3+wt0o/NTBSXrvkq7ZJHzkXnPMFmkZa2DhFtm/juIjuV1FFgkR0X+O4tC1GusNIa2kjXZvDwWIGX/TlunYWOzhc=
+	t=1729506831; cv=none; b=SjTiUw7NIIRuzS2WgdWDbs7C2lkvSG1L6nOY9TktL5nYuMuXMXgFwV/4mF/s8LUxk6+ps7OAW493HPJ3dTGOIuHnyeWoiN8AFfjXod3czU/klTiaivu1oI/hAaqZpgvJT295zJ0zmQ/S7ot45IOIrBUezA7e3vylGBOk3Gp5pZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507633; c=relaxed/simple;
-	bh=FXrq6wj8jyeXk5t5qxM3/PwtASSHk7paIMSYXb28skA=;
+	s=arc-20240116; t=1729506831; c=relaxed/simple;
+	bh=+Km6Vz2OOZ9ZXpn2bGp+6xFjnuIqsiJys/xqkar7feU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kn7r8iQs1eNzWSTd49R/GsF7OS7ZPeECVrM9LjDZTJvR1z0BNAPBFiJfDjBJe9tYnTCMA0C2nUuB7xyTkKDX6E0bLS0TH7tSV2BM5F5Zrt7TlajonxD2m9gsGSc0n1pooLLcT5de0aP3tYO269YVmrhO2skxSgRk153c7p3g2GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9SFMuHa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303A3C4CEC7;
-	Mon, 21 Oct 2024 10:47:13 +0000 (UTC)
+	 MIME-Version; b=Qx4Fh+bR1J/jKF9QaXvxFEE7GmPddeHq/JHhQotaP6kJIA/DsvDlI4NKmvTZwOEBFIT5GoiKVn/tBPmKOE+7dG2+Odb02KiMy/tVSxGfsQW2nIetxSm25wtJSmM9EoB3IhpY1rz8U2U0gWgJB5tzcTmF3XR4+Yg2JO9dgPMq6i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bT4tcnYf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5596AC4CEC3;
+	Mon, 21 Oct 2024 10:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507633;
-	bh=FXrq6wj8jyeXk5t5qxM3/PwtASSHk7paIMSYXb28skA=;
+	s=korg; t=1729506830;
+	bh=+Km6Vz2OOZ9ZXpn2bGp+6xFjnuIqsiJys/xqkar7feU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m9SFMuHaNrWn8o3kJCrkh56FwIFHhYoJCyeKsYIyM5bMuCEePwy+nfzbNDHXECgKX
-	 GrVaygQG5ENFMKU0NH5puQD68o5BmbuTTmG3hpxJhEgroF6k833WMUZDX++73FMT2Q
-	 fmPqw3bgpZBcbtP8LUDTw/mOTGSeLFh66UQOyKb4=
+	b=bT4tcnYfPrql5Egkyqi77fcRxjx/rXxHybvl7u3TVFuqF3Slc1jCOofyzm5BWoRh7
+	 smAe+gf5rXSDKNwXaupeHGmobcgBX6ybwpHeY5MGohpfDdKG8GZtIhDms7Y6D/1nKf
+	 xFPXpqPpE+53CB1/yV6lJfSw895YGn+DqwKEBN30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.15 09/82] udf: Convert udf_lookup() to use new directory iteration code
+	Chris Li <chrisl@kernel.org>,
+	Yu Zhao <yuzhao@google.com>,
+	Hugh Dickins <hughd@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.11 134/135] mm: vmscan.c: fix OOM on swap stress test
 Date: Mon, 21 Oct 2024 12:24:50 +0200
-Message-ID: <20241021102247.591708512@linuxfoundation.org>
+Message-ID: <20241021102304.593567247@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Chris Li <chrisl@kernel.org>
 
-[ Upstream commit 200918b34d158cdaee531db7e0c80b92c57e66f1 ]
+commit 0885ef4705607936fc36a38fd74356e1c465b023 upstream.
 
-Convert udf_lookup() to use udf_fiiter_find_entry() for looking up
-directory entries.
+I found a regression on mm-unstable during my swap stress test, using
+tmpfs to compile linux.  The test OOM very soon after the make spawns many
+cc processes.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+It bisects down to this change: 33dfe9204f29b415bbc0abb1a50642d1ba94f5e9
+(mm/gup: clear the LRU flag of a page before adding to LRU batch)
+
+Yu Zhao propose the fix: "I think this is one of the potential side
+effects -- Huge mentioned earlier about isolate_lru_folios():"
+
+I test that with it the swap stress test no longer OOM.
+
+Link: https://lore.kernel.org/r/CAOUHufYi9h0kz5uW3LHHS3ZrVwEq-kKp8S6N-MZUmErNAXoXmw@mail.gmail.com/
+Link: https://lkml.kernel.org/r/20240905-lru-flag-v2-1-8a2d9046c594@kernel.org
+Fixes: 33dfe9204f29 ("mm/gup: clear the LRU flag of a page before adding to LRU batch")
+Signed-off-by: Chris Li <chrisl@kernel.org>
+Suggested-by: Yu Zhao <yuzhao@google.com>
+Suggested-by: Hugh Dickins <hughd@google.com>
+Closes: https://lore.kernel.org/all/CAF8kJuNP5iTj2p07QgHSGOJsiUfYpJ2f4R1Q5-3BN9JiD9W_KA@mail.gmail.com/
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/namei.c |   19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ mm/vmscan.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/udf/namei.c
-+++ b/fs/udf/namei.c
-@@ -366,25 +366,22 @@ static struct dentry *udf_lookup(struct
- 				 unsigned int flags)
- {
- 	struct inode *inode = NULL;
--	struct fileIdentDesc cfi;
--	struct udf_fileident_bh fibh;
--	struct fileIdentDesc *fi;
-+	struct udf_fileident_iter iter;
-+	int err;
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4300,7 +4300,7 @@ static bool sort_folio(struct lruvec *lr
+ 	}
  
- 	if (dentry->d_name.len > UDF_NAME_LEN)
- 		return ERR_PTR(-ENAMETOOLONG);
- 
--	fi = udf_find_entry(dir, &dentry->d_name, &fibh, &cfi);
--	if (IS_ERR(fi))
--		return ERR_CAST(fi);
-+	err = udf_fiiter_find_entry(dir, &dentry->d_name, &iter);
-+	if (err < 0 && err != -ENOENT)
-+		return ERR_PTR(err);
- 
--	if (fi) {
-+	if (err == 0) {
- 		struct kernel_lb_addr loc;
- 
--		if (fibh.sbh != fibh.ebh)
--			brelse(fibh.ebh);
--		brelse(fibh.sbh);
-+		loc = lelb_to_cpu(iter.fi.icb.extLocation);
-+		udf_fiiter_release(&iter);
- 
--		loc = lelb_to_cpu(cfi.icb.extLocation);
- 		inode = udf_iget(dir->i_sb, &loc);
- 		if (IS_ERR(inode))
- 			return ERR_CAST(inode);
+ 	/* ineligible */
+-	if (zone > sc->reclaim_idx) {
++	if (!folio_test_lru(folio) || zone > sc->reclaim_idx) {
+ 		gen = folio_inc_gen(lruvec, folio, false);
+ 		list_move_tail(&folio->lru, &lrugen->folios[gen][type][zone]);
+ 		return true;
 
 
 
