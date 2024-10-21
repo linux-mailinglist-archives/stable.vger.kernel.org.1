@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-87481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287549A6523
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:54:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4CA9A64B0
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:49:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1A74282AA6
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:54:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 486611F218B7
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA501EF95D;
-	Mon, 21 Oct 2024 10:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 911C01E5737;
+	Mon, 21 Oct 2024 10:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kIer0lfX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nVNLkkKR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 017451EABB6;
-	Mon, 21 Oct 2024 10:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498391E32B1;
+	Mon, 21 Oct 2024 10:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507733; cv=none; b=dy+FMd2jjRDv6igENNgypZ+iJGQJOHERbWQ3RSLyten3QDYKWydlDlHp+O8WmQXmKpsh2yyLJqkgCmP81abQap8pfi/eiKA3qwWDUdvELp/rb+qx73U6zDhepm56hHrx1UFwkNGz1tnY8z6CdPO4jgrwqVZCEU3/jxHct8UUAvQ=
+	t=1729507448; cv=none; b=Uy3juPz9RVsCy7x0jfsyDUTb7o0lW9LA/F7U1CXD9/dD+J66UloypvejZkX5AXwhGrfYGsRbLuAE+qB+i+DmQW6hCmAne1IAnPciIcFqKfwxVmTXeB/xAKZsZUjv2V/jT3K/PeeU/pvPK8Im+S1OaK2izE1bICupyzfd/BtWDSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507733; c=relaxed/simple;
-	bh=mUVwBKl+f07PcEAIGfO2zSOkL6s0CAvHQ0JB1FOy6wI=;
+	s=arc-20240116; t=1729507448; c=relaxed/simple;
+	bh=NrmSnASakjSdDst1xf6V1jeo4IHxfztWsf3LOycECU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EZ28Wo475mWZBWVV7nVl1LWHAwvRwb2xUw/salrr2HtZm3pPcnOweHj+8H+wg5622aE5fUT6WGYempuUjIsqxxTGMOASBocOj0iRVkgOT+PpLn94RcOjswJ3pKsEVl81hQqQjjt57JK6mFhZLDOuuZdjjSipAAcH22a1OtqSSRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kIer0lfX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F59C4CEC3;
-	Mon, 21 Oct 2024 10:48:52 +0000 (UTC)
+	 MIME-Version; b=Q6+nNLx7a1sJcg69ONVwmN93j1qm86ZoK01L1y2K1jWNiAJfvl8AM4cHS2dEM1YfeLNYsBpogdcmWw4Rlw1LVfzzZJz4x2j/eF3qIgtjYAu9VViXieBpEHc4sVsnQejdoIKh8Uve69tsl6mAIYjzhP7w1rEsxrBKBUxipDGGRn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nVNLkkKR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDFEFC4CEC3;
+	Mon, 21 Oct 2024 10:44:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507732;
-	bh=mUVwBKl+f07PcEAIGfO2zSOkL6s0CAvHQ0JB1FOy6wI=;
+	s=korg; t=1729507448;
+	bh=NrmSnASakjSdDst1xf6V1jeo4IHxfztWsf3LOycECU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kIer0lfXR8IeYY803Im2+OK/32xyOv+H3d/llSdwnEW3xC7/I+7gSvh3rOe4obgaz
-	 rF3yweeIEtDLAnwBbeIQyBAz0r9qRIutZ4H0KY+lHHWjDna92I1qilDjWzbCfA7aHX
-	 BhGMbtD0w0f2JLbnLa7jBRNzwT6GrKa+kQxkC5u8=
+	b=nVNLkkKRAr2SALbHJePtk68SB0IRUlUmnhNDWDlZiskhfZbRgC1FFGjnNPIkGtRgQ
+	 pVF/PX3XCuk5jhar2pC0G963YNCh/f2/5Tc7NPtR91eX2x6jp00q+5iBnpc5pwAD1N
+	 Hwr0Xf90Pa2kCPDcNyFnJ4Pw9IYASZZB4YSdZyPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 52/82] iio: dac: ltc1660: add missing select REGMAP_SPI in Kconfig
-Date: Mon, 21 Oct 2024 12:25:33 +0200
-Message-ID: <20241021102249.294565227@linuxfoundation.org>
+	Jari Ruusu <jariruusu@protonmail.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 6.1 80/91] x86/entry_32: Do not clobber user EFLAGS.ZF
+Date: Mon, 21 Oct 2024 12:25:34 +0200
+Message-ID: <20241021102252.936320978@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-commit 252ff06a4cb4e572cb3c7fcfa697db96b08a7781 upstream.
+commit 2e2e5143d4868163d6756c8c6a4d28cbfa5245e5 upstream.
 
-This driver makes use of regmap_spi, but does not select the required
-module.
-Add the missing 'select REGMAP_SPI'.
+Opportunistic SYSEXIT executes VERW to clear CPU buffers after user EFLAGS
+are restored. This can clobber user EFLAGS.ZF.
 
-Fixes: 8316cebd1e59 ("iio: dac: add support for ltc1660")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241003-ad2s1210-select-v1-7-4019453f8c33@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Move CLEAR_CPU_BUFFERS before the user EFLAGS are restored. This ensures
+that the user EFLAGS.ZF is not clobbered.
+
+Closes: https://lore.kernel.org/lkml/yVXwe8gvgmPADpRB6lXlicS2fcHoV5OHHxyuFbB_MEleRPD7-KhGe5VtORejtPe-KCkT8Uhcg5d7-IBw4Ojb4H7z5LQxoZylSmJ8KNL3A8o=@protonmail.com/
+Fixes: a0e2dab44d22 ("x86/entry_32: Add VERW just before userspace transition")
+Reported-by: Jari Ruusu <jariruusu@protonmail.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240925-fix-dosemu-vm86-v7-1-1de0daca2d42%40linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/entry/entry_32.S |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/dac/Kconfig
-+++ b/drivers/iio/dac/Kconfig
-@@ -284,6 +284,7 @@ config LPC18XX_DAC
- config LTC1660
- 	tristate "Linear Technology LTC1660/LTC1665 DAC SPI driver"
- 	depends on SPI
-+	select REGMAP_SPI
- 	help
- 	  Say yes here to build support for Linear Technology
- 	  LTC1660 and LTC1665 Digital to Analog Converters.
+--- a/arch/x86/entry/entry_32.S
++++ b/arch/x86/entry/entry_32.S
+@@ -902,6 +902,8 @@ SYM_FUNC_START(entry_SYSENTER_32)
+ 
+ 	/* Now ready to switch the cr3 */
+ 	SWITCH_TO_USER_CR3 scratch_reg=%eax
++	/* Clobbers ZF */
++	CLEAR_CPU_BUFFERS
+ 
+ 	/*
+ 	 * Restore all flags except IF. (We restore IF separately because
+@@ -912,7 +914,6 @@ SYM_FUNC_START(entry_SYSENTER_32)
+ 	BUG_IF_WRONG_CR3 no_user_check=1
+ 	popfl
+ 	popl	%eax
+-	CLEAR_CPU_BUFFERS
+ 
+ 	/*
+ 	 * Return back to the vDSO, which will pop ecx and edx.
 
 
 
