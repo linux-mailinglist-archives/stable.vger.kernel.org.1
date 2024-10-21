@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-87435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85F359A64F4
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8EE89A649F
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:48:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 324201F21B54
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A96892807F3
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:48:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F8E1EABA1;
-	Mon, 21 Oct 2024 10:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40AA1F12F7;
+	Mon, 21 Oct 2024 10:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qwegCovl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VthM5BmQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05CB1E3764;
-	Mon, 21 Oct 2024 10:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6BF1953B9;
+	Mon, 21 Oct 2024 10:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507598; cv=none; b=gOGAY2G2RfGcWjtT4SHhPLCMUFxm6/4nmG9+INSGFIKb2pKSG48fxwWXF1kAlyDyrv2dqI1DjEAOX/C4iFhz8u3I0Ge/QByl2X05OrHBrMuVMAVvEUxfBzGEM+DfhXgUWl4cMZZiuhBefME7idagJxL3CU2wny+HMPFBsX69sXg=
+	t=1729507400; cv=none; b=JERRKiXe44cZdWxB5imCJnxIuPSNNIrlwAeHmHNBofBXZyTHLoxbW8ar04gFezI2Cz+50MQmp8AlN8kJappunFKkYNjMT9/4Tqjk5pukPG8jbjY5csY9J4jIq/zJT1kfjAo3UtcowDF/EkNFKji2hg7RQnKoIdrN14Ka5PTgtxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507598; c=relaxed/simple;
-	bh=KWgyUB7bd9FULWENG1+ADu5KIMhFVvAtS873MUJGICA=;
+	s=arc-20240116; t=1729507400; c=relaxed/simple;
+	bh=VXDUbLEezxym7njxiyf33xCRnjUvuDinXepj+WVr1vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M55/e4/WXcjv7rr37C+j+NbBQdDKHJXG3Ul68OWOYXlxxwOsggmNk5vM4fDyIRJ+YOW7/TDLeseCVdT7TLfIctWY/1jcFq+oMS+0h05HsfXNd9ZkACROIiqvuQZOI0RrFfLdrVCoK91DCz1eiLdAjh6ga6dQIhN59o4Dv0TTo7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qwegCovl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63891C4CEC3;
-	Mon, 21 Oct 2024 10:46:37 +0000 (UTC)
+	 MIME-Version; b=MaQ9xDnqiGEKJIVZnA4VuSDtbpabDxS9BKs3WOov8sO/yZAas6he/8A/cJH0NY/m92YJINwhQARujperhyXb0F98WJphryjJFbSfbe3q/MxJuJ4jDyeemin3gXL7YR+wgoL0QYgYJHoqDNnd0/5NlYvRyLuCyAFvmcJjy8/87zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VthM5BmQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA974C4CEE5;
+	Mon, 21 Oct 2024 10:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507597;
-	bh=KWgyUB7bd9FULWENG1+ADu5KIMhFVvAtS873MUJGICA=;
+	s=korg; t=1729507400;
+	bh=VXDUbLEezxym7njxiyf33xCRnjUvuDinXepj+WVr1vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qwegCovlRCx0o+vFpo6KXj6oLkbf8LuS6GqQCGQbLeO5LyigscLE6fG43HD1pTnqe
-	 YvhyyGfNbvY0YoeCYCX6C3MRfY17GDQJYN8zIXEHh8Yb2KlgW/xlEGyaSRHpBFUv1K
-	 twq0Gw+UgIeLtPyoHEx/MtSRxea8iY1CTlCKsXUs=
+	b=VthM5BmQp5UUuocpYpPx0unlBVxVdzJ6J9zxBVprQpH+y6MY4AiN53cae9hi70XMf
+	 PEVL/jZp+w9NM54OU6XqShGnmDYqAyNoF/IVb8qBE38GgN0g2+LhLlUo8uOwazW15Y
+	 Mfi2gqViDuNywc9lnUS3qkQtKBKxP5oqEu+D750g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Moessbauer <felix.moessbauer@siemens.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.15 38/82] io_uring/sqpoll: do not put cpumask on stack
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 65/91] iio: proximity: mb1232: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
 Date: Mon, 21 Oct 2024 12:25:19 +0200
-Message-ID: <20241021102248.748744278@linuxfoundation.org>
+Message-ID: <20241021102252.353335926@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Moessbauer <felix.moessbauer@siemens.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 7f44beadcc11adb98220556d2ddbe9c97aa6d42d upstream.
+commit 75461a0b15d7c026924d0001abce0476bbc7eda8 upstream.
 
-Putting the cpumask on the stack is deprecated for a long time (since
-2d3854a37e8), as these can be big. Given that, change the on-stack
-allocation of allowed_mask to be dynamically allocated.
+This driver makes use of triggered buffers, but does not select the
+required modules.
 
-Fixes: f011c9cf04c0 ("io_uring/sqpoll: do not allow pinning outside of cpuset")
-Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
-Link: https://lore.kernel.org/r/20240916111150.1266191-1-felix.moessbauer@siemens.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
+
+Fixes: 16b05261537e ("mb1232.c: add distance iio sensor with i2c")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241003-iio-select-v1-13-67c0385197cd@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/iio/proximity/Kconfig |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -8747,15 +8747,22 @@ static int io_sq_offload_create(struct i
- 			return 0;
- 
- 		if (p->flags & IORING_SETUP_SQ_AFF) {
--			struct cpumask allowed_mask;
-+			cpumask_var_t allowed_mask;
- 			int cpu = p->sq_thread_cpu;
- 
- 			ret = -EINVAL;
- 			if (cpu >= nr_cpu_ids || !cpu_online(cpu))
- 				goto err_sqpoll;
--			cpuset_cpus_allowed(current, &allowed_mask);
--			if (!cpumask_test_cpu(cpu, &allowed_mask))
-+			ret = -ENOMEM;
-+			if (!alloc_cpumask_var(&allowed_mask, GFP_KERNEL))
- 				goto err_sqpoll;
-+			ret = -EINVAL;
-+			cpuset_cpus_allowed(current, allowed_mask);
-+			if (!cpumask_test_cpu(cpu, allowed_mask)) {
-+				free_cpumask_var(allowed_mask);
-+				goto err_sqpoll;
-+			}
-+			free_cpumask_var(allowed_mask);
- 			sqd->sq_cpu = cpu;
- 		} else {
- 			sqd->sq_cpu = -1;
+--- a/drivers/iio/proximity/Kconfig
++++ b/drivers/iio/proximity/Kconfig
+@@ -60,6 +60,8 @@ config LIDAR_LITE_V2
+ config MB1232
+ 	tristate "MaxSonar I2CXL family ultrasonic sensors"
+ 	depends on I2C
++	select IIO_BUFFER
++	select IIO_TRIGGERED_BUFFER
+ 	help
+ 	  Say Y to build a driver for the ultrasonic sensors I2CXL of
+ 	  MaxBotix which have an i2c interface. It can be used to measure
 
 
 
