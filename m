@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-87325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE4BA9A6472
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:47:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BD859A637C
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 295721C20B8B
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:47:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B8FCB27673
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED671EF93C;
-	Mon, 21 Oct 2024 10:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7DB1E8831;
+	Mon, 21 Oct 2024 10:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJRH1o90"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPHh7mlq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263581E907A;
-	Mon, 21 Oct 2024 10:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D7416F27E;
+	Mon, 21 Oct 2024 10:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507268; cv=none; b=KyGM7NTDAVnpJHZprMbksx9mzJktHhf2bmkGFx7Nm08Yzl1RBpvHldUx6YZyZJnexJ0YMnVG67LuXTmI5SmIdBhX9IR1WmQuN4X7TGe50H6mBBlVVbAMLVF+cnyncUI3X1Iqke2XPPwY+q5SSsuQNfuvUCXlTaCl+uIKRDJkZ2k=
+	t=1729506776; cv=none; b=qyYviE+XcJyJxy+y7moKDnb50nP1Xm1VAfpOv7ke6iyZBqbyQGktxeNrBzWmoB0KCPdUX730qEJrgRm25pB7eQD76/6BtJwO/DI9ovqMfFrKc9sZDJ/b1UyRe4vpfgJpCv+CZV4K2OZYTXztx33X5MLVCJYd6XMsiU1z/rTSKTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507268; c=relaxed/simple;
-	bh=3e0D15UGrqcXec1XKzJ+fVHOzrtzCLIjmPbqb0krx5A=;
+	s=arc-20240116; t=1729506776; c=relaxed/simple;
+	bh=f1sGoijTpFN6xU5k6OC4r/LO0pAjO3AUH/TU6zER6QU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gwwcU8xeD4FAr+4BfSHzg2dAp1jZ3KDd2+ztdNL1O/z25VVgBFtol9zKH2bCFCJWqFOAG8mdOCxDJiQQML26nwaZAReuK62JUej2L0skOiv5OlMD/s0Ae/glyFOWLTpqiMODzcDKkfzOBqWpRsILBwRu8HI/oeWVgXhXuz7cHyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJRH1o90; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53194C4CEC7;
-	Mon, 21 Oct 2024 10:41:07 +0000 (UTC)
+	 MIME-Version; b=BlC+AQ9wHx4dVEt83/6f3s497ggAAyl11RFuY0wFw6RKRQXH41wJDGmlZkwl3zeetBjRMDPU/F9H0ZOCakgGOlFnCbHASUC/55BCy7qWJ2fojBrT04sXBi8507n5zVTu2Z2jNK/tX0tYotWavQ/X/0LX6qsjRXkb3fcg9PryBwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fPHh7mlq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56F96C4CEC3;
+	Mon, 21 Oct 2024 10:32:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507267;
-	bh=3e0D15UGrqcXec1XKzJ+fVHOzrtzCLIjmPbqb0krx5A=;
+	s=korg; t=1729506775;
+	bh=f1sGoijTpFN6xU5k6OC4r/LO0pAjO3AUH/TU6zER6QU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hJRH1o90Iv2KF79/mfT5VYSOmwyyZrfpPLOXJsScJ0x+FRkrYT1ygVIJ3ypgh2BfG
-	 5IL8fBBHaOQyLqn76A/1AkxUaAB8Rfqp3VRgc6QZLqCAwbOucMNiesp2Gi41/xr1GH
-	 4RewhhyMHxs9xNy71bysr3qkR+9OKZ/l88Vs4fTo=
+	b=fPHh7mlqzfv4Jz0MS0LfBSlE1TmTjZVBXZQJn8vEvbrzWsFvpi3pjgSQy5gG5uGu9
+	 I9pyswHR6G3fmNksZtej2Z+LxHtVdj8fsLVmCZwdgIkz4T5nuUD5ScUGttelvWF8X/
+	 ls8u8nv2Ezkke+G1wYz/XCAR/pcW1j8Y9mcdLNeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 6.1 20/91] udf: Convert udf_mkdir() to new directory iteration code
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Subject: [PATCH 6.11 118/135] x86/entry_32: Clear CPU buffers after register restore in NMI return
 Date: Mon, 21 Oct 2024 12:24:34 +0200
-Message-ID: <20241021102250.606209106@linuxfoundation.org>
+Message-ID: <20241021102303.945289737@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,103 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-[ Upstream commit 00bce6f792caccefa73daeaf9bde82d24d50037f ]
+commit 48a2440d0f20c826b884e04377ccc1e4696c84e9 upstream.
 
-Convert udf_mkdir() to new directory iteration code.
+CPU buffers are currently cleared after call to exc_nmi, but before
+register state is restored. This may be okay for MDS mitigation but not for
+RDFS. Because RDFS mitigation requires CPU buffers to be cleared when
+registers don't have any sensitive data.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Move CLEAR_CPU_BUFFERS after RESTORE_ALL_NMI.
+
+Fixes: a0e2dab44d22 ("x86/entry_32: Add VERW just before userspace transition")
+Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240925-fix-dosemu-vm86-v7-2-1de0daca2d42%40linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/namei.c |   48 +++++++++++++++++++++---------------------------
- 1 file changed, 21 insertions(+), 27 deletions(-)
+ arch/x86/entry/entry_32.S |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/udf/namei.c
-+++ b/fs/udf/namei.c
-@@ -928,8 +928,7 @@ static int udf_mkdir(struct user_namespa
- 		     struct dentry *dentry, umode_t mode)
- {
- 	struct inode *inode;
--	struct udf_fileident_bh fibh;
--	struct fileIdentDesc cfi, *fi;
-+	struct udf_fileident_iter iter;
- 	int err;
- 	struct udf_inode_info *dinfo = UDF_I(dir);
- 	struct udf_inode_info *iinfo;
-@@ -941,47 +940,42 @@ static int udf_mkdir(struct user_namespa
- 	iinfo = UDF_I(inode);
- 	inode->i_op = &udf_dir_inode_operations;
- 	inode->i_fop = &udf_dir_operations;
--	fi = udf_add_entry(inode, NULL, &fibh, &cfi, &err);
--	if (!fi) {
--		inode_dec_link_count(inode);
-+	err = udf_fiiter_add_entry(inode, NULL, &iter);
-+	if (err) {
-+		clear_nlink(inode);
- 		discard_new_inode(inode);
--		goto out;
-+		return err;
- 	}
- 	set_nlink(inode, 2);
--	cfi.icb.extLength = cpu_to_le32(inode->i_sb->s_blocksize);
--	cfi.icb.extLocation = cpu_to_lelb(dinfo->i_location);
--	*(__le32 *)((struct allocDescImpUse *)cfi.icb.impUse)->impUse =
-+	iter.fi.icb.extLength = cpu_to_le32(inode->i_sb->s_blocksize);
-+	iter.fi.icb.extLocation = cpu_to_lelb(dinfo->i_location);
-+	*(__le32 *)((struct allocDescImpUse *)iter.fi.icb.impUse)->impUse =
- 		cpu_to_le32(dinfo->i_unique & 0x00000000FFFFFFFFUL);
--	cfi.fileCharacteristics =
-+	iter.fi.fileCharacteristics =
- 			FID_FILE_CHAR_DIRECTORY | FID_FILE_CHAR_PARENT;
--	udf_write_fi(inode, &cfi, fi, &fibh, NULL, NULL);
--	brelse(fibh.sbh);
-+	udf_fiiter_write_fi(&iter, NULL);
-+	udf_fiiter_release(&iter);
- 	mark_inode_dirty(inode);
+--- a/arch/x86/entry/entry_32.S
++++ b/arch/x86/entry/entry_32.S
+@@ -1145,7 +1145,6 @@ SYM_CODE_START(asm_exc_nmi)
  
--	fi = udf_add_entry(dir, dentry, &fibh, &cfi, &err);
--	if (!fi) {
-+	err = udf_fiiter_add_entry(dir, dentry, &iter);
-+	if (err) {
- 		clear_nlink(inode);
--		mark_inode_dirty(inode);
- 		discard_new_inode(inode);
--		goto out;
-+		return err;
- 	}
--	cfi.icb.extLength = cpu_to_le32(inode->i_sb->s_blocksize);
--	cfi.icb.extLocation = cpu_to_lelb(iinfo->i_location);
--	*(__le32 *)((struct allocDescImpUse *)cfi.icb.impUse)->impUse =
-+	iter.fi.icb.extLength = cpu_to_le32(inode->i_sb->s_blocksize);
-+	iter.fi.icb.extLocation = cpu_to_lelb(iinfo->i_location);
-+	*(__le32 *)((struct allocDescImpUse *)iter.fi.icb.impUse)->impUse =
- 		cpu_to_le32(iinfo->i_unique & 0x00000000FFFFFFFFUL);
--	cfi.fileCharacteristics |= FID_FILE_CHAR_DIRECTORY;
--	udf_write_fi(dir, &cfi, fi, &fibh, NULL, NULL);
-+	iter.fi.fileCharacteristics |= FID_FILE_CHAR_DIRECTORY;
-+	udf_fiiter_write_fi(&iter, NULL);
-+	udf_fiiter_release(&iter);
- 	inc_nlink(dir);
- 	dir->i_ctime = dir->i_mtime = current_time(dir);
- 	mark_inode_dirty(dir);
- 	d_instantiate_new(dentry, inode);
--	if (fibh.sbh != fibh.ebh)
--		brelse(fibh.ebh);
--	brelse(fibh.sbh);
--	err = 0;
+ 	/* Not on SYSENTER stack. */
+ 	call	exc_nmi
+-	CLEAR_CPU_BUFFERS
+ 	jmp	.Lnmi_return
  
--out:
--	return err;
-+	return 0;
- }
+ .Lnmi_from_sysenter_stack:
+@@ -1166,6 +1165,7 @@ SYM_CODE_START(asm_exc_nmi)
  
- static int empty_dir(struct inode *dir)
+ 	CHECK_AND_APPLY_ESPFIX
+ 	RESTORE_ALL_NMI cr3_reg=%edi pop=4
++	CLEAR_CPU_BUFFERS
+ 	jmp	.Lirq_return
+ 
+ #ifdef CONFIG_X86_ESPFIX32
+@@ -1207,6 +1207,7 @@ SYM_CODE_START(asm_exc_nmi)
+ 	 *  1 - orig_ax
+ 	 */
+ 	lss	(1+5+6)*4(%esp), %esp			# back to espfix stack
++	CLEAR_CPU_BUFFERS
+ 	jmp	.Lirq_return
+ #endif
+ SYM_CODE_END(asm_exc_nmi)
 
 
 
