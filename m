@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-87193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E60A49A63CD
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:39:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 169419A630C
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:30:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1DA2B28A5B
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AF4D1C204F5
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:30:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226231E5019;
-	Mon, 21 Oct 2024 10:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714051E47B9;
+	Mon, 21 Oct 2024 10:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjhCZKSo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khqziLQP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67851E5730;
-	Mon, 21 Oct 2024 10:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288DF1E3787;
+	Mon, 21 Oct 2024 10:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506872; cv=none; b=r5Zgi7WNC4jnILHFbnbOFHPDGqOuEPQca011y/I6Mm5give72yJs6QNFd6r5RGVnU2EImGVuHV5YmaGrnQoPMx8aLM6mj64NAfW08mh00itaMMV58dsPomQNP7i9qMg0LVE6AYvXm6XrwKk3Pv8IjVIe/QkRvrCIXLG67UvWltg=
+	t=1729506611; cv=none; b=gpX6A4U7hNGOy7Wqsl3RRoe3pZcqAMIc+1nkJL0zruu50W5ivXEBb/SB5bR6HICki6E1vBQ25Og6XdQPlas2Vaakk+JBsQGkEVxG3Om9OVcKd2oJ5IbEWVGTdkn6EVxwWjr1WJ0MzELOT9O3yS7NxnISR2vrYusUZXS/10VAqac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506872; c=relaxed/simple;
-	bh=XbJf0QekIs4hWpVNEk6zlwp2mdfgxNXFxdCsPKxm9Ns=;
+	s=arc-20240116; t=1729506611; c=relaxed/simple;
+	bh=THk2odyZgx46c+ylFziFfLGFUmE0jzErtXvtqs5BDa0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FXCPGwb8E/E0ZsBDV73OgeNnv8QZrkZ6DXsQ544M/4TYAEfahM0/pHQokghOqrksKRyfVEalv1LSBIWMPUJ+B6ugPbdNsBVlz1G5xucOHnIyzu9afxUJ8TjTY370DDvDn/l5NLEnE6cf2itwZfCajQZdzYFow7E+ypdWwQFBYH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjhCZKSo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BBCC4CEC3;
-	Mon, 21 Oct 2024 10:34:32 +0000 (UTC)
+	 MIME-Version; b=oT8ZYNfNxexdWE+/2+LSZZbnDHmMIHLQHicRRaYDoZ60UuwI0MoymZrksnzRun635PTddXNhqeUWEB8ap9fpaZvfJ19VDcPh/F0a8ajp0+Pbjp3/5qNkxu6KdbU4FYPKEg/j8eGUpx65LogXAojI+++AHED2id+QW4v2WAqK3Xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khqziLQP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B7A6C4CEC3;
+	Mon, 21 Oct 2024 10:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506872;
-	bh=XbJf0QekIs4hWpVNEk6zlwp2mdfgxNXFxdCsPKxm9Ns=;
+	s=korg; t=1729506611;
+	bh=THk2odyZgx46c+ylFziFfLGFUmE0jzErtXvtqs5BDa0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TjhCZKSoqfnHZYcCjvt8kNwFPIm1V42f9rg5qBZGFyI5uZntEf4Cde3uzzWI3qyXT
-	 1BorqH/c32uBt3j3cYGyejZ+LK8Tn71fIxN73lYqpYMhP+ejsSYNHCZoOdaxW3BZZX
-	 0UY0kVg7DZfuVPBj/q89SbIzBBQfgWIsS1fXvywg=
+	b=khqziLQPCOULDgAE6kwStypcIrqQK/SSGpHcTBH5gfBM0EthxC+Z1WDJUk6fFcEEr
+	 HjE+xKMpi2OWqGxwx/yvWxOKovT1lIayR5lF/fjkviZMrEdBmxTy16+HnSWhfHGt4D
+	 8MXZIb+qA5iH0riCjyzIT9p8cGKayRXZjeVtsbiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.6 014/124] arm64: probes: Fix uprobes for big-endian kernels
+	Matthew Auld <matthew.auld@intel.com>,
+	Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.11 062/135] drm/xe/xe_sync: initialise ufence.signalled
 Date: Mon, 21 Oct 2024 12:23:38 +0200
-Message-ID: <20241021102257.273975242@linuxfoundation.org>
+Message-ID: <20241021102301.754133877@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,174 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-commit 13f8f1e05f1dc36dbba6cba0ae03354c0dafcde7 upstream.
+commit 816b186ce2e87df7c7ead4ad44f70f3b10a04c91 upstream.
 
-The arm64 uprobes code is broken for big-endian kernels as it doesn't
-convert the in-memory instruction encoding (which is always
-little-endian) into the kernel's native endianness before analyzing and
-simulating instructions. This may result in a few distinct problems:
+We can incorrectly think that the fence has signalled, if we get a
+non-zero value here from the kmalloc, which is quite plausible. Just use
+kzalloc to prevent stuff like this.
 
-* The kernel may may erroneously reject probing an instruction which can
-  safely be probed.
-
-* The kernel may erroneously erroneously permit stepping an
-  instruction out-of-line when that instruction cannot be stepped
-  out-of-line safely.
-
-* The kernel may erroneously simulate instruction incorrectly dur to
-  interpretting the byte-swapped encoding.
-
-The endianness mismatch isn't caught by the compiler or sparse because:
-
-* The arch_uprobe::{insn,ixol} fields are encoded as arrays of u8, so
-  the compiler and sparse have no idea these contain a little-endian
-  32-bit value. The core uprobes code populates these with a memcpy()
-  which similarly does not handle endianness.
-
-* While the uprobe_opcode_t type is an alias for __le32, both
-  arch_uprobe_analyze_insn() and arch_uprobe_skip_sstep() cast from u8[]
-  to the similarly-named probe_opcode_t, which is an alias for u32.
-  Hence there is no endianness conversion warning.
-
-Fix this by changing the arch_uprobe::{insn,ixol} fields to __le32 and
-adding the appropriate __le32_to_cpu() conversions prior to consuming
-the instruction encoding. The core uprobes copies these fields as opaque
-ranges of bytes, and so is unaffected by this change.
-
-At the same time, remove MAX_UINSN_BYTES and consistently use
-AARCH64_INSN_SIZE for clarity.
-
-Tested with the following:
-
-| #include <stdio.h>
-| #include <stdbool.h>
-|
-| #define noinline __attribute__((noinline))
-|
-| static noinline void *adrp_self(void)
-| {
-|         void *addr;
-|
-|         asm volatile(
-|         "       adrp    %x0, adrp_self\n"
-|         "       add     %x0, %x0, :lo12:adrp_self\n"
-|         : "=r" (addr));
-| }
-|
-|
-| int main(int argc, char *argv)
-| {
-|         void *ptr = adrp_self();
-|         bool equal = (ptr == adrp_self);
-|
-|         printf("adrp_self   => %p\n"
-|                "adrp_self() => %p\n"
-|                "%s\n",
-|                adrp_self, ptr, equal ? "EQUAL" : "NOT EQUAL");
-|
-|         return 0;
-| }
-
-.... where the adrp_self() function was compiled to:
-
-| 00000000004007e0 <adrp_self>:
-|   4007e0:       90000000        adrp    x0, 400000 <__ehdr_start>
-|   4007e4:       911f8000        add     x0, x0, #0x7e0
-|   4007e8:       d65f03c0        ret
-
-Before this patch, the ADRP is not recognized, and is assumed to be
-steppable, resulting in corruption of the result:
-
-| # ./adrp-self
-| adrp_self   => 0x4007e0
-| adrp_self() => 0x4007e0
-| EQUAL
-| # echo 'p /root/adrp-self:0x007e0' > /sys/kernel/tracing/uprobe_events
-| # echo 1 > /sys/kernel/tracing/events/uprobes/enable
-| # ./adrp-self
-| adrp_self   => 0x4007e0
-| adrp_self() => 0xffffffffff7e0
-| NOT EQUAL
-
-After this patch, the ADRP is correctly recognized and simulated:
-
-| # ./adrp-self
-| adrp_self   => 0x4007e0
-| adrp_self() => 0x4007e0
-| EQUAL
-| #
-| # echo 'p /root/adrp-self:0x007e0' > /sys/kernel/tracing/uprobe_events
-| # echo 1 > /sys/kernel/tracing/events/uprobes/enable
-| # ./adrp-self
-| adrp_self   => 0x4007e0
-| adrp_self() => 0x4007e0
-| EQUAL
-
-Fixes: 9842ceae9fa8 ("arm64: Add uprobe support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20241008155851.801546-4-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 977e5b82e090 ("drm/xe: Expose user fence from xe_sync_entry")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Cc: <stable@vger.kernel.org> # v6.10+
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241011133633.388008-2-matthew.auld@intel.com
+(cherry picked from commit 26f69e88dcc95fffc62ed2aea30ad7b1fdf31fdb)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/uprobes.h   |    8 +++-----
- arch/arm64/kernel/probes/uprobes.c |    4 ++--
- 2 files changed, 5 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/xe/xe_sync.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/include/asm/uprobes.h
-+++ b/arch/arm64/include/asm/uprobes.h
-@@ -10,11 +10,9 @@
- #include <asm/insn.h>
- #include <asm/probes.h>
+diff --git a/drivers/gpu/drm/xe/xe_sync.c b/drivers/gpu/drm/xe/xe_sync.c
+index bb3c2a830362..c6cf227ead40 100644
+--- a/drivers/gpu/drm/xe/xe_sync.c
++++ b/drivers/gpu/drm/xe/xe_sync.c
+@@ -58,7 +58,7 @@ static struct xe_user_fence *user_fence_create(struct xe_device *xe, u64 addr,
+ 	if (!access_ok(ptr, sizeof(*ptr)))
+ 		return ERR_PTR(-EFAULT);
  
--#define MAX_UINSN_BYTES		AARCH64_INSN_SIZE
--
- #define UPROBE_SWBP_INSN	cpu_to_le32(BRK64_OPCODE_UPROBES)
- #define UPROBE_SWBP_INSN_SIZE	AARCH64_INSN_SIZE
--#define UPROBE_XOL_SLOT_BYTES	MAX_UINSN_BYTES
-+#define UPROBE_XOL_SLOT_BYTES	AARCH64_INSN_SIZE
+-	ufence = kmalloc(sizeof(*ufence), GFP_KERNEL);
++	ufence = kzalloc(sizeof(*ufence), GFP_KERNEL);
+ 	if (!ufence)
+ 		return ERR_PTR(-ENOMEM);
  
- typedef __le32 uprobe_opcode_t;
- 
-@@ -23,8 +21,8 @@ struct arch_uprobe_task {
- 
- struct arch_uprobe {
- 	union {
--		u8 insn[MAX_UINSN_BYTES];
--		u8 ixol[MAX_UINSN_BYTES];
-+		__le32 insn;
-+		__le32 ixol;
- 	};
- 	struct arch_probe_insn api;
- 	bool simulate;
---- a/arch/arm64/kernel/probes/uprobes.c
-+++ b/arch/arm64/kernel/probes/uprobes.c
-@@ -42,7 +42,7 @@ int arch_uprobe_analyze_insn(struct arch
- 	else if (!IS_ALIGNED(addr, AARCH64_INSN_SIZE))
- 		return -EINVAL;
- 
--	insn = *(probe_opcode_t *)(&auprobe->insn[0]);
-+	insn = le32_to_cpu(auprobe->insn);
- 
- 	switch (arm_probe_decode_insn(insn, &auprobe->api)) {
- 	case INSN_REJECTED:
-@@ -108,7 +108,7 @@ bool arch_uprobe_skip_sstep(struct arch_
- 	if (!auprobe->simulate)
- 		return false;
- 
--	insn = *(probe_opcode_t *)(&auprobe->insn[0]);
-+	insn = le32_to_cpu(auprobe->insn);
- 	addr = instruction_pointer(regs);
- 
- 	if (auprobe->api.handler)
+-- 
+2.47.0
+
 
 
 
