@@ -1,65 +1,54 @@
-Return-Path: <stable+bounces-87588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66F1F9A6E52
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 17:37:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 775FA9A6EA0
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 17:47:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10CAA1F23BA6
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 15:37:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BA5F1F21DF6
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 15:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8BB61C3F35;
-	Mon, 21 Oct 2024 15:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79EDD1C68BC;
+	Mon, 21 Oct 2024 15:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jH5m0p4e"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="bL9koBtI"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AADD1C32EC;
-	Mon, 21 Oct 2024 15:36:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6401CA94;
+	Mon, 21 Oct 2024 15:46:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729525016; cv=none; b=fiDKsDv3VQoFstOy5DlVO0oYSFndONR13C7IxfL3xu3Yai6vNgC7gc9/faNdRTTcXKW9vRy+DfMc2IVQNMR5UPM28sLD6fw25Zl6Pl4YiHviDnjxflnOtTTRLlIgprcSaSeJt3hC7DvgfkygOu58jHHscjVMy3W1s4hr+0Aer1k=
+	t=1729525567; cv=none; b=FTJLctB/wPUpeOFdJNe1wu/0UJG5W9xl2I/dQaARh+FzDFPrg58Sh9fFTQXGZ88G6N/cFovXYbkWawbo8y8e7blaDGFwr4nQE+3R0hVzPi7qOtb1YymPS8oMUOE6bbDxVhBi1tDm63P2vzUchgs7OcsTwy7oLWIdh3rSJ3TxABI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729525016; c=relaxed/simple;
-	bh=iG8UoLDE9OO5zAzlZpMo6rLD6ZMjgHZMdsip5GxdtP0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UZH2EuVuTDkebcu4KJt0tGpkLVtDZZMHSG5upvz2CGZ5hq3gBjdombgqRdjBC6wTuYlnQdbc0r37XxkEaspWyCYvQi+x/7db/qz5ZyHnmYIirmL7m3bvKAlTN+XR6mivvOhEZ8l+YbcOdEvnEIzyEP/iF9onqTRxrWZDZyz/v+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jH5m0p4e; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729525014; x=1761061014;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=iG8UoLDE9OO5zAzlZpMo6rLD6ZMjgHZMdsip5GxdtP0=;
-  b=jH5m0p4edqEnxeIslQwGlbG+O67EjtEa9wGCOOrmVcm/J3o8+7BLy8GF
-   62vgkcMBzJHfKHvNik/8I9TMUJx+j/nYS8B0CtKOCCzpIWstfJhT7OksN
-   sM+VQRy2kjP/BPpZIAC/hb9GkAOac9FSYdkODN1O5re99ADXdNuC7QGh1
-   AQV6cSNdIejQ1ewnpT+4O5118A/obuDpT+OwsOJJmsZfxmUv/6VracWGm
-   +BFVHmDwYwafoVE3nJHfH64d3HslXASp1o0DcfHA85TFcL1Ueo8EpRQST
-   iDW3wGGj3NBlwU36J4s9gY6O2TAZYrrNTcxfPYTpq6IXlq7GJORYlVpTE
-   g==;
-X-CSE-ConnectionGUID: WQxmZmNhTqO+ESTShOxhfg==
-X-CSE-MsgGUID: jnXe3dl0TuijNisEfgZyDA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28966787"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="28966787"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 08:36:53 -0700
-X-CSE-ConnectionGUID: oGI7i789S/WjwgjjUre7Dg==
-X-CSE-MsgGUID: wsJtD0j4Sn28e+VWjO3L6w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,221,1725346800"; 
-   d="scan'208";a="110318540"
-Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.199]) ([10.237.72.199])
-  by fmviesa001.fm.intel.com with ESMTP; 21 Oct 2024 08:36:52 -0700
-Message-ID: <51a0598a-2618-4501-af40-f1e9a1463bca@linux.intel.com>
-Date: Mon, 21 Oct 2024 18:39:04 +0300
+	s=arc-20240116; t=1729525567; c=relaxed/simple;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=Mp8+7kC2l2kyDEe1IbSA4ysVjM2/SSKj5o3O8Nx7lMWCkZcm+/CxBTigm+ug7SpySeOx3rSb1bFQg8lHlb9nSf5ahqBIMqfPUUfzWGMoKTUG8dsCuCRAG/9xVMd79n405M65kHYhOOkTLZHvVyO485O/HklZa0Q7wAy/oPZVGdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=bL9koBtI; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1729525562; x=1730130362; i=rwarsow@gmx.de;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:To:Cc:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=bL9koBtIzv5Pzza3gmvHAO/khNIuodbgQh4levHJy1teb33IE8tD2diXiP57I6Uq
+	 Tk70ITvQImFgrhcugWc1YS4gLZAsjIOv4tahgE9T0F/a9YsLcKA8KbpH4yWTLJpTO
+	 oNwHMLE0Tmkev76w7bqjEj1Darrwx2Dsnd2AbP1pe5bT+//X/4PLktYIBOsp/m6P5
+	 F//6MzegMiN75gQFXYhGN9VLAUPq9qadmPArXcZGtpEfzddfEsYPp5Y6DBFQwyZ3Z
+	 /epJ8lyZEmMfp4TcVOTGgkfHZ3QFl/15suxFo2g2nHee39MSQyHqkod9qzn/qCsLm
+	 NZBHIT54Y8UI5rdoJA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.32.225]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MZTmY-1tN8N202Yo-00WXRt; Mon, 21
+ Oct 2024 17:46:02 +0200
+Message-ID: <596c6696-8df4-42bb-9989-cbc02012b5a0@gmx.de>
+Date: Mon, 21 Oct 2024 17:46:01 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,122 +56,37 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] xhci: Fix Link TRB DMA in command ring stopped
- completion event
-To: Faisal Hassan <quic_faisalh@quicinc.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Mathias Nyman <mathias.nyman@intel.com>
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20241021131904.20678-1-quic_faisalh@quicinc.com>
-Content-Language: en-US
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-In-Reply-To: <20241021131904.20678-1-quic_faisalh@quicinc.com>
+From: Ronald Warsow <rwarsow@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.11 000/135] 6.11.5-rc1 review
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:6ascOIiKDQHwNf685k3mdAeIjLmkPLEXSyRBtURP5SzXwm9xlrW
+ DkOL7QUpmSHkJTPAP4J4ms/EDXqwfanXgLyOi7NfZ+t6w2fvkd6lAbck4BcBjrzxMOB7tK4
+ 9NH3HI8UEZ7f+1fh0vA1nZmgzbLvZF8KnC76C7zr6jc8WiiV3I7/DjJ0yay5bNtck852T7y
+ U0xNkF38rTLCnfQr+78Nw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:IaBvQd7px4I=;Kb3LPD8qAa17m1w42EvXWQFg1+s
+ B2PiOkipg7vcB0a5raPhGgwlzX/T6cFTxQDyjuh4upX8+T1k/YQWOO+pj7Ab9fm+cgKsX7fBT
+ mNTCNgNORiIJJ401oMI6KO1Hu3YcACoIzKvIm0t7gNIBw9KWD+/+w5GVzka57r5pkbAxwhTGF
+ efKTUUGJfQ7VslRGXfVh/d+6Vfagv51vS0jNTuwLg/o1kfOuTr3XxL2oBssdqSRIIxMZBJXcJ
+ 50rAFql5/TQemMFT9kZTqNvHchfPPXEyeqkMBGc/4YH0QX4TDpC598pUZqTm9R9IFBBgstPwj
+ ly4zDLRsN4AUrHX47QNToPu6TaSwJ3ex5HY1/IPykHTsejCFvZDwbTcKeTlG4S8rUbwDouWdQ
+ WkEnCJOqu6Hged1UtitpdwXdm3ZCia/ww/nCI+zniUbpfliy4+k+k665QkNHNmLkrPtg0fo8M
+ GI34O7vgL4d/Anro5VrYMLoQmn/CjoBCLHpcAyFIyoU4AXOnbcv4F67xGpFed5Na3ircek5Hd
+ iKyJPcccRphTVCYZDHVw6JDkuUpV75wkVQxYgZb749Ax5LuRfPPFYcu+24bNmP8utcXpd98c6
+ DBYW9Vbw/+4oE5ekxwXyo8np05jwV00RLPLZHd3LVvX7uqreTo48e2kxY3u49XH5dWyFw5e/g
+ mOsfR0TwikMkQuuIXMer/j8DiO6DeSafvE9HVW7sDoxts/caVdWXRmitzJ5bGS8za6459HQ2G
+ CiRvgpQKZM90lEtzt85l7Wm7ylFqedI9fXsXsok91VCa2wJxYV/RNN3YGegXCdviJOFER+NSn
+ EdVHRWv2SZXWqhKwrp3X5jFA==
 
-On 21.10.2024 16.19, Faisal Hassan wrote:
-> During the aborting of a command, the software receives a command
-> completion event for the command ring stopped, with the TRB pointing
-> to the next TRB after the aborted command.
-> 
-> If the command we abort is located just before the Link TRB in the
-> command ring, then during the 'command ring stopped' completion event,
-> the xHC gives the Link TRB in the event's cmd DMA, which causes a
-> mismatch in handling command completion event.
-> 
-> To handle this situation, an additional check has been added to ignore
-> the mismatch error and continue the operation.
-> 
-> Fixes: 7f84eef0dafb ("USB: xhci: No-op command queueing and irq handler.")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Faisal Hassan <quic_faisalh@quicinc.com>
-> ---
-> Changes in v2:
-> - Removed traversing of TRBs with in_range() API.
-> - Simplified the if condition check.
-> 
-> v1 link:
-> https://lore.kernel.org/all/20241018195953.12315-1-quic_faisalh@quicinc.com
-> 
->   drivers/usb/host/xhci-ring.c | 43 +++++++++++++++++++++++++++++++-----
->   1 file changed, 38 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-> index b2950c35c740..de375c9f08ca 100644
-> --- a/drivers/usb/host/xhci-ring.c
-> +++ b/drivers/usb/host/xhci-ring.c
-> @@ -126,6 +126,29 @@ static void inc_td_cnt(struct urb *urb)
->   	urb_priv->num_tds_done++;
->   }
->   
-> +/*
-> + * Return true if the DMA is pointing to a Link TRB in the ring;
-> + * otherwise, return false.
-> + */
-> +static bool is_dma_link_trb(struct xhci_ring *ring, dma_addr_t dma)
-> +{
-> +	struct xhci_segment *seg;
-> +	union xhci_trb *trb;
-> +
-> +	seg = ring->first_seg;
-> +	do {
-> +		if (in_range(dma, seg->dma, TRB_SEGMENT_SIZE)) {
-> +			/* found the TRB, check if it's link */
-> +			trb = &seg->trbs[(dma - seg->dma) / sizeof(*trb)];
-> +			return trb_is_link(trb);
-> +		}
-> +
-> +		seg = seg->next;
-> +	} while (seg != ring->first_seg);
-> +
-> +	return false;
-> +}
-> +
->   static void trb_to_noop(union xhci_trb *trb, u32 noop_type)
->   {
->   	if (trb_is_link(trb)) {
-> @@ -1718,6 +1741,7 @@ static void handle_cmd_completion(struct xhci_hcd *xhci,
->   
->   	trace_xhci_handle_command(xhci->cmd_ring, &cmd_trb->generic);
->   
-> +	cmd_comp_code = GET_COMP_CODE(le32_to_cpu(event->status));
->   	cmd_dequeue_dma = xhci_trb_virt_to_dma(xhci->cmd_ring->deq_seg,
->   			cmd_trb);
->   	/*
-> @@ -1725,17 +1749,26 @@ static void handle_cmd_completion(struct xhci_hcd *xhci,
->   	 * command.
->   	 */
->   	if (!cmd_dequeue_dma || cmd_dma != (u64)cmd_dequeue_dma) {
-> -		xhci_warn(xhci,
-> -			  "ERROR mismatched command completion event\n");
-> -		return;
-> +		/*
-> +		 * For the 'command ring stopped' completion event, there
-> +		 * is a risk of a mismatch in dequeue pointers if we abort
-> +		 * the command just before the link TRB in the command ring.
-> +		 * In this scenario, the cmd_dma in the event would point
-> +		 * to a link TRB, while the software dequeue pointer circles
-> +		 * back to the start.
-> +		 */
-> +		if (!(cmd_comp_code == COMP_COMMAND_RING_STOPPED &&
-> +		      is_dma_link_trb(xhci->cmd_ring, cmd_dma))) {
+Hi Greg
 
-
-Do we in this COMP_COMMAND_RING_STOPPED case even need to check if
-cmd_dma != (u64)cmd_dequeue_dma, or if command ring stopped on a link TRB?
-
-Could we just move the COMP_COMMAND_RING_STOPPED handling a bit earlier?
-
-if (cmd_comp_code == COMP_COMMAND_RING_STOPPED) {
-	complete_all(&xhci->cmd_ring_stop_completion);
-         return;
-}
-
-If I remember correctly it should just turn aborted command TRBs into no-ops,
-and restart the command ring
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
 Thanks
-Mathias
 
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
