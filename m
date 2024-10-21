@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-87276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 570759A64ED
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB3919A6578
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:57:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68244B2B86F
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:44:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5385B2CEFB
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:48:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 615061E491C;
-	Mon, 21 Oct 2024 10:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1091F6698;
+	Mon, 21 Oct 2024 10:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfyt0+Yf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uKvvzT/v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164651E2618;
-	Mon, 21 Oct 2024 10:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174D81F1306;
+	Mon, 21 Oct 2024 10:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507121; cv=none; b=gNNHXu9JmoLrZVYwlrbm0C/cM7ilSvBIh8Tq/4AGBxrMZ4MSDk40Eik2MBrMZS9XPlf0K6e3Wg7grXY+g24v36fbn7Hnq/zI2JrXOuuRreTWU4WfWkDUovCV2ns0O6BruZWtKbyxqC+EiElbnCwDC99q5VZLsbT/QqxRI96MZlE=
+	t=1729507349; cv=none; b=LpW2dGbUe7WaBfpmlHTiyuWb24Fbdoav0O2RS/YVrcFWtqc4wU8irc3ygLEM5ldlEXmoSKfMCRZu7HlArL/8AomGIGTWXTx34/3RByo3LTQAt1Xla9E2zS8Ntsn133DG4Up0s0qa3mwsaaTkvEn2C/d4nu58D8BA+U7E6BkmLtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507121; c=relaxed/simple;
-	bh=J1p0xivP7K1Ws0G/ikkiGx+itttSP7JRfL8eApI/Img=;
+	s=arc-20240116; t=1729507349; c=relaxed/simple;
+	bh=dilGsiUiLHQPJ8xj59gU2+yecWAE5nJAjmB4Y+uGM3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WrEzglHv2BuivwtMt/DE4PbxNMuRrCqZxtIRm3N9tQEeMIRh3Sdg61hrepSInZDhSLR/9B+/93hvLd1PUBlqBVuhMgWy6ckzZ2EFpgMcWR2HSYPD+eEVTp/nartkF8EGO/h3IStbuo4p/TormT2M9Nct4UnZcH6l8j2vDHyM//0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfyt0+Yf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D719C4CEC3;
-	Mon, 21 Oct 2024 10:38:40 +0000 (UTC)
+	 MIME-Version; b=chmtal8+d8QteS4gdgZRZshmvJW6+JmvpjZHUkffyKcJZmQIwbLakT7L2lStsxyWwKej0Qp6gMOgHE7MrLb1TUHZalDOOrsjYz7nvWtkoxKYexnWRFUb7FSfoqXubHO2w3iDOYvha0QcsY5ZzEx3iOhc8cLoXOiN4zvZz48DENg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uKvvzT/v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F7F7C4CEC7;
+	Mon, 21 Oct 2024 10:42:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507120;
-	bh=J1p0xivP7K1Ws0G/ikkiGx+itttSP7JRfL8eApI/Img=;
+	s=korg; t=1729507348;
+	bh=dilGsiUiLHQPJ8xj59gU2+yecWAE5nJAjmB4Y+uGM3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dfyt0+YfgH7erBD+PK9ti6Bh8yIw9cV2AGrFx/y9Qt6SwRGhFdANz7hdGRGU/UH5+
-	 TaGuHVt9PguEpHI8vYjCq3DQjl21m2mHuiY2cTcMdQvoji1G26oVOq+RGPCSamr+sD
-	 aNg7t7Ynix7FbR2NNAoyuMWDfGFj7aKXN0mB/wDg=
+	b=uKvvzT/vnh6xAN+AgbOppU7+wWLHAXgUIQq9I4hlw0owFwa9k3A9KBzbjzPn6A2JW
+	 iFv1vcYiGDZMxCw/MZj4E0I8HCK9wifXGGDFBZeCjOzjp6EjJly5JovYhEUNFZLnSg
+	 NFwpu1tfUkiGBEmIrAuU8tal2yykUKOgStIAANpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jonathan Marek <jonathan@marek.ca>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH 6.6 097/124] usb: typec: qcom-pmic-typec: fix sink status being overwritten with RP_DEF
+	Borislav Petkov <bp@alien8.de>,
+	Johannes Wikner <kwikner@ethz.ch>,
+	stable@kernel.org
+Subject: [PATCH 6.1 47/91] x86/bugs: Do not use UNTRAIN_RET with IBPB on entry
 Date: Mon, 21 Oct 2024 12:25:01 +0200
-Message-ID: <20241021102300.475662251@linuxfoundation.org>
+Message-ID: <20241021102251.656108302@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Marek <jonathan@marek.ca>
+From: Johannes Wikner <kwikner@ethz.ch>
 
-commit ffe85c24d7ca5de7d57690c0ab194b3838674935 upstream.
+commit c62fa117c32bd1abed9304c58e0da6940f8c7fc2 upstream.
 
-This line is overwriting the result of the above switch-case.
+Since X86_FEATURE_ENTRY_IBPB will invalidate all harmful predictions
+with IBPB, no software-based untraining of returns is needed anymore.
+Currently, this change affects retbleed and SRSO mitigations so if
+either of the mitigations is doing IBPB and the other one does the
+software sequence, the latter is not needed anymore.
 
-This fixes the tcpm driver getting stuck in a "Sink TX No Go" loop.
+  [ bp: Massage commit message. ]
 
-Fixes: a4422ff22142 ("usb: typec: qcom: Add Qualcomm PMIC Type-C driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jonathan Marek <jonathan@marek.ca>
-Acked-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241005144146.2345-1-jonathan@marek.ca
+Suggested-by: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Johannes Wikner <kwikner@ethz.ch>
+Cc: <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port.c |    1 -
- 1 file changed, 1 deletion(-)
+ arch/x86/kernel/cpu/bugs.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port.c
-+++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port.c
-@@ -252,7 +252,6 @@ int qcom_pmic_typec_port_get_cc(struct p
- 			val = TYPEC_CC_RP_DEF;
- 			break;
- 		}
--		val = TYPEC_CC_RP_DEF;
- 	}
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1092,6 +1092,15 @@ do_cmd_auto:
  
- 	if (misc & CC_ORIENTATION)
+ 	case RETBLEED_MITIGATION_IBPB:
+ 		setup_force_cpu_cap(X86_FEATURE_ENTRY_IBPB);
++
++		/*
++		 * IBPB on entry already obviates the need for
++		 * software-based untraining so clear those in case some
++		 * other mitigation like SRSO has selected them.
++		 */
++		setup_clear_cpu_cap(X86_FEATURE_UNRET);
++		setup_clear_cpu_cap(X86_FEATURE_RETHUNK);
++
+ 		mitigate_smt = true;
+ 
+ 		/*
+@@ -2599,6 +2608,14 @@ static void __init srso_select_mitigatio
+ 			if (has_microcode) {
+ 				setup_force_cpu_cap(X86_FEATURE_ENTRY_IBPB);
+ 				srso_mitigation = SRSO_MITIGATION_IBPB;
++
++				/*
++				 * IBPB on entry already obviates the need for
++				 * software-based untraining so clear those in case some
++				 * other mitigation like Retbleed has selected them.
++				 */
++				setup_clear_cpu_cap(X86_FEATURE_UNRET);
++				setup_clear_cpu_cap(X86_FEATURE_RETHUNK);
+ 			}
+ 		} else {
+ 			pr_err("WARNING: kernel not compiled with CPU_IBPB_ENTRY.\n");
 
 
 
