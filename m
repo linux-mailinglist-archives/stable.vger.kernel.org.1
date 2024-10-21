@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-87149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 861939A6379
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE01B9A63E8
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:40:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E9B5B2692B
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D98311C21AF7
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84DF1E8820;
-	Mon, 21 Oct 2024 10:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493831EF0AE;
+	Mon, 21 Oct 2024 10:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SxxrwIJi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LczmKOTK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC071E47B4;
-	Mon, 21 Oct 2024 10:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD281EABB8;
+	Mon, 21 Oct 2024 10:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506740; cv=none; b=hVQAfktltp0nmJpK9RGs4WN3te4S9Av9tCaOstWXFNc1yPxlokRiFVKXBfVozPWa3jpaFh56ARljaGutnPeGXvCPrvsLaDz+NYrLMUPx9oDKJD1SiKz1gf4D9kW5JYdGEswUOL8k92OY2pSnu9/PtDUP0SsKoPy2yrj59X/Hwjs=
+	t=1729507002; cv=none; b=FfukyF7bkipcjeCVI6hbSlJxc6htXmk16xod2w+GcSm30O+TkMYfQStLd5bA2n3xF5Db0/kraCmDSRiLpwnyKjELq7E9tt/t0WvAtCoJ8X1SPgUxuTMAn+fQtvijzqmz3bAei4dIZ6gti4SXdy+v3eiMRR2LcQfJuXO8bcNxPhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506740; c=relaxed/simple;
-	bh=Y7MJ6nSCaU8o4CB8ZLJ59GGkv7FJ+Z0cfW2eEmTaT5s=;
+	s=arc-20240116; t=1729507002; c=relaxed/simple;
+	bh=uHPsI7MCccMzFsTHdnvq7WMUk2tUE/bwVX7vkI/7a+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hpx1TAqaEQzb4EMKS21S4zwtR0jf7PBSgEZGWSgJ4oI6/le8uQvs73enEQwFvmMuQgL9hQXY04lsVot3izFjnkY1dLAsi6S4YyoZWVqEVcjKtG7Q92PxtEGRFbzWh2UQwx0XV3wLweUsQ2r8XLCo7R4V/E4OxJwWIxMspu3c9vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SxxrwIJi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E68C4CEC3;
-	Mon, 21 Oct 2024 10:32:19 +0000 (UTC)
+	 MIME-Version; b=likTtOnC2zRWot7UdUwbwgJzFgp6Brv02bVGd+gjs4wUN4F8iYiF5ksuDgRKhL7LklSvcHfX7biYuMkXK3yDMsk2uBte0pjVaFFtIE/WFYZ9dALQsNTFHKurvh+JYefJevwFlM2qmw56XTLKdFsea7uwvyQonqsJZFJVhX1bISU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LczmKOTK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CFA0C4CEC3;
+	Mon, 21 Oct 2024 10:36:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506740;
-	bh=Y7MJ6nSCaU8o4CB8ZLJ59GGkv7FJ+Z0cfW2eEmTaT5s=;
+	s=korg; t=1729507001;
+	bh=uHPsI7MCccMzFsTHdnvq7WMUk2tUE/bwVX7vkI/7a+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SxxrwIJiP0InQNIK3UXeQA/oKS2bWjdmHMnbSkf3u0DbZx5Mm2xcuk1cqL7EGeGJc
-	 +LI5C8ClnGvhYS4rN4/0djdtyJsrtktU2SeaB5Y1nmJh0AZ1WnzSHbRQWhjqdUD9/m
-	 f7lL5bYE/nLicFHKN+8uGzlWpOgFB8xlSqsZqwwQ=
+	b=LczmKOTKC3eSnzWj/4XJHkXchoIaQ1P3jC0W2DLp6ESfcbqy5/uMKxLzKnErtHHmv
+	 A5LjdP+Bnc84KF587rdXOP4vjsSroebyi9ENrNm/A4GcgPtCDiwmY3Zdku/vIP4l2b
+	 FZmKWQJ63u64JmCWiXOZ+92dJfHyA9+HwZJoxSws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.11 074/135] iio: hid-sensors: Fix an error handling path in _hid_sensor_set_report_latency()
+	linux-xfs@vger.kernel.org,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 026/124] xfs: remove a racy if_bytes check in xfs_reflink_end_cow_extent
 Date: Mon, 21 Oct 2024 12:23:50 +0200
-Message-ID: <20241021102302.224335499@linuxfoundation.org>
+Message-ID: <20241021102257.737814241@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 3a29b84cf7fbf912a6ab1b9c886746f02b74ea25 upstream.
+commit 86de848403abda05bf9c16dcdb6bef65a8d88c41 upstream.
 
-If hid_sensor_set_report_latency() fails, the error code should be returned
-instead of a value likely to be interpreted as 'success'.
+Accessing if_bytes without the ilock is racy.  Remove the initial
+if_bytes == 0 check in xfs_reflink_end_cow_extent and let
+ext_iext_lookup_extent fail for this case after we've taken the ilock.
 
-Fixes: 138bc7969c24 ("iio: hid-sensor-hub: Implement batch mode")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/c50640665f091a04086e5092cf50f73f2055107a.1727980825.git.christophe.jaillet@wanadoo.fr
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/common/hid-sensors/hid-sensor-trigger.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_reflink.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
---- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-+++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-@@ -32,7 +32,7 @@ static ssize_t _hid_sensor_set_report_la
- 	latency = integer * 1000 + fract / 1000;
- 	ret = hid_sensor_set_report_latency(attrb, latency);
- 	if (ret < 0)
--		return len;
-+		return ret;
+--- a/fs/xfs/xfs_reflink.c
++++ b/fs/xfs/xfs_reflink.c
+@@ -716,12 +716,6 @@ xfs_reflink_end_cow_extent(
+ 	int			nmaps;
+ 	int			error;
  
- 	attrb->latency_ms = hid_sensor_get_report_latency(attrb);
- 
+-	/* No COW extents?  That's easy! */
+-	if (ifp->if_bytes == 0) {
+-		*offset_fsb = end_fsb;
+-		return 0;
+-	}
+-
+ 	resblks = XFS_EXTENTADD_SPACE_RES(mp, XFS_DATA_FORK);
+ 	error = xfs_trans_alloc(mp, &M_RES(mp)->tr_write, resblks, 0,
+ 			XFS_TRANS_RESERVE, &tp);
 
 
 
