@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-87267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA599A6479
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:47:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB5A9A63A2
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:38:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB965B2B377
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F07ED1C21C5A
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F69B1E571E;
-	Mon, 21 Oct 2024 10:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967431E571B;
+	Mon, 21 Oct 2024 10:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mafkapzh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZyanfsP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364241E47B4;
-	Mon, 21 Oct 2024 10:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4061EBA0C;
+	Mon, 21 Oct 2024 10:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507094; cv=none; b=cx9JuvcEEjckvOhrBpjIUKZSdrp6cqwjiwVpD7swM5rGQp6RQn3NFDyRU2fQdGxVB4Ra/lm1aeImPxau7UVA+IRpbtM7A8boLNSal4TFPyfajqYvjvJsuAYrOzdB5hTfiUgrzEb1rMfbEVPcLXB+ue3Z5kW92cFbuh6nrr46BKc=
+	t=1729506834; cv=none; b=cB+aQMgSK0o6vU7eRMIxZJMkaMeysTXT/FJJNOYFPA0iBNFoDqanaLIWDgoTkXUeXU5yKJBDQEYqtQoqMQy9gNw/tltakFCC4ZttYypQvgD9i9XKeM7NGrTlxcrmN16utAJ5uzDV72+s7kR+TPR+apKSkwbXbJooOFqzbM/FRA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507094; c=relaxed/simple;
-	bh=qT3kuYnS4heWWCaae/CjABwoSgKg1DeoFO7r5Av2X50=;
+	s=arc-20240116; t=1729506834; c=relaxed/simple;
+	bh=hGXYX6RubOAeTtQMs4Tq4iV/pY+tUksQr3u+BWNiEgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hcCURu0CeU0pTJvNCiDIpf4yj+TCWoFD6+MJ1vxlQvExwHwR5H6v2iYMo2OfwFZkosOg+MPVt5ONlzQNkXAdwFdPrB1k9L6BOarcXalwGUzfMOJUqkjdvsVLgO/eq7b6aiCvSGbyoQMIgdIrTwQKgPUp6BLixeKVf4RGxVXQ+qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mafkapzh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B2AEC4CEC7;
-	Mon, 21 Oct 2024 10:38:13 +0000 (UTC)
+	 MIME-Version; b=lQotkB59ScGZZHyi5/CsrH26NtWhOI0DyVY6E0LZqX4E/0ch6OdiCbB6Z8psQkiXWEpaNT81MMxgi6i5LhxNJvnaqu3/FV/E3PictxPnCaxwuODqtgyRvwynO8+2FntJfUURpsJjNWdWioQyVYVLL8zOgF+G/hm3EJemkogLDts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZyanfsP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C5D2C4CEC3;
+	Mon, 21 Oct 2024 10:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507093;
-	bh=qT3kuYnS4heWWCaae/CjABwoSgKg1DeoFO7r5Av2X50=;
+	s=korg; t=1729506833;
+	bh=hGXYX6RubOAeTtQMs4Tq4iV/pY+tUksQr3u+BWNiEgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MafkapzhfaNzu8Hot/GreiQIgN/0k150A0eiUcBSSvGVPN7BFDCc4Nt4TKTkP5BMW
-	 xwp7MqrFxLZu1bsHkTmvXZpZ9lyvA881ThZo1G81D8k2j8D9zOPHEGla88D6u5nRLC
-	 11pBeWtrsYzdHR1KB68gBkORu5xVebwDxAOppsnU=
+	b=WZyanfsPLHJ/3PaD1NbnF1cLj5+f/fXJE/+Z7TQlZVPzS/JPzEcOfs4TNwaoHSkS5
+	 k20nTeBfZEy/3wrpFIhPHLZExhMF1KSz0T5f3XkwYXFZw9RBXSi/oAMm9U7crsnGJg
+	 tkS2b3g3idBInAbnQSUe7Vh/NQILVi+MQXy7i3fo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 086/124] iio: accel: kx022a: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
-Date: Mon, 21 Oct 2024 12:24:50 +0200
-Message-ID: <20241021102300.057173319@linuxfoundation.org>
+	Kai-Heng Feng <kaihengf@nvidia.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Vasiliy Kovalev <kovalev@altlinux.org>
+Subject: [PATCH 6.11 135/135] ALSA: hda/conexant - Use cached pin control for Node 0x1d on HP EliteOne 1000 G2
+Date: Mon, 21 Oct 2024 12:24:51 +0200
+Message-ID: <20241021102304.632581047@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-commit 96666f05d11acf0370cedca17a4c3ab6f9554b35 upstream.
+commit 164cd0e077a18d6208523c82b102c98c77fdd51f upstream.
 
-This driver makes use of triggered buffers, but does not select the
-required modules.
+The cached version avoids redundant commands to the codec, improving
+stability and reducing unnecessary operations. This change ensures
+better power management and reliable restoration of pin configurations,
+especially after hibernation (S4) and other power transitions.
 
-Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
-
-Fixes: 7c1d1677b322 ("iio: accel: Support Kionix/ROHM KX022A accelerometer")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Link: https://patch.msgid.link/20241003-iio-select-v1-1-67c0385197cd@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 9988844c457f ("ALSA: hda/conexant - Fix audio routing for HP EliteOne 1000 G2")
+Suggested-by: Kai-Heng Feng <kaihengf@nvidia.com>
+Suggested-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Link: https://patch.msgid.link/20241016080713.46801-1-kovalev@altlinux.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/Kconfig |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/patch_conexant.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/accel/Kconfig
-+++ b/drivers/iio/accel/Kconfig
-@@ -415,6 +415,8 @@ config IIO_ST_ACCEL_SPI_3AXIS
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -330,7 +330,7 @@ static void cxt_fixup_update_pinctl(stru
+ 		 * This is the value stored in the codec register after
+ 		 * the correct initialization of the previous windows boot.
+ 		 */
+-		snd_hda_set_pin_ctl(codec, 0x1d, AC_PINCTL_HP_EN);
++		snd_hda_set_pin_ctl_cache(codec, 0x1d, AC_PINCTL_HP_EN);
+ 	}
+ }
  
- config IIO_KX022A
- 	tristate
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
- 
- config IIO_KX022A_SPI
- 	tristate "Kionix KX022A tri-axis digital accelerometer SPI interface"
 
 
 
