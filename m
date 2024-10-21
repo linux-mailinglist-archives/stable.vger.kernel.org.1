@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-87150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E70519A636D
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F02B99A63EA
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:40:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7904281D77
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B11AF28308C
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C64111E8826;
-	Mon, 21 Oct 2024 10:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314631EF0AF;
+	Mon, 21 Oct 2024 10:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OAVrH9w5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O9Q3yOXu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD781E47B4;
-	Mon, 21 Oct 2024 10:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D897A1EABB8;
+	Mon, 21 Oct 2024 10:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506743; cv=none; b=XJ/Y3ZXZ5sbI0qZayYmMvp5Msh3tWWxxQ22NnSpPKDzq1jntEwZ9Nhei/93Wf5Ud/EN9BWOLDr8ZCGw6/90BJae54tb+4lwZ6UUpcYkb6PjmO+X0goC+VZ0/Fx3pNLE8yNrCZ8xsxp9dxXOwFKHVXDInx3W2Ixm4eSP1RaivoOw=
+	t=1729507005; cv=none; b=JU3QGCYKNcmOm4e1N4viDxMGxXW9Hyet0d+0geYzwgr/xmdKC/7jvjUehOET1RvPx/QRpPFVAPv6q06gj+DDRRiWR0Ei2BP7v+KlLJhpyHP+62qMY/DfTCQcPp3llMwBUWSAxy0BF7mRw/G7bwpuGBWItRn72s0w82zrqME6HoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506743; c=relaxed/simple;
-	bh=Lqt9l6oBljZmpWtSg7yY9ip+a4GdOUqMcERdZHJw3b8=;
+	s=arc-20240116; t=1729507005; c=relaxed/simple;
+	bh=BiKxkQLriqj0bgErBU0T/eFZWX1XYnaWiVYN22aK8jI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HSPyOlfyqxaebBWrMVi/aVqNdCIaQQwV3iBfRRM2Q2CjiPteEYZU2R12mw0KZYmhGbgOzVOldejHmSOQCGIfPUW/YiGg1ESDJl4Fam5RmT7NxxDOr9KM/PIdhc28oRfrBonDCmHSGLuaZpvhUsVbuLU1ZEnT82rgV/+iTRq7UKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OAVrH9w5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6F2C4CEC3;
-	Mon, 21 Oct 2024 10:32:22 +0000 (UTC)
+	 MIME-Version; b=koCrtyBcG2BDLXhHnEiE1yxv4uF5Bm4xtbg123zmoxDWWgYbnF4bboTVrLKPy2aycgrI6DJ0F9Nm+yV4FrnYWRasDOj1LnhBfHIbV443FFAxo/DnRW5n2vw2BHY4ryZ4ZQnAqN5QebMkFLmRs3Vjfo8dN7uZ16D6u3bmy+AqSkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O9Q3yOXu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215FBC4CEC3;
+	Mon, 21 Oct 2024 10:36:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506743;
-	bh=Lqt9l6oBljZmpWtSg7yY9ip+a4GdOUqMcERdZHJw3b8=;
+	s=korg; t=1729507004;
+	bh=BiKxkQLriqj0bgErBU0T/eFZWX1XYnaWiVYN22aK8jI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OAVrH9w58LzfVlnUZnp2PzSHfKFQVzf2nEfId0KsDLfHk8ecRp1agZJXT8xTTfqm4
-	 Y4OhHcXlq+vSZG2lz70ZfTbyEq2X3cM0rQg9y6GOpAHzrtYQc/LJZp5m5/6oFGZKdF
-	 sEEvOo64SBjl36vTDpqba2VS1nNidBWbEJNHzGIk=
+	b=O9Q3yOXu560G3q4+5rIsmndqmIn1yh8Wovo2sAMQNQ8bl+FqBp9rkv5jmS6NzED2V
+	 TFYiFnp+dZZlRq744shSN1ld0v+YWuQJFSNE1FFihyQcnMnmE4H9MwX7g6GrPu81ws
+	 hyiwjirReIVZCr42DAe68YI8qGGE/rkCbWuCPTaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.11 075/135] iio: light: veml6030: fix ALS sensor resolution
+	linux-xfs@vger.kernel.org,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 027/124] xfs: require XFS_SB_FEAT_INCOMPAT_LOG_XATTRS for attr log intent item recovery
 Date: Mon, 21 Oct 2024 12:23:51 +0200
-Message-ID: <20241021102302.264235044@linuxfoundation.org>
+Message-ID: <20241021102257.776439524@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-commit c9e9746f275c45108f2b0633a4855d65d9ae0736 upstream.
+commit 8ef1d96a985e4dc07ffbd71bd7fc5604a80cc644 upstream.
 
-The driver still uses the sensor resolution provided in the datasheet
-until Rev. 1.6, 28-Apr-2022, which was updated with Rev 1.7,
-28-Nov-2023. The original ambient light resolution has been updated from
-0.0036 lx/ct to 0.0042 lx/ct, which is the value that can be found in
-the current device datasheet.
+The XFS_SB_FEAT_INCOMPAT_LOG_XATTRS feature bit protects a filesystem
+from old kernels that do not know how to recover extended attribute log
+intent items.  Make this check mandatory instead of a debugging assert.
 
-Update the default resolution for IT = 100 ms and GAIN = 1/8 from the
-original 4608 mlux/cnt to the current value from the "Resolution and
-maximum detection range" table (Application Note 84367, page 5), 5376
-mlux/cnt.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light sensor")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20240923-veml6035-v2-1-58c72a0df31c@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: fd920008784ea ("xfs: Set up infrastructure for log attribute replay")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/veml6030.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_attr_item.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/light/veml6030.c
-+++ b/drivers/iio/light/veml6030.c
-@@ -780,7 +780,7 @@ static int veml6030_hw_init(struct iio_d
+--- a/fs/xfs/xfs_attr_item.c
++++ b/fs/xfs/xfs_attr_item.c
+@@ -510,6 +510,9 @@ xfs_attri_validate(
+ 	unsigned int			op = attrp->alfi_op_flags &
+ 					     XFS_ATTRI_OP_FLAGS_TYPE_MASK;
  
- 	/* Cache currently active measurement parameters */
- 	data->cur_gain = 3;
--	data->cur_resolution = 4608;
-+	data->cur_resolution = 5376;
- 	data->cur_integration_time = 3;
++	if (!xfs_sb_version_haslogxattrs(&mp->m_sb))
++		return false;
++
+ 	if (attrp->__pad != 0)
+ 		return false;
  
- 	return ret;
+@@ -602,8 +605,6 @@ xfs_attri_item_recover(
+ 	args->op_flags = XFS_DA_OP_RECOVERY | XFS_DA_OP_OKNOENT |
+ 			 XFS_DA_OP_LOGGED;
+ 
+-	ASSERT(xfs_sb_version_haslogxattrs(&mp->m_sb));
+-
+ 	switch (attr->xattri_op_flags) {
+ 	case XFS_ATTRI_OP_FLAGS_SET:
+ 	case XFS_ATTRI_OP_FLAGS_REPLACE:
 
 
 
