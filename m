@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-87415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 071339A64DF
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:51:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1BEE9A658E
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:58:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B235C1F21323
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:51:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76F1CB2D186
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 428AE1F8F06;
-	Mon, 21 Oct 2024 10:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F461F6694;
+	Mon, 21 Oct 2024 10:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FxV0h0dF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ges1i7Zc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AEF1E7C01;
-	Mon, 21 Oct 2024 10:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19EC1F4FD1;
+	Mon, 21 Oct 2024 10:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507538; cv=none; b=EjcVSbPcnOL+K/LsTL80EoTvFnLKuIKCW6efOCQiu+aalYwOiUYbubO+Y6i0A7DbdOGht7kjIbNOTI2eKdZ5Fwk11oy/CzzabhJWHmN6LCfSh0P4FJfg6QQHD/EIF/D7fj4g89+1L8pCAZmNU1V5QMKp+R2K3CV5P1vU2p3agdY=
+	t=1729507346; cv=none; b=gfG8Qm3jhxRz10kWpoPZqFgmwiQeuoRzQHuqpSMirTtAe/5a1nKQgXYiWsUX2Qyf5I9EteJTm/2BPfxz7LOduUwOjZaRF/37cQz6sSp+VirEzimEQ1trnErKn6FuaSbhc4K+blIBPAr6GAMsIyUq1MbW2hUien3QEFKPeJBSnh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507538; c=relaxed/simple;
-	bh=7oUO0DBTLzAecv/4aax2CdUb0M/cLEOG/aCmpj/WFzc=;
+	s=arc-20240116; t=1729507346; c=relaxed/simple;
+	bh=ShJy1xWRkGs0P7i//ZxDtDtmWWem3r2yZqzsL9wqags=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jrTQcjghfw4Q3WIE/QsBmOVe9FkuVAJ7ucBzzAUt/ZIgZU6R7YaAXxCiGGU05IUqqHHjWyNdOhalvPoDNvfxxkY5br5Poe7kYUFO7X1f3WsiMMV5NDj12sajVWY4uHfqi+TxmgeSMKHVno3wHJjs0y6nhRuAbPZdQIQy+sJLreU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FxV0h0dF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B047C4CEE6;
-	Mon, 21 Oct 2024 10:45:37 +0000 (UTC)
+	 MIME-Version; b=C6IZ04AS+NuLClt7DYgGhXEB7ahhdwGrZqFc5U7B7StXGX/HbzBVle/eVCnB/nzUuIRG+Mh1MvMIJ9VX5xAAMTF2kD49zq3hplAgRvD17QJg5K7XLxFBBurOlExQSYe4j41M/Oj+acDHfRq8LfYf0sBi3TE5wYlQUNO9Yv5QZWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ges1i7Zc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33246C4CEC3;
+	Mon, 21 Oct 2024 10:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507537;
-	bh=7oUO0DBTLzAecv/4aax2CdUb0M/cLEOG/aCmpj/WFzc=;
+	s=korg; t=1729507345;
+	bh=ShJy1xWRkGs0P7i//ZxDtDtmWWem3r2yZqzsL9wqags=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FxV0h0dFK2GnLC9Hpk2ItBNAew4nIUT9hYg45ozNBxYU65Q4ridnl2wUTHZlW7VNE
-	 Hid0yjGMG+W1AwZRYwWmfikV5Hgd30TsZEXjAiTWsSSqBzrwEXbZgWpsFqgrmfMPGs
-	 SgOs/ePqwZbGNQiP1+pfbo9YBs/NcJqk+UnrS8jA=
+	b=ges1i7ZcFP3ckvjzgQ4im77bSkmVp61Tdl/D7p1Dxazu+GD0YXpy7d0BL2rZPup+n
+	 jVIYO1w/aR9bsFP6Gybgi5ygpJXJFDIt7BlGbM1MRBM0qtkD0qBgne+6wMeA12Zoxp
+	 G0DtqTvb5/gePVYyGsz78x2UdvbVva4LkYdEDgfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.15 19/82] udf: Handle error when expanding directory
+	Borislav Petkov <bp@alien8.de>,
+	Johannes Wikner <kwikner@ethz.ch>,
+	stable@kernel.org
+Subject: [PATCH 6.1 46/91] x86/bugs: Skip RSB fill at VMEXIT
 Date: Mon, 21 Oct 2024 12:25:00 +0200
-Message-ID: <20241021102248.000485192@linuxfoundation.org>
+Message-ID: <20241021102251.618382903@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Johannes Wikner <kwikner@ethz.ch>
 
-[ Upstream commit 33e9a53cd9f099b138578f8e1a3d60775ff8cbba ]
+commit 0fad2878642ec46225af2054564932745ac5c765 upstream.
 
-When there is an error when adding extent to the directory to expand it,
-make sure to propagate the error up properly. This is not expected to
-happen currently but let's make the code more futureproof.
+entry_ibpb() is designed to follow Intel's IBPB specification regardless
+of CPU. This includes invalidating RSB entries.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Hence, if IBPB on VMEXIT has been selected, entry_ibpb() as part of the
+RET untraining in the VMEXIT path will take care of all BTB and RSB
+clearing so there's no need to explicitly fill the RSB anymore.
+
+  [ bp: Massage commit message. ]
+
+Suggested-by: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Johannes Wikner <kwikner@ethz.ch>
+Cc: <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/namei.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/bugs.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/fs/udf/namei.c
-+++ b/fs/udf/namei.c
-@@ -192,8 +192,13 @@ static struct buffer_head *udf_expand_di
- 	epos.bh = NULL;
- 	epos.block = iinfo->i_location;
- 	epos.offset = udf_file_entry_alloc_offset(inode);
--	udf_add_aext(inode, &epos, &eloc, inode->i_size, 0);
-+	ret = udf_add_aext(inode, &epos, &eloc, inode->i_size, 0);
- 	brelse(epos.bh);
-+	if (ret < 0) {
-+		*err = ret;
-+		udf_free_blocks(inode->i_sb, inode, &eloc, 0, 1);
-+		return NULL;
-+	}
- 	mark_inode_dirty(inode);
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1093,6 +1093,14 @@ do_cmd_auto:
+ 	case RETBLEED_MITIGATION_IBPB:
+ 		setup_force_cpu_cap(X86_FEATURE_ENTRY_IBPB);
+ 		mitigate_smt = true;
++
++		/*
++		 * There is no need for RSB filling: entry_ibpb() ensures
++		 * all predictions, including the RSB, are invalidated,
++		 * regardless of IBPB implementation.
++		 */
++		setup_clear_cpu_cap(X86_FEATURE_RSB_VMEXIT);
++
+ 		break;
  
- 	/* Now fixup tags in moved directory entries */
+ 	default:
+@@ -2603,6 +2611,13 @@ static void __init srso_select_mitigatio
+ 			if (!boot_cpu_has(X86_FEATURE_ENTRY_IBPB) && has_microcode) {
+ 				setup_force_cpu_cap(X86_FEATURE_IBPB_ON_VMEXIT);
+ 				srso_mitigation = SRSO_MITIGATION_IBPB_ON_VMEXIT;
++
++				/*
++				 * There is no need for RSB filling: entry_ibpb() ensures
++				 * all predictions, including the RSB, are invalidated,
++				 * regardless of IBPB implementation.
++				 */
++				setup_clear_cpu_cap(X86_FEATURE_RSB_VMEXIT);
+ 			}
+ 		} else {
+ 			pr_err("WARNING: kernel not compiled with CPU_SRSO.\n");
 
 
 
