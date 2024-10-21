@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-87470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22E859A65F7
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:09:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB9609A6584
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:57:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE733B21E97
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:53:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D605283103
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:57:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 533041F4FDD;
-	Mon, 21 Oct 2024 10:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DDF01E7C39;
+	Mon, 21 Oct 2024 10:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8aHdZbi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ovuzgtg6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097761E47C1;
-	Mon, 21 Oct 2024 10:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059C81E47A6;
+	Mon, 21 Oct 2024 10:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507700; cv=none; b=HVMKZNVOE3YHMUiI+EGPcgf/FgMCA1Rufiij9tX3WDOMfcjhKnfaggwR2QjPHzIhlWDk8f6eky/+IZXAZVa8wwpif909ZfV2CnUrPUC+DHhQyg+2n6PPL7ELL+AXeyWT5cVxg9DGsdrPdbNvhrngxVRq97AnTb5EOlKUzf4Rw3w=
+	t=1729507906; cv=none; b=ptr0BkIaSUCB7Rv4B69loooUQVn8BA0+8wvyd1dxRgbK4PiY2EsgV/L59di0y0MFd7/V5kGk4qLBt+PvADYrfe1Vbs9aXHVBIIk2LR8BvqYrZfVFaR6LRZwontCY/KtfYotgDxZcsWBpCT/rN9aB25qggXwbNRIV2xj40UPSrKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507700; c=relaxed/simple;
-	bh=NVHrzQirNXTACKnWLIa4LlEjR733JC8LqCJGpPtWoPs=;
+	s=arc-20240116; t=1729507906; c=relaxed/simple;
+	bh=AE9zmayRwiUGFcZVjk60D8lqUEqqS1jSBi3ijyLwigY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=knDU/eu6owuArRfonB9sXNfD47us8GVDhx+YWhPZ3fHyS1/Pgf6sMJYuDUQof64J6vURv0sw5z7iXVeQPsHWyPHEwRbS05Afje8w5kaxisdoFmA8cdbN5ths6EMUSRMjcqdJWEfppm5ZRaZ6k4uODcqVAuRmdbXAlALvHtounVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8aHdZbi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B474C4CEC7;
-	Mon, 21 Oct 2024 10:48:19 +0000 (UTC)
+	 MIME-Version; b=aAD/d3oEYPC/zzLAGgD0vZT5iWZJVsuFkeG0flGTBa+fU1GZQ6NeCsicF3XiQO3Ma3wrVw+g5ANje98wBHmc8gy7c+yv7Z5HLG5GAsO1FQAqe8aCrUGUb3ySiKVnFjYgV/mTynwMWigVsZyjs+5HSbiXjCzsCFbZbTkXDbnFO/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ovuzgtg6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 717CEC4CEC7;
+	Mon, 21 Oct 2024 10:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507699;
-	bh=NVHrzQirNXTACKnWLIa4LlEjR733JC8LqCJGpPtWoPs=;
+	s=korg; t=1729507905;
+	bh=AE9zmayRwiUGFcZVjk60D8lqUEqqS1jSBi3ijyLwigY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g8aHdZbi5pYxYlgD7NOq9OTFZNYT0eGLJW0mvHYZdnI6wZ4gzKDAeoM3M41d5/VUD
-	 WvAWUZIEsqRWN+8AVPRSYJQ6wDeNOFanMDmdVFbvoC0DjUwmYjWr2BS0K2vA7N868m
-	 OAl3jonoHHP4jXBbwTf2rhdWs7SQeR7MCFSLdHrU=
+	b=Ovuzgtg6lE8CgwySlxKrGSbETompoP56wyjQYC4s8zjgYBnJQkw5lZZ9xCpVqP8mB
+	 zh3LiXKNoeh9V6VqGmLkojOgag5DYVAkldtWKb6PVSZJHa6FDn10OZgEPQsinHj6xz
+	 bd+8+wkGBpa8htuwjeMWCbt2/g/PEIxl1Z4VIyJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Matsievskiy <matsievskiysv@gmail.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 5.15 72/82] pinctrl: ocelot: fix system hang on level based interrupts
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 32/52] iio: light: veml6030: fix IIO device retrieval from embedded device
 Date: Mon, 21 Oct 2024 12:25:53 +0200
-Message-ID: <20241021102250.061402380@linuxfoundation.org>
+Message-ID: <20241021102242.884981428@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
+References: <20241021102241.624153108@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Matsievskiy <matsievskiysv@gmail.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 93b8ddc54507a227087c60a0013ed833b6ae7d3c upstream.
+commit c7c44e57750c31de43906d97813273fdffcf7d02 upstream.
 
-The current implementation only calls chained_irq_enter() and
-chained_irq_exit() if it detects pending interrupts.
+The dev pointer that is received as an argument in the
+in_illuminance_period_available_show function references the device
+embedded in the IIO device, not in the i2c client.
 
-```
-for (i = 0; i < info->stride; i++) {
-	uregmap_read(info->map, id_reg + 4 * i, &reg);
-	if (!reg)
-		continue;
+dev_to_iio_dev() must be used to accessthe right data. The current
+implementation leads to a segmentation fault on every attempt to read
+the attribute because indio_dev gets a NULL assignment.
 
-	chained_irq_enter(parent_chip, desc);
-```
-
-However, in case of GPIO pin configured in level mode and the parent
-controller configured in edge mode, GPIO interrupt might be lowered by the
-hardware. In the result, if the interrupt is short enough, the parent
-interrupt is still pending while the GPIO interrupt is cleared;
-chained_irq_enter() never gets called and the system hangs trying to
-service the parent interrupt.
-
-Moving chained_irq_enter() and chained_irq_exit() outside the for loop
-ensures that they are called even when GPIO interrupt is lowered by the
-hardware.
-
-The similar code with chained_irq_enter() / chained_irq_exit() functions
-wrapping interrupt checking loop may be found in many other drivers:
-```
-grep -r -A 10 chained_irq_enter drivers/pinctrl
-```
+This bug has been present since the first appearance of the driver,
+apparently since the last version (V6) before getting applied. A
+constant attribute was used until then, and the last modifications might
+have not been tested again.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Sergey Matsievskiy <matsievskiysv@gmail.com>
-Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Link: https://lore.kernel.org/20241012105743.12450-2-matsievskiysv@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light sensor")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20240913-veml6035-v1-3-0b09c0c90418@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-ocelot.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/iio/light/veml6030.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/pinctrl/pinctrl-ocelot.c
-+++ b/drivers/pinctrl/pinctrl-ocelot.c
-@@ -1279,21 +1279,21 @@ static void ocelot_irq_handler(struct ir
- 	unsigned int reg = 0, irq, i;
- 	unsigned long irqs;
+--- a/drivers/iio/light/veml6030.c
++++ b/drivers/iio/light/veml6030.c
+@@ -99,9 +99,8 @@ static const char * const period_values[
+ static ssize_t in_illuminance_period_available_show(struct device *dev,
+ 				struct device_attribute *attr, char *buf)
+ {
++	struct veml6030_data *data = iio_priv(dev_to_iio_dev(dev));
+ 	int ret, reg, x;
+-	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+-	struct veml6030_data *data = iio_priv(indio_dev);
  
-+	chained_irq_enter(parent_chip, desc);
-+
- 	for (i = 0; i < info->stride; i++) {
- 		regmap_read(info->map, id_reg + 4 * i, &reg);
- 		if (!reg)
- 			continue;
- 
--		chained_irq_enter(parent_chip, desc);
--
- 		irqs = reg;
- 
- 		for_each_set_bit(irq, &irqs,
- 				 min(32U, info->desc->npins - 32 * i))
- 			generic_handle_domain_irq(chip->irq.domain, irq + 32 * i);
--
--		chained_irq_exit(parent_chip, desc);
- 	}
-+
-+	chained_irq_exit(parent_chip, desc);
- }
- 
- static int ocelot_gpiochip_register(struct platform_device *pdev,
+ 	ret = regmap_read(data->regmap, VEML6030_REG_ALS_CONF, &reg);
+ 	if (ret) {
 
 
 
