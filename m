@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-87419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64A899A64E3
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:51:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BD039A6544
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:55:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C29161C20EBE
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:51:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D11BFB2BB91
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:44:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188D61E8827;
-	Mon, 21 Oct 2024 10:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 360661F470F;
+	Mon, 21 Oct 2024 10:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKvPh/h2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0XYYN6a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F0C1E47CE;
-	Mon, 21 Oct 2024 10:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCD61EF099;
+	Mon, 21 Oct 2024 10:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507549; cv=none; b=O0TXdxwDHe5+I1CiMlaLxnSJioK8UcFyrhbcw581i5kgZrEtyCv/X2tAipjUKR3Pq9i2joM32faAMvtnp6+WB9AhWRp3xtHJt3VbABX3Hy+3O21BiHbWI4wTMk/Y32amiQVCFsvdWO64mS2QKsj2J5tWj9x8mmF+TKWPARgEDLI=
+	t=1729507130; cv=none; b=pPlIQG5gFsWE4Xvq9E8c+GQ3jb1Vp2Cd1p+6tqFJsKRIy9G8/TWKMRnEvh5MziwNomF1h0QZn3mqyNKzW6dmZ/dGPbbNY9fpEl3WFseV0cY/A7H2qFu8pD4DB06NMhdAL58QNuPw4adVfw5BUEjS47Egjms+jBn9a9wA/gtnSGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507549; c=relaxed/simple;
-	bh=M8Ag2ThtvLSsbdXnOkpXU7gDh/M0upcwuj7gCVknIm4=;
+	s=arc-20240116; t=1729507130; c=relaxed/simple;
+	bh=Tzyd52wjQgO5nqrirDLWZQfi6KGX0WQab+9HML/eQ4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IH0v33dt9VzB3fTECv8u85MLaw4/l64PszvijE5vwlEYVqKYDEEHvoCaCIccD80FISsES55HRU+2TVTHGHEcl5/CzKNiv75+SzH9WGUMkksq4Wi9oAUAwO/qBlb+pHpcDPGj0BYRiT7m1SI0EinHVg+aVnQNfAW66RtcJTe4x5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKvPh/h2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BE2C4CEC3;
-	Mon, 21 Oct 2024 10:45:49 +0000 (UTC)
+	 MIME-Version; b=bfyitBXWsrURlbh9DfsvYyWlKOizYNfyf8On9HPKEt9Nl/nY/kQcEtMiAkkkns/KQ2MK0BAMNTks8E4XH+SZ2hdxOT1H1P4mxQGQWN1v3YTtdnj+rIqmHdfVeagHlI6bI/qssHCYuZLaseHs3GWrq9qCTSXSZEK+AI6iH37Hcek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0XYYN6a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E8FEC4CEC3;
+	Mon, 21 Oct 2024 10:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507549;
-	bh=M8Ag2ThtvLSsbdXnOkpXU7gDh/M0upcwuj7gCVknIm4=;
+	s=korg; t=1729507129;
+	bh=Tzyd52wjQgO5nqrirDLWZQfi6KGX0WQab+9HML/eQ4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hKvPh/h2XuEagNzQM7e6uQOzYHfJreKymEqw5+bl5PjVUN5ubNHqMfevLH/0Uam/6
-	 bOH5X4uKFRnCycFhtgk4KGhtcktkC8Qplrgz8v8YQv+qcgPHa1V6QJbGzG+exyIRi8
-	 sbLb9wWVh+8tLAvRuXnvTtUJLqyTBvN9c/19qtIY=
+	b=c0XYYN6a4T+cqaVPys0vX1kz5bAYJuC8hlvb1rCD7qp9K43Fz+lm5ZJ7Id17IlJtf
+	 1pEagtk+0qx7acqV6aZ3Ut+/F3JJZ1WDX8MEyogmWmq4FNxuhEzkvAeAR1QxSRl5Tr
+	 eTL/HlifHrSQOMsDxhz2eVBNrOC7DNDLIo2ynacU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 23/82] net: enetc: add missing static descriptor and inline keyword
+	Heiko Thiery <heiko.thiery@gmail.com>,
+	Michael Walle <mwalle@kernel.org>
+Subject: [PATCH 6.6 100/124] misc: microchip: pci1xxxx: add support for NVMEM_DEVID_AUTO for OTP device
 Date: Mon, 21 Oct 2024 12:25:04 +0200
-Message-ID: <20241021102248.165831957@linuxfoundation.org>
+Message-ID: <20241021102300.591188624@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Heiko Thiery <heiko.thiery@gmail.com>
 
-commit 1d7b2ce43d2c22a21dadaf689cb36a69570346a6 upstream.
+commit 2471787c1f0dae6721f60ab44be37460635d3732 upstream.
 
-Fix the build warnings when CONFIG_FSL_ENETC_MDIO is not enabled.
-The detailed warnings are shown as follows.
+By using NVMEM_DEVID_AUTO we support more than 1 device and
+automatically enumerate.
 
-include/linux/fsl/enetc_mdio.h:62:18: warning: no previous prototype for function 'enetc_hw_alloc' [-Wmissing-prototypes]
-      62 | struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
-         |                  ^
-include/linux/fsl/enetc_mdio.h:62:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-      62 | struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
-         | ^
-         | static
-8 warnings generated.
-
-Fixes: 6517798dd343 ("enetc: Make MDIO accessors more generic and export to include/linux/fsl")
+Fixes: 0969001569e4 ("misc: microchip: pci1xxxx: Add support to read and write into PCI1XXXX OTP via NVMEM sysfs")
 Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202410102136.jQHZOcS4-lkp@intel.com/
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20241011030103.392362-1-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Heiko Thiery <heiko.thiery@gmail.com>
+Reviewed-by: Michael Walle <mwalle@kernel.org>
+Link: https://lore.kernel.org/r/20241007071120.9522-2-heiko.thiery@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/fsl/enetc_mdio.h |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/linux/fsl/enetc_mdio.h
-+++ b/include/linux/fsl/enetc_mdio.h
-@@ -48,7 +48,8 @@ static inline int enetc_mdio_read(struct
- static inline int enetc_mdio_write(struct mii_bus *bus, int phy_id, int regnum,
- 				   u16 value)
- { return -EINVAL; }
--struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
-+static inline struct enetc_hw *enetc_hw_alloc(struct device *dev,
-+					      void __iomem *port_regs)
- { return ERR_PTR(-EINVAL); }
+diff --git a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
+index d1cd4544c83c..a2ed477e0370 100644
+--- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
++++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
+@@ -384,6 +384,7 @@ static int pci1xxxx_otp_eeprom_probe(struct auxiliary_device *aux_dev,
  
- #endif
+ 	priv->nvmem_config_otp.type = NVMEM_TYPE_OTP;
+ 	priv->nvmem_config_otp.name = OTP_NAME;
++	priv->nvmem_config_otp.id = NVMEM_DEVID_AUTO;
+ 	priv->nvmem_config_otp.dev = &aux_dev->dev;
+ 	priv->nvmem_config_otp.owner = THIS_MODULE;
+ 	priv->nvmem_config_otp.reg_read = pci1xxxx_otp_read;
+-- 
+2.47.0
+
 
 
 
