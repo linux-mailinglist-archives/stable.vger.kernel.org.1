@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-87443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C129A64FA
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 354159A6455
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:45:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C7C91F21C16
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A9A41C21E44
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:45:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 051A91EABAD;
-	Mon, 21 Oct 2024 10:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B134B1E8843;
+	Mon, 21 Oct 2024 10:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVWW7mvH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pg9Idv6h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09BD195FEC;
-	Mon, 21 Oct 2024 10:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6375C1E3787;
+	Mon, 21 Oct 2024 10:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507621; cv=none; b=AC7dUS+Fa1FRMwIxnfOgCiqEwBAej2aJvyZsylC06b6RPXPwNIUjpQnms3THGh4qVOFlBdQQsXKD0FHRu2O73Jl1k8toHCUhZJIjIGU+5zgPDH83yeTpDr75z5pJiD3LxULUT1c9Dgp1r0xzqlVcvVqK4/abKWlPe+6LZ0ohwlg=
+	t=1729507204; cv=none; b=KdEXwBZh+Y0vbRfx7l/BAzADWcEyjc+DW9B1cFZuh7NQ0/yyt7cHrepg2OB5pllH1LESFle3yxoPQ+amDrpNkS2Eo++zTBgsv2D21fERqc04/3Jvh+Nao7+n30NnXHQHdEjWdlCQJjvkZmauJl1rqkAlYc+xSUSu/kQSk2HGGac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507621; c=relaxed/simple;
-	bh=4KEHdMTZ0D7e/Cf2S+59fcufwwW3NTnLNxiB+MNbujg=;
+	s=arc-20240116; t=1729507204; c=relaxed/simple;
+	bh=hXdIJ05HZJcd9EKeJGb7Zf9vfEOCoUtwaYhMka1q8ts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cDDbFi1tLedu5tasXdvgjd9i9Ib+C2nAnwe5X8bQg8QqG1GmdQy6CmPU2+NYezN1nnx9Wbl+8h1oo0BPA5aCAfMeLlMpScHvHNqga8xEcWlGWhgg6Es6xhKJyz9osT23j3n+TUs/qRx996Vz0DxAQoIHKdufffCGZwGAJirGjJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PVWW7mvH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C83C4CEC3;
-	Mon, 21 Oct 2024 10:47:01 +0000 (UTC)
+	 MIME-Version; b=p/DjyK44lRaPzprMaP5e2+yx1JEDjkDcRpfCeJOpsKcevIfehyv+KcGIdrmmJV4Cncv6nBW104e2tyzIX5x+e0izt7amkFJUuLV7/pYnj9GpKJ0A3ZAKEN/L1JFtc6GJgZFwbFi7y7acVOzDIqP+9dZzmWaOkAMJNLcsiMD3nkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pg9Idv6h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4256C4CEC3;
+	Mon, 21 Oct 2024 10:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507621;
-	bh=4KEHdMTZ0D7e/Cf2S+59fcufwwW3NTnLNxiB+MNbujg=;
+	s=korg; t=1729507204;
+	bh=hXdIJ05HZJcd9EKeJGb7Zf9vfEOCoUtwaYhMka1q8ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PVWW7mvHC1awr//nskRDLmwHIcPMA6KttrFvOnmO14Ls8SpTyD7c6H4O9Pdh2Jk7M
-	 jyu+I2WBZBFio4b3y0npvNMoS0kgYob/7n7L/ADaLl8f3mf5DjezIaD6+Sd9AlZKG7
-	 zCn72JVkq4A6J7QTxkOrkmj/n6RvNBFcRb8RAI3c=
+	b=pg9Idv6hzkhW9gJt7S457dDtQtvKRfitEeJ1T7G9U5CDKVL37aFQ5D1hZEWNy6Pp+
+	 QdowQ+ieAlG+FgVhS1E/FluPO4D+0Vef5ZE5dc1cklIld6+Hb2iiNYfsMY8NQIIb20
+	 7lhfugm54vudTzSSGSMmCCWYQwocUOF2RIEbuYbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.15 15/82] udf: Convert udf_add_nondir() to new directory iteration
-Date: Mon, 21 Oct 2024 12:24:56 +0200
-Message-ID: <20241021102247.836328329@linuxfoundation.org>
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.6 093/124] xhci: Fix incorrect stream context type macro
+Date: Mon, 21 Oct 2024 12:24:57 +0200
+Message-ID: <20241021102300.323844639@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit ef91f9998bece00cf7f82ad26177f910a7124b25 ]
+commit 6599b6a6fa8060145046d0744456b6abdb3122a7 upstream.
 
-Convert udf_add_nondir() to new directory iteration code.
+The stream contex type (SCT) bitfield is used both in the stream context
+data structure,  and in the 'Set TR Dequeue pointer' command TRB.
+In both cases it uses bits 3:1
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+The SCT_FOR_TRB(p) macro used to set the stream context type (SCT) field
+for the 'Set TR Dequeue pointer' command TRB incorrectly shifts the value
+1 bit left before masking the three bits.
+
+Fix this by first masking and rshifting, just like the similar
+SCT_FOR_CTX(p) macro does
+
+This issue has not been visibile as the lost bit 3 is only used with
+secondary stream arrays (SSA). Xhci driver currently only supports using
+a primary stream array with Linear stream addressing.
+
+Fixes: 95241dbdf828 ("xhci: Set SCT field for Set TR dequeue on streams")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241016140000.783905-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/namei.c |   19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ drivers/usb/host/xhci.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/udf/namei.c
-+++ b/fs/udf/namei.c
-@@ -847,26 +847,23 @@ static int udf_add_nondir(struct dentry
- {
- 	struct udf_inode_info *iinfo = UDF_I(inode);
- 	struct inode *dir = d_inode(dentry->d_parent);
--	struct udf_fileident_bh fibh;
--	struct fileIdentDesc cfi, *fi;
-+	struct udf_fileident_iter iter;
- 	int err;
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1286,7 +1286,7 @@ enum xhci_setup_dev {
+ /* Set TR Dequeue Pointer command TRB fields, 6.4.3.9 */
+ #define TRB_TO_STREAM_ID(p)		((((p) & (0xffff << 16)) >> 16))
+ #define STREAM_ID_FOR_TRB(p)		((((p)) & 0xffff) << 16)
+-#define SCT_FOR_TRB(p)			(((p) << 1) & 0x7)
++#define SCT_FOR_TRB(p)			(((p) & 0x7) << 1)
  
--	fi = udf_add_entry(dir, dentry, &fibh, &cfi, &err);
--	if (unlikely(!fi)) {
-+	err = udf_fiiter_add_entry(dir, dentry, &iter);
-+	if (err) {
- 		inode_dec_link_count(inode);
- 		discard_new_inode(inode);
- 		return err;
- 	}
--	cfi.icb.extLength = cpu_to_le32(inode->i_sb->s_blocksize);
--	cfi.icb.extLocation = cpu_to_lelb(iinfo->i_location);
--	*(__le32 *)((struct allocDescImpUse *)cfi.icb.impUse)->impUse =
-+	iter.fi.icb.extLength = cpu_to_le32(inode->i_sb->s_blocksize);
-+	iter.fi.icb.extLocation = cpu_to_lelb(iinfo->i_location);
-+	*(__le32 *)((struct allocDescImpUse *)iter.fi.icb.impUse)->impUse =
- 		cpu_to_le32(iinfo->i_unique & 0x00000000FFFFFFFFUL);
--	udf_write_fi(dir, &cfi, fi, &fibh, NULL, NULL);
-+	udf_fiiter_write_fi(&iter, NULL);
- 	dir->i_ctime = dir->i_mtime = current_time(dir);
- 	mark_inode_dirty(dir);
--	if (fibh.sbh != fibh.ebh)
--		brelse(fibh.ebh);
--	brelse(fibh.sbh);
-+	udf_fiiter_release(&iter);
- 	d_instantiate_new(dentry, inode);
- 
- 	return 0;
+ /* Link TRB specific fields */
+ #define TRB_TC			(1<<1)
 
 
 
