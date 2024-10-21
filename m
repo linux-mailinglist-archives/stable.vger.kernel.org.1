@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-87338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0252E9A647F
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:47:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D70D99A639D
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:37:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8BAA28122C
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:47:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09E5E1C21BA9
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:37:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96ED1F4FA4;
-	Mon, 21 Oct 2024 10:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 388E81E47B4;
+	Mon, 21 Oct 2024 10:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6YAw0w0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRe+/HQX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76EA51EABD4;
-	Mon, 21 Oct 2024 10:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C3B1E570F;
+	Mon, 21 Oct 2024 10:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507307; cv=none; b=BdFDfr/XsUjPt4DM2eXMUCKy2IamZup6oq+0+Yum6qLLVwqOfcIN+qHsWDYn9C/ctXfxwJDZLT33XC1EOlhCLzbZ9QFgvypl+0Lbj+naQHeDcxvhv90VCTl8S10dgAxQsELcbhgbLAKl15L/wv3/LoYWxsUgCgh5B8MN2s4ENlM=
+	t=1729506825; cv=none; b=GzTycDTAemSOPSTU7ig83KO48CUlZLBlArBMjAuQzMXHZ3VK5iU8MOS7pnqJrjBQKrF47G3yDK8RVFbIN7RjwJqUYwQTTxc4k4cylLOf2pYpJKfDkzQHnKu42g2ZushzuYyqa8awCSYjOKyUgIwL1i0DQ/HveGlXoBHUk42m7ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507307; c=relaxed/simple;
-	bh=AQlfZEGWnmhPQ3PicZ0mHQoAQVP5Z1TYCrt0B3+OVQM=;
+	s=arc-20240116; t=1729506825; c=relaxed/simple;
+	bh=A6HOkGpDJ2XdWiiKLMPLhaJe287yHtqTlm7eAhNF4YQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KoE13GEpDB6rn739BcCd1ot47bpWCisouJcs6wbRbErliujAFth2qPWp10TxRvHJSD+kw2z8wCrwAIyyUkKWn7Q5ktZxc6f+FnirHU50/Pf48DulvwsaucUkWiFxD9S90ZSUokX+BT1ixFZEm5bkTTxn3cM9EaggXxomGNE1puY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6YAw0w0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB8FBC4CEC3;
-	Mon, 21 Oct 2024 10:41:46 +0000 (UTC)
+	 MIME-Version; b=FVMT3zK2kSd24py4wEPRK89gI4NuhdCpnl+cgtMMcj2R3VALavTa89jzvRsubFIp0Jar6cLB803hMqsClZuKRYmYMpV8w9Lib9qLZ6xNTKYQSwNebhLK+Yaiv+JLmX01VfaMLQBPBMAmInflUm8jhh3nBMNvsIIG1soAGtY4A3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rRe+/HQX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6019DC4CEC3;
+	Mon, 21 Oct 2024 10:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507307;
-	bh=AQlfZEGWnmhPQ3PicZ0mHQoAQVP5Z1TYCrt0B3+OVQM=;
+	s=korg; t=1729506824;
+	bh=A6HOkGpDJ2XdWiiKLMPLhaJe287yHtqTlm7eAhNF4YQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x6YAw0w0p1BnXM2MEXdUziHi85SPaY+XpXluMZHE9BNOEY3Zqt2mUmGJBkPN3+i6j
-	 XGL0piC9jIG8MiFgi0L37L0BrQVIO3jp8/nqKhujrj2E6WctTv9XzshTLOeV9fWVrD
-	 6tst9IW3OKPSRMT8LuYBUBMqrNLrUMA7tIasV+fQ=
+	b=rRe+/HQX8p7ueqkZ8FnoxNfqCRM2uZfG2rYzsbiltYp834OtIAQC/sn2wTa+HMRXy
+	 SIyInz/aMOpHgOU1o/Tx9PROjDwvYE5q07b99NFZq0GoAc2tWZ/jkVNwjdTbhBQDWC
+	 41JS30M5b8pOKshdaTMAwUJTi78wLWJcSiP8feFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH 6.1 34/91] devlink: drop the filter argument from devlinks_xa_find_get
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>
+Subject: [PATCH 6.11 132/135] serial: qcom-geni: fix dma rx cancellation
 Date: Mon, 21 Oct 2024 12:24:48 +0200
-Message-ID: <20241021102251.155479379@linuxfoundation.org>
+Message-ID: <20241021102304.513268002@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 8861c0933c78e3631fe752feadc0d2a6e5eab1e1 upstream.
+commit 23ee4a25661c33e6381d41e848a9060ed6d72845 upstream.
 
-Looks like devlinks_xa_find_get() was intended to get the mark
-from the @filter argument. It doesn't actually use @filter, passing
-DEVLINK_REGISTERED to xa_find_fn() directly. Walking marks other
-than registered is unlikely so drop @filter argument completely.
+Make sure to wait for the DMA transfer to complete when cancelling the
+rx command on stop_rx(). This specifically prevents the DMA completion
+interrupt from firing after rx has been restarted, something which can
+lead to an IOMMU fault and hosed rx when the interrupt handler unmaps
+the DMA buffer for the new command:
 
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Ido: Moved the changes from core.c and devl_internal.h to leftover.c ]
-Stable-dep-of: d77278196441 ("devlink: bump the instance index directly when iterating")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+	qcom_geni_serial 988000.serial: serial engine reports 0 RX bytes in!
+	arm-smmu 15000000.iommu: FSR    = 00000402 [Format=2 TF], SID=0x563
+	arm-smmu 15000000.iommu: FSYNR0 = 00210013 [S1CBNDX=33 WNR PLVL=3]
+	Bluetooth: hci0: command 0xfc00 tx timeout
+	Bluetooth: hci0: Reading QCA version information failed (-110)
+
+Also add the missing state machine reset which is needed in case
+cancellation fails.
+
+Fixes: 2aaa43c70778 ("tty: serial: qcom-geni-serial: add support for serial engine DMA")
+Cc: stable@vger.kernel.org      # 6.3
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20241009145110.16847-5-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/devlink/leftover.c |   21 ++++++++-------------
- 1 file changed, 8 insertions(+), 13 deletions(-)
+ drivers/tty/serial/qcom_geni_serial.c |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
---- a/net/devlink/leftover.c
-+++ b/net/devlink/leftover.c
-@@ -289,7 +289,7 @@ void devl_unlock(struct devlink *devlink
- EXPORT_SYMBOL_GPL(devl_unlock);
- 
- static struct devlink *
--devlinks_xa_find_get(struct net *net, unsigned long *indexp, xa_mark_t filter,
-+devlinks_xa_find_get(struct net *net, unsigned long *indexp,
- 		     void * (*xa_find_fn)(struct xarray *, unsigned long *,
- 					  unsigned long, xa_mark_t))
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -787,17 +787,27 @@ static void qcom_geni_serial_start_rx_fi
+ static void qcom_geni_serial_stop_rx_dma(struct uart_port *uport)
  {
-@@ -322,30 +322,25 @@ unlock:
- }
+ 	struct qcom_geni_serial_port *port = to_dev_port(uport);
++	bool done;
  
- static struct devlink *devlinks_xa_find_get_first(struct net *net,
--						  unsigned long *indexp,
--						  xa_mark_t filter)
-+						  unsigned long *indexp)
- {
--	return devlinks_xa_find_get(net, indexp, filter, xa_find);
-+	return devlinks_xa_find_get(net, indexp, xa_find);
- }
+ 	if (!qcom_geni_serial_secondary_active(uport))
+ 		return;
  
- static struct devlink *devlinks_xa_find_get_next(struct net *net,
--						 unsigned long *indexp,
--						 xa_mark_t filter)
-+						 unsigned long *indexp)
- {
--	return devlinks_xa_find_get(net, indexp, filter, xa_find_after);
-+	return devlinks_xa_find_get(net, indexp, xa_find_after);
- }
- 
- /* Iterate over devlink pointers which were possible to get reference to.
-  * devlink_put() needs to be called for each iterated devlink pointer
-  * in loop body in order to release the reference.
-  */
--#define devlinks_xa_for_each_get(net, index, devlink, filter)			\
--	for (index = 0,								\
--	     devlink = devlinks_xa_find_get_first(net, &index, filter);		\
--	     devlink; devlink = devlinks_xa_find_get_next(net, &index, filter))
+ 	geni_se_cancel_s_cmd(&port->se);
+-	qcom_geni_serial_poll_bit(uport, SE_GENI_S_IRQ_STATUS,
+-				  S_CMD_CANCEL_EN, true);
 -
- #define devlinks_xa_for_each_registered_get(net, index, devlink)		\
--	devlinks_xa_for_each_get(net, index, devlink, DEVLINK_REGISTERED)
-+	for (index = 0,								\
-+	     devlink = devlinks_xa_find_get_first(net, &index);	\
-+	     devlink; devlink = devlinks_xa_find_get_next(net, &index))
+-	if (qcom_geni_serial_secondary_active(uport))
++	done = qcom_geni_serial_poll_bit(uport, SE_DMA_RX_IRQ_STAT,
++			RX_EOT, true);
++	if (done) {
++		writel(RX_EOT | RX_DMA_DONE,
++				uport->membase + SE_DMA_RX_IRQ_CLR);
++	} else {
+ 		qcom_geni_serial_abort_rx(uport);
  
- static struct devlink *devlink_get_from_attrs(struct net *net,
- 					      struct nlattr **attrs)
++		writel(1, uport->membase + SE_DMA_RX_FSM_RST);
++		qcom_geni_serial_poll_bit(uport, SE_DMA_RX_IRQ_STAT,
++				RX_RESET_DONE, true);
++		writel(RX_RESET_DONE | RX_DMA_DONE,
++				uport->membase + SE_DMA_RX_IRQ_CLR);
++	}
++
+ 	if (port->rx_dma_addr) {
+ 		geni_se_rx_dma_unprep(&port->se, port->rx_dma_addr,
+ 				      DMA_RX_BUF_SIZE);
 
 
 
