@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-87097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 153A99A6307
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:30:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B4829A63BA
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:38:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F1ACB2603B
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:30:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9838E1C21CFB
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7A81E5708;
-	Mon, 21 Oct 2024 10:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2081E7679;
+	Mon, 21 Oct 2024 10:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gAUe6QR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjxFwZUh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37FF1E5707;
-	Mon, 21 Oct 2024 10:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CB31E3DD6;
+	Mon, 21 Oct 2024 10:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506584; cv=none; b=MDoFaVUenI3Qqj2jViZmMd4Qh9XUm7K/0WHzlu4Lj+FeVYTQrXNT1EoZmCaqp3lrj9iU/UlRDX86V9TBMUUpM3IwLwLVTnAFLpiUGT6HTKAh23+5lsuZfNAT6Wa3cfJWrPn84wfgoP+wEwCy7p5zO/ZfiijJyZr4Cy75iqsiK5Q=
+	t=1729506905; cv=none; b=skTpXD87hHsgwFcyseGmj27mxH5dt8gppvwABauTRpfFLu7p5zxEbq1hlccotPwb847BeWb4hz9yEedfOBwYz/M74xLufxIwdNLSAmeGEeefjVZEzinlCDMHYAOJXsjiNRydaZAlYWg/wdd6ST3XncTLxpSOkEycdYQ+V1Vhtoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506584; c=relaxed/simple;
-	bh=eB4XZ5RfZ4jhdeNLgCQntCSyR4wZYuq3+Lt6mHZtllM=;
+	s=arc-20240116; t=1729506905; c=relaxed/simple;
+	bh=DDod9Oxq0VT2iTrivItE+GhXd/BkOpMLrEYGb+kyN+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pa4y+fxoqbpfDrmjKdH4QptgNPhI6K40VP7QrpxV8F2ufePydNRdEFv4T4gDX454SF6KXqnEoMywWpgpFhn12XlxF0xCwS/mzusebXj1kJMxBbbcclu8WHs3UoHFJtuRAAjc6HJQRt5oiI9jR0mbR1H4Ngt1B3DL2PE62o+hGqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gAUe6QR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEEE6C4CEC3;
-	Mon, 21 Oct 2024 10:29:43 +0000 (UTC)
+	 MIME-Version; b=VuFcHeTk9V5oI5exlknAXMBdRYcM/D2shUmM10/KTIpqM6gYXYKSDhjZymGDFbDSWeLUHcsKW2cTi6JOeIzaBHB1MXSEdFI5m8xsAaAi03lwXpfkBpaUlgdCe2kSAOqpy8N62YoFpwZU/qK8MDiqYjR9Kl5tvLTHJtafsiqCGCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjxFwZUh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7DE1C4CEC3;
+	Mon, 21 Oct 2024 10:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506584;
-	bh=eB4XZ5RfZ4jhdeNLgCQntCSyR4wZYuq3+Lt6mHZtllM=;
+	s=korg; t=1729506905;
+	bh=DDod9Oxq0VT2iTrivItE+GhXd/BkOpMLrEYGb+kyN+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2gAUe6QRx5rf2gRBcaJxTHo6GrCESlFY3rNmPesJbffr0X4qR12gAIA1BjUjwhtIi
-	 bAR7tXFHVlWwC+Da/HvmRO86U3KxKwBZkuj3fOg91Knz8giMoeQdE674XT4P8lJrS0
-	 ixkEMgE/aYE0FbU+MwgAmxCKKekXqHai5sIB3gn4=
+	b=DjxFwZUhiRJEQ9V7GKl5BVlLiWuZwvIRGymsiEcPc00AAO/xYBlb0KD95qkWbbcAS
+	 vR7N2GBh9In3uJGviBL2klEtrJed6piMYuxM0yO0qbUFh4yOSjr+m+bkEzs9kE9AOB
+	 7TfQxL0xVN5dRCe+rIwlFsAsViCWm+Bhp5Cm6GBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Edwards <uejji@uejji.net>,
-	"Derek J. Clark" <derekjohn.clark@gmail.com>,
-	Christopher Snowhill <kode54@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.11 054/135] Input: xpad - add support for MSI Claw A1M
-Date: Mon, 21 Oct 2024 12:23:30 +0200
-Message-ID: <20241021102301.443196293@linuxfoundation.org>
+	Wei Fang <wei.fang@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 007/124] net: enetc: block concurrent XDP transmissions during ring reconfiguration
+Date: Mon, 21 Oct 2024 12:23:31 +0200
+Message-ID: <20241021102257.001402115@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Edwards <uejji@uejji.net>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit 22a18935d7d96bbb1a28076f843c1926d0ba189e upstream.
+commit c728a95ccf2a8ba544facfc30a4418d4c68c39f0 upstream.
 
-Add MSI Claw A1M controller to xpad_device match table when in xinput mode.
-Add MSI VID as XPAD_XBOX360_VENDOR.
+When testing the XDP_REDIRECT function on the LS1028A platform, we
+found a very reproducible issue that the Tx frames can no longer be
+sent out even if XDP_REDIRECT is turned off. Specifically, if there
+is a lot of traffic on Rx direction, when XDP_REDIRECT is turned on,
+the console may display some warnings like "timeout for tx ring #6
+clear", and all redirected frames will be dropped, the detailed log
+is as follows.
 
-Signed-off-by: John Edwards <uejji@uejji.net>
-Reviewed-by: Derek J. Clark <derekjohn.clark@gmail.com>
-Reviewed-by: Christopher Snowhill <kode54@gmail.com>
-Link: https://lore.kernel.org/r/20241010232020.3292284-4-uejji@uejji.net
+root@ls1028ardb:~# ./xdp-bench redirect eno0 eno2
+Redirecting from eno0 (ifindex 3; driver fsl_enetc) to eno2 (ifindex 4; driver fsl_enetc)
+[203.849809] fsl_enetc 0000:00:00.2 eno2: timeout for tx ring #5 clear
+[204.006051] fsl_enetc 0000:00:00.2 eno2: timeout for tx ring #6 clear
+[204.161944] fsl_enetc 0000:00:00.2 eno2: timeout for tx ring #7 clear
+eno0->eno2     1420505 rx/s       1420590 err,drop/s      0 xmit/s
+  xmit eno0->eno2    0 xmit/s     1420590 drop/s     0 drv_err/s     15.71 bulk-avg
+eno0->eno2     1420484 rx/s       1420485 err,drop/s      0 xmit/s
+  xmit eno0->eno2    0 xmit/s     1420485 drop/s     0 drv_err/s     15.71 bulk-avg
+
+By analyzing the XDP_REDIRECT implementation of enetc driver, the
+driver will reconfigure Tx and Rx BD rings when a bpf program is
+installed or uninstalled, but there is no mechanisms to block the
+redirected frames when enetc driver reconfigures rings. Similarly,
+XDP_TX verdicts on received frames can also lead to frames being
+enqueued in the Tx rings. Because XDP ignores the state set by the
+netif_tx_wake_queue() API, so introduce the ENETC_TX_DOWN flag to
+suppress transmission of XDP frames.
+
+Fixes: c33bfaf91c4c ("net: enetc: set up XDP program under enetc_reconfigure()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20241010092056.298128-3-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/freescale/enetc/enetc.c |   14 ++++++++++++++
+ drivers/net/ethernet/freescale/enetc/enetc.h |    1 +
+ 2 files changed, 15 insertions(+)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -218,6 +218,7 @@ static const struct xpad_device {
- 	{ 0x0c12, 0x8810, "Zeroplus Xbox Controller", 0, XTYPE_XBOX },
- 	{ 0x0c12, 0x9902, "HAMA VibraX - *FAULTY HARDWARE*", 0, XTYPE_XBOX },
- 	{ 0x0d2f, 0x0002, "Andamiro Pump It Up pad", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX },
-+	{ 0x0db0, 0x1901, "Micro Star International Xbox360 Controller for Windows", 0, XTYPE_XBOX360 },
- 	{ 0x0e4c, 0x1097, "Radica Gamester Controller", 0, XTYPE_XBOX },
- 	{ 0x0e4c, 0x1103, "Radica Gamester Reflex", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX },
- 	{ 0x0e4c, 0x2390, "Radica Games Jtech Controller", 0, XTYPE_XBOX },
-@@ -493,6 +494,7 @@ static const struct usb_device_id xpad_t
- 	XPAD_XBOX360_VENDOR(0x07ff),		/* Mad Catz Gamepad */
- 	XPAD_XBOXONE_VENDOR(0x0b05),		/* ASUS controllers */
- 	XPAD_XBOX360_VENDOR(0x0c12),		/* Zeroplus X-Box 360 controllers */
-+	XPAD_XBOX360_VENDOR(0x0db0),		/* Micro Star International X-Box 360 controllers */
- 	XPAD_XBOX360_VENDOR(0x0e6f),		/* 0x0e6f Xbox 360 controllers */
- 	XPAD_XBOXONE_VENDOR(0x0e6f),		/* 0x0e6f Xbox One controllers */
- 	XPAD_XBOX360_VENDOR(0x0f0d),		/* Hori controllers */
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -902,6 +902,7 @@ static bool enetc_clean_tx_ring(struct e
+ 
+ 	if (unlikely(tx_frm_cnt && netif_carrier_ok(ndev) &&
+ 		     __netif_subqueue_stopped(ndev, tx_ring->index) &&
++		     !test_bit(ENETC_TX_DOWN, &priv->flags) &&
+ 		     (enetc_bd_unused(tx_ring) >= ENETC_TXBDS_MAX_NEEDED))) {
+ 		netif_wake_subqueue(ndev, tx_ring->index);
+ 	}
+@@ -1380,6 +1381,9 @@ int enetc_xdp_xmit(struct net_device *nd
+ 	int xdp_tx_bd_cnt, i, k;
+ 	int xdp_tx_frm_cnt = 0;
+ 
++	if (unlikely(test_bit(ENETC_TX_DOWN, &priv->flags)))
++		return -ENETDOWN;
++
+ 	enetc_lock_mdio();
+ 
+ 	tx_ring = priv->xdp_tx_ring[smp_processor_id()];
+@@ -1605,6 +1609,12 @@ static int enetc_clean_rx_ring_xdp(struc
+ 			break;
+ 		case XDP_TX:
+ 			tx_ring = priv->xdp_tx_ring[rx_ring->index];
++			if (unlikely(test_bit(ENETC_TX_DOWN, &priv->flags))) {
++				enetc_xdp_drop(rx_ring, orig_i, i);
++				tx_ring->stats.xdp_tx_drops++;
++				break;
++			}
++
+ 			xdp_tx_bd_cnt = enetc_rx_swbd_to_xdp_tx_swbd(xdp_tx_arr,
+ 								     rx_ring,
+ 								     orig_i, i);
+@@ -2466,6 +2476,8 @@ void enetc_start(struct net_device *ndev
+ 	enetc_enable_bdrs(priv);
+ 
+ 	netif_tx_start_all_queues(ndev);
++
++	clear_bit(ENETC_TX_DOWN, &priv->flags);
+ }
+ EXPORT_SYMBOL_GPL(enetc_start);
+ 
+@@ -2523,6 +2535,8 @@ void enetc_stop(struct net_device *ndev)
+ 	struct enetc_ndev_priv *priv = netdev_priv(ndev);
+ 	int i;
+ 
++	set_bit(ENETC_TX_DOWN, &priv->flags);
++
+ 	netif_tx_stop_all_queues(ndev);
+ 
+ 	enetc_disable_bdrs(priv);
+--- a/drivers/net/ethernet/freescale/enetc/enetc.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc.h
+@@ -328,6 +328,7 @@ enum enetc_active_offloads {
+ 
+ enum enetc_flags_bit {
+ 	ENETC_TX_ONESTEP_TSTAMP_IN_PROGRESS = 0,
++	ENETC_TX_DOWN,
+ };
+ 
+ /* interrupt coalescing modes */
 
 
 
