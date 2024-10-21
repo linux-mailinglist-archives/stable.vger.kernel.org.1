@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-87201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B9C9A63B6
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:38:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 676139A6304
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:30:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89B05281D82
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2034D281A3D
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:30:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA81D1E503D;
-	Mon, 21 Oct 2024 10:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F7D1E5733;
+	Mon, 21 Oct 2024 10:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mu152MlZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0wuBlUfX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633151E631B;
-	Mon, 21 Oct 2024 10:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8641E5728;
+	Mon, 21 Oct 2024 10:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506896; cv=none; b=IvadJzHiqC22GyZ1Cg1VvkDu8RciAFol8n/+YIx5P5H2jmMxped0F++oLPahClU6LMAr82HcL4S/uUaDsazDWSn7iK58L9RutIphqYgPUGAer9MiHJxuIaXHAvONx0EBPvLV0HEDquHek01XVMhZFeAQqrRlHkFMNabJQwIeQ3Q=
+	t=1729506578; cv=none; b=lpEL/lq3SWpwxyQhARPNRpoKXHtsgdhLnUHRLVXYJaVbmHm6p0Mi/MODVIw08P01AAShGO4HrZJ0R45Z0z2fzJWQrJTC4OeL7cXoUvjmNoSDqRrQY46eoP0EfMuAqdrONbUK/cOYbaAW9m4bBmMQ5+SiVQb0KX13X9dS8FkmTGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506896; c=relaxed/simple;
-	bh=jAOKdCCkTgcQpYYYUWuL3/HMZ2sVbRNTOAwC/gNdmiU=;
+	s=arc-20240116; t=1729506578; c=relaxed/simple;
+	bh=tEA6cu++Z85ocUStr/3ic/CaYamONFDMnCRnX6nyjyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q2flifL7f160Pv9a4Ho+czUT9X2GfaOdpKRfQKD3JuTGGuRLHwq2OVrYdA8QL6NGK7+09gUAH446Q6fAALrwdkLVYT8U2+QeBFKviUPCMslKrlE0wDxpVIsjqBJ8C5nEoN5LFFcTVT6+J47wRZCBPjztpYa5Xr+FpIrnl4C52/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mu152MlZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8BD9C4CEC3;
-	Mon, 21 Oct 2024 10:34:55 +0000 (UTC)
+	 MIME-Version; b=CsT810k+FvUtABONCBwMHA8mVh65hL9gHsuga2Hw6IBqDmS7m0zebShE6GKbCALMPSq1XI3XyloOCttF4OI3TWRwPNTF5Iw9jt30u//yA14ESoknN0vy1TvtvAYH6UNzqKjJE9lhA6UTIqYBAf/ERfa02IbkxrYNyfNqVfTGkB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0wuBlUfX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF32C4CEC3;
+	Mon, 21 Oct 2024 10:29:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506896;
-	bh=jAOKdCCkTgcQpYYYUWuL3/HMZ2sVbRNTOAwC/gNdmiU=;
+	s=korg; t=1729506578;
+	bh=tEA6cu++Z85ocUStr/3ic/CaYamONFDMnCRnX6nyjyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mu152MlZOb8FHTm+DqBvypgQOOxJH24GlrJdZlh9JQy/Lamo5CyvBqR26Sf5v9h5J
-	 DD0+ah1GG7VeEjq0X3c3Fllcft7QApiuQpEpzFpEUDJlNHq0HZXQb+dqRvHnKuwlXU
-	 R5NtDQTnn0dQFeyG6bWhEINAphviyE7tYUK5Mrno=
+	b=0wuBlUfXCRB4Keemew/xDxn9XcHKlnYEMl0qKLbTR5T7dF/2QfAd0syxpETAoHq5t
+	 s+0Bctfs3bztavLhrrXWzmvisxoEbzsDHyDhui2OzpZd0K2S2wBes9XWglxnBeFKnz
+	 XtJ8TZDasTH5LKuahVkZPh90KbfBwM0+G0m/KeTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 004/124] ALSA: hda/conexant - Fix audio routing for HP EliteOne 1000 G2
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.11 052/135] io_uring/sqpoll: ensure task state is TASK_RUNNING when running task_work
 Date: Mon, 21 Oct 2024 12:23:28 +0200
-Message-ID: <20241021102256.886203750@linuxfoundation.org>
+Message-ID: <20241021102301.366617361@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +60,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 9988844c457f6f17fb2e75aa000b6c3b1b673bb9 upstream.
+commit 8f7033aa4089fbaf7a33995f0f2ee6c9d7b9ca1b upstream.
 
-There is a problem with simultaneous audio output to headphones and
-speakers, and when headphones are turned off, the speakers also turn
-off and do not turn them on.
+When the sqpoll is exiting and cancels pending work items, it may need
+to run task_work. If this happens from within io_uring_cancel_generic(),
+then it may be under waiting for the io_uring_task waitqueue. This
+results in the below splat from the scheduler, as the ring mutex may be
+attempted grabbed while in a TASK_INTERRUPTIBLE state.
 
-However, it was found that if you boot linux immediately after windows,
-there are no such problems. When comparing alsa-info, the only difference
-is the different configuration of Node 0x1d:
+Ensure that the task state is set appropriately for that, just like what
+is done for the other cases in io_run_task_work().
 
-working conf. (windows): Pin-ctls: 0x80: HP
-not working     (linux): Pin-ctls: 0xc0: OUT HP
+do not call blocking ops when !TASK_RUNNING; state=1 set at [<0000000029387fd2>] prepare_to_wait+0x88/0x2fc
+WARNING: CPU: 6 PID: 59939 at kernel/sched/core.c:8561 __might_sleep+0xf4/0x140
+Modules linked in:
+CPU: 6 UID: 0 PID: 59939 Comm: iou-sqp-59938 Not tainted 6.12.0-rc3-00113-g8d020023b155 #7456
+Hardware name: linux,dummy-virt (DT)
+pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+pc : __might_sleep+0xf4/0x140
+lr : __might_sleep+0xf4/0x140
+sp : ffff80008c5e7830
+x29: ffff80008c5e7830 x28: ffff0000d93088c0 x27: ffff60001c2d7230
+x26: dfff800000000000 x25: ffff0000e16b9180 x24: ffff80008c5e7a50
+x23: 1ffff000118bcf4a x22: ffff0000e16b9180 x21: ffff0000e16b9180
+x20: 000000000000011b x19: ffff80008310fac0 x18: 1ffff000118bcd90
+x17: 30303c5b20746120 x16: 74657320313d6574 x15: 0720072007200720
+x14: 0720072007200720 x13: 0720072007200720 x12: ffff600036c64f0b
+x11: 1fffe00036c64f0a x10: ffff600036c64f0a x9 : dfff800000000000
+x8 : 00009fffc939b0f6 x7 : ffff0001b6327853 x6 : 0000000000000001
+x5 : ffff0001b6327850 x4 : ffff600036c64f0b x3 : ffff8000803c35bc
+x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000e16b9180
+Call trace:
+ __might_sleep+0xf4/0x140
+ mutex_lock+0x84/0x124
+ io_handle_tw_list+0xf4/0x260
+ tctx_task_work_run+0x94/0x340
+ io_run_task_work+0x1ec/0x3c0
+ io_uring_cancel_generic+0x364/0x524
+ io_sq_thread+0x820/0x124c
+ ret_from_fork+0x10/0x20
 
-This patch disable the AC_PINCTL_OUT_EN bit of Node 0x1d and fixes the
-described problem.
-
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241009134248.662175-1-kovalev@altlinux.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Cc: stable@vger.kernel.org
+Fixes: af5d68f8892f ("io_uring/sqpoll: manage task_work privately")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_conexant.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ io_uring/io_uring.h |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -307,6 +307,7 @@ enum {
- 	CXT_FIXUP_HP_SPECTRE,
- 	CXT_FIXUP_HP_GATE_MIC,
- 	CXT_FIXUP_MUTE_LED_GPIO,
-+	CXT_FIXUP_HP_ELITEONE_OUT_DIS,
- 	CXT_FIXUP_HP_ZBOOK_MUTE_LED,
- 	CXT_FIXUP_HEADSET_MIC,
- 	CXT_FIXUP_HP_MIC_NO_PRESENCE,
-@@ -324,6 +325,19 @@ static void cxt_fixup_stereo_dmic(struct
- 	spec->gen.inv_dmic_split = 1;
- }
+--- a/io_uring/io_uring.h
++++ b/io_uring/io_uring.h
+@@ -322,6 +322,7 @@ static inline int io_run_task_work(void)
+ 		if (current->io_uring) {
+ 			unsigned int count = 0;
  
-+/* fix widget control pin settings */
-+static void cxt_fixup_update_pinctl(struct hda_codec *codec,
-+				   const struct hda_fixup *fix, int action)
-+{
-+	if (action == HDA_FIXUP_ACT_PROBE) {
-+		/* Unset OUT_EN for this Node pin, leaving only HP_EN.
-+		 * This is the value stored in the codec register after
-+		 * the correct initialization of the previous windows boot.
-+		 */
-+		snd_hda_set_pin_ctl(codec, 0x1d, AC_PINCTL_HP_EN);
-+	}
-+}
-+
- static void cxt5066_increase_mic_boost(struct hda_codec *codec,
- 				   const struct hda_fixup *fix, int action)
- {
-@@ -975,6 +989,10 @@ static const struct hda_fixup cxt_fixups
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = cxt_fixup_mute_led_gpio,
- 	},
-+	[CXT_FIXUP_HP_ELITEONE_OUT_DIS] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = cxt_fixup_update_pinctl,
-+	},
- 	[CXT_FIXUP_HP_ZBOOK_MUTE_LED] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = cxt_fixup_hp_zbook_mute_led,
-@@ -1065,6 +1083,7 @@ static const struct snd_pci_quirk cxt506
- 	SND_PCI_QUIRK(0x103c, 0x83b2, "HP EliteBook 840 G5", CXT_FIXUP_HP_DOCK),
- 	SND_PCI_QUIRK(0x103c, 0x83b3, "HP EliteBook 830 G5", CXT_FIXUP_HP_DOCK),
- 	SND_PCI_QUIRK(0x103c, 0x83d3, "HP ProBook 640 G4", CXT_FIXUP_HP_DOCK),
-+	SND_PCI_QUIRK(0x103c, 0x83e5, "HP EliteOne 1000 G2", CXT_FIXUP_HP_ELITEONE_OUT_DIS),
- 	SND_PCI_QUIRK(0x103c, 0x8402, "HP ProBook 645 G4", CXT_FIXUP_MUTE_LED_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x8427, "HP ZBook Studio G5", CXT_FIXUP_HP_ZBOOK_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x844f, "HP ZBook Studio G5", CXT_FIXUP_HP_ZBOOK_MUTE_LED),
++			__set_current_state(TASK_RUNNING);
+ 			tctx_task_work_run(current->io_uring, UINT_MAX, &count);
+ 			if (count)
+ 				ret = true;
 
 
 
