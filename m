@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-87166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EA189A637E
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D829A641A
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:43:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 176FD1F22945
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FD051F20FC8
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667751E5037;
-	Mon, 21 Oct 2024 10:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC1CA1F1302;
+	Mon, 21 Oct 2024 10:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNhti0Ag"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBM0VzON"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2931E8854;
-	Mon, 21 Oct 2024 10:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74ADA1EB9E1;
+	Mon, 21 Oct 2024 10:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506791; cv=none; b=bWd2pgZnwLSgoI6UxV81a89LRfzYoR0nzFXqLV7vzMtMAyKTCb1WRvDHVAeH0xDhCy+SdU23acepG8W+PmppbQh/B+0/crblmVfMG45UBFBlDBPqIhvp3dTG76+uc96AmJ14vAWeCkNk5m7xIDNrlT3YXhWFvdGcHv3wAbmSUuA=
+	t=1729507055; cv=none; b=fKna0qmYHj1wfpIfqos3sVxooOhLd4whvMH/xzg7TGFzmtiuSbLuDijFB6o/nFuOfJFqawW/s1Le/GDHnqMQWjEBMVmsXsOFNyexMooIjako/5w77dWjYyvAz8mBo7az4k82TVOI+C9WyLqdpoyqFR/LysiS80Aemb890DnqwgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506791; c=relaxed/simple;
-	bh=DiLtWdQIRdZK6sLt5Q/QEPVQURMUiRQU8c+xsi59Akc=;
+	s=arc-20240116; t=1729507055; c=relaxed/simple;
+	bh=QBrOmWFcDudxLibBnfyjtKAd5502Q58RPh+O05Zm3XA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FWsCEAQ4bfa2wcOqHH5f6bOTFrrPfKgbkghe4cvZFaLtoN65LBm7W/a7JTaMA2c3xhmBYA0srJeYCZd0GuVwV+oQps2vHNVIFvVlBhgf0eWZaz+Fskksu2liB/kD+b1+fl02UJb6+119jrYj2pDnbM8o29kBLUNmiG0yXRjvWZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNhti0Ag; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC35C4CEC3;
-	Mon, 21 Oct 2024 10:33:10 +0000 (UTC)
+	 MIME-Version; b=QbVlaI94H11K09DNhWpS14eDgTyeoaxrIt5bAYoVxdCvWSAAsiTIYe4FIVoPFjBoYWs39x2a6a5igJQBUf+xfKoS0Tnay/O0/n05pN/vHzOlGCvDCCUfBknMXxOXiWKOnnpJ/4z0/frQW1ZdCrNxZCbdqHZBjXhyRw68dST8Ugo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBM0VzON; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EACBFC4CEC3;
+	Mon, 21 Oct 2024 10:37:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506790;
-	bh=DiLtWdQIRdZK6sLt5Q/QEPVQURMUiRQU8c+xsi59Akc=;
+	s=korg; t=1729507055;
+	bh=QBrOmWFcDudxLibBnfyjtKAd5502Q58RPh+O05Zm3XA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bNhti0AgQGKKv68fr6LkfxJAAJsFD6W0dRNd/yZERZHoqSzhSJsRihd2N+PFq9pJJ
-	 FViQ/JIHoWtz9pSTf+R3x3LXdETmkqZ9tEqdVgy7QvI58oOm2J05mCqAq5DgXdT4LI
-	 9e7JNSyvVhLZhQQH7ZUo/JfAAdO3s3CpQA1cqazk=
+	b=GBM0VzONfGuFMP4/kdeaLrTt+V94TLAi9d9R07ib2xCMnvAoW2JmqUnpYp4Alj1qZ
+	 z6B+0s30hftbbB/4ZurMfrZeGW1mdpKNeC+usbyvKoETyZumgIgoGlv6nI88NYjsdW
+	 CaYyIXvSA9CXZ5a/gsTMPWFnM6fbshPTeHAg76b0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 6.11 122/135] pinctrl: intel: platform: fix error path in device_for_each_child_node()
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 074/124] iio: hid-sensors: Fix an error handling path in _hid_sensor_set_report_latency()
 Date: Mon, 21 Oct 2024 12:24:38 +0200
-Message-ID: <20241021102304.106920060@linuxfoundation.org>
+Message-ID: <20241021102259.595721114@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 16a6d2e685e8f9a2f51dd5a363d3f97fcad35e22 upstream.
+commit 3a29b84cf7fbf912a6ab1b9c886746f02b74ea25 upstream.
 
-The device_for_each_child_node() loop requires calls to
-fwnode_handle_put() upon early returns to decrement the refcount of
-the child node and avoid leaking memory if that error path is triggered.
+If hid_sensor_set_report_latency() fails, the error code should be returned
+instead of a value likely to be interpreted as 'success'.
 
-There is one early returns within that loop in
-intel_platform_pinctrl_prepare_community(), but fwnode_handle_put() is
-missing.
-
-Instead of adding the missing call, the scoped version of the loop can
-be used to simplify the code and avoid mistakes in the future if new
-early returns are added, as the child node is only used for parsing, and
-it is never assigned.
-
-Cc: stable@vger.kernel.org
-Fixes: c5860e4a2737 ("pinctrl: intel: Add a generic Intel pin control platform driver")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: 138bc7969c24 ("iio: hid-sensor-hub: Implement batch mode")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://patch.msgid.link/c50640665f091a04086e5092cf50f73f2055107a.1727980825.git.christophe.jaillet@wanadoo.fr
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/intel/pinctrl-intel-platform.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/iio/common/hid-sensors/hid-sensor-trigger.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pinctrl/intel/pinctrl-intel-platform.c
-+++ b/drivers/pinctrl/intel/pinctrl-intel-platform.c
-@@ -90,7 +90,6 @@ static int intel_platform_pinctrl_prepar
- 						    struct intel_community *community,
- 						    struct intel_platform_pins *pins)
- {
--	struct fwnode_handle *child;
- 	struct intel_padgroup *gpps;
- 	unsigned int group;
- 	size_t ngpps;
-@@ -131,7 +130,7 @@ static int intel_platform_pinctrl_prepar
- 		return -ENOMEM;
+--- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
++++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+@@ -32,7 +32,7 @@ static ssize_t _hid_sensor_set_report_la
+ 	latency = integer * 1000 + fract / 1000;
+ 	ret = hid_sensor_set_report_latency(attrb, latency);
+ 	if (ret < 0)
+-		return len;
++		return ret;
  
- 	group = 0;
--	device_for_each_child_node(dev, child) {
-+	device_for_each_child_node_scoped(dev, child) {
- 		struct intel_padgroup *gpp = &gpps[group];
+ 	attrb->latency_ms = hid_sensor_get_report_latency(attrb);
  
- 		gpp->reg_num = group;
 
 
 
