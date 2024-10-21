@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-87425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8731C9A64EA
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EB899A6430
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:44:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 308C71F2126C
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 307342828C8
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F771E884B;
-	Mon, 21 Oct 2024 10:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D0E21E631D;
+	Mon, 21 Oct 2024 10:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glFJqyWu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHtikhgJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1911239FD6;
-	Mon, 21 Oct 2024 10:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40EB3A1CD;
+	Mon, 21 Oct 2024 10:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507568; cv=none; b=ovEt2+jGmSn9JaqCiDq9fKrpsYU2WBqKeXcU8qM6qLThVa2pNfCf1hD3jXU8uW5jGCAkG0w/6930zL2+e6QjBYWJTaE/C8IV7R/AIJl2bqAA4ZWafSUjk/KV5kvbjKTpxA5+O+3/pbD8Lbty1jH5ZkLE5Rsfqy1Pc0g34pqfPKs=
+	t=1729507118; cv=none; b=PQbYsIYKBIKzg5UbP7n1ogVJabXsxQI3OEYijuLEzuU53OuuuLDa0gbjT0QFEnfCNyxyVYDZsZgq0E+iSikgmqOE6NZVlPkDN73y99j5lAYcMdTo82Px87mg3dy2EeZZ17FnjuEATmOBO8PWuhfJsqz4gDmzQYMu6nzL6PrjnWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507568; c=relaxed/simple;
-	bh=zzuedcecjQLLE3iAVELXdv3AUqE5HS1aj3SRf1qXlVY=;
+	s=arc-20240116; t=1729507118; c=relaxed/simple;
+	bh=nOLN8KLeksMQDxv5HWOkDax+ZuiJeJZ2vitFug2MeSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PA2iw48vRVqj9urQNOGbvinwUGjNCou3HSRDs2sZZFYORKHpGoEpByk9c7fx7rXwzvVEFU/8NQ3xzkf/loUR1abwFDtfdWKuZX8ex852HF/F6kjTgIhI5yhoJcL782acaJ1yrY6FQZLCiJPAJyZsqfAWzMUUqXCp4vgChCPRePA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glFJqyWu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8951DC4CEC7;
-	Mon, 21 Oct 2024 10:46:07 +0000 (UTC)
+	 MIME-Version; b=SuNV2cLMEycmfQhKaiWCekwjQTFCfuwlijQ57rlUc+zJIMQ25KabC4/z85h+fMTU75K3mH+WhxhERPzSO6Ihq8Z/NiRsawM0s/OeDQOCCIuy9ymLRdKXjH7hAw/Bex4u7QkIF9d5rt39ivCYaT6TU9spIKkOPlvJnZ59u1BvCR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHtikhgJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6363CC4CEC3;
+	Mon, 21 Oct 2024 10:38:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507567;
-	bh=zzuedcecjQLLE3iAVELXdv3AUqE5HS1aj3SRf1qXlVY=;
+	s=korg; t=1729507117;
+	bh=nOLN8KLeksMQDxv5HWOkDax+ZuiJeJZ2vitFug2MeSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=glFJqyWuFciybb6Z2hL2HwJrA1mF+jUFgxBmiL2oHDE2C67mWCIuEqJuZwc+zUWaD
-	 iucy2gBP75FZaO1LVvk+ISBfbt9FxkezK1Q2KX8/bVXF3eiTUZ1nrr5QMMGXK21VE5
-	 CnRgbEG0ce2wtFp2ZjM2iI4LJ6evwm2mqplZDK4w=
+	b=CHtikhgJHlffoXmqRq7POTyswkFEkCz+CiIwTf31Eugh+7bUtYSisjHHn9vo1+4io
+	 xQEVoPLgSCFwqaxP5/Qot87Z/ThS7NbGDNJOlAM+sayJ7/6c0tRRI4pD4gkejUS8ZI
+	 8QABP5jwN4U1F9s8YLZ8Js+E5JQeESYn9RaGt9lk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.15 11/82] udf: Convert empty_dir() to new directory iteration code
+	Aaron Thompson <dev@aaront.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 088/124] Bluetooth: Remove debugfs directory on module init failure
 Date: Mon, 21 Oct 2024 12:24:52 +0200
-Message-ID: <20241021102247.673170229@linuxfoundation.org>
+Message-ID: <20241021102300.132243031@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Aaron Thompson <dev@aaront.org>
 
-[ Upstream commit afb525f466f9fdc140b975221cb43fbb5c59314e ]
+commit 1db4564f101b47188c1b71696bd342ef09172b22 upstream.
 
-Convert empty_dir() to new directory iteration code.
+If bt_init() fails, the debugfs directory currently is not removed. If
+the module is loaded again after that, the debugfs directory is not set
+up properly due to the existing directory.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+  # modprobe bluetooth
+  # ls -laF /sys/kernel/debug/bluetooth
+  total 0
+  drwxr-xr-x  2 root root 0 Sep 27 14:26 ./
+  drwx------ 31 root root 0 Sep 27 14:25 ../
+  -r--r--r--  1 root root 0 Sep 27 14:26 l2cap
+  -r--r--r--  1 root root 0 Sep 27 14:26 sco
+  # modprobe -r bluetooth
+  # ls -laF /sys/kernel/debug/bluetooth
+  ls: cannot access '/sys/kernel/debug/bluetooth': No such file or directory
+  #
+
+  # modprobe bluetooth
+  modprobe: ERROR: could not insert 'bluetooth': Invalid argument
+  # dmesg | tail -n 6
+  Bluetooth: Core ver 2.22
+  NET: Registered PF_BLUETOOTH protocol family
+  Bluetooth: HCI device and connection manager initialized
+  Bluetooth: HCI socket layer initialized
+  Bluetooth: Faking l2cap_init() failure for testing
+  NET: Unregistered PF_BLUETOOTH protocol family
+  # ls -laF /sys/kernel/debug/bluetooth
+  total 0
+  drwxr-xr-x  2 root root 0 Sep 27 14:31 ./
+  drwx------ 31 root root 0 Sep 27 14:26 ../
+  #
+
+  # modprobe bluetooth
+  # dmesg | tail -n 7
+  Bluetooth: Core ver 2.22
+  debugfs: Directory 'bluetooth' with parent '/' already present!
+  NET: Registered PF_BLUETOOTH protocol family
+  Bluetooth: HCI device and connection manager initialized
+  Bluetooth: HCI socket layer initialized
+  Bluetooth: L2CAP socket layer initialized
+  Bluetooth: SCO socket layer initialized
+  # ls -laF /sys/kernel/debug/bluetooth
+  total 0
+  drwxr-xr-x  2 root root 0 Sep 27 14:31 ./
+  drwx------ 31 root root 0 Sep 27 14:26 ../
+  #
+
+Cc: stable@vger.kernel.org
+Fixes: ffcecac6a738 ("Bluetooth: Create root debugfs directory during module init")
+Signed-off-by: Aaron Thompson <dev@aaront.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/namei.c |   68 +++++++--------------------------------------------------
- 1 file changed, 9 insertions(+), 59 deletions(-)
+ net/bluetooth/af_bluetooth.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/udf/namei.c
-+++ b/fs/udf/namei.c
-@@ -879,69 +879,19 @@ out:
- 
- static int empty_dir(struct inode *dir)
- {
--	struct fileIdentDesc *fi, cfi;
--	struct udf_fileident_bh fibh;
--	loff_t f_pos;
--	loff_t size = udf_ext0_offset(dir) + dir->i_size;
--	udf_pblk_t block;
--	struct kernel_lb_addr eloc;
--	uint32_t elen;
--	sector_t offset;
--	struct extent_position epos = {};
--	struct udf_inode_info *dinfo = UDF_I(dir);
-+	struct udf_fileident_iter iter;
-+	int ret;
- 
--	f_pos = udf_ext0_offset(dir);
--	fibh.soffset = fibh.eoffset = f_pos & (dir->i_sb->s_blocksize - 1);
--
--	if (dinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB)
--		fibh.sbh = fibh.ebh = NULL;
--	else if (inode_bmap(dir, f_pos >> dir->i_sb->s_blocksize_bits,
--			      &epos, &eloc, &elen, &offset) ==
--					(EXT_RECORDED_ALLOCATED >> 30)) {
--		block = udf_get_lb_pblock(dir->i_sb, &eloc, offset);
--		if ((++offset << dir->i_sb->s_blocksize_bits) < elen) {
--			if (dinfo->i_alloc_type == ICBTAG_FLAG_AD_SHORT)
--				epos.offset -= sizeof(struct short_ad);
--			else if (dinfo->i_alloc_type == ICBTAG_FLAG_AD_LONG)
--				epos.offset -= sizeof(struct long_ad);
--		} else
--			offset = 0;
--
--		fibh.sbh = fibh.ebh = udf_tread(dir->i_sb, block);
--		if (!fibh.sbh) {
--			brelse(epos.bh);
--			return 0;
--		}
--	} else {
--		brelse(epos.bh);
--		return 0;
--	}
--
--	while (f_pos < size) {
--		fi = udf_fileident_read(dir, &f_pos, &fibh, &cfi, &epos, &eloc,
--					&elen, &offset);
--		if (!fi) {
--			if (fibh.sbh != fibh.ebh)
--				brelse(fibh.ebh);
--			brelse(fibh.sbh);
--			brelse(epos.bh);
--			return 0;
--		}
--
--		if (cfi.lengthFileIdent &&
--		    (cfi.fileCharacteristics & FID_FILE_CHAR_DELETED) == 0) {
--			if (fibh.sbh != fibh.ebh)
--				brelse(fibh.ebh);
--			brelse(fibh.sbh);
--			brelse(epos.bh);
-+	for (ret = udf_fiiter_init(&iter, dir, 0);
-+	     !ret && iter.pos < dir->i_size;
-+	     ret = udf_fiiter_advance(&iter)) {
-+		if (iter.fi.lengthFileIdent &&
-+		    !(iter.fi.fileCharacteristics & FID_FILE_CHAR_DELETED)) {
-+			udf_fiiter_release(&iter);
- 			return 0;
- 		}
- 	}
--
--	if (fibh.sbh != fibh.ebh)
--		brelse(fibh.ebh);
--	brelse(fibh.sbh);
--	brelse(epos.bh);
-+	udf_fiiter_release(&iter);
- 
- 	return 1;
+--- a/net/bluetooth/af_bluetooth.c
++++ b/net/bluetooth/af_bluetooth.c
+@@ -825,6 +825,7 @@ cleanup_sysfs:
+ 	bt_sysfs_cleanup();
+ cleanup_led:
+ 	bt_leds_cleanup();
++	debugfs_remove_recursive(bt_debugfs);
+ 	return err;
  }
+ 
 
 
 
