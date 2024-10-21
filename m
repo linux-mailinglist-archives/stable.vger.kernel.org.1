@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-87291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13C309A6447
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:45:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 925529A65DD
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:06:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3B441F22DED
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:45:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A325B2F298
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02CF01E7C25;
-	Mon, 21 Oct 2024 10:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD901F470E;
+	Mon, 21 Oct 2024 10:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfXWbyIv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qEuUJ8zj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFBC1E6DFF;
-	Mon, 21 Oct 2024 10:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B591EF099;
+	Mon, 21 Oct 2024 10:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507165; cv=none; b=d5cRcDkP5UBwUluH7CrIr3j8QyGJOI59XCnNxkv6+Ob/gWBSm+7th2BtekiY/Pt+9dC1F5c/fVRMD+4szZUrwhUtQfo+ps2ByRR7e42x7fVkvq/98Dkxeevi6gOqw+ZJGmVNqV7EGI3M+9cIkC2oQFisuJazSH4KvIqNqhJhQlg=
+	t=1729507487; cv=none; b=aBqkCR+eylEs3CFCzrowKSKchECpaoRY+0NRmy9pl257N0N0JvN3JoVerzkQaYkP1Wz0adwhDX2Rfw9Ac4aGoJtwu6FmSRw+8jZCvg03l9RMqEPr0DsvpjTxi8u6dU0Jt2VNQffacYpRnG3mvP3lpFPoOnzyPHz9fPTeoHWGDGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507165; c=relaxed/simple;
-	bh=favt9dLQJO5oU7OxCYMrYe4shXCzLH/yINcajU+dAgc=;
+	s=arc-20240116; t=1729507487; c=relaxed/simple;
+	bh=2Cm6eRgA1BQkZupsc/6ZrPdsUusB1I/djzebI3rOC9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fxOlFJiREhyBnXG2PVHMefHfiHXqEY1XUev1PJ2GmCTQm4HL0Napb5rio0+C8umAjB7KN9B7vmXfJ/AKJr8velvgekWkzoTV0FfziwsgyXwnBb+LhsB7rCunlWz01qildOsDxDecBW9mhsciiXSWY3kEhFfFpw7IPKnhmrvi3AU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfXWbyIv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30700C4CEC7;
-	Mon, 21 Oct 2024 10:39:25 +0000 (UTC)
+	 MIME-Version; b=fweIhPCkQZVW4FQJkZKkpXGzO1jaTtvkNQCW5xEGVHrZSY1j1TNkGXDNzJpV7kJjQYH6/GT9zJzfYTO6A26fHde/3lSppBUVX4WYShf9luVN1/cGDIqrv+mZalrGYLqwMQodrNRwR/A94thRtLH+GknXstsHAHCQvrKwOBat//U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qEuUJ8zj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6825C4CEE5;
+	Mon, 21 Oct 2024 10:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507165;
-	bh=favt9dLQJO5oU7OxCYMrYe4shXCzLH/yINcajU+dAgc=;
+	s=korg; t=1729507487;
+	bh=2Cm6eRgA1BQkZupsc/6ZrPdsUusB1I/djzebI3rOC9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CfXWbyIvQGkrP6qESkgDdV0cxhvshOSniQkaStv20zreECmfziHSYgM1RRMaRKoaL
-	 yWDQ7/HG9izDbwpWNm98kaSefcSWBErURNXJpUTKtaMj9s0aG97sl0PErX7kIs66xU
-	 IpsanRiy+X9sxETLSUJ9aRfEcdShSRKajxHUHeUE=
+	b=qEuUJ8zjr5EJvWqvNSfLOG+Pir8yt2c60oSgZBav+biu/jhBGPV46InLDAtEkGX4E
+	 YKm2S/vCSNNhriT92OO6sqYTJrE+TwudRfBlakP39Dze2oTRC2eWIqvkJoH7pQpw8u
+	 T+ZJhKGxf1pgxfWC60YQrJPKKIELnYWBzUhLbmj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.6 111/124] pinctrl: stm32: check devm_kasprintf() returned value
-Date: Mon, 21 Oct 2024 12:25:15 +0200
-Message-ID: <20241021102301.011529905@linuxfoundation.org>
+	Emil Gedenryd <emil.gedenryd@axis.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 62/91] iio: light: opt3001: add missing full-scale range value
+Date: Mon, 21 Oct 2024 12:25:16 +0200
+Message-ID: <20241021102252.236829340@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Emil Gedenryd <emil.gedenryd@axis.com>
 
-commit b0f0e3f0552a566def55c844b0d44250c58e4df6 upstream.
+commit 530688e39c644543b71bdd9cb45fdfb458a28eaa upstream.
 
-devm_kasprintf() can return a NULL pointer on failure but this returned
-value is not checked. Fix this lack and check the returned value.
+The opt3001 driver uses predetermined full-scale range values to
+determine what exponent to use for event trigger threshold values.
+The problem is that one of the values specified in the datasheet is
+missing from the implementation. This causes larger values to be
+scaled down to an incorrect exponent, effectively reducing the
+maximum settable threshold value by a factor of 2.
 
-Found by code review.
+Add missing full-scale range array value.
 
-Cc: stable@vger.kernel.org
-Fixes: 32c170ff15b0 ("pinctrl: stm32: set default gpio line names using pin names")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://lore.kernel.org/20240906100326.624445-1-make24@iscas.ac.cn
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 94a9b7b1809f ("iio: light: add support for TI's opt3001 light sensor")
+Signed-off-by: Emil Gedenryd <emil.gedenryd@axis.com>
+Cc: <Stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240913-add_opt3002-v2-1-69e04f840360@axis.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/stm32/pinctrl-stm32.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/iio/light/opt3001.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/pinctrl/stm32/pinctrl-stm32.c
-+++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
-@@ -1387,10 +1387,15 @@ static int stm32_gpiolib_register_bank(s
- 
- 	for (i = 0; i < npins; i++) {
- 		stm32_pin = stm32_pctrl_get_desc_pin_from_gpio(pctl, bank, i);
--		if (stm32_pin && stm32_pin->pin.name)
-+		if (stm32_pin && stm32_pin->pin.name) {
- 			names[i] = devm_kasprintf(dev, GFP_KERNEL, "%s", stm32_pin->pin.name);
--		else
-+			if (!names[i]) {
-+				err = -ENOMEM;
-+				goto err_clk;
-+			}
-+		} else {
- 			names[i] = NULL;
-+		}
- 	}
- 
- 	bank->gpio_chip.names = (const char * const *)names;
+--- a/drivers/iio/light/opt3001.c
++++ b/drivers/iio/light/opt3001.c
+@@ -139,6 +139,10 @@ static const struct opt3001_scale opt300
+ 		.val2 = 400000,
+ 	},
+ 	{
++		.val = 41932,
++		.val2 = 800000,
++	},
++	{
+ 		.val = 83865,
+ 		.val2 = 600000,
+ 	},
 
 
 
