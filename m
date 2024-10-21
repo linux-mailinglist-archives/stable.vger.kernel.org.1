@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-87108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E58C9A6311
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:30:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BB959A63AF
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:38:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDC901C2189C
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:30:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8583A1C21B0D
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EEC1E32D7;
-	Mon, 21 Oct 2024 10:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12ACC1E573C;
+	Mon, 21 Oct 2024 10:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cdjTTESR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JL7Fq2dK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2088F39FD6;
-	Mon, 21 Oct 2024 10:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95F81E572B;
+	Mon, 21 Oct 2024 10:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506617; cv=none; b=AgQmpo1JVQFDLWUtnRRz+WQ8BDjqAXFAm6a1X/AU37hhY3YFTWIhvBr6LqXs49LI4sGJ/HWtp+B5hUe3JRLYc14JaDL0EvK6sB6lXteKhxINmm8Kw9MoRtW39Ldh2v6HDtItUVRcGlLGNUWwB17vId/8kvbDX8J+eiaSzc5l7wg=
+	t=1729506878; cv=none; b=PlZsflXk7HtKs8FQDBNPkEv27SDQVKPlqhtFl0jgi46e+eXIcfjBk0BbQLHTrVaaI2kvvv7DzArrr55Lxa3FW1u2ypnmTIjLqPh1GDE+28DfeSD7vY9Pbone4SSGQfBIxPMue1DkyuesxBHdi7ofc1FFgrUYEA1vU48wn6LmstM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506617; c=relaxed/simple;
-	bh=x5R7P4IOrQAsaa/HkuwcqR/SRbEOo7xY5m4Gqi9Fk5g=;
+	s=arc-20240116; t=1729506878; c=relaxed/simple;
+	bh=rQYhdvkwhxxuTT5kRb9U/WoCWYP/FU6FDvvxDYuVFVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KaPKpwogkMAhUB4AQcr+o0/Ncrp5N7adm7LHYufFLnKOfvwH1GNL5ouWTfctaYmDJtOTbXz3b6zeK5BFU7SnhtNnr1olGO/8uIDDtC5SQ8ts6mHYcQIvhpHfqOd1Zf9644fIUOnhrp0TENtjCKd+F2YZB2GxK9AZI4qvTlTbBoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cdjTTESR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93858C4CEC3;
-	Mon, 21 Oct 2024 10:30:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Hcm+HhpxnKylx6GOMZb5VZEofa53knfzcAyPNEp15U2LexkESXMni+Caxw6+Lr66Fw0fPnEFgP3q7PY6Z5JG1zMFvoeINUw9E0NirIx7rDvLrbezb+j9tzExgfEf01S1+OZ+tTyjiWIeu7vsUN0iGrL31H5yG7G+x7r+7SECh8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JL7Fq2dK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A5F7C4CEC3;
+	Mon, 21 Oct 2024 10:34:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506617;
-	bh=x5R7P4IOrQAsaa/HkuwcqR/SRbEOo7xY5m4Gqi9Fk5g=;
+	s=korg; t=1729506878;
+	bh=rQYhdvkwhxxuTT5kRb9U/WoCWYP/FU6FDvvxDYuVFVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cdjTTESRrMAf3tiJNdPvzxYgSbtSekMuqCyeaYWYXwHX2BX46ekjR9VGbsH0Wy6El
-	 rmrbDiAvvpcLh/Furxq4v1u5qNIotPv8U0rGnVz6CjcER2gXofsodV0bmfc2xiN6pA
-	 cWATS0faA8oi2cZI9k0kZuc6E9bWrR34nCDGQAaY=
+	b=JL7Fq2dKlRADDuENswlsLDe+vT37n9UfTdAugjO2ZfLgkdtO9vM/G+LjhbI3VODF9
+	 Sdjtj+9l3A4NfMgfzIIxx65sGtf/VYw2yw0V4NHhvngYClepBq5By6fJ63Sh4deeE0
+	 sj5ENEPYyrBUARpK3rvHcQhMM/0SR7/p1kUqMHLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	dri-devel@lists.freedesktop.org,
-	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
-	Martin Krastev <martin.krastev@broadcom.com>
-Subject: [PATCH 6.11 064/135] drm/vmwgfx: Cleanup kms setup without 3d
+	Simon Horman <horms@kernel.org>,
+	=?UTF-8?q?Jens=20Emil=20Schulz=20=C3=98stergaard?= <jensemil.schulzostergaard@microchip.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 016/124] net: microchip: vcap api: Fix memory leaks in vcap_api_encode_rule_test()
 Date: Mon, 21 Oct 2024 12:23:40 +0200
-Message-ID: <20241021102301.834286912@linuxfoundation.org>
+Message-ID: <20241021102257.351838155@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +61,124 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zack Rusin <zack.rusin@broadcom.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit 512a9721cae0d88d34ff441f2f5917cd149af8af upstream.
+commit 217a3d98d1e9891a8b1438a27dfbc64ddf01f691 upstream.
 
-Do not validate format equality for the non 3d cases to allow xrgb to
-argb copies and make sure the dx binding flags are only used
-on dx compatible surfaces.
+Commit a3c1e45156ad ("net: microchip: vcap: Fix use-after-free error in
+kunit test") fixed the use-after-free error, but introduced below
+memory leaks by removing necessary vcap_free_rule(), add it to fix it.
 
-Fixes basic 2d kms setup on configurations without 3d. There's little
-practical benefit to it because kms framebuffer coherence is disabled
-on configurations without 3d but with those changes the code actually
-makes sense.
+	unreferenced object 0xffffff80ca58b700 (size 192):
+	  comm "kunit_try_catch", pid 1215, jiffies 4294898264
+	  hex dump (first 32 bytes):
+	    00 12 7a 00 05 00 00 00 0a 00 00 00 64 00 00 00  ..z.........d...
+	    00 00 00 00 00 00 00 00 00 04 0b cc 80 ff ff ff  ................
+	  backtrace (crc 9c09c3fe):
+	    [<0000000052a0be73>] kmemleak_alloc+0x34/0x40
+	    [<0000000043605459>] __kmalloc_cache_noprof+0x26c/0x2f4
+	    [<0000000040a01b8d>] vcap_alloc_rule+0x3cc/0x9c4
+	    [<000000003fe86110>] vcap_api_encode_rule_test+0x1ac/0x16b0
+	    [<00000000b3595fc4>] kunit_try_run_case+0x13c/0x3ac
+	    [<0000000010f5d2bf>] kunit_generic_run_threadfn_adapter+0x80/0xec
+	    [<00000000c5d82c9a>] kthread+0x2e8/0x374
+	    [<00000000f4287308>] ret_from_fork+0x10/0x20
+	unreferenced object 0xffffff80cc0b0400 (size 64):
+	  comm "kunit_try_catch", pid 1215, jiffies 4294898265
+	  hex dump (first 32 bytes):
+	    80 04 0b cc 80 ff ff ff 18 b7 58 ca 80 ff ff ff  ..........X.....
+	    39 00 00 00 02 00 00 00 06 05 04 03 02 01 ff ff  9...............
+	  backtrace (crc daf014e9):
+	    [<0000000052a0be73>] kmemleak_alloc+0x34/0x40
+	    [<0000000043605459>] __kmalloc_cache_noprof+0x26c/0x2f4
+	    [<000000000ff63fd4>] vcap_rule_add_key+0x2cc/0x528
+	    [<00000000dfdb1e81>] vcap_api_encode_rule_test+0x224/0x16b0
+	    [<00000000b3595fc4>] kunit_try_run_case+0x13c/0x3ac
+	    [<0000000010f5d2bf>] kunit_generic_run_threadfn_adapter+0x80/0xec
+	    [<00000000c5d82c9a>] kthread+0x2e8/0x374
+	    [<00000000f4287308>] ret_from_fork+0x10/0x20
+	unreferenced object 0xffffff80cc0b0700 (size 64):
+	  comm "kunit_try_catch", pid 1215, jiffies 4294898265
+	  hex dump (first 32 bytes):
+	    80 07 0b cc 80 ff ff ff 28 b7 58 ca 80 ff ff ff  ........(.X.....
+	    3c 00 00 00 00 00 00 00 01 2f 03 b3 ec ff ff ff  <......../......
+	  backtrace (crc 8d877792):
+	    [<0000000052a0be73>] kmemleak_alloc+0x34/0x40
+	    [<0000000043605459>] __kmalloc_cache_noprof+0x26c/0x2f4
+	    [<000000006eadfab7>] vcap_rule_add_action+0x2d0/0x52c
+	    [<00000000323475d1>] vcap_api_encode_rule_test+0x4d4/0x16b0
+	    [<00000000b3595fc4>] kunit_try_run_case+0x13c/0x3ac
+	    [<0000000010f5d2bf>] kunit_generic_run_threadfn_adapter+0x80/0xec
+	    [<00000000c5d82c9a>] kthread+0x2e8/0x374
+	    [<00000000f4287308>] ret_from_fork+0x10/0x20
+	unreferenced object 0xffffff80cc0b0900 (size 64):
+	  comm "kunit_try_catch", pid 1215, jiffies 4294898266
+	  hex dump (first 32 bytes):
+	    80 09 0b cc 80 ff ff ff 80 06 0b cc 80 ff ff ff  ................
+	    7d 00 00 00 01 00 00 00 00 00 00 00 ff 00 00 00  }...............
+	  backtrace (crc 34181e56):
+	    [<0000000052a0be73>] kmemleak_alloc+0x34/0x40
+	    [<0000000043605459>] __kmalloc_cache_noprof+0x26c/0x2f4
+	    [<000000000ff63fd4>] vcap_rule_add_key+0x2cc/0x528
+	    [<00000000991e3564>] vcap_val_rule+0xcf0/0x13e8
+	    [<00000000fc9868e5>] vcap_api_encode_rule_test+0x678/0x16b0
+	    [<00000000b3595fc4>] kunit_try_run_case+0x13c/0x3ac
+	    [<0000000010f5d2bf>] kunit_generic_run_threadfn_adapter+0x80/0xec
+	    [<00000000c5d82c9a>] kthread+0x2e8/0x374
+	    [<00000000f4287308>] ret_from_fork+0x10/0x20
+	unreferenced object 0xffffff80cc0b0980 (size 64):
+	  comm "kunit_try_catch", pid 1215, jiffies 4294898266
+	  hex dump (first 32 bytes):
+	    18 b7 58 ca 80 ff ff ff 00 09 0b cc 80 ff ff ff  ..X.............
+	    67 00 00 00 00 00 00 00 01 01 74 88 c0 ff ff ff  g.........t.....
+	  backtrace (crc 275fd9be):
+	    [<0000000052a0be73>] kmemleak_alloc+0x34/0x40
+	    [<0000000043605459>] __kmalloc_cache_noprof+0x26c/0x2f4
+	    [<000000000ff63fd4>] vcap_rule_add_key+0x2cc/0x528
+	    [<000000001396a1a2>] test_add_def_fields+0xb0/0x100
+	    [<000000006e7621f0>] vcap_val_rule+0xa98/0x13e8
+	    [<00000000fc9868e5>] vcap_api_encode_rule_test+0x678/0x16b0
+	    [<00000000b3595fc4>] kunit_try_run_case+0x13c/0x3ac
+	    [<0000000010f5d2bf>] kunit_generic_run_threadfn_adapter+0x80/0xec
+	    [<00000000c5d82c9a>] kthread+0x2e8/0x374
+	    [<00000000f4287308>] ret_from_fork+0x10/0x20
+	......
 
-v2: Remove the now unused format variable
-
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Fixes: d6667f0ddf46 ("drm/vmwgfx: Fix handling of dumb buffers")
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.9+
-Cc: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-Cc: Martin Krastev <martin.krastev@broadcom.com>
-Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
-Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240827043905.472825-1-zack.rusin@broadcom.com
+Cc: stable@vger.kernel.org
+Fixes: a3c1e45156ad ("net: microchip: vcap: Fix use-after-free error in kunit test")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Jens Emil Schulz Østergaard <jensemil.schulzostergaard@microchip.com>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://patch.msgid.link/20241014121922.1280583-1-ruanjinjie@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.c     |   29 -----------------------------
- drivers/gpu/drm/vmwgfx/vmwgfx_surface.c |    9 ++++++---
- 2 files changed, 6 insertions(+), 32 deletions(-)
+ drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-@@ -1283,7 +1283,6 @@ static int vmw_kms_new_framebuffer_surfa
- {
- 	struct drm_device *dev = &dev_priv->drm;
- 	struct vmw_framebuffer_surface *vfbs;
--	enum SVGA3dSurfaceFormat format;
- 	struct vmw_surface *surface;
- 	int ret;
+diff --git a/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c b/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c
+index f2a5a36fdacd..7251121ab196 100644
+--- a/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c
++++ b/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c
+@@ -1444,6 +1444,8 @@ static void vcap_api_encode_rule_test(struct kunit *test)
  
-@@ -1320,34 +1319,6 @@ static int vmw_kms_new_framebuffer_surfa
- 		return -EINVAL;
- 	}
- 
--	switch (mode_cmd->pixel_format) {
--	case DRM_FORMAT_ARGB8888:
--		format = SVGA3D_A8R8G8B8;
--		break;
--	case DRM_FORMAT_XRGB8888:
--		format = SVGA3D_X8R8G8B8;
--		break;
--	case DRM_FORMAT_RGB565:
--		format = SVGA3D_R5G6B5;
--		break;
--	case DRM_FORMAT_XRGB1555:
--		format = SVGA3D_A1R5G5B5;
--		break;
--	default:
--		DRM_ERROR("Invalid pixel format: %p4cc\n",
--			  &mode_cmd->pixel_format);
--		return -EINVAL;
--	}
--
--	/*
--	 * For DX, surface format validation is done when surface->scanout
--	 * is set.
--	 */
--	if (!has_sm4_context(dev_priv) && format != surface->metadata.format) {
--		DRM_ERROR("Invalid surface format for requested mode.\n");
--		return -EINVAL;
--	}
--
- 	vfbs = kzalloc(sizeof(*vfbs), GFP_KERNEL);
- 	if (!vfbs) {
- 		ret = -ENOMEM;
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
-@@ -2276,9 +2276,12 @@ int vmw_dumb_create(struct drm_file *fil
- 	const struct SVGA3dSurfaceDesc *desc = vmw_surface_get_desc(format);
- 	SVGA3dSurfaceAllFlags flags = SVGA3D_SURFACE_HINT_TEXTURE |
- 				      SVGA3D_SURFACE_HINT_RENDERTARGET |
--				      SVGA3D_SURFACE_SCREENTARGET |
--				      SVGA3D_SURFACE_BIND_SHADER_RESOURCE |
--				      SVGA3D_SURFACE_BIND_RENDER_TARGET;
-+				      SVGA3D_SURFACE_SCREENTARGET;
+ 	ret = vcap_del_rule(&test_vctrl, &test_netdev, id);
+ 	KUNIT_EXPECT_EQ(test, 0, ret);
 +
-+	if (vmw_surface_is_dx_screen_target_format(format)) {
-+		flags |= SVGA3D_SURFACE_BIND_SHADER_RESOURCE |
-+			 SVGA3D_SURFACE_BIND_RENDER_TARGET;
-+	}
++	vcap_free_rule(rule);
+ }
  
- 	/*
- 	 * Without mob support we're just going to use raw memory buffer
+ static void vcap_api_set_rule_counter_test(struct kunit *test)
+-- 
+2.47.0
+
 
 
 
