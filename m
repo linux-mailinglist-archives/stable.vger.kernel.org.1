@@ -1,159 +1,155 @@
-Return-Path: <stable+bounces-87018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBA7B9A5DB3
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 09:54:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07E7D9A5DBF
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 09:56:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABC0E281ABE
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 07:54:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 374C21C215E4
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 07:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063ED1E0E0A;
-	Mon, 21 Oct 2024 07:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61FEE1E1026;
+	Mon, 21 Oct 2024 07:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQUI3XIr"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="dR2SPeVM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40E5192D6E
-	for <stable@vger.kernel.org>; Mon, 21 Oct 2024 07:54:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EEAF1E1022;
+	Mon, 21 Oct 2024 07:56:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729497252; cv=none; b=G97/62r4WV1x/8Zt1NGLpAjtG/f2F+ImKs7zcGrBkD6GZaH+Pl77i9xepES4y8M4XKwe4cI7tb941CwLBlWgM2S73WzsuDqMXR9DftBvvAcvbmnYECPJOTJ8EVLLfBjouwn3PtV1287XPPodQuDGD19LTBkwGYM9Mj2Cjpc9M1U=
+	t=1729497406; cv=none; b=A4f5RRhVdehITMjYDmm3du4/Fd6YrNnDlJyBHOfiMbS28q1uBpyia+FN4hppnsuYuUd8l7uOOpew6xlV0KXDIUPKIYt9aq1ZoLlpSxItdpCSfuvn41PW0DLJ0qlBggJCrFJ5FRrct6OddnemPZc1zQ/2vBJjnIfAu/E4F+1hBKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729497252; c=relaxed/simple;
-	bh=NGgsIgCt2Rx1g3+5xKIUwtfv/vTziybo1Vi2Pp+XflE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sMaPEy8ZUIABXXTaqOEFJJ4Czs9lK0tD9EOOfjQRc8r1dukan7Lh0DEawjcw0nBwczk9+5CWYREM9/VBiVBrCuRE1MamOO6rgjgqNAX01GKkuG+b76/LCY5oNIC7xp7DNv40XRoOcd3eXk6BjIRitndF6Z09OR0DBzdL6qivH6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQUI3XIr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2912DC4CEE5;
-	Mon, 21 Oct 2024 07:54:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729497252;
-	bh=NGgsIgCt2Rx1g3+5xKIUwtfv/vTziybo1Vi2Pp+XflE=;
-	h=Subject:To:Cc:From:Date:From;
-	b=OQUI3XIrIuHnzVlkn3xFCir6Xma4vhLknW4hNEvMdLr6qQqEBnUjOGaxxKepOvtLm
-	 HiE9WpBLA9ulaDuQD8mA0WLR7E22xgUCkjLxMv7TMG1n55XQtto/lHCpR8/V0eW0sv
-	 RL5h//Lc1St0fYcbFYdEQZQBFZlLlQQcuxJN3naI=
-Subject: FAILED: patch "[PATCH] serial: imx: Update mctrl old_status on RTSD interrupt" failed to apply to 4.19-stable tree
-To: marex@denx.de,esben@geanix.com,gregkh@linuxfoundation.org,stable@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 21 Oct 2024 09:54:01 +0200
-Message-ID: <2024102101-glacial-outsell-b7f5@gregkh>
+	s=arc-20240116; t=1729497406; c=relaxed/simple;
+	bh=OQ8rJdgVEyrXGuuW4HbA/wAE8d62CqGOzxmvfsDM7uE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=qoppG+WO1zWjUvBZ/NV51Jk9l7yAgULpxO3fsuam0Pt/8Pv0eC9VFauyTWaB1uICQo9udd7O4VvPXEbOYN31/wdZL0yqAX5SwfOS5SBvCc2dvdrqRcCQHZV7ln6IZnNMcNIEdTYnBcd4InTyO5ZeIcg8QekhXwWO5+VSO8p4yvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=dR2SPeVM; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49L7uXutD2108098, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1729497393; bh=OQ8rJdgVEyrXGuuW4HbA/wAE8d62CqGOzxmvfsDM7uE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=dR2SPeVMQh3kk4XKaVq7WzA5kZqxG5ae70G9KmrK1qQcDdVy1LQ07VfHzZZjhqyBC
+	 Y9zPdKHFLAHTRP3gcEzvvAVVs7p16DfSMwqYqb4H0iYmd0wjC1YWK25jPI8Zoz0aBq
+	 s1GcrR2BvoXOq6GBpIGPDwzbKsMXTefAntam8JOdKt1ypJEt+Q+0K5U5oUyEJVnuGR
+	 f8HuAbgPO1Cn15tEKSfAtV2W9ChVxmlAL47pDwV3TFKz46lqUKzF/xum4XkS2Bv/Nf
+	 JqfQAZOP5Nteo5e9LbyHAwo2LrOJNEq67gBjF+0C73h6aJC3G3uwzzX9jajQBus38P
+	 NKgJ1YRvoI6aA==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49L7uXutD2108098
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 21 Oct 2024 15:56:33 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 21 Oct 2024 15:56:33 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 21 Oct 2024 15:56:32 +0800
+Received: from RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2]) by
+ RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2%7]) with mapi id
+ 15.01.2507.035; Mon, 21 Oct 2024 15:56:32 +0800
+From: Kailang <kailang@realtek.com>
+To: Takashi Iwai <tiwai@suse.de>,
+        Dean Matthew Menezes
+	<dean.menezes@utexas.edu>
+CC: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+        Jaroslav Kysela
+	<perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        Linux Sound System
+	<linux-sound@vger.kernel.org>,
+        Greg KH <gregkh@linuxfoundation.org>
+Subject: RE: No sound on speakers X1 Carbon Gen 12
+Thread-Topic: No sound on speakers X1 Carbon Gen 12
+Thread-Index: AQHbIwVT/23eeZo4dEmkKtnQN51H6bKP5WWAgABb9wCAAJQEMA==
+Date: Mon, 21 Oct 2024 07:56:32 +0000
+Message-ID: <325719ad24c24f1faee12a4cdceec87b@realtek.com>
+References: <CAEkK70Tke7UxMEEKgRLMntSYeMqiv0PC8st72VYnBVQD-KcqVw@mail.gmail.com>
+	<2024101613-giggling-ceremony-aae7@gregkh>
+	<433b8579-e181-40e6-9eac-815d73993b23@leemhuis.info>
+	<87bjzktncb.wl-tiwai@suse.de>
+	<CAEkK70TAk26HFgrz4ZS0jz4T2Eu3LWcG-JD1Ov_2ffMp66oO-g@mail.gmail.com>
+	<87cyjzrutw.wl-tiwai@suse.de>
+	<CAEkK70T7NBRA1dZHBwAC7mNeXPo-dby4c7Nn=SYg0vzeHHt-1A@mail.gmail.com>
+	<87ttd8jyu3.wl-tiwai@suse.de>
+	<CAEkK70RAWRjRp6_=bSrecSXXMfnepC2P2YriaHUqicv5x5wJWw@mail.gmail.com>
+	<87h697jl6c.wl-tiwai@suse.de>
+	<CAEkK70TWL_me58QZXeJSq+=Ry3jA+CgZJttsgAPz1wP7ywqj6A@mail.gmail.com>
+	<87ed4akd2a.wl-tiwai@suse.de>	<87bjzekcva.wl-tiwai@suse.de>
+	<CAEkK70SgwaFNcxni2JUAfz7Ne9a_kdkdLRTOR53uhNzJkBQ3+A@mail.gmail.com>
+ <877ca2j60l.wl-tiwai@suse.de>
+In-Reply-To: <877ca2j60l.wl-tiwai@suse.de>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-
-
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 40d7903386df4d18f04d90510ba90eedee260085
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024102101-glacial-outsell-b7f5@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
-
-Possible dependencies:
 
 
 
-thanks,
+> -----Original Message-----
+> From: Takashi Iwai <tiwai@suse.de>
+> Sent: Monday, October 21, 2024 2:59 PM
+> To: Dean Matthew Menezes <dean.menezes@utexas.edu>
+> Cc: Takashi Iwai <tiwai@suse.de>; Kailang <kailang@realtek.com>;
+> stable@vger.kernel.org; regressions@lists.linux.dev; Jaroslav Kysela
+> <perex@perex.cz>; Takashi Iwai <tiwai@suse.com>; Linux Sound System
+> <linux-sound@vger.kernel.org>; Greg KH <gregkh@linuxfoundation.org>
+> Subject: Re: No sound on speakers X1 Carbon Gen 12
+>=20
+>=20
+> External mail.
+>=20
+>=20
+>=20
+> On Mon, 21 Oct 2024 03:30:13 +0200,
+> Dean Matthew Menezes wrote:
+> >
+> > I can confirm that the original fix does not bring back the speaker
+> > output.  I have attached both outputs for alsa-info.sh
+>=20
+> Thanks!  This confirms that the only significant difference is the COEF d=
+ata
+> between working and patched-non-working cases.
+>=20
+> Kailang, I guess this model (X1 Carbon Gen 12) isn't with ALC1318, hence =
+your
+> quirk rather influences badly.  Or may the GPIO3 workaround have the simi=
+lar
+> effect?
 
-greg k-h
+No, I check with our AE. It's ALC1318 include.
+And This fixed was testing with Lenovo.
 
------------------- original commit in Linus's tree ------------------
+>=20
+> As of now, the possible fix is to simply remove the quirk entries for ALC=
+1318.
+> But I'd need to know which model was targeted for your original fix in co=
+mmit
+> 1e707769df07 and whether the regressed model is with ALC1318.
 
-From 40d7903386df4d18f04d90510ba90eedee260085 Mon Sep 17 00:00:00 2001
-From: Marek Vasut <marex@denx.de>
-Date: Wed, 2 Oct 2024 20:40:38 +0200
-Subject: [PATCH] serial: imx: Update mctrl old_status on RTSD interrupt
++	SND_PCI_QUIRK(0x17aa, 0x231e, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_A=
+LC1318),
++	SND_PCI_QUIRK(0x17aa, 0x231f, "Thinkpad", ALC287_FIXUP_LENOVO_THKPAD_WH_A=
+LC1318),
 
-When sending data using DMA at high baudrate (4 Mbdps in local test case) to
-a device with small RX buffer which keeps asserting RTS after every received
-byte, it is possible that the iMX UART driver would not recognize the falling
-edge of RTS input signal and get stuck, unable to transmit any more data.
+Yes, this model include ALC1318.
 
-This condition happens when the following sequence of events occur:
-- imx_uart_mctrl_check() is called at some point and takes a snapshot of UART
-  control signal status into sport->old_status using imx_uart_get_hwmctrl().
-  The RTSS/TIOCM_CTS bit is of interest here (*).
-- DMA transfer occurs, the remote device asserts RTS signal after each byte.
-  The i.MX UART driver recognizes each such RTS signal change, raises an
-  interrupt with USR1 register RTSD bit set, which leads to invocation of
-  __imx_uart_rtsint(), which calls uart_handle_cts_change().
-  - If the RTS signal is deasserted, uart_handle_cts_change() clears
-    port->hw_stopped and unblocks the port for further data transfers.
-  - If the RTS is asserted, uart_handle_cts_change() sets port->hw_stopped
-    and blocks the port for further data transfers. This may occur as the
-    last interrupt of a transfer, which means port->hw_stopped remains set
-    and the port remains blocked (**).
-- Any further data transfer attempts will trigger imx_uart_mctrl_check(),
-  which will read current status of UART control signals by calling
-  imx_uart_get_hwmctrl() (***) and compare it with sport->old_status .
-  - If current status differs from sport->old_status for RTS signal,
-    uart_handle_cts_change() is called and possibly unblocks the port
-    by clearing port->hw_stopped .
-  - If current status does not differ from sport->old_status for RTS
-    signal, no action occurs. This may occur in case prior snapshot (*)
-    was taken before any transfer so the RTS is deasserted, current
-    snapshot (***) was taken after a transfer and therefore RTS is
-    deasserted again, which means current status and sport->old_status
-    are identical. In case (**) triggered when RTS got asserted, and
-    made port->hw_stopped set, the port->hw_stopped will remain set
-    because no change on RTS line is recognized by this driver and
-    uart_handle_cts_change() is not called from here to unblock the
-    port->hw_stopped.
-
-Update sport->old_status in __imx_uart_rtsint() accordingly to make
-imx_uart_mctrl_check() detect such RTS change. Note that TIOCM_CAR
-and TIOCM_RI bits in sport->old_status do not suffer from this problem.
-
-Fixes: ceca629e0b48 ("[ARM] 2971/1: i.MX uart handle rts irq")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Esben Haabendal <esben@geanix.com>
-Signed-off-by: Marek Vasut <marex@denx.de>
-Link: https://lore.kernel.org/r/20241002184133.19427-1-marex@denx.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 67d4a72eda77..90974d338f3c 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -762,6 +762,21 @@ static irqreturn_t __imx_uart_rtsint(int irq, void *dev_id)
- 
- 	imx_uart_writel(sport, USR1_RTSD, USR1);
- 	usr1 = imx_uart_readl(sport, USR1) & USR1_RTSS;
-+	/*
-+	 * Update sport->old_status here, so any follow-up calls to
-+	 * imx_uart_mctrl_check() will be able to recognize that RTS
-+	 * state changed since last imx_uart_mctrl_check() call.
-+	 *
-+	 * In case RTS has been detected as asserted here and later on
-+	 * deasserted by the time imx_uart_mctrl_check() was called,
-+	 * imx_uart_mctrl_check() can detect the RTS state change and
-+	 * trigger uart_handle_cts_change() to unblock the port for
-+	 * further TX transfers.
-+	 */
-+	if (usr1 & USR1_RTSS)
-+		sport->old_status |= TIOCM_CTS;
-+	else
-+		sport->old_status &= ~TIOCM_CTS;
- 	uart_handle_cts_change(&sport->port, usr1);
- 	wake_up_interruptible(&sport->port.state->port.delta_msr_wait);
- 
-
+> =09
+>=20
+> Takashi
 
