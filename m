@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-87175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF809A639B
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:37:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CBD69A6422
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:43:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1DDE2825E5
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:37:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB1D51C220D8
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ECC51EB9F3;
-	Mon, 21 Oct 2024 10:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5494B1EB9F2;
+	Mon, 21 Oct 2024 10:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ai/+ak7G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+6NnG9U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7ED1E570D;
-	Mon, 21 Oct 2024 10:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094631E570F;
+	Mon, 21 Oct 2024 10:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506819; cv=none; b=ODgukQ6QfAXTXkBjW7iUQrVkYG+tt4XlywzR6wFFu3lZ/0GAmQRT9z43KtuBOykzLKnOo2n12WQFJQHnMfP49s0wT/wOXYtWjv+ML9RZis2QhivQZZDnXG5CLcLXyinOPq9Grnae8XzRCI97HkGnJ7jZveZ7HL3revp8VldEYx0=
+	t=1729507085; cv=none; b=kjXR9S7K1REKoAFiJAIo611tvkigy2v3zsjFG5ebPGCpkJoAcPyH4rHOOj7y1iGXs5551ioj0utDJVpqD1MAuHSmdklYYmAUkbuG+ZUDQtooRa2NWCMbnOAMCB3N//rCJGBFa5fVYUfQeeLUX1FyEUxBdGpV4YwoIRY7k/OJQOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506819; c=relaxed/simple;
-	bh=FOLoKGMkiiZuwJcqUMPAcZBTg8RUZ/5QU/LZ59Pd0iI=;
+	s=arc-20240116; t=1729507085; c=relaxed/simple;
+	bh=xyBbk2GTxMFJVMdSgyT5sb4OZtuJJpS5MhTr8fDhVnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XDMOS69dreJ2Bku0rVQ/cYFQYsW6Fdo05GAdhdnI3wiRrF5kfNU50y6zdiPnh6NF31SjquTMQuzvvFRsjG2odNz9WN/DuLZYCYc2LLE+xUJScxniO8dYFz+XryRYf3rhZTDTUgDcV7X8RSRU6PGstLhg+ZNAdRfct4Lcyp+tgbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ai/+ak7G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BFE8C4CEC3;
-	Mon, 21 Oct 2024 10:33:38 +0000 (UTC)
+	 MIME-Version; b=loM2vbRDIqc17ZpI8sdrdJB+O6rkgUX6CTFIZSuXUB/ixfSKqvl8gdR88Uqm3x9qdiRbq637suA5gQNHYvl8y42/2aZu26QHTIz58CFUwr9lrd0WCfeO7e6dPFqgJhVHkv3k4zJo2SKvYXJh9twjkn6LOBzUCBuMXaSzzkH6AS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+6NnG9U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C290C4CEC7;
+	Mon, 21 Oct 2024 10:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506818;
-	bh=FOLoKGMkiiZuwJcqUMPAcZBTg8RUZ/5QU/LZ59Pd0iI=;
+	s=korg; t=1729507084;
+	bh=xyBbk2GTxMFJVMdSgyT5sb4OZtuJJpS5MhTr8fDhVnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ai/+ak7Gv8ueyizsRn5lcgzu7I85pihHqCOrarbez8/dZgMzQIw78aRvuc2OVj1RX
-	 ZGq9Y4rE1VXIsKvkiaPHAYYNN9WRr+Izic6//+4F4LJLSksb3c3GHve/USGjCEymhg
-	 j2arSa/nKEUkucGn9mspeXpgaJqKyLvL/exHg1Z4=
+	b=l+6NnG9Uuo+Vu9EZZLKvU9rBXEjh9HmhuVsikxrfwGRBz9TzbEAjmT76JvI9qNI8h
+	 GKelW96h7eWqhR1OhfLzcnGmV3wTh8eBXFu/I/9+N66ahnnqKoKd0sMf2h5udKnkx4
+	 0VdMekc1ST0YpF5ZFFnyakJ1jOM+fqqeGsS5xg8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>
-Subject: [PATCH 6.11 131/135] serial: qcom-geni: fix shutdown race
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 083/124] iio: dac: ad3552r: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
 Date: Mon, 21 Oct 2024 12:24:47 +0200
-Message-ID: <20241021102304.471693559@linuxfoundation.org>
+Message-ID: <20241021102259.942877168@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 23f5f5debcaac1399cfeacec215278bf6dbc1d11 upstream.
+commit 5bede948670f447154df401458aef4e2fd446ba8 upstream.
 
-A commit adding back the stopping of tx on port shutdown failed to add
-back the locking which had also been removed by commit e83766334f96
-("tty: serial: qcom_geni_serial: No need to stop tx/rx on UART
-shutdown").
+This driver makes use of triggered buffers, but does not select the
+required modules.
 
-Holding the port lock is needed to serialise against the console code,
-which may update the interrupt enable register and access the port
-state.
+Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
 
-Fixes: d8aca2f96813 ("tty: serial: qcom-geni-serial: stop operations in progress at shutdown")
-Fixes: 947cc4ecc06c ("serial: qcom-geni: fix soft lockup on sw flow control and suspend")
-Cc: stable@vger.kernel.org	# 6.3
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20241009145110.16847-4-johan+linaro@kernel.org
+Fixes: 8f2b54824b28 ("drivers:iio:dac: Add AD3552R driver support")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241003-iio-select-v1-7-67c0385197cd@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/qcom_geni_serial.c |    2 ++
+ drivers/iio/dac/Kconfig |    2 ++
  1 file changed, 2 insertions(+)
 
---- a/drivers/tty/serial/qcom_geni_serial.c
-+++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -1096,10 +1096,12 @@ static void qcom_geni_serial_shutdown(st
- {
- 	disable_irq(uport->irq);
- 
-+	uart_port_lock_irq(uport);
- 	qcom_geni_serial_stop_tx(uport);
- 	qcom_geni_serial_stop_rx(uport);
- 
- 	qcom_geni_serial_cancel_tx_cmd(uport);
-+	uart_port_unlock_irq(uport);
- }
- 
- static void qcom_geni_serial_flush_buffer(struct uart_port *uport)
+--- a/drivers/iio/dac/Kconfig
++++ b/drivers/iio/dac/Kconfig
+@@ -9,6 +9,8 @@ menu "Digital to analog converters"
+ config AD3552R
+ 	tristate "Analog Devices AD3552R DAC driver"
+ 	depends on SPI_MASTER
++	select IIO_BUFFER
++	select IIO_TRIGGERED_BUFFER
+ 	help
+ 	  Say yes here to build support for Analog Devices AD3552R
+ 	  Digital to Analog Converter.
 
 
 
