@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-87482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 110689A6525
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:54:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B51B49A64A2
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:48:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C650C283179
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:54:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E9EB281D98
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB8F1EABC5;
-	Mon, 21 Oct 2024 10:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE6B1EABC5;
+	Mon, 21 Oct 2024 10:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMeq0ZYX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JbTIXFDi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170951E5718;
-	Mon, 21 Oct 2024 10:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9486D1953B9;
+	Mon, 21 Oct 2024 10:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507736; cv=none; b=sO3pMp9tmT/LWKN+8G1ZNAPDBgTlqAgkbvWH0aWxa+aH91UxufF0W+YkJeHTrea/SiBlo93BfFMalUW+AinOuEUYQfUXNoBrPutcoM43b5aX269LTzIPdpVv4IcX/vhRilOmU2Tu1dPbfSQRt8XrjITW/FirwhS3jkKsmN5hHh8=
+	t=1729507415; cv=none; b=XNEvTlEl7+b+hdOPtP/8EFxR2vbtTRtO2tezQ/hfqukwjIH61Xy4Nv0lEYhgAm3m5duGWwvDWqVEpYu/PHjfpQH7TtSzBTU0DY7kp5SHzTeFi/ePOERZnpyqYkBVAF5ZQwhF24AvfLwqM1NElrosS1ATaGjPQo8gKyHkV34psEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507736; c=relaxed/simple;
-	bh=6RaaTiAiAkS3SyAoluwCtyK2OI+2XgEUI/yGuQrZWSk=;
+	s=arc-20240116; t=1729507415; c=relaxed/simple;
+	bh=Od45SlU9CfuPWk5R65rmFsN1AfOfS8JHDrDDBJpTbUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ep7yQYJf9Jl8SzQhUHtdsR+CpNFyhq+7zK9Vj8n+zhloN18D0fIrU9tKfLxe0F6g/orCwaqlHzAldYtep31/LVsY00TYSGcNI0xWYKC3M39jJitsFPV1JkWSTR26Hx379HRMNjwq4jwVKEPqn1yPxJ4jlg8F1NWsxRHxF7YwusA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMeq0ZYX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61447C4CEC7;
-	Mon, 21 Oct 2024 10:48:55 +0000 (UTC)
+	 MIME-Version; b=DoCNHP8EN2bsnbaknBFJuW44+BtL5/CwNCgMyikuQUoEDd8yGWXff2BwfMZQzo3b9CfNg0exMwxRL+P5vlG/dDrOg4t07nW7eqviUMbV0xYHmyH42Zvr5SGHfrKp0uR4GjaQzV/VrEAC6aDCAvdAedMDVtbkmlEjqF/SdVa5N48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JbTIXFDi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 156FFC4CEC3;
+	Mon, 21 Oct 2024 10:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507735;
-	bh=6RaaTiAiAkS3SyAoluwCtyK2OI+2XgEUI/yGuQrZWSk=;
+	s=korg; t=1729507415;
+	bh=Od45SlU9CfuPWk5R65rmFsN1AfOfS8JHDrDDBJpTbUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gMeq0ZYXDHBni3yRAJWM2/2/2dgwFX06pbNUCDfDz+k610s859bTkCV0W9b5uE73l
-	 XNtO19EkdZqwbT1xcOSf8IweQ0koZKPdLix+zxF8K9rZrVy42LF87hcuqS7Q6aZkLn
-	 2vXThB5Br9EjUUEuhTDpzAFZPQ+LZfZcHynIx7AU=
+	b=JbTIXFDiiEWCLZsFI2Qc1QSPKXLd3lnjcStzbtKYYQHa/KxP0kb72jg3QpjvvUOVQ
+	 QDG6dU7A5wDNVXxVeBP4zs1mjE5fwf/M75ByrHOTIgmvKBVupzkfHFlnJ3eIUjJUQe
+	 gsOopZoHs3sJgPA+cgugTeT6AJSZKow89OGElZZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Wikner <kwikner@ethz.ch>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org
-Subject: [PATCH 5.15 43/82] x86/cpufeatures: Add a IBPB_NO_RET BUG flag
+	Aaron Thompson <dev@aaront.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 70/91] Bluetooth: ISO: Fix multiple init when debugfs is disabled
 Date: Mon, 21 Oct 2024 12:25:24 +0200
-Message-ID: <20241021102248.943420633@linuxfoundation.org>
+Message-ID: <20241021102252.552263720@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Wikner <kwikner@ethz.ch>
+From: Aaron Thompson <dev@aaront.org>
 
-commit 3ea87dfa31a7b0bb0ff1675e67b9e54883013074 upstream.
+commit a9b7b535ba192c6b77e6c15a4c82d853163eab8c upstream.
 
-Set this flag if the CPU has an IBPB implementation that does not
-invalidate return target predictions. Zen generations < 4 do not flush
-the RSB when executing an IBPB and this bug flag denotes that.
+If bt_debugfs is not created successfully, which happens if either
+CONFIG_DEBUG_FS or CONFIG_DEBUG_FS_ALLOW_ALL is unset, then iso_init()
+returns early and does not set iso_inited to true. This means that a
+subsequent call to iso_init() will result in duplicate calls to
+proto_register(), bt_sock_register(), etc.
 
-  [ bp: Massage. ]
+With CONFIG_LIST_HARDENED and CONFIG_BUG_ON_DATA_CORRUPTION enabled, the
+duplicate call to proto_register() triggers this BUG():
 
-Signed-off-by: Johannes Wikner <kwikner@ethz.ch>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
+  list_add double add: new=ffffffffc0b280d0, prev=ffffffffbab56250,
+    next=ffffffffc0b280d0.
+  ------------[ cut here ]------------
+  kernel BUG at lib/list_debug.c:35!
+  Oops: invalid opcode: 0000 [#1] PREEMPT SMP PTI
+  CPU: 2 PID: 887 Comm: bluetoothd Not tainted 6.10.11-1-ao-desktop #1
+  RIP: 0010:__list_add_valid_or_report+0x9a/0xa0
+  ...
+    __list_add_valid_or_report+0x9a/0xa0
+    proto_register+0x2b5/0x340
+    iso_init+0x23/0x150 [bluetooth]
+    set_iso_socket_func+0x68/0x1b0 [bluetooth]
+    kmem_cache_free+0x308/0x330
+    hci_sock_sendmsg+0x990/0x9e0 [bluetooth]
+    __sock_sendmsg+0x7b/0x80
+    sock_write_iter+0x9a/0x110
+    do_iter_readv_writev+0x11d/0x220
+    vfs_writev+0x180/0x3e0
+    do_writev+0xca/0x100
+  ...
+
+This change removes the early return. The check for iso_debugfs being
+NULL was unnecessary, it is always NULL when iso_inited is false.
+
+Cc: stable@vger.kernel.org
+Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
+Signed-off-by: Aaron Thompson <dev@aaront.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/cpufeatures.h |    1 +
- arch/x86/kernel/cpu/common.c       |    3 +++
- 2 files changed, 4 insertions(+)
+ net/bluetooth/iso.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -481,4 +481,5 @@
- #define X86_BUG_DIV0			X86_BUG(1*32 + 1) /* AMD DIV0 speculation bug */
- #define X86_BUG_RFDS			X86_BUG(1*32 + 2) /* CPU is vulnerable to Register File Data Sampling */
- #define X86_BUG_BHI			X86_BUG(1*32 + 3) /* CPU is affected by Branch History Injection */
-+#define X86_BUG_IBPB_NO_RET		X86_BUG(1*32 + 4) /* "ibpb_no_ret" IBPB omits return target predictions */
- #endif /* _ASM_X86_CPUFEATURES_H */
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1352,6 +1352,9 @@ static void __init cpu_set_bug_bits(stru
- 	     boot_cpu_has(X86_FEATURE_HYPERVISOR)))
- 		setup_force_cpu_bug(X86_BUG_BHI);
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -1837,13 +1837,9 @@ int iso_init(void)
  
-+	if (cpu_has(c, X86_FEATURE_AMD_IBPB) && !cpu_has(c, X86_FEATURE_AMD_IBPB_RET))
-+		setup_force_cpu_bug(X86_BUG_IBPB_NO_RET);
-+
- 	if (cpu_matches(cpu_vuln_whitelist, NO_MELTDOWN))
- 		return;
+ 	hci_register_cb(&iso_cb);
+ 
+-	if (IS_ERR_OR_NULL(bt_debugfs))
+-		return 0;
+-
+-	if (!iso_debugfs) {
++	if (!IS_ERR_OR_NULL(bt_debugfs))
+ 		iso_debugfs = debugfs_create_file("iso", 0444, bt_debugfs,
+ 						  NULL, &iso_debugfs_fops);
+-	}
+ 
+ 	iso_inited = true;
  
 
 
