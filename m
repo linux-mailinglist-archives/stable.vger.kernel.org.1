@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-87247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE60B9A6414
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:43:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9961B9A6374
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 518701F21117
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C96E01C215BA
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28FC41EF940;
-	Mon, 21 Oct 2024 10:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856241E8838;
+	Mon, 21 Oct 2024 10:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KNJkexRg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZ3SaG2B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59591953B9;
-	Mon, 21 Oct 2024 10:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCEA16F27E;
+	Mon, 21 Oct 2024 10:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507034; cv=none; b=kv2quvF6TZdjmqOkdHF++UUT/kve8VQ79lUgALb6jFCXoUthU5Zf7OPMQqOwDjHnvnbyYJpa2lS6f6vTJv4FmbMSJ3UTTWh0LWFVhYTOi2R0tDUPt4w8LOe309MFbRg9UzsPAw7jbHhGd/K42LGCU/46+eJ61MAoEJSh9Rfx20k=
+	t=1729506770; cv=none; b=NxpFQmVw6CKhH2MNjCW12kfIFQbXyJd8984hJ+atVBh15ieziHQdKn+Xbv4I8nlWINwvMyStcGWwTEno3G5YOIOrijq+hy+B6kW18z4SRbSxtX7+fsMAoJrVhgwxFEQm+hVGUKwt+XkijIudFpBtJpc9rSl8WGE4nMpvrEXknfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507034; c=relaxed/simple;
-	bh=5Q3QMMQO78EDPgvgHdg7nilcWSq/v8d4KCAvWRuyEmE=;
+	s=arc-20240116; t=1729506770; c=relaxed/simple;
+	bh=6HsR8ih4uUNQOALd1Pej6XfWfdtAakpyHPpL7RXR5bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JFJicLFoNrUlwx0B6Zujwn2QWTgHekuABXDQ0raqC/pkHwDpdygnM7rIN7jCVW0QkbYPkKE3Ak+xEoYjrkXtT1SCruMYgNiUTkCltjgdnjNyzl6+ruAR53rRzixvlPolPPzhxML3ei5y6aOrstA4NL2m4cTBAUerXwUDCm5pzB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KNJkexRg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 535D6C4CEC3;
-	Mon, 21 Oct 2024 10:37:14 +0000 (UTC)
+	 MIME-Version; b=kAHtqnQFaF6t+H85pLYf+D3lcT8KF6/dszGi9jAycgV9qbpbWnw9Rib06JunQ33WSjYglwBO4B3mMzFS0eM3MiWs0VQbyV2a393WwNo9blNsmQzPJe9ZgbtiYidUOBVq1bMBtykc01OcavfRbbfFNhHKFiqfekrp3/6Zi9WCELI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZ3SaG2B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F2A1C4CEC3;
+	Mon, 21 Oct 2024 10:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507034;
-	bh=5Q3QMMQO78EDPgvgHdg7nilcWSq/v8d4KCAvWRuyEmE=;
+	s=korg; t=1729506769;
+	bh=6HsR8ih4uUNQOALd1Pej6XfWfdtAakpyHPpL7RXR5bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KNJkexRgiqrZmwSzZZMZZXIC1TRvemz2Z0DeG13HlJYiGmv48eKhGGiETBEdNzWy5
-	 WJ0fG7o5l3DsZ48RFGbAqWIhrmtPQ8VDihRb+z9ME9Wc6XwphX7HWzGQhJTEoP7b60
-	 NGwwPQAvp0f1ABUJLKgKgDeRBGgeTa3vrtaeE+WQ=
+	b=mZ3SaG2BK4h43vEd2hwNLZr51/0TKhG/jKeMvUOAcfLYSMBh2fkn92gkHT1113MXf
+	 ByM0ZMsaSngWAgrwdWUPHsu/WNZFRR0W4dY1zK/DVDr3g5s1JwtEq55M5ORKLaSp+7
+	 CwGpEyVxCtrPDTMgxD6APnq0HyM7cawaD6DKiWjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kenneth Feng <kenneth.feng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 068/124] drm/amdgpu/swsmu: Only force workload setup on init
+	John Allen <john.allen@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.11 116/135] x86/CPU/AMD: Only apply Zenbleed fix for Zen2 during late microcode load
 Date: Mon, 21 Oct 2024 12:24:32 +0200
-Message-ID: <20241021102259.364985016@linuxfoundation.org>
+Message-ID: <20241021102303.866943899@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: John Allen <john.allen@amd.com>
 
-commit cb07c8338fc2b9d5f949a19d4a07ee4d5ecf8793 upstream.
+commit ee4d4e8d2c3bec6ee652599ab31991055a72c322 upstream.
 
-Needed to set the workload type at init time so that
-we can apply the navi3x margin optimization.
+Commit
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3618
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3131
-Fixes: c50fe289ed72 ("drm/amdgpu/swsmu: always force a state reprogram on init")
-Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 580ad7cbd4b7be8d2cb5ab5c1fca6bb76045eb0e)
-Cc: stable@vger.kernel.org
+  f69759be251d ("x86/CPU/AMD: Move Zenbleed check to the Zen2 init function")
+
+causes a bit in the DE_CFG MSR to get set erroneously after a microcode late
+load.
+
+The microcode late load path calls into amd_check_microcode() and subsequently
+zen2_zenbleed_check(). Since the above commit removes the cpu_has_amd_erratum()
+call from zen2_zenbleed_check(), this will cause all non-Zen2 CPUs to go
+through the function and set the bit in the DE_CFG MSR.
+
+Call into the Zenbleed fix path on Zen2 CPUs only.
+
+  [ bp: Massage commit message, use cpu_feature_enabled(). ]
+
+Fixes: f69759be251d ("x86/CPU/AMD: Move Zenbleed check to the Zen2 init function")
+Signed-off-by: John Allen <john.allen@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240923164404.27227-1-john.allen@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kernel/cpu/amd.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-@@ -1843,7 +1843,7 @@ static int smu_bump_power_profile_mode(s
- static int smu_adjust_power_state_dynamic(struct smu_context *smu,
- 					  enum amd_dpm_forced_level level,
- 					  bool skip_display_settings,
--					  bool force_update)
-+					  bool init)
- {
- 	int ret = 0;
- 	int index = 0;
-@@ -1872,7 +1872,7 @@ static int smu_adjust_power_state_dynami
- 		}
- 	}
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1218,5 +1218,6 @@ void amd_check_microcode(void)
+ 	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD)
+ 		return;
  
--	if (force_update || smu_dpm_ctx->dpm_level != level) {
-+	if (smu_dpm_ctx->dpm_level != level) {
- 		ret = smu_asic_set_performance_level(smu, level);
- 		if (ret) {
- 			dev_err(smu->adev->dev, "Failed to set performance level!");
-@@ -1889,7 +1889,7 @@ static int smu_adjust_power_state_dynami
- 		index = index > 0 && index <= WORKLOAD_POLICY_MAX ? index - 1 : 0;
- 		workload[0] = smu->workload_setting[index];
- 
--		if (force_update || smu->power_profile_mode != workload[0])
-+		if (init || smu->power_profile_mode != workload[0])
- 			smu_bump_power_profile_mode(smu, workload, 0);
- 	}
- 
+-	on_each_cpu(zenbleed_check_cpu, NULL, 1);
++	if (cpu_feature_enabled(X86_FEATURE_ZEN2))
++		on_each_cpu(zenbleed_check_cpu, NULL, 1);
+ }
 
 
 
