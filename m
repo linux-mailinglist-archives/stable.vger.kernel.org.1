@@ -1,75 +1,91 @@
-Return-Path: <stable+bounces-87560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5076D9A69A9
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 15:07:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4465B9A69D7
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 15:16:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D0C8283FF2
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:07:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32986B288D3
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:09:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D77941F80AE;
-	Mon, 21 Oct 2024 13:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5773B1F81A6;
+	Mon, 21 Oct 2024 13:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="L25bhQM7"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QSAkqZir"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2111FB3DD
-	for <stable@vger.kernel.org>; Mon, 21 Oct 2024 13:03:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F251F7092
+	for <stable@vger.kernel.org>; Mon, 21 Oct 2024 13:08:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729515791; cv=none; b=D7ufaT1299pM4TEV0HH64P7T8RSoA7C1PsBi5YwMRLr+PBDn1J7YQRaKwy1eqKZQ3R7/UpWq+/vHfHwspPn148c3AXZjF1FIZOdZ0l43yGfUt7pl6fKeKwIgJqdZjQIAJsCTE17a4jQ39MzZ1WTOAwCj4WNfNcb1Ii2ra28CoFU=
+	t=1729516088; cv=none; b=U94/BBAGtHU0+gX+RS8ypbHLNtYX1KeLhX5kkq4XWiTrGU8vWG9k8rYv5s8k2gYCdA5vgwCfob33fJAgYV+7ldmFVH5jA/hmkcRleGMiXj+5RFQgOlfEqSVvHGznFaFDvlZJXGNblzBNLRhTuuXVaBuNiPOxyskk/1XMOcPbS2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729515791; c=relaxed/simple;
-	bh=ysvqgWEP+B8HQQLopH/WTZRhsWUsWfr9HPvn8xo27F0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mdwaxYTL/lbeSerU3JIDiBUMpQI2dxv8gTC/zap6AZ9iOSdQw95peMal/kNACqUtiHQn7uGiRPb+NCpehiZgfTGIOJNgWyceb3+Xz1Es8E41PTg4CPDzEIqs2hkGJDj1VNs+ysKquVWnH0JmAfGzVjGHvwZIEw4MWE8ax6xbV4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=L25bhQM7; arc=none smtp.client-ip=209.85.208.176
+	s=arc-20240116; t=1729516088; c=relaxed/simple;
+	bh=9RqLgA+h9hX8Mf4mFhAuHHjEmy1g2wQEgrhonrkcENw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=II8rtINHl8hBcXUs/DnOERQSJoVu+/LbgXmad/lUAU+7QR4v581lBbafNlTbMVKyC/7SDR/tbBbnqj7X3ozN8fdFsm+4cV96x/Wh6gdlMPU2P5UIFObppIcmd0jOmeybV+GPGP0J+TqQKQGYQcR5Gk/81midhcODlioXeeTlNcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QSAkqZir; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2fb4ec17f5cso41658711fa.3
-        for <stable@vger.kernel.org>; Mon, 21 Oct 2024 06:03:09 -0700 (PDT)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43158625112so43770295e9.3
+        for <stable@vger.kernel.org>; Mon, 21 Oct 2024 06:08:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729515787; x=1730120587; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EPZW3o9O8KMd2l9bsdly639M9ayrVvVJPmPDhVzCI64=;
-        b=L25bhQM7xmtjwVGj07CRKdbxoJEDpddc35A7tg45OZ+G3yaG9bAsBpO+uCDOJXWH90
-         VHrExnkZUnQdTgFtR6yvwot4tRG0frocFD/cF7gBK8erkOO6KKeS+R/MTLf34LIXeD6z
-         oDyRbEdr3uqJP7BbQXZPm7reEM5b3GDV//R9F8ilL4/RZ1HI3KziiVxk24/rxeAilWI/
-         1l2F4AlLtjh+zBG5Kj518XjSEAfg5/4ZNRiSVtPe+Oo73BiB8UHkgEDQxneja6C2gQ+D
-         GKpSxxD6gRfF9f8S3gD3p3QdangdxJSvqHKTv+0pP1un5KNIcHNt6mwYMMn9iWEmDox9
-         IYOw==
+        d=linaro.org; s=google; t=1729516084; x=1730120884; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VqnULJngiAuI4PU+WENgbKZbOXrbYOY8YLdD1t2buO4=;
+        b=QSAkqZirhGkLWgHFsX6Xw33D6EoduRGwUDEC7/y7HYPpt087V3LhISPGsXNrHvdfSj
+         c4Z3SD+KBhzl0OuHjqSWaPKMa3JmVDcdIcYnnBA6d4XcipnqtsiYIz/uNc6mAfIXnwiO
+         dXF9xELYB6QGv0Okbj8FJBJui9zCsU+06EAmK0NhZFZJUbQJZBqLmfvRrFIhVmoSRT5Z
+         dPiuGE2G4R6KZBv16XACnSm4xWfL5/mAkofZIMV62xue/bo4B2pKduh8taGGkoaPUVxz
+         U9LnLmX/OERaS30Xsq/eVQvk/paWNjFrPlaPOUwudTFpafhq6HOfoI10l8kewhQwwrHy
+         kUFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729515787; x=1730120587;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1729516084; x=1730120884;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=EPZW3o9O8KMd2l9bsdly639M9ayrVvVJPmPDhVzCI64=;
-        b=CgNZ72EuhgfmgtbiUIYKzHuwlWGfEMSJdlzbuZZorJ+hFhXWoDPLkxgjs3NG8e16ai
-         khlmg/7yqFJtYitHYrHSAXrSQeWLWzOXRiPC1Na9vfU6kaQ8kggBqLFmAybCpfDGASn1
-         D/Yjr1NRIREsyypPrMGYlQ8xCj2T1rQyulRaMB5twXYL6gxnvQvmpAriDlQHtGorCJpI
-         NJqv8iG9I/Lia4ZxCP2jbhV5x6GcMxBimpuOLxNJf0vIE9HiGHl3WrWQuCu+pT4zlDgO
-         ZrFdgsU2b4MmciGS5Myv9yKwHxPHQCJBRh2JkuKkprzFw5cr3+MF0LDGDCJEhZuVDEA7
-         wWSg==
-X-Forwarded-Encrypted: i=1; AJvYcCVULBqa6ZAX37QjcL6NmWFBiKsuYIpXRncKmKRF20TU4GtImBcPYaw9K2axbrf535XcgWwQwRo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3UlKqX7yriJQOGgBd8B7br7cc7qJmgTTwTjU/SZ5FtFzVmma+
-	E0NR7w0GDTpqP2/tf9zd63DleA5oKSt11s8k8VmlaBc2r1paiZ9rias+HY+a/ZM=
-X-Google-Smtp-Source: AGHT+IE4bNxBuZiSo/LWHqIIi8XGiP3WfZqN2gNbTogSdqcLj7y34HS7yjaWiYcbIZDL3xkyYyjdIw==
-X-Received: by 2002:a2e:e0a:0:b0:2fa:cdac:8723 with SMTP id 38308e7fff4ca-2fb83208b7cmr38383041fa.29.1729515787337;
-        Mon, 21 Oct 2024 06:03:07 -0700 (PDT)
-Received: from lino.lan ([85.235.12.238])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2fb9ae24d51sm4808351fa.130.2024.10.21.06.03.04
+        bh=VqnULJngiAuI4PU+WENgbKZbOXrbYOY8YLdD1t2buO4=;
+        b=aGhBvxXbS24RAy+sXaQR04sCUf20Oo/BLEmmo6sFdSBCjKotmCA1LwWM8bcZYg4TNB
+         762HUY7VU2c76/lHdLXQSelLfXEU2ScuMvaM1CcQ3l8lxzjUgcDaqWDo75PXS2T1pVEN
+         3/X+F8geW4PJwfSCsaI+dP6bEpBA5q71yM50Yx+jDY61Ub57jGjQHsyejj7AQBkmRZ3X
+         iCXewyvT29XHWlZAKtIBqmfxYN1BzCsSDiVi8pgiwhg+FQu5La4uR1+k6GPwRZxHkPQo
+         N8Iu/P4BJulePC9JQwAhs0Gp2vrFZUGpAz3wkQG/DICrw/oGLvXneyb1mgpfVC6ysGSX
+         UugA==
+X-Forwarded-Encrypted: i=1; AJvYcCVi3jiTfch0Tb+LN0qFCzA+k4+l6ATjVVRd5thmm5CpnkOfFg3zyOcmzQfoULsxO7jrIze9pvY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2s9cickJ1lNt/97JvGOvWTxRoLDMVDUJWxwv088oc2Jh5GgYU
+	OiWCc+M0r/VOoxCK6FkJ9SD3F8ofhIg1kZ4Rw51WJ98fbcEq+0T0GnpoOPgLbUoJA4NUwSsqVhW
+	hkVc=
+X-Google-Smtp-Source: AGHT+IGm1/5Xh2Z81XQToS4JZjHin15PG7qBhTsyW0jnN8vOfqwSxnZN3dWJ97hienGRAVBco+uHkQ==
+X-Received: by 2002:a05:6000:b45:b0:37d:54d0:1f20 with SMTP id ffacd0b85a97d-37ea218b5ecmr7255011f8f.24.1729516084157;
+        Mon, 21 Oct 2024 06:08:04 -0700 (PDT)
+Received: from arrakeen.starnux.net ([2a01:e0a:982:cbb0:52eb:f6ff:feb3:451a])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ee0a4864csm4327496f8f.35.2024.10.21.06.08.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Oct 2024 06:03:06 -0700 (PDT)
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Mon, 21 Oct 2024 15:03:00 +0200
-Subject: [PATCH v4 3/3] mm: Pair atomic_set_release() with _read_acquire()
+        Mon, 21 Oct 2024 06:08:03 -0700 (PDT)
+From: Neil Armstrong <neil.armstrong@linaro.org>
+To: Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Abel Vesa <abel.vesa@linaro.org>
+Cc: Johan Hovold <johan@kernel.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+In-Reply-To: <20241018-drm-aux-bridge-mark-of-node-reused-v2-1-aeed1b445c7d@linaro.org>
+References: <20241018-drm-aux-bridge-mark-of-node-reused-v2-1-aeed1b445c7d@linaro.org>
+Subject: Re: [PATCH v2] drm/bridge: Fix assignment of the of_node of the
+ parent to aux bridge
+Message-Id: <172951608323.1285208.3162107667310691864.b4-ty@linaro.org>
+Date: Mon, 21 Oct 2024 15:08:03 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,56 +94,26 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241021-arm-kasan-vmalloc-crash-v4-3-837d1294344f@linaro.org>
-References: <20241021-arm-kasan-vmalloc-crash-v4-0-837d1294344f@linaro.org>
-In-Reply-To: <20241021-arm-kasan-vmalloc-crash-v4-0-837d1294344f@linaro.org>
-To: Clement LE GOFFIC <clement.legoffic@foss.st.com>, 
- Russell King <linux@armlinux.org.uk>, Melon Liu <melon1335@163.com>, 
- Kees Cook <kees@kernel.org>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Mark Brown <broonie@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
- Ard Biesheuvel <ardb@kernel.org>
-Cc: Antonio Borneo <antonio.borneo@foss.st.com>, 
- linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, 
- Linus Walleij <linus.walleij@linaro.org>, stable@vger.kernel.org
-X-Mailer: b4 0.14.0
+X-Mailer: b4 0.14.2
 
-The code for syncing vmalloc memory PGD pointers is using
-atomic_read() in pair with atomic_set_release() but the
-proper pairing is atomic_read_acquire() paired with
-atomic_set_release().
+Hi,
 
-This is done to clearly instruct the compiler to not
-reorder the memcpy() or similar calls inside the section
-so that we do not observe changes to init_mm. memcpy()
-calls should be identified by the compiler as having
-unpredictable side effects, but let's try to be on the
-safe side.
+On Fri, 18 Oct 2024 15:49:34 +0300, Abel Vesa wrote:
+> The assignment of the of_node to the aux bridge needs to mark the
+> of_node as reused as well, otherwise resource providers like pinctrl will
+> report a gpio as already requested by a different device when both pinconf
+> and gpios property are present.
+> Fix that by using the device_set_of_node_from_dev() helper instead.
+> 
+> 
+> [...]
 
-Cc: stable@vger.kernel.org
-Fixes: d31e23aff011 ("ARM: mm: make vmalloc_seq handling SMP safe")
-Suggested-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
- arch/arm/mm/ioremap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks, Applied to https://gitlab.freedesktop.org/drm/misc/kernel.git (drm-misc-fixes)
 
-diff --git a/arch/arm/mm/ioremap.c b/arch/arm/mm/ioremap.c
-index ff555823cceb..89f1c97f3079 100644
---- a/arch/arm/mm/ioremap.c
-+++ b/arch/arm/mm/ioremap.c
-@@ -141,7 +141,7 @@ void __check_vmalloc_seq(struct mm_struct *mm)
- 	int seq;
- 
- 	do {
--		seq = atomic_read(&init_mm.context.vmalloc_seq);
-+		seq = atomic_read_acquire(&init_mm.context.vmalloc_seq);
- 		memcpy_pgd(mm, VMALLOC_START, VMALLOC_END);
- 		if (IS_ENABLED(CONFIG_KASAN_VMALLOC)) {
- 			unsigned long start =
+[1/1] drm/bridge: Fix assignment of the of_node of the parent to aux bridge
+      https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/85e444a68126a631221ae32c63fce882bb18a262
 
 -- 
-2.46.2
+Neil
 
 
