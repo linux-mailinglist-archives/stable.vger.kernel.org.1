@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-87514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C4399A6607
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:12:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FB6A9A6518
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:54:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13DE6B22748
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:56:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 482A5283318
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF191F8926;
-	Mon, 21 Oct 2024 10:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415111F7089;
+	Mon, 21 Oct 2024 10:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N2q14hYg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jF1rs0oF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767BF1EE02C;
-	Mon, 21 Oct 2024 10:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4AB1F4FD0;
+	Mon, 21 Oct 2024 10:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507831; cv=none; b=sMiJSlSKu7mI1o1j4oEJz8g3asR9pXfukuwBRNqLsAkt+7fp4lGxBU0Eymyo5oQ/oPB/uW4eTDL+aq7ZJtDwI5gssTHiWHrrzrFHSqPVCBqf+tPayGBOWUqvjvJlEQZIZn9dGc1QUndC+9A4bnPCVDY8z6N5S6oX/H9YEgEcNaU=
+	t=1729507709; cv=none; b=l9saO8ehQNWqyhP+f6DAVNlIfJgHOF1C00nNOpZNkOa4Cs5vxz1fMSE7nYWeqD+dXGO9R0MMpzOAdOsRIWA0eFVIz1GHupLdtliUDrCGxl9oT5G9rORhH1g3toVga4og3hvt8tZMH8V3UPVZ5GNyEvGe5xciWGLZfb44RbxB0wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507831; c=relaxed/simple;
-	bh=YRJHjgsN/Sx+Cle5/IGC8B4viAYtL2JPDFvQVWjxuRQ=;
+	s=arc-20240116; t=1729507709; c=relaxed/simple;
+	bh=kFWbeLvXWJ4fsDMWHjwrupe76APZJ7lC77ZR/JmLXSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YuUHxU0PdwGiq41yBoxrbQrlglIA0y8b4M9O1jmT/vKmDeGrNQ0P5xbsigejSW4b1BocDTzOOC2wLlcPdCkcQKrv2YCVL+Pyqc+L6nwur9jZHFxDhfGNl65tLOon4cAd2GbiZ6SJ6XAUm9kNxxz4MIb6pNeF6Gdtevpsiah8Vcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N2q14hYg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7C5C4CEC7;
-	Mon, 21 Oct 2024 10:50:30 +0000 (UTC)
+	 MIME-Version; b=BmPlK4ZJs7T84xis5peS/NXrNQpSobVxghT5M4Hd/viTCyBIgbaKXzsFTtUixUGOvCF0KOCYUj0RdS5d159ZYoDK2l5Zk9J0AOOv6D+tBE6Na4j1nQuWDaTQsAJFljl1NZG68T4OvM29giP34grDBVKACBJic7c3XI+lSsJs7mQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jF1rs0oF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AAEDC4CEE6;
+	Mon, 21 Oct 2024 10:48:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507831;
-	bh=YRJHjgsN/Sx+Cle5/IGC8B4viAYtL2JPDFvQVWjxuRQ=;
+	s=korg; t=1729507708;
+	bh=kFWbeLvXWJ4fsDMWHjwrupe76APZJ7lC77ZR/JmLXSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N2q14hYgN2nqOZZQx7xciBBsKSCdNnK4lWOJFTscsSfINUOR/QQdEElEzBbt2EvD6
-	 0MXFmi4vfFS4ADqNjAZbjGsVbvKVlfPJK2rdHQcE9EmRdxi4OkaSnTg+El4YEB/Aqy
-	 bCNrlZOOka8JK69Q0oFOQj0Us41iL5xu8vJkdBho=
+	b=jF1rs0oFd6XBmP20X3y5d7iIIxnHod6ozJV7I35dDIdwX1RtJMr3eBMSr21KsGFoV
+	 SjIihb2GLNbAY85idFrMc/mwzYGnC83oSUFnj4/pAxh+QmftgvYJP3+sc/vM5xJTw3
+	 dZodj/clB9so3ucR4A6D5a8frNVxa6wOEnH6tYDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 34/52] iio: proximity: mb1232: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+	Paolo Abeni <pabeni@redhat.com>,
+	Geliang Tang <geliang.tang@suse.com>,
+	Mat Martineau <mathew.j.martineau@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 5.15 74/82] mptcp: track and update contiguous data status
 Date: Mon, 21 Oct 2024 12:25:55 +0200
-Message-ID: <20241021102242.962472352@linuxfoundation.org>
+Message-ID: <20241021102250.143761710@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
-References: <20241021102241.624153108@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Geliang Tang <geliang.tang@suse.com>
 
-commit 75461a0b15d7c026924d0001abce0476bbc7eda8 upstream.
+commit 0530020a7c8f2204e784f0dbdc882bbd961fdbde upstream.
 
-This driver makes use of triggered buffers, but does not select the
-required modules.
+This patch adds a new member allow_infinite_fallback in mptcp_sock,
+which is initialized to 'true' when the connection begins and is set
+to 'false' on any retransmit or successful MP_JOIN. Only do infinite
+mapping fallback if there is a single subflow AND there have been no
+retransmissions AND there have never been any MP_JOINs.
 
-Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
-
-Fixes: 16b05261537e ("mb1232.c: add distance iio sensor with i2c")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241003-iio-select-v1-13-67c0385197cd@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Geliang Tang <geliang.tang@suse.com>
+Signed-off-by: Mat Martineau <mathew.j.martineau@linux.intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: e32d262c89e2 ("mptcp: handle consistently DSS corruption")
+[ Conflicts in protocol.c, because commit 3e5014909b56 ("mptcp: cleanup
+  MPJ subflow list handling") is not in this version. This commit is
+  linked to a new feature, changing the context around. The new line
+  can still be added at the same place.
+  Conflicts in protocol.h, because commit 4f6e14bd19d6 ("mptcp: support
+  TCP_CORK and TCP_NODELAY") is not in this version. This commit is
+  linked to a new feature, changing the context around. The new line can
+  still be added at the same place.
+  Conflicts in subflow.c, because commit 0348c690ed37 ("mptcp: add the
+  fallback check") is not in this version. This commit is linked to a
+  new feature, changing the context around. The new line can still be
+  added at the same place. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/proximity/Kconfig |    2 ++
- 1 file changed, 2 insertions(+)
+ net/mptcp/protocol.c |    3 +++
+ net/mptcp/protocol.h |    1 +
+ net/mptcp/subflow.c  |    4 +++-
+ 3 files changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/proximity/Kconfig
-+++ b/drivers/iio/proximity/Kconfig
-@@ -49,6 +49,8 @@ config LIDAR_LITE_V2
- config MB1232
- 	tristate "MaxSonar I2CXL family ultrasonic sensors"
- 	depends on I2C
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
- 	help
- 	  Say Y to build a driver for the ultrasonic sensors I2CXL of
- 	  MaxBotix which have an i2c interface. It can be used to measure
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2472,6 +2472,7 @@ static void __mptcp_retrans(struct sock
+ 		dfrag->already_sent = max(dfrag->already_sent, info.sent);
+ 		tcp_push(ssk, 0, info.mss_now, tcp_sk(ssk)->nonagle,
+ 			 info.size_goal);
++		WRITE_ONCE(msk->allow_infinite_fallback, false);
+ 	}
+ 
+ 	release_sock(ssk);
+@@ -2549,6 +2550,7 @@ static int __mptcp_init_sock(struct sock
+ 	msk->first = NULL;
+ 	inet_csk(sk)->icsk_sync_mss = mptcp_sync_mss;
+ 	WRITE_ONCE(msk->csum_enabled, mptcp_is_checksum_enabled(sock_net(sk)));
++	WRITE_ONCE(msk->allow_infinite_fallback, true);
+ 	msk->recovery = false;
+ 
+ 	mptcp_pm_data_init(msk);
+@@ -3299,6 +3301,7 @@ bool mptcp_finish_join(struct sock *ssk)
+ 	if (parent_sock && !ssk->sk_socket)
+ 		mptcp_sock_graft(ssk, parent_sock);
+ 	subflow->map_seq = READ_ONCE(msk->ack_seq);
++	WRITE_ONCE(msk->allow_infinite_fallback, false);
+ out:
+ 	mptcp_event(MPTCP_EVENT_SUB_ESTABLISHED, msk, ssk, GFP_ATOMIC);
+ 	return true;
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -249,6 +249,7 @@ struct mptcp_sock {
+ 	bool		rcv_fastclose;
+ 	bool		use_64bit_ack; /* Set when we received a 64-bit DSN */
+ 	bool		csum_enabled;
++	bool		allow_infinite_fallback;
+ 	spinlock_t	join_list_lock;
+ 	int		keepalive_cnt;
+ 	int		keepalive_idle;
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -1219,7 +1219,8 @@ no_data:
+ fallback:
+ 	/* RFC 8684 section 3.7. */
+ 	if (subflow->send_mp_fail) {
+-		if (mptcp_has_another_subflow(ssk)) {
++		if (mptcp_has_another_subflow(ssk) ||
++		    !READ_ONCE(msk->allow_infinite_fallback)) {
+ 			while ((skb = skb_peek(&ssk->sk_receive_queue)))
+ 				sk_eat_skb(ssk, skb);
+ 		}
+@@ -1481,6 +1482,7 @@ int __mptcp_subflow_connect(struct sock
+ 	/* discard the subflow socket */
+ 	mptcp_sock_graft(ssk, sk->sk_socket);
+ 	iput(SOCK_INODE(sf));
++	WRITE_ONCE(msk->allow_infinite_fallback, false);
+ 	return err;
+ 
+ failed_unlink:
 
 
 
