@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-87170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A95D29A6391
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:36:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCC4E9A6511
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:53:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 593351F226C4
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:36:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45712B2B1FA
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF9341EABD4;
-	Mon, 21 Oct 2024 10:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25ED1EB9E3;
+	Mon, 21 Oct 2024 10:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZrsotxEp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OBQApgQL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD361F12F7;
-	Mon, 21 Oct 2024 10:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EE11EB9E1;
+	Mon, 21 Oct 2024 10:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506803; cv=none; b=ELPZPcjjtzOih+A1fayXs2loZKL4xl3+srWIaBJzStdyPkcLjJ0JGuliFopfBFF6G1D2lqsBcGxZSL048EVflAE1TFtBfIszZDJR9jRkCdA7tnMyafDY+iPHcH5eOedpYuyOiMeMA+Af1/7TawHxQJXsc9ybkbcUUhRahLg41q8=
+	t=1729507067; cv=none; b=guubuNqUCf9bjUedahbog8L+WdTuVzZ2u8pFwh4y1uudIW/WkLds3FIH+y78JGRBY63PONq8GloDXV7pPxsHrafmJWI/ftNSCTgoFJ0QZHHux69ofy9tmMlXynglVR0us6hzGUeFopXExZzXtVoNxHqky4jyGkHAu1czbtldfBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506803; c=relaxed/simple;
-	bh=N1h3bQg2QrZwxEx/+Y+JEKUHuUkwZ2Um1x+L7PrE0V8=;
+	s=arc-20240116; t=1729507067; c=relaxed/simple;
+	bh=e7nMwLj5gYdkoniuVQpyA+g3naqrrNH2w5jn3nnvvRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BSIy7wh8wGF1GRHwxoqhabz4E5rRA41OE5cfAdz5powxd7sFygRLXVyXBqFn/VEw9/arMvv/fStvAatEU6pZ+UlpTjc9z/QprvDFshdTXLetJ/5I0nArvteGZ6338A0t44lEk4Irikq6AR+2P45ZAWYHFKfDcc/1+HQvHVr9AAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZrsotxEp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9AA8C4CEFF;
-	Mon, 21 Oct 2024 10:33:22 +0000 (UTC)
+	 MIME-Version; b=G2Ox8SjpDoqH7zx/+j1SZoqVItVOxaIenxE2PG+ZP7haRvOA6grP6kNPtlht4wum/ZQdJ2MZaPr1+Cn17eCWzD+bnOAyoe6PdYJo/lhtIHEEjy5Jiv0vYLvy/Pi5HEia4As1V96zcow01Djjj1XpqRouR83X97S6QbhogLmw0r4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OBQApgQL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC0CC4CEC3;
+	Mon, 21 Oct 2024 10:37:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506803;
-	bh=N1h3bQg2QrZwxEx/+Y+JEKUHuUkwZ2Um1x+L7PrE0V8=;
+	s=korg; t=1729507067;
+	bh=e7nMwLj5gYdkoniuVQpyA+g3naqrrNH2w5jn3nnvvRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZrsotxEpfcm+93xK7ngdZAQFckju7u2Zawy8oFlhimfiuZto5mnxRW9eWq3SSXGtB
-	 3FvdoSC57WIjMiSj30WgwgmzCYfDh/3TsCUPKne61KO+UqkkdzALepAuBtdyhQ1YUM
-	 OXOchc4ZCvVmYGhHWwv3sAF+wRLveM/mgcprl7cE=
+	b=OBQApgQLWg8nxYGRZ+XQzaD0zOECi9jR/uynsrNMhkhVw0EzuNjYYuoaAlq5TcSsa
+	 JIV71gRfwskzGRckyG6CiAIKd9o2OeFJXvo01C3PSV5m/m090P8G1wPXeTszGi2NoW
+	 MHEOZDi4vxk93U1+YXbU7AH2rV6VkxgpomCzXmVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunkun Jiang <jiangkunkun@huawei.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.11 126/135] irqchip/gic-v4: Dont allow a VMOVP on a dying VPE
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 078/124] iio: amplifiers: ada4250: add missing select REGMAP_SPI in Kconfig
 Date: Mon, 21 Oct 2024 12:24:42 +0200
-Message-ID: <20241021102304.262304578@linuxfoundation.org>
+Message-ID: <20241021102259.749675961@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 1442ee0011983f0c5c4b92380e6853afb513841a upstream.
+commit b7983033a10baa0d98784bb411b2679bfb207d9a upstream.
 
-Kunkun Jiang reported that there is a small window of opportunity for
-userspace to force a change of affinity for a VPE while the VPE has already
-been unmapped, but the corresponding doorbell interrupt still visible in
-/proc/irq/.
+This driver makes use of regmap_spi, but does not select the required
+module.
+Add the missing 'select REGMAP_SPI'.
 
-Plug the race by checking the value of vmapp_count, which tracks whether
-the VPE is mapped ot not, and returning an error in this case.
-
-This involves making vmapp_count common to both GICv4.1 and its v4.0
-ancestor.
-
-Fixes: 64edfaa9a234 ("irqchip/gic-v4.1: Implement the v4.1 flavour of VMAPP")
-Reported-by: Kunkun Jiang <jiangkunkun@huawei.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/c182ece6-2ba0-ce4f-3404-dba7a3ab6c52@huawei.com
-Link: https://lore.kernel.org/all/20241002204959.2051709-1-maz@kernel.org
+Fixes: 28b4c30bfa5f ("iio: amplifiers: ada4250: add support for ADA4250")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241003-ad2s1210-select-v1-5-4019453f8c33@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c   |   18 ++++++++++++------
- include/linux/irqchip/arm-gic-v4.h |    4 +++-
- 2 files changed, 15 insertions(+), 7 deletions(-)
+ drivers/iio/amplifiers/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -797,8 +797,8 @@ static struct its_vpe *its_build_vmapp_c
- 	its_encode_valid(cmd, desc->its_vmapp_cmd.valid);
- 
- 	if (!desc->its_vmapp_cmd.valid) {
-+		alloc = !atomic_dec_return(&desc->its_vmapp_cmd.vpe->vmapp_count);
- 		if (is_v4_1(its)) {
--			alloc = !atomic_dec_return(&desc->its_vmapp_cmd.vpe->vmapp_count);
- 			its_encode_alloc(cmd, alloc);
- 			/*
- 			 * Unmapping a VPE is self-synchronizing on GICv4.1,
-@@ -817,13 +817,13 @@ static struct its_vpe *its_build_vmapp_c
- 	its_encode_vpt_addr(cmd, vpt_addr);
- 	its_encode_vpt_size(cmd, LPI_NRBITS - 1);
- 
-+	alloc = !atomic_fetch_inc(&desc->its_vmapp_cmd.vpe->vmapp_count);
-+
- 	if (!is_v4_1(its))
- 		goto out;
- 
- 	vconf_addr = virt_to_phys(page_address(desc->its_vmapp_cmd.vpe->its_vm->vprop_page));
- 
--	alloc = !atomic_fetch_inc(&desc->its_vmapp_cmd.vpe->vmapp_count);
--
- 	its_encode_alloc(cmd, alloc);
- 
- 	/*
-@@ -3807,6 +3807,13 @@ static int its_vpe_set_affinity(struct i
- 	unsigned long flags;
- 
- 	/*
-+	 * Check if we're racing against a VPE being destroyed, for
-+	 * which we don't want to allow a VMOVP.
-+	 */
-+	if (!atomic_read(&vpe->vmapp_count))
-+		return -EINVAL;
-+
-+	/*
- 	 * Changing affinity is mega expensive, so let's be as lazy as
- 	 * we can and only do it if we really have to. Also, if mapped
- 	 * into the proxy device, we need to move the doorbell
-@@ -4463,9 +4470,8 @@ static int its_vpe_init(struct its_vpe *
- 	raw_spin_lock_init(&vpe->vpe_lock);
- 	vpe->vpe_id = vpe_id;
- 	vpe->vpt_page = vpt_page;
--	if (gic_rdists->has_rvpeid)
--		atomic_set(&vpe->vmapp_count, 0);
--	else
-+	atomic_set(&vpe->vmapp_count, 0);
-+	if (!gic_rdists->has_rvpeid)
- 		vpe->vpe_proxy_event = -1;
- 
- 	return 0;
---- a/include/linux/irqchip/arm-gic-v4.h
-+++ b/include/linux/irqchip/arm-gic-v4.h
-@@ -66,10 +66,12 @@ struct its_vpe {
- 				bool	enabled;
- 				bool	group;
- 			}			sgi_config[16];
--			atomic_t vmapp_count;
- 		};
- 	};
- 
-+	/* Track the VPE being mapped */
-+	atomic_t vmapp_count;
-+
- 	/*
- 	 * Ensures mutual exclusion between affinity setting of the
- 	 * vPE and vLPI operations using vpe->col_idx.
+--- a/drivers/iio/amplifiers/Kconfig
++++ b/drivers/iio/amplifiers/Kconfig
+@@ -27,6 +27,7 @@ config AD8366
+ config ADA4250
+ 	tristate "Analog Devices ADA4250 Instrumentation Amplifier"
+ 	depends on SPI
++	select REGMAP_SPI
+ 	help
+ 	  Say yes here to build support for Analog Devices ADA4250
+ 	  SPI Amplifier's support. The driver provides direct access via
 
 
 
