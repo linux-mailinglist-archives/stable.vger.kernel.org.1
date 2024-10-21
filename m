@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-87324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB5179A6471
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:47:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 755009A6369
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A38CC2812B1
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:46:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19B931F22DD5
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C091EF925;
-	Mon, 21 Oct 2024 10:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3BD11E7C3D;
+	Mon, 21 Oct 2024 10:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kX28PJam"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VR7Sqx03"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12561E4106;
-	Mon, 21 Oct 2024 10:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699AA1E7C24;
+	Mon, 21 Oct 2024 10:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507264; cv=none; b=sdD1iv+3XBj++AXnZlsypwSNJkpxbVWyBEzNo9fiQcoD9yRK4+eV4jDewsxRo6XFoJfYFVYSZK7HWA5JTVHsdt+0hwIZRrorX4L/SvlY47tsJUCFzb+r+isjD4xXA4RjDu+ha4RF1wCYKwyC9x6HkupATaByD/18zXiBXgCQ2Cw=
+	t=1729506728; cv=none; b=foB/Ksmqdp+rd7dzhhEBi/AixSyyR+1JJ240mgDgJIRV2iTeSjRpvmu8AReTUAigbVBb/ve3f2a1jV2KEIfxj7cMrH5lkaFNRHEMNmctiFs/QMkSNdqbh+c6pr1gsciTLZi73z8JJcK0fCXsjrzHg+c04a9jH01xKMxsEmuvEIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507264; c=relaxed/simple;
-	bh=lfYPXmg0D90K81EFXGLdCHI7g20szxr7eZqwPzmTSsQ=;
+	s=arc-20240116; t=1729506728; c=relaxed/simple;
+	bh=52Wb+kFHBBtP04/pJbBoWKhJJlkGptGVmgUS2rCPIBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pKhvQE3IKQISf0zgdmYak/Qthc+ttflsb0EKPIf4/aAWrwY9w1VzfPz95NDLiWbBiDtXG0MI++VFwvUQt5ShIjNcuL2DX9ZHJ6uM+t105OYhsYtu0PHq60LuvDuLj3v3z7V/QnVOrvw8YdaiuB6DD/aFORTtgOgJc6cxw+MTaJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kX28PJam; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD9AC4CEE5;
-	Mon, 21 Oct 2024 10:41:04 +0000 (UTC)
+	 MIME-Version; b=Z7RZW0j0FThrgUlAvOs9eBXPG8hWocP1odUKWz+gleLN3iKokRr54CLszcFo6M9JL4skUbsQ1XS4riA3dgBvdSHbvScwUbMXClQOPEqQZRUuk52P/LHzHriDmXmzGB47DXVcj/Rxmt7LEJYJfI2rFnvBzT0JIG/0qseuCeIZf44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VR7Sqx03; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B5EC4CEC3;
+	Mon, 21 Oct 2024 10:32:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507264;
-	bh=lfYPXmg0D90K81EFXGLdCHI7g20szxr7eZqwPzmTSsQ=;
+	s=korg; t=1729506728;
+	bh=52Wb+kFHBBtP04/pJbBoWKhJJlkGptGVmgUS2rCPIBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kX28PJamt6fqtaZwPQZHOKooVT77eN3Dc3IeqtZDngO4zush7f5jfzFCoxDNyeKg9
-	 Iw7YS+vZHxBk5jwyGi7i1kA8zB+b6r5vUbm1FfE5mBdEdC/klcvUVnNbcLAzYHEpaG
-	 wwOVMe7cMP38vM/bbsQkeZNO/iuQIur22zpilOQw=
+	b=VR7Sqx03oWPQQ6MC7JDX+JCI43+2tL4nXG8+cBR16JBcKdim6O0+WGT0oniSxlNgb
+	 atYz70v8YPA5TCcni+cthKwL/mDsu4l5w6pWlaZwsPOUBsm1Db42brK5FvGjdZKH1A
+	 OrrQxLltw8iNPLRrMjUPS3udX05tf7VlT3HKXxwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anand Jain <anand.jain@oracle.com>,
-	Roi Martin <jroi.martin@gmail.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 02/91] btrfs: fix uninitialized pointer free on read_alloc_one_name() error
+	Henry Lin <henryl@nvidia.com>
+Subject: [PATCH 6.11 100/135] xhci: tegra: fix checked USB2 port number
 Date: Mon, 21 Oct 2024 12:24:16 +0200
-Message-ID: <20241021102249.891905555@linuxfoundation.org>
+Message-ID: <20241021102303.237308687@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +60,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roi Martin <jroi.martin@gmail.com>
+From: Henry Lin <henryl@nvidia.com>
 
-commit 2ab5e243c2266c841e0f6904fad1514b18eaf510 upstream.
+commit 7d381137cb6ecf558ef6698c7730ddd482d4c8f2 upstream.
 
-The function read_alloc_one_name() does not initialize the name field of
-the passed fscrypt_str struct if kmalloc fails to allocate the
-corresponding buffer.  Thus, it is not guaranteed that
-fscrypt_str.name is initialized when freeing it.
+If USB virtualizatoin is enabled, USB2 ports are shared between all
+Virtual Functions. The USB2 port number owned by an USB2 root hub in
+a Virtual Function may be less than total USB2 phy number supported
+by the Tegra XUSB controller.
 
-This is a follow-up to the linked patch that fixes the remaining
-instances of the bug introduced by commit e43eec81c516 ("btrfs: use
-struct qstr instead of name and namelen pairs").
+Using total USB2 phy number as port number to check all PORTSC values
+would cause invalid memory access.
 
-Link: https://lore.kernel.org/linux-btrfs/20241009080833.1355894-1-jroi.martin@gmail.com/
-Fixes: e43eec81c516 ("btrfs: use struct qstr instead of name and namelen pairs")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Roi Martin <jroi.martin@gmail.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+[  116.923438] Unable to handle kernel paging request at virtual address 006c622f7665642f
+...
+[  117.213640] Call trace:
+[  117.216783]  tegra_xusb_enter_elpg+0x23c/0x658
+[  117.222021]  tegra_xusb_runtime_suspend+0x40/0x68
+[  117.227260]  pm_generic_runtime_suspend+0x30/0x50
+[  117.232847]  __rpm_callback+0x84/0x3c0
+[  117.237038]  rpm_suspend+0x2dc/0x740
+[  117.241229] pm_runtime_work+0xa0/0xb8
+[  117.245769]  process_scheduled_works+0x24c/0x478
+[  117.251007]  worker_thread+0x23c/0x328
+[  117.255547]  kthread+0x104/0x1b0
+[  117.259389]  ret_from_fork+0x10/0x20
+[  117.263582] Code: 54000222 f9461ae8 f8747908 b4ffff48 (f9400100)
+
+Cc: stable@vger.kernel.org # v6.3+
+Fixes: a30951d31b25 ("xhci: tegra: USB2 pad power controls")
+Signed-off-by: Henry Lin <henryl@nvidia.com>
+Link: https://lore.kernel.org/r/20241014042134.27664-1-henryl@nvidia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-log.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-tegra.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -1844,7 +1844,7 @@ static noinline int replay_one_name(stru
- 				    struct btrfs_dir_item *di,
- 				    struct btrfs_key *key)
- {
--	struct fscrypt_str name;
-+	struct fscrypt_str name = { 0 };
- 	struct btrfs_dir_item *dir_dst_di;
- 	struct btrfs_dir_item *index_dst_di;
- 	bool dir_dst_matches = false;
-@@ -2124,7 +2124,7 @@ static noinline int check_item_in_log(st
- 	struct extent_buffer *eb;
- 	int slot;
- 	struct btrfs_dir_item *di;
--	struct fscrypt_str name;
-+	struct fscrypt_str name = { 0 };
- 	struct inode *inode = NULL;
- 	struct btrfs_key location;
+--- a/drivers/usb/host/xhci-tegra.c
++++ b/drivers/usb/host/xhci-tegra.c
+@@ -2183,7 +2183,7 @@ static int tegra_xusb_enter_elpg(struct
+ 		goto out;
+ 	}
  
+-	for (i = 0; i < tegra->num_usb_phys; i++) {
++	for (i = 0; i < xhci->usb2_rhub.num_ports; i++) {
+ 		if (!xhci->usb2_rhub.ports[i])
+ 			continue;
+ 		portsc = readl(xhci->usb2_rhub.ports[i]->addr);
 
 
 
