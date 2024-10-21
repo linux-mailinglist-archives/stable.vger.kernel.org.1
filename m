@@ -1,55 +1,66 @@
-Return-Path: <stable+bounces-87414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA7D99A64DE
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:51:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA3339A6482
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:47:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9408A1F2100D
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:51:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 056D51C211B8
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:47:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C40C1F8F00;
-	Mon, 21 Oct 2024 10:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A24161F4FB3;
+	Mon, 21 Oct 2024 10:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YaF4/T/K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GsA4YmaI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC5A1F8934;
-	Mon, 21 Oct 2024 10:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588ED1F4FA3;
+	Mon, 21 Oct 2024 10:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507535; cv=none; b=UNCCqpTfWcmf4bd0A7ByC94PXvMWGv+nciZU6Khtz5PsGdYjac5CtxDdvA3P9XN3IYjx6tGqMnBwuE4LEXQoOVCb2r5BR5KKLp4mwZSkDJHAro2e09u14TDB00ioR7+Zey94FaAyZfckDo/+RHtOgFdC8rTcvihK0Tx2Ers+PaE=
+	t=1729507316; cv=none; b=X6UvVnaeFXkXutoQ0n+I3QjGOhgnrhAG8Ky97ExXMWFjTVgZT9v+1Uj7/uJ9SknpYM34uIzxpI+Y8ca0HFJQWiOGyaVvKdRpZE9AG0qHRCBoo41eKb923PXSB9bn1FPoo5qav8xKgvpxnJR59rUToZyXCd4P+KzDVAonx/Q1xsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507535; c=relaxed/simple;
-	bh=3kGIRrLAYUQiVKEJ3KU7u/FODe+4kjXpE/S8mBe+niw=;
+	s=arc-20240116; t=1729507316; c=relaxed/simple;
+	bh=qspK7hCPLXW+pwQYd8wngaaqTnlSINgfSqbWAZMt84k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ANs5pbg7dnz4lSeWYAaH8v9RQtEz55cGXi+A1SUnbpAMOpxJHhUfOKEbs0EP7v4Nr3zhhEkI6rmx9QO7znfgscunXL+DrIvZ61lDhEUlgDXw5o3d+s5d9QLXRA85VsD8Pz/d0/ecFpiq13E5lLYWUY4WFhIqBQNE+of9JE+7Hl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YaF4/T/K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBBBC4CEC3;
-	Mon, 21 Oct 2024 10:45:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TGu+ermVytB0G7F5Q1qmOZTuTg6VYiqOnuaZs4k80JkXUo8Dj/qli8i334S6EDCLVFMUz/Z9mkEco/asMYAVh0TI68nJD9L2G7BQCXikCsqqM0WPx36q+1Tm3YG0tjtYnAktdvqR972oR5Sh0l2BZLnbYtZ2hJ6tIeim2veymo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GsA4YmaI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6101CC4CEC3;
+	Mon, 21 Oct 2024 10:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507534;
-	bh=3kGIRrLAYUQiVKEJ3KU7u/FODe+4kjXpE/S8mBe+niw=;
+	s=korg; t=1729507315;
+	bh=qspK7hCPLXW+pwQYd8wngaaqTnlSINgfSqbWAZMt84k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YaF4/T/KxPQIDfHEl2X7+bRIqQIIAea5JSuCOu/1Wk5ZmhCQiXr8SH2yjjPsAgUYG
-	 89IwOExXI0RSn0X9uekAeYVp6gKQtDDtstFw2faAnk2jov+vBHZgMadoexOpjbR7hX
-	 ZOZIeJ0G3xJdpjQrU6DNF8BFqSqemlZLJnZtaz3U=
+	b=GsA4YmaIaoZquBxBhLktwuknfKshPRtAhzhecxyFHbcRnXpN0ygGchOGSSSCjRmjd
+	 bt4tqbjrdRlui1+Oiy4+vet0U8pB9RMGYuNcE04ROGvRYKd5Pndy1HNzLhKNAUH0kM
+	 VwnST+YnFTZBNkBRwbSoHCd31quCnp0Fv7oEaCGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.15 10/82] udf: Convert udf_get_parent() to new directory iteration code
+	=?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
+	Eric Anholt <eric@anholt.net>,
+	Rob Herring <robh@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	dri-devel@lists.freedesktop.org,
+	"Wachowski, Karol" <karol.wachowski@intel.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Sherry Yang <sherry.yang@oracle.com>
+Subject: [PATCH 6.1 37/91] drm/shmem-helper: Fix BUG_ON() on mmap(PROT_WRITE, MAP_PRIVATE)
 Date: Mon, 21 Oct 2024 12:24:51 +0200
-Message-ID: <20241021102247.630043168@linuxfoundation.org>
+Message-ID: <20241021102251.270257207@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,52 +70,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Wachowski, Karol <karol.wachowski@intel.com>
 
-[ Upstream commit 9b06fbef4202363d74bba5459ddd231db6d3b1af ]
+commit 39bc27bd688066a63e56f7f64ad34fae03fbe3b8 upstream.
 
-Convert udf_get_parent() to use udf_fiiter_find_entry().
+Lack of check for copy-on-write (COW) mapping in drm_gem_shmem_mmap
+allows users to call mmap with PROT_WRITE and MAP_PRIVATE flag
+causing a kernel panic due to BUG_ON in vmf_insert_pfn_prot:
+BUG_ON((vma->vm_flags & VM_PFNMAP) && is_cow_mapping(vma->vm_flags));
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Return -EINVAL early if COW mapping is detected.
+
+This bug affects all drm drivers using default shmem helpers.
+It can be reproduced by this simple example:
+void *ptr = mmap(0, size, PROT_WRITE, MAP_PRIVATE, fd, mmap_offset);
+ptr[0] = 0;
+
+Fixes: 2194a63a818d ("drm: Add library for shmem backed GEM objects")
+Cc: Noralf Trønnes <noralf@tronnes.org>
+Cc: Eric Anholt <eric@anholt.net>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.2+
+Signed-off-by: Wachowski, Karol <karol.wachowski@intel.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240520100514.925681-1-jacek.lawrynowicz@linux.intel.com
+[ Sherry: bp to fix CVE-2024-39497, ignore context change due to missing
+  commit 21aa27ddc582 ("drm/shmem-helper: Switch to reservation lock")  ]
+Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/namei.c |   16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/drm_gem_shmem_helper.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/udf/namei.c
-+++ b/fs/udf/namei.c
-@@ -1368,17 +1368,15 @@ static struct dentry *udf_get_parent(str
- {
- 	struct kernel_lb_addr tloc;
- 	struct inode *inode = NULL;
--	struct fileIdentDesc cfi;
--	struct udf_fileident_bh fibh;
-+	struct udf_fileident_iter iter;
-+	int err;
+--- a/drivers/gpu/drm/drm_gem_shmem_helper.c
++++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+@@ -638,6 +638,9 @@ int drm_gem_shmem_mmap(struct drm_gem_sh
+ 		return ret;
+ 	}
  
--	if (!udf_find_entry(d_inode(child), &dotdot_name, &fibh, &cfi))
--		return ERR_PTR(-EACCES);
-+	err = udf_fiiter_find_entry(d_inode(child), &dotdot_name, &iter);
-+	if (err)
-+		return ERR_PTR(err);
- 
--	if (fibh.sbh != fibh.ebh)
--		brelse(fibh.ebh);
--	brelse(fibh.sbh);
--
--	tloc = lelb_to_cpu(cfi.icb.extLocation);
-+	tloc = lelb_to_cpu(iter.fi.icb.extLocation);
-+	udf_fiiter_release(&iter);
- 	inode = udf_iget(child->d_sb, &tloc);
- 	if (IS_ERR(inode))
- 		return ERR_CAST(inode);
++	if (is_cow_mapping(vma->vm_flags))
++		return -EINVAL;
++
+ 	ret = drm_gem_shmem_get_pages(shmem);
+ 	if (ret)
+ 		return ret;
 
 
 
