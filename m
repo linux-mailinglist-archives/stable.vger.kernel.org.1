@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-87289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E7C59A6445
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:45:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A4109A64F0
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E3171C21AEA
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:45:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F83A1C21CAF
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7591E47A8;
-	Mon, 21 Oct 2024 10:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 579251E9090;
+	Mon, 21 Oct 2024 10:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJFpQekw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PS0twP2F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FFE1E1C11;
-	Mon, 21 Oct 2024 10:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1006D1E907F;
+	Mon, 21 Oct 2024 10:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507159; cv=none; b=mimM9gMAQfeRzEIJQH5i1lCj57eadvXvxpGW1qbqn7SddaKSHYCRrdMO2/CQ5hdDrG/X3vASGCRnqR3xWbpnwI0MPSOwZb6vEKOJostoIndfW9v1YCC4qPHTnEYpHT1fJoGPDN3HmWCeVFLhddYElCAgxheC80VCXq32MadvDXU=
+	t=1729507583; cv=none; b=dBDjxkddZs3rGaQWbvhSwkLlLFDDEI+Tpob9P+MpflZbSsKwslwo2x/L+eqOiodsFC1NThT0K296CaVfz7uI8A1yOln5mheIh8tvrOmwyEFDJpEFwWCW6aoN4tosRGccZmOkNQeZ0iyhK2vgo9vjNzXCFv67/nQiYFXoJs697M0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507159; c=relaxed/simple;
-	bh=d86cUJRoNagLq+Rpvi8fZGkaPnYB95IK/Woj2bSKjwk=;
+	s=arc-20240116; t=1729507583; c=relaxed/simple;
+	bh=KgqPflGxGC6aQpCP7h3j8opKFqu7pdZ3a9Vueginbt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ak3xle4MrV8wX7xN/AIid9luFEY8F7uLPsobyIcccH8Gp80RmNHD6YCCF5eR/YemgarH8EP7eWBa4x0xFYOvRQW01SM4VXwiNXCXLYkmtmodZt1UPSerA66lmlcFCqZXWsn6sukpJ/UR7QM2TSG3lfn/+aKbKjoswO4GrVVWNPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJFpQekw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 476D5C4CEC3;
-	Mon, 21 Oct 2024 10:39:19 +0000 (UTC)
+	 MIME-Version; b=CnLL5lBWlDWsHeG43akJafq/YIWpxaXf2SvYszzD/czcjjzS7/P+IMnx0dJ53XgsYhK41cg94xijtcazNR+o7K1P4ufShsEll64XbTfncsbz0GW9hQv747OgaihqZjB7A6p9IM1zxYU/VO1yxL/TJcxHt0B6tb6ss+Xd9VpoV/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PS0twP2F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A43C4CEC3;
+	Mon, 21 Oct 2024 10:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507159;
-	bh=d86cUJRoNagLq+Rpvi8fZGkaPnYB95IK/Woj2bSKjwk=;
+	s=korg; t=1729507582;
+	bh=KgqPflGxGC6aQpCP7h3j8opKFqu7pdZ3a9Vueginbt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lJFpQekwWWG8TvJQ20eH2poSNJw50BreVWcmMSCq4zTAkJwcpdyeGOQgqbdV4wyGh
-	 TeO9RTVEDup5aOSGFVClX2c8aCQywLsz1idYARI+/GbbHkzf6z9GY4Qb6mCGOsgy+4
-	 NVUKTOBJ0eSvBCI2dcPdPtuj8QV+GexzkgogH8/A=
+	b=PS0twP2FbEEQr+GgOeyA+rSmhV9kFLG/UKtC3tqmgbIYnBkNICQ/Dja8Ttshs/lhU
+	 wprCbNC+Ra2DwEPyDcZVyz0BvJ6PGEQKBsUanUUxVx88pwc2LhV8HGMZz4HQ+5NY+o
+	 IxayWWdvYfU7+s+4K85zIWgJI70Pq/ChQy6n1pdE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Gill <rtgill82@gmail.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Brian Gerst <brgerst@gmail.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.6 109/124] x86/bugs: Use code segment selector for VERW operand
-Date: Mon, 21 Oct 2024 12:25:13 +0200
-Message-ID: <20241021102300.933445413@linuxfoundation.org>
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Saeed Mirzamohammadi <saeed.mirzamohammadi@oracle.com>
+Subject: [PATCH 5.15 33/82] dm-crypt, dm-verity: disable tasklets
+Date: Mon, 21 Oct 2024 12:25:14 +0200
+Message-ID: <20241021102248.553797766@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +62,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit e4d2102018542e3ae5e297bc6e229303abff8a0f upstream.
+commit 0a9bab391e336489169b95cb0d4553d921302189 upstream.
 
-Robert Gill reported below #GP in 32-bit mode when dosemu software was
-executing vm86() system call:
+Tasklets have an inherent problem with memory corruption. The function
+tasklet_action_common calls tasklet_trylock, then it calls the tasklet
+callback and then it calls tasklet_unlock. If the tasklet callback frees
+the structure that contains the tasklet or if it calls some code that may
+free it, tasklet_unlock will write into free memory.
 
-  general protection fault: 0000 [#1] PREEMPT SMP
-  CPU: 4 PID: 4610 Comm: dosemu.bin Not tainted 6.6.21-gentoo-x86 #1
-  Hardware name: Dell Inc. PowerEdge 1950/0H723K, BIOS 2.7.0 10/30/2010
-  EIP: restore_all_switch_stack+0xbe/0xcf
-  EAX: 00000000 EBX: 00000000 ECX: 00000000 EDX: 00000000
-  ESI: 00000000 EDI: 00000000 EBP: 00000000 ESP: ff8affdc
-  DS: 0000 ES: 0000 FS: 0000 GS: 0033 SS: 0068 EFLAGS: 00010046
-  CR0: 80050033 CR2: 00c2101c CR3: 04b6d000 CR4: 000406d0
-  Call Trace:
-   show_regs+0x70/0x78
-   die_addr+0x29/0x70
-   exc_general_protection+0x13c/0x348
-   exc_bounds+0x98/0x98
-   handle_exception+0x14d/0x14d
-   exc_bounds+0x98/0x98
-   restore_all_switch_stack+0xbe/0xcf
-   exc_bounds+0x98/0x98
-   restore_all_switch_stack+0xbe/0xcf
+The commits 8e14f610159d and d9a02e016aaf try to fix it for dm-crypt, but
+it is not a sufficient fix and the data corruption can still happen [1].
+There is no fix for dm-verity and dm-verity will write into free memory
+with every tasklet-processed bio.
 
-This only happens in 32-bit mode when VERW based mitigations like MDS/RFDS
-are enabled. This is because segment registers with an arbitrary user value
-can result in #GP when executing VERW. Intel SDM vol. 2C documents the
-following behavior for VERW instruction:
+There will be atomic workqueues implemented in the kernel 6.9 [2]. They
+will have better interface and they will not suffer from the memory
+corruption problem.
 
-  #GP(0) - If a memory operand effective address is outside the CS, DS, ES,
-	   FS, or GS segment limit.
+But we need something that stops the memory corruption now and that can be
+backported to the stable kernels. So, I'm proposing this commit that
+disables tasklets in both dm-crypt and dm-verity. This commit doesn't
+remove the tasklet support, because the tasklet code will be reused when
+atomic workqueues will be implemented.
 
-CLEAR_CPU_BUFFERS macro executes VERW instruction before returning to user
-space. Use %cs selector to reference VERW operand. This ensures VERW will
-not #GP for an arbitrary user %ds.
+[1] https://lore.kernel.org/all/d390d7ee-f142-44d3-822a-87949e14608b@suse.de/T/
+[2] https://lore.kernel.org/lkml/20240130091300.2968534-1-tj@kernel.org/
 
-[ mingo: Fixed the SOB chain. ]
-
-Fixes: a0e2dab44d22 ("x86/entry_32: Add VERW just before userspace transition")
-Reported-by: Robert Gill <rtgill82@gmail.com>
-Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com
-Cc: stable@vger.kernel.org # 5.10+
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218707
-Closes: https://lore.kernel.org/all/8c77ccfd-d561-45a1-8ed5-6b75212c7a58@leemhuis.info/
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-Suggested-by: Brian Gerst <brgerst@gmail.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: 39d42fa96ba1b ("dm crypt: add flags to optionally bypass kcryptd workqueues")
+Fixes: 5721d4e5a9cdb ("dm verity: Add optional "try_verify_in_tasklet" feature")
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Saeed Mirzamohammadi <saeed.mirzamohammadi@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/nospec-branch.h |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/md/dm-crypt.c |   37 ++-----------------------------------
+ 1 file changed, 2 insertions(+), 35 deletions(-)
 
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -332,7 +332,16 @@
-  * Note: Only the memory operand variant of VERW clears the CPU buffers.
-  */
- .macro CLEAR_CPU_BUFFERS
--	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
-+#ifdef CONFIG_X86_64
-+	ALTERNATIVE "", "verw mds_verw_sel(%rip)", X86_FEATURE_CLEAR_CPU_BUF
-+#else
-+	/*
-+	 * In 32bit mode, the memory operand must be a %cs reference. The data
-+	 * segments may not be usable (vm86 mode), and the stack segment may not
-+	 * be flat (ESPFIX32).
-+	 */
-+	ALTERNATIVE "", "verw %cs:mds_verw_sel", X86_FEATURE_CLEAR_CPU_BUF
-+#endif
- .endm
+--- a/drivers/md/dm-crypt.c
++++ b/drivers/md/dm-crypt.c
+@@ -69,10 +69,8 @@ struct dm_crypt_io {
+ 	struct bio *base_bio;
+ 	u8 *integrity_metadata;
+ 	bool integrity_metadata_from_pool:1;
+-	bool in_tasklet:1;
  
- #ifdef CONFIG_X86_64
+ 	struct work_struct work;
+-	struct tasklet_struct tasklet;
+ 
+ 	struct convert_context ctx;
+ 
+@@ -1725,7 +1723,6 @@ static void crypt_io_init(struct dm_cryp
+ 	io->ctx.r.req = NULL;
+ 	io->integrity_metadata = NULL;
+ 	io->integrity_metadata_from_pool = false;
+-	io->in_tasklet = false;
+ 	atomic_set(&io->io_pending, 0);
+ }
+ 
+@@ -1734,12 +1731,6 @@ static void crypt_inc_pending(struct dm_
+ 	atomic_inc(&io->io_pending);
+ }
+ 
+-static void kcryptd_io_bio_endio(struct work_struct *work)
+-{
+-	struct dm_crypt_io *io = container_of(work, struct dm_crypt_io, work);
+-	bio_endio(io->base_bio);
+-}
+-
+ /*
+  * One of the bios was finished. Check for completion of
+  * the whole request and correctly clean up the buffer.
+@@ -1763,20 +1754,6 @@ static void crypt_dec_pending(struct dm_
+ 
+ 	base_bio->bi_status = error;
+ 
+-	/*
+-	 * If we are running this function from our tasklet,
+-	 * we can't call bio_endio() here, because it will call
+-	 * clone_endio() from dm.c, which in turn will
+-	 * free the current struct dm_crypt_io structure with
+-	 * our tasklet. In this case we need to delay bio_endio()
+-	 * execution to after the tasklet is done and dequeued.
+-	 */
+-	if (io->in_tasklet) {
+-		INIT_WORK(&io->work, kcryptd_io_bio_endio);
+-		queue_work(cc->io_queue, &io->work);
+-		return;
+-	}
+-
+ 	bio_endio(base_bio);
+ }
+ 
+@@ -2220,11 +2197,6 @@ static void kcryptd_crypt(struct work_st
+ 		kcryptd_crypt_write_convert(io);
+ }
+ 
+-static void kcryptd_crypt_tasklet(unsigned long work)
+-{
+-	kcryptd_crypt((struct work_struct *)work);
+-}
+-
+ static void kcryptd_queue_crypt(struct dm_crypt_io *io)
+ {
+ 	struct crypt_config *cc = io->cc;
+@@ -2236,15 +2208,10 @@ static void kcryptd_queue_crypt(struct d
+ 		 * irqs_disabled(): the kernel may run some IO completion from the idle thread, but
+ 		 * it is being executed with irqs disabled.
+ 		 */
+-		if (in_hardirq() || irqs_disabled()) {
+-			io->in_tasklet = true;
+-			tasklet_init(&io->tasklet, kcryptd_crypt_tasklet, (unsigned long)&io->work);
+-			tasklet_schedule(&io->tasklet);
++		if (!(in_hardirq() || irqs_disabled())) {
++			kcryptd_crypt(&io->work);
+ 			return;
+ 		}
+-
+-		kcryptd_crypt(&io->work);
+-		return;
+ 	}
+ 
+ 	INIT_WORK(&io->work, kcryptd_crypt);
 
 
 
