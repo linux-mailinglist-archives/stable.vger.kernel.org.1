@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-87219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB9D09A63D2
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:39:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42BAF9A63DE
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:40:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7B781C2203B
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:39:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0497B28496F
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:40:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6821E885B;
-	Mon, 21 Oct 2024 10:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BFC11E908C;
+	Mon, 21 Oct 2024 10:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pmH5YZUl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pdT0X02Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831A139FD6;
-	Mon, 21 Oct 2024 10:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12CA1E570A;
+	Mon, 21 Oct 2024 10:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506950; cv=none; b=kxB2scfSbKx/M65Ev0ZyUgRIJ4eskgqBUehG1tjbvOqScqZO6v/RxpfFoL3KXznH0MMWHCkl6RrRorOYb7twjmWg4CddvBim/LcX7vsSMQtJ3xWIjIo7vA8RA62fKjHa1gDIgOAYFUjaw4qMOzxbCe9jOSj/q48F76uYFTArMgE=
+	t=1729506984; cv=none; b=NPEFCUJeEo3ovGxvLdydzGjr6zpAhLXWJ+yk94N1SLbmHnFt0k27fI7YTrfmgaCqT8YQsXe+WL7IxZNykQq13lehXyW1hwAqsiOnK6mWdVJkamEzdl692WIh9vIWAyUqRA+TeYGKckWJpJstN5VrmDDHEcqIGC+6QbpBi8+HFW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506950; c=relaxed/simple;
-	bh=PRbtMBbjxPeLYyxKkbiso+HLSnnRfNOqQmcRG3VfboI=;
+	s=arc-20240116; t=1729506984; c=relaxed/simple;
+	bh=AtKAaJivpLsxIWtEmhF0pAcF+z9byZNnrUh1oVUc1pU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BLsynsBx1ou+6/xkpPTwWe9JJyreSrobpQHcCGAfQU6iEREMpA+AuuMq08nNQf4I7o1XwUSaiTW3Y8dETZSoFddCgJj3xEBQgx2aWQw18vrGcRGruoNonx4RI9IPnV3FUfld5M4I5jMtSy1WKar2gFZ7T/yZtL3Pp2VEIN5U6F0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pmH5YZUl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D8AC4CEC3;
-	Mon, 21 Oct 2024 10:35:49 +0000 (UTC)
+	 MIME-Version; b=aOZAfKm2wo9N4V5o0iloVbVePu0+H9df7tYBicM3fuQADg4RiBq9w3z/AgQYX11rk+/fGuhgS1fUQdweRIkabl1S7+eYzssiMYOCxeWTaRp9BFtkH0u4RzmFdezCNWBDh+Z835yPnwaoxpDyRZH+RwMGpXh+BARCYo3xNOF1QqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pdT0X02Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D493C4CEC7;
+	Mon, 21 Oct 2024 10:36:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506950;
-	bh=PRbtMBbjxPeLYyxKkbiso+HLSnnRfNOqQmcRG3VfboI=;
+	s=korg; t=1729506983;
+	bh=AtKAaJivpLsxIWtEmhF0pAcF+z9byZNnrUh1oVUc1pU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pmH5YZUlX1rg5wcYUOx3sWe+njqf71j2nEdixHjF7T8NmdQkN78L6cfBnTjzaQmFh
-	 Y1dWJo3aaQCXMH2VcrY324HLZ0xcGiUFZbxZQcUZ6UEr4uQcd2nK80dvjmaKVmCayy
-	 e/KozrcIAk0XT8Tul2ILZbuPY2uwxWb0elVx/4xc=
+	b=pdT0X02QNZlM0a2Y/p8mS8NI5RpacpsS+POWoRKJflc3niqM0HTd+m2VoASyfukUT
+	 kjEdtQM8y8mDQkjKOERvH5rjMElvqTc7xsrn+0sXpZkB4sowvzEDuLeo7gCyQoWOD0
+	 qJee/mhoX+rlkXf6vx+TxLKH5VM2mmrc6L+r3C7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Xu <weixugc@google.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Brian Geffon <bgeffon@google.com>,
-	Jan Alexander Steffens <heftig@archlinux.org>,
-	Suleiman Souhlal <suleiman@google.com>,
-	Yu Zhao <yuzhao@google.com>,
+	Liu Shixin <liushixin2@huawei.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 022/124] mm/mglru: only clear kswapd_failures if reclaimable
-Date: Mon, 21 Oct 2024 12:23:46 +0200
-Message-ID: <20241021102257.582667771@linuxfoundation.org>
+Subject: [PATCH 6.6 023/124] mm/swapfile: skip HugeTLB pages for unuse_vma
+Date: Mon, 21 Oct 2024 12:23:47 +0200
+Message-ID: <20241021102257.621312655@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
 References: <20241021102256.706334758@linuxfoundation.org>
@@ -70,52 +67,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wei Xu <weixugc@google.com>
+From: Liu Shixin <liushixin2@huawei.com>
 
-commit b130ba4a6259f6b64d8af15e9e7ab1e912bcb7ad upstream.
+commit 7528c4fb1237512ee18049f852f014eba80bbe8d upstream.
 
-lru_gen_shrink_node() unconditionally clears kswapd_failures, which can
-prevent kswapd from sleeping and cause 100% kswapd cpu usage even when
-kswapd repeatedly fails to make progress in reclaim.
+I got a bad pud error and lost a 1GB HugeTLB when calling swapoff.  The
+problem can be reproduced by the following steps:
 
-Only clear kswap_failures in lru_gen_shrink_node() if reclaim makes some
-progress, similar to shrink_node().
+ 1. Allocate an anonymous 1GB HugeTLB and some other anonymous memory.
+ 2. Swapout the above anonymous memory.
+ 3. run swapoff and we will get a bad pud error in kernel message:
 
-I happened to run into this problem in one of my tests recently.  It
-requires a combination of several conditions: The allocator needs to
-allocate a right amount of pages such that it can wake up kswapd
-without itself being OOM killed; there is no memory for kswapd to
-reclaim (My test disables swap and cleans page cache first); no other
-process frees enough memory at the same time.
+  mm/pgtable-generic.c:42: bad pud 00000000743d215d(84000001400000e7)
 
-Link: https://lkml.kernel.org/r/20241014221211.832591-1-weixugc@google.com
-Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
-Signed-off-by: Wei Xu <weixugc@google.com>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Brian Geffon <bgeffon@google.com>
-Cc: Jan Alexander Steffens <heftig@archlinux.org>
-Cc: Suleiman Souhlal <suleiman@google.com>
-Cc: Yu Zhao <yuzhao@google.com>
+We can tell that pud_clear_bad is called by pud_none_or_clear_bad in
+unuse_pud_range() by ftrace.  And therefore the HugeTLB pages will never
+be freed because we lost it from page table.  We can skip HugeTLB pages
+for unuse_vma to fix it.
+
+Link: https://lkml.kernel.org/r/20241015014521.570237-1-liushixin2@huawei.com
+Fixes: 0fe6e20b9c4c ("hugetlb, rmap: add reverse mapping for hugepage")
+Signed-off-by: Liu Shixin <liushixin2@huawei.com>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/vmscan.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/swapfile.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -5603,8 +5603,8 @@ static void lru_gen_shrink_node(struct p
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -2003,7 +2003,7 @@ static int unuse_mm(struct mm_struct *mm
  
- 	blk_finish_plug(&plug);
- done:
--	/* kswapd should never fail */
--	pgdat->kswapd_failures = 0;
-+	if (sc->nr_reclaimed > reclaimed)
-+		pgdat->kswapd_failures = 0;
- }
- 
- /******************************************************************************
+ 	mmap_read_lock(mm);
+ 	for_each_vma(vmi, vma) {
+-		if (vma->anon_vma) {
++		if (vma->anon_vma && !is_vm_hugetlb_page(vma)) {
+ 			ret = unuse_vma(vma, type);
+ 			if (ret)
+ 				break;
 
 
 
