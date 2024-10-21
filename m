@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-87269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9351A9A6428
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:44:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 058BB9A65D0
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:05:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5223E28255B
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:44:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF783B2D50A
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BAA81EBFFF;
-	Mon, 21 Oct 2024 10:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C461EF954;
+	Mon, 21 Oct 2024 10:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OY6j2vU7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KjntyqMF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126441E47B4;
-	Mon, 21 Oct 2024 10:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8A01EF945;
+	Mon, 21 Oct 2024 10:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507100; cv=none; b=XgBBAN2gZ3Ysb2I4Vg6wb4q+fKqBawbZcMSTmlWsKjrfxvl+Tr/kyUSHKZziG9VICtU6xSb17pKMzarcwwHCtucGCN+TSIYDNZ5YI+6xQdVvzG8Xs+m7PPc4jzY9RI6HdB3R3F/+nC+/rRul8c400twhAaIuNm7+y0IXs2aytQw=
+	t=1729507286; cv=none; b=r5VmYJ3ZB/CZvw32vIZv/6yQr6Jx7rWZere8TUsHilHzP1nEDed51TBR1A8hAT376lI7I63XUi7olKBGfi85x96VfMVhPf2wm/IUYmL3Z5NTOnzRrEvlj7N04pcophWD4Qf1cOn9uPBZ8hXrXple+Vm7chEc50xiFCwcnQ4YVdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507100; c=relaxed/simple;
-	bh=zjtGK5ZZhyR5sZyO2j8YQzOOipLRtk7UTmL8+bkOI7Y=;
+	s=arc-20240116; t=1729507286; c=relaxed/simple;
+	bh=XFPO8qQHAIIKZKAZYkW41arcK18t0vWSuI/E+z+Q9lU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PrRHNwnIkd1HWO3AqucR18EpSY1cXLqnC6bAX9eRPE1mlbF09gPqnWVHT556+IwjW7Eap0kRTfECqUXa2XJPLbWpE2/xs5iyqhGxDSsrD+YVp396F/l/GVYKbZSxvv4RckuDOaAxCVMxyzZlB3rywyR4LKwh4g00GSfZVGMwgdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OY6j2vU7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59FFEC4CEC7;
-	Mon, 21 Oct 2024 10:38:19 +0000 (UTC)
+	 MIME-Version; b=Vm6gYczor7RMlrtk4hibpjDrEgXzBQ1IUdug4B/nCI7k4RrafJtUWjh8iM0EbaoZ6A+CF53fbnmec7eMNDB641kvY27keAhToGO9zw2pj/lQaNpUvIbtJkNJANoSnwgItq8OiSP1KGb9M/t0ST/Ei7Ei35hu6U5Th/SgGwnmNy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KjntyqMF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A378FC4CEC3;
+	Mon, 21 Oct 2024 10:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507099;
-	bh=zjtGK5ZZhyR5sZyO2j8YQzOOipLRtk7UTmL8+bkOI7Y=;
+	s=korg; t=1729507286;
+	bh=XFPO8qQHAIIKZKAZYkW41arcK18t0vWSuI/E+z+Q9lU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OY6j2vU7xM/MbeiLXWtu6aW42yurl3rL0MIO+0Nx7yhtGylBQUbyS4Slo/DU8h/kV
-	 dFcarm96giefNTl6P5sK0xXSDFh8ntFJw+oH81Z2gdUlFqgqpThdbhgoVaMd17yajD
-	 dqv6NsoRQ81HczalrRdNAy0S4aCKtLp8mhh7AR7g=
+	b=KjntyqMFnBreWjoOmETJ0vja2qKqjll1ghLI6ywamxftPyF4N0Qntja7O51oJXhzk
+	 0n33rrgbAR7kKsct/d5tJbJ/LwYiiWZikvx+GA99DWlxubaUNPhEI0LvY4Hvpi1O4G
+	 pDPO6U0QRsNM8fXqo8wpRexsY6vp5xHw2nu/lCBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Borislav Petkov <bp@alien8.de>,
-	Johannes Wikner <kwikner@ethz.ch>,
-	stable@kernel.org
-Subject: [PATCH 6.6 058/124] x86/bugs: Do not use UNTRAIN_RET with IBPB on entry
+	Jan Kara <jack@suse.cz>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 6.1 08/91] udf: Move udf_expand_dir_adinicb() to its callsite
 Date: Mon, 21 Oct 2024 12:24:22 +0200
-Message-ID: <20241021102258.977676880@linuxfoundation.org>
+Message-ID: <20241021102250.125753099@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +61,220 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Wikner <kwikner@ethz.ch>
+From: Jan Kara <jack@suse.cz>
 
-commit c62fa117c32bd1abed9304c58e0da6940f8c7fc2 upstream.
+[ Upstream commit a27b2923de7efaa1da1e243fb80ff0fa432e4be0 ]
 
-Since X86_FEATURE_ENTRY_IBPB will invalidate all harmful predictions
-with IBPB, no software-based untraining of returns is needed anymore.
-Currently, this change affects retbleed and SRSO mitigations so if
-either of the mitigations is doing IBPB and the other one does the
-software sequence, the latter is not needed anymore.
+There is just one caller of udf_expand_dir_adinicb(). Move the function
+to its caller into namei.c as it is more about directory handling than
+anything else anyway.
 
-  [ bp: Massage commit message. ]
-
-Suggested-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Johannes Wikner <kwikner@ethz.ch>
-Cc: <stable@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/bugs.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ fs/udf/inode.c   |   82 -------------------------------------------------------
+ fs/udf/namei.c   |   82 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ fs/udf/udfdecl.h |    2 -
+ 3 files changed, 82 insertions(+), 84 deletions(-)
 
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1113,6 +1113,15 @@ do_cmd_auto:
+--- a/fs/udf/inode.c
++++ b/fs/udf/inode.c
+@@ -325,88 +325,6 @@ int udf_expand_file_adinicb(struct inode
+ 	return err;
+ }
  
- 	case RETBLEED_MITIGATION_IBPB:
- 		setup_force_cpu_cap(X86_FEATURE_ENTRY_IBPB);
-+
-+		/*
-+		 * IBPB on entry already obviates the need for
-+		 * software-based untraining so clear those in case some
-+		 * other mitigation like SRSO has selected them.
-+		 */
-+		setup_clear_cpu_cap(X86_FEATURE_UNRET);
-+		setup_clear_cpu_cap(X86_FEATURE_RETHUNK);
-+
- 		setup_force_cpu_cap(X86_FEATURE_IBPB_ON_VMEXIT);
- 		mitigate_smt = true;
+-struct buffer_head *udf_expand_dir_adinicb(struct inode *inode,
+-					    udf_pblk_t *block, int *err)
+-{
+-	udf_pblk_t newblock;
+-	struct buffer_head *dbh = NULL;
+-	struct kernel_lb_addr eloc;
+-	struct extent_position epos;
+-	uint8_t alloctype;
+-	struct udf_inode_info *iinfo = UDF_I(inode);
+-	struct udf_fileident_iter iter;
+-	uint8_t *impuse;
+-	int ret;
+-
+-	if (UDF_QUERY_FLAG(inode->i_sb, UDF_FLAG_USE_SHORT_AD))
+-		alloctype = ICBTAG_FLAG_AD_SHORT;
+-	else
+-		alloctype = ICBTAG_FLAG_AD_LONG;
+-
+-	if (!inode->i_size) {
+-		iinfo->i_alloc_type = alloctype;
+-		mark_inode_dirty(inode);
+-		return NULL;
+-	}
+-
+-	/* alloc block, and copy data to it */
+-	*block = udf_new_block(inode->i_sb, inode,
+-			       iinfo->i_location.partitionReferenceNum,
+-			       iinfo->i_location.logicalBlockNum, err);
+-	if (!(*block))
+-		return NULL;
+-	newblock = udf_get_pblock(inode->i_sb, *block,
+-				  iinfo->i_location.partitionReferenceNum,
+-				0);
+-	if (!newblock)
+-		return NULL;
+-	dbh = udf_tgetblk(inode->i_sb, newblock);
+-	if (!dbh)
+-		return NULL;
+-	lock_buffer(dbh);
+-	memcpy(dbh->b_data, iinfo->i_data, inode->i_size);
+-	memset(dbh->b_data + inode->i_size, 0,
+-	       inode->i_sb->s_blocksize - inode->i_size);
+-	set_buffer_uptodate(dbh);
+-	unlock_buffer(dbh);
+-
+-	/* Drop inline data, add block instead */
+-	iinfo->i_alloc_type = alloctype;
+-	memset(iinfo->i_data + iinfo->i_lenEAttr, 0, iinfo->i_lenAlloc);
+-	iinfo->i_lenAlloc = 0;
+-	eloc.logicalBlockNum = *block;
+-	eloc.partitionReferenceNum =
+-				iinfo->i_location.partitionReferenceNum;
+-	iinfo->i_lenExtents = inode->i_size;
+-	epos.bh = NULL;
+-	epos.block = iinfo->i_location;
+-	epos.offset = udf_file_entry_alloc_offset(inode);
+-	udf_add_aext(inode, &epos, &eloc, inode->i_size, 0);
+-	brelse(epos.bh);
+-	mark_inode_dirty(inode);
+-
+-	/* Now fixup tags in moved directory entries */
+-	for (ret = udf_fiiter_init(&iter, inode, 0);
+-	     !ret && iter.pos < inode->i_size;
+-	     ret = udf_fiiter_advance(&iter)) {
+-		iter.fi.descTag.tagLocation = cpu_to_le32(*block);
+-		if (iter.fi.lengthOfImpUse != cpu_to_le16(0))
+-			impuse = dbh->b_data + iter.pos +
+-						sizeof(struct fileIdentDesc);
+-		else
+-			impuse = NULL;
+-		udf_fiiter_write_fi(&iter, impuse);
+-	}
+-	/*
+-	 * We don't expect the iteration to fail as the directory has been
+-	 * already verified to be correct
+-	 */
+-	WARN_ON_ONCE(ret);
+-	udf_fiiter_release(&iter);
+-
+-	return dbh;
+-}
+-
+ static int udf_get_block(struct inode *inode, sector_t block,
+ 			 struct buffer_head *bh_result, int create)
+ {
+--- a/fs/udf/namei.c
++++ b/fs/udf/namei.c
+@@ -326,6 +326,88 @@ static struct dentry *udf_lookup(struct
+ 	return d_splice_alias(inode, dentry);
+ }
  
-@@ -2618,6 +2627,14 @@ static void __init srso_select_mitigatio
- 			if (has_microcode) {
- 				setup_force_cpu_cap(X86_FEATURE_ENTRY_IBPB);
- 				srso_mitigation = SRSO_MITIGATION_IBPB;
++static struct buffer_head *udf_expand_dir_adinicb(struct inode *inode,
++					udf_pblk_t *block, int *err)
++{
++	udf_pblk_t newblock;
++	struct buffer_head *dbh = NULL;
++	struct kernel_lb_addr eloc;
++	struct extent_position epos;
++	uint8_t alloctype;
++	struct udf_inode_info *iinfo = UDF_I(inode);
++	struct udf_fileident_iter iter;
++	uint8_t *impuse;
++	int ret;
 +
-+				/*
-+				 * IBPB on entry already obviates the need for
-+				 * software-based untraining so clear those in case some
-+				 * other mitigation like Retbleed has selected them.
-+				 */
-+				setup_clear_cpu_cap(X86_FEATURE_UNRET);
-+				setup_clear_cpu_cap(X86_FEATURE_RETHUNK);
- 			}
- 		} else {
- 			pr_err("WARNING: kernel not compiled with CPU_IBPB_ENTRY.\n");
++	if (UDF_QUERY_FLAG(inode->i_sb, UDF_FLAG_USE_SHORT_AD))
++		alloctype = ICBTAG_FLAG_AD_SHORT;
++	else
++		alloctype = ICBTAG_FLAG_AD_LONG;
++
++	if (!inode->i_size) {
++		iinfo->i_alloc_type = alloctype;
++		mark_inode_dirty(inode);
++		return NULL;
++	}
++
++	/* alloc block, and copy data to it */
++	*block = udf_new_block(inode->i_sb, inode,
++			       iinfo->i_location.partitionReferenceNum,
++			       iinfo->i_location.logicalBlockNum, err);
++	if (!(*block))
++		return NULL;
++	newblock = udf_get_pblock(inode->i_sb, *block,
++				  iinfo->i_location.partitionReferenceNum,
++				0);
++	if (!newblock)
++		return NULL;
++	dbh = udf_tgetblk(inode->i_sb, newblock);
++	if (!dbh)
++		return NULL;
++	lock_buffer(dbh);
++	memcpy(dbh->b_data, iinfo->i_data, inode->i_size);
++	memset(dbh->b_data + inode->i_size, 0,
++	       inode->i_sb->s_blocksize - inode->i_size);
++	set_buffer_uptodate(dbh);
++	unlock_buffer(dbh);
++
++	/* Drop inline data, add block instead */
++	iinfo->i_alloc_type = alloctype;
++	memset(iinfo->i_data + iinfo->i_lenEAttr, 0, iinfo->i_lenAlloc);
++	iinfo->i_lenAlloc = 0;
++	eloc.logicalBlockNum = *block;
++	eloc.partitionReferenceNum =
++				iinfo->i_location.partitionReferenceNum;
++	iinfo->i_lenExtents = inode->i_size;
++	epos.bh = NULL;
++	epos.block = iinfo->i_location;
++	epos.offset = udf_file_entry_alloc_offset(inode);
++	udf_add_aext(inode, &epos, &eloc, inode->i_size, 0);
++	brelse(epos.bh);
++	mark_inode_dirty(inode);
++
++	/* Now fixup tags in moved directory entries */
++	for (ret = udf_fiiter_init(&iter, inode, 0);
++	     !ret && iter.pos < inode->i_size;
++	     ret = udf_fiiter_advance(&iter)) {
++		iter.fi.descTag.tagLocation = cpu_to_le32(*block);
++		if (iter.fi.lengthOfImpUse != cpu_to_le16(0))
++			impuse = dbh->b_data + iter.pos +
++						sizeof(struct fileIdentDesc);
++		else
++			impuse = NULL;
++		udf_fiiter_write_fi(&iter, impuse);
++	}
++	/*
++	 * We don't expect the iteration to fail as the directory has been
++	 * already verified to be correct
++	 */
++	WARN_ON_ONCE(ret);
++	udf_fiiter_release(&iter);
++
++	return dbh;
++}
++
+ static struct fileIdentDesc *udf_add_entry(struct inode *dir,
+ 					   struct dentry *dentry,
+ 					   struct udf_fileident_bh *fibh,
+--- a/fs/udf/udfdecl.h
++++ b/fs/udf/udfdecl.h
+@@ -169,8 +169,6 @@ static inline struct inode *udf_iget(str
+ 	return __udf_iget(sb, ino, false);
+ }
+ extern int udf_expand_file_adinicb(struct inode *);
+-extern struct buffer_head *udf_expand_dir_adinicb(struct inode *inode,
+-						  udf_pblk_t *block, int *err);
+ extern struct buffer_head *udf_bread(struct inode *inode, udf_pblk_t block,
+ 				      int create, int *err);
+ extern int udf_setsize(struct inode *, loff_t);
 
 
 
