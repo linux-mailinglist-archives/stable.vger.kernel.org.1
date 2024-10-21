@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-87248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE229A6415
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:43:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5FEA9A6376
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A05791C2206A
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90CDF1F22C38
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF811F12E5;
-	Mon, 21 Oct 2024 10:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36CAC1E883E;
+	Mon, 21 Oct 2024 10:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Osmw80CF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gh1M6r1B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10521953B9;
-	Mon, 21 Oct 2024 10:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F5E16F27E;
+	Mon, 21 Oct 2024 10:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507037; cv=none; b=GfuD4Kjc+IWYmJP0279biZxoppVuQJO4ibky+fLqT/v7wr/RNM0pDaImgbPdly2uBOcAZKGovLCOuxMyxscf+g3qWQhtMSre8SD0jFEimIwGl/18cIjqYG1yrhsVPjK6yPLhJ0zZVkbDjAiBJ/XHWEPyEWsIg8O1z1XhuMCB0BA=
+	t=1729506773; cv=none; b=Vcu5oww0C+VUNYxG2nL+99/ye7d3+nRhD+WxcGUfwhScsi3K0MD4RyjwL7bZXFX1cntUxJxOHOWdhOJRvnnuSdYa9qaT/7muh2bmVKXcGfCYnqinx8aE3eIydc63yVDBm8PSO6J/5E198g1pWWT6nQKpqSj+vwwBMkhcPqoGoAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507037; c=relaxed/simple;
-	bh=7V+PD/nus9FLZ/iEFbWDaJQMoAFFtME72lQQBu7ibvM=;
+	s=arc-20240116; t=1729506773; c=relaxed/simple;
+	bh=JjfWHiN6v/TgLc43ejWZgDpzrnZKDq86mtXTD9t+EtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WBquJmZJzXAKBZu74yCE82YKPq7mhkYeqztSrzuXgRQWdPtENppUytkRW0p3uNqN+usmRoI9oawNgs3BwrgjAZEZSws0zUIVEsfoPnwI1uT4MIhniHQhmmb/poeV2+uTO3FTOkEtFlzpNdyHOELe5+l8yPYLqgNzJLr60PUgxmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Osmw80CF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF55C4CEC7;
-	Mon, 21 Oct 2024 10:37:17 +0000 (UTC)
+	 MIME-Version; b=V3srB6q6/NpIAeTG8EcySBZhtPjZJ13Yy32OGGL/KE2mf36XTh5JP/HeEJRcc67Ho7rLMX51aXzL3WRtfR8o9Wh902DW49UEPLjA3HQGKpHCqwSDsD2jhF2w8VL9jcRD/MZGjkGKNhF2eRML3uLuoJwkSedY+nivoH87s7vEHTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gh1M6r1B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5966CC4CEC3;
+	Mon, 21 Oct 2024 10:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507037;
-	bh=7V+PD/nus9FLZ/iEFbWDaJQMoAFFtME72lQQBu7ibvM=;
+	s=korg; t=1729506772;
+	bh=JjfWHiN6v/TgLc43ejWZgDpzrnZKDq86mtXTD9t+EtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Osmw80CFnI4XV2i0Ll+W8Pe839ggANIKwi7Ly8yPrNuUndPjU3L5+/A8yeNqEK0ZZ
-	 7Eypmgx6lF8veausd6+nhoD6Ez4xFLw2CM6XKX9yBj+WmOVzLwJaXTXX9fom3fNtfa
-	 HqdNl8v9GTm/JXzhLUnAp+VlK+zIEirFswbDMX4k=
+	b=gh1M6r1B8penVD85sNTgBG87H2tfvxUwyPpD8nnOesfGQgkFUAycOMELTdqavlTPX
+	 FkAnbJeg+heyuZuGzGTBz2RKsJsXHOX0qHKT4F1eoS305PVFmz3ZNry0eUgiQRDhrD
+	 9RYGoVH/JthgSRT2EhvuzWpo9FwQ9F7unt5LcacM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohammed Anees <pvmohammedanees2003@gmail.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 069/124] drm/amdgpu: prevent BO_HANDLES error from being overwritten
+	Jari Ruusu <jariruusu@protonmail.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 6.11 117/135] x86/entry_32: Do not clobber user EFLAGS.ZF
 Date: Mon, 21 Oct 2024 12:24:33 +0200
-Message-ID: <20241021102259.402726305@linuxfoundation.org>
+Message-ID: <20241021102303.906093528@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohammed Anees <pvmohammedanees2003@gmail.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-commit c0ec082f10b7a1fd25e8c1e2a686440da913b7a3 upstream.
+commit 2e2e5143d4868163d6756c8c6a4d28cbfa5245e5 upstream.
 
-Before this patch, if multiple BO_HANDLES chunks were submitted,
-the error -EINVAL would be correctly set but could be overwritten
-by the return value from amdgpu_cs_p1_bo_handles(). This patch
-ensures that if there are multiple BO_HANDLES, we stop.
+Opportunistic SYSEXIT executes VERW to clear CPU buffers after user EFLAGS
+are restored. This can clobber user EFLAGS.ZF.
 
-Fixes: fec5f8e8c6bc ("drm/amdgpu: disallow multiple BO_HANDLES chunks in one submit")
-Signed-off-by: Mohammed Anees <pvmohammedanees2003@gmail.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 40f2cd98828f454bdc5006ad3d94330a5ea164b7)
-Cc: stable@vger.kernel.org
+Move CLEAR_CPU_BUFFERS before the user EFLAGS are restored. This ensures
+that the user EFLAGS.ZF is not clobbered.
+
+Closes: https://lore.kernel.org/lkml/yVXwe8gvgmPADpRB6lXlicS2fcHoV5OHHxyuFbB_MEleRPD7-KhGe5VtORejtPe-KCkT8Uhcg5d7-IBw4Ojb4H7z5LQxoZylSmJ8KNL3A8o=@protonmail.com/
+Fixes: a0e2dab44d22 ("x86/entry_32: Add VERW just before userspace transition")
+Reported-by: Jari Ruusu <jariruusu@protonmail.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240925-fix-dosemu-vm86-v7-1-1de0daca2d42%40linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/entry/entry_32.S |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-@@ -265,7 +265,7 @@ static int amdgpu_cs_pass1(struct amdgpu
+--- a/arch/x86/entry/entry_32.S
++++ b/arch/x86/entry/entry_32.S
+@@ -871,6 +871,8 @@ SYM_FUNC_START(entry_SYSENTER_32)
  
- 			/* Only a single BO list is allowed to simplify handling. */
- 			if (p->bo_list)
--				ret = -EINVAL;
-+				goto free_partial_kdata;
+ 	/* Now ready to switch the cr3 */
+ 	SWITCH_TO_USER_CR3 scratch_reg=%eax
++	/* Clobbers ZF */
++	CLEAR_CPU_BUFFERS
  
- 			ret = amdgpu_cs_p1_bo_handles(p, p->chunks[i].kdata);
- 			if (ret)
+ 	/*
+ 	 * Restore all flags except IF. (We restore IF separately because
+@@ -881,7 +883,6 @@ SYM_FUNC_START(entry_SYSENTER_32)
+ 	BUG_IF_WRONG_CR3 no_user_check=1
+ 	popfl
+ 	popl	%eax
+-	CLEAR_CPU_BUFFERS
+ 
+ 	/*
+ 	 * Return back to the vDSO, which will pop ecx and edx.
 
 
 
