@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-87199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4035E9A646E
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:46:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A349A6303
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:30:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA431B28FB1
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 927961F217B5
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C2361E6DE1;
-	Mon, 21 Oct 2024 10:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F13511E5723;
+	Mon, 21 Oct 2024 10:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="So/7Hopk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1oE/ObC9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03221E630C;
-	Mon, 21 Oct 2024 10:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63951E5020;
+	Mon, 21 Oct 2024 10:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506890; cv=none; b=Mz/oMW6UXllGX4L8ew7H9K8MAGiwY9Iv2cPeKqNGA82YAZAD+1YlgfOsv1Fu7eeGfmVKEXTkui4Fadz/HSskLCJwT6rvV59z32MZU87ZkXVKxHugSagSA3hUWJkcXbOJYGBNVf4dSxyL+1HLqnVLm4Ns/O+KfGWTqI8HggBCjPI=
+	t=1729506575; cv=none; b=KLNf0i72ylbjJ0M6I6q+8zhW0hw8KKUzMReiioiBj6RLekz4Yf3p28HtxYOg14WtQecsnpgkZVlb9KlNi2tV/a1U7CJaUPXir4hAwhOwGzMeY3wloAY0NWljC9PMsUpXsv6vcc68tfnoA7LRQq0DuvTiuUpuf6T+4VtWBI5Ji/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506890; c=relaxed/simple;
-	bh=p/5Ou8mxr7HH36yAjLRFsAELMG8c+QBR1Pn5bgR8x4c=;
+	s=arc-20240116; t=1729506575; c=relaxed/simple;
+	bh=x6dLTAqQEq3jTB+7NED1K1KgFIc5z0Ala7xA8ORsaQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fxk2je74o5NU58/Bjw/Ang9czCoZiSy+V6mzSFa2OSqzdIxFO5VTVao3R4lR3XcDpYe1nqOEqeK34Xniwtk2FotNRpuJzORwH+xL8xNCqrcs2cyKIWnzwYh9MivgKWkm4bguIObmP8bna7TH9RL0zZpbpxuKOXumyPLF+TDsQbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=So/7Hopk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E04C4CEC3;
-	Mon, 21 Oct 2024 10:34:49 +0000 (UTC)
+	 MIME-Version; b=FVLTxWHa8mXsYw9jbIHlQPaby7ANL6ZBDKdqUo+RwYI8tKY6GOcTMdNWjnJniPl8mtywxYr2o1oQY5AWftQ8d9FKXYm+1XgOcZMLpqWVymFB5ckqvcebkxIT/3t0BsJs0+DGgJqd6phyRjeQW+gtL1EJcg9AFvKopTS/SBOCnZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1oE/ObC9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F8AC4CEC3;
+	Mon, 21 Oct 2024 10:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506890;
-	bh=p/5Ou8mxr7HH36yAjLRFsAELMG8c+QBR1Pn5bgR8x4c=;
+	s=korg; t=1729506575;
+	bh=x6dLTAqQEq3jTB+7NED1K1KgFIc5z0Ala7xA8ORsaQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=So/7HopksKZ49r58NfTwPU4mG/fubfORCgomdIrSbbDHw7nVE1G/h+azrUM+s8nyE
-	 qO7j5OkOtuqXxWvaQyG+ieI3CCi30tH5XmhTVFSA/801E+0Dpp7ethc9xRBbV65iKk
-	 +8iQjofTQ0WB9V1Ox+PGj6rjG43gXTV0vXVBP46E=
+	b=1oE/ObC9ZJP+d5BaDKoybfR83xZq3IIcRE5GdMdW5czJJ7NL2XNlx3WmlPm+vdYe6
+	 ZUx5rXnXVZGk1+Y9r5zOYxATtkVfUT36CifnWBQYiEbn9bwHcOo0hnBxs8vzwoNlet
+	 7HA7U6/5Co6RBc3ZClk42oWUV6tv6Ug/de+TDtjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anand Jain <anand.jain@oracle.com>,
-	Roi Martin <jroi.martin@gmail.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 002/124] btrfs: fix uninitialized pointer free on read_alloc_one_name() error
-Date: Mon, 21 Oct 2024 12:23:26 +0200
-Message-ID: <20241021102256.808229649@linuxfoundation.org>
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.11 051/135] ublk: dont allow user copy for unprivileged device
+Date: Mon, 21 Oct 2024 12:23:27 +0200
+Message-ID: <20241021102301.328272496@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roi Martin <jroi.martin@gmail.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit 2ab5e243c2266c841e0f6904fad1514b18eaf510 upstream.
+commit 42aafd8b48adac1c3b20fe5892b1b91b80c1a1e6 upstream.
 
-The function read_alloc_one_name() does not initialize the name field of
-the passed fscrypt_str struct if kmalloc fails to allocate the
-corresponding buffer.  Thus, it is not guaranteed that
-fscrypt_str.name is initialized when freeing it.
+UBLK_F_USER_COPY requires userspace to call write() on ublk char
+device for filling request buffer, and unprivileged device can't
+be trusted.
 
-This is a follow-up to the linked patch that fixes the remaining
-instances of the bug introduced by commit e43eec81c516 ("btrfs: use
-struct qstr instead of name and namelen pairs").
+So don't allow user copy for unprivileged device.
 
-Link: https://lore.kernel.org/linux-btrfs/20241009080833.1355894-1-jroi.martin@gmail.com/
-Fixes: e43eec81c516 ("btrfs: use struct qstr instead of name and namelen pairs")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Roi Martin <jroi.martin@gmail.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org
+Fixes: 1172d5b8beca ("ublk: support user copy")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20241016134847.2911721-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-log.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/block/ublk_drv.c      |   11 ++++++++++-
+ include/uapi/linux/ublk_cmd.h |    8 +++++++-
+ 2 files changed, 17 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -1846,7 +1846,7 @@ static noinline int replay_one_name(stru
- 				    struct btrfs_dir_item *di,
- 				    struct btrfs_key *key)
- {
--	struct fscrypt_str name;
-+	struct fscrypt_str name = { 0 };
- 	struct btrfs_dir_item *dir_dst_di;
- 	struct btrfs_dir_item *index_dst_di;
- 	bool dir_dst_matches = false;
-@@ -2126,7 +2126,7 @@ static noinline int check_item_in_log(st
- 	struct extent_buffer *eb;
- 	int slot;
- 	struct btrfs_dir_item *di;
--	struct fscrypt_str name;
-+	struct fscrypt_str name = { 0 };
- 	struct inode *inode = NULL;
- 	struct btrfs_key location;
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -2381,10 +2381,19 @@ static int ublk_ctrl_add_dev(struct io_u
+ 	 * TODO: provide forward progress for RECOVERY handler, so that
+ 	 * unprivileged device can benefit from it
+ 	 */
+-	if (info.flags & UBLK_F_UNPRIVILEGED_DEV)
++	if (info.flags & UBLK_F_UNPRIVILEGED_DEV) {
+ 		info.flags &= ~(UBLK_F_USER_RECOVERY_REISSUE |
+ 				UBLK_F_USER_RECOVERY);
  
++		/*
++		 * For USER_COPY, we depends on userspace to fill request
++		 * buffer by pwrite() to ublk char device, which can't be
++		 * used for unprivileged device
++		 */
++		if (info.flags & UBLK_F_USER_COPY)
++			return -EINVAL;
++	}
++
+ 	/* the created device is always owned by current user */
+ 	ublk_store_owner_uid_gid(&info.owner_uid, &info.owner_gid);
+ 
+--- a/include/uapi/linux/ublk_cmd.h
++++ b/include/uapi/linux/ublk_cmd.h
+@@ -175,7 +175,13 @@
+ /* use ioctl encoding for uring command */
+ #define UBLK_F_CMD_IOCTL_ENCODE	(1UL << 6)
+ 
+-/* Copy between request and user buffer by pread()/pwrite() */
++/*
++ *  Copy between request and user buffer by pread()/pwrite()
++ *
++ *  Not available for UBLK_F_UNPRIVILEGED_DEV, otherwise userspace may
++ *  deceive us by not filling request buffer, then kernel uninitialized
++ *  data may be leaked.
++ */
+ #define UBLK_F_USER_COPY	(1UL << 7)
+ 
+ /*
 
 
 
