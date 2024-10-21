@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-87156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAB5E9A6372
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BFDE9A6439
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:44:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96E6C1F227E5
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44FCCB2AFA4
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D811E8829;
-	Mon, 21 Oct 2024 10:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA9B1E9064;
+	Mon, 21 Oct 2024 10:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CBLeFREC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MriEkoV+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8B11E766E;
-	Mon, 21 Oct 2024 10:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C5F1F1312;
+	Mon, 21 Oct 2024 10:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506761; cv=none; b=rRSwU9awYQ4Re2Di92NmwLTv8csrYuOfR2b1LHFKhUP+nuf61oMzPv+Igf07qzjGlMR3H9mlV/exOpEMksdBkn8X/Vf0XF715+kboRUPw5CbHXxLTYn1VKSeXXlTIA1If4q+YVCYrgfjkHjsa1O6tAOW//7TUnmVVdkpDgpwQ7k=
+	t=1729507026; cv=none; b=j3YjDYOI5+fvvU00KLnbO3VNYgr4kR1EcCjD8SG62jtzqWD6NONMKJI7H6cGUGImfnnRk85aIbflMof9719DzfT8OvCCrDCOoxU/VFnDf8gJI2f2yCwiWOuHxv6yVGUVh67WWD1Q7LDD58cCCgf9LzWprrJfQCollYazKezN0YI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506761; c=relaxed/simple;
-	bh=cKM/941V8bAmlrnoNkVAm6As9oSAmQBRSuw+uELgtf4=;
+	s=arc-20240116; t=1729507026; c=relaxed/simple;
+	bh=z6u1soZ3+2/AkqBHuhNuR81etlkm8pMi7GeAKI7GyZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gc7PgkuHgO76hodrKeC1xeCP2M+BGanGW0PEf8vbNSE6sZaOdP2o8Eip0MzLT/sbP/9qVfM4HbtXK52/nF13gL2UPrKobU3kqEUYQk+UJACqQj2HuARgZM4WrxHpSEqcNTfvIQRz+OVQ6yJ+s8X50noH0XOrQCPf9G0gH0fFIHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CBLeFREC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D91CC4CEC3;
-	Mon, 21 Oct 2024 10:32:40 +0000 (UTC)
+	 MIME-Version; b=DLpq8Qo7xNWaOMfZ3mHFKDIeQF4ztw5MB9T4Xq1qt5rFTJd+6DeWercERHyQUHwci0KIOqEzHk6YxBzCgdV3yPHItQhOVT/bPr10I/oU0c/Sak48xVHLnhbdM50HxT67kpOpGzkWFilTcR/iXsouhcnuynxmHAZhZcqf2p7YeiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MriEkoV+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4791CC4CEC3;
+	Mon, 21 Oct 2024 10:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506760;
-	bh=cKM/941V8bAmlrnoNkVAm6As9oSAmQBRSuw+uELgtf4=;
+	s=korg; t=1729507025;
+	bh=z6u1soZ3+2/AkqBHuhNuR81etlkm8pMi7GeAKI7GyZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CBLeFRECYFF3dOzxf/hF48HlI+6Bf+cTizfvZy4SYeotEVoJOyMnRI4GiYvLVGPpU
-	 W+zt+Xp4pzH0+wH1AcfOsxq5pzZtT3KMpVDslWNDhL7nNVlqT1D8V0alJ1jf/t6QyB
-	 ynj/tpTmSvy7rGc6feZbSdpIr3u7Wdnzwa23cvek=
+	b=MriEkoV+1EVSfsHyA7cw//9KN2qA7dhBJAE8tQG8wRCWqBNVlFtZOAByPRx5Ei+qL
+	 og2aF+Q5UxuNkFkATOCONUlwtpWr9eeWwHLEseSqEt4g0nLDr5OWnUP+zlEuDd39Kv
+	 lLi45INQOZe3kbr+L6pA6bSnNgXR5k3J7SyzI1iI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.11 113/135] parport: Proper fix for array out-of-bounds access
+	Peter Wang <peter.wang@mediatek.com>,
+	"Bao D. Nguyen" <quic_nguyenb@quicinc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 065/124] scsi: ufs: core: Fix the issue of ICU failure
 Date: Mon, 21 Oct 2024 12:24:29 +0200
-Message-ID: <20241021102303.745215260@linuxfoundation.org>
+Message-ID: <20241021102259.248275552@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,110 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Peter Wang <peter.wang@mediatek.com>
 
-commit 02ac3a9ef3a18b58d8f3ea2b6e46de657bf6c4f9 upstream.
+commit bf0c6cc73f7f91ec70307f7c72343f6cb7d65d01 upstream.
 
-The recent fix for array out-of-bounds accesses replaced sprintf()
-calls blindly with snprintf().  However, since snprintf() returns the
-would-be-printed size, not the actually output size, the length
-calculation can still go over the given limit.
+When setting the ICU bit without using read-modify-write, SQRTCy will
+restart SQ again and receive an RTC return error code 2 (Failure - SQ
+not stopped).
 
-Use scnprintf() instead of snprintf(), which returns the actually
-output letters, for addressing the potential out-of-bounds access
-properly.
+Additionally, the error log has been modified so that this type of error
+can be observed.
 
-Fixes: ab11dac93d2d ("dev/parport: fix the array out-of-bounds risk")
+Fixes: ab248643d3d6 ("scsi: ufs: core: Add error handling for MCQ mode")
 Cc: stable@vger.kernel.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20240920103318.19271-1-tiwai@suse.de
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Link: https://lore.kernel.org/r/20241001091917.6917-2-peter.wang@mediatek.com
+Reviewed-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parport/procfs.c |   22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/ufs/core/ufs-mcq.c |   15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
---- a/drivers/parport/procfs.c
-+++ b/drivers/parport/procfs.c
-@@ -51,12 +51,12 @@ static int do_active_device(const struct
- 	
- 	for (dev = port->devices; dev ; dev = dev->next) {
- 		if(dev == port->cad) {
--			len += snprintf(buffer, sizeof(buffer), "%s\n", dev->name);
-+			len += scnprintf(buffer, sizeof(buffer), "%s\n", dev->name);
- 		}
- 	}
+--- a/drivers/ufs/core/ufs-mcq.c
++++ b/drivers/ufs/core/ufs-mcq.c
+@@ -498,7 +498,7 @@ int ufshcd_mcq_sq_cleanup(struct ufs_hba
+ 	struct scsi_cmnd *cmd = lrbp->cmd;
+ 	struct ufs_hw_queue *hwq;
+ 	void __iomem *reg, *opr_sqd_base;
+-	u32 nexus, id, val;
++	u32 nexus, id, val, rtc;
+ 	int err;
  
- 	if(!len) {
--		len += snprintf(buffer, sizeof(buffer), "%s\n", "none");
-+		len += scnprintf(buffer, sizeof(buffer), "%s\n", "none");
- 	}
+ 	if (hba->quirks & UFSHCD_QUIRK_MCQ_BROKEN_RTC)
+@@ -528,17 +528,18 @@ int ufshcd_mcq_sq_cleanup(struct ufs_hba
+ 	opr_sqd_base = mcq_opr_base(hba, OPR_SQD, id);
+ 	writel(nexus, opr_sqd_base + REG_SQCTI);
  
- 	if (len > *lenp)
-@@ -87,19 +87,19 @@ static int do_autoprobe(const struct ctl
- 	}
- 	
- 	if ((str = info->class_name) != NULL)
--		len += snprintf (buffer + len, sizeof(buffer) - len, "CLASS:%s;\n", str);
-+		len += scnprintf (buffer + len, sizeof(buffer) - len, "CLASS:%s;\n", str);
+-	/* SQRTCy.ICU = 1 */
+-	writel(SQ_ICU, opr_sqd_base + REG_SQRTC);
++	/* Initiate Cleanup */
++	writel(readl(opr_sqd_base + REG_SQRTC) | SQ_ICU,
++		opr_sqd_base + REG_SQRTC);
  
- 	if ((str = info->model) != NULL)
--		len += snprintf (buffer + len, sizeof(buffer) - len, "MODEL:%s;\n", str);
-+		len += scnprintf (buffer + len, sizeof(buffer) - len, "MODEL:%s;\n", str);
+ 	/* Poll SQRTSy.CUS = 1. Return result from SQRTSy.RTC */
+ 	reg = opr_sqd_base + REG_SQRTS;
+ 	err = read_poll_timeout(readl, val, val & SQ_CUS, 20,
+ 				MCQ_POLL_US, false, reg);
+-	if (err)
+-		dev_err(hba->dev, "%s: failed. hwq=%d, tag=%d err=%ld\n",
+-			__func__, id, task_tag,
+-			FIELD_GET(SQ_ICU_ERR_CODE_MASK, readl(reg)));
++	rtc = FIELD_GET(SQ_ICU_ERR_CODE_MASK, readl(reg));
++	if (err || rtc)
++		dev_err(hba->dev, "%s: failed. hwq=%d, tag=%d err=%d RTC=%d\n",
++			__func__, id, task_tag, err, rtc);
  
- 	if ((str = info->mfr) != NULL)
--		len += snprintf (buffer + len, sizeof(buffer) - len, "MANUFACTURER:%s;\n", str);
-+		len += scnprintf (buffer + len, sizeof(buffer) - len, "MANUFACTURER:%s;\n", str);
- 
- 	if ((str = info->description) != NULL)
--		len += snprintf (buffer + len, sizeof(buffer) - len, "DESCRIPTION:%s;\n", str);
-+		len += scnprintf (buffer + len, sizeof(buffer) - len, "DESCRIPTION:%s;\n", str);
- 
- 	if ((str = info->cmdset) != NULL)
--		len += snprintf (buffer + len, sizeof(buffer) - len, "COMMAND SET:%s;\n", str);
-+		len += scnprintf (buffer + len, sizeof(buffer) - len, "COMMAND SET:%s;\n", str);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -128,7 +128,7 @@ static int do_hardware_base_addr(const s
- 	if (write) /* permissions prevent this anyway */
- 		return -EACCES;
- 
--	len += snprintf (buffer, sizeof(buffer), "%lu\t%lu\n", port->base, port->base_hi);
-+	len += scnprintf (buffer, sizeof(buffer), "%lu\t%lu\n", port->base, port->base_hi);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -155,7 +155,7 @@ static int do_hardware_irq(const struct
- 	if (write) /* permissions prevent this anyway */
- 		return -EACCES;
- 
--	len += snprintf (buffer, sizeof(buffer), "%d\n", port->irq);
-+	len += scnprintf (buffer, sizeof(buffer), "%d\n", port->irq);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -182,7 +182,7 @@ static int do_hardware_dma(const struct
- 	if (write) /* permissions prevent this anyway */
- 		return -EACCES;
- 
--	len += snprintf (buffer, sizeof(buffer), "%d\n", port->dma);
-+	len += scnprintf (buffer, sizeof(buffer), "%d\n", port->dma);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -213,7 +213,7 @@ static int do_hardware_modes(const struc
- #define printmode(x)							\
- do {									\
- 	if (port->modes & PARPORT_MODE_##x)				\
--		len += snprintf(buffer + len, sizeof(buffer) - len, "%s%s", f++ ? "," : "", #x); \
-+		len += scnprintf(buffer + len, sizeof(buffer) - len, "%s%s", f++ ? "," : "", #x); \
- } while (0)
- 		int f = 0;
- 		printmode(PCSPP);
+ 	if (ufshcd_mcq_sq_start(hba, hwq))
+ 		err = -ETIMEDOUT;
 
 
 
