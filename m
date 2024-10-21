@@ -1,142 +1,94 @@
-Return-Path: <stable+bounces-87620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 707CB9A7200
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 20:11:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4976C9A7217
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 20:14:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9133D1C22280
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 18:11:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9B401F2217E
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 18:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0677B1F9401;
-	Mon, 21 Oct 2024 18:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E3A1F8F1E;
+	Mon, 21 Oct 2024 18:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fJrVradM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OfZfBuUJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C99F1EB9EF;
-	Mon, 21 Oct 2024 18:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674411E907F;
+	Mon, 21 Oct 2024 18:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729534176; cv=none; b=fS1IKkCRWaAgRMDAw9+spH2hkZ6yunjSGWNMJYiL9EqzB8vEVDFNHAM8C7KYcFBejze7pofw4+yWFi8UqEr/xxyxTb0pCSpTN0ePezadZWS4wF2XpH75IbL0xPLnx9SY+Hh3UtggvVxfjdoJ9pr6wQ+3bWL5+Lwu9rEOXQskamo=
+	t=1729534487; cv=none; b=o3qbOtAoCd7iQAFvbShWkb038txau+tVH0fLHJXB7HFs3CbSoJUbDv//AFrT8ALrXAxRbVoDxwXkPuqZYtcfFtDN11vpKQGPy/ASv15ZwNHwkWQpZesHj+JSzyHq6rJHpEOq8HHLT7/PGKPzdkG9L/ZOTvql3oXjCMcdpOAnxHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729534176; c=relaxed/simple;
-	bh=LC0A/Rdjec5aDSJht41Id9IaHLYV+tuUkNDUK8OL93s=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OOawYbtghBga6AKdQZQjyIwtAH9krUpUaHECoM3ZYDPsP7D95+gquIfvcAMCImfnoELpJYhP6FupoXsa29a+DT3geyxZX9jQ4JjYIsCSe7Rx+AW1l6bRnqjFIDqoe6rKBjLqFrVfrmOQ/aJPrKafJdbEn85TA1vxJe+qK698M/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fJrVradM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C798C4CEC3;
-	Mon, 21 Oct 2024 18:09:36 +0000 (UTC)
+	s=arc-20240116; t=1729534487; c=relaxed/simple;
+	bh=j1mgVHPRoaNe9ycS61VrY4Fi/1Xcd+t3wGQSQxTpFFs=;
+	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
+	 Subject:From:Cc:To:Date; b=Yn1Am5BAB6hrfc4LHKxScENdtl4qynoMfYRWaAasKMNCDtNHdoxw0PAJNNCRvq0nUcG/Y1wXxD2bl37l8Yvrn+W/YeRX0KE08hJM8UEefujACKzQKfa2ZR0iRH+HweFNq9kSsywWELP9IEKr1vKCcBFf4x+exs2MNUkhsgI60y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OfZfBuUJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9BF2C4CEC3;
+	Mon, 21 Oct 2024 18:14:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729534176;
-	bh=LC0A/Rdjec5aDSJht41Id9IaHLYV+tuUkNDUK8OL93s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fJrVradMxURiouC+jgE/SGFb2gIoiG4mvYFoZ8W5cwMHNdUmON4B2caiRjaA7Pc/i
-	 UtWfklugQZydjf5fVb5Xa0uy5yD++79KuiCBJaFbqB73ECEJTvHOkR6/xTfxkbNFp0
-	 NZewGc/TD7ICjHDwbtHVctz2jGV9JHcpD93Ojiu2PWttwgyRtTjMtjStSeQ2RwzZu2
-	 aDm1yp3WDPzGTJfGsgCEl5t5PGsfnIeBt5mmU5l/evrLN/osbZcP3MzMHdtTshtgUC
-	 rHDN7rcq6U4vO2Ys28sgGY8u55sZE8FURd7gBSAtyQ2LxMQmR6gyHM/cBcydUitckN
-	 l3+XQnTzO/04A==
-From: SeongJae Park <sj@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com,
-	broonie@kernel.org,
-	damon@lists.linux.dev
-Subject: Re: [PATCH 6.11 000/135] 6.11.5-rc1 review
-Date: Mon, 21 Oct 2024 11:09:32 -0700
-Message-Id: <20241021180932.15092-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: 
+	s=k20201202; t=1729534487;
+	bh=j1mgVHPRoaNe9ycS61VrY4Fi/1Xcd+t3wGQSQxTpFFs=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=OfZfBuUJuR6VIidzmxsqgGm0vKWZZs1SYihvGiJIrN+VhnYgAIbqI7Nj6oZc2IRRU
+	 5p6X11bGYsYt6aTgY8ScXKCTdaijRrcOVAwq13SS9oWIwunb7I2OAch9fdWD1s08vn
+	 7OKF4mEs1xs1OCvSfEPQg32IgJrLKHjiaiJknflqVxsTJYEm85WUeM4TG7BaxHSzGK
+	 e6AT0/i2rHntTPAsQgaZwDeFYecP0Aw8+D08Tm+mT2ACwpJYDkq66q3IaIjghB6ceR
+	 pThVPB6Bq0qtOqwxCMWG68+p7VNE0iZAVEoLijvezs1ncJuQDADMXNNDMrPVI0e22g
+	 eHtE87AR8ft2g==
+Message-ID: <5f39a93197f02fa7ec0de897a7ce646d.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20241021-fix-alpha-mode-config-v1-1-f32c254e02bc@gmail.com>
+References: <20241021-fix-alpha-mode-config-v1-1-f32c254e02bc@gmail.com>
+Subject: Re: [PATCH] clk: qcom: clk-alpha-pll: fix alpha mode configuration
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, Gabor Juhos <j4g8y7@gmail.com>
+To: Bjorn Andersson <andersson@kernel.org>, Gabor Juhos <j4g8y7@gmail.com>, Michael Turquette <mturquette@baylibre.com>
+Date: Mon, 21 Oct 2024 11:14:44 -0700
+User-Agent: alot/0.10
 
-Hello,
-
-On Mon, 21 Oct 2024 12:22:36 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-
-> This is the start of the stable review cycle for the 6.11.5 release.
-> There are 135 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 23 Oct 2024 10:22:25 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.11.5-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.11.y
-
-This rc kernel passes DAMON functionality test[1] on my test machine.
-Attaching the test results summary below.  Please note that I retrieved the
-kernel from linux-stable-rc tree[2].
-
-Tested-by: SeongJae Park <sj@kernel.org>
-
-[1] https://github.com/damonitor/damon-tests/tree/next/corr
-[2] 96563e3507d7 ("Linux 6.11.5-rc1")
-
-Thanks,
-SJ
-
+Quoting Gabor Juhos (2024-10-21 10:32:48)
+> Commit c45ae598fc16 ("clk: qcom: support for alpha mode configuration")
+> added support for configuring alpha mode, but it seems that the feature
+> was never working in practice.
+>=20
 [...]
+>=20
+> Applying the 'alpha_en_mask' fixes the initial rate of the PLLs showed
+> in the table above. Since the 'alpha_mode_mask' is not used by any driver
+> currently, that part of the change causes no functional changes.
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: c45ae598fc16 ("clk: qcom: support for alpha mode configuration")
+> Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+> ---
+> diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alph=
+a-pll.c
+> index f9105443d7dbb104e3cb091e59f43df25999f8b3..03cc7aa092480bfdd9eaa986d=
+44f0545944b3b89 100644
+> --- a/drivers/clk/qcom/clk-alpha-pll.c
+> +++ b/drivers/clk/qcom/clk-alpha-pll.c
+> @@ -421,6 +421,8 @@ void clk_alpha_pll_configure(struct clk_alpha_pll *pl=
+l, struct regmap *regmap,
+>         mask |=3D config->pre_div_mask;
+>         mask |=3D config->post_div_mask;
+>         mask |=3D config->vco_mask;
+> +       mask |=3D config->alpha_en_mask;
+> +       mask |=3D config->alpha_mode_mask;
+> =20
 
----
-
-ok 9 selftests: damon: damos_tried_regions.py
-ok 10 selftests: damon: damon_nr_regions.py
-ok 11 selftests: damon: reclaim.sh
-ok 12 selftests: damon: lru_sort.sh
-ok 13 selftests: damon: debugfs_empty_targets.sh
-ok 14 selftests: damon: debugfs_huge_count_read_write.sh
-ok 15 selftests: damon: debugfs_duplicate_context_creation.sh
-ok 16 selftests: damon: debugfs_rm_non_contexts.sh
-ok 17 selftests: damon: debugfs_target_ids_read_before_terminate_race.sh
-ok 18 selftests: damon: debugfs_target_ids_pid_leak.sh
-ok 19 selftests: damon: sysfs_update_removed_scheme_dir.sh
-ok 20 selftests: damon: sysfs_update_schemes_tried_regions_hang.py
-ok 1 selftests: damon-tests: kunit.sh
-ok 2 selftests: damon-tests: huge_count_read_write.sh
-ok 3 selftests: damon-tests: buffer_overflow.sh
-ok 4 selftests: damon-tests: rm_contexts.sh
-ok 5 selftests: damon-tests: record_null_deref.sh
-ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
-ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
-ok 8 selftests: damon-tests: damo_tests.sh
-ok 9 selftests: damon-tests: masim-record.sh
-ok 10 selftests: damon-tests: build_i386.sh
-ok 11 selftests: damon-tests: build_arm64.sh # SKIP
-ok 12 selftests: damon-tests: build_m68k.sh # SKIP
-ok 13 selftests: damon-tests: build_i386_idle_flag.sh
-ok 14 selftests: damon-tests: build_i386_highpte.sh
-ok 15 selftests: damon-tests: build_nomemcg.sh
- [33m
- [92mPASS [39m
+This is https://lore.kernel.org/all/20241019-qcs615-mm-clockcontroller-v1-1=
+-4cfb96d779ae@quicinc.com/
 
