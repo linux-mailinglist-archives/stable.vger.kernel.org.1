@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-87459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA4AE9A650B
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:53:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 524DF9A6553
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:56:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 829E3281CD7
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:53:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 114BC283345
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2ABC1E130B;
-	Mon, 21 Oct 2024 10:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89EBE1EE036;
+	Mon, 21 Oct 2024 10:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OV3KvP44"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qQel2uEo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A980116F27E;
-	Mon, 21 Oct 2024 10:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB491E6DD4;
+	Mon, 21 Oct 2024 10:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507666; cv=none; b=Xi7gl6LvQ7tcAc59FPhuCThwdAxeJ0x0hKvEk8gaoypj78X1YPjbbPb1lg/1EJZl2bC79cFoe0NSYhNnPX6zjOZ7W3YUwP6/K2Pv0q0wCgQdWhi9abhIqfoDMNVrYCTe/BqnPb6lmO2TtksjjTyK+IKjibWLHGKMkzsu8qxYpHQ=
+	t=1729507802; cv=none; b=Dnsa6uJKE0yRRrDTyVWPM4ak/pl4joo3YDGbYNgZaWXMvrv02qdwP1F2gLWZeSiU10KyZEiKawCoXaZZw0+KJwyPGPVgT4ubjJGBVIK6HCeYcSHCDCaRsOs3+BUI3x11Eil5LADb2LuzYUnZDMW5RHiqU2U5KgTa9qW0hupL/Gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507666; c=relaxed/simple;
-	bh=78ZIRm2rz6EU+HMxz4cHqD5I8foJVCO/aTlUaASAEEk=;
+	s=arc-20240116; t=1729507802; c=relaxed/simple;
+	bh=KMQLbukrfxeSla+uBhpyJQIXsI09j0N8kYl4tEjwshc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mHNEhvo9Izvtk+LBIS1qNAlFCOqdvbXPCiYmWUpXqNHXK9yvrNTj6wikeG2VLRO0CtwtkhdIQvy2HG5pkPhCuG/lL1P3ONPkeUA3Y6xTyl3emIWLvoi2mnW+24P5N/goyJ5TTYIu/PU25fTyZrAVwfHZBnoThMxaJL3VzKm7m78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OV3KvP44; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B60C4CEC3;
-	Mon, 21 Oct 2024 10:47:45 +0000 (UTC)
+	 MIME-Version; b=sIydnf48rY/ZigO/z3WYy2o5XVtLCG+4N05QBrMwpKf52Ca2pp2FfmblS5/FChu+8hhpZZI9ZG88f+stzoRYpy4BCfxnMsthsE0kkLc5S57u5K2bMpPIKypx3TUrDliaBoZynXKNT9rf+oL7yHSOWizTKnmvh/oqeFhwu76XY6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qQel2uEo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E5D2C4CEC3;
+	Mon, 21 Oct 2024 10:50:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507666;
-	bh=78ZIRm2rz6EU+HMxz4cHqD5I8foJVCO/aTlUaASAEEk=;
+	s=korg; t=1729507801;
+	bh=KMQLbukrfxeSla+uBhpyJQIXsI09j0N8kYl4tEjwshc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OV3KvP44bN/CjnkbNzg5ClRkqRiKayWsuH9oXcDwpThKNT8Kovm9l32ENlKJaLwq3
-	 JURjKsX4p+YkcRhhSPRokew08WeDMLuJzb8pwwF5k/luxzhA42/1Zi2tqAZ4wJToMM
-	 uW/YMB0PcAjhQC0gvdE9Msr56wB+Jw1OlKw5rYmY=
+	b=qQel2uEoFIhf4SRIZsLgA+QTplEjERXyZKFosxLE9stX5oH86nEaXOrXAKiOev8Xi
+	 1ZVrRHCyl+l8MKlUCc8ON3Qn80fQlROMfojQgmWom0JKXgn5Yy+Ilf7tcHT24lO/sX
+	 y035kqgPkUNGnDd7H2zW7IS2cz00okFrI30QJio8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.15 62/82] Bluetooth: btusb: Fix regression with fake CSR controllers 0a12:0001
-Date: Mon, 21 Oct 2024 12:25:43 +0200
-Message-ID: <20241021102249.680332142@linuxfoundation.org>
+	Benedek Thaler <thaler@thaler.hu>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.10 23/52] io_uring/sqpoll: close race on waiting for sqring entries
+Date: Mon, 21 Oct 2024 12:25:44 +0200
+Message-ID: <20241021102242.533757096@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
+References: <20241021102241.624153108@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,72 +59,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 2c1dda2acc4192d826e84008d963b528e24d12bc upstream.
+commit 28aabffae6be54284869a91cd8bccd3720041129 upstream.
 
-Fake CSR controllers don't seem to handle short-transfer properly which
-cause command to time out:
+When an application uses SQPOLL, it must wait for the SQPOLL thread to
+consume SQE entries, if it fails to get an sqe when calling
+io_uring_get_sqe(). It can do so by calling io_uring_enter(2) with the
+flag value of IORING_ENTER_SQ_WAIT. In liburing, this is generally done
+with io_uring_sqring_wait(). There's a natural expectation that once
+this call returns, a new SQE entry can be retrieved, filled out, and
+submitted. However, the kernel uses the cached sq head to determine if
+the SQRING is full or not. If the SQPOLL thread is currently in the
+process of submitting SQE entries, it may have updated the cached sq
+head, but not yet committed it to the SQ ring. Hence the kernel may find
+that there are SQE entries ready to be consumed, and return successfully
+to the application. If the SQPOLL thread hasn't yet committed the SQ
+ring entries by the time the application returns to userspace and
+attempts to get a new SQE, it will fail getting a new SQE.
 
-kernel: usb 1-1: new full-speed USB device number 19 using xhci_hcd
-kernel: usb 1-1: New USB device found, idVendor=0a12, idProduct=0001, bcdDevice=88.91
-kernel: usb 1-1: New USB device strings: Mfr=0, Product=2, SerialNumber=0
-kernel: usb 1-1: Product: BT DONGLE10
-...
-Bluetooth: hci1: Opcode 0x1004 failed: -110
-kernel: Bluetooth: hci1: command 0x1004 tx timeout
+Fix this by having io_sqring_full() always use the user visible SQ ring
+head entry, rather than the internally cached one.
 
-According to USB Spec 2.0 Section 5.7.3 Interrupt Transfer Packet Size
-Constraints a interrupt transfer is considered complete when the size is 0
-(ZPL) or < wMaxPacketSize:
-
- 'When an interrupt transfer involves more data than can fit in one
- data payload of the currently established maximum size, all data
- payloads are required to be maximum-sized except for the last data
- payload, which will contain the remaining data. An interrupt transfer
- is complete when the endpoint does one of the following:
-
- • Has transferred exactly the amount of data expected
- • Transfers a packet with a payload size less than wMaxPacketSize or
- transfers a zero-length packet'
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219365
-Fixes: 7b05933340f4 ("Bluetooth: btusb: Fix not handling ZPL/short-transfer")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: stable@vger.kernel.org # 5.10+
+Link: https://github.com/axboe/liburing/discussions/1267
+Reported-by: Benedek Thaler <thaler@thaler.hu>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ io_uring/io_uring.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -1002,10 +1002,15 @@ static int btusb_submit_intr_urb(struct
- 	if (!urb)
- 		return -ENOMEM;
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1580,7 +1580,14 @@ static inline bool io_sqring_full(struct
+ {
+ 	struct io_rings *r = ctx->rings;
  
--	/* Use maximum HCI Event size so the USB stack handles
--	 * ZPL/short-transfer automatically.
--	 */
--	size = HCI_MAX_EVENT_SIZE;
-+	if (le16_to_cpu(data->udev->descriptor.idVendor)  == 0x0a12 &&
-+	    le16_to_cpu(data->udev->descriptor.idProduct) == 0x0001)
-+		/* Fake CSR devices don't seem to support sort-transter */
-+		size = le16_to_cpu(data->intr_ep->wMaxPacketSize);
-+	else
-+		/* Use maximum HCI Event size so the USB stack handles
-+		 * ZPL/short-transfer automatically.
-+		 */
-+		size = HCI_MAX_EVENT_SIZE;
+-	return READ_ONCE(r->sq.tail) - ctx->cached_sq_head == ctx->sq_entries;
++	/*
++	 * SQPOLL must use the actual sqring head, as using the cached_sq_head
++	 * is race prone if the SQPOLL thread has grabbed entries but not yet
++	 * committed them to the ring. For !SQPOLL, this doesn't matter, but
++	 * since this helper is just used for SQPOLL sqring waits (or POLLOUT),
++	 * just read the actual sqring head unconditionally.
++	 */
++	return READ_ONCE(r->sq.tail) - READ_ONCE(r->sq.head) == ctx->sq_entries;
+ }
  
- 	buf = kmalloc(size, mem_flags);
- 	if (!buf) {
+ static inline unsigned int __io_cqring_events(struct io_ring_ctx *ctx)
 
 
 
