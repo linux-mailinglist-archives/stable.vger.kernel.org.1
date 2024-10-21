@@ -1,162 +1,233 @@
-Return-Path: <stable+bounces-87629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F8E49A900C
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 21:41:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2D599A901C
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 21:49:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 508531C2223A
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 19:41:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5C16B220A4
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 19:49:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D751FCC52;
-	Mon, 21 Oct 2024 19:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 502C81C9EB9;
+	Mon, 21 Oct 2024 19:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UHi8S4C9"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u38O1dgU"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D78C1FCC58
-	for <stable@vger.kernel.org>; Mon, 21 Oct 2024 19:41:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4CD1C9B82
+	for <stable@vger.kernel.org>; Mon, 21 Oct 2024 19:49:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729539693; cv=none; b=J+vyUfHqXncDkP32h4iDZMCwxadb52rS1j2lTny0+Y22yOILaxZrAE3GAlSJhU2KWAtx4YpRQbYOXUXBa3oue4bz+dj/CaqUTRcLS82teTv0zmRFEQ4wuPbXbfCgqAZtRL0d2N52h0U+Q/e6WB+Dr+oDleGLmyPzNtJ0WYOGuE0=
+	t=1729540185; cv=none; b=Ouy5Ri6WAHUu2RcDWIRZzNSD7mD5cGPoEd5zE3VPm3Ta/QBht8C9fRmY5JWDYTZtNS6ohaTMy9Gz8qoKrgtvTO1vI4qarWPQwNhihCSRuA+lKj5HEWstPRB3S/dPb3I8Ldt6h/cb1QsLkEhiRjW8QEnltW2FJQATPTcult13alo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729539693; c=relaxed/simple;
-	bh=4nnZKHZ4VeZEpEUFCpXG/mrHTSwFduNl18fwqhzYuOo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U3WJIBrikCkX81Em9oZxdTU6cbJqoy3+NiXiSTB00gtDVo2OgGiis5eU1DO00TLyWrh8IMBd8HWByde7ReCpXc9YCCIWXhdAEtyaZVevp5I4kaje61OrDWq60UhNly8HAEohs5+byDlOoHi9tpNycXRQi/ONnUwjLtW10Cf17TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UHi8S4C9; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729539691; x=1761075691;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4nnZKHZ4VeZEpEUFCpXG/mrHTSwFduNl18fwqhzYuOo=;
-  b=UHi8S4C99JqL6c3YME3g6XM22eyNPYTXGFsiRcH5PrbrOQHxwrKGQNj/
-   2Jr5fwHL12CCXG6a01NB3K4N+uUczrxTvvSlw+LGF74AlJqWBe2t0PAHG
-   4jEP/0cbRAIXNct2euNfaSaeVuaz2l9BdLguWB5yfF7bkNiY8G/etB7Zt
-   VCGo95lFdsv9G/H93IZvWZg0cpd3Dg41jJOOdbOP6b2ShO+cZMvK0Efzw
-   VrK33KVt2yKmUn+gzvq6hb3dTqniilmlQX72TC0hklJMpVNb+fIP4SJ1L
-   ggBP4Eo3sXWK2tJ95qnyqvP7jwtgtjebMjVOD9EFaL8cQi3B0N2x8+JTa
-   w==;
-X-CSE-ConnectionGUID: rEbV8oFYSWCvluEhx9EChw==
-X-CSE-MsgGUID: dPbUbjcaQ0y2lnUSnNeieg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11232"; a="28921065"
-X-IronPort-AV: E=Sophos;i="6.11,221,1725346800"; 
-   d="scan'208";a="28921065"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 12:41:30 -0700
-X-CSE-ConnectionGUID: YfV/ggW9R4qwsivbFHIrzQ==
-X-CSE-MsgGUID: OdKtzdKoRb6Rx5aRa4+5dA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,221,1725346800"; 
-   d="scan'208";a="79708178"
-Received: from cphoward-mobl.amr.corp.intel.com (HELO desk) ([10.125.147.124])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 12:41:30 -0700
-Date: Mon, 21 Oct 2024 12:41:19 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: andrew.cooper3@citrix.com, brgerst@gmail.com,
-	dave.hansen@linux.intel.com, mingo@kernel.org, rtgill82@gmail.com
-Subject: [PATCH 5.10.y] x86/bugs: Use code segment selector for VERW operand
-Message-ID: <f9c84ff992511890556cd52c19c2875b440b98c6.1729538774.git.pawan.kumar.gupta@linux.intel.com>
-References: <2024102131-blissful-iodize-4056@gregkh>
+	s=arc-20240116; t=1729540185; c=relaxed/simple;
+	bh=HTep6Ps/b0VqQuVOG52oSj2XTrXoOn40CM7dR4EIEOI=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=MKa/J0s+JJ/MOtHJNayT00jzdPUoyiPCw9u45/f2hHgJu7VQHqDP8H1E9TZK30mAS6S/GRW75ePSmyQAhrzsXweKl7Oo35+6nlThYdcPaDHn6TG0b+t8LuxvaJnAyhTQHbBZyXD4AZHuKJPf/gQd1GrcvLpT2wEfkVfsqdNUPb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u38O1dgU; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-7c3e1081804so2574292a12.3
+        for <stable@vger.kernel.org>; Mon, 21 Oct 2024 12:49:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1729540182; x=1730144982; darn=vger.kernel.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TIAEhXnz+TycYsOXq4fwUScpNqUcxMY2FROsK0V63/0=;
+        b=u38O1dgUi9XNpaywyCUwduuXJ9Nc4q2RPX1D/Yq5Vb3OTTT/z4A+25TEsVWxq7QNf4
+         X7JF6sW6MT+lqBO5h0xTtzXB2WNGuQe3+C+Qutew8+KCulr+0MZzNRBn9Wuz4ota5ztz
+         vYPk0nw1oeO2fsGegij3qpgdNhBr33WPZGttJlNc/RTlv48iYYee0ocFZv38ten/6iLG
+         yLRzV5Q4PnZ0v2zP2O8ZlSQR/JaLcKkStZIKEGxntXzqr8+dfqQOlAeTJD1R9W40khZH
+         cF7ML29gfA8UVY19YwYJzKUxfhhVPfmq+h4rpjMFE8jdPm6PmgkjFYhXeCr2dyvMJiAf
+         HH3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729540182; x=1730144982;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TIAEhXnz+TycYsOXq4fwUScpNqUcxMY2FROsK0V63/0=;
+        b=iGvfkHW1TqTtULZ76yrrsdGk8SEDj/dfs14vRlBD79F9PQN8ONZXxGvNihw0qrQrmF
+         8YyDr0H3J8vQVYF+UboS8NwTio9vIsPX/DTvSfJXAVPtctUrw7PZTYaQELUVa7LxUvmR
+         29/jslQ7XSjGgkBP1uTLpqikgXrXiJTPD3l2QeWMGmVtK+lTILKZ+xT+gyTN0gJzFnf/
+         WBf4i1Drl2zwtVmiR/6vYFc0b8IJ15QRcyhLfqFnnggtZZm9KCcI5x34VKZLgSFLtkOY
+         VUkqhTcnLBb9Sqd6eADEFokzrg592M5lR12SF9g0+Zh6Sh/68+QtdCnH0Cp3Qxz2hcmf
+         9T3A==
+X-Forwarded-Encrypted: i=1; AJvYcCXXBBfWKr900DJQVQa9MCVtE1hCmU6rl8CcdyHAX6CiHOh8v3tsIW0mf4C3mU555SehcnIsgOM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7ejZYPdyYIKKUpRkXaNxvL/5kza8k4VJSBRE0U+EheZDWRL1D
+	vYsYBZgUOBaHgJRW5gCVdh/5zqV4hSzw1ErboKfzNvW+o+p4uhb+yJiuG0A7rA==
+X-Google-Smtp-Source: AGHT+IE7LBFDuXD464oDX7R+3pKFv6gB/pDONRd/qrGrJhWZX+JT1kChQtcaO3T6c0R4R1FchyglYw==
+X-Received: by 2002:a05:6a21:a24b:b0:1d9:275b:4f06 with SMTP id adf61e73a8af0-1d96debc9a1mr86139637.19.1729540181812;
+        Mon, 21 Oct 2024 12:49:41 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71ec1407f63sm3277862b3a.204.2024.10.21.12.49.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Oct 2024 12:49:40 -0700 (PDT)
+Date: Mon, 21 Oct 2024 12:49:28 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+    Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org, 
+    stable@vger.kernel.org, Hugh Dickins <hughd@google.com>, 
+    Matthew Wilcox <willy@infradead.org>, 
+    Shakeel Butt <shakeel.butt@linux.dev>
+Subject: Re: [PATCH v2] mm: page_alloc: move mlocked flag clearance into
+ free_pages_prepare()
+In-Reply-To: <20241021173455.2691973-1-roman.gushchin@linux.dev>
+Message-ID: <d50407d4-5a4e-de0c-9f70-222eef9a9f67@google.com>
+References: <20241021173455.2691973-1-roman.gushchin@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024102131-blissful-iodize-4056@gregkh>
+Content-Type: text/plain; charset=US-ASCII
 
-commit e4d2102018542e3ae5e297bc6e229303abff8a0f upstream.
+On Mon, 21 Oct 2024, Roman Gushchin wrote:
 
-Robert Gill reported below #GP in 32-bit mode when dosemu software was
-executing vm86() system call:
+> Syzbot reported a bad page state problem caused by a page
+> being freed using free_page() still having a mlocked flag at
+> free_pages_prepare() stage:
+> 
+>   BUG: Bad page state in process syz.0.15  pfn:1137bb
+>   page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff8881137bb870 pfn:0x1137bb
+>   flags: 0x400000000080000(mlocked|node=0|zone=1)
+>   raw: 0400000000080000 0000000000000000 dead000000000122 0000000000000000
+>   raw: ffff8881137bb870 0000000000000000 00000000ffffffff 0000000000000000
+>   page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
+>   page_owner tracks the page as allocated
+>   page last allocated via order 0, migratetype Unmovable, gfp_mask
+>   0x400dc0(GFP_KERNEL_ACCOUNT|__GFP_ZERO), pid 3005, tgid
+>   3004 (syz.0.15), ts 61546  608067, free_ts 61390082085
+>    set_page_owner include/linux/page_owner.h:32 [inline]
+>    post_alloc_hook+0x1f3/0x230 mm/page_alloc.c:1537
+>    prep_new_page mm/page_alloc.c:1545 [inline]
+>    get_page_from_freelist+0x3008/0x31f0 mm/page_alloc.c:3457
+>    __alloc_pages_noprof+0x292/0x7b0 mm/page_alloc.c:4733
+>    alloc_pages_mpol_noprof+0x3e8/0x630 mm/mempolicy.c:2265
+>    kvm_coalesced_mmio_init+0x1f/0xf0 virt/kvm/coalesced_mmio.c:99
+>    kvm_create_vm virt/kvm/kvm_main.c:1235 [inline]
+>    kvm_dev_ioctl_create_vm virt/kvm/kvm_main.c:5500 [inline]
+>    kvm_dev_ioctl+0x13bb/0x2320 virt/kvm/kvm_main.c:5542
+>    vfs_ioctl fs/ioctl.c:51 [inline]
+>    __do_sys_ioctl fs/ioctl.c:907 [inline]
+>    __se_sys_ioctl+0xf9/0x170 fs/ioctl.c:893
+>    do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+>    do_syscall_64+0x69/0x110 arch/x86/entry/common.c:83
+>    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>   page last free pid 951 tgid 951 stack trace:
+>    reset_page_owner include/linux/page_owner.h:25 [inline]
+>    free_pages_prepare mm/page_alloc.c:1108 [inline]
+>    free_unref_page+0xcb1/0xf00 mm/page_alloc.c:2638
+>    vfree+0x181/0x2e0 mm/vmalloc.c:3361
+>    delayed_vfree_work+0x56/0x80 mm/vmalloc.c:3282
+>    process_one_work kernel/workqueue.c:3229 [inline]
+>    process_scheduled_works+0xa5c/0x17a0 kernel/workqueue.c:3310
+>    worker_thread+0xa2b/0xf70 kernel/workqueue.c:3391
+>    kthread+0x2df/0x370 kernel/kthread.c:389
+>    ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+>    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+> 
+> A reproducer is available here:
+> https://syzkaller.appspot.com/x/repro.c?x=1437939f980000
+> 
+> The problem was originally introduced by
+> commit b109b87050df ("mm/munlock: replace clear_page_mlock() by final
+> clearance"): it was handling focused on handling pagecache
+> and anonymous memory and wasn't suitable for lower level
+> get_page()/free_page() API's used for example by KVM, as with
+> this reproducer.
+> 
+> Fix it by moving the mlocked flag clearance down to
+> free_page_prepare().
+> 
+> The bug itself if fairly old and harmless (aside from generating these
+> warnings).
+> 
+> Closes: https://syzkaller.appspot.com/x/report.txt?x=169a47d0580000
+> Fixes: b109b87050df ("mm/munlock: replace clear_page_mlock() by final clearance")
+> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+> Cc: <stable@vger.kernel.org>
+> Cc: Hugh Dickins <hughd@google.com>
 
-  general protection fault: 0000 [#1] PREEMPT SMP
-  CPU: 4 PID: 4610 Comm: dosemu.bin Not tainted 6.6.21-gentoo-x86 #1
-  Hardware name: Dell Inc. PowerEdge 1950/0H723K, BIOS 2.7.0 10/30/2010
-  EIP: restore_all_switch_stack+0xbe/0xcf
-  EAX: 00000000 EBX: 00000000 ECX: 00000000 EDX: 00000000
-  ESI: 00000000 EDI: 00000000 EBP: 00000000 ESP: ff8affdc
-  DS: 0000 ES: 0000 FS: 0000 GS: 0033 SS: 0068 EFLAGS: 00010046
-  CR0: 80050033 CR2: 00c2101c CR3: 04b6d000 CR4: 000406d0
-  Call Trace:
-   show_regs+0x70/0x78
-   die_addr+0x29/0x70
-   exc_general_protection+0x13c/0x348
-   exc_bounds+0x98/0x98
-   handle_exception+0x14d/0x14d
-   exc_bounds+0x98/0x98
-   restore_all_switch_stack+0xbe/0xcf
-   exc_bounds+0x98/0x98
-   restore_all_switch_stack+0xbe/0xcf
+Acked-by: Hugh Dickins <hughd@google.com>
 
-This only happens in 32-bit mode when VERW based mitigations like MDS/RFDS
-are enabled. This is because segment registers with an arbitrary user value
-can result in #GP when executing VERW. Intel SDM vol. 2C documents the
-following behavior for VERW instruction:
+Thanks Roman - I'd been preparing a similar patch, so agree that this is
+the right fix.  I don't think there's any need to change your text, but
+let me remind us that any "Bad page" report stops that page from being
+allocated again (because it's in an undefined, potentially dangerous
+state): so does amount to a small memory leak even if otherwise harmless.
 
-  #GP(0) - If a memory operand effective address is outside the CS, DS, ES,
-	   FS, or GS segment limit.
-
-CLEAR_CPU_BUFFERS macro executes VERW instruction before returning to user
-space. Use %cs selector to reference VERW operand. This ensures VERW will
-not #GP for an arbitrary user %ds.
-
-[ mingo: Fixed the SOB chain. ]
-[ pawan: Backported to 5.10 ]
-
-Fixes: a0e2dab44d22 ("x86/entry_32: Add VERW just before userspace transition")
-Reported-by: Robert Gill <rtgill82@gmail.com>
-Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: stable@vger.kernel.org # 5.10+
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218707
-Closes: https://lore.kernel.org/all/8c77ccfd-d561-45a1-8ed5-6b75212c7a58@leemhuis.info/
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-Suggested-by: Brian Gerst <brgerst@gmail.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
----
-Backport is boot tested on x86 64 and 32 bit mode.
-
- arch/x86/include/asm/nospec-branch.h | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index 87e1ff064025..7978d5fe1ce6 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -199,7 +199,16 @@
-  */
- .macro CLEAR_CPU_BUFFERS
- 	ALTERNATIVE "jmp .Lskip_verw_\@", "", X86_FEATURE_CLEAR_CPU_BUF
--	verw _ASM_RIP(mds_verw_sel)
-+#ifdef CONFIG_X86_64
-+	verw mds_verw_sel(%rip)
-+#else
-+	/*
-+	 * In 32bit mode, the memory operand must be a %cs reference. The data
-+	 * segments may not be usable (vm86 mode), and the stack segment may not
-+	 * be flat (ESPFIX32).
-+	 */
-+	verw %cs:mds_verw_sel
-+#endif
- .Lskip_verw_\@:
- .endm
- 
-
-base-commit: eac1c5bfc13c2b84ddb038dc54c90829e0066e60
--- 
-2.34.1
-
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> ---
+>  mm/page_alloc.c | 15 +++++++++++++++
+>  mm/swap.c       | 14 --------------
+>  2 files changed, 15 insertions(+), 14 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index bc55d39eb372..7535d78862ab 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -1044,6 +1044,7 @@ __always_inline bool free_pages_prepare(struct page *page,
+>  	bool skip_kasan_poison = should_skip_kasan_poison(page);
+>  	bool init = want_init_on_free();
+>  	bool compound = PageCompound(page);
+> +	struct folio *folio = page_folio(page);
+>  
+>  	VM_BUG_ON_PAGE(PageTail(page), page);
+>  
+> @@ -1053,6 +1054,20 @@ __always_inline bool free_pages_prepare(struct page *page,
+>  	if (memcg_kmem_online() && PageMemcgKmem(page))
+>  		__memcg_kmem_uncharge_page(page, order);
+>  
+> +	/*
+> +	 * In rare cases, when truncation or holepunching raced with
+> +	 * munlock after VM_LOCKED was cleared, Mlocked may still be
+> +	 * found set here.  This does not indicate a problem, unless
+> +	 * "unevictable_pgs_cleared" appears worryingly large.
+> +	 */
+> +	if (unlikely(folio_test_mlocked(folio))) {
+> +		long nr_pages = folio_nr_pages(folio);
+> +
+> +		__folio_clear_mlocked(folio);
+> +		zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
+> +		count_vm_events(UNEVICTABLE_PGCLEARED, nr_pages);
+> +	}
+> +
+>  	if (unlikely(PageHWPoison(page)) && !order) {
+>  		/* Do not let hwpoison pages hit pcplists/buddy */
+>  		reset_page_owner(page, order);
+> diff --git a/mm/swap.c b/mm/swap.c
+> index 835bdf324b76..7cd0f4719423 100644
+> --- a/mm/swap.c
+> +++ b/mm/swap.c
+> @@ -78,20 +78,6 @@ static void __page_cache_release(struct folio *folio, struct lruvec **lruvecp,
+>  		lruvec_del_folio(*lruvecp, folio);
+>  		__folio_clear_lru_flags(folio);
+>  	}
+> -
+> -	/*
+> -	 * In rare cases, when truncation or holepunching raced with
+> -	 * munlock after VM_LOCKED was cleared, Mlocked may still be
+> -	 * found set here.  This does not indicate a problem, unless
+> -	 * "unevictable_pgs_cleared" appears worryingly large.
+> -	 */
+> -	if (unlikely(folio_test_mlocked(folio))) {
+> -		long nr_pages = folio_nr_pages(folio);
+> -
+> -		__folio_clear_mlocked(folio);
+> -		zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
+> -		count_vm_events(UNEVICTABLE_PGCLEARED, nr_pages);
+> -	}
+>  }
+>  
+>  /*
+> -- 
+> 2.47.0.105.g07ac214952-goog
+> 
+> 
 
