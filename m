@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-87365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A5B19A65A1
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:00:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44D1B9A6397
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:37:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 671FAB2A4AD
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:48:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEAA61F22AF8
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0851F1308;
-	Mon, 21 Oct 2024 10:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07FAB1EABDA;
+	Mon, 21 Oct 2024 10:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gm4I6pYy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1ExPhFJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1FB1F1313;
-	Mon, 21 Oct 2024 10:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF21D1F429E;
+	Mon, 21 Oct 2024 10:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507388; cv=none; b=bEtPah9SU58zOhEs4DEUmz+KAZHAsIlBGDHMIh9gY+5tybHMHoiAYZZx+5t5zJWuDJ+5SATGW8+M/aIj1TBe6a6GvXUCbosk3Y5oDyOWMRFzN6oWqb4nYNnGHLXPQBRQDpyfY15KDQX0NG0E8TH5KmlZt1KJmX1Joc/6W9hR+HA=
+	t=1729506806; cv=none; b=GZlognBzUJfhzCFk4Fo9i7LCo9dDYwlF/VB/zAoYzkFg2Q5XrW9XW4OEqNRuHy6LY7WMd9/5RJ8qqpyzlvPI3TFUY61Bl443Oy3ZRiCvwJG6PFBhIJ/Mzj4hh93UrIpZF9cgQcoM1DnfW2P8XIHO4jLfEY8r43PZv+1m4ENONIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507388; c=relaxed/simple;
-	bh=NvUug/ZX3g4RCUdzeYl6ijDj7QPJwf/S/+boT72A4rM=;
+	s=arc-20240116; t=1729506806; c=relaxed/simple;
+	bh=OwuA1SZIgFvmJsaujaG2pSjJb0vLAdDdFhGh6UxL/RI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bQ7fXJVgSEckdZzYxXNFh93LkA026HH0hsvABzsqoEpAiVLZI09OYOPqT1z91ljVEL4hbYe3JIhGNKNj/DDBpA/RcWFHAxn0C1Ipuhg7LWsNVb4S7Z3Y6Cyg9l88x2e05qDFnccZWbP4z4LQtMzH+32L1In4kxw5V8qITtoA6uY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gm4I6pYy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A45AEC4CEC7;
-	Mon, 21 Oct 2024 10:43:07 +0000 (UTC)
+	 MIME-Version; b=WYG4iiOjpXUezMKWWiVzNkKrsunf1uIoIntlr3YKBJSCHgm28ilFgP7bk1pjDPx4httl5HLscN0qODL5yT8kX/AmmdZM1yBeUENl49/rAShYDktLJ59DBBAeNP4rRXOyOhaJQLVkU+3I5Mx4GlZdW1RGcGAZSAG/oheXTc4SMTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1ExPhFJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FADEC4CEEE;
+	Mon, 21 Oct 2024 10:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507388;
-	bh=NvUug/ZX3g4RCUdzeYl6ijDj7QPJwf/S/+boT72A4rM=;
+	s=korg; t=1729506806;
+	bh=OwuA1SZIgFvmJsaujaG2pSjJb0vLAdDdFhGh6UxL/RI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gm4I6pYysgfb0x2qIR10suPaEvQWC7hhAUzIdhwQUlM6xP+tEx8U9Au0T4XqUY24r
-	 ZJPinPZLYoYRP7NLItxBwvfjCQLek+u+v2v7lH3Yb+kHrVZ3Pt1KPdjGKYN2AvYQt3
-	 9Cwm7XO3T6B10v/7wLf89KgNGqCF6z1U38TFR/Ag=
+	b=S1ExPhFJz0m/d+7BtAfc8XbpvXzaJCci7hrYkVR9mLxLefjNiakaXi0gSFVovBZnd
+	 lRD7/4dbEcXMr72HssLmcpUzYkYvWvB3UOQeYcMibqutov/smtVhU0RWrFroh69JiJ
+	 DygP/Pv7k5T3+Fv/702gGGbZzVobweBCxinZsjhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.1 29/91] arm64: probes: Fix simulate_ldr*_literal()
+	Nam Cao <namcao@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.11 127/135] irqchip/sifive-plic: Unmask interrupt in plic_irq_enable()
 Date: Mon, 21 Oct 2024 12:24:43 +0200
-Message-ID: <20241021102250.962837100@linuxfoundation.org>
+Message-ID: <20241021102304.311323656@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Nam Cao <namcao@linutronix.de>
 
-commit 50f813e57601c22b6f26ced3193b9b94d70a2640 upstream.
+commit 6b1e0651e9ce8ce418ad4ff360e7b9925dc5da79 upstream.
 
-The simulate_ldr_literal() code always loads a 64-bit quantity, and when
-simulating a 32-bit load into a 'W' register, it discards the most
-significant 32 bits. For big-endian kernels this means that the relevant
-bits are discarded, and the value returned is the the subsequent 32 bits
-in memory (i.e. the value at addr + 4).
+It is possible that an interrupt is disabled and masked at the same time.
+When the interrupt is enabled again by enable_irq(), only plic_irq_enable()
+is called, not plic_irq_unmask(). The interrupt remains masked and never
+raises.
 
-Additionally, simulate_ldr_literal() and simulate_ldrsw_literal() use a
-plain C load, which the compiler may tear or elide (e.g. if the target
-is the zero register). Today this doesn't happen to matter, but it may
-matter in future if trampoline code uses a LDR (literal) or LDRSW
-(literal).
+An example where interrupt is both disabled and masked is when
+handle_fasteoi_irq() is the handler, and IRQS_ONESHOT is set. The interrupt
+handler:
 
-Update simulate_ldr_literal() and simulate_ldrsw_literal() to use an
-appropriately-sized READ_ONCE() to perform the access, which avoids
-these problems.
+  1. Mask the interrupt
+  2. Handle the interrupt
+  3. Check if interrupt is still enabled, and unmask it (see
+     cond_unmask_eoi_irq())
 
-Fixes: 39a67d49ba35 ("arm64: kprobes instruction simulation support")
+If another task disables the interrupt in the middle of the above steps,
+the interrupt will not get unmasked, and will remain masked when it is
+enabled in the future.
+
+The problem is occasionally observed when PREEMPT_RT is enabled, because
+PREEMPT_RT adds the IRQS_ONESHOT flag. But PREEMPT_RT only makes the problem
+more likely to appear, the bug has been around since commit a1706a1c5062
+("irqchip/sifive-plic: Separate the enable and mask operations").
+
+Fix it by unmasking interrupt in plic_irq_enable().
+
+Fixes: a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask operations")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20241008155851.801546-3-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/all/20241003084152.2422969-1-namcao@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/probes/simulate-insn.c |   18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+ drivers/irqchip/irq-sifive-plic.c |   21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
---- a/arch/arm64/kernel/probes/simulate-insn.c
-+++ b/arch/arm64/kernel/probes/simulate-insn.c
-@@ -171,17 +171,15 @@ simulate_tbz_tbnz(u32 opcode, long addr,
- void __kprobes
- simulate_ldr_literal(u32 opcode, long addr, struct pt_regs *regs)
- {
--	u64 *load_addr;
-+	unsigned long load_addr;
- 	int xn = opcode & 0x1f;
--	int disp;
- 
--	disp = ldr_displacement(opcode);
--	load_addr = (u64 *) (addr + disp);
-+	load_addr = addr + ldr_displacement(opcode);
- 
- 	if (opcode & (1 << 30))	/* x0-x30 */
--		set_x_reg(regs, xn, *load_addr);
-+		set_x_reg(regs, xn, READ_ONCE(*(u64 *)load_addr));
- 	else			/* w0-w30 */
--		set_w_reg(regs, xn, *load_addr);
-+		set_w_reg(regs, xn, READ_ONCE(*(u32 *)load_addr));
- 
- 	instruction_pointer_set(regs, instruction_pointer(regs) + 4);
+--- a/drivers/irqchip/irq-sifive-plic.c
++++ b/drivers/irqchip/irq-sifive-plic.c
+@@ -123,16 +123,6 @@ static inline void plic_irq_toggle(const
+ 	}
  }
-@@ -189,14 +187,12 @@ simulate_ldr_literal(u32 opcode, long ad
- void __kprobes
- simulate_ldrsw_literal(u32 opcode, long addr, struct pt_regs *regs)
+ 
+-static void plic_irq_enable(struct irq_data *d)
+-{
+-	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 1);
+-}
+-
+-static void plic_irq_disable(struct irq_data *d)
+-{
+-	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 0);
+-}
+-
+ static void plic_irq_unmask(struct irq_data *d)
  {
--	s32 *load_addr;
-+	unsigned long load_addr;
- 	int xn = opcode & 0x1f;
--	int disp;
- 
--	disp = ldr_displacement(opcode);
--	load_addr = (s32 *) (addr + disp);
-+	load_addr = addr + ldr_displacement(opcode);
- 
--	set_x_reg(regs, xn, *load_addr);
-+	set_x_reg(regs, xn, READ_ONCE(*(s32 *)load_addr));
- 
- 	instruction_pointer_set(regs, instruction_pointer(regs) + 4);
+ 	struct plic_priv *priv = irq_data_get_irq_chip_data(d);
+@@ -147,6 +137,17 @@ static void plic_irq_mask(struct irq_dat
+ 	writel(0, priv->regs + PRIORITY_BASE + d->hwirq * PRIORITY_PER_ID);
  }
+ 
++static void plic_irq_enable(struct irq_data *d)
++{
++	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 1);
++	plic_irq_unmask(d);
++}
++
++static void plic_irq_disable(struct irq_data *d)
++{
++	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 0);
++}
++
+ static void plic_irq_eoi(struct irq_data *d)
+ {
+ 	struct plic_handler *handler = this_cpu_ptr(&plic_handlers);
 
 
 
