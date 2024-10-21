@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-87231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41B9D9A63DD
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:40:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E1319A6367
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F1001C21C2E
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:40:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B85821F22B2B
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4785E1EABA2;
-	Mon, 21 Oct 2024 10:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276051EF088;
+	Mon, 21 Oct 2024 10:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4DdVu8j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukVZIEzt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B241E907C;
-	Mon, 21 Oct 2024 10:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38391E8825;
+	Mon, 21 Oct 2024 10:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506987; cv=none; b=FC5dUdENPfysf6+PbSJfcG1zZarYkx/cvwMVvlIYrQ0NwCYC3DWlNeL+4am4drI/7jxVv/KOBRLf4GMMz+IghLFNhNzfbC5flqr7ga3VCWgeLB1dBeOayXZ22sTkRRVUZz88nC708FOuUtadE6VzP3W4Ag+1Usz6Q1awas6c6Ds=
+	t=1729506722; cv=none; b=PCtPvZOGXH4Q/uJOWVReZNmrrU4Nke+n3MUqzqo30TgHKedFwExHMvpX0lldFAQoe20LWArj2UYdh338ouXl1dmgN8mBEteF/XZ7PDdkYL/ieVapXVttvOV6Z+EIQ1gAa28metqmIlPk4Wa7GnMEHw22sNJDYmSC/lhT/991ldM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506987; c=relaxed/simple;
-	bh=mRpisEpSbJeOzRGWgiNfuhJKgZN7KWoc9P+zKLbQAX4=;
+	s=arc-20240116; t=1729506722; c=relaxed/simple;
+	bh=Ynl3DuRJJXkHLzf5bT/jQFmWCRYLyYW8aKAAE+/PO40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZB6q8v+93ffw6qaqC4epTSO/9YRkOhP9rSN5wFWfZlylVGUy2IVkJfb4p6+7glIw/HMOhHd4WawpRNXm1dx0KmihrcPqzFoRLDk8+C8sO4mv8XM+XKt88I1hj/ObsSiZDjoPWwd1RzU89u5diyUskEXYXmbCPqlG/Rraiw0dG4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4DdVu8j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19328C4CEC3;
-	Mon, 21 Oct 2024 10:36:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i+gypNRq+Y1mRevW7LfoOJkRkOB1isbigpzkQTYWHVDZ7UK0ZQctmRZw8PfEJEtTpUVSgvujCVzlofwT50N2CpNJQ3ERhZlE9O8kK4GJNdn2qEIvHOcefdEnCW6h7I1cL+ro/8AEysM9YHrRJjMnPhC4xzIOuR9CLwzlMQGqrdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukVZIEzt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 079DEC4CEC3;
+	Mon, 21 Oct 2024 10:32:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506986;
-	bh=mRpisEpSbJeOzRGWgiNfuhJKgZN7KWoc9P+zKLbQAX4=;
+	s=korg; t=1729506722;
+	bh=Ynl3DuRJJXkHLzf5bT/jQFmWCRYLyYW8aKAAE+/PO40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J4DdVu8jf10dY5AtbAabF8KDiLnzKuyFroRIykLI5UlvThLoRtN/kVjhYSaBPbdux
-	 nFpHQjrYtBneQKjy4cNMkonpuQ4/ph9GyoFAP+ylK5BWtI+2JrDQ5pGbZ0UnkwZPo/
-	 j82SFQ+qbJyicykcDVH2JdWESfmxz3SRPNbmZYHA=
+	b=ukVZIEztFw47MHclbzSqUojudtRao1+vinAsRZ7n7RZE+zUgYbpFFNC1OVF/Dfl+H
+	 urlOANwOo9/UIKaSgowpcG8hVTa69Eckc8JzJFibRm41uSWOhXCG6Ta1uce0wXy2FD
+	 c+DMpB7uwUHNM+V5xAvDY6l5zzUULg5zmrn60T3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.6 050/124] s390/sclp: Deactivate sclp after all its users
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.11 098/135] Bluetooth: btusb: Fix regression with fake CSR controllers 0a12:0001
 Date: Mon, 21 Oct 2024 12:24:14 +0200
-Message-ID: <20241021102258.664966459@linuxfoundation.org>
+Message-ID: <20241021102303.160038379@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,69 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 0d9dc27df22d9b5c8dc7185c8dddbc14f5468518 upstream.
+commit 2c1dda2acc4192d826e84008d963b528e24d12bc upstream.
 
-On reboot the SCLP interface is deactivated through a reboot notifier.
-This happens before other components using SCLP have the chance to run
-their own reboot notifiers.
-Two of those components are the SCLP console and tty drivers which try
-to flush the last outstanding messages.
-At that point the SCLP interface is already unusable and the messages
-are discarded.
+Fake CSR controllers don't seem to handle short-transfer properly which
+cause command to time out:
 
-Execute sclp_deactivate() as late as possible to avoid this issue.
+kernel: usb 1-1: new full-speed USB device number 19 using xhci_hcd
+kernel: usb 1-1: New USB device found, idVendor=0a12, idProduct=0001, bcdDevice=88.91
+kernel: usb 1-1: New USB device strings: Mfr=0, Product=2, SerialNumber=0
+kernel: usb 1-1: Product: BT DONGLE10
+...
+Bluetooth: hci1: Opcode 0x1004 failed: -110
+kernel: Bluetooth: hci1: command 0x1004 tx timeout
 
-Fixes: 4ae46db99cd8 ("s390/consoles: improve panic notifiers reliability")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
-Link: https://lore.kernel.org/r/20241014-s390-kunit-v1-1-941defa765a6@linutronix.de
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+According to USB Spec 2.0 Section 5.7.3 Interrupt Transfer Packet Size
+Constraints a interrupt transfer is considered complete when the size is 0
+(ZPL) or < wMaxPacketSize:
+
+ 'When an interrupt transfer involves more data than can fit in one
+ data payload of the currently established maximum size, all data
+ payloads are required to be maximum-sized except for the last data
+ payload, which will contain the remaining data. An interrupt transfer
+ is complete when the endpoint does one of the following:
+
+ • Has transferred exactly the amount of data expected
+ • Transfers a packet with a payload size less than wMaxPacketSize or
+ transfers a zero-length packet'
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219365
+Fixes: 7b05933340f4 ("Bluetooth: btusb: Fix not handling ZPL/short-transfer")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/char/sclp.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/bluetooth/btusb.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/drivers/s390/char/sclp.c
-+++ b/drivers/s390/char/sclp.c
-@@ -1195,7 +1195,8 @@ sclp_reboot_event(struct notifier_block
- }
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -1399,10 +1399,15 @@ static int btusb_submit_intr_urb(struct
+ 	if (!urb)
+ 		return -ENOMEM;
  
- static struct notifier_block sclp_reboot_notifier = {
--	.notifier_call = sclp_reboot_event
-+	.notifier_call = sclp_reboot_event,
-+	.priority      = INT_MIN,
- };
+-	/* Use maximum HCI Event size so the USB stack handles
+-	 * ZPL/short-transfer automatically.
+-	 */
+-	size = HCI_MAX_EVENT_SIZE;
++	if (le16_to_cpu(data->udev->descriptor.idVendor)  == 0x0a12 &&
++	    le16_to_cpu(data->udev->descriptor.idProduct) == 0x0001)
++		/* Fake CSR devices don't seem to support sort-transter */
++		size = le16_to_cpu(data->intr_ep->wMaxPacketSize);
++	else
++		/* Use maximum HCI Event size so the USB stack handles
++		 * ZPL/short-transfer automatically.
++		 */
++		size = HCI_MAX_EVENT_SIZE;
  
- static ssize_t con_pages_show(struct device_driver *dev, char *buf)
+ 	buf = kmalloc(size, mem_flags);
+ 	if (!buf) {
 
 
 
