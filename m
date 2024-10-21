@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-87377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB659A64A6
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:49:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF989A655A
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:56:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27B161F207BE
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:49:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FAC61F21D06
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:56:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61661EBA00;
-	Mon, 21 Oct 2024 10:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C72B1F4709;
+	Mon, 21 Oct 2024 10:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWkEiRBC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xvhJMYY5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CCA01E5726;
-	Mon, 21 Oct 2024 10:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B1D1F4298;
+	Mon, 21 Oct 2024 10:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507424; cv=none; b=tVAFaszbH4n3jx4w/Hp0EFTFj+pKo4B11UvDbII5za/w8D88K/JV4JCaBZ4B3QbBS5H0BwVqtGQvQlTYzCS9rIxJSDSsB+yoguwVYdO004g86QcxCyTqj+iePGWTQpdbqLkuNmzE29oWMm9C8Xu4L8LOej1YvA9s7RKAYdoh3Cw=
+	t=1729507813; cv=none; b=Nm2fQuy/oH8cCInKSsJOZrSDrNbc7Nj699gWtKFRcwRCMOFtxK7/xZdKiN60Tc6MPPY9sp+BBKgGdq9vdjcdplO3zlDvzOiyljJFW0IBQSh8ZdzdXwF9oTSCVcV8T/+N+s8KClQ5ysWHeIqrCIg3uQwy4GiSxaxipRsn24Oq3Tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507424; c=relaxed/simple;
-	bh=h6w9Fucz7uFg45+vGPjufB/Eydxs+0i51jCEI9CvdpU=;
+	s=arc-20240116; t=1729507813; c=relaxed/simple;
+	bh=pyQoAlLqFfltAbeo5dYHQe87by4nvH/kJeX8CHNNdNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a0k2bpjNZQ2lJJrVZTkLGbGsJ/XrHvswwRe4EgkSvglMQdegCd/WyOsm8CcD7XU/2y1FLEXjpeU2zIPwHfVzd0g+44BFNS3xrTtqWEA7VROH2iGp14kyS8rNJm6zb1ayTFUYoiolfScLs46Z+suJLsOOOBAnnQ69p3wGuLk8yaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWkEiRBC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E96C4CEC3;
-	Mon, 21 Oct 2024 10:43:43 +0000 (UTC)
+	 MIME-Version; b=D7sFtyztMkpfX6e+rbzuiHI2ZR008X4N2UNRYBApurzjKYoJUTnni2FouOdA+IimDz6/OA6lSOheJ2XgCEAPo7VhG8KBJ/FVvOQrxW7EG/1d1ilU6tQn++08SMOSE2pGWRQEBVeFmmZHpCDOB+JC1lGvSPOx6XXrO4hNC8EPQJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xvhJMYY5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F66EC4CEC7;
+	Mon, 21 Oct 2024 10:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507424;
-	bh=h6w9Fucz7uFg45+vGPjufB/Eydxs+0i51jCEI9CvdpU=;
+	s=korg; t=1729507813;
+	bh=pyQoAlLqFfltAbeo5dYHQe87by4nvH/kJeX8CHNNdNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oWkEiRBChyVuKDJw/IxwVpM9xOy1DT6xQrU+Ifozph4QmwbB/vkN1LAdpJaNFQtLp
-	 XpzCZFgia7aJqTgTb67Ajl5BLJ/WCHiTihL2Ow7qb4qsoxeKmfgHSmWUVkCQNWKorc
-	 /GnOJM/vrdZnFqLXXeJDtKPjU5eMYzkoTCc157cQ=
+	b=xvhJMYY5nqcRKD2fK0dvMpidq4Jyvdxx1KuTXWGlD0JMLHBkEF0XQDA4+AUPAfs9t
+	 J85szCMo1GS9LqAa39yN2Qcidx9ocudEpjZ4qK6oqLQFJDrXHa7vTF1Ht+gl/7bQZX
+	 ldfzMfD69JncYQQogzZVhek4Bm2JPFb33Z6JTdxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.1 73/91] xhci: Mitigate failed set dequeue pointer commands
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 06/52] net: macb: Avoid 20s boot delay by skipping MDIO bus registration for fixed-link PHY
 Date: Mon, 21 Oct 2024 12:25:27 +0200
-Message-ID: <20241021102252.669346232@linuxfoundation.org>
+Message-ID: <20241021102241.875841073@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
+References: <20241021102241.624153108@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit fe49df60cdb7c2975aa743dc295f8786e4b7db10 upstream.
+commit d0c3601f2c4e12e7689b0f46ebc17525250ea8c3 upstream.
 
-Avoid xHC host from processing a cancelled URB by always turning
-cancelled URB TDs into no-op TRBs before queuing a 'Set TR Deq' command.
+A boot delay was introduced by commit 79540d133ed6 ("net: macb: Fix
+handling of fixed-link node"). This delay was caused by the call to
+`mdiobus_register()` in cases where a fixed-link PHY was present. The
+MDIO bus registration triggered unnecessary PHY address scans, leading
+to a 20-second delay due to attempts to detect Clause 45 (C45)
+compatible PHYs, despite no MDIO bus being attached.
 
-If the command fails then xHC will start processing the cancelled TD
-instead of skipping it once endpoint is restarted, causing issues like
-Babble error.
+The commit 79540d133ed6 ("net: macb: Fix handling of fixed-link node")
+was originally introduced to fix a regression caused by commit
+7897b071ac3b4 ("net: macb: convert to phylink"), which caused the driver
+to misinterpret fixed-link nodes as PHY nodes. This resulted in warnings
+like:
+mdio_bus f0028000.ethernet-ffffffff: fixed-link has invalid PHY address
+mdio_bus f0028000.ethernet-ffffffff: scan phy fixed-link at address 0
+...
+mdio_bus f0028000.ethernet-ffffffff: scan phy fixed-link at address 31
 
-This is not a complete solution as a failed 'Set TR Deq' command does not
-guarantee xHC TRB caches are cleared.
+This patch reworks the logic to avoid registering and allocation of the
+MDIO bus when:
+  - The device tree contains a fixed-link node.
+  - There is no "mdio" child node in the device tree.
 
-Fixes: 4db356924a50 ("xhci: turn cancelled td cleanup to its own function")
+If a child node named "mdio" exists, the MDIO bus will be registered to
+support PHYs  attached to the MACB's MDIO bus. Otherwise, with only a
+fixed-link, the MDIO bus is skipped.
+
+Tested on a sama5d35 based system with a ksz8863 switch attached to
+macb0.
+
+Fixes: 79540d133ed6 ("net: macb: Fix handling of fixed-link node")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20241016140000.783905-3-mathias.nyman@linux.intel.com
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20241013052916.3115142-1-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-ring.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/cadence/macb_main.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1006,7 +1006,7 @@ static int xhci_invalidate_cancelled_tds
- 					td_to_noop(xhci, ring, cached_td, false);
- 					cached_td->cancel_status = TD_CLEARED;
- 				}
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -742,9 +742,6 @@ static int macb_mdiobus_register(struct
+ {
+ 	struct device_node *child, *np = bp->pdev->dev.of_node;
+ 
+-	if (of_phy_is_fixed_link(np))
+-		return mdiobus_register(bp->mii_bus);
 -
-+				td_to_noop(xhci, ring, td, false);
- 				td->cancel_status = TD_CLEARING_CACHE;
- 				cached_td = td;
- 				break;
+ 	/* Only create the PHY from the device tree if at least one PHY is
+ 	 * described. Otherwise scan the entire MDIO bus. We do this to support
+ 	 * old device tree that did not follow the best practices and did not
+@@ -765,8 +762,19 @@ static int macb_mdiobus_register(struct
+ 
+ static int macb_mii_init(struct macb *bp)
+ {
++	struct device_node *child, *np = bp->pdev->dev.of_node;
+ 	int err = -ENXIO;
+ 
++	/* With fixed-link, we don't need to register the MDIO bus,
++	 * except if we have a child named "mdio" in the device tree.
++	 * In that case, some devices may be attached to the MACB's MDIO bus.
++	 */
++	child = of_get_child_by_name(np, "mdio");
++	if (child)
++		of_node_put(child);
++	else if (of_phy_is_fixed_link(np))
++		return macb_mii_probe(bp->dev);
++
+ 	/* Enable management port */
+ 	macb_writel(bp, NCR, MACB_BIT(MPE));
+ 
 
 
 
