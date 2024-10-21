@@ -1,66 +1,56 @@
-Return-Path: <stable+bounces-87432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED8B9A64F1
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B60719A6449
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:45:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06E641F21F66
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0B521C22163
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:45:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE3E1E906E;
-	Mon, 21 Oct 2024 10:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E206A1E7C32;
+	Mon, 21 Oct 2024 10:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNuTxnKB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omPugwfd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E341E0087;
-	Mon, 21 Oct 2024 10:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959AC1E7C36;
+	Mon, 21 Oct 2024 10:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507589; cv=none; b=D4+B2KlVJohLKP+1Rej/f6H/U7sxAt7jzU8FhV6pCeuJm8cTRxyvzO1aaKtlouylwaSQfgGnDzLRpXBzi81G8SaHCTk7BdFxC4MgPimqytL+o4vlyCPrmRuYRMDbTrt41FwN+foBxu8ciT63Lba7YnNEf6T7/JZfCeP48JIG/dA=
+	t=1729507168; cv=none; b=dSHroF7Ad4+iEY9qWaOKRYj/NPg5Ouhbiz4xZOOy22+oPgjMP6CX/Dd2t0xIGCRCWuUCM9J+WQgx0y18b844NG9de6ZsYiqjIwkqST8fNYl4cw+6KGZyNOT9VyU++HnNJTLZF49edNTTRs6RAVPk+8MQJ6vvFvOVbFkP2sI/ivY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507589; c=relaxed/simple;
-	bh=qzytvI6X6dYy7p2w81r5U/ZElz8EZ4aONiOBsJPLfUA=;
+	s=arc-20240116; t=1729507168; c=relaxed/simple;
+	bh=R6GlN8re+345BfbpaT/gU4oN1JE8KtHKpumZEiULK2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jKzbdIxlq3+Hn07nz29wo13LhSRi1h8Tiw2WQvgi3ThDsaByOEpXRi+p04Y5wH8ou1GZuy+hWs4DEeK0L4z/3247GB/mfCz24sXdjHyIqmscD/qG4cK49OiPUbe4NtQZqUuTL+zE8uSGrihyec9f9z25qAdOlQ/pd2V75W+ATa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNuTxnKB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA97C4CEC3;
-	Mon, 21 Oct 2024 10:46:28 +0000 (UTC)
+	 MIME-Version; b=q9O/fpnt/GFQ57UpMssrqw6WNKR0Xg6QGMHwmZjwzSVOdDUJJpcM2XoZTpB2TiOWoibWwOeaBdgo1porpBDWu1W3RqhrhQp3vOgXEI4mj9U4gfdKTjRtUwhrRSnMbtag4XBWlnJtOkG66jlBXas5oH2knUo/s5xMIJuIzaVtTZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omPugwfd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19510C4AF0E;
+	Mon, 21 Oct 2024 10:39:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507588;
-	bh=qzytvI6X6dYy7p2w81r5U/ZElz8EZ4aONiOBsJPLfUA=;
+	s=korg; t=1729507168;
+	bh=R6GlN8re+345BfbpaT/gU4oN1JE8KtHKpumZEiULK2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TNuTxnKB7WN9vYFSQmHZ33h9rDDFRG9ZBuSZuTSKfFCLhP0obQBaiKB7pkGv4+gWC
-	 42YT/bDOd3wJLx0ypigJ5zgddmkvoh5azT+bDr5HXOI7DWqUG+3Szfex6qQAmHV+oY
-	 YxDZEA0YmIKrjVRyR4eaH4fnj7yqU69OrZpkAZVs=
+	b=omPugwfdlaXLLbxjRc4U+1KvNxCm/SAObr75kxeZdD4TuFQf6iUWD/n62XuFkldH2
+	 48Viy7NwTv8lbzXfF7d1d2s7ra5I8Fx9bSAZblMi9yV4xCC+CGwoK59rpJSbUwovEn
+	 XMXoQuKcYMZUkPXjcqiyrPEsEX6x9AUxc5Ur/AnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
-	Eric Anholt <eric@anholt.net>,
-	Rob Herring <robh@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	dri-devel@lists.freedesktop.org,
-	"Wachowski, Karol" <karol.wachowski@intel.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Sherry Yang <sherry.yang@oracle.com>
-Subject: [PATCH 5.15 35/82] drm/shmem-helper: Fix BUG_ON() on mmap(PROT_WRITE, MAP_PRIVATE)
+	Ma Ke <make24@iscas.ac.cn>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.6 112/124] pinctrl: apple: check devm_kasprintf() returned value
 Date: Mon, 21 Oct 2024 12:25:16 +0200
-Message-ID: <20241021102248.630465317@linuxfoundation.org>
+Message-ID: <20241021102301.049201104@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,64 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wachowski, Karol <karol.wachowski@intel.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 39bc27bd688066a63e56f7f64ad34fae03fbe3b8 upstream.
+commit 665a58fe663ac7a9ea618dc0b29881649324b116 upstream.
 
-Lack of check for copy-on-write (COW) mapping in drm_gem_shmem_mmap
-allows users to call mmap with PROT_WRITE and MAP_PRIVATE flag
-causing a kernel panic due to BUG_ON in vmf_insert_pfn_prot:
-BUG_ON((vma->vm_flags & VM_PFNMAP) && is_cow_mapping(vma->vm_flags));
+devm_kasprintf() can return a NULL pointer on failure but this returned
+value is not checked. Fix this lack and check the returned value.
 
-Return -EINVAL early if COW mapping is detected.
+Found by code review.
 
-This bug affects all drm drivers using default shmem helpers.
-It can be reproduced by this simple example:
-void *ptr = mmap(0, size, PROT_WRITE, MAP_PRIVATE, fd, mmap_offset);
-ptr[0] = 0;
-
-Fixes: 2194a63a818d ("drm: Add library for shmem backed GEM objects")
-Cc: Noralf Trønnes <noralf@tronnes.org>
-Cc: Eric Anholt <eric@anholt.net>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v5.2+
-Signed-off-by: Wachowski, Karol <karol.wachowski@intel.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240520100514.925681-1-jacek.lawrynowicz@linux.intel.com
-[ Sherry: bp to fix CVE-2024-39497, ignore context change due to missing
-  commit 21aa27ddc582 ("drm/shmem-helper: Switch to reservation lock")  ]
-Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
+Cc: stable@vger.kernel.org
+Fixes: a0f160ffcb83 ("pinctrl: add pinctrl/GPIO driver for Apple SoCs")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Reviewed-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/20240905020917.356534-1-make24@iscas.ac.cn
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_gem_shmem_helper.c |    3 +++
+ drivers/pinctrl/pinctrl-apple-gpio.c |    3 +++
  1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/drm_gem_shmem_helper.c
-+++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-@@ -607,6 +607,9 @@ int drm_gem_shmem_mmap(struct drm_gem_sh
- 		return ret;
- 	}
- 
-+	if (is_cow_mapping(vma->vm_flags))
-+		return -EINVAL;
+--- a/drivers/pinctrl/pinctrl-apple-gpio.c
++++ b/drivers/pinctrl/pinctrl-apple-gpio.c
+@@ -474,6 +474,9 @@ static int apple_gpio_pinctrl_probe(stru
+ 	for (i = 0; i < npins; i++) {
+ 		pins[i].number = i;
+ 		pins[i].name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "PIN%u", i);
++		if (!pins[i].name)
++			return -ENOMEM;
 +
- 	ret = drm_gem_shmem_get_pages(shmem);
- 	if (ret)
- 		return ret;
+ 		pins[i].drv_data = pctl;
+ 		pin_names[i] = pins[i].name;
+ 		pin_nums[i] = i;
 
 
 
