@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-87215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F9C39A63CC
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:39:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA5569A6355
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:34:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9F6B1F22F85
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:39:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 487CF1F20F69
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:34:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177961E8840;
-	Mon, 21 Oct 2024 10:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544DF1EF093;
+	Mon, 21 Oct 2024 10:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qTN6KGPf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1YmwOmw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7DA1E47CD;
-	Mon, 21 Oct 2024 10:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D871EF089;
+	Mon, 21 Oct 2024 10:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506938; cv=none; b=XarWUfN8BMrIc+O+gmQcJLxTZ6/W35tzN+IYyEeP1ivdI39C7vBKPM0cswuJYDJGYr3qho5yMFPDRvA4gHvcWtvUatMSDUV+n9r7j2oEVKpJgnYWfcYpgBKBK2IdfjxwITE/EICN/0RwaJzAmmjxulvaBkadZQ/lK+rDN2EgyIA=
+	t=1729506675; cv=none; b=L0yNY2A3Z4nFrz4+W2my3T3F2HGX3oNOOSegfM6oX/1VGFPcg5GaKgPB4E0epzUGw01tHJjBcKD2H1F4QTrypgfR9p7KOhRdDrctHJubKCslHjJXPSfQScVZODtxZ2lSEoLcdH0sGVfhUhjkKT0ZNtaIe/3Vkdi9bX6GnA4KjHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506938; c=relaxed/simple;
-	bh=TOINEV2gBFCOp1I1qCzFAK40Qz6W25gljchSWPGMFs8=;
+	s=arc-20240116; t=1729506675; c=relaxed/simple;
+	bh=UUwgi0Mer6NSC0TW0xNtGm2TT2EgEdEo17ONIpEm7NQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NHgPa2WjbOakp+8LOVm1TVHF/NaW/opi+VtD2qrhwUQhGb8nH+iI0W9kMbDhEidsq3JQCsM0e9CMB1aao5aAAS1aHcNyjRHjaQ6nq8tf6zYqYROp0xVeZxbUeHQq3BQfgzO6vi3XHlOT4spXoQ6fTJR+ChQBQZZGpse2wgQshLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qTN6KGPf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F7CC4CEC3;
-	Mon, 21 Oct 2024 10:35:37 +0000 (UTC)
+	 MIME-Version; b=uI4aBM384v0wQQhV2daDbkDE2ZqjZTBsfN5RL0s5jPDhxLG1ftznjTNyUSJhNYI4Y2ft0ZksenWiDKHlKdKliAO0UhwiQxW3ckNL+uxPKdSjJjiePJF6a56j1Cq6gOUnANs2dhfG3BcTyoMK44JMgrso/n4BqSnoTAb8Eue+1Jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1YmwOmw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 665E8C4CEC7;
+	Mon, 21 Oct 2024 10:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506938;
-	bh=TOINEV2gBFCOp1I1qCzFAK40Qz6W25gljchSWPGMFs8=;
+	s=korg; t=1729506674;
+	bh=UUwgi0Mer6NSC0TW0xNtGm2TT2EgEdEo17ONIpEm7NQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qTN6KGPfLDv5QCDmqyF2Ey8WWErKYwCaawno1yidYet9rrXCx+g6kUq2shYsD5c3t
-	 AhFKO1dV2gecdnDfTT2ExwT9w8ihxZmUQoeff3CMlpEecUjgslMmLeeY4Tlevvdb4b
-	 SRfk9ItnJSZ1bvKDJN9ASO3KkZ9mCQIcjGk0zsMY=
+	b=n1YmwOmw0hNDTdzSBn//zuvmmlpKj81ib7mbo6eyGnCkLeVyg+MtPVUh3/0snh/Sl
+	 drhuiA7wtMBt+9xF2BwW5P3hu3cPvmhGVqXzUcphB6V7AitdHKFLWXv5JutxGWfsOT
+	 RF5kOUUnGt2fvij545XLspezseduiKHhoxn00/KY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 036/124] xfs: make the seq argument to xfs_bmapi_convert_delalloc() optional
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.11 084/135] iio: pressure: bm1390: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
 Date: Mon, 21 Oct 2024 12:24:00 +0200
-Message-ID: <20241021102258.124018134@linuxfoundation.org>
+Message-ID: <20241021102302.611923565@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit fc8d0ba0ff5fe4700fa02008b7751ec6b84b7677 upstream.
+commit 3f7b25f6ad0925b9ae9b70656a49abb5af111483 upstream.
 
-Allow callers to pass a NULLL seq argument if they don't care about
-the fork sequence number.
+This driver makes use of triggered buffers, but does not select the
+required modules.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
+
+Note the original driver patch had wrong part number hence the odd fixes
+entry.
+
+Fixes: 81ca5979b6ed ("iio: pressure: Support ROHM BU1390")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Link: https://patch.msgid.link/20241003-iio-select-v1-12-67c0385197cd@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_bmap.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/iio/pressure/Kconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/xfs/libxfs/xfs_bmap.c
-+++ b/fs/xfs/libxfs/xfs_bmap.c
-@@ -4595,7 +4595,8 @@ xfs_bmapi_convert_delalloc(
- 	if (!isnullstartblock(bma.got.br_startblock)) {
- 		xfs_bmbt_to_iomap(ip, iomap, &bma.got, 0, flags,
- 				xfs_iomap_inode_sequence(ip, flags));
--		*seq = READ_ONCE(ifp->if_seq);
-+		if (seq)
-+			*seq = READ_ONCE(ifp->if_seq);
- 		goto out_trans_cancel;
- 	}
- 
-@@ -4641,7 +4642,8 @@ xfs_bmapi_convert_delalloc(
- 	ASSERT(!isnullstartblock(bma.got.br_startblock));
- 	xfs_bmbt_to_iomap(ip, iomap, &bma.got, 0, flags,
- 				xfs_iomap_inode_sequence(ip, flags));
--	*seq = READ_ONCE(ifp->if_seq);
-+	if (seq)
-+		*seq = READ_ONCE(ifp->if_seq);
- 
- 	if (whichfork == XFS_COW_FORK)
- 		xfs_refcount_alloc_cow_extent(tp, bma.blkno, bma.length);
+diff --git a/drivers/iio/pressure/Kconfig b/drivers/iio/pressure/Kconfig
+index df65438c771e..d2cb8c871f6a 100644
+--- a/drivers/iio/pressure/Kconfig
++++ b/drivers/iio/pressure/Kconfig
+@@ -19,6 +19,9 @@ config ABP060MG
+ config ROHM_BM1390
+ 	tristate "ROHM BM1390GLV-Z pressure sensor driver"
+ 	depends on I2C
++	select REGMAP_I2C
++	select IIO_BUFFER
++	select IIO_TRIGGERED_BUFFER
+ 	help
+ 	  Support for the ROHM BM1390 pressure sensor. The BM1390GLV-Z
+ 	  can measure pressures ranging from 300 hPa to 1300 hPa with
+-- 
+2.47.0
+
 
 
 
