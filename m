@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-87110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A77F9A6314
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:30:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D34429A63B3
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:38:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F5BB1F21341
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:30:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CC471C21EA9
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA5719753F;
-	Mon, 21 Oct 2024 10:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E25D1EF093;
+	Mon, 21 Oct 2024 10:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JInrPKYl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8DltHFr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1136339FD6;
-	Mon, 21 Oct 2024 10:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97361EF086;
+	Mon, 21 Oct 2024 10:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506623; cv=none; b=TSMywpYZ7PAUid85VNwNEFq9I9DjW3dG/osEagcjm476gK6ZmKmC2JcTwgl2aB2GoisdQsqVpmljbSR26/YyhJUwTlDsgJDl2Fn+tCsMlR9vxHCUEErNLTSusJ6d4noelNXGTnYaNXOsxawmRlLoLt+iU8f6Y+dth5rp40PylzI=
+	t=1729506885; cv=none; b=t3bOJwJxeYvbFH+Iv1/XtyS37pd5nOLsH3dAHWeWSr865Z+upxP/EWnZ0kTGwh8/s424n3bVYdBGRxF3NlFFdyX2gkckoc0z9ny6wynRBbhIByi+HBwlYyvlBAykZUb3PUh0HyTuZk4CzPygX99DrM/MKwNj9qVEcxaCxEqUzfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506623; c=relaxed/simple;
-	bh=l7sZn7z5687bH6OR1z+dY6SXn6uk9cD8q/vTQD7d9JM=;
+	s=arc-20240116; t=1729506885; c=relaxed/simple;
+	bh=+zWLa8dwnYPOURvxvOLjSBLjQBDJ9V0Hm/DFsX7QlAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i9qiAcm1exjzx7epW0Mv14exV59opbZjA40JYmck+rVPL6DT2v3tj8HKSYKB+BV8WGxzXLlcdtezlYR3mFdFD/g9wp+cWXwfiuDYLu2WkB2/3IlJSDkrdcbmLCL+sWXMn8RiQ/VI2SS2NRxvQXiXmoK3qJNwBv+wV60a30CGNeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JInrPKYl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8351BC4CEC3;
-	Mon, 21 Oct 2024 10:30:22 +0000 (UTC)
+	 MIME-Version; b=egM5DU09otg6c5rREpUNYpxPGpQVy6NFhzrIHarlVxdgEOoNCEZ8kj9Rhxc5ENmcMi7+qcg0lAt5cCmuV5st/M+54LAohhRiVHNPujTU7+K8Xyys2vwow4CKOLgCq8y2cQSMZc8FgEjrYZA8wzWKuvaIYdWXRGa/qN1eyMdwb9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8DltHFr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 234E3C4CEC7;
+	Mon, 21 Oct 2024 10:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506622;
-	bh=l7sZn7z5687bH6OR1z+dY6SXn6uk9cD8q/vTQD7d9JM=;
+	s=korg; t=1729506884;
+	bh=+zWLa8dwnYPOURvxvOLjSBLjQBDJ9V0Hm/DFsX7QlAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JInrPKYl9VRgU0NaiEZrPScwdI8JqKxqJG9cjglabAcULrFswcivEeIqwfPRSN+Pg
-	 akDxw/2VRj8y6jaOX81y6X9KS00Czc83pgslRGD0as8T9Rdxjr+ig4tyU8QiJbbHAV
-	 a0ejIynRu/hMMCaQt3oEtTTvcGEIbjQjONLwy0r0=
+	b=H8DltHFrZP2aDKRv/JuDkXvI9yqKU78Yc16TPoTlQinuZkVplbDxHJiWeDrB7BpuF
+	 F+BAFk2g4ComrHA7D4kHbfc1QOnigS0KCGrryi/Uy8SjrTy092LDkB6U/o9E+AlMM4
+	 XOanb2FnTHEgRNKzPdInIAsAC0X7H23W9QdmwyzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Kuratov <kniv@yandex-team.ru>,
-	Zack Rusin <zack.rusin@broadcom.com>
-Subject: [PATCH 6.11 065/135] drm/vmwgfx: Handle surface check failure correctly
-Date: Mon, 21 Oct 2024 12:23:41 +0200
-Message-ID: <20241021102301.874679304@linuxfoundation.org>
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	syzbot+ef0d7bc412553291aa86@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 018/124] fat: fix uninitialized variable
+Date: Mon, 21 Oct 2024 12:23:42 +0200
+Message-ID: <20241021102257.428440446@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Kuratov <kniv@yandex-team.ru>
+From: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
 
-commit 26498b8d54373d31a621d7dec95c4bd842563b3b upstream.
+commit 963a7f4d3b90ee195b895ca06b95757fcba02d1a upstream.
 
-Currently if condition (!bo and !vmw_kms_srf_ok()) was met
-we go to err_out with ret == 0.
-err_out dereferences vfb if ret == 0, but in our case vfb is still NULL.
+syszbot produced this with a corrupted fs image.  In theory, however an IO
+error would trigger this also.
 
-Fix this by assigning sensible error to ret.
+This affects just an error report, so should not be a serious error.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE
-
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-Cc: stable@vger.kernel.org
-Fixes: 810b3e1683d0 ("drm/vmwgfx: Support topology greater than texture size")
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241002122429.1981822-1-kniv@yandex-team.ru
+Link: https://lkml.kernel.org/r/87r08wjsnh.fsf@mail.parknet.co.jp
+Link: https://lkml.kernel.org/r/66ff2c95.050a0220.49194.03e9.GAE@google.com
+Signed-off-by: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+Reported-by: syzbot+ef0d7bc412553291aa86@syzkaller.appspotmail.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/fat/namei_vfat.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-@@ -1510,6 +1510,7 @@ static struct drm_framebuffer *vmw_kms_f
- 		DRM_ERROR("Surface size cannot exceed %dx%d\n",
- 			dev_priv->texture_max_width,
- 			dev_priv->texture_max_height);
-+		ret = -EINVAL;
- 		goto err_out;
+--- a/fs/fat/namei_vfat.c
++++ b/fs/fat/namei_vfat.c
+@@ -1037,7 +1037,7 @@ error_inode:
+ 	if (corrupt < 0) {
+ 		fat_fs_error(new_dir->i_sb,
+ 			     "%s: Filesystem corrupted (i_pos %lld)",
+-			     __func__, sinfo.i_pos);
++			     __func__, new_i_pos);
  	}
- 
+ 	goto out;
+ }
 
 
 
