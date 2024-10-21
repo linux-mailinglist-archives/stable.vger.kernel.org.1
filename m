@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-87164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD9D9A637B
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D40659A6491
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:48:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 316EB281FF4
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4DB6B2D753
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D411E8851;
-	Mon, 21 Oct 2024 10:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A33D1E3776;
+	Mon, 21 Oct 2024 10:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKyUztHN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jt2Wcs8I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD26C16F27E;
-	Mon, 21 Oct 2024 10:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC531E7C16;
+	Mon, 21 Oct 2024 10:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506784; cv=none; b=Ju9k9+YP4wAkj0BTS7Gcy7qrlScZxyr0OYRzl4ErGcLPoHdSlF3+i4CSMqol711K+nvmKM48fe1TQLpJyXkfn5jfnl4LQixhIh/Faf9K5q4VFxlKCleFg0xYtYwsyGvv+zlnXK3ev69XlDSNPSUnthe8jW2H9sxlTUv68T+CnnE=
+	t=1729507328; cv=none; b=O2Czl/OJnzHKPe5OtKSphStd+rzSKf5TYrew/wiByVoX/GNWzQhRwGwwTIW6E3Gu27zFH42Vm51Gy6Z1V42QCFRfLqft4L5CckQ1TEWfZ8tId+yU6siqyeDnYNwcN49axTwKquDdbJnrOxSWi8xYZMAa2j2/QMUhn0glrgB5N/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506784; c=relaxed/simple;
-	bh=94GxdMmeznr+am3gvyzm8KOHP0l2jHetUhVwVgRUh38=;
+	s=arc-20240116; t=1729507328; c=relaxed/simple;
+	bh=CEFVc1ZGLai6UqD4P1a+KIjKcI5FEppdf1GTzE4rQmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HdKwRU8HF3/EtQbOtT8FLbxbr2LZjUznOKrphZCKWWT0hVdxzBaC9O/+a/8u1YXS1giGagApJvot57ciBO6IWWHAcQaEDHymWW4Qnwi9R76qcjkFVIqvxfnkcy0zm5qrw66YVLIi+ncnL0+ti9UOdVG2XMkU8hvFJowi+wvaGnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKyUztHN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC6EC4CEC3;
-	Mon, 21 Oct 2024 10:33:04 +0000 (UTC)
+	 MIME-Version; b=modlw9dqZwzK6FkM+vnX4HW5BCkur8wGQDTPY7QXIVBWdJDtXxAAkZW0vXy7e6Cqid/VBqHlm9Aya8NkQ5PPAN9fOecQQxaK8bjj5f5POAvl0i0Aw03I80UMyK2dlCUPCF4w+4AJsj0yDqg/y1i7sjmZAZbAA2lhYWiAU6jpD5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jt2Wcs8I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7ECC4CEC3;
+	Mon, 21 Oct 2024 10:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506784;
-	bh=94GxdMmeznr+am3gvyzm8KOHP0l2jHetUhVwVgRUh38=;
+	s=korg; t=1729507327;
+	bh=CEFVc1ZGLai6UqD4P1a+KIjKcI5FEppdf1GTzE4rQmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vKyUztHNIHdAOgk2QjbpUr3YV1PpX4YwaJgOI9zavhVPq5qC+wLhmtD8Mp0tnG4q1
-	 mDYHzRY/SiAFM7EFaZ2rTiwjN4Tb1VMRE1IKaV0UJ2VE1/9JbFdkB8U21+Wwcn3ds+
-	 4Jik9rtayPQRWMWS1CZtTWP0UT3Q7u/LH4Bn9UTY=
+	b=Jt2Wcs8IX5ijX3wDIiAJfeBvMttAPzRr61l0Q/1+Q6twj1Mi+VljCdzd7eo7Qbi5k
+	 QUUpWdUoAaq2gQimMsof69QFSacRdD6cYXYM2TQCZ89U9UbBuayI+cP6KOvgm+KiD8
+	 e4+8m5RpwxVy5OFrejOvFx+TlLjUDlQdTZKLiO5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.11 121/135] pinctrl: nuvoton: fix a double free in ma35_pinctrl_dt_node_to_map_func()
+	Jan Kara <jack@suse.cz>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 6.1 23/91] udf: Handle error when expanding directory
 Date: Mon, 21 Oct 2024 12:24:37 +0200
-Message-ID: <20241021102304.066261122@linuxfoundation.org>
+Message-ID: <20241021102250.726859951@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 3fd976afe9743110f20a23f93b7ff9693f2be4bf upstream.
+[ Upstream commit 33e9a53cd9f099b138578f8e1a3d60775ff8cbba ]
 
-'new_map' is allocated using devm_* which takes care of freeing the
-allocated data on device removal, call to
+When there is an error when adding extent to the directory to expand it,
+make sure to propagate the error up properly. This is not expected to
+happen currently but let's make the code more futureproof.
 
-	.dt_free_map = pinconf_generic_dt_free_map
-
-double frees the map as pinconf_generic_dt_free_map() calls
-pinctrl_utils_free_map().
-
-Fix this by using kcalloc() instead of auto-managed devm_kcalloc().
-
-Cc: stable@vger.kernel.org
-Fixes: f805e356313b ("pinctrl: nuvoton: Add ma35d1 pinctrl and GPIO driver")
-Reported-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Link: https://lore.kernel.org/20241010205237.1245318-1-harshit.m.mogalapalli@oracle.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/nuvoton/pinctrl-ma35.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/udf/namei.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/nuvoton/pinctrl-ma35.c b/drivers/pinctrl/nuvoton/pinctrl-ma35.c
-index 1fa00a23534a..59c4e7c6cdde 100644
---- a/drivers/pinctrl/nuvoton/pinctrl-ma35.c
-+++ b/drivers/pinctrl/nuvoton/pinctrl-ma35.c
-@@ -218,7 +218,7 @@ static int ma35_pinctrl_dt_node_to_map_func(struct pinctrl_dev *pctldev,
- 	}
+--- a/fs/udf/namei.c
++++ b/fs/udf/namei.c
+@@ -192,8 +192,13 @@ static struct buffer_head *udf_expand_di
+ 	epos.bh = NULL;
+ 	epos.block = iinfo->i_location;
+ 	epos.offset = udf_file_entry_alloc_offset(inode);
+-	udf_add_aext(inode, &epos, &eloc, inode->i_size, 0);
++	ret = udf_add_aext(inode, &epos, &eloc, inode->i_size, 0);
+ 	brelse(epos.bh);
++	if (ret < 0) {
++		*err = ret;
++		udf_free_blocks(inode->i_sb, inode, &eloc, 0, 1);
++		return NULL;
++	}
+ 	mark_inode_dirty(inode);
  
- 	map_num += grp->npins;
--	new_map = devm_kcalloc(pctldev->dev, map_num, sizeof(*new_map), GFP_KERNEL);
-+	new_map = kcalloc(map_num, sizeof(*new_map), GFP_KERNEL);
- 	if (!new_map)
- 		return -ENOMEM;
- 
--- 
-2.47.0
-
+ 	/* Now fixup tags in moved directory entries */
 
 
 
