@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-87153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E2EC9A637A
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F8899A63FA
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:41:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B252FB276F4
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40F2828233F
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:41:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BFEB1E7C3A;
-	Mon, 21 Oct 2024 10:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489391F4FC1;
+	Mon, 21 Oct 2024 10:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H4+WpBPE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTPkfVF7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D321E47B4;
-	Mon, 21 Oct 2024 10:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA8D1F4FB0;
+	Mon, 21 Oct 2024 10:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506752; cv=none; b=a92hpZsztsgfhQycBD0GHGXQR/ylQA3zhEaVFJ45MKlPDhhfuSfVCOHmPL+oO2AWAITwRJOt3NCghUTcP+xxLsTa98W/1Bj4fxoiokz58sezAsS1GDajedPkkePEQZRprO4GWNNI8My7E6RlkCBK5SLUp46jYtNWe6R4DPlBmCg=
+	t=1729507014; cv=none; b=iSCt76cbhqKzVW7VCw96dMcq45dSda7cG7Op9ZiTDAFdB78ihdUIOwgKWVAMm8TQZpEr2XltWk8XHFqFMIAQ1akw83tqPLNzffgyUVnG4vhOHRM6xn1Tftz6EnU2fXxt1/yijQ0N9UGUZkbd0f1guyCB589G9rwrXF0WPi7RcNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506752; c=relaxed/simple;
-	bh=BwuquZrntVnM7mmwQ0PNYRPtNoMjvEC6CgW6m7P+68w=;
+	s=arc-20240116; t=1729507014; c=relaxed/simple;
+	bh=fzLEba1XYABICshWu+p5m07qK08WnnV72VnC2rKTZmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UQI2CPkUUfY4k48+COGx2mLOS/FHz8zLHTR9+oYnFIaeA5msGhZ6dg/Fij3k6pb1QN++xX8XLjft4r0s6o8TK/gZj1ChKK2i1gOWj5T3OIv3H3lcmG3mAULQEBqvqeulHmjOb8ArxRsvB3Wdj/ZiUhu8A4RjNs3UBt+SHkacl2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H4+WpBPE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 914FAC4CEC7;
-	Mon, 21 Oct 2024 10:32:31 +0000 (UTC)
+	 MIME-Version; b=QuolF1zYY6LD6H1Zc6Xtxr8vv8XCst4M4KvU9u3l2Hjh1z10p3DTCK/bAixCnNPlEf0QGT3BcsTCwwN+PSUOPsMnTW1iBOCNPgkrZ+AXx3m027bzxqm73T1AOIYNut7dWBfNIQHCvvwXZOrIkL/tZqmqfrXyuIbKtI2GhmaORGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTPkfVF7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE65C4CEE7;
+	Mon, 21 Oct 2024 10:36:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506752;
-	bh=BwuquZrntVnM7mmwQ0PNYRPtNoMjvEC6CgW6m7P+68w=;
+	s=korg; t=1729507013;
+	bh=fzLEba1XYABICshWu+p5m07qK08WnnV72VnC2rKTZmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H4+WpBPE4HdzMEcQ8UGjuIsE3DqxNqNfCcyw2NOLR2gmAbLzJQLah6Ide27BnSOd/
-	 4ubCyGVXZd4CUj2tSJv8ZFJ04Mul8t8TEZx1fP6C10rAJ+24eMulkAPa9ZMnG/EJHt
-	 cGroYSOCD0JHaHlpA2xcOsJAB2vNMaSuWKSik5Bo=
+	b=LTPkfVF7OA5EyTcEg3zAH3aFC5Bh32r3CCOTgXMnVIjdXmlNmQ9gmGZjh4yy7116/
+	 /Ulh6/S9bRODB3EIPFqin7KvCniFCxNva3shS/LLgd+iJh5svqHWwTUya5I4lBMoVV
+	 VqLp6n3jcCjsjYL+I+Di735EWDTJHhog9GYEciIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kenneth Feng <kenneth.feng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.11 068/135] drm/amdgpu/swsmu: Only force workload setup on init
+	Edward Liaw <edliaw@google.com>,
+	Lokesh Gidra <lokeshgidra@google.com>,
+	Peter Xu <peterx@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 020/124] selftests/mm: fix deadlock for fork after pthread_create on ARM
 Date: Mon, 21 Oct 2024 12:23:44 +0200
-Message-ID: <20241021102301.993035776@linuxfoundation.org>
+Message-ID: <20241021102257.505196777@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Edward Liaw <edliaw@google.com>
 
-commit cb07c8338fc2b9d5f949a19d4a07ee4d5ecf8793 upstream.
+commit e142cc87ac4ec618f2ccf5f68aedcd6e28a59d9d upstream.
 
-Needed to set the workload type at init time so that
-we can apply the navi3x margin optimization.
+On Android with arm, there is some synchronization needed to avoid a
+deadlock when forking after pthread_create.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3618
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3131
-Fixes: c50fe289ed72 ("drm/amdgpu/swsmu: always force a state reprogram on init")
-Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 580ad7cbd4b7be8d2cb5ab5c1fca6bb76045eb0e)
-Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20241003211716.371786-3-edliaw@google.com
+Fixes: cff294582798 ("selftests/mm: extend and rename uffd pagemap test")
+Signed-off-by: Edward Liaw <edliaw@google.com>
+Cc: Lokesh Gidra <lokeshgidra@google.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/mm/uffd-unit-tests.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-@@ -2226,7 +2226,7 @@ static int smu_bump_power_profile_mode(s
- static int smu_adjust_power_state_dynamic(struct smu_context *smu,
- 					  enum amd_dpm_forced_level level,
- 					  bool skip_display_settings,
--					  bool force_update)
-+					  bool init)
- {
- 	int ret = 0;
- 	int index = 0;
-@@ -2255,7 +2255,7 @@ static int smu_adjust_power_state_dynami
- 		}
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c
++++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -237,6 +237,9 @@ static void *fork_event_consumer(void *d
+ 	fork_event_args *args = data;
+ 	struct uffd_msg msg = { 0 };
+ 
++	/* Ready for parent thread to fork */
++	pthread_barrier_wait(&ready_for_fork);
++
+ 	/* Read until a full msg received */
+ 	while (uffd_read_msg(args->parent_uffd, &msg));
+ 
+@@ -304,8 +307,12 @@ static int pagemap_test_fork(int uffd, b
+ 
+ 	/* Prepare a thread to resolve EVENT_FORK */
+ 	if (with_event) {
++		pthread_barrier_init(&ready_for_fork, NULL, 2);
+ 		if (pthread_create(&thread, NULL, fork_event_consumer, &args))
+ 			err("pthread_create()");
++		/* Wait for child thread to start before forking */
++		pthread_barrier_wait(&ready_for_fork);
++		pthread_barrier_destroy(&ready_for_fork);
  	}
  
--	if (force_update || smu_dpm_ctx->dpm_level != level) {
-+	if (smu_dpm_ctx->dpm_level != level) {
- 		ret = smu_asic_set_performance_level(smu, level);
- 		if (ret) {
- 			dev_err(smu->adev->dev, "Failed to set performance level!");
-@@ -2272,7 +2272,7 @@ static int smu_adjust_power_state_dynami
- 		index = index > 0 && index <= WORKLOAD_POLICY_MAX ? index - 1 : 0;
- 		workload[0] = smu->workload_setting[index];
- 
--		if (force_update || smu->power_profile_mode != workload[0])
-+		if (init || smu->power_profile_mode != workload[0])
- 			smu_bump_power_profile_mode(smu, workload, 0);
- 	}
- 
+ 	child = fork();
 
 
 
