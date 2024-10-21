@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-87336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5AA59A6524
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:54:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D2A49A64D2
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:51:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67A52B29FEC
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:47:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C6FE1C22078
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 903181F473F;
-	Mon, 21 Oct 2024 10:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638611E410E;
+	Mon, 21 Oct 2024 10:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2omc14a2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rj3ie8SF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4945A1F472E;
-	Mon, 21 Oct 2024 10:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A367194085;
+	Mon, 21 Oct 2024 10:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507301; cv=none; b=V2iLDxTqQxkMDGIHwx3Ynk+yiiq+3WBlU4E+yvAvelDZaIdaWKecoF7/2NVB81uTd32WrdbJ00wqDW/xF4IPTtrbLMFos8/Il2rUW0Z2WNIA7d56xI5hxNqBqu8VYTiSBFHlknCZ7FZoFsKcUgmflJICSpZqG23OHDUTzEPfNJg=
+	t=1729507520; cv=none; b=CY+AwgjAycz2PMlnB6NZ4yXrVM9P09mDlfTQvX2HDAWxW3rwsMhtMYHRp7/HG4WYklWdO+69/mqwIfM3I06tJVc7l0BfDRiyzb05LK9/Zp0cEqMDnROE5bgJXp6uI0LzqUod3satKvkBenVWJAWLLbJu3ttwyEnD56ovk9N9WUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507301; c=relaxed/simple;
-	bh=hsjPfk90fLfS9Tjd5gEA5YptzFBHerY7aWjbwS4OjXQ=;
+	s=arc-20240116; t=1729507520; c=relaxed/simple;
+	bh=jEht6G4Nj5uJWr0GkswdfC6fu3VG67MblecGNiHZecU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hywPiNg3r3GuqA8G9rTsECFAJBqO/7gmmTwJnW4M9gQOly9gb/0+atMGKBcQ19foAXJfYETyLVi/wm+/1StIqGHe96mS7rPdvxunJTMc7Rb0c3S8vT6xB1Zl2qUsB4s+almjlkb/pdAXGxUX0bFSt/mDZMgG4f7uhGa+LF23W8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2omc14a2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD827C4CEC3;
-	Mon, 21 Oct 2024 10:41:40 +0000 (UTC)
+	 MIME-Version; b=U5dytj2jjbVsjhBFHVDdvGC6S4syiECbixnVBkFYGA2VMRjY71xLlDXThRf16is1BcNnWZ5y1qfEgV3MkSOxn/y/o3FZG8C5H2k8VkTzlaJa/O5o7kDq6pKWIDpoEQ/kYKo8w5eQjxXKdhDq2QKZlbCA61nQJ0r00Una5rijQR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rj3ie8SF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F0BCC4CEC3;
+	Mon, 21 Oct 2024 10:45:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507301;
-	bh=hsjPfk90fLfS9Tjd5gEA5YptzFBHerY7aWjbwS4OjXQ=;
+	s=korg; t=1729507519;
+	bh=jEht6G4Nj5uJWr0GkswdfC6fu3VG67MblecGNiHZecU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2omc14a2KLSHQTRk/whQ/DOtuNsdWw+OFJH8EYJJZE91ovDtQOVS+HOD17JfU2UFp
-	 AXt8bQ6jpwi5dbfeHxy+H7DzJoYxQkDwtXWQUZSswnRNr04fbvAtbnNUnn83DYlC6v
-	 e4hLJNBQ/sZY9HDz2qFeivCIsgRnqC8PEPb2VrNQ=
+	b=Rj3ie8SFo8nk7JP4WPzCMIwS2fvFdD5WLS5FnjzIpWiDJzlJX7n/nPGM/EaixNG+a
+	 m253+1rB4ImGqIvNvHKf8DsSLBF7AmGApFGgavEYIC6eAlH2iyg5iXbQnUl+e8nau2
+	 k9McadbqE8zl0GzyH14XfTUxv/yPRigVYR7AJl6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	syzbot+ef0d7bc412553291aa86@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 32/91] fat: fix uninitialized variable
+	syzbot+69c9fdccc6dd08961d34@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 5.15 05/82] udf: Implement searching for directory entry using new iteration code
 Date: Mon, 21 Oct 2024 12:24:46 +0200
-Message-ID: <20241021102251.079326176@linuxfoundation.org>
+Message-ID: <20241021102247.428735020@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+From: Jan Kara <jack@suse.cz>
 
-commit 963a7f4d3b90ee195b895ca06b95757fcba02d1a upstream.
+[ Upstream commit 1c80afa04db39c98aebea9aabfafa37a208cdfee ]
 
-syszbot produced this with a corrupted fs image.  In theory, however an IO
-error would trigger this also.
+Implement searching for directory entry - udf_fiiter_find_entry() -
+using new directory iteration code.
 
-This affects just an error report, so should not be a serious error.
-
-Link: https://lkml.kernel.org/r/87r08wjsnh.fsf@mail.parknet.co.jp
-Link: https://lkml.kernel.org/r/66ff2c95.050a0220.49194.03e9.GAE@google.com
-Signed-off-by: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
-Reported-by: syzbot+ef0d7bc412553291aa86@syzkaller.appspotmail.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: syzbot+69c9fdccc6dd08961d34@syzkaller.appspotmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fat/namei_vfat.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/udf/namei.c |   67 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
 
---- a/fs/fat/namei_vfat.c
-+++ b/fs/fat/namei_vfat.c
-@@ -1037,7 +1037,7 @@ error_inode:
- 	if (corrupt < 0) {
- 		fat_fs_error(new_dir->i_sb,
- 			     "%s: Filesystem corrupted (i_pos %lld)",
--			     __func__, sinfo.i_pos);
-+			     __func__, new_i_pos);
- 	}
- 	goto out;
+--- a/fs/udf/namei.c
++++ b/fs/udf/namei.c
+@@ -141,6 +141,73 @@ int udf_write_fi(struct inode *inode, st
  }
+ 
+ /**
++ * udf_fiiter_find_entry - find entry in given directory.
++ *
++ * @dir:	directory inode to search in
++ * @child:	qstr of the name
++ * @iter:	iter to use for searching
++ *
++ * This function searches in the directory @dir for a file name @child. When
++ * found, @iter points to the position in the directory with given entry.
++ *
++ * Returns 0 on success, < 0 on error (including -ENOENT).
++ */
++static int udf_fiiter_find_entry(struct inode *dir, const struct qstr *child,
++				 struct udf_fileident_iter *iter)
++{
++	int flen;
++	unsigned char *fname = NULL;
++	struct super_block *sb = dir->i_sb;
++	int isdotdot = child->len == 2 &&
++		child->name[0] == '.' && child->name[1] == '.';
++	int ret;
++
++	fname = kmalloc(UDF_NAME_LEN, GFP_NOFS);
++	if (!fname)
++		return -ENOMEM;
++
++	for (ret = udf_fiiter_init(iter, dir, 0);
++	     !ret && iter->pos < dir->i_size;
++	     ret = udf_fiiter_advance(iter)) {
++		if (iter->fi.fileCharacteristics & FID_FILE_CHAR_DELETED) {
++			if (!UDF_QUERY_FLAG(sb, UDF_FLAG_UNDELETE))
++				continue;
++		}
++
++		if (iter->fi.fileCharacteristics & FID_FILE_CHAR_HIDDEN) {
++			if (!UDF_QUERY_FLAG(sb, UDF_FLAG_UNHIDE))
++				continue;
++		}
++
++		if ((iter->fi.fileCharacteristics & FID_FILE_CHAR_PARENT) &&
++		    isdotdot)
++			goto out_ok;
++
++		if (!iter->fi.lengthFileIdent)
++			continue;
++
++		flen = udf_get_filename(sb, iter->name,
++				iter->fi.lengthFileIdent, fname, UDF_NAME_LEN);
++		if (flen < 0) {
++			ret = flen;
++			goto out_err;
++		}
++
++		if (udf_match(flen, fname, child->len, child->name))
++			goto out_ok;
++	}
++	if (!ret)
++		ret = -ENOENT;
++
++out_err:
++	udf_fiiter_release(iter);
++out_ok:
++	kfree(fname);
++
++	return ret;
++}
++
++/**
+  * udf_find_entry - find entry in given directory.
+  *
+  * @dir:	directory inode to search in
 
 
 
