@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-87235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEB8E9A63E6
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:40:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 861939A6379
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EAA11F236BC
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:40:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E9B5B2692B
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A801EF0A3;
-	Mon, 21 Oct 2024 10:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84DF1E8820;
+	Mon, 21 Oct 2024 10:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/bGUrwz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SxxrwIJi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78DC1EABAD;
-	Mon, 21 Oct 2024 10:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC071E47B4;
+	Mon, 21 Oct 2024 10:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506998; cv=none; b=pBa+D80SxKM6WiH0VoSepK2bIRtqq+BHuR+a5RBUg+hMd2Iffmatj7X0DT+lBMlsKWLolhEhtSwjYcUHnai6hZOJLPrsMwTMCtbKgAKvfcPaGSNuFbMJ0P3NJ3UbIkBP3z3EtaXbEkC2AYvVxNag59L1B1D8SrGSmw9S6gA3tRo=
+	t=1729506740; cv=none; b=hVQAfktltp0nmJpK9RGs4WN3te4S9Av9tCaOstWXFNc1yPxlokRiFVKXBfVozPWa3jpaFh56ARljaGutnPeGXvCPrvsLaDz+NYrLMUPx9oDKJD1SiKz1gf4D9kW5JYdGEswUOL8k92OY2pSnu9/PtDUP0SsKoPy2yrj59X/Hwjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506998; c=relaxed/simple;
-	bh=RyLpf4q9ZzyjTc2rPK0zmoQ8iTDrZGjUoEW0O5brpUQ=;
+	s=arc-20240116; t=1729506740; c=relaxed/simple;
+	bh=Y7MJ6nSCaU8o4CB8ZLJ59GGkv7FJ+Z0cfW2eEmTaT5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BdscXFRdAkI+BdgI5r93uWmd+tipYJy0jtMSu2+7jOh7VfB2E4miBEByLFg6WCHrNXvFKvQobFFUobcQ8usvYPC0oZexFUjCo8eARtsFCKb0mSjrQ0ezFdAYVWgxKz05ssvGo7fGt5SRnYtsenks1D9G4vtTpzWnH3bHK5/kUIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/bGUrwz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1179CC4CEC3;
-	Mon, 21 Oct 2024 10:36:37 +0000 (UTC)
+	 MIME-Version; b=Hpx1TAqaEQzb4EMKS21S4zwtR0jf7PBSgEZGWSgJ4oI6/le8uQvs73enEQwFvmMuQgL9hQXY04lsVot3izFjnkY1dLAsi6S4YyoZWVqEVcjKtG7Q92PxtEGRFbzWh2UQwx0XV3wLweUsQ2r8XLCo7R4V/E4OxJwWIxMspu3c9vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SxxrwIJi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E68C4CEC3;
+	Mon, 21 Oct 2024 10:32:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506998;
-	bh=RyLpf4q9ZzyjTc2rPK0zmoQ8iTDrZGjUoEW0O5brpUQ=;
+	s=korg; t=1729506740;
+	bh=Y7MJ6nSCaU8o4CB8ZLJ59GGkv7FJ+Z0cfW2eEmTaT5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t/bGUrwzODPuZhAgCB0/HHituuGN5MTqlv5aZE8j06PBVjZg/RqmvQ64Y+2KTdrp2
-	 aGWng97MrczOfVdI0S1988ZQtiIxZWKKnyYlcU6W+gv3ggnj8bieRONPKYmvMXoyoN
-	 873zbCgQ5z6OjRoGSg14J23wfNf13VgnGYFmw5mA=
+	b=SxxrwIJiP0InQNIK3UXeQA/oKS2bWjdmHMnbSkf3u0DbZx5Mm2xcuk1cqL7EGeGJc
+	 +LI5C8ClnGvhYS4rN4/0djdtyJsrtktU2SeaB5Y1nmJh0AZ1WnzSHbRQWhjqdUD9/m
+	 f7lL5bYE/nLicFHKN+8uGzlWpOgFB8xlSqsZqwwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 025/124] xfs: fix xfs_bmap_add_extent_delay_real for partial conversions
-Date: Mon, 21 Oct 2024 12:23:49 +0200
-Message-ID: <20241021102257.699105467@linuxfoundation.org>
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.11 074/135] iio: hid-sensors: Fix an error handling path in _hid_sensor_set_report_latency()
+Date: Mon, 21 Oct 2024 12:23:50 +0200
+Message-ID: <20241021102302.224335499@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit d69bee6a35d3c5e4873b9e164dd1a9711351a97c upstream.
+commit 3a29b84cf7fbf912a6ab1b9c886746f02b74ea25 upstream.
 
-[backport: resolve conflict due to xfs_mod_freecounter refactor]
+If hid_sensor_set_report_latency() fails, the error code should be returned
+instead of a value likely to be interpreted as 'success'.
 
-xfs_bmap_add_extent_delay_real takes parts or all of a delalloc extent
-and converts them to a real extent.  It is written to deal with any
-potential overlap of the to be converted range with the delalloc extent,
-but it turns out that currently only converting the entire extents, or a
-part starting at the beginning is actually exercised, as the only caller
-always tries to convert the entire delalloc extent, and either succeeds
-or at least progresses partially from the start.
-
-If it only converts a tiny part of a delalloc extent, the indirect block
-calculation for the new delalloc extent (da_new) might be equivalent to that
-of the existing delalloc extent (da_old).  If this extent conversion now
-requires allocating an indirect block that gets accounted into da_new,
-leading to the assert that da_new must be smaller or equal to da_new
-unless we split the extent to trigger.
-
-Except for the assert that case is actually handled by just trying to
-allocate more space, as that already handled for the split case (which
-currently can't be reached at all), so just reusing it should be fine.
-Except that without dipping into the reserved block pool that would make
-it a bit too easy to trigger a fs shutdown due to ENOSPC.  So in addition
-to adjusting the assert, also dip into the reserved block pool.
-
-Note that I could only reproduce the assert with a change to only convert
-the actually asked range instead of the full delalloc extent from
-xfs_bmapi_write.
-
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+Fixes: 138bc7969c24 ("iio: hid-sensor-hub: Implement batch mode")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://patch.msgid.link/c50640665f091a04086e5092cf50f73f2055107a.1727980825.git.christophe.jaillet@wanadoo.fr
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_bmap.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/iio/common/hid-sensors/hid-sensor-trigger.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/xfs/libxfs/xfs_bmap.c
-+++ b/fs/xfs/libxfs/xfs_bmap.c
-@@ -1549,6 +1549,7 @@ xfs_bmap_add_extent_delay_real(
- 			if (error)
- 				goto done;
- 		}
-+		ASSERT(da_new <= da_old);
- 		break;
+--- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
++++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+@@ -32,7 +32,7 @@ static ssize_t _hid_sensor_set_report_la
+ 	latency = integer * 1000 + fract / 1000;
+ 	ret = hid_sensor_set_report_latency(attrb, latency);
+ 	if (ret < 0)
+-		return len;
++		return ret;
  
- 	case BMAP_LEFT_FILLING | BMAP_RIGHT_FILLING | BMAP_LEFT_CONTIG:
-@@ -1578,6 +1579,7 @@ xfs_bmap_add_extent_delay_real(
- 			if (error)
- 				goto done;
- 		}
-+		ASSERT(da_new <= da_old);
- 		break;
+ 	attrb->latency_ms = hid_sensor_get_report_latency(attrb);
  
- 	case BMAP_LEFT_FILLING | BMAP_RIGHT_FILLING | BMAP_RIGHT_CONTIG:
-@@ -1611,6 +1613,7 @@ xfs_bmap_add_extent_delay_real(
- 			if (error)
- 				goto done;
- 		}
-+		ASSERT(da_new <= da_old);
- 		break;
- 
- 	case BMAP_LEFT_FILLING | BMAP_RIGHT_FILLING:
-@@ -1643,6 +1646,7 @@ xfs_bmap_add_extent_delay_real(
- 				goto done;
- 			}
- 		}
-+		ASSERT(da_new <= da_old);
- 		break;
- 
- 	case BMAP_LEFT_FILLING | BMAP_LEFT_CONTIG:
-@@ -1680,6 +1684,7 @@ xfs_bmap_add_extent_delay_real(
- 			if (error)
- 				goto done;
- 		}
-+		ASSERT(da_new <= da_old);
- 		break;
- 
- 	case BMAP_LEFT_FILLING:
-@@ -1767,6 +1772,7 @@ xfs_bmap_add_extent_delay_real(
- 		xfs_iext_update_extent(bma->ip, state, &bma->icur, &PREV);
- 		xfs_iext_next(ifp, &bma->icur);
- 		xfs_iext_update_extent(bma->ip, state, &bma->icur, &RIGHT);
-+		ASSERT(da_new <= da_old);
- 		break;
- 
- 	case BMAP_RIGHT_FILLING:
-@@ -1814,6 +1820,7 @@ xfs_bmap_add_extent_delay_real(
- 		PREV.br_blockcount = temp;
- 		xfs_iext_insert(bma->ip, &bma->icur, &PREV, state);
- 		xfs_iext_next(ifp, &bma->icur);
-+		ASSERT(da_new <= da_old);
- 		break;
- 
- 	case 0:
-@@ -1934,11 +1941,9 @@ xfs_bmap_add_extent_delay_real(
- 	}
- 
- 	/* adjust for changes in reserved delayed indirect blocks */
--	if (da_new != da_old) {
--		ASSERT(state == 0 || da_new < da_old);
-+	if (da_new != da_old)
- 		error = xfs_mod_fdblocks(mp, (int64_t)(da_old - da_new),
--				false);
--	}
-+				true);
- 
- 	xfs_bmap_check_leaf_extents(bma->cur, bma->ip, whichfork);
- done:
 
 
 
