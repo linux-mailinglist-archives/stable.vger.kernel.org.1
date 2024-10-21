@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-87242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E3699A65BA
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:02:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 092699A63A8
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:38:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5922EB2AE9F
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:42:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A742D1F22DE2
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A6B1F891A;
-	Mon, 21 Oct 2024 10:37:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643011EB9F9;
+	Mon, 21 Oct 2024 10:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V59HM2qj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUzVoFc+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0254B1F890D;
-	Mon, 21 Oct 2024 10:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1616B1E570D;
+	Mon, 21 Oct 2024 10:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507020; cv=none; b=V4KwBkbstoLNusG4S/2Zhq8YhnkeJD4Gb9OXot2TpEq+FyCcH8MjgBM8TdNWO7SZrOjt3EiDY5N6BiaTiKvCBudtMy346QIpSXrjegDLdePtYDN46Vv3sKfAkFmAkUyHLCe9sswxGQslLNC1B01l65NpKJ/pQnqToIQrb2MnIvY=
+	t=1729506852; cv=none; b=KEIWC/21DorJ+HtDYzxwBpYo/Rz/zp9+7PLQGJjZxZSCiaXD7TVzNlrks7ddLWBGbUe4YbLNaqCkygh4A0/ySj+c7+dh0W9mxY+cNJ2geK6ZJaXOJceuxVId0gpFqG4n20qUJaNwBmNlSK+7ibAQBGjOkIVpyS3bxWY4ScqrQ9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507020; c=relaxed/simple;
-	bh=y/xcYOOZDTCYbX2E3cbQFrIE1PcwXpNh4JRhLf4IDTw=;
+	s=arc-20240116; t=1729506852; c=relaxed/simple;
+	bh=Bvu3CGnwkSsOOM+sJBQGFwsjQCOFsux6k++5fesv+Xg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lvRkknuOennxwP9GlMFgK8jNViwQRnFkhUxuZzQWTVfUQjJE/q4ZJSFWBDw/oRdsBP+GpqWfOyYkt71G8VGwGjJXt5JV1z48Xy3xSkDCet1/CVx8HU/uADFOXM7ci+me9bJn/IEwutlMribEyai/DrejsK+wAvOnD/cirG9qDgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V59HM2qj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72DBCC4CEC3;
-	Mon, 21 Oct 2024 10:36:59 +0000 (UTC)
+	 MIME-Version; b=dS3P2ifWS/pqdtLUJpOxjAMJuW86V8KFVCfh/tp4/SeyDZqF7uc6aFXPAzDiS+WTQmZnutY9OlGXjKdNF0p0arEETn3AwspLE8yvMjmH119ETvUudjP8b7yBRjCqRU765y2yEpiYp5gzNuvv0Az0F2OazDkcdRBM8xCRB7C2VBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUzVoFc+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A35DC4CEC3;
+	Mon, 21 Oct 2024 10:34:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507019;
-	bh=y/xcYOOZDTCYbX2E3cbQFrIE1PcwXpNh4JRhLf4IDTw=;
+	s=korg; t=1729506851;
+	bh=Bvu3CGnwkSsOOM+sJBQGFwsjQCOFsux6k++5fesv+Xg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V59HM2qjxxD/nGfXE3lJmnDHb2hruwA+suZkJyyxxX7O91m283xN/DIFgoPhAMJbW
-	 6cpV1mKAtlDyLYuBXIsvvi/PKqk0kZCTZ4kE4LRIfM4E4I+z2G9Ft9llRxKcRNp0hf
-	 HTEHpEUhv6ayaaOsoeMhQ9GsisGHyfD/IdmO4rhg=
+	b=sUzVoFc+B9q8R3mKAqd3+AY1Z9dSGheND9EVgq/J6lygouXs0MM9E1lUiO/M4MSHs
+	 q15WTOOO6pQ5WNbO0iVkc+/RF+bMwMsnmbr2IoKfdYC6z+rHEbNjG4dZbJtOygwHj5
+	 MkLqEcoQFqTeF+h/uimmr9WH7P7jQJRR1HRWvSNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Edwards <uejji@uejji.net>,
-	"Derek J. Clark" <derekjohn.clark@gmail.com>,
-	Christopher Snowhill <kode54@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 063/124] Input: xpad - add support for MSI Claw A1M
+	Heiko Thiery <heiko.thiery@gmail.com>,
+	Michael Walle <mwalle@kernel.org>
+Subject: [PATCH 6.11 111/135] misc: microchip: pci1xxxx: add support for NVMEM_DEVID_AUTO for OTP device
 Date: Mon, 21 Oct 2024 12:24:27 +0200
-Message-ID: <20241021102259.171669200@linuxfoundation.org>
+Message-ID: <20241021102303.668190851@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Edwards <uejji@uejji.net>
+From: Heiko Thiery <heiko.thiery@gmail.com>
 
-commit 22a18935d7d96bbb1a28076f843c1926d0ba189e upstream.
+commit 2471787c1f0dae6721f60ab44be37460635d3732 upstream.
 
-Add MSI Claw A1M controller to xpad_device match table when in xinput mode.
-Add MSI VID as XPAD_XBOX360_VENDOR.
+By using NVMEM_DEVID_AUTO we support more than 1 device and
+automatically enumerate.
 
-Signed-off-by: John Edwards <uejji@uejji.net>
-Reviewed-by: Derek J. Clark <derekjohn.clark@gmail.com>
-Reviewed-by: Christopher Snowhill <kode54@gmail.com>
-Link: https://lore.kernel.org/r/20241010232020.3292284-4-uejji@uejji.net
+Fixes: 0969001569e4 ("misc: microchip: pci1xxxx: Add support to read and write into PCI1XXXX OTP via NVMEM sysfs")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Heiko Thiery <heiko.thiery@gmail.com>
+Reviewed-by: Michael Walle <mwalle@kernel.org>
+Link: https://lore.kernel.org/r/20241007071120.9522-2-heiko.thiery@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -217,6 +217,7 @@ static const struct xpad_device {
- 	{ 0x0c12, 0x8810, "Zeroplus Xbox Controller", 0, XTYPE_XBOX },
- 	{ 0x0c12, 0x9902, "HAMA VibraX - *FAULTY HARDWARE*", 0, XTYPE_XBOX },
- 	{ 0x0d2f, 0x0002, "Andamiro Pump It Up pad", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX },
-+	{ 0x0db0, 0x1901, "Micro Star International Xbox360 Controller for Windows", 0, XTYPE_XBOX360 },
- 	{ 0x0e4c, 0x1097, "Radica Gamester Controller", 0, XTYPE_XBOX },
- 	{ 0x0e4c, 0x1103, "Radica Gamester Reflex", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX },
- 	{ 0x0e4c, 0x2390, "Radica Games Jtech Controller", 0, XTYPE_XBOX },
-@@ -486,6 +487,7 @@ static const struct usb_device_id xpad_t
- 	XPAD_XBOX360_VENDOR(0x07ff),		/* Mad Catz Gamepad */
- 	XPAD_XBOXONE_VENDOR(0x0b05),		/* ASUS controllers */
- 	XPAD_XBOX360_VENDOR(0x0c12),		/* Zeroplus X-Box 360 controllers */
-+	XPAD_XBOX360_VENDOR(0x0db0),		/* Micro Star International X-Box 360 controllers */
- 	XPAD_XBOX360_VENDOR(0x0e6f),		/* 0x0e6f Xbox 360 controllers */
- 	XPAD_XBOXONE_VENDOR(0x0e6f),		/* 0x0e6f Xbox One controllers */
- 	XPAD_XBOX360_VENDOR(0x0f0d),		/* Hori controllers */
+--- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
++++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
+@@ -384,6 +384,7 @@ static int pci1xxxx_otp_eeprom_probe(str
+ 
+ 	priv->nvmem_config_otp.type = NVMEM_TYPE_OTP;
+ 	priv->nvmem_config_otp.name = OTP_NAME;
++	priv->nvmem_config_otp.id = NVMEM_DEVID_AUTO;
+ 	priv->nvmem_config_otp.dev = &aux_dev->dev;
+ 	priv->nvmem_config_otp.owner = THIS_MODULE;
+ 	priv->nvmem_config_otp.reg_read = pci1xxxx_otp_read;
 
 
 
