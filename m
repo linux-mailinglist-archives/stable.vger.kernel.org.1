@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-87155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F6579A6371
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 632C69A6410
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:43:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E8FF1C21DCD
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03FB31F21279
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670B71E882C;
-	Mon, 21 Oct 2024 10:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7262D1F8928;
+	Mon, 21 Oct 2024 10:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9jH9lrK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RICkDwzE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6781E47B4;
-	Mon, 21 Oct 2024 10:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4BD1F1310;
+	Mon, 21 Oct 2024 10:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506758; cv=none; b=kfbNYI9lmfNoS+xrFQis77ihhi6EaBIUW0HMPM8+Ku5v7roeMOKKqb3C1jayaALlwK5nqqrhcQX8ig6qyoP0Oe4BqiFsUXDnY3CH3xIW6DjgxqsSvfsuTLC+f5s8iyoUnp9HPuNYlufxXSLGG2dqeWEuxItdwHvUJ14PAqMZRt4=
+	t=1729507023; cv=none; b=Kv16GB+1RQXsCRNxsJej5FgiSwMOPSqF3DYbzoRCmUvHcMMgRc0v5JSiEUiOBpcAs/5Xp66WJFC3EabXhoLRTQIHEp9k7XhI+X2Ua6apA2fxlasgdMH6S2FmSA/7LutsWEBPYUD0R4W4HNxM3J+pFdi5BQvzu1k5ztJ8d0juIak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506758; c=relaxed/simple;
-	bh=GQc+Zp9eXHejHahypZocZuGU9EG06HvaGWedF5cJyCY=;
+	s=arc-20240116; t=1729507023; c=relaxed/simple;
+	bh=hBg3Of+Sj/Cqzh9nvM+opQoB18RamAk+5hSYltoD6Mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WNnoX1J8S0JHRVgonPwPFsJukIxy5qRxUtbEZ8t26G7efmuGlp3V25XxaFHEGJyl9clPN1ndIlQyjoq+Q3MlD928g+JOo1BW0I7wukqEjp1T7OAtKxBwuUiHvalt2SDzoTbfR4Q25RTxvK4R5jS4n0DRXCm5JrkzyNjmGX+kos8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9jH9lrK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A2AC4CEC3;
-	Mon, 21 Oct 2024 10:32:37 +0000 (UTC)
+	 MIME-Version; b=oJmiPZnfem3VAWhx6669KmHHmxO5fTrQG36mZC5XyXFt2kVFZ0b39CEGaJlqVa6fh/kN9ealDkvetqGF2QRR7kP/2zSR4Cs3ya9ckDwydJV+hMdoNKzmofnUgCfv1jk6DwXfxeIzLj358TIRjwIyOtpXkEpZjcOqdow+ENLHOu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RICkDwzE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F088C4CEC3;
+	Mon, 21 Oct 2024 10:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506757;
-	bh=GQc+Zp9eXHejHahypZocZuGU9EG06HvaGWedF5cJyCY=;
+	s=korg; t=1729507022;
+	bh=hBg3Of+Sj/Cqzh9nvM+opQoB18RamAk+5hSYltoD6Mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p9jH9lrKw6dZ+yX/+zwJsHt0p5edDNDNDMvTZU1disk94beX9jPHlMYGRMBDQawx8
-	 cSUbOPDwDX4FjlmJUtwcLZ1ahNZWTAB+wDCOO6TReqVYVNWZbnRYadt4cguCklD4rj
-	 wMFFlWb+7WBMVvIIptEpVf+vAZiAI988L4vrz7yo=
+	b=RICkDwzET7rZcKOccKF6QUez/X6XNUDDAQ+Q/dYDNXTbVge4VdoP57H2TlC5mRq6v
+	 L4R+6oIx8OQ0L/bWCVnX9uHiv31AU++c9ghIL+GWHoqA2Jf+H9vjLmXPdkffKsOgaO
+	 xOnyvxTkNh2z3UWMEiF3PtTPXh912dOjkIqi3wUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Esben Haabendal <esben@geanix.com>,
-	Marek Vasut <marex@denx.de>
-Subject: [PATCH 6.11 112/135] serial: imx: Update mctrl old_status on RTSD interrupt
+	Seunghwan Baek <sh8267.baek@samsung.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 064/124] scsi: ufs: core: Set SDEV_OFFLINE when UFS is shut down
 Date: Mon, 21 Oct 2024 12:24:28 +0200
-Message-ID: <20241021102303.706434608@linuxfoundation.org>
+Message-ID: <20241021102259.209887057@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Seunghwan Baek <sh8267.baek@samsung.com>
 
-commit 40d7903386df4d18f04d90510ba90eedee260085 upstream.
+commit 19a198b67767d952c8f3d0cf24eb3100522a8223 upstream.
 
-When sending data using DMA at high baudrate (4 Mbdps in local test case) to
-a device with small RX buffer which keeps asserting RTS after every received
-byte, it is possible that the iMX UART driver would not recognize the falling
-edge of RTS input signal and get stuck, unable to transmit any more data.
+There is a history of deadlock if reboot is performed at the beginning
+of booting. SDEV_QUIESCE was set for all LU's scsi_devices by UFS
+shutdown, and at that time the audio driver was waiting on
+blk_mq_submit_bio() holding a mutex_lock while reading the fw binary.
+After that, a deadlock issue occurred while audio driver shutdown was
+waiting for mutex_unlock of blk_mq_submit_bio(). To solve this, set
+SDEV_OFFLINE for all LUs except WLUN, so that any I/O that comes down
+after a UFS shutdown will return an error.
 
-This condition happens when the following sequence of events occur:
-- imx_uart_mctrl_check() is called at some point and takes a snapshot of UART
-  control signal status into sport->old_status using imx_uart_get_hwmctrl().
-  The RTSS/TIOCM_CTS bit is of interest here (*).
-- DMA transfer occurs, the remote device asserts RTS signal after each byte.
-  The i.MX UART driver recognizes each such RTS signal change, raises an
-  interrupt with USR1 register RTSD bit set, which leads to invocation of
-  __imx_uart_rtsint(), which calls uart_handle_cts_change().
-  - If the RTS signal is deasserted, uart_handle_cts_change() clears
-    port->hw_stopped and unblocks the port for further data transfers.
-  - If the RTS is asserted, uart_handle_cts_change() sets port->hw_stopped
-    and blocks the port for further data transfers. This may occur as the
-    last interrupt of a transfer, which means port->hw_stopped remains set
-    and the port remains blocked (**).
-- Any further data transfer attempts will trigger imx_uart_mctrl_check(),
-  which will read current status of UART control signals by calling
-  imx_uart_get_hwmctrl() (***) and compare it with sport->old_status .
-  - If current status differs from sport->old_status for RTS signal,
-    uart_handle_cts_change() is called and possibly unblocks the port
-    by clearing port->hw_stopped .
-  - If current status does not differ from sport->old_status for RTS
-    signal, no action occurs. This may occur in case prior snapshot (*)
-    was taken before any transfer so the RTS is deasserted, current
-    snapshot (***) was taken after a transfer and therefore RTS is
-    deasserted again, which means current status and sport->old_status
-    are identical. In case (**) triggered when RTS got asserted, and
-    made port->hw_stopped set, the port->hw_stopped will remain set
-    because no change on RTS line is recognized by this driver and
-    uart_handle_cts_change() is not called from here to unblock the
-    port->hw_stopped.
+[   31.907781]I[0:      swapper/0:    0]        1        130705007       1651079834      11289729804                0 D(   2) 3 ffffff882e208000 *             init [device_shutdown]
+[   31.907793]I[0:      swapper/0:    0] Mutex: 0xffffff8849a2b8b0: owner[0xffffff882e28cb00 kworker/6:0 :49]
+[   31.907806]I[0:      swapper/0:    0] Call trace:
+[   31.907810]I[0:      swapper/0:    0]  __switch_to+0x174/0x338
+[   31.907819]I[0:      swapper/0:    0]  __schedule+0x5ec/0x9cc
+[   31.907826]I[0:      swapper/0:    0]  schedule+0x7c/0xe8
+[   31.907834]I[0:      swapper/0:    0]  schedule_preempt_disabled+0x24/0x40
+[   31.907842]I[0:      swapper/0:    0]  __mutex_lock+0x408/0xdac
+[   31.907849]I[0:      swapper/0:    0]  __mutex_lock_slowpath+0x14/0x24
+[   31.907858]I[0:      swapper/0:    0]  mutex_lock+0x40/0xec
+[   31.907866]I[0:      swapper/0:    0]  device_shutdown+0x108/0x280
+[   31.907875]I[0:      swapper/0:    0]  kernel_restart+0x4c/0x11c
+[   31.907883]I[0:      swapper/0:    0]  __arm64_sys_reboot+0x15c/0x280
+[   31.907890]I[0:      swapper/0:    0]  invoke_syscall+0x70/0x158
+[   31.907899]I[0:      swapper/0:    0]  el0_svc_common+0xb4/0xf4
+[   31.907909]I[0:      swapper/0:    0]  do_el0_svc+0x2c/0xb0
+[   31.907918]I[0:      swapper/0:    0]  el0_svc+0x34/0xe0
+[   31.907928]I[0:      swapper/0:    0]  el0t_64_sync_handler+0x68/0xb4
+[   31.907937]I[0:      swapper/0:    0]  el0t_64_sync+0x1a0/0x1a4
 
-Update sport->old_status in __imx_uart_rtsint() accordingly to make
-imx_uart_mctrl_check() detect such RTS change. Note that TIOCM_CAR
-and TIOCM_RI bits in sport->old_status do not suffer from this problem.
+[   31.908774]I[0:      swapper/0:    0]       49                0         11960702      11236868007                0 D(   2) 6 ffffff882e28cb00 *      kworker/6:0 [__bio_queue_enter]
+[   31.908783]I[0:      swapper/0:    0] Call trace:
+[   31.908788]I[0:      swapper/0:    0]  __switch_to+0x174/0x338
+[   31.908796]I[0:      swapper/0:    0]  __schedule+0x5ec/0x9cc
+[   31.908803]I[0:      swapper/0:    0]  schedule+0x7c/0xe8
+[   31.908811]I[0:      swapper/0:    0]  __bio_queue_enter+0xb8/0x178
+[   31.908818]I[0:      swapper/0:    0]  blk_mq_submit_bio+0x194/0x67c
+[   31.908827]I[0:      swapper/0:    0]  __submit_bio+0xb8/0x19c
 
-Fixes: ceca629e0b48 ("[ARM] 2971/1: i.MX uart handle rts irq")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Esben Haabendal <esben@geanix.com>
-Signed-off-by: Marek Vasut <marex@denx.de>
-Link: https://lore.kernel.org/r/20241002184133.19427-1-marex@denx.de
+Fixes: b294ff3e3449 ("scsi: ufs: core: Enable power management for wlun")
+Cc: stable@vger.kernel.org
+Signed-off-by: Seunghwan Baek <sh8267.baek@samsung.com>
+Link: https://lore.kernel.org/r/20240829093913.6282-2-sh8267.baek@samsung.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/imx.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/ufs/core/ufshcd.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -762,6 +762,21 @@ static irqreturn_t __imx_uart_rtsint(int
- 
- 	imx_uart_writel(sport, USR1_RTSD, USR1);
- 	usr1 = imx_uart_readl(sport, USR1) & USR1_RTSS;
-+	/*
-+	 * Update sport->old_status here, so any follow-up calls to
-+	 * imx_uart_mctrl_check() will be able to recognize that RTS
-+	 * state changed since last imx_uart_mctrl_check() call.
-+	 *
-+	 * In case RTS has been detected as asserted here and later on
-+	 * deasserted by the time imx_uart_mctrl_check() was called,
-+	 * imx_uart_mctrl_check() can detect the RTS state change and
-+	 * trigger uart_handle_cts_change() to unblock the port for
-+	 * further TX transfers.
-+	 */
-+	if (usr1 & USR1_RTSS)
-+		sport->old_status |= TIOCM_CTS;
-+	else
-+		sport->old_status &= ~TIOCM_CTS;
- 	uart_handle_cts_change(&sport->port, usr1);
- 	wake_up_interruptible(&sport->port.state->port.delta_msr_wait);
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -10100,7 +10100,9 @@ static void ufshcd_wl_shutdown(struct de
+ 	shost_for_each_device(sdev, hba->host) {
+ 		if (sdev == hba->ufs_device_wlun)
+ 			continue;
+-		scsi_device_quiesce(sdev);
++		mutex_lock(&sdev->state_mutex);
++		scsi_device_set_state(sdev, SDEV_OFFLINE);
++		mutex_unlock(&sdev->state_mutex);
+ 	}
+ 	__ufshcd_wl_suspend(hba, UFS_SHUTDOWN_PM);
  
 
 
