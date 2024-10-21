@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-87169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54BFB9A6398
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:37:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42E8F9A649C
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:48:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0523B27D2D
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:36:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E54E22811A5
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D451EF93C;
-	Mon, 21 Oct 2024 10:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0BC91F4738;
+	Mon, 21 Oct 2024 10:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a673/qg7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hptN/qQQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEA51E5020;
-	Mon, 21 Oct 2024 10:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF3B1F1309;
+	Mon, 21 Oct 2024 10:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506800; cv=none; b=nkHImsUI1gs4a+mli0gOqEAMkTX4d0Yc8qyumDnUj3QuEE2+CpYyvQYR50U5C83lE8TnM61Wp5SVlSIDOieZPgkCnglBjdrqg4MAxu7Nxk5jrzbbmRsZZgeTU7xgDwJu4itI2w3MgXUYT1/pvbMvBVt2C38kTU77RvlR1DJCqzI=
+	t=1729507385; cv=none; b=j5p65EBCgjJEWHxqe89I36rIjVB+c+fdT/Zlzi0yPdYQnfAf3PX+6E3Y0vJAli4CwH6/zkiyEwZ/QhzwW0qzy4hlfFRAfBr1VkLGn8asvmBdTGJlExyfx/MnkAdhDKYZDjKclMwrPOoFZu2A8SwkdoDN1LRY+9mLwjUSowylcGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506800; c=relaxed/simple;
-	bh=96ZPD/Bp4o+NEDy9+amBMoWuUDK2oztbEFaqThh+Ic8=;
+	s=arc-20240116; t=1729507385; c=relaxed/simple;
+	bh=tN0kEmyQpUlp/o6Q2RmaWMzX4SgQn93zVNtzzqPtGZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hEBn+sK5C1Wlf5pNYbsNDv0p3A8plhaHYoFgCiLpKxk6hxhzvqsjIKf6f1yruEEAHEDu8u/Jp3uFCoy6d1upTr1p/knYxpQKhXjQqtpPtl/wEaw6OPujTZFyOyKxgO8S241o5CWoM8DMV9lhU4zkahPWU16TllgG7Iff+RJC1YQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a673/qg7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6B1C4CEEB;
-	Mon, 21 Oct 2024 10:33:19 +0000 (UTC)
+	 MIME-Version; b=USIIDecw37bJQJDlEnfRKq2IaS7crNVy08IjdKRTuw9Lyf50X3xlOxOgdUJorf/4y4ODA7z1Yt2oD3CWngElvyduv00wwnQNLUqVy720/JtBuVe0xtHRLIqnbLGWHbfiYrClkTBQiJLDHKi8SFHNu0EZjGK4+q5iKzAa9SYNT9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hptN/qQQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF243C4CEC3;
+	Mon, 21 Oct 2024 10:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506800;
-	bh=96ZPD/Bp4o+NEDy9+amBMoWuUDK2oztbEFaqThh+Ic8=;
+	s=korg; t=1729507385;
+	bh=tN0kEmyQpUlp/o6Q2RmaWMzX4SgQn93zVNtzzqPtGZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a673/qg7N6Xd9vLeid60srsVm4SgwMcxfWuziCQ9vJVUpyHJO7uTaccl2FIEHOLWc
-	 G/4PWycxYEZWULCLws6PPkGqMw1iJfqRaMhKPHQImG3nAYqYFxOTvDeJ8I1wtpnsWd
-	 C1Zzeyh+nX4KYhcWNcatUBIcnAE6KeO4/t8J+oHg=
+	b=hptN/qQQnuRHKN3nvVcEgXPbHHZWyUKRN2IR/9wP9tEWsBqzptiBUwEfYB+6OVT53
+	 3kRVaLdSV+Go/wWkqSg3/9NCKwblr6A9a/Dzhgg6UtS2iM37MBPyWPuq5s6AA81p+Y
+	 gDKKwmIm1ptwyMmo82FltzIaeio2lhZfekFtN9m0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.11 125/135] pinctrl: apple: check devm_kasprintf() returned value
-Date: Mon, 21 Oct 2024 12:24:41 +0200
-Message-ID: <20241021102304.223279387@linuxfoundation.org>
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.1 28/91] arm64: probes: Remove broken LDR (literal) uprobe support
+Date: Mon, 21 Oct 2024 12:24:42 +0200
+Message-ID: <20241021102250.924650574@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 665a58fe663ac7a9ea618dc0b29881649324b116 upstream.
+commit acc450aa07099d071b18174c22a1119c57da8227 upstream.
 
-devm_kasprintf() can return a NULL pointer on failure but this returned
-value is not checked. Fix this lack and check the returned value.
+The simulate_ldr_literal() and simulate_ldrsw_literal() functions are
+unsafe to use for uprobes. Both functions were originally written for
+use with kprobes, and access memory with plain C accesses. When uprobes
+was added, these were reused unmodified even though they cannot safely
+access user memory.
 
-Found by code review.
+There are three key problems:
 
+1) The plain C accesses do not have corresponding extable entries, and
+   thus if they encounter a fault the kernel will treat these as
+   unintentional accesses to user memory, resulting in a BUG() which
+   will kill the kernel thread, and likely lead to further issues (e.g.
+   lockup or panic()).
+
+2) The plain C accesses are subject to HW PAN and SW PAN, and so when
+   either is in use, any attempt to simulate an access to user memory
+   will fault. Thus neither simulate_ldr_literal() nor
+   simulate_ldrsw_literal() can do anything useful when simulating a
+   user instruction on any system with HW PAN or SW PAN.
+
+3) The plain C accesses are privileged, as they run in kernel context,
+   and in practice can access a small range of kernel virtual addresses.
+   The instructions they simulate have a range of +/-1MiB, and since the
+   simulated instructions must itself be a user instructions in the
+   TTBR0 address range, these can address the final 1MiB of the TTBR1
+   acddress range by wrapping downwards from an address in the first
+   1MiB of the TTBR0 address range.
+
+   In contemporary kernels the last 8MiB of TTBR1 address range is
+   reserved, and accesses to this will always fault, meaning this is no
+   worse than (1).
+
+   Historically, it was theoretically possible for the linear map or
+   vmemmap to spill into the final 8MiB of the TTBR1 address range, but
+   in practice this is extremely unlikely to occur as this would
+   require either:
+
+   * Having enough physical memory to fill the entire linear map all the
+     way to the final 1MiB of the TTBR1 address range.
+
+   * Getting unlucky with KASLR randomization of the linear map such
+     that the populated region happens to overlap with the last 1MiB of
+     the TTBR address range.
+
+   ... and in either case if we were to spill into the final page there
+   would be larger problems as the final page would alias with error
+   pointers.
+
+Practically speaking, (1) and (2) are the big issues. Given there have
+been no reports of problems since the broken code was introduced, it
+appears that no-one is relying on probing these instructions with
+uprobes.
+
+Avoid these issues by not allowing uprobes on LDR (literal) and LDRSW
+(literal), limiting the use of simulate_ldr_literal() and
+simulate_ldrsw_literal() to kprobes. Attempts to place uprobes on LDR
+(literal) and LDRSW (literal) will be rejected as
+arm_probe_decode_insn() will return INSN_REJECTED. In future we can
+consider introducing working uprobes support for these instructions, but
+this will require more significant work.
+
+Fixes: 9842ceae9fa8 ("arm64: Add uprobe support")
 Cc: stable@vger.kernel.org
-Fixes: a0f160ffcb83 ("pinctrl: add pinctrl/GPIO driver for Apple SoCs")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/20240905020917.356534-1-make24@iscas.ac.cn
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20241008155851.801546-2-mark.rutland@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-apple-gpio.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/kernel/probes/decode-insn.c |   16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/drivers/pinctrl/pinctrl-apple-gpio.c
-+++ b/drivers/pinctrl/pinctrl-apple-gpio.c
-@@ -474,6 +474,9 @@ static int apple_gpio_pinctrl_probe(stru
- 	for (i = 0; i < npins; i++) {
- 		pins[i].number = i;
- 		pins[i].name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "PIN%u", i);
-+		if (!pins[i].name)
-+			return -ENOMEM;
+--- a/arch/arm64/kernel/probes/decode-insn.c
++++ b/arch/arm64/kernel/probes/decode-insn.c
+@@ -99,10 +99,6 @@ arm_probe_decode_insn(probe_opcode_t ins
+ 	    aarch64_insn_is_blr(insn) ||
+ 	    aarch64_insn_is_ret(insn)) {
+ 		api->handler = simulate_br_blr_ret;
+-	} else if (aarch64_insn_is_ldr_lit(insn)) {
+-		api->handler = simulate_ldr_literal;
+-	} else if (aarch64_insn_is_ldrsw_lit(insn)) {
+-		api->handler = simulate_ldrsw_literal;
+ 	} else {
+ 		/*
+ 		 * Instruction cannot be stepped out-of-line and we don't
+@@ -140,6 +136,17 @@ arm_kprobe_decode_insn(kprobe_opcode_t *
+ 	probe_opcode_t insn = le32_to_cpu(*addr);
+ 	probe_opcode_t *scan_end = NULL;
+ 	unsigned long size = 0, offset = 0;
++	struct arch_probe_insn *api = &asi->api;
 +
- 		pins[i].drv_data = pctl;
- 		pin_names[i] = pins[i].name;
- 		pin_nums[i] = i;
++	if (aarch64_insn_is_ldr_lit(insn)) {
++		api->handler = simulate_ldr_literal;
++		decoded = INSN_GOOD_NO_SLOT;
++	} else if (aarch64_insn_is_ldrsw_lit(insn)) {
++		api->handler = simulate_ldrsw_literal;
++		decoded = INSN_GOOD_NO_SLOT;
++	} else {
++		decoded = arm_probe_decode_insn(insn, &asi->api);
++	}
+ 
+ 	/*
+ 	 * If there's a symbol defined in front of and near enough to
+@@ -157,7 +164,6 @@ arm_kprobe_decode_insn(kprobe_opcode_t *
+ 		else
+ 			scan_end = addr - MAX_ATOMIC_CONTEXT_SIZE;
+ 	}
+-	decoded = arm_probe_decode_insn(insn, &asi->api);
+ 
+ 	if (decoded != INSN_REJECTED && scan_end)
+ 		if (is_probed_address_atomic(addr - 1, scan_end))
 
 
 
