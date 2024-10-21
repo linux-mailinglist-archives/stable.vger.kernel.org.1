@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-87524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A5779A6570
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:56:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 799419A657F
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:57:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79DD61C223B1
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:56:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D1EE1F21BA1
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:57:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D8111E6DE1;
-	Mon, 21 Oct 2024 10:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 602321E7C32;
+	Mon, 21 Oct 2024 10:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sfk8Y50h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KlthxIbU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247E73A1CD;
-	Mon, 21 Oct 2024 10:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193EF1E47B8;
+	Mon, 21 Oct 2024 10:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507861; cv=none; b=py93AT5eF0bo7ieFKHF4La/AG8ghnG4tX2QY9CyhLnJkp8y06bP8C3HHlZ/tGsl4wxQ5LCiBgPw+L2mPhVYcaeYFr1qy33lWzUMF5eRY9m0USP8lTjz2gMuYxySEIviks4ESXye0AV+XUuTzz+mrCa6irtg18+536UNCNF9xf9w=
+	t=1729507891; cv=none; b=HO6H2HceWsiDMXTn+K4BNP7NC4SL+hhSWcHGUxhuhbEeXRQHmrw7lKGTfvV7JaZfqMvIBcuyIKM2gnyLNn0+La/8iajx0maYMPIB39jzB237TY6/iZDZOrMZ1dDkScF4poLqykn/Zdk8v3XaCIt4wnZGG54mx4m5CsGE9xeGRFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507861; c=relaxed/simple;
-	bh=SXtGcLJVELtou709sWXMuZFPkBMGUZBOZ2omttUfJRw=;
+	s=arc-20240116; t=1729507891; c=relaxed/simple;
+	bh=thz/05KF6Ih2eJkGU1Fy89xxaZIPbIwW2gixrg6CwRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rPe+Y/Cm1RSqvkSQEGsiLvoQ6grgK40qX4v8PhRM4y6pw8UALwI6QMSDjrAtAVpFNd8E8r/qDUlTqwJoPcNQFrxrTizkIT2Nqx1KgRLXZqm10J3UGRHX3BqGULvrQN/xTdVqN++98SdCnctDX/Gjugaw4ZsbddL1Ri0JLHKv974=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sfk8Y50h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C55C4CEE5;
-	Mon, 21 Oct 2024 10:51:00 +0000 (UTC)
+	 MIME-Version; b=VkMiHNjBaG2Nl4CnE1g6MunVehtfGRDkYmhLW7bN376+AGNCSNMN/a6WH7StBRzQlDPrpLvAuhWIBv/P9nmhj9Pv/fh/+pzJ+/FTxZMlv+kL0XrznNuc8Kh1nt+Argc7nX4A77IQ38AWCzmqXUvEfhE1zgeoxiA6v8hNIZED/20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KlthxIbU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D37BC4CEC3;
+	Mon, 21 Oct 2024 10:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507861;
-	bh=SXtGcLJVELtou709sWXMuZFPkBMGUZBOZ2omttUfJRw=;
+	s=korg; t=1729507890;
+	bh=thz/05KF6Ih2eJkGU1Fy89xxaZIPbIwW2gixrg6CwRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sfk8Y50hJ9ItA3/PtYHeN2Z3wJoYUY7Cfl2MG/mdhCYvUA93MKjbpmFBD8Vl29RDi
-	 OCPm+t7PAV/N4P3GHjaNiiR5CxkOLPrH3Qa+Ht8Eb0z3IjirEzWGJ4ynLu5k4n9Xp4
-	 tLTiril+Q47JkTQKdpmTwYgkeCRDnsWm2mhUNo1M=
+	b=KlthxIbUXSb+VQ93/VNtBooMae0pj2rvhbtyAcmUWUbPldClJYXPmr4DiI/ckDMCC
+	 UY2bFschjLwpyc6w60jQqQOXh0rVuFzkLtY7iZ5qtfobvdhOpC1aozaYYYvr5Fhjue
+	 U5EVNh8TPV+HembYWUDysgSAA5ITNLvJl17Ci3Zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
 	Stable@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 26/52] iio: dac: ad5770r: add missing select REGMAP_SPI in Kconfig
-Date: Mon, 21 Oct 2024 12:25:47 +0200
-Message-ID: <20241021102242.650645938@linuxfoundation.org>
+Subject: [PATCH 5.10 27/52] iio: dac: ltc1660: add missing select REGMAP_SPI in Kconfig
+Date: Mon, 21 Oct 2024 12:25:48 +0200
+Message-ID: <20241021102242.688942713@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
 References: <20241021102241.624153108@linuxfoundation.org>
@@ -68,15 +68,15 @@ Content-Transfer-Encoding: 8bit
 
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit bcdab6f74c91cda19714354fd4e9e3ef3c9a78b3 upstream.
+commit 252ff06a4cb4e572cb3c7fcfa697db96b08a7781 upstream.
 
 This driver makes use of regmap_spi, but does not select the required
 module.
 Add the missing 'select REGMAP_SPI'.
 
-Fixes: cbbb819837f6 ("iio: dac: ad5770r: Add AD5770R support")
+Fixes: 8316cebd1e59 ("iio: dac: add support for ltc1660")
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241003-ad2s1210-select-v1-6-4019453f8c33@gmail.com
+Link: https://patch.msgid.link/20241003-ad2s1210-select-v1-7-4019453f8c33@gmail.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -86,14 +86,14 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/iio/dac/Kconfig
 +++ b/drivers/iio/dac/Kconfig
-@@ -191,6 +191,7 @@ config AD5764
- config AD5770R
- 	tristate "Analog Devices AD5770R IDAC driver"
- 	depends on SPI_MASTER
+@@ -272,6 +272,7 @@ config LPC18XX_DAC
+ config LTC1660
+ 	tristate "Linear Technology LTC1660/LTC1665 DAC SPI driver"
+ 	depends on SPI
 +	select REGMAP_SPI
  	help
- 	  Say yes here to build support for Analog Devices AD5770R Digital to
- 	  Analog Converter.
+ 	  Say yes here to build support for Linear Technology
+ 	  LTC1660 and LTC1665 Digital to Analog Converters.
 
 
 
