@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-87145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 755009A6369
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 578219A63E0
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:40:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19B931F22DD5
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14238281A74
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3BD11E7C3D;
-	Mon, 21 Oct 2024 10:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4B61E9098;
+	Mon, 21 Oct 2024 10:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VR7Sqx03"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hESZ+PTN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699AA1E7C24;
-	Mon, 21 Oct 2024 10:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA113195FEC;
+	Mon, 21 Oct 2024 10:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506728; cv=none; b=foB/Ksmqdp+rd7dzhhEBi/AixSyyR+1JJ240mgDgJIRV2iTeSjRpvmu8AReTUAigbVBb/ve3f2a1jV2KEIfxj7cMrH5lkaFNRHEMNmctiFs/QMkSNdqbh+c6pr1gsciTLZi73z8JJcK0fCXsjrzHg+c04a9jH01xKMxsEmuvEIs=
+	t=1729506993; cv=none; b=YboKQQQbmM0rfvLbzS+l+QZC9eDF88tyYzyyd/7j2byUbS3QlN9Rp3JGcCy7QRJfHUFwu4RNQ5KKtsas8ijeGpyhqjloYheCR9Q58FIIqMTpz0HHXzxrWrEHSPYyB/TfPmP5qeGykg4DyJw2KoW3XqEOjTKfcyjEqiRP0qFglGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506728; c=relaxed/simple;
-	bh=52Wb+kFHBBtP04/pJbBoWKhJJlkGptGVmgUS2rCPIBA=;
+	s=arc-20240116; t=1729506993; c=relaxed/simple;
+	bh=Y4iE72LHV9l6YQR/BPzs0UX6mTkWbbHYwbDU3NcRIjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z7RZW0j0FThrgUlAvOs9eBXPG8hWocP1odUKWz+gleLN3iKokRr54CLszcFo6M9JL4skUbsQ1XS4riA3dgBvdSHbvScwUbMXClQOPEqQZRUuk52P/LHzHriDmXmzGB47DXVcj/Rxmt7LEJYJfI2rFnvBzT0JIG/0qseuCeIZf44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VR7Sqx03; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B5EC4CEC3;
-	Mon, 21 Oct 2024 10:32:07 +0000 (UTC)
+	 MIME-Version; b=LBbvXLSmHwpXVVUu0XEaCJd8AdCxB2K/LyLan69prFUoDXoFub5IliL23KbwHeUdrz98PBOhhVs0SOhyukbQCshST74OaLAQ5thabmYGEx+Q7PzYjK9fRDFjuAvSuG1p2jsVRZ56F16fvRU8HFr1w20PDeyOITjWAcfnSueQBSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hESZ+PTN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E29C4CEC7;
+	Mon, 21 Oct 2024 10:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506728;
-	bh=52Wb+kFHBBtP04/pJbBoWKhJJlkGptGVmgUS2rCPIBA=;
+	s=korg; t=1729506992;
+	bh=Y4iE72LHV9l6YQR/BPzs0UX6mTkWbbHYwbDU3NcRIjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VR7Sqx03oWPQQ6MC7JDX+JCI43+2tL4nXG8+cBR16JBcKdim6O0+WGT0oniSxlNgb
-	 atYz70v8YPA5TCcni+cthKwL/mDsu4l5w6pWlaZwsPOUBsm1Db42brK5FvGjdZKH1A
-	 OrrQxLltw8iNPLRrMjUPS3udX05tf7VlT3HKXxwE=
+	b=hESZ+PTN/WxKS6kdLA3XUwcU7AtNx6JlLt9TYP/jURejnA++1qB4HhFnreHqWUR0L
+	 QacEY8mv0utw1q/BNEIfmbzYzI27cKlflmGkyEY4CKsQoE1rtdrSYABoeo8H2kiqVt
+	 T5mE2dlSRpeP5/MmPAmvEc6MIROeF/eed9fspn8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Lin <henryl@nvidia.com>
-Subject: [PATCH 6.11 100/135] xhci: tegra: fix checked USB2 port number
+	Nico Boehr <nrb@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>
+Subject: [PATCH 6.6 052/124] KVM: s390: gaccess: Check if guest address is in memslot
 Date: Mon, 21 Oct 2024 12:24:16 +0200
-Message-ID: <20241021102303.237308687@linuxfoundation.org>
+Message-ID: <20241021102258.743453118@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +62,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Lin <henryl@nvidia.com>
+From: Nico Boehr <nrb@linux.ibm.com>
 
-commit 7d381137cb6ecf558ef6698c7730ddd482d4c8f2 upstream.
+commit e8061f06185be0a06a73760d6526b8b0feadfe52 upstream.
 
-If USB virtualizatoin is enabled, USB2 ports are shared between all
-Virtual Functions. The USB2 port number owned by an USB2 root hub in
-a Virtual Function may be less than total USB2 phy number supported
-by the Tegra XUSB controller.
+Previously, access_guest_page() did not check whether the given guest
+address is inside of a memslot. This is not a problem, since
+kvm_write_guest_page/kvm_read_guest_page return -EFAULT in this case.
 
-Using total USB2 phy number as port number to check all PORTSC values
-would cause invalid memory access.
+However, -EFAULT is also returned when copy_to/from_user fails.
 
-[  116.923438] Unable to handle kernel paging request at virtual address 006c622f7665642f
-...
-[  117.213640] Call trace:
-[  117.216783]  tegra_xusb_enter_elpg+0x23c/0x658
-[  117.222021]  tegra_xusb_runtime_suspend+0x40/0x68
-[  117.227260]  pm_generic_runtime_suspend+0x30/0x50
-[  117.232847]  __rpm_callback+0x84/0x3c0
-[  117.237038]  rpm_suspend+0x2dc/0x740
-[  117.241229] pm_runtime_work+0xa0/0xb8
-[  117.245769]  process_scheduled_works+0x24c/0x478
-[  117.251007]  worker_thread+0x23c/0x328
-[  117.255547]  kthread+0x104/0x1b0
-[  117.259389]  ret_from_fork+0x10/0x20
-[  117.263582] Code: 54000222 f9461ae8 f8747908 b4ffff48 (f9400100)
+When emulating a guest instruction, the address being outside a memslot
+usually means that an addressing exception should be injected into the
+guest.
 
-Cc: stable@vger.kernel.org # v6.3+
-Fixes: a30951d31b25 ("xhci: tegra: USB2 pad power controls")
-Signed-off-by: Henry Lin <henryl@nvidia.com>
-Link: https://lore.kernel.org/r/20241014042134.27664-1-henryl@nvidia.com
+Failure in copy_to/from_user however indicates that something is wrong
+in userspace and hence should be handled there.
+
+To be able to distinguish these two cases, return PGM_ADDRESSING in
+access_guest_page() when the guest address is outside guest memory. In
+access_guest_real(), populate vcpu->arch.pgm.code such that
+kvm_s390_inject_prog_cond() can be used in the caller for injecting into
+the guest (if applicable).
+
+Since this adds a new return value to access_guest_page(), we need to make
+sure that other callers are not confused by the new positive return value.
+
+There are the following users of access_guest_page():
+- access_guest_with_key() does the checking itself (in
+  guest_range_to_gpas()), so this case should never happen. Even if, the
+  handling is set up properly.
+- access_guest_real() just passes the return code to its callers, which
+  are:
+    - read_guest_real() - see below
+    - write_guest_real() - see below
+
+There are the following users of read_guest_real():
+- ar_translation() in gaccess.c which already returns PGM_*
+- setup_apcb10(), setup_apcb00(), setup_apcb11() in vsie.c which always
+  return -EFAULT on read_guest_read() nonzero return - no change
+- shadow_crycb(), handle_stfle() always present this as validity, this
+  could be handled better but doesn't change current behaviour - no change
+
+There are the following users of write_guest_real():
+- kvm_s390_store_status_unloaded() always returns -EFAULT on
+  write_guest_real() failure.
+
+Fixes: 2293897805c2 ("KVM: s390: add architecture compliant guest access functions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240917151904.74314-2-nrb@linux.ibm.com
+Acked-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-tegra.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/kvm/gaccess.c |    4 ++++
+ arch/s390/kvm/gaccess.h |   14 ++++++++------
+ 2 files changed, 12 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/host/xhci-tegra.c
-+++ b/drivers/usb/host/xhci-tegra.c
-@@ -2183,7 +2183,7 @@ static int tegra_xusb_enter_elpg(struct
- 		goto out;
- 	}
+--- a/arch/s390/kvm/gaccess.c
++++ b/arch/s390/kvm/gaccess.c
+@@ -1001,6 +1001,8 @@ static int access_guest_page(struct kvm
+ 	const gfn_t gfn = gpa_to_gfn(gpa);
+ 	int rc;
  
--	for (i = 0; i < tegra->num_usb_phys; i++) {
-+	for (i = 0; i < xhci->usb2_rhub.num_ports; i++) {
- 		if (!xhci->usb2_rhub.ports[i])
- 			continue;
- 		portsc = readl(xhci->usb2_rhub.ports[i]->addr);
++	if (!gfn_to_memslot(kvm, gfn))
++		return PGM_ADDRESSING;
+ 	if (mode == GACC_STORE)
+ 		rc = kvm_write_guest_page(kvm, gfn, data, offset, len);
+ 	else
+@@ -1158,6 +1160,8 @@ int access_guest_real(struct kvm_vcpu *v
+ 		gra += fragment_len;
+ 		data += fragment_len;
+ 	}
++	if (rc > 0)
++		vcpu->arch.pgm.code = rc;
+ 	return rc;
+ }
+ 
+--- a/arch/s390/kvm/gaccess.h
++++ b/arch/s390/kvm/gaccess.h
+@@ -405,11 +405,12 @@ int read_guest_abs(struct kvm_vcpu *vcpu
+  * @len: number of bytes to copy
+  *
+  * Copy @len bytes from @data (kernel space) to @gra (guest real address).
+- * It is up to the caller to ensure that the entire guest memory range is
+- * valid memory before calling this function.
+  * Guest low address and key protection are not checked.
+  *
+- * Returns zero on success or -EFAULT on error.
++ * Returns zero on success, -EFAULT when copying from @data failed, or
++ * PGM_ADRESSING in case @gra is outside a memslot. In this case, pgm check info
++ * is also stored to allow injecting into the guest (if applicable) using
++ * kvm_s390_inject_prog_cond().
+  *
+  * If an error occurs data may have been copied partially to guest memory.
+  */
+@@ -428,11 +429,12 @@ int write_guest_real(struct kvm_vcpu *vc
+  * @len: number of bytes to copy
+  *
+  * Copy @len bytes from @gra (guest real address) to @data (kernel space).
+- * It is up to the caller to ensure that the entire guest memory range is
+- * valid memory before calling this function.
+  * Guest key protection is not checked.
+  *
+- * Returns zero on success or -EFAULT on error.
++ * Returns zero on success, -EFAULT when copying to @data failed, or
++ * PGM_ADRESSING in case @gra is outside a memslot. In this case, pgm check info
++ * is also stored to allow injecting into the guest (if applicable) using
++ * kvm_s390_inject_prog_cond().
+  *
+  * If an error occurs data may have been copied partially to kernel space.
+  */
 
 
 
