@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-87505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AD559A6554
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:56:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A429A6452
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:45:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F7A71F21182
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:56:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB9F52817AB
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:45:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34BA81E6DD4;
-	Mon, 21 Oct 2024 10:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BFDD1E882B;
+	Mon, 21 Oct 2024 10:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bpORBYJu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dIUeunJD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CDA1E1C11;
-	Mon, 21 Oct 2024 10:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F6A1E47CD;
+	Mon, 21 Oct 2024 10:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507805; cv=none; b=Zz49MPHuQosw4DHLxLKiYadlVNh1q6uQSpUl1d46o4BWy9GRaL7CQBFOGUYmRs453hENiOB8grbS69sstMISsHq6oZPcOwnT7qyzFYXeZrOafgB2tZ6NR5XJQ1VyvF/703flZ/a4QKgtICu5yUh63gP+9xtgFyl+j14NszQBZCY=
+	t=1729507195; cv=none; b=ZU3esOy0GJOdE6uwTaebNFcZxdsC/DPI7uwVtsIbxsaYC+MbqpAEZMQl38krmXtuJFcJUop1lY4bbT9JF4IYtaaO+GBtFz+HWn14S/4HnpmkAhHz8jdtXhNZ72ubkgLfTScuK7FvVtGszOZ4iqZZ+idm2X5YU+oShzz6SqGNwAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507805; c=relaxed/simple;
-	bh=ZTEO9dhrlmEgVCbs+aDxkKYXJARZyRQv8fquBqA0plo=;
+	s=arc-20240116; t=1729507195; c=relaxed/simple;
+	bh=HZtFgva5utvgqEbZ2aTR0OBXrNQ8nFeOVaIVcKRpt74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RjmAFoo6SgL0ECnbhXOEulLwX1jMOuHv8vTOk0/58HvXGPutxQVFOnj63XgOeBxT7sHN/2fxd9ieuGLQVv9OwM2hXHAmW2ehOr3irOLJyrOr7NJJUyIb46rrBIz9WRytu5x2k+DcLK9RyZwn63HpXEoRXjHisagmvRReohm40Xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bpORBYJu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65144C4CEC3;
-	Mon, 21 Oct 2024 10:50:04 +0000 (UTC)
+	 MIME-Version; b=Pk4ePssvvHoOzmE++3/shFUFls+f1YR/V/osvA1uY2i6taExPrRFsi4KlfQrNLOj6AOQSkGd5i5Yk5sfq8XiemoqF22mRbs0nggmcFz9HC3s3IlEFTfzRy0dq/2abjHEw0bi2tFJyrUld4LUyswgW0t1uqG1+4whwlZn21itfMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dIUeunJD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFCD7C4CEC3;
+	Mon, 21 Oct 2024 10:39:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507804;
-	bh=ZTEO9dhrlmEgVCbs+aDxkKYXJARZyRQv8fquBqA0plo=;
+	s=korg; t=1729507195;
+	bh=HZtFgva5utvgqEbZ2aTR0OBXrNQ8nFeOVaIVcKRpt74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bpORBYJuUhNT5jIin4UCB8wdjLeSw2nwsQr/BJYZ/Sd9C0tdd5RGRrk/PbqDGPQiv
-	 FYH73y3xXfKk5FadcMaUxmleZnbaAEIgEeEKINpXU2bd83dq2zRg1i9aL8eQIXHvOr
-	 Od/1blbQyokyHU94T8fnzNuGHJakipYJ6BGXN4tE=
+	b=dIUeunJD5m7WS62LLahLp73xqJDI5xqIHYUmHOqRbSVgigUmseYx65T1fcHYvh9BO
+	 mk0j1kvoIe7hOYzVTWipEN0NydfVkuXJq8nMW5gQ86e9K6Mtjx1uq4Y7260mP6PNh0
+	 Ie7L6aQftLJrvdjw7D7Csimpp9CYY4uLSjPwgURM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 03/52] posix-clock: Fix missing timespec64 check in pc_clock_settime()
+Subject: [PATCH 6.6 120/124] selftests: mptcp: join: change capture/checksum as bool
 Date: Mon, 21 Oct 2024 12:25:24 +0200
-Message-ID: <20241021102241.760860698@linuxfoundation.org>
+Message-ID: <20241021102301.363989240@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
-References: <20241021102241.624153108@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +62,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-commit d8794ac20a299b647ba9958f6d657051fc51a540 upstream.
+commit 8c6f6b4bb53a904f922dfb90d566391d3feee32c upstream.
 
-As Andrew pointed out, it will make sense that the PTP core
-checked timespec64 struct's tv_sec and tv_nsec range before calling
-ptp->info->settime64().
+To maintain consistency with other scripts, this patch changes vars
+'capture' and 'checksum' as bool vars in mptcp_join.
 
-As the man manual of clock_settime() said, if tp.tv_sec is negative or
-tp.tv_nsec is outside the range [0..999,999,999], it should return EINVAL,
-which include dynamic clocks which handles PTP clock, and the condition is
-consistent with timespec64_valid(). As Thomas suggested, timespec64_valid()
-only check the timespec is valid, but not ensure that the time is
-in a valid range, so check it ahead using timespec64_valid_strict()
-in pc_clock_settime() and return -EINVAL if not valid.
-
-There are some drivers that use tp->tv_sec and tp->tv_nsec directly to
-write registers without validity checks and assume that the higher layer
-has checked it, which is dangerous and will benefit from this, such as
-hclge_ptp_settime(), igb_ptp_settime_i210(), _rcar_gen4_ptp_settime(),
-and some drivers can remove the checks of itself.
-
-Cc: stable@vger.kernel.org
-Fixes: 0606f422b453 ("posix clocks: Introduce dynamic clocks")
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Suggested-by: Andrew Lunn <andrew@lunn.ch>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://patch.msgid.link/20241009072302.1754567-2-ruanjinjie@huawei.com
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240223-upstream-net-next-20240223-misc-improvements-v1-7-b6c8a10396bd@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 5afca7e996c4 ("selftests: mptcp: join: test for prohibited MPC to port-based endp")
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/posix-clock.c |    3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
---- a/kernel/time/posix-clock.c
-+++ b/kernel/time/posix-clock.c
-@@ -299,6 +299,9 @@ static int pc_clock_settime(clockid_t id
- 		goto out;
- 	}
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -30,11 +30,11 @@ iptables="iptables"
+ ip6tables="ip6tables"
+ timeout_poll=30
+ timeout_test=$((timeout_poll * 2 + 1))
+-capture=0
+-checksum=0
++capture=false
++checksum=false
+ ip_mptcp=0
+ check_invert=0
+-validate_checksum=0
++validate_checksum=false
+ init=0
+ evts_ns1=""
+ evts_ns2=""
+@@ -99,7 +99,7 @@ init_partial()
+ 		ip netns exec $netns sysctl -q net.mptcp.pm_type=0 2>/dev/null || true
+ 		ip netns exec $netns sysctl -q net.ipv4.conf.all.rp_filter=0
+ 		ip netns exec $netns sysctl -q net.ipv4.conf.default.rp_filter=0
+-		if [ $checksum -eq 1 ]; then
++		if $checksum; then
+ 			ip netns exec $netns sysctl -q net.mptcp.checksum_enabled=1
+ 		fi
+ 	done
+@@ -386,7 +386,7 @@ reset_with_checksum()
+ 	ip netns exec $ns1 sysctl -q net.mptcp.checksum_enabled=$ns1_enable
+ 	ip netns exec $ns2 sysctl -q net.mptcp.checksum_enabled=$ns2_enable
  
-+	if (!timespec64_valid_strict(ts))
-+		return -EINVAL;
-+
- 	if (cd.clk->ops.clock_settime)
- 		err = cd.clk->ops.clock_settime(cd.clk, ts);
+-	validate_checksum=1
++	validate_checksum=true
+ }
+ 
+ reset_with_allow_join_id0()
+@@ -419,7 +419,7 @@ reset_with_allow_join_id0()
+ setup_fail_rules()
+ {
+ 	check_invert=1
+-	validate_checksum=1
++	validate_checksum=true
+ 	local i="$1"
+ 	local ip="${2:-4}"
+ 	local tables
+@@ -1024,7 +1024,7 @@ do_transfer()
+ 	:> "$sout"
+ 	:> "$capout"
+ 
+-	if [ $capture -eq 1 ]; then
++	if $capture; then
+ 		local capuser
+ 		if [ -z $SUDO_USER ] ; then
+ 			capuser=""
+@@ -1125,7 +1125,7 @@ do_transfer()
+ 	wait $spid
+ 	local rets=$?
+ 
+-	if [ $capture -eq 1 ]; then
++	if $capture; then
+ 	    sleep 1
+ 	    kill $cappid
+ 	fi
+@@ -1514,7 +1514,7 @@ chk_join_nr()
  	else
+ 		print_ok
+ 	fi
+-	if [ $validate_checksum -eq 1 ]; then
++	if $validate_checksum; then
+ 		chk_csum_nr $csum_ns1 $csum_ns2
+ 		chk_fail_nr $fail_nr $fail_nr
+ 		chk_rst_nr $rst_nr $rst_nr
+@@ -3960,10 +3960,10 @@ while getopts "${all_tests_args}cCih" op
+ 			tests+=("${all_tests[${opt}]}")
+ 			;;
+ 		c)
+-			capture=1
++			capture=true
+ 			;;
+ 		C)
+-			checksum=1
++			checksum=true
+ 			;;
+ 		i)
+ 			ip_mptcp=1
 
 
 
