@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-87226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2737A9A6485
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:47:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89FAC9A6360
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:34:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4BE48B29FEB
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:40:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C7E31F21681
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 058201E9099;
-	Mon, 21 Oct 2024 10:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20331E7657;
+	Mon, 21 Oct 2024 10:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0EZ9uvRS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="av3HEhYF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC801E9064;
-	Mon, 21 Oct 2024 10:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89041E503D;
+	Mon, 21 Oct 2024 10:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506971; cv=none; b=CdTpqqVgBjwSttFqrJG7dtVhp1vvegrK+wYYGoi4qkfOQnJE2BIe6gB9DlGC3V6WWPk1JMGxTjjc2dL4A0qHBLzeij/e01uxlJ6kQiJJ760uPkE+Of5yLgu7NASTaRzQ2+BCDMhV/jQTDDpfrVoYx+EaSt5tMiwC+9bzOfanwJk=
+	t=1729506710; cv=none; b=MUOidF3cCtx/TUqjyB/bMEpOyX99dlQJTmu+03UNPpr/eBipPId+jDGzqSM8roKGqHRg3aYtcoqPe/bDoSWw14kB9txUH0Pu024HBwfJmFH68v/p3cr0iurPCPnu7uLsK4BCeJNAtxGYPirDDMDkRPgF45QA0Hnq9YOrevvzAQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506971; c=relaxed/simple;
-	bh=DP82pCz+eWbKGnPmfsFKUIFa8bFamylh+dlJKRrksvU=;
+	s=arc-20240116; t=1729506710; c=relaxed/simple;
+	bh=JAfgPh9TIdB+oXNO+KiPuUsQSTG56j2n3quUqgDZb+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kMcNIcTQ9DWPdu6m7LiXkKAzAhlEdV5I//S4jYbLGukwpKZhwQMH8D+di2/oceKGeBko5VRG4HsNMr8YkDqHnunKIayqGcU+BAxxaX4wL1ZR+wxuW3GGV8KJoyt3CS+oCdARxpuZgS+F7PlBgoiszJ/yb+vzSh2GEeSwISZFt/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0EZ9uvRS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F058C4CEC3;
-	Mon, 21 Oct 2024 10:36:11 +0000 (UTC)
+	 MIME-Version; b=rGjqdb1S8kh3EauOFz3b6G40E9F9EmrtEi5L8Z9xAGU7KhqQ4Hd6pIR1ZmkZw+MIyhyTLwKp4+AQZEHLUFrULAKWXcv3Xlfy00jgYa8nYh7nzwoV7PhnEpFWTOmPOC656CXQYM5O6MzJMt2Et0Ff1vfEHan3OwLgCsPo71Bj/E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=av3HEhYF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A82FC4CEC3;
+	Mon, 21 Oct 2024 10:31:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506971;
-	bh=DP82pCz+eWbKGnPmfsFKUIFa8bFamylh+dlJKRrksvU=;
+	s=korg; t=1729506710;
+	bh=JAfgPh9TIdB+oXNO+KiPuUsQSTG56j2n3quUqgDZb+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0EZ9uvRSnkMA6z88E19Aodt5iFUxAwOxhWguxGuvPQ2+g5DhOhP/4VuM4zeDrv4VB
-	 SicFSC6pRB2gMBbY5y19yWAUK/uMgJD7pcmVdLagO9GpklTlLCHMqy+dMy28xxAouq
-	 SBaWXfFmBZM4Oue+i8jLArqmzFpd168kytvupIek=
+	b=av3HEhYFu7PolwxBFnX9VSHLp212AfTPgopRlWFsxkPDDTbUCpu1KjNjSJW9Q+gHs
+	 D1uQf1LseqFWycvbN5vsCSwa9GKyC/kSTqRRyspV1WDuivqdBTV0wZeB/v8LKPcUg3
+	 xgjmJwId8v0m/pXRG/dSGXI743EByssqgBf3jYeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Frank Li <Frank.li@nxp.com>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>, Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 046/124] net: fec: Move `fec_ptp_read()` to the top of the file
-Date: Mon, 21 Oct 2024 12:24:10 +0200
-Message-ID: <20241021102258.509354184@linuxfoundation.org>
+	patches@lists.linux.dev,
+	Aaron Thompson <dev@aaront.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.11 095/135] Bluetooth: Remove debugfs directory on module init failure
+Date: Mon, 21 Oct 2024 12:24:11 +0200
+Message-ID: <20241021102303.041635877@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,105 +59,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Csókás, Bence <csokas.bence@prolan.hu>
+From: Aaron Thompson <dev@aaront.org>
 
-commit 4374a1fe580a14f6152752390c678d90311df247 upstream.
+commit 1db4564f101b47188c1b71696bd342ef09172b22 upstream.
 
-This function is used in `fec_ptp_enable_pps()` through
-struct cyclecounter read(). Moving the declaration makes
-it clearer, what's happening.
+If bt_init() fails, the debugfs directory currently is not removed. If
+the module is loaded again after that, the debugfs directory is not set
+up properly due to the existing directory.
 
-Suggested-by: Frank Li <Frank.li@nxp.com>
-Link: https://lore.kernel.org/netdev/20240805144754.2384663-1-csokas.bence@prolan.hu/T/#ma6c21ad264016c24612048b1483769eaff8cdf20
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20240812094713.2883476-1-csokas.bence@prolan.hu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  # modprobe bluetooth
+  # ls -laF /sys/kernel/debug/bluetooth
+  total 0
+  drwxr-xr-x  2 root root 0 Sep 27 14:26 ./
+  drwx------ 31 root root 0 Sep 27 14:25 ../
+  -r--r--r--  1 root root 0 Sep 27 14:26 l2cap
+  -r--r--r--  1 root root 0 Sep 27 14:26 sco
+  # modprobe -r bluetooth
+  # ls -laF /sys/kernel/debug/bluetooth
+  ls: cannot access '/sys/kernel/debug/bluetooth': No such file or directory
+  #
+
+  # modprobe bluetooth
+  modprobe: ERROR: could not insert 'bluetooth': Invalid argument
+  # dmesg | tail -n 6
+  Bluetooth: Core ver 2.22
+  NET: Registered PF_BLUETOOTH protocol family
+  Bluetooth: HCI device and connection manager initialized
+  Bluetooth: HCI socket layer initialized
+  Bluetooth: Faking l2cap_init() failure for testing
+  NET: Unregistered PF_BLUETOOTH protocol family
+  # ls -laF /sys/kernel/debug/bluetooth
+  total 0
+  drwxr-xr-x  2 root root 0 Sep 27 14:31 ./
+  drwx------ 31 root root 0 Sep 27 14:26 ../
+  #
+
+  # modprobe bluetooth
+  # dmesg | tail -n 7
+  Bluetooth: Core ver 2.22
+  debugfs: Directory 'bluetooth' with parent '/' already present!
+  NET: Registered PF_BLUETOOTH protocol family
+  Bluetooth: HCI device and connection manager initialized
+  Bluetooth: HCI socket layer initialized
+  Bluetooth: L2CAP socket layer initialized
+  Bluetooth: SCO socket layer initialized
+  # ls -laF /sys/kernel/debug/bluetooth
+  total 0
+  drwxr-xr-x  2 root root 0 Sep 27 14:31 ./
+  drwx------ 31 root root 0 Sep 27 14:26 ../
+  #
+
+Cc: stable@vger.kernel.org
+Fixes: ffcecac6a738 ("Bluetooth: Create root debugfs directory during module init")
+Signed-off-by: Aaron Thompson <dev@aaront.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/fec_ptp.c |   50 +++++++++++++++----------------
- 1 file changed, 25 insertions(+), 25 deletions(-)
+ net/bluetooth/af_bluetooth.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -91,6 +91,30 @@
- #define FEC_PTP_MAX_NSEC_COUNTER	0x80000000ULL
- 
- /**
-+ * fec_ptp_read - read raw cycle counter (to be used by time counter)
-+ * @cc: the cyclecounter structure
-+ *
-+ * this function reads the cyclecounter registers and is called by the
-+ * cyclecounter structure used to construct a ns counter from the
-+ * arbitrary fixed point registers
-+ */
-+static u64 fec_ptp_read(const struct cyclecounter *cc)
-+{
-+	struct fec_enet_private *fep =
-+		container_of(cc, struct fec_enet_private, cc);
-+	u32 tempval;
-+
-+	tempval = readl(fep->hwp + FEC_ATIME_CTRL);
-+	tempval |= FEC_T_CTRL_CAPTURE;
-+	writel(tempval, fep->hwp + FEC_ATIME_CTRL);
-+
-+	if (fep->quirks & FEC_QUIRK_BUG_CAPTURE)
-+		udelay(1);
-+
-+	return readl(fep->hwp + FEC_ATIME);
-+}
-+
-+/**
-  * fec_ptp_enable_pps
-  * @fep: the fec_enet_private structure handle
-  * @enable: enable the channel pps output
-@@ -136,7 +160,7 @@ static int fec_ptp_enable_pps(struct fec
- 		 * NSEC_PER_SEC - ts.tv_nsec. Add the remaining nanoseconds
- 		 * to current timer would be next second.
- 		 */
--		tempval = fep->cc.read(&fep->cc);
-+		tempval = fec_ptp_read(&fep->cc);
- 		/* Convert the ptp local counter to 1588 timestamp */
- 		ns = timecounter_cyc2time(&fep->tc, tempval);
- 		ts = ns_to_timespec64(ns);
-@@ -272,30 +296,6 @@ static enum hrtimer_restart fec_ptp_pps_
+--- a/net/bluetooth/af_bluetooth.c
++++ b/net/bluetooth/af_bluetooth.c
+@@ -825,6 +825,7 @@ cleanup_sysfs:
+ 	bt_sysfs_cleanup();
+ cleanup_led:
+ 	bt_leds_cleanup();
++	debugfs_remove_recursive(bt_debugfs);
+ 	return err;
  }
  
- /**
-- * fec_ptp_read - read raw cycle counter (to be used by time counter)
-- * @cc: the cyclecounter structure
-- *
-- * this function reads the cyclecounter registers and is called by the
-- * cyclecounter structure used to construct a ns counter from the
-- * arbitrary fixed point registers
-- */
--static u64 fec_ptp_read(const struct cyclecounter *cc)
--{
--	struct fec_enet_private *fep =
--		container_of(cc, struct fec_enet_private, cc);
--	u32 tempval;
--
--	tempval = readl(fep->hwp + FEC_ATIME_CTRL);
--	tempval |= FEC_T_CTRL_CAPTURE;
--	writel(tempval, fep->hwp + FEC_ATIME_CTRL);
--
--	if (fep->quirks & FEC_QUIRK_BUG_CAPTURE)
--		udelay(1);
--
--	return readl(fep->hwp + FEC_ATIME);
--}
--
--/**
-  * fec_ptp_start_cyclecounter - create the cycle counter from hw
-  * @ndev: network device
-  *
 
 
 
