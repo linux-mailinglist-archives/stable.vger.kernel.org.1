@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-87467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F0129A6514
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:53:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEFA59A6581
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:57:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E00A1C220D1
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:53:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 603011F21AEF
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CDA41F4FD3;
-	Mon, 21 Oct 2024 10:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581B01E8820;
+	Mon, 21 Oct 2024 10:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRUvV1dB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4ll3q+R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B961F4FC3;
-	Mon, 21 Oct 2024 10:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8EE1E47A6;
+	Mon, 21 Oct 2024 10:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507691; cv=none; b=G1eep+A94L/MOET5L6SxMRmxRgqT6uyaNawe9gX+V91nfwl5r0mvcsrwKt1cQ1fB+al6ZK17llnJsjRsy0cfATYnDzi/gjbNJXViHcoO1pvL5uW8QUrhfS/cUVUJEWIMGlCxwyCfnNSvuAgSXSVN9OKj5NesL3eE2CU9n7fRyT8=
+	t=1729507897; cv=none; b=KmNXDSYbNcEdbTL0bfIxNoIgoh0HWwCbGd03n3Y69GNlwRcCSAL2XJiVWbZFHoiFIZIaqlZthVNJgkfkul4lAccwRf3yIKjJzB/VshLyz3dNiesjH+8ZsfHU+d8SrvHy6IpVpp8U0cm/39d3Sre7+sIMuJoGPIk1XouWQzi1Ud0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507691; c=relaxed/simple;
-	bh=8OYAOMcAkNWxPa7s00mVd/xbkiU9mXfknPeqw62ARlQ=;
+	s=arc-20240116; t=1729507897; c=relaxed/simple;
+	bh=F50Z4NPjwjX9X3qfxmMWvw8hrPSw196GuWhUaknVbyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DGQzpWx9x04skDPcWP8XXUzOKdWJZJaQIpBhuIB8PRg4mUaEI2QYEfy3jqVrVY2hxBbPKFQ3shhhivkEdTQZ/HjzUJJHu96cvkGtxuJXELc3FU7oBNNrMQ20z3EiD5XcgwgxG715LkvdhxFNbdHhIcdU+U/8myjqpBwiWuk+2dA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRUvV1dB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8566DC4CEC3;
-	Mon, 21 Oct 2024 10:48:10 +0000 (UTC)
+	 MIME-Version; b=oKF/UIxqhf2+BlQHK8VUNadfAnOZ2jetvECdcn4Bkjw6tdrgGQTYAgvsXiCwiYXCMNkS+vO6BBoKdNTZHwdo6xTuFBI0Oy8lGAV7cupjh3nKUTTwUCTfXpkEetUdHBkYOTX8lpTLbiVzCMljaTITsTpFugMic9cu647HOBWdYuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4ll3q+R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E393C4CEC3;
+	Mon, 21 Oct 2024 10:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507690;
-	bh=8OYAOMcAkNWxPa7s00mVd/xbkiU9mXfknPeqw62ARlQ=;
+	s=korg; t=1729507896;
+	bh=F50Z4NPjwjX9X3qfxmMWvw8hrPSw196GuWhUaknVbyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YRUvV1dBBrtRToUDG7TwEzgLf9663tjSOw+c3jTBcX7+TXZ7k4RkxWbtVXm+J3Pnc
-	 ph+vZ6jEhUZku9ElHp+n2Ei7qXoCiS7UzIPDK/5vZ3N4naTRwWfI/ryIIqTkG7bKPV
-	 A3b6GzdRg78eWzkXDxovNcrWYxH5Ujcx9BFwmlNg=
+	b=s4ll3q+RNuk85bWhMDrPhynYRIjDeSqml0qKS1+69MkapCJ+CvGjV3ppKxlo5aYd5
+	 AQPc5lAgVypg3+E1RS1o69Sf8FzqyTIFkLevugg3F3b3FiaDU9LzbJRfM6mnIypsRH
+	 KIzcj1CEnLrCsO4b/OV8WWOiACR4YCOgI+L/Fcys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Hansen <dave.hansen@intel.com>,
-	Zhang Rui <rui.zhang@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Todd Brandt <todd.e.brandt@intel.com>
-Subject: [PATCH 5.15 69/82] x86/apic: Always explicitly disarm TSC-deadline timer
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Sean Nyekjaer <sean@geanix.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 29/52] iio: adc: ti-ads8688: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
 Date: Mon, 21 Oct 2024 12:25:50 +0200
-Message-ID: <20241021102249.948738798@linuxfoundation.org>
+Message-ID: <20241021102242.766744015@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
+References: <20241021102241.624153108@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit ffd95846c6ec6cf1f93da411ea10d504036cab42 upstream.
+commit 4c4834fd8696a949d1b1f1c2c5b96e1ad2083b02 upstream.
 
-New processors have become pickier about the local APIC timer state
-before entering low power modes. These low power modes are used (for
-example) when you close your laptop lid and suspend. If you put your
-laptop in a bag and it is not in this low power mode, it is likely
-to get quite toasty while it quickly sucks the battery dry.
+This driver makes use of triggered buffers, but does not select the
+required modules.
 
-The problem boils down to some CPUs' inability to power down until the
-CPU recognizes that the local APIC timer is shut down. The current
-kernel code works in one-shot and periodic modes but does not work for
-deadline mode. Deadline mode has been the supported and preferred mode
-on Intel CPUs for over a decade and uses an MSR to drive the timer
-instead of an APIC register.
+Fixes: 2a86487786b5 ("iio: adc: ti-ads8688: add trigger and buffer support")
+Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
 
-Disable the TSC Deadline timer in lapic_timer_shutdown() by writing to
-MSR_IA32_TSC_DEADLINE when in TSC-deadline mode. Also avoid writing
-to the initial-count register (APIC_TMICT) which is ignored in
-TSC-deadline mode.
-
-Note: The APIC_LVTT|=APIC_LVT_MASKED operation should theoretically be
-enough to tell the hardware that the timer will not fire in any of the
-timer modes. But mitigating AMD erratum 411[1] also requires clearing
-out APIC_TMICT. Solely setting APIC_LVT_MASKED is also ineffective in
-practice on Intel Lunar Lake systems, which is the motivation for this
-change.
-
-1. 411 Processor May Exit Message-Triggered C1E State Without an Interrupt if Local APIC Timer Reaches Zero - https://www.amd.com/content/dam/amd/en/documents/archived-tech-docs/revision-guides/41322_10h_Rev_Gd.pdf
-
-Fixes: 279f1461432c ("x86: apic: Use tsc deadline for oneshot when available")
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Tested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Tested-by: Todd Brandt <todd.e.brandt@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20241015061522.25288-1-rui.zhang%40intel.com
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Reviewed-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://patch.msgid.link/20241003-iio-select-v1-4-67c0385197cd@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/apic/apic.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/iio/adc/Kconfig |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -493,7 +493,19 @@ static int lapic_timer_shutdown(struct c
- 	v = apic_read(APIC_LVTT);
- 	v |= (APIC_LVT_MASKED | LOCAL_TIMER_VECTOR);
- 	apic_write(APIC_LVTT, v);
--	apic_write(APIC_TMICT, 0);
-+
-+	/*
-+	 * Setting APIC_LVT_MASKED (above) should be enough to tell
-+	 * the hardware that this timer will never fire. But AMD
-+	 * erratum 411 and some Intel CPU behavior circa 2024 say
-+	 * otherwise.  Time for belt and suspenders programming: mask
-+	 * the timer _and_ zero the counter registers:
-+	 */
-+	if (v & APIC_LVT_TIMER_TSCDEADLINE)
-+		wrmsrl(MSR_IA32_TSC_DEADLINE, 0);
-+	else
-+		apic_write(APIC_TMICT, 0);
-+
- 	return 0;
- }
- 
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -1126,6 +1126,8 @@ config TI_ADS8344
+ config TI_ADS8688
+ 	tristate "Texas Instruments ADS8688"
+ 	depends on SPI && OF
++	select IIO_BUFFER
++	select IIO_TRIGGERED_BUFFER
+ 	help
+ 	  If you say yes here you get support for Texas Instruments ADS8684 and
+ 	  and ADS8688 ADC chips
 
 
 
