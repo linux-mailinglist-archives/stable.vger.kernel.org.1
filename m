@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-87392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C080D9A64BB
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:49:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D14A49A6508
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:53:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFFB31C21F9C
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:49:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93BDA281863
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:53:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5DA21F4739;
-	Mon, 21 Oct 2024 10:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE2C01F12EF;
+	Mon, 21 Oct 2024 10:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fImDDPfB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a7HIXR+c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D841EE032;
-	Mon, 21 Oct 2024 10:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47DB1EF937;
+	Mon, 21 Oct 2024 10:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507469; cv=none; b=n11rz8zAhqo9wamEsMXjXcACcxVn3VtK994XRZ1Oudi53NL0wrqe2eDrR1yMhDJMpHsI3WVmkDG+nnHIOARLEVjpRT7IuWFyePVmB8OkPKzrb/0oOOyjBAEKPDtsSKhIgiHGHImErc+O3CIfGMMoL5NcY+omIUAi4OrvL5Rgh8k=
+	t=1729507657; cv=none; b=Ah7lA+ZmcO5m82uodG5pA6ELzn+bWddGbEUttgY6GomNFw1WGfuW4E7iZ2oMWPhcpa8YD5jIruFxLqFSLqd5GZBwb8gx2zpZlLqKJscB6SI7REiU4RUFKr9QgGtFQSUQ5OHT85ca4vU58K0KJfxsP+oAYF+YmUsuc6ITJKxPMJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507469; c=relaxed/simple;
-	bh=ssEMPpLh1Uzes97ZSXePzYy8MDm7JmjFfX8kwSe2iUI=;
+	s=arc-20240116; t=1729507657; c=relaxed/simple;
+	bh=p+1vwAGGmTLVS/dp1vKYF7kwMgoR6zqtfjZF9Y5aBDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IO1xi8P8wYKSFcPdWUYuFNVe27bgnZmjpvXNn27fruMUV1bl3rCM7EYyXe67EHbByACfQX/M+s5fOCbTSGs91lcZtdO3FFgBi9122rOLlbhnoEk0l4zCqNwh3Uaztz/L7FbLzRpXsiOIMqA6T/DXV61ZTJ8JtzTVZIsw9FcZgMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fImDDPfB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED4FC4CEC3;
-	Mon, 21 Oct 2024 10:44:28 +0000 (UTC)
+	 MIME-Version; b=rDrX8ujwW3h3N1h5CQpvwxG3kg06hDH1z9RFSIdcPaUe1alcPVUJXhhP9MqEOZq5cIYeaLEzW+17O1h8IHM72WdunZ/DRr7fqY14w/9LcQzneZFkdOzpYYKbo1t0t4UceHiGMTvxVYtNlFgWoetDI88vGbfhzi8s61c8T+H/gqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a7HIXR+c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1340DC4CEC3;
+	Mon, 21 Oct 2024 10:47:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507469;
-	bh=ssEMPpLh1Uzes97ZSXePzYy8MDm7JmjFfX8kwSe2iUI=;
+	s=korg; t=1729507657;
+	bh=p+1vwAGGmTLVS/dp1vKYF7kwMgoR6zqtfjZF9Y5aBDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fImDDPfBI5StQ17WSDLewr+2JwO5TKbXg/NPtokfwkJ7acTebwuoM3O2P237fziUN
-	 EfbhpJ7YWwvBjjbH8PM244eRTmyRu547KObXaqxky3QVjAOSYJio+qfDsYnD5yA8mp
-	 H6cUWM7LfIg3g6x6jVKk5P+R1f/7Lez7kqZ8zX84=
+	b=a7HIXR+c/sUEepuu+yPCVfj53SuI5iTqJ6CF99LE9du28mkLvvlJWSO/m8785RHkT
+	 WF8UKgPRQCztIh+vLL9O7icdGk4Zm635qWhegETziuqI1hmvZX7Uq/u5999nSahuVg
+	 ofXe/zDnq+UfIYJ1E86f5kV24FMV6aUHc8pA+8+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.1 86/91] irqchip/sifive-plic: Unmask interrupt in plic_irq_enable()
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 59/82] iio: proximity: mb1232: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
 Date: Mon, 21 Oct 2024 12:25:40 +0200
-Message-ID: <20241021102253.168307736@linuxfoundation.org>
+Message-ID: <20241021102249.563224761@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 6b1e0651e9ce8ce418ad4ff360e7b9925dc5da79 upstream.
+commit 75461a0b15d7c026924d0001abce0476bbc7eda8 upstream.
 
-It is possible that an interrupt is disabled and masked at the same time.
-When the interrupt is enabled again by enable_irq(), only plic_irq_enable()
-is called, not plic_irq_unmask(). The interrupt remains masked and never
-raises.
+This driver makes use of triggered buffers, but does not select the
+required modules.
 
-An example where interrupt is both disabled and masked is when
-handle_fasteoi_irq() is the handler, and IRQS_ONESHOT is set. The interrupt
-handler:
+Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
 
-  1. Mask the interrupt
-  2. Handle the interrupt
-  3. Check if interrupt is still enabled, and unmask it (see
-     cond_unmask_eoi_irq())
-
-If another task disables the interrupt in the middle of the above steps,
-the interrupt will not get unmasked, and will remain masked when it is
-enabled in the future.
-
-The problem is occasionally observed when PREEMPT_RT is enabled, because
-PREEMPT_RT adds the IRQS_ONESHOT flag. But PREEMPT_RT only makes the problem
-more likely to appear, the bug has been around since commit a1706a1c5062
-("irqchip/sifive-plic: Separate the enable and mask operations").
-
-Fix it by unmasking interrupt in plic_irq_enable().
-
-Fixes: a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask operations")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20241003084152.2422969-1-namcao@linutronix.de
+Fixes: 16b05261537e ("mb1232.c: add distance iio sensor with i2c")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241003-iio-select-v1-13-67c0385197cd@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-sifive-plic.c |   21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/iio/proximity/Kconfig |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/irqchip/irq-sifive-plic.c
-+++ b/drivers/irqchip/irq-sifive-plic.c
-@@ -116,16 +116,6 @@ static inline void plic_irq_toggle(const
- 	}
- }
- 
--static void plic_irq_enable(struct irq_data *d)
--{
--	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 1);
--}
--
--static void plic_irq_disable(struct irq_data *d)
--{
--	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 0);
--}
--
- static void plic_irq_unmask(struct irq_data *d)
- {
- 	struct plic_priv *priv = irq_data_get_irq_chip_data(d);
-@@ -140,6 +130,17 @@ static void plic_irq_mask(struct irq_dat
- 	writel(0, priv->regs + PRIORITY_BASE + d->hwirq * PRIORITY_PER_ID);
- }
- 
-+static void plic_irq_enable(struct irq_data *d)
-+{
-+	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 1);
-+	plic_irq_unmask(d);
-+}
-+
-+static void plic_irq_disable(struct irq_data *d)
-+{
-+	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 0);
-+}
-+
- static void plic_irq_eoi(struct irq_data *d)
- {
- 	struct plic_handler *handler = this_cpu_ptr(&plic_handlers);
+--- a/drivers/iio/proximity/Kconfig
++++ b/drivers/iio/proximity/Kconfig
+@@ -60,6 +60,8 @@ config LIDAR_LITE_V2
+ config MB1232
+ 	tristate "MaxSonar I2CXL family ultrasonic sensors"
+ 	depends on I2C
++	select IIO_BUFFER
++	select IIO_TRIGGERED_BUFFER
+ 	help
+ 	  Say Y to build a driver for the ultrasonic sensors I2CXL of
+ 	  MaxBotix which have an i2c interface. It can be used to measure
 
 
 
