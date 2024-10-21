@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-87206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D276A9A63BC
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:39:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58B4D9A645F
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:46:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 769A51F22D68
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:39:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A48CB28050
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6F01E7C03;
-	Mon, 21 Oct 2024 10:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3176A1EABCB;
+	Mon, 21 Oct 2024 10:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="My9QkGzk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1xj9JoH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488F21E47D9;
-	Mon, 21 Oct 2024 10:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6E91E3DF9;
+	Mon, 21 Oct 2024 10:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506911; cv=none; b=GBIHN2qWgSWSuwWpIRNh6whZOOrvSt5B4mbIqrDfGCb2lJqWH+31ZtC7UjzkIEPHyap9F5k6jAAICZ1mj45nEqaL8Au5+dPBQDpoZd/47I50ZQRVHXgMQAbQnLRH53Q9oAK7f7faEQD1rmKdP9siSi2hRrT8e0KfVFcyKESetL4=
+	t=1729506861; cv=none; b=PXhFkjf115L1/l67uYiNGHiTah6eGN8dyHaD8pGGIMJNM2oH80N5HZ7EEjFjaa1VQEWxTTSHCZ7wRqc63CCfqKGrZ9VVkX2WbKfnp1Gvz1+AtgKV9IbLLsP0mV4bynk1oTJRuhwJp/bBhxoEg1MqI340DSa75erlYjmbWbZ1k8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506911; c=relaxed/simple;
-	bh=VhBy6ugAwe0JDr/F1tar+XWQaDq3C6X67yCAIpnKqRw=;
+	s=arc-20240116; t=1729506861; c=relaxed/simple;
+	bh=Zr6on8Q07jwLdWk1Zl+8crUgIO52/1MG/WVwj5JoDjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gHwdHLUy/cX4GDnBI20aAYZ/NqL3BEAWs3GXiR2GmQCmDmrcXUOn+C626VF8g06ZK7UVcgfqDkpiP+PtrKcV9Jqvb0NS/DHpZkH900n+js0/jEYE4mvRN0uOsRlZUAOTW5kc7gQQn9Q015Lsj4RRnT38ixFtGBJELOG+gl2oTkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=My9QkGzk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE7DAC4CEE5;
-	Mon, 21 Oct 2024 10:35:10 +0000 (UTC)
+	 MIME-Version; b=VGxtOztxqneNE0YrSIfGaFjrWfSlrqO/OFao5SifnnN5ll0ZzPKZERSVBdJzmlcxa2CPCE0in4RVpTrpi1eMKwoE8yOKey6HLIm3w9G5J+UK70LtDet/6EjD/KvGdUYVNPY9eGAbdWzi7CFnxr5bwD/F5IyPkNiNOnjhMgGkgac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G1xj9JoH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 588E5C4CEC3;
+	Mon, 21 Oct 2024 10:34:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506911;
-	bh=VhBy6ugAwe0JDr/F1tar+XWQaDq3C6X67yCAIpnKqRw=;
+	s=korg; t=1729506860;
+	bh=Zr6on8Q07jwLdWk1Zl+8crUgIO52/1MG/WVwj5JoDjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=My9QkGzkx0gdgD7lhiCwSHqlZGdgmJ53EgHtfAd9J/N6nhDT8dQPYyu0YnWUWU5yw
-	 lLtixOqH7KCOdhG5oztWCo1oMGnA6Vw+ZpA0FpOUm+lvvpu1FlcHezpzTzMYa2mCrI
-	 AQ1faeq37xxRglw9JUsBePcF4U3LIH2Iqklc9qfY=
+	b=G1xj9JoHm1VtxV3bcEvzROOmTk2lmf7loU+eS99YkAJtMM90vVhb4Ku1jTnHAJ73d
+	 oRj1Y3NKXLoyS1Obp++jvSEucOI76Bf0THxNnbQddYUy44j52Jex0Myd9Ex6O/ifHv
+	 ZvEQ8QAGjcJBZkeqgmSwrUM1m5Rr/pcqmUm7qQa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	kernel test robot <lkp@intel.com>,
 	Wei Fang <wei.fang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 009/124] net: enetc: disable NAPI after all rings are disabled
-Date: Mon, 21 Oct 2024 12:23:33 +0200
-Message-ID: <20241021102257.079486456@linuxfoundation.org>
+Subject: [PATCH 6.6 010/124] net: enetc: add missing static descriptor and inline keyword
+Date: Mon, 21 Oct 2024 12:23:34 +0200
+Message-ID: <20241021102257.117503094@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
 References: <20241021102256.706334758@linuxfoundation.org>
@@ -68,114 +70,46 @@ Content-Transfer-Encoding: 8bit
 
 From: Wei Fang <wei.fang@nxp.com>
 
-commit 6b58fadd44aafbbd6af5f0b965063e1fd2063992 upstream.
+commit 1d7b2ce43d2c22a21dadaf689cb36a69570346a6 upstream.
 
-When running "xdp-bench tx eno0" to test the XDP_TX feature of ENETC
-on LS1028A, it was found that if the command was re-run multiple times,
-Rx could not receive the frames, and the result of xdp-bench showed
-that the rx rate was 0.
+Fix the build warnings when CONFIG_FSL_ENETC_MDIO is not enabled.
+The detailed warnings are shown as follows.
 
-root@ls1028ardb:~# ./xdp-bench tx eno0
-Hairpinning (XDP_TX) packets on eno0 (ifindex 3; driver fsl_enetc)
-Summary                      2046 rx/s                  0 err,drop/s
-Summary                         0 rx/s                  0 err,drop/s
-Summary                         0 rx/s                  0 err,drop/s
-Summary                         0 rx/s                  0 err,drop/s
+include/linux/fsl/enetc_mdio.h:62:18: warning: no previous prototype for function 'enetc_hw_alloc' [-Wmissing-prototypes]
+      62 | struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
+         |                  ^
+include/linux/fsl/enetc_mdio.h:62:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+      62 | struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
+         | ^
+         | static
+8 warnings generated.
 
-By observing the Rx PIR and CIR registers, CIR is always 0x7FF and
-PIR is always 0x7FE, which means that the Rx ring is full and can no
-longer accommodate other Rx frames. Therefore, the problem is caused
-by the Rx BD ring not being cleaned up.
-
-Further analysis of the code revealed that the Rx BD ring will only
-be cleaned if the "cleaned_cnt > xdp_tx_in_flight" condition is met.
-Therefore, some debug logs were added to the driver and the current
-values of cleaned_cnt and xdp_tx_in_flight were printed when the Rx
-BD ring was full. The logs are as follows.
-
-[  178.762419] [XDP TX] >> cleaned_cnt:1728, xdp_tx_in_flight:2140
-[  178.771387] [XDP TX] >> cleaned_cnt:1941, xdp_tx_in_flight:2110
-[  178.776058] [XDP TX] >> cleaned_cnt:1792, xdp_tx_in_flight:2110
-
->From the results, the max value of xdp_tx_in_flight has reached 2140.
-However, the size of the Rx BD ring is only 2048. So xdp_tx_in_flight
-did not drop to 0 after enetc_stop() is called and the driver does not
-clear it. The root cause is that NAPI is disabled too aggressively,
-without having waited for the pending XDP_TX frames to be transmitted,
-and their buffers recycled, so that xdp_tx_in_flight cannot naturally
-drop to 0. Later, enetc_free_tx_ring() does free those stale, unsent
-XDP_TX packets, but it is not coded up to also reset xdp_tx_in_flight,
-hence the manifestation of the bug.
-
-One option would be to cover this extra condition in enetc_free_tx_ring(),
-but now that the ENETC_TX_DOWN exists, we have created a window at
-the beginning of enetc_stop() where NAPI can still be scheduled, but
-any concurrent enqueue will be blocked. Therefore, enetc_wait_bdrs()
-and enetc_disable_tx_bdrs() can be called with NAPI still scheduled,
-and it is guaranteed that this will not wait indefinitely, but instead
-give us an indication that the pending TX frames have orderly dropped
-to zero. Only then should we call napi_disable().
-
-This way, enetc_free_tx_ring() becomes entirely redundant and can be
-dropped as part of subsequent cleanup.
-
-The change also refactors enetc_start() so that it looks like the
-mirror opposite procedure of enetc_stop().
-
-Fixes: ff58fda09096 ("net: enetc: prioritize ability to go down over packet processing")
+Fixes: 6517798dd343 ("enetc: Make MDIO accessors more generic and export to include/linux/fsl")
 Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202410102136.jQHZOcS4-lkp@intel.com/
 Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
 Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20241010092056.298128-5-wei.fang@nxp.com
+Link: https://patch.msgid.link/20241011030103.392362-1-wei.fang@nxp.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/linux/fsl/enetc_mdio.h |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -2477,8 +2477,6 @@ void enetc_start(struct net_device *ndev
+--- a/include/linux/fsl/enetc_mdio.h
++++ b/include/linux/fsl/enetc_mdio.h
+@@ -59,7 +59,8 @@ static inline int enetc_mdio_read_c45(st
+ static inline int enetc_mdio_write_c45(struct mii_bus *bus, int phy_id,
+ 				       int devad, int regnum, u16 value)
+ { return -EINVAL; }
+-struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
++static inline struct enetc_hw *enetc_hw_alloc(struct device *dev,
++					      void __iomem *port_regs)
+ { return ERR_PTR(-EINVAL); }
  
- 	enetc_setup_interrupts(priv);
- 
--	enetc_enable_tx_bdrs(priv);
--
- 	for (i = 0; i < priv->bdr_int_num; i++) {
- 		int irq = pci_irq_vector(priv->si->pdev,
- 					 ENETC_BDR_INT_BASE_IDX + i);
-@@ -2487,6 +2485,8 @@ void enetc_start(struct net_device *ndev
- 		enable_irq(irq);
- 	}
- 
-+	enetc_enable_tx_bdrs(priv);
-+
- 	enetc_enable_rx_bdrs(priv);
- 
- 	netif_tx_start_all_queues(ndev);
-@@ -2555,6 +2555,10 @@ void enetc_stop(struct net_device *ndev)
- 
- 	enetc_disable_rx_bdrs(priv);
- 
-+	enetc_wait_bdrs(priv);
-+
-+	enetc_disable_tx_bdrs(priv);
-+
- 	for (i = 0; i < priv->bdr_int_num; i++) {
- 		int irq = pci_irq_vector(priv->si->pdev,
- 					 ENETC_BDR_INT_BASE_IDX + i);
-@@ -2564,10 +2568,6 @@ void enetc_stop(struct net_device *ndev)
- 		napi_disable(&priv->int_vector[i]->napi);
- 	}
- 
--	enetc_wait_bdrs(priv);
--
--	enetc_disable_tx_bdrs(priv);
--
- 	enetc_clear_interrupts(priv);
- }
- EXPORT_SYMBOL_GPL(enetc_stop);
+ #endif
 
 
 
