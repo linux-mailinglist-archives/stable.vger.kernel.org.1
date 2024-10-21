@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-87424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2748B9A64E9
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BFCE9A6440
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:45:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C43B51F20594
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B7431C21E19
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:45:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433231E8847;
-	Mon, 21 Oct 2024 10:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D061F8934;
+	Mon, 21 Oct 2024 10:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I90wpc4c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="14PS9Dl3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC2C39FD6;
-	Mon, 21 Oct 2024 10:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C1C71E47A6;
+	Mon, 21 Oct 2024 10:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507565; cv=none; b=BwaBysVZrEe6EhAQ7ozcr3XCZcuM2SZ5iDj/538CI9fd8Na+adbXnqTcwEUKo/XTn+pA8whk+jM/JzQsohUZcS63/QgLiXX7jJBn9J70aw4NYSuwU2yvXVPlua7SblDd58WvwoTas53HuWAI2+6dBAJdzLuCKdOZJ6eO9YsBBFc=
+	t=1729507145; cv=none; b=NvJeA6mw2Bzjx1YE22179cm6NhLXwqnrWfyUQZBGARWDURXppW3VdxwzOVpSHaVd6AkKswx8AqhYmDYYbtH23eI+xp9gA16sYWlqlMFA3CYytIjRsjR8orx2xSiC88yXvEL2iq2CVWHUXxTPYfJDymYOCzXs3IX1Q3Iltjaq740=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507565; c=relaxed/simple;
-	bh=gXueZwIuC19mYYo1m90Kw+frLYttri0rqpGLZZhpkiU=;
+	s=arc-20240116; t=1729507145; c=relaxed/simple;
+	bh=kC9f8U6kvT29SEYXaC1wA50oDKXMv2BCsZXMfjV5iyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q050IP7AEU83jq/dwWD6qB7jMiOB361zd4uE7LAAoT6zNz9Q9rdbVIodYOGhBM8xvy559fOArfAxWx9CfxmTfLi/Fz4QRNqaWomlwNUppRbhb6aVqvztsYjOpo+UYoOEY1IsBeTUTqKxowbiGOYNWm3g3W6nzf2hNDp9Qyggomk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I90wpc4c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F410C4CEC7;
-	Mon, 21 Oct 2024 10:46:04 +0000 (UTC)
+	 MIME-Version; b=PWuWYRpXSpMjQVDmsJcQgHjWI5DHrcDsxE93K9HVnPc/md1XCC9rjrDPPswL+npTg5Zd7mvW/RnQnXwAHtaEkmxeC64a08EzDHVVG9l0xssV1MFHRvjv+zGxUKasIkoDm927qekYi3j8Og0TEiAmnrHUoQPkU01NLaxz0N2MBtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=14PS9Dl3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D268C4CEC3;
+	Mon, 21 Oct 2024 10:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507564;
-	bh=gXueZwIuC19mYYo1m90Kw+frLYttri0rqpGLZZhpkiU=;
+	s=korg; t=1729507144;
+	bh=kC9f8U6kvT29SEYXaC1wA50oDKXMv2BCsZXMfjV5iyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I90wpc4cgUUipIer4xfGDMXgC8H64Gyo7UZdmGIQtTtgM2zSf51v/76YQqirbUy/Y
-	 tMHZZMZSMKq6YYyI2hKcNi6B6OwnsEJfgJxXmoDFBwQDhklxZArtN7pzD4UEjYIckq
-	 ZhuD19iwZJBwXySoBh33hr3SWblWDF51BM83umcY=
+	b=14PS9Dl33NXm+vg6RuJWI3985A5xvW91pGldroajLCgUHrt/Und7355+pGPVKhlR2
+	 NVhqH3lDIjvUt5Zblnui/ITXAVZhiAmGqp3Y7Ca2dgBtBICDIqVOqhdsKghBau/42/
+	 LBtdepEdTKSFGL6vA5mZK00uMDpuuhryF7Tiosro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nianyao Tang <tangnianyao@huawei.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: [PATCH 5.15 28/82] irqchip/gic-v3-its: Fix VSYNC referencing an unmapped VPE on GIC v4.1
+	John Allen <john.allen@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 105/124] x86/CPU/AMD: Only apply Zenbleed fix for Zen2 during late microcode load
 Date: Mon, 21 Oct 2024 12:25:09 +0200
-Message-ID: <20241021102248.361324465@linuxfoundation.org>
+Message-ID: <20241021102300.779703805@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nianyao Tang <tangnianyao@huawei.com>
+From: John Allen <john.allen@amd.com>
 
-commit 80e9963fb3b5509dfcabe9652d56bf4b35542055 upstream.
+commit ee4d4e8d2c3bec6ee652599ab31991055a72c322 upstream.
 
-As per the GICv4.1 spec (Arm IHI 0069H, 5.3.19):
+Commit
 
- "A VMAPP with {V, Alloc}=={0, x} is self-synchronizing, This means the ITS
-  command queue does not show the command as consumed until all of its
-  effects are completed."
+  f69759be251d ("x86/CPU/AMD: Move Zenbleed check to the Zen2 init function")
 
-Furthermore, VSYNC is allowed to deliver an SError when referencing a
-non existent VPE.
+causes a bit in the DE_CFG MSR to get set erroneously after a microcode late
+load.
 
-By these definitions, a VMAPP followed by a VSYNC is a bug, as the
-later references a VPE that has been unmapped by the former.
+The microcode late load path calls into amd_check_microcode() and subsequently
+zen2_zenbleed_check(). Since the above commit removes the cpu_has_amd_erratum()
+call from zen2_zenbleed_check(), this will cause all non-Zen2 CPUs to go
+through the function and set the bit in the DE_CFG MSR.
 
-Fix it by eliding the VSYNC in this scenario.
+Call into the Zenbleed fix path on Zen2 CPUs only.
 
-Fixes: 64edfaa9a234 ("irqchip/gic-v4.1: Implement the v4.1 flavour of VMAPP")
-Signed-off-by: Nianyao Tang <tangnianyao@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
-Link: https://lore.kernel.org/r/20240406022737.3898763-1-tangnianyao@huawei.com
+  [ bp: Massage commit message, use cpu_feature_enabled(). ]
+
+Fixes: f69759be251d ("x86/CPU/AMD: Move Zenbleed check to the Zen2 init function")
+Signed-off-by: John Allen <john.allen@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240923164404.27227-1-john.allen@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/amd.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -779,6 +779,7 @@ static struct its_vpe *its_build_vmapp_c
- 					   struct its_cmd_block *cmd,
- 					   struct its_cmd_desc *desc)
- {
-+	struct its_vpe *vpe = valid_vpe(its, desc->its_vmapp_cmd.vpe);
- 	unsigned long vpt_addr, vconf_addr;
- 	u64 target;
- 	bool alloc;
-@@ -791,6 +792,11 @@ static struct its_vpe *its_build_vmapp_c
- 		if (is_v4_1(its)) {
- 			alloc = !atomic_dec_return(&desc->its_vmapp_cmd.vpe->vmapp_count);
- 			its_encode_alloc(cmd, alloc);
-+			/*
-+			 * Unmapping a VPE is self-synchronizing on GICv4.1,
-+			 * no need to issue a VSYNC.
-+			 */
-+			vpe = NULL;
- 		}
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1374,7 +1374,8 @@ void amd_check_microcode(void)
+ 	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD)
+ 		return;
  
- 		goto out;
-@@ -825,7 +831,7 @@ static struct its_vpe *its_build_vmapp_c
- out:
- 	its_fixup_cmd(cmd);
- 
--	return valid_vpe(its, desc->its_vmapp_cmd.vpe);
-+	return vpe;
+-	on_each_cpu(zenbleed_check_cpu, NULL, 1);
++	if (cpu_feature_enabled(X86_FEATURE_ZEN2))
++		on_each_cpu(zenbleed_check_cpu, NULL, 1);
  }
  
- static struct its_vpe *its_build_vmapti_cmd(struct its_node *its,
+ /*
 
 
 
