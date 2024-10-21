@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-87405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CBC19A64CF
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:51:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA2189A641D
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:43:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E1E61C221B4
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:51:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B49C2815F1
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852191F471D;
-	Mon, 21 Oct 2024 10:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797551EB9EE;
+	Mon, 21 Oct 2024 10:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="USTKkgL1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2iGo/7+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7CF194085;
-	Mon, 21 Oct 2024 10:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3231E1EABCE;
+	Mon, 21 Oct 2024 10:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507508; cv=none; b=lZOnbWi5+McMKjTlohOr3y0Up6ZgYV60TtERMVzFvF42MeW4LCVMcDsT92TjT1Z8g5gy29Jv2pQ+Q2M9xqVX38eDZ6/x93lclecbDW7KhHfBCd0Cb5zPmhbATDOdh7g7HSo+//olZybBjXLamGaE2eADVcsRaVmBmYaTtEnveqk=
+	t=1729507070; cv=none; b=e0rEAJbeEy0My6CvMfYr/z4v8SQvVJCUd40JsHGL+Ul3GwZMraYRwKVdrZXjda5ryxAZ39KN68PVTRDXooLVQQqCCNu2mxl89eOA53Wrk5LWIXbY8OLA771ryHv7ElJS/ittWLtInzs0RFrgd2QHdroyitL0VhEAOk+Igo8ik4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507508; c=relaxed/simple;
-	bh=Kknx94Y8PHpMIWMmde8IU0RGdmfP2k7jaYcLtIsp878=;
+	s=arc-20240116; t=1729507070; c=relaxed/simple;
+	bh=IK7hgFvD88uX9dsVpOqCIKCy2d45ZxKHmAFfoThwtXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gmUOQuHBTOqptlHdus7iDRAE/ONtwET/KDGN5UJ2IegYkf+/fpS3E72/FIhpg4emBD1MYm77Q53oP81yaBGz760n1Hy/de19OBjkEhdhtF4MGmAE7WY8AEoCMetXmn8VhyjX1p9X544csAUf+RCJ2zCxpMm/UqyEmhCslYzXZpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USTKkgL1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB27DC4CEC3;
-	Mon, 21 Oct 2024 10:45:07 +0000 (UTC)
+	 MIME-Version; b=POxAA7jvFWzH5iymcg2KL7AO8Ab/AzOAdV5lIclt/tmCaPLm8OmjysPG4oUdIFobKEWwj8MF7Yj0RAe3mEdaDnJK030FxvpMCvqjMGcXXpTz2yUwMUICkWmWMkypgfnj/V+DI4oTDYUJEnzCnr09CXucIye9zM8FZNr8L+8W4yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e2iGo/7+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A830FC4CEC3;
+	Mon, 21 Oct 2024 10:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507508;
-	bh=Kknx94Y8PHpMIWMmde8IU0RGdmfP2k7jaYcLtIsp878=;
+	s=korg; t=1729507070;
+	bh=IK7hgFvD88uX9dsVpOqCIKCy2d45ZxKHmAFfoThwtXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=USTKkgL1MFZ8QEJDrdXOEJ3Mfudlo7Yyne91jcMr4wuLnBjDK3dE++ghhwgRL5K1u
-	 bqIaikdwg9fnRt/mnksUnIgQUA0vclbEiQmgEwUh7YsCQacIQxR+BV3AYogXhCZrAh
-	 cEu4natz4l7jluBAsewoDcN0bhl7PL/POLmEegBs=
+	b=e2iGo/7+KvHcqsU34zyxy66jvkDwUVT2JDmI2BBtDx2WWP6xSAoEe80c76uRq0/Et
+	 aWZgHW4M0AhoIYGnQvUt7e/RlXOtY0UXSjNE18QflkE7hCK1opi5ERjuWr+WG5JGfr
+	 O5TOMQtiyNhhP6UbZjg644IkYUKd33C9U0etSN+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 01/82] ALSA: hda/conexant - Fix audio routing for HP EliteOne 1000 G2
-Date: Mon, 21 Oct 2024 12:24:42 +0200
-Message-ID: <20241021102247.270807183@linuxfoundation.org>
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 079/124] iio: frequency: adf4377: add missing select REMAP_SPI in Kconfig
+Date: Mon, 21 Oct 2024 12:24:43 +0200
+Message-ID: <20241021102259.787625738@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 9988844c457f6f17fb2e75aa000b6c3b1b673bb9 upstream.
+commit c64643ed4eaa5dfd0b3bab7ef1c50b84f3dbaba4 upstream.
 
-There is a problem with simultaneous audio output to headphones and
-speakers, and when headphones are turned off, the speakers also turn
-off and do not turn them on.
+This driver makes use of regmap_spi, but does not select the required
+module.
+Add the missing 'select REGMAP_SPI'.
 
-However, it was found that if you boot linux immediately after windows,
-there are no such problems. When comparing alsa-info, the only difference
-is the different configuration of Node 0x1d:
-
-working conf. (windows): Pin-ctls: 0x80: HP
-not working     (linux): Pin-ctls: 0xc0: OUT HP
-
-This patch disable the AC_PINCTL_OUT_EN bit of Node 0x1d and fixes the
-described problem.
-
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241009134248.662175-1-kovalev@altlinux.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: eda549e2e524 ("iio: frequency: adf4377: add support for ADF4377")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241003-ad2s1210-select-v1-3-4019453f8c33@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_conexant.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/iio/frequency/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -307,6 +307,7 @@ enum {
- 	CXT_FIXUP_HP_SPECTRE,
- 	CXT_FIXUP_HP_GATE_MIC,
- 	CXT_FIXUP_MUTE_LED_GPIO,
-+	CXT_FIXUP_HP_ELITEONE_OUT_DIS,
- 	CXT_FIXUP_HP_ZBOOK_MUTE_LED,
- 	CXT_FIXUP_HEADSET_MIC,
- 	CXT_FIXUP_HP_MIC_NO_PRESENCE,
-@@ -324,6 +325,19 @@ static void cxt_fixup_stereo_dmic(struct
- 	spec->gen.inv_dmic_split = 1;
- }
- 
-+/* fix widget control pin settings */
-+static void cxt_fixup_update_pinctl(struct hda_codec *codec,
-+				   const struct hda_fixup *fix, int action)
-+{
-+	if (action == HDA_FIXUP_ACT_PROBE) {
-+		/* Unset OUT_EN for this Node pin, leaving only HP_EN.
-+		 * This is the value stored in the codec register after
-+		 * the correct initialization of the previous windows boot.
-+		 */
-+		snd_hda_set_pin_ctl(codec, 0x1d, AC_PINCTL_HP_EN);
-+	}
-+}
-+
- static void cxt5066_increase_mic_boost(struct hda_codec *codec,
- 				   const struct hda_fixup *fix, int action)
- {
-@@ -975,6 +989,10 @@ static const struct hda_fixup cxt_fixups
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = cxt_fixup_mute_led_gpio,
- 	},
-+	[CXT_FIXUP_HP_ELITEONE_OUT_DIS] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = cxt_fixup_update_pinctl,
-+	},
- 	[CXT_FIXUP_HP_ZBOOK_MUTE_LED] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = cxt_fixup_hp_zbook_mute_led,
-@@ -1065,6 +1083,7 @@ static const struct snd_pci_quirk cxt506
- 	SND_PCI_QUIRK(0x103c, 0x83b2, "HP EliteBook 840 G5", CXT_FIXUP_HP_DOCK),
- 	SND_PCI_QUIRK(0x103c, 0x83b3, "HP EliteBook 830 G5", CXT_FIXUP_HP_DOCK),
- 	SND_PCI_QUIRK(0x103c, 0x83d3, "HP ProBook 640 G4", CXT_FIXUP_HP_DOCK),
-+	SND_PCI_QUIRK(0x103c, 0x83e5, "HP EliteOne 1000 G2", CXT_FIXUP_HP_ELITEONE_OUT_DIS),
- 	SND_PCI_QUIRK(0x103c, 0x8402, "HP ProBook 645 G4", CXT_FIXUP_MUTE_LED_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x8427, "HP ZBook Studio G5", CXT_FIXUP_HP_ZBOOK_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x844f, "HP ZBook Studio G5", CXT_FIXUP_HP_ZBOOK_MUTE_LED),
+--- a/drivers/iio/frequency/Kconfig
++++ b/drivers/iio/frequency/Kconfig
+@@ -53,6 +53,7 @@ config ADF4371
+ config ADF4377
+ 	tristate "Analog Devices ADF4377 Microwave Wideband Synthesizer"
+ 	depends on SPI && COMMON_CLK
++	select REGMAP_SPI
+ 	help
+ 	  Say yes here to build support for Analog Devices ADF4377 Microwave
+ 	  Wideband Synthesizer.
 
 
 
