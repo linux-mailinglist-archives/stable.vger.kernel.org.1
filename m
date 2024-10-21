@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-87297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1623D9A6478
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:47:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A78AB9A6453
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:45:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1445B2C5B4
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:45:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68D172808E7
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4BE01E7C2D;
-	Mon, 21 Oct 2024 10:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B741E883C;
+	Mon, 21 Oct 2024 10:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tM3TY7Lo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jv0qT5HP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B68C1E1C11;
-	Mon, 21 Oct 2024 10:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC381E47CD;
+	Mon, 21 Oct 2024 10:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507183; cv=none; b=IK4CZ2PITozyyxlQZPyErFXHuIVr+icFnwGuxtD5cftmAHRrr6uzOrJq3utdN1dVDNzqJ+/5DlDkqQ6Yw6sfMNFeXk2g+A0npLwmBzPI1HkeZ5dZSpJxsxDtOCQaXTZWFERNfCfIR6npVMsx3oI3OgNlfC0yzUveyegmNE3YyxM=
+	t=1729507198; cv=none; b=iVvszYFG8GfQ3OUEUarTp9tJNL9ZBp37quczWfGMsi3Z8guFs576dFFlZQXRfTcJsQXOSA6IdJzFZhgV7aiaXxVAOUEpSGcte6Mynmm4Fe9BET1+r33dGQMsMpf+KG+OBaAQXE9s1+3256ly3ET0zdCL6TH0uuNE7KUH2bF8its=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507183; c=relaxed/simple;
-	bh=9zedyoK74UfpqQGFdWEUavyCqplK81KwkQWs+Znq2Mg=;
+	s=arc-20240116; t=1729507198; c=relaxed/simple;
+	bh=NsCHxQo+4T/44bLrh+pmwLdQJ1ow6GIAXmXLJyj049w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P3vX8moGcclZ+AIlWHAwEilndD5Gt/UzoGfV/+ioEUOMfS1P0oGd2HRr0ix0w3SJwToBg/xuE//8yBG06rJoLWmXm9Q31PFapiQC+xNGiuuVs8zg0DAkq9loZ2EuTu2fPjBypPJR8mMQ3o04cLzscxeJhVqdzqw1BwFA8TwgcDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tM3TY7Lo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B6AC4CEC3;
-	Mon, 21 Oct 2024 10:39:42 +0000 (UTC)
+	 MIME-Version; b=cBSiRoClNnyTjE0MdTDMDSGbyiJf4uNTJ1faL+/dmVWP6IEDhZBlcM+7munM1J2iuJcpKU4zqc3PDtNygJCt9NZ+G5IbjuRiP5Rmwi4FJg3sghBEy0bJ8eibA9xKADJ0BuWvEHaTnCmEGj9cadn7e36cooKIeVT/RwrIc+eYpoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jv0qT5HP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3937C4CEC3;
+	Mon, 21 Oct 2024 10:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507183;
-	bh=9zedyoK74UfpqQGFdWEUavyCqplK81KwkQWs+Znq2Mg=;
+	s=korg; t=1729507198;
+	bh=NsCHxQo+4T/44bLrh+pmwLdQJ1ow6GIAXmXLJyj049w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tM3TY7Lo3GT55L8HMKVi/jkeWrcBI588MlBZhDB3aPiYbNVZXALC+1F8eEsi3fMUh
-	 x1BD7ZlKrImbJ3UekjCekR1cLZWvBXE8kz0RxFiIRoNuYWNnfEVbWdvXsnKLvJlgJ8
-	 PP9Zww+cTElIPUWXlgiqo011HKjQEQb7da1WOT4M=
+	b=Jv0qT5HPz/Wb7hmCtGZQQPDl8lxewlLlYZ3Gcp3dxLEtzqJpNHO4uujcb1Z+h2d8T
+	 Bys273vbvx98Lqw2Wjr1brJBqtcNsGn6adWSHI6UxNvhyKpGU40TfalTyZbaUcg3gY
+	 SwdeZaOVQ5W6tp+psUvVVlbcLR8raPVgQjl6KNvA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 090/124] Bluetooth: btusb: Fix regression with fake CSR controllers 0a12:0001
-Date: Mon, 21 Oct 2024 12:24:54 +0200
-Message-ID: <20241021102300.208459475@linuxfoundation.org>
+	syzbot+955da2d57931604ee691@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH 6.6 091/124] vt: prevent kernel-infoleak in con_font_get()
+Date: Mon, 21 Oct 2024 12:24:55 +0200
+Message-ID: <20241021102300.246144855@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
 References: <20241021102256.706334758@linuxfoundation.org>
@@ -58,72 +59,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit 2c1dda2acc4192d826e84008d963b528e24d12bc upstream.
+commit f956052e00de211b5c9ebaa1958366c23f82ee9e upstream.
 
-Fake CSR controllers don't seem to handle short-transfer properly which
-cause command to time out:
+font.data may not initialize all memory spaces depending on the implementation
+of vc->vc_sw->con_font_get. This may cause info-leak, so to prevent this, it
+is safest to modify it to initialize the allocated memory space to 0, and it
+generally does not affect the overall performance of the system.
 
-kernel: usb 1-1: new full-speed USB device number 19 using xhci_hcd
-kernel: usb 1-1: New USB device found, idVendor=0a12, idProduct=0001, bcdDevice=88.91
-kernel: usb 1-1: New USB device strings: Mfr=0, Product=2, SerialNumber=0
-kernel: usb 1-1: Product: BT DONGLE10
-...
-Bluetooth: hci1: Opcode 0x1004 failed: -110
-kernel: Bluetooth: hci1: command 0x1004 tx timeout
-
-According to USB Spec 2.0 Section 5.7.3 Interrupt Transfer Packet Size
-Constraints a interrupt transfer is considered complete when the size is 0
-(ZPL) or < wMaxPacketSize:
-
- 'When an interrupt transfer involves more data than can fit in one
- data payload of the currently established maximum size, all data
- payloads are required to be maximum-sized except for the last data
- payload, which will contain the remaining data. An interrupt transfer
- is complete when the endpoint does one of the following:
-
- • Has transferred exactly the amount of data expected
- • Transfers a packet with a payload size less than wMaxPacketSize or
- transfers a zero-length packet'
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219365
-Fixes: 7b05933340f4 ("Bluetooth: btusb: Fix not handling ZPL/short-transfer")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+955da2d57931604ee691@syzkaller.appspotmail.com
+Fixes: 05e2600cb0a4 ("VT: Bump font size limitation to 64x128 pixels")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Link: https://lore.kernel.org/r/20241010174619.59662-1-aha310510@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/tty/vt/vt.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -1354,10 +1354,15 @@ static int btusb_submit_intr_urb(struct
- 	if (!urb)
- 		return -ENOMEM;
+--- a/drivers/tty/vt/vt.c
++++ b/drivers/tty/vt/vt.c
+@@ -4550,7 +4550,7 @@ static int con_font_get(struct vc_data *
+ 		return -EINVAL;
  
--	/* Use maximum HCI Event size so the USB stack handles
--	 * ZPL/short-transfer automatically.
--	 */
--	size = HCI_MAX_EVENT_SIZE;
-+	if (le16_to_cpu(data->udev->descriptor.idVendor)  == 0x0a12 &&
-+	    le16_to_cpu(data->udev->descriptor.idProduct) == 0x0001)
-+		/* Fake CSR devices don't seem to support sort-transter */
-+		size = le16_to_cpu(data->intr_ep->wMaxPacketSize);
-+	else
-+		/* Use maximum HCI Event size so the USB stack handles
-+		 * ZPL/short-transfer automatically.
-+		 */
-+		size = HCI_MAX_EVENT_SIZE;
- 
- 	buf = kmalloc(size, mem_flags);
- 	if (!buf) {
+ 	if (op->data) {
+-		font.data = kvmalloc(max_font_size, GFP_KERNEL);
++		font.data = kvzalloc(max_font_size, GFP_KERNEL);
+ 		if (!font.data)
+ 			return -ENOMEM;
+ 	} else
 
 
 
