@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-87319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8515D9A646B
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:46:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAB5E9A6372
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D5B91F2128C
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:46:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96E6C1F227E5
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 004F71EF0B0;
-	Mon, 21 Oct 2024 10:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D811E8829;
+	Mon, 21 Oct 2024 10:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JU0Hu42X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CBLeFREC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D9F1EABAE;
-	Mon, 21 Oct 2024 10:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8B11E766E;
+	Mon, 21 Oct 2024 10:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507249; cv=none; b=YRgj3IVCRU89gp2+6IYLsHpDxIhEQ9F0vagr4jyOlabW2B1q1I+9wszzChkJae2N0EPNUVlzjYbuV2jjPEh1s1I01k0FaiPe8pJknXN4EwJUF+HYFRqZBDo0TwmvnmIfV+3SvbOza6oBji83JHO2MZJYUAk5MeBfkdGZO1AE5tg=
+	t=1729506761; cv=none; b=rRSwU9awYQ4Re2Di92NmwLTv8csrYuOfR2b1LHFKhUP+nuf61oMzPv+Igf07qzjGlMR3H9mlV/exOpEMksdBkn8X/Vf0XF715+kboRUPw5CbHXxLTYn1VKSeXXlTIA1If4q+YVCYrgfjkHjsa1O6tAOW//7TUnmVVdkpDgpwQ7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507249; c=relaxed/simple;
-	bh=zL0yRcE/JOkd7dKFYEfQO2/CTMFt3oz6xpLnCsdnbEs=;
+	s=arc-20240116; t=1729506761; c=relaxed/simple;
+	bh=cKM/941V8bAmlrnoNkVAm6As9oSAmQBRSuw+uELgtf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZ6x4v19b2J+5f0nU+hzLu/ZpbUFVrccugw103443kuE/AN/oDaABXP9l5r6mGW1Sasv2z6c0YqyXhrKMmjVxMDpqx/jUPP/RWfix2ySlHo4yRTu6jb0NdLdqNPzprSG6hVMhVH7oGf+oDdO1NUSKWSA2WAQa8gWR0uXIirQ1f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JU0Hu42X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C592C4AF09;
-	Mon, 21 Oct 2024 10:40:48 +0000 (UTC)
+	 MIME-Version; b=Gc7PgkuHgO76hodrKeC1xeCP2M+BGanGW0PEf8vbNSE6sZaOdP2o8Eip0MzLT/sbP/9qVfM4HbtXK52/nF13gL2UPrKobU3kqEUYQk+UJACqQj2HuARgZM4WrxHpSEqcNTfvIQRz+OVQ6yJ+s8X50noH0XOrQCPf9G0gH0fFIHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CBLeFREC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D91CC4CEC3;
+	Mon, 21 Oct 2024 10:32:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507249;
-	bh=zL0yRcE/JOkd7dKFYEfQO2/CTMFt3oz6xpLnCsdnbEs=;
+	s=korg; t=1729506760;
+	bh=cKM/941V8bAmlrnoNkVAm6As9oSAmQBRSuw+uELgtf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JU0Hu42XVc577ED5N4cMQoJrmyBIyW3oVa/8yKyfpQiVB6ZO1uo5TBxhxtIRcRGBt
-	 6BQmgmez+h3O/oMQIl7COvSDopbpjxNQSNe/Ve7FMVozbzoLf4F6FyVetsrzbVwgH2
-	 ufAj0sVaz0iTGd5V42ShK+7W71ZYnW+OYSJNSUDs=
+	b=CBLeFRECYFF3dOzxf/hF48HlI+6Bf+cTizfvZy4SYeotEVoJOyMnRI4GiYvLVGPpU
+	 W+zt+Xp4pzH0+wH1AcfOsxq5pzZtT3KMpVDslWNDhL7nNVlqT1D8V0alJ1jf/t6QyB
+	 ynj/tpTmSvy7rGc6feZbSdpIr3u7Wdnzwa23cvek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 6.1 15/91] udf: Convert empty_dir() to new directory iteration code
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.11 113/135] parport: Proper fix for array out-of-bounds access
 Date: Mon, 21 Oct 2024 12:24:29 +0200
-Message-ID: <20241021102250.405610644@linuxfoundation.org>
+Message-ID: <20241021102303.745215260@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +60,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit afb525f466f9fdc140b975221cb43fbb5c59314e ]
+commit 02ac3a9ef3a18b58d8f3ea2b6e46de657bf6c4f9 upstream.
 
-Convert empty_dir() to new directory iteration code.
+The recent fix for array out-of-bounds accesses replaced sprintf()
+calls blindly with snprintf().  However, since snprintf() returns the
+would-be-printed size, not the actually output size, the length
+calculation can still go over the given limit.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Use scnprintf() instead of snprintf(), which returns the actually
+output letters, for addressing the potential out-of-bounds access
+properly.
+
+Fixes: ab11dac93d2d ("dev/parport: fix the array out-of-bounds risk")
+Cc: stable@vger.kernel.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20240920103318.19271-1-tiwai@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/namei.c |   68 +++++++--------------------------------------------------
- 1 file changed, 9 insertions(+), 59 deletions(-)
+ drivers/parport/procfs.c |   22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
---- a/fs/udf/namei.c
-+++ b/fs/udf/namei.c
-@@ -879,69 +879,19 @@ out:
- 
- static int empty_dir(struct inode *dir)
- {
--	struct fileIdentDesc *fi, cfi;
--	struct udf_fileident_bh fibh;
--	loff_t f_pos;
--	loff_t size = udf_ext0_offset(dir) + dir->i_size;
--	udf_pblk_t block;
--	struct kernel_lb_addr eloc;
--	uint32_t elen;
--	sector_t offset;
--	struct extent_position epos = {};
--	struct udf_inode_info *dinfo = UDF_I(dir);
-+	struct udf_fileident_iter iter;
-+	int ret;
- 
--	f_pos = udf_ext0_offset(dir);
--	fibh.soffset = fibh.eoffset = f_pos & (dir->i_sb->s_blocksize - 1);
--
--	if (dinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB)
--		fibh.sbh = fibh.ebh = NULL;
--	else if (inode_bmap(dir, f_pos >> dir->i_sb->s_blocksize_bits,
--			      &epos, &eloc, &elen, &offset) ==
--					(EXT_RECORDED_ALLOCATED >> 30)) {
--		block = udf_get_lb_pblock(dir->i_sb, &eloc, offset);
--		if ((++offset << dir->i_sb->s_blocksize_bits) < elen) {
--			if (dinfo->i_alloc_type == ICBTAG_FLAG_AD_SHORT)
--				epos.offset -= sizeof(struct short_ad);
--			else if (dinfo->i_alloc_type == ICBTAG_FLAG_AD_LONG)
--				epos.offset -= sizeof(struct long_ad);
--		} else
--			offset = 0;
--
--		fibh.sbh = fibh.ebh = udf_tread(dir->i_sb, block);
--		if (!fibh.sbh) {
--			brelse(epos.bh);
--			return 0;
--		}
--	} else {
--		brelse(epos.bh);
--		return 0;
--	}
--
--	while (f_pos < size) {
--		fi = udf_fileident_read(dir, &f_pos, &fibh, &cfi, &epos, &eloc,
--					&elen, &offset);
--		if (!fi) {
--			if (fibh.sbh != fibh.ebh)
--				brelse(fibh.ebh);
--			brelse(fibh.sbh);
--			brelse(epos.bh);
--			return 0;
--		}
--
--		if (cfi.lengthFileIdent &&
--		    (cfi.fileCharacteristics & FID_FILE_CHAR_DELETED) == 0) {
--			if (fibh.sbh != fibh.ebh)
--				brelse(fibh.ebh);
--			brelse(fibh.sbh);
--			brelse(epos.bh);
-+	for (ret = udf_fiiter_init(&iter, dir, 0);
-+	     !ret && iter.pos < dir->i_size;
-+	     ret = udf_fiiter_advance(&iter)) {
-+		if (iter.fi.lengthFileIdent &&
-+		    !(iter.fi.fileCharacteristics & FID_FILE_CHAR_DELETED)) {
-+			udf_fiiter_release(&iter);
- 			return 0;
+--- a/drivers/parport/procfs.c
++++ b/drivers/parport/procfs.c
+@@ -51,12 +51,12 @@ static int do_active_device(const struct
+ 	
+ 	for (dev = port->devices; dev ; dev = dev->next) {
+ 		if(dev == port->cad) {
+-			len += snprintf(buffer, sizeof(buffer), "%s\n", dev->name);
++			len += scnprintf(buffer, sizeof(buffer), "%s\n", dev->name);
  		}
  	}
--
--	if (fibh.sbh != fibh.ebh)
--		brelse(fibh.ebh);
--	brelse(fibh.sbh);
--	brelse(epos.bh);
-+	udf_fiiter_release(&iter);
  
- 	return 1;
- }
+ 	if(!len) {
+-		len += snprintf(buffer, sizeof(buffer), "%s\n", "none");
++		len += scnprintf(buffer, sizeof(buffer), "%s\n", "none");
+ 	}
+ 
+ 	if (len > *lenp)
+@@ -87,19 +87,19 @@ static int do_autoprobe(const struct ctl
+ 	}
+ 	
+ 	if ((str = info->class_name) != NULL)
+-		len += snprintf (buffer + len, sizeof(buffer) - len, "CLASS:%s;\n", str);
++		len += scnprintf (buffer + len, sizeof(buffer) - len, "CLASS:%s;\n", str);
+ 
+ 	if ((str = info->model) != NULL)
+-		len += snprintf (buffer + len, sizeof(buffer) - len, "MODEL:%s;\n", str);
++		len += scnprintf (buffer + len, sizeof(buffer) - len, "MODEL:%s;\n", str);
+ 
+ 	if ((str = info->mfr) != NULL)
+-		len += snprintf (buffer + len, sizeof(buffer) - len, "MANUFACTURER:%s;\n", str);
++		len += scnprintf (buffer + len, sizeof(buffer) - len, "MANUFACTURER:%s;\n", str);
+ 
+ 	if ((str = info->description) != NULL)
+-		len += snprintf (buffer + len, sizeof(buffer) - len, "DESCRIPTION:%s;\n", str);
++		len += scnprintf (buffer + len, sizeof(buffer) - len, "DESCRIPTION:%s;\n", str);
+ 
+ 	if ((str = info->cmdset) != NULL)
+-		len += snprintf (buffer + len, sizeof(buffer) - len, "COMMAND SET:%s;\n", str);
++		len += scnprintf (buffer + len, sizeof(buffer) - len, "COMMAND SET:%s;\n", str);
+ 
+ 	if (len > *lenp)
+ 		len = *lenp;
+@@ -128,7 +128,7 @@ static int do_hardware_base_addr(const s
+ 	if (write) /* permissions prevent this anyway */
+ 		return -EACCES;
+ 
+-	len += snprintf (buffer, sizeof(buffer), "%lu\t%lu\n", port->base, port->base_hi);
++	len += scnprintf (buffer, sizeof(buffer), "%lu\t%lu\n", port->base, port->base_hi);
+ 
+ 	if (len > *lenp)
+ 		len = *lenp;
+@@ -155,7 +155,7 @@ static int do_hardware_irq(const struct
+ 	if (write) /* permissions prevent this anyway */
+ 		return -EACCES;
+ 
+-	len += snprintf (buffer, sizeof(buffer), "%d\n", port->irq);
++	len += scnprintf (buffer, sizeof(buffer), "%d\n", port->irq);
+ 
+ 	if (len > *lenp)
+ 		len = *lenp;
+@@ -182,7 +182,7 @@ static int do_hardware_dma(const struct
+ 	if (write) /* permissions prevent this anyway */
+ 		return -EACCES;
+ 
+-	len += snprintf (buffer, sizeof(buffer), "%d\n", port->dma);
++	len += scnprintf (buffer, sizeof(buffer), "%d\n", port->dma);
+ 
+ 	if (len > *lenp)
+ 		len = *lenp;
+@@ -213,7 +213,7 @@ static int do_hardware_modes(const struc
+ #define printmode(x)							\
+ do {									\
+ 	if (port->modes & PARPORT_MODE_##x)				\
+-		len += snprintf(buffer + len, sizeof(buffer) - len, "%s%s", f++ ? "," : "", #x); \
++		len += scnprintf(buffer + len, sizeof(buffer) - len, "%s%s", f++ ? "," : "", #x); \
+ } while (0)
+ 		int f = 0;
+ 		printmode(PCSPP);
 
 
 
