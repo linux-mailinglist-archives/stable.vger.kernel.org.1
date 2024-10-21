@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-87337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF62A9A647E
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:47:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF809A639B
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:37:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A52C1F2128C
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:47:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1DDE2825E5
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C6F81F1300;
-	Mon, 21 Oct 2024 10:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ECC51EB9F3;
+	Mon, 21 Oct 2024 10:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0vCxrVFh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ai/+ak7G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B1E1EABD4;
-	Mon, 21 Oct 2024 10:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7ED1E570D;
+	Mon, 21 Oct 2024 10:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507304; cv=none; b=bLyDHeH9/Sb7WdGRldE13aNbcrCIcx4EiTzef9tMcJxBTCix+lcWQvUh844CSWcJtBuUj3ys1G7ea6IlX3KFAa+vzU9vayX6q5aL0jvQ0iG2dH2R65FydpkMPI46FT3C/wQ8kvQZyoMTcFL4PsKr7VXSi9Uj1UiOubZKEHwKyxc=
+	t=1729506819; cv=none; b=ODgukQ6QfAXTXkBjW7iUQrVkYG+tt4XlywzR6wFFu3lZ/0GAmQRT9z43KtuBOykzLKnOo2n12WQFJQHnMfP49s0wT/wOXYtWjv+ML9RZis2QhivQZZDnXG5CLcLXyinOPq9Grnae8XzRCI97HkGnJ7jZveZ7HL3revp8VldEYx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507304; c=relaxed/simple;
-	bh=WOchI3moU7LmVUGlWg5z/ph6qDoYU2cLaKCUhMoguqA=;
+	s=arc-20240116; t=1729506819; c=relaxed/simple;
+	bh=FOLoKGMkiiZuwJcqUMPAcZBTg8RUZ/5QU/LZ59Pd0iI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L/JOIEde3XsqmYG12sb8PE1CAXEGm7oT99G2C2L+9ZBdFIe2Q+nFvVuQAoWRCHJp2nK04kQiGELb6pepMm1kAyIAwqyc/3mjVoKC8lZCzXIm9IpXeJ4r8Oe1E5mY6ztc/rBk67qurT2gnLaUXlAH1vtsIM/JHi25TAaJtbITwXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0vCxrVFh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E6EC4CEC3;
-	Mon, 21 Oct 2024 10:41:43 +0000 (UTC)
+	 MIME-Version; b=XDMOS69dreJ2Bku0rVQ/cYFQYsW6Fdo05GAdhdnI3wiRrF5kfNU50y6zdiPnh6NF31SjquTMQuzvvFRsjG2odNz9WN/DuLZYCYc2LLE+xUJScxniO8dYFz+XryRYf3rhZTDTUgDcV7X8RSRU6PGstLhg+ZNAdRfct4Lcyp+tgbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ai/+ak7G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BFE8C4CEC3;
+	Mon, 21 Oct 2024 10:33:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507304;
-	bh=WOchI3moU7LmVUGlWg5z/ph6qDoYU2cLaKCUhMoguqA=;
+	s=korg; t=1729506818;
+	bh=FOLoKGMkiiZuwJcqUMPAcZBTg8RUZ/5QU/LZ59Pd0iI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0vCxrVFh1FdtkjomJOmxAf/2iFcxgRKddiPccTgKOzSP9/ezcLtNxJH4FGDqjDOfS
-	 klvhVEi0IWJz1kvl/KZNOvdhDvGUAIt3MM+SZ9AuZb8xQ535W+saPanOjtuPd1f7se
-	 5yIbGvYvokURSOWFkPIb0VS8m6rqdg8QuSAyL/Jw=
+	b=ai/+ak7Gv8ueyizsRn5lcgzu7I85pihHqCOrarbez8/dZgMzQIw78aRvuc2OVj1RX
+	 ZGq9Y4rE1VXIsKvkiaPHAYYNN9WRr+Izic6//+4F4LJLSksb3c3GHve/USGjCEymhg
+	 j2arSa/nKEUkucGn9mspeXpgaJqKyLvL/exHg1Z4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Shixin <liushixin2@huawei.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 33/91] mm/swapfile: skip HugeTLB pages for unuse_vma
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>
+Subject: [PATCH 6.11 131/135] serial: qcom-geni: fix shutdown race
 Date: Mon, 21 Oct 2024 12:24:47 +0200
-Message-ID: <20241021102251.117719100@linuxfoundation.org>
+Message-ID: <20241021102304.471693559@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Shixin <liushixin2@huawei.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 7528c4fb1237512ee18049f852f014eba80bbe8d upstream.
+commit 23f5f5debcaac1399cfeacec215278bf6dbc1d11 upstream.
 
-I got a bad pud error and lost a 1GB HugeTLB when calling swapoff.  The
-problem can be reproduced by the following steps:
+A commit adding back the stopping of tx on port shutdown failed to add
+back the locking which had also been removed by commit e83766334f96
+("tty: serial: qcom_geni_serial: No need to stop tx/rx on UART
+shutdown").
 
- 1. Allocate an anonymous 1GB HugeTLB and some other anonymous memory.
- 2. Swapout the above anonymous memory.
- 3. run swapoff and we will get a bad pud error in kernel message:
+Holding the port lock is needed to serialise against the console code,
+which may update the interrupt enable register and access the port
+state.
 
-  mm/pgtable-generic.c:42: bad pud 00000000743d215d(84000001400000e7)
-
-We can tell that pud_clear_bad is called by pud_none_or_clear_bad in
-unuse_pud_range() by ftrace.  And therefore the HugeTLB pages will never
-be freed because we lost it from page table.  We can skip HugeTLB pages
-for unuse_vma to fix it.
-
-Link: https://lkml.kernel.org/r/20241015014521.570237-1-liushixin2@huawei.com
-Fixes: 0fe6e20b9c4c ("hugetlb, rmap: add reverse mapping for hugepage")
-Signed-off-by: Liu Shixin <liushixin2@huawei.com>
-Acked-by: Muchun Song <muchun.song@linux.dev>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: d8aca2f96813 ("tty: serial: qcom-geni-serial: stop operations in progress at shutdown")
+Fixes: 947cc4ecc06c ("serial: qcom-geni: fix soft lockup on sw flow control and suspend")
+Cc: stable@vger.kernel.org	# 6.3
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20241009145110.16847-4-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/swapfile.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/qcom_geni_serial.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -2006,7 +2006,7 @@ static int unuse_mm(struct mm_struct *mm
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -1096,10 +1096,12 @@ static void qcom_geni_serial_shutdown(st
+ {
+ 	disable_irq(uport->irq);
  
- 	mmap_read_lock(mm);
- 	for_each_vma(vmi, vma) {
--		if (vma->anon_vma) {
-+		if (vma->anon_vma && !is_vm_hugetlb_page(vma)) {
- 			ret = unuse_vma(vma, type);
- 			if (ret)
- 				break;
++	uart_port_lock_irq(uport);
+ 	qcom_geni_serial_stop_tx(uport);
+ 	qcom_geni_serial_stop_rx(uport);
+ 
+ 	qcom_geni_serial_cancel_tx_cmd(uport);
++	uart_port_unlock_irq(uport);
+ }
+ 
+ static void qcom_geni_serial_flush_buffer(struct uart_port *uport)
 
 
 
