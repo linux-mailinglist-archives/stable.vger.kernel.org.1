@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-87303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 778829A6454
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:45:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67C129A64FA
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A62DA1C21AEA
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:45:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C7C91F21C16
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BAC1E5708;
-	Mon, 21 Oct 2024 10:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 051A91EABAD;
+	Mon, 21 Oct 2024 10:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mn1dR2XT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVWW7mvH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F27E1E0087;
-	Mon, 21 Oct 2024 10:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09BD195FEC;
+	Mon, 21 Oct 2024 10:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507201; cv=none; b=aoTMCFD4oHpQJUoN5d+LnIDQQ7o4wo3Ut5jFUmEUesr2sdfYWhRoWtTXcbdHr8a9Ty5ldWuR/4v6J2A/F8ht4dEIIO+85lnnIvfc1HQCfz8L6wB8KmhL/TwSTCAgx4aYSAUq4+5clTZP2FuS0uVtWf1vKbN0AyM4gbV5y797XjQ=
+	t=1729507621; cv=none; b=AC7dUS+Fa1FRMwIxnfOgCiqEwBAej2aJvyZsylC06b6RPXPwNIUjpQnms3THGh4qVOFlBdQQsXKD0FHRu2O73Jl1k8toHCUhZJIjIGU+5zgPDH83yeTpDr75z5pJiD3LxULUT1c9Dgp1r0xzqlVcvVqK4/abKWlPe+6LZ0ohwlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507201; c=relaxed/simple;
-	bh=ReXjEnyU2zgu16G8naMrWWgZX2oa64X4PjPEmfYfU8I=;
+	s=arc-20240116; t=1729507621; c=relaxed/simple;
+	bh=4KEHdMTZ0D7e/Cf2S+59fcufwwW3NTnLNxiB+MNbujg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dJNv1tGhdaKBOBeAeko5ceohh82/YED7Me3X/2KTSQPNzSJAfXXOVSjQYypRiGRLNV2DT7oMts6EwNZ7rGZfk24HFsXpcYqzksNdF2aX7F4fE/mIKn0V+CjCfDzm6hAWurOWgMhSb3GMfMq1Uw4xHsks46jiFofFMmXgNsLRfBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mn1dR2XT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9777C4CEC7;
-	Mon, 21 Oct 2024 10:40:00 +0000 (UTC)
+	 MIME-Version; b=cDDbFi1tLedu5tasXdvgjd9i9Ib+C2nAnwe5X8bQg8QqG1GmdQy6CmPU2+NYezN1nnx9Wbl+8h1oo0BPA5aCAfMeLlMpScHvHNqga8xEcWlGWhgg6Es6xhKJyz9osT23j3n+TUs/qRx996Vz0DxAQoIHKdufffCGZwGAJirGjJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PVWW7mvH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C83C4CEC3;
+	Mon, 21 Oct 2024 10:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507201;
-	bh=ReXjEnyU2zgu16G8naMrWWgZX2oa64X4PjPEmfYfU8I=;
+	s=korg; t=1729507621;
+	bh=4KEHdMTZ0D7e/Cf2S+59fcufwwW3NTnLNxiB+MNbujg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mn1dR2XT6ED7cdnIEPGO5GAVZimgko5E1hjoS/OeiXegOpMGZI4CX85oAfWUYSeT2
-	 DCtaNQ6Ao0MhomtgR8pmGj8X0kZ7fh95XFTw4U2+390TBxaHDiAIQ+7GcP00ztohuh
-	 HZdx9raR9+W6uS6rPCHHTBnkaThOL3xgdf0a2G7w=
+	b=PVWW7mvHC1awr//nskRDLmwHIcPMA6KttrFvOnmO14Ls8SpTyD7c6H4O9Pdh2Jk7M
+	 jyu+I2WBZBFio4b3y0npvNMoS0kgYob/7n7L/ADaLl8f3mf5DjezIaD6+Sd9AlZKG7
+	 zCn72JVkq4A6J7QTxkOrkmj/n6RvNBFcRb8RAI3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Lin <henryl@nvidia.com>
-Subject: [PATCH 6.6 092/124] xhci: tegra: fix checked USB2 port number
+	Jan Kara <jack@suse.cz>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 5.15 15/82] udf: Convert udf_add_nondir() to new directory iteration
 Date: Mon, 21 Oct 2024 12:24:56 +0200
-Message-ID: <20241021102300.284306321@linuxfoundation.org>
+Message-ID: <20241021102247.836328329@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Lin <henryl@nvidia.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 7d381137cb6ecf558ef6698c7730ddd482d4c8f2 upstream.
+[ Upstream commit ef91f9998bece00cf7f82ad26177f910a7124b25 ]
 
-If USB virtualizatoin is enabled, USB2 ports are shared between all
-Virtual Functions. The USB2 port number owned by an USB2 root hub in
-a Virtual Function may be less than total USB2 phy number supported
-by the Tegra XUSB controller.
+Convert udf_add_nondir() to new directory iteration code.
 
-Using total USB2 phy number as port number to check all PORTSC values
-would cause invalid memory access.
-
-[  116.923438] Unable to handle kernel paging request at virtual address 006c622f7665642f
-...
-[  117.213640] Call trace:
-[  117.216783]  tegra_xusb_enter_elpg+0x23c/0x658
-[  117.222021]  tegra_xusb_runtime_suspend+0x40/0x68
-[  117.227260]  pm_generic_runtime_suspend+0x30/0x50
-[  117.232847]  __rpm_callback+0x84/0x3c0
-[  117.237038]  rpm_suspend+0x2dc/0x740
-[  117.241229] pm_runtime_work+0xa0/0xb8
-[  117.245769]  process_scheduled_works+0x24c/0x478
-[  117.251007]  worker_thread+0x23c/0x328
-[  117.255547]  kthread+0x104/0x1b0
-[  117.259389]  ret_from_fork+0x10/0x20
-[  117.263582] Code: 54000222 f9461ae8 f8747908 b4ffff48 (f9400100)
-
-Cc: stable@vger.kernel.org # v6.3+
-Fixes: a30951d31b25 ("xhci: tegra: USB2 pad power controls")
-Signed-off-by: Henry Lin <henryl@nvidia.com>
-Link: https://lore.kernel.org/r/20241014042134.27664-1-henryl@nvidia.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-tegra.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/udf/namei.c |   19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
---- a/drivers/usb/host/xhci-tegra.c
-+++ b/drivers/usb/host/xhci-tegra.c
-@@ -2183,7 +2183,7 @@ static int tegra_xusb_enter_elpg(struct
- 		goto out;
- 	}
+--- a/fs/udf/namei.c
++++ b/fs/udf/namei.c
+@@ -847,26 +847,23 @@ static int udf_add_nondir(struct dentry
+ {
+ 	struct udf_inode_info *iinfo = UDF_I(inode);
+ 	struct inode *dir = d_inode(dentry->d_parent);
+-	struct udf_fileident_bh fibh;
+-	struct fileIdentDesc cfi, *fi;
++	struct udf_fileident_iter iter;
+ 	int err;
  
--	for (i = 0; i < tegra->num_usb_phys; i++) {
-+	for (i = 0; i < xhci->usb2_rhub.num_ports; i++) {
- 		if (!xhci->usb2_rhub.ports[i])
- 			continue;
- 		portsc = readl(xhci->usb2_rhub.ports[i]->addr);
+-	fi = udf_add_entry(dir, dentry, &fibh, &cfi, &err);
+-	if (unlikely(!fi)) {
++	err = udf_fiiter_add_entry(dir, dentry, &iter);
++	if (err) {
+ 		inode_dec_link_count(inode);
+ 		discard_new_inode(inode);
+ 		return err;
+ 	}
+-	cfi.icb.extLength = cpu_to_le32(inode->i_sb->s_blocksize);
+-	cfi.icb.extLocation = cpu_to_lelb(iinfo->i_location);
+-	*(__le32 *)((struct allocDescImpUse *)cfi.icb.impUse)->impUse =
++	iter.fi.icb.extLength = cpu_to_le32(inode->i_sb->s_blocksize);
++	iter.fi.icb.extLocation = cpu_to_lelb(iinfo->i_location);
++	*(__le32 *)((struct allocDescImpUse *)iter.fi.icb.impUse)->impUse =
+ 		cpu_to_le32(iinfo->i_unique & 0x00000000FFFFFFFFUL);
+-	udf_write_fi(dir, &cfi, fi, &fibh, NULL, NULL);
++	udf_fiiter_write_fi(&iter, NULL);
+ 	dir->i_ctime = dir->i_mtime = current_time(dir);
+ 	mark_inode_dirty(dir);
+-	if (fibh.sbh != fibh.ebh)
+-		brelse(fibh.ebh);
+-	brelse(fibh.sbh);
++	udf_fiiter_release(&iter);
+ 	d_instantiate_new(dentry, inode);
+ 
+ 	return 0;
 
 
 
