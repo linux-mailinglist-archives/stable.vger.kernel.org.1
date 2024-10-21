@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-87438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E059A64F6
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77E8A9A6543
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:55:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D2F71F221DB
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91048B2DDE2
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 213801EABB0;
-	Mon, 21 Oct 2024 10:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBAEC1F1314;
+	Mon, 21 Oct 2024 10:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VLzC2fxK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPv+GuXm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC9D1E9098;
-	Mon, 21 Oct 2024 10:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9267C1953B9;
+	Mon, 21 Oct 2024 10:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507606; cv=none; b=tJD+X/iZYxX9d2/5XdYxIay/g9mamjNtG4U4G7OO7+6uPxW3XneCkEjC5ygYnlM8S5wIqqWUjkOKfw7IO+pBp3l27WIDffocjDDXk6rMKrZFON9kGSfn0Sb1RzAFlaf4ytNkv4HxlcmqrsVncaMatKOJ1TZ5hdz+Xv04D0sqNDk=
+	t=1729507406; cv=none; b=Nf+ynmndquDmcp9ogYfxK/1nsGoSaI/xxBtpyC2pUBf3DqYTr8h+7o4tB21nx10UmedFduDukiFbCjWCsznXJwwvpiSGDCN549rHHSNLQ/ejQFkRHSvfTqyRyozZxOzFAZwN0GlxZlVnFDvAImSaNTnuDSGmVR+sFR8QvudrZYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507606; c=relaxed/simple;
-	bh=mFUZqQ4mkI5A36e5ZIS2NuGi+BT37LJsYf5LgDElXUw=;
+	s=arc-20240116; t=1729507406; c=relaxed/simple;
+	bh=O1PrQc2B31OvCyystX9+8MxkUGd8HlmIt9KXNeK4KIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BdY3wNrrk/u44S0310E2C+QqknbGHjKBBDmkV7DBPjU+B3MqSQGU+M27Q0gidR7ou+P3eHtlWNsTq2Hs5JuRtp3eHfV2LRx5J+k41byLHqN8hPy/R9WeP9BT8exgH/DU2nevJ01zlcc/NYkN9D21QcuglUqrC2A3nzyIMwp4LYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VLzC2fxK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AFD3C4CEC3;
-	Mon, 21 Oct 2024 10:46:46 +0000 (UTC)
+	 MIME-Version; b=PPFWdugx9AeV3knTox+LDC8H8+IDwnibGyTNpgza6Bmz9GHoYNeIGCmH7iEuJ73aKoV7I7WwUE3F1/qpgMz2sKSaHQ6gsO9TkAAmHDRQAjXyMbzxc9JoCKqA5LGTS7Ok+PTMnOP3uJKj001eQ9UtTu2RezgCd0wZpva/jr1OT7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPv+GuXm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F8CC4CEC3;
+	Mon, 21 Oct 2024 10:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507606;
-	bh=mFUZqQ4mkI5A36e5ZIS2NuGi+BT37LJsYf5LgDElXUw=;
+	s=korg; t=1729507406;
+	bh=O1PrQc2B31OvCyystX9+8MxkUGd8HlmIt9KXNeK4KIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VLzC2fxKyoS6S4CMqTOetsLHXXTGaNDMIFlg0uGS9hNeuWTTz3Ug8s+M9asxoDWyw
-	 XSGe8t25JlK9qexzA7reCIbrJvK5PNPCM0ZsMO6BT/G2JCxS4cfR1b2RypdaLLmYAg
-	 KMENa3WdPPL5Xxw7cCjseGcndRCUG8TlQ0KTTuPA=
+	b=GPv+GuXm0cL3p2TsWqKRv/cat44s55/a1ji/RUsW6VV25sETk6lDV23XFKLg4AKJM
+	 uK50SSHTpoF8p3HlAOy/Cw3t4R1bQmKgnBZ0PcWnGbFGxzCH4kgSkmUxtV4NMuA2SZ
+	 DHEX+zwCGkFm7qA2kwe0G/jJHQsAf7IZOarpW++Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 5.15 40/82] s390/sclp_vt220: Convert newlines to CRLF instead of LFCR
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 67/91] iio: adc: ti-ads124s08: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
 Date: Mon, 21 Oct 2024 12:25:21 +0200
-Message-ID: <20241021102248.824635034@linuxfoundation.org>
+Message-ID: <20241021102252.429384300@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit dee3df68ab4b00fff6bdf9fc39541729af37307c upstream.
+commit eb143d05def52bc6d193e813018e5fa1a0e47c77 upstream.
 
-According to the VT220 specification the possible character combinations
-sent on RETURN are only CR or CRLF [0].
+This driver makes use of triggered buffers, but does not select the
+required modules.
 
-	The Return key sends either a CR character (0/13) or a CR
-	character (0/13) and an LF character (0/10), depending on the
-	set/reset state of line feed/new line mode (LNM).
+Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
 
-The sclp/vt220 driver however uses LFCR. This can confuse tools, for
-example the kunit runner.
-
-Link: https://vt100.net/docs/vt220-rm/chapter3.html#S3.2
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
-Link: https://lore.kernel.org/r/20241014-s390-kunit-v1-2-941defa765a6@linutronix.de
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: e717f8c6dfec ("iio: adc: Add the TI ads124s08 ADC code")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241003-iio-select-v1-3-67c0385197cd@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/char/sclp_vt220.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/adc/Kconfig |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/s390/char/sclp_vt220.c
-+++ b/drivers/s390/char/sclp_vt220.c
-@@ -320,7 +320,7 @@ sclp_vt220_add_msg(struct sclp_vt220_req
- 	buffer = (void *) ((addr_t) sccb + sccb->header.length);
- 
- 	if (convertlf) {
--		/* Perform Linefeed conversion (0x0a -> 0x0a 0x0d)*/
-+		/* Perform Linefeed conversion (0x0a -> 0x0d 0x0a)*/
- 		for (from=0, to=0;
- 		     (from < count) && (to < sclp_vt220_space_left(request));
- 		     from++) {
-@@ -329,8 +329,8 @@ sclp_vt220_add_msg(struct sclp_vt220_req
- 			/* Perform conversion */
- 			if (c == 0x0a) {
- 				if (to + 1 < sclp_vt220_space_left(request)) {
--					((unsigned char *) buffer)[to++] = c;
- 					((unsigned char *) buffer)[to++] = 0x0d;
-+					((unsigned char *) buffer)[to++] = c;
- 				} else
- 					break;
- 
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -1205,6 +1205,8 @@ config TI_ADS8688
+ config TI_ADS124S08
+ 	tristate "Texas Instruments ADS124S08"
+ 	depends on SPI
++	select IIO_BUFFER
++	select IIO_TRIGGERED_BUFFER
+ 	help
+ 	  If you say yes here you get support for Texas Instruments ADS124S08
+ 	  and ADS124S06 ADC chips
 
 
 
