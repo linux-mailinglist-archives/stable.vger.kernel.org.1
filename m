@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-87331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 058BB9A65D0
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:05:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A01D9A63A3
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:38:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF783B2D50A
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:47:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B4292826A5
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C461EF954;
-	Mon, 21 Oct 2024 10:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8C61E571D;
+	Mon, 21 Oct 2024 10:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KjntyqMF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T18SDIA8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8A01EF945;
-	Mon, 21 Oct 2024 10:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058821E5722;
+	Mon, 21 Oct 2024 10:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507286; cv=none; b=r5VmYJ3ZB/CZvw32vIZv/6yQr6Jx7rWZere8TUsHilHzP1nEDed51TBR1A8hAT376lI7I63XUi7olKBGfi85x96VfMVhPf2wm/IUYmL3Z5NTOnzRrEvlj7N04pcophWD4Qf1cOn9uPBZ8hXrXple+Vm7chEc50xiFCwcnQ4YVdg=
+	t=1729506837; cv=none; b=FB31OoN44rCBDdczhstfWiAr1hZ1V/wGc3N9u6TWpNZEvfkSioGsI+DzLiw0Ba2bxdentIX+GxP/WYneUkXlZPnGlQqlJhN9xs9TgTDoLdSETqsSUaiK3OQ5TY4zWh3aGsQVSs7r21/fD0VRf51cHVb/uq80x5cZ5W4v1oEeJCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507286; c=relaxed/simple;
-	bh=XFPO8qQHAIIKZKAZYkW41arcK18t0vWSuI/E+z+Q9lU=;
+	s=arc-20240116; t=1729506837; c=relaxed/simple;
+	bh=mtH7jSFRFrFmQ5X93f0e0UOY3HB6ohaHh/InaRCUhmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vm6gYczor7RMlrtk4hibpjDrEgXzBQ1IUdug4B/nCI7k4RrafJtUWjh8iM0EbaoZ6A+CF53fbnmec7eMNDB641kvY27keAhToGO9zw2pj/lQaNpUvIbtJkNJANoSnwgItq8OiSP1KGb9M/t0ST/Ei7Ei35hu6U5Th/SgGwnmNy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KjntyqMF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A378FC4CEC3;
-	Mon, 21 Oct 2024 10:41:25 +0000 (UTC)
+	 MIME-Version; b=Hl21rgFyrz77FOhlrIVw44W15b3A6qOA5ghRo/y9H+Ux2fYjetWjFqZxDOJEYmU9H4+XaLbgnawAMY8CNJ+uNDuPYN0hC4I5M0FGEfIgq4SKaq2Rl6vD+Hbp7fSwXRxHW0fxz9DbaHCDcDm8T/BhjF2W1iu+WsC/0MHuQR3NDKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T18SDIA8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 733EDC4CEC3;
+	Mon, 21 Oct 2024 10:33:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507286;
-	bh=XFPO8qQHAIIKZKAZYkW41arcK18t0vWSuI/E+z+Q9lU=;
+	s=korg; t=1729506836;
+	bh=mtH7jSFRFrFmQ5X93f0e0UOY3HB6ohaHh/InaRCUhmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KjntyqMFnBreWjoOmETJ0vja2qKqjll1ghLI6ywamxftPyF4N0Qntja7O51oJXhzk
-	 0n33rrgbAR7kKsct/d5tJbJ/LwYiiWZikvx+GA99DWlxubaUNPhEI0LvY4Hvpi1O4G
-	 pDPO6U0QRsNM8fXqo8wpRexsY6vp5xHw2nu/lCBw=
+	b=T18SDIA8/62F4eTWaS2G+dzMNfYJFDXt+1Wvix3vpu1jPW/LLnyUK/teGKgvUsSuT
+	 pc/jlMf219FOIrcGLQyzFEij/gqb2ZeFlmTPj/JbAnMKgvQkZJjpgstI6e9au60qZ3
+	 NOSvMM7ukHlPfticDzED2dnZTn/LwuqO+0+X5h5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 6.1 08/91] udf: Move udf_expand_dir_adinicb() to its callsite
+	syzbot+f342ea16c9d06d80b585@syzkaller.appspotmail.com,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Marcello Sylvester Bauer <sylv@sylv.io>
+Subject: [PATCH 6.11 106/135] USB: gadget: dummy-hcd: Fix "task hung" problem
 Date: Mon, 21 Oct 2024 12:24:22 +0200
-Message-ID: <20241021102250.125753099@linuxfoundation.org>
+Message-ID: <20241021102303.474641178@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,220 +62,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit a27b2923de7efaa1da1e243fb80ff0fa432e4be0 ]
+commit 5189df7b8088268012882c220d6aca4e64981348 upstream.
 
-There is just one caller of udf_expand_dir_adinicb(). Move the function
-to its caller into namei.c as it is more about directory handling than
-anything else anyway.
+The syzbot fuzzer has been encountering "task hung" problems ever
+since the dummy-hcd driver was changed to use hrtimers instead of
+regular timers.  It turns out that the problems are caused by a subtle
+difference between the timer_pending() and hrtimer_active() APIs.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+The changeover blindly replaced the first by the second.  However,
+timer_pending() returns True when the timer is queued but not when its
+callback is running, whereas hrtimer_active() returns True when the
+hrtimer is queued _or_ its callback is running.  This difference
+occasionally caused dummy_urb_enqueue() to think that the callback
+routine had not yet started when in fact it was almost finished.  As a
+result the hrtimer was not restarted, which made it impossible for the
+driver to dequeue later the URB that was just enqueued.  This caused
+usb_kill_urb() to hang, and things got worse from there.
+
+Since hrtimers have no API for telling when they are queued and the
+callback isn't running, the driver must keep track of this for itself.
+That's what this patch does, adding a new "timer_pending" flag and
+setting or clearing it at the appropriate times.
+
+Reported-by: syzbot+f342ea16c9d06d80b585@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/6709234e.050a0220.3e960.0011.GAE@google.com/
+Tested-by: syzbot+f342ea16c9d06d80b585@syzkaller.appspotmail.com
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Fixes: a7f3813e589f ("usb: gadget: dummy_hcd: Switch to hrtimer transfer scheduler")
+Cc: Marcello Sylvester Bauer <sylv@sylv.io>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/2dab644e-ef87-4de8-ac9a-26f100b2c609@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/inode.c   |   82 -------------------------------------------------------
- fs/udf/namei.c   |   82 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
- fs/udf/udfdecl.h |    2 -
- 3 files changed, 82 insertions(+), 84 deletions(-)
+ drivers/usb/gadget/udc/dummy_hcd.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
---- a/fs/udf/inode.c
-+++ b/fs/udf/inode.c
-@@ -325,88 +325,6 @@ int udf_expand_file_adinicb(struct inode
- 	return err;
- }
+diff --git a/drivers/usb/gadget/udc/dummy_hcd.c b/drivers/usb/gadget/udc/dummy_hcd.c
+index 8820d9924448..081ac7683c0b 100644
+--- a/drivers/usb/gadget/udc/dummy_hcd.c
++++ b/drivers/usb/gadget/udc/dummy_hcd.c
+@@ -254,6 +254,7 @@ struct dummy_hcd {
+ 	u32				stream_en_ep;
+ 	u8				num_stream[30 / 2];
  
--struct buffer_head *udf_expand_dir_adinicb(struct inode *inode,
--					    udf_pblk_t *block, int *err)
--{
--	udf_pblk_t newblock;
--	struct buffer_head *dbh = NULL;
--	struct kernel_lb_addr eloc;
--	struct extent_position epos;
--	uint8_t alloctype;
--	struct udf_inode_info *iinfo = UDF_I(inode);
--	struct udf_fileident_iter iter;
--	uint8_t *impuse;
--	int ret;
--
--	if (UDF_QUERY_FLAG(inode->i_sb, UDF_FLAG_USE_SHORT_AD))
--		alloctype = ICBTAG_FLAG_AD_SHORT;
--	else
--		alloctype = ICBTAG_FLAG_AD_LONG;
--
--	if (!inode->i_size) {
--		iinfo->i_alloc_type = alloctype;
--		mark_inode_dirty(inode);
--		return NULL;
--	}
--
--	/* alloc block, and copy data to it */
--	*block = udf_new_block(inode->i_sb, inode,
--			       iinfo->i_location.partitionReferenceNum,
--			       iinfo->i_location.logicalBlockNum, err);
--	if (!(*block))
--		return NULL;
--	newblock = udf_get_pblock(inode->i_sb, *block,
--				  iinfo->i_location.partitionReferenceNum,
--				0);
--	if (!newblock)
--		return NULL;
--	dbh = udf_tgetblk(inode->i_sb, newblock);
--	if (!dbh)
--		return NULL;
--	lock_buffer(dbh);
--	memcpy(dbh->b_data, iinfo->i_data, inode->i_size);
--	memset(dbh->b_data + inode->i_size, 0,
--	       inode->i_sb->s_blocksize - inode->i_size);
--	set_buffer_uptodate(dbh);
--	unlock_buffer(dbh);
--
--	/* Drop inline data, add block instead */
--	iinfo->i_alloc_type = alloctype;
--	memset(iinfo->i_data + iinfo->i_lenEAttr, 0, iinfo->i_lenAlloc);
--	iinfo->i_lenAlloc = 0;
--	eloc.logicalBlockNum = *block;
--	eloc.partitionReferenceNum =
--				iinfo->i_location.partitionReferenceNum;
--	iinfo->i_lenExtents = inode->i_size;
--	epos.bh = NULL;
--	epos.block = iinfo->i_location;
--	epos.offset = udf_file_entry_alloc_offset(inode);
--	udf_add_aext(inode, &epos, &eloc, inode->i_size, 0);
--	brelse(epos.bh);
--	mark_inode_dirty(inode);
--
--	/* Now fixup tags in moved directory entries */
--	for (ret = udf_fiiter_init(&iter, inode, 0);
--	     !ret && iter.pos < inode->i_size;
--	     ret = udf_fiiter_advance(&iter)) {
--		iter.fi.descTag.tagLocation = cpu_to_le32(*block);
--		if (iter.fi.lengthOfImpUse != cpu_to_le16(0))
--			impuse = dbh->b_data + iter.pos +
--						sizeof(struct fileIdentDesc);
--		else
--			impuse = NULL;
--		udf_fiiter_write_fi(&iter, impuse);
--	}
--	/*
--	 * We don't expect the iteration to fail as the directory has been
--	 * already verified to be correct
--	 */
--	WARN_ON_ONCE(ret);
--	udf_fiiter_release(&iter);
--
--	return dbh;
--}
--
- static int udf_get_block(struct inode *inode, sector_t block,
- 			 struct buffer_head *bh_result, int create)
- {
---- a/fs/udf/namei.c
-+++ b/fs/udf/namei.c
-@@ -326,6 +326,88 @@ static struct dentry *udf_lookup(struct
- 	return d_splice_alias(inode, dentry);
- }
++	unsigned			timer_pending:1;
+ 	unsigned			active:1;
+ 	unsigned			old_active:1;
+ 	unsigned			resuming:1;
+@@ -1303,9 +1304,11 @@ static int dummy_urb_enqueue(
+ 		urb->error_count = 1;		/* mark as a new urb */
  
-+static struct buffer_head *udf_expand_dir_adinicb(struct inode *inode,
-+					udf_pblk_t *block, int *err)
-+{
-+	udf_pblk_t newblock;
-+	struct buffer_head *dbh = NULL;
-+	struct kernel_lb_addr eloc;
-+	struct extent_position epos;
-+	uint8_t alloctype;
-+	struct udf_inode_info *iinfo = UDF_I(inode);
-+	struct udf_fileident_iter iter;
-+	uint8_t *impuse;
-+	int ret;
-+
-+	if (UDF_QUERY_FLAG(inode->i_sb, UDF_FLAG_USE_SHORT_AD))
-+		alloctype = ICBTAG_FLAG_AD_SHORT;
-+	else
-+		alloctype = ICBTAG_FLAG_AD_LONG;
-+
-+	if (!inode->i_size) {
-+		iinfo->i_alloc_type = alloctype;
-+		mark_inode_dirty(inode);
-+		return NULL;
+ 	/* kick the scheduler, it'll do the rest */
+-	if (!hrtimer_active(&dum_hcd->timer))
++	if (!dum_hcd->timer_pending) {
++		dum_hcd->timer_pending = 1;
+ 		hrtimer_start(&dum_hcd->timer, ns_to_ktime(DUMMY_TIMER_INT_NSECS),
+ 				HRTIMER_MODE_REL_SOFT);
 +	}
-+
-+	/* alloc block, and copy data to it */
-+	*block = udf_new_block(inode->i_sb, inode,
-+			       iinfo->i_location.partitionReferenceNum,
-+			       iinfo->i_location.logicalBlockNum, err);
-+	if (!(*block))
-+		return NULL;
-+	newblock = udf_get_pblock(inode->i_sb, *block,
-+				  iinfo->i_location.partitionReferenceNum,
-+				0);
-+	if (!newblock)
-+		return NULL;
-+	dbh = udf_tgetblk(inode->i_sb, newblock);
-+	if (!dbh)
-+		return NULL;
-+	lock_buffer(dbh);
-+	memcpy(dbh->b_data, iinfo->i_data, inode->i_size);
-+	memset(dbh->b_data + inode->i_size, 0,
-+	       inode->i_sb->s_blocksize - inode->i_size);
-+	set_buffer_uptodate(dbh);
-+	unlock_buffer(dbh);
-+
-+	/* Drop inline data, add block instead */
-+	iinfo->i_alloc_type = alloctype;
-+	memset(iinfo->i_data + iinfo->i_lenEAttr, 0, iinfo->i_lenAlloc);
-+	iinfo->i_lenAlloc = 0;
-+	eloc.logicalBlockNum = *block;
-+	eloc.partitionReferenceNum =
-+				iinfo->i_location.partitionReferenceNum;
-+	iinfo->i_lenExtents = inode->i_size;
-+	epos.bh = NULL;
-+	epos.block = iinfo->i_location;
-+	epos.offset = udf_file_entry_alloc_offset(inode);
-+	udf_add_aext(inode, &epos, &eloc, inode->i_size, 0);
-+	brelse(epos.bh);
-+	mark_inode_dirty(inode);
-+
-+	/* Now fixup tags in moved directory entries */
-+	for (ret = udf_fiiter_init(&iter, inode, 0);
-+	     !ret && iter.pos < inode->i_size;
-+	     ret = udf_fiiter_advance(&iter)) {
-+		iter.fi.descTag.tagLocation = cpu_to_le32(*block);
-+		if (iter.fi.lengthOfImpUse != cpu_to_le16(0))
-+			impuse = dbh->b_data + iter.pos +
-+						sizeof(struct fileIdentDesc);
-+		else
-+			impuse = NULL;
-+		udf_fiiter_write_fi(&iter, impuse);
+ 
+  done:
+ 	spin_unlock_irqrestore(&dum_hcd->dum->lock, flags);
+@@ -1324,9 +1327,10 @@ static int dummy_urb_dequeue(struct usb_hcd *hcd, struct urb *urb, int status)
+ 	spin_lock_irqsave(&dum_hcd->dum->lock, flags);
+ 
+ 	rc = usb_hcd_check_unlink_urb(hcd, urb, status);
+-	if (!rc && dum_hcd->rh_state != DUMMY_RH_RUNNING &&
+-			!list_empty(&dum_hcd->urbp_list))
++	if (rc == 0 && !dum_hcd->timer_pending) {
++		dum_hcd->timer_pending = 1;
+ 		hrtimer_start(&dum_hcd->timer, ns_to_ktime(0), HRTIMER_MODE_REL_SOFT);
 +	}
-+	/*
-+	 * We don't expect the iteration to fail as the directory has been
-+	 * already verified to be correct
-+	 */
-+	WARN_ON_ONCE(ret);
-+	udf_fiiter_release(&iter);
-+
-+	return dbh;
-+}
-+
- static struct fileIdentDesc *udf_add_entry(struct inode *dir,
- 					   struct dentry *dentry,
- 					   struct udf_fileident_bh *fibh,
---- a/fs/udf/udfdecl.h
-+++ b/fs/udf/udfdecl.h
-@@ -169,8 +169,6 @@ static inline struct inode *udf_iget(str
- 	return __udf_iget(sb, ino, false);
+ 
+ 	spin_unlock_irqrestore(&dum_hcd->dum->lock, flags);
+ 	return rc;
+@@ -1813,6 +1817,7 @@ static enum hrtimer_restart dummy_timer(struct hrtimer *t)
+ 
+ 	/* look at each urb queued by the host side driver */
+ 	spin_lock_irqsave(&dum->lock, flags);
++	dum_hcd->timer_pending = 0;
+ 
+ 	if (!dum_hcd->udev) {
+ 		dev_err(dummy_dev(dum_hcd),
+@@ -1994,8 +1999,10 @@ static enum hrtimer_restart dummy_timer(struct hrtimer *t)
+ 	if (list_empty(&dum_hcd->urbp_list)) {
+ 		usb_put_dev(dum_hcd->udev);
+ 		dum_hcd->udev = NULL;
+-	} else if (dum_hcd->rh_state == DUMMY_RH_RUNNING) {
++	} else if (!dum_hcd->timer_pending &&
++			dum_hcd->rh_state == DUMMY_RH_RUNNING) {
+ 		/* want a 1 msec delay here */
++		dum_hcd->timer_pending = 1;
+ 		hrtimer_start(&dum_hcd->timer, ns_to_ktime(DUMMY_TIMER_INT_NSECS),
+ 				HRTIMER_MODE_REL_SOFT);
+ 	}
+@@ -2390,8 +2397,10 @@ static int dummy_bus_resume(struct usb_hcd *hcd)
+ 	} else {
+ 		dum_hcd->rh_state = DUMMY_RH_RUNNING;
+ 		set_link_state(dum_hcd);
+-		if (!list_empty(&dum_hcd->urbp_list))
++		if (!list_empty(&dum_hcd->urbp_list)) {
++			dum_hcd->timer_pending = 1;
+ 			hrtimer_start(&dum_hcd->timer, ns_to_ktime(0), HRTIMER_MODE_REL_SOFT);
++		}
+ 		hcd->state = HC_STATE_RUNNING;
+ 	}
+ 	spin_unlock_irq(&dum_hcd->dum->lock);
+@@ -2522,6 +2531,7 @@ static void dummy_stop(struct usb_hcd *hcd)
+ 	struct dummy_hcd	*dum_hcd = hcd_to_dummy_hcd(hcd);
+ 
+ 	hrtimer_cancel(&dum_hcd->timer);
++	dum_hcd->timer_pending = 0;
+ 	device_remove_file(dummy_dev(dum_hcd), &dev_attr_urbs);
+ 	dev_info(dummy_dev(dum_hcd), "stopped\n");
  }
- extern int udf_expand_file_adinicb(struct inode *);
--extern struct buffer_head *udf_expand_dir_adinicb(struct inode *inode,
--						  udf_pblk_t *block, int *err);
- extern struct buffer_head *udf_bread(struct inode *inode, udf_pblk_t block,
- 				      int create, int *err);
- extern int udf_setsize(struct inode *, loff_t);
+-- 
+2.47.0
+
 
 
 
