@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-87186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 092699A63A8
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:38:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4FF59A646A
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:46:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A742D1F22DE2
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E47D21C21DAC
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643011EB9F9;
-	Mon, 21 Oct 2024 10:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B51B1EF0A6;
+	Mon, 21 Oct 2024 10:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUzVoFc+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npk3RsA5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1616B1E570D;
-	Mon, 21 Oct 2024 10:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64941E32D7;
+	Mon, 21 Oct 2024 10:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506852; cv=none; b=KEIWC/21DorJ+HtDYzxwBpYo/Rz/zp9+7PLQGJjZxZSCiaXD7TVzNlrks7ddLWBGbUe4YbLNaqCkygh4A0/ySj+c7+dh0W9mxY+cNJ2geK6ZJaXOJceuxVId0gpFqG4n20qUJaNwBmNlSK+7ibAQBGjOkIVpyS3bxWY4ScqrQ9k=
+	t=1729507246; cv=none; b=p5jJ/Xv5jP5CljM/dTcV0mZYY+9/XJb6kcFjawnRCpU3vmFzn2o0fZgZnRsMh2znqMjao0pN3OdiYDId5M/xuwkU8FH5LmOB6ilj1yRGKjkqtx8HW2iMIczjVRcyxvBoDnoPM4ob3WE4AkCucD+oCPYHQ4ng2uepW4+Uo7yHwLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506852; c=relaxed/simple;
-	bh=Bvu3CGnwkSsOOM+sJBQGFwsjQCOFsux6k++5fesv+Xg=;
+	s=arc-20240116; t=1729507246; c=relaxed/simple;
+	bh=Jw+n4VX9UXBo/DPkSPYgaIuzaLKfrcawsKa99HHr75Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dS3P2ifWS/pqdtLUJpOxjAMJuW86V8KFVCfh/tp4/SeyDZqF7uc6aFXPAzDiS+WTQmZnutY9OlGXjKdNF0p0arEETn3AwspLE8yvMjmH119ETvUudjP8b7yBRjCqRU765y2yEpiYp5gzNuvv0Az0F2OazDkcdRBM8xCRB7C2VBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUzVoFc+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A35DC4CEC3;
-	Mon, 21 Oct 2024 10:34:11 +0000 (UTC)
+	 MIME-Version; b=FWtZMyOR78ld7HKBnIi1W8KiUEx/DdI3KV19n0tkzV2/MKb0dcqHjOdm6OMZIoMUbK5D9up80ADf/DGrpFczsi/D65fHXYmgFxe8oXIJbYmeKt4TW2xXQZ4G3dUiPvZqk7cZK75tYHu+phQkklRYf4VvC3w7Tr+uDs9soO2WLo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npk3RsA5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32BECC4CEC3;
+	Mon, 21 Oct 2024 10:40:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506851;
-	bh=Bvu3CGnwkSsOOM+sJBQGFwsjQCOFsux6k++5fesv+Xg=;
+	s=korg; t=1729507246;
+	bh=Jw+n4VX9UXBo/DPkSPYgaIuzaLKfrcawsKa99HHr75Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sUzVoFc+B9q8R3mKAqd3+AY1Z9dSGheND9EVgq/J6lygouXs0MM9E1lUiO/M4MSHs
-	 q15WTOOO6pQ5WNbO0iVkc+/RF+bMwMsnmbr2IoKfdYC6z+rHEbNjG4dZbJtOygwHj5
-	 MkLqEcoQFqTeF+h/uimmr9WH7P7jQJRR1HRWvSNo=
+	b=npk3RsA5coMlak5RekswxBSggllug2ss4bhUo+gnagz+p2oTTgFw3r8CqeGSKjfBc
+	 ItRs43Ez9VEwRvLX39d6v26GB23hTRUR1UcljxiymfK2NzDrf1bujh1dgac0PuuLMs
+	 vBzz8E7PJjfZ3O8EP3/k/t+7Oxf2Q+4zgXfpmuoE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Thiery <heiko.thiery@gmail.com>,
-	Michael Walle <mwalle@kernel.org>
-Subject: [PATCH 6.11 111/135] misc: microchip: pci1xxxx: add support for NVMEM_DEVID_AUTO for OTP device
-Date: Mon, 21 Oct 2024 12:24:27 +0200
-Message-ID: <20241021102303.668190851@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 6.1 14/91] udf: Convert udf_get_parent() to new directory iteration code
+Date: Mon, 21 Oct 2024 12:24:28 +0200
+Message-ID: <20241021102250.365848709@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Thiery <heiko.thiery@gmail.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 2471787c1f0dae6721f60ab44be37460635d3732 upstream.
+[ Upstream commit 9b06fbef4202363d74bba5459ddd231db6d3b1af ]
 
-By using NVMEM_DEVID_AUTO we support more than 1 device and
-automatically enumerate.
+Convert udf_get_parent() to use udf_fiiter_find_entry().
 
-Fixes: 0969001569e4 ("misc: microchip: pci1xxxx: Add support to read and write into PCI1XXXX OTP via NVMEM sysfs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiko Thiery <heiko.thiery@gmail.com>
-Reviewed-by: Michael Walle <mwalle@kernel.org>
-Link: https://lore.kernel.org/r/20241007071120.9522-2-heiko.thiery@gmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/udf/namei.c |   16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
---- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
-+++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
-@@ -384,6 +384,7 @@ static int pci1xxxx_otp_eeprom_probe(str
+--- a/fs/udf/namei.c
++++ b/fs/udf/namei.c
+@@ -1366,17 +1366,15 @@ static struct dentry *udf_get_parent(str
+ {
+ 	struct kernel_lb_addr tloc;
+ 	struct inode *inode = NULL;
+-	struct fileIdentDesc cfi;
+-	struct udf_fileident_bh fibh;
++	struct udf_fileident_iter iter;
++	int err;
  
- 	priv->nvmem_config_otp.type = NVMEM_TYPE_OTP;
- 	priv->nvmem_config_otp.name = OTP_NAME;
-+	priv->nvmem_config_otp.id = NVMEM_DEVID_AUTO;
- 	priv->nvmem_config_otp.dev = &aux_dev->dev;
- 	priv->nvmem_config_otp.owner = THIS_MODULE;
- 	priv->nvmem_config_otp.reg_read = pci1xxxx_otp_read;
+-	if (!udf_find_entry(d_inode(child), &dotdot_name, &fibh, &cfi))
+-		return ERR_PTR(-EACCES);
++	err = udf_fiiter_find_entry(d_inode(child), &dotdot_name, &iter);
++	if (err)
++		return ERR_PTR(err);
+ 
+-	if (fibh.sbh != fibh.ebh)
+-		brelse(fibh.ebh);
+-	brelse(fibh.sbh);
+-
+-	tloc = lelb_to_cpu(cfi.icb.extLocation);
++	tloc = lelb_to_cpu(iter.fi.icb.extLocation);
++	udf_fiiter_release(&iter);
+ 	inode = udf_iget(child->d_sb, &tloc);
+ 	if (IS_ERR(inode))
+ 		return ERR_CAST(inode);
 
 
 
