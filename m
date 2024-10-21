@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-87342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3152D9A6483
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:47:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 827039A65C4
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:03:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E79B528134C
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:47:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B74A8B2BDD2
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94DFA1F4FA2;
-	Mon, 21 Oct 2024 10:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7061EABA9;
+	Mon, 21 Oct 2024 10:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVbq3CPI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCqX5iSz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4898A1F4FAD;
-	Mon, 21 Oct 2024 10:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A311E9098;
+	Mon, 21 Oct 2024 10:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507319; cv=none; b=tYWFaSRM8D08Hppsi7jnoTuz7K6yXtQi/dwziyHSXD07eGxwBLnjonMvI0DcJCPxfmrRH/QMEzj5zJwUR5r+FuLr6KHCu3ILFdYzhZ+65otGXCrLJNoP3H0X/uRSpkmLQA3bgVzbPJEibka8LSJ2cYjv9NznRc4qJOMcx5KyiGg=
+	t=1729507601; cv=none; b=mA8FYNeBuzAXEzafZY1CsaB6x5zwknoc782Qkl/8i252zXsmBDdW71z72oYb2fVHWpwZrdqiqp1NSjMgFpNHvnQr/Ga0mI52tDhXfRLkEepOP+kDzWZSuHK4mBmSTk4h6clQk1kLOntsYaxuJxYQRFhMXrlKynO9oHMSgNPRv4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507319; c=relaxed/simple;
-	bh=OxMS2PUOZO5Al9gRhC+v2p8KnghMj+JmLx2PQtGk5Jw=;
+	s=arc-20240116; t=1729507601; c=relaxed/simple;
+	bh=9ZB53HRF3NOI7tXWfncb0YTE1fXNfvH8pLZnvbgfZAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g7x3YOko42Pr4EGKd/7YdL6EL93A4K5TslWrccz2OrsBJjThvtkIXQ/nIGZdfjH+xtlCF2r3eXNdqLfvw1WRnsxZzLJw17X8Qsa+O36FaY8nYcSx4FoRAOVIIsvKCgHpANioZfsh041ZiquolzDn00IMSNK1sFErDLBPAbdfbxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVbq3CPI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E74C4CEC3;
-	Mon, 21 Oct 2024 10:41:58 +0000 (UTC)
+	 MIME-Version; b=QVyCvP19R/9oIPoZKyMDHP3IQdwda08u0OH6xgd1oB/dv9f1ZsMH3DsZpFvZzR25H2EYoaEDQmGj5gHO6gHMh5WF/xfs97nepxzhZqJMAgQBv1+HO8o984vCQCD8rOaU4u5efEh/Li6UNDgZjRyWzmWjBXsqfHyCNAZFYqCoXgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCqX5iSz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56FA3C4CEC3;
+	Mon, 21 Oct 2024 10:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507318;
-	bh=OxMS2PUOZO5Al9gRhC+v2p8KnghMj+JmLx2PQtGk5Jw=;
+	s=korg; t=1729507600;
+	bh=9ZB53HRF3NOI7tXWfncb0YTE1fXNfvH8pLZnvbgfZAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KVbq3CPIc7KpckeYUEBxeqCZXRk0TpNXXIs4gkzK4ceWQiOo3wdCvzfX4yeedOPsA
-	 Ld4dBFp75tfl2bRnbEl625Gm/tdp3TEvvzEWpzHrCw0+aDS4PrIxN+ThTxfy8AMyBJ
-	 NeAi1nVuQIMvMhlFyNLSf0bYjR1twGaR6VErQGTI=
+	b=LCqX5iSzdGWAMYJWQbaRztUz3kX8jHD6nLjx4ESRD9/5I4N/yPfdsw1385UdyfQa0
+	 JOuW+Ij7buqVAwGNmkessPN2iN84cYK9fSmS2fCH13GWEVmmyfpQhvZ2J6hNYhE+bU
+	 SzQ3UKLRwuca0JmqEbEHQcmLEvXppVgnh7nGj3Uw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Todd Brandt <todd.e.brandt@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.1 38/91] iommu/vt-d: Fix incorrect pci_for_each_dma_alias() for non-PCI devices
-Date: Mon, 21 Oct 2024 12:24:52 +0200
-Message-ID: <20241021102251.310143361@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 5.15 12/82] udf: Convert udf_rmdir() to new directory iteration code
+Date: Mon, 21 Oct 2024 12:24:53 +0200
+Message-ID: <20241021102247.715374616@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 6e02a277f1db24fa039e23783c8921c7b0e5b1b3 upstream.
+[ Upstream commit d11ffa8d3ec11fdb665f12f95d58d74673051a93 ]
 
-Previously, the domain_context_clear() function incorrectly called
-pci_for_each_dma_alias() to set up context entries for non-PCI devices.
-This could lead to kernel hangs or other unexpected behavior.
+Convert udf_rmdir() to use new directory iteration code.
 
-Add a check to only call pci_for_each_dma_alias() for PCI devices. For
-non-PCI devices, domain_context_clear_one() is called directly.
-
-Reported-by: Todd Brandt <todd.e.brandt@intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219363
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219349
-Fixes: 9a16ab9d6402 ("iommu/vt-d: Make context clearing consistent with context mapping")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/20241014013744.102197-2-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/iommu.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/udf/namei.c |   32 +++++++++++---------------------
+ 1 file changed, 11 insertions(+), 21 deletions(-)
 
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -4090,8 +4090,10 @@ static int domain_context_clear_one_cb(s
-  */
- static void domain_context_clear(struct device_domain_info *info)
- {
--	if (!dev_is_pci(info->dev))
-+	if (!dev_is_pci(info->dev)) {
- 		domain_context_clear_one(info, info->bus, info->devfn);
-+		return;
-+	}
+--- a/fs/udf/namei.c
++++ b/fs/udf/namei.c
+@@ -898,30 +898,23 @@ static int empty_dir(struct inode *dir)
  
- 	pci_for_each_dma_alias(to_pci_dev(info->dev),
- 			       &domain_context_clear_one_cb, info);
+ static int udf_rmdir(struct inode *dir, struct dentry *dentry)
+ {
+-	int retval;
++	int ret;
+ 	struct inode *inode = d_inode(dentry);
+-	struct udf_fileident_bh fibh;
+-	struct fileIdentDesc *fi, cfi;
++	struct udf_fileident_iter iter;
+ 	struct kernel_lb_addr tloc;
+ 
+-	retval = -ENOENT;
+-	fi = udf_find_entry(dir, &dentry->d_name, &fibh, &cfi);
+-	if (IS_ERR_OR_NULL(fi)) {
+-		if (fi)
+-			retval = PTR_ERR(fi);
++	ret = udf_fiiter_find_entry(dir, &dentry->d_name, &iter);
++	if (ret)
+ 		goto out;
+-	}
+ 
+-	retval = -EIO;
+-	tloc = lelb_to_cpu(cfi.icb.extLocation);
++	ret = -EFSCORRUPTED;
++	tloc = lelb_to_cpu(iter.fi.icb.extLocation);
+ 	if (udf_get_lb_pblock(dir->i_sb, &tloc, 0) != inode->i_ino)
+ 		goto end_rmdir;
+-	retval = -ENOTEMPTY;
++	ret = -ENOTEMPTY;
+ 	if (!empty_dir(inode))
+ 		goto end_rmdir;
+-	retval = udf_delete_entry(dir, fi, &fibh, &cfi);
+-	if (retval)
+-		goto end_rmdir;
++	udf_fiiter_delete_entry(&iter);
+ 	if (inode->i_nlink != 2)
+ 		udf_warn(inode->i_sb, "empty directory has nlink != 2 (%u)\n",
+ 			 inode->i_nlink);
+@@ -931,14 +924,11 @@ static int udf_rmdir(struct inode *dir,
+ 	inode->i_ctime = dir->i_ctime = dir->i_mtime =
+ 						current_time(inode);
+ 	mark_inode_dirty(dir);
+-
++	ret = 0;
+ end_rmdir:
+-	if (fibh.sbh != fibh.ebh)
+-		brelse(fibh.ebh);
+-	brelse(fibh.sbh);
+-
++	udf_fiiter_release(&iter);
+ out:
+-	return retval;
++	return ret;
+ }
+ 
+ static int udf_unlink(struct inode *dir, struct dentry *dentry)
 
 
 
