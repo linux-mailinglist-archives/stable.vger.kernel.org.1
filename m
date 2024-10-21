@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-87450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A93E9A6502
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:53:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87FC09A6541
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:55:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A2D31C21DA1
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:53:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B75B91C22359
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:55:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5FD1F12E3;
-	Mon, 21 Oct 2024 10:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377AC1F80B5;
+	Mon, 21 Oct 2024 10:49:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XsoU6W63"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUwtpAWX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75951EF956;
-	Mon, 21 Oct 2024 10:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E611F76D0;
+	Mon, 21 Oct 2024 10:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507642; cv=none; b=OapDQAxmKIXIgHrZR1vw7Rvknt756hRSgQik9MFds3YOyGoMhP7qGifOoZ6YcQZvff8nuIAyjEQiHAteeCSF11Id8qBbl+eaX8jHDuaqH1lSVFbOK5sAzFPJ0kbKbNsabVhOjHYulXY/qdaRS1jKCB1wzkXk+shmVDuESDqjmjA=
+	t=1729507772; cv=none; b=CW5ri4hAE9QkCp0/JTj9gKLp1QVyoHzOe2JmmLYa97wZBUBkPm0/fIEEMkCl3jn2juw7hUTKU+iVd33UIYgLLsqmE7R0coq/Bt3i7v/IoUamZ0oBM5TXd3klIj0h59T6T2lcnF9/LVs55Foog7ojg26QXoozNW4PYbZtXq2Iw+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507642; c=relaxed/simple;
-	bh=OyFz9agE+ElYfcT9q12U6xPZYA9AN/JcEec1kWxTvoM=;
+	s=arc-20240116; t=1729507772; c=relaxed/simple;
+	bh=LAeMJwizzVBi1qjkOTe+4Sfs6Y23yr3VDUrc+pN8hEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NxtA6Fb0HzNKlopSDoXA3c46JMnnofJlkFQbaCT8G0nvG277kcB8lVg+8ryuN4QjKFI05TdvF245mr6Oflkhfn+l5F7no9rCWg8zHkwfTjDPqIFt9hyN8TIXhvRGI6YqMGK9MtWkijikVpSlDGdXT624wicvi/aNX0FOYS0T8ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XsoU6W63; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35DBAC4CEC3;
-	Mon, 21 Oct 2024 10:47:22 +0000 (UTC)
+	 MIME-Version; b=DMCukIdBSNrmjEC6EWGr55zn0QShsTxHP5T5KgqdcN0REGn8Ag85PmmKVtejxJwFKutxfWrhU4LXDwyQZFeqe2pqagPT5XVKunx+2eukzcZXM5sGPUXHGOrnhbsOqZ00AeKbWkdS9Kv8Q51DKx80N9hIicOdtqmaM9sLnHq3IS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUwtpAWX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 645DBC4CEE5;
+	Mon, 21 Oct 2024 10:49:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507642;
-	bh=OyFz9agE+ElYfcT9q12U6xPZYA9AN/JcEec1kWxTvoM=;
+	s=korg; t=1729507771;
+	bh=LAeMJwizzVBi1qjkOTe+4Sfs6Y23yr3VDUrc+pN8hEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XsoU6W63/C62SBB4GDSvy1AscYVDoODdE8yxfpm+uUYRvm3mkJnKMXUN43qvovyxO
-	 vzyDzlJocREKFR6GW8mCswm6fQz41E7MBWVrtl92VwQQYOigum3L42H7UWvL4im3rj
-	 nYdNChTMRfITa5VdVivJoqVYX9yN5V1vmVKquLSg=
+	b=BUwtpAWX2jJVk2EHxf21XYZ/x1e3AqzrR/Ryi6UXmH17dxYI4vG28jOsLXQT/k1uS
+	 i17ET0VRvbUml35gw8Dpp+GJ99fUWBlEKpwehq1xbmMQ87bFmNatj3qjvzsNwLRRaH
+	 OUbmQcW7r1bMmmgjbo8XPbBhRv3ZB4wZ6KXO4o7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 54/82] iio: adc: ti-ads8688: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+	Felix Moessbauer <felix.moessbauer@siemens.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.10 14/52] io_uring/sqpoll: do not put cpumask on stack
 Date: Mon, 21 Oct 2024 12:25:35 +0200
-Message-ID: <20241021102249.370220754@linuxfoundation.org>
+Message-ID: <20241021102242.184442551@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
+References: <20241021102241.624153108@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Felix Moessbauer <felix.moessbauer@siemens.com>
 
-commit 4c4834fd8696a949d1b1f1c2c5b96e1ad2083b02 upstream.
+commit 7f44beadcc11adb98220556d2ddbe9c97aa6d42d upstream.
 
-This driver makes use of triggered buffers, but does not select the
-required modules.
+Putting the cpumask on the stack is deprecated for a long time (since
+2d3854a37e8), as these can be big. Given that, change the on-stack
+allocation of allowed_mask to be dynamically allocated.
 
-Fixes: 2a86487786b5 ("iio: adc: ti-ads8688: add trigger and buffer support")
-Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
-
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Reviewed-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20241003-iio-select-v1-4-67c0385197cd@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: f011c9cf04c0 ("io_uring/sqpoll: do not allow pinning outside of cpuset")
+Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
+Link: https://lore.kernel.org/r/20240916111150.1266191-1-felix.moessbauer@siemens.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/Kconfig |    2 ++
- 1 file changed, 2 insertions(+)
+ io_uring/io_uring.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -1131,6 +1131,8 @@ config TI_ADS8344
- config TI_ADS8688
- 	tristate "Texas Instruments ADS8688"
- 	depends on SPI && OF
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
- 	help
- 	  If you say yes here you get support for Texas Instruments ADS8684 and
- 	  and ADS8688 ADC chips
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -8572,15 +8572,22 @@ static int io_sq_offload_create(struct i
+ 			return 0;
+ 
+ 		if (p->flags & IORING_SETUP_SQ_AFF) {
+-			struct cpumask allowed_mask;
++			cpumask_var_t allowed_mask;
+ 			int cpu = p->sq_thread_cpu;
+ 
+ 			ret = -EINVAL;
+ 			if (cpu >= nr_cpu_ids || !cpu_online(cpu))
+ 				goto err_sqpoll;
+-			cpuset_cpus_allowed(current, &allowed_mask);
+-			if (!cpumask_test_cpu(cpu, &allowed_mask))
++			ret = -ENOMEM;
++			if (!alloc_cpumask_var(&allowed_mask, GFP_KERNEL))
+ 				goto err_sqpoll;
++			ret = -EINVAL;
++			cpuset_cpus_allowed(current, allowed_mask);
++			if (!cpumask_test_cpu(cpu, allowed_mask)) {
++				free_cpumask_var(allowed_mask);
++				goto err_sqpoll;
++			}
++			free_cpumask_var(allowed_mask);
+ 			sqd->sq_cpu = cpu;
+ 		} else {
+ 			sqd->sq_cpu = -1;
 
 
 
