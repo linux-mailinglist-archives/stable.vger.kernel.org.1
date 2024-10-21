@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-87403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 583299A64CD
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:50:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F32F9A6603
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:11:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19602280D50
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:50:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A408B21622
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A0621E767B;
-	Mon, 21 Oct 2024 10:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B56316F27E;
+	Mon, 21 Oct 2024 10:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ulqgU16Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JlSlwNjn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500EB1E7677;
-	Mon, 21 Oct 2024 10:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A731E4113;
+	Mon, 21 Oct 2024 10:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507502; cv=none; b=dXQpW0ZIfV1WPsyI5tOi+rI62E2mQqt/Aip3EG9EG/2kbpBUZMNZ/W5nHvoc6Eqme2IzadvpR2HvSExIOYigUcRhMeMVAeGzozYK9z0KVs/jzZckuwUm6r3mPYaBXGn35Gxh/sr+FMsFUUDApijrEAajXfmien1Yw84pjsbU0is=
+	t=1729507676; cv=none; b=qimWwQUGFImeeRD5tOd+jdMGXWGslvNtr0FBfLj2lGBkFLq1OJ6xriZBfu+PpJMbuPdrV/Sh9pyRlwk68dmTUvXUXODcqmdXRlY/ilgYIqFb9kwbd8kbXwUKLtH6EHv8ct34+7ThmZ5o1v/jbay0CWTI18Hb4S74XxY+cezVelY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507502; c=relaxed/simple;
-	bh=rzQ3rpNELcpdvlBTLRARPz7vMJdvdV0Muef28PRtzhk=;
+	s=arc-20240116; t=1729507676; c=relaxed/simple;
+	bh=AOY/rO+qSpcWh6aXSwEFkZQGKiaMtR/mV3iRTdodTDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l6sbaBhFMfY4Xqn+SAg4+VYOYUGixkyYyLgHT79RzjuPfMPerirjOPy1c7lFZgSKmR/gTH15DSiFF8B9jpH54XisG1Uum++IVfTP/TOrMih2s3A6226FLcBNudpsHzzKz1LL9FyF1spkZ6j6lZnsfMYCHqpT7LkZ3JdEANTi+MU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ulqgU16Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E10C4CEC3;
-	Mon, 21 Oct 2024 10:45:01 +0000 (UTC)
+	 MIME-Version; b=B0gGTSiVYHz5ZqEWu5SnqNYoRA3lNdgi3DAKMsUsgkKj8p8Zy6Xm84XSqRm9Xc2KKbx59y5L9VUOKyPsUZ0TcCYs1isjx4FD5Py4LaFXvSG5pE14fDsdnic+fx2sdSm642ploTRtf2bcruLGjqs7wjk4Uj3ZJrMDXXH/b/hDh9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JlSlwNjn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E798C4CEC3;
+	Mon, 21 Oct 2024 10:47:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507502;
-	bh=rzQ3rpNELcpdvlBTLRARPz7vMJdvdV0Muef28PRtzhk=;
+	s=korg; t=1729507675;
+	bh=AOY/rO+qSpcWh6aXSwEFkZQGKiaMtR/mV3iRTdodTDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ulqgU16Z/FIF0JZikdmaypaJQqi3S691snvkQB+Ct4V5Vp8yY/i753Nc4Y3Y5gtVU
-	 uF/vksdVQQTRez5a+KBBV/OnGCrHFGhN5E+CaVwHGiYbOU+s1SJuTm1suwSCP8rNN/
-	 t6gFr1zigydJ7y+vbngzCGNPwGr/yX/9puyv0Ek4=
+	b=JlSlwNjntYxMn+SGccZnlY7QwnPafGdf+StvZ5hRLiv1JkSv8ci52jYX6QCDNp1gN
+	 BKLbCViBQroriII74BqQwo7i0TTVCyx/HHrEyYhTRYqzQ/50t3l/1C+pkjwPvRkTEo
+	 +X1DTMUqXoCte/3wuHKGyAcNqsVw/l9OWCc6o6QE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai-Heng Feng <kaihengf@nvidia.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Vasiliy Kovalev <kovalev@altlinux.org>
-Subject: [PATCH 6.1 91/91] ALSA: hda/conexant - Use cached pin control for Node 0x1d on HP EliteOne 1000 G2
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.15 64/82] xhci: Mitigate failed set dequeue pointer commands
 Date: Mon, 21 Oct 2024 12:25:45 +0200
-Message-ID: <20241021102253.363665226@linuxfoundation.org>
+Message-ID: <20241021102249.757022702@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit 164cd0e077a18d6208523c82b102c98c77fdd51f upstream.
+commit fe49df60cdb7c2975aa743dc295f8786e4b7db10 upstream.
 
-The cached version avoids redundant commands to the codec, improving
-stability and reducing unnecessary operations. This change ensures
-better power management and reliable restoration of pin configurations,
-especially after hibernation (S4) and other power transitions.
+Avoid xHC host from processing a cancelled URB by always turning
+cancelled URB TDs into no-op TRBs before queuing a 'Set TR Deq' command.
 
-Fixes: 9988844c457f ("ALSA: hda/conexant - Fix audio routing for HP EliteOne 1000 G2")
-Suggested-by: Kai-Heng Feng <kaihengf@nvidia.com>
-Suggested-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://patch.msgid.link/20241016080713.46801-1-kovalev@altlinux.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+If the command fails then xHC will start processing the cancelled TD
+instead of skipping it once endpoint is restarted, causing issues like
+Babble error.
+
+This is not a complete solution as a failed 'Set TR Deq' command does not
+guarantee xHC TRB caches are cleared.
+
+Fixes: 4db356924a50 ("xhci: turn cancelled td cleanup to its own function")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241016140000.783905-3-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_conexant.c |    2 +-
+ drivers/usb/host/xhci-ring.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -334,7 +334,7 @@ static void cxt_fixup_update_pinctl(stru
- 		 * This is the value stored in the codec register after
- 		 * the correct initialization of the previous windows boot.
- 		 */
--		snd_hda_set_pin_ctl(codec, 0x1d, AC_PINCTL_HP_EN);
-+		snd_hda_set_pin_ctl_cache(codec, 0x1d, AC_PINCTL_HP_EN);
- 	}
- }
- 
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1013,7 +1013,7 @@ static int xhci_invalidate_cancelled_tds
+ 					td_to_noop(xhci, ring, cached_td, false);
+ 					cached_td->cancel_status = TD_CLEARED;
+ 				}
+-
++				td_to_noop(xhci, ring, td, false);
+ 				td->cancel_status = TD_CLEARING_CACHE;
+ 				cached_td = td;
+ 				break;
 
 
 
