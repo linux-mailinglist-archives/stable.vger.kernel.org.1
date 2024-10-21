@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-87442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6CFC9A64F9
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82FF59A65E5
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:07:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE2401C213A4
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4386FB2B7ED
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:47:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10FA71E5020;
-	Mon, 21 Oct 2024 10:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD161F4FC4;
+	Mon, 21 Oct 2024 10:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pdqKkFvX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="imxMCQbq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD311EABAD;
-	Mon, 21 Oct 2024 10:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA991E47AC;
+	Mon, 21 Oct 2024 10:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507618; cv=none; b=b6iSx7GXiJtjGEDzZbq5PEp3Djoh+S1v0pkTrhuwVDTqcS0nIIZGfAvoS1RoQ6GuY4KscCxgiWukaYBGxnPQjOmBemqJqoiTYX+M3X9/OD9eSixbyKLF+2eMtEAZlPXkwazk9DfS1p5NnP2s49OFmsm0u6bn8AGiY52A4QKuDZI=
+	t=1729507330; cv=none; b=MhhNjPCmEbi9+Hex+mx69kUndmu2MGV4F7Iok7MkC/9ASrYlIIceqjG2y3iOhyW6lG1ujXCDd86OK8I7aEsHGa4oTiNIulAXZvwYhmngEKx7BDXeEZ7OF9AhS8bf++TyoPik5h1A62dbX0vM1trCIJvAKkJG7nOUU75cOEUPGWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507618; c=relaxed/simple;
-	bh=LSaJBCNTlTUsjrErwr+lnXwv/yFtNhaCzwM7dDV9BhM=;
+	s=arc-20240116; t=1729507330; c=relaxed/simple;
+	bh=Cp7jiUWLqWSEBug1gS+K78QdCadiv7VoRgahWFH8ouk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QfeN9Ubmp0D9UYkwG3ZD1esGBTLybL7sdL/PbRSYUAYs7Js1Cw+f4VL3dTbVr8loYyVgibDhOqh5GAp51LLtHhp4rqFzgdU7/dAMTSaUsuFEobusZwqUKndudajQkyybEaXi7pQqVVOZYHKUkwkSa3Fit4K6mSTAl43POJJthhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pdqKkFvX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39479C4CEC3;
-	Mon, 21 Oct 2024 10:46:58 +0000 (UTC)
+	 MIME-Version; b=QI7LwHCaTWFERFsdCcOnmX1KxjMwpnUZoMokJ0lVYE5xB7yDsQUDKxa7aDaFRJYno6P8rbriBieu1SR2bV6y6zBZmPyLAIvotyAlG+dQNrHru9XkIF6uUWX/anNmoANXddZklvJ6YstRzEcDR/DccAoouYCi5jKHJ2DiXvs1swc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=imxMCQbq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AFE9C4CEC3;
+	Mon, 21 Oct 2024 10:42:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507618;
-	bh=LSaJBCNTlTUsjrErwr+lnXwv/yFtNhaCzwM7dDV9BhM=;
+	s=korg; t=1729507330;
+	bh=Cp7jiUWLqWSEBug1gS+K78QdCadiv7VoRgahWFH8ouk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pdqKkFvXCmSQMGoAHThKXd/vZvFOeawzYe9mhlM6FcHAE6tFmK0HY07vYtlrmBtdV
-	 W2dDCzY8JAZKH3Bx4cnS1ZRKTox/AqYJDh4cgEavU1Bord8XDibu41k9pnEVg91Uxh
-	 WRZwJGvuWT/2FQMitfgazarT6DxvdU3PfcQn3dG8=
+	b=imxMCQbqN5EHOKoLWUG7pUUYlQSlNVYKwXypGZgN9cJNMYWLeK5M9TLh3si1LwEvl
+	 PSxzXi3sypTmnwCuqDX3LVhPCvGoRkCfbul8ntcnZJ4nbXir0LGpy7WYJpkFam9cHB
+	 7Tse3En85uCHb8KrSVHkto75+GRiDn1seXjt77CA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.15 14/82] udf: Implement adding of dir entries using new iteration code
+	Nico Boehr <nrb@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>
+Subject: [PATCH 6.1 41/91] KVM: s390: gaccess: Check if guest address is in memslot
 Date: Mon, 21 Oct 2024 12:24:55 +0200
-Message-ID: <20241021102247.795657340@linuxfoundation.org>
+Message-ID: <20241021102251.425191717@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,222 +62,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Nico Boehr <nrb@linux.ibm.com>
 
-[ Upstream commit f2844803404d9729f893e279ddea12678710e7fb ]
+commit e8061f06185be0a06a73760d6526b8b0feadfe52 upstream.
 
-Implement function udf_fiiter_add_entry() adding new directory entries
-using new directory iteration code.
+Previously, access_guest_page() did not check whether the given guest
+address is inside of a memslot. This is not a problem, since
+kvm_write_guest_page/kvm_read_guest_page return -EFAULT in this case.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+However, -EFAULT is also returned when copy_to/from_user fails.
+
+When emulating a guest instruction, the address being outside a memslot
+usually means that an addressing exception should be injected into the
+guest.
+
+Failure in copy_to/from_user however indicates that something is wrong
+in userspace and hence should be handled there.
+
+To be able to distinguish these two cases, return PGM_ADDRESSING in
+access_guest_page() when the guest address is outside guest memory. In
+access_guest_real(), populate vcpu->arch.pgm.code such that
+kvm_s390_inject_prog_cond() can be used in the caller for injecting into
+the guest (if applicable).
+
+Since this adds a new return value to access_guest_page(), we need to make
+sure that other callers are not confused by the new positive return value.
+
+There are the following users of access_guest_page():
+- access_guest_with_key() does the checking itself (in
+  guest_range_to_gpas()), so this case should never happen. Even if, the
+  handling is set up properly.
+- access_guest_real() just passes the return code to its callers, which
+  are:
+    - read_guest_real() - see below
+    - write_guest_real() - see below
+
+There are the following users of read_guest_real():
+- ar_translation() in gaccess.c which already returns PGM_*
+- setup_apcb10(), setup_apcb00(), setup_apcb11() in vsie.c which always
+  return -EFAULT on read_guest_read() nonzero return - no change
+- shadow_crycb(), handle_stfle() always present this as validity, this
+  could be handled better but doesn't change current behaviour - no change
+
+There are the following users of write_guest_real():
+- kvm_s390_store_status_unloaded() always returns -EFAULT on
+  write_guest_real() failure.
+
+Fixes: 2293897805c2 ("KVM: s390: add architecture compliant guest access functions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240917151904.74314-2-nrb@linux.ibm.com
+Acked-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/directory.c |   57 +++++++++++++++++++++++++++
- fs/udf/namei.c     |  110 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- fs/udf/udfdecl.h   |    2 
- 3 files changed, 169 insertions(+)
+ arch/s390/kvm/gaccess.c |    4 ++++
+ arch/s390/kvm/gaccess.h |   14 ++++++++------
+ 2 files changed, 12 insertions(+), 6 deletions(-)
 
---- a/fs/udf/directory.c
-+++ b/fs/udf/directory.c
-@@ -413,6 +413,63 @@ void udf_fiiter_write_fi(struct udf_file
- 	inode_inc_iversion(iter->dir);
+--- a/arch/s390/kvm/gaccess.c
++++ b/arch/s390/kvm/gaccess.c
+@@ -1001,6 +1001,8 @@ static int access_guest_page(struct kvm
+ 	const gfn_t gfn = gpa_to_gfn(gpa);
+ 	int rc;
+ 
++	if (!gfn_to_memslot(kvm, gfn))
++		return PGM_ADDRESSING;
+ 	if (mode == GACC_STORE)
+ 		rc = kvm_write_guest_page(kvm, gfn, data, offset, len);
+ 	else
+@@ -1158,6 +1160,8 @@ int access_guest_real(struct kvm_vcpu *v
+ 		gra += fragment_len;
+ 		data += fragment_len;
+ 	}
++	if (rc > 0)
++		vcpu->arch.pgm.code = rc;
+ 	return rc;
  }
  
-+void udf_fiiter_update_elen(struct udf_fileident_iter *iter, uint32_t new_elen)
-+{
-+	struct udf_inode_info *iinfo = UDF_I(iter->dir);
-+	int diff = new_elen - iter->elen;
-+
-+	/* Skip update when we already went past the last extent */
-+	if (!iter->elen)
-+		return;
-+	iter->elen = new_elen;
-+	if (iinfo->i_alloc_type == ICBTAG_FLAG_AD_SHORT)
-+		iter->epos.offset -= sizeof(struct short_ad);
-+	else if (iinfo->i_alloc_type == ICBTAG_FLAG_AD_LONG)
-+		iter->epos.offset -= sizeof(struct long_ad);
-+	udf_write_aext(iter->dir, &iter->epos, &iter->eloc, iter->elen, 1);
-+	iinfo->i_lenExtents += diff;
-+	mark_inode_dirty(iter->dir);
-+}
-+
-+/* Append new block to directory. @iter is expected to point at EOF */
-+int udf_fiiter_append_blk(struct udf_fileident_iter *iter)
-+{
-+	struct udf_inode_info *iinfo = UDF_I(iter->dir);
-+	int blksize = 1 << iter->dir->i_blkbits;
-+	struct buffer_head *bh;
-+	sector_t block;
-+	uint32_t old_elen = iter->elen;
-+	int err;
-+
-+	if (WARN_ON_ONCE(iinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB))
-+		return -EINVAL;
-+
-+	/* Round up last extent in the file */
-+	udf_fiiter_update_elen(iter, ALIGN(iter->elen, blksize));
-+
-+	/* Allocate new block and refresh mapping information */
-+	block = iinfo->i_lenExtents >> iter->dir->i_blkbits;
-+	bh = udf_bread(iter->dir, block, 1, &err);
-+	if (!bh) {
-+		udf_fiiter_update_elen(iter, old_elen);
-+		return err;
-+	}
-+	if (inode_bmap(iter->dir, block, &iter->epos, &iter->eloc, &iter->elen,
-+		       &iter->loffset) != (EXT_RECORDED_ALLOCATED >> 30)) {
-+		udf_err(iter->dir->i_sb,
-+			"block %llu not allocated in directory (ino %lu)\n",
-+			(unsigned long long)block, iter->dir->i_ino);
-+		return -EFSCORRUPTED;
-+	}
-+	if (!(iter->pos & (blksize - 1))) {
-+		brelse(iter->bh[0]);
-+		iter->bh[0] = bh;
-+	} else {
-+		iter->bh[1] = bh;
-+	}
-+	return 0;
-+}
-+
- struct fileIdentDesc *udf_fileident_read(struct inode *dir, loff_t *nf_pos,
- 					 struct udf_fileident_bh *fibh,
- 					 struct fileIdentDesc *cfi,
---- a/fs/udf/namei.c
-+++ b/fs/udf/namei.c
-@@ -472,6 +472,116 @@ static struct buffer_head *udf_expand_di
- 	return dbh;
- }
- 
-+static int udf_fiiter_add_entry(struct inode *dir, struct dentry *dentry,
-+				struct udf_fileident_iter *iter)
-+{
-+	struct udf_inode_info *dinfo = UDF_I(dir);
-+	int nfidlen, namelen = 0;
-+	int ret;
-+	int off, blksize = 1 << dir->i_blkbits;
-+	udf_pblk_t block;
-+	char name[UDF_NAME_LEN_CS0];
-+
-+	if (dentry) {
-+		if (!dentry->d_name.len)
-+			return -EINVAL;
-+		namelen = udf_put_filename(dir->i_sb, dentry->d_name.name,
-+					   dentry->d_name.len,
-+					   name, UDF_NAME_LEN_CS0);
-+		if (!namelen)
-+			return -ENAMETOOLONG;
-+	}
-+	nfidlen = ALIGN(sizeof(struct fileIdentDesc) + namelen, UDF_NAME_PAD);
-+
-+	for (ret = udf_fiiter_init(iter, dir, 0);
-+	     !ret && iter->pos < dir->i_size;
-+	     ret = udf_fiiter_advance(iter)) {
-+		if (iter->fi.fileCharacteristics & FID_FILE_CHAR_DELETED) {
-+			if (udf_dir_entry_len(&iter->fi) == nfidlen) {
-+				iter->fi.descTag.tagSerialNum = cpu_to_le16(1);
-+				iter->fi.fileVersionNum = cpu_to_le16(1);
-+				iter->fi.fileCharacteristics = 0;
-+				iter->fi.lengthFileIdent = namelen;
-+				iter->fi.lengthOfImpUse = cpu_to_le16(0);
-+				memcpy(iter->namebuf, name, namelen);
-+				iter->name = iter->namebuf;
-+				return 0;
-+			}
-+		}
-+	}
-+	if (ret) {
-+		udf_fiiter_release(iter);
-+		return ret;
-+	}
-+	if (dinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB &&
-+	    blksize - udf_ext0_offset(dir) - iter->pos < nfidlen) {
-+		struct buffer_head *retbh;
-+
-+		udf_fiiter_release(iter);
-+		/*
-+		 * FIXME: udf_expand_dir_adinicb does not need to return bh
-+		 * once other users are gone
-+		 */
-+		retbh = udf_expand_dir_adinicb(dir, &block, &ret);
-+		if (!retbh)
-+			return ret;
-+		brelse(retbh);
-+		ret = udf_fiiter_init(iter, dir, dir->i_size);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	/* Get blocknumber to use for entry tag */
-+	if (dinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB) {
-+		block = dinfo->i_location.logicalBlockNum;
-+	} else {
-+		block = iter->eloc.logicalBlockNum +
-+				((iter->elen - 1) >> dir->i_blkbits);
-+	}
-+	off = iter->pos & (blksize - 1);
-+	if (!off)
-+		off = blksize;
-+	/* Entry fits into current block? */
-+	if (blksize - udf_ext0_offset(dir) - off >= nfidlen)
-+		goto store_fi;
-+
-+	ret = udf_fiiter_append_blk(iter);
-+	if (ret) {
-+		udf_fiiter_release(iter);
-+		return ret;
-+	}
-+
-+	/* Entry will be completely in the new block? Update tag location... */
-+	if (!(iter->pos & (blksize - 1)))
-+		block = iter->eloc.logicalBlockNum +
-+				((iter->elen - 1) >> dir->i_blkbits);
-+store_fi:
-+	memset(&iter->fi, 0, sizeof(struct fileIdentDesc));
-+	if (UDF_SB(dir->i_sb)->s_udfrev >= 0x0200)
-+		udf_new_tag((char *)(&iter->fi), TAG_IDENT_FID, 3, 1, block,
-+			    sizeof(struct tag));
-+	else
-+		udf_new_tag((char *)(&iter->fi), TAG_IDENT_FID, 2, 1, block,
-+			    sizeof(struct tag));
-+	iter->fi.fileVersionNum = cpu_to_le16(1);
-+	iter->fi.lengthFileIdent = namelen;
-+	iter->fi.lengthOfImpUse = cpu_to_le16(0);
-+	memcpy(iter->namebuf, name, namelen);
-+	iter->name = iter->namebuf;
-+
-+	dir->i_size += nfidlen;
-+	if (dinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB) {
-+		dinfo->i_lenAlloc += nfidlen;
-+	} else {
-+		/* Truncate last extent to proper size */
-+		udf_fiiter_update_elen(iter, iter->elen -
-+					(dinfo->i_lenExtents - dir->i_size));
-+	}
-+	mark_inode_dirty(dir);
-+
-+	return 0;
-+}
-+
- static struct fileIdentDesc *udf_add_entry(struct inode *dir,
- 					   struct dentry *dentry,
- 					   struct udf_fileident_bh *fibh,
---- a/fs/udf/udfdecl.h
-+++ b/fs/udf/udfdecl.h
-@@ -264,6 +264,8 @@ int udf_fiiter_init(struct udf_fileident
- int udf_fiiter_advance(struct udf_fileident_iter *iter);
- void udf_fiiter_release(struct udf_fileident_iter *iter);
- void udf_fiiter_write_fi(struct udf_fileident_iter *iter, uint8_t *impuse);
-+void udf_fiiter_update_elen(struct udf_fileident_iter *iter, uint32_t new_elen);
-+int udf_fiiter_append_blk(struct udf_fileident_iter *iter);
- extern struct fileIdentDesc *udf_fileident_read(struct inode *, loff_t *,
- 						struct udf_fileident_bh *,
- 						struct fileIdentDesc *,
+--- a/arch/s390/kvm/gaccess.h
++++ b/arch/s390/kvm/gaccess.h
+@@ -402,11 +402,12 @@ int read_guest_abs(struct kvm_vcpu *vcpu
+  * @len: number of bytes to copy
+  *
+  * Copy @len bytes from @data (kernel space) to @gra (guest real address).
+- * It is up to the caller to ensure that the entire guest memory range is
+- * valid memory before calling this function.
+  * Guest low address and key protection are not checked.
+  *
+- * Returns zero on success or -EFAULT on error.
++ * Returns zero on success, -EFAULT when copying from @data failed, or
++ * PGM_ADRESSING in case @gra is outside a memslot. In this case, pgm check info
++ * is also stored to allow injecting into the guest (if applicable) using
++ * kvm_s390_inject_prog_cond().
+  *
+  * If an error occurs data may have been copied partially to guest memory.
+  */
+@@ -425,11 +426,12 @@ int write_guest_real(struct kvm_vcpu *vc
+  * @len: number of bytes to copy
+  *
+  * Copy @len bytes from @gra (guest real address) to @data (kernel space).
+- * It is up to the caller to ensure that the entire guest memory range is
+- * valid memory before calling this function.
+  * Guest key protection is not checked.
+  *
+- * Returns zero on success or -EFAULT on error.
++ * Returns zero on success, -EFAULT when copying to @data failed, or
++ * PGM_ADRESSING in case @gra is outside a memslot. In this case, pgm check info
++ * is also stored to allow injecting into the guest (if applicable) using
++ * kvm_s390_inject_prog_cond().
+  *
+  * If an error occurs data may have been copied partially to kernel space.
+  */
 
 
 
