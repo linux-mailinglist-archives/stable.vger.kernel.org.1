@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-87312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A779A645E
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:46:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C2629A6556
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:56:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0522828112F
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:46:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DA2A1C22171
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:56:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CA11E907C;
-	Mon, 21 Oct 2024 10:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BFF31EE03C;
+	Mon, 21 Oct 2024 10:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lfLY7p5o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r487h5V4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F59A1E0087;
-	Mon, 21 Oct 2024 10:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92561E6DC7;
+	Mon, 21 Oct 2024 10:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507228; cv=none; b=jMfeIbdQYoPDywH7pFMDllSZDAjYDs9PagbKrU5UJHkFPIOcgeG2hqERVRIbJwxT++r+3Lr29SRq7n0PpEGLSKZn4wPUvGD2AzEPxjUGqRuV2PBU513DO3IBTkapA+vkccm8ScPgHuhCZSDeIrGP3sf8m7kKSXUl1GXZMKVqgAU=
+	t=1729507808; cv=none; b=kwFDKhxmfoIjHUUdcTrqfzbltW7hJGOLkfCjv6xPNS1Y/tSBnnKRMmveIkd14SMNO+/Gxj35z++ubR+w71YoEii/6WaFNu1kRqyYs3/wH7VYT1eeEnPLxvID4JZDflkAoMDZyWRttUL8g6W/Kq6lfHGAhN25mBZ6pBn/uGFjse4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507228; c=relaxed/simple;
-	bh=CO8tP+4lBmS5EX82cqFf/oWgsumsqlacNaErqwM/BF4=;
+	s=arc-20240116; t=1729507808; c=relaxed/simple;
+	bh=IcUAQbIJWknBIPvd1t1c3ZNSUPBg0tGMPbgcwuly+d8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MmHyy3CXcpbweCPYfKBdte/xEO0G3K17E6GdYs9534Zj0PowyywfU+yYRw9rOtCwDVyAGhQ1x6Wu4erGlciaw5EvLq6qhWzb+eY1eDog7kpMGxz3GShuTSbOeAOq2eroAcfX9qeKAk2yOS0OmOlziRSMR7AsS+Lw61G0Y8g08Ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lfLY7p5o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7ED9C4CEC3;
-	Mon, 21 Oct 2024 10:40:27 +0000 (UTC)
+	 MIME-Version; b=GPWHZMeimdZ05DgY34jsqbqiJ/lAk1SyMiJjjgWxx16VwtaXi9iSRSYC1xOaaPmg2Sc0X13QZdGLo/Y+w/F5c6wDKLXDmeXZcwwIiZuDwio7MbNGd0RUcDBIxh3Ym9T9ELAr/KaeN75CmptZ1XuR7wSmETdrYRb7B17ykbHPk6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r487h5V4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58358C4CEC7;
+	Mon, 21 Oct 2024 10:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507228;
-	bh=CO8tP+4lBmS5EX82cqFf/oWgsumsqlacNaErqwM/BF4=;
+	s=korg; t=1729507807;
+	bh=IcUAQbIJWknBIPvd1t1c3ZNSUPBg0tGMPbgcwuly+d8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lfLY7p5o1LZni6YRduSiwDxcqh9O/CWSV7dOm6qN4y+8ScOKuiBxSN6u96H4fUNTz
-	 UnQUOg2VD4ViICzcBugoPbZvzJ8TRGoGaoV6scEg2ND7MUPbRN3KHkrMHazovmzKRi
-	 pJrNx010y+Gfed2c3Qv0eWTyx2hChNIoMzA/h/mk=
+	b=r487h5V4/6aky8785KewdPWa/222RyjmAaQyzyWYjL4W2nMlb4vJrbm14iR4iKcq7
+	 nl8YhIQ50fsBNJ2F3BSFaX0xSfsTJ6F3cF7R1ZpMz+/qdc8rVUf3YkokmdjuIQWG8F
+	 VE02b8PEjQpElXcdY6nXsAWN92xuSHUbaTA2kK+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 121/124] selftests: mptcp: join: test for prohibited MPC to port-based endp
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 5.10 04/52] arm64: probes: Remove broken LDR (literal) uprobe support
 Date: Mon, 21 Oct 2024 12:25:25 +0200
-Message-ID: <20241021102301.403674076@linuxfoundation.org>
+Message-ID: <20241021102241.799804879@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
+References: <20241021102241.624153108@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,231 +62,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 5afca7e996c42aed1b4a42d4712817601ba42aff upstream.
+commit acc450aa07099d071b18174c22a1119c57da8227 upstream.
 
-Explicitly verify that MPC connection attempts towards a port-based
-signal endpoint fail with a reset.
+The simulate_ldr_literal() and simulate_ldrsw_literal() functions are
+unsafe to use for uprobes. Both functions were originally written for
+use with kprobes, and access memory with plain C accesses. When uprobes
+was added, these were reused unmodified even though they cannot safely
+access user memory.
 
-Note that this new test is a bit different from the other ones, not
-using 'run_tests'. It is then needed to add the capture capability, and
-the picking the right port which have been extracted into three new
-helpers. The info about the capture can also be printed from a single
-point, which simplifies the exit paths in do_transfer().
+There are three key problems:
 
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
+1) The plain C accesses do not have corresponding extable entries, and
+   thus if they encounter a fault the kernel will treat these as
+   unintentional accesses to user memory, resulting in a BUG() which
+   will kill the kernel thread, and likely lead to further issues (e.g.
+   lockup or panic()).
 
-Fixes: 1729cf186d8a ("mptcp: create the listening socket for new port")
+2) The plain C accesses are subject to HW PAN and SW PAN, and so when
+   either is in use, any attempt to simulate an access to user memory
+   will fault. Thus neither simulate_ldr_literal() nor
+   simulate_ldrsw_literal() can do anything useful when simulating a
+   user instruction on any system with HW PAN or SW PAN.
+
+3) The plain C accesses are privileged, as they run in kernel context,
+   and in practice can access a small range of kernel virtual addresses.
+   The instructions they simulate have a range of +/-1MiB, and since the
+   simulated instructions must itself be a user instructions in the
+   TTBR0 address range, these can address the final 1MiB of the TTBR1
+   acddress range by wrapping downwards from an address in the first
+   1MiB of the TTBR0 address range.
+
+   In contemporary kernels the last 8MiB of TTBR1 address range is
+   reserved, and accesses to this will always fault, meaning this is no
+   worse than (1).
+
+   Historically, it was theoretically possible for the linear map or
+   vmemmap to spill into the final 8MiB of the TTBR1 address range, but
+   in practice this is extremely unlikely to occur as this would
+   require either:
+
+   * Having enough physical memory to fill the entire linear map all the
+     way to the final 1MiB of the TTBR1 address range.
+
+   * Getting unlucky with KASLR randomization of the linear map such
+     that the populated region happens to overlap with the last 1MiB of
+     the TTBR address range.
+
+   ... and in either case if we were to spill into the final page there
+   would be larger problems as the final page would alias with error
+   pointers.
+
+Practically speaking, (1) and (2) are the big issues. Given there have
+been no reports of problems since the broken code was introduced, it
+appears that no-one is relying on probing these instructions with
+uprobes.
+
+Avoid these issues by not allowing uprobes on LDR (literal) and LDRSW
+(literal), limiting the use of simulate_ldr_literal() and
+simulate_ldrsw_literal() to kprobes. Attempts to place uprobes on LDR
+(literal) and LDRSW (literal) will be rejected as
+arm_probe_decode_insn() will return INSN_REJECTED. In future we can
+consider introducing working uprobes support for these instructions, but
+this will require more significant work.
+
+Fixes: 9842ceae9fa8 ("arm64: Add uprobe support")
 Cc: stable@vger.kernel.org
-Co-developed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241014-net-mptcp-mpc-port-endp-v2-2-7faea8e6b6ae@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in mptcp_join.sh, because commit 0bd962dd86b2 ("selftests:
-  mptcp: join: check CURRESTAB counters"), and commit 9e6a39ecb9a1
-  ("selftests: mptcp: export TEST_COUNTER variable") are linked to new
-  features, not available in this version. Resolving the conflicts is
-  easy, simply adding the new helpers before do_transfer(), and rename
-  MPTCP_LIB_TEST_COUNTER to TEST_COUNT that was used before. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20241008155851.801546-2-mark.rutland@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |  115 +++++++++++++++++-------
- 1 file changed, 85 insertions(+), 30 deletions(-)
+ arch/arm64/kernel/probes/decode-insn.c |   16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -23,6 +23,7 @@ tmpfile=""
- cout=""
- err=""
- capout=""
-+cappid=""
- ns1=""
- ns2=""
- ksft_skip=4
-@@ -1006,40 +1007,62 @@ pm_nl_set_endpoint()
- 	fi
- }
+--- a/arch/arm64/kernel/probes/decode-insn.c
++++ b/arch/arm64/kernel/probes/decode-insn.c
+@@ -99,10 +99,6 @@ arm_probe_decode_insn(probe_opcode_t ins
+ 	    aarch64_insn_is_blr(insn) ||
+ 	    aarch64_insn_is_ret(insn)) {
+ 		api->handler = simulate_br_blr_ret;
+-	} else if (aarch64_insn_is_ldr_lit(insn)) {
+-		api->handler = simulate_ldr_literal;
+-	} else if (aarch64_insn_is_ldrsw_lit(insn)) {
+-		api->handler = simulate_ldrsw_literal;
+ 	} else {
+ 		/*
+ 		 * Instruction cannot be stepped out-of-line and we don't
+@@ -140,6 +136,17 @@ arm_kprobe_decode_insn(kprobe_opcode_t *
+ 	probe_opcode_t insn = le32_to_cpu(*addr);
+ 	probe_opcode_t *scan_end = NULL;
+ 	unsigned long size = 0, offset = 0;
++	struct arch_probe_insn *api = &asi->api;
++
++	if (aarch64_insn_is_ldr_lit(insn)) {
++		api->handler = simulate_ldr_literal;
++		decoded = INSN_GOOD_NO_SLOT;
++	} else if (aarch64_insn_is_ldrsw_lit(insn)) {
++		api->handler = simulate_ldrsw_literal;
++		decoded = INSN_GOOD_NO_SLOT;
++	} else {
++		decoded = arm_probe_decode_insn(insn, &asi->api);
++	}
  
--do_transfer()
-+cond_start_capture()
- {
--	local listener_ns="$1"
--	local connector_ns="$2"
--	local cl_proto="$3"
--	local srv_proto="$4"
--	local connect_addr="$5"
--
--	local port=$((10000 + TEST_COUNT - 1))
--	local cappid
--	local FAILING_LINKS=${FAILING_LINKS:-""}
--	local fastclose=${fastclose:-""}
--	local speed=${speed:-"fast"}
-+	local ns="$1"
- 
--	:> "$cout"
--	:> "$sout"
- 	:> "$capout"
- 
- 	if $capture; then
--		local capuser
--		if [ -z $SUDO_USER ] ; then
-+		local capuser capfile
-+		if [ -z $SUDO_USER ]; then
- 			capuser=""
+ 	/*
+ 	 * If there's a symbol defined in front of and near enough to
+@@ -157,7 +164,6 @@ arm_kprobe_decode_insn(kprobe_opcode_t *
  		else
- 			capuser="-Z $SUDO_USER"
- 		fi
+ 			scan_end = addr - MAX_ATOMIC_CONTEXT_SIZE;
+ 	}
+-	decoded = arm_probe_decode_insn(insn, &asi->api);
  
--		capfile=$(printf "mp_join-%02u-%s.pcap" "$TEST_COUNT" "${listener_ns}")
-+		capfile=$(printf "mp_join-%02u-%s.pcap" "$TEST_COUNT" "$ns")
- 
- 		echo "Capturing traffic for test $TEST_COUNT into $capfile"
--		ip netns exec ${listener_ns} tcpdump -i any -s 65535 -B 32768 $capuser -w $capfile > "$capout" 2>&1 &
-+		ip netns exec "$ns" tcpdump -i any -s 65535 -B 32768 $capuser -w "$capfile" > "$capout" 2>&1 &
- 		cappid=$!
- 
- 		sleep 1
- 	fi
-+}
-+
-+cond_stop_capture()
-+{
-+	if $capture; then
-+		sleep 1
-+		kill $cappid
-+		cat "$capout"
-+	fi
-+}
-+
-+get_port()
-+{
-+	echo "$((10000 + TEST_COUNT - 1))"
-+}
-+
-+do_transfer()
-+{
-+	local listener_ns="$1"
-+	local connector_ns="$2"
-+	local cl_proto="$3"
-+	local srv_proto="$4"
-+	local connect_addr="$5"
-+	local port
-+
-+	local FAILING_LINKS=${FAILING_LINKS:-""}
-+	local fastclose=${fastclose:-""}
-+	local speed=${speed:-"fast"}
-+	port=$(get_port)
-+
-+	:> "$cout"
-+	:> "$sout"
-+
-+	cond_start_capture ${listener_ns}
- 
- 	NSTAT_HISTORY=/tmp/${listener_ns}.nstat ip netns exec ${listener_ns} \
- 		nstat -n
-@@ -1125,10 +1148,7 @@ do_transfer()
- 	wait $spid
- 	local rets=$?
- 
--	if $capture; then
--	    sleep 1
--	    kill $cappid
--	fi
-+	cond_stop_capture
- 
- 	NSTAT_HISTORY=/tmp/${listener_ns}.nstat ip netns exec ${listener_ns} \
- 		nstat | grep Tcp > /tmp/${listener_ns}.out
-@@ -1144,7 +1164,6 @@ do_transfer()
- 		ip netns exec ${connector_ns} ss -Menita 1>&2 -o "dport = :$port"
- 		cat /tmp/${connector_ns}.out
- 
--		cat "$capout"
- 		return 1
- 	fi
- 
-@@ -1161,13 +1180,7 @@ do_transfer()
- 	fi
- 	rets=$?
- 
--	if [ $retc -eq 0 ] && [ $rets -eq 0 ];then
--		cat "$capout"
--		return 0
--	fi
--
--	cat "$capout"
--	return 1
-+	[ $retc -eq 0 ] && [ $rets -eq 0 ]
- }
- 
- make_file()
-@@ -2944,6 +2957,32 @@ verify_listener_events()
- 	fail_test "$e_type:$type $e_family:$family $e_saddr:$saddr $e_sport:$sport"
- }
- 
-+chk_mpc_endp_attempt()
-+{
-+	local retl=$1
-+	local attempts=$2
-+
-+	print_check "Connect"
-+
-+	if [ ${retl} = 124 ]; then
-+		fail_test "timeout on connect"
-+	elif [ ${retl} = 0 ]; then
-+		fail_test "unexpected successful connect"
-+	else
-+		print_ok
-+
-+		print_check "Attempts"
-+		count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtMPCapableEndpAttempt")
-+		if [ -z "$count" ]; then
-+			print_skip
-+		elif [ "$count" != "$attempts" ]; then
-+			fail_test "got ${count} MPC attempt[s] on port-based endpoint, expected ${attempts}"
-+		else
-+			print_ok
-+		fi
-+	fi
-+}
-+
- add_addr_ports_tests()
- {
- 	# signal address with port
-@@ -3034,6 +3073,22 @@ add_addr_ports_tests()
- 		chk_join_nr 2 2 2
- 		chk_add_nr 2 2 2
- 	fi
-+
-+	if reset "port-based signal endpoint must not accept mpc"; then
-+		local port retl count
-+		port=$(get_port)
-+
-+		cond_start_capture ${ns1}
-+		pm_nl_add_endpoint ${ns1} 10.0.2.1 flags signal port ${port}
-+		mptcp_lib_wait_local_port_listen ${ns1} ${port}
-+
-+		timeout 1 ip netns exec ${ns2} \
-+			./mptcp_connect -t ${timeout_poll} -p $port -s MPTCP 10.0.2.1 >/dev/null 2>&1
-+		retl=$?
-+		cond_stop_capture
-+
-+		chk_mpc_endp_attempt ${retl} 1
-+	fi
- }
- 
- syncookies_tests()
+ 	if (decoded != INSN_REJECTED && scan_end)
+ 		if (is_probed_address_atomic(addr - 1, scan_end))
 
 
 
