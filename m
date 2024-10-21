@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-87189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58B4D9A645F
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:46:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E83CB9A630E
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:30:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A48CB28050
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 055BF282837
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:30:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3176A1EABCB;
-	Mon, 21 Oct 2024 10:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD73E1E47A5;
+	Mon, 21 Oct 2024 10:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1xj9JoH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D7rpFJoP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6E91E3DF9;
-	Mon, 21 Oct 2024 10:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965FC1D04BB;
+	Mon, 21 Oct 2024 10:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506861; cv=none; b=PXhFkjf115L1/l67uYiNGHiTah6eGN8dyHaD8pGGIMJNM2oH80N5HZ7EEjFjaa1VQEWxTTSHCZ7wRqc63CCfqKGrZ9VVkX2WbKfnp1Gvz1+AtgKV9IbLLsP0mV4bynk1oTJRuhwJp/bBhxoEg1MqI340DSa75erlYjmbWbZ1k8A=
+	t=1729506599; cv=none; b=lyXLm0S+X5JcX2EGbyb1IlKNecUcB+6ZJgfI43ypKEaYt8sFkbKjdIobqvIVh64cBZL8AG4H6KnmKXk9t8ZQ1IknxsDbyXCTdUiZh2+k8uUrTdM+yu0D/DWjhr4AXfRST5SjV8HLEA/MCB9Q0XyErqZ4Is4GvhgwrvcZnm2cg4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506861; c=relaxed/simple;
-	bh=Zr6on8Q07jwLdWk1Zl+8crUgIO52/1MG/WVwj5JoDjU=;
+	s=arc-20240116; t=1729506599; c=relaxed/simple;
+	bh=9MggNq3OmpZIi2Kw9uMk5C6BP9LvevCAkCi414gcQLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VGxtOztxqneNE0YrSIfGaFjrWfSlrqO/OFao5SifnnN5ll0ZzPKZERSVBdJzmlcxa2CPCE0in4RVpTrpi1eMKwoE8yOKey6HLIm3w9G5J+UK70LtDet/6EjD/KvGdUYVNPY9eGAbdWzi7CFnxr5bwD/F5IyPkNiNOnjhMgGkgac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G1xj9JoH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 588E5C4CEC3;
-	Mon, 21 Oct 2024 10:34:20 +0000 (UTC)
+	 MIME-Version; b=ivXx88ukGl9MrXlMDV3Im3no/jw2t7mxP9NQXG2g1QRVfV6Yi5U9Ww2Ic2KX6IVEd0tfqL5nDpkGuYnzLE7uSkezfqYbM2SRP0JlktrysdMZxUa0n6wq/lI1ciE7oAhLDrs9kbne0T4Y5Mhwz56BLhsyzl6nhhHylrYEKuiKgZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D7rpFJoP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE7ABC4CEC3;
+	Mon, 21 Oct 2024 10:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506860;
-	bh=Zr6on8Q07jwLdWk1Zl+8crUgIO52/1MG/WVwj5JoDjU=;
+	s=korg; t=1729506599;
+	bh=9MggNq3OmpZIi2Kw9uMk5C6BP9LvevCAkCi414gcQLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G1xj9JoHm1VtxV3bcEvzROOmTk2lmf7loU+eS99YkAJtMM90vVhb4Ku1jTnHAJ73d
-	 oRj1Y3NKXLoyS1Obp++jvSEucOI76Bf0THxNnbQddYUy44j52Jex0Myd9Ex6O/ifHv
-	 ZvEQ8QAGjcJBZkeqgmSwrUM1m5Rr/pcqmUm7qQa4=
+	b=D7rpFJoP5yB2kkzwzz1huWv0LgsKEQ6Gpe/IRIYm8aNnvAj6D6rD/bYXjH/UEUowO
+	 yz9hmoAptd18/+wHexUgGR60Rvs70ScXVncvM58kdgUJKeAJ1zN17jzN+cKjCaAoPG
+	 Sr0IfhxEGBfSwpofzHV5GKum5wwhl0XMxIizjQLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 010/124] net: enetc: add missing static descriptor and inline keyword
+	Peter Wang <peter.wang@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.11 058/135] scsi: ufs: core: Requeue aborted request
 Date: Mon, 21 Oct 2024 12:23:34 +0200
-Message-ID: <20241021102257.117503094@linuxfoundation.org>
+Message-ID: <20241021102301.598694629@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Peter Wang <peter.wang@mediatek.com>
 
-commit 1d7b2ce43d2c22a21dadaf689cb36a69570346a6 upstream.
+commit 8fa075804cb3b00960dd5c06554308175c834530 upstream.
 
-Fix the build warnings when CONFIG_FSL_ENETC_MDIO is not enabled.
-The detailed warnings are shown as follows.
+After the SQ cleanup fix, the CQ will receive a response with the
+corresponding tag marked as OCS: ABORTED. To align with the behavior of
+Legacy SDB mode, the handling of OCS: ABORTED has been changed to match
+that of OCS_INVALID_COMMAND_STATUS (SDB), with both returning a SCSI
+result of DID_REQUEUE.
 
-include/linux/fsl/enetc_mdio.h:62:18: warning: no previous prototype for function 'enetc_hw_alloc' [-Wmissing-prototypes]
-      62 | struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
-         |                  ^
-include/linux/fsl/enetc_mdio.h:62:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-      62 | struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
-         | ^
-         | static
-8 warnings generated.
+Furthermore, the workaround implemented before the SQ cleanup fix can be
+removed.
 
-Fixes: 6517798dd343 ("enetc: Make MDIO accessors more generic and export to include/linux/fsl")
+Fixes: ab248643d3d6 ("scsi: ufs: core: Add error handling for MCQ mode")
 Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202410102136.jQHZOcS4-lkp@intel.com/
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20241011030103.392362-1-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Link: https://lore.kernel.org/r/20241001091917.6917-3-peter.wang@mediatek.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/fsl/enetc_mdio.h |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/ufs/core/ufshcd.c |   20 ++++----------------
+ 1 file changed, 4 insertions(+), 16 deletions(-)
 
---- a/include/linux/fsl/enetc_mdio.h
-+++ b/include/linux/fsl/enetc_mdio.h
-@@ -59,7 +59,8 @@ static inline int enetc_mdio_read_c45(st
- static inline int enetc_mdio_write_c45(struct mii_bus *bus, int phy_id,
- 				       int devad, int regnum, u16 value)
- { return -EINVAL; }
--struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
-+static inline struct enetc_hw *enetc_hw_alloc(struct device *dev,
-+					      void __iomem *port_regs)
- { return ERR_PTR(-EINVAL); }
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -5403,10 +5403,12 @@ ufshcd_transfer_rsp_status(struct ufs_hb
+ 		}
+ 		break;
+ 	case OCS_ABORTED:
+-		result |= DID_ABORT << 16;
+-		break;
+ 	case OCS_INVALID_COMMAND_STATUS:
+ 		result |= DID_REQUEUE << 16;
++		dev_warn(hba->dev,
++				"OCS %s from controller for tag %d\n",
++				(ocs == OCS_ABORTED ? "aborted" : "invalid"),
++				lrbp->task_tag);
+ 		break;
+ 	case OCS_INVALID_CMD_TABLE_ATTR:
+ 	case OCS_INVALID_PRDT_ATTR:
+@@ -6470,26 +6472,12 @@ static bool ufshcd_abort_one(struct requ
+ 	struct scsi_device *sdev = cmd->device;
+ 	struct Scsi_Host *shost = sdev->host;
+ 	struct ufs_hba *hba = shost_priv(shost);
+-	struct ufshcd_lrb *lrbp = &hba->lrb[tag];
+-	struct ufs_hw_queue *hwq;
+-	unsigned long flags;
  
- #endif
+ 	*ret = ufshcd_try_to_abort_task(hba, tag);
+ 	dev_err(hba->dev, "Aborting tag %d / CDB %#02x %s\n", tag,
+ 		hba->lrb[tag].cmd ? hba->lrb[tag].cmd->cmnd[0] : -1,
+ 		*ret ? "failed" : "succeeded");
+ 
+-	/* Release cmd in MCQ mode if abort succeeds */
+-	if (hba->mcq_enabled && (*ret == 0)) {
+-		hwq = ufshcd_mcq_req_to_hwq(hba, scsi_cmd_to_rq(lrbp->cmd));
+-		if (!hwq)
+-			return 0;
+-		spin_lock_irqsave(&hwq->cq_lock, flags);
+-		if (ufshcd_cmd_inflight(lrbp->cmd))
+-			ufshcd_release_scsi_cmd(hba, lrbp);
+-		spin_unlock_irqrestore(&hwq->cq_lock, flags);
+-	}
+-
+ 	return *ret == 0;
+ }
+ 
 
 
 
