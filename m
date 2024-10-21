@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-87412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FB4E9A64D6
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:51:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C7229A639E
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:37:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C29D2812C3
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:51:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC5191F2278D
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:37:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93ED21E7C09;
-	Mon, 21 Oct 2024 10:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE431EABC5;
+	Mon, 21 Oct 2024 10:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pgDioFYN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vnObGRrY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4830C1E47B2;
-	Mon, 21 Oct 2024 10:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FB21E570D;
+	Mon, 21 Oct 2024 10:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507529; cv=none; b=RDviW0by3VV30F0DItGsE1puCHflOHg7o2OYQf9WxNYpNZ+H5smmaO0lIOo0oIfvsYdb+bNosWG6o+JnwjRm+//4vLt4qoJB6dfIFePUIhCbBD0FDyPruBXTwClxAieI+9ATt4by+0oLUmUVrZDd7tlCwtNBi244AdHmTn0wD4Q=
+	t=1729506828; cv=none; b=YF9EwnP8OMgJZwZBhgd0VkveAHSJdCyoWhzcVT6vLeTf6h1DP0rs0NK7xGhRD28MVaiPlAHq1+esWxvjuPKvbwfU9HJ2l0m9LhBqf9Ky+vV+t9dPJfW46ZYpIN1HlkKcVQkMlu9LFqTjKWE2imxG5a+7Aldhloz888PzL0Xqa+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507529; c=relaxed/simple;
-	bh=zU46pkGc6+Jny5hMoN97pDu3d8iWX3dnwrJr7KzL4+Q=;
+	s=arc-20240116; t=1729506828; c=relaxed/simple;
+	bh=LkFEXn9KjY//3+HihTfWG5ZySezlRm4M6LxkCNNwGSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CfIN9NIkGMbupdWDKU3od+ybCBhuQZyMVfLnkb+zFtqhSgVqyH2DVYhFXSQiXLJ2CE/BXdxLI4Z8dT3dJIjduykeZj59nl/uTvhEvRyIiFnj8emu1/Lt5ApK5CbYHnh7DHfkPr33l/1gfJQBkoTHI59ULE/NvEGy7/NriKetXy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pgDioFYN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F0AEC4CEC3;
-	Mon, 21 Oct 2024 10:45:28 +0000 (UTC)
+	 MIME-Version; b=HMaJDqAJQ2jDFNsSKazX+sZxcZGxT+zsoV4cXu3UB7qvl5TZxz4B4jnK3NmcWyjxyT0Vlz7VSOGY42v541epZc/l0AdaPLgaxks/IkW9cM5/7HSJc+QT4NiIaL32XLOg3cwGwdz6llDvO9m3gl6p0pHH7SczDT4+E0bhKEhBfuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vnObGRrY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D48DC4CEC3;
+	Mon, 21 Oct 2024 10:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507528;
-	bh=zU46pkGc6+Jny5hMoN97pDu3d8iWX3dnwrJr7KzL4+Q=;
+	s=korg; t=1729506827;
+	bh=LkFEXn9KjY//3+HihTfWG5ZySezlRm4M6LxkCNNwGSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pgDioFYNy4HtyvVaP13zYB5d0aKqrOOCpvY+3hX2pqCCLhhZwMDlpXP74TIspaRP7
-	 QSKYCudqceiTOQZw9dTcLqzMrLKVJvdYSnsDgBAvxlLe/kKhc5vUyR5+F1UHN5XmWD
-	 jsA6vrsO+1uYgzakGeYA9uc4sksNKsd8CAcKM4wE=
+	b=vnObGRrYC/392H5svSYDsRLLRlYgX0lvu2pXMrLqx8zfPQQxi0GBvA2Xfm391Quh0
+	 s1SzY2WfpcOTL7Ui1lzE3uwWtD/xleiKHGnSC00+skdcIjrz0p4V96YUmLCJ+aZSvP
+	 MTigyCnReDkMp3vs9WSIR8b8NcyHS4uIun0Do+EQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.15 08/82] udf: Convert udf_readdir() to new directory iteration
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>
+Subject: [PATCH 6.11 133/135] serial: qcom-geni: fix receiver enable
 Date: Mon, 21 Oct 2024 12:24:49 +0200
-Message-ID: <20241021102247.551495100@linuxfoundation.org>
+Message-ID: <20241021102304.553714111@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,227 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 7cd7a36ab44d3e8c1dee7185ef407b9831a8220b ]
+commit fa103d2599e11e802c818684cff821baefe7f206 upstream.
 
-Convert udf_readdir() to new directory iteration functions.
+The receiver is supposed to be enabled in the startup() callback and not
+in set_termios() which is called also during console setup.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-[cascardo: conflict due to skipped 59a16786fa7a ("udf: replace ll_rw_block()")]
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+This specifically avoids accepting input before the port has been opened
+(and interrupts enabled), something which can also break the GENI
+firmware (cancel fails and after abort, the "stale" counter handling
+appears to be broken so that later input is not processed until twelve
+chars have been received).
+
+There also does not appear to be any need to keep the receiver disabled
+while updating the port settings.
+
+Since commit 6f3c3cafb115 ("serial: qcom-geni: disable interrupts during
+console writes") the calls to manipulate the secondary interrupts, which
+were done without holding the port lock, can also lead to the receiver
+being left disabled when set_termios() races with the console code (e.g.
+when init opens the tty during boot). This can manifest itself as a
+serial getty not accepting input.
+
+The calls to stop and start rx in set_termios() can similarly race with
+DMA completion and, for example, cause the DMA buffer to be unmapped
+twice or the mapping to be leaked.
+
+Fix this by only enabling the receiver during startup and while holding
+the port lock to avoid racing with the console code.
+
+Fixes: 6f3c3cafb115 ("serial: qcom-geni: disable interrupts during console writes")
+Fixes: 2aaa43c70778 ("tty: serial: qcom-geni-serial: add support for serial engine DMA")
+Fixes: c4f528795d1a ("tty: serial: msm_geni_serial: Add serial driver support for GENI based QUP")
+Cc: stable@vger.kernel.org      # 6.3
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20241009145110.16847-6-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/dir.c |  148 ++++++++++-------------------------------------------------
- 1 file changed, 27 insertions(+), 121 deletions(-)
+ drivers/tty/serial/qcom_geni_serial.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/fs/udf/dir.c
-+++ b/fs/udf/dir.c
-@@ -39,26 +39,13 @@
- static int udf_readdir(struct file *file, struct dir_context *ctx)
- {
- 	struct inode *dir = file_inode(file);
--	struct udf_inode_info *iinfo = UDF_I(dir);
--	struct udf_fileident_bh fibh = { .sbh = NULL, .ebh = NULL};
--	struct fileIdentDesc *fi = NULL;
--	struct fileIdentDesc cfi;
--	udf_pblk_t block, iblock;
- 	loff_t nf_pos, emit_pos = 0;
- 	int flen;
--	unsigned char *fname = NULL, *copy_name = NULL;
--	unsigned char *nameptr;
--	uint16_t liu;
--	uint8_t lfi;
--	loff_t size = udf_ext0_offset(dir) + dir->i_size;
--	struct buffer_head *tmp, *bha[16];
--	struct kernel_lb_addr eloc;
--	uint32_t elen;
--	sector_t offset;
--	int i, num, ret = 0;
--	struct extent_position epos = { NULL, 0, {0, 0} };
-+	unsigned char *fname = NULL;
-+	int ret = 0;
- 	struct super_block *sb = dir->i_sb;
- 	bool pos_valid = false;
-+	struct udf_fileident_iter iter;
- 
- 	if (ctx->pos == 0) {
- 		if (!dir_emit_dot(file, ctx))
-@@ -66,7 +53,7 @@ static int udf_readdir(struct file *file
- 		ctx->pos = 1;
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -1179,6 +1179,11 @@ static int qcom_geni_serial_startup(stru
+ 		if (ret)
+ 			return ret;
  	}
- 	nf_pos = (ctx->pos - 1) << 2;
--	if (nf_pos >= size)
-+	if (nf_pos >= dir->i_size)
- 		goto out;
++
++	uart_port_lock_irq(uport);
++	qcom_geni_serial_start_rx(uport);
++	uart_port_unlock_irq(uport);
++
+ 	enable_irq(uport->irq);
  
- 	/*
-@@ -90,138 +77,57 @@ static int udf_readdir(struct file *file
- 		goto out;
+ 	return 0;
+@@ -1264,7 +1269,6 @@ static void qcom_geni_serial_set_termios
+ 	unsigned int avg_bw_core;
+ 	unsigned long timeout;
+ 
+-	qcom_geni_serial_stop_rx(uport);
+ 	/* baud rate */
+ 	baud = uart_get_baud_rate(uport, termios, old, 300, 4000000);
+ 
+@@ -1280,7 +1284,7 @@ static void qcom_geni_serial_set_termios
+ 		dev_err(port->se.dev,
+ 			"Couldn't find suitable clock rate for %u\n",
+ 			baud * sampling_rate);
+-		goto out_restart_rx;
++		return;
  	}
  
--	if (nf_pos == 0)
--		nf_pos = udf_ext0_offset(dir);
--
--	fibh.soffset = fibh.eoffset = nf_pos & (sb->s_blocksize - 1);
--	if (iinfo->i_alloc_type != ICBTAG_FLAG_AD_IN_ICB) {
--		if (inode_bmap(dir, nf_pos >> sb->s_blocksize_bits,
--		    &epos, &eloc, &elen, &offset)
--		    != (EXT_RECORDED_ALLOCATED >> 30)) {
--			ret = -ENOENT;
--			goto out;
--		}
--		block = udf_get_lb_pblock(sb, &eloc, offset);
--		if ((++offset << sb->s_blocksize_bits) < elen) {
--			if (iinfo->i_alloc_type == ICBTAG_FLAG_AD_SHORT)
--				epos.offset -= sizeof(struct short_ad);
--			else if (iinfo->i_alloc_type ==
--					ICBTAG_FLAG_AD_LONG)
--				epos.offset -= sizeof(struct long_ad);
--		} else {
--			offset = 0;
--		}
--
--		if (!(fibh.sbh = fibh.ebh = udf_tread(sb, block))) {
--			ret = -EIO;
--			goto out;
--		}
--
--		if (!(offset & ((16 >> (sb->s_blocksize_bits - 9)) - 1))) {
--			i = 16 >> (sb->s_blocksize_bits - 9);
--			if (i + offset > (elen >> sb->s_blocksize_bits))
--				i = (elen >> sb->s_blocksize_bits) - offset;
--			for (num = 0; i > 0; i--) {
--				block = udf_get_lb_pblock(sb, &eloc, offset + i);
--				tmp = udf_tgetblk(sb, block);
--				if (tmp && !buffer_uptodate(tmp) && !buffer_locked(tmp))
--					bha[num++] = tmp;
--				else
--					brelse(tmp);
--			}
--			if (num) {
--				ll_rw_block(REQ_OP_READ, REQ_RAHEAD, num, bha);
--				for (i = 0; i < num; i++)
--					brelse(bha[i]);
--			}
--		}
--	}
--
--	while (nf_pos < size) {
-+	for (ret = udf_fiiter_init(&iter, dir, nf_pos);
-+	     !ret && iter.pos < dir->i_size;
-+	     ret = udf_fiiter_advance(&iter)) {
- 		struct kernel_lb_addr tloc;
--		loff_t cur_pos = nf_pos;
--
--		/* Update file position only if we got past the current one */
--		if (nf_pos >= emit_pos) {
--			ctx->pos = (nf_pos >> 2) + 1;
--			pos_valid = true;
--		}
-+		udf_pblk_t iblock;
- 
--		fi = udf_fileident_read(dir, &nf_pos, &fibh, &cfi, &epos, &eloc,
--					&elen, &offset);
--		if (!fi)
--			goto out;
- 		/* Still not at offset where user asked us to read from? */
--		if (cur_pos < emit_pos)
-+		if (iter.pos < emit_pos)
- 			continue;
- 
--		liu = le16_to_cpu(cfi.lengthOfImpUse);
--		lfi = cfi.lengthFileIdent;
--
--		if (fibh.sbh == fibh.ebh) {
--			nameptr = udf_get_fi_ident(fi);
--		} else {
--			int poffset;	/* Unpaded ending offset */
--
--			poffset = fibh.soffset + sizeof(struct fileIdentDesc) + liu + lfi;
--
--			if (poffset >= lfi) {
--				nameptr = (char *)(fibh.ebh->b_data + poffset - lfi);
--			} else {
--				if (!copy_name) {
--					copy_name = kmalloc(UDF_NAME_LEN,
--							    GFP_NOFS);
--					if (!copy_name) {
--						ret = -ENOMEM;
--						goto out;
--					}
--				}
--				nameptr = copy_name;
--				memcpy(nameptr, udf_get_fi_ident(fi),
--				       lfi - poffset);
--				memcpy(nameptr + lfi - poffset,
--				       fibh.ebh->b_data, poffset);
--			}
--		}
-+		/* Update file position only if we got past the current one */
-+		pos_valid = true;
-+		ctx->pos = (iter.pos >> 2) + 1;
- 
--		if ((cfi.fileCharacteristics & FID_FILE_CHAR_DELETED) != 0) {
-+		if (iter.fi.fileCharacteristics & FID_FILE_CHAR_DELETED) {
- 			if (!UDF_QUERY_FLAG(sb, UDF_FLAG_UNDELETE))
- 				continue;
- 		}
- 
--		if ((cfi.fileCharacteristics & FID_FILE_CHAR_HIDDEN) != 0) {
-+		if (iter.fi.fileCharacteristics & FID_FILE_CHAR_HIDDEN) {
- 			if (!UDF_QUERY_FLAG(sb, UDF_FLAG_UNHIDE))
- 				continue;
- 		}
- 
--		if (cfi.fileCharacteristics & FID_FILE_CHAR_PARENT) {
-+		if (iter.fi.fileCharacteristics & FID_FILE_CHAR_PARENT) {
- 			if (!dir_emit_dotdot(file, ctx))
--				goto out;
-+				goto out_iter;
- 			continue;
- 		}
- 
--		flen = udf_get_filename(sb, nameptr, lfi, fname, UDF_NAME_LEN);
-+		flen = udf_get_filename(sb, iter.name,
-+				iter.fi.lengthFileIdent, fname, UDF_NAME_LEN);
- 		if (flen < 0)
- 			continue;
- 
--		tloc = lelb_to_cpu(cfi.icb.extLocation);
-+		tloc = lelb_to_cpu(iter.fi.icb.extLocation);
- 		iblock = udf_get_lb_pblock(sb, &tloc, 0);
- 		if (!dir_emit(ctx, fname, flen, iblock, DT_UNKNOWN))
--			goto out;
--	} /* end while */
--
--	ctx->pos = (nf_pos >> 2) + 1;
--	pos_valid = true;
-+			goto out_iter;
-+	}
- 
-+	if (!ret) {
-+		ctx->pos = (iter.pos >> 2) + 1;
-+		pos_valid = true;
-+	}
-+out_iter:
-+	udf_fiiter_release(&iter);
- out:
- 	if (pos_valid)
- 		file->f_version = inode_query_iversion(dir);
--	if (fibh.sbh != fibh.ebh)
--		brelse(fibh.ebh);
--	brelse(fibh.sbh);
--	brelse(epos.bh);
- 	kfree(fname);
--	kfree(copy_name);
- 
- 	return ret;
+ 	dev_dbg(port->se.dev, "desired_rate = %u, clk_rate = %lu, clk_div = %u\n",
+@@ -1371,8 +1375,6 @@ static void qcom_geni_serial_set_termios
+ 	writel(stop_bit_len, uport->membase + SE_UART_TX_STOP_BIT_LEN);
+ 	writel(ser_clk_cfg, uport->membase + GENI_SER_M_CLK_CFG);
+ 	writel(ser_clk_cfg, uport->membase + GENI_SER_S_CLK_CFG);
+-out_restart_rx:
+-	qcom_geni_serial_start_rx(uport);
  }
+ 
+ #ifdef CONFIG_SERIAL_QCOM_GENI_CONSOLE
 
 
 
