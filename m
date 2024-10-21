@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-87364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42E8F9A649C
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:48:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A95D29A6391
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:36:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E54E22811A5
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:48:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 593351F226C4
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0BC91F4738;
-	Mon, 21 Oct 2024 10:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF9341EABD4;
+	Mon, 21 Oct 2024 10:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hptN/qQQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZrsotxEp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF3B1F1309;
-	Mon, 21 Oct 2024 10:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD361F12F7;
+	Mon, 21 Oct 2024 10:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507385; cv=none; b=j5p65EBCgjJEWHxqe89I36rIjVB+c+fdT/Zlzi0yPdYQnfAf3PX+6E3Y0vJAli4CwH6/zkiyEwZ/QhzwW0qzy4hlfFRAfBr1VkLGn8asvmBdTGJlExyfx/MnkAdhDKYZDjKclMwrPOoFZu2A8SwkdoDN1LRY+9mLwjUSowylcGg=
+	t=1729506803; cv=none; b=ELPZPcjjtzOih+A1fayXs2loZKL4xl3+srWIaBJzStdyPkcLjJ0JGuliFopfBFF6G1D2lqsBcGxZSL048EVflAE1TFtBfIszZDJR9jRkCdA7tnMyafDY+iPHcH5eOedpYuyOiMeMA+Af1/7TawHxQJXsc9ybkbcUUhRahLg41q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507385; c=relaxed/simple;
-	bh=tN0kEmyQpUlp/o6Q2RmaWMzX4SgQn93zVNtzzqPtGZk=;
+	s=arc-20240116; t=1729506803; c=relaxed/simple;
+	bh=N1h3bQg2QrZwxEx/+Y+JEKUHuUkwZ2Um1x+L7PrE0V8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=USIIDecw37bJQJDlEnfRKq2IaS7crNVy08IjdKRTuw9Lyf50X3xlOxOgdUJorf/4y4ODA7z1Yt2oD3CWngElvyduv00wwnQNLUqVy720/JtBuVe0xtHRLIqnbLGWHbfiYrClkTBQiJLDHKi8SFHNu0EZjGK4+q5iKzAa9SYNT9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hptN/qQQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF243C4CEC3;
-	Mon, 21 Oct 2024 10:43:04 +0000 (UTC)
+	 MIME-Version; b=BSIy7wh8wGF1GRHwxoqhabz4E5rRA41OE5cfAdz5powxd7sFygRLXVyXBqFn/VEw9/arMvv/fStvAatEU6pZ+UlpTjc9z/QprvDFshdTXLetJ/5I0nArvteGZ6338A0t44lEk4Irikq6AR+2P45ZAWYHFKfDcc/1+HQvHVr9AAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZrsotxEp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9AA8C4CEFF;
+	Mon, 21 Oct 2024 10:33:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507385;
-	bh=tN0kEmyQpUlp/o6Q2RmaWMzX4SgQn93zVNtzzqPtGZk=;
+	s=korg; t=1729506803;
+	bh=N1h3bQg2QrZwxEx/+Y+JEKUHuUkwZ2Um1x+L7PrE0V8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hptN/qQQnuRHKN3nvVcEgXPbHHZWyUKRN2IR/9wP9tEWsBqzptiBUwEfYB+6OVT53
-	 3kRVaLdSV+Go/wWkqSg3/9NCKwblr6A9a/Dzhgg6UtS2iM37MBPyWPuq5s6AA81p+Y
-	 gDKKwmIm1ptwyMmo82FltzIaeio2lhZfekFtN9m0=
+	b=ZrsotxEpfcm+93xK7ngdZAQFckju7u2Zawy8oFlhimfiuZto5mnxRW9eWq3SSXGtB
+	 3FvdoSC57WIjMiSj30WgwgmzCYfDh/3TsCUPKne61KO+UqkkdzALepAuBtdyhQ1YUM
+	 OXOchc4ZCvVmYGhHWwv3sAF+wRLveM/mgcprl7cE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.1 28/91] arm64: probes: Remove broken LDR (literal) uprobe support
+	Kunkun Jiang <jiangkunkun@huawei.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.11 126/135] irqchip/gic-v4: Dont allow a VMOVP on a dying VPE
 Date: Mon, 21 Oct 2024 12:24:42 +0200
-Message-ID: <20241021102250.924650574@linuxfoundation.org>
+Message-ID: <20241021102304.262304578@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,126 +62,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Marc Zyngier <maz@kernel.org>
 
-commit acc450aa07099d071b18174c22a1119c57da8227 upstream.
+commit 1442ee0011983f0c5c4b92380e6853afb513841a upstream.
 
-The simulate_ldr_literal() and simulate_ldrsw_literal() functions are
-unsafe to use for uprobes. Both functions were originally written for
-use with kprobes, and access memory with plain C accesses. When uprobes
-was added, these were reused unmodified even though they cannot safely
-access user memory.
+Kunkun Jiang reported that there is a small window of opportunity for
+userspace to force a change of affinity for a VPE while the VPE has already
+been unmapped, but the corresponding doorbell interrupt still visible in
+/proc/irq/.
 
-There are three key problems:
+Plug the race by checking the value of vmapp_count, which tracks whether
+the VPE is mapped ot not, and returning an error in this case.
 
-1) The plain C accesses do not have corresponding extable entries, and
-   thus if they encounter a fault the kernel will treat these as
-   unintentional accesses to user memory, resulting in a BUG() which
-   will kill the kernel thread, and likely lead to further issues (e.g.
-   lockup or panic()).
+This involves making vmapp_count common to both GICv4.1 and its v4.0
+ancestor.
 
-2) The plain C accesses are subject to HW PAN and SW PAN, and so when
-   either is in use, any attempt to simulate an access to user memory
-   will fault. Thus neither simulate_ldr_literal() nor
-   simulate_ldrsw_literal() can do anything useful when simulating a
-   user instruction on any system with HW PAN or SW PAN.
-
-3) The plain C accesses are privileged, as they run in kernel context,
-   and in practice can access a small range of kernel virtual addresses.
-   The instructions they simulate have a range of +/-1MiB, and since the
-   simulated instructions must itself be a user instructions in the
-   TTBR0 address range, these can address the final 1MiB of the TTBR1
-   acddress range by wrapping downwards from an address in the first
-   1MiB of the TTBR0 address range.
-
-   In contemporary kernels the last 8MiB of TTBR1 address range is
-   reserved, and accesses to this will always fault, meaning this is no
-   worse than (1).
-
-   Historically, it was theoretically possible for the linear map or
-   vmemmap to spill into the final 8MiB of the TTBR1 address range, but
-   in practice this is extremely unlikely to occur as this would
-   require either:
-
-   * Having enough physical memory to fill the entire linear map all the
-     way to the final 1MiB of the TTBR1 address range.
-
-   * Getting unlucky with KASLR randomization of the linear map such
-     that the populated region happens to overlap with the last 1MiB of
-     the TTBR address range.
-
-   ... and in either case if we were to spill into the final page there
-   would be larger problems as the final page would alias with error
-   pointers.
-
-Practically speaking, (1) and (2) are the big issues. Given there have
-been no reports of problems since the broken code was introduced, it
-appears that no-one is relying on probing these instructions with
-uprobes.
-
-Avoid these issues by not allowing uprobes on LDR (literal) and LDRSW
-(literal), limiting the use of simulate_ldr_literal() and
-simulate_ldrsw_literal() to kprobes. Attempts to place uprobes on LDR
-(literal) and LDRSW (literal) will be rejected as
-arm_probe_decode_insn() will return INSN_REJECTED. In future we can
-consider introducing working uprobes support for these instructions, but
-this will require more significant work.
-
-Fixes: 9842ceae9fa8 ("arm64: Add uprobe support")
+Fixes: 64edfaa9a234 ("irqchip/gic-v4.1: Implement the v4.1 flavour of VMAPP")
+Reported-by: Kunkun Jiang <jiangkunkun@huawei.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20241008155851.801546-2-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/c182ece6-2ba0-ce4f-3404-dba7a3ab6c52@huawei.com
+Link: https://lore.kernel.org/all/20241002204959.2051709-1-maz@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/probes/decode-insn.c |   16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c   |   18 ++++++++++++------
+ include/linux/irqchip/arm-gic-v4.h |    4 +++-
+ 2 files changed, 15 insertions(+), 7 deletions(-)
 
---- a/arch/arm64/kernel/probes/decode-insn.c
-+++ b/arch/arm64/kernel/probes/decode-insn.c
-@@ -99,10 +99,6 @@ arm_probe_decode_insn(probe_opcode_t ins
- 	    aarch64_insn_is_blr(insn) ||
- 	    aarch64_insn_is_ret(insn)) {
- 		api->handler = simulate_br_blr_ret;
--	} else if (aarch64_insn_is_ldr_lit(insn)) {
--		api->handler = simulate_ldr_literal;
--	} else if (aarch64_insn_is_ldrsw_lit(insn)) {
--		api->handler = simulate_ldrsw_literal;
- 	} else {
- 		/*
- 		 * Instruction cannot be stepped out-of-line and we don't
-@@ -140,6 +136,17 @@ arm_kprobe_decode_insn(kprobe_opcode_t *
- 	probe_opcode_t insn = le32_to_cpu(*addr);
- 	probe_opcode_t *scan_end = NULL;
- 	unsigned long size = 0, offset = 0;
-+	struct arch_probe_insn *api = &asi->api;
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -797,8 +797,8 @@ static struct its_vpe *its_build_vmapp_c
+ 	its_encode_valid(cmd, desc->its_vmapp_cmd.valid);
+ 
+ 	if (!desc->its_vmapp_cmd.valid) {
++		alloc = !atomic_dec_return(&desc->its_vmapp_cmd.vpe->vmapp_count);
+ 		if (is_v4_1(its)) {
+-			alloc = !atomic_dec_return(&desc->its_vmapp_cmd.vpe->vmapp_count);
+ 			its_encode_alloc(cmd, alloc);
+ 			/*
+ 			 * Unmapping a VPE is self-synchronizing on GICv4.1,
+@@ -817,13 +817,13 @@ static struct its_vpe *its_build_vmapp_c
+ 	its_encode_vpt_addr(cmd, vpt_addr);
+ 	its_encode_vpt_size(cmd, LPI_NRBITS - 1);
+ 
++	alloc = !atomic_fetch_inc(&desc->its_vmapp_cmd.vpe->vmapp_count);
 +
-+	if (aarch64_insn_is_ldr_lit(insn)) {
-+		api->handler = simulate_ldr_literal;
-+		decoded = INSN_GOOD_NO_SLOT;
-+	} else if (aarch64_insn_is_ldrsw_lit(insn)) {
-+		api->handler = simulate_ldrsw_literal;
-+		decoded = INSN_GOOD_NO_SLOT;
-+	} else {
-+		decoded = arm_probe_decode_insn(insn, &asi->api);
-+	}
+ 	if (!is_v4_1(its))
+ 		goto out;
+ 
+ 	vconf_addr = virt_to_phys(page_address(desc->its_vmapp_cmd.vpe->its_vm->vprop_page));
+ 
+-	alloc = !atomic_fetch_inc(&desc->its_vmapp_cmd.vpe->vmapp_count);
+-
+ 	its_encode_alloc(cmd, alloc);
  
  	/*
- 	 * If there's a symbol defined in front of and near enough to
-@@ -157,7 +164,6 @@ arm_kprobe_decode_insn(kprobe_opcode_t *
- 		else
- 			scan_end = addr - MAX_ATOMIC_CONTEXT_SIZE;
- 	}
--	decoded = arm_probe_decode_insn(insn, &asi->api);
+@@ -3807,6 +3807,13 @@ static int its_vpe_set_affinity(struct i
+ 	unsigned long flags;
  
- 	if (decoded != INSN_REJECTED && scan_end)
- 		if (is_probed_address_atomic(addr - 1, scan_end))
+ 	/*
++	 * Check if we're racing against a VPE being destroyed, for
++	 * which we don't want to allow a VMOVP.
++	 */
++	if (!atomic_read(&vpe->vmapp_count))
++		return -EINVAL;
++
++	/*
+ 	 * Changing affinity is mega expensive, so let's be as lazy as
+ 	 * we can and only do it if we really have to. Also, if mapped
+ 	 * into the proxy device, we need to move the doorbell
+@@ -4463,9 +4470,8 @@ static int its_vpe_init(struct its_vpe *
+ 	raw_spin_lock_init(&vpe->vpe_lock);
+ 	vpe->vpe_id = vpe_id;
+ 	vpe->vpt_page = vpt_page;
+-	if (gic_rdists->has_rvpeid)
+-		atomic_set(&vpe->vmapp_count, 0);
+-	else
++	atomic_set(&vpe->vmapp_count, 0);
++	if (!gic_rdists->has_rvpeid)
+ 		vpe->vpe_proxy_event = -1;
+ 
+ 	return 0;
+--- a/include/linux/irqchip/arm-gic-v4.h
++++ b/include/linux/irqchip/arm-gic-v4.h
+@@ -66,10 +66,12 @@ struct its_vpe {
+ 				bool	enabled;
+ 				bool	group;
+ 			}			sgi_config[16];
+-			atomic_t vmapp_count;
+ 		};
+ 	};
+ 
++	/* Track the VPE being mapped */
++	atomic_t vmapp_count;
++
+ 	/*
+ 	 * Ensures mutual exclusion between affinity setting of the
+ 	 * vPE and vLPI operations using vpe->col_idx.
 
 
 
