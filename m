@@ -1,164 +1,156 @@
-Return-Path: <stable+bounces-87020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12CEC9A5DD1
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:00:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC2AD9A5E4A
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:13:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92BC31F2178A
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 08:00:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7538FB24B0E
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 08:13:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93871E1323;
-	Mon, 21 Oct 2024 07:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031AA1E1A37;
+	Mon, 21 Oct 2024 08:13:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9QUNcpB"
 X-Original-To: stable@vger.kernel.org
-Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFA71E1302;
-	Mon, 21 Oct 2024 07:59:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFA91E0E11
+	for <stable@vger.kernel.org>; Mon, 21 Oct 2024 08:13:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729497592; cv=none; b=EmyeXLVd2oZZvQ4eibJgNg/aUSbmRowERCL1Ltpfyh7yMEAQQlOyGIMhwfJyxQEXi3Jyw+PUoBe/ic7AioI7Z+hOxvOzAqURWh53icTEDZlgGtVqR7ZIM/JP3h4uGkwdf+04+rwZXoNlGhIssczXIGggdUqy8eZaIMbCAI/xVwI=
+	t=1729498412; cv=none; b=KDDDaNNXHLWUSJEFDtOW3RKHQw5M1N7OsHb4pU4QxSJ6Sc2E6nKjZjCj0a8R/pha/R5oLBlxd1kpN9nyrTxAzn/1/8+8o9xrJzDIYeTPpkyvrsN0jszD9va6E0gfuXAR4JWbzK2aqjP6CQW1gTnKbYqJVcmUlojtvN8W3aAK0jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729497592; c=relaxed/simple;
-	bh=lyQWXd8tZ+cJL5EJxSB+u2xZemaLQGSuAwwZhKQD8JQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=so0tKROT/2JP+sPNpLFBclwbPPOe47bIqvogi4OExYosWlpeADYaKWu1LTqcxfgjrq7IfO5TScYUOdAL4bTil5x9QofUJMJLA6UrBVKsYsNGfdkO7cOKHpeeKyiD/s7J9um7w6jsW7UcJN+uem3ljhpmyEOuR8eskd8VI2UZyx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.186.29])
-	by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4XX6dS3JbXz9v7NX;
-	Mon, 21 Oct 2024 15:39:24 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.27])
-	by mail.maildlp.com (Postfix) with ESMTP id 3DEE8140134;
-	Mon, 21 Oct 2024 15:59:40 +0800 (CST)
-Received: from [127.0.0.1] (unknown [10.204.63.22])
-	by APP2 (Coremail) with SMTP id GxC2BwCXsYDdCRZnfdwkAA--.41168S2;
-	Mon, 21 Oct 2024 08:59:39 +0100 (CET)
-Message-ID: <c0e85aaa89283d5e4b742d23299f286a2e3eeaad.camel@huaweicloud.com>
-Subject: Re: [PATCH v2] mm: Split critical region in remap_file_pages() and
- invoke LSMs in between
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-To: Paul Moore <paul@paul-moore.com>, "Kirill A. Shutemov"
-	 <kirill.shutemov@linux.intel.com>, akpm@linux-foundation.org
-Cc: Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, vbabka@suse.cz, 
- jannh@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- ebpqwerty472123@gmail.com, zohar@linux.ibm.com, dmitry.kasatkin@gmail.com, 
- eric.snowberg@oracle.com, jmorris@namei.org, serge@hallyn.com, 
- linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org, 
- bpf@vger.kernel.org, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org,
-  syzbot+1cd571a672400ef3a930@syzkaller.appspotmail.com, Roberto Sassu
- <roberto.sassu@huawei.com>
-Date: Mon, 21 Oct 2024 09:59:22 +0200
-In-Reply-To: <CAHC9VhQP7gBa4AV-Hbh4Bq4fRU6toRmjccv52dGoU-s+MqsmfQ@mail.gmail.com>
-References: <20241018161415.3845146-1-roberto.sassu@huaweicloud.com>
-	 <CAHC9VhQP7gBa4AV-Hbh4Bq4fRU6toRmjccv52dGoU-s+MqsmfQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	s=arc-20240116; t=1729498412; c=relaxed/simple;
+	bh=n+ep29R2pnauZNuvIVK4SgV3+3gyR8oqdoLKH+UadIo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JB8kfoBRxWNERYBP2juCplo51x2Asxp8L1idLGmL/CVEp4R0/F0tk/sJby9LifyLLoZDVYj2mqTCLmHRFw+2d9bPALupo9IXM3s26zl9AfhzFPRmRa1OtO+4Ez9ll3t85RmjqEbD4FXqQntUXyRX60cUdJMuBdwChM1Rh/UGgRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9QUNcpB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD83CC4CEC3;
+	Mon, 21 Oct 2024 08:13:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1729498412;
+	bh=n+ep29R2pnauZNuvIVK4SgV3+3gyR8oqdoLKH+UadIo=;
+	h=Subject:To:Cc:From:Date:From;
+	b=w9QUNcpBlzR6bWG8yipw1ReR5qcEHM233ONHL6F1Iyu5s3vxxSWlMGGEN1EUA1r9G
+	 VmJvr7j0oX/aHMmYfUzZu0/2T8OV25K97c4/2fc9jrLvES7+lBIV3a1dBkGLiMtv5F
+	 eAPar1wafgcHg4g9iv9AJ3Opj3ZxxgRg/pJX6TwE=
+Subject: FAILED: patch "[PATCH] x86/bugs: Use code segment selector for VERW operand" failed to apply to 6.1-stable tree
+To: pawan.kumar.gupta@linux.intel.com,andrew.cooper3@citrix.com,brgerst@gmail.com,dave.hansen@linux.intel.com,mingo@kernel.org,rtgill82@gmail.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 21 Oct 2024 10:13:29 +0200
+Message-ID: <2024102128-omega-phosphate-db6c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-CM-TRANSID:GxC2BwCXsYDdCRZnfdwkAA--.41168S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxAF1rZr18XFyrCw1xCryrXrb_yoW5Cw1DpF
-	ZxK3Z0kr1vqryxur1aqFy7WFWrC3yfGrW7WrZ7Xr1ruasrXF1fKr1fGF45Wa4DWrZ7CFWF
-	vF1jkr93Ka1DArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxV
-	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
-	wI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
-	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUIa
-	0PDUUUU
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQADBGcVvDAFpgADsY
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Sat, 2024-10-19 at 11:34 -0400, Paul Moore wrote:
-> On Fri, Oct 18, 2024 at 12:15=E2=80=AFPM Roberto Sassu
-> <roberto.sassu@huaweicloud.com> wrote:
-> > From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-> >=20
-> > Commit ea7e2d5e49c0 ("mm: call the security_mmap_file() LSM hook in
-> > remap_file_pages()") fixed a security issue, it added an LSM check when
-> > trying to remap file pages, so that LSMs have the opportunity to evalua=
-te
-> > such action like for other memory operations such as mmap() and mprotec=
-t().
-> >=20
-> > However, that commit called security_mmap_file() inside the mmap_lock l=
-ock,
-> > while the other calls do it before taking the lock, after commit
-> > 8b3ec6814c83 ("take security_mmap_file() outside of ->mmap_sem").
-> >=20
-> > This caused lock inversion issue with IMA which was taking the mmap_loc=
-k
-> > and i_mutex lock in the opposite way when the remap_file_pages() system
-> > call was called.
-> >=20
-> > Solve the issue by splitting the critical region in remap_file_pages() =
-in
-> > two regions: the first takes a read lock of mmap_lock, retrieves the VM=
-A
-> > and the file descriptor associated, and calculates the 'prot' and 'flag=
-s'
-> > variables; the second takes a write lock on mmap_lock, checks that the =
-VMA
-> > flags and the VMA file descriptor are the same as the ones obtained in =
-the
-> > first critical region (otherwise the system call fails), and calls
-> > do_mmap().
-> >=20
-> > In between, after releasing the read lock and before taking the write l=
-ock,
-> > call security_mmap_file(), and solve the lock inversion issue.
-> >=20
-> > Cc: stable@vger.kernel.org # v6.12-rcx
-> > Fixes: ea7e2d5e49c0 ("mm: call the security_mmap_file() LSM hook in rem=
-ap_file_pages()")
-> > Reported-by: syzbot+1cd571a672400ef3a930@syzkaller.appspotmail.com
-> > Closes: https://lore.kernel.org/linux-security-module/66f7b10e.050a0220=
-.46d20.0036.GAE@google.com/
-> > Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
-> > Reviewed-by: Jann Horn <jannh@google.com>
-> > Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > Tested-by: Roberto Sassu <roberto.sassu@huawei.com>
-> > Tested-by: syzbot+1cd571a672400ef3a930@syzkaller.appspotmail.com
-> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > ---
-> >  mm/mmap.c | 69 +++++++++++++++++++++++++++++++++++++++++--------------
-> >  1 file changed, 52 insertions(+), 17 deletions(-)
->=20
-> Thanks for working on this Roberto, Kirill, and everyone else who had
-> a hand in reviewing and testing.
 
-Welcome!
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-> Reviewed-by: Paul Moore <paul@paul-moore.com>
->=20
-> Andrew, I see you're pulling this into the MM/hotfixes-unstable
-> branch, do you also plan to send this up to Linus soon/next-week?  If
-> so, great, if not let me know and I can send it up via the LSM tree.
->=20
-> We need to get clarity around Roberto's sign-off, but I think that is
-> more of an administrative mistake rather than an intentional omission
-> :)
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Ops, I just thought that I would not need to add it, since I'm not the
-author of the patch. Please add my:
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x e4d2102018542e3ae5e297bc6e229303abff8a0f
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024102128-omega-phosphate-db6c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Possible dependencies:
 
-Roberto
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From e4d2102018542e3ae5e297bc6e229303abff8a0f Mon Sep 17 00:00:00 2001
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Date: Thu, 26 Sep 2024 09:10:31 -0700
+Subject: [PATCH] x86/bugs: Use code segment selector for VERW operand
+
+Robert Gill reported below #GP in 32-bit mode when dosemu software was
+executing vm86() system call:
+
+  general protection fault: 0000 [#1] PREEMPT SMP
+  CPU: 4 PID: 4610 Comm: dosemu.bin Not tainted 6.6.21-gentoo-x86 #1
+  Hardware name: Dell Inc. PowerEdge 1950/0H723K, BIOS 2.7.0 10/30/2010
+  EIP: restore_all_switch_stack+0xbe/0xcf
+  EAX: 00000000 EBX: 00000000 ECX: 00000000 EDX: 00000000
+  ESI: 00000000 EDI: 00000000 EBP: 00000000 ESP: ff8affdc
+  DS: 0000 ES: 0000 FS: 0000 GS: 0033 SS: 0068 EFLAGS: 00010046
+  CR0: 80050033 CR2: 00c2101c CR3: 04b6d000 CR4: 000406d0
+  Call Trace:
+   show_regs+0x70/0x78
+   die_addr+0x29/0x70
+   exc_general_protection+0x13c/0x348
+   exc_bounds+0x98/0x98
+   handle_exception+0x14d/0x14d
+   exc_bounds+0x98/0x98
+   restore_all_switch_stack+0xbe/0xcf
+   exc_bounds+0x98/0x98
+   restore_all_switch_stack+0xbe/0xcf
+
+This only happens in 32-bit mode when VERW based mitigations like MDS/RFDS
+are enabled. This is because segment registers with an arbitrary user value
+can result in #GP when executing VERW. Intel SDM vol. 2C documents the
+following behavior for VERW instruction:
+
+  #GP(0) - If a memory operand effective address is outside the CS, DS, ES,
+	   FS, or GS segment limit.
+
+CLEAR_CPU_BUFFERS macro executes VERW instruction before returning to user
+space. Use %cs selector to reference VERW operand. This ensures VERW will
+not #GP for an arbitrary user %ds.
+
+[ mingo: Fixed the SOB chain. ]
+
+Fixes: a0e2dab44d22 ("x86/entry_32: Add VERW just before userspace transition")
+Reported-by: Robert Gill <rtgill82@gmail.com>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com
+Cc: stable@vger.kernel.org # 5.10+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218707
+Closes: https://lore.kernel.org/all/8c77ccfd-d561-45a1-8ed5-6b75212c7a58@leemhuis.info/
+Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+Suggested-by: Brian Gerst <brgerst@gmail.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+
+diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+index ff5f1ecc7d1e..96b410b1d4e8 100644
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -323,7 +323,16 @@
+  * Note: Only the memory operand variant of VERW clears the CPU buffers.
+  */
+ .macro CLEAR_CPU_BUFFERS
+-	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
++#ifdef CONFIG_X86_64
++	ALTERNATIVE "", "verw mds_verw_sel(%rip)", X86_FEATURE_CLEAR_CPU_BUF
++#else
++	/*
++	 * In 32bit mode, the memory operand must be a %cs reference. The data
++	 * segments may not be usable (vm86 mode), and the stack segment may not
++	 * be flat (ESPFIX32).
++	 */
++	ALTERNATIVE "", "verw %cs:mds_verw_sel", X86_FEATURE_CLEAR_CPU_BUF
++#endif
+ .endm
+ 
+ #ifdef CONFIG_X86_64
 
 
