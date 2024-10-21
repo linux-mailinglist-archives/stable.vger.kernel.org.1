@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-87252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43C639A6418
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:43:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D9569A6370
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5DBA1F2213C
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2230E1F21471
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375D51F4271;
-	Mon, 21 Oct 2024 10:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65DE41E8822;
+	Mon, 21 Oct 2024 10:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CDbKiYxi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/+eV6PY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEDB1F4266;
-	Mon, 21 Oct 2024 10:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE031E47B4;
+	Mon, 21 Oct 2024 10:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507050; cv=none; b=PhKKlUomQlEqPWz5JtIxwRgpJTGEBUi2eCwN27aqBuVy0qTLh5f5n7eJMkili3kg9dJziUpqRKC5fitZASJv7dA6yvyJ+d9plUrdnt9UNLi0l2DkT295cVOpA8dBD9PBI/VIDILISDgIvRYE/htiKAWCUYVwotV1yNVsFlVx7J4=
+	t=1729506755; cv=none; b=HIgTA35HmTs7K/kAkEAUPhbnADj/w1hTRnUmIdmk2kakDJjAoMuHrf1qOhekBbnE95MQHENrgl/WUnCsbXVuY+/zzyV/s3ipHIJNNVYR2voJXCKH7ZAG3Z+d0C1l+SrakjYJCPUCuD6GQ0KitXhTVZE0t0GEv5+WXZOheZd2AoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507050; c=relaxed/simple;
-	bh=Wr7FTMzp20OhCFGzkRUrk37wlBRxYNLqwgnZVl5dn+Q=;
+	s=arc-20240116; t=1729506755; c=relaxed/simple;
+	bh=aZMLMG9M0bRU88KVpJjMmpmnK22yZQ+3jne9bS5SjTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XBB2eODJVWh3hz4Zmp/x57/uVAnCRHYA5Ywk0xEvJpocG51fZKdPDqavOH5fhw5yM18vbZDVoer+FwULoo1riom4I+xM60R7qFtl6kxGR1eAJ8FaiDjvlsywJjU1lX+OiBtDRaL3e8wn8oQ1TgmhB+MhG/NbQwFxW9N1b9Vg8+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CDbKiYxi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E70C4CEC3;
-	Mon, 21 Oct 2024 10:37:28 +0000 (UTC)
+	 MIME-Version; b=EASr6JyrJ8rVVvwFq0Nz6SWry9Jl5OpTcJS865URwsWxo/7shxPLBI7YZy95vjc4IDUkq6Frvj4c6JEMyK8QRikGt7xHcQmcFgZ+gzvOUeV/8pyOEBHoBttOXyP9yNbnUFhV8cpnPmaZ0tHszArdNVMwq/zHARjS7A046J81q9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/+eV6PY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE97C4CEC3;
+	Mon, 21 Oct 2024 10:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507049;
-	bh=Wr7FTMzp20OhCFGzkRUrk37wlBRxYNLqwgnZVl5dn+Q=;
+	s=korg; t=1729506754;
+	bh=aZMLMG9M0bRU88KVpJjMmpmnK22yZQ+3jne9bS5SjTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CDbKiYxibc+YoN1Q3N2DboEcDAKV5xhksIU7/bboQD2WbxSkpzhOlj6vbh0Iw1Iot
-	 kKwWuoBgADMPKgf/LCn8Nci3YzK+Op7EdFkineEZWsw/d1Y6PpmD1BZa8HrCZ+5lyH
-	 BS8Gl/4xtW2zlMGTq8i/dNFzz4I+Hla0HibRt0Ko=
+	b=b/+eV6PYkAgIrsQUh1zC8Nb5H6/eiJiky7d9+NjD958+6OyRKWpvXa608WD3pp+Qv
+	 KpbQZuw+35vimV8smLwfQk6ixJok7pUzZdfnTipWRrmnQqP7KtWwGP08KCLPuaNWA9
+	 rvMYLeM5xJszDfNAzQzkYDysQ4CXhP938rx69HLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Wikner <kwikner@ethz.ch>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org
-Subject: [PATCH 6.6 055/124] x86/cpufeatures: Add a IBPB_NO_RET BUG flag
+	"Benjamin B. Frost" <benjamin@geanix.com>,
+	Lars Melin <larsm17@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.11 103/135] USB: serial: option: add support for Quectel EG916Q-GL
 Date: Mon, 21 Oct 2024 12:24:19 +0200
-Message-ID: <20241021102258.859450907@linuxfoundation.org>
+Message-ID: <20241021102303.357348017@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Wikner <kwikner@ethz.ch>
+From: Benjamin B. Frost <benjamin@geanix.com>
 
-commit 3ea87dfa31a7b0bb0ff1675e67b9e54883013074 upstream.
+commit 540eff5d7faf0c9330ec762da49df453263f7676 upstream.
 
-Set this flag if the CPU has an IBPB implementation that does not
-invalidate return target predictions. Zen generations < 4 do not flush
-the RSB when executing an IBPB and this bug flag denotes that.
+Add Quectel EM916Q-GL with product ID 0x6007
 
-  [ bp: Massage. ]
+T:  Bus=01 Lev=02 Prnt=02 Port=01 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=2c7c ProdID=6007 Rev= 2.00
+S:  Manufacturer=Quectel
+S:  Product=EG916Q-GL
+C:* #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=200mA
+A:  FirstIf#= 4 IfCount= 2 Cls=02(comm.) Sub=06 Prot=00
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=86(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=88(I) Atr=03(Int.) MxPS=  32 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+I:* If#= 5 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Signed-off-by: Johannes Wikner <kwikner@ethz.ch>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
+MI_00 Quectel USB Diag Port
+MI_01 Quectel USB NMEA Port
+MI_02 Quectel USB AT Port
+MI_03 Quectel USB Modem Port
+MI_04 Quectel USB Net Port
+
+Signed-off-by: Benjamin B. Frost <benjamin@geanix.com>
+Reviewed-by: Lars Melin <larsm17@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/cpufeatures.h |    1 +
- arch/x86/kernel/cpu/common.c       |    3 +++
- 2 files changed, 4 insertions(+)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -517,4 +517,5 @@
- #define X86_BUG_DIV0			X86_BUG(1*32 + 1) /* AMD DIV0 speculation bug */
- #define X86_BUG_RFDS			X86_BUG(1*32 + 2) /* CPU is vulnerable to Register File Data Sampling */
- #define X86_BUG_BHI			X86_BUG(1*32 + 3) /* CPU is affected by Branch History Injection */
-+#define X86_BUG_IBPB_NO_RET		X86_BUG(1*32 + 4) /* "ibpb_no_ret" IBPB omits return target predictions */
- #endif /* _ASM_X86_CPUFEATURES_H */
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1483,6 +1483,9 @@ static void __init cpu_set_bug_bits(stru
- 	     boot_cpu_has(X86_FEATURE_HYPERVISOR)))
- 		setup_force_cpu_bug(X86_BUG_BHI);
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -279,6 +279,7 @@ static void option_instat_callback(struc
+ #define QUECTEL_PRODUCT_EG912Y			0x6001
+ #define QUECTEL_PRODUCT_EC200S_CN		0x6002
+ #define QUECTEL_PRODUCT_EC200A			0x6005
++#define QUECTEL_PRODUCT_EG916Q			0x6007
+ #define QUECTEL_PRODUCT_EM061K_LWW		0x6008
+ #define QUECTEL_PRODUCT_EM061K_LCN		0x6009
+ #define QUECTEL_PRODUCT_EC200T			0x6026
+@@ -1270,6 +1271,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200S_CN, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200T, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EG912Y, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EG916Q, 0xff, 0x00, 0x00) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500K, 0xff, 0x00, 0x00) },
  
-+	if (cpu_has(c, X86_FEATURE_AMD_IBPB) && !cpu_has(c, X86_FEATURE_AMD_IBPB_RET))
-+		setup_force_cpu_bug(X86_BUG_IBPB_NO_RET);
-+
- 	if (cpu_matches(cpu_vuln_whitelist, NO_MELTDOWN))
- 		return;
- 
+ 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_6001) },
 
 
 
