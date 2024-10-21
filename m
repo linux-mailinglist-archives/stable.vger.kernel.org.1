@@ -1,165 +1,126 @@
-Return-Path: <stable+bounces-87578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 315F89A6C2D
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 16:33:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C64CE9A6D2B
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 16:53:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D940E281E93
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 14:33:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 013271C223A4
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 14:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805191D7E5B;
-	Mon, 21 Oct 2024 14:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 839551FAC50;
+	Mon, 21 Oct 2024 14:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SfjCk4bU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TE2vDYBh"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196581D1E88;
-	Mon, 21 Oct 2024 14:33:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115971FA25D;
+	Mon, 21 Oct 2024 14:52:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729521225; cv=none; b=WEqj1yBDl8XXmb63PizxF2lAAWd/lttLiAB6d6WWl35xvQVWp95HQ5B2RmP/DspLS6xUTBjZHoNgRMeFYLlhUqsoJdTgDy6IikQ8m9egEU90KDVVvHZV1qBO0nfv1cwIXamlbm1WescTeqLNMPX6Hag/+5L4CMvCNzSnQ5nEqBE=
+	t=1729522360; cv=none; b=R4LkhKSAxP5/+MjjBFX7CpUUA0lJYCa5fxupoJWsbOvp2pwkNX9ogbU52AhYrMso1mGhwt9lQMDFwbSXUtiBKF9p2U14Wm6nsDUNxT06QTTotyPPjvhlN1lel4knn5EDn4K40hg1NsC3GYUlLPyQ90uZCBpJu3B/jPrzUh469qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729521225; c=relaxed/simple;
-	bh=VKVb6R/kxF3VgL968A4q+prGm/RC2EwQ5vjr4iY9xC4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Bc8ZBHAD523F+rqBsCt+7rlzOA3X/7k2LCKnMuXfN9xQp+exgDMsHcGVsWtGt6lRTDuJdBNKoZEEH8fxY+0zov2NaL2cd2UYElZKBs0pE9wHJKoIPRZzekbTil67F2FbioMRtmp0x/+J7iB4jwY0ffs+8sMMhuArGcgma0Pnqfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SfjCk4bU; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729521223; x=1761057223;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=VKVb6R/kxF3VgL968A4q+prGm/RC2EwQ5vjr4iY9xC4=;
-  b=SfjCk4bU7uFBa4x78CcsmF7cgQoa1AEbrhpYJQyerQ2gQ0ygMg3Ip/9h
-   jX82E8QTojGwj1LUXmJe/cTH6YVkfdEHJBq/CMXM+NB81BgClQRwAgq2I
-   pu0eK9eTopNI5aDfJpzP+kkPoLtmSV33lVPEJArqakgDaNAqq+4Wez5M4
-   vvmY8s+2RxXFbhdTGhs+s5ZQXREx5aUtsFsygelN9GNUeF3u2RmSMxRVB
-   xGTaYeRjlhMog4eyXuhF66a21MYxsRjtw0JnwxGhX/jZoaWJ8i9dg83Ad
-   LOp0+sDv8ajeGhBCYWS5TkflwQdgzWf6NJWy5/TAarGDEQfrwLbocqJFA
-   g==;
-X-CSE-ConnectionGUID: yFn4aBt0T+abDJMrwrOtoQ==
-X-CSE-MsgGUID: 43uVvfVKSSW+92wCefqKsg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28782569"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="28782569"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 07:33:42 -0700
-X-CSE-ConnectionGUID: XAWovZcGTK+oBrjKFZd4cQ==
-X-CSE-MsgGUID: cGE54+BSRK69QGfqcwRoWQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,221,1725346800"; 
-   d="scan'208";a="79181496"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.246.16.81])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 07:33:41 -0700
-Message-ID: <0ead8466-a068-4e1f-93aa-47dc269b5b62@intel.com>
-Date: Mon, 21 Oct 2024 17:33:35 +0300
+	s=arc-20240116; t=1729522360; c=relaxed/simple;
+	bh=dlWGS/l4ijCOGac8jIK107VrQI+1RI8UERuuB2oajJE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hDGerendu52NRLGSEPZ+rPAaXa67jj0zAQ9EEknhPoa7m5qdXH0CRDGz9mYkhh91/gecfh6nXcJnL9nbIIk5lfHLrPU9yahCu2INt3RsQ2RzIldft/pfN+IqubRiuM7yUcJGAEUfwjHVd6fw1zuqLjTB+0//h0e4cY1dTds2FCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TE2vDYBh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C0CC4CEE6;
+	Mon, 21 Oct 2024 14:52:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729522359;
+	bh=dlWGS/l4ijCOGac8jIK107VrQI+1RI8UERuuB2oajJE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TE2vDYBhb7mKSE49g1O1JrRTkH+haqmC6CjGkUMfx/NS5mL2aW3udk3wL9gUNgImP
+	 lw5uhWPxmWnn055BzlW8D3d4PJLrCI2Mc6TTBrY15owrVx4SFgKredCEEn/wqA+/De
+	 5phEeg9ijWs+UwuKH6Vw/FPgPgBVMA0Q3PGN87Cr8wBsoyzf7w1T97B41O6ZkPipoh
+	 g4X2y2ZyA2/unPvyF6YAj9Ll8sDI5HOmR/4GoSJOjp1LwmDTiSq63J91XJiphb9PLG
+	 GX/RPoLKgNFfPGGPtQ6RxHZU1UMZwLvNgKkkUk+YvNv9/e72gF7xqPWdRD5lQRjyhu
+	 k5ysD7Q/BvrNw==
+From: Christian Brauner <brauner@kernel.org>
+To: Aleksa Sarai <cyphar@cyphar.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Florian Weimer <fweimer@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Mark Rutland <mark.rutland@arm.com>,
+	linux-kernel@vger.kernel.org,
+	linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	stable@vger.kernel.org,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>,
+	Shuah Khan <shuah@kernel.org>
+Subject: Re: (subset) [PATCH RFC v3 00/10] extensible syscalls: CHECK_FIELDS to allow for easier feature detection
+Date: Mon, 21 Oct 2024 16:51:51 +0200
+Message-ID: <20241021-kraut-fundgrube-cf1648e59df4@brauner>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241010-extensible-structs-check_fields-v3-0-d2833dfe6edd@cyphar.com>
+References: <20241010-extensible-structs-check_fields-v3-0-d2833dfe6edd@cyphar.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mmc: core: Use GFP_NOIO in ACMD22
-To: Avri Altman <Avri.Altman@wdc.com>, Ulf Hansson <ulf.hansson@linaro.org>,
- "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20241018052901.446638-1-avri.altman@wdc.com>
- <59f6c217-d84e-4626-9265-ce5cd8a043f4@intel.com>
- <DM6PR04MB6575EAADE9A5C775C0837361FC432@DM6PR04MB6575.namprd04.prod.outlook.com>
-Content-Language: en-US
-From: Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-In-Reply-To: <DM6PR04MB6575EAADE9A5C775C0837361FC432@DM6PR04MB6575.namprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1779; i=brauner@kernel.org; h=from:subject:message-id; bh=dlWGS/l4ijCOGac8jIK107VrQI+1RI8UERuuB2oajJE=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaSLZa29GrT7ZpV74rL3y8Ijstc/P7tdxYBRchtjj8Umw 0JXGZ8vHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABOpj2f4X33A1Nfrxe052925 gvPv/S+69SaCQZXp45K3TXnHQj0mCzMyfPqyRJ9NYJ5kq/Clhd+W3ix5fGt6n9uW5+rR3003zXn Cxg8A
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On 21/10/24 15:24, Avri Altman wrote:
->>
->> On 18/10/24 08:29, Avri Altman wrote:
->>> While reviewing the SDUC series, Adrian made a comment concerning the
->>> memory allocation code in mmc_sd_num_wr_blocks() - see [1].
->>> Prevent memory allocations from triggering I/O operations while ACMD22
->>> is in progress.
->>>
->>> [1] https://www.spinics.net/lists/linux-mmc/msg82199.html
->>>
->>> Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
->>> Signed-off-by: Avri Altman <avri.altman@wdc.com>
->>> Cc: stable@vger.kernel.org
->>
->> Some checkpatch warnings:
->>
->>   WARNING: Use lore.kernel.org archive links when possible - see
->> https://lore.kernel.org/lists.html
->>   #12:
->>   [1] https://www.spinics.net/lists/linux-mmc/msg82199.html
-> Done.
+On Thu, 10 Oct 2024 07:40:33 +1100, Aleksa Sarai wrote:
+> This is something that I've been thinking about for a while. We had a
+> discussion at LPC 2020 about this[1] but the proposals suggested there
+> never materialised.
 > 
->>
->>   WARNING: The commit message has 'stable@', perhaps it also needs a
->> 'Fixes:' tag?
-> I tried to look for the patch that introduced mmc_sd_num_wr_blocks but couldn't find it in Ulf's tree.
-
-Seems like the following introduced the kmalloc()
-
-	commit 051913dada046ac948eb6f48c0717fc25de2a917
-	Author: Ben Dooks <ben@simtec.co.uk>
-	Date:   Mon Jun 8 23:33:57 2009 +0100
-
-	    mmc_block: do not DMA to stack
-
+> In short, it is quite difficult for userspace to detect the feature
+> capability of syscalls at runtime. This is something a lot of programs
+> want to do, but they are forced to create elaborate scenarios to try to
+> figure out if a feature is supported without causing damage to the
+> system. For the vast majority of cases, each individual feature also
+> needs to be tested individually (because syscall results are
+> all-or-nothing), so testing even a single syscall's feature set can
+> easily inflate the startup time of programs.
 > 
-> Thanks,
-> Avri
->>
->>   total: 0 errors, 2 warnings, 17 lines checked
->>
->> Otherwise:
->>
->> Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
->>
->>>
->>> ---
->>> Changes since v1:
->>>  - Move memalloc_noio_restore around (Adrian)
->>> ---
->>>  drivers/mmc/core/block.c | 4 ++++
->>>  1 file changed, 4 insertions(+)
->>>
->>> diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c index
->>> 04f3165cf9ae..a813fd7f39cc 100644
->>> --- a/drivers/mmc/core/block.c
->>> +++ b/drivers/mmc/core/block.c
->>> @@ -995,6 +995,8 @@ static int mmc_sd_num_wr_blocks(struct mmc_card
->> *card, u32 *written_blocks)
->>>       u32 result;
->>>       __be32 *blocks;
->>>       u8 resp_sz = mmc_card_ult_capacity(card) ? 8 : 4;
->>> +     unsigned int noio_flag;
->>> +
->>>       struct mmc_request mrq = {};
->>>       struct mmc_command cmd = {};
->>>       struct mmc_data data = {};
->>> @@ -1018,7 +1020,9 @@ static int mmc_sd_num_wr_blocks(struct
->> mmc_card *card, u32 *written_blocks)
->>>       mrq.cmd = &cmd;
->>>       mrq.data = &data;
->>>
->>> +     noio_flag = memalloc_noio_save();
->>>       blocks = kmalloc(resp_sz, GFP_KERNEL);
->>> +     memalloc_noio_restore(noio_flag);
->>>       if (!blocks)
->>>               return -ENOMEM;
->>>
-> 
+> [...]
 
+I think the copy_struct_to_user() is useful especially now that we'll gain
+another user with pidfd_info.
+
+---
+
+Applied to the vfs.usercopy branch of the vfs/vfs.git tree.
+Patches in the vfs.usercopy branch should appear in linux-next soon.
+
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
+
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.usercopy
+
+[01/10] uaccess: add copy_struct_to_user helper
+        https://git.kernel.org/vfs/vfs/c/424a55a4a908
+[02/10] sched_getattr: port to copy_struct_to_user
+        https://git.kernel.org/vfs/vfs/c/112cca098a70
 
