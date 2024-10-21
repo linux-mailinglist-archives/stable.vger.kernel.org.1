@@ -1,121 +1,135 @@
-Return-Path: <stable+bounces-87554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48DE49A6963
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 15:00:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F25C9A6966
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 15:01:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6BFF1F22B50
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:00:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F898284BA9
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:01:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9A41E8841;
-	Mon, 21 Oct 2024 13:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA3C1EBFFB;
+	Mon, 21 Oct 2024 13:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="DmA+F3s9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Mr7Mmsg9"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6F41D1E9F
-	for <stable@vger.kernel.org>; Mon, 21 Oct 2024 13:00:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B005A1E511;
+	Mon, 21 Oct 2024 13:01:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729515608; cv=none; b=jBqfHNaKTJoWjfUCZB9wGpgysWBQv6d/RXmIywjRJcLCsAwG3ZkfmbIx2L8Xslqx1ro95NkDZpiv0l1Zsxpesf82xt7cJEG70DUn8d+ajJ9XmPLn1nZhNn9dHAvjT9xSSH9S3J4EH4mDgsbBUweojLK7/wX3ijnA5T6Wvpbj6ho=
+	t=1729515673; cv=none; b=CIlGnn7yowjvBKxL/xUyYP3+0y/oKSTymVWlt5MEXd20S9ApTXY/P6Xxplzqreb9DKKJqEMQV9MRNEeT3CO8HNkcBme2bGWiuItaFBqrpijigWbLJnkkaPKFwk1mmaKL9Su/fAtbt9HImggrtDJFnI4phebKKdOqh14xHVL0Jo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729515608; c=relaxed/simple;
-	bh=GARdp70yvURA2iZ0BI591v73U712ryU6EX0XnYuzTmE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NEJDGhHewhfVF/CPZkuNpvnjt4KuKyP4KnQchKAGhNvLrPgWU9AaeFLB14WqP3Mchnd/tWkUaiy/Q9YedLUQHxCByKT6fqMOriUWCSAo+3u32tymptAK3BL67Amq+ByLp1fQ5R6rtjzQz8x5G1/W8ltIScKlXVSmUPTZ3sX6rOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=DmA+F3s9; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=hYcy7oXdllXHw//tNKpnNP1mE4JLQadm24jSsZ6IZyk=; b=DmA+F3s9YtPMTBdcLhbqxBQ7Eg
-	GPe6MnTrPTGRs4ecYB2kAU0iayrKUJyiv8qYWKVVk3j1swfRh66NKi+iW/ik7WKJqW+w3Joq79Ofg
-	70v3sV8iQp+xfA2ovtVvp2Hpt+/AvL4iqfPOfGR6LHIwIksqqRRzBBNZxqryv8ARZP0oOsBgUQyW7
-	0flS6hxsHJMWsNU7H/KRXcyV+yniWAYn9Jpoj/KwF4BAszTn9cZdwO7i5LFt7j4MAqIObO0EVmsGi
-	zdOJucqUXTohHMKrzXTTTKmsElYEnlm/r7SFrP1LPzBmnKjR+ERVDBRBFjxZRMzP9Y9S0cHOcXxdy
-	KYcnudXA==;
-Received: from [187.43.135.173] (helo=quatroqueijos..)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1t2s0r-00D9zS-Ot; Mon, 21 Oct 2024 14:59:58 +0200
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-To: stable@vger.kernel.org
-Cc: Christoph Hellwig <hch@lst.de>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	kernel-dev@igalia.com,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.10 1/1] splice: don't generate zero-len segement bvecs
-Date: Mon, 21 Oct 2024 09:59:42 -0300
-Message-Id: <20241021125942.2090200-2-cascardo@igalia.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241021125942.2090200-1-cascardo@igalia.com>
-References: <20241021125942.2090200-1-cascardo@igalia.com>
+	s=arc-20240116; t=1729515673; c=relaxed/simple;
+	bh=ej3qu3+gaDVBh2zajSPGQQs7YptzCBhIISJg5FqP5Ys=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N5ZtuoIcg0SaY/bUg6AxnNeeVoE5gKwRXe1BGTnhmTvevYeIzGar/FL/MJUEaiHtlJAT1DdRLSzHQZ7IfDnJxuDeNC2nbc6R7tCivHUPqQg6vdfsZe2Ik1ccE40ofcyOmCzHJS6EveFi59rj7VrYcGJiv+onrpfXyUUtzcrQt14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Mr7Mmsg9; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729515672; x=1761051672;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ej3qu3+gaDVBh2zajSPGQQs7YptzCBhIISJg5FqP5Ys=;
+  b=Mr7Mmsg9MXZzJkKHMP9+WvMb+mz93qt9QnjuND8Q8X+v3BMp+vP8gaeW
+   31hWq9jkBze2zicISOWWv4FMtofRLzG/E88AO+/fdicJ6Qr1YWlniLolq
+   eXG6tZwZuSMA90SLWzWZg0yfZCKeZdq9L2wOjbiJZvFZm7W87QfUvMfVo
+   Q4WdoBexXfHiOmUDIRZBvo1KkcWAhkNBF7gcRnreLRZA9tiovlFA0QQqs
+   i7XCOicWKd+5OQHTGPbk47YCTDOglUcLQ1av8dfKHIg/GZn4Xf6jBEK7u
+   6FH0r4nb9nlteIVMY6PwZVj58QwWcc8kubtAaEm9zeKV9qgcI/RVyyPRj
+   g==;
+X-CSE-ConnectionGUID: SSPZ41cCQn+dXCJq9kjd3A==
+X-CSE-MsgGUID: 3AT0bh6jSGy0U90EEV1wSQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29162840"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="29162840"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 06:01:12 -0700
+X-CSE-ConnectionGUID: Ff3P9/pOT8ipqVHXPAl0nQ==
+X-CSE-MsgGUID: pm4T5JBTSeeKY95E78IYqQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,220,1725346800"; 
+   d="scan'208";a="79871502"
+Received: from kuha.fi.intel.com ([10.237.72.152])
+  by fmviesa010.fm.intel.com with SMTP; 21 Oct 2024 06:01:07 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 21 Oct 2024 16:01:06 +0300
+Date: Mon, 21 Oct 2024 16:01:06 +0300
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Caleb Connolly <caleb.connolly@linaro.org>,
+	Guenter Roeck <linux@roeck-us.net>, linux-arm-msm@vger.kernel.org,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] usb: typec: qcom-pmic-typec: use
+ fwnode_handle_put() to release fwnodes
+Message-ID: <ZxZQks8_rkYge-yf@kuha.fi.intel.com>
+References: <20241020-qcom_pmic_typec-fwnode_remove-v2-0-7054f3d2e215@gmail.com>
+ <20241020-qcom_pmic_typec-fwnode_remove-v2-1-7054f3d2e215@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241020-qcom_pmic_typec-fwnode_remove-v2-1-7054f3d2e215@gmail.com>
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+On Sun, Oct 20, 2024 at 02:56:34PM +0200, Javier Carrasco wrote:
+> The right function to release a fwnode acquired via
+> device_get_named_child_node() is fwnode_handle_put(), and not
+> fwnode_remove_software_node(), as no software node is being handled.
+> 
+> Replace the calls to fwnode_remove_software_node() with
+> fwnode_handle_put() in qcom_pmic_typec_probe() and
+> qcom_pmic_typec_remove().
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: a4422ff22142 ("usb: typec: qcom: Add Qualcomm PMIC Type-C driver")
+> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 0f1d344feb534555a0dcd0beafb7211a37c5355e ]
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-iter_file_splice_write() may spawn bvec segments with zero-length. In
-preparation for prohibiting them, filter out by hand at splice level.
+> ---
+>  drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
+> index 2201eeae5a99..73a159e67ec2 100644
+> --- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
+> +++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
+> @@ -123,7 +123,7 @@ static int qcom_pmic_typec_probe(struct platform_device *pdev)
+>  port_unregister:
+>  	tcpm_unregister_port(tcpm->tcpm_port);
+>  fwnode_remove:
+> -	fwnode_remove_software_node(tcpm->tcpc.fwnode);
+> +	fwnode_handle_put(tcpm->tcpc.fwnode);
+>  
+>  	return ret;
+>  }
+> @@ -135,7 +135,7 @@ static void qcom_pmic_typec_remove(struct platform_device *pdev)
+>  	tcpm->pdphy_stop(tcpm);
+>  	tcpm->port_stop(tcpm);
+>  	tcpm_unregister_port(tcpm->tcpm_port);
+> -	fwnode_remove_software_node(tcpm->tcpc.fwnode);
+> +	fwnode_handle_put(tcpm->tcpc.fwnode);
+>  }
+>  
+>  static const struct pmic_typec_resources pm8150b_typec_res = {
+> 
+> -- 
+> 2.43.0
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
----
- fs/splice.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/fs/splice.c b/fs/splice.c
-index 866d5c2367b2..474fb8b5562a 100644
---- a/fs/splice.c
-+++ b/fs/splice.c
-@@ -662,12 +662,14 @@ iter_file_splice_write(struct pipe_inode_info *pipe, struct file *out,
- 
- 		/* build the vector */
- 		left = sd.total_len;
--		for (n = 0; !pipe_empty(head, tail) && left && n < nbufs; tail++, n++) {
-+		for (n = 0; !pipe_empty(head, tail) && left && n < nbufs; tail++) {
- 			struct pipe_buffer *buf = &pipe->bufs[tail & mask];
- 			size_t this_len = buf->len;
- 
--			if (this_len > left)
--				this_len = left;
-+			/* zero-length bvecs are not supported, skip them */
-+			if (!this_len)
-+				continue;
-+			this_len = min(this_len, left);
- 
- 			ret = pipe_buf_confirm(pipe, buf);
- 			if (unlikely(ret)) {
-@@ -680,6 +682,7 @@ iter_file_splice_write(struct pipe_inode_info *pipe, struct file *out,
- 			array[n].bv_len = this_len;
- 			array[n].bv_offset = buf->offset;
- 			left -= this_len;
-+			n++;
- 		}
- 
- 		iov_iter_bvec(&from, WRITE, array, n, sd.total_len - left);
 -- 
-2.34.1
-
+heikki
 
