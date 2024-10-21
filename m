@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-87638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A209A90CC
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 22:15:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8278E9A9152
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 22:34:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A62BC1C22D18
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 20:15:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9FC0B22B89
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 20:34:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145951FDF86;
-	Mon, 21 Oct 2024 20:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5884C1FDFA4;
+	Mon, 21 Oct 2024 20:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ath19mW8"
-X-Original-To: Stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="X6pGH1/t"
+X-Original-To: stable@vger.kernel.org
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB9D192D66;
-	Mon, 21 Oct 2024 20:14:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131031FCC7F;
+	Mon, 21 Oct 2024 20:34:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729541677; cv=none; b=ObY2wF22bv2ay2HEQwXcX/j3mE25dOtLmmwt2E7t7Uuve8hNNuEit9P2LBjWDjEfRKapiRU6w//PlhLIYU57x+fQq3R00xyPMPKkoxW17VYS9BSten2zR1Ge3MRHYTBB7LqpH8xwL9dL4hGFnWN79F8gwFfykAuwRUlN4PpWFjo=
+	t=1729542881; cv=none; b=jSTckC2voOb0eli6FXszUbK/RB62WwIEi6DuOtVXRqgfHoNlCVy/cv1tZcE6JYZbdGmHB0aRCuBj/EJ4N9+y8tbZ1rlgiRWRP9fQPwOVFiVC0/CbOi21sJAlPwDkEgRmCvDaOlfS1lN68IsxFJtp/JDWDseh1064PUqEGWKPGEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729541677; c=relaxed/simple;
-	bh=j/BrK8B0TGkZ9ZwNciUqLWo+wzl27hLDJOIpsB2sOLQ=;
+	s=arc-20240116; t=1729542881; c=relaxed/simple;
+	bh=2aKHCD7HF/BNx/ZMDMdlRAyKmulryR7i/G3Sbf07QTQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eXm07kXzOnwbFiuMRkww/9o8glPKQgKpW4mEn+Ptn27IL1oKQnl8hKhn4ZVAro1pVlU/lPZyDuml0k8cjSDEzFS66QjMkmLFyInd1AjCLtj/YdBx2ts3+9ZD0rwnHDfoCiDPlExSnrNq+n+IptrFsxyda2RkvOuurtv9DeD7fDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ath19mW8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14CDDC4CEC3;
-	Mon, 21 Oct 2024 20:14:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729541677;
-	bh=j/BrK8B0TGkZ9ZwNciUqLWo+wzl27hLDJOIpsB2sOLQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ath19mW8aXXkH6uv9k4DdfEi8j+WQftCAu0vTLib1HY+oSD1lAV+LSLabNrpzVg28
-	 LYGpTBaQKuyBXg9mLs0UcTroswf/x1+FY9cDaInTuDxQLeLdYaDvJHz96yD9M9O0Rj
-	 bdxTXBQ0Rc1v7NGivSBjjwK4DlG11n1vP4qVesj0=
-Date: Mon, 21 Oct 2024 22:13:17 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, andriy.shevchenko@linux.intel.com,
-	anshulusr@gmail.com, gustavograzs@gmail.com,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Stable@vger.kernel.org
-Subject: Re: [PATCH v2 01/13] iio: chemical: bme680: Fix missing header
-Message-ID: <2024102100-sulfide-paving-17fb@gregkh>
-References: <20241021195316.58911-1-vassilisamir@gmail.com>
- <20241021195316.58911-2-vassilisamir@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=lCYz9kXbYeLxsGvEVNfClJqkdGLduqCZ9KEZxGaACpa9kKBAgxuB+cMbNs0cgV29J8OhvNKBMj0AtvHd0AfZCZ2T6jK4NDl1ODxfWTJqvtdhBY7Wg7dWBZkA8ZcD2JzyVkYUiV+8KJirl40XqKCa9tFTyucIWGtOALVVNemHBWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=X6pGH1/t; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=TCoATayQL6ScqW1XAVqLhkU9X3nCi6KYSYnaGXGM4LI=; b=X6pGH1/t3oiG4Ha7YTPU9ThRaR
+	ygQodXSJRJFYQqvjHoIsRj25x+RiRRkkCh98SMXGninHw2E5QGRrfP73EW0Eg1Xi6WrSaBYzqejTV
+	CvAkBc4fAV0YQyh/teyiR7+Zt4zvnDRjYIo0GrVNjmNZhth6kIFFr3YPyDQRMOpo4ueREjbweg1Kb
+	q7yt0D0xdCcx70ahdamezMTzOHsACXDa2BdvL1Na/3yL1zjIatEvepnLUmove7pSiTYQpiSy5yiGU
+	4DWQqBi7TRQGDgEZz5xcdhB2ryFpyddI2DBE7MEQjkrl2yWGpPSnGL1ZwMyaORUQ7ax+tssGchAMS
+	WgBEJSwg==;
+Received: from willy by casper.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1t2z6f-0000000Gjj7-0W2g;
+	Mon, 21 Oct 2024 20:34:25 +0000
+Date: Mon, 21 Oct 2024 21:34:24 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Hugh Dickins <hughd@google.com>
+Subject: Re: [PATCH v2] mm: page_alloc: move mlocked flag clearance into
+ free_pages_prepare()
+Message-ID: <Zxa60Ftbh8eN1MG5@casper.infradead.org>
+References: <20241021173455.2691973-1-roman.gushchin@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,33 +62,14 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241021195316.58911-2-vassilisamir@gmail.com>
+In-Reply-To: <20241021173455.2691973-1-roman.gushchin@linux.dev>
 
-On Mon, Oct 21, 2024 at 09:53:04PM +0200, Vasileios Amoiridis wrote:
-> Add the linux/regmap.h header since the struct regmap_config is used
-> in this file.
-> 
-> Cc: <Stable@vger.kernel.org>
-> Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
-> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-> ---
->  drivers/iio/chemical/bme680.h | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/iio/chemical/bme680.h b/drivers/iio/chemical/bme680.h
-> index b2c547ac8d34..dc9ff477da34 100644
-> --- a/drivers/iio/chemical/bme680.h
-> +++ b/drivers/iio/chemical/bme680.h
-> @@ -2,6 +2,8 @@
->  #ifndef BME680_H_
->  #define BME680_H_
->  
-> +#include <linux/regmap.h>
-> +
->  #define BME680_REG_CHIP_ID			0xD0
->  #define   BME680_CHIP_ID_VAL			0x61
->  #define BME680_REG_SOFT_RESET			0xE0
+On Mon, Oct 21, 2024 at 05:34:55PM +0000, Roman Gushchin wrote:
+> Fix it by moving the mlocked flag clearance down to
+> free_page_prepare().
 
-Why is this needed in a stable release?  Does it fix a bug?
+Urgh, I don't like this new reference to folio in free_pages_prepare().
+It feels like a layering violation.  I'll think about where else we
+could put this.
 
 
