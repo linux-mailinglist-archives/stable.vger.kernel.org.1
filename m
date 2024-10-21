@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-87351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1BEE9A658E
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:58:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 570759A64ED
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76F1CB2D186
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:48:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68244B2B86F
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F461F6694;
-	Mon, 21 Oct 2024 10:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 615061E491C;
+	Mon, 21 Oct 2024 10:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ges1i7Zc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfyt0+Yf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19EC1F4FD1;
-	Mon, 21 Oct 2024 10:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164651E2618;
+	Mon, 21 Oct 2024 10:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507346; cv=none; b=gfG8Qm3jhxRz10kWpoPZqFgmwiQeuoRzQHuqpSMirTtAe/5a1nKQgXYiWsUX2Qyf5I9EteJTm/2BPfxz7LOduUwOjZaRF/37cQz6sSp+VirEzimEQ1trnErKn6FuaSbhc4K+blIBPAr6GAMsIyUq1MbW2hUien3QEFKPeJBSnh0=
+	t=1729507121; cv=none; b=gNNHXu9JmoLrZVYwlrbm0C/cM7ilSvBIh8Tq/4AGBxrMZ4MSDk40Eik2MBrMZS9XPlf0K6e3Wg7grXY+g24v36fbn7Hnq/zI2JrXOuuRreTWU4WfWkDUovCV2ns0O6BruZWtKbyxqC+EiElbnCwDC99q5VZLsbT/QqxRI96MZlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507346; c=relaxed/simple;
-	bh=ShJy1xWRkGs0P7i//ZxDtDtmWWem3r2yZqzsL9wqags=;
+	s=arc-20240116; t=1729507121; c=relaxed/simple;
+	bh=J1p0xivP7K1Ws0G/ikkiGx+itttSP7JRfL8eApI/Img=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C6IZ04AS+NuLClt7DYgGhXEB7ahhdwGrZqFc5U7B7StXGX/HbzBVle/eVCnB/nzUuIRG+Mh1MvMIJ9VX5xAAMTF2kD49zq3hplAgRvD17QJg5K7XLxFBBurOlExQSYe4j41M/Oj+acDHfRq8LfYf0sBi3TE5wYlQUNO9Yv5QZWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ges1i7Zc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33246C4CEC3;
-	Mon, 21 Oct 2024 10:42:25 +0000 (UTC)
+	 MIME-Version; b=WrEzglHv2BuivwtMt/DE4PbxNMuRrCqZxtIRm3N9tQEeMIRh3Sdg61hrepSInZDhSLR/9B+/93hvLd1PUBlqBVuhMgWy6ckzZ2EFpgMcWR2HSYPD+eEVTp/nartkF8EGO/h3IStbuo4p/TormT2M9Nct4UnZcH6l8j2vDHyM//0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfyt0+Yf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D719C4CEC3;
+	Mon, 21 Oct 2024 10:38:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507345;
-	bh=ShJy1xWRkGs0P7i//ZxDtDtmWWem3r2yZqzsL9wqags=;
+	s=korg; t=1729507120;
+	bh=J1p0xivP7K1Ws0G/ikkiGx+itttSP7JRfL8eApI/Img=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ges1i7ZcFP3ckvjzgQ4im77bSkmVp61Tdl/D7p1Dxazu+GD0YXpy7d0BL2rZPup+n
-	 jVIYO1w/aR9bsFP6Gybgi5ygpJXJFDIt7BlGbM1MRBM0qtkD0qBgne+6wMeA12Zoxp
-	 G0DtqTvb5/gePVYyGsz78x2UdvbVva4LkYdEDgfc=
+	b=dfyt0+YfgH7erBD+PK9ti6Bh8yIw9cV2AGrFx/y9Qt6SwRGhFdANz7hdGRGU/UH5+
+	 TaGuHVt9PguEpHI8vYjCq3DQjl21m2mHuiY2cTcMdQvoji1G26oVOq+RGPCSamr+sD
+	 aNg7t7Ynix7FbR2NNAoyuMWDfGFj7aKXN0mB/wDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Borislav Petkov <bp@alien8.de>,
-	Johannes Wikner <kwikner@ethz.ch>,
-	stable@kernel.org
-Subject: [PATCH 6.1 46/91] x86/bugs: Skip RSB fill at VMEXIT
-Date: Mon, 21 Oct 2024 12:25:00 +0200
-Message-ID: <20241021102251.618382903@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Jonathan Marek <jonathan@marek.ca>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH 6.6 097/124] usb: typec: qcom-pmic-typec: fix sink status being overwritten with RP_DEF
+Date: Mon, 21 Oct 2024 12:25:01 +0200
+Message-ID: <20241021102300.475662251@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Wikner <kwikner@ethz.ch>
+From: Jonathan Marek <jonathan@marek.ca>
 
-commit 0fad2878642ec46225af2054564932745ac5c765 upstream.
+commit ffe85c24d7ca5de7d57690c0ab194b3838674935 upstream.
 
-entry_ibpb() is designed to follow Intel's IBPB specification regardless
-of CPU. This includes invalidating RSB entries.
+This line is overwriting the result of the above switch-case.
 
-Hence, if IBPB on VMEXIT has been selected, entry_ibpb() as part of the
-RET untraining in the VMEXIT path will take care of all BTB and RSB
-clearing so there's no need to explicitly fill the RSB anymore.
+This fixes the tcpm driver getting stuck in a "Sink TX No Go" loop.
 
-  [ bp: Massage commit message. ]
-
-Suggested-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Johannes Wikner <kwikner@ethz.ch>
-Cc: <stable@kernel.org>
+Fixes: a4422ff22142 ("usb: typec: qcom: Add Qualcomm PMIC Type-C driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jonathan Marek <jonathan@marek.ca>
+Acked-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241005144146.2345-1-jonathan@marek.ca
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/bugs.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1093,6 +1093,14 @@ do_cmd_auto:
- 	case RETBLEED_MITIGATION_IBPB:
- 		setup_force_cpu_cap(X86_FEATURE_ENTRY_IBPB);
- 		mitigate_smt = true;
-+
-+		/*
-+		 * There is no need for RSB filling: entry_ibpb() ensures
-+		 * all predictions, including the RSB, are invalidated,
-+		 * regardless of IBPB implementation.
-+		 */
-+		setup_clear_cpu_cap(X86_FEATURE_RSB_VMEXIT);
-+
- 		break;
+--- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port.c
++++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port.c
+@@ -252,7 +252,6 @@ int qcom_pmic_typec_port_get_cc(struct p
+ 			val = TYPEC_CC_RP_DEF;
+ 			break;
+ 		}
+-		val = TYPEC_CC_RP_DEF;
+ 	}
  
- 	default:
-@@ -2603,6 +2611,13 @@ static void __init srso_select_mitigatio
- 			if (!boot_cpu_has(X86_FEATURE_ENTRY_IBPB) && has_microcode) {
- 				setup_force_cpu_cap(X86_FEATURE_IBPB_ON_VMEXIT);
- 				srso_mitigation = SRSO_MITIGATION_IBPB_ON_VMEXIT;
-+
-+				/*
-+				 * There is no need for RSB filling: entry_ibpb() ensures
-+				 * all predictions, including the RSB, are invalidated,
-+				 * regardless of IBPB implementation.
-+				 */
-+				setup_clear_cpu_cap(X86_FEATURE_RSB_VMEXIT);
- 			}
- 		} else {
- 			pr_err("WARNING: kernel not compiled with CPU_SRSO.\n");
+ 	if (misc & CC_ORIENTATION)
 
 
 
