@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-87245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3516B9A6411
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:43:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B94519A646C
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:46:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C12A1F21001
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64C071F2131A
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B1331F1315;
-	Mon, 21 Oct 2024 10:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00C251EF0B4;
+	Mon, 21 Oct 2024 10:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfiuLgjI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/wyt39h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2199D1EF95D;
-	Mon, 21 Oct 2024 10:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7ACF1E32D7;
+	Mon, 21 Oct 2024 10:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507029; cv=none; b=JtEGTki0Q1f74+WAQ35nwTq4x9BUK5nydaB7dlMk4yxN764M+FpDnIRx0cgUNB7Ra1UUPcSNCPtGy5YU8GwCgow+lOxTp5yMW09K/Wf4eT7qjgg2Qhznj8asyUHjsJg2D5Pr4n7WfbOBPzgz8Eu9mu5+bDvK8+TyFLXk4ygSRIQ=
+	t=1729507252; cv=none; b=HxSs/qe9llN9PpdiReaQ0wUfVeMUeDvaz5YdnwA4OzJRE65T6UWAWiac0QtIihxnVyHSV7cNbqNQVsN2Tn0dTTYD+2yaPakfbDiguufnEdK4592QaoU/fTPJ0frR5YOBnVemU8/+X2UOgQ7U3Dep6uTeHVUjQUs0XTW5U54/j7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507029; c=relaxed/simple;
-	bh=gWFRp2eW84fpBnFgl3iI5sQ8IZE9d2zHk5FS5xXOAWY=;
+	s=arc-20240116; t=1729507252; c=relaxed/simple;
+	bh=X49FKIVj8EWAU22ak197tv7LOChsDuv8GzCo8GNDt5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eLSziVSt9/jpNvVhkO1GmHQ3PzeXiYSLnTSehshyo5zUYa/lE+8/d3Fr8z3F3UBIKSJWDou1QKZgqh4rRY368tiZsZB03wlTtMMRhIS214PeTBKOws340wY+6NokODxnOB8JulKApwP4iXbRAcwECtjrxsBdYMlM2VooInmb0fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfiuLgjI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AAA8C4CEC3;
-	Mon, 21 Oct 2024 10:37:08 +0000 (UTC)
+	 MIME-Version; b=Wqmtv3RD4mayi3zVW4JxWY7ZYzZqZjCgA+7pgbid1sauODAGQj4a4xxsXqRAXM4xiV6lrI4r5GImsI4oEITeTisuJcZHsot1gyDX9w5dkY1v56VLcm6msgamKO7i2lKcuAez6tAks4bLQr6BHk6hOMVQ9/nswPpq1eZiJWQW/f8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/wyt39h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 233BCC4CEC7;
+	Mon, 21 Oct 2024 10:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507028;
-	bh=gWFRp2eW84fpBnFgl3iI5sQ8IZE9d2zHk5FS5xXOAWY=;
+	s=korg; t=1729507252;
+	bh=X49FKIVj8EWAU22ak197tv7LOChsDuv8GzCo8GNDt5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dfiuLgjI5UgItBBXtAkZfOlUaoEUEaLyr5AN6hbkLIxhtZBL/p3xYS3EHrm/buGv7
-	 HlxsqDUttFHjwn1HBdIEigAjZaMpR6vuMEXRWxAuOuxzIaXzySBaxVAy0zK0ro3qbo
-	 KaLzDYGPSLyqyWK3ND4vO+Gi3xFehkh+mZChBJ34=
+	b=e/wyt39h28ae5IfYkrG5cwFllDhfL15qCvNMJEt3IdzDqTkfxqlTd8gIbDWHraCWW
+	 UgWrbnQk0MbGMinK/lVk58iDCvh5zaFJSKSxvHvKscjj8ky28GKswbAkRk+OboL3mC
+	 aAz5gwQe6Xij/s/4cGizFF8QEsq5AYtRHBqkAvfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	Erhard Furtner <erhard_f@mailbox.org>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
-Subject: [PATCH 6.6 066/124] drm/radeon: Fix encoder->possible_clones
+	Jan Kara <jack@suse.cz>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 6.1 16/91] udf: Convert udf_rmdir() to new directory iteration code
 Date: Mon, 21 Oct 2024 12:24:30 +0200
-Message-ID: <20241021102259.287482641@linuxfoundation.org>
+Message-ID: <20241021102250.445351839@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +59,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 28127dba64d8ae1a0b737b973d6d029908599611 upstream.
+[ Upstream commit d11ffa8d3ec11fdb665f12f95d58d74673051a93 ]
 
-Include the encoder itself in its possible_clones bitmask.
-In the past nothing validated that drivers were populating
-possible_clones correctly, but that changed in commit
-74d2aacbe840 ("drm: Validate encoder->possible_clones").
-Looks like radeon never got the memo and is still not
-following the rules 100% correctly.
+Convert udf_rmdir() to use new directory iteration code.
 
-This results in some warnings during driver initialization:
-Bogus possible_clones: [ENCODER:46:TV-46] possible_clones=0x4 (full encoder mask=0x7)
-WARNING: CPU: 0 PID: 170 at drivers/gpu/drm/drm_mode_config.c:615 drm_mode_config_validate+0x113/0x39c
-...
-
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: amd-gfx@lists.freedesktop.org
-Fixes: 74d2aacbe840 ("drm: Validate encoder->possible_clones")
-Reported-by: Erhard Furtner <erhard_f@mailbox.org>
-Closes: https://lore.kernel.org/dri-devel/20241009000321.418e4294@yea/
-Tested-by: Erhard Furtner <erhard_f@mailbox.org>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 3b6e7d40649c0d75572039aff9d0911864c689db)
-Cc: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/radeon/radeon_encoders.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/udf/namei.c |   32 +++++++++++---------------------
+ 1 file changed, 11 insertions(+), 21 deletions(-)
 
---- a/drivers/gpu/drm/radeon/radeon_encoders.c
-+++ b/drivers/gpu/drm/radeon/radeon_encoders.c
-@@ -42,7 +42,7 @@ static uint32_t radeon_encoder_clones(st
- 	struct radeon_device *rdev = dev->dev_private;
- 	struct radeon_encoder *radeon_encoder = to_radeon_encoder(encoder);
- 	struct drm_encoder *clone_encoder;
--	uint32_t index_mask = 0;
-+	uint32_t index_mask = drm_encoder_mask(encoder);
- 	int count;
+--- a/fs/udf/namei.c
++++ b/fs/udf/namei.c
+@@ -898,30 +898,23 @@ static int empty_dir(struct inode *dir)
  
- 	/* DIG routing gets problematic */
+ static int udf_rmdir(struct inode *dir, struct dentry *dentry)
+ {
+-	int retval;
++	int ret;
+ 	struct inode *inode = d_inode(dentry);
+-	struct udf_fileident_bh fibh;
+-	struct fileIdentDesc *fi, cfi;
++	struct udf_fileident_iter iter;
+ 	struct kernel_lb_addr tloc;
+ 
+-	retval = -ENOENT;
+-	fi = udf_find_entry(dir, &dentry->d_name, &fibh, &cfi);
+-	if (IS_ERR_OR_NULL(fi)) {
+-		if (fi)
+-			retval = PTR_ERR(fi);
++	ret = udf_fiiter_find_entry(dir, &dentry->d_name, &iter);
++	if (ret)
+ 		goto out;
+-	}
+ 
+-	retval = -EIO;
+-	tloc = lelb_to_cpu(cfi.icb.extLocation);
++	ret = -EFSCORRUPTED;
++	tloc = lelb_to_cpu(iter.fi.icb.extLocation);
+ 	if (udf_get_lb_pblock(dir->i_sb, &tloc, 0) != inode->i_ino)
+ 		goto end_rmdir;
+-	retval = -ENOTEMPTY;
++	ret = -ENOTEMPTY;
+ 	if (!empty_dir(inode))
+ 		goto end_rmdir;
+-	retval = udf_delete_entry(dir, fi, &fibh, &cfi);
+-	if (retval)
+-		goto end_rmdir;
++	udf_fiiter_delete_entry(&iter);
+ 	if (inode->i_nlink != 2)
+ 		udf_warn(inode->i_sb, "empty directory has nlink != 2 (%u)\n",
+ 			 inode->i_nlink);
+@@ -931,14 +924,11 @@ static int udf_rmdir(struct inode *dir,
+ 	inode->i_ctime = dir->i_ctime = dir->i_mtime =
+ 						current_time(inode);
+ 	mark_inode_dirty(dir);
+-
++	ret = 0;
+ end_rmdir:
+-	if (fibh.sbh != fibh.ebh)
+-		brelse(fibh.ebh);
+-	brelse(fibh.sbh);
+-
++	udf_fiiter_release(&iter);
+ out:
+-	return retval;
++	return ret;
+ }
+ 
+ static int udf_unlink(struct inode *dir, struct dentry *dentry)
 
 
 
