@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-87243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 632C69A6410
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8515D9A646B
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:46:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03FB31F21279
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D5B91F2128C
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:46:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7262D1F8928;
-	Mon, 21 Oct 2024 10:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 004F71EF0B0;
+	Mon, 21 Oct 2024 10:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RICkDwzE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JU0Hu42X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4BD1F1310;
-	Mon, 21 Oct 2024 10:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D9F1EABAE;
+	Mon, 21 Oct 2024 10:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507023; cv=none; b=Kv16GB+1RQXsCRNxsJej5FgiSwMOPSqF3DYbzoRCmUvHcMMgRc0v5JSiEUiOBpcAs/5Xp66WJFC3EabXhoLRTQIHEp9k7XhI+X2Ua6apA2fxlasgdMH6S2FmSA/7LutsWEBPYUD0R4W4HNxM3J+pFdi5BQvzu1k5ztJ8d0juIak=
+	t=1729507249; cv=none; b=YRgj3IVCRU89gp2+6IYLsHpDxIhEQ9F0vagr4jyOlabW2B1q1I+9wszzChkJae2N0EPNUVlzjYbuV2jjPEh1s1I01k0FaiPe8pJknXN4EwJUF+HYFRqZBDo0TwmvnmIfV+3SvbOza6oBji83JHO2MZJYUAk5MeBfkdGZO1AE5tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507023; c=relaxed/simple;
-	bh=hBg3Of+Sj/Cqzh9nvM+opQoB18RamAk+5hSYltoD6Mc=;
+	s=arc-20240116; t=1729507249; c=relaxed/simple;
+	bh=zL0yRcE/JOkd7dKFYEfQO2/CTMFt3oz6xpLnCsdnbEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJmiPZnfem3VAWhx6669KmHHmxO5fTrQG36mZC5XyXFt2kVFZ0b39CEGaJlqVa6fh/kN9ealDkvetqGF2QRR7kP/2zSR4Cs3ya9ckDwydJV+hMdoNKzmofnUgCfv1jk6DwXfxeIzLj358TIRjwIyOtpXkEpZjcOqdow+ENLHOu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RICkDwzE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F088C4CEC3;
-	Mon, 21 Oct 2024 10:37:02 +0000 (UTC)
+	 MIME-Version; b=NZ6x4v19b2J+5f0nU+hzLu/ZpbUFVrccugw103443kuE/AN/oDaABXP9l5r6mGW1Sasv2z6c0YqyXhrKMmjVxMDpqx/jUPP/RWfix2ySlHo4yRTu6jb0NdLdqNPzprSG6hVMhVH7oGf+oDdO1NUSKWSA2WAQa8gWR0uXIirQ1f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JU0Hu42X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C592C4AF09;
+	Mon, 21 Oct 2024 10:40:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507022;
-	bh=hBg3Of+Sj/Cqzh9nvM+opQoB18RamAk+5hSYltoD6Mc=;
+	s=korg; t=1729507249;
+	bh=zL0yRcE/JOkd7dKFYEfQO2/CTMFt3oz6xpLnCsdnbEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RICkDwzET7rZcKOccKF6QUez/X6XNUDDAQ+Q/dYDNXTbVge4VdoP57H2TlC5mRq6v
-	 L4R+6oIx8OQ0L/bWCVnX9uHiv31AU++c9ghIL+GWHoqA2Jf+H9vjLmXPdkffKsOgaO
-	 xOnyvxTkNh2z3UWMEiF3PtTPXh912dOjkIqi3wUQ=
+	b=JU0Hu42XVc577ED5N4cMQoJrmyBIyW3oVa/8yKyfpQiVB6ZO1uo5TBxhxtIRcRGBt
+	 6BQmgmez+h3O/oMQIl7COvSDopbpjxNQSNe/Ve7FMVozbzoLf4F6FyVetsrzbVwgH2
+	 ufAj0sVaz0iTGd5V42ShK+7W71ZYnW+OYSJNSUDs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seunghwan Baek <sh8267.baek@samsung.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 064/124] scsi: ufs: core: Set SDEV_OFFLINE when UFS is shut down
-Date: Mon, 21 Oct 2024 12:24:28 +0200
-Message-ID: <20241021102259.209887057@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 6.1 15/91] udf: Convert empty_dir() to new directory iteration code
+Date: Mon, 21 Oct 2024 12:24:29 +0200
+Message-ID: <20241021102250.405610644@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +61,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seunghwan Baek <sh8267.baek@samsung.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 19a198b67767d952c8f3d0cf24eb3100522a8223 upstream.
+[ Upstream commit afb525f466f9fdc140b975221cb43fbb5c59314e ]
 
-There is a history of deadlock if reboot is performed at the beginning
-of booting. SDEV_QUIESCE was set for all LU's scsi_devices by UFS
-shutdown, and at that time the audio driver was waiting on
-blk_mq_submit_bio() holding a mutex_lock while reading the fw binary.
-After that, a deadlock issue occurred while audio driver shutdown was
-waiting for mutex_unlock of blk_mq_submit_bio(). To solve this, set
-SDEV_OFFLINE for all LUs except WLUN, so that any I/O that comes down
-after a UFS shutdown will return an error.
+Convert empty_dir() to new directory iteration code.
 
-[   31.907781]I[0:      swapper/0:    0]        1        130705007       1651079834      11289729804                0 D(   2) 3 ffffff882e208000 *             init [device_shutdown]
-[   31.907793]I[0:      swapper/0:    0] Mutex: 0xffffff8849a2b8b0: owner[0xffffff882e28cb00 kworker/6:0 :49]
-[   31.907806]I[0:      swapper/0:    0] Call trace:
-[   31.907810]I[0:      swapper/0:    0]  __switch_to+0x174/0x338
-[   31.907819]I[0:      swapper/0:    0]  __schedule+0x5ec/0x9cc
-[   31.907826]I[0:      swapper/0:    0]  schedule+0x7c/0xe8
-[   31.907834]I[0:      swapper/0:    0]  schedule_preempt_disabled+0x24/0x40
-[   31.907842]I[0:      swapper/0:    0]  __mutex_lock+0x408/0xdac
-[   31.907849]I[0:      swapper/0:    0]  __mutex_lock_slowpath+0x14/0x24
-[   31.907858]I[0:      swapper/0:    0]  mutex_lock+0x40/0xec
-[   31.907866]I[0:      swapper/0:    0]  device_shutdown+0x108/0x280
-[   31.907875]I[0:      swapper/0:    0]  kernel_restart+0x4c/0x11c
-[   31.907883]I[0:      swapper/0:    0]  __arm64_sys_reboot+0x15c/0x280
-[   31.907890]I[0:      swapper/0:    0]  invoke_syscall+0x70/0x158
-[   31.907899]I[0:      swapper/0:    0]  el0_svc_common+0xb4/0xf4
-[   31.907909]I[0:      swapper/0:    0]  do_el0_svc+0x2c/0xb0
-[   31.907918]I[0:      swapper/0:    0]  el0_svc+0x34/0xe0
-[   31.907928]I[0:      swapper/0:    0]  el0t_64_sync_handler+0x68/0xb4
-[   31.907937]I[0:      swapper/0:    0]  el0t_64_sync+0x1a0/0x1a4
-
-[   31.908774]I[0:      swapper/0:    0]       49                0         11960702      11236868007                0 D(   2) 6 ffffff882e28cb00 *      kworker/6:0 [__bio_queue_enter]
-[   31.908783]I[0:      swapper/0:    0] Call trace:
-[   31.908788]I[0:      swapper/0:    0]  __switch_to+0x174/0x338
-[   31.908796]I[0:      swapper/0:    0]  __schedule+0x5ec/0x9cc
-[   31.908803]I[0:      swapper/0:    0]  schedule+0x7c/0xe8
-[   31.908811]I[0:      swapper/0:    0]  __bio_queue_enter+0xb8/0x178
-[   31.908818]I[0:      swapper/0:    0]  blk_mq_submit_bio+0x194/0x67c
-[   31.908827]I[0:      swapper/0:    0]  __submit_bio+0xb8/0x19c
-
-Fixes: b294ff3e3449 ("scsi: ufs: core: Enable power management for wlun")
-Cc: stable@vger.kernel.org
-Signed-off-by: Seunghwan Baek <sh8267.baek@samsung.com>
-Link: https://lore.kernel.org/r/20240829093913.6282-2-sh8267.baek@samsung.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/udf/namei.c |   68 +++++++--------------------------------------------------
+ 1 file changed, 9 insertions(+), 59 deletions(-)
 
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -10100,7 +10100,9 @@ static void ufshcd_wl_shutdown(struct de
- 	shost_for_each_device(sdev, hba->host) {
- 		if (sdev == hba->ufs_device_wlun)
- 			continue;
--		scsi_device_quiesce(sdev);
-+		mutex_lock(&sdev->state_mutex);
-+		scsi_device_set_state(sdev, SDEV_OFFLINE);
-+		mutex_unlock(&sdev->state_mutex);
- 	}
- 	__ufshcd_wl_suspend(hba, UFS_SHUTDOWN_PM);
+--- a/fs/udf/namei.c
++++ b/fs/udf/namei.c
+@@ -879,69 +879,19 @@ out:
  
+ static int empty_dir(struct inode *dir)
+ {
+-	struct fileIdentDesc *fi, cfi;
+-	struct udf_fileident_bh fibh;
+-	loff_t f_pos;
+-	loff_t size = udf_ext0_offset(dir) + dir->i_size;
+-	udf_pblk_t block;
+-	struct kernel_lb_addr eloc;
+-	uint32_t elen;
+-	sector_t offset;
+-	struct extent_position epos = {};
+-	struct udf_inode_info *dinfo = UDF_I(dir);
++	struct udf_fileident_iter iter;
++	int ret;
+ 
+-	f_pos = udf_ext0_offset(dir);
+-	fibh.soffset = fibh.eoffset = f_pos & (dir->i_sb->s_blocksize - 1);
+-
+-	if (dinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB)
+-		fibh.sbh = fibh.ebh = NULL;
+-	else if (inode_bmap(dir, f_pos >> dir->i_sb->s_blocksize_bits,
+-			      &epos, &eloc, &elen, &offset) ==
+-					(EXT_RECORDED_ALLOCATED >> 30)) {
+-		block = udf_get_lb_pblock(dir->i_sb, &eloc, offset);
+-		if ((++offset << dir->i_sb->s_blocksize_bits) < elen) {
+-			if (dinfo->i_alloc_type == ICBTAG_FLAG_AD_SHORT)
+-				epos.offset -= sizeof(struct short_ad);
+-			else if (dinfo->i_alloc_type == ICBTAG_FLAG_AD_LONG)
+-				epos.offset -= sizeof(struct long_ad);
+-		} else
+-			offset = 0;
+-
+-		fibh.sbh = fibh.ebh = udf_tread(dir->i_sb, block);
+-		if (!fibh.sbh) {
+-			brelse(epos.bh);
+-			return 0;
+-		}
+-	} else {
+-		brelse(epos.bh);
+-		return 0;
+-	}
+-
+-	while (f_pos < size) {
+-		fi = udf_fileident_read(dir, &f_pos, &fibh, &cfi, &epos, &eloc,
+-					&elen, &offset);
+-		if (!fi) {
+-			if (fibh.sbh != fibh.ebh)
+-				brelse(fibh.ebh);
+-			brelse(fibh.sbh);
+-			brelse(epos.bh);
+-			return 0;
+-		}
+-
+-		if (cfi.lengthFileIdent &&
+-		    (cfi.fileCharacteristics & FID_FILE_CHAR_DELETED) == 0) {
+-			if (fibh.sbh != fibh.ebh)
+-				brelse(fibh.ebh);
+-			brelse(fibh.sbh);
+-			brelse(epos.bh);
++	for (ret = udf_fiiter_init(&iter, dir, 0);
++	     !ret && iter.pos < dir->i_size;
++	     ret = udf_fiiter_advance(&iter)) {
++		if (iter.fi.lengthFileIdent &&
++		    !(iter.fi.fileCharacteristics & FID_FILE_CHAR_DELETED)) {
++			udf_fiiter_release(&iter);
+ 			return 0;
+ 		}
+ 	}
+-
+-	if (fibh.sbh != fibh.ebh)
+-		brelse(fibh.ebh);
+-	brelse(fibh.sbh);
+-	brelse(epos.bh);
++	udf_fiiter_release(&iter);
+ 
+ 	return 1;
+ }
 
 
 
