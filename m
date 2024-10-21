@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-87354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 774559A6493
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:48:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0423D9A6434
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:44:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EF831F20C89
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:48:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A183B1F227F3
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54DCF1F76C1;
-	Mon, 21 Oct 2024 10:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39A8A1E633C;
+	Mon, 21 Oct 2024 10:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JaiTx22q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GpU08c7x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7391F709B;
-	Mon, 21 Oct 2024 10:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E458D1EC001;
+	Mon, 21 Oct 2024 10:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507355; cv=none; b=d/kVFgePQx1Y3wAEliXrcn5ptLdi4KHwIIS2DZi9pYgvW2R5KvJ4ukoKO+igbcCpzMuJHjTbr7hriHD8nHkFje7z9H4Jguumx+Nh338/Zqn8LQz63i5uQOLoD1jHN7703it4x0TWniQc294GbPX29/eKWu3yPQSCGfRtaMrpZDY=
+	t=1729507127; cv=none; b=nqYMCZohVMT3ZAYSToL9ZBWHqPOSFdgwIrMfY4JJTsWkmZkN8UvTkaR4mBW5X6jHrRz61g5NRcx1mFZsuEOSNbRYFvK9av1UyzzTsLv2JG0z9bTlM0ukLGhSIEf9XF0dwQ8cimRJyzDGWmGz7NqvYZrlNWGMdhUffxHyVgX5exU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507355; c=relaxed/simple;
-	bh=sEpxGc716HTZh4byWdVUiov28yPvZLmrNqqUsNnenEQ=;
+	s=arc-20240116; t=1729507127; c=relaxed/simple;
+	bh=EZenF0rP618uFIoNVAZvxBH1h6CKfIOv0iiu9hePBgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qy8SrwfGzcOF0JyNQF8UU5AKzNvl1OVdZE1eWi35wSyXH/a7dbAXgf7mur2zAZDCOhffbF5guYVR964yN9lLN9farGnjRwQTmOGgY1Cu03nvse87V3c94sy/F4vuXxfDSZfjAnE815AWnspa8e+qlVXkx0WH7/1OtXa/kCoP5No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JaiTx22q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD5CC4CEC3;
-	Mon, 21 Oct 2024 10:42:34 +0000 (UTC)
+	 MIME-Version; b=egGhwBTz6s5jEfOJiw7tqkpkGXXcOsyM6MppKIs4Y2Jpu5AEP9vUUUdl1g9jtETvarXqcl3Mxrv1qFN00rcXQ8DwqE5O0A9G1I8NrO9A78xMldOHl6WUU42qyUe+Gxmm4YJEdFay5vuCf4mQczBll0GY6wDX+5Ahbu/89m1umGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GpU08c7x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F79C4CEC3;
+	Mon, 21 Oct 2024 10:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507354;
-	bh=sEpxGc716HTZh4byWdVUiov28yPvZLmrNqqUsNnenEQ=;
+	s=korg; t=1729507126;
+	bh=EZenF0rP618uFIoNVAZvxBH1h6CKfIOv0iiu9hePBgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JaiTx22qG1g4gibGiuBdvHeMIR8FuVBuQ5dcJpUErVxsFO1N1iOuukoioHLHYcMA6
-	 Sy58amIgnjkQObDUhqNgV2t07nPvstgJy8q5YVHVwWwl/K69np7rixMtA4aKyb6Olf
-	 LG++ZXceiVV8immoYQUSKDxCOKXLU2BMNH5q3ny4=
+	b=GpU08c7xcZMH9k4sj+1BTPqOsmnNY8KZoHyG9fLqQw0NxhqcoZrhkc09E60lMl7Aa
+	 vjPQOQrDcM6z5tySaUK1z7jAC9bNdbKjviNPsLKZc1zsP+BjSVVasd+mTJsmK8Wn+F
+	 Td6soolZKoKp5NaON0B1weweEW0gq8pSQsumNPNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benedek Thaler <thaler@thaler.hu>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 49/91] io_uring/sqpoll: close race on waiting for sqring entries
+	Heiko Thiery <heiko.thiery@gmail.com>,
+	Michael Walle <mwalle@kernel.org>
+Subject: [PATCH 6.6 099/124] misc: microchip: pci1xxxx: add support for NVMEM_DEVID_AUTO for EEPROM device
 Date: Mon, 21 Oct 2024 12:25:03 +0200
-Message-ID: <20241021102251.734964296@linuxfoundation.org>
+Message-ID: <20241021102300.552498622@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Heiko Thiery <heiko.thiery@gmail.com>
 
-commit 28aabffae6be54284869a91cd8bccd3720041129 upstream.
+commit 3c2d73de49be528276474c1a53f78b38ee11c1fa upstream.
 
-When an application uses SQPOLL, it must wait for the SQPOLL thread to
-consume SQE entries, if it fails to get an sqe when calling
-io_uring_get_sqe(). It can do so by calling io_uring_enter(2) with the
-flag value of IORING_ENTER_SQ_WAIT. In liburing, this is generally done
-with io_uring_sqring_wait(). There's a natural expectation that once
-this call returns, a new SQE entry can be retrieved, filled out, and
-submitted. However, the kernel uses the cached sq head to determine if
-the SQRING is full or not. If the SQPOLL thread is currently in the
-process of submitting SQE entries, it may have updated the cached sq
-head, but not yet committed it to the SQ ring. Hence the kernel may find
-that there are SQE entries ready to be consumed, and return successfully
-to the application. If the SQPOLL thread hasn't yet committed the SQ
-ring entries by the time the application returns to userspace and
-attempts to get a new SQE, it will fail getting a new SQE.
+By using NVMEM_DEVID_AUTO we support more than 1 device and
+automatically enumerate.
 
-Fix this by having io_sqring_full() always use the user visible SQ ring
-head entry, rather than the internally cached one.
-
-Cc: stable@vger.kernel.org # 5.10+
-Link: https://github.com/axboe/liburing/discussions/1267
-Reported-by: Benedek Thaler <thaler@thaler.hu>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 9ab5465349c0 ("misc: microchip: pci1xxxx: Add support to read and write into PCI1XXXX EEPROM via NVMEM sysfs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiko Thiery <heiko.thiery@gmail.com>
+Reviewed-by: Michael Walle <mwalle@kernel.org>
+Link: https://lore.kernel.org/r/20241007071120.9522-1-heiko.thiery@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.h |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/io_uring/io_uring.h
-+++ b/io_uring/io_uring.h
-@@ -235,7 +235,14 @@ static inline bool io_sqring_full(struct
- {
- 	struct io_rings *r = ctx->rings;
- 
--	return READ_ONCE(r->sq.tail) - ctx->cached_sq_head == ctx->sq_entries;
-+	/*
-+	 * SQPOLL must use the actual sqring head, as using the cached_sq_head
-+	 * is race prone if the SQPOLL thread has grabbed entries but not yet
-+	 * committed them to the ring. For !SQPOLL, this doesn't matter, but
-+	 * since this helper is just used for SQPOLL sqring waits (or POLLOUT),
-+	 * just read the actual sqring head unconditionally.
-+	 */
-+	return READ_ONCE(r->sq.tail) - READ_ONCE(r->sq.head) == ctx->sq_entries;
- }
- 
- static inline unsigned int io_sqring_entries(struct io_ring_ctx *ctx)
+diff --git a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
+index 7c3d8bedf90b..d1cd4544c83c 100644
+--- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
++++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
+@@ -364,6 +364,7 @@ static int pci1xxxx_otp_eeprom_probe(struct auxiliary_device *aux_dev,
+ 	if (is_eeprom_responsive(priv)) {
+ 		priv->nvmem_config_eeprom.type = NVMEM_TYPE_EEPROM;
+ 		priv->nvmem_config_eeprom.name = EEPROM_NAME;
++		priv->nvmem_config_eeprom.id = NVMEM_DEVID_AUTO;
+ 		priv->nvmem_config_eeprom.dev = &aux_dev->dev;
+ 		priv->nvmem_config_eeprom.owner = THIS_MODULE;
+ 		priv->nvmem_config_eeprom.reg_read = pci1xxxx_eeprom_read;
+-- 
+2.47.0
+
 
 
 
