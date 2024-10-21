@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-87431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A48E59A654E
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:55:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD0A09A64C9
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:50:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9DE3CB30125
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EA4A280C48
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FECF1E908D;
-	Mon, 21 Oct 2024 10:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 042441F4714;
+	Mon, 21 Oct 2024 10:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5X27mkM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JC01RAK7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063211E884F;
-	Mon, 21 Oct 2024 10:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0BF1F470E;
+	Mon, 21 Oct 2024 10:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507586; cv=none; b=ZhXmyH5stRVFRK854MPCyAzzYnOrw/giZ5lQ33cZvjIDhlcJ+xBEIeovQkXZUFxbDSqF1vTKxh3sUTnmqteId4kg0rB0hhmooBlVLzheOOcaA5Utbmq2Bxmm/D6/yRrTs4pehFSMAgTRrpIaBZoUcf2pkP+dLqV83ABwiIohl78=
+	t=1729507484; cv=none; b=l8kjocn+hTf0/ad4qJw9mE/Car1VFyIV8VMAaix6mNV1m85ECbvxtJH7GRd+7WfARrBcCU2/jUgmBITAptJocJ7+lYcN89pO+K+LcN59TpYOYeXMp3+LAxPBMq9Lr88QeBYDQ5PZiD+nWKYmDEHZ+kW+qe9xKdRJic/9r2thocQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507586; c=relaxed/simple;
-	bh=C3RtUO8TBHaJUp9AGPGXsdlPM5zRX9wzb0kMsGi/MOo=;
+	s=arc-20240116; t=1729507484; c=relaxed/simple;
+	bh=ufOYtMKW+wqfvwtZcmR3wMPYqXtzd5bZxoX/43ZAh+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JDJPZtX24UQ7Xla0HrkE0y8juJso9Gg+DroukcVa6qAwhVYyl68Ie5z+ybWPm2U9HTT3BIrBcE3yMENtqN0f02lP2wnvVb66ql0ny5bKWlq75X/mhy6FhxQCqYQ7JORAoMueVUNjEJFPinqpUnCeoVJ7UcfEHbFMypqnzds2qQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5X27mkM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC09C4CEC3;
-	Mon, 21 Oct 2024 10:46:25 +0000 (UTC)
+	 MIME-Version; b=gUlGPSjsU0L/oDN4duJ336Oo8QsKRxXFhNT0n7vGxY7TkYUnmyA6svFvmNmjS0rDKi/hYD1PCABHcqo/0fW8mQEdMFWIScueJGVvoc0EJBaCRU52irh3MYmOC/G4DHx/OX33VsegEZHbNfYHpvd/WWLtIbROMwebJ5aG8eAa32M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JC01RAK7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E8AC4CEC3;
+	Mon, 21 Oct 2024 10:44:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507585;
-	bh=C3RtUO8TBHaJUp9AGPGXsdlPM5zRX9wzb0kMsGi/MOo=;
+	s=korg; t=1729507484;
+	bh=ufOYtMKW+wqfvwtZcmR3wMPYqXtzd5bZxoX/43ZAh+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y5X27mkMgNnORgO7UCF6VBn86H8npIpan1VePC+Q0YiLQvuk+Ed1aPRH3h7ZaZtdE
-	 W6fDzkrnmYgjoOqp5wwNW+lKdh0ZpYlsEMz8abY6D1N0xkYvXsNh8ZVJwvpl1aKjBN
-	 TjtMDiweQ7suDPu6PdNPudnfh7Ipb7YDUbI6FVcs=
+	b=JC01RAK7Hx0wUYkAeczhE0doy0ZOFBsFM+llPwk9+E+KTCtBFMhT3yOwGme455eYI
+	 ILRxOawTDjruXGeQtq3oNjTRO1BaFcDib0WXsPIDp4ZFuTWBdJLD76T0FOqT2BYDTY
+	 VGTUi+GSeZetFPXczsAtHLsdrjV1Wz4ezEqaNGGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Saeed Mirzamohammadi <saeed.mirzamohammadi@oracle.com>
-Subject: [PATCH 5.15 34/82] KVM: Fix a data race on last_boosted_vcpu in kvm_vcpu_on_spin()
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 61/91] iio: light: veml6030: fix IIO device retrieval from embedded device
 Date: Mon, 21 Oct 2024 12:25:15 +0200
-Message-ID: <20241021102248.592688087@linuxfoundation.org>
+Message-ID: <20241021102252.198547445@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 49f683b41f28918df3e51ddc0d928cb2e934ccdb upstream.
+commit c7c44e57750c31de43906d97813273fdffcf7d02 upstream.
 
-Use {READ,WRITE}_ONCE() to access kvm->last_boosted_vcpu to ensure the
-loads and stores are atomic.  In the extremely unlikely scenario the
-compiler tears the stores, it's theoretically possible for KVM to attempt
-to get a vCPU using an out-of-bounds index, e.g. if the write is split
-into multiple 8-bit stores, and is paired with a 32-bit load on a VM with
-257 vCPUs:
+The dev pointer that is received as an argument in the
+in_illuminance_period_available_show function references the device
+embedded in the IIO device, not in the i2c client.
 
-  CPU0                              CPU1
-  last_boosted_vcpu = 0xff;
+dev_to_iio_dev() must be used to accessthe right data. The current
+implementation leads to a segmentation fault on every attempt to read
+the attribute because indio_dev gets a NULL assignment.
 
-                                    (last_boosted_vcpu = 0x100)
-                                    last_boosted_vcpu[15:8] = 0x01;
-  i = (last_boosted_vcpu = 0x1ff)
-                                    last_boosted_vcpu[7:0] = 0x00;
+This bug has been present since the first appearance of the driver,
+apparently since the last version (V6) before getting applied. A
+constant attribute was used until then, and the last modifications might
+have not been tested again.
 
-  vcpu = kvm->vcpu_array[0x1ff];
-
-As detected by KCSAN:
-
-  BUG: KCSAN: data-race in kvm_vcpu_on_spin [kvm] / kvm_vcpu_on_spin [kvm]
-
-  write to 0xffffc90025a92344 of 4 bytes by task 4340 on cpu 16:
-  kvm_vcpu_on_spin (arch/x86/kvm/../../../virt/kvm/kvm_main.c:4112) kvm
-  handle_pause (arch/x86/kvm/vmx/vmx.c:5929) kvm_intel
-  vmx_handle_exit (arch/x86/kvm/vmx/vmx.c:?
-		 arch/x86/kvm/vmx/vmx.c:6606) kvm_intel
-  vcpu_run (arch/x86/kvm/x86.c:11107 arch/x86/kvm/x86.c:11211) kvm
-  kvm_arch_vcpu_ioctl_run (arch/x86/kvm/x86.c:?) kvm
-  kvm_vcpu_ioctl (arch/x86/kvm/../../../virt/kvm/kvm_main.c:?) kvm
-  __se_sys_ioctl (fs/ioctl.c:52 fs/ioctl.c:904 fs/ioctl.c:890)
-  __x64_sys_ioctl (fs/ioctl.c:890)
-  x64_sys_call (arch/x86/entry/syscall_64.c:33)
-  do_syscall_64 (arch/x86/entry/common.c:?)
-  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-  read to 0xffffc90025a92344 of 4 bytes by task 4342 on cpu 4:
-  kvm_vcpu_on_spin (arch/x86/kvm/../../../virt/kvm/kvm_main.c:4069) kvm
-  handle_pause (arch/x86/kvm/vmx/vmx.c:5929) kvm_intel
-  vmx_handle_exit (arch/x86/kvm/vmx/vmx.c:?
-			arch/x86/kvm/vmx/vmx.c:6606) kvm_intel
-  vcpu_run (arch/x86/kvm/x86.c:11107 arch/x86/kvm/x86.c:11211) kvm
-  kvm_arch_vcpu_ioctl_run (arch/x86/kvm/x86.c:?) kvm
-  kvm_vcpu_ioctl (arch/x86/kvm/../../../virt/kvm/kvm_main.c:?) kvm
-  __se_sys_ioctl (fs/ioctl.c:52 fs/ioctl.c:904 fs/ioctl.c:890)
-  __x64_sys_ioctl (fs/ioctl.c:890)
-  x64_sys_call (arch/x86/entry/syscall_64.c:33)
-  do_syscall_64 (arch/x86/entry/common.c:?)
-  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-  value changed: 0x00000012 -> 0x00000000
-
-Fixes: 217ece6129f2 ("KVM: use yield_to instead of sleep in kvm_vcpu_on_spin")
 Cc: stable@vger.kernel.org
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://lore.kernel.org/r/20240510092353.2261824-1-leitao@debian.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Saeed Mirzamohammadi <saeed.mirzamohammadi@oracle.com>
+Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light sensor")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20240913-veml6035-v1-3-0b09c0c90418@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- virt/kvm/kvm_main.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/iio/light/veml6030.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -3528,12 +3528,13 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *m
+--- a/drivers/iio/light/veml6030.c
++++ b/drivers/iio/light/veml6030.c
+@@ -99,9 +99,8 @@ static const char * const period_values[
+ static ssize_t in_illuminance_period_available_show(struct device *dev,
+ 				struct device_attribute *attr, char *buf)
  {
- 	struct kvm *kvm = me->kvm;
- 	struct kvm_vcpu *vcpu;
--	int last_boosted_vcpu = me->kvm->last_boosted_vcpu;
-+	int last_boosted_vcpu;
- 	int yielded = 0;
- 	int try = 3;
- 	int pass;
- 	int i;
++	struct veml6030_data *data = iio_priv(dev_to_iio_dev(dev));
+ 	int ret, reg, x;
+-	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+-	struct veml6030_data *data = iio_priv(indio_dev);
  
-+	last_boosted_vcpu = READ_ONCE(kvm->last_boosted_vcpu);
- 	kvm_vcpu_set_in_spin_loop(me, true);
- 	/*
- 	 * We boost the priority of a VCPU that is runnable but not
-@@ -3565,7 +3566,7 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *m
- 
- 			yielded = kvm_vcpu_yield_to(vcpu);
- 			if (yielded > 0) {
--				kvm->last_boosted_vcpu = i;
-+				WRITE_ONCE(kvm->last_boosted_vcpu, i);
- 				break;
- 			} else if (yielded < 0) {
- 				try--;
+ 	ret = regmap_read(data->regmap, VEML6030_REG_ALS_CONF, &reg);
+ 	if (ret) {
 
 
 
