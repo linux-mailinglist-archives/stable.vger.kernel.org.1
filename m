@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-87209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C29399A63C0
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:39:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE6C9A633A
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:32:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E95E21C21EFF
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:39:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AB151C213D2
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F381E7C3C;
-	Mon, 21 Oct 2024 10:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F26291E8848;
+	Mon, 21 Oct 2024 10:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IDvGpTfx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/43X6EM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B241E7C34;
-	Mon, 21 Oct 2024 10:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FC51E906A;
+	Mon, 21 Oct 2024 10:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506920; cv=none; b=beTalH5TOCeaA1Q4SvFlJ+AFFMHcoCUSjBk2EFuFq38Z5ude/gz+d/iACQR1U+K2aAkYPKCggRxwTrjGci+qCouhe/+McDlbZht3quOcNsHe0URNTgDKbG/dR7yU+kbGVYZppJg3ZDbi3HCdmx2z1Z6rdq5ug9TpPB/1FwEyTUs=
+	t=1729506659; cv=none; b=WC/d45BSy/0zQ4WlJYC4WRSRNd8JX2cOcJ6O405aJ9Vz20vOEJRcHbkcMzyldOrimr7xWzXr6Sv29JVdhd20dKDuGEVSrDucuPP7tY7Wf+mw8Wd2Jo61ZTl4ExeVgDbeAfArA551DszseamkVLI1sxPmhKk22YR5N43anjr03TU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506920; c=relaxed/simple;
-	bh=dusvwWHZeY9kdD0iR9KFatieNIJOGPeSJsGUxj0uZt8=;
+	s=arc-20240116; t=1729506659; c=relaxed/simple;
+	bh=0P7/rV3u1KkD0ZclGWSyvUhsnOJtybbZjFhRW2s1Yno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ieKt16lhlxHhSE0el6bNAaLWLqWwTny+XXcXkkZOMB1ICkqnDLcHsVQmHCywd2nEdzS59MUia+QLXFmc1u/+qISev5m0El6pCEWVRg2KZNFwmZSKmlIXM3OlBzX23yyFlnFeRan7xNr2mk1VYFXoM/Cn+M9MQNEfV7/hsoOt5h0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IDvGpTfx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAE86C4CEC7;
-	Mon, 21 Oct 2024 10:35:19 +0000 (UTC)
+	 MIME-Version; b=Tkryrujet35HB8HzwhYV5+gZoshYYeR6+9drhpAKti10VNFw6bqjce0bI68cVIy1hQyBFEsDbcoXJRMETUzePE6hBWbA97KLZ9zqL/nu+Hc7J03VFv9M3pzrpaceAbBlQsGvIUYWltkJ+OqgjOJ+uMyIjH7cVhEBGoCE2HWtlf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/43X6EM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C72C4CEE9;
+	Mon, 21 Oct 2024 10:30:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506920;
-	bh=dusvwWHZeY9kdD0iR9KFatieNIJOGPeSJsGUxj0uZt8=;
+	s=korg; t=1729506659;
+	bh=0P7/rV3u1KkD0ZclGWSyvUhsnOJtybbZjFhRW2s1Yno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IDvGpTfx9NjlBY++et4kG9zOMlfdkHiPWiD8zNrgJBTYrjXQSx1BQxW3HK9VyX00X
-	 eACwNiivM2He9NIN+k09PY4wdFZ39BvVMj/vz53syvtvLT2aRoJydsM8/5YogiLKce
-	 tqAqvyvOt9iB1Bk1ZVLFCqP5yhaCUoNufZa6xDD4=
+	b=s/43X6EM1K3ZFuIVkRFg/t/aCe4kqZVvbh0sFbGJ4+XV9L6Lsn6sSTp4w9IrJI8R7
+	 qhAp9dDCJI5SyNXHgyyvAnvixqMDMDYKkog0ORu7YvmMvXuvT7mHtnJsAFxcJaPDiW
+	 GaBr+Jdp75IMm0/bpLOX1G3SxpMRSnP1tLQVWCL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 030/124] xfs: check shortform attr entry flags specifically
-Date: Mon, 21 Oct 2024 12:23:54 +0200
-Message-ID: <20241021102257.892283414@linuxfoundation.org>
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.11 079/135] iio: frequency: adf4377: add missing select REMAP_SPI in Kconfig
+Date: Mon, 21 Oct 2024 12:23:55 +0200
+Message-ID: <20241021102302.418195182@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 309dc9cbbb4379241bcc9b5a6a42c04279a0e5a7 upstream.
+commit c64643ed4eaa5dfd0b3bab7ef1c50b84f3dbaba4 upstream.
 
-While reviewing flag checking in the attr scrub functions, we noticed
-that the shortform attr scanner didn't catch entries that have the LOCAL
-or INCOMPLETE bits set.  Neither of these flags can ever be set on a
-shortform attr, so we need to check this narrower set of valid flags.
+This driver makes use of regmap_spi, but does not select the required
+module.
+Add the missing 'select REGMAP_SPI'.
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+Fixes: eda549e2e524 ("iio: frequency: adf4377: add support for ADF4377")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241003-ad2s1210-select-v1-3-4019453f8c33@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/scrub/attr.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/iio/frequency/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/xfs/scrub/attr.c
-+++ b/fs/xfs/scrub/attr.c
-@@ -566,6 +566,15 @@ xchk_xattr_check_sf(
- 			break;
- 		}
- 
-+		/*
-+		 * Shortform entries do not set LOCAL or INCOMPLETE, so the
-+		 * only valid flag bits here are for namespaces.
-+		 */
-+		if (sfe->flags & ~XFS_ATTR_NSP_ONDISK_MASK) {
-+			xchk_fblock_set_corrupt(sc, XFS_ATTR_FORK, 0);
-+			break;
-+		}
-+
- 		if (!xchk_xattr_set_map(sc, ab->usedmap,
- 				(char *)sfe - (char *)sf,
- 				sizeof(struct xfs_attr_sf_entry))) {
+--- a/drivers/iio/frequency/Kconfig
++++ b/drivers/iio/frequency/Kconfig
+@@ -53,6 +53,7 @@ config ADF4371
+ config ADF4377
+ 	tristate "Analog Devices ADF4377 Microwave Wideband Synthesizer"
+ 	depends on SPI && COMMON_CLK
++	select REGMAP_SPI
+ 	help
+ 	  Say yes here to build support for Analog Devices ADF4377 Microwave
+ 	  Wideband Synthesizer.
 
 
 
