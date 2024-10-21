@@ -1,66 +1,55 @@
-Return-Path: <stable+bounces-87341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA3339A6482
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:47:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF9C89A6458
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:45:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 056D51C211B8
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:47:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 996E41F21860
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A24161F4FB3;
-	Mon, 21 Oct 2024 10:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14141E884F;
+	Mon, 21 Oct 2024 10:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GsA4YmaI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DrFjEae3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588ED1F4FA3;
-	Mon, 21 Oct 2024 10:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591581E0087;
+	Mon, 21 Oct 2024 10:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507316; cv=none; b=X6UvVnaeFXkXutoQ0n+I3QjGOhgnrhAG8Ky97ExXMWFjTVgZT9v+1Uj7/uJ9SknpYM34uIzxpI+Y8ca0HFJQWiOGyaVvKdRpZE9AG0qHRCBoo41eKb923PXSB9bn1FPoo5qav8xKgvpxnJR59rUToZyXCd4P+KzDVAonx/Q1xsc=
+	t=1729507216; cv=none; b=fCv+xHyR9NWr0d6IDaZk2FVzdBWbqt38I0LD8i4BxYCz5leF379OuOALjFN8MuXSEkPyZJYsdfG89NcLYGF59udOp2Aaet82poOffX4XwmpenODTnv9z5cIgFws779c8jxqcZYoEJJso01Cy34cJ3B9p2LDPQC1DRPOyvOkBiBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507316; c=relaxed/simple;
-	bh=qspK7hCPLXW+pwQYd8wngaaqTnlSINgfSqbWAZMt84k=;
+	s=arc-20240116; t=1729507216; c=relaxed/simple;
+	bh=Efrk8ivpdQgvHFnCPkW+LkAkjUjlFSUJPhbEefwOg6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TGu+ermVytB0G7F5Q1qmOZTuTg6VYiqOnuaZs4k80JkXUo8Dj/qli8i334S6EDCLVFMUz/Z9mkEco/asMYAVh0TI68nJD9L2G7BQCXikCsqqM0WPx36q+1Tm3YG0tjtYnAktdvqR972oR5Sh0l2BZLnbYtZ2hJ6tIeim2veymo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GsA4YmaI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6101CC4CEC3;
-	Mon, 21 Oct 2024 10:41:55 +0000 (UTC)
+	 MIME-Version; b=Bs1dlQSs0YWvqF+vhzITR93txw9I+8hwlqiom7TnAiz+9/xbiegQ/itex5gC8YJIJtVBeDjFkp5LrwjVQ5fpSFpRFmsBhpF/pcdXET9BuLQDdKGflubbz857haFhx6jxXnjdo+C8mDlilK09Fs8pY/t+pqe4kXM+/hPqXjCHKSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DrFjEae3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1B4C4CEC3;
+	Mon, 21 Oct 2024 10:40:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507315;
-	bh=qspK7hCPLXW+pwQYd8wngaaqTnlSINgfSqbWAZMt84k=;
+	s=korg; t=1729507216;
+	bh=Efrk8ivpdQgvHFnCPkW+LkAkjUjlFSUJPhbEefwOg6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GsA4YmaIaoZquBxBhLktwuknfKshPRtAhzhecxyFHbcRnXpN0ygGchOGSSSCjRmjd
-	 bt4tqbjrdRlui1+Oiy4+vet0U8pB9RMGYuNcE04ROGvRYKd5Pndy1HNzLhKNAUH0kM
-	 VwnST+YnFTZBNkBRwbSoHCd31quCnp0Fv7oEaCGk=
+	b=DrFjEae3uw7lVDp5aKrdV0vm14LNgjS2LpJRWUCaecYhj0I8+xWRawc6MMeRCoZLa
+	 /26JQ+c/LgyM86VnaYY1Liaclnu8d+36mlwa5MH9wT5OrNZLRqqL2Y47w9wRLxCRDE
+	 Dol50iRSIqyni21xpqirrLHwukeAOn1v8AVTiTc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
-	Eric Anholt <eric@anholt.net>,
-	Rob Herring <robh@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	dri-devel@lists.freedesktop.org,
-	"Wachowski, Karol" <karol.wachowski@intel.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Sherry Yang <sherry.yang@oracle.com>
-Subject: [PATCH 6.1 37/91] drm/shmem-helper: Fix BUG_ON() on mmap(PROT_WRITE, MAP_PRIVATE)
+	Aaron Thompson <dev@aaront.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 087/124] Bluetooth: Call iso_exit() on module unload
 Date: Mon, 21 Oct 2024 12:24:51 +0200
-Message-ID: <20241021102251.270257207@linuxfoundation.org>
+Message-ID: <20241021102300.094930548@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,64 +59,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wachowski, Karol <karol.wachowski@intel.com>
+From: Aaron Thompson <dev@aaront.org>
 
-commit 39bc27bd688066a63e56f7f64ad34fae03fbe3b8 upstream.
+commit d458cd1221e9e56da3b2cc5518ad3225caa91f20 upstream.
 
-Lack of check for copy-on-write (COW) mapping in drm_gem_shmem_mmap
-allows users to call mmap with PROT_WRITE and MAP_PRIVATE flag
-causing a kernel panic due to BUG_ON in vmf_insert_pfn_prot:
-BUG_ON((vma->vm_flags & VM_PFNMAP) && is_cow_mapping(vma->vm_flags));
+If iso_init() has been called, iso_exit() must be called on module
+unload. Without that, the struct proto that iso_init() registered with
+proto_register() becomes invalid, which could cause unpredictable
+problems later. In my case, with CONFIG_LIST_HARDENED and
+CONFIG_BUG_ON_DATA_CORRUPTION enabled, loading the module again usually
+triggers this BUG():
 
-Return -EINVAL early if COW mapping is detected.
+  list_add corruption. next->prev should be prev (ffffffffb5355fd0),
+    but was 0000000000000068. (next=ffffffffc0a010d0).
+  ------------[ cut here ]------------
+  kernel BUG at lib/list_debug.c:29!
+  Oops: invalid opcode: 0000 [#1] PREEMPT SMP PTI
+  CPU: 1 PID: 4159 Comm: modprobe Not tainted 6.10.11-4+bt2-ao-desktop #1
+  RIP: 0010:__list_add_valid_or_report+0x61/0xa0
+  ...
+    __list_add_valid_or_report+0x61/0xa0
+    proto_register+0x299/0x320
+    hci_sock_init+0x16/0xc0 [bluetooth]
+    bt_init+0x68/0xd0 [bluetooth]
+    __pfx_bt_init+0x10/0x10 [bluetooth]
+    do_one_initcall+0x80/0x2f0
+    do_init_module+0x8b/0x230
+    __do_sys_init_module+0x15f/0x190
+    do_syscall_64+0x68/0x110
+  ...
 
-This bug affects all drm drivers using default shmem helpers.
-It can be reproduced by this simple example:
-void *ptr = mmap(0, size, PROT_WRITE, MAP_PRIVATE, fd, mmap_offset);
-ptr[0] = 0;
-
-Fixes: 2194a63a818d ("drm: Add library for shmem backed GEM objects")
-Cc: Noralf Trønnes <noralf@tronnes.org>
-Cc: Eric Anholt <eric@anholt.net>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v5.2+
-Signed-off-by: Wachowski, Karol <karol.wachowski@intel.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240520100514.925681-1-jacek.lawrynowicz@linux.intel.com
-[ Sherry: bp to fix CVE-2024-39497, ignore context change due to missing
-  commit 21aa27ddc582 ("drm/shmem-helper: Switch to reservation lock")  ]
-Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
+Cc: stable@vger.kernel.org
+Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
+Signed-off-by: Aaron Thompson <dev@aaront.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_gem_shmem_helper.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/bluetooth/af_bluetooth.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/drm_gem_shmem_helper.c
-+++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-@@ -638,6 +638,9 @@ int drm_gem_shmem_mmap(struct drm_gem_sh
- 		return ret;
- 	}
+--- a/net/bluetooth/af_bluetooth.c
++++ b/net/bluetooth/af_bluetooth.c
+@@ -830,6 +830,8 @@ cleanup_led:
  
-+	if (is_cow_mapping(vma->vm_flags))
-+		return -EINVAL;
+ static void __exit bt_exit(void)
+ {
++	iso_exit();
 +
- 	ret = drm_gem_shmem_get_pages(shmem);
- 	if (ret)
- 		return ret;
+ 	mgmt_exit();
+ 
+ 	sco_exit();
 
 
 
