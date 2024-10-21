@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-87203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3269F9A63B9
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:38:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 153A99A6307
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:30:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E298A281EAB
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F1ACB2603B
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F7A1E7677;
-	Mon, 21 Oct 2024 10:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7A81E5708;
+	Mon, 21 Oct 2024 10:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHilmQJw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gAUe6QR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7937A1E3776;
-	Mon, 21 Oct 2024 10:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37FF1E5707;
+	Mon, 21 Oct 2024 10:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506902; cv=none; b=cZsRQxgu8pzMIDjEMt1+KKAVYPxJLV8NEelewXDoW5ZiiWz565WSy3WEVRZr6oIH+6SjJ19Q52mMfyC5H/10IT4oWqDFAqMOhuqAQ4BUvms2LOuTDuvdWYbJYzGJKgqu8wgJJBuiZZnBszGdSytj3EEshc0+eMnh6VgPOFQRijY=
+	t=1729506584; cv=none; b=MDoFaVUenI3Qqj2jViZmMd4Qh9XUm7K/0WHzlu4Lj+FeVYTQrXNT1EoZmCaqp3lrj9iU/UlRDX86V9TBMUUpM3IwLwLVTnAFLpiUGT6HTKAh23+5lsuZfNAT6Wa3cfJWrPn84wfgoP+wEwCy7p5zO/ZfiijJyZr4Cy75iqsiK5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506902; c=relaxed/simple;
-	bh=yrvkvwO55Ug+OCbTXjr/YCKTRbYJPadHbjNWayMriz4=;
+	s=arc-20240116; t=1729506584; c=relaxed/simple;
+	bh=eB4XZ5RfZ4jhdeNLgCQntCSyR4wZYuq3+Lt6mHZtllM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jpy12rJPKtTv4Hyj4bANOrKe1zKHMB3VfZjuB4qnDW2TDjBkSstdMVQ0XSfqupWsXvUE3Kz87v6dHYwoD7aeDVCLNF1q2fulkhYQCazWcsf4A+uTn3qYMbOqcn3MdyUMbr4jH4MiQwSadsyuRGoHwh3+APK1IPtHxn4PDLdrwwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHilmQJw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED88FC4CEC3;
-	Mon, 21 Oct 2024 10:35:01 +0000 (UTC)
+	 MIME-Version; b=pa4y+fxoqbpfDrmjKdH4QptgNPhI6K40VP7QrpxV8F2ufePydNRdEFv4T4gDX454SF6KXqnEoMywWpgpFhn12XlxF0xCwS/mzusebXj1kJMxBbbcclu8WHs3UoHFJtuRAAjc6HJQRt5oiI9jR0mbR1H4Ngt1B3DL2PE62o+hGqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gAUe6QR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEEE6C4CEC3;
+	Mon, 21 Oct 2024 10:29:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506902;
-	bh=yrvkvwO55Ug+OCbTXjr/YCKTRbYJPadHbjNWayMriz4=;
+	s=korg; t=1729506584;
+	bh=eB4XZ5RfZ4jhdeNLgCQntCSyR4wZYuq3+Lt6mHZtllM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bHilmQJwchV9IwdDUybP+UFE51MQaB0rnTofqDmJqShp1oH8vpaXfJ7PeRiRIAf0N
-	 Yo21XcD9i4TBxsaRl8quzTv7bIv0fYm8mH+fwNrEUzroPfLNGb08+5LcWbYsreHXp/
-	 wHANVo/nQubdSRpj3BdtHJe9OvIz17vCfHlMLkP0=
+	b=2gAUe6QRx5rf2gRBcaJxTHo6GrCESlFY3rNmPesJbffr0X4qR12gAIA1BjUjwhtIi
+	 bAR7tXFHVlWwC+Da/HvmRO86U3KxKwBZkuj3fOg91Knz8giMoeQdE674XT4P8lJrS0
+	 ixkEMgE/aYE0FbU+MwgAmxCKKekXqHai5sIB3gn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 006/124] net: enetc: remove xdp_drops statistic from enetc_xdp_drop()
+	John Edwards <uejji@uejji.net>,
+	"Derek J. Clark" <derekjohn.clark@gmail.com>,
+	Christopher Snowhill <kode54@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.11 054/135] Input: xpad - add support for MSI Claw A1M
 Date: Mon, 21 Oct 2024 12:23:30 +0200
-Message-ID: <20241021102256.962844782@linuxfoundation.org>
+Message-ID: <20241021102301.443196293@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: John Edwards <uejji@uejji.net>
 
-commit 412950d5746f7aa139e14fe95338694c1f09b595 upstream.
+commit 22a18935d7d96bbb1a28076f843c1926d0ba189e upstream.
 
-The xdp_drops statistic indicates the number of XDP frames dropped in
-the Rx direction. However, enetc_xdp_drop() is also used in XDP_TX and
-XDP_REDIRECT actions. If frame loss occurs in these two actions, the
-frames loss count should not be included in xdp_drops, because there
-are already xdp_tx_drops and xdp_redirect_failures to count the frame
-loss of these two actions, so it's better to remove xdp_drops statistic
-from enetc_xdp_drop() and increase xdp_drops in XDP_DROP action.
+Add MSI Claw A1M controller to xpad_device match table when in xinput mode.
+Add MSI VID as XPAD_XBOX360_VENDOR.
 
-Fixes: 7ed2bc80074e ("net: enetc: add support for XDP_TX")
+Signed-off-by: John Edwards <uejji@uejji.net>
+Reviewed-by: Derek J. Clark <derekjohn.clark@gmail.com>
+Reviewed-by: Christopher Snowhill <kode54@gmail.com>
+Link: https://lore.kernel.org/r/20241010232020.3292284-4-uejji@uejji.net
 Cc: stable@vger.kernel.org
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20241010092056.298128-2-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/joystick/xpad.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -1524,7 +1524,6 @@ static void enetc_xdp_drop(struct enetc_
- 				  &rx_ring->rx_swbd[rx_ring_first]);
- 		enetc_bdr_idx_inc(rx_ring, &rx_ring_first);
- 	}
--	rx_ring->stats.xdp_drops++;
- }
- 
- static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
-@@ -1589,6 +1588,7 @@ static int enetc_clean_rx_ring_xdp(struc
- 			fallthrough;
- 		case XDP_DROP:
- 			enetc_xdp_drop(rx_ring, orig_i, i);
-+			rx_ring->stats.xdp_drops++;
- 			break;
- 		case XDP_PASS:
- 			rxbd = orig_rxbd;
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -218,6 +218,7 @@ static const struct xpad_device {
+ 	{ 0x0c12, 0x8810, "Zeroplus Xbox Controller", 0, XTYPE_XBOX },
+ 	{ 0x0c12, 0x9902, "HAMA VibraX - *FAULTY HARDWARE*", 0, XTYPE_XBOX },
+ 	{ 0x0d2f, 0x0002, "Andamiro Pump It Up pad", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX },
++	{ 0x0db0, 0x1901, "Micro Star International Xbox360 Controller for Windows", 0, XTYPE_XBOX360 },
+ 	{ 0x0e4c, 0x1097, "Radica Gamester Controller", 0, XTYPE_XBOX },
+ 	{ 0x0e4c, 0x1103, "Radica Gamester Reflex", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX },
+ 	{ 0x0e4c, 0x2390, "Radica Games Jtech Controller", 0, XTYPE_XBOX },
+@@ -493,6 +494,7 @@ static const struct usb_device_id xpad_t
+ 	XPAD_XBOX360_VENDOR(0x07ff),		/* Mad Catz Gamepad */
+ 	XPAD_XBOXONE_VENDOR(0x0b05),		/* ASUS controllers */
+ 	XPAD_XBOX360_VENDOR(0x0c12),		/* Zeroplus X-Box 360 controllers */
++	XPAD_XBOX360_VENDOR(0x0db0),		/* Micro Star International X-Box 360 controllers */
+ 	XPAD_XBOX360_VENDOR(0x0e6f),		/* 0x0e6f Xbox 360 controllers */
+ 	XPAD_XBOXONE_VENDOR(0x0e6f),		/* 0x0e6f Xbox One controllers */
+ 	XPAD_XBOX360_VENDOR(0x0f0d),		/* Hori controllers */
 
 
 
