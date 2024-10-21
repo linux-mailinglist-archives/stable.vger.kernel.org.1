@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-87184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF2E79A63A6
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:38:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7B0B9A6468
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:46:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 529DA1F22E30
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8447C2803FF
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:46:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB8F1EBFF7;
-	Mon, 21 Oct 2024 10:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE08E1F8EE1;
+	Mon, 21 Oct 2024 10:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K+CKwArX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V0qJc2lE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674CF1EABA0;
-	Mon, 21 Oct 2024 10:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B821EF0A3;
+	Mon, 21 Oct 2024 10:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506846; cv=none; b=YDIr/fgAM9ot/QjFbEL8oqUj6svwo/aG/HVxFDJsaJmfT3TNUVJCVjAtnBhf5IuaLwh5w6NPmOyAmX7a5PzOVKvemEY0JyNMEQYU9OVQtzMa25NBpLW4cchNZVIiq1pNwnQm/s9KYs0o5bsjJ6blDEt7AFX3qHK0PPAozhHgkfw=
+	t=1729507237; cv=none; b=ZIDQIyLszKamAv+kZIcrxWfHVgAKPOumfWTCL00sA6fVDHtYE5Hoz7hva4m2VG9CfteAQuXGOIdawTIF6nggZpty94W398o5X5tVT/q5vONbbPsSoRAj8EKvW7WJS4asAk+Dz6l4CAG+nm/qWXk4mZL4safRJ3P0aBlZeAbFJYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506846; c=relaxed/simple;
-	bh=a302S1Tis++lSNpjdL4hDm+E39alV284BmhnEm7r8+k=;
+	s=arc-20240116; t=1729507237; c=relaxed/simple;
+	bh=FbK2LTztNQXHAAQ3lym1w4HMSkQ8zTFrKpeosmSbRZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YGlhb5rQclsQuqVbxPAPYfpy+zG60+BW5GQeV6SV7lAoQ7EP6YRHAEuwjiv6snXvSUtr1/32fGAkUBAbgcgWqjP5zJWqFZ5EW7G92nF+pWI0s2nKjEzSwhw6WljXmFPMtdSHWSwQCmOB7jzRa3NcADjhtJg0pmrlgrXVgJHJWbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+CKwArX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08D3C4CEC7;
-	Mon, 21 Oct 2024 10:34:05 +0000 (UTC)
+	 MIME-Version; b=bn282x/Cmxv0vnGj9psf2fRpClbb6QHZ5ZIz8o76UfjmTARRa0Ui5Ymq+/Ckxp75nzrWZ2srMNGAroQd8TSHztMasLaD32LS5G2q875IkjuLmbOeTpy4LdW7tl5aMlAEgyHL39St/g4vs3xKwPNKoUkIKgQiZI3mpMS7F1m3yPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V0qJc2lE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21932C4CEE5;
+	Mon, 21 Oct 2024 10:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506846;
-	bh=a302S1Tis++lSNpjdL4hDm+E39alV284BmhnEm7r8+k=;
+	s=korg; t=1729507237;
+	bh=FbK2LTztNQXHAAQ3lym1w4HMSkQ8zTFrKpeosmSbRZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K+CKwArXrwyrujUMT7D2jW/rGx5fFudWgtkFuLt7VlqrOMTmzKH0XaPk7K0lM1EKc
-	 QsW07jXZSrHjrMfXC89WlRErbCKvdqIoPn8ZuigmVVDqpiLM2JnpwUCOw+ZtQYUSLo
-	 Y/blFU3dnFd+sXGU5e37+v/H8Tdlca54BbSHhklQ=
+	b=V0qJc2lE4a5ofNW5nFFwDqp9yx+QHrWSTJWiQX6FR7Fu8o7YxyUB3Ym+ByArk8JxW
+	 mpTRQDrwNtheL+5gpDRS5wu71UDvu+9v4JkQ0A8ksx6EdV9ni7FK5DCtize01wwfXH
+	 zJVdXx/JOrxcZ1db0YKtnFWIl/eKu3ZWtYktkkfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	Dhruva Gole <d-gole@ti.com>
-Subject: [PATCH 6.11 109/135] usb: dwc3: core: Fix system suspend on TI AM62 platforms
+	syzbot+0eaad3590d65102b9391@syzkaller.appspotmail.com,
+	syzbot+b7fc73213bc2361ab650@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 6.1 11/91] udf: Convert udf_rename() to new directory iteration code
 Date: Mon, 21 Oct 2024 12:24:25 +0200
-Message-ID: <20241021102303.590008452@linuxfoundation.org>
+Message-ID: <20241021102250.246849981@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +63,237 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roger Quadros <rogerq@kernel.org>
+From: Jan Kara <jack@suse.cz>
 
-commit 705e3ce37bccdf2ed6f848356ff355f480d51a91 upstream.
+[ Upstream commit e9109a92d2a95889498bed3719cd2318892171a2 ]
 
-Since commit 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init"),
-system suspend is broken on AM62 TI platforms.
+Convert udf_rename() to use new directory iteration code.
 
-Before that commit, both DWC3_GUSB3PIPECTL_SUSPHY and DWC3_GUSB2PHYCFG_SUSPHY
-bits (hence forth called 2 SUSPHY bits) were being set during core
-initialization and even during core re-initialization after a system
-suspend/resume.
-
-These bits are required to be set for system suspend/resume to work correctly
-on AM62 platforms.
-
-Since that commit, the 2 SUSPHY bits are not set for DEVICE/OTG mode if gadget
-driver is not loaded and started.
-For Host mode, the 2 SUSPHY bits are set before the first system suspend but
-get cleared at system resume during core re-init and are never set again.
-
-This patch resovles these two issues by ensuring the 2 SUSPHY bits are set
-before system suspend and restored to the original state during system resume.
-
-Cc: stable@vger.kernel.org # v6.9+
-Fixes: 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init")
-Link: https://lore.kernel.org/all/1519dbe7-73b6-4afc-bfe3-23f4f75d772f@kernel.org/
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Tested-by: Markus Schneider-Pargmann <msp@baylibre.com>
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Link: https://lore.kernel.org/r/20241011-am62-lpm-usb-v3-1-562d445625b5@kernel.org
+Reported-by: syzbot+0eaad3590d65102b9391@syzkaller.appspotmail.com
+Reported-by: syzbot+b7fc73213bc2361ab650@syzkaller.appspotmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+[cascardo: remove the call to udf_rename_tag per commit
+ 27ab33854873 ("udf: Fix bogus checksum computation in udf_rename()")]
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c |   19 +++++++++++++++++++
- drivers/usb/dwc3/core.h |    3 +++
- 2 files changed, 22 insertions(+)
+ fs/udf/namei.c |  166 ++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 78 insertions(+), 88 deletions(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -2342,6 +2342,11 @@ static int dwc3_suspend_common(struct dw
- 	u32 reg;
- 	int i;
+--- a/fs/udf/namei.c
++++ b/fs/udf/namei.c
+@@ -1238,78 +1238,68 @@ static int udf_rename(struct user_namesp
+ {
+ 	struct inode *old_inode = d_inode(old_dentry);
+ 	struct inode *new_inode = d_inode(new_dentry);
+-	struct udf_fileident_bh ofibh, nfibh;
+-	struct fileIdentDesc *ofi = NULL, *nfi = NULL, *dir_fi = NULL;
+-	struct fileIdentDesc ocfi, ncfi;
+-	struct buffer_head *dir_bh = NULL;
+-	int retval = -ENOENT;
++	struct udf_fileident_iter oiter, niter, diriter;
++	bool has_diriter = false;
++	int retval;
+ 	struct kernel_lb_addr tloc;
+-	struct udf_inode_info *old_iinfo = UDF_I(old_inode);
  
-+	dwc->susphy_state = (dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
-+			    DWC3_GUSB2PHYCFG_SUSPHY) ||
-+			    (dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0)) &
-+			    DWC3_GUSB3PIPECTL_SUSPHY);
+ 	if (flags & ~RENAME_NOREPLACE)
+ 		return -EINVAL;
+ 
+-	ofi = udf_find_entry(old_dir, &old_dentry->d_name, &ofibh, &ocfi);
+-	if (!ofi || IS_ERR(ofi)) {
+-		if (IS_ERR(ofi))
+-			retval = PTR_ERR(ofi);
+-		goto end_rename;
+-	}
+-
+-	if (ofibh.sbh != ofibh.ebh)
+-		brelse(ofibh.ebh);
+-
+-	brelse(ofibh.sbh);
+-	tloc = lelb_to_cpu(ocfi.icb.extLocation);
+-	if (udf_get_lb_pblock(old_dir->i_sb, &tloc, 0) != old_inode->i_ino)
+-		goto end_rename;
+-
+-	nfi = udf_find_entry(new_dir, &new_dentry->d_name, &nfibh, &ncfi);
+-	if (IS_ERR(nfi)) {
+-		retval = PTR_ERR(nfi);
+-		goto end_rename;
+-	}
+-	if (nfi && !new_inode) {
+-		if (nfibh.sbh != nfibh.ebh)
+-			brelse(nfibh.ebh);
+-		brelse(nfibh.sbh);
+-		nfi = NULL;
++	retval = udf_fiiter_find_entry(old_dir, &old_dentry->d_name, &oiter);
++	if (retval)
++		return retval;
 +
- 	switch (dwc->current_dr_role) {
- 	case DWC3_GCTL_PRTCAP_DEVICE:
- 		if (pm_runtime_suspended(dwc->dev))
-@@ -2393,6 +2398,15 @@ static int dwc3_suspend_common(struct dw
- 		break;
++	tloc = lelb_to_cpu(oiter.fi.icb.extLocation);
++	if (udf_get_lb_pblock(old_dir->i_sb, &tloc, 0) != old_inode->i_ino) {
++		retval = -ENOENT;
++		goto out_oiter;
+ 	}
+-	if (S_ISDIR(old_inode->i_mode)) {
+-		int offset = udf_ext0_offset(old_inode);
+ 
++	if (S_ISDIR(old_inode->i_mode)) {
+ 		if (new_inode) {
+ 			retval = -ENOTEMPTY;
+ 			if (!empty_dir(new_inode))
+-				goto end_rename;
++				goto out_oiter;
+ 		}
+-		retval = -EIO;
+-		if (old_iinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB) {
+-			dir_fi = udf_get_fileident(
+-					old_iinfo->i_data -
+-					  (old_iinfo->i_efe ?
+-					   sizeof(struct extendedFileEntry) :
+-					   sizeof(struct fileEntry)),
+-					old_inode->i_sb->s_blocksize, &offset);
+-		} else {
+-			dir_bh = udf_bread(old_inode, 0, 0, &retval);
+-			if (!dir_bh)
+-				goto end_rename;
+-			dir_fi = udf_get_fileident(dir_bh->b_data,
+-					old_inode->i_sb->s_blocksize, &offset);
++		retval = udf_fiiter_find_entry(old_inode, &dotdot_name,
++					       &diriter);
++		if (retval == -ENOENT) {
++			udf_err(old_inode->i_sb,
++				"directory (ino %lu) has no '..' entry\n",
++				old_inode->i_ino);
++			retval = -EFSCORRUPTED;
+ 		}
+-		if (!dir_fi)
+-			goto end_rename;
+-		tloc = lelb_to_cpu(dir_fi->icb.extLocation);
++		if (retval)
++			goto out_oiter;
++		has_diriter = true;
++		tloc = lelb_to_cpu(diriter.fi.icb.extLocation);
+ 		if (udf_get_lb_pblock(old_inode->i_sb, &tloc, 0) !=
+-				old_dir->i_ino)
+-			goto end_rename;
++				old_dir->i_ino) {
++			retval = -EFSCORRUPTED;
++			udf_err(old_inode->i_sb,
++				"directory (ino %lu) has parent entry pointing to another inode (%lu != %u)\n",
++				old_inode->i_ino, old_dir->i_ino,
++				udf_get_lb_pblock(old_inode->i_sb, &tloc, 0));
++			goto out_oiter;
++		}
+ 	}
+-	if (!nfi) {
+-		nfi = udf_add_entry(new_dir, new_dentry, &nfibh, &ncfi,
+-				    &retval);
+-		if (!nfi)
+-			goto end_rename;
++
++	retval = udf_fiiter_find_entry(new_dir, &new_dentry->d_name, &niter);
++	if (retval && retval != -ENOENT)
++		goto out_oiter;
++	/* Entry found but not passed by VFS? */
++	if (!retval && !new_inode) {
++		retval = -EFSCORRUPTED;
++		udf_fiiter_release(&niter);
++		goto out_oiter;
++	}
++	/* Entry not found? Need to add one... */
++	if (retval) {
++		udf_fiiter_release(&niter);
++		retval = udf_fiiter_add_entry(new_dir, new_dentry, &niter);
++		if (retval)
++			goto out_oiter;
  	}
  
-+	if (!PMSG_IS_AUTO(msg)) {
-+		/*
-+		 * TI AM62 platform requires SUSPHY to be
-+		 * enabled for system suspend to work.
-+		 */
-+		if (!dwc->susphy_state)
-+			dwc3_enable_susphy(dwc, true);
-+	}
+ 	/*
+@@ -1322,14 +1312,26 @@ static int udf_rename(struct user_namesp
+ 	/*
+ 	 * ok, that's it
+ 	 */
+-	ncfi.fileVersionNum = ocfi.fileVersionNum;
+-	ncfi.fileCharacteristics = ocfi.fileCharacteristics;
+-	memcpy(&(ncfi.icb), &(ocfi.icb), sizeof(ocfi.icb));
+-	udf_write_fi(new_dir, &ncfi, nfi, &nfibh, NULL, NULL);
+-
+-	/* The old fid may have moved - find it again */
+-	ofi = udf_find_entry(old_dir, &old_dentry->d_name, &ofibh, &ocfi);
+-	udf_delete_entry(old_dir, ofi, &ofibh, &ocfi);
++	niter.fi.fileVersionNum = oiter.fi.fileVersionNum;
++	niter.fi.fileCharacteristics = oiter.fi.fileCharacteristics;
++	memcpy(&(niter.fi.icb), &(oiter.fi.icb), sizeof(oiter.fi.icb));
++	udf_fiiter_write_fi(&niter, NULL);
++	udf_fiiter_release(&niter);
 +
- 	return 0;
- }
++	/*
++	 * The old entry may have moved due to new entry allocation. Find it
++	 * again.
++	 */
++	udf_fiiter_release(&oiter);
++	retval = udf_fiiter_find_entry(old_dir, &old_dentry->d_name, &oiter);
++	if (retval) {
++		udf_err(old_dir->i_sb,
++			"failed to find renamed entry again in directory (ino %lu)\n",
++			old_dir->i_ino);
++	} else {
++		udf_fiiter_delete_entry(&oiter);
++		udf_fiiter_release(&oiter);
++	}
  
-@@ -2460,6 +2474,11 @@ static int dwc3_resume_common(struct dwc
- 		break;
+ 	if (new_inode) {
+ 		new_inode->i_ctime = current_time(new_inode);
+@@ -1340,12 +1342,11 @@ static int udf_rename(struct user_namesp
+ 	mark_inode_dirty(old_dir);
+ 	mark_inode_dirty(new_dir);
+ 
+-	if (dir_fi) {
+-		dir_fi->icb.extLocation = cpu_to_lelb(UDF_I(new_dir)->i_location);
+-		if (old_iinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB)
+-			mark_inode_dirty(old_inode);
+-		else
+-			mark_buffer_dirty_inode(dir_bh, old_inode);
++	if (has_diriter) {
++		diriter.fi.icb.extLocation =
++					cpu_to_lelb(UDF_I(new_dir)->i_location);
++		udf_fiiter_write_fi(&diriter, NULL);
++		udf_fiiter_release(&diriter);
+ 
+ 		inode_dec_link_count(old_dir);
+ 		if (new_inode)
+@@ -1355,22 +1356,11 @@ static int udf_rename(struct user_namesp
+ 			mark_inode_dirty(new_dir);
+ 		}
  	}
+-
+-	if (ofi) {
+-		if (ofibh.sbh != ofibh.ebh)
+-			brelse(ofibh.ebh);
+-		brelse(ofibh.sbh);
+-	}
+-
+-	retval = 0;
+-
+-end_rename:
+-	brelse(dir_bh);
+-	if (nfi) {
+-		if (nfibh.sbh != nfibh.ebh)
+-			brelse(nfibh.ebh);
+-		brelse(nfibh.sbh);
+-	}
++	return 0;
++out_oiter:
++	if (has_diriter)
++		udf_fiiter_release(&diriter);
++	udf_fiiter_release(&oiter);
  
-+	if (!PMSG_IS_AUTO(msg)) {
-+		/* restore SUSPHY state to that before system suspend. */
-+		dwc3_enable_susphy(dwc, dwc->susphy_state);
-+	}
-+
- 	return 0;
+ 	return retval;
  }
- 
---- a/drivers/usb/dwc3/core.h
-+++ b/drivers/usb/dwc3/core.h
-@@ -1150,6 +1150,8 @@ struct dwc3_scratchpad_array {
-  * @sys_wakeup: set if the device may do system wakeup.
-  * @wakeup_configured: set if the device is configured for remote wakeup.
-  * @suspended: set to track suspend event due to U3/L2.
-+ * @susphy_state: state of DWC3_GUSB2PHYCFG_SUSPHY + DWC3_GUSB3PIPECTL_SUSPHY
-+ *		  before PM suspend.
-  * @imod_interval: set the interrupt moderation interval in 250ns
-  *			increments or 0 to disable.
-  * @max_cfg_eps: current max number of IN eps used across all USB configs.
-@@ -1382,6 +1384,7 @@ struct dwc3 {
- 	unsigned		sys_wakeup:1;
- 	unsigned		wakeup_configured:1;
- 	unsigned		suspended:1;
-+	unsigned		susphy_state:1;
- 
- 	u16			imod_interval;
- 
 
 
 
