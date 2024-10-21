@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-87256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D7B9A641B
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:43:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52A639A649A
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:48:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABA6F281F80
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8153D1C21BD5
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A1171F427F;
-	Mon, 21 Oct 2024 10:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A82B51F130A;
+	Mon, 21 Oct 2024 10:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rLogsZvm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ep9ckNw2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4111F4279;
-	Mon, 21 Oct 2024 10:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548CE1F76D0;
+	Mon, 21 Oct 2024 10:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507061; cv=none; b=B9xY5FpuRMk7HVNwKwyoEVbj7G2kA7l/kCjMPnvGP5S28GbSIrhgMqf5Uuw6O3pAt9rwYHc4j5yrN0AtICgnf9R/a/b5dTbTcteb6oLkpukgf3GwLHv6/lrQ2eW4AI7I2vkmlj+disug42m080V115EJEJFPaG6YqA/khowz4TA=
+	t=1729507379; cv=none; b=RcUen5ZS/o16mA0n9WoNtVQul9+G7r/xyvyUJVdcAWa61i0dGvWB49SwfjFD1KXRJU8iBKkisPPrU87ZW6EuBlwuka67JSpkt/xnoVrWkoLbLA2q/MeSMx9cfpjMCNP+BFLloNTs66TLyyzzdfxV6Ok0Hs4O5OvRBbJMsolBNbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507061; c=relaxed/simple;
-	bh=h3vSOnfTvsWZ42kD+72wp4L9LNOENvP+zXvyC2VbuQs=;
+	s=arc-20240116; t=1729507379; c=relaxed/simple;
+	bh=p2L/RJAcczu6SRVRkud4QeaSvh5mzxO/s+npFoA3VHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T0lve7Mv0LmC/XA461SPkC+7UBl5UBIKkARlJkysrVHzc+cnofmvrDgToZD0px0Y++fPO4k/lA9UH9noF3fV3/Aninpg9+ni3XX1WnfwaTwS0cK42iqMumDpoBg9lIzIxo6q2s15tIjImRiuh+6kfVRPSh831gJfXWU39+g3ipg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLogsZvm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C53BEC4CEC3;
-	Mon, 21 Oct 2024 10:37:40 +0000 (UTC)
+	 MIME-Version; b=hlI0NALTFNpVHmL5M4nbJczKbNPd3LkBgVioDQISBANWJq/pAlYmLNXvqwiYLxAtAX5MQ4pXWhmBnF3bDPJpzZBnyHvjvfX1OVOXxQSAjXW4g6NFo9hIQt3iYr+/vhkT/NjZSHi0Fpvtmnb1jXCclHCntARGEnAj8qR6LTuVS8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ep9ckNw2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8091C4CEC3;
+	Mon, 21 Oct 2024 10:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507061;
-	bh=h3vSOnfTvsWZ42kD+72wp4L9LNOENvP+zXvyC2VbuQs=;
+	s=korg; t=1729507379;
+	bh=p2L/RJAcczu6SRVRkud4QeaSvh5mzxO/s+npFoA3VHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rLogsZvmxghLFBSpKBzl3I2LhMd9JSNTXzLXORQACnQScIIcNfn/8fVFr6TJo/X5W
-	 weUlvuKN6nJx4X8SlYJKnD45/VtkRuKlmtVSmC10in92WXBRqT4DexTXdkWBHGekEF
-	 frg8XeensHpkl57kuamQEw/4Y8SmX1tLz+bSwFYM=
+	b=ep9ckNw2s+cKjzihEOasSPD5s3+phrummPbOe4PwLYgeoC6+2y1CvnCHJnLR9JZ1A
+	 Y0wSrsOCKViOMya2TsHP0d06VOukRg+SaeGs2PMgOCd/9xcTLIuzlav78QDyGEuB6z
+	 uB3ps8wm4lHOssra9UfmhMy5l0rPOqGt60rcNb3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 076/124] iio: light: veml6030: fix IIO device retrieval from embedded device
+	kernel test robot <lkp@intel.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 26/91] net: enetc: add missing static descriptor and inline keyword
 Date: Mon, 21 Oct 2024 12:24:40 +0200
-Message-ID: <20241021102259.672820401@linuxfoundation.org>
+Message-ID: <20241021102250.846094217@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit c7c44e57750c31de43906d97813273fdffcf7d02 upstream.
+commit 1d7b2ce43d2c22a21dadaf689cb36a69570346a6 upstream.
 
-The dev pointer that is received as an argument in the
-in_illuminance_period_available_show function references the device
-embedded in the IIO device, not in the i2c client.
+Fix the build warnings when CONFIG_FSL_ENETC_MDIO is not enabled.
+The detailed warnings are shown as follows.
 
-dev_to_iio_dev() must be used to accessthe right data. The current
-implementation leads to a segmentation fault on every attempt to read
-the attribute because indio_dev gets a NULL assignment.
+include/linux/fsl/enetc_mdio.h:62:18: warning: no previous prototype for function 'enetc_hw_alloc' [-Wmissing-prototypes]
+      62 | struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
+         |                  ^
+include/linux/fsl/enetc_mdio.h:62:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+      62 | struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
+         | ^
+         | static
+8 warnings generated.
 
-This bug has been present since the first appearance of the driver,
-apparently since the last version (V6) before getting applied. A
-constant attribute was used until then, and the last modifications might
-have not been tested again.
-
+Fixes: 6517798dd343 ("enetc: Make MDIO accessors more generic and export to include/linux/fsl")
 Cc: stable@vger.kernel.org
-Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light sensor")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20240913-veml6035-v1-3-0b09c0c90418@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202410102136.jQHZOcS4-lkp@intel.com/
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20241011030103.392362-1-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/veml6030.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ include/linux/fsl/enetc_mdio.h |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/light/veml6030.c
-+++ b/drivers/iio/light/veml6030.c
-@@ -99,9 +99,8 @@ static const char * const period_values[
- static ssize_t in_illuminance_period_available_show(struct device *dev,
- 				struct device_attribute *attr, char *buf)
- {
-+	struct veml6030_data *data = iio_priv(dev_to_iio_dev(dev));
- 	int ret, reg, x;
--	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
--	struct veml6030_data *data = iio_priv(indio_dev);
+--- a/include/linux/fsl/enetc_mdio.h
++++ b/include/linux/fsl/enetc_mdio.h
+@@ -48,7 +48,8 @@ static inline int enetc_mdio_read(struct
+ static inline int enetc_mdio_write(struct mii_bus *bus, int phy_id, int regnum,
+ 				   u16 value)
+ { return -EINVAL; }
+-struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
++static inline struct enetc_hw *enetc_hw_alloc(struct device *dev,
++					      void __iomem *port_regs)
+ { return ERR_PTR(-EINVAL); }
  
- 	ret = regmap_read(data->regmap, VEML6030_REG_ALS_CONF, &reg);
- 	if (ret) {
+ #endif
 
 
 
