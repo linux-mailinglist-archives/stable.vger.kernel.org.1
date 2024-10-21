@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-87263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 595869A6420
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:43:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A99F9A65C1
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:02:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B5B4281D3A
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6796B2B357
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CAC91EABCA;
-	Mon, 21 Oct 2024 10:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A4AE1EABC4;
+	Mon, 21 Oct 2024 10:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdpuWVa3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TM4Rb0oT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FEAC1EABC2;
-	Mon, 21 Oct 2024 10:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531BB1E3DDB;
+	Mon, 21 Oct 2024 10:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507082; cv=none; b=a8VuOROscfDqaWzq6WeV2p7jFkpMUKZJ4WRPO6h+mOLEFMlZqCAlhyn8e5EkWdQwCs/S6JPYgIdbKVPY3hBTuD9bdXeaJwdQGK82FMdEh/V1v4AVtS7m+Dx9hvFcz4/T8GHsuWj0pbSs1vgjRfMJzxZQ1ZzqnnjDAJhQDBWSiqY=
+	t=1729507283; cv=none; b=eSRH0V1eEgGwVob/5ANzQbZag5nQHkZbzL/vZyiJ5Lq2jmr/fj6ZgZG3Ai8uuZycpGeVPgkoTrGKL/I8xBnB4jh9sDOAYmvD6UZbo61l072/96HEflcjvWIiu9SH6Xgt+yAa60UhEBXZjpF5XFZ36uGt2hobxVaAtbBq3qNxMs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507082; c=relaxed/simple;
-	bh=z53ixMWgP8bMju39fXrBd6PA9+5K5coV2eTSNL3Reic=;
+	s=arc-20240116; t=1729507283; c=relaxed/simple;
+	bh=n94q1iy6Gljp5J/aK6yLjaG02vJYepPizPJQssF6pkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iOOWLUfw7zLucL9/0XSzJCXsX96IhLzgjPRAepFHTwSprQcL1XW5EcA3inU5EL5P4loQEMO+H30Au/DizUSS5aEDFoG/mkQVOYu2P2cy5m6sd3q5VULLo/bdw0TuxXHIXs26S14JhDqw3fKdxGeetUjfGUuuA0cwTqN6Brg7F/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdpuWVa3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8191DC4CEC3;
-	Mon, 21 Oct 2024 10:38:01 +0000 (UTC)
+	 MIME-Version; b=RUl2I3FNRjr3ibuyURaaHrCwqMSrFyEgHm0h3o9nUzMx2gmFKDPjvN+viHnpAlkQ8q0H0lijrv3KU0ZSv/pAR+ZjkXG0EQsD1m29Nix08H8IkRK/BDOK9LT8Bsj51fbJeIabVL3v3rxzue/KLPeoL0NPgIEy3YyigXmshvuXazw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TM4Rb0oT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8880FC4CEC3;
+	Mon, 21 Oct 2024 10:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507081;
-	bh=z53ixMWgP8bMju39fXrBd6PA9+5K5coV2eTSNL3Reic=;
+	s=korg; t=1729507282;
+	bh=n94q1iy6Gljp5J/aK6yLjaG02vJYepPizPJQssF6pkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RdpuWVa3nXzU6NwvzF6WP2NLMUTm8juEKCLAj8C5mn8Ypb78pSNj9G7Mj9imUZuyw
-	 xIDdffNgnbjkIQVlZUr8NF+NgqlwlgAFID1WBsYB7VDVAnM4XxFd5XLlXRycqoU6L6
-	 WD1aqdqBsgo48mWXH57aFIteKXATEWpTRCFukVUs=
+	b=TM4Rb0oT/xh1Re6+SH81a9GzR14FOvlHHWpS32KJmu1B0HlGBNjIQraWO6v4kEmZO
+	 52KxOxTtcj9qHyTBBlOHv50Y4flY1aL5HKkh4yHSTf0vp5JGGskNOe+oUCkamCwFMW
+	 bICe+mm0o67OY/wfMaqMga2UOBhdhaysS426Zh28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Wikner <kwikner@ethz.ch>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org
-Subject: [PATCH 6.6 056/124] x86/entry: Have entry_ibpb() invalidate return predictions
-Date: Mon, 21 Oct 2024 12:24:20 +0200
-Message-ID: <20241021102258.901468716@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 6.1 07/91] udf: Convert udf_expand_dir_adinicb() to new directory iteration
+Date: Mon, 21 Oct 2024 12:24:21 +0200
+Message-ID: <20241021102250.085795676@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Wikner <kwikner@ethz.ch>
+From: Jan Kara <jack@suse.cz>
 
-commit 50e4b3b94090babe8d4bb85c95f0d3e6b07ea86e upstream.
+[ Upstream commit 57bda9fb169d689bff4108265a897d324b5fb8c3 ]
 
-entry_ibpb() should invalidate all indirect predictions, including return
-target predictions. Not all IBPB implementations do this, in which case the
-fallback is RSB filling.
+Convert udf_expand_dir_adinicb() to new directory iteration code.
 
-Prevent SRSO-style hijacks of return predictions following IBPB, as the return
-target predictor can be corrupted before the IBPB completes.
-
-  [ bp: Massage. ]
-
-Signed-off-by: Johannes Wikner <kwikner@ethz.ch>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/entry/entry.S |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/udf/inode.c |   66 +++++++++++++++++++++++++--------------------------------
+ 1 file changed, 29 insertions(+), 37 deletions(-)
 
---- a/arch/x86/entry/entry.S
-+++ b/arch/x86/entry/entry.S
-@@ -9,6 +9,8 @@
- #include <asm/unwind_hints.h>
- #include <asm/segment.h>
- #include <asm/cache.h>
-+#include <asm/cpufeatures.h>
-+#include <asm/nospec-branch.h>
+--- a/fs/udf/inode.c
++++ b/fs/udf/inode.c
+@@ -331,14 +331,12 @@ struct buffer_head *udf_expand_dir_adini
+ 	udf_pblk_t newblock;
+ 	struct buffer_head *dbh = NULL;
+ 	struct kernel_lb_addr eloc;
+-	uint8_t alloctype;
+ 	struct extent_position epos;
+-
+-	struct udf_fileident_bh sfibh, dfibh;
+-	loff_t f_pos = udf_ext0_offset(inode);
+-	int size = udf_ext0_offset(inode) + inode->i_size;
+-	struct fileIdentDesc cfi, *sfi, *dfi;
++	uint8_t alloctype;
+ 	struct udf_inode_info *iinfo = UDF_I(inode);
++	struct udf_fileident_iter iter;
++	uint8_t *impuse;
++	int ret;
  
- .pushsection .noinstr.text, "ax"
+ 	if (UDF_QUERY_FLAG(inode->i_sb, UDF_FLAG_USE_SHORT_AD))
+ 		alloctype = ICBTAG_FLAG_AD_SHORT;
+@@ -366,38 +364,14 @@ struct buffer_head *udf_expand_dir_adini
+ 	if (!dbh)
+ 		return NULL;
+ 	lock_buffer(dbh);
+-	memset(dbh->b_data, 0x00, inode->i_sb->s_blocksize);
++	memcpy(dbh->b_data, iinfo->i_data, inode->i_size);
++	memset(dbh->b_data + inode->i_size, 0,
++	       inode->i_sb->s_blocksize - inode->i_size);
+ 	set_buffer_uptodate(dbh);
+ 	unlock_buffer(dbh);
+-	mark_buffer_dirty_inode(dbh, inode);
+-
+-	sfibh.soffset = sfibh.eoffset =
+-			f_pos & (inode->i_sb->s_blocksize - 1);
+-	sfibh.sbh = sfibh.ebh = NULL;
+-	dfibh.soffset = dfibh.eoffset = 0;
+-	dfibh.sbh = dfibh.ebh = dbh;
+-	while (f_pos < size) {
+-		iinfo->i_alloc_type = ICBTAG_FLAG_AD_IN_ICB;
+-		sfi = udf_fileident_read(inode, &f_pos, &sfibh, &cfi, NULL,
+-					 NULL, NULL, NULL);
+-		if (!sfi) {
+-			brelse(dbh);
+-			return NULL;
+-		}
+-		iinfo->i_alloc_type = alloctype;
+-		sfi->descTag.tagLocation = cpu_to_le32(*block);
+-		dfibh.soffset = dfibh.eoffset;
+-		dfibh.eoffset += (sfibh.eoffset - sfibh.soffset);
+-		dfi = (struct fileIdentDesc *)(dbh->b_data + dfibh.soffset);
+-		if (udf_write_fi(inode, sfi, dfi, &dfibh, sfi->impUse,
+-				 udf_get_fi_ident(sfi))) {
+-			iinfo->i_alloc_type = ICBTAG_FLAG_AD_IN_ICB;
+-			brelse(dbh);
+-			return NULL;
+-		}
+-	}
+-	mark_buffer_dirty_inode(dbh, inode);
  
-@@ -17,6 +19,9 @@ SYM_FUNC_START(entry_ibpb)
- 	movl	$PRED_CMD_IBPB, %eax
- 	xorl	%edx, %edx
- 	wrmsr
++	/* Drop inline data, add block instead */
++	iinfo->i_alloc_type = alloctype;
+ 	memset(iinfo->i_data + iinfo->i_lenEAttr, 0, iinfo->i_lenAlloc);
+ 	iinfo->i_lenAlloc = 0;
+ 	eloc.logicalBlockNum = *block;
+@@ -408,10 +382,28 @@ struct buffer_head *udf_expand_dir_adini
+ 	epos.block = iinfo->i_location;
+ 	epos.offset = udf_file_entry_alloc_offset(inode);
+ 	udf_add_aext(inode, &epos, &eloc, inode->i_size, 0);
+-	/* UniqueID stuff */
+-
+ 	brelse(epos.bh);
+ 	mark_inode_dirty(inode);
 +
-+	/* Make sure IBPB clears return stack preductions too. */
-+	FILL_RETURN_BUFFER %rax, RSB_CLEAR_LOOPS, X86_BUG_IBPB_NO_RET
- 	RET
- SYM_FUNC_END(entry_ibpb)
- /* For KVM */
++	/* Now fixup tags in moved directory entries */
++	for (ret = udf_fiiter_init(&iter, inode, 0);
++	     !ret && iter.pos < inode->i_size;
++	     ret = udf_fiiter_advance(&iter)) {
++		iter.fi.descTag.tagLocation = cpu_to_le32(*block);
++		if (iter.fi.lengthOfImpUse != cpu_to_le16(0))
++			impuse = dbh->b_data + iter.pos +
++						sizeof(struct fileIdentDesc);
++		else
++			impuse = NULL;
++		udf_fiiter_write_fi(&iter, impuse);
++	}
++	/*
++	 * We don't expect the iteration to fail as the directory has been
++	 * already verified to be correct
++	 */
++	WARN_ON_ONCE(ret);
++	udf_fiiter_release(&iter);
++
+ 	return dbh;
+ }
+ 
 
 
 
