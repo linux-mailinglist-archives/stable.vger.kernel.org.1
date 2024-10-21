@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-87540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 268AE9A6585
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:57:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4399A6607
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:12:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC5FB283777
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:57:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13DE6B22748
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F0C1F4718;
-	Mon, 21 Oct 2024 10:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF191F8926;
+	Mon, 21 Oct 2024 10:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NQ+3xe8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N2q14hYg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2D41E47A6;
-	Mon, 21 Oct 2024 10:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767BF1EE02C;
+	Mon, 21 Oct 2024 10:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507909; cv=none; b=jTFU6YMgwLLFT9UkznosX2Tb2mHjWUZgS0wabybRHiefU2GB7+qqkldvRy+Pp2d9oUAxAkiqCN/2m4WoUcRVI8iy+HJ/EbVCWmMojI+O4Bl4sRkYupm8cFncJ0TgTmossCbcujKw+kfefv4jHDYQnEgc3Pk9PQo3Puv0u36Ktn0=
+	t=1729507831; cv=none; b=sMiJSlSKu7mI1o1j4oEJz8g3asR9pXfukuwBRNqLsAkt+7fp4lGxBU0Eymyo5oQ/oPB/uW4eTDL+aq7ZJtDwI5gssTHiWHrrzrFHSqPVCBqf+tPayGBOWUqvjvJlEQZIZn9dGc1QUndC+9A4bnPCVDY8z6N5S6oX/H9YEgEcNaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507909; c=relaxed/simple;
-	bh=ntf/Gl3+UB8ViOdNTold3aQMz0kLfJ/B+tNSmDi6G0M=;
+	s=arc-20240116; t=1729507831; c=relaxed/simple;
+	bh=YRJHjgsN/Sx+Cle5/IGC8B4viAYtL2JPDFvQVWjxuRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HfVxyyxaD6vtkJOapdeKmgCMRthMZWGGKTHnwnt25IJBi87adnKPmwu8yGQXd80rg6iagU244k8iWBzHadAH+wkJnVAW03IoLvl0Kbl4/ZAG8J+aEWuJ05ICPdwvT9iQzf/eS2rRBiKkJyWglAKKHjKf8UgEI8UMxQGQijE9wQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NQ+3xe8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A3E1C4CEC3;
-	Mon, 21 Oct 2024 10:51:48 +0000 (UTC)
+	 MIME-Version; b=YuUHxU0PdwGiq41yBoxrbQrlglIA0y8b4M9O1jmT/vKmDeGrNQ0P5xbsigejSW4b1BocDTzOOC2wLlcPdCkcQKrv2YCVL+Pyqc+L6nwur9jZHFxDhfGNl65tLOon4cAd2GbiZ6SJ6XAUm9kNxxz4MIb6pNeF6Gdtevpsiah8Vcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N2q14hYg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7C5C4CEC7;
+	Mon, 21 Oct 2024 10:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507908;
-	bh=ntf/Gl3+UB8ViOdNTold3aQMz0kLfJ/B+tNSmDi6G0M=;
+	s=korg; t=1729507831;
+	bh=YRJHjgsN/Sx+Cle5/IGC8B4viAYtL2JPDFvQVWjxuRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1NQ+3xe8KWv0HNYqzPTurk9/fgrMnk34IAhy6Zz0oWg8XT1DKDeStemQbfR8hJlmZ
-	 fPxHFMTcWB+Li2sdW6UetiYitKn3xZ+PKk1cf3uTAQGgZ75vrIxRfboqtPzKvTgH5c
-	 /mAEk5qFs0dcD5gq4/thkorPcenZGw359ENxaaXc=
+	b=N2q14hYgN2nqOZZQx7xciBBsKSCdNnK4lWOJFTscsSfINUOR/QQdEElEzBbt2EvD6
+	 0MXFmi4vfFS4ADqNjAZbjGsVbvKVlfPJK2rdHQcE9EmRdxi4OkaSnTg+El4YEB/Aqy
+	 bCNrlZOOka8JK69Q0oFOQj0Us41iL5xu8vJkdBho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emil Gedenryd <emil.gedenryd@axis.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
 	Stable@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 33/52] iio: light: opt3001: add missing full-scale range value
-Date: Mon, 21 Oct 2024 12:25:54 +0200
-Message-ID: <20241021102242.923423652@linuxfoundation.org>
+Subject: [PATCH 5.10 34/52] iio: proximity: mb1232: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+Date: Mon, 21 Oct 2024 12:25:55 +0200
+Message-ID: <20241021102242.962472352@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
 References: <20241021102241.624153108@linuxfoundation.org>
@@ -66,42 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Emil Gedenryd <emil.gedenryd@axis.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 530688e39c644543b71bdd9cb45fdfb458a28eaa upstream.
+commit 75461a0b15d7c026924d0001abce0476bbc7eda8 upstream.
 
-The opt3001 driver uses predetermined full-scale range values to
-determine what exponent to use for event trigger threshold values.
-The problem is that one of the values specified in the datasheet is
-missing from the implementation. This causes larger values to be
-scaled down to an incorrect exponent, effectively reducing the
-maximum settable threshold value by a factor of 2.
+This driver makes use of triggered buffers, but does not select the
+required modules.
 
-Add missing full-scale range array value.
+Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
 
-Fixes: 94a9b7b1809f ("iio: light: add support for TI's opt3001 light sensor")
-Signed-off-by: Emil Gedenryd <emil.gedenryd@axis.com>
+Fixes: 16b05261537e ("mb1232.c: add distance iio sensor with i2c")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241003-iio-select-v1-13-67c0385197cd@gmail.com
 Cc: <Stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240913-add_opt3002-v2-1-69e04f840360@axis.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/opt3001.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/iio/proximity/Kconfig |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/iio/light/opt3001.c
-+++ b/drivers/iio/light/opt3001.c
-@@ -139,6 +139,10 @@ static const struct opt3001_scale opt300
- 		.val2 = 400000,
- 	},
- 	{
-+		.val = 41932,
-+		.val2 = 800000,
-+	},
-+	{
- 		.val = 83865,
- 		.val2 = 600000,
- 	},
+--- a/drivers/iio/proximity/Kconfig
++++ b/drivers/iio/proximity/Kconfig
+@@ -49,6 +49,8 @@ config LIDAR_LITE_V2
+ config MB1232
+ 	tristate "MaxSonar I2CXL family ultrasonic sensors"
+ 	depends on I2C
++	select IIO_BUFFER
++	select IIO_TRIGGERED_BUFFER
+ 	help
+ 	  Say Y to build a driver for the ultrasonic sensors I2CXL of
+ 	  MaxBotix which have an i2c interface. It can be used to measure
 
 
 
