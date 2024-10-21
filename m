@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-87388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 850D59A64B3
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:49:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC11A9A6546
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:55:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 478C3281BF3
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:49:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 914671F21501
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:55:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99EA11E5705;
-	Mon, 21 Oct 2024 10:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB671E573C;
+	Mon, 21 Oct 2024 10:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ci1B3Hkm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ls0/Vd82"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FA11E491C;
-	Mon, 21 Oct 2024 10:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64511E571E;
+	Mon, 21 Oct 2024 10:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507457; cv=none; b=VrxuXAPAtMLDblcVwgYFjZ8GsmSp2dVUovYUVmUKd0cuHH1BIXkiqrsNrHvJcNG66m1VDGMX1t/G9g2ZLtbV7O6lDWyrxz7AYODKUw7KK8Vy5Ah8JLOF+XfMt6XL6vp26gGaCnfleyzB3dpMoW4W0IoqCOtGWoVu0DSSDvfQBkc=
+	t=1729507778; cv=none; b=N+AGXqvnvoBXUbBKeeoLLTkDeARL/xb08jlWhoBcN8OtaFFY25QzLtSM55UKIZSh/MVnbBynjaUKKJefxbU6MyU4mqg34XUTGKNgLA960cMDGC4ITguh990vl0soMpPDqYvKoR6bigY8l5xOtmxHxMLr/NnpbCvVe5T53cEVp0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507457; c=relaxed/simple;
-	bh=5SamZBCa/lztTNg2W7UUnUx7qrN70d/MMFVDjR6iOo8=;
+	s=arc-20240116; t=1729507778; c=relaxed/simple;
+	bh=TNHtu9IuOH5TBzq1yjSouuyriyPxHGEiFEAhnaUwlo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pdfp6DnVSI+hqe1pvIJ8tE0SH6P4lABTOJVIbKvjVjGMGHqghTt8ZbanRaktSFviPC3U2u4ezN0+lklAb90iMTmQT1WBfJjhjreEcWTe9WGIklvQxX04eVOzEHqUfx8dXna1Y+VsCr740y4iauaHTBbHZ2Dm/yooTG5KDrF6H7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ci1B3Hkm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C716AC4CEC3;
-	Mon, 21 Oct 2024 10:44:16 +0000 (UTC)
+	 MIME-Version; b=SOmiYU43BlybtLsTg044r2OsXlHdJrhJcgEdpnJzbECGySRWQwSUkb18tA3lwipiQt/LQsfEO1khnzkw6702vHxsPOoVwxmn7J/RRSJI9VBK7zg4czcdx+vzuZIErzCZjfej7820jHum2qfzpWj7jKFKEkMN5t2UVsa2fvh3j24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ls0/Vd82; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54A4FC4CEC3;
+	Mon, 21 Oct 2024 10:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507457;
-	bh=5SamZBCa/lztTNg2W7UUnUx7qrN70d/MMFVDjR6iOo8=;
+	s=korg; t=1729507777;
+	bh=TNHtu9IuOH5TBzq1yjSouuyriyPxHGEiFEAhnaUwlo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ci1B3HkmcOwrtuViADOOkPqTk1t1gaZRuWgF5g8WwdsQzR4LVeD8DlrU9ToIqHdie
-	 Odfda9Ad1SdGQ39Om6QnrMKzarcakU4e0zFW/v988t9AoBmFZah5iis7/Swj7fiuHR
-	 OHECpAbPC8KOQloE097qSjz5ko5dYwKC4K/oew9Q=
+	b=Ls0/Vd82bK+1ccOZvk3cURY4t2LlLEL0f5WTbnZk8qBWPs2Y+bOpPrC9WOnZ25g8c
+	 PSnLEcvppcegtB4FO5HGaNKYfldhchePFscLU85Hb1Y49AqxfLRmNJNNj6yc4MWGLt
+	 v/ffgjlVKuGNgD+IXNSjKeUM3vo9FzLEJJP8VQPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Matsievskiy <matsievskiysv@gmail.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.1 83/91] pinctrl: ocelot: fix system hang on level based interrupts
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Michael Mueller <mimu@linux.ibm.com>,
+	Nico Boehr <nrb@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>
+Subject: [PATCH 5.10 16/52] KVM: s390: Change virtual to physical address access in diag 0x258 handler
 Date: Mon, 21 Oct 2024 12:25:37 +0200
-Message-ID: <20241021102253.052984752@linuxfoundation.org>
+Message-ID: <20241021102242.262682530@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
+References: <20241021102241.624153108@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Matsievskiy <matsievskiysv@gmail.com>
+From: Michael Mueller <mimu@linux.ibm.com>
 
-commit 93b8ddc54507a227087c60a0013ed833b6ae7d3c upstream.
+commit cad4b3d4ab1f062708fff33f44d246853f51e966 upstream.
 
-The current implementation only calls chained_irq_enter() and
-chained_irq_exit() if it detects pending interrupts.
+The parameters for the diag 0x258 are real addresses, not virtual, but
+KVM was using them as virtual addresses. This only happened to work, since
+the Linux kernel as a guest used to have a 1:1 mapping for physical vs
+virtual addresses.
 
-```
-for (i = 0; i < info->stride; i++) {
-	uregmap_read(info->map, id_reg + 4 * i, &reg);
-	if (!reg)
-		continue;
-
-	chained_irq_enter(parent_chip, desc);
-```
-
-However, in case of GPIO pin configured in level mode and the parent
-controller configured in edge mode, GPIO interrupt might be lowered by the
-hardware. In the result, if the interrupt is short enough, the parent
-interrupt is still pending while the GPIO interrupt is cleared;
-chained_irq_enter() never gets called and the system hangs trying to
-service the parent interrupt.
-
-Moving chained_irq_enter() and chained_irq_exit() outside the for loop
-ensures that they are called even when GPIO interrupt is lowered by the
-hardware.
-
-The similar code with chained_irq_enter() / chained_irq_exit() functions
-wrapping interrupt checking loop may be found in many other drivers:
-```
-grep -r -A 10 chained_irq_enter drivers/pinctrl
-```
+Fix KVM so that it correctly uses the addresses as real addresses.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Sergey Matsievskiy <matsievskiysv@gmail.com>
-Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Link: https://lore.kernel.org/20241012105743.12450-2-matsievskiysv@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 8ae04b8f500b ("KVM: s390: Guest's memory access functions get access registers")
+Suggested-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Michael Mueller <mimu@linux.ibm.com>
+Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240917151904.74314-3-nrb@linux.ibm.com
+Acked-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-ocelot.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/s390/kvm/diag.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pinctrl/pinctrl-ocelot.c
-+++ b/drivers/pinctrl/pinctrl-ocelot.c
-@@ -1962,21 +1962,21 @@ static void ocelot_irq_handler(struct ir
- 	unsigned int reg = 0, irq, i;
- 	unsigned long irqs;
- 
-+	chained_irq_enter(parent_chip, desc);
-+
- 	for (i = 0; i < info->stride; i++) {
- 		regmap_read(info->map, id_reg + 4 * i, &reg);
- 		if (!reg)
- 			continue;
- 
--		chained_irq_enter(parent_chip, desc);
--
- 		irqs = reg;
- 
- 		for_each_set_bit(irq, &irqs,
- 				 min(32U, info->desc->npins - 32 * i))
- 			generic_handle_domain_irq(chip->irq.domain, irq + 32 * i);
--
--		chained_irq_exit(parent_chip, desc);
- 	}
-+
-+	chained_irq_exit(parent_chip, desc);
- }
- 
- static int ocelot_gpiochip_register(struct platform_device *pdev,
+--- a/arch/s390/kvm/diag.c
++++ b/arch/s390/kvm/diag.c
+@@ -77,7 +77,7 @@ static int __diag_page_ref_service(struc
+ 	vcpu->stat.diagnose_258++;
+ 	if (vcpu->run->s.regs.gprs[rx] & 7)
+ 		return kvm_s390_inject_program_int(vcpu, PGM_SPECIFICATION);
+-	rc = read_guest(vcpu, vcpu->run->s.regs.gprs[rx], rx, &parm, sizeof(parm));
++	rc = read_guest_real(vcpu, vcpu->run->s.regs.gprs[rx], &parm, sizeof(parm));
+ 	if (rc)
+ 		return kvm_s390_inject_prog_cond(vcpu, rc);
+ 	if (parm.parm_version != 2 || parm.parm_len < 5 || parm.code != 0x258)
 
 
 
