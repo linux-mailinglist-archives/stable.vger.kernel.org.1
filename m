@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-87489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB7829A6531
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:54:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93EA99A6550
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:56:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 249011C20ED7
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:54:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55898282CBC
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:56:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80EE11F131C;
-	Mon, 21 Oct 2024 10:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1294A1F429B;
+	Mon, 21 Oct 2024 10:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cuZxbB3v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1N4FMkbB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384D31E571E;
-	Mon, 21 Oct 2024 10:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF131EBFFD;
+	Mon, 21 Oct 2024 10:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507757; cv=none; b=cToE7QPCl7wlIgmq6GNWGur1EH5MMGU00LNJuKiV05Sy9mlOluXnMhXUJQ6/y7T2Cah8AYn+bSAiNbLHweS9oIqKViJ6Mc+pSOdCNswd4kVWP1thz/iDAHczuzpQFHY1LXVe4A1cjOoRGbrti5vZztfFV7XtqJ1fAyscgSI0EKo=
+	t=1729507789; cv=none; b=at6McaSnF6aPqm9d8V4qjDTonuBlfR0QV8fmYWbSaN3/ZgT6DzCwbQ0pv1YAOyfQgT9azp9VjJ+aH7Hqk+9Kh6nw0woHejCmR/0qU22mclcdNYh1UP17fyBWS0hIzejcy7jZvylJyQh+kkfbXWNX1k7J1wYwyVH1lRSqvZ1StDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507757; c=relaxed/simple;
-	bh=1Py+NPSB2XGxwaOe9rd6vsgwPwZdE+6ZDNhtHu0+CZU=;
+	s=arc-20240116; t=1729507789; c=relaxed/simple;
+	bh=zTO4buLTtD3E5uRN9jQnl3lN07Za5zkQD0TuX2bDcOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XILmOmq2+F1HbZQhxcmdQKptbAjbNY1O59t4cjJgCedxQ50z9CgppPPEN80zJ/Bnei4Vs/5BTzFY4YmaZv6Wc6pooaV3VaAwFC8G1Iw8bBU11QhczD2sCt/HpTJxa183/A1QrNrEWH+qY5zcbiUSZaYNP8eASIRjbyIOAckzcHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cuZxbB3v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B235AC4CEC3;
-	Mon, 21 Oct 2024 10:49:16 +0000 (UTC)
+	 MIME-Version; b=LGMmzcTQcXaatRpNxWSsd2lYNn+tv75+WsBN2bksqmaFFevBcDXdBHAaxN70EpNJBAicIZnu3ePN5vSjApHbm3lYGHS1ag+6+wvmeqyrVHCfdz8/fuuZBLamyohIImILDox9f2ouaGPp9XQQ5HnZuzUXPsjSOU/4u8/W1vBw4+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1N4FMkbB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41336C4CEC3;
+	Mon, 21 Oct 2024 10:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507757;
-	bh=1Py+NPSB2XGxwaOe9rd6vsgwPwZdE+6ZDNhtHu0+CZU=;
+	s=korg; t=1729507789;
+	bh=zTO4buLTtD3E5uRN9jQnl3lN07Za5zkQD0TuX2bDcOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cuZxbB3vlKt13S2hHR9+Bt/71lr34Hgqb5UDELg2kMV+TvFxkdb7/BtdeJ8TqDH2/
-	 W9xGn/x+P0MwhugrHSjTDk8Rqzh2p7Zf/lNPOV9SdYTKRzY5VdOgAZlMJzUcXb95v0
-	 AsBjwXzTZK6oXuW1NI7gweb8o0c4Y6JbmtWpfX+8=
+	b=1N4FMkbB9qtq0pdNdznotLLM8kXNVOjaGcsuvwf5qXNBMv9Bh00YPBwgLRLeiwmrn
+	 oGzgiDbbPSU1IlYQVUQC8s2J/iqAmMH1R9D/02G1/yGvJ01nZJwgqp+COEyCSMOjkh
+	 a8bFJcYCUSfUSNKwQ0o9mquUQ2X+aS4O41hhix60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 01/52] ALSA: hda/conexant - Fix audio routing for HP EliteOne 1000 G2
-Date: Mon, 21 Oct 2024 12:25:22 +0200
-Message-ID: <20241021102241.683668742@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 02/52] net: enetc: add missing static descriptor and inline keyword
+Date: Mon, 21 Oct 2024 12:25:23 +0200
+Message-ID: <20241021102241.721902328@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
 References: <20241021102241.624153108@linuxfoundation.org>
@@ -65,82 +68,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit 9988844c457f6f17fb2e75aa000b6c3b1b673bb9 upstream.
+commit 1d7b2ce43d2c22a21dadaf689cb36a69570346a6 upstream.
 
-There is a problem with simultaneous audio output to headphones and
-speakers, and when headphones are turned off, the speakers also turn
-off and do not turn them on.
+Fix the build warnings when CONFIG_FSL_ENETC_MDIO is not enabled.
+The detailed warnings are shown as follows.
 
-However, it was found that if you boot linux immediately after windows,
-there are no such problems. When comparing alsa-info, the only difference
-is the different configuration of Node 0x1d:
+include/linux/fsl/enetc_mdio.h:62:18: warning: no previous prototype for function 'enetc_hw_alloc' [-Wmissing-prototypes]
+      62 | struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
+         |                  ^
+include/linux/fsl/enetc_mdio.h:62:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+      62 | struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
+         | ^
+         | static
+8 warnings generated.
 
-working conf. (windows): Pin-ctls: 0x80: HP
-not working     (linux): Pin-ctls: 0xc0: OUT HP
-
-This patch disable the AC_PINCTL_OUT_EN bit of Node 0x1d and fixes the
-described problem.
-
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241009134248.662175-1-kovalev@altlinux.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 6517798dd343 ("enetc: Make MDIO accessors more generic and export to include/linux/fsl")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202410102136.jQHZOcS4-lkp@intel.com/
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20241011030103.392362-1-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_conexant.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ include/linux/fsl/enetc_mdio.h |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -234,6 +234,7 @@ enum {
- 	CXT_FIXUP_HP_SPECTRE,
- 	CXT_FIXUP_HP_GATE_MIC,
- 	CXT_FIXUP_MUTE_LED_GPIO,
-+	CXT_FIXUP_HP_ELITEONE_OUT_DIS,
- 	CXT_FIXUP_HP_ZBOOK_MUTE_LED,
- 	CXT_FIXUP_HEADSET_MIC,
- 	CXT_FIXUP_HP_MIC_NO_PRESENCE,
-@@ -251,6 +252,19 @@ static void cxt_fixup_stereo_dmic(struct
- 	spec->gen.inv_dmic_split = 1;
- }
+--- a/include/linux/fsl/enetc_mdio.h
++++ b/include/linux/fsl/enetc_mdio.h
+@@ -48,7 +48,8 @@ static inline int enetc_mdio_read(struct
+ static inline int enetc_mdio_write(struct mii_bus *bus, int phy_id, int regnum,
+ 				   u16 value)
+ { return -EINVAL; }
+-struct enetc_hw *enetc_hw_alloc(struct device *dev, void __iomem *port_regs)
++static inline struct enetc_hw *enetc_hw_alloc(struct device *dev,
++					      void __iomem *port_regs)
+ { return ERR_PTR(-EINVAL); }
  
-+/* fix widget control pin settings */
-+static void cxt_fixup_update_pinctl(struct hda_codec *codec,
-+				   const struct hda_fixup *fix, int action)
-+{
-+	if (action == HDA_FIXUP_ACT_PROBE) {
-+		/* Unset OUT_EN for this Node pin, leaving only HP_EN.
-+		 * This is the value stored in the codec register after
-+		 * the correct initialization of the previous windows boot.
-+		 */
-+		snd_hda_set_pin_ctl(codec, 0x1d, AC_PINCTL_HP_EN);
-+	}
-+}
-+
- static void cxt5066_increase_mic_boost(struct hda_codec *codec,
- 				   const struct hda_fixup *fix, int action)
- {
-@@ -902,6 +916,10 @@ static const struct hda_fixup cxt_fixups
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = cxt_fixup_mute_led_gpio,
- 	},
-+	[CXT_FIXUP_HP_ELITEONE_OUT_DIS] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = cxt_fixup_update_pinctl,
-+	},
- 	[CXT_FIXUP_HP_ZBOOK_MUTE_LED] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = cxt_fixup_hp_zbook_mute_led,
-@@ -992,6 +1010,7 @@ static const struct snd_pci_quirk cxt506
- 	SND_PCI_QUIRK(0x103c, 0x83b2, "HP EliteBook 840 G5", CXT_FIXUP_HP_DOCK),
- 	SND_PCI_QUIRK(0x103c, 0x83b3, "HP EliteBook 830 G5", CXT_FIXUP_HP_DOCK),
- 	SND_PCI_QUIRK(0x103c, 0x83d3, "HP ProBook 640 G4", CXT_FIXUP_HP_DOCK),
-+	SND_PCI_QUIRK(0x103c, 0x83e5, "HP EliteOne 1000 G2", CXT_FIXUP_HP_ELITEONE_OUT_DIS),
- 	SND_PCI_QUIRK(0x103c, 0x8402, "HP ProBook 645 G4", CXT_FIXUP_MUTE_LED_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x8427, "HP ZBook Studio G5", CXT_FIXUP_HP_ZBOOK_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x844f, "HP ZBook Studio G5", CXT_FIXUP_HP_ZBOOK_MUTE_LED),
+ #endif
 
 
 
