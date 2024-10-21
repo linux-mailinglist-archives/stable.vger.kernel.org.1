@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-87074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BE789A62F0
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29FFA9A62F1
 	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:29:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C07CB25DB9
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:29:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 594851C217B8
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EAE81E7C1D;
-	Mon, 21 Oct 2024 10:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748031E570F;
+	Mon, 21 Oct 2024 10:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2FkdqK4/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1c6WHxB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC121E7C1B;
-	Mon, 21 Oct 2024 10:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE2B1E5701;
+	Mon, 21 Oct 2024 10:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506516; cv=none; b=E/LcUjfgmsBPflDsmbf5wB84S4zG6DOxVGF7hOyJb6aQln6oikCzmMiDKdBWaWIRjI0hO/QPNUJz1sEdmnNz/d8ud09df39lo/oREiMQV0JmkFnopqnCUvez8DlTQTNnQny65ok+zT+EEXA7mmxMRcpmTS926p8+cOSsiuFKNT0=
+	t=1729506522; cv=none; b=FiTQ8tJZZzzWf1GQ6QUlIFfPMTuFcRicq0K/SMFy4CglTiAR5T+iFXE+bABMQ0g7+qy+WN0qWf52JqAgZKApTJ9CePcu4jChGxOGjMA5mJ0SSuTlr5IQdZTsXaCOE/saExubo39Jv/CImpKB1fIVnHFt7YFBd4hqVRgAIGy0XWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506516; c=relaxed/simple;
-	bh=Bru/+/C3q5boz7/s2c8OoVeSwWvmWbeiZ0EbmB7PjP8=;
+	s=arc-20240116; t=1729506522; c=relaxed/simple;
+	bh=uy/zI5J3v7mxPz/X9wh3slcuOQ0ag47NZPSZQM8zHww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b2oWs0PbaEerpD0O3EgVTiwuRDm+5/gpHIU5B++yvNCNr9Rt9tDNgNZbWovQSNZ+igSQQW5kl7/13O1OJVJl9omjGqOvHdhCXMHPGspqkVFQWvcw+YQ/vvw4X+KLTpZwo0jCh3MguVDORVnzpGbzyqyeeKSBzz/PazgJI4Y8AFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2FkdqK4/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829A0C4CEE5;
-	Mon, 21 Oct 2024 10:28:35 +0000 (UTC)
+	 MIME-Version; b=biMgbt+xcTeXNYZbHaVF6qC9SS7jY5isfkNCPPvdJ69qgQki5refvUZ46llmj+CHvI+Q1RcyqkjosKhAfCtlHy96B1Xpnh7tPYppVW1ISSWSHKP7ntsJEjgZqMN6WeBWy8yBuZHd5Dx1oat0OaNxZ5emjbozLCMtTxuJEOMWSA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1c6WHxB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B77C4CEC3;
+	Mon, 21 Oct 2024 10:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506515;
-	bh=Bru/+/C3q5boz7/s2c8OoVeSwWvmWbeiZ0EbmB7PjP8=;
+	s=korg; t=1729506521;
+	bh=uy/zI5J3v7mxPz/X9wh3slcuOQ0ag47NZPSZQM8zHww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2FkdqK4/1Ghclyyg0uL47YjlK8L3faKS/2VQcFD6cD80MJZTG3C4RceHI5aBLzbj6
-	 uefpn5ej3WWyK8/Rcmmiv1m61KgZtsPohSL83X+N17Qp7J0QhKtPHwzEpCcObxwQsu
-	 DfdRoB/Awzw+KDJBmBcbx+we7HdjrWIdJ5yELBas=
+	b=t1c6WHxBAZ/8AdX5qLUuda4XaptebefAeSn0IDOtrJvMZPvca7E2Sd1rEdYDAGSvx
+	 ds8MHD9OXDgJGChFeIPfm3wMtzLKHNkJ2VVURrseCTz1pfqSO7Q5xlA7WOEGsrM3NH
+	 2bltEHeM7J9YL9rphs8t6j57gkDno/kLZOqkePis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Shixin <liushixin2@huawei.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 030/135] mm/swapfile: skip HugeTLB pages for unuse_vma
-Date: Mon, 21 Oct 2024 12:23:06 +0200
-Message-ID: <20241021102300.514171375@linuxfoundation.org>
+Subject: [PATCH 6.11 031/135] mm/damon/tests/sysfs-kunit.h: fix memory leak in damon_sysfs_test_add_targets()
+Date: Mon, 21 Oct 2024 12:23:07 +0200
+Message-ID: <20241021102300.552631851@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
 References: <20241021102259.324175287@linuxfoundation.org>
@@ -67,47 +66,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Liu Shixin <liushixin2@huawei.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit 7528c4fb1237512ee18049f852f014eba80bbe8d upstream.
+commit 2d6a1c835685de3b0c8e8dc871f60f4ef92ab01a upstream.
 
-I got a bad pud error and lost a 1GB HugeTLB when calling swapoff.  The
-problem can be reproduced by the following steps:
+The sysfs_target->regions allocated in damon_sysfs_regions_alloc() is not
+freed in damon_sysfs_test_add_targets(), which cause the following memory
+leak, free it to fix it.
 
- 1. Allocate an anonymous 1GB HugeTLB and some other anonymous memory.
- 2. Swapout the above anonymous memory.
- 3. run swapoff and we will get a bad pud error in kernel message:
+	unreferenced object 0xffffff80c2a8db80 (size 96):
+	  comm "kunit_try_catch", pid 187, jiffies 4294894363
+	  hex dump (first 32 bytes):
+	    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+	  backtrace (crc 0):
+	    [<0000000001e3714d>] kmemleak_alloc+0x34/0x40
+	    [<000000008e6835c1>] __kmalloc_cache_noprof+0x26c/0x2f4
+	    [<000000001286d9f8>] damon_sysfs_test_add_targets+0x1cc/0x738
+	    [<0000000032ef8f77>] kunit_try_run_case+0x13c/0x3ac
+	    [<00000000f3edea23>] kunit_generic_run_threadfn_adapter+0x80/0xec
+	    [<00000000adf936cf>] kthread+0x2e8/0x374
+	    [<0000000041bb1628>] ret_from_fork+0x10/0x20
 
-  mm/pgtable-generic.c:42: bad pud 00000000743d215d(84000001400000e7)
-
-We can tell that pud_clear_bad is called by pud_none_or_clear_bad in
-unuse_pud_range() by ftrace.  And therefore the HugeTLB pages will never
-be freed because we lost it from page table.  We can skip HugeTLB pages
-for unuse_vma to fix it.
-
-Link: https://lkml.kernel.org/r/20241015014521.570237-1-liushixin2@huawei.com
-Fixes: 0fe6e20b9c4c ("hugetlb, rmap: add reverse mapping for hugepage")
-Signed-off-by: Liu Shixin <liushixin2@huawei.com>
-Acked-by: Muchun Song <muchun.song@linux.dev>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Link: https://lkml.kernel.org/r/20241010125323.3127187-1-ruanjinjie@huawei.com
+Fixes: b8ee5575f763 ("mm/damon/sysfs-test: add a unit test for damon_sysfs_set_targets()")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/swapfile.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/damon/sysfs-test.h |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -2106,7 +2106,7 @@ static int unuse_mm(struct mm_struct *mm
+--- a/mm/damon/sysfs-test.h
++++ b/mm/damon/sysfs-test.h
+@@ -67,6 +67,7 @@ static void damon_sysfs_test_add_targets
+ 	damon_destroy_ctx(ctx);
+ 	kfree(sysfs_targets->targets_arr);
+ 	kfree(sysfs_targets);
++	kfree(sysfs_target->regions);
+ 	kfree(sysfs_target);
+ }
  
- 	mmap_read_lock(mm);
- 	for_each_vma(vmi, vma) {
--		if (vma->anon_vma) {
-+		if (vma->anon_vma && !is_vm_hugetlb_page(vma)) {
- 			ret = unuse_vma(vma, type);
- 			if (ret)
- 				break;
 
 
 
