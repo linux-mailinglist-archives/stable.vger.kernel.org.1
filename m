@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-87091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0186B9A6300
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:30:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2954A9A63AA
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:38:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DD181F20C73
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:30:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55F561C21C5A
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA741E571B;
-	Mon, 21 Oct 2024 10:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B381EBFFC;
+	Mon, 21 Oct 2024 10:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQC0YwEd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AEYCgKDM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3946194C62;
-	Mon, 21 Oct 2024 10:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9411EBFEB;
+	Mon, 21 Oct 2024 10:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506566; cv=none; b=eX4NwfYgoJ9i9Bs0Q0GvTqxiM5vmdWcVIXrRlOF4GH5jcnrnnxlwfBC4L532yXntaCOsjtPMEfJqp3k+RE8aEog+DqsrUkMfNjEIyVYLelFtkPgyhjvw9wRMyKcXK3BM7EEBvUYxrQ62VYFJWcl4bt8NWJcM9u9Ot/o5rp/2ZZA=
+	t=1729506858; cv=none; b=eYLeNZpB/gU98/40ZMWqVIgbcRHR2wWPQ8Xz65ostkDvz8VqaHMC7dArE38yAn3/Wz76XzIaRkAmGjhoY3gTnsxY6g9lbAWnEbcJ7Kfzc2JFLteUAx6XCDzd8ga8A9qHslGJ1IBtzkHaAz9zm+THOR2da69diCJKNiErbZxhZmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506566; c=relaxed/simple;
-	bh=DREzEfuEXtVWzImb/EwaIReffCvUFP2VU9Z2Ee8IDKE=;
+	s=arc-20240116; t=1729506858; c=relaxed/simple;
+	bh=bquUuTCDiKyuGf4PzCROegGh2ApvfAydDl/8MxPKpvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MYdHBfG/b7G4wNA1puUVp7uT5WO7If4ywvR2scKyKeLmDK+VdPRCD9Ox2cpANOp3uITaOdh2l9ezPM79RgKJBicD2IKaXsvKONtjr8M00uLbPqtAgpLmWOgIKVRI1ux8oBhXiT3Vjb9JDjupkumH5Q6JHCWSwBL+47MdJkN4EnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQC0YwEd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43FCAC4CEC3;
-	Mon, 21 Oct 2024 10:29:26 +0000 (UTC)
+	 MIME-Version; b=a/TkryFGTJnYbsUkW7L86NU9TrLE7iVd4qnBZ87Lok2vnjMiyf66Yevd1g+38N65SUUddhtJMipEDMLpOT2SNXOjaCnXCo3HlDKc6v2ozuUGdBfGGG1GrdaiHkoEpxH1Nn5ezseioJwpdmeFllueHW0nB+aMdVxPxxgFc4GN3xE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AEYCgKDM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B172C4CEC3;
+	Mon, 21 Oct 2024 10:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506566;
-	bh=DREzEfuEXtVWzImb/EwaIReffCvUFP2VU9Z2Ee8IDKE=;
+	s=korg; t=1729506857;
+	bh=bquUuTCDiKyuGf4PzCROegGh2ApvfAydDl/8MxPKpvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MQC0YwEdfCgS+Zth2BArQyR04gekHeRLGAXq7eoW7vTgzK9rsi7LdWxlavOFtUUKe
-	 Cs1D4v/C1Ez3ymj9fQSxLr0LSHe9kfCA+R7bQPIFmfUF5ag/izAfzppaCvvNhxjvgk
-	 JlIt2vX0dF+VXrYNskE6M5qaTOmu+8BMZA6db2LI=
+	b=AEYCgKDM/xZ5P0gODD5Rt5fCDmfLvg9TFKto8pf9qeCwR3WCW0mAacWqiUXHM1ISq
+	 EgXcv+5bpjwmEfAyu/Nn8q8S1J0XTfUJrDwaE+pfwIiG6K3pP3LrF84s5ybly6a4bL
+	 H1pxfOXAppE9CY5ltmHycN/bt0y+A6BNHgBeSNNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Omar Sandoval <osandov@fb.com>,
-	Tejun Heo <tj@kernel.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.11 048/135] blk-rq-qos: fix crash on rq_qos_wait vs. rq_qos_wake_function race
-Date: Mon, 21 Oct 2024 12:23:24 +0200
-Message-ID: <20241021102301.211486793@linuxfoundation.org>
+	Filipe Manana <fdmanana@suse.com>,
+	Roi Martin <jroi.martin@gmail.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 001/124] btrfs: fix uninitialized pointer free in add_inode_ref()
+Date: Mon, 21 Oct 2024 12:23:25 +0200
+Message-ID: <20241021102256.768554873@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Omar Sandoval <osandov@fb.com>
+From: Roi Martin <jroi.martin@gmail.com>
 
-commit e972b08b91ef48488bae9789f03cfedb148667fb upstream.
+commit 66691c6e2f18d2aa4b22ffb624b9bdc97e9979e4 upstream.
 
-We're seeing crashes from rq_qos_wake_function that look like this:
+The add_inode_ref() function does not initialize the "name" struct when
+it is declared.  If any of the following calls to "read_one_inode()
+returns NULL,
 
-  BUG: unable to handle page fault for address: ffffafe180a40084
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0002) - not-present page
-  PGD 100000067 P4D 100000067 PUD 10027c067 PMD 10115d067 PTE 0
-  Oops: Oops: 0002 [#1] PREEMPT SMP PTI
-  CPU: 17 UID: 0 PID: 0 Comm: swapper/17 Not tainted 6.12.0-rc3-00013-geca631b8fe80 #11
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-  RIP: 0010:_raw_spin_lock_irqsave+0x1d/0x40
-  Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 41 54 9c 41 5c fa 65 ff 05 62 97 30 4c 31 c0 ba 01 00 00 00 <f0> 0f b1 17 75 0a 4c 89 e0 41 5c c3 cc cc cc cc 89 c6 e8 2c 0b 00
-  RSP: 0018:ffffafe180580ca0 EFLAGS: 00010046
-  RAX: 0000000000000000 RBX: ffffafe180a3f7a8 RCX: 0000000000000011
-  RDX: 0000000000000001 RSI: 0000000000000003 RDI: ffffafe180a40084
-  RBP: 0000000000000000 R08: 00000000001e7240 R09: 0000000000000011
-  R10: 0000000000000028 R11: 0000000000000888 R12: 0000000000000002
-  R13: ffffafe180a40084 R14: 0000000000000000 R15: 0000000000000003
-  FS:  0000000000000000(0000) GS:ffff9aaf1f280000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: ffffafe180a40084 CR3: 000000010e428002 CR4: 0000000000770ef0
-  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  PKRU: 55555554
-  Call Trace:
-   <IRQ>
-   try_to_wake_up+0x5a/0x6a0
-   rq_qos_wake_function+0x71/0x80
-   __wake_up_common+0x75/0xa0
-   __wake_up+0x36/0x60
-   scale_up.part.0+0x50/0x110
-   wb_timer_fn+0x227/0x450
-   ...
+	dir = read_one_inode(root, parent_objectid);
+	if (!dir) {
+		ret = -ENOENT;
+		goto out;
+	}
 
-So rq_qos_wake_function() calls wake_up_process(data->task), which calls
-try_to_wake_up(), which faults in raw_spin_lock_irqsave(&p->pi_lock).
+	inode = read_one_inode(root, inode_objectid);
+	if (!inode) {
+		ret = -EIO;
+		goto out;
+	}
 
-p comes from data->task, and data comes from the waitqueue entry, which
-is stored on the waiter's stack in rq_qos_wait(). Analyzing the core
-dump with drgn, I found that the waiter had already woken up and moved
-on to a completely unrelated code path, clobbering what was previously
-data->task. Meanwhile, the waker was passing the clobbered garbage in
-data->task to wake_up_process(), leading to the crash.
+then "name.name" would be freed on "out" before being initialized.
 
-What's happening is that in between rq_qos_wake_function() deleting the
-waitqueue entry and calling wake_up_process(), rq_qos_wait() is finding
-that it already got a token and returning. The race looks like this:
+out:
+	...
+	kfree(name.name);
 
-rq_qos_wait()                           rq_qos_wake_function()
-==============================================================
-prepare_to_wait_exclusive()
-                                        data->got_token = true;
-                                        list_del_init(&curr->entry);
-if (data.got_token)
-        break;
-finish_wait(&rqw->wait, &data.wq);
-  ^- returns immediately because
-     list_empty_careful(&wq_entry->entry)
-     is true
-... return, go do something else ...
-                                        wake_up_process(data->task)
-                                          (NO LONGER VALID!)-^
+This issue was reported by Coverity with CID 1526744.
 
-Normally, finish_wait() is supposed to synchronize against the waker.
-But, as noted above, it is returning immediately because the waitqueue
-entry has already been removed from the waitqueue.
-
-The bug is that rq_qos_wake_function() is accessing the waitqueue entry
-AFTER deleting it. Note that autoremove_wake_function() wakes the waiter
-and THEN deletes the waitqueue entry, which is the proper order.
-
-Fix it by swapping the order. We also need to use
-list_del_init_careful() to match the list_empty_careful() in
-finish_wait().
-
-Fixes: 38cfb5a45ee0 ("blk-wbt: improve waking of tasks")
-Cc: stable@vger.kernel.org
-Signed-off-by: Omar Sandoval <osandov@fb.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Link: https://lore.kernel.org/r/d3bee2463a67b1ee597211823bf7ad3721c26e41.1729014591.git.osandov@fb.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: e43eec81c516 ("btrfs: use struct qstr instead of name and namelen pairs")
+CC: stable@vger.kernel.org # 6.6+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Roi Martin <jroi.martin@gmail.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-rq-qos.c |    2 +-
+ fs/btrfs/tree-log.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/block/blk-rq-qos.c
-+++ b/block/blk-rq-qos.c
-@@ -219,8 +219,8 @@ static int rq_qos_wake_function(struct w
- 
- 	data->got_token = true;
- 	smp_wmb();
--	list_del_init(&curr->entry);
- 	wake_up_process(data->task);
-+	list_del_init_careful(&curr->entry);
- 	return 1;
- }
- 
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -1374,7 +1374,7 @@ static noinline int add_inode_ref(struct
+ 	struct inode *inode = NULL;
+ 	unsigned long ref_ptr;
+ 	unsigned long ref_end;
+-	struct fscrypt_str name;
++	struct fscrypt_str name = { 0 };
+ 	int ret;
+ 	int log_ref_ver = 0;
+ 	u64 parent_objectid;
 
 
 
