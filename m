@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-87356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBDDB9A6495
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:48:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F9B9A637F
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DDD1280F0C
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:48:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B3BC1F229F2
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1301F76DF;
-	Mon, 21 Oct 2024 10:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC441E9060;
+	Mon, 21 Oct 2024 10:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EKa7cOsc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4gMKeTY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173EF1F4738;
-	Mon, 21 Oct 2024 10:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D9D1E8854;
+	Mon, 21 Oct 2024 10:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507361; cv=none; b=cf1KGTTKyMBD81CmiAGM192EsAgav1lGlzQ7bq83/iIwVEiVRHya3iN7OZfGn5TeH+LcI5FBd2dDl/L/rgVFNQAHdCtG7y9R85yQ8ovI2C+GJqRWNi3DM2TXUbIRWfQcunKXFK7GYXffyRUVO+tk1vOKBXmd+MnIBrngDrWt6Mw=
+	t=1729506794; cv=none; b=VLBK2mPXGCEIxhX4w5cP7ng8jfhTkHFMMUOs0p0ZMq40pcqN9JR8XsmeBzivCH4N3cA8WWUgR/MDvG8gmSXwbtiM73WAmMH6EOFjcfX3xMU5HZNKuWFU6kA7j/ILF2E490aet4ckE/6zLyfnn3AdJFDejvX7nai8Qu3OhvDJo/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507361; c=relaxed/simple;
-	bh=+Saikuje5t57GItr0gcG9HpyVvddOKZb0oqlhRxqzew=;
+	s=arc-20240116; t=1729506794; c=relaxed/simple;
+	bh=0jFSYChs4/Gbb/0SLHLvpMytbldu8qA4e9P13O9CBrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lsRoive3rtxwI2HbSznXGzHjZ/2zDoYmClat74zZ2sQtPTMMV8UqU286qxzBfnYhZ28uXiwGlR7n/GKIyDj7OOa+esFdIDE2sMRsd2thjj5q+u0CpyyWvry0kRCEEJdLT2he3sX/PyFEw1RSW9hsY3pd0fZdUt1s2JJQzPt1KHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EKa7cOsc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0B7C4CEC3;
-	Mon, 21 Oct 2024 10:42:40 +0000 (UTC)
+	 MIME-Version; b=BdhIadtRNzUiUyYyhrKuqaI+e+PJZHd0l+UTqxuPotGP8JBq8I039svdEncHGcR5l4TCUKUK4k0rv7sMaUOAUb6Wec0SMrYbaNTfx/m961VVPSkMbuFjpspMufRk9wPd4GS5rbCkV4nCcfrWwyzix5FBiTDqz32rvOHBDqlkf3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4gMKeTY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51BF1C4CEE8;
+	Mon, 21 Oct 2024 10:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507360;
-	bh=+Saikuje5t57GItr0gcG9HpyVvddOKZb0oqlhRxqzew=;
+	s=korg; t=1729506793;
+	bh=0jFSYChs4/Gbb/0SLHLvpMytbldu8qA4e9P13O9CBrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EKa7cOscXp3aYnmysiU4HcxLv+xu2358/wgYwlrhMXib4ttaXrB6Hmf+ZiSAh+WVm
-	 mxmzP2cXuYbbPXr+XD6zhWMG8Q/4JYnBvMghLWdjboLJqIL+BUnsXWzSv2diFHWAyH
-	 Bi8TSzExPwilgelThbJobb8agCs0KNl2bPazqLXs=
+	b=p4gMKeTY9fwz91dCkDai6nAZrj6aVdw/EDxXrGyYi1PHMt5wHfIU3isM8cR4/uc7T
+	 CZxFvyQpBrnyTOPiZkcC7zegaXis0IomOQ+epJaqjxY8I97bTvgn+CWuR5Kqg8LDWv
+	 yzTzdNhTHGIeZofmbxNI/EjhIi9B43TqYL+PRYgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 6.1 24/91] udf: Dont return bh from udf_expand_dir_adinicb()
-Date: Mon, 21 Oct 2024 12:24:38 +0200
-Message-ID: <20241021102250.768225945@linuxfoundation.org>
+	Sergey Matsievskiy <matsievskiysv@gmail.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.11 123/135] pinctrl: ocelot: fix system hang on level based interrupts
+Date: Mon, 21 Oct 2024 12:24:39 +0200
+Message-ID: <20241021102304.145858051@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,116 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Sergey Matsievskiy <matsievskiysv@gmail.com>
 
-[ Upstream commit f386c802a6fda8f9fe4a5cf418c49aa84dfc52e4 ]
+commit 93b8ddc54507a227087c60a0013ed833b6ae7d3c upstream.
 
-Nobody uses the bh returned from udf_expand_dir_adinicb(). Don't return
-it.
+The current implementation only calls chained_irq_enter() and
+chained_irq_exit() if it detects pending interrupts.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-[cascardo: skip backport of 101ee137d32a ("udf: Drop VARCONV support")]
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+```
+for (i = 0; i < info->stride; i++) {
+	uregmap_read(info->map, id_reg + 4 * i, &reg);
+	if (!reg)
+		continue;
+
+	chained_irq_enter(parent_chip, desc);
+```
+
+However, in case of GPIO pin configured in level mode and the parent
+controller configured in edge mode, GPIO interrupt might be lowered by the
+hardware. In the result, if the interrupt is short enough, the parent
+interrupt is still pending while the GPIO interrupt is cleared;
+chained_irq_enter() never gets called and the system hangs trying to
+service the parent interrupt.
+
+Moving chained_irq_enter() and chained_irq_exit() outside the for loop
+ensures that they are called even when GPIO interrupt is lowered by the
+hardware.
+
+The similar code with chained_irq_enter() / chained_irq_exit() functions
+wrapping interrupt checking loop may be found in many other drivers:
+```
+grep -r -A 10 chained_irq_enter drivers/pinctrl
+```
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Sergey Matsievskiy <matsievskiysv@gmail.com>
+Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Link: https://lore.kernel.org/20241012105743.12450-2-matsievskiysv@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/namei.c |   33 +++++++++++++--------------------
- 1 file changed, 13 insertions(+), 20 deletions(-)
+ drivers/pinctrl/pinctrl-ocelot.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/udf/namei.c
-+++ b/fs/udf/namei.c
-@@ -136,8 +136,7 @@ static struct dentry *udf_lookup(struct
- 	return d_splice_alias(inode, dentry);
- }
+--- a/drivers/pinctrl/pinctrl-ocelot.c
++++ b/drivers/pinctrl/pinctrl-ocelot.c
+@@ -1955,21 +1955,21 @@ static void ocelot_irq_handler(struct ir
+ 	unsigned int reg = 0, irq, i;
+ 	unsigned long irqs;
  
--static struct buffer_head *udf_expand_dir_adinicb(struct inode *inode,
--					udf_pblk_t *block, int *err)
-+static int udf_expand_dir_adinicb(struct inode *inode, udf_pblk_t *block)
- {
- 	udf_pblk_t newblock;
- 	struct buffer_head *dbh = NULL;
-@@ -157,23 +156,23 @@ static struct buffer_head *udf_expand_di
- 	if (!inode->i_size) {
- 		iinfo->i_alloc_type = alloctype;
- 		mark_inode_dirty(inode);
--		return NULL;
-+		return 0;
- 	}
++	chained_irq_enter(parent_chip, desc);
++
+ 	for (i = 0; i < info->stride; i++) {
+ 		regmap_read(info->map, id_reg + 4 * i, &reg);
+ 		if (!reg)
+ 			continue;
  
- 	/* alloc block, and copy data to it */
- 	*block = udf_new_block(inode->i_sb, inode,
- 			       iinfo->i_location.partitionReferenceNum,
--			       iinfo->i_location.logicalBlockNum, err);
-+			       iinfo->i_location.logicalBlockNum, &ret);
- 	if (!(*block))
--		return NULL;
-+		return ret;
- 	newblock = udf_get_pblock(inode->i_sb, *block,
- 				  iinfo->i_location.partitionReferenceNum,
- 				0);
--	if (!newblock)
--		return NULL;
-+	if (newblock == 0xffffffff)
-+		return -EFSCORRUPTED;
- 	dbh = udf_tgetblk(inode->i_sb, newblock);
- 	if (!dbh)
--		return NULL;
-+		return -ENOMEM;
- 	lock_buffer(dbh);
- 	memcpy(dbh->b_data, iinfo->i_data, inode->i_size);
- 	memset(dbh->b_data + inode->i_size, 0,
-@@ -195,9 +194,9 @@ static struct buffer_head *udf_expand_di
- 	ret = udf_add_aext(inode, &epos, &eloc, inode->i_size, 0);
- 	brelse(epos.bh);
- 	if (ret < 0) {
--		*err = ret;
-+		brelse(dbh);
- 		udf_free_blocks(inode->i_sb, inode, &eloc, 0, 1);
--		return NULL;
-+		return ret;
- 	}
- 	mark_inode_dirty(inode);
- 
-@@ -213,6 +212,7 @@ static struct buffer_head *udf_expand_di
- 			impuse = NULL;
- 		udf_fiiter_write_fi(&iter, impuse);
- 	}
-+	brelse(dbh);
- 	/*
- 	 * We don't expect the iteration to fail as the directory has been
- 	 * already verified to be correct
-@@ -220,7 +220,7 @@ static struct buffer_head *udf_expand_di
- 	WARN_ON_ONCE(ret);
- 	udf_fiiter_release(&iter);
- 
--	return dbh;
-+	return 0;
- }
- 
- static int udf_fiiter_add_entry(struct inode *dir, struct dentry *dentry,
-@@ -266,17 +266,10 @@ static int udf_fiiter_add_entry(struct i
- 	}
- 	if (dinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB &&
- 	    blksize - udf_ext0_offset(dir) - iter->pos < nfidlen) {
--		struct buffer_head *retbh;
+-		chained_irq_enter(parent_chip, desc);
 -
- 		udf_fiiter_release(iter);
--		/*
--		 * FIXME: udf_expand_dir_adinicb does not need to return bh
--		 * once other users are gone
--		 */
--		retbh = udf_expand_dir_adinicb(dir, &block, &ret);
--		if (!retbh)
-+		ret = udf_expand_dir_adinicb(dir, &block);
-+		if (ret)
- 			return ret;
--		brelse(retbh);
- 		ret = udf_fiiter_init(iter, dir, dir->i_size);
- 		if (ret < 0)
- 			return ret;
+ 		irqs = reg;
+ 
+ 		for_each_set_bit(irq, &irqs,
+ 				 min(32U, info->desc->npins - 32 * i))
+ 			generic_handle_domain_irq(chip->irq.domain, irq + 32 * i);
+-
+-		chained_irq_exit(parent_chip, desc);
+ 	}
++
++	chained_irq_exit(parent_chip, desc);
+ }
+ 
+ static int ocelot_gpiochip_register(struct platform_device *pdev,
 
 
 
