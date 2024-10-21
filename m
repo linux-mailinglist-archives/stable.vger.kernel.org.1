@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-87178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C7229A639E
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:37:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB8F99A6424
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:43:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC5191F2278D
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:37:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8174C1F227F5
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE431EABC5;
-	Mon, 21 Oct 2024 10:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3B51EB9FA;
+	Mon, 21 Oct 2024 10:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vnObGRrY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+TsPe51"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FB21E570D;
-	Mon, 21 Oct 2024 10:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D141E570F;
+	Mon, 21 Oct 2024 10:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506828; cv=none; b=YF9EwnP8OMgJZwZBhgd0VkveAHSJdCyoWhzcVT6vLeTf6h1DP0rs0NK7xGhRD28MVaiPlAHq1+esWxvjuPKvbwfU9HJ2l0m9LhBqf9Ky+vV+t9dPJfW46ZYpIN1HlkKcVQkMlu9LFqTjKWE2imxG5a+7Aldhloz888PzL0Xqa+A=
+	t=1729507091; cv=none; b=VRBT/cucaKqea3CR3whaTSxdJLedD2SsQyOjdA6CadyFKnnk+xJeLORKZ8oxca6YzDVR5ty+p6I+K5gjyOL24Bk+oNaq4l9uEShJ6cpCucbWMZazeQTGipI/Kv26THJA+0w4Iu4hWneLQDsSqq5nTyv2a+Ga04zz8v/7r6sY/Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506828; c=relaxed/simple;
-	bh=LkFEXn9KjY//3+HihTfWG5ZySezlRm4M6LxkCNNwGSI=;
+	s=arc-20240116; t=1729507091; c=relaxed/simple;
+	bh=S71VahxyRTnttYdiwC3Lf8jkq5y0kp3b46Tm5m+wXds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HMaJDqAJQ2jDFNsSKazX+sZxcZGxT+zsoV4cXu3UB7qvl5TZxz4B4jnK3NmcWyjxyT0Vlz7VSOGY42v541epZc/l0AdaPLgaxks/IkW9cM5/7HSJc+QT4NiIaL32XLOg3cwGwdz6llDvO9m3gl6p0pHH7SczDT4+E0bhKEhBfuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vnObGRrY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D48DC4CEC3;
-	Mon, 21 Oct 2024 10:33:47 +0000 (UTC)
+	 MIME-Version; b=b4iYqiPjURRMDoA/8Ad720BpegKrBr6/NkwMmKjJWvjJsVzfyFh25m3S4h0zx+ZWl25fE9sYz1mVAMvXXVT3IKkgtY5jio+/thpOEp21VgytGYfr99tcDuscJEQR4hAonX+AsHoyOzf73xXHoZLskfD/gvpmszzuUoA8MOZqdWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+TsPe51; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C8BC4CEC3;
+	Mon, 21 Oct 2024 10:38:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506827;
-	bh=LkFEXn9KjY//3+HihTfWG5ZySezlRm4M6LxkCNNwGSI=;
+	s=korg; t=1729507090;
+	bh=S71VahxyRTnttYdiwC3Lf8jkq5y0kp3b46Tm5m+wXds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vnObGRrYC/392H5svSYDsRLLRlYgX0lvu2pXMrLqx8zfPQQxi0GBvA2Xfm391Quh0
-	 s1SzY2WfpcOTL7Ui1lzE3uwWtD/xleiKHGnSC00+skdcIjrz0p4V96YUmLCJ+aZSvP
-	 MTigyCnReDkMp3vs9WSIR8b8NcyHS4uIun0Do+EQ=
+	b=t+TsPe51eHpN/j3GFhwIykBkvkFVt/duBh+xo33wun2y+alwX7EnirgjCSYyyGr0F
+	 hjqbbBiuMaEEEOJz82dFzIyxvQEsAezvD8JdBwT7HU++tSBpuo0wDDJbbgK5pnQK1E
+	 1OVvMSazv4v3Ge0Hu1wjQhy8HMjEWVQaxt2dRO1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>
-Subject: [PATCH 6.11 133/135] serial: qcom-geni: fix receiver enable
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 085/124] iio: adc: ti-ads124s08: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
 Date: Mon, 21 Oct 2024 12:24:49 +0200
-Message-ID: <20241021102304.553714111@linuxfoundation.org>
+Message-ID: <20241021102300.019105421@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit fa103d2599e11e802c818684cff821baefe7f206 upstream.
+commit eb143d05def52bc6d193e813018e5fa1a0e47c77 upstream.
 
-The receiver is supposed to be enabled in the startup() callback and not
-in set_termios() which is called also during console setup.
+This driver makes use of triggered buffers, but does not select the
+required modules.
 
-This specifically avoids accepting input before the port has been opened
-(and interrupts enabled), something which can also break the GENI
-firmware (cancel fails and after abort, the "stale" counter handling
-appears to be broken so that later input is not processed until twelve
-chars have been received).
+Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
 
-There also does not appear to be any need to keep the receiver disabled
-while updating the port settings.
-
-Since commit 6f3c3cafb115 ("serial: qcom-geni: disable interrupts during
-console writes") the calls to manipulate the secondary interrupts, which
-were done without holding the port lock, can also lead to the receiver
-being left disabled when set_termios() races with the console code (e.g.
-when init opens the tty during boot). This can manifest itself as a
-serial getty not accepting input.
-
-The calls to stop and start rx in set_termios() can similarly race with
-DMA completion and, for example, cause the DMA buffer to be unmapped
-twice or the mapping to be leaked.
-
-Fix this by only enabling the receiver during startup and while holding
-the port lock to avoid racing with the console code.
-
-Fixes: 6f3c3cafb115 ("serial: qcom-geni: disable interrupts during console writes")
-Fixes: 2aaa43c70778 ("tty: serial: qcom-geni-serial: add support for serial engine DMA")
-Fixes: c4f528795d1a ("tty: serial: msm_geni_serial: Add serial driver support for GENI based QUP")
-Cc: stable@vger.kernel.org      # 6.3
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20241009145110.16847-6-johan+linaro@kernel.org
+Fixes: e717f8c6dfec ("iio: adc: Add the TI ads124s08 ADC code")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241003-iio-select-v1-3-67c0385197cd@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/qcom_geni_serial.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/iio/adc/Kconfig |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/tty/serial/qcom_geni_serial.c
-+++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -1179,6 +1179,11 @@ static int qcom_geni_serial_startup(stru
- 		if (ret)
- 			return ret;
- 	}
-+
-+	uart_port_lock_irq(uport);
-+	qcom_geni_serial_start_rx(uport);
-+	uart_port_unlock_irq(uport);
-+
- 	enable_irq(uport->irq);
- 
- 	return 0;
-@@ -1264,7 +1269,6 @@ static void qcom_geni_serial_set_termios
- 	unsigned int avg_bw_core;
- 	unsigned long timeout;
- 
--	qcom_geni_serial_stop_rx(uport);
- 	/* baud rate */
- 	baud = uart_get_baud_rate(uport, termios, old, 300, 4000000);
- 
-@@ -1280,7 +1284,7 @@ static void qcom_geni_serial_set_termios
- 		dev_err(port->se.dev,
- 			"Couldn't find suitable clock rate for %u\n",
- 			baud * sampling_rate);
--		goto out_restart_rx;
-+		return;
- 	}
- 
- 	dev_dbg(port->se.dev, "desired_rate = %u, clk_rate = %lu, clk_div = %u\n",
-@@ -1371,8 +1375,6 @@ static void qcom_geni_serial_set_termios
- 	writel(stop_bit_len, uport->membase + SE_UART_TX_STOP_BIT_LEN);
- 	writel(ser_clk_cfg, uport->membase + GENI_SER_M_CLK_CFG);
- 	writel(ser_clk_cfg, uport->membase + GENI_SER_S_CLK_CFG);
--out_restart_rx:
--	qcom_geni_serial_start_rx(uport);
- }
- 
- #ifdef CONFIG_SERIAL_QCOM_GENI_CONSOLE
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -1298,6 +1298,8 @@ config TI_ADS8688
+ config TI_ADS124S08
+ 	tristate "Texas Instruments ADS124S08"
+ 	depends on SPI
++	select IIO_BUFFER
++	select IIO_TRIGGERED_BUFFER
+ 	help
+ 	  If you say yes here you get support for Texas Instruments ADS124S08
+ 	  and ADS124S06 ADC chips
 
 
 
