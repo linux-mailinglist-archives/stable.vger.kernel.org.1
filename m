@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-87535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42D779A6580
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:57:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2795A9A6513
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:53:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6927B1C21687
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:57:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD7B02817C8
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:53:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D2B51E7C3C;
-	Mon, 21 Oct 2024 10:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640011E4113;
+	Mon, 21 Oct 2024 10:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="StYBplij"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sNV6pYKv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4571E47B8;
-	Mon, 21 Oct 2024 10:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A60C1F4FC3;
+	Mon, 21 Oct 2024 10:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507894; cv=none; b=D4es57tm8sWz7jz1gwBWQMqnKSICqRGRKa25faWVxU+ZjwY0TKqVCWwMoK7k8Xsv0GMkMCBv/QbdZymKwDaWrRykMsl7YYsOzOoUyfnnrjsjANhSlBkzcmBR3VYBk9j97u4aN5EMWpHdi6mKNw9SUgTfQccrcPNCiIP+OhljGD0=
+	t=1729507688; cv=none; b=SpO0hfGNdWw1nlF1A31KRekOd/pP1SaM0sbk5Sk44VBD0dgN4UyjupXdjuk1i5P7Akw/EMuWtmUtGOS1esGB5Uc/H+1PTS8qFpOvfMgmQArbb2S9wiG6DJN93K1RjKCLjUZEx1SylG3/WACifRQ93iB5OKcbCGwNvW7FtQnsduU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507894; c=relaxed/simple;
-	bh=Bbg6Yi6oNdPxZlc7Mq1iz1CMqd0WsZjIlvug5WKqLtU=;
+	s=arc-20240116; t=1729507688; c=relaxed/simple;
+	bh=sqjPxZeZuClSBCc0c0aqnf29BypjKKw61MTfwcoBlPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=St05OzyrWl3jB/Qnp8CJGN1DC/1eIp8ei7kU8VFuQYdpHdBdlc5OOJAb4wk/v2fygPDqhx6qMuyLFrmL3USQ/A9Q+IdhyEtS6IP0CvXP/AuGoeFP4gVGoxihGC2eVok5yLEvi7RvxlvWaCePrD4Ma0FDgMOo/pYiJj8/jFcitKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=StYBplij; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83269C4CEC3;
-	Mon, 21 Oct 2024 10:51:33 +0000 (UTC)
+	 MIME-Version; b=DZC7I5i1ng5WGEgrf5/lSQSHMq+mcluZirmJANAYUmsPiJrEWLSSBCcKpUxDJ7GAa7A4RHYtaeaEe6BAmJ96qHDH1AvFSAQ1dzeFlaQXwDAclm+8P4hE7AWNqHWCLJyhlalHkEsvr7E+emDYG80o5irBAI245BsmZFHL4K789x8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sNV6pYKv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E50C4CEC3;
+	Mon, 21 Oct 2024 10:48:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507893;
-	bh=Bbg6Yi6oNdPxZlc7Mq1iz1CMqd0WsZjIlvug5WKqLtU=;
+	s=korg; t=1729507687;
+	bh=sqjPxZeZuClSBCc0c0aqnf29BypjKKw61MTfwcoBlPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=StYBplijPaadNyITEsWvRPOb6K0FtuQOZMSQ4k2Sdq2JNEa6Mgfvs4Eib7uvrr5Od
-	 zLU2ANt/peoHNaC5bhhkc0tBU0+eO1i6PY4rNkot4MWe/KTHFXchkHHruBAtuKBu5Y
-	 9UZnGlNeB6P3BfdHriFdD3psCcnatzGU3C4hP/Jw=
+	b=sNV6pYKvsnifdkJfaF4ofkvnyA2VITUXn7imA+AnMGFQOwySgApfjfoRf9VmVLBd2
+	 LLigcY7wPU9AcxlsX1F4watXOqxK5bxv+inwLPiltO0FAPFFlSHJor14Vi+VEC6vpL
+	 yDZBHJJRQ3Gfh1qv5H9siq53Gs1RgkIWDrvLkMMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 28/52] iio: dac: stm32-dac-core: add missing select REGMAP_MMIO in Kconfig
+	Nathan Chancellor <nathan@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	stable@kernel.org
+Subject: [PATCH 5.15 68/82] x86/resctrl: Annotate get_mem_config() functions as __init
 Date: Mon, 21 Oct 2024 12:25:49 +0200
-Message-ID: <20241021102242.727640585@linuxfoundation.org>
+Message-ID: <20241021102249.910760371@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
-References: <20241021102241.624153108@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 27b6aa68a68105086aef9f0cb541cd688e5edea8 upstream.
+commit d5fd042bf4cfb557981d65628e1779a492cd8cfa upstream.
 
-This driver makes use of regmap_mmio, but does not select the required
-module.
-Add the missing 'select REGMAP_MMIO'.
+After a recent LLVM change [1] that deduces __cold on functions that only call
+cold code (such as __init functions), there is a section mismatch warning from
+__get_mem_config_intel(), which got moved to .text.unlikely. as a result of
+that optimization:
 
-Fixes: 4d4b30526eb8 ("iio: dac: add support for stm32 DAC")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241003-ad2s1210-select-v1-8-4019453f8c33@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+  WARNING: modpost: vmlinux: section mismatch in reference: \
+  __get_mem_config_intel+0x77 (section: .text.unlikely.) -> thread_throttle_mode_init (section: .init.text)
+
+Mark __get_mem_config_intel() as __init as well since it is only called
+from __init code, which clears up the warning.
+
+While __rdt_get_mem_config_amd() does not exhibit a warning because it
+does not call any __init code, it is a similar function that is only
+called from __init code like __get_mem_config_intel(), so mark it __init
+as well to keep the code symmetrical.
+
+CONFIG_SECTION_MISMATCH_WARN_ONLY=n would turn this into a fatal error.
+
+Fixes: 05b93417ce5b ("x86/intel_rdt/mba: Add primary support for Memory Bandwidth Allocation (MBA)")
+Fixes: 4d05bf71f157 ("x86/resctrl: Introduce AMD QOS feature")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Cc: <stable@kernel.org>
+Link: https://github.com/llvm/llvm-project/commit/6b11573b8c5e3d36beee099dbe7347c2a007bf53 [1]
+Link: https://lore.kernel.org/r/20240917-x86-restctrl-get_mem_config_intel-init-v3-1-10d521256284@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/cpu/resctrl/core.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/dac/Kconfig
-+++ b/drivers/iio/dac/Kconfig
-@@ -359,6 +359,7 @@ config STM32_DAC
+--- a/arch/x86/kernel/cpu/resctrl/core.c
++++ b/arch/x86/kernel/cpu/resctrl/core.c
+@@ -175,7 +175,7 @@ static inline bool rdt_get_mb_table(stru
+ 	return false;
+ }
  
- config STM32_DAC_CORE
- 	tristate
-+	select REGMAP_MMIO
+-static bool __get_mem_config_intel(struct rdt_resource *r)
++static __init bool __get_mem_config_intel(struct rdt_resource *r)
+ {
+ 	struct rdt_hw_resource *hw_res = resctrl_to_arch_res(r);
+ 	union cpuid_0x10_3_eax eax;
+@@ -210,7 +210,7 @@ static bool __get_mem_config_intel(struc
+ 	return true;
+ }
  
- config TI_DAC082S085
- 	tristate "Texas Instruments 8/10/12-bit 2/4-channel DAC driver"
+-static bool __rdt_get_mem_config_amd(struct rdt_resource *r)
++static __init bool __rdt_get_mem_config_amd(struct rdt_resource *r)
+ {
+ 	struct rdt_hw_resource *hw_res = resctrl_to_arch_res(r);
+ 	union cpuid_0x10_3_eax eax;
 
 
 
