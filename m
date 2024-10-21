@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-87407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381A59A64D1
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:51:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E0839A6399
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:37:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8B60280940
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:51:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A0691C21BFA
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:37:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA6E194A74;
-	Mon, 21 Oct 2024 10:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5144A1F4725;
+	Mon, 21 Oct 2024 10:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdTVx49R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o8t1G6My"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BFC1E47A3;
-	Mon, 21 Oct 2024 10:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097231EB9EB;
+	Mon, 21 Oct 2024 10:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507515; cv=none; b=R9xD9Q0z8PxktH+0B0xWz1JAwDeKHP7jSayHPZRfIF4zKhOpc3koGmdT+UMuAW5/FWxPharAYL9dMbTHXldgqOTszzpdYAApWiXbkRiaTbhl4Ck+mv5s8usu+9QhnvwbEYOTA+8YXxpw/iDL0tQPYMRRx+bpHLS9R67Z7Bqg6AE=
+	t=1729506810; cv=none; b=qClvJ8fMR67bCA+H7L1qgAG8mNDSS5TE/a7Ggo+0T0GWrCOMFHUbovxjm8i+ftuqr5UZBryqWGljazd+A18SHjBIhnz57FtEWqTEXZQHSN2iDx0P6QzFc73a29fmTyXN2fMoNChMuEiFtAXgAZ9R/cSPBNbxEgRSyW0vdZ38+yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507515; c=relaxed/simple;
-	bh=kBdQElYC76VAXJ0iR+h90Yq8ERJ6JOmILlOEwT8w6w4=;
+	s=arc-20240116; t=1729506810; c=relaxed/simple;
+	bh=XIPhKd+LOtnIILzMpmiPaZ4AiFi6J6IYLpg6MBGVBdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mD4510Jk7yWqSeauBOQUYe2V8llqcsHg5YoERZxTT4OJQXYoagwjCy9F0aQQqpQbLbvRFNHGNw5/v1pmPCLdVS9IDw/hWo1xDaLZcIW4Br3VICbfR8wvYixqG5+zaVs/+mYC+b0XSvl6Ff1jxM4d4ItOlHP7NRoKfvuxs2KcqVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdTVx49R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941C0C4CEC3;
-	Mon, 21 Oct 2024 10:45:13 +0000 (UTC)
+	 MIME-Version; b=Erl1u6LvjsLZDQzyCHDfELpZsMb7+rQ9BKMlJ7Q/SlOKRWvK4MpeCDE2cWFHdFS39KDpm0TBRp4S1NnLyBHyCTXDUP97K4qbjDfTLrqjZkptppck3T1ubwW9efArdosjZRW4mgjB5ol0A8V5oW99y8+hd6P2jQ2L4Si5Eozde00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o8t1G6My; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 561A9C4CEE7;
+	Mon, 21 Oct 2024 10:33:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507514;
-	bh=kBdQElYC76VAXJ0iR+h90Yq8ERJ6JOmILlOEwT8w6w4=;
+	s=korg; t=1729506809;
+	bh=XIPhKd+LOtnIILzMpmiPaZ4AiFi6J6IYLpg6MBGVBdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fdTVx49RdPS0lnHVqI9g0fUa2PXUUYk4z8mvpZVPj0XFuoUqsrwccI+1leLKUlp9U
-	 ny2oUZ34cqmAU4CDiKeoSBfDo99EETJd8U5MLHf2VNfeQQidffAVZ11XuEIN/tL1Mp
-	 9V0gNtN4dCdTNy9ntw3WN+yA9/J4RDoNltsqjMuw=
+	b=o8t1G6Myvm3gRgW6QPOrQ188S/vtO2LpK0UDSGt5Q0pGHMwVpbUTTUoIpHHAJv6JM
+	 pljKTYPgfqDwA0T73zslHMKrAzjSFCXEbAB9CjEAXq2OjAKPz4fhD9D9r/YORyZWGd
+	 Kp71c1RMGx0yxVU1rU2ez2dvlus7R4LZ8TbIL/mI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.15 03/82] udf: Convert udf_expand_dir_adinicb() to new directory iteration
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Anup Patel <anup@brainfault.org>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: [PATCH 6.11 128/135] irqchip/sifive-plic: Return error code on failure
 Date: Mon, 21 Oct 2024 12:24:44 +0200
-Message-ID: <20241021102247.348079558@linuxfoundation.org>
+Message-ID: <20241021102304.349777022@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,119 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Charlie Jenkins <charlie@rivosinc.com>
 
-[ Upstream commit 57bda9fb169d689bff4108265a897d324b5fb8c3 ]
+commit 6eabf656048d904d961584de2e1d45bc0854f9fb upstream.
 
-Convert udf_expand_dir_adinicb() to new directory iteration code.
+Set error to -ENOMEM if kcalloc() fails or if irq_domain_add_linear()
+fails inside of plic_probe() instead of returning 0.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Fixes: 4d936f10ff80 ("irqchip/sifive-plic: Probe plic driver early for Allwinner D1 platform")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240903-correct_error_codes_sifive_plic-v1-1-d929b79663a2@rivosinc.com
+Closes: https://lore.kernel.org/r/202409031122.yBh8HrxA-lkp@intel.com/
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/inode.c |   66 +++++++++++++++++++++++++--------------------------------
- 1 file changed, 29 insertions(+), 37 deletions(-)
+ drivers/irqchip/irq-sifive-plic.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/fs/udf/inode.c
-+++ b/fs/udf/inode.c
-@@ -330,14 +330,12 @@ struct buffer_head *udf_expand_dir_adini
- 	udf_pblk_t newblock;
- 	struct buffer_head *dbh = NULL;
- 	struct kernel_lb_addr eloc;
--	uint8_t alloctype;
- 	struct extent_position epos;
--
--	struct udf_fileident_bh sfibh, dfibh;
--	loff_t f_pos = udf_ext0_offset(inode);
--	int size = udf_ext0_offset(inode) + inode->i_size;
--	struct fileIdentDesc cfi, *sfi, *dfi;
-+	uint8_t alloctype;
- 	struct udf_inode_info *iinfo = UDF_I(inode);
-+	struct udf_fileident_iter iter;
-+	uint8_t *impuse;
-+	int ret;
+--- a/drivers/irqchip/irq-sifive-plic.c
++++ b/drivers/irqchip/irq-sifive-plic.c
+@@ -578,8 +578,10 @@ static int plic_probe(struct fwnode_hand
  
- 	if (UDF_QUERY_FLAG(inode->i_sb, UDF_FLAG_USE_SHORT_AD))
- 		alloctype = ICBTAG_FLAG_AD_SHORT;
-@@ -365,38 +363,14 @@ struct buffer_head *udf_expand_dir_adini
- 	if (!dbh)
- 		return NULL;
- 	lock_buffer(dbh);
--	memset(dbh->b_data, 0x00, inode->i_sb->s_blocksize);
-+	memcpy(dbh->b_data, iinfo->i_data, inode->i_size);
-+	memset(dbh->b_data + inode->i_size, 0,
-+	       inode->i_sb->s_blocksize - inode->i_size);
- 	set_buffer_uptodate(dbh);
- 	unlock_buffer(dbh);
--	mark_buffer_dirty_inode(dbh, inode);
--
--	sfibh.soffset = sfibh.eoffset =
--			f_pos & (inode->i_sb->s_blocksize - 1);
--	sfibh.sbh = sfibh.ebh = NULL;
--	dfibh.soffset = dfibh.eoffset = 0;
--	dfibh.sbh = dfibh.ebh = dbh;
--	while (f_pos < size) {
--		iinfo->i_alloc_type = ICBTAG_FLAG_AD_IN_ICB;
--		sfi = udf_fileident_read(inode, &f_pos, &sfibh, &cfi, NULL,
--					 NULL, NULL, NULL);
--		if (!sfi) {
--			brelse(dbh);
--			return NULL;
--		}
--		iinfo->i_alloc_type = alloctype;
--		sfi->descTag.tagLocation = cpu_to_le32(*block);
--		dfibh.soffset = dfibh.eoffset;
--		dfibh.eoffset += (sfibh.eoffset - sfibh.soffset);
--		dfi = (struct fileIdentDesc *)(dbh->b_data + dfibh.soffset);
--		if (udf_write_fi(inode, sfi, dfi, &dfibh, sfi->impUse,
--				 udf_get_fi_ident(sfi))) {
--			iinfo->i_alloc_type = ICBTAG_FLAG_AD_IN_ICB;
--			brelse(dbh);
--			return NULL;
--		}
--	}
--	mark_buffer_dirty_inode(dbh, inode);
+ 		handler->enable_save = kcalloc(DIV_ROUND_UP(nr_irqs, 32),
+ 					       sizeof(*handler->enable_save), GFP_KERNEL);
+-		if (!handler->enable_save)
++		if (!handler->enable_save) {
++			error = -ENOMEM;
+ 			goto fail_cleanup_contexts;
++		}
+ done:
+ 		for (hwirq = 1; hwirq <= nr_irqs; hwirq++) {
+ 			plic_toggle(handler, hwirq, 0);
+@@ -591,8 +593,10 @@ done:
  
-+	/* Drop inline data, add block instead */
-+	iinfo->i_alloc_type = alloctype;
- 	memset(iinfo->i_data + iinfo->i_lenEAttr, 0, iinfo->i_lenAlloc);
- 	iinfo->i_lenAlloc = 0;
- 	eloc.logicalBlockNum = *block;
-@@ -407,10 +381,28 @@ struct buffer_head *udf_expand_dir_adini
- 	epos.block = iinfo->i_location;
- 	epos.offset = udf_file_entry_alloc_offset(inode);
- 	udf_add_aext(inode, &epos, &eloc, inode->i_size, 0);
--	/* UniqueID stuff */
--
- 	brelse(epos.bh);
- 	mark_inode_dirty(inode);
-+
-+	/* Now fixup tags in moved directory entries */
-+	for (ret = udf_fiiter_init(&iter, inode, 0);
-+	     !ret && iter.pos < inode->i_size;
-+	     ret = udf_fiiter_advance(&iter)) {
-+		iter.fi.descTag.tagLocation = cpu_to_le32(*block);
-+		if (iter.fi.lengthOfImpUse != cpu_to_le16(0))
-+			impuse = dbh->b_data + iter.pos +
-+						sizeof(struct fileIdentDesc);
-+		else
-+			impuse = NULL;
-+		udf_fiiter_write_fi(&iter, impuse);
+ 	priv->irqdomain = irq_domain_add_linear(to_of_node(fwnode), nr_irqs + 1,
+ 						&plic_irqdomain_ops, priv);
+-	if (WARN_ON(!priv->irqdomain))
++	if (WARN_ON(!priv->irqdomain)) {
++		error = -ENOMEM;
+ 		goto fail_cleanup_contexts;
 +	}
-+	/*
-+	 * We don't expect the iteration to fail as the directory has been
-+	 * already verified to be correct
-+	 */
-+	WARN_ON_ONCE(ret);
-+	udf_fiiter_release(&iter);
-+
- 	return dbh;
- }
  
+ 	/*
+ 	 * We can have multiple PLIC instances so setup global state
 
 
 
