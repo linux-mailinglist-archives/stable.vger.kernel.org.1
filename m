@@ -1,138 +1,86 @@
-Return-Path: <stable+bounces-87575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6338F9A6BAF
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 16:09:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CF069A6BDB
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 16:15:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D416281C52
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 14:09:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34542280D9E
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 14:15:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A84B21FAC39;
-	Mon, 21 Oct 2024 14:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E8B1F80AE;
+	Mon, 21 Oct 2024 14:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="PxDSWj1W"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="KPx6R/4P"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CA81FA271;
-	Mon, 21 Oct 2024 14:08:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5171EABDC;
+	Mon, 21 Oct 2024 14:15:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729519711; cv=none; b=oxRPTj6kJfj11PhvhU4YlcaHBrKeT34t3JAzZvIt/tThz7RQHDUUqCNd2UCDe2z9E226T3VjhfjpRZmtebzT3sbsZJdsf9yAmWkQoamAhcXaJlmUzxcwJT72eN+U+ItPLt+0HDTo2gLN0EbePyqlVT4NwxDVLobyG/ZdG8c8wMA=
+	t=1729520126; cv=none; b=ETlW3+GXO00xWbTXgLOx5L4Xfcmy6M4KzJo4XRz6RflW/GTra9hTPEl959rgWpLaJsk4XF7XkcsoTm69VvPFfrTSaqTLVCM9F0beg+3iCwcjHx4ZQDjFh1cYC/x/ho6JjgK/xZbx0PFyua/uXoG5NR3eeNXmBJP4kIm3KDW3CdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729519711; c=relaxed/simple;
-	bh=ENDFVzRG/cSHhohHXAlrlu8X8vbG5ayt/Jz55IYFLDg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kWDlGMoEI8z8+hpliCNtg+8KZO326ysuj8A9DbmHy9jdLz2p0sbQNB6+I2dJQ54dnH6liJhlA22eTfvFKFyw0quuOk3FhY5dqkT6Cqq4Bp3dpi8NfTJi2HXQO2RrqqlAoTc1DTlwL48IHHuxJx58MRHBFlKoPslXR+i/TnOPY1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=PxDSWj1W; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [127.0.1.1] (91-157-155-49.elisa-laajakaista.fi [91.157.155.49])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 6F4DB1A40;
-	Mon, 21 Oct 2024 16:06:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1729519595;
-	bh=ENDFVzRG/cSHhohHXAlrlu8X8vbG5ayt/Jz55IYFLDg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=PxDSWj1W2hRRX6/76+mP/nye+oe6R1f6chkMM+fq6dLMYNQTSaK72ISZ7DJLhY9R4
-	 8EgDc1vJVC2+bmbGtD4anOJmLazMkU517fAV+/SHtXKlO+XgaGOmMYiQYJgMjXg+bl
-	 WDZFelNbWIhIE5dvbT+6AxXMcGVRY5ONpBdchrmU=
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Date: Mon, 21 Oct 2024 17:07:50 +0300
-Subject: [PATCH 6/7] drm/tidss: Fix race condition while handling interrupt
- registers
+	s=arc-20240116; t=1729520126; c=relaxed/simple;
+	bh=pHf5twCTnnJnfQtRd2qMSTYSiWrNRBO3RQNcXpO/2E0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jgI/hHyULpvnFYlZgf8tNc1RbV4SLT20bUvo5ZSffkNg4PNDStnXBXSftyfLA4DBcA+WLcWYsyYQ1QnHvQOYW7iaHbyWCXoll6ys2JFfnN7M4kqtCxxTB0KOi+k9HTtOzq2hKsBp/KDuwM01xUbpJXx7ABgR3zpkMCJEI32q1mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=KPx6R/4P; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1729520122;
+	bh=pHf5twCTnnJnfQtRd2qMSTYSiWrNRBO3RQNcXpO/2E0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KPx6R/4PiHZUyF7n8wGcXnnV2x85EriAD8S+BM+eA3Q4CEj3onekWZW1AsjtP5noN
+	 pxUPRFt+wCQLXNA2i+WeW/9SIagFaP3ndf8iT0vd/aSpDIF0NYuxtRAgR93uFkkodf
+	 d4tXFpx2LgQdkgFj57sDL2n4gWkAOuz8/s9ntrcUP75aFtTPcyLOZnKS6hwR4dQ6zK
+	 9FA6C4UVa56+Yvb5GwxvociS6wpdhAYvGiwjddSepI6MjuNDGc2IlfINu99q6yRhuv
+	 QYxEcWPtjsNSGjdry4zSWKkUxsjcyaRG1Gmgk17v8DzPuUi7gFEpJp4SSUlwa69fbV
+	 tZrXtgT7kK5Ow==
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id E6D7517E3621;
+	Mon, 21 Oct 2024 16:15:21 +0200 (CEST)
+Message-ID: <b403ea3c-6a03-43fd-a9fb-daee6e1c425c@collabora.com>
+Date: Mon, 21 Oct 2024 16:15:21 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: mediatek: mt8186-corsola: Fix GPU supply
+ coupling max-spread
+To: Chen-Yu Tsai <wenst@chromium.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20241021140537.3049232-1-wenst@chromium.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Content-Language: en-US
+In-Reply-To: <20241021140537.3049232-1-wenst@chromium.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241021-tidss-irq-fix-v1-6-82ddaec94e4a@ideasonboard.com>
-References: <20241021-tidss-irq-fix-v1-0-82ddaec94e4a@ideasonboard.com>
-In-Reply-To: <20241021-tidss-irq-fix-v1-0-82ddaec94e4a@ideasonboard.com>
-To: Devarsh Thakkar <devarsht@ti.com>, Jyri Sarha <jyri.sarha@iki.fi>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- Jonathan Cormier <jcormier@criticallink.com>, 
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, stable@vger.kernel.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1922;
- i=tomi.valkeinen@ideasonboard.com; h=from:subject:message-id;
- bh=bGZXTG+tLmXBnXVPFsIwwNa8R3k06EXefciByMbofqM=;
- b=owEBbQKS/ZANAwAIAfo9qoy8lh71AcsmYgBnFmBOTwVF0bOBCbZHVN0m7QT4O92wtEguXJm7B
- m7b+yARrGWJAjMEAAEIAB0WIQTEOAw+ll79gQef86f6PaqMvJYe9QUCZxZgTgAKCRD6PaqMvJYe
- 9egHD/9Lo9BOhehfjhPUQCcW290RdFSEMHDIAgFsTTmDduhcRjjHCntIlVzwBsX/VQjcx1DPuam
- DuNxqbhoKoo+xrbPfbdV38+mEZglw3IxIjha0U8DrrUCazbxdO96fnbCMHUcf/B8kgt9TGDDo9s
- G6RybrCb9SW5kQ8FJoXVyaIC5e8hrV4PF6cn6DEHrzyxYrENcwJRzgvUKiO6acID0VAFmeYP71h
- TpeRScI8C1CFC8UIkR5lqTBIzsj7sDP2Lv0B0x24iLSamA2AK6MHe4Y8VXPlIfYCH+vJYHTl0IM
- EPNW2Bo6T6Ih0m99g/K/SUPNr/uRLjWSwz4Xq8j65w92ZUPq0UZZRas5GxVRU2wSphp2BULgUQ/
- tPud9VxLEVSENWY1nY9t5Z+EJ4KGNo39DS49CLpOs0+uu5mvMjbTbfp0ocyeZ1tK7c2MKNxsztR
- k1EUPY7tDRWPjqhjia9xh4FfIhWnawdMcRWiw/vSaKC563vvJf+IsOaqG0vH24kZQSDQveNJ6Hq
- MC/tYWEwBH+mDihu7eCYnZdmbZMGkuMiY2M+D+thYUGAYLMH4Xxe1p4aYPq7wsMuv9Sq82BpZIN
- vtbPDkpf4tvBZae/V/uoNqBSer5joVTZ0XhMZZ2NLRnXwf63IdkyEf+yYgM2dghgCebLwaiB+PO
- oxTpogasEpFpLEQ==
-X-Developer-Key: i=tomi.valkeinen@ideasonboard.com; a=openpgp;
- fpr=C4380C3E965EFD81079FF3A7FA3DAA8CBC961EF5
 
-From: Devarsh Thakkar <devarsht@ti.com>
+Il 21/10/24 16:05, Chen-Yu Tsai ha scritto:
+> The GPU SRAM supply is supposed to be always at least 0.1V higher than
+> the GPU supply. However when the DT was upstreamed, the spread was
+> incorrectly set to 0.01V.
+> 
+> Fixes: 8855d01fb81f ("arm64: dts: mediatek: Add MT8186 Krabby platform based Tentacruel / Tentacool")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
 
-The driver has a spinlock for protecting the irq_masks field and irq
-enable registers. However, the driver misses protecting the irq status
-registers which can lead to races.
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-Take the spinlock when accessing irqstatus too.
-
-Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
-Cc: stable@vger.kernel.org
-Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
-[Tomi: updated the desc]
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
----
- drivers/gpu/drm/tidss/tidss_dispc.c | 4 ++++
- drivers/gpu/drm/tidss/tidss_irq.c   | 2 ++
- 2 files changed, 6 insertions(+)
-
-diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
-index 515f82e8a0a5..07f5c26cfa26 100644
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -2767,8 +2767,12 @@ static void dispc_init_errata(struct dispc_device *dispc)
-  */
- static void dispc_softreset_k2g(struct dispc_device *dispc)
- {
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&dispc->tidss->wait_lock, flags);
- 	dispc_set_irqenable(dispc, 0);
- 	dispc_read_and_clear_irqstatus(dispc);
-+	spin_unlock_irqrestore(&dispc->tidss->wait_lock, flags);
- 
- 	for (unsigned int vp_idx = 0; vp_idx < dispc->feat->num_vps; ++vp_idx)
- 		VP_REG_FLD_MOD(dispc, vp_idx, DISPC_VP_CONTROL, 0, 0, 0);
-diff --git a/drivers/gpu/drm/tidss/tidss_irq.c b/drivers/gpu/drm/tidss/tidss_irq.c
-index 3cc4024ec7ff..8af4682ba56b 100644
---- a/drivers/gpu/drm/tidss/tidss_irq.c
-+++ b/drivers/gpu/drm/tidss/tidss_irq.c
-@@ -60,7 +60,9 @@ static irqreturn_t tidss_irq_handler(int irq, void *arg)
- 	unsigned int id;
- 	dispc_irq_t irqstatus;
- 
-+	spin_lock(&tidss->wait_lock);
- 	irqstatus = dispc_read_and_clear_irqstatus(tidss->dispc);
-+	spin_unlock(&tidss->wait_lock);
- 
- 	for (id = 0; id < tidss->num_crtcs; id++) {
- 		struct drm_crtc *crtc = tidss->crtcs[id];
-
--- 
-2.43.0
 
 
