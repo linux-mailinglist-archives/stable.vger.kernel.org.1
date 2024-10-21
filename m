@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-87087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08F119A62FC
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:29:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2820C9A6306
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:30:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FDD71F2247A
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:29:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3D2C281E6D
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5890E1E5713;
-	Mon, 21 Oct 2024 10:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C06F21E3776;
+	Mon, 21 Oct 2024 10:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hXGn+KUi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="duUyxOXA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1164B194C62;
-	Mon, 21 Oct 2024 10:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C001E47AC;
+	Mon, 21 Oct 2024 10:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506555; cv=none; b=Cj5VfjzTI1qVibCb6vq7hTPq0t8AAvAKzuzXBuD8w5TLER0Dfx9BvgrNV0ZVMccxCny0+7so7tUDZ9TMFeU2hUvSIpS4APelh2Kre7t98s9bMhc2kye5lnWMsv8TwNNl14Fy1P3d71J6CC4tUehvpJ8K+2MHuqike01tn1xMs3Y=
+	t=1729506587; cv=none; b=Gi7qlRnfDRC/uQNzCP7+3uyBYPjzYqN/W6eAKGd4YdeUACf8PleREICjnu1uh+4jUQ2qY1fXkddCyJGLSO+XjYImPyl7opnxHY9FRByrQAdrJJM3d/cGWodS++rx8lBSTR5Un6N/6yhLmo6x+WTTAieIgr9zC9EIzz8Ypo8MrF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506555; c=relaxed/simple;
-	bh=3kL91nu/MEtOAEvqzJxhLoHDZhC+462+LNvkkPCBmJQ=;
+	s=arc-20240116; t=1729506587; c=relaxed/simple;
+	bh=78wSuA0DXGBz+7JS4R5m8sHukvdlD3fzesbJ5wxZJtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hy56ks4dD2gMO33Dpuf7hDMZjL+SDCLHpVfvjMZUArccZPzzeDA9eBDE7SHFro399BBStlaIUUjhq8Bvge5ql4NyXsXePU25kz0NBQ/6PCUh7Es85RUFKD4fLeojZR25Qyut1sCTDJh+8+7zox2tbPndPxFq1MyZTFcYGpdepOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hXGn+KUi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 858EBC4CEC3;
-	Mon, 21 Oct 2024 10:29:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uaap9godfCeDEqa2HqoejG9CDkDxxGuyNoToWPjotbcAM2AspGyuvr6cB+XcqOwcSgN/SDY49SOAhS7ZM3747a08lZDnkMk87nXlgnNMtsUt0eQX+9LznFROzo4bhiw2nlEagvrj6tPt+j8vGaz1YSTeHhFQNPJNAe4VL9MPqHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=duUyxOXA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB199C4CEC3;
+	Mon, 21 Oct 2024 10:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506554;
-	bh=3kL91nu/MEtOAEvqzJxhLoHDZhC+462+LNvkkPCBmJQ=;
+	s=korg; t=1729506587;
+	bh=78wSuA0DXGBz+7JS4R5m8sHukvdlD3fzesbJ5wxZJtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hXGn+KUiM/QCzQxqK7YurRnYW4sjbkwdBli/+a+4jnlwJG9kZrfurOD6M3HD32W1B
-	 rKtjVLnr4KJtbLRpl8NPE4FE3bAyAixkoKd3fg4BGzpuNhgQ392XD6q0bmVxfw29Be
-	 LobsXuvZQ7P2yFgnCq1qNMKMPjJfiVdd4/jzbF5E=
+	b=duUyxOXAHdr1h3ZelFwTnysgYaas1SA+cTOdRX/r7wuFh9E1YNmy8dTq4UKvmjVRK
+	 VEs9SQO7VLbAKABgGdPXZaJkY7QhD2Rs3OUbQ/v/HwbrYUk8bZut12LHpShpPxxk+A
+	 x02wMSOBKSu0JOMPBa5AHKpRe7I40nabV98I/c0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Todd Brandt <todd.e.brandt@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.11 036/135] iommu/vt-d: Fix incorrect pci_for_each_dma_alias() for non-PCI devices
-Date: Mon, 21 Oct 2024 12:23:12 +0200
-Message-ID: <20241021102300.746725711@linuxfoundation.org>
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 6.11 037/135] s390/sclp: Deactivate sclp after all its users
+Date: Mon, 21 Oct 2024 12:23:13 +0200
+Message-ID: <20241021102300.784834838@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
 References: <20241021102259.324175287@linuxfoundation.org>
@@ -60,50 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-commit 6e02a277f1db24fa039e23783c8921c7b0e5b1b3 upstream.
+commit 0d9dc27df22d9b5c8dc7185c8dddbc14f5468518 upstream.
 
-Previously, the domain_context_clear() function incorrectly called
-pci_for_each_dma_alias() to set up context entries for non-PCI devices.
-This could lead to kernel hangs or other unexpected behavior.
+On reboot the SCLP interface is deactivated through a reboot notifier.
+This happens before other components using SCLP have the chance to run
+their own reboot notifiers.
+Two of those components are the SCLP console and tty drivers which try
+to flush the last outstanding messages.
+At that point the SCLP interface is already unusable and the messages
+are discarded.
 
-Add a check to only call pci_for_each_dma_alias() for PCI devices. For
-non-PCI devices, domain_context_clear_one() is called directly.
+Execute sclp_deactivate() as late as possible to avoid this issue.
 
-Reported-by: Todd Brandt <todd.e.brandt@intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219363
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219349
-Fixes: 9a16ab9d6402 ("iommu/vt-d: Make context clearing consistent with context mapping")
+Fixes: 4ae46db99cd8 ("s390/consoles: improve panic notifiers reliability")
 Cc: stable@vger.kernel.org
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/20241014013744.102197-2-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
+Link: https://lore.kernel.org/r/20241014-s390-kunit-v1-1-941defa765a6@linutronix.de
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/iommu.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/s390/char/sclp.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -3520,8 +3520,10 @@ static int domain_context_clear_one_cb(s
-  */
- static void domain_context_clear(struct device_domain_info *info)
- {
--	if (!dev_is_pci(info->dev))
-+	if (!dev_is_pci(info->dev)) {
- 		domain_context_clear_one(info, info->bus, info->devfn);
-+		return;
-+	}
+--- a/drivers/s390/char/sclp.c
++++ b/drivers/s390/char/sclp.c
+@@ -1195,7 +1195,8 @@ sclp_reboot_event(struct notifier_block
+ }
  
- 	pci_for_each_dma_alias(to_pci_dev(info->dev),
- 			       &domain_context_clear_one_cb, info);
+ static struct notifier_block sclp_reboot_notifier = {
+-	.notifier_call = sclp_reboot_event
++	.notifier_call = sclp_reboot_event,
++	.priority      = INT_MIN,
+ };
+ 
+ static ssize_t con_pages_show(struct device_driver *dev, char *buf)
 
 
 
