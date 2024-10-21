@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-87222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3630F9A64DD
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:51:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 744DC9A635A
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:34:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 012CEB29CC5
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:40:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3F551C20361
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:34:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011361E907F;
-	Mon, 21 Oct 2024 10:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C9081E47AB;
+	Mon, 21 Oct 2024 10:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZZdDMKZ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mhN3gzc0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00E939FD6;
-	Mon, 21 Oct 2024 10:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B681E503D;
+	Mon, 21 Oct 2024 10:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506959; cv=none; b=AtRB/k1Q8Zh2l6N+72KmvrvtJOf5QgmYz0tnsU6DALD8vXi30EGDNMt6CnBCN1MsqCFaqQss/U0t+2rV13pZsRzvRx/+0gE03vi1wQ6qP1xAqTdi/DM9xgWFaVrO0Rb1fz2zDbcQVfxNEpE+ai6JbNfadaaoTXW79c71YzsF9eA=
+	t=1729506695; cv=none; b=mh12hGRGtve1q3thLMzBM550g2IbMrudziCAUZhC8DyRe7dHeqTmycYCl0LUw7ibSVWo75CaX7SY8IwqARmbPcOH1BV4YTokAbET6XmFLR7ObNEFuSVoTzIHNip5cPKV6aCylcyU5YJvkZlXQM0qf5ffWHPudI18VuaxMx50kSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506959; c=relaxed/simple;
-	bh=QyupRLX7ktGBfQkBPfPnQbXwNyYQg6IbWmSVGl5zy8Y=;
+	s=arc-20240116; t=1729506695; c=relaxed/simple;
+	bh=JDTEkhbQDj7edjxdYPAmiWdOhQ9jvdbaG9KtRzilGGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OZ6P/gthXDiaLDm9ucBfQPET8/qKzcgSxnSqTO4muU6JHsbtjr17xH6gfkHPw3O09fQV+hycBaVfJIoGDrpNsJwdKb3iin24vnZ0PuXaPi+1UflLkSx/9zxVfsE5VJas/dndMm93FTpw6GOjW20XVek7U4SUdVHsvjwA1IJ5dqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZZdDMKZ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66C6C4CEC3;
-	Mon, 21 Oct 2024 10:35:58 +0000 (UTC)
+	 MIME-Version; b=TK16nAILL31+NEmYvbkrgDsZZhXlwvLueZUrabYxemedm2Y2oI6EjukApVeXLWHmWXFRgURmMNPlogZWue5G7FMrwoQ4fluS43zFQiKh2WsWq3+nmIHd/jvGDQ+BTz1d9UPwSWHu0X5M/eRxQs7yY53JV7vHjwaREN7JvZXmXlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mhN3gzc0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483BCC4CEC3;
+	Mon, 21 Oct 2024 10:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506959;
-	bh=QyupRLX7ktGBfQkBPfPnQbXwNyYQg6IbWmSVGl5zy8Y=;
+	s=korg; t=1729506695;
+	bh=JDTEkhbQDj7edjxdYPAmiWdOhQ9jvdbaG9KtRzilGGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZZdDMKZ/rkjOtSOQpgQvu+9W5VdSNMwtVkti0nd+CbCJkIr81OBOyTqd4zVEKe+Sb
-	 TIn1nQqKmTiaRLORzX46mzzsDFu6ZgMpIRIfRD6e2GMtXMduPqm7yE951dIxEeczMa
-	 G3nxNdDNuGo+xHbsyaXETxbu6rMzJP5sRzL/sBNs=
+	b=mhN3gzc0EDv+QiuCKbr1SQ9BERGbjI2UKSc/FnitGAnYiNYupjmCfRZ1Jd1RhWwRO
+	 2fBdrkWl5KdgX/ZocWehw6W0wsAXVOv4Ipsj+Ynf8qZD6G5bBMVAs9oMvQOAYlv37i
+	 g+MLMIl2GL+rJus/dDXdYiDp/GNVHk7+yRvFTfbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 042/124] xfs: fix freeing speculative preallocations for preallocated files
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.11 090/135] iio: adc: ti-ads124s08: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
 Date: Mon, 21 Oct 2024 12:24:06 +0200
-Message-ID: <20241021102258.356308221@linuxfoundation.org>
+Message-ID: <20241021102302.847164730@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,171 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 610b29161b0aa9feb59b78dc867553274f17fb01 upstream.
+commit eb143d05def52bc6d193e813018e5fa1a0e47c77 upstream.
 
-xfs_can_free_eofblocks returns false for files that have persistent
-preallocations unless the force flag is passed and there are delayed
-blocks.  This means it won't free delalloc reservations for files
-with persistent preallocations unless the force flag is set, and it
-will also free the persistent preallocations if the force flag is
-set and the file happens to have delayed allocations.
+This driver makes use of triggered buffers, but does not select the
+required modules.
 
-Both of these are bad, so do away with the force flag and always free
-only post-EOF delayed allocations for files with the XFS_DIFLAG_PREALLOC
-or APPEND flags set.
+Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+Fixes: e717f8c6dfec ("iio: adc: Add the TI ads124s08 ADC code")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241003-iio-select-v1-3-67c0385197cd@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_bmap_util.c |   30 ++++++++++++++++++++++--------
- fs/xfs/xfs_bmap_util.h |    2 +-
- fs/xfs/xfs_icache.c    |    2 +-
- fs/xfs/xfs_inode.c     |   14 ++++----------
- 4 files changed, 28 insertions(+), 20 deletions(-)
+ drivers/iio/adc/Kconfig |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/xfs/xfs_bmap_util.c
-+++ b/fs/xfs/xfs_bmap_util.c
-@@ -636,13 +636,11 @@ out_unlock:
- 
- /*
-  * Test whether it is appropriate to check an inode for and free post EOF
-- * blocks. The 'force' parameter determines whether we should also consider
-- * regular files that are marked preallocated or append-only.
-+ * blocks.
-  */
- bool
- xfs_can_free_eofblocks(
--	struct xfs_inode	*ip,
--	bool			force)
-+	struct xfs_inode	*ip)
- {
- 	struct xfs_bmbt_irec	imap;
- 	struct xfs_mount	*mp = ip->i_mount;
-@@ -676,11 +674,11 @@ xfs_can_free_eofblocks(
- 		return false;
- 
- 	/*
--	 * Do not free real preallocated or append-only files unless the file
--	 * has delalloc blocks and we are forced to remove them.
-+	 * Only free real extents for inodes with persistent preallocations or
-+	 * the append-only flag.
- 	 */
- 	if (ip->i_diflags & (XFS_DIFLAG_PREALLOC | XFS_DIFLAG_APPEND))
--		if (!force || ip->i_delayed_blks == 0)
-+		if (ip->i_delayed_blks == 0)
- 			return false;
- 
- 	/*
-@@ -734,6 +732,22 @@ xfs_free_eofblocks(
- 	/* Wait on dio to ensure i_size has settled. */
- 	inode_dio_wait(VFS_I(ip));
- 
-+	/*
-+	 * For preallocated files only free delayed allocations.
-+	 *
-+	 * Note that this means we also leave speculative preallocations in
-+	 * place for preallocated files.
-+	 */
-+	if (ip->i_diflags & (XFS_DIFLAG_PREALLOC | XFS_DIFLAG_APPEND)) {
-+		if (ip->i_delayed_blks) {
-+			xfs_bmap_punch_delalloc_range(ip,
-+				round_up(XFS_ISIZE(ip), mp->m_sb.sb_blocksize),
-+				LLONG_MAX);
-+		}
-+		xfs_inode_clear_eofblocks_tag(ip);
-+		return 0;
-+	}
-+
- 	error = xfs_trans_alloc(mp, &M_RES(mp)->tr_itruncate, 0, 0, 0, &tp);
- 	if (error) {
- 		ASSERT(xfs_is_shutdown(mp));
-@@ -1048,7 +1062,7 @@ xfs_prepare_shift(
- 	 * Trim eofblocks to avoid shifting uninitialized post-eof preallocation
- 	 * into the accessible region of the file.
- 	 */
--	if (xfs_can_free_eofblocks(ip, true)) {
-+	if (xfs_can_free_eofblocks(ip)) {
- 		error = xfs_free_eofblocks(ip);
- 		if (error)
- 			return error;
---- a/fs/xfs/xfs_bmap_util.h
-+++ b/fs/xfs/xfs_bmap_util.h
-@@ -63,7 +63,7 @@ int	xfs_insert_file_space(struct xfs_ino
- 				xfs_off_t len);
- 
- /* EOF block manipulation functions */
--bool	xfs_can_free_eofblocks(struct xfs_inode *ip, bool force);
-+bool	xfs_can_free_eofblocks(struct xfs_inode *ip);
- int	xfs_free_eofblocks(struct xfs_inode *ip);
- 
- int	xfs_swap_extents(struct xfs_inode *ip, struct xfs_inode *tip,
---- a/fs/xfs/xfs_icache.c
-+++ b/fs/xfs/xfs_icache.c
-@@ -1149,7 +1149,7 @@ xfs_inode_free_eofblocks(
- 	}
- 	*lockflags |= XFS_IOLOCK_EXCL;
- 
--	if (xfs_can_free_eofblocks(ip, false))
-+	if (xfs_can_free_eofblocks(ip))
- 		return xfs_free_eofblocks(ip);
- 
- 	/* inode could be preallocated or append-only */
---- a/fs/xfs/xfs_inode.c
-+++ b/fs/xfs/xfs_inode.c
-@@ -1469,7 +1469,7 @@ xfs_release(
- 	if (!xfs_ilock_nowait(ip, XFS_IOLOCK_EXCL))
- 		return 0;
- 
--	if (xfs_can_free_eofblocks(ip, false)) {
-+	if (xfs_can_free_eofblocks(ip)) {
- 		/*
- 		 * Check if the inode is being opened, written and closed
- 		 * frequently and we have delayed allocation blocks outstanding
-@@ -1685,15 +1685,13 @@ xfs_inode_needs_inactive(
- 
- 	/*
- 	 * This file isn't being freed, so check if there are post-eof blocks
--	 * to free.  @force is true because we are evicting an inode from the
--	 * cache.  Post-eof blocks must be freed, lest we end up with broken
--	 * free space accounting.
-+	 * to free.
- 	 *
- 	 * Note: don't bother with iolock here since lockdep complains about
- 	 * acquiring it in reclaim context. We have the only reference to the
- 	 * inode at this point anyways.
- 	 */
--	return xfs_can_free_eofblocks(ip, true);
-+	return xfs_can_free_eofblocks(ip);
- }
- 
- /*
-@@ -1741,15 +1739,11 @@ xfs_inactive(
- 
- 	if (VFS_I(ip)->i_nlink != 0) {
- 		/*
--		 * force is true because we are evicting an inode from the
--		 * cache. Post-eof blocks must be freed, lest we end up with
--		 * broken free space accounting.
--		 *
- 		 * Note: don't bother with iolock here since lockdep complains
- 		 * about acquiring it in reclaim context. We have the only
- 		 * reference to the inode at this point anyways.
- 		 */
--		if (xfs_can_free_eofblocks(ip, true))
-+		if (xfs_can_free_eofblocks(ip))
- 			error = xfs_free_eofblocks(ip);
- 
- 		goto out;
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -1447,6 +1447,8 @@ config TI_ADS8688
+ config TI_ADS124S08
+ 	tristate "Texas Instruments ADS124S08"
+ 	depends on SPI
++	select IIO_BUFFER
++	select IIO_TRIGGERED_BUFFER
+ 	help
+ 	  If you say yes here you get support for Texas Instruments ADS124S08
+ 	  and ADS124S06 ADC chips
 
 
 
