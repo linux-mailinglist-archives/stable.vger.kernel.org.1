@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-87273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B224A9A642D
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:44:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3A669A63A7
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:38:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73EBD2829FF
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:44:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 640011F22C28
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ADD71E572A;
-	Mon, 21 Oct 2024 10:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63FC81EABA0;
+	Mon, 21 Oct 2024 10:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9a7P3Do"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8TGEIFS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3371E573A;
-	Mon, 21 Oct 2024 10:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7411E47A5;
+	Mon, 21 Oct 2024 10:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507112; cv=none; b=Xflr07lF4pdyTR8jFnFCrMjfPpLBEiifx3YgtZiYxsY9lIYT8R0O+jDXI/MPPCmieh3PCKoAjatJT+i8VwaNtj7I4lByVHXs8S4/1oz5mOannN87WrRuLmZP2jyYLfWvJI2A8cuwdxu5aIj+7U4d5Pq8vH7FZUzEh0DX0MjU9Dw=
+	t=1729506849; cv=none; b=BGf4dX0hP71ug3zyUBM2KAG/zJhrhcvopa77G7fbL0CqA2iStMsnA9FzxD0+KIpdsq1iyBu1nhD4PVkpWjbwzBLIDEI79dK63km0VP9ngv/ndv8O7bTiYTyUdMQ+afjqk/sDCp3pu7l9Y7DrLAbJDaGYKKdlT7OibnvjFBWndY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507112; c=relaxed/simple;
-	bh=VraGhiL17usBYsVmvWeacWnQzUl1wmdYMlIgXnd3efo=;
+	s=arc-20240116; t=1729506849; c=relaxed/simple;
+	bh=Fwo670zhcbjx0v0zdxNJjeukL4u2AUdUPt+ds+l84W8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jbtfygi7RexQPDE1TzQST5jnB8zRlD6OOlKf+l0/3lqp+rO2/oerSUTRyV1kYTqSk8h2l5QWJtJjNZtzeReBfE48M+KI7qBp8dFWj1SutakH4dL7TEruGl7O4i6j4fzFxseri6fFJs7MRW8Rai4VsuM5U6k3z5W46IYvjsEOokw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9a7P3Do; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0B9C4CEC3;
-	Mon, 21 Oct 2024 10:38:31 +0000 (UTC)
+	 MIME-Version; b=M1XHsQn4a7HNuWIZ1xLI3+gW6GcVyw7/+KzZrtrT8dL8Oj6iyPztWUDdl/8Av7lI5BPJzvomt7soIc0/bBO9uY9SsawvHi/CajIDmeg8EGJrjJlo2PW58VnZN+c9EF7aNAC6DTHY/Xy8q8OMry/Ri3g4kXl5fKrjRl6BhNaDzF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8TGEIFS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920CBC4CEC3;
+	Mon, 21 Oct 2024 10:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507111;
-	bh=VraGhiL17usBYsVmvWeacWnQzUl1wmdYMlIgXnd3efo=;
+	s=korg; t=1729506849;
+	bh=Fwo670zhcbjx0v0zdxNJjeukL4u2AUdUPt+ds+l84W8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o9a7P3DoN2haBFUHf7OH8PUuLrvXayq9cLP5CtVuMOyGYNwdUMo2YfuYIzebeVq0Z
-	 pW/V1Smqao3aph3bTiWGkgR5uw/rMY6RUf8yr4g5yueqCD+VSOti0FRFzCI0sWu9WQ
-	 2bEc5AJHVmxnM1EaqtS8hd9LXHVUinA6J7FGWLGo=
+	b=d8TGEIFSguGOW8ia468EhM3m9cZYUvnjTr5Q4WgzRoIlIgP7QdxLjt2x69AGZptR6
+	 MQVHyMHO7CFn2qb/MxaxgH1KZAEFQGh4j0Zym5FSnlMJq3R50F2B6R/f7CcGi+LkGI
+	 0h1mFM9EcrtXVZqCBp8UjuHDdcbpGFx4x3pnfKS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yun Lu <luyun@kylinos.cn>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 6.6 062/124] selftest: hid: add the missing tests directory
+	Heiko Thiery <heiko.thiery@gmail.com>,
+	Michael Walle <mwalle@kernel.org>
+Subject: [PATCH 6.11 110/135] misc: microchip: pci1xxxx: add support for NVMEM_DEVID_AUTO for EEPROM device
 Date: Mon, 21 Oct 2024 12:24:26 +0200
-Message-ID: <20241021102259.133602793@linuxfoundation.org>
+Message-ID: <20241021102303.629388609@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yun Lu <luyun@kylinos.cn>
+From: Heiko Thiery <heiko.thiery@gmail.com>
 
-commit fe05c40ca9c18cfdb003f639a30fc78a7ab49519 upstream.
+commit 3c2d73de49be528276474c1a53f78b38ee11c1fa upstream.
 
-Commit 160c826b4dd0 ("selftest: hid: add missing run-hid-tools-tests.sh")
-has added the run-hid-tools-tests.sh script for it to be installed, but
-I forgot to add the tests directory together.
+By using NVMEM_DEVID_AUTO we support more than 1 device and
+automatically enumerate.
 
-If running the test case without the tests directory,  will results in
-the following error message:
-
-    make -C tools/testing/selftests/ TARGETS=hid install \
-	    INSTALL_PATH=$KSFT_INSTALL_PATH
-    cd $KSFT_INSTALL_PATH
-    ./run_kselftest.sh -t hid:hid-core.sh
-
-  /usr/lib/python3.11/site-packages/_pytest/config/__init__.py:331: PluggyTeardownRaisedWarning: A plugin raised an exception during an old-style hookwrapper teardown.
-  Plugin: helpconfig, Hook: pytest_cmdline_parse
-  UsageError: usage: __main__.py [options] [file_or_dir] [file_or_dir] [...]
-  __main__.py: error: unrecognized arguments: --udevd
-    inifile: None
-    rootdir: /root/linux/kselftest_install/hid
-
-In fact, the run-hid-tools-tests.sh script uses the scripts in the tests
-directory to run tests. The tests directory also needs to be added to be
-installed.
-
-Fixes: ffb85d5c9e80 ("selftests: hid: import hid-tools hid-core tests")
+Fixes: 9ab5465349c0 ("misc: microchip: pci1xxxx: Add support to read and write into PCI1XXXX EEPROM via NVMEM sysfs")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yun Lu <luyun@kylinos.cn>
-Acked-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Heiko Thiery <heiko.thiery@gmail.com>
+Reviewed-by: Michael Walle <mwalle@kernel.org>
+Link: https://lore.kernel.org/r/20241007071120.9522-1-heiko.thiery@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/hid/Makefile | 1 +
+ drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/hid/Makefile b/tools/testing/selftests/hid/Makefile
-index 38ae31bb07b5..662209f5fabc 100644
---- a/tools/testing/selftests/hid/Makefile
-+++ b/tools/testing/selftests/hid/Makefile
-@@ -18,6 +18,7 @@ TEST_PROGS += hid-usb_crash.sh
- TEST_PROGS += hid-wacom.sh
- 
- TEST_FILES := run-hid-tools-tests.sh
-+TEST_FILES += tests
- 
- CXX ?= $(CROSS_COMPILE)g++
- 
--- 
-2.47.0
-
+--- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
++++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c
+@@ -364,6 +364,7 @@ static int pci1xxxx_otp_eeprom_probe(str
+ 	if (is_eeprom_responsive(priv)) {
+ 		priv->nvmem_config_eeprom.type = NVMEM_TYPE_EEPROM;
+ 		priv->nvmem_config_eeprom.name = EEPROM_NAME;
++		priv->nvmem_config_eeprom.id = NVMEM_DEVID_AUTO;
+ 		priv->nvmem_config_eeprom.dev = &aux_dev->dev;
+ 		priv->nvmem_config_eeprom.owner = THIS_MODULE;
+ 		priv->nvmem_config_eeprom.reg_read = pci1xxxx_eeprom_read;
 
 
 
