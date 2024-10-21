@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-87144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 749CB9A6368
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D476D9A64DA
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:51:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 193AE1F2278D
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84287B2A0D9
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:46:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01761E7C3B;
-	Mon, 21 Oct 2024 10:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D56631E0087;
+	Mon, 21 Oct 2024 10:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y678w5lR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCGhjv65"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782F61E7C29;
-	Mon, 21 Oct 2024 10:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8AF195FEC;
+	Mon, 21 Oct 2024 10:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506725; cv=none; b=qeG0YqaNRvVs2VuzkpqP0PmuscQdlJ812zm/4R8fVP7ZXv6/J1Kf2PkHmhVOucI41GB55Kv9Vq2Ys8JIQow8z6nVUYf1H0fDa3GTFzq/8Xbtkn9I/gHrLl7AXiwoC2P3U6dWEY2lKBSciYa1jsGKlaLm+izy2NVIQrejwns3mt8=
+	t=1729507231; cv=none; b=h8TEDiOX76v+35Xjs623S9u3FQi5wL9VVerGHE2dpMwFHH8cwtJeEc6MeyZio+maiBcTna8h5Elb5QRUTq409JmwIYzbf9p8GQKcPnWoiV7P/R/YcB9UEuhysqlmeU3TtTvbbiEIGp9noUD573TBLODi2+cigZjmayjhoQTzaPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506725; c=relaxed/simple;
-	bh=ckPvU2LvqN6Gs/FnGsDS99vhBKSyuwlDUU7oMQbF0SA=;
+	s=arc-20240116; t=1729507231; c=relaxed/simple;
+	bh=6rkTIn+GaYqhIXXLwBKGz8GbJ9OXtliHyYAyAnlpQtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EY7H8E0WribEwAz224ydMnWnslQtOQhL0+9kG1VMFwIKlm64SSVVB6Ze0X6dz1I8E/OhC8XtRnQeimfYpbklAfWMTgoQggaesqlEdtX3kic8oM8DvKpeTo1QPcBgPUmO7mbRfl8X5htZp37fkM9AU+aF012pbvDjtF3GiHebhkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y678w5lR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B2DC4CEC3;
-	Mon, 21 Oct 2024 10:32:04 +0000 (UTC)
+	 MIME-Version; b=vCzGuOzQu1Z2hmuR+Jb4eGCOXOwgLj0ZfL2doZNSGKO/UxMQbXpro54I2s5rRQU+88QaxCrNjAFWj+5/KGwER065DngPYxkgILYbRamqW1/XUAqdOS3kI4H+q05jMcq4zT8QTByhp+/5ath5gw0bOd+qrDIh+omjwBOsPPjWgIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCGhjv65; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4124C4CEC3;
+	Mon, 21 Oct 2024 10:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506725;
-	bh=ckPvU2LvqN6Gs/FnGsDS99vhBKSyuwlDUU7oMQbF0SA=;
+	s=korg; t=1729507231;
+	bh=6rkTIn+GaYqhIXXLwBKGz8GbJ9OXtliHyYAyAnlpQtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y678w5lRa1qVFc7+LW/YgITfHKFKCbtrh9tkBp8ZAP0cbayyxiupfHRB1Qg2f101Z
-	 SYxf5ySByw2nmUmDTE5c1emfxkZVfxn1M6BDEc93jHvcTa2GtUic1wG7ghXvkRPpgH
-	 lHV0PHvaeXkfyflkgF+IqzUVfLgiIZBFh2IaKO00=
+	b=YCGhjv65d7xzVxWhI8VpNTVlk0QAWnLriEd9Y6yRIJToxBG39oe98f+cefOxZ/clh
+	 5aXHPQustP+Bfg/WtNYhg3oUvaUnaN1kPsgt8BpWpi1XCOMjK0sHNNUhBgLZyiOYMG
+	 DsKh6BPLCg4Lfr8tXQcP6vNPd2gS9Tqcu3KEZ14Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+955da2d57931604ee691@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH 6.11 099/135] vt: prevent kernel-infoleak in con_font_get()
+	Filipe Manana <fdmanana@suse.com>,
+	Roi Martin <jroi.martin@gmail.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 01/91] btrfs: fix uninitialized pointer free in add_inode_ref()
 Date: Mon, 21 Oct 2024 12:24:15 +0200
-Message-ID: <20241021102303.198614204@linuxfoundation.org>
+Message-ID: <20241021102249.853676139@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Roi Martin <jroi.martin@gmail.com>
 
-commit f956052e00de211b5c9ebaa1958366c23f82ee9e upstream.
+commit 66691c6e2f18d2aa4b22ffb624b9bdc97e9979e4 upstream.
 
-font.data may not initialize all memory spaces depending on the implementation
-of vc->vc_sw->con_font_get. This may cause info-leak, so to prevent this, it
-is safest to modify it to initialize the allocated memory space to 0, and it
-generally does not affect the overall performance of the system.
+The add_inode_ref() function does not initialize the "name" struct when
+it is declared.  If any of the following calls to "read_one_inode()
+returns NULL,
 
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+955da2d57931604ee691@syzkaller.appspotmail.com
-Fixes: 05e2600cb0a4 ("VT: Bump font size limitation to 64x128 pixels")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Link: https://lore.kernel.org/r/20241010174619.59662-1-aha310510@gmail.com
+	dir = read_one_inode(root, parent_objectid);
+	if (!dir) {
+		ret = -ENOENT;
+		goto out;
+	}
+
+	inode = read_one_inode(root, inode_objectid);
+	if (!inode) {
+		ret = -EIO;
+		goto out;
+	}
+
+then "name.name" would be freed on "out" before being initialized.
+
+out:
+	...
+	kfree(name.name);
+
+This issue was reported by Coverity with CID 1526744.
+
+Fixes: e43eec81c516 ("btrfs: use struct qstr instead of name and namelen pairs")
+CC: stable@vger.kernel.org # 6.6+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Roi Martin <jroi.martin@gmail.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/vt/vt.c |    2 +-
+ fs/btrfs/tree-log.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -4726,7 +4726,7 @@ static int con_font_get(struct vc_data *
- 		return -EINVAL;
- 
- 	if (op->data) {
--		font.data = kvmalloc(max_font_size, GFP_KERNEL);
-+		font.data = kvzalloc(max_font_size, GFP_KERNEL);
- 		if (!font.data)
- 			return -ENOMEM;
- 	} else
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -1372,7 +1372,7 @@ static noinline int add_inode_ref(struct
+ 	struct inode *inode = NULL;
+ 	unsigned long ref_ptr;
+ 	unsigned long ref_end;
+-	struct fscrypt_str name;
++	struct fscrypt_str name = { 0 };
+ 	int ret;
+ 	int log_ref_ver = 0;
+ 	u64 parent_objectid;
 
 
 
