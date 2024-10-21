@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-87180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDB5A9A63A2
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:38:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA7D99A64DE
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:51:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F07ED1C21C5A
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9408A1F2100D
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967431E571B;
-	Mon, 21 Oct 2024 10:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C40C1F8F00;
+	Mon, 21 Oct 2024 10:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZyanfsP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YaF4/T/K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4061EBA0C;
-	Mon, 21 Oct 2024 10:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC5A1F8934;
+	Mon, 21 Oct 2024 10:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506834; cv=none; b=cB+aQMgSK0o6vU7eRMIxZJMkaMeysTXT/FJJNOYFPA0iBNFoDqanaLIWDgoTkXUeXU5yKJBDQEYqtQoqMQy9gNw/tltakFCC4ZttYypQvgD9i9XKeM7NGrTlxcrmN16utAJ5uzDV72+s7kR+TPR+apKSkwbXbJooOFqzbM/FRA0=
+	t=1729507535; cv=none; b=UNCCqpTfWcmf4bd0A7ByC94PXvMWGv+nciZU6Khtz5PsGdYjac5CtxDdvA3P9XN3IYjx6tGqMnBwuE4LEXQoOVCb2r5BR5KKLp4mwZSkDJHAro2e09u14TDB00ioR7+Zey94FaAyZfckDo/+RHtOgFdC8rTcvihK0Tx2Ers+PaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506834; c=relaxed/simple;
-	bh=hGXYX6RubOAeTtQMs4Tq4iV/pY+tUksQr3u+BWNiEgo=;
+	s=arc-20240116; t=1729507535; c=relaxed/simple;
+	bh=3kGIRrLAYUQiVKEJ3KU7u/FODe+4kjXpE/S8mBe+niw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lQotkB59ScGZZHyi5/CsrH26NtWhOI0DyVY6E0LZqX4E/0ch6OdiCbB6Z8psQkiXWEpaNT81MMxgi6i5LhxNJvnaqu3/FV/E3PictxPnCaxwuODqtgyRvwynO8+2FntJfUURpsJjNWdWioQyVYVLL8zOgF+G/hm3EJemkogLDts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZyanfsP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C5D2C4CEC3;
-	Mon, 21 Oct 2024 10:33:53 +0000 (UTC)
+	 MIME-Version; b=ANs5pbg7dnz4lSeWYAaH8v9RQtEz55cGXi+A1SUnbpAMOpxJHhUfOKEbs0EP7v4Nr3zhhEkI6rmx9QO7znfgscunXL+DrIvZ61lDhEUlgDXw5o3d+s5d9QLXRA85VsD8Pz/d0/ecFpiq13E5lLYWUY4WFhIqBQNE+of9JE+7Hl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YaF4/T/K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBBBC4CEC3;
+	Mon, 21 Oct 2024 10:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506833;
-	bh=hGXYX6RubOAeTtQMs4Tq4iV/pY+tUksQr3u+BWNiEgo=;
+	s=korg; t=1729507534;
+	bh=3kGIRrLAYUQiVKEJ3KU7u/FODe+4kjXpE/S8mBe+niw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WZyanfsPLHJ/3PaD1NbnF1cLj5+f/fXJE/+Z7TQlZVPzS/JPzEcOfs4TNwaoHSkS5
-	 k20nTeBfZEy/3wrpFIhPHLZExhMF1KSz0T5f3XkwYXFZw9RBXSi/oAMm9U7crsnGJg
-	 tkS2b3g3idBInAbnQSUe7Vh/NQILVi+MQXy7i3fo=
+	b=YaF4/T/KxPQIDfHEl2X7+bRIqQIIAea5JSuCOu/1Wk5ZmhCQiXr8SH2yjjPsAgUYG
+	 89IwOExXI0RSn0X9uekAeYVp6gKQtDDtstFw2faAnk2jov+vBHZgMadoexOpjbR7hX
+	 ZOZIeJ0G3xJdpjQrU6DNF8BFqSqemlZLJnZtaz3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai-Heng Feng <kaihengf@nvidia.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Vasiliy Kovalev <kovalev@altlinux.org>
-Subject: [PATCH 6.11 135/135] ALSA: hda/conexant - Use cached pin control for Node 0x1d on HP EliteOne 1000 G2
+	Jan Kara <jack@suse.cz>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 5.15 10/82] udf: Convert udf_get_parent() to new directory iteration code
 Date: Mon, 21 Oct 2024 12:24:51 +0200
-Message-ID: <20241021102304.632581047@linuxfoundation.org>
+Message-ID: <20241021102247.630043168@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Jan Kara <jack@suse.cz>
 
-commit 164cd0e077a18d6208523c82b102c98c77fdd51f upstream.
+[ Upstream commit 9b06fbef4202363d74bba5459ddd231db6d3b1af ]
 
-The cached version avoids redundant commands to the codec, improving
-stability and reducing unnecessary operations. This change ensures
-better power management and reliable restoration of pin configurations,
-especially after hibernation (S4) and other power transitions.
+Convert udf_get_parent() to use udf_fiiter_find_entry().
 
-Fixes: 9988844c457f ("ALSA: hda/conexant - Fix audio routing for HP EliteOne 1000 G2")
-Suggested-by: Kai-Heng Feng <kaihengf@nvidia.com>
-Suggested-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://patch.msgid.link/20241016080713.46801-1-kovalev@altlinux.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_conexant.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/udf/namei.c |   16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -330,7 +330,7 @@ static void cxt_fixup_update_pinctl(stru
- 		 * This is the value stored in the codec register after
- 		 * the correct initialization of the previous windows boot.
- 		 */
--		snd_hda_set_pin_ctl(codec, 0x1d, AC_PINCTL_HP_EN);
-+		snd_hda_set_pin_ctl_cache(codec, 0x1d, AC_PINCTL_HP_EN);
- 	}
- }
+--- a/fs/udf/namei.c
++++ b/fs/udf/namei.c
+@@ -1368,17 +1368,15 @@ static struct dentry *udf_get_parent(str
+ {
+ 	struct kernel_lb_addr tloc;
+ 	struct inode *inode = NULL;
+-	struct fileIdentDesc cfi;
+-	struct udf_fileident_bh fibh;
++	struct udf_fileident_iter iter;
++	int err;
  
+-	if (!udf_find_entry(d_inode(child), &dotdot_name, &fibh, &cfi))
+-		return ERR_PTR(-EACCES);
++	err = udf_fiiter_find_entry(d_inode(child), &dotdot_name, &iter);
++	if (err)
++		return ERR_PTR(err);
+ 
+-	if (fibh.sbh != fibh.ebh)
+-		brelse(fibh.ebh);
+-	brelse(fibh.sbh);
+-
+-	tloc = lelb_to_cpu(cfi.icb.extLocation);
++	tloc = lelb_to_cpu(iter.fi.icb.extLocation);
++	udf_fiiter_release(&iter);
+ 	inode = udf_iget(child->d_sb, &tloc);
+ 	if (IS_ERR(inode))
+ 		return ERR_CAST(inode);
 
 
 
