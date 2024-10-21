@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-87138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23BE99A635F
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:34:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2737A9A6485
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:47:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF5311F22578
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:34:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4BE48B29FEB
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481131E6DE1;
-	Mon, 21 Oct 2024 10:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 058201E9099;
+	Mon, 21 Oct 2024 10:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6HiXHXg"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0EZ9uvRS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002D419753F;
-	Mon, 21 Oct 2024 10:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC801E9064;
+	Mon, 21 Oct 2024 10:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506708; cv=none; b=QKG1CTZKUgaSa/baP/4NQetPjHGETVMM6QbxsGIkwTGlsnZGlSszNazMmSOVYsKwZblwUMfUsCX8PbS4P0Mu8ylr2E8sVCQqVE1cgv4u6WDljm+IoLLvDqOGY9Q228DcZkA1lwf2Sn8Bmg0RSOn56m6a/2ZsbpSocQ0ol8zBoH8=
+	t=1729506971; cv=none; b=CdTpqqVgBjwSttFqrJG7dtVhp1vvegrK+wYYGoi4qkfOQnJE2BIe6gB9DlGC3V6WWPk1JMGxTjjc2dL4A0qHBLzeij/e01uxlJ6kQiJJ760uPkE+Of5yLgu7NASTaRzQ2+BCDMhV/jQTDDpfrVoYx+EaSt5tMiwC+9bzOfanwJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506708; c=relaxed/simple;
-	bh=zNsNjFIkN0dM4urVZchnRqQvawliePMest48aDYTzj4=;
+	s=arc-20240116; t=1729506971; c=relaxed/simple;
+	bh=DP82pCz+eWbKGnPmfsFKUIFa8bFamylh+dlJKRrksvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hd4SIHFd/c8VgCaNKL4RpM61RcS9YzAahIUd639wDrBTzXRiCEFITZewL0dxotZcU4kTJLtGIIcI7PUUJjn5ImRpCdH4VmzuGvL9flsyn/THaUXDK0Kz9eEUlZKAbXhN74M2RabcqYINSxHeTcgfspwXSO3k2K8X0Bbo80F0OyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f6HiXHXg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C4A4C4CEC3;
-	Mon, 21 Oct 2024 10:31:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kMcNIcTQ9DWPdu6m7LiXkKAzAhlEdV5I//S4jYbLGukwpKZhwQMH8D+di2/oceKGeBko5VRG4HsNMr8YkDqHnunKIayqGcU+BAxxaX4wL1ZR+wxuW3GGV8KJoyt3CS+oCdARxpuZgS+F7PlBgoiszJ/yb+vzSh2GEeSwISZFt/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0EZ9uvRS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F058C4CEC3;
+	Mon, 21 Oct 2024 10:36:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506707;
-	bh=zNsNjFIkN0dM4urVZchnRqQvawliePMest48aDYTzj4=;
+	s=korg; t=1729506971;
+	bh=DP82pCz+eWbKGnPmfsFKUIFa8bFamylh+dlJKRrksvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f6HiXHXgmmde7PCDw1iVDTwR+D4gKAenOGZ5kgYmBcDshE2t+OqsqAvfBhhlKw4+C
-	 upZCZErrSSPj9eIHaF+Bg+kdR8mk07xaQ9ldVfO/f9S1p+z6gJ10c020rXCaxfSI+G
-	 GbO6EavN2oZOSkpj3fuF3vcj8WF2FSFj6lUmHRXw=
+	b=0EZ9uvRSnkMA6z88E19Aodt5iFUxAwOxhWguxGuvPQ2+g5DhOhP/4VuM4zeDrv4VB
+	 SicFSC6pRB2gMBbY5y19yWAUK/uMgJD7pcmVdLagO9GpklTlLCHMqy+dMy28xxAouq
+	 SBaWXfFmBZM4Oue+i8jLArqmzFpd168kytvupIek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Aaron Thompson <dev@aaront.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.11 094/135] Bluetooth: Call iso_exit() on module unload
+	patches@lists.linux.dev, Frank Li <Frank.li@nxp.com>,
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
+	=20Bence?= <csokas.bence@prolan.hu>, Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 046/124] net: fec: Move `fec_ptp_read()` to the top of the file
 Date: Mon, 21 Oct 2024 12:24:10 +0200
-Message-ID: <20241021102303.002958435@linuxfoundation.org>
+Message-ID: <20241021102258.509354184@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +60,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Thompson <dev@aaront.org>
+From: Csókás, Bence <csokas.bence@prolan.hu>
 
-commit d458cd1221e9e56da3b2cc5518ad3225caa91f20 upstream.
+commit 4374a1fe580a14f6152752390c678d90311df247 upstream.
 
-If iso_init() has been called, iso_exit() must be called on module
-unload. Without that, the struct proto that iso_init() registered with
-proto_register() becomes invalid, which could cause unpredictable
-problems later. In my case, with CONFIG_LIST_HARDENED and
-CONFIG_BUG_ON_DATA_CORRUPTION enabled, loading the module again usually
-triggers this BUG():
+This function is used in `fec_ptp_enable_pps()` through
+struct cyclecounter read(). Moving the declaration makes
+it clearer, what's happening.
 
-  list_add corruption. next->prev should be prev (ffffffffb5355fd0),
-    but was 0000000000000068. (next=ffffffffc0a010d0).
-  ------------[ cut here ]------------
-  kernel BUG at lib/list_debug.c:29!
-  Oops: invalid opcode: 0000 [#1] PREEMPT SMP PTI
-  CPU: 1 PID: 4159 Comm: modprobe Not tainted 6.10.11-4+bt2-ao-desktop #1
-  RIP: 0010:__list_add_valid_or_report+0x61/0xa0
-  ...
-    __list_add_valid_or_report+0x61/0xa0
-    proto_register+0x299/0x320
-    hci_sock_init+0x16/0xc0 [bluetooth]
-    bt_init+0x68/0xd0 [bluetooth]
-    __pfx_bt_init+0x10/0x10 [bluetooth]
-    do_one_initcall+0x80/0x2f0
-    do_init_module+0x8b/0x230
-    __do_sys_init_module+0x15f/0x190
-    do_syscall_64+0x68/0x110
-  ...
-
-Cc: stable@vger.kernel.org
-Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
-Signed-off-by: Aaron Thompson <dev@aaront.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Suggested-by: Frank Li <Frank.li@nxp.com>
+Link: https://lore.kernel.org/netdev/20240805144754.2384663-1-csokas.bence@prolan.hu/T/#ma6c21ad264016c24612048b1483769eaff8cdf20
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20240812094713.2883476-1-csokas.bence@prolan.hu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/af_bluetooth.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/freescale/fec_ptp.c |   50 +++++++++++++++----------------
+ 1 file changed, 25 insertions(+), 25 deletions(-)
 
---- a/net/bluetooth/af_bluetooth.c
-+++ b/net/bluetooth/af_bluetooth.c
-@@ -830,6 +830,8 @@ cleanup_led:
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -91,6 +91,30 @@
+ #define FEC_PTP_MAX_NSEC_COUNTER	0x80000000ULL
  
- static void __exit bt_exit(void)
- {
-+	iso_exit();
+ /**
++ * fec_ptp_read - read raw cycle counter (to be used by time counter)
++ * @cc: the cyclecounter structure
++ *
++ * this function reads the cyclecounter registers and is called by the
++ * cyclecounter structure used to construct a ns counter from the
++ * arbitrary fixed point registers
++ */
++static u64 fec_ptp_read(const struct cyclecounter *cc)
++{
++	struct fec_enet_private *fep =
++		container_of(cc, struct fec_enet_private, cc);
++	u32 tempval;
 +
- 	mgmt_exit();
++	tempval = readl(fep->hwp + FEC_ATIME_CTRL);
++	tempval |= FEC_T_CTRL_CAPTURE;
++	writel(tempval, fep->hwp + FEC_ATIME_CTRL);
++
++	if (fep->quirks & FEC_QUIRK_BUG_CAPTURE)
++		udelay(1);
++
++	return readl(fep->hwp + FEC_ATIME);
++}
++
++/**
+  * fec_ptp_enable_pps
+  * @fep: the fec_enet_private structure handle
+  * @enable: enable the channel pps output
+@@ -136,7 +160,7 @@ static int fec_ptp_enable_pps(struct fec
+ 		 * NSEC_PER_SEC - ts.tv_nsec. Add the remaining nanoseconds
+ 		 * to current timer would be next second.
+ 		 */
+-		tempval = fep->cc.read(&fep->cc);
++		tempval = fec_ptp_read(&fep->cc);
+ 		/* Convert the ptp local counter to 1588 timestamp */
+ 		ns = timecounter_cyc2time(&fep->tc, tempval);
+ 		ts = ns_to_timespec64(ns);
+@@ -272,30 +296,6 @@ static enum hrtimer_restart fec_ptp_pps_
+ }
  
- 	sco_exit();
+ /**
+- * fec_ptp_read - read raw cycle counter (to be used by time counter)
+- * @cc: the cyclecounter structure
+- *
+- * this function reads the cyclecounter registers and is called by the
+- * cyclecounter structure used to construct a ns counter from the
+- * arbitrary fixed point registers
+- */
+-static u64 fec_ptp_read(const struct cyclecounter *cc)
+-{
+-	struct fec_enet_private *fep =
+-		container_of(cc, struct fec_enet_private, cc);
+-	u32 tempval;
+-
+-	tempval = readl(fep->hwp + FEC_ATIME_CTRL);
+-	tempval |= FEC_T_CTRL_CAPTURE;
+-	writel(tempval, fep->hwp + FEC_ATIME_CTRL);
+-
+-	if (fep->quirks & FEC_QUIRK_BUG_CAPTURE)
+-		udelay(1);
+-
+-	return readl(fep->hwp + FEC_ATIME);
+-}
+-
+-/**
+  * fec_ptp_start_cyclecounter - create the cycle counter from hw
+  * @ndev: network device
+  *
 
 
 
