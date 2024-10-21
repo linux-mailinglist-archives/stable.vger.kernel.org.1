@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-87287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A7D29A6443
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:45:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A565C9A64EC
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 229D1282431
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:45:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D479A1C21151
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383EC1E7C0D;
-	Mon, 21 Oct 2024 10:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CBB81E8858;
+	Mon, 21 Oct 2024 10:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lLGYWzCX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mr5rrwGm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CBD1E1C11;
-	Mon, 21 Oct 2024 10:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039A41E884E;
+	Mon, 21 Oct 2024 10:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507154; cv=none; b=qX0gnJ/pjIwiceVYpmfyjLRE8V6JPPbv9nwHzWTNhNaEiKFfiC/7oafRfhvm4UBvWLYQAlklgKt7vsb3CRNHOVaDQSYrjisak29/OwzU3tozJAS0tz5tOx+3GcGezPaMkyO2c9UQmv/vQpb0ArwnmrkNBvacayE6EYBiQ1ZXw0k=
+	t=1729507574; cv=none; b=HlpUHt4UBB69iYTJH3PgHUsdt1pLxB1JgvHIlFSjTtiOqnbsbvy5YqeibufkEIX7Ddd/hVY5uIHnsafERlpOKy7yH57izWb/kq1DHpuiPvGAhbLs/FiEbVvN+Eu9evpRAO0ej2PtoK1gsx0Q7XsehDj+j/OHiGe78lFOJCfcFCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507154; c=relaxed/simple;
-	bh=44V3vPcQjP16qJ0UtzEcbPS40h2bcUrl30c8tpkgpAg=;
+	s=arc-20240116; t=1729507574; c=relaxed/simple;
+	bh=gpMNXYy/6dtmDryJzVGuPBZ3Xz67dVxqNZL9u9aDr2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JIJMMI6frb2kr4TldWRS+nSxAaHpDeG8CzMENEh0BwOLDxCVF+xsnXt7h05WOXhO/X+/Af7JRvBcYm+2DuAFCV5mOFjO27S2CG3xmUcby52atWQV4Md3pldGnE7369/Ru8UAwIiPWq3TtzL3nZTFt6HJkIiHJI2rr9PhFkB2zRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lLGYWzCX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614F5C4CEC3;
-	Mon, 21 Oct 2024 10:39:13 +0000 (UTC)
+	 MIME-Version; b=daifoUAvBpjE7nIqdaULty1nM/+L2BJU422D4sPqp6YBNxgvDexUH+o5PtVHdNjTGKfH/WuW5OYxYyI2J0SJxeOXibo178ZrTonk3yxRjghZ//F07yUe//Un5GzFgjOOmKQKGZx87LR25qQMyTvof7E3W0hXJnFinVC4VTQ+4Lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mr5rrwGm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732C5C4CEC3;
+	Mon, 21 Oct 2024 10:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507153;
-	bh=44V3vPcQjP16qJ0UtzEcbPS40h2bcUrl30c8tpkgpAg=;
+	s=korg; t=1729507573;
+	bh=gpMNXYy/6dtmDryJzVGuPBZ3Xz67dVxqNZL9u9aDr2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lLGYWzCXQiktPLual0N27aBjT+WoBoiHBPewKkRLXQbF1+XqD+TBuqxZGtazKnvpe
-	 +zKCvK2pbQmneGO0YUIKRPHAz1H0Dws4Pbgw8Dk4VkGACo+zudi4DEGw+sUAJmnqBR
-	 c0xkDhw7I04Rl5/M848S9eU8gqwpcV1Q8Bp9k8+0=
+	b=Mr5rrwGmpPQxjYfVpnv7EPFgqvv1Si463tMmQN1QkGmuvwBGc1lUCLLt+bNyNJAkT
+	 6onRX5Sb3IQp9WFivW705IwQDbhqbuvyhpYI2cU7LK1Kwh5VWHNZnNYGMYRd069aaV
+	 H2w8bADAjsBtXeeFc0Tkl/ZYp9Lh3cDz2VtcBGlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Subject: [PATCH 6.6 107/124] x86/entry_32: Clear CPU buffers after register restore in NMI return
+	Liu Shixin <liushixin2@huawei.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 30/82] mm/swapfile: skip HugeTLB pages for unuse_vma
 Date: Mon, 21 Oct 2024 12:25:11 +0200
-Message-ID: <20241021102300.856565423@linuxfoundation.org>
+Message-ID: <20241021102248.438753441@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Liu Shixin <liushixin2@huawei.com>
 
-commit 48a2440d0f20c826b884e04377ccc1e4696c84e9 upstream.
+commit 7528c4fb1237512ee18049f852f014eba80bbe8d upstream.
 
-CPU buffers are currently cleared after call to exc_nmi, but before
-register state is restored. This may be okay for MDS mitigation but not for
-RDFS. Because RDFS mitigation requires CPU buffers to be cleared when
-registers don't have any sensitive data.
+I got a bad pud error and lost a 1GB HugeTLB when calling swapoff.  The
+problem can be reproduced by the following steps:
 
-Move CLEAR_CPU_BUFFERS after RESTORE_ALL_NMI.
+ 1. Allocate an anonymous 1GB HugeTLB and some other anonymous memory.
+ 2. Swapout the above anonymous memory.
+ 3. run swapoff and we will get a bad pud error in kernel message:
 
-Fixes: a0e2dab44d22 ("x86/entry_32: Add VERW just before userspace transition")
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240925-fix-dosemu-vm86-v7-2-1de0daca2d42%40linux.intel.com
+  mm/pgtable-generic.c:42: bad pud 00000000743d215d(84000001400000e7)
+
+We can tell that pud_clear_bad is called by pud_none_or_clear_bad in
+unuse_pud_range() by ftrace.  And therefore the HugeTLB pages will never
+be freed because we lost it from page table.  We can skip HugeTLB pages
+for unuse_vma to fix it.
+
+Link: https://lkml.kernel.org/r/20241015014521.570237-1-liushixin2@huawei.com
+Fixes: 0fe6e20b9c4c ("hugetlb, rmap: add reverse mapping for hugepage")
+Signed-off-by: Liu Shixin <liushixin2@huawei.com>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/entry/entry_32.S |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/swapfile.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/entry/entry_32.S
-+++ b/arch/x86/entry/entry_32.S
-@@ -1149,7 +1149,6 @@ SYM_CODE_START(asm_exc_nmi)
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -2125,7 +2125,7 @@ static int unuse_mm(struct mm_struct *mm
  
- 	/* Not on SYSENTER stack. */
- 	call	exc_nmi
--	CLEAR_CPU_BUFFERS
- 	jmp	.Lnmi_return
- 
- .Lnmi_from_sysenter_stack:
-@@ -1170,6 +1169,7 @@ SYM_CODE_START(asm_exc_nmi)
- 
- 	CHECK_AND_APPLY_ESPFIX
- 	RESTORE_ALL_NMI cr3_reg=%edi pop=4
-+	CLEAR_CPU_BUFFERS
- 	jmp	.Lirq_return
- 
- #ifdef CONFIG_X86_ESPFIX32
-@@ -1211,6 +1211,7 @@ SYM_CODE_START(asm_exc_nmi)
- 	 *  1 - orig_ax
- 	 */
- 	lss	(1+5+6)*4(%esp), %esp			# back to espfix stack
-+	CLEAR_CPU_BUFFERS
- 	jmp	.Lirq_return
- #endif
- SYM_CODE_END(asm_exc_nmi)
+ 	mmap_read_lock(mm);
+ 	for (vma = mm->mmap; vma; vma = vma->vm_next) {
+-		if (vma->anon_vma) {
++		if (vma->anon_vma && !is_vm_hugetlb_page(vma)) {
+ 			ret = unuse_vma(vma, type, frontswap,
+ 					fs_pages_to_unuse);
+ 			if (ret)
 
 
 
