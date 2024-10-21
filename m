@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-87232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28FD09A63DF
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:40:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB5179A6471
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:47:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B96041F23479
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:40:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A38CC2812B1
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EED5B1EABA4;
-	Mon, 21 Oct 2024 10:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C091EF925;
+	Mon, 21 Oct 2024 10:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xob1GdA1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kX28PJam"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBE71E9098;
-	Mon, 21 Oct 2024 10:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12561E4106;
+	Mon, 21 Oct 2024 10:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506989; cv=none; b=Ha/MV3rta9wMCURn2huAGdrk6jCmNGgKKOXtvPEhGjnoDPo3bt1n21ygE4P4lhsuj12iIcevlj3fY1vpeTnGwTVd5sH+6RhKnZtpiTutA6T/eHsxQJAMsCyCmn/ayz4iLa/Pn3lk1XU/tQAo+H2I6zuxDEhQM65cdk5feVc30Bo=
+	t=1729507264; cv=none; b=sdD1iv+3XBj++AXnZlsypwSNJkpxbVWyBEzNo9fiQcoD9yRK4+eV4jDewsxRo6XFoJfYFVYSZK7HWA5JTVHsdt+0hwIZRrorX4L/SvlY47tsJUCFzb+r+isjD4xXA4RjDu+ha4RF1wCYKwyC9x6HkupATaByD/18zXiBXgCQ2Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506989; c=relaxed/simple;
-	bh=US7GiHuOVPhZjNL7zOKMcns/ZEslLwq02XALlK19UQI=;
+	s=arc-20240116; t=1729507264; c=relaxed/simple;
+	bh=lfYPXmg0D90K81EFXGLdCHI7g20szxr7eZqwPzmTSsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=akVsW3SVVKo1d4cWnpl3soDqN3wZ7KWfzpW2Vwm2pA3fDLoIcrqMFYd1nNxqUrCQSDM9RicZklCf+QsRbH+hkZfrJmdnwqLtPqkQfN4tzYQ9BZldfGP2fUZZ58ecy/TaCdaLobwMuVzPmYvyRrtmUuzk9oL8kuVVFZujNl9lnF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xob1GdA1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E547C4CEC3;
-	Mon, 21 Oct 2024 10:36:28 +0000 (UTC)
+	 MIME-Version; b=pKhvQE3IKQISf0zgdmYak/Qthc+ttflsb0EKPIf4/aAWrwY9w1VzfPz95NDLiWbBiDtXG0MI++VFwvUQt5ShIjNcuL2DX9ZHJ6uM+t105OYhsYtu0PHq60LuvDuLj3v3z7V/QnVOrvw8YdaiuB6DD/aFORTtgOgJc6cxw+MTaJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kX28PJam; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD9AC4CEE5;
+	Mon, 21 Oct 2024 10:41:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506989;
-	bh=US7GiHuOVPhZjNL7zOKMcns/ZEslLwq02XALlK19UQI=;
+	s=korg; t=1729507264;
+	bh=lfYPXmg0D90K81EFXGLdCHI7g20szxr7eZqwPzmTSsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xob1GdA1SSXgLyJkSsptT7gO5hNj+SO23+1y4q4h6IorJtSEmYG3fyLvaxWJ2l91M
-	 Php5oNeSQjEPtNdNU4FIJ+6r3NXd/s60IYreSHwxCAgcrCxj/cs7zE1+7/otF9JO6y
-	 I2IhmH8YQyFv3rXqPeSNQXfw7h5YIR1GCIquys/w=
+	b=kX28PJamt6fqtaZwPQZHOKooVT77eN3Dc3IeqtZDngO4zush7f5jfzFCoxDNyeKg9
+	 Iw7YS+vZHxBk5jwyGi7i1kA8zB+b6r5vUbm1FfE5mBdEdC/klcvUVnNbcLAzYHEpaG
+	 wwOVMe7cMP38vM/bbsQkeZNO/iuQIur22zpilOQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.6 051/124] s390/sclp_vt220: Convert newlines to CRLF instead of LFCR
-Date: Mon, 21 Oct 2024 12:24:15 +0200
-Message-ID: <20241021102258.704098589@linuxfoundation.org>
+	Anand Jain <anand.jain@oracle.com>,
+	Roi Martin <jroi.martin@gmail.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 02/91] btrfs: fix uninitialized pointer free on read_alloc_one_name() error
+Date: Mon, 21 Oct 2024 12:24:16 +0200
+Message-ID: <20241021102249.891905555@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Roi Martin <jroi.martin@gmail.com>
 
-commit dee3df68ab4b00fff6bdf9fc39541729af37307c upstream.
+commit 2ab5e243c2266c841e0f6904fad1514b18eaf510 upstream.
 
-According to the VT220 specification the possible character combinations
-sent on RETURN are only CR or CRLF [0].
+The function read_alloc_one_name() does not initialize the name field of
+the passed fscrypt_str struct if kmalloc fails to allocate the
+corresponding buffer.  Thus, it is not guaranteed that
+fscrypt_str.name is initialized when freeing it.
 
-	The Return key sends either a CR character (0/13) or a CR
-	character (0/13) and an LF character (0/10), depending on the
-	set/reset state of line feed/new line mode (LNM).
+This is a follow-up to the linked patch that fixes the remaining
+instances of the bug introduced by commit e43eec81c516 ("btrfs: use
+struct qstr instead of name and namelen pairs").
 
-The sclp/vt220 driver however uses LFCR. This can confuse tools, for
-example the kunit runner.
-
-Link: https://vt100.net/docs/vt220-rm/chapter3.html#S3.2
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
-Link: https://lore.kernel.org/r/20241014-s390-kunit-v1-2-941defa765a6@linutronix.de
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/linux-btrfs/20241009080833.1355894-1-jroi.martin@gmail.com/
+Fixes: e43eec81c516 ("btrfs: use struct qstr instead of name and namelen pairs")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Roi Martin <jroi.martin@gmail.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/char/sclp_vt220.c |    4 ++--
+ fs/btrfs/tree-log.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/s390/char/sclp_vt220.c
-+++ b/drivers/s390/char/sclp_vt220.c
-@@ -319,7 +319,7 @@ sclp_vt220_add_msg(struct sclp_vt220_req
- 	buffer = (void *) ((addr_t) sccb + sccb->header.length);
- 
- 	if (convertlf) {
--		/* Perform Linefeed conversion (0x0a -> 0x0a 0x0d)*/
-+		/* Perform Linefeed conversion (0x0a -> 0x0d 0x0a)*/
- 		for (from=0, to=0;
- 		     (from < count) && (to < sclp_vt220_space_left(request));
- 		     from++) {
-@@ -328,8 +328,8 @@ sclp_vt220_add_msg(struct sclp_vt220_req
- 			/* Perform conversion */
- 			if (c == 0x0a) {
- 				if (to + 1 < sclp_vt220_space_left(request)) {
--					((unsigned char *) buffer)[to++] = c;
- 					((unsigned char *) buffer)[to++] = 0x0d;
-+					((unsigned char *) buffer)[to++] = c;
- 				} else
- 					break;
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -1844,7 +1844,7 @@ static noinline int replay_one_name(stru
+ 				    struct btrfs_dir_item *di,
+ 				    struct btrfs_key *key)
+ {
+-	struct fscrypt_str name;
++	struct fscrypt_str name = { 0 };
+ 	struct btrfs_dir_item *dir_dst_di;
+ 	struct btrfs_dir_item *index_dst_di;
+ 	bool dir_dst_matches = false;
+@@ -2124,7 +2124,7 @@ static noinline int check_item_in_log(st
+ 	struct extent_buffer *eb;
+ 	int slot;
+ 	struct btrfs_dir_item *di;
+-	struct fscrypt_str name;
++	struct fscrypt_str name = { 0 };
+ 	struct inode *inode = NULL;
+ 	struct btrfs_key location;
  
 
 
