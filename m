@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-87326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CADA9A6473
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:47:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B6EA9A642E
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:44:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 653B41C20E33
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:47:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E903C1F21545
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784B81EF93F;
-	Mon, 21 Oct 2024 10:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F511E573B;
+	Mon, 21 Oct 2024 10:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOtjms3W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGf739Dt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D0F1E3DF3;
-	Mon, 21 Oct 2024 10:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FCCC1E2618;
+	Mon, 21 Oct 2024 10:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507271; cv=none; b=Bg0zsq/E5XiJuq0T9LrLzmw7rD8jgg3B6ScggCGdEqXT3jJWIqRasBn/QwjlEZeMZxCQv2YjMrFcAIXtEBdcSa/wCbN3KQDaSIH6NTfM/rBeBh0FKTFaodyNeFSFc0NOOmZ81hBvCXukDPYqWnneCU4dlPx3EPFjwD6d0TSX/DY=
+	t=1729507115; cv=none; b=IHHykEz1z/VyF3qPcX06xeTiQwlJe97KKk7LAtG+PzgdshzPKl+9SqrK95qaH5ay2DL17uhhE5B3ehjy7KCdGy/oFDpLhOkHivGObG6EkMTV70qnJdlRA1puak1hq7EtTgKyNkbl38qmhWhpdX0oLUUFiP4a14Wf3cobeT0V+74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507271; c=relaxed/simple;
-	bh=ObphCfngXRde0m7QoMtDMyVH9tEodP5V1TtpbQ6UYAU=;
+	s=arc-20240116; t=1729507115; c=relaxed/simple;
+	bh=VPoYP1lKs7I6bksYYSffqL7ZUN2jjRmivbzfBcpt64o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pbA0293iYrKXlySJxdkd3CE6Kr5uOba0LEXr3f0rjXzeVhiZiSFHJZTn1OeIXXjuEs/4WXS9w0KTGK77qHsy/xku3XZvlT3PxQqsxcX6NYbb7zT+xCPq5CE/B8KHy9fvr1WUBYl96aCC4yAUcdOcqOCsO01LbLU4XrU4efACFwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOtjms3W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C51DC4CEC3;
-	Mon, 21 Oct 2024 10:41:10 +0000 (UTC)
+	 MIME-Version; b=clB8UQv0RHEVk5cvjT1WDNKH5/hJCHrXE1neSbarKsp+YixiktFBt5KQPYtI5qHsJ5cI8c96KH1+oYAYiwHc7kTQuwk0wZAWxmfKvSCMB+bS0p4LwgCVhOjnToasm+8CISG82FEh1mXmafjW5IA99IS3LC0b7TgFPpXJnL5ueDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGf739Dt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 694F2C4CEE5;
+	Mon, 21 Oct 2024 10:38:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507270;
-	bh=ObphCfngXRde0m7QoMtDMyVH9tEodP5V1TtpbQ6UYAU=;
+	s=korg; t=1729507114;
+	bh=VPoYP1lKs7I6bksYYSffqL7ZUN2jjRmivbzfBcpt64o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kOtjms3W/zeMhuLqpR34pXIQLcc/ndIQQdsIGed+k2boEfj4ox5kOdCwHhZpqxtHK
-	 qv2advE87ItpjOdsN7pF+0AC/pmH90EojIwQkfkAItU6l7IHZ3HXXpwi4L9qnUQTie
-	 pIsFghKQA1C/nInv8g7ZMYorcy6ZrwcDcDIDo/lg=
+	b=ZGf739Dtxg1exkvB4+Gk5zYxYHE6Eou+ENw6ri20VsEoWwWUV8xkkSnFFMZJlOqw9
+	 L3jEqn+tshxDdmy73oSlJ3V4E2U8fqXSV8KBUYldGiG4EM6YcPe3Lmp2BYia0yuL23
+	 cxILj92XoV/5Tmh5C0YS7k7/Zob1n9f2fdzyOWuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	zdi-disclosures@trendmicro.com
-Subject: [PATCH 6.1 03/91] ksmbd: fix user-after-free from session log off
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Michael Mueller <mimu@linux.ibm.com>,
+	Nico Boehr <nrb@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>
+Subject: [PATCH 6.6 053/124] KVM: s390: Change virtual to physical address access in diag 0x258 handler
 Date: Mon, 21 Oct 2024 12:24:17 +0200
-Message-ID: <20241021102249.930971205@linuxfoundation.org>
+Message-ID: <20241021102258.781321336@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,156 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Michael Mueller <mimu@linux.ibm.com>
 
-commit 7aa8804c0b67b3cb263a472d17f2cb50d7f1a930 upstream.
+commit cad4b3d4ab1f062708fff33f44d246853f51e966 upstream.
 
-There is racy issue between smb2 session log off and smb2 session setup.
-It will cause user-after-free from session log off.
-This add session_lock when setting SMB2_SESSION_EXPIRED and referece
-count to session struct not to free session while it is being used.
+The parameters for the diag 0x258 are real addresses, not virtual, but
+KVM was using them as virtual addresses. This only happened to work, since
+the Linux kernel as a guest used to have a 1:1 mapping for physical vs
+virtual addresses.
 
-Cc: stable@vger.kernel.org # v5.15+
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-25282
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fix KVM so that it correctly uses the addresses as real addresses.
+
+Cc: stable@vger.kernel.org
+Fixes: 8ae04b8f500b ("KVM: s390: Guest's memory access functions get access registers")
+Suggested-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Michael Mueller <mimu@linux.ibm.com>
+Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240917151904.74314-3-nrb@linux.ibm.com
+Acked-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/mgmt/user_session.c |   26 +++++++++++++++++++++-----
- fs/smb/server/mgmt/user_session.h |    4 ++++
- fs/smb/server/server.c            |    2 ++
- fs/smb/server/smb2pdu.c           |    8 +++++++-
- 4 files changed, 34 insertions(+), 6 deletions(-)
+ arch/s390/kvm/diag.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -176,9 +176,10 @@ static void ksmbd_expire_session(struct
- 
- 	down_write(&conn->session_lock);
- 	xa_for_each(&conn->sessions, id, sess) {
--		if (sess->state != SMB2_SESSION_VALID ||
--		    time_after(jiffies,
--			       sess->last_active + SMB2_SESSION_TIMEOUT)) {
-+		if (atomic_read(&sess->refcnt) == 0 &&
-+		    (sess->state != SMB2_SESSION_VALID ||
-+		     time_after(jiffies,
-+			       sess->last_active + SMB2_SESSION_TIMEOUT))) {
- 			xa_erase(&conn->sessions, sess->id);
- 			hash_del(&sess->hlist);
- 			ksmbd_session_destroy(sess);
-@@ -268,8 +269,6 @@ struct ksmbd_session *ksmbd_session_look
- 
- 	down_read(&sessions_table_lock);
- 	sess = __session_lookup(id);
--	if (sess)
--		sess->last_active = jiffies;
- 	up_read(&sessions_table_lock);
- 
- 	return sess;
-@@ -288,6 +287,22 @@ struct ksmbd_session *ksmbd_session_look
- 	return sess;
- }
- 
-+void ksmbd_user_session_get(struct ksmbd_session *sess)
-+{
-+	atomic_inc(&sess->refcnt);
-+}
-+
-+void ksmbd_user_session_put(struct ksmbd_session *sess)
-+{
-+	if (!sess)
-+		return;
-+
-+	if (atomic_read(&sess->refcnt) <= 0)
-+		WARN_ON(1);
-+	else
-+		atomic_dec(&sess->refcnt);
-+}
-+
- struct preauth_session *ksmbd_preauth_session_alloc(struct ksmbd_conn *conn,
- 						    u64 sess_id)
- {
-@@ -356,6 +371,7 @@ static struct ksmbd_session *__session_c
- 	xa_init(&sess->rpc_handle_list);
- 	sess->sequence_number = 1;
- 	rwlock_init(&sess->tree_conns_lock);
-+	atomic_set(&sess->refcnt, 1);
- 
- 	ret = __init_smb2_session(sess);
- 	if (ret)
---- a/fs/smb/server/mgmt/user_session.h
-+++ b/fs/smb/server/mgmt/user_session.h
-@@ -61,6 +61,8 @@ struct ksmbd_session {
- 	struct ksmbd_file_table		file_table;
- 	unsigned long			last_active;
- 	rwlock_t			tree_conns_lock;
-+
-+	atomic_t			refcnt;
- };
- 
- static inline int test_session_flag(struct ksmbd_session *sess, int bit)
-@@ -101,4 +103,6 @@ void ksmbd_release_tree_conn_id(struct k
- int ksmbd_session_rpc_open(struct ksmbd_session *sess, char *rpc_name);
- void ksmbd_session_rpc_close(struct ksmbd_session *sess, int id);
- int ksmbd_session_rpc_method(struct ksmbd_session *sess, int id);
-+void ksmbd_user_session_get(struct ksmbd_session *sess);
-+void ksmbd_user_session_put(struct ksmbd_session *sess);
- #endif /* __USER_SESSION_MANAGEMENT_H__ */
---- a/fs/smb/server/server.c
-+++ b/fs/smb/server/server.c
-@@ -238,6 +238,8 @@ static void __handle_ksmbd_work(struct k
- 	} while (is_chained == true);
- 
- send:
-+	if (work->sess)
-+		ksmbd_user_session_put(work->sess);
- 	if (work->tcon)
- 		ksmbd_tree_connect_put(work->tcon);
- 	smb3_preauth_hash_rsp(work);
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -604,8 +604,10 @@ int smb2_check_user_session(struct ksmbd
- 
- 	/* Check for validity of user session */
- 	work->sess = ksmbd_session_lookup_all(conn, sess_id);
--	if (work->sess)
-+	if (work->sess) {
-+		ksmbd_user_session_get(work->sess);
- 		return 1;
-+	}
- 	ksmbd_debug(SMB, "Invalid user session, Uid %llu\n", sess_id);
- 	return -ENOENT;
- }
-@@ -1759,6 +1761,7 @@ int smb2_sess_setup(struct ksmbd_work *w
- 		}
- 
- 		conn->binding = true;
-+		ksmbd_user_session_get(sess);
- 	} else if ((conn->dialect < SMB30_PROT_ID ||
- 		    server_conf.flags & KSMBD_GLOBAL_FLAG_SMB3_MULTICHANNEL) &&
- 		   (req->Flags & SMB2_SESSION_REQ_FLAG_BINDING)) {
-@@ -1785,6 +1788,7 @@ int smb2_sess_setup(struct ksmbd_work *w
- 		}
- 
- 		conn->binding = false;
-+		ksmbd_user_session_get(sess);
- 	}
- 	work->sess = sess;
- 
-@@ -2240,7 +2244,9 @@ int smb2_session_logoff(struct ksmbd_wor
- 	}
- 
- 	ksmbd_destroy_file_table(&sess->file_table);
-+	down_write(&conn->session_lock);
- 	sess->state = SMB2_SESSION_EXPIRED;
-+	up_write(&conn->session_lock);
- 
- 	ksmbd_free_user(sess->user);
- 	sess->user = NULL;
+--- a/arch/s390/kvm/diag.c
++++ b/arch/s390/kvm/diag.c
+@@ -77,7 +77,7 @@ static int __diag_page_ref_service(struc
+ 	vcpu->stat.instruction_diagnose_258++;
+ 	if (vcpu->run->s.regs.gprs[rx] & 7)
+ 		return kvm_s390_inject_program_int(vcpu, PGM_SPECIFICATION);
+-	rc = read_guest(vcpu, vcpu->run->s.regs.gprs[rx], rx, &parm, sizeof(parm));
++	rc = read_guest_real(vcpu, vcpu->run->s.regs.gprs[rx], &parm, sizeof(parm));
+ 	if (rc)
+ 		return kvm_s390_inject_prog_cond(vcpu, rc);
+ 	if (parm.parm_version != 2 || parm.parm_len < 5 || parm.code != 0x258)
 
 
 
