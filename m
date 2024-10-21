@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-87033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 870F59A5F95
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:59:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C10909A600E
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 11:32:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F290B1F236B8
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 08:59:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82715284BB2
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 09:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4002C1E2603;
-	Mon, 21 Oct 2024 08:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ABD71E3785;
+	Mon, 21 Oct 2024 09:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="m18TV+jM"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="GRljuWkQ"
 X-Original-To: stable@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FD5200CD;
-	Mon, 21 Oct 2024 08:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F361E1C18;
+	Mon, 21 Oct 2024 09:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729501152; cv=none; b=mLLSGWEJ6TBfPhhy79aKLQdd4pL6RjtnIAbJwPurzqslhKpQLYjQLkhe1usbALCpenSgcCrhO4rognS/w1/NskVPIeJGfbBBqytyFBS8PkBzw/422za1XqFnLUghS9VRfHrdjZRuhTRHwj0J/qAcsG82pFvk1OBtIia/XRWFg+g=
+	t=1729503077; cv=none; b=jVucJHyZGYaVFN0srHqA+Ev99LNwNXPNmGKut22jK+drYf0FgANI0U/zkIepFmh63rjo0soEtJVO/yorMjjr/3hSg9ZJnfjxavyVwVMQQSjEH7iPqjzn93GjqXb7+zyZOvUSrSaadbfyPuRl1Pq4WiijAFQRqy7Nc+vGRVWbTdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729501152; c=relaxed/simple;
-	bh=C7NIpMnvUoTZxe6zhDE0hY4LhkMmsoBIL9CZOvEdxxY=;
+	s=arc-20240116; t=1729503077; c=relaxed/simple;
+	bh=GQSpJJI5IGjcyXynsa8pJEnZ5S6eiP4WGTSuAiP3oHI=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=in4ICFYbnhw4eCkG2nYDkDElkpQdq7pD2JODs2YUzl6ce38dSrW1HZcmQHnJ11iHb6SLjAdBqNEKs+82s1XmDbab0Np3k59fdgtjDlOrdBqVV0FnX8ziyGbfLuFC3iT2Ex7KogtpkADqyRvixOAmMywa7bXZ/wbnIzeVwmR9Hr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=m18TV+jM; arc=none smtp.client-ip=211.75.126.72
+	 Content-Type:MIME-Version; b=CyPvwPNaUPnh3O3DuzbERe37EijOGlNeNbzwWKytdKfMRtL5MEXHatjVlk+RnJkPBGRKq/CvCf9Kgl2g0b6jJ+xegLer/lIsLteHxTjlKcolbOfE6clZ/uz5izcccemxfOlwSihIBKc1tQuEikO1YQKvc1/Cuqzocs1BmX2hD/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=GRljuWkQ; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49L8x19612167434, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49L9V7RX02196782, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1729501141; bh=C7NIpMnvUoTZxe6zhDE0hY4LhkMmsoBIL9CZOvEdxxY=;
+	t=1729503067; bh=GQSpJJI5IGjcyXynsa8pJEnZ5S6eiP4WGTSuAiP3oHI=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=m18TV+jM+A7vGI5s2Rs31sOPverQvZygA/gF7/pfcWhGMEsW9//ze7XskWg/LEPrv
-	 PKX1NYI3Mor/cAD953z4ohUujbTj8s9hc35qPtS9vommkpuqYuxCr7MN/wnZibxiDf
-	 hdG+LOPTyHYQSRRXFzb2DQ2FbJGs22D7ZKOfATnIujdygUcHOm3gpk+zTQJqx4zNDa
-	 BTAs4GhYQSvOGlr61WAxyerTGICDj7yDQiangRKv7uLvkfE1687mq1gNeSzvDiUVpg
-	 sqzxUmOzlhOu8GDzICG3qk3bxlQC4HYeHe8aBgyZvyy320Y3JLPW+P8uw557b0220l
-	 m/lzG327YLy8g==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49L8x19612167434
+	b=GRljuWkQAX6gChy37FYHi8IZKpbRRseyGLXv8+N0MCz3IxLl4L2INuKi7v/pfoEUX
+	 HgHKNOx9X4eFfI2OxJocZRb8AcJYApZMZAa+j5Z1YR5OQuc/to8fTnGH5Nzsktt++z
+	 eYgDvAWTCiTimvztraLSCdaxOXAgCqifkTeV63BbUooJkq37wIaRQUfeeDoaJuWI8n
+	 /WwbK6qLfFFBli7oGGxaz1T8C9qnRN9TeF35vf9u3dZtD/wDyb0wP7sPn4gPWlyArP
+	 X+i3r5Ie+8SEw+OAP5LIzIPTHFoXC0WSTp8XkBfQ7sMaCrzkIIcfv6x7DNh2yNF54n
+	 k/Ep1vVpHYAZw==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49L9V7RX02196782
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 21 Oct 2024 16:59:01 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+	Mon, 21 Oct 2024 17:31:07 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 21 Oct 2024 16:59:01 +0800
+ 15.1.2507.39; Mon, 21 Oct 2024 17:31:08 +0800
 Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 21 Oct 2024 16:59:00 +0800
+ 15.1.2507.35; Mon, 21 Oct 2024 17:31:07 +0800
 Received: from RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2]) by
  RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2%7]) with mapi id
- 15.01.2507.035; Mon, 21 Oct 2024 16:59:00 +0800
+ 15.01.2507.035; Mon, 21 Oct 2024 17:31:07 +0800
 From: Kailang <kailang@realtek.com>
 To: Takashi Iwai <tiwai@suse.de>
 CC: Dean Matthew Menezes <dean.menezes@utexas.edu>,
@@ -71,9 +71,9 @@ CC: Dean Matthew Menezes <dean.menezes@utexas.edu>,
 	<gregkh@linuxfoundation.org>
 Subject: RE: No sound on speakers X1 Carbon Gen 12
 Thread-Topic: No sound on speakers X1 Carbon Gen 12
-Thread-Index: AQHbIwVT/23eeZo4dEmkKtnQN51H6bKP5WWAgABb9wCAAJxEgP//e3+AgACHy9D//4FDgIAAhkBg
-Date: Mon, 21 Oct 2024 08:59:00 +0000
-Message-ID: <c47a3841cd554c678a0c5e517dd2ea77@realtek.com>
+Thread-Index: AQHbIwVT/23eeZo4dEmkKtnQN51H6bKP5WWAgABb9wCAAJxEgP//e3+AgACHy9D//4FDgIAAjaEg
+Date: Mon, 21 Oct 2024 09:31:07 +0000
+Message-ID: <556c2d97b9054562a96e070efc9f817c@realtek.com>
 References: <CAEkK70Tke7UxMEEKgRLMntSYeMqiv0PC8st72VYnBVQD-KcqVw@mail.gmail.com>
 	<2024101613-giggling-ceremony-aae7@gregkh>
 	<433b8579-e181-40e6-9eac-815d73993b23@leemhuis.info>
@@ -140,6 +140,10 @@ ai
 > (working)    Coeff 0x46: 0x0004
 > (broken)     Coeff 0x46: 0x0404
 > It shouldn't be a problem to leave the bit 0x800 to COEF 0x10, I suppose?
+
+This just change pin function from MLK to GIPO.
+Our AE guess says, it maybe GPIO3 can't pull high.
+
 >=20
 > > Maybe could run hda_verb to get COEF value. To get NID 0x5A index 0 val=
 ue.
@@ -151,10 +155,6 @@ ue.
 > and give the outputs on both working and non-working cases.
 >=20
 > hda-verb should be included in alsa-utils.
-
-Dean,
-Please also get the value via music playing.
-
 >=20
 >=20
 > Takashi
