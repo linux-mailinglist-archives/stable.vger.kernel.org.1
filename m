@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-87181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A01D9A63A3
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:38:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B835A9A642A
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:44:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B4292826A5
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A2882826BF
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8C61E571D;
-	Mon, 21 Oct 2024 10:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556851E5716;
+	Mon, 21 Oct 2024 10:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T18SDIA8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tbcyPn0F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058821E5722;
-	Mon, 21 Oct 2024 10:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9F91E2618;
+	Mon, 21 Oct 2024 10:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506837; cv=none; b=FB31OoN44rCBDdczhstfWiAr1hZ1V/wGc3N9u6TWpNZEvfkSioGsI+DzLiw0Ba2bxdentIX+GxP/WYneUkXlZPnGlQqlJhN9xs9TgTDoLdSETqsSUaiK3OQ5TY4zWh3aGsQVSs7r21/fD0VRf51cHVb/uq80x5cZ5W4v1oEeJCY=
+	t=1729507103; cv=none; b=MbAuA/YONm0Vxh/RCu3tCnuCWawwTyRW8I3OIf4/CVa/2PpVDTcbNHsmb8t+59UZMVjDvBKFN06DYFEX0TEVWhlCkL0wGMa73hg2P5mXUib5TtVSNkzbEdDGrR1MV4MAxKHV1A+EyASVfUPjg8OKfkPcG0JVS7l0hErnsxwGyuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506837; c=relaxed/simple;
-	bh=mtH7jSFRFrFmQ5X93f0e0UOY3HB6ohaHh/InaRCUhmE=;
+	s=arc-20240116; t=1729507103; c=relaxed/simple;
+	bh=w5mNyAIYN8NypZZT+/4Fpito1vNuIMFx15L4WsxUCvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hl21rgFyrz77FOhlrIVw44W15b3A6qOA5ghRo/y9H+Ux2fYjetWjFqZxDOJEYmU9H4+XaLbgnawAMY8CNJ+uNDuPYN0hC4I5M0FGEfIgq4SKaq2Rl6vD+Hbp7fSwXRxHW0fxz9DbaHCDcDm8T/BhjF2W1iu+WsC/0MHuQR3NDKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T18SDIA8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 733EDC4CEC3;
-	Mon, 21 Oct 2024 10:33:56 +0000 (UTC)
+	 MIME-Version; b=I+ua1N3mRSno/ti8cyNsg8JzXNWKCyQ7mXiYqh/k4Zao4w7Ri8Zv/RIOHVdx8dd9mNUVJmWSeiOE+NYziNsL2j+JL6EmLCr/YNDMsDOs3bvWcc85d8TuiTFrIzo+nJhMXYyXf7CsSGgDcBXYEo6NTN62fgmSANOFeCdV6UEVyJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tbcyPn0F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EBFFC4CEC3;
+	Mon, 21 Oct 2024 10:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506836;
-	bh=mtH7jSFRFrFmQ5X93f0e0UOY3HB6ohaHh/InaRCUhmE=;
+	s=korg; t=1729507102;
+	bh=w5mNyAIYN8NypZZT+/4Fpito1vNuIMFx15L4WsxUCvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T18SDIA8/62F4eTWaS2G+dzMNfYJFDXt+1Wvix3vpu1jPW/LLnyUK/teGKgvUsSuT
-	 pc/jlMf219FOIrcGLQyzFEij/gqb2ZeFlmTPj/JbAnMKgvQkZJjpgstI6e9au60qZ3
-	 NOSvMM7ukHlPfticDzED2dnZTn/LwuqO+0+X5h5I=
+	b=tbcyPn0Fg3f9FhB/tesvMCyEaXQ/cj9BkQGuiBuxe0aTQdwMJDeeVkb7q4hAlzI9y
+	 0rXq1kVXKNWvC5BdvyH+QSaIAs1gqFcCsgyyDMRDtnYBsoquVBD52PQAnc80v6BM6U
+	 52Xl5x1ncydIXRflXWyBJFrIv7n8T4FePChTS3wQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f342ea16c9d06d80b585@syzkaller.appspotmail.com,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Marcello Sylvester Bauer <sylv@sylv.io>
-Subject: [PATCH 6.11 106/135] USB: gadget: dummy-hcd: Fix "task hung" problem
-Date: Mon, 21 Oct 2024 12:24:22 +0200
-Message-ID: <20241021102303.474641178@linuxfoundation.org>
+	Omar Sandoval <osandov@fb.com>,
+	Tejun Heo <tj@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 059/124] blk-rq-qos: fix crash on rq_qos_wait vs. rq_qos_wake_function race
+Date: Mon, 21 Oct 2024 12:24:23 +0200
+Message-ID: <20241021102259.016730510@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,128 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Omar Sandoval <osandov@fb.com>
 
-commit 5189df7b8088268012882c220d6aca4e64981348 upstream.
+commit e972b08b91ef48488bae9789f03cfedb148667fb upstream.
 
-The syzbot fuzzer has been encountering "task hung" problems ever
-since the dummy-hcd driver was changed to use hrtimers instead of
-regular timers.  It turns out that the problems are caused by a subtle
-difference between the timer_pending() and hrtimer_active() APIs.
+We're seeing crashes from rq_qos_wake_function that look like this:
 
-The changeover blindly replaced the first by the second.  However,
-timer_pending() returns True when the timer is queued but not when its
-callback is running, whereas hrtimer_active() returns True when the
-hrtimer is queued _or_ its callback is running.  This difference
-occasionally caused dummy_urb_enqueue() to think that the callback
-routine had not yet started when in fact it was almost finished.  As a
-result the hrtimer was not restarted, which made it impossible for the
-driver to dequeue later the URB that was just enqueued.  This caused
-usb_kill_urb() to hang, and things got worse from there.
+  BUG: unable to handle page fault for address: ffffafe180a40084
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x0002) - not-present page
+  PGD 100000067 P4D 100000067 PUD 10027c067 PMD 10115d067 PTE 0
+  Oops: Oops: 0002 [#1] PREEMPT SMP PTI
+  CPU: 17 UID: 0 PID: 0 Comm: swapper/17 Not tainted 6.12.0-rc3-00013-geca631b8fe80 #11
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+  RIP: 0010:_raw_spin_lock_irqsave+0x1d/0x40
+  Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 41 54 9c 41 5c fa 65 ff 05 62 97 30 4c 31 c0 ba 01 00 00 00 <f0> 0f b1 17 75 0a 4c 89 e0 41 5c c3 cc cc cc cc 89 c6 e8 2c 0b 00
+  RSP: 0018:ffffafe180580ca0 EFLAGS: 00010046
+  RAX: 0000000000000000 RBX: ffffafe180a3f7a8 RCX: 0000000000000011
+  RDX: 0000000000000001 RSI: 0000000000000003 RDI: ffffafe180a40084
+  RBP: 0000000000000000 R08: 00000000001e7240 R09: 0000000000000011
+  R10: 0000000000000028 R11: 0000000000000888 R12: 0000000000000002
+  R13: ffffafe180a40084 R14: 0000000000000000 R15: 0000000000000003
+  FS:  0000000000000000(0000) GS:ffff9aaf1f280000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: ffffafe180a40084 CR3: 000000010e428002 CR4: 0000000000770ef0
+  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  PKRU: 55555554
+  Call Trace:
+   <IRQ>
+   try_to_wake_up+0x5a/0x6a0
+   rq_qos_wake_function+0x71/0x80
+   __wake_up_common+0x75/0xa0
+   __wake_up+0x36/0x60
+   scale_up.part.0+0x50/0x110
+   wb_timer_fn+0x227/0x450
+   ...
 
-Since hrtimers have no API for telling when they are queued and the
-callback isn't running, the driver must keep track of this for itself.
-That's what this patch does, adding a new "timer_pending" flag and
-setting or clearing it at the appropriate times.
+So rq_qos_wake_function() calls wake_up_process(data->task), which calls
+try_to_wake_up(), which faults in raw_spin_lock_irqsave(&p->pi_lock).
 
-Reported-by: syzbot+f342ea16c9d06d80b585@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/6709234e.050a0220.3e960.0011.GAE@google.com/
-Tested-by: syzbot+f342ea16c9d06d80b585@syzkaller.appspotmail.com
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Fixes: a7f3813e589f ("usb: gadget: dummy_hcd: Switch to hrtimer transfer scheduler")
-Cc: Marcello Sylvester Bauer <sylv@sylv.io>
+p comes from data->task, and data comes from the waitqueue entry, which
+is stored on the waiter's stack in rq_qos_wait(). Analyzing the core
+dump with drgn, I found that the waiter had already woken up and moved
+on to a completely unrelated code path, clobbering what was previously
+data->task. Meanwhile, the waker was passing the clobbered garbage in
+data->task to wake_up_process(), leading to the crash.
+
+What's happening is that in between rq_qos_wake_function() deleting the
+waitqueue entry and calling wake_up_process(), rq_qos_wait() is finding
+that it already got a token and returning. The race looks like this:
+
+rq_qos_wait()                           rq_qos_wake_function()
+==============================================================
+prepare_to_wait_exclusive()
+                                        data->got_token = true;
+                                        list_del_init(&curr->entry);
+if (data.got_token)
+        break;
+finish_wait(&rqw->wait, &data.wq);
+  ^- returns immediately because
+     list_empty_careful(&wq_entry->entry)
+     is true
+... return, go do something else ...
+                                        wake_up_process(data->task)
+                                          (NO LONGER VALID!)-^
+
+Normally, finish_wait() is supposed to synchronize against the waker.
+But, as noted above, it is returning immediately because the waitqueue
+entry has already been removed from the waitqueue.
+
+The bug is that rq_qos_wake_function() is accessing the waitqueue entry
+AFTER deleting it. Note that autoremove_wake_function() wakes the waiter
+and THEN deletes the waitqueue entry, which is the proper order.
+
+Fix it by swapping the order. We also need to use
+list_del_init_careful() to match the list_empty_careful() in
+finish_wait().
+
+Fixes: 38cfb5a45ee0 ("blk-wbt: improve waking of tasks")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/2dab644e-ef87-4de8-ac9a-26f100b2c609@rowland.harvard.edu
+Signed-off-by: Omar Sandoval <osandov@fb.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/r/d3bee2463a67b1ee597211823bf7ad3721c26e41.1729014591.git.osandov@fb.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/dummy_hcd.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ block/blk-rq-qos.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/udc/dummy_hcd.c b/drivers/usb/gadget/udc/dummy_hcd.c
-index 8820d9924448..081ac7683c0b 100644
---- a/drivers/usb/gadget/udc/dummy_hcd.c
-+++ b/drivers/usb/gadget/udc/dummy_hcd.c
-@@ -254,6 +254,7 @@ struct dummy_hcd {
- 	u32				stream_en_ep;
- 	u8				num_stream[30 / 2];
+--- a/block/blk-rq-qos.c
++++ b/block/blk-rq-qos.c
+@@ -219,8 +219,8 @@ static int rq_qos_wake_function(struct w
  
-+	unsigned			timer_pending:1;
- 	unsigned			active:1;
- 	unsigned			old_active:1;
- 	unsigned			resuming:1;
-@@ -1303,9 +1304,11 @@ static int dummy_urb_enqueue(
- 		urb->error_count = 1;		/* mark as a new urb */
- 
- 	/* kick the scheduler, it'll do the rest */
--	if (!hrtimer_active(&dum_hcd->timer))
-+	if (!dum_hcd->timer_pending) {
-+		dum_hcd->timer_pending = 1;
- 		hrtimer_start(&dum_hcd->timer, ns_to_ktime(DUMMY_TIMER_INT_NSECS),
- 				HRTIMER_MODE_REL_SOFT);
-+	}
- 
-  done:
- 	spin_unlock_irqrestore(&dum_hcd->dum->lock, flags);
-@@ -1324,9 +1327,10 @@ static int dummy_urb_dequeue(struct usb_hcd *hcd, struct urb *urb, int status)
- 	spin_lock_irqsave(&dum_hcd->dum->lock, flags);
- 
- 	rc = usb_hcd_check_unlink_urb(hcd, urb, status);
--	if (!rc && dum_hcd->rh_state != DUMMY_RH_RUNNING &&
--			!list_empty(&dum_hcd->urbp_list))
-+	if (rc == 0 && !dum_hcd->timer_pending) {
-+		dum_hcd->timer_pending = 1;
- 		hrtimer_start(&dum_hcd->timer, ns_to_ktime(0), HRTIMER_MODE_REL_SOFT);
-+	}
- 
- 	spin_unlock_irqrestore(&dum_hcd->dum->lock, flags);
- 	return rc;
-@@ -1813,6 +1817,7 @@ static enum hrtimer_restart dummy_timer(struct hrtimer *t)
- 
- 	/* look at each urb queued by the host side driver */
- 	spin_lock_irqsave(&dum->lock, flags);
-+	dum_hcd->timer_pending = 0;
- 
- 	if (!dum_hcd->udev) {
- 		dev_err(dummy_dev(dum_hcd),
-@@ -1994,8 +1999,10 @@ static enum hrtimer_restart dummy_timer(struct hrtimer *t)
- 	if (list_empty(&dum_hcd->urbp_list)) {
- 		usb_put_dev(dum_hcd->udev);
- 		dum_hcd->udev = NULL;
--	} else if (dum_hcd->rh_state == DUMMY_RH_RUNNING) {
-+	} else if (!dum_hcd->timer_pending &&
-+			dum_hcd->rh_state == DUMMY_RH_RUNNING) {
- 		/* want a 1 msec delay here */
-+		dum_hcd->timer_pending = 1;
- 		hrtimer_start(&dum_hcd->timer, ns_to_ktime(DUMMY_TIMER_INT_NSECS),
- 				HRTIMER_MODE_REL_SOFT);
- 	}
-@@ -2390,8 +2397,10 @@ static int dummy_bus_resume(struct usb_hcd *hcd)
- 	} else {
- 		dum_hcd->rh_state = DUMMY_RH_RUNNING;
- 		set_link_state(dum_hcd);
--		if (!list_empty(&dum_hcd->urbp_list))
-+		if (!list_empty(&dum_hcd->urbp_list)) {
-+			dum_hcd->timer_pending = 1;
- 			hrtimer_start(&dum_hcd->timer, ns_to_ktime(0), HRTIMER_MODE_REL_SOFT);
-+		}
- 		hcd->state = HC_STATE_RUNNING;
- 	}
- 	spin_unlock_irq(&dum_hcd->dum->lock);
-@@ -2522,6 +2531,7 @@ static void dummy_stop(struct usb_hcd *hcd)
- 	struct dummy_hcd	*dum_hcd = hcd_to_dummy_hcd(hcd);
- 
- 	hrtimer_cancel(&dum_hcd->timer);
-+	dum_hcd->timer_pending = 0;
- 	device_remove_file(dummy_dev(dum_hcd), &dev_attr_urbs);
- 	dev_info(dummy_dev(dum_hcd), "stopped\n");
+ 	data->got_token = true;
+ 	smp_wmb();
+-	list_del_init(&curr->entry);
+ 	wake_up_process(data->task);
++	list_del_init_careful(&curr->entry);
+ 	return 1;
  }
--- 
-2.47.0
-
+ 
 
 
 
