@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-87194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD4419A63CA
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:39:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E58C9A6311
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:30:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 261B6B28A7F
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDC901C2189C
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F3D1E5733;
-	Mon, 21 Oct 2024 10:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EEC1E32D7;
+	Mon, 21 Oct 2024 10:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnc9eYBu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cdjTTESR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6341E5705;
-	Mon, 21 Oct 2024 10:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2088F39FD6;
+	Mon, 21 Oct 2024 10:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506875; cv=none; b=OZd+nhEy+DIQoiG4+8kPGHiQbKGpBZlMAa/P5Gc+TEkgrtanHxi8J1nVWcrLo/xvOj9jhrX1IKiLOIRBT5O1ERvYgDTfPE8LcYAA+WccPCdQpPsD8RBChSv2X6lELLaf14kMnAdDAyoveSdhk2uDNGLDfGLgFzAmZrY4zdUlGpk=
+	t=1729506617; cv=none; b=AgQmpo1JVQFDLWUtnRRz+WQ8BDjqAXFAm6a1X/AU37hhY3YFTWIhvBr6LqXs49LI4sGJ/HWtp+B5hUe3JRLYc14JaDL0EvK6sB6lXteKhxINmm8Kw9MoRtW39Ldh2v6HDtItUVRcGlLGNUWwB17vId/8kvbDX8J+eiaSzc5l7wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506875; c=relaxed/simple;
-	bh=/gDQq5Ap8fIvaZvY4/xDghFze65mvXwXN/Eywj99QDc=;
+	s=arc-20240116; t=1729506617; c=relaxed/simple;
+	bh=x5R7P4IOrQAsaa/HkuwcqR/SRbEOo7xY5m4Gqi9Fk5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lxm5Bz8NH5G/5txyjsEIeVnsgn+K9PNtGQ3oGZUu0eWzUBYaYZx4m1pDYahTACaOByfObxy1PL7/plOsiD3ADMQjlixW4fQ116D72yHhw/85Z+M7oN+mga8zRjk6rKt8O74M5WPwWfxNylj4TQYKZi7TSKdj+yNdUEY/32PgjVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnc9eYBu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA46C4CEC3;
-	Mon, 21 Oct 2024 10:34:35 +0000 (UTC)
+	 MIME-Version; b=KaPKpwogkMAhUB4AQcr+o0/Ncrp5N7adm7LHYufFLnKOfvwH1GNL5ouWTfctaYmDJtOTbXz3b6zeK5BFU7SnhtNnr1olGO/8uIDDtC5SQ8ts6mHYcQIvhpHfqOd1Zf9644fIUOnhrp0TENtjCKd+F2YZB2GxK9AZI4qvTlTbBoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cdjTTESR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93858C4CEC3;
+	Mon, 21 Oct 2024 10:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506875;
-	bh=/gDQq5Ap8fIvaZvY4/xDghFze65mvXwXN/Eywj99QDc=;
+	s=korg; t=1729506617;
+	bh=x5R7P4IOrQAsaa/HkuwcqR/SRbEOo7xY5m4Gqi9Fk5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lnc9eYBuzOehI44upzdMvjrs7j8GEnkwThiM0lciBpgVy70g18tNUmPy1tV8jrtUj
-	 fsw2qp5+HHw18giKIqlsw480UVZ1Xz22xZHXYNMXCwT088Dmal87laKK0Z/tVS+m22
-	 Tmy4QRzWvwWXuLIhN04DsSdAvpkory/gtGyHSJEw=
+	b=cdjTTESRrMAf3tiJNdPvzxYgSbtSekMuqCyeaYWYXwHX2BX46ekjR9VGbsH0Wy6El
+	 rmrbDiAvvpcLh/Furxq4v1u5qNIotPv8U0rGnVz6CjcER2gXofsodV0bmfc2xiN6pA
+	 cWATS0faA8oi2cZI9k0kZuc6E9bWrR34nCDGQAaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 015/124] net: macb: Avoid 20s boot delay by skipping MDIO bus registration for fixed-link PHY
-Date: Mon, 21 Oct 2024 12:23:39 +0200
-Message-ID: <20241021102257.312650825@linuxfoundation.org>
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	dri-devel@lists.freedesktop.org,
+	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
+	Martin Krastev <martin.krastev@broadcom.com>
+Subject: [PATCH 6.11 064/135] drm/vmwgfx: Cleanup kms setup without 3d
+Date: Mon, 21 Oct 2024 12:23:40 +0200
+Message-ID: <20241021102301.834286912@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +64,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Zack Rusin <zack.rusin@broadcom.com>
 
-commit d0c3601f2c4e12e7689b0f46ebc17525250ea8c3 upstream.
+commit 512a9721cae0d88d34ff441f2f5917cd149af8af upstream.
 
-A boot delay was introduced by commit 79540d133ed6 ("net: macb: Fix
-handling of fixed-link node"). This delay was caused by the call to
-`mdiobus_register()` in cases where a fixed-link PHY was present. The
-MDIO bus registration triggered unnecessary PHY address scans, leading
-to a 20-second delay due to attempts to detect Clause 45 (C45)
-compatible PHYs, despite no MDIO bus being attached.
+Do not validate format equality for the non 3d cases to allow xrgb to
+argb copies and make sure the dx binding flags are only used
+on dx compatible surfaces.
 
-The commit 79540d133ed6 ("net: macb: Fix handling of fixed-link node")
-was originally introduced to fix a regression caused by commit
-7897b071ac3b4 ("net: macb: convert to phylink"), which caused the driver
-to misinterpret fixed-link nodes as PHY nodes. This resulted in warnings
-like:
-mdio_bus f0028000.ethernet-ffffffff: fixed-link has invalid PHY address
-mdio_bus f0028000.ethernet-ffffffff: scan phy fixed-link at address 0
-...
-mdio_bus f0028000.ethernet-ffffffff: scan phy fixed-link at address 31
+Fixes basic 2d kms setup on configurations without 3d. There's little
+practical benefit to it because kms framebuffer coherence is disabled
+on configurations without 3d but with those changes the code actually
+makes sense.
 
-This patch reworks the logic to avoid registering and allocation of the
-MDIO bus when:
-  - The device tree contains a fixed-link node.
-  - There is no "mdio" child node in the device tree.
+v2: Remove the now unused format variable
 
-If a child node named "mdio" exists, the MDIO bus will be registered to
-support PHYs  attached to the MACB's MDIO bus. Otherwise, with only a
-fixed-link, the MDIO bus is skipped.
-
-Tested on a sama5d35 based system with a ksz8863 switch attached to
-macb0.
-
-Fixes: 79540d133ed6 ("net: macb: Fix handling of fixed-link node")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: stable@vger.kernel.org
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20241013052916.3115142-1-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: d6667f0ddf46 ("drm/vmwgfx: Fix handling of dumb buffers")
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.9+
+Cc: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+Cc: Martin Krastev <martin.krastev@broadcom.com>
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240827043905.472825-1-zack.rusin@broadcom.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c     |   29 -----------------------------
+ drivers/gpu/drm/vmwgfx/vmwgfx_surface.c |    9 ++++++---
+ 2 files changed, 6 insertions(+), 32 deletions(-)
 
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -930,9 +930,6 @@ static int macb_mdiobus_register(struct
- 		return ret;
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -1283,7 +1283,6 @@ static int vmw_kms_new_framebuffer_surfa
+ {
+ 	struct drm_device *dev = &dev_priv->drm;
+ 	struct vmw_framebuffer_surface *vfbs;
+-	enum SVGA3dSurfaceFormat format;
+ 	struct vmw_surface *surface;
+ 	int ret;
+ 
+@@ -1320,34 +1319,6 @@ static int vmw_kms_new_framebuffer_surfa
+ 		return -EINVAL;
  	}
  
--	if (of_phy_is_fixed_link(np))
--		return mdiobus_register(bp->mii_bus);
+-	switch (mode_cmd->pixel_format) {
+-	case DRM_FORMAT_ARGB8888:
+-		format = SVGA3D_A8R8G8B8;
+-		break;
+-	case DRM_FORMAT_XRGB8888:
+-		format = SVGA3D_X8R8G8B8;
+-		break;
+-	case DRM_FORMAT_RGB565:
+-		format = SVGA3D_R5G6B5;
+-		break;
+-	case DRM_FORMAT_XRGB1555:
+-		format = SVGA3D_A1R5G5B5;
+-		break;
+-	default:
+-		DRM_ERROR("Invalid pixel format: %p4cc\n",
+-			  &mode_cmd->pixel_format);
+-		return -EINVAL;
+-	}
 -
- 	/* Only create the PHY from the device tree if at least one PHY is
- 	 * described. Otherwise scan the entire MDIO bus. We do this to support
- 	 * old device tree that did not follow the best practices and did not
-@@ -953,8 +950,19 @@ static int macb_mdiobus_register(struct
- 
- static int macb_mii_init(struct macb *bp)
- {
-+	struct device_node *child, *np = bp->pdev->dev.of_node;
- 	int err = -ENXIO;
- 
-+	/* With fixed-link, we don't need to register the MDIO bus,
-+	 * except if we have a child named "mdio" in the device tree.
-+	 * In that case, some devices may be attached to the MACB's MDIO bus.
-+	 */
-+	child = of_get_child_by_name(np, "mdio");
-+	if (child)
-+		of_node_put(child);
-+	else if (of_phy_is_fixed_link(np))
-+		return macb_mii_probe(bp->dev);
+-	/*
+-	 * For DX, surface format validation is done when surface->scanout
+-	 * is set.
+-	 */
+-	if (!has_sm4_context(dev_priv) && format != surface->metadata.format) {
+-		DRM_ERROR("Invalid surface format for requested mode.\n");
+-		return -EINVAL;
+-	}
+-
+ 	vfbs = kzalloc(sizeof(*vfbs), GFP_KERNEL);
+ 	if (!vfbs) {
+ 		ret = -ENOMEM;
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
+@@ -2276,9 +2276,12 @@ int vmw_dumb_create(struct drm_file *fil
+ 	const struct SVGA3dSurfaceDesc *desc = vmw_surface_get_desc(format);
+ 	SVGA3dSurfaceAllFlags flags = SVGA3D_SURFACE_HINT_TEXTURE |
+ 				      SVGA3D_SURFACE_HINT_RENDERTARGET |
+-				      SVGA3D_SURFACE_SCREENTARGET |
+-				      SVGA3D_SURFACE_BIND_SHADER_RESOURCE |
+-				      SVGA3D_SURFACE_BIND_RENDER_TARGET;
++				      SVGA3D_SURFACE_SCREENTARGET;
 +
- 	/* Enable management port */
- 	macb_writel(bp, NCR, MACB_BIT(MPE));
++	if (vmw_surface_is_dx_screen_target_format(format)) {
++		flags |= SVGA3D_SURFACE_BIND_SHADER_RESOURCE |
++			 SVGA3D_SURFACE_BIND_RENDER_TARGET;
++	}
  
+ 	/*
+ 	 * Without mob support we're just going to use raw memory buffer
 
 
 
