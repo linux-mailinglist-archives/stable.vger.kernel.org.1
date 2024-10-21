@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-87122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BE6C9A633A
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:32:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE15D9A63C2
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:39:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AB151C213D2
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:32:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A97D283A07
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:39:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F26291E8848;
-	Mon, 21 Oct 2024 10:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16731E7C2B;
+	Mon, 21 Oct 2024 10:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/43X6EM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DXNPtZ6P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FC51E906A;
-	Mon, 21 Oct 2024 10:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682201E47B7;
+	Mon, 21 Oct 2024 10:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506659; cv=none; b=WC/d45BSy/0zQ4WlJYC4WRSRNd8JX2cOcJ6O405aJ9Vz20vOEJRcHbkcMzyldOrimr7xWzXr6Sv29JVdhd20dKDuGEVSrDucuPP7tY7Wf+mw8Wd2Jo61ZTl4ExeVgDbeAfArA551DszseamkVLI1sxPmhKk22YR5N43anjr03TU=
+	t=1729506923; cv=none; b=JWt14Ob9DwggwvpjOvU/+Tyl1u5A+nsVTO8t8QlN1PQ0DO+IHCYjo3KC94Uuiimsho63QH9Rz5UazArVjT70G2rvGrBFfoitl6UEHkFOXOcAqqDomK3139HP8cRCr8r3YXlUdDN+R1yNY2Ss49n6ylY/TUsCvdoMZX9o6AHDR/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506659; c=relaxed/simple;
-	bh=0P7/rV3u1KkD0ZclGWSyvUhsnOJtybbZjFhRW2s1Yno=;
+	s=arc-20240116; t=1729506923; c=relaxed/simple;
+	bh=6GmXj0XD/SwIYVJCcNeT7g+CCwyglomyCqGsBczhqw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tkryrujet35HB8HzwhYV5+gZoshYYeR6+9drhpAKti10VNFw6bqjce0bI68cVIy1hQyBFEsDbcoXJRMETUzePE6hBWbA97KLZ9zqL/nu+Hc7J03VFv9M3pzrpaceAbBlQsGvIUYWltkJ+OqgjOJ+uMyIjH7cVhEBGoCE2HWtlf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/43X6EM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C72C4CEE9;
-	Mon, 21 Oct 2024 10:30:58 +0000 (UTC)
+	 MIME-Version; b=F6r/TtRjSLY9KRUR6/l+DrjSCsmvNMOUneetwTxqOznBHXGXrnpNrEMuBQgvfmrt0XSBkbaeu6Jb/24XMYFJxj7AbWsSJbyLL5LbEOC1LfC1S7WTPxm8ydLUQRAfydG2eMlFuv/MWdszyojh6lDW30ONhmuJGUl9VJy6BHSLkAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DXNPtZ6P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD3DC4CEC3;
+	Mon, 21 Oct 2024 10:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506659;
-	bh=0P7/rV3u1KkD0ZclGWSyvUhsnOJtybbZjFhRW2s1Yno=;
+	s=korg; t=1729506923;
+	bh=6GmXj0XD/SwIYVJCcNeT7g+CCwyglomyCqGsBczhqw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s/43X6EM1K3ZFuIVkRFg/t/aCe4kqZVvbh0sFbGJ4+XV9L6Lsn6sSTp4w9IrJI8R7
-	 qhAp9dDCJI5SyNXHgyyvAnvixqMDMDYKkog0ORu7YvmMvXuvT7mHtnJsAFxcJaPDiW
-	 GaBr+Jdp75IMm0/bpLOX1G3SxpMRSnP1tLQVWCL8=
+	b=DXNPtZ6P987VxWXGpgCvIBkQKrAygzEfeC7yq1Cn4hU7n8yX2B9Wc3Vjv22w9H6/C
+	 MuHLoCIiFqVKPMpe89rCiidbIL58MIzoPVlG2QHNiTrMNLyIlIjwurdsr5mPr2OD+c
+	 lU6bLBp5K5Q6ee+GdurhF2a89dOqCYoG82W7Bv4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.11 079/135] iio: frequency: adf4377: add missing select REMAP_SPI in Kconfig
+	linux-xfs@vger.kernel.org,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 031/124] xfs: validate recovered name buffers when recovering xattr items
 Date: Mon, 21 Oct 2024 12:23:55 +0200
-Message-ID: <20241021102302.418195182@linuxfoundation.org>
+Message-ID: <20241021102257.930847507@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-commit c64643ed4eaa5dfd0b3bab7ef1c50b84f3dbaba4 upstream.
+commit 1c7f09d210aba2f2bb206e2e8c97c9f11a3fd880 upstream.
 
-This driver makes use of regmap_spi, but does not select the required
-module.
-Add the missing 'select REGMAP_SPI'.
+Strengthen the xattri log item recovery code by checking that we
+actually have the required name and newname buffers for whatever
+operation we're replaying.
 
-Fixes: eda549e2e524 ("iio: frequency: adf4377: add support for ADF4377")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241003-ad2s1210-select-v1-3-4019453f8c33@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/frequency/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ fs/xfs/xfs_attr_item.c |   58 +++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 47 insertions(+), 11 deletions(-)
 
---- a/drivers/iio/frequency/Kconfig
-+++ b/drivers/iio/frequency/Kconfig
-@@ -53,6 +53,7 @@ config ADF4371
- config ADF4377
- 	tristate "Analog Devices ADF4377 Microwave Wideband Synthesizer"
- 	depends on SPI && COMMON_CLK
-+	select REGMAP_SPI
- 	help
- 	  Say yes here to build support for Analog Devices ADF4377 Microwave
- 	  Wideband Synthesizer.
+--- a/fs/xfs/xfs_attr_item.c
++++ b/fs/xfs/xfs_attr_item.c
+@@ -719,22 +719,20 @@ xlog_recover_attri_commit_pass2(
+ 	const void			*attr_value = NULL;
+ 	const void			*attr_name;
+ 	size_t				len;
+-	unsigned int			op;
+-
+-	attri_formatp = item->ri_buf[0].i_addr;
+-	attr_name = item->ri_buf[1].i_addr;
++	unsigned int			op, i = 0;
+ 
+ 	/* Validate xfs_attri_log_format before the large memory allocation */
+ 	len = sizeof(struct xfs_attri_log_format);
+-	if (item->ri_buf[0].i_len != len) {
++	if (item->ri_buf[i].i_len != len) {
+ 		XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
+ 				item->ri_buf[0].i_addr, item->ri_buf[0].i_len);
+ 		return -EFSCORRUPTED;
+ 	}
+ 
++	attri_formatp = item->ri_buf[i].i_addr;
+ 	if (!xfs_attri_validate(mp, attri_formatp)) {
+ 		XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
+-				item->ri_buf[0].i_addr, item->ri_buf[0].i_len);
++				attri_formatp, len);
+ 		return -EFSCORRUPTED;
+ 	}
+ 
+@@ -763,31 +761,69 @@ xlog_recover_attri_commit_pass2(
+ 				     attri_formatp, len);
+ 		return -EFSCORRUPTED;
+ 	}
++	i++;
+ 
+ 	/* Validate the attr name */
+-	if (item->ri_buf[1].i_len !=
++	if (item->ri_buf[i].i_len !=
+ 			xlog_calc_iovec_len(attri_formatp->alfi_name_len)) {
+ 		XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
+-				item->ri_buf[0].i_addr, item->ri_buf[0].i_len);
++				attri_formatp, len);
+ 		return -EFSCORRUPTED;
+ 	}
+ 
++	attr_name = item->ri_buf[i].i_addr;
+ 	if (!xfs_attr_namecheck(attr_name, attri_formatp->alfi_name_len)) {
+ 		XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
+-				item->ri_buf[1].i_addr, item->ri_buf[1].i_len);
++				attri_formatp, len);
+ 		return -EFSCORRUPTED;
+ 	}
++	i++;
+ 
+ 	/* Validate the attr value, if present */
+ 	if (attri_formatp->alfi_value_len != 0) {
+-		if (item->ri_buf[2].i_len != xlog_calc_iovec_len(attri_formatp->alfi_value_len)) {
++		if (item->ri_buf[i].i_len != xlog_calc_iovec_len(attri_formatp->alfi_value_len)) {
+ 			XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
+ 					item->ri_buf[0].i_addr,
+ 					item->ri_buf[0].i_len);
+ 			return -EFSCORRUPTED;
+ 		}
+ 
+-		attr_value = item->ri_buf[2].i_addr;
++		attr_value = item->ri_buf[i].i_addr;
++		i++;
++	}
++
++	/*
++	 * Make sure we got the correct number of buffers for the operation
++	 * that we just loaded.
++	 */
++	if (i != item->ri_total) {
++		XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
++				attri_formatp, len);
++		return -EFSCORRUPTED;
++	}
++
++	switch (op) {
++	case XFS_ATTRI_OP_FLAGS_REMOVE:
++		/* Regular remove operations operate only on names. */
++		if (attr_value != NULL || attri_formatp->alfi_value_len != 0) {
++			XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
++					     attri_formatp, len);
++			return -EFSCORRUPTED;
++		}
++		fallthrough;
++	case XFS_ATTRI_OP_FLAGS_SET:
++	case XFS_ATTRI_OP_FLAGS_REPLACE:
++		/*
++		 * Regular xattr set/remove/replace operations require a name
++		 * and do not take a newname.  Values are optional for set and
++		 * replace.
++		 */
++		if (attr_name == NULL || attri_formatp->alfi_name_len == 0) {
++			XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
++					     attri_formatp, len);
++			return -EFSCORRUPTED;
++		}
++		break;
+ 	}
+ 
+ 	/*
 
 
 
