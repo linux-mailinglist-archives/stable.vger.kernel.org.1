@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-87433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 874D49A64F2
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE039A644A
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:45:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4956D2819B9
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FB40282FDA
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD731E9097;
-	Mon, 21 Oct 2024 10:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C481E47BA;
+	Mon, 21 Oct 2024 10:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J9VDrfgv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NhNrk1r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5551E3764;
-	Mon, 21 Oct 2024 10:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91ED51E47B7;
+	Mon, 21 Oct 2024 10:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507592; cv=none; b=YMr0ivxkr2MYRRHfm280+xz+mmKaU7ocZfTq0xQzOxxxGOWtvTIwpsOlDMVAGXNSRZrSdoWzpRJVEsH7E4a4MZYauHfJmorpdgMcwVlB/WmKlcsycEiIPEg2eW+zDHrkLjqI4+UU/EGFUoyi54ZGOTFrqTRBMc+0VpRioMe0xA4=
+	t=1729507171; cv=none; b=ChkexcqTXYMQf9QbvS7vVmBEKFCa78RJmQajj/5dWKzlP3R6em6m0j9Sro3HGeMq1mejeR0PlszhMc30CvGzl/Aoy9mXoSnabHe4jV7paJdRcYHumgIgSGrGOAYLOxJRM/CZmQC7V+S+qo8MY201qikMxJHLFE7qK9KST/4gpGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507592; c=relaxed/simple;
-	bh=QUE86SavnZrubu0gFY0ucn77M+rBlf4D8l229wWmfK0=;
+	s=arc-20240116; t=1729507171; c=relaxed/simple;
+	bh=muaGucLPLKUoXIcHs8HMqP8kfpQ8EXwfrwrtKry11Q0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dpwB5aUugko8LbBzfkWMP3ohSm71a3sMw/n6BtGoii5itMe74dBPTvvH43ntcf2zOETPPPrxPJbnzaqFlLbjTCLH2O0KMIioKdYwMYT3PjervunvlImQ4dGbQ47U75t3L2vdOUkpfOcwY1hfsYUD3LnczSTo8K4RdsK5e6qGOnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J9VDrfgv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEC5C4CEC3;
-	Mon, 21 Oct 2024 10:46:31 +0000 (UTC)
+	 MIME-Version; b=KH2oYhYdjCZn1kWdEO1HxyYTfcHGm+deGPCLzSW+Gkm2ITW6dcGxCXH4lgdVWNBKpbKzqTA0peVbifQK7XHsO3692nF2JpssPvSVPsvJCjC4vUBtfkWHlUBMQtGN95Nxm2sDrJKTL9vJJsKOs4dXpv6ac66GgzsZ3r1PynzMQjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NhNrk1r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B3EC4CEC3;
+	Mon, 21 Oct 2024 10:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507591;
-	bh=QUE86SavnZrubu0gFY0ucn77M+rBlf4D8l229wWmfK0=;
+	s=korg; t=1729507171;
+	bh=muaGucLPLKUoXIcHs8HMqP8kfpQ8EXwfrwrtKry11Q0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J9VDrfgv8ajBCHFuMSy2QtI2zuV8N1ICklo7SqTS0B2VicE/t0MuRgnQrSvPnXhYG
-	 bI8c/dI71IxFZcz5RsrgKiKduzciZKKCO+DH6VgUUQvwQMXcghAx4HKha2/CTGodrA
-	 cIY+7vJTD5Iuu2Uo+fBSRbZVBIeuzwU3dP6tvyk4=
+	b=2NhNrk1ruOw3uLiSoRac2XeihlmxPdu+NbANMZWSKjY8QKDE4V4BT4bB84OSj8Grs
+	 avTHeuayRkgi89g2xNM8Flw+CezjpM+Wu0vs8QjVkRgEkNvTVhA0GNOeOHSj6kLPec
+	 JvM876IHs4CNN7QNmMnelZu7TF9N846LFHOgqmh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Moessbauer <felix.moessbauer@siemens.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.15 36/82] io_uring/sqpoll: do not allow pinning outside of cpuset
+	Kunkun Jiang <jiangkunkun@huawei.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.6 113/124] irqchip/gic-v4: Dont allow a VMOVP on a dying VPE
 Date: Mon, 21 Oct 2024 12:25:17 +0200
-Message-ID: <20241021102248.670749448@linuxfoundation.org>
+Message-ID: <20241021102301.087523490@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +62,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Moessbauer <felix.moessbauer@siemens.com>
+From: Marc Zyngier <maz@kernel.org>
 
-commit f011c9cf04c06f16b24f583d313d3c012e589e50 upstream.
+commit 1442ee0011983f0c5c4b92380e6853afb513841a upstream.
 
-The submit queue polling threads are userland threads that just never
-exit to the userland. When creating the thread with IORING_SETUP_SQ_AFF,
-the affinity of the poller thread is set to the cpu specified in
-sq_thread_cpu. However, this CPU can be outside of the cpuset defined
-by the cgroup cpuset controller. This violates the rules defined by the
-cpuset controller and is a potential issue for realtime applications.
+Kunkun Jiang reported that there is a small window of opportunity for
+userspace to force a change of affinity for a VPE while the VPE has already
+been unmapped, but the corresponding doorbell interrupt still visible in
+/proc/irq/.
 
-In b7ed6d8ffd6 we fixed the default affinity of the poller thread, in
-case no explicit pinning is required by inheriting the one of the
-creating task. In case of explicit pinning, the check is more
-complicated, as also a cpu outside of the parent cpumask is allowed.
-We implemented this by using cpuset_cpus_allowed (that has support for
-cgroup cpusets) and testing if the requested cpu is in the set.
+Plug the race by checking the value of vmapp_count, which tracks whether
+the VPE is mapped ot not, and returning an error in this case.
 
-Fixes: 37d1e2e3642e ("io_uring: move SQPOLL thread io-wq forked worker")
-Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
-Link: https://lore.kernel.org/r/20240909150036.55921-1-felix.moessbauer@siemens.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+This involves making vmapp_count common to both GICv4.1 and its v4.0
+ancestor.
+
+Fixes: 64edfaa9a234 ("irqchip/gic-v4.1: Implement the v4.1 flavour of VMAPP")
+Reported-by: Kunkun Jiang <jiangkunkun@huawei.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/c182ece6-2ba0-ce4f-3404-dba7a3ab6c52@huawei.com
+Link: https://lore.kernel.org/all/20241002204959.2051709-1-maz@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-gic-v3-its.c   |   18 ++++++++++++------
+ include/linux/irqchip/arm-gic-v4.h |    4 +++-
+ 2 files changed, 15 insertions(+), 7 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -56,6 +56,7 @@
- #include <linux/mm.h>
- #include <linux/mman.h>
- #include <linux/percpu.h>
-+#include <linux/cpuset.h>
- #include <linux/slab.h>
- #include <linux/blkdev.h>
- #include <linux/bvec.h>
-@@ -8746,10 +8747,12 @@ static int io_sq_offload_create(struct i
- 			return 0;
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -796,8 +796,8 @@ static struct its_vpe *its_build_vmapp_c
+ 	its_encode_valid(cmd, desc->its_vmapp_cmd.valid);
  
- 		if (p->flags & IORING_SETUP_SQ_AFF) {
-+			struct cpumask allowed_mask;
- 			int cpu = p->sq_thread_cpu;
+ 	if (!desc->its_vmapp_cmd.valid) {
++		alloc = !atomic_dec_return(&desc->its_vmapp_cmd.vpe->vmapp_count);
+ 		if (is_v4_1(its)) {
+-			alloc = !atomic_dec_return(&desc->its_vmapp_cmd.vpe->vmapp_count);
+ 			its_encode_alloc(cmd, alloc);
+ 			/*
+ 			 * Unmapping a VPE is self-synchronizing on GICv4.1,
+@@ -816,13 +816,13 @@ static struct its_vpe *its_build_vmapp_c
+ 	its_encode_vpt_addr(cmd, vpt_addr);
+ 	its_encode_vpt_size(cmd, LPI_NRBITS - 1);
  
- 			ret = -EINVAL;
--			if (cpu >= nr_cpu_ids || !cpu_online(cpu))
-+			cpuset_cpus_allowed(current, &allowed_mask);
-+			if (!cpumask_test_cpu(cpu, &allowed_mask))
- 				goto err_sqpoll;
- 			sqd->sq_cpu = cpu;
- 		} else {
++	alloc = !atomic_fetch_inc(&desc->its_vmapp_cmd.vpe->vmapp_count);
++
+ 	if (!is_v4_1(its))
+ 		goto out;
+ 
+ 	vconf_addr = virt_to_phys(page_address(desc->its_vmapp_cmd.vpe->its_vm->vprop_page));
+ 
+-	alloc = !atomic_fetch_inc(&desc->its_vmapp_cmd.vpe->vmapp_count);
+-
+ 	its_encode_alloc(cmd, alloc);
+ 
+ 	/*
+@@ -3817,6 +3817,13 @@ static int its_vpe_set_affinity(struct i
+ 	int from, cpu;
+ 
+ 	/*
++	 * Check if we're racing against a VPE being destroyed, for
++	 * which we don't want to allow a VMOVP.
++	 */
++	if (!atomic_read(&vpe->vmapp_count))
++		return -EINVAL;
++
++	/*
+ 	 * Changing affinity is mega expensive, so let's be as lazy as
+ 	 * we can and only do it if we really have to. Also, if mapped
+ 	 * into the proxy device, we need to move the doorbell
+@@ -4456,9 +4463,8 @@ static int its_vpe_init(struct its_vpe *
+ 	raw_spin_lock_init(&vpe->vpe_lock);
+ 	vpe->vpe_id = vpe_id;
+ 	vpe->vpt_page = vpt_page;
+-	if (gic_rdists->has_rvpeid)
+-		atomic_set(&vpe->vmapp_count, 0);
+-	else
++	atomic_set(&vpe->vmapp_count, 0);
++	if (!gic_rdists->has_rvpeid)
+ 		vpe->vpe_proxy_event = -1;
+ 
+ 	return 0;
+--- a/include/linux/irqchip/arm-gic-v4.h
++++ b/include/linux/irqchip/arm-gic-v4.h
+@@ -58,10 +58,12 @@ struct its_vpe {
+ 				bool	enabled;
+ 				bool	group;
+ 			}			sgi_config[16];
+-			atomic_t vmapp_count;
+ 		};
+ 	};
+ 
++	/* Track the VPE being mapped */
++	atomic_t vmapp_count;
++
+ 	/*
+ 	 * Ensures mutual exclusion between affinity setting of the
+ 	 * vPE and vLPI operations using vpe->col_idx.
 
 
 
