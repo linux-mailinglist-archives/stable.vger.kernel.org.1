@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-87490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F5B9A6532
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:54:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 368839A65F4
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:09:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B5C21C221D2
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:54:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79094B2E461
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB2E31EB9FE;
-	Mon, 21 Oct 2024 10:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BFF31EBA1A;
+	Mon, 21 Oct 2024 10:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KEZymAjy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bdE7Qnyo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A381E571E;
-	Mon, 21 Oct 2024 10:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2283E1E5722;
+	Mon, 21 Oct 2024 10:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507760; cv=none; b=EXVFDEukkP44U3kcmSaNgeq/LThjRhveTQMraa6WAwpKwsvvuvuPwBomtWAV7C1JgQy4Q+YZoq13zu0VwSE7fqZx3fV+leg0o3Ac9dshoTaZWxccHE/zONx2HzUoOcdIdCnwFI+yFsuovhK6y+Aie4dE4Hvc8wMpULiuNg91fNA=
+	t=1729507442; cv=none; b=W21uT1uaC/rS3XZ/7LDS4X9n2lkOV7E/ojtS3WbotBtOSo6rBedPFodhDmO6Qc005HuwPckg5rcZ6jeThuGXh/vwNHioOYNBEqLtXabyQdn4enFbv7KqMauZ9E1rXtPKYVugWhFXmSGETpBFGQI6zQSpsWajGkX8+M68NUG9J2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507760; c=relaxed/simple;
-	bh=GaH8gdxDxvlInyLWwNn9WL9eFXRWmUfp4IbW4IbAG0A=;
+	s=arc-20240116; t=1729507442; c=relaxed/simple;
+	bh=z1oq3G3Xl3SZ0GHN2I4AK6+OUHQpjECITI+vSfXYjUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RroKZ9IOX2PlMNKqypu401jMX1uUBS2asZzdj6IBAHneyHYPUFYkNtLztRX8A7q2EaZbkLraYFH5xBJJMRn/IGzbsRturXBY9E/3KYpo71QYG/aQKUrxNnuBKSWqyQ5p/HFWidYwrb5OKVDT5/jjtGuoFe4ldg5ZImUPC5r8lp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KEZymAjy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4077C4CEC3;
-	Mon, 21 Oct 2024 10:49:19 +0000 (UTC)
+	 MIME-Version; b=n6yzMH1JxFvO9QM+6TbD+mM8fCB8JZa2aYAHWIow+h2J8kf3DybsHDAXh1v9oD0Hur3CZe4e8w3IwEQEXxFPB8ekpCCzN47iO8wIEJIVjT2nARCSXIOZkp0VZy++meeRWLr6/9XhNnZHfWpvvl4N2VJ6nUeLA08B+IiNygg3XSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bdE7Qnyo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98DA8C4CEC3;
+	Mon, 21 Oct 2024 10:44:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507760;
-	bh=GaH8gdxDxvlInyLWwNn9WL9eFXRWmUfp4IbW4IbAG0A=;
+	s=korg; t=1729507442;
+	bh=z1oq3G3Xl3SZ0GHN2I4AK6+OUHQpjECITI+vSfXYjUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KEZymAjyAENDh5iYrHMVLwRB39rUNwQPYRDykTKCF8LugZcfa6BdpTiV9vk5wDnGB
-	 gH+puFooiythVbPty28kGFyYTL+oRYBrmwlhph/7Kx7IeB3ESKNscZBTxIL9ImbwwP
-	 McGgr25qKuSoybCjnzkkAoZay6i3h6WQxoUkzFIc=
+	b=bdE7Qnyo1h9n2THYWXD/V6McrpqG2yiLfGDfdp3PUA9dB5Ydes47ceWcvcRVsFJkZ
+	 3KrA4d9vpVlMay4BXWSyiKojc/T5lholikFCiD+QXt20vEY3OSbk2O92beZ9rjNjrB
+	 ERgOqc2PxGhboCxA+GDBsevvRb/k2sfQ+kSI7X8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Sherry Yang <sherry.yang@oracle.com>
-Subject: [PATCH 5.10 10/52] wifi: mac80211: fix potential key use-after-free
-Date: Mon, 21 Oct 2024 12:25:31 +0200
-Message-ID: <20241021102242.030800433@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	stable@kernel.org
+Subject: [PATCH 6.1 78/91] x86/resctrl: Annotate get_mem_config() functions as __init
+Date: Mon, 21 Oct 2024 12:25:32 +0200
+Message-ID: <20241021102252.861017308@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
-References: <20241021102241.624153108@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 31db78a4923ef5e2008f2eed321811ca79e7f71b upstream.
+commit d5fd042bf4cfb557981d65628e1779a492cd8cfa upstream.
 
-When ieee80211_key_link() is called by ieee80211_gtk_rekey_add()
-but returns 0 due to KRACK protection (identical key reinstall),
-ieee80211_gtk_rekey_add() will still return a pointer into the
-key, in a potential use-after-free. This normally doesn't happen
-since it's only called by iwlwifi in case of WoWLAN rekey offload
-which has its own KRACK protection, but still better to fix, do
-that by returning an error code and converting that to success on
-the cfg80211 boundary only, leaving the error for bad callers of
-ieee80211_gtk_rekey_add().
+After a recent LLVM change [1] that deduces __cold on functions that only call
+cold code (such as __init functions), there is a section mismatch warning from
+__get_mem_config_intel(), which got moved to .text.unlikely. as a result of
+that optimization:
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Fixes: fdf7cb4185b6 ("mac80211: accept key reinstall without changing anything")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ Sherry: bp to fix CVE-2023-52530, resolved minor conflicts in
-  net/mac80211/cfg.c because of context change due to missing commit
-  23a5f0af6ff4 ("wifi: mac80211: remove cipher scheme support")
-  ccdde7c74ffd ("wifi: mac80211: properly implement MLO key handling")]
-Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
+  WARNING: modpost: vmlinux: section mismatch in reference: \
+  __get_mem_config_intel+0x77 (section: .text.unlikely.) -> thread_throttle_mode_init (section: .init.text)
+
+Mark __get_mem_config_intel() as __init as well since it is only called
+from __init code, which clears up the warning.
+
+While __rdt_get_mem_config_amd() does not exhibit a warning because it
+does not call any __init code, it is a similar function that is only
+called from __init code like __get_mem_config_intel(), so mark it __init
+as well to keep the code symmetrical.
+
+CONFIG_SECTION_MISMATCH_WARN_ONLY=n would turn this into a fatal error.
+
+Fixes: 05b93417ce5b ("x86/intel_rdt/mba: Add primary support for Memory Bandwidth Allocation (MBA)")
+Fixes: 4d05bf71f157 ("x86/resctrl: Introduce AMD QOS feature")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Cc: <stable@kernel.org>
+Link: https://github.com/llvm/llvm-project/commit/6b11573b8c5e3d36beee099dbe7347c2a007bf53 [1]
+Link: https://lore.kernel.org/r/20240917-x86-restctrl-get_mem_config_intel-init-v3-1-10d521256284@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/cfg.c |    3 +++
- net/mac80211/key.c |    2 +-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/resctrl/core.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -509,6 +509,9 @@ static int ieee80211_add_key(struct wiph
- 		sta->cipher_scheme = cs;
+--- a/arch/x86/kernel/cpu/resctrl/core.c
++++ b/arch/x86/kernel/cpu/resctrl/core.c
+@@ -174,7 +174,7 @@ static inline bool rdt_get_mb_table(stru
+ 	return false;
+ }
  
- 	err = ieee80211_key_link(key, sdata, sta);
-+	/* KRACK protection, shouldn't happen but just silently accept key */
-+	if (err == -EALREADY)
-+		err = 0;
+-static bool __get_mem_config_intel(struct rdt_resource *r)
++static __init bool __get_mem_config_intel(struct rdt_resource *r)
+ {
+ 	struct rdt_hw_resource *hw_res = resctrl_to_arch_res(r);
+ 	union cpuid_0x10_3_eax eax;
+@@ -208,7 +208,7 @@ static bool __get_mem_config_intel(struc
+ 	return true;
+ }
  
-  out_unlock:
- 	mutex_unlock(&local->sta_mtx);
---- a/net/mac80211/key.c
-+++ b/net/mac80211/key.c
-@@ -843,7 +843,7 @@ int ieee80211_key_link(struct ieee80211_
- 	 */
- 	if (ieee80211_key_identical(sdata, old_key, key)) {
- 		ieee80211_key_free_unused(key);
--		ret = 0;
-+		ret = -EALREADY;
- 		goto out;
- 	}
- 
+-static bool __rdt_get_mem_config_amd(struct rdt_resource *r)
++static __init bool __rdt_get_mem_config_amd(struct rdt_resource *r)
+ {
+ 	struct rdt_hw_resource *hw_res = resctrl_to_arch_res(r);
+ 	union cpuid_0x10_3_eax eax;
 
 
 
