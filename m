@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-87238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CAED9A63EE
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:40:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C58939A636F
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AEDE1C21C1D
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:40:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C5CE1F226C5
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B471EF0BA;
-	Mon, 21 Oct 2024 10:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2041E7C01;
+	Mon, 21 Oct 2024 10:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+gAiVOh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TqgYpDD4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69821EABAD;
-	Mon, 21 Oct 2024 10:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251641E47B4;
+	Mon, 21 Oct 2024 10:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507007; cv=none; b=YFL5mIeLfsxL4ziUGn5KVwjSdUWP9NnUdlzRiK+j5jqNtPZRQMwFHCUTmQXYCJaolkl4LMDMZJuvKpA6ya6wlpKNTEjLLR6E14jtN+oAoSYmNNx0pGyFOjwZ0xyQ4f47AXpx5ABJjs78DpbvnYBKfDqmaIGTmn1X9OdUTrU4wcU=
+	t=1729506749; cv=none; b=RekW5IepUn2liaIJ7IMnCwqKli/K545PESeGVBqK2uthAKoSBDcfnum9wL5MBx6SkkyQ9EWjlz3v2AzHWEID0sYofSysDd6q/ZR6uJELm76zGldQGWOWXePpWfO0vWZ+bkJdEDnoL1CSnH/45iwg686GM/HB4mxZdbbimA/bBDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507007; c=relaxed/simple;
-	bh=V/IU8NrZWvWfi38uBG01uS7vVjIAzYXld5VGSBSPo7c=;
+	s=arc-20240116; t=1729506749; c=relaxed/simple;
+	bh=kMkQg8AIMV50ZvlgO/GMsgXVx2o9sk47GaWxvcR3nBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lVcs4RPbY/HN2YdntPDd4TYOhVnsws35MXrjqQkunC2NNl6DEKajBytE9p8VhjIvgtzSMwAarPYklhaOnvX6pk/CrFk+4i85VXTqdSHoDdlsR70azFHjqqWUU1NgKi6VXrR3q6CfR6hZ+4I9EdwxGLil7a2iFbUhZvMWs4/6yNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+gAiVOh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F0EAC4CEC3;
-	Mon, 21 Oct 2024 10:36:46 +0000 (UTC)
+	 MIME-Version; b=Qo+b0cBrVPKh8fCFB/TEep+tUD5MmUCYPyL2fey0Qj+6t9hKU7f4hXgXYPsH3YdduquvjuAQe0MBGCFAXCWMuLD/HsIkhe0sAFB+Y8KkhZIIKPzi22pwJuJ6ud3kQ3KYznP2623/OnOlHrelEJHrDIBRlwUoJPoX5YZM8tvOX6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TqgYpDD4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96999C4CEC3;
+	Mon, 21 Oct 2024 10:32:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507007;
-	bh=V/IU8NrZWvWfi38uBG01uS7vVjIAzYXld5VGSBSPo7c=;
+	s=korg; t=1729506749;
+	bh=kMkQg8AIMV50ZvlgO/GMsgXVx2o9sk47GaWxvcR3nBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V+gAiVOh6whPpgFRsDQqVusRE8JULVo+Py+qZWeBngOnorTXS3r3pLmSwC6HwTbgS
-	 cBGhJwsr5C2yz94l5BnDkKs5bGN+WwAzQFkPEtuQL8gojzXiXYS8wQYyChZV20Lut9
-	 HhJWhihbNNw60FxXlJoxks7ruteWFEIeUl1gjbXA=
+	b=TqgYpDD4V4krxFx4JkWfIaTmpjMDYNpdimqyGAVAN9Aky0aLmDhi/GWKsUfZbuNzT
+	 pSKxBjTVwdA7DwWjMkpi5JWRnWSr/JqwiIiO+desFVNS4LKTdfw+fM9K+0L0lT/Kim
+	 3Ez9/f7cjdH6giigERSTw83jVe40i88W7MBGu1pM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 028/124] xfs: check opcode and iovec count match in xlog_recover_attri_commit_pass2
-Date: Mon, 21 Oct 2024 12:23:52 +0200
-Message-ID: <20241021102257.815640292@linuxfoundation.org>
+	Emil Gedenryd <emil.gedenryd@axis.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.11 077/135] iio: light: opt3001: add missing full-scale range value
+Date: Mon, 21 Oct 2024 12:23:53 +0200
+Message-ID: <20241021102302.340516787@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Emil Gedenryd <emil.gedenryd@axis.com>
 
-commit ad206ae50eca62836c5460ab5bbf2a6c59a268e7 upstream.
+commit 530688e39c644543b71bdd9cb45fdfb458a28eaa upstream.
 
-Check that the number of recovered log iovecs is what is expected for
-the xattri opcode is expecting.
+The opt3001 driver uses predetermined full-scale range values to
+determine what exponent to use for event trigger threshold values.
+The problem is that one of the values specified in the datasheet is
+missing from the implementation. This causes larger values to be
+scaled down to an incorrect exponent, effectively reducing the
+maximum settable threshold value by a factor of 2.
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+Add missing full-scale range array value.
+
+Fixes: 94a9b7b1809f ("iio: light: add support for TI's opt3001 light sensor")
+Signed-off-by: Emil Gedenryd <emil.gedenryd@axis.com>
+Cc: <Stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240913-add_opt3002-v2-1-69e04f840360@axis.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_attr_item.c |   27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ drivers/iio/light/opt3001.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/xfs/xfs_attr_item.c
-+++ b/fs/xfs/xfs_attr_item.c
-@@ -719,6 +719,7 @@ xlog_recover_attri_commit_pass2(
- 	const void			*attr_value = NULL;
- 	const void			*attr_name;
- 	size_t				len;
-+	unsigned int			op;
- 
- 	attri_formatp = item->ri_buf[0].i_addr;
- 	attr_name = item->ri_buf[1].i_addr;
-@@ -737,6 +738,32 @@ xlog_recover_attri_commit_pass2(
- 		return -EFSCORRUPTED;
- 	}
- 
-+	/* Check the number of log iovecs makes sense for the op code. */
-+	op = attri_formatp->alfi_op_flags & XFS_ATTRI_OP_FLAGS_TYPE_MASK;
-+	switch (op) {
-+	case XFS_ATTRI_OP_FLAGS_SET:
-+	case XFS_ATTRI_OP_FLAGS_REPLACE:
-+		/* Log item, attr name, attr value */
-+		if (item->ri_total != 3) {
-+			XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
-+					     attri_formatp, len);
-+			return -EFSCORRUPTED;
-+		}
-+		break;
-+	case XFS_ATTRI_OP_FLAGS_REMOVE:
-+		/* Log item, attr name */
-+		if (item->ri_total != 2) {
-+			XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
-+					     attri_formatp, len);
-+			return -EFSCORRUPTED;
-+		}
-+		break;
-+	default:
-+		XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
-+				     attri_formatp, len);
-+		return -EFSCORRUPTED;
-+	}
-+
- 	/* Validate the attr name */
- 	if (item->ri_buf[1].i_len !=
- 			xlog_calc_iovec_len(attri_formatp->alfi_name_len)) {
+--- a/drivers/iio/light/opt3001.c
++++ b/drivers/iio/light/opt3001.c
+@@ -139,6 +139,10 @@ static const struct opt3001_scale opt300
+ 		.val2 = 400000,
+ 	},
+ 	{
++		.val = 41932,
++		.val2 = 800000,
++	},
++	{
+ 		.val = 83865,
+ 		.val2 = 600000,
+ 	},
 
 
 
