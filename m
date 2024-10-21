@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-87538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F4FF9A6583
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:57:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3362D9A6515
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:53:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADF951C221EA
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:57:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1AA01F21D1F
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:53:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F38A1EBA08;
-	Mon, 21 Oct 2024 10:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB771F4FD9;
+	Mon, 21 Oct 2024 10:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BHq8Bjcw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hLnpIsnN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4147B1E47B7;
-	Mon, 21 Oct 2024 10:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07EEB1E5736;
+	Mon, 21 Oct 2024 10:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507903; cv=none; b=t77w4sQ/AYTuRAAtbdQLQ+2KhX8QnyW64ZQN8+su0mK8QdKbCIm/NaQFGEyFC1M9sZTQ25WcqgpE7D3pInx5ucTyRn1nZpawNn9A0MZgqQRPiRggZt4d1lDUS1lp430EriI3f8AaA7hRMBOIP8BVqPVykAYP4PewBqoTDTLjy0o=
+	t=1729507697; cv=none; b=MQiV+rQj4XJ6f6fVgte60EK/K5t13yJE/jj+qWU3tpgOGta50hA+eOGoGQitQeB+ulzS64W/mN59fYVz+wBEygXqslvNJPbNRYc6J5aTSdgeWnSFRziS54EazUZY8Hsw+JZouh+Tpy2o0b2AtyxpwAd5GsXTl9SE6I+qmiSyAAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507903; c=relaxed/simple;
-	bh=pckRBn//ZopwukBrqnnFyBhcA9hnvQuJfcWeODLVdZs=;
+	s=arc-20240116; t=1729507697; c=relaxed/simple;
+	bh=9LNFU2Ljz2nFmivDi1KMAXlRgef6GfqCR840g/Eq5J4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SHz6OBKfLZx2lLiJqRuxBBkXqwlzOmNygighY5LZPluhJwZqFzu1faj4dv+Gk+qFu3t5nX3YqwU+9hq30ISYNQyJ/1BZG3EhCGhZH9jfwAvqKpgD/sUFEuh6IJxp71Uvr+WnmqMTzWlSfvRNCBzjlnvEGrf1i7/g2Q0G/EW0YJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BHq8Bjcw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 748DBC4CEC3;
-	Mon, 21 Oct 2024 10:51:42 +0000 (UTC)
+	 MIME-Version; b=nh8fBteb0z6XXRSs9eFloeym4IjmCNF9geMPqspvbr3dfBwp/zJYa5Mdv632B1xp6sl/sVTLFW3VNF6ziYskDPLJDukvzvG59VSZ3OXkDpTIJ1pAHdnatsrFA+OFUJDYvPawCud60LJ7z9lwzjdL/a1bfIG3dCP0ei7GpL4Qce0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hLnpIsnN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B4ABC4CEC3;
+	Mon, 21 Oct 2024 10:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507902;
-	bh=pckRBn//ZopwukBrqnnFyBhcA9hnvQuJfcWeODLVdZs=;
+	s=korg; t=1729507696;
+	bh=9LNFU2Ljz2nFmivDi1KMAXlRgef6GfqCR840g/Eq5J4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BHq8BjcwN5Xggg8wFXEcxLuUH5lECv9vb8ZLF67XmpnwbBTLN2HKbk8pZvPRTMeXO
-	 sHIlAAvbkNV+yWobols2gRJ8N2TY0z8BqmuLWvWGJ/pn5TUvmhJtZhxX0aoBWxsmVg
-	 bnrv3Mb+OucQr+GgDU98rs0cm8Zc3ReLLJ57713s=
+	b=hLnpIsnNZE0bB4zj3JC3P2mb6s7QtqA4EJz3pRY8g84gxc2rabYjPVGmtz+ZQaXJX
+	 hHcVe37BXA9RFJwnFsjEiBh79lhOX0YlD7v0YgaksjE6uyrxJVIs7mQimXQAEIDz3x
+	 bIz4JmHkqBXQ0Rmvuf6wQpGDPtipg3GGBKMWENDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 31/52] iio: light: veml6030: fix ALS sensor resolution
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Subject: [PATCH 5.15 71/82] x86/entry_32: Clear CPU buffers after register restore in NMI return
 Date: Mon, 21 Oct 2024 12:25:52 +0200
-Message-ID: <20241021102242.846138157@linuxfoundation.org>
+Message-ID: <20241021102250.023857459@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
-References: <20241021102241.624153108@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-commit c9e9746f275c45108f2b0633a4855d65d9ae0736 upstream.
+commit 48a2440d0f20c826b884e04377ccc1e4696c84e9 upstream.
 
-The driver still uses the sensor resolution provided in the datasheet
-until Rev. 1.6, 28-Apr-2022, which was updated with Rev 1.7,
-28-Nov-2023. The original ambient light resolution has been updated from
-0.0036 lx/ct to 0.0042 lx/ct, which is the value that can be found in
-the current device datasheet.
+CPU buffers are currently cleared after call to exc_nmi, but before
+register state is restored. This may be okay for MDS mitigation but not for
+RDFS. Because RDFS mitigation requires CPU buffers to be cleared when
+registers don't have any sensitive data.
 
-Update the default resolution for IT = 100 ms and GAIN = 1/8 from the
-original 4608 mlux/cnt to the current value from the "Resolution and
-maximum detection range" table (Application Note 84367, page 5), 5376
-mlux/cnt.
+Move CLEAR_CPU_BUFFERS after RESTORE_ALL_NMI.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light sensor")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20240923-veml6035-v2-1-58c72a0df31c@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: a0e2dab44d22 ("x86/entry_32: Add VERW just before userspace transition")
+Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240925-fix-dosemu-vm86-v7-2-1de0daca2d42%40linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/veml6030.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/entry/entry_32.S |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/light/veml6030.c
-+++ b/drivers/iio/light/veml6030.c
-@@ -780,7 +780,7 @@ static int veml6030_hw_init(struct iio_d
+--- a/arch/x86/entry/entry_32.S
++++ b/arch/x86/entry/entry_32.S
+@@ -1176,7 +1176,6 @@ SYM_CODE_START(asm_exc_nmi)
  
- 	/* Cache currently active measurement parameters */
- 	data->cur_gain = 3;
--	data->cur_resolution = 4608;
-+	data->cur_resolution = 5376;
- 	data->cur_integration_time = 3;
+ 	/* Not on SYSENTER stack. */
+ 	call	exc_nmi
+-	CLEAR_CPU_BUFFERS
+ 	jmp	.Lnmi_return
  
- 	return ret;
+ .Lnmi_from_sysenter_stack:
+@@ -1197,6 +1196,7 @@ SYM_CODE_START(asm_exc_nmi)
+ 
+ 	CHECK_AND_APPLY_ESPFIX
+ 	RESTORE_ALL_NMI cr3_reg=%edi pop=4
++	CLEAR_CPU_BUFFERS
+ 	jmp	.Lirq_return
+ 
+ #ifdef CONFIG_X86_ESPFIX32
+@@ -1238,6 +1238,7 @@ SYM_CODE_START(asm_exc_nmi)
+ 	 *  1 - orig_ax
+ 	 */
+ 	lss	(1+5+6)*4(%esp), %esp			# back to espfix stack
++	CLEAR_CPU_BUFFERS
+ 	jmp	.Lirq_return
+ #endif
+ SYM_CODE_END(asm_exc_nmi)
 
 
 
