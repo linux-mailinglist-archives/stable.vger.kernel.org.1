@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-87515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41E599A6566
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:56:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C9B79A6519
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:54:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03F672834C1
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:56:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC5171C222BB
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:54:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F4A1F8EE7;
-	Mon, 21 Oct 2024 10:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B271F708B;
+	Mon, 21 Oct 2024 10:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJWk9Y0w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmrnsorD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80101EE02C;
-	Mon, 21 Oct 2024 10:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CCDB1F1306;
+	Mon, 21 Oct 2024 10:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507834; cv=none; b=j+5T39SXmWZjHD8RHSNfQynBOrQJBbj7FU2ICnSUe4HMOv4QvuIj4IHkzmgT30xPmDmxzW/PNz2FhV+WvdqzFqz3tsV1sEbx4k7UxOREqW4Gz4gxzG9FCKPT2uO7eO5bQLoR+VGa93wyVlcRqI0nA1M7hXulB2DX4sdD6L2vMS0=
+	t=1729507712; cv=none; b=iiTNqq/bEx0NwtPvCVuWexiKfZ+GdNb9EPCj5FPzIeHxQKkvi9+YdNPsb069xafmzkWVuv3FfMmP5FBXGtFtUZdJFhjnPW/NE+9jBSf/D4FT2lXOhpfhWwNk9m8/cq/icQzJErcth3w9VtEA7xjGUaCBYl6SqhW56oH9N9sOHEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507834; c=relaxed/simple;
-	bh=npd9R+M6s9z+9Ks9yl+VAYyKMbEG33Eoyml8S2SWCP8=;
+	s=arc-20240116; t=1729507712; c=relaxed/simple;
+	bh=Bc0AsO3MXvK47Ey2+UIBbNOJ/XoUdfLK3B4StJdCqFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lUQ4xM1Bf2+EKhRh9nsPho2fLF7I2ZxniHBTc2L83HoL4C3xIbLzTwDkvFW7dJtkyyz6OzaCFmGNiJbwL6s9GS65efXaUOTWhXaOy8W47rLv3uBHKgNrXG8K1z8q0azxLfIKHJtA4HcyFihhGSr2wwvv1koxr7jS3r54SvmHxaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJWk9Y0w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E20B5C4CEC3;
-	Mon, 21 Oct 2024 10:50:33 +0000 (UTC)
+	 MIME-Version; b=bCKkBHc5+f/uZ+jrKR7+9JxdK5CXpd3dvtPzCeG1RrKRDIQAlk+8+xPSI41MZW+qQGuBfwVzuOh1gAnpIdE1tIJm8wuf9so9Fap3sd5o13+YnFKKC3TDeJgQKaaKxayQ9qv/RSmgkyAUx767lDp2RepeW+7gSA4ekNcqhpnqshE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmrnsorD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64FE5C4CEC3;
+	Mon, 21 Oct 2024 10:48:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507834;
-	bh=npd9R+M6s9z+9Ks9yl+VAYyKMbEG33Eoyml8S2SWCP8=;
+	s=korg; t=1729507712;
+	bh=Bc0AsO3MXvK47Ey2+UIBbNOJ/XoUdfLK3B4StJdCqFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QJWk9Y0wEcPZv7jy81HTSeVpiGDTdPC7y7WOGGpe5xMj3u4iB4HwE5r/WeMe/bsbm
-	 oIZ+O/Dkqn/QYxkPgjGOsShEj41BPzAZGpmvEmz4C3FnxHZW7c6xSWHIhDhNIDjM+G
-	 W9axWtghLbcsQ4SzXXwBSWTKgnwwpupx9PJx1GT0=
+	b=XmrnsorDaEuGWUCsDRNq5JTt3iRlo+XjpHIhITcydQrS2/XoUJfObSiZF/LvJYkRB
+	 YbQN6Zb9oEai9+Y4A42eB2FwYoJEzsKqqJXYccnE116wY5Azxxy9V0jTF3ibL81IUT
+	 KSRcg9IxtEgdukt/tZc+DDdWxJOdxjtMB7lkuCIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 35/52] iio: adc: ti-ads124s08: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 75/82] mptcp: handle consistently DSS corruption
 Date: Mon, 21 Oct 2024 12:25:56 +0200
-Message-ID: <20241021102243.000813057@linuxfoundation.org>
+Message-ID: <20241021102250.183045919@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
-References: <20241021102241.624153108@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit eb143d05def52bc6d193e813018e5fa1a0e47c77 upstream.
+commit e32d262c89e2b22cb0640223f953b548617ed8a6 upstream.
 
-This driver makes use of triggered buffers, but does not select the
-required modules.
+Bugged peer implementation can send corrupted DSS options, consistently
+hitting a few warning in the data path. Use DEBUG_NET assertions, to
+avoid the splat on some builds and handle consistently the error, dumping
+related MIBs and performing fallback and/or reset according to the
+subflow type.
 
-Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
-
-Fixes: e717f8c6dfec ("iio: adc: Add the TI ads124s08 ADC code")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241003-iio-select-v1-3-67c0385197cd@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 6771bfd9ee24 ("mptcp: update mptcp ack sequence from work queue")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20241008-net-mptcp-fallback-fixes-v1-1-c6fb8e93e551@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in mib.[ch], because commit 104125b82e5c ("mptcp: add mib
+  for infinite map sending") is linked to a new feature, not available
+  in this version. Resolving the conflicts is easy, simply adding the
+  new lines declaring the new "DSS corruptions" MIB entries.
+  Also removed in protocol.c and subflow.c all DEBUG_NET_WARN_ON_ONCE
+  because they are not defined in this version: enough with the MIB
+  counters that have been added in this commit. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/Kconfig |    2 ++
- 1 file changed, 2 insertions(+)
+ net/mptcp/mib.c      |    2 ++
+ net/mptcp/mib.h      |    2 ++
+ net/mptcp/protocol.c |   20 +++++++++++++++++---
+ net/mptcp/subflow.c  |    2 +-
+ 4 files changed, 22 insertions(+), 4 deletions(-)
 
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -1138,6 +1138,8 @@ config TI_ADS8688
- config TI_ADS124S08
- 	tristate "Texas Instruments ADS124S08"
- 	depends on SPI && OF
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
- 	help
- 	  If you say yes here you get support for Texas Instruments ADS124S08
- 	  and ADS124S06 ADC chips
+--- a/net/mptcp/mib.c
++++ b/net/mptcp/mib.c
+@@ -26,6 +26,8 @@ static const struct snmp_mib mptcp_snmp_
+ 	SNMP_MIB_ITEM("MPJoinAckRx", MPTCP_MIB_JOINACKRX),
+ 	SNMP_MIB_ITEM("MPJoinAckHMacFailure", MPTCP_MIB_JOINACKMAC),
+ 	SNMP_MIB_ITEM("DSSNotMatching", MPTCP_MIB_DSSNOMATCH),
++	SNMP_MIB_ITEM("DSSCorruptionFallback", MPTCP_MIB_DSSCORRUPTIONFALLBACK),
++	SNMP_MIB_ITEM("DSSCorruptionReset", MPTCP_MIB_DSSCORRUPTIONRESET),
+ 	SNMP_MIB_ITEM("InfiniteMapRx", MPTCP_MIB_INFINITEMAPRX),
+ 	SNMP_MIB_ITEM("DSSNoMatchTCP", MPTCP_MIB_DSSTCPMISMATCH),
+ 	SNMP_MIB_ITEM("DataCsumErr", MPTCP_MIB_DATACSUMERR),
+--- a/net/mptcp/mib.h
++++ b/net/mptcp/mib.h
+@@ -19,6 +19,8 @@ enum linux_mptcp_mib_field {
+ 	MPTCP_MIB_JOINACKRX,		/* Received an ACK + MP_JOIN */
+ 	MPTCP_MIB_JOINACKMAC,		/* HMAC was wrong on ACK + MP_JOIN */
+ 	MPTCP_MIB_DSSNOMATCH,		/* Received a new mapping that did not match the previous one */
++	MPTCP_MIB_DSSCORRUPTIONFALLBACK,/* DSS corruption detected, fallback */
++	MPTCP_MIB_DSSCORRUPTIONRESET,	/* DSS corruption detected, MPJ subflow reset */
+ 	MPTCP_MIB_INFINITEMAPRX,	/* Received an infinite mapping */
+ 	MPTCP_MIB_DSSTCPMISMATCH,	/* DSS-mapping did not map with TCP's sequence numbers */
+ 	MPTCP_MIB_DATACSUMERR,		/* The data checksum fail */
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -554,6 +554,18 @@ static bool mptcp_check_data_fin(struct
+ 	return ret;
+ }
+ 
++static void mptcp_dss_corruption(struct mptcp_sock *msk, struct sock *ssk)
++{
++	if (READ_ONCE(msk->allow_infinite_fallback)) {
++		MPTCP_INC_STATS(sock_net(ssk),
++				MPTCP_MIB_DSSCORRUPTIONFALLBACK);
++		mptcp_do_fallback(ssk);
++	} else {
++		MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_DSSCORRUPTIONRESET);
++		mptcp_subflow_reset(ssk);
++	}
++}
++
+ static bool __mptcp_move_skbs_from_subflow(struct mptcp_sock *msk,
+ 					   struct sock *ssk,
+ 					   unsigned int *bytes)
+@@ -626,10 +638,12 @@ static bool __mptcp_move_skbs_from_subfl
+ 				moved += len;
+ 			seq += len;
+ 
+-			if (WARN_ON_ONCE(map_remaining < len))
+-				break;
++			if (unlikely(map_remaining < len))
++				mptcp_dss_corruption(msk, ssk);
+ 		} else {
+-			WARN_ON_ONCE(!fin);
++			if (unlikely(!fin))
++				mptcp_dss_corruption(msk, ssk);
++
+ 			sk_eat_skb(ssk, skb);
+ 			done = true;
+ 		}
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -847,7 +847,7 @@ static bool skb_is_fully_mapped(struct s
+ 	unsigned int skb_consumed;
+ 
+ 	skb_consumed = tcp_sk(ssk)->copied_seq - TCP_SKB_CB(skb)->seq;
+-	if (WARN_ON_ONCE(skb_consumed >= skb->len))
++	if (unlikely(skb_consumed >= skb->len))
+ 		return true;
+ 
+ 	return skb->len - skb_consumed <= subflow->map_data_len -
 
 
 
