@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-87420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E2699A64E4
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:51:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11D179A650A
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:53:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4E272811CA
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:51:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38663B2D07F
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0CF1E5709;
-	Mon, 21 Oct 2024 10:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 437401F1307;
+	Mon, 21 Oct 2024 10:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SbHdsG27"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PnwVy2yy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E291E47CD;
-	Mon, 21 Oct 2024 10:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7EEE1F80A9;
+	Mon, 21 Oct 2024 10:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507553; cv=none; b=iPQOZAWm8axxch4ri2qyx9W1tqrJuapuxxfUDaXfUOGC7BIhzL/JjTaIYtCtkTEOUroePmyJcU4Kya5rie5WhLBrqmUJj0fTDzKNkHwZKBB6nUJjkTddImXdyQwK9uDEEQzK+MiMnRk7gtFUgoFAnlWUr0FPf0WVTtF6jir+Ybg=
+	t=1729507367; cv=none; b=GqY5kpyDHaELnB0Sg+Mj2nmghFBYnnJenm7eJ1mwzjGXd7wy2ULV9NPn4WH6X5t/7pRkpynfBeFyQBkmYHAUDLnLRptbuRi3Va6GBlqPGcOJQLPWT+t/uhro//vb4Qv9IS8mHkZ1WTyH88Pj5uAS4S4Kbvts8SeE02cu3c7+hao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507553; c=relaxed/simple;
-	bh=KOlYzgMWvWOyH1WOhO65tfE3AMKCyxsWYgncdfX5rV4=;
+	s=arc-20240116; t=1729507367; c=relaxed/simple;
+	bh=ITP7AAbyfIWHapZNbpHIeIqmcShew+mWVl/ynasQKBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IWgodklcvQFZHMdup+Jw7h/GXNkOK+KJs1DLB8f/JlfYtlbDIsh5osEoezAeVsVCYSTGi5MLCDp4A9pTYBn2bzGO8B3L4P67v1cOoFrQgV6hDsZ7TwQb7bToN18RBCyYNcBNgYYJPsWqC5SISnIh2naZQdHKnQcWvUUPmbz4FcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SbHdsG27; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4473DC4CEC3;
-	Mon, 21 Oct 2024 10:45:52 +0000 (UTC)
+	 MIME-Version; b=PXkUqi2JVEDKL6x3jTae4BPH0qgSr0DgJo9ooAZm4HNl0C4/K8zz6EgHCw1Y5jVmeiPHS0qhqw3BqAijE6uknog3Op+aJrX9aFnMZT/i+RXGuoMWL4zgKeCfS5O7veOFXxil9xVPwGTkkN1FHKK0R9AwXPmxgiqWpdyLVyPSJ6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnwVy2yy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 666FCC4CEC3;
+	Mon, 21 Oct 2024 10:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507552;
-	bh=KOlYzgMWvWOyH1WOhO65tfE3AMKCyxsWYgncdfX5rV4=;
+	s=korg; t=1729507366;
+	bh=ITP7AAbyfIWHapZNbpHIeIqmcShew+mWVl/ynasQKBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SbHdsG27MyMrWvZrgHC5uv/TzVf+wvf9g4RSmK7a+vUm0NFqGTpOzucBAAvz2Bz0R
-	 e1uZuMJKeeDBZpTidvkfXNgaBiBDuLh6zQzptwnbWwGfrS6km8gdzi8Oo5LKOS4tGw
-	 9cWiIZtNoATCVuPWqY3cjSzo00bbbw2ODU357tEQ=
+	b=PnwVy2yyuIXma9UXU1iPFZ7VJeLyTpdT1Fgt9gk579ABdjFJ8C3+ZGIJFK3l6Ag40
+	 0Tk79UAOHCLqE7plkOQ60c4hqQbGMR951w4H+JN0qQiXQ2TA/nb7pyaQhvcFVX9VGm
+	 goyC0ucteTSCP5X3gV+w01Iun7vDAdTmCl5voVls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 24/82] posix-clock: Fix missing timespec64 check in pc_clock_settime()
-Date: Mon, 21 Oct 2024 12:25:05 +0200
-Message-ID: <20241021102248.204029243@linuxfoundation.org>
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	Zack Rusin <zack.rusin@broadcom.com>
+Subject: [PATCH 6.1 52/91] drm/vmwgfx: Handle surface check failure correctly
+Date: Mon, 21 Oct 2024 12:25:06 +0200
+Message-ID: <20241021102251.850277081@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-commit d8794ac20a299b647ba9958f6d657051fc51a540 upstream.
+commit 26498b8d54373d31a621d7dec95c4bd842563b3b upstream.
 
-As Andrew pointed out, it will make sense that the PTP core
-checked timespec64 struct's tv_sec and tv_nsec range before calling
-ptp->info->settime64().
+Currently if condition (!bo and !vmw_kms_srf_ok()) was met
+we go to err_out with ret == 0.
+err_out dereferences vfb if ret == 0, but in our case vfb is still NULL.
 
-As the man manual of clock_settime() said, if tp.tv_sec is negative or
-tp.tv_nsec is outside the range [0..999,999,999], it should return EINVAL,
-which include dynamic clocks which handles PTP clock, and the condition is
-consistent with timespec64_valid(). As Thomas suggested, timespec64_valid()
-only check the timespec is valid, but not ensure that the time is
-in a valid range, so check it ahead using timespec64_valid_strict()
-in pc_clock_settime() and return -EINVAL if not valid.
+Fix this by assigning sensible error to ret.
 
-There are some drivers that use tp->tv_sec and tp->tv_nsec directly to
-write registers without validity checks and assume that the higher layer
-has checked it, which is dangerous and will benefit from this, such as
-hclge_ptp_settime(), igb_ptp_settime_i210(), _rcar_gen4_ptp_settime(),
-and some drivers can remove the checks of itself.
+Found by Linux Verification Center (linuxtesting.org) with SVACE
 
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
 Cc: stable@vger.kernel.org
-Fixes: 0606f422b453 ("posix clocks: Introduce dynamic clocks")
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Suggested-by: Andrew Lunn <andrew@lunn.ch>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://patch.msgid.link/20241009072302.1754567-2-ruanjinjie@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 810b3e1683d0 ("drm/vmwgfx: Support topology greater than texture size")
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241002122429.1981822-1-kniv@yandex-team.ru
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/posix-clock.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/time/posix-clock.c
-+++ b/kernel/time/posix-clock.c
-@@ -299,6 +299,9 @@ static int pc_clock_settime(clockid_t id
- 		goto out;
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -1591,6 +1591,7 @@ static struct drm_framebuffer *vmw_kms_f
+ 		DRM_ERROR("Surface size cannot exceed %dx%d\n",
+ 			dev_priv->texture_max_width,
+ 			dev_priv->texture_max_height);
++		ret = -EINVAL;
+ 		goto err_out;
  	}
  
-+	if (!timespec64_valid_strict(ts))
-+		return -EINVAL;
-+
- 	if (cd.clk->ops.clock_settime)
- 		err = cd.clk->ops.clock_settime(cd.clk, ts);
- 	else
 
 
 
