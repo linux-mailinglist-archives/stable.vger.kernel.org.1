@@ -1,233 +1,153 @@
-Return-Path: <stable+bounces-87630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2D599A901C
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 21:49:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D888C9A9031
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 21:51:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5C16B220A4
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 19:49:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51592B21D7C
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 19:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 502C81C9EB9;
-	Mon, 21 Oct 2024 19:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24431CC88D;
+	Mon, 21 Oct 2024 19:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u38O1dgU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MizNjLd7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4CD1C9B82
-	for <stable@vger.kernel.org>; Mon, 21 Oct 2024 19:49:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5C01C9B82;
+	Mon, 21 Oct 2024 19:51:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729540185; cv=none; b=Ouy5Ri6WAHUu2RcDWIRZzNSD7mD5cGPoEd5zE3VPm3Ta/QBht8C9fRmY5JWDYTZtNS6ohaTMy9Gz8qoKrgtvTO1vI4qarWPQwNhihCSRuA+lKj5HEWstPRB3S/dPb3I8Ldt6h/cb1QsLkEhiRjW8QEnltW2FJQATPTcult13alo=
+	t=1729540268; cv=none; b=S5zkK7mABFUo8GTuzj0DGmRDXqpzeTSV16rjYq2rKHVXVQuRguYaVN1fvOwkLKIaKq0ygX/qFt9EoWnN3G9KQ40reLqqwIz/WUh9RP+oewccw5/mvAC6zeyoNBNIDecVFlwXC5wYwxNO++As3I1hP1HBDHBVRoWD8Ow+qsOreqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729540185; c=relaxed/simple;
-	bh=HTep6Ps/b0VqQuVOG52oSj2XTrXoOn40CM7dR4EIEOI=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=MKa/J0s+JJ/MOtHJNayT00jzdPUoyiPCw9u45/f2hHgJu7VQHqDP8H1E9TZK30mAS6S/GRW75ePSmyQAhrzsXweKl7Oo35+6nlThYdcPaDHn6TG0b+t8LuxvaJnAyhTQHbBZyXD4AZHuKJPf/gQd1GrcvLpT2wEfkVfsqdNUPb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u38O1dgU; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-7c3e1081804so2574292a12.3
-        for <stable@vger.kernel.org>; Mon, 21 Oct 2024 12:49:42 -0700 (PDT)
+	s=arc-20240116; t=1729540268; c=relaxed/simple;
+	bh=v6WqajTgm21dgHkOaugCGzi6BssbIho+byz2+/ZcAhg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CAk2ILFv1E0jqZvwFQubz6u4ET23EmO5uA4kY6biQYNh+8L1rXfYGjmAeMGCmLi8NL2uPI6Hhiq/06iO40Oe6ENLmgbvCpBtrTYgwyDMyIHxv8Qa+HTRdZhAXxHEM90F4De1VvIMCBDTGZEfbwkP1t1J6ElkQyJdxD2XQ6mp5/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MizNjLd7; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-207115e3056so39852795ad.2;
+        Mon, 21 Oct 2024 12:51:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729540182; x=1730144982; darn=vger.kernel.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TIAEhXnz+TycYsOXq4fwUScpNqUcxMY2FROsK0V63/0=;
-        b=u38O1dgUi9XNpaywyCUwduuXJ9Nc4q2RPX1D/Yq5Vb3OTTT/z4A+25TEsVWxq7QNf4
-         X7JF6sW6MT+lqBO5h0xTtzXB2WNGuQe3+C+Qutew8+KCulr+0MZzNRBn9Wuz4ota5ztz
-         vYPk0nw1oeO2fsGegij3qpgdNhBr33WPZGttJlNc/RTlv48iYYee0ocFZv38ten/6iLG
-         yLRzV5Q4PnZ0v2zP2O8ZlSQR/JaLcKkStZIKEGxntXzqr8+dfqQOlAeTJD1R9W40khZH
-         cF7ML29gfA8UVY19YwYJzKUxfhhVPfmq+h4rpjMFE8jdPm6PmgkjFYhXeCr2dyvMJiAf
-         HH3A==
+        d=gmail.com; s=20230601; t=1729540266; x=1730145066; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=6V+lOtaR8H+gY4XFOspQoIsXeqDJl++GkY5DK5ENgxs=;
+        b=MizNjLd7LbM8P1+tARlViuMjd9HYz69sLqz7UYZc+yaKaNXnSYaBUrWc1mClRMvmQk
+         PkLZoWX0sobqV4KrNg8HSe5Ch15hsqMakIrWjS40othhEtfq8KEAVC8os6v/Yyzcz2pt
+         19G3pEg1kV6M8vvQiJ+liBW6YvZBXvrurKY/YAkU+2JmjY5/aPZSuD9yOSG6IYG0wq3n
+         o2pSnJtf/HxHfqHj6PGweaDPWDNlIRIkV26/nQWxauDCYiF8QtDLUXm9c5yqlPRXYzbZ
+         35mDmn/kU1OCkylwSoU0Xd95/KFPxbEP7LklDkjXPqMilXTogoaUsxI6vQw3zxgDk6Ka
+         01mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729540182; x=1730144982;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TIAEhXnz+TycYsOXq4fwUScpNqUcxMY2FROsK0V63/0=;
-        b=iGvfkHW1TqTtULZ76yrrsdGk8SEDj/dfs14vRlBD79F9PQN8ONZXxGvNihw0qrQrmF
-         8YyDr0H3J8vQVYF+UboS8NwTio9vIsPX/DTvSfJXAVPtctUrw7PZTYaQELUVa7LxUvmR
-         29/jslQ7XSjGgkBP1uTLpqikgXrXiJTPD3l2QeWMGmVtK+lTILKZ+xT+gyTN0gJzFnf/
-         WBf4i1Drl2zwtVmiR/6vYFc0b8IJ15QRcyhLfqFnnggtZZm9KCcI5x34VKZLgSFLtkOY
-         VUkqhTcnLBb9Sqd6eADEFokzrg592M5lR12SF9g0+Zh6Sh/68+QtdCnH0Cp3Qxz2hcmf
-         9T3A==
-X-Forwarded-Encrypted: i=1; AJvYcCXXBBfWKr900DJQVQa9MCVtE1hCmU6rl8CcdyHAX6CiHOh8v3tsIW0mf4C3mU555SehcnIsgOM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7ejZYPdyYIKKUpRkXaNxvL/5kza8k4VJSBRE0U+EheZDWRL1D
-	vYsYBZgUOBaHgJRW5gCVdh/5zqV4hSzw1ErboKfzNvW+o+p4uhb+yJiuG0A7rA==
-X-Google-Smtp-Source: AGHT+IE7LBFDuXD464oDX7R+3pKFv6gB/pDONRd/qrGrJhWZX+JT1kChQtcaO3T6c0R4R1FchyglYw==
-X-Received: by 2002:a05:6a21:a24b:b0:1d9:275b:4f06 with SMTP id adf61e73a8af0-1d96debc9a1mr86139637.19.1729540181812;
-        Mon, 21 Oct 2024 12:49:41 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71ec1407f63sm3277862b3a.204.2024.10.21.12.49.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Oct 2024 12:49:40 -0700 (PDT)
-Date: Mon, 21 Oct 2024 12:49:28 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-    Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org, 
-    stable@vger.kernel.org, Hugh Dickins <hughd@google.com>, 
-    Matthew Wilcox <willy@infradead.org>, 
-    Shakeel Butt <shakeel.butt@linux.dev>
-Subject: Re: [PATCH v2] mm: page_alloc: move mlocked flag clearance into
- free_pages_prepare()
-In-Reply-To: <20241021173455.2691973-1-roman.gushchin@linux.dev>
-Message-ID: <d50407d4-5a4e-de0c-9f70-222eef9a9f67@google.com>
-References: <20241021173455.2691973-1-roman.gushchin@linux.dev>
+        d=1e100.net; s=20230601; t=1729540266; x=1730145066;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6V+lOtaR8H+gY4XFOspQoIsXeqDJl++GkY5DK5ENgxs=;
+        b=WTafI7Y5gWZk8ezDYbpyH7JLn/xyZ7bbLplbs5f+kyUrD1z1FexLruz70qnwuxU8d4
+         Z6ekEI8kvoUuHtTBhg6iQ5Y8poH2migse0noD2VlpdWytxT2ajhOpSQNT08sCw9J5hM7
+         WkI3wIbJSSAoVXWFAj0T7ivM+AICxfmo7K+gAxxEvx3xxV8UNuMLyKJbiVsfrsuulQap
+         GmVWInbk4s6Zdqxel1tyOgb9bX5/wYO/8phyRpOFcefzztBh+c4WkeWOYFAjhm5s1b1c
+         8sr9Rt7DwBd8nrB3uApsTkg79qFvL1T/D8BxY6L4hHyu1HGwKIivDr2bdbrrwFr24Z5B
+         sRUA==
+X-Forwarded-Encrypted: i=1; AJvYcCX6tbXz4m07+P6rT4khGTdFgQAIKO52Z+HTxC8brP8cOYp/hjCx+cNyNBjVNlfcMYSV7AcRg4EJLdr07+c=@vger.kernel.org, AJvYcCXpTeumqchWF22xcDBhYY2GQMbhl8b/cOFL4hvBLpR1T+YBTSDiCt7OFWfoDFifX2kaTlWmQmw+@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywq8RPKAcM7j/nGnfPDi2uhNVeIRDd0LVKAunfcdgb2EYP/Vwlo
+	LPywmdDlbG4s2u5OmWrZQnoEBsECpYix7AeFjJb3pcwbl3BvBtZU
+X-Google-Smtp-Source: AGHT+IE2cH0HcFylugul3Qu343Q8apXWOnusPPzVH5Ny3/PXThBXvTtyl9qK9dJQTeKLjD3h0whijg==
+X-Received: by 2002:a17:903:234b:b0:20b:61c0:43ed with SMTP id d9443c01a7336-20e5a89ffd5mr161113905ad.30.1729540266004;
+        Mon, 21 Oct 2024 12:51:06 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20e7f0ef62asm29792635ad.242.2024.10.21.12.51.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Oct 2024 12:51:05 -0700 (PDT)
+Message-ID: <f4578cc0-00c6-4bfd-a5c8-2a92fcfb427d@gmail.com>
+Date: Mon, 21 Oct 2024 12:51:03 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 000/124] 6.6.58-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20241021102256.706334758@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+ HGuUuzv+GKZ6nsysJw==
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, 21 Oct 2024, Roman Gushchin wrote:
+On 10/21/24 03:23, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.58 release.
+> There are 124 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 23 Oct 2024 10:22:25 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.58-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-> Syzbot reported a bad page state problem caused by a page
-> being freed using free_page() still having a mlocked flag at
-> free_pages_prepare() stage:
-> 
->   BUG: Bad page state in process syz.0.15  pfn:1137bb
->   page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff8881137bb870 pfn:0x1137bb
->   flags: 0x400000000080000(mlocked|node=0|zone=1)
->   raw: 0400000000080000 0000000000000000 dead000000000122 0000000000000000
->   raw: ffff8881137bb870 0000000000000000 00000000ffffffff 0000000000000000
->   page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
->   page_owner tracks the page as allocated
->   page last allocated via order 0, migratetype Unmovable, gfp_mask
->   0x400dc0(GFP_KERNEL_ACCOUNT|__GFP_ZERO), pid 3005, tgid
->   3004 (syz.0.15), ts 61546  608067, free_ts 61390082085
->    set_page_owner include/linux/page_owner.h:32 [inline]
->    post_alloc_hook+0x1f3/0x230 mm/page_alloc.c:1537
->    prep_new_page mm/page_alloc.c:1545 [inline]
->    get_page_from_freelist+0x3008/0x31f0 mm/page_alloc.c:3457
->    __alloc_pages_noprof+0x292/0x7b0 mm/page_alloc.c:4733
->    alloc_pages_mpol_noprof+0x3e8/0x630 mm/mempolicy.c:2265
->    kvm_coalesced_mmio_init+0x1f/0xf0 virt/kvm/coalesced_mmio.c:99
->    kvm_create_vm virt/kvm/kvm_main.c:1235 [inline]
->    kvm_dev_ioctl_create_vm virt/kvm/kvm_main.c:5500 [inline]
->    kvm_dev_ioctl+0x13bb/0x2320 virt/kvm/kvm_main.c:5542
->    vfs_ioctl fs/ioctl.c:51 [inline]
->    __do_sys_ioctl fs/ioctl.c:907 [inline]
->    __se_sys_ioctl+0xf9/0x170 fs/ioctl.c:893
->    do_syscall_x64 arch/x86/entry/common.c:52 [inline]
->    do_syscall_64+0x69/0x110 arch/x86/entry/common.c:83
->    entry_SYSCALL_64_after_hwframe+0x76/0x7e
->   page last free pid 951 tgid 951 stack trace:
->    reset_page_owner include/linux/page_owner.h:25 [inline]
->    free_pages_prepare mm/page_alloc.c:1108 [inline]
->    free_unref_page+0xcb1/0xf00 mm/page_alloc.c:2638
->    vfree+0x181/0x2e0 mm/vmalloc.c:3361
->    delayed_vfree_work+0x56/0x80 mm/vmalloc.c:3282
->    process_one_work kernel/workqueue.c:3229 [inline]
->    process_scheduled_works+0xa5c/0x17a0 kernel/workqueue.c:3310
->    worker_thread+0xa2b/0xf70 kernel/workqueue.c:3391
->    kthread+0x2df/0x370 kernel/kthread.c:389
->    ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
->    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-> 
-> A reproducer is available here:
-> https://syzkaller.appspot.com/x/repro.c?x=1437939f980000
-> 
-> The problem was originally introduced by
-> commit b109b87050df ("mm/munlock: replace clear_page_mlock() by final
-> clearance"): it was handling focused on handling pagecache
-> and anonymous memory and wasn't suitable for lower level
-> get_page()/free_page() API's used for example by KVM, as with
-> this reproducer.
-> 
-> Fix it by moving the mlocked flag clearance down to
-> free_page_prepare().
-> 
-> The bug itself if fairly old and harmless (aside from generating these
-> warnings).
-> 
-> Closes: https://syzkaller.appspot.com/x/report.txt?x=169a47d0580000
-> Fixes: b109b87050df ("mm/munlock: replace clear_page_mlock() by final clearance")
-> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-> Cc: <stable@vger.kernel.org>
-> Cc: Hugh Dickins <hughd@google.com>
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Acked-by: Hugh Dickins <hughd@google.com>
-
-Thanks Roman - I'd been preparing a similar patch, so agree that this is
-the right fix.  I don't think there's any need to change your text, but
-let me remind us that any "Bad page" report stops that page from being
-allocated again (because it's in an undefined, potentially dangerous
-state): so does amount to a small memory leak even if otherwise harmless.
-
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> ---
->  mm/page_alloc.c | 15 +++++++++++++++
->  mm/swap.c       | 14 --------------
->  2 files changed, 15 insertions(+), 14 deletions(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index bc55d39eb372..7535d78862ab 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1044,6 +1044,7 @@ __always_inline bool free_pages_prepare(struct page *page,
->  	bool skip_kasan_poison = should_skip_kasan_poison(page);
->  	bool init = want_init_on_free();
->  	bool compound = PageCompound(page);
-> +	struct folio *folio = page_folio(page);
->  
->  	VM_BUG_ON_PAGE(PageTail(page), page);
->  
-> @@ -1053,6 +1054,20 @@ __always_inline bool free_pages_prepare(struct page *page,
->  	if (memcg_kmem_online() && PageMemcgKmem(page))
->  		__memcg_kmem_uncharge_page(page, order);
->  
-> +	/*
-> +	 * In rare cases, when truncation or holepunching raced with
-> +	 * munlock after VM_LOCKED was cleared, Mlocked may still be
-> +	 * found set here.  This does not indicate a problem, unless
-> +	 * "unevictable_pgs_cleared" appears worryingly large.
-> +	 */
-> +	if (unlikely(folio_test_mlocked(folio))) {
-> +		long nr_pages = folio_nr_pages(folio);
-> +
-> +		__folio_clear_mlocked(folio);
-> +		zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
-> +		count_vm_events(UNEVICTABLE_PGCLEARED, nr_pages);
-> +	}
-> +
->  	if (unlikely(PageHWPoison(page)) && !order) {
->  		/* Do not let hwpoison pages hit pcplists/buddy */
->  		reset_page_owner(page, order);
-> diff --git a/mm/swap.c b/mm/swap.c
-> index 835bdf324b76..7cd0f4719423 100644
-> --- a/mm/swap.c
-> +++ b/mm/swap.c
-> @@ -78,20 +78,6 @@ static void __page_cache_release(struct folio *folio, struct lruvec **lruvecp,
->  		lruvec_del_folio(*lruvecp, folio);
->  		__folio_clear_lru_flags(folio);
->  	}
-> -
-> -	/*
-> -	 * In rare cases, when truncation or holepunching raced with
-> -	 * munlock after VM_LOCKED was cleared, Mlocked may still be
-> -	 * found set here.  This does not indicate a problem, unless
-> -	 * "unevictable_pgs_cleared" appears worryingly large.
-> -	 */
-> -	if (unlikely(folio_test_mlocked(folio))) {
-> -		long nr_pages = folio_nr_pages(folio);
-> -
-> -		__folio_clear_mlocked(folio);
-> -		zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
-> -		count_vm_events(UNEVICTABLE_PGCLEARED, nr_pages);
-> -	}
->  }
->  
->  /*
-> -- 
-> 2.47.0.105.g07ac214952-goog
-> 
-> 
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
