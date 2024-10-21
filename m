@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-87022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D58029A5E4C
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:13:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1029A5E5C
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:14:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 571371F21C65
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 08:13:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1741CB20589
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 08:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1720A1E1C06;
-	Mon, 21 Oct 2024 08:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8C11E1A2C;
+	Mon, 21 Oct 2024 08:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mh8ERWEs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZQah8sV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3361E1A3E
-	for <stable@vger.kernel.org>; Mon, 21 Oct 2024 08:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34021E1C32
+	for <stable@vger.kernel.org>; Mon, 21 Oct 2024 08:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729498421; cv=none; b=ROTNTxElLMrHKZS7MXOnAK9GUjEkWXhKmRZMTBWMp03kl7T/Wqh7yOJxeeihs1C+4aVoit3gcrS1LjeRm4dTq+Qav04Q//jVPPFX+arc+H5QqdaL7fx4p5kmELHEXDF9HrMG+R82k0HDWNr9NACIA19xT/p3lkvUSG02BMWMEHc=
+	t=1729498424; cv=none; b=erJv4Y4YzxB/lIXxh6jpNOVug+wYXsbruroFp0u7h0Q1BoE9EdEFWmpT06yvCYj8r7nIz8t8loLyVr2moDM8C3mEsbymPEOiQkxemfpFJ8aXNloGB/JSKa2VXaehLTZGUVF98uNsX6LnbJce3qOK+K3dL+ItRE/bvd4t/7R7DFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729498421; c=relaxed/simple;
-	bh=1OukKXoxhfMXJOzNjvBO4A9nZgcBt7/H1/g5pcchVEk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rq3/KwI6k9hwaNUQRm7RIerekkPmEezTMIazrEPeRQzXscBksQjyljb27ictsPtor5gtsCt4M9AlPUr51c5wMRAXuOtEncFZENfOx/ySnXu2VkIgxAV6FMJyURBT+l79f8kFduCUL+c5VTMwSAa2XPUwBrkIg2sxANgHbbjXmmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mh8ERWEs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8CA9C4CECD;
-	Mon, 21 Oct 2024 08:13:40 +0000 (UTC)
+	s=arc-20240116; t=1729498424; c=relaxed/simple;
+	bh=EugtF0w8wSnTKUSU1xG/cdkQaQlyAG9lzWsR6EfIWEM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oeVUs3P/AUxqwEBJ7ssUSFovV0DtqFbOGGnHiMe6RKZjC2S7tFGwo19jEOLHmdy2/CGZusdfzkOUFmwCjhSqGigAEhqUYlNkbUNFp+t1ktNfypmIocWwFkE9ruN/kEheKMuPmCVQKngoM5EFXb2c5HnmzeZGBJIP+MkcDBqtFMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZQah8sV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB931C4CEE7;
+	Mon, 21 Oct 2024 08:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729498421;
-	bh=1OukKXoxhfMXJOzNjvBO4A9nZgcBt7/H1/g5pcchVEk=;
+	s=korg; t=1729498424;
+	bh=EugtF0w8wSnTKUSU1xG/cdkQaQlyAG9lzWsR6EfIWEM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=mh8ERWEs+jBq3l9iyKGJKosHvjouaHETiNQ02BK6vSsJjFAQSaNuZKaKy0bddLJd0
-	 1zOkdNUJDoU2RfcVInaXmM2eeZra28KhAFC99e9h5VlyZLTYgNt6A1fPdsNhJVeylC
-	 tbpQ9/bi/cfjLbfOmExYMQq4jivv+n8NScITyXCI=
-Subject: FAILED: patch "[PATCH] x86/bugs: Use code segment selector for VERW operand" failed to apply to 5.15-stable tree
+	b=TZQah8sVoXZ+y9IMnSTMsuVGVabuzG9BSBMNbtgiHvCdVdK3d1g+OM876kLIF/+US
+	 B8DH5wle2Z0hOeiQAhfaOacqe0KWsg9o9ObvZcreErrx3JKF+zlTtMiq68dwAOduvv
+	 2yT1pg4DxX3guAm9ZcfjiwLYQ1KhmciVBS6o/Ky4=
+Subject: FAILED: patch "[PATCH] x86/bugs: Use code segment selector for VERW operand" failed to apply to 5.10-stable tree
 To: pawan.kumar.gupta@linux.intel.com,andrew.cooper3@citrix.com,brgerst@gmail.com,dave.hansen@linux.intel.com,mingo@kernel.org,rtgill82@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 21 Oct 2024 10:13:30 +0200
-Message-ID: <2024102130-saturday-bountiful-5087@gregkh>
+Date: Mon, 21 Oct 2024 10:13:31 +0200
+Message-ID: <2024102131-blissful-iodize-4056@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x e4d2102018542e3ae5e297bc6e229303abff8a0f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024102130-saturday-bountiful-5087@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024102131-blissful-iodize-4056@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
