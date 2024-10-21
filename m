@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-87260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2757A9A641E
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:43:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6830D9A6402
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:41:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 562361C22474
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 258CBB271BD
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:37:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792121F4285;
-	Mon, 21 Oct 2024 10:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DADF1E909D;
+	Mon, 21 Oct 2024 10:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/sZ2w8K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S60KB8D6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B531EABCE;
-	Mon, 21 Oct 2024 10:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C131EABD5;
+	Mon, 21 Oct 2024 10:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507073; cv=none; b=F1vIoEzMtjMQjbC/kdlyuIdFb1gemqS4z/oBboKhNgwr+XT0YUhfp0I+Cfn2WkSGkNGqA2XMZeN82FDg7Jcg8u3gLP8LIMNUAVHJkebkl/A0YpYjTRFRSnH1xaEfTUYURxuDdv/v5/k9CQJZ3o5DIejxazq9HCJZ4O1uiJWcYKs=
+	t=1729506813; cv=none; b=JYZEr+ySK0La/z12FY3Vgfl54P5HC2lkLK4+/1hCn5LgAGLKSI6AIRPNXT5HYzAnwryCxW2NxZzqDyMKIrbMwtIXBm4Vj40jxPaPXLNAmaycdcbGG8YJdC2b7koqm2nu6qOMdaZ7C3l6e78ry9Bqb39kQHsJ7PXo2GsiB3eWk6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507073; c=relaxed/simple;
-	bh=ZnTtR6gEnMU1uejB6AZMKeNH1ukPLhmMpVJUsqpxCJ4=;
+	s=arc-20240116; t=1729506813; c=relaxed/simple;
+	bh=G3P2B5kcslUPU20SBZXHfc3THmuziEn4CQPejZyvM2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qri/09E/F/SveURhzL7jBFO+ejp18A/x/duOVAks94Zs1Kwb1flCVxOVpgzswH+DlOczcX603ocoaZiwX/P+TmX/5/TsCdIJmgsMqivIGU/Qh//MWs3j56J5XXD9+KsegmHogpf+08gQMIvMdkMXhum/tJ0ez7g4dTggFjOUXW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/sZ2w8K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C670C4CEC7;
-	Mon, 21 Oct 2024 10:37:52 +0000 (UTC)
+	 MIME-Version; b=sSfv52tBYrHoWONLH2tB5nzyUFUNhWLscKkfZ6faD0j7qRpPXiHTX9Cf70t0LpJ4Y94Jh3pKucGw3nmE8sld4R+kU4uC+xQx4T4N8wc/W6bSLS56gmb2FW3oRhUMZA4nVAr54/F3UA0NAX9qULeoIsE60tE0KRgzzuowCezE0Ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S60KB8D6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B23C4CEC3;
+	Mon, 21 Oct 2024 10:33:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507073;
-	bh=ZnTtR6gEnMU1uejB6AZMKeNH1ukPLhmMpVJUsqpxCJ4=;
+	s=korg; t=1729506812;
+	bh=G3P2B5kcslUPU20SBZXHfc3THmuziEn4CQPejZyvM2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a/sZ2w8K6EFRm34fuOVBW2D5Ng/H7JU3LJilRiPeJuQS5fHwFs/DF8bVVFa2IT0Zm
-	 1DxX6mm6B3bt9sza6VY/KPI0aywFaedcjW+2buLPWsPu6NIcb/ytitutglUeJNC64x
-	 Z1ty3c3tMwkRe2dR7bfyjW9qKljJcxMOoULfPWWc=
+	b=S60KB8D64BAptU2wJTd9WC/U8o7MLsGTVrw9Y83Vmeb161DbJyzeE9AL6cntOQLbu
+	 6Mp8h+IsyLVa+YZXqVGrIdhHsCW/yEbVPLS/GflIhaxs3WhjSZm3IRWlDr6Sn62Lxl
+	 qwHfWWZP5HhIrMjtRog3SIxw0yAYa81mPJ2gdXkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 080/124] iio: light: bu27008: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
-Date: Mon, 21 Oct 2024 12:24:44 +0200
-Message-ID: <20241021102259.826460231@linuxfoundation.org>
+	Douglas Anderson <dianders@chromium.org>,
+	Johan Hovold <johan+linaro@kernel.org>
+Subject: [PATCH 6.11 129/135] serial: qcom-geni: fix polled console initialisation
+Date: Mon, 21 Oct 2024 12:24:45 +0200
+Message-ID: <20241021102304.390804398@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit aa99ef68eff5bc6df4959a372ae355b3b73f9930 upstream.
+commit 4bef7c6f299910f19876ad8e7f5897514855f1d2 upstream.
 
-This driver makes use of triggered buffers, but does not select the
-required modules.
+The polled console (KGDB/KDB) implementation must not call port setup
+unconditionally as the port may already be in use by the console or a
+getty.
 
-Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
+Only make sure that the receiver is enabled, but do not enable any
+device interrupts.
 
-Fixes: 41ff93d14f78 ("iio: light: ROHM BU27008 color sensor")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Link: https://patch.msgid.link/20241003-iio-select-v1-10-67c0385197cd@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: d8851a96ba25 ("tty: serial: qcom-geni-serial: Add a poll_init() function")
+Cc: stable@vger.kernel.org	# 6.4
+Cc: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20241009145110.16847-2-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/Kconfig |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/serial/qcom_geni_serial.c |   20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/light/Kconfig
-+++ b/drivers/iio/light/Kconfig
-@@ -294,6 +294,8 @@ config ROHM_BU27008
- 	depends on I2C
- 	select REGMAP_I2C
- 	select IIO_GTS_HELPER
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
- 	help
- 	  Enable support for the ROHM BU27008 color sensor.
- 	  The ROHM BU27008 is a sensor with 5 photodiodes (red, green,
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -146,6 +146,7 @@ static struct uart_driver qcom_geni_cons
+ static struct uart_driver qcom_geni_uart_driver;
+ 
+ static void qcom_geni_serial_cancel_tx_cmd(struct uart_port *uport);
++static int qcom_geni_serial_port_setup(struct uart_port *uport);
+ 
+ static inline struct qcom_geni_serial_port *to_dev_port(struct uart_port *uport)
+ {
+@@ -393,6 +394,23 @@ static void qcom_geni_serial_poll_put_ch
+ 	writel(M_TX_FIFO_WATERMARK_EN, uport->membase + SE_GENI_M_IRQ_CLEAR);
+ 	qcom_geni_serial_poll_tx_done(uport);
+ }
++
++static int qcom_geni_serial_poll_init(struct uart_port *uport)
++{
++	struct qcom_geni_serial_port *port = to_dev_port(uport);
++	int ret;
++
++	if (!port->setup) {
++		ret = qcom_geni_serial_port_setup(uport);
++		if (ret)
++			return ret;
++	}
++
++	if (!qcom_geni_serial_secondary_active(uport))
++		geni_se_setup_s_cmd(&port->se, UART_START_READ, 0);
++
++	return 0;
++}
+ #endif
+ 
+ #ifdef CONFIG_SERIAL_QCOM_GENI_CONSOLE
+@@ -1564,7 +1582,7 @@ static const struct uart_ops qcom_geni_c
+ #ifdef CONFIG_CONSOLE_POLL
+ 	.poll_get_char	= qcom_geni_serial_get_char,
+ 	.poll_put_char	= qcom_geni_serial_poll_put_char,
+-	.poll_init = qcom_geni_serial_port_setup,
++	.poll_init = qcom_geni_serial_poll_init,
+ #endif
+ 	.pm = qcom_geni_serial_pm,
+ };
 
 
 
