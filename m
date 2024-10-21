@@ -1,139 +1,134 @@
-Return-Path: <stable+bounces-86987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-86988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90CFA9A5994
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 06:36:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C9F9A59BD
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 07:39:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 461A71F22119
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 04:36:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC66A1C2110B
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 05:39:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842E61940B2;
-	Mon, 21 Oct 2024 04:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D451CF5F1;
+	Mon, 21 Oct 2024 05:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="Twem3gfa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eB/ijjWx"
 X-Original-To: stable@vger.kernel.org
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0322C95;
-	Mon, 21 Oct 2024 04:36:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FD41CF2B9;
+	Mon, 21 Oct 2024 05:39:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729485364; cv=none; b=WOA1i/1aM21yHkuH2gKv3nBnnUyYaZeUFgyXI5z3ifuXCLplcYqYu87zMxM1UeOLPoQWRMReKDuf/MRpqhRln9W6dpDy4l6ZqlSzPjnn+BmiU2nSHsNA0akaTXkloQn9svHGzYjt0Iyu7TjUFDKF6NYltSXppigbEJyw5BZKeeM=
+	t=1729489175; cv=none; b=GXwQNdXJpMLe31sDcq/y03SK3XV2XEmf5JIQakRhshSFFOR/Cgh3tBWZl7ozhFP38G233aujQsazK+tI48XilvrCeu8V6Hk/+KWfY+0gvB5/10Y+ZIXM/PELLM/rhpKwJGP8UuqwXraYgpZv/CXSRHMD1L1u6TbHhVtZfAf/V+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729485364; c=relaxed/simple;
-	bh=kfyBl89qi07l58LqgOVh/E+t7hT9q6eZ/J9aUMqlDdU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=sJ/GT4iZ4kOQV/GJe2HVQLsQ9RmU78aNybGbzY2jLgPNXYigi51qGTdpGYLnarhsFtaRXVlsNUVfkmCj0sqCHNJ8zhb1rNU4gv2cU24Rd2c/ChS2o8C4fLmLGn19vaH9WPxhJRiHfJaK2yPzBMQDYVdOWginGdkRoEMmvxpaRT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=Twem3gfa; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1729485353;
-	bh=SWW3lLflcZSTt/7kAMirXY1p2/5OZLkG+On5G9EG8/A=;
-	h=From:Date:Subject:To:Cc;
-	b=Twem3gfa9XF7vZ9+LBBoBs/KVaTjd5iDwmUpGIHcQHNvjpk+k42dMqotBhFknCfC/
-	 tn1EeUwJY4ONJGbsmFGyMCpXAV6hf4cnVktpwRPC/KL6ht8Y4KjXFHbWKKgwRgApbj
-	 9JjEIBPUbnh+ikgxFIx8xvHYlfpthwrGsMKpq908znJ991vx8KhJhnDM9P//cerDbr
-	 IloAw5RWtSw6n2iYsC1Wl0TAA3ChCf8jQ4DFJ+21o7HWP4LGL/CP2YkmN8vN9E0q/S
-	 okSsvfRvgA9arsO3NPMcA1BnMHHwweMgMocF8imL0QKUgIhVdf0OqISw+kCZO4YpA9
-	 pAKVP50bRZ5Ag==
-Received: by codeconstruct.com.au (Postfix, from userid 10001)
-	id D2D4368607; Mon, 21 Oct 2024 12:35:53 +0800 (AWST)
-From: Matt Johnston <matt@codeconstruct.com.au>
-Date: Mon, 21 Oct 2024 12:35:26 +0800
-Subject: [PATCH net v2] mctp i2c: handle NULL header address
+	s=arc-20240116; t=1729489175; c=relaxed/simple;
+	bh=ClrpSHkVHottrltLmH7Rp4WsaHoZ3VFbzU0VMLWpIHE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=buRtDcCx6DEl7CXi2UinzAHLAByS6bVE9CNT/g27f2Id5uPAANfEERl8CftoFsadO5DU9GjRFcE85gojvrC0pV22copYFi7Lf+Hn/jibu2s1UG0vC+urr9rZ1bhG96Yo0S1/aEzW4qbv85wNDIPgIzcMyAwff520abdQTmiMbUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eB/ijjWx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04917C4CEE4;
+	Mon, 21 Oct 2024 05:39:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729489174;
+	bh=ClrpSHkVHottrltLmH7Rp4WsaHoZ3VFbzU0VMLWpIHE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=eB/ijjWx0Ki7CwzyliqkJIGspPsg1wLnv1gVWpAQchlLmnUvWIRrGVU2wWP48FHNR
+	 UnUFA+/sH31YjkbZFFIEEFaNGz5RFLz/lHj2uS5PtYHi3XBHIZZxOQRog76w9cMY8n
+	 OdZWmlgp1fMWQfJiGh50BJnW+CR9miA3WCNmR/Ou7u45kEPDaFoMUEqUJHI/ia1od8
+	 Vzq3WZvD2a4b1rsJKl9vl1/JpJznz+ExEyLqLyp9Nn1oKr5hDTyCha/rYP3UhTO/E1
+	 GfPHW02MXldtQA/qD+JYagAyPpxF6JrhAvJzdDl2hGAsSclrywS50eTY5sv1GJBEk/
+	 vR7LYgzTExPww==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-integrity@vger.kernel.org,
+	Peter Huewe <peterhuewe@gmx.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: David Howells <dhowells@redhat.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v7 1/5] tpm: Return on tpm2_create_null_primary() failure
+Date: Mon, 21 Oct 2024 08:39:15 +0300
+Message-ID: <20241021053921.33274-2-jarkko@kernel.org>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241021053921.33274-1-jarkko@kernel.org>
+References: <20241021053921.33274-1-jarkko@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241021-mctp-i2c-null-dest-v2-1-4503e478517c@codeconstruct.com.au>
-X-B4-Tracking: v=1; b=H4sIAA3aFWcC/32NQQqDMBBFryKz7kgSrNWueo/iIo7TOqCJJFFax
- Ls3eIAu3//893eIHIQj3IsdAm8SxbsM5lIAjda9GWXIDEaZSivd4ExpQTGEbp0mHDgmtKq35qZ
- ZUdVAHi6BX/I5pU9wnKDL4Sgx+fA9jzZ9Vv+cm0aNvdW2v5q2rrl9kB+YvIsprJRK8nNpV+iO4
- /gBy/ICRcQAAAA=
-X-Change-ID: 20241018-mctp-i2c-null-dest-a0ba271e0c48
-To: Jeremy Kerr <jk@codeconstruct.com.au>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Matt Johnston <matt@codeconstruct.com.au>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, Wolfram Sang <wsa@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Dung Cao <dung@os.amperecomputing.com>
-X-Mailer: b4 0.15-dev-cbbb4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1729485352; l=2035;
- i=matt@codeconstruct.com.au; s=20241018; h=from:subject:message-id;
- bh=kfyBl89qi07l58LqgOVh/E+t7hT9q6eZ/J9aUMqlDdU=;
- b=g8pthMSNyYuR426kRcv+rNB5vPq1JTxfSaNyB/pLReNKQr30VxaDqtwxBo/x6cHU755b1KqIm
- NS1QpeuuzdbDZMqYl6SqN+gNnn/6WS1F7p8opuPbPhlo58ziKBBOG/3
-X-Developer-Key: i=matt@codeconstruct.com.au; a=ed25519;
- pk=exersTcCYD/pEBOzXGO6HkLd6kKXRuWxHhj+LXn3DYE=
+Content-Transfer-Encoding: 8bit
 
-daddr can be NULL if there is no neighbour table entry present,
-in that case the tx packet should be dropped.
+tpm2_sessions_init() does not ignore the result of
+tpm2_create_null_primary(). Address this by returning -ENODEV to the
+caller. Given that upper layers cannot help healing the situation
+further, deal with the TPM error here by
 
-saddr will normally be set by MCTP core, but in case it is NULL it
-should be set to the device address.
-
-Incorrect indent of the function arguments is also fixed.
-
-Fixes: f5b8abf9fc3d ("mctp i2c: MCTP I2C binding driver")
-Cc: stable@vger.kernel.org
-Reported-by: Dung Cao <dung@os.amperecomputing.com>
-Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
+Cc: stable@vger.kernel.org # v6.10+
+Fixes: d2add27cf2b8 ("tpm: Add NULL primary creation")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
-Changes in v2:
-- Set saddr to device address if NULL, mention in commit message
-- Fix patch prefix formatting
-- Link to v1: https://lore.kernel.org/r/20241018-mctp-i2c-null-dest-v1-1-ba1ab52966e9@codeconstruct.com.au
+v7:
+- Add the error message back but fix it up a bit:
+  1. Remove 'TPM:' given dev_err().
+  2. s/NULL/null/ as this has nothing to do with the macro in libc.
+  3. Fix the reasoning: null key creation failed
+v6:
+- Address:
+  https://lore.kernel.org/linux-integrity/69c893e7-6b87-4daa-80db-44d1120e80fe@linux.ibm.com/
+  as TPM RC is taken care of at the call site. Add also the missing
+  documentation for the return values.
+v5:
+- Do not print klog messages on error, as tpm2_save_context() already
+  takes care of this.
+v4:
+- Fixed up stable version.
+v3:
+- Handle TPM and POSIX error separately and return -ENODEV always back
+  to the caller.
+v2:
+- Refined the commit message.
 ---
- drivers/net/mctp/mctp-i2c.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/char/tpm/tpm2-sessions.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
-index 4dc057c121f5d0fb9c9c48bf16b6933ae2f7b2ac..c909254e03c21518c17daf8b813e610558e074c1 100644
---- a/drivers/net/mctp/mctp-i2c.c
-+++ b/drivers/net/mctp/mctp-i2c.c
-@@ -579,7 +579,7 @@ static void mctp_i2c_flow_release(struct mctp_i2c_dev *midev)
- 
- static int mctp_i2c_header_create(struct sk_buff *skb, struct net_device *dev,
- 				  unsigned short type, const void *daddr,
--	   const void *saddr, unsigned int len)
-+				  const void *saddr, unsigned int len)
+diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+index d3521aadd43e..1e12e0b2492e 100644
+--- a/drivers/char/tpm/tpm2-sessions.c
++++ b/drivers/char/tpm/tpm2-sessions.c
+@@ -1347,14 +1347,21 @@ static int tpm2_create_null_primary(struct tpm_chip *chip)
+  *
+  * Derive and context save the null primary and allocate memory in the
+  * struct tpm_chip for the authorizations.
++ *
++ * Return:
++ * * 0		- OK
++ * * -errno	- A system error
++ * * TPM_RC	- A TPM error
+  */
+ int tpm2_sessions_init(struct tpm_chip *chip)
  {
- 	struct mctp_i2c_hdr *hdr;
- 	struct mctp_hdr *mhdr;
-@@ -588,8 +588,15 @@ static int mctp_i2c_header_create(struct sk_buff *skb, struct net_device *dev,
- 	if (len > MCTP_I2C_MAXMTU)
- 		return -EMSGSIZE;
+ 	int rc;
  
--	lldst = *((u8 *)daddr);
--	llsrc = *((u8 *)saddr);
-+	if (daddr)
-+		lldst = *((u8 *)daddr);
-+	else
-+		return -EINVAL;
-+
-+	if (saddr)
-+		llsrc = *((u8 *)saddr);
-+	else
-+		llsrc = dev->dev_addr;
+ 	rc = tpm2_create_null_primary(chip);
+-	if (rc)
+-		dev_err(&chip->dev, "TPM: security failed (NULL seed derivation): %d\n", rc);
++	if (rc) {
++		dev_err(&chip->dev, "null primary key creation failed with %d\n", rc);
++		return rc;
++	}
  
- 	skb_push(skb, sizeof(struct mctp_i2c_hdr));
- 	skb_reset_mac_header(skb);
-
----
-base-commit: cb560795c8c2ceca1d36a95f0d1b2eafc4074e37
-change-id: 20241018-mctp-i2c-null-dest-a0ba271e0c48
-
-Best regards,
+ 	chip->auth = kmalloc(sizeof(*chip->auth), GFP_KERNEL);
+ 	if (!chip->auth)
 -- 
-Matt Johnston <matt@codeconstruct.com.au>
+2.47.0
 
 
