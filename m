@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-87361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D33F9A6499
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:48:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D7B9A641B
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:43:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8F42280FE6
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:48:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABA6F281F80
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E9A1F80D2;
-	Mon, 21 Oct 2024 10:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A1171F427F;
+	Mon, 21 Oct 2024 10:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVlrCHIA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rLogsZvm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1711F80BC;
-	Mon, 21 Oct 2024 10:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4111F4279;
+	Mon, 21 Oct 2024 10:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507376; cv=none; b=CaAwyDitvL1vRce31/7e2yAVOI/q3rK1me6EaUnTC1i+yl010pxf8HZk7n18uGbxCrrbBmRbY1HpblY86mFb3wn9mzMrfr19XL2z8exl6VPNgGlewyoGXM7yAY5dElhmBiqN60cntayaJcZBxuGRumtNFZBZCXPkQ5zFbIeZ578=
+	t=1729507061; cv=none; b=B9xY5FpuRMk7HVNwKwyoEVbj7G2kA7l/kCjMPnvGP5S28GbSIrhgMqf5Uuw6O3pAt9rwYHc4j5yrN0AtICgnf9R/a/b5dTbTcteb6oLkpukgf3GwLHv6/lrQ2eW4AI7I2vkmlj+disug42m080V115EJEJFPaG6YqA/khowz4TA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507376; c=relaxed/simple;
-	bh=iWUs/cR37ynUbWRSxo3Pij9ETT0nkBSNs0FLNeTH5mw=;
+	s=arc-20240116; t=1729507061; c=relaxed/simple;
+	bh=h3vSOnfTvsWZ42kD+72wp4L9LNOENvP+zXvyC2VbuQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MEpppepKoUL3ArfKhhaAVPesKi/DHKvM0crMgDqkGlgN0hbo8sctUZNi4sAzi2n73P/lCYq63oN8w1KYRZw4pXyRWhXWQU1ywEy6wGmvjAKZx7F516EDX2bJm9aJbi0gNIcmnfP7yvkFBhJ4uRdslcUYU7kNIqxAienSMGz5HGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PVlrCHIA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D192BC4CEC3;
-	Mon, 21 Oct 2024 10:42:55 +0000 (UTC)
+	 MIME-Version; b=T0lve7Mv0LmC/XA461SPkC+7UBl5UBIKkARlJkysrVHzc+cnofmvrDgToZD0px0Y++fPO4k/lA9UH9noF3fV3/Aninpg9+ni3XX1WnfwaTwS0cK42iqMumDpoBg9lIzIxo6q2s15tIjImRiuh+6kfVRPSh831gJfXWU39+g3ipg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLogsZvm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C53BEC4CEC3;
+	Mon, 21 Oct 2024 10:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507376;
-	bh=iWUs/cR37ynUbWRSxo3Pij9ETT0nkBSNs0FLNeTH5mw=;
+	s=korg; t=1729507061;
+	bh=h3vSOnfTvsWZ42kD+72wp4L9LNOENvP+zXvyC2VbuQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PVlrCHIAE2AJY2yFVIMeb529p7lboCEwVHarHIT67/HEDmO1fxPS+fyyYXBnvWCCt
-	 dODPinG9v8YC/++86hrz2rIlE7m5fafTHGYe6glB9Vwnn2Z4jwj5kO6Td4/qd7Zynp
-	 FUAoJHBWmo3k3wuJqn7/+RjcQ7B+DkhbMN+4jf18=
+	b=rLogsZvmxghLFBSpKBzl3I2LhMd9JSNTXzLXORQACnQScIIcNfn/8fVFr6TJo/X5W
+	 weUlvuKN6nJx4X8SlYJKnD45/VtkRuKlmtVSmC10in92WXBRqT4DexTXdkWBHGekEF
+	 frg8XeensHpkl57kuamQEw/4Y8SmX1tLz+bSwFYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 25/91] net: enetc: remove xdp_drops statistic from enetc_xdp_drop()
-Date: Mon, 21 Oct 2024 12:24:39 +0200
-Message-ID: <20241021102250.807574482@linuxfoundation.org>
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 076/124] iio: light: veml6030: fix IIO device retrieval from embedded device
+Date: Mon, 21 Oct 2024 12:24:40 +0200
+Message-ID: <20241021102259.672820401@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 412950d5746f7aa139e14fe95338694c1f09b595 upstream.
+commit c7c44e57750c31de43906d97813273fdffcf7d02 upstream.
 
-The xdp_drops statistic indicates the number of XDP frames dropped in
-the Rx direction. However, enetc_xdp_drop() is also used in XDP_TX and
-XDP_REDIRECT actions. If frame loss occurs in these two actions, the
-frames loss count should not be included in xdp_drops, because there
-are already xdp_tx_drops and xdp_redirect_failures to count the frame
-loss of these two actions, so it's better to remove xdp_drops statistic
-from enetc_xdp_drop() and increase xdp_drops in XDP_DROP action.
+The dev pointer that is received as an argument in the
+in_illuminance_period_available_show function references the device
+embedded in the IIO device, not in the i2c client.
 
-Fixes: 7ed2bc80074e ("net: enetc: add support for XDP_TX")
+dev_to_iio_dev() must be used to accessthe right data. The current
+implementation leads to a segmentation fault on every attempt to read
+the attribute because indio_dev gets a NULL assignment.
+
+This bug has been present since the first appearance of the driver,
+apparently since the last version (V6) before getting applied. A
+constant attribute was used until then, and the last modifications might
+have not been tested again.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20241010092056.298128-2-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light sensor")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20240913-veml6035-v1-3-0b09c0c90418@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/light/veml6030.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -1492,7 +1492,6 @@ static void enetc_xdp_drop(struct enetc_
- 				  &rx_ring->rx_swbd[rx_ring_first]);
- 		enetc_bdr_idx_inc(rx_ring, &rx_ring_first);
- 	}
--	rx_ring->stats.xdp_drops++;
- }
+--- a/drivers/iio/light/veml6030.c
++++ b/drivers/iio/light/veml6030.c
+@@ -99,9 +99,8 @@ static const char * const period_values[
+ static ssize_t in_illuminance_period_available_show(struct device *dev,
+ 				struct device_attribute *attr, char *buf)
+ {
++	struct veml6030_data *data = iio_priv(dev_to_iio_dev(dev));
+ 	int ret, reg, x;
+-	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+-	struct veml6030_data *data = iio_priv(indio_dev);
  
- static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
-@@ -1557,6 +1556,7 @@ static int enetc_clean_rx_ring_xdp(struc
- 			fallthrough;
- 		case XDP_DROP:
- 			enetc_xdp_drop(rx_ring, orig_i, i);
-+			rx_ring->stats.xdp_drops++;
- 			break;
- 		case XDP_PASS:
- 			rxbd = orig_rxbd;
+ 	ret = regmap_read(data->regmap, VEML6030_REG_ALS_CONF, &reg);
+ 	if (ret) {
 
 
 
