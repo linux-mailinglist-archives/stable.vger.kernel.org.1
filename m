@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-87262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3E7A9A6431
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:44:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E82B09A639A
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:37:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E32C0B2B289
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68F0B1F22E21
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C87D1EABCE;
-	Mon, 21 Oct 2024 10:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 625281EB9F7;
+	Mon, 21 Oct 2024 10:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbBOYNwK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIIz7er7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234731EABCA;
-	Mon, 21 Oct 2024 10:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC321E570F;
+	Mon, 21 Oct 2024 10:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507079; cv=none; b=TKx04q14DbVSRxkPake6p/0cjhH3ESJAQ0Ef4RCSXA2H4uRbQ5/RYLMkhX3FRJSJ89A+6soryP0lM3M1AWqDrBHHP2642oZtSSPREheS+V/1DjxjTUqcW74ZdmWvoSS7NrQa2KaINivho9IAgFgnuGyhP74ksUuvAX1lLdr4Q3E=
+	t=1729506816; cv=none; b=DKm2IPp3ikBWf7p5SYONXm+0SpLzxObGnYs/NOFkLmvArCBZQEBC8jIWaeK2gsxTV24qBOKJkwJ67TM1FJ1ll3wecvGpbidFKo1ysOkeKUryjLdlnxrmDgusNgZSpeuDxLioumKdFmFDHNyVvF96itqxqYua9cAmEu8gM4ehJ60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507079; c=relaxed/simple;
-	bh=pu4hYcyh6G+SC/t4yBhQ9r4KpgUNtZ/PvNzzQGIcwiY=;
+	s=arc-20240116; t=1729506816; c=relaxed/simple;
+	bh=9TtFgVmDIiWfcn1DUg2KUG9uaTZZWMCTNFHFJ1bBDLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6cNrzfcwYxXr2pjUw8Q4vBCvHlEi6Xtwk1PP0ohsdLMr6CRmhPdSS6DabPfw/81C3jAl1mrkoANSwIn0G9J72vqMCccV1W6G4EUhC7iTSQsHe3W/PL5CWCGbBHhHeuv1vUBfeZB9IZPUW4p5ws8zjC3+wcQ+t7CZfjK3NDGBNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qbBOYNwK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97544C4CEC3;
-	Mon, 21 Oct 2024 10:37:58 +0000 (UTC)
+	 MIME-Version; b=ZwMGQnI1gBcezbqUILBhccZ5UNcNNSduLPv/iPZ/8VMakHgJP6JnnYHC4kl1yGftJNVGCIW4uvKI5YrJRyXkB5U5MO8gg8jjLdPtocrOJJSm+UxhBWKLRK1hBusccrSK3YXXU3+Nv0s9zZjDGXB1VDZNtd+yQ0jk9mCqI0eyGWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIIz7er7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C485C4CEC3;
+	Mon, 21 Oct 2024 10:33:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507079;
-	bh=pu4hYcyh6G+SC/t4yBhQ9r4KpgUNtZ/PvNzzQGIcwiY=;
+	s=korg; t=1729506815;
+	bh=9TtFgVmDIiWfcn1DUg2KUG9uaTZZWMCTNFHFJ1bBDLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qbBOYNwKzOAWOr0mqNXhALHKsA0vzESrnSnFI87+cY+jMWkqoA+oSyoDUOYfyPeUW
-	 /OGIyiHLP6+KVzTsCzZqLBmR03bTT0aJoeVYBgNB3BWeGgH6vYZ6DO7MsptUgNrJp1
-	 aOznToUplCy7hD1ANRHpg88kJxkCOrsvlQljVIoM=
+	b=jIIz7er79EIOMka3BBshoJaLSmKd3GXemfPMf60+VeSEXuWN1il2HgxMXm2oIU8Cd
+	 3SW7XNg1MtOv3monhAhjCt2kyeAu+CH0ww21pYgZ3WgZEM7F3LCRN0lfuVwezL4o6h
+	 aS2zlS7LUObfa3rPrAluW1m/SFsYXrfJicdd3V20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 082/124] iio: proximity: mb1232: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+	Aniket Randive <quic_arandive@quicinc.com>,
+	Johan Hovold <johan+linaro@kernel.org>
+Subject: [PATCH 6.11 130/135] serial: qcom-geni: revert broken hibernation support
 Date: Mon, 21 Oct 2024 12:24:46 +0200
-Message-ID: <20241021102259.904311093@linuxfoundation.org>
+Message-ID: <20241021102304.430907341@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 75461a0b15d7c026924d0001abce0476bbc7eda8 upstream.
+commit 19df76662a33d2f2fc41a66607cb8285fc02d6ec upstream.
 
-This driver makes use of triggered buffers, but does not select the
-required modules.
+This reverts commit 35781d8356a2eecaa6074ceeb80ee22e252fcdae.
 
-Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
+Hibernation is not supported on Qualcomm platforms with mainline
+kernels yet a broken vendor implementation for the GENI serial driver
+made it upstream.
 
-Fixes: 16b05261537e ("mb1232.c: add distance iio sensor with i2c")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241003-iio-select-v1-13-67c0385197cd@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+This is effectively dead code that cannot be tested and should just be
+removed, but if these paths were ever hit for an open non-console port
+they would crash the machine as the driver would fail to enable clocks
+during restore() (i.e. all ports would have to be closed by drivers and
+user space before hibernating the system to avoid this as a comment in
+the code hinted at).
+
+The broken implementation also added a random call to enable the
+receiver in the port setup code where it does not belong and which
+enables the receiver prematurely for console ports.
+
+Fixes: 35781d8356a2 ("tty: serial: qcom-geni-serial: Add support for Hibernation feature")
+Cc: stable@vger.kernel.org	# 6.2
+Cc: Aniket Randive <quic_arandive@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20241009145110.16847-3-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/proximity/Kconfig |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/serial/qcom_geni_serial.c |   41 +---------------------------------
+ 1 file changed, 2 insertions(+), 39 deletions(-)
 
---- a/drivers/iio/proximity/Kconfig
-+++ b/drivers/iio/proximity/Kconfig
-@@ -72,6 +72,8 @@ config LIDAR_LITE_V2
- config MB1232
- 	tristate "MaxSonar I2CXL family ultrasonic sensors"
- 	depends on I2C
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
- 	help
- 	  Say Y to build a driver for the ultrasonic sensors I2CXL of
- 	  MaxBotix which have an i2c interface. It can be used to measure
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -1152,7 +1152,6 @@ static int qcom_geni_serial_port_setup(s
+ 			       false, true, true);
+ 	geni_se_init(&port->se, UART_RX_WM, port->rx_fifo_depth - 2);
+ 	geni_se_select_mode(&port->se, port->dev_data->mode);
+-	qcom_geni_serial_start_rx(uport);
+ 	port->setup = true;
+ 
+ 	return 0;
+@@ -1781,38 +1780,6 @@ static int qcom_geni_serial_sys_resume(s
+ 	return ret;
+ }
+ 
+-static int qcom_geni_serial_sys_hib_resume(struct device *dev)
+-{
+-	int ret = 0;
+-	struct uart_port *uport;
+-	struct qcom_geni_private_data *private_data;
+-	struct qcom_geni_serial_port *port = dev_get_drvdata(dev);
+-
+-	uport = &port->uport;
+-	private_data = uport->private_data;
+-
+-	if (uart_console(uport)) {
+-		geni_icc_set_tag(&port->se, QCOM_ICC_TAG_ALWAYS);
+-		geni_icc_set_bw(&port->se);
+-		ret = uart_resume_port(private_data->drv, uport);
+-		/*
+-		 * For hibernation usecase clients for
+-		 * console UART won't call port setup during restore,
+-		 * hence call port setup for console uart.
+-		 */
+-		qcom_geni_serial_port_setup(uport);
+-	} else {
+-		/*
+-		 * Peripheral register settings are lost during hibernation.
+-		 * Update setup flag such that port setup happens again
+-		 * during next session. Clients of HS-UART will close and
+-		 * open the port during hibernation.
+-		 */
+-		port->setup = false;
+-	}
+-	return ret;
+-}
+-
+ static const struct qcom_geni_device_data qcom_geni_console_data = {
+ 	.console = true,
+ 	.mode = GENI_SE_FIFO,
+@@ -1824,12 +1791,8 @@ static const struct qcom_geni_device_dat
+ };
+ 
+ static const struct dev_pm_ops qcom_geni_serial_pm_ops = {
+-	.suspend = pm_sleep_ptr(qcom_geni_serial_sys_suspend),
+-	.resume = pm_sleep_ptr(qcom_geni_serial_sys_resume),
+-	.freeze = pm_sleep_ptr(qcom_geni_serial_sys_suspend),
+-	.poweroff = pm_sleep_ptr(qcom_geni_serial_sys_suspend),
+-	.restore = pm_sleep_ptr(qcom_geni_serial_sys_hib_resume),
+-	.thaw = pm_sleep_ptr(qcom_geni_serial_sys_hib_resume),
++	SYSTEM_SLEEP_PM_OPS(qcom_geni_serial_sys_suspend,
++					qcom_geni_serial_sys_resume)
+ };
+ 
+ static const struct of_device_id qcom_geni_serial_match_table[] = {
 
 
 
