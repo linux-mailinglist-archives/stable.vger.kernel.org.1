@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-87511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AF4B9A6560
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:56:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26BB99A65D9
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:05:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C40DD1F21C0A
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:56:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7102B2E416
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:49:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2DD91F8908;
-	Mon, 21 Oct 2024 10:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3AB1EBA18;
+	Mon, 21 Oct 2024 10:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="erfhHQl7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="POkdsVfY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989D11F890B;
-	Mon, 21 Oct 2024 10:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444AE1E25E3;
+	Mon, 21 Oct 2024 10:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507822; cv=none; b=UmRXyshx5VBt5wtWvO7pN+FvWTQ1EK/oOmDQ08PodfN1+wAyMXym6F2t5VwSZ8FaMFbwKbSlwuq2+VBfzCCXDdaFFZ4lGBuXesPCYWnp1WLb8d5EKty+7TrcNnhu3HfI3yLiHcFxBUAABjFHFtfKL7k28ceolYEl2vijwRp1tg0=
+	t=1729507436; cv=none; b=ZvNsc0aSeFP6MtkvVurT9NTZhP4MYKaKmy6upX0UAk8+sWtqVEJzWJD8LU2BAuc2/B4dvus95iJANxOaMkp98K4qnOJfRh4ESvbbjlu6MO2ujzfbJU+l/47/laEoNoAxEIHfk6lOZrm7VEZKD+8yFg/5kHZteSlHEl7OAGb9TT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507822; c=relaxed/simple;
-	bh=P5oG88NDWt1p3bor+uoh1NPxtcrvoA2J674II1jq2TM=;
+	s=arc-20240116; t=1729507436; c=relaxed/simple;
+	bh=A1mA4h61rRDsIvUFj3nxF8iLxOsiQqTyhwKIDGjN10E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sY+dOl9SmR6TeSkUvZi51j9b7ZuuXzBFcmgaTRsUUgRWYa81mKmHl+M4BDtwjeaibX9Mb9Kld4smQ0jDzQvmbGVcbv3Sqr/Wi+yyEWPF4l/71JWN1bS2plGsVaL3WzsbpECe0+QDY+hvna218VOrYLtw8lAzH7PMGbaFUL/OW4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=erfhHQl7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16736C4CEC3;
-	Mon, 21 Oct 2024 10:50:21 +0000 (UTC)
+	 MIME-Version; b=a8gKwqsY8HbKUJcHnCVqVXJsS5gc3ADhhXPX+M6u3shqhKTG0eMtlhqKZz/NleZ3yJQj7TVOKCGQb8tsezFbmi1D3hM5CNa6+5/3tThM912mv7RvkoYzV7R5fmJPhDr7PV/PnAAxtHu793aNbxlixFKXp2PRQTOJsoFNjopnK2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=POkdsVfY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3728C4CEC3;
+	Mon, 21 Oct 2024 10:43:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507822;
-	bh=P5oG88NDWt1p3bor+uoh1NPxtcrvoA2J674II1jq2TM=;
+	s=korg; t=1729507436;
+	bh=A1mA4h61rRDsIvUFj3nxF8iLxOsiQqTyhwKIDGjN10E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=erfhHQl7aY48NlRa3YzM/zXPIjFeF/L8laoM9ij/mvlNsD7i0lCeULhBF3vjGdDrx
-	 D4sr82mSNGctQ/wkHc4hUH+3ITl7h2JKTYnIfzaADOsQJqJAiuaLiesKrpgN/rh1DN
-	 OGerOi8pHBU1x1VNLvfKvbth1PcngKCd30jmvHm0=
+	b=POkdsVfY3aYTUUhBAyCtHKnH24+xd1Wg/12UPlUpB2NzFh4BRnRz90G3kPFU8iGHp
+	 893x+chYlIzW+NOyF3GCTgBakWarDT+SDDsbbK/kZXDQScUwib0D4HnTa8fVt2a9Ec
+	 cb2axEw5+JFPA+80fYoDWRg78fECM0Y5jDkExRY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Shixin <liushixin2@huawei.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 09/52] mm/swapfile: skip HugeTLB pages for unuse_vma
+	Prashanth K <quic_prashk@quicinc.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.1 76/91] usb: dwc3: Wait for EndXfer completion before restoring GUSB2PHYCFG
 Date: Mon, 21 Oct 2024 12:25:30 +0200
-Message-ID: <20241021102241.992379909@linuxfoundation.org>
+Message-ID: <20241021102252.783260166@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
-References: <20241021102241.624153108@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Shixin <liushixin2@huawei.com>
+From: Prashanth K <quic_prashk@quicinc.com>
 
-commit 7528c4fb1237512ee18049f852f014eba80bbe8d upstream.
+commit c96e31252110a84dcc44412e8a7b456b33c3e298 upstream.
 
-I got a bad pud error and lost a 1GB HugeTLB when calling swapoff.  The
-problem can be reproduced by the following steps:
+DWC3 programming guide mentions that when operating in USB2.0 speeds,
+if GUSB2PHYCFG[6] or GUSB2PHYCFG[8] is set, it must be cleared prior
+to issuing commands and may be set again  after the command completes.
+But currently while issuing EndXfer command without CmdIOC set, we
+wait for 1ms after GUSB2PHYCFG is restored. This results in cases
+where EndXfer command doesn't get completed and causes SMMU faults
+since requests are unmapped afterwards. Hence restore GUSB2PHYCFG
+after waiting for EndXfer command completion.
 
- 1. Allocate an anonymous 1GB HugeTLB and some other anonymous memory.
- 2. Swapout the above anonymous memory.
- 3. run swapoff and we will get a bad pud error in kernel message:
-
-  mm/pgtable-generic.c:42: bad pud 00000000743d215d(84000001400000e7)
-
-We can tell that pud_clear_bad is called by pud_none_or_clear_bad in
-unuse_pud_range() by ftrace.  And therefore the HugeTLB pages will never
-be freed because we lost it from page table.  We can skip HugeTLB pages
-for unuse_vma to fix it.
-
-Link: https://lkml.kernel.org/r/20241015014521.570237-1-liushixin2@huawei.com
-Fixes: 0fe6e20b9c4c ("hugetlb, rmap: add reverse mapping for hugepage")
-Signed-off-by: Liu Shixin <liushixin2@huawei.com>
-Acked-by: Muchun Song <muchun.song@linux.dev>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 1d26ba0944d3 ("usb: dwc3: Wait unconditionally after issuing EndXfer command")
+Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20240924093208.2524531-1-quic_prashk@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/swapfile.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/gadget.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -2134,7 +2134,7 @@ static int unuse_mm(struct mm_struct *mm
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -445,6 +445,10 @@ skip_status:
+ 			dwc3_gadget_ep_get_transfer_index(dep);
+ 	}
  
- 	mmap_read_lock(mm);
- 	for (vma = mm->mmap; vma; vma = vma->vm_next) {
--		if (vma->anon_vma) {
-+		if (vma->anon_vma && !is_vm_hugetlb_page(vma)) {
- 			ret = unuse_vma(vma, type, frontswap,
- 					fs_pages_to_unuse);
- 			if (ret)
++	if (DWC3_DEPCMD_CMD(cmd) == DWC3_DEPCMD_ENDTRANSFER &&
++	    !(cmd & DWC3_DEPCMD_CMDIOC))
++		mdelay(1);
++
+ 	if (saved_config) {
+ 		reg = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
+ 		reg |= saved_config;
+@@ -1731,12 +1735,10 @@ static int __dwc3_stop_active_transfer(s
+ 	WARN_ON_ONCE(ret);
+ 	dep->resource_index = 0;
+ 
+-	if (!interrupt) {
+-		mdelay(1);
++	if (!interrupt)
+ 		dep->flags &= ~DWC3_EP_TRANSFER_STARTED;
+-	} else if (!ret) {
++	else if (!ret)
+ 		dep->flags |= DWC3_EP_END_TRANSFER_PENDING;
+-	}
+ 
+ 	dep->flags &= ~DWC3_EP_DELAY_STOP;
+ 	return ret;
 
 
 
