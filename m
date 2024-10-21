@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-87100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 220089A6309
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:30:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBC4E9A63BB
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:38:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF69D1F212EF
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:30:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A14121F213CB
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE76D1E3DDB;
-	Mon, 21 Oct 2024 10:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52311E7C04;
+	Mon, 21 Oct 2024 10:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQQcsL03"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AjW2TJp/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671871D04BB;
-	Mon, 21 Oct 2024 10:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1001E7C05;
+	Mon, 21 Oct 2024 10:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506593; cv=none; b=AX/fyUzPlwdu+hifJ1SqZjINCLqn0Zgfc/Tr5R8y6IsyACXd+akCZljh7g9NnFQSoRLwE3hATBrtn45f6OiIBxzkVJQqL8ZdotwRxZzRZNWpDiDKzm+Rp90DraE1RLhiW01X69569MhzWZFQwGVuT0cce+jwTBqyyhLxgOnO+Qw=
+	t=1729506908; cv=none; b=mgvGd3o6b6lK3kKVI+87KNVqtkGr1oALdynfwGl6O0Bq+pxb+8fGjL5bWLAQg0nU+gYQHedD6k3vMTL9N6rXWGQ9UBI/IOaZ8DyzJRjLCfMWjgJAzk8HIqp970vrW94x3Nn48lXZ+rPrk/M56kjCRkaDX5k8XBhpuz54giFPJhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506593; c=relaxed/simple;
-	bh=ngKbln/GRinP6nXcltBYe5LIlKUwDeFRWdCiLY8gzLU=;
+	s=arc-20240116; t=1729506908; c=relaxed/simple;
+	bh=jgkvAzLBqPhJGVRmAYmcUrk4EVipogZdHdohwje+Sxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A2O1NuDPq3T4kAK6FDvbipN5IF13VFyAsRu/utwitSY3N4Ow3OSyGS3RTNtsUG/KuU42OUC08fPAxUEgF+v4Wu9YmWDgxgN4cj1L8rI/AgwkofBzUonkDp664Xn6zqDVkQK84fmBthThgeTOeQse6lgg1QWD18vUM1Te0WufBgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQQcsL03; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8EBBC4CEC3;
-	Mon, 21 Oct 2024 10:29:52 +0000 (UTC)
+	 MIME-Version; b=mgXtHPlIa/5Hglr87BYi9u4gleNZtcSUkcnUSV5pDZmwVir6BQauyDNRa0zxd8jzDW6hg9yQc+NlYcnSGkchmG+Gi7puDhsiffuT3Kl9leuIMpCkClApcS2dS4sgATbmkh0Pt0ZVGR8H1UhunM9O45lqhky6I0roYfX+ZbTmmfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AjW2TJp/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF637C4CEC3;
+	Mon, 21 Oct 2024 10:35:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506593;
-	bh=ngKbln/GRinP6nXcltBYe5LIlKUwDeFRWdCiLY8gzLU=;
+	s=korg; t=1729506908;
+	bh=jgkvAzLBqPhJGVRmAYmcUrk4EVipogZdHdohwje+Sxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vQQcsL03IjLCUcT/SVzzvf44YGxf7vP9R1Rcu4HxLOIXsJ4eD4LImGPp407yVrLIb
-	 wL4wjhiVbxVPYs5XAZMYZAPTVSJNe/DhLc97lutyRZigE1Qi/s/DANmNzjWyloH7eJ
-	 9hJHIAVWoGxZ79v6HSqXEcJvTJNGEX+TW9GARnJA=
+	b=AjW2TJp/xfaRvEt94lS0tW8PcW0cxGSUWoYaPTxhl83m5tP+2qEUlCSzhsF1LSc9c
+	 ipPtpIW5UfRSE2JONJYrYdY/zB+D6OsiVWO3NPpqExXNItGKROXH9AhhYaCXDlxDiR
+	 GtrtlZU8twfboG1hjBxEDWW22i/594BP4I3x+ty0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seunghwan Baek <sh8267.baek@samsung.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.11 056/135] scsi: ufs: core: Set SDEV_OFFLINE when UFS is shut down
+	Wei Fang <wei.fang@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 008/124] net: enetc: disable Tx BD rings after they are empty
 Date: Mon, 21 Oct 2024 12:23:32 +0200
-Message-ID: <20241021102301.521485932@linuxfoundation.org>
+Message-ID: <20241021102257.041209489@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +62,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seunghwan Baek <sh8267.baek@samsung.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit 19a198b67767d952c8f3d0cf24eb3100522a8223 upstream.
+commit 0a93f2ca4be6c4616d371f18a3fabad2df7f8d55 upstream.
 
-There is a history of deadlock if reboot is performed at the beginning
-of booting. SDEV_QUIESCE was set for all LU's scsi_devices by UFS
-shutdown, and at that time the audio driver was waiting on
-blk_mq_submit_bio() holding a mutex_lock while reading the fw binary.
-After that, a deadlock issue occurred while audio driver shutdown was
-waiting for mutex_unlock of blk_mq_submit_bio(). To solve this, set
-SDEV_OFFLINE for all LUs except WLUN, so that any I/O that comes down
-after a UFS shutdown will return an error.
+The Tx BD rings are disabled first in enetc_stop() and the driver
+waits for them to become empty. This operation is not safe while
+the ring is actively transmitting frames, and will cause the ring
+to not be empty and hardware exception. As described in the NETC
+block guide, software should only disable an active Tx ring after
+all pending ring entries have been consumed (i.e. when PI = CI).
+Disabling a transmit ring that is actively processing BDs risks
+a HW-SW race hazard whereby a hardware resource becomes assigned
+to work on one or more ring entries only to have those entries be
+removed due to the ring becoming disabled.
 
-[   31.907781]I[0:      swapper/0:    0]        1        130705007       1651079834      11289729804                0 D(   2) 3 ffffff882e208000 *             init [device_shutdown]
-[   31.907793]I[0:      swapper/0:    0] Mutex: 0xffffff8849a2b8b0: owner[0xffffff882e28cb00 kworker/6:0 :49]
-[   31.907806]I[0:      swapper/0:    0] Call trace:
-[   31.907810]I[0:      swapper/0:    0]  __switch_to+0x174/0x338
-[   31.907819]I[0:      swapper/0:    0]  __schedule+0x5ec/0x9cc
-[   31.907826]I[0:      swapper/0:    0]  schedule+0x7c/0xe8
-[   31.907834]I[0:      swapper/0:    0]  schedule_preempt_disabled+0x24/0x40
-[   31.907842]I[0:      swapper/0:    0]  __mutex_lock+0x408/0xdac
-[   31.907849]I[0:      swapper/0:    0]  __mutex_lock_slowpath+0x14/0x24
-[   31.907858]I[0:      swapper/0:    0]  mutex_lock+0x40/0xec
-[   31.907866]I[0:      swapper/0:    0]  device_shutdown+0x108/0x280
-[   31.907875]I[0:      swapper/0:    0]  kernel_restart+0x4c/0x11c
-[   31.907883]I[0:      swapper/0:    0]  __arm64_sys_reboot+0x15c/0x280
-[   31.907890]I[0:      swapper/0:    0]  invoke_syscall+0x70/0x158
-[   31.907899]I[0:      swapper/0:    0]  el0_svc_common+0xb4/0xf4
-[   31.907909]I[0:      swapper/0:    0]  do_el0_svc+0x2c/0xb0
-[   31.907918]I[0:      swapper/0:    0]  el0_svc+0x34/0xe0
-[   31.907928]I[0:      swapper/0:    0]  el0t_64_sync_handler+0x68/0xb4
-[   31.907937]I[0:      swapper/0:    0]  el0t_64_sync+0x1a0/0x1a4
+When testing XDP_REDIRECT feautre, although all frames were blocked
+from being put into Tx rings during ring reconfiguration, the similar
+warning log was still encountered:
 
-[   31.908774]I[0:      swapper/0:    0]       49                0         11960702      11236868007                0 D(   2) 6 ffffff882e28cb00 *      kworker/6:0 [__bio_queue_enter]
-[   31.908783]I[0:      swapper/0:    0] Call trace:
-[   31.908788]I[0:      swapper/0:    0]  __switch_to+0x174/0x338
-[   31.908796]I[0:      swapper/0:    0]  __schedule+0x5ec/0x9cc
-[   31.908803]I[0:      swapper/0:    0]  schedule+0x7c/0xe8
-[   31.908811]I[0:      swapper/0:    0]  __bio_queue_enter+0xb8/0x178
-[   31.908818]I[0:      swapper/0:    0]  blk_mq_submit_bio+0x194/0x67c
-[   31.908827]I[0:      swapper/0:    0]  __submit_bio+0xb8/0x19c
+fsl_enetc 0000:00:00.2 eno2: timeout for tx ring #6 clear
+fsl_enetc 0000:00:00.2 eno2: timeout for tx ring #7 clear
 
-Fixes: b294ff3e3449 ("scsi: ufs: core: Enable power management for wlun")
+The reason is that when there are still unsent frames in the Tx ring,
+disabling the Tx ring causes the remaining frames to be unable to be
+sent out. And the Tx ring cannot be restored, which means that even
+if the xdp program is uninstalled, the Tx frames cannot be sent out
+anymore. Therefore, correct the operation order in enect_start() and
+enect_stop().
+
+Fixes: ff58fda09096 ("net: enetc: prioritize ability to go down over packet processing")
 Cc: stable@vger.kernel.org
-Signed-off-by: Seunghwan Baek <sh8267.baek@samsung.com>
-Link: https://lore.kernel.org/r/20240829093913.6282-2-sh8267.baek@samsung.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20241010092056.298128-4-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c |   36 +++++++++++++++++++--------
+ 1 file changed, 26 insertions(+), 10 deletions(-)
 
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -10214,7 +10214,9 @@ static void ufshcd_wl_shutdown(struct de
- 	shost_for_each_device(sdev, hba->host) {
- 		if (sdev == hba->ufs_device_wlun)
- 			continue;
--		scsi_device_quiesce(sdev);
-+		mutex_lock(&sdev->state_mutex);
-+		scsi_device_set_state(sdev, SDEV_OFFLINE);
-+		mutex_unlock(&sdev->state_mutex);
- 	}
- 	__ufshcd_wl_suspend(hba, UFS_SHUTDOWN_PM);
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -2236,18 +2236,24 @@ static void enetc_enable_rxbdr(struct en
+ 	enetc_rxbdr_wr(hw, idx, ENETC_RBMR, rbmr);
+ }
  
+-static void enetc_enable_bdrs(struct enetc_ndev_priv *priv)
++static void enetc_enable_rx_bdrs(struct enetc_ndev_priv *priv)
+ {
+ 	struct enetc_hw *hw = &priv->si->hw;
+ 	int i;
+ 
+-	for (i = 0; i < priv->num_tx_rings; i++)
+-		enetc_enable_txbdr(hw, priv->tx_ring[i]);
+-
+ 	for (i = 0; i < priv->num_rx_rings; i++)
+ 		enetc_enable_rxbdr(hw, priv->rx_ring[i]);
+ }
+ 
++static void enetc_enable_tx_bdrs(struct enetc_ndev_priv *priv)
++{
++	struct enetc_hw *hw = &priv->si->hw;
++	int i;
++
++	for (i = 0; i < priv->num_tx_rings; i++)
++		enetc_enable_txbdr(hw, priv->tx_ring[i]);
++}
++
+ static void enetc_disable_rxbdr(struct enetc_hw *hw, struct enetc_bdr *rx_ring)
+ {
+ 	int idx = rx_ring->index;
+@@ -2264,18 +2270,24 @@ static void enetc_disable_txbdr(struct e
+ 	enetc_txbdr_wr(hw, idx, ENETC_TBMR, 0);
+ }
+ 
+-static void enetc_disable_bdrs(struct enetc_ndev_priv *priv)
++static void enetc_disable_rx_bdrs(struct enetc_ndev_priv *priv)
+ {
+ 	struct enetc_hw *hw = &priv->si->hw;
+ 	int i;
+ 
+-	for (i = 0; i < priv->num_tx_rings; i++)
+-		enetc_disable_txbdr(hw, priv->tx_ring[i]);
+-
+ 	for (i = 0; i < priv->num_rx_rings; i++)
+ 		enetc_disable_rxbdr(hw, priv->rx_ring[i]);
+ }
+ 
++static void enetc_disable_tx_bdrs(struct enetc_ndev_priv *priv)
++{
++	struct enetc_hw *hw = &priv->si->hw;
++	int i;
++
++	for (i = 0; i < priv->num_tx_rings; i++)
++		enetc_disable_txbdr(hw, priv->tx_ring[i]);
++}
++
+ static void enetc_wait_txbdr(struct enetc_hw *hw, struct enetc_bdr *tx_ring)
+ {
+ 	int delay = 8, timeout = 100;
+@@ -2465,6 +2477,8 @@ void enetc_start(struct net_device *ndev
+ 
+ 	enetc_setup_interrupts(priv);
+ 
++	enetc_enable_tx_bdrs(priv);
++
+ 	for (i = 0; i < priv->bdr_int_num; i++) {
+ 		int irq = pci_irq_vector(priv->si->pdev,
+ 					 ENETC_BDR_INT_BASE_IDX + i);
+@@ -2473,7 +2487,7 @@ void enetc_start(struct net_device *ndev
+ 		enable_irq(irq);
+ 	}
+ 
+-	enetc_enable_bdrs(priv);
++	enetc_enable_rx_bdrs(priv);
+ 
+ 	netif_tx_start_all_queues(ndev);
+ 
+@@ -2539,7 +2553,7 @@ void enetc_stop(struct net_device *ndev)
+ 
+ 	netif_tx_stop_all_queues(ndev);
+ 
+-	enetc_disable_bdrs(priv);
++	enetc_disable_rx_bdrs(priv);
+ 
+ 	for (i = 0; i < priv->bdr_int_num; i++) {
+ 		int irq = pci_irq_vector(priv->si->pdev,
+@@ -2552,6 +2566,8 @@ void enetc_stop(struct net_device *ndev)
+ 
+ 	enetc_wait_bdrs(priv);
+ 
++	enetc_disable_tx_bdrs(priv);
++
+ 	enetc_clear_interrupts(priv);
+ }
+ EXPORT_SYMBOL_GPL(enetc_stop);
 
 
 
