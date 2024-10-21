@@ -1,115 +1,129 @@
-Return-Path: <stable+bounces-87049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 724FF9A62BE
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:26:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40A099A64A4
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:49:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28DFF281BB1
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:26:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F0BD1C21D39
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:49:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B429D1E5734;
-	Mon, 21 Oct 2024 10:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85081F426F;
+	Mon, 21 Oct 2024 10:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a6ZJ9QGO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QCxXV3zW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFD31E3784;
-	Mon, 21 Oct 2024 10:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F97B1F4266;
+	Mon, 21 Oct 2024 10:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506335; cv=none; b=FwluOKsYY6WXzcINPM2fWfucKhEOK4+dCOkEyjkTLYgqsKZCB+2CZvS1GBFta6iX83zM5vN+UjvlW+bfyKZzhFk08YP+UnfNae9N1JYLDfAUFQbiZ2RSbRe5kgrGEVeVWm6Lf9qzD+vAtRA9AB4zeIbrtclA9QkxgEf6WBGbJvs=
+	t=1729507418; cv=none; b=B0p7CTuyrIjqmjPwWk9S6yY8OMbuiME0SzHZ3DiD28Ne2Lay9RFOOPC8RuhU/xw8qd6o2goVIGRsib5lQAAVxMZ9JTujVFDXlM7SRkS5k5vqZiTF0Yg/tVEqo/jzdBGqMWsu0G14Ojbx4dUz3rOvosM/A+Ovo4s7gQfJtPxk22U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506335; c=relaxed/simple;
-	bh=uIgLSqziQCeKnnjs3M6A6U9bobYsrf6xTUo8tXLjk/E=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DyKlBWal7Y+bKJFPcO60Qsx3kWegbyVXjDpXEEIL+Rwe5kXmqo0QWdyTsYjwYl3qQqM9Ntt1gPQ8VBe3Qf2vuo4VXnVphBNSLOMBxKF/wtKR4nxUCquqamIOskGPaImuWUxTRBaQGoV4Db1S3MwlMbISRpUKyHgVH39BFNwq0uQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a6ZJ9QGO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1EB9C4CEC3;
-	Mon, 21 Oct 2024 10:25:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729506334;
-	bh=uIgLSqziQCeKnnjs3M6A6U9bobYsrf6xTUo8tXLjk/E=;
-	h=From:Subject:Date:To:Cc:From;
-	b=a6ZJ9QGOtOersDdiTY/X/N92Rp1/V/9VoTiBUwdbX4iO/ESfasNO660x83QMtcUXH
-	 XGA+M2WR43csK6l6iSWel6a3dFsHetl3+eOE3cwWfcvMyX/hvNuNBfp3vhtJDHFJF+
-	 ZRRWYTxenzkDOK703vLxQmpom3+IqiRMt+juiKAeHcpXQW+qXHMwHDtTJ7KaLuzx+N
-	 moPlPU2RaJTcyzm2VUJFyh1a7iH2P7efmNDrK3jqvXcTLr+laJvGmYyL+76OMVHXbh
-	 MZ0+REnRI/DfxDSdt+EEtMDv+bX17d09arJXFCTVtA8FyToWmhZtZ9UbYi258ZBjPR
-	 q/WvN+vvbj2sw==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH net 0/3] mptcp: sched: fix some lock issues
+	s=arc-20240116; t=1729507418; c=relaxed/simple;
+	bh=VJeZGT/Q3bhjP7pv+4SqrCTTIyPEyGpINt/1DZF2n3A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Y7lWgMLRy3ujrXlEOo4DUZ0cU5AwpidYl4QCtwVrW+HYJEf46JN44ckH9XM9OktZ09pG08MjW5YlugDDallKzpyn3nNfQ0FUb/8yJHf9MIfIlONmB4nwIa9wax7qURWIsF4vpHifjPa6lGJ4PQHcJw9BMvOeyto+0vCUxDnWlYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QCxXV3zW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC83C4CEC7;
+	Mon, 21 Oct 2024 10:43:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1729507418;
+	bh=VJeZGT/Q3bhjP7pv+4SqrCTTIyPEyGpINt/1DZF2n3A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QCxXV3zWJFsIUqBEf5AwWhS/9YC2BvnzV8JjKURnsx9aVp+C6g9RttgJY/uMy8V4U
+	 nsofDw9nclOJPlOI8ythRq2OpG2bJYHN7q5lw2BrJ9i7znby9I/j04e8r1JLaAiI30
+	 o3WFUadk/zXKDH+c1LdTTQJGzOnVfm653iCV8Xfo=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 71/91] Bluetooth: btusb: Fix regression with fake CSR controllers 0a12:0001
 Date: Mon, 21 Oct 2024 12:25:25 +0200
-Message-Id: <20241021-net-mptcp-sched-lock-v1-0-637759cf061c@kernel.org>
+Message-ID: <20241021102252.591664258@linuxfoundation.org>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIABUsFmcC/x3MQQqEMAxA0atI1gaSogheRVxIGjWotbQiA+Ldp
- 7j8i/cfyJpMM/TVA0lvy3aGElxXIOsUFkXzpcGRa5gcY9ALj3hJxCyretxP2ZDJz9K1npUICo1
- JZ/t92wGKgPF9/0F/G2xrAAAA
-X-Change-ID: 20241021-net-mptcp-sched-lock-10dfc75d1e00
-To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Gregory Detal <gregory.detal@gmail.com>, Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1005; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=uIgLSqziQCeKnnjs3M6A6U9bobYsrf6xTUo8tXLjk/E=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnFiwbUyEDYfJ6v5K+ZJSztVrh+r7PGQBWTjjTY
- lPuIsFotGaJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZxYsGwAKCRD2t4JPQmmg
- c1PeEAC0RZJZiiiBXPzXzy5/SBC1aGCpPNMiv6x5BNj1rNyZIv/l23Pn5ZdaP+ljrVGmNO+RnF/
- MnrGotL0jY76ffMuwDdJoUvG/xVoNlQUUlupPkK3IKtHLA9heRlzbJWYlf9F+vDHXaGg0oKLI+o
- 0sNKmPt1ODvyX9Nt9xIDXJwhVaCPFLgwGoDyOZQvK/xv0MrN8Vv3mnHSvKnXi24XbLdbWRyGmLe
- 4JHXGbJ8pa65A2yKZInwPjzHrIaGwTd79a5SCR0Tmkn4QS9kurjybpIQZ8bvQqUbvt2TRNz9HJa
- ysTS0+Cwz6cEFw/jyzcgkMsCR4m+mWOPq+gcRo5HXYgGvLevFFQXDYIVIY221Yl3YpHjtB+XKtA
- VfTbfxBlJB7pN7/rTPLSiN63B0bfaxhvterWDUTLfuWSxkD5RXvqfleOYSmJYR1byWmxzTHSnH2
- S47i4rJApubaq5MJ5lf3S6xYhqlRez9780ouAN/iyuEr78eOVEnroxpO78kxDpT1a6U1dZkLWgq
- hs3X6IuVnlcmyUHATLRZNE2ufKy8MoWtxqd/VRxPgL+nmIbiArfYIPrUc06jdGGVTTt+NtTR79i
- m+BIACH8Bk1NLMmKZPnnsvAtIWaMC0+2ErBNBiu394w/nRsXYCW38s9bbTCyDGpslwmr+7hmIdj
- hipEkxCJxf3tLjg==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Two small fixes related to the MPTCP packets scheduler:
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
-- Patch 1: add missing rcu_read_(un)lock(). A fix for >= 6.6.
+------------------
 
-- Patch 2: remove unneeded lock when listing packets schedulers. A fix
-  for >= 6.10.
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-And some modifications in the MPTCP selftests:
+commit 2c1dda2acc4192d826e84008d963b528e24d12bc upstream.
 
-- Patch 3: a small addition to the MPTCP selftests to cover more code.
+Fake CSR controllers don't seem to handle short-transfer properly which
+cause command to time out:
 
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+kernel: usb 1-1: new full-speed USB device number 19 using xhci_hcd
+kernel: usb 1-1: New USB device found, idVendor=0a12, idProduct=0001, bcdDevice=88.91
+kernel: usb 1-1: New USB device strings: Mfr=0, Product=2, SerialNumber=0
+kernel: usb 1-1: Product: BT DONGLE10
+...
+Bluetooth: hci1: Opcode 0x1004 failed: -110
+kernel: Bluetooth: hci1: command 0x1004 tx timeout
+
+According to USB Spec 2.0 Section 5.7.3 Interrupt Transfer Packet Size
+Constraints a interrupt transfer is considered complete when the size is 0
+(ZPL) or < wMaxPacketSize:
+
+ 'When an interrupt transfer involves more data than can fit in one
+ data payload of the currently established maximum size, all data
+ payloads are required to be maximum-sized except for the last data
+ payload, which will contain the remaining data. An interrupt transfer
+ is complete when the endpoint does one of the following:
+
+ • Has transferred exactly the amount of data expected
+ • Transfers a packet with a payload size less than wMaxPacketSize or
+ transfers a zero-length packet'
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219365
+Fixes: 7b05933340f4 ("Bluetooth: btusb: Fix not handling ZPL/short-transfer")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
-Matthieu Baerts (NGI0) (3):
-      mptcp: init: protect sched with rcu_read_lock
-      mptcp: remove unneeded lock when listing scheds
-      selftests: mptcp: list sysctl data
+ drivers/bluetooth/btusb.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
- net/mptcp/protocol.c                               | 2 ++
- net/mptcp/sched.c                                  | 2 --
- tools/testing/selftests/net/mptcp/mptcp_connect.sh | 9 +++++++++
- 3 files changed, 11 insertions(+), 2 deletions(-)
----
-base-commit: 3b05b9c36ddd01338e1352588f2ec1ea23f97d43
-change-id: 20241021-net-mptcp-sched-lock-10dfc75d1e00
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -1191,10 +1191,15 @@ static int btusb_submit_intr_urb(struct
+ 	if (!urb)
+ 		return -ENOMEM;
+ 
+-	/* Use maximum HCI Event size so the USB stack handles
+-	 * ZPL/short-transfer automatically.
+-	 */
+-	size = HCI_MAX_EVENT_SIZE;
++	if (le16_to_cpu(data->udev->descriptor.idVendor)  == 0x0a12 &&
++	    le16_to_cpu(data->udev->descriptor.idProduct) == 0x0001)
++		/* Fake CSR devices don't seem to support sort-transter */
++		size = le16_to_cpu(data->intr_ep->wMaxPacketSize);
++	else
++		/* Use maximum HCI Event size so the USB stack handles
++		 * ZPL/short-transfer automatically.
++		 */
++		size = HCI_MAX_EVENT_SIZE;
+ 
+ 	buf = kmalloc(size, mem_flags);
+ 	if (!buf) {
 
-Best regards,
--- 
-Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
 
