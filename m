@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-87098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2820C9A6306
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:30:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E68C89A6313
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:30:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3D2C281E6D
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:30:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21CC21C21780
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C06F21E3776;
-	Mon, 21 Oct 2024 10:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B3F31E32CD;
+	Mon, 21 Oct 2024 10:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="duUyxOXA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RkXY+Pzd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C001E47AC;
-	Mon, 21 Oct 2024 10:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1358D16F27E;
+	Mon, 21 Oct 2024 10:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506587; cv=none; b=Gi7qlRnfDRC/uQNzCP7+3uyBYPjzYqN/W6eAKGd4YdeUACf8PleREICjnu1uh+4jUQ2qY1fXkddCyJGLSO+XjYImPyl7opnxHY9FRByrQAdrJJM3d/cGWodS++rx8lBSTR5Un6N/6yhLmo6x+WTTAieIgr9zC9EIzz8Ypo8MrF0=
+	t=1729506620; cv=none; b=j4pmsRsg1V6CgPGJ4z5uSxCDOcEcuKHoppqOsRrPCFIX763LeGwEOG6JDv8H37j1D8l5DWEkclLdUae5Dkt8Ih+Hoj54Lemdv0XbWlT3BRmBs/Yb/82Qi/piXdT2zFj9HTL/hoz0H/dhHvAo8J2bqa9FgqcX7Mtn0pBFhffWRIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506587; c=relaxed/simple;
-	bh=78wSuA0DXGBz+7JS4R5m8sHukvdlD3fzesbJ5wxZJtI=;
+	s=arc-20240116; t=1729506620; c=relaxed/simple;
+	bh=Ik35TOZqTeA1W06+VbhisdbYxmrfuU5sbXPjhttuF6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uaap9godfCeDEqa2HqoejG9CDkDxxGuyNoToWPjotbcAM2AspGyuvr6cB+XcqOwcSgN/SDY49SOAhS7ZM3747a08lZDnkMk87nXlgnNMtsUt0eQX+9LznFROzo4bhiw2nlEagvrj6tPt+j8vGaz1YSTeHhFQNPJNAe4VL9MPqHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=duUyxOXA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB199C4CEC3;
-	Mon, 21 Oct 2024 10:29:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aPObfjcwJzCNETbOBfbX7vFSi1U4awXAe2AnQmat8g8WbyKdzpx+AI+1QR2OkxQYw3Tre0VKPeTcl39hN0uH+ypBlf1Qadjn3JV8YUAGnhNPUb3RP201DQ4OcuDpRc8emrOTxsMqte4Plp+6CGklzyD9g/j1BI2M3TgY8w/qm8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RkXY+Pzd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D74C4CEC3;
+	Mon, 21 Oct 2024 10:30:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506587;
-	bh=78wSuA0DXGBz+7JS4R5m8sHukvdlD3fzesbJ5wxZJtI=;
+	s=korg; t=1729506619;
+	bh=Ik35TOZqTeA1W06+VbhisdbYxmrfuU5sbXPjhttuF6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=duUyxOXAHdr1h3ZelFwTnysgYaas1SA+cTOdRX/r7wuFh9E1YNmy8dTq4UKvmjVRK
-	 VEs9SQO7VLbAKABgGdPXZaJkY7QhD2Rs3OUbQ/v/HwbrYUk8bZut12LHpShpPxxk+A
-	 x02wMSOBKSu0JOMPBa5AHKpRe7I40nabV98I/c0w=
+	b=RkXY+PzdnnaLXSxYce/eT1Cr2z6gO6dlHpKRdD0uST/K9/9+AHSdbzNRsoxzRjJnF
+	 FDAdAJ+bz5/FDkJM5drOaPHCW2PRYTwtTRIXdHA28EtSK8dkeoiY5Hxy1B6DlpviI+
+	 Mhv0U8PPRnvgHJYj0dGH2HHbMR0ks193kuG186DM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
 	Sven Schnelle <svens@linux.ibm.com>,
 	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.11 037/135] s390/sclp: Deactivate sclp after all its users
-Date: Mon, 21 Oct 2024 12:23:13 +0200
-Message-ID: <20241021102300.784834838@linuxfoundation.org>
+Subject: [PATCH 6.11 038/135] s390/sclp_vt220: Convert newlines to CRLF instead of LFCR
+Date: Mon, 21 Oct 2024 12:23:14 +0200
+Message-ID: <20241021102300.823578350@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
 References: <20241021102259.324175287@linuxfoundation.org>
@@ -69,41 +69,51 @@ Content-Transfer-Encoding: 8bit
 
 From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-commit 0d9dc27df22d9b5c8dc7185c8dddbc14f5468518 upstream.
+commit dee3df68ab4b00fff6bdf9fc39541729af37307c upstream.
 
-On reboot the SCLP interface is deactivated through a reboot notifier.
-This happens before other components using SCLP have the chance to run
-their own reboot notifiers.
-Two of those components are the SCLP console and tty drivers which try
-to flush the last outstanding messages.
-At that point the SCLP interface is already unusable and the messages
-are discarded.
+According to the VT220 specification the possible character combinations
+sent on RETURN are only CR or CRLF [0].
 
-Execute sclp_deactivate() as late as possible to avoid this issue.
+	The Return key sends either a CR character (0/13) or a CR
+	character (0/13) and an LF character (0/10), depending on the
+	set/reset state of line feed/new line mode (LNM).
 
-Fixes: 4ae46db99cd8 ("s390/consoles: improve panic notifiers reliability")
+The sclp/vt220 driver however uses LFCR. This can confuse tools, for
+example the kunit runner.
+
+Link: https://vt100.net/docs/vt220-rm/chapter3.html#S3.2
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
-Link: https://lore.kernel.org/r/20241014-s390-kunit-v1-1-941defa765a6@linutronix.de
+Link: https://lore.kernel.org/r/20241014-s390-kunit-v1-2-941defa765a6@linutronix.de
 Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/char/sclp.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/s390/char/sclp_vt220.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/s390/char/sclp.c
-+++ b/drivers/s390/char/sclp.c
-@@ -1195,7 +1195,8 @@ sclp_reboot_event(struct notifier_block
- }
+--- a/drivers/s390/char/sclp_vt220.c
++++ b/drivers/s390/char/sclp_vt220.c
+@@ -319,7 +319,7 @@ sclp_vt220_add_msg(struct sclp_vt220_req
+ 	buffer = (void *) ((addr_t) sccb + sccb->header.length);
  
- static struct notifier_block sclp_reboot_notifier = {
--	.notifier_call = sclp_reboot_event
-+	.notifier_call = sclp_reboot_event,
-+	.priority      = INT_MIN,
- };
+ 	if (convertlf) {
+-		/* Perform Linefeed conversion (0x0a -> 0x0a 0x0d)*/
++		/* Perform Linefeed conversion (0x0a -> 0x0d 0x0a)*/
+ 		for (from=0, to=0;
+ 		     (from < count) && (to < sclp_vt220_space_left(request));
+ 		     from++) {
+@@ -328,8 +328,8 @@ sclp_vt220_add_msg(struct sclp_vt220_req
+ 			/* Perform conversion */
+ 			if (c == 0x0a) {
+ 				if (to + 1 < sclp_vt220_space_left(request)) {
+-					((unsigned char *) buffer)[to++] = c;
+ 					((unsigned char *) buffer)[to++] = 0x0d;
++					((unsigned char *) buffer)[to++] = c;
+ 				} else
+ 					break;
  
- static ssize_t con_pages_show(struct device_driver *dev, char *buf)
 
 
 
