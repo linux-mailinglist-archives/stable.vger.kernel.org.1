@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-87139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89FAC9A6360
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:34:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDC9F9A63DB
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:40:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C7E31F21681
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:34:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9623A284768
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20331E7657;
-	Mon, 21 Oct 2024 10:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F32051E9097;
+	Mon, 21 Oct 2024 10:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="av3HEhYF"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZEiKLKoJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89041E503D;
-	Mon, 21 Oct 2024 10:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFBF1E570A;
+	Mon, 21 Oct 2024 10:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506710; cv=none; b=MUOidF3cCtx/TUqjyB/bMEpOyX99dlQJTmu+03UNPpr/eBipPId+jDGzqSM8roKGqHRg3aYtcoqPe/bDoSWw14kB9txUH0Pu024HBwfJmFH68v/p3cr0iurPCPnu7uLsK4BCeJNAtxGYPirDDMDkRPgF45QA0Hnq9YOrevvzAQo=
+	t=1729506974; cv=none; b=jZZCUCfBC0j+5WrASgyNAEfCkWKBqf2QvsY3n8YjbHgjQiQUMbN94XZDUB6asle3x4hBQAw6093RhA77xbxMas2zHiO/FvdcZJsxA0qG9ZvhG7UxICNBF0y/VwYfiVqbtj0noe1w6ah+YuIFzzz9S2kbe2S9AKzYfTLQ09/kJOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506710; c=relaxed/simple;
-	bh=JAfgPh9TIdB+oXNO+KiPuUsQSTG56j2n3quUqgDZb+w=;
+	s=arc-20240116; t=1729506974; c=relaxed/simple;
+	bh=nSTy/DFOizvExdmzTBqftLrU453T8fDzyFXk0fZ6Ky4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rGjqdb1S8kh3EauOFz3b6G40E9F9EmrtEi5L8Z9xAGU7KhqQ4Hd6pIR1ZmkZw+MIyhyTLwKp4+AQZEHLUFrULAKWXcv3Xlfy00jgYa8nYh7nzwoV7PhnEpFWTOmPOC656CXQYM5O6MzJMt2Et0Ff1vfEHan3OwLgCsPo71Bj/E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=av3HEhYF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A82FC4CEC3;
-	Mon, 21 Oct 2024 10:31:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RV7/PRVZSNcgCX+A9eSacGYAfwreMWSav3lBW6xlWU3ySK6DZXUxJoag06h7hgbpydz20U/WqnNgVyoQdCsINtKCNj6iKvIqdfbPhf0bPQU9sIcNKFXd8+3ewf/KESPN9uLF7M8H6L7lrHJlnip/Y7ZtSfs/2PHgBNGMMan0X+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZEiKLKoJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B2C5C4CEC7;
+	Mon, 21 Oct 2024 10:36:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506710;
-	bh=JAfgPh9TIdB+oXNO+KiPuUsQSTG56j2n3quUqgDZb+w=;
+	s=korg; t=1729506974;
+	bh=nSTy/DFOizvExdmzTBqftLrU453T8fDzyFXk0fZ6Ky4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=av3HEhYFu7PolwxBFnX9VSHLp212AfTPgopRlWFsxkPDDTbUCpu1KjNjSJW9Q+gHs
-	 D1uQf1LseqFWycvbN5vsCSwa9GKyC/kSTqRRyspV1WDuivqdBTV0wZeB/v8LKPcUg3
-	 xgjmJwId8v0m/pXRG/dSGXI743EByssqgBf3jYeg=
+	b=ZEiKLKoJeTtC8/x0AoVxGNxp+RBbvQBHuUCGABB0QpujvlVyEkIOPM/aV+F3ewbsy
+	 8CA5lsJ5TZcjdi22mXs1EJ0FcGiTt9df9JKe2jDAhdc9OUZD56Vd/90m/TJTO5xjIh
+	 PitPLcRmE2o2K3s760pc5cLhVbMb3cQRtbuLmLEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Thompson <dev@aaront.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.11 095/135] Bluetooth: Remove debugfs directory on module init failure
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
+	=20Bence?= <csokas.bence@prolan.hu>, Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 047/124] net: fec: Remove duplicated code
 Date: Mon, 21 Oct 2024 12:24:11 +0200
-Message-ID: <20241021102303.041635877@linuxfoundation.org>
+Message-ID: <20241021102258.548728332@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,81 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Thompson <dev@aaront.org>
+From: Csókás, Bence <csokas.bence@prolan.hu>
 
-commit 1db4564f101b47188c1b71696bd342ef09172b22 upstream.
+commit 713ebaed68d88121cbaf5e74104e2290a9ea74bd upstream.
 
-If bt_init() fails, the debugfs directory currently is not removed. If
-the module is loaded again after that, the debugfs directory is not set
-up properly due to the existing directory.
+`fec_ptp_pps_perout()` reimplements logic already
+in `fec_ptp_read()`. Replace with function call.
 
-  # modprobe bluetooth
-  # ls -laF /sys/kernel/debug/bluetooth
-  total 0
-  drwxr-xr-x  2 root root 0 Sep 27 14:26 ./
-  drwx------ 31 root root 0 Sep 27 14:25 ../
-  -r--r--r--  1 root root 0 Sep 27 14:26 l2cap
-  -r--r--r--  1 root root 0 Sep 27 14:26 sco
-  # modprobe -r bluetooth
-  # ls -laF /sys/kernel/debug/bluetooth
-  ls: cannot access '/sys/kernel/debug/bluetooth': No such file or directory
-  #
-
-  # modprobe bluetooth
-  modprobe: ERROR: could not insert 'bluetooth': Invalid argument
-  # dmesg | tail -n 6
-  Bluetooth: Core ver 2.22
-  NET: Registered PF_BLUETOOTH protocol family
-  Bluetooth: HCI device and connection manager initialized
-  Bluetooth: HCI socket layer initialized
-  Bluetooth: Faking l2cap_init() failure for testing
-  NET: Unregistered PF_BLUETOOTH protocol family
-  # ls -laF /sys/kernel/debug/bluetooth
-  total 0
-  drwxr-xr-x  2 root root 0 Sep 27 14:31 ./
-  drwx------ 31 root root 0 Sep 27 14:26 ../
-  #
-
-  # modprobe bluetooth
-  # dmesg | tail -n 7
-  Bluetooth: Core ver 2.22
-  debugfs: Directory 'bluetooth' with parent '/' already present!
-  NET: Registered PF_BLUETOOTH protocol family
-  Bluetooth: HCI device and connection manager initialized
-  Bluetooth: HCI socket layer initialized
-  Bluetooth: L2CAP socket layer initialized
-  Bluetooth: SCO socket layer initialized
-  # ls -laF /sys/kernel/debug/bluetooth
-  total 0
-  drwxr-xr-x  2 root root 0 Sep 27 14:31 ./
-  drwx------ 31 root root 0 Sep 27 14:26 ../
-  #
-
-Cc: stable@vger.kernel.org
-Fixes: ffcecac6a738 ("Bluetooth: Create root debugfs directory during module init")
-Signed-off-by: Aaron Thompson <dev@aaront.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20240812094713.2883476-2-csokas.bence@prolan.hu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/af_bluetooth.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/freescale/fec_ptp.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
---- a/net/bluetooth/af_bluetooth.c
-+++ b/net/bluetooth/af_bluetooth.c
-@@ -825,6 +825,7 @@ cleanup_sysfs:
- 	bt_sysfs_cleanup();
- cleanup_led:
- 	bt_leds_cleanup();
-+	debugfs_remove_recursive(bt_debugfs);
- 	return err;
- }
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -235,13 +235,7 @@ static int fec_ptp_pps_perout(struct fec
+ 	timecounter_read(&fep->tc);
  
+ 	/* Get the current ptp hardware time counter */
+-	temp_val = readl(fep->hwp + FEC_ATIME_CTRL);
+-	temp_val |= FEC_T_CTRL_CAPTURE;
+-	writel(temp_val, fep->hwp + FEC_ATIME_CTRL);
+-	if (fep->quirks & FEC_QUIRK_BUG_CAPTURE)
+-		udelay(1);
+-
+-	ptp_hc = readl(fep->hwp + FEC_ATIME);
++	ptp_hc = fec_ptp_read(&fep->cc);
+ 
+ 	/* Convert the ptp local counter to 1588 timestamp */
+ 	curr_time = timecounter_cyc2time(&fep->tc, ptp_hc);
 
 
 
