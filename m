@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-87479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E99119A6521
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:54:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D88D9A64AD
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:49:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 938101F223C3
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:54:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21AEE1F20C89
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:49:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA3E1F7097;
-	Mon, 21 Oct 2024 10:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9B71EBFE1;
+	Mon, 21 Oct 2024 10:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BULLUEr7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4uWn7Xn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0AE1EF940;
-	Mon, 21 Oct 2024 10:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A181E5722;
+	Mon, 21 Oct 2024 10:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507727; cv=none; b=fa3OUogNQKZk2XtGrar1coZyFFsDmJgjFmwDoD0T6S3CzwZ13+uAVcwokOl+cvUHtl3ulHq4FHl05IKX0V7w4BK/YSODlzVjxnDkVgOGvLOVR3QSdSq5FCL8ij7kANf+M153UOlAZ0xK9VXPeeAO2qUy9ll5N2wLOgNe67kCxCA=
+	t=1729507439; cv=none; b=LRcRo2VRUpZkhN1ZWyKi3yuDC5SdcT3Ffo2M6ev75mwfv1NspjGg8hCDW3YPKtnz+nTu95p28aY8ESiApDwidTRo6V0jQLDbfFX2W7RHixiM22HiimkrluFsOUBtwwTP44kMMYW7K5v+lCeyoPlFAfPE0ZaGFszP4bDXpxfnEfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507727; c=relaxed/simple;
-	bh=aK58NI6ZjvI/QzgYzC1aNCl9cCK4bT3GCZy9y6hq21A=;
+	s=arc-20240116; t=1729507439; c=relaxed/simple;
+	bh=zbfS5Q3Cwvn8oHqJQKiTFSHh3SM1laEGOaz4vdK3k/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YJ7sgKNwiwwTNNKuyLRbKw85xuT8vs8qkOwgZQBS7tvbaup8lKZ68xTeYZ7KJjMNYMW62OOj+sjIwdMFCeqsaai0bl9jkk7mUeT1JKIwJ+7PciSKX1L0uVRZg9VH86x5Viar5dz/nk2mVCCYLynMy8jN19fF1SB30DKVC9gBVoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BULLUEr7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B6C9C4CEC3;
-	Mon, 21 Oct 2024 10:48:46 +0000 (UTC)
+	 MIME-Version; b=FEcCyW6ZNDf5lxEQRMXnjEeeTukZphy2FDn6/CObjWiENwLz7u/Scnto20clmJEf7Eeogp0YP8iKFowQ0HU+SKUQf5B6enmQy7iI5yIeNDiipgRv8vLC9NAj4s1bCFhBUnGgvZv9E70cv6kI9cgCuh5XR1XVTPh7bY2VKgChKl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4uWn7Xn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4246C4CEC3;
+	Mon, 21 Oct 2024 10:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507726;
-	bh=aK58NI6ZjvI/QzgYzC1aNCl9cCK4bT3GCZy9y6hq21A=;
+	s=korg; t=1729507439;
+	bh=zbfS5Q3Cwvn8oHqJQKiTFSHh3SM1laEGOaz4vdK3k/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BULLUEr753PskPcxnuNCFyrt5zwhjxRVYr8vuRNnfeZp1eElCe/1MI6O+hitSf9BE
-	 LyuQ7G0IXwxUm59EZPNtCMVTYnSlg8jRIMM6czmWXsw9oQYTQ7NdHPGYlExpmGETmf
-	 QqbH1wV2Dobj+WcJfCxFBTwPNq56wWh6bellewak=
+	b=E4uWn7Xn1evaAyNo2XgGjql9O6pEIieFtzkO1HbAfFJgCs62BRxMTPT0a5PM+NRO2
+	 Muwr5V2SmrD/9mfhtHqley/QDFgRfdPEhIZORtSyEc2aOsYM36MjijWkGkTyZQ6mKM
+	 JH4UwcX0oki7YERFUq9Cn0oUy/pe0hS6QzTmQwzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Kuratov <kniv@yandex-team.ru>,
-	Zack Rusin <zack.rusin@broadcom.com>
-Subject: [PATCH 5.15 50/82] drm/vmwgfx: Handle surface check failure correctly
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 77/91] parport: Proper fix for array out-of-bounds access
 Date: Mon, 21 Oct 2024 12:25:31 +0200
-Message-ID: <20241021102249.219094457@linuxfoundation.org>
+Message-ID: <20241021102252.822450095@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +60,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Kuratov <kniv@yandex-team.ru>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 26498b8d54373d31a621d7dec95c4bd842563b3b upstream.
+commit 02ac3a9ef3a18b58d8f3ea2b6e46de657bf6c4f9 upstream.
 
-Currently if condition (!bo and !vmw_kms_srf_ok()) was met
-we go to err_out with ret == 0.
-err_out dereferences vfb if ret == 0, but in our case vfb is still NULL.
+The recent fix for array out-of-bounds accesses replaced sprintf()
+calls blindly with snprintf().  However, since snprintf() returns the
+would-be-printed size, not the actually output size, the length
+calculation can still go over the given limit.
 
-Fix this by assigning sensible error to ret.
+Use scnprintf() instead of snprintf(), which returns the actually
+output letters, for addressing the potential out-of-bounds access
+properly.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE
-
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Fixes: ab11dac93d2d ("dev/parport: fix the array out-of-bounds risk")
 Cc: stable@vger.kernel.org
-Fixes: 810b3e1683d0 ("drm/vmwgfx: Support topology greater than texture size")
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241002122429.1981822-1-kniv@yandex-team.ru
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20240920103318.19271-1-tiwai@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/parport/procfs.c |   22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-@@ -1417,6 +1417,7 @@ static struct drm_framebuffer *vmw_kms_f
- 		DRM_ERROR("Surface size cannot exceed %dx%d\n",
- 			dev_priv->texture_max_width,
- 			dev_priv->texture_max_height);
-+		ret = -EINVAL;
- 		goto err_out;
+--- a/drivers/parport/procfs.c
++++ b/drivers/parport/procfs.c
+@@ -51,12 +51,12 @@ static int do_active_device(struct ctl_t
+ 	
+ 	for (dev = port->devices; dev ; dev = dev->next) {
+ 		if(dev == port->cad) {
+-			len += snprintf(buffer, sizeof(buffer), "%s\n", dev->name);
++			len += scnprintf(buffer, sizeof(buffer), "%s\n", dev->name);
+ 		}
  	}
  
+ 	if(!len) {
+-		len += snprintf(buffer, sizeof(buffer), "%s\n", "none");
++		len += scnprintf(buffer, sizeof(buffer), "%s\n", "none");
+ 	}
+ 
+ 	if (len > *lenp)
+@@ -87,19 +87,19 @@ static int do_autoprobe(struct ctl_table
+ 	}
+ 	
+ 	if ((str = info->class_name) != NULL)
+-		len += snprintf (buffer + len, sizeof(buffer) - len, "CLASS:%s;\n", str);
++		len += scnprintf (buffer + len, sizeof(buffer) - len, "CLASS:%s;\n", str);
+ 
+ 	if ((str = info->model) != NULL)
+-		len += snprintf (buffer + len, sizeof(buffer) - len, "MODEL:%s;\n", str);
++		len += scnprintf (buffer + len, sizeof(buffer) - len, "MODEL:%s;\n", str);
+ 
+ 	if ((str = info->mfr) != NULL)
+-		len += snprintf (buffer + len, sizeof(buffer) - len, "MANUFACTURER:%s;\n", str);
++		len += scnprintf (buffer + len, sizeof(buffer) - len, "MANUFACTURER:%s;\n", str);
+ 
+ 	if ((str = info->description) != NULL)
+-		len += snprintf (buffer + len, sizeof(buffer) - len, "DESCRIPTION:%s;\n", str);
++		len += scnprintf (buffer + len, sizeof(buffer) - len, "DESCRIPTION:%s;\n", str);
+ 
+ 	if ((str = info->cmdset) != NULL)
+-		len += snprintf (buffer + len, sizeof(buffer) - len, "COMMAND SET:%s;\n", str);
++		len += scnprintf (buffer + len, sizeof(buffer) - len, "COMMAND SET:%s;\n", str);
+ 
+ 	if (len > *lenp)
+ 		len = *lenp;
+@@ -128,7 +128,7 @@ static int do_hardware_base_addr(struct
+ 	if (write) /* permissions prevent this anyway */
+ 		return -EACCES;
+ 
+-	len += snprintf (buffer, sizeof(buffer), "%lu\t%lu\n", port->base, port->base_hi);
++	len += scnprintf (buffer, sizeof(buffer), "%lu\t%lu\n", port->base, port->base_hi);
+ 
+ 	if (len > *lenp)
+ 		len = *lenp;
+@@ -155,7 +155,7 @@ static int do_hardware_irq(struct ctl_ta
+ 	if (write) /* permissions prevent this anyway */
+ 		return -EACCES;
+ 
+-	len += snprintf (buffer, sizeof(buffer), "%d\n", port->irq);
++	len += scnprintf (buffer, sizeof(buffer), "%d\n", port->irq);
+ 
+ 	if (len > *lenp)
+ 		len = *lenp;
+@@ -182,7 +182,7 @@ static int do_hardware_dma(struct ctl_ta
+ 	if (write) /* permissions prevent this anyway */
+ 		return -EACCES;
+ 
+-	len += snprintf (buffer, sizeof(buffer), "%d\n", port->dma);
++	len += scnprintf (buffer, sizeof(buffer), "%d\n", port->dma);
+ 
+ 	if (len > *lenp)
+ 		len = *lenp;
+@@ -213,7 +213,7 @@ static int do_hardware_modes(struct ctl_
+ #define printmode(x)							\
+ do {									\
+ 	if (port->modes & PARPORT_MODE_##x)				\
+-		len += snprintf(buffer + len, sizeof(buffer) - len, "%s%s", f++ ? "," : "", #x); \
++		len += scnprintf(buffer + len, sizeof(buffer) - len, "%s%s", f++ ? "," : "", #x); \
+ } while (0)
+ 		int f = 0;
+ 		printmode(PCSPP);
 
 
 
