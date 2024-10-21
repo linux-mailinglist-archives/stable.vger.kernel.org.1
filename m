@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-87313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D476D9A64DA
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:51:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28FD09A63DF
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:40:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84287B2A0D9
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:46:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B96041F23479
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:40:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D56631E0087;
-	Mon, 21 Oct 2024 10:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EED5B1EABA4;
+	Mon, 21 Oct 2024 10:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCGhjv65"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xob1GdA1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8AF195FEC;
-	Mon, 21 Oct 2024 10:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBE71E9098;
+	Mon, 21 Oct 2024 10:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507231; cv=none; b=h8TEDiOX76v+35Xjs623S9u3FQi5wL9VVerGHE2dpMwFHH8cwtJeEc6MeyZio+maiBcTna8h5Elb5QRUTq409JmwIYzbf9p8GQKcPnWoiV7P/R/YcB9UEuhysqlmeU3TtTvbbiEIGp9noUD573TBLODi2+cigZjmayjhoQTzaPY=
+	t=1729506989; cv=none; b=Ha/MV3rta9wMCURn2huAGdrk6jCmNGgKKOXtvPEhGjnoDPo3bt1n21ygE4P4lhsuj12iIcevlj3fY1vpeTnGwTVd5sH+6RhKnZtpiTutA6T/eHsxQJAMsCyCmn/ayz4iLa/Pn3lk1XU/tQAo+H2I6zuxDEhQM65cdk5feVc30Bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507231; c=relaxed/simple;
-	bh=6rkTIn+GaYqhIXXLwBKGz8GbJ9OXtliHyYAyAnlpQtY=;
+	s=arc-20240116; t=1729506989; c=relaxed/simple;
+	bh=US7GiHuOVPhZjNL7zOKMcns/ZEslLwq02XALlK19UQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vCzGuOzQu1Z2hmuR+Jb4eGCOXOwgLj0ZfL2doZNSGKO/UxMQbXpro54I2s5rRQU+88QaxCrNjAFWj+5/KGwER065DngPYxkgILYbRamqW1/XUAqdOS3kI4H+q05jMcq4zT8QTByhp+/5ath5gw0bOd+qrDIh+omjwBOsPPjWgIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCGhjv65; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4124C4CEC3;
-	Mon, 21 Oct 2024 10:40:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=akVsW3SVVKo1d4cWnpl3soDqN3wZ7KWfzpW2Vwm2pA3fDLoIcrqMFYd1nNxqUrCQSDM9RicZklCf+QsRbH+hkZfrJmdnwqLtPqkQfN4tzYQ9BZldfGP2fUZZ58ecy/TaCdaLobwMuVzPmYvyRrtmUuzk9oL8kuVVFZujNl9lnF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xob1GdA1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E547C4CEC3;
+	Mon, 21 Oct 2024 10:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507231;
-	bh=6rkTIn+GaYqhIXXLwBKGz8GbJ9OXtliHyYAyAnlpQtY=;
+	s=korg; t=1729506989;
+	bh=US7GiHuOVPhZjNL7zOKMcns/ZEslLwq02XALlK19UQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YCGhjv65d7xzVxWhI8VpNTVlk0QAWnLriEd9Y6yRIJToxBG39oe98f+cefOxZ/clh
-	 5aXHPQustP+Bfg/WtNYhg3oUvaUnaN1kPsgt8BpWpi1XCOMjK0sHNNUhBgLZyiOYMG
-	 DsKh6BPLCg4Lfr8tXQcP6vNPd2gS9Tqcu3KEZ14Q=
+	b=Xob1GdA1SSXgLyJkSsptT7gO5hNj+SO23+1y4q4h6IorJtSEmYG3fyLvaxWJ2l91M
+	 Php5oNeSQjEPtNdNU4FIJ+6r3NXd/s60IYreSHwxCAgcrCxj/cs7zE1+7/otF9JO6y
+	 I2IhmH8YQyFv3rXqPeSNQXfw7h5YIR1GCIquys/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Roi Martin <jroi.martin@gmail.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 01/91] btrfs: fix uninitialized pointer free in add_inode_ref()
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 6.6 051/124] s390/sclp_vt220: Convert newlines to CRLF instead of LFCR
 Date: Mon, 21 Oct 2024 12:24:15 +0200
-Message-ID: <20241021102249.853676139@linuxfoundation.org>
+Message-ID: <20241021102258.704098589@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roi Martin <jroi.martin@gmail.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-commit 66691c6e2f18d2aa4b22ffb624b9bdc97e9979e4 upstream.
+commit dee3df68ab4b00fff6bdf9fc39541729af37307c upstream.
 
-The add_inode_ref() function does not initialize the "name" struct when
-it is declared.  If any of the following calls to "read_one_inode()
-returns NULL,
+According to the VT220 specification the possible character combinations
+sent on RETURN are only CR or CRLF [0].
 
-	dir = read_one_inode(root, parent_objectid);
-	if (!dir) {
-		ret = -ENOENT;
-		goto out;
-	}
+	The Return key sends either a CR character (0/13) or a CR
+	character (0/13) and an LF character (0/10), depending on the
+	set/reset state of line feed/new line mode (LNM).
 
-	inode = read_one_inode(root, inode_objectid);
-	if (!inode) {
-		ret = -EIO;
-		goto out;
-	}
+The sclp/vt220 driver however uses LFCR. This can confuse tools, for
+example the kunit runner.
 
-then "name.name" would be freed on "out" before being initialized.
-
-out:
-	...
-	kfree(name.name);
-
-This issue was reported by Coverity with CID 1526744.
-
-Fixes: e43eec81c516 ("btrfs: use struct qstr instead of name and namelen pairs")
-CC: stable@vger.kernel.org # 6.6+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Roi Martin <jroi.martin@gmail.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Link: https://vt100.net/docs/vt220-rm/chapter3.html#S3.2
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
+Link: https://lore.kernel.org/r/20241014-s390-kunit-v1-2-941defa765a6@linutronix.de
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-log.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/s390/char/sclp_vt220.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -1372,7 +1372,7 @@ static noinline int add_inode_ref(struct
- 	struct inode *inode = NULL;
- 	unsigned long ref_ptr;
- 	unsigned long ref_end;
--	struct fscrypt_str name;
-+	struct fscrypt_str name = { 0 };
- 	int ret;
- 	int log_ref_ver = 0;
- 	u64 parent_objectid;
+--- a/drivers/s390/char/sclp_vt220.c
++++ b/drivers/s390/char/sclp_vt220.c
+@@ -319,7 +319,7 @@ sclp_vt220_add_msg(struct sclp_vt220_req
+ 	buffer = (void *) ((addr_t) sccb + sccb->header.length);
+ 
+ 	if (convertlf) {
+-		/* Perform Linefeed conversion (0x0a -> 0x0a 0x0d)*/
++		/* Perform Linefeed conversion (0x0a -> 0x0d 0x0a)*/
+ 		for (from=0, to=0;
+ 		     (from < count) && (to < sclp_vt220_space_left(request));
+ 		     from++) {
+@@ -328,8 +328,8 @@ sclp_vt220_add_msg(struct sclp_vt220_req
+ 			/* Perform conversion */
+ 			if (c == 0x0a) {
+ 				if (to + 1 < sclp_vt220_space_left(request)) {
+-					((unsigned char *) buffer)[to++] = c;
+ 					((unsigned char *) buffer)[to++] = 0x0d;
++					((unsigned char *) buffer)[to++] = c;
+ 				} else
+ 					break;
+ 
 
 
 
