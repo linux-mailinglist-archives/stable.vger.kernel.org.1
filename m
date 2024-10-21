@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-87451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2E5B9A6503
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:53:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFE049A6545
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:55:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E6F11F2160B
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:53:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58F3F1F213DD
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4ED1EF95F;
-	Mon, 21 Oct 2024 10:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D5101F8F10;
+	Mon, 21 Oct 2024 10:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bmT62oPD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HRuI8iXx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C521EF956;
-	Mon, 21 Oct 2024 10:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FCFF1E25E3;
+	Mon, 21 Oct 2024 10:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507645; cv=none; b=YfbAZoSIj5kVCNB82f52yAvM1Kkl0j+YsrNW/3VvYyTo4VDrF6uuM8wfHvl1XuLx+SRzPKD+zFur/3WKohxIUPJ01BQtTNnxey7oB4DgaYSKPncKfRFu+5hF3mSrbw6R5BeAusfWZ2GUw03LCzu8ioBsPgje5gC5ooPgdBeyZNI=
+	t=1729507775; cv=none; b=btf9/MmdQda1Zebq+7gbT/9DII08ZauqPPGxdHHO0U/DRNmZTtC8bT8k8/LKsy+fG7Daa3nwpr6pPxHv/cc4nmOUIbhaL9fpDnHRTCQMtftwtkUYRpZkpjpqTx6s5gdGEZv/fUxpITDVvGibmhCopYMWDpZ8yOm3mB26o8+fBXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507645; c=relaxed/simple;
-	bh=Jzai1SnUin9rDpQLgBea8ywPQ3xytzN97MwICr8vTRA=;
+	s=arc-20240116; t=1729507775; c=relaxed/simple;
+	bh=yM5Fn85M7fId38UjhyNlNSoNo4fwG6uiEwhyoWlZFfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bd5h9OpJMSx2as8wOc6Vj64y8al99ByUhzqYHUZpa/7jMg97m/MEGFNMiv45skZnngWnTVTQTbCAks6LHWbrBgucjd63wzSTXSAEfLGUM+fwJJ1ZePIrJ+RdlE7t1Y6iJFEwd0gJ+WnyrN9r+FraqojeLmvn7goPETTm6Tms5Bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bmT62oPD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22595C4CEC3;
-	Mon, 21 Oct 2024 10:47:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XV12phN9ewUbtLNlUBEk67PkKTk/7jRo+IdD8bI4azTcHh7Gn1iwK4E6iQB+u/KQr16i4IYKfdgKWx8WleGEvVzAiSCOMgBNWbyynBlCdcUMWP5c053JvUHzym3oEfE3d6K1PYp9QKUG4oaHU5lqU3twsSCepNXjdFJSEhkRN+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HRuI8iXx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 595AFC4CEC3;
+	Mon, 21 Oct 2024 10:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507645;
-	bh=Jzai1SnUin9rDpQLgBea8ywPQ3xytzN97MwICr8vTRA=;
+	s=korg; t=1729507774;
+	bh=yM5Fn85M7fId38UjhyNlNSoNo4fwG6uiEwhyoWlZFfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bmT62oPDI4Y1bX30C7MVYYHuLWhQmR0bNvZ/pWWdBn82L3/g40NIkkwYkg8Ocqfa7
-	 dZHeCO2vUxJ3+ZFguEo4w0n55/MKn08XV08ugl91V6HEuNYtTe18ZiCBAuKPfW5U/D
-	 Z4so9mmtUSM/c+oIQzQgXWTyDkoLjCbo4j7lpAl4=
+	b=HRuI8iXxcVKWAJMKDYafgycS3T1KGfnlKIozemU02lSbxLQdDHQmRZwRCTNpRDHzE
+	 Bj6L4NPSGqebNFtG6+AIjh9ct/HbDnK959OWd52Jen5XhTc3wzmm61uuTyuX1ID72O
+	 yZLKNDwErgcIJmkCzv6EOJ/SBnYa5mut9FnHhL/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 55/82] iio: hid-sensors: Fix an error handling path in _hid_sensor_set_report_latency()
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 5.10 15/52] s390/sclp_vt220: Convert newlines to CRLF instead of LFCR
 Date: Mon, 21 Oct 2024 12:25:36 +0200
-Message-ID: <20241021102249.408887117@linuxfoundation.org>
+Message-ID: <20241021102242.223257712@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
+References: <20241021102241.624153108@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-commit 3a29b84cf7fbf912a6ab1b9c886746f02b74ea25 upstream.
+commit dee3df68ab4b00fff6bdf9fc39541729af37307c upstream.
 
-If hid_sensor_set_report_latency() fails, the error code should be returned
-instead of a value likely to be interpreted as 'success'.
+According to the VT220 specification the possible character combinations
+sent on RETURN are only CR or CRLF [0].
 
-Fixes: 138bc7969c24 ("iio: hid-sensor-hub: Implement batch mode")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/c50640665f091a04086e5092cf50f73f2055107a.1727980825.git.christophe.jaillet@wanadoo.fr
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+	The Return key sends either a CR character (0/13) or a CR
+	character (0/13) and an LF character (0/10), depending on the
+	set/reset state of line feed/new line mode (LNM).
+
+The sclp/vt220 driver however uses LFCR. This can confuse tools, for
+example the kunit runner.
+
+Link: https://vt100.net/docs/vt220-rm/chapter3.html#S3.2
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
+Link: https://lore.kernel.org/r/20241014-s390-kunit-v1-2-941defa765a6@linutronix.de
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/common/hid-sensors/hid-sensor-trigger.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/s390/char/sclp_vt220.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-+++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-@@ -32,7 +32,7 @@ static ssize_t _hid_sensor_set_report_la
- 	latency = integer * 1000 + fract / 1000;
- 	ret = hid_sensor_set_report_latency(attrb, latency);
- 	if (ret < 0)
--		return len;
-+		return ret;
+--- a/drivers/s390/char/sclp_vt220.c
++++ b/drivers/s390/char/sclp_vt220.c
+@@ -325,7 +325,7 @@ sclp_vt220_add_msg(struct sclp_vt220_req
+ 	buffer = (void *) ((addr_t) sccb + sccb->header.length);
  
- 	attrb->latency_ms = hid_sensor_get_report_latency(attrb);
+ 	if (convertlf) {
+-		/* Perform Linefeed conversion (0x0a -> 0x0a 0x0d)*/
++		/* Perform Linefeed conversion (0x0a -> 0x0d 0x0a)*/
+ 		for (from=0, to=0;
+ 		     (from < count) && (to < sclp_vt220_space_left(request));
+ 		     from++) {
+@@ -334,8 +334,8 @@ sclp_vt220_add_msg(struct sclp_vt220_req
+ 			/* Perform conversion */
+ 			if (c == 0x0a) {
+ 				if (to + 1 < sclp_vt220_space_left(request)) {
+-					((unsigned char *) buffer)[to++] = c;
+ 					((unsigned char *) buffer)[to++] = 0x0d;
++					((unsigned char *) buffer)[to++] = c;
+ 				} else
+ 					break;
  
 
 
