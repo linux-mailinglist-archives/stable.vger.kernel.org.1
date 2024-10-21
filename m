@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-87251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DE079A6417
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:43:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3719D9A6378
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC1CF1C2231A
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2C031F227CE
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 305311F426B;
-	Mon, 21 Oct 2024 10:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 221B31E884F;
+	Mon, 21 Oct 2024 10:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IULPxUsN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dwXjwSgf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6451EB9E1;
-	Mon, 21 Oct 2024 10:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1F416F27E;
+	Mon, 21 Oct 2024 10:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507047; cv=none; b=oAZcu6Qf5Pf9mud+ZLOPBZHgwh6kgYwMGTIleqUzz6KAsarPA/oyEJqpgz6zf4TvwImV/g2hYUQ7Ud1kudDD5yUF/g5YFmYj3qF5YcEIQ5OPQSf2QUXqCN3NDjM9Tg3tdQOgUtYi5A4rGe22EVJSDQX5NciwHB5DxmG8wXsg88c=
+	t=1729506781; cv=none; b=qYboNmKaQCKmb7GOqGAFcSdqjL79tydOTDZ2MWVGSUwkzMy9NNYBADVFOYKz/8xUaegG+AhUizPXgN/Lh0BwKQxOPCVqW31uCMxyvoA7H3d1/TR/BCZmxvClpgIuYVQhC4xPe1qGQ/wW+XDfzwUx9A+JVkOtfMNARbAAYo6ax6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507047; c=relaxed/simple;
-	bh=rkSsQQjiGqP8Z4JTtGIz2DVkXRi7eqmTvvB6TsBi3VE=;
+	s=arc-20240116; t=1729506781; c=relaxed/simple;
+	bh=jjrIt+dtRGa3wBumAWoh9wX3ggNmvltY2n0LRISOOXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BfkWV0iLluFm6TiRrb/7s0UZ/FKeMvqnkZrdSGtr/jImQtzq3bokSIeP4DHOdoRMnAHZIZGtjzK8mzW/MAo4p9Ilew0822hqLPQu8ImAUI0mi/YmhPAZRmXkWoujHwmyXszgJ+4AQmy43om4xO9Y2JiGr1C6+SANtNll0LxbMwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IULPxUsN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2203DC4CEC3;
-	Mon, 21 Oct 2024 10:37:25 +0000 (UTC)
+	 MIME-Version; b=XxXu/+BUkJZ8lRBrSAMAGmPNMobyOWTBmaPp8bZtYoDTZxY8kMe/gOJ+ff6Ls8GdWYRX0hfHmwhyp5LfMxf0IhWirXUZ5MH0munLS2xItIJPpQ/Dkyg/gI2jeFSJVlNNCikjsdAgf5nAEqsxAKeRXTlac5KxCK7tjpbdUIr98xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dwXjwSgf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1AAC4CEC3;
+	Mon, 21 Oct 2024 10:33:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507046;
-	bh=rkSsQQjiGqP8Z4JTtGIz2DVkXRi7eqmTvvB6TsBi3VE=;
+	s=korg; t=1729506781;
+	bh=jjrIt+dtRGa3wBumAWoh9wX3ggNmvltY2n0LRISOOXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IULPxUsN7PZSiZm9+AuwVnOb0aaAoYdXbF75x72fAD16cS16z8IWW44f1N85/YZgG
-	 wE++8pVMp1OtoYTkKuFN9h87j64kea51chu/ObJHgrvnZxa8jh4XeSzYD+1zCXixfL
-	 ZOOWjxeAjopS1JyTOUYeixVRXeSIkYo5drBkO+ck=
+	b=dwXjwSgfaxV39U+zEc93dAiEfd04gdiR2Mnce2fdBc42zm8u+A+Qqql6PssrOlYwg
+	 6MUnGJi07cS0+nykpTsbZc30uxLldAuHoGHjAmdZcU/2nOoSp/FIRf5ye8RPfibRt7
+	 UgLCPxa0vebWtF6NJkOtmYCk7KpkzeVSSehYJUAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 072/124] iio: dac: stm32-dac-core: add missing select REGMAP_MMIO in Kconfig
+	Robert Gill <rtgill82@gmail.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Brian Gerst <brgerst@gmail.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 6.11 120/135] x86/bugs: Use code segment selector for VERW operand
 Date: Mon, 21 Oct 2024 12:24:36 +0200
-Message-ID: <20241021102259.519205561@linuxfoundation.org>
+Message-ID: <20241021102304.023480708@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-commit 27b6aa68a68105086aef9f0cb541cd688e5edea8 upstream.
+commit e4d2102018542e3ae5e297bc6e229303abff8a0f upstream.
 
-This driver makes use of regmap_mmio, but does not select the required
-module.
-Add the missing 'select REGMAP_MMIO'.
+Robert Gill reported below #GP in 32-bit mode when dosemu software was
+executing vm86() system call:
 
-Fixes: 4d4b30526eb8 ("iio: dac: add support for stm32 DAC")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241003-ad2s1210-select-v1-8-4019453f8c33@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+  general protection fault: 0000 [#1] PREEMPT SMP
+  CPU: 4 PID: 4610 Comm: dosemu.bin Not tainted 6.6.21-gentoo-x86 #1
+  Hardware name: Dell Inc. PowerEdge 1950/0H723K, BIOS 2.7.0 10/30/2010
+  EIP: restore_all_switch_stack+0xbe/0xcf
+  EAX: 00000000 EBX: 00000000 ECX: 00000000 EDX: 00000000
+  ESI: 00000000 EDI: 00000000 EBP: 00000000 ESP: ff8affdc
+  DS: 0000 ES: 0000 FS: 0000 GS: 0033 SS: 0068 EFLAGS: 00010046
+  CR0: 80050033 CR2: 00c2101c CR3: 04b6d000 CR4: 000406d0
+  Call Trace:
+   show_regs+0x70/0x78
+   die_addr+0x29/0x70
+   exc_general_protection+0x13c/0x348
+   exc_bounds+0x98/0x98
+   handle_exception+0x14d/0x14d
+   exc_bounds+0x98/0x98
+   restore_all_switch_stack+0xbe/0xcf
+   exc_bounds+0x98/0x98
+   restore_all_switch_stack+0xbe/0xcf
+
+This only happens in 32-bit mode when VERW based mitigations like MDS/RFDS
+are enabled. This is because segment registers with an arbitrary user value
+can result in #GP when executing VERW. Intel SDM vol. 2C documents the
+following behavior for VERW instruction:
+
+  #GP(0) - If a memory operand effective address is outside the CS, DS, ES,
+	   FS, or GS segment limit.
+
+CLEAR_CPU_BUFFERS macro executes VERW instruction before returning to user
+space. Use %cs selector to reference VERW operand. This ensures VERW will
+not #GP for an arbitrary user %ds.
+
+[ mingo: Fixed the SOB chain. ]
+
+Fixes: a0e2dab44d22 ("x86/entry_32: Add VERW just before userspace transition")
+Reported-by: Robert Gill <rtgill82@gmail.com>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com
+Cc: stable@vger.kernel.org # 5.10+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218707
+Closes: https://lore.kernel.org/all/8c77ccfd-d561-45a1-8ed5-6b75212c7a58@leemhuis.info/
+Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+Suggested-by: Brian Gerst <brgerst@gmail.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/include/asm/nospec-branch.h |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/dac/Kconfig
-+++ b/drivers/iio/dac/Kconfig
-@@ -426,6 +426,7 @@ config STM32_DAC
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -323,7 +323,16 @@
+  * Note: Only the memory operand variant of VERW clears the CPU buffers.
+  */
+ .macro CLEAR_CPU_BUFFERS
+-	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
++#ifdef CONFIG_X86_64
++	ALTERNATIVE "", "verw mds_verw_sel(%rip)", X86_FEATURE_CLEAR_CPU_BUF
++#else
++	/*
++	 * In 32bit mode, the memory operand must be a %cs reference. The data
++	 * segments may not be usable (vm86 mode), and the stack segment may not
++	 * be flat (ESPFIX32).
++	 */
++	ALTERNATIVE "", "verw %cs:mds_verw_sel", X86_FEATURE_CLEAR_CPU_BUF
++#endif
+ .endm
  
- config STM32_DAC_CORE
- 	tristate
-+	select REGMAP_MMIO
- 
- config TI_DAC082S085
- 	tristate "Texas Instruments 8/10/12-bit 2/4-channel DAC driver"
+ #ifdef CONFIG_X86_64
 
 
 
