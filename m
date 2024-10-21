@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-87475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DA359A651B
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:54:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5055F9A6567
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:56:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DF562832AE
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:54:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F1091C223A8
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A9401F7090;
-	Mon, 21 Oct 2024 10:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6CC1F8EEC;
+	Mon, 21 Oct 2024 10:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ds9Nrcc+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MetrnFtQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F54F1F1307;
-	Mon, 21 Oct 2024 10:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA031EE02C;
+	Mon, 21 Oct 2024 10:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507715; cv=none; b=sCsmEtadll29IKLnPyEmdYNGP4HnGaQo8UL+Llwlo37OM0rJPG0jX00WWTSwmPn0+J8krmQL1qyLPpcHG2L+whrGW4Tn5vw/RlmiiLSRYybnTgsq4W6AXQjsTgAI3r1QKzKpPfvQJTGwhx4anUSWHREk7fxzgWGp7LNUYAjCQ/s=
+	t=1729507837; cv=none; b=AQbu16NYyo81L6qX70q5vC9H+KjUuji87sSkJNTYEwI44P6SvrSbRKEAxQsBEeXuYdS6YBipEwZNQ5XoMD8IhbsqcHaCtxKxG4ONaSh16NpqV1FiX/3/70GIVCCdCxBDbsLnUHWeyhgoF18Llmlfvwf6tQ0tyjCBRsKhU7ciWYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507715; c=relaxed/simple;
-	bh=12cNwtrepHA5oOU5RCqRdRrMZbjTi2gnOB+CAAQI8bQ=;
+	s=arc-20240116; t=1729507837; c=relaxed/simple;
+	bh=d136ZY8EkZ07cIJhbeXLaZQB0y9WThvSe1gjGtU8MOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R+ZLtFmT/wLHGiZaPXH67YdCA2oEQ8gOYScP84UxdnU+7TVAFRGwzL40xdaerr++MtoaS6dqDevnoSP68VzW7WBG1bbGiJS9GGfpDKRrlrjNo37uoFuciNCrRLX9GUw7hvYPAwgK2JddQIuMaFkRbBadIqjh6LDbKG0z+ALWZqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ds9Nrcc+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A19C4CEC3;
-	Mon, 21 Oct 2024 10:48:34 +0000 (UTC)
+	 MIME-Version; b=rWWBnd/8zsiDEEi0a2Y0zkTHSYvnN3KHMJTtVysqhATkbrF1hLVuUKu3PcWvMJBB8Ij56JBdcwjefWpPANpjt1d4Pu9Af3+ifxnLyFFEvWTDgFX1Q3NVfLDS0niaZ9hQLymPq8AeGJ23HA9ib4TXtdXlnFkkt0U7OV9ZVklRG9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MetrnFtQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32F2C4CEC3;
+	Mon, 21 Oct 2024 10:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507715;
-	bh=12cNwtrepHA5oOU5RCqRdRrMZbjTi2gnOB+CAAQI8bQ=;
+	s=korg; t=1729507837;
+	bh=d136ZY8EkZ07cIJhbeXLaZQB0y9WThvSe1gjGtU8MOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ds9Nrcc+1ZCmSz+IO3TeKmdeIISRt6vw31H5MsX8Ss/hUIyHZTIMGLGAxoESh4jFT
-	 NK/nUzfExWIQc0emFfkf8NwajU0J8CulekjPty9aQWEi7M3c8GwltwdPxIGw+IVh4Y
-	 SJ1cSZ5gm2bWyvFywhrR2+qgEva6h8f7BiPtvOcI=
+	b=MetrnFtQoHNpYyeO9rV0XM1ijMutWSC55h9+ZYWm/D02FmZ/HQOCG/BYnrt8PgOPt
+	 yXnHxbP1Rx9H7hOSZX2vfidH8633/DuyJP8C0yaZppfirrAFD8OXPb606XN9dXC7/L
+	 AqCfCWz+UDJvovFYpYYJi9s+loQ9UgCGqW/OdrEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d1bff73460e33101f0e7@syzkaller.appspotmail.com,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 76/82] tcp: fix mptcp DSS corruption due to large pmtu xmit
+	Aaron Thompson <dev@aaront.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.10 36/52] Bluetooth: Remove debugfs directory on module init failure
 Date: Mon, 21 Oct 2024 12:25:57 +0200
-Message-ID: <20241021102250.221938620@linuxfoundation.org>
+Message-ID: <20241021102243.040326193@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
+References: <20241021102241.624153108@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,146 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Aaron Thompson <dev@aaront.org>
 
-commit 4dabcdf581217e60690467a37c956a5b8dbc6bd9 upstream.
+commit 1db4564f101b47188c1b71696bd342ef09172b22 upstream.
 
-Syzkaller was able to trigger a DSS corruption:
+If bt_init() fails, the debugfs directory currently is not removed. If
+the module is loaded again after that, the debugfs directory is not set
+up properly due to the existing directory.
 
-  TCP: request_sock_subflow_v4: Possible SYN flooding on port [::]:20002. Sending cookies.
-  ------------[ cut here ]------------
-  WARNING: CPU: 0 PID: 5227 at net/mptcp/protocol.c:695 __mptcp_move_skbs_from_subflow+0x20a9/0x21f0 net/mptcp/protocol.c:695
-  Modules linked in:
-  CPU: 0 UID: 0 PID: 5227 Comm: syz-executor350 Not tainted 6.11.0-syzkaller-08829-gaf9c191ac2a0 #0
-  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
-  RIP: 0010:__mptcp_move_skbs_from_subflow+0x20a9/0x21f0 net/mptcp/protocol.c:695
-  Code: 0f b6 dc 31 ff 89 de e8 b5 dd ea f5 89 d8 48 81 c4 50 01 00 00 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc e8 98 da ea f5 90 <0f> 0b 90 e9 47 ff ff ff e8 8a da ea f5 90 0f 0b 90 e9 99 e0 ff ff
-  RSP: 0018:ffffc90000006db8 EFLAGS: 00010246
-  RAX: ffffffff8ba9df18 RBX: 00000000000055f0 RCX: ffff888030023c00
-  RDX: 0000000000000100 RSI: 00000000000081e5 RDI: 00000000000055f0
-  RBP: 1ffff110062bf1ae R08: ffffffff8ba9cf12 R09: 1ffff110062bf1b8
-  R10: dffffc0000000000 R11: ffffed10062bf1b9 R12: 0000000000000000
-  R13: dffffc0000000000 R14: 00000000700cec61 R15: 00000000000081e5
-  FS:  000055556679c380(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000000020287000 CR3: 0000000077892000 CR4: 00000000003506f0
-  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  Call Trace:
-   <IRQ>
-   move_skbs_to_msk net/mptcp/protocol.c:811 [inline]
-   mptcp_data_ready+0x29c/0xa90 net/mptcp/protocol.c:854
-   subflow_data_ready+0x34a/0x920 net/mptcp/subflow.c:1490
-   tcp_data_queue+0x20fd/0x76c0 net/ipv4/tcp_input.c:5283
-   tcp_rcv_established+0xfba/0x2020 net/ipv4/tcp_input.c:6237
-   tcp_v4_do_rcv+0x96d/0xc70 net/ipv4/tcp_ipv4.c:1915
-   tcp_v4_rcv+0x2dc0/0x37f0 net/ipv4/tcp_ipv4.c:2350
-   ip_protocol_deliver_rcu+0x22e/0x440 net/ipv4/ip_input.c:205
-   ip_local_deliver_finish+0x341/0x5f0 net/ipv4/ip_input.c:233
-   NF_HOOK+0x3a4/0x450 include/linux/netfilter.h:314
-   NF_HOOK+0x3a4/0x450 include/linux/netfilter.h:314
-   __netif_receive_skb_one_core net/core/dev.c:5662 [inline]
-   __netif_receive_skb+0x2bf/0x650 net/core/dev.c:5775
-   process_backlog+0x662/0x15b0 net/core/dev.c:6107
-   __napi_poll+0xcb/0x490 net/core/dev.c:6771
-   napi_poll net/core/dev.c:6840 [inline]
-   net_rx_action+0x89b/0x1240 net/core/dev.c:6962
-   handle_softirqs+0x2c5/0x980 kernel/softirq.c:554
-   do_softirq+0x11b/0x1e0 kernel/softirq.c:455
-   </IRQ>
-   <TASK>
-   __local_bh_enable_ip+0x1bb/0x200 kernel/softirq.c:382
-   local_bh_enable include/linux/bottom_half.h:33 [inline]
-   rcu_read_unlock_bh include/linux/rcupdate.h:919 [inline]
-   __dev_queue_xmit+0x1764/0x3e80 net/core/dev.c:4451
-   dev_queue_xmit include/linux/netdevice.h:3094 [inline]
-   neigh_hh_output include/net/neighbour.h:526 [inline]
-   neigh_output include/net/neighbour.h:540 [inline]
-   ip_finish_output2+0xd41/0x1390 net/ipv4/ip_output.c:236
-   ip_local_out net/ipv4/ip_output.c:130 [inline]
-   __ip_queue_xmit+0x118c/0x1b80 net/ipv4/ip_output.c:536
-   __tcp_transmit_skb+0x2544/0x3b30 net/ipv4/tcp_output.c:1466
-   tcp_transmit_skb net/ipv4/tcp_output.c:1484 [inline]
-   tcp_mtu_probe net/ipv4/tcp_output.c:2547 [inline]
-   tcp_write_xmit+0x641d/0x6bf0 net/ipv4/tcp_output.c:2752
-   __tcp_push_pending_frames+0x9b/0x360 net/ipv4/tcp_output.c:3015
-   tcp_push_pending_frames include/net/tcp.h:2107 [inline]
-   tcp_data_snd_check net/ipv4/tcp_input.c:5714 [inline]
-   tcp_rcv_established+0x1026/0x2020 net/ipv4/tcp_input.c:6239
-   tcp_v4_do_rcv+0x96d/0xc70 net/ipv4/tcp_ipv4.c:1915
-   sk_backlog_rcv include/net/sock.h:1113 [inline]
-   __release_sock+0x214/0x350 net/core/sock.c:3072
-   release_sock+0x61/0x1f0 net/core/sock.c:3626
-   mptcp_push_release net/mptcp/protocol.c:1486 [inline]
-   __mptcp_push_pending+0x6b5/0x9f0 net/mptcp/protocol.c:1625
-   mptcp_sendmsg+0x10bb/0x1b10 net/mptcp/protocol.c:1903
-   sock_sendmsg_nosec net/socket.c:730 [inline]
-   __sock_sendmsg+0x1a6/0x270 net/socket.c:745
-   ____sys_sendmsg+0x52a/0x7e0 net/socket.c:2603
-   ___sys_sendmsg net/socket.c:2657 [inline]
-   __sys_sendmsg+0x2aa/0x390 net/socket.c:2686
-   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-   do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  RIP: 0033:0x7fb06e9317f9
-  Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-  RSP: 002b:00007ffe2cfd4f98 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-  RAX: ffffffffffffffda RBX: 00007fb06e97f468 RCX: 00007fb06e9317f9
-  RDX: 0000000000000000 RSI: 0000000020000080 RDI: 0000000000000005
-  RBP: 00007fb06e97f446 R08: 0000555500000000 R09: 0000555500000000
-  R10: 0000555500000000 R11: 0000000000000246 R12: 00007fb06e97f406
-  R13: 0000000000000001 R14: 00007ffe2cfd4fe0 R15: 0000000000000003
-   </TASK>
+  # modprobe bluetooth
+  # ls -laF /sys/kernel/debug/bluetooth
+  total 0
+  drwxr-xr-x  2 root root 0 Sep 27 14:26 ./
+  drwx------ 31 root root 0 Sep 27 14:25 ../
+  -r--r--r--  1 root root 0 Sep 27 14:26 l2cap
+  -r--r--r--  1 root root 0 Sep 27 14:26 sco
+  # modprobe -r bluetooth
+  # ls -laF /sys/kernel/debug/bluetooth
+  ls: cannot access '/sys/kernel/debug/bluetooth': No such file or directory
+  #
 
-Additionally syzkaller provided a nice reproducer. The repro enables
-pmtu on the loopback device, leading to tcp_mtu_probe() generating
-very large probe packets.
+  # modprobe bluetooth
+  modprobe: ERROR: could not insert 'bluetooth': Invalid argument
+  # dmesg | tail -n 6
+  Bluetooth: Core ver 2.22
+  NET: Registered PF_BLUETOOTH protocol family
+  Bluetooth: HCI device and connection manager initialized
+  Bluetooth: HCI socket layer initialized
+  Bluetooth: Faking l2cap_init() failure for testing
+  NET: Unregistered PF_BLUETOOTH protocol family
+  # ls -laF /sys/kernel/debug/bluetooth
+  total 0
+  drwxr-xr-x  2 root root 0 Sep 27 14:31 ./
+  drwx------ 31 root root 0 Sep 27 14:26 ../
+  #
 
-tcp_can_coalesce_send_queue_head() currently does not check for
-mptcp-level invariants, and allowed the creation of cross-DSS probes,
-leading to the mentioned corruption.
+  # modprobe bluetooth
+  # dmesg | tail -n 7
+  Bluetooth: Core ver 2.22
+  debugfs: Directory 'bluetooth' with parent '/' already present!
+  NET: Registered PF_BLUETOOTH protocol family
+  Bluetooth: HCI device and connection manager initialized
+  Bluetooth: HCI socket layer initialized
+  Bluetooth: L2CAP socket layer initialized
+  Bluetooth: SCO socket layer initialized
+  # ls -laF /sys/kernel/debug/bluetooth
+  total 0
+  drwxr-xr-x  2 root root 0 Sep 27 14:31 ./
+  drwx------ 31 root root 0 Sep 27 14:26 ../
+  #
 
-Address the issue teaching tcp_can_coalesce_send_queue_head() about
-mptcp using the tcp_skb_can_collapse(), also reducing the code
-duplication.
-
-Fixes: 85712484110d ("tcp: coalesce/collapse must respect MPTCP extensions")
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+d1bff73460e33101f0e7@syzkaller.appspotmail.com
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/513
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Acked-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241008-net-mptcp-fallback-fixes-v1-2-c6fb8e93e551@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflict in tcp_output.c, because commit 65249feb6b3d ("net: add
-  support for skbs with unreadable frags"), and commit 9b65b17db723
-  ("net: avoid double accounting for pure zerocopy skbs") are not in
-  this version. These commits are linked to new features and introduce
-  new conditions which cause the conflicts. Resolving this is easy: we
-  can ignore the missing new condition, and use tcp_skb_can_collapse()
-  like in the original patch. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: ffcecac6a738 ("Bluetooth: Create root debugfs directory during module init")
+Signed-off-by: Aaron Thompson <dev@aaront.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_output.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/af_bluetooth.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -2308,7 +2308,7 @@ static bool tcp_can_coalesce_send_queue_
- 		if (len <= skb->len)
- 			break;
+--- a/net/bluetooth/af_bluetooth.c
++++ b/net/bluetooth/af_bluetooth.c
+@@ -779,6 +779,7 @@ cleanup_sysfs:
+ 	bt_sysfs_cleanup();
+ cleanup_led:
+ 	bt_leds_cleanup();
++	debugfs_remove_recursive(bt_debugfs);
+ 	return err;
+ }
  
--		if (unlikely(TCP_SKB_CB(skb)->eor) || tcp_has_tx_tstamp(skb))
-+		if (tcp_has_tx_tstamp(skb) || !tcp_skb_can_collapse(skb, next))
- 			return false;
- 
- 		len -= skb->len;
 
 
 
