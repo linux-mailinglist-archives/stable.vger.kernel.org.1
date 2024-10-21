@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-87286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C4049A6442
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:45:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31DA49A648C
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:47:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4CC71F22E2A
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:45:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C533B2561A
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417961E7C09;
-	Mon, 21 Oct 2024 10:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82E3C1F1303;
+	Mon, 21 Oct 2024 10:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODU+IiMe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zwNslH50"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6AB1E1C11;
-	Mon, 21 Oct 2024 10:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5CB1E130B;
+	Mon, 21 Oct 2024 10:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507151; cv=none; b=gwFrMN4RHTVJaRhaxXqpgQswODfMKChRYbdesbTs1hGPZjCh/gIFz1MFYUPAixysmGBYP29bOomGVRVb3tr80Oqou6CpWay37qDb5/kMNmvfBc3c3WerkVAf89nOvyDC1VGPKxFt5BRjlXUJyX9sLhEDIY+zUqNkN9u8NeUit/Q=
+	t=1729507322; cv=none; b=Ape9QUm96P0sktCcVNOdh7+C9b/ErCOSDG4oChmv+QiNWGLE6I1cg5+qGhDlrbqVrfJx2CaqBVWOraugKxZs0qq6RIDU333fgjMGS+nhSJgKZKv2z38Aqy0cVdbHdNPAI/a+gJBvtCPAf04SKQV2wxRFWVNpq9X+c6Fl/ODhbVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507151; c=relaxed/simple;
-	bh=KHUypPnYweVVKO4bKz4JMokZiqFHKRAyFIlen6LBiu8=;
+	s=arc-20240116; t=1729507322; c=relaxed/simple;
+	bh=IXTy9at3ZHwnYf1Otk7Sp11XpIgWHwoekWRtD5cbulk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pu9WGuTvDAnQ/glGxtV0XXxqnoOagScPZrpKpms0swFuHZN6bhbBkqxXbGF1FluHWOksI4ogH/JoC/jPfyWz3cXDs7F09qLdFK6VtwDV+dkFs+PJ9zR/0pOsTjd3t50xnQzNzTdDrMLLSxFoMqJZoayadSA0b+e5Q55VWHw/VOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODU+IiMe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A942C4CEC3;
-	Mon, 21 Oct 2024 10:39:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VPVKf1B3IwrwpWjXJpfg9BPqiC1e/mIGJpqbmI56H52lkvKZOS7GGBM471eVMiZ0GKHqMS1+t8mhwvaUn10eCkC006M29bDRHJjzblqWkPhukX2AoKD/g+ke6BPPm3L95ma1BlexcYD9QwfxUGO4qL6WkOe6lgDuBHBa1//CpkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zwNslH50; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC28C4CEE5;
+	Mon, 21 Oct 2024 10:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507150;
-	bh=KHUypPnYweVVKO4bKz4JMokZiqFHKRAyFIlen6LBiu8=;
+	s=korg; t=1729507321;
+	bh=IXTy9at3ZHwnYf1Otk7Sp11XpIgWHwoekWRtD5cbulk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ODU+IiMePKu5l4oMel0SLEG3twDB9kebSEMPtFBCkw3pq1YvLyiCOjW4dUeXr8qJr
-	 aJTz7KpYXlOZ82fDMs3pCDBq3mdxnLK5DZ39tSFHqR3iY6xIUwwXVmOFyRUPOckbW+
-	 xQnzhjvtraQXUIg5NqLdD9VYgo9Y2j830tXUSvIA=
+	b=zwNslH508IcGEONVbTfIFc0z1B/UQ6jzKqdWFsU2sqSMABkZaHnF9Qb6yxdpenOCI
+	 mFfNvJ2dPJp5WDuYu90Kv6sNLFL7GRuZRqxmnOfI/SGGyCm6i8pWRQo6+sdXpUIhsO
+	 nhvryZQcjEdlFCGwskcd02u1EdBkpb41JjpvX69Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Thompson <dev@aaront.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 089/124] Bluetooth: ISO: Fix multiple init when debugfs is disabled
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 6.1 39/91] s390/sclp: Deactivate sclp after all its users
 Date: Mon, 21 Oct 2024 12:24:53 +0200
-Message-ID: <20241021102300.170262099@linuxfoundation.org>
+Message-ID: <20241021102251.349124771@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,75 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Thompson <dev@aaront.org>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-commit a9b7b535ba192c6b77e6c15a4c82d853163eab8c upstream.
+commit 0d9dc27df22d9b5c8dc7185c8dddbc14f5468518 upstream.
 
-If bt_debugfs is not created successfully, which happens if either
-CONFIG_DEBUG_FS or CONFIG_DEBUG_FS_ALLOW_ALL is unset, then iso_init()
-returns early and does not set iso_inited to true. This means that a
-subsequent call to iso_init() will result in duplicate calls to
-proto_register(), bt_sock_register(), etc.
+On reboot the SCLP interface is deactivated through a reboot notifier.
+This happens before other components using SCLP have the chance to run
+their own reboot notifiers.
+Two of those components are the SCLP console and tty drivers which try
+to flush the last outstanding messages.
+At that point the SCLP interface is already unusable and the messages
+are discarded.
 
-With CONFIG_LIST_HARDENED and CONFIG_BUG_ON_DATA_CORRUPTION enabled, the
-duplicate call to proto_register() triggers this BUG():
+Execute sclp_deactivate() as late as possible to avoid this issue.
 
-  list_add double add: new=ffffffffc0b280d0, prev=ffffffffbab56250,
-    next=ffffffffc0b280d0.
-  ------------[ cut here ]------------
-  kernel BUG at lib/list_debug.c:35!
-  Oops: invalid opcode: 0000 [#1] PREEMPT SMP PTI
-  CPU: 2 PID: 887 Comm: bluetoothd Not tainted 6.10.11-1-ao-desktop #1
-  RIP: 0010:__list_add_valid_or_report+0x9a/0xa0
-  ...
-    __list_add_valid_or_report+0x9a/0xa0
-    proto_register+0x2b5/0x340
-    iso_init+0x23/0x150 [bluetooth]
-    set_iso_socket_func+0x68/0x1b0 [bluetooth]
-    kmem_cache_free+0x308/0x330
-    hci_sock_sendmsg+0x990/0x9e0 [bluetooth]
-    __sock_sendmsg+0x7b/0x80
-    sock_write_iter+0x9a/0x110
-    do_iter_readv_writev+0x11d/0x220
-    vfs_writev+0x180/0x3e0
-    do_writev+0xca/0x100
-  ...
-
-This change removes the early return. The check for iso_debugfs being
-NULL was unnecessary, it is always NULL when iso_inited is false.
-
+Fixes: 4ae46db99cd8 ("s390/consoles: improve panic notifiers reliability")
 Cc: stable@vger.kernel.org
-Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
-Signed-off-by: Aaron Thompson <dev@aaront.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
+Link: https://lore.kernel.org/r/20241014-s390-kunit-v1-1-941defa765a6@linutronix.de
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/iso.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/s390/char/sclp.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -2112,13 +2112,9 @@ int iso_init(void)
+--- a/drivers/s390/char/sclp.c
++++ b/drivers/s390/char/sclp.c
+@@ -1200,7 +1200,8 @@ sclp_reboot_event(struct notifier_block
+ }
  
- 	hci_register_cb(&iso_cb);
+ static struct notifier_block sclp_reboot_notifier = {
+-	.notifier_call = sclp_reboot_event
++	.notifier_call = sclp_reboot_event,
++	.priority      = INT_MIN,
+ };
  
--	if (IS_ERR_OR_NULL(bt_debugfs))
--		return 0;
--
--	if (!iso_debugfs) {
-+	if (!IS_ERR_OR_NULL(bt_debugfs))
- 		iso_debugfs = debugfs_create_file("iso", 0444, bt_debugfs,
- 						  NULL, &iso_debugfs_fops);
--	}
- 
- 	iso_inited = true;
- 
+ static ssize_t con_pages_show(struct device_driver *dev, char *buf)
 
 
 
