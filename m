@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-87292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60719A6449
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:45:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 874D49A64F2
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0B521C22163
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:45:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4956D2819B9
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E206A1E7C32;
-	Mon, 21 Oct 2024 10:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD731E9097;
+	Mon, 21 Oct 2024 10:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omPugwfd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J9VDrfgv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959AC1E7C36;
-	Mon, 21 Oct 2024 10:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5551E3764;
+	Mon, 21 Oct 2024 10:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507168; cv=none; b=dSHroF7Ad4+iEY9qWaOKRYj/NPg5Ouhbiz4xZOOy22+oPgjMP6CX/Dd2t0xIGCRCWuUCM9J+WQgx0y18b844NG9de6ZsYiqjIwkqST8fNYl4cw+6KGZyNOT9VyU++HnNJTLZF49edNTTRs6RAVPk+8MQJ6vvFvOVbFkP2sI/ivY=
+	t=1729507592; cv=none; b=YMr0ivxkr2MYRRHfm280+xz+mmKaU7ocZfTq0xQzOxxxGOWtvTIwpsOlDMVAGXNSRZrSdoWzpRJVEsH7E4a4MZYauHfJmorpdgMcwVlB/WmKlcsycEiIPEg2eW+zDHrkLjqI4+UU/EGFUoyi54ZGOTFrqTRBMc+0VpRioMe0xA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507168; c=relaxed/simple;
-	bh=R6GlN8re+345BfbpaT/gU4oN1JE8KtHKpumZEiULK2c=;
+	s=arc-20240116; t=1729507592; c=relaxed/simple;
+	bh=QUE86SavnZrubu0gFY0ucn77M+rBlf4D8l229wWmfK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q9O/fpnt/GFQ57UpMssrqw6WNKR0Xg6QGMHwmZjwzSVOdDUJJpcM2XoZTpB2TiOWoibWwOeaBdgo1porpBDWu1W3RqhrhQp3vOgXEI4mj9U4gfdKTjRtUwhrRSnMbtag4XBWlnJtOkG66jlBXas5oH2knUo/s5xMIJuIzaVtTZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omPugwfd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19510C4AF0E;
-	Mon, 21 Oct 2024 10:39:27 +0000 (UTC)
+	 MIME-Version; b=dpwB5aUugko8LbBzfkWMP3ohSm71a3sMw/n6BtGoii5itMe74dBPTvvH43ntcf2zOETPPPrxPJbnzaqFlLbjTCLH2O0KMIioKdYwMYT3PjervunvlImQ4dGbQ47U75t3L2vdOUkpfOcwY1hfsYUD3LnczSTo8K4RdsK5e6qGOnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J9VDrfgv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEC5C4CEC3;
+	Mon, 21 Oct 2024 10:46:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507168;
-	bh=R6GlN8re+345BfbpaT/gU4oN1JE8KtHKpumZEiULK2c=;
+	s=korg; t=1729507591;
+	bh=QUE86SavnZrubu0gFY0ucn77M+rBlf4D8l229wWmfK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=omPugwfdlaXLLbxjRc4U+1KvNxCm/SAObr75kxeZdD4TuFQf6iUWD/n62XuFkldH2
-	 48Viy7NwTv8lbzXfF7d1d2s7ra5I8Fx9bSAZblMi9yV4xCC+CGwoK59rpJSbUwovEn
-	 XMXoQuKcYMZUkPXjcqiyrPEsEX6x9AUxc5Ur/AnI=
+	b=J9VDrfgv8ajBCHFuMSy2QtI2zuV8N1ICklo7SqTS0B2VicE/t0MuRgnQrSvPnXhYG
+	 bI8c/dI71IxFZcz5RsrgKiKduzciZKKCO+DH6VgUUQvwQMXcghAx4HKha2/CTGodrA
+	 cIY+7vJTD5Iuu2Uo+fBSRbZVBIeuzwU3dP6tvyk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.6 112/124] pinctrl: apple: check devm_kasprintf() returned value
-Date: Mon, 21 Oct 2024 12:25:16 +0200
-Message-ID: <20241021102301.049201104@linuxfoundation.org>
+	Felix Moessbauer <felix.moessbauer@siemens.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 36/82] io_uring/sqpoll: do not allow pinning outside of cpuset
+Date: Mon, 21 Oct 2024 12:25:17 +0200
+Message-ID: <20241021102248.670749448@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Felix Moessbauer <felix.moessbauer@siemens.com>
 
-commit 665a58fe663ac7a9ea618dc0b29881649324b116 upstream.
+commit f011c9cf04c06f16b24f583d313d3c012e589e50 upstream.
 
-devm_kasprintf() can return a NULL pointer on failure but this returned
-value is not checked. Fix this lack and check the returned value.
+The submit queue polling threads are userland threads that just never
+exit to the userland. When creating the thread with IORING_SETUP_SQ_AFF,
+the affinity of the poller thread is set to the cpu specified in
+sq_thread_cpu. However, this CPU can be outside of the cpuset defined
+by the cgroup cpuset controller. This violates the rules defined by the
+cpuset controller and is a potential issue for realtime applications.
 
-Found by code review.
+In b7ed6d8ffd6 we fixed the default affinity of the poller thread, in
+case no explicit pinning is required by inheriting the one of the
+creating task. In case of explicit pinning, the check is more
+complicated, as also a cpu outside of the parent cpumask is allowed.
+We implemented this by using cpuset_cpus_allowed (that has support for
+cgroup cpusets) and testing if the requested cpu is in the set.
 
-Cc: stable@vger.kernel.org
-Fixes: a0f160ffcb83 ("pinctrl: add pinctrl/GPIO driver for Apple SoCs")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/20240905020917.356534-1-make24@iscas.ac.cn
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 37d1e2e3642e ("io_uring: move SQPOLL thread io-wq forked worker")
+Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
+Link: https://lore.kernel.org/r/20240909150036.55921-1-felix.moessbauer@siemens.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-apple-gpio.c |    3 +++
- 1 file changed, 3 insertions(+)
+ io_uring/io_uring.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/pinctrl/pinctrl-apple-gpio.c
-+++ b/drivers/pinctrl/pinctrl-apple-gpio.c
-@@ -474,6 +474,9 @@ static int apple_gpio_pinctrl_probe(stru
- 	for (i = 0; i < npins; i++) {
- 		pins[i].number = i;
- 		pins[i].name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "PIN%u", i);
-+		if (!pins[i].name)
-+			return -ENOMEM;
-+
- 		pins[i].drv_data = pctl;
- 		pin_names[i] = pins[i].name;
- 		pin_nums[i] = i;
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -56,6 +56,7 @@
+ #include <linux/mm.h>
+ #include <linux/mman.h>
+ #include <linux/percpu.h>
++#include <linux/cpuset.h>
+ #include <linux/slab.h>
+ #include <linux/blkdev.h>
+ #include <linux/bvec.h>
+@@ -8746,10 +8747,12 @@ static int io_sq_offload_create(struct i
+ 			return 0;
+ 
+ 		if (p->flags & IORING_SETUP_SQ_AFF) {
++			struct cpumask allowed_mask;
+ 			int cpu = p->sq_thread_cpu;
+ 
+ 			ret = -EINVAL;
+-			if (cpu >= nr_cpu_ids || !cpu_online(cpu))
++			cpuset_cpus_allowed(current, &allowed_mask);
++			if (!cpumask_test_cpu(cpu, &allowed_mask))
+ 				goto err_sqpoll;
+ 			sqd->sq_cpu = cpu;
+ 		} else {
 
 
 
