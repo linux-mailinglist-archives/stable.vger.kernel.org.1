@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-87357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 219C39A6496
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:48:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E2699A64E4
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:51:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D74DE280ECB
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:48:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4E272811CA
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:51:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633971F709B;
-	Mon, 21 Oct 2024 10:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0CF1E5709;
+	Mon, 21 Oct 2024 10:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPYk39T3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SbHdsG27"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1170B1F4738;
-	Mon, 21 Oct 2024 10:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E291E47CD;
+	Mon, 21 Oct 2024 10:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507364; cv=none; b=NTpTC8m2nZWLAMePkHmSYg5BHljE0f3R0fCWzAeC8h1bYA0A/U0sy0p9pBlJN3y6BDUIKKdN77hv62e0pBNKf4lhjNDu0VYnhxPI7809y9l4vLWv+jzfFrwdhlg19uP9UVYVVIYsFjTfRbGx14a6bLZTh7lnPljuNA0kqyvbruo=
+	t=1729507553; cv=none; b=iPQOZAWm8axxch4ri2qyx9W1tqrJuapuxxfUDaXfUOGC7BIhzL/JjTaIYtCtkTEOUroePmyJcU4Kya5rie5WhLBrqmUJj0fTDzKNkHwZKBB6nUJjkTddImXdyQwK9uDEEQzK+MiMnRk7gtFUgoFAnlWUr0FPf0WVTtF6jir+Ybg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507364; c=relaxed/simple;
-	bh=yYnA+WxlFloSw268iNjOYYl2s+GBYeMyv1qMg07hD58=;
+	s=arc-20240116; t=1729507553; c=relaxed/simple;
+	bh=KOlYzgMWvWOyH1WOhO65tfE3AMKCyxsWYgncdfX5rV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BziIooGN+9vBI0zXlLkSUzAv+HLCgd3zWT1wMCQFjjahAwXFF+7/rI0qd0pBHu3yjVnMk4hQGyHQE5wkRbudLS+0+HODGA1fmh43JBz0arFGHMMvoKKbCVVtpCtTPwQ7mvR2+kgnNBMPW+sj2qroFWOx2d4a4iUjgX0UGWMGX0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPYk39T3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78721C4CEC3;
-	Mon, 21 Oct 2024 10:42:43 +0000 (UTC)
+	 MIME-Version; b=IWgodklcvQFZHMdup+Jw7h/GXNkOK+KJs1DLB8f/JlfYtlbDIsh5osEoezAeVsVCYSTGi5MLCDp4A9pTYBn2bzGO8B3L4P67v1cOoFrQgV6hDsZ7TwQb7bToN18RBCyYNcBNgYYJPsWqC5SISnIh2naZQdHKnQcWvUUPmbz4FcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SbHdsG27; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4473DC4CEC3;
+	Mon, 21 Oct 2024 10:45:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507363;
-	bh=yYnA+WxlFloSw268iNjOYYl2s+GBYeMyv1qMg07hD58=;
+	s=korg; t=1729507552;
+	bh=KOlYzgMWvWOyH1WOhO65tfE3AMKCyxsWYgncdfX5rV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GPYk39T3AwHtUoVj/CYJHKL2OeOsSajeqTG5zOvXpa3YRWpoNAAOSkkUCigNKga4E
-	 DouZtTpUdhTpEgXBn5vDDUvYLhUYW9KBrcj4WrwqQhK0NglzRggrI7LIfKC0JR/dq8
-	 aKMJggap/MaShAgMYqveqfpxciP7k+SJ99WKIquQ=
+	b=SbHdsG27MyMrWvZrgHC5uv/TzVf+wvf9g4RSmK7a+vUm0NFqGTpOzucBAAvz2Bz0R
+	 e1uZuMJKeeDBZpTidvkfXNgaBiBDuLh6zQzptwnbWwGfrS6km8gdzi8Oo5LKOS4tGw
+	 9cWiIZtNoATCVuPWqY3cjSzo00bbbw2ODU357tEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	Erhard Furtner <erhard_f@mailbox.org>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
-Subject: [PATCH 6.1 51/91] drm/radeon: Fix encoder->possible_clones
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 24/82] posix-clock: Fix missing timespec64 check in pc_clock_settime()
 Date: Mon, 21 Oct 2024 12:25:05 +0200
-Message-ID: <20241021102251.811649488@linuxfoundation.org>
+Message-ID: <20241021102248.204029243@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit 28127dba64d8ae1a0b737b973d6d029908599611 upstream.
+commit d8794ac20a299b647ba9958f6d657051fc51a540 upstream.
 
-Include the encoder itself in its possible_clones bitmask.
-In the past nothing validated that drivers were populating
-possible_clones correctly, but that changed in commit
-74d2aacbe840 ("drm: Validate encoder->possible_clones").
-Looks like radeon never got the memo and is still not
-following the rules 100% correctly.
+As Andrew pointed out, it will make sense that the PTP core
+checked timespec64 struct's tv_sec and tv_nsec range before calling
+ptp->info->settime64().
 
-This results in some warnings during driver initialization:
-Bogus possible_clones: [ENCODER:46:TV-46] possible_clones=0x4 (full encoder mask=0x7)
-WARNING: CPU: 0 PID: 170 at drivers/gpu/drm/drm_mode_config.c:615 drm_mode_config_validate+0x113/0x39c
-...
+As the man manual of clock_settime() said, if tp.tv_sec is negative or
+tp.tv_nsec is outside the range [0..999,999,999], it should return EINVAL,
+which include dynamic clocks which handles PTP clock, and the condition is
+consistent with timespec64_valid(). As Thomas suggested, timespec64_valid()
+only check the timespec is valid, but not ensure that the time is
+in a valid range, so check it ahead using timespec64_valid_strict()
+in pc_clock_settime() and return -EINVAL if not valid.
 
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: amd-gfx@lists.freedesktop.org
-Fixes: 74d2aacbe840 ("drm: Validate encoder->possible_clones")
-Reported-by: Erhard Furtner <erhard_f@mailbox.org>
-Closes: https://lore.kernel.org/dri-devel/20241009000321.418e4294@yea/
-Tested-by: Erhard Furtner <erhard_f@mailbox.org>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 3b6e7d40649c0d75572039aff9d0911864c689db)
+There are some drivers that use tp->tv_sec and tp->tv_nsec directly to
+write registers without validity checks and assume that the higher layer
+has checked it, which is dangerous and will benefit from this, such as
+hclge_ptp_settime(), igb_ptp_settime_i210(), _rcar_gen4_ptp_settime(),
+and some drivers can remove the checks of itself.
+
 Cc: stable@vger.kernel.org
+Fixes: 0606f422b453 ("posix clocks: Introduce dynamic clocks")
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Suggested-by: Andrew Lunn <andrew@lunn.ch>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://patch.msgid.link/20241009072302.1754567-2-ruanjinjie@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/radeon/radeon_encoders.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/time/posix-clock.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/radeon/radeon_encoders.c
-+++ b/drivers/gpu/drm/radeon/radeon_encoders.c
-@@ -43,7 +43,7 @@ static uint32_t radeon_encoder_clones(st
- 	struct radeon_device *rdev = dev->dev_private;
- 	struct radeon_encoder *radeon_encoder = to_radeon_encoder(encoder);
- 	struct drm_encoder *clone_encoder;
--	uint32_t index_mask = 0;
-+	uint32_t index_mask = drm_encoder_mask(encoder);
- 	int count;
+--- a/kernel/time/posix-clock.c
++++ b/kernel/time/posix-clock.c
+@@ -299,6 +299,9 @@ static int pc_clock_settime(clockid_t id
+ 		goto out;
+ 	}
  
- 	/* DIG routing gets problematic */
++	if (!timespec64_valid_strict(ts))
++		return -EINVAL;
++
+ 	if (cd.clk->ops.clock_settime)
+ 		err = cd.clk->ops.clock_settime(cd.clk, ts);
+ 	else
 
 
 
