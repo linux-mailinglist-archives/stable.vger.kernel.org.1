@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-87236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE01B9A63E8
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:40:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E70519A636D
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D98311C21AF7
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:40:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7904281D77
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493831EF0AE;
-	Mon, 21 Oct 2024 10:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C64111E8826;
+	Mon, 21 Oct 2024 10:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LczmKOTK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OAVrH9w5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD281EABB8;
-	Mon, 21 Oct 2024 10:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD781E47B4;
+	Mon, 21 Oct 2024 10:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507002; cv=none; b=FfukyF7bkipcjeCVI6hbSlJxc6htXmk16xod2w+GcSm30O+TkMYfQStLd5bA2n3xF5Db0/kraCmDSRiLpwnyKjELq7E9tt/t0WvAtCoJ8X1SPgUxuTMAn+fQtvijzqmz3bAei4dIZ6gti4SXdy+v3eiMRR2LcQfJuXO8bcNxPhs=
+	t=1729506743; cv=none; b=XJ/Y3ZXZ5sbI0qZayYmMvp5Msh3tWWxxQ22NnSpPKDzq1jntEwZ9Nhei/93Wf5Ud/EN9BWOLDr8ZCGw6/90BJae54tb+4lwZ6UUpcYkb6PjmO+X0goC+VZ0/Fx3pNLE8yNrCZ8xsxp9dxXOwFKHVXDInx3W2Ixm4eSP1RaivoOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507002; c=relaxed/simple;
-	bh=uHPsI7MCccMzFsTHdnvq7WMUk2tUE/bwVX7vkI/7a+c=;
+	s=arc-20240116; t=1729506743; c=relaxed/simple;
+	bh=Lqt9l6oBljZmpWtSg7yY9ip+a4GdOUqMcERdZHJw3b8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=likTtOnC2zRWot7UdUwbwgJzFgp6Brv02bVGd+gjs4wUN4F8iYiF5ksuDgRKhL7LklSvcHfX7biYuMkXK3yDMsk2uBte0pjVaFFtIE/WFYZ9dALQsNTFHKurvh+JYefJevwFlM2qmw56XTLKdFsea7uwvyQonqsJZFJVhX1bISU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LczmKOTK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CFA0C4CEC3;
-	Mon, 21 Oct 2024 10:36:40 +0000 (UTC)
+	 MIME-Version; b=HSPyOlfyqxaebBWrMVi/aVqNdCIaQQwV3iBfRRM2Q2CjiPteEYZU2R12mw0KZYmhGbgOzVOldejHmSOQCGIfPUW/YiGg1ESDJl4Fam5RmT7NxxDOr9KM/PIdhc28oRfrBonDCmHSGLuaZpvhUsVbuLU1ZEnT82rgV/+iTRq7UKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OAVrH9w5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6F2C4CEC3;
+	Mon, 21 Oct 2024 10:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507001;
-	bh=uHPsI7MCccMzFsTHdnvq7WMUk2tUE/bwVX7vkI/7a+c=;
+	s=korg; t=1729506743;
+	bh=Lqt9l6oBljZmpWtSg7yY9ip+a4GdOUqMcERdZHJw3b8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LczmKOTKC3eSnzWj/4XJHkXchoIaQ1P3jC0W2DLp6ESfcbqy5/uMKxLzKnErtHHmv
-	 A5LjdP+Bnc84KF587rdXOP4vjsSroebyi9ENrNm/A4GcgPtCDiwmY3Zdku/vIP4l2b
-	 FZmKWQJ63u64JmCWiXOZ+92dJfHyA9+HwZJoxSws=
+	b=OAVrH9w58LzfVlnUZnp2PzSHfKFQVzf2nEfId0KsDLfHk8ecRp1agZJXT8xTTfqm4
+	 Y4OhHcXlq+vSZG2lz70ZfTbyEq2X3cM0rQg9y6GOpAHzrtYQc/LJZp5m5/6oFGZKdF
+	 sEEvOo64SBjl36vTDpqba2VS1nNidBWbEJNHzGIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 026/124] xfs: remove a racy if_bytes check in xfs_reflink_end_cow_extent
-Date: Mon, 21 Oct 2024 12:23:50 +0200
-Message-ID: <20241021102257.737814241@linuxfoundation.org>
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.11 075/135] iio: light: veml6030: fix ALS sensor resolution
+Date: Mon, 21 Oct 2024 12:23:51 +0200
+Message-ID: <20241021102302.264235044@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 86de848403abda05bf9c16dcdb6bef65a8d88c41 upstream.
+commit c9e9746f275c45108f2b0633a4855d65d9ae0736 upstream.
 
-Accessing if_bytes without the ilock is racy.  Remove the initial
-if_bytes == 0 check in xfs_reflink_end_cow_extent and let
-ext_iext_lookup_extent fail for this case after we've taken the ilock.
+The driver still uses the sensor resolution provided in the datasheet
+until Rev. 1.6, 28-Apr-2022, which was updated with Rev 1.7,
+28-Nov-2023. The original ambient light resolution has been updated from
+0.0036 lx/ct to 0.0042 lx/ct, which is the value that can be found in
+the current device datasheet.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+Update the default resolution for IT = 100 ms and GAIN = 1/8 from the
+original 4608 mlux/cnt to the current value from the "Resolution and
+maximum detection range" table (Application Note 84367, page 5), 5376
+mlux/cnt.
+
+Cc: <stable@vger.kernel.org>
+Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light sensor")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20240923-veml6035-v2-1-58c72a0df31c@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_reflink.c |    6 ------
- 1 file changed, 6 deletions(-)
+ drivers/iio/light/veml6030.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/xfs/xfs_reflink.c
-+++ b/fs/xfs/xfs_reflink.c
-@@ -716,12 +716,6 @@ xfs_reflink_end_cow_extent(
- 	int			nmaps;
- 	int			error;
+--- a/drivers/iio/light/veml6030.c
++++ b/drivers/iio/light/veml6030.c
+@@ -780,7 +780,7 @@ static int veml6030_hw_init(struct iio_d
  
--	/* No COW extents?  That's easy! */
--	if (ifp->if_bytes == 0) {
--		*offset_fsb = end_fsb;
--		return 0;
--	}
--
- 	resblks = XFS_EXTENTADD_SPACE_RES(mp, XFS_DATA_FORK);
- 	error = xfs_trans_alloc(mp, &M_RES(mp)->tr_write, resblks, 0,
- 			XFS_TRANS_RESERVE, &tp);
+ 	/* Cache currently active measurement parameters */
+ 	data->cur_gain = 3;
+-	data->cur_resolution = 4608;
++	data->cur_resolution = 5376;
+ 	data->cur_integration_time = 3;
+ 
+ 	return ret;
 
 
 
