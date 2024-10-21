@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-87397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD0A09A64C9
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:50:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13C309A6447
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:45:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EA4A280C48
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:50:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3B441F22DED
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 042441F4714;
-	Mon, 21 Oct 2024 10:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02CF01E7C25;
+	Mon, 21 Oct 2024 10:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JC01RAK7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfXWbyIv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0BF1F470E;
-	Mon, 21 Oct 2024 10:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFBC1E6DFF;
+	Mon, 21 Oct 2024 10:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507484; cv=none; b=l8kjocn+hTf0/ad4qJw9mE/Car1VFyIV8VMAaix6mNV1m85ECbvxtJH7GRd+7WfARrBcCU2/jUgmBITAptJocJ7+lYcN89pO+K+LcN59TpYOYeXMp3+LAxPBMq9Lr88QeBYDQ5PZiD+nWKYmDEHZ+kW+qe9xKdRJic/9r2thocQ=
+	t=1729507165; cv=none; b=d5cRcDkP5UBwUluH7CrIr3j8QyGJOI59XCnNxkv6+Ob/gWBSm+7th2BtekiY/Pt+9dC1F5c/fVRMD+4szZUrwhUtQfo+ps2ByRR7e42x7fVkvq/98Dkxeevi6gOqw+ZJGmVNqV7EGI3M+9cIkC2oQFisuJazSH4KvIqNqhJhQlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507484; c=relaxed/simple;
-	bh=ufOYtMKW+wqfvwtZcmR3wMPYqXtzd5bZxoX/43ZAh+I=;
+	s=arc-20240116; t=1729507165; c=relaxed/simple;
+	bh=favt9dLQJO5oU7OxCYMrYe4shXCzLH/yINcajU+dAgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gUlGPSjsU0L/oDN4duJ336Oo8QsKRxXFhNT0n7vGxY7TkYUnmyA6svFvmNmjS0rDKi/hYD1PCABHcqo/0fW8mQEdMFWIScueJGVvoc0EJBaCRU52irh3MYmOC/G4DHx/OX33VsegEZHbNfYHpvd/WWLtIbROMwebJ5aG8eAa32M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JC01RAK7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E8AC4CEC3;
-	Mon, 21 Oct 2024 10:44:43 +0000 (UTC)
+	 MIME-Version; b=fxOlFJiREhyBnXG2PVHMefHfiHXqEY1XUev1PJ2GmCTQm4HL0Napb5rio0+C8umAjB7KN9B7vmXfJ/AKJr8velvgekWkzoTV0FfziwsgyXwnBb+LhsB7rCunlWz01qildOsDxDecBW9mhsciiXSWY3kEhFfFpw7IPKnhmrvi3AU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfXWbyIv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30700C4CEC7;
+	Mon, 21 Oct 2024 10:39:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507484;
-	bh=ufOYtMKW+wqfvwtZcmR3wMPYqXtzd5bZxoX/43ZAh+I=;
+	s=korg; t=1729507165;
+	bh=favt9dLQJO5oU7OxCYMrYe4shXCzLH/yINcajU+dAgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JC01RAK7Hx0wUYkAeczhE0doy0ZOFBsFM+llPwk9+E+KTCtBFMhT3yOwGme455eYI
-	 ILRxOawTDjruXGeQtq3oNjTRO1BaFcDib0WXsPIDp4ZFuTWBdJLD76T0FOqT2BYDTY
-	 VGTUi+GSeZetFPXczsAtHLsdrjV1Wz4ezEqaNGGU=
+	b=CfXWbyIvQGkrP6qESkgDdV0cxhvshOSniQkaStv20zreECmfziHSYgM1RRMaRKoaL
+	 yWDQ7/HG9izDbwpWNm98kaSefcSWBErURNXJpUTKtaMj9s0aG97sl0PErX7kIs66xU
+	 IpsanRiy+X9sxETLSUJ9aRfEcdShSRKajxHUHeUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 61/91] iio: light: veml6030: fix IIO device retrieval from embedded device
+	Ma Ke <make24@iscas.ac.cn>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.6 111/124] pinctrl: stm32: check devm_kasprintf() returned value
 Date: Mon, 21 Oct 2024 12:25:15 +0200
-Message-ID: <20241021102252.198547445@linuxfoundation.org>
+Message-ID: <20241021102301.011529905@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit c7c44e57750c31de43906d97813273fdffcf7d02 upstream.
+commit b0f0e3f0552a566def55c844b0d44250c58e4df6 upstream.
 
-The dev pointer that is received as an argument in the
-in_illuminance_period_available_show function references the device
-embedded in the IIO device, not in the i2c client.
+devm_kasprintf() can return a NULL pointer on failure but this returned
+value is not checked. Fix this lack and check the returned value.
 
-dev_to_iio_dev() must be used to accessthe right data. The current
-implementation leads to a segmentation fault on every attempt to read
-the attribute because indio_dev gets a NULL assignment.
-
-This bug has been present since the first appearance of the driver,
-apparently since the last version (V6) before getting applied. A
-constant attribute was used until then, and the last modifications might
-have not been tested again.
+Found by code review.
 
 Cc: stable@vger.kernel.org
-Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light sensor")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20240913-veml6035-v1-3-0b09c0c90418@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 32c170ff15b0 ("pinctrl: stm32: set default gpio line names using pin names")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://lore.kernel.org/20240906100326.624445-1-make24@iscas.ac.cn
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/veml6030.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/pinctrl/stm32/pinctrl-stm32.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/light/veml6030.c
-+++ b/drivers/iio/light/veml6030.c
-@@ -99,9 +99,8 @@ static const char * const period_values[
- static ssize_t in_illuminance_period_available_show(struct device *dev,
- 				struct device_attribute *attr, char *buf)
- {
-+	struct veml6030_data *data = iio_priv(dev_to_iio_dev(dev));
- 	int ret, reg, x;
--	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
--	struct veml6030_data *data = iio_priv(indio_dev);
+--- a/drivers/pinctrl/stm32/pinctrl-stm32.c
++++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
+@@ -1387,10 +1387,15 @@ static int stm32_gpiolib_register_bank(s
  
- 	ret = regmap_read(data->regmap, VEML6030_REG_ALS_CONF, &reg);
- 	if (ret) {
+ 	for (i = 0; i < npins; i++) {
+ 		stm32_pin = stm32_pctrl_get_desc_pin_from_gpio(pctl, bank, i);
+-		if (stm32_pin && stm32_pin->pin.name)
++		if (stm32_pin && stm32_pin->pin.name) {
+ 			names[i] = devm_kasprintf(dev, GFP_KERNEL, "%s", stm32_pin->pin.name);
+-		else
++			if (!names[i]) {
++				err = -ENOMEM;
++				goto err_clk;
++			}
++		} else {
+ 			names[i] = NULL;
++		}
+ 	}
+ 
+ 	bank->gpio_chip.names = (const char * const *)names;
 
 
 
