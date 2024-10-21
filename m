@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-87395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EA129A64C7
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:50:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E7C59A6445
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:45:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE5221F21488
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:50:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E3171C21AEA
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A7E1F8F01;
-	Mon, 21 Oct 2024 10:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7591E47A8;
+	Mon, 21 Oct 2024 10:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZz5zMRj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJFpQekw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1C11F8EF7;
-	Mon, 21 Oct 2024 10:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FFE1E1C11;
+	Mon, 21 Oct 2024 10:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507478; cv=none; b=bjN1Hl2ZZmzAcYcWby5rUTJhn549KfEzzbB0JOMVml5x4oxWg+r17Grj/5K8B42U//yVUOJFtS9OP9RShtj2YfvASS/eGhGbm+6ICLl9w9mrzWBdE8okPeSsy8fJ51E86c3803hOkNzm0uSluKlS6iwuUXzSGm6RWcmgbrX/4dU=
+	t=1729507159; cv=none; b=mimM9gMAQfeRzEIJQH5i1lCj57eadvXvxpGW1qbqn7SddaKSHYCRrdMO2/CQ5hdDrG/X3vASGCRnqR3xWbpnwI0MPSOwZb6vEKOJostoIndfW9v1YCC4qPHTnEYpHT1fJoGPDN3HmWCeVFLhddYElCAgxheC80VCXq32MadvDXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507478; c=relaxed/simple;
-	bh=S4oWmPfrB9l39OGcFwT0nFnKGqTxGdm306yVX7pZDMw=;
+	s=arc-20240116; t=1729507159; c=relaxed/simple;
+	bh=d86cUJRoNagLq+Rpvi8fZGkaPnYB95IK/Woj2bSKjwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CIE99NU8x4ma49nBYSt88SqAa69y4SM/MVgLBkxwQMsIyL5S+CC2uhwHpzj9Gop1N6fg9hk06F17S+q4FY3nTXxRhVByGRVBt/HgiLYdM0/Cd0FMHTsH71fUNyPnKQsTxvKDpK+Cnsdjo5FFGcx41Wekdhu5InP2aML/TQR6Uic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZz5zMRj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E96C4CEE5;
-	Mon, 21 Oct 2024 10:44:37 +0000 (UTC)
+	 MIME-Version; b=ak3xle4MrV8wX7xN/AIid9luFEY8F7uLPsobyIcccH8Gp80RmNHD6YCCF5eR/YemgarH8EP7eWBa4x0xFYOvRQW01SM4VXwiNXCXLYkmtmodZt1UPSerA66lmlcFCqZXWsn6sukpJ/UR7QM2TSG3lfn/+aKbKjoswO4GrVVWNPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJFpQekw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 476D5C4CEC3;
+	Mon, 21 Oct 2024 10:39:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507478;
-	bh=S4oWmPfrB9l39OGcFwT0nFnKGqTxGdm306yVX7pZDMw=;
+	s=korg; t=1729507159;
+	bh=d86cUJRoNagLq+Rpvi8fZGkaPnYB95IK/Woj2bSKjwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qZz5zMRjADAU5URxVjpgeC9JOBy6pFHvhTe6Yp/DOlad6YKnjvEMB0t/LfjZ4lVaU
-	 R+NKAjm4aDKC4muyTD2kxOSuCZOI9auw33SSkY+awzjapxZtLOuR3EcU3WnahfGeHN
-	 s4VklAES8pcvsMBmNNTfv9LsFV5rdxVBinfo3LaY=
+	b=lJFpQekwWWG8TvJQ20eH2poSNJw50BreVWcmMSCq4zTAkJwcpdyeGOQgqbdV4wyGh
+	 TeO9RTVEDup5aOSGFVClX2c8aCQywLsz1idYARI+/GbbHkzf6z9GY4Qb6mCGOsgy+4
+	 NVUKTOBJ0eSvBCI2dcPdPtuj8QV+GexzkgogH8/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 59/91] iio: hid-sensors: Fix an error handling path in _hid_sensor_set_report_latency()
+	Robert Gill <rtgill82@gmail.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Brian Gerst <brgerst@gmail.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 6.6 109/124] x86/bugs: Use code segment selector for VERW operand
 Date: Mon, 21 Oct 2024 12:25:13 +0200
-Message-ID: <20241021102252.122058664@linuxfoundation.org>
+Message-ID: <20241021102300.933445413@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-commit 3a29b84cf7fbf912a6ab1b9c886746f02b74ea25 upstream.
+commit e4d2102018542e3ae5e297bc6e229303abff8a0f upstream.
 
-If hid_sensor_set_report_latency() fails, the error code should be returned
-instead of a value likely to be interpreted as 'success'.
+Robert Gill reported below #GP in 32-bit mode when dosemu software was
+executing vm86() system call:
 
-Fixes: 138bc7969c24 ("iio: hid-sensor-hub: Implement batch mode")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/c50640665f091a04086e5092cf50f73f2055107a.1727980825.git.christophe.jaillet@wanadoo.fr
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+  general protection fault: 0000 [#1] PREEMPT SMP
+  CPU: 4 PID: 4610 Comm: dosemu.bin Not tainted 6.6.21-gentoo-x86 #1
+  Hardware name: Dell Inc. PowerEdge 1950/0H723K, BIOS 2.7.0 10/30/2010
+  EIP: restore_all_switch_stack+0xbe/0xcf
+  EAX: 00000000 EBX: 00000000 ECX: 00000000 EDX: 00000000
+  ESI: 00000000 EDI: 00000000 EBP: 00000000 ESP: ff8affdc
+  DS: 0000 ES: 0000 FS: 0000 GS: 0033 SS: 0068 EFLAGS: 00010046
+  CR0: 80050033 CR2: 00c2101c CR3: 04b6d000 CR4: 000406d0
+  Call Trace:
+   show_regs+0x70/0x78
+   die_addr+0x29/0x70
+   exc_general_protection+0x13c/0x348
+   exc_bounds+0x98/0x98
+   handle_exception+0x14d/0x14d
+   exc_bounds+0x98/0x98
+   restore_all_switch_stack+0xbe/0xcf
+   exc_bounds+0x98/0x98
+   restore_all_switch_stack+0xbe/0xcf
+
+This only happens in 32-bit mode when VERW based mitigations like MDS/RFDS
+are enabled. This is because segment registers with an arbitrary user value
+can result in #GP when executing VERW. Intel SDM vol. 2C documents the
+following behavior for VERW instruction:
+
+  #GP(0) - If a memory operand effective address is outside the CS, DS, ES,
+	   FS, or GS segment limit.
+
+CLEAR_CPU_BUFFERS macro executes VERW instruction before returning to user
+space. Use %cs selector to reference VERW operand. This ensures VERW will
+not #GP for an arbitrary user %ds.
+
+[ mingo: Fixed the SOB chain. ]
+
+Fixes: a0e2dab44d22 ("x86/entry_32: Add VERW just before userspace transition")
+Reported-by: Robert Gill <rtgill82@gmail.com>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com
+Cc: stable@vger.kernel.org # 5.10+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218707
+Closes: https://lore.kernel.org/all/8c77ccfd-d561-45a1-8ed5-6b75212c7a58@leemhuis.info/
+Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+Suggested-by: Brian Gerst <brgerst@gmail.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/common/hid-sensors/hid-sensor-trigger.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/nospec-branch.h |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-+++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-@@ -32,7 +32,7 @@ static ssize_t _hid_sensor_set_report_la
- 	latency = integer * 1000 + fract / 1000;
- 	ret = hid_sensor_set_report_latency(attrb, latency);
- 	if (ret < 0)
--		return len;
-+		return ret;
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -332,7 +332,16 @@
+  * Note: Only the memory operand variant of VERW clears the CPU buffers.
+  */
+ .macro CLEAR_CPU_BUFFERS
+-	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
++#ifdef CONFIG_X86_64
++	ALTERNATIVE "", "verw mds_verw_sel(%rip)", X86_FEATURE_CLEAR_CPU_BUF
++#else
++	/*
++	 * In 32bit mode, the memory operand must be a %cs reference. The data
++	 * segments may not be usable (vm86 mode), and the stack segment may not
++	 * be flat (ESPFIX32).
++	 */
++	ALTERNATIVE "", "verw %cs:mds_verw_sel", X86_FEATURE_CLEAR_CPU_BUF
++#endif
+ .endm
  
- 	attrb->latency_ms = hid_sensor_get_report_latency(attrb);
- 
+ #ifdef CONFIG_X86_64
 
 
 
