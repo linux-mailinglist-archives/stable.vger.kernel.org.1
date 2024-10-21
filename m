@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-87404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DF0A9A64CE
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:51:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA4AE9A650B
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:53:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87C091F21F81
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:50:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 829E3281CD7
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:53:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6411E7C04;
-	Mon, 21 Oct 2024 10:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2ABC1E130B;
+	Mon, 21 Oct 2024 10:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3TCh9Ur"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OV3KvP44"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46FBA1E7C05;
-	Mon, 21 Oct 2024 10:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A980116F27E;
+	Mon, 21 Oct 2024 10:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507505; cv=none; b=ZRu33Uj88w+vj/dFLCHQ6uu45ZyFA8UFPPZVAD+JemQ5HPbXjRlpi/Smn5nmUHNYb8qZaD7My2RQi+PURFJITPwKlze3lcMFiP1RfechnEFal4FER2/dfcC3rYQuzHKlhmL3H1cURSk2XWeOqRx8U8A3jHA81Ghd5orEwihQAFs=
+	t=1729507666; cv=none; b=Xi7gl6LvQ7tcAc59FPhuCThwdAxeJ0x0hKvEk8gaoypj78X1YPjbbPb1lg/1EJZl2bC79cFoe0NSYhNnPX6zjOZ7W3YUwP6/K2Pv0q0wCgQdWhi9abhIqfoDMNVrYCTe/BqnPb6lmO2TtksjjTyK+IKjibWLHGKMkzsu8qxYpHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507505; c=relaxed/simple;
-	bh=spMahO7XoRlpCDymYhy01lQDg5fcawM2Z9Un1Zyw9iQ=;
+	s=arc-20240116; t=1729507666; c=relaxed/simple;
+	bh=78ZIRm2rz6EU+HMxz4cHqD5I8foJVCO/aTlUaASAEEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FiU6MJsG0lCng7V39qPCXnQwFOU5pW3ElS8nyGz73X89WpbXZ+zCWoLHLnivkOwtBdvqVzphtS7FUqPB0Xyasj+FojLjnS9N0yUhUFvrt2RiGgpkcBAz/E1MiE3g2z9UcukMgytb+MmiSM4I105dwXsSFHT3jryDSwneciSF6wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3TCh9Ur; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C81C4CEC3;
-	Mon, 21 Oct 2024 10:45:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mHNEhvo9Izvtk+LBIS1qNAlFCOqdvbXPCiYmWUpXqNHXK9yvrNTj6wikeG2VLRO0CtwtkhdIQvy2HG5pkPhCuG/lL1P3ONPkeUA3Y6xTyl3emIWLvoi2mnW+24P5N/goyJ5TTYIu/PU25fTyZrAVwfHZBnoThMxaJL3VzKm7m78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OV3KvP44; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B60C4CEC3;
+	Mon, 21 Oct 2024 10:47:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507505;
-	bh=spMahO7XoRlpCDymYhy01lQDg5fcawM2Z9Un1Zyw9iQ=;
+	s=korg; t=1729507666;
+	bh=78ZIRm2rz6EU+HMxz4cHqD5I8foJVCO/aTlUaASAEEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C3TCh9UribSBB4Ubpr1wS9nQMGZ2FKzADIFpTyCAPZeNlAehd1xzt6eHWj4S/MA24
-	 lS606ITsGAbEbnob/EIqo2JzplbUqxIiRfZu6FLeacFbFbFpBTWIo5e8eUjImK/PuD
-	 FFnRzbWu/NO8UN3d1mTmhOjUPqogOXjT9U5DIaC0=
+	b=OV3KvP44bN/CjnkbNzg5ClRkqRiKayWsuH9oXcDwpThKNT8Kovm9l32ENlKJaLwq3
+	 JURjKsX4p+YkcRhhSPRokew08WeDMLuJzb8pwwF5k/luxzhA42/1Zi2tqAZ4wJToMM
+	 uW/YMB0PcAjhQC0gvdE9Msr56wB+Jw1OlKw5rYmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	syzbot+8a192e8d090fa9a31135@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 89/91] nilfs2: propagate directory read errors from nilfs_find_entry()
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.15 62/82] Bluetooth: btusb: Fix regression with fake CSR controllers 0a12:0001
 Date: Mon, 21 Oct 2024 12:25:43 +0200
-Message-ID: <20241021102253.286095853@linuxfoundation.org>
+Message-ID: <20241021102249.680332142@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,237 +58,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 08cfa12adf888db98879dbd735bc741360a34168 upstream.
+commit 2c1dda2acc4192d826e84008d963b528e24d12bc upstream.
 
-Syzbot reported that a task hang occurs in vcs_open() during a fuzzing
-test for nilfs2.
+Fake CSR controllers don't seem to handle short-transfer properly which
+cause command to time out:
 
-The root cause of this problem is that in nilfs_find_entry(), which
-searches for directory entries, ignores errors when loading a directory
-page/folio via nilfs_get_folio() fails.
+kernel: usb 1-1: new full-speed USB device number 19 using xhci_hcd
+kernel: usb 1-1: New USB device found, idVendor=0a12, idProduct=0001, bcdDevice=88.91
+kernel: usb 1-1: New USB device strings: Mfr=0, Product=2, SerialNumber=0
+kernel: usb 1-1: Product: BT DONGLE10
+...
+Bluetooth: hci1: Opcode 0x1004 failed: -110
+kernel: Bluetooth: hci1: command 0x1004 tx timeout
 
-If the filesystem images is corrupted, and the i_size of the directory
-inode is large, and the directory page/folio is successfully read but
-fails the sanity check, for example when it is zero-filled,
-nilfs_check_folio() may continue to spit out error messages in bursts.
+According to USB Spec 2.0 Section 5.7.3 Interrupt Transfer Packet Size
+Constraints a interrupt transfer is considered complete when the size is 0
+(ZPL) or < wMaxPacketSize:
 
-Fix this issue by propagating the error to the callers when loading a
-page/folio fails in nilfs_find_entry().
+ 'When an interrupt transfer involves more data than can fit in one
+ data payload of the currently established maximum size, all data
+ payloads are required to be maximum-sized except for the last data
+ payload, which will contain the remaining data. An interrupt transfer
+ is complete when the endpoint does one of the following:
 
-The current interface of nilfs_find_entry() and its callers is outdated
-and cannot propagate error codes such as -EIO and -ENOMEM returned via
-nilfs_find_entry(), so fix it together.
+ • Has transferred exactly the amount of data expected
+ • Transfers a packet with a payload size less than wMaxPacketSize or
+ transfers a zero-length packet'
 
-Link: https://lkml.kernel.org/r/20241004033640.6841-1-konishi.ryusuke@gmail.com
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: Lizhi Xu <lizhi.xu@windriver.com>
-Closes: https://lkml.kernel.org/r/20240927013806.3577931-1-lizhi.xu@windriver.com
-Reported-by: syzbot+8a192e8d090fa9a31135@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=8a192e8d090fa9a31135
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219365
+Fixes: 7b05933340f4 ("Bluetooth: btusb: Fix not handling ZPL/short-transfer")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/dir.c   |   50 +++++++++++++++++++++++++++-----------------------
- fs/nilfs2/namei.c |   39 ++++++++++++++++++++++++++-------------
- fs/nilfs2/nilfs.h |    2 +-
- 3 files changed, 54 insertions(+), 37 deletions(-)
+ drivers/bluetooth/btusb.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -331,6 +331,8 @@ static int nilfs_readdir(struct file *fi
-  * returns the page in which the entry was found, and the entry itself
-  * (as a parameter - res_dir). Page is returned mapped and unlocked.
-  * Entry is guaranteed to be valid.
-+ *
-+ * On failure, returns an error pointer and the caller should ignore res_page.
-  */
- struct nilfs_dir_entry *
- nilfs_find_entry(struct inode *dir, const struct qstr *qstr,
-@@ -358,22 +360,24 @@ nilfs_find_entry(struct inode *dir, cons
- 	do {
- 		char *kaddr = nilfs_get_page(dir, n, &page);
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -1002,10 +1002,15 @@ static int btusb_submit_intr_urb(struct
+ 	if (!urb)
+ 		return -ENOMEM;
  
--		if (!IS_ERR(kaddr)) {
--			de = (struct nilfs_dir_entry *)kaddr;
--			kaddr += nilfs_last_byte(dir, n) - reclen;
--			while ((char *) de <= kaddr) {
--				if (de->rec_len == 0) {
--					nilfs_error(dir->i_sb,
--						"zero-length directory entry");
--					nilfs_put_page(page);
--					goto out;
--				}
--				if (nilfs_match(namelen, name, de))
--					goto found;
--				de = nilfs_next_entry(de);
-+		if (IS_ERR(kaddr))
-+			return ERR_CAST(kaddr);
-+
-+		de = (struct nilfs_dir_entry *)kaddr;
-+		kaddr += nilfs_last_byte(dir, n) - reclen;
-+		while ((char *)de <= kaddr) {
-+			if (de->rec_len == 0) {
-+				nilfs_error(dir->i_sb,
-+					    "zero-length directory entry");
-+				nilfs_put_page(page);
-+				goto out;
- 			}
--			nilfs_put_page(page);
-+			if (nilfs_match(namelen, name, de))
-+				goto found;
-+			de = nilfs_next_entry(de);
- 		}
-+		nilfs_put_page(page);
-+
- 		if (++n >= npages)
- 			n = 0;
- 		/* next page is past the blocks we've got */
-@@ -386,7 +390,7 @@ nilfs_find_entry(struct inode *dir, cons
- 		}
- 	} while (n != start);
- out:
--	return NULL;
-+	return ERR_PTR(-ENOENT);
+-	/* Use maximum HCI Event size so the USB stack handles
+-	 * ZPL/short-transfer automatically.
+-	 */
+-	size = HCI_MAX_EVENT_SIZE;
++	if (le16_to_cpu(data->udev->descriptor.idVendor)  == 0x0a12 &&
++	    le16_to_cpu(data->udev->descriptor.idProduct) == 0x0001)
++		/* Fake CSR devices don't seem to support sort-transter */
++		size = le16_to_cpu(data->intr_ep->wMaxPacketSize);
++	else
++		/* Use maximum HCI Event size so the USB stack handles
++		 * ZPL/short-transfer automatically.
++		 */
++		size = HCI_MAX_EVENT_SIZE;
  
- found:
- 	*res_page = page;
-@@ -431,19 +435,19 @@ fail:
- 	return NULL;
- }
- 
--ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
-+int nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr, ino_t *ino)
- {
--	ino_t res = 0;
- 	struct nilfs_dir_entry *de;
- 	struct page *page;
- 
- 	de = nilfs_find_entry(dir, qstr, &page);
--	if (de) {
--		res = le64_to_cpu(de->inode);
--		kunmap(page);
--		put_page(page);
--	}
--	return res;
-+	if (IS_ERR(de))
-+		return PTR_ERR(de);
-+
-+	*ino = le64_to_cpu(de->inode);
-+	kunmap(page);
-+	put_page(page);
-+	return 0;
- }
- 
- /* Releases the page */
---- a/fs/nilfs2/namei.c
-+++ b/fs/nilfs2/namei.c
-@@ -55,12 +55,20 @@ nilfs_lookup(struct inode *dir, struct d
- {
- 	struct inode *inode;
- 	ino_t ino;
-+	int res;
- 
- 	if (dentry->d_name.len > NILFS_NAME_LEN)
- 		return ERR_PTR(-ENAMETOOLONG);
- 
--	ino = nilfs_inode_by_name(dir, &dentry->d_name);
--	inode = ino ? nilfs_iget(dir->i_sb, NILFS_I(dir)->i_root, ino) : NULL;
-+	res = nilfs_inode_by_name(dir, &dentry->d_name, &ino);
-+	if (res) {
-+		if (res != -ENOENT)
-+			return ERR_PTR(res);
-+		inode = NULL;
-+	} else {
-+		inode = nilfs_iget(dir->i_sb, NILFS_I(dir)->i_root, ino);
-+	}
-+
- 	return d_splice_alias(inode, dentry);
- }
- 
-@@ -263,10 +271,11 @@ static int nilfs_do_unlink(struct inode
- 	struct page *page;
- 	int err;
- 
--	err = -ENOENT;
- 	de = nilfs_find_entry(dir, &dentry->d_name, &page);
--	if (!de)
-+	if (IS_ERR(de)) {
-+		err = PTR_ERR(de);
- 		goto out;
-+	}
- 
- 	inode = d_inode(dentry);
- 	err = -EIO;
-@@ -361,10 +370,11 @@ static int nilfs_rename(struct user_name
- 	if (unlikely(err))
- 		return err;
- 
--	err = -ENOENT;
- 	old_de = nilfs_find_entry(old_dir, &old_dentry->d_name, &old_page);
--	if (!old_de)
-+	if (IS_ERR(old_de)) {
-+		err = PTR_ERR(old_de);
- 		goto out;
-+	}
- 
- 	if (S_ISDIR(old_inode->i_mode)) {
- 		err = -EIO;
-@@ -381,10 +391,12 @@ static int nilfs_rename(struct user_name
- 		if (dir_de && !nilfs_empty_dir(new_inode))
- 			goto out_dir;
- 
--		err = -ENOENT;
--		new_de = nilfs_find_entry(new_dir, &new_dentry->d_name, &new_page);
--		if (!new_de)
-+		new_de = nilfs_find_entry(new_dir, &new_dentry->d_name,
-+					  &new_page);
-+		if (IS_ERR(new_de)) {
-+			err = PTR_ERR(new_de);
- 			goto out_dir;
-+		}
- 		nilfs_set_link(new_dir, new_de, new_page, old_inode);
- 		nilfs_mark_inode_dirty(new_dir);
- 		new_inode->i_ctime = current_time(new_inode);
-@@ -438,13 +450,14 @@ out:
-  */
- static struct dentry *nilfs_get_parent(struct dentry *child)
- {
--	unsigned long ino;
-+	ino_t ino;
-+	int res;
- 	struct inode *inode;
- 	struct nilfs_root *root;
- 
--	ino = nilfs_inode_by_name(d_inode(child), &dotdot_name);
--	if (!ino)
--		return ERR_PTR(-ENOENT);
-+	res = nilfs_inode_by_name(d_inode(child), &dotdot_name, &ino);
-+	if (res)
-+		return ERR_PTR(res);
- 
- 	root = NILFS_I(d_inode(child))->i_root;
- 
---- a/fs/nilfs2/nilfs.h
-+++ b/fs/nilfs2/nilfs.h
-@@ -233,7 +233,7 @@ static inline __u32 nilfs_mask_flags(umo
- 
- /* dir.c */
- extern int nilfs_add_link(struct dentry *, struct inode *);
--extern ino_t nilfs_inode_by_name(struct inode *, const struct qstr *);
-+int nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr, ino_t *ino);
- extern int nilfs_make_empty(struct inode *, struct inode *);
- extern struct nilfs_dir_entry *
- nilfs_find_entry(struct inode *, const struct qstr *, struct page **);
+ 	buf = kmalloc(size, mem_flags);
+ 	if (!buf) {
 
 
 
