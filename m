@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-87400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36EAF9A64CB
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:50:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15B529A64F3
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D33601F21B7D
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:50:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B604C1F21C16
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E92261E503D;
-	Mon, 21 Oct 2024 10:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415281E909F;
+	Mon, 21 Oct 2024 10:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lv1unOeg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPqXiMvh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E461F4717;
-	Mon, 21 Oct 2024 10:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1971E3764;
+	Mon, 21 Oct 2024 10:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507493; cv=none; b=pObbQiypoKudNZ3gjjcepupf757dw2aYdEe75+oFX3WG+JnHsj7y6RAJhsbXfQuE+yHFChatJiQ5A7aeAxnT/MUT7Q6iwW8Kz8ybjAuzpeqRQu9nuGfudfHtUfc7UEJTAreFV/1hFdeJs05R0oOGMg2p1vFetN8OKjxx2CUX9lo=
+	t=1729507595; cv=none; b=ePrku2qpNAo6GkmN34PrupJnU+sOaY8bJMV8cKKuvEL2a253VlJldnC03oQTFO1kxJcrUUVGWsROXQUX+t0F0ou2PKPMUPs1jiJexzOH5j6dSzldNWtyqCEi87VVBsKoHnodRWNqTllXlHHwLIgcWqPdVvdsSDbzwXZbPaDHurQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507493; c=relaxed/simple;
-	bh=4iveqZ/G9n0cBS8bPA101gBhQiJyQwnSNRhPCESjUmk=;
+	s=arc-20240116; t=1729507595; c=relaxed/simple;
+	bh=Z6jB1Td2KFroESW2IdWm7595otd/Y+iP6PvImmaKxvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o8FoQ6sJ3ucSuInRedBcK2p1ZJEWdgwXAQR/DGm3jZ82/k0KY+mASrdhGHb5tQpiJdg6foa1H8HzHhMHtSnMEUoJe8030wZGU6aPb7zVnNinUVFmmgCrzFKpv7L3j7PjVNSJIydtMRWvkb5hHDzk2ZZRmrNYSQD3VgoufghSMNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lv1unOeg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D619AC4CEC3;
-	Mon, 21 Oct 2024 10:44:52 +0000 (UTC)
+	 MIME-Version; b=TL9PhuOk7CHg4hDEV3RCXV8XxkfU0TfYKiwpzph7+cdNZqwLIhmBHF3JXXGO4ijPgAeUtEqRTZ4suHjabOd+1zgcwagBRoEZWqdZ9NHeoo/ybdo9IIx/mqrWLeJ2Sm1qafeRu/MZ11bd6fSSgg9+oO30oFbzhWikAlyEDgeiSKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPqXiMvh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A333C4CEC3;
+	Mon, 21 Oct 2024 10:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507493;
-	bh=4iveqZ/G9n0cBS8bPA101gBhQiJyQwnSNRhPCESjUmk=;
+	s=korg; t=1729507594;
+	bh=Z6jB1Td2KFroESW2IdWm7595otd/Y+iP6PvImmaKxvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lv1unOegkqvIA8ioVcDimVj2duN4LzNYuV4YaHoSIRxO63sLWqJPw+sXzfoNjJvyA
-	 UwNsY6kJi6Acn14Y4KcF9rSliiqlkqTpdlA6+oIiJeo50EfA22vBioCGjFasOHObWQ
-	 Tn54XjxKYgQ8ayqGC4ntv2C/Udz97OuMcLKYlyx8=
+	b=ZPqXiMvhroeA1/7rRAnQ3xOI/2sjqGooUJtKSMVlKmUHZ4TbOYDO76lbVxgF64yqP
+	 cwN3lzg2kau/FbTrpyVHrTvPPRuZ+MPdYgUcLPcwwVJsThoyTQJfQF8pT7DOOCWEag
+	 t2EF8UpKENQwuj9Rm3Mp46uNfNgzDPSKJWCPPTdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 64/91] iio: dac: ad5766: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+	kernel test robot <oliver.sang@intel.com>,
+	Felix Moessbauer <felix.moessbauer@siemens.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 37/82] io_uring/sqpoll: retain test for whether the CPU is valid
 Date: Mon, 21 Oct 2024 12:25:18 +0200
-Message-ID: <20241021102252.314720243@linuxfoundation.org>
+Message-ID: <20241021102248.710634082@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 62ec3df342cca6a8eb7ed33fd4ac8d0fbfcb9391 upstream.
+commit a09c17240bdf2e9fa6d0591afa9448b59785f7d4 upstream.
 
-This driver makes use of triggered buffers, but does not select the
-required modules.
+A recent commit ensured that SQPOLL cannot be setup with a CPU that
+isn't in the current tasks cpuset, but it also dropped testing whether
+the CPU is valid in the first place. Without that, if a task passes in
+a CPU value that is too high, the following KASAN splat can get
+triggered:
 
-Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
+BUG: KASAN: stack-out-of-bounds in io_sq_offload_create+0x858/0xaa4
+Read of size 8 at addr ffff800089bc7b90 by task wq-aff.t/1391
 
-Fixes: 885b9790c25a ("drivers:iio:dac:ad5766.c: Add trigger buffer")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241003-iio-select-v1-8-67c0385197cd@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+CPU: 4 UID: 1000 PID: 1391 Comm: wq-aff.t Not tainted 6.11.0-rc7-00227-g371c468f4db6 #7080
+Hardware name: linux,dummy-virt (DT)
+Call trace:
+ dump_backtrace.part.0+0xcc/0xe0
+ show_stack+0x14/0x1c
+ dump_stack_lvl+0x58/0x74
+ print_report+0x16c/0x4c8
+ kasan_report+0x9c/0xe4
+ __asan_report_load8_noabort+0x1c/0x24
+ io_sq_offload_create+0x858/0xaa4
+ io_uring_setup+0x1394/0x17c4
+ __arm64_sys_io_uring_setup+0x6c/0x180
+ invoke_syscall+0x6c/0x260
+ el0_svc_common.constprop.0+0x158/0x224
+ do_el0_svc+0x3c/0x5c
+ el0_svc+0x34/0x70
+ el0t_64_sync_handler+0x118/0x124
+ el0t_64_sync+0x168/0x16c
+
+The buggy address belongs to stack of task wq-aff.t/1391
+ and is located at offset 48 in frame:
+ io_sq_offload_create+0x0/0xaa4
+
+This frame has 1 object:
+ [32, 40) 'allowed_mask'
+
+The buggy address belongs to the virtual mapping at
+ [ffff800089bc0000, ffff800089bc9000) created by:
+ kernel_clone+0x124/0x7e0
+
+The buggy address belongs to the physical page:
+page: refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff0000d740af80 pfn:0x11740a
+memcg:ffff0000c2706f02
+flags: 0xbffe00000000000(node=0|zone=2|lastcpupid=0x1fff)
+raw: 0bffe00000000000 0000000000000000 dead000000000122 0000000000000000
+raw: ffff0000d740af80 0000000000000000 00000001ffffffff ffff0000c2706f02
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff800089bc7a80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff800089bc7b00: 00 00 00 00 00 00 00 00 00 00 00 00 f1 f1 f1 f1
+>ffff800089bc7b80: 00 f3 f3 f3 00 00 00 00 00 00 00 00 00 00 00 00
+                         ^
+ ffff800089bc7c00: 00 00 00 00 00 00 00 00 00 00 00 00 f1 f1 f1 f1
+ ffff800089bc7c80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f3
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202409161632.cbeeca0d-lkp@intel.com
+Fixes: f011c9cf04c0 ("io_uring/sqpoll: do not allow pinning outside of cpuset")
+Tested-by: Felix Moessbauer <felix.moessbauer@siemens.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/Kconfig |    2 ++
+ io_uring/io_uring.c |    2 ++
  1 file changed, 2 insertions(+)
 
---- a/drivers/iio/dac/Kconfig
-+++ b/drivers/iio/dac/Kconfig
-@@ -214,6 +214,8 @@ config AD5764
- config AD5766
- 	tristate "Analog Devices AD5766/AD5767 DAC driver"
- 	depends on SPI_MASTER
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
- 	help
- 	  Say yes here to build support for Analog Devices AD5766, AD5767
- 	  Digital to Analog Converter.
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -8751,6 +8751,8 @@ static int io_sq_offload_create(struct i
+ 			int cpu = p->sq_thread_cpu;
+ 
+ 			ret = -EINVAL;
++			if (cpu >= nr_cpu_ids || !cpu_online(cpu))
++				goto err_sqpoll;
+ 			cpuset_cpus_allowed(current, &allowed_mask);
+ 			if (!cpumask_test_cpu(cpu, &allowed_mask))
+ 				goto err_sqpoll;
 
 
 
