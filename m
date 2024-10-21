@@ -1,156 +1,126 @@
-Return-Path: <stable+bounces-87023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D1029A5E5C
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:14:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4077A9A5E69
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:18:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1741CB20589
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 08:14:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC2CF2814BB
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 08:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8C11E1A2C;
-	Mon, 21 Oct 2024 08:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ADD91E04AB;
+	Mon, 21 Oct 2024 08:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZQah8sV"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mjv0kPqO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34021E1C32
-	for <stable@vger.kernel.org>; Mon, 21 Oct 2024 08:13:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B9A31A60
+	for <stable@vger.kernel.org>; Mon, 21 Oct 2024 08:18:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729498424; cv=none; b=erJv4Y4YzxB/lIXxh6jpNOVug+wYXsbruroFp0u7h0Q1BoE9EdEFWmpT06yvCYj8r7nIz8t8loLyVr2moDM8C3mEsbymPEOiQkxemfpFJ8aXNloGB/JSKa2VXaehLTZGUVF98uNsX6LnbJce3qOK+K3dL+ItRE/bvd4t/7R7DFI=
+	t=1729498689; cv=none; b=FJddzL8EH13yFd2Fk8ax3DU4qb/bBAkJ8Em+y07KoYxP7RDjiS09sQuYpl2gpzBu27cTGByX+rry5FEnvYeX9RBko0zA96oWuUh7fdAnz+7qje07mhsOqZ6Hlv1B0VlBsMie9r4S9hyAiCrB/ZHp7gFEezrk6kwz3cB3fCg2QAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729498424; c=relaxed/simple;
-	bh=EugtF0w8wSnTKUSU1xG/cdkQaQlyAG9lzWsR6EfIWEM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oeVUs3P/AUxqwEBJ7ssUSFovV0DtqFbOGGnHiMe6RKZjC2S7tFGwo19jEOLHmdy2/CGZusdfzkOUFmwCjhSqGigAEhqUYlNkbUNFp+t1ktNfypmIocWwFkE9ruN/kEheKMuPmCVQKngoM5EFXb2c5HnmzeZGBJIP+MkcDBqtFMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZQah8sV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB931C4CEE7;
-	Mon, 21 Oct 2024 08:13:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729498424;
-	bh=EugtF0w8wSnTKUSU1xG/cdkQaQlyAG9lzWsR6EfIWEM=;
-	h=Subject:To:Cc:From:Date:From;
-	b=TZQah8sVoXZ+y9IMnSTMsuVGVabuzG9BSBMNbtgiHvCdVdK3d1g+OM876kLIF/+US
-	 B8DH5wle2Z0hOeiQAhfaOacqe0KWsg9o9ObvZcreErrx3JKF+zlTtMiq68dwAOduvv
-	 2yT1pg4DxX3guAm9ZcfjiwLYQ1KhmciVBS6o/Ky4=
-Subject: FAILED: patch "[PATCH] x86/bugs: Use code segment selector for VERW operand" failed to apply to 5.10-stable tree
-To: pawan.kumar.gupta@linux.intel.com,andrew.cooper3@citrix.com,brgerst@gmail.com,dave.hansen@linux.intel.com,mingo@kernel.org,rtgill82@gmail.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 21 Oct 2024 10:13:31 +0200
-Message-ID: <2024102131-blissful-iodize-4056@gregkh>
+	s=arc-20240116; t=1729498689; c=relaxed/simple;
+	bh=eoi9k7Ygt7ktavMqWKGD7qsQYEk2fiEFaSEeoaagxAI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=F5Lc7rYW4ENGrQ+yqr/icSHpKyXXiw9r9Atdv76IK8Bem3se3WSJwc5QLjI9PxBPz5G/gAhVVb4XpuCo80e+OTDfScBP9jB0PgH4uG6tjRUiDFqgCSezMVE/CWPt1RrafdhZjBbZAXyAmgT2msRKQrEAAbnCACcpl/NGAaqcQuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mjv0kPqO; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2fb56cb61baso32126441fa.1
+        for <stable@vger.kernel.org>; Mon, 21 Oct 2024 01:18:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1729498686; x=1730103486; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eoi9k7Ygt7ktavMqWKGD7qsQYEk2fiEFaSEeoaagxAI=;
+        b=mjv0kPqOlihYOAuGMDtdY/Lmnwo8342NFaiw0baYukuQsoU4Roz3oP78dwoYrutaje
+         Y7do0ksCS/3YnztG80W3zkxrbOpC65TbmPUJaWINx/Z08Lb8dd5hFD89ECxU86rcIZAQ
+         Sl0PRBJqhGqYP0Bn/NbWipryuXeIL7AzUzQhjj09IDIeRE8Z/KlEXqT5U97hWq/iEBZD
+         DvXOEBGvkI8Bxa3jNddCwH5GfK10+3o3m2N4bIWp9GA+PBVEZTdVyALmBpDm0kXnDSvb
+         dOUYF0sTnNLst8gmo6/umubuz3GJ1If5E7OvhjwU3oRozrJV/cVi/nhhDwOAzvRO8SIk
+         iEyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729498686; x=1730103486;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eoi9k7Ygt7ktavMqWKGD7qsQYEk2fiEFaSEeoaagxAI=;
+        b=vFC2Su7cbQBQ+yo6vMQzJzbUpuPBYFux0c6vvG3//QtFRStk7oBiHfHd891RoaqYpd
+         Gkf2idd2IGC17hJ7v1h1wAjxE773yZnM1UlcnxiU4OouIOkJsZCWKHxCUu8KXFzMa/qm
+         ptWIsPy2lAgy1pAmF2A+hpgrROk95flL5xEQkHWZpvexRzxJ0NSJcDNLln8Cu1tRiupB
+         x7keYu/OBamXWVp1HRzCnP9Kj2FtA3YYmT+tMFjyMhlpG3za6NsNYPFBwWzEdzR7r5FY
+         LEI5TlxleYbQs9DeXunU3EGvcPKLeMokHQWQipuZPmzx7aD1yAC2jUkL5pyMCP6Ilg0p
+         F7sA==
+X-Forwarded-Encrypted: i=1; AJvYcCUlovmtfJ1lNRL6aurwEJgT8n2WmZJ0qXAFSObaoOsnUW/fFvKZgWnDHRjMfTh6PK1yThlZ9k0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCN21h7Shhqd9DwvpdDqbMCIZaBesq2evqFnaEKKOLStjLn55y
+	AfPU5TjH6DMXBvANxQUTijSl7zeKrThaneadaHWj7pVO0CUFUqBSi1l2S0m3IMKpHIIyDqPJXOC
+	zibJZWxlwDItHEARRmILoj7EgbwMoWVM9Ja2xVw==
+X-Google-Smtp-Source: AGHT+IHqcu6/cs+18LQiPhDruAMJcQI78x11uXeyZZCo4iTRJVHXBAwnvIbkLUHZqP7mp8QjrS5VJe0fWAo0cI/9A4E=
+X-Received: by 2002:a05:651c:1502:b0:2fb:593c:2bf2 with SMTP id
+ 38308e7fff4ca-2fb82e90cebmr38651181fa.3.1729498685512; Mon, 21 Oct 2024
+ 01:18:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+References: <20241016-arm-kasan-vmalloc-crash-v2-0-0a52fd086eef@linaro.org> <20241016-arm-kasan-vmalloc-crash-v2-1-0a52fd086eef@linaro.org>
+In-Reply-To: <20241016-arm-kasan-vmalloc-crash-v2-1-0a52fd086eef@linaro.org>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Mon, 21 Oct 2024 10:17:53 +0200
+Message-ID: <CACRpkdY8pA_z6DSzOVUH+wRt2uDpWtD=ipkCs0aZyWgfZ7fyjQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] ARM: ioremap: Sync PGDs for VMALLOC shadow
+To: Clement LE GOFFIC <clement.legoffic@foss.st.com>, Russell King <linux@armlinux.org.uk>, 
+	Kees Cook <kees@kernel.org>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Mark Brown <broonie@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, Melon Liu <melon1335@163.com>
+Cc: Antonio Borneo <antonio.borneo@foss.st.com>, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Oct 16, 2024 at 9:15=E2=80=AFPM Linus Walleij <linus.walleij@linaro=
+.org> wrote:
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+> When sync:ing the VMALLOC area to other CPUs, make sure to also
+> sync the KASAN shadow memory for the VMALLOC area, so that we
+> don't get stale entries for the shadow memory in the top level PGD.
+>
+> Since we are now copying PGDs in two instances, create a helper
+> function named memcpy_pgd() to do the actual copying, and
+> create a helper to map the addresses of VMALLOC_START and
+> VMALLOC_END into the corresponding shadow memory.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 565cbaad83d8 ("ARM: 9202/1: kasan: support CONFIG_KASAN_VMALLOC")
+> Link: https://lore.kernel.org/linux-arm-kernel/a1a1d062-f3a2-4d05-9836-3b=
+098de9db6d@foss.st.com/
+> Reported-by: Clement LE GOFFIC <clement.legoffic@foss.st.com>
+> Suggested-by: Mark Rutland <mark.rutland@arm.com>
+> Suggested-by: Russell King (Oracle) <linux@armlinux.org.uk>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 
-To reproduce the conflict and resubmit, you may use the following commands:
+As it turns out in my confusion I have missed that the more or less identic=
+al
+patch with a different subject (talking about recursion) is already submitt=
+ed
+by Melon Liu and waiting in the patch tracker:
+https://www.arm.linux.org.uk/developer/patches/viewpatch.php?id=3D9427/1
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x e4d2102018542e3ae5e297bc6e229303abff8a0f
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024102131-blissful-iodize-4056@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+I've tested it and it solves the problem equally well.
 
-Possible dependencies:
+I even reviewed that and didn't remember it...
 
+I will submit patch 2/2 into the patch tracker and let Melon's
+patch deal with this issue.
 
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From e4d2102018542e3ae5e297bc6e229303abff8a0f Mon Sep 17 00:00:00 2001
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Date: Thu, 26 Sep 2024 09:10:31 -0700
-Subject: [PATCH] x86/bugs: Use code segment selector for VERW operand
-
-Robert Gill reported below #GP in 32-bit mode when dosemu software was
-executing vm86() system call:
-
-  general protection fault: 0000 [#1] PREEMPT SMP
-  CPU: 4 PID: 4610 Comm: dosemu.bin Not tainted 6.6.21-gentoo-x86 #1
-  Hardware name: Dell Inc. PowerEdge 1950/0H723K, BIOS 2.7.0 10/30/2010
-  EIP: restore_all_switch_stack+0xbe/0xcf
-  EAX: 00000000 EBX: 00000000 ECX: 00000000 EDX: 00000000
-  ESI: 00000000 EDI: 00000000 EBP: 00000000 ESP: ff8affdc
-  DS: 0000 ES: 0000 FS: 0000 GS: 0033 SS: 0068 EFLAGS: 00010046
-  CR0: 80050033 CR2: 00c2101c CR3: 04b6d000 CR4: 000406d0
-  Call Trace:
-   show_regs+0x70/0x78
-   die_addr+0x29/0x70
-   exc_general_protection+0x13c/0x348
-   exc_bounds+0x98/0x98
-   handle_exception+0x14d/0x14d
-   exc_bounds+0x98/0x98
-   restore_all_switch_stack+0xbe/0xcf
-   exc_bounds+0x98/0x98
-   restore_all_switch_stack+0xbe/0xcf
-
-This only happens in 32-bit mode when VERW based mitigations like MDS/RFDS
-are enabled. This is because segment registers with an arbitrary user value
-can result in #GP when executing VERW. Intel SDM vol. 2C documents the
-following behavior for VERW instruction:
-
-  #GP(0) - If a memory operand effective address is outside the CS, DS, ES,
-	   FS, or GS segment limit.
-
-CLEAR_CPU_BUFFERS macro executes VERW instruction before returning to user
-space. Use %cs selector to reference VERW operand. This ensures VERW will
-not #GP for an arbitrary user %ds.
-
-[ mingo: Fixed the SOB chain. ]
-
-Fixes: a0e2dab44d22 ("x86/entry_32: Add VERW just before userspace transition")
-Reported-by: Robert Gill <rtgill82@gmail.com>
-Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com
-Cc: stable@vger.kernel.org # 5.10+
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218707
-Closes: https://lore.kernel.org/all/8c77ccfd-d561-45a1-8ed5-6b75212c7a58@leemhuis.info/
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-Suggested-by: Brian Gerst <brgerst@gmail.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index ff5f1ecc7d1e..96b410b1d4e8 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -323,7 +323,16 @@
-  * Note: Only the memory operand variant of VERW clears the CPU buffers.
-  */
- .macro CLEAR_CPU_BUFFERS
--	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
-+#ifdef CONFIG_X86_64
-+	ALTERNATIVE "", "verw mds_verw_sel(%rip)", X86_FEATURE_CLEAR_CPU_BUF
-+#else
-+	/*
-+	 * In 32bit mode, the memory operand must be a %cs reference. The data
-+	 * segments may not be usable (vm86 mode), and the stack segment may not
-+	 * be flat (ESPFIX32).
-+	 */
-+	ALTERNATIVE "", "verw %cs:mds_verw_sel", X86_FEATURE_CLEAR_CPU_BUF
-+#endif
- .endm
- 
- #ifdef CONFIG_X86_64
-
+Yours,
+Linus Walleij
 
