@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-87141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AF7C9A6366
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2B609A63DC
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:40:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DF09B27192
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:34:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D07B61C21E43
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:40:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E00081E7677;
-	Mon, 21 Oct 2024 10:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79AD11E9078;
+	Mon, 21 Oct 2024 10:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PrVUZUMN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ruQrlXAP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9848A1E47AC;
-	Mon, 21 Oct 2024 10:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287181E9067;
+	Mon, 21 Oct 2024 10:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506716; cv=none; b=pv30dXxCJ4awp5Mw87gFahr+CAlLrjkJTtSKdODXA5mdn0winLYdk3FSM7W67vxYpkmJKh/bP8VkXaAwV+1uWGO4NhjjhcrDKe+eL922NfeCE89udbTYRjWNMttZ8JNxy3bPFNriHSG5fgXRSnnp3ieHGbo6YMegvlMZ4tY0Z44=
+	t=1729506981; cv=none; b=r2As2CuBmmNkinteaQZIatyQfVPLZ3WFJ3oxmSB4MAYyqjYqIL5cUpNkeK8DuNM4cATHOe1+RuoL47Dp3xN6yu7TFLBRjPKoGn+CI0tw3Ziw8Onyw169dqW1wVNOY/5DWroevO2LvSLwliMHFf1SdtmpFiMrDrlenN0VlIqzHfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506716; c=relaxed/simple;
-	bh=oGZGF2/1VdY2Z3iPwRddJi9ELOwmPnoKFw1New4Dixo=;
+	s=arc-20240116; t=1729506981; c=relaxed/simple;
+	bh=2mHuUj1lAUAE8p8dNWlNznCf587QwkpOOQuK+JX2HfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sh7AuCsP4vat7Z9LAu5q7QdBBk717Y1r1oprBjpf1edMfW2CIkzNSB247I4QSh6dVzdEwqthdcbIetApGi2aRF5AH1hFF7KGb8qdVbhpVuSc7Xyll4N/f8AfCVS53TY5//4LIQDWXdrC0sPUl7Awff1MhHftP0eWxWqKSKGG0lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PrVUZUMN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E15C4CEE5;
-	Mon, 21 Oct 2024 10:31:55 +0000 (UTC)
+	 MIME-Version; b=A60rBeMLgwCgtNuyDST2E6P+ee/V45ZpeoCHMmfQ4oTF2keWDOzpMS6ZN8yQAzrxKPOxeShnjH7wmUrXBt2sLqK6zom3Qhmu4HiLcUTHShMjPk4Ht/zrF1PZ//DRHu2uiyldI7KI+HzFBLogygJVa0OCNf4eUkg/TqBVCYswpnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ruQrlXAP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD10C4CEC3;
+	Mon, 21 Oct 2024 10:36:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506716;
-	bh=oGZGF2/1VdY2Z3iPwRddJi9ELOwmPnoKFw1New4Dixo=;
+	s=korg; t=1729506980;
+	bh=2mHuUj1lAUAE8p8dNWlNznCf587QwkpOOQuK+JX2HfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PrVUZUMNlFGtodblmw6qAgz1+qWOUUwEf8J9e70W6Jgjahw+WPbogEnZkN53Fjrky
-	 jOgHVr014VzaSENSNFXuiivdenKNYijP4bdwqxnVg4uneXAUqgHFp5tPHH+283ttua
-	 YFraYYi0aVUWhqwnUawmhEIsp0+aODigxSRLNsEU=
+	b=ruQrlXAPfe+vItId+exazVaTall7y9dt6539IeYnbc7bUU6lNIhiLePFgct7b7ILc
+	 WAc+99UcknF/1jGs86zGzHOMoASbke2qRtGCJHBaJZ66nlVpNX2MZlePNZZAwC86V9
+	 bMn3wKi0mGoAYdJAuJRlkFVueXHeohFslQ6Du8Og=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Kenneth Crudup <kenny@panix.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.11 097/135] Bluetooth: btusb: Fix not being able to reconnect after suspend
+	Todd Brandt <todd.e.brandt@intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 6.6 049/124] iommu/vt-d: Fix incorrect pci_for_each_dma_alias() for non-PCI devices
 Date: Mon, 21 Oct 2024 12:24:13 +0200
-Message-ID: <20241021102303.120595342@linuxfoundation.org>
+Message-ID: <20241021102258.625525282@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-commit 4084286151fc91cd093578f615bfb68f9efbbfcb upstream.
+commit 6e02a277f1db24fa039e23783c8921c7b0e5b1b3 upstream.
 
-This partially reverts 81b3e33bb054 ("Bluetooth: btusb: Don't fail
-external suspend requests") as it introduced a call to hci_suspend_dev
-that assumes the system-suspend which doesn't work well when just the
-device is being suspended because wakeup flag is only set for remote
-devices that can wakeup the system.
+Previously, the domain_context_clear() function incorrectly called
+pci_for_each_dma_alias() to set up context entries for non-PCI devices.
+This could lead to kernel hangs or other unexpected behavior.
 
-Reported-by: Rafael J. Wysocki <rafael@kernel.org>
-Reported-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reported-by: Kenneth Crudup <kenny@panix.com>
-Fixes: 610712298b11 ("Bluetooth: btusb: Don't fail external suspend requests")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Tested-by: Rafael J. Wysocki <rafael@kernel.org>
+Add a check to only call pci_for_each_dma_alias() for PCI devices. For
+non-PCI devices, domain_context_clear_one() is called directly.
+
+Reported-by: Todd Brandt <todd.e.brandt@intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219363
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219349
+Fixes: 9a16ab9d6402 ("iommu/vt-d: Make context clearing consistent with context mapping")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/20241014013744.102197-2-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c |   14 --------------
- 1 file changed, 14 deletions(-)
+ drivers/iommu/intel/iommu.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -4092,7 +4092,6 @@ static void btusb_disconnect(struct usb_
- static int btusb_suspend(struct usb_interface *intf, pm_message_t message)
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -3925,8 +3925,10 @@ static int domain_context_clear_one_cb(s
+  */
+ static void domain_context_clear(struct device_domain_info *info)
  {
- 	struct btusb_data *data = usb_get_intfdata(intf);
--	int err;
+-	if (!dev_is_pci(info->dev))
++	if (!dev_is_pci(info->dev)) {
+ 		domain_context_clear_one(info, info->bus, info->devfn);
++		return;
++	}
  
- 	BT_DBG("intf %p", intf);
- 
-@@ -4105,16 +4104,6 @@ static int btusb_suspend(struct usb_inte
- 	if (data->suspend_count++)
- 		return 0;
- 
--	/* Notify Host stack to suspend; this has to be done before stopping
--	 * the traffic since the hci_suspend_dev itself may generate some
--	 * traffic.
--	 */
--	err = hci_suspend_dev(data->hdev);
--	if (err) {
--		data->suspend_count--;
--		return err;
--	}
--
- 	spin_lock_irq(&data->txlock);
- 	if (!(PMSG_IS_AUTO(message) && data->tx_in_flight)) {
- 		set_bit(BTUSB_SUSPENDING, &data->flags);
-@@ -4122,7 +4111,6 @@ static int btusb_suspend(struct usb_inte
- 	} else {
- 		spin_unlock_irq(&data->txlock);
- 		data->suspend_count--;
--		hci_resume_dev(data->hdev);
- 		return -EBUSY;
- 	}
- 
-@@ -4243,8 +4231,6 @@ static int btusb_resume(struct usb_inter
- 	spin_unlock_irq(&data->txlock);
- 	schedule_work(&data->work);
- 
--	hci_resume_dev(data->hdev);
--
- 	return 0;
- 
- failed:
+ 	pci_for_each_dma_alias(to_pci_dev(info->dev),
+ 			       &domain_context_clear_one_cb, info);
 
 
 
