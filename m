@@ -1,215 +1,188 @@
-Return-Path: <stable+bounces-87028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4201E9A5E8B
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:23:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE1C9A5ECE
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:39:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1297282C05
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 08:23:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63E421F22829
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 08:39:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE791E1C31;
-	Mon, 21 Oct 2024 08:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E136F1E22EE;
+	Mon, 21 Oct 2024 08:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ZnXpi7hD";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Gbq7Jeww";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ZnXpi7hD";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Gbq7Jeww"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OpD6Jwjo"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754341E1A29;
-	Mon, 21 Oct 2024 08:23:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B30C1E1C2D;
+	Mon, 21 Oct 2024 08:38:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729499009; cv=none; b=RLi9IIoC2J6oK6vkxGy0gE+615naR61PyBkFOJX5nxxR2wNTBQPx3kPdQz9Mc+Ary5u6YKBcaYDoVlUNyn49v67BYtemsbdn+U0wFJ7BxzXnLA1SVZppMHHugBdK1S3Ppj2Qdur1J1oKEu1yAD3QQTNJuN085EubKHuEQrW+mro=
+	t=1729499933; cv=none; b=k6BO1ZctrpSa5l8YMre+YQoUX/kAC8reK0FSTFmr7wOTVidxP3Mje8dHMymyYE1io2jYn5cv5TZk6McL+gUcZW4rzDr8oPQKPa/x26w4olfSZSTxLz4Ik9CFTDgbJ1rQYvKtKA5tzcZCKcb71/xwCR4aaFENIeiU8Wi3DlTMU0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729499009; c=relaxed/simple;
-	bh=WwNjMFmctKzFXLK8lxWuVafRcUUCsMvb6KjXgmfb3xA=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kkGIeL5tGk9Ab/1h+igz/1mJ7y6k/zhRkL4TkgIhV9WsFXF/CweDPImnEI7clYqr56gIgi2EOtqzn9o2fbCZlbxJWlR/WGr0Z+lQxWPdrkrzxCTosv78wlwwhuzEXiobw0rkP6nnsXQjWU8Xo1vibvdb2uOLhh1R1j6dhzcBjqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ZnXpi7hD; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Gbq7Jeww; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ZnXpi7hD; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Gbq7Jeww; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 92CAC1F7D4;
-	Mon, 21 Oct 2024 08:23:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1729499005; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ebuVgWEAOWnQ8lRVNNZaJvcSVaKgtZtjysbBghRCznM=;
-	b=ZnXpi7hDPnGsyrQmEjw+kbnaT1pAgo7ZTwf70D8exzwTPMgwwB0e6Xqd3haZsvK7W+Uae6
-	qzKukvbS9du8i0pTjQn1r9wp7JJxY204mJ3GNmGGU+recRbxUjshaW6I8mMzDBU61/3uAn
-	MTAADHLMiohD0ivcAlqGzBszKPZRJ3w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1729499005;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ebuVgWEAOWnQ8lRVNNZaJvcSVaKgtZtjysbBghRCznM=;
-	b=Gbq7JewwP+/EzySZKvT2BpZXmIzezc43t/fczmurt0BfhcbzB3BW/z02Z9cMhfXn/fM9c4
-	T1FFU/olZpvMGoBw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZnXpi7hD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Gbq7Jeww
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1729499005; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ebuVgWEAOWnQ8lRVNNZaJvcSVaKgtZtjysbBghRCznM=;
-	b=ZnXpi7hDPnGsyrQmEjw+kbnaT1pAgo7ZTwf70D8exzwTPMgwwB0e6Xqd3haZsvK7W+Uae6
-	qzKukvbS9du8i0pTjQn1r9wp7JJxY204mJ3GNmGGU+recRbxUjshaW6I8mMzDBU61/3uAn
-	MTAADHLMiohD0ivcAlqGzBszKPZRJ3w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1729499005;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ebuVgWEAOWnQ8lRVNNZaJvcSVaKgtZtjysbBghRCznM=;
-	b=Gbq7JewwP+/EzySZKvT2BpZXmIzezc43t/fczmurt0BfhcbzB3BW/z02Z9cMhfXn/fM9c4
-	T1FFU/olZpvMGoBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 43970139E0;
-	Mon, 21 Oct 2024 08:23:25 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id B3HkDn0PFmf4YQAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Mon, 21 Oct 2024 08:23:25 +0000
-Date: Mon, 21 Oct 2024 10:24:25 +0200
-Message-ID: <87ldyh6eyu.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Kailang <kailang@realtek.com>
-Cc: Takashi Iwai <tiwai@suse.de>,
-	Dean Matthew Menezes
-	<dean.menezes@utexas.edu>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-	Jaroslav Kysela
-	<perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Linux Sound System
-	<linux-sound@vger.kernel.org>,
-	Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: No sound on speakers X1 Carbon Gen 12
-In-Reply-To: <43fe74e10d1d470e80dc2ae937bc1a43@realtek.com>
-References: <CAEkK70Tke7UxMEEKgRLMntSYeMqiv0PC8st72VYnBVQD-KcqVw@mail.gmail.com>
-	<2024101613-giggling-ceremony-aae7@gregkh>
-	<433b8579-e181-40e6-9eac-815d73993b23@leemhuis.info>
-	<87bjzktncb.wl-tiwai@suse.de>
-	<CAEkK70TAk26HFgrz4ZS0jz4T2Eu3LWcG-JD1Ov_2ffMp66oO-g@mail.gmail.com>
-	<87cyjzrutw.wl-tiwai@suse.de>
-	<CAEkK70T7NBRA1dZHBwAC7mNeXPo-dby4c7Nn=SYg0vzeHHt-1A@mail.gmail.com>
-	<87ttd8jyu3.wl-tiwai@suse.de>
-	<CAEkK70RAWRjRp6_=bSrecSXXMfnepC2P2YriaHUqicv5x5wJWw@mail.gmail.com>
-	<87h697jl6c.wl-tiwai@suse.de>
-	<CAEkK70TWL_me58QZXeJSq+=Ry3jA+CgZJttsgAPz1wP7ywqj6A@mail.gmail.com>
-	<87ed4akd2a.wl-tiwai@suse.de>
-	<87bjzekcva.wl-tiwai@suse.de>
-	<CAEkK70SgwaFNcxni2JUAfz7Ne9a_kdkdLRTOR53uhNzJkBQ3+A@mail.gmail.com>
-	<877ca2j60l.wl-tiwai@suse.de>
-	<43fe74e10d1d470e80dc2ae937bc1a43@realtek.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	s=arc-20240116; t=1729499933; c=relaxed/simple;
+	bh=WbYlBVy0U1GnLrIaCO/CCGOrRCmdbhg78fXAroW8hGI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ILIsVZ3ZN9YB0zVKsYiotYSEOcFdakGNiJKIP5p4PX6epjo5aGO/TB6Bc5X27607Qhq/0e5TnT8obGWqDQEQ7DsP4V7Nuj0PaUCivS2in/mHiE4E0NSwdw+vwymp1NOrWiYaSS1DW2IUOlaY13Z5cerHlSlwxBAFcnj2p3HbL/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OpD6Jwjo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 264FFC4CEC3;
+	Mon, 21 Oct 2024 08:38:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729499933;
+	bh=WbYlBVy0U1GnLrIaCO/CCGOrRCmdbhg78fXAroW8hGI=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=OpD6JwjoEbpXWdXRei8CEF7VlerKKO3JhBHq2c+VxPlqZvPw4728gWC3WOECXySBL
+	 Mn4pNZIYCdAkuB0GX3nXJrWUWWeANaiiwMcpM1lYDVh6YKvjiJPuLDhDvq+JLFg4pa
+	 iE4HLfClPYo708F69LKJUXTnEyX4DpxMweljx25MqEXcLjPTx5T0ngDNMoq6t4fssY
+	 NneMJPKNdfCH/5v9xpqY95TIjUPukB+ROBA4cKYcyU6uEgC8MAkzCMX+zXdNi3gv/0
+	 YKMsx2cUitz46diDiKFzDbaGrswf3ERyTH6JHlNrOWkjoPoqIQlIdMGIbup+hiArYk
+	 FTnkuR1vFwGRw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0DA02D0E6CE;
+	Mon, 21 Oct 2024 08:38:53 +0000 (UTC)
+From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
+Date: Mon, 21 Oct 2024 10:38:42 +0200
+Subject: [PATCH v2] iio: invensense: fix multiple odr switch when FIFO is
+ off
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Queue-Id: 92CAC1F7D4
-X-Spam-Score: -3.51
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.51 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email,suse.com:email,linux.dev:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Level: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241021-invn-inv-sensors-timestamp-fix-switch-fifo-off-v2-1-39ffd43edcc4@tdk.com>
+X-B4-Tracking: v=1; b=H4sIABETFmcC/52N0QrCMAxFf2X02UhbJ2U++R+yh65LXZC1oylVG
+ ft3u32CBEJOuNyzCsZEyOLWrCJhIaYYKuhTI9xkwxOBxspCS90qqQxQKGFfwBg4JoZMM3K28wK
+ ePsBvym6qp48QvYeL151SErvrKEUtXRLW2CF89JUn4hzT9/AXtX//VhUFdQbnrZHWtGa45/F1d
+ nEW/bZtP/cHZmDqAAAA
+X-Change-ID: 20241017-invn-inv-sensors-timestamp-fix-switch-fifo-off-3f29110e95d0
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, 
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1729499932; l=4913;
+ i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
+ bh=HwKkaznxa/GtKkxWPn8/QMQwIOns9lkHLrxgztbXJrs=;
+ b=/sQVEhyGw77DuiPXFRVEer1YQBIacJXR2hYlZQwCLOik+ZPXySdxk1USKK4w3JDsy4VFRjklU
+ v5nmDzjaHoyC++TpxnT4m2GYvVMc7wwyJIUh73MoyP9kJGq2pZsJ6V+
+X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
+ pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
+X-Endpoint-Received: by B4 Relay for
+ jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
+X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Reply-To: jean-baptiste.maneyrol@tdk.com
 
-On Mon, 21 Oct 2024 10:19:53 +0200,
-Kailang wrote:
-> 
-> Change to below model. 
-> +	SND_PCI_QUIRK(0x17aa, 0x231e, "Thinkpad", ALC287_FIXUP_THINKPAD_I2S_SPK),
-> +	SND_PCI_QUIRK(0x17aa, 0x231f, "Thinkpad", ALC287_FIXUP_THINKPAD_I2S_SPK),
-> 
-> The speaker will have output. Right?
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-FWIW, that was what I asked in
-  https://lore.kernel.org/87h697jl6c.wl-tiwai@suse.de
-and Dean replied that the speaker worked with it.
-(His reply missed Cc, so it didn't appear in the thread,
-unfortunately).
+When multiple ODR switch happens during FIFO off, the change could
+not be taken into account if you get back to previous FIFO on value.
+For example, if you run sensor buffer at 50Hz, stop, change to
+200Hz, then back to 50Hz and restart buffer, data will be timestamped
+at 200Hz. This due to testing against mult and not new_mult.
+
+To prevent this, let's just run apply_odr automatically when FIFO is
+off. It will also simplify driver code.
+
+Update inv_mpu6050 and inv_icm42600 to delete now useless apply_odr.
+
+Fixes: 95444b9eeb8c ("iio: invensense: fix odr switching to same value")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+---
+Changes in v2:
+- Delete unused anymore local variables.
+- Link to v1: https://lore.kernel.org/r/20241017-invn-inv-sensors-timestamp-fix-switch-fifo-off-v1-1-1bcfa70a747b@tdk.com
+---
+ drivers/iio/common/inv_sensors/inv_sensors_timestamp.c | 4 ++++
+ drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c      | 2 --
+ drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c       | 3 ---
+ drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c          | 1 -
+ 4 files changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+index f44458c380d92823ce2e7e5f78ca877ea4c06118..37d0bdaa8d824f79dcd2f341be7501d249926951 100644
+--- a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
++++ b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+@@ -70,6 +70,10 @@ int inv_sensors_timestamp_update_odr(struct inv_sensors_timestamp *ts,
+ 	if (mult != ts->mult)
+ 		ts->new_mult = mult;
+ 
++	/* When FIFO is off, directly apply the new ODR */
++	if (!fifo)
++		inv_sensors_timestamp_apply_odr(ts, 0, 0, 0);
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL_NS_GPL(inv_sensors_timestamp_update_odr, IIO_INV_SENSORS_TIMESTAMP);
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+index 56ac198142500a2e1fc40b62cdd465cc736d8bf0..7968aa27f9fd798f206e72891f1c9b483811dea2 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+@@ -200,7 +200,6 @@ static int inv_icm42600_accel_update_scan_mode(struct iio_dev *indio_dev,
+ {
+ 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+ 	struct inv_icm42600_sensor_state *accel_st = iio_priv(indio_dev);
+-	struct inv_sensors_timestamp *ts = &accel_st->ts;
+ 	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
+ 	unsigned int fifo_en = 0;
+ 	unsigned int sleep_temp = 0;
+@@ -229,7 +228,6 @@ static int inv_icm42600_accel_update_scan_mode(struct iio_dev *indio_dev,
+ 	}
+ 
+ 	/* update data FIFO write */
+-	inv_sensors_timestamp_apply_odr(ts, 0, 0, 0);
+ 	ret = inv_icm42600_buffer_set_fifo_en(st, fifo_en | st->fifo.en);
+ 
+ out_unlock:
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
+index 938af5b640b00f58d2b8185f752c4755edfb0d25..c6bb68bf5e1449d4b961ac962311cbc5aa3c0a97 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
+@@ -99,8 +99,6 @@ static int inv_icm42600_gyro_update_scan_mode(struct iio_dev *indio_dev,
+ 					      const unsigned long *scan_mask)
+ {
+ 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+-	struct inv_icm42600_sensor_state *gyro_st = iio_priv(indio_dev);
+-	struct inv_sensors_timestamp *ts = &gyro_st->ts;
+ 	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
+ 	unsigned int fifo_en = 0;
+ 	unsigned int sleep_gyro = 0;
+@@ -128,7 +126,6 @@ static int inv_icm42600_gyro_update_scan_mode(struct iio_dev *indio_dev,
+ 	}
+ 
+ 	/* update data FIFO write */
+-	inv_sensors_timestamp_apply_odr(ts, 0, 0, 0);
+ 	ret = inv_icm42600_buffer_set_fifo_en(st, fifo_en | st->fifo.en);
+ 
+ out_unlock:
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+index 3bfeabab0ec4f6fa28fbbcd47afe92af5b8a58e2..5b1088cc3704f1ad1288a0d65b2f957b91455d7f 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+@@ -112,7 +112,6 @@ int inv_mpu6050_prepare_fifo(struct inv_mpu6050_state *st, bool enable)
+ 	if (enable) {
+ 		/* reset timestamping */
+ 		inv_sensors_timestamp_reset(&st->timestamp);
+-		inv_sensors_timestamp_apply_odr(&st->timestamp, 0, 0, 0);
+ 		/* reset FIFO */
+ 		d = st->chip_config.user_ctrl | INV_MPU6050_BIT_FIFO_RST;
+ 		ret = regmap_write(st->map, st->reg->user_ctrl, d);
+
+---
+base-commit: c3e9df514041ec6c46be83801b1891392f4522f7
+change-id: 20241017-invn-inv-sensors-timestamp-fix-switch-fifo-off-3f29110e95d0
+
+Best regards,
+-- 
+Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
 
-Takashi
-
-> > -----Original Message-----
-> > From: Takashi Iwai <tiwai@suse.de>
-> > Sent: Monday, October 21, 2024 2:59 PM
-> > To: Dean Matthew Menezes <dean.menezes@utexas.edu>
-> > Cc: Takashi Iwai <tiwai@suse.de>; Kailang <kailang@realtek.com>;
-> > stable@vger.kernel.org; regressions@lists.linux.dev; Jaroslav Kysela
-> > <perex@perex.cz>; Takashi Iwai <tiwai@suse.com>; Linux Sound System
-> > <linux-sound@vger.kernel.org>; Greg KH <gregkh@linuxfoundation.org>
-> > Subject: Re: No sound on speakers X1 Carbon Gen 12
-> > 
-> > 
-> > External mail.
-> > 
-> > 
-> > 
-> > On Mon, 21 Oct 2024 03:30:13 +0200,
-> > Dean Matthew Menezes wrote:
-> > >
-> > > I can confirm that the original fix does not bring back the speaker
-> > > output.  I have attached both outputs for alsa-info.sh
-> > 
-> > Thanks!  This confirms that the only significant difference is the COEF data
-> > between working and patched-non-working cases.
-> > 
-> > Kailang, I guess this model (X1 Carbon Gen 12) isn't with ALC1318, hence your
-> > quirk rather influences badly.  Or may the GPIO3 workaround have the similar
-> > effect?
-> > 
-> > As of now, the possible fix is to simply remove the quirk entries for ALC1318.
-> > But I'd need to know which model was targeted for your original fix in commit
-> > 1e707769df07 and whether the regressed model is with ALC1318.
-> > 
-> > 
-> > Takashi
 
