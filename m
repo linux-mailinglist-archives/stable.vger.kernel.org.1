@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-87120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7857A9A632E
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:31:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE2F9A6358
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:34:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B6DC1F210A2
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:31:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E0A01F20C73
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:34:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD0F11E7C16;
-	Mon, 21 Oct 2024 10:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B31F3A1CD;
+	Mon, 21 Oct 2024 10:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkkU9XAN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cKZU7D1R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E81A1E47A6;
-	Mon, 21 Oct 2024 10:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E6A1E5707;
+	Mon, 21 Oct 2024 10:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506653; cv=none; b=S+QkDc1wUF14iLbLSU+hAiwFS7RmM8HvGUDDxoo2VPvTIrgvFOgarlAT0WGywji7N0kHSNuqfJGRzUc6EIKwbRokRDMbuTodtfrvZNku+mTG1ghVnnRqzvlLF1xezu6Z+lmltJgw3AvtvfRkHLkU7r1RsWgwo06FwWHzyeu7Y3I=
+	t=1729506687; cv=none; b=jCUesg1RCiIr9WmgQB8vHGzHuz/5O9kmVKgx8TeQXYjMmGzdrA0yRuSovmeyuuxhVAhnjmhfmJPRASsPlbO8/FSSlVPG92hcb9gqEki+qMAZYZAcYgg04FG4w5Nj4euvy83VjIGvRDSd71x1BLYvnrlRKJLHykEs/pnQXOkTzLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506653; c=relaxed/simple;
-	bh=Ci8yQgz1uXuI6MJgbwucay0XR6fdUIebIAkFj0UxcFU=;
+	s=arc-20240116; t=1729506687; c=relaxed/simple;
+	bh=Ql1NbfNjR80TOJLOnmInIb0fvLjxul3fWYNgoJW8gqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T400szQqLV0o7Bl2fM2eglP603p1vmU8VnZ4fgyj0H6FmA2Kfkyh/ugNENTTs03CAJ29Cm0cBI33JtMD7z5FOQy5a6BIG5+QF1v7uvzX7jWl339v4Z3U49TJVDYgI4oPkT3bfjCZOxnZBX9ZFtFj1aUvMjkNMKpwSGqpWHZ9iC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkkU9XAN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6638C4CEEE;
-	Mon, 21 Oct 2024 10:30:52 +0000 (UTC)
+	 MIME-Version; b=NE9jcGxpDwnv4Z1eHjRNRO0qkiaNL4dVrDw3X1XBxNvsMJc2PZzJxKS+2CymeiCFGM2HqQsaHXZsmg1BVmx1HuSg+3Gh4lBosM87J9xn/3fKkHsxHOQkjtCnHDinIV3/yFE7g7+0AAq9WRxV78HdNb1LpKy1nYjmEoa+ZEeM32s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cKZU7D1R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76B9EC4CEC3;
+	Mon, 21 Oct 2024 10:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506653;
-	bh=Ci8yQgz1uXuI6MJgbwucay0XR6fdUIebIAkFj0UxcFU=;
+	s=korg; t=1729506686;
+	bh=Ql1NbfNjR80TOJLOnmInIb0fvLjxul3fWYNgoJW8gqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zkkU9XANNIxHpkVhwB2s+/LWF4Sshw3GKhkFJ/ttYzq7JwucZnq2JvRJRAAhPdCrP
-	 Rz+2N7ElcuwSaIxSHbvc11JcMM4KUBEfC/QKne1GwZF6KCRsc6wNgWDK9ArzJG5fcg
-	 dQdwI36T9OrxIlIqE6s7DLX5qEAMQ/+Pw+QoK+ZI=
+	b=cKZU7D1RKWi9JYslgy4v9QfYDnzZnO4+kpcvIu6NPk5D2xgMvWNgl/dVj72fVbFhp
+	 cL++oN55Fq9w/PW7m1OvESwntWMjHmCgjfGgEhfI7XFTu3SCg1fjT/EGnP7JcXphwu
+	 mpiFJckdIC3TRwQBE1hG/eUOCzkaGis6jY7syJaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohammed Anees <pvmohammedanees2003@gmail.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.11 069/135] drm/amdgpu: prevent BO_HANDLES error from being overwritten
-Date: Mon, 21 Oct 2024 12:23:45 +0200
-Message-ID: <20241021102302.031380481@linuxfoundation.org>
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.11 070/135] iio: dac: ad5770r: add missing select REGMAP_SPI in Kconfig
+Date: Mon, 21 Oct 2024 12:23:46 +0200
+Message-ID: <20241021102302.069562388@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
 References: <20241021102259.324175287@linuxfoundation.org>
@@ -61,45 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohammed Anees <pvmohammedanees2003@gmail.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit c0ec082f10b7a1fd25e8c1e2a686440da913b7a3 upstream.
+commit bcdab6f74c91cda19714354fd4e9e3ef3c9a78b3 upstream.
 
-Before this patch, if multiple BO_HANDLES chunks were submitted,
-the error -EINVAL would be correctly set but could be overwritten
-by the return value from amdgpu_cs_p1_bo_handles(). This patch
-ensures that if there are multiple BO_HANDLES, we stop.
+This driver makes use of regmap_spi, but does not select the required
+module.
+Add the missing 'select REGMAP_SPI'.
 
-Fixes: fec5f8e8c6bc ("drm/amdgpu: disallow multiple BO_HANDLES chunks in one submit")
-Signed-off-by: Mohammed Anees <pvmohammedanees2003@gmail.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 40f2cd98828f454bdc5006ad3d94330a5ea164b7)
-Cc: stable@vger.kernel.org
+Fixes: cbbb819837f6 ("iio: dac: ad5770r: Add AD5770R support")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241003-ad2s1210-select-v1-6-4019453f8c33@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/dac/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-@@ -265,7 +265,7 @@ static int amdgpu_cs_pass1(struct amdgpu
- 
- 			/* Only a single BO list is allowed to simplify handling. */
- 			if (p->bo_list)
--				ret = -EINVAL;
-+				goto free_partial_kdata;
- 
- 			ret = amdgpu_cs_p1_bo_handles(p, p->chunks[i].kdata);
- 			if (ret)
+--- a/drivers/iio/dac/Kconfig
++++ b/drivers/iio/dac/Kconfig
+@@ -262,6 +262,7 @@ config AD5766
+ config AD5770R
+ 	tristate "Analog Devices AD5770R IDAC driver"
+ 	depends on SPI_MASTER
++	select REGMAP_SPI
+ 	help
+ 	  Say yes here to build support for Analog Devices AD5770R Digital to
+ 	  Analog Converter.
 
 
 
