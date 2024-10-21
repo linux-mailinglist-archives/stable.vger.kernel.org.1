@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-87283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C23B9A643E
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:44:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71C0E9A64E8
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:52:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD23628431E
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:44:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2852A1F211CB
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:52:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EA1C1E7657;
-	Mon, 21 Oct 2024 10:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463AA1E8840;
+	Mon, 21 Oct 2024 10:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGDlctNo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1okIgFTq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C823D1E3DD8;
-	Mon, 21 Oct 2024 10:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F327339FD6;
+	Mon, 21 Oct 2024 10:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507141; cv=none; b=JY63pc0g7ggpgo7j4P7lbrYNO1xidgd3sTp19nZvpjAo4WE+qgvsliyPxBm9EMAds7m4YS3rtqF/Agcu/d61mEQWHOmqUE+QrWqih3NJJp8FnI7NRPWaKO45kOECWnC1fLVhgYl8vZnh00M8gprjOvSeJD3JUV0yewHFFONBd5I=
+	t=1729507562; cv=none; b=l8xBO+buj/E6oxLEsSBdq2QwasuNQOTw3LdAzP895Dq/itPvtnIc96y0qN8hdWyn770P0n99e8udFfKIkBbgbKlixvzkZRkGSMH2f/VdUVvtVxK23cIKjzlBCQsBmJK0ZNUek/XnxgSKFnT9fpjAsb6ATw5iaaQAtQU+FthYTjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507141; c=relaxed/simple;
-	bh=RSzahBSj9fpNb1CpC1InpnTKrF0FwIh4W3Vr/MCGll4=;
+	s=arc-20240116; t=1729507562; c=relaxed/simple;
+	bh=IdEgIfMASlEjLUWWfeUakefMeByiQfy2sfuyOao46F0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rtt4HqtFgdIKh0QCUkK86vCx17jp2kp3PEthsjtIIslatqpqMbKFX2Y/oV2YfyEjPH1x+YANTdzj9E4imv6aq8WvpUPHR8Fsg9UstmCvU3nMyqHco9u9T6S+PpTnF7dmzydJm1Zo0N2gwznWMKLhUMM2WS9jBidglSwn4YpGR5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGDlctNo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E96C4CEC3;
-	Mon, 21 Oct 2024 10:39:01 +0000 (UTC)
+	 MIME-Version; b=hvSr2FNKiEON+VSDmky8jS5bkFYhe4fe9Vx+XvHUVH/r6B/NAhuGlmskuZ0jIA1iEphn59sQctIQM5Qz/4kYD+GNdrjL1FW4lxTRWPdD48viy4Ou0ILfP6+gui+pjKuNoEH3YlY2qfxJUw2EsgoUS/+Kc5KRQzib7jz/Vcjdlpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1okIgFTq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E3FC4CEC3;
+	Mon, 21 Oct 2024 10:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507141;
-	bh=RSzahBSj9fpNb1CpC1InpnTKrF0FwIh4W3Vr/MCGll4=;
+	s=korg; t=1729507561;
+	bh=IdEgIfMASlEjLUWWfeUakefMeByiQfy2sfuyOao46F0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DGDlctNogy+3w2dmltSqoPyeYnuwNlvn/FQLG1+nD5AZWTUkzk3GCE0SN30k1oXZd
-	 2ZZNgDiEzUevA9EXJZwaB+upe8MKQ7CaPtTTuPFXHcDKmPImijiXswzpniD3D+MoT8
-	 2rpGmqm9bdcGkj4WYEI90qN8wyN6GGtT6pWZUbeo=
+	b=1okIgFTqJzXAb0Z/d/pR4Sd8dcqym/DjmLt1gGgH08Vbd4D4S95XYZuYH3Szfm2Fu
+	 d5cZ4lHa0ytsccsGFzTixlRBdeLIpDJTz6lV83stUr23JJzK8HtFcPMUIpq22TIkbo
+	 wnAQEX/juwlEMHivEyx1WcLAQPgXjHWEQZgpyQWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Hansen <dave.hansen@intel.com>,
-	Zhang Rui <rui.zhang@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Todd Brandt <todd.e.brandt@intel.com>
-Subject: [PATCH 6.6 104/124] x86/apic: Always explicitly disarm TSC-deadline timer
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 27/82] net: macb: Avoid 20s boot delay by skipping MDIO bus registration for fixed-link PHY
 Date: Mon, 21 Oct 2024 12:25:08 +0200
-Message-ID: <20241021102300.741838345@linuxfoundation.org>
+Message-ID: <20241021102248.322952950@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit ffd95846c6ec6cf1f93da411ea10d504036cab42 upstream.
+commit d0c3601f2c4e12e7689b0f46ebc17525250ea8c3 upstream.
 
-New processors have become pickier about the local APIC timer state
-before entering low power modes. These low power modes are used (for
-example) when you close your laptop lid and suspend. If you put your
-laptop in a bag and it is not in this low power mode, it is likely
-to get quite toasty while it quickly sucks the battery dry.
+A boot delay was introduced by commit 79540d133ed6 ("net: macb: Fix
+handling of fixed-link node"). This delay was caused by the call to
+`mdiobus_register()` in cases where a fixed-link PHY was present. The
+MDIO bus registration triggered unnecessary PHY address scans, leading
+to a 20-second delay due to attempts to detect Clause 45 (C45)
+compatible PHYs, despite no MDIO bus being attached.
 
-The problem boils down to some CPUs' inability to power down until the
-CPU recognizes that the local APIC timer is shut down. The current
-kernel code works in one-shot and periodic modes but does not work for
-deadline mode. Deadline mode has been the supported and preferred mode
-on Intel CPUs for over a decade and uses an MSR to drive the timer
-instead of an APIC register.
+The commit 79540d133ed6 ("net: macb: Fix handling of fixed-link node")
+was originally introduced to fix a regression caused by commit
+7897b071ac3b4 ("net: macb: convert to phylink"), which caused the driver
+to misinterpret fixed-link nodes as PHY nodes. This resulted in warnings
+like:
+mdio_bus f0028000.ethernet-ffffffff: fixed-link has invalid PHY address
+mdio_bus f0028000.ethernet-ffffffff: scan phy fixed-link at address 0
+...
+mdio_bus f0028000.ethernet-ffffffff: scan phy fixed-link at address 31
 
-Disable the TSC Deadline timer in lapic_timer_shutdown() by writing to
-MSR_IA32_TSC_DEADLINE when in TSC-deadline mode. Also avoid writing
-to the initial-count register (APIC_TMICT) which is ignored in
-TSC-deadline mode.
+This patch reworks the logic to avoid registering and allocation of the
+MDIO bus when:
+  - The device tree contains a fixed-link node.
+  - There is no "mdio" child node in the device tree.
 
-Note: The APIC_LVTT|=APIC_LVT_MASKED operation should theoretically be
-enough to tell the hardware that the timer will not fire in any of the
-timer modes. But mitigating AMD erratum 411[1] also requires clearing
-out APIC_TMICT. Solely setting APIC_LVT_MASKED is also ineffective in
-practice on Intel Lunar Lake systems, which is the motivation for this
-change.
+If a child node named "mdio" exists, the MDIO bus will be registered to
+support PHYs  attached to the MACB's MDIO bus. Otherwise, with only a
+fixed-link, the MDIO bus is skipped.
 
-1. 411 Processor May Exit Message-Triggered C1E State Without an Interrupt if Local APIC Timer Reaches Zero - https://www.amd.com/content/dam/amd/en/documents/archived-tech-docs/revision-guides/41322_10h_Rev_Gd.pdf
+Tested on a sama5d35 based system with a ksz8863 switch attached to
+macb0.
 
-Fixes: 279f1461432c ("x86: apic: Use tsc deadline for oneshot when available")
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Tested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Tested-by: Todd Brandt <todd.e.brandt@intel.com>
+Fixes: 79540d133ed6 ("net: macb: Fix handling of fixed-link node")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20241015061522.25288-1-rui.zhang%40intel.com
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20241013052916.3115142-1-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/apic/apic.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/cadence/macb_main.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -473,7 +473,19 @@ static int lapic_timer_shutdown(struct c
- 	v = apic_read(APIC_LVTT);
- 	v |= (APIC_LVT_MASKED | LOCAL_TIMER_VECTOR);
- 	apic_write(APIC_LVTT, v);
--	apic_write(APIC_TMICT, 0);
-+
-+	/*
-+	 * Setting APIC_LVT_MASKED (above) should be enough to tell
-+	 * the hardware that this timer will never fire. But AMD
-+	 * erratum 411 and some Intel CPU behavior circa 2024 say
-+	 * otherwise.  Time for belt and suspenders programming: mask
-+	 * the timer _and_ zero the counter registers:
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -902,9 +902,6 @@ static int macb_mdiobus_register(struct
+ {
+ 	struct device_node *child, *np = bp->pdev->dev.of_node;
+ 
+-	if (of_phy_is_fixed_link(np))
+-		return mdiobus_register(bp->mii_bus);
+-
+ 	/* Only create the PHY from the device tree if at least one PHY is
+ 	 * described. Otherwise scan the entire MDIO bus. We do this to support
+ 	 * old device tree that did not follow the best practices and did not
+@@ -925,8 +922,19 @@ static int macb_mdiobus_register(struct
+ 
+ static int macb_mii_init(struct macb *bp)
+ {
++	struct device_node *child, *np = bp->pdev->dev.of_node;
+ 	int err = -ENXIO;
+ 
++	/* With fixed-link, we don't need to register the MDIO bus,
++	 * except if we have a child named "mdio" in the device tree.
++	 * In that case, some devices may be attached to the MACB's MDIO bus.
 +	 */
-+	if (v & APIC_LVT_TIMER_TSCDEADLINE)
-+		wrmsrl(MSR_IA32_TSC_DEADLINE, 0);
-+	else
-+		apic_write(APIC_TMICT, 0);
++	child = of_get_child_by_name(np, "mdio");
++	if (child)
++		of_node_put(child);
++	else if (of_phy_is_fixed_link(np))
++		return macb_mii_probe(bp->dev);
 +
- 	return 0;
- }
+ 	/* Enable management port */
+ 	macb_writel(bp, NCR, MACB_BIT(MPE));
  
 
 
