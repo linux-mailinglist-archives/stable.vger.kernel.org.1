@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-87375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40A099A64A4
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:49:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A779A645E
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:46:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F0BD1C21D39
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:49:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0522828112F
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:46:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85081F426F;
-	Mon, 21 Oct 2024 10:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CA11E907C;
+	Mon, 21 Oct 2024 10:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QCxXV3zW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lfLY7p5o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F97B1F4266;
-	Mon, 21 Oct 2024 10:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F59A1E0087;
+	Mon, 21 Oct 2024 10:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507418; cv=none; b=B0p7CTuyrIjqmjPwWk9S6yY8OMbuiME0SzHZ3DiD28Ne2Lay9RFOOPC8RuhU/xw8qd6o2goVIGRsib5lQAAVxMZ9JTujVFDXlM7SRkS5k5vqZiTF0Yg/tVEqo/jzdBGqMWsu0G14Ojbx4dUz3rOvosM/A+Ovo4s7gQfJtPxk22U=
+	t=1729507228; cv=none; b=jMfeIbdQYoPDywH7pFMDllSZDAjYDs9PagbKrU5UJHkFPIOcgeG2hqERVRIbJwxT++r+3Lr29SRq7n0PpEGLSKZn4wPUvGD2AzEPxjUGqRuV2PBU513DO3IBTkapA+vkccm8ScPgHuhCZSDeIrGP3sf8m7kKSXUl1GXZMKVqgAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507418; c=relaxed/simple;
-	bh=VJeZGT/Q3bhjP7pv+4SqrCTTIyPEyGpINt/1DZF2n3A=;
+	s=arc-20240116; t=1729507228; c=relaxed/simple;
+	bh=CO8tP+4lBmS5EX82cqFf/oWgsumsqlacNaErqwM/BF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y7lWgMLRy3ujrXlEOo4DUZ0cU5AwpidYl4QCtwVrW+HYJEf46JN44ckH9XM9OktZ09pG08MjW5YlugDDallKzpyn3nNfQ0FUb/8yJHf9MIfIlONmB4nwIa9wax7qURWIsF4vpHifjPa6lGJ4PQHcJw9BMvOeyto+0vCUxDnWlYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QCxXV3zW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC83C4CEC7;
-	Mon, 21 Oct 2024 10:43:37 +0000 (UTC)
+	 MIME-Version; b=MmHyy3CXcpbweCPYfKBdte/xEO0G3K17E6GdYs9534Zj0PowyywfU+yYRw9rOtCwDVyAGhQ1x6Wu4erGlciaw5EvLq6qhWzb+eY1eDog7kpMGxz3GShuTSbOeAOq2eroAcfX9qeKAk2yOS0OmOlziRSMR7AsS+Lw61G0Y8g08Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lfLY7p5o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7ED9C4CEC3;
+	Mon, 21 Oct 2024 10:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507418;
-	bh=VJeZGT/Q3bhjP7pv+4SqrCTTIyPEyGpINt/1DZF2n3A=;
+	s=korg; t=1729507228;
+	bh=CO8tP+4lBmS5EX82cqFf/oWgsumsqlacNaErqwM/BF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QCxXV3zWJFsIUqBEf5AwWhS/9YC2BvnzV8JjKURnsx9aVp+C6g9RttgJY/uMy8V4U
-	 nsofDw9nclOJPlOI8ythRq2OpG2bJYHN7q5lw2BrJ9i7znby9I/j04e8r1JLaAiI30
-	 o3WFUadk/zXKDH+c1LdTTQJGzOnVfm653iCV8Xfo=
+	b=lfLY7p5o1LZni6YRduSiwDxcqh9O/CWSV7dOm6qN4y+8ScOKuiBxSN6u96H4fUNTz
+	 UnQUOg2VD4ViICzcBugoPbZvzJ8TRGoGaoV6scEg2ND7MUPbRN3KHkrMHazovmzKRi
+	 pJrNx010y+Gfed2c3Qv0eWTyx2hChNIoMzA/h/mk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 71/91] Bluetooth: btusb: Fix regression with fake CSR controllers 0a12:0001
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 121/124] selftests: mptcp: join: test for prohibited MPC to port-based endp
 Date: Mon, 21 Oct 2024 12:25:25 +0200
-Message-ID: <20241021102252.591664258@linuxfoundation.org>
+Message-ID: <20241021102301.403674076@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,72 +61,233 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 2c1dda2acc4192d826e84008d963b528e24d12bc upstream.
+commit 5afca7e996c42aed1b4a42d4712817601ba42aff upstream.
 
-Fake CSR controllers don't seem to handle short-transfer properly which
-cause command to time out:
+Explicitly verify that MPC connection attempts towards a port-based
+signal endpoint fail with a reset.
 
-kernel: usb 1-1: new full-speed USB device number 19 using xhci_hcd
-kernel: usb 1-1: New USB device found, idVendor=0a12, idProduct=0001, bcdDevice=88.91
-kernel: usb 1-1: New USB device strings: Mfr=0, Product=2, SerialNumber=0
-kernel: usb 1-1: Product: BT DONGLE10
-...
-Bluetooth: hci1: Opcode 0x1004 failed: -110
-kernel: Bluetooth: hci1: command 0x1004 tx timeout
+Note that this new test is a bit different from the other ones, not
+using 'run_tests'. It is then needed to add the capture capability, and
+the picking the right port which have been extracted into three new
+helpers. The info about the capture can also be printed from a single
+point, which simplifies the exit paths in do_transfer().
 
-According to USB Spec 2.0 Section 5.7.3 Interrupt Transfer Packet Size
-Constraints a interrupt transfer is considered complete when the size is 0
-(ZPL) or < wMaxPacketSize:
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
 
- 'When an interrupt transfer involves more data than can fit in one
- data payload of the currently established maximum size, all data
- payloads are required to be maximum-sized except for the last data
- payload, which will contain the remaining data. An interrupt transfer
- is complete when the endpoint does one of the following:
-
- • Has transferred exactly the amount of data expected
- • Transfers a packet with a payload size less than wMaxPacketSize or
- transfers a zero-length packet'
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219365
-Fixes: 7b05933340f4 ("Bluetooth: btusb: Fix not handling ZPL/short-transfer")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 1729cf186d8a ("mptcp: create the listening socket for new port")
+Cc: stable@vger.kernel.org
+Co-developed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20241014-net-mptcp-mpc-port-endp-v2-2-7faea8e6b6ae@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in mptcp_join.sh, because commit 0bd962dd86b2 ("selftests:
+  mptcp: join: check CURRESTAB counters"), and commit 9e6a39ecb9a1
+  ("selftests: mptcp: export TEST_COUNTER variable") are linked to new
+  features, not available in this version. Resolving the conflicts is
+  easy, simply adding the new helpers before do_transfer(), and rename
+  MPTCP_LIB_TEST_COUNTER to TEST_COUNT that was used before. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |  115 +++++++++++++++++-------
+ 1 file changed, 85 insertions(+), 30 deletions(-)
 
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -1191,10 +1191,15 @@ static int btusb_submit_intr_urb(struct
- 	if (!urb)
- 		return -ENOMEM;
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -23,6 +23,7 @@ tmpfile=""
+ cout=""
+ err=""
+ capout=""
++cappid=""
+ ns1=""
+ ns2=""
+ ksft_skip=4
+@@ -1006,40 +1007,62 @@ pm_nl_set_endpoint()
+ 	fi
+ }
  
--	/* Use maximum HCI Event size so the USB stack handles
--	 * ZPL/short-transfer automatically.
--	 */
--	size = HCI_MAX_EVENT_SIZE;
-+	if (le16_to_cpu(data->udev->descriptor.idVendor)  == 0x0a12 &&
-+	    le16_to_cpu(data->udev->descriptor.idProduct) == 0x0001)
-+		/* Fake CSR devices don't seem to support sort-transter */
-+		size = le16_to_cpu(data->intr_ep->wMaxPacketSize);
+-do_transfer()
++cond_start_capture()
+ {
+-	local listener_ns="$1"
+-	local connector_ns="$2"
+-	local cl_proto="$3"
+-	local srv_proto="$4"
+-	local connect_addr="$5"
+-
+-	local port=$((10000 + TEST_COUNT - 1))
+-	local cappid
+-	local FAILING_LINKS=${FAILING_LINKS:-""}
+-	local fastclose=${fastclose:-""}
+-	local speed=${speed:-"fast"}
++	local ns="$1"
+ 
+-	:> "$cout"
+-	:> "$sout"
+ 	:> "$capout"
+ 
+ 	if $capture; then
+-		local capuser
+-		if [ -z $SUDO_USER ] ; then
++		local capuser capfile
++		if [ -z $SUDO_USER ]; then
+ 			capuser=""
+ 		else
+ 			capuser="-Z $SUDO_USER"
+ 		fi
+ 
+-		capfile=$(printf "mp_join-%02u-%s.pcap" "$TEST_COUNT" "${listener_ns}")
++		capfile=$(printf "mp_join-%02u-%s.pcap" "$TEST_COUNT" "$ns")
+ 
+ 		echo "Capturing traffic for test $TEST_COUNT into $capfile"
+-		ip netns exec ${listener_ns} tcpdump -i any -s 65535 -B 32768 $capuser -w $capfile > "$capout" 2>&1 &
++		ip netns exec "$ns" tcpdump -i any -s 65535 -B 32768 $capuser -w "$capfile" > "$capout" 2>&1 &
+ 		cappid=$!
+ 
+ 		sleep 1
+ 	fi
++}
++
++cond_stop_capture()
++{
++	if $capture; then
++		sleep 1
++		kill $cappid
++		cat "$capout"
++	fi
++}
++
++get_port()
++{
++	echo "$((10000 + TEST_COUNT - 1))"
++}
++
++do_transfer()
++{
++	local listener_ns="$1"
++	local connector_ns="$2"
++	local cl_proto="$3"
++	local srv_proto="$4"
++	local connect_addr="$5"
++	local port
++
++	local FAILING_LINKS=${FAILING_LINKS:-""}
++	local fastclose=${fastclose:-""}
++	local speed=${speed:-"fast"}
++	port=$(get_port)
++
++	:> "$cout"
++	:> "$sout"
++
++	cond_start_capture ${listener_ns}
+ 
+ 	NSTAT_HISTORY=/tmp/${listener_ns}.nstat ip netns exec ${listener_ns} \
+ 		nstat -n
+@@ -1125,10 +1148,7 @@ do_transfer()
+ 	wait $spid
+ 	local rets=$?
+ 
+-	if $capture; then
+-	    sleep 1
+-	    kill $cappid
+-	fi
++	cond_stop_capture
+ 
+ 	NSTAT_HISTORY=/tmp/${listener_ns}.nstat ip netns exec ${listener_ns} \
+ 		nstat | grep Tcp > /tmp/${listener_ns}.out
+@@ -1144,7 +1164,6 @@ do_transfer()
+ 		ip netns exec ${connector_ns} ss -Menita 1>&2 -o "dport = :$port"
+ 		cat /tmp/${connector_ns}.out
+ 
+-		cat "$capout"
+ 		return 1
+ 	fi
+ 
+@@ -1161,13 +1180,7 @@ do_transfer()
+ 	fi
+ 	rets=$?
+ 
+-	if [ $retc -eq 0 ] && [ $rets -eq 0 ];then
+-		cat "$capout"
+-		return 0
+-	fi
+-
+-	cat "$capout"
+-	return 1
++	[ $retc -eq 0 ] && [ $rets -eq 0 ]
+ }
+ 
+ make_file()
+@@ -2944,6 +2957,32 @@ verify_listener_events()
+ 	fail_test "$e_type:$type $e_family:$family $e_saddr:$saddr $e_sport:$sport"
+ }
+ 
++chk_mpc_endp_attempt()
++{
++	local retl=$1
++	local attempts=$2
++
++	print_check "Connect"
++
++	if [ ${retl} = 124 ]; then
++		fail_test "timeout on connect"
++	elif [ ${retl} = 0 ]; then
++		fail_test "unexpected successful connect"
 +	else
-+		/* Use maximum HCI Event size so the USB stack handles
-+		 * ZPL/short-transfer automatically.
-+		 */
-+		size = HCI_MAX_EVENT_SIZE;
++		print_ok
++
++		print_check "Attempts"
++		count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtMPCapableEndpAttempt")
++		if [ -z "$count" ]; then
++			print_skip
++		elif [ "$count" != "$attempts" ]; then
++			fail_test "got ${count} MPC attempt[s] on port-based endpoint, expected ${attempts}"
++		else
++			print_ok
++		fi
++	fi
++}
++
+ add_addr_ports_tests()
+ {
+ 	# signal address with port
+@@ -3034,6 +3073,22 @@ add_addr_ports_tests()
+ 		chk_join_nr 2 2 2
+ 		chk_add_nr 2 2 2
+ 	fi
++
++	if reset "port-based signal endpoint must not accept mpc"; then
++		local port retl count
++		port=$(get_port)
++
++		cond_start_capture ${ns1}
++		pm_nl_add_endpoint ${ns1} 10.0.2.1 flags signal port ${port}
++		mptcp_lib_wait_local_port_listen ${ns1} ${port}
++
++		timeout 1 ip netns exec ${ns2} \
++			./mptcp_connect -t ${timeout_poll} -p $port -s MPTCP 10.0.2.1 >/dev/null 2>&1
++		retl=$?
++		cond_stop_capture
++
++		chk_mpc_endp_attempt ${retl} 1
++	fi
+ }
  
- 	buf = kmalloc(size, mem_flags);
- 	if (!buf) {
+ syncookies_tests()
 
 
 
