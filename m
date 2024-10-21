@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-87345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D40659A6491
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:48:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EA189A637E
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:35:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4DB6B2D753
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:47:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 176FD1F22945
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A33D1E3776;
-	Mon, 21 Oct 2024 10:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667751E5037;
+	Mon, 21 Oct 2024 10:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jt2Wcs8I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNhti0Ag"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC531E7C16;
-	Mon, 21 Oct 2024 10:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2931E8854;
+	Mon, 21 Oct 2024 10:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507328; cv=none; b=O2Czl/OJnzHKPe5OtKSphStd+rzSKf5TYrew/wiByVoX/GNWzQhRwGwwTIW6E3Gu27zFH42Vm51Gy6Z1V42QCFRfLqft4L5CckQ1TEWfZ8tId+yU6siqyeDnYNwcN49axTwKquDdbJnrOxSWi8xYZMAa2j2/QMUhn0glrgB5N/M=
+	t=1729506791; cv=none; b=bWd2pgZnwLSgoI6UxV81a89LRfzYoR0nzFXqLV7vzMtMAyKTCb1WRvDHVAeH0xDhCy+SdU23acepG8W+PmppbQh/B+0/crblmVfMG45UBFBlDBPqIhvp3dTG76+uc96AmJ14vAWeCkNk5m7xIDNrlT3YXhWFvdGcHv3wAbmSUuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507328; c=relaxed/simple;
-	bh=CEFVc1ZGLai6UqD4P1a+KIjKcI5FEppdf1GTzE4rQmI=;
+	s=arc-20240116; t=1729506791; c=relaxed/simple;
+	bh=DiLtWdQIRdZK6sLt5Q/QEPVQURMUiRQU8c+xsi59Akc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=modlw9dqZwzK6FkM+vnX4HW5BCkur8wGQDTPY7QXIVBWdJDtXxAAkZW0vXy7e6Cqid/VBqHlm9Aya8NkQ5PPAN9fOecQQxaK8bjj5f5POAvl0i0Aw03I80UMyK2dlCUPCF4w+4AJsj0yDqg/y1i7sjmZAZbAA2lhYWiAU6jpD5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jt2Wcs8I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7ECC4CEC3;
-	Mon, 21 Oct 2024 10:42:07 +0000 (UTC)
+	 MIME-Version; b=FWsCEAQ4bfa2wcOqHH5f6bOTFrrPfKgbkghe4cvZFaLtoN65LBm7W/a7JTaMA2c3xhmBYA0srJeYCZd0GuVwV+oQps2vHNVIFvVlBhgf0eWZaz+Fskksu2liB/kD+b1+fl02UJb6+119jrYj2pDnbM8o29kBLUNmiG0yXRjvWZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNhti0Ag; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC35C4CEC3;
+	Mon, 21 Oct 2024 10:33:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507327;
-	bh=CEFVc1ZGLai6UqD4P1a+KIjKcI5FEppdf1GTzE4rQmI=;
+	s=korg; t=1729506790;
+	bh=DiLtWdQIRdZK6sLt5Q/QEPVQURMUiRQU8c+xsi59Akc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jt2Wcs8IX5ijX3wDIiAJfeBvMttAPzRr61l0Q/1+Q6twj1Mi+VljCdzd7eo7Qbi5k
-	 QUUpWdUoAaq2gQimMsof69QFSacRdD6cYXYM2TQCZ89U9UbBuayI+cP6KOvgm+KiD8
-	 e4+8m5RpwxVy5OFrejOvFx+TlLjUDlQdTZKLiO5k=
+	b=bNhti0AgQGKKv68fr6LkfxJAAJsFD6W0dRNd/yZERZHoqSzhSJsRihd2N+PFq9pJJ
+	 FViQ/JIHoWtz9pSTf+R3x3LXdETmkqZ9tEqdVgy7QvI58oOm2J05mCqAq5DgXdT4LI
+	 9e7JNSyvVhLZhQQH7ZUo/JfAAdO3s3CpQA1cqazk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 6.1 23/91] udf: Handle error when expanding directory
-Date: Mon, 21 Oct 2024 12:24:37 +0200
-Message-ID: <20241021102250.726859951@linuxfoundation.org>
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 6.11 122/135] pinctrl: intel: platform: fix error path in device_for_each_child_node()
+Date: Mon, 21 Oct 2024 12:24:38 +0200
+Message-ID: <20241021102304.106920060@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
-References: <20241021102249.791942892@linuxfoundation.org>
+In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
+References: <20241021102259.324175287@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 33e9a53cd9f099b138578f8e1a3d60775ff8cbba ]
+commit 16a6d2e685e8f9a2f51dd5a363d3f97fcad35e22 upstream.
 
-When there is an error when adding extent to the directory to expand it,
-make sure to propagate the error up properly. This is not expected to
-happen currently but let's make the code more futureproof.
+The device_for_each_child_node() loop requires calls to
+fwnode_handle_put() upon early returns to decrement the refcount of
+the child node and avoid leaking memory if that error path is triggered.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+There is one early returns within that loop in
+intel_platform_pinctrl_prepare_community(), but fwnode_handle_put() is
+missing.
+
+Instead of adding the missing call, the scoped version of the loop can
+be used to simplify the code and avoid mistakes in the future if new
+early returns are added, as the child node is only used for parsing, and
+it is never assigned.
+
+Cc: stable@vger.kernel.org
+Fixes: c5860e4a2737 ("pinctrl: intel: Add a generic Intel pin control platform driver")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/namei.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/pinctrl/intel/pinctrl-intel-platform.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/udf/namei.c
-+++ b/fs/udf/namei.c
-@@ -192,8 +192,13 @@ static struct buffer_head *udf_expand_di
- 	epos.bh = NULL;
- 	epos.block = iinfo->i_location;
- 	epos.offset = udf_file_entry_alloc_offset(inode);
--	udf_add_aext(inode, &epos, &eloc, inode->i_size, 0);
-+	ret = udf_add_aext(inode, &epos, &eloc, inode->i_size, 0);
- 	brelse(epos.bh);
-+	if (ret < 0) {
-+		*err = ret;
-+		udf_free_blocks(inode->i_sb, inode, &eloc, 0, 1);
-+		return NULL;
-+	}
- 	mark_inode_dirty(inode);
+--- a/drivers/pinctrl/intel/pinctrl-intel-platform.c
++++ b/drivers/pinctrl/intel/pinctrl-intel-platform.c
+@@ -90,7 +90,6 @@ static int intel_platform_pinctrl_prepar
+ 						    struct intel_community *community,
+ 						    struct intel_platform_pins *pins)
+ {
+-	struct fwnode_handle *child;
+ 	struct intel_padgroup *gpps;
+ 	unsigned int group;
+ 	size_t ngpps;
+@@ -131,7 +130,7 @@ static int intel_platform_pinctrl_prepar
+ 		return -ENOMEM;
  
- 	/* Now fixup tags in moved directory entries */
+ 	group = 0;
+-	device_for_each_child_node(dev, child) {
++	device_for_each_child_node_scoped(dev, child) {
+ 		struct intel_padgroup *gpp = &gpps[group];
+ 
+ 		gpp->reg_num = group;
 
 
 
