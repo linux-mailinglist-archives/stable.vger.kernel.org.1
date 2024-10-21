@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-87104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0A479A6310
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:30:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D81EA9A63AD
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:38:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82784281EDA
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:30:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 078D61C21E49
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806A11E570F;
-	Mon, 21 Oct 2024 10:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F9E1EC016;
+	Mon, 21 Oct 2024 10:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6fRoBDr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgZ6S9Wm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A271E4937;
-	Mon, 21 Oct 2024 10:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2A71EC000;
+	Mon, 21 Oct 2024 10:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506605; cv=none; b=Yvwj5LuTblqO7EXNcO6CEA/W7yoxmqRShr0a8R9f9QO+ZhPO1QfgNJ+TO1iOOpNtA/T0ovB1YPL7MG7xVxb+OPAK8yg13xsliMApnlPNhjm0rcFYtiPDi8UP3QmPVHtqUhfZgGdFk1QzpSuX238WTyD6TZ3cQKgEUk4h5uqfWBo=
+	t=1729506866; cv=none; b=B+uHxZ2ViPGN9oYzemsCAMHp+Wv8wG82qjVyRnX3aLEsQE7hiudy8qfuYpG+eqlfd64i7uS037jnGChyUs7xUUGX4hZtXysYjkuE2OGkXJLyllUNW88koeRa7UGxqVh1dGs2PiUudDb6W6gK8W1ucR1nr+Y3SGbHMbP1A9+uwts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506605; c=relaxed/simple;
-	bh=PIKfwHzEWlm/6lyrTTt+cnhIUu/bAixWvdzBIhaJBMg=;
+	s=arc-20240116; t=1729506866; c=relaxed/simple;
+	bh=wiGBhvhepmFoAO7i2Vh8JzIVojuNvFqtoYa5jfQvd6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p349oEmn1FrXXPeJ/GdkW1AS/uedwI+1Gu7ToqC/AnZEifRCfm2nFINsZwHgQSiDtrLoPg56ZaB+eZyMU0yXFMXyTgi72uXzvN0ubS3oVa54QAtxIc7Gp0WUB5U6/i2RqqRhG7AhBlzf0plSMPWjiG3UUQttRKO2sN5g/uCqLxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6fRoBDr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF22C4CEC7;
-	Mon, 21 Oct 2024 10:30:04 +0000 (UTC)
+	 MIME-Version; b=tvY/KlZIGFOGowU0vGNfZuHeGjDaXuLHwfjuwVkdloxUH/3G4EbWpuvlVfYIK1cqaLi/rU+m5XuhF3KJ0K36q6plYryrDMhtr5RxEXSLpma+lDDrguRzu24nlMp+g6KU3Kr5lnNwsPb5ERNYR7Zv2kdytpOp1E6iyRP4HnR190c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgZ6S9Wm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ECA4C4CEC7;
+	Mon, 21 Oct 2024 10:34:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506605;
-	bh=PIKfwHzEWlm/6lyrTTt+cnhIUu/bAixWvdzBIhaJBMg=;
+	s=korg; t=1729506866;
+	bh=wiGBhvhepmFoAO7i2Vh8JzIVojuNvFqtoYa5jfQvd6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6fRoBDrj9QfGRDCe1cxYTFxwjdkgnSJ5dsCB+w44r1IdNq4/RPulpXeadWw3ghJT
-	 SpLGYq/abhzZN4eWY9/fZoMLaUtfKNHce5OsYc5z0dMYdzx+7DcrUtSwY0QnCbXazE
-	 tn79E7wXYMhABYZLsT40xzFCjk3bmWzwOTyHlt+w=
+	b=MgZ6S9WmsrmOWDdH8zVswENNmrdDvODVtGxWgGEvXLOdmUYnMneLXRA2eeTqW65d2
+	 J/VBdYCBNbmt8smBYjMPw2kFrfghDHtAXQbT8mgAstqJho5bVoiOEhcxs4Qp/LTfAp
+	 4Gfozh3Mt06A6cEIox6aYzAhQeLHNfPzjDpQz7go=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.11 060/135] drm/i915/dp_mst: Handle error during DSC BW overhead/slice calculation
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.6 012/124] arm64: probes: Remove broken LDR (literal) uprobe support
 Date: Mon, 21 Oct 2024 12:23:36 +0200
-Message-ID: <20241021102301.675497180@linuxfoundation.org>
+Message-ID: <20241021102257.194723570@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +62,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 69b3d87212676c4c22aa4660435e2066dc7d1311 upstream.
+commit acc450aa07099d071b18174c22a1119c57da8227 upstream.
 
-The MST branch device may not support the number of DSC slices a mode
-requires, handle the error in this case.
+The simulate_ldr_literal() and simulate_ldrsw_literal() functions are
+unsafe to use for uprobes. Both functions were originally written for
+use with kprobes, and access memory with plain C accesses. When uprobes
+was added, these were reused unmodified even though they cannot safely
+access user memory.
 
-Fixes: 4e0837a8d00a ("drm/i915/dp_mst: Account for FEC and DSC overhead during BW allocation")
-Cc: stable@vger.kernel.org # v6.8+
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241009110135.1216498-1-imre.deak@intel.com
-(cherry picked from commit 802a69b6b8a0502a9e2309afec7e1b77f67874f2)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+There are three key problems:
+
+1) The plain C accesses do not have corresponding extable entries, and
+   thus if they encounter a fault the kernel will treat these as
+   unintentional accesses to user memory, resulting in a BUG() which
+   will kill the kernel thread, and likely lead to further issues (e.g.
+   lockup or panic()).
+
+2) The plain C accesses are subject to HW PAN and SW PAN, and so when
+   either is in use, any attempt to simulate an access to user memory
+   will fault. Thus neither simulate_ldr_literal() nor
+   simulate_ldrsw_literal() can do anything useful when simulating a
+   user instruction on any system with HW PAN or SW PAN.
+
+3) The plain C accesses are privileged, as they run in kernel context,
+   and in practice can access a small range of kernel virtual addresses.
+   The instructions they simulate have a range of +/-1MiB, and since the
+   simulated instructions must itself be a user instructions in the
+   TTBR0 address range, these can address the final 1MiB of the TTBR1
+   acddress range by wrapping downwards from an address in the first
+   1MiB of the TTBR0 address range.
+
+   In contemporary kernels the last 8MiB of TTBR1 address range is
+   reserved, and accesses to this will always fault, meaning this is no
+   worse than (1).
+
+   Historically, it was theoretically possible for the linear map or
+   vmemmap to spill into the final 8MiB of the TTBR1 address range, but
+   in practice this is extremely unlikely to occur as this would
+   require either:
+
+   * Having enough physical memory to fill the entire linear map all the
+     way to the final 1MiB of the TTBR1 address range.
+
+   * Getting unlucky with KASLR randomization of the linear map such
+     that the populated region happens to overlap with the last 1MiB of
+     the TTBR address range.
+
+   ... and in either case if we were to spill into the final page there
+   would be larger problems as the final page would alias with error
+   pointers.
+
+Practically speaking, (1) and (2) are the big issues. Given there have
+been no reports of problems since the broken code was introduced, it
+appears that no-one is relying on probing these instructions with
+uprobes.
+
+Avoid these issues by not allowing uprobes on LDR (literal) and LDRSW
+(literal), limiting the use of simulate_ldr_literal() and
+simulate_ldrsw_literal() to kprobes. Attempts to place uprobes on LDR
+(literal) and LDRSW (literal) will be rejected as
+arm_probe_decode_insn() will return INSN_REJECTED. In future we can
+consider introducing working uprobes support for these instructions, but
+this will require more significant work.
+
+Fixes: 9842ceae9fa8 ("arm64: Add uprobe support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20241008155851.801546-2-mark.rutland@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp_mst.c |   37 ++++++++++++++++++++--------
- 1 file changed, 27 insertions(+), 10 deletions(-)
+ arch/arm64/kernel/probes/decode-insn.c |   16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_dp_mst.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp_mst.c
-@@ -88,25 +88,19 @@ static int intel_dp_mst_max_dpt_bpp(cons
- 
- static int intel_dp_mst_bw_overhead(const struct intel_crtc_state *crtc_state,
- 				    const struct intel_connector *connector,
--				    bool ssc, bool dsc, int bpp_x16)
-+				    bool ssc, int dsc_slice_count, int bpp_x16)
- {
- 	const struct drm_display_mode *adjusted_mode =
- 		&crtc_state->hw.adjusted_mode;
- 	unsigned long flags = DRM_DP_BW_OVERHEAD_MST;
--	int dsc_slice_count = 0;
- 	int overhead;
- 
- 	flags |= intel_dp_is_uhbr(crtc_state) ? DRM_DP_BW_OVERHEAD_UHBR : 0;
- 	flags |= ssc ? DRM_DP_BW_OVERHEAD_SSC_REF_CLK : 0;
- 	flags |= crtc_state->fec_enable ? DRM_DP_BW_OVERHEAD_FEC : 0;
- 
--	if (dsc) {
-+	if (dsc_slice_count)
- 		flags |= DRM_DP_BW_OVERHEAD_DSC;
--		dsc_slice_count = intel_dp_dsc_get_slice_count(connector,
--							       adjusted_mode->clock,
--							       adjusted_mode->hdisplay,
--							       crtc_state->joiner_pipes);
--	}
- 
- 	overhead = drm_dp_bw_overhead(crtc_state->lane_count,
- 				      adjusted_mode->hdisplay,
-@@ -152,6 +146,19 @@ static int intel_dp_mst_calc_pbn(int pix
- 	return DIV_ROUND_UP(effective_data_rate * 64, 54 * 1000);
- }
- 
-+static int intel_dp_mst_dsc_get_slice_count(const struct intel_connector *connector,
-+					    const struct intel_crtc_state *crtc_state)
-+{
-+	const struct drm_display_mode *adjusted_mode =
-+		&crtc_state->hw.adjusted_mode;
-+	int num_joined_pipes = crtc_state->joiner_pipes;
+--- a/arch/arm64/kernel/probes/decode-insn.c
++++ b/arch/arm64/kernel/probes/decode-insn.c
+@@ -99,10 +99,6 @@ arm_probe_decode_insn(probe_opcode_t ins
+ 	    aarch64_insn_is_blr(insn) ||
+ 	    aarch64_insn_is_ret(insn)) {
+ 		api->handler = simulate_br_blr_ret;
+-	} else if (aarch64_insn_is_ldr_lit(insn)) {
+-		api->handler = simulate_ldr_literal;
+-	} else if (aarch64_insn_is_ldrsw_lit(insn)) {
+-		api->handler = simulate_ldrsw_literal;
+ 	} else {
+ 		/*
+ 		 * Instruction cannot be stepped out-of-line and we don't
+@@ -140,6 +136,17 @@ arm_kprobe_decode_insn(kprobe_opcode_t *
+ 	probe_opcode_t insn = le32_to_cpu(*addr);
+ 	probe_opcode_t *scan_end = NULL;
+ 	unsigned long size = 0, offset = 0;
++	struct arch_probe_insn *api = &asi->api;
 +
-+	return intel_dp_dsc_get_slice_count(connector,
-+					    adjusted_mode->clock,
-+					    adjusted_mode->hdisplay,
-+					    num_joined_pipes);
-+}
-+
- static int intel_dp_mst_find_vcpi_slots_for_bpp(struct intel_encoder *encoder,
- 						struct intel_crtc_state *crtc_state,
- 						int max_bpp,
-@@ -171,6 +178,7 @@ static int intel_dp_mst_find_vcpi_slots_
- 	const struct drm_display_mode *adjusted_mode =
- 		&crtc_state->hw.adjusted_mode;
- 	int bpp, slots = -EINVAL;
-+	int dsc_slice_count = 0;
- 	int max_dpt_bpp;
- 	int ret = 0;
- 
-@@ -202,6 +210,15 @@ static int intel_dp_mst_find_vcpi_slots_
- 	drm_dbg_kms(&i915->drm, "Looking for slots in range min bpp %d max bpp %d\n",
- 		    min_bpp, max_bpp);
- 
-+	if (dsc) {
-+		dsc_slice_count = intel_dp_mst_dsc_get_slice_count(connector, crtc_state);
-+		if (!dsc_slice_count) {
-+			drm_dbg_kms(&i915->drm, "Can't get valid DSC slice count\n");
-+
-+			return -ENOSPC;
-+		}
++	if (aarch64_insn_is_ldr_lit(insn)) {
++		api->handler = simulate_ldr_literal;
++		decoded = INSN_GOOD_NO_SLOT;
++	} else if (aarch64_insn_is_ldrsw_lit(insn)) {
++		api->handler = simulate_ldrsw_literal;
++		decoded = INSN_GOOD_NO_SLOT;
++	} else {
++		decoded = arm_probe_decode_insn(insn, &asi->api);
 +	}
-+
- 	for (bpp = max_bpp; bpp >= min_bpp; bpp -= step) {
- 		int local_bw_overhead;
- 		int remote_bw_overhead;
-@@ -215,9 +232,9 @@ static int intel_dp_mst_find_vcpi_slots_
- 					  intel_dp_output_bpp(crtc_state->output_format, bpp));
  
- 		local_bw_overhead = intel_dp_mst_bw_overhead(crtc_state, connector,
--							     false, dsc, link_bpp_x16);
-+							     false, dsc_slice_count, link_bpp_x16);
- 		remote_bw_overhead = intel_dp_mst_bw_overhead(crtc_state, connector,
--							      true, dsc, link_bpp_x16);
-+							      true, dsc_slice_count, link_bpp_x16);
+ 	/*
+ 	 * If there's a symbol defined in front of and near enough to
+@@ -157,7 +164,6 @@ arm_kprobe_decode_insn(kprobe_opcode_t *
+ 		else
+ 			scan_end = addr - MAX_ATOMIC_CONTEXT_SIZE;
+ 	}
+-	decoded = arm_probe_decode_insn(insn, &asi->api);
  
- 		intel_dp_mst_compute_m_n(crtc_state, connector,
- 					 local_bw_overhead,
+ 	if (decoded != INSN_REJECTED && scan_end)
+ 		if (is_probed_address_atomic(addr - 1, scan_end))
 
 
 
