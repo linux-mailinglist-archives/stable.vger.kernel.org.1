@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-87241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75129A640C
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:42:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 606259A65C2
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 13:02:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 692D0281BC6
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:42:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0987B21847
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D4E1F7098;
-	Mon, 21 Oct 2024 10:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A341EF949;
+	Mon, 21 Oct 2024 10:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QbKDVKT6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6N7XP9o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4657A1F706E;
-	Mon, 21 Oct 2024 10:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286251E4106;
+	Mon, 21 Oct 2024 10:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507017; cv=none; b=LF/YRGEnCVztkhxy6m6RhOniLdtGh+G9iv5RPjK+hIeJqXR7fwnuk+gYsuKZ6DT1xFiUkHS/viusKMUpYVijlwOn8BcAYo/BTJDWBYOm2zLF8EMiFvfFG/pAD0Kq5aDLs+d7rfFXeuMF/s3sYlc3QGXfop3B49wOTXi8qbTFU9A=
+	t=1729507274; cv=none; b=T2x6akBtAErbDKMB8OZAlA7GnjRkTON4P774phB0X53pm7vv8Oa+8eB1U36g5PPxkHYoQWSwvkfJvPDNPjDw9lq4scGWmdwfziOOJjVI8dEXSQzZokoPmi+jZ15GDtGLbJSRqRnNLBGGdWGEvGIm74GFGwisfz++lms5pZ1aaE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507017; c=relaxed/simple;
-	bh=Ur62jsoWDGiGrYWJZmncaGH+tREd21XFboDKRMUdO2g=;
+	s=arc-20240116; t=1729507274; c=relaxed/simple;
+	bh=UgXOfjAHbjb7EkeEZROCnChX4uBwhObgqZDuujPOMVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CF1fRYGSZezG0BmfQIhqRPFDI+bCyt5rWLXysl+MFuza/0jSiaF5kUZ+sWxqBu8lDhrlGdRW5O091r8mHt/SCpH9HSt1YV5T8euh1vHZAOdEU55bOmcPDOO+PD/1mU05wKNEcufGEJmMGIEGE4mPwg3tY/eezBZ82E2tj0pI/vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QbKDVKT6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B6AC4CEC3;
-	Mon, 21 Oct 2024 10:36:56 +0000 (UTC)
+	 MIME-Version; b=YcGpcCNRSt2nQWFLGBEYdhVmfaRwBS7qW3S7k3n48s3Q41I4yE2zohIaPg5a5jQlZmWyAy5Mlf6rd4maH2xnM849xDRWpvhQ29SkatdEM+MX1Mdi6Dly5qjfNJIbHoA3ExWGEHZ1ZpRky3SsV9Sn+IN/PAWEEftNSNi4Tp/ydt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6N7XP9o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6477FC4CEC3;
+	Mon, 21 Oct 2024 10:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507016;
-	bh=Ur62jsoWDGiGrYWJZmncaGH+tREd21XFboDKRMUdO2g=;
+	s=korg; t=1729507273;
+	bh=UgXOfjAHbjb7EkeEZROCnChX4uBwhObgqZDuujPOMVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QbKDVKT6+6HbruFyd73OxnqLALbwAVP5h2uxKqF9VBeaTjWYagqqPucCNTH1A/73B
-	 s2t1K37uvRh4jTdiUg7x/l6dtMnOU7bMTE1GrLuhiqN/wkXh37SWvDfAZiJnoOOpWp
-	 ysXA7yrrFnBVxiaXfqFaSs9n1G2iq5ksDcNRFwR0=
+	b=j6N7XP9olQlZixEXTvkeBFFdTQksVFU9BgC3IgXPtIl0kAtzaYJ905VnS5RA3S4iK
+	 n4CJaq0lMEBqXT+DAvR2pFRIvY81uSdilLGv4KwkPA/gocgqJS02Bnpj25TCm0C2qC
+	 JFkEfnVCk4Qby/qqMlWdY6g7IdS+wUR6E55EouyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkatesh Srinivas <venkateshs@chromium.org>,
-	Jim Mattson <jmattson@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	stable@kernel.org
-Subject: [PATCH 6.6 054/124] x86/cpufeatures: Define X86_FEATURE_AMD_IBPB_RET
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 04/91] ALSA: hda/conexant - Fix audio routing for HP EliteOne 1000 G2
 Date: Mon, 21 Oct 2024 12:24:18 +0200
-Message-ID: <20241021102258.820632684@linuxfoundation.org>
+Message-ID: <20241021102249.970132305@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-References: <20241021102256.706334758@linuxfoundation.org>
+In-Reply-To: <20241021102249.791942892@linuxfoundation.org>
+References: <20241021102249.791942892@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Mattson <jmattson@google.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-commit ff898623af2ed564300752bba83a680a1e4fec8d upstream.
+commit 9988844c457f6f17fb2e75aa000b6c3b1b673bb9 upstream.
 
-AMD's initial implementation of IBPB did not clear the return address
-predictor. Beginning with Zen4, AMD's IBPB *does* clear the return address
-predictor. This behavior is enumerated by CPUID.80000008H:EBX.IBPB_RET[30].
+There is a problem with simultaneous audio output to headphones and
+speakers, and when headphones are turned off, the speakers also turn
+off and do not turn them on.
 
-Define X86_FEATURE_AMD_IBPB_RET for use in KVM_GET_SUPPORTED_CPUID,
-when determining cross-vendor capabilities.
+However, it was found that if you boot linux immediately after windows,
+there are no such problems. When comparing alsa-info, the only difference
+is the different configuration of Node 0x1d:
 
-Suggested-by: Venkatesh Srinivas <venkateshs@chromium.org>
-Signed-off-by: Jim Mattson <jmattson@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: <stable@kernel.org>
+working conf. (windows): Pin-ctls: 0x80: HP
+not working     (linux): Pin-ctls: 0xc0: OUT HP
+
+This patch disable the AC_PINCTL_OUT_EN bit of Node 0x1d and fixes the
+described problem.
+
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241009134248.662175-1-kovalev@altlinux.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/cpufeatures.h |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_conexant.c |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -216,7 +216,7 @@
- #define X86_FEATURE_SPEC_STORE_BYPASS_DISABLE	( 7*32+23) /* "" Disable Speculative Store Bypass. */
- #define X86_FEATURE_LS_CFG_SSBD		( 7*32+24)  /* "" AMD SSBD implementation via LS_CFG MSR */
- #define X86_FEATURE_IBRS		( 7*32+25) /* Indirect Branch Restricted Speculation */
--#define X86_FEATURE_IBPB		( 7*32+26) /* Indirect Branch Prediction Barrier */
-+#define X86_FEATURE_IBPB		( 7*32+26) /* "ibpb" Indirect Branch Prediction Barrier without a guaranteed RSB flush */
- #define X86_FEATURE_STIBP		( 7*32+27) /* Single Thread Indirect Branch Predictors */
- #define X86_FEATURE_ZEN			( 7*32+28) /* "" Generic flag for all Zen and newer */
- #define X86_FEATURE_L1TF_PTEINV		( 7*32+29) /* "" L1TF workaround PTE inversion */
-@@ -347,6 +347,7 @@
- #define X86_FEATURE_CPPC		(13*32+27) /* Collaborative Processor Performance Control */
- #define X86_FEATURE_AMD_PSFD            (13*32+28) /* "" Predictive Store Forwarding Disable */
- #define X86_FEATURE_BTC_NO		(13*32+29) /* "" Not vulnerable to Branch Type Confusion */
-+#define X86_FEATURE_AMD_IBPB_RET	(13*32+30) /* "" IBPB clears return address predictor */
- #define X86_FEATURE_BRS			(13*32+31) /* Branch Sampling available */
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -307,6 +307,7 @@ enum {
+ 	CXT_FIXUP_HP_SPECTRE,
+ 	CXT_FIXUP_HP_GATE_MIC,
+ 	CXT_FIXUP_MUTE_LED_GPIO,
++	CXT_FIXUP_HP_ELITEONE_OUT_DIS,
+ 	CXT_FIXUP_HP_ZBOOK_MUTE_LED,
+ 	CXT_FIXUP_HEADSET_MIC,
+ 	CXT_FIXUP_HP_MIC_NO_PRESENCE,
+@@ -324,6 +325,19 @@ static void cxt_fixup_stereo_dmic(struct
+ 	spec->gen.inv_dmic_split = 1;
+ }
  
- /* Thermal and Power Management Leaf, CPUID level 0x00000006 (EAX), word 14 */
++/* fix widget control pin settings */
++static void cxt_fixup_update_pinctl(struct hda_codec *codec,
++				   const struct hda_fixup *fix, int action)
++{
++	if (action == HDA_FIXUP_ACT_PROBE) {
++		/* Unset OUT_EN for this Node pin, leaving only HP_EN.
++		 * This is the value stored in the codec register after
++		 * the correct initialization of the previous windows boot.
++		 */
++		snd_hda_set_pin_ctl(codec, 0x1d, AC_PINCTL_HP_EN);
++	}
++}
++
+ static void cxt5066_increase_mic_boost(struct hda_codec *codec,
+ 				   const struct hda_fixup *fix, int action)
+ {
+@@ -975,6 +989,10 @@ static const struct hda_fixup cxt_fixups
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = cxt_fixup_mute_led_gpio,
+ 	},
++	[CXT_FIXUP_HP_ELITEONE_OUT_DIS] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = cxt_fixup_update_pinctl,
++	},
+ 	[CXT_FIXUP_HP_ZBOOK_MUTE_LED] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = cxt_fixup_hp_zbook_mute_led,
+@@ -1065,6 +1083,7 @@ static const struct snd_pci_quirk cxt506
+ 	SND_PCI_QUIRK(0x103c, 0x83b2, "HP EliteBook 840 G5", CXT_FIXUP_HP_DOCK),
+ 	SND_PCI_QUIRK(0x103c, 0x83b3, "HP EliteBook 830 G5", CXT_FIXUP_HP_DOCK),
+ 	SND_PCI_QUIRK(0x103c, 0x83d3, "HP ProBook 640 G4", CXT_FIXUP_HP_DOCK),
++	SND_PCI_QUIRK(0x103c, 0x83e5, "HP EliteOne 1000 G2", CXT_FIXUP_HP_ELITEONE_OUT_DIS),
+ 	SND_PCI_QUIRK(0x103c, 0x8402, "HP ProBook 645 G4", CXT_FIXUP_MUTE_LED_GPIO),
+ 	SND_PCI_QUIRK(0x103c, 0x8427, "HP ZBook Studio G5", CXT_FIXUP_HP_ZBOOK_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x844f, "HP ZBook Studio G5", CXT_FIXUP_HP_ZBOOK_MUTE_LED),
 
 
 
