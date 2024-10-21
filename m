@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-87537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2AEE9A6582
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:57:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC2B9A659A
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:59:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 691A31F21AEF
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:57:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 705C6B224F6
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B972F1E47BA;
-	Mon, 21 Oct 2024 10:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9098A1F4FD6;
+	Mon, 21 Oct 2024 10:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0qJqI0YH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sLirw+Tl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BFC01E47A6;
-	Mon, 21 Oct 2024 10:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477301F473E;
+	Mon, 21 Oct 2024 10:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507900; cv=none; b=gtmNEJFg2MZuzfH2qLmIKlDZYIYRewwlZ1+C+EqJpUQjz0RQM0zlS2ZqSoipYDoVCAWUhw4skmBQ3tLxX6pDtYfOGEt2GwRj2BxuPCx26PJUXwMqUsJtkFUoaLmsPw3ob2dMEj4/oEvycxZP3+62MYumBq671TrTVhkKQpALVmI=
+	t=1729507694; cv=none; b=hjzYVQXM61JlUHXCw1HW6H6m18oSXjPQihTFXzthrF8krlKkE8UQG2H82XdYIfMvue8oD4rJTVBCUCZzbX6ZZE4j8gD1b/m6GTNKnZcoTj4KmHNVhwwEcztjy8xAwZ+ZpR0brM76HOngA3XI2r2oamTeON6M79nsWurhSEIvGqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507900; c=relaxed/simple;
-	bh=f+GjlE32vzWZmOiDbToslof6PM2iT1HIT181likQRsI=;
+	s=arc-20240116; t=1729507694; c=relaxed/simple;
+	bh=gnIfJUHfMLS9B2vvQlTW+AD92K9dSAShb0VWq1brCzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tfk+N03z87cvm+OooYwr/fE4l+aD0jJiVMkFrQ8IUYDm19zxggwGQNkdap9efTtYYFFtbW5Fx6dvcPttCRowGVn4xfo3NT2W1HcJD+XHj6zcEzk1+PoDvd/UYAZ/fPCYvtRL6WEC8AewsUgqice0orZ5bN8I7/aLukHhvOHDScc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0qJqI0YH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3CDC4CEC3;
-	Mon, 21 Oct 2024 10:51:39 +0000 (UTC)
+	 MIME-Version; b=R6y0BrBWHTWqFCybP5BU2ygpD3FUC/bw9/mwyVKKStkSSFLUkoCfiv6i9g7NC7hph0JXPlDykNCwQ7DX9f/7gHFFGmfEpGo1ltVpoIuqn1fL2S7ZvOcBrz7dWdebcor1XHTSjhSxqI+EucHJDywj1iC7o5Lk62AO7AoSWlMYzNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sLirw+Tl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E657C4CEC3;
+	Mon, 21 Oct 2024 10:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507899;
-	bh=f+GjlE32vzWZmOiDbToslof6PM2iT1HIT181likQRsI=;
+	s=korg; t=1729507693;
+	bh=gnIfJUHfMLS9B2vvQlTW+AD92K9dSAShb0VWq1brCzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0qJqI0YHCrA4dsSF6ju+pYoQlyk7XYm7ZlJ5eL5oIL07dNLU3eX9/cqBwHi3fHXXx
-	 niXA6wLNt92/hG/g3AXV9ayaVs/wGbusYRYggJNkFLtoAcppg6J6Um9ta+HRy+lUHe
-	 xl1M0a6tCAlfAhOkeVYLBMG9hrsVucNHqW3EYAoQ=
+	b=sLirw+Tlw1SifpsQC89YEg4h6lwJYiURs/KspykGAkiKmjqmjjzffx7SRct1MfKx2
+	 3NXo9vLbsqFo+bBNqrWDGY96276zxwyLhLhO1/dxiMjMWAKbAOPhjjey8f7ExaZDzy
+	 WvOZ57PturDcu89b5hZIhYuZ0zfdvq52Qxjz5auU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 30/52] iio: hid-sensors: Fix an error handling path in _hid_sensor_set_report_latency()
+	Jari Ruusu <jariruusu@protonmail.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 5.15 70/82] x86/entry_32: Do not clobber user EFLAGS.ZF
 Date: Mon, 21 Oct 2024 12:25:51 +0200
-Message-ID: <20241021102242.805224939@linuxfoundation.org>
+Message-ID: <20241021102249.986312819@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102241.624153108@linuxfoundation.org>
-References: <20241021102241.624153108@linuxfoundation.org>
+In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
+References: <20241021102247.209765070@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-commit 3a29b84cf7fbf912a6ab1b9c886746f02b74ea25 upstream.
+commit 2e2e5143d4868163d6756c8c6a4d28cbfa5245e5 upstream.
 
-If hid_sensor_set_report_latency() fails, the error code should be returned
-instead of a value likely to be interpreted as 'success'.
+Opportunistic SYSEXIT executes VERW to clear CPU buffers after user EFLAGS
+are restored. This can clobber user EFLAGS.ZF.
 
-Fixes: 138bc7969c24 ("iio: hid-sensor-hub: Implement batch mode")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/c50640665f091a04086e5092cf50f73f2055107a.1727980825.git.christophe.jaillet@wanadoo.fr
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Move CLEAR_CPU_BUFFERS before the user EFLAGS are restored. This ensures
+that the user EFLAGS.ZF is not clobbered.
+
+Closes: https://lore.kernel.org/lkml/yVXwe8gvgmPADpRB6lXlicS2fcHoV5OHHxyuFbB_MEleRPD7-KhGe5VtORejtPe-KCkT8Uhcg5d7-IBw4Ojb4H7z5LQxoZylSmJ8KNL3A8o=@protonmail.com/
+Fixes: a0e2dab44d22 ("x86/entry_32: Add VERW just before userspace transition")
+Reported-by: Jari Ruusu <jariruusu@protonmail.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240925-fix-dosemu-vm86-v7-1-1de0daca2d42%40linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/common/hid-sensors/hid-sensor-trigger.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/entry/entry_32.S |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-+++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-@@ -35,7 +35,7 @@ static ssize_t _hid_sensor_set_report_la
- 	latency = integer * 1000 + fract / 1000;
- 	ret = hid_sensor_set_report_latency(attrb, latency);
- 	if (ret < 0)
--		return len;
-+		return ret;
+--- a/arch/x86/entry/entry_32.S
++++ b/arch/x86/entry/entry_32.S
+@@ -902,6 +902,8 @@ SYM_FUNC_START(entry_SYSENTER_32)
  
- 	attrb->latency_ms = hid_sensor_get_report_latency(attrb);
+ 	/* Now ready to switch the cr3 */
+ 	SWITCH_TO_USER_CR3 scratch_reg=%eax
++	/* Clobbers ZF */
++	CLEAR_CPU_BUFFERS
  
+ 	/*
+ 	 * Restore all flags except IF. (We restore IF separately because
+@@ -912,7 +914,6 @@ SYM_FUNC_START(entry_SYSENTER_32)
+ 	BUG_IF_WRONG_CR3 no_user_check=1
+ 	popfl
+ 	popl	%eax
+-	CLEAR_CPU_BUFFERS
+ 
+ 	/*
+ 	 * Return back to the vDSO, which will pop ecx and edx.
 
 
 
