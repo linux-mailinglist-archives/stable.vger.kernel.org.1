@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-87416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9FE89A64E0
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:51:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59B229A6492
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:48:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A48D1F22116
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:51:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD529B22BA2
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 378CD1E766E;
-	Mon, 21 Oct 2024 10:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 570041E573A;
+	Mon, 21 Oct 2024 10:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6QKMjsG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jzb77/3l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F4D1E47CE;
-	Mon, 21 Oct 2024 10:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2CA1E2618;
+	Mon, 21 Oct 2024 10:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729507541; cv=none; b=KrzNHWzgDulLeFk0E8RnPlSJXyjV6E2KcuRWtbtKVObCi0xcjKyhldpWkoLONppgqyTTvI4/pxbaDVQCH7smkZmOwQTZCBnRcULFhoGaUWVykHh0nUdz1XyIEP1zU4j0bisSYsf0YKUZr/xqQl3CKJ5JO9EfYmW1nA6KsVryNYI=
+	t=1729507124; cv=none; b=nP6DLXWW+NQtXiBCW4RGAplWDaOjdgL6ETuh8XHC7tpG6AeY/oPNwACWp7qLz6rm55Uc0KeSUwFmjP7Wltm91RtuEG6TEVr17w4SnHHV6QfTok1xvK4qQPS09oOdczqX+38bfVmZFyMMsIAoPwf3bFx2vvdN6ucWB9g7dDmlk1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729507541; c=relaxed/simple;
-	bh=njpuScdZmHivLymRhs+Mmv4OWiZ4oEPXlTHGmsnnBwo=;
+	s=arc-20240116; t=1729507124; c=relaxed/simple;
+	bh=xS7udohdo2YG8O7WP+r3xXq365WyM2d+I5BfOCsOuuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T5OSo218B0sKhjJtS78QBd8JpXZbgWde2HbDxcLdcnqFAUNTWoKOE29H+sdNGDe34GLDpsBCLxZzv7+u9nDbr7bJUQQmADX8rLK5L6+m1j8BauSbjM5WWfCNm8GDPPkFdFxyWhTKXA4FNKFLHEh1d2zFW7BlYD55kAHrkNp1o/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6QKMjsG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E74BC4CEC3;
-	Mon, 21 Oct 2024 10:45:40 +0000 (UTC)
+	 MIME-Version; b=lqzaaErswmeAyrlWlbJwXreuC3wyiVBJjT/32rZIadjx3mXMWuaC/Xu2zCZIxyT+kfnmSnvPOozhZ4g7EFlexyKY3V0krP0wf/MrpHNsGrgUdDFrKsAUIetZWiYY3RZ0zYTSWURSul+cW0S7eQO6TyTEkj58floVPENq01iGUdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jzb77/3l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 808E9C4CEC3;
+	Mon, 21 Oct 2024 10:38:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729507540;
-	bh=njpuScdZmHivLymRhs+Mmv4OWiZ4oEPXlTHGmsnnBwo=;
+	s=korg; t=1729507123;
+	bh=xS7udohdo2YG8O7WP+r3xXq365WyM2d+I5BfOCsOuuM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h6QKMjsG/2ta/PEcWV0aJj5BUN8CIKsR5ZEqFj9FKaC5kMfJ3N79G5E5STukhyjyS
-	 UI8E/1WQ12tpEx+jlpBSZNUKHmq0zivu2kT4tDVS5dPFcIEQwT21X8cJ4qhcEwsOkl
-	 Iw0BcZytWALjicvQNmSlNMxkwt0LEVWE5GtJP0UQ=
+	b=Jzb77/3lrux76jtqbkFYmrfoASuDnEPPxi854z4xu9h0G+aMjCJ4u+Cg8nLMqKAdv
+	 pFs6sK0msctHBw7LxoK4LCwhoPNvR68lkPMrR3yLiohR6q3fdgBH6rKhuzk3cFruP1
+	 2K6cTYMoNQ7Dc2ijfi+/mGKirSPlgsqazB/1klwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.15 20/82] udf: Dont return bh from udf_expand_dir_adinicb()
-Date: Mon, 21 Oct 2024 12:25:01 +0200
-Message-ID: <20241021102248.039242735@linuxfoundation.org>
+	Prashanth K <quic_prashk@quicinc.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.6 098/124] usb: dwc3: Wait for EndXfer completion before restoring GUSB2PHYCFG
+Date: Mon, 21 Oct 2024 12:25:02 +0200
+Message-ID: <20241021102300.514195275@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102247.209765070@linuxfoundation.org>
-References: <20241021102247.209765070@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,116 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Prashanth K <quic_prashk@quicinc.com>
 
-[ Upstream commit f386c802a6fda8f9fe4a5cf418c49aa84dfc52e4 ]
+commit c96e31252110a84dcc44412e8a7b456b33c3e298 upstream.
 
-Nobody uses the bh returned from udf_expand_dir_adinicb(). Don't return
-it.
+DWC3 programming guide mentions that when operating in USB2.0 speeds,
+if GUSB2PHYCFG[6] or GUSB2PHYCFG[8] is set, it must be cleared prior
+to issuing commands and may be set again  after the command completes.
+But currently while issuing EndXfer command without CmdIOC set, we
+wait for 1ms after GUSB2PHYCFG is restored. This results in cases
+where EndXfer command doesn't get completed and causes SMMU faults
+since requests are unmapped afterwards. Hence restore GUSB2PHYCFG
+after waiting for EndXfer command completion.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-[cascardo: skip backport of 101ee137d32a ("udf: Drop VARCONV support")]
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Cc: stable@vger.kernel.org
+Fixes: 1d26ba0944d3 ("usb: dwc3: Wait unconditionally after issuing EndXfer command")
+Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20240924093208.2524531-1-quic_prashk@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/namei.c |   33 +++++++++++++--------------------
- 1 file changed, 13 insertions(+), 20 deletions(-)
+ drivers/usb/dwc3/gadget.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/fs/udf/namei.c
-+++ b/fs/udf/namei.c
-@@ -136,8 +136,7 @@ static struct dentry *udf_lookup(struct
- 	return d_splice_alias(inode, dentry);
- }
- 
--static struct buffer_head *udf_expand_dir_adinicb(struct inode *inode,
--					udf_pblk_t *block, int *err)
-+static int udf_expand_dir_adinicb(struct inode *inode, udf_pblk_t *block)
- {
- 	udf_pblk_t newblock;
- 	struct buffer_head *dbh = NULL;
-@@ -157,23 +156,23 @@ static struct buffer_head *udf_expand_di
- 	if (!inode->i_size) {
- 		iinfo->i_alloc_type = alloctype;
- 		mark_inode_dirty(inode);
--		return NULL;
-+		return 0;
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -438,6 +438,10 @@ skip_status:
+ 			dwc3_gadget_ep_get_transfer_index(dep);
  	}
  
- 	/* alloc block, and copy data to it */
- 	*block = udf_new_block(inode->i_sb, inode,
- 			       iinfo->i_location.partitionReferenceNum,
--			       iinfo->i_location.logicalBlockNum, err);
-+			       iinfo->i_location.logicalBlockNum, &ret);
- 	if (!(*block))
--		return NULL;
-+		return ret;
- 	newblock = udf_get_pblock(inode->i_sb, *block,
- 				  iinfo->i_location.partitionReferenceNum,
- 				0);
--	if (!newblock)
--		return NULL;
-+	if (newblock == 0xffffffff)
-+		return -EFSCORRUPTED;
- 	dbh = udf_tgetblk(inode->i_sb, newblock);
- 	if (!dbh)
--		return NULL;
-+		return -ENOMEM;
- 	lock_buffer(dbh);
- 	memcpy(dbh->b_data, iinfo->i_data, inode->i_size);
- 	memset(dbh->b_data + inode->i_size, 0,
-@@ -195,9 +194,9 @@ static struct buffer_head *udf_expand_di
- 	ret = udf_add_aext(inode, &epos, &eloc, inode->i_size, 0);
- 	brelse(epos.bh);
- 	if (ret < 0) {
--		*err = ret;
-+		brelse(dbh);
- 		udf_free_blocks(inode->i_sb, inode, &eloc, 0, 1);
--		return NULL;
-+		return ret;
- 	}
- 	mark_inode_dirty(inode);
- 
-@@ -213,6 +212,7 @@ static struct buffer_head *udf_expand_di
- 			impuse = NULL;
- 		udf_fiiter_write_fi(&iter, impuse);
- 	}
-+	brelse(dbh);
- 	/*
- 	 * We don't expect the iteration to fail as the directory has been
- 	 * already verified to be correct
-@@ -220,7 +220,7 @@ static struct buffer_head *udf_expand_di
++	if (DWC3_DEPCMD_CMD(cmd) == DWC3_DEPCMD_ENDTRANSFER &&
++	    !(cmd & DWC3_DEPCMD_CMDIOC))
++		mdelay(1);
++
+ 	if (saved_config) {
+ 		reg = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
+ 		reg |= saved_config;
+@@ -1734,12 +1738,10 @@ static int __dwc3_stop_active_transfer(s
  	WARN_ON_ONCE(ret);
- 	udf_fiiter_release(&iter);
+ 	dep->resource_index = 0;
  
--	return dbh;
-+	return 0;
- }
+-	if (!interrupt) {
+-		mdelay(1);
++	if (!interrupt)
+ 		dep->flags &= ~DWC3_EP_TRANSFER_STARTED;
+-	} else if (!ret) {
++	else if (!ret)
+ 		dep->flags |= DWC3_EP_END_TRANSFER_PENDING;
+-	}
  
- static int udf_fiiter_add_entry(struct inode *dir, struct dentry *dentry,
-@@ -266,17 +266,10 @@ static int udf_fiiter_add_entry(struct i
- 	}
- 	if (dinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB &&
- 	    blksize - udf_ext0_offset(dir) - iter->pos < nfidlen) {
--		struct buffer_head *retbh;
--
- 		udf_fiiter_release(iter);
--		/*
--		 * FIXME: udf_expand_dir_adinicb does not need to return bh
--		 * once other users are gone
--		 */
--		retbh = udf_expand_dir_adinicb(dir, &block, &ret);
--		if (!retbh)
-+		ret = udf_expand_dir_adinicb(dir, &block);
-+		if (ret)
- 			return ret;
--		brelse(retbh);
- 		ret = udf_fiiter_init(iter, dir, dir->i_size);
- 		if (ret < 0)
- 			return ret;
+ 	dep->flags &= ~DWC3_EP_DELAY_STOP;
+ 	return ret;
 
 
 
