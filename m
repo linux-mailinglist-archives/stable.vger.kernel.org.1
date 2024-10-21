@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-87172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E0839A6399
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:37:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2757A9A641E
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 12:43:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A0691C21BFA
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:37:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 562361C22474
+	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 10:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5144A1F4725;
-	Mon, 21 Oct 2024 10:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792121F4285;
+	Mon, 21 Oct 2024 10:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o8t1G6My"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/sZ2w8K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097231EB9EB;
-	Mon, 21 Oct 2024 10:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B531EABCE;
+	Mon, 21 Oct 2024 10:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729506810; cv=none; b=qClvJ8fMR67bCA+H7L1qgAG8mNDSS5TE/a7Ggo+0T0GWrCOMFHUbovxjm8i+ftuqr5UZBryqWGljazd+A18SHjBIhnz57FtEWqTEXZQHSN2iDx0P6QzFc73a29fmTyXN2fMoNChMuEiFtAXgAZ9R/cSPBNbxEgRSyW0vdZ38+yM=
+	t=1729507073; cv=none; b=F1vIoEzMtjMQjbC/kdlyuIdFb1gemqS4z/oBboKhNgwr+XT0YUhfp0I+Cfn2WkSGkNGqA2XMZeN82FDg7Jcg8u3gLP8LIMNUAVHJkebkl/A0YpYjTRFRSnH1xaEfTUYURxuDdv/v5/k9CQJZ3o5DIejxazq9HCJZ4O1uiJWcYKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729506810; c=relaxed/simple;
-	bh=XIPhKd+LOtnIILzMpmiPaZ4AiFi6J6IYLpg6MBGVBdU=;
+	s=arc-20240116; t=1729507073; c=relaxed/simple;
+	bh=ZnTtR6gEnMU1uejB6AZMKeNH1ukPLhmMpVJUsqpxCJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Erl1u6LvjsLZDQzyCHDfELpZsMb7+rQ9BKMlJ7Q/SlOKRWvK4MpeCDE2cWFHdFS39KDpm0TBRp4S1NnLyBHyCTXDUP97K4qbjDfTLrqjZkptppck3T1ubwW9efArdosjZRW4mgjB5ol0A8V5oW99y8+hd6P2jQ2L4Si5Eozde00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o8t1G6My; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 561A9C4CEE7;
-	Mon, 21 Oct 2024 10:33:29 +0000 (UTC)
+	 MIME-Version; b=qri/09E/F/SveURhzL7jBFO+ejp18A/x/duOVAks94Zs1Kwb1flCVxOVpgzswH+DlOczcX603ocoaZiwX/P+TmX/5/TsCdIJmgsMqivIGU/Qh//MWs3j56J5XXD9+KsegmHogpf+08gQMIvMdkMXhum/tJ0ez7g4dTggFjOUXW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/sZ2w8K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C670C4CEC7;
+	Mon, 21 Oct 2024 10:37:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729506809;
-	bh=XIPhKd+LOtnIILzMpmiPaZ4AiFi6J6IYLpg6MBGVBdU=;
+	s=korg; t=1729507073;
+	bh=ZnTtR6gEnMU1uejB6AZMKeNH1ukPLhmMpVJUsqpxCJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o8t1G6Myvm3gRgW6QPOrQ188S/vtO2LpK0UDSGt5Q0pGHMwVpbUTTUoIpHHAJv6JM
-	 pljKTYPgfqDwA0T73zslHMKrAzjSFCXEbAB9CjEAXq2OjAKPz4fhD9D9r/YORyZWGd
-	 Kp71c1RMGx0yxVU1rU2ez2dvlus7R4LZ8TbIL/mI=
+	b=a/sZ2w8K6EFRm34fuOVBW2D5Ng/H7JU3LJilRiPeJuQS5fHwFs/DF8bVVFa2IT0Zm
+	 1DxX6mm6B3bt9sza6VY/KPI0aywFaedcjW+2buLPWsPu6NIcb/ytitutglUeJNC64x
+	 Z1ty3c3tMwkRe2dR7bfyjW9qKljJcxMOoULfPWWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Anup Patel <anup@brainfault.org>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: [PATCH 6.11 128/135] irqchip/sifive-plic: Return error code on failure
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 080/124] iio: light: bu27008: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
 Date: Mon, 21 Oct 2024 12:24:44 +0200
-Message-ID: <20241021102304.349777022@linuxfoundation.org>
+Message-ID: <20241021102259.826460231@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021102259.324175287@linuxfoundation.org>
-References: <20241021102259.324175287@linuxfoundation.org>
+In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
+References: <20241021102256.706334758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charlie Jenkins <charlie@rivosinc.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 6eabf656048d904d961584de2e1d45bc0854f9fb upstream.
+commit aa99ef68eff5bc6df4959a372ae355b3b73f9930 upstream.
 
-Set error to -ENOMEM if kcalloc() fails or if irq_domain_add_linear()
-fails inside of plic_probe() instead of returning 0.
+This driver makes use of triggered buffers, but does not select the
+required modules.
 
-Fixes: 4d936f10ff80 ("irqchip/sifive-plic: Probe plic driver early for Allwinner D1 platform")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240903-correct_error_codes_sifive_plic-v1-1-d929b79663a2@rivosinc.com
-Closes: https://lore.kernel.org/r/202409031122.yBh8HrxA-lkp@intel.com/
+Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
+
+Fixes: 41ff93d14f78 ("iio: light: ROHM BU27008 color sensor")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Link: https://patch.msgid.link/20241003-iio-select-v1-10-67c0385197cd@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-sifive-plic.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/iio/light/Kconfig |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/irqchip/irq-sifive-plic.c
-+++ b/drivers/irqchip/irq-sifive-plic.c
-@@ -578,8 +578,10 @@ static int plic_probe(struct fwnode_hand
- 
- 		handler->enable_save = kcalloc(DIV_ROUND_UP(nr_irqs, 32),
- 					       sizeof(*handler->enable_save), GFP_KERNEL);
--		if (!handler->enable_save)
-+		if (!handler->enable_save) {
-+			error = -ENOMEM;
- 			goto fail_cleanup_contexts;
-+		}
- done:
- 		for (hwirq = 1; hwirq <= nr_irqs; hwirq++) {
- 			plic_toggle(handler, hwirq, 0);
-@@ -591,8 +593,10 @@ done:
- 
- 	priv->irqdomain = irq_domain_add_linear(to_of_node(fwnode), nr_irqs + 1,
- 						&plic_irqdomain_ops, priv);
--	if (WARN_ON(!priv->irqdomain))
-+	if (WARN_ON(!priv->irqdomain)) {
-+		error = -ENOMEM;
- 		goto fail_cleanup_contexts;
-+	}
- 
- 	/*
- 	 * We can have multiple PLIC instances so setup global state
+--- a/drivers/iio/light/Kconfig
++++ b/drivers/iio/light/Kconfig
+@@ -294,6 +294,8 @@ config ROHM_BU27008
+ 	depends on I2C
+ 	select REGMAP_I2C
+ 	select IIO_GTS_HELPER
++	select IIO_BUFFER
++	select IIO_TRIGGERED_BUFFER
+ 	help
+ 	  Enable support for the ROHM BU27008 color sensor.
+ 	  The ROHM BU27008 is a sensor with 5 photodiodes (red, green,
 
 
 
