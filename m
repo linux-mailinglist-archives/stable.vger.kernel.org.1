@@ -1,204 +1,218 @@
-Return-Path: <stable+bounces-87694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64ECD9A9E14
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 11:14:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E070F9A9E1C
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 11:15:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20CA5281EEF
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 09:14:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9299F283451
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 09:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B961940B9;
-	Tue, 22 Oct 2024 09:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2712A187330;
+	Tue, 22 Oct 2024 09:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="J5FT5nKZ";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="hdfPUyzI";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Zel8JAhy";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="fI66crsR"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="V2z4YYF9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1F1126BEF;
-	Tue, 22 Oct 2024 09:14:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D354D2BB09
+	for <stable@vger.kernel.org>; Tue, 22 Oct 2024 09:15:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729588465; cv=none; b=BisoVtEsuxQ/JjZdSS9ZYaHRGAtpVOsQqNXVzb1s4PEPu1t1Xukz3oG4d4pXfnKQsAj+kMocTwF9U+N5CGkTVIfQ+y6w8KGEGkvoeQomyGpR/KwwZaJmCL9HH6VKuH4Dd2a38ewjhMqWoZfbUsm438ssz4w7Pwo0az4uwi7btPc=
+	t=1729588512; cv=none; b=uXJkHQuXEmg4lAB6GHsg5GssSQkAPHSIc+K9OAPWF4kx4y0bxcL4r6AxE0A3/werHaO8nvXsHLzc4Mw6F0l5hnQIG2nfSicICTPqIHGjGngVclvq6EY1CtMy29UhbKfSe1p6ycUD1dbM9Xe8aLPotNrcn48ybGXYhX0pkySUGUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729588465; c=relaxed/simple;
-	bh=VWR7aDOgmN2xrx7wH5+Qcz22KucfK3CVPxBBWEremGU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I+X8jwY19UrlM9e36eqRLcjZEWpnngGfx+rbqqvRXjNZ0BbvD9tD1tHv+SjTdK7BQ6eKrOge8QZEDz/d304ihgjUF+rRJMOcjhReRRuiOBKQaHSN7JV5EwvWvygWL3V+I6EdH0b0qhVber50bQTBs9EHmwdPc6auBIUxr3a5gFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=J5FT5nKZ; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=hdfPUyzI; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Zel8JAhy; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=fI66crsR; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	s=arc-20240116; t=1729588512; c=relaxed/simple;
+	bh=HZAPK3mJmTS0q5Rxj8HcfPNEVjwwJ+YQc63qBqyzdx4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=R1TDb3FHx89+6Vvn4CnAo+KhGoUD3KkE1NQ/YnqGnTYJp4mxwRNhyrV+rBwzanGQSWcBLUl9VjXo9SWFyYvI10faiCYMfq2bddrgZLu8Ad07kYHxikP0OBA+Rt3BshAUmg0qOFc7zSVdMDOkkSqphUj0ZcXT/84lpbUvR1o63Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=V2z4YYF9; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729588508;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Z4sUBp/YGky6H3ltSPc3JifcYG/XqztgIGk696naMPU=;
+	b=V2z4YYF9VzhgcQMuQciisKDIQKSE+DIvwydkBREaiS6DatTCJ911tVXoH1wmwEHOgT61j8
+	+riw9G5zHULTorgZw5b03zmDS7f1dgWpjws3HkNtYtHkovbsb/kh9GSMpcmm8Z2OlXRZWI
+	gxMjjyU5k7oKHaaUPCcRIGGN92zI1q8=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-631-UM8jXB04O4eKXwBriehxYQ-1; Tue,
+ 22 Oct 2024 05:15:05 -0400
+X-MC-Unique: UM8jXB04O4eKXwBriehxYQ-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 47ED01F8BF;
-	Tue, 22 Oct 2024 09:14:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1729588460; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2+9g73mgOTVYRL+S85Co8Hk2zFfU/RJePZEI0E88Al4=;
-	b=J5FT5nKZzFTx6zukYTUHvbdZdpdbYXOwcXLSroGBHv+3hE1jdvt2WaIn4MxS4kg/tn1nMN
-	jYBf+hK8uA9A5kQwpuCj5p5mba2puaXv4nhZSZvipDgC9KSvdH+dEaCo8S3tYMjjf/QixU
-	FxG9eY4KNg0SHhnlaiuIznXD7Om7gfg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1729588460;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2+9g73mgOTVYRL+S85Co8Hk2zFfU/RJePZEI0E88Al4=;
-	b=hdfPUyzI93m0WbMP8xUggr8ck5NAV0kLWwfFBnvbCVq36sX/zGupblqRDniAiOr9ur20zE
-	PvXOJ8p0EyVM7qDg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Zel8JAhy;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fI66crsR
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1729588459; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2+9g73mgOTVYRL+S85Co8Hk2zFfU/RJePZEI0E88Al4=;
-	b=Zel8JAhyRP1dDMyGWokKoADFB+fbkt28OTuqWl16URsA0VThFW149tImEruZ7QKovmJzMc
-	ByFQeLJiqNf8nTJXPk/t4r+6a+vLuIORDGHQsONiZcNByMWZCnObst/9gwWM8n1AeYcn9S
-	x6oe0Rx379wBTmDI8RuRvy96jTyzJak=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1729588459;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2+9g73mgOTVYRL+S85Co8Hk2zFfU/RJePZEI0E88Al4=;
-	b=fI66crsRQgeHMM5B5KeqsnmirR5BItToiL4ELRrg5DS9BpP3sG7desc+FgZbyXPRob3cj5
-	ACBlxW/5v4PeX+Bw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 39FA713AC9;
-	Tue, 22 Oct 2024 09:14:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id fNchDutsF2c3CwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 22 Oct 2024 09:14:19 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id E73F8A086F; Tue, 22 Oct 2024 11:14:18 +0200 (CEST)
-Date: Tue, 22 Oct 2024 11:14:18 +0200
-From: Jan Kara <jack@suse.cz>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, broonie@kernel.org, Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH 6.1 00/91] 6.1.114-rc1 review
-Message-ID: <20241022091418.tbmk3sswlzsv7azu@quack3>
-References: <20241021102249.791942892@linuxfoundation.org>
- <CA+G9fYtXZfLYbFFpj25GqFRbX5mVQvLSoafM1pT7Xff6HRMeaA@mail.gmail.com>
- <2024102216-buckskin-swimmable-a99d@gregkh>
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B8B8F19560BE;
+	Tue, 22 Oct 2024 09:15:03 +0000 (UTC)
+Received: from t14s.redhat.com (unknown [10.22.88.114])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C6CBF1955F42;
+	Tue, 22 Oct 2024 09:14:59 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
+To: stable@vger.kernel.org
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>,
+	David Hildenbrand <david@redhat.com>,
+	Leo Fu <bfu@redhat.com>,
+	Thomas Huth <thuth@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Hugh Dickins <hughd@google.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: [PATCH 6.11.y] mm: huge_memory: add vma_thp_disabled() and thp_disabled_by_hw()
+Date: Tue, 22 Oct 2024 11:14:58 +0200
+Message-ID: <20241022091458.4111085-1-david@redhat.com>
+In-Reply-To: <2024101835-eloquent-could-27ce@gregkh>
+References: <2024101835-eloquent-could-27ce@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024102216-buckskin-swimmable-a99d@gregkh>
-X-Rspamd-Queue-Id: 47ED01F8BF
-X-Spam-Score: -2.51
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	MIME_TRACE(0.00)[0:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
-	TO_DN_SOME(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	TAGGED_RCPT(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
-	FREEMAIL_CC(0.00)[linaro.org,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,sladewatkins.net,gmx.de,suse.cz];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,linaro.org:email,suse.com:email]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Level: 
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On Tue 22-10-24 10:56:34, Greg Kroah-Hartman wrote:
-> On Tue, Oct 22, 2024 at 01:38:59AM +0530, Naresh Kamboju wrote:
-> > On Mon, 21 Oct 2024 at 16:11, Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > This is the start of the stable review cycle for the 6.1.114 release.
-> > > There are 91 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> > >
-> > > Responses should be made by Wed, 23 Oct 2024 10:22:25 +0000.
-> > > Anything received after that time might be too late.
-> > >
-> > > The whole patch series can be found in one patch at:
-> > >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.114-rc1.gz
-> > > or in the git tree and branch at:
-> > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> > > and the diffstat can be found below.
-> > >
-> > > thanks,
-> > >
-> > > greg k-h
-> > 
-> > The arm allmodconfig build failed due to following warnings / errors with
-> > toolchain clang-19.
-> > For all other 32-bit arch builds it is noticed as a warning.
-> > 
-> > * arm, build
-> >   - clang-19-allmodconfig
-> > 
-> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> > 
-> > Build warning / error:
-> > -----------
-> > fs/udf/namei.c:747:12: error: stack frame size (1560) exceeds limit
-> > (1280) in 'udf_rename' [-Werror,-Wframe-larger-than]
-> >   747 | static int udf_rename(struct user_namespace *mnt_userns,
-> > struct inode *old_dir,
-> >       |            ^
-> > 1 error generated.
-> 
-> Odd that this isn't seen in newer kernels, any chance you can bisect?
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
 
-Glancing over the commits in stable-rc it seems the series is missing
-commit 0aba4860b0d021 ("udf: Allocate name buffer in directory iterator on
-heap").
+Patch series "mm: don't install PMD mappings when THPs are disabled by the
+hw/process/vma".
 
-								Honza
+During testing, it was found that we can get PMD mappings in processes
+where THP (and more precisely, PMD mappings) are supposed to be disabled.
+While it works as expected for anon+shmem, the pagecache is the
+problematic bit.
+
+For s390 KVM this currently means that a VM backed by a file located on
+filesystem with large folio support can crash when KVM tries accessing the
+problematic page, because the readahead logic might decide to use a
+PMD-sized THP and faulting it into the page tables will install a PMD
+mapping, something that s390 KVM cannot tolerate.
+
+This might also be a problem with HW that does not support PMD mappings,
+but I did not try reproducing it.
+
+Fix it by respecting the ways to disable THPs when deciding whether we can
+install a PMD mapping.  khugepaged should already be taking care of not
+collapsing if THPs are effectively disabled for the hw/process/vma.
+
+This patch (of 2):
+
+Add vma_thp_disabled() and thp_disabled_by_hw() helpers to be shared by
+shmem_allowable_huge_orders() and __thp_vma_allowable_orders().
+
+[david@redhat.com: rename to vma_thp_disabled(), split out thp_disabled_by_hw() ]
+Link: https://lkml.kernel.org/r/20241011102445.934409-2-david@redhat.com
+Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reported-by: Leo Fu <bfu@redhat.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Boqiao Fu <bfu@redhat.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Janosch Frank <frankja@linux.ibm.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 963756aac1f011d904ddd9548ae82286d3a91f96)
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+
+Only contextual differences in shmem_allowable_huge_orders(). Note that
+this patch is required to backport the fix
+2b0f922323ccfa76219bcaacd35cd50aeaa13592, which can be cleanly cherry
+picked on top.
+
+---
+ include/linux/huge_mm.h | 18 ++++++++++++++++++
+ mm/huge_memory.c        | 13 +------------
+ mm/shmem.c              |  7 +------
+ 3 files changed, 20 insertions(+), 18 deletions(-)
+
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index e25d9ebfdf89..6d334c211176 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -308,6 +308,24 @@ static inline void count_mthp_stat(int order, enum mthp_stat_item item)
+ 	(transparent_hugepage_flags &					\
+ 	 (1<<TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG))
+ 
++static inline bool vma_thp_disabled(struct vm_area_struct *vma,
++		unsigned long vm_flags)
++{
++	/*
++	 * Explicitly disabled through madvise or prctl, or some
++	 * architectures may disable THP for some mappings, for
++	 * example, s390 kvm.
++	 */
++	return (vm_flags & VM_NOHUGEPAGE) ||
++	       test_bit(MMF_DISABLE_THP, &vma->vm_mm->flags);
++}
++
++static inline bool thp_disabled_by_hw(void)
++{
++	/* If the hardware/firmware marked hugepage support disabled. */
++	return transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_UNSUPPORTED);
++}
++
+ unsigned long thp_get_unmapped_area(struct file *filp, unsigned long addr,
+ 		unsigned long len, unsigned long pgoff, unsigned long flags);
+ unsigned long thp_get_unmapped_area_vmflags(struct file *filp, unsigned long addr,
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 99b146d16a18..1536421f76d4 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -106,18 +106,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+ 	if (!vma->vm_mm)		/* vdso */
+ 		return 0;
+ 
+-	/*
+-	 * Explicitly disabled through madvise or prctl, or some
+-	 * architectures may disable THP for some mappings, for
+-	 * example, s390 kvm.
+-	 * */
+-	if ((vm_flags & VM_NOHUGEPAGE) ||
+-	    test_bit(MMF_DISABLE_THP, &vma->vm_mm->flags))
+-		return 0;
+-	/*
+-	 * If the hardware/firmware marked hugepage support disabled.
+-	 */
+-	if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_UNSUPPORTED))
++	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vm_flags))
+ 		return 0;
+ 
+ 	/* khugepaged doesn't collapse DAX vma, but page fault is fine. */
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 5a77acf6ac6a..2e21e06565ef 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1632,12 +1632,7 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
+ 	loff_t i_size;
+ 	int order;
+ 
+-	if ((vm_flags & VM_NOHUGEPAGE) ||
+-	    test_bit(MMF_DISABLE_THP, &vma->vm_mm->flags))
+-		return 0;
+-
+-	/* If the hardware/firmware marked hugepage support disabled. */
+-	if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_UNSUPPORTED))
++	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vm_flags))
+ 		return 0;
+ 
+ 	/*
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.46.1
+
 
