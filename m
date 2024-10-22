@@ -1,158 +1,127 @@
-Return-Path: <stable+bounces-87705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B88D9A9F40
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 11:54:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40E199A9F3E
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 11:54:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBA471F239FD
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 09:54:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACEA7B21259
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 09:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BCE819994A;
-	Tue, 22 Oct 2024 09:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D8F219992E;
+	Tue, 22 Oct 2024 09:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lLuSga9d"
+	dkim=pass (2048-bit key) header.d=nexus-software-ie.20230601.gappssmtp.com header.i=@nexus-software-ie.20230601.gappssmtp.com header.b="NZ4YvN2P"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2A11993B9;
-	Tue, 22 Oct 2024 09:53:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B6E155330
+	for <stable@vger.kernel.org>; Tue, 22 Oct 2024 09:53:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729590831; cv=none; b=j+LkuLBRbWZgWyHFabHIVjgWymglSkTcCSKEWapXtFl1C/IYaY4RjL4tYwJTCcqKBgNJ5MU9X7hj3AFPXfzAvkeASBjpUX0e/VktXw2s05UDbrsBFW0ILtPZHOp7KZpX4v5ZJbV9rJSyeNCpRTqj7JvfZHJmkE7TaQWK2wfxVAs=
+	t=1729590830; cv=none; b=IREAFV6FQhIOUH8otkb6dXuqgr14ttaHVLDgI4LpcQmS3XFBEETenoOcuH35Ri1xMsTpBO+CQPk8qEb2ZPqxTFgxllH047rAJhmGzGZRybdi01bp+Sj1GlJBYGGzZ57RT6GhLEJdPt/hTtdBzLbnU3oNSVdzX5Sm5/CjFxqu9Uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729590831; c=relaxed/simple;
-	bh=scM++PRarp/aL6EIAnPspEEa4tB6O8OVUGdyT5ywHWg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wk6cWbqCOVDYExnTvAt3gx4sEaSOclPbQxBNbKjz3X6MB5Xl2GM849KPpk4gJ1luXw7H+B3jINHfClHpI+BKzG5iXZWdg9u9IOfp9prNXmv31IagDUOfQeTZF48vDjvp7udZy2Y+21OsiTND8vVgtw8iPGjuO72x5jnOMbAt6v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lLuSga9d; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729590830; x=1761126830;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=scM++PRarp/aL6EIAnPspEEa4tB6O8OVUGdyT5ywHWg=;
-  b=lLuSga9drB5qOM5feq6YfdeXJ5LXlqB0CETQAk5zlBeKPdyEXH0UOa2e
-   z8MblJcSuel2gwbA2lKbdW1Sxk1MeL4IQ0HyLu0PS7RJeh9H6DDTrSQdb
-   DHSjMXJGJxj2PgHbRP2nk9UgOTmez2fhLMNa5/ii5yt0x28TKwta9Z6XX
-   2jZWPhLy8LOibMH9SnjMwRgsPlHZQvIB4uS2Fb9P2MT/NqlMHJjqqdQFC
-   mbb9lZP1toaQR341tu4fLHtSm81VcfhP9Cn9QE2k0LLBswEh7BVCRk5FS
-   zYBPN7xgAGTTPHkZx7Li4m1/8d1s6igkYlW5EMYAww9diKxsPWyQGfFuy
-   A==;
-X-CSE-ConnectionGUID: WBOhAiRuTiCsY8cr96Pt4g==
-X-CSE-MsgGUID: XbeRHvjkRGOwzeSSlWD3Iw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11232"; a="29320777"
-X-IronPort-AV: E=Sophos;i="6.11,222,1725346800"; 
-   d="scan'208";a="29320777"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 02:52:34 -0700
-X-CSE-ConnectionGUID: dtMF4WWlS2enATM/z7NnNw==
-X-CSE-MsgGUID: V81PCzHpTli7AWTOne9nsw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,222,1725346800"; 
-   d="scan'208";a="110635030"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 22 Oct 2024 02:52:31 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t3BYy-000TPr-0b;
-	Tue, 22 Oct 2024 09:52:28 +0000
-Date: Tue, 22 Oct 2024 17:52:18 +0800
-From: kernel test robot <lkp@intel.com>
-To: Matt Johnston <matt@codeconstruct.com.au>,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Wolfram Sang <wsa-dev@sang-engineering.com>
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Dung Cao <dung@os.amperecomputing.com>
-Subject: Re: [PATCH net v2] mctp i2c: handle NULL header address
-Message-ID: <202410221734.IWc5paM1-lkp@intel.com>
-References: <20241021-mctp-i2c-null-dest-v2-1-4503e478517c@codeconstruct.com.au>
+	s=arc-20240116; t=1729590830; c=relaxed/simple;
+	bh=Y46DtbVTP0E38ObjD6CzbJEhXZgRp0JJH6MXGub6VHA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k+yxQjxmtQnJs/Fmvp1kHM+7EtdNt0VJPJpLAoiUZHz67tXHS1gAB0mTAV7B/0qHgxDK5we8Bp1kj0m1RUVwjoZ1xVHrcQjM2+twPFBniclexZdHTATqCnwxr0LMPiFWBB5Ix1wSu5Vrh2coOrizmekraSc8lBJ4EnGOtsJj8HI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nexus-software.ie; spf=none smtp.mailfrom=nexus-software.ie; dkim=pass (2048-bit key) header.d=nexus-software-ie.20230601.gappssmtp.com header.i=@nexus-software-ie.20230601.gappssmtp.com header.b=NZ4YvN2P; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nexus-software.ie
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nexus-software.ie
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5c9709c9b0cso7126663a12.1
+        for <stable@vger.kernel.org>; Tue, 22 Oct 2024 02:53:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nexus-software-ie.20230601.gappssmtp.com; s=20230601; t=1729590825; x=1730195625; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=op1FRSJCS1vPXD/9QYtg2XAEFEXZ1E8zhO4zRpuc9J0=;
+        b=NZ4YvN2PeZshISEcqNa3Nlg645xxyP+W9AWrRdUOsNeaoGle4GtDXukfoXNh0070xR
+         zQMr9ms7/Zqtvdyrb0uTTgmVHfaKUWi4g9z10P97X0S5XozstAZEwNEQUgXqsjB2O739
+         52hiy824yC2Z5CDXH3UJO7t8xtA++8YSYkYIOOSUqur5smrdeRyRfBTBsGreOpcSecd2
+         ahiL6K4KM7ii8d6Oj7bjaO5AbvUXs7lIrbCFpFMSTyonVYYCLE6kQ/pPu7/oYZOJUXi7
+         N+HS2hpyCZTYgEpGjwnSwCLgFNzVw/djOusmZJk3+rpoEuGN/2LXSuG3dju0VDpAb6mQ
+         Dr+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729590825; x=1730195625;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=op1FRSJCS1vPXD/9QYtg2XAEFEXZ1E8zhO4zRpuc9J0=;
+        b=T1xgtr8bp2ZAvM+aimKJ9K9WssmxrP4bMG3EF1pb43YmUu8/q4f5h5WpLvuuusdb5B
+         TYG5MDUyLjRHtCTGR5l6y8ZxXxW1FyKJb88H+UTlsViJWuhHu2MToqY2wy3If1sI6n9I
+         SCdIlMPiXi8lHyZoRN6qAv03ary5i9G4NWE1YoLeZU8d6QA6JmsFqrzvg3+Yg7LwDuLS
+         Q22GYk0yCvUeM1fS6XPURYSMSrmzwevK4au+Ht7JwPztVmW1ax0gwQbp+YO0Mi5PrTTw
+         sn2aLCfghnRC9VRgQlyE17520aVrkBgMhs+s9jC8YngsYEyqgKrKbks4DLbbclc3Z7cn
+         WB1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXMJBK4cjw8E79vIeUK46RLLAJt8mji6hNFWRovpLTCYR2Xh076UawZl50NGZ0VHCcGUf7+ZcY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZmp/CcyiJx5A5YDo8sHKXGOLvTtsQR8DhRb8rAvexwnyzpCDk
+	TWKLskFIM3+A1t/KOvtPl0u4LaVYDkH0A+rMyrKUA2GsDcvITfNwcwTX08WiF5A=
+X-Google-Smtp-Source: AGHT+IEcLQwkHk5o2k7sioZOXKjv6teIn45f2gmoiG+SvQugsEWBRSFoR1zkrhOzSxxQycfl1GyexQ==
+X-Received: by 2002:a17:907:72d2:b0:a9a:c82:d76e with SMTP id a640c23a62f3a-a9aa88cb1a7mr251886366b.12.1729590824875;
+        Tue, 22 Oct 2024 02:53:44 -0700 (PDT)
+Received: from [192.168.0.40] ([176.61.106.227])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a912f6644sm313292666b.81.2024.10.22.02.53.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Oct 2024 02:53:44 -0700 (PDT)
+Message-ID: <8ec5512b-a8ea-432c-84aa-f920470c056d@nexus-software.ie>
+Date: Tue, 22 Oct 2024 10:53:43 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241021-mctp-i2c-null-dest-v2-1-4503e478517c@codeconstruct.com.au>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] clk: qcom: gcc-qcs404: fix initial rate of GPLL3
+To: Gabor Juhos <j4g8y7@gmail.com>, Bjorn Andersson <andersson@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Taniya Das <quic_tdas@quicinc.com>
+Cc: Vinod Koul <vkoul@kernel.org>, linux-arm-msm@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20241022-fix-gcc-qcs404-gpll3-v1-1-c4d30d634d19@gmail.com>
+Content-Language: en-US
+From: Bryan O'Donoghue <pure.logic@nexus-software.ie>
+In-Reply-To: <20241022-fix-gcc-qcs404-gpll3-v1-1-c4d30d634d19@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Matt,
+On 22/10/2024 10:45, Gabor Juhos wrote:
+> The comment before the config of the GPLL3 PLL says that the
+> PLL should run at 930 MHz. In contrary to this, calculating
+> the frequency from the current configuration values by using
+> 19.2 MHz as input frequency defined in 'qcs404.dtsi', it gives
+> 921.6 MHz:
+> 
+>    $ xo=19200000; l=48; alpha=0x0; alpha_hi=0x0
+>    $ echo "$xo * ($((l)) + $(((alpha_hi << 32 | alpha) >> 8)) / 2^32)" | bc -l
+>    921600000.00000000000000000000
+> 
+> Set 'alpha_hi' in the configuration to a value used in downstream
+> kernels [1][2] in order to get the correct output rate:
+> 
+>    $ xo=19200000; l=48; alpha=0x0; alpha_hi=0x70
+>    $ echo "$xo * ($((l)) + $(((alpha_hi << 32 | alpha) >> 8)) / 2^32)" | bc -l
+>    930000000.00000000000000000000
+> 
+> The change is based on static code analysis, compile tested only.
+> 
+> [1] https://git.codelinaro.org/clo/la/kernel/msm-5.4/-/blob/kernel.lnx.5.4.r56-rel/drivers/clk/qcom/gcc-qcs404.c?ref_type=heads#L335
+> [2} https://git.codelinaro.org/clo/la/kernel/msm-5.15/-/blob/kernel.lnx.5.15.r49-rel/drivers/clk/qcom/gcc-qcs404.c?ref_type=heads#L127
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 652f1813c113 ("clk: qcom: gcc: Add global clock controller driver for QCS404")
+> Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+It should be possible to test / verify this change with debugcc on qcs404
 
-kernel test robot noticed the following build warnings:
+https://github.com/linux-msm/debugcc/blob/master/qcs404.c
 
-[auto build test WARNING on cb560795c8c2ceca1d36a95f0d1b2eafc4074e37]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Matt-Johnston/mctp-i2c-handle-NULL-header-address/20241021-123741
-base:   cb560795c8c2ceca1d36a95f0d1b2eafc4074e37
-patch link:    https://lore.kernel.org/r/20241021-mctp-i2c-null-dest-v2-1-4503e478517c%40codeconstruct.com.au
-patch subject: [PATCH net v2] mctp i2c: handle NULL header address
-config: alpha-randconfig-r122-20241022 (https://download.01.org/0day-ci/archive/20241022/202410221734.IWc5paM1-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 13.3.0
-reproduce: (https://download.01.org/0day-ci/archive/20241022/202410221734.IWc5paM1-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410221734.IWc5paM1-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> drivers/net/mctp/mctp-i2c.c:599:23: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned char [assigned] [usertype] llsrc @@     got unsigned char const *dev_addr @@
-   drivers/net/mctp/mctp-i2c.c:599:23: sparse:     expected unsigned char [assigned] [usertype] llsrc
-   drivers/net/mctp/mctp-i2c.c:599:23: sparse:     got unsigned char const *dev_addr
-   drivers/net/mctp/mctp-i2c.c: note: in included file (through include/linux/module.h):
-   include/linux/list.h:83:21: sparse: sparse: self-comparison always evaluates to true
-   include/linux/list.h:83:21: sparse: sparse: self-comparison always evaluates to true
-
-vim +599 drivers/net/mctp/mctp-i2c.c
-
-   579	
-   580	static int mctp_i2c_header_create(struct sk_buff *skb, struct net_device *dev,
-   581					  unsigned short type, const void *daddr,
-   582					  const void *saddr, unsigned int len)
-   583	{
-   584		struct mctp_i2c_hdr *hdr;
-   585		struct mctp_hdr *mhdr;
-   586		u8 lldst, llsrc;
-   587	
-   588		if (len > MCTP_I2C_MAXMTU)
-   589			return -EMSGSIZE;
-   590	
-   591		if (daddr)
-   592			lldst = *((u8 *)daddr);
-   593		else
-   594			return -EINVAL;
-   595	
-   596		if (saddr)
-   597			llsrc = *((u8 *)saddr);
-   598		else
- > 599			llsrc = dev->dev_addr;
-   600	
-   601		skb_push(skb, sizeof(struct mctp_i2c_hdr));
-   602		skb_reset_mac_header(skb);
-   603		hdr = (void *)skb_mac_header(skb);
-   604		mhdr = mctp_hdr(skb);
-   605		hdr->dest_slave = (lldst << 1) & 0xff;
-   606		hdr->command = MCTP_I2C_COMMANDCODE;
-   607		hdr->byte_count = len + 1;
-   608		hdr->source_slave = ((llsrc << 1) & 0xff) | 0x01;
-   609		mhdr->ver = 0x01;
-   610	
-   611		return sizeof(struct mctp_i2c_hdr);
-   612	}
-   613	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+---
+bod
 
