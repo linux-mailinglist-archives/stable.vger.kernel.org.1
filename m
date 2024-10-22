@@ -1,158 +1,198 @@
-Return-Path: <stable+bounces-87744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B489AB206
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 17:28:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03DF19AB22A
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 17:31:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5503AB213DD
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 15:28:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AE62B23CFF
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 15:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675CA1A38C2;
-	Tue, 22 Oct 2024 15:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B8C1B5ED0;
+	Tue, 22 Oct 2024 15:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="eolUrfIE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tp/B7uOv"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5444419D8A8;
-	Tue, 22 Oct 2024 15:28:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9AC1A726D;
+	Tue, 22 Oct 2024 15:30:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729610883; cv=none; b=lxLZ6R5zmHo5M4rIl3HauAQc6lJhIBlYgASz4p1HSY5y90Z3b5EafdR6gHUsyFcy6c2fevPwJt7in+/88TmbbyNL+GVBNT3VcGEe8bNTnguLuWl9ecgvQ+dD7aJIJUrA1LmMkle+YgOKm9secm9CCfqQRXiFnfBQ13eBDvDkgv8=
+	t=1729611045; cv=none; b=U3eX/ai4C5OoPuarVyHTI0DfPIor+fD3LS5gFjGl4HuEPo5HwtA78c9n6VnMUMMkrsv47KhVqmB8VhwatVSNaeV6Nfx9NA2YTSSKCXJ/hTNecsBGaENz3CABKEZd07H7AfG7/Bv4hKs1wxfOtmQdYlQOXREeoORAbII4GIZiWf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729610883; c=relaxed/simple;
-	bh=Q6/LCuHxtFaNWPS9zJ1PUM8zFCB+Qji/2TlyaQMqe74=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=oExJ058RAYGhrfPiy34fjNAvh6SOfsLygz8I2QgpzJo4awLH/dNVJk5KqpR5rOSyDgZ36a0y+VeJ3SKc040rJBz3NNIEAb1sCIFLlxtNyJGihXhPp23UFU6NboVQ821x6KHnKGR7FeKlAqNDQ/4jOk4HDBOYljwUElOr+MegE0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=eolUrfIE; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49MC9udB025848;
-	Tue, 22 Oct 2024 15:27:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	RIDLr4r/u/K1oPWDOMyoC7Dp7E83dotNNmd7J8LLHPs=; b=eolUrfIEJF3LThEo
-	OAx0HVbaRw/w2KVL6DmdES0s6oI3VV1JhMJ4+snG11jhExNVJ25ArkAdobAwFspa
-	K+MiAWZ+aS9DwiHM6wYUOQtevYfBvxZHvQ60YpfDag49QCGnfmrqRZ7hYnn0izk8
-	xrFytqaBdf6GueiuZZGtXOBSYbCAQzbeNg6FvefVsXyYiyxx2jNW4XbemJomb4k5
-	uwBg4FBQBoLeM0BS9KPRd8LqRf+X1cGkwBQ9fRDOfvFnMN+OebYuu66dE7sCI6TO
-	VLDpd65NBYxl6Rj0rOqnWXD9DTXhAXodxzc2yco9goxpec2BvtTBsuqd0NdhOKXK
-	5PjaaA==
-Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42ebtm8ka0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Oct 2024 15:27:56 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49MFRt1u012769
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Oct 2024 15:27:55 GMT
-Received: from [10.216.52.6] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 22 Oct
- 2024 08:27:52 -0700
-Message-ID: <3c13bc31-1ee5-4f5b-9655-1e12465fa8ce@quicinc.com>
-Date: Tue, 22 Oct 2024 20:57:49 +0530
+	s=arc-20240116; t=1729611045; c=relaxed/simple;
+	bh=QaeEqdPFz3BRmov/AvOyAXOEIdoSrRqhJFtqE3JLuAc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lyc9rVW4WCU8TMbUnXieifkoP0MAa5dXIwSdrnJxKK8OP8ke0kfiwa8cjbJKsRR0QXBUGWoEArPuPTZOIrtotT7hKvm3QSkFF0FHbs5R2AbsqAjLLPPmblbWjaCH+Swp7RhOhRt8FPcJI0JdXB+WzXTQudUvYC/SJKotnWCvGpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tp/B7uOv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 865BEC4CEE7;
+	Tue, 22 Oct 2024 15:30:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729611044;
+	bh=QaeEqdPFz3BRmov/AvOyAXOEIdoSrRqhJFtqE3JLuAc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Tp/B7uOvvqVfphlIu5iRNu1Iqlkcy0OL/bvfWQsx4L9Ex2c180NZSD9NMHz+PfBjJ
+	 wYWXq5pPpDQfQqy12cmgLElrZBfhTyBbQUFEhknHsyImQGdZRcAPkTI6zFBg0PBunG
+	 A7Non5gcw9RviSwYgu3Dsjp0t/XCrn3447Aona4R4yBmRIAodpM8fEURBOG7RQRYMv
+	 3LDJRpej4HS8B6hLP88B/5QnnotwzBMNjAizpONd97Qzk3OaQlz1qty4wDYYnPi7th
+	 tKPEvDxV6ifNSWKPQ45PuDaodebiLYPmFQ/ty/Z7qen7lFZgU3zF2ZbLGDE00rC3PH
+	 j/kxGPNlnJ8Jw==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1t3GqV-000000001By-4ABf;
+	Tue, 22 Oct 2024 17:30:56 +0200
+Date: Tue, 22 Oct 2024 17:30:55 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Chris Lew <quic_clew@quicinc.com>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] soc: qcom: pmic_glink: Handle GLINK intent
+ allocation rejections
+Message-ID: <ZxfFL8eVs5lYCPum@hovoldconsulting.com>
+References: <20241022-pmic-glink-ecancelled-v1-0-9e26fc74e0a3@oss.qualcomm.com>
+ <20241022-pmic-glink-ecancelled-v1-2-9e26fc74e0a3@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] xhci: Fix Link TRB DMA in command ring stopped
- completion event
-To: Mathias Nyman <mathias.nyman@linux.intel.com>,
-        Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>,
-        Mathias Nyman <mathias.nyman@intel.com>
-CC: <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <20241021131904.20678-1-quic_faisalh@quicinc.com>
- <51a0598a-2618-4501-af40-f1e9a1463bca@linux.intel.com>
- <07744fc7-633f-477e-96e9-8f498a3b40e8@quicinc.com>
- <118041cf-07b1-457c-ad59-b9c8d48342b9@linux.intel.com>
-Content-Language: en-US
-From: Faisal Hassan <quic_faisalh@quicinc.com>
-In-Reply-To: <118041cf-07b1-457c-ad59-b9c8d48342b9@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: OaGEFgHReXcTYVJ-2ck0RwTPAMOrQQrX
-X-Proofpoint-GUID: OaGEFgHReXcTYVJ-2ck0RwTPAMOrQQrX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1015
- malwarescore=0 suspectscore=0 mlxscore=0 bulkscore=0 impostorscore=0
- priorityscore=1501 mlxlogscore=788 adultscore=0 lowpriorityscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410220099
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241022-pmic-glink-ecancelled-v1-2-9e26fc74e0a3@oss.qualcomm.com>
 
+On Tue, Oct 22, 2024 at 04:17:12AM +0000, Bjorn Andersson wrote:
+> Some versions of the pmic_glink firmware does not allow dynamic GLINK
+> intent allocations, attempting to send a message before the firmware has
+> allocated its receive buffers and announced these intent allocations
+> will fail. When this happens something like this showns up in the log:
+> 
+> 	[    9.799719] pmic_glink_altmode.pmic_glink_altmode pmic_glink.altmode.0: failed to send altmode request: 0x10 (-125)
+> 	[    9.812446] pmic_glink_altmode.pmic_glink_altmode pmic_glink.altmode.0: failed to request altmode notifications: -125
+> 	[    9.831796] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: failed to send UCSI read request: -125
 
+I think you should drop the time stamps here, and also add the battery
+notification error to make the patch easier to find when searching for
+these errors:
 
-On 10/22/2024 8:03 PM, Mathias Nyman wrote:
-> On 22.10.2024 15.34, Faisal Hassan wrote:
->> Hi Mathias,
->>
->>> Do we in this COMP_COMMAND_RING_STOPPED case even need to check if
->>> cmd_dma != (u64)cmd_dequeue_dma, or if command ring stopped on a link
->>> TRB?
->>>
->>> Could we just move the COMP_COMMAND_RING_STOPPED handling a bit earlier?
->>>
->>> if (cmd_comp_code == COMP_COMMAND_RING_STOPPED) {
->>>      complete_all(&xhci->cmd_ring_stop_completion);
->>>          return;
->>> }
->>>
->>> If I remember correctly it should just turn aborted command TRBs into
->>> no-ops,
->>> and restart the command ring
->>>
->>
->> Thanks for reviewing the changes!
->>
->> Yes, you’re right. As part of restarting the command ring, we just ring
->> the doorbell.
->>
->> If we move the event handling without validating the dequeue pointer,
->> wouldn’t it be a risk if we don’t check what the xHC is holding in its
->> dequeue pointer? If we are not setting it, it starts from wherever it
->> stopped. What if the dequeue pointer got corrupted or is not pointing to
->> any of the TRBs in the command ring?
-> 
-> For that to happen the xHC host would have to corrupt its internal command
-> ring dequeue pointer. Not impossible, but an unlikely HW flaw, and a
-> separate
-> issue. A case like that could be solved by writing the address of the
-> next valid
-> (non-aborted) command to the CRCR register in
-> xhci_handle_stopped_cmd_ring() before
-> ringing the doorbell.
-> 
-> The case you found where a command abort is not handled properly due to
-> stopping
-> on a link TRB is a real xhci driver issue that would be nice to get solved.
-> 
-> For the COMP_COMMAND_RING_STOPPED case we don't really care that much
-> on which command it stopped, for other commands we do.
-> 
-> Thanks
-> Mathias
-> 
+	qcom_battmgr.pmic_glink_power_supply pmic_glink.power-supply.0: failed to request power notifications
 
-Sure, I will submit a v3 with the command ring stopped check moved a bit
-earlier.
+> GLINK has been updated to distinguish between the cases where the remote
+> is going down (-ECANCELLED) and the intent allocation being rejected
+> (-EAGAIN).
+> 
+> Retry the send until intent buffers becomes available, or an actual
+> error occur.
+> 
+> To avoid infinitely waiting for the firmware in the event that this
+> misbehaves and no intents arrive, an arbitrary 10 second timeout is
+> used.
+> 
+> This patch was developed with input from Chris Lew.
+> 
+> Reported-by: Johan Hovold <johan@kernel.org>
+> Closes: https://lore.kernel.org/all/Zqet8iInnDhnxkT9@hovoldconsulting.com/#t
 
-Thanks,
-Faisal
+This indeed seems to fix the -ECANCELED related errors I reported above,
+but the audio probe failure still remains as expected:
+
+	PDR: avs/audio get domain list txn wait failed: -110
+	PDR: service lookup for avs/audio failed: -110
+
+I hit it on the third reboot and then again after another 75 reboots
+(and have never seen it with the user space pd-mapper over several
+hundred boots).
+
+Do you guys have any theories as to what is causing the above with the
+in-kernel pd-mapper (beyond the obvious changes in timing)?
+
+> Cc: stable@vger.kernel.org
+
+Can you add a Fixes tag here?
+
+This patch depends on the former, but that is not necessarily obvious
+for someone backporting this (and the previous patch is only going to be
+backported to 6.4).
+
+Perhaps you can use the stable tag dependency annotation or even mark
+the previous patch so that it is backported far enough.
+
+> Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+	
+> ---
+>  drivers/soc/qcom/pmic_glink.c | 18 +++++++++++++++---
+>  1 file changed, 15 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/soc/qcom/pmic_glink.c b/drivers/soc/qcom/pmic_glink.c
+> index 9606222993fd78e80d776ea299cad024a0197e91..221639f3da149da1f967dbc769a97d327ffd6c63 100644
+> --- a/drivers/soc/qcom/pmic_glink.c
+> +++ b/drivers/soc/qcom/pmic_glink.c
+> @@ -13,6 +13,8 @@
+>  #include <linux/soc/qcom/pmic_glink.h>
+>  #include <linux/spinlock.h>
+>  
+> +#define PMIC_GLINK_SEND_TIMEOUT (10*HZ)
+
+nit: spaces around *
+
+Ten seconds seems a little excessive; are there any reasons for not
+picking something shorter like 5 s (also used by USB but that comes from
+spec)?
+
+> +
+>  enum {
+>  	PMIC_GLINK_CLIENT_BATT = 0,
+>  	PMIC_GLINK_CLIENT_ALTMODE,
+> @@ -112,13 +114,23 @@ EXPORT_SYMBOL_GPL(pmic_glink_client_register);
+>  int pmic_glink_send(struct pmic_glink_client *client, void *data, size_t len)
+>  {
+>  	struct pmic_glink *pg = client->pg;
+> +	unsigned long start;
+> +	bool timeout_reached = false;
+
+No need to initialise.
+
+>  	int ret;
+>  
+>  	mutex_lock(&pg->state_lock);
+> -	if (!pg->ept)
+> +	if (!pg->ept) {
+>  		ret = -ECONNRESET;
+> -	else
+> -		ret = rpmsg_send(pg->ept, data, len);
+> +	} else {
+> +		start = jiffies;
+> +		do {
+> +			timeout_reached = time_after(jiffies, start + PMIC_GLINK_SEND_TIMEOUT);
+> +			ret = rpmsg_send(pg->ept, data, len);
+
+Add a delay here to avoid hammering the remote side with requests in a
+tight loop for 10 s?
+
+> +		} while (ret == -EAGAIN && !timeout_reached);
+> +
+> +		if (ret == -EAGAIN && timeout_reached)
+> +			ret = -ETIMEDOUT;
+> +	}
+>  	mutex_unlock(&pg->state_lock);
+>  
+>  	return ret;
+
+Looks good to me otherwise: 
+
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+
+Johan
 
