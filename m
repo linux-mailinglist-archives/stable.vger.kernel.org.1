@@ -1,100 +1,109 @@
-Return-Path: <stable+bounces-87768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C63939AB5AB
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 20:00:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0A369AB5DE
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 20:16:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 566662836EC
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 18:00:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E114328437D
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 18:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21D81BD507;
-	Tue, 22 Oct 2024 18:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBE61A38E1;
+	Tue, 22 Oct 2024 18:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KxiF4mgL"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="GYmhqKWi"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA326156871
-	for <stable@vger.kernel.org>; Tue, 22 Oct 2024 18:00:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1AC07E0E4;
+	Tue, 22 Oct 2024 18:16:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729620057; cv=none; b=sPO8sQkqzvkKp7gAbx+HguCACtzk44tBdifNOAJtOQFK3r+1aNWBpxErwYzrTvnyw6vPCwT0JjkqNcGqVpBXMN+ls76Icm8uBgCHa8nYp9PGFdacUdDJ46YpGwPzxfIjTBj5xmScApB6v8tRovqpnLN15qmFLWpc4twHk8UwvPk=
+	t=1729621007; cv=none; b=kWew0skP+U9TYz3gUM7YP7EzZfpbHFxXYEi+vYAdZmvcliH6hJ5grlzXvuXkdaoQ6en9V87DtEi6nSDafFWeRhGpsPEA+G2FRRqYwwv9ZZNZRVPLY2ly2A0+o33DtUgbu1wUyI4Y2ZkuPxx1PN5URTWSgTUWlEkYtZpjw+bURkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729620057; c=relaxed/simple;
-	bh=+C6xcks3TAvLTD033DNHXFEAW+54GsNNp6vpRyaeBQ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=hgFaCEHeyrfdKskvdfCuznNZPvxr2CmmIlKO2smUFFtKNGZOT8fFubSEJ+uOgSoFfIBdYyf7Prv9Plt/CEblS66wAYDuQJdVLsachE2+WRB2OnF+3nXDbXSAuaL4VurhZrLPTCPLMIuPtL+a0o/1+xpo9q8EItnZS4aA6Mw/wQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KxiF4mgL; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729620054; x=1761156054;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=+C6xcks3TAvLTD033DNHXFEAW+54GsNNp6vpRyaeBQ0=;
-  b=KxiF4mgLT0KngHka9DutMxoLf10xAxWSsI0nXSOPI9p0lQTVpatsYH31
-   aMGlmYociDW75abg5GCZdxeA0ms8aspusCTlFRw/XQJ68DTn+2ih5G0wi
-   WfxGXGrz3972gGgpBfyAewCpLNvURbqp3A0P3rn/Esh8iZlV2/8J822b3
-   D7bd1ODUh5uE21+VaY5a1TFFN4N2UCAkW6vKeecMkcLULibdu1iqpBPE4
-   /7lwUU5vniN68m5tnosvRQ3ScrWpMyTyG1OY8uVqwS9NlaX3qUyoXZu2l
-   pC8D5+bBYnAeG34/IAHv24onrpt7dm2NRzfdytAz/HhjpaY9iAsYVKCQa
-   w==;
-X-CSE-ConnectionGUID: Y0OU/kBATQWPdUK/5Nhy2g==
-X-CSE-MsgGUID: /kwCA8ppReK0TYGsq9ts1g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="32867983"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="32867983"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 11:00:54 -0700
-X-CSE-ConnectionGUID: pFv7Gm7cTz6/EF4lS1A9cw==
-X-CSE-MsgGUID: gsuUrsL8RjOXxSAPDWlG1A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; 
-   d="scan'208";a="80359807"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 22 Oct 2024 11:00:53 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t3JBa-000TuO-2W;
-	Tue, 22 Oct 2024 18:00:50 +0000
-Date: Wed, 23 Oct 2024 01:59:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: Saurabh Sengar <ssengar@linux.microsoft.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] sched/topology: Enable topology_span_sane check only for
- debug builds
-Message-ID: <ZxfoG50ltwUFNzJ-@a65df9119445>
+	s=arc-20240116; t=1729621007; c=relaxed/simple;
+	bh=UZqgYCmGKMLoPX6x45jwleLfwKc2WBwRV6SssUQHBmI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r5GD1tNdUL6PMuIqT9zBrzz1LyxsK6upgS6aW0Eg5xJ5gfDJkD0XbH04OJPouaK5c1AHWyAkzK1PDyiHoHb/1q2+aptkWRhI/6A344JRN9YNsmShUaNJhcoPAqU0xCPcOWeQmjY0RL2HSUlKxleDzwi/iHv50lXxlpVtPuN/2LA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=GYmhqKWi; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4XY0kH2RNKz6ClY9C;
+	Tue, 22 Oct 2024 18:16:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:mime-version:x-mailer:message-id:date
+	:date:subject:subject:from:from:received:received; s=mr01; t=
+	1729620996; x=1732212997; bh=lsF95ZAMKXS4nPzun/TBSeUR4KI4RRlcTUe
+	on854CPA=; b=GYmhqKWiPRNZ7boT3oKFHkSK24TQ3JGeHFMdq+hS2EzS99mejpg
+	uEu6ifotQaphZt5Zs50DEts1seDZJyNiDt2NzpVg7t+BgCMfMy07TzPhlTuet0pL
+	dnDtv3dLrP7mM/MsD5s4VSGq9obL3CaXo1iDquk9TnaW7WfCGJ988a36BpwUvT7M
+	kG6cfEPQo2EV4Qo+t0pB6qFjgkKW89tO0rIigwkaKIGnvlltVHvStZU/XdE1lXUf
+	w7fmGguOSN94qN6UiPCaNcLEAHoxEqMhEzUylhVoePl/pHelENgMTEl/ZBTJn0sa
+	GHz94o0VpMU0WWylTP201M7Lts8ujwsY6bA==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id Z0rZcDsQIz26; Tue, 22 Oct 2024 18:16:36 +0000 (UTC)
+Received: from bvanassche.mtv.corp.google.com (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4XY0kC4YXMz6CmLxj;
+	Tue, 22 Oct 2024 18:16:35 +0000 (UTC)
+From: Bart Van Assche <bvanassche@acm.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org,
+	Christoph Hellwig <hch@lst.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Peter Wang <peter.wang@mediatek.com>,
+	Chao Leng <lengchao@huawei.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] blk-mq: Make blk_mq_quiesce_tagset() hold the tag list mutex less long
+Date: Tue, 22 Oct 2024 11:16:17 -0700
+Message-ID: <20241022181617.2716173-1-bvanassche@acm.org>
+X-Mailer: git-send-email 2.47.0.105.g07ac214952-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1729619853-2597-1-git-send-email-ssengar@linux.microsoft.com>
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Make sure that the tag_list_lock mutex is no longer held than necessary.
+This change reduces latency if e.g. blk_mq_quiesce_tagset() is called
+concurrently from more than one thread. This function is used by the
+NVMe core and also by the UFS driver.
 
-Thanks for your patch.
+Reported-by: Peter Wang <peter.wang@mediatek.com>
+Cc: Chao Leng <lengchao@huawei.com>
+Cc: Ming Lei <ming.lei@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: commit 414dd48e882c ("blk-mq: add tagset quiesce interface")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+---
+ block/blk-mq.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] sched/topology: Enable topology_span_sane check only for debug builds
-Link: https://lore.kernel.org/stable/1729619853-2597-1-git-send-email-ssengar%40linux.microsoft.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 4b2c8e940f59..1ef227dfb9ba 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -283,8 +283,9 @@ void blk_mq_quiesce_tagset(struct blk_mq_tag_set *set=
+)
+ 		if (!blk_queue_skip_tagset_quiesce(q))
+ 			blk_mq_quiesce_queue_nowait(q);
+ 	}
+-	blk_mq_wait_quiesce_done(set);
+ 	mutex_unlock(&set->tag_list_lock);
++
++	blk_mq_wait_quiesce_done(set);
+ }
+ EXPORT_SYMBOL_GPL(blk_mq_quiesce_tagset);
+=20
 
