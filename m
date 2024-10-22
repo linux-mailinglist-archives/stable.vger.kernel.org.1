@@ -1,145 +1,107 @@
-Return-Path: <stable+bounces-87674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 762679A9AB3
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 09:15:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 238E09A9B08
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 09:30:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB300B23859
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 07:15:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCB011F23491
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 07:30:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BA914A4F0;
-	Tue, 22 Oct 2024 07:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD5C14D2BD;
+	Tue, 22 Oct 2024 07:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HihK6JEX"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="tbehmfhi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022611465BB;
-	Tue, 22 Oct 2024 07:15:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E8313B79F
+	for <stable@vger.kernel.org>; Tue, 22 Oct 2024 07:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729581318; cv=none; b=R20VyTXcxoCW1FFM0NS1nzt5/1tccuveNpYqa8i4qCaNr9J3e8SmLN3We4nppmdm2x8WOzUWMV1I/JPZA5Ehhahamdf9JVu1ZzxZskp6hUSSyOafZyiIzgXxLhj31WAFewPDTx8TelGt0DpNfrgSrkZfAmUN/4s84UtC2saC/W8=
+	t=1729582231; cv=none; b=jStIF8gRwR45PrcyZoTB1O5edGUqAKVD0ajnPsVwkNmydfPdcgVOrifEGTrwfanusKxEXnXKj8xOwAxjgPNCMApROKLtdc2V0cxn41nOp+zewNIAn+dMgbYASsAiU+7iJn8psvAjXNJBEhrAe8Gks4EdbehdfW9y0yZC+cNy8AU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729581318; c=relaxed/simple;
-	bh=LoFoQKXKUVk/pCf19sC0PrOBcxYg31RRtFIIJGFy1yI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sNAltYzdKSDXPPMINCXxB/sx9ug1L/ebxdp/ZAd+Ds4DnaSbBIVUkUedXoO9nqHxX46Jyn1Y+D+CZWyExyNNfizrRFvHSkQqruqBLnISvhdl1Voswu7kE0d+yBbDZOmMOAVjENM2o1bV/jSIdGTdtjWkqqRpF8DmIi5aFMKVC+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HihK6JEX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9EFFC4CEC3;
-	Tue, 22 Oct 2024 07:15:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729581317;
-	bh=LoFoQKXKUVk/pCf19sC0PrOBcxYg31RRtFIIJGFy1yI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HihK6JEXfN3CtTHIqHzWwrpjTMyp4ZNYF1WdScEHdQo+tCovIqPPJJmx3+CNcP++4
-	 wdYJ4y7w2onq57h4U76PLrEjhTd/1loW9C1HwPnm/oLW3B9jPjfsw6SUBJNT9HUhTP
-	 AoSsg6azJHC6HQUWjQcxa6+hKJWpo6eWIN52alW5lv/zr7NLpaUFaDN5KnJrxqNQS1
-	 0csULKGhYTUrpIR92yUoynLsj/Fr65Ff6LjEmHM3foFIGpk9wSUGw9j3IbZOGNgMVs
-	 V9LQpmBuCbM+AUWP2EOp+rSxNBrqo2aSoqkNccEh25ABZ/3VezEzOm1jcuON+pjTDH
-	 5pnjXCx1Jfkeg==
-Message-ID: <bb705eb7-c61c-4da9-816e-cbb46c0c16e4@kernel.org>
-Date: Tue, 22 Oct 2024 09:15:12 +0200
+	s=arc-20240116; t=1729582231; c=relaxed/simple;
+	bh=s9AlGR3aC/jkfp5wIIAiFqq80453+YrFszZA4EOS9fY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=L5soGW1pmQ0rZMB/NMmsYwABMxRLJdFcIxoyfBHtuNWch/ukpkCOV94qGhcodpS7eQvA9GnwnL9KlbAgdvy+AFZWCsjAMkCw12KUXWd3HyV+orEojgIu9bOmvgXVsTUTereWSJ2sxziOIKGUAvNLAols7hRB5G3C3dr21oSaFVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=tbehmfhi; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-539983beb19so5860624e87.3
+        for <stable@vger.kernel.org>; Tue, 22 Oct 2024 00:30:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1729582228; x=1730187028; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=s9AlGR3aC/jkfp5wIIAiFqq80453+YrFszZA4EOS9fY=;
+        b=tbehmfhiq8xGkwApxzC2ZCqTdI5cdhsh4MgyS0QGSJcVffr2ou6Y+NuEbEuw0NLQBz
+         P+BkmVP/kdMoHjAbavcOWCcitX22Gsq5rYTBlYCq5ArR2LHHgbOX9HdUaYiuPbWgYwyY
+         HX5zCs5/W1j8IWjI3Fu2eyMhK1couCOcGp3hAvFzSHCvjH+wUkbp3QbPCNz4gcIDeg+M
+         JtrkmzpQZizHmzIHn59VycoeskpI+lCQSrFNW5giWOHF4DyjnP436wecb6IWEtiDR1bY
+         09yjq9F0sgl54dWsQlXHqMUpObD6sN0S7rtkwdGhl3Bcwa8VF9S9QPeeCdkSEFOksou4
+         DGFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729582228; x=1730187028;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=s9AlGR3aC/jkfp5wIIAiFqq80453+YrFszZA4EOS9fY=;
+        b=tB68KU0zADsxVGmGAI/OEz/0OeF/NaOfJAcwCa7l5jERXTDvtzYRp056Op1t84/o4f
+         2IhNI2iMr/s/igDX5liC3Ul8uJpfmfN89822y11Mi8KxRt9p+QEPPDWUzg1A4qY5iFEd
+         8yC8Rxx7C1hFV/vHLwcQvmxnloLMoe1PJ3EH+wxDOAbkD3LGmqyes2LYDNtk5DP9bldY
+         3x+naFaUIc57TvAC0DNe7TUcTYT2qOPwcpeU2v4FvHdESgxQuJ6/Xrk9t8owXpLaDn3x
+         b1ORtvfRJXclO1Lfc9t8skVJ973PVJTwcfOEFImfYihz+sNdusNQIji0CM2GT/vKcWPq
+         ngXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWdZbHeVt9hXrUq6bUQqWHdYFRmW1/eSyrWs/fQRg+1nlRynuG9r1eKI/FHAP+NABJXoFcInIE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyiGpq0jcBYlg6Klggt4aFpw/gXAp83qY7kRnmbkTSh1mxTzw6s
+	U6j8NkP0TGOxmV9s3hUNw4uMYGE+jiIOJjdcVaev2HDTzV6xBzQXYvUMbVhleTb+XjO2d4woJKh
+	wrXSlGUHjDBp5kE7hGlmYMtOK8Opim6+hM0NbIw==
+X-Google-Smtp-Source: AGHT+IF49dZCMKViDbxpV2eKhiIHV1RDGA68wUouph+dlIMJN4RYm70o7grRVK5xXCDp2yY2Ikg40KfZMweGVngtB7k=
+X-Received: by 2002:a05:6512:682:b0:539:89f7:3187 with SMTP id
+ 2adb3069b0e04-53b13a23dbcmr717950e87.47.1729582227670; Tue, 22 Oct 2024
+ 00:30:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] lib: string_helpers: fix potential snprintf() output
- truncation
-To: Bartosz Golaszewski <brgl@bgdev.pl>, Kees Cook <kees@kernel.org>,
- Andy Shevchenko <andy@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>,
- James Bottomley <James.Bottomley@HansenPartnership.com>,
- Greg KH <gregkh@linuxfoundation.org>
-Cc: linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org
-References: <20241021100421.41734-1-brgl@bgdev.pl>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20241021100421.41734-1-brgl@bgdev.pl>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20241021100421.41734-1-brgl@bgdev.pl> <bb705eb7-c61c-4da9-816e-cbb46c0c16e4@kernel.org>
+In-Reply-To: <bb705eb7-c61c-4da9-816e-cbb46c0c16e4@kernel.org>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Tue, 22 Oct 2024 09:30:16 +0200
+Message-ID: <CAMRc=Mcp4LBj0ZZx=hUg9KBk04XXcAtiNv+QjQesN1iCpDC+KA@mail.gmail.com>
+Subject: Re: [PATCH] lib: string_helpers: fix potential snprintf() output truncation
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: Kees Cook <kees@kernel.org>, Andy Shevchenko <andy@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, 
+	Greg KH <gregkh@linuxfoundation.org>, linux-hardening@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 21. 10. 24, 12:04, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> 
-> The output of ".%03u" with the unsigned int in range [0, 4294966295] may
-> get truncated if the target buffer is not 12 bytes.
+On Tue, Oct 22, 2024 at 9:15=E2=80=AFAM Jiri Slaby <jirislaby@kernel.org> w=
+rote:
+>
+> On 21. 10. 24, 12:04, Bartosz Golaszewski wrote:
+> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >
+> > The output of ".%03u" with the unsigned int in range [0, 4294966295] ma=
+y
+> > get truncated if the target buffer is not 12 bytes.
+>
+> Perhaps, if you elaborate on how 'remainder' can become > 999?
+>
 
-Perhaps, if you elaborate on how 'remainder' can become > 999?
+Yeah, I guess it can't. Not sure what we do about such false
+positives, do we have some common way to suppress them?
 
-> Fixes: 3c9f3681d0b4 ("[SCSI] lib: add generic helper to print sizes rounded to the correct SI range")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Andy Shevchenko <andy@kernel.org>
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> ---
->   lib/string_helpers.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/lib/string_helpers.c b/lib/string_helpers.c
-> index 4f887aa62fa0..91fa37b5c510 100644
-> --- a/lib/string_helpers.c
-> +++ b/lib/string_helpers.c
-> @@ -57,7 +57,7 @@ int string_get_size(u64 size, u64 blk_size, const enum string_size_units units,
->   	static const unsigned int rounding[] = { 500, 50, 5 };
->   	int i = 0, j;
->   	u32 remainder = 0, sf_cap;
-> -	char tmp[8];
-> +	char tmp[12];
->   	const char *unit;
->   
->   	tmp[0] = '\0';
-
--- 
-js
-suse labs
-
+Bart
 
