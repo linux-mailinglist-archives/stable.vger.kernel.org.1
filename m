@@ -1,162 +1,126 @@
-Return-Path: <stable+bounces-87755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49EF99AB419
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 18:35:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 285899AB48E
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 18:59:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0179A284412
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 16:35:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE003285BB6
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 16:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325A41A4E92;
-	Tue, 22 Oct 2024 16:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57ADD1BC07E;
+	Tue, 22 Oct 2024 16:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="BWEb8Sd+"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="A8W+Kt2x"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-80008.amazon.com (smtp-fw-80008.amazon.com [99.78.197.219])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C12754FB5
-	for <stable@vger.kernel.org>; Tue, 22 Oct 2024 16:35:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BB81BC9F5;
+	Tue, 22 Oct 2024 16:59:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729614913; cv=none; b=MRSzsfsWJFtRAYga4kt5xi420S5dKzgEE0dDWH/QzgPBeRYV6Tw5bkBkw7scUvu45C6GvY5f8z5o5uLemXHgD9R9LI+SrI54eMpXZpZ/0LAYGxdllU59mEOmW745WUOxki2Mq+xy/ZQ7nW7a0XxPh6g8U8Q42LK/AuSrc1AwUqo=
+	t=1729616389; cv=none; b=LMx19gcrCHWDNsuvIF4hJ8E7oQJQPm8GfvEOFNYcTLstqCwLacG9Qshh1L5TQRA44eZJKShCo9KPqgCSCvpdDsd0OC0O1D/1LIWrDt6wruD8tFw1Rs4d7hICw0I/b+4zVyH2A/5gzvM0QDSLZyKQaouJkWUKYZXAzIcVpoZgOXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729614913; c=relaxed/simple;
-	bh=YEGaqXFeFdFYG9REsH1yDX/ZD3rSnchB5tQzRGh+vL4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Dc0h3VfcU1Zw7tyfcFSnA44llg1my6DNwuemNEQXtjwo5GtiOtFAuOoXRtwKyTa+t43UNt/mI/yY8NuU5eFVR/5LUQn8yTPF8xVRBMet6YqBw/3MmOzQF3JGrb3nm+gJTHjk040DYu21F0+zEQ5cfBJCBrCd7cp2ddpi2S3hzVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=BWEb8Sd+; arc=none smtp.client-ip=99.78.197.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1729614911; x=1761150911;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=fqjjI+5sBZSIuqTvLiOPTp0Chgi1KsAWApvWt7Twseo=;
-  b=BWEb8Sd+LIDM4hzR+R9md2LilfBsJf+b74g8AkLbB127VQHGVVumEQhz
-   yhDeDCsr1mhFI3j5vXi9zPnSldNHJvsPvFw8EdTeHW3UzG4Q1sxI/NFoL
-   lehPkjnbBDuWOLpXKUihwInM7riEhFR31Uq0Cplyek3aVSWevK30oj/zv
-   c=;
-X-IronPort-AV: E=Sophos;i="6.11,223,1725321600"; 
-   d="scan'208";a="139625415"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-80008.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 16:35:09 +0000
-Received: from EX19MTAUEB002.ant.amazon.com [10.0.0.204:10384]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.95.25:2525] with esmtp (Farcaster)
- id 3fca39c1-2b47-4c85-89b8-d4fb14a7f33c; Tue, 22 Oct 2024 16:35:08 +0000 (UTC)
-X-Farcaster-Flow-ID: 3fca39c1-2b47-4c85-89b8-d4fb14a7f33c
-Received: from EX19EXOUEC001.ant.amazon.com (10.252.135.173) by
- EX19MTAUEB002.ant.amazon.com (10.252.135.47) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Tue, 22 Oct 2024 16:35:07 +0000
-Received: from EX19MTAUEC002.ant.amazon.com (10.252.135.253) by
- EX19EXOUEC001.ant.amazon.com (10.252.135.173) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Tue, 22 Oct 2024 16:35:07 +0000
-Received: from email-imr-corp-prod-iad-all-1a-6ea42a62.us-east-1.amazon.com
- (10.43.8.6) by mail-relay.amazon.com (10.252.135.146) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1258.34 via Frontend Transport; Tue, 22 Oct 2024 16:35:07 +0000
-Received: from dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com [10.15.1.225])
-	by email-imr-corp-prod-iad-all-1a-6ea42a62.us-east-1.amazon.com (Postfix) with ESMTP id 025DC4030E;
-	Tue, 22 Oct 2024 16:35:07 +0000 (UTC)
-Received: by dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (Postfix, from userid 23907357)
-	id B894D9C3F; Tue, 22 Oct 2024 18:35:06 +0200 (CEST)
-From: Mahmoud Adam <mngyadam@amazon.com>
-To: <gregkh@linuxfoundation.org>
-CC: <jack@suse.cz>, <hch@lst.de>, <tytso@mit.edu>, <sashal@kernel.org>,
-	<stable@vger.kernel.org>
-Subject: [PATCH 5.10] iomap: update ki_pos a little later in iomap_dio_complete
-Date: Tue, 22 Oct 2024 18:33:46 +0200
-Message-ID: <20241022163346.125127-1-mngyadam@amazon.com>
-X-Mailer: git-send-email 2.40.1
+	s=arc-20240116; t=1729616389; c=relaxed/simple;
+	bh=VwKa+WbiBqrWRWS5cjfvU15kXhvt5HsDR7HGZdhNcA8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uQNfQ5yEhPvhagd86qgUbJoJypdzYAlbX1FK1nZcc4RgLPWTuUPRrUfig45ynrEuJPhXx8e14klRjWXpXgZKX3C3OiYSPyL2EpKiSQyj+/7Snp8/3ohoy6fsguePiOweZnfymha+chhBM0j0AklBAoF8sBc9O4Hh1r0UjsQIPZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=A8W+Kt2x; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=M3403l0++IC5vLibquK9W7dEl1jgdPyJMeNaJ8pe8Uc=; b=A8W+Kt2xkOU0oftggZLkqP2b7l
+	7LLOyP22CczZYEpkuT60nFiydOm4HBeusR+5hwVnnBNvlXOoJgb29xJ6XIQ3VaBRbQLwa6+TZEe8o
+	o0oMCLPO1LpwlF6aGur6JlQ9DbRi2zMpa23n3SgxchjVzp9329qt1JA2l66KLQMfjIf46RJXJu/+N
+	EsUo9bCl1ICOHlH9CkZMGNDSTSZPJ3yPXql/W8pgVxTSmVLAXBTx3FkIruD1ltX2JPcs13CkVvzel
+	0xlsMWn75NcsG9vpRTMij6SPA1Zw2Ng+4YDJDEO0RBReAM2Y0w/B2gJ4NJ/b42jA0Zlt7hSdEqRur
+	W4FLD3FQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1t3IEP-00000001pLb-1W8R;
+	Tue, 22 Oct 2024 16:59:41 +0000
+Date: Tue, 22 Oct 2024 17:59:41 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Yosry Ahmed <yosryahmed@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Hugh Dickins <hughd@google.com>,
+	kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v2] mm: page_alloc: move mlocked flag clearance into
+ free_pages_prepare()
+Message-ID: <ZxfZ_VSeOo2Vnmmg@casper.infradead.org>
+References: <20241021173455.2691973-1-roman.gushchin@linux.dev>
+ <Zxa60Ftbh8eN1MG5@casper.infradead.org>
+ <ZxcKjwhMKmnHTX8Q@google.com>
+ <ZxcgR46zpW8uVKrt@casper.infradead.org>
+ <ZxcrJHtIGckMo9Ni@google.com>
+ <CAJD7tkb2oUre-tgVyW6XgUaNfGQSSKp=QNAfB0iZoTvHcc0n0w@mail.gmail.com>
+ <ZxfHNo1dUVcOLJYK@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZxfHNo1dUVcOLJYK@google.com>
 
-From: Christoph Hellwig <hch@lst.de>
+On Tue, Oct 22, 2024 at 08:39:34AM -0700, Sean Christopherson wrote:
+> On Tue, Oct 22, 2024, Yosry Ahmed wrote:
+> > Even if we don't want mlock() to err in this case, shouldn't we just do
+> > nothing?
+> 
+> Ideally, yes.
 
-upstream 936e114a245b6e38e0dbf706a67e7611fc993da1 commit.
+Agreed.  There's no sense in having this count against the NR_MLOCK
+stats, for example.
 
-Move the ki_pos update down a bit to prepare for a better common helper
-that invalidates pages based of an iocb.
+> > I see a lot of checks at the beginning of mlock_fixup() to check
+> > whether we should operate on the vma, perhaps we should also check for
+> > these KVM vmas?
+> 
+> Definitely not.  KVM may be doing something unexpected, but the VMA certainly
+> isn't unique enough to warrant mm/ needing dedicated handling.
+> 
+> Focusing on KVM is likely a waste of time.  There are probably other subsystems
+> and/or drivers that .mmap() kernel allocated memory in the same way.  Odds are
+> good KVM is just the messenger, because syzkaller knows how to beat on KVM.  And
+> even if there aren't any other existing cases, nothing would prevent them from
+> coming along in the future.
 
-Link: https://lkml.kernel.org/r/20230601145904.1385409-3-hch@lst.de
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: Anna Schumaker <anna@kernel.org>
-Cc: Chao Yu <chao@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Ilya Dryomov <idryomov@gmail.com>
-Cc: Jaegeuk Kim <jaegeuk@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Miklos Szeredi <mszeredi@redhat.com>
-Cc: Theodore Ts'o <tytso@mit.edu>
-Cc: Trond Myklebust <trond.myklebust@hammerspace.com>
-Cc: Xiubo Li <xiubli@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Mahmoud Adam <mngyadam@amazon.com>
----
-This fixes the ext3/4 data corruption casued by dde4c1e1663b6 ("ext4:
-properly sync file size update after O_SYNC direct IO").
-reported here: https://lore.kernel.org/all/2024102130-thieving-parchment-7885@gregkh/T/#mfbffb1eda9472c6885ce2c627c302c9eff7bda1f
- fs/iomap/direct-io.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+They all need to be fixed.  How to do that is not an answer I have at
+this point.  Ideally we can fix them without changing them all immediately
+(but they will all need to be fixed eventually because pages will no
+longer have a refcount and so get_page() will need to go away ...)
 
-diff --git a/fs/iomap/direct-io.c b/fs/iomap/direct-io.c
-index 933f234d5becd..8a49c0d3a7b46 100644
---- a/fs/iomap/direct-io.c
-+++ b/fs/iomap/direct-io.c
-@@ -93,7 +93,6 @@ ssize_t iomap_dio_complete(struct iomap_dio *dio)
- 		if (offset + ret > dio->i_size &&
- 		    !(dio->flags & IOMAP_DIO_WRITE))
- 			ret = dio->i_size - offset;
--		iocb->ki_pos += ret;
- 	}
- 
- 	/*
-@@ -119,15 +118,18 @@ ssize_t iomap_dio_complete(struct iomap_dio *dio)
- 	}
- 
- 	inode_dio_end(file_inode(iocb->ki_filp));
--	/*
--	 * If this is a DSYNC write, make sure we push it to stable storage now
--	 * that we've written data.
--	 */
--	if (ret > 0 && (dio->flags & IOMAP_DIO_NEED_SYNC))
--		ret = generic_write_sync(iocb, ret);
- 
--	kfree(dio);
-+	if (ret > 0) {
-+		iocb->ki_pos += ret;
- 
-+		/*
-+		 * If this is a DSYNC write, make sure we push it to stable
-+		 * storage now that we've written data.
-+		 */
-+		if (dio->flags & IOMAP_DIO_NEED_SYNC)
-+			ret = generic_write_sync(iocb, ret);
-+	}
-+	kfree(dio);
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(iomap_dio_complete);
--- 
-2.40.1
+> > Trying to or maybe set VM_SPECIAL in kvm_vcpu_mmap()? I am not
+> > sure tbh, but this doesn't seem right.
+> 
+> Agreed.  VM_DONTEXPAND is the only VM_SPECIAL flag that is remotely appropriate,
+> but setting VM_DONTEXPAND could theoretically break userspace, and other than
+> preventing mlock(), there is no reason why the VMA can't be expanded.  I doubt
+> any userspace VMM is actually remapping and expanding a vCPU mapping, but trying
+> to fudge around this outside of core mm/ feels kludgy and has the potential to
+> turn into a game of whack-a-mole.
 
+Actually, VM_PFNMAP is probably ideal.  We're not really mapping pages
+here (I mean, they are pages, but they're not filesystem pages or
+anonymous pages ... there's no rmap to them).  We're mapping blobs of
+memory whose refcount is controlled by the vma that maps them.  We don't
+particularly want to be able to splice() this memory, or do RDMA to it.
+We probably do want gdb to be able to read it (... yes?) which might be
+a complication with a PFNMAP VMA.
+
+We've given a lot of flexibility to device drivers about how they
+implement mmap() and I think that's now getting in the way of some
+important improvements.  I want to see a simpler way of providing the
+same functionality, and I'm not quite there yet.
 
