@@ -1,97 +1,93 @@
-Return-Path: <stable+bounces-87730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5DA09AB0A7
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 16:18:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D50899AB0A9
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 16:18:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10CC41C2250E
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 14:18:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D9EDB22A3C
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 14:18:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4A81A08C2;
-	Tue, 22 Oct 2024 14:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 380E91A072A;
+	Tue, 22 Oct 2024 14:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="LKiToaJm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UUMAtAOe"
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0051A00F2;
-	Tue, 22 Oct 2024 14:17:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D1D199EA2;
+	Tue, 22 Oct 2024 14:18:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729606668; cv=none; b=PyX9X+2cHlzejzTuwxXM0KgHadu7fVdfm+Ll1R5PcSseYlreo+JlbPogESvEBZFQX4Ow/5rYP0/TbGEapRCCRqxpK3cIkgItFWQPzVjIsU8JgTpKxay9tsw56giywbLHADxWqrf9efW2Z/h0sS2vkMCjqhOuf5NzgmmdG74d1Wg=
+	t=1729606731; cv=none; b=K3e6Xk8HCujnBXVRSQN9o3f4ElqTVaMLUa4MR59KgNhdoRmH5VFF70IIYwCDyaZCqVDqaxStzmmR2Uee6Y2WzWlTGwpVq6CgNiJQU9JTojdXXZpKzgexecuRqdbmyinBu7HengL9hbx4hYPfRZxZo9qkp8O+Lst1Jk3W7fw1XYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729606668; c=relaxed/simple;
-	bh=68WdYzIarQVjRHSchfunh+oOLTQrpXXpJWnb1pF3ttE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SQ5Ws/k8MllkQQ75KCUPSzaaSt1jQhM1doejutafN3JpGYmrR8jTKt55p/jjc9EAOOv9R2fm54hvV+ex9yHFoum6+eVlkhNNymjAB2OmHIcnwzQqGBKrE72EIxe2Kpj3rozsLUTxixNCylq+sB2bmtpb1nb42y77lS7vdIPEp1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=LKiToaJm; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=wAWaw7uJMG1uA564YAQqUUha8AMLR3EufJ78OEJdlh4=; t=1729606666; x=1730816266; 
-	b=LKiToaJmdtr8gAVEHp4k94botLNG5RHMKnnxFL2S0A1ETQwbtYDfLLnGYpp0RxLFDYBuFPkVARN
-	cSkAz0BJ2kZp9f6wc0pzrv+ZgTDKV3ExN4Lea3Q4JwPaIiDvSIHOV0mqc/56RX6oe160s88WIqiAA
-	dX60ztnYiq52EEgydOy8qDcz8iaNbxWggP4zOxTCxmJnDZKwh2NlmZyoBjo2NmtkFsDti04w4XCuE
-	x0dvVsv1zmNmDA3mJqJRaYcEsAhpOeq0lJ32nm7klXuQrOmrcgedL2kixEXf45wlTBiu3UMCG/x1p
-	VFz5jLA8/8FLXA7UOrE6JxUiExpZRVlhmbIg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1t3Fhg-00000001lpE-0fRR;
-	Tue, 22 Oct 2024 16:17:44 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	syzbot+36218cddfd84b5cc263e@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH] wifi: cfg80211: clear wdev->cqm_config pointer on free
-Date: Tue, 22 Oct 2024 16:17:42 +0200
-Message-ID: <20241022161742.7c34b2037726.I121b9cdb7eb180802eafc90b493522950d57ee18@changeid>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1729606731; c=relaxed/simple;
+	bh=kSy/v9zsfg+uchR+oZgQGS8E9s2D6ymYvJFZLCaTfa8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t1eP1qZBjX0nsF29M75DsTKN2nlf64ifUIT1w8eRf9XpE56H0cgUNR8xQ36Bpkvsy3ady/OvtYf+pc7lsmWsd8YTe9mdoyXZHnYhiAB763IphQofQPLjPZPM+KMnRbLDfSSeBVXhJgNnqEQ3z/zP2KSqjFYRgq3mHPwxss/dXTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UUMAtAOe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C4C9C4CEC3;
+	Tue, 22 Oct 2024 14:18:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729606730;
+	bh=kSy/v9zsfg+uchR+oZgQGS8E9s2D6ymYvJFZLCaTfa8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UUMAtAOe/7jErEnEwy4C5P8AzfM8Jm+XyKKU479VR9/+EIPyEfTRzYa1Vdpusj3PF
+	 U/2LaeLFCoAfnZFw2JswMx9NVFrFidCEJGbSg5ToVhV8qm6Xbizr+HoQAWBgREcDlK
+	 NqZEVJ9S0XG7KdK+LXB6A50eATww+OSZZGOyz92juzuNZ9SAJvwqzlttivja+WBlRJ
+	 v2NTMImDteJ643cXx8/89wWAppyClzovyOjvkbIQIywu8RZkzI5tmbDBbLt+oJu4Yk
+	 WTHTqs7Op5riRXT79yie5gAVHm2j3BqIKR0YuCMqm69TadsGM+RGns+44Hwg+alIuD
+	 XPOUpqXUCHIpQ==
+Date: Tue, 22 Oct 2024 15:18:45 +0100
+From: Simon Horman <horms@kernel.org>
+To: Matt Johnston <matt@codeconstruct.com.au>
+Cc: Jeremy Kerr <jk@codeconstruct.com.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, Wolfram Sang <wsa@kernel.org>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Dung Cao <dung@os.amperecomputing.com>
+Subject: Re: [PATCH net v3] mctp i2c: handle NULL header address
+Message-ID: <20241022141845.GV402847@kernel.org>
+References: <20241022-mctp-i2c-null-dest-v3-1-e929709956c5@codeconstruct.com.au>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241022-mctp-i2c-null-dest-v3-1-e929709956c5@codeconstruct.com.au>
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Tue, Oct 22, 2024 at 06:25:14PM +0800, Matt Johnston wrote:
+> daddr can be NULL if there is no neighbour table entry present,
+> in that case the tx packet should be dropped.
+> 
+> saddr will usually be set by MCTP core, but check for NULL in case a
+> packet is transmitted by a different protocol.
+> 
+> Fixes: f5b8abf9fc3d ("mctp i2c: MCTP I2C binding driver")
+> Cc: stable@vger.kernel.org
+> Reported-by: Dung Cao <dung@os.amperecomputing.com>
+> Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
+> ---
+> Changes in v3:
+> - Revert to simpler saddr check of v1, mention in commit message
+> - Revert whitespace change from v2
+> - Link to v2: https://lore.kernel.org/r/20241021-mctp-i2c-null-dest-v2-1-4503e478517c@codeconstruct.com.au
+> 
+> Changes in v2:
+> - Set saddr to device address if NULL, mention in commit message
+> - Fix patch prefix formatting
+> - Link to v1: https://lore.kernel.org/r/20241018-mctp-i2c-null-dest-v1-1-ba1ab52966e9@codeconstruct.com.au
 
-When we free wdev->cqm_config when unregistering, we also
-need to clear out the pointer since the same wdev/netdev
-may get re-registered in another network namespace, then
-destroyed later, running this code again, which results in
-a double-free.
+Thanks for the updates Matt.
 
-Reported-by: syzbot+36218cddfd84b5cc263e@syzkaller.appspotmail.com
-Fixes: 37c20b2effe9 ("wifi: cfg80211: fix cqm_config access race")
-Cc: stable@vger.kernel.org # 6.6+
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/wireless/core.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 4c8d8f167409..d3c7b7978f00 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1280,6 +1280,7 @@ static void _cfg80211_unregister_wdev(struct wireless_dev *wdev,
- 	/* deleted from the list, so can't be found from nl80211 any more */
- 	cqm_config = rcu_access_pointer(wdev->cqm_config);
- 	kfree_rcu(cqm_config, rcu_head);
-+	RCU_INIT_POINTER(wdev->cqm_config, NULL);
- 
- 	/*
- 	 * Ensure that all events have been processed and
--- 
-2.47.0
+Reviewed-by: Simon Horman <horms@kernel.org>
 
 
