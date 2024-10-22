@@ -1,102 +1,110 @@
-Return-Path: <stable+bounces-87710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C7C9AA0DA
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 13:09:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7BDA9AA0F9
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 13:16:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41DF61C20C35
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 11:09:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62A121F2273F
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 11:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3F719C556;
-	Tue, 22 Oct 2024 11:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D05219C579;
+	Tue, 22 Oct 2024 11:16:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jZJxfEFs"
 X-Original-To: stable@vger.kernel.org
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E178C19AD93
-	for <stable@vger.kernel.org>; Tue, 22 Oct 2024 11:09:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.58.85.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352AD19C559;
+	Tue, 22 Oct 2024 11:16:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729595343; cv=none; b=n2xWbyG4Ccd/TuAZDrgw8uPZ/lDSHsj/EXa0fM27pDbRH28Ui1ke6OY0ANL0AVdJXXKVE1epiuogAvcsKMAZZQkr3VFYwHHhh23JIT6sM18ibUG/3+KgsuqK7ezyTnobFJCwEOu1B0mBcX9iULLTZ/ZTokDNNay/9Je2JQ/MskM=
+	t=1729595798; cv=none; b=tffdTRde11nSGi8CrrGsmHS4a6kwrqZTbw7NXjYtRp2BiZHuUgc6Q8SgPmHAAgQjNYFsJBDbWQBAZ7NnBTtU51GuOXR/5bfMDbL3nAHiWbhaTfhx79XeeedLpjkybjTmDIZk56Jx8PdYRBtfZTbIIcS+95td+3sMDvSKKNqID7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729595343; c=relaxed/simple;
-	bh=j/P5XcejjQdLAmnOA9ZylcRGFZcZRVaRls4QqwxeTnc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 MIME-Version:Content-Type; b=cCuQzgWiIHyhPkt+Q0yoYUQYjptyu1uKl5qMhhK24+KawoZi9H4LYNy9pz7AynKdmwIS3GsiIwF9zQS5JDqh0CVtNMogp3vI3apQXnuCehKEhnpbIsY1N8iD147ysCHV4/wUi/8dLlyzmWu0xP5Qriy5Rpzfl/eDS0OOWUh0hNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass smtp.mailfrom=aculab.com; arc=none smtp.client-ip=185.58.85.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-9-IRasUf_yOseRZNZNNpdKww-1; Tue, 22 Oct 2024 12:07:47 +0100
-X-MC-Unique: IRasUf_yOseRZNZNNpdKww-1
-Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
- (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Tue, 22 Oct
- 2024 12:07:46 +0100
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Tue, 22 Oct 2024 12:07:46 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Bartosz Golaszewski' <brgl@bgdev.pl>, Jiri Slaby <jirislaby@kernel.org>
-CC: Kees Cook <kees@kernel.org>, Andy Shevchenko <andy@kernel.org>, "Andrew
- Morton" <akpm@linux-foundation.org>, James Bottomley
-	<James.Bottomley@hansenpartnership.com>, Greg KH
-	<gregkh@linuxfoundation.org>, "linux-hardening@vger.kernel.org"
-	<linux-hardening@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Bartosz Golaszewski
-	<bartosz.golaszewski@linaro.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH] lib: string_helpers: fix potential snprintf() output
- truncation
-Thread-Topic: [PATCH] lib: string_helpers: fix potential snprintf() output
- truncation
-Thread-Index: AQHbJFRQeh3oqbVfUku0a/hfxUzxIbKSma/Q
-Date: Tue, 22 Oct 2024 11:07:46 +0000
-Message-ID: <bb500daac1dc4cd9abd3f5e39f9329be@AcuMS.aculab.com>
-References: <20241021100421.41734-1-brgl@bgdev.pl>
- <bb705eb7-c61c-4da9-816e-cbb46c0c16e4@kernel.org>
- <CAMRc=Mcp4LBj0ZZx=hUg9KBk04XXcAtiNv+QjQesN1iCpDC+KA@mail.gmail.com>
-In-Reply-To: <CAMRc=Mcp4LBj0ZZx=hUg9KBk04XXcAtiNv+QjQesN1iCpDC+KA@mail.gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
+	s=arc-20240116; t=1729595798; c=relaxed/simple;
+	bh=kiuJLXM00R2xjoCq2cO3SkKeY3DGvebHihn+W7XV2pk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VsRJIui09vGh/0tDX2dFZ9LVjjRtPv3m67sEj/UaPgrxjkRUglx5Agw0W/mAv7uqIU09ayrsveKj4bXzRVwFopIISrYjSksBOAhlS3Gbc2HKFdcEs7W+1SE1rUBflpl3zvN43LOdjIWrJuvZF5QBKNxxAshcbo0ZP+wmXA6BZ5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jZJxfEFs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6469EC4CEE6;
+	Tue, 22 Oct 2024 11:16:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729595797;
+	bh=kiuJLXM00R2xjoCq2cO3SkKeY3DGvebHihn+W7XV2pk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jZJxfEFspbSXxF2wh+pr5+Nxk1/qHnVTX43BSYN+uhQt2uHnRLhiqGGhiF5Lhe5PD
+	 +v3TxXOfGvSlH0fjUxFGsMZv8YpUWJ2YuioRZhq+8l4c+WBHT70efkfHKUxoRORNOI
+	 kNJO3/Sd3FUpEGmfERtcFvT9b/HHlqoZl614J2B8oVzGu7BV5PN5wb75C8vZpTlsap
+	 ovwJoNlWfUTzqrFBVC3o4xJKXje9NEbzbGS5qSjze//Pi9F+kjFoTy+AVmuYQKJdD6
+	 J3VtkGe0h+W/W7ho6PkHMbVlnkbr6aIgBe8PP8IH9/on+sFBDgPvu5ZxnFGzh30XhJ
+	 bPitWxCl7ydfw==
+Date: Tue, 22 Oct 2024 13:16:33 +0200
+From: Carlos Maiolino <cem@kernel.org>
+To: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	linux-xfs@vger.kernel.org, hch@lst.de
+Subject: Re: [PATCH 20/29] xfs: don't fail repairs on metadata files with no
+ attr fork
+Message-ID: <xr2px4yfwpi4cak4e5z4xnjyip6zblxi537v4x4r2ibssajuie@eeubheijryrj>
+References: <172919069364.3451313.14303329469780278917.stgit@frogsfrogsfrogs>
+ <172919069796.3451313.2227454340362290952.stgit@frogsfrogsfrogs>
+ <2024101838-thickness-exposure-ec78@gregkh>
+ <20241021172751.GA21853@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241021172751.GA21853@frogsfrogsfrogs>
 
-RnJvbTogQmFydG9zeiBHb2xhc3pld3NraQ0KPiBTZW50OiAyMiBPY3RvYmVyIDIwMjQgMDg6MzAN
-Cj4gDQo+IE9uIFR1ZSwgT2N0IDIyLCAyMDI0IGF0IDk6MTXigK9BTSBKaXJpIFNsYWJ5IDxqaXJp
-c2xhYnlAa2VybmVsLm9yZz4gd3JvdGU6DQo+ID4NCj4gPiBPbiAyMS4gMTAuIDI0LCAxMjowNCwg
-QmFydG9zeiBHb2xhc3pld3NraSB3cm90ZToNCj4gPiA+IEZyb206IEJhcnRvc3ogR29sYXN6ZXdz
-a2kgPGJhcnRvc3ouZ29sYXN6ZXdza2lAbGluYXJvLm9yZz4NCj4gPiA+DQo+ID4gPiBUaGUgb3V0
-cHV0IG9mICIuJTAzdSIgd2l0aCB0aGUgdW5zaWduZWQgaW50IGluIHJhbmdlIFswLCA0Mjk0OTY2
-Mjk1XSBtYXkNCj4gPiA+IGdldCB0cnVuY2F0ZWQgaWYgdGhlIHRhcmdldCBidWZmZXIgaXMgbm90
-IDEyIGJ5dGVzLg0KPiA+DQo+ID4gUGVyaGFwcywgaWYgeW91IGVsYWJvcmF0ZSBvbiBob3cgJ3Jl
-bWFpbmRlcicgY2FuIGJlY29tZSA+IDk5OT8NCj4gPg0KPiANCj4gWWVhaCwgSSBndWVzcyBpdCBj
-YW4ndC4gTm90IHN1cmUgd2hhdCB3ZSBkbyBhYm91dCBzdWNoIGZhbHNlDQo+IHBvc2l0aXZlcywg
-ZG8gd2UgaGF2ZSBzb21lIGNvbW1vbiB3YXkgdG8gc3VwcHJlc3MgdGhlbT8NCg0KVGhlIG9ubHkg
-d2F5IEkndmUgZm91bmQgaXMgdG8gJ2xhdW5kZXInIHRoZSBidWZmZXIgc2l6ZSB1c2luZw0KT1BU
-SU1JU0VSX0hJREVfVkFSKCkuDQpBbHRob3VnaCBJIGNhbiBpbWFnaW5lIGFuIHVwZGF0ZSB0byBn
-Y2MgdGhhdCBjaGVja3Mgc2l6ZW9mIChidWZmZXIpDQphcyB3ZWxsIC0gc28gdGhhdCB3b3VsZCBh
-bHNvIG5lZWQgbGF1bmRlcmluZy4NCg0KWW91IGFjdHVhbGx5IHdhbnQ6DQojZGVmaW5lIE9QVElN
-RVJfSElERV9WQUwoeCkgXA0KICAoeyBfX2F1dG9fdHlwZSBfeCA9IHg7IE9QVElNRVJfSElERV9W
-QVIoX3gpOyBfeDt9KQ0Kc28geW91IGNhbiBkbzoNCglzbnByaW50ZihPUFRJTUlTRVJfSElERV9W
-QUwoYnVmZmVyKSwgT1BUT01JU0VSX0hJREVfVkFMKHNpemVvZiBidWZmZXIpLCBmbXQsIC4uLikN
-Cg0KUGVyaGFwcyB0aGF0IGNvdWxkIGJlIHNucHJpbnRfdHJ1bmNhdGUoKSA/DQoNCglEYXZpZA0K
-DQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwgTW91bnQgRmFy
-bSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzogMTM5NzM4NiAo
-V2FsZXMpDQo=
+On Mon, Oct 21, 2024 at 10:27:51AM GMT, Darrick J. Wong wrote:
+> On Fri, Oct 18, 2024 at 08:00:21AM +0200, Greg KH wrote:
+> > On Thu, Oct 17, 2024 at 11:58:10AM -0700, Darrick J. Wong wrote:
+> > > From: Darrick J. Wong <djwong@kernel.org>
+> > > 
+> > > Fix a minor bug where we fail repairs on metadata files that do not have
+> > > attr forks because xrep_metadata_inode_subtype doesn't filter ENOENT.
+> > > 
+> > > Cc: <stable@vger.kernel.org> # v6.8
+> > > Fixes: 5a8e07e799721b ("xfs: repair the inode core and forks of a metadata inode")
+> > > Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+> > > Reviewed-by: Christoph Hellwig <hch@lst.de>
+> > > ---
+> > >  fs/xfs/scrub/repair.c |    8 +++++---
+> > >  1 file changed, 5 insertions(+), 3 deletions(-)
+> > 
+> > Why is a bugfix / stable-tagged-patch, number 20 in a 29 patch series?
+> > Why isn't it first, or better yet, on it's own if it is fixing a bug
+> > that people want merged "soon"?
+> 
+> I have too many patches, and every time I try to get a set through the
+> review process I end up having to write *more* patches to appease the
+> reviewers, and fixes get lost.  Look at the copyrights on the other
+> patches, I've been trying to get this upstreamed since 2018.
+> 
+> This particular bugfix got lost last month probably because I forgot to
+> ping cem to take it for 6.12-rc1.  Thanks for pushing on this, Greg.
+> 
+> Hey Carlos, can you queue this one up for 6.12-rc5, please?
 
+Sure, it's queued now in next-rc, I'm testing it and I hope to send it to
+for-next today yet. It's the only patch for -rc5.
+
+Cheers.
+Carlos
+
+> 
+> --D
+> 
+> > thanks,
+> > 
+> > greg k-h
+> > 
+> 
 
