@@ -1,84 +1,107 @@
-Return-Path: <stable+bounces-87714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C2289AA17E
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 13:55:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAC479AA1EC
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 14:13:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B6561C224CF
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 11:55:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DECC1F22E86
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 12:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756A919DF4F;
-	Tue, 22 Oct 2024 11:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A0419CC32;
+	Tue, 22 Oct 2024 12:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jDNQOwz4"
+	dkim=pass (1024-bit key) header.d=581238.xyz header.i=@581238.xyz header.b="bJb+vR+c"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.581238.xyz (86-95-37-93.fixed.kpn.net [86.95.37.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287D619CC00;
-	Tue, 22 Oct 2024 11:54:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807AF199246;
+	Tue, 22 Oct 2024 12:13:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=86.95.37.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729598062; cv=none; b=Vn0YOfAYSn+rPjeEXkD1v6o/ygQQvcJ3SgrIicbN9T5OPeXEQSgBgYKlGiJME4mpLmeVyGsd9ae0oh1r5PYGd5MbNIS0Sy/tCeGttT00L6l3L2N4eKlWKEHMYvs7t/yBWLkk8o5unj41eKEcvdJ3ZfueDG/zX9S/3zMC47ukLcM=
+	t=1729599219; cv=none; b=SjBN7CojmdlO3sDy19qdt0vcJUH69cQCrmfWFBPzCXAsIaE9kpHcBGwf2gQ8PFLpyEVcMRcQhCqMPPzNXOnT/LoM6q1EGp8kJfUuk2/UBF3xCjGBfq7C/agKMdmQDP+vBaGTgiWGAdFsBl2GDM+z0+msDr3x83g9oDe+dHWLA6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729598062; c=relaxed/simple;
-	bh=G/kbwQLjdr9WblhnfaCAq2D6cyH7ZviTQFM+Gi3kM3Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DxjiLedWFYgh6xDtl29msOdcWznXRokOl2UoQra9ETkGt5F3gmn3ut/QSHnKFoke+2X+ljKhuxwA845nVvYXPcjNfVOvDCu3yS4QzjWKq89sSMesBWkCtetW9gKixp57M++4HQT607EY7VMFYEqHQwJhuXimOmUbX1ogtTq81aQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jDNQOwz4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C95C4CEE6;
-	Tue, 22 Oct 2024 11:54:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729598061;
-	bh=G/kbwQLjdr9WblhnfaCAq2D6cyH7ZviTQFM+Gi3kM3Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jDNQOwz4h3o7F2LuRcfSkFx4n/KBLHAEN4Z89X8ucny+gBsKvdm9GhoxFKnbqoMwd
-	 i8EG9TmUmf4vF25owqjOUHh0X+HLcBlSoUsJBLtiUjeyZ4b6p/Zn5MClmvx7lmFq/K
-	 5mdgSag9XegiagqlJWBsMiHvznKktSAAKOs96fsI=
-Date: Tue, 22 Oct 2024 13:54:18 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Liao, Bard" <yung-chuan.liao@linux.intel.com>
-Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	mstrozek@opensource.cirrus.com,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	bard.liao@intel.com
-Subject: Re: Request to backport "ASoC: Intel: mtl-match: Add cs42l43_l0
- cs35l56_l23 for MTL"
-Message-ID: <2024102229-pueblo-swell-019e@gregkh>
-References: <448a5371-75d5-4016-9e6d-d54252c792b4@linux.intel.com>
+	s=arc-20240116; t=1729599219; c=relaxed/simple;
+	bh=lCky3Di3m4lYMAlpEuMx18kgHzOCT36dhjVGA5GWJ/Y=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=DyhjOLuQP6+VNosZ9IjTCRnO8E/NoGXQqvJljzRnPX5s1/ac8lPFS5EzbITFDEFTSOGbFH3ryTmlrJGWjh1JYZSpiBO9caAa7IfGgM0dWGxEi1mL141NeWu0+la16Y0tIzKwHlwn3thXyPgqNR7UP/yZr5nu7eIa73c6plffAsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=581238.xyz; spf=pass smtp.mailfrom=581238.xyz; dkim=pass (1024-bit key) header.d=581238.xyz header.i=@581238.xyz header.b=bJb+vR+c; arc=none smtp.client-ip=86.95.37.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=581238.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=581238.xyz
+Received: from PC (pc.internal [192.168.1.10])
+	by mail.581238.xyz (Postfix) with ESMTPSA id 89A5543088FB;
+	Tue, 22 Oct 2024 14:13:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=581238.xyz; s=dkim;
+	t=1729599214; bh=lCky3Di3m4lYMAlpEuMx18kgHzOCT36dhjVGA5GWJ/Y=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date;
+	b=bJb+vR+cquFV4dAEemyokErGy4PwyUI1t+YXwzxAz0ZMO9qf12qPIDnCs0UvgFojR
+	 1HPucDlGNLCGntytURaFXucAy8g4wB8EVsYkTBFWthH8+BdDASuZNVQsDlJjfVGmbG
+	 3aqiS4up8z2PNHwh0N1qFsMrAeYPu4LZReXSwPZM=
+From: <rick@581238.xyz>
+To: <mika.westerberg@linux.intel.com>
+Cc: <Sanath.S@amd.com>,
+	<christian@heusel.eu>,
+	<fabian@fstab.de>,
+	<gregkh@linuxfoundation.org>,
+	<linux-usb@vger.kernel.org>,
+	<mario.limonciello@amd.com>,
+	<regressions@lists.linux.dev>,
+	<stable@vger.kernel.org>
+References: 
+In-Reply-To: 
+Subject: Re: Dell WD19TB Thunderbolt Dock not working with kernel > 6.6.28-1
+Date: Tue, 22 Oct 2024 14:13:34 +0200
+Message-ID: <000f01db247b$d10e1520$732a3f60$@581238.xyz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <448a5371-75d5-4016-9e6d-d54252c792b4@linux.intel.com>
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: Adske5XwB29EbUf4QzmLPMDmlYiH4Q==
+Content-Language: en-gb
 
-On Tue, Oct 22, 2024 at 07:31:42PM +0800, Liao, Bard wrote:
-> Hi,
-> 
-> commit 84b22af29ff6 ("ASoC: Intel: mtl-match: Add cs42l43_l0 cs35l56_l23
-> for MTL") upstream.
-> 
-> The commit added cs42l43 on SoundWire link 0 and cs35l56 on SoundWire
-> link 2 and 3 configuration support on Intel Meteor Lake support. Audio
-> will not work without this commit if the laptop use the given audio
-> configuration.
-> 
-> I wish this commit can be applied to kernel 6.8.
+Hi all,
 
-6.8.y is long long long end-of-life, so there's nothing we can do there.
+I am having the exact same issue.=20
 
-Please remember you can always look at the front page of kernel.org to
-see the currently active kernel versions.
+linux-lts-6.6.28-1 works, anything above doesn=92t.
 
-thanks,
+When kernel above linux-lts-6.6.28-1:
+- Boltctl does not show anything
+- thunderbolt.host_reset=3D0 had no impact
+- triggers following errors:
+  [=A0=A0 50.627948] ucsi_acpi USBC000:00: unknown error 0
+  [=A0=A0 50.627957] ucsi_acpi USBC000:00: UCSI_GET_PDOS failed (-5)
 
-greg k-h
+Gists:
+- https://gist.github.com/ricklahaye/83695df8c8273c30d2403da97a353e15 =
+dmesg
+with =93Linux system 6.11.4-arch1-1 #1 SMP PREEMPT_DYNAMIC Thu, 17 Oct =
+2024
+20:53:41 +0000 x86_64 GNU/Linux=94 where thunderbolt dock does not work
+- https://gist.github.com/ricklahaye/79e4040abcd368524633e86addec1833 =
+dmesg
+with =93Linux system 6.6.28-1-lts #1 SMP PREEMPT_DYNAMIC Wed, 17 Apr =
+2024
+10:11:09 +0000 x86_64 GNU/Linux=94 where thunderbolt does work
+- https://gist.github.com/ricklahaye/c9a7b4a7eeba5e7900194eecf9fce454
+boltctl with =93Linux system 6.6.28-1-lts #1 SMP PREEMPT_DYNAMIC Wed, 17 =
+Apr
+2024 10:11:09 +0000 x86_64 GNU/Linux=94 where thunderbolt does work
+
+
+Kind regards,
+Rick
+
+Ps: sorry for resend; this time with plain text format
+
+
 
