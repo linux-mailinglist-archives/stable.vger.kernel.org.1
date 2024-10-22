@@ -1,223 +1,304 @@
-Return-Path: <stable+bounces-87685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B9D29A9C7C
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 10:27:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 056769A9D76
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 10:52:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E6D51C23690
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 08:27:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4C4728347F
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 08:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33C1F171066;
-	Tue, 22 Oct 2024 08:27:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jC6EnA1X"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CAA4155330;
+	Tue, 22 Oct 2024 08:52:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29014161310
-	for <stable@vger.kernel.org>; Tue, 22 Oct 2024 08:26:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729585622; cv=none; b=qHq8TI3NftCYvmvuqLdJ5XFVU+xrWM1E8W7HIbY3maIN3QoVCGP/jTDocZb0kLcPNSUDTv+52ICtIasbJgSr1cUUrgx51slen2tWZ1CNvG2neJfAbnhUceYWrDia9XvG48noOzRRs5H83U6K9kt0ExrCvVPoTI4JG9+yu49IJ8Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729585622; c=relaxed/simple;
-	bh=7tvE9XV1b+UMspHAVG7r8xj9pj7djTt7CCt1dacV9Ew=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T8xeRMaDeDVXV434QOHkj5JK6Tet6OamBxuY3CzQDMZkXTOtT/h9VjjAeQGLK4yMy71HOBrRieeKc/OLSORGCP0FZhI3Ilx+rch2nEfvSbe1kCMYqcuA23hD6IC1FilJ37vUClcPjbMAaFa6rVTsisbdrgmqxHs+eIh9sAaLCss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jC6EnA1X; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-53a007743e7so6442468e87.1
-        for <stable@vger.kernel.org>; Tue, 22 Oct 2024 01:26:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729585618; x=1730190418; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n0GiliwIaLCyGRQWXYx66I75LIQA84ct+U2DkcDdwKs=;
-        b=jC6EnA1XYcYtW5w9vgeDDtPEK5T2hyDLcAYkCeLCwkiSMn5pu/ALjoEWMTrJsdJNiF
-         lmCUjwXpEFlvRr+oRdQLeDbq6dtzzDbTBg70QS2NFllhKmZT91M3r4aQb3MbSktRwkFV
-         ZJDrkq7Qdwyy+vxUCCv+hy5i5FZwEA6UdceSVobUotr1SiOv3O1x2JL34uG39WfWszT/
-         jRBE0lzkV14mwjUSDV8MQb3k283ugTKaEFpUqGsPqN0zB/w4d5G8qxYa/HB1cUzSAYoW
-         KWzHjsBfmVxls0qXKJqKisXF8c1Te8ywVPQqJyo6t2kbEzWoDHMslWNuGwuXQBu3nSY2
-         m1RQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729585618; x=1730190418;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=n0GiliwIaLCyGRQWXYx66I75LIQA84ct+U2DkcDdwKs=;
-        b=ePS1yQAu4qKsrlUi1fdzxsvaJ+YT3dQ67yCTUj267svJEAVebmVrEj4UWa+LmB1VzK
-         Jiv36BSn5eAE83MvzQ9ZzWGAfzczplDhySxNytm20A7Iq/rsY2S+Gv3MC87K9Hh7WR05
-         McuOYqO9aH+pkk/cKpx7FH7suHo6ODhKYCooLdlh0MCroEeMlnn8neB/5qkkr7aO2Ihd
-         yicqH8thPacceBo7L6NTSRfC8swgZupPhPMX8SKDMFk+vrfcflA2Zjx6YXgoKrTSrXiw
-         CewIvpdsJiM4Ro7qn2UL5vK0woGlDPEl70GyEvktlTM6Xu+kqB0dM26iD5QjFrXQz5Oz
-         T+9w==
-X-Forwarded-Encrypted: i=1; AJvYcCWIKnctnMwQQ4tc48lUB8pP8HSypdwtNZfKi1+icw56BLn2cCwPqWbeBtyohpVFflny1VMozFs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySuMrQbcJm37gDdja2qd4STQ2aj+vNR9R/mgnJV5J9wzIVNnby
-	snB7bYt3OBrRg+P8Il5Y5EL1X1nX8tRj6EA+Kt9nh0dOP4YRGr9gVdioge1Gw5OfpZJaxKvwsmd
-	V7KIk0iTXGJK2hsLEQyMV3ZPx/nMdnLzhBkgS
-X-Google-Smtp-Source: AGHT+IEQucMr9xh3AiasaWZklpACkjyVewVAf4ZNFK0lBETmdd0R2zeParDjP7G/u52mxSejv4EmSK84cRfEwEw36kY=
-X-Received: by 2002:a05:6512:3f04:b0:539:ee04:2321 with SMTP id
- 2adb3069b0e04-53b139f1c95mr847888e87.33.1729585618041; Tue, 22 Oct 2024
- 01:26:58 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A257A187864
+	for <stable@vger.kernel.org>; Tue, 22 Oct 2024 08:52:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729587125; cv=fail; b=udRqt3rww+7QHtfxqOs8aDpWAOHrlurnXWolOe/8PeymQP1AG/Fs0txCCB3DTw3Q+RKKm88Trrh5BIzEICmYCGizp4DRuTjHtlFJfw5nxdwstcLpN+eMIiqu00a6B0f6DunFmDMPX+Al7aD5SAM6qZKJNSYCEIaOk5xoxHzhRKE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729587125; c=relaxed/simple;
+	bh=/G4nsfZ7AT7hnq1DZ4+neyYwkFfJruqlWWmca1R2/9o=;
+	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=NjfSuBOHmT19DPZ8z/Do3o48exzac1jG4tWtutKArtlDjyxY1aVadMMBw+SPa9jGhz7uneuK38wQysWBMUPWdsO+wu5GBkTIPBLO2aogDQ5jd4j2swBbt/KGFYYwLgL/7EpAyf5syFtiLOM1xCQ61D3mvKpAsp+a3eskQ/H2kgI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49M50634011285
+	for <stable@vger.kernel.org>; Tue, 22 Oct 2024 01:52:01 -0700
+Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2174.outbound.protection.outlook.com [104.47.55.174])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 42cc9ktv7b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 22 Oct 2024 01:52:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fd0AxCCmt4msFTCN3hVKK4WhH6CqjJKbUEDdfjE0G1pAuiibWH7gwkN5L+HJCi+Xi3LgvDCdANRsSowkZ9sJttdVPV8zVpL7IP4esHepzDA0mco5uAdmHPsIIXrRFC83bYpuJWKhPdDILU6GNk3HaOtjFQ5f4LKj12pntsulHLKXVQZbUnsffgzx6hkJZm/7eTrCd9rqmfTyJV2l3rXZkwfNCKlYaQdleWBnDGfPVxFfMmgb9oQ2pgmCFGJAYUxASvIy/q/HJcAgTa7c1b1ZEOtcWBWFHretvSLrFm6TVUT3O13ZLOJj7vOUUodeejaiIsNnZAlrXs3wzfqieq9/jA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RFpdGAZU2SAFGtdL0HSQf3B4OkYg4XJPyHPg87h+sug=;
+ b=dSMrJxH9nlk3VicXhydw+nHIE8j+9dQellTA0QnlSmA+hyJ2vGI0pwV6dm66uwkvVAad2yIffkPeYgh7/d9i39pUO2dpD+0gtKaBa8O/v+lG9hEQHw29qhOaMFCyDCG3yTv1HQ0ZBFHRms9/nTXnLnMFQ+I3rqt/MkV3XdgiClQJQ5FSFXK4XjVJb1RWPcN5qm5TJaNU4fOmp42rbqBMm1vstxS35AJkN89Jm2NF3SiryQt5/IVgeAKSstP/jj+tcbpao9TkGbxzXMv45HaJZuPFxsvp1I2UjE0USyud/y4ztMpc7FRz7qiUj743dkNL98yRUROTTDhkVdoRj9GcXA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+Received: from MW4PR11MB5824.namprd11.prod.outlook.com (2603:10b6:303:187::19)
+ by CO1PR11MB4835.namprd11.prod.outlook.com (2603:10b6:303:9e::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.29; Tue, 22 Oct
+ 2024 08:51:57 +0000
+Received: from MW4PR11MB5824.namprd11.prod.outlook.com
+ ([fe80::f5f6:a389:b6fc:dbc3]) by MW4PR11MB5824.namprd11.prod.outlook.com
+ ([fe80::f5f6:a389:b6fc:dbc3%4]) with mapi id 15.20.8069.027; Tue, 22 Oct 2024
+ 08:51:57 +0000
+From: Xiangyu Chen <xiangyu.chen@windriver.com>
+To: stable@vger.kernel.org
+Subject: [PATCH] fs/ntfs3: Add more attributes checks in mi_enum_attr()
+Date: Tue, 22 Oct 2024 16:51:48 +0800
+Message-ID: <20241022085148.3115342-1-xiangyu.chen@windriver.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR01CA0031.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:192::11) To MW4PR11MB5824.namprd11.prod.outlook.com
+ (2603:10b6:303:187::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241021173455.2691973-1-roman.gushchin@linux.dev>
- <Zxa60Ftbh8eN1MG5@casper.infradead.org> <ZxcKjwhMKmnHTX8Q@google.com>
- <ZxcgR46zpW8uVKrt@casper.infradead.org> <ZxcrJHtIGckMo9Ni@google.com>
-In-Reply-To: <ZxcrJHtIGckMo9Ni@google.com>
-From: Yosry Ahmed <yosryahmed@google.com>
-Date: Tue, 22 Oct 2024 01:26:20 -0700
-Message-ID: <CAJD7tkb2oUre-tgVyW6XgUaNfGQSSKp=QNAfB0iZoTvHcc0n0w@mail.gmail.com>
-Subject: Re: [PATCH v2] mm: page_alloc: move mlocked flag clearance into free_pages_prepare()
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Hugh Dickins <hughd@google.com>, kvm@vger.kernel.org, 
-	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR11MB5824:EE_|CO1PR11MB4835:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1a32921d-b4fb-4c16-c36f-08dcf276c8eb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|52116014|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?eBTlKEQGrn188ZTVd1StfrmgzvRun+dieeeGG+Wnmod8Ow4X2f0rjjTPRbiG?=
+ =?us-ascii?Q?U4WzerDRjZo3BVjTHEOXsuK1uhFhAzVK9mIy+i2t4zDBmeJC06sz2HKL9/gQ?=
+ =?us-ascii?Q?YWS5JouORAvq/tSuI2OfhjcuQQns9p2kh/cucOo0TRXXl3FRGHCiv8UDuNvQ?=
+ =?us-ascii?Q?b8n3kmNiT4ccki5L1TCtm2s7udSq9QQqqkofMWsQNAMJeHnU6WoxjSXs5fdc?=
+ =?us-ascii?Q?NmXrraMs/jgGopLwZAl5QVJNJkkDDBvrsL1NOxMhR9oJz4rIotaUxiQeEOk8?=
+ =?us-ascii?Q?RsZTPWs7XGgz3cwBqWfwx623AJFjfEEi8cN3vMFH8lJisGxGziXkllRc9TgQ?=
+ =?us-ascii?Q?bwqt3XLxrYBCgWTSMNcOm5bHLLKKpi/RCaNOQzwn/BTMO44QJWS5W83L0fqL?=
+ =?us-ascii?Q?ZO4SW2LhB3AtgJrH7B77a7LFP5w6R7dxq5vCtPBWEHso2PAgyRd5qdiozffz?=
+ =?us-ascii?Q?pHISSnV9rDC5AeSJ0lqa+xYqP3d4fTvnCiuSOcM9aEAKZp4eLl6wjM1LZ3lZ?=
+ =?us-ascii?Q?I2+f76EPRuRuc/tQoBHNNUsYm4yShbhh2yhfLqlCs9TvNI8+mCeHm8wvr8VV?=
+ =?us-ascii?Q?vKW90Jsi5xTnd+VWxnhVncJ5ThUtvX+xPesgjJEQOW6ctHaH7CFdF1hcwoN/?=
+ =?us-ascii?Q?GOjV5pASXSQ0e6iABZiHzjh8UaC72P024eXNrSszaJ8v+nZ8jYByZCIJWCXL?=
+ =?us-ascii?Q?rABzZkwiciCeAYlBBcd5AcxJOT7a0MGKbln7m+iXj0fG+M5sqnkSZyw74g7D?=
+ =?us-ascii?Q?OsUsMNc9mIhSwBGH00fA57w/hw+BhlyVdHSLNuNomSyYSX1FpoVAne7LupZX?=
+ =?us-ascii?Q?eXiTXPRm4aBLD+3aBTX+8Rhk6FFLVAljOfr1GMhabKOBBjBqmxRcp3xnzaR1?=
+ =?us-ascii?Q?CrchGFKRFLyHbCNPOA4EH7B+YH53ydLWOoVd8DilwZnyNJ5V1bgAUPfSjdFy?=
+ =?us-ascii?Q?XeDcibYh1NOHT9dZS2JjLaGA3iUkzDgY8ipWEtom8ibCuzi06B7jrLfysskv?=
+ =?us-ascii?Q?1jgRfEV0iu/AW1VCHhn6TXVNhd8rXduM7yHpkVIjW1xJ8ABag0deuhE99pOH?=
+ =?us-ascii?Q?lagcmAwqulyDwri8KvwzzNxg74KUPS+o0Z0p64+NukSIDEQyLTEufMWcTCLb?=
+ =?us-ascii?Q?NWFbvPv4e/5pCggDcBc3dgFWn2xJol/Y9sk4KuYuD8iy4ebUQn1kopaoXGmL?=
+ =?us-ascii?Q?LZzIM2jYYJngsxAe3AlahNWMk+GNXGy/QT9PrRZnOqlnp9hIh+Ua3XdGh2qh?=
+ =?us-ascii?Q?EUmb03FcAQkFd7ikQPTFLUuQmiGyki9wNYJpYOB6QZSVx/61jz5k7G8BhqI0?=
+ =?us-ascii?Q?SOmKJgRsT5Ba0aCvQX37G6vF4mmB7s0HN7UA/9VXsoo0k49HGUpyfe0byj9f?=
+ =?us-ascii?Q?PZLLH7Q=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB5824.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?FQlAdpaEUiRzKSwzWP8WewPY99SJ0T5AEwYR7U+bxKAS8OEGj86g/1h3A5X3?=
+ =?us-ascii?Q?ThMYF+xwPlU2dRu0h+N8ihDJRFZG+3LEMdnuwcnhDJBK9sz+cosniPjF+qjG?=
+ =?us-ascii?Q?1xSKJCXGfPPdkKQ5zBqRZRMh7fI9fT+VKD7kskIvZObWnaeeyW8YlTf0M2LZ?=
+ =?us-ascii?Q?5BkGj1rNPUVpm8hpyMViC362mVwAEQgcFOJCiSOKBvBo+ecRFYpIHMKQFYHs?=
+ =?us-ascii?Q?kmmbeRc6h//3LD0W1LlT9erf7WneIp6v2cTz4vMUzMOZTbCX/IrLDBX4HxO7?=
+ =?us-ascii?Q?8R8R1ohAQ5KS5GJVAFcNAvAdA9OXh6+qYCJ98N0BoxcokpfH8K3GBmbURbf2?=
+ =?us-ascii?Q?KIoilAaFyex2WFn4Ub9NbbIBOS+lDnoTI610KfeKl7aK5vuUsmCSCbUVT0J/?=
+ =?us-ascii?Q?RlrhDAbkOs64z6Wgq6KCaxVL9NqZmcr43iqeQu4xIM2xVmHLasuRMZrjqpTt?=
+ =?us-ascii?Q?qJ/ewmnQcGNXR2Z5Gl0VaxHdCGyelddJEcewRT7p1jJROTWs8s7jF9okyYMa?=
+ =?us-ascii?Q?LtVIo/GBfKJXxsiwimoGqlahWp2/zmQHxv7reFMJJhRrl6UbMBiGJ4SUfDLe?=
+ =?us-ascii?Q?EdFr+6rDd5tfoigYMaFHNp53gM2Rib255DvGhcCtk7FQQVKW3q1WlXO8Uhhw?=
+ =?us-ascii?Q?1DDyZr1xE2aY3DKnj1jvNDVS+KtTC8h+zHG64A9TPVVJANSgHAINgn5iaEgO?=
+ =?us-ascii?Q?Q3KIE5uqpMgj6SRW7+zUoa7AI/L7Oq0ggg4tVRWhtu1oaHVgJ5wrUwVeNd1I?=
+ =?us-ascii?Q?fwvBAGO/Xi5D6rP7ow6X7i0X9inRFls8EUryOlXPLt5M3c0FdrYAYSsuq0/x?=
+ =?us-ascii?Q?v01gla3Nh+usVf/4c2KVBfArKjNTtPvwoUgkL3tBVoH21UAf3EsphA+nOoe3?=
+ =?us-ascii?Q?V/avilkMRj2zuIV8sdAsByI98wz2oTrO5SD5emPKMLZDfRRL2pwH/ukhpzZW?=
+ =?us-ascii?Q?5vy61Z7xv5nef8hXeivsUN7VaYM+R54/1IbWAcjpdecHI3KdaDC8NWenGt2T?=
+ =?us-ascii?Q?V4IOgMmqaDvszqcKzmN3T8fqF2mr3lAdJk/256RCAuLaAgnC3sD1xoYsGH9u?=
+ =?us-ascii?Q?BQwWyflimHTGpFChhVuZw8iL3TCqG5IdxcWRyGDp+MeRn70SJk02FtRoRtnG?=
+ =?us-ascii?Q?GpyjPisCO+5FHALtz8qZ6Z93Tt020jAfgork7ttSq72vvoVBlK65DbNs4skZ?=
+ =?us-ascii?Q?X8vwmTugf0NR2NJx8U6UHJ/er7PS4cRdJwbOdnAu75Pj3x195nYIiIGu2PmP?=
+ =?us-ascii?Q?Qe2B+9BwZpL2TOoW8j4ScGCTmU12gTZ0H0YZgHnPShmrjR3h5UaRRJUIILRv?=
+ =?us-ascii?Q?wPRr4gKyN0uanQSWBfxj2aGapOEnDZFzixoILU7Fxo1vJbaBcR1mzrv9oXWY?=
+ =?us-ascii?Q?zXk6aIJuTMLj0MyJBPnPM4OiL3UnFaINau9cNZz3Va5gGw7YAVunYQjmCm2m?=
+ =?us-ascii?Q?l/yX5N9hFbJxOMfYfmS/9R9jOwp49G2QqVoiCs3/rlVjgWmbdH3b7nDIfRRu?=
+ =?us-ascii?Q?Ph3Q0HBUVKrBk5smer8MAH2nOW8rq+E3drQrOSwu7LnRCe+j1wdPwIzZZvJl?=
+ =?us-ascii?Q?rdGHsODEYQwj/MGLzbda8NeXrnd+hf8ATDL8/n7iKbXSKNk0GFSrTpTnCZAJ?=
+ =?us-ascii?Q?3w=3D=3D?=
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1a32921d-b4fb-4c16-c36f-08dcf276c8eb
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB5824.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2024 08:51:57.2355
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1GLVj5hGtFtjAPUsbIyjBI+qoSpIyhmsdkf1azOgUnGuBEpKb1dMQ4cOWaIAo5O6Z0+qcFlLcgOrNh76vuIj0vCfCBDNK/z19sW5vPR5Jm8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4835
+X-Authority-Analysis: v=2.4 cv=ZYlPNdVA c=1 sm=1 tr=0 ts=671767b1 cx=c_pps a=AVVanhwSUc+LQPSikfBlbg==:117 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=DAUX931o1VcA:10 a=bRTqI5nwn0kA:10 a=GFCt93a2AAAA:8 a=t7CeM3EgAAAA:8 a=F4_d0iVdzyuZofu-chwA:9
+ a=0UNspqPZPZo5crgNHNjb:22 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-GUID: HkgMcUA5CJ19K4_f6lfgcyXgOfpVN87K
+X-Proofpoint-ORIG-GUID: HkgMcUA5CJ19K4_f6lfgcyXgOfpVN87K
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-22_08,2024-10-21_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ clxscore=1015 suspectscore=0 adultscore=0 impostorscore=0 mlxlogscore=999
+ bulkscore=0 priorityscore=1501 spamscore=0 phishscore=0 malwarescore=0
+ mlxscore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
+ engine=8.21.0-2409260000 definitions=main-2410220057
 
-On Mon, Oct 21, 2024 at 9:33=E2=80=AFPM Roman Gushchin <roman.gushchin@linu=
-x.dev> wrote:
->
-> On Tue, Oct 22, 2024 at 04:47:19AM +0100, Matthew Wilcox wrote:
-> > On Tue, Oct 22, 2024 at 02:14:39AM +0000, Roman Gushchin wrote:
-> > > On Mon, Oct 21, 2024 at 09:34:24PM +0100, Matthew Wilcox wrote:
-> > > > On Mon, Oct 21, 2024 at 05:34:55PM +0000, Roman Gushchin wrote:
-> > > > > Fix it by moving the mlocked flag clearance down to
-> > > > > free_page_prepare().
-> > > >
-> > > > Urgh, I don't like this new reference to folio in free_pages_prepar=
-e().
-> > > > It feels like a layering violation.  I'll think about where else we
-> > > > could put this.
-> > >
-> > > I agree, but it feels like it needs quite some work to do it in a nic=
-er way,
-> > > no way it can be backported to older kernels. As for this fix, I don'=
-t
-> > > have better ideas...
-> >
-> > Well, what is KVM doing that causes this page to get mapped to userspac=
-e?
-> > Don't tell me to look at the reproducer as it is 403 Forbidden.  All I
-> > can tell is that it's freed with vfree().
-> >
-> > Is it from kvm_dirty_ring_get_page()?  That looks like the obvious thin=
-g,
-> > but I'd hate to spend a lot of time on it and then discover I was looki=
-ng
-> > at the wrong thing.
->
-> One of the pages is vcpu->run, others belong to kvm->coalesced_mmio_ring.
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-Looking at kvm_vcpu_fault(), it seems like we after mmap'ing the fd
-returned by KVM_CREATE_VCPU we can access one of the following:
-- vcpu->run
-- vcpu->arch.pio_data
-- vcpu->kvm->coalesced_mmio_ring
-- a page returned by kvm_dirty_ring_get_page()
+[ Upstream commit 013ff63b649475f0ee134e2c8d0c8e65284ede50 ]
 
-It doesn't seem like any of these are reclaimable, why is mlock()'ing
-them supported to begin with? Even if we don't want mlock() to err in
-this case, shouldn't we just do nothing?
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+CVE: CVE-2023-45896
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+---
+ fs/ntfs3/record.c | 67 ++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 54 insertions(+), 13 deletions(-)
 
-I see a lot of checks at the beginning of mlock_fixup() to check
-whether we should operate on the vma, perhaps we should also check for
-these KVM vmas? or maybe set VM_SPECIAL in kvm_vcpu_mmap()? I am not
-sure tbh, but this doesn't seem right.
+diff --git a/fs/ntfs3/record.c b/fs/ntfs3/record.c
+index 1351fb02e140..7ab452710572 100644
+--- a/fs/ntfs3/record.c
++++ b/fs/ntfs3/record.c
+@@ -193,8 +193,9 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
+ {
+ 	const struct MFT_REC *rec = mi->mrec;
+ 	u32 used = le32_to_cpu(rec->used);
+-	u32 t32, off, asize;
++	u32 t32, off, asize, prev_type;
+ 	u16 t16;
++	u64 data_size, alloc_size, tot_size;
+ 
+ 	if (!attr) {
+ 		u32 total = le32_to_cpu(rec->total);
+@@ -213,6 +214,7 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
+ 		if (!is_rec_inuse(rec))
+ 			return NULL;
+ 
++		prev_type = 0;
+ 		attr = Add2Ptr(rec, off);
+ 	} else {
+ 		/* Check if input attr inside record. */
+@@ -226,6 +228,11 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
+ 			return NULL;
+ 		}
+ 
++		/* Overflow check. */
++		if (off + asize < off)
++			return NULL;
++
++		prev_type = le32_to_cpu(attr->type);
+ 		attr = Add2Ptr(attr, asize);
+ 		off += asize;
+ 	}
+@@ -245,7 +252,11 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
+ 
+ 	/* 0x100 is last known attribute for now. */
+ 	t32 = le32_to_cpu(attr->type);
+-	if ((t32 & 0xf) || (t32 > 0x100))
++	if (!t32 || (t32 & 0xf) || (t32 > 0x100))
++		return NULL;
++
++	/* attributes in record must be ordered by type */
++	if (t32 < prev_type)
+ 		return NULL;
+ 
+ 	/* Check overflow and boundary. */
+@@ -254,16 +265,15 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
+ 
+ 	/* Check size of attribute. */
+ 	if (!attr->non_res) {
++		/* Check resident fields. */
+ 		if (asize < SIZEOF_RESIDENT)
+ 			return NULL;
+ 
+ 		t16 = le16_to_cpu(attr->res.data_off);
+-
+ 		if (t16 > asize)
+ 			return NULL;
+ 
+-		t32 = le32_to_cpu(attr->res.data_size);
+-		if (t16 + t32 > asize)
++		if (t16 + le32_to_cpu(attr->res.data_size) > asize)
+ 			return NULL;
+ 
+ 		if (attr->name_len &&
+@@ -274,21 +284,52 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
+ 		return attr;
+ 	}
+ 
+-	/* Check some nonresident fields. */
+-	if (attr->name_len &&
+-	    le16_to_cpu(attr->name_off) + sizeof(short) * attr->name_len >
+-		    le16_to_cpu(attr->nres.run_off)) {
++	/* Check nonresident fields. */
++	if (attr->non_res != 1)
+ 		return NULL;
+-	}
+ 
+-	if (attr->nres.svcn || !is_attr_ext(attr)) {
++	t16 = le16_to_cpu(attr->nres.run_off);
++	if (t16 > asize)
++		return NULL;
++
++	t32 = sizeof(short) * attr->name_len;
++	if (t32 && le16_to_cpu(attr->name_off) + t32 > t16)
++		return NULL;
++
++	/* Check start/end vcn. */
++	if (le64_to_cpu(attr->nres.svcn) > le64_to_cpu(attr->nres.evcn) + 1)
++		return NULL;
++
++	data_size = le64_to_cpu(attr->nres.data_size);
++	if (le64_to_cpu(attr->nres.valid_size) > data_size)
++		return NULL;
++
++	alloc_size = le64_to_cpu(attr->nres.alloc_size);
++	if (data_size > alloc_size)
++		return NULL;
++
++	t32 = mi->sbi->cluster_mask;
++	if (alloc_size & t32)
++		return NULL;
++
++	if (!attr->nres.svcn && is_attr_ext(attr)) {
++		/* First segment of sparse/compressed attribute */
++		if (asize + 8 < SIZEOF_NONRESIDENT_EX)
++			return NULL;
++
++		tot_size = le64_to_cpu(attr->nres.total_size);
++		if (tot_size & t32)
++			return NULL;
++
++		if (tot_size > alloc_size)
++			return NULL;
++	} else {
+ 		if (asize + 8 < SIZEOF_NONRESIDENT)
+ 			return NULL;
+ 
+ 		if (attr->nres.c_unit)
+ 			return NULL;
+-	} else if (asize + 8 < SIZEOF_NONRESIDENT_EX)
+-		return NULL;
++	}
+ 
+ 	return attr;
+ }
+-- 
+2.43.0
 
-FWIW, I think moving the mlock clearing from __page_cache_release ()
-to free_pages_prepare() (or another common function in the page
-freeing path) may be the right thing to do in its own right. I am just
-wondering why we are not questioning the mlock() on the KVM vCPU
-mapping to begin with.
-
-Is there a use case for this that I am missing?
-
->
-> Here is the reproducer:
->
-> #define _GNU_SOURCE
->
-> #include <endian.h>
-> #include <fcntl.h>
-> #include <stdint.h>
-> #include <stdio.h>
-> #include <stdlib.h>
-> #include <string.h>
-> #include <sys/mount.h>
-> #include <sys/stat.h>
-> #include <sys/syscall.h>
-> #include <sys/types.h>
-> #include <unistd.h>
->
-> #ifndef __NR_mlock2
-> #define __NR_mlock2 325
-> #endif
->
-> uint64_t r[3] =3D {0xffffffffffffffff, 0xffffffffffffffff, 0xffffffffffff=
-ffff};
->
-> #ifndef KVM_CREATE_VM
-> #define KVM_CREATE_VM 0xae01
-> #endif
->
-> #ifndef KVM_CREATE_VCPU
-> #define KVM_CREATE_VCPU 0xae41
-> #endif
->
-> int main(void)
-> {
->   syscall(__NR_mmap, /*addr=3D*/0x1ffff000ul, /*len=3D*/0x1000ul, /*prot=
-=3D*/0ul,
->           /*flags=3DMAP_FIXED|MAP_ANONYMOUS|MAP_PRIVATE*/ 0x32ul, /*fd=3D=
-*/-1,
->           /*offset=3D*/0ul);
->   syscall(__NR_mmap, /*addr=3D*/0x20000000ul, /*len=3D*/0x1000000ul,
->           /*prot=3DPROT_WRITE|PROT_READ|PROT_EXEC*/ 7ul,
->           /*flags=3DMAP_FIXED|MAP_ANONYMOUS|MAP_PRIVATE*/ 0x32ul, /*fd=3D=
-*/-1,
->           /*offset=3D*/0ul);
->   syscall(__NR_mmap, /*addr=3D*/0x21000000ul, /*len=3D*/0x1000ul, /*prot=
-=3D*/0ul,
->           /*flags=3DMAP_FIXED|MAP_ANONYMOUS|MAP_PRIVATE*/ 0x32ul, /*fd=3D=
-*/-1,
->           /*offset=3D*/0ul);
->   intptr_t res =3D syscall(__NR_openat, /*fd=3D*/0xffffff9c, /*file=3D*/"=
-/dev/kvm",
->                 /*flags=3D*/0, /*mode=3D*/0);
->   if (res !=3D -1)
->     r[0] =3D res;
->   res =3D syscall(__NR_ioctl, /*fd=3D*/r[0], /*cmd=3D*/KVM_CREATE_VM, /*t=
-ype=3D*/0ul);
->   if (res !=3D -1)
->     r[1] =3D res;
->   res =3D syscall(__NR_ioctl, /*fd=3D*/r[1], /*cmd=3D*/KVM_CREATE_VCPU, /=
-*id=3D*/0ul);
->   if (res !=3D -1)
->     r[2] =3D res;
->   syscall(__NR_mmap, /*addr=3D*/0x20000000ul, /*len=3D*/0xb36000ul,
->           /*prot=3DPROT_SEM|PROT_WRITE|PROT_READ|PROT_EXEC*/ 0xful,
->           /*flags=3DMAP_FIXED|MAP_SHARED*/ 0x11ul, /*fd=3D*/r[2], /*offse=
-t=3D*/0ul);
->   syscall(__NR_mlock2, /*addr=3D*/0x20000000ul, /*size=3D*/0x400000ul,
->           /*flags=3D*/0ul);
->   syscall(__NR_mremap, /*addr=3D*/0x200ab000ul, /*len=3D*/0x1000ul,
->           /*newlen=3D*/0x1000ul,
->           /*flags=3DMREMAP_DONTUNMAP|MREMAP_FIXED|MREMAP_MAYMOVE*/ 7ul,
->           /*newaddr=3D*/0x20ffc000ul);
->   return 0;
-> }
->
 
