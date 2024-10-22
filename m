@@ -1,98 +1,164 @@
-Return-Path: <stable+bounces-87651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A74789A93E3
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 01:08:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D05D29A9477
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 02:05:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69AF628421C
-	for <lists+stable@lfdr.de>; Mon, 21 Oct 2024 23:08:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E8211F22874
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 00:05:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12042003B5;
-	Mon, 21 Oct 2024 23:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AFE9EC2;
+	Tue, 22 Oct 2024 00:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WgtTLqpf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nkzLoIif"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659F71FEFDD;
-	Mon, 21 Oct 2024 23:05:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9858B41C62;
+	Tue, 22 Oct 2024 00:05:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729551934; cv=none; b=AbmPnA65LtKGFLusWognxluPIDMn1+oW9Rxzd5CMD04QEvNg9yJFfBop0E6/wqelMymRVtB0QW+vxvKf34W65+cnqomjjbQdYIu6Hme0QPCusf7mv60Z4Vt7LY8x+CSfA+CBvIEPKikvreUco+5OpbZt5IGU8sOoIAkJC3QD/kE=
+	t=1729555504; cv=none; b=ltGuDfPq1C3wm0h3FBQllT7/4yJxsghBEHQ4/ouAGtw/3MzepaC7Rg2hGqDnH3lbUboj2rVhlNeuHrmjv6fd/aW5976ziBFB4EZK29yo21R3+i7hlKXTF4TGN5fRGu0nJplH8M9cK+F6fjzeAXrx+NJZw0bA3lHfuJ4mrK7wskI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729551934; c=relaxed/simple;
-	bh=GgGk3/Y7H2IU2xsVU7CzwSTqSvZtBptn3on5KhFGVAk=;
+	s=arc-20240116; t=1729555504; c=relaxed/simple;
+	bh=5x6gGOwyX7rO1kjd/9hTV8Rr5+e03ZltQc1RADfVmoQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kzjv+/2yC/Q/Hcrd2KARmM2CfhPJoRTueV1rb8AwXUtKiKBysPQfKN+vPxoOfCVRjWt/tvQ31CsexHLjGNpQfcSHO+7kidYe+5ulI0ID6KfUk36SWiMBrFQeGy+fVXrWhSj164QePK53WkisjwZsWQ7om/1J23awb+Hmp7B9Zys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WgtTLqpf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DDFC4CEC3;
-	Mon, 21 Oct 2024 23:05:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729551934;
-	bh=GgGk3/Y7H2IU2xsVU7CzwSTqSvZtBptn3on5KhFGVAk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WgtTLqpfDjmawLfzTdlAs79dkX5SV43b2VbiIRHCZiYff8YdajrdaAJrZseEc0VnJ
-	 XgDtQvjgNes3UWICWV+r+Z1VxatfV+HdSjUCPW7F8Zr8+byKSg4wMnwpWHadGhaZT2
-	 aiM/+N70ALKC1ESZW5SfcdX10GpMAUCOHhf2baZkfy+GlY+UTuR0L7J53+RvmLqk95
-	 y+eHjVTUG8fvv+zxj0g5TjY7xtCTasZ5X8Jef8xuHH+u8JZqGFMISxoOlGxtg8CqJS
-	 5UJc70AF1g0Rxdjrmjl/T91ij/n4n/pjPmv8XHEg7jaY9OfizaEpPcgGzgQ+eJzGKv
-	 A9MQxXMptdlqA==
-Date: Tue, 22 Oct 2024 00:05:27 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 6.6 000/124] 6.6.58-rc1 review
-Message-ID: <bfbf2def-c3dc-4435-b218-8ca8d2e969a5@sirena.org.uk>
-References: <20241021102256.706334758@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=IM32TRPIZXmZT+mmg0uhP13XljTIlLyZqxywoiXqNv/bYFvOqw77ehLJJ0keZIusW+7khD1d2n0S9zxLEHpRAAl1XVZWsTYkcqcJRNs/1nYPgeGhaVSqUt+Ej3MGbIQJh4FhI5dzpAKLU8SUu51Hq7X5Kb6Jh8auPtHb7lCwWV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nkzLoIif; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729555503; x=1761091503;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5x6gGOwyX7rO1kjd/9hTV8Rr5+e03ZltQc1RADfVmoQ=;
+  b=nkzLoIif2yEWIWanrIhi5gL/Ilo1HCggIzyGYklHdmtHUMoLTXPnCCG8
+   z+InFtHzgiEMsyABMdC6WWDT+7NW4tSkPLePeYbJeWKl9nCmb9Y0MGUtm
+   Yg0s8l+1Api7aJi5dEm5qaoWdNVvj+TCWaVFVd+83KLxN6Pojko0lrKYf
+   7Fnf1FOmf/ccFGByMDjfSx6hLIDX6Edjt/oF5Yj4Zil+HdHeIy5JAa/nB
+   ia0pk2FXmxS1D3sZbDWcrIoWyOBTuf2Vciu4fd5vQslaY2mVFEKXKAy4t
+   KPcfT3spuVAeLP7gZ5S3SyEDbSYlm7WVi9mHCXKRuF2rDA7p1a6Tb0Duk
+   g==;
+X-CSE-ConnectionGUID: /nEG6bMqTm2LLT7jUy6nQg==
+X-CSE-MsgGUID: dPyFGuhdQnuZtQGfBEci9Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29177789"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="29177789"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 17:05:03 -0700
+X-CSE-ConnectionGUID: YU9ncK1OQ2mbg8Ce91GwZw==
+X-CSE-MsgGUID: di1qBU7GSqWyiBP0vUKKeQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,221,1725346800"; 
+   d="scan'208";a="79853197"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 21 Oct 2024 17:04:59 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t32OO-000Sn0-2G;
+	Tue, 22 Oct 2024 00:04:56 +0000
+Date: Tue, 22 Oct 2024 08:04:32 +0800
+From: kernel test robot <lkp@intel.com>
+To: Matt Johnston <matt@codeconstruct.com.au>,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Wolfram Sang <wsa-dev@sang-engineering.com>
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Dung Cao <dung@os.amperecomputing.com>
+Subject: Re: [PATCH net v2] mctp i2c: handle NULL header address
+Message-ID: <202410220730.90gh2nXQ-lkp@intel.com>
+References: <20241021-mctp-i2c-null-dest-v2-1-4503e478517c@codeconstruct.com.au>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="bmU92ulhcJv30c65"
-Content-Disposition: inline
-In-Reply-To: <20241021102256.706334758@linuxfoundation.org>
-X-Cookie: Most people prefer certainty to truth.
-
-
---bmU92ulhcJv30c65
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20241021-mctp-i2c-null-dest-v2-1-4503e478517c@codeconstruct.com.au>
 
-On Mon, Oct 21, 2024 at 12:23:24PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.58 release.
-> There are 124 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hi Matt,
 
-Tested-by: Mark Brown <broonie@kernel.org>
+kernel test robot noticed the following build warnings:
 
---bmU92ulhcJv30c65
-Content-Type: application/pgp-signature; name="signature.asc"
+[auto build test WARNING on cb560795c8c2ceca1d36a95f0d1b2eafc4074e37]
 
------BEGIN PGP SIGNATURE-----
+url:    https://github.com/intel-lab-lkp/linux/commits/Matt-Johnston/mctp-i2c-handle-NULL-header-address/20241021-123741
+base:   cb560795c8c2ceca1d36a95f0d1b2eafc4074e37
+patch link:    https://lore.kernel.org/r/20241021-mctp-i2c-null-dest-v2-1-4503e478517c%40codeconstruct.com.au
+patch subject: [PATCH net v2] mctp i2c: handle NULL header address
+config: arc-allmodconfig (https://download.01.org/0day-ci/archive/20241022/202410220730.90gh2nXQ-lkp@intel.com/config)
+compiler: arceb-elf-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241022/202410220730.90gh2nXQ-lkp@intel.com/reproduce)
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcW3jYACgkQJNaLcl1U
-h9CY9Qf/c6HO74lLhfRLnxl37KSTjprUCkTkUN6jS1cFZ1hS+xs4XgYDthFKINMz
-RjvPesLTQ4AdszdwkHHPAQ5qXipvE4ZqpcZpsCntZ4QYPH5/qwaIGz06SQZpAceN
-F6EzZzDw3tWhFRqntKlQOFv+ASNPzetF35D5MOwFcXRCh+dgz+sI27lxvYbQxE1k
-wbvY3D9a6f5ReGXEWc+adBOH8NyMqKeyKfBjM+6GoAdBfYPdcIn1dNgqKZaXRkeU
-4Kqn5DrPTCdQRfSoSOjJYSAOswc1Gca9bKmCULyZyjvvPTPxi31lKr9eJNgGFWov
-cJqKzjcAMv8YSVa7P2SmtCBsQKRoMw==
-=DtN/
------END PGP SIGNATURE-----
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410220730.90gh2nXQ-lkp@intel.com/
 
---bmU92ulhcJv30c65--
+All warnings (new ones prefixed by >>):
+
+   drivers/net/mctp/mctp-i2c.c: In function 'mctp_i2c_header_create':
+>> drivers/net/mctp/mctp-i2c.c:599:23: warning: assignment to 'u8' {aka 'unsigned char'} from 'const unsigned char *' makes integer from pointer without a cast [-Wint-conversion]
+     599 |                 llsrc = dev->dev_addr;
+         |                       ^
+
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for GET_FREE_REGION
+   Depends on [n]: SPARSEMEM [=n]
+   Selected by [m]:
+   - RESOURCE_KUNIT_TEST [=m] && RUNTIME_TESTING_MENU [=y] && KUNIT [=m]
+
+
+vim +599 drivers/net/mctp/mctp-i2c.c
+
+   579	
+   580	static int mctp_i2c_header_create(struct sk_buff *skb, struct net_device *dev,
+   581					  unsigned short type, const void *daddr,
+   582					  const void *saddr, unsigned int len)
+   583	{
+   584		struct mctp_i2c_hdr *hdr;
+   585		struct mctp_hdr *mhdr;
+   586		u8 lldst, llsrc;
+   587	
+   588		if (len > MCTP_I2C_MAXMTU)
+   589			return -EMSGSIZE;
+   590	
+   591		if (daddr)
+   592			lldst = *((u8 *)daddr);
+   593		else
+   594			return -EINVAL;
+   595	
+   596		if (saddr)
+   597			llsrc = *((u8 *)saddr);
+   598		else
+ > 599			llsrc = dev->dev_addr;
+   600	
+   601		skb_push(skb, sizeof(struct mctp_i2c_hdr));
+   602		skb_reset_mac_header(skb);
+   603		hdr = (void *)skb_mac_header(skb);
+   604		mhdr = mctp_hdr(skb);
+   605		hdr->dest_slave = (lldst << 1) & 0xff;
+   606		hdr->command = MCTP_I2C_COMMANDCODE;
+   607		hdr->byte_count = len + 1;
+   608		hdr->source_slave = ((llsrc << 1) & 0xff) | 0x01;
+   609		mhdr->ver = 0x01;
+   610	
+   611		return sizeof(struct mctp_i2c_hdr);
+   612	}
+   613	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
