@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-87745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03DF19AB22A
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 17:31:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C76A09AB243
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 17:39:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AE62B23CFF
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 15:31:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E24A1F23302
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 15:39:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B8C1B5ED0;
-	Tue, 22 Oct 2024 15:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8516C19E97A;
+	Tue, 22 Oct 2024 15:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tp/B7uOv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IRSh7wcv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9AC1A726D;
-	Tue, 22 Oct 2024 15:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9BC2E406;
+	Tue, 22 Oct 2024 15:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729611045; cv=none; b=U3eX/ai4C5OoPuarVyHTI0DfPIor+fD3LS5gFjGl4HuEPo5HwtA78c9n6VnMUMMkrsv47KhVqmB8VhwatVSNaeV6Nfx9NA2YTSSKCXJ/hTNecsBGaENz3CABKEZd07H7AfG7/Bv4hKs1wxfOtmQdYlQOXREeoORAbII4GIZiWf8=
+	t=1729611551; cv=none; b=NscB1p7c26eDeEjuJaQglW0783I3k4VPnxKwYihhyj/nGIJXG+uEQRFlRRWtrxjyrEhWDN3iiBrSYqLai7f6vJRih/CKqJBqJNbrXFLDsakX4i9sJoteOoJGzjoNt175XYrL8c3v8EBjRKx+2PP8ZpqXiMVPEMC0YGrrwbrkHOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729611045; c=relaxed/simple;
-	bh=QaeEqdPFz3BRmov/AvOyAXOEIdoSrRqhJFtqE3JLuAc=;
+	s=arc-20240116; t=1729611551; c=relaxed/simple;
+	bh=HBAd+pH1suGBZHzKJW+16YwwQdaznnAtSA8k0AlCw/Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lyc9rVW4WCU8TMbUnXieifkoP0MAa5dXIwSdrnJxKK8OP8ke0kfiwa8cjbJKsRR0QXBUGWoEArPuPTZOIrtotT7hKvm3QSkFF0FHbs5R2AbsqAjLLPPmblbWjaCH+Swp7RhOhRt8FPcJI0JdXB+WzXTQudUvYC/SJKotnWCvGpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tp/B7uOv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 865BEC4CEE7;
-	Tue, 22 Oct 2024 15:30:44 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=XFoQjMRX7sdT2i/KntK5xzagRAKvwEk+75Sb5+QpVWEp0sfrGQN4J16DvdKTfXwaGSbOU0cF36D6Whl9NLCzGDsy3tLvkHt9b1r6Ha7NV8DDjlSuMVOik+0fpDo1P9xw5MjPUp2+BMap7Y2WhBhYVwzOluU4UOhudmt0yrUf0NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IRSh7wcv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F6AC4CEC3;
+	Tue, 22 Oct 2024 15:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729611044;
-	bh=QaeEqdPFz3BRmov/AvOyAXOEIdoSrRqhJFtqE3JLuAc=;
+	s=k20201202; t=1729611550;
+	bh=HBAd+pH1suGBZHzKJW+16YwwQdaznnAtSA8k0AlCw/Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Tp/B7uOvvqVfphlIu5iRNu1Iqlkcy0OL/bvfWQsx4L9Ex2c180NZSD9NMHz+PfBjJ
-	 wYWXq5pPpDQfQqy12cmgLElrZBfhTyBbQUFEhknHsyImQGdZRcAPkTI6zFBg0PBunG
-	 A7Non5gcw9RviSwYgu3Dsjp0t/XCrn3447Aona4R4yBmRIAodpM8fEURBOG7RQRYMv
-	 3LDJRpej4HS8B6hLP88B/5QnnotwzBMNjAizpONd97Qzk3OaQlz1qty4wDYYnPi7th
-	 tKPEvDxV6ifNSWKPQ45PuDaodebiLYPmFQ/ty/Z7qen7lFZgU3zF2ZbLGDE00rC3PH
-	 j/kxGPNlnJ8Jw==
+	b=IRSh7wcv1VAvmrR8bGUr+cmGKAsxlIyr93qsBirHrXE0NQTlCHrKa6jwh6BKM1U92
+	 1VzPCJOr6wTWFtc+TccGtAVu89N3Fso3SGT0FS+n0wPvwM+rxviMIaY7thYvxfuOEb
+	 Wz1qC2qs9E3SJtVSt33E+rw8ZSST8mDjW7cPfuB6UoN4Tl91BaIH5HDMNiv3r3aB1/
+	 kWKM5lpJxYxliuRtKhGHzhPJTnhC3XxthvDbSRaX0kONEHzVsr16/5/Wk2/4LhSjcS
+	 D7ewARlnNhmDkIsn19WF8luwc8JWSKyXMsxUU6p3iX0z8oA74Kim6fswJNpN5ckAmI
+	 ksfeW2H9yErKA==
 Received: from johan by xi.lan with local (Exim 4.97.1)
 	(envelope-from <johan@kernel.org>)
-	id 1t3GqV-000000001By-4ABf;
-	Tue, 22 Oct 2024 17:30:56 +0200
-Date: Tue, 22 Oct 2024 17:30:55 +0200
+	id 1t3Gyg-000000001MB-0xbc;
+	Tue, 22 Oct 2024 17:39:22 +0200
+Date: Tue, 22 Oct 2024 17:39:22 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 Cc: Bjorn Andersson <andersson@kernel.org>,
@@ -56,11 +56,10 @@ Cc: Bjorn Andersson <andersson@kernel.org>,
 	Bjorn Andersson <quic_bjorande@quicinc.com>,
 	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] soc: qcom: pmic_glink: Handle GLINK intent
- allocation rejections
-Message-ID: <ZxfFL8eVs5lYCPum@hovoldconsulting.com>
+Subject: Re: [PATCH 1/2] rpmsg: glink: Handle rejected intent request better
+Message-ID: <ZxfHKncYLeiIH3io@hovoldconsulting.com>
 References: <20241022-pmic-glink-ecancelled-v1-0-9e26fc74e0a3@oss.qualcomm.com>
- <20241022-pmic-glink-ecancelled-v1-2-9e26fc74e0a3@oss.qualcomm.com>
+ <20241022-pmic-glink-ecancelled-v1-1-9e26fc74e0a3@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,130 +68,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241022-pmic-glink-ecancelled-v1-2-9e26fc74e0a3@oss.qualcomm.com>
+In-Reply-To: <20241022-pmic-glink-ecancelled-v1-1-9e26fc74e0a3@oss.qualcomm.com>
 
-On Tue, Oct 22, 2024 at 04:17:12AM +0000, Bjorn Andersson wrote:
-> Some versions of the pmic_glink firmware does not allow dynamic GLINK
-> intent allocations, attempting to send a message before the firmware has
-> allocated its receive buffers and announced these intent allocations
-> will fail. When this happens something like this showns up in the log:
+On Tue, Oct 22, 2024 at 04:17:11AM +0000, Bjorn Andersson wrote:
+> The initial implementation of request intent response handling dealt
+> with two outcomes; granted allocations, and all other cases being
+> considered -ECANCELLED (likely from "cancelling the operation as the
+> remote is going down").
+
+For the benefit of casual reviewers and contributors, could you add
+introductory comment about what "intents" are?
+
+> But on some channels intent allocation is not supported, instead the
+> remote will pre-allocate and announce a fixed number of intents for the
+> sender to use. If for such channels an rpmsg_send() is being invoked
+> before any channels have been announced, an intent request will be
+> issued and as this comes back rejected the call is failed with
+> -ECANCELLED.
+
+It's actually the one L -ECANCELED
+
+s/is failed/fails/ ?
+ 
+> Given that this is reported in the same way as the remote being shut
+> down, there's no way for the client to differentiate the two cases.
 > 
-> 	[    9.799719] pmic_glink_altmode.pmic_glink_altmode pmic_glink.altmode.0: failed to send altmode request: 0x10 (-125)
-> 	[    9.812446] pmic_glink_altmode.pmic_glink_altmode pmic_glink.altmode.0: failed to request altmode notifications: -125
-> 	[    9.831796] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: failed to send UCSI read request: -125
-
-I think you should drop the time stamps here, and also add the battery
-notification error to make the patch easier to find when searching for
-these errors:
-
-	qcom_battmgr.pmic_glink_power_supply pmic_glink.power-supply.0: failed to request power notifications
-
-> GLINK has been updated to distinguish between the cases where the remote
-> is going down (-ECANCELLED) and the intent allocation being rejected
-> (-EAGAIN).
+> In line with the original GLINK design, change the return value to
+> -EAGAIN for the case where the remote rejects an intent allocation
+> request.
 > 
-> Retry the send until intent buffers becomes available, or an actual
-> error occur.
+> It's tempting to handle this case in the GLINK core, as we expect
+> intents to show up in this case. But there's no way to distinguish
+> between this case and a rejection for a too big allocation, nor is it
+> possible to predict if a currently used (and seeminly suitable) intent
+
+seemingly
+
+> will be returned for reuse or not. As such, returning the error to the
+> client and allow it to react seems to be the only sensible solution.
+
+s/allow/allowing/ ?
+
+> In addition to this, commit 'c05dfce0b89e ("rpmsg: glink: Wait for
+> intent, not just request ack")' changed the logic such that the code
+> always wait for an intent request response and an intent. This works out
+> in most cases, but in the event that a intent request is rejected and no
+
+an intent
+
+> further intent arrives (e.g. client asks for a too big intent), the code
+> will stall for 10 seconds and then return -ETIMEDOUT; instead of a more
+> suitable error.
 > 
-> To avoid infinitely waiting for the firmware in the event that this
-> misbehaves and no intents arrive, an arbitrary 10 second timeout is
-> used.
+> This change also resulted in intent requests racing with the shutdown of
+> the remote would be exposed to this same problem, unless some intent
+> happens to arrive. A patch for this was developed and posted by Sarannya
+> S [1], and has been incorporated here.
 > 
-> This patch was developed with input from Chris Lew.
+> To summarize, the intent request can end in 4 ways:
+> - Timeout, no response arrived => return -ETIMEDOUT
+> - Abort TX, the edge is going away => return -ECANCELLED
+> - Intent request was rejected => return -EAGAIN
+> - Intent request was accepted, and an intent arrived => return 0
 > 
-> Reported-by: Johan Hovold <johan@kernel.org>
-> Closes: https://lore.kernel.org/all/Zqet8iInnDhnxkT9@hovoldconsulting.com/#t
-
-This indeed seems to fix the -ECANCELED related errors I reported above,
-but the audio probe failure still remains as expected:
-
-	PDR: avs/audio get domain list txn wait failed: -110
-	PDR: service lookup for avs/audio failed: -110
-
-I hit it on the third reboot and then again after another 75 reboots
-(and have never seen it with the user space pd-mapper over several
-hundred boots).
-
-Do you guys have any theories as to what is causing the above with the
-in-kernel pd-mapper (beyond the obvious changes in timing)?
-
+> This patch was developed with input from Sarannya S, Deepak Kumar Singh,
+> and Chris Lew.
+> 
+> [1] https://lore.kernel.org/all/20240925072328.1163183-1-quic_deesin@quicinc.com/
+> 
+> Fixes: c05dfce0b89e ("rpmsg: glink: Wait for intent, not just request ack")
 > Cc: stable@vger.kernel.org
-
-Can you add a Fixes tag here?
-
-This patch depends on the former, but that is not necessarily obvious
-for someone backporting this (and the previous patch is only going to be
-backported to 6.4).
-
-Perhaps you can use the stable tag dependency annotation or even mark
-the previous patch so that it is backported far enough.
-
 > Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
+Nit picks aside, this was all nice and clear.
+
 Tested-by: Johan Hovold <johan+linaro@kernel.org>
-	
-> ---
->  drivers/soc/qcom/pmic_glink.c | 18 +++++++++++++++---
->  1 file changed, 15 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/soc/qcom/pmic_glink.c b/drivers/soc/qcom/pmic_glink.c
-> index 9606222993fd78e80d776ea299cad024a0197e91..221639f3da149da1f967dbc769a97d327ffd6c63 100644
-> --- a/drivers/soc/qcom/pmic_glink.c
-> +++ b/drivers/soc/qcom/pmic_glink.c
-> @@ -13,6 +13,8 @@
->  #include <linux/soc/qcom/pmic_glink.h>
->  #include <linux/spinlock.h>
->  
-> +#define PMIC_GLINK_SEND_TIMEOUT (10*HZ)
-
-nit: spaces around *
-
-Ten seconds seems a little excessive; are there any reasons for not
-picking something shorter like 5 s (also used by USB but that comes from
-spec)?
-
-> +
->  enum {
->  	PMIC_GLINK_CLIENT_BATT = 0,
->  	PMIC_GLINK_CLIENT_ALTMODE,
-> @@ -112,13 +114,23 @@ EXPORT_SYMBOL_GPL(pmic_glink_client_register);
->  int pmic_glink_send(struct pmic_glink_client *client, void *data, size_t len)
->  {
->  	struct pmic_glink *pg = client->pg;
-> +	unsigned long start;
-> +	bool timeout_reached = false;
-
-No need to initialise.
-
->  	int ret;
->  
->  	mutex_lock(&pg->state_lock);
-> -	if (!pg->ept)
-> +	if (!pg->ept) {
->  		ret = -ECONNRESET;
-> -	else
-> -		ret = rpmsg_send(pg->ept, data, len);
-> +	} else {
-> +		start = jiffies;
-> +		do {
-> +			timeout_reached = time_after(jiffies, start + PMIC_GLINK_SEND_TIMEOUT);
-> +			ret = rpmsg_send(pg->ept, data, len);
-
-Add a delay here to avoid hammering the remote side with requests in a
-tight loop for 10 s?
-
-> +		} while (ret == -EAGAIN && !timeout_reached);
-> +
-> +		if (ret == -EAGAIN && timeout_reached)
-> +			ret = -ETIMEDOUT;
-> +	}
->  	mutex_unlock(&pg->state_lock);
->  
->  	return ret;
-
-Looks good to me otherwise: 
-
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-
-Johan
 
