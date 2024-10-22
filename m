@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-87673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68DA89A9A7B
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 09:07:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 762679A9AB3
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 09:15:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 982281C220CE
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 07:07:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB300B23859
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 07:15:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E807D12FB2E;
-	Tue, 22 Oct 2024 07:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BA914A4F0;
+	Tue, 22 Oct 2024 07:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lky6i8h+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HihK6JEX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5568149C51
-	for <stable@vger.kernel.org>; Tue, 22 Oct 2024 07:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022611465BB;
+	Tue, 22 Oct 2024 07:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729580827; cv=none; b=R4boS5q6DsGtr/b3yh/zC5YLnRCZfOqUx0NNVJSqHu2n/cg1QWuH9MPMOaBzBfEIVV/Cefup+D9f9DigqrrW09PEyLgw5RpbGJvA5SqoRfh+JlcntzD2+GeBNMabY52oJkP1zKEKGi5aa31ejJdc4JkcswIOXUmKcn8hkZFdINE=
+	t=1729581318; cv=none; b=R20VyTXcxoCW1FFM0NS1nzt5/1tccuveNpYqa8i4qCaNr9J3e8SmLN3We4nppmdm2x8WOzUWMV1I/JPZA5Ehhahamdf9JVu1ZzxZskp6hUSSyOafZyiIzgXxLhj31WAFewPDTx8TelGt0DpNfrgSrkZfAmUN/4s84UtC2saC/W8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729580827; c=relaxed/simple;
-	bh=V/b9dQ5/6PtMrCovKmJgt8AaPD1qaKslf4TkR/TV1hw=;
+	s=arc-20240116; t=1729581318; c=relaxed/simple;
+	bh=LoFoQKXKUVk/pCf19sC0PrOBcxYg31RRtFIIJGFy1yI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sncXpT1F5rAlOKYZYCTuRpX4pOsuZBPthEo/qsqEyjRGHR8iTwVeSDYVs0xIAPxMVRgOW93C2PEt7kGbddApw9bq8g8bxJ0MTShZZitYNAB3uN1xV9cog5qV99gPXEvIJZbM6vDb3HtMFsQYXLeEXx2NXw4KStLfDDa9cmFRt4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lky6i8h+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F2C2C4CEC3;
-	Tue, 22 Oct 2024 07:07:05 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=sNAltYzdKSDXPPMINCXxB/sx9ug1L/ebxdp/ZAd+Ds4DnaSbBIVUkUedXoO9nqHxX46Jyn1Y+D+CZWyExyNNfizrRFvHSkQqruqBLnISvhdl1Voswu7kE0d+yBbDZOmMOAVjENM2o1bV/jSIdGTdtjWkqqRpF8DmIi5aFMKVC+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HihK6JEX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9EFFC4CEC3;
+	Tue, 22 Oct 2024 07:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729580827;
-	bh=V/b9dQ5/6PtMrCovKmJgt8AaPD1qaKslf4TkR/TV1hw=;
+	s=k20201202; t=1729581317;
+	bh=LoFoQKXKUVk/pCf19sC0PrOBcxYg31RRtFIIJGFy1yI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Lky6i8h+etoJ+qsnyvW6rLpbNRJ2yimcezBMmVrtg1zG7WLIKBt/Y5oQ3S7M+0df8
-	 u834+t2UVyTdqlcNdftVKPmrRLZwpmO7L0I8QwAbHPK7TV/00GRrTo0aoZD0jyVLe7
-	 KtTWaJlD/+VW40yl4ycV18RksRkhquNMdOLyRZEfBpBFZ3zix243K7st+TsTiU9kRd
-	 J2y9fxym9EKy6ljtQC8wtMsCuG4DXO1M+cabpiuHZyCLecIwmUYU36x6rRGVcJNxjc
-	 dTlkwbR939M4jZpWWuxvvxHtFX9dOqUxK+G9ykj/eAQQrQQxk06sQCf3d7QpGi3LS+
-	 PDy2TV7XbujcQ==
-Message-ID: <da0f3bee-9ad4-479b-af42-92b9e12ef4bb@kernel.org>
-Date: Tue, 22 Oct 2024 10:07:03 +0300
+	b=HihK6JEXfN3CtTHIqHzWwrpjTMyp4ZNYF1WdScEHdQo+tCovIqPPJJmx3+CNcP++4
+	 wdYJ4y7w2onq57h4U76PLrEjhTd/1loW9C1HwPnm/oLW3B9jPjfsw6SUBJNT9HUhTP
+	 AoSsg6azJHC6HQUWjQcxa6+hKJWpo6eWIN52alW5lv/zr7NLpaUFaDN5KnJrxqNQS1
+	 0csULKGhYTUrpIR92yUoynLsj/Fr65Ff6LjEmHM3foFIGpk9wSUGw9j3IbZOGNgMVs
+	 V9LQpmBuCbM+AUWP2EOp+rSxNBrqo2aSoqkNccEh25ABZ/3VezEzOm1jcuON+pjTDH
+	 5pnjXCx1Jfkeg==
+Message-ID: <bb705eb7-c61c-4da9-816e-cbb46c0c16e4@kernel.org>
+Date: Tue, 22 Oct 2024 09:15:12 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,49 +50,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] usb: dwc3: core: Fix system suspend on TI
- AM62 platforms" failed to apply to 5.10-stable tree
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Thinh.Nguyen@synopsys.com, d-gole@ti.com, msp@baylibre.com,
- stable@vger.kernel.org
-References: <2024102152-salvage-pursuable-3b7c@gregkh>
- <c8c33676-d05b-4cbb-974e-398784cb8b8a@kernel.org>
- <2024102201-pushup-unmoral-aed0@gregkh>
+Subject: Re: [PATCH] lib: string_helpers: fix potential snprintf() output
+ truncation
+To: Bartosz Golaszewski <brgl@bgdev.pl>, Kees Cook <kees@kernel.org>,
+ Andy Shevchenko <andy@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>,
+ James Bottomley <James.Bottomley@HansenPartnership.com>,
+ Greg KH <gregkh@linuxfoundation.org>
+Cc: linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org
+References: <20241021100421.41734-1-brgl@bgdev.pl>
 Content-Language: en-US
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <2024102201-pushup-unmoral-aed0@gregkh>
-Content-Type: text/plain; charset=UTF-8
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <20241021100421.41734-1-brgl@bgdev.pl>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-
-
-On 22/10/2024 09:55, Greg KH wrote:
-> On Tue, Oct 22, 2024 at 09:37:30AM +0300, Roger Quadros wrote:
->> Hi Greg,
->>
->> Patch was marked for 6.9+ but I added a 'v' in the tag and that's probably why it
->> was attempted for earlier trees.
->>
->>> Cc: stable@vger.kernel.org # v6.9+
+On 21. 10. 24, 12:04, Bartosz Golaszewski wrote:
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 > 
-> No, it was attempted for earlier trees because:
+> The output of ".%03u" with the unsigned int in range [0, 4294966295] may
+> get truncated if the target buffer is not 12 bytes.
+
+Perhaps, if you elaborate on how 'remainder' can become > 999?
+
+> Fixes: 3c9f3681d0b4 ("[SCSI] lib: add generic helper to print sizes rounded to the correct SI range")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Andy Shevchenko <andy@kernel.org>
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> ---
+>   lib/string_helpers.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
->>> Fixes: 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init")
-> 
-> That commit is in the following kernel releases:
-> 	5.10.217 5.15.159 6.1.91 6.6.31 6.8.10 6.9
-
-Thanks for this information.
-
-> 
-> So if a backport is needed, that would be great.
-
-USB support for AM62 platform was only added in v6.3 [1]. I will check
-and see if it can be ported to stable trees after that.
-
-[1] - 2d94dfc43885 arm64: dts: ti: k3-am625-sk: Add support for USB
+> diff --git a/lib/string_helpers.c b/lib/string_helpers.c
+> index 4f887aa62fa0..91fa37b5c510 100644
+> --- a/lib/string_helpers.c
+> +++ b/lib/string_helpers.c
+> @@ -57,7 +57,7 @@ int string_get_size(u64 size, u64 blk_size, const enum string_size_units units,
+>   	static const unsigned int rounding[] = { 500, 50, 5 };
+>   	int i = 0, j;
+>   	u32 remainder = 0, sf_cap;
+> -	char tmp[8];
+> +	char tmp[12];
+>   	const char *unit;
+>   
+>   	tmp[0] = '\0';
 
 -- 
-cheers,
--roger
+js
+suse labs
+
 
