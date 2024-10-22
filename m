@@ -1,159 +1,149 @@
-Return-Path: <stable+bounces-87702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 250BF9A9E6D
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 11:24:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3305A9A9F05
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 11:47:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 838A9B22754
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 09:24:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF35B1F2347D
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 09:47:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E8371991BA;
-	Tue, 22 Oct 2024 09:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8CB19ABB3;
+	Tue, 22 Oct 2024 09:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Wx6hM+aK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="axzX5GmI"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA51197A98
-	for <stable@vger.kernel.org>; Tue, 22 Oct 2024 09:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537BD19A281;
+	Tue, 22 Oct 2024 09:46:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729589025; cv=none; b=W3TW09QzK/j87mjVF1UgcSS3SwEa+SkFIbH0wB07EjLdTCfwvszfxC51BS/elmmkxlPPzovTJFLoKZrwu7ro228DzXGFLzL2TfJj4cRNymUtqPm6aECXXhdk8eNFylrxk0xKOx6PuiU39IyahpZVQISaqLoL+Neul1OtidVKmlk=
+	t=1729590369; cv=none; b=I7EbZEO3IDNd6J9AfnX/Wk5uortDsmHZX5ODUU111wIHVxzN9Sh25AoWDNrhF3INKh1us7hYHL9k8QrNtGsuNVjcL/7DkZZsr4WnDHV1vlwMuAoEmWu0U9arwAIPYyzbp2ddOT8uXUch2HiDrj2ffRtQbAkokYoI4NqdLVOkhO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729589025; c=relaxed/simple;
-	bh=gXvfaI49P46PjRXLj3TVX9vhzBY6AWbniqzGNUIP7hg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UdHYLpB9n5xZF+GLgDdXzEUA6HXtSgQvQQTiqbroGvWoejPdCADnjr5jy5L6m3/swaWRjykut+gD0WEyZcZlMV3OTLkxm/fWf8Kjrxd2d7qSWmVod4tIDj4sSGgjHTln6iZ5LYsixdcqL6y5+jHqWC0kvzX4thonLcjKFZpmTFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Wx6hM+aK; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729589023;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f7WhZ/cQlKmFtOCUsHjv6yzC0SlLDEmM96t4pmRbjMg=;
-	b=Wx6hM+aKkEs3xKqA2DSJu4ySSHCTUElJTACjnwiRFFBB3ozKUunScXXxKuePT3EfbLcm6o
-	TEdL2zk99nh3L//Kklaa6qlKRZzBgQmUB0tGR3wC9Et6SNbwlNALpCw88PdSUekpqpb+7u
-	fi5nJ/Uagd7takC4vPMf7i1qwtSWW4k=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-627-_XgqDPE0OJK_PAQrXpXd_g-1; Tue,
- 22 Oct 2024 05:23:40 -0400
-X-MC-Unique: _XgqDPE0OJK_PAQrXpXd_g-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 85C921955F68;
-	Tue, 22 Oct 2024 09:23:38 +0000 (UTC)
-Received: from t14s.redhat.com (unknown [10.22.88.114])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 420121956046;
-	Tue, 22 Oct 2024 09:23:35 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: stable@vger.kernel.org
-Cc: David Hildenbrand <david@redhat.com>,
-	Leo Fu <bfu@redhat.com>,
-	Thomas Huth <thuth@redhat.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Hugh Dickins <hughd@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>
-Subject: [PATCH 6.1.y] mm: don't install PMD mappings when THPs are disabled by the hw/process/vma
-Date: Tue, 22 Oct 2024 11:23:33 +0200
-Message-ID: <20241022092333.4127283-1-david@redhat.com>
-In-Reply-To: <2024101837-mammogram-headsman-2dec@gregkh>
-References: <2024101837-mammogram-headsman-2dec@gregkh>
+	s=arc-20240116; t=1729590369; c=relaxed/simple;
+	bh=I3A80qnRg/24foK1MGb4E+l8Yi0cv2nSf3OCJrtqpF8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=T6ArPpDSQg2RjEu+w4PIPm58x2Z38pqt1pTJ7vzYcR3fslwP9InGtH7SW+PyhCTWUJILbbuiVRehcMJu+NY16t3wd4VUO27xNUdLZjaLV8ShwUUrTPYxfNltvOVkBRwwHpVHNsq8L5OsvQfHsK7OUUr4bDXtsn3MSe7Jpg6Xh6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=axzX5GmI; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5cb6ca2a776so2140313a12.0;
+        Tue, 22 Oct 2024 02:46:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729590366; x=1730195166; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Wa/NW0XNcXewHOtopIil9gZAv+Os9ZksCyFaYiqCPFY=;
+        b=axzX5GmIKPwe3Dvoa/X5ZW2a1IrSbvBPWWCB28fUhHwne5TfH4G5drLa/F5vvDyDdD
+         +J29P+qjeyDeIg/ijmbBHNUCOQJV1Bjjsm7BHm8XJGhM9PO36VTmQY2SRoveqQ96/V/l
+         B4LhI6aD1c/nyvsxPNOthm45RK2qTGC+wRmWPdqRNvpwm9+aHWFxHpLC2BK4TU2aif9o
+         SlGfOz+3/peRiYnMVpaDAYZ3H/UHy64FpaZlkaz3M0Oo1JnNLCd1nZb7iHbW8W3x1GFq
+         aUqyDC/9KA4b5iwVdIRU908J6V5CdR6yBXA06yTCdEd6hS9wKrI3vOdfy5+AbrTN47rh
+         JY+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729590366; x=1730195166;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Wa/NW0XNcXewHOtopIil9gZAv+Os9ZksCyFaYiqCPFY=;
+        b=LTYpQ16fiwS+q5ig3KB7hNtKzTvOTFz1L1XpcBfZcpsygyHir3DQTSIDK1gT0q39EE
+         n2RhYc6usXeEXIKFA5p5VaHEWp0HaiWn4tBcHmphEgfno8SXIyOnsQOuRxgt5dS49/ha
+         ZmeWv92bwxNMgiRcvGJyG+PJS9PB3EFR9OBhTzy5kcpDrX345ZhjgfKyuTKRYoFyqf7K
+         8fv3nQbQJBetTmafue9L40QcvbL1UdEeZcahbE39G4wutQyUdPToBT8AUMRNkMnqa5+r
+         ZVBnsYaYW992boXWWnVZc3emx5Z/sIFcnaXQvOSBI5lIXf95MytC2+gduuummSWvNSlK
+         e+Lg==
+X-Forwarded-Encrypted: i=1; AJvYcCUWDe6qVpag0X2F5YQPVNR0Ro02tL8dCoPOyG5bLuo9dEhS2N+rUj88oL3+LzhrlqQkr+FUrFqbFPV3@vger.kernel.org, AJvYcCW14WJnFYBn7c1BpL9AFkDSn3q9Te5mVHdvVE5MUCOD7swcwhNpDH3fQyHktqakdD+k/Ftzv9Xl@vger.kernel.org, AJvYcCWtIxDj8I18xvOr/H3x1W0VWbC2za5nAMsqp/+XtBvzgAUZ2STwonTIpqSdG0fPEu6F15eY6HJexKbo0UNj@vger.kernel.org, AJvYcCXqkES16LY99JGMZ38U3eFvQwIzI7/qN7D8y14jyBRBSArupmwSuBy8zyOIdx4Ps/SRgRPD+DZ6XqoOjY7P@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywx+xixkWco1BcbYKkzS+v7iHbqN6z97NWqXpaNW85oU68kg4jc
+	FMsjwTx+ksOfhpz6K16CZzRPcIlIdzCpAycRs26ZQAwLSo7l0wK2
+X-Google-Smtp-Source: AGHT+IE/PSXZdNZMTrnXKZL8iufhEBfDpd9zUhvLIUHtTkYQu4PTZakuYQfLZ8wrjxiXwh0xPI1HRA==
+X-Received: by 2002:a17:907:969e:b0:a99:fb10:1285 with SMTP id a640c23a62f3a-a9aa890ab77mr276977766b.20.1729590365280;
+        Tue, 22 Oct 2024 02:46:05 -0700 (PDT)
+Received: from redchief.local (5D59A51C.catv.pool.telekom.hu. [93.89.165.28])
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a9a912edb6asm313237666b.49.2024.10.22.02.46.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Oct 2024 02:46:04 -0700 (PDT)
+From: Gabor Juhos <j4g8y7@gmail.com>
+Date: Tue, 22 Oct 2024 11:45:56 +0200
+Subject: [PATCH] clk: qcom: gcc-qcs404: fix initial rate of GPLL3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241022-fix-gcc-qcs404-gpll3-v1-1-c4d30d634d19@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAFN0F2cC/yWMSwrDMAwFrxK0roplu6XkKiWLVJVdQb52Egohd
+ 69plvN4MztkSSoZ6mqHJJtmHYcCdKmAP+0QBfVdGKyxnowlDPrFyIwzZ288xqnrHAZH3rkbP4Q
+ DFHVKUn7/7LM5Ocm8lvpyjvBqsyCPfa9LXW33K1lMTNAcxw+yY9yfkwAAAA==
+X-Change-ID: 20241021-fix-gcc-qcs404-gpll3-f314335c8ecf
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
+ Taniya Das <quic_tdas@quicinc.com>
+Cc: Vinod Koul <vkoul@kernel.org>, linux-arm-msm@vger.kernel.org, 
+ linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Gabor Juhos <j4g8y7@gmail.com>
+X-Mailer: b4 0.14.2
 
-We (or rather, readahead logic :) ) might be allocating a THP in the
-pagecache and then try mapping it into a process that explicitly disabled
-THP: we might end up installing PMD mappings.
+The comment before the config of the GPLL3 PLL says that the
+PLL should run at 930 MHz. In contrary to this, calculating
+the frequency from the current configuration values by using
+19.2 MHz as input frequency defined in 'qcs404.dtsi', it gives
+921.6 MHz:
 
-This is a problem for s390x KVM, which explicitly remaps all PMD-mapped
-THPs to be PTE-mapped in s390_enable_sie()->thp_split_mm(), before
-starting the VM.
+  $ xo=19200000; l=48; alpha=0x0; alpha_hi=0x0
+  $ echo "$xo * ($((l)) + $(((alpha_hi << 32 | alpha) >> 8)) / 2^32)" | bc -l
+  921600000.00000000000000000000
 
-For example, starting a VM backed on a file system with large folios
-supported makes the VM crash when the VM tries accessing such a mapping
-using KVM.
+Set 'alpha_hi' in the configuration to a value used in downstream
+kernels [1][2] in order to get the correct output rate:
 
-Is it also a problem when the HW disabled THP using
-TRANSPARENT_HUGEPAGE_UNSUPPORTED?  At least on x86 this would be the case
-without X86_FEATURE_PSE.
+  $ xo=19200000; l=48; alpha=0x0; alpha_hi=0x70
+  $ echo "$xo * ($((l)) + $(((alpha_hi << 32 | alpha) >> 8)) / 2^32)" | bc -l
+  930000000.00000000000000000000
 
-In the future, we might be able to do better on s390x and only disallow
-PMD mappings -- what s390x and likely TRANSPARENT_HUGEPAGE_UNSUPPORTED
-really wants.  For now, fix it by essentially performing the same check as
-would be done in __thp_vma_allowable_orders() or in shmem code, where this
-works as expected, and disallow PMD mappings, making us fallback to PTE
-mappings.
+The change is based on static code analysis, compile tested only.
 
-Link: https://lkml.kernel.org/r/20241011102445.934409-3-david@redhat.com
-Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: Leo Fu <bfu@redhat.com>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Cc: Thomas Huth <thuth@redhat.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Janosch Frank <frankja@linux.ibm.com>
-Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 2b0f922323ccfa76219bcaacd35cd50aeaa13592)
-Signed-off-by: David Hildenbrand <david@redhat.com>
+[1] https://git.codelinaro.org/clo/la/kernel/msm-5.4/-/blob/kernel.lnx.5.4.r56-rel/drivers/clk/qcom/gcc-qcs404.c?ref_type=heads#L335
+[2} https://git.codelinaro.org/clo/la/kernel/msm-5.15/-/blob/kernel.lnx.5.15.r49-rel/drivers/clk/qcom/gcc-qcs404.c?ref_type=heads#L127
+
+Cc: stable@vger.kernel.org
+Fixes: 652f1813c113 ("clk: qcom: gcc: Add global clock controller driver for QCS404")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
 ---
+Note: due to a bug in the clk_alpha_pll_configure() function, the following
+patch is also needed in order for this fix to take effect:
 
-Minor contextual difference.
+https://lore.kernel.org/all/20241019-qcs615-mm-clockcontroller-v1-1-4cfb96d779ae@quicinc.com/
+---
+ drivers/clk/qcom/gcc-qcs404.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Note that the backport of 963756aac1f011d904ddd9548ae82286d3a91f96 is
-required (send separately as reply to the "FAILED:" mail).
+diff --git a/drivers/clk/qcom/gcc-qcs404.c b/drivers/clk/qcom/gcc-qcs404.c
+index c3cfd572e7c1e0a987519be2cb2050c9bc7992c7..5ca003c9bfba89bee2e626b3c35936452cc02765 100644
+--- a/drivers/clk/qcom/gcc-qcs404.c
++++ b/drivers/clk/qcom/gcc-qcs404.c
+@@ -131,6 +131,7 @@ static struct clk_alpha_pll gpll1_out_main = {
+ /* 930MHz configuration */
+ static const struct alpha_pll_config gpll3_config = {
+ 	.l = 48,
++	.alpha_hi = 0x70,
+ 	.alpha = 0x0,
+ 	.alpha_en_mask = BIT(24),
+ 	.post_div_mask = 0xf << 8,
 
 ---
- mm/memory.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+base-commit: 03dc72319cee7d0dfefee9ae7041b67732f6b8cd
+change-id: 20241021-fix-gcc-qcs404-gpll3-f314335c8ecf
 
-diff --git a/mm/memory.c b/mm/memory.c
-index da9fed5e6025..d0af31ffd6b5 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4328,6 +4328,15 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct page *page)
- 	int i;
- 	vm_fault_t ret = VM_FAULT_FALLBACK;
- 
-+	/*
-+	 * It is too late to allocate a small folio, we already have a large
-+	 * folio in the pagecache: especially s390 KVM cannot tolerate any
-+	 * PMD mappings, but PTE-mapped THP are fine. So let's simply refuse any
-+	 * PMD mappings if THPs are disabled.
-+	 */
-+	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vma->vm_flags))
-+		return ret;
-+
- 	if (!transhuge_vma_suitable(vma, haddr))
- 		return ret;
- 
+Best regards,
 -- 
-2.46.1
+Gabor Juhos <j4g8y7@gmail.com>
 
 
