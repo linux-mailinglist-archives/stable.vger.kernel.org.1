@@ -1,117 +1,222 @@
-Return-Path: <stable+bounces-87766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BB9D9AB59A
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 19:58:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18BB29AB5A4
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 19:59:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 020821F2386E
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 17:58:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A00FF2856EF
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 17:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862FB1C9B86;
-	Tue, 22 Oct 2024 17:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A251C9DCB;
+	Tue, 22 Oct 2024 17:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="j6AG7kUY"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="somhzxMx"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D88861C7B98;
-	Tue, 22 Oct 2024 17:57:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729619861; cv=none; b=GlHd2wlCpzA8bE/aiXSnkvW7ymMsNh7p+9IfbZUTMeoFgDGg8U/VwAOLPbFgr80rz4LiIKavz+dJ2wGpLUT55hTNk8sws9w+61DzWaM46Pe+4CLKmt8Jflg/TsKQgrHKZ8nesWtgay6tI1mAWrIpZMA3zuUBEgpGv9RdVvmu/dM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729619861; c=relaxed/simple;
-	bh=rXrvx1WPGPDwjcWKUH0FnLk6OcHtQYABwn43TN2DErA=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=Ljdaoi6oVQOXw23Q+19klq20Re6a8kdQe5GzS4ucMAKbJM//LfBneKIaGKJJQG4jsXHrZPiLZX3qh/E8Yucg+aIgcZBwHHm5Is7ItTQYPbPOEqplbgjPXIscbICDW1CZ+ccMQ8z4DQbnf6JeInQZpCSyGuK5Emj1Kq1B+iSVYRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=j6AG7kUY; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 34569210FBBD;
-	Tue, 22 Oct 2024 10:57:39 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 34569210FBBD
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1729619859;
-	bh=RaEgNvlyDPu6gmaxMsf39NwStpnU9QnZ5TzKi6GHQhI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=j6AG7kUYzsTqBYEYEBuHZpf4FiDfLXW1MXluQctrJIcowSV4JowBqSYGDBTCmHir0
-	 Z8fmYklWjXcKZEEkC1iCPIqCutf3LYkfz024UMo7+rOYxhbR7v55Eh+Esbj5fITyaA
-	 igSiyIqZT3jpl2J7LIvRM99yFpdU1yXHQVeKRYRo=
-From: Saurabh Sengar <ssengar@linux.microsoft.com>
-To: mingo@redhat.com,
-	peterz@infradead.org,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com,
-	rostedt@goodmis.org,
-	bsegall@google.com,
-	mgorman@suse.de,
-	vschneid@redhat.com,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	ssengar@microsoft.com,
-	srivatsa@csail.mit.edu
-Subject: [PATCH] sched/topology: Enable topology_span_sane check only for debug builds
-Date: Tue, 22 Oct 2024 10:57:33 -0700
-Message-Id: <1729619853-2597-1-git-send-email-ssengar@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2067.outbound.protection.outlook.com [40.107.223.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5631C3F34;
+	Tue, 22 Oct 2024 17:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729619947; cv=fail; b=tQ7eEpnxan/vCzZUGoJD5KB4nxM6c/1wE306LG83l/pEoFcPYDaTi4qXiiAx6IGCCvPo7DPDuspCMXl7eXZiRjQ33Irrdtu4tNHPR+N2VI0IXOYZQjC+dDcVV4dIazEgI2jFWsK7pvgW2ntdJ+9CN9Hi9/4ofKWYkhymsqW+XeU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729619947; c=relaxed/simple;
+	bh=LCIkdrXTukbBMGm8kDzmE3eTHZH4tc9hbyvyW7jyv1I=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=uezjSJWnlBMbSy+eHLzKkpFGS/T3VcmPFELWsIzNbbgZ5fzMM9ygTJzuH1Cgnvq3Hp9oYKJhBVB/qXDxBf8v8MVQgjv/Xoo1AKwiei7q13JfibNEtLWjTqAGbe5ZvOeYQkNBQ3JpBqVlurYGkd+6UC+milNHxzfv5kYEcdiiTRE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=somhzxMx; arc=fail smtp.client-ip=40.107.223.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tHBaCDXTjIbtEP1oCRDzPvllx4UakUqyn2n5ep9tGFsqaQ29c6PWBE1h2eYXoe+hQlNG2CseHSGUVRlCOHPJvksGtK9ufu6pW5350dPmzlj+TWzV2v1zFY70q4lp8bTNK8ljK3KMiLqW4gzm5Wtjd+djmlWvFRcm10U3bj7R582aIZRAvdBOYoO40ZqeIbzJkRZGN4SHCO7iyDSq1IIju32J2bs7/fIHAlpxiW6y0OyQiNzFlbgey0vmuZt7lyohxjNeCd+1BMsT2I8DSS9/yADkFsMJf661rBuLa9YGaTEe90a+12qvTx2iwCsew/GBw1CDh20qZVnhLxjSlQkXVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JkvQWE0BPQuC+Lcq1F8wkIjm0lZo/WkQV1YyNomzb9s=;
+ b=QeoYC52STqm4fppIFbFhAMRI+0nfFr8D5uJTu5D1VwBWtzpPNNfJl4fGjdocqQiRN++WHCfKmfGNg8KPushGEDDImfFvTk4J/WtHtvauQ/MX7+dBU+ZlgVeKrMydGAytgq4t6iPKfNsb9XjQaq1XPV2ydVyqbSetVwpEwx0PHtF/7AprHEPQvxf5ZVmhSoAfFxAo1o5+fowYxZaf54Y8IAnoHTo3emRg9UBuwrBUmNokKEB7yVLCVXLcd6P8zUVUWOhuHg1xwgVPQyxnejDD00+Zc9ZcD3CLR3u1VAEwyWlukLa2yHcXpoGEdQsD9knhz+eQv2JJMJYRYJVTIYuytQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JkvQWE0BPQuC+Lcq1F8wkIjm0lZo/WkQV1YyNomzb9s=;
+ b=somhzxMx5xzZN1rcNV7SaukTcD/NE5FoWqrMgnkUMhBq8qK6O31/vMJXCWkTFAzwQOgZghhM8c3hM/g8Lr5fUqKJk130PX8akhuysWQ3wABQnlGjbKGVvRfN9Xzz9yut9QqXDboScQcqYQOH+DPy/BpxZmd2d7or0TDG9kanWUaqxW3K9IszP4YI7ToblDoaQO4/ESkzEV2jdDb/POQxWXssSCfcqAEYqIhiRbf3R6iETdLlL+tdvyNy9pWEvZvFGXEfyoNKP9QTss+3grqjM+xgMnRqX4XdpJNfZ/D4xdYyZ9pgj2d/j2mXz72nOAtoG2IMvJFo/50R7/o8BJ9hLg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SJ2PR12MB8784.namprd12.prod.outlook.com (2603:10b6:a03:4d0::11)
+ by CH3PR12MB8728.namprd12.prod.outlook.com (2603:10b6:610:171::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.18; Tue, 22 Oct
+ 2024 17:59:02 +0000
+Received: from SJ2PR12MB8784.namprd12.prod.outlook.com
+ ([fe80::1660:3173:eef6:6cd9]) by SJ2PR12MB8784.namprd12.prod.outlook.com
+ ([fe80::1660:3173:eef6:6cd9%5]) with mapi id 15.20.8093.014; Tue, 22 Oct 2024
+ 17:59:01 +0000
+Message-ID: <225ee26e-e157-4f30-934b-e7a902d67257@nvidia.com>
+Date: Tue, 22 Oct 2024 18:58:54 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 00/91] 6.1.114-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, f.fainelli@gmail.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
+ linux-tegra@vger.kernel.org, stable@vger.kernel.org
+References: <20241021102249.791942892@linuxfoundation.org>
+ <23d85d2c-553d-40fd-a1f5-3356e12160c1@rnnvmail205.nvidia.com>
+From: Jon Hunter <jonathanh@nvidia.com>
+Content-Language: en-US
+In-Reply-To: <23d85d2c-553d-40fd-a1f5-3356e12160c1@rnnvmail205.nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO0P123CA0009.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:354::14) To SJ2PR12MB8784.namprd12.prod.outlook.com
+ (2603:10b6:a03:4d0::11)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR12MB8784:EE_|CH3PR12MB8728:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4aa3bafa-4ac9-4bb2-9948-08dcf2c335d0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?dVBKQ0dETVpWTlRjSExKUHNLNUk2a2NQUTlSTyt1QjVNZ3FucFNzSXk3eG5S?=
+ =?utf-8?B?WHpWbnJaS0pCcDhLQUlRcVJTQWhabW94bUhzeUw2cmdGSmIxTlpvVVNJeTgv?=
+ =?utf-8?B?YkJNWXJZQ1pmd0YwQmdZa1hxL3ZtY0lZL0ttY01yd0FQYVBMeEJHWDB0SHRm?=
+ =?utf-8?B?d2d2aFpjNno0V1NGaXcvUEhzSEZHM3Nkb3VjSjkxZFZVd1VvS0N2T1pVZGNR?=
+ =?utf-8?B?QndDSEpXUVFBdUdHZWJwVVpIWWtQNGVCTE1Ic3RKSVI1T0gxM0FDZWpISVBB?=
+ =?utf-8?B?L2NBdDh5MUMrYzEwOXdUZ0lJUnB4UUwrTlF2bU1pcTZ3MkVLWTFxbnFvMDBC?=
+ =?utf-8?B?RDA0Ry8rc0hpZUgrSGJUY0U2bDJoeXFFdVRzT000NThJZlpVNTYvNHVGcXNF?=
+ =?utf-8?B?bzVIVnpteWYzQW93aGtxUys5RzVRaStqZldwSWl3Zmk0Z3lRdXNZamppOVVq?=
+ =?utf-8?B?RzhWSnBVMHc2Y2tNVjlBNkVXMWtmcDVnOEdqc2VoTjU1Z0tjajJ4WnFaZkdq?=
+ =?utf-8?B?dERIUmNSZ1VOZUhRWmNRR3JvQTNIVG1FZ1lXWmRKdVBxbnlhdlRTZUxDalpv?=
+ =?utf-8?B?b2JTWGlUdUczaGZsOEJ1VzBQU1k2TDFhM3psVmhMR01aaUh4N0JCbXBabUZ2?=
+ =?utf-8?B?eno3YnhXMW5Za3ZiYUZTQkZWUWsyQVErT0dxdU1KeElqRlFSQWpEUXNRZ3ZR?=
+ =?utf-8?B?aVZ2S3c2SkY0SUViM2k4WGFWZUlwK2hQZEsxMVkvbUpqZlpvbzRDSGNncjZI?=
+ =?utf-8?B?K3ZHdGZ5cmsvZ0g3RFZrSXJ1R1Zxc3VUSjNtM2xmeVFRWE1GZy9uWElzQkpI?=
+ =?utf-8?B?VnpscDF4Vm9VY3RRSWZZd1VadXg4YjgzM2g3RkJYdXJtOWM5UFZqdjhURjZz?=
+ =?utf-8?B?U2U5SlptMDd2RzN6cDZZRTlxMnV3YmdRYy8vWW9STTVKV2RzUEs5UFlJcXFw?=
+ =?utf-8?B?UGVvcHRPTDF4M0VGUjYySTFpUXBFcUd5TXZWUyt3VVBnbGs4QSt5Qjl2SWdp?=
+ =?utf-8?B?UnAxdUd5UHJtUjZLVFViZmM4SW9Ba3VieTNVd0MzQTNsZ2V0OHY3Z2tZazNN?=
+ =?utf-8?B?Y1lwRFlMUTVvQlZiL1J3Vy9rYUF0WS9jRDRsc09jZ3JNTGtnNWxqTkwrV2tN?=
+ =?utf-8?B?bXdscUMyaUxLYmMwbXZkUktrYzlKSG02QUtkckxocFd6V2ZVcm5scnJzRmdM?=
+ =?utf-8?B?dmNvSkgxU1pZZjdwRjJURklCdHFTbUU0NnZnSlo3Q3dKYWNHNkJncXBLdC9Z?=
+ =?utf-8?B?Ung3VHpHMkxldHkwV0ZHSmZHT25id3pxdCsxdDFNKzJBWEJzNWVyR0M1Z2J2?=
+ =?utf-8?B?U2pBOVQ4eTg1dE1vSkxzUy9jdXE0T3JjRDlnT0o2cXEvMVhmaEx3ZXlPT1FT?=
+ =?utf-8?B?c3MxZmZHRVIyQVE0N2U0ano4dW1WUjl5NlU0NnFubnh6V3VNa2pzRFdSVjFM?=
+ =?utf-8?B?NVZPL2FjQmdvRktiMW1XRUxRQ01QbDRocjlUTkpoZzFacW9qeUhTaWVYK0pJ?=
+ =?utf-8?B?Y2xSQ2czZEtldytSYmZCWkkzOVFzTWRnYjVHbjFGcWRHQVRCUzZyeFpOZEFF?=
+ =?utf-8?B?RHY2aGp1VFRycHdTTmhaVnh0b0Ivd2RNZHRLallRSlhCRmlPRGU2YUljeHVB?=
+ =?utf-8?B?Wk1uZ2J0OGtOdTVnbkpFeWhuazVndUR6cHlkbmlHL3NTMVROTWtBVU1Pb00x?=
+ =?utf-8?B?Q3ZHUDVqU1gzaG5oMmY2NnJkMGQzWEtSeFgyMG8wcmd5eGQ3bWNBVEZtRnor?=
+ =?utf-8?Q?TAK2GFf0iJYGkslnFigDUd9K2g/kYmVNfzP6ftY?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB8784.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?STBuYktyT25ocVhydVFVeEN0bGhkNHc0S3Z4MDkrNTF0TUkyOUprZmxuZ3Q4?=
+ =?utf-8?B?eUs2ZUdLeGZxNXZ4TWVhdWF6YUhEbmltaG9PRFRhcnRTaUcyRDBBZ1lQdnk1?=
+ =?utf-8?B?UjZkbCszV29xSFVmcFFvQlFGa0l3WDZLTTQ4UHBlbmZ5c2lEVk9KcEhmUnJJ?=
+ =?utf-8?B?RGwyZCt5RTk5QXNyZ3NvVGxYUUZzbmZrejIzakxPY29kbzVRSEY1R1gwM29W?=
+ =?utf-8?B?elcvK2JKUUFQdElnSG1UK0Q1Y1BwOE91QXBhWlJ0ZlFWOE1Wc2s2UGw5dHVE?=
+ =?utf-8?B?a25vZTR0SzZnbTd2NEVzd2NlZUZVM3JxRndGNk9qQk12TDRYYTUrV2g0Y0sy?=
+ =?utf-8?B?RFhXZWhBd2pvTVZFUTNQZWN2V0xuZGZRVnUzR012b3FFdDRzTW0xblEvL0dF?=
+ =?utf-8?B?TWVOemxzK1FaOXlnazkzalZDb1dUc2RPbHg3TnZ6SHlUQkc1RmN4T2owTGFW?=
+ =?utf-8?B?N2IrSEZWbEZrYnZodHZXcmtlQm45dVFwRWFCQWRPVFMvQkQvVS9pVVJYQVJG?=
+ =?utf-8?B?Y2R0aE1UVFNBMkovN2dyMjdtNTQvSXRPZDd3Ri9FcTVMUGZaMEwvMmhjVkRB?=
+ =?utf-8?B?WDNnUWZrby9ZYWhMUmhjZTNFOWlnVlNPT1AxbHg4UEJPcHV0VUFWOTFCVjJq?=
+ =?utf-8?B?R3kySjJsL1VCaDg3M0UrSUtKdWRWSHM1RFNyWnZ5c0l0T2hOczQxZ052T0Uw?=
+ =?utf-8?B?dTIwNEtIemdtbk8xU3o2WkhXcDFPM3laSytrdGFpVDdMMTFQSjdCU0VZcWFk?=
+ =?utf-8?B?Yld0ZHgyUmU2RDg3Z1hZOGJEK0hON1ZUeXJLOWFtcDd3UHg3SHNtUENKeHNs?=
+ =?utf-8?B?RXVXcGNNQlZyMnZCWHNvWkNPaWV1NlZUb1Ztb015b2MrNFVWaDNlSllqb29I?=
+ =?utf-8?B?WGNmYkxlTzJMNWZRWFZDMFllR0hEejc3V09vY09QUHBkbUhHZWFRZzA2ekJD?=
+ =?utf-8?B?ME85RGhOcVhlZzlyNzZBTUwrN0w5MEhsaE85SnlaTGV0UXQ1TS9SM1BqUXY5?=
+ =?utf-8?B?cFIzZzdCRmZ0WGFVS1JSQVZHT2E0c3VEcDhZR3dnRFZsbVltaG44VE1zS1Z1?=
+ =?utf-8?B?dldXbllTMTB0TUFWY2ZPVXNXaEM1QzF1akwzR2lwZjY1S3lYMEhjOUppRHBw?=
+ =?utf-8?B?TGRuMENNcjNQOEtRV2NkQ1BoM1EvOWlTWU5EV0lURmZpVUl1K3ZXblF0NEJt?=
+ =?utf-8?B?aDlIdzNSY0kvbHZ3eWJtb2thengvVERZNnBydkhMWU4rTFhnOFpQWHA1c1BT?=
+ =?utf-8?B?UWhMWW10MGxBdEttall0dzkzVHk5TC9QQ2hGQ3k3eHp6UDhsbDBYbytWVkxR?=
+ =?utf-8?B?YVFSaVUzSWVmODM0akx1VlgyYmNnS0ZKK1Q2TzU2ZG9SSnhtYm5kME84eFRZ?=
+ =?utf-8?B?WE1hUGR4K1E1YnZqeGkrSlFDY3BHbjZQZXJ0aDVwckgwd3dzbVZ3ZXhmUVVm?=
+ =?utf-8?B?WWhReWVQeWRoOGpxdDVuM1BvSGhKUlVta3JsWmZMTHd3UU96WG5HZjZtS0d2?=
+ =?utf-8?B?VktnbWd4ank2a3FhS2lKWjJORm91dThNMEZtQVBOUmkxVXpYUkpzQ1ZwRjFq?=
+ =?utf-8?B?UjhUME5odmtDRGM5MCtBRThQdW5UaGRjakV6dWVYZTA2S2M5UFNRTlZZcS9y?=
+ =?utf-8?B?RnJWcFNVSUJ1VUlnN0F6cVk1QVhiWThRNjB1RXhyLy9kS1RROHRnazZ3NE9Y?=
+ =?utf-8?B?d0FJR1J6WjQzOXN2WHF3a0N3RjNlV3dHaE1lSUZsanBsVmZTL3p3N2VOeTRl?=
+ =?utf-8?B?M0lwcjR2YncvMXZLcVRjZVBCTlhXd3dGL0lDSGFzZ3dKWFVjRklHM2tkRG1H?=
+ =?utf-8?B?OVdvQW5DSDliNWZpRHhjVVU2R2xnR2ZpN1VXcWpnTnA4NjlKQXAydXJ6TElt?=
+ =?utf-8?B?UlFVbWthbnlvNUo1YWNrdzRaSFlCSm1qWHdZZVZ4ZmQrMXZhUFZtVHc0OUVK?=
+ =?utf-8?B?cXNwY2VBa0dWbnczcWVaQ3pUWWwwcXJ2OFpXVDUvL1lvSGY4MFh5NkJlWGdP?=
+ =?utf-8?B?UVBCdGhiSmJjT3pwM0dRbEx6YmJXN014dzRqTnFYZ2xERzNoaUl1MWVJaWRQ?=
+ =?utf-8?B?aG8vbmp3VXJPWGx1aUl4M0hTRnZqaWVGMmFJVjh3TVBZYitsNGxTWlNWN0Z2?=
+ =?utf-8?Q?XoHlHXKV+M30wKqFBP+R6czpx?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4aa3bafa-4ac9-4bb2-9948-08dcf2c335d0
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8784.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2024 17:59:01.6525
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KuZFQMKoWh3UjlH7dZiGMGWj7CWTAxbxQ523Txa+00hfy5wZhoreMJ3MhHW4fxjFjAR1IIwt1KUd3DY+3wYYvA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8728
 
-On a x86 system under test with 1780 CPUs, topology_span_sane() takes
-around 8 seconds cumulatively for all the iterations. It is an expensive
-operation which does the sanity of non-NUMA topology masks.
+Hi Greg,
 
-CPU topology is not something which changes very frequently hence make
-this check optional for the systems where the topology is trusted and
-need faster bootup.
+On 22/10/2024 18:56, Jon Hunter wrote:
+> On Mon, 21 Oct 2024 12:24:14 +0200, Greg Kroah-Hartman wrote:
+>> This is the start of the stable review cycle for the 6.1.114 release.
+>> There are 91 patches in this series, all will be posted as a response
+>> to this one.  If anyone has any issues with these being applied, please
+>> let me know.
+>>
+>> Responses should be made by Wed, 23 Oct 2024 10:22:25 +0000.
+>> Anything received after that time might be too late.
+>>
+>> The whole patch series can be found in one patch at:
+>> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.114-rc1.gz
+>> or in the git tree and branch at:
+>> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+>> and the diffstat can be found below.
+>>
+>> thanks,
+>>
+>> greg k-h
+> 
+> Failures detected for Tegra ...
+> 
+> Test results for stable-v6.1:
+>      10 builds:	10 pass, 0 fail
+>      27 boots:	26 pass, 1 fail
+>      110 tests:	110 pass, 0 fail
+> 
+> Linux version:	6.1.114-rc1-g6a7f9259c323
+> Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+>                  tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
+>                  tegra20-ventana, tegra210-p2371-2180,
+>                  tegra210-p3450-0000, tegra30-cardhu-a04
+> 
+> Boot failures:	tegra30-cardhu-a04
 
-Restrict this to SCHED_DEBUG builds so that this penalty can be avoided
-for the systems who wants to avoid it.
 
-Fixes: ccf74128d66c ("sched/topology: Assert non-NUMA topology masks don't (partially) overlap")
-Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
----
- kernel/sched/topology.c | 4 ++++
- 1 file changed, 4 insertions(+)
+I am running a bisect to narrow this down. However, just wanted to 
+report this. Appears to be the same issue on linux-6.6.y.
 
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index 9748a4c8d668..dacc8c6f978b 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -2354,6 +2354,7 @@ static struct sched_domain *build_sched_domain(struct sched_domain_topology_leve
- 	return sd;
- }
- 
-+#ifdef CONFIG_SCHED_DEBUG
- /*
-  * Ensure topology masks are sane, i.e. there are no conflicts (overlaps) for
-  * any two given CPUs at this (non-NUMA) topology level.
-@@ -2387,6 +2388,7 @@ static bool topology_span_sane(struct sched_domain_topology_level *tl,
- 
- 	return true;
- }
-+#endif
- 
- /*
-  * Build sched domains for a given set of CPUs and attach the sched domains
-@@ -2417,8 +2419,10 @@ build_sched_domains(const struct cpumask *cpu_map, struct sched_domain_attr *att
- 		sd = NULL;
- 		for_each_sd_topology(tl) {
- 
-+#ifdef CONFIG_SCHED_DEBUG
- 			if (WARN_ON(!topology_span_sane(tl, cpu_map, i)))
- 				goto error;
-+#endif
- 
- 			sd = build_sched_domain(tl, cpu_map, attr, sd, i);
- 
+Jon
+
 -- 
-2.43.0
-
+nvpublic
 
