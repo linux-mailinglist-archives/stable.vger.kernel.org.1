@@ -1,89 +1,115 @@
-Return-Path: <stable+bounces-87697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90C9E9A9E36
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 11:17:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AEAA9A9E4C
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 11:19:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7EE21C24671
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 09:17:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B91C81C24BE2
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 09:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8EB199FB5;
-	Tue, 22 Oct 2024 09:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6B01991AB;
+	Tue, 22 Oct 2024 09:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="YDK4Tc4b"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gSD++rOE"
 X-Original-To: stable@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4058F152166;
-	Tue, 22 Oct 2024 09:16:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E2B1990DC;
+	Tue, 22 Oct 2024 09:18:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729588575; cv=none; b=eoLaL0iXOtj9gKqP0OEcvAcxEUfj1Pjdn8s8g+hAjtQgMiWKMvFHW5OAhpefJZQiGDF1XDBM0JaGV8oHqWKfUVff5YoBFqKIrNAWy59QxMnfg7bYEf00Z4ul9cSraC8DJNht9YzLgHUx76s4yBmQqJ9O/YqlKvpxepocpq3hmG0=
+	t=1729588737; cv=none; b=Q2zI+IIvGBFFV7o/5B4VsaoTq65Not1E9MleXCcI5/43oeL4CzTw47MfObha64Sy7AEFQkMXVMIp3VDSxFPa1Oti3jnfASGd0z4VW9fxU85GGO5JcM8A2eXSU2ceGJrKT3BVZtUy0wIyq1tPHeMBVf1SUzZxC+6+lhTN+5Z83Ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729588575; c=relaxed/simple;
-	bh=sl0NtYtcnPuoIwLlUEcbG1AzVTC9P2SfOFUZ4Si+h4s=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=c/YmjiazH/dowJOqK/9Ge5Qe6G1bI4/0RH0z0gpUByEj4Zz7XJH4Ddd8Nsr171l+TeExGWdvUg84YaTRrF76yL0xIm5rAHfdv8hC9J1B/JbY2WvRiGza/1AkOw/gB+patIr23xtwIRtgv+LSgFk1J/rjsbyLF3jZ2Iq4W3WiF/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=YDK4Tc4b; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1729588572;
-	bh=sl0NtYtcnPuoIwLlUEcbG1AzVTC9P2SfOFUZ4Si+h4s=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=YDK4Tc4b3cbrC/8wT8ngke1EKB5BDI3v0oHI7opwJdaKSdCaFbqUuWzuKgqNrFjPC
-	 sTU64CYHkcFnjyYWsa/JZyQKYny/yUtslvXedOMrlxQhrbE4LzKIkjL2EVgYknucRp
-	 ZQ1MMq2dWkoAfujcU5eVaTs4Yn+nI18lTrgk9sYLodduY03VqUws1sOeXIbZEHhee5
-	 EJOzhR47JJUKmm+KV9s9gRux1EJRXugZTekdIy76/BN62dEa2wAECe2QAqT+RD2bK0
-	 B4jp7qGJREcrIljO9HOEzLlJ8T47jEYBoR0fmCpbHB44g5dlYQxzfwby9tMIhsKz1+
-	 MP8ZIjfZcc3eA==
-Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 4EFFD17E1395;
-	Tue, 22 Oct 2024 11:16:12 +0200 (CEST)
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-To: Matthias Brugger <matthias.bgg@gmail.com>, 
- Chen-Yu Tsai <wenst@chromium.org>
-Cc: devicetree@vger.kernel.org, linux-mediatek@lists.infradead.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20241021140537.3049232-1-wenst@chromium.org>
-References: <20241021140537.3049232-1-wenst@chromium.org>
-Subject: Re: [PATCH] arm64: dts: mediatek: mt8186-corsola: Fix GPU supply
- coupling max-spread
-Message-Id: <172958857228.72613.9158406663277512408.b4-ty@collabora.com>
-Date: Tue, 22 Oct 2024 11:16:12 +0200
+	s=arc-20240116; t=1729588737; c=relaxed/simple;
+	bh=ktUntblqwbX11lE4VFhQvbDpXlY5dHHrgSDM8lr7qU8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AQ+lv7Al11cQjNLz67XTJrZ2n/grcAWxvh/w9QvvYd8tpw9wMGYTggKql1F+Mcprzjm0YbXqdqFH4kslgHWdaWbro4UtVbcM2uTeHFmln1wZcwZjbcGivFyoVET2dmIfLs73c1hE1ULXlC7BU5WvGIBozFLAXXm5xKw+yU46+PM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gSD++rOE; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a9a628b68a7so699518466b.2;
+        Tue, 22 Oct 2024 02:18:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729588734; x=1730193534; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ktUntblqwbX11lE4VFhQvbDpXlY5dHHrgSDM8lr7qU8=;
+        b=gSD++rOE/qcNeRZkFQkVlCPKX/aN92S2nG04PEE+CZWVHrZH9QuQN4WjJivsKR1Cgv
+         VCSN7bt9suy/C4Uw+GjwHn4U7I/OpDvpU8ouxu+4gqcc3/6ZYk6wY1489NKtRLvFTxgb
+         uEJymQYzhmaplV8WKbFwtsZbxd3gqG4/w1OAAL8DNrRsPVkg38dWofO2vcrMbvFGJbl6
+         T9rQ7bK9a2/aS0DP6AAziPtncJefxdZvK0zPAqB84QcbVyOoeJ9GSc2IdIWPxp8/b5UK
+         I1MKxdO2bY0mbCNyscDF03wfOemC+CrN5Hd2Ib6akWdaWQ95GtTK0YtnOkA1BQ4ODf4u
+         EoPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729588734; x=1730193534;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ktUntblqwbX11lE4VFhQvbDpXlY5dHHrgSDM8lr7qU8=;
+        b=kR4UQn6PePfLtaeMyTMDZPnQxtx3NCKLBQusmwWlh0ZpD4SIvTVPTYkxw8vz+gK6od
+         NlZ4oRTngt/Hwm20eYAnLfG8fXy75XDSrvxA6rctzfiEgER8r9MLWyIjekYrwXlCgUlh
+         PFmn3vCiiaJV2Y2F1hsX7m0d/zuRN3GFkZi6fiGRELwdkMW8489Ih25C2VIgZ2q7/Sop
+         W0/cRHgsE02p0+9HyeyVe/Cw0fymi+LDWbQTFwHIijHpn/cGttGeO6Z7sonnwHqox9XG
+         wGij7hOgqMVRvBWj1RFWDM9t+QXa6dPWti5o1syoZ1Q/wwJF13PECma0btNU3bz9lDze
+         slfw==
+X-Forwarded-Encrypted: i=1; AJvYcCUER0JRFobSThHTRk8VOg3qTBSzDkT02zjciCo6KDyyqZJomQoM3mery0rVd3Y1YM5dMq/pw4Jpd7PL9aWRby8=@vger.kernel.org, AJvYcCVsw3acpT/lPUThzKoy8zzlh7xGpc3Bxk3lkFSeHEEBzXTOvVy5GVTRp1gVkuuN3PKmWlmh8BQj@vger.kernel.org, AJvYcCXljo9jgp0f+Od212AsJfcAH8Ez5/4H0DXPSMC6TZ/TOyGs/XIqfqiil0i/H5aoaHYsq1QFgN+0R/336GV/@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4fr70pA8UuIjzIfZI+GwgY7x4vCJ75RMCnYnuRmCImsv2XCmm
+	lhsoDrZj4bLwucoiSZkxAcfu+mFdXLs2IJ3sWHKlx2UvWshE4OMaWFvkMtiKst5SKifzgmpF1uq
+	DUFQy5+2AovzwmI8mRZmN/RAHaaOGv9al2tw=
+X-Google-Smtp-Source: AGHT+IFT5NKjcwFGWBwUpT8dc+RxKHbxg2bHl0QeeeMrYyjueQBanQ3EjdvlH7HxVnRLfDQObus8JJ17e5hMw2M7/mw=
+X-Received: by 2002:a17:907:7293:b0:a99:ef5d:443e with SMTP id
+ a640c23a62f3a-a9a69773b2emr1500723866b.13.1729588733544; Tue, 22 Oct 2024
+ 02:18:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+References: <20241021100421.41734-1-brgl@bgdev.pl> <bb705eb7-c61c-4da9-816e-cbb46c0c16e4@kernel.org>
+ <CAMRc=Mcp4LBj0ZZx=hUg9KBk04XXcAtiNv+QjQesN1iCpDC+KA@mail.gmail.com>
+In-Reply-To: <CAMRc=Mcp4LBj0ZZx=hUg9KBk04XXcAtiNv+QjQesN1iCpDC+KA@mail.gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Tue, 22 Oct 2024 12:18:17 +0300
+Message-ID: <CAHp75VdLuxL4tqodoiWE_Pq7VjwxVLa-mXnnnOT-j8W=3jetCg@mail.gmail.com>
+Subject: Re: [PATCH] lib: string_helpers: fix potential snprintf() output truncation
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Jiri Slaby <jirislaby@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, 
+	Greg KH <gregkh@linuxfoundation.org>, linux-hardening@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 21 Oct 2024 22:05:36 +0800, Chen-Yu Tsai wrote:
-> The GPU SRAM supply is supposed to be always at least 0.1V higher than
-> the GPU supply. However when the DT was upstreamed, the spread was
-> incorrectly set to 0.01V.
-> 
-> 
+On Tue, Oct 22, 2024 at 10:30=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.pl=
+> wrote:
+>
+> On Tue, Oct 22, 2024 at 9:15=E2=80=AFAM Jiri Slaby <jirislaby@kernel.org>=
+ wrote:
+> >
+> > On 21. 10. 24, 12:04, Bartosz Golaszewski wrote:
+> > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > >
+> > > The output of ".%03u" with the unsigned int in range [0, 4294966295] =
+may
+> > > get truncated if the target buffer is not 12 bytes.
+> >
+> > Perhaps, if you elaborate on how 'remainder' can become > 999?
+>
+> Yeah, I guess it can't. Not sure what we do about such false
+> positives, do we have some common way to suppress them?
 
-Applied to v6.12-next/dts64, thanks!
+I already pointed out these kinds of warnings from GCC.
+https://lore.kernel.org/all/Zt73a3t8Y8uH5MHG@smile.fi.intel.com/
 
-[1/1] arm64: dts: mediatek: mt8186-corsola: Fix GPU supply coupling max-spread
-      commit: 2f1aab0cb0661d533f008e4975325080351cdfc8
-
-Cheers,
-Angelo
-
-
+--=20
+With Best Regards,
+Andy Shevchenko
 
