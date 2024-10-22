@@ -1,187 +1,160 @@
-Return-Path: <stable+bounces-87750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62D5F9AB2D9
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 17:56:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51BC19AB2E4
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 17:57:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E62C91F24871
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 15:56:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77EFA1C210C2
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 15:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08EC71A7AD0;
-	Tue, 22 Oct 2024 15:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E221A2C0B;
+	Tue, 22 Oct 2024 15:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="yWY593mf";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="PpslFFz/";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="ChkLK7o+";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="XCGMKk1V"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fWQt4ge7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8291A7066;
-	Tue, 22 Oct 2024 15:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CB019F10A;
+	Tue, 22 Oct 2024 15:56:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729612560; cv=none; b=AS+lZUfJDK939z9pLKM+Y+JQ8LdjQ7GLqKkgg6AomQg557xglP0Z1kF1EClaTh7CZftomSQdLV/MDCEMJseqikhftXn1g/C9jgbx7i8r/oJJ8vGydNiRGHMFmaQDIiPQkGp8i2LoETgKgBIkFO5L2DDXD1g2FBv16B+oNuSB+Wk=
+	t=1729612612; cv=none; b=Ah/B0DmNT33A7UJXcAhYcRUXKibmhonVhXcqqUheL9atw0l5Pax9TrsCLl0QFf1IvPV7r6Jfo0RuGyG0lSeIsRZzp3udt7dBQqzNafTZs7qN/ZPvqFCTU21JZshvVVfyqLyBW1YuHOhyMBTaJXzFRfJThG38ZUec43XvLOi5yXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729612560; c=relaxed/simple;
-	bh=qdiw+9iWWIUdBQsa8uZIUdsCsqPh/ECLmNwq+10aTbE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dUR3sqKekg++hTesrqItR1QJN4SSkkhFHKk+q2X+ijpsgdDED+rKWGsovVsbr8PEUBiSUA31lGOZxZy6E12wV7ds7A9CcpgMLdyS2Rioc7AZkXF+8vos2SHJNR9joARcpbQHXOhygt2lamQsqj/ekt1g3tQsIsKvWozW7pGawCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=yWY593mf; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=PpslFFz/; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=ChkLK7o+; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=XCGMKk1V; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id BFC5D1FD2A;
-	Tue, 22 Oct 2024 15:55:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1729612544; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qdiw+9iWWIUdBQsa8uZIUdsCsqPh/ECLmNwq+10aTbE=;
-	b=yWY593mfxM7+fXjWrlzFpoyWifGwzGDz5T5beh+7sIhv8cDAo9AV7jaVlhz/cGkHntcUCg
-	xarqy89Lw/X0ItHfgNGYHCbryc4a6DLeOddRw1KIXGVDCbtt3NwFZmeuhSo7PTgWIy4SVw
-	AvNJBe/BIWu+s3x0bTK/8qOJRZTqH5w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1729612544;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qdiw+9iWWIUdBQsa8uZIUdsCsqPh/ECLmNwq+10aTbE=;
-	b=PpslFFz/8aTVtMVrdRn7CxhtHZlBHHDyDyQMLZe4xz69mOiHyxlkTh0ty8MztyysIhwy2P
-	BJMxzr614KJaP+Cg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1729612543; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qdiw+9iWWIUdBQsa8uZIUdsCsqPh/ECLmNwq+10aTbE=;
-	b=ChkLK7o+mdekXp6JBUjmsDoZrK94rdcyr/uoh0ReQNdZS/GX39UCStxeLebN2qzq6THNcl
-	Q4UgzvE3YSOtW5SGNg+9iZ6fCOZXgrhLjXR4LqMu3/RVT//O8LHmDb9Y49XBrh/q7ShAnm
-	oMLOVFA6VSztY6P+41f5tYxicnN93FI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1729612543;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qdiw+9iWWIUdBQsa8uZIUdsCsqPh/ECLmNwq+10aTbE=;
-	b=XCGMKk1Vd0VE4kQFHxYirSe3QRx0BUxPLBY125RsCscNeQ/3vxQftsbEbCqAjl+LI/t57a
-	OHAl0pOQsf2ZdbBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8D43B13AC9;
-	Tue, 22 Oct 2024 15:55:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id xOQkIv/KF2dBDwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 22 Oct 2024 15:55:43 +0000
-Message-ID: <8f68ad82-2f60-49f8-b150-0cf183c9cc71@suse.cz>
-Date: Tue, 22 Oct 2024 17:55:43 +0200
+	s=arc-20240116; t=1729612612; c=relaxed/simple;
+	bh=z13NicMcF9ZVpeE1GItwW03x9gDbBSHe3X3Sx9kV7Io=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=vEsD3+1HuyNMbLs8fwTMIh+r5Q9XsVk6UqGbyYS3l8mHb9OSJSas79dNLhEoDqNYPPjHN6T49ojouWblVRBqJ5r8UMSVaOFeBPpLDbwwEASq/mOZRyhdJjL+hcyEjyZaPg+ux/goffLOMWis/507qcnqvhUQ8pYvTDitVVkyFrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fWQt4ge7; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49M9amGJ005187;
+	Tue, 22 Oct 2024 15:56:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-type:date:from:message-id:mime-version:subject:to; s=
+	qcppdkim1; bh=+HbAaa1q9bAdAu7D05Pl04/COhM7iX9rJ+WJMiME4Fw=; b=fW
+	Qt4ge7LMYp790WOogpb8YXokhcmpLis/b4Dz3L5RLOiuLwad9Tc7KTAlah6BZQDP
+	KldtQMI3OgeuQDLBfWRArJaiTLop3xvGM1vAwpRbvOryJZtsPes1luw1CFXzg1xw
+	yGJ9BYITV8s1G10fHfoCpZ9ALzCpY6oVEwf/C+TSZEgXpBvPNBBfT/PuGsSBlj3M
+	KAqmWfo/W8ZbCCCqXoauk0gyXqR899qRWE9gYnDK60udjfCM5IOu23iPzvT+fmBR
+	I/5x6krrXkON0ujjaexfeBAY8MxheKrialzbNxMSZaG6x+hn+fsUyeVvleKl/Cy+
+	V9xMuhF4ge5nBc/4EdLw==
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42c6rbgwfg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 22 Oct 2024 15:56:44 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49MFuhR6030859
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 22 Oct 2024 15:56:43 GMT
+Received: from hu-faisalh-hyd.qualcomm.com (10.80.80.8) by
+ nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Tue, 22 Oct 2024 08:56:41 -0700
+From: Faisal Hassan <quic_faisalh@quicinc.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mathias Nyman
+	<mathias.nyman@intel.com>
+CC: <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Faisal Hassan
+	<quic_faisalh@quicinc.com>, <stable@vger.kernel.org>
+Subject: [PATCH v3] xhci: Fix Link TRB DMA in command ring stopped completion event
+Date: Tue, 22 Oct 2024 21:26:31 +0530
+Message-ID: <20241022155631.1185-1-quic_faisalh@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/2] mseal: Two fixes for madvise(MADV_DONTNEED) when
- sealed
-Content-Language: en-US
-To: Jeff Xu <jeffxu@chromium.org>, Pedro Falcato <pedro.falcato@gmail.com>
-Cc: akpm@linux-foundation.org, keescook@chromium.org,
- torvalds@linux-foundation.org, usama.anjum@collabora.com, corbet@lwn.net,
- Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, jeffxu@google.com,
- jorgelo@chromium.org, groeck@chromium.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, jannh@google.com,
- sroettger@google.com, linux-hardening@vger.kernel.org, willy@infradead.org,
- gregkh@linuxfoundation.org, deraadt@openbsd.org, surenb@google.com,
- merimus@google.com, rdunlap@infradead.org, stable@vger.kernel.org
-References: <20241017005105.3047458-1-jeffxu@chromium.org>
- <20241017005105.3047458-2-jeffxu@chromium.org>
- <5svaztlptf4gs4sp6zyzycwjm2fnpd2xw3oirsls67sq7gq7wv@pwcktbixrzdo>
- <CABi2SkXwOkoFcUUx=aALWVqurKhns+JKZqm2EyRTbHtROK8SKg@mail.gmail.com>
- <r5ljdglhtbapgqddtr6gxz5lszvq2yek2rd6bnllxk5i6difzv@imuu3pxh5fcc>
- <CABi2SkXArA+yfodoOxDbTTOpWCbU5Ce1p1HadSo0=CL23K4-dQ@mail.gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <CABi2SkXArA+yfodoOxDbTTOpWCbU5Ce1p1HadSo0=CL23K4-dQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FREEMAIL_TO(0.00)[chromium.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TAGGED_RCPT(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Level: 
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: XTd4BBODkolSvOCLlI_s99UZf9GHG1Xk
+X-Proofpoint-GUID: XTd4BBODkolSvOCLlI_s99UZf9GHG1Xk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ adultscore=0 malwarescore=0 mlxscore=0 suspectscore=0 spamscore=0
+ impostorscore=0 phishscore=0 mlxlogscore=966 lowpriorityscore=0
+ clxscore=1015 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410220102
 
-On 10/17/24 22:57, Jeff Xu wrote:
-> On Thu, Oct 17, 2024 at 1:49 PM Pedro Falcato <pedro.falcato@gmail.com> wrote:
->> >
->> > > > For file-backed, private, read-only memory mappings, we previously did
->> > > > not block the madvise(MADV_DONTNEED). This was based on
->> > > > the assumption that the memory's content, being file-backed, could be
->> > > > retrieved from the file if accessed again. However, this assumption
->> > > > failed to consider scenarios where a mapping is initially created as
->> > > > read-write, modified, and subsequently changed to read-only. The newly
->> > > > introduced VM_WASWRITE flag addresses this oversight.
->> > >
->> > > We *do not* need this. It's sufficient to just block discard operations on read-only
->> > > private mappings.
->> > I think you meant blocking madvise(MADV_DONTNEED) on all read-only
->> > private file-backed mappings.
->> >
->> > I considered that option, but there is a use case for madvise on those
->> > mappings that never get modified.
->> >
->> > Apps can use that to free up RAM. e.g. Considering read-only .text
->> > section, which never gets modified, madvise( MADV_DONTNEED) can free
->> > up RAM when memory is in-stress, memory will be reclaimed from a
->> > backed-file on next read access. Therefore we can't just block all
->> > read-only private file-backed mapping, only those that really need to,
->> > such as mapping changed from rw=>r (what you described)
->>
->> Does anyone actually do this? If so, why? WHYYYY?
->>
-> This is a legit use case, I can't argue that it isn't.
+During the aborting of a command, the software receives a command
+completion event for the command ring stopped, with the TRB pointing
+to the next TRB after the aborted command.
 
-Could the same effect be simply achieved with MADV_COLD/MADV_PAGEOUT? That
-should be able to reclaim the pages as well if they are indeed not used, but
-it's non-destructive and you don't want to allow destructive madvise anyway
-(i.e. no throwing away data that would be replaced by zeroes or original
-file content on the next touch) so it seems overall a better fit for sealed
-areas?
+If the command we abort is located just before the Link TRB in the
+command ring, then during the 'command ring stopped' completion event,
+the xHC gives the Link TRB in the event's cmd DMA, which causes a
+mismatch in handling command completion event.
 
+To address this situation, move the 'command ring stopped' completion
+event check slightly earlier, since the specific command it stopped
+on isn't of significant concern.
+
+Fixes: 7f84eef0dafb ("USB: xhci: No-op command queueing and irq handler.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Faisal Hassan <quic_faisalh@quicinc.com>
+---
+
+Changes in v3:
+- Skip dma check for the cmd ring stopped event
+- v2 link:
+https://lore.kernel.org/all/20241021131904.20678-1-quic_faisalh@quicinc.com
+
+Changes in v2:
+- Added Fixes tag
+- Removed traversing of TRBs with in_range() API.
+- Simplified the if condition check.
+- v1 link:
+https://lore.kernel.org/all/20241018195953.12315-1-quic_faisalh@quicinc.com
+
+ drivers/usb/host/xhci-ring.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index b2950c35c740..1ffc69c48eac 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1718,6 +1718,14 @@ static void handle_cmd_completion(struct xhci_hcd *xhci,
+ 
+ 	trace_xhci_handle_command(xhci->cmd_ring, &cmd_trb->generic);
+ 
++	cmd_comp_code = GET_COMP_CODE(le32_to_cpu(event->status));
++
++	/* If CMD ring stopped we own the trbs between enqueue and dequeue */
++	if (cmd_comp_code == COMP_COMMAND_RING_STOPPED) {
++		complete_all(&xhci->cmd_ring_stop_completion);
++		return;
++	}
++
+ 	cmd_dequeue_dma = xhci_trb_virt_to_dma(xhci->cmd_ring->deq_seg,
+ 			cmd_trb);
+ 	/*
+@@ -1734,14 +1742,6 @@ static void handle_cmd_completion(struct xhci_hcd *xhci,
+ 
+ 	cancel_delayed_work(&xhci->cmd_timer);
+ 
+-	cmd_comp_code = GET_COMP_CODE(le32_to_cpu(event->status));
+-
+-	/* If CMD ring stopped we own the trbs between enqueue and dequeue */
+-	if (cmd_comp_code == COMP_COMMAND_RING_STOPPED) {
+-		complete_all(&xhci->cmd_ring_stop_completion);
+-		return;
+-	}
+-
+ 	if (cmd->command_trb != xhci->cmd_ring->dequeue) {
+ 		xhci_err(xhci,
+ 			 "Command completion event does not match command\n");
+-- 
+2.17.1
 
 
