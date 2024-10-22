@@ -1,109 +1,160 @@
-Return-Path: <stable+bounces-87769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0A369AB5DE
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 20:16:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C3179AB615
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 20:45:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E114328437D
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 18:16:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B67A1C23B30
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 18:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBE61A38E1;
-	Tue, 22 Oct 2024 18:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7221BD00C;
+	Tue, 22 Oct 2024 18:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="GYmhqKWi"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="K4bYYqzz"
 X-Original-To: stable@vger.kernel.org
-Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1AC07E0E4;
-	Tue, 22 Oct 2024 18:16:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0520A19F487
+	for <stable@vger.kernel.org>; Tue, 22 Oct 2024 18:45:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729621007; cv=none; b=kWew0skP+U9TYz3gUM7YP7EzZfpbHFxXYEi+vYAdZmvcliH6hJ5grlzXvuXkdaoQ6en9V87DtEi6nSDafFWeRhGpsPEA+G2FRRqYwwv9ZZNZRVPLY2ly2A0+o33DtUgbu1wUyI4Y2ZkuPxx1PN5URTWSgTUWlEkYtZpjw+bURkE=
+	t=1729622732; cv=none; b=KEp36rqPgHcL1zKxdkZcHMh0YwHNLNJptE1A6qzlDr+iw4nPT4nFY6Xysxgk7T7idf7RU8LicEMg6w3IeAZX+AEfjbg7a1v835FZKD3fXrV2o8r33jOxIiJlx73+fJRN4mHfMvcFucMDTRLNCaK1LGsrC4ZCrF9xkV/sRMCoZNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729621007; c=relaxed/simple;
-	bh=UZqgYCmGKMLoPX6x45jwleLfwKc2WBwRV6SssUQHBmI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r5GD1tNdUL6PMuIqT9zBrzz1LyxsK6upgS6aW0Eg5xJ5gfDJkD0XbH04OJPouaK5c1AHWyAkzK1PDyiHoHb/1q2+aptkWRhI/6A344JRN9YNsmShUaNJhcoPAqU0xCPcOWeQmjY0RL2HSUlKxleDzwi/iHv50lXxlpVtPuN/2LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=GYmhqKWi; arc=none smtp.client-ip=199.89.1.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 008.lax.mailroute.net (Postfix) with ESMTP id 4XY0kH2RNKz6ClY9C;
-	Tue, 22 Oct 2024 18:16:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:mime-version:x-mailer:message-id:date
-	:date:subject:subject:from:from:received:received; s=mr01; t=
-	1729620996; x=1732212997; bh=lsF95ZAMKXS4nPzun/TBSeUR4KI4RRlcTUe
-	on854CPA=; b=GYmhqKWiPRNZ7boT3oKFHkSK24TQ3JGeHFMdq+hS2EzS99mejpg
-	uEu6ifotQaphZt5Zs50DEts1seDZJyNiDt2NzpVg7t+BgCMfMy07TzPhlTuet0pL
-	dnDtv3dLrP7mM/MsD5s4VSGq9obL3CaXo1iDquk9TnaW7WfCGJ988a36BpwUvT7M
-	kG6cfEPQo2EV4Qo+t0pB6qFjgkKW89tO0rIigwkaKIGnvlltVHvStZU/XdE1lXUf
-	w7fmGguOSN94qN6UiPCaNcLEAHoxEqMhEzUylhVoePl/pHelENgMTEl/ZBTJn0sa
-	GHz94o0VpMU0WWylTP201M7Lts8ujwsY6bA==
-X-Virus-Scanned: by MailRoute
-Received: from 008.lax.mailroute.net ([127.0.0.1])
- by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id Z0rZcDsQIz26; Tue, 22 Oct 2024 18:16:36 +0000 (UTC)
-Received: from bvanassche.mtv.corp.google.com (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4XY0kC4YXMz6CmLxj;
-	Tue, 22 Oct 2024 18:16:35 +0000 (UTC)
-From: Bart Van Assche <bvanassche@acm.org>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org,
-	Christoph Hellwig <hch@lst.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Peter Wang <peter.wang@mediatek.com>,
-	Chao Leng <lengchao@huawei.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] blk-mq: Make blk_mq_quiesce_tagset() hold the tag list mutex less long
-Date: Tue, 22 Oct 2024 11:16:17 -0700
-Message-ID: <20241022181617.2716173-1-bvanassche@acm.org>
-X-Mailer: git-send-email 2.47.0.105.g07ac214952-goog
+	s=arc-20240116; t=1729622732; c=relaxed/simple;
+	bh=Ts68eKQ0k2SX2rKkD4ujE9T0uytM6SNn7hUUGZybJmk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oXqE25BfBoAieBOD5ZkwDTzy2m0Tg6TKaocxb5p2eTJh7XNUKDeGglS2H/aUvn3jE4VbNtyn7/cQqRrneop19FWok5z4yTXITxar8cGOTiBURiR7LDlAfIe9d4/J6Kbnepl4XwsF+QejELh9jXLgxoMLR7BrrLvYxrWLj2spzTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=K4bYYqzz; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=bHp2aMVL5wG4h4ETfXBjbhHWCYZ7ca5jDeDqVuS7euM=; b=K4bYYqzzeh+Mv4/jxIb3GH+VLj
+	Pyxt8KCC0fVQebrplv7rAJ9S9XCjMzpFwLCwqp7oORjEcJSCyij7AxQkQh0evWJ8qp2TJBnbv2BIM
+	9hBp2RbOhckgZCwZIYNPWW6x6EkUrZLP/rnLGIv/jpKh7suW6KEPVfq73ss7S8Pm8vikpewp4SaW4
+	9IcA09rpWkELX0Yeh8gVhFAXlmQQwj1un5gTLZbvqjKDsUuq42QRc7eEpylMypRH1WehpN3ZH61Xn
+	oIWa4fxyNEi3hjgmivbgPd/1nawJqhmk/MyJJlK5sJUVONVPsG8YtMkzgG1aGx1Yq+Q+GCjZESySV
+	zVfZJsUA==;
+Received: from 179-125-79-219-dinamico.pombonet.net.br ([179.125.79.219] helo=localhost.localdomain)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1t3Jsc-00DiXz-QG; Tue, 22 Oct 2024 20:45:19 +0200
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+To: stable@vger.kernel.org
+Cc: Mateusz Guzik <mjguzik@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 6.6] exec: don't WARN for racy path_noexec check
+Date: Tue, 22 Oct 2024 15:44:58 -0300
+Message-Id: <20241022184458.3601255-1-cascardo@igalia.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Make sure that the tag_list_lock mutex is no longer held than necessary.
-This change reduces latency if e.g. blk_mq_quiesce_tagset() is called
-concurrently from more than one thread. This function is used by the
-NVMe core and also by the UFS driver.
+From: Mateusz Guzik <mjguzik@gmail.com>
 
-Reported-by: Peter Wang <peter.wang@mediatek.com>
-Cc: Chao Leng <lengchao@huawei.com>
-Cc: Ming Lei <ming.lei@redhat.com>
-Cc: stable@vger.kernel.org
-Fixes: commit 414dd48e882c ("blk-mq: add tagset quiesce interface")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+[ Upstream commit 0d196e7589cefe207d5d41f37a0a28a1fdeeb7c6 ]
+
+Both i_mode and noexec checks wrapped in WARN_ON stem from an artifact
+of the previous implementation. They used to legitimately check for the
+condition, but that got moved up in two commits:
+633fb6ac3980 ("exec: move S_ISREG() check earlier")
+0fd338b2d2cd ("exec: move path_noexec() check earlier")
+
+Instead of being removed said checks are WARN_ON'ed instead, which
+has some debug value.
+
+However, the spurious path_noexec check is racy, resulting in
+unwarranted warnings should someone race with setting the noexec flag.
+
+One can note there is more to perm-checking whether execve is allowed
+and none of the conditions are guaranteed to still hold after they were
+tested for.
+
+Additionally this does not validate whether the code path did any perm
+checking to begin with -- it will pass if the inode happens to be
+regular.
+
+Keep the redundant path_noexec() check even though it's mindless
+nonsense checking for guarantee that isn't given so drop the WARN.
+
+Reword the commentary and do small tidy ups while here.
+
+Signed-off-by: Mateusz Guzik <mjguzik@gmail.com>
+Link: https://lore.kernel.org/r/20240805131721.765484-1-mjguzik@gmail.com
+[brauner: keep redundant path_noexec() check]
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[cascardo: keep exit label and use it]
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 ---
- block/blk-mq.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/exec.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 4b2c8e940f59..1ef227dfb9ba 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -283,8 +283,9 @@ void blk_mq_quiesce_tagset(struct blk_mq_tag_set *set=
-)
- 		if (!blk_queue_skip_tagset_quiesce(q))
- 			blk_mq_quiesce_queue_nowait(q);
- 	}
--	blk_mq_wait_quiesce_done(set);
- 	mutex_unlock(&set->tag_list_lock);
-+
-+	blk_mq_wait_quiesce_done(set);
- }
- EXPORT_SYMBOL_GPL(blk_mq_quiesce_tagset);
-=20
+diff --git a/fs/exec.c b/fs/exec.c
+index f49b352a6032..7776209d98c1 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -143,13 +143,11 @@ SYSCALL_DEFINE1(uselib, const char __user *, library)
+ 		goto out;
+ 
+ 	/*
+-	 * may_open() has already checked for this, so it should be
+-	 * impossible to trip now. But we need to be extra cautious
+-	 * and check again at the very end too.
++	 * Check do_open_execat() for an explanation.
+ 	 */
+ 	error = -EACCES;
+-	if (WARN_ON_ONCE(!S_ISREG(file_inode(file)->i_mode) ||
+-			 path_noexec(&file->f_path)))
++	if (WARN_ON_ONCE(!S_ISREG(file_inode(file)->i_mode)) ||
++	    path_noexec(&file->f_path))
+ 		goto exit;
+ 
+ 	error = -ENOEXEC;
+@@ -925,23 +923,22 @@ static struct file *do_open_execat(int fd, struct filename *name, int flags)
+ 
+ 	file = do_filp_open(fd, name, &open_exec_flags);
+ 	if (IS_ERR(file))
+-		goto out;
++		return file;
+ 
+ 	/*
+-	 * may_open() has already checked for this, so it should be
+-	 * impossible to trip now. But we need to be extra cautious
+-	 * and check again at the very end too.
++	 * In the past the regular type check was here. It moved to may_open() in
++	 * 633fb6ac3980 ("exec: move S_ISREG() check earlier"). Since then it is
++	 * an invariant that all non-regular files error out before we get here.
+ 	 */
+ 	err = -EACCES;
+-	if (WARN_ON_ONCE(!S_ISREG(file_inode(file)->i_mode) ||
+-			 path_noexec(&file->f_path)))
++	if (WARN_ON_ONCE(!S_ISREG(file_inode(file)->i_mode)) ||
++	    path_noexec(&file->f_path))
+ 		goto exit;
+ 
+ 	err = deny_write_access(file);
+ 	if (err)
+ 		goto exit;
+ 
+-out:
+ 	return file;
+ 
+ exit:
+-- 
+2.34.1
+
 
