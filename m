@@ -1,112 +1,116 @@
-Return-Path: <stable+bounces-87783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 776D59AB9E7
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 01:15:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A8B69ABA0C
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 01:26:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03750B225B8
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 23:15:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F2F91C22F85
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 23:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22391CCEEF;
-	Tue, 22 Oct 2024 23:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B001CEADD;
+	Tue, 22 Oct 2024 23:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fshk/KL0"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ROH/QEaU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B04C130AF6;
-	Tue, 22 Oct 2024 23:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682691CEAD2;
+	Tue, 22 Oct 2024 23:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729638946; cv=none; b=aRHjgUEYRPOFtOK3o4fI10alzkSdvBW7DoDNpGalacd46R5hpBG9eW48cb+nqUvDDIFt2mkKgaj0qgCj7nx1piUa6QjLruyXMgu8zHnD9YSsFrB0yts7g5h74ETgHVDEPqXLvlAFYN3o9EjlXmFgCVKB8nMi+tXTwoOGlB3XA2k=
+	t=1729639572; cv=none; b=LfUM03bCmL3IH/NreY1zLRrm0AbNKFbU+IZXDY2Tn/Tkvky0WjlIEmm5MBy/Ke82suKQFlHRoxLgvc4o5VPppnfF1GU9v+djYXgeDuQ7rF0jcSv0T/oBNClt6NapyKN8mWDqmeyZ8+RsIeuJryisil5H9j7AlojAK2geVS1VdUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729638946; c=relaxed/simple;
-	bh=eIOJlPjE4CtOTt1MXDUhDT+O5xXsoiSWn8H7fZVwGxQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=HS+hO+SK/wNulJFWK2cg3AWVvGaE1PC/8UdrUDRWN8GeV5/0sAz41OkQqgAvFlz1tiPVSGQ6WA/wO3GMj7nAAtH//JQ4sWgCMdnpm46nWrvsRycqXjyIlvf6KpP4KUCUVfOVlFPVDgY3ha1O0zF/PVbcTBIBdZ/hBiL8Mwtmdpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fshk/KL0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77E2C4CEC3;
-	Tue, 22 Oct 2024 23:15:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729638946;
-	bh=eIOJlPjE4CtOTt1MXDUhDT+O5xXsoiSWn8H7fZVwGxQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Fshk/KL0wmHyB3KInp62gSM/+XziHiUxrBWxqQ8BgECtuedldbuc3PfLKA0JK+QB/
-	 5FN9F1ls+12KhWizTA448YzpgtOS9r9vUq/UAx67rKJpXZB1I3XSiaSqFNaBgdK59w
-	 v3VEXnmbmlZ8KtJXHzP6Tz35mE+JWM3uor31O3sck+sdjt47KfAs2htjPS47wmZdvf
-	 NAzasc+iDfoki5el1su+dR91indjxrgCb3rfZ/v8z0N9b5RIDek27p33bMkdAZ0uBa
-	 Wck+QTtUR+TfsMNRtdQccbqLkqOgoySG7ph4U2HlbN+Rog5OEOnhY+oyREf8gMRLGU
-	 4dZrSb4S8huVA==
-From: Mark Brown <broonie@kernel.org>
-To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, 
- Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, 
- linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: stable@vger.kernel.org, Alexey Klimov <alexey.klimov@linaro.org>, 
- Steev Klimaszewski <steev@kali.org>
-In-Reply-To: <20241012101108.129476-1-krzysztof.kozlowski@linaro.org>
-References: <20241012101108.129476-1-krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v2] ASoC: qcom: sc7280: Fix missing Soundwire runtime
- stream alloc
-Message-Id: <172963894347.334190.2415888818283876880.b4-ty@kernel.org>
-Date: Wed, 23 Oct 2024 00:15:43 +0100
+	s=arc-20240116; t=1729639572; c=relaxed/simple;
+	bh=Q74S25P1VTOCvOa3o8RrdWMg8H+qhCnEJQ9U1yKa38E=;
+	h=Date:To:From:Subject:Message-Id; b=u6snJv2ZGtYyogP871VwLq9rkrR0E2i7UsBiEaMKc6KI4lp7OmIJxvXJXIU8j2LoKbHEGBi0r19qmWegcI+bbdKcslNZoYIiQjc81iCNdPfVKab8JUs+2QnAV5VeZZOk2CkXY3dd7FmkNSXg6hl4L0VbAH/QMySggJciXy3+1DI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ROH/QEaU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDCDFC4CEC3;
+	Tue, 22 Oct 2024 23:26:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1729639572;
+	bh=Q74S25P1VTOCvOa3o8RrdWMg8H+qhCnEJQ9U1yKa38E=;
+	h=Date:To:From:Subject:From;
+	b=ROH/QEaUcYgrVktldutVVtsn7PGqMY+I3K1F+ls7mb4aKvhUnw6lrmkU4dVneyUT1
+	 sYwUIM9Fedk0xLdLeHq9szFQk3uWIt2F1rPa3CM4rPi6yW7E+UkayZZuXP6pkEOWSf
+	 Gw3dyG9EZeT8+99dAtls7ORFTTD1bBY3Dj2vjHso=
+Date: Tue, 22 Oct 2024 16:26:11 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged] nilfs2-fix-kernel-bug-due-to-missing-clearing-of-buffer-delay-flag.patch removed from -mm tree
+Message-Id: <20241022232611.DDCDFC4CEC3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-9b746
 
-On Sat, 12 Oct 2024 12:11:08 +0200, Krzysztof Kozlowski wrote:
-> Commit 15c7fab0e047 ("ASoC: qcom: Move Soundwire runtime stream alloc to
-> soundcards") moved the allocation of Soundwire stream runtime from the
-> Qualcomm Soundwire driver to each individual machine sound card driver,
-> except that it forgot to update SC7280 card.
-> 
-> Just like for other Qualcomm sound cards using Soundwire, the card
-> driver should allocate and release the runtime.  Otherwise sound
-> playback will result in a NULL pointer dereference or other effect of
-> uninitialized memory accesses (which was confirmed on SDM845 having
-> similar issue).
-> 
-> [...]
 
-Applied to
+The quilt patch titled
+     Subject: nilfs2: fix kernel bug due to missing clearing of buffer delay flag
+has been removed from the -mm tree.  Its filename was
+     nilfs2-fix-kernel-bug-due-to-missing-clearing-of-buffer-delay-flag.patch
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+This patch was dropped because it was merged into mainline or a subsystem tree
 
-Thanks!
+------------------------------------------------------
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Subject: nilfs2: fix kernel bug due to missing clearing of buffer delay flag
+Date: Wed, 16 Oct 2024 06:32:07 +0900
 
-[1/1] ASoC: qcom: sc7280: Fix missing Soundwire runtime stream alloc
-      commit: db7e59e6a39a4d3d54ca8197c796557e6d480b0d
+Syzbot reported that after nilfs2 reads a corrupted file system image and
+degrades to read-only, the BUG_ON check for the buffer delay flag in
+submit_bh_wbc() may fail, causing a kernel bug.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+This is because the buffer delay flag is not cleared when clearing the
+buffer state flags to discard a page/folio or a buffer head.  So, fix
+this.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+This became necessary when the use of nilfs2's own page clear routine was
+expanded.  This state inconsistency does not occur if the buffer is
+written normally by log writing.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Link: https://lkml.kernel.org/r/20241015213300.7114-1-konishi.ryusuke@gmail.com
+Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+985ada84bf055a575c07@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=985ada84bf055a575c07
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+ fs/nilfs2/page.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Thanks,
-Mark
+--- a/fs/nilfs2/page.c~nilfs2-fix-kernel-bug-due-to-missing-clearing-of-buffer-delay-flag
++++ a/fs/nilfs2/page.c
+@@ -77,7 +77,8 @@ void nilfs_forget_buffer(struct buffer_h
+ 	const unsigned long clear_bits =
+ 		(BIT(BH_Uptodate) | BIT(BH_Dirty) | BIT(BH_Mapped) |
+ 		 BIT(BH_Async_Write) | BIT(BH_NILFS_Volatile) |
+-		 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected));
++		 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected) |
++		 BIT(BH_Delay));
+ 
+ 	lock_buffer(bh);
+ 	set_mask_bits(&bh->b_state, clear_bits, 0);
+@@ -406,7 +407,8 @@ void nilfs_clear_folio_dirty(struct foli
+ 		const unsigned long clear_bits =
+ 			(BIT(BH_Uptodate) | BIT(BH_Dirty) | BIT(BH_Mapped) |
+ 			 BIT(BH_Async_Write) | BIT(BH_NILFS_Volatile) |
+-			 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected));
++			 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected) |
++			 BIT(BH_Delay));
+ 
+ 		bh = head;
+ 		do {
+_
+
+Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
+
+nilfs2-fix-kernel-bug-due-to-missing-clearing-of-checked-flag.patch
 
 
