@@ -1,110 +1,97 @@
-Return-Path: <stable+bounces-87711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7BDA9AA0F9
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 13:16:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA77C9AA12E
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 13:32:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62A121F2273F
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 11:16:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 643501F233DF
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 11:32:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D05219C579;
-	Tue, 22 Oct 2024 11:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A9619AD73;
+	Tue, 22 Oct 2024 11:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jZJxfEFs"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gRV6WAyl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352AD19C559;
-	Tue, 22 Oct 2024 11:16:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D075C199FDE;
+	Tue, 22 Oct 2024 11:31:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729595798; cv=none; b=tffdTRde11nSGi8CrrGsmHS4a6kwrqZTbw7NXjYtRp2BiZHuUgc6Q8SgPmHAAgQjNYFsJBDbWQBAZ7NnBTtU51GuOXR/5bfMDbL3nAHiWbhaTfhx79XeeedLpjkybjTmDIZk56Jx8PdYRBtfZTbIIcS+95td+3sMDvSKKNqID7M=
+	t=1729596717; cv=none; b=d8rBhadUCnfkQ5pJToNCfYpGSXWZbiTxlFb3LQsKXMu52Y+jqmOA4yO1hvvCtqZENvLBkEQLZTejDO6ReVTXU0IH88f6fOOvD4E3J173KU0B0ITpXv7FR/DjXAYmJxPS5mPK3cULNoHGMaXDcXMqvBNDLPbPGLD/bWfSeCVYX4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729595798; c=relaxed/simple;
-	bh=kiuJLXM00R2xjoCq2cO3SkKeY3DGvebHihn+W7XV2pk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VsRJIui09vGh/0tDX2dFZ9LVjjRtPv3m67sEj/UaPgrxjkRUglx5Agw0W/mAv7uqIU09ayrsveKj4bXzRVwFopIISrYjSksBOAhlS3Gbc2HKFdcEs7W+1SE1rUBflpl3zvN43LOdjIWrJuvZF5QBKNxxAshcbo0ZP+wmXA6BZ5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jZJxfEFs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6469EC4CEE6;
-	Tue, 22 Oct 2024 11:16:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729595797;
-	bh=kiuJLXM00R2xjoCq2cO3SkKeY3DGvebHihn+W7XV2pk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jZJxfEFspbSXxF2wh+pr5+Nxk1/qHnVTX43BSYN+uhQt2uHnRLhiqGGhiF5Lhe5PD
-	 +v3TxXOfGvSlH0fjUxFGsMZv8YpUWJ2YuioRZhq+8l4c+WBHT70efkfHKUxoRORNOI
-	 kNJO3/Sd3FUpEGmfERtcFvT9b/HHlqoZl614J2B8oVzGu7BV5PN5wb75C8vZpTlsap
-	 ovwJoNlWfUTzqrFBVC3o4xJKXje9NEbzbGS5qSjze//Pi9F+kjFoTy+AVmuYQKJdD6
-	 J3VtkGe0h+W/W7ho6PkHMbVlnkbr6aIgBe8PP8IH9/on+sFBDgPvu5ZxnFGzh30XhJ
-	 bPitWxCl7ydfw==
-Date: Tue, 22 Oct 2024 13:16:33 +0200
-From: Carlos Maiolino <cem@kernel.org>
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
-	linux-xfs@vger.kernel.org, hch@lst.de
-Subject: Re: [PATCH 20/29] xfs: don't fail repairs on metadata files with no
- attr fork
-Message-ID: <xr2px4yfwpi4cak4e5z4xnjyip6zblxi537v4x4r2ibssajuie@eeubheijryrj>
-References: <172919069364.3451313.14303329469780278917.stgit@frogsfrogsfrogs>
- <172919069796.3451313.2227454340362290952.stgit@frogsfrogsfrogs>
- <2024101838-thickness-exposure-ec78@gregkh>
- <20241021172751.GA21853@frogsfrogsfrogs>
+	s=arc-20240116; t=1729596717; c=relaxed/simple;
+	bh=Wiu8jpqlvHopEX0zCMI49sswBg5XfxfY0ixLSvxZcho=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=kVpIPEOB4zii6mL4Fz+ukyC7VBTgFfzbn2gFonsgrNtFteGezLIT4fDi/aqwnRjje55kSIrkIYflWEBkhm9s8+cL9aLiqk9YbdjHToKxmWyA0kEntcldcfetuhMFBz3cDxs90gEbk8pJmoGenRMUQuaZgsZowu59XjCxu8kPW8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gRV6WAyl; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729596716; x=1761132716;
+  h=message-id:date:mime-version:to:cc:from:subject:
+   content-transfer-encoding;
+  bh=Wiu8jpqlvHopEX0zCMI49sswBg5XfxfY0ixLSvxZcho=;
+  b=gRV6WAyl8sNPYhHEGRbWTG/9E1ZCQ340rUpahuaW5GfoowmWXH9cb8O2
+   +N1QY4tGSUJNpEuJSdhWUjyqEqXL+4dFM6PgDBEblgniySBnzCc93h0gx
+   joiL06m3a6ZdHMfOpBtJnysIpAputxs4t2+SOcYC0guH3nw7SB8EKzw1o
+   /rJ+l3nMzYNcMFJU8e6MUJrtJ17uNi64o+LVVQPaDTP7NgRQbxbtJbMqT
+   6f4Gc7rOEQzSklqaLQ8n2n/0DunGonnAfLJc3KN5mJBOnFjORedsY+3z/
+   UGO2QKdUyhQ1v+MLx5NNHho3UvlC7TraTv50VLe6dV5OjT7AXrEjgxE6T
+   A==;
+X-CSE-ConnectionGUID: FSzmmSBBQzqGJhve+2XkkA==
+X-CSE-MsgGUID: a41vnFv1QImCBlrqzl9/gw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11232"; a="16754526"
+X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; 
+   d="scan'208";a="16754526"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 04:31:55 -0700
+X-CSE-ConnectionGUID: q8dbIADNQwSPzZjZVEEqjA==
+X-CSE-MsgGUID: fckb5dgSSF+8yqQEP1YdSg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; 
+   d="scan'208";a="79756833"
+Received: from yungchua-mobl2.ccr.corp.intel.com (HELO [10.247.108.13]) ([10.247.108.13])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 04:31:53 -0700
+Message-ID: <448a5371-75d5-4016-9e6d-d54252c792b4@linux.intel.com>
+Date: Tue, 22 Oct 2024 19:31:42 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241021172751.GA21853@frogsfrogsfrogs>
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+ Charles Keepax <ckeepax@opensource.cirrus.com>,
+ mstrozek@opensource.cirrus.com, gregkh@linuxfoundation.org,
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, bard.liao@intel.com
+From: "Liao, Bard" <yung-chuan.liao@linux.intel.com>
+Subject: Request to backport "ASoC: Intel: mtl-match: Add cs42l43_l0
+ cs35l56_l23 for MTL"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 21, 2024 at 10:27:51AM GMT, Darrick J. Wong wrote:
-> On Fri, Oct 18, 2024 at 08:00:21AM +0200, Greg KH wrote:
-> > On Thu, Oct 17, 2024 at 11:58:10AM -0700, Darrick J. Wong wrote:
-> > > From: Darrick J. Wong <djwong@kernel.org>
-> > > 
-> > > Fix a minor bug where we fail repairs on metadata files that do not have
-> > > attr forks because xrep_metadata_inode_subtype doesn't filter ENOENT.
-> > > 
-> > > Cc: <stable@vger.kernel.org> # v6.8
-> > > Fixes: 5a8e07e799721b ("xfs: repair the inode core and forks of a metadata inode")
-> > > Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-> > > Reviewed-by: Christoph Hellwig <hch@lst.de>
-> > > ---
-> > >  fs/xfs/scrub/repair.c |    8 +++++---
-> > >  1 file changed, 5 insertions(+), 3 deletions(-)
-> > 
-> > Why is a bugfix / stable-tagged-patch, number 20 in a 29 patch series?
-> > Why isn't it first, or better yet, on it's own if it is fixing a bug
-> > that people want merged "soon"?
-> 
-> I have too many patches, and every time I try to get a set through the
-> review process I end up having to write *more* patches to appease the
-> reviewers, and fixes get lost.  Look at the copyrights on the other
-> patches, I've been trying to get this upstreamed since 2018.
-> 
-> This particular bugfix got lost last month probably because I forgot to
-> ping cem to take it for 6.12-rc1.  Thanks for pushing on this, Greg.
-> 
-> Hey Carlos, can you queue this one up for 6.12-rc5, please?
+Hi,
 
-Sure, it's queued now in next-rc, I'm testing it and I hope to send it to
-for-next today yet. It's the only patch for -rc5.
+commit 84b22af29ff6 ("ASoC: Intel: mtl-match: Add cs42l43_l0 cs35l56_l23
+for MTL") upstream.
 
-Cheers.
-Carlos
+The commit added cs42l43 on SoundWire link 0 and cs35l56 on SoundWire
+link 2 and 3 configuration support on Intel Meteor Lake support. Audio
+will not work without this commit if the laptop use the given audio
+configuration.
 
-> 
-> --D
-> 
-> > thanks,
-> > 
-> > greg k-h
-> > 
-> 
+I wish this commit can be applied to kernel 6.8.
+
+It can be applied and built cleanly on it.
+
+Thanks,
+Bard
 
