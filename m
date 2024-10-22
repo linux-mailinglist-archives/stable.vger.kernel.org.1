@@ -1,244 +1,223 @@
-Return-Path: <stable+bounces-87683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F529A9BA3
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 09:58:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B9D29A9C7C
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 10:27:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B93A71C21413
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 07:58:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E6D51C23690
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 08:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB2D1547E3;
-	Tue, 22 Oct 2024 07:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33C1F171066;
+	Tue, 22 Oct 2024 08:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eH+pqGem"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jC6EnA1X"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934B3155330
-	for <stable@vger.kernel.org>; Tue, 22 Oct 2024 07:58:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29014161310
+	for <stable@vger.kernel.org>; Tue, 22 Oct 2024 08:26:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729583915; cv=none; b=SHC2K7Mc9RTk2543YohrB8Wk8lD16WvfnljXW8q7mGcQxzvJbQgXkwG8wmfhdbq0NDGqo+1LUPTakC3PLBgVgp68MhWriY6Qc36KUT46Keal8WOg6ZabX/JqY8AKa9d2l+fj8tnhyCKx/X1TZxzzl8X65hHd0UoLuAcGc7atOcw=
+	t=1729585622; cv=none; b=qHq8TI3NftCYvmvuqLdJ5XFVU+xrWM1E8W7HIbY3maIN3QoVCGP/jTDocZb0kLcPNSUDTv+52ICtIasbJgSr1cUUrgx51slen2tWZ1CNvG2neJfAbnhUceYWrDia9XvG48noOzRRs5H83U6K9kt0ExrCvVPoTI4JG9+yu49IJ8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729583915; c=relaxed/simple;
-	bh=lTeE1UIRfFH8YAqr+4u3CG+9B/nuNI9gKmA6v3/EVv4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QSkL7nVM0IKXszKHKsFxhaJSor4srd0BpGHtApHwL8r20qfct4QPAOKM3FEhTFVKVjUhg5h7hbgyCYa+A7N2J5Xx6Irjblr0KeQK2xCbXniyCPyS/mPFgmZqOgJyTOm+eTYBAdUM8K2fOts8tH7HXOBDSj1Rftgv1s5X53lvNG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eH+pqGem; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729583913; x=1761119913;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=lTeE1UIRfFH8YAqr+4u3CG+9B/nuNI9gKmA6v3/EVv4=;
-  b=eH+pqGemhl+EktNMdGMBt+Tkzd1d0GxQqv5XzXqocFVey+BdzaOzPvM+
-   F1NDZK9uLVUBmLZzVMSpCzP5cuS8Uql8vAAmF+kVPxndXG6RPbfMLLCCG
-   T4TBa5a9lZoUR4jKdfQTWaEIZPryHBpZoDZFuYp/lVSuY/XvvbqJNgNb3
-   qxoUyTnkJr7TauwcnIBdeqi3ciEz6pgoRDZQ4ODm8DqLAqwpq4mrNNfQZ
-   vNfNYVyXmAINuJiTyBuKxJ3F6VMbWDJj3eNluwUO5qAY4PlLqlGXjtPpa
-   3b5z9DFyYbZwc5Khc0GQjySD4g6DuWdJ1u4Xw3LSYkTIohcVvDqsJ1plX
-   g==;
-X-CSE-ConnectionGUID: RQlkltHISR+EiDbvhGc5uw==
-X-CSE-MsgGUID: VS/HVjgqR2aHHRpUDj4eDg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11232"; a="46587877"
-X-IronPort-AV: E=Sophos;i="6.11,222,1725346800"; 
-   d="scan'208";a="46587877"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 00:58:33 -0700
-X-CSE-ConnectionGUID: RlYdbdsDRre/un0Mcqq2TA==
-X-CSE-MsgGUID: hep+V1GfTeq71UNuWqYvHg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,222,1725346800"; 
-   d="scan'208";a="79954814"
-Received: from fdefranc-mobl3.ger.corp.intel.com (HELO pujfalus-desk.intel.com) ([10.245.244.97])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 00:58:30 -0700
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	kai.vehmanen@linux.intel.com,
-	yung-chuan.liao@linux.intel.com
-Subject: [PATCH stable-6.6.x 3/3] ASoC: SOF: ipc4-control: Add support for ALSA enum control
-Date: Tue, 22 Oct 2024 10:58:52 +0300
-Message-ID: <20241022075852.21271-4-peter.ujfalusi@linux.intel.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241022075852.21271-1-peter.ujfalusi@linux.intel.com>
-References: <20241022075852.21271-1-peter.ujfalusi@linux.intel.com>
+	s=arc-20240116; t=1729585622; c=relaxed/simple;
+	bh=7tvE9XV1b+UMspHAVG7r8xj9pj7djTt7CCt1dacV9Ew=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T8xeRMaDeDVXV434QOHkj5JK6Tet6OamBxuY3CzQDMZkXTOtT/h9VjjAeQGLK4yMy71HOBrRieeKc/OLSORGCP0FZhI3Ilx+rch2nEfvSbe1kCMYqcuA23hD6IC1FilJ37vUClcPjbMAaFa6rVTsisbdrgmqxHs+eIh9sAaLCss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jC6EnA1X; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-53a007743e7so6442468e87.1
+        for <stable@vger.kernel.org>; Tue, 22 Oct 2024 01:26:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1729585618; x=1730190418; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n0GiliwIaLCyGRQWXYx66I75LIQA84ct+U2DkcDdwKs=;
+        b=jC6EnA1XYcYtW5w9vgeDDtPEK5T2hyDLcAYkCeLCwkiSMn5pu/ALjoEWMTrJsdJNiF
+         lmCUjwXpEFlvRr+oRdQLeDbq6dtzzDbTBg70QS2NFllhKmZT91M3r4aQb3MbSktRwkFV
+         ZJDrkq7Qdwyy+vxUCCv+hy5i5FZwEA6UdceSVobUotr1SiOv3O1x2JL34uG39WfWszT/
+         jRBE0lzkV14mwjUSDV8MQb3k283ugTKaEFpUqGsPqN0zB/w4d5G8qxYa/HB1cUzSAYoW
+         KWzHjsBfmVxls0qXKJqKisXF8c1Te8ywVPQqJyo6t2kbEzWoDHMslWNuGwuXQBu3nSY2
+         m1RQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729585618; x=1730190418;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=n0GiliwIaLCyGRQWXYx66I75LIQA84ct+U2DkcDdwKs=;
+        b=ePS1yQAu4qKsrlUi1fdzxsvaJ+YT3dQ67yCTUj267svJEAVebmVrEj4UWa+LmB1VzK
+         Jiv36BSn5eAE83MvzQ9ZzWGAfzczplDhySxNytm20A7Iq/rsY2S+Gv3MC87K9Hh7WR05
+         McuOYqO9aH+pkk/cKpx7FH7suHo6ODhKYCooLdlh0MCroEeMlnn8neB/5qkkr7aO2Ihd
+         yicqH8thPacceBo7L6NTSRfC8swgZupPhPMX8SKDMFk+vrfcflA2Zjx6YXgoKrTSrXiw
+         CewIvpdsJiM4Ro7qn2UL5vK0woGlDPEl70GyEvktlTM6Xu+kqB0dM26iD5QjFrXQz5Oz
+         T+9w==
+X-Forwarded-Encrypted: i=1; AJvYcCWIKnctnMwQQ4tc48lUB8pP8HSypdwtNZfKi1+icw56BLn2cCwPqWbeBtyohpVFflny1VMozFs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySuMrQbcJm37gDdja2qd4STQ2aj+vNR9R/mgnJV5J9wzIVNnby
+	snB7bYt3OBrRg+P8Il5Y5EL1X1nX8tRj6EA+Kt9nh0dOP4YRGr9gVdioge1Gw5OfpZJaxKvwsmd
+	V7KIk0iTXGJK2hsLEQyMV3ZPx/nMdnLzhBkgS
+X-Google-Smtp-Source: AGHT+IEQucMr9xh3AiasaWZklpACkjyVewVAf4ZNFK0lBETmdd0R2zeParDjP7G/u52mxSejv4EmSK84cRfEwEw36kY=
+X-Received: by 2002:a05:6512:3f04:b0:539:ee04:2321 with SMTP id
+ 2adb3069b0e04-53b139f1c95mr847888e87.33.1729585618041; Tue, 22 Oct 2024
+ 01:26:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241021173455.2691973-1-roman.gushchin@linux.dev>
+ <Zxa60Ftbh8eN1MG5@casper.infradead.org> <ZxcKjwhMKmnHTX8Q@google.com>
+ <ZxcgR46zpW8uVKrt@casper.infradead.org> <ZxcrJHtIGckMo9Ni@google.com>
+In-Reply-To: <ZxcrJHtIGckMo9Ni@google.com>
+From: Yosry Ahmed <yosryahmed@google.com>
+Date: Tue, 22 Oct 2024 01:26:20 -0700
+Message-ID: <CAJD7tkb2oUre-tgVyW6XgUaNfGQSSKp=QNAfB0iZoTvHcc0n0w@mail.gmail.com>
+Subject: Re: [PATCH v2] mm: page_alloc: move mlocked flag clearance into free_pages_prepare()
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Hugh Dickins <hughd@google.com>, kvm@vger.kernel.org, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-commit 07a866a41982c896dc46476f57d209a200602946 upstream.
+On Mon, Oct 21, 2024 at 9:33=E2=80=AFPM Roman Gushchin <roman.gushchin@linu=
+x.dev> wrote:
+>
+> On Tue, Oct 22, 2024 at 04:47:19AM +0100, Matthew Wilcox wrote:
+> > On Tue, Oct 22, 2024 at 02:14:39AM +0000, Roman Gushchin wrote:
+> > > On Mon, Oct 21, 2024 at 09:34:24PM +0100, Matthew Wilcox wrote:
+> > > > On Mon, Oct 21, 2024 at 05:34:55PM +0000, Roman Gushchin wrote:
+> > > > > Fix it by moving the mlocked flag clearance down to
+> > > > > free_page_prepare().
+> > > >
+> > > > Urgh, I don't like this new reference to folio in free_pages_prepar=
+e().
+> > > > It feels like a layering violation.  I'll think about where else we
+> > > > could put this.
+> > >
+> > > I agree, but it feels like it needs quite some work to do it in a nic=
+er way,
+> > > no way it can be backported to older kernels. As for this fix, I don'=
+t
+> > > have better ideas...
+> >
+> > Well, what is KVM doing that causes this page to get mapped to userspac=
+e?
+> > Don't tell me to look at the reproducer as it is 403 Forbidden.  All I
+> > can tell is that it's freed with vfree().
+> >
+> > Is it from kvm_dirty_ring_get_page()?  That looks like the obvious thin=
+g,
+> > but I'd hate to spend a lot of time on it and then discover I was looki=
+ng
+> > at the wrong thing.
+>
+> One of the pages is vcpu->run, others belong to kvm->coalesced_mmio_ring.
 
-Enum controls use generic param_id and a generic struct where the data
-is passed to the firmware.
+Looking at kvm_vcpu_fault(), it seems like we after mmap'ing the fd
+returned by KVM_CREATE_VCPU we can access one of the following:
+- vcpu->run
+- vcpu->arch.pio_data
+- vcpu->kvm->coalesced_mmio_ring
+- a page returned by kvm_dirty_ring_get_page()
 
-Stable 6.6.y note:
-Fixes NULL dereference on Meteor Lake platforms with new SOF release
-due to the use of Swithc/Enum controls.
-Link: https://github.com/thesofproject/sof/issues/9600
+It doesn't seem like any of these are reclaimable, why is mlock()'ing
+them supported to begin with? Even if we don't want mlock() to err in
+this case, shouldn't we just do nothing?
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20230919103115.30783-4-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.6.x
----
- sound/soc/sof/ipc4-control.c  | 64 +++++++++++++++++++++++++++++++++++
- sound/soc/sof/ipc4-topology.c | 33 ++++++++++++++++++
- 2 files changed, 97 insertions(+)
+I see a lot of checks at the beginning of mlock_fixup() to check
+whether we should operate on the vma, perhaps we should also check for
+these KVM vmas? or maybe set VM_SPECIAL in kvm_vcpu_mmap()? I am not
+sure tbh, but this doesn't seem right.
 
-diff --git a/sound/soc/sof/ipc4-control.c b/sound/soc/sof/ipc4-control.c
-index 44e11be83482..b4cdcec33e12 100644
---- a/sound/soc/sof/ipc4-control.c
-+++ b/sound/soc/sof/ipc4-control.c
-@@ -297,6 +297,63 @@ static int sof_ipc4_switch_get(struct snd_sof_control *scontrol,
- 	return 0;
- }
- 
-+static bool sof_ipc4_enum_put(struct snd_sof_control *scontrol,
-+			      struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct sof_ipc4_control_data *cdata = scontrol->ipc_control_data;
-+	struct snd_soc_component *scomp = scontrol->scomp;
-+	struct snd_sof_dev *sdev = snd_soc_component_get_drvdata(scomp);
-+	struct snd_sof_widget *swidget;
-+	bool widget_found = false;
-+	bool change = false;
-+	unsigned int i;
-+	u32 value;
-+	int ret;
-+
-+	/* update each channel */
-+	for (i = 0; i < scontrol->num_channels; i++) {
-+		value = ucontrol->value.enumerated.item[i];
-+		change = change || (value != cdata->chanv[i].value);
-+		cdata->chanv[i].channel = i;
-+		cdata->chanv[i].value = value;
-+	}
-+
-+	if (!pm_runtime_active(scomp->dev))
-+		return change;
-+
-+	/* find widget associated with the control */
-+	list_for_each_entry(swidget, &sdev->widget_list, list) {
-+		if (swidget->comp_id == scontrol->comp_id) {
-+			widget_found = true;
-+			break;
-+		}
-+	}
-+
-+	if (!widget_found) {
-+		dev_err(scomp->dev, "Failed to find widget for kcontrol %s\n", scontrol->name);
-+		return false;
-+	}
-+
-+	ret = sof_ipc4_set_generic_control_data(sdev, swidget, scontrol, true);
-+	if (ret < 0)
-+		return false;
-+
-+	return change;
-+}
-+
-+static int sof_ipc4_enum_get(struct snd_sof_control *scontrol,
-+			     struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct sof_ipc4_control_data *cdata = scontrol->ipc_control_data;
-+	unsigned int i;
-+
-+	/* read back each channel */
-+	for (i = 0; i < scontrol->num_channels; i++)
-+		ucontrol->value.enumerated.item[i] = cdata->chanv[i].value;
-+
-+	return 0;
-+}
-+
- static int sof_ipc4_set_get_bytes_data(struct snd_sof_dev *sdev,
- 				       struct snd_sof_control *scontrol,
- 				       bool set, bool lock)
-@@ -562,6 +619,11 @@ static int sof_ipc4_widget_kcontrol_setup(struct snd_sof_dev *sdev, struct snd_s
- 				ret = sof_ipc4_set_get_bytes_data(sdev, scontrol,
- 								  true, false);
- 				break;
-+			case SND_SOC_TPLG_CTL_ENUM:
-+			case SND_SOC_TPLG_CTL_ENUM_VALUE:
-+				ret = sof_ipc4_set_generic_control_data(sdev, swidget,
-+									scontrol, false);
-+				break;
- 			default:
- 				break;
- 			}
-@@ -605,6 +667,8 @@ const struct sof_ipc_tplg_control_ops tplg_ipc4_control_ops = {
- 	.volume_get = sof_ipc4_volume_get,
- 	.switch_put = sof_ipc4_switch_put,
- 	.switch_get = sof_ipc4_switch_get,
-+	.enum_put = sof_ipc4_enum_put,
-+	.enum_get = sof_ipc4_enum_get,
- 	.bytes_put = sof_ipc4_bytes_put,
- 	.bytes_get = sof_ipc4_bytes_get,
- 	.bytes_ext_put = sof_ipc4_bytes_ext_put,
-diff --git a/sound/soc/sof/ipc4-topology.c b/sound/soc/sof/ipc4-topology.c
-index cea8beb5ceb5..c380ddf68a58 100644
---- a/sound/soc/sof/ipc4-topology.c
-+++ b/sound/soc/sof/ipc4-topology.c
-@@ -2148,6 +2148,36 @@ static int sof_ipc4_control_load_volume(struct snd_sof_dev *sdev, struct snd_sof
- 	return 0;
- }
- 
-+static int sof_ipc4_control_load_enum(struct snd_sof_dev *sdev, struct snd_sof_control *scontrol)
-+{
-+	struct sof_ipc4_control_data *control_data;
-+	struct sof_ipc4_msg *msg;
-+	int i;
-+
-+	scontrol->size = struct_size(control_data, chanv, scontrol->num_channels);
-+
-+	/* scontrol->ipc_control_data will be freed in sof_control_unload */
-+	scontrol->ipc_control_data = kzalloc(scontrol->size, GFP_KERNEL);
-+	if (!scontrol->ipc_control_data)
-+		return -ENOMEM;
-+
-+	control_data = scontrol->ipc_control_data;
-+	control_data->index = scontrol->index;
-+
-+	msg = &control_data->msg;
-+	msg->primary = SOF_IPC4_MSG_TYPE_SET(SOF_IPC4_MOD_LARGE_CONFIG_SET);
-+	msg->primary |= SOF_IPC4_MSG_DIR(SOF_IPC4_MSG_REQUEST);
-+	msg->primary |= SOF_IPC4_MSG_TARGET(SOF_IPC4_MODULE_MSG);
-+
-+	msg->extension = SOF_IPC4_MOD_EXT_MSG_PARAM_ID(SOF_IPC4_ENUM_CONTROL_PARAM_ID);
-+
-+	/* Default, initial value for enums: first enum entry is selected (0) */
-+	for (i = 0; i < scontrol->num_channels; i++)
-+		control_data->chanv[i].channel = i;
-+
-+	return 0;
-+}
-+
- static int sof_ipc4_control_load_bytes(struct snd_sof_dev *sdev, struct snd_sof_control *scontrol)
- {
- 	struct sof_ipc4_control_data *control_data;
-@@ -2222,6 +2252,9 @@ static int sof_ipc4_control_setup(struct snd_sof_dev *sdev, struct snd_sof_contr
- 		return sof_ipc4_control_load_volume(sdev, scontrol);
- 	case SND_SOC_TPLG_CTL_BYTES:
- 		return sof_ipc4_control_load_bytes(sdev, scontrol);
-+	case SND_SOC_TPLG_CTL_ENUM:
-+	case SND_SOC_TPLG_CTL_ENUM_VALUE:
-+		return sof_ipc4_control_load_enum(sdev, scontrol);
- 	default:
- 		break;
- 	}
--- 
-2.47.0
+FWIW, I think moving the mlock clearing from __page_cache_release ()
+to free_pages_prepare() (or another common function in the page
+freeing path) may be the right thing to do in its own right. I am just
+wondering why we are not questioning the mlock() on the KVM vCPU
+mapping to begin with.
 
+Is there a use case for this that I am missing?
+
+>
+> Here is the reproducer:
+>
+> #define _GNU_SOURCE
+>
+> #include <endian.h>
+> #include <fcntl.h>
+> #include <stdint.h>
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <string.h>
+> #include <sys/mount.h>
+> #include <sys/stat.h>
+> #include <sys/syscall.h>
+> #include <sys/types.h>
+> #include <unistd.h>
+>
+> #ifndef __NR_mlock2
+> #define __NR_mlock2 325
+> #endif
+>
+> uint64_t r[3] =3D {0xffffffffffffffff, 0xffffffffffffffff, 0xffffffffffff=
+ffff};
+>
+> #ifndef KVM_CREATE_VM
+> #define KVM_CREATE_VM 0xae01
+> #endif
+>
+> #ifndef KVM_CREATE_VCPU
+> #define KVM_CREATE_VCPU 0xae41
+> #endif
+>
+> int main(void)
+> {
+>   syscall(__NR_mmap, /*addr=3D*/0x1ffff000ul, /*len=3D*/0x1000ul, /*prot=
+=3D*/0ul,
+>           /*flags=3DMAP_FIXED|MAP_ANONYMOUS|MAP_PRIVATE*/ 0x32ul, /*fd=3D=
+*/-1,
+>           /*offset=3D*/0ul);
+>   syscall(__NR_mmap, /*addr=3D*/0x20000000ul, /*len=3D*/0x1000000ul,
+>           /*prot=3DPROT_WRITE|PROT_READ|PROT_EXEC*/ 7ul,
+>           /*flags=3DMAP_FIXED|MAP_ANONYMOUS|MAP_PRIVATE*/ 0x32ul, /*fd=3D=
+*/-1,
+>           /*offset=3D*/0ul);
+>   syscall(__NR_mmap, /*addr=3D*/0x21000000ul, /*len=3D*/0x1000ul, /*prot=
+=3D*/0ul,
+>           /*flags=3DMAP_FIXED|MAP_ANONYMOUS|MAP_PRIVATE*/ 0x32ul, /*fd=3D=
+*/-1,
+>           /*offset=3D*/0ul);
+>   intptr_t res =3D syscall(__NR_openat, /*fd=3D*/0xffffff9c, /*file=3D*/"=
+/dev/kvm",
+>                 /*flags=3D*/0, /*mode=3D*/0);
+>   if (res !=3D -1)
+>     r[0] =3D res;
+>   res =3D syscall(__NR_ioctl, /*fd=3D*/r[0], /*cmd=3D*/KVM_CREATE_VM, /*t=
+ype=3D*/0ul);
+>   if (res !=3D -1)
+>     r[1] =3D res;
+>   res =3D syscall(__NR_ioctl, /*fd=3D*/r[1], /*cmd=3D*/KVM_CREATE_VCPU, /=
+*id=3D*/0ul);
+>   if (res !=3D -1)
+>     r[2] =3D res;
+>   syscall(__NR_mmap, /*addr=3D*/0x20000000ul, /*len=3D*/0xb36000ul,
+>           /*prot=3DPROT_SEM|PROT_WRITE|PROT_READ|PROT_EXEC*/ 0xful,
+>           /*flags=3DMAP_FIXED|MAP_SHARED*/ 0x11ul, /*fd=3D*/r[2], /*offse=
+t=3D*/0ul);
+>   syscall(__NR_mlock2, /*addr=3D*/0x20000000ul, /*size=3D*/0x400000ul,
+>           /*flags=3D*/0ul);
+>   syscall(__NR_mremap, /*addr=3D*/0x200ab000ul, /*len=3D*/0x1000ul,
+>           /*newlen=3D*/0x1000ul,
+>           /*flags=3DMREMAP_DONTUNMAP|MREMAP_FIXED|MREMAP_MAYMOVE*/ 7ul,
+>           /*newaddr=3D*/0x20ffc000ul);
+>   return 0;
+> }
+>
 
