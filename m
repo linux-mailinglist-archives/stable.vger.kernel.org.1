@@ -1,146 +1,197 @@
-Return-Path: <stable+bounces-87746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C76A09AB243
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 17:39:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D83B9AB248
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 17:39:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E24A1F23302
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 15:39:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E5581C21C99
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 15:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8516C19E97A;
-	Tue, 22 Oct 2024 15:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B50B41A070D;
+	Tue, 22 Oct 2024 15:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IRSh7wcv"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vrsey+98"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9BC2E406;
-	Tue, 22 Oct 2024 15:39:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9C619D091
+	for <stable@vger.kernel.org>; Tue, 22 Oct 2024 15:39:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729611551; cv=none; b=NscB1p7c26eDeEjuJaQglW0783I3k4VPnxKwYihhyj/nGIJXG+uEQRFlRRWtrxjyrEhWDN3iiBrSYqLai7f6vJRih/CKqJBqJNbrXFLDsakX4i9sJoteOoJGzjoNt175XYrL8c3v8EBjRKx+2PP8ZpqXiMVPEMC0YGrrwbrkHOw=
+	t=1729611578; cv=none; b=sbPUu/zKyS4wR+LCiGhiULtMwdh9sv2PfsNEpZEId67mHy0DmG3FNEeOZTPL1uEq4cb9LFkJiigPOwq/5tzvGPMC6lQWLUdkvBm5RV3qAWGHwQp6xD3SSZZhabrsH7iJw4vRnEHLVhwytl9oCLrDrByNQwCQOJ9j+JPfykIkMmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729611551; c=relaxed/simple;
-	bh=HBAd+pH1suGBZHzKJW+16YwwQdaznnAtSA8k0AlCw/Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XFoQjMRX7sdT2i/KntK5xzagRAKvwEk+75Sb5+QpVWEp0sfrGQN4J16DvdKTfXwaGSbOU0cF36D6Whl9NLCzGDsy3tLvkHt9b1r6Ha7NV8DDjlSuMVOik+0fpDo1P9xw5MjPUp2+BMap7Y2WhBhYVwzOluU4UOhudmt0yrUf0NY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IRSh7wcv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F6AC4CEC3;
-	Tue, 22 Oct 2024 15:39:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729611550;
-	bh=HBAd+pH1suGBZHzKJW+16YwwQdaznnAtSA8k0AlCw/Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IRSh7wcv1VAvmrR8bGUr+cmGKAsxlIyr93qsBirHrXE0NQTlCHrKa6jwh6BKM1U92
-	 1VzPCJOr6wTWFtc+TccGtAVu89N3Fso3SGT0FS+n0wPvwM+rxviMIaY7thYvxfuOEb
-	 Wz1qC2qs9E3SJtVSt33E+rw8ZSST8mDjW7cPfuB6UoN4Tl91BaIH5HDMNiv3r3aB1/
-	 kWKM5lpJxYxliuRtKhGHzhPJTnhC3XxthvDbSRaX0kONEHzVsr16/5/Wk2/4LhSjcS
-	 D7ewARlnNhmDkIsn19WF8luwc8JWSKyXMsxUU6p3iX0z8oA74Kim6fswJNpN5ckAmI
-	 ksfeW2H9yErKA==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1t3Gyg-000000001MB-0xbc;
-	Tue, 22 Oct 2024 17:39:22 +0200
-Date: Tue, 22 Oct 2024 17:39:22 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Chris Lew <quic_clew@quicinc.com>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	Bjorn Andersson <quic_bjorande@quicinc.com>,
-	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] rpmsg: glink: Handle rejected intent request better
-Message-ID: <ZxfHKncYLeiIH3io@hovoldconsulting.com>
-References: <20241022-pmic-glink-ecancelled-v1-0-9e26fc74e0a3@oss.qualcomm.com>
- <20241022-pmic-glink-ecancelled-v1-1-9e26fc74e0a3@oss.qualcomm.com>
+	s=arc-20240116; t=1729611578; c=relaxed/simple;
+	bh=wcNc2MA1GyKb0CNLmVy6i3fGKYzMQ9ZDso8LkvyEZCM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=PZuBNVDBxkLJ2uHIp1pgQ85XjH3sNn7+creuhjH3YsRHaplyEnS4B/LbVNT1vmnGVfOvUHwHBX1gu+ZX6YVtvGz76jqiWSruY7MHdcMjUhb2utYqRNTmZRMbM5klw9S2co/prN+JF2JVJ+kFx2chhqYHgmReFwG22MReYCup9y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vrsey+98; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-7e9b2d75d6dso4783377a12.1
+        for <stable@vger.kernel.org>; Tue, 22 Oct 2024 08:39:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1729611576; x=1730216376; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=h3y119MD9wmKtbCuck0m1HoKm8DFO9OxY9WfoV49VvA=;
+        b=vrsey+98Ttl7/DSnaCzGWGBzRJcc7/IbYdggxin5OnANf/Mw3pxfY4CVR27t9adP8q
+         fhX4X9LypDodT9b45UYBfUBHNjekV+5G0ezgCjEhf6ZfalC5aay0BfTC0uFmyHaFo2Hn
+         iBO1ed5siuuFzMXnCBcifaoY8pYLpnlsVf3iSd6OlEHVAzw6Waf6y3XhFcBUkQwtES1m
+         zyYM1trLoWDb4w93OPuXAWrtIHXTicmzaXViQka97kumovx8FzYbKOAgu2JW8OQkjIFq
+         2vrPtyi9mvfGTrT1Wby2y/9+A3XRdG0edj7okiEOeQKWwwFKZK1YK1SULR/6TQofpBKN
+         58Cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729611576; x=1730216376;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=h3y119MD9wmKtbCuck0m1HoKm8DFO9OxY9WfoV49VvA=;
+        b=cwtWuoEiquR5Te5Jov+BclLyfhGZIb6km+bILVhn3SxdNZ8gntggSL4/ge0oioGNzF
+         y3emzpIB7KDrdHy1ul4IwmNFlQBHOWtijoIDm6cHkQj+cs8JDa1E0WVfjV3LmO9DeEBz
+         yAn/Y5aFdFtD9XAgZtx9SfZV5bIYzM59nuHxMG31RXXHhjAax4KiS7w3kN0dOV7PjV8Z
+         /iwES8JLvrPeMTfU9xl86KKyKoKosd+CvUSlwTUAO4emA+IbSIx+T6Y4QPSEbtsQMh/p
+         q9Uyunw2ZkG+pou+fg7IMh27EiSwsTzw2ZTKIHhUOQ0h0Dwk0WUDQV1qn+1/sfOxPS5L
+         fZ9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXVGpwxftSUDCtv9hBNOev/fkyB0Gla2qSQH4kreU4ah1C7y8siPeJM+1j4dhGhXTS99MVj6zs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YypmnzIxnci+I9n1l/B9Kl/rpVoU2d+PskK8ZIuGNhwUV6L8JGe
+	0j3dMPmwqDVw+yeOlYoAzAih4pk/Kbx/y3MEeq6LlbGV/qJJgPs+CDUjOrvLPcqYToG9SXjw4FY
+	Lzw==
+X-Google-Smtp-Source: AGHT+IGC9vYjja2RJe4yfi4oSZXSGryKcMpLP6CLXouCF0l5UeX3c76IyljH5E7eZYNj8rn5Bmx44Cfiq2k=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:9d:3983:ac13:c240])
+ (user=seanjc job=sendgmr) by 2002:a63:f545:0:b0:7ea:67a0:9651 with SMTP id
+ 41be03b00d2f7-7eacc6e6631mr17501a12.3.1729611576172; Tue, 22 Oct 2024
+ 08:39:36 -0700 (PDT)
+Date: Tue, 22 Oct 2024 08:39:34 -0700
+In-Reply-To: <CAJD7tkb2oUre-tgVyW6XgUaNfGQSSKp=QNAfB0iZoTvHcc0n0w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241022-pmic-glink-ecancelled-v1-1-9e26fc74e0a3@oss.qualcomm.com>
+Mime-Version: 1.0
+References: <20241021173455.2691973-1-roman.gushchin@linux.dev>
+ <Zxa60Ftbh8eN1MG5@casper.infradead.org> <ZxcKjwhMKmnHTX8Q@google.com>
+ <ZxcgR46zpW8uVKrt@casper.infradead.org> <ZxcrJHtIGckMo9Ni@google.com> <CAJD7tkb2oUre-tgVyW6XgUaNfGQSSKp=QNAfB0iZoTvHcc0n0w@mail.gmail.com>
+Message-ID: <ZxfHNo1dUVcOLJYK@google.com>
+Subject: Re: [PATCH v2] mm: page_alloc: move mlocked flag clearance into free_pages_prepare()
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosryahmed@google.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>, Matthew Wilcox <willy@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Hugh Dickins <hughd@google.com>, kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 22, 2024 at 04:17:11AM +0000, Bjorn Andersson wrote:
-> The initial implementation of request intent response handling dealt
-> with two outcomes; granted allocations, and all other cases being
-> considered -ECANCELLED (likely from "cancelling the operation as the
-> remote is going down").
+On Tue, Oct 22, 2024, Yosry Ahmed wrote:
+> On Mon, Oct 21, 2024 at 9:33=E2=80=AFPM Roman Gushchin <roman.gushchin@li=
+nux.dev> wrote:
+> >
+> > On Tue, Oct 22, 2024 at 04:47:19AM +0100, Matthew Wilcox wrote:
+> > > On Tue, Oct 22, 2024 at 02:14:39AM +0000, Roman Gushchin wrote:
+> > > > On Mon, Oct 21, 2024 at 09:34:24PM +0100, Matthew Wilcox wrote:
+> > > > > On Mon, Oct 21, 2024 at 05:34:55PM +0000, Roman Gushchin wrote:
+> > > > > > Fix it by moving the mlocked flag clearance down to
+> > > > > > free_page_prepare().
+> > > > >
+> > > > > Urgh, I don't like this new reference to folio in free_pages_prep=
+are().
+> > > > > It feels like a layering violation.  I'll think about where else =
+we
+> > > > > could put this.
+> > > >
+> > > > I agree, but it feels like it needs quite some work to do it in a n=
+icer way,
+> > > > no way it can be backported to older kernels. As for this fix, I do=
+n't
+> > > > have better ideas...
+> > >
+> > > Well, what is KVM doing that causes this page to get mapped to usersp=
+ace?
+> > > Don't tell me to look at the reproducer as it is 403 Forbidden.  All =
+I
+> > > can tell is that it's freed with vfree().
+> > >
+> > > Is it from kvm_dirty_ring_get_page()?  That looks like the obvious th=
+ing,
+> > > but I'd hate to spend a lot of time on it and then discover I was loo=
+king
+> > > at the wrong thing.
+> >
+> > One of the pages is vcpu->run, others belong to kvm->coalesced_mmio_rin=
+g.
+>=20
+> Looking at kvm_vcpu_fault(), it seems like we after mmap'ing the fd
+> returned by KVM_CREATE_VCPU we can access one of the following:
+> - vcpu->run
+> - vcpu->arch.pio_data
+> - vcpu->kvm->coalesced_mmio_ring
+> - a page returned by kvm_dirty_ring_get_page()
+>=20
+> It doesn't seem like any of these are reclaimable,
 
-For the benefit of casual reviewers and contributors, could you add
-introductory comment about what "intents" are?
+Correct, these are all kernel allocated pages that KVM exposes to userspace=
+ to
+facilitate bidirectional sharing of large chunks of data.
 
-> But on some channels intent allocation is not supported, instead the
-> remote will pre-allocate and announce a fixed number of intents for the
-> sender to use. If for such channels an rpmsg_send() is being invoked
-> before any channels have been announced, an intent request will be
-> issued and as this comes back rejected the call is failed with
-> -ECANCELLED.
+> why is mlock()'ing them supported to begin with?
 
-It's actually the one L -ECANCELED
+Because no one realized it would be problematic, and KVM would have had to =
+go out
+of its way to prevent mlock().
 
-s/is failed/fails/ ?
- 
-> Given that this is reported in the same way as the remote being shut
-> down, there's no way for the client to differentiate the two cases.
-> 
-> In line with the original GLINK design, change the return value to
-> -EAGAIN for the case where the remote rejects an intent allocation
-> request.
-> 
-> It's tempting to handle this case in the GLINK core, as we expect
-> intents to show up in this case. But there's no way to distinguish
-> between this case and a rejection for a too big allocation, nor is it
-> possible to predict if a currently used (and seeminly suitable) intent
+> Even if we don't want mlock() to err in this case, shouldn't we just do
+> nothing?
 
-seemingly
+Ideally, yes.
 
-> will be returned for reuse or not. As such, returning the error to the
-> client and allow it to react seems to be the only sensible solution.
+> I see a lot of checks at the beginning of mlock_fixup() to check
+> whether we should operate on the vma, perhaps we should also check for
+> these KVM vmas?
 
-s/allow/allowing/ ?
+Definitely not.  KVM may be doing something unexpected, but the VMA certain=
+ly
+isn't unique enough to warrant mm/ needing dedicated handling.
 
-> In addition to this, commit 'c05dfce0b89e ("rpmsg: glink: Wait for
-> intent, not just request ack")' changed the logic such that the code
-> always wait for an intent request response and an intent. This works out
-> in most cases, but in the event that a intent request is rejected and no
+Focusing on KVM is likely a waste of time.  There are probably other subsys=
+tems
+and/or drivers that .mmap() kernel allocated memory in the same way.  Odds =
+are
+good KVM is just the messenger, because syzkaller knows how to beat on KVM.=
+  And
+even if there aren't any other existing cases, nothing would prevent them f=
+rom
+coming along in the future.
 
-an intent
+> Trying to or maybe set VM_SPECIAL in kvm_vcpu_mmap()? I am not
+> sure tbh, but this doesn't seem right.
 
-> further intent arrives (e.g. client asks for a too big intent), the code
-> will stall for 10 seconds and then return -ETIMEDOUT; instead of a more
-> suitable error.
-> 
-> This change also resulted in intent requests racing with the shutdown of
-> the remote would be exposed to this same problem, unless some intent
-> happens to arrive. A patch for this was developed and posted by Sarannya
-> S [1], and has been incorporated here.
-> 
-> To summarize, the intent request can end in 4 ways:
-> - Timeout, no response arrived => return -ETIMEDOUT
-> - Abort TX, the edge is going away => return -ECANCELLED
-> - Intent request was rejected => return -EAGAIN
-> - Intent request was accepted, and an intent arrived => return 0
-> 
-> This patch was developed with input from Sarannya S, Deepak Kumar Singh,
-> and Chris Lew.
-> 
-> [1] https://lore.kernel.org/all/20240925072328.1163183-1-quic_deesin@quicinc.com/
-> 
-> Fixes: c05dfce0b89e ("rpmsg: glink: Wait for intent, not just request ack")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Agreed.  VM_DONTEXPAND is the only VM_SPECIAL flag that is remotely appropr=
+iate,
+but setting VM_DONTEXPAND could theoretically break userspace, and other th=
+an
+preventing mlock(), there is no reason why the VMA can't be expanded.  I do=
+ubt
+any userspace VMM is actually remapping and expanding a vCPU mapping, but t=
+rying
+to fudge around this outside of core mm/ feels kludgy and has the potential=
+ to
+turn into a game of whack-a-mole.
 
-Nit picks aside, this was all nice and clear.
+> FWIW, I think moving the mlock clearing from __page_cache_release ()
+> to free_pages_prepare() (or another common function in the page
+> freeing path) may be the right thing to do in its own right. I am just
+> wondering why we are not questioning the mlock() on the KVM vCPU
+> mapping to begin with.
+>=20
+> Is there a use case for this that I am missing?
 
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Not that I know of, I suspect mlock() is allowed simply because it's allowe=
+d by
+default.
 
