@@ -1,130 +1,253 @@
-Return-Path: <stable+bounces-87733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A26339AB0E2
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 16:31:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC5949AB12A
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 16:45:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D148E1C225F2
-	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 14:31:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 682342845FA
+	for <lists+stable@lfdr.de>; Tue, 22 Oct 2024 14:45:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F42001A00F8;
-	Tue, 22 Oct 2024 14:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D4419D089;
+	Tue, 22 Oct 2024 14:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GRGLOJjx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GQS6Ee3x"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35AD193409;
-	Tue, 22 Oct 2024 14:31:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07FD7DA7C;
+	Tue, 22 Oct 2024 14:45:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729607489; cv=none; b=pEf9ttB6qk87H0+9CEedX/rHTc39lt8yeV+Yi1+FBpv7G5C/kGSj0XCsVU/YAQhd8KNSztEQZo7nEvePpmsPe6KKiuPa0xrmhPBl2oNDsSnsAQUcxAlDvRvGUKYPsF8x/G7T6li1GlevEY5wgB/827Io8FB3RixmJq3gAZiQHFU=
+	t=1729608335; cv=none; b=S7OahKHBl/czY0inWqUhICBYv4v6UkNlsEMjQR4h7+4Qvc3TTly2+c8Mat+xLpnQRW4VV6Mv3FKMGdo7BARTW0dcX//+ph3hesIsqVVz4/rqBiKr9VFMxqIRBmBZLZglT6xvkRuyGgUD2ns+zaXoVzptMa6P51B/5M7NhjFsGT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729607489; c=relaxed/simple;
-	bh=fZXbOxyaHdvHUYh+ECDwoOfE5XM+s7pGRSfNL5VSMws=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T9D+JULCbvsLcIiBJ1fN2hemEgCC8hitXy9nsBbNP3bwSG2Jx84/xReVYyk228MBy/u6mryIL2DrMksW8lZllLXDcvnt4KizYCvd2CEc+byUgja+hzlH7e/7mc2slq3nY+yfdtdlCYRxhwnvxBGzYtepJwr/rAy+EaXTxOQ+Bzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GRGLOJjx; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729607488; x=1761143488;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=fZXbOxyaHdvHUYh+ECDwoOfE5XM+s7pGRSfNL5VSMws=;
-  b=GRGLOJjx8WSe3/yknZw/L7zGEFaKywU6J6698ch398lG1X6nbGQ/bYKn
-   /1e/Qt404ggrSqUSCcoU9CnTZ7o3Ck/UxPJa/lN5BSI1We5PUQxbGZA0L
-   AwqIMIegoDB/8dBnmgqpUKwVaFQEBobjS/sEFtsRwtcjOD5Z+TLZ1tdr6
-   5CDQcdyBztpn2m2i9I7hp77wPBKqDvdv391sUNIGZBC3UGlTe55zCnjt2
-   sR/5MqByuksdPiAJNYug75WKMEMeIYhPuV2XJdK+Plo8+zhxKDZ0FQLBf
-   3XA3uB+Ab5rXHNy3v0gYhuadZgittG7BmNd8bBXC/cALJm74aU2HX9e1b
-   Q==;
-X-CSE-ConnectionGUID: 6EcSRm9rTWKSsapDb2Y45Q==
-X-CSE-MsgGUID: tYU6ZCPeQfe5WviZTnV+ew==
-X-IronPort-AV: E=McAfee;i="6700,10204,11233"; a="46632523"
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; 
-   d="scan'208";a="46632523"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 07:31:27 -0700
-X-CSE-ConnectionGUID: 4Ug4VnKATU6YqzzbJEGGyg==
-X-CSE-MsgGUID: xRM+iuBnQeuiw+dAWv1hwQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; 
-   d="scan'208";a="84680540"
-Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.199]) ([10.237.72.199])
-  by orviesa005.jf.intel.com with ESMTP; 22 Oct 2024 07:31:25 -0700
-Message-ID: <118041cf-07b1-457c-ad59-b9c8d48342b9@linux.intel.com>
-Date: Tue, 22 Oct 2024 17:33:37 +0300
+	s=arc-20240116; t=1729608335; c=relaxed/simple;
+	bh=8dw1hiQ0u7Oy3sa4M/iR3fwXrom58zBKrO67YiZdB0s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TIWFpt+eyP7N+ya3yIZEAPqnPtEJpop45R6QNgN0oHibWJZCGVuHzRMLl4vfDTeYlflx96O9YUk4h3wj7MKOS001sFwiloKw2bzKSXUOWcpe5UglNZXbErgAQyytAQT3zgqvyVglSw9HSmKmwlJkXDhvYbz9yOAHe9wffSgHhP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GQS6Ee3x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB223C4CEC3;
+	Tue, 22 Oct 2024 14:45:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1729608335;
+	bh=8dw1hiQ0u7Oy3sa4M/iR3fwXrom58zBKrO67YiZdB0s=;
+	h=From:To:Cc:Subject:Date:From;
+	b=GQS6Ee3x3kAmacpVuQe4merR4RFkr9/tYoEvzIQURJYHNpaDijjEOwR8XvfpH+A+5
+	 XLWgE/F+N885gmc0Ltcexo1TXoy0Md1bBU+wmHp8UH43huqEaRpBr83GE9xJGIHFbZ
+	 gLJhplZ2FY7aDLxJxiy1eACbGbVBOJdKYZuLbOmA=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org,
+	stable@vger.kernel.org
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 5.10.228
+Date: Tue, 22 Oct 2024 16:45:30 +0200
+Message-ID: <2024102230-surpass-uncloak-e888@gregkh>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] xhci: Fix Link TRB DMA in command ring stopped
- completion event
-To: Faisal Hassan <quic_faisalh@quicinc.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Mathias Nyman <mathias.nyman@intel.com>
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20241021131904.20678-1-quic_faisalh@quicinc.com>
- <51a0598a-2618-4501-af40-f1e9a1463bca@linux.intel.com>
- <07744fc7-633f-477e-96e9-8f498a3b40e8@quicinc.com>
-Content-Language: en-US
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-In-Reply-To: <07744fc7-633f-477e-96e9-8f498a3b40e8@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 22.10.2024 15.34, Faisal Hassan wrote:
-> Hi Mathias,
-> 
->> Do we in this COMP_COMMAND_RING_STOPPED case even need to check if
->> cmd_dma != (u64)cmd_dequeue_dma, or if command ring stopped on a link TRB?
->>
->> Could we just move the COMP_COMMAND_RING_STOPPED handling a bit earlier?
->>
->> if (cmd_comp_code == COMP_COMMAND_RING_STOPPED) {
->>      complete_all(&xhci->cmd_ring_stop_completion);
->>          return;
->> }
->>
->> If I remember correctly it should just turn aborted command TRBs into
->> no-ops,
->> and restart the command ring
->>
-> 
-> Thanks for reviewing the changes!
-> 
-> Yes, you’re right. As part of restarting the command ring, we just ring
-> the doorbell.
-> 
-> If we move the event handling without validating the dequeue pointer,
-> wouldn’t it be a risk if we don’t check what the xHC is holding in its
-> dequeue pointer? If we are not setting it, it starts from wherever it
-> stopped. What if the dequeue pointer got corrupted or is not pointing to
-> any of the TRBs in the command ring?
+I'm announcing the release of the 5.10.228 kernel.
 
-For that to happen the xHC host would have to corrupt its internal command
-ring dequeue pointer. Not impossible, but an unlikely HW flaw, and a separate
-issue. A case like that could be solved by writing the address of the next valid
-(non-aborted) command to the CRCR register in xhci_handle_stopped_cmd_ring() before
-ringing the doorbell.
+All users of the 5.10 kernel series must upgrade.
 
-The case you found where a command abort is not handled properly due to stopping
-on a link TRB is a real xhci driver issue that would be nice to get solved.
+The updated 5.10.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-5.10.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
-For the COMP_COMMAND_RING_STOPPED case we don't really care that much
-on which command it stopped, for other commands we do.
+thanks,
 
-Thanks
-Mathias
+greg k-h
+
+------------
+
+ Makefile                                            |    2 
+ arch/arm64/kernel/probes/decode-insn.c              |   16 ++++--
+ arch/arm64/kernel/probes/simulate-insn.c            |   18 ++-----
+ arch/powerpc/mm/numa.c                              |    6 +-
+ arch/s390/kvm/diag.c                                |    2 
+ arch/x86/entry/entry.S                              |    5 ++
+ arch/x86/entry/entry_32.S                           |    6 +-
+ arch/x86/include/asm/cpufeatures.h                  |    5 +-
+ arch/x86/kernel/apic/apic.c                         |   14 +++++
+ arch/x86/kernel/cpu/bugs.c                          |   32 ++++++++++++
+ arch/x86/kernel/cpu/common.c                        |    3 +
+ arch/x86/kernel/cpu/resctrl/core.c                  |    4 -
+ block/blk-rq-qos.c                                  |    2 
+ drivers/bluetooth/btusb.c                           |   13 +++--
+ drivers/gpu/drm/radeon/radeon_encoders.c            |    2 
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c                 |    1 
+ drivers/iio/adc/Kconfig                             |    4 +
+ drivers/iio/common/hid-sensors/hid-sensor-trigger.c |    2 
+ drivers/iio/dac/Kconfig                             |    3 +
+ drivers/iio/light/opt3001.c                         |    4 +
+ drivers/iio/light/veml6030.c                        |    5 --
+ drivers/iio/proximity/Kconfig                       |    2 
+ drivers/irqchip/irq-gic-v3-its.c                    |   26 +++++++---
+ drivers/net/ethernet/cadence/macb_main.c            |   14 ++++-
+ drivers/parport/procfs.c                            |   22 ++++----
+ drivers/s390/char/sclp_vt220.c                      |    4 -
+ drivers/usb/host/xhci.h                             |    2 
+ drivers/usb/serial/option.c                         |    8 +++
+ fs/fat/namei_vfat.c                                 |    2 
+ fs/nilfs2/dir.c                                     |   50 ++++++++++----------
+ fs/nilfs2/namei.c                                   |   39 ++++++++++-----
+ fs/nilfs2/nilfs.h                                   |    2 
+ include/linux/fsl/enetc_mdio.h                      |    3 -
+ include/linux/irqchip/arm-gic-v4.h                  |    4 +
+ io_uring/io_uring.c                                 |   21 ++++++++
+ kernel/time/posix-clock.c                           |    3 +
+ mm/swapfile.c                                       |    2 
+ net/bluetooth/af_bluetooth.c                        |    1 
+ net/ipv4/tcp_output.c                               |    2 
+ net/mac80211/cfg.c                                  |    3 +
+ net/mac80211/key.c                                  |    2 
+ net/mptcp/mib.c                                     |    2 
+ net/mptcp/mib.h                                     |    2 
+ net/mptcp/protocol.c                                |   26 ++++++++--
+ net/mptcp/protocol.h                                |    1 
+ net/mptcp/subflow.c                                 |    3 -
+ sound/pci/hda/patch_conexant.c                      |   19 +++++++
+ virt/kvm/kvm_main.c                                 |    5 +-
+ 48 files changed, 307 insertions(+), 112 deletions(-)
+
+Aaron Thompson (1):
+      Bluetooth: Remove debugfs directory on module init failure
+
+Aneesh Kumar K.V (1):
+      powerpc/mm: Always update max/min_low_pfn in mem_topology_setup()
+
+Benjamin B. Frost (1):
+      USB: serial: option: add support for Quectel EG916Q-GL
+
+Breno Leitao (1):
+      KVM: Fix a data race on last_boosted_vcpu in kvm_vcpu_on_spin()
+
+Christophe JAILLET (1):
+      iio: hid-sensors: Fix an error handling path in _hid_sensor_set_report_latency()
+
+Daniele Palmas (1):
+      USB: serial: option: add Telit FN920C04 MBIM compositions
+
+Emil Gedenryd (1):
+      iio: light: opt3001: add missing full-scale range value
+
+Felix Moessbauer (2):
+      io_uring/sqpoll: do not allow pinning outside of cpuset
+      io_uring/sqpoll: do not put cpumask on stack
+
+Geliang Tang (1):
+      mptcp: track and update contiguous data status
+
+Greg Kroah-Hartman (1):
+      Linux 5.10.228
+
+Javier Carrasco (8):
+      iio: dac: ad5770r: add missing select REGMAP_SPI in Kconfig
+      iio: dac: ltc1660: add missing select REGMAP_SPI in Kconfig
+      iio: dac: stm32-dac-core: add missing select REGMAP_MMIO in Kconfig
+      iio: adc: ti-ads8688: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+      iio: light: veml6030: fix ALS sensor resolution
+      iio: light: veml6030: fix IIO device retrieval from embedded device
+      iio: proximity: mb1232: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+      iio: adc: ti-ads124s08: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+
+Jens Axboe (2):
+      io_uring/sqpoll: retain test for whether the CPU is valid
+      io_uring/sqpoll: close race on waiting for sqring entries
+
+Jim Mattson (1):
+      x86/cpufeatures: Define X86_FEATURE_AMD_IBPB_RET
+
+Jinjie Ruan (1):
+      posix-clock: Fix missing timespec64 check in pc_clock_settime()
+
+Johannes Berg (1):
+      wifi: mac80211: fix potential key use-after-free
+
+Johannes Wikner (4):
+      x86/cpufeatures: Add a IBPB_NO_RET BUG flag
+      x86/entry: Have entry_ibpb() invalidate return predictions
+      x86/bugs: Skip RSB fill at VMEXIT
+      x86/bugs: Do not use UNTRAIN_RET with IBPB on entry
+
+Liu Shixin (1):
+      mm/swapfile: skip HugeTLB pages for unuse_vma
+
+Luiz Augusto von Dentz (1):
+      Bluetooth: btusb: Fix regression with fake CSR controllers 0a12:0001
+
+Marc Zyngier (1):
+      irqchip/gic-v4: Don't allow a VMOVP on a dying VPE
+
+Mark Rutland (2):
+      arm64: probes: Remove broken LDR (literal) uprobe support
+      arm64: probes: Fix simulate_ldr*_literal()
+
+Mathias Nyman (1):
+      xhci: Fix incorrect stream context type macro
+
+Michael Mueller (1):
+      KVM: s390: Change virtual to physical address access in diag 0x258 handler
+
+Nathan Chancellor (1):
+      x86/resctrl: Annotate get_mem_config() functions as __init
+
+Nianyao Tang (1):
+      irqchip/gic-v3-its: Fix VSYNC referencing an unmapped VPE on GIC v4.1
+
+Nikolay Kuratov (1):
+      drm/vmwgfx: Handle surface check failure correctly
+
+OGAWA Hirofumi (1):
+      fat: fix uninitialized variable
+
+Oleksij Rempel (1):
+      net: macb: Avoid 20s boot delay by skipping MDIO bus registration for fixed-link PHY
+
+Omar Sandoval (1):
+      blk-rq-qos: fix crash on rq_qos_wait vs. rq_qos_wake_function race
+
+Paolo Abeni (2):
+      mptcp: handle consistently DSS corruption
+      tcp: fix mptcp DSS corruption due to large pmtu xmit
+
+Pawan Gupta (2):
+      x86/entry_32: Do not clobber user EFLAGS.ZF
+      x86/entry_32: Clear CPU buffers after register restore in NMI return
+
+Ryusuke Konishi (1):
+      nilfs2: propagate directory read errors from nilfs_find_entry()
+
+Takashi Iwai (1):
+      parport: Proper fix for array out-of-bounds access
+
+Thomas Weißschuh (1):
+      s390/sclp_vt220: Convert newlines to CRLF instead of LFCR
+
+Vasiliy Kovalev (2):
+      ALSA: hda/conexant - Fix audio routing for HP EliteOne 1000 G2
+      ALSA: hda/conexant - Use cached pin control for Node 0x1d on HP EliteOne 1000 G2
+
+Ville Syrjälä (1):
+      drm/radeon: Fix encoder->possible_clones
+
+Wei Fang (1):
+      net: enetc: add missing static descriptor and inline keyword
+
+Zhang Rui (1):
+      x86/apic: Always explicitly disarm TSC-deadline timer
 
 
