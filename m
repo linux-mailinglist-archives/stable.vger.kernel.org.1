@@ -1,373 +1,245 @@
-Return-Path: <stable+bounces-87959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7A859AD7EA
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 00:44:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40A7F9AD864
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 01:24:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8E5D1C217BE
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 22:44:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7BA11C21DF3
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 23:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3251FF608;
-	Wed, 23 Oct 2024 22:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D651FF7B5;
+	Wed, 23 Oct 2024 23:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="PPnHGw5F"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DWFdoUEN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DA64D599;
-	Wed, 23 Oct 2024 22:44:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729723448; cv=none; b=AD/w6UwcIfeLSqxLjyQRAb7jgwOilWUQBuP7/yNDwConYMK6u+urbau5GTzRaJTgEZWcdaEbyi1+qZSYCCdCbsogl/NgGGvOWGsSz0fwxSqsjVEJ+qJQHr81Z5d/PFdme/Lbb9hrhIoBJhCiShJFZphxvkXqZ0FVbHfD2jmF3dg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729723448; c=relaxed/simple;
-	bh=g/aHEolb1eKSBzadAX8PuSrS4zaWJfGDFGJnKT5aoHA=;
-	h=Date:To:From:Subject:Message-Id; b=emZtzJ8FwnOb9l6K8Z9p0v3OfROaov5FBYx9EK/CKXnNvNoR5MZnH2I/A+2ekNHKWBAO+2pTiQST/zaWGJcPVEtkPbrfRRcjxfN+2FNhIqgWY882hHdM6lHorog1p7xsHlrFjixz5j+uwS44lnpHPIJVdiqttUWeZK9VKISt01Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=PPnHGw5F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B76CC4CEC6;
-	Wed, 23 Oct 2024 22:44:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1729723448;
-	bh=g/aHEolb1eKSBzadAX8PuSrS4zaWJfGDFGJnKT5aoHA=;
-	h=Date:To:From:Subject:From;
-	b=PPnHGw5FvK8EeaiNwKngnCtcmKCvCjGpIgilX+aPG5jvkYlNxa3oxpTo7pAzwNxGu
-	 AOhAcsIU4doXUqVqkYx8QPMRvYfF+euiOIr11ufKBH1nBXA6gGfj782NONp9kHfSDG
-	 JMp7jTZnpNNYFomFP7pySkEtR76ZBRNULkgbuxB0=
-Date: Wed, 23 Oct 2024 15:44:07 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,torvalds@linux-foundation.org,stable@vger.kernel.org,Liam.Howlett@oracle.com,jannh@google.com,lorenzo.stoakes@oracle.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-resolve-faulty-mmap_region-error-path-behaviour.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241023224408.3B76CC4CEC6@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C5F200111
+	for <stable@vger.kernel.org>; Wed, 23 Oct 2024 23:24:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729725866; cv=fail; b=f+brx5MSfZyb/LY0V1Qqk0MtMo28szipbRDGDNP+RgX0b2R5x2uXdBLPjlJ3sh67gcHl8s545SfpR4z0Zj8oJ7OufSRN5AGwxUoFSybEKb1bPd2ynawpkbsEb2KslqzO0C4L27x2Ch4cCXLxywo51gxMng/UcpwtM6bmumzSsMw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729725866; c=relaxed/simple;
+	bh=8+4+w06oZsj/ZQUasf0uapixohGtFhV34/vkcJaQ8GI=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=rhYcTTg4st71o+srBWRfZBd5PRzSaxJUcGIGZDxVvkQamMwpGk5y7cktoHx7qCwyoicYPywGoGcf2FffEfngCd7CmnZ/yBu+Frv8nM/JvVj/5Y9bw1oA/97O/YOrWe0cMFkBfB4qPZz8DcErW4UsI/zUeH4z/NoNNWv2soiU/XA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DWFdoUEN; arc=fail smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729725864; x=1761261864;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=8+4+w06oZsj/ZQUasf0uapixohGtFhV34/vkcJaQ8GI=;
+  b=DWFdoUENeUvAHFR3TVtsVda4zkIQpDpWoj9SP1PAA1C86XRHCZujCCUx
+   IPTcdDRqnPvyVTikYH9TxOTfwAAL/SDkbgVAK4EB2t8SZZ/gFXqzyqkwg
+   Fn3zI56G62WqbrhrkMcWfjkUWtCUubJKJuP0OBu8joykehXbxYVBVMIO+
+   rCKDMBnzsJh/NSOMJ+waLGrwbaLRZ2Ddrh0WffQayg8WJV0tTLrJo778E
+   e1wPoOIrsVfr2nsi+3MDbP5cZ7KsZFnvwaWZIP6AFO22U5T0/ku3ybMmd
+   u0B12sLKUUpXSA2V0HSKBZHcpfqQAe/+OEhi0tVnNmPU+mZn7HH7UC9C6
+   w==;
+X-CSE-ConnectionGUID: nu1+XeEBT/mgxvkCDFgWug==
+X-CSE-MsgGUID: z8jpJ4TEQLW1E9PZ5XiVVA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="39883859"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="39883859"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2024 16:24:23 -0700
+X-CSE-ConnectionGUID: 8sjAS8O9R1uEr44zxohc9A==
+X-CSE-MsgGUID: 3En+W3TKS2ekoOIDXoTaLg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,227,1725346800"; 
+   d="scan'208";a="103739563"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 23 Oct 2024 16:24:22 -0700
+Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 23 Oct 2024 16:24:22 -0700
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Wed, 23 Oct 2024 16:24:22 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.173)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 23 Oct 2024 16:24:12 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=keZX6jIsiRxRhfj19B+p2QDzDHSuCgHlgI5qf/odlw/kUbH7M3H/rYtPr6fvclU3fJx8iVYGSQZt/3bvyMBx7vmARf6UDa7b5tw0YlWwvb3rycz3U4XG8x7tUZ9Fmyg3EUJM8P9abLYL6WFMCx5RT8f3tD6/0TT1eGHpvb5aK99qExfU/9FLl/WNVYpYv2gArAx5c6hozB57K+zV2s8yk2TZxDNrNNfLbOBU4/yRIgXF2Rn9ik9BThj2Ko7yqBY6GCAOObZhxaw7XUSedK6SGtyQaEsINagf3Yig/iEWd+S6w6g64NiQDY42/0lbTejrH69rP5o42ad7xyUFmTUUYw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jDUIA1UsZAOKMoMy/5DCY37deTHBOsqJ/1bZzraRr+g=;
+ b=jIZB8ysn4KhTbbTEvbEUe82ft8DGtyIQShrGEpLbEzZDjhAiD7QZ6nUykgKuTlAPjy7XrLUW0B0M3to7/V7aL2ClWwdizGLnbJcOEAIOjW8pf0iG+JwSHCwZtvDb424Lb20PcMaK2R3DCYtTXv7vsePdVlgbmX4XiPccR7mX9Ms3OoQaij/f73WD0ySJXzvlE8f9z6Xih11iZpGy+HgSUqU/nUebjd86QjqqURVyO2GQA7yPKPGc3ahvqZeU7tajAz54dN3kAlENqlXZlFqlOMQ2f++TjKnv7M0K1tdabKiF0008yjaaDZZP0ARUC4fp6KS2FAtcjcF+U8OKwxCy+g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
+ by IA0PR11MB8303.namprd11.prod.outlook.com (2603:10b6:208:487::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.22; Wed, 23 Oct
+ 2024 23:24:07 +0000
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::7141:316f:77a0:9c44]) by CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::7141:316f:77a0:9c44%6]) with mapi id 15.20.8069.031; Wed, 23 Oct 2024
+ 23:24:07 +0000
+Date: Wed, 23 Oct 2024 18:24:01 -0500
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+CC: <stable@vger.kernel.org>, Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: Re: Request to include xe and i915 patches for 6.11.y
+Message-ID: <cvzltq3munvitr3laxcjehisesefairhqvbbbt67lq4ak6qjkw@igv4i5foft47>
+References: <k5xojgkymtcgybwu5hbhvidgptxwhv4m4plbhdx26qzmlfryvn@mh4i7xvpx5gi>
+ <2024102344-savanna-skimming-4ee3@gregkh>
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <2024102344-savanna-skimming-4ee3@gregkh>
+X-ClientProxiedBy: MW4PR04CA0182.namprd04.prod.outlook.com
+ (2603:10b6:303:86::7) To CY5PR11MB6139.namprd11.prod.outlook.com
+ (2603:10b6:930:29::17)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|IA0PR11MB8303:EE_
+X-MS-Office365-Filtering-Correlation-Id: e59efc93-d809-4b5a-f178-08dcf3b9ca4e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?gFc+KhRBqJTbtT0V0rg+s8qK1xm1sfS6P4PfiHy4EOet3X7V5c1vcfwi1JiR?=
+ =?us-ascii?Q?BPXHePuiyrS2x9nuahfTZ6QW2sDXihrpUphYvsgXZCU9iCynjYIDChvbFfmR?=
+ =?us-ascii?Q?/5VPF7z4zkHQBJi6+8925SWJ2o3AvxiZLuoX8BAHFS3ffHX8s01UKTi9/sdt?=
+ =?us-ascii?Q?dhfuKunYckjqOzbF6ZAvwBzEIpLjedNlx6Pw2LeMZgK4bqLTuxJg/17M3szz?=
+ =?us-ascii?Q?dsKzjJRplNg3Jpl07TYS+3rVlCx0xXpuEndoXWcwCOOH7oZq5onwx8g+jXZL?=
+ =?us-ascii?Q?GukphOY34eL5FZnJ13T54QF7x0ZYiffUqFlpwysAw5nqQmzdFRTXRq+vyyxX?=
+ =?us-ascii?Q?Fr9zzuOsoAe0tXzbfChwA8t6PMp/dZQwk1Lb0U4taLBBfMYmumqSoic2RrW/?=
+ =?us-ascii?Q?Mm6k+WWzPgFpQPyKbMUItHorf3UoTy5bYT45XcmWpQGW81mmI7+y8/y/se1y?=
+ =?us-ascii?Q?QBsE8RoPw76PCQz4FW3VglpvROZiOA27DpsRwDD6GWyLKN+j3ijwyO86KE4O?=
+ =?us-ascii?Q?jFjbb3XKjR3w7BxYrg7rtrVrjkf322CORj1Z1yxHl8u2EXI7BK1gvbkAZWuy?=
+ =?us-ascii?Q?bIwkhH5ixb4ZlO/urs5MvmiJq4CJgS4i1Cioqg8wic3asLt2W+2cRd6m6Ht0?=
+ =?us-ascii?Q?5YnQKCVqo2QNDfEdWW8DRgUMNcuHzRreA/cEihZ9q0IYmDRqfkH/VCqO1HKY?=
+ =?us-ascii?Q?DcX/NqADoDg22RV5iaeMvTh4FOCmQvNRsWxoBzFQ2RVj21JhCm2SpK65457i?=
+ =?us-ascii?Q?eBqs4wS/dDwHOHJbDJ63azIrO1kM8xUnCLV8Y2fTceVY4vqHt0/XYtZPGbBl?=
+ =?us-ascii?Q?ziXf588+q6Wk0qEcoiFQ16zihD3i+qcy17Qk53Nb1RQwN/yYHdRNalolWSwi?=
+ =?us-ascii?Q?Ws50VarEu0xgTgZJzZ5bK7b2RS+ezcWBhWK/kwP8+vJMiI/hWg5eH7JbPT2g?=
+ =?us-ascii?Q?kUXQB8naTffi2HdnEjOVrtPAgexqqCxBG1ZW+1+N5xJ1TVFbZ807RcagYyYk?=
+ =?us-ascii?Q?lnwcA4vannYwHwAkdVs0qYVkhCKrQfMerf8EzSc5foCi/Zn7tVbyeJnrkUjP?=
+ =?us-ascii?Q?J9jpo1WR/eSLqbA9LT6BJgiu4DTXng83fARGwonAfDrr7fNmu8DINR4gxEFI?=
+ =?us-ascii?Q?CsoCZ3EzKNc85ZOOxgSvY063AMRm43XUzvYtm6KHb55bgGhSrKtgB90+KGt3?=
+ =?us-ascii?Q?hdX2plYxdxDHQRFg2qlXc01h8ExI2GLx8pKa85hbAGF+daXoNDXCMd1l84QE?=
+ =?us-ascii?Q?IPb9pxBpjkyNjPARalSArqQ/EZgacEI1UJe6TyM7xG/abnQcwbXRNPcn5RK5?=
+ =?us-ascii?Q?fTXeRlIOzPNDsxNUP1/m0MhW?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6139.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?qyNGqTnkzhnE/3yko/4H+vaIgMagj2UFdyB01wvrjuiRbNO3KuvZf4C7ucte?=
+ =?us-ascii?Q?wY4zbNu3f/nOPpZ55n3Pdse3O9uNTE6xGpGPgyjp1PH0dVb9NwKNjwmK+x9N?=
+ =?us-ascii?Q?mvrKafktgd3sYGh3B0M9tBit9H00HXmuSnf3xOV+C27SvO9LYW8pyx+K7Fmm?=
+ =?us-ascii?Q?qILip++lC5nCxRegnhiDbSahdh/8fBlrnHUIrTkM7NIDaJvyPI9xY4gpx/zG?=
+ =?us-ascii?Q?Wbg2CnKwNXgU6sizonfi4922svbhf+GlzLyQesSx0bUEZCjU/aLVPmOg5jYj?=
+ =?us-ascii?Q?/PAuLeXmg7Yfg4RGTAqIixA5o148KL8V8gTVZvrQczDgsFYTm54Wu95YuXh7?=
+ =?us-ascii?Q?T3KyxpQxbgDaE4hIg4zGYzKNVLFvIdfk7pOe2hgijGvXQu7IMb6LDqT8aOq+?=
+ =?us-ascii?Q?vCPramt0d8zOcMpCtaOT1FHOP3D8Sd8aklQzw4A+hczOchLUt7N13kYZRa1k?=
+ =?us-ascii?Q?ISlMClqdKK08uHofRTaQ9QFoz7+aZLZ2kYv1nR5Lds+IszM5IoQ09EKC8z0B?=
+ =?us-ascii?Q?uNEFAm4YIsiKBELnqeBnLdsYOT1T6bqsERftMc6JVTl3v4woyxySpFTwEqI8?=
+ =?us-ascii?Q?eKHL2GPZj5D2omI2PNZCGRadx+AZlysNwFphIUk0Mf9bQGGATmnInqtMMzsy?=
+ =?us-ascii?Q?Dl6bIs+AfnEt59Fkt8mYnagA2VcKLqSB530zZccxMfSlCwzEdyMZdaiBynyV?=
+ =?us-ascii?Q?OMa4Xl5H3xPCNAGPOJyJCl8ZfsspYUfeU6aGzVYtn9ISOG6bRnezTPClw3QY?=
+ =?us-ascii?Q?xF8gdb7b822VkYeFcrb5F7h2f4Z3p4656Np3ni+byE7Aa7YV65OOI0+LWorC?=
+ =?us-ascii?Q?Ve9uPPb49WICEHpTQ/gKqBGlgR6qGGrrxiqvK8zova/OHTt0NCiTDjm6uzGv?=
+ =?us-ascii?Q?d2ARq2jIl8zzL+zDDTqKx4tinHl1XhApRjGVQlMRfZGpW1GNI643FdwQmVop?=
+ =?us-ascii?Q?Sn9C+A5SByCVqOrTjgYx9OsF2CMuOH7FuwhP++W9KGSlJ4fYHHqm1ij7X2Wa?=
+ =?us-ascii?Q?VtZq1DIihC6XzGPf/XQDHAP8+8CL0MjfM6ZpU9b1IrFl5721ahpdnPk00y12?=
+ =?us-ascii?Q?PNn3RA1AHjP9Y1wZRLZ9d9pmTPwII7hbj0BtL59Koh04GfM3FFDawDx5PQok?=
+ =?us-ascii?Q?s8HnTbPjIonLyK6V7gN8CY1Ae9690qodqHMLhZ95uJ6fMnz9Cp2Yz/oxmz/g?=
+ =?us-ascii?Q?+VkXI1yiydSzvwun6fFIH5IKlOWFH3+yNtl+S2eGwOjCV5GqYss5PKmRHlyS?=
+ =?us-ascii?Q?eaEwaVj8CuazCYFoimLqhmg7CdBjkVPgpGpBZqI/QrNjfNRviZq1998cYJoC?=
+ =?us-ascii?Q?COhyn88G4q6d7gbu26PQQc/5tum5c6HSZtXRr/VTVrqggmxhkMaG+bzvgm2k?=
+ =?us-ascii?Q?8XPCGrvTue51BtZoSEIo84Xqj5BECm1R3hgAs/lJlVhix7tzF1h5Rdb4rYtE?=
+ =?us-ascii?Q?FPYQU7J7LdNKkLTy2iQ0CzS6g3Rt8dyzb+pabv1xNAsMe6TaO+j76kRMGGU1?=
+ =?us-ascii?Q?bThkdx2Ry/BMyHWp7HKZskLhq60qCRjxgxykxUQfViNzXAdv/UFIVAymxjBk?=
+ =?us-ascii?Q?7kX9UwLHvhtWsDIA85r+nDpJJEkPuNKL3thMUa+z9BtkxpXU0aLC2EWSi9lH?=
+ =?us-ascii?Q?Ag=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: e59efc93-d809-4b5a-f178-08dcf3b9ca4e
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2024 23:24:07.0783
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jMSgC9yGFLH4JUeXDtFMO4TDC6biQycqbakFshglxeAMwICtVE2iB44vtTe31bEF6QhJ6CuBL2lQ8l0aQ1nNXFR3oDsmJQAIEanibtrzW2w=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB8303
+X-OriginatorOrg: intel.com
 
+On Wed, Oct 23, 2024 at 07:15:27AM +0200, Greg KH wrote:
+>On Tue, Oct 22, 2024 at 04:39:29PM -0500, Lucas De Marchi wrote:
+>> Hi,
+>>
+>> I have tested 6.11.4 with these additional fixes for the xe and i915
+>> drivers:
+>>
+>> 	f0ffa657e9f3913c7921cbd4d876343401f15f52
+>> 	4551d60299b5ddc2655b6b365a4b92634e14e04f
+>> 	ecabb5e6ce54711c28706fc794d77adb3ecd0605
+>> 	2009e808bc3e0df6d4d83e2271bc25ae63a4ac05
+>> 	e4ac526c440af8aa94d2bdfe6066339dd93b4db2
+>> 	ab0d6ef864c5fa820e894ee1a07f861e63851664
+>> 	7929ffce0f8b9c76cb5c2a67d1966beaed20ab61
+>> 	da9a73b7b25eab574cb9c984fcce0b5e240bdd2c
+>> 	014125c64d09e58e90dde49fbb57d802a13e2559
+>> 	4cce34b3835b6f7dc52ee2da95c96b6364bb72e5
+>> 	a8efd8ce280996fe29f2564f705e96e18da3fa62
+>> 	f15e5587448989a55cf8b4feaad0df72ca3aa6a0
+>> 	a9556637a23311dea96f27fa3c3e5bfba0b38ae4
+>> 	c7085d08c7e53d9aef0cdd4b20798356f6f5d469
+>> 	eb53e5b933b9ff315087305b3dc931af3067d19c
+>> 	3e307d6c28e7bc7d94b5699d0ed7fe07df6db094
+>> 	d34f4f058edf1235c103ca9c921dc54820d14d40
+>> 	31b42af516afa1e184d1a9f9dd4096c54044269a
+>> 	7fbad577c82c5dd6db7217855c26f51554e53d85
+>> 	b2013783c4458a1fe8b25c0b249d2e878bcf6999
+>> 	c55f79f317ab428ae6d005965bc07e37496f209f
+>> 	9fc97277eb2d17492de636b68cf7d2f5c4f15c1b
+>>
+>> I have them applied locally and could submit that if preferred, but
+>> there were no conflicts (since it also brings some additional patches as
+>> required for fixes to apply), so it should be trivial.
+>>
+>> All of these patches are already in upstream.  Some of them are brought
+>> as dependency. The ones mentioning "performance changes" are knobs to
+>> follow the hw spec and could be considered as fixes too.  These patches
+>> are also enabled downstream in Ubuntu 24.10 in order to allow the new
+>> Lunar Lake and Battlemage to work correctly. They have more patches not
+>> included here, but I may follow up with more depending on the acceptance
+>> of these patches.
+>
+>As this is a long series, can you just send this as a patch series so
+>that we know the proper order of them, and it will get your
+>signed-off-by on as proof you tested these?
 
-The patch titled
-     Subject: mm: resolve faulty mmap_region() error path behaviour
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-resolve-faulty-mmap_region-error-path-behaviour.patch
+yeah, better that way. While I was generating it in the correct format
+I noticed I do have one conflict that had been auto-resolved by
+git-rerere in patch "drm/i915: disable fbc due to Wa_16023588340".
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-resolve-faulty-mmap_region-error-path-behaviour.patch
+I added a note in the commit message about the conflict and I'm going to
+submit as a patch series.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+thanks
+Lucas De Marchi
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: mm: resolve faulty mmap_region() error path behaviour
-Date: Wed, 23 Oct 2024 21:38:29 +0100
-
-The mmap_region() function is somewhat terrifying, with spaghetti-like
-control flow and numerous means by which issues can arise and incomplete
-state, memory leaks and other unpleasantness can occur.
-
-A large amount of the complexity arises from trying to handle errors late
-in the process of mapping a VMA, which forms the basis of recently
-observed issues with resource leaks and observable inconsistent state.
-
-Taking advantage of previous patches in this series we move a number of
-checks earlier in the code, simplifying things by moving the core of the
-logic into a static internal function __mmap_region().
-
-Doing this allows us to perform a number of checks up front before we do
-any real work, and allows us to unwind the writable unmap check
-unconditionally as required and to perform a CONFIG_DEBUG_VM_MAPLE_TREE
-validation unconditionally also.
-
-We move a number of things here:
-
-1. We preallocate memory for the iterator before we call the file-backed
-   memory hook, allowing us to exit early and avoid having to perform
-   complicated and error-prone close/free logic. We carefully free
-   iterator state on both success and error paths.
-
-2. The enclosing mmap_region() function handles the mapping_map_writable()
-   logic early. Previously the logic had the mapping_map_writable() at the
-   point of mapping a newly allocated file-backed VMA, and a matching
-   mapping_unmap_writable() on success and error paths.
-
-   We now do this unconditionally if this is a file-backed, shared writable
-   mapping. If a driver changes the flags to eliminate VM_MAYWRITE, however
-   doing so does not invalidate the seal check we just performed, and we in
-   any case always decrement the counter in the wrapper.
-
-   We perform a debug assert to ensure a driver does not attempt to do the
-   opposite.
-
-3. We also move arch_validate_flags() up into the mmap_region()
-   function. This is only relevant on arm64 and sparc64, and the check is
-   only meaningful for SPARC with ADI enabled. We explicitly add a warning
-   for this arch if a driver invalidates this check, though the code ought
-   eventually to be fixed to eliminate the need for this.
-
-With all of these measures in place, we no longer need to explicitly close
-the VMA on error paths, as we place all checks which might fail prior to a
-call to any driver mmap hook.
-
-This eliminates an entire class of errors, makes the code easier to reason
-about and more robust.
-
-Link: https://lkml.kernel.org/r/6e8deda970b982e1e8ffd876e3cef342c292fbb5.1729715266.git.lorenzo.stoakes@oracle.com
-Fixes: deb0f6562884 ("mm/mmap: undo ->mmap() when arch_validate_flags() fails")
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reported-by: Jann Horn <jannh@google.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/mmap.c |  121 ++++++++++++++++++++++++++++------------------------
- 1 file changed, 66 insertions(+), 55 deletions(-)
-
---- a/mm/mmap.c~mm-resolve-faulty-mmap_region-error-path-behaviour
-+++ a/mm/mmap.c
-@@ -1357,20 +1357,18 @@ int do_munmap(struct mm_struct *mm, unsi
- 	return do_vmi_munmap(&vmi, mm, start, len, uf, false);
- }
- 
--unsigned long mmap_region(struct file *file, unsigned long addr,
-+static unsigned long __mmap_region(struct file *file, unsigned long addr,
- 		unsigned long len, vm_flags_t vm_flags, unsigned long pgoff,
- 		struct list_head *uf)
- {
- 	struct mm_struct *mm = current->mm;
- 	struct vm_area_struct *vma = NULL;
- 	pgoff_t pglen = PHYS_PFN(len);
--	struct vm_area_struct *merge;
- 	unsigned long charged = 0;
- 	struct vma_munmap_struct vms;
- 	struct ma_state mas_detach;
- 	struct maple_tree mt_detach;
- 	unsigned long end = addr + len;
--	bool writable_file_mapping = false;
- 	int error;
- 	VMA_ITERATOR(vmi, mm, addr);
- 	VMG_STATE(vmg, mm, &vmi, addr, end, vm_flags, pgoff);
-@@ -1444,28 +1442,26 @@ unsigned long mmap_region(struct file *f
- 	vm_flags_init(vma, vm_flags);
- 	vma->vm_page_prot = vm_get_page_prot(vm_flags);
- 
-+	if (vma_iter_prealloc(&vmi, vma)) {
-+		error = -ENOMEM;
-+		goto free_vma;
-+	}
-+
- 	if (file) {
- 		vma->vm_file = get_file(file);
- 		error = mmap_file(file, vma);
- 		if (error)
--			goto unmap_and_free_vma;
--
--		if (vma_is_shared_maywrite(vma)) {
--			error = mapping_map_writable(file->f_mapping);
--			if (error)
--				goto close_and_free_vma;
--
--			writable_file_mapping = true;
--		}
-+			goto unmap_and_free_file_vma;
- 
-+		/* Drivers cannot alter the address of the VMA. */
-+		WARN_ON_ONCE(addr != vma->vm_start);
- 		/*
--		 * Expansion is handled above, merging is handled below.
--		 * Drivers should not alter the address of the VMA.
-+		 * Drivers should not permit writability when previously it was
-+		 * disallowed.
- 		 */
--		if (WARN_ON((addr != vma->vm_start))) {
--			error = -EINVAL;
--			goto close_and_free_vma;
--		}
-+		VM_WARN_ON_ONCE(vm_flags != vma->vm_flags &&
-+				!(vm_flags & VM_MAYWRITE) &&
-+				(vma->vm_flags & VM_MAYWRITE));
- 
- 		vma_iter_config(&vmi, addr, end);
- 		/*
-@@ -1473,6 +1469,8 @@ unsigned long mmap_region(struct file *f
- 		 * vma again as we may succeed this time.
- 		 */
- 		if (unlikely(vm_flags != vma->vm_flags && vmg.prev)) {
-+			struct vm_area_struct *merge;
-+
- 			vmg.flags = vma->vm_flags;
- 			/* If this fails, state is reset ready for a reattempt. */
- 			merge = vma_merge_new_range(&vmg);
-@@ -1490,7 +1488,7 @@ unsigned long mmap_region(struct file *f
- 				vma = merge;
- 				/* Update vm_flags to pick up the change. */
- 				vm_flags = vma->vm_flags;
--				goto unmap_writable;
-+				goto file_expanded;
- 			}
- 			vma_iter_config(&vmi, addr, end);
- 		}
-@@ -1499,26 +1497,15 @@ unsigned long mmap_region(struct file *f
- 	} else if (vm_flags & VM_SHARED) {
- 		error = shmem_zero_setup(vma);
- 		if (error)
--			goto free_vma;
-+			goto free_iter_vma;
- 	} else {
- 		vma_set_anonymous(vma);
- 	}
- 
--	if (map_deny_write_exec(vma->vm_flags, vma->vm_flags)) {
--		error = -EACCES;
--		goto close_and_free_vma;
--	}
--
--	/* Allow architectures to sanity-check the vm_flags */
--	if (!arch_validate_flags(vma->vm_flags)) {
--		error = -EINVAL;
--		goto close_and_free_vma;
--	}
--
--	if (vma_iter_prealloc(&vmi, vma)) {
--		error = -ENOMEM;
--		goto close_and_free_vma;
--	}
-+#ifdef CONFIG_SPARC64
-+	/* TODO: Fix SPARC ADI! */
-+	WARN_ON_ONCE(!arch_validate_flags(vm_flags));
-+#endif
- 
- 	/* Lock the VMA since it is modified after insertion into VMA tree */
- 	vma_start_write(vma);
-@@ -1532,10 +1519,7 @@ unsigned long mmap_region(struct file *f
- 	 */
- 	khugepaged_enter_vma(vma, vma->vm_flags);
- 
--	/* Once vma denies write, undo our temporary denial count */
--unmap_writable:
--	if (writable_file_mapping)
--		mapping_unmap_writable(file->f_mapping);
-+file_expanded:
- 	file = vma->vm_file;
- 	ksm_add_vma(vma);
- expanded:
-@@ -1568,23 +1552,17 @@ expanded:
- 
- 	vma_set_page_prot(vma);
- 
--	validate_mm(mm);
- 	return addr;
- 
--close_and_free_vma:
--	vma_close(vma);
--
--	if (file || vma->vm_file) {
--unmap_and_free_vma:
--		fput(vma->vm_file);
--		vma->vm_file = NULL;
--
--		vma_iter_set(&vmi, vma->vm_end);
--		/* Undo any partial mapping done by a device driver. */
--		unmap_region(&vmi.mas, vma, vmg.prev, vmg.next);
--	}
--	if (writable_file_mapping)
--		mapping_unmap_writable(file->f_mapping);
-+unmap_and_free_file_vma:
-+	fput(vma->vm_file);
-+	vma->vm_file = NULL;
-+
-+	vma_iter_set(&vmi, vma->vm_end);
-+	/* Undo any partial mapping done by a device driver. */
-+	unmap_region(&vmi.mas, vma, vmg.prev, vmg.next);
-+free_iter_vma:
-+	vma_iter_free(&vmi);
- free_vma:
- 	vm_area_free(vma);
- unacct_error:
-@@ -1594,10 +1572,43 @@ unacct_error:
- abort_munmap:
- 	vms_abort_munmap_vmas(&vms, &mas_detach);
- gather_failed:
--	validate_mm(mm);
- 	return error;
- }
- 
-+unsigned long mmap_region(struct file *file, unsigned long addr,
-+			  unsigned long len, vm_flags_t vm_flags, unsigned long pgoff,
-+			  struct list_head *uf)
-+{
-+	unsigned long ret;
-+	bool writable_file_mapping = false;
-+
-+	/* Check to see if MDWE is applicable. */
-+	if (map_deny_write_exec(vm_flags, vm_flags))
-+		return -EACCES;
-+
-+	/* Allow architectures to sanity-check the vm_flags. */
-+	if (!arch_validate_flags(vm_flags))
-+		return -EINVAL;
-+
-+	/* Map writable and ensure this isn't a sealed memfd. */
-+	if (file && is_shared_maywrite(vm_flags)) {
-+		int error = mapping_map_writable(file->f_mapping);
-+
-+		if (error)
-+			return error;
-+		writable_file_mapping = true;
-+	}
-+
-+	ret = __mmap_region(file, addr, len, vm_flags, pgoff, uf);
-+
-+	/* Clear our write mapping regardless of error. */
-+	if (writable_file_mapping)
-+		mapping_unmap_writable(file->f_mapping);
-+
-+	validate_mm(current->mm);
-+	return ret;
-+}
-+
- static int __vm_munmap(unsigned long start, size_t len, bool unlock)
- {
- 	int ret;
-_
-
-Patches currently in -mm which might be from lorenzo.stoakes@oracle.com are
-
-fork-do-not-invoke-uffd-on-fork-if-error-occurs.patch
-fork-only-invoke-khugepaged-ksm-hooks-if-no-error.patch
-mm-vma-add-expand-only-vma-merge-mode-and-optimise-do_brk_flags.patch
-tools-testing-add-expand-only-mode-vma-test.patch
-mm-avoid-unsafe-vma-hook-invocation-when-error-arises-on-mmap-hook.patch
-mm-unconditionally-close-vmas-on-error.patch
-mm-refactor-map_deny_write_exec.patch
-mm-resolve-faulty-mmap_region-error-path-behaviour.patch
-tools-testing-add-additional-vma_internalh-stubs.patch
-mm-isolate-mmap-internal-logic-to-mm-vmac.patch
-mm-refactor-__mmap_region.patch
-mm-defer-second-attempt-at-merge-on-mmap.patch
-selftests-mm-add-pkey_sighandler_xx-hugetlb_dio-to-gitignore.patch
-mm-refactor-mm_access-to-not-return-null.patch
-mm-refactor-mm_access-to-not-return-null-fix.patch
-mm-madvise-unrestrict-process_madvise-for-current-process.patch
-maple_tree-do-not-hash-pointers-on-dump-in-debug-mode.patch
-tools-testing-fix-phys_addr_t-size-on-64-bit-systems.patch
-
+>
+>thanks,
+>
+>greg k-h
 
