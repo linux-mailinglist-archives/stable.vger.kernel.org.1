@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-87900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A165B9ACD13
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:45:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B8EE9ACD15
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:46:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C7991F21F95
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:45:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A6831C210E2
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1560A20FAA0;
-	Wed, 23 Oct 2024 14:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC65621018F;
+	Wed, 23 Oct 2024 14:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IdD2eZ/p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J81qSgJF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68751CDA15;
-	Wed, 23 Oct 2024 14:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D4920FA91;
+	Wed, 23 Oct 2024 14:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729693941; cv=none; b=DEySED+Cfk2sVbvJWT3/1SaBwXkA+2K5nS0VUCINjkmnLT3cJH0WIAbJzHgOvCjIxv1i73Rj7AxesHyakUZIjwfXP3fhCW2SCJJNmZhrO7IufthINY0uxcyZQnXRV7JE0GtLm9sXtNXZkLYociJ9vM8lrg8FIsekPQnUexbMXNM=
+	t=1729693944; cv=none; b=NDaT0boGCdCIoQ4u5AHqFKompPaLjw/xMIWYbISc9WWe2Ez7cUu99nZ0OPvFAxKyznb0PrTDa3pye4zqF0Aj8QmHssgKdM4uitOAdfnCmmH+eNcm2j95GrawoGByJ30jkm4YCA+vdn/7sISaa5Ii48cl05LH8qWpuEuQ4f/yQfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729693941; c=relaxed/simple;
-	bh=ZQrYJDMnoBFLpW8UVhYQWZh6vexkb13dRDo3GqxW4gU=;
+	s=arc-20240116; t=1729693944; c=relaxed/simple;
+	bh=ps2pio6F3j0r+hhv1BZ70KY2snpn9xRXWVZg2U276Hw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kg/QEy7A19Jb6f/bVjSyZJ/x9KzQlrJaG+GAH6ma7Z8bB3hg057MPgjZ5o8JyiQEQrzO5eqxKeWvIUWpVPV1VwvLqPKkcmxQOqYOno8J2h8LO4L4VYwUkyuF8CDoaynlDJ68LdatzzncgVsl9IEnLxWBUL7aNaNNqx+pU2Sdmos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IdD2eZ/p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F517C4CEC6;
-	Wed, 23 Oct 2024 14:32:20 +0000 (UTC)
+	 MIME-Version; b=pGdrT7mWBE0LOXhRsYbrUsJrUgNaiGywyp/WfaTWcjqb0NS/00sS4MN7Bji9bOxLa8xsMMSfe5TWGnajN1vya4rqPequYQzyZDvUHioZQxdr56ZD9P5264gnUlnwL90jlReJOZUstvrV7r8tu+2+6PF7ClohVUDOnaaPMeTWJ+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J81qSgJF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3D3C4CEC6;
+	Wed, 23 Oct 2024 14:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729693941;
-	bh=ZQrYJDMnoBFLpW8UVhYQWZh6vexkb13dRDo3GqxW4gU=;
+	s=k20201202; t=1729693944;
+	bh=ps2pio6F3j0r+hhv1BZ70KY2snpn9xRXWVZg2U276Hw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IdD2eZ/psoR/L/TlE2yegze0OA23lD/djKfJrecuEn9pbbWTRdiqoC8aFY4QtxdMH
-	 eySgDg89/gZ4fTRoLEQFRnmeLQSgxh/kVaR/jPF9I0I/y7Q7gSb+XdlJFLJ6V3l8/n
-	 jt5ovBOaZiQzoL4Iijh9YNlOAC+TgC9hMPlrMitKqjDzbJPGyJUoLn5Xmz9KpSd6OM
-	 T7+JrbOj/usvTQUJ+v2eLYgnDooetoaFj17gC1ImtiLaBTm2NNVEyTlYNiU4A90fMb
-	 8K3wmPsF1VjFf1exRVqoFEynA920++HI/drvE5RtMcBcTp/WXBAKtjoIeVwBKtO+BU
-	 scf7m2TirVb5w==
+	b=J81qSgJFpjyeoc3DxQxBaFqXCkgX1c4Xnj6oaUPijsX5rIj8FTS6q9TnRIXOeMTkT
+	 b+NyqCgXd8FDTY1mONqj891mJxVlDdX/XvsDrRlBBO9Nd3zWS6sK8jV6YLv57IrZuX
+	 1ZPVhOrCa+IkVwWM5ocB+N8Vtdx/+96W7jMin90GRF7TSLeshHhD2KFonlebT01jJr
+	 JkIbO83Cobkxa2iqRhOA6mcVZHI0U1ENg97wRFcTfzjD9399mfXtsecEDhUHFV0M+7
+	 Uiv63HJGzqUfw9pYLL+DrbSxpwJWHXiyirq4CZWD4ios92cAyDvm6ArWKVIUgPXZST
+	 HLk+su6TPbfNQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Martin Krastev <martin.krastev@broadcom.com>,
+Cc: Joey Gouly <joey.gouly@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Kevin Brodsky <Kevin.Brodsky@arm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.1 12/17] drm/vmwgfx: Limit display layout ioctl array size to VMWGFX_NUM_DISPLAY_UNITS
-Date: Wed, 23 Oct 2024 10:31:51 -0400
-Message-ID: <20241023143202.2981992-12-sashal@kernel.org>
+	pcc@google.com,
+	dawei.li@shingroup.cn,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.1 13/17] arm64: set POR_EL0 for kernel threads
+Date: Wed, 23 Oct 2024 10:31:52 -0400
+Message-ID: <20241023143202.2981992-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241023143202.2981992-1-sashal@kernel.org>
 References: <20241023143202.2981992-1-sashal@kernel.org>
@@ -71,84 +69,38 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.114
 Content-Transfer-Encoding: 8bit
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Joey Gouly <joey.gouly@arm.com>
 
-[ Upstream commit 28a5dfd4f615539fb22fb6d5c219c199c14e6eb6 ]
+[ Upstream commit e3e85271330b18f487ab3032ea9ca0601efeafaf ]
 
-Currently the array size is only limited by the largest kmalloc size which
-is incorrect. This change will also return a more specific error message
-than ENOMEM to userspace.
+Restrict kernel threads to only have RWX overlays for pkey 0.  This matches
+what arch/x86 does, by defaulting to a restrictive PKRU.
 
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
-Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240808200634.1074083-1-ian.forbes@broadcom.com
+Signed-off-by: Joey Gouly <joey.gouly@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Kevin Brodsky <Kevin.Brodsky@arm.com>
+Link: https://lore.kernel.org/r/20241001133618.1547996-2-joey.gouly@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_drv.h | 4 ++--
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 4 +++-
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.h | 3 ---
- 3 files changed, 5 insertions(+), 6 deletions(-)
+ arch/arm64/kernel/process.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-index bca10214e0bf1..abdca2346f1a0 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-@@ -59,7 +59,7 @@
- #define VMWGFX_DRIVER_MINOR 20
- #define VMWGFX_DRIVER_PATCHLEVEL 0
- #define VMWGFX_FIFO_STATIC_SIZE (1024*1024)
--#define VMWGFX_MAX_DISPLAYS 16
-+#define VMWGFX_NUM_DISPLAY_UNITS 8
- #define VMWGFX_CMD_BOUNCE_INIT_SIZE 32768
+diff --git a/arch/arm64/kernel/process.c b/arch/arm64/kernel/process.c
+index 044a7d7f1f6ad..048fe09da8a07 100644
+--- a/arch/arm64/kernel/process.c
++++ b/arch/arm64/kernel/process.c
+@@ -399,6 +399,9 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
  
- #define VMWGFX_MIN_INITIAL_WIDTH 1280
-@@ -79,7 +79,7 @@
- #define VMWGFX_NUM_GB_CONTEXT 256
- #define VMWGFX_NUM_GB_SHADER 20000
- #define VMWGFX_NUM_GB_SURFACE 32768
--#define VMWGFX_NUM_GB_SCREEN_TARGET VMWGFX_MAX_DISPLAYS
-+#define VMWGFX_NUM_GB_SCREEN_TARGET VMWGFX_NUM_DISPLAY_UNITS
- #define VMWGFX_NUM_DXCONTEXT 256
- #define VMWGFX_NUM_DXQUERY 512
- #define VMWGFX_NUM_MOB (VMWGFX_NUM_GB_CONTEXT +\
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-index 5b30e4ba2811a..01fe9c87e4451 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-@@ -2260,7 +2260,7 @@ int vmw_kms_update_layout_ioctl(struct drm_device *dev, void *data,
- 	struct drm_mode_config *mode_config = &dev->mode_config;
- 	struct drm_vmw_update_layout_arg *arg =
- 		(struct drm_vmw_update_layout_arg *)data;
--	void __user *user_rects;
-+	const void __user *user_rects;
- 	struct drm_vmw_rect *rects;
- 	struct drm_rect *drm_rects;
- 	unsigned rects_size;
-@@ -2272,6 +2272,8 @@ int vmw_kms_update_layout_ioctl(struct drm_device *dev, void *data,
- 					    VMWGFX_MIN_INITIAL_HEIGHT};
- 		vmw_du_update_layout(dev_priv, 1, &def_rect);
- 		return 0;
-+	} else if (arg->num_outputs > VMWGFX_NUM_DISPLAY_UNITS) {
-+		return -E2BIG;
+ 		p->thread.cpu_context.x19 = (unsigned long)args->fn;
+ 		p->thread.cpu_context.x20 = (unsigned long)args->fn_arg;
++
++		if (system_supports_poe())
++			p->thread.por_el0 = POR_EL0_INIT;
  	}
- 
- 	rects_size = arg->num_outputs * sizeof(struct drm_vmw_rect);
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-index 1099de1ece4b3..a2a294841df41 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-@@ -199,9 +199,6 @@ struct vmw_kms_dirty {
- 	s32 unit_y2;
- };
- 
--#define VMWGFX_NUM_DISPLAY_UNITS 8
--
--
- #define vmw_framebuffer_to_vfb(x) \
- 	container_of(x, struct vmw_framebuffer, base)
- #define vmw_framebuffer_to_vfbs(x) \
+ 	p->thread.cpu_context.pc = (unsigned long)ret_from_fork;
+ 	p->thread.cpu_context.sp = (unsigned long)childregs;
 -- 
 2.43.0
 
