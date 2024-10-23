@@ -1,133 +1,107 @@
-Return-Path: <stable+bounces-87835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 074289ACC36
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:25:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95CF09ACC4C
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:30:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A58A41F22154
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:25:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57C1F28220B
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83711B86CC;
-	Wed, 23 Oct 2024 14:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 067F21C3024;
+	Wed, 23 Oct 2024 14:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YdpHmSeO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cDafyW0W"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1980C1BBBC0;
-	Wed, 23 Oct 2024 14:24:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A6B1B6556;
+	Wed, 23 Oct 2024 14:30:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729693499; cv=none; b=I7p56h37ixSIn4UEamJDRPQFhQLsh5xGlhS2HsW3ejEu/NXEYFLB+Pq73kVmwxN75B2gaKgdND7+ay4GbwPY9KzlfTI4aZvDWQa5BzSiLqWhQ0OMh2WGlRmCVMom8qD97J8mk7N8ogqX9dRPNsvEEAt/ThIFmpr9tm64ApWxphA=
+	t=1729693815; cv=none; b=bV1xPqtR5qIwM/J9hsz0hdX4xvpBpyMqmt2DtjGjmqt8QonENdSdWjcTTtd0iP7v2ewU/CuABc6FqR7RJrHRx5dyEMe3ajHnPv8B+fEHDua/dScs7ujDjBF9sFhM8LhgvTW9Ommtxf99cO7FVv2dndimB+asdCIhplme2BJbTe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729693499; c=relaxed/simple;
-	bh=vOPOg3lWLHfwgbf5aNXDeZl0cIpNdD47DGZ0baeW1tE=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=K9w2NdJ/kuvfa78euwoXosXOUag/l5uYU2lr9ictEPKXZS2OUn2nF1+8GTwdKIXT5Ias7Nw25HsjgFJAf0KTD1AjEK1Z0zouzQ+7QHWhxIF3rpnbMVq41vcEew0G1t87uTgSUcUFeUMAXYGPUvR9WPXLf5z3GfD2MDXeECz5euE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YdpHmSeO; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729693498; x=1761229498;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=vOPOg3lWLHfwgbf5aNXDeZl0cIpNdD47DGZ0baeW1tE=;
-  b=YdpHmSeOqp3S+/pxSn/aKpYj+7WqQxtjXZ8mHTR6+WwbflceLLXugFYE
-   FHt96UvTBOSN0nBg5lkhYtpEUt8VFl12W4ijO3Itw49sPDogEq8RpqZ+A
-   YRKeVZHG6ZhErPdomQ2tiUrokc6y/+hQ93TGPbH1QG0B82BEvVbEKWcNA
-   UY2I1W8+3Z0ODLOUMGu0Pi4ThBcksunHcfLZBlLLC2lVtBTQgTy/igbiU
-   h1UnoEDPTPbziSQo2p/0x1WR1FJQFY3Sg5iprvpFZsjX2fwSmZRqjWR5C
-   TvBmGf1QWV2r96aOBBVceZnw/74RiJf18Q5okrUz8U8fAirsca8LabRE3
-   Q==;
-X-CSE-ConnectionGUID: mMOE0CroTCis6ugwzSiHkw==
-X-CSE-MsgGUID: BzrrzTd6Q4q+6+Z7HgfQnQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11234"; a="33091519"
-X-IronPort-AV: E=Sophos;i="6.11,226,1725346800"; 
-   d="scan'208";a="33091519"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2024 07:24:58 -0700
-X-CSE-ConnectionGUID: 3Xwn5gqYRr+1+GOJAG6cPQ==
-X-CSE-MsgGUID: +2QKtaksTqmd9buVWDJKYA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,226,1725346800"; 
-   d="scan'208";a="80635081"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.40])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2024 07:24:55 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Wed, 23 Oct 2024 17:24:51 +0300 (EEST)
-To: Sasha Levin <sashal@kernel.org>
-cc: Jiri Slaby <jirislaby@kernel.org>, stable@vger.kernel.org, 
-    stable-commits@vger.kernel.org, Rodolfo Giometti <giometti@enneenne.com>, 
-    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-    "David S. Miller" <davem@davemloft.net>
-Subject: Re: Patch "tty/serial: Make ->dcd_change()+uart_handle_dcd_change()
- status bool active" has been added to the 6.1-stable tree
-In-Reply-To: <ZxkGNdh6cQnKEpSt@sashalap>
-Message-ID: <3d5209b9-ceb7-3fe0-667d-38c1c0db8c50@linux.intel.com>
-References: <20241022175403.2844928-1-sashal@kernel.org> <a07de63f-1723-440d-802c-6bedefec7f24@kernel.org> <ZxjidR9PG2vfB_De@sashalap> <28b8da74-02ff-8b2d-4eca-74062dc84946@linux.intel.com> <ZxkGNdh6cQnKEpSt@sashalap>
+	s=arc-20240116; t=1729693815; c=relaxed/simple;
+	bh=gGjoSKuMzN38pKeOo57846/tebNCe1RbKVVaSV4fnHc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JVuT6zh8ra7YChfdcoZbhe+IWFL/BoW7tXUg5c3j+X9Tm2Ml/PvuYJGNFF0Sb4s7iZq8LEhfNaAULhiyi9ka4gNITmExPRuHSp0YZwNxplADduo6RZV+pWy8o8cCrgZNTNpzsL833KqOahGd7viy34CkCLwRoAkNu/QjpXgdJnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cDafyW0W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5357BC4CEC6;
+	Wed, 23 Oct 2024 14:30:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729693815;
+	bh=gGjoSKuMzN38pKeOo57846/tebNCe1RbKVVaSV4fnHc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cDafyW0WXk6+PyCR3XViCtQ/xe9/ywTUSPstmYeRVhZJpgNt0A5ptnfnErJORf3mN
+	 wSdifE8yC2u72WugeHEL90LDUUjw1kWsnvDD2Vlzx3MQPiJP4ZSWum5HMqf9ScdT4O
+	 ELS11uQ/BU6CFBUPOhJhPbUDQItezKWRNeARREdK/oCrhaH0mBmXDfb6qatjfJgAMT
+	 gupU4q71InIfUkebBTbFMgCr0/DGoHp2F3IOP6Qu5n940Jl3L8OHQLh0svb7EP3dgi
+	 ZfZWPQZOukzAI47dwP1WVVug9a25gwVg/AFRBazy7Zoyqr+5aFsE8IQga3hL/PxUSF
+	 LpuQosYemXOkg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Sasha Levin <sashal@kernel.org>,
+	ericvh@kernel.org,
+	lucho@ionkov.net,
+	v9fs@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.11 01/30] 9p: v9fs_fid_find: also lookup by inode if not found dentry
+Date: Wed, 23 Oct 2024 10:29:26 -0400
+Message-ID: <20241023143012.2980728-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-298596848-1729693491=:1168"
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.11.5
+Content-Transfer-Encoding: 8bit
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+From: Dominique Martinet <asmadeus@codewreck.org>
 
---8323328-298596848-1729693491=:1168
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+[ Upstream commit 38d222b3163f7b7d737e5d999ffc890a12870e36 ]
 
-On Wed, 23 Oct 2024, Sasha Levin wrote:
+It's possible for v9fs_fid_find "find by dentry" branch to not turn up
+anything despite having an entry set (because e.g. uid doesn't match),
+in which case the calling code will generally make an extra lookup
+to the server.
 
-> On Wed, Oct 23, 2024 at 02:56:06PM +0300, Ilpo J=E4rvinen wrote:
-> > On Wed, 23 Oct 2024, Sasha Levin wrote:
-> >=20
-> > > On Wed, Oct 23, 2024 at 08:25:12AM +0200, Jiri Slaby wrote:
-> > > > On 22. 10. 24, 19:54, Sasha Levin wrote:
-> > > > > This is a note to let you know that I've just added the patch tit=
-led
-> > > > >
-> > > > >     tty/serial: Make ->dcd_change()+uart_handle_dcd_change() stat=
-us
-> > > bool
-> > > > > active
-> > > >
-> > > > This is a cleanup, not needed in stable. (Unless something
-> > > context-depends
-> > > > on it.)
-> > >=20
-> > > The 3 commits you've pointed out are a pre-req for 30c9ae5ece8e ("xhc=
-i:
-> > > dbc: honor usb transfer size boundaries.").
-> >=20
-> > Hi Sasha,
-> >=20
-> > I wonder if that information could be added automatically into the
-> > notification email as it feels useful to know?
-> >=20
-> > I assume there's some tool which figures these pre-reqs out, if it's ba=
-sed
-> > on manual work, please disregard my suggestion.
->=20
-> We already add a tag to indicate the dependency, sometimes folks miss it.
+In this case we might have had better luck looking by inode, so fall
+back to look up by inode if we have one and the lookup by dentry failed.
 
-Heheh, it seems I'm too among them. Thanks a lot for pointing that out.
+Message-Id: <20240523210024.1214386-1-asmadeus@codewreck.org>
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/9p/fid.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-> In the case of this patch, here it is:
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/t=
-ree/queue-6.1/tty-serial-make-dcd_change-uart_handle_dcd_change-st.patch#n2=
-5
+diff --git a/fs/9p/fid.c b/fs/9p/fid.c
+index de009a33e0e26..f84412290a30c 100644
+--- a/fs/9p/fid.c
++++ b/fs/9p/fid.c
+@@ -131,10 +131,9 @@ static struct p9_fid *v9fs_fid_find(struct dentry *dentry, kuid_t uid, int any)
+ 			}
+ 		}
+ 		spin_unlock(&dentry->d_lock);
+-	} else {
+-		if (dentry->d_inode)
+-			ret = v9fs_fid_find_inode(dentry->d_inode, false, uid, any);
+ 	}
++	if (!ret && dentry->d_inode)
++		ret = v9fs_fid_find_inode(dentry->d_inode, false, uid, any);
+ 
+ 	return ret;
+ }
+-- 
+2.43.0
 
---=20
- i.
-
---8323328-298596848-1729693491=:1168--
 
