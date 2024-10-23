@@ -1,107 +1,120 @@
-Return-Path: <stable+bounces-87825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BDFA9AC97F
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 13:56:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD3829AC993
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:01:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1F48280CFF
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 11:56:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9872B28232D
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 12:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7D91AAE06;
-	Wed, 23 Oct 2024 11:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DF71A0B0E;
+	Wed, 23 Oct 2024 12:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OQdyuCBd"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="O0yPOopt"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA851A7270;
-	Wed, 23 Oct 2024 11:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7AAE19F461
+	for <stable@vger.kernel.org>; Wed, 23 Oct 2024 12:00:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729684575; cv=none; b=jEJ/wKjeQMpc/Shqc9m70cR/bhAdWS8NCCbTOtbg1OIWc3K5cM05XCoHU8/mdA7GXpVI05sICqs17fZpoEDX6AoB8++jmheGQHA4Wbw69KkH3avskYJYKaXnl5Y4vUuNvI0wuD89YAQbDo16Bibgbwgd7o4Jr1PgcqUCJxcvO2s=
+	t=1729684861; cv=none; b=qtkJo2RMda589VCWrlqM2nniVBGiO89z/5IY5VJs3SMyAf9vqUxAc/cI2DauZfQ8NWMJ2okukgKfVUQjKH7+hVpXJXv5q+/FsilD7vJrBzxPaDa/Cxia/0QJ2mqbtYAFuhzE3CTa8RMs0MPTizKhpeuKuWZK66unuIRZCNESGjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729684575; c=relaxed/simple;
-	bh=js+VsgORYgCrkl1IOoOS4gTzkIPmHgKMyBbMDgeHxEE=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=WKAmiOiEkqB4OzMEVE4c9d/Vm4gizwZuDpBS2kDCOUyBMkNDC1P73f9LLMew+qt9itEMYmeqb0gMlJO/yuWY6JUlVfv3cOSXF5A3iyEIMYohxNsUPgCWpD9kGmnzYQQ0z6VaoqXUwhM5wC22R5kLnAzqCi/CEDn03HSUFukpmEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OQdyuCBd; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729684573; x=1761220573;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=js+VsgORYgCrkl1IOoOS4gTzkIPmHgKMyBbMDgeHxEE=;
-  b=OQdyuCBdkK9gNQxQMQe9Ms/gX9Rd9ACnIuw74pheXgP6MMcqq9ltBfxE
-   FCG3xrIQgifuSu9rcyrieIwu90dLUrnd+t3UD8/4TOvec/srXSJ+yI+a/
-   MUZG4of7RvC5iZzEoDOtbV4sykOVQUtFLFa9u2w4PnmWTM71DXlmqQ/U0
-   xjX7oNAnTh2No0Oeu/6axQrbXA6kNBib+4Za+UTZs7sQo+x/yL+kapHgv
-   5gSBiI+ncmjXqF4cneOVMq31qyLlga2lxSwT1MX3xvbmh6zr3bjq0HoAt
-   i3FC6UtweYiIk0PZOzduabVQOlES93jjflJAnz5uV8x9m8qd6Q+ihP5Oi
-   A==;
-X-CSE-ConnectionGUID: XcGZp9R9S8e3TMeTWrA4CQ==
-X-CSE-MsgGUID: KJ7EgghATnOug3LeHbuOKw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11234"; a="32123791"
-X-IronPort-AV: E=Sophos;i="6.11,226,1725346800"; 
-   d="scan'208";a="32123791"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2024 04:56:13 -0700
-X-CSE-ConnectionGUID: ofn1s8cxSaSVbjLpZtJLyw==
-X-CSE-MsgGUID: /lAIBpQsSk+2W/09gS/vxQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,226,1725346800"; 
-   d="scan'208";a="80509613"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.40])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2024 04:56:10 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Wed, 23 Oct 2024 14:56:06 +0300 (EEST)
-To: Sasha Levin <sashal@kernel.org>
-cc: Jiri Slaby <jirislaby@kernel.org>, stable@vger.kernel.org, 
-    stable-commits@vger.kernel.org, Rodolfo Giometti <giometti@enneenne.com>, 
-    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-    "David S. Miller" <davem@davemloft.net>
-Subject: Re: Patch "tty/serial: Make ->dcd_change()+uart_handle_dcd_change()
- status bool active" has been added to the 6.1-stable tree
-In-Reply-To: <ZxjidR9PG2vfB_De@sashalap>
-Message-ID: <28b8da74-02ff-8b2d-4eca-74062dc84946@linux.intel.com>
-References: <20241022175403.2844928-1-sashal@kernel.org> <a07de63f-1723-440d-802c-6bedefec7f24@kernel.org> <ZxjidR9PG2vfB_De@sashalap>
+	s=arc-20240116; t=1729684861; c=relaxed/simple;
+	bh=tqbz9ghi25MyNM796HfNIo/wGiHciMSp9xBKYdZMdzs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ug+pbxumid1v/xz+LF3Fi+kkV9MUv9Bxng7xICQoSLyuhDTzuZjqfxFXikx9igq04fdL6X6AY+WbgQP/EBOz+bVymxGnPoxcNGx3GQIhEhq8eowc14XZyp8RK/+eRev/9MX0HxuoeDzDQkZVRqQjxV98jREj6ck6Vhprhjwt020=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=O0yPOopt; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-539f53973fdso735280e87.1
+        for <stable@vger.kernel.org>; Wed, 23 Oct 2024 05:00:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1729684858; x=1730289658; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tqbz9ghi25MyNM796HfNIo/wGiHciMSp9xBKYdZMdzs=;
+        b=O0yPOoptYA5qvFQFQ5CIcJg3J+mDQsluvxlSFXezl0AILmFw1QclJ+svnIa5QbQjyr
+         VFJmZ7hQNXfXTZlcAxOeAk2tALFnUWokp92QDU48HNt88FX9qihqZGsyV9W3sy+Qi3nR
+         BF3Xyo/Tmo3avpg0PbThSpSO2HbxTvsiXyfvd7JK7H3jufpeAC5Ww1CcsAvg2vjccDet
+         S0TDJSBCBLi1lXBlf24I+4CJvhvzEq0ypnY2vVQOn/F3f0vS5e1llhEW27ueqACTuf7+
+         FVXUB/AL5tMf8zIvtVPcbQdq8Fgu/YHKkeMdVdaAuHNX9JkNNbho1wZvm1eS99rf3B1w
+         M9GA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729684858; x=1730289658;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tqbz9ghi25MyNM796HfNIo/wGiHciMSp9xBKYdZMdzs=;
+        b=AgVRT9LO+J4Y4aoIXx7j3Pg5T/9RWqCJ9u9CAP+y3OI133Gtennw59ozYzr9hCHaLW
+         1yBoA/nMFV54q7OMR/ZgsgyM14fTiuiBEhEfeAyzll4ADlBFQtydvYhG66JqoWADnGze
+         ZtZPLRX/lxZeADA+Dtg4LgeJkvJpoS8LmVCpujmF5n+mhMldj40AlqK0TT1VVqusLHX0
+         xb+3hh/6AA6UF5DpuJkSjKrXst1qNfYxjB3jSRozVi1iBJnpER6b/jSmaCeldEpUWp3x
+         9psRTz24yPmZUQR5EiT3fQQhl679ys7QAj4sGzd6qafz2fmHyL8gg42+JZn0O+Yn/olD
+         aE0g==
+X-Forwarded-Encrypted: i=1; AJvYcCVG19oxS+Ymc5xIUzyjyFdMZIz+T0HS/EvpQMxEyv5w9ssrFmFAInCC/4s1J0zguBnjXgsinus=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yysga/6zCvzrfTAQDpGzCuiqbjGUER2Wke2yZqHOKgV4nrvtqoz
+	x58gaksKD3VmRipAAtpTpaZReB1aoE3PuueRJ7XgGeSUjX7fx8FErW+S1UT5LjebolsxoSw3AU0
+	uvQr9pXtIEcxrRi3W8WdxE6C9YDe3VswcGeLIFQ==
+X-Google-Smtp-Source: AGHT+IE/UAzMY7V3eb5pkqaftwZ38vfA7061nJlGo03pDJqYCoLAKz73v+E375hMTpCsOw6OHL/EGlBNyYbkCpt8l/c=
+X-Received: by 2002:a05:6512:3992:b0:539:f1d2:725b with SMTP id
+ 2adb3069b0e04-53b19c41fbamr866738e87.4.1729684857664; Wed, 23 Oct 2024
+ 05:00:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <20241021-arm-kasan-vmalloc-crash-v4-0-837d1294344f@linaro.org>
+In-Reply-To: <20241021-arm-kasan-vmalloc-crash-v4-0-837d1294344f@linaro.org>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 23 Oct 2024 14:00:45 +0200
+Message-ID: <CACRpkdZfbjorFjZ9P7ifYO4mVa7eVdviyqO8+KjJXW3bhOq7aA@mail.gmail.com>
+Subject: Re: [PATCH v4 0/3] Fix KASAN crash when using KASAN_VMALLOC
+To: Clement LE GOFFIC <clement.legoffic@foss.st.com>, Russell King <linux@armlinux.org.uk>, 
+	Melon Liu <melon1335@163.com>, Kees Cook <kees@kernel.org>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Mark Brown <broonie@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>
+Cc: Antonio Borneo <antonio.borneo@foss.st.com>, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 23 Oct 2024, Sasha Levin wrote:
+On Mon, Oct 21, 2024 at 3:03=E2=80=AFPM Linus Walleij <linus.walleij@linaro=
+.org> wrote:
 
-> On Wed, Oct 23, 2024 at 08:25:12AM +0200, Jiri Slaby wrote:
-> > On 22. 10. 24, 19:54, Sasha Levin wrote:
-> > > This is a note to let you know that I've just added the patch titled
-> > > 
-> > >     tty/serial: Make ->dcd_change()+uart_handle_dcd_change() status bool
-> > > active
-> > 
-> > This is a cleanup, not needed in stable. (Unless something context-depends
-> > on it.)
-> 
-> The 3 commits you've pointed out are a pre-req for 30c9ae5ece8e ("xhci:
-> dbc: honor usb transfer size boundaries.").
+> This problem reported by Clement LE GOFFIC manifest when
+> using CONFIG_KASAN_IN_VMALLOC and VMAP_STACK:
+> https://lore.kernel.org/linux-arm-kernel/a1a1d062-f3a2-4d05-9836-3b098de9=
+db6d@foss.st.com/
+>
+> After some analysis it seems we are missing to sync the
+> VMALLOC shadow memory in top level PGD to all CPUs.
+>
+> Add some code to perform this sync, and the bug appears
+> to go away.
+>
+> As suggested by Ard, also perform a dummy read from the
+> shadow memory of the new VMAP_STACK in the low level
+> assembly.
+>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 
-Hi Sasha,
+As these are regressions that need to go in as fixes I'm putting
+them into Russell's patch tracker now.
 
-I wonder if that information could be added automatically into the 
-notification email as it feels useful to know?
+The 9427/1 patch:
+https://www.arm.linux.org.uk/developer/patches/viewpatch.php?id=3D9427/1
 
-I assume there's some tool which figures these pre-reqs out, if it's based 
-on manual work, please disregard my suggestion.
+Need to be avoided as it causes build regressions. Patch 1/3
+supersedes it.
 
--- 
- i.
-
+Yours,
+Linus Walleij
 
