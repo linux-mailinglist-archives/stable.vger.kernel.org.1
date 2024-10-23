@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-87805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7262A9ABEA1
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 08:24:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB2FA9ABEAA
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 08:25:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A112B1C21509
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 06:24:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAD3D1C21039
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 06:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01D3136345;
-	Wed, 23 Oct 2024 06:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6FE14D6F6;
+	Wed, 23 Oct 2024 06:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KzUFMVMc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="awqkjfOa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2E840BF5;
-	Wed, 23 Oct 2024 06:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D32136345;
+	Wed, 23 Oct 2024 06:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729664665; cv=none; b=r7J4zgUp+k66Wxw/HjIfpk3IaVpLKI6Um97n8h+qUQMcErmDwkJ1mxLFNZmzOWina57uTwQD5/h2qZoSX1fT7s+qnkt52hegrAc8AHcFRzkYFqgPFvJRXKGuH4UgXUYPuA+bETsMoNikotgR6X0SlX7IgBvqVoZFVfxew3i9Vfc=
+	t=1729664680; cv=none; b=upmCRE4+VhohIPxT5NIPeXsAINO2muc5ityGEywv6GmNaz1uD21VuD2aDMSFGpgpd6rYEU1aIkrahJC47AaP7zQ/IWRp1v2OVicmJTPlHnh+ANR8Y6m5h06iz2kGiCs71f8V71kci8vCU4Mdy9d+mN3oBH8OdWnkeOWWA9HLGEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729664665; c=relaxed/simple;
-	bh=Lr/yuYRYxokxIyN/N59/GibJ8XeVVyK6DVu4g3nhykY=;
+	s=arc-20240116; t=1729664680; c=relaxed/simple;
+	bh=X6qePqTy4De26xnIqhTGjHuyAbFRoIuQ3sqI36dgIxk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HEJ6z4OAzU51im0/MUkBcRVFByC7G0PNsY2WzK4IPaxvKLKUK5r9E8ZnIUOsI/nUuEQ/9BDIePMAJ2UUjoJOyAVxeVsIJtXtGEFsfH+CGuXKbhDSrD2IDSvUhO7j13knoCfcG9tbWoewOhwp9DwIEn7lk8m4G+d/zQjZ3xxsfsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KzUFMVMc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E53C4CEE5;
-	Wed, 23 Oct 2024 06:24:24 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=eU/sxF4TN+excVatOw9fPE4zc7lFSV1RkZuMcabxaAz+4TMcp1KfCHz8u0Szn9Ac1oDM7GqkVyjAB/x8XSKVtnDw4xF+43nssuMe5m402U4yA1cg1TM5knpSH25l87oUpE5IgQwVsYldZ5eVnp5oVuLjm9SO0c+vWPi11wky2jE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=awqkjfOa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA13C4CEE6;
+	Wed, 23 Oct 2024 06:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729664665;
-	bh=Lr/yuYRYxokxIyN/N59/GibJ8XeVVyK6DVu4g3nhykY=;
+	s=k20201202; t=1729664679;
+	bh=X6qePqTy4De26xnIqhTGjHuyAbFRoIuQ3sqI36dgIxk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KzUFMVMcHul3v2H/goB5JZuCsada6ZdHu0/s6GRdkwo8WlH4Hg9dhKrercrq3cx+J
-	 cp8KotqvvSt7cG6xzYietInSQ4Kl4Rmhj1pSlqxX8M2s/gw5jMT3YpKjI8SQfBuWXF
-	 F5d+jeEGlaaMmvqBBTEg9Js5UEMrqD+7uhxwcTKpApdFvNMo446n/+5p1iTNdW7jtG
-	 uswKM0knRLMP97/dfvS/YQmQMrWHyNCPMNRJw6UDoCuD33JACXwnU4/f8jsk5IGIwG
-	 K5wzHIjbT9P5FByCZgsokXW5Jk5+1akmYC2kECEs1A423d1aQRok23mQfN4eKdRWW7
-	 FSib31LpsPW/g==
-Message-ID: <435a97c3-57da-4e18-a054-506433b0062a@kernel.org>
-Date: Wed, 23 Oct 2024 08:24:22 +0200
+	b=awqkjfOawgpgjseXx60c6ANvCEY141ITM6YvqaYCQOn/SJ7NL0qknd4yKhyMBVYiG
+	 9HGzHI/8vqs6VBIltUtssMR3OL/SKyCoAQm3Ow6VivIb6on2U0txou09kLhAE9h+EY
+	 vdTI1CGKWTcPqprb1j8H36W5M51EiQUF/NTlGRPunvxLeiqAjEbwiTRS67ZqtnqN7Y
+	 Jzftrovn+vQUDqBjHdP45S5m3O+zJswjja5+CNN64pDqoWge4PZ8ll2TUaJwV/GpFn
+	 9sQjAc2WnLHkEj5eX8qzbsuoSHyJQNGMvZf2Mya3DEd/QbkxTOZNjIGqQvJJmSDIJ+
+	 fZoYItMzLvupw==
+Message-ID: <6031178d-a577-43e4-a44b-743ccb8c1f67@kernel.org>
+Date: Wed, 23 Oct 2024 08:24:36 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "xhci: dbgtty: use kfifo from tty_port struct" has been
- added to the 6.11-stable tree
+Subject: Re: Patch "xhci: dbgtty: remove kfifo_out() wrapper" has been added
+ to the 6.11-stable tree
 To: stable@vger.kernel.org, stable-commits@vger.kernel.org
 Cc: Mathias Nyman <mathias.nyman@intel.com>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <20241022174538.2837492-1-sashal@kernel.org>
+References: <20241022174535.2837449-1-sashal@kernel.org>
 Content-Language: en-US
 From: Jiri Slaby <jirislaby@kernel.org>
 Autocrypt: addr=jirislaby@kernel.org; keydata=
@@ -100,14 +100,14 @@ Autocrypt: addr=jirislaby@kernel.org; keydata=
  f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
  DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
  S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <20241022174538.2837492-1-sashal@kernel.org>
+In-Reply-To: <20241022174535.2837449-1-sashal@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 22. 10. 24, 19:45, Sasha Levin wrote:
 > This is a note to let you know that I've just added the patch titled
 > 
->      xhci: dbgtty: use kfifo from tty_port struct
+>      xhci: dbgtty: remove kfifo_out() wrapper
 
 This is a cleanup, not needed in stable.
 
