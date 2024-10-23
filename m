@@ -1,106 +1,145 @@
-Return-Path: <stable+bounces-87947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B1EC9AD4E3
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 21:34:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE1D9AD550
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 22:07:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C80BD1F23A01
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 19:34:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CB731F21ACA
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 20:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 975591D0483;
-	Wed, 23 Oct 2024 19:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 394F21D2B3D;
+	Wed, 23 Oct 2024 20:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="nGEVIbuC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xrpx78YG"
 X-Original-To: stable@vger.kernel.org
-Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB37E15574E;
-	Wed, 23 Oct 2024 19:34:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E861E51D
+	for <stable@vger.kernel.org>; Wed, 23 Oct 2024 20:07:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729712070; cv=none; b=HGafBLnODTPPkXzl1eIcLbofO/3sL90ZlzwGX4eD5JwqsJszP++33pyCjgt8ZhWU5Yv39MW+4psiezcY5ACiQFpYOnF9r4/B/vJTtrDTRW41ncrxk1airtmaVIcvzFJqCXb36d7EKngqrc5+3vpcZ4f2EIpQbgzP34oXHCWSBJE=
+	t=1729714044; cv=none; b=LXXXF9IBSEI8q4uaeOUm9UCs2z5BiJcSPkUlaUy7PsUm3MwvZScqOY2UIyuNkOrWm3erm+8UaVwC3XgBDNxZraeStihK/A4N/pR5pOUfYE/UCdKXvANp/FW15fK9crIi5DKfG2KqmqW1canR/wONgLWxdgnsrzCavP+gByT6n4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729712070; c=relaxed/simple;
-	bh=/8D3WOgwZvNkLo5HSlS3lC/gZ1W4ruG1/qLQOlw0EO4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CQOql/jF5HW3kkpKrIh/3mzoJqIH6+kC+OT5Y+2RpeKwjzyfMdSY5fEWguKggQuFOqHn8tW33RE4vy1WsXZx42qlip0dhcVlwNpO+/ixDmXZfFn4Os1vWxrw0jiaJBjnv2JGWO+EjW+8p2YXGqW4CmXOXXkIH81VCUv0wtM3F3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=nGEVIbuC; arc=none smtp.client-ip=199.89.1.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 008.lax.mailroute.net (Postfix) with ESMTP id 4XYfPT0CMDz6ClY8x;
-	Wed, 23 Oct 2024 19:34:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1729712052; x=1732304053; bh=UGZNZ2BEBqO2PQX0Ox1H5dzx
-	ZcADvb4w3SzhgMbYpks=; b=nGEVIbuC1gcaUni7Fn93l2J36pDTnraKOmMNXw18
-	bGY7GBjekfxniPcbjAeC4fFzlMBaoNcmplRA/LgN72zZM8R208C/Xr+B23UV5zVV
-	S5BcnJXLg1beukAiT3JdMgnDe7VmKkEhBbFiGGXqWfAX25MoeMLuoveLZ7PS9Ivq
-	q5JXmw4mt4p0EBXMsJi5+PipZd6Fyfd0WY6G+ijJh3F07zkORnLypI4IpXLeT3Kt
-	Ad4Hl+l0ahKvI5A5l9C+voDUh+Fi6O/fczbJDUqPszKYP7HJnagtJkncWCsSChnB
-	vlysbViqf2bgBcU1sbPKagtu/v7fWJW3U7/8++m1fRqc2Q==
-X-Virus-Scanned: by MailRoute
-Received: from 008.lax.mailroute.net ([127.0.0.1])
- by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id 9ptD4NLkaz8m; Wed, 23 Oct 2024 19:34:12 +0000 (UTC)
-Received: from [100.66.154.22] (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4XYfPG4mn0z6ClY9V;
-	Wed, 23 Oct 2024 19:34:10 +0000 (UTC)
-Message-ID: <9805c64f-70ab-4693-aa49-b3659ebb38be@acm.org>
-Date: Wed, 23 Oct 2024 12:34:10 -0700
+	s=arc-20240116; t=1729714044; c=relaxed/simple;
+	bh=SK5lPv3YuFK1hBUvd2UwNmsHOsoJKtMnR8B4JUF4BHQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fWnFYTYgS2VTeJlYRCePI+9GxBtuGgLePo0inBs9SkjaVqLhGSktrtSwFCmCmH21EWSMXR7Z340f8nLwX/s0K3OAnOA1VFLjxSHWQk9b8oJY185YCGFa03+O5oD5EOH4/PALxUbIFYuwBC6H8FUW8YtAaVpvbpH7mg7laXjltN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xrpx78YG; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729714043; x=1761250043;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=SK5lPv3YuFK1hBUvd2UwNmsHOsoJKtMnR8B4JUF4BHQ=;
+  b=Xrpx78YGbwmIpF/VZmzYF0fRHVfZLZUtzkuAHm4uYS2vS2/2/T/3h3Rs
+   ynMRdr6KsUMfjLQZOsXKXKoMBic8K7ccMiMl6xne9Pv3z9yuoQEOiVadj
+   so8G2/Xis9/DaAVZwRGAm8/OBfZwpmlYBNaTb9bxf+0Yjh4vfCN6NpcOr
+   d0frJ/6ClYZC/VHkwJt0OL2s+eFR2dR6Oo/wgy0bABbKGBqrT8aQlJsiy
+   3NTXeNP95+8Up1Swo2ep5dsOP8fvRG0/odQ7EcBBlzDOZ9+yDJLoLTWFg
+   jxCNZ3Sgc0lYVcifRFyCU7X5kGZggasMz7tiSRADAOhY4MSO81EugVXYu
+   g==;
+X-CSE-ConnectionGUID: cmz0JpWSQumkpCsXLY4TFw==
+X-CSE-MsgGUID: feRikZ8BQl+DAm/jjB7WqA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11234"; a="29423307"
+X-IronPort-AV: E=Sophos;i="6.11,227,1725346800"; 
+   d="scan'208";a="29423307"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2024 13:07:21 -0700
+X-CSE-ConnectionGUID: jvk8Op5RSlKDSKdXTkhXnA==
+X-CSE-MsgGUID: o6BQM40KTEySnoEJ5NT3bQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,227,1725346800"; 
+   d="scan'208";a="80543976"
+Received: from dut4413lnl.fm.intel.com ([10.105.8.97])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2024 13:07:18 -0700
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: jonathan.cavitt@intel.com,
+	saurabhg.gupta@intel.com,
+	alex.zuo@intel.com,
+	umesh.nerlige.ramappa@intel.com,
+	john.c.harrison@intel.com,
+	stable@vger.kernel.org
+Subject: [PATCH v3] drm/xe/xe_guc_ads: save/restore OA registers
+Date: Wed, 23 Oct 2024 20:07:15 +0000
+Message-ID: <20241023200716.82624-1-jonathan.cavitt@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] ufs: core: fix another deadlock when rtc update
-To: peter.wang@mediatek.com, linux-scsi@vger.kernel.org,
- martin.petersen@oracle.com, avri.altman@wdc.com, alim.akhtar@samsung.com,
- jejb@linux.ibm.com, beanhuo@micron.com
-Cc: wsd_upstream@mediatek.com, linux-mediatek@lists.infradead.org,
- chun-hung.wu@mediatek.com, alice.chao@mediatek.com, cc.chou@mediatek.com,
- chaotian.jing@mediatek.com, jiajie.hao@mediatek.com,
- yi-fan.peng@mediatek.com, qilin.tan@mediatek.com, lin.gui@mediatek.com,
- tun-yu.yu@mediatek.com, eddie.huang@mediatek.com, naomi.chu@mediatek.com,
- ed.tsai@mediatek.com, stable@vger.kernel.org
-References: <20241023131904.9749-1-peter.wang@mediatek.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20241023131904.9749-1-peter.wang@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+Several OA registers and allowlist registers were missing from the
+save/restore list for GuC and could be lost during an engine reset.  Add
+them to the list.
 
-On 10/23/24 6:19 AM, peter.wang@mediatek.com wrote:
-> From: Peter Wang <peter.wang@mediatek.com>
-> 
-> When ufshcd_rtc_work calls ufshcd_rpm_put_sync and the pm's
-> usage_count is 0, it will enter the runtime suspend callback.
-> However, the runtime suspend callback will wait to flush
-> ufshcd_rtc_work, causing a deadlock.
-> Replacing ufshcd_rpm_put_sync with ufshcd_rpm_put can avoid
-> the deadlock.
-> 
-> Fixes: 6bf999e0eb41 ("scsi: ufs: core: Add UFS RTC support")
-> Cc: <stable@vger.kernel.org> 6.11.x
-> 
-> Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+v2:
+- Fix commit message (Umesh)
+- Add missing closes (Ashutosh)
 
-No blank lines in the tags section please. Additionally, a hash sign
-(#) is missing between "<stable@vger.kernel.org>" and "6.11.x".
-Otherwise this patch looks good to me. Hence:
+v3:
+- Add missing fixes (Ashutosh)
 
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2249
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Suggested-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Suggested-by: John Harrison <john.c.harrison@intel.com>
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+CC: stable@vger.kernel.org # v6.11+
+Acked-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+---
+ drivers/gpu/drm/xe/xe_guc_ads.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/drivers/gpu/drm/xe/xe_guc_ads.c b/drivers/gpu/drm/xe/xe_guc_ads.c
+index 4e746ae98888..a196c4fb90fc 100644
+--- a/drivers/gpu/drm/xe/xe_guc_ads.c
++++ b/drivers/gpu/drm/xe/xe_guc_ads.c
+@@ -15,6 +15,7 @@
+ #include "regs/xe_engine_regs.h"
+ #include "regs/xe_gt_regs.h"
+ #include "regs/xe_guc_regs.h"
++#include "regs/xe_oa_regs.h"
+ #include "xe_bo.h"
+ #include "xe_gt.h"
+ #include "xe_gt_ccs_mode.h"
+@@ -740,6 +741,11 @@ static unsigned int guc_mmio_regset_write(struct xe_guc_ads *ads,
+ 		guc_mmio_regset_write_one(ads, regset_map, e->reg, count++);
+ 	}
+ 
++	for (i = 0; i < RING_MAX_NONPRIV_SLOTS; i++)
++		guc_mmio_regset_write_one(ads, regset_map,
++					  RING_FORCE_TO_NONPRIV(hwe->mmio_base, i),
++					  count++);
++
+ 	/* Wa_1607983814 */
+ 	if (needs_wa_1607983814(xe) && hwe->class == XE_ENGINE_CLASS_RENDER) {
+ 		for (i = 0; i < LNCFCMOCS_REG_COUNT; i++) {
+@@ -748,6 +754,14 @@ static unsigned int guc_mmio_regset_write(struct xe_guc_ads *ads,
+ 		}
+ 	}
+ 
++	guc_mmio_regset_write_one(ads, regset_map, EU_PERF_CNTL0, count++);
++	guc_mmio_regset_write_one(ads, regset_map, EU_PERF_CNTL1, count++);
++	guc_mmio_regset_write_one(ads, regset_map, EU_PERF_CNTL2, count++);
++	guc_mmio_regset_write_one(ads, regset_map, EU_PERF_CNTL3, count++);
++	guc_mmio_regset_write_one(ads, regset_map, EU_PERF_CNTL4, count++);
++	guc_mmio_regset_write_one(ads, regset_map, EU_PERF_CNTL5, count++);
++	guc_mmio_regset_write_one(ads, regset_map, EU_PERF_CNTL6, count++);
++
+ 	return count;
+ }
+ 
+-- 
+2.43.0
+
 
