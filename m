@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-87961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 793A19AD874
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 01:31:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 832B19AD8A9
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 01:51:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A89861C21BE3
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 23:31:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A39A71C21D5D
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 23:51:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C982B19AA46;
-	Wed, 23 Oct 2024 23:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CBA8200110;
+	Wed, 23 Oct 2024 23:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ysLAswPS"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="yhLep0eM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F1478C9C;
-	Wed, 23 Oct 2024 23:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A0A1FF7D7;
+	Wed, 23 Oct 2024 23:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729726308; cv=none; b=Sx2XqPvwHY6X1+RFILXg3b2FR1LFXm5gC8Dm79EP0aSd9MzTHbAkFu/ZpZuMRMgYNKIdG8kh3YrOvDNGtFiOfIIfePX7deODdKmpuU3tSnmnGX0SFanIUwCGeC59mjG3aPmOTKJMnnBRH1UrL2wYlSwZGpEFiHO9ykZ+DEmKKTk=
+	t=1729727479; cv=none; b=ehIVETJVhf10pe2oPuQfk+0rEN4BA0BUQorEqc5UC+AU/LREnAVaRevMlO8DlGYDgDMnvPDi0ryjIqdPL4+ctSGfGdG4QnE0wIOWPxBsbCMUkGMXl4tsvfuQo/dW5rLgq710kry0dSepP9Be9lnbqVbwLf6B1TQyEpptEB5/LB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729726308; c=relaxed/simple;
-	bh=YbWYuKtDd+ETf6Zk2BpyeVmCMzdsoDkdQkPr92Yy/yU=;
-	h=Date:To:From:Subject:Message-Id; b=ejaqRKRXcDXPsDAwvZtsZq0N14T1fVCOW6IEyAwrAba0S/QBDWQZvsHXXw/SoeO1PxVQchALz7SDGbcR4S0jhGiwE1oBQV6ZB5TqH+XKu3jkHP92tRE8j8HXQSCGPz04QMZI4NaPYgiIVGwYzDMont6p3j3n0azIaOpLoxxQn4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ysLAswPS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1964EC4CEC6;
-	Wed, 23 Oct 2024 23:31:48 +0000 (UTC)
+	s=arc-20240116; t=1729727479; c=relaxed/simple;
+	bh=h9eqOt0XALXQ1T+RGox89AQgIb+9cKJT71nHYHxnEfk=;
+	h=Date:To:From:Subject:Message-Id; b=Xi4MGFkmiVhOuc3sJaamQ9OoPmpI3fnYzGELFgOJljfoIY30hIsB3fpks8/hX8H8F7EUQPNMk3dqxdzQUNYBuJc+zkOBZrncLIyaYsKw3mEPf0hMAm0V29v/UuVWYYWeZNI7rOxgNfQNMmEBZnKs/YWQMoDYi1QfjDJVhP6rC9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=yhLep0eM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C9BC4CEE5;
+	Wed, 23 Oct 2024 23:51:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1729726308;
-	bh=YbWYuKtDd+ETf6Zk2BpyeVmCMzdsoDkdQkPr92Yy/yU=;
+	s=korg; t=1729727478;
+	bh=h9eqOt0XALXQ1T+RGox89AQgIb+9cKJT71nHYHxnEfk=;
 	h=Date:To:From:Subject:From;
-	b=ysLAswPSFkv6+kdOiAIISSR6hfJwH9w7zHBorK5r/H2pu1/8ShTUGPp2DufxqhvAY
-	 Xnqpsubz5+n1tMGQcxpu+jAihOmC1JUw0GsY3pGlRipxhf7oTkuiDIe3bpJISTmakX
-	 1znirve9s46A9CW/4EyegfWCmC46UtbyrPEhgbz8=
-Date: Wed, 23 Oct 2024 16:31:47 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,mawupeng1@huawei.com,akpm@linux-foundation.org
+	b=yhLep0eME+7q35OXOklglLlSbbswQqTg7ciKkuHdgWOsSKfoQG+ouyF0bTpVylrvy
+	 qEZDboVL7ADXTINj89IAxD97gwXH5SzGVrjzm/mf2ZgkCo4vhdl++SG4OG+aYR6cZf
+	 prFuPqcCLaFYrrAGbYs08m8dTy5v7dYWaMitk+5s=
+Date: Wed, 23 Oct 2024 16:51:17 -0700
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,herton@redhat.com,wladislav.kw@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + ipc-fix-memleak-if-msg_init_ns-failed-in-create_ipc_ns.patch added to mm-nonmm-unstable branch
-Message-Id: <20241023233148.1964EC4CEC6@smtp.kernel.org>
+Subject: + tools-mm-werror-fixes-in-page-types-slabinfo.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241023235118.73C9BC4CEE5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,14 +50,14 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: ipc: fix memleak if msg_init_ns failed in create_ipc_ns
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     ipc-fix-memleak-if-msg_init_ns-failed-in-create_ipc_ns.patch
+     Subject: tools/mm: -Werror fixes in page-types/slabinfo
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     tools-mm-werror-fixes-in-page-types-slabinfo.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ipc-fix-memleak-if-msg_init_ns-failed-in-create_ipc_ns.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/tools-mm-werror-fixes-in-page-types-slabinfo.patch
 
-This patch will later appear in the mm-nonmm-unstable branch at
+This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 Before you just go and hit "reply", please:
@@ -73,68 +73,92 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Wupeng Ma <mawupeng1@huawei.com>
-Subject: ipc: fix memleak if msg_init_ns failed in create_ipc_ns
-Date: Wed, 23 Oct 2024 17:31:29 +0800
+From: Wladislav Wiebe <wladislav.kw@gmail.com>
+Subject: tools/mm: -Werror fixes in page-types/slabinfo
+Date: Tue, 22 Oct 2024 19:21:13 +0200
 
+Commit e6d2c436ff693 ("tools/mm: allow users to provide additional
+cflags/ldflags") passes now CFLAGS to Makefile.  With this, build systems
+with default -Werror enabled found:
 
-Percpu memory allocation may failed during create_ipc_ns however this
-fail is not handled properly since ipc sysctls and mq sysctls is not
-released properly. Fix this by release these two resource when failure.
+slabinfo.c:1300:25: error: ignoring return value of 'chdir'
+declared with attribute 'warn_unused_result' [-Werror=unused-result]
+                         chdir("..");
+                         ^~~~~~~~~~~
+page-types.c:397:35: error: format '%lu' expects argument of type
+'long unsigned int', but argument 2 has type 'uint64_t'
+{aka 'long long unsigned int'} [-Werror=format=]
+                         printf("%lu\t", mapcnt0);
+                                 ~~^     ~~~~~~~
+..
 
-Here is the kmemleak stack when percpu failed:
+Fix page-types by using PRIu64 for uint64_t prints and check in slabinfo
+for return code on chdir("..").
 
-unreferenced object 0xffff88819de2a600 (size 512):
-  comm "shmem_2nstest", pid 120711, jiffies 4300542254
-  hex dump (first 32 bytes):
-    60 aa 9d 84 ff ff ff ff fc 18 48 b2 84 88 ff ff  `.........H.....
-    04 00 00 00 a4 01 00 00 20 e4 56 81 ff ff ff ff  ........ .V.....
-  backtrace (crc be7cba35):
-    [<ffffffff81b43f83>] __kmalloc_node_track_caller_noprof+0x333/0x420
-    [<ffffffff81a52e56>] kmemdup_noprof+0x26/0x50
-    [<ffffffff821b2f37>] setup_mq_sysctls+0x57/0x1d0
-    [<ffffffff821b29cc>] copy_ipcs+0x29c/0x3b0
-    [<ffffffff815d6a10>] create_new_namespaces+0x1d0/0x920
-    [<ffffffff815d7449>] copy_namespaces+0x2e9/0x3e0
-    [<ffffffff815458f3>] copy_process+0x29f3/0x7ff0
-    [<ffffffff8154b080>] kernel_clone+0xc0/0x650
-    [<ffffffff8154b6b1>] __do_sys_clone+0xa1/0xe0
-    [<ffffffff843df8ff>] do_syscall_64+0xbf/0x1c0
-    [<ffffffff846000b0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Link: https://lkml.kernel.org/r/20241023093129.3074301-1-mawupeng1@huawei.com
-Fixes: 72d1e611082e ("ipc/msg: mitigate the lock contention with percpu counter")
-Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
+Link: https://lkml.kernel.org/r/c1ceb507-94bc-461c-934d-c19b77edd825@gmail.com
+Fixes: e6d2c436ff693 ("tools/mm: allow users to provide additional cflags/ldflags")
+Signed-off-by: Wladislav Wiebe <wladislav.kw@gmail.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Herton R. Krzesinski <herton@redhat.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- ipc/namespace.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/mm/page-types.c |    9 +++++----
+ tools/mm/slabinfo.c   |    4 +++-
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
---- a/ipc/namespace.c~ipc-fix-memleak-if-msg_init_ns-failed-in-create_ipc_ns
-+++ a/ipc/namespace.c
-@@ -83,13 +83,15 @@ static struct ipc_namespace *create_ipc_
+--- a/tools/mm/page-types.c~tools-mm-werror-fixes-in-page-types-slabinfo
++++ a/tools/mm/page-types.c
+@@ -22,6 +22,7 @@
+ #include <time.h>
+ #include <setjmp.h>
+ #include <signal.h>
++#include <inttypes.h>
+ #include <sys/types.h>
+ #include <sys/errno.h>
+ #include <sys/fcntl.h>
+@@ -391,9 +392,9 @@ static void show_page_range(unsigned lon
+ 		if (opt_file)
+ 			printf("%lx\t", voff);
+ 		if (opt_list_cgroup)
+-			printf("@%llu\t", (unsigned long long)cgroup0);
++			printf("@%" PRIu64 "\t", cgroup0);
+ 		if (opt_list_mapcnt)
+-			printf("%lu\t", mapcnt0);
++			printf("%" PRIu64 "\t", mapcnt0);
+ 		printf("%lx\t%lx\t%s\n",
+ 				index, count, page_flag_name(flags0));
+ 	}
+@@ -419,9 +420,9 @@ static void show_page(unsigned long voff
+ 	if (opt_file)
+ 		printf("%lx\t", voffset);
+ 	if (opt_list_cgroup)
+-		printf("@%llu\t", (unsigned long long)cgroup);
++		printf("@%" PRIu64 "\t", cgroup)
+ 	if (opt_list_mapcnt)
+-		printf("%lu\t", mapcnt);
++		printf("%" PRIu64 "\t", mapcnt);
  
- 	err = msg_init_ns(ns);
- 	if (err)
--		goto fail_put;
-+		goto fail_ipc;
- 
- 	sem_init_ns(ns);
- 	shm_init_ns(ns);
- 
- 	return ns;
- 
-+fail_ipc:
-+	retire_ipc_sysctls(ns);
- fail_mq:
- 	retire_mq_sysctls(ns);
- 
+ 	printf("%lx\t%s\n", offset, page_flag_name(flags));
+ }
+--- a/tools/mm/slabinfo.c~tools-mm-werror-fixes-in-page-types-slabinfo
++++ a/tools/mm/slabinfo.c
+@@ -1297,7 +1297,9 @@ static void read_slab_dir(void)
+ 			slab->cpu_partial_free = get_obj("cpu_partial_free");
+ 			slab->alloc_node_mismatch = get_obj("alloc_node_mismatch");
+ 			slab->deactivate_bypass = get_obj("deactivate_bypass");
+-			chdir("..");
++			if (chdir(".."))
++				fatal("Unable to chdir from slab ../%s\n",
++				      slab->name);
+ 			if (slab->name[0] == ':')
+ 				alias_targets++;
+ 			slab++;
 _
 
-Patches currently in -mm which might be from mawupeng1@huawei.com are
+Patches currently in -mm which might be from wladislav.kw@gmail.com are
 
-ipc-fix-memleak-if-msg_init_ns-failed-in-create_ipc_ns.patch
+tools-mm-werror-fixes-in-page-types-slabinfo.patch
 
 
