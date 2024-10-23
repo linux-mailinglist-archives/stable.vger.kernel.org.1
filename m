@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-87874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7AAE9ACCC7
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:38:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A6A9ACCC9
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:39:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 940FA1F2151C
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:38:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A9A22812C8
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:39:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D8C1FF7C9;
-	Wed, 23 Oct 2024 14:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68367200109;
+	Wed, 23 Oct 2024 14:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hb9j67H0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ehrnwjOr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03D01FF7BB;
-	Wed, 23 Oct 2024 14:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235C51BFE05;
+	Wed, 23 Oct 2024 14:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729693891; cv=none; b=mTXK2xX5QxUlCvzoh42fwTW/oi9EojsncIznkdrnrDcklM8nsTSAOxGsNGED5Rxcj0rPVcbB7vS6pWg4bu7HrvZZYSOWz0H9S3fmBpc46piCL7fw0BEnUKcO/bd7cHnXTuo8q0BwmmNlDiqwVEy1kIgeoYEu0BK8/48dQepAcUs=
+	t=1729693893; cv=none; b=SpCvdHaRNG4tpTO6ch+g/EOGlIQTzm/dkCLTBtaAI0o4S72ZRWzyiq6U5Iu6Zm613YPey5JnG/Nw4CsTl4Y4uUnclOjJyNDxjtXv112fhnspoiuKKMcxmE0yP7prq5M7cFTOUbu6a5BPcosGY/WQyl8H0VGy4FuhOxXxp85Nq0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729693891; c=relaxed/simple;
-	bh=DTPT4zl44npMYzjERrEH9EvBCMsinVpzO0mfU1W/K+s=;
+	s=arc-20240116; t=1729693893; c=relaxed/simple;
+	bh=q1OZjb80glGL02e2p03kI221IdO0Idodp+8LAuZylP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H+ZfzCAsPZkGRLkTClt5M4SPnwuFKW8IlbaCJ50IhqcANUY1uv3bd3QdVbesunQ9VjZzLj9z0SzpuefZcNOG5V/5BaxAPSlCO9Ji5LohOKWRpcQq5BJ3zOkCtTuxCoh+N0Vnct5XdBn3p3BMCI7fBpj3sVdydImE0SoDrDW3i9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hb9j67H0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0210C4CEC6;
-	Wed, 23 Oct 2024 14:31:30 +0000 (UTC)
+	 MIME-Version; b=BUwv9Xeb4oAF/LkK79GXTI5PLxfgCAlPS/U5j3DgBQw/cNqty83v8nYxUusjJn/2GdqgK1KjDoBW7aLbKfqSGXMGXdshs1skkx6bihQhFB2FFwScdo3nEpAzngIwXGNSCcJfwzWEHnGjTIguz6NmeZnBgCWp/i1EcLBPBxefARI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ehrnwjOr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174A8C4CEE4;
+	Wed, 23 Oct 2024 14:31:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729693891;
-	bh=DTPT4zl44npMYzjERrEH9EvBCMsinVpzO0mfU1W/K+s=;
+	s=k20201202; t=1729693893;
+	bh=q1OZjb80glGL02e2p03kI221IdO0Idodp+8LAuZylP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hb9j67H0cQJisbeOByZnDrvtNRkiL0B/AQ60yQMivg7recmbCI3cpy9hLv7dt0iSr
-	 ZHGFcgklUTzkrYEgqtboOWpMpoEAlcATRRXtn6oUMMP8E6NkZOERzQSgkD+mLd9Ufe
-	 2U0VnpexlJDbSgR3+nuxg3s9uTBObiTd8OKuiRWgKfjG2HZ4g8z/RniynOD8EVBrNQ
-	 NoYyx5ASofpW2GHYNjpPR8d1ZE+fXCKPVuBsVF/J7uvpg+YaX0T8QSFoVgUmEZAyEH
-	 o8Y3tSgBshTjZXLIGPXR+qt5egiR3iyLpBCwa/+tIJlquzC8zgZyboezniA/MUZb0A
-	 mjNFmakYW/bWw==
+	b=ehrnwjOrjdJMywo3g66O6qTY1POYpqq5E8q60X4Fhbvg294rBsjOCPLl9KRUtRv1z
+	 PhIuFXBOFXz7HfvHKErDYTHfNI/p67c45MN48kzDzF7FmJw4jPXDeACaCWl/jkPIMy
+	 +O08RuQq33XUEkvVQpa4P1zfhnCQLWtblmqnfI7PZR8ekHItg3c+xI7/XWQ27qhcs8
+	 XS+UQf0VLUCmTSlvk+gFTA6KV6b8fnb2Bc470q4tKh+m6Z8vgDeKKjRQgvpBLD82TD
+	 HDf71cKDKpXdWkE0hmjqDJhM4iHpspIVKqtV5RggQVPD1qZOcNAQg0zdmxfTBaNwnp
+	 0bRjHXOtH74qQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Robin Murphy <robin.murphy@arm.com>,
-	Will Deacon <will@kernel.org>,
+Cc: Greg Joyce <gjoyce@linux.ibm.com>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	joro@8bytes.org,
-	linux-arm-kernel@lists.infradead.org,
-	iommu@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 09/23] iommu/arm-smmu: Clarify MMU-500 CPRE workaround
-Date: Wed, 23 Oct 2024 10:30:53 -0400
-Message-ID: <20241023143116.2981369-9-sashal@kernel.org>
+	sagi@grimberg.me,
+	linux-nvme@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.6 10/23] nvme: disable CC.CRIME (NVME_CC_CRIME)
+Date: Wed, 23 Oct 2024 10:30:54 -0400
+Message-ID: <20241023143116.2981369-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241023143116.2981369-1-sashal@kernel.org>
 References: <20241023143116.2981369-1-sashal@kernel.org>
@@ -67,45 +67,55 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.58
 Content-Transfer-Encoding: 8bit
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Greg Joyce <gjoyce@linux.ibm.com>
 
-[ Upstream commit 0dfe314cdd0d378f96bb9c6bdc05c8120f48606d ]
+[ Upstream commit 0ce96a6708f34280a536263ee5c67e20c433dcce ]
 
-CPRE workarounds are implicated in at least 5 MMU-500 errata, some of
-which remain unfixed. The comment and warning message have proven to be
-unhelpfully misleading about this scope, so reword them to get the point
-across with less risk of going out of date or confusing users.
+Disable NVME_CC_CRIME so that CSTS.RDY indicates that the media
+is ready and able to handle commands without returning
+NVME_SC_ADMIN_COMMAND_MEDIA_NOT_READY.
 
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/dfa82171b5248ad7cf1f25592101a6eec36b8c9a.1728400877.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Joyce <gjoyce@linux.ibm.com>
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+Tested-by: Nilay Shroff <nilay@linux.ibm.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu-impl.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/nvme/host/core.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c b/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
-index 9dc772f2cbb27..99030e6b16e7a 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
-@@ -130,7 +130,7 @@ int arm_mmu500_reset(struct arm_smmu_device *smmu)
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 82509f3679373..e25206c7de80c 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -2250,8 +2250,13 @@ int nvme_enable_ctrl(struct nvme_ctrl *ctrl)
+ 	else
+ 		ctrl->ctrl_config = NVME_CC_CSS_NVM;
  
- 	/*
- 	 * Disable MMU-500's not-particularly-beneficial next-page
--	 * prefetcher for the sake of errata #841119 and #826419.
-+	 * prefetcher for the sake of at least 5 known errata.
- 	 */
- 	for (i = 0; i < smmu->num_context_banks; ++i) {
- 		reg = arm_smmu_cb_read(smmu, i, ARM_SMMU_CB_ACTLR);
-@@ -138,7 +138,7 @@ int arm_mmu500_reset(struct arm_smmu_device *smmu)
- 		arm_smmu_cb_write(smmu, i, ARM_SMMU_CB_ACTLR, reg);
- 		reg = arm_smmu_cb_read(smmu, i, ARM_SMMU_CB_ACTLR);
- 		if (reg & ARM_MMU500_ACTLR_CPRE)
--			dev_warn_once(smmu->dev, "Failed to disable prefetcher [errata #841119 and #826419], check ACR.CACHE_LOCK\n");
-+			dev_warn_once(smmu->dev, "Failed to disable prefetcher for errata workarounds, check SACR.CACHE_LOCK\n");
- 	}
+-	if (ctrl->cap & NVME_CAP_CRMS_CRWMS && ctrl->cap & NVME_CAP_CRMS_CRIMS)
+-		ctrl->ctrl_config |= NVME_CC_CRIME;
++	/*
++	 * Setting CRIME results in CSTS.RDY before the media is ready. This
++	 * makes it possible for media related commands to return the error
++	 * NVME_SC_ADMIN_COMMAND_MEDIA_NOT_READY. Until the driver is
++	 * restructured to handle retries, disable CC.CRIME.
++	 */
++	ctrl->ctrl_config &= ~NVME_CC_CRIME;
  
- 	return 0;
+ 	ctrl->ctrl_config |= (NVME_CTRL_PAGE_SHIFT - 12) << NVME_CC_MPS_SHIFT;
+ 	ctrl->ctrl_config |= NVME_CC_AMS_RR | NVME_CC_SHN_NONE;
+@@ -2286,10 +2291,7 @@ int nvme_enable_ctrl(struct nvme_ctrl *ctrl)
+ 		 * devices are known to get this wrong. Use the larger of the
+ 		 * two values.
+ 		 */
+-		if (ctrl->ctrl_config & NVME_CC_CRIME)
+-			ready_timeout = NVME_CRTO_CRIMT(crto);
+-		else
+-			ready_timeout = NVME_CRTO_CRWMT(crto);
++		ready_timeout = NVME_CRTO_CRWMT(crto);
+ 
+ 		if (ready_timeout < timeout)
+ 			dev_warn_once(ctrl->device, "bad crto:%x cap:%llx\n",
 -- 
 2.43.0
 
