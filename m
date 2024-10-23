@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-87928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 861EB9ACD5F
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:51:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 421B39ACD64
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:52:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CD201F254A4
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:51:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF37BB260DE
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:52:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E3A21831C;
-	Wed, 23 Oct 2024 14:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C863421858B;
+	Wed, 23 Oct 2024 14:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rv4ryarA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TeFd2p4R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC0E218314;
-	Wed, 23 Oct 2024 14:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9DE218339;
+	Wed, 23 Oct 2024 14:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729694005; cv=none; b=fbLJJUpsWLSFgxzqPahisYAXPBkWsOiJGCLfdpmeDNGBvb80QfX3MTJ/0vtjLYPQpdiUD7dWCDARsThEOEqeQOWxHNOk2Qi2mdpmSL393B0pmDw83ZDsdnBR0qLYtskpVLsvoy01LWSRUuduR2zfauU/DstksOMj0eYrZj/M2u4=
+	t=1729694007; cv=none; b=kjZoY463+QQ/CmdSn1xbUFJjn8qLxZIJgvdxodI33CgxfpUplgo3sgUk/G9Eyp+x/zihHcIDuEBFxwT3IyunzkHKKNcGhRxtuhpd4YQ6c1kO9Yc2RmLqrbMRajN5Ac7/Xv2TORKEHV0msXA8D2NDXYI2KfvAmEGOYAO93m2CVoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729694005; c=relaxed/simple;
-	bh=2Alo/y2CiuDSAXuTtnuzS2QputKZAQEV420KfnxkseQ=;
+	s=arc-20240116; t=1729694007; c=relaxed/simple;
+	bh=ehKCRv5eADkou1azTYF5vkSU2N2nnR4vZ3u/U0CdpgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n7D8iT+KKLTEs0E0UgDYAmgwUXAGOzI5M6jnZpBh575QPWj3AxJyXxy7m4kRDDglN/r7VYw7cpTKHDFahDqP4QCzB6HeiVVHNhP7J+XCq7l8hWJQ7SP4/5g075NlC7XPzIRwz5z7YxLBTQV/OwdBKRuGO4oJM67bDcTGsrd1KAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rv4ryarA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BD8C4CEE4;
-	Wed, 23 Oct 2024 14:33:24 +0000 (UTC)
+	 MIME-Version; b=NAbJlx/KssApTXDsWrCFMSiUVVYKqVvnKUBxZIMvK/Xf59CYGb/vnMc8jLc//8r8m/3oXhSmiI2ah4/g/Wjs7YMlq6x7OSpFm3//TqGYH5Y+5F469vDj9rzYSxp3utdte/9T09QrqlXR+GPCD/0yqiZE6+ZNc97LsbuYSu1nTe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TeFd2p4R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B082C4CECD;
+	Wed, 23 Oct 2024 14:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729694005;
-	bh=2Alo/y2CiuDSAXuTtnuzS2QputKZAQEV420KfnxkseQ=;
+	s=k20201202; t=1729694007;
+	bh=ehKCRv5eADkou1azTYF5vkSU2N2nnR4vZ3u/U0CdpgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rv4ryarAiupdTERspq8qLcavkNczHEJ6azm+TymvLzxzWkA57ug4tgJvHUqe7v356
-	 Sa6cokjRH+aCg2ztUu+7ghZV7EGq7Je3rqWtyhLYX27D4PAv12/2Ty9PYeNYMIuHnT
-	 jPoRlES+3BZxo2/9Snl97bLLfgiq8CcUOl54I3wxzIdnT3NwFcLcI62yDrusCepL6m
-	 sUPSfRLbgcU8akTmqdyCdaelyTrxFXGlbQ0fd6NYM287pJcWJYFmMrhQ8Em0swNTkT
-	 09avW61Kv6FgD+vjQhFxOpsNtPDoRlJ8HxZtbhRNKEwKnCQ6ivvHIwKD5oO16DTTmj
-	 135iro6IHMopQ==
+	b=TeFd2p4RhRlN8zkAxm7eEhzIUvJ6LfW6oYhKI2w/nKF5nw48s3/yKazdqRQcUFw8R
+	 Opb/Ln4ElOGkL5LuNCIQSBAqHfPaAzVuW6PM7/Ccvd5TainWOUkuYrbRFL7kMuEukX
+	 ZTowY9YLrH0yIYxFjuIsaEFo+rVohEdG3NWTLC18vRQSX9vTAknAOKCy7OwCw2LOm4
+	 EToc+H+iMQIfLXfqP0CANGIuVRwtgMYRIIZYlieG9V4px9B3qZersyzyYtyyABLlqb
+	 GuPg6qIyeJfZ3NmtCHplhZab0ELqTv28yKqakl44QjoJvfQpvQBm4IcexXL9Ocx+Aw
+	 Cxa7F0gx67xrA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: WangYuli <wangyuli@uniontech.com>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Jiri Kosina <jkosina@suse.com>,
+Cc: Rik van Riel <riel@surriel.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 2/5] HID: multitouch: Add quirk for HONOR MagicBook Art 14 touchpad
-Date: Wed, 23 Oct 2024 10:33:17 -0400
-Message-ID: <20241023143321.2982841-2-sashal@kernel.org>
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 3/5] bpf: use kvzmalloc to allocate BPF verifier environment
+Date: Wed, 23 Oct 2024 10:33:18 -0400
+Message-ID: <20241023143321.2982841-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241023143321.2982841-1-sashal@kernel.org>
 References: <20241023143321.2982841-1-sashal@kernel.org>
@@ -68,45 +68,50 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.322
 Content-Transfer-Encoding: 8bit
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Rik van Riel <riel@surriel.com>
 
-[ Upstream commit 7a5ab8071114344f62a8b1e64ed3452a77257d76 ]
+[ Upstream commit 434247637c66e1be2bc71a9987d4c3f0d8672387 ]
 
-The behavior of HONOR MagicBook Art 14 touchpad is not consistent
-after reboots, as sometimes it reports itself as a touchpad, and
-sometimes as a mouse.
+The kzmalloc call in bpf_check can fail when memory is very fragmented,
+which in turn can lead to an OOM kill.
 
-Similarly to GLO-GXXX it is possible to call MT_QUIRK_FORCE_GET_FEATURE as a
-workaround to force set feature in mt_set_input_mode() for such special touchpad
-device.
+Use kvzmalloc to fall back to vmalloc when memory is too fragmented to
+allocate an order 3 sized bpf verifier environment.
 
-[jkosina@suse.com: reword changelog a little bit]
-Link: https://gitlab.freedesktop.org/libinput/libinput/-/issues/1040
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Reviewed-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Admittedly this is not a very common case, and only happens on systems
+where memory has already been squeezed close to the limit, but this does
+not seem like much of a hot path, and it's a simple enough fix.
+
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Link: https://lore.kernel.org/r/20241008170735.16766766@imladris.surriel.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/bpf/verifier.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 14dc5ec9edc69..6e975d639c36b 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1986,6 +1986,11 @@ static const struct hid_device_id mt_devices[] = {
- 		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
- 			0x347d, 0x7853) },
- 
-+	/* HONOR MagicBook Art 14 touchpad */
-+	{ .driver_data = MT_CLS_VTL,
-+		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
-+			0x35cc, 0x0104) },
-+
- 	/* Ilitek dual touch panel */
- 	{  .driver_data = MT_CLS_NSMU,
- 		MT_USB_DEVICE(USB_VENDOR_ID_ILITEK,
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index a48de55f5630e..de0926cff8352 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -6446,7 +6446,7 @@ int bpf_check(struct bpf_prog **prog, union bpf_attr *attr)
+ 	/* 'struct bpf_verifier_env' can be global, but since it's not small,
+ 	 * allocate/free it every time bpf_check() is called
+ 	 */
+-	env = kzalloc(sizeof(struct bpf_verifier_env), GFP_KERNEL);
++	env = kvzalloc(sizeof(struct bpf_verifier_env), GFP_KERNEL);
+ 	if (!env)
+ 		return -ENOMEM;
+ 	log = &env->log;
+@@ -6573,6 +6573,6 @@ int bpf_check(struct bpf_prog **prog, union bpf_attr *attr)
+ 	mutex_unlock(&bpf_verifier_lock);
+ 	vfree(env->insn_aux_data);
+ err_free_env:
+-	kfree(env);
++	kvfree(env);
+ 	return ret;
+ }
 -- 
 2.43.0
 
