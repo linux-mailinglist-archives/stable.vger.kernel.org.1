@@ -1,106 +1,128 @@
-Return-Path: <stable+bounces-87803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 871BB9ABDB2
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 07:15:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D4A9ABE70
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 08:10:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5D901C22ED5
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 05:15:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B75E91F21768
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 06:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1915B83CDA;
-	Wed, 23 Oct 2024 05:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31791474A4;
+	Wed, 23 Oct 2024 06:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQyFWRld"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hHqx+J9F"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4313A1BA
-	for <stable@vger.kernel.org>; Wed, 23 Oct 2024 05:15:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F52146A79;
+	Wed, 23 Oct 2024 06:10:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729660530; cv=none; b=oWZ87L8AmlgfURNyEd3XRTG9DPjeyQCZvZsKjZ0DJQl7ipDgrn9CMfC34IE0U6JxmCJ6ryUVR13d0PTHyG4zJoW0VawOJ8nh59d1CU7ypqTeiuSCYSV5tfDqpGfWKKFpMnRqtAHu53P8StzXO7mRiJIK39ouwkrQJGde7pC1YV0=
+	t=1729663809; cv=none; b=Ujh1huIJ2+bPS/YvWeppUofWsox0LrR7Yzqk2lkuL0nD2mN7gW2TStNv+B4FXa8cdeG/xnQPdWiNx76Nq1nTaoumuWpIjJ4wwsx5lBxaz3Ji6f7Vlb/rv91wWMPjeNOpj7L5ahKPTSU7p2InWTbdKFmiCvOEHP4gIjwry3M+Wr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729660530; c=relaxed/simple;
-	bh=8ZurN4cG8QPRPQP6hA8ugM7FE6Zp6kQEotgcfKQ5k6E=;
+	s=arc-20240116; t=1729663809; c=relaxed/simple;
+	bh=d6pW4xi0LQC9Mf1CBRcA8IVQ88uK0iTTORzaAqW6ieE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eOYgGQ6Fsfk1vhlhPrK3bqfbRFKO9oESNmCuw0qPNHtA8LoqMl+Uso3Wp5AaADzY630tu8dmWvQNc2WTIL76S7xsc4d/vV3NTJIN5vcItExmPdsYPJB6fKowlE7kwXLf1uuMZ9M1/5B6YiC/ItFSDxSy41kRnlSNZeJIZgBn0kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQyFWRld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9883C4CEC6;
-	Wed, 23 Oct 2024 05:15:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729660530;
-	bh=8ZurN4cG8QPRPQP6hA8ugM7FE6Zp6kQEotgcfKQ5k6E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aQyFWRldFu49eT0V2S16/3d4P3iB/gSWuPIdyvkwZKI5+CWisBmMqLBjYtzgVSiNv
-	 qF+7iua5i0tXhIpKzC2g+GpyrvIlBr470aup1rHtF7CNfnKcOoNDMNEnHUAqMrB7rF
-	 nFB/Yo7rlGP3GECTpE/3uyGJMZ7kG93+iJj80hhE=
-Date: Wed, 23 Oct 2024 07:15:27 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: stable@vger.kernel.org, Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: Re: Request to include xe and i915 patches for 6.11.y
-Message-ID: <2024102344-savanna-skimming-4ee3@gregkh>
-References: <k5xojgkymtcgybwu5hbhvidgptxwhv4m4plbhdx26qzmlfryvn@mh4i7xvpx5gi>
+	 Content-Type:Content-Disposition:In-Reply-To; b=p9bPN3Aukqf3Tv41FY81QzkRnwm7rnM757EfwMaXYrkgywwr9yEcYswCXnFmh59U3pPuEdXpK8M1COLCKR47X1Z8z6ptNgbyuPPNiOVCfG4rPLjLxenIrWU+lNj3SDSHLMVHqp7kXq7wHp9D14xwGe0zumOQGFw2aJtWOO4RBew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hHqx+J9F; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729663807; x=1761199807;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=d6pW4xi0LQC9Mf1CBRcA8IVQ88uK0iTTORzaAqW6ieE=;
+  b=hHqx+J9FlnJ2GMCyHCz3a2B+3t7t/M5Wm+Jw2avt7RBFHItzDvjhWPMy
+   yrMJl3qU/EWD9MVYubLFT813zcsbRa6JaGNQKoy6CKQtGQGE48sYRo3zM
+   HxF/Wkh+jw9D0hj3CndILAqnmwKjzEdxIs6tJhHJ4xKMd6VX+aELLB2Ob
+   uUmQRbnj2FyPokfCjxCUSg3tvHh1D15NRi14gVYEWEO7RLWhMU1pKlBvW
+   024q5aVcD7R9utLAexG9HwMTUuz6/ENf/Css1RV8iH+eEXt6OeP2/Ywwq
+   xCvvJjwF6GWddTMhxFGhUrGvwQ4jS7/9b/fqR1Vci9cjOvn3lSZWTxJs+
+   w==;
+X-CSE-ConnectionGUID: fZCIIb0aQgGZj4gs7ckGbQ==
+X-CSE-MsgGUID: GyU0RRblRI64GhlOFM2xDg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11233"; a="54632075"
+X-IronPort-AV: E=Sophos;i="6.11,225,1725346800"; 
+   d="scan'208";a="54632075"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 23:10:06 -0700
+X-CSE-ConnectionGUID: T+YlXsULSgWe4jrst28lJw==
+X-CSE-MsgGUID: 4ZW84SJkQT2oRkMuOjcsPQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,225,1725346800"; 
+   d="scan'208";a="80899370"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa008.jf.intel.com with ESMTP; 22 Oct 2024 23:10:02 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+	id 1E164301; Wed, 23 Oct 2024 09:10:01 +0300 (EEST)
+Date: Wed, 23 Oct 2024 09:10:01 +0300
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Rick <rick@581238.xyz>
+Cc: Mario Limonciello <mario.limonciello@amd.com>, Sanath.S@amd.com,
+	christian@heusel.eu, fabian@fstab.de, gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org, regressions@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: Dell WD19TB Thunderbolt Dock not working with kernel > 6.6.28-1
+Message-ID: <20241023061001.GF275077@black.fi.intel.com>
+References: <000f01db247b$d10e1520$732a3f60$@581238.xyz>
+ <96560f8e-ab9f-4036-9b4d-6ff327de5382@amd.com>
+ <22415e85-9397-42db-9030-43fc5f1c7b35@581238.xyz>
+ <20241022161055.GE275077@black.fi.intel.com>
+ <7f14476b-8084-4c43-81ec-e31ae3f7a3c6@581238.xyz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <k5xojgkymtcgybwu5hbhvidgptxwhv4m4plbhdx26qzmlfryvn@mh4i7xvpx5gi>
+In-Reply-To: <7f14476b-8084-4c43-81ec-e31ae3f7a3c6@581238.xyz>
 
-On Tue, Oct 22, 2024 at 04:39:29PM -0500, Lucas De Marchi wrote:
-> Hi,
-> 
-> I have tested 6.11.4 with these additional fixes for the xe and i915
-> drivers:
-> 
-> 	f0ffa657e9f3913c7921cbd4d876343401f15f52
-> 	4551d60299b5ddc2655b6b365a4b92634e14e04f
-> 	ecabb5e6ce54711c28706fc794d77adb3ecd0605
-> 	2009e808bc3e0df6d4d83e2271bc25ae63a4ac05
-> 	e4ac526c440af8aa94d2bdfe6066339dd93b4db2
-> 	ab0d6ef864c5fa820e894ee1a07f861e63851664
-> 	7929ffce0f8b9c76cb5c2a67d1966beaed20ab61
-> 	da9a73b7b25eab574cb9c984fcce0b5e240bdd2c
-> 	014125c64d09e58e90dde49fbb57d802a13e2559
-> 	4cce34b3835b6f7dc52ee2da95c96b6364bb72e5
-> 	a8efd8ce280996fe29f2564f705e96e18da3fa62
-> 	f15e5587448989a55cf8b4feaad0df72ca3aa6a0
-> 	a9556637a23311dea96f27fa3c3e5bfba0b38ae4
-> 	c7085d08c7e53d9aef0cdd4b20798356f6f5d469
-> 	eb53e5b933b9ff315087305b3dc931af3067d19c
-> 	3e307d6c28e7bc7d94b5699d0ed7fe07df6db094
-> 	d34f4f058edf1235c103ca9c921dc54820d14d40
-> 	31b42af516afa1e184d1a9f9dd4096c54044269a
-> 	7fbad577c82c5dd6db7217855c26f51554e53d85
-> 	b2013783c4458a1fe8b25c0b249d2e878bcf6999
-> 	c55f79f317ab428ae6d005965bc07e37496f209f
-> 	9fc97277eb2d17492de636b68cf7d2f5c4f15c1b
-> 
-> I have them applied locally and could submit that if preferred, but
-> there were no conflicts (since it also brings some additional patches as
-> required for fixes to apply), so it should be trivial.
-> 
-> All of these patches are already in upstream.  Some of them are brought
-> as dependency. The ones mentioning "performance changes" are knobs to
-> follow the hw spec and could be considered as fixes too.  These patches
-> are also enabled downstream in Ubuntu 24.10 in order to allow the new
-> Lunar Lake and Battlemage to work correctly. They have more patches not
-> included here, but I may follow up with more depending on the acceptance
-> of these patches.
+Hi,
 
-As this is a long series, can you just send this as a patch series so
-that we know the proper order of them, and it will get your
-signed-off-by on as proof you tested these?
+On Tue, Oct 22, 2024 at 07:06:50PM +0200, Rick wrote:
+> Hi Mika,
+> 
+> I have removed pcie_asm=force as kernel parameter but still not working on
+> latest non LTS kernel.
 
-thanks,
+Okay, I still suggest not having that unless you absolutely know that
+you need it.
 
-greg k-h
+> In regards to the disconnect; sorry I think I might have turned of the
+> docking station myself during that test. I have taken another dmesg without
+> me disconnecting the docking station:
+> https://gist.github.com/ricklahaye/9798b7de573d0f29b3ada6a5d99b69f1
+> 
+> The cable is the original Thunderbolt 4 cable that came with the docking
+> station. I have used it on this laptop using Windows (dualboot) without any
+> issues. Also on another Windows laptop also without issues. It was used in
+> 40Gbit mode.
+
+In the dmesg you shared above, there are still unplug and USB tunnel
+creation fails so you only get USB 2.x connection with all the USB
+devices on the dock.
+
+How do you determine if it "works"? I guess keyboard and mouse (both
+USB 2.x devices) and display (tunneled over USB4 link) all are working
+right? However, if you plug in USB 3.x device to the dock it enumerates
+as FullSpeed instead of SuperSpeed. There is definitely something wrong
+here. I asked from our TB validation folks if they have any experience
+with this dock but did not receive any reply yet.
+
+What you mean by 40Gbit mode? The dock exposes two lanes both at 20G so
+it should always be 40G since we bind the lanes, also in Windows.
+
+Also In Windows, do you see if the all USB devices on the dock are
+enumerated as FullSpeed or SuperSpeed? I suspect it's the former there
+too but can you check? Keyboard and mouse should be FullSpeed but there
+is some audio device that may be USB 3.x (SuperSpeed), or alternatively
+if you have USB 3.x memory stick (or any other device) you can plug that
+to the dock and see how it enumerates.
 
