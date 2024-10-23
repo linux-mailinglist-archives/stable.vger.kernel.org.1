@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-87806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB2FA9ABEAA
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 08:25:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7B529ABEB2
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 08:25:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAD3D1C21039
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 06:25:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9006E1F21944
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 06:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6FE14D6F6;
-	Wed, 23 Oct 2024 06:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CF9148308;
+	Wed, 23 Oct 2024 06:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="awqkjfOa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dVopE7FC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D32136345;
-	Wed, 23 Oct 2024 06:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5831143C40;
+	Wed, 23 Oct 2024 06:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729664680; cv=none; b=upmCRE4+VhohIPxT5NIPeXsAINO2muc5ityGEywv6GmNaz1uD21VuD2aDMSFGpgpd6rYEU1aIkrahJC47AaP7zQ/IWRp1v2OVicmJTPlHnh+ANR8Y6m5h06iz2kGiCs71f8V71kci8vCU4Mdy9d+mN3oBH8OdWnkeOWWA9HLGEw=
+	t=1729664715; cv=none; b=Yta15MYse0cW1uk5pm9KnS4TolLiX4DmP1GPiCFsAIgzrp/R23rLFsISjCrJL6fKiya76Ojw6zlzpuToovo2BBxo+fKTw8OoAMGRCYXymcSaCx8xtgBJuoC8T8IEdDp4OLRkBfUiNK++rkV0pED2UZCfA7kg/RUfcqWr/3F8MS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729664680; c=relaxed/simple;
-	bh=X6qePqTy4De26xnIqhTGjHuyAbFRoIuQ3sqI36dgIxk=;
+	s=arc-20240116; t=1729664715; c=relaxed/simple;
+	bh=haDXNp+VJoStyZwm8K9NjrhHFmotmx3+t7oRfBh/EoY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eU/sxF4TN+excVatOw9fPE4zc7lFSV1RkZuMcabxaAz+4TMcp1KfCHz8u0Szn9Ac1oDM7GqkVyjAB/x8XSKVtnDw4xF+43nssuMe5m402U4yA1cg1TM5knpSH25l87oUpE5IgQwVsYldZ5eVnp5oVuLjm9SO0c+vWPi11wky2jE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=awqkjfOa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA13C4CEE6;
-	Wed, 23 Oct 2024 06:24:38 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=bSMF6muuRVTKCYKUZBAtmzJqCP0pL3Pr5sg0bwr/mDS1jRAG4gJOQVrGbDDP9C+dILaYT9gWDc52jdCElA06FXA2pDxFPChaCD1IHqG03IPPPEty5nfmoN9UfkxmMdDTgGtYzVs1/dhOhlQBXn5LzjvBFPAC8a/JwYYJbtt2hes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dVopE7FC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7F09C4CEC7;
+	Wed, 23 Oct 2024 06:25:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729664679;
-	bh=X6qePqTy4De26xnIqhTGjHuyAbFRoIuQ3sqI36dgIxk=;
+	s=k20201202; t=1729664715;
+	bh=haDXNp+VJoStyZwm8K9NjrhHFmotmx3+t7oRfBh/EoY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=awqkjfOawgpgjseXx60c6ANvCEY141ITM6YvqaYCQOn/SJ7NL0qknd4yKhyMBVYiG
-	 9HGzHI/8vqs6VBIltUtssMR3OL/SKyCoAQm3Ow6VivIb6on2U0txou09kLhAE9h+EY
-	 vdTI1CGKWTcPqprb1j8H36W5M51EiQUF/NTlGRPunvxLeiqAjEbwiTRS67ZqtnqN7Y
-	 Jzftrovn+vQUDqBjHdP45S5m3O+zJswjja5+CNN64pDqoWge4PZ8ll2TUaJwV/GpFn
-	 9sQjAc2WnLHkEj5eX8qzbsuoSHyJQNGMvZf2Mya3DEd/QbkxTOZNjIGqQvJJmSDIJ+
-	 fZoYItMzLvupw==
-Message-ID: <6031178d-a577-43e4-a44b-743ccb8c1f67@kernel.org>
-Date: Wed, 23 Oct 2024 08:24:36 +0200
+	b=dVopE7FCc87GNcsZ60SLS/qOh7vg+Mz5xpirRJdHMofrdWQDhFIRkEK8YonUJ6eNY
+	 /F6FwjYMXTzj7a/45DpJKtTVojVQDQOEo/fKlUsLiB52bvwZc9J5gV9F0MDYK3qqAJ
+	 dbMCAs/ASL161MCFzMFCL62VIvY0n9m80x6bxjejflB/Y6+VsHuCHrDiEQIdjzzHzv
+	 muoYjPfkyZ6q1PZSrg1skYRJfpdr81CmiQ6U3E+G4u60mvnvHz542Bs2XnooLJy0+E
+	 DCybyKLUhqSlKH7JBsxkDdKb1OdEKaT6T1TbXwI3a99hdjEsZy9j5T8+k47xwz0X+f
+	 RynUJ6lsnsYrA==
+Message-ID: <a07de63f-1723-440d-802c-6bedefec7f24@kernel.org>
+Date: Wed, 23 Oct 2024 08:25:12 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "xhci: dbgtty: remove kfifo_out() wrapper" has been added
- to the 6.11-stable tree
-To: stable@vger.kernel.org, stable-commits@vger.kernel.org
-Cc: Mathias Nyman <mathias.nyman@intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <20241022174535.2837449-1-sashal@kernel.org>
+Subject: Re: Patch "tty/serial: Make ->dcd_change()+uart_handle_dcd_change()
+ status bool active" has been added to the 6.1-stable tree
+To: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+ ilpo.jarvinen@linux.intel.com
+Cc: Rodolfo Giometti <giometti@enneenne.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "David S. Miller" <davem@davemloft.net>
+References: <20241022175403.2844928-1-sashal@kernel.org>
 Content-Language: en-US
 From: Jiri Slaby <jirislaby@kernel.org>
 Autocrypt: addr=jirislaby@kernel.org; keydata=
@@ -100,16 +102,17 @@ Autocrypt: addr=jirislaby@kernel.org; keydata=
  f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
  DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
  S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <20241022174535.2837449-1-sashal@kernel.org>
+In-Reply-To: <20241022175403.2844928-1-sashal@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 22. 10. 24, 19:45, Sasha Levin wrote:
+On 22. 10. 24, 19:54, Sasha Levin wrote:
 > This is a note to let you know that I've just added the patch titled
 > 
->      xhci: dbgtty: remove kfifo_out() wrapper
+>      tty/serial: Make ->dcd_change()+uart_handle_dcd_change() status bool active
 
-This is a cleanup, not needed in stable.
+This is a cleanup, not needed in stable. (Unless something 
+context-depends on it.)
 
 -- 
 js
