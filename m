@@ -1,208 +1,169 @@
-Return-Path: <stable+bounces-87953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C61F9AD6CA
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 23:33:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8D689AD77D
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 00:22:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D0781C210D2
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 21:33:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 494491F221D9
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 22:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F421D2B11;
-	Wed, 23 Oct 2024 21:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B211FE0FD;
+	Wed, 23 Oct 2024 22:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YhC8Leuv"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="g4f8hSuE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD51171671;
-	Wed, 23 Oct 2024 21:33:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA414D599;
+	Wed, 23 Oct 2024 22:21:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729719203; cv=none; b=hifZbr1ZP7a1cKLS0qXDE7ZgOWycmxD7JslKlpsLeU8S94xe8p3RqibJtgsGKOQLSlMVsku9KMF9mrFrGk6hRv+oKQDy2N523wGB3C90qGSUWYtlq7ENdgjt1aVfgYA6xj33MJkt+inhZxkYMG7+pGHKKo1DRImbu0Pm/CJd96A=
+	t=1729722118; cv=none; b=UQLEuSV8xW3XGa1eqfU0SicQdxbP52w4dP9p1m+HbFbCUqKRnBd92CuvNktOZ5oDZh0YkUa8uMoRENjwluzaTyL1q3NzwxqlKAIEajZocjLoK6537OVKscBccUOvcC3DDstKIbunhmBf02vX1xZX7HHRl+em31mZ9Y94BMeQKEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729719203; c=relaxed/simple;
-	bh=4Cdl78KMSg8ESoVkXR1vtPGDTu30ACB34Uff1obLF+s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=cx+BKp0OC2bFcoN90Y/gKha0w/2ZYYa2k/JuJI29GIo2p/X2iH8C5fMFf7M3I1o1DEBz2i+7siAm9j4zum5GklLHlkb4fY60/9mye02TDPtDk4vcSlfLnbFOWXQQCjZY97mUKM3BeDCGaRRW4PK2zRDlvgmeEi+LvHx8QSwVr7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YhC8Leuv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A979FC4CEC6;
-	Wed, 23 Oct 2024 21:33:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729719202;
-	bh=4Cdl78KMSg8ESoVkXR1vtPGDTu30ACB34Uff1obLF+s=;
-	h=From:Date:Subject:To:Cc:From;
-	b=YhC8LeuvFdI1wN0m3isfCcxto6XSU4YmTdslMeXDevbzGVnkdmBSeici2HTIPTIvR
-	 nbH0ka//EPTeVEgqphT31zwCaWwl39ePfhHf+1a0pikShfDasJOP/g2y/nRsYwT3yM
-	 8eYG5iiGq4lPlmff0xKHpbAV1HsTgzCsROy7Qafkn/at88zV68q6+W0wsFHTxiDlak
-	 fxmzrf1sZaUluYm3GCclT/CrGkzbNHYApThrOuSRzwJL46f8Ujo/8Qyc9D/b8CPYPJ
-	 CMqrfp36VW3TMcySp+GqS+hgvB8Ae1m3EhT5HapavU5F464rWjqpDY3Xpre16dqZSi
-	 P14DT6sAuK70g==
-From: Mark Brown <broonie@kernel.org>
-Date: Wed, 23 Oct 2024 22:31:24 +0100
-Subject: [PATCH] arm64/signal: Avoid corruption of SME state when entering
- signal handler
+	s=arc-20240116; t=1729722118; c=relaxed/simple;
+	bh=RNQZ+4Gn07qWwQ1WhtJQDHeeM6BS8OoxhTDaGvEztLo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=KqLXkzf4eYC6xdTMb+krqPGu+BFcCz0/+ykTSNMri21WgbSZANEV9LIxaHty7+pYje92Gl19hXewm4DQm66nz8p9761fvDoKKnVWqEjjdSRpOKHa8RqhnZ6/Mgjmf+Sr9iuw6tWriJQIfUajP4w60GSHlZx58V6rpoiG+l9s6/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=g4f8hSuE; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49N9ijGS030354;
+	Wed, 23 Oct 2024 22:21:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	oXTdl017qkFFaJjdWRfywgTTPeFRhj+b+Qyfqj4ayBo=; b=g4f8hSuE9IzYRX9l
+	zRMRaXs0HqoqFYnAmqVIWxNaTjRzyGjUVGBUQN4Q29QOCYivj3GbL2B7iDHfw1f7
+	lgrMo1mtF6IqfruPVnjbjJXFHGlam7sCA/jz2ho1jZqNoHlDbOlQviFP722Jr4bN
+	68+aiUvawC4cjbGvRsJv+cqlCl/78702Wqg9T9dmVO+K7IS/ZSVojIEjtJoHEUYv
+	9duWNTAX5ItVNFm1v/hqk6h2YYXHPe2HzNjltza02Rx1kBLnJeor+bqfRWXLCvoi
+	94m+A599HhlfZAyKIGNH0TOd7WJd0wnIU5qLDTls8fWRD4dscxX71fKO9HQyEeTE
+	85FyLQ==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42em3w3nyg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 23 Oct 2024 22:21:52 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49NMLp7h001476
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 23 Oct 2024 22:21:51 GMT
+Received: from [10.110.103.186] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 23 Oct
+ 2024 15:21:50 -0700
+Message-ID: <6b2b1e75-696b-4860-b6ec-ef5713fdfd21@quicinc.com>
+Date: Wed, 23 Oct 2024 15:21:50 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] rpmsg: glink: Handle rejected intent request
+ better
+To: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+        Bjorn Andersson
+	<andersson@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        "Konrad
+ Dybcio" <konradybcio@kernel.org>,
+        Johan Hovold <johan@kernel.org>
+CC: <linux-arm-msm@vger.kernel.org>,
+        Bjorn Andersson
+	<quic_bjorande@quicinc.com>,
+        <linux-remoteproc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>, Johan Hovold
+	<johan+linaro@kernel.org>
+References: <20241023-pmic-glink-ecancelled-v2-0-ebc268129407@oss.qualcomm.com>
+ <20241023-pmic-glink-ecancelled-v2-1-ebc268129407@oss.qualcomm.com>
+Content-Language: en-US
+From: Chris Lew <quic_clew@quicinc.com>
+In-Reply-To: <20241023-pmic-glink-ecancelled-v2-1-ebc268129407@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241023-arm64-fp-sme-sigentry-v1-1-249ff7ec3ad0@kernel.org>
-X-B4-Tracking: v=1; b=H4sIACtrGWcC/x3MQQ5AMBBA0avIrE2iJSquIhYtg1komREh4u4ay
- 7f4/wElYVJosweETlbeYoLJMxgWH2dCHpPBFrYyhS3Ry1pXOO2oK6HyTPGQG70NozONI2cCpHY
- Xmvj6v13/vh9LzOURZwAAAA==
-X-Change-ID: 20241023-arm64-fp-sme-sigentry-a2bd7187e71b
-To: Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-9b746
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4970; i=broonie@kernel.org;
- h=from:subject:message-id; bh=4Cdl78KMSg8ESoVkXR1vtPGDTu30ACB34Uff1obLF+s=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBnGWufCXMY+wKGUe0veSFLrn03Q+QJr52eqIWW1PoS
- 80ym3+OJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZxlrnwAKCRAk1otyXVSH0PLDB/
- sFjdjvP1i9t977GK9dzQ+jJrqtRpqRQre7WINBFglAtjiF2DbrBjDrCtaL3BfnUfChlbwiPMWu/+U8
- d6hWrvxgzvLYCFAz40zNMO/QGRLoz6urB6/B0G4kmI2oMmGTsbOvHn6UhPlRc3G5mHl/n+e5tmXqg5
- VgVax1Qc0j7AlAh9HuIMBU0GTKZgUYZmtwUswoado7ALyJWt6vF17/Jv/xV2p6jnfBqMVsQzIijZNF
- zY49gCyPO2Aa/DZ6bdmpTFClPQS10VYLUfAz+OGwecwo4iqT9hVC+Iny31N0nI8CwykPegh0yV/uVD
- /pD9rVzUnMB590PAKb64tEu45J0Ega
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: -pAKsyJCTQ8pvqnIhdBkTm43pLuPvpxZ
+X-Proofpoint-GUID: -pAKsyJCTQ8pvqnIhdBkTm43pLuPvpxZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=999
+ priorityscore=1501 impostorscore=0 bulkscore=0 lowpriorityscore=0
+ clxscore=1011 suspectscore=0 spamscore=0 malwarescore=0 mlxscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410230145
 
-When we enter a signal handler we exit streaming mode in order to ensure
-that signal handlers can run normal FPSIMD code, and while we're at it we
-also clear PSTATE.ZA. Currently the code in setup_return() updates both the
-in memory copy of the state and the register state. Not only is this
-redundant it can also lead to corruption if we are preempted.
 
-Consider two tasks on one CPU:
 
- A: Begins signal entry in kernel mode, is preempted prior to SMSTOP.
- B: Using SM and/or ZA in userspace with register state current on the
-    CPU, is preempted.
- A: Scheduled in, no register state changes made as in kernel mode.
- A: Executes SMSTOP, modifying live register state.
- A: Scheduled out.
- B: Scheduled in, fpsimd_thread_switch() sees the register state on the
-    CPU is tracked as being that for task B so the state is not reloaded
-    prior to returning to userspace.
+On 10/23/2024 10:24 AM, Bjorn Andersson wrote:
+> GLINK operates using pre-allocated buffers, aka intents, where incoming
+> messages are aggregated before being passed up the stack. In the case
+> that no suitable intents have been announced by the receiver, the sender
+> can request an intent to be allocated.
+> 
+> The initial implementation of the response to such request dealt
+> with two outcomes; granted allocations, and all other cases being
+> considered -ECANCELLED (likely from "cancelling the operation as the
+> remote is going down").
+> 
+> But on some channels intent allocation is not supported, instead the
+> remote will pre-allocate and announce a fixed number of intents for the
+> sender to use. If for such channels an rpmsg_send() is being invoked
+> before any channels have been announced, an intent request will be
+> issued and as this comes back rejected the call fails with -ECANCELED.
+> 
+> Given that this is reported in the same way as the remote being shut
+> down, there's no way for the client to differentiate the two cases.
+> 
+> In line with the original GLINK design, change the return value to
+> -EAGAIN for the case where the remote rejects an intent allocation
+> request.
+> 
+> It's tempting to handle this case in the GLINK core, as we expect
+> intents to show up in this case. But there's no way to distinguish
+> between this case and a rejection for a too big allocation, nor is it
+> possible to predict if a currently used (and seemingly suitable) intent
+> will be returned for reuse or not. As such, returning the error to the
+> client and allow it to react seems to be the only sensible solution.
+> 
+> In addition to this, commit 'c05dfce0b89e ("rpmsg: glink: Wait for
+> intent, not just request ack")' changed the logic such that the code
+> always wait for an intent request response and an intent. This works out
+> in most cases, but in the event that an intent request is rejected and no
+> further intent arrives (e.g. client asks for a too big intent), the code
+> will stall for 10 seconds and then return -ETIMEDOUT; instead of a more
+> suitable error.
+> 
+> This change also resulted in intent requests racing with the shutdown of
+> the remote would be exposed to this same problem, unless some intent
+> happens to arrive. A patch for this was developed and posted by Sarannya
+> S [1], and has been incorporated here.
+> 
+> To summarize, the intent request can end in 4 ways:
+> - Timeout, no response arrived => return -ETIMEDOUT
+> - Abort TX, the edge is going away => return -ECANCELLED
+> - Intent request was rejected => return -EAGAIN
+> - Intent request was accepted, and an intent arrived => return 0
+> 
+> This patch was developed with input from Sarannya S, Deepak Kumar Singh,
+> and Chris Lew.
+> 
+> [1] https://lore.kernel.org/all/20240925072328.1163183-1-quic_deesin@quicinc.com/
+> 
+> Fixes: c05dfce0b89e ("rpmsg: glink: Wait for intent, not just request ack")
+> Cc: stable@vger.kernel.org
+> Tested-by: Johan Hovold <johan+linaro@kernel.org>
+> Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+> ---
 
-Task B is now running with SM and ZA incorrectly cleared.
-
-Fix this by check TIF_FOREIGN_FPSTATE and only updating one of the live
-register context or the in memory copy when entering a signal handler.
-Since this needs to happen atomically and all code that atomically
-accesses FP state is in fpsimd.c also move the code there to ensure
-consistency.
-
-This race has been observed intermittently with fp-stress, especially
-with preempt disabled.
-
-Fixes: 40a8e87bb3285 ("arm64/sme: Disable ZA and streaming mode when handling signals")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
----
- arch/arm64/include/asm/fpsimd.h |  1 +
- arch/arm64/kernel/fpsimd.c      | 30 ++++++++++++++++++++++++++++++
- arch/arm64/kernel/signal.c      | 19 +------------------
- 3 files changed, 32 insertions(+), 18 deletions(-)
-
-diff --git a/arch/arm64/include/asm/fpsimd.h b/arch/arm64/include/asm/fpsimd.h
-index f2a84efc361858d4deda99faf1967cc7cac386c1..09af7cfd9f6c2cec26332caa4c254976e117b1bf 100644
---- a/arch/arm64/include/asm/fpsimd.h
-+++ b/arch/arm64/include/asm/fpsimd.h
-@@ -76,6 +76,7 @@ extern void fpsimd_load_state(struct user_fpsimd_state *state);
- extern void fpsimd_thread_switch(struct task_struct *next);
- extern void fpsimd_flush_thread(void);
- 
-+extern void fpsimd_enter_sighandler(void);
- extern void fpsimd_signal_preserve_current_state(void);
- extern void fpsimd_preserve_current_state(void);
- extern void fpsimd_restore_current_state(void);
-diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-index 77006df20a75aee7c991cf116b6d06bfe953d1a4..e6b086dc09f21e7f30df32ab4f6875b53c4228fd 100644
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1693,6 +1693,36 @@ void fpsimd_signal_preserve_current_state(void)
- 		sve_to_fpsimd(current);
- }
- 
-+/*
-+ * Called by the signal handling code when preparing current to enter
-+ * a signal handler. Currently this only needs to take care of exiting
-+ * streaming mode and clearing ZA on SME systems.
-+ */
-+void fpsimd_enter_sighandler(void)
-+{
-+	if (!system_supports_sme())
-+		return;
-+
-+	get_cpu_fpsimd_context();
-+
-+	if (test_thread_flag(TIF_FOREIGN_FPSTATE)) {
-+		/* Exiting streaming mode zeros the FPSIMD state */
-+		if (current->thread.svcr & SVCR_SM_MASK) {
-+			memset(&current->thread.uw.fpsimd_state, 0,
-+			       sizeof(current->thread.uw.fpsimd_state));
-+			current->thread.fp_type = FP_STATE_FPSIMD;
-+		}
-+
-+		current->thread.svcr &= ~(SVCR_ZA_MASK |
-+					  SVCR_SM_MASK);
-+	} else {
-+		/* The register state is current, just update it. */
-+		sme_smstop();
-+	}
-+
-+	put_cpu_fpsimd_context();
-+}
-+
- /*
-  * Called by KVM when entering the guest.
-  */
-diff --git a/arch/arm64/kernel/signal.c b/arch/arm64/kernel/signal.c
-index 5619869475304776fc005fe24a385bf86bfdd253..fe07d0bd9f7978d73973f07ce38b7bdd7914abb2 100644
---- a/arch/arm64/kernel/signal.c
-+++ b/arch/arm64/kernel/signal.c
-@@ -1218,24 +1218,7 @@ static void setup_return(struct pt_regs *regs, struct k_sigaction *ka,
- 	/* TCO (Tag Check Override) always cleared for signal handlers */
- 	regs->pstate &= ~PSR_TCO_BIT;
- 
--	/* Signal handlers are invoked with ZA and streaming mode disabled */
--	if (system_supports_sme()) {
--		/*
--		 * If we were in streaming mode the saved register
--		 * state was SVE but we will exit SM and use the
--		 * FPSIMD register state - flush the saved FPSIMD
--		 * register state in case it gets loaded.
--		 */
--		if (current->thread.svcr & SVCR_SM_MASK) {
--			memset(&current->thread.uw.fpsimd_state, 0,
--			       sizeof(current->thread.uw.fpsimd_state));
--			current->thread.fp_type = FP_STATE_FPSIMD;
--		}
--
--		current->thread.svcr &= ~(SVCR_ZA_MASK |
--					  SVCR_SM_MASK);
--		sme_smstop();
--	}
-+	fpsimd_enter_sighandler();
- 
- 	if (system_supports_poe())
- 		write_sysreg_s(POR_EL0_INIT, SYS_POR_EL0);
-
----
-base-commit: 8e929cb546ee42c9a61d24fae60605e9e3192354
-change-id: 20241023-arm64-fp-sme-sigentry-a2bd7187e71b
-
-Best regards,
--- 
-Mark Brown <broonie@kernel.org>
-
+Reviewed-by: Chris Lew <quic_clew@quicinc.com>
 
