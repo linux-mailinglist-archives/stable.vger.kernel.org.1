@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-87878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD36D9ACCD1
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:40:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BACCF9ACCD4
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:40:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 271C4B247CB
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:40:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65B191F24EA0
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B762003B3;
-	Wed, 23 Oct 2024 14:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2707B200C9E;
+	Wed, 23 Oct 2024 14:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pe6LeUMg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qFjgZPw4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB290200B84;
-	Wed, 23 Oct 2024 14:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BFE1C304B;
+	Wed, 23 Oct 2024 14:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729693898; cv=none; b=tEpeXJ/HK7dd9Ab/4WkLNm+wXJMnPxQLOZLIhuf+GD8aHw4BcOZ1d9nJEZ2UQdvL9XbsRaMzWrRmHx2qE0z/83/shYPg3FI2Tip/5X0DrBhHPJZBUsZa6i/piZul7l1NtbZPPxiaEJtKeDYgih6N3DLJwAKgVDVh+aNo3vgfpvQ=
+	t=1729693899; cv=none; b=W3x+rm6jkcq4FNDoPMnxxGj8rxOOMF+KuVQDlZrilq/Cpa3dst9B0g1Hq+CsaxWbCPWNxEddm9+79Z+6pPAUiwV5EVNQvxSH6b4/qi8TX/hxy1KFnKnXlI+i+YilWvZn/idynT/RNGH2TyAhhcYVBr0s7/S+Kx2cGO8at7prFq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729693898; c=relaxed/simple;
-	bh=mfJRy+rYwPbNCeTCcqg3cZQ1W1UA6uLvQa3fW+Ha6cY=;
+	s=arc-20240116; t=1729693899; c=relaxed/simple;
+	bh=G59Njn/ri5bLKpEUV6Ax+VakkUWMTqQ2UEYtaLWGdrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W0z9G9kNAxg730Nil7ANpbrcdVafrhGJZcXxEbcOGBluJ8MDbqTOSxRd2cPfEK/4I+8tYPiC9ztRCH8ttLiURu1QqPf2npYkZkJYCWqYWARk/tOwYGCkXDDqiVKJZUqzunYvlJ5duTNMeZ7JGDyJCFFjUviJ8GMpIhGnoeqbtP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pe6LeUMg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28841C4CEE4;
-	Wed, 23 Oct 2024 14:31:37 +0000 (UTC)
+	 MIME-Version; b=bkzDlWTdSXbZ1FC2C3rCTKBCnGjekwsg+G/JFLIM9Z0F8hFnDw495jeie58tV4ZaVu42g286DpzGYrSu1oNE6pn9ub9r5OAh0p7grHE+mBlu4AicHkEqgHTk9JjvD2pmAqoPKvokE507noixQD6mbDrPBHtPzx7Y1+HrffG/HAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qFjgZPw4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE05C4CEEA;
+	Wed, 23 Oct 2024 14:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729693898;
-	bh=mfJRy+rYwPbNCeTCcqg3cZQ1W1UA6uLvQa3fW+Ha6cY=;
+	s=k20201202; t=1729693899;
+	bh=G59Njn/ri5bLKpEUV6Ax+VakkUWMTqQ2UEYtaLWGdrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pe6LeUMguaX5h2aV1+8jI44AjMFlPFzj19KddazdYpjgIq+VXIHGK762L3TfWHNh5
-	 eb/AlGEJNNu/JetwgjMr6ajDXP8VlY0ZvvDhzVSL3ijNznVMISN+igjcWa9VJex733
-	 VXlZx0X2Zr0hoP4nMJWn1SG5l63/7IT7iB8s0JAp1bOfdQaMqDaC5cK02mgF+yPhhZ
-	 eyhw6/eN1LW6t1lL3puHPdP5xY8a5U4TtNGVR7siBe8fJqQy9vXPV6sXoPyUNvNW8I
-	 ERHOokIogfeL3t+9X8HbAYcmxXJkgGQ6cjaoiOaGR7+DRF+niwcBJRhFYKj19r8Q0L
-	 O283awZSnFa8Q==
+	b=qFjgZPw4Ljl/0qGl3Mu97xWsSv8ITmJOzhJqehGlneHHcYuFgsBI/Z+lFqS4UCD6V
+	 aryY7vn5dRfga7SYUP+BwdU2nfFSdBcpJLTWyCow0JGNIMvEufW0YwT4JfDUGIIbXK
+	 /gzyVA+p2HfefU5VxRgb1/Lc3J1hdJOfaOwx9pJPwxcmzZ4drbpkZhX3+XWXuvNzrA
+	 GCWGt/jk5FWDhQ+OvaP+5KjYxBtRKYx5hBWxtT3Ta0A0dhoo+4cWI+1xeg7f9+jH0c
+	 FukgKs/3H/HJn551hnTzSkxlkysuh0Z+l7fSeLeUH0W3c+AV/6QUjph6vUnPR1FtRh
+	 bL604nWn3lS2A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Herbert Xu <herbert@gondor.apana.org.au>,
-	Klaus Kudielka <klaus.kudielka@gmail.com>,
+Cc: Julian Vetter <jvetter@kalrayinc.com>,
+	Yann Sionneau <ysionneau@kalrayinc.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	bbrezillon@kernel.org,
-	arno@natisbad.org,
-	schalla@marvell.com,
-	davem@davemloft.net,
-	linux-crypto@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 13/23] crypto: marvell/cesa - Disable hash algorithms
-Date: Wed, 23 Oct 2024 10:30:57 -0400
-Message-ID: <20241023143116.2981369-13-sashal@kernel.org>
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 14/23] sound: Make CONFIG_SND depend on INDIRECT_IOMEM instead of UML
+Date: Wed, 23 Oct 2024 10:30:58 -0400
+Message-ID: <20241023143116.2981369-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241023143116.2981369-1-sashal@kernel.org>
 References: <20241023143116.2981369-1-sashal@kernel.org>
@@ -69,79 +68,38 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.58
 Content-Transfer-Encoding: 8bit
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Julian Vetter <jvetter@kalrayinc.com>
 
-[ Upstream commit e845d2399a00f866f287e0cefbd4fc7d8ef0d2f7 ]
+[ Upstream commit ad6639f143a0b42d7fb110ad14f5949f7c218890 ]
 
-Disable cesa hash algorithms by lowering the priority because they
-appear to be broken when invoked in parallel.  This allows them to
-still be tested for debugging purposes.
+When building for the UM arch and neither INDIRECT_IOMEM=y, nor
+HAS_IOMEM=y is selected, it will fall back to the implementations from
+asm-generic/io.h for IO memcpy. But these fall-back functions just do a
+memcpy. So, instead of depending on UML, add dependency on 'HAS_IOMEM ||
+INDIRECT_IOMEM'.
 
-Reported-by: Klaus Kudielka <klaus.kudielka@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reviewed-by: Yann Sionneau <ysionneau@kalrayinc.com>
+Signed-off-by: Julian Vetter <jvetter@kalrayinc.com>
+Link: https://patch.msgid.link/20241010124601.700528-1-jvetter@kalrayinc.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/marvell/cesa/hash.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ sound/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/marvell/cesa/hash.c b/drivers/crypto/marvell/cesa/hash.c
-index 8d84ad45571c7..f150861ceaf69 100644
---- a/drivers/crypto/marvell/cesa/hash.c
-+++ b/drivers/crypto/marvell/cesa/hash.c
-@@ -947,7 +947,7 @@ struct ahash_alg mv_md5_alg = {
- 		.base = {
- 			.cra_name = "md5",
- 			.cra_driver_name = "mv-md5",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
-@@ -1018,7 +1018,7 @@ struct ahash_alg mv_sha1_alg = {
- 		.base = {
- 			.cra_name = "sha1",
- 			.cra_driver_name = "mv-sha1",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
-@@ -1092,7 +1092,7 @@ struct ahash_alg mv_sha256_alg = {
- 		.base = {
- 			.cra_name = "sha256",
- 			.cra_driver_name = "mv-sha256",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
-@@ -1302,7 +1302,7 @@ struct ahash_alg mv_ahmac_md5_alg = {
- 		.base = {
- 			.cra_name = "hmac(md5)",
- 			.cra_driver_name = "mv-hmac-md5",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
-@@ -1373,7 +1373,7 @@ struct ahash_alg mv_ahmac_sha1_alg = {
- 		.base = {
- 			.cra_name = "hmac(sha1)",
- 			.cra_driver_name = "mv-hmac-sha1",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
-@@ -1444,7 +1444,7 @@ struct ahash_alg mv_ahmac_sha256_alg = {
- 		.base = {
- 			.cra_name = "hmac(sha256)",
- 			.cra_driver_name = "mv-hmac-sha256",
--			.cra_priority = 300,
-+			.cra_priority = 0,
- 			.cra_flags = CRYPTO_ALG_ASYNC |
- 				     CRYPTO_ALG_ALLOCATES_MEMORY |
- 				     CRYPTO_ALG_KERN_DRIVER_ONLY,
+diff --git a/sound/Kconfig b/sound/Kconfig
+index 4c036a9a420ab..8b40205394fe0 100644
+--- a/sound/Kconfig
++++ b/sound/Kconfig
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ menuconfig SOUND
+ 	tristate "Sound card support"
+-	depends on HAS_IOMEM || UML
++	depends on HAS_IOMEM || INDIRECT_IOMEM
+ 	help
+ 	  If you have a sound card in your computer, i.e. if it can say more
+ 	  than an occasional beep, say Y.
 -- 
 2.43.0
 
