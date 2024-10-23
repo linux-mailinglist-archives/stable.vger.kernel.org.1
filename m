@@ -1,164 +1,114 @@
-Return-Path: <stable+bounces-87962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 832B19AD8A9
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 01:51:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D14C79AD8AF
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 01:52:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A39A71C21D5D
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 23:51:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CB3BB21DC6
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 23:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CBA8200110;
-	Wed, 23 Oct 2024 23:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936151F9439;
+	Wed, 23 Oct 2024 23:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="yhLep0eM"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="YpRvGYef"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A0A1FF7D7;
-	Wed, 23 Oct 2024 23:51:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9776B1553AB;
+	Wed, 23 Oct 2024 23:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729727479; cv=none; b=ehIVETJVhf10pe2oPuQfk+0rEN4BA0BUQorEqc5UC+AU/LREnAVaRevMlO8DlGYDgDMnvPDi0ryjIqdPL4+ctSGfGdG4QnE0wIOWPxBsbCMUkGMXl4tsvfuQo/dW5rLgq710kry0dSepP9Be9lnbqVbwLf6B1TQyEpptEB5/LB4=
+	t=1729727541; cv=none; b=sunLlLeh+YNw/9vROwdZqm9NBi7a53mm71q9u/eJGsLSOknLQhDeQWuUKa9Ek2wL/hlVu7IQfz7pr1I7dWb/B1Aj/olHTAGSo+R74h7FFF6jAOwvfxR7vxwhFmLYtfVDYO9CL+ynF790CbRYjQhbFMvU37OxuCJpu0hv4iW3Zuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729727479; c=relaxed/simple;
-	bh=h9eqOt0XALXQ1T+RGox89AQgIb+9cKJT71nHYHxnEfk=;
-	h=Date:To:From:Subject:Message-Id; b=Xi4MGFkmiVhOuc3sJaamQ9OoPmpI3fnYzGELFgOJljfoIY30hIsB3fpks8/hX8H8F7EUQPNMk3dqxdzQUNYBuJc+zkOBZrncLIyaYsKw3mEPf0hMAm0V29v/UuVWYYWeZNI7rOxgNfQNMmEBZnKs/YWQMoDYi1QfjDJVhP6rC9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=yhLep0eM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C9BC4CEE5;
-	Wed, 23 Oct 2024 23:51:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1729727478;
-	bh=h9eqOt0XALXQ1T+RGox89AQgIb+9cKJT71nHYHxnEfk=;
-	h=Date:To:From:Subject:From;
-	b=yhLep0eME+7q35OXOklglLlSbbswQqTg7ciKkuHdgWOsSKfoQG+ouyF0bTpVylrvy
-	 qEZDboVL7ADXTINj89IAxD97gwXH5SzGVrjzm/mf2ZgkCo4vhdl++SG4OG+aYR6cZf
-	 prFuPqcCLaFYrrAGbYs08m8dTy5v7dYWaMitk+5s=
-Date: Wed, 23 Oct 2024 16:51:17 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,herton@redhat.com,wladislav.kw@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + tools-mm-werror-fixes-in-page-types-slabinfo.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241023235118.73C9BC4CEE5@smtp.kernel.org>
+	s=arc-20240116; t=1729727541; c=relaxed/simple;
+	bh=O/vy4mrWdabPdlolsfFrNgZCD6OvMhLbP+0E3oS7FTo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Dj2Yhco7NLcMtGFBK3TWXykMF0ktFPs7sLAfg0m9Lum4vzNe3GYIwq3vuiLyhQNKoc+6un1Cr+qxHPNKmL5edwRZ5Zbwt6pTD79Vkj2QJr84rsiTeiL3SHMJMU586VPXwgUYngzK2oaa2+P5qzDbspVergU0IPqbrN0aBO1iYw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=YpRvGYef; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id EB32E14C1E1;
+	Thu, 24 Oct 2024 01:52:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1729727538;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=3amPHg8ShNxpKjTjXddp/0Req2pjfWNLLptqKj3Vw4U=;
+	b=YpRvGYefW8lc5XWUlUNnhIqHOUEPilhc6tRLedjdEg1rLdPsjSg9vq/5Yv5sCZCox3WYem
+	NgYlGikJGkfBiOgji/r2yGSYhwFs5HqZptnej807XALuXBs9+BaAQuc3DJnl2fbhve2AK4
+	twphGDpeuRwy/JO7Px5ogPGBI9RRK0+tu3M8c6UXPUP80flivqwNaMLzP08Q4pesI1wx1R
+	XKBT65x4FkeCyFrSrV2E1/jYj2xqqIZnY87/YCTsHjRnqRT8YgTlvLlElAoNNTcFReNEWy
+	vkNtV7wHGWpZeZ5cPIl0b+gSePG38Fupj86XpGPULq4tzOGWbsi2Pk7czbsl8Q==
+Received: from [127.0.0.1] (localhost.lan [::1])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTP id deeb55f8;
+	Wed, 23 Oct 2024 23:52:14 +0000 (UTC)
+From: Dominique Martinet <asmadeus@codewreck.org>
+Subject: [PATCH 0/4] 9p: revert broken inode lookup simplifications
+Date: Thu, 24 Oct 2024 08:52:09 +0900
+Message-Id: <20241024-revert_iget-v1-0-4cac63d25f72@codewreck.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACmMGWcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxNDINYFKkotKonPTE8t0U01TjFKSU42TzQxSVQC6igoSk3LrACbFh1bWws
+ AmDpVMF0AAAA=
+To: Eric Van Hensbergen <ericvh@kernel.org>, 
+ Latchesar Ionkov <lucho@ionkov.net>, 
+ Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: "Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>, 
+ v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ Dominique Martinet <asmadeus@codewreck.org>, Will Deacon <will@kernel.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14-dev-87f09
+X-Developer-Signature: v=1; a=openpgp-sha256; l=901; i=asmadeus@codewreck.org;
+ h=from:subject:message-id; bh=O/vy4mrWdabPdlolsfFrNgZCD6OvMhLbP+0E3oS7FTo=;
+ b=owEBbQKS/ZANAwAIAatOm+xqmOZwAcsmYgBnGYwtTTXV0Vzf3tHyTCdQnx0mr5iu7qLpyQlaD
+ L4Se1+saVSJAjMEAAEIAB0WIQT8g9txgG5a3TOhiE6rTpvsapjmcAUCZxmMLQAKCRCrTpvsapjm
+ cAFXD/oCPVsgekQYLGCfNhd0yjR5HERUpD3mLTD3ol4NM3At4XCDf7/W5V1GYxgjy/D3jFppfPn
+ 3/mPUHR9StlW5OSbURM5I8xQnvdUM/DokAGTYAPi07h34BIB7p+mUWDDMUVBQFCDzJhpyrSHIlG
+ uDPnTA/uGp7Tst0Hwg2CwlOtvuCxetSv24e3v1sydhWvBMAy5yk9GkEakbibqE0szcHmFrfmmd+
+ hY+uP3miYpukyknMFVfvFYeKE6KjQqpqz51dewKpxpWUiZPvMGs6My99bBayG7P9GDqXOaqr8YE
+ GBkSWhP7sPHIVmLwof2GWIS4HW70xPPDBGU6jmsWoK7zFQdp1VHOuKxkAvxvtp706MGOdSRReUM
+ 15iGymhcn9x8fq60/HqY/FiKKdP/Wtu+5DJ2xSYNoDc6aOOXNgX9vyGxiWLAzLM87pc60MQYkdg
+ KiwBhvOYHBEcxMFTZQAHhxMoUoJqri78wr9NsvScFWMI84se3m88zFYJTRwfMvVsTm5jKrUZh4z
+ eEjR54hUsmPSXkYPi2M62/LKBnItfhYjZqggKSxmAu4O2w4gMUpKWc44cAHTFioNgHB85pxJu/B
+ yjvC6t63P206Ho8uVXUhExISx2CwGB+esU89BsbnKsHallBg77wyxLTIkAKOEQNMNrwsB88GtFs
+ vnXuwuRoU6Pl9KQ==
+X-Developer-Key: i=asmadeus@codewreck.org; a=openpgp;
+ fpr=B894379F662089525B3FB1B9333F1F391BBBB00A
 
+See commit 4's message for details
 
-The patch titled
-     Subject: tools/mm: -Werror fixes in page-types/slabinfo
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     tools-mm-werror-fixes-in-page-types-slabinfo.patch
+Unless anyone complains I'll send this to Linus on Saturday
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/tools-mm-werror-fixes-in-page-types-slabinfo.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Wladislav Wiebe <wladislav.kw@gmail.com>
-Subject: tools/mm: -Werror fixes in page-types/slabinfo
-Date: Tue, 22 Oct 2024 19:21:13 +0200
-
-Commit e6d2c436ff693 ("tools/mm: allow users to provide additional
-cflags/ldflags") passes now CFLAGS to Makefile.  With this, build systems
-with default -Werror enabled found:
-
-slabinfo.c:1300:25: error: ignoring return value of 'chdir'
-declared with attribute 'warn_unused_result' [-Werror=unused-result]
-                         chdir("..");
-                         ^~~~~~~~~~~
-page-types.c:397:35: error: format '%lu' expects argument of type
-'long unsigned int', but argument 2 has type 'uint64_t'
-{aka 'long long unsigned int'} [-Werror=format=]
-                         printf("%lu\t", mapcnt0);
-                                 ~~^     ~~~~~~~
-..
-
-Fix page-types by using PRIu64 for uint64_t prints and check in slabinfo
-for return code on chdir("..").
-
-Link: https://lkml.kernel.org/r/c1ceb507-94bc-461c-934d-c19b77edd825@gmail.com
-Fixes: e6d2c436ff693 ("tools/mm: allow users to provide additional cflags/ldflags")
-Signed-off-by: Wladislav Wiebe <wladislav.kw@gmail.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Herton R. Krzesinski <herton@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 ---
+Dominique Martinet (4):
+      Revert " fs/9p: mitigate inode collisions"
+      Revert "fs/9p: remove redundant pointer v9ses"
+      Revert "fs/9p: fix uaf in in v9fs_stat2inode_dotl"
+      Revert "fs/9p: simplify iget to remove unnecessary paths"
 
- tools/mm/page-types.c |    9 +++++----
- tools/mm/slabinfo.c   |    4 +++-
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ fs/9p/v9fs.h           |  34 ++++++++++---
+ fs/9p/v9fs_vfs.h       |   2 +-
+ fs/9p/vfs_inode.c      | 129 +++++++++++++++++++++++++++++++------------------
+ fs/9p/vfs_inode_dotl.c | 112 ++++++++++++++++++++++++++++++------------
+ fs/9p/vfs_super.c      |   2 +-
+ 5 files changed, 192 insertions(+), 87 deletions(-)
+---
+base-commit: 42f7652d3eb527d03665b09edac47f85fb600924
+change-id: 20241024-revert_iget-e3d2dcc7a44a
 
---- a/tools/mm/page-types.c~tools-mm-werror-fixes-in-page-types-slabinfo
-+++ a/tools/mm/page-types.c
-@@ -22,6 +22,7 @@
- #include <time.h>
- #include <setjmp.h>
- #include <signal.h>
-+#include <inttypes.h>
- #include <sys/types.h>
- #include <sys/errno.h>
- #include <sys/fcntl.h>
-@@ -391,9 +392,9 @@ static void show_page_range(unsigned lon
- 		if (opt_file)
- 			printf("%lx\t", voff);
- 		if (opt_list_cgroup)
--			printf("@%llu\t", (unsigned long long)cgroup0);
-+			printf("@%" PRIu64 "\t", cgroup0);
- 		if (opt_list_mapcnt)
--			printf("%lu\t", mapcnt0);
-+			printf("%" PRIu64 "\t", mapcnt0);
- 		printf("%lx\t%lx\t%s\n",
- 				index, count, page_flag_name(flags0));
- 	}
-@@ -419,9 +420,9 @@ static void show_page(unsigned long voff
- 	if (opt_file)
- 		printf("%lx\t", voffset);
- 	if (opt_list_cgroup)
--		printf("@%llu\t", (unsigned long long)cgroup);
-+		printf("@%" PRIu64 "\t", cgroup)
- 	if (opt_list_mapcnt)
--		printf("%lu\t", mapcnt);
-+		printf("%" PRIu64 "\t", mapcnt);
- 
- 	printf("%lx\t%s\n", offset, page_flag_name(flags));
- }
---- a/tools/mm/slabinfo.c~tools-mm-werror-fixes-in-page-types-slabinfo
-+++ a/tools/mm/slabinfo.c
-@@ -1297,7 +1297,9 @@ static void read_slab_dir(void)
- 			slab->cpu_partial_free = get_obj("cpu_partial_free");
- 			slab->alloc_node_mismatch = get_obj("alloc_node_mismatch");
- 			slab->deactivate_bypass = get_obj("deactivate_bypass");
--			chdir("..");
-+			if (chdir(".."))
-+				fatal("Unable to chdir from slab ../%s\n",
-+				      slab->name);
- 			if (slab->name[0] == ':')
- 				alias_targets++;
- 			slab++;
-_
-
-Patches currently in -mm which might be from wladislav.kw@gmail.com are
-
-tools-mm-werror-fixes-in-page-types-slabinfo.patch
+Best regards,
+-- 
+Dominique Martinet | Asmadeus
 
 
