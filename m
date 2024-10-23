@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-87853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B97D9ACC8D
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:33:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E1BC9ACC8F
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:34:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4786C1C20D5F
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:33:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CA231C2061C
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37DE1CFED6;
-	Wed, 23 Oct 2024 14:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B6A2146018;
+	Wed, 23 Oct 2024 14:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="taVFpk5h"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d1LRo0za"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D6D1CFEC7;
-	Wed, 23 Oct 2024 14:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560AD1D016A;
+	Wed, 23 Oct 2024 14:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729693842; cv=none; b=SLbqhg/gD1OQOvykOh8BqeB2eZIT+l60jG9OCBdh/qXRvrvx+g6vzST/nv1ZmK6EN2LKRuNzPnGntS8W8kxuu67Exx07zoGf/r+hu0W+XIf9dF5AFDGeg2IY7EvpKQ4LZLfkj3WsQcxAddwCziizcbqYsOiyexWlhN8LdTW8ZtM=
+	t=1729693844; cv=none; b=OXu5aqYtBHkkWf3wr6NmsyuOFRRcZ5j3Oho9eb75Ndipx8Sm7SrHubexCD6k84hZ4i/mDQd/MUSuBbegGXHFHvUBjRNi4CFtn85MkRWAjgxGtIWsVIAXDQKPXDrbEEc2fm4IgPy7mGbYO798MKQfIjwDzLYfOOChyMrSqd0+6og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729693842; c=relaxed/simple;
-	bh=G59Njn/ri5bLKpEUV6Ax+VakkUWMTqQ2UEYtaLWGdrU=;
+	s=arc-20240116; t=1729693844; c=relaxed/simple;
+	bh=Tmr6J5mJFH6Iy72xJOrNjejVaHARmkj7o5RpsJk38m4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MID7dHBUA3rvS7De61pbsCa0fqvGuo35T5idJKBv299Wrh+0nMQ6TYO5AsEzXKFSVNp/76sHm6p0/l2nUhyXcAKboTcl4uvxTD45qwFFQ6bIw2fzarWHovBeBCKOJBk5PWT+PDM+SzUE1KVLrl1LeiRlUmsvb75IHU3txOFhyN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=taVFpk5h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A8FBC4CEE4;
-	Wed, 23 Oct 2024 14:30:41 +0000 (UTC)
+	 MIME-Version; b=J8rH7qL/D68BYndFKJafYCZfahTMsS7kfeq+4Mp9IecA0ebltrdQTm8x3Wm36Jtdqrs/0G1HZVqAo91Bdyl2UKDM1BwpFQNKNkw5CWidVCYXke/K9r5B9kEFBQ01IhqpVJQu21Te+zCrWw+YmJ2Ikb6baYUDU7QM0gO6eAgM0v0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d1LRo0za; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E5FC4CEE4;
+	Wed, 23 Oct 2024 14:30:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729693842;
-	bh=G59Njn/ri5bLKpEUV6Ax+VakkUWMTqQ2UEYtaLWGdrU=;
+	s=k20201202; t=1729693844;
+	bh=Tmr6J5mJFH6Iy72xJOrNjejVaHARmkj7o5RpsJk38m4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=taVFpk5h828tzcM6msbhZn52GWvIHEo+lVw1AHbbj8+tDSSOQPvtEFIVE82ribjoq
-	 RfAsBapm1SbImbM4hNiBwQBwBgerKcVvnkZAGbk5bgDxXz0p4jFZHfa6j2TeRFf71m
-	 IJaUcV2H1Vf5Arsyom1bKPU/JYBxJaulOnzux3GSzJ7ZrYmcMQLHkQUY6Dv6O+SsIC
-	 gRxOd2L0vQWsWTERLDHILXXkchCU36B1mC4aE1UIslbcddCPNuta4NLdK0nmFwnouB
-	 vEGbscmG2Qag37ttn7j8VY3AlpL8sRHtJwHC+oZxINgQLEXNlG705c80PFYxQtTgX2
-	 cMReHtbg4WswQ==
+	b=d1LRo0zacq+GRRzV9UxekgPXqtoIK5e9ti+7vCXQfNyVTGtx4UN0lGyBSYhQoSXrQ
+	 eCoGLaceXEmFhlj/rf/RzXo50adB2a9hMaEi3D8agddAHIL52kpj48ZOdiA+Ga/WiT
+	 e4W4bXjqO8ogczb9hWtxEAozvd2IZqGOy3Ekv3GQ9FIctIXm0pUfknoGQdwHTHch3N
+	 lAa3gcmPB/3/DACIk6/ORVX77qws1bBgD0zTM7UKm6GVIGy4/q1WpeqOxASnBP82DC
+	 3AkYdnF+eYD8QRhDsdreODn3sCyJ7wRkigHxikEvfYDIp/fpyOPNSvIkKdl669+PK9
+	 gf7r8oHo1P0uw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Julian Vetter <jvetter@kalrayinc.com>,
-	Yann Sionneau <ysionneau@kalrayinc.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Martin Krastev <martin.krastev@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 18/30] sound: Make CONFIG_SND depend on INDIRECT_IOMEM instead of UML
-Date: Wed, 23 Oct 2024 10:29:43 -0400
-Message-ID: <20241023143012.2980728-18-sashal@kernel.org>
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.11 19/30] drm/vmwgfx: Limit display layout ioctl array size to VMWGFX_NUM_DISPLAY_UNITS
+Date: Wed, 23 Oct 2024 10:29:44 -0400
+Message-ID: <20241023143012.2980728-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241023143012.2980728-1-sashal@kernel.org>
 References: <20241023143012.2980728-1-sashal@kernel.org>
@@ -68,38 +71,84 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.5
 Content-Transfer-Encoding: 8bit
 
-From: Julian Vetter <jvetter@kalrayinc.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit ad6639f143a0b42d7fb110ad14f5949f7c218890 ]
+[ Upstream commit 28a5dfd4f615539fb22fb6d5c219c199c14e6eb6 ]
 
-When building for the UM arch and neither INDIRECT_IOMEM=y, nor
-HAS_IOMEM=y is selected, it will fall back to the implementations from
-asm-generic/io.h for IO memcpy. But these fall-back functions just do a
-memcpy. So, instead of depending on UML, add dependency on 'HAS_IOMEM ||
-INDIRECT_IOMEM'.
+Currently the array size is only limited by the largest kmalloc size which
+is incorrect. This change will also return a more specific error message
+than ENOMEM to userspace.
 
-Reviewed-by: Yann Sionneau <ysionneau@kalrayinc.com>
-Signed-off-by: Julian Vetter <jvetter@kalrayinc.com>
-Link: https://patch.msgid.link/20241010124601.700528-1-jvetter@kalrayinc.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240808200634.1074083-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.h | 4 ++--
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 4 +++-
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.h | 3 ---
+ 3 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/sound/Kconfig b/sound/Kconfig
-index 4c036a9a420ab..8b40205394fe0 100644
---- a/sound/Kconfig
-+++ b/sound/Kconfig
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- menuconfig SOUND
- 	tristate "Sound card support"
--	depends on HAS_IOMEM || UML
-+	depends on HAS_IOMEM || INDIRECT_IOMEM
- 	help
- 	  If you have a sound card in your computer, i.e. if it can say more
- 	  than an occasional beep, say Y.
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
+index 3f4719b3c2681..4e2807f5f94cf 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
+@@ -62,7 +62,7 @@
+ #define VMWGFX_DRIVER_MINOR 20
+ #define VMWGFX_DRIVER_PATCHLEVEL 0
+ #define VMWGFX_FIFO_STATIC_SIZE (1024*1024)
+-#define VMWGFX_MAX_DISPLAYS 16
++#define VMWGFX_NUM_DISPLAY_UNITS 8
+ #define VMWGFX_CMD_BOUNCE_INIT_SIZE 32768
+ 
+ #define VMWGFX_MIN_INITIAL_WIDTH 1280
+@@ -82,7 +82,7 @@
+ #define VMWGFX_NUM_GB_CONTEXT 256
+ #define VMWGFX_NUM_GB_SHADER 20000
+ #define VMWGFX_NUM_GB_SURFACE 32768
+-#define VMWGFX_NUM_GB_SCREEN_TARGET VMWGFX_MAX_DISPLAYS
++#define VMWGFX_NUM_GB_SCREEN_TARGET VMWGFX_NUM_DISPLAY_UNITS
+ #define VMWGFX_NUM_DXCONTEXT 256
+ #define VMWGFX_NUM_DXQUERY 512
+ #define VMWGFX_NUM_MOB (VMWGFX_NUM_GB_CONTEXT +\
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+index 288ed0bb75cb9..884804274dfb1 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -2225,7 +2225,7 @@ int vmw_kms_update_layout_ioctl(struct drm_device *dev, void *data,
+ 	struct drm_mode_config *mode_config = &dev->mode_config;
+ 	struct drm_vmw_update_layout_arg *arg =
+ 		(struct drm_vmw_update_layout_arg *)data;
+-	void __user *user_rects;
++	const void __user *user_rects;
+ 	struct drm_vmw_rect *rects;
+ 	struct drm_rect *drm_rects;
+ 	unsigned rects_size;
+@@ -2237,6 +2237,8 @@ int vmw_kms_update_layout_ioctl(struct drm_device *dev, void *data,
+ 					    VMWGFX_MIN_INITIAL_HEIGHT};
+ 		vmw_du_update_layout(dev_priv, 1, &def_rect);
+ 		return 0;
++	} else if (arg->num_outputs > VMWGFX_NUM_DISPLAY_UNITS) {
++		return -E2BIG;
+ 	}
+ 
+ 	rects_size = arg->num_outputs * sizeof(struct drm_vmw_rect);
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
+index 6141fadf81efe..2a6c6d6581e02 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
+@@ -199,9 +199,6 @@ struct vmw_kms_dirty {
+ 	s32 unit_y2;
+ };
+ 
+-#define VMWGFX_NUM_DISPLAY_UNITS 8
+-
+-
+ #define vmw_framebuffer_to_vfb(x) \
+ 	container_of(x, struct vmw_framebuffer, base)
+ #define vmw_framebuffer_to_vfbs(x) \
 -- 
 2.43.0
 
