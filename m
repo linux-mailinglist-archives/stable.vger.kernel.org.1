@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-87965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A8509AD8B3
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 01:52:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD8EC9AD8B6
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 01:53:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8CA11C21654
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 23:52:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01B00B21CB5
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 23:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A792003C2;
-	Wed, 23 Oct 2024 23:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0B6200BB6;
+	Wed, 23 Oct 2024 23:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="QKnzaIV8"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="aNmWzHQp"
 X-Original-To: stable@vger.kernel.org
 Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E63191FF7DB;
-	Wed, 23 Oct 2024 23:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F42200105;
+	Wed, 23 Oct 2024 23:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729727546; cv=none; b=EDqxtOpZuEi78agYX+eKn1OwXIOUEg4rEAraV59qW55XRnYS1r2Hnqo3JRK2UaHIg3zijHNNgwPH1k9X7KoHnoUHTBpaCd2xPU7H0jMdH6EdlYHKuwaz3F49wsBoPixNSbwZ3JCXeYRwCL3G7t5Y3N6NfX/IfKpXTHbS9g73U5E=
+	t=1729727549; cv=none; b=UFNLP3MzVD77f/G0oDO3/w13s9thIH1Ii7tiO2bYgGTRNXakcWJUVoZhv+MEzzvCwP9ckIczo/AVfohPWl/bclFCLtoOa2Sz9dz0HN+gQvIcgoskkMRRb/zMedepBVr/fflmnCQ6yLKuCD6gQZolydl8zOlOoxpD2uGYB5hm+4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729727546; c=relaxed/simple;
-	bh=2jNRSNETBdoBmXcxqoPcSW/Pu+5mOR/5FQsdWsgGU1g=;
+	s=arc-20240116; t=1729727549; c=relaxed/simple;
+	bh=1a/Bd6MVgtny3x6qYfGD1H0MSVQ/x7ApD2BNdRoVBjY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eXh0KB67XmdxAA/0kq7OZip9qmp/aXwT0azaQxYqZmZBVjl4Z0z3dZFJIRt+CWdEGM4D9MhkBJQwWhGDfODJsdVh/POkjkVUN6vsZ9rHJEL04Cuq552GSgugH4fnN2xUMwYs1uDfDkF4+vgExageTI6ZXKpJYyDr+x64PMhvNIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=QKnzaIV8; arc=none smtp.client-ip=62.210.214.84
+	 In-Reply-To:To:Cc; b=jeRM6/hUJM7G1Hl8xJ1AwyxD8WL+rnpCLZUijCggc1qpmc00JVZQlZGh0P5ZSfLhkGSKmg0/+YrfJALLQjAiE43UkfBGrBaEAP4rX/e4OKOQjbmsS/9ShAnoeOo0a2yshTE3/OMlHn9H0gREAw7u48DAbzsgLZvqsIPxaonvY44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=aNmWzHQp; arc=none smtp.client-ip=62.210.214.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 494E214C2DE;
-	Thu, 24 Oct 2024 01:52:21 +0200 (CEST)
+	by submarine.notk.org (Postfix) with ESMTPS id 95AF214C2DF;
+	Thu, 24 Oct 2024 01:52:22 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1729727543;
+	s=2; t=1729727545;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=c9RUoHXYJukKxYmUrbnbvTXMN6BCsDk1ng65p881zxY=;
-	b=QKnzaIV8nv6sJ0N/C1zf77MAnsd5hTyD2me5tv/nJ4kDZ+7VggPA0vVHmcjU5Y8ueVFseX
-	4ltvTyRZYWssqmTlWmWs4k/cqhH5SDJ5jj802392QfZR2oZGcAvwlq/EmEZZf2QGUd1iZ9
-	UufM/uGwnpL456/XcJxLN2haoZaSN8lIuOu4KJ8JGDIgUoMgztdWl8ms+Nm+AqjTFCLtAE
-	wYvP5ixeiTr3Kzk5+JZIJSnIIGvpDlHYs8AlD8Fa8bBeaHK42q+J9q4b3KDL1SNeJHlgSg
-	UCJ7bBGmUEcQhKS1zmEuMIQ7V6s+XSgVqw8OG7yy41qWPKIzIsKyN6wIVIpFRQ==
+	bh=pCSeVIizETL3AZftJfJ4jkpxwztAnC+IPubkBSbvaD0=;
+	b=aNmWzHQpdqtaCpcPJ+Bo19UVr2Q73v1wQYWATcRXp0mh23C6dPqhdUFl8VTWovTEX0KzqI
+	uv3d1ofEX1WVggbsw4VaTL/Aa433qLOJSKeIXXj0Sifp/O9cYUkO5oua6sfLqCx+MGTNwK
+	L72BRY8gYnX/Oo5Hfh7e0E/rLByTOc/PIZdEAtHtCM80HWmEodQsmc8Bho+xaxppHdxIcD
+	t2yqZXgaHmnJKepP+B08wI9cKVuGoYWsflJo+kgmZCwoLFFHKPnaaDkaO+wzWAPkezqIf5
+	Zf6+MXnVHDk2osRJndOFYMWKCOHH41maVLhBjnbyokCAA8l+NiFsYzqpuGBx5w==
 Received: from [127.0.0.1] (localhost.lan [::1])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTP id 23319dd8;
+	by gaia.codewreck.org (OpenSMTPD) with ESMTP id 129c9a46;
 	Wed, 23 Oct 2024 23:52:14 +0000 (UTC)
 From: Dominique Martinet <asmadeus@codewreck.org>
-Date: Thu, 24 Oct 2024 08:52:11 +0900
-Subject: [PATCH 2/4] Revert "fs/9p: remove redundant pointer v9ses"
+Date: Thu, 24 Oct 2024 08:52:12 +0900
+Subject: [PATCH 3/4] Revert "fs/9p: fix uaf in in v9fs_stat2inode_dotl"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,7 +58,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241024-revert_iget-v1-2-4cac63d25f72@codewreck.org>
+Message-Id: <20241024-revert_iget-v1-3-4cac63d25f72@codewreck.org>
 References: <20241024-revert_iget-v1-0-4cac63d25f72@codewreck.org>
 In-Reply-To: <20241024-revert_iget-v1-0-4cac63d25f72@codewreck.org>
 To: Eric Van Hensbergen <ericvh@kernel.org>, 
@@ -69,25 +69,25 @@ Cc: "Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>,
  Dominique Martinet <asmadeus@codewreck.org>, Will Deacon <will@kernel.org>, 
  stable@vger.kernel.org
 X-Mailer: b4 0.14-dev-87f09
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1796;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1197;
  i=asmadeus@codewreck.org; h=from:subject:message-id;
- bh=2jNRSNETBdoBmXcxqoPcSW/Pu+5mOR/5FQsdWsgGU1g=;
- b=owEBbQKS/ZANAwAIAatOm+xqmOZwAcsmYgBnGYwusNK+2S7ozYMD51VyLjMOVOK7Jzb5Kvx2y
- w87QOPuXe+JAjMEAAEIAB0WIQT8g9txgG5a3TOhiE6rTpvsapjmcAUCZxmMLgAKCRCrTpvsapjm
- cFefD/94l9C7Rbe1mO1CEvyJQ6fNSmwP9/KG7tEXeLw6OKzMgwnV+VUryXJDxEy+C6UujLoKyv1
- Q7mieUoJ6FGFzHxhCrP2rQ66TIIuGy+HbcPAJuaYUEFR4hIi62Ti78wj7KI3Uz1Vov2gY2s/8DR
- 9tkHd2VMNpHUG7fNEmouSVwAjrDwjIkop0LOuZfXqhXA7fw4Fx0uHNzhHGHUeZfrNkDJGBgwc3l
- CvC4W8H/J0SiWbCXITmyEiX/3mXJ4vLmBKn6BvpGxoYezQdkRLZT3m2cmgmT5p/JkEIKXc9LWP1
- 2+UdtRKQrJA6AQWiK111r3+vUZ1VocBSbpo354b5w6wBgE6PhxJELoilClbOfbYOYE6Jj8KYfbI
- rx+ERHTrtwUVqikJeOrV6K9v7rNY5pCqDvtXPnza+YZOTw+dAFhDtM9LCeWC3+sCcC/+y7MkdiR
- sV1FSVgKRxGwXc/stzDsIWUvyGQ/iq4j20CgDtiCdu4BE7eudLqISfmq+ERcAjcFRBF6YeU2hPD
- HfoRlZWh2lMQ7aPdMcx8+H8LE9HVt/0R3Cfz+FC8SviJFzDTHS21utNEewWDweeKnuTxJcBwKiV
- 1CEy+ppL4yx83tJqFbgYx/h1CbF2Q7iWrUGrl+QEgfvRZIXf0SMi/tm7QJEht/lSs4UHN3xvPyM
- utlQNgLKVwf1btA==
+ bh=1a/Bd6MVgtny3x6qYfGD1H0MSVQ/x7ApD2BNdRoVBjY=;
+ b=owEBbQKS/ZANAwAIAatOm+xqmOZwAcsmYgBnGYwuBF/ECwjzn/a5TaI2xjpsECqsuVnI9ymMv
+ yXRWunPSeeJAjMEAAEIAB0WIQT8g9txgG5a3TOhiE6rTpvsapjmcAUCZxmMLgAKCRCrTpvsapjm
+ cFzPD/4/lWbe3id79E4xDe688DeGhvsWIY9ghzSh2A5Ski6zbjtXFQk7dVIxnMupZOKIC0XYXl6
+ 0V/uzW/fpcpif7PNkS8iVt6VAFzNpZN5/Pw+X/SwQU/r0WZElhXQr/oF7z42WlHv9+PHEZEfgmq
+ 4EJeYJ+gBVAZF+CKyCte7hTY4dWkBe/JQ+rMxDp4tbNZG9qITxDVC8b9CVJKe3hhHWDveaYv0lW
+ BoDRA8t+yN/EgL2bG3mC/YJz8iZ3BJUXARtmiVNddP2GBMTpQitSpt6y4QwcL/HJHXWNs1AAa65
+ Q1tMZs45n2aR+RgM26m2Yjh50xwPMk/9ir1wXVcfo3Gfyi6Te8wXzkDFrQO35Gvs5uoKWsvpZ3h
+ HibBBoeScRMn90UkwYKbHKlBqY0jyW3MUM1d2msAu/HCMPLBsixotP3UpsY883xvIPOexQTKzax
+ BGgJFzR0a2yKA0hs+JyJA5cwrG8wxxAG9jZUP5JPgbvhl3CgfLe7F4oLzRPfJhpFv/4DNZZvubM
+ vsQLyz5JTtVGSexKifx5QbKjqPyj36lm1bA/59LyOGOitbvXKP5P/1RLi+VZt4br/jPXiEFZqAe
+ Mxx4TRSxypxZ7U/Jym9nV0MOMZw3jaBrPKjCeSZxLpEmXv5hXoCIOwSTb4HxH/wblpmnUIJO0S0
+ pg5wa8iVEJr3dhg==
 X-Developer-Key: i=asmadeus@codewreck.org; a=openpgp;
  fpr=B894379F662089525B3FB1B9333F1F391BBBB00A
 
-This reverts commit 10211b4a23cf4a3df5c11a10e5b3d371f16a906f.
+This reverts commit 11763a8598f888dec631a8a903f7ada32181001f.
 
 This is a requirement to revert commit 724a08450f74 ("fs/9p: simplify
 iget to remove unnecessary paths"), see that revert for details.
@@ -98,45 +98,26 @@ Link: https://lkml.kernel.org/r/20240923100508.GA32066@willie-the-truck
 Cc: stable@vger.kernel.org # v6.9+
 Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 ---
- fs/9p/vfs_inode_dotl.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/9p/vfs_inode_dotl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
-index 55dde186041a..2b313fe7003e 100644
+index 2b313fe7003e..ef9db3e03506 100644
 --- a/fs/9p/vfs_inode_dotl.c
 +++ b/fs/9p/vfs_inode_dotl.c
-@@ -297,6 +297,7 @@ static int v9fs_vfs_mkdir_dotl(struct mnt_idmap *idmap,
- 			       umode_t omode)
- {
- 	int err;
-+	struct v9fs_session_info *v9ses;
- 	struct p9_fid *fid = NULL, *dfid = NULL;
- 	kgid_t gid;
- 	const unsigned char *name;
-@@ -306,6 +307,7 @@ static int v9fs_vfs_mkdir_dotl(struct mnt_idmap *idmap,
- 	struct posix_acl *dacl = NULL, *pacl = NULL;
+@@ -78,11 +78,11 @@ struct inode *v9fs_fid_iget_dotl(struct super_block *sb, struct p9_fid *fid)
  
- 	p9_debug(P9_DEBUG_VFS, "name %pd\n", dentry);
-+	v9ses = v9fs_inode2v9ses(dir);
+ 	retval = v9fs_init_inode(v9ses, inode, &fid->qid,
+ 				 st->st_mode, new_decode_dev(st->st_rdev));
+-	v9fs_stat2inode_dotl(st, inode, 0);
+ 	kfree(st);
+ 	if (retval)
+ 		goto error;
  
- 	omode |= S_IFDIR;
- 	if (dir->i_mode & S_ISGID)
-@@ -737,6 +739,7 @@ v9fs_vfs_mknod_dotl(struct mnt_idmap *idmap, struct inode *dir,
- 	kgid_t gid;
- 	const unsigned char *name;
- 	umode_t mode;
-+	struct v9fs_session_info *v9ses;
- 	struct p9_fid *fid = NULL, *dfid = NULL;
- 	struct inode *inode;
- 	struct p9_qid qid;
-@@ -746,6 +749,7 @@ v9fs_vfs_mknod_dotl(struct mnt_idmap *idmap, struct inode *dir,
- 		 dir->i_ino, dentry, omode,
- 		 MAJOR(rdev), MINOR(rdev));
- 
-+	v9ses = v9fs_inode2v9ses(dir);
- 	dfid = v9fs_parent_fid(dentry);
- 	if (IS_ERR(dfid)) {
- 		err = PTR_ERR(dfid);
++	v9fs_stat2inode_dotl(st, inode, 0);
+ 	v9fs_set_netfs_context(inode);
+ 	v9fs_cache_inode_get_cookie(inode);
+ 	retval = v9fs_get_acl(inode, fid);
 
 -- 
 2.46.0
