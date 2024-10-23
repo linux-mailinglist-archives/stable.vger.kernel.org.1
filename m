@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-87929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 421B39ACD64
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:52:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 747FC9ACD67
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:52:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF37BB260DE
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:52:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AE931F25B43
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:52:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C863421858B;
-	Wed, 23 Oct 2024 14:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC602185BA;
+	Wed, 23 Oct 2024 14:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TeFd2p4R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VtJCDbk1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9DE218339;
-	Wed, 23 Oct 2024 14:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85FB2185AF;
+	Wed, 23 Oct 2024 14:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729694007; cv=none; b=kjZoY463+QQ/CmdSn1xbUFJjn8qLxZIJgvdxodI33CgxfpUplgo3sgUk/G9Eyp+x/zihHcIDuEBFxwT3IyunzkHKKNcGhRxtuhpd4YQ6c1kO9Yc2RmLqrbMRajN5Ac7/Xv2TORKEHV0msXA8D2NDXYI2KfvAmEGOYAO93m2CVoU=
+	t=1729694008; cv=none; b=SpGBVdRK3NmRtu4urZDYpyh3wAYzRYrnE29PdlZwL1eIc0AVp6tae2yhZWHxvPAUMPz0hoqiyNfLM2xmDpYlEYKOe3XK7iBVVdQJDCnFEzCKBItr8bilFM/QOvXVgySGTEf8koscTVPEAtb8W/Kxmfkm7yoaoidJL+S/QtU4W74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729694007; c=relaxed/simple;
-	bh=ehKCRv5eADkou1azTYF5vkSU2N2nnR4vZ3u/U0CdpgM=;
+	s=arc-20240116; t=1729694008; c=relaxed/simple;
+	bh=S3UtykaDtYZGznGjl8tHD3XtFFB9dALBjYjnnE+3L38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NAbJlx/KssApTXDsWrCFMSiUVVYKqVvnKUBxZIMvK/Xf59CYGb/vnMc8jLc//8r8m/3oXhSmiI2ah4/g/Wjs7YMlq6x7OSpFm3//TqGYH5Y+5F469vDj9rzYSxp3utdte/9T09QrqlXR+GPCD/0yqiZE6+ZNc97LsbuYSu1nTe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TeFd2p4R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B082C4CECD;
-	Wed, 23 Oct 2024 14:33:25 +0000 (UTC)
+	 MIME-Version; b=rIYoAg46RQxVZsdHpGTAHRcnqcf6fL2ZBMwxqmsFwRKNRecP6zdB1H96TmLBlAhKxZmf/FoSo6OZpqNH8s8GOV2y/z4hsBYxMK0FK+aDB618vr+00ojO3J6ylxxQ2sf9fYA22danOJDzlG8FpWsvzMn7hlTC0mS0kvbK633tglQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VtJCDbk1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79281C4CEE5;
+	Wed, 23 Oct 2024 14:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729694007;
-	bh=ehKCRv5eADkou1azTYF5vkSU2N2nnR4vZ3u/U0CdpgM=;
+	s=k20201202; t=1729694008;
+	bh=S3UtykaDtYZGznGjl8tHD3XtFFB9dALBjYjnnE+3L38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TeFd2p4RhRlN8zkAxm7eEhzIUvJ6LfW6oYhKI2w/nKF5nw48s3/yKazdqRQcUFw8R
-	 Opb/Ln4ElOGkL5LuNCIQSBAqHfPaAzVuW6PM7/Ccvd5TainWOUkuYrbRFL7kMuEukX
-	 ZTowY9YLrH0yIYxFjuIsaEFo+rVohEdG3NWTLC18vRQSX9vTAknAOKCy7OwCw2LOm4
-	 EToc+H+iMQIfLXfqP0CANGIuVRwtgMYRIIZYlieG9V4px9B3qZersyzyYtyyABLlqb
-	 GuPg6qIyeJfZ3NmtCHplhZab0ELqTv28yKqakl44QjoJvfQpvQBm4IcexXL9Ocx+Aw
-	 Cxa7F0gx67xrA==
+	b=VtJCDbk1gSag5Ok9nF3P+MpTX4pPXMUXpqPIxOuulRqHNqtnlzopkAzSkzF21j6Ax
+	 GrjkE+mjHS9AkyH0NIskh03/QbfiKF6UVuld/9YjV8fH/sz2rrRddBzY2TQYZz4Bmc
+	 7ijVmOfTiHYQjh5B3me8tiAHktEylT3jEiYXhlZiB630bJJXkaCqH3cpP1T8gaQdFP
+	 dFc4gBaTfH0dcpgne6DOXHYeeUF3B0NEgcoU6kFGQhiv29yWzymzhYcdufhw0DZHfW
+	 Y+ZoXiW/jdqIZ5+c/REj1nAfrtYxlqJAJvUz4vzgvw2PK0+g174dodT6rbW3DCwNyi
+	 jllWkE+nRBpnA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Rik van Riel <riel@surriel.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+Cc: Julian Vetter <jvetter@kalrayinc.com>,
+	Yann Sionneau <ysionneau@kalrayinc.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 3/5] bpf: use kvzmalloc to allocate BPF verifier environment
-Date: Wed, 23 Oct 2024 10:33:18 -0400
-Message-ID: <20241023143321.2982841-3-sashal@kernel.org>
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 4/5] sound: Make CONFIG_SND depend on INDIRECT_IOMEM instead of UML
+Date: Wed, 23 Oct 2024 10:33:19 -0400
+Message-ID: <20241023143321.2982841-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241023143321.2982841-1-sashal@kernel.org>
 References: <20241023143321.2982841-1-sashal@kernel.org>
@@ -68,50 +68,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.322
 Content-Transfer-Encoding: 8bit
 
-From: Rik van Riel <riel@surriel.com>
+From: Julian Vetter <jvetter@kalrayinc.com>
 
-[ Upstream commit 434247637c66e1be2bc71a9987d4c3f0d8672387 ]
+[ Upstream commit ad6639f143a0b42d7fb110ad14f5949f7c218890 ]
 
-The kzmalloc call in bpf_check can fail when memory is very fragmented,
-which in turn can lead to an OOM kill.
+When building for the UM arch and neither INDIRECT_IOMEM=y, nor
+HAS_IOMEM=y is selected, it will fall back to the implementations from
+asm-generic/io.h for IO memcpy. But these fall-back functions just do a
+memcpy. So, instead of depending on UML, add dependency on 'HAS_IOMEM ||
+INDIRECT_IOMEM'.
 
-Use kvzmalloc to fall back to vmalloc when memory is too fragmented to
-allocate an order 3 sized bpf verifier environment.
-
-Admittedly this is not a very common case, and only happens on systems
-where memory has already been squeezed close to the limit, but this does
-not seem like much of a hot path, and it's a simple enough fix.
-
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-Link: https://lore.kernel.org/r/20241008170735.16766766@imladris.surriel.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reviewed-by: Yann Sionneau <ysionneau@kalrayinc.com>
+Signed-off-by: Julian Vetter <jvetter@kalrayinc.com>
+Link: https://patch.msgid.link/20241010124601.700528-1-jvetter@kalrayinc.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index a48de55f5630e..de0926cff8352 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -6446,7 +6446,7 @@ int bpf_check(struct bpf_prog **prog, union bpf_attr *attr)
- 	/* 'struct bpf_verifier_env' can be global, but since it's not small,
- 	 * allocate/free it every time bpf_check() is called
- 	 */
--	env = kzalloc(sizeof(struct bpf_verifier_env), GFP_KERNEL);
-+	env = kvzalloc(sizeof(struct bpf_verifier_env), GFP_KERNEL);
- 	if (!env)
- 		return -ENOMEM;
- 	log = &env->log;
-@@ -6573,6 +6573,6 @@ int bpf_check(struct bpf_prog **prog, union bpf_attr *attr)
- 	mutex_unlock(&bpf_verifier_lock);
- 	vfree(env->insn_aux_data);
- err_free_env:
--	kfree(env);
-+	kvfree(env);
- 	return ret;
- }
+diff --git a/sound/Kconfig b/sound/Kconfig
+index 76febc37862de..be30a24daaf1c 100644
+--- a/sound/Kconfig
++++ b/sound/Kconfig
+@@ -1,6 +1,6 @@
+ menuconfig SOUND
+ 	tristate "Sound card support"
+-	depends on HAS_IOMEM || UML
++	depends on HAS_IOMEM || INDIRECT_IOMEM
+ 	help
+ 	  If you have a sound card in your computer, i.e. if it can say more
+ 	  than an occasional beep, say Y.
 -- 
 2.43.0
 
