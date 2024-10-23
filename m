@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-87840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0036E9ACC5B
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:31:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 793A99ACC60
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:31:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB5301F256D2
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:31:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24CF01F256F0
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:31:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7FAD1C9DF9;
-	Wed, 23 Oct 2024 14:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E16C21CACDE;
+	Wed, 23 Oct 2024 14:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BOCaT0tk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uq7T524t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A081C9DC6;
-	Wed, 23 Oct 2024 14:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970AC1C9ED6;
+	Wed, 23 Oct 2024 14:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729693822; cv=none; b=F5srWULnL1Ik1wLyk56c0qafnS/9vyqUeeD3z16wznLA1CH0SYeSCECwtMZXY/oxB79ykuwT87u8W5w/tq6fVD55kbJEShy+tzggbbURW3C30kOyxEmj+vmCTXKeDO5N5tim4mHdAm09ubLtOhKtRoLM+kMa5PwnyszOdPV5ZL8=
+	t=1729693823; cv=none; b=JAAWrSoM0DAaR0LsODuBN+x4//cVmOxUNSiym/iPtO/IphmNsrwzeyWa8MYcyzbx0iPyzp+DrO6kKt6YDfcTK7gWmiUKPnWiswPIalBppJycJ+yQLvUdRlSs5cE47Jj+tvIgN3tl6XV/Q40a/M8cfWe6Kv7FqbBm+nHSYtRqVSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729693822; c=relaxed/simple;
-	bh=eLcq8MuiQb/sOJuduYqKMuTG95hX8gQlc+dMMaRWQKo=;
+	s=arc-20240116; t=1729693823; c=relaxed/simple;
+	bh=Q9hqRoQ4qEHP2CU6+WUPGiEkJgRQ1LIR8djjGXuPW14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C9PgmUvNCzJEV2AKrYjLA9dZQz5oKqX5PG5P6f/gU+WODyFGbQnhab78xf8TGqro9Vs/GrRmC9lQbVYm5u24yv7JxvbOC2EkUBsfPnuPWV3tReYCdEeaL1cRkLEVTBcLKupME3SMfXRtVjl1XKZqOeGrMp+YxYjp1J6hJEQP8VU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BOCaT0tk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED9DC4CEC6;
-	Wed, 23 Oct 2024 14:30:21 +0000 (UTC)
+	 MIME-Version; b=O4QXyIUs86iQvVitr6mZyw7Z9LqpFvy4QvipyZkpoOeme8yWHRa9fRHG+1Q9nKLyABEVlvhQnlz9f0R3ihc3LFzCe/hM1ufYx04X9IVRs7YXp05aZxNofa2w2d9CaUG+xB2zx1jWD5ibKCVZ26gebLmNXSg7Q36/X13QVeq/MC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uq7T524t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FFA7C4CEE4;
+	Wed, 23 Oct 2024 14:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729693821;
-	bh=eLcq8MuiQb/sOJuduYqKMuTG95hX8gQlc+dMMaRWQKo=;
+	s=k20201202; t=1729693823;
+	bh=Q9hqRoQ4qEHP2CU6+WUPGiEkJgRQ1LIR8djjGXuPW14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BOCaT0tkb6fkN4+m0/8oOD3TRLLy+Bgcl2yCYrdJWBnyHSzRMamZ3gFQOihyqvgyu
-	 Lw+8QK7n7FVVCSQjxfRbL8z7I63dgySFsJZy5bfKCxnpD7Xp0eskmRa8BQW6+7EjzB
-	 qDnMvdHCyWvd7ZRNa0pV6NsMI+Erbd15oJvR2yHOP62FFndLjfcDtaK2T5qieNUmiy
-	 H2J5AZoA0aPf1ULruOS15OiP0nu/0Pv6v0cQX2zfOTRv6hfyeuHQckiYNZem+gZg+q
-	 tEIlsocwGWZEnevp9re1Dok2KTiELa03Rks9NKbyxWDDGb9+7PBsssUIEci9DEhkg0
-	 9cG+BYV6H9ltw==
+	b=uq7T524tN/mBmd16+WFn6m/8nq0rOl7XauZCsySnWfoCD2ONdYf90ttMH3UyA1BzA
+	 KnjRHaDjWRYdBVswhq1rjf6cZ8ZjkDoZkNB4LncSbwtGYAM+Cna4qUP8jRBcr0vMk+
+	 4uTn1q/efpSdh6LiIyrWAcloGXWWq3EdkBGygY82rA3/QKE+bvAN4vB2MmFKRHIzdf
+	 lOnb0/JkxFM0tW2U7l55MS4eXwbbTkwLhSdNncE/XqM7V/XKqrX4n0YpnsN1nVD3xy
+	 hzhbYVg7HC6+DhMSpE6vgFwqhaPtEpbH8YfUg772CLC84EWESDcksJzplKHhxEpUDD
+	 b1HlXL8HWkpyQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sergey Matsievskiy <matsievskiysv@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.11 05/30] irqchip/ocelot: Fix trigger register address
-Date: Wed, 23 Oct 2024 10:29:30 -0400
-Message-ID: <20241023143012.2980728-5-sashal@kernel.org>
+Cc: Rosen Penev <rosenp@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 06/30] pinctrl: aw9523: add missing mutex_destroy
+Date: Wed, 23 Oct 2024 10:29:31 -0400
+Message-ID: <20241023143012.2980728-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241023143012.2980728-1-sashal@kernel.org>
 References: <20241023143012.2980728-1-sashal@kernel.org>
@@ -64,54 +65,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.5
 Content-Transfer-Encoding: 8bit
 
-From: Sergey Matsievskiy <matsievskiysv@gmail.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit 9e9c4666abb5bb444dac37e2d7eb5250c8d52a45 ]
+[ Upstream commit 393c554093c0c4cbc8e2f178d36df169016384da ]
 
-Controllers, supported by this driver, have two sets of registers:
+Otherwise the mutex remains after a failed kzalloc.
 
- * (main) interrupt registers control peripheral interrupt sources.
-
- * device interrupt registers configure per-device (network interface)
-   interrupts and act as an extra stage before the main interrupt
-   registers.
-
-In the driver unmask code, device trigger registers are used in the mask
-calculation of the main interrupt sticky register, mixing two kinds of
-registers.
-
-Use the main interrupt trigger register instead.
-
-Signed-off-by: Sergey Matsievskiy <matsievskiysv@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20240925184416.54204-2-matsievskiysv@gmail.com
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Link: https://lore.kernel.org/20241001212724.309320-1-rosenp@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-mscc-ocelot.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pinctrl/pinctrl-aw9523.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-mscc-ocelot.c b/drivers/irqchip/irq-mscc-ocelot.c
-index 4d0c3532dbe73..c19ab379e8c5e 100644
---- a/drivers/irqchip/irq-mscc-ocelot.c
-+++ b/drivers/irqchip/irq-mscc-ocelot.c
-@@ -37,7 +37,7 @@ static struct chip_props ocelot_props = {
- 	.reg_off_ena_clr	= 0x1c,
- 	.reg_off_ena_set	= 0x20,
- 	.reg_off_ident		= 0x38,
--	.reg_off_trigger	= 0x5c,
-+	.reg_off_trigger	= 0x4,
- 	.n_irq			= 24,
- };
+diff --git a/drivers/pinctrl/pinctrl-aw9523.c b/drivers/pinctrl/pinctrl-aw9523.c
+index b5e1c467625ba..1374f30166bc3 100644
+--- a/drivers/pinctrl/pinctrl-aw9523.c
++++ b/drivers/pinctrl/pinctrl-aw9523.c
+@@ -987,8 +987,10 @@ static int aw9523_probe(struct i2c_client *client)
+ 	lockdep_set_subclass(&awi->i2c_lock, i2c_adapter_depth(client->adapter));
  
-@@ -70,7 +70,7 @@ static struct chip_props jaguar2_props = {
- 	.reg_off_ena_clr	= 0x1c,
- 	.reg_off_ena_set	= 0x20,
- 	.reg_off_ident		= 0x38,
--	.reg_off_trigger	= 0x5c,
-+	.reg_off_trigger	= 0x4,
- 	.n_irq			= 29,
- };
+ 	pdesc = devm_kzalloc(dev, sizeof(*pdesc), GFP_KERNEL);
+-	if (!pdesc)
+-		return -ENOMEM;
++	if (!pdesc) {
++		ret = -ENOMEM;
++		goto err_disable_vregs;
++	}
  
+ 	ret = aw9523_hw_init(awi);
+ 	if (ret)
 -- 
 2.43.0
 
