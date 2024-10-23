@@ -1,393 +1,258 @@
-Return-Path: <stable+bounces-87820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E1F79AC89E
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 13:09:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 725FF9AC93D
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 13:40:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5CCD1F232FE
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 11:09:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69F081C21888
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 11:40:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 393181AC88B;
-	Wed, 23 Oct 2024 11:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582861AB6C1;
+	Wed, 23 Oct 2024 11:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="XQeSNJ9y"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="um7mMoXy"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2049.outbound.protection.outlook.com [40.107.94.49])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035291AB521
-	for <stable@vger.kernel.org>; Wed, 23 Oct 2024 11:07:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729681673; cv=fail; b=WDSgcTRwkGV0GN7peU79FMpEm0b9/gUkKylh9aPzdTXL0C5OuljcStZPeAVhgjBFt5QvdLmvN1r54SJp1IjTEOZnKCwZmhDYFdpabIiGjvs6RhUG6BuCNavzhLCYUMjQlBrOT5Nj3EAJd8AQqBYGSJ4MDfi35iKBsG2yiedqfMo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729681673; c=relaxed/simple;
-	bh=vXw3kRsWxD02bASUgffc37El5ouWAjHlftmRIF3/pD4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ttKZ/ypnenfml8z4920ORw/aJ6B4CJX1ucVSUaEJX/wYEG+1wWKVmkv/OA5Vw3NVEW5XKBsaM11SO7S9yw7QwqNNNxwFR4e+h9P6PYTTmzpPKJwhLrKZX7enTtq7EN+uEa0VYvHnszcEPhheU8c5rC+IzDDe5xkyKlrD9PuFFlA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=XQeSNJ9y; arc=fail smtp.client-ip=40.107.94.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SYF/J8YkYk68Vj4JAmhixqf5uY9dGB2EjKCGytKxiWrzSsKEPS5AzksdIXI9dVYnNJFtXqXPjJPV0V3vRJvj0kcp3v2jCdQZWs362uP72y820L2ymXmlatPmtPGKCaGuemGq0P4jUdIBuNfIADXxKsEaKykI8ilK3G8Ov4iiE7CxFBBM0kfC83xl5PTET3P01ZmXD66Q9MYk1NSNZbmrI/jTkbo0mvGjTSIXW/0bGeFEB0gPrbBL9ErIBrxztFeqXLszFoullQUf4/Oxbnlehhlw2UI6RGTu/igQWFOgBwMgzH1nPdN5mjEFAbz1Tvny7gB3++9jImJ6ZljODtntFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=h6uaelI5eBcMWiDG6kUjDklZ+FS4JB0xnaOG+YbbqTo=;
- b=nACb3EDLfEIzW3FCQ6V6z52HPI0BMy2pcHvaWnmLjymjn+zSciJIeGKdaui8DYpFhmZBFGC0rDD6Yl0izho2edVI10p8CUDQplCpwZHbq5U2UvTDMhJZTovVPaK+mBUZTEGpSdf4Ut3Mj9RVpd2ti2pvRnVPBOYy7IXNsHHmnzIFA9EZ5tnXkVHWDVT5bYOWdA4gwWTc1elc/A2Q1uELlGHdWr11/gZfLjn7zV7TUUN4DheCNxrL7UTL4WO4SnJ4f1u7XLVdB3X1TUM84zSOEHwQ+OhWU9sS/vgFGK4epDNps48JCYHKLJsvB1h9Fi6D+nGtUSaicsT1BBXuA8Zyuw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=h6uaelI5eBcMWiDG6kUjDklZ+FS4JB0xnaOG+YbbqTo=;
- b=XQeSNJ9yKY2XwTLmw5cI89oCqYpJ7yUh4RdGv98z1FmOuaN9nAcBT3QFqrYWs1sAUIS0eegeDAwaFNtszIHu8ZxsGrmfbIjyU6uKoLgfuFl1UDYh4S4qgFcGeP10KvDQD1GtQZFmzS6o2iNDrDsWn84qTpkeNnLkBxldQ2bx3V0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
- by SJ2PR12MB7848.namprd12.prod.outlook.com (2603:10b6:a03:4ca::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.26; Wed, 23 Oct
- 2024 11:07:49 +0000
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::c170:6906:9ef3:ecef]) by BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::c170:6906:9ef3:ecef%7]) with mapi id 15.20.8069.027; Wed, 23 Oct 2024
- 11:07:49 +0000
-Message-ID: <1f6feded-066d-4207-9645-f2bbed5ebfee@amd.com>
-Date: Wed, 23 Oct 2024 06:07:37 -0500
-User-Agent: Mozilla Thunderbird
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8B91AA7AF;
+	Wed, 23 Oct 2024 11:40:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729683624; cv=none; b=h/girFsg2vymLBVO3ddEI04vtKUDW7Y0wzo/A27c1k7aTpFP/LC2OTAe5qiWvO78hy4t/z0YSrCI1PKkcbjV1rH3+GVPqt+Mhr33VfHApd3jy0jS6AoeBUKGN/3cSsDcN4lJr2NOJ6HggNLTFPotqdknjEIRCkvuPgMNBKK5bxI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729683624; c=relaxed/simple;
+	bh=hRZ1q5WO42IFGuMjp8F67bTR5xT/ZR2y9uDzNiTYSEM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=f1xy5DH98CuQVNLOgM0uri5MZGGz8TSSD/Mzb+BgTqrgOZrtJsUSaI8qBfnG8rDXl7MoN+DJxGVYuk4i/eVyH693uXkI65QIzsjYBzC0slXALCbo3slE6y6IZYvc+oD+4kEWzXKBxcnk1O0kvG41fidl/dpErLkgPm/zK7noR0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=um7mMoXy; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=uAni5P+XG2LJYbeQjyKwcQ6SXlZ6We877SgANvJcOO4=; b=um7mMoXyUJlRcUv7SbaB9qBWGU
+	u08ff1Vbi88W39BCj0s83zUc+bzUaBtmqEQvRc92BwHizsTKfozkNRbnSZVCb7ViWcSWvQeOgYBZW
+	J2mEXdWr8e09dSo1HmxmsO0U3Vb5SDJVPK4B0Ug4r9VI4ThpIbJx9uqonLqTUkEvFMfoa+cGxsI28
+	9UARGbFqkzN/u7a81iXELBo1KFd34g987V1DvIzekZA1bD9kDztYIxOXy2E4+AxAf/y5AIS7AhvEO
+	X4K7KbUKGe+AuzJAdQNIK/pZk/cQ6nXt6r4QhingV9Z+8L6HBm/zSkKnjVrA6ulo8JA6U0KGLkNoH
+	fBRU14EA==;
+Received: from [2001:8b0:10b:5:51f6:cefc:4e76:679f] (helo=u3832b3a9db3152.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1t3ZiZ-00000002qZT-33NK;
+	Wed, 23 Oct 2024 11:40:00 +0000
+Message-ID: <e4cc1e0cfca0d954ca22d850ac771c4bf7406902.camel@infradead.org>
 Subject: Re: [REGRESSION] kexec does firmware reboot in kernel v6.7.6
-Content-Language: en-US
-To: David Woodhouse <dwmw2@infradead.org>, Steve Wahl <steve.wahl@hpe.com>,
- Tom Lendacky <thomas.lendacky@amd.com>
+From: David Woodhouse <dwmw2@infradead.org>
+To: "Kalra, Ashish" <ashish.kalra@amd.com>, Steve Wahl <steve.wahl@hpe.com>,
+  Tom Lendacky <thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>
 Cc: Dave Young <dyoung@redhat.com>, "Eric W. Biederman"
- <ebiederm@xmission.com>, Pavin Joseph <me@pavinjoseph.com>,
- Simon Horman <horms@verge.net.au>, kexec@lists.infradead.org,
- Eric Hagberg <ehagberg@gmail.com>, dave.hansen@linux.intel.com,
- regressions@lists.linux.dev, stable@vger.kernel.org
-References: <CAJbxNHe3EJ88ABB1aZ8bYZq=a36F0TFST1Fqu4fkugvyU_fjhw@mail.gmail.com>
- <ZensTNC72DJeaYMo@swahl-home.5wahls.com>
- <CAJbxNHfPHpbzRwfuFw6j7SxR1OsgBH2VJFPnchBHTtRueJna4A@mail.gmail.com>
- <ZfBxIykq3LwPq34M@swahl-home.5wahls.com>
- <42e3e931-2883-4faf-8a15-2d7660120381@pavinjoseph.com>
- <ZfDQ3j6lOf9xgC04@swahl-home.5wahls.com>
- <87cyryxr6w.fsf@email.froward.int.ebiederm.org>
- <ZfHRsL4XYrBQctdu@swahl-home.5wahls.com>
- <CALu+AoSZhUm_JuHf-KuhoQp-S31XFE=GfKUe6jR8MuPy4oQiFw@mail.gmail.com>
- <af634055643bd814e2204f61132610778d5ef5e5.camel@infradead.org>
- <Zxgh-hBK2FfhHJ9R@swahl-home.5wahls.com>
- <e373dcbdd15d717898cfe8ebde74191b5f3acc4c.camel@infradead.org>
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-In-Reply-To: <e373dcbdd15d717898cfe8ebde74191b5f3acc4c.camel@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SI2PR02CA0019.apcprd02.prod.outlook.com
- (2603:1096:4:195::13) To BL3PR12MB9049.namprd12.prod.outlook.com
- (2603:10b6:208:3b8::21)
+ <ebiederm@xmission.com>,  Pavin Joseph <me@pavinjoseph.com>, Simon Horman
+ <horms@verge.net.au>, kexec@lists.infradead.org, Eric Hagberg
+ <ehagberg@gmail.com>, dave.hansen@linux.intel.com,
+ regressions@lists.linux.dev,  stable@vger.kernel.org
+Date: Wed, 23 Oct 2024 12:39:59 +0100
+In-Reply-To: <1f6feded-066d-4207-9645-f2bbed5ebfee@amd.com>
+References: 
+	<CAJbxNHe3EJ88ABB1aZ8bYZq=a36F0TFST1Fqu4fkugvyU_fjhw@mail.gmail.com>
+	 <ZensTNC72DJeaYMo@swahl-home.5wahls.com>
+	 <CAJbxNHfPHpbzRwfuFw6j7SxR1OsgBH2VJFPnchBHTtRueJna4A@mail.gmail.com>
+	 <ZfBxIykq3LwPq34M@swahl-home.5wahls.com>
+	 <42e3e931-2883-4faf-8a15-2d7660120381@pavinjoseph.com>
+	 <ZfDQ3j6lOf9xgC04@swahl-home.5wahls.com>
+	 <87cyryxr6w.fsf@email.froward.int.ebiederm.org>
+	 <ZfHRsL4XYrBQctdu@swahl-home.5wahls.com>
+	 <CALu+AoSZhUm_JuHf-KuhoQp-S31XFE=GfKUe6jR8MuPy4oQiFw@mail.gmail.com>
+	 <af634055643bd814e2204f61132610778d5ef5e5.camel@infradead.org>
+	 <Zxgh-hBK2FfhHJ9R@swahl-home.5wahls.com>
+	 <e373dcbdd15d717898cfe8ebde74191b5f3acc4c.camel@infradead.org>
+	 <1f6feded-066d-4207-9645-f2bbed5ebfee@amd.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-yojImZPbTp/l/2VR5/B7"
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|SJ2PR12MB7848:EE_
-X-MS-Office365-Filtering-Correlation-Id: a55ce95d-9548-4aae-b824-08dcf352ee1a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dzRZWUlibFg2bTd1YkpYYTFUS3NxN0g5YmN6eW03YlowQm0vUk5lbUpGWW10?=
- =?utf-8?B?eEh3MWQrdE1iaEJxQ05LRi9TRVpGU2EzTHdlSHhYb2dhNmNrN0NJcjlLSW9m?=
- =?utf-8?B?cFVWbnBnd1FxY1ZzY1Z5UzVORisxZ3ZtMk0vSmVwVUFBakRJVHVNWjJtSHhI?=
- =?utf-8?B?Q1lUQTZ3Q1pBcnk2OSszendGWkU4OFduRmlQU1lTdTJGMVB3akpwckg2em1H?=
- =?utf-8?B?UC9uNDJUQ3Y1L1VDWWU4MDVvdTRJYXBicFNkcDVqYkVLdVJUNG94bjl4SitM?=
- =?utf-8?B?aCt5ZHpvNzF1a3c5SnVyR0hCTno0Zi82RllzWmE0bkhBQUJ5T2hKbzR6eDJv?=
- =?utf-8?B?cWFkQzQ0dmV2WXF0ZENzOUtpd0xiTWwyTSt0YzBpejNWbUlGTXRabUFvSExl?=
- =?utf-8?B?OFUzSENxRlE1QnkxMTgwR2hkcXBZZ0Y0cnl4L1ZzS2VJbUxoekx4SGlDV21S?=
- =?utf-8?B?VUZzazdoTkQzTW0vcGVvbDZHZTdkVFM5c0dlL2hIY0N4WkhncFVTQ1E5dVFU?=
- =?utf-8?B?YU1nMmxobUlKSkZzclRtWkREb1hucWtaZHlpOVRPSFZ0bi9TbEhLNTZnN0lv?=
- =?utf-8?B?MzVETFRxcTkwa0xCaU1MVnpLTS8yWVppUzlJRFVLVHhPNHBtMkNzV0VZTXQ5?=
- =?utf-8?B?TkJHL2JPNlhsY0FFeGlxU3EzbmR6cUNOa3dkNFZDcVVmOTQvK211alAyV1dp?=
- =?utf-8?B?YlJiR2wyYThWZTRMdlZCWkc2YXFuMDJHRjhsemRKQTFrTncxdndaMnVsdUpw?=
- =?utf-8?B?bFpIZjlyYk1HRFJlOWhrQmZ5ZUZlYTZiY0ZOSitLVCtwUktCQ0NrVm9odkdk?=
- =?utf-8?B?d2hmWmRUaXlrZlNvb0ZjaklldDFPeXdhZFNMZHpGWGZxbGNnNzBsbW5zWGt0?=
- =?utf-8?B?NW1MQ3ZTQzY2Vkd2QnF1OHRWV2I2YVozNnJjWm5KOXloSFRwajVWQ2tMYjZM?=
- =?utf-8?B?TGJYam9aL1hUK3hPOE1WclpBbXdCMmd4Y1FGZTUxUEVrK1F4MUNxdytDd2tZ?=
- =?utf-8?B?TnI1M3h1R0J4VXgyUFNWK1RBbWJaTXhCTFJ5MzAvRDBhQkFJRmlERDJrUDJE?=
- =?utf-8?B?dlJLZGlCTHVacCtkaE5lSUtxSHA4VkZaN3RzeTViVDR5Y2owZUNCWTNTQk44?=
- =?utf-8?B?cGlJMXRTVFQweFljdFNwSjdMRmFyNVI2VnBQeWlWeFU2YVFldUlvVnFyMDJJ?=
- =?utf-8?B?Uno4TnE0end4a2FFdDkrZXI4alFyYUtHbUlXUk1lOWlGTk9Rekdkc1NveWhK?=
- =?utf-8?B?aGlrT2gxLzZOWDRFOVpOY04rdEt0UjZRREhWbTl5REc5bUdUdHU4MlJZWjB0?=
- =?utf-8?B?clhmaHp4S20xeVJDQVc3VVo4eUE4ZG1jemhRaVlHd0dENkVtcmRDU2FIdmF3?=
- =?utf-8?B?ZWhxRFg5S1U3V252RDJZWmh2TzB3SVZGNk5JTG16MWI1bTA5L05OaGNHVEJL?=
- =?utf-8?B?b2dXc0JMSGlTd3RVa21sWjI0S0pXaXVaZUJnWUxjQUhEY2NlSitHQm5vMUZl?=
- =?utf-8?B?NWhKYVVLdG5ZN004YW01TElwM1dUNitGUHRNakRnLzBxWStIYjlVaktxVjA1?=
- =?utf-8?B?YlBDdWlZN0E5aVFTZlJidFNyQk4rTW1odjExMy8vbU9oZmFQdGJpK2NzTkFh?=
- =?utf-8?B?akJKWm8rcEtWYlZaSzYzMTE0Q0VpQmF6SmYrRDBWczlva0FaZmZqZlhLT205?=
- =?utf-8?B?R1ZqYksvaGdlaWswUCtkZndOakMzeGwxVWhrdWN6Zmo0dVkvZnYzbXlTMlND?=
- =?utf-8?Q?tyFUVvMY1tdiLpTDMofIhyEEcfwYKIO+CtSPJun?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZmN5UHFrM0l4WitsRXB0TmpZeDRNQ2QreFZWN2tVd0tHSGduMFJ1blVUcktN?=
- =?utf-8?B?MU1rR3B3VDVLY3JndVE0aVhCcStaUThucHh4ZW1yRGdMRFhDODlMU3ZoMC90?=
- =?utf-8?B?TVV6QkxWK3FlZDJsRHFZc2o4TDE1Q09ZMXNzUWwvMGRLZGtuL3V4aW1PRlE5?=
- =?utf-8?B?bTNkYm9SclAwU1RPaVFZK05JTFdQNThRTGFxdEllLzh2Ym1mWTk2TWVMRHFK?=
- =?utf-8?B?VEt1K2hUVUU2OHRWamMrZ1NuMENCem5Ta2x3OWNOd2kxTm9pZlBFTVlBU09E?=
- =?utf-8?B?Sm9qalhtWFNRc0Y0VkNWSkZHNnYwVUh0NHQ2ZklRVEdzKzFVRU94QU9HMEdk?=
- =?utf-8?B?U0RhZ0ttMmJOYnVmOVBkNHdPM1FMVkcwL2JxTmR5UWFUd0RKaE92OHBHN1VE?=
- =?utf-8?B?WWFNcGVLTGRUbHd5VHZUWUg0TzhLSW1PZVVpS3ZJV3A4L3ZFYUlhWm5DU2I4?=
- =?utf-8?B?NWhLOTVSUlRFU3c5MFFIYzYrWGtkTVJQbTFnK2xDV0kxNG5iSjJzR0VQckVB?=
- =?utf-8?B?WGkrd1Z6akF1YzFpYnBWZkRoWFltL3drdStoSFZCelBwRmtQYVY3d1hFV0o2?=
- =?utf-8?B?TW1ZcC9pcDZMbHpqZGhXMDR1UyswSmlwYmk1cldrSFZvc1ZwUk9jdGU5clFv?=
- =?utf-8?B?ZmhuS3RyaEhqaWVWVzFWdDlydUo2YkI5dGlmUys2QnJOT1BIeTVuak5iZmFq?=
- =?utf-8?B?MVZaVTh3RGxNVHNuK1hoYlJmbTRHdUozOXpKaWc3MWtnRU1oWUd1aU95dnBO?=
- =?utf-8?B?ZFhJbTBPVklNUUdjSzVhU09CVTYwSHQ5ZWJmcVB3Qk5VMythdk0rdFlIbHlz?=
- =?utf-8?B?bXNDZ1o4WE1oZ01vRC9oZlBFUUNkS1VOQ0tqTXdZOVBTd3hoVTZpSExJZ0h3?=
- =?utf-8?B?MzkvWWwzK0U0TG5IUlhKS1BJTDRrSVZpb3grSDU1emhueDQxZWl6Sno4bE5q?=
- =?utf-8?B?cUcrNXNSQklLdlpnTkVDSmJGUVRUM1dLeWNwTmpxK1pYaVBvT0VyY0pIN29a?=
- =?utf-8?B?YW9yS2x0dTFjaS96TTZYWnMrMVdpSEJta29WdlMrRjRpMXczZlVoMnlOS0RF?=
- =?utf-8?B?WlpXa2hRTnVrMG1hYm5hQlZCb2U0TGphQklhR2NIQjlBVm8xd1JpbzZCQ0Fz?=
- =?utf-8?B?T3VBV0ZscVpsWnlZWXR6VVlYeFZRNWltSUJjaERSZE44cFR5ZXNuU1U0Ny9I?=
- =?utf-8?B?UlJKWDhCZWFRWGhlRVdKTmJoaHVnRG53ZW95b2NVTjlWeGtabCtqRWVDcGV2?=
- =?utf-8?B?UmtMMUNDWHlaQjlwWWlwa0hlazNRWldDOWxjTnNKSVh0TE9CbUV4RGw1QU12?=
- =?utf-8?B?WDZMR2J4bmNNMGl1ZkNLM2lnVW5VM2tYZzIxZ0g3N0Rwb3F3WGJaNGxGNHI0?=
- =?utf-8?B?ZnFkZWxiRzFsYUY1Y0RmYlRQQ25WZml4SmowQ0ZpdEtkUXh4MjBvd25FQ2t5?=
- =?utf-8?B?TXRuMnQraWJNQVF1ZGVEV1I3SkpxV210REpwWkk2UDhxL1BreE5saG5IcEY2?=
- =?utf-8?B?dFpHTk5oMG5IckxCNGlhSDhYKzlGV2JQNzNxcmpOTTR0SFR4amZkYlNoU0pO?=
- =?utf-8?B?U3lscEdORzBsZGprM0JFMVV5dWdpbDJnOTk1d25GbkNsbTMyQnRlWG1jN29y?=
- =?utf-8?B?ZTlQT3JsZjdFcllXMFl5Si9wbHpHOWFGZ3lNZVBKY2loZXlDSXNYOHJIYUU3?=
- =?utf-8?B?a3BpeWlvVkJlMkFOMUc2M2tUSm56VnNISGdVYkNyRFFwNFNjWHBEK3BWYkx6?=
- =?utf-8?B?ZFhjTTNwWWRLOUxEYVVmZHd3dUZndy9FUDBvTkdvTkh4bmEwYUUrUTJLNVpp?=
- =?utf-8?B?WEMvcE1tNzlMR25xS1IxSldvMThtNXZQVVV2RG5ZbUtLUDVRVWVMdWVMLzJH?=
- =?utf-8?B?K2VTaHF3SU9TTGt2YWJ4dmRDdHlXVTZULzVBRkpxRS9tR01Ec09FL1M5VHQ2?=
- =?utf-8?B?TzBUVUFJWWU2TnQ2Y3U0NlBzZUJGcU5Wcks3aUpKUldtRlhXVDhvOHNEdzdk?=
- =?utf-8?B?enExWWV1RFpNK0NGdmtyU0xvTjhwbGdYeW1CVUs0WnFDYjhtdkJWcDlhVFcy?=
- =?utf-8?B?OW9mWTNuTGFtRmxJUjFrWXJUY1h4Z3JkYlBuMG9FWU91SndhbFFiTUxjZk1G?=
- =?utf-8?Q?LWzINZNUgHLUGevRt98NVLgrX?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a55ce95d-9548-4aae-b824-08dcf352ee1a
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2024 11:07:49.0619
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KP5f1AJg8fduhV9Qy3HB9xsLvX/TIgaHIiF+YGHmbIjqcKABz01TXbZLrbJPm6NO+Zj3pgxWSAvoblrtAKOgzg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB7848
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On 10/23/2024 2:39 AM, David Woodhouse wrote:
-> On Tue, 2024-10-22 at 17:06 -0500, Steve Wahl wrote:
->> On Tue, Oct 22, 2024 at 07:51:38PM +0100, David Woodhouse wrote:
->>> I spent all of Monday setting up a full GDT, IDT and exception handler
->>> for the relocate_kernel() environment¹, and I think these reports may
->>> have been the same as what I've been debugging.
->>
->> David,
->>
->> My original problem involved UV platform hardware catching a
->> speculative access into the reserved areas, that caused a BIOS HALT.
->> Reducing the use of gbpages in the page table kept the speculation
->> from hitting those areas.  I would believe this sort of thing might be
->> uniqe to the UV platform.
->>
->> The regression reports I got from Pavin and others were due to my
->> original patch trimming down the page tables to the point where they
->> didn't include some memory that was actually referenced, not processor
->> speculation, because the regions were not explicitly included in the
->> creation of the kexec page map.  This was fixed by explicitly
->> including those regions when creating the map.
-> 
-> Hm, I didn't see that part of the discussion. I saw that such was a
-> theory, but haven't seen specific confirmation and fixes. And your
-> original patch was reverted and still not reapplied, AFAICT.
-> 
-> I did note that the victims all seemed to be using AMD CPUs, so it
-> seemed likely that at least *some* of them were suffering the same
-> problem that I've found.
-> 
-> Do you have references please? 
-> 
-> If anyone is still seeing such problems either with or without your
-> patch, they can run with my exception handler and get an actual dump
-> instead of a triple-fault.
-> 
-> (I'm also pushing CPU vendors to give us information from the triple-
-> fault through the machine check architecture. It's awful having to do
-> this blind. For VMs, I also had plans to register a crashdump kernel
-> entry point with the hypervisor, so that on a triple fault the
-> *hypervisor* could jump state of all the vCPUs to the configured
-> location, then restart one CPU in the crash kernel for it to do its own
-> dump). 
-> 
->> Can you dump the page tables to see if the address you're referencing
->> is included in those tables (or maybe you already did)?  Can you give
->> symbols and code around the RIP when you hit the #PF?  It looks like
->> this is in the region metioned as the "Control page", so it's probably
->> trampoline code that has been copied from somewhere else.  I'm using
->> my copy of perhaps different kernel source than you have, given your
->> exception handler modification.
->>
->> Wait, I can't make sense of the dump. See more below.
->>
->> What platform are you running on?  And under what conditions (is this
->> bare metal)? Is it really speculation that's causing your #PF?  If so,
->> you could cause it deterministically by, say, doing a quick checksum
->> on that area you're not supposed to touch (0xc142000000 -
->> 0xC1420fffff) and see if it faults every time.  (As I said, I was
->> thinking faults from speculation might be unique to the UV platform.)
-> 
-> Yes, it's bare metal. AMD Genoa. No, it's not speculation. It's because
-> we have a single 2MiB page which covers *both* the RMP table (1MiB
-> reserved by BIOS in e820 as I showed), and a page that was allocated
-> for the kimage. If I understand correctly, the hardware raises that
-> fault (with bit 31 in the error code) when refusing to populate that
-> TLB entry for writing.
 
-As mentioned above, about the same 2MB page containing the end portion of the RMP table and a page allocated for kexec and 
-looking at the e820 memory map dump here: 
+--=-yojImZPbTp/l/2VR5/B7
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
->>> [    0.000000] BIOS-e820: [mem 0x000000bfbe000000-0x000000c1420fffff] reserved
->>> [    0.000000] BIOS-e820: [mem 0x000000c142100000-0x000000fc7fffffff] usable
+On Wed, 2024-10-23 at 06:07 -0500, Kalra, Ashish wrote:
+>=20
+> As mentioned above, about the same 2MB page containing the end portion of=
+ the RMP table and a page allocated for kexec and=20
+> looking at the e820 memory map dump here:=20
+>=20
+> > > > [=C2=A0=C2=A0=C2=A0 0.000000] BIOS-e820: [mem 0x000000bfbe000000-0x=
+000000c1420fffff] reserved
+> > > > [=C2=A0=C2=A0=C2=A0 0.000000] BIOS-e820: [mem 0x000000c142100000-0x=
+000000fc7fffffff] usable
+>=20
+> As seen here in the e820 memory map, the end range of the RMP table is no=
+t
+> aligned to 2MB and not reserved but it is usable as RAM.
+>=20
+> Subsequently, kexec-ed kernel could try to allocate from within that chun=
+k
+> which then causes a fatal RMP fault.
 
-As seen here in the e820 memory map, the end range of the RMP table is not
-aligned to 2MB and not reserved but it is usable as RAM.
+Well, allocating within that chunk would be just fine. It *is* usable
+as RAM, as the e820 table says. It works fine most of the time.
 
-Subsequently, kexec-ed kernel could try to allocate from within that chunk
-which then causes a fatal RMP fault.
+You've missed a step out of the story. The problem is that for kexec we
+map it with an "overreaching" 2MiB PTE which also covers the reserved
+regions, and *that* is what causes the RMP violation fault.
 
-This issue has been fixed with the following patch: 
-https://lore.kernel.org/lkml/171438476623.10875.16783275868264913579.tip-bot2@tip-bot2/
+We could take two possible viewpoints here. I was taking the viewpoint
+that this is a kernel bug, that it *shouldn't* be setting up 2MiB pages
+which include a reserved region, and should break those down to 4KiB
+pages.
 
-Thanks, 
-Ashish
+The alternative view would be to consider it a BIOS bug, and to say
+that the BIOS really *ought* to have reserved the whole 2MiB region to
+avoid the 'sharing'.  Since the hardware apparently already breaks down
+1GiB pages to 2MiB TLB entries in order to avoid triggering the problem
+on 1GiB mappings.
 
-> 
-> According to the AMD manual we're allowed to *read* but not write.
-> 
->>> We end up taking a #PF, usually on one of the 'rep mov's, one time on
->>> the 'pushq %r8' right before using it to 'ret' to identity_mapped. In
->>> each case it happens on the first *write* to a page.
->>>
->>> Now I can print %cr2 when it happens (instead of just going straight to
->>> triple-fault), I spot an interesting fact about the address. It's
->>> always *adjacent* to a region reserved by BIOS in the e820 data, and
->>> within the same 2MiB page.
+> This issue has been fixed with the following patch:=20
+> https://lore.kernel.org/lkml/171438476623.10875.16783275868264913579.tip-=
+bot2@tip-bot2/
 
->>
->> I'm not at all certain, but this feels like a red herring.  Be cautious.
-> 
-> It wouldn't be our first in this journey, but I'm actually fairly
-> confident this time. :)
-> 
->>> [    0.000000] BIOS-e820: [mem 0x000000bfbe000000-0x000000c1420fffff] reserved
->>> [    0.000000] BIOS-e820: [mem 0x000000c142100000-0x000000fc7fffffff] usable
->>>
->>>
->>> 2024-10-22 17:09:14.291000 kern NOTICE [   58.996257] kexec: Control page at c149431000
->>> 2024-10-22 17:09:14.291000 Y
->>> 2024-10-22 17:09:14.291000 rip:000000c1494312f8
->>> 2024-10-22 17:09:14.291000 rsp:000000c149431f90
->>> 2024-10-22 17:09:14.291000 Exc:000000000000000e
->>> 2024-10-22 17:09:14.291000 Err:0000000080000003
->>> 2024-10-22 17:09:14.291000 rax:000000c142130000
->>> 2024-10-22 17:09:14.291000 rbx:000000010d4b8020
->>> 2024-10-22 17:09:14.291000 rcx:0000000000000200
->>> 2024-10-22 17:09:14.291000 rdx:000000000009c000
->>> 2024-10-22 17:09:14.291000 rsi:000000000009c000
->>> 2024-10-22 17:09:14.291000 rdi:000000c142130000
->>> 2024-10-22 17:09:14.291000 r8 :000000c149431000
->>> 2024-10-22 17:09:14.291000 r9 :000000c149430000
->>> 2024-10-22 17:09:14.291000 r10:000000010d4bc000
->>> 2024-10-22 17:09:14.291000 r11:0000000000000000
->>> 2024-10-22 17:09:14.291000 r12:0000000000000000
->>> 2024-10-22 17:09:14.291000 r13:0000000000770ef0
->>> 2024-10-22 17:09:14.291000 r14:ffff8c82c0000000
->>> 2024-10-22 17:09:14.291000 r15:0000000000000000
->>> 2024-10-22 17:09:14.291000 cr2:000000c142130000
->>>>
->>>
->>> And bit 31 in the error code is set, which means it's an RMP
->>> violation. 
->>
->> RMP is AMD SEV related, right?  I'm not familiar with SEV operation,
->> but I have an itchy feeling it's involved in this problem.
->>
->> I am having a hard time with the RIP listed above.  Maybe your
->> exception handler has affected it?  My disassembly seems to show this
->> address should be in a sea of 0xCC / int3 bytes past the end of swap
->> pages.
-> 
-> You'd have to have access to my kernel binary to have a hope of knowing
-> that, surely? I don't think I checked that particular one, but it's
-> normally one of the 'rep mov's in relocate_kernel_64.S.
-> 
->>> Looks like we set up a 2MiB page covering the whole range from
->>> 0xc142000000 to 0xc142200000, but we aren't allowed to touch the first
->>> half of that.
->>
->> Is it possible that, instead, some SEV tag is hanging around (TLB not
->> completely cleared?) and a page that was otherwise free is causing the
->> problem.  Are you using SEV/SME in your system, and if you stop using
->> it does it go away?  (Although I have a feeling the answer is no and
->> I'm barking up the wrong tree.)
->>
->> The target of the pages above is c1421300000.  Have you checked to
->> make sure that's a valid address in the page map?
-> 
-> Yeah, we dumped the page tables and it's present.
-> 
->>> For me it happens either with or without Steve's last patch, *but*
->>> clearing direct_gbpages did seem to make it go away (or at least
->>> reduced the incident rate far below the 1-crash-in-1000-kexecs which I
->>> was seeing before).
->>
->> I assume you're referring to the "nogbpages" kernel option?  
-> 
-> Nah, I just commented out the lines in init_pgtable() which set
-> info.direct_gbpages=true.
-> 
-> 
->> My patch
->> and the nogbpages option should have the exact same pages mapped in
->> the page table.  The difference being my patch would still use gbpages
->> in places where a whole gbpage region is included in the map,
->> nogbpages would use 2M pages to fill out the region.  This *would*
->> allocate more pages to the page table, which might be shifting things
->> around on you.
-> 
-> Right. In fact the first trigger for this, in our case, was an
-> innocuous change to the NMI watchdog period — which sent us on a *long*
-> wild goose chase based on the assumption that it was a stray perf NMI
-> causing the triple-faults, when in fact that was just shifting things
-> around on us too, and causing pages in that dangerous 1MiB to be chosen
-> for the kimage.
-> 
->>> I think Steve's original patch was just moving things around a little
->>> and because it allocate more pages for page tables, just happened to
->>> leave pages in the offending range to be allocated for writing to, for
->>> the unlucky victims.
->>>
->>> I think the patch was actually along the right lines though, although
->>> it needs to go all the way down to 4KiB PTEs in some cases. And it
->>> could probably map anything that the e820 calls 'usable RAM', rather
->>> than really restricting itself to precisely the ranges which it's
->>> requested to map. 
->>>
->>>
->>>
->>> ¹ I'll post that exception handler at some point once I've tidied it
->>> up.
->>
->> I hope this might be of some help.  Good luck, I'll pitch in any way I
->> can.
-> 
-> Thanks.
-> 
+Thanks for pointing that patch out! Should it have been Cc:stable?
+
+It seems to be taking the latter of the above two viewpoints, that this
+is a BIOS bug and that the BIOS *should* have reserved the whole 2MiB.
+
+In that case are fixed BIOSes available already? This patch makes sense
+as a temporary workaround (we have ways to print warnings about BIOS
+bugs, btw), but I don't really like it as a longer-term "fix". What if
+the BIOS had put *other* things into that other 1MiB of address space?
+What if the bootloader had loaded something there?=20
+
+I'm still inclined to suggest that kexec *shouldn't* use over-reaching
+large pages which cover anything that isn't marked as usable RAM.=20
+
+--=-yojImZPbTp/l/2VR5/B7
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
+DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
+VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
+UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
+MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
+ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
+oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
+SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
+xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
+RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
+bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
+NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
+KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
+5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
+C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
+gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
+VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
+by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
+b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
+BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
+QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
+c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
+AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
+qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
+v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
+Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
+tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
+Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
+ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
+GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
+h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
+9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
+P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
+2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
+BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
+7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
+lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
+lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
+AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
+Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
+FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
+BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
+cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
+aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
+LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
+BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
+cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
+Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
+lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
+WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
+hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
+IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
+dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
+NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
+xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjQxMDIzMTEzOTU5WjAvBgkqhkiG9w0BCQQxIgQgCmnNLxqV
+QL5n1/kfvk4kEprqmMHRJV6FCsKsbuz4nMwwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
+dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
+DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgBfaqeeqFVa/kG4W9AHcwliMyb29Flr43w+
+d4DW3L3R/fhh50T22PJnrN+FsCrG1D+1PK6ZEeOnHJO1xkRjjAjWUAFt7OjkybMNtQcleg+2F6mw
+6CntQKMJ9/x1gs3GElSpPiz0JjJfUAaaAAm3vnCvc6JqVsTUhfVh6PpA1AwTCGJ9Sa5sJkq7iMW9
+RZhx00w50fGSVH2PPjaHzaTa/rDtFrmWvKb4C5oVtc/z6ecFRw+XBDrNO9m7023dzxPn2sklH9jn
+qlqcrCiYtEu0bKnDXISAJbyD7Ma3moqCGbMGAZmjIbzMMThyuNMsYyVNsDPkVgB08oetpg/EO0Ve
+R4CKY/N7gXoih678/uFEDEimiXnx1GyXzbolkwkgSgdq8Kj0ojV5EcDF6A4EOPNJN3EXz28sBPH6
+iKKbJm+b+bulAklC+HLd0MnuMb1FK6rhHr/D+eE6Gjo8VYKFCZJSiokIAzlwlmJLCcnC3WDxTPUX
+YiHMliMa1zFgJ3VT8hn2vVf9HVVAAlZ6INzmSUHKpCGQiwbWgC2TEIAX0APOolkNwPrYHpMdaT3s
+murRR0ci8ohuYzAiMzVqLl2X5nr9hGDOo9g+BlsZJBzvoJIORtrVZ7IuYNJDHAmfSBTA/o9iq+no
+tAfIrbTnrsiWwUFuIZaLPYdgNBc+ylCGIQM30f34nQAAAAAAAA==
+
+
+--=-yojImZPbTp/l/2VR5/B7--
 
