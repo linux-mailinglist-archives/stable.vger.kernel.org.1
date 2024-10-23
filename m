@@ -1,128 +1,117 @@
-Return-Path: <stable+bounces-87804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18D4A9ABE70
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 08:10:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7262A9ABEA1
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 08:24:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B75E91F21768
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 06:10:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A112B1C21509
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 06:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31791474A4;
-	Wed, 23 Oct 2024 06:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01D3136345;
+	Wed, 23 Oct 2024 06:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hHqx+J9F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KzUFMVMc"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F52146A79;
-	Wed, 23 Oct 2024 06:10:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2E840BF5;
+	Wed, 23 Oct 2024 06:24:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729663809; cv=none; b=Ujh1huIJ2+bPS/YvWeppUofWsox0LrR7Yzqk2lkuL0nD2mN7gW2TStNv+B4FXa8cdeG/xnQPdWiNx76Nq1nTaoumuWpIjJ4wwsx5lBxaz3Ji6f7Vlb/rv91wWMPjeNOpj7L5ahKPTSU7p2InWTbdKFmiCvOEHP4gIjwry3M+Wr0=
+	t=1729664665; cv=none; b=r7J4zgUp+k66Wxw/HjIfpk3IaVpLKI6Um97n8h+qUQMcErmDwkJ1mxLFNZmzOWina57uTwQD5/h2qZoSX1fT7s+qnkt52hegrAc8AHcFRzkYFqgPFvJRXKGuH4UgXUYPuA+bETsMoNikotgR6X0SlX7IgBvqVoZFVfxew3i9Vfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729663809; c=relaxed/simple;
-	bh=d6pW4xi0LQC9Mf1CBRcA8IVQ88uK0iTTORzaAqW6ieE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p9bPN3Aukqf3Tv41FY81QzkRnwm7rnM757EfwMaXYrkgywwr9yEcYswCXnFmh59U3pPuEdXpK8M1COLCKR47X1Z8z6ptNgbyuPPNiOVCfG4rPLjLxenIrWU+lNj3SDSHLMVHqp7kXq7wHp9D14xwGe0zumOQGFw2aJtWOO4RBew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hHqx+J9F; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729663807; x=1761199807;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=d6pW4xi0LQC9Mf1CBRcA8IVQ88uK0iTTORzaAqW6ieE=;
-  b=hHqx+J9FlnJ2GMCyHCz3a2B+3t7t/M5Wm+Jw2avt7RBFHItzDvjhWPMy
-   yrMJl3qU/EWD9MVYubLFT813zcsbRa6JaGNQKoy6CKQtGQGE48sYRo3zM
-   HxF/Wkh+jw9D0hj3CndILAqnmwKjzEdxIs6tJhHJ4xKMd6VX+aELLB2Ob
-   uUmQRbnj2FyPokfCjxCUSg3tvHh1D15NRi14gVYEWEO7RLWhMU1pKlBvW
-   024q5aVcD7R9utLAexG9HwMTUuz6/ENf/Css1RV8iH+eEXt6OeP2/Ywwq
-   xCvvJjwF6GWddTMhxFGhUrGvwQ4jS7/9b/fqR1Vci9cjOvn3lSZWTxJs+
-   w==;
-X-CSE-ConnectionGUID: fZCIIb0aQgGZj4gs7ckGbQ==
-X-CSE-MsgGUID: GyU0RRblRI64GhlOFM2xDg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11233"; a="54632075"
-X-IronPort-AV: E=Sophos;i="6.11,225,1725346800"; 
-   d="scan'208";a="54632075"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 23:10:06 -0700
-X-CSE-ConnectionGUID: T+YlXsULSgWe4jrst28lJw==
-X-CSE-MsgGUID: 4ZW84SJkQT2oRkMuOjcsPQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,225,1725346800"; 
-   d="scan'208";a="80899370"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa008.jf.intel.com with ESMTP; 22 Oct 2024 23:10:02 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id 1E164301; Wed, 23 Oct 2024 09:10:01 +0300 (EEST)
-Date: Wed, 23 Oct 2024 09:10:01 +0300
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Rick <rick@581238.xyz>
-Cc: Mario Limonciello <mario.limonciello@amd.com>, Sanath.S@amd.com,
-	christian@heusel.eu, fabian@fstab.de, gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org, regressions@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: Dell WD19TB Thunderbolt Dock not working with kernel > 6.6.28-1
-Message-ID: <20241023061001.GF275077@black.fi.intel.com>
-References: <000f01db247b$d10e1520$732a3f60$@581238.xyz>
- <96560f8e-ab9f-4036-9b4d-6ff327de5382@amd.com>
- <22415e85-9397-42db-9030-43fc5f1c7b35@581238.xyz>
- <20241022161055.GE275077@black.fi.intel.com>
- <7f14476b-8084-4c43-81ec-e31ae3f7a3c6@581238.xyz>
+	s=arc-20240116; t=1729664665; c=relaxed/simple;
+	bh=Lr/yuYRYxokxIyN/N59/GibJ8XeVVyK6DVu4g3nhykY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HEJ6z4OAzU51im0/MUkBcRVFByC7G0PNsY2WzK4IPaxvKLKUK5r9E8ZnIUOsI/nUuEQ/9BDIePMAJ2UUjoJOyAVxeVsIJtXtGEFsfH+CGuXKbhDSrD2IDSvUhO7j13knoCfcG9tbWoewOhwp9DwIEn7lk8m4G+d/zQjZ3xxsfsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KzUFMVMc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E53C4CEE5;
+	Wed, 23 Oct 2024 06:24:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729664665;
+	bh=Lr/yuYRYxokxIyN/N59/GibJ8XeVVyK6DVu4g3nhykY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KzUFMVMcHul3v2H/goB5JZuCsada6ZdHu0/s6GRdkwo8WlH4Hg9dhKrercrq3cx+J
+	 cp8KotqvvSt7cG6xzYietInSQ4Kl4Rmhj1pSlqxX8M2s/gw5jMT3YpKjI8SQfBuWXF
+	 F5d+jeEGlaaMmvqBBTEg9Js5UEMrqD+7uhxwcTKpApdFvNMo446n/+5p1iTNdW7jtG
+	 uswKM0knRLMP97/dfvS/YQmQMrWHyNCPMNRJw6UDoCuD33JACXwnU4/f8jsk5IGIwG
+	 K5wzHIjbT9P5FByCZgsokXW5Jk5+1akmYC2kECEs1A423d1aQRok23mQfN4eKdRWW7
+	 FSib31LpsPW/g==
+Message-ID: <435a97c3-57da-4e18-a054-506433b0062a@kernel.org>
+Date: Wed, 23 Oct 2024 08:24:22 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <7f14476b-8084-4c43-81ec-e31ae3f7a3c6@581238.xyz>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Patch "xhci: dbgtty: use kfifo from tty_port struct" has been
+ added to the 6.11-stable tree
+To: stable@vger.kernel.org, stable-commits@vger.kernel.org
+Cc: Mathias Nyman <mathias.nyman@intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20241022174538.2837492-1-sashal@kernel.org>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <20241022174538.2837492-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi,
-
-On Tue, Oct 22, 2024 at 07:06:50PM +0200, Rick wrote:
-> Hi Mika,
+On 22. 10. 24, 19:45, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
 > 
-> I have removed pcie_asm=force as kernel parameter but still not working on
-> latest non LTS kernel.
+>      xhci: dbgtty: use kfifo from tty_port struct
 
-Okay, I still suggest not having that unless you absolutely know that
-you need it.
+This is a cleanup, not needed in stable.
 
-> In regards to the disconnect; sorry I think I might have turned of the
-> docking station myself during that test. I have taken another dmesg without
-> me disconnecting the docking station:
-> https://gist.github.com/ricklahaye/9798b7de573d0f29b3ada6a5d99b69f1
-> 
-> The cable is the original Thunderbolt 4 cable that came with the docking
-> station. I have used it on this laptop using Windows (dualboot) without any
-> issues. Also on another Windows laptop also without issues. It was used in
-> 40Gbit mode.
-
-In the dmesg you shared above, there are still unplug and USB tunnel
-creation fails so you only get USB 2.x connection with all the USB
-devices on the dock.
-
-How do you determine if it "works"? I guess keyboard and mouse (both
-USB 2.x devices) and display (tunneled over USB4 link) all are working
-right? However, if you plug in USB 3.x device to the dock it enumerates
-as FullSpeed instead of SuperSpeed. There is definitely something wrong
-here. I asked from our TB validation folks if they have any experience
-with this dock but did not receive any reply yet.
-
-What you mean by 40Gbit mode? The dock exposes two lanes both at 20G so
-it should always be 40G since we bind the lanes, also in Windows.
-
-Also In Windows, do you see if the all USB devices on the dock are
-enumerated as FullSpeed or SuperSpeed? I suspect it's the former there
-too but can you check? Keyboard and mouse should be FullSpeed but there
-is some audio device that may be USB 3.x (SuperSpeed), or alternatively
-if you have USB 3.x memory stick (or any other device) you can plug that
-to the dock and see how it enumerates.
+-- 
+js
+suse labs
 
