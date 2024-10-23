@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-87922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 054B29ACD4E
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:50:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A9E89ACD51
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:50:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A50A01F24CCB
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:50:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C122282622
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D391A2170C8;
-	Wed, 23 Oct 2024 14:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6CD2170D3;
+	Wed, 23 Oct 2024 14:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="di/zw5ll"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DK/vEbsG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E89E1CF29D;
-	Wed, 23 Oct 2024 14:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60362170CF;
+	Wed, 23 Oct 2024 14:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729693993; cv=none; b=FOdS1GVmqXl1CRFprTv4n6gHeO4+rMFiHkSPOKwEv6M1e6boXgtB7QVtk8s7TXBZRPJr7PSarP6SzXbzsr+aanfR/ghCIGkpai2Oahjqpqf4G8Q/uxCmHJiSOq3d5cbuTzg2QJIhCpiZbq/9+Fvs2QJ4DyPV8lcFzvbWejkeNyk=
+	t=1729693994; cv=none; b=m781OXmzoIdCWSDc4jANhMygfnxcTpvml1Ahzy1l9M9uS2+ycqUBgvpAJo0lFaP1ie9OuTdebT4Mn6JogS+LK+9siEpOz5bXwdeDd+tBcpvjYiMDsHj4AixV8EcfTvE5Y64KgjOgJFKrbCv/42CYOSpkk7k14azRSDcl3jYb6Q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729693993; c=relaxed/simple;
-	bh=tnAxfdLlsYd/NzPcFyFwcVhnWu+PsTFCFWIROjh7ztM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=akVq2apxs7NhdBvVECMge3rox7hB0qasLLPObMRaE9WNXiy96UvAjfbRnTtnj/3BFob9L6IHwqtRf6CpXHjMvW8b+C3eJls76e+DdjPha+B54XU9O9IMP7M7IL+HwIJMnfb9Ui917ucLpv8r6x6vO9qaLEYqvisdQf5nF4nXH+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=di/zw5ll; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14141C4CEE4;
-	Wed, 23 Oct 2024 14:33:11 +0000 (UTC)
+	s=arc-20240116; t=1729693994; c=relaxed/simple;
+	bh=TluvFe3twprDcJ5sIkgBOrOGRgjandOXNjvKISZ22A0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=c+e9tLOgewNQoyx33hOTyakEO4d/AUkVycM2be4uk4Po4fDMtJvzabvXVNsc52vB1BmUtS3VapoTBG179A9F1c1QpbXPtcZ2Jz7/RfclEgqt6wIxl8L+aZhZ1U3+/JYAuIB3MBNpHKOmOVf/k0Eca/cCUcDL2PSBGcBbN7vB1Tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DK/vEbsG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89634C4CEC6;
+	Wed, 23 Oct 2024 14:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729693993;
-	bh=tnAxfdLlsYd/NzPcFyFwcVhnWu+PsTFCFWIROjh7ztM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=di/zw5llbl/ajXiC6yXy/83CE1BgFO7DdC9MYVgXNFxQ1fkWJWCqoge93sK48fkyE
-	 Gizaj/Q2U0qWCYPPMnlIIUbV5r5MFDDpTZGgjTypT7kGXFxwuOqfvMXmv+GEExw3uP
-	 VhJg9xQEFEeXV7wNsMq3WMyzXc7vyvzueGu2rU4Jr313T/FqG/4QIZQBRmtkcu3h1M
-	 B9R1RUFEnZFUL9B/AsUX0rnB6BhpuTep3xklzEcB7EAn23ZOI9sFS7u4Pp1m2Kd/1u
-	 gjgNbpVu2nkRqg/YCWNRH2/EaCTQkAoOetnq4c6MZFL1oLzBNWy+DGAuLO/jEKqTmp
-	 EZ2PEJSSZfHyA==
+	s=k20201202; t=1729693994;
+	bh=TluvFe3twprDcJ5sIkgBOrOGRgjandOXNjvKISZ22A0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=DK/vEbsGCeRHorI1oG7IrOJgyNCK3pPfyVU3defCQVIExiF8vXEWMA8w8JPbXrvzh
+	 H2vSmnW/S6wvwfUA+FLU+vLcK7xZWyUhL2R4/IrDL2pxhkF1CsQ3MlK3rA9rs9uFJ0
+	 FLhYDwGOqF0SwT9u9I0eBX9pCDYLTGvY75/0uRH21ypLOYIK+YV/WzAizVg8W8ZOqM
+	 qopVnTq+AsYzPnIkttH5Zc2Gt+rF+lTwnHQEZt3dhJho1UL+wEWADCgC+lMWKYOOqr
+	 yKbTiZp+fZKCXzgfKbRtPs9673NbTSdnkX+xkk2LMG/sg8hCtD4kJyahwsNDU8ParJ
+	 hN94LRuVcDixA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Pedro Falcato <pedro.falcato@gmail.com>,
-	syzbot+3c5d43e97993e1fa612b@syzkaller.appspotmail.com,
-	Dominique Martinet <asmadeus@codewreck.org>,
+Cc: WangYuli <wangyuli@uniontech.com>,
+	Wentao Guan <guanwentao@uniontech.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	ericvh@kernel.org,
-	lucho@ionkov.net,
-	v9fs@lists.linux.dev
-Subject: [PATCH AUTOSEL 5.4 1/5] 9p: Avoid creating multiple slab caches with the same name
-Date: Wed, 23 Oct 2024 10:33:04 -0400
-Message-ID: <20241023143310.2982725-1-sashal@kernel.org>
+	jikos@kernel.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 2/5] HID: multitouch: Add quirk for HONOR MagicBook Art 14 touchpad
+Date: Wed, 23 Oct 2024 10:33:05 -0400
+Message-ID: <20241023143310.2982725-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241023143310.2982725-1-sashal@kernel.org>
+References: <20241023143310.2982725-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,60 +68,45 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.284
 Content-Transfer-Encoding: 8bit
 
-From: Pedro Falcato <pedro.falcato@gmail.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit 79efebae4afc2221fa814c3cae001bede66ab259 ]
+[ Upstream commit 7a5ab8071114344f62a8b1e64ed3452a77257d76 ]
 
-In the spirit of [1], avoid creating multiple slab caches with the same
-name. Instead, add the dev_name into the mix.
+The behavior of HONOR MagicBook Art 14 touchpad is not consistent
+after reboots, as sometimes it reports itself as a touchpad, and
+sometimes as a mouse.
 
-[1]: https://lore.kernel.org/all/20240807090746.2146479-1-pedro.falcato@gmail.com/
+Similarly to GLO-GXXX it is possible to call MT_QUIRK_FORCE_GET_FEATURE as a
+workaround to force set feature in mt_set_input_mode() for such special touchpad
+device.
 
-Signed-off-by: Pedro Falcato <pedro.falcato@gmail.com>
-Reported-by: syzbot+3c5d43e97993e1fa612b@syzkaller.appspotmail.com
-Message-ID: <20240807094725.2193423-1-pedro.falcato@gmail.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+[jkosina@suse.com: reword changelog a little bit]
+Link: https://gitlab.freedesktop.org/libinput/libinput/-/issues/1040
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Reviewed-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/9p/client.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/hid/hid-multitouch.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/9p/client.c b/net/9p/client.c
-index 2b54f1cef2b0d..0f5db1f414be1 100644
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -1003,6 +1003,7 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
- 	int err;
- 	struct p9_client *clnt;
- 	char *client_id;
-+	char *cache_name;
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index c3810e7140a55..5994e7d1b82d9 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2008,6 +2008,11 @@ static const struct hid_device_id mt_devices[] = {
+ 		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
+ 			0x347d, 0x7853) },
  
- 	err = 0;
- 	clnt = kmalloc(sizeof(struct p9_client), GFP_KERNEL);
-@@ -1055,15 +1056,22 @@ struct p9_client *p9_client_create(const char *dev_name, char *options)
- 	if (err)
- 		goto close_trans;
- 
-+	cache_name = kasprintf(GFP_KERNEL, "9p-fcall-cache-%s", dev_name);
-+	if (!cache_name) {
-+		err = -ENOMEM;
-+		goto close_trans;
-+	}
++	/* HONOR MagicBook Art 14 touchpad */
++	{ .driver_data = MT_CLS_VTL,
++		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
++			0x35cc, 0x0104) },
 +
- 	/* P9_HDRSZ + 4 is the smallest packet header we can have that is
- 	 * followed by data accessed from userspace by read
- 	 */
- 	clnt->fcall_cache =
--		kmem_cache_create_usercopy("9p-fcall-cache", clnt->msize,
-+		kmem_cache_create_usercopy(cache_name, clnt->msize,
- 					   0, 0, P9_HDRSZ + 4,
- 					   clnt->msize - (P9_HDRSZ + 4),
- 					   NULL);
- 
-+	kfree(cache_name);
- 	return clnt;
- 
- close_trans:
+ 	/* Ilitek dual touch panel */
+ 	{  .driver_data = MT_CLS_NSMU,
+ 		MT_USB_DEVICE(USB_VENDOR_ID_ILITEK,
 -- 
 2.43.0
 
