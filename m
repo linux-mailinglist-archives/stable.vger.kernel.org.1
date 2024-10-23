@@ -1,118 +1,158 @@
-Return-Path: <stable+bounces-87936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88E9F9AD12D
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 18:39:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9D519AD2D2
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 19:27:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7B9B1C21F14
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:39:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B10E1F21043
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 17:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A731CACF8;
-	Wed, 23 Oct 2024 16:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D221D433C;
+	Wed, 23 Oct 2024 17:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EcpavlIi"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="mBveir08"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFD91CACEF
-	for <stable@vger.kernel.org>; Wed, 23 Oct 2024 16:39:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF871D1F46
+	for <stable@vger.kernel.org>; Wed, 23 Oct 2024 17:24:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729701587; cv=none; b=mNegSaCbYAU6XBub/umu6I0EEWH+qmGTGFHU7ZNsSy40o8DY5SMxoec9RwvTIZyZ6GWJxiAkPge4Tz5zUmOO7wETpbjqJRkcuqZWb+gOhVUAHkhqlfbYUl1x4Aa3Whgshs/KDfYIyDh34RkG8U0S3axETn84sY2nrpPaVe3arbo=
+	t=1729704294; cv=none; b=uzrnnnz6+NAkYZlcji2JIjGcmPdcZUleQI8a7U/bA2hFxv1Fpb/I+Tb+QsxjpXDnqiQrn5Qp1e9OytkPseg0eYaV58u4mVY9MAyYD/irDzz5FWcdFr8slN4Npu7G+gSZm65BvlmSfLiNAhuDmEA0Q8/YUiFOvgPx3TZgkpGDnOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729701587; c=relaxed/simple;
-	bh=xgYde0kYGRiEie8bOJeIGOMdO8PtreNYsoIJWrnKk8g=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=hSxas/gJXZNL63GzoFdTTBPcs9G+aPbV8uTKDeGbdfszq3J/fNeH4WrHlERPQVEMhjdooFROR81HPKmGSJTsOcKvcclob6Jyw+VaF5VHUivwT8jBfDDqp4suoi6N2v60LijZydhFQ5FyVpw/iBaQsEB+wANf7SK5R7kMxueKy9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EcpavlIi; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729701585;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xgYde0kYGRiEie8bOJeIGOMdO8PtreNYsoIJWrnKk8g=;
-	b=EcpavlIiM4Y/RPEP2HShOtDlojVb0kUhO2bbmy22RupjyTjBzU/5NjlbdMPLE4laIECKmo
-	xkG4viahuZyb5sG3SQ+n2GtLJ1Tc7s+CbVeIQ5C1LQCO4sG8jr7t9EpnyahxFxTWp0dvSY
-	qLE2SvQePNSrLiE9MD5zDe/AZ22Zvz4=
-Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com
- [209.85.161.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-449-U57LlSTCPV-hd3mCxhsynQ-1; Wed, 23 Oct 2024 12:39:43 -0400
-X-MC-Unique: U57LlSTCPV-hd3mCxhsynQ-1
-Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-5eb84cfdc03so4968036eaf.0
-        for <stable@vger.kernel.org>; Wed, 23 Oct 2024 09:39:43 -0700 (PDT)
+	s=arc-20240116; t=1729704294; c=relaxed/simple;
+	bh=U4v5Y/G7x8rAFbNJdXFka7Vj359od3X3yavnuk1vbiw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=sFNxc5UF1aNDGVgLtEtFj6X28Bx4ANKXZpKqv9K1/nyJkcceeIxaHxoDZ0V0o1dglMEcN0457I2CGZ+3i1v5itPpNAdBfXs75F18yhuKs3MRS3NGJa1RxHfbiPpi1maiVKMgsq/qnQF7gweI0xLGFt2xgce42gzqZH+DAEer4hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=fail smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=mBveir08; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49N9p4FB027446
+	for <stable@vger.kernel.org>; Wed, 23 Oct 2024 17:24:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=mno9KrzQKJKTjIihjuqQ9Y
+	ntwHWD60qm3mU9BGPN5nQ=; b=mBveir08nW2gZclb/wkWGvXsrtgfwsWGtlli2D
+	LOBxp58qE3gnZU7GdJf7u/DTONPGemhxp+itYUqNLhid+ynNAYe1i3sYKagZlOrp
+	7n5/7LyS1tmeP6EE6SF35n/MpseD2+z6xqxfs7OeVKnvSuO7XWshJpTp9L4MnfCZ
+	lU7ya0nuNI6fHV8dgh1PPk11n9GZ/JozF3O9O5wF+DjP+2yYI3CcR6lTnH6T60c/
+	PT+cKvEhTVm+SjNQw04Izm3d12LnNUEomv3Lt0tvgp5L0jCEzKpLg2JUHJ2lTZjN
+	Mn2SCPnPCpE5x4R3EjIA3OV5EFidm6FECrrirFhzbG/pQghw==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42em3wjxt8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 23 Oct 2024 17:24:50 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-20e5ab8e022so64432495ad.3
+        for <stable@vger.kernel.org>; Wed, 23 Oct 2024 10:24:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729701583; x=1730306383;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xgYde0kYGRiEie8bOJeIGOMdO8PtreNYsoIJWrnKk8g=;
-        b=tNF/p4W71fsUZI0JlySJ5clNy3OgZ/unFCcwl/eC9DVweYw3FnNWu+ChU9c5RQ1y85
-         822OVA5ua2DoGfSQaccQyksfR5E9V4wXcFAQSNn1TKbv6I1H6/vM7Qo7a7Zd5EyXuBoo
-         5e0fqohpAXMk3Dyf9yD71szzVcMgWORSZhhD3PaLs5zaPAnHGkcEyj/xx3E9UNFGX7Eb
-         0uYnxL/LGt9l0woS6lfNxuIbxWoxuzR2yW9K0KsaczibSiPLErZtlDMx06ED57wdCdXW
-         qvkUa8jH/BBV45QBLbAqNkAFJSeNgIE/mTp41fSOTU/mKBRHCnceWjywD5AeWM9yEhUS
-         hwvg==
-X-Gm-Message-State: AOJu0YysAeqoinIMa03W9fUjx3M4w5PeiAI5BI+H/fiXNxRkzDJ3Of69
-	f+01yk3uAZIZ+pvyoVhzAbiwQFcSCV1hx30Y8dt2NNtqQctmd5abZPM2ig7/twQYpw8uPlv0Dm+
-	ODMM+dWfCmYdu/jCKSwLcVIDBwMCsjPGFrkdlhbEGNC2yldZIZduNng==
-X-Received: by 2002:a05:6358:7301:b0:1b5:a38c:11d1 with SMTP id e5c5f4694b2df-1c3d81b1c55mr215715155d.26.1729701582826;
-        Wed, 23 Oct 2024 09:39:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH5uJ85hkEz2INCCPDQFtdhJuoP49vMzKxw9NE+7RKWs4MM8KvFHPEu83z6kixqE7MV11l1uA==
-X-Received: by 2002:a05:6358:7301:b0:1b5:a38c:11d1 with SMTP id e5c5f4694b2df-1c3d81b1c55mr215712055d.26.1729701582497;
-        Wed, 23 Oct 2024 09:39:42 -0700 (PDT)
-Received: from vschneid-thinkpadt14sgen2i.remote.csb (213-44-141-166.abo.bbox.fr. [213.44.141.166])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-460d3d70a6bsm41746811cf.63.2024.10.23.09.39.39
+        d=1e100.net; s=20230601; t=1729704289; x=1730309089;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mno9KrzQKJKTjIihjuqQ9YntwHWD60qm3mU9BGPN5nQ=;
+        b=p81dYzVqe8DKLPLL/xgYw/kseT/svEKiZ8qmrahjs7cVYrGgD/y0q9bDrQ5ILxiyhN
+         yxfCCyw5K/n35Y3HgvXGKzRTDez0h6a8SneZmLceJU6CNklXqIpiFZYGDVSdET2A0Td1
+         YJVHRmGe9PlA6EfMdn60IWltumWalZyfqwVNIqjc/1THDEqc6agMEbuX37PsLpnss422
+         DUyTraXVo6cSixZI/QEygmcN3eCdBt3VYPz7GU187mkJqtMy3GJsQuOAa26zuzycoaPK
+         b/EkUdTWH2gR89VT2bDEe2VbJ82Hu+1gxKtUbHvgbNU6Y3V6WZEq30f+qOZbMijGrEJE
+         HV9w==
+X-Forwarded-Encrypted: i=1; AJvYcCVelUFj3gtR3R+mUEQAsuUZEbXMuPH1m5HGoMf8wtO6IiIBKe2m85QAts9E6RtKKVnu7oqmJUw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcKIN9UpPeSf+/MS/1QSdUFpgjiBW559IF8P30yw4lm7tvIm10
+	BaVZe75qG0tcZQfS5fpibxZkTPDHw2QV2BP0ddTkocf9UZKsdPyQ1gBblqZyow2pOrLTIKFSpe3
+	1eWjJFFNWMad86M9UcWeJ0LXtl9VpDYKH+n7Ezm7VhpOYyj0F5DJpWaw=
+X-Received: by 2002:a17:902:ebc6:b0:20c:bf43:938e with SMTP id d9443c01a7336-20fa9e48c13mr44517025ad.15.1729704289358;
+        Wed, 23 Oct 2024 10:24:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFOb7RH4mVCzd3hO5LGTdD/S5DYEO8ShwtyV7Pt4jYRt2MyKdq+jWfXwYzzIyvy187RIklQgw==
+X-Received: by 2002:a17:902:ebc6:b0:20c:bf43:938e with SMTP id d9443c01a7336-20fa9e48c13mr44516785ad.15.1729704289051;
+        Wed, 23 Oct 2024 10:24:49 -0700 (PDT)
+Received: from ip-172-31-25-79.us-west-2.compute.internal (ec2-35-81-238-112.us-west-2.compute.amazonaws.com. [35.81.238.112])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20e7f0f20aesm59525435ad.246.2024.10.23.10.24.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2024 09:39:41 -0700 (PDT)
-From: Valentin Schneider <vschneid@redhat.com>
-To: Saurabh Sengar <ssengar@linux.microsoft.com>, mingo@redhat.com,
- peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
- mgorman@suse.de, linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org, ssengar@microsoft.com, srivatsa@csail.mit.edu
-Subject: Re: [PATCH] sched/topology: Enable topology_span_sane check only
- for debug builds
-In-Reply-To: <1729619853-2597-1-git-send-email-ssengar@linux.microsoft.com>
-References: <1729619853-2597-1-git-send-email-ssengar@linux.microsoft.com>
-Date: Wed, 23 Oct 2024 18:39:37 +0200
-Message-ID: <xhsmhsesmu62e.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+        Wed, 23 Oct 2024 10:24:48 -0700 (PDT)
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Subject: [PATCH v2 0/2] soc: qcom: pmic_glink: Resolve failures to bring up
+ pmic_glink
+Date: Wed, 23 Oct 2024 17:24:31 +0000
+Message-Id: <20241023-pmic-glink-ecancelled-v2-0-ebc268129407@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAE8xGWcC/4WNQQ6CMBBFr0JmbUkpqNSV9zAsmmGAiaXFVomG9
+ O5WLuDmJ+8n//0NIgWmCJdig0ArR/YugzoUgJNxIwnuM4OSqqmkUmKZGcVo2d0FoXFI1lIv+lZ
+ ro9HI+thC3i6BBn7v3luXeeL49OGz36zVr/1nXCshhSZ1GvDckDT11cdYPl7Gop/nMgd0KaUvx
+ zArfMEAAAA=
+X-Change-ID: 20241022-pmic-glink-ecancelled-d899a9ca0358
+To: Bjorn Andersson <andersson@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Chris Lew <quic_clew@quicinc.com>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Johan Hovold <johan@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, Bjorn Andersson <quic_bjorande@quicinc.com>,
+        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+        stable@vger.kernel.org, Johan Hovold <johan+linaro@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1729704288; l=1360;
+ i=bjorn.andersson@oss.qualcomm.com; s=20241022; h=from:subject:message-id;
+ bh=U4v5Y/G7x8rAFbNJdXFka7Vj359od3X3yavnuk1vbiw=;
+ b=GJDBjnlTINnOBoJT/HKq4YIR9JqusN4gChA8GeKG19LwHO2qPvjwTGdF670QW+HnZEBwge2DJ
+ TJ+VDZ9ls94Asggf33Mr3OcvNXkSm4o7mVU3wMk9vzU4hR2l4b6NRJ9
+X-Developer-Key: i=bjorn.andersson@oss.qualcomm.com; a=ed25519;
+ pk=SAhIzN2NcG7kdNPq3QMED+Agjgc2IyfGAldevLwbJnU=
+X-Proofpoint-GUID: FXUCh_zouOIL3u4AXs8nnsHHDd-LHcOm
+X-Proofpoint-ORIG-GUID: FXUCh_zouOIL3u4AXs8nnsHHDd-LHcOm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 phishscore=0
+ mlxlogscore=999 lowpriorityscore=0 malwarescore=0 suspectscore=0
+ spamscore=0 mlxscore=0 impostorscore=0 clxscore=1015 priorityscore=1501
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410230109
 
-On 22/10/24 10:57, Saurabh Sengar wrote:
-> On a x86 system under test with 1780 CPUs, topology_span_sane() takes
-> around 8 seconds cumulatively for all the iterations. It is an expensive
-> operation which does the sanity of non-NUMA topology masks.
->
-> CPU topology is not something which changes very frequently hence make
-> this check optional for the systems where the topology is trusted and
-> need faster bootup.
->
-> Restrict this to SCHED_DEBUG builds so that this penalty can be avoided
-> for the systems who wants to avoid it.
->
-> Fixes: ccf74128d66c ("sched/topology: Assert non-NUMA topology masks don't (partially) overlap")
-> Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+With the transition of pd-mapper into the kernel, the timing was altered
+such that on some targets the initial rpmsg_send() requests from
+pmic_glink clients would be attempted before the firmware had announced
+intents, and the firmware reject intent requests.
 
-Please see:
-http://lore.kernel.org/r/20241010155111.230674-1-steve.wahl@hpe.com
+Fix this
 
-Also note that most distros ship with CONFIG_SCHED_DEBUG=y, so while I'm
-not 100% against it this would at the very least need to be gated behind
-e.g. the sched_verbose cmdline argument to be useful.
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+---
+Changes in v2:
+- Introduced "intents" and fixed a few spelling mistakes in the commit
+  message of patch 1
+- Cleaned up log snippet in commit message of patch 2, added battery
+  manager log
+- Changed the arbitrary 10 second timeout to 5... Ought to be enough for
+  anybody.
+- Added a small sleep in the send-loop in patch 2, and by that
+  refactored the loop completely.
+- Link to v1: https://lore.kernel.org/r/20241022-pmic-glink-ecancelled-v1-0-9e26fc74e0a3@oss.qualcomm.com
 
-But before that I'd like the "just run it once" option to be explored
-first.
+---
+Bjorn Andersson (2):
+      rpmsg: glink: Handle rejected intent request better
+      soc: qcom: pmic_glink: Handle GLINK intent allocation rejections
+
+ drivers/rpmsg/qcom_glink_native.c | 10 +++++++---
+ drivers/soc/qcom/pmic_glink.c     | 25 ++++++++++++++++++++++---
+ 2 files changed, 29 insertions(+), 6 deletions(-)
+---
+base-commit: 42f7652d3eb527d03665b09edac47f85fb600924
+change-id: 20241022-pmic-glink-ecancelled-d899a9ca0358
+
+Best regards,
+-- 
+Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
 
