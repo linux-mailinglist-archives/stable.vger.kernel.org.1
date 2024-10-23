@@ -1,144 +1,98 @@
-Return-Path: <stable+bounces-87792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F4669ABB4C
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 04:04:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9CF49ABB5D
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 04:16:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53AB71C22A8F
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 02:04:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76B8CB22213
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 02:16:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514FE481D1;
-	Wed, 23 Oct 2024 02:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 618954595B;
+	Wed, 23 Oct 2024 02:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="eXIZhoc9"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jSmzT7b1"
 X-Original-To: stable@vger.kernel.org
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D2022615
-	for <stable@vger.kernel.org>; Wed, 23 Oct 2024 02:04:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0343208A5
+	for <stable@vger.kernel.org>; Wed, 23 Oct 2024 02:15:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729649057; cv=none; b=KCJlHB9Keg3jicf05o7x2YxaifCEtB343nprCRD8GY1j8mjQV2pAYIPnkrLkRukQDkgA7vXgcV89m4ANoaBjCkSc3dXJBIJwUfjcif+cg2+h2NFm9VRmL0htfRz58suZlwN4eMyJ2B3l4T6wxCTMDfAmT0OG+cofSSDXRtYf/IQ=
+	t=1729649762; cv=none; b=ieGOIx5q29mno3Sk+10hxCmKaIzcB1BRM58+BkMkiNs+3EFwNEtksSaUePN9aEyEQnjZzk87/R7L3QBJq3vp3Y9w9gqw5vE6yJV0gRVx1CCgSWfqjWU5Q5xiY0rkL3HNPamV0qEvGkqFud6T3Jje1iWZgAnTBG3dnqkGNvo2ikE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729649057; c=relaxed/simple;
-	bh=R4GGG33lUKGQnK9hCXXz7w12TC6kQJDQkpXGRbWbwpU=;
+	s=arc-20240116; t=1729649762; c=relaxed/simple;
+	bh=Rxp/VQMU1PU9c1THWr5ynYdOTndthDFX+dUvvPPAWdI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bJDuQMFtIxB2r7ms6WOQXMOv6YgyltmemAqGpdwfhehuSQmEOlT9tZrKuVFQtufvzrvxlkshGibEW3gbrVH8XQuOuSMEpiOKM+vSyPDvDupT7tcyUw3mVmH5qHJ+Eya3RhHlhqXftGm19OaeQ38wL2gMlM5uUp1du2z5+c06eyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=eXIZhoc9; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Wed, 23 Oct 2024 02:04:07 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1729649053;
+	 Content-Type:Content-Disposition:In-Reply-To; b=lsuSWRLXHYvQrfGzCdBAi44f+qhmDBtWhLFqm8RiiRQDG9ngkD9cyINXc0oxHUYNzRTX+q3fcHqQNf3Irr1E1zpr/8j7A3hCjNYga3j73R7KLxJSMeBeLSSzjD8j/yB3KGCevon52dploN5Pi+VZTMSjn8X5UCOgdj+kdE+Vcds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jSmzT7b1; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729649758;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WTDEQxtL/e15npVRRblX1oHt3rcZenqRAA28VnZ+D7Q=;
-	b=eXIZhoc9TWuSBnwsavc9/J5Z7v7U1C5BMrOQyHH3rqg/Ek6KpEz+5L98tc+uhzAH3yAWew
-	6Hl+Zj+c9bioi5qtX17tmHvMgtXbdotK3zuBFfXmw4HIMxi5xd/NcYahSK69rhSlxjEn0Q
-	IMghs7iVcnFSvyFfoopgoQaGPL0eoVc=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Yosry Ahmed <yosryahmed@google.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Hugh Dickins <hughd@google.com>,
-	kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2] mm: page_alloc: move mlocked flag clearance into
- free_pages_prepare()
-Message-ID: <ZxhZl3Qi2sRIWRIb@google.com>
-References: <20241021173455.2691973-1-roman.gushchin@linux.dev>
- <Zxa60Ftbh8eN1MG5@casper.infradead.org>
- <ZxcKjwhMKmnHTX8Q@google.com>
- <ZxcgR46zpW8uVKrt@casper.infradead.org>
- <ZxcrJHtIGckMo9Ni@google.com>
- <CAJD7tkb2oUre-tgVyW6XgUaNfGQSSKp=QNAfB0iZoTvHcc0n0w@mail.gmail.com>
- <ZxfHNo1dUVcOLJYK@google.com>
+	bh=7L4MhxCYhofNtLg+tXJAr77AFE/k5Jqpq5D0/+wLQY0=;
+	b=jSmzT7b1xSaFpPhFkV1sP840l6V2O+von4fsoszzfkE3MRIo0fhgdrswiSnS/EvfFHn3tN
+	RBLP8lKXAmAYECs21og/2E5L0KjyQutO9aCCrf6rLSaIDALc5BLj3L7emvMm6yHOUdVuar
+	nmvwRBZJmim0dNowHTwOwCdTmAttMG4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-651-uwIhkWCqM1mc3HExexN2WA-1; Tue,
+ 22 Oct 2024 22:15:55 -0400
+X-MC-Unique: uwIhkWCqM1mc3HExexN2WA-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1192E19560AA;
+	Wed, 23 Oct 2024 02:15:54 +0000 (UTC)
+Received: from fedora (unknown [10.72.116.47])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D8D7D1956056;
+	Wed, 23 Oct 2024 02:15:48 +0000 (UTC)
+Date: Wed, 23 Oct 2024 10:15:43 +0800
+From: Ming Lei <ming.lei@redhat.com>
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+	Christoph Hellwig <hch@lst.de>,
+	Peter Wang <peter.wang@mediatek.com>,
+	Chao Leng <lengchao@huawei.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] blk-mq: Make blk_mq_quiesce_tagset() hold the tag list
+ mutex less long
+Message-ID: <ZxhcT46a6glC0Db7@fedora>
+References: <20241022181617.2716173-1-bvanassche@acm.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZxfHNo1dUVcOLJYK@google.com>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <20241022181617.2716173-1-bvanassche@acm.org>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Tue, Oct 22, 2024 at 08:39:34AM -0700, Sean Christopherson wrote:
-> On Tue, Oct 22, 2024, Yosry Ahmed wrote:
-> > On Mon, Oct 21, 2024 at 9:33 PM Roman Gushchin <roman.gushchin@linux.dev> wrote:
-> > >
-> > > On Tue, Oct 22, 2024 at 04:47:19AM +0100, Matthew Wilcox wrote:
-> > > > On Tue, Oct 22, 2024 at 02:14:39AM +0000, Roman Gushchin wrote:
-> > > > > On Mon, Oct 21, 2024 at 09:34:24PM +0100, Matthew Wilcox wrote:
-> > > > > > On Mon, Oct 21, 2024 at 05:34:55PM +0000, Roman Gushchin wrote:
-> > > > > > > Fix it by moving the mlocked flag clearance down to
-> > > > > > > free_page_prepare().
-> > > > > >
-> > > > > > Urgh, I don't like this new reference to folio in free_pages_prepare().
-> > > > > > It feels like a layering violation.  I'll think about where else we
-> > > > > > could put this.
-> > > > >
-> > > > > I agree, but it feels like it needs quite some work to do it in a nicer way,
-> > > > > no way it can be backported to older kernels. As for this fix, I don't
-> > > > > have better ideas...
-> > > >
-> > > > Well, what is KVM doing that causes this page to get mapped to userspace?
-> > > > Don't tell me to look at the reproducer as it is 403 Forbidden.  All I
-> > > > can tell is that it's freed with vfree().
-> > > >
-> > > > Is it from kvm_dirty_ring_get_page()?  That looks like the obvious thing,
-> > > > but I'd hate to spend a lot of time on it and then discover I was looking
-> > > > at the wrong thing.
-> > >
-> > > One of the pages is vcpu->run, others belong to kvm->coalesced_mmio_ring.
-> > 
-> > Looking at kvm_vcpu_fault(), it seems like we after mmap'ing the fd
-> > returned by KVM_CREATE_VCPU we can access one of the following:
-> > - vcpu->run
-> > - vcpu->arch.pio_data
-> > - vcpu->kvm->coalesced_mmio_ring
-> > - a page returned by kvm_dirty_ring_get_page()
-> > 
-> > It doesn't seem like any of these are reclaimable,
+On Tue, Oct 22, 2024 at 11:16:17AM -0700, Bart Van Assche wrote:
+> Make sure that the tag_list_lock mutex is no longer held than necessary.
+> This change reduces latency if e.g. blk_mq_quiesce_tagset() is called
+> concurrently from more than one thread. This function is used by the
+> NVMe core and also by the UFS driver.
 > 
-> Correct, these are all kernel allocated pages that KVM exposes to userspace to
-> facilitate bidirectional sharing of large chunks of data.
-> 
-> > why is mlock()'ing them supported to begin with?
-> 
-> Because no one realized it would be problematic, and KVM would have had to go out
-> of its way to prevent mlock().
-> 
-> > Even if we don't want mlock() to err in this case, shouldn't we just do
-> > nothing?
-> 
-> Ideally, yes.
-> 
-> > I see a lot of checks at the beginning of mlock_fixup() to check
-> > whether we should operate on the vma, perhaps we should also check for
-> > these KVM vmas?
-> 
-> Definitely not.  KVM may be doing something unexpected, but the VMA certainly
-> isn't unique enough to warrant mm/ needing dedicated handling.
-> 
-> Focusing on KVM is likely a waste of time.  There are probably other subsystems
-> and/or drivers that .mmap() kernel allocated memory in the same way.  Odds are
-> good KVM is just the messenger, because syzkaller knows how to beat on KVM.  And
-> even if there aren't any other existing cases, nothing would prevent them from
-> coming along in the future.
+> Reported-by: Peter Wang <peter.wang@mediatek.com>
+> Cc: Chao Leng <lengchao@huawei.com>
+> Cc: Ming Lei <ming.lei@redhat.com>
+> Cc: stable@vger.kernel.org
+> Fixes: commit 414dd48e882c ("blk-mq: add tagset quiesce interface")
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
 
-Yeah, I also think so.
-It seems that bpf/ringbuf.c contains another example. There are likely more.
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
 
-So I think we have either to fix it like proposed or on the mlock side.
+Thanks,
+Ming
+
 
