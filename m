@@ -1,465 +1,314 @@
-Return-Path: <stable+bounces-87790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B0AB9ABB1C
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 03:44:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E5859ABB43
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 04:01:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46E1A2843AF
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 01:43:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEE29284617
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 02:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDF1434CC4;
-	Wed, 23 Oct 2024 01:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41440487BE;
+	Wed, 23 Oct 2024 02:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BJyVL+O2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m+4V1WyK"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03EC20323;
-	Wed, 23 Oct 2024 01:43:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3945420322;
+	Wed, 23 Oct 2024 02:01:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729647834; cv=none; b=UoPQgO1xhG1oVSQ/VvPjpaZFc9P/R3frWKj5WnvY9TGiKaIzViOQpN+1HnDC9kagqBYO3FMvt4K65DQZa4W9T+Xw8oVyjSVijiPxXKVNnjXhyXRSPmN+JtaiYx7oYnPMr7WiSlhz3jzW2LWvhmLrv+fe/SLW1zyAjFR75FGHSkk=
+	t=1729648881; cv=none; b=E11xILs4GiothSovai1sPXF/7QWjQZ/5Ff5WiIpSZneB5TQIbpy5+rXmWrxBDrsYVVaLGdaC4jbA02quNr0n2rIt0cVTZ2m0LPHMOvxH6VT1KgLUoeDPC7dBDN4275k9bQHvS8NbufJLojItaJbd1fpuHW9yYQtTg8SoGSVtJ6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729647834; c=relaxed/simple;
-	bh=S5SBBD34sDQ+NONT3hUfjKBSzcn8qXTm64swiCBSqr0=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=klRe8SLvKG0+OJc//6q0cdy/pyPTfKNf1tCB+zei6eATLCnxc3gvrvRpqOpUho5sU/gY2VCYjv8JIog2NC3rpy0FfV4sa+gGnPfYCsEB1Hm1g/YtDtPXaffuCbzKSIivrWKnItWNuz3aSd0MvnwNciLbDzPVr6fhgpRSUzR4pSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BJyVL+O2; arc=none smtp.client-ip=198.175.65.10
+	s=arc-20240116; t=1729648881; c=relaxed/simple;
+	bh=1i3ThIkrrVe2fLu6Tt2tqRj2QRumtfMWOK9itQrA6xA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Ywv/GD/Wl2TKWEQc8ZEkGa0PErDne1i65MWi+pYbJY2eExuvTvIltqMjoopCMzLcLlrbmB8KIPbCkiCql4c+2BqOjIZPEzvs/J/fVJ9AhY6SmHMngg795c5/MwsW/oTZ2wIL99P2twKly6omt/NHTAehT9nfsPXaueXdPw+arWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m+4V1WyK; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729647832; x=1761183832;
-  h=subject:from:to:cc:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=S5SBBD34sDQ+NONT3hUfjKBSzcn8qXTm64swiCBSqr0=;
-  b=BJyVL+O2783aKByymKxVauZpPr/rlChm1u926ek7aqzNIZwDR//SJKuR
-   8Iso/WUnIdQkVcFH457BYkFJQvX9E90lNMvYERDURCrFPCChHZjszYkT2
-   j4CzPs+rWtB5BO2l1CoyWMSECmhJZBR0CssuCfYWxuwolPHuYkL0BrONc
-   dicmh9ABi2XBfpHC2OWIWGvz9Ob1TiuxeswHfCqXlPdH4zTwuRjnvl76h
-   Mna7PZ5ruyz1hdbx47rpQsYJPj7XtAZQXmv0xwBPqOYUhIRrihhRoQmDS
-   gAFGateY/EXKX5LHNtHSZi7lkvZI245jKFvMcoUc/J3mqaovKwsV57Ol+
-   A==;
-X-CSE-ConnectionGUID: hPdAX1+jR++W+zrU1O1rFQ==
-X-CSE-MsgGUID: ftKi00aXQDq0pwl+vswHng==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="46675945"
+  t=1729648879; x=1761184879;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version:content-transfer-encoding;
+  bh=1i3ThIkrrVe2fLu6Tt2tqRj2QRumtfMWOK9itQrA6xA=;
+  b=m+4V1WyKTWkv9diUU5zR8QSB1tDqmK9mh7lmEStXIpZGx3BdwDw7mqEW
+   7TkxSqar/iPz97H+kRlCCDy2gs9kcJ6/T9j3T/ShX29DXyqRxi55XABVJ
+   /xrGbyHBW6xx9rHHJSfgpAw4QaLxK4S5w/kUvTpP1OjkSrQ4MUonZUB/p
+   kTcFYYazgkc1U5L2zUuv5RpegpUWLL4ELltk8iDI1S3Ap+hF0g64WIuhF
+   +rxk8fmPkvT8YXUb+v/RRhvSu8FIBGzREdB34U/WVrM2hzuYQtpa+eueT
+   mRrJIA5GK8a7CpSxWQbwA3thHgNpFpnGAXMq8+RNQAzlsyeqneU+WusnJ
+   w==;
+X-CSE-ConnectionGUID: OKpY9xzhQ5200lJnTuH86g==
+X-CSE-MsgGUID: QrUG8SA/TYu1/lE3/ZybWA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="39763195"
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="46675945"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 18:43:52 -0700
-X-CSE-ConnectionGUID: DJemh+FDTI2zxZuGYJwvuw==
-X-CSE-MsgGUID: /AB1vowvR7WHTPh/BgX3sg==
+   d="scan'208";a="39763195"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 19:01:18 -0700
+X-CSE-ConnectionGUID: NqEj6QBqTYCHESkKj4X0+Q==
+X-CSE-MsgGUID: EBVpR1IVTC2bIlI0mIUBkw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; 
-   d="scan'208";a="110844040"
-Received: from cmdeoliv-mobl4.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.125.110.222])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 18:43:51 -0700
-Subject: [PATCH v2 4/6] cxl/port: Fix use-after-free,
- permit out-of-order decoder shutdown
-From: Dan Williams <dan.j.williams@intel.com>
-To: ira.weiny@intel.com
-Cc: stable@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Davidlohr Bueso <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>,
- Alison Schofield <alison.schofield@intel.com>,
- Zijun Hu <quic_zijuhu@quicinc.com>, vishal.l.verma@intel.com,
- dave.jiang@intel.com, linux-cxl@vger.kernel.org
-Date: Tue, 22 Oct 2024 18:43:49 -0700
-Message-ID: <172964782781.81806.17902885593105284330.stgit@dwillia2-xfh.jf.intel.com>
-In-Reply-To: <172964779333.81806.8852577918216421011.stgit@dwillia2-xfh.jf.intel.com>
-References: <172964779333.81806.8852577918216421011.stgit@dwillia2-xfh.jf.intel.com>
-User-Agent: StGit/0.18-3-g996c
+   d="scan'208";a="79623556"
+Received: from yhuang6-desk2.sh.intel.com (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 19:01:14 -0700
+From: "Huang, Ying" <ying.huang@intel.com>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: akpm@linux-foundation.org,  chrisl@kernel.org,  david@redhat.com,
+  hannes@cmpxchg.org,  hughd@google.com,  kaleshsingh@google.com,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
+  liyangouwen1@oppo.com,  mhocko@suse.com,  minchan@kernel.org,
+  sj@kernel.org,  stable@vger.kernel.org,  surenb@google.com,
+  v-songbaohua@oppo.com,  willy@infradead.org,  yosryahmed@google.com,
+  yuzhao@google.com,  Barry Song <21cnbao@gmail.com>
+Subject: Re: [PATCH] mm: avoid unconditional one-tick sleep when
+ swapcache_prepare fails
+In-Reply-To: <CAMgjq7D6Ku4-0mfJUexB9ARxY5eHwJjMS_M9qqXrvR=ScW0jtA@mail.gmail.com>
+	(Kairui Song's message of "Tue, 22 Oct 2024 17:21:07 +0800")
+References: <87ikuani1f.fsf@yhuang6-desk2.ccr.corp.intel.com>
+	<20241008130807.40833-1-21cnbao@gmail.com>
+	<87set6m73u.fsf@yhuang6-desk2.ccr.corp.intel.com>
+	<CAMgjq7D6Ku4-0mfJUexB9ARxY5eHwJjMS_M9qqXrvR=ScW0jtA@mail.gmail.com>
+Date: Wed, 23 Oct 2024 09:57:41 +0800
+Message-ID: <87iktj4m3u.fsf@yhuang6-desk2.ccr.corp.intel.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-In support of investigating an initialization failure report [1],
-cxl_test was updated to register mock memory-devices after the mock
-root-port/bus device had been registered. That led to cxl_test crashing
-with a use-after-free bug with the following signature:
+Kairui Song <ryncsn@gmail.com> writes:
 
-    cxl_port_attach_region: cxl region3: cxl_host_bridge.0:port3 decoder3.0 add: mem0:decoder7.0 @ 0 next: cxl_switch_uport.0 nr_eps: 1 nr_targets: 1
-    cxl_port_attach_region: cxl region3: cxl_host_bridge.0:port3 decoder3.0 add: mem4:decoder14.0 @ 1 next: cxl_switch_uport.0 nr_eps: 2 nr_targets: 1
-    cxl_port_setup_targets: cxl region3: cxl_switch_uport.0:port6 target[0] = cxl_switch_dport.0 for mem0:decoder7.0 @ 0
-1)  cxl_port_setup_targets: cxl region3: cxl_switch_uport.0:port6 target[1] = cxl_switch_dport.4 for mem4:decoder14.0 @ 1
-    [..]
-    cxld_unregister: cxl decoder14.0:
-    cxl_region_decode_reset: cxl_region region3:
-    mock_decoder_reset: cxl_port port3: decoder3.0 reset
-2)  mock_decoder_reset: cxl_port port3: decoder3.0: out of order reset, expected decoder3.1
-    cxl_endpoint_decoder_release: cxl decoder14.0:
-    [..]
-    cxld_unregister: cxl decoder7.0:
-3)  cxl_region_decode_reset: cxl_region region3:
-    Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6bc3: 0000 [#1] PREEMPT SMP PTI
-    [..]
-    RIP: 0010:to_cxl_port+0x8/0x60 [cxl_core]
-    [..]
-    Call Trace:
-     <TASK>
-     cxl_region_decode_reset+0x69/0x190 [cxl_core]
-     cxl_region_detach+0xe8/0x210 [cxl_core]
-     cxl_decoder_kill_region+0x27/0x40 [cxl_core]
-     cxld_unregister+0x5d/0x60 [cxl_core]
+> On Wed, Oct 9, 2024 at 8:55=E2=80=AFAM Huang, Ying <ying.huang@intel.com>=
+ wrote:
+>>
+>> Barry Song <21cnbao@gmail.com> writes:
+>>
+>> > On Thu, Oct 3, 2024 at 8:35=E2=80=AFAM Huang, Ying <ying.huang@intel.c=
+om> wrote:
+>> >>
+>> >> Barry Song <21cnbao@gmail.com> writes:
+>> >>
+>> >> > On Wed, Oct 2, 2024 at 8:43=E2=80=AFAM Huang, Ying <ying.huang@inte=
+l.com> wrote:
+>> >> >>
+>> >> >> Barry Song <21cnbao@gmail.com> writes:
+>> >> >>
+>> >> >> > On Tue, Oct 1, 2024 at 7:43=E2=80=AFAM Huang, Ying <ying.huang@i=
+ntel.com> wrote:
+>> >> >> >>
+>> >> >> >> Barry Song <21cnbao@gmail.com> writes:
+>> >> >> >>
+>> >> >> >> > On Sun, Sep 29, 2024 at 3:43=E2=80=AFPM Huang, Ying <ying.hua=
+ng@intel.com> wrote:
+>> >> >> >> >>
+>> >> >> >> >> Hi, Barry,
+>> >> >> >> >>
+>> >> >> >> >> Barry Song <21cnbao@gmail.com> writes:
+>> >> >> >> >>
+>> >> >> >> >> > From: Barry Song <v-songbaohua@oppo.com>
+>> >> >> >> >> >
+>> >> >> >> >> > Commit 13ddaf26be32 ("mm/swap: fix race when skipping swap=
+cache")
+>> >> >> >> >> > introduced an unconditional one-tick sleep when `swapcache=
+_prepare()`
+>> >> >> >> >> > fails, which has led to reports of UI stuttering on latenc=
+y-sensitive
+>> >> >> >> >> > Android devices. To address this, we can use a waitqueue t=
+o wake up
+>> >> >> >> >> > tasks that fail `swapcache_prepare()` sooner, instead of a=
+lways
+>> >> >> >> >> > sleeping for a full tick. While tasks may occasionally be =
+woken by an
+>> >> >> >> >> > unrelated `do_swap_page()`, this method is preferable to t=
+wo scenarios:
+>> >> >> >> >> > rapid re-entry into page faults, which can cause livelocks=
+, and
+>> >> >> >> >> > multiple millisecond sleeps, which visibly degrade user ex=
+perience.
+>> >> >> >> >>
+>> >> >> >> >> In general, I think that this works.  Why not extend the sol=
+ution to
+>> >> >> >> >> cover schedule_timeout_uninterruptible() in __read_swap_cach=
+e_async()
+>> >> >> >> >> too?  We can call wake_up() when we clear SWAP_HAS_CACHE.  T=
+o avoid
+>> >> >> >> >
+>> >> >> >> > Hi Ying,
+>> >> >> >> > Thanks for your comments.
+>> >> >> >> > I feel extending the solution to __read_swap_cache_async() sh=
+ould be done
+>> >> >> >> > in a separate patch. On phones, I've never encountered any is=
+sues reported
+>> >> >> >> > on that path, so it might be better suited for an optimizatio=
+n rather than a
+>> >> >> >> > hotfix?
+>> >> >> >>
+>> >> >> >> Yes.  It's fine to do that in another patch as optimization.
+>> >> >> >
+>> >> >> > Ok. I'll prepare a separate patch for optimizing that path.
+>> >> >>
+>> >> >> Thanks!
+>> >> >>
+>> >> >> >>
+>> >> >> >> >> overhead to call wake_up() when there's no task waiting, we =
+can use an
+>> >> >> >> >> atomic to count waiting tasks.
+>> >> >> >> >
+>> >> >> >> > I'm not sure it's worth adding the complexity, as wake_up() o=
+n an empty
+>> >> >> >> > waitqueue should have a very low cost on its own?
+>> >> >> >>
+>> >> >> >> wake_up() needs to call spin_lock_irqsave() unconditionally on =
+a global
+>> >> >> >> shared lock.  On systems with many CPUs (such servers), this ma=
+y cause
+>> >> >> >> severe lock contention.  Even the cache ping-pong may hurt perf=
+ormance
+>> >> >> >> much.
+>> >> >> >
+>> >> >> > I understand that cache synchronization was a significant issue =
+before
+>> >> >> > qspinlock, but it seems to be less of a concern after its implem=
+entation.
+>> >> >>
+>> >> >> Unfortunately, qspinlock cannot eliminate cache ping-pong issue, as
+>> >> >> discussed in the following thread.
+>> >> >>
+>> >> >> https://lore.kernel.org/lkml/20220510192708.GQ76023@worktop.progra=
+mming.kicks-ass.net/
+>> >> >>
+>> >> >> > However, using a global atomic variable would still trigger cach=
+e broadcasts,
+>> >> >> > correct?
+>> >> >>
+>> >> >> We can only change the atomic variable to non-zero when
+>> >> >> swapcache_prepare() returns non-zero, and call wake_up() when the =
+atomic
+>> >> >> variable is non-zero.  Because swapcache_prepare() returns 0 most =
+times,
+>> >> >> the atomic variable is 0 most times.  If we don't change the value=
+ of
+>> >> >> atomic variable, cache ping-pong will not be triggered.
+>> >> >
+>> >> > yes. this can be implemented by adding another atomic variable.
+>> >>
+>> >> Just realized that we don't need another atomic variable for this, ju=
+st
+>> >> use waitqueue_active() before wake_up() should be enough.
+>> >>
+>> >> >>
+>> >> >> Hi, Kairui,
+>> >> >>
+>> >> >> Do you have some test cases to test parallel zram swap-in?  If so,=
+ that
+>> >> >> can be used to verify whether cache ping-pong is an issue and whet=
+her it
+>> >> >> can be fixed via a global atomic variable.
+>> >> >>
+>> >> >
+>> >> > Yes, Kairui please run a test on your machine with lots of cores be=
+fore
+>> >> > and after adding a global atomic variable as suggested by Ying. I am
+>> >> > sorry I don't have a server machine.
+>> >> >
+>> >> > if it turns out you find cache ping-pong can be an issue, another
+>> >> > approach would be a waitqueue hash:
+>> >>
+>> >> Yes.  waitqueue hash may help reduce lock contention.  And, we can ha=
+ve
+>> >> both waitqueue_active() and waitqueue hash if necessary.  As the first
+>> >> step, waitqueue_active() appears simpler.
+>> >
+>> > Hi Andrew,
+>> > If there are no objections, can you please squash the below change? Ov=
+en
+>> > has already tested the change and the original issue was still fixed w=
+ith
+>> > it. If you want me to send v2 instead, please let me know.
+>> >
+>> > From a5ca401da89f3b628c3a0147e54541d0968654b2 Mon Sep 17 00:00:00 2001
+>> > From: Barry Song <v-songbaohua@oppo.com>
+>> > Date: Tue, 8 Oct 2024 20:18:27 +0800
+>> > Subject: [PATCH] mm: wake_up only when swapcache_wq waitqueue is active
+>> >
+>> > wake_up() will acquire spinlock even waitqueue is empty. This might
+>> > involve cache sync overhead. Let's only call wake_up() when waitqueue
+>> > is active.
+>> >
+>> > Suggested-by: "Huang, Ying" <ying.huang@intel.com>
+>> > Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+>> > ---
+>> >  mm/memory.c | 6 ++++--
+>> >  1 file changed, 4 insertions(+), 2 deletions(-)
+>> >
+>> > diff --git a/mm/memory.c b/mm/memory.c
+>> > index fe21bd3beff5..4adb2d0bcc7a 100644
+>> > --- a/mm/memory.c
+>> > +++ b/mm/memory.c
+>> > @@ -4623,7 +4623,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>> >       /* Clear the swap cache pin for direct swapin after PTL unlock */
+>> >       if (need_clear_cache) {
+>> >               swapcache_clear(si, entry, nr_pages);
+>> > -             wake_up(&swapcache_wq);
+>> > +             if (waitqueue_active(&swapcache_wq))
+>> > +                     wake_up(&swapcache_wq);
+>> >       }
+>> >       if (si)
+>> >               put_swap_device(si);
+>> > @@ -4641,7 +4642,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>> >       }
+>> >       if (need_clear_cache) {
+>> >               swapcache_clear(si, entry, nr_pages);
+>> > -             wake_up(&swapcache_wq);
+>> > +             if (waitqueue_active(&swapcache_wq))
+>> > +                     wake_up(&swapcache_wq);
+>> >       }
+>> >       if (si)
+>> >               put_swap_device(si);
+>>
+>> Hi, Kairui,
+>>
+>> Do you have time to give this patch (combined with the previous patch
+>> from Barry) a test to check whether the overhead introduced in the
+>> previous patch has been eliminated?
+>
+> Hi Ying, Barry
+>
+> I did a rebase on mm tree and run more tests with the latest patch:
+>
+> Before the two patches:
+> make -j96 (64k): 33814.45 35061.25 35667.54 36618.30 37381.60 37678.75
+> make -j96: 20456.03 20460.36 20511.55 20584.76 20751.07 20780.79
+> make -j64:7490.83 7515.55 7535.30 7544.81 7564.77 7583.41
+>
+> After adding workqueue:
+> make -j96 (64k): 33190.60 35049.57 35732.01 36263.81 37154.05 37815.50
+> make -j96: 20373.27 20382.96 20428.78 20459.73 20534.59 20548.48
+> make -j64: 7469.18 7522.57 7527.38 7532.69 7543.36 7546.28
+>
+> After adding workqueue with workqueue_active() check:
+> make -j96 (64k): 33321.03 35039.68 35552.86 36474.95 37502.76 37549.04
+> make -j96: 20601.39 20639.08 20692.81 20693.91 20701.35 20740.71
+> make -j64: 7538.63 7542.27 7564.86 7567.36 7594.14 7600.96
+>
+> So I think it's just noise level performance change, it should be OK
+> in either way.
 
-At 1) a region has been established with 2 endpoint decoders (7.0 and
-14.0). Those endpoints share a common switch-decoder in the topology
-(3.0). At teardown, 2), decoder14.0 is the first to be removed and hits
-the "out of order reset case" in the switch decoder. The effect though
-is that region3 cleanup is aborted leaving it in-tact and
-referencing decoder14.0. At 3) the second attempt to teardown region3
-trips over the stale decoder14.0 object which has long since been
-deleted.
+Thanks for your test results.  There should be bottlenecks in other
+places.
 
-The fix here is to recognize that the CXL specification places no
-mandate on in-order shutdown of switch-decoders, the driver enforces
-in-order allocation, and hardware enforces in-order commit. So, rather
-than fail and leave objects dangling, always remove them.
-
-In support of making cxl_region_decode_reset() always succeed,
-cxl_region_invalidate_memregion() failures are turned into warnings.
-Crashing the kernel is ok there since system integrity is at risk if
-caches cannot be managed around physical address mutation events like
-CXL region destruction.
-
-A new device_for_each_child_reverse_from() is added to cleanup
-port->commit_end after all dependent decoders have been disabled. In
-other words if decoders are allocated 0->1->2 and disabled 1->2->0 then
-port->commit_end only decrements from 2 after 2 has been disabled, and
-it decrements all the way to zero since 1 was disabled previously.
-
-Link: http://lore.kernel.org/20241004212504.1246-1-gourry@gourry.net [1]
-Cc: <stable@vger.kernel.org>
-Fixes: 176baefb2eb5 ("cxl/hdm: Commit decoder state to hardware")
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Cc: Zijun Hu <quic_zijuhu@quicinc.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- drivers/base/core.c          |   35 +++++++++++++++++++++++++++++
- drivers/cxl/core/hdm.c       |   50 +++++++++++++++++++++++++++++++++++-------
- drivers/cxl/core/region.c    |   48 +++++++++++-----------------------------
- drivers/cxl/cxl.h            |    3 ++-
- include/linux/device.h       |    3 +++
- tools/testing/cxl/test/cxl.c |   14 ++++--------
- 6 files changed, 100 insertions(+), 53 deletions(-)
-
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index a4c853411a6b..e42f1ad73078 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -4037,6 +4037,41 @@ int device_for_each_child_reverse(struct device *parent, void *data,
- }
- EXPORT_SYMBOL_GPL(device_for_each_child_reverse);
- 
-+/**
-+ * device_for_each_child_reverse_from - device child iterator in reversed order.
-+ * @parent: parent struct device.
-+ * @from: optional starting point in child list
-+ * @fn: function to be called for each device.
-+ * @data: data for the callback.
-+ *
-+ * Iterate over @parent's child devices, starting at @from, and call @fn
-+ * for each, passing it @data. This helper is identical to
-+ * device_for_each_child_reverse() when @from is NULL.
-+ *
-+ * @fn is checked each iteration. If it returns anything other than 0,
-+ * iteration stop and that value is returned to the caller of
-+ * device_for_each_child_reverse_from();
-+ */
-+int device_for_each_child_reverse_from(struct device *parent,
-+				       struct device *from, const void *data,
-+				       int (*fn)(struct device *, const void *))
-+{
-+	struct klist_iter i;
-+	struct device *child;
-+	int error = 0;
-+
-+	if (!parent->p)
-+		return 0;
-+
-+	klist_iter_init_node(&parent->p->klist_children, &i,
-+			     (from ? &from->p->knode_parent : NULL));
-+	while ((child = prev_device(&i)) && !error)
-+		error = fn(child, data);
-+	klist_iter_exit(&i);
-+	return error;
-+}
-+EXPORT_SYMBOL_GPL(device_for_each_child_reverse_from);
-+
- /**
-  * device_find_child - device iterator for locating a particular device.
-  * @parent: parent struct device
-diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
-index 3df10517a327..223c273c0cd1 100644
---- a/drivers/cxl/core/hdm.c
-+++ b/drivers/cxl/core/hdm.c
-@@ -712,7 +712,44 @@ static int cxl_decoder_commit(struct cxl_decoder *cxld)
- 	return 0;
- }
- 
--static int cxl_decoder_reset(struct cxl_decoder *cxld)
-+static int commit_reap(struct device *dev, const void *data)
-+{
-+	struct cxl_port *port = to_cxl_port(dev->parent);
-+	struct cxl_decoder *cxld;
-+
-+	if (!is_switch_decoder(dev) && !is_endpoint_decoder(dev))
-+		return 0;
-+
-+	cxld = to_cxl_decoder(dev);
-+	if (port->commit_end == cxld->id &&
-+	    ((cxld->flags & CXL_DECODER_F_ENABLE) == 0)) {
-+		port->commit_end--;
-+		dev_dbg(&port->dev, "reap: %s commit_end: %d\n",
-+			dev_name(&cxld->dev), port->commit_end);
-+	}
-+
-+	return 0;
-+}
-+
-+void cxl_port_commit_reap(struct cxl_decoder *cxld)
-+{
-+	struct cxl_port *port = to_cxl_port(cxld->dev.parent);
-+
-+	lockdep_assert_held_write(&cxl_region_rwsem);
-+
-+	/*
-+	 * Once the highest committed decoder is disabled, free any other
-+	 * decoders that were pinned allocated by out-of-order release.
-+	 */
-+	port->commit_end--;
-+	dev_dbg(&port->dev, "reap: %s commit_end: %d\n", dev_name(&cxld->dev),
-+		port->commit_end);
-+	device_for_each_child_reverse_from(&port->dev, &cxld->dev, NULL,
-+					   commit_reap);
-+}
-+EXPORT_SYMBOL_NS_GPL(cxl_port_commit_reap, CXL);
-+
-+static void cxl_decoder_reset(struct cxl_decoder *cxld)
- {
- 	struct cxl_port *port = to_cxl_port(cxld->dev.parent);
- 	struct cxl_hdm *cxlhdm = dev_get_drvdata(&port->dev);
-@@ -721,14 +758,14 @@ static int cxl_decoder_reset(struct cxl_decoder *cxld)
- 	u32 ctrl;
- 
- 	if ((cxld->flags & CXL_DECODER_F_ENABLE) == 0)
--		return 0;
-+		return;
- 
--	if (port->commit_end != id) {
-+	if (port->commit_end == id)
-+		cxl_port_commit_reap(cxld);
-+	else
- 		dev_dbg(&port->dev,
- 			"%s: out of order reset, expected decoder%d.%d\n",
- 			dev_name(&cxld->dev), port->id, port->commit_end);
--		return -EBUSY;
--	}
- 
- 	down_read(&cxl_dpa_rwsem);
- 	ctrl = readl(hdm + CXL_HDM_DECODER0_CTRL_OFFSET(id));
-@@ -741,7 +778,6 @@ static int cxl_decoder_reset(struct cxl_decoder *cxld)
- 	writel(0, hdm + CXL_HDM_DECODER0_BASE_LOW_OFFSET(id));
- 	up_read(&cxl_dpa_rwsem);
- 
--	port->commit_end--;
- 	cxld->flags &= ~CXL_DECODER_F_ENABLE;
- 
- 	/* Userspace is now responsible for reconfiguring this decoder */
-@@ -751,8 +787,6 @@ static int cxl_decoder_reset(struct cxl_decoder *cxld)
- 		cxled = to_cxl_endpoint_decoder(&cxld->dev);
- 		cxled->state = CXL_DECODER_STATE_MANUAL;
- 	}
--
--	return 0;
- }
- 
- static int cxl_setup_hdm_decoder_from_dvsec(
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index e701e4b04032..3478d2058303 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -232,8 +232,8 @@ static int cxl_region_invalidate_memregion(struct cxl_region *cxlr)
- 				"Bypassing cpu_cache_invalidate_memregion() for testing!\n");
- 			return 0;
- 		} else {
--			dev_err(&cxlr->dev,
--				"Failed to synchronize CPU cache state\n");
-+			dev_WARN(&cxlr->dev,
-+				 "Failed to synchronize CPU cache state\n");
- 			return -ENXIO;
- 		}
- 	}
-@@ -242,19 +242,17 @@ static int cxl_region_invalidate_memregion(struct cxl_region *cxlr)
- 	return 0;
- }
- 
--static int cxl_region_decode_reset(struct cxl_region *cxlr, int count)
-+static void cxl_region_decode_reset(struct cxl_region *cxlr, int count)
- {
- 	struct cxl_region_params *p = &cxlr->params;
--	int i, rc = 0;
-+	int i;
- 
- 	/*
--	 * Before region teardown attempt to flush, and if the flush
--	 * fails cancel the region teardown for data consistency
--	 * concerns
-+	 * Before region teardown attempt to flush, evict any data cached for
-+	 * this region, or scream loudly about missing arch / platform support
-+	 * for CXL teardown.
- 	 */
--	rc = cxl_region_invalidate_memregion(cxlr);
--	if (rc)
--		return rc;
-+	cxl_region_invalidate_memregion(cxlr);
- 
- 	for (i = count - 1; i >= 0; i--) {
- 		struct cxl_endpoint_decoder *cxled = p->targets[i];
-@@ -277,23 +275,17 @@ static int cxl_region_decode_reset(struct cxl_region *cxlr, int count)
- 			cxl_rr = cxl_rr_load(iter, cxlr);
- 			cxld = cxl_rr->decoder;
- 			if (cxld->reset)
--				rc = cxld->reset(cxld);
--			if (rc)
--				return rc;
-+				cxld->reset(cxld);
- 			set_bit(CXL_REGION_F_NEEDS_RESET, &cxlr->flags);
- 		}
- 
- endpoint_reset:
--		rc = cxled->cxld.reset(&cxled->cxld);
--		if (rc)
--			return rc;
-+		cxled->cxld.reset(&cxled->cxld);
- 		set_bit(CXL_REGION_F_NEEDS_RESET, &cxlr->flags);
- 	}
- 
- 	/* all decoders associated with this region have been torn down */
- 	clear_bit(CXL_REGION_F_NEEDS_RESET, &cxlr->flags);
--
--	return 0;
- }
- 
- static int commit_decoder(struct cxl_decoder *cxld)
-@@ -409,16 +401,8 @@ static ssize_t commit_store(struct device *dev, struct device_attribute *attr,
- 		 * still pending.
- 		 */
- 		if (p->state == CXL_CONFIG_RESET_PENDING) {
--			rc = cxl_region_decode_reset(cxlr, p->interleave_ways);
--			/*
--			 * Revert to committed since there may still be active
--			 * decoders associated with this region, or move forward
--			 * to active to mark the reset successful
--			 */
--			if (rc)
--				p->state = CXL_CONFIG_COMMIT;
--			else
--				p->state = CXL_CONFIG_ACTIVE;
-+			cxl_region_decode_reset(cxlr, p->interleave_ways);
-+			p->state = CXL_CONFIG_ACTIVE;
- 		}
- 	}
- 
-@@ -2054,13 +2038,7 @@ static int cxl_region_detach(struct cxl_endpoint_decoder *cxled)
- 	get_device(&cxlr->dev);
- 
- 	if (p->state > CXL_CONFIG_ACTIVE) {
--		/*
--		 * TODO: tear down all impacted regions if a device is
--		 * removed out of order
--		 */
--		rc = cxl_region_decode_reset(cxlr, p->interleave_ways);
--		if (rc)
--			goto out;
-+		cxl_region_decode_reset(cxlr, p->interleave_ways);
- 		p->state = CXL_CONFIG_ACTIVE;
- 	}
- 
-diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-index 0d8b810a51f0..5406e3ab3d4a 100644
---- a/drivers/cxl/cxl.h
-+++ b/drivers/cxl/cxl.h
-@@ -359,7 +359,7 @@ struct cxl_decoder {
- 	struct cxl_region *region;
- 	unsigned long flags;
- 	int (*commit)(struct cxl_decoder *cxld);
--	int (*reset)(struct cxl_decoder *cxld);
-+	void (*reset)(struct cxl_decoder *cxld);
- };
- 
- /*
-@@ -730,6 +730,7 @@ static inline bool is_cxl_root(struct cxl_port *port)
- int cxl_num_decoders_committed(struct cxl_port *port);
- bool is_cxl_port(const struct device *dev);
- struct cxl_port *to_cxl_port(const struct device *dev);
-+void cxl_port_commit_reap(struct cxl_decoder *cxld);
- struct pci_bus;
- int devm_cxl_register_pci_bus(struct device *host, struct device *uport_dev,
- 			      struct pci_bus *bus);
-diff --git a/include/linux/device.h b/include/linux/device.h
-index b4bde8d22697..667cb6db9019 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -1078,6 +1078,9 @@ int device_for_each_child(struct device *dev, void *data,
- 			  int (*fn)(struct device *dev, void *data));
- int device_for_each_child_reverse(struct device *dev, void *data,
- 				  int (*fn)(struct device *dev, void *data));
-+int device_for_each_child_reverse_from(struct device *parent,
-+				       struct device *from, const void *data,
-+				       int (*fn)(struct device *, const void *));
- struct device *device_find_child(struct device *dev, void *data,
- 				 int (*match)(struct device *dev, void *data));
- struct device *device_find_child_by_name(struct device *parent,
-diff --git a/tools/testing/cxl/test/cxl.c b/tools/testing/cxl/test/cxl.c
-index 90d5afd52dd0..c5bbd89b3192 100644
---- a/tools/testing/cxl/test/cxl.c
-+++ b/tools/testing/cxl/test/cxl.c
-@@ -693,26 +693,22 @@ static int mock_decoder_commit(struct cxl_decoder *cxld)
- 	return 0;
- }
- 
--static int mock_decoder_reset(struct cxl_decoder *cxld)
-+static void mock_decoder_reset(struct cxl_decoder *cxld)
- {
- 	struct cxl_port *port = to_cxl_port(cxld->dev.parent);
- 	int id = cxld->id;
- 
- 	if ((cxld->flags & CXL_DECODER_F_ENABLE) == 0)
--		return 0;
-+		return;
- 
- 	dev_dbg(&port->dev, "%s reset\n", dev_name(&cxld->dev));
--	if (port->commit_end != id) {
-+	if (port->commit_end == id)
-+		cxl_port_commit_reap(cxld);
-+	else
- 		dev_dbg(&port->dev,
- 			"%s: out of order reset, expected decoder%d.%d\n",
- 			dev_name(&cxld->dev), port->id, port->commit_end);
--		return -EBUSY;
--	}
--
--	port->commit_end--;
- 	cxld->flags &= ~CXL_DECODER_F_ENABLE;
--
--	return 0;
- }
- 
- static void default_mock_decoder(struct cxl_decoder *cxld)
-
+--
+Best Regards,
+Huang, Ying
 
