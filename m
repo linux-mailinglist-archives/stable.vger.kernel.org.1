@@ -1,155 +1,270 @@
-Return-Path: <stable+bounces-87944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A9289AD40E
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 20:34:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46F4C9AD495
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 21:15:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 360F7285452
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 18:34:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F0D128357B
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 19:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C10661D0E05;
-	Wed, 23 Oct 2024 18:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ACA51CF5C4;
+	Wed, 23 Oct 2024 19:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="a7btn8rN"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Wor5htUV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053A01A0AF0
-	for <stable@vger.kernel.org>; Wed, 23 Oct 2024 18:33:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4063F13CABC;
+	Wed, 23 Oct 2024 19:15:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729708440; cv=none; b=sZg25YmemM7LtrL8SQtKcqtqISqXK1WHwTOgds2+SHzlL85bHTCmCVGvDEXDlL2dQq7TFyz09qSDekbbu9EXYtGeTqCbd9/3r9gVVWxnF7zr+IikTpyfkm4ODPb88m7sBqketIZH7GzTnyZm29kQc1dcX+SffFTE4mkOJLGzJ80=
+	t=1729710935; cv=none; b=YfL8Q3QjwrGxud+wh2pNfYSinLloQSMas2Kt1oQ8U18NFLqZV4iat6JW3pwjfv0oCO0O7VYUsmG3nJU3gRk0xmi7/movrK6nMLofrvCo43KJYFuxGTXI++rzZmvStRywmOOf6459cKDKNjPZzAD87B9T2A8JmLAVkeH7v1jwHRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729708440; c=relaxed/simple;
-	bh=46H7PDaCQ2mc9wWUN9y7o0ZuIliZ1TptrpK1yyyphmM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=W7hR7vB+T/kQ3dDYLI09molSU7ghjoroVUQgwmPKjoRAfI//fxdk0xpkxUyd1lf++2qVvkx++VVwidjf9wdIt4pmjKsygn29vzlbOVOxrzHvk/DdWrfrgKZJ0ob5y6yIF4lcbqjZx8oxsXrGwJe9z9NsqMGhGiBrz1m83VmEi54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=a7btn8rN; arc=none smtp.client-ip=209.85.161.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-5e5b7d54ff8so1526eaf.0
-        for <stable@vger.kernel.org>; Wed, 23 Oct 2024 11:33:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1729708438; x=1730313238; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TVm15+JO2o8mM+w0yinyleN/ZVNf1YYgHDbnm3S0yro=;
-        b=a7btn8rNnH8nXRpDaDj2v3n/XNA91arJe1m8yIoWj6RL+eN+viwdqn3YgWCeG8nQu9
-         s4u8fzXpZNhf8cFEEYlNqJMa6Jqm3YWaUSWmFQ06gYV1Cen1RIeK79vybBbO3I/DqxPs
-         Vv2vyk408aPMYc5I2ubchlAnrtS1Y2DB1NQ7M=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729708438; x=1730313238;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TVm15+JO2o8mM+w0yinyleN/ZVNf1YYgHDbnm3S0yro=;
-        b=wnAjKNYSL9AObJ77HX62fV4jaZtdQEyGIuQr4loDypTT/QG8ICmtoQfEc29BiuE9z3
-         KhmoZzX6j5WuZSt4jvRKpgbADsdMCCj1gtapVeKEBmq/QtWsdXD09u05PCn8q2YF2BoN
-         gD8DfrA3GDn+C3YoUkoX90Dg84JhyBYWIbFDjIwIKUxatKG1YHORrqq8YEbMJWPyS+om
-         sMM40oIBFqMmgLUMWBfO6KGVcEQq4dcF9PzHs2yvzFdz/xRkWdmdeAx+CMA6IxcQkva9
-         1CsU7liy2jwk+CmJlYKflDzOQ44O5WM8OWiirUeHcEmOX8UQCxxqAfv/07uahqtAqpcT
-         pllA==
-X-Forwarded-Encrypted: i=1; AJvYcCVVxNsv5zqGeVz0FwwCjxpGqd8adr4h7RANg91bIbBaNWEt9vLTJVuvtjwGoIhhEWf3bcuP5wM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrS0TpT5AUEi6ZpokoZvfWuQzsmu7baFOYBJwzXl7Eo73kk411
-	oOP+rZNZWA5itnCiAFTJeZzSHwNsrM9fv9+a+WvI1lO6R6iWOtu29Q/I15xmi1JUoo0mVHIfDaP
-	JV39RBKIBoyal7SX014hmIkwowTZAUzXgkr1y
-X-Google-Smtp-Source: AGHT+IHLGbkE5Oo4IYlY3tWegFIJ6lm7Wf/IIJ6qevixwoPKrt15CKBR9bfEkXM+gXkwnZyxMgOtkG3lSgqMgDT/5dQ=
-X-Received: by 2002:a05:6870:5590:b0:27b:b2e0:6af with SMTP id
- 586e51a60fabf-28ccb40e51emr1031801fac.2.1729708438196; Wed, 23 Oct 2024
- 11:33:58 -0700 (PDT)
+	s=arc-20240116; t=1729710935; c=relaxed/simple;
+	bh=9thUWIwxm+P1OiXRJtseCipOkL29XQjtB7VWINSaMLU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Z2q5SunnZQkhhVlHnA2+NHbFqRtYH9xCQddq41MxJYoZ4xoX2RD3k/yJrLqPAZtmnHpe1Fkq9iGucdrHm2gzQj98iQI/j84O7c1spkq0e0A3EMD3L57JNotGsyuD/pWlWU3mQz8IQSykniEBxwbNwQWkmj0LlOgozThvp0xcJwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Wor5htUV; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49NDX66q002904;
+	Wed, 23 Oct 2024 19:15:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=S+pEOj
+	I3Rou9W85PRHaNhTEFwwqpMX79r7jx/I3Oo88=; b=Wor5htUVoO9q0senq9aGfs
+	o1rjSqKfgLrNhwAUSC2qikaP5I3URYoRPDyruC2OZ5t5fJhB4dJtO2Qt04Bbdsv2
+	h0hfxrj9q8a59tC/5qowgIqq4oQtrjg/lwmHvBCy1Y2bjNj26geHTNEQY0cCLaaD
+	auE60fTepE1Vm5IZu3aDmRsYitD4X0RuEe7lMXzvEll/Nu3v7QvrEumzwW+gZjGX
+	2PfA1izyeqk9+DHQG3o/vpVreYZEDRZwOC8oifnUuuobCAfLKNYD3nrPY5YRg7JH
+	wc0WN5N6nYVemaStPOJ5LFijb+x34kdufjErprBrqgBfSrKXDxDoSg+yI5MgoQxg
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42emafvp2f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 23 Oct 2024 19:15:20 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49NJFKDU010619;
+	Wed, 23 Oct 2024 19:15:20 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42emafvp2e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 23 Oct 2024 19:15:20 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49NIwogc014576;
+	Wed, 23 Oct 2024 19:15:19 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42emk7vfu7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 23 Oct 2024 19:15:19 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49NJFJ0s20775574
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 23 Oct 2024 19:15:19 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E1E7958064;
+	Wed, 23 Oct 2024 19:15:18 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 42AB058058;
+	Wed, 23 Oct 2024 19:15:18 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 23 Oct 2024 19:15:18 +0000 (GMT)
+Message-ID: <588319e8-5983-4f15-abae-b5021f1e4fce@linux.ibm.com>
+Date: Wed, 23 Oct 2024 15:15:17 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241017005105.3047458-1-jeffxu@chromium.org> <20241017005105.3047458-2-jeffxu@chromium.org>
- <5svaztlptf4gs4sp6zyzycwjm2fnpd2xw3oirsls67sq7gq7wv@pwcktbixrzdo>
- <CABi2SkXwOkoFcUUx=aALWVqurKhns+JKZqm2EyRTbHtROK8SKg@mail.gmail.com>
- <r5ljdglhtbapgqddtr6gxz5lszvq2yek2rd6bnllxk5i6difzv@imuu3pxh5fcc>
- <CABi2SkXArA+yfodoOxDbTTOpWCbU5Ce1p1HadSo0=CL23K4-dQ@mail.gmail.com> <8f68ad82-2f60-49f8-b150-0cf183c9cc71@suse.cz>
-In-Reply-To: <8f68ad82-2f60-49f8-b150-0cf183c9cc71@suse.cz>
-From: Jeff Xu <jeffxu@chromium.org>
-Date: Wed, 23 Oct 2024 11:33:46 -0700
-Message-ID: <CABi2SkW6onjPipzhwqQ7iiOFJx3vtwnB2wFizqe01j1Wf3kqYQ@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] mseal: Two fixes for madvise(MADV_DONTNEED) when sealed
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Pedro Falcato <pedro.falcato@gmail.com>, akpm@linux-foundation.org, 
-	keescook@chromium.org, torvalds@linux-foundation.org, 
-	usama.anjum@collabora.com, corbet@lwn.net, Liam.Howlett@oracle.com, 
-	lorenzo.stoakes@oracle.com, jeffxu@google.com, jorgelo@chromium.org, 
-	groeck@chromium.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, jannh@google.com, 
-	sroettger@google.com, linux-hardening@vger.kernel.org, willy@infradead.org, 
-	gregkh@linuxfoundation.org, deraadt@openbsd.org, surenb@google.com, 
-	merimus@google.com, rdunlap@infradead.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 4/5] tpm: Allocate chip->auth in
+ tpm2_start_auth_session()
+To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org,
+        Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+        James Bottomley <James.Bottomley@HansenPartnership.com>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc: David Howells <dhowells@redhat.com>, Mimi Zohar <zohar@linux.ibm.com>,
+        Roberto Sassu <roberto.sassu@huawei.com>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20241021053921.33274-1-jarkko@kernel.org>
+ <20241021053921.33274-5-jarkko@kernel.org>
+Content-Language: en-US
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20241021053921.33274-5-jarkko@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: aRlFpnLTFCWCPlurl78ykkBFmuEsVMay
+X-Proofpoint-ORIG-GUID: b09UmyJZUwo6YhjRN2E51CK7Gh3_Edw9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
+ priorityscore=1501 bulkscore=0 lowpriorityscore=0 malwarescore=0
+ mlxscore=0 adultscore=0 mlxlogscore=999 phishscore=0 suspectscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410230120
 
-Hi Vlastimil
 
-On Tue, Oct 22, 2024 at 8:55=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
->
-> On 10/17/24 22:57, Jeff Xu wrote:
-> > On Thu, Oct 17, 2024 at 1:49=E2=80=AFPM Pedro Falcato <pedro.falcato@gm=
-ail.com> wrote:
-> >> >
-> >> > > > For file-backed, private, read-only memory mappings, we previous=
-ly did
-> >> > > > not block the madvise(MADV_DONTNEED). This was based on
-> >> > > > the assumption that the memory's content, being file-backed, cou=
-ld be
-> >> > > > retrieved from the file if accessed again. However, this assumpt=
-ion
-> >> > > > failed to consider scenarios where a mapping is initially create=
-d as
-> >> > > > read-write, modified, and subsequently changed to read-only. The=
- newly
-> >> > > > introduced VM_WASWRITE flag addresses this oversight.
-> >> > >
-> >> > > We *do not* need this. It's sufficient to just block discard opera=
-tions on read-only
-> >> > > private mappings.
-> >> > I think you meant blocking madvise(MADV_DONTNEED) on all read-only
-> >> > private file-backed mappings.
-> >> >
-> >> > I considered that option, but there is a use case for madvise on tho=
-se
-> >> > mappings that never get modified.
-> >> >
-> >> > Apps can use that to free up RAM. e.g. Considering read-only .text
-> >> > section, which never gets modified, madvise( MADV_DONTNEED) can free
-> >> > up RAM when memory is in-stress, memory will be reclaimed from a
-> >> > backed-file on next read access. Therefore we can't just block all
-> >> > read-only private file-backed mapping, only those that really need t=
-o,
-> >> > such as mapping changed from rw=3D>r (what you described)
-> >>
-> >> Does anyone actually do this? If so, why? WHYYYY?
-> >>
-> > This is a legit use case, I can't argue that it isn't.
->
-> Could the same effect be simply achieved with MADV_COLD/MADV_PAGEOUT? Tha=
-t
-> should be able to reclaim the pages as well if they are indeed not used, =
-but
-> it's non-destructive and you don't want to allow destructive madvise anyw=
-ay
-> (i.e. no throwing away data that would be replaced by zeroes or original
-> file content on the next touch) so it seems overall a better fit for seal=
-ed
-> areas?
->
-Thanks for the suggestion. This opens a new way to solve this, I need
-to do some research and testing  to verify the solutions work for us.
-I will respond after I'm done with those.
 
-Best regards,
--Jeff
+On 10/21/24 1:39 AM, Jarkko Sakkinen wrote:
+> Move allocation of chip->auth to tpm2_start_auth_session() so that the
+> field can be used as flag to tell whether auth session is active or not.
+> 
+> Cc: stable@vger.kernel.org # v6.10+
+> Fixes: 699e3efd6c64 ("tpm: Add HMAC session start and end functions")
+> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> ---
+> v5:
+> - No changes.
+> v4:
+> - Change to bug.
+> v3:
+> - No changes.
+> v2:
+> - A new patch.
+> ---
+>   drivers/char/tpm/tpm2-sessions.c | 43 +++++++++++++++++++-------------
+>   1 file changed, 25 insertions(+), 18 deletions(-)
+> 
+> diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+> index 78c650ce4c9f..6e52785de9fd 100644
+> --- a/drivers/char/tpm/tpm2-sessions.c
+> +++ b/drivers/char/tpm/tpm2-sessions.c
+> @@ -484,7 +484,8 @@ static void tpm2_KDFe(u8 z[EC_PT_SZ], const char *str, u8 *pt_u, u8 *pt_v,
+>   	sha256_final(&sctx, out);
+>   }
+>   
+> -static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip)
+> +static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip,
+> +				struct tpm2_auth *auth)
+>   {
+>   	struct crypto_kpp *kpp;
+>   	struct kpp_request *req;
+> @@ -543,7 +544,7 @@ static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip)
+>   	sg_set_buf(&s[0], chip->null_ec_key_x, EC_PT_SZ);
+>   	sg_set_buf(&s[1], chip->null_ec_key_y, EC_PT_SZ);
+>   	kpp_request_set_input(req, s, EC_PT_SZ*2);
+> -	sg_init_one(d, chip->auth->salt, EC_PT_SZ);
+> +	sg_init_one(d, auth->salt, EC_PT_SZ);
+>   	kpp_request_set_output(req, d, EC_PT_SZ);
+>   	crypto_kpp_compute_shared_secret(req);
+>   	kpp_request_free(req);
+> @@ -554,8 +555,7 @@ static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip)
+>   	 * This works because KDFe fully consumes the secret before it
+>   	 * writes the salt
+>   	 */
+> -	tpm2_KDFe(chip->auth->salt, "SECRET", x, chip->null_ec_key_x,
+> -		  chip->auth->salt);
+> +	tpm2_KDFe(auth->salt, "SECRET", x, chip->null_ec_key_x, auth->salt);
+>   
+>    out:
+>   	crypto_free_kpp(kpp);
+> @@ -854,6 +854,8 @@ int tpm_buf_check_hmac_response(struct tpm_chip *chip, struct tpm_buf *buf,
+>   			/* manually close the session if it wasn't consumed */
+>   			tpm2_flush_context(chip, auth->handle);
+>   		memzero_explicit(auth, sizeof(*auth));
+> +		kfree(auth);
+> +		chip->auth = NULL;
+>   	} else {
+>   		/* reset for next use  */
+>   		auth->session = TPM_HEADER_SIZE;
+> @@ -882,6 +884,8 @@ void tpm2_end_auth_session(struct tpm_chip *chip)
+>   
+>   	tpm2_flush_context(chip, auth->handle);
+>   	memzero_explicit(auth, sizeof(*auth));
+> +	kfree(auth);
+> +	chip->auth = NULL;
+>   }
+>   EXPORT_SYMBOL(tpm2_end_auth_session);
+>   
+> @@ -970,25 +974,29 @@ static int tpm2_load_null(struct tpm_chip *chip, u32 *null_key)
+>    */
+>   int tpm2_start_auth_session(struct tpm_chip *chip)
+>   {
+> +	struct tpm2_auth *auth;
+>   	struct tpm_buf buf;
+> -	struct tpm2_auth *auth = chip->auth;
+> -	int rc;
+>   	u32 null_key;
+> +	int rc;
+>   
+> -	if (!auth) {
+> -		dev_warn_once(&chip->dev, "auth session is not active\n");
+> +	if (chip->auth) {
+> +		dev_warn_once(&chip->dev, "auth session is active\n");
+>   		return 0;
+>   	}
+>   
+> +	auth = kzalloc(sizeof(*auth), GFP_KERNEL);
+> +	if (!auth)
+> +		return -ENOMEM;
+> +
+>   	rc = tpm2_load_null(chip, &null_key);
+>   	if (rc)
+> -		goto out;
+> +		goto err;
+>   
+>   	auth->session = TPM_HEADER_SIZE;
+>   
+>   	rc = tpm_buf_init(&buf, TPM2_ST_NO_SESSIONS, TPM2_CC_START_AUTH_SESS);
+>   	if (rc)
+> -		goto out;
+> +		goto err;
+>   
+>   	/* salt key handle */
+>   	tpm_buf_append_u32(&buf, null_key);
+> @@ -1000,7 +1008,7 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
+>   	tpm_buf_append(&buf, auth->our_nonce, sizeof(auth->our_nonce));
+>   
+>   	/* append encrypted salt and squirrel away unencrypted in auth */
+> -	tpm_buf_append_salt(&buf, chip);
+> +	tpm_buf_append_salt(&buf, chip, auth);
+>   	/* session type (HMAC, audit or policy) */
+>   	tpm_buf_append_u8(&buf, TPM2_SE_HMAC);
+>   
+> @@ -1021,10 +1029,13 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
+>   
+>   	tpm_buf_destroy(&buf);
+>   
+> -	if (rc)
+> -		goto out;
+> +	if (rc == TPM2_RC_SUCCESS) {
+> +		chip->auth = auth;
+> +		return 0;
+> +	}
+>   
+> - out:
+> +err:
+
+like in many other cases before kfree(auth):
+memzero_explicit(auth, sizeof(*auth));
+
+With this:
+
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+
+> +	kfree(auth);
+>   	return rc;
+>   }
+>   EXPORT_SYMBOL(tpm2_start_auth_session);
+> @@ -1377,10 +1388,6 @@ int tpm2_sessions_init(struct tpm_chip *chip)
+>   		return rc;
+>   	}
+>   
+> -	chip->auth = kmalloc(sizeof(*chip->auth), GFP_KERNEL);
+> -	if (!chip->auth)
+> -		return -ENOMEM;
+> -
+>   	return rc;
+>   }
+>   #endif /* CONFIG_TCG_TPM2_HMAC */
+
 
