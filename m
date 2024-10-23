@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-87908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D973F9ACD25
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:47:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 533229ACD28
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:47:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A414281990
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:47:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 813C91C21AFD
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E00A4212D23;
-	Wed, 23 Oct 2024 14:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C15212F09;
+	Wed, 23 Oct 2024 14:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nSnHt6e+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OaVwHj5g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0A1212D1D;
-	Wed, 23 Oct 2024 14:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C68212EFB;
+	Wed, 23 Oct 2024 14:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729693960; cv=none; b=N8odHuRKQRwbPWJf6LDjIsT+EBne7ZNI9paQf/TemDsCWrftPStvug3m3/ME02DhD7pOlR6MGu3DZC2s8QsTqi3sGPCLnsJo4W06BRyPd+fPYzal5ihtGhNnd+rtxHPWi2EboxK2yLdd/y+0i2hRScmGqrlmFEcduFQEnRERuOc=
+	t=1729693962; cv=none; b=WzuZnuMaumU8XTHtZj28pw1BB/kGHtZ4liBhoUG/67Lk/Ausu6qxn2iB4xekMIwpzJquRjM54XMel6m0KkT2m4Wjgv0qFeFWZI/5fQHZKJ8mAvPJ/c/wCZYfHpAmCCrI1buXxnH4UWwo+cyHfQ8KGfm4Bnu8vmvZY+xzc4dwkJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729693960; c=relaxed/simple;
-	bh=gckRkumOpsyq7F5/Ugf40vPgAuzb0zs8QhJu1JFTphw=;
+	s=arc-20240116; t=1729693962; c=relaxed/simple;
+	bh=0s/sSlUW922wNbOlRL3IxXWYz3e8KOVME6YhB9erIDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=phVtu77Gk1erjNt9TiEHR+NrDu+3fD4UtveWJWakSM8U3bbunrfs4/Azq5QBjT02t5cLnTdO6ba+Ga5c+EApQ+oS9vH+dJBLKQFSLTW3opdHjtay7R+YcS5WcBCbTckMViTsbDFDBaVhngFr0gu1ObxPP5f6RntcrrHE5LJQ3i0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nSnHt6e+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB5EBC4CEC6;
-	Wed, 23 Oct 2024 14:32:39 +0000 (UTC)
+	 MIME-Version; b=IPbf9Q6NuIrFyxzSuLhLuJyfQsU1idag1ny1+VnKOOD6FVCFfHqTQPls1QKbEwA92vEue62Of7Lf9HMtu/3+0oAz4XtB3+f0Dz7jUnEwa3aZ3P+FRDb9+B1uqErZjer/Z+hbbnUj89mxME4QI+xDjhcEHZSPDrv2XsDltfaNWIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OaVwHj5g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5140C4CEE8;
+	Wed, 23 Oct 2024 14:32:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729693960;
-	bh=gckRkumOpsyq7F5/Ugf40vPgAuzb0zs8QhJu1JFTphw=;
+	s=k20201202; t=1729693961;
+	bh=0s/sSlUW922wNbOlRL3IxXWYz3e8KOVME6YhB9erIDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nSnHt6e+ht3TuatZ9akcmi7poMzQcaZbVLJeEW7UQBDk80atwVLS0nyqenYH6cJ+H
-	 +SGG5Mvx3OfD5Ba7N5+yRwn1oVRLq0zvXjV4vNO/M0CYG8ilbL4gcJHqLlP9Z0I6cZ
-	 /2uaDjkRLL59T7WchGXkR/snM3MGr+mfrM06n7YCpB348pdZMJXoTZCGNKNxxUYfZp
-	 nQc6g+3F4LZml7hCbN12I0IGj4hdlkwydlRnEFrtVKker4Z9VpEjF1weyXTyqs8Vu3
-	 GdGuCeKFqKfuAIxg2eDZDfJZkxOSHBVcM6EY+BQaomy2sHRTgrlYmC1Ojb/js/e3ug
-	 7tFaEXpSXgZkw==
+	b=OaVwHj5g4RPWHb1JN1H2pRUF0tLXjfwFhGhZjH5k+Wh3AltqfK7MXNsygPiT2tpTa
+	 Wt8FxzkLXrdcCML8uSfQXbCXr27MBZwhCAcNd+aswIH+qMgRFzBq/yc2aXqAk2t9oD
+	 +qcsaLRyYJ2VLeX/FIG7w/J+nege55g8R+FEp1xPwObrQYDYYXJMKKw07iluYFdrls
+	 07NLmrtsysElFk8qOScVlWGpPEkbfBiQ6V0Zkstqc6rLJMhUajkQl/Hp8JpaEzIZdq
+	 ysciyo7fTsRat4JxcDA6X2O6Wg9vzzuFSIm8KExvFPx8X3reTo1REZx8+x7KjE/H1j
+	 4caC3AaP+4zKg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: SurajSonawane2415 <surajsonawane0215@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Stefan Blum <stefanblum2004@gmail.com>,
+	Stefan Blum <stefan.blum@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 03/10] block: Fix elevator_get_default() checking for NULL q->tag_set
-Date: Wed, 23 Oct 2024 10:32:24 -0400
-Message-ID: <20241023143235.2982363-3-sashal@kernel.org>
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 04/10] HID: multitouch: Add support for B2402FVA track point
+Date: Wed, 23 Oct 2024 10:32:25 -0400
+Message-ID: <20241023143235.2982363-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241023143235.2982363-1-sashal@kernel.org>
 References: <20241023143235.2982363-1-sashal@kernel.org>
@@ -65,48 +68,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.169
 Content-Transfer-Encoding: 8bit
 
-From: SurajSonawane2415 <surajsonawane0215@gmail.com>
+From: Stefan Blum <stefanblum2004@gmail.com>
 
-[ Upstream commit b402328a24ee7193a8ab84277c0c90ae16768126 ]
+[ Upstream commit 1a5cbb526ec4b885177d06a8bc04f38da7dbb1d9 ]
 
-elevator_get_default() and elv_support_iosched() both check for whether
-or not q->tag_set is non-NULL, however it's not possible for them to be
-NULL. This messes up some static checkers, as the checking of tag_set
-isn't consistent.
+By default the track point does not work on the Asus Expertbook B2402FVA.
 
-Remove the checks, which both simplifies the logic and avoids checker
-errors.
+From libinput record i got the ID of the track point device:
+  evdev:
+    # Name: ASUE1201:00 04F3:32AE
+    # ID: bus 0x18 vendor 0x4f3 product 0x32ae version 0x100
 
-Signed-off-by: SurajSonawane2415 <surajsonawane0215@gmail.com>
-Link: https://lore.kernel.org/r/20241007111416.13814-1-surajsonawane0215@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+I found that the track point is functional, when i set the
+MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU class for the reported device.
+
+Signed-off-by: Stefan Blum <stefan.blum@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/elevator.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/hid-multitouch.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/block/elevator.c b/block/elevator.c
-index 1b5e57f6115f3..a98e8356f1b87 100644
---- a/block/elevator.c
-+++ b/block/elevator.c
-@@ -620,7 +620,7 @@ int elevator_switch_mq(struct request_queue *q,
- static inline bool elv_support_iosched(struct request_queue *q)
- {
- 	if (!queue_is_mq(q) ||
--	    (q->tag_set && (q->tag_set->flags & BLK_MQ_F_NO_SCHED)))
-+	    (q->tag_set->flags & BLK_MQ_F_NO_SCHED))
- 		return false;
- 	return true;
- }
-@@ -631,7 +631,7 @@ static inline bool elv_support_iosched(struct request_queue *q)
-  */
- static struct elevator_type *elevator_get_default(struct request_queue *q)
- {
--	if (q->tag_set && q->tag_set->flags & BLK_MQ_F_NO_SCHED_BY_DEFAULT)
-+	if (q->tag_set->flags & BLK_MQ_F_NO_SCHED_BY_DEFAULT)
- 		return NULL;
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 6a3f4371bd109..116876d710932 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2017,6 +2017,10 @@ static const struct hid_device_id mt_devices[] = {
+ 		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
+ 			USB_VENDOR_ID_ELAN, 0x3148) },
  
- 	if (q->nr_hw_queues != 1 &&
++	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
++		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
++			USB_VENDOR_ID_ELAN, 0x32ae) },
++
+ 	/* Elitegroup panel */
+ 	{ .driver_data = MT_CLS_SERIAL,
+ 		MT_USB_DEVICE(USB_VENDOR_ID_ELITEGROUP,
 -- 
 2.43.0
 
