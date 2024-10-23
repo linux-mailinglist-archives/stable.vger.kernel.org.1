@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-87854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E1BC9ACC8F
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:34:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E40709ACC92
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 16:34:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CA231C2061C
-	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:34:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4F96281F22
+	for <lists+stable@lfdr.de>; Wed, 23 Oct 2024 14:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B6A2146018;
-	Wed, 23 Oct 2024 14:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3E0D1D0782;
+	Wed, 23 Oct 2024 14:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d1LRo0za"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iZf0PML8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560AD1D016A;
-	Wed, 23 Oct 2024 14:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862501D04A2;
+	Wed, 23 Oct 2024 14:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729693844; cv=none; b=OXu5aqYtBHkkWf3wr6NmsyuOFRRcZ5j3Oho9eb75Ndipx8Sm7SrHubexCD6k84hZ4i/mDQd/MUSuBbegGXHFHvUBjRNi4CFtn85MkRWAjgxGtIWsVIAXDQKPXDrbEEc2fm4IgPy7mGbYO798MKQfIjwDzLYfOOChyMrSqd0+6og=
+	t=1729693847; cv=none; b=YEF4gziFfcaWW/OhCKICDyOw1lcRLYpOu8kl3BpJx+xlcLpEaN05zg1UFeqKEo8TCPetU5EG3P7SKG65oIMZNfyZPD4QNA2DKSm9cGMq5z0acALh4DSYHqZ+ZWNIUtiE1RvpnKKh7zX9DvdWfIFO43NKiFcPtF8bT6X8HxLdeuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729693844; c=relaxed/simple;
-	bh=Tmr6J5mJFH6Iy72xJOrNjejVaHARmkj7o5RpsJk38m4=;
+	s=arc-20240116; t=1729693847; c=relaxed/simple;
+	bh=g+S1LBgUVa6rlTJhe1tTXZdwl/UXXR/T2NKcJRxZ11c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J8rH7qL/D68BYndFKJafYCZfahTMsS7kfeq+4Mp9IecA0ebltrdQTm8x3Wm36Jtdqrs/0G1HZVqAo91Bdyl2UKDM1BwpFQNKNkw5CWidVCYXke/K9r5B9kEFBQ01IhqpVJQu21Te+zCrWw+YmJ2Ikb6baYUDU7QM0gO6eAgM0v0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d1LRo0za; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E5FC4CEE4;
-	Wed, 23 Oct 2024 14:30:42 +0000 (UTC)
+	 MIME-Version; b=H1YCaU726GZz0agmPWcDr2ilP+Adul7cHSAUmXVea31QCcfKN/T77PSpj7Q4sZtc9KubpYRnMog0+br0q3dR5aA68gyBXUBoQ+bNYeXxEOefoucdBRF4z9ALqJYD+PVLF5Nyc5FisbAM2cRlSZn4IqMayCfUFdxKqvnWBwRfOqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iZf0PML8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE74C4CEE5;
+	Wed, 23 Oct 2024 14:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729693844;
-	bh=Tmr6J5mJFH6Iy72xJOrNjejVaHARmkj7o5RpsJk38m4=;
+	s=k20201202; t=1729693847;
+	bh=g+S1LBgUVa6rlTJhe1tTXZdwl/UXXR/T2NKcJRxZ11c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d1LRo0zacq+GRRzV9UxekgPXqtoIK5e9ti+7vCXQfNyVTGtx4UN0lGyBSYhQoSXrQ
-	 eCoGLaceXEmFhlj/rf/RzXo50adB2a9hMaEi3D8agddAHIL52kpj48ZOdiA+Ga/WiT
-	 e4W4bXjqO8ogczb9hWtxEAozvd2IZqGOy3Ekv3GQ9FIctIXm0pUfknoGQdwHTHch3N
-	 lAa3gcmPB/3/DACIk6/ORVX77qws1bBgD0zTM7UKm6GVIGy4/q1WpeqOxASnBP82DC
-	 3AkYdnF+eYD8QRhDsdreODn3sCyJ7wRkigHxikEvfYDIp/fpyOPNSvIkKdl669+PK9
-	 gf7r8oHo1P0uw==
+	b=iZf0PML8VCrKGud4TiDLWTwk4mW756VpqGXlcgYQsQsL9vjsfzqyQXzS9JwEPWuzz
+	 IjVbofasDBiWDk56p318TWhRGpSIfOwhv83j/EM/wir62OavDixCdbqMTtJnJ9HorO
+	 xfSzsDL20eM2bQcuAlceyzoX7ndWSEyn0Mc7sAE1llBkaVqunYNLVCG637UfZXvokc
+	 gHm3EG9n2gpjEASYFBzOuzexu9hZJpJAsaz8gOiGazyCGolvvNpX7yDueXK/S2qiqD
+	 i3NARvAUQTvk1u4Lny1sjCnfxRQ7EAc9v2UVyVhbVVYK2QDvgYNkUsJIqDrY3Zs1pN
+	 hCyjWOKDWKM/g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Martin Krastev <martin.krastev@broadcom.com>,
+Cc: Tyrone Wu <wudevelops@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.11 19/30] drm/vmwgfx: Limit display layout ioctl array size to VMWGFX_NUM_DISPLAY_UNITS
-Date: Wed, 23 Oct 2024 10:29:44 -0400
-Message-ID: <20241023143012.2980728-19-sashal@kernel.org>
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	eddyz87@gmail.com,
+	shuah@kernel.org,
+	jolsa@kernel.org,
+	song@kernel.org,
+	laoar.shao@gmail.com,
+	bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 20/30] selftests/bpf: Assert link info uprobe_multi count & path_size if unset
+Date: Wed, 23 Oct 2024 10:29:45 -0400
+Message-ID: <20241023143012.2980728-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241023143012.2980728-1-sashal@kernel.org>
 References: <20241023143012.2980728-1-sashal@kernel.org>
@@ -71,84 +73,45 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.5
 Content-Transfer-Encoding: 8bit
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Tyrone Wu <wudevelops@gmail.com>
 
-[ Upstream commit 28a5dfd4f615539fb22fb6d5c219c199c14e6eb6 ]
+[ Upstream commit b836cbdf3b81a4a22b3452186efa2e5105a77e10 ]
 
-Currently the array size is only limited by the largest kmalloc size which
-is incorrect. This change will also return a more specific error message
-than ENOMEM to userspace.
+Add assertions in `bpf_link_info.uprobe_multi` test to verify that
+`count` and `path_size` fields are correctly populated when the fields
+are unset.
 
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
-Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240808200634.1074083-1-ian.forbes@broadcom.com
+This tests a previous bug where the `path_size` field was not populated
+when `path` and `path_size` were unset.
+
+Signed-off-by: Tyrone Wu <wudevelops@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241011000803.681190-2-wudevelops@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_drv.h | 4 ++--
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 4 +++-
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.h | 3 ---
- 3 files changed, 5 insertions(+), 6 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/fill_link_info.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-index 3f4719b3c2681..4e2807f5f94cf 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-@@ -62,7 +62,7 @@
- #define VMWGFX_DRIVER_MINOR 20
- #define VMWGFX_DRIVER_PATCHLEVEL 0
- #define VMWGFX_FIFO_STATIC_SIZE (1024*1024)
--#define VMWGFX_MAX_DISPLAYS 16
-+#define VMWGFX_NUM_DISPLAY_UNITS 8
- #define VMWGFX_CMD_BOUNCE_INIT_SIZE 32768
+diff --git a/tools/testing/selftests/bpf/prog_tests/fill_link_info.c b/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
+index f3932941bbaaf..59ef57145b63c 100644
+--- a/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
++++ b/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
+@@ -417,6 +417,15 @@ verify_umulti_link_info(int fd, bool retprobe, __u64 *offsets,
+ 	if (!ASSERT_NEQ(err, -1, "readlink"))
+ 		return -1;
  
- #define VMWGFX_MIN_INITIAL_WIDTH 1280
-@@ -82,7 +82,7 @@
- #define VMWGFX_NUM_GB_CONTEXT 256
- #define VMWGFX_NUM_GB_SHADER 20000
- #define VMWGFX_NUM_GB_SURFACE 32768
--#define VMWGFX_NUM_GB_SCREEN_TARGET VMWGFX_MAX_DISPLAYS
-+#define VMWGFX_NUM_GB_SCREEN_TARGET VMWGFX_NUM_DISPLAY_UNITS
- #define VMWGFX_NUM_DXCONTEXT 256
- #define VMWGFX_NUM_DXQUERY 512
- #define VMWGFX_NUM_MOB (VMWGFX_NUM_GB_CONTEXT +\
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-index 288ed0bb75cb9..884804274dfb1 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-@@ -2225,7 +2225,7 @@ int vmw_kms_update_layout_ioctl(struct drm_device *dev, void *data,
- 	struct drm_mode_config *mode_config = &dev->mode_config;
- 	struct drm_vmw_update_layout_arg *arg =
- 		(struct drm_vmw_update_layout_arg *)data;
--	void __user *user_rects;
-+	const void __user *user_rects;
- 	struct drm_vmw_rect *rects;
- 	struct drm_rect *drm_rects;
- 	unsigned rects_size;
-@@ -2237,6 +2237,8 @@ int vmw_kms_update_layout_ioctl(struct drm_device *dev, void *data,
- 					    VMWGFX_MIN_INITIAL_HEIGHT};
- 		vmw_du_update_layout(dev_priv, 1, &def_rect);
- 		return 0;
-+	} else if (arg->num_outputs > VMWGFX_NUM_DISPLAY_UNITS) {
-+		return -E2BIG;
- 	}
- 
- 	rects_size = arg->num_outputs * sizeof(struct drm_vmw_rect);
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-index 6141fadf81efe..2a6c6d6581e02 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-@@ -199,9 +199,6 @@ struct vmw_kms_dirty {
- 	s32 unit_y2;
- };
- 
--#define VMWGFX_NUM_DISPLAY_UNITS 8
--
--
- #define vmw_framebuffer_to_vfb(x) \
- 	container_of(x, struct vmw_framebuffer, base)
- #define vmw_framebuffer_to_vfbs(x) \
++	memset(&info, 0, sizeof(info));
++	err = bpf_link_get_info_by_fd(fd, &info, &len);
++	if (!ASSERT_OK(err, "bpf_link_get_info_by_fd"))
++		return -1;
++
++	ASSERT_EQ(info.uprobe_multi.count, 3, "info.uprobe_multi.count");
++	ASSERT_EQ(info.uprobe_multi.path_size, strlen(path) + 1,
++		  "info.uprobe_multi.path_size");
++
+ 	for (bit = 0; bit < 8; bit++) {
+ 		memset(&info, 0, sizeof(info));
+ 		info.uprobe_multi.path = ptr_to_u64(path_buf);
 -- 
 2.43.0
 
