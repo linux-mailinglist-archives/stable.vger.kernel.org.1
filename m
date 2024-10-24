@@ -1,201 +1,121 @@
-Return-Path: <stable+bounces-88090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E020F9AEA51
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 17:22:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22ADF9AEA94
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 17:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9962F283530
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 15:22:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC939282E04
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 15:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B151E7C00;
-	Thu, 24 Oct 2024 15:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 378491E1A1D;
+	Thu, 24 Oct 2024 15:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="rmzjr1GD";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="umD1zxiq";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="rmzjr1GD";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="umD1zxiq"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ly4TswQj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07491EABCC
-	for <stable@vger.kernel.org>; Thu, 24 Oct 2024 15:22:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D58154420
+	for <stable@vger.kernel.org>; Thu, 24 Oct 2024 15:34:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729783376; cv=none; b=IuafYPdfgeRRvUM1UvmZYfPsWYyOWphfgfXyZ/VWhzWEw/xl3e9ouaYPqcs5CI6N9MA4kdNQd1wDOGpLSvVJyZ/iwUYM7NbE/wq5Tn6ff81hOR7mnQEVx7gebu/NLcH/iCVC6Th5XrVdvBMNTcXWVT06gw7B7NUENnvBMTuAbW4=
+	t=1729784068; cv=none; b=U2VagVw30WaQnatS8qL3ePmsdL7kWxlEJOmmH71JGDYgDYHnoV+894mt3hHf1S+lvVRmieAloOkpLmA5puiQ4HmnuBbBB6MhBi9ntWfpoRTWo5iV7fSZA9Zde+N0USlJhgWLUWHDrUrxcNdZ48MVLX43LmlhI4dmQdJUqmQmGUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729783376; c=relaxed/simple;
-	bh=7vyiOk9NcMWxxwkpWi6QNDWjhLXtPLplr7yA4Q7pO9w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rscan781qhYXe0VTUAOt+xnsXk39tPP33logfbgeG8BHBz+zJyRJxrj4I0eRjOwHIb6CYzZeKyi+4gkSn3e8MCutHffWUQueRf7DThhceGepTUzLWAVX2i8VzafR3jFyMW73k3D6NR4sLc1Seh5vFhRclZohHk8eSc8geXPL278=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=rmzjr1GD; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=umD1zxiq; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=rmzjr1GD; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=umD1zxiq; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	s=arc-20240116; t=1729784068; c=relaxed/simple;
+	bh=DmaNumx1B9Ch/TRtvCjSsjZvuo2pfUkSNhQa17xSru8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XlzGuDPPcQkOxPXsadD75NaPZB/Y1v/YkldzwqAuFWE9reWxwjHbbLxQnPwULHHGIpFRJ9vgNmbDBsVrlY4YEHMs3bmthHIl86xOyJm8XjBOXO5r9mOPfHbhS6W5qEP5oZV/C5cdQLWaDSCoBB/meAE93jjmSy17c4FzTdeXm0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ly4TswQj; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729784064;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=cXUUAup2BSwJWOmEG3JvcIkWwS4Ltp5hO2So1hfEC/o=;
+	b=Ly4TswQjUigPdDyQpOnyiLkp647XrzN//peO3MQn1/FRUR4QtvtIvxsfQfL3jE3sSRCuDu
+	z7xMythkCxyPl227uVSuK/kl1GWwqM/GpL3mB0Kc9NZkECxBeAzgLNYEnyOkkz7jrWToba
+	P8pIew0D+zI3vkXn95P+pZsUBlFYXi0=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-613-Pkhxl-hhPlWK5XtZSJRhmA-1; Thu,
+ 24 Oct 2024 11:34:21 -0400
+X-MC-Unique: Pkhxl-hhPlWK5XtZSJRhmA-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D91EB1FFF7;
-	Thu, 24 Oct 2024 15:22:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1729783371; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=R6JIM2VnPConJOPMUvY8+vROVEwAtQQqnCG4fdedpiw=;
-	b=rmzjr1GDsv4w4V89VgzzNJTMNLiwwYp0MDKg4lM3I5jbWHjcXUhLjMgPTtv2cGLmUDoFcG
-	ctScUpsBlP+bkWvl+FKaEUHkTHyJg6CgZCKa5oTRrxUyPzxo/uEauTilqwJOtgv7wqfC/J
-	nSuSbqpYUC8dPBH23wUYHTunApv3Wws=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1729783371;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=R6JIM2VnPConJOPMUvY8+vROVEwAtQQqnCG4fdedpiw=;
-	b=umD1zxiq49tXPgwtRHi3nA7LyfxXXnI4+euSpUgut8QKFKJ54ecJ4tyxkbh+EfL1JM8BWO
-	S1Du7HkEK9BtL5BA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=rmzjr1GD;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=umD1zxiq
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1729783371; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=R6JIM2VnPConJOPMUvY8+vROVEwAtQQqnCG4fdedpiw=;
-	b=rmzjr1GDsv4w4V89VgzzNJTMNLiwwYp0MDKg4lM3I5jbWHjcXUhLjMgPTtv2cGLmUDoFcG
-	ctScUpsBlP+bkWvl+FKaEUHkTHyJg6CgZCKa5oTRrxUyPzxo/uEauTilqwJOtgv7wqfC/J
-	nSuSbqpYUC8dPBH23wUYHTunApv3Wws=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1729783371;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=R6JIM2VnPConJOPMUvY8+vROVEwAtQQqnCG4fdedpiw=;
-	b=umD1zxiq49tXPgwtRHi3nA7LyfxXXnI4+euSpUgut8QKFKJ54ecJ4tyxkbh+EfL1JM8BWO
-	S1Du7HkEK9BtL5BA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CD88F1368E;
-	Thu, 24 Oct 2024 15:22:51 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id fJPGMUtmGmdsQgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 24 Oct 2024 15:22:51 +0000
-Message-ID: <72f5ff15-0e15-4368-a080-6223eeb63f8e@suse.cz>
-Date: Thu, 24 Oct 2024 17:22:51 +0200
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EF16C1955D50;
+	Thu, 24 Oct 2024 15:34:19 +0000 (UTC)
+Received: from cantor.redhat.com (unknown [10.2.144.217])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 287D73000198;
+	Thu, 24 Oct 2024 15:34:17 +0000 (UTC)
+From: Jerry Snitselaar <jsnitsel@redhat.com>
+To: iommu@lists.linux.dev
+Cc: Robin Murphy <robin.murphy@arm.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] iommu/dma: Reserve iova ranges for reserved regions of all devices
+Date: Thu, 24 Oct 2024 08:34:12 -0700
+Message-ID: <20241024153412.141765-1-jsnitsel@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH hotfix 6.12] mm, mmap: limit THP aligment of anonymous
- mappings to PMD-aligned sizes
-Content-Language: en-US
-To: kernel test robot <lkp@intel.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-References: <ZxpkJzLe_iZ1LXp7@0218aad26cb2>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- EP+ylKVEKb0Q2A==
-In-Reply-To: <ZxpkJzLe_iZ1LXp7@0218aad26cb2>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D91EB1FFF7
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.cz:dkim,suse.cz:mid];
-	DKIM_TRACE(0.00)[suse.cz:+]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.51
-X-Spam-Flag: NO
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On 10/24/24 17:13, kernel test robot wrote:
-> Hi,
+Only the first device that is passed when the domain is set up will
+have its reserved regions reserved in the iova address space.  So if
+there are other devices in the group with unique reserved regions,
+those regions will not get reserved in the iova address space.  All of
+the ranges do get set up in the iopagetables via calls to
+iommu_create_device_direct_mappings for all devices in a group.
 
-Hi,
+In the case of vt-d system this resulted in messages like the following:
 
-> Thanks for your patch.
-> 
-> FYI: kernel test robot notices the stable kernel rule is not satisfied.
-> 
-> The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
+[ 1632.693264] DMAR: ERROR: DMA PTE for vPFN 0xf1f7e already set (to f1f7e003 not 173025001)
 
-But this submission follows Option 1, which the check probably didn't recognize?
+To make sure iova ranges are reserved for the reserved regions all of
+the devices, call iova_reserve_iommu_regions in iommu_dma_init_domain
+prior to exiting in the case where the domain is already initialized.
 
-Vlastimil
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Fixes: 7c1b058c8b5a ("iommu/dma: Handle IOMMU API reserved regions")
+Signed-off-by: Jerry Snitselaar <jsnitsel@redhat.com>
+---
+Robin: I wasn't positive if this is the correct solution, or if it should be
+       done for the entire group at once.
 
-> Rule: The upstream commit ID must be specified with a separate line above the commit text.
-> Subject: [PATCH hotfix 6.12] mm, mmap: limit THP aligment of anonymous mappings to PMD-aligned sizes
-> Link: https://lore.kernel.org/stable/20241024151228.101841-2-vbabka%40suse.cz
-> 
-> Please ignore this mail if the patch is not relevant for upstream.
-> 
+ drivers/iommu/dma-iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+index 2a9fa0c8cc00..5fd3cccbb233 100644
+--- a/drivers/iommu/dma-iommu.c
++++ b/drivers/iommu/dma-iommu.c
+@@ -707,7 +707,7 @@ static int iommu_dma_init_domain(struct iommu_domain *domain, struct device *dev
+ 			goto done_unlock;
+ 		}
+ 
+-		ret = 0;
++		ret = iova_reserve_iommu_regions(dev, domain);
+ 		goto done_unlock;
+ 	}
+ 
+-- 
+2.44.0
 
 
