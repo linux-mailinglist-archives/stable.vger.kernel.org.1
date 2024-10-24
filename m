@@ -1,76 +1,72 @@
-Return-Path: <stable+bounces-87982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C3689ADA80
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 05:39:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E32089ADA83
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 05:39:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28DF4282F3B
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 03:38:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29959B224C1
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 03:39:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC84A16130C;
-	Thu, 24 Oct 2024 03:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132B8166302;
+	Thu, 24 Oct 2024 03:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YKtuQF7Y"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BMw6BR6C"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1602C14F9EE
-	for <stable@vger.kernel.org>; Thu, 24 Oct 2024 03:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B3E156F39
+	for <stable@vger.kernel.org>; Thu, 24 Oct 2024 03:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729741134; cv=none; b=XGtmiGGU9vYge8yPEZGaXDds/RyTyzaDq1o+WHwYCNs8WNJ5XhvP0ewRU2k2rOs2/xfwYJHWcB8vaf1Kr7WQgpxfsZ2RahdHHwdSXdrT+CPgtVMQV58kIaqSDq0C1t5PUbbEunxdVKbaQ4ydD5mie+qpz0EtdaAz0nx9rqHeysU=
+	t=1729741135; cv=none; b=glnkp38NJ9qP92jccGicsXavkv1g7ttRSjxxi0WxKOMt5qQw2nVGWD6puJNrSmV4jOuNwXe1yDzdVmHMY6BXwOznkAHf1fShjKSWUSJY49VTYpvAzBL1q5vv9BHTYICaMeplw/staOV7leGS7lvM0DJH8tDH90pxfzTuFYUju88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729741134; c=relaxed/simple;
-	bh=oWZxAf5gvfl5LBo+aWdhCoe4X5FRYWpxsXdCS7BGAJU=;
+	s=arc-20240116; t=1729741135; c=relaxed/simple;
+	bh=aUSBq0jGiyabOieUFBg9pUClhzx+TS01UM/DO7b81ok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Cao+OhEOqEMBczXbGY+pf5UwNT1XKg2UmiqukGWje2gy48K0NYs5jNWDeHXRsYVx7Ecunky1Udc3WEnOg2XdPgPKYCZ5gUen+EQy8AKuCanbCfnrNr9HWVCXdMJx7r3AHwssEUq+kYuxKxxkWmHIVzv/0yUvJqpK4pFvdBnYyhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YKtuQF7Y; arc=none smtp.client-ip=192.198.163.12
+	 MIME-Version; b=KDe0CmqfL3gZvnfWQB5+s+cHAbVvZGlBkc6qU4EFFQ41eVWf/ZKL9f874tWq8sE9kik/dCNAOrwwdzbODvnQjpK29Nfx2T1mzYI3xUeb5khuS7hsUh+wBhlcxu9K5hpY+uBP667rC/tCC8uWT3UAwOQ+lttCeiiNwSDxUMZBC7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BMw6BR6C; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729741132; x=1761277132;
+  t=1729741133; x=1761277133;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=oWZxAf5gvfl5LBo+aWdhCoe4X5FRYWpxsXdCS7BGAJU=;
-  b=YKtuQF7Y7uUbwOyyuDdIKgMgw5e9VYVT83TRyRbxU1tBS9oDChTHJOkU
-   u9IDf/sd+RwlqJz4oqqdUz6qjLDulqNcr25ZzYCMByHosxzy4ObWUFrUz
-   cu/xoV2kRGJPMjHv5nPXRY+cEXwRWSaTQ4Z8Y1dW8Zp+5q8/GXlePnA9S
-   BZYp4MBNpv5hBhHse6yBj/D5Tm3M+dJuwTuaTGFulp0NhH1RjObkQSS7S
-   MXzSF15sTlka+h+57dcV+uK7R1zCHw7ow99lwPW3LjMrPSuGKqr6tvAwk
-   Ifh7AI+MK5SNW5477pFSPwWQSAU3Zyl4TIF/D2EbeOn+8+oaqb5YDmOCi
-   g==;
-X-CSE-ConnectionGUID: XOjRu15WTYWM/arughE/aw==
-X-CSE-MsgGUID: MiJDR28KSpKa/YynS5+eLw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11234"; a="33264982"
+  bh=aUSBq0jGiyabOieUFBg9pUClhzx+TS01UM/DO7b81ok=;
+  b=BMw6BR6C8n7Seq+NPbNUrImP+HiJoQFPk1WH5BKCweJ4C+5/S+KKRShN
+   nPlSZ531dwDXul7ks9/YJ0omZD4gxYyXppcr14nqzlWny27M2fskFm0QQ
+   rr8hd6Ua0Zw3LE4Up3cyPvgPr3MlN+UTlONuZg4YhWfvN10kEEYdVjxCi
+   XCbRphiubUeGXNLAqmEuAnkuUdNXI7G0mq3BVC/NupMNcXXYp3O67KvZs
+   lO/An+pYAJ2dkI53FHxN+AiKjxeoS1ajbnACkm+Xv2Usx7zSYJDc4ro4s
+   eLclL2rOkorZ9nEN504x2qsUQgmHt0fdAJRRJGi+2W2OQGR9pBQZImLz9
+   A==;
+X-CSE-ConnectionGUID: 8SEW6wMJTZeZxyO0EBtEuw==
+X-CSE-MsgGUID: F/ox95SzRJ6DwIcCpar+Yw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11234"; a="33264986"
 X-IronPort-AV: E=Sophos;i="6.11,228,1725346800"; 
-   d="scan'208";a="33264982"
+   d="scan'208";a="33264986"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2024 20:38:50 -0700
-X-CSE-ConnectionGUID: ENnZARAWQZe4kVk/53Vmww==
-X-CSE-MsgGUID: 7qHVMIczSkS2e5XeLjhc7g==
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2024 20:38:51 -0700
+X-CSE-ConnectionGUID: NVrcfL68Q4+bdE0slNhAaQ==
+X-CSE-MsgGUID: kx+3hf6sR+uvn96YH8Bpmw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,228,1725346800"; 
-   d="scan'208";a="80384939"
+   d="scan'208";a="80384942"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
   by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2024 20:38:50 -0700
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: stable@vger.kernel.org
 Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Vinod Govindapillai <vinod.govindapillai@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	intel-gfx@lists.freedesktop.org
-Subject: [PATCH xe-i915-for-6.11 02/22] drm/i915: disable fbc due to Wa_16023588340
-Date: Wed, 23 Oct 2024 20:37:54 -0700
-Message-ID: <20241024033815.3538736-2-lucas.demarchi@intel.com>
+	Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>,
+	Arun R Murthy <arun.r.murthy@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH xe-i915-for-6.11 03/22] drm/i915/display: Cache adpative sync caps to use it later
+Date: Wed, 23 Oct 2024 20:37:55 -0700
+Message-ID: <20241024033815.3538736-3-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241024033815.3538736-1-lucas.demarchi@intel.com>
 References: <20241024033815.3538736-1-lucas.demarchi@intel.com>
@@ -80,122 +76,137 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
 
-commit c55f79f317ab428ae6d005965bc07e37496f209f upstream.
+commit b2013783c4458a1fe8b25c0b249d2e878bcf6999 upstream.
 
-On BMG-G21 we need to disable fbc due to complications around the WA.
+Add new member to struct intel_dp to cache support of Adaptive Sync
+SDP capabilities and use it whenever required to avoid HW access
+to read capability during each atomic commit.
 
-v2:
- - Try to handle with i915_drv.h and compat layer. (Rodrigo)
-v3:
- - For simplicity retreat back to the original design for now.
- - Drop the extra \ from the Makefile (Jani)
+-v2:
+- Squash both the patches
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Vinod Govindapillai <vinod.govindapillai@intel.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: intel-gfx@lists.freedesktop.org
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Acked-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240703124338.208220-4-matthew.auld@intel.com
-[ commit dc0f1644c47e ("drm/xe: Generate oob before compiling anything")
-  makes part of the change to the Makefile not needed.
-  Drop that to resolve conflict. ]
+Signed-off-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
+Reviewed-by: Arun R Murthy <arun.r.murthy@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240704082638.2302092-2-mitulkumar.ajitkumar.golani@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- drivers/gpu/drm/i915/display/intel_display_wa.h |  8 ++++++++
- drivers/gpu/drm/i915/display/intel_fbc.c        |  6 ++++++
- drivers/gpu/drm/xe/Makefile                     |  1 +
- drivers/gpu/drm/xe/display/xe_display_wa.c      | 16 ++++++++++++++++
- 4 files changed, 31 insertions(+)
- create mode 100644 drivers/gpu/drm/xe/display/xe_display_wa.c
+ drivers/gpu/drm/i915/display/intel_alpm.c     |  2 +-
+ .../drm/i915/display/intel_display_types.h    |  1 +
+ drivers/gpu/drm/i915/display/intel_dp.c       | 22 ++++++++++---------
+ drivers/gpu/drm/i915/display/intel_dp.h       |  1 -
+ drivers/gpu/drm/i915/display/intel_vrr.c      |  3 +--
+ 5 files changed, 15 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_display_wa.h b/drivers/gpu/drm/i915/display/intel_display_wa.h
-index 63201d09852c5..be644ab6ae006 100644
---- a/drivers/gpu/drm/i915/display/intel_display_wa.h
-+++ b/drivers/gpu/drm/i915/display/intel_display_wa.h
-@@ -6,8 +6,16 @@
- #ifndef __INTEL_DISPLAY_WA_H__
- #define __INTEL_DISPLAY_WA_H__
+diff --git a/drivers/gpu/drm/i915/display/intel_alpm.c b/drivers/gpu/drm/i915/display/intel_alpm.c
+index 10689480338eb..90a960fb1d143 100644
+--- a/drivers/gpu/drm/i915/display/intel_alpm.c
++++ b/drivers/gpu/drm/i915/display/intel_alpm.c
+@@ -280,7 +280,7 @@ void intel_alpm_lobf_compute_config(struct intel_dp *intel_dp,
+ 	if (DISPLAY_VER(i915) < 20)
+ 		return;
  
-+#include <linux/types.h>
+-	if (!intel_dp_as_sdp_supported(intel_dp))
++	if (!intel_dp->as_sdp_supported)
+ 		return;
+ 
+ 	if (crtc_state->has_psr)
+diff --git a/drivers/gpu/drm/i915/display/intel_display_types.h b/drivers/gpu/drm/i915/display/intel_display_types.h
+index f9d3cc3c342bb..160098708eba2 100644
+--- a/drivers/gpu/drm/i915/display/intel_display_types.h
++++ b/drivers/gpu/drm/i915/display/intel_display_types.h
+@@ -1806,6 +1806,7 @@ struct intel_dp {
+ 
+ 	/* connector directly attached - won't be use for modeset in mst world */
+ 	struct intel_connector *attached_connector;
++	bool as_sdp_supported;
+ 
+ 	struct drm_dp_tunnel *tunnel;
+ 	bool tunnel_suspended:1;
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index ffc0d1b140455..d5ce883b289dc 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -130,14 +130,6 @@ bool intel_dp_is_edp(struct intel_dp *intel_dp)
+ 	return dig_port->base.type == INTEL_OUTPUT_EDP;
+ }
+ 
+-bool intel_dp_as_sdp_supported(struct intel_dp *intel_dp)
+-{
+-	struct drm_i915_private *i915 = dp_to_i915(intel_dp);
+-
+-	return HAS_AS_SDP(i915) &&
+-		drm_dp_as_sdp_supported(&intel_dp->aux, intel_dp->dpcd);
+-}
+-
+ static void intel_dp_unset_edid(struct intel_dp *intel_dp);
+ 
+ /* Is link rate UHBR and thus 128b/132b? */
+@@ -2635,8 +2627,7 @@ static void intel_dp_compute_as_sdp(struct intel_dp *intel_dp,
+ 	const struct drm_display_mode *adjusted_mode =
+ 		&crtc_state->hw.adjusted_mode;
+ 
+-	if (!crtc_state->vrr.enable ||
+-	    !intel_dp_as_sdp_supported(intel_dp))
++	if (!crtc_state->vrr.enable || intel_dp->as_sdp_supported)
+ 		return;
+ 
+ 	crtc_state->infoframes.enable |= intel_hdmi_infoframe_enable(DP_SDP_ADAPTIVE_SYNC);
+@@ -5921,6 +5912,15 @@ intel_dp_detect_dsc_caps(struct intel_dp *intel_dp, struct intel_connector *conn
+ 					  connector);
+ }
+ 
++static void
++intel_dp_detect_sdp_caps(struct intel_dp *intel_dp)
++{
++	struct drm_i915_private *i915 = dp_to_i915(intel_dp);
 +
- struct drm_i915_private;
- 
- void intel_display_wa_apply(struct drm_i915_private *i915);
- 
-+#ifdef I915
-+static inline bool intel_display_needs_wa_16023588340(struct drm_i915_private *i915) { return false; }
-+#else
-+bool intel_display_needs_wa_16023588340(struct drm_i915_private *i915);
-+#endif
++	intel_dp->as_sdp_supported = HAS_AS_SDP(i915) &&
++		drm_dp_as_sdp_supported(&intel_dp->aux, intel_dp->dpcd);
++}
 +
- #endif
-diff --git a/drivers/gpu/drm/i915/display/intel_fbc.c b/drivers/gpu/drm/i915/display/intel_fbc.c
-index 67116c9f14643..8488f82143a40 100644
---- a/drivers/gpu/drm/i915/display/intel_fbc.c
-+++ b/drivers/gpu/drm/i915/display/intel_fbc.c
-@@ -56,6 +56,7 @@
- #include "intel_display_device.h"
- #include "intel_display_trace.h"
- #include "intel_display_types.h"
-+#include "intel_display_wa.h"
- #include "intel_fbc.h"
- #include "intel_fbc_regs.h"
- #include "intel_frontbuffer.h"
-@@ -1237,6 +1238,11 @@ static int intel_fbc_check_plane(struct intel_atomic_state *state,
- 		return 0;
+ static int
+ intel_dp_detect(struct drm_connector *connector,
+ 		struct drm_modeset_acquire_ctx *ctx,
+@@ -5991,6 +5991,8 @@ intel_dp_detect(struct drm_connector *connector,
+ 
+ 	intel_dp_detect_dsc_caps(intel_dp, intel_connector);
+ 
++	intel_dp_detect_sdp_caps(intel_dp);
++
+ 	intel_dp_mst_configure(intel_dp);
+ 
+ 	if (intel_dp->reset_link_params) {
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.h b/drivers/gpu/drm/i915/display/intel_dp.h
+index a0f990a95ecca..9be539edf817b 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.h
++++ b/drivers/gpu/drm/i915/display/intel_dp.h
+@@ -85,7 +85,6 @@ void intel_dp_audio_compute_config(struct intel_encoder *encoder,
+ 				   struct drm_connector_state *conn_state);
+ bool intel_dp_has_hdmi_sink(struct intel_dp *intel_dp);
+ bool intel_dp_is_edp(struct intel_dp *intel_dp);
+-bool intel_dp_as_sdp_supported(struct intel_dp *intel_dp);
+ bool intel_dp_is_uhbr(const struct intel_crtc_state *crtc_state);
+ bool intel_dp_has_dsc(const struct intel_connector *connector);
+ int intel_dp_link_symbol_size(int rate);
+diff --git a/drivers/gpu/drm/i915/display/intel_vrr.c b/drivers/gpu/drm/i915/display/intel_vrr.c
+index 5a0da64c7db33..7e1d9c718214c 100644
+--- a/drivers/gpu/drm/i915/display/intel_vrr.c
++++ b/drivers/gpu/drm/i915/display/intel_vrr.c
+@@ -233,8 +233,7 @@ intel_vrr_compute_config(struct intel_crtc_state *crtc_state,
+ 		crtc_state->mode_flags |= I915_MODE_FLAG_VRR;
  	}
  
-+	if (intel_display_needs_wa_16023588340(i915)) {
-+		plane_state->no_fbc_reason = "Wa_16023588340";
-+		return 0;
-+	}
-+
- 	/* WaFbcTurnOffFbcWhenHyperVisorIsUsed:skl,bxt */
- 	if (i915_vtd_active(i915) && (IS_SKYLAKE(i915) || IS_BROXTON(i915))) {
- 		plane_state->no_fbc_reason = "VT-d enabled";
-diff --git a/drivers/gpu/drm/xe/Makefile b/drivers/gpu/drm/xe/Makefile
-index 1979614a90bdd..1ff9602a52f67 100644
---- a/drivers/gpu/drm/xe/Makefile
-+++ b/drivers/gpu/drm/xe/Makefile
-@@ -175,6 +175,7 @@ xe-$(CONFIG_DRM_XE_DISPLAY) += \
- 	display/xe_display.o \
- 	display/xe_display_misc.o \
- 	display/xe_display_rps.o \
-+	display/xe_display_wa.o \
- 	display/xe_dsb_buffer.o \
- 	display/xe_fb_pin.o \
- 	display/xe_hdcp_gsc.o \
-diff --git a/drivers/gpu/drm/xe/display/xe_display_wa.c b/drivers/gpu/drm/xe/display/xe_display_wa.c
-new file mode 100644
-index 0000000000000..68e3d1959ad6a
---- /dev/null
-+++ b/drivers/gpu/drm/xe/display/xe_display_wa.c
-@@ -0,0 +1,16 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2024 Intel Corporation
-+ */
-+
-+#include "intel_display_wa.h"
-+
-+#include "xe_device.h"
-+#include "xe_wa.h"
-+
-+#include <generated/xe_wa_oob.h>
-+
-+bool intel_display_needs_wa_16023588340(struct drm_i915_private *i915)
-+{
-+	return XE_WA(xe_root_mmio_gt(i915), 16023588340);
-+}
+-	if (intel_dp_as_sdp_supported(intel_dp) &&
+-	    crtc_state->vrr.enable) {
++	if (intel_dp->as_sdp_supported && crtc_state->vrr.enable) {
+ 		crtc_state->vrr.vsync_start =
+ 			(crtc_state->hw.adjusted_mode.crtc_vtotal -
+ 			 crtc_state->hw.adjusted_mode.vsync_start);
 -- 
 2.47.0
 
