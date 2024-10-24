@@ -1,158 +1,100 @@
-Return-Path: <stable+bounces-88085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02ADC9AE92B
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 16:42:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B13AD9AE933
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 16:43:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B649A28A452
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 14:42:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AEC628B05F
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 14:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0037A1E5735;
-	Thu, 24 Oct 2024 14:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 812491E9075;
+	Thu, 24 Oct 2024 14:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wAfM0OWt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K54yTDFN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980F31E3788
-	for <stable@vger.kernel.org>; Thu, 24 Oct 2024 14:41:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BD11E6316
+	for <stable@vger.kernel.org>; Thu, 24 Oct 2024 14:42:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729780910; cv=none; b=BV0qa7RROW1HzRxVfNh0ISezKD+mO/C9HYuaTLIclrxp8Pf7l6RRCezLRt/N3srfgE8eB9mDGD/Wv0JCOD7/4xYG5Ri6JLc1GBWatUlODMZUfr0p0DZSFJ82hOVZNg5fpZk7+ibRvi/u0aSvAWuHsl0qIAjnY5nQDHVTLnn8cyQ=
+	t=1729780982; cv=none; b=vBp7ePq80/cXRUYtCjXD8rGF+jFPjUkU1ElOgQN2LOyVWsn/gIE6SDqCGwfEU3orSRAdVly1878aKzPncdcZoAi5qaMDye3H+2066/zb3pp3OFAt0EE1GR4PvhqsbdwVOyLjYAH7vf6aOZkL/BH47lYZbFPV38+kWZqgb44o2tE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729780910; c=relaxed/simple;
-	bh=PB8KBVtiODUPJZipdTOV7LIC3rFuPdVi4OkEXiOycZQ=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=i9FZCaV+wC65sfti78syurSU3E6sChRyVGL3igOfmqnr/cQgiMspnDCFVEuY7l7erYk9ieEMb+PS8B2FmBkNEtJVEFrmtQUl2QEqk6H6Kfieo82Y5P1KX2hIRCE/fljo8AHWzTio2NzWmUFEqTMR5EWCSNs3Lhs5Qhcy0ppxVqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wAfM0OWt; arc=none smtp.client-ip=209.85.167.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3e5f968230bso459908b6e.3
-        for <stable@vger.kernel.org>; Thu, 24 Oct 2024 07:41:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729780907; x=1730385707; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=dZVAlNyX41TJtkmqUex4uvcXk1DCDx1jUZWPpru6ieQ=;
-        b=wAfM0OWtqL3UAFrAGLpmyT38YMOJU3RlJGWdA22cvnLzKsG2yrqnbYtdcpxQ2OJdPx
-         WHojQU+W66MEYcqeORNuCTGlbG9pByfnkF5MJeaTLH+VFfRMZPEp9Kr5WK/zIlsHFEXM
-         nAhu2+p4f61leCBTqz8ktk4UiVHyvXzz1d9IDiC3yDaUc912qBXHLs25YUs94ZvTEhn/
-         msR2cz7IR6e+63DoVlXOvcf98K9bUFV6+5lgFB/YGdlRDRMW1/zmy614wEb7zGg/Yp8E
-         0HBnylUyITPWdkrV7ZuyAek1psV1xAF6USHUNcPVkEJOwIVpuXNs6jKAziHhmgUHwzHv
-         YDEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729780907; x=1730385707;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dZVAlNyX41TJtkmqUex4uvcXk1DCDx1jUZWPpru6ieQ=;
-        b=K4VBMrkAtSFZOHw2fFloEn9s5Rx4ucBhCX8Yg7CNulodF0F/+J9OrOTz7r5XvO4Jy5
-         V66i4h5cvqoXK3smFgJ1K3yLd0gckraczIoVPSjvgKv0NxqLEtcPCaiohMYRNYMMff/i
-         +1SVAquiuNMxYo2Oez6MGV2S7oTyZXFO24GnWW8FuxYx0kq7S7XQhOIvjmMdascf7vdl
-         +yDM4YbkNkeECboM+pPJ5PFAGQnl2dpm9CIUn5LYGHw/OB1j5SjUZTYjYA2ehidxTKfS
-         cLRByFnaf/xXD39//RdZ/54ssfA8Qn4MKUaia+skhwZCmFHgUtns2M5MiNQHOnnj0iEK
-         zt9w==
-X-Gm-Message-State: AOJu0YwQLwjjLBOihrkKLvQ7Tfv4Jw49DFJyllEAPfpis6bIHHrxL923
-	KXaQbmPF393EKSaUPw+Tt2rmx1XEgbJzU7n/GzhEll8rylJ9+XDZreLvdIql8TPrd0AfKpAnSxA
-	Qdc2uDw0Olwqb5P+XOr83tT4maLTqXAiDv2UK77QTq25TsIoado4=
-X-Google-Smtp-Source: AGHT+IFoj6HxQyMTP+O33KIqB5ZEoLUAbXegDn8qFNOc1tMmOFYwu+hGvrsVM/tago/3Idtl8FtQq6jNLh4roVRyF88=
-X-Received: by 2002:a05:6808:3a07:b0:3e6:261f:5a51 with SMTP id
- 5614622812f47-3e6261f61eemr6815877b6e.35.1729780907103; Thu, 24 Oct 2024
- 07:41:47 -0700 (PDT)
+	s=arc-20240116; t=1729780982; c=relaxed/simple;
+	bh=zCUgnqD5mO98AkIjhdXNX3G3zNpNXTgMPKWp54Dpsyg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=bZMb0bfw9A3zSxOyjULR6VI4bnfiBcVlpn7YUxESzCvzMPRNb+4wrBHjE6qojkzxETiqCc1EeVdoy5Rdyebpc8I4lh+F0NLvVpQmxHB7/1eWeI/oc7jo6Ryb9Oc/Y22GmzhR6n9jLxjhH/azIK7xNQUzIl1ZshrSuP/11J/rDVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K54yTDFN; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729780980; x=1761316980;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=zCUgnqD5mO98AkIjhdXNX3G3zNpNXTgMPKWp54Dpsyg=;
+  b=K54yTDFNdmg047CYHyLu+NnRB921P3/943RMB8onj2SW6De4YZ6cvcei
+   eirWskFot9YmMC+GRDBxZJpUdFqksIYcLgR4qVpEnF66j+B+2P6eQ6Pmr
+   8LbS/KqAJm0nVcIVxv15ul15BroAJVMmGe135hbFXm3tRhzQKa5u/usTn
+   OifqFGLEu1hOk2XU9qlqAk/CsRy4oSWwrMgoun1598EW4V6YocKRw4h5G
+   2xETdQ/TTnqQoq7g3qIqqDzK8HMR+OAdwtfhYdl9lZuqmySh9sCeWoGh1
+   5Cyla0r6cv2G+kvcD5uRsi1SfiIO+lK+VkOZNuUWqPR5bWUI8jgUMhUav
+   w==;
+X-CSE-ConnectionGUID: szJ15v9EQmmyLSr2vGlGJg==
+X-CSE-MsgGUID: Q8h+tJbvQau5mMiaIgI8bg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11235"; a="29520457"
+X-IronPort-AV: E=Sophos;i="6.11,229,1725346800"; 
+   d="scan'208";a="29520457"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2024 07:42:59 -0700
+X-CSE-ConnectionGUID: I2eSZ54bS6eivhZPZBJC6g==
+X-CSE-MsgGUID: AF1dJlsJQtmXYhqTluQZ0A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,229,1725346800"; 
+   d="scan'208";a="85215849"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 24 Oct 2024 07:42:58 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t3z39-000WXE-2D;
+	Thu, 24 Oct 2024 14:42:55 +0000
+Date: Thu, 24 Oct 2024 22:42:47 +0800
+From: kernel test robot <lkp@intel.com>
+To: Zijun Hu <zijun_hu@icloud.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2 6/6] phy: core: Simplify API of_phy_simple_xlate()
+ implementation
+Message-ID: <Zxpc51rJJvfJ-wdY@0218aad26cb2>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 24 Oct 2024 20:11:34 +0530
-Message-ID: <CA+G9fYsaQPsvJdCsezaTu1x3koCzkTBEG8C1NpZotZLXZpZ9Qw@mail.gmail.com>
-Subject: stable-rc linux-6.6.y: Queues: tinyconfig: undefined reference to `irq_work_queue'
-To: linux-stable <stable@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	rcu <rcu@vger.kernel.org>
-Cc: Anders Roxell <anders.roxell@linaro.org>, Dan Carpenter <dan.carpenter@linaro.org>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241024-phy_core_fix-v2-6-fc0c63dbfcf3@quicinc.com>
 
-Most of the tinyconfigs are failing on stable-rc linux-6.6.y.
+Hi,
 
-Build errors:
---------------
-aarch64-linux-gnu-ld: kernel/task_work.o: in function `task_work_add':
-task_work.c:(.text+0x190): undefined reference to `irq_work_queue'
-task_work.c:(.text+0x190): relocation truncated to fit:
-R_AARCH64_CALL26 against undefined symbol `irq_work_queue'
+Thanks for your patch.
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-metadata:
-------------
-git_describe: v6.6.57-251-g1870a9bd3fe7
-git_repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-Build:   v6.6.57-251-g1870a9bd3fe7
-Details: https://qa-reports.linaro.org/lkft/linux-stable-rc-queues-queue_6.6/build/v6.6.57-251-g1870a9bd3fe7
-kernel_version: 6.6.58
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-Regressions (compared to build v6.6.57)
-------------------------------------------------------------------------
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v2 6/6] phy: core: Simplify API of_phy_simple_xlate() implementation
+Link: https://lore.kernel.org/stable/20241024-phy_core_fix-v2-6-fc0c63dbfcf3%40quicinc.com
 
-parisc:
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
-  * build/gcc-11-tinyconfig
-mips:
 
-  * build/gcc-12-tinyconfig
-  * build/clang-19-tinyconfig
-  * build/gcc-8-tinyconfig
-  * build/clang-nightly-tinyconfig
-arm:
 
-  * build/clang-19-tinyconfig
-  * build/gcc-8-tinyconfig
-  * build/gcc-13-tinyconfig
-  * build/clang-nightly-tinyconfig
-powerpc:
-
-  * build/clang-19-tinyconfig
-  * build/gcc-8-tinyconfig
-  * build/gcc-13-tinyconfig
-  * build/clang-nightly-tinyconfig
-arm64:
-
-  * build/clang-19-tinyconfig
-  * build/gcc-8-tinyconfig
-  * build/gcc-13-tinyconfig
-  * build/clang-nightly-tinyconfig
-arc:
-
-  * build/gcc-9-tinyconfig
-  * build/gcc-8-tinyconfig
-s390:
-
-  * build/clang-19-tinyconfig
-  * build/gcc-8-tinyconfig
-  * build/gcc-13-tinyconfig
-  * build/clang-nightly-tinyconfig
-sparc:
-
-  * build/gcc-8-tinyconfig
-  * build/gcc-11-tinyconfig
-riscv:
-
-  * build/clang-19-tinyconfig
-  * build/gcc-8-tinyconfig
-  * build/gcc-13-tinyconfig
-
-compare history links:
------
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-queues-queue_6.6/build/v6.6.57-251-g1870a9bd3fe7/testrun/25533195/suite/build/test/gcc-13-tinyconfig/history/
-- https://qa-reports.linaro.org/lkft/linux-stable-rc-queues-queue_6.6/build/v6.6.57-251-g1870a9bd3fe7/testrun/25533195/suite/build/test/gcc-13-tinyconfig/log
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
