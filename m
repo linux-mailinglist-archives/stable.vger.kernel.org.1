@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-87974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FFFB9ADA31
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 05:00:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 787669ADA35
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 05:03:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71E881F22360
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 03:00:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22FDE1F22B12
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 03:03:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0AB15746E;
-	Thu, 24 Oct 2024 03:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 935F3482EB;
+	Thu, 24 Oct 2024 03:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="m7EKQeeU"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="xSgQMeIN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F5C156F30;
-	Thu, 24 Oct 2024 03:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503593C3C;
+	Thu, 24 Oct 2024 03:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729738803; cv=none; b=HBCWRg7PdI166aDDtDogAOh8vqjcQfk4ni54ZqNTtINbyqx7L14udZaQc3Ofhi8zbtSxIj+1tOOrTLWSsIDyMpCPhyytK1fSlRdgb4HpDX+AxgKTm+8DG0f7lcaEaW6oT5RFyWRrOqje7wAgw+1VZVTsXlFEAEIRhTGK4qGY15U=
+	t=1729739029; cv=none; b=hafPnT+1jO75XeIWCwpljdFTRura6Z7Y7M9Bi3AsXDCC3grZ3zcKYrrrtU9OZ1D1XE54FiSipalgb/JqU10f+jgjW9ReSNH7BCvb7r9im6fG8LF1t0fBexGNTwbtMVRVuOaY3xDmyfpEts0Cmwt6G/61Nr00dypeKe/RdoFlPss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729738803; c=relaxed/simple;
-	bh=Y4iOGP+DCwBj9Plp01TpcArgJAABKF2G0i6KPJefUz4=;
-	h=Date:To:From:Subject:Message-Id; b=AlyJMieARm13l2ax4Phf3SbhfVX2fmavV4ThWYYa5BVMlbKeJa++S8PaMRlcWaz2yGDYiH1h5+fz1UKXzCAgW7+lxKHUf6rxefyN68PvzqkB2ykT+0xR9FxQbnHH/qtAdtmHXg+isUmYLsKozsr9daD37Z8DpDIFePndmd4u3+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=m7EKQeeU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA7BC4CEC6;
-	Thu, 24 Oct 2024 03:00:02 +0000 (UTC)
+	s=arc-20240116; t=1729739029; c=relaxed/simple;
+	bh=ko+SpEJILyrR8OVQ+wNJ9ZAyrCCB+UJNtwb2QbMGWgA=;
+	h=Date:To:From:Subject:Message-Id; b=kr+1h/swcCszQ59bt/6/hLBk0XkxiIGD9VNh6CI5dB035Y8u9B5kLVTc8xawNpptZIAUTw+R1mRZmdTIXfegvdAxIVizasJ5+ucOaPBzVma1lX0ZiFZLL1nd33Ma9Bo8NqLMjx8DJuAepcaQDoGaw6DUL3xzxi37pj1Nb6+i1DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=xSgQMeIN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE30DC4CEC6;
+	Thu, 24 Oct 2024 03:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1729738802;
-	bh=Y4iOGP+DCwBj9Plp01TpcArgJAABKF2G0i6KPJefUz4=;
+	s=korg; t=1729739028;
+	bh=ko+SpEJILyrR8OVQ+wNJ9ZAyrCCB+UJNtwb2QbMGWgA=;
 	h=Date:To:From:Subject:From;
-	b=m7EKQeeUWBZ/z1tQ2ojkpkCr+yuKMVvwv+2IetD6E8LrttQzoh24AOPYRS8s2eUV4
-	 3U+FUbpaayxyQm94OTelHRAtUPF6JDtvQUA+bP700uPFTdgjBqaW+cJVeaUVPyaFT1
-	 5HNLyTxcj0eWVOAR/szP2gJRFChAvEmTkEhMPGpU=
-Date: Wed, 23 Oct 2024 20:00:01 -0700
-To: mm-commits@vger.kernel.org,yeweihua4@huawei.com,stable@vger.kernel.org,sj@kernel.org,sieberf@amazon.com,shakeel.butt@linux.dev,foersleo@amazon.de,zhengyejian@huaweicloud.com,akpm@linux-foundation.org
+	b=xSgQMeINL3vPIBcX3+44Tk5+DayR2ZjMI9ZE0NKhK9ukNT2mQjAX85ydJUypA5rpZ
+	 9Zoxz2X1BeB+MO3uEPoO0AAOaXPpcTHVBiRxnjcGVc6TADXDB82R7hqaNNz9c0EOnu
+	 SXzcAM11Y5z51RsquxiXVbqHnlzBjfQZ6Ub/FbIc=
+Date: Wed, 23 Oct 2024 20:03:48 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-vaddr-fix-issue-in-damon_va_evenly_split_region.patch added to mm-unstable branch
-Message-Id: <20241024030002.1AA7BC4CEC6@smtp.kernel.org>
+Subject: + nilfs2-fix-potential-deadlock-with-newly-created-symlinks.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241024030348.BE30DC4CEC6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,14 +50,14 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: mm/damon/vaddr: fix issue in damon_va_evenly_split_region()
-has been added to the -mm mm-unstable branch.  Its filename is
-     mm-damon-vaddr-fix-issue-in-damon_va_evenly_split_region.patch
+     Subject: nilfs2: fix potential deadlock with newly created symlinks
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     nilfs2-fix-potential-deadlock-with-newly-created-symlinks.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-vaddr-fix-issue-in-damon_va_evenly_split_region.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/nilfs2-fix-potential-deadlock-with-newly-created-symlinks.patch
 
-This patch will later appear in the mm-unstable branch at
+This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 Before you just go and hit "reply", please:
@@ -73,128 +73,63 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Zheng Yejian <zhengyejian@huaweicloud.com>
-Subject: mm/damon/vaddr: fix issue in damon_va_evenly_split_region()
-Date: Tue, 22 Oct 2024 16:39:26 +0800
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Subject: nilfs2: fix potential deadlock with newly created symlinks
+Date: Sun, 20 Oct 2024 13:51:28 +0900
 
-Patch series "mm/damon/vaddr: Fix issue in
-damon_va_evenly_split_region()".  v2.
+Syzbot reported that page_symlink(), called by nilfs_symlink(), triggers
+memory reclamation involving the filesystem layer, which can result in
+circular lock dependencies among the reader/writer semaphore
+nilfs->ns_segctor_sem, s_writers percpu_rwsem (intwrite) and the
+fs_reclaim pseudo lock.
 
-According to the logic of damon_va_evenly_split_region(), currently
-following split case would not meet the expectation:
+This is because after commit 21fc61c73c39 ("don't put symlink bodies in
+pagecache into highmem"), the gfp flags of the page cache for symbolic
+links are overwritten to GFP_KERNEL via inode_nohighmem().
 
-  Suppose DAMON_MIN_REGION=0x1000,
-  Case: Split [0x0, 0x3000) into 2 pieces, then the result would be
-        acutually 3 regions:
-          [0x0, 0x1000), [0x1000, 0x2000), [0x2000, 0x3000)
-        but NOT the expected 2 regions:
-          [0x0, 0x1000), [0x1000, 0x3000) !!!
+This is not a problem for symlinks read from the backing device, because
+the __GFP_FS flag is dropped after inode_nohighmem() is called.  However,
+when a new symlink is created with nilfs_symlink(), the gfp flags remain
+overwritten to GFP_KERNEL.  Then, memory allocation called from
+page_symlink() etc.  triggers memory reclamation including the FS layer,
+which may call nilfs_evict_inode() or nilfs_dirty_inode().  And these can
+cause a deadlock if they are called while nilfs->ns_segctor_sem is held:
 
-The root cause is that when calculating size of each split piece in
-damon_va_evenly_split_region():
+Fix this issue by dropping the __GFP_FS flag from the page cache GFP flags
+of newly created symlinks in the same way that nilfs_new_inode() and
+__nilfs_read_inode() do, as a workaround until we adopt nofs allocation
+scope consistently or improve the locking constraints.
 
-  `sz_piece = ALIGN_DOWN(sz_orig / nr_pieces, DAMON_MIN_REGION);`
-
-both the dividing and the ALIGN_DOWN may cause loss of precision, then
-each time split one piece of size 'sz_piece' from origin 'start' to 'end'
-would cause more pieces are split out than expected!!!
-
-To fix it, count for each piece split and make sure no more than
-'nr_pieces'.  In addition, add above case into damon_test_split_evenly().
-
-And add 'nr_piece == 1' check in damon_va_evenly_split_region() for better
-code readability and add a corresponding kunit testcase.
-
-
-This patch (of 2):
-
-According to the logic of damon_va_evenly_split_region(), currently
-following split case would not meet the expectation:
-
-  Suppose DAMON_MIN_REGION=0x1000,
-  Case: Split [0x0, 0x3000) into 2 pieces, then the result would be
-        acutually 3 regions:
-          [0x0, 0x1000), [0x1000, 0x2000), [0x2000, 0x3000)
-        but NOT the expected 2 regions:
-          [0x0, 0x1000), [0x1000, 0x3000) !!!
-
-The root cause is that when calculating size of each split piece in
-damon_va_evenly_split_region():
-
-  `sz_piece = ALIGN_DOWN(sz_orig / nr_pieces, DAMON_MIN_REGION);`
-
-both the dividing and the ALIGN_DOWN may cause loss of precision,
-then each time split one piece of size 'sz_piece' from origin 'start' to
-'end' would cause more pieces are split out than expected!!!
-
-To fix it, count for each piece split and make sure no more than
-'nr_pieces'. In addition, add above case into damon_test_split_evenly().
-
-After this patch, damon-operations test passed:
-
- # ./tools/testing/kunit/kunit.py run damon-operations
- [...]
- ============== damon-operations (6 subtests) ===============
- [PASSED] damon_test_three_regions_in_vmas
- [PASSED] damon_test_apply_three_regions1
- [PASSED] damon_test_apply_three_regions2
- [PASSED] damon_test_apply_three_regions3
- [PASSED] damon_test_apply_three_regions4
- [PASSED] damon_test_split_evenly
- ================ [PASSED] damon-operations =================
-
-Link: https://lkml.kernel.org/r/20241022083927.3592237-1-zhengyejian@huaweicloud.com
-Link: https://lkml.kernel.org/r/20241022083927.3592237-2-zhengyejian@huaweicloud.com
-Fixes: 3f49584b262c ("mm/damon: implement primitives for the virtual memory address spaces")
-Signed-off-by: Zheng Yejian <zhengyejian@huaweicloud.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: Fernand Sieber <sieberf@amazon.com>
-Cc: Leonard Foerster <foersleo@amazon.de>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Ye Weihua <yeweihua4@huawei.com>
+Link: https://lkml.kernel.org/r/20241020050003.4308-1-konishi.ryusuke@gmail.com
+Fixes: 21fc61c73c39 ("don't put symlink bodies in pagecache into highmem")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9ef37ac20608f4836256
+Tested-by: syzbot+9ef37ac20608f4836256@syzkaller.appspotmail.com
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/damon/tests/vaddr-kunit.h |    1 +
- mm/damon/vaddr.c             |    4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ fs/nilfs2/namei.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/mm/damon/tests/vaddr-kunit.h~mm-damon-vaddr-fix-issue-in-damon_va_evenly_split_region
-+++ a/mm/damon/tests/vaddr-kunit.h
-@@ -300,6 +300,7 @@ static void damon_test_split_evenly(stru
- 	damon_test_split_evenly_fail(test, 0, 100, 0);
- 	damon_test_split_evenly_succ(test, 0, 100, 10);
- 	damon_test_split_evenly_succ(test, 5, 59, 5);
-+	damon_test_split_evenly_succ(test, 0, 3, 2);
- 	damon_test_split_evenly_fail(test, 5, 6, 2);
- }
- 
---- a/mm/damon/vaddr.c~mm-damon-vaddr-fix-issue-in-damon_va_evenly_split_region
-+++ a/mm/damon/vaddr.c
-@@ -67,6 +67,7 @@ static int damon_va_evenly_split_region(
- 	unsigned long sz_orig, sz_piece, orig_end;
- 	struct damon_region *n = NULL, *next;
- 	unsigned long start;
-+	unsigned int i;
- 
- 	if (!r || !nr_pieces)
- 		return -EINVAL;
-@@ -80,8 +81,7 @@ static int damon_va_evenly_split_region(
- 
- 	r->ar.end = r->ar.start + sz_piece;
- 	next = damon_next_region(r);
--	for (start = r->ar.end; start + sz_piece <= orig_end;
--			start += sz_piece) {
-+	for (start = r->ar.end, i = 1; i < nr_pieces; start += sz_piece, i++) {
- 		n = damon_new_region(start, start + sz_piece);
- 		if (!n)
- 			return -ENOMEM;
+--- a/fs/nilfs2/namei.c~nilfs2-fix-potential-deadlock-with-newly-created-symlinks
++++ a/fs/nilfs2/namei.c
+@@ -157,6 +157,9 @@ static int nilfs_symlink(struct mnt_idma
+ 	/* slow symlink */
+ 	inode->i_op = &nilfs_symlink_inode_operations;
+ 	inode_nohighmem(inode);
++	mapping_set_gfp_mask(inode->i_mapping,
++			     mapping_gfp_constraint(inode->i_mapping,
++						    ~__GFP_FS));
+ 	inode->i_mapping->a_ops = &nilfs_aops;
+ 	err = page_symlink(inode, symname, l);
+ 	if (err)
 _
 
-Patches currently in -mm which might be from zhengyejian@huaweicloud.com are
+Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
 
-mm-damon-vaddr-fix-issue-in-damon_va_evenly_split_region.patch
-mm-damon-vaddr-add-nr_piece-==-1-check-in-damon_va_evenly_split_region.patch
+nilfs2-fix-kernel-bug-due-to-missing-clearing-of-checked-flag.patch
+nilfs2-fix-potential-deadlock-with-newly-created-symlinks.patch
 
 
