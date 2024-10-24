@@ -1,153 +1,99 @@
-Return-Path: <stable+bounces-87971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B4A89AD9E0
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 04:22:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E93429AD9EB
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 04:27:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6892283733
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 02:22:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2262C1C215E7
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 02:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28317147C91;
-	Thu, 24 Oct 2024 02:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2A8148838;
+	Thu, 24 Oct 2024 02:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="v+erznpW"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="eCs6J2P3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D855214F9F3
-	for <stable@vger.kernel.org>; Thu, 24 Oct 2024 02:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966F174040;
+	Thu, 24 Oct 2024 02:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729736559; cv=none; b=ag25rz7DNZicafmkTbSFq9z6/IpnYQ17IfV3jNTwTkHtKMT9z1YAvkMpb5bbnDjILIeiyRtVrezx5aQxvWQHLg/r3kZrC9b8H4Im9ECUo3l63MWfUw/DnCLT/sGN2VWDO5hA8x1sSW87SGkPvRACiDf/8VEeYbYMsmQ/vUijAuk=
+	t=1729736848; cv=none; b=UR1E4dvnl9AqfyU1aWwKVmo61Wc45VuBb1HcQs/+DINK/YFL/MARwTZ5Ub3etBLBOibAG3kK/aqGs6DBBBaVqXry6r2ZpxxK88ROJHb4OzM2Wuqc4y+5FmQEUxSGkyonelanTmB1X28U0psJh4QryvdlO/2imSFtRmJaBMmXqN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729736559; c=relaxed/simple;
-	bh=hGtFXbU9VAyW/8pRrl9hkSCxmzALYxOVKBLxqL2fk0A=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=dIxSi5QbuQkJLzk1gaFfO1G59OJJ3PsoLYLdPrvEeo9ntg3jVUeFQG+cyZN11KcLsW5VPsmZa8+nbkpFnjYK6GaHdFnmDjwWzgql8ZIx4QiQ43VaAQEVKIYmy7Lhy2TtO7gs1fYyRUK995+1yNUDwY8mbMRPa1D8QUeI5Lb8vjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--amitsd.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=v+erznpW; arc=none smtp.client-ip=209.85.219.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--amitsd.bounces.google.com
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e2bd09d2505so848200276.2
-        for <stable@vger.kernel.org>; Wed, 23 Oct 2024 19:22:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729736557; x=1730341357; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=RChQ6ImziR2UxxxuK55p/UZIl7zlomw2h99sUv/4Mus=;
-        b=v+erznpWBQDEyOUMlqOzpaGZzerZyNvleKRA7ha7hTclyESeNCsp5NKe4DHk2VRdJ7
-         igEJXgyd3s8GV3V530EhFsjZpQwwmhebCvIrLQkK0lgzf3L7ipCjzuwTElE/W/dm5r/d
-         Wurh9ztigHb3davaIYXamgeBSM8KuPOMsP7DNk1ggihaUPE8DyE3xcmslSIAJRUmCpC7
-         xfAH5z7aUbt432yCtupI7BHU+FvF3ug861L4IlFNurAOTbEGb4yZpJdJeiIc5FaAdTlr
-         rgOLu4J0GRWtTIKerGY4ZjHwuGn6ra+4KE4UB1XhB56NDeRRtxO17MKYbQQP8hz8Ov+w
-         GzAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729736557; x=1730341357;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RChQ6ImziR2UxxxuK55p/UZIl7zlomw2h99sUv/4Mus=;
-        b=WHkqliKv5BHLLy0FLc8TnMTAYmisPHdtb1j9FWNmUPb0FmnvpTTiIXhB6izNzWsavY
-         mia5dRFWWOfq/rcafnoPZqu0pDpdZd/3NqZ9AWUg2dA3/s0H9OXbzGqEfdyp9MBwHNJM
-         ixhz0TREyNwNa8REVHeszspoIfSzShSNt/bFtfQhmcWZ/Z2GLkh79ekUCZ//3Bgdhiy4
-         70Jp0mKx4IGWTqavo0oL/Fct+GoxUGqQ5R2kp0oEHX3rn/PGeJTUNowXEegczuDleFCP
-         5KMpo/cf8z2GtwPnj98tJofLNa0rt8EL0yrjAqkkWi5I/YHDWsaC4ntgblR5JVPI1/qH
-         Oe8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV/+RR/mBVCJKHsjEBLPL6E3pSJwhPGT183Z/GQ80vxU9L/7++tGQ37XUMOD6/bXZdfffrk3jk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJZ72opthoQI85WT5MKbHXCIQ9NBAkwwfftINdNhrPp82UiHh9
-	qn0hraC7qNeI2vzvBrV/VbAckEfPrycAHxXhqmtUM/RBIDPqExJqYZR4jaSQf7+EswYgjUVuKrS
-	a1Q==
-X-Google-Smtp-Source: AGHT+IHvpgV2IEy6a8M5p6FINEmbO9iwt7048YunZFeK8TEB+fKeKeGsJJogBorbRaYHFXdxrIma//8yhks=
-X-Received: from amitsd-gti.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:827])
- (user=amitsd job=sendgmr) by 2002:a25:74c9:0:b0:e2e:2c11:bbf8 with SMTP id
- 3f1490d57ef6-e2f2fbbb888mr230276.9.1729736556338; Wed, 23 Oct 2024 19:22:36
- -0700 (PDT)
-Date: Wed, 23 Oct 2024 19:22:30 -0700
+	s=arc-20240116; t=1729736848; c=relaxed/simple;
+	bh=IvEc+AYeWPJJmtJ60ssOpgGH28HGIQWXYtW2hYd4OvM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Mkug1QTqS7ekd2OePiLdXRL7KmQ/TF6vjhNAvTujsFemG1+iP+oiFdWbtBrASzgBFbpiKQl5OIK4rdlET4iW3Frv5vH/ucQGqKrYlgjFA2YXscVVkX1JTeZFCWeFIQSG9DsDSuR7mRhHz0VkhPzp8QhBk5NipAO8cqswdP6T2rY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=eCs6J2P3; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=/rPi5
+	Lcki+iBDALqPQLhIL7P+3qfjGOuEBBYE9xUBb4=; b=eCs6J2P3tr3ky7OPmlMYT
+	UOZlnHUyIqbWHlsnIxf8OHrwgPYvfenxZQaVXpR4okazu+bOY/i9YKcHFOg/McAg
+	/y3ty1Pj2qJ/n8gkPnmNEkzkhEjwNXin4mDk4YMMZbCv1rb+BIJhiT9eyHBddvB3
+	siOBw28jMUKJ45XxBXtxdw=
+Received: from thinkpadx13gen2i.. (unknown [111.48.58.12])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wC339x2sBlnNkzrAA--.9816S2;
+	Thu, 24 Oct 2024 10:27:03 +0800 (CST)
+From: Zongmin Zhou <min_halo@163.com>
+To: skhan@linuxfoundation.org
+Cc: i@zenithal.me,
+	linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	shuah@kernel.org,
+	valentina.manea.m@gmail.com,
+	Zongmin Zhou <zhouzongmin@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] usbip: tools: Fix detach_port() invalid port error path
+Date: Thu, 24 Oct 2024 10:27:00 +0800
+Message-Id: <20241024022700.1236660-1-min_halo@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <8d1a298c-78e4-4dfd-a5fb-5dd96fb22e81@linuxfoundation.org>
+References: <8d1a298c-78e4-4dfd-a5fb-5dd96fb22e81@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.47.0.105.g07ac214952-goog
-Message-ID: <20241024022233.3276995-1-amitsd@google.com>
-Subject: [PATCH v1] usb: typec: tcpm: restrict SNK_WAIT_CAPABILITIES_TIMEOUT
- transitions to non self-powered devices
-From: Amit Sunil Dhamne <amitsd@google.com>
-To: heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org
-Cc: rdbabiera@google.com, badhri@google.com, xu.yang_2@nxp.com, 
-	sebastian.reichel@collabora.com, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Amit Sunil Dhamne <amitsd@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wC339x2sBlnNkzrAA--.9816S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrur17Kry7uFWfGr4rJry7Jrb_yoWfCrg_Cr
+	4Uur4DXrWYka4Fkrn5GF18CryrK3Z8Wr4kXa1UKr1fGa4qyrn5JFyDt3929F18ur1qvF1a
+	y3Z5Xw1DZws8ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU89Xo7UUUUU==
+X-CM-SenderInfo: pplqsxxdorqiywtou0bp/1tbiLAWBq2cZRZMUFQABsr
 
-PD3.1 spec ("8.3.3.3.3 PE_SNK_Wait_for_Capabilities State") mandates
-that the policy engine perform a hard reset when SinkWaitCapTimer
-expires. Instead the code explicitly does a GET_SOURCE_CAP when the
-timer expires as part of SNK_WAIT_CAPABILITIES_TIMEOUT. Due to this the
-following compliance test failures are reported by the compliance tester
-(added excerpts from the PD Test Spec):
+From: Zongmin Zhou <zhouzongmin@kylinos.cn>
 
-* COMMON.PROC.PD.2#1:
-  The Tester receives a Get_Source_Cap Message from the UUT. This
-  message is valid except the following conditions: [COMMON.PROC.PD.2#1]
-    a. The check fails if the UUT sends this message before the Tester
-       has established an Explicit Contract
-    ...
+The detach_port() doesn't return error
+when detach is attempted on an invalid port.
 
-* TEST.PD.PROT.SNK.4:
-  ...
-  4. The check fails if the UUT does not send a Hard Reset between
-    tTypeCSinkWaitCap min and max. [TEST.PD.PROT.SNK.4#1] The delay is
-    between the VBUS present vSafe5V min and the time of the first bit
-    of Preamble of the Hard Reset sent by the UUT.
-
-For the purpose of interoperability, restrict the quirk introduced in
-https://lore.kernel.org/all/20240523171806.223727-1-sebastian.reichel@collabora.com/
-to only non self-powered devices as battery powered devices will not
-have the issue mentioned in that commit.
-
+Fixes: 40ecdeb1a187 ("usbip: usbip_detach: fix to check for invalid ports")
 Cc: stable@vger.kernel.org
-Fixes: 122968f8dda8 ("usb: typec: tcpm: avoid resets for missing source capability messages")
-Reported-by: Badhri Jagan Sridharan <badhri@google.com>
-Closes: https://lore.kernel.org/all/CAPTae5LAwsVugb0dxuKLHFqncjeZeJ785nkY4Jfd+M-tCjHSnQ@mail.gmail.com/
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Hongren Zheng <i@zenithal.me>
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Zongmin Zhou <zhouzongmin@kylinos.cn>
 ---
- drivers/usb/typec/tcpm/tcpm.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ tools/usb/usbip/src/usbip_detach.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index d6f2412381cf..c8f467d24fbb 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -4515,7 +4515,8 @@ static inline enum tcpm_state hard_reset_state(struct tcpm_port *port)
- 		return ERROR_RECOVERY;
- 	if (port->pwr_role == TYPEC_SOURCE)
- 		return SRC_UNATTACHED;
--	if (port->state == SNK_WAIT_CAPABILITIES_TIMEOUT)
-+	if (port->state == SNK_WAIT_CAPABILITIES ||
-+	    port->state == SNK_WAIT_CAPABILITIES_TIMEOUT)
- 		return SNK_READY;
- 	return SNK_UNATTACHED;
- }
-@@ -5043,8 +5044,11 @@ static void run_state_machine(struct tcpm_port *port)
- 			tcpm_set_state(port, SNK_SOFT_RESET,
- 				       PD_T_SINK_WAIT_CAP);
- 		} else {
--			tcpm_set_state(port, SNK_WAIT_CAPABILITIES_TIMEOUT,
--				       PD_T_SINK_WAIT_CAP);
-+			if (!port->self_powered)
-+				upcoming_state = SNK_WAIT_CAPABILITIES_TIMEOUT;
-+			else
-+				upcoming_state = hard_reset_state(port);
-+			tcpm_set_state(port, upcoming_state, PD_T_SINK_WAIT_CAP);
- 		}
- 		break;
- 	case SNK_WAIT_CAPABILITIES_TIMEOUT:
-
-base-commit: c6d9e43954bfa7415a1e9efdb2806ec1d8a8afc8
+diff --git a/tools/usb/usbip/src/usbip_detach.c b/tools/usb/usbip/src/usbip_detach.c
+index b29101986b5a..6b78d4a81e95 100644
+--- a/tools/usb/usbip/src/usbip_detach.c
++++ b/tools/usb/usbip/src/usbip_detach.c
+@@ -68,6 +68,7 @@ static int detach_port(char *port)
+ 	}
+ 
+ 	if (!found) {
++		ret = -1;
+ 		err("Invalid port %s > maxports %d",
+ 			port, vhci_driver->nports);
+ 		goto call_driver_close;
 -- 
-2.47.0.105.g07ac214952-goog
+2.34.1
 
 
