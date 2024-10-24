@@ -1,145 +1,201 @@
-Return-Path: <stable+bounces-88094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BA6B9AEB3C
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 18:00:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E020F9AEA51
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 17:22:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 101C82856C7
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 16:00:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9962F283530
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 15:22:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77E81EABDB;
-	Thu, 24 Oct 2024 16:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B151E7C00;
+	Thu, 24 Oct 2024 15:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VAZcTOyd"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="rmzjr1GD";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="umD1zxiq";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="rmzjr1GD";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="umD1zxiq"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693A7156C74
-	for <stable@vger.kernel.org>; Thu, 24 Oct 2024 16:00:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07491EABCC
+	for <stable@vger.kernel.org>; Thu, 24 Oct 2024 15:22:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729785631; cv=none; b=aLlcJnZ5E7BH+GDB1YlTjPjHu3NYJVc9ZhsH570xQp4eLo5SHO1pjEF3BzMMs08wC+pBvhEl1urpnAAJJiCey/gPXPp6yYwd51flX/PUwxJCgK2OB+beQZf9a1M8GPyUPeY2Fq3qPEm7//Gph+AyS964da5IdVJXcHapuTskC+Y=
+	t=1729783376; cv=none; b=IuafYPdfgeRRvUM1UvmZYfPsWYyOWphfgfXyZ/VWhzWEw/xl3e9ouaYPqcs5CI6N9MA4kdNQd1wDOGpLSvVJyZ/iwUYM7NbE/wq5Tn6ff81hOR7mnQEVx7gebu/NLcH/iCVC6Th5XrVdvBMNTcXWVT06gw7B7NUENnvBMTuAbW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729785631; c=relaxed/simple;
-	bh=HdD6LFiCfxFHCFx4F91EgQcK3pcUN0AemqdP0RklwX0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PInGqzCCZ/hUD4ByatVspAz+CHXDbpsRRQ8V5J+o3T3L7/5lIWCX7hhD8BuP38q2SQMOweZdLhPlj0KDVHjy1JPg491Rh0NnwB+tYkPopTMuSBbIz7tARAmrW9saTHTzTsy7G4GNRczM1n9H/1yMENXMLM+RrdoRqSy2aDFNDAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VAZcTOyd; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729785629; x=1761321629;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=HdD6LFiCfxFHCFx4F91EgQcK3pcUN0AemqdP0RklwX0=;
-  b=VAZcTOydp16Y0cb01j7KIf5+0iJgi34M+IaL2YW9q/T51kb2MRExxOVu
-   EhCl494OROm1sVuYvebUi7uRw4LevgJgyDttd9mfLqpaNmMM+yFiM9eBe
-   Er6kTN0XIQRa6AJxXziM/ncmm8xDcKLPqWQ64Tde4U7ZxPhVrgJjOKRXS
-   hII0JUyf7dV1aaEmijrrrAXOSpgWBMX6vQnFU+X6ml+xweRyM8ZtZHeke
-   ddBYjjjEH9PkW2f57SSIJzVAgDIKAbCIawzuU3N1T9NmiycG/Km4HQn6l
-   EUh/I8263l15zUd5YLuvwVLkuiQVFrns7d5g8kyFA8S7ALgxCde1bd9kd
-   w==;
-X-CSE-ConnectionGUID: S0BgnPuYSdaiZksiJ1yxzA==
-X-CSE-MsgGUID: Fe3vl68tR0yJp/v5wY3vzw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11235"; a="33331268"
-X-IronPort-AV: E=Sophos;i="6.11,229,1725346800"; 
-   d="scan'208";a="33331268"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2024 09:00:19 -0700
-X-CSE-ConnectionGUID: pD0LmetCTleqkcJL+jaFqQ==
-X-CSE-MsgGUID: 6ElvGkYiTwmk6LjakkP0Xw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="85415741"
-Received: from nirmoyda-desk.igk.intel.com ([10.102.138.190])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2024 09:00:16 -0700
-From: Nirmoy Das <nirmoy.das@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: Nirmoy Das <nirmoy.das@intel.com>,
-	Badal Nilawar <badal.nilawar@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	stable@vger.kernel.org,
-	Matthew Brost <matthew.brost@intel.com>
-Subject: [PATCH v2] drm/xe/ufence: Flush xe ordered_wq in case of ufence timeout
-Date: Thu, 24 Oct 2024 17:18:15 +0200
-Message-ID: <20241024151815.929142-1-nirmoy.das@intel.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1729783376; c=relaxed/simple;
+	bh=7vyiOk9NcMWxxwkpWi6QNDWjhLXtPLplr7yA4Q7pO9w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rscan781qhYXe0VTUAOt+xnsXk39tPP33logfbgeG8BHBz+zJyRJxrj4I0eRjOwHIb6CYzZeKyi+4gkSn3e8MCutHffWUQueRf7DThhceGepTUzLWAVX2i8VzafR3jFyMW73k3D6NR4sLc1Seh5vFhRclZohHk8eSc8geXPL278=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=rmzjr1GD; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=umD1zxiq; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=rmzjr1GD; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=umD1zxiq; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D91EB1FFF7;
+	Thu, 24 Oct 2024 15:22:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1729783371; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=R6JIM2VnPConJOPMUvY8+vROVEwAtQQqnCG4fdedpiw=;
+	b=rmzjr1GDsv4w4V89VgzzNJTMNLiwwYp0MDKg4lM3I5jbWHjcXUhLjMgPTtv2cGLmUDoFcG
+	ctScUpsBlP+bkWvl+FKaEUHkTHyJg6CgZCKa5oTRrxUyPzxo/uEauTilqwJOtgv7wqfC/J
+	nSuSbqpYUC8dPBH23wUYHTunApv3Wws=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1729783371;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=R6JIM2VnPConJOPMUvY8+vROVEwAtQQqnCG4fdedpiw=;
+	b=umD1zxiq49tXPgwtRHi3nA7LyfxXXnI4+euSpUgut8QKFKJ54ecJ4tyxkbh+EfL1JM8BWO
+	S1Du7HkEK9BtL5BA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=rmzjr1GD;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=umD1zxiq
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1729783371; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=R6JIM2VnPConJOPMUvY8+vROVEwAtQQqnCG4fdedpiw=;
+	b=rmzjr1GDsv4w4V89VgzzNJTMNLiwwYp0MDKg4lM3I5jbWHjcXUhLjMgPTtv2cGLmUDoFcG
+	ctScUpsBlP+bkWvl+FKaEUHkTHyJg6CgZCKa5oTRrxUyPzxo/uEauTilqwJOtgv7wqfC/J
+	nSuSbqpYUC8dPBH23wUYHTunApv3Wws=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1729783371;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=R6JIM2VnPConJOPMUvY8+vROVEwAtQQqnCG4fdedpiw=;
+	b=umD1zxiq49tXPgwtRHi3nA7LyfxXXnI4+euSpUgut8QKFKJ54ecJ4tyxkbh+EfL1JM8BWO
+	S1Du7HkEK9BtL5BA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CD88F1368E;
+	Thu, 24 Oct 2024 15:22:51 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id fJPGMUtmGmdsQgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 24 Oct 2024 15:22:51 +0000
+Message-ID: <72f5ff15-0e15-4368-a080-6223eeb63f8e@suse.cz>
+Date: Thu, 24 Oct 2024 17:22:51 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Deutschland GmbH, Registered Address: Am Campeon 10, 85579 Neubiberg, Germany, Commercial Register: Amtsgericht Muenchen HRB 186928
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH hotfix 6.12] mm, mmap: limit THP aligment of anonymous
+ mappings to PMD-aligned sizes
+Content-Language: en-US
+To: kernel test robot <lkp@intel.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+References: <ZxpkJzLe_iZ1LXp7@0218aad26cb2>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ EP+ylKVEKb0Q2A==
+In-Reply-To: <ZxpkJzLe_iZ1LXp7@0218aad26cb2>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: D91EB1FFF7
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.cz:dkim,suse.cz:mid];
+	DKIM_TRACE(0.00)[suse.cz:+]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -4.51
+X-Spam-Flag: NO
 
-Flush xe ordered_wq in case of ufence timeout which is observed
-on LNL and that points to the recent scheduling issue with E-cores.
+On 10/24/24 17:13, kernel test robot wrote:
+> Hi,
 
-This is similar to the recent fix:
-commit e51527233804 ("drm/xe/guc/ct: Flush g2h worker in case of g2h
-response timeout") and should be removed once there is E core
-scheduling fix.
+Hi,
 
-v2: Add platform check(Himal)
-    s/__flush_workqueue/flush_workqueue(Jani)
+> Thanks for your patch.
+> 
+> FYI: kernel test robot notices the stable kernel rule is not satisfied.
+> 
+> The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
 
-Cc: Badal Nilawar <badal.nilawar@intel.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: <stable@vger.kernel.org> # v6.11+
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2754
-Suggested-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
----
- drivers/gpu/drm/xe/xe_wait_user_fence.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+But this submission follows Option 1, which the check probably didn't recognize?
 
-diff --git a/drivers/gpu/drm/xe/xe_wait_user_fence.c b/drivers/gpu/drm/xe/xe_wait_user_fence.c
-index f5deb81eba01..78a0ad3c78fe 100644
---- a/drivers/gpu/drm/xe/xe_wait_user_fence.c
-+++ b/drivers/gpu/drm/xe/xe_wait_user_fence.c
-@@ -13,6 +13,7 @@
- #include "xe_device.h"
- #include "xe_gt.h"
- #include "xe_macros.h"
-+#include "compat-i915-headers/i915_drv.h"
- #include "xe_exec_queue.h"
- 
- static int do_compare(u64 addr, u64 value, u64 mask, u16 op)
-@@ -155,6 +156,19 @@ int xe_wait_user_fence_ioctl(struct drm_device *dev, void *data,
- 		}
- 
- 		if (!timeout) {
-+			if (IS_LUNARLAKE(xe)) {
-+				/*
-+				 * This is analogous to e51527233804 ("drm/xe/guc/ct: Flush g2h
-+				 * worker in case of g2h response timeout")
-+				 *
-+				 * TODO: Drop this change once workqueue scheduling delay issue is
-+				 * fixed on LNL Hybrid CPU.
-+				 */
-+				flush_workqueue(xe->ordered_wq);
-+				err = do_compare(addr, args->value, args->mask, args->op);
-+				if (err <= 0)
-+					break;
-+			}
- 			err = -ETIME;
- 			break;
- 		}
--- 
-2.46.0
+Vlastimil
+
+> Rule: The upstream commit ID must be specified with a separate line above the commit text.
+> Subject: [PATCH hotfix 6.12] mm, mmap: limit THP aligment of anonymous mappings to PMD-aligned sizes
+> Link: https://lore.kernel.org/stable/20241024151228.101841-2-vbabka%40suse.cz
+> 
+> Please ignore this mail if the patch is not relevant for upstream.
+> 
 
 
