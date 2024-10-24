@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-88011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A6D9ADBE8
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 08:15:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7DA69ADBE9
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 08:15:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C242284150
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 06:15:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A759128448A
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 06:15:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F91217A586;
-	Thu, 24 Oct 2024 06:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B51189911;
+	Thu, 24 Oct 2024 06:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="0qDttR0e"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="C+4sg5o3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAEA1662E8;
-	Thu, 24 Oct 2024 06:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F92216F287;
+	Thu, 24 Oct 2024 06:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729750533; cv=none; b=VnNqiOyujfndJbMbcMnUZZwQFJM1ISeZtzruznMuYzOJce+BdqZrrLwILIMF6Btr5/gWUmdaQCBvaOfdoBsk2r4wC+Fiw0qPNAoVbDK8cwNyJhd75mSWl8WBAdTbi61Nuw59d0SAeqeLe4YhUt9F4t6reKya+7Wex9kXv8bR/Zg=
+	t=1729750536; cv=none; b=VzmAMp4ysH64Eqch3Q3Az9vV3C+7k6S3Xot1b/aarjKwJim2RFdePH6UVr3ZX2H3uSj+AKCfAic1uo6/coM6ZyW8kcHHUO5nTCUYEq4HR9SibKiI6SPNFdm2giNktTtF4uOvCXwCSfjgRVPn0lK6JDkXUEIsFwMqtu5YIp2zZxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729750533; c=relaxed/simple;
-	bh=QBzyJFn6LniJJVkErLbEr291SmuOc2KCLdL+nEadts4=;
-	h=Date:To:From:Subject:Message-Id; b=UUl7GVYoPpCVMCWz3u7uNJ64I5DRswqeDHeKgcYlhbLqnUUT1AArnHuCFYwJk/gyclTKwJ2ubHDn0HpEVyQB3cG+sQdKlSQkWw+1tWdsRxa772hKOSKNucnq1XDHyPBf8MnEeJvXCg8eeEUyT3rjmm88l1gFOBAaMGeBbulfSZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=0qDttR0e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA714C4CEE4;
-	Thu, 24 Oct 2024 06:15:32 +0000 (UTC)
+	s=arc-20240116; t=1729750536; c=relaxed/simple;
+	bh=wnhJsEdeEWgXDS0fH/6WKrC766W7WpXnqmY7fpRFI4I=;
+	h=Date:To:From:Subject:Message-Id; b=DChTbM/uOz53Mj2O1oSn+KiUKjykasYHQ9rHn8VL4qGEutPyeoGGClFMK/Y4ULTkdGAhnC9p8Jlw7WYMvy0qF0LRbgbnzLtjlivEMWOd7F8ww7zUE8LVteCLuPEEGBpRrscnOOerIgw3Z2nfn5wyJxwQb1lFmIyTN3SbpSTLBes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=C+4sg5o3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B7C2C4CEC7;
+	Thu, 24 Oct 2024 06:15:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1729750533;
-	bh=QBzyJFn6LniJJVkErLbEr291SmuOc2KCLdL+nEadts4=;
+	s=korg; t=1729750536;
+	bh=wnhJsEdeEWgXDS0fH/6WKrC766W7WpXnqmY7fpRFI4I=;
 	h=Date:To:From:Subject:From;
-	b=0qDttR0eacAdl1maPK1QD6MZg9u58UODsEwrJrhorZjiKOodE5yJX2HekiG2T5YXG
-	 aCHdNAi+fJbOLPq46tCH5Yg/sSw/Gm0m5Vkgeg/SDbuVSLmV2eRnaoIK3l9G1NTBjS
-	 HrwDevF++lCSdTv9J9jFGjFxzKaJS2RUDfqOikEE=
-Date: Wed, 23 Oct 2024 23:15:32 -0700
-To: mm-commits@vger.kernel.org,ying.huang@intel.com,tglx@linutronix.de,takahiro.akashi@linaro.org,stable@vger.kernel.org,mika.westerberg@linux.intel.com,ilpo.jarvinen@linux.intel.com,dan.j.williams@intel.com,bhe@redhat.com,bhelgaas@google.com,andriy.shevchenko@linux.intel.com,gourry@gourry.net,akpm@linux-foundation.org
+	b=C+4sg5o3mgC5N4hNyx/nbidxcta2LwPzv2bSIAZXq8XyxxqbbHgM6q7LHzAFznY1O
+	 6B3QSRDPUTKM4cIRYnBuSm/SS25i02VdVMKAV7qX/V5edqvabPhEqy+bryCthb8c8i
+	 a+NOtlmb8n6YpbUprj3uHyja8+8kjVhdkNfTxs94=
+Date: Wed, 23 Oct 2024 23:15:35 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,ryan.roberts@arm.com,peterx@redhat.com,edliaw@google.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] resourcekexec-walk_system_ram_res_rev-must-retain-resource-flags.patch removed from -mm tree
-Message-Id: <20241024061532.EA714C4CEE4@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] revert-selftests-mm-fix-deadlock-for-fork-after-pthread_create-on-arm.patch removed from -mm tree
+Message-Id: <20241024061536.6B7C2C4CEC7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,125 +50,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: resource,kexec: walk_system_ram_res_rev must retain resource flags
+     Subject: Revert "selftests/mm: fix deadlock for fork after pthread_create on ARM"
 has been removed from the -mm tree.  Its filename was
-     resourcekexec-walk_system_ram_res_rev-must-retain-resource-flags.patch
+     revert-selftests-mm-fix-deadlock-for-fork-after-pthread_create-on-arm.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Gregory Price <gourry@gourry.net>
-Subject: resource,kexec: walk_system_ram_res_rev must retain resource flags
-Date: Thu, 17 Oct 2024 15:03:47 -0400
+From: Edward Liaw <edliaw@google.com>
+Subject: Revert "selftests/mm: fix deadlock for fork after pthread_create on ARM"
+Date: Fri, 18 Oct 2024 17:17:22 +0000
 
-walk_system_ram_res_rev() erroneously discards resource flags when passing
-the information to the callback.
+Patch series "selftests/mm: revert pthread_barrier change"
 
-This causes systems with IORESOURCE_SYSRAM_DRIVER_MANAGED memory to have
-these resources selected during kexec to store kexec buffers if that
-memory happens to be at placed above normal system ram.
+On Android arm, pthread_create followed by a fork caused a deadlock in
+the case where the fork required work to be completed by the created
+thread.
 
-This leads to undefined behavior after reboot.  If the kexec buffer is
-never touched, nothing happens.  If the kexec buffer is touched, it could
-lead to a crash (like below) or undefined behavior.
+The previous patches incorrectly assumed that the parent would
+always initialize the pthread_barrier for the child thread.  This
+reverts the change and replaces the fix for wp-fork-with-event with the
+original use of atomic_bool.
 
-Tested on a system with CXL memory expanders with driver managed memory,
-TPM enabled, and CONFIG_IMA_KEXEC=y.  Adding printk's showed the flags
-were being discarded and as a result the check for
-IORESOURCE_SYSRAM_DRIVER_MANAGED passes.
 
-find_next_iomem_res: name(System RAM (kmem))
-		     start(10000000000)
-		     end(1034fffffff)
-		     flags(83000200)
+This patch (of 3):
 
-locate_mem_hole_top_down: start(10000000000) end(1034fffffff) flags(0)
+This reverts commit e142cc87ac4ec618f2ccf5f68aedcd6e28a59d9d.
 
-[.] BUG: unable to handle page fault for address: ffff89834ffff000
-[.] #PF: supervisor read access in kernel mode
-[.] #PF: error_code(0x0000) - not-present page
-[.] PGD c04c8bf067 P4D c04c8bf067 PUD c04c8be067 PMD 0
-[.] Oops: 0000 [#1] SMP
-[.] RIP: 0010:ima_restore_measurement_list+0x95/0x4b0
-[.] RSP: 0018:ffffc900000d3a80 EFLAGS: 00010286
-[.] RAX: 0000000000001000 RBX: 0000000000000000 RCX: ffff89834ffff000
-[.] RDX: 0000000000000018 RSI: ffff89834ffff000 RDI: ffff89834ffff018
-[.] RBP: ffffc900000d3ba0 R08: 0000000000000020 R09: ffff888132b8a900
-[.] R10: 4000000000000000 R11: 000000003a616d69 R12: 0000000000000000
-[.] R13: ffffffff8404ac28 R14: 0000000000000000 R15: ffff89834ffff000
-[.] FS:  0000000000000000(0000) GS:ffff893d44640000(0000) knlGS:0000000000000000
-[.] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[.] ata5: SATA link down (SStatus 0 SControl 300)
-[.] CR2: ffff89834ffff000 CR3: 000001034d00f001 CR4: 0000000000770ef0
-[.] PKRU: 55555554
-[.] Call Trace:
-[.]  <TASK>
-[.]  ? __die+0x78/0xc0
-[.]  ? page_fault_oops+0x2a8/0x3a0
-[.]  ? exc_page_fault+0x84/0x130
-[.]  ? asm_exc_page_fault+0x22/0x30
-[.]  ? ima_restore_measurement_list+0x95/0x4b0
-[.]  ? template_desc_init_fields+0x317/0x410
-[.]  ? crypto_alloc_tfm_node+0x9c/0xc0
-[.]  ? init_ima_lsm+0x30/0x30
-[.]  ima_load_kexec_buffer+0x72/0xa0
-[.]  ima_init+0x44/0xa0
-[.]  __initstub__kmod_ima__373_1201_init_ima7+0x1e/0xb0
-[.]  ? init_ima_lsm+0x30/0x30
-[.]  do_one_initcall+0xad/0x200
-[.]  ? idr_alloc_cyclic+0xaa/0x110
-[.]  ? new_slab+0x12c/0x420
-[.]  ? new_slab+0x12c/0x420
-[.]  ? number+0x12a/0x430
-[.]  ? sysvec_apic_timer_interrupt+0xa/0x80
-[.]  ? asm_sysvec_apic_timer_interrupt+0x16/0x20
-[.]  ? parse_args+0xd4/0x380
-[.]  ? parse_args+0x14b/0x380
-[.]  kernel_init_freeable+0x1c1/0x2b0
-[.]  ? rest_init+0xb0/0xb0
-[.]  kernel_init+0x16/0x1a0
-[.]  ret_from_fork+0x2f/0x40
-[.]  ? rest_init+0xb0/0xb0
-[.]  ret_from_fork_asm+0x11/0x20
-[.]  </TASK>
+fork_event_consumer may be called by other tests that do not initialize
+the pthread_barrier, so this approach is not correct.  The subsequent
+patch will revert to using atomic_bool instead.
 
-Link: https://lore.kernel.org/all/20231114091658.228030-1-bhe@redhat.com/
-Link: https://lkml.kernel.org/r/20241017190347.5578-1-gourry@gourry.net
-Fixes: 7acf164b259d ("resource: add walk_system_ram_res_rev()")
-Signed-off-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Acked-by: Baoquan He <bhe@redhat.com>
-Cc: AKASHI Takahiro <takahiro.akashi@linaro.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: "Huang, Ying" <ying.huang@intel.com>
-Cc: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20241018171734.2315053-1-edliaw@google.com
+Link: https://lkml.kernel.org/r/20241018171734.2315053-2-edliaw@google.com
+Fixes: e142cc87ac4e ("fix deadlock for fork after pthread_create on ARM")
+Signed-off-by: Edward Liaw <edliaw@google.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- kernel/resource.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ tools/testing/selftests/mm/uffd-unit-tests.c |    7 -------
+ 1 file changed, 7 deletions(-)
 
---- a/kernel/resource.c~resourcekexec-walk_system_ram_res_rev-must-retain-resource-flags
-+++ a/kernel/resource.c
-@@ -459,9 +459,7 @@ int walk_system_ram_res_rev(u64 start, u
- 			rams_size += 16;
- 		}
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c~revert-selftests-mm-fix-deadlock-for-fork-after-pthread_create-on-arm
++++ a/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -241,9 +241,6 @@ static void *fork_event_consumer(void *d
+ 	fork_event_args *args = data;
+ 	struct uffd_msg msg = { 0 };
  
--		rams[i].start = res.start;
--		rams[i++].end = res.end;
+-	/* Ready for parent thread to fork */
+-	pthread_barrier_wait(&ready_for_fork);
 -
-+		rams[i++] = res;
- 		start = res.end + 1;
+ 	/* Read until a full msg received */
+ 	while (uffd_read_msg(args->parent_uffd, &msg));
+ 
+@@ -311,12 +308,8 @@ static int pagemap_test_fork(int uffd, b
+ 
+ 	/* Prepare a thread to resolve EVENT_FORK */
+ 	if (with_event) {
+-		pthread_barrier_init(&ready_for_fork, NULL, 2);
+ 		if (pthread_create(&thread, NULL, fork_event_consumer, &args))
+ 			err("pthread_create()");
+-		/* Wait for child thread to start before forking */
+-		pthread_barrier_wait(&ready_for_fork);
+-		pthread_barrier_destroy(&ready_for_fork);
  	}
  
+ 	child = fork();
 _
 
-Patches currently in -mm which might be from gourry@gourry.net are
+Patches currently in -mm which might be from edliaw@google.com are
 
 
 
