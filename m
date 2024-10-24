@@ -1,243 +1,293 @@
-Return-Path: <stable+bounces-88095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390FF9AEB49
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 18:01:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE8DC9AEB61
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 18:04:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAF07285797
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 16:01:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A302285BCE
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 16:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7948C1F76B5;
-	Thu, 24 Oct 2024 16:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F2891F7086;
+	Thu, 24 Oct 2024 16:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="VyQLsN8j";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="mkXs7vid"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="uOjFM8tJ";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="rDZKpPro";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="vPFGlPfp";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="f2H3tJou"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5158614E;
-	Thu, 24 Oct 2024 16:01:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729785680; cv=fail; b=IMrFAxUVvIKCtyP9Or+K4yjGomHWMBc7N74vB0xBXcWopMpFnkm5FZpOFrUy+ywy0gOMSe49Xh9Rl9NwTvxgJntNQsgvQeM/V3gNw/dSWBYTkLfugzk4qIt+nYN4lARghdom8tF7by/WYnalhCFEW7qq1qHUbYC90kNFY0+81YE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729785680; c=relaxed/simple;
-	bh=78mGbPC/vekmUQtbU3iKxjlcQcGslvslhOOKI8aonDA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=kaD2dQkZ93O7MxyTR4iva4o/ixz5oHl7I12I9RnYpXMF1cCOdx8E4LiP2mtSHam0Fo109tS0sQKsf8z1r0FulpcYB7eBaf2WedRXRaSzn8WMxqjH+U3AbEycYFKu8m3TJmHaOF2mJ7mwz0Jj9BqwmhkwFuL0daFeU4zEEJp2evw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=VyQLsN8j; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=mkXs7vid; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49OFtcLE019140;
-	Thu, 24 Oct 2024 16:00:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2023-11-20; bh=hJb14qOtHuKUg6qXBu
-	yeM83bGsCmvD9tupgae9mfyVE=; b=VyQLsN8j5EyVuO9RcNx3pAiIynNUWCnsQe
-	uKV1fDiRHdCNCoSRi23zW3vIj9KFHWzlkAEuntgpgbjQfQgvj0NccKJV2BxUCD/r
-	N9AJ8I+Ovr40IWjqImbx9KPJtfHzEEvGYYuj6gZtLZqDpjPmcg7hufpqmMNUOcH5
-	MBwmrnjqM27MaRnH076fgVMJymEgNiD4F3sYDLhm4fLfEh3WQ3ajvd+TYVqjZsgP
-	7zCLBiV1cIbjXQuq0VHQ3M8RpKqw71R2IZO4H/MAaCQmI+1M8rl6NRHzPG7J3LyA
-	FI7kqf2s6jphqo0yVRHepZCNPmmoOQ4PcNwS8KSH9o+s9TL3YBAA==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42c5ask1cx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 24 Oct 2024 16:00:46 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 49OF15eh018529;
-	Thu, 24 Oct 2024 16:00:45 GMT
-Received: from nam02-bn1-obe.outbound.protection.outlook.com (mail-bn1nam02lp2044.outbound.protection.outlook.com [104.47.51.44])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 42emhm7821-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 24 Oct 2024 16:00:45 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TYBee9yZ0qr/V33dt7S2vsSt7e5ZbR1UTRsmTjU4jMPKEZh0BxYDUMfGIlnSceb7InseMTEs1J13RROeLjflaXnbldCVLfm/bIkSSuKq8d4+2X3YmJA2ed/AeVyAnppNhRI2xma4jVJZ/8/Vo2w+ggOqEmKFk35gHkBvicUT82xpO0tUNy4v9GKRRm1mFtrS36DL7sFnIb8LjzEmzuQZv4vj/CwKKm7LObdhLhKglgAaDjEQM06Qd9O2t5uqfODk5tN09a9X10xEXxNpZorz2ZJy4zTly0D5lU+Z4tChhiuEhNUZEte7HpAjR7CE9609Re2da5ZjeOok26CzNIpewg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hJb14qOtHuKUg6qXBuyeM83bGsCmvD9tupgae9mfyVE=;
- b=HS8/pIOiCXnyPrKX640LFGabm89CSGXWw9MH6gWOs/GipuQ6JtsjnLmJd6JYh3KNM2iIIj1K/r+iXZAttXD9Nc6EFrlubKhtWKLc6X7ZACxh47xhFVD27i4YfjgxcXHsq4LlN7Ex/WRAJEfHCNm84/sUuK0lrkmhuvOvRr4HoHNa8rlEae/CmeETd6R42YJM5Ct7ieSNqAIkn9Bx8CbFLyESfHV521TkpZlNNxE8U5bqE6ubK0aAtqw76HH4ToeB7E2loH2xeJ/zqTV2AyGdf5g6dCVq28Vi8bD2oisX3bWz6NQm17atcWg/UtBtKPhgkwtWPVNgy1ze8nmAQbeafA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hJb14qOtHuKUg6qXBuyeM83bGsCmvD9tupgae9mfyVE=;
- b=mkXs7vidoSjDCsULG+4T2TfgpIBU9PwSOz7zHjIS/byOWvKM0I3/+B0pxIwxv84yNcO2/kCw/mcJtSLgNC96KE52NQ6FnCiMPr6uLl0DRVD3wyCpXDfbKMIpbojTECpZSBWR1yEbSgvSb0Nb2riT80traxcPOcp5VZchc5AFMbM=
-Received: from BYAPR10MB3366.namprd10.prod.outlook.com (2603:10b6:a03:14f::25)
- by BN0PR10MB4919.namprd10.prod.outlook.com (2603:10b6:408:129::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.16; Thu, 24 Oct
- 2024 16:00:40 +0000
-Received: from BYAPR10MB3366.namprd10.prod.outlook.com
- ([fe80::baf2:dff1:d471:1c9]) by BYAPR10MB3366.namprd10.prod.outlook.com
- ([fe80::baf2:dff1:d471:1c9%6]) with mapi id 15.20.8093.014; Thu, 24 Oct 2024
- 16:00:40 +0000
-Date: Thu, 24 Oct 2024 17:00:36 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Jann Horn <jannh@google.com>,
-        Thorsten Leemhuis <regressions@leemhuis.info>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Petr Tesarik <ptesarik@suse.com>,
-        Michael Matz <matz@suse.de>,
-        Gabriel Krisman Bertazi <gabriel@krisman.be>,
-        Matthias Bodenbinder <matthias@bodenbinder.de>, stable@vger.kernel.org,
-        Rik van Riel <riel@surriel.com>,
-        Yang Shi <yang@os.amperecomputing.com>
-Subject: Re: [PATCH hotfix 6.12] mm, mmap: limit THP aligment of anonymous
- mappings to PMD-aligned sizes
-Message-ID: <00899fee-4bf9-46de-8a66-45088243bd2f@lucifer.local>
-References: <2050f0d4-57b0-481d-bab8-05e8d48fed0c@leemhuis.info>
- <20241024151228.101841-2-vbabka@suse.cz>
- <2b89811b-5957-4fad-8979-86744678d296@lucifer.local>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2b89811b-5957-4fad-8979-86744678d296@lucifer.local>
-X-ClientProxiedBy: LO3P123CA0001.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:ba::6) To BYAPR10MB3366.namprd10.prod.outlook.com
- (2603:10b6:a03:14f::25)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03111BD504;
+	Thu, 24 Oct 2024 16:04:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729785886; cv=none; b=DS7lu2w+nqa8IsQ5mDpRgLL7HxNTHyU4ObratjQatZjKNxjJJiQo0yCbhPRNmaYpjL5C1yiNvj5K7ETf+geocvUf9KM/3srIjePeO/+audrmX++2xy1i+KjAAlwDbQhIcGlZdwWe9roL+c32aQqlbdDBvbfsI4QSzr9GEWZmXYQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729785886; c=relaxed/simple;
+	bh=wcsY82VQpWJj9t5azimryQC4DuEwr1nLtNdgmYDd3+0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PUxu6Eq4RSmfVv+dUVXvjcXbxT14ciXW2KDRgfR5GiD3hiwMApyeneHVgTqjOKW7Do39FTvNTME8jALxVeBQ8plJrKr9+VIEVdO1MTkFzjTirnKGYYdJZ6qljkcaQ/Zrs9rd2plo2m49ljwuEl8VDZpKu4K3zz3k9dagyszESPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=uOjFM8tJ; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=rDZKpPro; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=vPFGlPfp; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=f2H3tJou; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C57D61F79F;
+	Thu, 24 Oct 2024 16:04:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1729785882; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=C4n+uG16nQASRu4wvt8vLL1Dm7UBTVuUlvxeOUEYA+E=;
+	b=uOjFM8tJd6ccW2vrisRX1KZ8VcjhLNwA/V4vMA0F7xGyMrQmehdRQL3SEzxvDStVioJ2yA
+	LPfZIHoWttcY7seJe1qGzfXZgbXBi7mgZGMwJGpIHa7P3OPq5rT2w6GJHszHql0q4co/6Y
+	H/X/qH9yN4j4asK3tDX96c4K2eFGuZI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1729785882;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=C4n+uG16nQASRu4wvt8vLL1Dm7UBTVuUlvxeOUEYA+E=;
+	b=rDZKpProCLkf8OCxvJUuRqEiPRyY2fs1dt9UJQ7FyzhYrkFh3NfdAL2cBIVmBs/GGS/bGG
+	fmf+ZYdewqFj/OBA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1729785881; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=C4n+uG16nQASRu4wvt8vLL1Dm7UBTVuUlvxeOUEYA+E=;
+	b=vPFGlPfpGJlleUqwRfRV582izz80PeosRTG0dr4ATi/ICREGZSjGljmyVSuOZQMOaEhKix
+	cZ/GrcqZdtxmfbxH56+c0l7hxRqtVwcHymblUR+gb0qRZ1KREhDfoPX6MSj7AVpeqoE68S
+	W5t2LCW7x/pAY3u1XupGCvqlznRAH0Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1729785881;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=C4n+uG16nQASRu4wvt8vLL1Dm7UBTVuUlvxeOUEYA+E=;
+	b=f2H3tJourdEb5Plg6NMWobaEZ4pqJdpqb0t3m6C3QR9zFVagWQaz9oIjBgdjD9Hk51mtNT
+	G4UbBH5ClPli88DA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A37F9136F5;
+	Thu, 24 Oct 2024 16:04:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id k8aQJxlwGmdRTwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 24 Oct 2024 16:04:41 +0000
+Message-ID: <5f7a49e8-0416-4648-a704-a7a67e8cd894@suse.cz>
+Date: Thu, 24 Oct 2024 18:04:41 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR10MB3366:EE_|BN0PR10MB4919:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7376957b-7f76-462f-a396-08dcf44501e5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|10070799003;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?hm/hVw1ZhXIVDIw2DeEMCbRM5j2tJ+3rvivMimFsfMcGGxmgYjllb49GXaKJ?=
- =?us-ascii?Q?W/oPDIqBLY9y+U123gk/8aF68tWG3q/vbsnIrTNi5RYFHTe5sk3hVlhWauf2?=
- =?us-ascii?Q?prFkHJxdmfFlasCnhTm1kPQzybJL95PVr/Yt0ujeMSZ9bE/KJOd72iGkVm0J?=
- =?us-ascii?Q?/litIOTGN6+Sip5wzysl6hMhkovJqJUL1G67nj0VRz0d6+ScXJyD3LAcTlWh?=
- =?us-ascii?Q?k+WsMM8xnvWJBeOcn1mSSoKdczwLBpl9jaotWQzloTNEjyuz2QxWxgcR/XOS?=
- =?us-ascii?Q?zxYzcfXreuDkuK0QAoQd/X1E68oQXNhdVGWU+bkp+sdUowIP3iQSUS/EzCTe?=
- =?us-ascii?Q?QdsUulJv9q8f1ZyaVTGMVV+RWITsu8PCWdpi6wCHmNkgzyHDyk8Ik4h2Vmjc?=
- =?us-ascii?Q?ZHto+wM+mdQkSXNV3RcSIDY7WXS6tp2Zb/zaLC2y/tE/zFVJdDfA+8sKaMor?=
- =?us-ascii?Q?1QiU+Hx4kWasgNGGM9evWWo2LrYKycSWOqE/tG2wYNvMx42+UID0A7UdEFzt?=
- =?us-ascii?Q?TTExLeIk2x4MZ01RLx8u0JiSDBWoJFTbl/pCT4ZfwN8+DlHTriq3/8SWilWg?=
- =?us-ascii?Q?ErT3BFY/4+Ol3ty9DpDBzua7KtHoSillTInvvzbiSwZSklg7y96BJD1NSHy0?=
- =?us-ascii?Q?hDRA7LgdxGYXAQYbSW3CScLODfMY2C5dupyArj+9mzKSlyr76u5OeiPn++lJ?=
- =?us-ascii?Q?O6/eUWJRwIXGWRPUwb4Ut4F5ZibuP5ToJyL688YUC4brPaspPDJA8S1gT0xq?=
- =?us-ascii?Q?Iq+YQUMuLRdRd8AZmgeuCtlqMt9msXAcw2MSLMp/WPEJ08CGKjHQzuI2TZC9?=
- =?us-ascii?Q?2DW42U8JTH7wEcqEksAvxixbZYDNdU8rANwFlwEzu8/QI9nVu3jRXukaoqis?=
- =?us-ascii?Q?CtuObY4l/FI6J3wfOFjU39CNjomnRXJiq9uBYCtw6JoWIVJTXMTw8rJsHfc2?=
- =?us-ascii?Q?TAp8ds2FnzYqNMhfZ852qtZ2lnfHFh04fyCbZXJnnR9hXz9jg1Q1i4meRDzr?=
- =?us-ascii?Q?jnj1aCNYGg7H2PhZQiB5/ShHl+V5tZz05DRpL9XfzDs+d92vPDwaogyEhhws?=
- =?us-ascii?Q?az94QoUtCrcxvWxiyHAwgR6nG+i0jtxmj9QdVhmKTbPWL0LA3d0KE68oyMox?=
- =?us-ascii?Q?4tLrQNx+0fHccuQT2Fgu+tNbyreS+KjASNJkUEpGGOO1Y1Qjv+0nbnN8vj8h?=
- =?us-ascii?Q?GRiiWX8eZ7ouTEVEvb0RmqPul3LNfq9S4E3/HP2jDLsbe7ne3jLPKt8wZ+2w?=
- =?us-ascii?Q?pEghoFbgZphHWtvsWTJ1yCZNnch7Cri82UUhibm9b4M9kbDEB62kyeAsdPVG?=
- =?us-ascii?Q?kgNQZtnvQu7lTR2AcWNIS7SQ?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR10MB3366.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?MaK2sycsiLSnNomvqAjnzXCpJYMb6bnFE5FoP+NJeOq5RF3pnQdyEgF8Kfg8?=
- =?us-ascii?Q?7P0O3rGRCPavTZ4NnES8k64uA8klzKc9uZFiFfeeVmwjUGkSvQnABTx5ONFl?=
- =?us-ascii?Q?EDcgueSynJhya8juEOu+InmI4MTWGghvJW18YPHXjMx3MRVjts4cELaNWS3A?=
- =?us-ascii?Q?hKoxAxNMp0BKSTWMpZrMB/Hbk7TQSmcDKw+FsZtlAw91/HVgMFvmvaft2qSm?=
- =?us-ascii?Q?RCIyLPEVQSbkqA7Wl5KBWcgDniMZsYVj3f0Yrx8Y7LTw0Oq+qQGFbaDOJS4q?=
- =?us-ascii?Q?wgM3kRFfVHECu+hOnyNrFtrsCM6AHhyka9AfjwpNSf6z6wb3cHxuTHYJtsoA?=
- =?us-ascii?Q?utneGAn2ls1FcuZ5oIMIWIzTQK9Ihx0zCpdtwX2VkXBNy7db835pHKVKCT6z?=
- =?us-ascii?Q?ygFA5+xpN+VrAgRA7I+KZ63xMSYrk28TAu5AIEIEUqRsyyPDfCODUqbTGCww?=
- =?us-ascii?Q?sozTOWoXsBDmmwNs4FX8elTl+5v+IxZm6+WzRSLuRyrV4TMhfTuD4+ReWmfB?=
- =?us-ascii?Q?mlcq9/8fDe+8QcLa29/zt65IdSoleKTSOwcKDPv7LCON3ykDFIJ3Px64OjzK?=
- =?us-ascii?Q?e/6/HFAeuS+ASuC3/QgZmNu3QDpmsmgdsKRbxYiOBcNgsXf3pPnM16GqYVt1?=
- =?us-ascii?Q?GRpkHGsl64ZNetDsmf83oSM7rr9aMWPn4PJOazVK4r2Cfqxc36xcAf7oy5Xs?=
- =?us-ascii?Q?zqxpxNgw1hH3PC2WDVk8vvQBsWRUYv2ilLdYAekfoaepl+isaCTBqX6PtMXC?=
- =?us-ascii?Q?FCXPeLLovNy49i2Sge+p0eWbj8+bk1rIcj+FMl4Rm57TRNB91nikxH3mBC9B?=
- =?us-ascii?Q?msTXSIOD6JipgDfKioj1IPifcLOzE7bkTNwhBpOpyOoq/U82BgbeN1ioJJsT?=
- =?us-ascii?Q?iCYZr2zKnmab+onmLIx92azu8VSJOypsvcJnioCEfiTthabo4di6gqAIMUHm?=
- =?us-ascii?Q?mrBifCdYzpXsWZVGHY7A3RKwXYnK7Dc7+UM/JRJUAOitHafeVg0CJTozwewA?=
- =?us-ascii?Q?J7qmSMCtgUJom+aV0xdf2h39GYAWRyzAoNj8Csp5oLRUu/CFmj0KRJHVzA2+?=
- =?us-ascii?Q?djxJezBhdVsdRVlxCkyanvLFR8k33TRm/RIX4t5mlndXWGEdQnKKe7m6JAUF?=
- =?us-ascii?Q?fTYUowssicrenKwl8uOqh2hw1SSmdOyx4aof5a5D0GGzNl3QES2DDKJBVQe6?=
- =?us-ascii?Q?LZW9+LVycuXVeNzBFCAT7HXXUrVq/DqrtJm36Eyassi3t1PEc+8VZ2+BRt5B?=
- =?us-ascii?Q?BXwksy1AHTCYqSL25EYiBHYVI3C+kOxunHWBGD/AkbLW+BSi8Et6doqKHkUq?=
- =?us-ascii?Q?YMgbJBZm1CQYa50OV93TdMWF16On715PDwjUCvORM7/OJQan+OOy71eo8H3S?=
- =?us-ascii?Q?9DsJ3Wdvx7oygBXKqzuzHWZVuXmuxrdzrlFl2cjfCkzKxhrjJhMG+PCKn84t?=
- =?us-ascii?Q?9LENcsxvC0SXP1K5l9+m59s8DwdQgLs8/dM01Oi/ZG2iAjteRE6rCglpOxbH?=
- =?us-ascii?Q?mA5A+NIPekms1MpLb9fS0ycZQMF2nJGljjpbOtjwlGMH4OX3OLxYacSWGV6D?=
- =?us-ascii?Q?IxQPEW/jZpgaks+g9j19jXN/2iSFwg2KPU2LIPvlRkuRHz4YkoJLVhK/k3Ex?=
- =?us-ascii?Q?eBY+Gt3QDMmgZEM0n2vlmExxAx1hcjp3j2Si5XBshXBzUlFCLmETIOck75KV?=
- =?us-ascii?Q?h6eOhA=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	waX4S4HzBtHgdFQLFfza8rEBzTszrXn/2Nkdvh8EAmuXGbgoVxTTE78HF8jXOKfxiN1+PJvmNuA/kvZwqZRaxKOfleUsCZVUC/C41J63myJmtFoAmFw5mh9bbzrlRnhY2WbKb1HFnRTH5Cxq61tU6ANW7sML1gPzFVxwQtLp9ZcYWi2RabyZFAjxRBae+gC2z2hc55ED7+gyrc+czChTM1JRKHbnfCHc4OMECE4CbHYxf3RSye6Bf+MlzFZFXBuVeM359sL5tWdyUMO8BlwoanM+Twk+t084bKXaHtzUYUgYgTwzJPmj1i+0wHGjOkTyjx3z8XXF/U+WzYt5Tdj/EfugRd5djpIi6SfpC2pr1jx+S1U6aI0soQiZt2qiTnM3h1PEc6jJ+rW6BDSGazgp/BrDfG+q3Ki7tXq27X9ZQ5darpd9iki/3QjyEXwD9TjGrSSweTQiEoCYpMyslEEZqf7wgTc0PcIxLksRcQ4OJSFamL+QSdyUktgRs8B6Yd5LSQjRJKZD62mDIxFqh9o9Y6uJx9SzvIIg3mMTz5iPDdnJfskVtKe4+xUHZwH8rCa96A2ybhP4+1V4uLw5fQ7Yxjjdy5H2j3I412O2N/WX4Nc=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7376957b-7f76-462f-a396-08dcf44501e5
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB3366.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2024 16:00:40.2678
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0V+f9Vkg9ieAkZM0+JSIc0P65EqQdzUfhLg05weHYSgE1OVlUqPLBpu1+qvoFUPsRYkbvUOV4GyOT98TAwi7uzGq0clWbpjQtrU5nR4L10c=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0PR10MB4919
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-24_15,2024-10-24_02,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 bulkscore=0
- adultscore=0 mlxlogscore=999 mlxscore=0 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2409260000
- definitions=main-2410240131
-X-Proofpoint-GUID: tX9IIW-Ro4CrFsD6JzYZ8ZpMLWh_XwCO
-X-Proofpoint-ORIG-GUID: tX9IIW-Ro4CrFsD6JzYZ8ZpMLWh_XwCO
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH hotfix 6.12] mm, mmap: limit THP aligment of anonymous
+ mappings to PMD-aligned sizes
+Content-Language: en-US
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Jann Horn <jannh@google.com>,
+ Thorsten Leemhuis <regressions@leemhuis.info>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Petr Tesarik <ptesarik@suse.com>,
+ Michael Matz <matz@suse.de>, Gabriel Krisman Bertazi <gabriel@krisman.be>,
+ Matthias Bodenbinder <matthias@bodenbinder.de>, stable@vger.kernel.org,
+ Rik van Riel <riel@surriel.com>, Yang Shi <yang@os.amperecomputing.com>,
+ Matthew Wilcox <willy@infradead.org>
+References: <2050f0d4-57b0-481d-bab8-05e8d48fed0c@leemhuis.info>
+ <20241024151228.101841-2-vbabka@suse.cz>
+ <2b89811b-5957-4fad-8979-86744678d296@lucifer.local>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ EP+ylKVEKb0Q2A==
+In-Reply-To: <2b89811b-5957-4fad-8979-86744678d296@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.com:url]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On Thu, Oct 24, 2024 at 04:47:54PM +0100, Lorenzo Stoakes wrote:
-[snip]
+On 10/24/24 17:47, Lorenzo Stoakes wrote:
+> On Thu, Oct 24, 2024 at 05:12:29PM +0200, Vlastimil Babka wrote:
+>> Since commit efa7df3e3bb5 ("mm: align larger anonymous mappings on THP
+>> boundaries") a mmap() of anonymous memory without a specific address
+>> hint and of at least PMD_SIZE will be aligned to PMD so that it can
+>> benefit from a THP backing page.
+>>
+>> However this change has been shown to regress some workloads
+>> significantly. [1] reports regressions in various spec benchmarks, with
+>> up to 600% slowdown of the cactusBSSN benchmark on some platforms. The
+> 
+> Ugh god.
+> 
+>> benchmark seems to create many mappings of 4632kB, which would have
+>> merged to a large THP-backed area before commit efa7df3e3bb5 and now
+>> they are fragmented to multiple areas each aligned to PMD boundary with
+>> gaps between. The regression then seems to be caused mainly due to the
+>> benchmark's memory access pattern suffering from TLB or cache aliasing
+>> due to the aligned boundaries of the individual areas.
+> 
+> Any more details on precisely why?
 
-> > diff --git a/mm/mmap.c b/mm/mmap.c
-> > index 9c0fb43064b5..a5297cfb1dfc 100644
-> > --- a/mm/mmap.c
-> > +++ b/mm/mmap.c
-> > @@ -900,7 +900,8 @@ __get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
-> >
-> >  	if (get_area) {
-> >  		addr = get_area(file, addr, len, pgoff, flags);
-> > -	} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
-> > +	} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)
-> > +		   && IS_ALIGNED(len, PMD_SIZE)) {
->
+The experiments performed in [1] didn't seem conclusive enough for me to say
+that with enough confidence :) Generally speaking if there are multiple
+addresses with the same virtual or physical offset accesssed rapidly, they
+can alias in the TLB or processor caches due to limited associativity and
+cause thrashing. Aligning the mappings to same 2MB boundary can cause such
+aliasing.
+
+>>
+>> Another known regression bisected to commit efa7df3e3bb5 is darktable
+>> [2] [3] and early testing suggests this patch fixes the regression there
+>> as well.
+> 
+> Good!
+> 
+>>
+>> To fix the regression but still try to benefit from THP-friendly
+>> anonymous mapping alignment, add a condition that the size of the
+>> mapping must be a multiple of PMD size instead of at least PMD size. In
+>> case of many odd-sized mapping like the cactusBSSN creates, those will
+>> stop being aligned and with gaps between, and instead naturally merge
+>> again.
+>>
+> 
+> Seems like the original logic just padded the length by PMD size and checks
+> for overflow, assuming that [pgoff << PAGE_SHIFT, pgoff << PAGE_SHIFT +
+> len) contains at least one PMD-sized block.
+> 
+> Which I guess results in potentially getting mis-sized empty spaces that
+> now can't be PMD-merged at the bits that 'overhang' the PMD-sized/aligned
+> bit?
+> 
+> Which is yeah, not great and would explain this (correct me if my
+> understanding is wrong).
+> 
+>> Reported-by: Michael Matz <matz@suse.de>
+>> Debugged-by: Gabriel Krisman Bertazi <gabriel@krisman.be>
+>> Closes: https://bugzilla.suse.com/show_bug.cgi?id=1229012 [1]
+>> Reported-by: Matthias Bodenbinder <matthias@bodenbinder.de>
+>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219366 [2]
+>> Closes: https://lore.kernel.org/all/2050f0d4-57b0-481d-bab8-05e8d48fed0c@leemhuis.info/ [3]
+>> Fixes: efa7df3e3bb5 ("mm: align larger anonymous mappings on THP boundaries")
+>> Cc: <stable@vger.kernel.org>
+>> Cc: Rik van Riel <riel@surriel.com>
+>> Cc: Yang Shi <yang@os.amperecomputing.com>
+>> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+>> ---
+>>  mm/mmap.c | 3 ++-
+>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/mm/mmap.c b/mm/mmap.c
+>> index 9c0fb43064b5..a5297cfb1dfc 100644
+>> --- a/mm/mmap.c
+>> +++ b/mm/mmap.c
+>> @@ -900,7 +900,8 @@ __get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
+>>
+>>  	if (get_area) {
+>>  		addr = get_area(file, addr, len, pgoff, flags);
+>> -	} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
+>> +	} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)
+>> +		   && IS_ALIGNED(len, PMD_SIZE)) {
+> 
 > So doing this feels right but...
->
+> 
 > Hm this seems like it belongs in __thp_get_unmapped_area() which does a bunch of
 > checks up front returning 0 if they fail, which then results in it peforming the
 > normal get unmapped area logic.
->
+> 
 > That also has a bunch of (offset) alignment checks as well overflow checks
 > so it would seem the natural place to also check length?
->
 
-OK having said that, I see this function is referenced from a bunch of fs
-stuff we probably don't want to potentially break by enforcing this
-requirement there (at least in this fix).
+Petr suggested the same, but changing  __thp_get_unmapped_area() affects FS
+THP's and the proposed check seemed wrong to me:
 
-So disregard that and since this looks otherwise good to me, feel free to add:
+https://lore.kernel.org/all/9d7c73f6-1e1a-458b-93c6-3b44959022e0@suse.cz/
 
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+While it could be fixed, I'm still not sure if we want to restrict FS THPs
+the same as anonymous THPs. AFAIU even small mappings of a range from a file
+should be aligned properly to make it possible for a large range from the
+same file (that includes the smaller range) mapped elsewhere to be THP
+backed? I mean we can investigate it further, but for the regression fix to
+backported to stable kernels it seemed more safe to address only the case
+that was changed by commit efa7df3e3bb5 specifically, i.e. anonymous mappings.
 
+>>  		/* Ensures that larger anonymous mappings are THP aligned. */
+>>  		addr = thp_get_unmapped_area_vmflags(file, addr, len,
+>>  						     pgoff, flags, vm_flags);
+>> --
+>> 2.47.0
+>>
 
-> >  		/* Ensures that larger anonymous mappings are THP aligned. */
-> >  		addr = thp_get_unmapped_area_vmflags(file, addr, len,
-> >  						     pgoff, flags, vm_flags);
-> > --
-> > 2.47.0
-> >
-
-Thanks!
 
