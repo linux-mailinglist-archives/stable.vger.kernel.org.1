@@ -1,118 +1,153 @@
-Return-Path: <stable+bounces-87970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A239AD975
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 03:55:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B4A89AD9E0
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 04:22:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71F62282CC2
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 01:55:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6892283733
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 02:22:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE81554279;
-	Thu, 24 Oct 2024 01:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28317147C91;
+	Thu, 24 Oct 2024 02:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Z0awVBZk"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="v+erznpW"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DF31BDDF;
-	Thu, 24 Oct 2024 01:54:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D855214F9F3
+	for <stable@vger.kernel.org>; Thu, 24 Oct 2024 02:22:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729734902; cv=none; b=u0QJTGGh/3+tFLhVF97b65A7nUXxAXkwvo8MO4onWnHQpmorxdS2MJGpD9LcGb7FDbUnqduYAzsKkFo9bdEl0PA5zg/UWsLCjehq066KiyezMHjf/Ds1A4fHpP+EoRq3b8ZkYKlIAG5va5mr1d4N/56vKnO4QvC1Q6gZXd4NgLU=
+	t=1729736559; cv=none; b=ag25rz7DNZicafmkTbSFq9z6/IpnYQ17IfV3jNTwTkHtKMT9z1YAvkMpb5bbnDjILIeiyRtVrezx5aQxvWQHLg/r3kZrC9b8H4Im9ECUo3l63MWfUw/DnCLT/sGN2VWDO5hA8x1sSW87SGkPvRACiDf/8VEeYbYMsmQ/vUijAuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729734902; c=relaxed/simple;
-	bh=VKjnzWViqaacwxmVr+4DEPsTuDpMIYUv315O6plHzSI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nIwmBVKrHnvQmAeP9zx8cslbH8u7QFWe6OEdfLGA1ZGjpnof9rINxav3mfEqCn+F9wGTrAbpoVd2PnMAS8LiW/6JMwR91TkCbwbVKTyW3iau1riF6iXk1TRnV6x+vzbgFC7Fc/VklwlHwS6ZwBBlpwKfhJ03MpADRnrOdnUTJzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=Z0awVBZk; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: f83cbaa691aa11efb88477ffae1fc7a5-20241024
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=3CpmCRaf0iN6t3tO+rXWbvSp6h4e8oWCGaYzYX07O2A=;
-	b=Z0awVBZks7GuVW/SHkBi3mRApiP49nHwGW4yll79KuZnr/qlvqakGKtjlNdfLrqR9qkOMBAOAr50l0IiJbI2/1JqCfNOcnFb5ICOKmk3WukZFEGrSpwN4//RRRNEeduHWVto93JtZnrw0i77p2DfObmsvHqSxPgHuiEnAMUo5+A=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.42,REQID:91de5430-dabc-4fe0-bedd-c4a9f9ab4eb7,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-5
-X-CID-META: VersionHash:b0fcdc3,CLOUDID:438fbd41-8751-41b2-98dd-475503d45150,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: f83cbaa691aa11efb88477ffae1fc7a5-20241024
-Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw01.mediatek.com
-	(envelope-from <peter.wang@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1438409549; Thu, 24 Oct 2024 09:54:56 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Wed, 23 Oct 2024 18:54:55 -0700
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Thu, 24 Oct 2024 09:54:55 +0800
-From: <peter.wang@mediatek.com>
-To: <linux-scsi@vger.kernel.org>, <martin.petersen@oracle.com>,
-	<avri.altman@wdc.com>, <alim.akhtar@samsung.com>, <jejb@linux.ibm.com>,
-	<beanhuo@micron.com>
-CC: <wsd_upstream@mediatek.com>, <linux-mediatek@lists.infradead.org>,
-	<peter.wang@mediatek.com>, <chun-hung.wu@mediatek.com>,
-	<alice.chao@mediatek.com>, <cc.chou@mediatek.com>,
-	<chaotian.jing@mediatek.com>, <jiajie.hao@mediatek.com>,
-	<yi-fan.peng@mediatek.com>, <qilin.tan@mediatek.com>, <lin.gui@mediatek.com>,
-	<tun-yu.yu@mediatek.com>, <eddie.huang@mediatek.com>,
-	<naomi.chu@mediatek.com>, <ed.tsai@mediatek.com>, <bvanassche@acm.org>,
-	<stable@vger.kernel.org>
-Subject: [PATCH v2] ufs: core: fix another deadlock when rtc update
-Date: Thu, 24 Oct 2024 09:54:53 +0800
-Message-ID: <20241024015453.21684-1-peter.wang@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+	s=arc-20240116; t=1729736559; c=relaxed/simple;
+	bh=hGtFXbU9VAyW/8pRrl9hkSCxmzALYxOVKBLxqL2fk0A=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=dIxSi5QbuQkJLzk1gaFfO1G59OJJ3PsoLYLdPrvEeo9ntg3jVUeFQG+cyZN11KcLsW5VPsmZa8+nbkpFnjYK6GaHdFnmDjwWzgql8ZIx4QiQ43VaAQEVKIYmy7Lhy2TtO7gs1fYyRUK995+1yNUDwY8mbMRPa1D8QUeI5Lb8vjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--amitsd.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=v+erznpW; arc=none smtp.client-ip=209.85.219.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--amitsd.bounces.google.com
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e2bd09d2505so848200276.2
+        for <stable@vger.kernel.org>; Wed, 23 Oct 2024 19:22:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1729736557; x=1730341357; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=RChQ6ImziR2UxxxuK55p/UZIl7zlomw2h99sUv/4Mus=;
+        b=v+erznpWBQDEyOUMlqOzpaGZzerZyNvleKRA7ha7hTclyESeNCsp5NKe4DHk2VRdJ7
+         igEJXgyd3s8GV3V530EhFsjZpQwwmhebCvIrLQkK0lgzf3L7ipCjzuwTElE/W/dm5r/d
+         Wurh9ztigHb3davaIYXamgeBSM8KuPOMsP7DNk1ggihaUPE8DyE3xcmslSIAJRUmCpC7
+         xfAH5z7aUbt432yCtupI7BHU+FvF3ug861L4IlFNurAOTbEGb4yZpJdJeiIc5FaAdTlr
+         rgOLu4J0GRWtTIKerGY4ZjHwuGn6ra+4KE4UB1XhB56NDeRRtxO17MKYbQQP8hz8Ov+w
+         GzAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729736557; x=1730341357;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RChQ6ImziR2UxxxuK55p/UZIl7zlomw2h99sUv/4Mus=;
+        b=WHkqliKv5BHLLy0FLc8TnMTAYmisPHdtb1j9FWNmUPb0FmnvpTTiIXhB6izNzWsavY
+         mia5dRFWWOfq/rcafnoPZqu0pDpdZd/3NqZ9AWUg2dA3/s0H9OXbzGqEfdyp9MBwHNJM
+         ixhz0TREyNwNa8REVHeszspoIfSzShSNt/bFtfQhmcWZ/Z2GLkh79ekUCZ//3Bgdhiy4
+         70Jp0mKx4IGWTqavo0oL/Fct+GoxUGqQ5R2kp0oEHX3rn/PGeJTUNowXEegczuDleFCP
+         5KMpo/cf8z2GtwPnj98tJofLNa0rt8EL0yrjAqkkWi5I/YHDWsaC4ntgblR5JVPI1/qH
+         Oe8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV/+RR/mBVCJKHsjEBLPL6E3pSJwhPGT183Z/GQ80vxU9L/7++tGQ37XUMOD6/bXZdfffrk3jk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJZ72opthoQI85WT5MKbHXCIQ9NBAkwwfftINdNhrPp82UiHh9
+	qn0hraC7qNeI2vzvBrV/VbAckEfPrycAHxXhqmtUM/RBIDPqExJqYZR4jaSQf7+EswYgjUVuKrS
+	a1Q==
+X-Google-Smtp-Source: AGHT+IHvpgV2IEy6a8M5p6FINEmbO9iwt7048YunZFeK8TEB+fKeKeGsJJogBorbRaYHFXdxrIma//8yhks=
+X-Received: from amitsd-gti.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:827])
+ (user=amitsd job=sendgmr) by 2002:a25:74c9:0:b0:e2e:2c11:bbf8 with SMTP id
+ 3f1490d57ef6-e2f2fbbb888mr230276.9.1729736556338; Wed, 23 Oct 2024 19:22:36
+ -0700 (PDT)
+Date: Wed, 23 Oct 2024 19:22:30 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK: N
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.0.105.g07ac214952-goog
+Message-ID: <20241024022233.3276995-1-amitsd@google.com>
+Subject: [PATCH v1] usb: typec: tcpm: restrict SNK_WAIT_CAPABILITIES_TIMEOUT
+ transitions to non self-powered devices
+From: Amit Sunil Dhamne <amitsd@google.com>
+To: heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org
+Cc: rdbabiera@google.com, badhri@google.com, xu.yang_2@nxp.com, 
+	sebastian.reichel@collabora.com, linux-usb@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Amit Sunil Dhamne <amitsd@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Peter Wang <peter.wang@mediatek.com>
+PD3.1 spec ("8.3.3.3.3 PE_SNK_Wait_for_Capabilities State") mandates
+that the policy engine perform a hard reset when SinkWaitCapTimer
+expires. Instead the code explicitly does a GET_SOURCE_CAP when the
+timer expires as part of SNK_WAIT_CAPABILITIES_TIMEOUT. Due to this the
+following compliance test failures are reported by the compliance tester
+(added excerpts from the PD Test Spec):
 
-When ufshcd_rtc_work calls ufshcd_rpm_put_sync and the pm's
-usage_count is 0, it will enter the runtime suspend callback.
-However, the runtime suspend callback will wait to flush
-ufshcd_rtc_work, causing a deadlock.
-Replacing ufshcd_rpm_put_sync with ufshcd_rpm_put can avoid
-the deadlock.
+* COMMON.PROC.PD.2#1:
+  The Tester receives a Get_Source_Cap Message from the UUT. This
+  message is valid except the following conditions: [COMMON.PROC.PD.2#1]
+    a. The check fails if the UUT sends this message before the Tester
+       has established an Explicit Contract
+    ...
 
-Fixes: 6bf999e0eb41 ("scsi: ufs: core: Add UFS RTC support")
-Cc: <stable@vger.kernel.org> #6.11.x
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+* TEST.PD.PROT.SNK.4:
+  ...
+  4. The check fails if the UUT does not send a Hard Reset between
+    tTypeCSinkWaitCap min and max. [TEST.PD.PROT.SNK.4#1] The delay is
+    between the VBUS present vSafe5V min and the time of the first bit
+    of Preamble of the Hard Reset sent by the UUT.
+
+For the purpose of interoperability, restrict the quirk introduced in
+https://lore.kernel.org/all/20240523171806.223727-1-sebastian.reichel@collabora.com/
+to only non self-powered devices as battery powered devices will not
+have the issue mentioned in that commit.
+
+Cc: stable@vger.kernel.org
+Fixes: 122968f8dda8 ("usb: typec: tcpm: avoid resets for missing source capability messages")
+Reported-by: Badhri Jagan Sridharan <badhri@google.com>
+Closes: https://lore.kernel.org/all/CAPTae5LAwsVugb0dxuKLHFqncjeZeJ785nkY4Jfd+M-tCjHSnQ@mail.gmail.com/
+Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
 ---
- drivers/ufs/core/ufshcd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpm.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index a63dcf48e59d..f5846598d80e 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -8219,7 +8219,7 @@ static void ufshcd_update_rtc(struct ufs_hba *hba)
- 
- 	err = ufshcd_query_attr(hba, UPIU_QUERY_OPCODE_WRITE_ATTR, QUERY_ATTR_IDN_SECONDS_PASSED,
- 				0, 0, &val);
--	ufshcd_rpm_put_sync(hba);
-+	ufshcd_rpm_put(hba);
- 
- 	if (err)
- 		dev_err(hba->dev, "%s: Failed to update rtc %d\n", __func__, err);
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index d6f2412381cf..c8f467d24fbb 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -4515,7 +4515,8 @@ static inline enum tcpm_state hard_reset_state(struct tcpm_port *port)
+ 		return ERROR_RECOVERY;
+ 	if (port->pwr_role == TYPEC_SOURCE)
+ 		return SRC_UNATTACHED;
+-	if (port->state == SNK_WAIT_CAPABILITIES_TIMEOUT)
++	if (port->state == SNK_WAIT_CAPABILITIES ||
++	    port->state == SNK_WAIT_CAPABILITIES_TIMEOUT)
+ 		return SNK_READY;
+ 	return SNK_UNATTACHED;
+ }
+@@ -5043,8 +5044,11 @@ static void run_state_machine(struct tcpm_port *port)
+ 			tcpm_set_state(port, SNK_SOFT_RESET,
+ 				       PD_T_SINK_WAIT_CAP);
+ 		} else {
+-			tcpm_set_state(port, SNK_WAIT_CAPABILITIES_TIMEOUT,
+-				       PD_T_SINK_WAIT_CAP);
++			if (!port->self_powered)
++				upcoming_state = SNK_WAIT_CAPABILITIES_TIMEOUT;
++			else
++				upcoming_state = hard_reset_state(port);
++			tcpm_set_state(port, upcoming_state, PD_T_SINK_WAIT_CAP);
+ 		}
+ 		break;
+ 	case SNK_WAIT_CAPABILITIES_TIMEOUT:
+
+base-commit: c6d9e43954bfa7415a1e9efdb2806ec1d8a8afc8
 -- 
-2.18.0
+2.47.0.105.g07ac214952-goog
 
 
