@@ -1,130 +1,226 @@
-Return-Path: <stable+bounces-87977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 285989ADA3E
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 05:08:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D04FA9ADA6B
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 05:26:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4422F1C2095E
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 03:08:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F137F1C211FC
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 03:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C46B15625A;
-	Thu, 24 Oct 2024 03:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A7316130C;
+	Thu, 24 Oct 2024 03:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="fcN7B5ES";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="GJ3aMVhS"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="i7BukLEO"
 X-Original-To: stable@vger.kernel.org
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC551537CE;
-	Thu, 24 Oct 2024 03:08:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3935815E5B5;
+	Thu, 24 Oct 2024 03:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729739331; cv=none; b=nzDyZoipPZcIViXF/R+YGpkj+kEjjTgNWhgqALAqhpql/ec74D9YK3Umuzx54aweBiqxM28hLVayNwlFgOpL8X0vMciGYHsIyxwLFvodavm8onH+MQmQKYx3B3co1kwzbqG4wRFDAH1iUApmVseMqi4m07o4n7z/VB0Er8MIbqQ=
+	t=1729740390; cv=none; b=aJ+tzmyzdsIgomlvBLS4fySKsrK5BJGf//yeRoIGAqDdzJTB89PMdTza6kh5T84iyFoji1m4zh/kDMXBM2wxUWwQuvR++2A6xU9Wbx1xBUlfavSXVJ5NBNtzKiPpE+5eYd9msa1CwJ01bef8Buvp218hwSU6ClxJH2nLDexKRw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729739331; c=relaxed/simple;
-	bh=SBtdUtnHf3EZbh4WUnYlb0VbbvvHOMMHOAyfPY0u/Co=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MANleL9jMkuLV5FZx0N/PidKyOvdQSJLJL3M+KQK5uNvrReWzj61LHktMUewv3M56lX7SM2Vv9cE+nOOyH9qV5B6nuojDwJJTmuYhl90LfEP2ufD6f56DRs36kGteWRPQuBaSa+4p5qG1+Smw/AO7N0PkQ4lb/U49Rv14Z4haz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=fcN7B5ES; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=GJ3aMVhS; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1729739328;
-	bh=SBtdUtnHf3EZbh4WUnYlb0VbbvvHOMMHOAyfPY0u/Co=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=fcN7B5ESLyr3KcGw9084AlkjRMFxpk0lCeCXu3nRJsyHRBx4Azvcj5b4StMLkjMuR
-	 h8YrljN/KNgNl+Kt15PnXneEQ9hikunS7g0RW1Q0THn4nocvwQOeywGt18RxIPhYUZ
-	 qQWjlsC6DizHl0HsLakpZGJfPGiJFzC1FI6f1EOU=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 3FD1A1287915;
-	Wed, 23 Oct 2024 23:08:48 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id CCIe8oASZAqX; Wed, 23 Oct 2024 23:08:48 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1729739327;
-	bh=SBtdUtnHf3EZbh4WUnYlb0VbbvvHOMMHOAyfPY0u/Co=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=GJ3aMVhSk6/o8fXg6vsgl9OjnzHdXqOlcbie5kvbuyVWd0+7vvtRY/FP4lOC2hUev
-	 zzVGVCzjT+O8WGLbRNsIpYhB27BjqdiXILIYWD6lFOsD/hXLkCpiUscU18RQJ2oTyJ
-	 9Nn/MUC+v+tJdqlBb3d1pPuzRkpMJqGj8OYdxe/w=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 66A3912878D1;
-	Wed, 23 Oct 2024 23:08:47 -0400 (EDT)
-Message-ID: <601574d94d05e580548256d6c46e1d3d38c6f132.camel@HansenPartnership.com>
-Subject: Re: +
- lib-string_helpers-fix-potential-snprintf-output-truncation.patch added to
- mm-hotfixes-unstable branch
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Andrew Morton <akpm@linux-foundation.org>, mm-commits@vger.kernel.org, 
-	stable@vger.kernel.org, kees@kernel.org, andy@kernel.org, 
-	bartosz.golaszewski@linaro.org
-Date: Wed, 23 Oct 2024 23:08:46 -0400
-In-Reply-To: <20241024025252.BA359C4CEC6@smtp.kernel.org>
-References: <20241024025252.BA359C4CEC6@smtp.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	s=arc-20240116; t=1729740390; c=relaxed/simple;
+	bh=sA7lsaxO2lYk5WCgaBlue5KkdPVvvonLjE89Ugp2G0g=;
+	h=Date:To:From:Subject:Message-Id; b=FVQI1qPcs2nKr5usUHFrz6Dre5laVjtXfTgw5tXupKo8K05dsWz+aAG8zhlTYgf3gfD7Awcm6pNUDF9/H+kekPTa0gB4Fh09dpWRFLlGXt/Pw0CG/KbLyrQAqaY3Hdrsbdm8G5CR9ERHZNCjtrj7pDqKg4S2fu0b+ILNGWV0O3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=i7BukLEO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A14BBC4CEC7;
+	Thu, 24 Oct 2024 03:26:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1729740389;
+	bh=sA7lsaxO2lYk5WCgaBlue5KkdPVvvonLjE89Ugp2G0g=;
+	h=Date:To:From:Subject:From;
+	b=i7BukLEOj4UnKMxjwHswSF/KJltCr/7S1zqGVb2f2JD5lsbrSWKnAaHKEyR/+UQ5e
+	 xygGpSUGpdUmKm7ZdChkOl+CdzQux2U99SFmdJdmtdk+DYKWLJrY7FSdvMKhUo4hwh
+	 O5F0lbYC4GyoZZ4gfsaxfAGhEwcpChmj2WDcKWa4=
+Date: Wed, 23 Oct 2024 20:26:29 -0700
+To: mm-commits@vger.kernel.org,weixugc@google.com,stevensd@google.com,stable@vger.kernel.org,seanjc@google.com,rientjes@google.com,pbonzini@redhat.com,oliver.upton@linux.dev,jthoughton@google.com,dmatlack@google.com,axelrasmussen@google.com,yuzhao@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-multi-gen-lru-remove-mm_leaf_old-and-mm_nonleaf_total-stats.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241024032629.A14BBC4CEC7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-On Wed, 2024-10-23 at 19:52 -0700, Andrew Morton wrote:
-> 
-> The patch titled
->      Subject: lib: string_helpers: fix potential snprintf() output
-> truncation
-> has been added to the -mm mm-hotfixes-unstable branch.  Its filename
-> is
->      lib-string_helpers-fix-potential-snprintf-output-
-> truncation.patch
-> 
-> This patch will shortly appear at
->     
-> https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/lib-string_helpers-fix-potential-snprintf-output-truncation.patch
-> 
-> This patch will later appear in the mm-hotfixes-unstable branch at
->     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> 
-> Before you just go and hit "reply", please:
->    a) Consider who else should be cc'ed
->    b) Prefer to cc a suitable mailing list as well
->    c) Ideally: find the original patch on the mailing list and do a
->       reply-to-all to that, adding suitable additional cc's
-> 
-> *** Remember to use Documentation/process/submit-checklist.rst when
-> testing your code ***
-> 
-> The -mm tree is included into linux-next via the mm-everything
-> branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> and is updated there every 2-3 working days
-> 
-> ------------------------------------------------------
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> Subject: lib: string_helpers: fix potential snprintf() output
-> truncation
-> Date: Mon, 21 Oct 2024 11:14:17 +0200
-> 
-> The output of ".%03u" with the unsigned int in range [0, 4294966295]
-> may get truncated if the target buffer is not 12 bytes.
 
-I think we all agree the explanation isn't accurate: remainder will be
-between 0-999 (not range [0, 4294966295]) which means that the string
-will only ever be 5 bytes (including leading zero).
+The patch titled
+     Subject: mm: multi-gen LRU: remove MM_LEAF_OLD and MM_NONLEAF_TOTAL stats
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-multi-gen-lru-remove-mm_leaf_old-and-mm_nonleaf_total-stats.patch
 
-This might be required to correct a compiler false warning, but if it
-is applied, the patch description should say this.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-multi-gen-lru-remove-mm_leaf_old-and-mm_nonleaf_total-stats.patch
 
-James
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Yu Zhao <yuzhao@google.com>
+Subject: mm: multi-gen LRU: remove MM_LEAF_OLD and MM_NONLEAF_TOTAL stats
+Date: Sat, 19 Oct 2024 01:29:38 +0000
+
+Patch series "mm: multi-gen LRU: Have secondary MMUs participate in
+MM_WALK".
+
+Today, the MM_WALK capability causes MGLRU to clear the young bit from
+PMDs and PTEs during the page table walk before eviction, but MGLRU does
+not call the clear_young() MMU notifier in this case.  By not calling this
+notifier, the MM walk takes less time/CPU, but it causes pages that are
+accessed mostly through KVM / secondary MMUs to appear younger than they
+should be.
+
+We do call the clear_young() notifier today, but only when attempting to
+evict the page, so we end up clearing young/accessed information less
+frequently for secondary MMUs than for mm PTEs, and therefore they appear
+younger and are less likely to be evicted.  Therefore, memory that is
+*not* being accessed mostly by KVM will be evicted *more* frequently,
+worsening performance.
+
+ChromeOS observed a tab-open latency regression when enabling MGLRU with a
+setup that involved running a VM:
+
+		Tab-open latency histogram (ms)
+Version		p50	mean	p95	p99	max
+base		1315	1198	2347	3454	10319
+mglru		2559	1311	7399	12060	43758
+fix		1119	926	2470	4211	6947
+
+This series replaces the final non-selftest patchs from this series[1],
+which introduced a similar change (and a new MMU notifier) with KVM
+optimizations.  I'll send a separate series (to Sean and Paolo) for the
+KVM optimizations.
+
+This series also makes proactive reclaim with MGLRU possible for KVM
+memory.  I have verified that this functions correctly with the selftest
+from [1], but given that that test is a KVM selftest, I'll send it with
+the rest of the KVM optimizations later.  Andrew, let me know if you'd
+like to take the test now anyway.
+
+[1]: https://lore.kernel.org/linux-mm/20240926013506.860253-18-jthoughton@google.com/
+
+
+This patch (of 2):
+
+The removed stats, MM_LEAF_OLD and MM_NONLEAF_TOTAL, are not very helpful
+and become more complicated to properly compute when adding
+test/clear_young() notifiers in MGLRU's mm walk.
+
+Link: https://lkml.kernel.org/r/20241019012940.3656292-1-jthoughton@google.com
+Link: https://lkml.kernel.org/r/20241019012940.3656292-2-jthoughton@google.com
+Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
+Signed-off-by: Yu Zhao <yuzhao@google.com>
+Signed-off-by: James Houghton <jthoughton@google.com>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: David Matlack <dmatlack@google.com>
+Cc: David Rientjes <rientjes@google.com>
+Cc: David Stevens <stevensd@google.com>
+Cc: Oliver Upton <oliver.upton@linux.dev>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Wei Xu <weixugc@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/mmzone.h |    2 --
+ mm/vmscan.c            |   14 +++++---------
+ 2 files changed, 5 insertions(+), 11 deletions(-)
+
+--- a/include/linux/mmzone.h~mm-multi-gen-lru-remove-mm_leaf_old-and-mm_nonleaf_total-stats
++++ a/include/linux/mmzone.h
+@@ -458,9 +458,7 @@ struct lru_gen_folio {
+ 
+ enum {
+ 	MM_LEAF_TOTAL,		/* total leaf entries */
+-	MM_LEAF_OLD,		/* old leaf entries */
+ 	MM_LEAF_YOUNG,		/* young leaf entries */
+-	MM_NONLEAF_TOTAL,	/* total non-leaf entries */
+ 	MM_NONLEAF_FOUND,	/* non-leaf entries found in Bloom filters */
+ 	MM_NONLEAF_ADDED,	/* non-leaf entries added to Bloom filters */
+ 	NR_MM_STATS
+--- a/mm/vmscan.c~mm-multi-gen-lru-remove-mm_leaf_old-and-mm_nonleaf_total-stats
++++ a/mm/vmscan.c
+@@ -3399,7 +3399,6 @@ restart:
+ 			continue;
+ 
+ 		if (!pte_young(ptent)) {
+-			walk->mm_stats[MM_LEAF_OLD]++;
+ 			continue;
+ 		}
+ 
+@@ -3552,7 +3551,6 @@ restart:
+ 			walk->mm_stats[MM_LEAF_TOTAL]++;
+ 
+ 			if (!pmd_young(val)) {
+-				walk->mm_stats[MM_LEAF_OLD]++;
+ 				continue;
+ 			}
+ 
+@@ -3564,8 +3562,6 @@ restart:
+ 			continue;
+ 		}
+ 
+-		walk->mm_stats[MM_NONLEAF_TOTAL]++;
+-
+ 		if (!walk->force_scan && should_clear_pmd_young()) {
+ 			if (!pmd_young(val))
+ 				continue;
+@@ -5254,11 +5250,11 @@ static void lru_gen_seq_show_full(struct
+ 	for (tier = 0; tier < MAX_NR_TIERS; tier++) {
+ 		seq_printf(m, "            %10d", tier);
+ 		for (type = 0; type < ANON_AND_FILE; type++) {
+-			const char *s = "   ";
++			const char *s = "xxx";
+ 			unsigned long n[3] = {};
+ 
+ 			if (seq == max_seq) {
+-				s = "RT ";
++				s = "RTx";
+ 				n[0] = READ_ONCE(lrugen->avg_refaulted[type][tier]);
+ 				n[1] = READ_ONCE(lrugen->avg_total[type][tier]);
+ 			} else if (seq == min_seq[type] || NR_HIST_GENS > 1) {
+@@ -5280,14 +5276,14 @@ static void lru_gen_seq_show_full(struct
+ 
+ 	seq_puts(m, "                      ");
+ 	for (i = 0; i < NR_MM_STATS; i++) {
+-		const char *s = "      ";
++		const char *s = "xxxx";
+ 		unsigned long n = 0;
+ 
+ 		if (seq == max_seq && NR_HIST_GENS == 1) {
+-			s = "LOYNFA";
++			s = "TYFA";
+ 			n = READ_ONCE(mm_state->stats[hist][i]);
+ 		} else if (seq != max_seq && NR_HIST_GENS > 1) {
+-			s = "loynfa";
++			s = "tyfa";
+ 			n = READ_ONCE(mm_state->stats[hist][i]);
+ 		}
+ 
+_
+
+Patches currently in -mm which might be from yuzhao@google.com are
+
+mm-allow-set-clear-page_type-again.patch
+mm-multi-gen-lru-remove-mm_leaf_old-and-mm_nonleaf_total-stats.patch
+mm-multi-gen-lru-use-pteppmdp_clear_young_notify.patch
 
 
