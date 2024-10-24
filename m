@@ -1,150 +1,154 @@
-Return-Path: <stable+bounces-88097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 575779AEB83
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 18:08:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3569E9AEB91
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 18:12:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 141CC281A81
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 16:08:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8A19B2412E
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 16:12:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DECE1BD504;
-	Thu, 24 Oct 2024 16:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ADF11D0DD5;
+	Thu, 24 Oct 2024 16:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FcV33e/E"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TjUa+QWI"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F84233EA
-	for <stable@vger.kernel.org>; Thu, 24 Oct 2024 16:08:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555261F7065;
+	Thu, 24 Oct 2024 16:12:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729786129; cv=none; b=jOhcAqAIur60LLBxNwppk8SvIxgpfC0en5hWAcDTXna7gG+gwW0TYwA77LNvlYiVUc3u1MmC0KDqC1J+RYhpZTLBtfeuxQGDJg1ZQQhtfyGQR8ywS8oh6Jd+EfScnEAy0sx3TBQnd0zVPyqcbQ3rwPxxAifBMiVHZhlVpXTuMsg=
+	t=1729786348; cv=none; b=uWfX6BZ5Ua/RF5z4jWIHCTx67fL5isRtVfJevovsMdLiDqSi+3w5G/B5hCT42sPWmijrzjNTRGbiHdWwtnu66J/4FiaYpNpdaAYiJD2Iu8DYX8psCpjZpUcggNqD8itCADQ4G51o9oxR/6qf/19xFMCFJs3VigkpFwYb8ewvqkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729786129; c=relaxed/simple;
-	bh=CD672zf/icrP84JkBNyIXVtqmmmy5ltkgqScRUqyZ0I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ABk0nUiBbC0L9yg6oGVlOy/+WCj9DPU1EBtiECVqB5BMdrvoaxphMszLGgJ1RCSH/JWp/WjXfwVdgMvzR3i26YhBeerIBXy9y4G5i26ozYCKtkrFMFH1rcFg2sc7sDYMepNfpROo2aeghUrsrrBKqo4hX0flCseJrR6YpT9thGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FcV33e/E; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729786127; x=1761322127;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=CD672zf/icrP84JkBNyIXVtqmmmy5ltkgqScRUqyZ0I=;
-  b=FcV33e/EGWz2YXGHniqKHMKw37lZ3t7S4J8urZcJsERj0Gx4n6cKRuf6
-   F4y+mXYnClMHsmElSCRWEydz9U9rG7jKf9p8jpjib9YtC+cjA/19b2PCH
-   uCaa8dHhaKBkfoWsDtBgsytdkdEV/Z+yEzu/XdKzMO2J36uiOGe0aenIT
-   YI9njt4liU9jn1l4wxtrpfl/0F3zb/IC1L0ebIbtH100EJviywH3+eBMb
-   nOTLgMckxMsfNPdBxP02ccl0Jm7oFfpl/KJydXmxJTTvHpI56GQ/sgOax
-   XBaDmdp34l6b9VcCC5/z0AF5d3pdjyRBr6l5aCnPBvPcb6RxDniICcpUW
-   A==;
-X-CSE-ConnectionGUID: JX31snfkSW6iWi9X4uXC8Q==
-X-CSE-MsgGUID: 0MeviwLZRam45IbrDLwK6g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11235"; a="29645490"
-X-IronPort-AV: E=Sophos;i="6.11,229,1725346800"; 
-   d="scan'208";a="29645490"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2024 09:08:46 -0700
-X-CSE-ConnectionGUID: qiLFrGcfQ5ar0L2Kw9ovZw==
-X-CSE-MsgGUID: 8ERYUp9QSXyVhWJRUXaTWA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,229,1725346800"; 
-   d="scan'208";a="118098418"
-Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.245.128.192]) ([10.245.128.192])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2024 09:08:42 -0700
-Message-ID: <91c492bd-5001-41fe-b151-fe78be86a9c4@linux.intel.com>
-Date: Thu, 24 Oct 2024 18:08:39 +0200
+	s=arc-20240116; t=1729786348; c=relaxed/simple;
+	bh=0pWcFGTWUI42+0oL/sufKdtun9LyhaKE0N8zfH69DyY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kfBtMIqIlnOxisDeQMALEqouCeKo4f24TQlDI99sIf7JXUthqCgshYITovIIV72iRNbNnesy8+xDljgOMUMdTDI9QniqCSfA2DUqZa8/VcgF6wMAyjkzUnfUYMdJWQIhTtVH0k1b4jN3r0J5LV9mAOhQoXCboroYScbk8ZSFG94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TjUa+QWI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE647C4CEC7;
+	Thu, 24 Oct 2024 16:12:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729786347;
+	bh=0pWcFGTWUI42+0oL/sufKdtun9LyhaKE0N8zfH69DyY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TjUa+QWI0wYWVPm8j0H5EV4hvSZaacCpGkhrTBB32AASacSyvkL40+ypLJUwE1Zhw
+	 46pIH0TScLjMczQR/PHzIj/UqZXWmV2WJAhZkkLDpsIBv7FTjR1QuPhSPDOUGrssXs
+	 3ANBV1wxi/rxo6uEeZ9agrYpOxpjbH5KBgBqUaDNrSjah/cJo2f+cbPS14sQwnb2rv
+	 QGfHOBX6HaKrl/RKbPVkSYCnj8d/VA1iZru5oGUBwzL4owFWLh/brIom/LonP+veIG
+	 CRz3sgiWq9wXk4Bf3bUCwEhxlye2Mlam/6anHh6tDAvfZemCig2DEQuZGSO4u9mZ7l
+	 J9aWAu0UchKjw==
+Date: Thu, 24 Oct 2024 17:12:22 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>, stable@vger.kernel.org,
+	Alexander Potapenko <glider@google.com>
+Subject: Re: [PATCH] KVM: arm64: Don't eagerly teardown the vgic on init error
+Message-ID: <3f0918bf-0265-4714-9660-89b75da49859@sirena.org.uk>
+References: <20241009183603.3221824-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/xe/ufence: Flush xe ordered_wq in case of ufence
- timeout
-To: Nirmoy Das <nirmoy.das@intel.com>, intel-xe@lists.freedesktop.org
-Cc: Badal Nilawar <badal.nilawar@intel.com>,
- Jani Nikula <jani.nikula@intel.com>, Matthew Auld <matthew.auld@intel.com>,
- John Harrison <John.C.Harrison@Intel.com>,
- Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>, stable@vger.kernel.org,
- Matthew Brost <matthew.brost@intel.com>
-References: <20241024151815.929142-1-nirmoy.das@intel.com>
-Content-Language: en-US
-From: Nirmoy Das <nirmoy.das@linux.intel.com>
-In-Reply-To: <20241024151815.929142-1-nirmoy.das@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="R3Gd0kDeZDpf0DlW"
+Content-Disposition: inline
+In-Reply-To: <20241009183603.3221824-1-maz@kernel.org>
+X-Cookie: Absinthe makes the tart grow fonder.
 
 
-On 10/24/2024 5:18 PM, Nirmoy Das wrote:
-> Flush xe ordered_wq in case of ufence timeout which is observed
-> on LNL and that points to the recent scheduling issue with E-cores.
->
-> This is similar to the recent fix:
-> commit e51527233804 ("drm/xe/guc/ct: Flush g2h worker in case of g2h
-> response timeout") and should be removed once there is E core
-> scheduling fix.
->
-> v2: Add platform check(Himal)
->     s/__flush_workqueue/flush_workqueue(Jani)
->
-> Cc: Badal Nilawar <badal.nilawar@intel.com>
-> Cc: Jani Nikula <jani.nikula@intel.com>
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Cc: John Harrison <John.C.Harrison@Intel.com>
-> Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-> Cc: <stable@vger.kernel.org> # v6.11+
-> Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2754
-> Suggested-by: Matthew Brost <matthew.brost@intel.com>
-> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-> Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-> ---
->  drivers/gpu/drm/xe/xe_wait_user_fence.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
->
-> diff --git a/drivers/gpu/drm/xe/xe_wait_user_fence.c b/drivers/gpu/drm/xe/xe_wait_user_fence.c
-> index f5deb81eba01..78a0ad3c78fe 100644
-> --- a/drivers/gpu/drm/xe/xe_wait_user_fence.c
-> +++ b/drivers/gpu/drm/xe/xe_wait_user_fence.c
-> @@ -13,6 +13,7 @@
->  #include "xe_device.h"
->  #include "xe_gt.h"
->  #include "xe_macros.h"
-> +#include "compat-i915-headers/i915_drv.h"
+--R3Gd0kDeZDpf0DlW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Sorry sent too soon. This is bit out of place. I will sort it and resend after sometime to accumulate reviews.
+On Wed, Oct 09, 2024 at 07:36:03PM +0100, Marc Zyngier wrote:
+> As there is very little ordering in the KVM API, userspace can
+> instanciate a half-baked GIC (missing its memory map, for example)
+> at almost any time.
 
+The vgic_init selftest has started failing in mainline on multiple
+platforms, with a bisect pointing at this patch which is present there
+as commit df5fd75ee305cb5.  The test reports:
 
->  #include "xe_exec_queue.h"
->  
->  static int do_compare(u64 addr, u64 value, u64 mask, u16 op)
-> @@ -155,6 +156,19 @@ int xe_wait_user_fence_ioctl(struct drm_device *dev, void *data,
->  		}
->  
->  		if (!timeout) {
-> +			if (IS_LUNARLAKE(xe)) {
-> +				/*
-> +				 * This is analogous to e51527233804 ("drm/xe/guc/ct: Flush g2h
-> +				 * worker in case of g2h response timeout")
-> +				 *
-> +				 * TODO: Drop this change once workqueue scheduling delay issue is
-> +				 * fixed on LNL Hybrid CPU.
-> +				 */
-> +				flush_workqueue(xe->ordered_wq);
-> +				err = do_compare(addr, args->value, args->mask, args->op);
-> +				if (err <= 0)
-> +					break;
-> +			}
->  			err = -ETIME;
->  			break;
->  		}
+# selftests: kvm: vgic_init
+# Random seed: 0x6b8b4567
+# Running GIC_v3 tests.
+# ==== Test Assertion Failure ====
+#   lib/kvm_util.c:724: false
+#   pid=1947 tid=1947 errno=5 - Input/output error
+#      1	0x0000000000404edb: __vm_mem_region_delete at kvm_util.c:724 (discriminator 5)
+#      2	0x0000000000405d0b: kvm_vm_free at kvm_util.c:762 (discriminator 12)
+#      3	0x0000000000402d5f: vm_gic_destroy at vgic_init.c:101
+#      4	 (inlined by) test_vcpus_then_vgic at vgic_init.c:368
+#      5	 (inlined by) run_tests at vgic_init.c:720
+#      6	0x0000000000401a6f: main at vgic_init.c:748
+#      7	0x0000ffffa7b37543: ?? ??:0
+#      8	0x0000ffffa7b37617: ?? ??:0
+#      9	0x0000000000401b6f: _start at ??:?
+#   KVM killed/bugged the VM, check the kernel log for clues
+not ok 10 selftests: kvm: vgic_init # exit=254
+
+which does rather look like a test bug rather than a problem in the
+change itself.
+
+Full log from one run on synquacer at:
+
+   https://validation.linaro.org/scheduler/job/4108424#L1846
+
+bisect log (using a current mailine build of kselftests rather than one
+matching the tested kernel to avoid the build issues):
+
+git bisect start
+# status: waiting for both good and bad commits
+# bad: [c2ee9f594da826bea183ed14f2cc029c719bf4da] KVM: selftests: Fix build on on non-x86 architectures
+git bisect bad c2ee9f594da826bea183ed14f2cc029c719bf4da
+# status: waiting for good commit(s), bad commit known
+# good: [9852d85ec9d492ebef56dc5f229416c925758edc] Linux 6.12-rc1
+git bisect good 9852d85ec9d492ebef56dc5f229416c925758edc
+# good: [a1029768f3931b31aa52790f1dde0c7d6a6552eb] Merge tag 'rcu.fixes.6.12-rc3' of git://git.kernel.org/pub/scm/linux/kernel/git/rcu/linux
+git bisect good a1029768f3931b31aa52790f1dde0c7d6a6552eb
+# good: [b1b46751671be5a426982f037a47ae05f37ff80b] mm: fix follow_pfnmap API lockdep assert
+git bisect good b1b46751671be5a426982f037a47ae05f37ff80b
+# good: [531643fcd98c8d045d72a05cb0aaf49e5a4bdf5c] Merge tag 'scsi-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/jejb/scsi
+git bisect good 531643fcd98c8d045d72a05cb0aaf49e5a4bdf5c
+# good: [c55228220dd33e7627ad9736b6fce4df5e7eac98] Merge tag 'char-misc-6.12-rc4' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc
+git bisect good c55228220dd33e7627ad9736b6fce4df5e7eac98
+# good: [c1bc09d7bfcbe90c6df3a630ec1fb0fcd4799236] Merge tag 'probes-fixes-v6.12-rc4' of git://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace
+git bisect good c1bc09d7bfcbe90c6df3a630ec1fb0fcd4799236
+# bad: [5978d4ec7e82ffc472ac2645601dd10b09e61b0f] KVM: arm64: vgic: Don't check for vgic_ready() when setting NR_IRQS
+git bisect bad 5978d4ec7e82ffc472ac2645601dd10b09e61b0f
+# good: [6ded46b5a4fd7fc9c6104b770627043aaf996abf] KVM: arm64: nv: Keep reference on stage-2 MMU when scheduled out
+git bisect good 6ded46b5a4fd7fc9c6104b770627043aaf996abf
+# good: [d4a89e5aee23eaebdc45f63cb3d6d5917ff6acf4] KVM: arm64: Expose S1PIE to guests
+git bisect good d4a89e5aee23eaebdc45f63cb3d6d5917ff6acf4
+# bad: [afa9b48f327c9ef36bfba4c643a29385a633252b] KVM: arm64: Shave a few bytes from the EL2 idmap code
+git bisect bad afa9b48f327c9ef36bfba4c643a29385a633252b
+# bad: [df5fd75ee305cb5927e0b1a0b46cc988ad8db2b1] KVM: arm64: Don't eagerly teardown the vgic on init error
+git bisect bad df5fd75ee305cb5927e0b1a0b46cc988ad8db2b1
+# first bad commit: [df5fd75ee305cb5927e0b1a0b46cc988ad8db2b1] KVM: arm64: Don't eagerly teardown the vgic on init error
+
+--R3Gd0kDeZDpf0DlW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcaceYACgkQJNaLcl1U
+h9DxvwgAhRPO3/Xq4JlWVbJBTEKaksaqBrD5n9A/J+0OjI2tN9wWuwm5iY+MrBHe
+A489my53v0OMHNw/cKBcd1dLpTuW/ZBLF0bC2GZr5sArJ5PpMw3G2Dju6vFBNo6w
+M3mwkW2YR6WExTZ39NbNZNL2VrubJNb8jb57ww74hGw8lOoCDBZDX0Yo9lnd/UMf
+Kiqlmo/laa+QNR5JkVket0P4p471WFhFTXr+jzbpFWG6mJoJxNBOFjYGVGtC9Qki
+2C6r4d/4D+hN0iQISQS6CNFFhKScNxomyaUno9Fa4EdWDl0HZkcPWjrPq/cGXNyK
+va9pUOXiVU98+2SGW8/0Ekr4AtlghQ==
+=EFMf
+-----END PGP SIGNATURE-----
+
+--R3Gd0kDeZDpf0DlW--
 
