@@ -1,108 +1,173 @@
-Return-Path: <stable+bounces-88112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D189AEE9D
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 19:50:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B772D9AEF27
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 20:05:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFB3C1F21BD5
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 17:50:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A51C1F22755
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 18:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076241FF05F;
-	Thu, 24 Oct 2024 17:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A051FE0E7;
+	Thu, 24 Oct 2024 18:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mAnsUGgN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CeBEkrM9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DCB1FF03B;
-	Thu, 24 Oct 2024 17:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E94D1F8196;
+	Thu, 24 Oct 2024 18:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729792231; cv=none; b=UeGJfmxoppdxYtZMMik4UKAuFrl6zgZw9Zn/cxibaZr5mmgctEenm7P97AGO1oxnVq0K3+t2YFwex+/rF/pj7Dxc1XATsQrlU4U+Vx9mvnLPFnKv6RmUK+LVA3bmjHbd5S/3zZX7aHIflU45o9Ga9IHucF3g0oPqXiHbY30MFvw=
+	t=1729793113; cv=none; b=Lj37eM1T1TEo0NcuKWbRfhOu7RCEU2Lp979zzrO7IPC+7+xML5f5DMsZk5326ElmCzrgregyXfVTjxJ7hBjk02skIe7SxQgv45zy0wIBRNT+OZmK4l1+H4wKSQfB0DlrwoeykztdLaAHNv792s3mM0zwFivIUbgSun5tqr0RcDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729792231; c=relaxed/simple;
-	bh=ptSiFDe2P85iu70FwjRoR12tixmT8CMtJdplcGQaHEY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ZRNV6g5ESFNCSYbi51vZmvVqdZ7aFvyL1U6NwZO4L6ffqVhYbcXuBkVNwsdm3hQT67KiAq/4kdWueXsT7Mx9fftvb1kbs/2WThmdMmhTxSaSOL0RFGJfxZ3jC0HIDbCugh1FWdwJ2AJkMw1ntqiL6D3b50c5erlJ8pSagFqILok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mAnsUGgN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C3FEC4CEE4;
-	Thu, 24 Oct 2024 17:50:31 +0000 (UTC)
+	s=arc-20240116; t=1729793113; c=relaxed/simple;
+	bh=xH/uQd3S3Hw++2BLkxPeBWim+glMB4nzTKks3oUBOqU=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OOPn61dlTs/aA+M+RwwvwFDEb7/AbXDiWRPdZfcrZlQqjxLkksWm4gA/yWNlXUhZWWvAOFxg9sPgmGWcBqiFArxR1+DjewKbM0vqLhe8PTCMUtJLEk16mTF9acoyenGqfjhIJyNrdp2F8zNchNQptTOtluaIYF0+IIBUxXl28A8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CeBEkrM9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C52ABC4CEE3;
+	Thu, 24 Oct 2024 18:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729792231;
-	bh=ptSiFDe2P85iu70FwjRoR12tixmT8CMtJdplcGQaHEY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=mAnsUGgN6FJtIw+d9l1/gyUOeEN4rHsY24MKideem7pSGKkok1MntlshY9IJHK0DC
-	 SsFaifEKtK9qyORVb+RZvjjG8Lnp2JWFJtyVqdM+U8YqNsiCsOCD/wagcVrshpVfRi
-	 VDIKAbuSWAAOO3YtPpSYPsQIkrasoLA9IZx2IQLnBFmd7OIigJ01ygR7yjCDCa7Qh7
-	 TwlS8toqpYvpcyIKgAN4vDhXgrGoJALKpf3VRZnhhvuW4CZQ4jfjSN8TOvbK5Is6CK
-	 G+by3pgw8IoOakbhE8vpKhAd8fbLVpq2cAFT2BOZkrpssCt/bugv60C7CpJ5vSxPXG
-	 9tFrJDieNhqVg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70D1B380DBDC;
-	Thu, 24 Oct 2024 17:50:39 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1729793112;
+	bh=xH/uQd3S3Hw++2BLkxPeBWim+glMB4nzTKks3oUBOqU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=CeBEkrM9KwQzs8Sr4H9qvrS+Q+9Yn6jLzch4n283mZAU506Igo5qMKU+VZkFZMKNb
+	 eqxrqg/B5rU0QJZXQFLhmOsDBOuWnLPDFr/VjmRoTJaWahtG8uH8KrR85hZ+u0BZnm
+	 pf8/BnfDVoGb5/qN7GY3juHqm7RTDFdvRCmzfLR1zyBAKRTDBV/TFmZnTwjQE1F3o2
+	 //De9w4roD/DZKGTAtalldRPeTP5XpC/3A/Eth1RDwxMleCYh99S06uE130taSRWVK
+	 eGNmCOUxBcQ3Hs6vaAjKCEJdwY8a/sa7P+Yd3ezC/Tgi2D+Q2Tu3GhJk23Zre+Wmk1
+	 xNpvGBRN/m/9A==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1t42Cs-006XzS-Pu;
+	Thu, 24 Oct 2024 19:05:10 +0100
+Date: Thu, 24 Oct 2024 19:05:10 +0100
+Message-ID: <86ldyd2x7t.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	stable@vger.kernel.org,
+	Alexander Potapenko <glider@google.com>
+Subject: Re: [PATCH] KVM: arm64: Don't eagerly teardown the vgic on init error
+In-Reply-To: <3f0918bf-0265-4714-9660-89b75da49859@sirena.org.uk>
+References: <20241009183603.3221824-1-maz@kernel.org>
+	<3f0918bf-0265-4714-9660-89b75da49859@sirena.org.uk>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v10 0/6] RISC-V: Detect and report speed of unaligned
- vector accesses
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id: 
- <172979223826.2327357.18000385603028507418.git-patchwork-notify@kernel.org>
-Date: Thu, 24 Oct 2024 17:50:38 +0000
-References: <20241017-jesse_unaligned_vector-v10-0-5b33500160f8@rivosinc.com>
-In-Reply-To: <20241017-jesse_unaligned_vector-v10-0-5b33500160f8@rivosinc.com>
-To: Charlie Jenkins <charlie@rivosinc.com>
-Cc: linux-riscv@lists.infradead.org, paul.walmsley@sifive.com,
- palmer@dabbelt.com, aou@eecs.berkeley.edu, cleger@rivosinc.com,
- evan@rivosinc.com, corbet@lwn.net, palmer@rivosinc.com,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, jesse@rivosinc.com,
- stable@vger.kernel.org, conor.dooley@microchip.com
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: broonie@kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, stable@vger.kernel.org, glider@google.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Hello:
-
-This series was applied to riscv/linux.git (for-next)
-by Palmer Dabbelt <palmer@rivosinc.com>:
-
-On Thu, 17 Oct 2024 12:00:17 -0700 you wrote:
-> Adds support for detecting and reporting the speed of unaligned vector
-> accesses on RISC-V CPUs. Adds vec_misaligned_speed key to the hwprobe
-> adds Zicclsm to cpufeature and fixes the check for scalar unaligned
-> emulated all CPUs. The vec_misaligned_speed key keeps the same format
-> as the scalar unaligned access speed key.
+On Thu, 24 Oct 2024 17:12:22 +0100,
+Mark Brown <broonie@kernel.org> wrote:
 > 
-> This set does not emulate unaligned vector accesses on CPUs that do not
-> support them. Only reports if userspace can run them and speed of
-> unaligned vector accesses if supported.
+> [1  <text/plain; us-ascii (7bit)>]
+> On Wed, Oct 09, 2024 at 07:36:03PM +0100, Marc Zyngier wrote:
+> > As there is very little ordering in the KVM API, userspace can
+> > instanciate a half-baked GIC (missing its memory map, for example)
+> > at almost any time.
 > 
-> [...]
+> The vgic_init selftest has started failing in mainline on multiple
+> platforms, with a bisect pointing at this patch which is present there
+> as commit df5fd75ee305cb5.  The test reports:
+> 
+> # selftests: kvm: vgic_init
+> # Random seed: 0x6b8b4567
+> # Running GIC_v3 tests.
+> # ==== Test Assertion Failure ====
+> #   lib/kvm_util.c:724: false
+> #   pid=1947 tid=1947 errno=5 - Input/output error
+> #      1	0x0000000000404edb: __vm_mem_region_delete at kvm_util.c:724 (discriminator 5)
+> #      2	0x0000000000405d0b: kvm_vm_free at kvm_util.c:762 (discriminator 12)
+> #      3	0x0000000000402d5f: vm_gic_destroy at vgic_init.c:101
+> #      4	 (inlined by) test_vcpus_then_vgic at vgic_init.c:368
+> #      5	 (inlined by) run_tests at vgic_init.c:720
+> #      6	0x0000000000401a6f: main at vgic_init.c:748
+> #      7	0x0000ffffa7b37543: ?? ??:0
+> #      8	0x0000ffffa7b37617: ?? ??:0
+> #      9	0x0000000000401b6f: _start at ??:?
+> #   KVM killed/bugged the VM, check the kernel log for clues
+> not ok 10 selftests: kvm: vgic_init # exit=254
+> 
+> which does rather look like a test bug rather than a problem in the
+> change itself.
 
-Here is the summary with links:
-  - [v10,1/6] RISC-V: Check scalar unaligned access on all CPUs
-    https://git.kernel.org/riscv/c/8d20a739f17a
-  - [v10,2/6] RISC-V: Scalar unaligned access emulated on hotplug CPUs
-    https://git.kernel.org/riscv/c/9c528b5f7927
-  - [v10,3/6] RISC-V: Replace RISCV_MISALIGNED with RISCV_SCALAR_MISALIGNED
-    https://git.kernel.org/riscv/c/c05a62c92516
-  - [v10,4/6] RISC-V: Detect unaligned vector accesses supported
-    https://git.kernel.org/riscv/c/d1703dc7bc8e
-  - [v10,5/6] RISC-V: Report vector unaligned access speed hwprobe
-    https://git.kernel.org/riscv/c/e7c9d66e313b
-  - [v10,6/6] RISC-V: hwprobe: Document unaligned vector perf key
-    https://git.kernel.org/riscv/c/40e09ebd791f
+Well, the test tries to do braindead things, and then the test
+infrastructure seems surprised that KVM tells it to bugger off...
 
-You are awesome, thank you!
+I can paper over it with this (see below), but frankly, someone who
+actually cares about this crap should take a look (and ownership).
+
+	M.
+
+diff --git a/tools/testing/selftests/kvm/aarch64/vgic_init.c b/tools/testing/selftests/kvm/aarch64/vgic_init.c
+index b3b5fb0ff0a9..60b076ae85ea 100644
+--- a/tools/testing/selftests/kvm/aarch64/vgic_init.c
++++ b/tools/testing/selftests/kvm/aarch64/vgic_init.c
+@@ -742,6 +742,8 @@ int main(int ac, char **av)
+ 	pa_bits = vm_guest_mode_params[VM_MODE_DEFAULT].pa_bits;
+ 	max_phys_size = 1ULL << pa_bits;
+ 
++	allow_ioctl_returning_eio = true;
++
+ 	ret = test_kvm_device(KVM_DEV_TYPE_ARM_VGIC_V3);
+ 	if (!ret) {
+ 		pr_info("Running GIC_v3 tests.\n");
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+index bc7c242480d6..988c68a77ce3 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util.h
++++ b/tools/testing/selftests/kvm/include/kvm_util.h
+@@ -298,6 +298,8 @@ static __always_inline void static_assert_is_vm(struct kvm_vm *vm) { }
+ 	kvm_do_ioctl((vm)->fd, cmd, arg);			\
+ })
+ 
++extern bool allow_ioctl_returning_eio;
++
+ /*
+  * Assert that a VM or vCPU ioctl() succeeded, with extra magic to detect if
+  * the ioctl() failed because KVM killed/bugged the VM.  To detect a dead VM,
+@@ -313,6 +315,8 @@ do {											\
+ 	static_assert_is_vm(vm);							\
+ 											\
+ 	if (cond)									\
++		break;									\
++	if (errno == EIO && allow_ioctl_returning_eio)					\
+ 		break;									\
+ 											\
+ 	if (errno == EIO &&								\
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index a2b7df5f1d39..d9834421ab12 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -25,6 +25,8 @@ static uint32_t last_guest_seed;
+ 
+ static int vcpu_mmap_sz(void);
+ 
++bool allow_ioctl_returning_eio = false;
++
+ int open_path_or_exit(const char *path, int flags)
+ {
+ 	int fd;
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Without deviation from the norm, progress is not possible.
 
