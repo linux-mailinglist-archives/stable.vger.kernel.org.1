@@ -1,68 +1,70 @@
-Return-Path: <stable+bounces-88040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90B489AE5B4
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 15:08:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E29D9AE5BF
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 15:11:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AB151F24DD6
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 13:08:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27D2E284186
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 13:11:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAEC21DD9D1;
-	Thu, 24 Oct 2024 13:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 921801D89E4;
+	Thu, 24 Oct 2024 13:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="geEXMPWH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zakz2Op7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7454F1DD0E6;
-	Thu, 24 Oct 2024 13:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426C71BBBEB;
+	Thu, 24 Oct 2024 13:11:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729775225; cv=none; b=fYlVSLmPbnYX9It1x1NqN+yGEVHQ38Ah63oGJgi13f3WjT+Dd1wjjHhzs96lZEk1+3u82qvpS4JynCUk5rMBFV+dgP7ii/632D1jUwNCvBy+iC8nkiZe7o108051YBTYBy+qwbH6Tm5NCAMVCt1Fmgd9aPIITjgV266AmSgsSmU=
+	t=1729775474; cv=none; b=uftz+rB5dypcN0V5389M/5UUTfw3lrmldb+gCU8PnJ6Ajh6+ScEj1w87XY5gAtYGFLjrqamoGL54UMtQHHgG1+mH28trged4aTuCRzKnBsV8PMi05V9K8bTLxSa5g/XI5SbW48kDOki8mC6WCQTuEOI2vumRiNK0CTGY2HCyAls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729775225; c=relaxed/simple;
-	bh=R3pA8ojsMDNT1XdCtiG0vsOjX/BIQQ3XMMeNIDGpxkQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=m7y9JjChBII/QT76WFYz/cJlFvDnRaDgYUw8xb4GWtr+OBRBvxaBnn6nN+Kkm59YTzdRh6JFIDi8Jl/Ijq5qpbDK3jYvDy9gOMopBALAvnmEeUCY+7gzhHe9cMGH2LNDxSqk/7TxR/8YKcGWwkhmcEfTjQGKvxmrVXuQu3f9qaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=geEXMPWH; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 9F08C1F9BA;
-	Thu, 24 Oct 2024 15:06:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1729775220;
-	bh=OaWYCbKne0jIgmMCGe5IUHjDjae7PV5dOPwFEy5t4e8=; h=From:To:Subject;
-	b=geEXMPWHAE7ALD9fcu+awGzVuukhe+61VmA8Fn/O/hZZEfrNyK6HRkVwg9sP7bHxz
-	 woLrzvxLyL1R9nVlcF1EjLb5VU71l5OcW4pZfZg9irJJaTCBR9ut3XRaUPOo8AYG5+
-	 NY1NrfZwkTu7MGRg+R9ZUxXKSwSKT5FvIiKudUfOpxyLHO4VfztblIT5pNOTIkF8kr
-	 nIkscfqJLUcZVDLoiVy+WTkmF1o/ru7WN/TXWxNXiF6dV9pWYE5YrGy6bVMFZkjGBF
-	 Dx2CvbTkwi3ZaFT1iMSz53LGmOf3R9QgATPomoBfr+wgburCOgLBuka+lSst8vkHt4
-	 w+ymp5oZKEsxg==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Rob Herring <robh@kernel.org>,
+	s=arc-20240116; t=1729775474; c=relaxed/simple;
+	bh=/FxvH4MR+grW/AE7muGNVZV8ZPyfHNmhdBaSYWUZgzI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hzbJduBX5SXd/69DG68xc3uhU7JA7f5ucNQnJNoUf39Ii+4dAYwWJcb1LqhAwt76ekb2M86OQltrWI7YB6E4qzcQoxhnk/7QyUyJxGQgQOCakCIKttwReBJpVS1tZABOPm6idxipDKklFT0Ha5bE6O+SXxDuI1Cq91bzeqSFo8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zakz2Op7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B26C4CEE4;
+	Thu, 24 Oct 2024 13:11:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729775474;
+	bh=/FxvH4MR+grW/AE7muGNVZV8ZPyfHNmhdBaSYWUZgzI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Zakz2Op7TsS4HdYR1hDOEknftQeaETxzrtu97BcCTJ6U/ipCi/uWhosRSUn4uwlxn
+	 siTOk0l3gtT2325trpkK5hxgPlBp+vCFQJXjcJ/eaDlFtXfbM6sb2uA7xWwNA27trq
+	 poEdsK+y0yvVPxJIC/5AzwrrI4UDDXD9U/SL+vj37lOVLYSnYrNJ3z7482QpwEkPDi
+	 G9Lf7Qe8h1uJ0kE1I4XOdraGVnKOw3InzryjjbGwwaQoyscQOGnsz0w3ZHtUHW9iMp
+	 KqR8/sDtIRJ9YvTVyj6q/whlud8VK8dZerZ1efkCUoejWXwU8uADVdwxEcxnpLvubY
+	 eivTAXpRPLCAA==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan+linaro@kernel.org>)
+	id 1t3xcf-000000003Xq-2URJ;
+	Thu, 24 Oct 2024 15:11:29 +0200
+From: Johan Hovold <johan+linaro@kernel.org>
+To: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>
+Cc: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Rajendra Nayak <quic_rjendra@quicinc.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v1 2/2] arm64: dts: freescale: imx8mp-verdin: Fix SD regulator startup delay
-Date: Thu, 24 Oct 2024 15:06:51 +0200
-Message-Id: <20241024130651.49718-3-francesco@dolcini.it>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241024130651.49718-1-francesco@dolcini.it>
-References: <20241024130651.49718-1-francesco@dolcini.it>
+	Johan Hovold <johan+linaro@kernel.org>,
+	stable@vger.kernel.org,
+	Sibi Sankar <quic_sibis@quicinc.com>
+Subject: [PATCH 1/2] arm64: dts: qcom: x1e80100: fix PCIe4 interconnect
+Date: Thu, 24 Oct 2024 15:10:59 +0200
+Message-ID: <20241024131101.13587-2-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241024131101.13587-1-johan+linaro@kernel.org>
+References: <20241024131101.13587-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,33 +73,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+The fourth PCIe controller is connected to the PCIe North ANoC.
 
-The power switch used to power the SD card interface might have
-more than 2ms turn-on time, increase the startup delay to 20ms to
-prevent failures.
+Fix the corresponding interconnect property so that the OS manages the
+right path.
 
-Fixes: a39ed23bdf6e ("arm64: dts: freescale: add initial support for verdin imx8m plus")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Fixes: 5eb83fc10289 ("arm64: dts: qcom: x1e80100: Add PCIe nodes")
+Cc: stable@vger.kernel.org	# 6.9
+Cc: Abel Vesa <abel.vesa@linaro.org>
+Cc: Sibi Sankar <quic_sibis@quicinc.com>
+Cc: Rajendra Nayak <quic_rjendra@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi | 2 +-
+ arch/arm64/boot/dts/qcom/x1e80100.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-index e9518b7c7aa8..b8c24fe228fa 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-@@ -175,7 +175,7 @@ reg_usdhc2_vmmc: regulator-usdhc2 {
- 		regulator-max-microvolt = <3300000>;
- 		regulator-min-microvolt = <3300000>;
- 		regulator-name = "+V3.3_SD";
--		startup-delay-us = <2000>;
-+		startup-delay-us = <20000>;
- 	};
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+index b577c4b640dc..ee53cd0aeb95 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+@@ -3229,7 +3229,7 @@ pcie4: pci@1c08000 {
+ 			assigned-clocks = <&gcc GCC_PCIE_4_AUX_CLK>;
+ 			assigned-clock-rates = <19200000>;
  
- 	reserved-memory {
+-			interconnects = <&pcie_south_anoc MASTER_PCIE_4 QCOM_ICC_TAG_ALWAYS
++			interconnects = <&pcie_north_anoc MASTER_PCIE_4 QCOM_ICC_TAG_ALWAYS
+ 					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
+ 					<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ALWAYS
+ 					 &cnoc_main SLAVE_PCIE_4 QCOM_ICC_TAG_ALWAYS>;
 -- 
-2.39.5
+2.45.2
 
 
