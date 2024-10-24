@@ -1,125 +1,128 @@
-Return-Path: <stable+bounces-88076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 395179AE865
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 16:24:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDA519AE910
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 16:40:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68E3F1C22DD9
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 14:24:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0A551C21CFD
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 14:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E23E1F131D;
-	Thu, 24 Oct 2024 14:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1644D1E0E0A;
+	Thu, 24 Oct 2024 14:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBbRUG4B"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="SOyz2ggU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pv50p00im-hyfv10011601.me.com (pv50p00im-hyfv10011601.me.com [17.58.6.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3A91E2847
-	for <stable@vger.kernel.org>; Thu, 24 Oct 2024 14:17:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE8E1D9A72
+	for <stable@vger.kernel.org>; Thu, 24 Oct 2024 14:40:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729779426; cv=none; b=inpeUztbI2lUzb+f2f3koDq1uu07Ijajc+KRN1ELRLcXMrwBf4AaKcexy/C7Q6hYhpD43H/lgVz7BJUWDD0XxqbQ+JRcg06sum2RjqO0ik7VplTyduhxnWY6WvEwiYQFCny69L6cRPyFMWpb9Gh3QCUB92Rp/2XhPX7+lWAK7vU=
+	t=1729780808; cv=none; b=NK0ou+o4z7ku3clx79cyrb3Wyha3aL+L9W1XAia7hlwb8Th4v+xAbbv4vTgUsMdw9/0JY0ovu9CH5f4tqI5OKdcsmug4sDsSiWfKJ/7MrDVQZWZ8rxmmBm7z9vFJ3fZyASloxVhjRipJGA7Rdh3Fy5yfElkk+0RdBysCrZOZHVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729779426; c=relaxed/simple;
-	bh=ZHLpxCaABJIHGEakW/HkEnnmvVY3qa2023G4Rw5DXYg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ABjKMdWgd/ZfvTNKIIOxvgmFv8ajI5E6Rj1xLGnTPeYDEXgNuqE3Vi4LxGC6uHmjt4aIcVbpgIuJ07tV91Q+IBr5Idmi1udARucvjwYIT9mAhZ4l7sBhloaRqVquLLiPzv810Y8hYkjMZiyayEoUzDv/BnwIkhaxqGUfmoeKYxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBbRUG4B; arc=none smtp.client-ip=209.85.166.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-83ab6cbd8b1so43101039f.1
-        for <stable@vger.kernel.org>; Thu, 24 Oct 2024 07:17:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1729779423; x=1730384223; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=b64qypICVOVPLQ4AT6WFJut9ohzO7ijv8p58Gwp22hw=;
-        b=VBbRUG4Bvo1DmnzjypQFjM2b01McsUrTxuz3qJ23To/DYh2X+2426I+gaKTnh0lSTK
-         oMoxXAjdohz0qro0tqFwyMd8XJWA8szSBJ21KNvT6FI97/Cbw+9KiE1O7QWT6bh1yYal
-         uPKbYxVoOasNuohZSOqFxbyCv8fo5pwZHUdlc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729779423; x=1730384223;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b64qypICVOVPLQ4AT6WFJut9ohzO7ijv8p58Gwp22hw=;
-        b=F/HI9H5uEVIytZVk+kYoOr6Hvj3biuwTtdPkV1Nfc4rXsbBw+eua1QxwxCVlV4yUFf
-         d1dppturQDXIyU7h6tmbO0MHVqkAI3r+tD6z/qI7NNJ+XCNxnGUQYHPFJtZ5EvK9lMc4
-         lGc1f5Ijrr9ojw7FdNjckdBvRUOQuslvPjSGrdiATzf8Lzp+WzJ9yHk9KFMrkdikE2MH
-         dmVHiFh4VN8iQMV1hOePHkqdIPz2ibAW0vrUtnGVd9kFUSAwaY2YCnYA7wfJhsf0VmKc
-         wko9UHKEl0RVokwVZFSyeXlx6qVIplC3mnXMtNHbZPYhsCZhEh9HmmXBuq3YWkRVJzcW
-         aLmg==
-X-Forwarded-Encrypted: i=1; AJvYcCWdQaLc1S/uBC8idqSxnD+QDhkFCc6rLCXh54wiC8Aq0S7hO6MFJDKxYsKKcenpaTOKE+CP8Ao=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzw7sv+zKthWU4dTqgTkAJokepMJ82b4I5nsujQAMOwN6R/jQ8c
-	/1fbwOrMbSaPWLspSS0b0h5T/JHnW4/Ct4N2YMFn6EOOjI0m7MZ0H13UsoRZQrI=
-X-Google-Smtp-Source: AGHT+IG3V+qH2hGCoVjFpiCSG8OO5Klo/NaqFQGsT0YDjdqVv5Wth0Ol89M3HnkpPrHKa/QvmQmlpg==
-X-Received: by 2002:a05:6602:2cc4:b0:82d:18d:bab with SMTP id ca18e2360f4ac-83af63f9e29mr745899339f.15.1729779423028;
-        Thu, 24 Oct 2024 07:17:03 -0700 (PDT)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-83ad1dfb919sm271119439f.53.2024.10.24.07.17.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Oct 2024 07:17:02 -0700 (PDT)
-Message-ID: <6b3bc049-4cc3-4d7d-a9b2-17d4132ebc50@linuxfoundation.org>
-Date: Thu, 24 Oct 2024 08:17:01 -0600
+	s=arc-20240116; t=1729780808; c=relaxed/simple;
+	bh=/+v5qWDFpQpSP4aVgXGxrkHf2Ca3FTpNljsXUZ9EyjE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Hg6NNsSVVcjEQIeJpij3XbcjM1WcPfCkHD4FbRaO0PcW+S0MWMqrPFMiAGs6/YPx5GtD/NOfNUcZklMonqrax9B29D2s3MEdwpELjrABb123ttGgZVTq/I/HoBZg0EBGjqvRmPm+6L9yd3OvIGnKdV9y8V3yz7IlYzOnMFNP7HE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=SOyz2ggU; arc=none smtp.client-ip=17.58.6.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; t=1729780806;
+	bh=ElEUXfsmj+BGFWeZ+4fY2pT8AL/H58IUKyHjLlkrc24=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To;
+	b=SOyz2ggUisFgCRAISxeuflGhAWUdYDibnEcSe2fLViYcwdcLBUsm0gngWCzf76JFY
+	 3/zkx1p/7gXKY3gDwpeQNV2tWOpJHmpX8GZy7J3SjqxBzCH0ZIRNpCvcjm3kgCZbiN
+	 FxSOfUsu74IktD+xLB/jiK6pFZ8XyazGKnwMMJvtgj4Fac5wCaiqKULrlXEm+PjHno
+	 oO4htjxXKMrs/vWd7sHflKTDclbOJyPxef7QvooGMrTORo/S3IzZdeLP8OVJEPB2nT
+	 Fb5TaByocIkgdIyuuoX1BLmEAOS9UkaWGjoBTVYC2YtND977+3krTufz+XsBeVE1Dg
+	 DPhqeS/EZS9Bw==
+Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
+	by pv50p00im-hyfv10011601.me.com (Postfix) with ESMTPSA id DD8D3C8018B;
+	Thu, 24 Oct 2024 14:39:59 +0000 (UTC)
+From: Zijun Hu <zijun_hu@icloud.com>
+Subject: [PATCH v2 0/6] phy: core: Fix bugs for several APIs and simplify
+ an API
+Date: Thu, 24 Oct 2024 22:39:25 +0800
+Message-Id: <20241024-phy_core_fix-v2-0-fc0c63dbfcf3@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] usbip: tools: Fix detach_port() invalid port error
- path
-To: Zongmin Zhou <min_halo@163.com>
-Cc: i@zenithal.me, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
- shuah@kernel.org, valentina.manea.m@gmail.com,
- Zongmin Zhou <zhouzongmin@kylinos.cn>, stable@vger.kernel.org,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <8d1a298c-78e4-4dfd-a5fb-5dd96fb22e81@linuxfoundation.org>
- <20241024022700.1236660-1-min_halo@163.com>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20241024022700.1236660-1-min_halo@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAB1cGmcC/3WMQQ7CIBAAv9LsWQygltqT/zBNg7DIHiwVlNg0/
+ F3s3eNMMrNCwkiYoG9WiJgpUZgqyF0DxuvpjoxsZZBcHgWXnM1+GU2IODr6MDxo257s7dw5BTW
+ ZI1a97a5DZU/pFeKy3bP42T+jLBhnXHW8lU5ZrcTl+SZDk9mb8IChlPIF43ttYKoAAAA=
+To: Vinod Koul <vkoul@kernel.org>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, Felipe Balbi <balbi@ti.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Rob Herring <robh@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+ Lee Jones <lee@kernel.org>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>, 
+ Zijun Hu <zijun_hu@icloud.com>, stable@vger.kernel.org, 
+ linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Zijun Hu <quic_zijuhu@quicinc.com>
+X-Mailer: b4 0.14.1
+X-Proofpoint-ORIG-GUID: 9n3-w7T1ahFC5qSBvrhN7QQIjqgA1PEY
+X-Proofpoint-GUID: 9n3-w7T1ahFC5qSBvrhN7QQIjqgA1PEY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-24_15,2024-10-24_02,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=631 clxscore=1011
+ mlxscore=0 spamscore=0 phishscore=0 malwarescore=0 adultscore=0
+ suspectscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2410240120
+X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
 
-On 10/23/24 20:27, Zongmin Zhou wrote:
-> From: Zongmin Zhou <zhouzongmin@kylinos.cn>
-> 
-> The detach_port() doesn't return error
-> when detach is attempted on an invalid port.
-> 
-> Fixes: 40ecdeb1a187 ("usbip: usbip_detach: fix to check for invalid ports")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Hongren Zheng <i@zenithal.me>
-> Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-> Signed-off-by: Zongmin Zhou <zhouzongmin@kylinos.cn>
-> ---
->   tools/usb/usbip/src/usbip_detach.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/tools/usb/usbip/src/usbip_detach.c b/tools/usb/usbip/src/usbip_detach.c
-> index b29101986b5a..6b78d4a81e95 100644
-> --- a/tools/usb/usbip/src/usbip_detach.c
-> +++ b/tools/usb/usbip/src/usbip_detach.c
-> @@ -68,6 +68,7 @@ static int detach_port(char *port)
->   	}
->   
->   	if (!found) {
-> +		ret = -1;
->   		err("Invalid port %s > maxports %d",
->   			port, vhci_driver->nports);
->   		goto call_driver_close;
+This patch series is to fix bugs for below APIs:
 
-Thank you.
+devm_phy_put()
+devm_of_phy_provider_unregister()
+devm_phy_destroy()
+phy_get()
+of_phy_get()
+devm_phy_get()
+devm_of_phy_get()
+devm_of_phy_get_by_index()
 
-Greg, Please pick this up.
+And simplify below API:
 
-thanks,
--- Shuah
+of_phy_simple_xlate().
+
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+---
+Changes in v2:
+- Correct title, commit message, and inline comments.
+- Link to v1: https://lore.kernel.org/r/20241020-phy_core_fix-v1-0-078062f7da71@quicinc.com
+
+---
+Zijun Hu (6):
+      phy: core: Fix that API devm_phy_put() fails to release the phy
+      phy: core: Fix that API devm_of_phy_provider_unregister() fails to unregister the phy provider
+      phy: core: Fix that API devm_phy_destroy() fails to destroy the phy
+      phy: core: Fix an OF node refcount leakage in _of_phy_get()
+      phy: core: Fix an OF node refcount leakage in of_phy_provider_lookup()
+      phy: core: Simplify API of_phy_simple_xlate() implementation
+
+ drivers/phy/phy-core.c | 39 +++++++++++++++++++--------------------
+ 1 file changed, 19 insertions(+), 20 deletions(-)
+---
+base-commit: e70d2677ef4088d59158739d72b67ac36d1b132b
+change-id: 20241020-phy_core_fix-e3ad65db98f7
+
+Best regards,
+-- 
+Zijun Hu <quic_zijuhu@quicinc.com>
+
 
