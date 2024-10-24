@@ -1,147 +1,93 @@
-Return-Path: <stable+bounces-88084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 924B19AE926
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 16:42:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 210719AE90E
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 16:39:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C356B23FE0
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 14:42:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8C32282FC4
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 14:39:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D971E7660;
-	Thu, 24 Oct 2024 14:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990BF1E0E0A;
+	Thu, 24 Oct 2024 14:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="hYcgBkly"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tos/w7Cx"
 X-Original-To: stable@vger.kernel.org
-Received: from pv50p00im-hyfv10011601.me.com (pv50p00im-hyfv10011601.me.com [17.58.6.43])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C6A1E7668
-	for <stable@vger.kernel.org>; Thu, 24 Oct 2024 14:40:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A4514F12F;
+	Thu, 24 Oct 2024 14:39:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729780856; cv=none; b=tri85WnKQD9C/okaNvDD/Hca6OFDNEQ/TZ1HwWOGv9Vl+5MpcRVh7exu5t4cwqeebmVguzlmtUruKc+RgpUlP8gayFflYoqQx0gagBJl73s3IVq8qnXxLGNUrT5EU2YNV1V1BfmncWIr5hdlGniM7e79icsY6fIa3FSUrnvzytM=
+	t=1729780783; cv=none; b=mFIgI8V9SREPDGrxqdjNPumrvX5X9JtGYu32BcndvZisRER8b+Xo336DMoyLwtjxQoalctpk4CqlzrGPh2lWJL0/rEcum0Q/iRpEgyYeXuQyNivP4CTauLAw+S95swgE48fQb469p+i0SdQM0FBPZHCEbxT9uEvnvD5BILdU6cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729780856; c=relaxed/simple;
-	bh=MJbrB7W8kX/cyQEalTTmjsZNEab1KL1hzlNY1ejl9U8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=l08MkbZWBlO5/WRsRqHfsB7ntjXpWB1J23EJMJ2TsaL8iPyMikcej7scc8iQwcHD5WVTQkaldmzniOW7PlCHUi+HPgZcIoH5gRJcH7tHm9lQF/JiaSoLrvP8eIjwLotZRCcJqnW0pb/UTR4NvlgJhWP67klZ+ygqCQAzDElGy6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=hYcgBkly; arc=none smtp.client-ip=17.58.6.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1729780854;
-	bh=WmCswZRvkq5WGhabYEyPR/NmcnJ9vmObxp5kPrfpCBY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To;
-	b=hYcgBkly1dOfQwz/FwLHxlli7FRnHINaxmitJN2ytTrAZ2i9555OuGsPe4Ncwd6Fn
-	 VnkaxwSrnzBu1FVjNp6cQ8KyRIRI1zgj4wvf6wxpl4P1vVkt1VvEZZwzz1pP5i7tYb
-	 4vRN1/0dUg7i+QOicQKLdnsNBv+X6miGqmH9Ke8XfnHK2guU8A+AWsWxSm8XefV1TH
-	 fdJaxQhta5amcUls0goL57b4ZLJBK5wee9/e+CYViqg5u9wuaEwGDzzIScp3sQIsCk
-	 79a1ZksS3iRgmWYGM6xoQkuwXfCIxDl3xbGf4ea3C3BqT3qwNO2E1/iua/lbMG8ibC
-	 N+sMxp6fMJiUA==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-hyfv10011601.me.com (Postfix) with ESMTPSA id 636BAC80102;
-	Thu, 24 Oct 2024 14:40:46 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Thu, 24 Oct 2024 22:39:31 +0800
-Subject: [PATCH v2 6/6] phy: core: Simplify API of_phy_simple_xlate()
- implementation
+	s=arc-20240116; t=1729780783; c=relaxed/simple;
+	bh=j7R7q/n1DGRJwGT/TXFXwmZAbDEB6EUvmAjBQm7Nx6s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o314P5gpYlapGikD583SvKm1AvaYjVJ+QceRz7HPv9FFlCHsFiJJbqqu97rSlnRVoc6jA0hmVj5XErbCE0JnO4DoIrS86LZHPzQdUwNB+58/uxA9JNTc8A8PbPIhRbEU3P0I4wf2tNpD1zrmQJzWGDZTYujQv7ayDv2gvD5twXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tos/w7Cx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B91EEC4CEC7;
+	Thu, 24 Oct 2024 14:39:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729780782;
+	bh=j7R7q/n1DGRJwGT/TXFXwmZAbDEB6EUvmAjBQm7Nx6s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Tos/w7CxlYFcGag7h2b3k8RKWpM4Hz+vbcPW6zd94dK2EM7zuI7TZQJf9Nh7uwrtV
+	 oMknMJ5wJXS64s73pcdxC2H3kUczbjgudI2JR9bw5o7IlNkqmgJ+EU9restFtTBQwH
+	 RAiw2022PlE0qH1Mduq5TvPJuldOxzuCJfx5L0PrQam/03YvYyBl7HxKwG1oII1I0F
+	 64bHtdsLbymYCNTn+q4Zs/ZmYe4qeSDrF/PVKdrHL1JvtFjIYhvLKWhU7OANh0rpj9
+	 hR9RqISWgDgGASa2TFVFrgyiKFfwI9ltvuAX5DUG6taf1DBiV0BjRuuLVQ2fbk+od8
+	 Xf9f19zJaS0lw==
+Date: Thu, 24 Oct 2024 15:39:39 +0100
+From: Simon Horman <horms@kernel.org>
+To: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+	stable@vger.kernel.org, Tarun K Singh <tarun.k.singh@intel.com>
+Subject: Re: [PATCH iwl-net 2/2] idpf: fix idpf_vc_core_init error path
+Message-ID: <20241024143939.GQ1202098@kernel.org>
+References: <20241022173527.87972-1-pavan.kumar.linga@intel.com>
+ <20241022173527.87972-3-pavan.kumar.linga@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241024-phy_core_fix-v2-6-fc0c63dbfcf3@quicinc.com>
-References: <20241024-phy_core_fix-v2-0-fc0c63dbfcf3@quicinc.com>
-In-Reply-To: <20241024-phy_core_fix-v2-0-fc0c63dbfcf3@quicinc.com>
-To: Vinod Koul <vkoul@kernel.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, Felipe Balbi <balbi@ti.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Rob Herring <robh@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
- Lee Jones <lee@kernel.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>, 
- Zijun Hu <zijun_hu@icloud.com>, stable@vger.kernel.org, 
- linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Zijun Hu <quic_zijuhu@quicinc.com>
-X-Mailer: b4 0.14.1
-X-Proofpoint-ORIG-GUID: bMZgaXaVPFhitUgiIfVpQoWbRlqMPNO3
-X-Proofpoint-GUID: bMZgaXaVPFhitUgiIfVpQoWbRlqMPNO3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-24_15,2024-10-24_02,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 clxscore=1015
- mlxscore=0 spamscore=0 phishscore=0 malwarescore=0 adultscore=0
- suspectscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2410240120
-X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241022173527.87972-3-pavan.kumar.linga@intel.com>
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+On Tue, Oct 22, 2024 at 10:35:27AM -0700, Pavan Kumar Linga wrote:
+> In an event where the platform running the device control plane
+> is rebooted, reset is detected on the driver. It releases
+> all the resources and waits for the reset to complete. Once the
+> reset is done, it tries to build the resources back. At this
+> time if the device control plane is not yet started, then
+> the driver timeouts on the virtchnl message and retries to
+> establish the mailbox again.
+> 
+> In the retry flow, mailbox is deinitialized but the mailbox
+> workqueue is still alive and polling for the mailbox message.
+> This results in accessing the released control queue leading to
+> null-ptr-deref. Fix it by unrolling the work queue cancellation
+> and mailbox deinitialization in the order which they got
+> initialized.
+> 
+> Also remove the redundant scheduling of the mailbox task in
+> idpf_vc_core_init.
 
-Simplify of_phy_simple_xlate() implementation by API
-class_find_device_by_of_node() which is also safer since it subsys_get()
-the class's subsystem in advance of iterating over the class's devices.
+I think it might be better to move this last change into a separate patch
+targeted at iwl rather than iwl-net. It isn't a fix, right?
 
-Also correct comments to mark its parameter @dev as unused instead of
-@args in passing.
+> 
+> Fixes: 4930fbf419a7 ("idpf: add core init and interrupt request")
+> Fixes: 34c21fa894a1 ("idpf: implement virtchnl transaction manager")
+> Cc: stable@vger.kernel.org # 6.9+
+> Reviewed-by: Tarun K Singh <tarun.k.singh@intel.com>
+> Signed-off-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
----
- drivers/phy/phy-core.c | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
-index de0264dfc387..b83c6aa0287d 100644
---- a/drivers/phy/phy-core.c
-+++ b/drivers/phy/phy-core.c
-@@ -749,8 +749,8 @@ EXPORT_SYMBOL_GPL(devm_phy_put);
- 
- /**
-  * of_phy_simple_xlate() - returns the phy instance from phy provider
-- * @dev: the PHY provider device
-- * @args: of_phandle_args (not used here)
-+ * @dev: the PHY provider device (not used here)
-+ * @args: of_phandle_args
-  *
-  * Intended to be used by phy provider for the common case where #phy-cells is
-  * 0. For other cases where #phy-cells is greater than '0', the phy provider
-@@ -760,20 +760,14 @@ EXPORT_SYMBOL_GPL(devm_phy_put);
- struct phy *of_phy_simple_xlate(struct device *dev,
- 				const struct of_phandle_args *args)
- {
--	struct phy *phy;
--	struct class_dev_iter iter;
--
--	class_dev_iter_init(&iter, &phy_class, NULL, NULL);
--	while ((dev = class_dev_iter_next(&iter))) {
--		phy = to_phy(dev);
--		if (args->np != phy->dev.of_node)
--			continue;
-+	struct device *target_dev;
- 
--		class_dev_iter_exit(&iter);
--		return phy;
-+	target_dev = class_find_device_by_of_node(&phy_class, args->np);
-+	if (target_dev) {
-+		put_device(target_dev);
-+		return to_phy(target_dev);
- 	}
- 
--	class_dev_iter_exit(&iter);
- 	return ERR_PTR(-ENODEV);
- }
- EXPORT_SYMBOL_GPL(of_phy_simple_xlate);
-
--- 
-2.34.1
-
+...
 
