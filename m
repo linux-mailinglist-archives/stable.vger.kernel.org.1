@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-87973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF1759ADA2C
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 04:52:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FFFB9ADA31
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 05:00:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A0391C21603
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 02:52:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71E881F22360
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 03:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B68EE1552ED;
-	Thu, 24 Oct 2024 02:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0AB15746E;
+	Thu, 24 Oct 2024 03:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="NMcS+hBU"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="m7EKQeeU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6966E1CD3F;
-	Thu, 24 Oct 2024 02:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F5C156F30;
+	Thu, 24 Oct 2024 03:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729738373; cv=none; b=n8NO8S09Gv5K4nNNeuIUsTBzlrHVRh50UnvzfYEFBlcpOq4tPczlTFMzIuNbOxATwU0vYsyQTiDaLG9JL8FzcE4/WzSAW6JsJXMaeljtvq5WRPnzp6+YTW8nPiHWnZVRPOI2vjOxZPXF/w84GlyfEHy0xsR0FrFrDLyePp9Nros=
+	t=1729738803; cv=none; b=HBCWRg7PdI166aDDtDogAOh8vqjcQfk4ni54ZqNTtINbyqx7L14udZaQc3Ofhi8zbtSxIj+1tOOrTLWSsIDyMpCPhyytK1fSlRdgb4HpDX+AxgKTm+8DG0f7lcaEaW6oT5RFyWRrOqje7wAgw+1VZVTsXlFEAEIRhTGK4qGY15U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729738373; c=relaxed/simple;
-	bh=qPufH9wEOwoAVzNsymc28VGiI+tzIJ5f8Dr/m3ZspVg=;
-	h=Date:To:From:Subject:Message-Id; b=LriizL6NKAS4+Gngall69/Fj/p6U4eQ/SkubGwE87pwMTjFI6Ch19vO+kSSqp95fjedz9dsftfViczgJhn1tNRJVUZM+ktOylCBxSD/THtTUs4Ak0LJk1NXQCooCbd/Y9hvSWMc0QGyPQDwkGdZHqskCkdLOymPw32Z8vSnLStc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=NMcS+hBU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA359C4CEC6;
-	Thu, 24 Oct 2024 02:52:52 +0000 (UTC)
+	s=arc-20240116; t=1729738803; c=relaxed/simple;
+	bh=Y4iOGP+DCwBj9Plp01TpcArgJAABKF2G0i6KPJefUz4=;
+	h=Date:To:From:Subject:Message-Id; b=AlyJMieARm13l2ax4Phf3SbhfVX2fmavV4ThWYYa5BVMlbKeJa++S8PaMRlcWaz2yGDYiH1h5+fz1UKXzCAgW7+lxKHUf6rxefyN68PvzqkB2ykT+0xR9FxQbnHH/qtAdtmHXg+isUmYLsKozsr9daD37Z8DpDIFePndmd4u3+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=m7EKQeeU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA7BC4CEC6;
+	Thu, 24 Oct 2024 03:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1729738372;
-	bh=qPufH9wEOwoAVzNsymc28VGiI+tzIJ5f8Dr/m3ZspVg=;
+	s=korg; t=1729738802;
+	bh=Y4iOGP+DCwBj9Plp01TpcArgJAABKF2G0i6KPJefUz4=;
 	h=Date:To:From:Subject:From;
-	b=NMcS+hBUN7uktt7qqhsM2wV9krRk6I8Guy1HWVYK0HhBT/jcxktRolnk6dkkphxO7
-	 1a88UFkDOiFPNTN4b8iGj2O6NBzMxOXfYvoHLoIa6nM9JMr1pxemeBQIHQ5XLZ/Qru
-	 CR9G7IPwGGvRvj6D/hkVH/BCzIdcjmI0VthylKI4=
-Date: Wed, 23 Oct 2024 19:52:52 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,kees@kernel.org,James.Bottomley@HansenPartnership.com,andy@kernel.org,bartosz.golaszewski@linaro.org,akpm@linux-foundation.org
+	b=m7EKQeeUWBZ/z1tQ2ojkpkCr+yuKMVvwv+2IetD6E8LrttQzoh24AOPYRS8s2eUV4
+	 3U+FUbpaayxyQm94OTelHRAtUPF6JDtvQUA+bP700uPFTdgjBqaW+cJVeaUVPyaFT1
+	 5HNLyTxcj0eWVOAR/szP2gJRFChAvEmTkEhMPGpU=
+Date: Wed, 23 Oct 2024 20:00:01 -0700
+To: mm-commits@vger.kernel.org,yeweihua4@huawei.com,stable@vger.kernel.org,sj@kernel.org,sieberf@amazon.com,shakeel.butt@linux.dev,foersleo@amazon.de,zhengyejian@huaweicloud.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + lib-string_helpers-fix-potential-snprintf-output-truncation.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241024025252.BA359C4CEC6@smtp.kernel.org>
+Subject: + mm-damon-vaddr-fix-issue-in-damon_va_evenly_split_region.patch added to mm-unstable branch
+Message-Id: <20241024030002.1AA7BC4CEC6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,14 +50,14 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: lib: string_helpers: fix potential snprintf() output truncation
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     lib-string_helpers-fix-potential-snprintf-output-truncation.patch
+     Subject: mm/damon/vaddr: fix issue in damon_va_evenly_split_region()
+has been added to the -mm mm-unstable branch.  Its filename is
+     mm-damon-vaddr-fix-issue-in-damon_va_evenly_split_region.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/lib-string_helpers-fix-potential-snprintf-output-truncation.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-vaddr-fix-issue-in-damon_va_evenly_split_region.patch
 
-This patch will later appear in the mm-hotfixes-unstable branch at
+This patch will later appear in the mm-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 Before you just go and hit "reply", please:
@@ -73,41 +73,128 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: lib: string_helpers: fix potential snprintf() output truncation
-Date: Mon, 21 Oct 2024 11:14:17 +0200
+From: Zheng Yejian <zhengyejian@huaweicloud.com>
+Subject: mm/damon/vaddr: fix issue in damon_va_evenly_split_region()
+Date: Tue, 22 Oct 2024 16:39:26 +0800
 
-The output of ".%03u" with the unsigned int in range [0, 4294966295] may
-get truncated if the target buffer is not 12 bytes.
+Patch series "mm/damon/vaddr: Fix issue in
+damon_va_evenly_split_region()".  v2.
 
-Link: https://lkml.kernel.org/r/20241021091417.37796-1-brgl@bgdev.pl
-Fixes: 3c9f3681d0b4 ("[SCSI] lib: add generic helper to print sizes rounded to the correct SI range")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Kees Cook <kees@kernel.org>
+According to the logic of damon_va_evenly_split_region(), currently
+following split case would not meet the expectation:
+
+  Suppose DAMON_MIN_REGION=0x1000,
+  Case: Split [0x0, 0x3000) into 2 pieces, then the result would be
+        acutually 3 regions:
+          [0x0, 0x1000), [0x1000, 0x2000), [0x2000, 0x3000)
+        but NOT the expected 2 regions:
+          [0x0, 0x1000), [0x1000, 0x3000) !!!
+
+The root cause is that when calculating size of each split piece in
+damon_va_evenly_split_region():
+
+  `sz_piece = ALIGN_DOWN(sz_orig / nr_pieces, DAMON_MIN_REGION);`
+
+both the dividing and the ALIGN_DOWN may cause loss of precision, then
+each time split one piece of size 'sz_piece' from origin 'start' to 'end'
+would cause more pieces are split out than expected!!!
+
+To fix it, count for each piece split and make sure no more than
+'nr_pieces'.  In addition, add above case into damon_test_split_evenly().
+
+And add 'nr_piece == 1' check in damon_va_evenly_split_region() for better
+code readability and add a corresponding kunit testcase.
+
+
+This patch (of 2):
+
+According to the logic of damon_va_evenly_split_region(), currently
+following split case would not meet the expectation:
+
+  Suppose DAMON_MIN_REGION=0x1000,
+  Case: Split [0x0, 0x3000) into 2 pieces, then the result would be
+        acutually 3 regions:
+          [0x0, 0x1000), [0x1000, 0x2000), [0x2000, 0x3000)
+        but NOT the expected 2 regions:
+          [0x0, 0x1000), [0x1000, 0x3000) !!!
+
+The root cause is that when calculating size of each split piece in
+damon_va_evenly_split_region():
+
+  `sz_piece = ALIGN_DOWN(sz_orig / nr_pieces, DAMON_MIN_REGION);`
+
+both the dividing and the ALIGN_DOWN may cause loss of precision,
+then each time split one piece of size 'sz_piece' from origin 'start' to
+'end' would cause more pieces are split out than expected!!!
+
+To fix it, count for each piece split and make sure no more than
+'nr_pieces'. In addition, add above case into damon_test_split_evenly().
+
+After this patch, damon-operations test passed:
+
+ # ./tools/testing/kunit/kunit.py run damon-operations
+ [...]
+ ============== damon-operations (6 subtests) ===============
+ [PASSED] damon_test_three_regions_in_vmas
+ [PASSED] damon_test_apply_three_regions1
+ [PASSED] damon_test_apply_three_regions2
+ [PASSED] damon_test_apply_three_regions3
+ [PASSED] damon_test_apply_three_regions4
+ [PASSED] damon_test_split_evenly
+ ================ [PASSED] damon-operations =================
+
+Link: https://lkml.kernel.org/r/20241022083927.3592237-1-zhengyejian@huaweicloud.com
+Link: https://lkml.kernel.org/r/20241022083927.3592237-2-zhengyejian@huaweicloud.com
+Fixes: 3f49584b262c ("mm/damon: implement primitives for the virtual memory address spaces")
+Signed-off-by: Zheng Yejian <zhengyejian@huaweicloud.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Cc: Fernand Sieber <sieberf@amazon.com>
+Cc: Leonard Foerster <foersleo@amazon.de>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Ye Weihua <yeweihua4@huawei.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- lib/string_helpers.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/damon/tests/vaddr-kunit.h |    1 +
+ mm/damon/vaddr.c             |    4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
---- a/lib/string_helpers.c~lib-string_helpers-fix-potential-snprintf-output-truncation
-+++ a/lib/string_helpers.c
-@@ -57,7 +57,7 @@ int string_get_size(u64 size, u64 blk_si
- 	static const unsigned int rounding[] = { 500, 50, 5 };
- 	int i = 0, j;
- 	u32 remainder = 0, sf_cap;
--	char tmp[8];
-+	char tmp[12];
- 	const char *unit;
+--- a/mm/damon/tests/vaddr-kunit.h~mm-damon-vaddr-fix-issue-in-damon_va_evenly_split_region
++++ a/mm/damon/tests/vaddr-kunit.h
+@@ -300,6 +300,7 @@ static void damon_test_split_evenly(stru
+ 	damon_test_split_evenly_fail(test, 0, 100, 0);
+ 	damon_test_split_evenly_succ(test, 0, 100, 10);
+ 	damon_test_split_evenly_succ(test, 5, 59, 5);
++	damon_test_split_evenly_succ(test, 0, 3, 2);
+ 	damon_test_split_evenly_fail(test, 5, 6, 2);
+ }
  
- 	tmp[0] = '\0';
+--- a/mm/damon/vaddr.c~mm-damon-vaddr-fix-issue-in-damon_va_evenly_split_region
++++ a/mm/damon/vaddr.c
+@@ -67,6 +67,7 @@ static int damon_va_evenly_split_region(
+ 	unsigned long sz_orig, sz_piece, orig_end;
+ 	struct damon_region *n = NULL, *next;
+ 	unsigned long start;
++	unsigned int i;
+ 
+ 	if (!r || !nr_pieces)
+ 		return -EINVAL;
+@@ -80,8 +81,7 @@ static int damon_va_evenly_split_region(
+ 
+ 	r->ar.end = r->ar.start + sz_piece;
+ 	next = damon_next_region(r);
+-	for (start = r->ar.end; start + sz_piece <= orig_end;
+-			start += sz_piece) {
++	for (start = r->ar.end, i = 1; i < nr_pieces; start += sz_piece, i++) {
+ 		n = damon_new_region(start, start + sz_piece);
+ 		if (!n)
+ 			return -ENOMEM;
 _
 
-Patches currently in -mm which might be from bartosz.golaszewski@linaro.org are
+Patches currently in -mm which might be from zhengyejian@huaweicloud.com are
 
-lib-string_helpers-fix-potential-snprintf-output-truncation.patch
+mm-damon-vaddr-fix-issue-in-damon_va_evenly_split_region.patch
+mm-damon-vaddr-add-nr_piece-==-1-check-in-damon_va_evenly_split_region.patch
 
 
