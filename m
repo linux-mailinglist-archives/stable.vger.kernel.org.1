@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-88009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9208F9ADBE6
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 08:15:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA369ADBE7
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 08:15:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 162DE1F23144
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 06:15:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D0171C21E15
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 06:15:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A04E18871F;
-	Thu, 24 Oct 2024 06:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65DC217A90F;
+	Thu, 24 Oct 2024 06:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XrQlLlAB"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ReMdW/6Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A2D176AB9;
-	Thu, 24 Oct 2024 06:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E87E1662E8;
+	Thu, 24 Oct 2024 06:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729750530; cv=none; b=Lq/LLeMLQhbTeHpnKUpCs0460L/BtGO/cFaZmt0yDtQAQTBHEO3dEXBVcvecc/IVEbT0jmjlCpHAXrh9OMi6yYVuD0WjL7yoTNY8cor5e8gZnW5MOZac/GN5FBga3CEj4rakn9n58j8SbGNT8YsIb9QTrNLVzb1wLwOFE62xuLs=
+	t=1729750532; cv=none; b=NTF6OF69bNNA9udSQFh7gEm7JN9AcNPV28ukN0GW4BLKa87LKAdaKKz9BDXkMHynnH8KFCj4lagxwENwaLGjG92/XDAPTmPIl+hAm6/XPn3mNQujFlOm5LHu+zXFcrJda5WQ0q6bXAOk7PxMV30kLy1GhGfCedsQv6KIU5lGnb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729750530; c=relaxed/simple;
-	bh=mFcx4HuQIBNd2QxMGzin/o4vfwNfSuJprlh+eg1HnNA=;
-	h=Date:To:From:Subject:Message-Id; b=iS1pSBjSe9L1/Hj3Bx5TU3kdkgkCqfbme1lH9ETA/cZ+kMzqBF2KywaxYWw1LH6gbIIkPL6UnL/WtECRrpe7XkjKVk5OlB+UJZeuhmbKcxaUwVfuvZGOgMhnsYMrWT+CaVpA9Jd2Tg2/1qIDq7DRy7NhgUPHnuWS2wQtx+sornE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XrQlLlAB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D57C4CECC;
-	Thu, 24 Oct 2024 06:15:28 +0000 (UTC)
+	s=arc-20240116; t=1729750532; c=relaxed/simple;
+	bh=85qb1s7rPNgvrXY8dUqssgTKdtzmo9eFsV9iDEfuZfw=;
+	h=Date:To:From:Subject:Message-Id; b=QnwzIWMryccA5iZ2Am1tiCDk9C8VZyr7JCb/aLPQo9HDpTw7Do+hTuXxl2mn7ViCZxa/4v6rJtB5twGG4r4DvCRV1jY+GumyBtAa6n+ZzZ9q6MS2Cve6l5qMQzeV4noeeiQ01RL8iGD4HIE28IpsIbhn1lURlePQFEJFUlScC5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ReMdW/6Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A5DC4CEC7;
+	Thu, 24 Oct 2024 06:15:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1729750529;
-	bh=mFcx4HuQIBNd2QxMGzin/o4vfwNfSuJprlh+eg1HnNA=;
+	s=korg; t=1729750531;
+	bh=85qb1s7rPNgvrXY8dUqssgTKdtzmo9eFsV9iDEfuZfw=;
 	h=Date:To:From:Subject:From;
-	b=XrQlLlABq9i2giZpnVENhq/pJ7HAMivvPMEbYfszOkbrNjH3dSmqtK1Aup5s6LGmu
-	 nELE7ZT8GKI74IG2a1oo7/R1sJGHfYAsekFUs+joKmDY5Nq6F6fymRzctdLm74KnLb
-	 UEV8xdbge4adaCThkhNcXY6+OSjv8Imqlbv9hW0o=
-Date: Wed, 23 Oct 2024 23:15:28 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,ghe@suse.com,gechangwei@live.cn,eadavis@qq.com,akpm@linux-foundation.org
+	b=ReMdW/6ZSN9IhD4iB2Bi7wwRyoAiieIRZun8iboQTuE9XT7H6Vh+RC6JLhCdJ3sJN
+	 7tdfgxduFkX/09fYms0BZDO37ZHuMg7gErg4F8af9fJiq1sI3jbiqnnpVpXyEq5IAJ
+	 UWlzo9e4IOy34E8mbfrC0WSTsFYpkHSD5d7DVXVI=
+Date: Wed, 23 Oct 2024 23:15:31 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] ocfs2-pass-u64-to-ocfs2_truncate_inline-maybe-overflow.patch removed from -mm tree
-Message-Id: <20241024061529.81D57C4CECC@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] nilfs2-fix-kernel-bug-due-to-missing-clearing-of-checked-flag.patch removed from -mm tree
+Message-Id: <20241024061531.A8A5DC4CEC7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,67 +50,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: ocfs2: pass u64 to ocfs2_truncate_inline maybe overflow
+     Subject: nilfs2: fix kernel bug due to missing clearing of checked flag
 has been removed from the -mm tree.  Its filename was
-     ocfs2-pass-u64-to-ocfs2_truncate_inline-maybe-overflow.patch
+     nilfs2-fix-kernel-bug-due-to-missing-clearing-of-checked-flag.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Edward Adam Davis <eadavis@qq.com>
-Subject: ocfs2: pass u64 to ocfs2_truncate_inline maybe overflow
-Date: Wed, 16 Oct 2024 19:43:47 +0800
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Subject: nilfs2: fix kernel bug due to missing clearing of checked flag
+Date: Fri, 18 Oct 2024 04:33:10 +0900
 
-Syzbot reported a kernel BUG in ocfs2_truncate_inline.  There are two
-reasons for this: first, the parameter value passed is greater than
-ocfs2_max_inline_data_with_xattr, second, the start and end parameters of
-ocfs2_truncate_inline are "unsigned int".
+Syzbot reported that in directory operations after nilfs2 detects
+filesystem corruption and degrades to read-only,
+__block_write_begin_int(), which is called to prepare block writes, may
+fail the BUG_ON check for accesses exceeding the folio/page size,
+triggering a kernel bug.
 
-So, we need to add a sanity check for byte_start and byte_len right before
-ocfs2_truncate_inline() in ocfs2_remove_inode_range(), if they are greater
-than ocfs2_max_inline_data_with_xattr return -EINVAL.
+This was found to be because the "checked" flag of a page/folio was not
+cleared when it was discarded by nilfs2's own routine, which causes the
+sanity check of directory entries to be skipped when the directory
+page/folio is reloaded.  So, fix that.
 
-Link: https://lkml.kernel.org/r/tencent_D48DB5122ADDAEDDD11918CFB68D93258C07@qq.com
-Fixes: 1afc32b95233 ("ocfs2: Write support for inline data")
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Reported-by: syzbot+81092778aac03460d6b7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=81092778aac03460d6b7
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
+This was necessary when the use of nilfs2's own page discard routine was
+applied to more than just metadata files.
+
+Link: https://lkml.kernel.org/r/20241017193359.5051-1-konishi.ryusuke@gmail.com
+Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+d6ca2daf692c7a82f959@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d6ca2daf692c7a82f959
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/ocfs2/file.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/nilfs2/page.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ocfs2/file.c~ocfs2-pass-u64-to-ocfs2_truncate_inline-maybe-overflow
-+++ a/fs/ocfs2/file.c
-@@ -1784,6 +1784,14 @@ int ocfs2_remove_inode_range(struct inod
- 		return 0;
+--- a/fs/nilfs2/page.c~nilfs2-fix-kernel-bug-due-to-missing-clearing-of-checked-flag
++++ a/fs/nilfs2/page.c
+@@ -400,6 +400,7 @@ void nilfs_clear_folio_dirty(struct foli
  
- 	if (OCFS2_I(inode)->ip_dyn_features & OCFS2_INLINE_DATA_FL) {
-+		int id_count = ocfs2_max_inline_data_with_xattr(inode->i_sb, di);
-+
-+		if (byte_start > id_count || byte_start + byte_len > id_count) {
-+			ret = -EINVAL;
-+			mlog_errno(ret);
-+			goto out;
-+		}
-+
- 		ret = ocfs2_truncate_inline(inode, di_bh, byte_start,
- 					    byte_start + byte_len, 0);
- 		if (ret) {
+ 	folio_clear_uptodate(folio);
+ 	folio_clear_mappedtodisk(folio);
++	folio_clear_checked(folio);
+ 
+ 	head = folio_buffers(folio);
+ 	if (head) {
 _
 
-Patches currently in -mm which might be from eadavis@qq.com are
+Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
 
+nilfs2-fix-potential-deadlock-with-newly-created-symlinks.patch
 
 
