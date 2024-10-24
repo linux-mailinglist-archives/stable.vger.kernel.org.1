@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-88083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C7669AE922
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 16:41:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 924B19AE926
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 16:42:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E5E11C2220B
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 14:41:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C356B23FE0
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 14:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0EB1EF0BB;
-	Thu, 24 Oct 2024 14:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D971E7660;
+	Thu, 24 Oct 2024 14:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="puj7eOkv"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="hYcgBkly"
 X-Original-To: stable@vger.kernel.org
 Received: from pv50p00im-hyfv10011601.me.com (pv50p00im-hyfv10011601.me.com [17.58.6.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4B71EC01B
-	for <stable@vger.kernel.org>; Thu, 24 Oct 2024 14:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C6A1E7668
+	for <stable@vger.kernel.org>; Thu, 24 Oct 2024 14:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729780848; cv=none; b=kapi6gbLQ/xO8c08lzxMY4vuQsrgm+RkUvOV6lm0+oPMu2WHF5FqPxUREbSrDxa/NKozJoAbPxMLMyydblMu2cCmTJrbbUjayHgSi17ieLPdgo0BSmjrBNGnEwAHl7Nt+ZEzE9AxIYGRXuIZTQiCJMwZqexDQfy7EIScNm/HBfQ=
+	t=1729780856; cv=none; b=tri85WnKQD9C/okaNvDD/Hca6OFDNEQ/TZ1HwWOGv9Vl+5MpcRVh7exu5t4cwqeebmVguzlmtUruKc+RgpUlP8gayFflYoqQx0gagBJl73s3IVq8qnXxLGNUrT5EU2YNV1V1BfmncWIr5hdlGniM7e79icsY6fIa3FSUrnvzytM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729780848; c=relaxed/simple;
-	bh=iZKDw8ZYl2r+PnmmzzqcjTPuBPeYAfMiAPoDOy7IBj0=;
+	s=arc-20240116; t=1729780856; c=relaxed/simple;
+	bh=MJbrB7W8kX/cyQEalTTmjsZNEab1KL1hzlNY1ejl9U8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ttIVx6nbIp9zyzmn/mBIlU3xRDSHZjY7auNiN6Qz+DzKaHYg0ZwVdt30gceRzmo0m4LImjOZmOpKquayG4PPqxrVgGT7OjnQNPNzZNPQMsPZ9CZLwjR8zrtHo7Iea8qKX+6n9nilgjrSTt5HGNwwngHdfjvaT7eMdKEYIRrdbKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=puj7eOkv; arc=none smtp.client-ip=17.58.6.43
+	 In-Reply-To:To:Cc; b=l08MkbZWBlO5/WRsRqHfsB7ntjXpWB1J23EJMJ2TsaL8iPyMikcej7scc8iQwcHD5WVTQkaldmzniOW7PlCHUi+HPgZcIoH5gRJcH7tHm9lQF/JiaSoLrvP8eIjwLotZRCcJqnW0pb/UTR4NvlgJhWP67klZ+ygqCQAzDElGy6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=hYcgBkly; arc=none smtp.client-ip=17.58.6.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1729780845;
-	bh=Ao26SUIb49PEusAusFKVqbKwYbs2RGsKMlMvZlYTPaY=;
+	s=1a1hai; t=1729780854;
+	bh=WmCswZRvkq5WGhabYEyPR/NmcnJ9vmObxp5kPrfpCBY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To;
-	b=puj7eOkviFui+XPsW59+5X+gEPwLIDDj0ip2kCBMb9ckgcCVO9y5WMle8LC90hCgo
-	 TVnZsLZyu+M8qJMqsedVLqBZIsZI7w+GcPbPl9B8vijaUh8TQq6f7bZKcc1wEMHy4G
-	 BaVir5Mv6CGeSFFjByPwTi7MM8ollBCiM/IjgLK09hanfsj9Ra0iP7aUlsoQbDvdnP
-	 DYoB8GcELq6Iyu+G6mnSZetOJpfw6oZ198ec1wI+4YRE/f+LI4Rcm2qow2hTurNpe8
-	 aDairxQYm+uLUxJitzL2TqyOfd0VGNNs/7wH/EJJvN9sFT1LSsHCzyPamlyF0Fmn7E
-	 syLDcInm2fFqQ==
+	b=hYcgBkly1dOfQwz/FwLHxlli7FRnHINaxmitJN2ytTrAZ2i9555OuGsPe4Ncwd6Fn
+	 VnkaxwSrnzBu1FVjNp6cQ8KyRIRI1zgj4wvf6wxpl4P1vVkt1VvEZZwzz1pP5i7tYb
+	 4vRN1/0dUg7i+QOicQKLdnsNBv+X6miGqmH9Ke8XfnHK2guU8A+AWsWxSm8XefV1TH
+	 fdJaxQhta5amcUls0goL57b4ZLJBK5wee9/e+CYViqg5u9wuaEwGDzzIScp3sQIsCk
+	 79a1ZksS3iRgmWYGM6xoQkuwXfCIxDl3xbGf4ea3C3BqT3qwNO2E1/iua/lbMG8ibC
+	 N+sMxp6fMJiUA==
 Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-hyfv10011601.me.com (Postfix) with ESMTPSA id F3D3EC801D5;
-	Thu, 24 Oct 2024 14:40:38 +0000 (UTC)
+	by pv50p00im-hyfv10011601.me.com (Postfix) with ESMTPSA id 636BAC80102;
+	Thu, 24 Oct 2024 14:40:46 +0000 (UTC)
 From: Zijun Hu <zijun_hu@icloud.com>
-Date: Thu, 24 Oct 2024 22:39:30 +0800
-Subject: [PATCH v2 5/6] phy: core: Fix an OF node refcount leakage in
- of_phy_provider_lookup()
+Date: Thu, 24 Oct 2024 22:39:31 +0800
+Subject: [PATCH v2 6/6] phy: core: Simplify API of_phy_simple_xlate()
+ implementation
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,7 +56,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241024-phy_core_fix-v2-5-fc0c63dbfcf3@quicinc.com>
+Message-Id: <20241024-phy_core_fix-v2-6-fc0c63dbfcf3@quicinc.com>
 References: <20241024-phy_core_fix-v2-0-fc0c63dbfcf3@quicinc.com>
 In-Reply-To: <20241024-phy_core_fix-v2-0-fc0c63dbfcf3@quicinc.com>
 To: Vinod Koul <vkoul@kernel.org>, 
@@ -74,8 +74,8 @@ Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
  linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org, 
  Zijun Hu <quic_zijuhu@quicinc.com>
 X-Mailer: b4 0.14.1
-X-Proofpoint-ORIG-GUID: ljF3k-k6RczWgU4HR65qjNpZTcRZvZNQ
-X-Proofpoint-GUID: ljF3k-k6RczWgU4HR65qjNpZTcRZvZNQ
+X-Proofpoint-ORIG-GUID: bMZgaXaVPFhitUgiIfVpQoWbRlqMPNO3
+X-Proofpoint-GUID: bMZgaXaVPFhitUgiIfVpQoWbRlqMPNO3
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-24_15,2024-10-24_02,2024-09-30_01
@@ -87,51 +87,59 @@ X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
 
 From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-For macro for_each_child_of_node(parent, child), refcount of @child has
-been increased before entering its loop body, so normally needs to call
-of_node_put(@child) before returning from the loop body to avoid refcount
-leakage.
+Simplify of_phy_simple_xlate() implementation by API
+class_find_device_by_of_node() which is also safer since it subsys_get()
+the class's subsystem in advance of iterating over the class's devices.
 
-of_phy_provider_lookup() has such usage but does not call of_node_put()
-before returning, so cause leakage of the OF node refcount.
+Also correct comments to mark its parameter @dev as unused instead of
+@args in passing.
 
-Fixed by simply calling of_node_put() before returning from the loop body.
-
-The APIs affected by this issue are shown below since they indirectly
-invoke problematic of_phy_provider_lookup().
-phy_get()
-of_phy_get()
-devm_phy_get()
-devm_of_phy_get()
-devm_of_phy_get_by_index()
-
-Fixes: 2a4c37016ca9 ("phy: core: Fix of_phy_provider_lookup to return PHY provider for sub node")
-Cc: stable@vger.kernel.org
 Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-
 ---
-The following kernel mainline commit fixes a similar issue:
-Commit: b337cc3ce475 ("backlight: lm3509_bl: Fix early returns in for_each_child_of_node()")
----
- drivers/phy/phy-core.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/phy/phy-core.c | 20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
-index 967878b78797..de0264dfc387 100644
+index de0264dfc387..b83c6aa0287d 100644
 --- a/drivers/phy/phy-core.c
 +++ b/drivers/phy/phy-core.c
-@@ -145,8 +145,10 @@ static struct phy_provider *of_phy_provider_lookup(struct device_node *node)
- 			return phy_provider;
+@@ -749,8 +749,8 @@ EXPORT_SYMBOL_GPL(devm_phy_put);
  
- 		for_each_child_of_node(phy_provider->children, child)
--			if (child == node)
-+			if (child == node) {
-+				of_node_put(child);
- 				return phy_provider;
-+			}
+ /**
+  * of_phy_simple_xlate() - returns the phy instance from phy provider
+- * @dev: the PHY provider device
+- * @args: of_phandle_args (not used here)
++ * @dev: the PHY provider device (not used here)
++ * @args: of_phandle_args
+  *
+  * Intended to be used by phy provider for the common case where #phy-cells is
+  * 0. For other cases where #phy-cells is greater than '0', the phy provider
+@@ -760,20 +760,14 @@ EXPORT_SYMBOL_GPL(devm_phy_put);
+ struct phy *of_phy_simple_xlate(struct device *dev,
+ 				const struct of_phandle_args *args)
+ {
+-	struct phy *phy;
+-	struct class_dev_iter iter;
+-
+-	class_dev_iter_init(&iter, &phy_class, NULL, NULL);
+-	while ((dev = class_dev_iter_next(&iter))) {
+-		phy = to_phy(dev);
+-		if (args->np != phy->dev.of_node)
+-			continue;
++	struct device *target_dev;
+ 
+-		class_dev_iter_exit(&iter);
+-		return phy;
++	target_dev = class_find_device_by_of_node(&phy_class, args->np);
++	if (target_dev) {
++		put_device(target_dev);
++		return to_phy(target_dev);
  	}
  
- 	return ERR_PTR(-EPROBE_DEFER);
+-	class_dev_iter_exit(&iter);
+ 	return ERR_PTR(-ENODEV);
+ }
+ EXPORT_SYMBOL_GPL(of_phy_simple_xlate);
 
 -- 
 2.34.1
