@@ -1,74 +1,72 @@
-Return-Path: <stable+bounces-87998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBC609ADA96
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 05:39:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CABF9ADA97
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 05:39:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FC4E281B0D
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 03:39:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC3761C218AC
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 03:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A5B17107F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A0F1714B2;
 	Thu, 24 Oct 2024 03:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YQZNX5Rc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m/sBgaEy"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7531016F265
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FAE16F8E9
 	for <stable@vger.kernel.org>; Thu, 24 Oct 2024 03:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729741146; cv=none; b=Ku+RUsfTA171imsIvgA+8CUkaFBIU2BqEM1WzUAyPaHVecF4GYOp7ArJauNdqNcjzseZTzxDwx6eFiBH6zR4uOxYyfJiRAeCsnCcvNxIdxxl1IVoFkbMaIf81n2UqzgN6gnxcYdhSYhStTJwMjJBvv0AMneAxwdbkYIveh0Ly50=
+	t=1729741146; cv=none; b=jeiA/Sx+LaAsAUFxEi+lqpDGoxXfuedtebwTN1HB2WCyC+0HhrbDkNIn44XNLUAAZu2IzTB00GWvazKlBjDP/2Jo0vdx1Hd2hMdGOF98MQ0UJrJ4cJBxt1OPyX8w6ccuCWTtPIy/o2CMobWLhWOIwlCfxHVUNg7lMl1rO0ErpR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1729741146; c=relaxed/simple;
-	bh=PJ6hOTcpMxobSyC0urP1furALllXHu/pOjWs4SoX528=;
+	bh=TeNrs+Nx5w59WODSEG5n3Nt7tSdMwoprf1yH7i+lOGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VbOz4HgtPV0sEcZV/ETu4mI6Ku9YFdSPX6oLBZ4y3iRXzG0VTbF2XLgLvsC1nZpurmjMpuUycU4VBmFGFzyDCZK/nJhvXEcxFgpEbVxxv2N90aWIllAWS6OYG6whnXqsoq3AOLnl3Ko+JmCctKDSnDWtA/HUmhFuMBkzufdff14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YQZNX5Rc; arc=none smtp.client-ip=192.198.163.12
+	 MIME-Version; b=rYIjtIC16xOoSwNHNEGgiLh9rN32jlbUPBJSV90WtEuv2wrmqO5aYf5K7C+ucI805o40zf/Y0uTMr+7dswAcC6I5YZXmq4XRKG5nUTdx0PP5on7VSi1kr6SaulxQGBrWru1HoV0/l0uxG4jCeaa3lWZy1+7B7hj2fQd+gWnVTXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m/sBgaEy; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729741144; x=1761277144;
+  t=1729741145; x=1761277145;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=PJ6hOTcpMxobSyC0urP1furALllXHu/pOjWs4SoX528=;
-  b=YQZNX5RcqimavAfM9ABJkqByx55F1l4iiNl2q7dmRRupErIx7/u0UZju
-   6ZNzR4wrClDYq2QzcOtALoLAphdvp4IzQP8t1ojKuvEyiG+yZ2bNco9Dm
-   mN74gilgAQcWaPlJyzLS81oRdSnv4a7crQCjHvPVTg1i2OdQlD5sya7jk
-   WKGwKqpZxRJoHquO/K+ipB6/9pPx742AaJZTUEUYSUt7IhdK806dkBMrT
-   HjfhjhFeID9bmMaTI+6Pu/KhYT0VUv4ilgUBoRzO0yookrlCb03al4rnx
-   5Lpe14Cp5v2cgeS+CCfrbpmjsO8bQ2IQtITzu4uNk2pft8JRSCFiAUv7w
-   A==;
-X-CSE-ConnectionGUID: Zy35PWNbQFajZpjSDaG5KA==
-X-CSE-MsgGUID: /agdqEoqR/W4KHJlKHxEgA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11234"; a="33265005"
+  bh=TeNrs+Nx5w59WODSEG5n3Nt7tSdMwoprf1yH7i+lOGc=;
+  b=m/sBgaEy1SlhdxN/o+rnFHeiCjgKclbplYY7uXF7sgn19CBiqDpQyCd2
+   44O4CXZ4LfYARmZ7hnleQctoFvpL1iHj1J9JJOnOkH8U6q1qjd0dKgYBV
+   KRdU4mD+lvwIvDwkd/tJb0GIImAEUUrT1UEOveSXutAP7K0VGyQZj6h/5
+   Xr7BjTs7qeerjY4t1Dwn9fomBNCalvaue5wT7R4qEncn9BlCq/PXEEFSc
+   D+6a9n/dWbDYr2LqYQCTriqlkYIcA/rkxxQAQFHEPkcBlq5g104h7eNHr
+   rSbfxB9OehVrvwWBI4bYiNsyN7NErgdsfWEJL8hp6w9keRz06LZVjb+ZF
+   w==;
+X-CSE-ConnectionGUID: EVkNFc0xSOWV+xqECCzBug==
+X-CSE-MsgGUID: EEpI9wtNSgyE9V3I3WRHRg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11234"; a="33265006"
 X-IronPort-AV: E=Sophos;i="6.11,228,1725346800"; 
-   d="scan'208";a="33265005"
+   d="scan'208";a="33265006"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
   by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2024 20:38:53 -0700
-X-CSE-ConnectionGUID: xgwxQAzGSXqaX9x4aoXm+g==
-X-CSE-MsgGUID: Og5n8XYRRc2vnHvb6iQdSQ==
+X-CSE-ConnectionGUID: 39a54zb/SouU0w0GEDRJKA==
+X-CSE-MsgGUID: xWxpWluYQmq+GWyQPQv/mQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,228,1725346800"; 
-   d="scan'208";a="80384995"
+   d="scan'208";a="80384998"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
   by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2024 20:38:51 -0700
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: stable@vger.kernel.org
 Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
 	Shekhar Chauhan <shekhar.chauhan@intel.com>,
-	Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>,
-	Akshata Jahagirdar <akshata.jahagirdar@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
 	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH xe-i915-for-6.11 20/22] drm/xe/xe2: Add performance turning changes
-Date: Wed, 23 Oct 2024 20:38:12 -0700
-Message-ID: <20241024033815.3538736-20-lucas.demarchi@intel.com>
+Subject: [PATCH xe-i915-for-6.11 21/22] drm/xe: Define STATELESS_COMPRESSION_CTRL as mcr register
+Date: Wed, 23 Oct 2024 20:38:13 -0700
+Message-ID: <20241024033815.3538736-21-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241024033815.3538736-1-lucas.demarchi@intel.com>
 References: <20241024033815.3538736-1-lucas.demarchi@intel.com>
@@ -80,72 +78,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Shekhar Chauhan <shekhar.chauhan@intel.com>
+From: Tejas Upadhyay <tejas.upadhyay@intel.com>
 
-commit ecabb5e6ce54711c28706fc794d77adb3ecd0605 upstream.
+commit 4551d60299b5ddc2655b6b365a4b92634e14e04f upstream.
 
-Update performance tuning according to the hardware spec.
+Register STATELESS_COMPRESSION_CTRL should be considered
+mcr register which should write to all slices as per
+documentation.
 
-Bspec: 72161
-Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
-Reviewed-by: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
-Reviewed-by: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240805053710.877119-1-shekhar.chauhan@intel.com
+Bspec: 71185
+Fixes: ecabb5e6ce54 ("drm/xe/xe2: Add performance turning changes")
+Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Reviewed-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240814095614.909774-4-tejas.upadhyay@intel.com
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- drivers/gpu/drm/xe/regs/xe_gt_regs.h | 4 ++++
- drivers/gpu/drm/xe/xe_tuning.c       | 8 +++++++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/regs/xe_gt_regs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/xe/regs/xe_gt_regs.h b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-index 5155f2744fd3b..076afe5b5777c 100644
+index 076afe5b5777c..667671e482141 100644
 --- a/drivers/gpu/drm/xe/regs/xe_gt_regs.h
 +++ b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
-@@ -80,6 +80,9 @@
+@@ -80,7 +80,7 @@
  #define   LE_CACHEABILITY_MASK			REG_GENMASK(1, 0)
  #define   LE_CACHEABILITY(value)		REG_FIELD_PREP(LE_CACHEABILITY_MASK, value)
  
-+#define STATELESS_COMPRESSION_CTRL		XE_REG(0x4148)
-+#define   UNIFIED_COMPRESSION_FORMAT		REG_GENMASK(3, 0)
-+
+-#define STATELESS_COMPRESSION_CTRL		XE_REG(0x4148)
++#define STATELESS_COMPRESSION_CTRL		XE_REG_MCR(0x4148)
+ #define   UNIFIED_COMPRESSION_FORMAT		REG_GENMASK(3, 0)
+ 
  #define XE2_GAMREQSTRM_CTRL			XE_REG(0x4194)
- #define   CG_DIS_CNTLBUS			REG_BIT(6)
- 
-@@ -192,6 +195,7 @@
- #define GSCPSMI_BASE				XE_REG(0x880c)
- 
- #define CCCHKNREG1				XE_REG_MCR(0x8828)
-+#define   L3CMPCTRL				REG_BIT(23)
- #define   ENCOMPPERFFIX				REG_BIT(18)
- 
- /* Fuse readout registers for GT */
-diff --git a/drivers/gpu/drm/xe/xe_tuning.c b/drivers/gpu/drm/xe/xe_tuning.c
-index 3817b7743b0ca..faa1bf42e50ed 100644
---- a/drivers/gpu/drm/xe/xe_tuning.c
-+++ b/drivers/gpu/drm/xe/xe_tuning.c
-@@ -39,7 +39,8 @@ static const struct xe_rtp_entry_sr gt_tunings[] = {
- 	},
- 	{ XE_RTP_NAME("Tuning: Compression Overfetch"),
- 	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, XE_RTP_END_VERSION_UNDEFINED)),
--	  XE_RTP_ACTIONS(CLR(CCCHKNREG1, ENCOMPPERFFIX)),
-+	  XE_RTP_ACTIONS(CLR(CCCHKNREG1, ENCOMPPERFFIX),
-+			 SET(CCCHKNREG1, L3CMPCTRL))
- 	},
- 	{ XE_RTP_NAME("Tuning: Enable compressible partial write overfetch in L3"),
- 	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, XE_RTP_END_VERSION_UNDEFINED)),
-@@ -50,6 +51,11 @@ static const struct xe_rtp_entry_sr gt_tunings[] = {
- 	  XE_RTP_ACTIONS(SET(L3SQCREG2,
- 			     COMPMEMRD256BOVRFETCHEN))
- 	},
-+	{ XE_RTP_NAME("Tuning: Stateless compression control"),
-+	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(2001, XE_RTP_END_VERSION_UNDEFINED)),
-+	  XE_RTP_ACTIONS(FIELD_SET(STATELESS_COMPRESSION_CTRL, UNIFIED_COMPRESSION_FORMAT,
-+				   REG_FIELD_PREP(UNIFIED_COMPRESSION_FORMAT, 0)))
-+	},
- 	{}
- };
- 
 -- 
 2.47.0
 
