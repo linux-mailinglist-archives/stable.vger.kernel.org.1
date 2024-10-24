@@ -1,148 +1,140 @@
-Return-Path: <stable+bounces-88015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D49A69ADC54
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 08:39:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B599ADC6A
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 08:43:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EAED1F22F6C
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 06:39:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA59B1F225AB
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 06:43:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F18A18990D;
-	Thu, 24 Oct 2024 06:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047DC189B84;
+	Thu, 24 Oct 2024 06:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TCp2vLs5"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Cljcn1xo"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42294166F14;
-	Thu, 24 Oct 2024 06:39:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCAB86CDBA;
+	Thu, 24 Oct 2024 06:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729751951; cv=none; b=WAxYigtGCwLdcXoUf/He5MDVJvTtlfYg1xGa94urphUSarSEFh+HFysNwTEV5dBQLbMHiyIFqLrd3oylFRsCNMelA4Qh0E/KhZ2FHxIt9NJpab9icNWYz6p9wIH3E9k32wpI4i1aL7wSFhRdn745OemkbhanmwQxRK2Tixy3CZE=
+	t=1729752174; cv=none; b=WDo1gfSQlI6ZpPkr0/X7Gq5F3WWPzxihP5CrD9jiE2m9mS5IWWotP/5w98ZDSzqR7QfHec2mpnbRiSIhLqsvVpKLn3Hh76bgmvoUPEZz7t2Itte6RcXf4JD7YwNDf7iPudHaCDw3B3KS05Yf50nEwbRrsRkg08WjYffQfIPjaB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729751951; c=relaxed/simple;
-	bh=2bKNDUAIZb9oWcPV045oHohhSfP4ZSl2w1vDelsLi/M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aYglnzkEykd/OiIZa4ksASQEbaX0lmqMcEc3n9VGRzvc6Xtt4kaP1Wva1zTuZBqoAxdS75yy4NBfvWNTv8lmgs45XKzNDnCLcGdBKlbaJXEsKXu6wF8EWarRT3fg/eRlQvHOtB5gZsCs665iM9P5GJxf/CPj3Rv8snopfN8hfyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TCp2vLs5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7442C4CEC7;
-	Thu, 24 Oct 2024 06:39:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729751950;
-	bh=2bKNDUAIZb9oWcPV045oHohhSfP4ZSl2w1vDelsLi/M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TCp2vLs5JAPN1xc73whYor8p7xoe1OI/+7A0yu2fQ0V+qsJZ55q/lgnhFszmJG6Xq
-	 N6zkGogRJMIw4Ad1K3N6XYu3R/Y/GXe4RmvQKzbPuITSjpA9rr7MMMlnd9t/1oxG9A
-	 p/fxjynbVpiONjmYwiAi2AL/jhdW+J3nFBDZ7SSiDDtK0ZgaCq+9hQ9eX4LWbSx7Yc
-	 sfjV2T4robg+OAZ+K28yRgyMAphT6hhG4ck/2h4NF74FqXryYydY4aj5sjo5yyk366
-	 DDPHlADIenAenoPs34Q0CPB3MAggufBbpJANXCSLhH7Q3chr1sI5bju+0iwOBbeJsQ
-	 JgOF5w4q8KaYg==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1t3rVF-000000006Mw-1vvY;
-	Thu, 24 Oct 2024 08:39:25 +0200
-Date: Thu, 24 Oct 2024 08:39:25 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Chris Lew <quic_clew@quicinc.com>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	Bjorn Andersson <quic_bjorande@quicinc.com>,
-	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Johan Hovold <johan+linaro@kernel.org>
-Subject: Re: [PATCH v2 2/2] soc: qcom: pmic_glink: Handle GLINK intent
- allocation rejections
-Message-ID: <ZxnrnY0rMQRWmUtd@hovoldconsulting.com>
-References: <20241023-pmic-glink-ecancelled-v2-0-ebc268129407@oss.qualcomm.com>
- <20241023-pmic-glink-ecancelled-v2-2-ebc268129407@oss.qualcomm.com>
+	s=arc-20240116; t=1729752174; c=relaxed/simple;
+	bh=AE41odrvovNQUesHpRK1dP38ZopOUuUByGzXS6QtEiw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=qqTqsDl3g8cwIVNEc1By+jx0JPWqTLuM7TYyyQrsEg2HZyf/Oxj5o4z8ThKrDBw0QukCsK4n3GV+T1rENbvIlBY1XvtChHkIjTBi2+yFuOhckmJr4vOnMpfvKAlPctfMdi164fe4eY5Id15KiETjvdGVyxyzb6+Ctiuw2j5jy7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Cljcn1xo; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49NLlpbi020224;
+	Thu, 24 Oct 2024 06:42:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	MOui3FkqthLLxDG8jF1710A76nx3b/xntWLvkRqfo2o=; b=Cljcn1xoP8JShVp3
+	AazyhMbIbtcyGGi2TV15QQFaSwqoUitCmzV/gcoXNcch1hiBZqnCgt0x8nMCBpm1
+	XgmvibGoN8b3HS4+WN/fBzL0/7Tr3Vq76G3wX4RvcUPwkxblFu72gY7OTzlHny75
+	f1W1gDAEXsNSVZcPdRU0paiAb3lja2IgTDb3/z7yQWjN4x6ZqdboSqy1GSBnPjkn
+	wZB3VqzfXz0TZlOeQUDWx2hcCRPyAOYX7DKKwypg68CRw3elD1+Bt5iV7z0rtTpi
+	0ZfO/6aOcvuKhMuN1MJTkIIxdCzfkYTprKKXN8TkTnaKdpiagmBg4pr/+IeWQmvs
+	5hu/gA==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42em3xmr0m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Oct 2024 06:42:44 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49O6geY0026399
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Oct 2024 06:42:40 GMT
+Received: from [10.239.29.179] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 23 Oct
+ 2024 23:42:35 -0700
+Message-ID: <91395c5e-22a0-4117-a4b5-4985284289ab@quicinc.com>
+Date: Thu, 24 Oct 2024 14:42:32 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241023-pmic-glink-ecancelled-v2-2-ebc268129407@oss.qualcomm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 6/7] PCI: qcom: Disable ASPM L0s and remove BDF2SID
+ mapping config for X1E80100 SoC
+To: Johan Hovold <johan@kernel.org>
+CC: <manivannan.sadhasivam@linaro.org>, <vkoul@kernel.org>,
+        <kishon@kernel.org>, <robh@kernel.org>, <andersson@kernel.org>,
+        <konradybcio@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+        <mturquette@baylibre.com>, <sboyd@kernel.org>, <abel.vesa@linaro.org>,
+        <quic_msarkar@quicinc.com>, <quic_devipriy@quicinc.com>,
+        <dmitry.baryshkov@linaro.org>, <kw@linux.com>, <lpieralisi@kernel.org>,
+        <neil.armstrong@linaro.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-phy@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-clk@vger.kernel.org>, <johan+linaro@kernel.org>,
+        <stable@vger.kernel.org>
+References: <20241017030412.265000-1-quic_qianyu@quicinc.com>
+ <20241017030412.265000-7-quic_qianyu@quicinc.com>
+ <ZxJrUQDGMDw3wI3Q@hovoldconsulting.com>
+Content-Language: en-US
+From: Qiang Yu <quic_qianyu@quicinc.com>
+In-Reply-To: <ZxJrUQDGMDw3wI3Q@hovoldconsulting.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: gagmCVtlOA3uf-nAqE7_D-lcVsNj_yVZ
+X-Proofpoint-ORIG-GUID: gagmCVtlOA3uf-nAqE7_D-lcVsNj_yVZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ impostorscore=0 mlxscore=0 bulkscore=0 spamscore=0 lowpriorityscore=0
+ mlxlogscore=656 malwarescore=0 priorityscore=1501 adultscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410240050
 
-On Wed, Oct 23, 2024 at 05:24:33PM +0000, Bjorn Andersson wrote:
-> Some versions of the pmic_glink firmware does not allow dynamic GLINK
-> intent allocations, attempting to send a message before the firmware has
-> allocated its receive buffers and announced these intent allocations
-> will fail.
 
-> Retry the send until intent buffers becomes available, or an actual
-> error occur.
+On 10/18/2024 10:06 PM, Johan Hovold wrote:
+> Please use a more concise subject (e.g. try to stay within 72 chars)
+> than:
+>
+> 	PCI: qcom: Disable ASPM L0s and remove BDF2SID mapping config for X1E80100 SoC
+>
+> Here you could drop "SoC", maybe "ASPM" and "config" for example.
+>
+> On Wed, Oct 16, 2024 at 08:04:11PM -0700, Qiang Yu wrote:
+>> Currently, the cfg_1_9_0 which is being used for X1E80100 has config_sid
+>> callback in its ops and doesn't disable ASPM L0s. However, as same as
+>> SC8280X, PCIe controllers on X1E80100 are connected to SMMUv3, hence don't
+>> need config_sid() callback and hardware team has recommended to disable
+>> L0s as it is broken in the controller. Hence reuse cfg_sc8280xp for
+>> X1E80100.
+> Since the x1e80100 dtsi, like sc8280xp, do not specify an iommu-map,
+> that bit is effectively just a cleanup and all this patch does is to
+> disable L0s.
+>
+> Please rephrase to make this clear. This will also allow you to make the
+> Subject even shorter (no need to mention the SID bit in Subject).
+>
+> Also say something about how L0s is broken so that it is more clear what
+> the effect of this patch is. On sc8280xp enabling L0s lead to
+> correctable errors for example.
+Need more time to confirm the exact reason about disabling L0s.
+Will update if get any progress
 
-> Reported-by: Johan Hovold <johan@kernel.org>
-> Closes: https://lore.kernel.org/all/Zqet8iInnDhnxkT9@hovoldconsulting.com/#t
-> Cc: stable@vger.kernel.org # rpmsg: glink: Handle rejected intent request better
-> Fixes: 58ef4ece1e41 ("soc: qcom: pmic_glink: Introduce base PMIC GLINK driver")
-> Tested-by: Johan Hovold <johan+linaro@kernel.org>
-> Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-> Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-
-Thanks for the update. Still works as intended here.
-
->  int pmic_glink_send(struct pmic_glink_client *client, void *data, size_t len)
->  {
->  	struct pmic_glink *pg = client->pg;
-> +	bool timeout_reached = false;
-> +	unsigned long start;
->  	int ret;
->  
->  	mutex_lock(&pg->state_lock);
-> -	if (!pg->ept)
-> +	if (!pg->ept) {
->  		ret = -ECONNRESET;
-> -	else
-> -		ret = rpmsg_send(pg->ept, data, len);
-> +	} else {
-> +		start = jiffies;
-> +		for (;;) {
-> +			ret = rpmsg_send(pg->ept, data, len);
-> +			if (ret != -EAGAIN)
-> +				break;
-> +
-> +			if (timeout_reached) {
-> +				ret = -ETIMEDOUT;
-> +				break;
-> +			}
-> +
-> +			usleep_range(1000, 5000);
-
-I ran some quick tests of this patch this morning (reproducing the issue
-five times), and with the above delay it seems a single resend is
-enough. Dropping the delay I once hit:
-
-[    8.723479] qcom_pmic_glink pmic-glink: pmic_glink_send - resend
-[    8.723877] qcom_pmic_glink pmic-glink: pmic_glink_send - resend
-[    8.723921] qcom_pmic_glink pmic-glink: pmic_glink_send - resend
-[    8.723951] qcom_pmic_glink pmic-glink: pmic_glink_send - resend
-[    8.723981] qcom_pmic_glink pmic-glink: pmic_glink_send - resend
-[    8.724010] qcom_pmic_glink pmic-glink: pmic_glink_send - resend
-[    8.724046] qcom_pmic_glink pmic-glink: pmic_glink_send - resend
-
-which seems to suggest that a one millisecond sleep is sufficient for
-the currently observed issue.
-
-It would still mean up to 5k calls if you ever try to send a too large
-buffer or similar and spin here for five seconds however. Perhaps
-nothing to worry about at this point, but increasing the delay or
-lowering the timeout could be considered.
-
-> +			timeout_reached = time_after(jiffies, start + PMIC_GLINK_SEND_TIMEOUT);
-> +		}
-> +	}
->  	mutex_unlock(&pg->state_lock);
->  
->  	return ret;
-
-Johan
+Thanks,
+Qiang
+>
+>> Fixes: 6d0c39324c5f ("PCI: qcom: Add X1E80100 PCIe support")
+>> Cc: stable@vger.kernel.org
+> Johan
 
