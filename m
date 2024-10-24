@@ -1,99 +1,113 @@
-Return-Path: <stable+bounces-87972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-87973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E93429AD9EB
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 04:27:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF1759ADA2C
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 04:52:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2262C1C215E7
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 02:27:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A0391C21603
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 02:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2A8148838;
-	Thu, 24 Oct 2024 02:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B68EE1552ED;
+	Thu, 24 Oct 2024 02:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="eCs6J2P3"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="NMcS+hBU"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966F174040;
-	Thu, 24 Oct 2024 02:27:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6966E1CD3F;
+	Thu, 24 Oct 2024 02:52:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729736848; cv=none; b=UR1E4dvnl9AqfyU1aWwKVmo61Wc45VuBb1HcQs/+DINK/YFL/MARwTZ5Ub3etBLBOibAG3kK/aqGs6DBBBaVqXry6r2ZpxxK88ROJHb4OzM2Wuqc4y+5FmQEUxSGkyonelanTmB1X28U0psJh4QryvdlO/2imSFtRmJaBMmXqN0=
+	t=1729738373; cv=none; b=n8NO8S09Gv5K4nNNeuIUsTBzlrHVRh50UnvzfYEFBlcpOq4tPczlTFMzIuNbOxATwU0vYsyQTiDaLG9JL8FzcE4/WzSAW6JsJXMaeljtvq5WRPnzp6+YTW8nPiHWnZVRPOI2vjOxZPXF/w84GlyfEHy0xsR0FrFrDLyePp9Nros=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729736848; c=relaxed/simple;
-	bh=IvEc+AYeWPJJmtJ60ssOpgGH28HGIQWXYtW2hYd4OvM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Mkug1QTqS7ekd2OePiLdXRL7KmQ/TF6vjhNAvTujsFemG1+iP+oiFdWbtBrASzgBFbpiKQl5OIK4rdlET4iW3Frv5vH/ucQGqKrYlgjFA2YXscVVkX1JTeZFCWeFIQSG9DsDSuR7mRhHz0VkhPzp8QhBk5NipAO8cqswdP6T2rY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=eCs6J2P3; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=/rPi5
-	Lcki+iBDALqPQLhIL7P+3qfjGOuEBBYE9xUBb4=; b=eCs6J2P3tr3ky7OPmlMYT
-	UOZlnHUyIqbWHlsnIxf8OHrwgPYvfenxZQaVXpR4okazu+bOY/i9YKcHFOg/McAg
-	/y3ty1Pj2qJ/n8gkPnmNEkzkhEjwNXin4mDk4YMMZbCv1rb+BIJhiT9eyHBddvB3
-	siOBw28jMUKJ45XxBXtxdw=
-Received: from thinkpadx13gen2i.. (unknown [111.48.58.12])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wC339x2sBlnNkzrAA--.9816S2;
-	Thu, 24 Oct 2024 10:27:03 +0800 (CST)
-From: Zongmin Zhou <min_halo@163.com>
-To: skhan@linuxfoundation.org
-Cc: i@zenithal.me,
-	linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	shuah@kernel.org,
-	valentina.manea.m@gmail.com,
-	Zongmin Zhou <zhouzongmin@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] usbip: tools: Fix detach_port() invalid port error path
-Date: Thu, 24 Oct 2024 10:27:00 +0800
-Message-Id: <20241024022700.1236660-1-min_halo@163.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <8d1a298c-78e4-4dfd-a5fb-5dd96fb22e81@linuxfoundation.org>
-References: <8d1a298c-78e4-4dfd-a5fb-5dd96fb22e81@linuxfoundation.org>
+	s=arc-20240116; t=1729738373; c=relaxed/simple;
+	bh=qPufH9wEOwoAVzNsymc28VGiI+tzIJ5f8Dr/m3ZspVg=;
+	h=Date:To:From:Subject:Message-Id; b=LriizL6NKAS4+Gngall69/Fj/p6U4eQ/SkubGwE87pwMTjFI6Ch19vO+kSSqp95fjedz9dsftfViczgJhn1tNRJVUZM+ktOylCBxSD/THtTUs4Ak0LJk1NXQCooCbd/Y9hvSWMc0QGyPQDwkGdZHqskCkdLOymPw32Z8vSnLStc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=NMcS+hBU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA359C4CEC6;
+	Thu, 24 Oct 2024 02:52:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1729738372;
+	bh=qPufH9wEOwoAVzNsymc28VGiI+tzIJ5f8Dr/m3ZspVg=;
+	h=Date:To:From:Subject:From;
+	b=NMcS+hBUN7uktt7qqhsM2wV9krRk6I8Guy1HWVYK0HhBT/jcxktRolnk6dkkphxO7
+	 1a88UFkDOiFPNTN4b8iGj2O6NBzMxOXfYvoHLoIa6nM9JMr1pxemeBQIHQ5XLZ/Qru
+	 CR9G7IPwGGvRvj6D/hkVH/BCzIdcjmI0VthylKI4=
+Date: Wed, 23 Oct 2024 19:52:52 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,kees@kernel.org,James.Bottomley@HansenPartnership.com,andy@kernel.org,bartosz.golaszewski@linaro.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + lib-string_helpers-fix-potential-snprintf-output-truncation.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241024025252.BA359C4CEC6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wC339x2sBlnNkzrAA--.9816S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrur17Kry7uFWfGr4rJry7Jrb_yoWfCrg_Cr
-	4Uur4DXrWYka4Fkrn5GF18CryrK3Z8Wr4kXa1UKr1fGa4qyrn5JFyDt3929F18ur1qvF1a
-	y3Z5Xw1DZws8ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU89Xo7UUUUU==
-X-CM-SenderInfo: pplqsxxdorqiywtou0bp/1tbiLAWBq2cZRZMUFQABsr
 
-From: Zongmin Zhou <zhouzongmin@kylinos.cn>
 
-The detach_port() doesn't return error
-when detach is attempted on an invalid port.
+The patch titled
+     Subject: lib: string_helpers: fix potential snprintf() output truncation
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     lib-string_helpers-fix-potential-snprintf-output-truncation.patch
 
-Fixes: 40ecdeb1a187 ("usbip: usbip_detach: fix to check for invalid ports")
-Cc: stable@vger.kernel.org
-Reviewed-by: Hongren Zheng <i@zenithal.me>
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Zongmin Zhou <zhouzongmin@kylinos.cn>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/lib-string_helpers-fix-potential-snprintf-output-truncation.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: lib: string_helpers: fix potential snprintf() output truncation
+Date: Mon, 21 Oct 2024 11:14:17 +0200
+
+The output of ".%03u" with the unsigned int in range [0, 4294966295] may
+get truncated if the target buffer is not 12 bytes.
+
+Link: https://lkml.kernel.org/r/20241021091417.37796-1-brgl@bgdev.pl
+Fixes: 3c9f3681d0b4 ("[SCSI] lib: add generic helper to print sizes rounded to the correct SI range")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- tools/usb/usbip/src/usbip_detach.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/tools/usb/usbip/src/usbip_detach.c b/tools/usb/usbip/src/usbip_detach.c
-index b29101986b5a..6b78d4a81e95 100644
---- a/tools/usb/usbip/src/usbip_detach.c
-+++ b/tools/usb/usbip/src/usbip_detach.c
-@@ -68,6 +68,7 @@ static int detach_port(char *port)
- 	}
+ lib/string_helpers.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/lib/string_helpers.c~lib-string_helpers-fix-potential-snprintf-output-truncation
++++ a/lib/string_helpers.c
+@@ -57,7 +57,7 @@ int string_get_size(u64 size, u64 blk_si
+ 	static const unsigned int rounding[] = { 500, 50, 5 };
+ 	int i = 0, j;
+ 	u32 remainder = 0, sf_cap;
+-	char tmp[8];
++	char tmp[12];
+ 	const char *unit;
  
- 	if (!found) {
-+		ret = -1;
- 		err("Invalid port %s > maxports %d",
- 			port, vhci_driver->nports);
- 		goto call_driver_close;
--- 
-2.34.1
+ 	tmp[0] = '\0';
+_
+
+Patches currently in -mm which might be from bartosz.golaszewski@linaro.org are
+
+lib-string_helpers-fix-potential-snprintf-output-truncation.patch
 
 
