@@ -1,145 +1,148 @@
-Return-Path: <stable+bounces-88014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F102C9ADC3A
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 08:31:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D49A69ADC54
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 08:39:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF0C7282BB2
-	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 06:31:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EAED1F22F6C
+	for <lists+stable@lfdr.de>; Thu, 24 Oct 2024 06:39:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BFA18732C;
-	Thu, 24 Oct 2024 06:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F18A18990D;
+	Thu, 24 Oct 2024 06:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eV4opCuC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TCp2vLs5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26697175D50;
-	Thu, 24 Oct 2024 06:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42294166F14;
+	Thu, 24 Oct 2024 06:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729751506; cv=none; b=Sq3BANmGKN4hWe27eOk87ktCPYW6jwtpHmmVG8GA2cuu03uvZO8uVBSL/IrwKbL46qvDrA488rxhNUknYg5eU3esI9+9inXpQ9KRKg31c4Ce+JKUgP85dqX5FS8TCofclE8X/Pt5so1O4B3USV5T0gpM/okU9R86+xqD7trjLxk=
+	t=1729751951; cv=none; b=WAxYigtGCwLdcXoUf/He5MDVJvTtlfYg1xGa94urphUSarSEFh+HFysNwTEV5dBQLbMHiyIFqLrd3oylFRsCNMelA4Qh0E/KhZ2FHxIt9NJpab9icNWYz6p9wIH3E9k32wpI4i1aL7wSFhRdn745OemkbhanmwQxRK2Tixy3CZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729751506; c=relaxed/simple;
-	bh=s5Ua4uQeCmjlKatsG1AdKAFVKVi1M1S3R2R0eIQTdK8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JUnZoHUGT/U09uc8E7Iu2O1yF7cfWTVZqwAAXX9IEwDYSurn6Hqj0qIgEWOVlX7T4vF4fCnmruSdvbT3oTASB48042HZzAS4cTzueGYXR6jIVYaILy6Qh6c/TliCl5n5QK20qOJMva/qpU39EoTmrMIaoHl1XHCUxNWHe8Ol1po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eV4opCuC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD7AC4CEC7;
-	Thu, 24 Oct 2024 06:31:43 +0000 (UTC)
+	s=arc-20240116; t=1729751951; c=relaxed/simple;
+	bh=2bKNDUAIZb9oWcPV045oHohhSfP4ZSl2w1vDelsLi/M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aYglnzkEykd/OiIZa4ksASQEbaX0lmqMcEc3n9VGRzvc6Xtt4kaP1Wva1zTuZBqoAxdS75yy4NBfvWNTv8lmgs45XKzNDnCLcGdBKlbaJXEsKXu6wF8EWarRT3fg/eRlQvHOtB5gZsCs665iM9P5GJxf/CPj3Rv8snopfN8hfyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TCp2vLs5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7442C4CEC7;
+	Thu, 24 Oct 2024 06:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729751505;
-	bh=s5Ua4uQeCmjlKatsG1AdKAFVKVi1M1S3R2R0eIQTdK8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=eV4opCuCcFU8Bh6BOiFOFr6wYq05NoRiAKTLcKbf0L6kMSAlIWjU24LzFDG1HM8Sv
-	 CIC19o3944Elxqe3uutNW2YI7/B5XbUFLCwGcY6ku9UbkPKS4q/G4PemtQ9T6JaiM5
-	 HqrVuQ8zr2mmvXkRvkPdI58PbSy+NAph4BGB9PaKunCpJd1nMU+zvLPp9LITI21v2I
-	 GvVAzZMlQwizUPMVGw8S2/kRITe66I45WviNRSqR3GQlJRv7ouGeJfv1mPhBtseIne
-	 ZDqKZI+5iTywEibLEbf0RE6PlJFN1+vKbKIyDjHlGR74dnEHqjLQnHsBstlFdp6e+9
-	 Bws+rYIgT0HJw==
-Message-ID: <11f81797-0452-47dd-b49f-9466110a6781@kernel.org>
-Date: Thu, 24 Oct 2024 08:31:42 +0200
+	s=k20201202; t=1729751950;
+	bh=2bKNDUAIZb9oWcPV045oHohhSfP4ZSl2w1vDelsLi/M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TCp2vLs5JAPN1xc73whYor8p7xoe1OI/+7A0yu2fQ0V+qsJZ55q/lgnhFszmJG6Xq
+	 N6zkGogRJMIw4Ad1K3N6XYu3R/Y/GXe4RmvQKzbPuITSjpA9rr7MMMlnd9t/1oxG9A
+	 p/fxjynbVpiONjmYwiAi2AL/jhdW+J3nFBDZ7SSiDDtK0ZgaCq+9hQ9eX4LWbSx7Yc
+	 sfjV2T4robg+OAZ+K28yRgyMAphT6hhG4ck/2h4NF74FqXryYydY4aj5sjo5yyk366
+	 DDPHlADIenAenoPs34Q0CPB3MAggufBbpJANXCSLhH7Q3chr1sI5bju+0iwOBbeJsQ
+	 JgOF5w4q8KaYg==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1t3rVF-000000006Mw-1vvY;
+	Thu, 24 Oct 2024 08:39:25 +0200
+Date: Thu, 24 Oct 2024 08:39:25 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Chris Lew <quic_clew@quicinc.com>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Johan Hovold <johan+linaro@kernel.org>
+Subject: Re: [PATCH v2 2/2] soc: qcom: pmic_glink: Handle GLINK intent
+ allocation rejections
+Message-ID: <ZxnrnY0rMQRWmUtd@hovoldconsulting.com>
+References: <20241023-pmic-glink-ecancelled-v2-0-ebc268129407@oss.qualcomm.com>
+ <20241023-pmic-glink-ecancelled-v2-2-ebc268129407@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "tty/serial: Make ->dcd_change()+uart_handle_dcd_change()
- status bool active" has been added to the 6.1-stable tree
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
- ilpo.jarvinen@linux.intel.com, Rodolfo Giometti <giometti@enneenne.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "David S. Miller" <davem@davemloft.net>
-References: <20241022175403.2844928-1-sashal@kernel.org>
- <a07de63f-1723-440d-802c-6bedefec7f24@kernel.org> <ZxjidR9PG2vfB_De@sashalap>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <ZxjidR9PG2vfB_De@sashalap>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241023-pmic-glink-ecancelled-v2-2-ebc268129407@oss.qualcomm.com>
 
-On 23. 10. 24, 13:48, Sasha Levin wrote:
-> On Wed, Oct 23, 2024 at 08:25:12AM +0200, Jiri Slaby wrote:
->> On 22. 10. 24, 19:54, Sasha Levin wrote:
->>> This is a note to let you know that I've just added the patch titled
->>>
->>>     tty/serial: Make ->dcd_change()+uart_handle_dcd_change() status 
->>> bool active
->>
->> This is a cleanup, not needed in stable. (Unless something context- 
->> depends on it.)
-> 
-> The 3 commits you've pointed out are a pre-req for 30c9ae5ece8e ("xhci:
-> dbc: honor usb transfer size boundaries.").
+On Wed, Oct 23, 2024 at 05:24:33PM +0000, Bjorn Andersson wrote:
+> Some versions of the pmic_glink firmware does not allow dynamic GLINK
+> intent allocations, attempting to send a message before the firmware has
+> allocated its receive buffers and announced these intent allocations
+> will fail.
 
-Ah, OK, thanks.
+> Retry the send until intent buffers becomes available, or an actual
+> error occur.
 
-And OMG (side note), the patch reintroduced the non-sense pattern I 
-removed (the added kfifo_len()).
+> Reported-by: Johan Hovold <johan@kernel.org>
+> Closes: https://lore.kernel.org/all/Zqet8iInnDhnxkT9@hovoldconsulting.com/#t
+> Cc: stable@vger.kernel.org # rpmsg: glink: Handle rejected intent request better
+> Fixes: 58ef4ece1e41 ("soc: qcom: pmic_glink: Introduce base PMIC GLINK driver")
+> Tested-by: Johan Hovold <johan+linaro@kernel.org>
+> Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+> Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
+Thanks for the update. Still works as intended here.
 
+>  int pmic_glink_send(struct pmic_glink_client *client, void *data, size_t len)
+>  {
+>  	struct pmic_glink *pg = client->pg;
+> +	bool timeout_reached = false;
+> +	unsigned long start;
+>  	int ret;
+>  
+>  	mutex_lock(&pg->state_lock);
+> -	if (!pg->ept)
+> +	if (!pg->ept) {
+>  		ret = -ECONNRESET;
+> -	else
+> -		ret = rpmsg_send(pg->ept, data, len);
+> +	} else {
+> +		start = jiffies;
+> +		for (;;) {
+> +			ret = rpmsg_send(pg->ept, data, len);
+> +			if (ret != -EAGAIN)
+> +				break;
+> +
+> +			if (timeout_reached) {
+> +				ret = -ETIMEDOUT;
+> +				break;
+> +			}
+> +
+> +			usleep_range(1000, 5000);
 
+I ran some quick tests of this patch this morning (reproducing the issue
+five times), and with the above delay it seems a single resend is
+enough. Dropping the delay I once hit:
 
-But re. this patch
-   0388a152fc55 tty/serial: Make ->dcd_change()+uart_handle_dcd_change() 
-status bool active
-with
-   Stable-dep-of: 40d7903386df ("serial: imx: Update mctrl old_status on 
-RTSD interrupt")
+[    8.723479] qcom_pmic_glink pmic-glink: pmic_glink_send - resend
+[    8.723877] qcom_pmic_glink pmic-glink: pmic_glink_send - resend
+[    8.723921] qcom_pmic_glink pmic-glink: pmic_glink_send - resend
+[    8.723951] qcom_pmic_glink pmic-glink: pmic_glink_send - resend
+[    8.723981] qcom_pmic_glink pmic-glink: pmic_glink_send - resend
+[    8.724010] qcom_pmic_glink pmic-glink: pmic_glink_send - resend
+[    8.724046] qcom_pmic_glink pmic-glink: pmic_glink_send - resend
 
-I fail to see how is that a dep?
+which seems to suggest that a one millisecond sleep is sufficient for
+the currently observed issue.
 
-thanks,
--- 
-js
-suse labs
+It would still mean up to 5k calls if you ever try to send a too large
+buffer or similar and spin here for five seconds however. Perhaps
+nothing to worry about at this point, but increasing the delay or
+lowering the timeout could be considered.
+
+> +			timeout_reached = time_after(jiffies, start + PMIC_GLINK_SEND_TIMEOUT);
+> +		}
+> +	}
+>  	mutex_unlock(&pg->state_lock);
+>  
+>  	return ret;
+
+Johan
 
