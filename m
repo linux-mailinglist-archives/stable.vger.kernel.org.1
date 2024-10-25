@@ -1,108 +1,155 @@
-Return-Path: <stable+bounces-88146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBAF49B01FE
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 14:18:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F259B0201
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 14:18:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94346283BA3
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 12:18:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A2F9283BEF
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 12:18:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D12B2036EA;
-	Fri, 25 Oct 2024 12:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D042201026;
+	Fri, 25 Oct 2024 12:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ObIYQnj1"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M9siP94U"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD74A2003DE;
-	Fri, 25 Oct 2024 12:17:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29861FF7B9
+	for <stable@vger.kernel.org>; Fri, 25 Oct 2024 12:18:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729858675; cv=none; b=A9BlruXrN6517hbFQSCmwgEadAN5HSdRZXPWnu9dk/zflhVPrS2JIBuVdilX1fuy5t6QdZqbsM5rm5pBVkjKalBYmwDpVLvca4C4SJc2v5CxSxyYl7opXvdtaVC2Xv0s+blAM8AIrVkoOPY2R9hz7NDWpSc4aTF5eupF13ESM/Q=
+	t=1729858691; cv=none; b=iXQ4MHOxUeeG4w2FziSHH5EYsPGthYKwYh7X2dAnjWtw4gBG1a6VXmUDQ7VZdkEFzZuqDLLP/ONbyFgoB8wLBWYw3eLxVY7FT5uZhI6QYru1WeMK2OOUolDuMsUglKHfilnTwjDumLBjKOgdz8WAfKq+mQoTQ80zCHe01mLDe20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729858675; c=relaxed/simple;
-	bh=S/bqUsr/5mwZ4YNDlIpRTUK2R5DCl91evENsXbbAavU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EUYWsOj5OdzbgXlOwOx+dAfGAhqOrchIEHPjxgWzoOOdxihc226SZyZV3TP+1GrU962n0rM2dQ7+xSRJRpFrQcA1OvdGk5oRvm9DkbA2RCYEljD8/K3WHYQR+DTAWI5+93bSDK6LpfnhG8r/omrzbuKj3S5OT1QqDumsWVwCCKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ObIYQnj1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649B6C4CEC3;
-	Fri, 25 Oct 2024 12:17:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729858675;
-	bh=S/bqUsr/5mwZ4YNDlIpRTUK2R5DCl91evENsXbbAavU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ObIYQnj1d5qS35RgUz/CYU3NgtD8eMELFeSoT1MyO4EajCgPup+/G1agh2+89Qg94
-	 MO6ezXD8ui4gTk4cqznxIUhdCGQiW5mLQxTk4MQ2y+K+nUFhgpOlbOtFOiJ2Qch8Z3
-	 0UvdSK6NYP58Kk7y6irEf9x3VFdigolioVtkXHlxmx+xuElMSCKCmCDtf3an3UQpzj
-	 56hsR5Y2HGkNJgqNr0NijLAO56Yq4I/hhQn2cdRwceifCiN9SakoPSYDB9d94N7R3z
-	 rylyCfYqmfvAgu3M5hEYglQ8py3TxDRerOOfSLxRARADz7MeXR3OcOjnivzjiHuzdb
-	 cZG6d8lJNZmBA==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1t4JGe-000000000Q8-42Hn;
-	Fri, 25 Oct 2024 14:18:13 +0200
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>
-Cc: Konrad Dybcio <konradybcio@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Anjelique Melendez <quic_amelende@quicinc.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] pinctrl: qcom: spmi: fix debugfs drive strength
-Date: Fri, 25 Oct 2024 14:16:22 +0200
-Message-ID: <20241025121622.1496-1-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1729858691; c=relaxed/simple;
+	bh=uslR7BRL60cTwk//jOlbNVg8EbFbaCQXQ5EFpkeNjfk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PA3ACvKGsJpEGFSWw9XYm/tT3mHSLeiC/3E/1ZNPfgBmRCoSJC1uf3JTL1bZ+OF7gQCiFOymH6EVOyUR+vkTRKRQdToAltNHaIrtcL42Op2a0pS/U/OJaHbZAzZUCrlYo34wp5Y69Lfha35UUxqOnI9UiD/Glvl2GNZ+HI51ul0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M9siP94U; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729858689;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1rwfDoTPSMRtfXHmINVRgiQrkEDJjKEQXCOsodjYaCQ=;
+	b=M9siP94U6+HxFQA/W2Slaun5C68QuIwefAvuPlkcXYljjIFJ1vLllbGKMTH6Ohqe4w7/Hb
+	wK4dljMx3Cq0ul7nwJKYjfk9jJyYOA8lU1iNaQcwC7OMya05BmnEKJ+mSJM8KG7xbrRM5w
+	QuEtEWYfHwWOXHSYpZdbM+ssa01RDPg=
+Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
+ [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-342-OxqSoITMOF-cyJJudtIpSA-1; Fri, 25 Oct 2024 08:18:07 -0400
+X-MC-Unique: OxqSoITMOF-cyJJudtIpSA-1
+Received: by mail-yb1-f197.google.com with SMTP id 3f1490d57ef6-e28fc8902e6so3688066276.0
+        for <stable@vger.kernel.org>; Fri, 25 Oct 2024 05:18:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729858687; x=1730463487;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1rwfDoTPSMRtfXHmINVRgiQrkEDJjKEQXCOsodjYaCQ=;
+        b=GELJD8aNwQQ6ASsNM8tPRnSFOMahtuFZC55By8Eq+XLeu4n8NjxvqgvY7SnEkg5ur2
+         mxgiPHUyWGkI1H2SLzpLC/rqOPzUHSowQBLa15RvJ5Kasp5CfLW93TuPPyvF1xk+UQWU
+         jvo1ffkjoAmXKzBk5bWWWtVFgIzoh9Y/t764CScKq7T5JMG/tsznHfgg+NHSSI4d03f5
+         wF8jByb0+Zr04gYEjTIphBemj7gylMQbhPr1VDrrAS+CAFby2ucBkIUognXN9NrKe7HE
+         iz1RKtZDP0meNAWEyqvasMa43hdOgna1DviUH5Gq5qyO+nIVeztP85P/w1o59hA1nKvk
+         GPyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWFh5oX7IPru9HpE+bRdYd9Ha5vcJ5NX1wFvIJGTCSVxHB4ab1pBJb8ypg044vYID6RwciX2Nc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9qObGTzPQObTGUawkq2vcaQISKeDwGJ+1K1ap29Fi3MLMikiw
+	vRvi1bqhRrjrADkGqF0zubV0V0Mf+BWUQJjQIaXiLsseGcexwFToGt66CDNkPMRnCazyxJ7RjgJ
+	pFXMp0JMOCGmzIM7oFRUNyIjgdEpIKgcGzyM9pQQUPJrzITBlkTDdrA==
+X-Received: by 2002:a05:6902:2505:b0:e29:6692:d84 with SMTP id 3f1490d57ef6-e2f2fbc0f20mr5328321276.36.1729858687236;
+        Fri, 25 Oct 2024 05:18:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH1rUBoEoKRi1UMAQxws2WSnv93vUPbVshx6vDErv0r8+kymJM8JDcqvagwSTJs1tTUrJWTGA==
+X-Received: by 2002:a05:6902:2505:b0:e29:6692:d84 with SMTP id 3f1490d57ef6-e2f2fbc0f20mr5328299276.36.1729858686859;
+        Fri, 25 Oct 2024 05:18:06 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874? ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-461323abd6csm5321731cf.94.2024.10.25.05.18.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Oct 2024 05:18:05 -0700 (PDT)
+Message-ID: <92d755af-e19b-49a5-b4df-a8ed0fb7aece@redhat.com>
+Date: Fri, 25 Oct 2024 14:18:02 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: arm64: Don't eagerly teardown the vgic on init error
+Content-Language: en-US
+To: Mark Brown <broonie@kernel.org>, Marc Zyngier <maz@kernel.org>
+Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, stable@vger.kernel.org,
+ Alexander Potapenko <glider@google.com>
+References: <20241009183603.3221824-1-maz@kernel.org>
+ <3f0918bf-0265-4714-9660-89b75da49859@sirena.org.uk>
+ <86ldyd2x7t.wl-maz@kernel.org>
+ <eb6e7e29-b0a8-47b1-94c4-f01569aa55cb@sirena.org.uk>
+From: Eric Auger <eauger@redhat.com>
+In-Reply-To: <eb6e7e29-b0a8-47b1-94c4-f01569aa55cb@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Commit 723e8462a4fe ("pinctrl: qcom: spmi-gpio: Fix the GPIO strength
-mapping") fixed a long-standing issue in the Qualcomm SPMI PMIC gpio
-driver which had the 'low' and 'high' drive strength settings switched
-but failed to update the debugfs interface which still gets this wrong.
+Hi Mark, Marc,
 
-Fix the debugfs code so that the exported values match the hardware
-settings.
+On 10/25/24 12:54, Mark Brown wrote:
+> On Thu, Oct 24, 2024 at 07:05:10PM +0100, Marc Zyngier wrote:
+>> Mark Brown <broonie@kernel.org> wrote:
+> 
+>>> # ==== Test Assertion Failure ====
+>>> #   lib/kvm_util.c:724: false
+>>> #   pid=1947 tid=1947 errno=5 - Input/output error
+>>> #      1	0x0000000000404edb: __vm_mem_region_delete at kvm_util.c:724 (discriminator 5)
+>>> #      2	0x0000000000405d0b: kvm_vm_free at kvm_util.c:762 (discriminator 12)
+>>> #      3	0x0000000000402d5f: vm_gic_destroy at vgic_init.c:101
+>>> #      4	 (inlined by) test_vcpus_then_vgic at vgic_init.c:368
+>>> #      5	 (inlined by) run_tests at vgic_init.c:720
+>>> #      6	0x0000000000401a6f: main at vgic_init.c:748
+>>> #      7	0x0000ffffa7b37543: ?? ??:0
+>>> #      8	0x0000ffffa7b37617: ?? ??:0
+>>> #      9	0x0000000000401b6f: _start at ??:?
+>>> #   KVM killed/bugged the VM, check the kernel log for clues
+>>> not ok 10 selftests: kvm: vgic_init # exit=254
+> 
+>>> which does rather look like a test bug rather than a problem in the
+>>> change itself.
+> 
+>> Well, the test tries to do braindead things, and then the test
+>> infrastructure seems surprised that KVM tells it to bugger off...
+> 
+>> I can paper over it with this (see below), but frankly, someone who
+>> actually cares about this crap should take a look (and ownership).
+As I am the original contributor of the crap I can definitively have a
+look at it and take ownership. Those tests were originally written
+because the init sequence was different between kvmtool and qemu and we
+had regular regressions when touching the init sequence at some point.
+Now this may be not valid anymore ...
+> 
+> I'm not even sure that's a terrible fix, looking at the changelog I get
+> the impression the test is deliberately looking to do problematic things
+> with the goal of making sure that the kernel handles them appropriately.
+> That's not interacting well with the KVM selftest framework's general
+> assert early assert often approach but it's a reasonable thing to want
+Can you elaborate on the "assert early assert often approach". What
+shall this test rather do according to you?
 
-Note that this probably means that most devicetrees that try to describe
-the firmware settings got this wrong if the settings were derived from
-debugfs. Before the above mentioned commit the settings would have
-actually matched the firmware settings even if they were described
-incorrectly, but now they are inverted.
+I am OoO next week but I can have a look afterwards. On which machine is
+it failing?
 
-Fixes: 723e8462a4fe ("pinctrl: qcom: spmi-gpio: Fix the GPIO strength mapping")
-Fixes: eadff3024472 ("pinctrl: Qualcomm SPMI PMIC GPIO pin controller driver")
-Cc: Anjelique Melendez <quic_amelende@quicinc.com>
-Cc: stable@vger.kernel.org	# 3.19
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- drivers/pinctrl/qcom/pinctrl-spmi-gpio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-index 3d03293f6320..3a12304e2b7d 100644
---- a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-+++ b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-@@ -667,7 +667,7 @@ static void pmic_gpio_config_dbg_show(struct pinctrl_dev *pctldev,
- 		"push-pull", "open-drain", "open-source"
- 	};
- 	static const char *const strengths[] = {
--		"no", "high", "medium", "low"
-+		"no", "low", "medium", "high"
- 	};
- 
- 	pad = pctldev->desc->pins[pin].drv_data;
--- 
-2.45.2
+Eric
+
+
+> to test so relaxing the asserts like this is one way of squaring the
+> circile.
 
 
