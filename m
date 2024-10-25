@@ -1,85 +1,62 @@
-Return-Path: <stable+bounces-88160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 314709B0589
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 16:18:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4A009B0594
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 16:21:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABE361F24949
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 14:18:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 718DE1F2499C
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 14:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A9E81FB8AD;
-	Fri, 25 Oct 2024 14:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 952461FB8AF;
+	Fri, 25 Oct 2024 14:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="uIj8TvxQ"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="bApwO4Jh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A641FB891
-	for <stable@vger.kernel.org>; Fri, 25 Oct 2024 14:17:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB171487C8
+	for <stable@vger.kernel.org>; Fri, 25 Oct 2024 14:20:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729865854; cv=none; b=OjXtej+G4EXQmIuLkpSe9Msqe9zZTiq52FvVPOoZvH/CACqbvlz9JXx8T8Ce7qjjfweUCrRw1HofvJWrINpe8Ic1vq4ziNacHQ8yKpcOuFpKmj8PwcH8Z2Qd4tXA20XyjUF8QEIE2umdWIIRu5WEYheNBKTNGoTkDlg5jotsMog=
+	t=1729866049; cv=none; b=QIcmjV+5U9eVXI2lM5UcZnIthwuhLnTtN+TA//fge/daqkitW4V2T/KIyhWT89xG1BkpWskV7RUmFCITn+Ej55AfPpZoOS7p/s3oxmNWulutXLcC8vruzYJdiqmqUIgeWpt+Wpm0dfaKTdUAdmv5u4hMSQoAzVuE5z7IhLugpDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729865854; c=relaxed/simple;
-	bh=TWudHctEQ5knuTlK6Wu7BZNOHdMM0HIGFJ1bh884wfk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OFNUwHwexVUK02S96RdewuTPxQI/uItKJ+Wdq/9iiBXpig9XYxRd0LsbcSPnPYm7PzNHPRZy5Tv9kd+Srb7ploA6Qlv8ZWgfVJRZR5h2t637Lg1+WVmhAKkDLFQ7l9uiq1UNwnN7buMLjMov58Qaf/ZNZ51N2zsPtSOaxRDiT4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=uIj8TvxQ; arc=none smtp.client-ip=209.85.219.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6cb97afcec9so12201276d6.2
-        for <stable@vger.kernel.org>; Fri, 25 Oct 2024 07:17:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1729865850; x=1730470650; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wFJ7qeo3WN9Qtar7fFSc4KOFTyi0KFll6s9kH9IhHuM=;
-        b=uIj8TvxQYayP18CDbfRyXOSKZfMs8hQxXJlF4455h1oIMwFyRb2i714pzI0VvLjOsx
-         wLEb2mxz+bKVnLNCC8sevj+ED47+JD5BM5s1KF6T2lbkKkY2nfGvX6+zCX2C3tdgvo5m
-         pzTKfiYGKFQWnsm18cKBow1an6LSDC+WioennO2/5bsy3s6xEtQm8zP2/6vXtRi5FiRX
-         CFuJ5IftYtCbBjNYpLRovBWP0Nt3q+/VBnAl0ZoHuDYNk9L8B57nIgxYt7jvdlqcE9wx
-         RphZrY55v3g2fGRyd+X1y7a/ISC5Z6XH+I66d9lLz2rf2ye8iBDy0m5QAohtg3UVyRQ+
-         SacQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729865850; x=1730470650;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wFJ7qeo3WN9Qtar7fFSc4KOFTyi0KFll6s9kH9IhHuM=;
-        b=woxhxanyyPNtw4xwartevswsgKN7s2RSLVIVjLTzRUe1PZhnV7xjvhOdiHWBBY+ZB6
-         UdlRk7r+JELTG5NjB6lRRrr0OWjmjI3dptfAUgo47RGN9xBoA1aI7GSqkJqgE2vxfSE2
-         OK144j9k2VqR+IG5QF5eJGycvt8tKb+E2VBZu0gOaQqT62r/Rn1Gv7FuWycpTx+yJPl4
-         I35As9zcrbwC6IVbM1CiiU6SoHK5wqCCrh1IWXLxQNfgI0+tcwfeXuofGN072C6x8Ing
-         9B4627WqhPkHPTm5buBypRUgJCC5apY5h93GpE3Nom9phm/LdqaXN7Q6XTuANuzRCHOG
-         LAgA==
-X-Forwarded-Encrypted: i=1; AJvYcCUyj8VYtXbE0t8mG4DtFubuaSPHqEvbtOwZZ2lCdErIBgH5p3Rf0A4bp2oilVWpLGnqoMaRT4w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvBrBGy3OtzfT/o/WmD/YJDk1HWTJznVhBFcwUwv8GmONJMZ/o
-	MqvUvtxxqciBC/xTe+ydUZwewD2dCmaPf1TyT4AeYbEkO7tf+UAqztL/hLCbtc8=
-X-Google-Smtp-Source: AGHT+IE7mLrQ4PS1T6eK7H6zyqpO+N3XayG6pjPmJzubg5i3rO0Sb5RLmu37pfnSWox+jGrQ8fS7Pg==
-X-Received: by 2002:a05:6214:5bc4:b0:6ce:12da:1dfc with SMTP id 6a1803df08f44-6d08d6dbc20mr74253646d6.4.1729865848617;
-        Fri, 25 Oct 2024 07:17:28 -0700 (PDT)
-Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d179753621sm6115576d6.22.2024.10.25.07.17.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Oct 2024 07:17:28 -0700 (PDT)
-From: Gregory Price <gourry@gourry.net>
-To: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Cc: kernel-team@meta.com,
-	akpm@linux-foundation.org,
-	ying.huang@intel.com,
-	weixugc@google.com,
-	dave.hansen@linux.intel.com,
-	osalvador@suse.de,
-	shy828301@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH] vmscan,migrate: fix double-decrement on node stats when demoting pages
-Date: Fri, 25 Oct 2024 10:17:24 -0400
-Message-ID: <20241025141724.17927-1-gourry@gourry.net>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1729866049; c=relaxed/simple;
+	bh=FEOFD30gT3iPGvNvaeeMZp5hxIdcFr1jXLApeLDW7m4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kRzRw5QNyzClYLkynMEFCuJl21R6woA/oKx1cbJAbX/6K3rJD/5uxbz6OkECsxFwAglgt+diNTN6mWG+fjxgEnnBv/wHHp3HxLa6o8iZ9a6cz83F7z+dnLZ7YawSWXexRESHknOm0XTbk/QztoxMYYwjeCcmsGTBfq7HV+g/nhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=bApwO4Jh; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=g/oYChZ1YYEQ6s7rZ1R8T7Ldhoj8qSAYzVmjijDOhCs=; b=bApwO4Jhwj/Ngmpixw0rTxApLK
+	xzpqIXyZh6qh9k3UfzuzXBGLL5ldrCcmNOMn2TZ5TLZoZ635I8IDCVJoDe1wqZWamwoUNJzQ9ZPbw
+	mfzBf5RNGBrQOe0K5bYwPWwJc1ZG5VWu1JQUPUNRAQBF37onOV5TuCmpHlmf5zKT4Akw1P5YWU0Xk
+	9k2gRqDEGOc26/SDZzL030hkPRYw17GSNKvHHnr62BwTLrsx7OzWYMDYSuCXks3eJTWXkTJWEeFPN
+	a4iXiQH1te7s0pQX1voRGrqLNZfOOQ9g8OXKZVxL1N9pFT/OPbynXyZue+n5v+gxhCdLnZfnd8d67
+	qd6GCsHQ==;
+Received: from 179-125-75-201-dinamico.pombonet.net.br ([179.125.75.201] helo=quatroqueijos.lan)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1t4LBB-00F3ht-J2; Fri, 25 Oct 2024 16:20:42 +0200
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+To: stable@vger.kernel.org
+Cc: Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Sam Sun <samsun1006219@gmail.com>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 6.6] selinux: improve error checking in sel_write_load()
+Date: Fri, 25 Oct 2024 11:20:21 -0300
+Message-Id: <20241025142021.862724-1-cascardo@igalia.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,58 +65,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When numa balancing is enabled with demotion, vmscan will call
-migrate_pages when shrinking LRUs.  Successful demotions will
-cause node vmstat numbers to double-decrement, leading to an
-imbalanced page count.  The result is dmesg output like such:
+From: Paul Moore <paul@paul-moore.com>
 
-$ cat /proc/sys/vm/stat_refresh
+[ Upstream commit 42c773238037c90b3302bf37a57ae3b5c3f6004a ]
 
-[77383.088417] vmstat_refresh: nr_isolated_anon -103212
-[77383.088417] vmstat_refresh: nr_isolated_file -899642
+Move our existing input sanity checking to the top of sel_write_load()
+and add a check to ensure the buffer size is non-zero.
 
-This negative value may impact compaction and reclaim throttling.
+Move a local variable initialization from the declaration to before it
+is used.
 
-The double-decrement occurs in the migrate_pages path:
+Minor style adjustments.
 
-caller to shrink_folio_list decrements the count
-  shrink_folio_list
-    demote_folio_list
-      migrate_pages
-        migrate_pages_batch
-          migrate_folio_move
-            migrate_folio_done
-              mod_node_page_state(-ve) <- second decrement
-
-This path happens for SUCCESSFUL migrations, not failures. Typically
-callers to migrate_pages are required to handle putback/accounting for
-failures, but this is already handled in the shrink code.
-
-When accounting for migrations, instead do not decrement the count
-when the migration reason is MR_DEMOTION. As of v6.11, this demotion
-logic is the only source of MR_DEMOTION.
-
-Signed-off-by: Gregory Price <gourry@gourry.net>
-Fixes: 26aa2d199d6f2 ("mm/migrate: demote pages during reclaim")
-Cc: stable@vger.kernel.org
+Reported-by: Sam Sun <samsun1006219@gmail.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 ---
- mm/migrate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/selinux/selinuxfs.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 923ea80ba744..e3aac274cf16 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1099,7 +1099,7 @@ static void migrate_folio_done(struct folio *src,
- 	 * not accounted to NR_ISOLATED_*. They can be recognized
- 	 * as __folio_test_movable
- 	 */
--	if (likely(!__folio_test_movable(src)))
-+	if (likely(!__folio_test_movable(src)) && reason != MR_DEMOTION)
- 		mod_node_page_state(folio_pgdat(src), NR_ISOLATED_ANON +
- 				    folio_is_file_lru(src), -folio_nr_pages(src));
+diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
+index 2c23a5a28608..54bc18e8164b 100644
+--- a/security/selinux/selinuxfs.c
++++ b/security/selinux/selinuxfs.c
+@@ -582,11 +582,18 @@ static ssize_t sel_write_load(struct file *file, const char __user *buf,
+ 			      size_t count, loff_t *ppos)
  
+ {
+-	struct selinux_fs_info *fsi = file_inode(file)->i_sb->s_fs_info;
++	struct selinux_fs_info *fsi;
+ 	struct selinux_load_state load_state;
+ 	ssize_t length;
+ 	void *data = NULL;
+ 
++	/* no partial writes */
++	if (*ppos)
++		return -EINVAL;
++	/* no empty policies */
++	if (!count)
++		return -EINVAL;
++
+ 	mutex_lock(&selinux_state.policy_mutex);
+ 
+ 	length = avc_has_perm(current_sid(), SECINITSID_SECURITY,
+@@ -594,26 +601,22 @@ static ssize_t sel_write_load(struct file *file, const char __user *buf,
+ 	if (length)
+ 		goto out;
+ 
+-	/* No partial writes. */
+-	length = -EINVAL;
+-	if (*ppos != 0)
+-		goto out;
+-
+-	length = -ENOMEM;
+ 	data = vmalloc(count);
+-	if (!data)
++	if (!data) {
++		length = -ENOMEM;
+ 		goto out;
+-
+-	length = -EFAULT;
+-	if (copy_from_user(data, buf, count) != 0)
++	}
++	if (copy_from_user(data, buf, count) != 0) {
++		length = -EFAULT;
+ 		goto out;
++	}
+ 
+ 	length = security_load_policy(data, count, &load_state);
+ 	if (length) {
+ 		pr_warn_ratelimited("SELinux: failed to load policy\n");
+ 		goto out;
+ 	}
+-
++	fsi = file_inode(file)->i_sb->s_fs_info;
+ 	length = sel_make_policy_nodes(fsi, load_state.policy);
+ 	if (length) {
+ 		pr_warn_ratelimited("SELinux: failed to initialize selinuxfs\n");
+@@ -622,13 +625,12 @@ static ssize_t sel_write_load(struct file *file, const char __user *buf,
+ 	}
+ 
+ 	selinux_policy_commit(&load_state);
+-
+ 	length = count;
+-
+ 	audit_log(audit_context(), GFP_KERNEL, AUDIT_MAC_POLICY_LOAD,
+ 		"auid=%u ses=%u lsm=selinux res=1",
+ 		from_kuid(&init_user_ns, audit_get_loginuid(current)),
+ 		audit_get_sessionid(current));
++
+ out:
+ 	mutex_unlock(&selinux_state.policy_mutex);
+ 	vfree(data);
 -- 
-2.43.0
+2.34.1
 
 
