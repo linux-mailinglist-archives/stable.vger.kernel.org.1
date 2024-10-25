@@ -1,117 +1,121 @@
-Return-Path: <stable+bounces-88156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94DD09B046A
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 15:46:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8719D9B049E
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 15:53:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59CC128407D
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 13:46:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 330541F243B7
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 13:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E798D1E52D;
-	Fri, 25 Oct 2024 13:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60F91FB8AA;
+	Fri, 25 Oct 2024 13:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gm5zNzoO"
+	dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b="VkbZqWIe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC76C2F3B
-	for <stable@vger.kernel.org>; Fri, 25 Oct 2024 13:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9991632E2
+	for <stable@vger.kernel.org>; Fri, 25 Oct 2024 13:52:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729863968; cv=none; b=f6R3R8JCM/1gi/uODCqaqR81z7OaFTFcS8679SsamHioewiJXBEFcdYGXV2FcjESEDNDcdAUhY3emVFGFVEolud0G8i8lWUw7j7CDZpaqN2bTP3xm9GWSkrgD4T8U0GvqFLSJDnDV4Powu8sqhqVIqCTZtVi/Ztx/mCPOQN3wsA=
+	t=1729864377; cv=none; b=bTMjyA4+krebP+4d/NRmnRSFS9xtDGfgDEkqLEii9Zh+5hzgLLv0xVIBQmRpofnzTMPNxls53wM4X9NmPIMpK/f9B5sZSWXNxPi2QEc+wqR6y5i1xeTZHHxRrE0hfdwEGcywxzEO7Wp0UfYqtH/we8HKNL73T69JnL8VI53t9o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729863968; c=relaxed/simple;
-	bh=/5F1S1qZ2Lb/CpHWfdbbPEt0hCpGHjdkqz6yfOhd5OU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=l8vpORSUd4XBVM8SSAcb2/CTXrvjp33Bu6p/pxef27lpjzgADugdzzxu2VOsjN2NQ33wDfwiW+450DQkT7Hx26dpXTyDZ8Ut0cYqcrRF7jHNElJGjcrmozIKiEGwTLkRT1hql/W9ClGIt4jaZCdZV3AttdLhOuRZ+4DaRsGofcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gm5zNzoO; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4316f3d3c21so20012365e9.3
-        for <stable@vger.kernel.org>; Fri, 25 Oct 2024 06:46:05 -0700 (PDT)
+	s=arc-20240116; t=1729864377; c=relaxed/simple;
+	bh=CyhTmBGO9ZFabUSrWTgxv7yXYx4sA7pdGdr+8fFjZ+Y=;
+	h=Subject:From:To:CC:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Cr0u0gIO+RVZ0KAjipV17h701JdsAdrFKkizWqx/5l0XwH02DllTipASBdb9i/nZ61ZTUMFP/ZxKmoMtK2d/2xm7ZxbSDvLJXD7LOA1renuJBJ5YuoTH80kLSpMB1aPqP0mtK5BNBIssBC8PlB6KEockqjh4ksl2sGb/3Rzo0Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b=VkbZqWIe; arc=none smtp.client-ip=52.119.213.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729863964; x=1730468764; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JILYNotk0SoSZC9ibNIc280JVlCgGuDr0hgCGJ8jNg4=;
-        b=Gm5zNzoOUIZwpWdm0nDwpo0a0ki/KEC4HGKrSbhCK5XKn2p3c0i+ZxvBdRh/78uMum
-         f5VmTyw5TOlMg6qaiHv/RGHlmPQzEUYAwZWRwqyhilx8Vk0CToVX3iDT38w5mv7kLkmG
-         d9qYPBuIxHr5f8h843CNZDVo8lsdAwp4FKomx/sBtsQOMx8ujXPy06slpLxth3XrNPe2
-         m80F66ul/B7qlj/A7wx3Nc03pBTGxfirZBa/18VUQ5fPaeTpuzpy7HPQ+Rxgcg216F2q
-         YlnPJojqA9mycM3Rnt8YZ3WPTmTPd+8616WvmZsX+EWK1C94XZv7CD+Qta+TIkShxM65
-         GPUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729863964; x=1730468764;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JILYNotk0SoSZC9ibNIc280JVlCgGuDr0hgCGJ8jNg4=;
-        b=fby5c6cVET64CVbgaOBsRgIYLQA698zglwCXkEO/HKLzRFnZ3HGLFXSkIfb0VxA4Op
-         K0XVHsY8mIXWHAxitOeBRuX6FKd9WniOvmkEQf6j9gdtDaLs4I0M6uJ5tK/NmiMHvej5
-         43bndeet5SCnxPckPHZVtFUwZewWedXOHRNgt/LYa8FPkogasHCjOj8WCIgAIUh8JSUA
-         6jmrXRAsCsgrEKaV5OZYD1oC9BnatP9WNBhYEEulZtzD/S75kyWvMBEdvfDqhzFv1Cgz
-         AMjFB+GK9eC6pjplwjdULxKWAkwlnd+tafMbS5H8ICYVIIQs4XSD4YoYREm7XHVhkkva
-         JKdQ==
-X-Gm-Message-State: AOJu0YxWpVs09bpWdqriK8MlYxHGShEYMyubZaIV3UeeYUFJvS4hjO21
-	yUv2CXini3cQiQ9KXNjw25LT62kgRruwufnrWWjsRVxTgJxPdLzgZHe5Hk7OM2PaMw==
-X-Google-Smtp-Source: AGHT+IGJSsAIZEnnaMb0SjpsZ2Zm8hgxCzg8PnHjK+P9qzvcs2WEFyOElexdDabcXL3WGWPQ7WIc9w==
-X-Received: by 2002:a05:6000:2:b0:378:89be:1825 with SMTP id ffacd0b85a97d-37efcf9297cmr5888469f8f.49.1729863963601;
-        Fri, 25 Oct 2024 06:46:03 -0700 (PDT)
-Received: from dev-dsk-krckatom-1b-7b393aa4.eu-west-1.amazon.com (54-240-197-231.amazon.com. [54.240.197.231])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b91f50sm1543499f8f.94.2024.10.25.06.46.03
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 25 Oct 2024 06:46:03 -0700 (PDT)
-From: Tomas Krcka <tomas.krcka@gmail.com>
-X-Google-Original-From: Tomas Krcka <krckatom@amazon.de>
-To: stable@vger.kernel.org
-Cc: Zijun Hu <quic_zijuhu@quicinc.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Tomas Krcka <krckatom@amazon.de>
-Subject: [PATCH 6.1.y 5.15.y 5.10.y] driver core: bus: Fix double free in driver API bus_register()
-Date: Fri, 25 Oct 2024 13:45:55 +0000
-Message-Id: <20241025134555.10272-1-krckatom@amazon.de>
-X-Mailer: git-send-email 2.40.1
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
+  t=1729864374; x=1761400374;
+  h=from:to:cc:date:message-id:references:in-reply-to:
+   content-id:mime-version:content-transfer-encoding:subject;
+  bh=CyhTmBGO9ZFabUSrWTgxv7yXYx4sA7pdGdr+8fFjZ+Y=;
+  b=VkbZqWIe+9ITm+qdkvWxQF8Hmp26ftT35IDxjff4hg/XISzQ08DtIgdT
+   0UUqC8QpeDjgQ6dv2+o3tTLuGCmTHlRpkpf+P8cqludFChr4VL/lvoqIs
+   l4lzGsgURsqxvzGyZJQWN89t1ZJtFOG/xuhZ+0Jo4JZkfYhlobjfS7kSh
+   4=;
+X-IronPort-AV: E=Sophos;i="6.11,231,1725321600"; 
+   d="scan'208";a="36382158"
+Subject: Re: [PATCH 6.1.y 5.15.y 5.10.y] driver core: bus: Fix double free in driver
+ API bus_register()
+Thread-Topic: [PATCH 6.1.y 5.15.y 5.10.y] driver core: bus: Fix double free in driver API
+ bus_register()
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2024 13:52:51 +0000
+Received: from EX19MTAEUC002.ant.amazon.com [10.0.17.79:52298]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.39.131:2525] with esmtp (Farcaster)
+ id 13fa684c-6128-4d81-b9dc-91d778feeca4; Fri, 25 Oct 2024 13:52:50 +0000 (UTC)
+X-Farcaster-Flow-ID: 13fa684c-6128-4d81-b9dc-91d778feeca4
+Received: from EX19D030EUC001.ant.amazon.com (10.252.61.228) by
+ EX19MTAEUC002.ant.amazon.com (10.252.51.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Fri, 25 Oct 2024 13:52:50 +0000
+Received: from EX19D030EUC004.ant.amazon.com (10.252.61.164) by
+ EX19D030EUC001.ant.amazon.com (10.252.61.228) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Fri, 25 Oct 2024 13:52:50 +0000
+Received: from EX19D030EUC004.ant.amazon.com ([fe80::f98a:db18:b0eb:477]) by
+ EX19D030EUC004.ant.amazon.com ([fe80::f98a:db18:b0eb:477%3]) with mapi id
+ 15.02.1258.034; Fri, 25 Oct 2024 13:52:50 +0000
+From: "Krcka, Tomas" <krckatom@amazon.de>
+To: Tomas Krcka <tomas.krcka@gmail.com>
+CC: "stable@vger.kernel.org" <stable@vger.kernel.org>, Zijun Hu
+	<quic_zijuhu@quicinc.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Thread-Index: AQHbJuRJI+nN9vCMFUyDzXlG+qpjtrKXfIaA
+Date: Fri, 25 Oct 2024 13:52:50 +0000
+Message-ID: <D499DBE4-DDA7-4DB0-B1DA-0C81301FEEE2@amazon.de>
+References: <20241025134555.10272-1-krckatom@amazon.de>
+In-Reply-To: <20241025134555.10272-1-krckatom@amazon.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <92A59063A3F5F54AA715A1887A53EC52@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: base64
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
-
-[ Upstream commit bfa54a793ba77ef696755b66f3ac4ed00c7d1248 ]
-
-For bus_register(), any error which happens after kset_register() will
-cause that @priv are freed twice, fixed by setting @priv with NULL after
-the first free.
-
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20240727-bus_register_fix-v1-1-fed8dd0dba7a@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Tomas Krcka <krckatom@amazon.de>
----
- drivers/base/bus.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/base/bus.c b/drivers/base/bus.c
-index 339a9edcde5f..8fae7c700cc9 100644
---- a/drivers/base/bus.c
-+++ b/drivers/base/bus.c
-@@ -853,6 +853,8 @@ int bus_register(struct bus_type *bus)
- 	bus_remove_file(bus, &bus_attr_uevent);
- bus_uevent_fail:
- 	kset_unregister(&bus->p->subsys);
-+	/* Above kset_unregister() will kfree @priv */
-+	priv = NULL;
- out:
- 	kfree(bus->p);
- 	bus->p = NULL;
--- 
-2.40.1
+SXTigJlzIG5vdCBjb3JyZWN0IHBhdGNoIC0geW91IGNhbiBkaXNjYXJkZWQuDQpTb3JyeSBmb3Ig
+bm9pc2UuDQpUb21hcw0KDQo+IE9uIDI1LiBPY3QgMjAyNCwgYXQgMTU6NDUsIFRvbWFzIEtyY2th
+IDx0b21hcy5rcmNrYUBnbWFpbC5jb20+IHdyb3RlOg0KPiANCj4gQ0FVVElPTjogVGhpcyBlbWFp
+bCBvcmlnaW5hdGVkIGZyb20gb3V0c2lkZSBvZiB0aGUgb3JnYW5pemF0aW9uLiBEbyBub3QgY2xp
+Y2sgbGlua3Mgb3Igb3BlbiBhdHRhY2htZW50cyB1bmxlc3MgeW91IGNhbiBjb25maXJtIHRoZSBz
+ZW5kZXIgYW5kIGtub3cgdGhlIGNvbnRlbnQgaXMgc2FmZS4NCj4gDQo+IA0KPiANCj4gRnJvbTog
+WmlqdW4gSHUgPHF1aWNfemlqdWh1QHF1aWNpbmMuY29tPg0KPiANCj4gWyBVcHN0cmVhbSBjb21t
+aXQgYmZhNTRhNzkzYmE3N2VmNjk2NzU1YjY2ZjNhYzRlZDAwYzdkMTI0OCBdDQo+IA0KPiBGb3Ig
+YnVzX3JlZ2lzdGVyKCksIGFueSBlcnJvciB3aGljaCBoYXBwZW5zIGFmdGVyIGtzZXRfcmVnaXN0
+ZXIoKSB3aWxsDQo+IGNhdXNlIHRoYXQgQHByaXYgYXJlIGZyZWVkIHR3aWNlLCBmaXhlZCBieSBz
+ZXR0aW5nIEBwcml2IHdpdGggTlVMTCBhZnRlcg0KPiB0aGUgZmlyc3QgZnJlZS4NCj4gDQo+IFNp
+Z25lZC1vZmYtYnk6IFppanVuIEh1IDxxdWljX3ppanVodUBxdWljaW5jLmNvbT4NCj4gTGluazog
+aHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvci8yMDI0MDcyNy1idXNfcmVnaXN0ZXJfZml4LXYxLTEt
+ZmVkOGRkMGRiYTdhQHF1aWNpbmMuY29tDQo+IFNpZ25lZC1vZmYtYnk6IEdyZWcgS3JvYWgtSGFy
+dG1hbiA8Z3JlZ2toQGxpbnV4Zm91bmRhdGlvbi5vcmc+DQo+IFNpZ25lZC1vZmYtYnk6IFRvbWFz
+IEtyY2thIDxrcmNrYXRvbUBhbWF6b24uZGU+DQo+IC0tLQ0KPiBkcml2ZXJzL2Jhc2UvYnVzLmMg
+fCAyICsrDQo+IDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKykNCj4gDQo+IGRpZmYgLS1n
+aXQgYS9kcml2ZXJzL2Jhc2UvYnVzLmMgYi9kcml2ZXJzL2Jhc2UvYnVzLmMNCj4gaW5kZXggMzM5
+YTllZGNkZTVmLi44ZmFlN2M3MDBjYzkgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvYmFzZS9idXMu
+Yw0KPiArKysgYi9kcml2ZXJzL2Jhc2UvYnVzLmMNCj4gQEAgLTg1Myw2ICs4NTMsOCBAQCBpbnQg
+YnVzX3JlZ2lzdGVyKHN0cnVjdCBidXNfdHlwZSAqYnVzKQ0KPiAgICAgICAgYnVzX3JlbW92ZV9m
+aWxlKGJ1cywgJmJ1c19hdHRyX3VldmVudCk7DQo+IGJ1c191ZXZlbnRfZmFpbDoNCj4gICAgICAg
+IGtzZXRfdW5yZWdpc3RlcigmYnVzLT5wLT5zdWJzeXMpOw0KPiArICAgICAgIC8qIEFib3ZlIGtz
+ZXRfdW5yZWdpc3RlcigpIHdpbGwga2ZyZWUgQHByaXYgKi8NCj4gKyAgICAgICBwcml2ID0gTlVM
+TDsNCj4gb3V0Og0KPiAgICAgICAga2ZyZWUoYnVzLT5wKTsNCj4gICAgICAgIGJ1cy0+cCA9IE5V
+TEw7DQo+IC0tDQo+IDIuNDAuMQ0KPiANCg0KCgoKQW1hem9uIFdlYiBTZXJ2aWNlcyBEZXZlbG9w
+bWVudCBDZW50ZXIgR2VybWFueSBHbWJICktyYXVzZW5zdHIuIDM4CjEwMTE3IEJlcmxpbgpHZXNj
+aGFlZnRzZnVlaHJ1bmc6IENocmlzdGlhbiBTY2hsYWVnZXIsIEpvbmF0aGFuIFdlaXNzCkVpbmdl
+dHJhZ2VuIGFtIEFtdHNnZXJpY2h0IENoYXJsb3R0ZW5idXJnIHVudGVyIEhSQiAyNTc3NjQgQgpT
+aXR6OiBCZXJsaW4KVXN0LUlEOiBERSAzNjUgNTM4IDU5Nwo=
 
 
