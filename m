@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-88205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE36C9B12F2
-	for <lists+stable@lfdr.de>; Sat, 26 Oct 2024 00:43:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE249B135E
+	for <lists+stable@lfdr.de>; Sat, 26 Oct 2024 01:39:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A74A4283BD6
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 22:43:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAF441C2115F
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 23:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323E0213147;
-	Fri, 25 Oct 2024 22:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF1620C32C;
+	Fri, 25 Oct 2024 23:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="cCfBGrG6"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="1/4qwMUk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09AC20EA3A;
-	Fri, 25 Oct 2024 22:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74101DD0C9;
+	Fri, 25 Oct 2024 23:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729896128; cv=none; b=UTMaCxzAevNgIKvVljVF2UZv0R4+cZU/wmwLoLN90CedZSkDSrHWF30tFN1AWT4Pv3It/SV/29/JQpntKOkaYG3ZIHiQfU1iTxPYsfpkHBQuJF/fy1ZkMV2YqUGdOm24PPr2ZpCer3i/ZQvwZyJ0WEodUWiBsFIKQ5pVKtvqBkE=
+	t=1729899541; cv=none; b=WF6y5UNJHfg7x6K/w8HhQ1vCTNN6+GzXRWmlwb2pDXIXy7oBx7syNLBqXjJa/0FWAMxAkIuic6N/rZMUpkI3Io7wWlESJlaoiG9kDTnG6hdEnKyyYPohIHakNdFLtPIxI6WECHBgLH+twQVZ3yhYi+MdTeTC3lXFfTVoBtUVvok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729896128; c=relaxed/simple;
-	bh=he+XMZ3C9godGob7mCSNonft4pREpREAjhQGvERrj+0=;
-	h=Date:To:From:Subject:Message-Id; b=WgDceScNPwKcWSBf2JReiAJSXJDlD56DE9bwbiQ50wJ9m76ufM1s4QgUpGmXV617AZHn84EkU9qLZZF8Z0dWI+R9fmPnOQGoxzaC61u+QEf6uSm5NcQsfx30kUDilSzxtj6PocKpxwIywl3nkxc+dzEhfusT4tGWVuKX9OV0rBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=cCfBGrG6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59567C4CEC3;
-	Fri, 25 Oct 2024 22:42:07 +0000 (UTC)
+	s=arc-20240116; t=1729899541; c=relaxed/simple;
+	bh=u9ACUQRhZbG23uyI+jfIQN0tCk/bmxxl/VQSY8/Yrtg=;
+	h=Date:To:From:Subject:Message-Id; b=jTiZn/K2/Lt98muDesk1317zR4cY6s2/FAv3ye9HOcKYeMsXh0XAB1XmKvLgWgo3ZyNlx3/UPKSfPKvt4e5x0e0OpkqJl2qEmNDc8L5WPu/oF+1s7zA35gxiMvLKNTK4agcYRGYVpkYwgn+2Gsjn+T5jUJ38B57x31W336AsNGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=1/4qwMUk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F0FC4CEC3;
+	Fri, 25 Oct 2024 23:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1729896127;
-	bh=he+XMZ3C9godGob7mCSNonft4pREpREAjhQGvERrj+0=;
+	s=korg; t=1729899541;
+	bh=u9ACUQRhZbG23uyI+jfIQN0tCk/bmxxl/VQSY8/Yrtg=;
 	h=Date:To:From:Subject:From;
-	b=cCfBGrG6QVgoTaH44Vk5LlhxUAjXBj+ZmSNDUFZB8yBgNVkkVgOImIHvvBOf1flnF
-	 sxabbxeXqmdk8ah1wpy+/vN++Vp+/KVwKys4EvHAGKNwRWdTca+h3xSWRBx4aCeCTw
-	 ZHSeBCV/HhwnDQ2aoMOtY30AF+hrQyf4q2UAIIfo=
-Date: Fri, 25 Oct 2024 15:42:06 -0700
-To: mm-commits@vger.kernel.org,zhengqi.arch@bytedance.com,wangweiyang2@huawei.com,vbabka@suse.cz,stable@vger.kernel.org,roman.gushchin@linux.dev,muchun.song@linux.dev,kirill.shutemov@linux.intel.com,david@fromorbit.com,anshuman.khandual@arm.com,chenridong@huawei.com,akpm@linux-foundation.org
+	b=1/4qwMUkssdhsGzFdyrYnHAYCmLLLTwzurQHDkYNwd7XLQeXqXGxIYSm86P8VdfJ0
+	 h4UsepuiI5NYlRuZa0WaT5d9xu2ijD06MjWYaclqAdxAkSQvgMvryFM3OFi+0y9MPf
+	 aG97WIExlizN5xJ+DksNcJUDhHQlWDNUE4nSl+TM=
+Date: Fri, 25 Oct 2024 16:39:00 -0700
+To: mm-commits@vger.kernel.org,yang@os.amperecomputing.com,stable@vger.kernel.org,riel@surriel.com,regressions@leemhuis.info,ptesarik@suse.com,matz@suse.de,matthias@bodenbinder.de,lorenzo.stoakes@oracle.com,Liam.Howlett@Oracle.com,jannh@google.com,gabriel@krisman.be,vbabka@suse.cz,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-shrinker-avoid-memleak-in-alloc_shrinker_info.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241025224207.59567C4CEC3@smtp.kernel.org>
+Subject: + mm-mmap-limit-thp-aligment-of-anonymous-mappings-to-pmd-aligned-sizes.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241025233901.48F0FC4CEC3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: mm: shrinker: avoid memleak in alloc_shrinker_info
+     Subject: mm, mmap: limit THP aligment of anonymous mappings to PMD-aligned sizes
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-shrinker-avoid-memleak-in-alloc_shrinker_info.patch
+     mm-mmap-limit-thp-aligment-of-anonymous-mappings-to-pmd-aligned-sizes.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-shrinker-avoid-memleak-in-alloc_shrinker_info.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-mmap-limit-thp-aligment-of-anonymous-mappings-to-pmd-aligned-sizes.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,83 +73,74 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Chen Ridong <chenridong@huawei.com>
-Subject: mm: shrinker: avoid memleak in alloc_shrinker_info
-Date: Fri, 25 Oct 2024 06:09:42 +0000
+From: Vlastimil Babka <vbabka@suse.cz>
+Subject: mm, mmap: limit THP aligment of anonymous mappings to PMD-aligned sizes
+Date: Thu, 24 Oct 2024 17:12:29 +0200
 
-A memleak was found as below:
+Since commit efa7df3e3bb5 ("mm: align larger anonymous mappings on THP
+boundaries") a mmap() of anonymous memory without a specific address hint
+and of at least PMD_SIZE will be aligned to PMD so that it can benefit
+from a THP backing page.
 
-unreferenced object 0xffff8881010d2a80 (size 32):
-  comm "mkdir", pid 1559, jiffies 4294932666
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  @...............
-  backtrace (crc 2e7ef6fa):
-    [<ffffffff81372754>] __kmalloc_node_noprof+0x394/0x470
-    [<ffffffff813024ab>] alloc_shrinker_info+0x7b/0x1a0
-    [<ffffffff813b526a>] mem_cgroup_css_online+0x11a/0x3b0
-    [<ffffffff81198dd9>] online_css+0x29/0xa0
-    [<ffffffff811a243d>] cgroup_apply_control_enable+0x20d/0x360
-    [<ffffffff811a5728>] cgroup_mkdir+0x168/0x5f0
-    [<ffffffff8148543e>] kernfs_iop_mkdir+0x5e/0x90
-    [<ffffffff813dbb24>] vfs_mkdir+0x144/0x220
-    [<ffffffff813e1c97>] do_mkdirat+0x87/0x130
-    [<ffffffff813e1de9>] __x64_sys_mkdir+0x49/0x70
-    [<ffffffff81f8c928>] do_syscall_64+0x68/0x140
-    [<ffffffff8200012f>] entry_SYSCALL_64_after_hwframe+0x76/0x7e
+However this change has been shown to regress some workloads
+significantly.  [1] reports regressions in various spec benchmarks, with
+up to 600% slowdown of the cactusBSSN benchmark on some platforms.  The
+benchmark seems to create many mappings of 4632kB, which would have merged
+to a large THP-backed area before commit efa7df3e3bb5 and now they are
+fragmented to multiple areas each aligned to PMD boundary with gaps
+between.  The regression then seems to be caused mainly due to the
+benchmark's memory access pattern suffering from TLB or cache aliasing due
+to the aligned boundaries of the individual areas.
 
-alloc_shrinker_info(), when shrinker_unit_alloc() returns an errer, the
-info won't be freed.  Just fix it.
+Another known regression bisected to commit efa7df3e3bb5 is darktable [2]
+[3] and early testing suggests this patch fixes the regression there as
+well.
 
-Link: https://lkml.kernel.org/r/20241025060942.1049263-1-chenridong@huaweicloud.com
-Fixes: 307bececcd12 ("mm: shrinker: add a secondary array for shrinker_info::{map, nr_deferred}")
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Acked-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Dave Chinner <david@fromorbit.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Wang Weiyang <wangweiyang2@huawei.com>
+To fix the regression but still try to benefit from THP-friendly anonymous
+mapping alignment, add a condition that the size of the mapping must be a
+multiple of PMD size instead of at least PMD size.  In case of many
+odd-sized mapping like the cactusBSSN creates, those will stop being
+aligned and with gaps between, and instead naturally merge again.
+
+Link: https://lkml.kernel.org/r/20241024151228.101841-2-vbabka@suse.cz
+Fixes: efa7df3e3bb5 ("mm: align larger anonymous mappings on THP boundaries")
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Reported-by: Michael Matz <matz@suse.de>
+Debugged-by: Gabriel Krisman Bertazi <gabriel@krisman.be>
+Closes: https://bugzilla.suse.com/show_bug.cgi?id=1229012 [1]
+Reported-by: Matthias Bodenbinder <matthias@bodenbinder.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219366 [2]
+Closes: https://lore.kernel.org/all/2050f0d4-57b0-481d-bab8-05e8d48fed0c@leemhuis.info/ [3]
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Yang Shi <yang@os.amperecomputing.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Petr Tesarik <ptesarik@suse.com>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/shrinker.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ mm/mmap.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/mm/shrinker.c~mm-shrinker-avoid-memleak-in-alloc_shrinker_info
-+++ a/mm/shrinker.c
-@@ -76,19 +76,21 @@ void free_shrinker_info(struct mem_cgrou
+--- a/mm/mmap.c~mm-mmap-limit-thp-aligment-of-anonymous-mappings-to-pmd-aligned-sizes
++++ a/mm/mmap.c
+@@ -900,7 +900,8 @@ __get_unmapped_area(struct file *file, u
  
- int alloc_shrinker_info(struct mem_cgroup *memcg)
- {
--	struct shrinker_info *info;
- 	int nid, ret = 0;
- 	int array_size = 0;
- 
- 	mutex_lock(&shrinker_mutex);
- 	array_size = shrinker_unit_size(shrinker_nr_max);
- 	for_each_node(nid) {
--		info = kvzalloc_node(sizeof(*info) + array_size, GFP_KERNEL, nid);
-+		struct shrinker_info *info = kvzalloc_node(sizeof(*info) + array_size,
-+							   GFP_KERNEL, nid);
- 		if (!info)
- 			goto err;
- 		info->map_nr_max = shrinker_nr_max;
--		if (shrinker_unit_alloc(info, NULL, nid))
-+		if (shrinker_unit_alloc(info, NULL, nid)) {
-+			kvfree(info);
- 			goto err;
-+		}
- 		rcu_assign_pointer(memcg->nodeinfo[nid]->shrinker_info, info);
- 	}
- 	mutex_unlock(&shrinker_mutex);
+ 	if (get_area) {
+ 		addr = get_area(file, addr, len, pgoff, flags);
+-	} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
++	} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)
++		   && IS_ALIGNED(len, PMD_SIZE)) {
+ 		/* Ensures that larger anonymous mappings are THP aligned. */
+ 		addr = thp_get_unmapped_area_vmflags(file, addr, len,
+ 						     pgoff, flags, vm_flags);
 _
 
-Patches currently in -mm which might be from chenridong@huawei.com are
+Patches currently in -mm which might be from vbabka@suse.cz are
 
-mm-shrinker-avoid-memleak-in-alloc_shrinker_info.patch
+mm-mmap-limit-thp-aligment-of-anonymous-mappings-to-pmd-aligned-sizes.patch
 
 
