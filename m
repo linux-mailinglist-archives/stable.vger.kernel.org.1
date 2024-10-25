@@ -1,147 +1,118 @@
-Return-Path: <stable+bounces-88143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 731029B00E7
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 13:11:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44AB39B0111
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 13:20:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 271FC28454B
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 11:11:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E580F1F22AF8
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 11:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 585B31DDC00;
-	Fri, 25 Oct 2024 11:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B8D1F9EA1;
+	Fri, 25 Oct 2024 11:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IhihztZ4"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="TEG60jEl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EFB1CF295
-	for <stable@vger.kernel.org>; Fri, 25 Oct 2024 11:11:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B5D1D54FE
+	for <stable@vger.kernel.org>; Fri, 25 Oct 2024 11:20:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729854664; cv=none; b=Qs436v7KiLdmdS32Sj8H2IM+qIKgemaWE+lI9g5rDs39Pn05t2GRxprMhF8+DNfjfpLRVpRzNkLDJ5LnndyDN8Q+iH8afw6zMPvY9n5IzXjPD6ZB3DfvpXJ0/cf5roiYtuAVbDuSBSeDvYmlzLJFLi3rN1jyn0hYQ4plgMy7qis=
+	t=1729855223; cv=none; b=LKTLrh0GOQeE7lRr2+OngOBes4zdeYJYOlT8FeD47u8pDBS+Owf5NnE/XUI0wT1T3ZSMUwtpIg0mFXk+Fni7xEPzlp2U+bNnTZrFHHdQCDa87Ze8SXDD0I4/T9rEQo5R9Um8youopTpB1cxy5D1JD7r+J5T6nB4ETEkzTome6nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729854664; c=relaxed/simple;
-	bh=DxIfBQXrH1Xs2wc78ePPfc99pKvc+iL/Vx4PjZmTlKA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bp1H2o2aN1BwsZYAN7oSgSUb7YmRFYHn9m3VLNbgUUA/dwkSbn1BFZu5I79trizL2T1h2F5gOHqL9D5LZHawHi9jGhGb6JB834ZMHXOuvDzAcmwpkVNoZJFj728KvPsOscSCsb37drHFB3rUR63OpEaBkgeH93DKQFTe/o2AUGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IhihztZ4; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43152b79d25so17812655e9.1
-        for <stable@vger.kernel.org>; Fri, 25 Oct 2024 04:11:01 -0700 (PDT)
+	s=arc-20240116; t=1729855223; c=relaxed/simple;
+	bh=WI7XrMwtXL077tWZKycguwQfQ38m20vMCPsqD+m+N3M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NHyU2ucmkPXJdGdyK8dD83EAzWoEugav7vM4YNhqdRJs2uGj6RGXSkSkigT90vG9a5hnmJM8UT4BT/ls80mIkMXdSHu4tvV7umomT3kfNenu+8gBGdyY0sDjVCFsAA3OCYIvXzGTjH3rxEb14Wm0SL2jVMxVhMo99W2yX4eHz18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=TEG60jEl; arc=none smtp.client-ip=209.85.217.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-4a47fd930b8so596829137.1
+        for <stable@vger.kernel.org>; Fri, 25 Oct 2024 04:20:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729854660; x=1730459460; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cAoPtk2p21WqOXSKfb0zuYspiByDLClYh7v/hXTSgls=;
-        b=IhihztZ4I2PzXpwUsMxTGQb09P4vAwsMuM+8x1y2oWkI+Wxo2TyVph1obePKkEZAzK
-         5K8zG35NJPUsgN/0fp2mrOO3HMYsB5Ehrswn4PBPUFH0AtmdKP+pZsq0QvDGBTOlI5N4
-         htHiYdHx3DpAf15XRRLb2aweKK15PiT+fYX5JpBi3VISwEo9IWpXlPMCI6mS2DQ3sa5d
-         EgFG8smkr+Q0RqwrhhBil/FxIfEEHVP5jdXUilP1VeVjCS2vUM9X20/z6fumTbnoICnt
-         GtNc6D/oOuVFCmA2qrOimZ/7oyqy2t1Z6YYvMZktXjyaA/rdtT33cVJMs4txsbucY26L
-         mMog==
+        d=chromium.org; s=google; t=1729855220; x=1730460020; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WI7XrMwtXL077tWZKycguwQfQ38m20vMCPsqD+m+N3M=;
+        b=TEG60jElpzEJC1VT5+OpLoLh7NHPJDqvghx13/98TBO75B/lWbpz8YtKUt8JdPFU5q
+         h/A+M43tkLl8JpPOIb/OFOJDi+A+gOPU9JL1AELX58S0ny9E/0l+kQQfNr85YgUogu2t
+         mTzcSz+y9YJ8rVjN+FpM1g+ZnVLZ1neu2QPAE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729854660; x=1730459460;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cAoPtk2p21WqOXSKfb0zuYspiByDLClYh7v/hXTSgls=;
-        b=s8s7pjr99norXxyfBbphUIUGjf3TE6n8U8Fsc6XTZKePGZoCoe9Z8IytrT4y06LDSf
-         8MG2HlY56ykyLe8I3nCw1lm635iy5M4kLzpb0ZE4yFQ+aeJ/fS6KJE6pAL70GposIBzq
-         kVlshVzwFaBgla3ZuBHNC7ZDnuJaiYDhGpA+MZIBBUcWyiZaS1o992k9DdERD1y9yiTI
-         BsPfXo5LWfVC5j3CIY7P35YlUuG73dIrPSjHLrN58FvTuuIWiC9a+kbJ5/XjMEW+W/QF
-         QLUCPhJD4kDpi4gnkjQ5bq81RciwLHK+ll6V4gGLdwAFq5OIFVBFLU6KAUpbb98oBqbp
-         BGLQ==
-X-Gm-Message-State: AOJu0YzA/01mrZyQz2C6XKZYqKDVDlPejMpaVCM33ppNxRHzFSGhWlcr
-	8UQEPSWijIwHcZOqjim5vwgCwh/072iCVPhGDDHI5Z3ftSkjffXkKcxR0MF0Ti2tdw==
-X-Google-Smtp-Source: AGHT+IG/0YYWj/RUqm7qrTvoTtb6etksBNoBPudb1cgZpmZ+8h35hB8rREDoRlDuDYt+d6RU5fEpQQ==
-X-Received: by 2002:a05:600c:4ecb:b0:431:5aea:964 with SMTP id 5b1f17b1804b1-4318415c2damr78611615e9.19.1729854659947;
-        Fri, 25 Oct 2024 04:10:59 -0700 (PDT)
-Received: from dev-dsk-krckatom-1b-7b393aa4.eu-west-1.amazon.com (54-240-197-239.amazon.com. [54.240.197.239])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4318b567e23sm44687065e9.25.2024.10.25.04.10.59
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 25 Oct 2024 04:10:59 -0700 (PDT)
-From: Tomas Krcka <tomas.krcka@gmail.com>
-X-Google-Original-From: Tomas Krcka <krckatom@amazon.de>
-To: stable@vger.kernel.org
-Cc: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Peter Hurley <peter@hurleysoftware.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Tomas Krcka <krckatom@amazon.de>
-Subject: [PATCH 6.1.y 5.15.y 5.10.y] serial: protect uart_port_dtr_rts() in uart_shutdown() too
-Date: Fri, 25 Oct 2024 11:05:48 +0000
-Message-Id: <20241025110548.69008-1-krckatom@amazon.de>
-X-Mailer: git-send-email 2.40.1
+        d=1e100.net; s=20230601; t=1729855220; x=1730460020;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WI7XrMwtXL077tWZKycguwQfQ38m20vMCPsqD+m+N3M=;
+        b=kXha5mtXTWWZJcz+NY5Td55ubcNd/B/x6Aa/g0vqcZCaSF84zLdmvSsG7CNmGgKpsr
+         KLxyulyJkvp2wB47qbnFjIRFOR6HYCT1r91Ff6icrejjkcWihXPapCrSdsU17UqRkS/L
+         p+STdg8LWlf8yrb+DPGjr10PX9yEm810a3YdNWpD2y/1fbbVbx0SZm9NlasA4iPIhSvy
+         wPnd1NlYB8MpsobFd0onaOoIR+PvDDReJu25vD6bwRc21+f5C17K+72rlYKZ7RHtqNll
+         JDPEdJjGh2iD0nWljrPRQZRxSkvLrGT16VzUQoFR8302q76ZHuA0JhWbqVbz3jP/XadH
+         36bg==
+X-Forwarded-Encrypted: i=1; AJvYcCUevO+YGwP9JoS5v5ehZORk5gsGFmfXcsyhVAkgl60HMCmKfDwJSg9lR42C8OPJnlNyNX4rRF0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywhmM/GvlTGWh3m1FEyDBf0aDJ/9py+3BTBx3uZERtg3Nfji5E
+	4BDyueGQ+vs+lEmDNsqVCYRjvyy1H6v2zxNXWE7CtWut337+UkJKYierOG7wl3WZFxO2TqdtT0a
+	4jg==
+X-Google-Smtp-Source: AGHT+IGbNbIL0kk7yRJLM8HX+6BPiWBOqN8FkXifN+DNJQxEyCsURE1WkG9HigTiGOO9c/1iMTfSzQ==
+X-Received: by 2002:a05:6102:1623:b0:4a5:afbc:48a9 with SMTP id ada2fe7eead31-4a751bc71c4mr12162761137.8.1729855219984;
+        Fri, 25 Oct 2024 04:20:19 -0700 (PDT)
+Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com. [209.85.217.47])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4a8c520a9adsm169335137.7.2024.10.25.04.20.19
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Oct 2024 04:20:19 -0700 (PDT)
+Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-4a47fd930b8so596822137.1
+        for <stable@vger.kernel.org>; Fri, 25 Oct 2024 04:20:19 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVOMzyxqq8Jnf733zsKSFnqtQ50d3bW+NyXsxTq6qpUAiG1gNaNjsdGj2Uj4O8NGce/cWHkCac=@vger.kernel.org
+X-Received: by 2002:a05:6102:954:b0:4a5:b712:2c94 with SMTP id
+ ada2fe7eead31-4a751bff426mr11555515137.14.1729855218618; Fri, 25 Oct 2024
+ 04:20:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241025075630.3917458-1-wenst@chromium.org>
+In-Reply-To: <20241025075630.3917458-1-wenst@chromium.org>
+From: Fei Shao <fshao@chromium.org>
+Date: Fri, 25 Oct 2024 19:19:40 +0800
+X-Gmail-Original-Message-ID: <CAC=S1nhPsPRYk_w0n9or7KrEhF_UzLjN8MFCL6xw_FLR1b1++A@mail.gmail.com>
+Message-ID: <CAC=S1nhPsPRYk_w0n9or7KrEhF_UzLjN8MFCL6xw_FLR1b1++A@mail.gmail.com>
+Subject: Re: [PATCH 1/2] arm64: dts: mediatek: mt8183: Disable DPI display
+ output by default
+To: Chen-Yu Tsai <wenst@chromium.org>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, devicetree@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+On Fri, Oct 25, 2024 at 3:56=E2=80=AFPM Chen-Yu Tsai <wenst@chromium.org> w=
+rote:
+>
+> This reverts commit 377548f05bd0905db52a1d50e5b328b9b4eb049d.
+>
+> Most SoC dtsi files have the display output interfaces disabled by
+> default, and only enabled on boards that utilize them. The MT8183
+> has it backwards: the display outputs are left enabled by default,
+> and only disabled at the board level.
+>
+> Reverse the situation for the DPI output so that it follows the
+> normal scheme. For ease of backporting the DSI output is handled
+> in a separate patch.
+>
+> Fixes: 009d855a26fd ("arm64: dts: mt8183: add dpi node to mt8183")
+> Fixes: 377548f05bd0 ("arm64: dts: mediatek: mt8183-kukui: Disable DPI dis=
+play interface")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 602babaa84d627923713acaf5f7e9a4369e77473 ]
-
-Commit af224ca2df29 (serial: core: Prevent unsafe uart port access, part
-3) added few uport == NULL checks. It added one to uart_shutdown(), so
-the commit assumes, uport can be NULL in there. But right after that
-protection, there is an unprotected "uart_port_dtr_rts(uport, false);"
-call. That is invoked only if HUPCL is set, so I assume that is the
-reason why we do not see lots of these reports.
-
-Or it cannot be NULL at this point at all for some reason :P.
-
-Until the above is investigated, stay on the safe side and move this
-dereference to the if too.
-
-I got this inconsistency from Coverity under CID 1585130. Thanks.
-
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Cc: Peter Hurley <peter@hurleysoftware.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20240805102046.307511-3-jirislaby@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Adapted over commit 5701cb8bf50e ("tty: Call ->dtr_rts() parameter
-active consistently") not in the tree]
-Signed-off-by: Tomas Krcka <krckatom@amazon.de>
----
- drivers/tty/serial/serial_core.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-index 58e857fb8dee..fd9f635dc247 100644
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -339,14 +339,16 @@ static void uart_shutdown(struct tty_struct *tty, struct uart_state *state)
- 		/*
- 		 * Turn off DTR and RTS early.
- 		 */
--		if (uport && uart_console(uport) && tty) {
--			uport->cons->cflag = tty->termios.c_cflag;
--			uport->cons->ispeed = tty->termios.c_ispeed;
--			uport->cons->ospeed = tty->termios.c_ospeed;
--		}
-+		if (uport) {
-+			if (uart_console(uport) && tty) {
-+				uport->cons->cflag = tty->termios.c_cflag;
-+				uport->cons->ispeed = tty->termios.c_ispeed;
-+				uport->cons->ospeed = tty->termios.c_ospeed;
-+			}
- 
--		if (!tty || C_HUPCL(tty))
--			uart_port_dtr_rts(uport, 0);
-+			if (!tty || C_HUPCL(tty))
-+				uart_port_dtr_rts(uport, 0);
-+		}
- 
- 		uart_port_shutdown(port);
- 	}
--- 
-2.40.1
-
+Reviewed-by: Fei Shao <fshao@chromium.org>
 
