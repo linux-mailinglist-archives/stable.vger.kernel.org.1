@@ -1,134 +1,156 @@
-Return-Path: <stable+bounces-88152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC4FD9B035B
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 15:05:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C4D9B037C
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 15:13:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81F2FB226AB
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 13:05:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61EF12867B7
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 13:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 993FF1632FB;
-	Fri, 25 Oct 2024 13:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939BE20BB31;
+	Fri, 25 Oct 2024 13:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t8iRUn7M"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3opULSf5";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZqBU12QT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521B81632F6;
-	Fri, 25 Oct 2024 13:05:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263AA1D515A;
+	Fri, 25 Oct 2024 13:12:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729861530; cv=none; b=p26ppnjGprdKdvvEfP5cxEAU2hQD6n2f2j69VMWnx04nAnB/y9HVt21bpVMjxnXClt4pIAMxwQVu2eV2YJ8ypFgm473P1lVJGCNFJ786Fl1NWTXCBhXkgJVNdwXfYXHAhMX5uFOEyYfslwzx2u9vtUq0PiNTyJ94dTYfYw1tiG4=
+	t=1729861939; cv=none; b=M1ZoAR7ZPWFAmVrwVJAUoCVe9vtpZPtIyHrZ8Pgtt2Dkseb1Ya3gt2WJdmFO3LloD5LMvw3PqMbwh6netCjzWVVzjp52MW+tjPktMA4gx9xS0Mag1lxbrxaMczM58QVJNMJNwFV/INv7K0afw5bevcgzjL2ou3Skw8h5Sdho7vM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729861530; c=relaxed/simple;
-	bh=JHk7KYb3g3gubZ/UCoHENgcCGyzGa5kzhT1E3wr8230=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PTt/ChX9O5rkGW+7zVVsGxghvJH959gxK2/8Gjo3Haw0wd/s8okcLy7UgqDaUOxumVBShhffXW9c2AXqfUOZEzlieNeoRpEj3sTkfmXEFeb922iN+rtP0tb+aouFpTXgPwQYVwUAvY3/+dL19PsY+1F/b7jJmQA2+4Ltf5bD2as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t8iRUn7M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73F2C4CEC3;
-	Fri, 25 Oct 2024 13:05:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729861529;
-	bh=JHk7KYb3g3gubZ/UCoHENgcCGyzGa5kzhT1E3wr8230=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=t8iRUn7MW8+vBX02dVc9yoDre05ZBSkvXiKgdaN3nH3Xfn6kgX0qxhYM6SDdnRTvy
-	 5ZqCUQi9lghoJ8667mBCWv+Ej3lNrl2woZhNmF+0Bh896RrwpHIgVNj2k5AK9uAsUV
-	 lelBoqSj9hn2BFXDKm1CRKKNudW6GdKWXId7pE/GkKK+EX1HJ6bT+WIvnF4mfrmKsx
-	 /2W7ZAVekhd1JVpG515Q0A4fMdpBit5wkiyRc4eiKoAfc8tmdGAn7PtkW++LqPaAyr
-	 qEnnC4/gwWvuoMxYwq0cEFw4nfPJ7BZDlc3ll3+ejzX6giEXRFGjE3U4hXtg1/2f5H
-	 z0DzPv0yC7p6A==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=wait-a-minute.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1t4K0N-006muA-8R;
-	Fri, 25 Oct 2024 14:05:27 +0100
-Date: Fri, 25 Oct 2024 14:05:26 +0100
-Message-ID: <87v7xgtjs9.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	stable@vger.kernel.org,
-	Alexander Potapenko <glider@google.com>
-Subject: Re: [PATCH] KVM: arm64: Don't eagerly teardown the vgic on init error
-In-Reply-To: <eb6e7e29-b0a8-47b1-94c4-f01569aa55cb@sirena.org.uk>
-References: <20241009183603.3221824-1-maz@kernel.org>
-	<3f0918bf-0265-4714-9660-89b75da49859@sirena.org.uk>
-	<86ldyd2x7t.wl-maz@kernel.org>
-	<eb6e7e29-b0a8-47b1-94c4-f01569aa55cb@sirena.org.uk>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1729861939; c=relaxed/simple;
+	bh=LMcKy13HKOHUiARSCOxTXaBgVFPbmKvqll5xpfPJqO4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Lcbb+B0jsvQ8OypO3q/BKvSI7eyx5zLjIBmVxfHlJl17J/Wo6e7oFU0h8PFfiNHArXODYhaqT+kVEJ0bxO54LVczCZMJvnDx0OKN1K8x9eLuf28oI+kYIZznB5fThth3wqshRX0pyDbj35a0V9al8elawX+h1vin5beSSyEKSqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3opULSf5; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZqBU12QT; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1729861935;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4CCakkuEsajugg/PgpFQNY8pqc/CyoUnL2IGo8dHuAo=;
+	b=3opULSf5YcYafX2XXc3JliiHlbCwCqGdZGKObFcdRQ+rSX+pTwuA8cytrXvHhUK5gErFKF
+	RPhku62wfhLz+/0lUSYssEBAnaVbQ9zieb8p/caBk6VTn9CdAwmeSxwnuxxpdef5iYcRZ2
+	6SVpCRRXVjZrTYvTXIJKF7QMFvWYPfc6qIxatrbQE6/nzHjbmG2D7niPCHPufjBEvCHEIs
+	gE+WJDOMpNDyk07d4o9V08fus2sT8o8XEk2rFARLveFa3wr24rq8dAvO1+p9B9m3n3Oy9D
+	ZITyYzhRsgv97EOdFhMuAhfsVhPd2UtfNtXXZlwmAsiK8N94EtApTWacal+aMQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1729861935;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4CCakkuEsajugg/PgpFQNY8pqc/CyoUnL2IGo8dHuAo=;
+	b=ZqBU12QTzxdqkbQWnwL3tA/lmm+1CqOFPszaVKX++FHjHGFaYBmDVW7LFFl3wbDA369YLZ
+	or7ODo+dQRGnnfAQ==
+To: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, Celeste Liu
+ <coelacanthushex@gmail.com>,
+ Celeste Liu via B4 Relay <devnull+CoelacanthusHex.gmail.com@kernel.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, =?utf-8?B?Qmo=?=
+ =?utf-8?B?w7ZybiBUw7ZwZWw=?=
+ <bjorn@rivosinc.com>
+Cc: Palmer Dabbelt <palmer@rivosinc.com>, Alexandre Ghiti <alex@ghiti.fr>,
+ "Dmitry V. Levin" <ldv@strace.io>, Andrea Bolognani <abologna@redhat.com>,
+ Felix Yan <felixonmars@archlinux.org>, Ruizhe Pan <c141028@gmail.com>,
+ Shiqi Zhang <shiqi@isrc.iscas.ac.cn>, Guo Ren <guoren@kernel.org>, Yao Zi
+ <ziyao@disroot.org>, Han Gao <gaohan@iscas.ac.cn>,
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] riscv/entry: get correct syscall number from
+ syscall_get_nr()
+In-Reply-To: <8734kpqu8k.fsf@all.your.base.are.belong.to.us>
+References: <20241017-fix-riscv-syscall-nr-v1-1-4edb4ca07f07@gmail.com>
+ <87a5exy2rx.fsf@all.your.base.are.belong.to.us>
+ <b72e3d2b-d540-47bf-adec-0ab6eda135d8@gmail.com>
+ <8734kpqu8k.fsf@all.your.base.are.belong.to.us>
+Date: Fri, 25 Oct 2024 15:12:14 +0200
+Message-ID: <871q045ntd.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: broonie@kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, stable@vger.kernel.org, glider@google.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 25 Oct 2024 11:54:38 +0100,
-Mark Brown <broonie@kernel.org> wrote:
-> 
-> [1  <text/plain; us-ascii (7bit)>]
-> On Thu, Oct 24, 2024 at 07:05:10PM +0100, Marc Zyngier wrote:
-> > Mark Brown <broonie@kernel.org> wrote:
-> 
-> > > # ==== Test Assertion Failure ====
-> > > #   lib/kvm_util.c:724: false
-> > > #   pid=1947 tid=1947 errno=5 - Input/output error
-> > > #      1	0x0000000000404edb: __vm_mem_region_delete at kvm_util.c:724 (discriminator 5)
-> > > #      2	0x0000000000405d0b: kvm_vm_free at kvm_util.c:762 (discriminator 12)
-> > > #      3	0x0000000000402d5f: vm_gic_destroy at vgic_init.c:101
-> > > #      4	 (inlined by) test_vcpus_then_vgic at vgic_init.c:368
-> > > #      5	 (inlined by) run_tests at vgic_init.c:720
-> > > #      6	0x0000000000401a6f: main at vgic_init.c:748
-> > > #      7	0x0000ffffa7b37543: ?? ??:0
-> > > #      8	0x0000ffffa7b37617: ?? ??:0
-> > > #      9	0x0000000000401b6f: _start at ??:?
-> > > #   KVM killed/bugged the VM, check the kernel log for clues
-> > > not ok 10 selftests: kvm: vgic_init # exit=254
-> 
-> > > which does rather look like a test bug rather than a problem in the
-> > > change itself.
-> 
-> > Well, the test tries to do braindead things, and then the test
-> > infrastructure seems surprised that KVM tells it to bugger off...
-> 
-> > I can paper over it with this (see below), but frankly, someone who
-> > actually cares about this crap should take a look (and ownership).
-> 
-> I'm not even sure that's a terrible fix, looking at the changelog I get
-> the impression the test is deliberately looking to do problematic things
-> with the goal of making sure that the kernel handles them appropriately.
-> That's not interacting well with the KVM selftest framework's general
-> assert early assert often approach but it's a reasonable thing to want
-> to test so relaxing the asserts like this is one way of squaring the
-> circile.
+On Mon, Oct 21 2024 at 09:46, Bj=C3=B6rn T=C3=B6pel wrote:
+> Celeste Liu <coelacanthushex@gmail.com> writes:
+>> 1. syscall_enter_from_user_mode() will do two things:
+>>    1) the return value is only to inform whether the syscall should be s=
+kipped.
+>>    2) regs will be modified by filters (seccomp or ptrace and so on).
+>> 2. for common entry user, there is two informations: syscall number and
+>>    the return value of syscall_enter_from_user_mode() (called is_skipped=
+ below).
+>>    so there is three situations:
+>>    1) if syscall number is invalid, the syscall should not be performed,=
+ and
+>>       we set a0 to -ENOSYS to inform userspace the syscall doesn't exist.
+>>    2) if syscall number is valid, is_skipped will be used:
+>>       a) if is_skipped is -1, which means there are some filters reject =
+this syscall,
+>>          so the syscall should not performed. (Of course, we can use boo=
+l instead to
+>>          get better semantic)
+>>       b) if is_skipped !=3D -1, which means the filters approved this sy=
+scall,
+>>          so we invoke syscall handler with modified regs.
+>>
+>> In your design, the logical condition is not obvious. Why syscall_enter_=
+from_user_mode()
+>> informed the syscall will be skipped but the syscall handler will be cal=
+led
+>> when syscall number is invalid? The users need to think two things to ge=
+t result:
+>> a) -1 means skip
+>> b) -1 < 0 in signed integer, so the skip condition is always a invalid s=
+yscall number.
+>>
+>> In may way, the users only need to think one thing: The syscall_enter_fr=
+om_user_mode()
+>> said -1 means the syscall should not be performed, so use it as a condit=
+ion of reject
+>> directly. They just need to combine the informations that they get from =
+API as the
+>> condition of control flow.
+>
+> I'm all-in for simpler API usage! Maybe massage the
+> syscall_enter_from_user_mode() (or a new one), so that additional
+> syscall_get_nr() call is not needed?
 
-It *is* a terrible fix, since it makes no effort in finding out
-whether the VM is be dead for a good or a bad reason. In a way, the
-fix is worse than the current error, because it silently hide the
-crap.
+It's completely unclear to me what the actual problem is. The flow how
+this works on all architectures is:
 
-So this test will continue to explode until someone fixes it
-*properly*. And if that means rewriting the selftest harness, so be
-it.
+       regs->orig_a0  =3D regs->a0
+       regs->a0 =3D -ENOSYS;
 
-	M.
+       nr =3D syscall_enter_from_user_mode(....);
 
--- 
-Without deviation from the norm, progress is not possible.
+       if (nr >=3D 0)
+          regs->a0 =3D nr < MAX_SYSCALL ? syscall(nr) : -ENOSYS;
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+If syscall_trace_enter() returns -1 to skip the syscall, then regs->a0
+is unmodified, unless one of the magic operations modified it.
+
+If syscall_trace_enter() was not active (no tracer, no seccomp ...) then
+regs->a0 already contains -ENOSYS.
+
+So what's the exact problem?
+
+Thanks,
+
+        tglx
 
