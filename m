@@ -1,162 +1,109 @@
-Return-Path: <stable+bounces-88200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7C849B0FC8
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 22:31:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67FEC9B111A
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 23:00:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B49A1F2283B
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 20:31:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99CE51C2111F
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 21:00:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26365214415;
-	Fri, 25 Oct 2024 20:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A41C18BB90;
+	Fri, 25 Oct 2024 20:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="T+XFuLta"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iBA5Cbws"
 X-Original-To: stable@vger.kernel.org
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E26E21441B
-	for <stable@vger.kernel.org>; Fri, 25 Oct 2024 20:31:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA4A217F26
+	for <stable@vger.kernel.org>; Fri, 25 Oct 2024 20:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729888283; cv=none; b=Z/I/5UQA8amJuPTXPUXETPdj1SI/BSxhEdlxnpmGX4prMCjeUtxQ3sVKWIl+YuVU+n3TbuJzT8uTcOso3o9Ig/Pe/I0BU3LlqctQMdwGWYWQv9OLmNPp/kaJ+TTg0Hi6N2dBgz4A6+ObEt+GlHhbTPM/gb0/7HpCI5bDkPobVME=
+	t=1729889849; cv=none; b=KVepQEbe0STAmTJGdZqJsNyCkGw1Re4aA1K9NYF25y2iOzSQxJ8bsjG+TFbKYP3onp2gYxbILOBYnuMemKyXwnm8U5vUpnDB6dz4NBP1b+lvNKnour1SxjW6axJeHRWKnkNA1YlslWV6E4/mTA1jmlUYXIPmC+I4B92SO7uX0C4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729888283; c=relaxed/simple;
-	bh=Iy493F+pzQg2fpvg0RRli4wvoJ+/KT35WSxY22GlUHw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XtsbiW80hhUgZGFyR7sPFeM4qdeV4iT4Gpo+1HnyFhdnJxSJ2boeEfQTqKtZm/0WZsz7ueULduiEjmmMZLXKesIctTmqdc/S5hgW/01XivGmfoYi0pqHj6Kcs6oneCkkqvqDyOMDcYuXhP7uULlTsZFauxNYFwXlKY0AgxI8vLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=T+XFuLta; arc=none smtp.client-ip=91.218.175.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1729888278;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZhJ9ugIPIaGFFz5qM07CREOEip6QOw5dMQo4DWCePhE=;
-	b=T+XFuLtaFh7Q3CDmqR5AnYLYTyL5Dpi/CNlxln+LiSJay+HZ5b8AlQ6ITmJIheQqZobzEp
-	1lWXDgiy2oSimAJoWvAgbhqqVXivL8WNvSYulL7oyW2aNBlvT6dNR2Jok819O9DbUJiGNd
-	o2G6Ijrcp+lS4ASv66nRuK/4ELdZZYM=
-From: Oliver Upton <oliver.upton@linux.dev>
-To: kvmarm@lists.linux.dev
-Cc: Marc Zyngier <maz@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	stable@vger.kernel.org,
-	Alexander Potapenko <glider@google.com>
-Subject: [PATCH v2 1/4] KVM: arm64: Don't retire aborted MMIO instruction
-Date: Fri, 25 Oct 2024 20:31:03 +0000
-Message-ID: <20241025203106.3529261-2-oliver.upton@linux.dev>
-In-Reply-To: <20241025203106.3529261-1-oliver.upton@linux.dev>
-References: <20241025203106.3529261-1-oliver.upton@linux.dev>
+	s=arc-20240116; t=1729889849; c=relaxed/simple;
+	bh=hNPFlVbZVA/OKJ3932WwecR37g7+EI0egSRr36/qweM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=G0NXggAdjW3UazXWspbNzvz6AMfwYMEgrS2s1imwilKa1BaJhnfWLo2EOMHO1VbjvnwEIzu8fb70Luwup3P9/9gKxbh5c5oIeJqUyDnUqMsKJlfxyr6/an7U9AAEBHfOiK3hhN848y6X0WjfJclsLTfqZvrJB1ypgvajdyxF9Es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iBA5Cbws; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-539f2b95775so2888635e87.1
+        for <stable@vger.kernel.org>; Fri, 25 Oct 2024 13:57:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1729889845; x=1730494645; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=hNPFlVbZVA/OKJ3932WwecR37g7+EI0egSRr36/qweM=;
+        b=iBA5Cbws3HSP6VVTVkLq+HffhQbSMtXqIVyTsQD79Dsu+pfVc/rP+NeA7WSjVruxXT
+         jfN1457sg4PxRqLu/w5o+FpDGY8Ee+x+V5+iCxHglzTgUDqS8P55ssxzd4GMzOdZdnrR
+         Zb9H1PvYGIfGoc7URDtyaCRor31R6KAbCJDS31i5eJNZM+Howg//vucpZa9Qa4drtCIY
+         UQJ0LDdjNPTYXj3oaOaK/HKXJQCVhUG7WGt/rNAQIJA6f/im7hfcT8eXHlYifcNrGDKA
+         HYFWVNOMIDF2JO/HnswT8Tb95wMJBkZGPXKPh/ur+oAvJAhQhxgAlE8kZSSbCjQNHiae
+         /cgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729889845; x=1730494645;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hNPFlVbZVA/OKJ3932WwecR37g7+EI0egSRr36/qweM=;
+        b=V0BdUnVE34Er7J6/QvTTQuO2k+WtRdY1wbWDjDzQQGcG2/KHDC6sV57iHgfZq8Yols
+         e2d0zrW7Lwkl0l25wrjW5Q6FpNFALvQuMjO1Iy4o39pcQO4SkeT30NDHItB3eujtd0Jf
+         UsnN9a4CodTUrlJMJU7BBwI7d3EWyD4jBq/ZiEXzVEqfBFxjO3s4KPuyAG4+JvL93MBp
+         eI3ovxujTg8rWILswsU29uxTym589/yKKu41iaprPKyBu6VHRpWRejiTXl5Vozi1du+4
+         Bq3EZOuVvx3XndbJ5hZHEmTfNySmbXWkKdO4U38j1SD/xNFodZ+qezsr4DhLzlKLICHH
+         18rw==
+X-Forwarded-Encrypted: i=1; AJvYcCXbqpNTzOI6CZVCO3zbuLxx6zI5LXCsRM8X08ibgSxKunfMYWn4RE2sn/DUVcNwg3B7lxLrWrM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwywLvmc8Haw7Apht0UZX9Ryha6BTHWFUgM+MxKZrJ2SVNwbx/C
+	6xHcO5FbRkqaRwhGjbniyS6Cg49foTLHmpP5e9asfoAiv6+tcYnu/eYqEoKlYmeBHADXhWOSc6R
+	eR/OXUuxp4hTH9jqcZCNXFoCknJT72kvqiz5T1Q==
+X-Google-Smtp-Source: AGHT+IGNM4TYAOHuoUTcKkN3riSvNQrGUI2BitGMjHxjJ9ZNHlb/Bci2C7h3R3BXPLmrz9pSyztWUOGUMtDmtzwbabk=
+X-Received: by 2002:a05:6512:3da8:b0:535:6baa:8c5d with SMTP id
+ 2adb3069b0e04-53b348cbb72mr418498e87.20.1729889844751; Fri, 25 Oct 2024
+ 13:57:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+References: <20241017-arm-kasan-vmalloc-crash-v3-0-d2a34cd5b663@linaro.org>
+ <20241017-arm-kasan-vmalloc-crash-v3-1-d2a34cd5b663@linaro.org>
+ <69f71ac8-4ba6-46ed-b2ab-e575dcada47b@foss.st.com> <CACRpkdYvgZj1R4gAmzFhf4GmFOxZXhpHVTOio+hVP52OBAJP0A@mail.gmail.com>
+ <46336aba-e7dd-49dd-aa1c-c5f765006e3c@foss.st.com> <CACRpkdY2=qdY_0GA1gB03yHODPEvxum+4YBjzsXRVnhLaf++6Q@mail.gmail.com>
+ <f3856158-10e6-4ee8-b4d5-b7f2fe6d1097@foss.st.com> <CACRpkdZa5x6NvUg0kU6F0+HaFhKhVswvK2WaaCSBx3-JCVFcag@mail.gmail.com>
+In-Reply-To: <CACRpkdZa5x6NvUg0kU6F0+HaFhKhVswvK2WaaCSBx3-JCVFcag@mail.gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Fri, 25 Oct 2024 22:57:12 +0200
+Message-ID: <CACRpkdYtG3ObRCghte2D0UgeZxkOC6oEUg39uRs+Z0nXiPhUTA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] ARM: ioremap: Sync PGDs for VMALLOC shadow
+To: Clement LE GOFFIC <clement.legoffic@foss.st.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+	Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	kasan-dev <kasan-dev@googlegroups.com>, Russell King <linux@armlinux.org.uk>, 
+	Kees Cook <kees@kernel.org>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Mark Brown <broonie@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Antonio Borneo <antonio.borneo@foss.st.com>, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Returning an abort to the guest for an unsupported MMIO access is a
-documented feature of the KVM UAPI. Nevertheless, it's clear that this
-plumbing has seen limited testing, since userspace can trivially cause a
-WARN in the MMIO return:
+[Me]
+> What happens if you just
+>
+> git checkout b6506981f880^
+>
+> And build and boot that? It's just running the commit right before the
+> unwinding patch.
 
-  WARNING: CPU: 0 PID: 30558 at arch/arm64/include/asm/kvm_emulate.h:536 kvm_handle_mmio_return+0x46c/0x5c4 arch/arm64/include/asm/kvm_emulate.h:536
-  Call trace:
-   kvm_handle_mmio_return+0x46c/0x5c4 arch/arm64/include/asm/kvm_emulate.h:536
-   kvm_arch_vcpu_ioctl_run+0x98/0x15b4 arch/arm64/kvm/arm.c:1133
-   kvm_vcpu_ioctl+0x75c/0xa78 virt/kvm/kvm_main.c:4487
-   __do_sys_ioctl fs/ioctl.c:51 [inline]
-   __se_sys_ioctl fs/ioctl.c:893 [inline]
-   __arm64_sys_ioctl+0x14c/0x1c8 fs/ioctl.c:893
-   __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
-   invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
-   el0_svc_common+0x1e0/0x23c arch/arm64/kernel/syscall.c:132
-   do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
-   el0_svc+0x38/0x68 arch/arm64/kernel/entry-common.c:712
-   el0t_64_sync_handler+0x90/0xfc arch/arm64/kernel/entry-common.c:730
-   el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
+Another thing you can test is to disable vmap:ed stacks and see
+what happens. (General architecture-dependent options uncheck
+"Use a virtually-mapped stack".)
 
-The splat is complaining that KVM is advancing PC while an exception is
-pending, i.e. that KVM is retiring the MMIO instruction despite a
-pending synchronous external abort. Womp womp.
-
-Fix the glaring UAPI bug by skipping over all the MMIO emulation in
-case there is a pending synchronous exception. Note that while userspace
-is capable of pending an asynchronous exception (SError, IRQ, or FIQ),
-it is still safe to retire the MMIO instruction in this case as (1) they
-are by definition asynchronous, and (2) KVM relies on hardware support
-for pending/delivering these exceptions instead of the software state
-machine for advancing PC.
-
-Cc: stable@vger.kernel.org
-Fixes: da345174ceca ("KVM: arm/arm64: Allow user injection of external data aborts")
-Reported-by: Alexander Potapenko <glider@google.com>
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
----
- arch/arm64/kvm/mmio.c | 32 ++++++++++++++++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm64/kvm/mmio.c b/arch/arm64/kvm/mmio.c
-index cd6b7b83e2c3..ab365e839874 100644
---- a/arch/arm64/kvm/mmio.c
-+++ b/arch/arm64/kvm/mmio.c
-@@ -72,6 +72,31 @@ unsigned long kvm_mmio_read_buf(const void *buf, unsigned int len)
- 	return data;
- }
- 
-+static bool kvm_pending_sync_exception(struct kvm_vcpu *vcpu)
-+{
-+	if (!vcpu_get_flag(vcpu, PENDING_EXCEPTION))
-+		return false;
-+
-+	if (vcpu_el1_is_32bit(vcpu)) {
-+		switch (vcpu_get_flag(vcpu, EXCEPT_MASK)) {
-+		case unpack_vcpu_flag(EXCEPT_AA32_UND):
-+		case unpack_vcpu_flag(EXCEPT_AA32_IABT):
-+		case unpack_vcpu_flag(EXCEPT_AA32_DABT):
-+			return true;
-+		default:
-+			return false;
-+		}
-+	} else {
-+		switch (vcpu_get_flag(vcpu, EXCEPT_MASK)) {
-+		case unpack_vcpu_flag(EXCEPT_AA64_EL1_SYNC):
-+		case unpack_vcpu_flag(EXCEPT_AA64_EL2_SYNC):
-+			return true;
-+		default:
-+			return false;
-+		}
-+	}
-+}
-+
- /**
-  * kvm_handle_mmio_return -- Handle MMIO loads after user space emulation
-  *			     or in-kernel IO emulation
-@@ -84,8 +109,11 @@ int kvm_handle_mmio_return(struct kvm_vcpu *vcpu)
- 	unsigned int len;
- 	int mask;
- 
--	/* Detect an already handled MMIO return */
--	if (unlikely(!vcpu->mmio_needed))
-+	/*
-+	 * Detect if the MMIO return was already handled or if userspace aborted
-+	 * the MMIO access.
-+	 */
-+	if (unlikely(!vcpu->mmio_needed || kvm_pending_sync_exception(vcpu)))
- 		return 1;
- 
- 	vcpu->mmio_needed = 0;
--- 
-2.47.0.163.g1226f6d8fa-goog
-
+Yours,
+Linus Walleij
 
