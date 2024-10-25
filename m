@@ -1,125 +1,176 @@
-Return-Path: <stable+bounces-88141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 279F39B009E
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 12:55:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B3F59B00DA
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 13:05:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E000E285856
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 10:54:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D79A31F235D6
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 11:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9187A1F8194;
-	Fri, 25 Oct 2024 10:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE591DAC88;
+	Fri, 25 Oct 2024 11:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R2whcWvD"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GlLXtjF0"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B88F1FC7D9;
-	Fri, 25 Oct 2024 10:54:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17331CFEB5
+	for <stable@vger.kernel.org>; Fri, 25 Oct 2024 11:05:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729853683; cv=none; b=rRMvNIIWHe96H2MhP6AUsCS1iktUoCNAyPgoppzcVXzApJ0NPPKQTMLcleRc2466e/0crQqvNdTIK7Dm3EKj7emQ0c5lwCDGmU/b4bwxm1KDxIJcPROagE5YFShBK65t24lrwz1INUrROPlQOWWNPM5b5xIxfCuL9sHqh5XGNXY=
+	t=1729854314; cv=none; b=hEbh19z3ZU3wmHrbGTa9eTBfKYcSut+0rnt2RBMp29gXTk54hbfHKR0Y74Wxp/mxT+QCCjFVjob7+Xfd0kWOvZfwZegV9zknKu1jWpY85PAIN02gPpDqNaYh15b7TJcI62wrXjZ5I5c+1HUBe1B1b8ft269SghWBdHCNHaTuxTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729853683; c=relaxed/simple;
-	bh=NMrbIE7m12dPqV1Z3n/gS0Txjw3cXnFgI8+kZXLcLB8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pr1o+vQpbOd648NrT/hQAxCP2cLBZuiCDOb1ggXofIZYlT4sMh4gwXhdyGoGbxx1w2OQEdq+G7a5cmI84k/w6B30Esqy6brCcH5zh8MBpcdRWqHPgxEKUlqAX5VXNtn0Pgh+vUXXicebzuD4Tmk88p8mTURDAjTFxXAH7v2nueA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R2whcWvD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220ACC4CECD;
-	Fri, 25 Oct 2024 10:54:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729853682;
-	bh=NMrbIE7m12dPqV1Z3n/gS0Txjw3cXnFgI8+kZXLcLB8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=R2whcWvDR/PCSSP4DjUDcLxYQdy/95WyWAkhc5q3+TQ6tALzqIP6huUkRUJCA0RUi
-	 6T/DCTxM9DKTKhzd6/QegR6t07huOMNYy0cTugylMk9jyowm4Aj6pAwzZnNI9lR9B2
-	 +NT8XthWH++muZKV+CNzrbc5W7b30PlegnbYiFxW5JVl99hyLpSkcxd5S6XnAKJTzt
-	 kch6zq9zjDVBH1PPbUYnhzendmzxaeAr/0IWU7JE8VO0/+s/9AzGCxehHLhRno7N7Q
-	 a3l7QQoCCLSlheLjBrhJPxAG56oRGBoNF+ykK7U7QD2UtHmMVV7fe8Qssn52NpPRgn
-	 ZCkR+vgbEv8UA==
-Date: Fri, 25 Oct 2024 11:54:38 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>, stable@vger.kernel.org,
-	Alexander Potapenko <glider@google.com>
-Subject: Re: [PATCH] KVM: arm64: Don't eagerly teardown the vgic on init error
-Message-ID: <eb6e7e29-b0a8-47b1-94c4-f01569aa55cb@sirena.org.uk>
-References: <20241009183603.3221824-1-maz@kernel.org>
- <3f0918bf-0265-4714-9660-89b75da49859@sirena.org.uk>
- <86ldyd2x7t.wl-maz@kernel.org>
+	s=arc-20240116; t=1729854314; c=relaxed/simple;
+	bh=TYXGy47aTmQ+8lM1/A7b5cCqKr9Na80GePDVaBMMd2k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Emq1k3yCOSoVGaNZsDPSthsalaaLSCVTdXK3fhy+YpzzpPxx+i/W4OP6b+DB4Z0Cpt0Iz0Bh3ShzlKjdKLSetrIKP8TpacbYWf+kBpoEKHDzqnCi34Q5iTT/qNNFSZJxqo51HGV3sjJ0kVdD/sZM1mRdNfXBUKZDdX067VSGU8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GlLXtjF0; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-539f76a6f0dso1810626e87.1
+        for <stable@vger.kernel.org>; Fri, 25 Oct 2024 04:05:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1729854310; x=1730459110; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JuomQA4el8BSAut2vwLq507qc8/7nzyKhdkv644V4tk=;
+        b=GlLXtjF0ZfnVjLh8Wfb3kDgVC5AXxkgflHq5KsX3CTGVw3B6poapiL1zL2jA18YEk2
+         uQJONfd1OY01BpRs+G6TPqDUiqI9d/lKSLmP5Bl3lXy+GkOCVbjr8W/FMVCs7bDup6Xu
+         CHRMNujap0cxD6+s1Uqv7401ZFXeoCrKHDIaypiIFARZL4LHq3AZGVrSCDC07zYXH/V1
+         lRramMtkfJdqsgYQwH2nTv1ri0wgFFyzVUX/tf9K2LgXEDO7yMAhEro3sa3STR15ucWX
+         ABQVFxByY0ENvR9O7T4OvQAtybT9lNYW62uerLC54cIhKrNs2DeZvAbh51rJKLQaUoh/
+         N1sQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729854310; x=1730459110;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JuomQA4el8BSAut2vwLq507qc8/7nzyKhdkv644V4tk=;
+        b=dYAV8QNXDSFpadsN9YIVXkb11WlBKthrqFcnGZvgoQqUp5uv1tNCFbzQCiLjCHDg82
+         4ByNr8BrZ4YlKmeydcTDZXgS6Cl9V2HJSipsfm+uszBJIFJY8j2DCXdBInQS0db+LhDn
+         bVqQQnbyDLgqqqjkCYs9Y5djtznWWXi25kzIsApWtZfRGyah2cTkWOtyjpUcdhlTcWiH
+         xHNXamV1fDBlsfYNYL5XcoNpw1nhgRlxPyOI5Ig0MsAhg0nFtPa04iJxNilVERDKaGLE
+         3rho5ptEWkhqptT/5VOhlvqt5QpR1InsLJNn7VPLAZDw6NENPC7pQ0+Z82d5epJGJALs
+         GX/g==
+X-Forwarded-Encrypted: i=1; AJvYcCVjc41AM2tKanSEh1tRwDMH24lsFKJ7/gc3ambJbvY5ekKQpN+RZiy44Ir/WHP9MoOOSwnXx8I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yym0v6g6G4TwzGG/gGhxG3zHJMzQB8/dn8lWwxlqiZc3aN6Lnwk
+	CKT6fSzEOT6CotFYj6qmI9J0YqrMbImMy5YH3AV+A9vximq7uGWVRO0ZXB449hQ1w0hByS0msyp
+	ruTthBZ+tAECudQNqb3T8iMbDIdRrLOMGdqsBig==
+X-Google-Smtp-Source: AGHT+IE3hHhqGmpopThdU7fUZ90CNqImMKu3l7SDYMnc1DU7abvZQL9XTwbVyoLLrq2iIOMeoYVGfYC3GvxR504MoZA=
+X-Received: by 2002:a05:6512:3996:b0:539:f593:c19e with SMTP id
+ 2adb3069b0e04-53b1a3b018amr5062359e87.60.1729854309787; Fri, 25 Oct 2024
+ 04:05:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="f1SfmhQ4GPa7UgZL"
-Content-Disposition: inline
-In-Reply-To: <86ldyd2x7t.wl-maz@kernel.org>
-X-Cookie: Often things ARE as bad as they seem!
+References: <20241017-arm-kasan-vmalloc-crash-v3-0-d2a34cd5b663@linaro.org>
+ <20241017-arm-kasan-vmalloc-crash-v3-1-d2a34cd5b663@linaro.org>
+ <69f71ac8-4ba6-46ed-b2ab-e575dcada47b@foss.st.com> <CACRpkdYvgZj1R4gAmzFhf4GmFOxZXhpHVTOio+hVP52OBAJP0A@mail.gmail.com>
+ <46336aba-e7dd-49dd-aa1c-c5f765006e3c@foss.st.com> <CACRpkdY2=qdY_0GA1gB03yHODPEvxum+4YBjzsXRVnhLaf++6Q@mail.gmail.com>
+ <f3856158-10e6-4ee8-b4d5-b7f2fe6d1097@foss.st.com>
+In-Reply-To: <f3856158-10e6-4ee8-b4d5-b7f2fe6d1097@foss.st.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Fri, 25 Oct 2024 13:04:57 +0200
+Message-ID: <CACRpkdZa5x6NvUg0kU6F0+HaFhKhVswvK2WaaCSBx3-JCVFcag@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] ARM: ioremap: Sync PGDs for VMALLOC shadow
+To: Clement LE GOFFIC <clement.legoffic@foss.st.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+	Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	kasan-dev <kasan-dev@googlegroups.com>, Russell King <linux@armlinux.org.uk>, 
+	Kees Cook <kees@kernel.org>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Mark Brown <broonie@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Antonio Borneo <antonio.borneo@foss.st.com>, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, Oct 25, 2024 at 11:27=E2=80=AFAM Clement LE GOFFIC
+<clement.legoffic@foss.st.com> wrote:
+> On 10/24/24 23:58, Linus Walleij wrote:
+> > Hi Clement,
+> >
+> > I saw I missed to look closer at the new bug found in ext4
+> > on the STM32:
+> >
+> > On Mon, Oct 21, 2024 at 2:12=E2=80=AFPM Clement LE GOFFIC
+> > <clement.legoffic@foss.st.com> wrote:
+> >
+> >> Perhaps not related with this topic but as in the backtrace I am getti=
+ng
+> >> some keyword from our start exchange, I dump the crash below.
+> >> If this backtrace is somehow related with our issue, please have a loo=
+k.
+> > (...)
+> >> [ 1439.351945] PC is at __read_once_word_nocheck+0x0/0x8
+> >> [ 1439.356965] LR is at unwind_exec_insn+0x364/0x658
+> > (...)
+> >> [ 1440.333183]  __read_once_word_nocheck from unwind_exec_insn+0x364/0=
+x658
+> >> [ 1440.339726]  unwind_exec_insn from unwind_frame+0x270/0x618
+> >> [ 1440.345352]  unwind_frame from arch_stack_walk+0x6c/0xe0
+> >> [ 1440.350674]  arch_stack_walk from stack_trace_save+0x90/0xc0
+> >> [ 1440.356308]  stack_trace_save from kasan_save_stack+0x30/0x4c
+> >> [ 1440.362042]  kasan_save_stack from __kasan_record_aux_stack+0x84/0x=
+8c
+> >> [ 1440.368473]  __kasan_record_aux_stack from task_work_add+0x90/0x210
+> >> [ 1440.374706]  task_work_add from scheduler_tick+0x18c/0x250
+> >> [ 1440.380245]  scheduler_tick from update_process_times+0x124/0x148
+> >> [ 1440.386287]  update_process_times from tick_sched_handle+0x64/0x88
+> >> [ 1440.392521]  tick_sched_handle from tick_sched_timer+0x60/0xcc
+> >> [ 1440.398341]  tick_sched_timer from __hrtimer_run_queues+0x2c4/0x59c
+> >> [ 1440.404572]  __hrtimer_run_queues from hrtimer_interrupt+0x1bc/0x3a=
+0
+> >> [ 1440.411009]  hrtimer_interrupt from arch_timer_handler_virt+0x34/0x=
+3c
+> >> [ 1440.417447]  arch_timer_handler_virt from
+> >> handle_percpu_devid_irq+0xf4/0x368
+> >> [ 1440.424480]  handle_percpu_devid_irq from
+> >> generic_handle_domain_irq+0x38/0x48
+> >> [ 1440.431618]  generic_handle_domain_irq from gic_handle_irq+0x90/0xa=
+8
+> >> [ 1440.437953]  gic_handle_irq from generic_handle_arch_irq+0x30/0x40
+> >> [ 1440.444094]  generic_handle_arch_irq from __irq_svc+0x88/0xc8
+> >> [ 1440.449920] Exception stack(0xde803a30 to 0xde803a78)
+> >> [ 1440.454914] 3a20:                                     de803b00
+> >> 00000000 00000001 000000c0
+> >> [ 1440.463141] 3a40: e5333f40 de803ba0 de803bd0 00000001 e5333f40
+> >> de803b00 c1241d90 bad0075c
+> >> [ 1440.471262] 3a60: c20584b8 de803a7c c0114114 c0113850 200f0013 ffff=
+ffff
+> >> [ 1440.477959]  __irq_svc from unwind_exec_insn+0x4/0x658
+> >> [ 1440.483078]  unwind_exec_insn from call_with_stack+0x18/0x20
+> >
+> > This is hard to analyze without being able to reproduce it, but it talk=
+s
+> > about the stack and Kasan and unwinding, so could it (also) be related =
+to the
+> > VMAP:ed stack?
+> >
+> > Did you try to revert (or check out the commit before and after)
+> > b6506981f880 ARM: unwind: support unwinding across multiple stacks
+> > to see if this is again fixing the issue?
+> I Linus,
+>
+> Yes, I've tried to revert this particular commit on top of your last
+> patches but I have some conflicts inside arch/arm/kernel/unwind.c
 
---f1SfmhQ4GPa7UgZL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+What happens if you just
 
-On Thu, Oct 24, 2024 at 07:05:10PM +0100, Marc Zyngier wrote:
-> Mark Brown <broonie@kernel.org> wrote:
+git checkout b6506981f880^
 
-> > # ==== Test Assertion Failure ====
-> > #   lib/kvm_util.c:724: false
-> > #   pid=1947 tid=1947 errno=5 - Input/output error
-> > #      1	0x0000000000404edb: __vm_mem_region_delete at kvm_util.c:724 (discriminator 5)
-> > #      2	0x0000000000405d0b: kvm_vm_free at kvm_util.c:762 (discriminator 12)
-> > #      3	0x0000000000402d5f: vm_gic_destroy at vgic_init.c:101
-> > #      4	 (inlined by) test_vcpus_then_vgic at vgic_init.c:368
-> > #      5	 (inlined by) run_tests at vgic_init.c:720
-> > #      6	0x0000000000401a6f: main at vgic_init.c:748
-> > #      7	0x0000ffffa7b37543: ?? ??:0
-> > #      8	0x0000ffffa7b37617: ?? ??:0
-> > #      9	0x0000000000401b6f: _start at ??:?
-> > #   KVM killed/bugged the VM, check the kernel log for clues
-> > not ok 10 selftests: kvm: vgic_init # exit=254
+And build and boot that? It's just running the commit right before the
+unwinding patch.
 
-> > which does rather look like a test bug rather than a problem in the
-> > change itself.
-
-> Well, the test tries to do braindead things, and then the test
-> infrastructure seems surprised that KVM tells it to bugger off...
-
-> I can paper over it with this (see below), but frankly, someone who
-> actually cares about this crap should take a look (and ownership).
-
-I'm not even sure that's a terrible fix, looking at the changelog I get
-the impression the test is deliberately looking to do problematic things
-with the goal of making sure that the kernel handles them appropriately.
-That's not interacting well with the KVM selftest framework's general
-assert early assert often approach but it's a reasonable thing to want
-to test so relaxing the asserts like this is one way of squaring the
-circile.
-
---f1SfmhQ4GPa7UgZL
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcbeO0ACgkQJNaLcl1U
-h9CYWggAhZeL7arTcbfSYjm9iBbxz0wTjV52BOyL0NAmhjGaHipkl/iNLk65tjuu
-Ru0565ygr7xFQCbadPpkVsbn4KKaeHo+3cqtlPR45eShijH8TY81xIw8lp1uNYVh
-4uy9zhIzL0YLuiXrpI+wQ/FW4C1bnXCh3CsBhm2SvPzZpj51nzwnZgEfROJ2BCPc
-i75RPztWPmmce2XDSWLP/j967nI87+fhUdBQbjlRN82B0OHtNrAmXer5b6Qh17U0
-YPKMiyGnUayJ5U/vTHngRy4cJGnaYmb1w/Vvst5SqBjmhwf9pPbZgp4oZf5mL9MT
-8qxWB/NhANiYbf6pilkXli/hSwDhBQ==
-=Bczd
------END PGP SIGNATURE-----
-
---f1SfmhQ4GPa7UgZL--
+Yours,
+Linus Walleij
 
