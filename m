@@ -1,107 +1,175 @@
-Return-Path: <stable+bounces-88128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7ACB9AFA58
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 08:51:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF3C69AFAD1
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 09:16:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B71C1F239AA
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 06:51:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 354D21F221FA
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 07:16:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B611AF0BA;
-	Fri, 25 Oct 2024 06:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5746E1925B0;
+	Fri, 25 Oct 2024 07:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bxftS3/Y";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4k/3pj60"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="yt/p041I";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="WqObzizw";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="enGozTGP";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+eMjhXH5"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB58818CBFF;
-	Fri, 25 Oct 2024 06:51:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0E4156F30;
+	Fri, 25 Oct 2024 07:16:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729839100; cv=none; b=t/H+mBRaPL/A3aRb8bBoA2ZilVWRqmAlaNBBkg0tsTi62r/frJdF7Fc+dPj0XTV4JDBIVREUvbBdi3XLR1LlmNrGdqv37PdMBqnSQgEXhsZtR8NPwsEl5n9aEsSJEFwS/E361k5Sroi3c5bArtth3XmmL02H6oPMN6FYuLboHQg=
+	t=1729840570; cv=none; b=Wqn4LVnjRL8GoZaei8xVubDw9u4BkbMPK9d50sWEukJOTDydw3SplPL69/MWlfdxTZpdN/icJs+u1FfOCZftJqXUa0iMw9PIGd5TFYl/x4X5Q42JYWBvUv6XKkEx9fBZNtAaE+uM4QnbpF1SdKwqKe4qMEEbupJhli9jlNYomEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729839100; c=relaxed/simple;
-	bh=Fcj07ef6ZmAUJLv0JpSeJ5QvpvjS7urdGRU/woa/GRU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gB5EESCC1oOULHvNoxQcN5gmG5e32p4+dlTlR6iYRKCSF3A/AwoWwNIvC27vUmx016SGPqrA8ZN/oT8w4MBR/zQvef/7QcyG2QxzmFYeUsJEv5xTSS3b4+EYqurF1aKixPYtPsF2dP1r+qiBJKddJmauMLy0mJ052+BxIA3Ho84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bxftS3/Y; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4k/3pj60; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 25 Oct 2024 08:51:33 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1729839096;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	s=arc-20240116; t=1729840570; c=relaxed/simple;
+	bh=3lvE9ux1Cc1yNsqWJaYnNMwfbxLoFmkzaQwAUYT2beA=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PkAlyZdhcbROA7tKOLP8AxDkBf/U+/oCMhYRk38bDqWLeuy9h/+Re1Syxb8HvXCMBrSz24tQLtEV+VRiGcx9OpS9S1hYb80piLK5E8CcsCnuQQN/HlcP1iNuvSiIiMohnjaYR66L3NTfFwBKLQJsS5hvWeuntXIom3UeapuLGMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=yt/p041I; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=WqObzizw; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=enGozTGP; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+eMjhXH5; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 7323B1F7EF;
+	Fri, 25 Oct 2024 07:16:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1729840566; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=20Bc1eU/s+h4RynsGXBZHHHgbYIcK+6zEwC7BqWsbmE=;
-	b=bxftS3/YirzavYM9UjJzWXinFXe3cgs0C1Yk9luCwjZk7wChO17GtCpqpavFtXbOeF3+20
-	swzPStw4egcfqn+aFdDn0sYb4/vuVqdAAGKK3Bppgf9h/6uqyytZz5F6MeB5gGkd33iNgI
-	bmnwvcQCvMOt3N4BIak9KoCMV/RrCKgMy8CSlZMQB7DA8ZsA9B51gOJ7d4YmEtGvHaK0lh
-	cmiezL7sA2Cg8wB1cjobeoAWlvX8SsUCW+uOG2bQnDq+b03wh/F2qGrqhvKLAqBrylw1Jy
-	Ewem8m2p4aYYoJDJvycTFwBwfopbWLuBZi8erTXh8ZNo2TxioZKAh/4nhTW3Qw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1729839096;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	bh=z1h6EqeiW4j4oOK0o11J6e6gn42Ge73Pfofx6zOLK6Y=;
+	b=yt/p041IsGR3/4sfo2tIfvpbz6P1zwta/zNh5ZEuWo0VgB8PenpATqEJja9gDG7PKqp6Q7
+	4HtwIepbkEHG0Os4SpZWGUrF9QNbqacoVoX58dxvEbY9PEMOWIn6//QdnV885Yleo1k+yR
+	SwWw1XU7XL4lzKn5ZsQproc+Qjh7074=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1729840566;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=20Bc1eU/s+h4RynsGXBZHHHgbYIcK+6zEwC7BqWsbmE=;
-	b=4k/3pj60xk1hswzu8D2SbjRA3cfQ9nyD2d6cL1SeV/wp1XLhdWTA1qxlbnO0gHnWtzIlaX
-	oyHa1ZeqW1SVBzAg==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: linux-stable <stable@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, rcu <rcu@vger.kernel.org>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: Re: stable-rc linux-6.6.y: Queues: tinyconfig: undefined reference
- to `irq_work_queue'
-Message-ID: <20241025065133.oMP0jTDx@linutronix.de>
-References: <CA+G9fYsaQPsvJdCsezaTu1x3koCzkTBEG8C1NpZotZLXZpZ9Qw@mail.gmail.com>
- <CA+G9fYu1QsoBLgqn5yQF28n=0gz773-cO2jq9J=qeUNugD+Hcg@mail.gmail.com>
+	bh=z1h6EqeiW4j4oOK0o11J6e6gn42Ge73Pfofx6zOLK6Y=;
+	b=WqObzizwHZHVs8rv32XV9DElf0mHNcR7VlAFg9/OnfgN6wt23L5HuKJLiNLNGo+JMO/dtc
+	vsOvulKu9rVvxjBw==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1729840565; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=z1h6EqeiW4j4oOK0o11J6e6gn42Ge73Pfofx6zOLK6Y=;
+	b=enGozTGPyfj/D2d06PAn2NnDD5JUyeoMUeRC8/GNPfwEjbsmlPZVe7iOdL9bGdR3qjk/wo
+	WZHqc5l/hyMSNjlT/gNzBaAQWOuSThzFzqJyW0CDpyOPFxzsc8SVEDUAim83nW4DsF6ZS3
+	g6FLlDZjwEGCeqmQLnk71u+QKPmqaSY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1729840565;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=z1h6EqeiW4j4oOK0o11J6e6gn42Ge73Pfofx6zOLK6Y=;
+	b=+eMjhXH5sdl3INFyTtsskvwxpbxsXnS6pvZAgdYVRDhIczRfQW1b8lD8UdoynZJYxX3GjZ
+	Yv55IB2ofiBFt6Dw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 33D21136F5;
+	Fri, 25 Oct 2024 07:16:05 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id rZhPC7VFG2d0SQAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Fri, 25 Oct 2024 07:16:05 +0000
+Date: Fri, 25 Oct 2024 09:17:06 +0200
+Message-ID: <87ldyctzwt.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Dean Matthew Menezes <dean.menezes@utexas.edu>
+Cc: Kailang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Linux Sound System <linux-sound@vger.kernel.org>,
+	Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: No sound on speakers X1 Carbon Gen 12
+In-Reply-To: <CAEkK70SojedmjbXB+a+g+Bys=VWCOpxzV5GkuMSkAgA-jR2FpA@mail.gmail.com>
+References: <CAEkK70Tke7UxMEEKgRLMntSYeMqiv0PC8st72VYnBVQD-KcqVw@mail.gmail.com>
+	<2024101613-giggling-ceremony-aae7@gregkh>
+	<433b8579-e181-40e6-9eac-815d73993b23@leemhuis.info>
+	<87bjzktncb.wl-tiwai@suse.de>
+	<CAEkK70TAk26HFgrz4ZS0jz4T2Eu3LWcG-JD1Ov_2ffMp66oO-g@mail.gmail.com>
+	<87cyjzrutw.wl-tiwai@suse.de>
+	<CAEkK70T7NBRA1dZHBwAC7mNeXPo-dby4c7Nn=SYg0vzeHHt-1A@mail.gmail.com>
+	<87ttd8jyu3.wl-tiwai@suse.de>
+	<CAEkK70RAWRjRp6_=bSrecSXXMfnepC2P2YriaHUqicv5x5wJWw@mail.gmail.com>
+	<87h697jl6c.wl-tiwai@suse.de>
+	<CAEkK70TWL_me58QZXeJSq+=Ry3jA+CgZJttsgAPz1wP7ywqj6A@mail.gmail.com>
+	<87ed4akd2a.wl-tiwai@suse.de>
+	<87bjzekcva.wl-tiwai@suse.de>
+	<CAEkK70SgwaFNcxni2JUAfz7Ne9a_kdkdLRTOR53uhNzJkBQ3+A@mail.gmail.com>
+	<877ca2j60l.wl-tiwai@suse.de>
+	<43fe74e10d1d470e80dc2ae937bc1a43@realtek.com>
+	<87ldyh6eyu.wl-tiwai@suse.de>
+	<18d07dccef894f4cb87b78dd548c5bdd@realtek.com>
+	<87h6956dgu.wl-tiwai@suse.de>
+	<c47a3841cd554c678a0c5e517dd2ea77@realtek.com>
+	<CAEkK70SojedmjbXB+a+g+Bys=VWCOpxzV5GkuMSkAgA-jR2FpA@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYu1QsoBLgqn5yQF28n=0gz773-cO2jq9J=qeUNugD+Hcg@mail.gmail.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.990];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -3.30
+X-Spam-Flag: NO
 
-On 2024-10-24 22:56:53 [+0530], Naresh Kamboju wrote:
-> On Thu, 24 Oct 2024 at 20:11, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
-> >
-> > Most of the tinyconfigs are failing on stable-rc linux-6.6.y.
-> >
-> > Build errors:
-> > --------------
-> > aarch64-linux-gnu-ld: kernel/task_work.o: in function `task_work_add':
-> > task_work.c:(.text+0x190): undefined reference to `irq_work_queue'
-> > task_work.c:(.text+0x190): relocation truncated to fit:
-> > R_AARCH64_CALL26 against undefined symbol `irq_work_queue'
+On Fri, 25 Oct 2024 03:22:38 +0200,
+Dean Matthew Menezes wrote:
 > 
-> Anders bisected this regression and found,
-> # first bad commit:
->   [63ad09867ee1affe4b7a5914deeb031d5b4c0be2]
->   task_work: Add TWA_NMI_CURRENT as an additional notify mode.
->   [ Upstream commit 466e4d801cd438a1ab2c8a2cce1bef6b65c31bbb ]
+> I get the same values for both
+> 
+> axiom /home/dean/linux-6.11.3/sound/pci/hda # hda-verb /dev/snd/hwC0D0
+> 0x5a SET_COEF_INDEX 0x00
+> nid = 0x5a, verb = 0x500, param = 0x0
+> value = 0x0
 
-Would you mind to cherry-pick
-	cec6937dd1aae ("task_work: make TWA_NMI_CURRENT handling conditional on IRQ_WORK")
+Here OK, but...
 
-I'm able to to build the arm64 tinyconfig on the queue/6.6 branch with
-this (while it fails without).
+> axiom /home/dean/linux-6.11.3/sound/pci/hda # hda-verb /dev/snd/hwC0D0
+> 0x5a SET_PROC_COEF 0x00
 
-> - Naresh
+... here run GET_PROC_COEF instead, i.e. to read the value.
 
-Sebastian
+
+thanks,
+
+Takashi
 
