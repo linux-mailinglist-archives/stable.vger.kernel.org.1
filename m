@@ -1,114 +1,117 @@
-Return-Path: <stable+bounces-88155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 646749B045F
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 15:43:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94DD09B046A
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 15:46:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21EC528269C
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 13:43:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59CC128407D
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 13:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7187082E;
-	Fri, 25 Oct 2024 13:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E798D1E52D;
+	Fri, 25 Oct 2024 13:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZdELT36w"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gm5zNzoO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2919C212178;
-	Fri, 25 Oct 2024 13:43:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC76C2F3B
+	for <stable@vger.kernel.org>; Fri, 25 Oct 2024 13:46:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729863794; cv=none; b=a63MizETpLKZO5+X8LiMivzeH6YClz5F9BJqbxSQpO+fgVN2nwJ29FPSYad9iTT900YLpw+uMr7KteaqhzRZpiJ8LrpMo2bjeO9HdYL4QypUjmlJ5THE6INwoEm4aU/7UA2B+90S6u4vVIr+WxksmF3ZJLDm/zKE9r64VS2iVhM=
+	t=1729863968; cv=none; b=f6R3R8JCM/1gi/uODCqaqR81z7OaFTFcS8679SsamHioewiJXBEFcdYGXV2FcjESEDNDcdAUhY3emVFGFVEolud0G8i8lWUw7j7CDZpaqN2bTP3xm9GWSkrgD4T8U0GvqFLSJDnDV4Powu8sqhqVIqCTZtVi/Ztx/mCPOQN3wsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729863794; c=relaxed/simple;
-	bh=QcgSLO9Ndsh6+YlbmmV4d9uuj5L/CYMsjacv9xI54Ns=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dxyrboTnaCMaj4E38vBDtK+eYLx4/h9ptHW5ROwc4OsQJfmtSnwL71EsRw9da96dWU/KFKYLBaKFJNHdAA4vRcMbDTg+z1mbKXwzaLCV2sU+gbRWKL38YTQwKT/raYENa5n+lPFfDNDbqMUidc5+oT+RpGB8ecmSAHNW+dsDdhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZdELT36w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AAF4C4CEE6;
-	Fri, 25 Oct 2024 13:43:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729863793;
-	bh=QcgSLO9Ndsh6+YlbmmV4d9uuj5L/CYMsjacv9xI54Ns=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZdELT36wIwde8NN0+Vp4FTKs2GYP2xckmgZ6rM7QUL9PIPomICybM+igyCBVPWlhD
-	 YqoF+xq5Tmm5CFFUtbREbySlnNP29S6iJz1yKecQFyMEfaSYeX57cYmw9TDZ6E3mjT
-	 MZoCGLWx0KtFurD4yQyTQORUxGtT5ApJHkaNrpPj0P+51fNF8+mXHPEAd7jipmhi0q
-	 bgGgJdLqEUsJpVMIT8TF+U3jieIPyMDH738ZuG2CFYmhpsgJ/MC+yT1WCJKxTt3vN6
-	 fuph75paFpnuTIZNRGyWWSdpgFcpHPcX9k8ZRHlzOtqsZGkSBPsyO5kn03UEjm7Z6D
-	 Ju95QRcYQMnnA==
-Date: Fri, 25 Oct 2024 14:43:04 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>, stable@vger.kernel.org,
-	Alexander Potapenko <glider@google.com>
-Subject: Re: [PATCH] KVM: arm64: Don't eagerly teardown the vgic on init error
-Message-ID: <ZxugaK5Z4_7ula7n@finisterre.sirena.org.uk>
-References: <20241009183603.3221824-1-maz@kernel.org>
- <3f0918bf-0265-4714-9660-89b75da49859@sirena.org.uk>
- <86ldyd2x7t.wl-maz@kernel.org>
- <eb6e7e29-b0a8-47b1-94c4-f01569aa55cb@sirena.org.uk>
- <87v7xgtjs9.wl-maz@kernel.org>
+	s=arc-20240116; t=1729863968; c=relaxed/simple;
+	bh=/5F1S1qZ2Lb/CpHWfdbbPEt0hCpGHjdkqz6yfOhd5OU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=l8vpORSUd4XBVM8SSAcb2/CTXrvjp33Bu6p/pxef27lpjzgADugdzzxu2VOsjN2NQ33wDfwiW+450DQkT7Hx26dpXTyDZ8Ut0cYqcrRF7jHNElJGjcrmozIKiEGwTLkRT1hql/W9ClGIt4jaZCdZV3AttdLhOuRZ+4DaRsGofcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gm5zNzoO; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4316f3d3c21so20012365e9.3
+        for <stable@vger.kernel.org>; Fri, 25 Oct 2024 06:46:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729863964; x=1730468764; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JILYNotk0SoSZC9ibNIc280JVlCgGuDr0hgCGJ8jNg4=;
+        b=Gm5zNzoOUIZwpWdm0nDwpo0a0ki/KEC4HGKrSbhCK5XKn2p3c0i+ZxvBdRh/78uMum
+         f5VmTyw5TOlMg6qaiHv/RGHlmPQzEUYAwZWRwqyhilx8Vk0CToVX3iDT38w5mv7kLkmG
+         d9qYPBuIxHr5f8h843CNZDVo8lsdAwp4FKomx/sBtsQOMx8ujXPy06slpLxth3XrNPe2
+         m80F66ul/B7qlj/A7wx3Nc03pBTGxfirZBa/18VUQ5fPaeTpuzpy7HPQ+Rxgcg216F2q
+         YlnPJojqA9mycM3Rnt8YZ3WPTmTPd+8616WvmZsX+EWK1C94XZv7CD+Qta+TIkShxM65
+         GPUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729863964; x=1730468764;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JILYNotk0SoSZC9ibNIc280JVlCgGuDr0hgCGJ8jNg4=;
+        b=fby5c6cVET64CVbgaOBsRgIYLQA698zglwCXkEO/HKLzRFnZ3HGLFXSkIfb0VxA4Op
+         K0XVHsY8mIXWHAxitOeBRuX6FKd9WniOvmkEQf6j9gdtDaLs4I0M6uJ5tK/NmiMHvej5
+         43bndeet5SCnxPckPHZVtFUwZewWedXOHRNgt/LYa8FPkogasHCjOj8WCIgAIUh8JSUA
+         6jmrXRAsCsgrEKaV5OZYD1oC9BnatP9WNBhYEEulZtzD/S75kyWvMBEdvfDqhzFv1Cgz
+         AMjFB+GK9eC6pjplwjdULxKWAkwlnd+tafMbS5H8ICYVIIQs4XSD4YoYREm7XHVhkkva
+         JKdQ==
+X-Gm-Message-State: AOJu0YxWpVs09bpWdqriK8MlYxHGShEYMyubZaIV3UeeYUFJvS4hjO21
+	yUv2CXini3cQiQ9KXNjw25LT62kgRruwufnrWWjsRVxTgJxPdLzgZHe5Hk7OM2PaMw==
+X-Google-Smtp-Source: AGHT+IGJSsAIZEnnaMb0SjpsZ2Zm8hgxCzg8PnHjK+P9qzvcs2WEFyOElexdDabcXL3WGWPQ7WIc9w==
+X-Received: by 2002:a05:6000:2:b0:378:89be:1825 with SMTP id ffacd0b85a97d-37efcf9297cmr5888469f8f.49.1729863963601;
+        Fri, 25 Oct 2024 06:46:03 -0700 (PDT)
+Received: from dev-dsk-krckatom-1b-7b393aa4.eu-west-1.amazon.com (54-240-197-231.amazon.com. [54.240.197.231])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b91f50sm1543499f8f.94.2024.10.25.06.46.03
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 25 Oct 2024 06:46:03 -0700 (PDT)
+From: Tomas Krcka <tomas.krcka@gmail.com>
+X-Google-Original-From: Tomas Krcka <krckatom@amazon.de>
+To: stable@vger.kernel.org
+Cc: Zijun Hu <quic_zijuhu@quicinc.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Tomas Krcka <krckatom@amazon.de>
+Subject: [PATCH 6.1.y 5.15.y 5.10.y] driver core: bus: Fix double free in driver API bus_register()
+Date: Fri, 25 Oct 2024 13:45:55 +0000
+Message-Id: <20241025134555.10272-1-krckatom@amazon.de>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="oaU2WkJ14yfoCs6h"
-Content-Disposition: inline
-In-Reply-To: <87v7xgtjs9.wl-maz@kernel.org>
-X-Cookie: Editing is a rewording activity.
+Content-Transfer-Encoding: 8bit
 
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
---oaU2WkJ14yfoCs6h
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+[ Upstream commit bfa54a793ba77ef696755b66f3ac4ed00c7d1248 ]
 
-On Fri, Oct 25, 2024 at 02:05:26PM +0100, Marc Zyngier wrote:
-> Mark Brown <broonie@kernel.org> wrote:
+For bus_register(), any error which happens after kset_register() will
+cause that @priv are freed twice, fixed by setting @priv with NULL after
+the first free.
 
-> > I'm not even sure that's a terrible fix, looking at the changelog I get
-> > the impression the test is deliberately looking to do problematic things
-> > with the goal of making sure that the kernel handles them appropriately.
-> > That's not interacting well with the KVM selftest framework's general
-> > assert early assert often approach but it's a reasonable thing to want
-> > to test so relaxing the asserts like this is one way of squaring the
-> > circile.
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20240727-bus_register_fix-v1-1-fed8dd0dba7a@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tomas Krcka <krckatom@amazon.de>
+---
+ drivers/base/bus.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> It *is* a terrible fix, since it makes no effort in finding out
-> whether the VM is be dead for a good or a bad reason. In a way, the
-> fix is worse than the current error, because it silently hide the
-> crap.
+diff --git a/drivers/base/bus.c b/drivers/base/bus.c
+index 339a9edcde5f..8fae7c700cc9 100644
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -853,6 +853,8 @@ int bus_register(struct bus_type *bus)
+ 	bus_remove_file(bus, &bus_attr_uevent);
+ bus_uevent_fail:
+ 	kset_unregister(&bus->p->subsys);
++	/* Above kset_unregister() will kfree @priv */
++	priv = NULL;
+ out:
+ 	kfree(bus->p);
+ 	bus->p = NULL;
+-- 
+2.40.1
 
-I mean, it's clearly not ideal or finished especially in that it's just
-allowing the error code throughout the program rather than during a
-specific case but the broad approach of flagging that the VM is expected
-to already be in a bad state and not support operations any more seems
-reasonable.
-
---oaU2WkJ14yfoCs6h
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcboGUACgkQJNaLcl1U
-h9C2MAf+NELyDRQOR62AbhGylzzEH1W+It446W3mJYfqiES6RyzIoyd/29BoQXp7
-5UvyDyrv4lEPvmMFIGOlcloHTTkCIOCsFviPgW9Mwm7/1RBaOomD/mB5GfDkyx4e
-96VmsYkg+RfFyVychhYaJBKI8lzDO+9jHL/cwxTBdOADOZZeNrvA2eiv0sLAibHW
-PO3KubatGXvf+Oyh6f7EGK1kZeok7MNnNwa3b9Mj558n3LbJXcBoBB0iPDHs0bwC
-Dgjl3VaESLv86vexhAN+eIJZDTinTzXJJS5nFF0E4kKzC4ttB5PZ9DlMcUFqky9s
-u4Onph+rXiYNZ6uRDoL9+emHnnLfhA==
-=F9Rw
------END PGP SIGNATURE-----
-
---oaU2WkJ14yfoCs6h--
 
