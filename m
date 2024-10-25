@@ -1,121 +1,141 @@
-Return-Path: <stable+bounces-88157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8719D9B049E
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 15:53:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F4389B04F3
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 16:03:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 330541F243B7
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 13:53:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 706691C217EC
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 14:03:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60F91FB8AA;
-	Fri, 25 Oct 2024 13:52:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b="VkbZqWIe"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E292A74BED;
+	Fri, 25 Oct 2024 14:03:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
+Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9991632E2
-	for <stable@vger.kernel.org>; Fri, 25 Oct 2024 13:52:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A429E212189;
+	Fri, 25 Oct 2024 14:03:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729864377; cv=none; b=bTMjyA4+krebP+4d/NRmnRSFS9xtDGfgDEkqLEii9Zh+5hzgLLv0xVIBQmRpofnzTMPNxls53wM4X9NmPIMpK/f9B5sZSWXNxPi2QEc+wqR6y5i1xeTZHHxRrE0hfdwEGcywxzEO7Wp0UfYqtH/we8HKNL73T69JnL8VI53t9o4=
+	t=1729865028; cv=none; b=TeuYlzwnHKN0Xh63y48Y4bDHGJaGFSdMuRwMoL0EmP8RosvMxYYgHSDj1vo10F6zve/WB1x7oNwOnlj5aemrleqoRroZs6pCmtbUi8CrNScKq5KWeMVUBTtr+NhjgIPPeGaxQyCxsU9V1axGzy+aXNDePga3gxEN3OlQpbPTwKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729864377; c=relaxed/simple;
-	bh=CyhTmBGO9ZFabUSrWTgxv7yXYx4sA7pdGdr+8fFjZ+Y=;
-	h=Subject:From:To:CC:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Cr0u0gIO+RVZ0KAjipV17h701JdsAdrFKkizWqx/5l0XwH02DllTipASBdb9i/nZ61ZTUMFP/ZxKmoMtK2d/2xm7ZxbSDvLJXD7LOA1renuJBJ5YuoTH80kLSpMB1aPqP0mtK5BNBIssBC8PlB6KEockqjh4ksl2sGb/3Rzo0Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b=VkbZqWIe; arc=none smtp.client-ip=52.119.213.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
-  t=1729864374; x=1761400374;
-  h=from:to:cc:date:message-id:references:in-reply-to:
-   content-id:mime-version:content-transfer-encoding:subject;
-  bh=CyhTmBGO9ZFabUSrWTgxv7yXYx4sA7pdGdr+8fFjZ+Y=;
-  b=VkbZqWIe+9ITm+qdkvWxQF8Hmp26ftT35IDxjff4hg/XISzQ08DtIgdT
-   0UUqC8QpeDjgQ6dv2+o3tTLuGCmTHlRpkpf+P8cqludFChr4VL/lvoqIs
-   l4lzGsgURsqxvzGyZJQWN89t1ZJtFOG/xuhZ+0Jo4JZkfYhlobjfS7kSh
-   4=;
-X-IronPort-AV: E=Sophos;i="6.11,231,1725321600"; 
-   d="scan'208";a="36382158"
-Subject: Re: [PATCH 6.1.y 5.15.y 5.10.y] driver core: bus: Fix double free in driver
- API bus_register()
-Thread-Topic: [PATCH 6.1.y 5.15.y 5.10.y] driver core: bus: Fix double free in driver API
- bus_register()
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2024 13:52:51 +0000
-Received: from EX19MTAEUC002.ant.amazon.com [10.0.17.79:52298]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.39.131:2525] with esmtp (Farcaster)
- id 13fa684c-6128-4d81-b9dc-91d778feeca4; Fri, 25 Oct 2024 13:52:50 +0000 (UTC)
-X-Farcaster-Flow-ID: 13fa684c-6128-4d81-b9dc-91d778feeca4
-Received: from EX19D030EUC001.ant.amazon.com (10.252.61.228) by
- EX19MTAEUC002.ant.amazon.com (10.252.51.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Fri, 25 Oct 2024 13:52:50 +0000
-Received: from EX19D030EUC004.ant.amazon.com (10.252.61.164) by
- EX19D030EUC001.ant.amazon.com (10.252.61.228) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Fri, 25 Oct 2024 13:52:50 +0000
-Received: from EX19D030EUC004.ant.amazon.com ([fe80::f98a:db18:b0eb:477]) by
- EX19D030EUC004.ant.amazon.com ([fe80::f98a:db18:b0eb:477%3]) with mapi id
- 15.02.1258.034; Fri, 25 Oct 2024 13:52:50 +0000
-From: "Krcka, Tomas" <krckatom@amazon.de>
-To: Tomas Krcka <tomas.krcka@gmail.com>
-CC: "stable@vger.kernel.org" <stable@vger.kernel.org>, Zijun Hu
-	<quic_zijuhu@quicinc.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Thread-Index: AQHbJuRJI+nN9vCMFUyDzXlG+qpjtrKXfIaA
-Date: Fri, 25 Oct 2024 13:52:50 +0000
-Message-ID: <D499DBE4-DDA7-4DB0-B1DA-0C81301FEEE2@amazon.de>
-References: <20241025134555.10272-1-krckatom@amazon.de>
-In-Reply-To: <20241025134555.10272-1-krckatom@amazon.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <92A59063A3F5F54AA715A1887A53EC52@amazon.com>
+	s=arc-20240116; t=1729865028; c=relaxed/simple;
+	bh=Nl+3bOnR2Unji8mkIuA4GaO14wA+JZUVRZbEaFWBh+k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P+dE8tDfthtvwctbgVclnT/MEMTxE6g/Q3DtBFrGGklOCAxQJz49ldq5udeZdvQejAgx7NTBWMnDm78ai2eR7Un+kDzmPKIltLXfzV1HmaUAgVJZU746ik1HoXjQ2EzyZFgHqJ/oAbOKmOHodIvem751X9UeQouzce13+Tiw248=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.18.186.51])
+	by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4XZkWY4ht0z9v7JC;
+	Fri, 25 Oct 2024 21:43:21 +0800 (CST)
+Received: from mail02.huawei.com (unknown [7.182.16.47])
+	by mail.maildlp.com (Postfix) with ESMTP id 9F98614035F;
+	Fri, 25 Oct 2024 22:03:37 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.204.63.22])
+	by APP1 (Coremail) with SMTP id LxC2BwCH+Tk0pRtnjsZpAA--.22140S2;
+	Fri, 25 Oct 2024 15:03:37 +0100 (CET)
+From: Roberto Sassu <roberto.sassu@huaweicloud.com>
+To: trondmy@kernel.org,
+	anna@kernel.org
+Cc: linux-nfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] nfs: Fix KMSAN warning in decode_getfattr_attrs()
+Date: Fri, 25 Oct 2024 16:03:27 +0200
+Message-ID: <20241025140327.2666623-1-roberto.sassu@huaweicloud.com>
+X-Mailer: git-send-email 2.47.0.118.gfd3785337b
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:LxC2BwCH+Tk0pRtnjsZpAA--.22140S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7AF1xXw48Jw4DWw4fuw4xtFb_yoW8uw45pr
+	Wqk34fCr15Ary8JF4Fva13X34UXay8trW7Wrs7tr1xZ3WrJrnxKa48tr4agrnrCr4UAFyF
+	g3WUJr4rJ3yDAFDanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUyKb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij
+	64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
+	8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE
+	2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42
+	xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF
+	7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU4NB_UUUUU
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAHBGcbAm8JvAABsk
 
-SXTigJlzIG5vdCBjb3JyZWN0IHBhdGNoIC0geW91IGNhbiBkaXNjYXJkZWQuDQpTb3JyeSBmb3Ig
-bm9pc2UuDQpUb21hcw0KDQo+IE9uIDI1LiBPY3QgMjAyNCwgYXQgMTU6NDUsIFRvbWFzIEtyY2th
-IDx0b21hcy5rcmNrYUBnbWFpbC5jb20+IHdyb3RlOg0KPiANCj4gQ0FVVElPTjogVGhpcyBlbWFp
-bCBvcmlnaW5hdGVkIGZyb20gb3V0c2lkZSBvZiB0aGUgb3JnYW5pemF0aW9uLiBEbyBub3QgY2xp
-Y2sgbGlua3Mgb3Igb3BlbiBhdHRhY2htZW50cyB1bmxlc3MgeW91IGNhbiBjb25maXJtIHRoZSBz
-ZW5kZXIgYW5kIGtub3cgdGhlIGNvbnRlbnQgaXMgc2FmZS4NCj4gDQo+IA0KPiANCj4gRnJvbTog
-WmlqdW4gSHUgPHF1aWNfemlqdWh1QHF1aWNpbmMuY29tPg0KPiANCj4gWyBVcHN0cmVhbSBjb21t
-aXQgYmZhNTRhNzkzYmE3N2VmNjk2NzU1YjY2ZjNhYzRlZDAwYzdkMTI0OCBdDQo+IA0KPiBGb3Ig
-YnVzX3JlZ2lzdGVyKCksIGFueSBlcnJvciB3aGljaCBoYXBwZW5zIGFmdGVyIGtzZXRfcmVnaXN0
-ZXIoKSB3aWxsDQo+IGNhdXNlIHRoYXQgQHByaXYgYXJlIGZyZWVkIHR3aWNlLCBmaXhlZCBieSBz
-ZXR0aW5nIEBwcml2IHdpdGggTlVMTCBhZnRlcg0KPiB0aGUgZmlyc3QgZnJlZS4NCj4gDQo+IFNp
-Z25lZC1vZmYtYnk6IFppanVuIEh1IDxxdWljX3ppanVodUBxdWljaW5jLmNvbT4NCj4gTGluazog
-aHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvci8yMDI0MDcyNy1idXNfcmVnaXN0ZXJfZml4LXYxLTEt
-ZmVkOGRkMGRiYTdhQHF1aWNpbmMuY29tDQo+IFNpZ25lZC1vZmYtYnk6IEdyZWcgS3JvYWgtSGFy
-dG1hbiA8Z3JlZ2toQGxpbnV4Zm91bmRhdGlvbi5vcmc+DQo+IFNpZ25lZC1vZmYtYnk6IFRvbWFz
-IEtyY2thIDxrcmNrYXRvbUBhbWF6b24uZGU+DQo+IC0tLQ0KPiBkcml2ZXJzL2Jhc2UvYnVzLmMg
-fCAyICsrDQo+IDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKykNCj4gDQo+IGRpZmYgLS1n
-aXQgYS9kcml2ZXJzL2Jhc2UvYnVzLmMgYi9kcml2ZXJzL2Jhc2UvYnVzLmMNCj4gaW5kZXggMzM5
-YTllZGNkZTVmLi44ZmFlN2M3MDBjYzkgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvYmFzZS9idXMu
-Yw0KPiArKysgYi9kcml2ZXJzL2Jhc2UvYnVzLmMNCj4gQEAgLTg1Myw2ICs4NTMsOCBAQCBpbnQg
-YnVzX3JlZ2lzdGVyKHN0cnVjdCBidXNfdHlwZSAqYnVzKQ0KPiAgICAgICAgYnVzX3JlbW92ZV9m
-aWxlKGJ1cywgJmJ1c19hdHRyX3VldmVudCk7DQo+IGJ1c191ZXZlbnRfZmFpbDoNCj4gICAgICAg
-IGtzZXRfdW5yZWdpc3RlcigmYnVzLT5wLT5zdWJzeXMpOw0KPiArICAgICAgIC8qIEFib3ZlIGtz
-ZXRfdW5yZWdpc3RlcigpIHdpbGwga2ZyZWUgQHByaXYgKi8NCj4gKyAgICAgICBwcml2ID0gTlVM
-TDsNCj4gb3V0Og0KPiAgICAgICAga2ZyZWUoYnVzLT5wKTsNCj4gICAgICAgIGJ1cy0+cCA9IE5V
-TEw7DQo+IC0tDQo+IDIuNDAuMQ0KPiANCg0KCgoKQW1hem9uIFdlYiBTZXJ2aWNlcyBEZXZlbG9w
-bWVudCBDZW50ZXIgR2VybWFueSBHbWJICktyYXVzZW5zdHIuIDM4CjEwMTE3IEJlcmxpbgpHZXNj
-aGFlZnRzZnVlaHJ1bmc6IENocmlzdGlhbiBTY2hsYWVnZXIsIEpvbmF0aGFuIFdlaXNzCkVpbmdl
-dHJhZ2VuIGFtIEFtdHNnZXJpY2h0IENoYXJsb3R0ZW5idXJnIHVudGVyIEhSQiAyNTc3NjQgQgpT
-aXR6OiBCZXJsaW4KVXN0LUlEOiBERSAzNjUgNTM4IDU5Nwo=
+From: Roberto Sassu <roberto.sassu@huawei.com>
+
+Fix the following KMSAN warning:
+
+CPU: 1 UID: 0 PID: 7651 Comm: cp Tainted: G    B
+Tainted: [B]=BAD_PAGE
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009)
+=====================================================
+=====================================================
+BUG: KMSAN: uninit-value in decode_getfattr_attrs+0x2d6d/0x2f90
+ decode_getfattr_attrs+0x2d6d/0x2f90
+ decode_getfattr_generic+0x806/0xb00
+ nfs4_xdr_dec_getattr+0x1de/0x240
+ rpcauth_unwrap_resp_decode+0xab/0x100
+ rpcauth_unwrap_resp+0x95/0xc0
+ call_decode+0x4ff/0xb50
+ __rpc_execute+0x57b/0x19d0
+ rpc_execute+0x368/0x5e0
+ rpc_run_task+0xcfe/0xee0
+ nfs4_proc_getattr+0x5b5/0x990
+ __nfs_revalidate_inode+0x477/0xd00
+ nfs_access_get_cached+0x1021/0x1cc0
+ nfs_do_access+0x9f/0xae0
+ nfs_permission+0x1e4/0x8c0
+ inode_permission+0x356/0x6c0
+ link_path_walk+0x958/0x1330
+ path_lookupat+0xce/0x6b0
+ filename_lookup+0x23e/0x770
+ vfs_statx+0xe7/0x970
+ vfs_fstatat+0x1f2/0x2c0
+ __se_sys_newfstatat+0x67/0x880
+ __x64_sys_newfstatat+0xbd/0x120
+ x64_sys_call+0x1826/0x3cf0
+ do_syscall_64+0xd0/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The KMSAN warning is triggered in decode_getfattr_attrs(), when calling
+decode_attr_mdsthreshold(). It appears that fattr->mdsthreshold is not
+initialized.
+
+Fix the issue by initializing fattr->mdsthreshold to NULL in
+nfs_fattr_init().
+
+Cc: stable@vger.kernel.org # v3.5.x
+Fixes: 88034c3d88c2 ("NFSv4.1 mdsthreshold attribute xdr")
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+---
+ fs/nfs/inode.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index 542c7d97b235..1e71b029da58 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -1633,6 +1633,7 @@ void nfs_fattr_init(struct nfs_fattr *fattr)
+ 	fattr->gencount = nfs_inc_attr_generation_counter();
+ 	fattr->owner_name = NULL;
+ 	fattr->group_name = NULL;
++	fattr->mdsthreshold = NULL;
+ }
+ EXPORT_SYMBOL_GPL(nfs_fattr_init);
+ 
+-- 
+2.47.0.118.gfd3785337b
 
 
