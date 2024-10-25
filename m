@@ -1,156 +1,188 @@
-Return-Path: <stable+bounces-88176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDFE99B070C
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 17:06:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9003A9B07E0
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 17:21:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83BFF2846E6
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 15:06:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2136D1F25929
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 15:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA16175D46;
-	Fri, 25 Oct 2024 15:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 070C0185E50;
+	Fri, 25 Oct 2024 15:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="QlARgUcp"
+	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="cjaqCGAD";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="fkBaxrbN"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1CB1547D4;
-	Fri, 25 Oct 2024 15:02:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42252170A20;
+	Fri, 25 Oct 2024 15:17:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729868570; cv=none; b=fyfaWff41ruzLVfukOtpenOu0NJ+6sRhTM+/9O+NdkefZ/jE7f9coE5lu0yg3Jg4ENWSeFTf1CJvpgggDVDHiFp7mvr7ILVmvz9zIRyLPMmydQzGpMYpuCcfCYYwRurmBzPGQLJsTNcsX/0Zcp2qaEocMSsl7WbKqrlYxWvQKcQ=
+	t=1729869434; cv=none; b=oF1S0mb2ijGFTFR+lv/l7ofAqm0V7W4KstohLihdm6fK+3Rhoa77bo6JWXq0Dn6o9gn6CA6Ka9z4fmj3c6eovejta6e2pGCzzxu4lZeL64wRxszwNCZMIzPsYBugZAs24la1u8zp42QU3Qi6kuBc3wOQPZtVMVCXV1logOodxTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729868570; c=relaxed/simple;
-	bh=dsgsar/lq9h68px2z+YopEnzb0lo//koWLJldh9k9Ck=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HRzuIInv+64MfEpc6WL3KWOnro1wA3zdPA2v7ZHExi3lfHwa8I9LhN6TKs63JOZWgZVDQQY6oQ8yTe+5DuUeWt55aBY2oJ/qWgR/ySwUAWUp+PDjSMdQ5kaVWmz5uVutBJTE8IYVhKlORtqLpzqcd1p00RQHdwZJId4DcVO4JqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=QlARgUcp; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=heAl94HWGe1G6ctlNlL5CBOHnMpx7UyxiFprcL0faS8=; b=QlARgUcp0ANqFUiEPH5e4JbwbA
-	CKcecSxYu6l4YTpsNrZgC+ho/gR++Wo44671B9aeCvZKEBDZ4kGqGSoqaxgLBfk9MKAi1Kkk24HrN
-	1Jlcsd2+G8aJwWmEYRcISLWv21emo8ZiVy3MhHizg+fcL7ydx1GHnoF9EY3IllqcjvoWwsEAszztN
-	UNtbLE7ICCPeiZfxcdPOjgvW/TMKa/wgvXt1oAovX56RBZtaWRRJU7abWj0Y0AqkUfnO7KL9D/umi
-	M6gDMfHETjTACos/Sce2Ox2J5tY5zSSsTVruBGmzKKrCNTEDJni+rzLukkZXIlNw0YzBsH4H5Sdz/
-	InQVMl8Q==;
-Received: from [189.79.117.125] (helo=localhost)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1t4Lpk-00F4Ps-VV; Fri, 25 Oct 2024 17:02:37 +0200
-From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-To: pkshih@realtek.com,
-	linux-wireless@vger.kernel.org
-Cc: kvalo@kernel.org,
-	linux-kernel@vger.kernel.org,
-	kernel@gpiccoli.net,
-	kernel-dev@igalia.com,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	stable@vger.kernel.org,
-	syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com
-Subject: [PATCH] wifi: rtlwifi: Drastically reduce the attempts to read efuse bytes in case of failures
-Date: Fri, 25 Oct 2024 12:02:16 -0300
-Message-ID: <20241025150226.896613-1-gpiccoli@igalia.com>
-X-Mailer: git-send-email 2.46.2
+	s=arc-20240116; t=1729869434; c=relaxed/simple;
+	bh=36irzOhZbIRw7cPQRnWTvJeq+F1VD8ZJ4OsqbkyP5S8=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:Subject:Content-Type; b=GYJF6X4JCC7EmsjVqO5EPu+Nk0G3Udjnxg/ZEKL9hI/tMI85pXBr+OotmEyNqKyD/8cvfj32SXd/bGTNyGGX7BdeVl1/XYlizVvGTSQLiK+pqU88UvIxH2+MZyHl27QNlJgJtrF6JvG9dUQxZHpRCkRNfv0qt8u3Lgvbyo6ChTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=cjaqCGAD; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=fkBaxrbN; arc=none smtp.client-ip=103.168.172.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 4ECA611400FE;
+	Fri, 25 Oct 2024 11:17:11 -0400 (EDT)
+Received: from phl-imap-12 ([10.202.2.86])
+  by phl-compute-09.internal (MEProxy); Fri, 25 Oct 2024 11:17:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:subject:subject:to:to; s=fm1; t=1729869431; x=1729955831; bh=Qq
+	75eh/iLSb6i7lwJ20sbQlkVHzVLepTD+MIIfFJCwc=; b=cjaqCGAD2SWOFqbT9+
+	hIt4ky/8BRDwinooMMmT5mEEANsjbiJ1WoDpHF3zaeG0wUkxJHEM1cwWr/pbgtCk
+	iumZVyIcr1b8wKTjTnYYw6uRWKNCrN4ypY591+oPd/qua/3GiCuTaTBIY+j80lFe
+	rvIkTJRvaiJDXUp06x0gKzEWjl66S7qgh0KaNCmEgSCwcAV0VXQCX1+ZP7HK0lVy
+	hJUvTAgQOzlkYX9fk11BYCygHjwkj9qy2BDHCZjrWpXURz3DUF72Gx7xEJ2kHQEX
+	u7U13OO7vWr6rtROBDm/YRmhm7um9Rk5Cv7pbHCprNo7bGuUDs4mmZ+0uUlukQn9
+	A2FQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm3; t=1729869431; x=1729955831; bh=Qq75eh/iLSb6i
+	7lwJ20sbQlkVHzVLepTD+MIIfFJCwc=; b=fkBaxrbNvDFcDExScVgLalEmYGlFb
+	PAlkOnvWKBVl5cJgS+jLD4cgs5Y+QnLat5CWRvxRZnxDeuqlf8UoSyAmLz+0xTcZ
+	tLD4CDF6kILZfDTVUqd2SPOPFL/dbjzub1qP9xEF5df3pmRRS5A5ofG4RLseIlXF
+	9Ao+6daQUW9ly5qHSrsWL9GoP5oM8fC71pW9ixAZSuuybOzwFwzJ48Jt+X5oA6F4
+	1arnz+CfMePs+qeujQ+QXsssyGFozrLAUkvTRZG9fYs0p+/mzRvNwVQ0vFkshuwe
+	cwArs97qWX9ZsvhFgHT0+Jly80ozIroevU8RmOSbSKOrgeW0nuT6h8a4Q==
+X-ME-Sender: <xms:drYbZ9HBq7cVT2j6k0BNK9p17lYIWLxiT01b2vpOfkX0q1T2gL5V6w>
+    <xme:drYbZyVo5bb6RWL-iS-rXHPCw32H_MWCY9hyRungLpommhfnVFR_2z4vwZo1SKqO1
+    22V--PzV0ae4SwUqKA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejvddgkeehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepofggfffhvfevkffutgfgsehtqhertdertdejnecu
+    hfhrohhmpedflfhirgiguhhnucgjrghnghdfuceojhhirgiguhhnrdihrghnghesfhhlhi
+    hgohgrthdrtghomheqnecuggftrfgrthhtvghrnhepfedtteelgfeugfdugefhjeetgfei
+    uedvfeehleeghefhgefhffduveelveevfeefnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdr
+    tghomhdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmthhpohhuthdprhgtphhtth
+    hopegtohhnughutghtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtvhgvsehkvghr
+    nhgvlhdrohhrghdprhgtphhtthhopehlvggvsehkvghrnhgvlhdrohhrghdprhgtphhtth
+    hopehsrghshhgrlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshgvtghurhhithih
+    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopehtohhrvhgrlhgusheslhhinhhugidqfhhouhhnuggrthhiohhnrdho
+    rhhgpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorh
+    hgpdhrtghpthhtoheptghorhgsvghtsehlfihnrdhnvght
+X-ME-Proxy: <xmx:drYbZ_Ltugr73YXgEN9QJBaM0iiXyRDfwgtp4zIi808m-m7Fy7zI1w>
+    <xmx:drYbZzEoWv87H-oHg1DY5jMvI3ZG7bv8hpjO64_iezs4k18Yd3TaxQ>
+    <xmx:drYbZzXn7oA5KU42_2P5pwmMsStXxGA-iTsAxaFgequfl76pqkIOKA>
+    <xmx:drYbZ-OrNCXSEtRWJq0KpzEJuwDdQjqUkoZEaKHX9awoc8laGePqdw>
+    <xmx:d7YbZ2N9KR0f5_QeVE6_ZJDrEk48Szd_s9J_oCZgSro0JlSRehc6gO-S>
+Feedback-ID: ifd894703:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id B49061C20066; Fri, 25 Oct 2024 11:17:10 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Fri, 25 Oct 2024 16:15:42 +0100
+From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
+To: linux-kernel@vger.kernel.org, conduct@kernel.org, security@kernel.org,
+ cve@kernel.org, linux-doc@vger.kernel.org,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+Cc: "Linus Torvalds" <torvalds@linux-foundation.org>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, shuah@kernel.org,
+ lee@kernel.org, sashal@kernel.org, corbet@lwn.net
+Message-Id: <73b8017b-fce9-4cb1-be48-fc8085f1c276@app.fastmail.com>
+Subject: Concerns over transparency of informal kernel groups
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Syzkaller reported a hung task with uevent_show() on stack trace. That
-specific issue was addressed by another commit [0], but even with that
-fix applied (for example, running v6.12-rc4) we face another type of hung
-task that comes from the same reproducer [1]. By investigating that, we
-could narrow it to the following path:
+Dear Linux Community Members,
 
-(a) Syzkaller emulates a Realtek USB WiFi adapter using raw-gadget and
-dummy_hcd infrastructure.
+Over the years, various informal groups have formed within our community,
+serving purposes such as maintaining connections with companies and exte=
+rnal
+bodies, handling sensitive information, making challenging decisions, an=
+d,
+at times, representing the community as a whole. These groups contribute=
+ significantly
+to our community's development and deserve our recognition and appreciat=
+ion.
 
-(b) During the probe of rtl8192cu, the driver ends-up performing an efuse
-read procedure (which is related to EEPROM load IIUC), and here lies the
-issue: the function read_efuse() calls read_efuse_byte() many times, as
-loop iterations depending on the efuse size (in our example, 512 in total).
+I'll name a few below that I identified from  `Documentation/`:
+- Code of Conduct Committee <conduct@kernel.org>
+- Linux kernel security team <security@kernel.org>
+- Linux kernel hardware security team <hardware-security@kernel.org>
+- Kernel CVE assignment team <cve@kernel.org>
+- Stable Team for unpublished vulnerabilities <stable@kernel.org>
+  (I suspect it's just an alias to regular stable team, but I found no e=
+vidence).
 
-This procedure for reading efuse bytes relies in a loop that performs an
-I/O read up to *10k* times in case of failures. We measured the time of
-the loop inside read_efuse_byte() alone, and in this reproducer (which
-involves the dummy_hcd emulation layer), it takes 15 seconds each. As a
-consequence, we have the driver stuck in its probe routine for big time,
-exposing a stack trace like below if we attempt to reboot the system, for
-example:
+Over recent events, I've taken a closer look at how our community's gove=
+rnance
+operates, only to find that there's remarkably little public information=
+ available
+about those informal groups. With the exception of the Linux kernel hard=
+ware security
+team, it seems none of these groups maintain a public list of members th=
+at I can
+easily find.
 
-task:kworker/0:3 state:D stack:0 pid:662 tgid:662 ppid:2 flags:0x00004000
-Workqueue: usb_hub_wq hub_event
-Call Trace:
- __schedule+0xe22/0xeb6
- schedule_timeout+0xe7/0x132
- __wait_for_common+0xb5/0x12e
- usb_start_wait_urb+0xc5/0x1ef
- ? usb_alloc_urb+0x95/0xa4
- usb_control_msg+0xff/0x184
- _usbctrl_vendorreq_sync+0xa0/0x161
- _usb_read_sync+0xb3/0xc5
- read_efuse_byte+0x13c/0x146
- read_efuse+0x351/0x5f0
- efuse_read_all_map+0x42/0x52
- rtl_efuse_shadow_map_update+0x60/0xef
- rtl_get_hwinfo+0x5d/0x1c2
- rtl92cu_read_eeprom_info+0x10a/0x8d5
- ? rtl92c_read_chip_version+0x14f/0x17e
- rtl_usb_probe+0x323/0x851
- usb_probe_interface+0x278/0x34b
- really_probe+0x202/0x4a4
- __driver_probe_device+0x166/0x1b2
- driver_probe_device+0x2f/0xd8
- [...]
+Upon digging into the details, I=E2=80=99d like to raise a few concerns =
+and offer some thoughts
+for further discussion:
 
-We propose hereby to drastically reduce the attempts of doing the I/O read
-in case of failures, from 10000 to 10. With that, we got reponsiveness in the
-reproducer, while seems reasonable to believe that there's no sane device
-implementation in the field requiring this amount of retries at every I/O
-read in order to properly work. Based on that assumption it'd be good to
-have it backported to stable but maybe not since driver implementation
-(the 10k number comes from day 0), perhaps up to 6.x series makes sense.
+- Absence of a Membership Register
+Our community is built on mutual trust. Without knowing who comprises th=
+ese groups,
+it's understandably difficult for people to have full confidence in thei=
+r work.
+A publicly available membership list would not only foster trust but als=
+o allow us to
+address our recognition and appreciation.
 
-[0] Commit 15fffc6a5624 ("driver core: Fix uevent_show() vs driver detach race").
+- Lack of Guidelines for Actions
+Many of these groups appear to operate without documented guidelines. Wh=
+ile I trust each
+respectful individual's integrity, documented guidelines would enable th=
+e wider community
+to better understand and appreciate the roles and responsibilities invol=
+ved.
 
-[1] A note about that: this syzkaller report presents multiple reproducers
-that differs by the type of emulated USB device. For this specific case,
-check the entry from 2024/08/08 06:23 in the list of crashes; the C repro
-is available at https://syzkaller.appspot.com/text?tag=ReproC&x=1521fc83980000.
+- Insufficient Transparency in Decision-Making
+I fully respect the need for confidentiality in handling security matter=
+s, yet some
+degree of openness around decision-making processes is essential in my o=
+pinion.
+Releasing communications post-embargo, for instance, could promote under=
+standing and
+prevent potential abuse of confidential procedures.
 
-Cc: stable@vger.kernel.org # v6.1+
-Reported-by: syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
----
- drivers/net/wireless/realtek/rtlwifi/efuse.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+- No Conflict of Interest Policy
+Particularly in the case of the Code of Conduct Committee, there may ari=
+se situations
+where individuals face challenging decisions involving personal connecti=
+ons. A conflict
+of interest policy would provide valuable guidance in such circumstances.
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/efuse.c b/drivers/net/wireless/realtek/rtlwifi/efuse.c
-index 82cf5fb5175f..2f75e376c0f6 100644
---- a/drivers/net/wireless/realtek/rtlwifi/efuse.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/efuse.c
-@@ -178,7 +178,7 @@ void read_efuse_byte(struct ieee80211_hw *hw, u16 _offset, u8 *pbuf)
- 
- 	retry = 0;
- 	value32 = rtl_read_dword(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]);
--	while (!(((value32 >> 24) & 0xff) & 0x80) && (retry < 10000)) {
-+	while (!(((value32 >> 24) & 0xff) & 0x80) && (retry < 10)) {
- 		value32 = rtl_read_dword(rtlpriv,
- 					 rtlpriv->cfg->maps[EFUSE_CTRL]);
- 		retry++;
--- 
-2.46.2
+Thank you for reading. I know none of us enjoy being pulled away by thes=
+e non-technical
+concerns, we love coding after all. However, I feel these concerns are v=
+ital for the
+community's continued health. It might be a candidate of Linux TAB discu=
+ssion.
 
+I'm looking forward to everyone's input.
+
+Thanks
+- Jiaxun
 
