@@ -1,169 +1,150 @@
-Return-Path: <stable+bounces-88130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBE409AFB21
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 09:31:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E42E9AFB26
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 09:33:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABB2F28390C
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 07:31:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B472F1F23C8A
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 07:33:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 006D71C07EA;
-	Fri, 25 Oct 2024 07:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E9819B59F;
+	Fri, 25 Oct 2024 07:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uNeY1mvy"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="pNgK1Bw2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5FC319B59F;
-	Fri, 25 Oct 2024 07:31:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE581BC5C;
+	Fri, 25 Oct 2024 07:33:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729841465; cv=none; b=bRbQPnuS/3gKwwSJJvwFTeHnmazkZrDP5RSeaMTQA7Ar8BJL1IAMOQPBAAnoErD43Wg7dwEjWdkcgXURKOqTcA6J2BtbcZt8av3vMb9F8gsb+/Pt0QDiLrhjG4/ME4uiIbLTWwhMWl4Y6a3POMlpJk5Jx+Mg1XRpSTo9k4KMfzw=
+	t=1729841585; cv=none; b=VW8UFeVg5olKQyilSqI2x+vp/sVJ+VRzC/ztAci0T2v+P3TLcwOqv4QC+k7y0lKNAkrf9IPxCleSYsy5qaLiKsL1ldLdSW3AZy5lpf645sthQotMqIS2o0kcss7nQ5VdovUUVUlZAbsrdLYltRWqO+9K16Db/k6slQFcQF3RDbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729841465; c=relaxed/simple;
-	bh=I6C3lzf5t1tuMs2GU6e4c4+bPnAS/CPrRU9TVC+oAuU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DF9pzjhsIUSuCKjpck9BqB/H93cl7shzO37A2f0m3qeDSLdKp6dKQ8mE1tisVBwTy46Y2KVp3Y+l0cdMuWcAfeXiGhi9t0hJZADBQoIyG1wouB9lOBb6cJzd3RkWdm5kbo136mxFpO8NKOktsm/wjghhhvfxXpfWLUCXQkLNkNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uNeY1mvy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 310CEC4AF0B;
-	Fri, 25 Oct 2024 07:31:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729841465;
-	bh=I6C3lzf5t1tuMs2GU6e4c4+bPnAS/CPrRU9TVC+oAuU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=uNeY1mvyGaoYmQv0bKXmWcwH0KXLyoCWVrM3XsEbqYdCsCWkFWqr7K2twMdtv8Scc
-	 DEJtkXoTRD0RXGPNaaNmsqBW7deyrQiMCAAaMl164lE4TS1A7fNFbUNBhIs5Qpuq9a
-	 E+wHqdVbrruHWN4xMLxoeagYVbQe1h3dpok0zQ9HxgJ+XU9yXeR8CGE+k/G8Uv6qNU
-	 HQw13+DVg1biADPdWbd0curs/3GBH2yXjPAz8r/suz4XJg9OCpD/jD0+3owsDUmonz
-	 vC8bmQdXU4XuRPJbH7eyclRqrsq7rj4vuHSxYLaYjJVyvc89+FGgiR2sBJqJ2UdP99
-	 /Ngz5QTSJjx3Q==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-539f58c68c5so3181862e87.3;
-        Fri, 25 Oct 2024 00:31:05 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVFjhzdSZ+nlKxYuORqyqs6ygE+ZfzzUI0R2nKWqCCLvSjF3wWzXkNxmU0QFhCpoTvYtv7TpNbhHwo=@vger.kernel.org, AJvYcCXd6wvC4K0tq5ubWMY7xR5/atWARUwB5861zL23jszAyFrvN3zkpLno5+Q9zH0zryHPiOWSSfkr@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3H7K/DKwJgOR/0Bf5FyJidmZJF0lneqmcvi+jXlfVPDhCiwM3
-	QIP/XciV38HJyMxoEBXG0E0sf8MdS2lJsYbu+eueG0U6VRF3+LmzE+LYbZmq3q+tnwxO2NNhlTG
-	tq8t1PyEZDQm6LmIMZWQsGAzRLr0=
-X-Google-Smtp-Source: AGHT+IGt3ZTJYMxSusAj+Pm9vLCBdgXBSwkrXUPMn49mM0ynXJ9Rf8X/V6qWtqiYxvjPNirJ81R3z4ZkjWvFJMdapdY=
-X-Received: by 2002:a05:6512:3d09:b0:536:7377:7d23 with SMTP id
- 2adb3069b0e04-53b1a39b073mr9047217e87.40.1729841463346; Fri, 25 Oct 2024
- 00:31:03 -0700 (PDT)
+	s=arc-20240116; t=1729841585; c=relaxed/simple;
+	bh=rQzYkXul6Rw+pJQnum4RN5R3vzG9twby/wiCPRhKPHQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=fAXhtMVUYAQQKBt7vh/q0tjHJvNcFPbRTCV8K5ucVG2jbUBpFs4RgNCzx7IhBMH1SUgNK4bbf0BN5LIZKZv+U8McqeaN4EBDd/3q91QBcGlK5ysm4JnxvnZXVqw1vhsWn9ZlRxTXMzoSzbcK6mAsvPG9EQ7XWwvnR6vIR8iHQnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=pNgK1Bw2; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49P7WqX22255012, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1729841572; bh=rQzYkXul6Rw+pJQnum4RN5R3vzG9twby/wiCPRhKPHQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=pNgK1Bw2tTTECiBFspXvtWclZJNJte6AB6QwXNhJpt8I+28LeoK4Vu9Y26HwB3SI5
+	 +gxq7TYZNRSHp9iZOWyfARXNOYx8DycVz8KLhWANKOZDARgIG2WuZu/42wx7xDXWq+
+	 qG1W/wbnG2EMtbmx5cLPeENec7AgNPGMLBlyd6CL3x0K8fdE/O3dgLuAGFsfdSHcWe
+	 LlvrGpEIp2BJOlg9y+PvIPEc5S7++O5YnnShDCmW7Y3MG7BGZW5w40auZePYxOBiOT
+	 KRAWN4KXsSoiOmoErEt1SDUpbV74MQr6r9ZFlrdv3x2I3py7eVWD2ezwMfNwoLCZEa
+	 SSzWLbPvvGePA==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49P7WqX22255012
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 25 Oct 2024 15:32:52 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 25 Oct 2024 15:32:52 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 25 Oct 2024 15:32:51 +0800
+Received: from RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2]) by
+ RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2%7]) with mapi id
+ 15.01.2507.035; Fri, 25 Oct 2024 15:32:51 +0800
+From: Kailang <kailang@realtek.com>
+To: Takashi Iwai <tiwai@suse.de>,
+        Dean Matthew Menezes
+	<dean.menezes@utexas.edu>
+CC: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+        Jaroslav Kysela
+	<perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        Linux Sound System
+	<linux-sound@vger.kernel.org>,
+        Greg KH <gregkh@linuxfoundation.org>
+Subject: RE: No sound on speakers X1 Carbon Gen 12
+Thread-Topic: No sound on speakers X1 Carbon Gen 12
+Thread-Index: AQHbIwVT/23eeZo4dEmkKtnQN51H6bKP5WWAgABb9wCAAJxEgP//e3+AgACHy9D//4FDgIAAhkBggAVELQCAAGMKAIAAiivw
+Date: Fri, 25 Oct 2024 07:32:51 +0000
+Message-ID: <7450fb7c26d64049a92ba4b5df022b41@realtek.com>
+References: <CAEkK70Tke7UxMEEKgRLMntSYeMqiv0PC8st72VYnBVQD-KcqVw@mail.gmail.com>
+	<2024101613-giggling-ceremony-aae7@gregkh>
+	<433b8579-e181-40e6-9eac-815d73993b23@leemhuis.info>
+	<87bjzktncb.wl-tiwai@suse.de>
+	<CAEkK70TAk26HFgrz4ZS0jz4T2Eu3LWcG-JD1Ov_2ffMp66oO-g@mail.gmail.com>
+	<87cyjzrutw.wl-tiwai@suse.de>
+	<CAEkK70T7NBRA1dZHBwAC7mNeXPo-dby4c7Nn=SYg0vzeHHt-1A@mail.gmail.com>
+	<87ttd8jyu3.wl-tiwai@suse.de>
+	<CAEkK70RAWRjRp6_=bSrecSXXMfnepC2P2YriaHUqicv5x5wJWw@mail.gmail.com>
+	<87h697jl6c.wl-tiwai@suse.de>
+	<CAEkK70TWL_me58QZXeJSq+=Ry3jA+CgZJttsgAPz1wP7ywqj6A@mail.gmail.com>
+	<87ed4akd2a.wl-tiwai@suse.de>	<87bjzekcva.wl-tiwai@suse.de>
+	<CAEkK70SgwaFNcxni2JUAfz7Ne9a_kdkdLRTOR53uhNzJkBQ3+A@mail.gmail.com>
+	<877ca2j60l.wl-tiwai@suse.de>	<43fe74e10d1d470e80dc2ae937bc1a43@realtek.com>
+	<87ldyh6eyu.wl-tiwai@suse.de>	<18d07dccef894f4cb87b78dd548c5bdd@realtek.com>
+	<87h6956dgu.wl-tiwai@suse.de>	<c47a3841cd554c678a0c5e517dd2ea77@realtek.com>
+	<CAEkK70SojedmjbXB+a+g+Bys=VWCOpxzV5GkuMSkAgA-jR2FpA@mail.gmail.com>
+ <87ldyctzwt.wl-tiwai@suse.de>
+In-Reply-To: <87ldyctzwt.wl-tiwai@suse.de>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240912155159.1951792-2-ardb+git@google.com> <ec7db629-61b0-49aa-a67d-df663f004cd0@kernel.org>
- <29b39388-5848-4de0-9fcf-71427d10c3e8@kernel.org> <58da4824-523c-4368-9da1-05984693c811@kernel.org>
-In-Reply-To: <58da4824-523c-4368-9da1-05984693c811@kernel.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 25 Oct 2024 09:30:51 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHqgZ-fD=oSAr7E0h9kTj_yzDv=_o2ifCCD0cYNgXv9RQ@mail.gmail.com>
-Message-ID: <CAMj1kXHqgZ-fD=oSAr7E0h9kTj_yzDv=_o2ifCCD0cYNgXv9RQ@mail.gmail.com>
-Subject: Re: [PATCH] efistub/tpm: Use ACPI reclaim memory for event log to
- avoid corruption
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org, stable@vger.kernel.org, 
-	Breno Leitao <leitao@debian.org>, Usama Arif <usamaarif642@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-On Fri, 25 Oct 2024 at 07:09, Jiri Slaby <jirislaby@kernel.org> wrote:
->
-> On 25. 10. 24, 7:07, Jiri Slaby wrote:
-> > On 24. 10. 24, 18:20, Jiri Slaby wrote:
-> >> On 12. 09. 24, 17:52, Ard Biesheuvel wrote:
-> >>> From: Ard Biesheuvel <ardb@kernel.org>
-> >>>
-> >>> The TPM event log table is a Linux specific construct, where the data
-> >>> produced by the GetEventLog() boot service is cached in memory, and
-> >>> passed on to the OS using a EFI configuration table.
-> >>>
-> >>> The use of EFI_LOADER_DATA here results in the region being left
-> >>> unreserved in the E820 memory map constructed by the EFI stub, and this
-> >>> is the memory description that is passed on to the incoming kernel by
-> >>> kexec, which is therefore unaware that the region should be reserved.
-> >>>
-> >>> Even though the utility of the TPM2 event log after a kexec is
-> >>> questionable, any corruption might send the parsing code off into the
-> >>> weeds and crash the kernel. So let's use EFI_ACPI_RECLAIM_MEMORY
-> >>> instead, which is always treated as reserved by the E820 conversion
-> >>> logic.
-> >>>
-> >>> Cc: <stable@vger.kernel.org>
-> >>> Reported-by: Breno Leitao <leitao@debian.org>
-> >>> Tested-by: Usama Arif <usamaarif642@gmail.com>
-> >>> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> >>> ---
-> >>>   drivers/firmware/efi/libstub/tpm.c | 2 +-
-> >>>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/drivers/firmware/efi/libstub/tpm.c b/drivers/firmware/
-> >>> efi/libstub/tpm.c
-> >>> index df3182f2e63a..1fd6823248ab 100644
-> >>> --- a/drivers/firmware/efi/libstub/tpm.c
-> >>> +++ b/drivers/firmware/efi/libstub/tpm.c
-> >>> @@ -96,7 +96,7 @@ static void efi_retrieve_tcg2_eventlog(int version,
-> >>> efi_physical_addr_t log_loca
-> >>>       }
-> >>>       /* Allocate space for the logs and copy them. */
-> >>> -    status = efi_bs_call(allocate_pool, EFI_LOADER_DATA,
-> >>> +    status = efi_bs_call(allocate_pool, EFI_ACPI_RECLAIM_MEMORY,
-> >>>                    sizeof(*log_tbl) + log_size, (void **)&log_tbl);
-> >>
-> >> Hi,
-> >>
-> >> this, for some reason, corrupts system configuration table. On good
-> >> boots, memattr points to 0x77535018, on bad boots (this commit
-> >> applied), it points to 0x77526018.
-> >>
-> >> And the good content at 0x77526018:
-> >> tab=0x77526018 size=16+45*48=0x0000000000000880
-> >>
-> >> bad content at 0x77535018:
-> >> tab=0x77535018 size=16+2*1705353216=0x00000000cb4b4010
-> >>
-> >> This happens only on cold boots. Subsequent boots (having the commit
-> >> or not) are all fine.
-> >>
-> >> Any ideas?
+
+
+> -----Original Message-----
+> From: Takashi Iwai <tiwai@suse.de>
+> Sent: Friday, October 25, 2024 3:17 PM
+> To: Dean Matthew Menezes <dean.menezes@utexas.edu>
+> Cc: Kailang <kailang@realtek.com>; Takashi Iwai <tiwai@suse.de>;
+> stable@vger.kernel.org; regressions@lists.linux.dev; Jaroslav Kysela
+> <perex@perex.cz>; Takashi Iwai <tiwai@suse.com>; Linux Sound System
+> <linux-sound@vger.kernel.org>; Greg KH <gregkh@linuxfoundation.org>
+> Subject: Re: No sound on speakers X1 Carbon Gen 12
+>=20
+>=20
+> External mail.
+>=20
+>=20
+>=20
+> On Fri, 25 Oct 2024 03:22:38 +0200,
+> Dean Matthew Menezes wrote:
 > >
-> > ====
-> > EFI_ACPI_RECLAIM_MEMORY
+> > I get the same values for both
 > >
-> > This memory is to be preserved by the UEFI OS loader and OS until ACPI
-> > is enabled. Once ACPI is enabled, the memory in this range is available
-> > for general use.
-> > ====
-> >
-> > BTW doesn't the above mean it is released by the time TPM actually reads
-> > it?
-> >
-> > Isn't the proper fix to actually memblock_reserve() that TPM portion.
-> > The same as memattr in efi_memattr_init()?
->
-> And this is actually done in efi_tpm_eventlog_init().
->
+> > axiom /home/dean/linux-6.11.3/sound/pci/hda # hda-verb /dev/snd/hwC0D0
+> > 0x5a SET_COEF_INDEX 0x00 nid =3D 0x5a, verb =3D 0x500, param =3D 0x0 va=
+lue =3D
+> > 0x0
+>=20
+> Here OK, but...
+>=20
+> > axiom /home/dean/linux-6.11.3/sound/pci/hda # hda-verb /dev/snd/hwC0D0
+> > 0x5a SET_PROC_COEF 0x00
+>=20
+> ... here run GET_PROC_COEF instead, i.e. to read the value.
+>=20
+But SOF mode can't read from this usage. I forgot.
 
-EFI_ACPI_RECLAIM_MEMORY may be reclaimed by the OS, but we never
-actually do that in Linux.
-
-To me, it seems like the use of EFI_ACPI_RECLAIM_MEMORY in this case
-simply tickles a bug in the firmware that causes it to corrupt the
-memory attributes table. The fact that cold boot behaves differently
-is a strong indicator here.
-
-I didn't see the results of the memory attribute table dumps on the
-bugzilla thread, but dumping this table from EFI is not very useful
-because it will get regenerated/updated at ExitBootServices() time.
-Unfortunately, that also takes away the console so capturing the state
-of that table before the EFI stub boots the kernel is not an easy
-thing to do.
-
-Is the memattr table completely corrupted? It also has a version
-field, and only versions 1 and 2 are defined so we might use that to
-detect corruption.
+>=20
+> thanks,
+>=20
+> Takashi
 
