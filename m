@@ -1,152 +1,118 @@
-Return-Path: <stable+bounces-88181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28B4A9B0956
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 18:11:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AD349B0A46
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 18:49:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C87CD1F217A0
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 16:11:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CD4E1C22C02
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 16:49:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A1317C9E8;
-	Fri, 25 Oct 2024 16:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EA231D63D7;
+	Fri, 25 Oct 2024 16:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="NkQveD4I"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E3QhoXPF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6398170A31;
-	Fri, 25 Oct 2024 16:11:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD09C170854;
+	Fri, 25 Oct 2024 16:49:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729872668; cv=none; b=b1FaDhPR2E/dFBge2wAgGHGOkr0daV02Z6P0EywAsCpUiQw1wJsF5c792e2QXPh4LjfKiQCsKl9qN61/9vSvzvj1CDPHI12LECfVBo6dMee/Wg0+837K7lG7fY95hCwvXNSmu54pkwLqYsNleO/2BaAZH8hAZ0ReCishqvE+IUQ=
+	t=1729874984; cv=none; b=g3syCE2lwZdwFjevCBLkSp3bzLU0hbL5HgQXB1aOZeRqiICGcU94c1G6dO5jt2sDWmJIVP1I1MvOvXXQDSNrNq0ncG7Wb4Ee97Xe5TWrgQwP1sfJdK8ryooVh6pEdBrc0fQxtBEo9nH0HYQzS7e50rynieFzgRYTaR9qnkg7YYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729872668; c=relaxed/simple;
-	bh=W41hJnhNQLCvtcUj0/7OFMCwUbb3LaViC2imU7/jxs8=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=p8imSrQgLNy9u871yirQWkc/M8ZEb0WOqQwaoXwxcdgi0AXROKe9heQjkLq4ZLbpF6gogUgglu1LLxTlKygamIF09/01bVXKH8nUu2dOoCgQDQH/lH2oZnLea6H2Ig51ihcHKcr47zArd9AppSt1T/GkU2+sHsckGx7wKb/LpQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=NkQveD4I; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+	s=arc-20240116; t=1729874984; c=relaxed/simple;
+	bh=DfJ3hQmZ6k+K93BrEtTXX6xLP3W07BuCdIALQFrMA38=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Nk7esgihDIeKYjiMGJT4lLyk4mOnUZAMq6IQmQQSpkyk58awabVcLNwGQPcGgcQhJLaF/kIYlJX5G2FtBRBBwXzrFIkrlC7DmfyXc4FMFKMc7xiGnSqk0lw6fqcqm4rZ9jQBeZPgx67U+Z41PdEMT7TvjN0fZBYc0ReSpII6NtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E3QhoXPF; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5c9709c9b0cso3088405a12.1;
+        Fri, 25 Oct 2024 09:49:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729874981; x=1730479781; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=C6NClCe/pCFahIjQkz67tW5BHdRGWDuFmSNfVYTs8HA=;
+        b=E3QhoXPFD6MNXqedY5yr58z9FDqwGoR5DQr4nl1M2bb5botDw8LgV/EwqiSqIYzyWL
+         6IOk6H8wxST5JWDC58XFRjV5FMrBqZUWMwAy0F+2r4F9Hfd6Tfok79Jb7UPGhfOUqN+2
+         vlGG5PBUx70FbcJJpXOqgNxs+M4aR7gsvgv/YH3LnFuNMCNvQdLVwjQ6m092FwzXZvih
+         1vtqprzbIDbXfs2WaGB90LDDqYgqO855TOXAFnix55a4xMu6maGhcrBNc63Fan0GLTrL
+         1wwAuXJY11soyFXOxqhTdhsT3OmpSR2LDksH2dam0h0I4fjxdM9Z2/8w9j8kiTI+nZ0e
+         MOpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729874981; x=1730479781;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=C6NClCe/pCFahIjQkz67tW5BHdRGWDuFmSNfVYTs8HA=;
+        b=e/dVSRsrLGQE5BRPK9byTxgSJc+gJXHwnMBrnNCYI9OYk4DHboapV9ltRnhvydBm8X
+         YX1RVeSNExK7Ibe8Nxp3f7MbdqMonI7S9Ud6UBLA5Dw7SEfzPQbYh6g8Lm3+x2zjETAM
+         EGLRPPvqmh91DbkoYgJdAp6MGgt+RQp6aKDYDkKfb/cD8GmZEncLheAbxIpVBYzoCKDF
+         ehEYIDTDGUoa5+p/RdbmlQ71bd2H1FXkpzPXcilSJQoq30FZF5+dXOt/jaDk0Ih3xmcZ
+         VD2TYxkEUUGe4NGMp7oHzBGoqqL6uVdj1k1siwwJXvcyzi4WFOk4fPvU0BsAqaQ1cdTk
+         fPiA==
+X-Forwarded-Encrypted: i=1; AJvYcCUHJpnJlVS/sXSs3RuAJcIEtzah6gBCUceNOWZgK398yxdCU9xphAj28X+DPD7tbeSA6xAGNsWCs55CPg==@vger.kernel.org, AJvYcCVVpPMfRZ4e7D9fJqQqsUqV/6KoiCluOJ2r3LiuiZL0ve8kuTHNNg7h338TRuTtofywSSm2oYLVBlfoxOGX@vger.kernel.org, AJvYcCVxQHNZb0DIpEDcrrDexUhkisKYO258j48D8w290AfmQfD/Zcm9BMI+IRr22tt6dUJKtv0pTSHa@vger.kernel.org, AJvYcCXUPe6fZE/a5bL94cV7N56OSRl0hUt3e9pMLCcKtPFCd4ptiWxqJT3qRUVWkeXfOJKtaQY3melExHfUlkZU@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxsPilslVPKac845j7N3lilPxtdJ0EGAgR2adFNm7k6DqFa9jN
+	XykG/JikPKXEqEaNjayveRphG0Z9/EnqB8Skd/qWaKrmPrZD/g1y
+X-Google-Smtp-Source: AGHT+IEplfKRE+FzdIgQzkRri+LLQy1SDGVkqAbCGUQXY94gamrjimYvOVLFEObF5gDcFC6jz/NVsA==
+X-Received: by 2002:a17:907:72cb:b0:a9a:1918:c6c6 with SMTP id a640c23a62f3a-a9abf84ad47mr1057640966b.8.1729874980744;
+        Fri, 25 Oct 2024 09:49:40 -0700 (PDT)
+Received: from [192.168.212.120] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b1f298b1esm88169266b.107.2024.10.25.09.49.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Oct 2024 09:49:40 -0700 (PDT)
+Message-ID: <c153d278-7b61-4feb-a749-43226357acc3@gmail.com>
+Date: Fri, 25 Oct 2024 18:49:38 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1729872662;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7Iw4mSeihGj1YsgWe8Zsotpic8lQYd8a9F0LzrpwBY4=;
-	b=NkQveD4IeJyVYkwl4GNW11zstxIvo/Pkwm9FiFHL9Bu79vy3H890U5m7g1JxmTLm1xnuh/
-	Gkkd+S9bwz+MA/6wG/u1lvxrG/88/tEat2A6sW5Uk2LPhZgAh7GHstuFbYjBFpUUaSeJfj
-	hD3+6yQwvxWA/HqQvDI+p1hj7tDc8n3XXJ5AzuNQIN6jM1TLr6GwPwcGXO4F3jmGufT62T
-	bAaYRoGAdKyE3mUaHqfFjOPmL/ie+INilHsXVre0CNwM5X+TvQQTgBIGufdKRgUZvdbhzX
-	Z6gKNlS/v39pS6OZTZ5QP0NSAwknEXY6meB+kPmgTfnSEoZNytTH+mfPWvIG1A==
-Date: Fri, 25 Oct 2024 18:11:01 +0200
-From: Dragan Simic <dsimic@manjaro.org>
-To: wens@csie.org
-Cc: linux-sunxi@lists.linux.dev, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, jernej.skrabec@gmail.com, samuel@sholland.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, Ondrej Jirman
- <megi@xff.cz>, Andrey Skvortsov <andrej.skvortzov@gmail.com>
-Subject: Re: [PATCH] arm64: dts: allwinner: pinephone: Add mount matrix to
- accelerometer
-In-Reply-To: <CAGb2v66aody60h=Bpk49pxogq93FekmO48uThPET2RKxvx=OGw@mail.gmail.com>
-References: <129f0c754d071cca1db5d207d9d4a7bd9831dff7.1726773282.git.dsimic@manjaro.org>
- <bef0570137358c6c4a55f59e7a4977c4@manjaro.org>
- <CAGb2v66aody60h=Bpk49pxogq93FekmO48uThPET2RKxvx=OGw@mail.gmail.com>
-Message-ID: <cfc090cb87a8b926116d1a436694d17d@manjaro.org>
-X-Sender: dsimic@manjaro.org
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] pinctrl: qcom: spmi: fix debugfs drive strength
+To: Johan Hovold <johan+linaro@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Linus Walleij <linus.walleij@linaro.org>
+Cc: Konrad Dybcio <konradybcio@kernel.org>, linux-arm-msm@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Anjelique Melendez <quic_amelende@quicinc.com>, stable@vger.kernel.org
+References: <20241025121622.1496-1-johan+linaro@kernel.org>
+Content-Language: en-US
+From: Konrad Dybcio <konradybcio@gmail.com>
+In-Reply-To: <20241025121622.1496-1-johan+linaro@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello Chen-Yu,
-
-On 2024-10-25 16:47, Chen-Yu Tsai wrote:
-> On Wed, Oct 23, 2024 at 5:11 AM Dragan Simic <dsimic@manjaro.org> 
-> wrote:
->> On 2024-09-19 21:15, Dragan Simic wrote:
->> > The way InvenSense MPU-6050 accelerometer is mounted on the user-facing
->> > side
->> > of the Pine64 PinePhone mainboard, which makes it rotated 90 degrees
->> > counter-
->> > clockwise, [1] requires the accelerometer's x- and y-axis to be
->> > swapped, and
->> > the direction of the accelerometer's y-axis to be inverted.
->> >
->> > Rectify this by adding a mount-matrix to the accelerometer definition
->> > in the Pine64 PinePhone dtsi file.
->> >
->> > [1] https://files.pine64.org/doc/PinePhone/PinePhone%20mainboard%20bottom%20placement%20v1.1%2020191031.pdf
->> >
->> > Fixes: 91f480d40942 ("arm64: dts: allwinner: Add initial support for
->> > Pine64 PinePhone")
->> > Cc: stable@vger.kernel.org
->> > Helped-by: Ondrej Jirman <megi@xff.cz>
->> > Helped-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
->> > Signed-off-by: Dragan Simic <dsimic@manjaro.org>
->> 
->> Just a brief reminder about this patch...  Please, let me know if some
->> further work is needed for it to become accepted.
+On 25.10.2024 2:16 PM, Johan Hovold wrote:
+> Commit 723e8462a4fe ("pinctrl: qcom: spmi-gpio: Fix the GPIO strength
+> mapping") fixed a long-standing issue in the Qualcomm SPMI PMIC gpio
+> driver which had the 'low' and 'high' drive strength settings switched
+> but failed to update the debugfs interface which still gets this wrong.
 > 
-> There's no "Helped-by" tag, and checkpatch would complain. The closest
-> would be either Suggested-by or Co-developed-by, but with the latter
-> you would also need their Signed-off-by.
+> Fix the debugfs code so that the exported values match the hardware
+> settings.
+> 
+> Note that this probably means that most devicetrees that try to describe
+> the firmware settings got this wrong if the settings were derived from
+> debugfs. Before the above mentioned commit the settings would have
+> actually matched the firmware settings even if they were described
+> incorrectly, but now they are inverted.
+> 
+> Fixes: 723e8462a4fe ("pinctrl: qcom: spmi-gpio: Fix the GPIO strength mapping")
+> Fixes: eadff3024472 ("pinctrl: Qualcomm SPMI PMIC GPIO pin controller driver")
+> Cc: Anjelique Melendez <quic_amelende@quicinc.com>
+> Cc: stable@vger.kernel.org	# 3.19
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> ---
 
-Thanks for your response.  You're totally right about checkpatch.pl
-not supporting Helped-by tags, but including neither Suggested-by
-nor Co-developed-by would fit very well in this case, because the
-associated level of credit falls right somewhere between what's
-indicated by these two tags.
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-> I can change it to Suggested-by if that's OK with you.
-
-I've created and submitted a patch [*] that adds support for Helped-by
-tags to checkpatch.pl.  Let's see what kind of feedback that patch
-will receive, and then we'll be able to move forward accordingly.
-
-[*] 
-https://lore.kernel.org/linux-kernel/0e1ef28710e3e49222c966f07958a9879fa4e903.1729871544.git.dsimic@manjaro.org/T/#u
-
->> > ---
->> >
->> > Notes:
->> >     See also the linux-sunxi thread [2] that has led to this patch,
->> > which
->> >     provides a rather detailed analysis with additional details and
->> > pictures.
->> >     This patch effectively replaces the patch submitted in that thread.
->> >
->> >     [2]
->> > https://lore.kernel.org/linux-sunxi/20240916204521.2033218-1-andrej.skvortzov@gmail.com/T/#u
->> >
->> >  arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi | 3 +++
->> >  1 file changed, 3 insertions(+)
->> >
->> > diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
->> > b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
->> > index 6eab61a12cd8..b844759f52c0 100644
->> > --- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
->> > +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
->> > @@ -212,6 +212,9 @@ accelerometer@68 {
->> >               interrupts = <7 5 IRQ_TYPE_EDGE_RISING>; /* PH5 */
->> >               vdd-supply = <&reg_dldo1>;
->> >               vddio-supply = <&reg_dldo1>;
->> > +             mount-matrix = "0", "1", "0",
->> > +                            "-1", "0", "0",
->> > +                            "0", "0", "1";
->> >       };
->> >  };
->> 
+Konrad
 
