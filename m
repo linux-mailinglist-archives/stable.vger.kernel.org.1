@@ -1,177 +1,114 @@
-Return-Path: <stable+bounces-88154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A3F39B0403
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 15:28:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 646749B045F
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 15:43:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6045B213FE
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 13:28:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21EC528269C
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 13:43:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D77212163;
-	Fri, 25 Oct 2024 13:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7187082E;
+	Fri, 25 Oct 2024 13:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ToWZogvy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZdELT36w"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20F6212177;
-	Fri, 25 Oct 2024 13:27:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2919C212178;
+	Fri, 25 Oct 2024 13:43:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729862877; cv=none; b=W6WYF4cmsQHRguma2Fpsi2ltFKsJZw6VfZ1GDhaNlR7pbs6GeR/0vWfG0JmgqSw/bdZANlSJjs1EvyW/m57Rrg/i4M+vicgm2JhfUAucXANhxo2GvxqHzKV1bBVBNGRmrgxmZvky3xEQq+yEmHDEl7LzRAE+TBcLyNKzhP/svm8=
+	t=1729863794; cv=none; b=a63MizETpLKZO5+X8LiMivzeH6YClz5F9BJqbxSQpO+fgVN2nwJ29FPSYad9iTT900YLpw+uMr7KteaqhzRZpiJ8LrpMo2bjeO9HdYL4QypUjmlJ5THE6INwoEm4aU/7UA2B+90S6u4vVIr+WxksmF3ZJLDm/zKE9r64VS2iVhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729862877; c=relaxed/simple;
-	bh=vqXSoDHtWOzVQLU81RLVdFevTsKOQPe0GfCVmVSQaUc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R1ZK/mv8eFsVfdrLxf0iPbXx7BNZZGF6E/IHUYonk4yTXq0P0Z3wus5eU4gYEtU+FVcF5T8YIVZjg5tZjfLgYaRMMczqjx1Oi6IMXMxd4CSDcgM1DfiBUfP8jDgTr24663/67RSLqXu4OY/oMqXnjzflP5T/TbgzgPrr376G1IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ToWZogvy; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5366fd6fdf1so2874714e87.0;
-        Fri, 25 Oct 2024 06:27:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729862873; x=1730467673; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2OhXSnxIccENH/su062bXdXJHpWmUMiU9LhU+oaGUCM=;
-        b=ToWZogvy2oI2gueFSaTVC5zUoNXy3RzcY1/cRl1C2ko8NNsePbBw7RhYP3ppmJR9SJ
-         mw+JZjSrHzbXOXOE6dO6uHpakcjoQRpJZY6FKs7Jo186O6uLfAKS2FlwwQ2d/4Quyw+j
-         8gNVkQWEZKVnDhkhOKkj3ZG7fHnDvK5yqOuTNPpyNQ1C43vzfrROWSAom/bl41lcMtcX
-         JnHcKqzMcb5HclsLx/r7YGjpwn/zabvz+nvfMQz6x5ukAx9OAzU284yHedoF1JfAvZhY
-         4OlYWYo1u+bCCLijhIv80fruHu9u8vnLVa+CD0EtSTTCozsdTiakDzo/HcQ3EWIxOUWD
-         6kRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729862873; x=1730467673;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2OhXSnxIccENH/su062bXdXJHpWmUMiU9LhU+oaGUCM=;
-        b=WbTVyDnOKcsf/MeZSGwRVZ1TDM2quVZQd9XOOJOLGtKgmu+FdpAkmbltS7VhEA7LaZ
-         XwHnKvzvqLmfBKuq7tXU97SYcH1ubVM2eMNEQpxjXmMYEW9T6ZPYu5HNTN67yZKswdsn
-         F1jL1NptvxJtRtgQTjmCwJhGhLnwY8ebRYEFLazUavAHpN0P9Wge2JHN8ikcCX9bCNwa
-         F1HKNSHilNPr1zLg6jOKXmVVA+UrjNn6cZXjOSvktyTVJfWANZfyil8cgFDj/SQuVTU7
-         upPI3LuaSuPkxmkTWkL4rwAqudQgpgud4YRW/z4vULD0qJN96Jc1UiRNwhdzt7NC1LqS
-         1O3g==
-X-Forwarded-Encrypted: i=1; AJvYcCVHTHQsxzKgX48cD95ZgQdzucDstF06E3ithWJZjRzS64K9ScvpQPwW5leY4nvjsjG0JlG7Km0u6Z0=@vger.kernel.org, AJvYcCVMVi2MjMFB5+ZG7MSRZS7fXwMAPOosZNJ+Gw4Rqf0wbr+dGu8KVUCbu1mx6ejxIAKr/qwuZXiL@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz67sYTj7Xa6296exh2XelTwn8/MRmtu3u2nS5KL+QszGMGqmPw
-	rCRKI5ity5fFB0EPZC9unkfJWbaqHWo+TT/Y+0TTBOB3LMnuR6E7
-X-Google-Smtp-Source: AGHT+IEHCs8g48g/xSi7UMtMGRFHp468IaTIG8a4oO92I8SOGt45flfJGGSuclb6cm8sNjLPjO7OJQ==
-X-Received: by 2002:a05:6512:401a:b0:52c:9383:4c16 with SMTP id 2adb3069b0e04-53b23dfa27dmr3580589e87.22.1729862872431;
-        Fri, 25 Oct 2024 06:27:52 -0700 (PDT)
-Received: from ?IPV6:2a02:6b67:d751:7400:c2b:f323:d172:e42a? ([2a02:6b67:d751:7400:c2b:f323:d172:e42a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431935a5943sm18047735e9.25.2024.10.25.06.27.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Oct 2024 06:27:52 -0700 (PDT)
-Message-ID: <899f209b-d4ec-4903-a3e6-88b570805499@gmail.com>
-Date: Fri, 25 Oct 2024 14:27:51 +0100
+	s=arc-20240116; t=1729863794; c=relaxed/simple;
+	bh=QcgSLO9Ndsh6+YlbmmV4d9uuj5L/CYMsjacv9xI54Ns=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dxyrboTnaCMaj4E38vBDtK+eYLx4/h9ptHW5ROwc4OsQJfmtSnwL71EsRw9da96dWU/KFKYLBaKFJNHdAA4vRcMbDTg+z1mbKXwzaLCV2sU+gbRWKL38YTQwKT/raYENa5n+lPFfDNDbqMUidc5+oT+RpGB8ecmSAHNW+dsDdhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZdELT36w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AAF4C4CEE6;
+	Fri, 25 Oct 2024 13:43:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729863793;
+	bh=QcgSLO9Ndsh6+YlbmmV4d9uuj5L/CYMsjacv9xI54Ns=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZdELT36wIwde8NN0+Vp4FTKs2GYP2xckmgZ6rM7QUL9PIPomICybM+igyCBVPWlhD
+	 YqoF+xq5Tmm5CFFUtbREbySlnNP29S6iJz1yKecQFyMEfaSYeX57cYmw9TDZ6E3mjT
+	 MZoCGLWx0KtFurD4yQyTQORUxGtT5ApJHkaNrpPj0P+51fNF8+mXHPEAd7jipmhi0q
+	 bgGgJdLqEUsJpVMIT8TF+U3jieIPyMDH738ZuG2CFYmhpsgJ/MC+yT1WCJKxTt3vN6
+	 fuph75paFpnuTIZNRGyWWSdpgFcpHPcX9k8ZRHlzOtqsZGkSBPsyO5kn03UEjm7Z6D
+	 Ju95QRcYQMnnA==
+Date: Fri, 25 Oct 2024 14:43:04 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>, stable@vger.kernel.org,
+	Alexander Potapenko <glider@google.com>
+Subject: Re: [PATCH] KVM: arm64: Don't eagerly teardown the vgic on init error
+Message-ID: <ZxugaK5Z4_7ula7n@finisterre.sirena.org.uk>
+References: <20241009183603.3221824-1-maz@kernel.org>
+ <3f0918bf-0265-4714-9660-89b75da49859@sirena.org.uk>
+ <86ldyd2x7t.wl-maz@kernel.org>
+ <eb6e7e29-b0a8-47b1-94c4-f01569aa55cb@sirena.org.uk>
+ <87v7xgtjs9.wl-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] efistub/tpm: Use ACPI reclaim memory for event log to
- avoid corruption
-To: Jiri Slaby <jirislaby@kernel.org>, Ard Biesheuvel <ardb+git@google.com>,
- linux-efi@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org,
- Breno Leitao <leitao@debian.org>
-References: <20240912155159.1951792-2-ardb+git@google.com>
- <ec7db629-61b0-49aa-a67d-df663f004cd0@kernel.org>
- <29b39388-5848-4de0-9fcf-71427d10c3e8@kernel.org>
- <58da4824-523c-4368-9da1-05984693c811@kernel.org>
-Content-Language: en-US
-From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <58da4824-523c-4368-9da1-05984693c811@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="oaU2WkJ14yfoCs6h"
+Content-Disposition: inline
+In-Reply-To: <87v7xgtjs9.wl-maz@kernel.org>
+X-Cookie: Editing is a rewording activity.
 
 
+--oaU2WkJ14yfoCs6h
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 25/10/2024 06:09, Jiri Slaby wrote:
-> On 25. 10. 24, 7:07, Jiri Slaby wrote:
->> On 24. 10. 24, 18:20, Jiri Slaby wrote:
->>> On 12. 09. 24, 17:52, Ard Biesheuvel wrote:
->>>> From: Ard Biesheuvel <ardb@kernel.org>
->>>>
->>>> The TPM event log table is a Linux specific construct, where the data
->>>> produced by the GetEventLog() boot service is cached in memory, and
->>>> passed on to the OS using a EFI configuration table.
->>>>
->>>> The use of EFI_LOADER_DATA here results in the region being left
->>>> unreserved in the E820 memory map constructed by the EFI stub, and this
->>>> is the memory description that is passed on to the incoming kernel by
->>>> kexec, which is therefore unaware that the region should be reserved.
->>>>
->>>> Even though the utility of the TPM2 event log after a kexec is
->>>> questionable, any corruption might send the parsing code off into the
->>>> weeds and crash the kernel. So let's use EFI_ACPI_RECLAIM_MEMORY
->>>> instead, which is always treated as reserved by the E820 conversion
->>>> logic.
->>>>
->>>> Cc: <stable@vger.kernel.org>
->>>> Reported-by: Breno Leitao <leitao@debian.org>
->>>> Tested-by: Usama Arif <usamaarif642@gmail.com>
->>>> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
->>>> ---
->>>>   drivers/firmware/efi/libstub/tpm.c | 2 +-
->>>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>>
->>>> diff --git a/drivers/firmware/efi/libstub/tpm.c b/drivers/firmware/ efi/libstub/tpm.c
->>>> index df3182f2e63a..1fd6823248ab 100644
->>>> --- a/drivers/firmware/efi/libstub/tpm.c
->>>> +++ b/drivers/firmware/efi/libstub/tpm.c
->>>> @@ -96,7 +96,7 @@ static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_loca
->>>>       }
->>>>       /* Allocate space for the logs and copy them. */
->>>> -    status = efi_bs_call(allocate_pool, EFI_LOADER_DATA,
->>>> +    status = efi_bs_call(allocate_pool, EFI_ACPI_RECLAIM_MEMORY,
->>>>                    sizeof(*log_tbl) + log_size, (void **)&log_tbl);
->>>
->>> Hi,
->>>
->>> this, for some reason, corrupts system configuration table. On good boots, memattr points to 0x77535018, on bad boots (this commit applied), it points to 0x77526018.
->>>
->>> And the good content at 0x77526018:
->>> tab=0x77526018 size=16+45*48=0x0000000000000880
->>>
->>> bad content at 0x77535018:
->>> tab=0x77535018 size=16+2*1705353216=0x00000000cb4b4010
->>>
->>> This happens only on cold boots. Subsequent boots (having the commit or not) are all fine.
->>>
->>> Any ideas?
->>
->> ====
->> EFI_ACPI_RECLAIM_MEMORY
->>
->> This memory is to be preserved by the UEFI OS loader and OS until ACPI
->> is enabled. Once ACPI is enabled, the memory in this range is available for general use.
->> ====
->>
->> BTW doesn't the above mean it is released by the time TPM actually reads it?
->>
->> Isn't the proper fix to actually memblock_reserve() that TPM portion. The same as memattr in efi_memattr_init()?
-> 
-> And this is actually done in efi_tpm_eventlog_init().
-> 
->>> DMI: Dell Inc. Latitude 7290/09386V, BIOS 1.39.0 07/04/2024
->>>
->>> This was reported downstream at:
->>> https://bugzilla.suse.com/show_bug.cgi?id=1231465
->>>
->>> thanks,
-> 
+On Fri, Oct 25, 2024 at 02:05:26PM +0100, Marc Zyngier wrote:
+> Mark Brown <broonie@kernel.org> wrote:
 
-Could you share the e820 map, reserve setup_data and TPMEventLog address with and without the patch?
-All of these should be just be in the dmesg.
+> > I'm not even sure that's a terrible fix, looking at the changelog I get
+> > the impression the test is deliberately looking to do problematic things
+> > with the goal of making sure that the kernel handles them appropriately.
+> > That's not interacting well with the KVM selftest framework's general
+> > assert early assert often approach but it's a reasonable thing to want
+> > to test so relaxing the asserts like this is one way of squaring the
+> > circile.
 
-Thanks,
-Usama
+> It *is* a terrible fix, since it makes no effort in finding out
+> whether the VM is be dead for a good or a bad reason. In a way, the
+> fix is worse than the current error, because it silently hide the
+> crap.
+
+I mean, it's clearly not ideal or finished especially in that it's just
+allowing the error code throughout the program rather than during a
+specific case but the broad approach of flagging that the VM is expected
+to already be in a bad state and not support operations any more seems
+reasonable.
+
+--oaU2WkJ14yfoCs6h
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcboGUACgkQJNaLcl1U
+h9C2MAf+NELyDRQOR62AbhGylzzEH1W+It446W3mJYfqiES6RyzIoyd/29BoQXp7
+5UvyDyrv4lEPvmMFIGOlcloHTTkCIOCsFviPgW9Mwm7/1RBaOomD/mB5GfDkyx4e
+96VmsYkg+RfFyVychhYaJBKI8lzDO+9jHL/cwxTBdOADOZZeNrvA2eiv0sLAibHW
+PO3KubatGXvf+Oyh6f7EGK1kZeok7MNnNwa3b9Mj558n3LbJXcBoBB0iPDHs0bwC
+Dgjl3VaESLv86vexhAN+eIJZDTinTzXJJS5nFF0E4kKzC4ttB5PZ9DlMcUFqky9s
+u4Onph+rXiYNZ6uRDoL9+emHnnLfhA==
+=F9Rw
+-----END PGP SIGNATURE-----
+
+--oaU2WkJ14yfoCs6h--
 
