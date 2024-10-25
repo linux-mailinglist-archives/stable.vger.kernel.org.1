@@ -1,117 +1,172 @@
-Return-Path: <stable+bounces-88198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77EDA9B0FA1
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 22:16:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC80B9B0FB3
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 22:21:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A931B1C212C6
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 20:16:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE0C71C2168F
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 20:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9006F1BE871;
-	Fri, 25 Oct 2024 20:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9258220F3F1;
+	Fri, 25 Oct 2024 20:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="b0zmDbAW"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FVm/bEgG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4880520C337
-	for <stable@vger.kernel.org>; Fri, 25 Oct 2024 20:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC341925AB;
+	Fri, 25 Oct 2024 20:21:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729887365; cv=none; b=ZWHKXI7+PusC34ao2KEtr2Rlhy5XDe5l49vwJjFCn720xkqJUG7wQtGabcGTvldX88zY0BCKFiSX/RZTsArJsPBsUTFBXYGw9ZVHDkF+Z1kXJ8+q3LrdOikDK+pTxBdekagxWi2m1mhSGpFKQ54ktEa46YjrNdew//kUFQAFNqA=
+	t=1729887664; cv=none; b=HJFMMzQ5rcrSdFlnLNffMdmSlgmlytN78bJJr4FUWb0nAKJxPfLhZllTx3mpvZz9XIAZmrSPbz9p3nAU5bMY/HAgeWS49RY3oGTrC33KuMKQbQpN1SbJedhbLt8iox4EjlJhKqOchOatSAZ2ibhYIw5y33kmWF0ee0r68TbU+Os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729887365; c=relaxed/simple;
-	bh=HXwNlsDX65qK5k66z7IA8yvdHHI0vAUZEoGmEzH1HZ0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RL1+qNEkuwtZYlxoD0b37+rPgbwDRzgvuRU32ZtJ7P2d5OnhutrlpjV9QWmn3gbo6xderh1wq26l1uk07nULAJ7qahb813R1iWbO8sOQHkC+0ZpI1xgEvCACrf/05YttrLaGT3THJ29IJdo4AI1wUhcemtO+1d+StfHcrdTzNjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=b0zmDbAW; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-539fbe22ac0so2845315e87.2
-        for <stable@vger.kernel.org>; Fri, 25 Oct 2024 13:16:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729887361; x=1730492161; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BrfKOY+CFQBFpuKjqQn+EovTIGUgf43WkJJ5IpUgMGA=;
-        b=b0zmDbAWTCZoENFtPAIXDx19kkEjUiYrIzOTvABHQIYGBBu3pxEp2j0S4qfISGixYj
-         ntC5jhZBiUBDoFkn3crgUlr31E0CF+RH6B19CR831E0x0wkFzf6JGKMrXEHBVfcqpwqY
-         92C/Fd8CNuGe9jVVeDObcxE74SNzrA1IY5mCUNIX2ULTl3Vz7nD8tmu1n0RU6s4ZAHJb
-         Ib5k4ZGVSGEQEziaFDA725NEJOlJlc/wEDXSnIR8C3RrKybipQmVrwYYzkwq+7B/IDvA
-         h2ONgs9jeoSHaO18J1CVxmLAbLdob2bKotMTxwxEfQ5WsqQEIcWFFXP69vDmAyJ5/rwG
-         aWQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729887361; x=1730492161;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BrfKOY+CFQBFpuKjqQn+EovTIGUgf43WkJJ5IpUgMGA=;
-        b=AE/GSdNSludnOWFSRw13DRTbTqaVzS0mteEi/Y9f0vE4jBB5X9Uxr61snKU8GB1+Op
-         0L1RcBiA1QrQXZgYMXMfIhFngW+A3P08HhkE4r3amIxPrw/9I3p6sXXHMXORSSrHn5wB
-         GsMzZbwCD4PKK/1TekxkApUF3/mQMPm1uM8IEVYlhNDtubiD2lLHP2KljYhIzMxiNWuV
-         0UtMalTurw2MCqUMsdT6Vj+YuzTRqPKJuzRxQrLZ/65h8mM75la57+01VSG47Is3UP/y
-         DXvHoosuPNFvbVPgpIPR5LbmHDbibGLdar0e9aIcjLT/VUuLtkEulhTgAC9IXrUV1aWK
-         TMlA==
-X-Forwarded-Encrypted: i=1; AJvYcCV5nvjihth1Vk3088srPCHyUaRLmXj6RqmCyeU8lAOxu9H0RZnOWiiRFdXhM3073+PyKQ5GqIM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDxKc8szcalgKBJG/ba+l9CL4K5Y+c6TupTNII7/6Nc6K806wY
-	a1g+lCJseYBE0SeCQZ+j3Efacav7HxVnQvT1PWXNdI0duw+VkcjR0OS3IBJX2b4Esi3AXCoZpqT
-	GobP6TlR6OIqHP2g3n6EFIbRR1/6IEnwK3mRksA==
-X-Google-Smtp-Source: AGHT+IFhpeik0nSV3W/KgV00KKhCd+MCqLZInlp9rhg6YetJwEu4kfb6FuXzMeDghjhw01tKCsjFDM0Iin7o1GFcDsY=
-X-Received: by 2002:a05:6512:3e1b:b0:539:f4a6:ef40 with SMTP id
- 2adb3069b0e04-53b34b395cfmr248111e87.54.1729887361373; Fri, 25 Oct 2024
- 13:16:01 -0700 (PDT)
+	s=arc-20240116; t=1729887664; c=relaxed/simple;
+	bh=GjpIo7MTiPjGsjg5q1U4fLMGs6FPJDaFFXhGTAHrM9g=;
+	h=Date:To:From:Subject:Message-Id; b=blkpfrJ8wr7JvBV7NHMqm+xw5lw6TrECkGIr2E38U392HkBbO+haWwI2VQXdmXSrvnJ+9gWGHn3bA0zrAm77qra73YsxUx3lBFFw2P0odlwaEwAlUUnfJULtLfRQQnZ/3O0GmTtVoCh+50rrOv0xTo6FX1UHrJR9nvHwGvlPNpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FVm/bEgG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFCECC4CEC3;
+	Fri, 25 Oct 2024 20:21:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1729887663;
+	bh=GjpIo7MTiPjGsjg5q1U4fLMGs6FPJDaFFXhGTAHrM9g=;
+	h=Date:To:From:Subject:From;
+	b=FVm/bEgGMM9zF4d0situ9yKBQfEL30j4wN2lPYmRTEpXo5B+lVAgVubqZZt3SPdkZ
+	 GC6y/lXCgB8jtutE25ZVq2GRd3ctf5ZvENbi/TGXjs3QbHM4qhPknhpCjtUyFRgdZZ
+	 S4ckVHyaZaWuc4kXoSGcuMu4XALY4/yCSejAPJ18=
+Date: Fri, 25 Oct 2024 13:21:03 -0700
+To: mm-commits@vger.kernel.org,vschneid@redhat.com,vincent.guittot@linaro.org,stable@vger.kernel.org,rostedt@goodmis.org,peterz@infradead.org,mingo@redhat.com,mgorman@suse.de,Liam.Howlett@oracle.com,juri.lelli@redhat.com,dietmar.eggemann@arm.com,bsegall@google.com,baolin.wang@linux.alibaba.com,shawnwang@linux.alibaba.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + sched-numa-fix-the-potential-null-pointer-dereference-in-task_numa_work.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241025202103.BFCECC4CEC3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241025121622.1496-1-johan+linaro@kernel.org>
-In-Reply-To: <20241025121622.1496-1-johan+linaro@kernel.org>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Fri, 25 Oct 2024 22:15:49 +0200
-Message-ID: <CACRpkdYowN4gWohH+Qmp6GAmHUyXNCdA65Uwp_9ii4phrd_+Rg@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: qcom: spmi: fix debugfs drive strength
-To: Johan Hovold <johan+linaro@kernel.org>
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Anjelique Melendez <quic_amelende@quicinc.com>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 25, 2024 at 2:17=E2=80=AFPM Johan Hovold <johan+linaro@kernel.o=
-rg> wrote:
 
-> Commit 723e8462a4fe ("pinctrl: qcom: spmi-gpio: Fix the GPIO strength
-> mapping") fixed a long-standing issue in the Qualcomm SPMI PMIC gpio
-> driver which had the 'low' and 'high' drive strength settings switched
-> but failed to update the debugfs interface which still gets this wrong.
->
-> Fix the debugfs code so that the exported values match the hardware
-> settings.
->
-> Note that this probably means that most devicetrees that try to describe
-> the firmware settings got this wrong if the settings were derived from
-> debugfs. Before the above mentioned commit the settings would have
-> actually matched the firmware settings even if they were described
-> incorrectly, but now they are inverted.
->
-> Fixes: 723e8462a4fe ("pinctrl: qcom: spmi-gpio: Fix the GPIO strength map=
-ping")
-> Fixes: eadff3024472 ("pinctrl: Qualcomm SPMI PMIC GPIO pin controller dri=
-ver")
-> Cc: Anjelique Melendez <quic_amelende@quicinc.com>
-> Cc: stable@vger.kernel.org      # 3.19
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+The patch titled
+     Subject: sched/numa: fix the potential null pointer dereference in task_numa_work()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     sched-numa-fix-the-potential-null-pointer-dereference-in-task_numa_work.patch
 
-Patch applied for fixes, thanks for digging into this Johan!
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/sched-numa-fix-the-potential-null-pointer-dereference-in-task_numa_work.patch
 
-Yours,
-Linus Walleij
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Shawn Wang <shawnwang@linux.alibaba.com>
+Subject: sched/numa: fix the potential null pointer dereference in task_numa_work()
+Date: Fri, 25 Oct 2024 10:22:08 +0800
+
+When running stress-ng-vm-segv test, we found a null pointer dereference
+error in task_numa_work().  Here is the backtrace:
+
+  [323676.066985] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000020
+  ......
+  [323676.067108] CPU: 35 PID: 2694524 Comm: stress-ng-vm-se
+  ......
+  [323676.067113] pstate: 23401009 (nzCv daif +PAN -UAO +TCO +DIT +SSBS BTYPE=--)
+  [323676.067115] pc : vma_migratable+0x1c/0xd0
+  [323676.067122] lr : task_numa_work+0x1ec/0x4e0
+  [323676.067127] sp : ffff8000ada73d20
+  [323676.067128] x29: ffff8000ada73d20 x28: 0000000000000000 x27: 000000003e89f010
+  [323676.067130] x26: 0000000000080000 x25: ffff800081b5c0d8 x24: ffff800081b27000
+  [323676.067133] x23: 0000000000010000 x22: 0000000104d18cc0 x21: ffff0009f7158000
+  [323676.067135] x20: 0000000000000000 x19: 0000000000000000 x18: ffff8000ada73db8
+  [323676.067138] x17: 0001400000000000 x16: ffff800080df40b0 x15: 0000000000000035
+  [323676.067140] x14: ffff8000ada73cc8 x13: 1fffe0017cc72001 x12: ffff8000ada73cc8
+  [323676.067142] x11: ffff80008001160c x10: ffff000be639000c x9 : ffff8000800f4ba4
+  [323676.067145] x8 : ffff000810375000 x7 : ffff8000ada73974 x6 : 0000000000000001
+  [323676.067147] x5 : 0068000b33e26707 x4 : 0000000000000001 x3 : ffff0009f7158000
+  [323676.067149] x2 : 0000000000000041 x1 : 0000000000004400 x0 : 0000000000000000
+  [323676.067152] Call trace:
+  [323676.067153]  vma_migratable+0x1c/0xd0
+  [323676.067155]  task_numa_work+0x1ec/0x4e0
+  [323676.067157]  task_work_run+0x78/0xd8
+  [323676.067161]  do_notify_resume+0x1ec/0x290
+  [323676.067163]  el0_svc+0x150/0x160
+  [323676.067167]  el0t_64_sync_handler+0xf8/0x128
+  [323676.067170]  el0t_64_sync+0x17c/0x180
+  [323676.067173] Code: d2888001 910003fd f9000bf3 aa0003f3 (f9401000)
+  [323676.067177] SMP: stopping secondary CPUs
+  [323676.070184] Starting crashdump kernel...
+
+stress-ng-vm-segv in stress-ng is used to stress test the SIGSEGV error
+handling function of the system, which tries to cause a SIGSEGV error on
+return from unmapping the whole address space of the child process.
+
+Normally this program will not cause kernel crashes.  But before the
+munmap system call returns to user mode, a potential task_numa_work() for
+numa balancing could be added and executed.  In this scenario, since the
+child process has no vma after munmap, the vma_next() in task_numa_work()
+will return a null pointer even if the vma iterator restarts from 0.
+
+Recheck the vma pointer before dereferencing it in task_numa_work().
+
+Link: https://lkml.kernel.org/r/20241025022208.125527-1-shawnwang@linux.alibaba.com
+Fixes: 214dbc428137 ("sched: convert to vma iterator")
+Signed-off-by: Shawn Wang <shawnwang@linux.alibaba.com>
+Reviewed-by:  Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Ben Segall <bsegall@google.com>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: <stable@vger.kernel.org>	[6.2+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ kernel/sched/fair.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+--- a/kernel/sched/fair.c~sched-numa-fix-the-potential-null-pointer-dereference-in-task_numa_work
++++ a/kernel/sched/fair.c
+@@ -3369,7 +3369,7 @@ retry_pids:
+ 		vma = vma_next(&vmi);
+ 	}
+ 
+-	do {
++	for (; vma; vma = vma_next(&vmi)) {
+ 		if (!vma_migratable(vma) || !vma_policy_mof(vma) ||
+ 			is_vm_hugetlb_page(vma) || (vma->vm_flags & VM_MIXEDMAP)) {
+ 			trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_UNSUITABLE);
+@@ -3491,7 +3491,7 @@ retry_pids:
+ 		 */
+ 		if (vma_pids_forced)
+ 			break;
+-	} for_each_vma(vmi, vma);
++	}
+ 
+ 	/*
+ 	 * If no VMAs are remaining and VMAs were skipped due to the PID
+_
+
+Patches currently in -mm which might be from shawnwang@linux.alibaba.com are
+
+sched-numa-fix-the-potential-null-pointer-dereference-in-task_numa_work.patch
+
 
