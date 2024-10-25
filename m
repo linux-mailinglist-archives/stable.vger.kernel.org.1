@@ -1,64 +1,85 @@
-Return-Path: <stable+bounces-88159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 111359B056C
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 16:17:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 314709B0589
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 16:18:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96EB01F24959
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 14:17:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABE361F24949
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 14:18:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A793A20102B;
-	Fri, 25 Oct 2024 14:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A9E81FB8AD;
+	Fri, 25 Oct 2024 14:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="X5hyvYUo"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="uIj8TvxQ"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1B21FB8BE
-	for <stable@vger.kernel.org>; Fri, 25 Oct 2024 14:15:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A641FB891
+	for <stable@vger.kernel.org>; Fri, 25 Oct 2024 14:17:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729865744; cv=none; b=QKXQBd5OpWaptyKs2Zp7EWu+f4PghkPm7JRSDz/Rpjn2elJ9d6MAWNwvGqv+aK8CgYfwiZ+Ysks3SQPfOHK/sbkgRvBlHqc6V5iSez9Iefnu2+J3gIqSdskGjmVrpPp+0VnoR7YDppW/JqQMfRK2Ev8AMrlTCOlCYYLJwaPiBZY=
+	t=1729865854; cv=none; b=OjXtej+G4EXQmIuLkpSe9Msqe9zZTiq52FvVPOoZvH/CACqbvlz9JXx8T8Ce7qjjfweUCrRw1HofvJWrINpe8Ic1vq4ziNacHQ8yKpcOuFpKmj8PwcH8Z2Qd4tXA20XyjUF8QEIE2umdWIIRu5WEYheNBKTNGoTkDlg5jotsMog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729865744; c=relaxed/simple;
-	bh=Sp/j3TXF8w9fHYEYgoZcXKly+ukzk8JFJBkgoKu6wQ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bWgPcti4kfbzKql3G4ngM+++E/8Mtc0rhZfbMnPP0jw4tHKTdgM3bplgZB3r2npRtsp8En5r1SG5CkdDzsrlMJQkf/lFKzbse/eK85D0w9Adr6ucSdshajY9yEKZj//U+Bo4y49xA0DEKge0OejFiyN/a8Ri9QkxsiBXbA/TWBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=X5hyvYUo; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=HF6JdqcICjQRXCESM5j2dVOSCoSQwY0RE7jarsaIL7A=; b=X5hyvYUoJmlUNgeuS+OXYE7qWh
-	1oGtVHb1UIulOZJxTn1VkF5fGDI3TGcaX2QVi3ilY1BkkfGFA3VvCCDAzTeZTc2BqXcb0BLqbkLqw
-	8mJBnO4MpEYQf4yKCkCEYSg0jgaqXII6tU0tLbW07N8C9PxIPTGfrsGuORujX1zi+gR68TKMlSNOO
-	DLE0gHHFzZllhyRtGlq1z/Xa5g1XHC5SGtJkAVq13+kBuLf00OH/gcZhNSziTDSXpykcW5NH5wb2V
-	rZguJFgpbRuGZBw5e4lFHHQ11S+NGu5G5Q7XsyznfoLf/tvd/HhYagUA1mIpZK6mE6hwvrNupWBlj
-	MklYBf0A==;
-Received: from [90.241.98.187] (helo=localhost)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1t4L6C-00F3cJ-Gz; Fri, 25 Oct 2024 16:15:32 +0200
-From: Tvrtko Ursulin <tursulin@igalia.com>
-To: amd-gfx@lists.freedesktop.org
-Cc: kernel-dev@igalia.com,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Evan Quan <evan.quan@amd.com>,
-	Wenyou Yang <WenYou.Yang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	s=arc-20240116; t=1729865854; c=relaxed/simple;
+	bh=TWudHctEQ5knuTlK6Wu7BZNOHdMM0HIGFJ1bh884wfk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OFNUwHwexVUK02S96RdewuTPxQI/uItKJ+Wdq/9iiBXpig9XYxRd0LsbcSPnPYm7PzNHPRZy5Tv9kd+Srb7ploA6Qlv8ZWgfVJRZR5h2t637Lg1+WVmhAKkDLFQ7l9uiq1UNwnN7buMLjMov58Qaf/ZNZ51N2zsPtSOaxRDiT4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=uIj8TvxQ; arc=none smtp.client-ip=209.85.219.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6cb97afcec9so12201276d6.2
+        for <stable@vger.kernel.org>; Fri, 25 Oct 2024 07:17:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1729865850; x=1730470650; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wFJ7qeo3WN9Qtar7fFSc4KOFTyi0KFll6s9kH9IhHuM=;
+        b=uIj8TvxQYayP18CDbfRyXOSKZfMs8hQxXJlF4455h1oIMwFyRb2i714pzI0VvLjOsx
+         wLEb2mxz+bKVnLNCC8sevj+ED47+JD5BM5s1KF6T2lbkKkY2nfGvX6+zCX2C3tdgvo5m
+         pzTKfiYGKFQWnsm18cKBow1an6LSDC+WioennO2/5bsy3s6xEtQm8zP2/6vXtRi5FiRX
+         CFuJ5IftYtCbBjNYpLRovBWP0Nt3q+/VBnAl0ZoHuDYNk9L8B57nIgxYt7jvdlqcE9wx
+         RphZrY55v3g2fGRyd+X1y7a/ISC5Z6XH+I66d9lLz2rf2ye8iBDy0m5QAohtg3UVyRQ+
+         SacQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729865850; x=1730470650;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wFJ7qeo3WN9Qtar7fFSc4KOFTyi0KFll6s9kH9IhHuM=;
+        b=woxhxanyyPNtw4xwartevswsgKN7s2RSLVIVjLTzRUe1PZhnV7xjvhOdiHWBBY+ZB6
+         UdlRk7r+JELTG5NjB6lRRrr0OWjmjI3dptfAUgo47RGN9xBoA1aI7GSqkJqgE2vxfSE2
+         OK144j9k2VqR+IG5QF5eJGycvt8tKb+E2VBZu0gOaQqT62r/Rn1Gv7FuWycpTx+yJPl4
+         I35As9zcrbwC6IVbM1CiiU6SoHK5wqCCrh1IWXLxQNfgI0+tcwfeXuofGN072C6x8Ing
+         9B4627WqhPkHPTm5buBypRUgJCC5apY5h93GpE3Nom9phm/LdqaXN7Q6XTuANuzRCHOG
+         LAgA==
+X-Forwarded-Encrypted: i=1; AJvYcCUyj8VYtXbE0t8mG4DtFubuaSPHqEvbtOwZZ2lCdErIBgH5p3Rf0A4bp2oilVWpLGnqoMaRT4w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvBrBGy3OtzfT/o/WmD/YJDk1HWTJznVhBFcwUwv8GmONJMZ/o
+	MqvUvtxxqciBC/xTe+ydUZwewD2dCmaPf1TyT4AeYbEkO7tf+UAqztL/hLCbtc8=
+X-Google-Smtp-Source: AGHT+IE7mLrQ4PS1T6eK7H6zyqpO+N3XayG6pjPmJzubg5i3rO0Sb5RLmu37pfnSWox+jGrQ8fS7Pg==
+X-Received: by 2002:a05:6214:5bc4:b0:6ce:12da:1dfc with SMTP id 6a1803df08f44-6d08d6dbc20mr74253646d6.4.1729865848617;
+        Fri, 25 Oct 2024 07:17:28 -0700 (PDT)
+Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d179753621sm6115576d6.22.2024.10.25.07.17.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Oct 2024 07:17:28 -0700 (PDT)
+From: Gregory Price <gourry@gourry.net>
+To: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Cc: kernel-team@meta.com,
+	akpm@linux-foundation.org,
+	ying.huang@intel.com,
+	weixugc@google.com,
+	dave.hansen@linux.intel.com,
+	osalvador@suse.de,
+	shy828301@gmail.com,
 	stable@vger.kernel.org
-Subject: [PATCH] drm/amd/pm: Vangogh: Fix kernel memory out of bounds write
-Date: Fri, 25 Oct 2024 15:15:26 +0100
-Message-ID: <20241025141526.18572-1-tursulin@igalia.com>
-X-Mailer: git-send-email 2.46.0
+Subject: [PATCH] vmscan,migrate: fix double-decrement on node stats when demoting pages
+Date: Fri, 25 Oct 2024 10:17:24 -0400
+Message-ID: <20241025141724.17927-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,93 +88,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+When numa balancing is enabled with demotion, vmscan will call
+migrate_pages when shrinking LRUs.  Successful demotions will
+cause node vmstat numbers to double-decrement, leading to an
+imbalanced page count.  The result is dmesg output like such:
 
-KASAN reports that the GPU metrics table allocated in
-vangogh_tables_init() is not large enough for the memset done in
-smu_cmn_init_soft_gpu_metrics(). Condensed report follows:
+$ cat /proc/sys/vm/stat_refresh
 
-[   33.861314] BUG: KASAN: slab-out-of-bounds in smu_cmn_init_soft_gpu_metrics+0x73/0x200 [amdgpu]
-[   33.861799] Write of size 168 at addr ffff888129f59500 by task mangoapp/1067
-...
-[   33.861808] CPU: 6 UID: 1000 PID: 1067 Comm: mangoapp Tainted: G        W          6.12.0-rc4 #356 1a56f59a8b5182eeaf67eb7cb8b13594dd23b544
-[   33.861816] Tainted: [W]=WARN
-[   33.861818] Hardware name: Valve Galileo/Galileo, BIOS F7G0107 12/01/2023
-[   33.861822] Call Trace:
-[   33.861826]  <TASK>
-[   33.861829]  dump_stack_lvl+0x66/0x90
-[   33.861838]  print_report+0xce/0x620
-[   33.861853]  kasan_report+0xda/0x110
-[   33.862794]  kasan_check_range+0xfd/0x1a0
-[   33.862799]  __asan_memset+0x23/0x40
-[   33.862803]  smu_cmn_init_soft_gpu_metrics+0x73/0x200 [amdgpu 13b1bc364ec578808f676eba412c20eaab792779]
-[   33.863306]  vangogh_get_gpu_metrics_v2_4+0x123/0xad0 [amdgpu 13b1bc364ec578808f676eba412c20eaab792779]
-[   33.864257]  vangogh_common_get_gpu_metrics+0xb0c/0xbc0 [amdgpu 13b1bc364ec578808f676eba412c20eaab792779]
-[   33.865682]  amdgpu_dpm_get_gpu_metrics+0xcc/0x110 [amdgpu 13b1bc364ec578808f676eba412c20eaab792779]
-[   33.866160]  amdgpu_get_gpu_metrics+0x154/0x2d0 [amdgpu 13b1bc364ec578808f676eba412c20eaab792779]
-[   33.867135]  dev_attr_show+0x43/0xc0
-[   33.867147]  sysfs_kf_seq_show+0x1f1/0x3b0
-[   33.867155]  seq_read_iter+0x3f8/0x1140
-[   33.867173]  vfs_read+0x76c/0xc50
-[   33.867198]  ksys_read+0xfb/0x1d0
-[   33.867214]  do_syscall_64+0x90/0x160
-...
-[   33.867353] Allocated by task 378 on cpu 7 at 22.794876s:
-[   33.867358]  kasan_save_stack+0x33/0x50
-[   33.867364]  kasan_save_track+0x17/0x60
-[   33.867367]  __kasan_kmalloc+0x87/0x90
-[   33.867371]  vangogh_init_smc_tables+0x3f9/0x840 [amdgpu]
-[   33.867835]  smu_sw_init+0xa32/0x1850 [amdgpu]
-[   33.868299]  amdgpu_device_init+0x467b/0x8d90 [amdgpu]
-[   33.868733]  amdgpu_driver_load_kms+0x19/0xf0 [amdgpu]
-[   33.869167]  amdgpu_pci_probe+0x2d6/0xcd0 [amdgpu]
-[   33.869608]  local_pci_probe+0xda/0x180
-[   33.869614]  pci_device_probe+0x43f/0x6b0
+[77383.088417] vmstat_refresh: nr_isolated_anon -103212
+[77383.088417] vmstat_refresh: nr_isolated_file -899642
 
-Empirically we can confirm that the former allocates 152 bytes for the
-table, while the latter memsets the 168 large block.
+This negative value may impact compaction and reclaim throttling.
 
-This is somewhat alleviated by the fact that allocation goes into a 192
-SLAB bucket, but then for v3_0 metrics the table grows to 264 bytes which
-would definitely be a problem.
+The double-decrement occurs in the migrate_pages path:
 
-Root cause appears that when GPU metrics tables for v2_4 parts were added
-it was not considered to enlarge the table to fit.
+caller to shrink_folio_list decrements the count
+  shrink_folio_list
+    demote_folio_list
+      migrate_pages
+        migrate_pages_batch
+          migrate_folio_move
+            migrate_folio_done
+              mod_node_page_state(-ve) <- second decrement
 
-The fix in this patch is rather "brute force" and perhaps later should be
-done in a smarter way, by extracting and consolidating the part version to
-size logic to a common helper, instead of brute forcing the largest
-possible allocation. Nevertheless, for now this works and fixes the out of
-bounds write.
+This path happens for SUCCESSFUL migrations, not failures. Typically
+callers to migrate_pages are required to handle putback/accounting for
+failures, but this is already handled in the shrink code.
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Fixes: 41cec40bc9ba ("drm/amd/pm: Vangogh: Add new gpu_metrics_v2_4 to acquire gpu_metrics")
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Evan Quan <evan.quan@amd.com>
-Cc: Wenyou Yang <WenYou.Yang@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: <stable@vger.kernel.org> # v6.6+
+When accounting for migrations, instead do not decrement the count
+when the migration reason is MR_DEMOTION. As of v6.11, this demotion
+logic is the only source of MR_DEMOTION.
+
+Signed-off-by: Gregory Price <gourry@gourry.net>
+Fixes: 26aa2d199d6f2 ("mm/migrate: demote pages during reclaim")
+Cc: stable@vger.kernel.org
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ mm/migrate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
-index 22737b11b1bf..36f4a4651918 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
-@@ -242,7 +242,10 @@ static int vangogh_tables_init(struct smu_context *smu)
- 		goto err0_out;
- 	smu_table->metrics_time = 0;
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 923ea80ba744..e3aac274cf16 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1099,7 +1099,7 @@ static void migrate_folio_done(struct folio *src,
+ 	 * not accounted to NR_ISOLATED_*. They can be recognized
+ 	 * as __folio_test_movable
+ 	 */
+-	if (likely(!__folio_test_movable(src)))
++	if (likely(!__folio_test_movable(src)) && reason != MR_DEMOTION)
+ 		mod_node_page_state(folio_pgdat(src), NR_ISOLATED_ANON +
+ 				    folio_is_file_lru(src), -folio_nr_pages(src));
  
--	smu_table->gpu_metrics_table_size = max(sizeof(struct gpu_metrics_v2_3), sizeof(struct gpu_metrics_v2_2));
-+	smu_table->gpu_metrics_table_size = sizeof(struct gpu_metrics_v2_2);
-+	smu_table->gpu_metrics_table_size = max(smu_table->gpu_metrics_table_size, sizeof(struct gpu_metrics_v2_3));
-+	smu_table->gpu_metrics_table_size = max(smu_table->gpu_metrics_table_size, sizeof(struct gpu_metrics_v2_4));
-+	smu_table->gpu_metrics_table_size = max(smu_table->gpu_metrics_table_size, sizeof(struct gpu_metrics_v3_0));
- 	smu_table->gpu_metrics_table = kzalloc(smu_table->gpu_metrics_table_size, GFP_KERNEL);
- 	if (!smu_table->gpu_metrics_table)
- 		goto err1_out;
 -- 
-2.46.0
+2.43.0
 
 
