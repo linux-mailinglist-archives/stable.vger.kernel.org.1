@@ -1,33 +1,33 @@
-Return-Path: <stable+bounces-88162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26BA29B0599
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 16:21:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5446B9B059A
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 16:21:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD6D02845DA
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 14:21:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C7E01F24977
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 14:21:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8F11FB8B9;
-	Fri, 25 Oct 2024 14:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D9EA1FB8A1;
+	Fri, 25 Oct 2024 14:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="nSOCrHfJ"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="Q1R7TAEv"
 X-Original-To: stable@vger.kernel.org
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF10E20D4E6
-	for <stable@vger.kernel.org>; Fri, 25 Oct 2024 14:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF531FB89E
+	for <stable@vger.kernel.org>; Fri, 25 Oct 2024 14:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729866058; cv=none; b=TS24xpV2CFYGKTPfXBdU6rJLJFNYGbWnntBMtTPaLxE+5nVHIVqYWpXnTgNkPPOhZNbhzRYHEFQJXs5GHfS6yyOkUQeVrVGmwzkdFzWWGcU3QGLZqRj2oHISFj/inJH2QIvJT8VwTaw79YaUvVj6GhNBOTklQRmvNt3Ay2hYblw=
+	t=1729866069; cv=none; b=mWINzbva0NJVCT2zkTB0fvH41FLAwvte9tLpLHLpg7eSN0VVDzjGskhY99/7HqGeKbetDmEkaVI44RN4LfrmILIDiZ3g+p2ruEMHOUNe2vgLqdBmWquVsfe+c+0hczvUCL6tC1GGjtpoYPUsOTbp6JqIyl6m4cz7je7X9nYkpw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729866058; c=relaxed/simple;
-	bh=t7ADqRXIElNZhnXHFbfDTmcGzpmCiSvMXQhjgXrIEV4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=melzSrhEOAvjzRTML2GeECybeuahq8y97S39/aegLTbO+Vb7pI163GGEX++bpl8khxcLi9iAFtPL4iAZi02Xq18eg/BS47FMgDPlTP6dapxGiOJoV9Gdh4jwegnhSP7B1LIllI14WDt8IyzFZOWZulj5Cl70iQNF2uCNeHIQYJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=nSOCrHfJ; arc=none smtp.client-ip=178.60.130.6
+	s=arc-20240116; t=1729866069; c=relaxed/simple;
+	bh=RjEbS7g7ANEhqrnJQWtslQ5OutnM3uPz/X4+JTXrjZE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OGKSyw74T9k18+WNCE2PWxNg/NUtMEx3aIcxCuG3xeXp8tDifDCrujv+Bmr09yHeR98M9KtcNCFshSb9Wxka8Q8WupjwH1a4yxFej07hpWmbjaKbqWrHKf3BmqYCOJs5tssS7gyPl2UVYZH/nb7EdhTEGJkTsTM1/IlFmOxBTTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=Q1R7TAEv; arc=none smtp.client-ip=178.60.130.6
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
@@ -36,16 +36,16 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
 	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=AO8Kj603KQjyUMdI+Xge7ltvPvn5yM7EGzBzsLiVDSU=; b=nSOCrHfJl+c4Y5XNRUlemxRdnu
-	/DVf59OJ9/OkRNn2zTRsQOtCCCr16hzDoVMVJJVRqhvDpPSxoRXEzc8SaRe6b/0HzilziYukV+Ezk
-	5n1DlLFB2HO+BWwmFeDfbwuYzrGIfDUJyTnZNfOadUX57ftVSRbV5Cr+FMlB5Hyw0b5gw9NSRDlGd
-	4FO6niTHIAosUddloVorH92lGAkKfOG9UrUv0m2BvUmF5ADw21+AG1SrqvNv/9SiY6rtQPPRwJs5t
-	PgkYxeO6tnSoR5XDmYPox+MXSTrgrrh4clxfLC/vz1hECku115EtsPjvAJAWg8c0aI3H7RQ7Zacdb
-	bm7/iMqQ==;
+	bh=C5qepusPzRABbydKRoTLs5amUryIFwYDdwANJkeEfIU=; b=Q1R7TAEv7NNtmWNUPv9PY2JPyO
+	oCCMCDgWwLTOnJSalf/KU/PDjx6BQ14Wp8mG9u1OvywRRxjzqFEWtnqPd+8l7LAdFMPoM7LphqKDx
+	VHxwiJmRvruO2Y9vaPKwCwAz26YbeFDU8CSdtlHhNciK4JEe9R/2s/xqkLc8kRdGItsWVmFWzpY9I
+	1UuOaBAu9jS50fW1cLfq6i7xtFAkUFrXdAirA9cP7HseYcwZSYVGAFHR4kk67Noyev4rlYn6IU8zN
+	B5bUX58CPiGu+P28fGHzKRdz5ltAM528RkhXYRh1hYia/yFg7Bx1obJSHciYvTyGUd5FKsfRqH5yI
+	9FEEJ47Q==;
 Received: from 179-125-75-201-dinamico.pombonet.net.br ([179.125.75.201] helo=quatroqueijos.lan)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1t4LBM-00F3iE-7f; Fri, 25 Oct 2024 16:20:52 +0200
+	id 1t4LBX-00F3ik-Mt; Fri, 25 Oct 2024 16:21:04 +0200
 From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 To: stable@vger.kernel.org
 Cc: Paul Moore <paul@paul-moore.com>,
@@ -53,9 +53,9 @@ Cc: Paul Moore <paul@paul-moore.com>,
 	Ondrej Mosnacek <omosnace@redhat.com>,
 	Sam Sun <samsun1006219@gmail.com>,
 	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 6.1] selinux: improve error checking in sel_write_load()
-Date: Fri, 25 Oct 2024 11:20:46 -0300
-Message-Id: <20241025142046.862779-1-cascardo@igalia.com>
+Subject: [PATCH 5.15] selinux: improve error checking in sel_write_load()
+Date: Fri, 25 Oct 2024 11:20:57 -0300
+Message-Id: <20241025142057.862813-1-cascardo@igalia.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -86,10 +86,10 @@ Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
  1 file changed, 14 insertions(+), 13 deletions(-)
 
 diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
-index a00d19139436..ab804d4ea911 100644
+index f2f6203e0fff..13be7826ae80 100644
 --- a/security/selinux/selinuxfs.c
 +++ b/security/selinux/selinuxfs.c
-@@ -621,6 +621,13 @@ static ssize_t sel_write_load(struct file *file, const char __user *buf,
+@@ -619,6 +619,13 @@ static ssize_t sel_write_load(struct file *file, const char __user *buf,
  	ssize_t length;
  	void *data = NULL;
  
@@ -103,7 +103,7 @@ index a00d19139436..ab804d4ea911 100644
  	mutex_lock(&fsi->state->policy_mutex);
  
  	length = avc_has_perm(&selinux_state,
-@@ -629,26 +636,21 @@ static ssize_t sel_write_load(struct file *file, const char __user *buf,
+@@ -627,26 +634,21 @@ static ssize_t sel_write_load(struct file *file, const char __user *buf,
  	if (length)
  		goto out;
  
@@ -136,7 +136,7 @@ index a00d19139436..ab804d4ea911 100644
  	length = sel_make_policy_nodes(fsi, load_state.policy);
  	if (length) {
  		pr_warn_ratelimited("SELinux: failed to initialize selinuxfs\n");
-@@ -657,13 +659,12 @@ static ssize_t sel_write_load(struct file *file, const char __user *buf,
+@@ -655,13 +657,12 @@ static ssize_t sel_write_load(struct file *file, const char __user *buf,
  	}
  
  	selinux_policy_commit(fsi->state, &load_state);
