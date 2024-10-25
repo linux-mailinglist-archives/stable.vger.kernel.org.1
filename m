@@ -1,53 +1,64 @@
-Return-Path: <stable+bounces-88158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F4389B04F3
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 16:03:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 111359B056C
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 16:17:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 706691C217EC
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 14:03:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96EB01F24959
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 14:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E292A74BED;
-	Fri, 25 Oct 2024 14:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A793A20102B;
+	Fri, 25 Oct 2024 14:15:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="X5hyvYUo"
 X-Original-To: stable@vger.kernel.org
-Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A429E212189;
-	Fri, 25 Oct 2024 14:03:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1B21FB8BE
+	for <stable@vger.kernel.org>; Fri, 25 Oct 2024 14:15:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729865028; cv=none; b=TeuYlzwnHKN0Xh63y48Y4bDHGJaGFSdMuRwMoL0EmP8RosvMxYYgHSDj1vo10F6zve/WB1x7oNwOnlj5aemrleqoRroZs6pCmtbUi8CrNScKq5KWeMVUBTtr+NhjgIPPeGaxQyCxsU9V1axGzy+aXNDePga3gxEN3OlQpbPTwKs=
+	t=1729865744; cv=none; b=QKXQBd5OpWaptyKs2Zp7EWu+f4PghkPm7JRSDz/Rpjn2elJ9d6MAWNwvGqv+aK8CgYfwiZ+Ysks3SQPfOHK/sbkgRvBlHqc6V5iSez9Iefnu2+J3gIqSdskGjmVrpPp+0VnoR7YDppW/JqQMfRK2Ev8AMrlTCOlCYYLJwaPiBZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729865028; c=relaxed/simple;
-	bh=Nl+3bOnR2Unji8mkIuA4GaO14wA+JZUVRZbEaFWBh+k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P+dE8tDfthtvwctbgVclnT/MEMTxE6g/Q3DtBFrGGklOCAxQJz49ldq5udeZdvQejAgx7NTBWMnDm78ai2eR7Un+kDzmPKIltLXfzV1HmaUAgVJZU746ik1HoXjQ2EzyZFgHqJ/oAbOKmOHodIvem751X9UeQouzce13+Tiw248=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.186.51])
-	by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4XZkWY4ht0z9v7JC;
-	Fri, 25 Oct 2024 21:43:21 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.47])
-	by mail.maildlp.com (Postfix) with ESMTP id 9F98614035F;
-	Fri, 25 Oct 2024 22:03:37 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.204.63.22])
-	by APP1 (Coremail) with SMTP id LxC2BwCH+Tk0pRtnjsZpAA--.22140S2;
-	Fri, 25 Oct 2024 15:03:37 +0100 (CET)
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-To: trondmy@kernel.org,
-	anna@kernel.org
-Cc: linux-nfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Roberto Sassu <roberto.sassu@huawei.com>,
+	s=arc-20240116; t=1729865744; c=relaxed/simple;
+	bh=Sp/j3TXF8w9fHYEYgoZcXKly+ukzk8JFJBkgoKu6wQ4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bWgPcti4kfbzKql3G4ngM+++E/8Mtc0rhZfbMnPP0jw4tHKTdgM3bplgZB3r2npRtsp8En5r1SG5CkdDzsrlMJQkf/lFKzbse/eK85D0w9Adr6ucSdshajY9yEKZj//U+Bo4y49xA0DEKge0OejFiyN/a8Ri9QkxsiBXbA/TWBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=X5hyvYUo; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=HF6JdqcICjQRXCESM5j2dVOSCoSQwY0RE7jarsaIL7A=; b=X5hyvYUoJmlUNgeuS+OXYE7qWh
+	1oGtVHb1UIulOZJxTn1VkF5fGDI3TGcaX2QVi3ilY1BkkfGFA3VvCCDAzTeZTc2BqXcb0BLqbkLqw
+	8mJBnO4MpEYQf4yKCkCEYSg0jgaqXII6tU0tLbW07N8C9PxIPTGfrsGuORujX1zi+gR68TKMlSNOO
+	DLE0gHHFzZllhyRtGlq1z/Xa5g1XHC5SGtJkAVq13+kBuLf00OH/gcZhNSziTDSXpykcW5NH5wb2V
+	rZguJFgpbRuGZBw5e4lFHHQ11S+NGu5G5Q7XsyznfoLf/tvd/HhYagUA1mIpZK6mE6hwvrNupWBlj
+	MklYBf0A==;
+Received: from [90.241.98.187] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1t4L6C-00F3cJ-Gz; Fri, 25 Oct 2024 16:15:32 +0200
+From: Tvrtko Ursulin <tursulin@igalia.com>
+To: amd-gfx@lists.freedesktop.org
+Cc: kernel-dev@igalia.com,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Evan Quan <evan.quan@amd.com>,
+	Wenyou Yang <WenYou.Yang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] nfs: Fix KMSAN warning in decode_getfattr_attrs()
-Date: Fri, 25 Oct 2024 16:03:27 +0200
-Message-ID: <20241025140327.2666623-1-roberto.sassu@huaweicloud.com>
-X-Mailer: git-send-email 2.47.0.118.gfd3785337b
+Subject: [PATCH] drm/amd/pm: Vangogh: Fix kernel memory out of bounds write
+Date: Fri, 25 Oct 2024 15:15:26 +0100
+Message-ID: <20241025141526.18572-1-tursulin@igalia.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,87 +66,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:LxC2BwCH+Tk0pRtnjsZpAA--.22140S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7AF1xXw48Jw4DWw4fuw4xtFb_yoW8uw45pr
-	Wqk34fCr15Ary8JF4Fva13X34UXay8trW7Wrs7tr1xZ3WrJrnxKa48tr4agrnrCr4UAFyF
-	g3WUJr4rJ3yDAFDanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUyKb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
-	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij
-	64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
-	8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE
-	2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42
-	xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF
-	7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU4NB_UUUUU
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAHBGcbAm8JvAABsk
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-Fix the following KMSAN warning:
+KASAN reports that the GPU metrics table allocated in
+vangogh_tables_init() is not large enough for the memset done in
+smu_cmn_init_soft_gpu_metrics(). Condensed report follows:
 
-CPU: 1 UID: 0 PID: 7651 Comm: cp Tainted: G    B
-Tainted: [B]=BAD_PAGE
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009)
-=====================================================
-=====================================================
-BUG: KMSAN: uninit-value in decode_getfattr_attrs+0x2d6d/0x2f90
- decode_getfattr_attrs+0x2d6d/0x2f90
- decode_getfattr_generic+0x806/0xb00
- nfs4_xdr_dec_getattr+0x1de/0x240
- rpcauth_unwrap_resp_decode+0xab/0x100
- rpcauth_unwrap_resp+0x95/0xc0
- call_decode+0x4ff/0xb50
- __rpc_execute+0x57b/0x19d0
- rpc_execute+0x368/0x5e0
- rpc_run_task+0xcfe/0xee0
- nfs4_proc_getattr+0x5b5/0x990
- __nfs_revalidate_inode+0x477/0xd00
- nfs_access_get_cached+0x1021/0x1cc0
- nfs_do_access+0x9f/0xae0
- nfs_permission+0x1e4/0x8c0
- inode_permission+0x356/0x6c0
- link_path_walk+0x958/0x1330
- path_lookupat+0xce/0x6b0
- filename_lookup+0x23e/0x770
- vfs_statx+0xe7/0x970
- vfs_fstatat+0x1f2/0x2c0
- __se_sys_newfstatat+0x67/0x880
- __x64_sys_newfstatat+0xbd/0x120
- x64_sys_call+0x1826/0x3cf0
- do_syscall_64+0xd0/0x1b0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[   33.861314] BUG: KASAN: slab-out-of-bounds in smu_cmn_init_soft_gpu_metrics+0x73/0x200 [amdgpu]
+[   33.861799] Write of size 168 at addr ffff888129f59500 by task mangoapp/1067
+...
+[   33.861808] CPU: 6 UID: 1000 PID: 1067 Comm: mangoapp Tainted: G        W          6.12.0-rc4 #356 1a56f59a8b5182eeaf67eb7cb8b13594dd23b544
+[   33.861816] Tainted: [W]=WARN
+[   33.861818] Hardware name: Valve Galileo/Galileo, BIOS F7G0107 12/01/2023
+[   33.861822] Call Trace:
+[   33.861826]  <TASK>
+[   33.861829]  dump_stack_lvl+0x66/0x90
+[   33.861838]  print_report+0xce/0x620
+[   33.861853]  kasan_report+0xda/0x110
+[   33.862794]  kasan_check_range+0xfd/0x1a0
+[   33.862799]  __asan_memset+0x23/0x40
+[   33.862803]  smu_cmn_init_soft_gpu_metrics+0x73/0x200 [amdgpu 13b1bc364ec578808f676eba412c20eaab792779]
+[   33.863306]  vangogh_get_gpu_metrics_v2_4+0x123/0xad0 [amdgpu 13b1bc364ec578808f676eba412c20eaab792779]
+[   33.864257]  vangogh_common_get_gpu_metrics+0xb0c/0xbc0 [amdgpu 13b1bc364ec578808f676eba412c20eaab792779]
+[   33.865682]  amdgpu_dpm_get_gpu_metrics+0xcc/0x110 [amdgpu 13b1bc364ec578808f676eba412c20eaab792779]
+[   33.866160]  amdgpu_get_gpu_metrics+0x154/0x2d0 [amdgpu 13b1bc364ec578808f676eba412c20eaab792779]
+[   33.867135]  dev_attr_show+0x43/0xc0
+[   33.867147]  sysfs_kf_seq_show+0x1f1/0x3b0
+[   33.867155]  seq_read_iter+0x3f8/0x1140
+[   33.867173]  vfs_read+0x76c/0xc50
+[   33.867198]  ksys_read+0xfb/0x1d0
+[   33.867214]  do_syscall_64+0x90/0x160
+...
+[   33.867353] Allocated by task 378 on cpu 7 at 22.794876s:
+[   33.867358]  kasan_save_stack+0x33/0x50
+[   33.867364]  kasan_save_track+0x17/0x60
+[   33.867367]  __kasan_kmalloc+0x87/0x90
+[   33.867371]  vangogh_init_smc_tables+0x3f9/0x840 [amdgpu]
+[   33.867835]  smu_sw_init+0xa32/0x1850 [amdgpu]
+[   33.868299]  amdgpu_device_init+0x467b/0x8d90 [amdgpu]
+[   33.868733]  amdgpu_driver_load_kms+0x19/0xf0 [amdgpu]
+[   33.869167]  amdgpu_pci_probe+0x2d6/0xcd0 [amdgpu]
+[   33.869608]  local_pci_probe+0xda/0x180
+[   33.869614]  pci_device_probe+0x43f/0x6b0
 
-The KMSAN warning is triggered in decode_getfattr_attrs(), when calling
-decode_attr_mdsthreshold(). It appears that fattr->mdsthreshold is not
-initialized.
+Empirically we can confirm that the former allocates 152 bytes for the
+table, while the latter memsets the 168 large block.
 
-Fix the issue by initializing fattr->mdsthreshold to NULL in
-nfs_fattr_init().
+This is somewhat alleviated by the fact that allocation goes into a 192
+SLAB bucket, but then for v3_0 metrics the table grows to 264 bytes which
+would definitely be a problem.
 
-Cc: stable@vger.kernel.org # v3.5.x
-Fixes: 88034c3d88c2 ("NFSv4.1 mdsthreshold attribute xdr")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Root cause appears that when GPU metrics tables for v2_4 parts were added
+it was not considered to enlarge the table to fit.
+
+The fix in this patch is rather "brute force" and perhaps later should be
+done in a smarter way, by extracting and consolidating the part version to
+size logic to a common helper, instead of brute forcing the largest
+possible allocation. Nevertheless, for now this works and fixes the out of
+bounds write.
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: 41cec40bc9ba ("drm/amd/pm: Vangogh: Add new gpu_metrics_v2_4 to acquire gpu_metrics")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Evan Quan <evan.quan@amd.com>
+Cc: Wenyou Yang <WenYou.Yang@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: <stable@vger.kernel.org> # v6.6+
 ---
- fs/nfs/inode.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index 542c7d97b235..1e71b029da58 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -1633,6 +1633,7 @@ void nfs_fattr_init(struct nfs_fattr *fattr)
- 	fattr->gencount = nfs_inc_attr_generation_counter();
- 	fattr->owner_name = NULL;
- 	fattr->group_name = NULL;
-+	fattr->mdsthreshold = NULL;
- }
- EXPORT_SYMBOL_GPL(nfs_fattr_init);
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
+index 22737b11b1bf..36f4a4651918 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
+@@ -242,7 +242,10 @@ static int vangogh_tables_init(struct smu_context *smu)
+ 		goto err0_out;
+ 	smu_table->metrics_time = 0;
  
+-	smu_table->gpu_metrics_table_size = max(sizeof(struct gpu_metrics_v2_3), sizeof(struct gpu_metrics_v2_2));
++	smu_table->gpu_metrics_table_size = sizeof(struct gpu_metrics_v2_2);
++	smu_table->gpu_metrics_table_size = max(smu_table->gpu_metrics_table_size, sizeof(struct gpu_metrics_v2_3));
++	smu_table->gpu_metrics_table_size = max(smu_table->gpu_metrics_table_size, sizeof(struct gpu_metrics_v2_4));
++	smu_table->gpu_metrics_table_size = max(smu_table->gpu_metrics_table_size, sizeof(struct gpu_metrics_v3_0));
+ 	smu_table->gpu_metrics_table = kzalloc(smu_table->gpu_metrics_table_size, GFP_KERNEL);
+ 	if (!smu_table->gpu_metrics_table)
+ 		goto err1_out;
 -- 
-2.47.0.118.gfd3785337b
+2.46.0
 
 
