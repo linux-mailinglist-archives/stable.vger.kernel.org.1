@@ -1,150 +1,137 @@
-Return-Path: <stable+bounces-88131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E42E9AFB26
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 09:33:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 191869AFBA3
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 09:57:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B472F1F23C8A
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 07:33:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B638B23E87
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 07:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E9819B59F;
-	Fri, 25 Oct 2024 07:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79BF1C4A12;
+	Fri, 25 Oct 2024 07:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="pNgK1Bw2"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="dvxmrz1D"
 X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE581BC5C;
-	Fri, 25 Oct 2024 07:33:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940BC1C3025
+	for <stable@vger.kernel.org>; Fri, 25 Oct 2024 07:56:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729841585; cv=none; b=VW8UFeVg5olKQyilSqI2x+vp/sVJ+VRzC/ztAci0T2v+P3TLcwOqv4QC+k7y0lKNAkrf9IPxCleSYsy5qaLiKsL1ldLdSW3AZy5lpf645sthQotMqIS2o0kcss7nQ5VdovUUVUlZAbsrdLYltRWqO+9K16Db/k6slQFcQF3RDbI=
+	t=1729843001; cv=none; b=H/VXVDsSL7be8xVvEg78DgXMT08pEtYQG615MM20sNxZAnWzvOHpfCw/Xnu4+QGkDNpFCxBww2ao2tL4qBkJchj8uaGId+fqN7lOKYAQqxBDVevHWAFv7zNFv00xAerXGr28XXM/GTwO5N2bT6tLE/X61cKQztHJ5HGKmIwmEaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729841585; c=relaxed/simple;
-	bh=rQzYkXul6Rw+pJQnum4RN5R3vzG9twby/wiCPRhKPHQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=fAXhtMVUYAQQKBt7vh/q0tjHJvNcFPbRTCV8K5ucVG2jbUBpFs4RgNCzx7IhBMH1SUgNK4bbf0BN5LIZKZv+U8McqeaN4EBDd/3q91QBcGlK5ysm4JnxvnZXVqw1vhsWn9ZlRxTXMzoSzbcK6mAsvPG9EQ7XWwvnR6vIR8iHQnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=pNgK1Bw2; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49P7WqX22255012, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1729841572; bh=rQzYkXul6Rw+pJQnum4RN5R3vzG9twby/wiCPRhKPHQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=pNgK1Bw2tTTECiBFspXvtWclZJNJte6AB6QwXNhJpt8I+28LeoK4Vu9Y26HwB3SI5
-	 +gxq7TYZNRSHp9iZOWyfARXNOYx8DycVz8KLhWANKOZDARgIG2WuZu/42wx7xDXWq+
-	 qG1W/wbnG2EMtbmx5cLPeENec7AgNPGMLBlyd6CL3x0K8fdE/O3dgLuAGFsfdSHcWe
-	 LlvrGpEIp2BJOlg9y+PvIPEc5S7++O5YnnShDCmW7Y3MG7BGZW5w40auZePYxOBiOT
-	 KRAWN4KXsSoiOmoErEt1SDUpbV74MQr6r9ZFlrdv3x2I3py7eVWD2ezwMfNwoLCZEa
-	 SSzWLbPvvGePA==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49P7WqX22255012
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 25 Oct 2024 15:32:52 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 25 Oct 2024 15:32:52 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 25 Oct 2024 15:32:51 +0800
-Received: from RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2]) by
- RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2%7]) with mapi id
- 15.01.2507.035; Fri, 25 Oct 2024 15:32:51 +0800
-From: Kailang <kailang@realtek.com>
-To: Takashi Iwai <tiwai@suse.de>,
-        Dean Matthew Menezes
-	<dean.menezes@utexas.edu>
-CC: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-        Jaroslav Kysela
-	<perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-        Linux Sound System
-	<linux-sound@vger.kernel.org>,
-        Greg KH <gregkh@linuxfoundation.org>
-Subject: RE: No sound on speakers X1 Carbon Gen 12
-Thread-Topic: No sound on speakers X1 Carbon Gen 12
-Thread-Index: AQHbIwVT/23eeZo4dEmkKtnQN51H6bKP5WWAgABb9wCAAJxEgP//e3+AgACHy9D//4FDgIAAhkBggAVELQCAAGMKAIAAiivw
-Date: Fri, 25 Oct 2024 07:32:51 +0000
-Message-ID: <7450fb7c26d64049a92ba4b5df022b41@realtek.com>
-References: <CAEkK70Tke7UxMEEKgRLMntSYeMqiv0PC8st72VYnBVQD-KcqVw@mail.gmail.com>
-	<2024101613-giggling-ceremony-aae7@gregkh>
-	<433b8579-e181-40e6-9eac-815d73993b23@leemhuis.info>
-	<87bjzktncb.wl-tiwai@suse.de>
-	<CAEkK70TAk26HFgrz4ZS0jz4T2Eu3LWcG-JD1Ov_2ffMp66oO-g@mail.gmail.com>
-	<87cyjzrutw.wl-tiwai@suse.de>
-	<CAEkK70T7NBRA1dZHBwAC7mNeXPo-dby4c7Nn=SYg0vzeHHt-1A@mail.gmail.com>
-	<87ttd8jyu3.wl-tiwai@suse.de>
-	<CAEkK70RAWRjRp6_=bSrecSXXMfnepC2P2YriaHUqicv5x5wJWw@mail.gmail.com>
-	<87h697jl6c.wl-tiwai@suse.de>
-	<CAEkK70TWL_me58QZXeJSq+=Ry3jA+CgZJttsgAPz1wP7ywqj6A@mail.gmail.com>
-	<87ed4akd2a.wl-tiwai@suse.de>	<87bjzekcva.wl-tiwai@suse.de>
-	<CAEkK70SgwaFNcxni2JUAfz7Ne9a_kdkdLRTOR53uhNzJkBQ3+A@mail.gmail.com>
-	<877ca2j60l.wl-tiwai@suse.de>	<43fe74e10d1d470e80dc2ae937bc1a43@realtek.com>
-	<87ldyh6eyu.wl-tiwai@suse.de>	<18d07dccef894f4cb87b78dd548c5bdd@realtek.com>
-	<87h6956dgu.wl-tiwai@suse.de>	<c47a3841cd554c678a0c5e517dd2ea77@realtek.com>
-	<CAEkK70SojedmjbXB+a+g+Bys=VWCOpxzV5GkuMSkAgA-jR2FpA@mail.gmail.com>
- <87ldyctzwt.wl-tiwai@suse.de>
-In-Reply-To: <87ldyctzwt.wl-tiwai@suse.de>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1729843001; c=relaxed/simple;
+	bh=laKWV2RpmCyH/YcI4Xx9fpf8SVY0NnUQ2fFtJ730LB8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Js05DwOA53d/Z9rx3AiCyp8DdlgJmC9/FGtZRs5W8YPKNPA4lyQ5xVw7lgdsXUEmXqhpKhhm9WyjEPUWNm7jYcfxFm/nInRg9WQ/98NfHId4tvnGolTunA3XGBoWhlJDaLXCXCEJ6qinxTaAFUzn0ijc6p6zKVUWgUXdc3/6ZZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=dvxmrz1D; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2e56750bb0dso1273194a91.0
+        for <stable@vger.kernel.org>; Fri, 25 Oct 2024 00:56:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1729842999; x=1730447799; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6laKqa55/o0629X+75d0Pfs5pGBVZ/MLyO3PoLeX31M=;
+        b=dvxmrz1DcRSWsRRbeTTRXklv/9hY17IJIzYhYks7G69GS3jUQUR5Wnz83qjrzMl4Pu
+         fe8hrGfy8A/xSEXoToG4Lju2L7tPaHlm75oP3Rujwd/pA2JDI0R/WKEVQukMxOltZzMQ
+         bZ/py5aDMhadgC/I+6qh6Z4cW2T8sexKecjSo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729842999; x=1730447799;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6laKqa55/o0629X+75d0Pfs5pGBVZ/MLyO3PoLeX31M=;
+        b=YFicoD7bqs4zDBSJGP8cfSPXhkKSl8asZ64Ka1ng0DjUq0jbj2WdPOYrZlXwga76I3
+         gfpFXMYoPBcVWnyyHPIhlnTdsob/Zi7Eo21nLxQVJ/kHS47w+pK/eoJ1dfmblH3CVHYH
+         uvRHScUbgbUImsndpAmmeFADGDwD15aWTEPyQUI+z/MxxsKoAKmkf7wZujcRgeMHDYq9
+         kau8b7/7kJt8Skdue1mNV4y2XszZZPjsOri0v7sQrCyFAQ6yn1bm+5oSq8H9UQ7lRLNa
+         GjSNAsg85e1tk9nBSs/pxFaFsDIP+5YbB2fjdOxgp2wrMsdJJvFZqXA0sRsrvf3qKKrK
+         9PZg==
+X-Forwarded-Encrypted: i=1; AJvYcCXCm8gPJ3rw4kY+YcZXimZWTWyvrTpvK1siauR7NhI27lnE+hzwhlrSx+0d6LXzPWxgj7LkuWE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdXEMgF5eQ26ARhd8B1Cc8PHeaKzTdh8ZqAMp2LXK5qRNwQmcM
+	lgsR6z2myg84wi8rmIkzVtD6IA8CALfnAf5kVOUIx1QzccMqE/39aSKBHNv1dw==
+X-Google-Smtp-Source: AGHT+IFmmKGI2cs990SRzNz65POmVSt+7jqG6ghbGRlWIcpYgMGvGVtY/qLmA8mHzd2tQ8d9uEfU1g==
+X-Received: by 2002:a17:90b:3850:b0:2e2:d1a3:faf9 with SMTP id 98e67ed59e1d1-2e76b716566mr7196222a91.40.1729842998905;
+        Fri, 25 Oct 2024 00:56:38 -0700 (PDT)
+Received: from wenstp920.tpe.corp.google.com ([2401:fa00:1:10:d8f:752c:c7f1:3169])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e77e4c9c1bsm2797553a91.19.2024.10.25.00.56.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Oct 2024 00:56:38 -0700 (PDT)
+From: Chen-Yu Tsai <wenst@chromium.org>
+To: Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Chen-Yu Tsai <wenst@chromium.org>,
+	devicetree@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] arm64: dts: mediatek: mt8183: Disable DPI display output by default
+Date: Fri, 25 Oct 2024 15:56:27 +0800
+Message-ID: <20241025075630.3917458-1-wenst@chromium.org>
+X-Mailer: git-send-email 2.47.0.163.g1226f6d8fa-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Transfer-Encoding: 8bit
 
+This reverts commit 377548f05bd0905db52a1d50e5b328b9b4eb049d.
 
+Most SoC dtsi files have the display output interfaces disabled by
+default, and only enabled on boards that utilize them. The MT8183
+has it backwards: the display outputs are left enabled by default,
+and only disabled at the board level.
 
-> -----Original Message-----
-> From: Takashi Iwai <tiwai@suse.de>
-> Sent: Friday, October 25, 2024 3:17 PM
-> To: Dean Matthew Menezes <dean.menezes@utexas.edu>
-> Cc: Kailang <kailang@realtek.com>; Takashi Iwai <tiwai@suse.de>;
-> stable@vger.kernel.org; regressions@lists.linux.dev; Jaroslav Kysela
-> <perex@perex.cz>; Takashi Iwai <tiwai@suse.com>; Linux Sound System
-> <linux-sound@vger.kernel.org>; Greg KH <gregkh@linuxfoundation.org>
-> Subject: Re: No sound on speakers X1 Carbon Gen 12
->=20
->=20
-> External mail.
->=20
->=20
->=20
-> On Fri, 25 Oct 2024 03:22:38 +0200,
-> Dean Matthew Menezes wrote:
-> >
-> > I get the same values for both
-> >
-> > axiom /home/dean/linux-6.11.3/sound/pci/hda # hda-verb /dev/snd/hwC0D0
-> > 0x5a SET_COEF_INDEX 0x00 nid =3D 0x5a, verb =3D 0x500, param =3D 0x0 va=
-lue =3D
-> > 0x0
->=20
-> Here OK, but...
->=20
-> > axiom /home/dean/linux-6.11.3/sound/pci/hda # hda-verb /dev/snd/hwC0D0
-> > 0x5a SET_PROC_COEF 0x00
->=20
-> ... here run GET_PROC_COEF instead, i.e. to read the value.
->=20
-But SOF mode can't read from this usage. I forgot.
+Reverse the situation for the DPI output so that it follows the
+normal scheme. For ease of backporting the DSI output is handled
+in a separate patch.
 
->=20
-> thanks,
->=20
-> Takashi
+Fixes: 009d855a26fd ("arm64: dts: mt8183: add dpi node to mt8183")
+Fixes: 377548f05bd0 ("arm64: dts: mediatek: mt8183-kukui: Disable DPI display interface")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+---
+ arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi | 5 -----
+ arch/arm64/boot/dts/mediatek/mt8183.dtsi       | 1 +
+ 2 files changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
+index 07ae3c8e897b..22924f61ec9e 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
+@@ -290,11 +290,6 @@ dsi_out: endpoint {
+ 	};
+ };
+ 
+-&dpi0 {
+-	/* TODO Re-enable after DP to Type-C port muxing can be described */
+-	status = "disabled";
+-};
+-
+ &gic {
+ 	mediatek,broken-save-restore-fw;
+ };
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183.dtsi b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+index 1afeeb1155f5..8f31fc9050ec 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+@@ -1845,6 +1845,7 @@ dpi0: dpi@14015000 {
+ 				 <&mmsys CLK_MM_DPI_MM>,
+ 				 <&apmixedsys CLK_APMIXED_TVDPLL>;
+ 			clock-names = "pixel", "engine", "pll";
++			status = "disabled";
+ 
+ 			port {
+ 				dpi_out: endpoint { };
+-- 
+2.47.0.163.g1226f6d8fa-goog
+
 
