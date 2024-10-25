@@ -1,250 +1,168 @@
-Return-Path: <stable+bounces-88170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 492E99B060F
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 16:45:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D3539B061E
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 16:47:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07E9F283224
-	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 14:45:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7770EB24984
+	for <lists+stable@lfdr.de>; Fri, 25 Oct 2024 14:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21A244C81;
-	Fri, 25 Oct 2024 14:45:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OYosZLMz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75D31465A0;
+	Fri, 25 Oct 2024 14:47:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8C321218A;
-	Fri, 25 Oct 2024 14:45:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2830D7083B
+	for <stable@vger.kernel.org>; Fri, 25 Oct 2024 14:47:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729867528; cv=none; b=pJKE0ewPj56kRlZx+7KWX1S+k/tY8E4x44AGZMZ0zD41CkdKIAnmj3pJYOyEZZ3QxXw2lfR4/n9iMyJIvd3gx3kXmBYj7PB9mexHyyVDwMf97zFUKjea5c2kMFYC8DP1mk9PtxPlplHRZuPSdrtrBkAhtmCv4KicXxTpvvAV7PY=
+	t=1729867659; cv=none; b=GxmCwoqQ7290OeJRAyYWw29OTY4jALHhuv7JDhSkQdDjD05Wk/Hju1nBcCeikevX1ytRyMGb701CTvXhdapoO15nmmh8O/YT6C/UURLAZL3Z/4C2fGrjLSssb4yMAfKYlWu8F9GtwyH24qVhbrgyBd3jMq0YW6emEfuPgqKtmH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729867528; c=relaxed/simple;
-	bh=ysppTu5mWCPLNFr19X3D1ebFpzQRxs2LQ0FjU/PhG0A=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=uDkIIr/xR5ztDP5y7LmmMsMEnGqwMtw0N0Y1okjy1k86P3cMQ1ucMqVivDHuzY1iHMGAgQMPa9Q5+jygGmmolCon+RWytl2KpA39+Wn12aSN43MzoNKEQq1P3lbJxXYQu6uAyxUR6gtDyfLJfu26xU0jJzJPaLHpQWb1f2XmVAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OYosZLMz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F46EC4CEC3;
-	Fri, 25 Oct 2024 14:45:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729867526;
-	bh=ysppTu5mWCPLNFr19X3D1ebFpzQRxs2LQ0FjU/PhG0A=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=OYosZLMzA81g9Vzc2XLu6HsXq9ZvG+EP5EjkfSR2JdFOdzpRtDPGNTieQSVSpQoqI
-	 LhGKBJq5qBSg7WRlTI0D6940fjpDvmTarolOEMtTvk7Hw5Fgg+ityOnFVa+QCEWHRy
-	 F6EymOvpdn7qIxXSjQiXHIikkAuMiqovTC33fXGCnwPGgMwkMF3OZat1dk1Y1IExWm
-	 VzyN3yySroCizuzc4k+B3vKnA8BipeGgLKCsxcg1Y4992eyDn9t6ZST1fA+Se32SeR
-	 FW1OkLLF6a3cuMOdmio3wW9eqaEe5icahMEgWwO6uGcgY1lf9Uhv2appxgfXeJuI3l
-	 wKxx2pM+P2zZw==
+	s=arc-20240116; t=1729867659; c=relaxed/simple;
+	bh=6YwKegnpwMlkce+A8tzgEAQWND4eqyOep74ce/8am10=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=FZo19DAA/8EPsTGUdj5XA4H67LvV4PiU5wz3F7nsAlnted3G824Kn5zxVhgLhNgwNMdzJSnQRqNDS+tcxrE9b19k8/cZ1RevFqji9suNDBy0LIFXv3bio1vOjiuJBTSID07jawszUufP20WkWwN2SNrIELx2/MBWMAYkY9SL8Yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1t4LbD-0000iG-KV
+	for stable@vger.kernel.org; Fri, 25 Oct 2024 16:47:35 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1t4LbD-000Nuz-1N
+	for stable@vger.kernel.org;
+	Fri, 25 Oct 2024 16:47:35 +0200
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+	by bjornoya.blackshift.org (Postfix) with SMTP id 1A3D635EB83
+	for <stable@vger.kernel.org>; Fri, 25 Oct 2024 14:47:35 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 3AD6B35EB77;
+	Fri, 25 Oct 2024 14:47:32 +0000 (UTC)
+Received: from [172.20.34.65] (localhost [::1])
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id b75e4293;
+	Fri, 25 Oct 2024 14:47:31 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Fri, 25 Oct 2024 16:47:19 +0200
+Subject: [PATCH can] can: mcp251xfd: mcp251xfd_ring_alloc(): fix coalescing
+ configuration when switching CAN modes
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 25 Oct 2024 17:45:22 +0300
-Message-Id: <D54YUWTQNJK0.1NUJJJF6FA8C@kernel.org>
-Cc: "David Howells" <dhowells@redhat.com>, "Mimi Zohar"
- <zohar@linux.ibm.com>, "Roberto Sassu" <roberto.sassu@huawei.com>,
- <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v7 4/5] tpm: Allocate chip->auth in
- tpm2_start_auth_session()
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Stefan Berger" <stefanb@linux.ibm.com>,
- <linux-integrity@vger.kernel.org>, "Peter Huewe" <peterhuewe@gmx.de>,
- "Jason Gunthorpe" <jgg@ziepe.ca>, "James Bottomley"
- <James.Bottomley@HansenPartnership.com>, "Ard Biesheuvel" <ardb@kernel.org>
-X-Mailer: aerc 0.18.2
-References: <20241021053921.33274-1-jarkko@kernel.org>
- <20241021053921.33274-5-jarkko@kernel.org>
- <588319e8-5983-4f15-abae-b5021f1e4fce@linux.ibm.com>
- <D5401CDJGBUG.1588B09HN21YS@kernel.org>
- <01edff76-2a66-4543-b1bf-4dc33d46c741@linux.ibm.com>
-In-Reply-To: <01edff76-2a66-4543-b1bf-4dc33d46c741@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241025-mcp251xfd-fix-coalesing-v1-1-9d11416de1df@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAHavG2cC/x2MWwqAIBAAryL73YLaC7pK9CG61kKpKEQQ3j3pc
+ 2BmXiiUmQos4oVMNxeOoYHqBNjDhJ2QXWPQUg9KKomXTXpUj3fo+UEbzUmFw46+n3s5Tc4NmqD
+ VKVMT/vMK1gTYav0Ah+2cCG4AAAA=
+X-Change-ID: 20241010-mcp251xfd-fix-coalesing-f373066dd42e
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ Thomas Kopp <thomas.kopp@microchip.com>, 
+ Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-can@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Marc Kleine-Budde <mkl@pengutronix.de>
+X-Mailer: b4 0.15-dev-dedf8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2950; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=6YwKegnpwMlkce+A8tzgEAQWND4eqyOep74ce/8am10=;
+ b=owEBbQGS/pANAwAKASg4oj56LbxvAcsmYgBnG6+APmOzIpFu7mVzEWzfdERoWACNGIZbPKSmb
+ 7Rfjvf0RtmJATMEAAEKAB0WIQRQQLqG4LYE3Sm8Pl8oOKI+ei28bwUCZxuvgAAKCRAoOKI+ei28
+ b9JGB/9415TnRd2nP4b1F9ld7bXPBD5mcCPrnZjUALn5Et0lzORblfBk6dCB5gBWhZAqGKmB9hJ
+ ZcivmgNo0BgzISK7xSd8cu6kWUqK/VoX7geTASTzhdyH3kufioTp0YsQ8+7tjoTOAXlqpoUQE9N
+ AgJkRUNtBUu4xOfojsenqyVpmHGD0hqzxGpkaXjgMLUVX2K4E5Rg1ojzj9TS9aMo8ASb/1h5x3E
+ 6kYT01M/M++Gv/4IC3o/qAPECFtByOLKD+4Ovdh13Ww0wi0a00mV9ucHyxYyYhp1+u5KYeYfokQ
+ cmoCT76hvg6irc4F2dijXrJhAMgLDNba2wlS9P+v0tWkYEUj
+X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
+ fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-On Thu Oct 24, 2024 at 3:59 PM EEST, Stefan Berger wrote:
->
->
-> On 10/24/24 7:28 AM, Jarkko Sakkinen wrote:
-> > On Wed Oct 23, 2024 at 10:15 PM EEST, Stefan Berger wrote:
-> >>
-> >>
-> >> On 10/21/24 1:39 AM, Jarkko Sakkinen wrote:
-> >>> Move allocation of chip->auth to tpm2_start_auth_session() so that th=
-e
-> >>> field can be used as flag to tell whether auth session is active or n=
-ot.
-> >>>
-> >>> Cc: stable@vger.kernel.org # v6.10+
-> >>> Fixes: 699e3efd6c64 ("tpm: Add HMAC session start and end functions")
-> >>> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> >>> ---
-> >>> v5:
-> >>> - No changes.
-> >>> v4:
-> >>> - Change to bug.
-> >>> v3:
-> >>> - No changes.
-> >>> v2:
-> >>> - A new patch.
-> >>> ---
-> >>>    drivers/char/tpm/tpm2-sessions.c | 43 +++++++++++++++++++---------=
-----
-> >>>    1 file changed, 25 insertions(+), 18 deletions(-)
-> >>>
-> >>> diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2=
--sessions.c
-> >>> index 78c650ce4c9f..6e52785de9fd 100644
-> >>> --- a/drivers/char/tpm/tpm2-sessions.c
-> >>> +++ b/drivers/char/tpm/tpm2-sessions.c
-> >>> @@ -484,7 +484,8 @@ static void tpm2_KDFe(u8 z[EC_PT_SZ], const char =
-*str, u8 *pt_u, u8 *pt_v,
-> >>>    	sha256_final(&sctx, out);
-> >>>    }
-> >>>   =20
-> >>> -static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip=
- *chip)
-> >>> +static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip=
- *chip,
-> >>> +				struct tpm2_auth *auth)
-> >>>    {
-> >>>    	struct crypto_kpp *kpp;
-> >>>    	struct kpp_request *req;
-> >>> @@ -543,7 +544,7 @@ static void tpm_buf_append_salt(struct tpm_buf *b=
-uf, struct tpm_chip *chip)
-> >>>    	sg_set_buf(&s[0], chip->null_ec_key_x, EC_PT_SZ);
-> >>>    	sg_set_buf(&s[1], chip->null_ec_key_y, EC_PT_SZ);
-> >>>    	kpp_request_set_input(req, s, EC_PT_SZ*2);
-> >>> -	sg_init_one(d, chip->auth->salt, EC_PT_SZ);
-> >>> +	sg_init_one(d, auth->salt, EC_PT_SZ);
-> >>>    	kpp_request_set_output(req, d, EC_PT_SZ);
-> >>>    	crypto_kpp_compute_shared_secret(req);
-> >>>    	kpp_request_free(req);
-> >>> @@ -554,8 +555,7 @@ static void tpm_buf_append_salt(struct tpm_buf *b=
-uf, struct tpm_chip *chip)
-> >>>    	 * This works because KDFe fully consumes the secret before it
-> >>>    	 * writes the salt
-> >>>    	 */
-> >>> -	tpm2_KDFe(chip->auth->salt, "SECRET", x, chip->null_ec_key_x,
-> >>> -		  chip->auth->salt);
-> >>> +	tpm2_KDFe(auth->salt, "SECRET", x, chip->null_ec_key_x, auth->salt)=
-;
-> >>>   =20
-> >>>     out:
-> >>>    	crypto_free_kpp(kpp);
-> >>> @@ -854,6 +854,8 @@ int tpm_buf_check_hmac_response(struct tpm_chip *=
-chip, struct tpm_buf *buf,
-> >>>    			/* manually close the session if it wasn't consumed */
-> >>>    			tpm2_flush_context(chip, auth->handle);
-> >>>    		memzero_explicit(auth, sizeof(*auth));
-> >>> +		kfree(auth);
-> >>> +		chip->auth =3D NULL;
-> >>>    	} else {
-> >>>    		/* reset for next use  */
-> >>>    		auth->session =3D TPM_HEADER_SIZE;
-> >>> @@ -882,6 +884,8 @@ void tpm2_end_auth_session(struct tpm_chip *chip)
-> >>>   =20
-> >>>    	tpm2_flush_context(chip, auth->handle);
-> >>>    	memzero_explicit(auth, sizeof(*auth));
-> >>> +	kfree(auth);
-> >>> +	chip->auth =3D NULL;
-> >>>    }
-> >>>    EXPORT_SYMBOL(tpm2_end_auth_session);
-> >>>   =20
-> >>> @@ -970,25 +974,29 @@ static int tpm2_load_null(struct tpm_chip *chip=
-, u32 *null_key)
-> >>>     */
-> >>>    int tpm2_start_auth_session(struct tpm_chip *chip)
-> >>>    {
-> >>> +	struct tpm2_auth *auth;
-> >>>    	struct tpm_buf buf;
-> >>> -	struct tpm2_auth *auth =3D chip->auth;
-> >>> -	int rc;
-> >>>    	u32 null_key;
-> >>> +	int rc;
-> >>>   =20
-> >>> -	if (!auth) {
-> >>> -		dev_warn_once(&chip->dev, "auth session is not active\n");
-> >>> +	if (chip->auth) {
-> >>> +		dev_warn_once(&chip->dev, "auth session is active\n");
-> >>>    		return 0;
-> >>>    	}
-> >>>   =20
-> >>> +	auth =3D kzalloc(sizeof(*auth), GFP_KERNEL);
-> >>> +	if (!auth)
-> >>> +		return -ENOMEM;
-> >>> +
-> >>>    	rc =3D tpm2_load_null(chip, &null_key);
-> >>>    	if (rc)
-> >>> -		goto out;
-> >>> +		goto err;
-> >>>   =20
-> >>>    	auth->session =3D TPM_HEADER_SIZE;
-> >>>   =20
-> >>>    	rc =3D tpm_buf_init(&buf, TPM2_ST_NO_SESSIONS, TPM2_CC_START_AUTH=
-_SESS);
-> >>>    	if (rc)
-> >>> -		goto out;
-> >>> +		goto err;
-> >>>   =20
-> >>>    	/* salt key handle */
-> >>>    	tpm_buf_append_u32(&buf, null_key);
-> >>> @@ -1000,7 +1008,7 @@ int tpm2_start_auth_session(struct tpm_chip *ch=
-ip)
-> >>>    	tpm_buf_append(&buf, auth->our_nonce, sizeof(auth->our_nonce));
-> >>>   =20
-> >>>    	/* append encrypted salt and squirrel away unencrypted in auth */
-> >>> -	tpm_buf_append_salt(&buf, chip);
-> >>> +	tpm_buf_append_salt(&buf, chip, auth);
-> >>>    	/* session type (HMAC, audit or policy) */
-> >>>    	tpm_buf_append_u8(&buf, TPM2_SE_HMAC);
-> >>>   =20
-> >>> @@ -1021,10 +1029,13 @@ int tpm2_start_auth_session(struct tpm_chip *=
-chip)
-> >>>   =20
-> >>>    	tpm_buf_destroy(&buf);
-> >>>   =20
-> >>> -	if (rc)
-> >>> -		goto out;
-> >>> +	if (rc =3D=3D TPM2_RC_SUCCESS) {
-> >>> +		chip->auth =3D auth;
-> >>> +		return 0;
-> >>> +	}
-> >>>   =20
-> >>> - out:
-> >>> +err:
-> >>
-> >> like in many other cases before kfree(auth):
-> >> memzero_explicit(auth, sizeof(*auth));
-> >>
-> >> With this:
-> >>
-> >> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-> >=20
-> > Thanks, or should we use kfree_sensitive()?
-> >=20
-> > It has some additional functionality, which is missed now:
-> >=20
-> > https://elixir.bootlin.com/linux/v6.11.5/source/mm/slab_common.c#L1339
-> >=20
-> > I.e. kasan_unpoison().
->
-> And change the other ones that use memzero_explicit()?
+Since commit 50ea5449c563 ("can: mcp251xfd: fix ring configuration
+when switching from CAN-CC to CAN-FD mode"), the current ring and
+coalescing configuration is passed to can_ram_get_layout(). That fixed
+the issue when switching between CAN-CC and CAN-FD mode with
+configured ring (rx, tx) and/or coalescing parameters (rx-frames-irq,
+tx-frames-irq).
 
-Yeah, might be a good idea too. Don't invent your own "safe primitives"
-sounds like a good idea to me at least...
+However 50ea5449c563 ("can: mcp251xfd: fix ring configuration when
+switching from CAN-CC to CAN-FD mode"), introduced a regression when
+switching CAN modes with disabled coalescing configuration: Even if
+the previous CAN mode has no coalescing configured, the new mode is
+configured with active coalescing. This leads to delayed receiving of
+CAN-FD frames.
 
->
-> >=20
-> > BR, Jarkko
-> >=20
+This comes from the fact, that ethtool uses usecs = 0 and max_frames =
+1 to disable coalescing, however the driver uses internally
+priv->{rx,tx}_obj_num_coalesce_irq = 0 to indicate disabled
+coalescing.
 
-BR, Jarkko
+Fix the regression by assigning struct ethtool_coalesce
+ec->{rx,tx}_max_coalesced_frames_irq = 1 if coalescing is disabled in
+the driver as can_ram_get_layout() expects this.
+
+Reported-by: https://github.com/vdh-robothania
+Closes: https://github.com/raspberrypi/linux/issues/6407
+Fixes: 50ea5449c563 ("can: mcp251xfd: fix ring configuration when switching from CAN-CC to CAN-FD mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+index e684991fa3917d4f6b6ebda8329f72971237574e..7209a831f0f2089e409c6be635f0e5dc7b2271da 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+@@ -2,7 +2,7 @@
+ //
+ // mcp251xfd - Microchip MCP251xFD Family CAN controller driver
+ //
+-// Copyright (c) 2019, 2020, 2021 Pengutronix,
++// Copyright (c) 2019, 2020, 2021, 2024 Pengutronix,
+ //               Marc Kleine-Budde <kernel@pengutronix.de>
+ //
+ // Based on:
+@@ -483,9 +483,11 @@ int mcp251xfd_ring_alloc(struct mcp251xfd_priv *priv)
+ 		};
+ 		const struct ethtool_coalesce ec = {
+ 			.rx_coalesce_usecs_irq = priv->rx_coalesce_usecs_irq,
+-			.rx_max_coalesced_frames_irq = priv->rx_obj_num_coalesce_irq,
++			.rx_max_coalesced_frames_irq = priv->rx_obj_num_coalesce_irq == 0 ?
++				1 : priv->rx_obj_num_coalesce_irq,
+ 			.tx_coalesce_usecs_irq = priv->tx_coalesce_usecs_irq,
+-			.tx_max_coalesced_frames_irq = priv->tx_obj_num_coalesce_irq,
++			.tx_max_coalesced_frames_irq = priv->tx_obj_num_coalesce_irq == 0 ?
++				1 : priv->tx_obj_num_coalesce_irq,
+ 		};
+ 		struct can_ram_layout layout;
+ 
+
+---
+base-commit: 9efc44fb2dba6138b0575826319200049078679a
+change-id: 20241010-mcp251xfd-fix-coalesing-f373066dd42e
+
+Best regards,
+-- 
+Marc Kleine-Budde <mkl@pengutronix.de>
+
+
 
