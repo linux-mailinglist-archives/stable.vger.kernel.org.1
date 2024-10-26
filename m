@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-88215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD2C9B18CE
-	for <lists+stable@lfdr.de>; Sat, 26 Oct 2024 16:53:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C069B18D8
+	for <lists+stable@lfdr.de>; Sat, 26 Oct 2024 16:57:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DED91F221C0
-	for <lists+stable@lfdr.de>; Sat, 26 Oct 2024 14:53:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 032561C21499
+	for <lists+stable@lfdr.de>; Sat, 26 Oct 2024 14:57:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D857E1F94D;
-	Sat, 26 Oct 2024 14:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F861C695;
+	Sat, 26 Oct 2024 14:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="IDXAYO04"
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="Tzw8Gs48"
 X-Original-To: stable@vger.kernel.org
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62BC324B4A
-	for <stable@vger.kernel.org>; Sat, 26 Oct 2024 14:53:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E4D1F94D
+	for <stable@vger.kernel.org>; Sat, 26 Oct 2024 14:57:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729954395; cv=none; b=TR3Lv2RKBrVvsxuSiHFlqI7MEEBB0gdnbYqIAku9pVMwcFYg72nDjGtlkOa+z9kVgx0+IS+Npk+0wMXyRu6YAArT4M/VSi+17NOq3sa9Ik1dpbHOsmA0FSTUIbZmzg61IMwLAAVZ/hzmoFlz7/tiYKb3xv6LjzMj1PzAMcNq/jI=
+	t=1729954642; cv=none; b=ODCu7pLltSKUnQZDLKWWbRnPja7O5co0kaBYi2xhNiYcZB78udCPjuegA3hbYwmUZqXpe5nYTMZOWdubvA5KBhE0fja+0yCwc2PVvjn14x+vzp+HmP55uKOpTMRMro0eKsBUHPojzSMRZzvVO+h7SNF456MzdD4htahZGFn4f/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729954395; c=relaxed/simple;
-	bh=0ZAutvhhGaFlmj1XmFap9brpWl2bniA/D2BddoTQ/jM=;
+	s=arc-20240116; t=1729954642; c=relaxed/simple;
+	bh=CJs0VpoZhONc6COX1imNdpelZZQnQ6WOrBIepRXm34w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qDXza2SnrtAWUUdULlYlLWZJhflvsAzsmH+NXHHahqGOJExtb2KdQQFsonM29Z2OlVJUVCdo7ni1X8xIqWPMgfhvvjfCm6I5NrN/ojnxarpdylJtepzfr/PMEOypCihIiuZqNpFkyC38JIUOwurPyS1DNyogIZgp1HyvdXFmG0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=IDXAYO04; arc=none smtp.client-ip=91.218.175.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Sat, 26 Oct 2024 07:53:03 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1729954390;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f6oEY5I2mn6JavjYEYeWI4XafhLDooXmCGvLmqMJIxw=;
-	b=IDXAYO04odV2PC/0FFjwWPsKKHzqtlkfTZw+5+KuPl8w5Mo++yXHzLsZTEF+ZR0DNjAfqL
-	zSWPUbrqLaREWWiScSQsS5jxMFGdimkChYtRQ3L6M0S4/mZk4JHQiWuyT1ybNlLbsQlnI0
-	vAy0Oz+0NMusUx+JOGzqoh6uH80Rnlw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Oliver Upton <oliver.upton@linux.dev>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Raghavendra Rao Ananta <rananta@google.com>,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	stable@vger.kernel.org, syzbot <syzkaller@googlegroups.com>
-Subject: Re: [PATCH] KVM: arm64: Mark the VM as dead for failed
- initializations
-Message-ID: <Zx0CT1gdSWVyKLuD@linux.dev>
-References: <20241025221220.2985227-1-rananta@google.com>
- <Zxx_X9-MdmAFzHUO@linux.dev>
- <87ttcztili.wl-maz@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ScqcFHfqoMZOMzPluXxChrosm4cgrAWbvuK1F12q5lN34AgP3/NeeRfLd9/jC7mZPmeiW024wTHWh6PT3SJyZmK4ZAeYHGxF5MFCwxNtxSH7sh1N4X6Uln80UOo9rqssEuft/YKWwFMM0AyF5V6J5Xj+y4f715AHCkv5CpMxKxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=Tzw8Gs48; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
+Received: from cwcc.thunk.org (pool-173-48-123-201.bstnma.fios.verizon.net [173.48.123.201])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 49QEueZW028447
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 26 Oct 2024 10:56:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1729954603; bh=aULT5OMJ6smsVuK2cgh/H3JIovBDA9Azz9OyMHRcqaA=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=Tzw8Gs48LAwF45tatmSNWobz6VgBPrihP9EwNG7bIEEGCVvsky/lBI9xua7qdo9Pm
+	 N81QQdX40IHBtixe7waVbfo8zUTXPme/XEdo8UoQxU8+p5DQQbgGLc9jrbFALqdC2I
+	 odx3/RXBgLGum4PQgJZawxMyVtVi2W6YofKFKbrXf5ROvvpEWgvyt+F2v1Op+cY+3V
+	 W0kkcVK39CosbMH+9FxMRHK00q4mNKfcdI4D3yuiQqUhbun0cZrbt6C6XoJunc1ejX
+	 mgDcjv7kG6j2lqCzjzzMb9QMtntP+jMaGoci5t4WeQ1q6M6frglWCE1gnNPz4pQW/c
+	 FIXSWhYTo1nwA==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+	id 3C68815C032A; Sat, 26 Oct 2024 10:56:40 -0400 (EDT)
+Date: Sat, 26 Oct 2024 10:56:40 -0400
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: linux-kernel@vger.kernel.org, conduct@kernel.org, security@kernel.org,
+        cve@kernel.org, linux-doc@vger.kernel.org,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>, shuah@kernel.org,
+        lee@kernel.org, sashal@kernel.org, corbet@lwn.net
+Subject: Re: Concerns over transparency of informal kernel groups
+Message-ID: <20241026145640.GA4029861@mit.edu>
+References: <73b8017b-fce9-4cb1-be48-fc8085f1c276@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,117 +68,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87ttcztili.wl-maz@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <73b8017b-fce9-4cb1-be48-fc8085f1c276@app.fastmail.com>
 
-On Sat, Oct 26, 2024 at 08:43:21AM +0100, Marc Zyngier wrote:
-> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-> index bf64fed9820e..c315bc1a4e9a 100644
-> --- a/arch/arm64/include/asm/kvm_host.h
-> +++ b/arch/arm64/include/asm/kvm_host.h
-> @@ -74,8 +74,6 @@ enum kvm_mode kvm_get_mode(void);
->  static inline enum kvm_mode kvm_get_mode(void) { return KVM_MODE_NONE; };
->  #endif
->  
-> -DECLARE_STATIC_KEY_FALSE(userspace_irqchip_in_use);
-> -
->  extern unsigned int __ro_after_init kvm_sve_max_vl;
->  extern unsigned int __ro_after_init kvm_host_sve_max_vl;
->  int __init kvm_arm_init_sve(void);
-> diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
-> index 879982b1cc73..1215df590418 100644
-> --- a/arch/arm64/kvm/arch_timer.c
-> +++ b/arch/arm64/kvm/arch_timer.c
-> @@ -206,8 +206,7 @@ void get_timer_map(struct kvm_vcpu *vcpu, struct timer_map *map)
->  
->  static inline bool userspace_irqchip(struct kvm *kvm)
->  {
-> -	return static_branch_unlikely(&userspace_irqchip_in_use) &&
-> -		unlikely(!irqchip_in_kernel(kvm));
-> +	return unlikely(!irqchip_in_kernel(kvm));
->  }
->  
->  static void soft_timer_start(struct hrtimer *hrt, u64 ns)
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 48cafb65d6ac..70ff9a20ef3a 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -69,7 +69,6 @@ DECLARE_KVM_NVHE_PER_CPU(struct kvm_cpu_context, kvm_hyp_ctxt);
->  static bool vgic_present, kvm_arm_initialised;
->  
->  static DEFINE_PER_CPU(unsigned char, kvm_hyp_initialized);
-> -DEFINE_STATIC_KEY_FALSE(userspace_irqchip_in_use);
->  
->  bool is_kvm_arm_initialised(void)
->  {
-> @@ -503,9 +502,6 @@ void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu)
->  
->  void kvm_arch_vcpu_destroy(struct kvm_vcpu *vcpu)
->  {
-> -	if (vcpu_has_run_once(vcpu) && unlikely(!irqchip_in_kernel(vcpu->kvm)))
-> -		static_branch_dec(&userspace_irqchip_in_use);
-> -
->  	kvm_mmu_free_memory_cache(&vcpu->arch.mmu_page_cache);
->  	kvm_timer_vcpu_terminate(vcpu);
->  	kvm_pmu_vcpu_destroy(vcpu);
-> @@ -848,14 +844,6 @@ int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vcpu)
->  			return ret;
->  	}
->  
-> -	if (!irqchip_in_kernel(kvm)) {
-> -		/*
-> -		 * Tell the rest of the code that there are userspace irqchip
-> -		 * VMs in the wild.
-> -		 */
-> -		static_branch_inc(&userspace_irqchip_in_use);
-> -	}
-> -
->  	/*
->  	 * Initialize traps for protected VMs.
->  	 * NOTE: Move to run in EL2 directly, rather than via a hypercall, once
-> @@ -1077,7 +1065,7 @@ static bool kvm_vcpu_exit_request(struct kvm_vcpu *vcpu, int *ret)
->  	 * state gets updated in kvm_timer_update_run and
->  	 * kvm_pmu_update_run below).
->  	 */
-> -	if (static_branch_unlikely(&userspace_irqchip_in_use)) {
-> +	if (unlikely(!irqchip_in_kernel(vcpu->kvm))) {
->  		if (kvm_timer_should_notify_user(vcpu) ||
->  		    kvm_pmu_should_notify_user(vcpu)) {
->  			*ret = -EINTR;
-> @@ -1199,7 +1187,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->  			vcpu->mode = OUTSIDE_GUEST_MODE;
->  			isb(); /* Ensure work in x_flush_hwstate is committed */
->  			kvm_pmu_sync_hwstate(vcpu);
-> -			if (static_branch_unlikely(&userspace_irqchip_in_use))
-> +			if (unlikely(!irqchip_in_kernel(vcpu->kvm)))
->  				kvm_timer_sync_user(vcpu);
->  			kvm_vgic_sync_hwstate(vcpu);
->  			local_irq_enable();
-> @@ -1245,7 +1233,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->  		 * we don't want vtimer interrupts to race with syncing the
->  		 * timer virtual interrupt state.
->  		 */
-> -		if (static_branch_unlikely(&userspace_irqchip_in_use))
-> +		if (unlikely(!irqchip_in_kernel(vcpu->kvm)))
->  			kvm_timer_sync_user(vcpu);
->  
->  		kvm_arch_vcpu_ctxsync_fp(vcpu);
+On Fri, Oct 25, 2024 at 04:15:42PM +0100, Jiaxun Yang wrote:
 > 
-> I think this would fix the problem you're seeing without changing the
-> userspace view of an erroneous configuration. It would also pave the
-> way for the complete removal of the interrupt notification to
-> userspace, which I claim has no user and is just a shit idea.
+> Over recent events, I've taken a closer look at how our community's governance
+> operates, only to find that there's remarkably little public information available
+> about those informal groups. 
 
-Yeah, looks like this ought to get it done.
+There's quite a bit of information available in the Linux Kernel
+documentation.  For example:
 
-Even with a fix for this particular issue I do wonder if we should
-categorically harden against late initialization failures and un-init
-the vCPU (or bug VM, where necessary) to avoid dealing with half-baked
-vCPUs/VMs across our UAPI surfaces.
+* https://www.kernel.org/doc/html/latest/process/security-bugs.html
+* https://www.kernel.org/doc/html/latest/process/code-of-conduct.html
+* https://www.kernel.org/code-of-conduct.html
 
-A sane userspace will probably crash when KVM_RUN returns EINVAL anyway.
+Ultimately, though, governance model that we've used since the
+founding of the Benevolent Dictator model.  For a description of this,
+see:
 
--- 
-Thanks,
-Oliver
+* https://wiki.p2pfoundation.net/Benevolent_Dictator
+
+The reason why this model works for Open Source projects is that
+ultimately, the license allows the code to be forked, and someone
+could decide to take the Linux Kernel sources, and declare some new
+version, say: "Tedix".  However, if I was delusional enough to do
+this, it's very likely no one would pay attention to me, and consider
+me a random madman (of which there are many on the Internet).  
+
+Ultmately, though, the reason why Linus continues to serve as the
+leader of the Linux is that there is a very large number of people
+that respect his judgement and technical acumen.  And unlike in
+physical space where a dictator could (hypothetically) order tanks to
+fire on college-aged students, ultimately no one can force developers
+or companies to continue use or develop Linux.
+
+Everything else follows from this.  So for example, a maintainer or
+maintainer team can refuse to accept patches from a particular source.
+If someone disagrees with a decision, whether it is not accepting a
+patch, or request a patch that it be reverted, they can appeal to
+Linus.  Linus ask the Maintainer for their reasons, or can decide to
+override the decision by accepting the patch into his tree, or
+reverting a patch.  Ultimately, Linus can decide to relieve a
+maintainer of their duties by simply refusing to accept pull request
+from that maintainer, or by remoing the subsytem entirely from his
+sources.
+
+As another example, the Code of Conduct committee has no inherent
+power to sanction developers, other than to make recommendations to
+people who actually do the work --- namely, Linus Torvalds, other
+maintainers, the people who run the mailing lists, etc.  Like with
+Maintainers, their "power" comes from the respect that individuals on
+that body have with Linus and the other maintainers.
+
+Yet another body which you didn't mention is the Linux Foundation
+Technical Advisory board.  That body is elected, but the TAB has
+always made it clear that the primary power comes from the reputation
+and moral authority of the people who are elected to the TAB.  Sure,
+The TAB chair has an at-large seat on the Linux Foundation board, but
+any influence that the TAB through the TAB chair might have is more
+because of their work and the force of their arguments.
+
+
+More broadly, the model that I like to use is "servant leadership",
+and that's why I tell people who want to pursue taking up leadership
+roles in Linux.  Most of the senior leadership spend a huge amount of
+their personal time, and have often made career choices that have
+prioritized working on Linux and other Open Source projects over
+monetary renumeration.  Speaking for myself, I could have progressed
+farther in terms of position and salary.  I made choices that traded
+the freedom and ability to work on Linux because that was more
+important to me, and there is an awful lot of what I do as a leader is
+to serve those people in the ext4 development community.
+
+This is not true just in Linux; previously, I've served on the
+Security Area Advisory Group for the IETF, the standards body for the
+internet, and as working group chair for the ipsec working group when
+the IPSec protocols were first being standardied.  Sure, I was part of
+the "governance" of the IETF, but one of the things you learn very
+quickly is that as a volunteer leader, your primary power is to stop
+things from happening.  Hopefully, you're only stopping bad things
+from happening, and you can try to encourage and cajole volunteers
+spend time on what's necessary to make forward progress.  And of
+course, you can spend your own personal time smoothing the way to
+enable the members of the community to make forward progress.  And
+that takes us back to "servant leadership".
+
+Cheers,
+
+					- Ted
+
+P.S.  Note that when I say "volunteer', I'm using this in a fairly
+broad/informal fashion.  Yes, some members of the community have
+companies that pay our salaries to work on Linux.  But as the ext4
+maintainer, I don't have magement authority over the ext4 developer.
+I can refuse to take a patch; I can spend time creating testing
+infrastruture to make it easier for ext4 contributors to test their
+work; I can point out ways that some particular design might be good
+for ext4, and good for their company's business objectives, to the
+extent that I know their companies goals or they are willing to share
+those goals with me.  But I can't *force* someone at SuSE or Oracle or
+IBM or Huawei to work on some particular ext4 feature or bug.
+Ultimately, either individuals (who might be hobbists) or companies,
+voluntarily choose to contribute to ext4, or the IPSec standard.  And
+so that's why I call Linux and the IETF have much in common with a
+pure 100% volunteer organization, such as Doctors without Borders.
 
