@@ -1,190 +1,102 @@
-Return-Path: <stable+bounces-88212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5545E9B1743
-	for <lists+stable@lfdr.de>; Sat, 26 Oct 2024 13:06:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4FD49B183C
+	for <lists+stable@lfdr.de>; Sat, 26 Oct 2024 14:54:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCFFC1F224BC
-	for <lists+stable@lfdr.de>; Sat, 26 Oct 2024 11:06:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18816B22534
+	for <lists+stable@lfdr.de>; Sat, 26 Oct 2024 12:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D2521D2F6A;
-	Sat, 26 Oct 2024 11:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8401D7986;
+	Sat, 26 Oct 2024 12:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bRhPHdMV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ojfbFI5J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552DD1D1F5B;
-	Sat, 26 Oct 2024 11:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD101D6DBF;
+	Sat, 26 Oct 2024 12:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729940764; cv=none; b=h6fKLEv78IIElBwZnJpUZbdmyLol4FXg+7rYqKJUPxmVYKK742EcSgsKN/Dd/uXNhqMy3Gq6sXlGCTxQ4MU0TMWYbo+nvtG1Z65pxKeBv1i838xmg1sPAyJ+TtOnavQAs7srDq7walCTwMpGPkrLb2AeWQkErFkyqnneZxppomM=
+	t=1729947246; cv=none; b=oPC443YlG9ce2MyNkZh1YDyugZbZ7VqzhnDantlfQlSqFnWostBwIJ9Yca1JI1t5CGHvCGcGDkiZvXxv/Kn0gE3YU7FXHM7SX6UA7ZED207lpJooV76uZOgXf1AE4eNThWhltfGbcjO/8SvQDeXbJ8x//VgHyA2c4kyN2KSZoaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729940764; c=relaxed/simple;
-	bh=Zh3zuybgEofOZaCAcGFonRQz+iSFD09SNvGu7O6LYq8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ani34HCurYYX1mynHgv1ZY1cniLqioRxg+eSY87CSyD5Dnbig4+wl50ceYMYNZdULR/7ZziiQOAurdz09IrS1pyVvubLMZG3sAg0ZfbPBXk1IJlNGfCL72MJlv7LDeCua2TFDo/Qqvnu00gqqJtpTDzGhzgM7gdc0DK8kmXxgO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bRhPHdMV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72370C4CEC6;
-	Sat, 26 Oct 2024 11:05:59 +0000 (UTC)
+	s=arc-20240116; t=1729947246; c=relaxed/simple;
+	bh=CJGpXk4JE8FDwb3q0K8U4S1HXQZXc0+eiMpLFAaiKlI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=psP3X2GppyUXoGLvYbiG8o66UnQHYDlbDGfPqpk9D9sYUG8KHNcue3P3emL8bYvYVJQOpJlB/CSHJYfvM7aIHtP8tKXQZ6pmM/aOF1tSlDpU6QTSwhsoDjC0MQFDor5+ufAz9mEGMqCSIP/yI5ClzndpwCu1VNJcIIcAbE1yIzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ojfbFI5J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3846FC4CEC6;
+	Sat, 26 Oct 2024 12:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729940764;
-	bh=Zh3zuybgEofOZaCAcGFonRQz+iSFD09SNvGu7O6LYq8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bRhPHdMVnsnYmmf8azqlFC62K1Qi2aD1m3wm7FIkkhFZqaUpvwv4owY71WpPN1Tab
-	 UevitB2BtcNGrAunNKRkvn+zIM+H9BHjWNGVxj5/7QliKglRc1CO2ZSm+8U2vkHyeq
-	 L5GCr6CB6Mtc0ghY6NjDV5WWbrlN8DhUnp1RNlGdzxfVfhnvQoWcauenF8BK8MG+z6
-	 FOuV3MNwNSt0iV+G8M76pD8PLbWl9R5qJwxEJy0+QWVPsE5B+Cv4VxDK/4yHszjPUB
-	 GyhaqjAdiNzuFejGYskojc0piA5Xf8aWgJmA0Yyzs0A9zq9VGisbUhvmKHG5DdFPfN
-	 Kr6i+wbGdlFbw==
-Message-ID: <fae122f1-5a8e-4f92-b468-aba3fcb8ac90@kernel.org>
-Date: Sat, 26 Oct 2024 13:05:56 +0200
+	s=k20201202; t=1729947246;
+	bh=CJGpXk4JE8FDwb3q0K8U4S1HXQZXc0+eiMpLFAaiKlI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ojfbFI5Jc8AzkzpnaW+zWn01L8scZ72QaD7i3Jv2bXTlCjTmBIQ7/k4EkR8bljFBz
+	 pE1nFW3AVrkCXgJBzT0f+6YvqIpONVKqUMnam4pal/2a+58BL1LJizjPMjIU/qTWtm
+	 RVPLKm4QVSPw9Se0NLVrb111uufJ4+gdvCy8Ir7oWQb8Z6yiXpg5f9pMO4mwbL1mpy
+	 qA1IuW/jyQPeDlMes30BhaHGsZhqP+VnHKBifRXVQJcgCzZkkDio/04S8eEgAPnxr8
+	 8t4LT3NRPPwdxjJgGakaKsbauBOBIWwPW6WhPSE7vKX9jDU2HgUiqymYDB5rfFEUNV
+	 dFy3peBkIYtxg==
+Date: Sat, 26 Oct 2024 13:54:00 +0100
+From: Simon Horman <horms@kernel.org>
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Thomas Kopp <thomas.kopp@microchip.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-can@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH can] can: mcp251xfd: mcp251xfd_ring_alloc(): fix
+ coalescing configuration when switching CAN modes
+Message-ID: <20241026125400.GD1507976@kernel.org>
+References: <20241025-mcp251xfd-fix-coalesing-v1-1-9d11416de1df@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Concerns over transparency of informal kernel groups
-To: Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-kernel@vger.kernel.org,
- conduct@kernel.org, security@kernel.org, cve@kernel.org,
- linux-doc@vger.kernel.org, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, shuah@kernel.org,
- lee@kernel.org, sashal@kernel.org, corbet@lwn.net
-References: <73b8017b-fce9-4cb1-be48-fc8085f1c276@app.fastmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <73b8017b-fce9-4cb1-be48-fc8085f1c276@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241025-mcp251xfd-fix-coalesing-v1-1-9d11416de1df@pengutronix.de>
 
-On 25/10/2024 17:15, Jiaxun Yang wrote:
-> Dear Linux Community Members,
+On Fri, Oct 25, 2024 at 04:47:19PM +0200, Marc Kleine-Budde wrote:
+> Since commit 50ea5449c563 ("can: mcp251xfd: fix ring configuration
+> when switching from CAN-CC to CAN-FD mode"), the current ring and
+> coalescing configuration is passed to can_ram_get_layout(). That fixed
+> the issue when switching between CAN-CC and CAN-FD mode with
+> configured ring (rx, tx) and/or coalescing parameters (rx-frames-irq,
+> tx-frames-irq).
 > 
-> Over the years, various informal groups have formed within our community,
-> serving purposes such as maintaining connections with companies and external
-> bodies, handling sensitive information, making challenging decisions, and,
-> at times, representing the community as a whole. These groups contribute significantly
-> to our community's development and deserve our recognition and appreciation.
+> However 50ea5449c563 ("can: mcp251xfd: fix ring configuration when
+> switching from CAN-CC to CAN-FD mode"), introduced a regression when
+> switching CAN modes with disabled coalescing configuration: Even if
+> the previous CAN mode has no coalescing configured, the new mode is
+> configured with active coalescing. This leads to delayed receiving of
+> CAN-FD frames.
 > 
-> I'll name a few below that I identified from  `Documentation/`:
-> - Code of Conduct Committee <conduct@kernel.org>
-> - Linux kernel security team <security@kernel.org>
-> - Linux kernel hardware security team <hardware-security@kernel.org>
-> - Kernel CVE assignment team <cve@kernel.org>
-> - Stable Team for unpublished vulnerabilities <stable@kernel.org>
->   (I suspect it's just an alias to regular stable team, but I found no evidence).
+> This comes from the fact, that ethtool uses usecs = 0 and max_frames =
+> 1 to disable coalescing, however the driver uses internally
+> priv->{rx,tx}_obj_num_coalesce_irq = 0 to indicate disabled
+> coalescing.
 > 
-> Over recent events, I've taken a closer look at how our community's governance
-> operates, only to find that there's remarkably little public information available
-
-Oh, spread more FUD under the cloak of helping the community. Reminds me
-something, wait, how was it? zx?
-
-> about those informal groups. With the exception of the Linux kernel hardware security
-> team, it seems none of these groups maintain a public list of members that I can
-> easily find.
+> Fix the regression by assigning struct ethtool_coalesce
+> ec->{rx,tx}_max_coalesced_frames_irq = 1 if coalescing is disabled in
+> the driver as can_ram_get_layout() expects this.
 > 
-> Upon digging into the details, I’d like to raise a few concerns and offer some thoughts
-> for further discussion:
-> 
-> - Absence of a Membership Register
-> Our community is built on mutual trust. Without knowing who comprises these groups,
-> it's understandably difficult for people to have full confidence in their work.
+> Reported-by: https://github.com/vdh-robothania
+> Closes: https://github.com/raspberrypi/linux/issues/6407
+> Fixes: 50ea5449c563 ("can: mcp251xfd: fix ring configuration when switching from CAN-CC to CAN-FD mode")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 
-No, you might have difficulty, not "all people" which you imply. Please
-stop creating sentences like you are speaking for others. You do not
-speak for others.
-
-> A publicly available membership list would not only foster trust but also allow us to
-> address our recognition and appreciation.
-
-Nope. For some of the groups it is very intentional to hide the
-membership. It was explained already why and should be pretty obvious.
-
-> 
-> - Lack of Guidelines for Actions
-> Many of these groups appear to operate without documented guidelines. While I trust each
-> respectful individual's integrity, documented guidelines would enable the wider community
-> to better understand and appreciate the roles and responsibilities involved.
-
-Guidelines are well documented, although I understand something might be
-missing. Feel free to extend the existing documentation, as usual,
-patches are welcomed.
-
-> 
-> - Insufficient Transparency in Decision-Making
-> I fully respect the need for confidentiality in handling security matters, yet some
-> degree of openness around decision-making processes is essential in my opinion.
-> Releasing communications post-embargo, for instance, could promote understanding and
-> prevent potential abuse of confidential procedures.
-
-Again, unspecified FUD.
-
-> 
-> - No Conflict of Interest Policy
-> Particularly in the case of the Code of Conduct Committee, there may arise situations
-> where individuals face challenging decisions involving personal connections. A conflict
-> of interest policy would provide valuable guidance in such circumstances.
-
-Feel free to propose patches instead of claiming there is problem for
-others. If you identify issue, propose a patch.
-
-Several other your replies earlier were in similar tone. I am not going
-to engage in such discussions and probably neither other people, but
-some think that silence is approval or agreement. Thus this reply. for
-me this is just FUD.
-
-Best regards,
-Krzysztof
+Reviewed-by: Simon Horman <horms@kernel.org>
 
 
