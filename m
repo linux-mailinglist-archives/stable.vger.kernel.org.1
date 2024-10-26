@@ -1,293 +1,190 @@
-Return-Path: <stable+bounces-88211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CC069B1614
-	for <lists+stable@lfdr.de>; Sat, 26 Oct 2024 09:43:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5545E9B1743
+	for <lists+stable@lfdr.de>; Sat, 26 Oct 2024 13:06:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A49271F223A9
-	for <lists+stable@lfdr.de>; Sat, 26 Oct 2024 07:43:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCFFC1F224BC
+	for <lists+stable@lfdr.de>; Sat, 26 Oct 2024 11:06:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47831C2DCE;
-	Sat, 26 Oct 2024 07:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D2521D2F6A;
+	Sat, 26 Oct 2024 11:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JQkDBy09"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bRhPHdMV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651C71C2313;
-	Sat, 26 Oct 2024 07:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552DD1D1F5B;
+	Sat, 26 Oct 2024 11:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729928605; cv=none; b=CbowNwA3bMFdfoSSRxrMcsaELCqIhPzC0CTx6qqPwLazJCfU+PKpen0sAEm8K6BiT1FiohrGSSaVTBnBucrfxTF51LaBgLNGET5wzJUV8BL8IzOu+h7vHlkkooSY2bnJqpIni8fFJMERoTSMjKt5ez07YJkKks3NQphfaCKfyEc=
+	t=1729940764; cv=none; b=h6fKLEv78IIElBwZnJpUZbdmyLol4FXg+7rYqKJUPxmVYKK742EcSgsKN/Dd/uXNhqMy3Gq6sXlGCTxQ4MU0TMWYbo+nvtG1Z65pxKeBv1i838xmg1sPAyJ+TtOnavQAs7srDq7walCTwMpGPkrLb2AeWQkErFkyqnneZxppomM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729928605; c=relaxed/simple;
-	bh=yfbxVTOdjNWyFdOg0N0IInAkyNx3S7CGOwN19VHJsjA=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fmZaliHI4PXjbqhBT4fXCYdr+hK8Xe/1jshKp2NZimPIOAxs8FKRPDWCO9QT5oO0sUwKpHVPUHQ74q9TVoZzrLK1EIWve1tgH3chCC4HAxhPGV+DFTyO0S0YAQFDjeD8syUnBXMtTFn4fNZPlNSfWDmlTZLtkSY8TTWGyCs2USo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JQkDBy09; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E13C4CEC7;
-	Sat, 26 Oct 2024 07:43:25 +0000 (UTC)
+	s=arc-20240116; t=1729940764; c=relaxed/simple;
+	bh=Zh3zuybgEofOZaCAcGFonRQz+iSFD09SNvGu7O6LYq8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ani34HCurYYX1mynHgv1ZY1cniLqioRxg+eSY87CSyD5Dnbig4+wl50ceYMYNZdULR/7ZziiQOAurdz09IrS1pyVvubLMZG3sAg0ZfbPBXk1IJlNGfCL72MJlv7LDeCua2TFDo/Qqvnu00gqqJtpTDzGhzgM7gdc0DK8kmXxgO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bRhPHdMV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72370C4CEC6;
+	Sat, 26 Oct 2024 11:05:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729928605;
-	bh=yfbxVTOdjNWyFdOg0N0IInAkyNx3S7CGOwN19VHJsjA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=JQkDBy09B1l/Y5nwDWFidJDsLQb3b/ObeRiKMKPJUDvTDs6VeOAWKV2loLemCB7cW
-	 gM+LhoUUgrMHAha82zGUIeH9KqNbIpduEqqDKQWe0WmCGpqu3COystN60ajC/hHcoy
-	 BUDqKi5+PN79CUAvYWcWZIdtaq2/LhthAaYYLWc3TIQdwGowqWUxkCoqSzZ0Gv8SRt
-	 etFAbXuWp+xB66vKAWEquBbs+vhCE9mRq2qls4x8Ya7L2Nn5XRAx6KvrHQg3HwOTZ5
-	 4GrF+r9Qb127BvdBFWQyfSiCXwH9vxMEPxXwnX5lnfzkKdrTxe4Ml9E3QkWtsWelkS
-	 7q82Q2eVBEhAQ==
-Received: from [81.145.206.43] (helo=wait-a-minute.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1t4bSE-0075vH-K3;
-	Sat, 26 Oct 2024 08:43:22 +0100
-Date: Sat, 26 Oct 2024 08:43:21 +0100
-Message-ID: <87ttcztili.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Oliver Upton <oliver.upton@linux.dev>, Raghavendra Rao Ananta <rananta@google.com>
-Cc: 	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	stable@vger.kernel.org,
-	syzbot <syzkaller@googlegroups.com>
-Subject: Re: [PATCH] KVM: arm64: Mark the VM as dead for failed initializations
-In-Reply-To: <Zxx_X9-MdmAFzHUO@linux.dev>
-References: <20241025221220.2985227-1-rananta@google.com>
-	<Zxx_X9-MdmAFzHUO@linux.dev>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20201202; t=1729940764;
+	bh=Zh3zuybgEofOZaCAcGFonRQz+iSFD09SNvGu7O6LYq8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=bRhPHdMVnsnYmmf8azqlFC62K1Qi2aD1m3wm7FIkkhFZqaUpvwv4owY71WpPN1Tab
+	 UevitB2BtcNGrAunNKRkvn+zIM+H9BHjWNGVxj5/7QliKglRc1CO2ZSm+8U2vkHyeq
+	 L5GCr6CB6Mtc0ghY6NjDV5WWbrlN8DhUnp1RNlGdzxfVfhnvQoWcauenF8BK8MG+z6
+	 FOuV3MNwNSt0iV+G8M76pD8PLbWl9R5qJwxEJy0+QWVPsE5B+Cv4VxDK/4yHszjPUB
+	 GyhaqjAdiNzuFejGYskojc0piA5Xf8aWgJmA0Yyzs0A9zq9VGisbUhvmKHG5DdFPfN
+	 Kr6i+wbGdlFbw==
+Message-ID: <fae122f1-5a8e-4f92-b468-aba3fcb8ac90@kernel.org>
+Date: Sat, 26 Oct 2024 13:05:56 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 81.145.206.43
-X-SA-Exim-Rcpt-To: oliver.upton@linux.dev, rananta@google.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, stable@vger.kernel.org, syzkaller@googlegroups.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: Concerns over transparency of informal kernel groups
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-kernel@vger.kernel.org,
+ conduct@kernel.org, security@kernel.org, cve@kernel.org,
+ linux-doc@vger.kernel.org, "stable@vger.kernel.org" <stable@vger.kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, shuah@kernel.org,
+ lee@kernel.org, sashal@kernel.org, corbet@lwn.net
+References: <73b8017b-fce9-4cb1-be48-fc8085f1c276@app.fastmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <73b8017b-fce9-4cb1-be48-fc8085f1c276@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi both,
+On 25/10/2024 17:15, Jiaxun Yang wrote:
+> Dear Linux Community Members,
+> 
+> Over the years, various informal groups have formed within our community,
+> serving purposes such as maintaining connections with companies and external
+> bodies, handling sensitive information, making challenging decisions, and,
+> at times, representing the community as a whole. These groups contribute significantly
+> to our community's development and deserve our recognition and appreciation.
+> 
+> I'll name a few below that I identified from  `Documentation/`:
+> - Code of Conduct Committee <conduct@kernel.org>
+> - Linux kernel security team <security@kernel.org>
+> - Linux kernel hardware security team <hardware-security@kernel.org>
+> - Kernel CVE assignment team <cve@kernel.org>
+> - Stable Team for unpublished vulnerabilities <stable@kernel.org>
+>   (I suspect it's just an alias to regular stable team, but I found no evidence).
+> 
+> Over recent events, I've taken a closer look at how our community's governance
+> operates, only to find that there's remarkably little public information available
 
-On Sat, 26 Oct 2024 06:34:23 +0100,
-Oliver Upton <oliver.upton@linux.dev> wrote:
-> 
-> Hi Raghu,
-> 
-> Thanks for posting this fix.
-> 
-> On Fri, Oct 25, 2024 at 10:12:20PM +0000, Raghavendra Rao Ananta wrote:
-> > Syzbot hit the following WARN_ON() in kvm_timer_update_irq():
-> > 
-> > WARNING: CPU: 0 PID: 3281 at arch/arm64/kvm/arch_timer.c:459
-> > kvm_timer_update_irq+0x21c/0x394
-> > Call trace:
-> >   kvm_timer_update_irq+0x21c/0x394 arch/arm64/kvm/arch_timer.c:459
-> >   kvm_timer_vcpu_reset+0x158/0x684 arch/arm64/kvm/arch_timer.c:968
-> >   kvm_reset_vcpu+0x3b4/0x560 arch/arm64/kvm/reset.c:264
-> >   kvm_vcpu_set_target arch/arm64/kvm/arm.c:1553 [inline]
-> >   kvm_arch_vcpu_ioctl_vcpu_init arch/arm64/kvm/arm.c:1573 [inline]
-> >   kvm_arch_vcpu_ioctl+0x112c/0x1b3c arch/arm64/kvm/arm.c:1695
-> >   kvm_vcpu_ioctl+0x4ec/0xf74 virt/kvm/kvm_main.c:4658
-> >   vfs_ioctl fs/ioctl.c:51 [inline]
-> >   __do_sys_ioctl fs/ioctl.c:907 [inline]
-> >   __se_sys_ioctl fs/ioctl.c:893 [inline]
-> >   __arm64_sys_ioctl+0x108/0x184 fs/ioctl.c:893
-> >   __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
-> >   invoke_syscall+0x78/0x1b8 arch/arm64/kernel/syscall.c:49
-> >   el0_svc_common+0xe8/0x1b0 arch/arm64/kernel/syscall.c:132
-> >   do_el0_svc+0x40/0x50 arch/arm64/kernel/syscall.c:151
-> >   el0_svc+0x54/0x14c arch/arm64/kernel/entry-common.c:712
-> >   el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
-> >   el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
-> > 
-> > The sequence that led to the report is when KVM_ARM_VCPU_INIT ioctl is
-> > invoked after a failed first KVM_RUN. In a general sense though, since
-> > kvm_arch_vcpu_run_pid_change() doesn't tear down any of the past
-> > initiatializations, it's possible that the VM's state could be left
-> 
-> typo: initializations
-> 
-> > half-baked. Any upcoming ioctls could behave erroneously because of
-> > this.
-> 
-> You may want to highlight a bit more strongly that, despite the name,
-> we do a lot of late *VM* state initialization in kvm_arch_vcpu_run_pid_change().
-> 
-> When that goes sideways we're left with few choices besides bugging the
-> VM or gracefully tearing down state, potentially w/ concurrent users.
-> 
-> > Since these late vCPU initializations is past the point of attributing
-> > the failures to any ioctl, instead of tearing down each of the previous
-> > setups, simply mark the VM as dead, gving an opportunity for the
-> > userspace to close and try again.
-> > 
-> > Cc: <stable@vger.kernel.org>
-> > Reported-by: syzbot <syzkaller@googlegroups.com>
-> > Suggested-by: Oliver Upton <oliver.upton@linux.dev>
-> 
-> I definitely recommended this to you, so blame *me* for imposing some
-> toil on you with the following.
-> 
-> > @@ -836,16 +836,16 @@ int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vcpu)
-> >  
-> >  	ret = kvm_timer_enable(vcpu);
-> >  	if (ret)
-> > -		return ret;
-> > +		goto out_err;
-> >  
-> >  	ret = kvm_arm_pmu_v3_enable(vcpu);
-> >  	if (ret)
-> > -		return ret;
-> > +		goto out_err;
-> >  
-> >  	if (is_protected_kvm_enabled()) {
-> >  		ret = pkvm_create_hyp_vm(kvm);
-> >  		if (ret)
-> > -			return ret;
-> > +			goto out_err;
-> >  	}
-> >  
-> >  	if (!irqchip_in_kernel(kvm)) {
-> > @@ -869,6 +869,10 @@ int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vcpu)
-> >  	mutex_unlock(&kvm->arch.config_lock);
-> >  
-> >  	return ret;
-> > +
-> > +out_err:
-> > +	kvm_vm_dead(kvm);
-> > +	return ret;
-> >  }
-> 
-> After rereading, I think we could benefit from a more distinct separation
-> of late VM vs. vCPU state initialization.
-> 
-> Bugging the VM is a big hammer, we should probably only resort to that
-> when the VM state is screwed up badly.
->
-> Otherwise, for screwed up vCPU state we could uninitialize the vCPU and
-> let userspace try again. An example of this is how we deal with VMs that
-> run 32 bit userspace when KVM tries to hide the feature.
+Oh, spread more FUD under the cloak of helping the community. Reminds me
+something, wait, how was it? zx?
 
-I tend to agree. We shouldn't make a misconfiguration fatal unless we
-know for sure that the state is not recoverable (such as a screwed up
-memory map).
+> about those informal groups. With the exception of the Linux kernel hardware security
+> team, it seems none of these groups maintain a public list of members that I can
+> easily find.
+> 
+> Upon digging into the details, I’d like to raise a few concerns and offer some thoughts
+> for further discussion:
+> 
+> - Absence of a Membership Register
+> Our community is built on mutual trust. Without knowing who comprises these groups,
+> it's understandably difficult for people to have full confidence in their work.
 
-When it comes to this particular issue, I wonder why the (maybe overly
-simplistic) hack below isn't enough. The userspace_irqchip_in_use
-static key brings more problems than it is worth it, and the feature
-is mostly nonsense anyway.
+No, you might have difficulty, not "all people" which you imply. Please
+stop creating sentences like you are speaking for others. You do not
+speak for others.
 
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index bf64fed9820e..c315bc1a4e9a 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -74,8 +74,6 @@ enum kvm_mode kvm_get_mode(void);
- static inline enum kvm_mode kvm_get_mode(void) { return KVM_MODE_NONE; };
- #endif
- 
--DECLARE_STATIC_KEY_FALSE(userspace_irqchip_in_use);
--
- extern unsigned int __ro_after_init kvm_sve_max_vl;
- extern unsigned int __ro_after_init kvm_host_sve_max_vl;
- int __init kvm_arm_init_sve(void);
-diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
-index 879982b1cc73..1215df590418 100644
---- a/arch/arm64/kvm/arch_timer.c
-+++ b/arch/arm64/kvm/arch_timer.c
-@@ -206,8 +206,7 @@ void get_timer_map(struct kvm_vcpu *vcpu, struct timer_map *map)
- 
- static inline bool userspace_irqchip(struct kvm *kvm)
- {
--	return static_branch_unlikely(&userspace_irqchip_in_use) &&
--		unlikely(!irqchip_in_kernel(kvm));
-+	return unlikely(!irqchip_in_kernel(kvm));
- }
- 
- static void soft_timer_start(struct hrtimer *hrt, u64 ns)
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 48cafb65d6ac..70ff9a20ef3a 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -69,7 +69,6 @@ DECLARE_KVM_NVHE_PER_CPU(struct kvm_cpu_context, kvm_hyp_ctxt);
- static bool vgic_present, kvm_arm_initialised;
- 
- static DEFINE_PER_CPU(unsigned char, kvm_hyp_initialized);
--DEFINE_STATIC_KEY_FALSE(userspace_irqchip_in_use);
- 
- bool is_kvm_arm_initialised(void)
- {
-@@ -503,9 +502,6 @@ void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu)
- 
- void kvm_arch_vcpu_destroy(struct kvm_vcpu *vcpu)
- {
--	if (vcpu_has_run_once(vcpu) && unlikely(!irqchip_in_kernel(vcpu->kvm)))
--		static_branch_dec(&userspace_irqchip_in_use);
--
- 	kvm_mmu_free_memory_cache(&vcpu->arch.mmu_page_cache);
- 	kvm_timer_vcpu_terminate(vcpu);
- 	kvm_pmu_vcpu_destroy(vcpu);
-@@ -848,14 +844,6 @@ int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vcpu)
- 			return ret;
- 	}
- 
--	if (!irqchip_in_kernel(kvm)) {
--		/*
--		 * Tell the rest of the code that there are userspace irqchip
--		 * VMs in the wild.
--		 */
--		static_branch_inc(&userspace_irqchip_in_use);
--	}
--
- 	/*
- 	 * Initialize traps for protected VMs.
- 	 * NOTE: Move to run in EL2 directly, rather than via a hypercall, once
-@@ -1077,7 +1065,7 @@ static bool kvm_vcpu_exit_request(struct kvm_vcpu *vcpu, int *ret)
- 	 * state gets updated in kvm_timer_update_run and
- 	 * kvm_pmu_update_run below).
- 	 */
--	if (static_branch_unlikely(&userspace_irqchip_in_use)) {
-+	if (unlikely(!irqchip_in_kernel(vcpu->kvm))) {
- 		if (kvm_timer_should_notify_user(vcpu) ||
- 		    kvm_pmu_should_notify_user(vcpu)) {
- 			*ret = -EINTR;
-@@ -1199,7 +1187,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
- 			vcpu->mode = OUTSIDE_GUEST_MODE;
- 			isb(); /* Ensure work in x_flush_hwstate is committed */
- 			kvm_pmu_sync_hwstate(vcpu);
--			if (static_branch_unlikely(&userspace_irqchip_in_use))
-+			if (unlikely(!irqchip_in_kernel(vcpu->kvm)))
- 				kvm_timer_sync_user(vcpu);
- 			kvm_vgic_sync_hwstate(vcpu);
- 			local_irq_enable();
-@@ -1245,7 +1233,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
- 		 * we don't want vtimer interrupts to race with syncing the
- 		 * timer virtual interrupt state.
- 		 */
--		if (static_branch_unlikely(&userspace_irqchip_in_use))
-+		if (unlikely(!irqchip_in_kernel(vcpu->kvm)))
- 			kvm_timer_sync_user(vcpu);
- 
- 		kvm_arch_vcpu_ctxsync_fp(vcpu);
+> A publicly available membership list would not only foster trust but also allow us to
+> address our recognition and appreciation.
 
-I think this would fix the problem you're seeing without changing the
-userspace view of an erroneous configuration. It would also pave the
-way for the complete removal of the interrupt notification to
-userspace, which I claim has no user and is just a shit idea.
+Nope. For some of the groups it is very intentional to hide the
+membership. It was explained already why and should be pretty obvious.
 
-Thanks,
+> 
+> - Lack of Guidelines for Actions
+> Many of these groups appear to operate without documented guidelines. While I trust each
+> respectful individual's integrity, documented guidelines would enable the wider community
+> to better understand and appreciate the roles and responsibilities involved.
 
-	M.
+Guidelines are well documented, although I understand something might be
+missing. Feel free to extend the existing documentation, as usual,
+patches are welcomed.
 
--- 
-Without deviation from the norm, progress is not possible.
+> 
+> - Insufficient Transparency in Decision-Making
+> I fully respect the need for confidentiality in handling security matters, yet some
+> degree of openness around decision-making processes is essential in my opinion.
+> Releasing communications post-embargo, for instance, could promote understanding and
+> prevent potential abuse of confidential procedures.
+
+Again, unspecified FUD.
+
+> 
+> - No Conflict of Interest Policy
+> Particularly in the case of the Code of Conduct Committee, there may arise situations
+> where individuals face challenging decisions involving personal connections. A conflict
+> of interest policy would provide valuable guidance in such circumstances.
+
+Feel free to propose patches instead of claiming there is problem for
+others. If you identify issue, propose a patch.
+
+Several other your replies earlier were in similar tone. I am not going
+to engage in such discussions and probably neither other people, but
+some think that silence is approval or agreement. Thus this reply. for
+me this is just FUD.
+
+Best regards,
+Krzysztof
+
 
