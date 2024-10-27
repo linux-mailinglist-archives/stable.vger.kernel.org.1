@@ -1,104 +1,93 @@
-Return-Path: <stable+bounces-88226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D269B1CF0
-	for <lists+stable@lfdr.de>; Sun, 27 Oct 2024 10:49:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 971C29B1D7A
+	for <lists+stable@lfdr.de>; Sun, 27 Oct 2024 12:43:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DC3E281B56
-	for <lists+stable@lfdr.de>; Sun, 27 Oct 2024 09:49:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41AC4B211AC
+	for <lists+stable@lfdr.de>; Sun, 27 Oct 2024 11:43:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CDB1126C16;
-	Sun, 27 Oct 2024 09:49:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kk3j+WKJ"
-X-Original-To: Stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AFF41534E9;
+	Sun, 27 Oct 2024 11:43:49 +0000 (UTC)
+X-Original-To: stable@vger.kernel.org
+Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C44AD51;
-	Sun, 27 Oct 2024 09:49:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869CF14A09A;
+	Sun, 27 Oct 2024 11:43:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730022543; cv=none; b=dxjmPUdKTXCsCRaqKIOn+jgsKZpebdrR/xm88e0z4+EMmo4q+p8WHeBTicsR3DFpZ7Wjppv8saJrFFEXm1Z4VHzhjWLP1lfrEjmCYaoq7wv/R51hfVTBHiQzbPgZTO+pYgSQpEwwO4Qa/DyBpJdXE7Kae0J/P9lV3XHJfnF9GRs=
+	t=1730029429; cv=none; b=ef12hk734wyDNmTLyLZxqK4AvXlrSascw9qFc546X6ZLy6UywFvuT3+K3k5qaag6y0ucsySZrABJC9bELgd7T4BvQvgaqHNyg/ns113AnVs5E4RpIofOl0+BcfvNL1MZew4bGxnU5hWFcthC5+xXmTbGWurpNoZlzXvtaqyzaP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730022543; c=relaxed/simple;
-	bh=4Xo+BTvX/fRZw18CXj0mt5E4lf+3WhIOdjelvs3sb/Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ze/LxTJSDXynx91seYJv9TxJw1VNv/gFgdLnS9hwUDkuOYvgJMvA/s3eh87zZ4B63c0Uzej7Sob36MWtoGu99X2ABl3awwzhBpgT35e/jaom4BQnr+3TktfyTCYiKGGkwQoBO/VMBWDuxtGSB3axldYCBXf1pXK1aPqOVGh7Xvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kk3j+WKJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF0D5C4CEC3;
-	Sun, 27 Oct 2024 09:48:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730022542;
-	bh=4Xo+BTvX/fRZw18CXj0mt5E4lf+3WhIOdjelvs3sb/Y=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kk3j+WKJfIiFsC5DsJcTQZ43HmXouHxpYiSce1UAEJUu8CygaAyEOHIYMhD9TuQC9
-	 Vl2ZdyHId0bwGUvhWek6Ot40TTI++7VlwllT+sLb06YkiFMjDRl+Z9bk5RjHW+0Rpo
-	 g7WjRHRcoK1oY7IHLFjOUqj2AwIumWY6W6o7+crrIhRvbtDFt7SakwTd6iluJaoXyH
-	 xL3wUUJnGs+WFILy1jET/yki6yPc0/7v4o6VuL8I8v5jw6X5Z6zkqozoGVq4ZEiwH7
-	 oN+D0zfvd7inDx798MrRBYwmxRK3TaoR5+0Rf2neenyeK3tJxDEydVXEiIHNNLVMYq
-	 /VQbuTMo8T4ig==
-Date: Sun, 27 Oct 2024 09:48:53 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- andriy.shevchenko@linux.intel.com, anshulusr@gmail.com,
- gustavograzs@gmail.com, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Stable@vger.kernel.org
-Subject: Re: [PATCH v2 01/13] iio: chemical: bme680: Fix missing header
-Message-ID: <20241027094853.00ed19cf@jic23-huawei>
-In-Reply-To: <2024102100-sulfide-paving-17fb@gregkh>
-References: <20241021195316.58911-1-vassilisamir@gmail.com>
-	<20241021195316.58911-2-vassilisamir@gmail.com>
-	<2024102100-sulfide-paving-17fb@gregkh>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1730029429; c=relaxed/simple;
+	bh=VhaA53Zp+2mrXZXUnUwu3gnRPns6El5q4T/OURux8kQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SMElyFJDnOwoRY8dnIQfHUD2ag4nhua9YBkM3APAB57ExFbTliPi7TbPtR+lAMISrdLHIO7w/i/es/SELICpxCV2ne/+xVL2ZX0o1VobH0/ywLygGpPrN8Jh5a+d674kWlNlaalwz/oDbK57buDuue7DsS0tKP7bt7d8sBGgWfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id EF5A4435C4;
+	Sun, 27 Oct 2024 12:43:37 +0100 (CET)
+From: Christian Ebner <c.ebner@proxmox.com>
+To: dhowells@redhat.com,
+	jlayton@kernel.org,
+	stable@vger.kernel.org
+Cc: netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Christian Ebner <c.ebner@proxmox.com>
+Subject: [PATCH stable 6.11.y] netfs: reset subreq->iov_iter before netfs_clear_unread() tail clean
+Date: Sun, 27 Oct 2024 12:43:15 +0100
+Message-Id: <20241027114315.730407-1-c.ebner@proxmox.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon, 21 Oct 2024 22:13:17 +0200
-Greg KH <gregkh@linuxfoundation.org> wrote:
+Fixes file corruption issues when reading contents via ceph client.
 
-> On Mon, Oct 21, 2024 at 09:53:04PM +0200, Vasileios Amoiridis wrote:
-> > Add the linux/regmap.h header since the struct regmap_config is used
-> > in this file.
-> > 
-> > Cc: <Stable@vger.kernel.org>
-> > Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
-> > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-> > ---
-> >  drivers/iio/chemical/bme680.h | 2 ++
-> >  1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/drivers/iio/chemical/bme680.h b/drivers/iio/chemical/bme680.h
-> > index b2c547ac8d34..dc9ff477da34 100644
-> > --- a/drivers/iio/chemical/bme680.h
-> > +++ b/drivers/iio/chemical/bme680.h
-> > @@ -2,6 +2,8 @@
-> >  #ifndef BME680_H_
-> >  #define BME680_H_
-> >  
-> > +#include <linux/regmap.h>
-> > +
-> >  #define BME680_REG_CHIP_ID			0xD0
-> >  #define   BME680_CHIP_ID_VAL			0x61
-> >  #define BME680_REG_SOFT_RESET			0xE0  
-> 
-> Why is this needed in a stable release?  Does it fix a bug?
-> 
+Call netfs_reset_subreq_iter() to align subreq->io_iter before
+calling netfs_clear_unread() to clear tail, as subreq->io_iter count
+and subreq->transferred might not be aligned after incomplete I/O,
+having the subreq's NETFS_SREQ_CLEAR_TAIL set.
 
-Indeed this is just tidying up.  I've applied but dropped the tag and changed
-title to Add missing.... as no reason for this to get backported that I know
-of.
+Based on ee4cdf7b ("netfs: Speed up buffered reading"), which
+introduces a fix for the issue in mainline.
+
+Fixes: 92b6cc5d ("netfs: Add iov_iters to (sub)requests to describe various buffers")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219237
+Signed-off-by: Christian Ebner <c.ebner@proxmox.com>
+---
+Sending this patch in an attempt to backport the fix introduced by
+commit ee4cdf7b ("netfs: Speed up buffered reading"), which however
+can not be cherry picked for older kernels, as the patch is not
+independent from other commits and touches a lot of unrelated (to
+the fix) code.
+
+ fs/netfs/io.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/fs/netfs/io.c b/fs/netfs/io.c
+index d6ada4eba744..500119285346 100644
+--- a/fs/netfs/io.c
++++ b/fs/netfs/io.c
+@@ -528,6 +528,7 @@ void netfs_subreq_terminated(struct netfs_io_subrequest *subreq,
+ 
+ incomplete:
+ 	if (test_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags)) {
++		netfs_reset_subreq_iter(rreq, subreq);
+ 		netfs_clear_unread(subreq);
+ 		subreq->transferred = subreq->len;
+ 		goto complete;
+-- 
+2.39.5
+
 
 
