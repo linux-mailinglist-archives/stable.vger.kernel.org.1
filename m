@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80E4B9B26F1
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95B5B9B2617
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D69B8B20F46
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 409191F2120C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392AE18EFDC;
-	Mon, 28 Oct 2024 06:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4059218F2D4;
+	Mon, 28 Oct 2024 06:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FK+ZFyyG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ly1dTojk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB3218EFD2;
-	Mon, 28 Oct 2024 06:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29D918E779;
+	Mon, 28 Oct 2024 06:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097840; cv=none; b=ee0RFKLl5QVALlRzf0t2i1ktqLzahOrPaE2nGE6Se2eAiYCW4eh+cyBUokIwMSAPnN7qWkrS33ClcCdwJUwxTY2H06yEE8OneqRnj9VpJzOgBmw/zk7MH14Eq+kw6zpJnbOa2Fu+fHgO26mlPv57Llg4w0RiOpfCJrdT6rwIhVc=
+	t=1730097395; cv=none; b=dSZCr9f1Sz3X1RbRvngJCxr8pn5bQJCh9mhzk2r66DGvcl0xGRa86VXukRgswEvi7n4Lt8EWNeTxa50LHnNcOO1nSyltlLyJ9lxIdIZniM7nBtzy0UHT6UTYMj0up8BdmhmgRzi4LOHY+lOx0Hu3J8XbeTtzZHeSwQEZF954O0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097840; c=relaxed/simple;
-	bh=SdYHPNP6hJEwuoCZ1yQxxaEH9ReiZ9s+JWYYFN0M0+Y=;
+	s=arc-20240116; t=1730097395; c=relaxed/simple;
+	bh=2QSsIhkt8hCMaZtowc1eIExFD6R7gpt4A1jHnIv7b6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R1L2WPXPyUmS0ifbMw+hcB7BuR+hPmQ0TmZXaX4hkL99Mqy5N7cW2+cdrl2j4ROHY4e+KH4SZ4kUFkthmXm6dE/aZ+IU8p0r0n2oOiMKdmOKYX+vx5ismH7qfsl9np/KLhdf5Zg7t1ZUgSOKSEyVKKjS1kDiRYz1pGw8vmcBJSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FK+ZFyyG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89062C4CEC3;
-	Mon, 28 Oct 2024 06:43:59 +0000 (UTC)
+	 MIME-Version; b=QQn7JJzZ18xE6fkJ4pac4QpnhItJTwOoIp+wJCCxGn6RjVgGCaqEVETUFjDP7yUwIv2hOcWh3GDFj3D5822oePc0tiSVNMVpX+JtlxRz62Numeh1f6QP0fBk0NNg6+l0VCv5gW73aFtfhQpTxMtj8fvMhM9HtjZ/H7DeT7KMAdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ly1dTojk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB40DC4CEC3;
+	Mon, 28 Oct 2024 06:36:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097839;
-	bh=SdYHPNP6hJEwuoCZ1yQxxaEH9ReiZ9s+JWYYFN0M0+Y=;
+	s=korg; t=1730097394;
+	bh=2QSsIhkt8hCMaZtowc1eIExFD6R7gpt4A1jHnIv7b6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FK+ZFyyG8ulD8WiCZEozRWBjE7oepjb1H7i08CunuDkQYbB/qouvSCXsFkXdNBKlN
-	 dIcsNBjzZ61z60OHNfSB4i7Dkga3hbVdlGrUtEESrA6n43ELdLL31pIC4LBUzKIVBV
-	 EI1Oz3ShN7BYNrDz+Q1+wZzeHF78318HR/cfqDVE=
+	b=ly1dTojkJqDkqxpY+sptumAqAAVhhgCqrBN7LClZI1PMxv0Dpr0lKEFDkRnetMg5s
+	 twgPEKAcKnAKwm1TVmP0ktXOgHxJfYbB4t0pqUHenUjAQWChu3/Y0gVrrjZQre+RB7
+	 NcDffvCGhoEiqnhSem7Svn3QDiJRY9oeQzb9jEuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chancel Liu <chancel.liu@nxp.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 169/208] ASoC: fsl_micfil: Add a flag to distinguish with different volume control types
+Subject: [PATCH 6.1 112/137] ALSA: hda/realtek: Update default depop procedure
 Date: Mon, 28 Oct 2024 07:25:49 +0100
-Message-ID: <20241028062310.792741459@linuxfoundation.org>
+Message-ID: <20241028062301.842693841@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,133 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chancel Liu <chancel.liu@nxp.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit da95e891dd5d5de6c5ebc010bd028a2e028de093 ]
+[ Upstream commit e3ea2757c312e51bbf62ebc434a6f7df1e3a201f ]
 
-On i.MX8MM the register of volume control has positive and negative
-values. It is different from other platforms like i.MX8MP and i.MX93
-which only have positive values. Add a volume_sx flag to use SX_TLV
-volume control for this kind of platform. Use common TLV volume control
-for other platforms.
+Old procedure has a chance to meet Headphone no output.
 
-Fixes: cdfa92eb90f5 ("ASoC: fsl_micfil: Correct the number of steps on SX controls")
-Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Link: https://patch.msgid.link/20241017071507.2577786-1-chancel.liu@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: c2d6af53a43f ("ALSA: hda/realtek - Add default procedure for suspend and resume state")
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/17b717a0a0b04a77aea4a8ec820cba13@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_micfil.c | 43 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 42 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 38 ++++++++++++++++-------------------
+ 1 file changed, 17 insertions(+), 21 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
-index 0d37edb70261c..9407179af5d57 100644
---- a/sound/soc/fsl/fsl_micfil.c
-+++ b/sound/soc/fsl/fsl_micfil.c
-@@ -67,6 +67,7 @@ struct fsl_micfil_soc_data {
- 	bool imx;
- 	bool use_edma;
- 	bool use_verid;
-+	bool volume_sx;
- 	u64  formats;
- };
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 8c8a3f6499c22..e8c4c4c3474da 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -3854,20 +3854,18 @@ static void alc_default_init(struct hda_codec *codec)
  
-@@ -76,6 +77,7 @@ static struct fsl_micfil_soc_data fsl_micfil_imx8mm = {
- 	.fifo_depth = 8,
- 	.dataline =  0xf,
- 	.formats = SNDRV_PCM_FMTBIT_S16_LE,
-+	.volume_sx = true,
- };
+ 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
  
- static struct fsl_micfil_soc_data fsl_micfil_imx8mp = {
-@@ -84,6 +86,7 @@ static struct fsl_micfil_soc_data fsl_micfil_imx8mp = {
- 	.fifo_depth = 32,
- 	.dataline =  0xf,
- 	.formats = SNDRV_PCM_FMTBIT_S32_LE,
-+	.volume_sx = false,
- };
+-	if (hp_pin_sense)
++	if (hp_pin_sense) {
+ 		msleep(2);
  
- static struct fsl_micfil_soc_data fsl_micfil_imx93 = {
-@@ -94,6 +97,7 @@ static struct fsl_micfil_soc_data fsl_micfil_imx93 = {
- 	.formats = SNDRV_PCM_FMTBIT_S32_LE,
- 	.use_edma = true,
- 	.use_verid = true,
-+	.volume_sx = false,
- };
+-	snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+-
+-	if (hp_pin_sense)
+-		msleep(85);
++		snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
  
- static const struct of_device_id fsl_micfil_dt_ids[] = {
-@@ -317,7 +321,26 @@ static int hwvad_detected(struct snd_kcontrol *kcontrol,
- 	return 0;
+-	snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
++		msleep(75);
+ 
+-	if (hp_pin_sense)
+-		msleep(100);
++		snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
++		msleep(75);
++	}
  }
  
--static const struct snd_kcontrol_new fsl_micfil_snd_controls[] = {
-+static const struct snd_kcontrol_new fsl_micfil_volume_controls[] = {
-+	SOC_SINGLE_TLV("CH0 Volume", REG_MICFIL_OUT_CTRL,
-+		       MICFIL_OUTGAIN_CHX_SHIFT(0), 0xF, 0, gain_tlv),
-+	SOC_SINGLE_TLV("CH1 Volume", REG_MICFIL_OUT_CTRL,
-+		       MICFIL_OUTGAIN_CHX_SHIFT(1), 0xF, 0, gain_tlv),
-+	SOC_SINGLE_TLV("CH2 Volume", REG_MICFIL_OUT_CTRL,
-+		       MICFIL_OUTGAIN_CHX_SHIFT(2), 0xF, 0, gain_tlv),
-+	SOC_SINGLE_TLV("CH3 Volume", REG_MICFIL_OUT_CTRL,
-+		       MICFIL_OUTGAIN_CHX_SHIFT(3), 0xF, 0, gain_tlv),
-+	SOC_SINGLE_TLV("CH4 Volume", REG_MICFIL_OUT_CTRL,
-+		       MICFIL_OUTGAIN_CHX_SHIFT(4), 0xF, 0, gain_tlv),
-+	SOC_SINGLE_TLV("CH5 Volume", REG_MICFIL_OUT_CTRL,
-+		       MICFIL_OUTGAIN_CHX_SHIFT(5), 0xF, 0, gain_tlv),
-+	SOC_SINGLE_TLV("CH6 Volume", REG_MICFIL_OUT_CTRL,
-+		       MICFIL_OUTGAIN_CHX_SHIFT(6), 0xF, 0, gain_tlv),
-+	SOC_SINGLE_TLV("CH7 Volume", REG_MICFIL_OUT_CTRL,
-+		       MICFIL_OUTGAIN_CHX_SHIFT(7), 0xF, 0, gain_tlv),
-+};
+ static void alc_default_shutup(struct hda_codec *codec)
+@@ -3883,22 +3881,20 @@ static void alc_default_shutup(struct hda_codec *codec)
+ 
+ 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
+ 
+-	if (hp_pin_sense)
++	if (hp_pin_sense) {
+ 		msleep(2);
+ 
+-	snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+-
+-	if (hp_pin_sense)
+-		msleep(85);
+-
+-	if (!spec->no_shutup_pins)
+ 		snd_hda_codec_write(codec, hp_pin, 0,
+-				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+ 
+-	if (hp_pin_sense)
+-		msleep(100);
++		msleep(75);
+ 
++		if (!spec->no_shutup_pins)
++			snd_hda_codec_write(codec, hp_pin, 0,
++					    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
 +
-+static const struct snd_kcontrol_new fsl_micfil_volume_sx_controls[] = {
- 	SOC_SINGLE_SX_TLV("CH0 Volume", REG_MICFIL_OUT_CTRL,
- 			  MICFIL_OUTGAIN_CHX_SHIFT(0), 0x8, 0xF, gain_tlv),
- 	SOC_SINGLE_SX_TLV("CH1 Volume", REG_MICFIL_OUT_CTRL,
-@@ -334,6 +357,9 @@ static const struct snd_kcontrol_new fsl_micfil_snd_controls[] = {
- 			  MICFIL_OUTGAIN_CHX_SHIFT(6), 0x8, 0xF, gain_tlv),
- 	SOC_SINGLE_SX_TLV("CH7 Volume", REG_MICFIL_OUT_CTRL,
- 			  MICFIL_OUTGAIN_CHX_SHIFT(7), 0x8, 0xF, gain_tlv),
-+};
-+
-+static const struct snd_kcontrol_new fsl_micfil_snd_controls[] = {
- 	SOC_ENUM_EXT("MICFIL Quality Select",
- 		     fsl_micfil_quality_enum,
- 		     micfil_quality_get, micfil_quality_set),
-@@ -801,6 +827,20 @@ static int fsl_micfil_dai_probe(struct snd_soc_dai *cpu_dai)
- 	return 0;
++		msleep(75);
++	}
+ 	alc_auto_setup_eapd(codec, false);
+ 	alc_shutup_pins(codec);
  }
- 
-+static int fsl_micfil_component_probe(struct snd_soc_component *component)
-+{
-+	struct fsl_micfil *micfil = snd_soc_component_get_drvdata(component);
-+
-+	if (micfil->soc->volume_sx)
-+		snd_soc_add_component_controls(component, fsl_micfil_volume_sx_controls,
-+					       ARRAY_SIZE(fsl_micfil_volume_sx_controls));
-+	else
-+		snd_soc_add_component_controls(component, fsl_micfil_volume_controls,
-+					       ARRAY_SIZE(fsl_micfil_volume_controls));
-+
-+	return 0;
-+}
-+
- static const struct snd_soc_dai_ops fsl_micfil_dai_ops = {
- 	.probe		= fsl_micfil_dai_probe,
- 	.startup	= fsl_micfil_startup,
-@@ -821,6 +861,7 @@ static struct snd_soc_dai_driver fsl_micfil_dai = {
- 
- static const struct snd_soc_component_driver fsl_micfil_component = {
- 	.name		= "fsl-micfil-dai",
-+	.probe		= fsl_micfil_component_probe,
- 	.controls       = fsl_micfil_snd_controls,
- 	.num_controls   = ARRAY_SIZE(fsl_micfil_snd_controls),
- 	.legacy_dai_naming      = 1,
 -- 
 2.43.0
 
