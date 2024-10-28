@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-88569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 647279B2683
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:40:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C3D79B25AB
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:33:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D2441F227C1
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:40:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DAAB1C208BE
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7278818E74C;
-	Mon, 28 Oct 2024 06:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4450218E35B;
+	Mon, 28 Oct 2024 06:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="isqfKAyi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H1SVKqaY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F22F18E04F;
-	Mon, 28 Oct 2024 06:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C0918E03A;
+	Mon, 28 Oct 2024 06:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097629; cv=none; b=gJdTx0IDLKBs1RQGizEiyQ/CiyGit0PtzFPKAyYmSlJv+Zj25I7zEfKii8/zIDO51XebIagtfnBI40xV5yYW4R3X1csfBuayNlumn/jA7doqWpoEGY9zT2uilJsbg1M7zr2CZjrPAy6NU+TJI2ocf37nfNlgtrL7+tmQYnfUNY0=
+	t=1730097188; cv=none; b=hZZlm13T4Keyfy2+FA/1AnHyTGeCBavkun3trlH/DxalozNO9zdP5iI0JOJFW1nkFM/jqTnl5COGvckHMvv+MCgL9zGiOpl26pseE3qH9IYtAQ8jM3Y0Gwh7q/GZzG3hUAOveNEPnThJwwAyjyR3U6f2dipcpPt2zWooTVFbeg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097629; c=relaxed/simple;
-	bh=/yVDTN6GaIa5z0zjINBoe4hTSSeDdwtCLMCBbeNZJaw=;
+	s=arc-20240116; t=1730097188; c=relaxed/simple;
+	bh=dAgyjiZOJBTsneEhY/y5/c4Gtd2YPr50qIg89Zgmi5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fj1EKHk7XSVtG7enBdXCIJlqgcXb+hrN9f6sNIIe+XmQx9CrdK4m7/ue5fKVPZm+Y6a4vWbMsMurWFxhKGOJuQSttkDui+yeiPSSY6ORBLALPT9QWKJiNjx9XmDR+qA+aPO/QDTG6dLk0Mkv0rZ8n9/Epo5sn/TO6/2u9dczkr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=isqfKAyi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1CA9C4CEC3;
-	Mon, 28 Oct 2024 06:40:28 +0000 (UTC)
+	 MIME-Version; b=UVWkDl5Mq3ATZsm6E/XFkM9NtvHHNaLtDyfm9ZFiXCc0iQkJAMus7Ai9O84t535j/4bFpTJlKKX70QNxbpPZWTq3UYZ+kLVEcXxuECr8pQRc2nw2GaRrur4LDkS0ZQlVTqbM9IkbQ8m3QZu3Gu11od62HjhKePOxlJruQVxHjyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H1SVKqaY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B4AAC4CECD;
+	Mon, 28 Oct 2024 06:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097629;
-	bh=/yVDTN6GaIa5z0zjINBoe4hTSSeDdwtCLMCBbeNZJaw=;
+	s=korg; t=1730097187;
+	bh=dAgyjiZOJBTsneEhY/y5/c4Gtd2YPr50qIg89Zgmi5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=isqfKAyi2IZW+5HbXp+VOjJBE8RnfwF2wl/fiqyzj6z7pX9b9CDuNZjAtDeTaBbD1
-	 Tkq2erRIWF3XZR35krW7n9QZFHGSCAZpGoHlMFCH+Pp97bZGd2K29XZWzbbasNyEh4
-	 dn2eO5B5PNE25KeJPFEjtWokXHTRr5gREjxhZZ0U=
+	b=H1SVKqaYcvqcz18oS0mc+8uT1dP5HbNexjVM3crquviqbS4yjUMN/onEcaqCPIrI3
+	 Z5KkWT8V8nqrhdtqHhzS96GBUzi1rw8SH/3C4iPYs6eTXO0heCkvRaFKjbu95iVA+S
+	 kf/DhmKbIKNlu60bW83Uw855xHqiAwb7dIi3W4kc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Sauber <andrew.sauber@isovalent.com>,
-	Nikolay Nikolaev <nikolay.nikolaev@isovalent.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Anton Protopopov <aspsk@isovalent.com>,
-	William Tu <witu@nvidia.com>,
-	Ronak Doshi <ronak.doshi@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/208] vmxnet3: Fix packet corruption in vmxnet3_xdp_xmit_frame
+Subject: [PATCH 6.1 021/137] RDMA/bnxt_re: Return more meaningful error
 Date: Mon, 28 Oct 2024 07:24:18 +0100
-Message-ID: <20241028062308.564370591@linuxfoundation.org>
+Message-ID: <20241028062259.316057312@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,66 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit 4678adf94da4a9e9683817b246b58ce15fb81782 ]
+[ Upstream commit 98647df0178df215b8239c5c365537283b2852a6 ]
 
-Andrew and Nikolay reported connectivity issues with Cilium's service
-load-balancing in case of vmxnet3.
+When the HWRM command fails, driver currently returns -EFAULT(Bad
+address). This does not look correct.
 
-If a BPF program for native XDP adds an encapsulation header such as
-IPIP and transmits the packet out the same interface, then in case
-of vmxnet3 a corrupted packet is being sent and subsequently dropped
-on the path.
+Modified to return -EIO(I/O error).
 
-vmxnet3_xdp_xmit_frame() which is called e.g. via vmxnet3_run_xdp()
-through vmxnet3_xdp_xmit_back() calculates an incorrect DMA address:
-
-  page = virt_to_page(xdpf->data);
-  tbi->dma_addr = page_pool_get_dma_addr(page) +
-                  VMXNET3_XDP_HEADROOM;
-  dma_sync_single_for_device(&adapter->pdev->dev,
-                             tbi->dma_addr, buf_size,
-                             DMA_TO_DEVICE);
-
-The above assumes a fixed offset (VMXNET3_XDP_HEADROOM), but the XDP
-BPF program could have moved xdp->data. While the passed buf_size is
-correct (xdpf->len), the dma_addr needs to have a dynamic offset which
-can be calculated as xdpf->data - (void *)xdpf, that is, xdp->data -
-xdp->data_hard_start.
-
-Fixes: 54f00cce1178 ("vmxnet3: Add XDP support.")
-Reported-by: Andrew Sauber <andrew.sauber@isovalent.com>
-Reported-by: Nikolay Nikolaev <nikolay.nikolaev@isovalent.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Nikolay Nikolaev <nikolay.nikolaev@isovalent.com>
-Acked-by: Anton Protopopov <aspsk@isovalent.com>
-Cc: William Tu <witu@nvidia.com>
-Cc: Ronak Doshi <ronak.doshi@broadcom.com>
-Link: https://patch.msgid.link/a0888656d7f09028f9984498cc698bb5364d89fc.1728931137.git.daniel@iogearbox.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: cc1ec769b87c ("RDMA/bnxt_re: Fixing the Control path command and response handling")
+Fixes: 65288a22ddd8 ("RDMA/bnxt_re: use shadow qd while posting non blocking rcfw command")
+Link: https://patch.msgid.link/r/1728373302-19530-5-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vmxnet3/vmxnet3_xdp.c | 2 +-
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/vmxnet3/vmxnet3_xdp.c b/drivers/net/vmxnet3/vmxnet3_xdp.c
-index a6c787454a1ae..1341374a4588a 100644
---- a/drivers/net/vmxnet3/vmxnet3_xdp.c
-+++ b/drivers/net/vmxnet3/vmxnet3_xdp.c
-@@ -148,7 +148,7 @@ vmxnet3_xdp_xmit_frame(struct vmxnet3_adapter *adapter,
- 	} else { /* XDP buffer from page pool */
- 		page = virt_to_page(xdpf->data);
- 		tbi->dma_addr = page_pool_get_dma_addr(page) +
--				VMXNET3_XDP_HEADROOM;
-+				(xdpf->data - (void *)xdpf);
- 		dma_sync_single_for_device(&adapter->pdev->dev,
- 					   tbi->dma_addr, buf_size,
- 					   DMA_TO_DEVICE);
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+index 75e0c42f6f424..14c9af41faa67 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+@@ -249,7 +249,7 @@ int bnxt_qplib_rcfw_send_message(struct bnxt_qplib_rcfw *rcfw,
+ 		/* failed with status */
+ 		dev_err(&rcfw->pdev->dev, "cmdq[%#x]=%#x status %#x\n",
+ 			cookie, opcode, evnt->status);
+-		rc = -EFAULT;
++		rc = -EIO;
+ 	}
+ 
+ 	return rc;
 -- 
 2.43.0
 
