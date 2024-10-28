@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-88244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B34839B218D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 01:26:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9201A9B218E
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 01:28:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 776B728136D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 00:26:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD3FB1C20912
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 00:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE6F63B9;
-	Mon, 28 Oct 2024 00:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEA3E63B9;
+	Mon, 28 Oct 2024 00:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qwULEzCu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kULu/Xfn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4F54C6C
-	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 00:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92A34C6C
+	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 00:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730075163; cv=none; b=T7M3moab0czOB8uJ9I2RgQ8ZQ+RpZ1GdE9mNKF1FPpOrAUPyhON72OPZxwdIso8zRO9T9Yb5g/JZ/OmcyAzg9COtayK5NUninLEo5/199iVLMsyWBNCD/lIEFb+qEcVE1c3qBBAlodN4iG4EGWd4GtLKCYk7b0bOKCGaU8RIl2E=
+	t=1730075280; cv=none; b=rPtFZlKnm1+NX0qCXgQGcaSK0sW5fg7HRAfIKWW/DHm8HMzTldEtLhM5ueCgjSiYBPlkyeMp+RzqEIg+yY0m/PQPtxCKQUXPtop/vjXQ+jVt23kFtMEmRD1t4hQ0E0odKpLgkBFgraLSfy3wqFhPirRUpBbxKufDLVXVSk2e/Y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730075163; c=relaxed/simple;
-	bh=pvMrrxkYrJBwUJQf5FEDHHClPCEYU5bmNHJBGU3fK8U=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=obWbTtVZsTikSKfIhTVMv2f+ZLL6nfretX+dNtYJpp+O0iuLdUNBP23dnuRfu8T4A7dwBiZVBzawx+ejhEtz6OZxHr8rMtwB1N+VxRLgdjd9V1m0tseQIojb0I+GNZvk6dPbsy6CWX78YwpVBIl0g0M/10yNWA++WOZMnvWrWeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qwULEzCu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD328C4CEC3;
-	Mon, 28 Oct 2024 00:26:02 +0000 (UTC)
+	s=arc-20240116; t=1730075280; c=relaxed/simple;
+	bh=61JtRPQwBGi/LTauUGq7e83VPgFvRXdHfUbSRqREHdI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jOWiDsdlf7XmRNf90Fq1FnKiErvXS9uRpkevhQrt9uCU7hTf651GXkdGviqPE2eVAbVYHE/UFznlx8ZpilPbFFYv3e14mcEcvCQTHIqZGyOGdnYiEJ1ZUQvqZIAT/LXnNY/ECEodmBX7TgrwVslIDTjEx9krvEV0ub9Mkzw/zrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kULu/Xfn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E8BC4CEC3;
+	Mon, 28 Oct 2024 00:27:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730075163;
-	bh=pvMrrxkYrJBwUJQf5FEDHHClPCEYU5bmNHJBGU3fK8U=;
+	s=korg; t=1730075280;
+	bh=61JtRPQwBGi/LTauUGq7e83VPgFvRXdHfUbSRqREHdI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=qwULEzCuKkMFuk8MpbieC3KVbG0skXJIkAQNwXpe8Q1sY9Rp37GLWweBZlvMtnYd4
-	 XF1g2Elx2JoY98h75pTNtqEL4WnZLTQXIrYUyeHQ/vRkB08XExLqcB9rXjeh550kCR
-	 MFKX1LC3r6w/IkAX0G5N0UpQwXl/cMzmR7w6UAmI=
-Subject: FAILED: patch "[PATCH] ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM handler and" failed to apply to 5.15-stable tree
-To: kobak@nvidia.com,ardb@kernel.org,mochs@nvidia.com,rafael.j.wysocki@intel.com,rui.zhang@intel.com,stable@vger.kernel.org
+	b=kULu/XfnOHAzsy1a/2JHrdKb0l5t3IMTG2R9B/QhYLBwvK4Q8KL5v0RNtMUtV5wkg
+	 CtPmZkMpmSpn13YnVzBI06KoXwRjPBasYsHDQjNMMuGsIulRs+Xh0LyV6X/5R6bswg
+	 qLzEse37PNoIUPLztWZb95XF9BOWpgt0QH+3lByc=
+Subject: FAILED: patch "[PATCH] KVM: nSVM: Ignore nCR3[4:0] when loading PDPTEs from memory" failed to apply to 5.4-stable tree
+To: seanjc@google.com,3pvd@google.com,pbonzini@redhat.com,swidowski@google.com,theflow@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 28 Oct 2024 01:25:50 +0100
-Message-ID: <2024102850-postal-pogo-94ed@gregkh>
+Date: Mon, 28 Oct 2024 01:27:48 +0100
+Message-ID: <2024102847-level-stoic-fc77@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 088984c8d54c0053fc4ae606981291d741c5924b
+git cherry-pick -x f559b2e9c5c5308850544ab59396b7d53cfc67bd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024102850-postal-pogo-94ed@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024102847-level-stoic-fc77@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-
+f559b2e9c5c5 ("KVM: nSVM: Ignore nCR3[4:0] when loading PDPTEs from memory")
+2732be902353 ("KVM: nSVM: Don't strip host's C-bit from guest's CR3 when reading PDPTRs")
+883b0a91f41a ("KVM: SVM: Move Nested SVM Implementation to nested.c")
+46a010dd6896 ("kVM SVM: Move SVM related files to own sub-directory")
+d55c9d4009c7 ("KVM: nSVM: check for EFER.SVME=1 before entering guest")
+0b66465344a7 ("KVM: nSVM: Remove an obsolete comment.")
+78f2145c4d93 ("KVM: nSVM: avoid loss of pending IRQ/NMI before entering L2")
+b518ba9fa691 ("KVM: nSVM: implement check_nested_events for interrupts")
+64b5bd270426 ("KVM: nSVM: ignore L1 interrupt window while running L2 with V_INTR_MASKING=1")
+b5ec2e020b70 ("KVM: nSVM: do not change host intercepts while nested VM is running")
+689f3bf21628 ("KVM: x86: unify callbacks to load paging root")
+257038745cae ("KVM: x86: Move nSVM CPUID 0x8000000A handling into common x86 code")
+a50718cc3f43 ("KVM: nSVM: Expose SVM features to L1 iff nested is enabled")
+703c335d0693 ("KVM: x86/mmu: Configure max page level during hardware setup")
+bde772355958 ("KVM: x86/mmu: Merge kvm_{enable,disable}_tdp() into a common function")
+213e0e1f500b ("KVM: SVM: Refactor logging of NPT enabled/disabled")
+a1bead2abaa1 ("KVM: VMX: Directly query Intel PT mode when refreshing PMUs")
+139085101f85 ("KVM: x86: Use KVM cpu caps to detect MSR_TSC_AUX virt support")
+93c380e7b528 ("KVM: x86: Set emulated/transmuted feature bits via kvm_cpu_caps")
+bd7919999047 ("KVM: x86: Override host CPUID results with kvm_cpu_caps")
 
 thanks,
 
@@ -77,114 +96,58 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 088984c8d54c0053fc4ae606981291d741c5924b Mon Sep 17 00:00:00 2001
-From: Koba Ko <kobak@nvidia.com>
-Date: Sun, 13 Oct 2024 04:50:10 +0800
-Subject: [PATCH] ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM handler and
- context
+From f559b2e9c5c5308850544ab59396b7d53cfc67bd Mon Sep 17 00:00:00 2001
+From: Sean Christopherson <seanjc@google.com>
+Date: Wed, 9 Oct 2024 07:08:38 -0700
+Subject: [PATCH] KVM: nSVM: Ignore nCR3[4:0] when loading PDPTEs from memory
 
-PRMT needs to find the correct type of block to translate the PA-VA
-mapping for EFI runtime services.
+Ignore nCR3[4:0] when loading PDPTEs from memory for nested SVM, as bits
+4:0 of CR3 are ignored when PAE paging is used, and thus VMRUN doesn't
+enforce 32-byte alignment of nCR3.
 
-The issue arises because the PRMT is finding a block of type
-EFI_CONVENTIONAL_MEMORY, which is not appropriate for runtime services
-as described in Section 2.2.2 (Runtime Services) of the UEFI
-Specification [1]. Since the PRM handler is a type of runtime service,
-this causes an exception when the PRM handler is called.
+In the absolute worst case scenario, failure to ignore bits 4:0 can result
+in an out-of-bounds read, e.g. if the target page is at the end of a
+memslot, and the VMM isn't using guard pages.
 
-    [Firmware Bug]: Unable to handle paging request in EFI runtime service
-    WARNING: CPU: 22 PID: 4330 at drivers/firmware/efi/runtime-wrappers.c:341
-        __efi_queue_work+0x11c/0x170
-    Call trace:
+Per the APM:
 
-Let PRMT find a block with EFI_MEMORY_RUNTIME for PRM handler and PRM
-context.
+  The CR3 register points to the base address of the page-directory-pointer
+  table. The page-directory-pointer table is aligned on a 32-byte boundary,
+  with the low 5 address bits 4:0 assumed to be 0.
 
-If no suitable block is found, a warning message will be printed, but
-the procedure continues to manage the next PRM handler.
+And the SDM's much more explicit:
 
-However, if the PRM handler is actually called without proper allocation,
-it would result in a failure during error handling.
+  4:0    Ignored
 
-By using the correct memory types for runtime services, ensure that the
-PRM handler and the context are properly mapped in the virtual address
-space during runtime, preventing the paging request error.
+Note, KVM gets this right when loading PDPTRs, it's only the nSVM flow
+that is broken.
 
-The issue is really that only memory that has been remapped for runtime
-by the firmware can be used by the PRM handler, and so the region needs
-to have the EFI_MEMORY_RUNTIME attribute.
+Fixes: e4e517b4be01 ("KVM: MMU: Do not unconditionally read PDPTE from guest memory")
+Reported-by: Kirk Swidowski <swidowski@google.com>
+Cc: Andy Nguyen <theflow@google.com>
+Cc: 3pvd <3pvd@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20241009140838.1036226-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-Link: https://uefi.org/sites/default/files/resources/UEFI_Spec_2_10_Aug29.pdf # [1]
-Fixes: cefc7ca46235 ("ACPI: PRM: implement OperationRegion handler for the PlatformRtMechanism subtype")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Koba Ko <kobak@nvidia.com>
-Reviewed-by: Matthew R. Ochs <mochs@nvidia.com>
-Reviewed-by: Zhang Rui <rui.zhang@intel.com>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://patch.msgid.link/20241012205010.4165798-1-kobak@nvidia.com
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-index 1cfaa5957ac4..d59307a76ca3 100644
---- a/drivers/acpi/prmt.c
-+++ b/drivers/acpi/prmt.c
-@@ -72,17 +72,21 @@ struct prm_module_info {
- 	struct prm_handler_info handlers[] __counted_by(handler_count);
- };
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index d5314cb7dff4..cf84103ce38b 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -63,8 +63,12 @@ static u64 nested_svm_get_tdp_pdptr(struct kvm_vcpu *vcpu, int index)
+ 	u64 pdpte;
+ 	int ret;
  
--static u64 efi_pa_va_lookup(u64 pa)
-+static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
- {
- 	efi_memory_desc_t *md;
- 	u64 pa_offset = pa & ~PAGE_MASK;
- 	u64 page = pa & PAGE_MASK;
- 
- 	for_each_efi_memory_desc(md) {
--		if (md->phys_addr < pa && pa < md->phys_addr + PAGE_SIZE * md->num_pages)
-+		if ((md->attribute & EFI_MEMORY_RUNTIME) &&
-+		    (md->phys_addr < pa && pa < md->phys_addr + PAGE_SIZE * md->num_pages)) {
- 			return pa_offset + md->virt_addr + page - md->phys_addr;
-+		}
- 	}
- 
-+	pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa);
-+
- 	return 0;
- }
- 
-@@ -148,9 +152,15 @@ acpi_parse_prmt(union acpi_subtable_headers *header, const unsigned long end)
- 		th = &tm->handlers[cur_handler];
- 
- 		guid_copy(&th->guid, (guid_t *)handler_info->handler_guid);
--		th->handler_addr = (void *)efi_pa_va_lookup(handler_info->handler_address);
--		th->static_data_buffer_addr = efi_pa_va_lookup(handler_info->static_data_buffer_address);
--		th->acpi_param_buffer_addr = efi_pa_va_lookup(handler_info->acpi_param_buffer_address);
-+		th->handler_addr =
-+			(void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
-+
-+		th->static_data_buffer_addr =
-+			efi_pa_va_lookup(&th->guid, handler_info->static_data_buffer_address);
-+
-+		th->acpi_param_buffer_addr =
-+			efi_pa_va_lookup(&th->guid, handler_info->acpi_param_buffer_address);
-+
- 	} while (++cur_handler < tm->handler_count && (handler_info = get_next_handler(handler_info)));
- 
- 	return 0;
-@@ -277,6 +287,13 @@ static acpi_status acpi_platformrt_space_handler(u32 function,
- 		if (!handler || !module)
- 			goto invalid_guid;
- 
-+		if (!handler->handler_addr ||
-+		    !handler->static_data_buffer_addr ||
-+		    !handler->acpi_param_buffer_addr) {
-+			buffer->prm_status = PRM_HANDLER_ERROR;
-+			return AE_OK;
-+		}
-+
- 		ACPI_COPY_NAMESEG(context.signature, "PRMC");
- 		context.revision = 0x0;
- 		context.reserved = 0x0;
++	/*
++	 * Note, nCR3 is "assumed" to be 32-byte aligned, i.e. the CPU ignores
++	 * nCR3[4:0] when loading PDPTEs from memory.
++	 */
+ 	ret = kvm_vcpu_read_guest_page(vcpu, gpa_to_gfn(cr3), &pdpte,
+-				       offset_in_page(cr3) + index * 8, 8);
++				       (cr3 & GENMASK(11, 5)) + index * 8, 8);
+ 	if (ret)
+ 		return 0;
+ 	return pdpte;
 
 
