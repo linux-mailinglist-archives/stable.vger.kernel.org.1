@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-88345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71DB99B2585
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:32:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 168A19B280C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:53:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 939301C210C1
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:32:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63B43B213B8
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29F1C18E03A;
-	Mon, 28 Oct 2024 06:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5409E18EFD6;
+	Mon, 28 Oct 2024 06:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bd/iKC1k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AeRVB5w5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB15515B10D;
-	Mon, 28 Oct 2024 06:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119BB18DF83;
+	Mon, 28 Oct 2024 06:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097121; cv=none; b=kHyBXHYijrOlgEtLHeuepQUxAMfPNORVV/9qm8zlUd8yaEqIjX1aZYCG7/jD3Ba+lIgocBcIyx23lrP4wIJZwKyz29LMKSp8MWmvq/uvBwD9edJQiRe7yzZX2J5N+d1ozYQteXhLSKD9HqbHgLhKgEyxdyoBDKowMiUigP6vxR0=
+	t=1730098406; cv=none; b=QmH3bNdnvNeJOR7ohT1wDAlyjJsiJhZb9ha3CR3Za6XFrb4MAoCkYfWMaL+zZpIbxMHh1MjDHzOzsfQaQLqD7b5yioWbfeyFhYLWVXWoV6TYXgPg3C8IRFYzdqt6pW6zL/ok61+4aLbpphji5yCzqcuQsyI27tVJAKcpTrXvnEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097121; c=relaxed/simple;
-	bh=Rr3zu1fNMo0iDuXSPnzsbmFQJVc38vriVlFlqPUMgvU=;
+	s=arc-20240116; t=1730098406; c=relaxed/simple;
+	bh=G9iPOGLyjSNxqzPk368QsFPYAGHtOLMbOf9EyNYCaH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jZ5rQJueJEKmv1Sy9G/DGl1DHATT0tH+bbtR1GW7t4pa/HFxHbIls8MLDiUYt0BIMNS5Wr/fXxX9xYK8y0k5FbNAfmpz+/d0CifFfrRJcXeOvgEuQPXqGFyAt7CJmv4glm1bIPjQoTu7VbX86xHUL+uoN9tPiih3RYKPsD90rZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bd/iKC1k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 799E5C4CEC7;
-	Mon, 28 Oct 2024 06:32:01 +0000 (UTC)
+	 MIME-Version; b=d5rVu2vMrfcHQf6bdNg5pXDEnRnmDReOns+/0WGYr/59xpudvx2vGTb7EoP/qDb2bplu0idE+gknhR0wo2YUR4E6yDPvqKd7kqe+1/Q8sH6QV39vuDiL1qqB2ODSYchI1iGYcpsR6S1wzGeM0AIfFAGmiwS69iU4r+QO3ct/DHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AeRVB5w5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58A4C4CEC3;
+	Mon, 28 Oct 2024 06:53:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097121;
-	bh=Rr3zu1fNMo0iDuXSPnzsbmFQJVc38vriVlFlqPUMgvU=;
+	s=korg; t=1730098405;
+	bh=G9iPOGLyjSNxqzPk368QsFPYAGHtOLMbOf9EyNYCaH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bd/iKC1kr2i/jDSwexXf5Qf4ZCg5Mf/r5ewFuF80PqiQ4TWKNm4YvNySkf47XPpJ+
-	 o1+Pl4uObIYzomsq7F2ODuG93mOyKcUM0+N2W1P870VnETRiWBeMqVJIkKyFgTH78S
-	 1RSUYM5U4l6JoTOBL4WX9oErqniqrshCeyK3Xddc=
+	b=AeRVB5w5/0N40ZV/PV18KPNY8NRP4J0Jb94mi/oqVgfOcp9U0FAa58SPFAOYj7uSr
+	 h0x33b7JOKnvPjZNP/rL1NbElPDUeDEkRYcRo6vOYLvv3OeVw3+TPdSIuO4tAaVCIY
+	 hJ6OZ55QhdobxXmhnZWuee2l7kr9Jsqy+ZLKkAhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	Dhruva Gole <d-gole@ti.com>,
+	Shenghao Yang <me@shenghaoyang.info>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 38/80] usb: dwc3: core: Fix system suspend on TI AM62 platforms
-Date: Mon, 28 Oct 2024 07:25:18 +0100
-Message-ID: <20241028062253.680926796@linuxfoundation.org>
+Subject: [PATCH 6.11 177/261] net: dsa: mv88e6xxx: group cycle counter coefficients
+Date: Mon, 28 Oct 2024 07:25:19 +0100
+Message-ID: <20241028062316.442073293@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,113 +63,178 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roger Quadros <rogerq@kernel.org>
+From: Shenghao Yang <me@shenghaoyang.info>
 
-[ Upstream commit 705e3ce37bccdf2ed6f848356ff355f480d51a91 ]
+[ Upstream commit 67af86afff74c914944374a103c04e4d9868dd15 ]
 
-Since commit 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init"),
-system suspend is broken on AM62 TI platforms.
+Instead of having them as individual fields in ptp_ops, wrap the
+coefficients in a separate struct so they can be referenced together.
 
-Before that commit, both DWC3_GUSB3PIPECTL_SUSPHY and DWC3_GUSB2PHYCFG_SUSPHY
-bits (hence forth called 2 SUSPHY bits) were being set during core
-initialization and even during core re-initialization after a system
-suspend/resume.
-
-These bits are required to be set for system suspend/resume to work correctly
-on AM62 platforms.
-
-Since that commit, the 2 SUSPHY bits are not set for DEVICE/OTG mode if gadget
-driver is not loaded and started.
-For Host mode, the 2 SUSPHY bits are set before the first system suspend but
-get cleared at system resume during core re-init and are never set again.
-
-This patch resovles these two issues by ensuring the 2 SUSPHY bits are set
-before system suspend and restored to the original state during system resume.
-
-Cc: stable@vger.kernel.org # v6.9+
-Fixes: 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init")
-Link: https://lore.kernel.org/all/1519dbe7-73b6-4afc-bfe3-23f4f75d772f@kernel.org/
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Tested-by: Markus Schneider-Pargmann <msp@baylibre.com>
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Link: https://lore.kernel.org/r/20241011-am62-lpm-usb-v3-1-562d445625b5@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: de776d0d316f ("net: dsa: mv88e6xxx: add support for mv88e6393x family")
+Signed-off-by: Shenghao Yang <me@shenghaoyang.info>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/core.c | 19 +++++++++++++++++++
- drivers/usb/dwc3/core.h |  3 +++
- 2 files changed, 22 insertions(+)
+ drivers/net/dsa/mv88e6xxx/chip.h |  6 ++--
+ drivers/net/dsa/mv88e6xxx/ptp.c  | 59 ++++++++++++++++----------------
+ 2 files changed, 32 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index 6c740dc633e7c..0ca06a3ab7179 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1796,6 +1796,11 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
- {
- 	u32 reg;
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
+index c34caf9815c5c..1d003a9deafa7 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.h
++++ b/drivers/net/dsa/mv88e6xxx/chip.h
+@@ -206,6 +206,7 @@ struct mv88e6xxx_gpio_ops;
+ struct mv88e6xxx_avb_ops;
+ struct mv88e6xxx_ptp_ops;
+ struct mv88e6xxx_pcs_ops;
++struct mv88e6xxx_cc_coeffs;
  
-+	dwc->susphy_state = (dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
-+			    DWC3_GUSB2PHYCFG_SUSPHY) ||
-+			    (dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0)) &
-+			    DWC3_GUSB3PIPECTL_SUSPHY);
+ struct mv88e6xxx_irq {
+ 	u16 masked;
+@@ -731,10 +732,7 @@ struct mv88e6xxx_ptp_ops {
+ 	int arr1_sts_reg;
+ 	int dep_sts_reg;
+ 	u32 rx_filters;
+-	u32 cc_shift;
+-	u32 cc_mult;
+-	u32 cc_mult_num;
+-	u32 cc_mult_dem;
++	const struct mv88e6xxx_cc_coeffs *cc_coeffs;
+ };
+ 
+ struct mv88e6xxx_pcs_ops {
+diff --git a/drivers/net/dsa/mv88e6xxx/ptp.c b/drivers/net/dsa/mv88e6xxx/ptp.c
+index 56391e09b3257..641af44e00af9 100644
+--- a/drivers/net/dsa/mv88e6xxx/ptp.c
++++ b/drivers/net/dsa/mv88e6xxx/ptp.c
+@@ -18,6 +18,13 @@
+ 
+ #define MV88E6XXX_MAX_ADJ_PPB	1000000
+ 
++struct mv88e6xxx_cc_coeffs {
++	u32 cc_shift;
++	u32 cc_mult;
++	u32 cc_mult_num;
++	u32 cc_mult_dem;
++};
 +
- 	switch (dwc->current_dr_role) {
- 	case DWC3_GCTL_PRTCAP_DEVICE:
- 		if (pm_runtime_suspended(dwc->dev))
-@@ -1843,6 +1848,15 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
- 		break;
+ /* Family MV88E6250:
+  * Raw timestamps are in units of 10-ns clock periods.
+  *
+@@ -25,10 +32,13 @@
+  * simplifies to
+  * clkadj = scaled_ppm * 2^7 / 5^5
+  */
+-#define MV88E6250_CC_SHIFT	28
+-#define MV88E6250_CC_MULT	(10 << MV88E6250_CC_SHIFT)
+-#define MV88E6250_CC_MULT_NUM	(1 << 7)
+-#define MV88E6250_CC_MULT_DEM	3125ULL
++#define MV88E6250_CC_SHIFT 28
++static const struct mv88e6xxx_cc_coeffs mv88e6250_cc_coeffs = {
++	.cc_shift = MV88E6250_CC_SHIFT,
++	.cc_mult = 10 << MV88E6250_CC_SHIFT,
++	.cc_mult_num = 1 << 7,
++	.cc_mult_dem = 3125ULL,
++};
+ 
+ /* Other families:
+  * Raw timestamps are in units of 8-ns clock periods.
+@@ -37,10 +47,13 @@
+  * simplifies to
+  * clkadj = scaled_ppm * 2^9 / 5^6
+  */
+-#define MV88E6XXX_CC_SHIFT	28
+-#define MV88E6XXX_CC_MULT	(8 << MV88E6XXX_CC_SHIFT)
+-#define MV88E6XXX_CC_MULT_NUM	(1 << 9)
+-#define MV88E6XXX_CC_MULT_DEM	15625ULL
++#define MV88E6XXX_CC_SHIFT 28
++static const struct mv88e6xxx_cc_coeffs mv88e6xxx_cc_coeffs = {
++	.cc_shift = MV88E6XXX_CC_SHIFT,
++	.cc_mult = 8 << MV88E6XXX_CC_SHIFT,
++	.cc_mult_num = 1 << 9,
++	.cc_mult_dem = 15625ULL
++};
+ 
+ #define TAI_EVENT_WORK_INTERVAL msecs_to_jiffies(100)
+ 
+@@ -214,10 +227,10 @@ static int mv88e6xxx_ptp_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
+ 		scaled_ppm = -scaled_ppm;
  	}
  
-+	if (!PMSG_IS_AUTO(msg)) {
-+		/*
-+		 * TI AM62 platform requires SUSPHY to be
-+		 * enabled for system suspend to work.
-+		 */
-+		if (!dwc->susphy_state)
-+			dwc3_enable_susphy(dwc, true);
-+	}
-+
- 	return 0;
- }
+-	mult = ptp_ops->cc_mult;
+-	adj = ptp_ops->cc_mult_num;
++	mult = ptp_ops->cc_coeffs->cc_mult;
++	adj = ptp_ops->cc_coeffs->cc_mult_num;
+ 	adj *= scaled_ppm;
+-	diff = div_u64(adj, ptp_ops->cc_mult_dem);
++	diff = div_u64(adj, ptp_ops->cc_coeffs->cc_mult_dem);
  
-@@ -1905,6 +1919,11 @@ static int dwc3_resume_common(struct dwc3 *dwc, pm_message_t msg)
- 		break;
- 	}
+ 	mv88e6xxx_reg_lock(chip);
  
-+	if (!PMSG_IS_AUTO(msg)) {
-+		/* restore SUSPHY state to that before system suspend. */
-+		dwc3_enable_susphy(dwc, dwc->susphy_state);
-+	}
-+
- 	return 0;
- }
+@@ -364,10 +377,7 @@ const struct mv88e6xxx_ptp_ops mv88e6165_ptp_ops = {
+ 		(1 << HWTSTAMP_FILTER_PTP_V2_EVENT) |
+ 		(1 << HWTSTAMP_FILTER_PTP_V2_SYNC) |
+ 		(1 << HWTSTAMP_FILTER_PTP_V2_DELAY_REQ),
+-	.cc_shift = MV88E6XXX_CC_SHIFT,
+-	.cc_mult = MV88E6XXX_CC_MULT,
+-	.cc_mult_num = MV88E6XXX_CC_MULT_NUM,
+-	.cc_mult_dem = MV88E6XXX_CC_MULT_DEM,
++	.cc_coeffs = &mv88e6xxx_cc_coeffs
+ };
  
-diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
-index 7e7820ce21bf5..3d434c110bdb6 100644
---- a/drivers/usb/dwc3/core.h
-+++ b/drivers/usb/dwc3/core.h
-@@ -1085,6 +1085,8 @@ struct dwc3_scratchpad_array {
-  * @dis_metastability_quirk: set to disable metastability quirk.
-  * @dis_split_quirk: set to disable split boundary.
-  * @suspended: set to track suspend event due to U3/L2.
-+ * @susphy_state: state of DWC3_GUSB2PHYCFG_SUSPHY + DWC3_GUSB3PIPECTL_SUSPHY
-+ *		  before PM suspend.
-  * @imod_interval: set the interrupt moderation interval in 250ns
-  *			increments or 0 to disable.
-  * @max_cfg_eps: current max number of IN eps used across all USB configs.
-@@ -1300,6 +1302,7 @@ struct dwc3 {
- 	unsigned		dis_split_quirk:1;
- 	unsigned		async_callbacks:1;
- 	unsigned		suspended:1;
-+	unsigned		susphy_state:1;
+ const struct mv88e6xxx_ptp_ops mv88e6250_ptp_ops = {
+@@ -391,10 +401,7 @@ const struct mv88e6xxx_ptp_ops mv88e6250_ptp_ops = {
+ 		(1 << HWTSTAMP_FILTER_PTP_V2_EVENT) |
+ 		(1 << HWTSTAMP_FILTER_PTP_V2_SYNC) |
+ 		(1 << HWTSTAMP_FILTER_PTP_V2_DELAY_REQ),
+-	.cc_shift = MV88E6250_CC_SHIFT,
+-	.cc_mult = MV88E6250_CC_MULT,
+-	.cc_mult_num = MV88E6250_CC_MULT_NUM,
+-	.cc_mult_dem = MV88E6250_CC_MULT_DEM,
++	.cc_coeffs = &mv88e6250_cc_coeffs,
+ };
  
- 	u16			imod_interval;
+ const struct mv88e6xxx_ptp_ops mv88e6352_ptp_ops = {
+@@ -418,10 +425,7 @@ const struct mv88e6xxx_ptp_ops mv88e6352_ptp_ops = {
+ 		(1 << HWTSTAMP_FILTER_PTP_V2_EVENT) |
+ 		(1 << HWTSTAMP_FILTER_PTP_V2_SYNC) |
+ 		(1 << HWTSTAMP_FILTER_PTP_V2_DELAY_REQ),
+-	.cc_shift = MV88E6XXX_CC_SHIFT,
+-	.cc_mult = MV88E6XXX_CC_MULT,
+-	.cc_mult_num = MV88E6XXX_CC_MULT_NUM,
+-	.cc_mult_dem = MV88E6XXX_CC_MULT_DEM,
++	.cc_coeffs = &mv88e6xxx_cc_coeffs,
+ };
  
+ const struct mv88e6xxx_ptp_ops mv88e6390_ptp_ops = {
+@@ -446,10 +450,7 @@ const struct mv88e6xxx_ptp_ops mv88e6390_ptp_ops = {
+ 		(1 << HWTSTAMP_FILTER_PTP_V2_EVENT) |
+ 		(1 << HWTSTAMP_FILTER_PTP_V2_SYNC) |
+ 		(1 << HWTSTAMP_FILTER_PTP_V2_DELAY_REQ),
+-	.cc_shift = MV88E6XXX_CC_SHIFT,
+-	.cc_mult = MV88E6XXX_CC_MULT,
+-	.cc_mult_num = MV88E6XXX_CC_MULT_NUM,
+-	.cc_mult_dem = MV88E6XXX_CC_MULT_DEM,
++	.cc_coeffs = &mv88e6xxx_cc_coeffs,
+ };
+ 
+ static u64 mv88e6xxx_ptp_clock_read(const struct cyclecounter *cc)
+@@ -487,8 +488,8 @@ int mv88e6xxx_ptp_setup(struct mv88e6xxx_chip *chip)
+ 	memset(&chip->tstamp_cc, 0, sizeof(chip->tstamp_cc));
+ 	chip->tstamp_cc.read	= mv88e6xxx_ptp_clock_read;
+ 	chip->tstamp_cc.mask	= CYCLECOUNTER_MASK(32);
+-	chip->tstamp_cc.mult	= ptp_ops->cc_mult;
+-	chip->tstamp_cc.shift	= ptp_ops->cc_shift;
++	chip->tstamp_cc.mult	= ptp_ops->cc_coeffs->cc_mult;
++	chip->tstamp_cc.shift	= ptp_ops->cc_coeffs->cc_shift;
+ 
+ 	timecounter_init(&chip->tstamp_tc, &chip->tstamp_cc,
+ 			 ktime_to_ns(ktime_get_real()));
 -- 
 2.43.0
 
