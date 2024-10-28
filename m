@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-88511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392A19B264E
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:38:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE1DB9B264D
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:38:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FCC2B20EA8
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:38:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D3841C21137
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:38:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C03718E748;
-	Mon, 28 Oct 2024 06:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB75418E779;
+	Mon, 28 Oct 2024 06:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRxSUyk5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVcdMyAy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3758618E374;
-	Mon, 28 Oct 2024 06:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9619818C03D;
+	Mon, 28 Oct 2024 06:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097499; cv=none; b=O7emVqpGhci8RsiP8oi+gSDepy/rvzJ4l5O7fLOYG5qSD0rWImiNu2J+FJYjKeYpjcHs2ZmPN736uUhHlymdFQmEiAMDdOAOqeLTYNjtEh/pz5EapTffiV9wWPivi49k4+vqhTMoW20S3r2uHFUHH1+gM88lGaZo7YcbJoQHYNk=
+	t=1730097503; cv=none; b=Tzo8APbUPIWUiCIbkz7TNaTjb4UqkZv03yBIZHhP/hxXzNvsix+SxJeU+3mOP0PW3+DQYPL3m8mEA+H7fBKRoGUj3xwyrvfK0HKzdR8iCjKFXjehM4WEHXidR7m0UYH18+ykmGzKVvEN6ZJPkt3l3Q66ORnogdnYR27dfOIh/hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097499; c=relaxed/simple;
-	bh=tGr4qsS/XOn/TOXMaNb/T/yeeA4CNxaLlF0BOyy7IuI=;
+	s=arc-20240116; t=1730097503; c=relaxed/simple;
+	bh=RKYaXSEx+jX3OvC89qVTy1f8SB43jMNheZraKgUqpw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pw4R5wPSr+aX4mVsjGDtXhwGKGa314CvjyUMAk5m7o91bjaoEKwxEnfqbIyu7KWMkkqAywe5J8NY6eqRH3iI1sc0j1JelyRodFl1D8V/DDFGhFZKM1gvmUsFIKfgKQVthArGzFlVlxVFcPAAc4UBsHv3nlk3H88IscWml5L/raA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRxSUyk5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE5BC4CEC3;
-	Mon, 28 Oct 2024 06:38:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sZiU8mG8kjJi+VKljdMXhaTnTaiR9sHtLnfMPxjT86MUZK8qW/W6Sj8qLA4K1BrquQSSr/LI7pHMx2nK24mX346syY2sNavn4TTZm/LmWuq2KHGkEomGuNQFgGJ+Az7px0Uj84Tb1obT55n/k+rhhbiCbCwGW+/ZrZCAoZg2mEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVcdMyAy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 372FCC4CEC3;
+	Mon, 28 Oct 2024 06:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097499;
-	bh=tGr4qsS/XOn/TOXMaNb/T/yeeA4CNxaLlF0BOyy7IuI=;
+	s=korg; t=1730097503;
+	bh=RKYaXSEx+jX3OvC89qVTy1f8SB43jMNheZraKgUqpw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DRxSUyk5N37vq1267LKCVci76sVlOBrMCnBwciT8iGWkcLEEZzmUnH0r4cH2XvhGm
-	 XoXYlRX3UIuNLaSwWDprUK3ma7edS7H34vEjYQM2nNqZncPmzC6xkgXLcFZyR66Quk
-	 CMfAj0Wc7exp38YCCgjZ/Q/qq2aHET/uEc1QkDdk=
+	b=yVcdMyAyWpilA+Geoc+I+q5uVJtXXD/8/0AlytkKw/IfFjQrXMyB2yubVLmivH30V
+	 tW3QVU6XngAcxOucr4sWJRFs4F385CVvakOnas7SoZzHI/6KD0eoMKG2OgN8UPfOqr
+	 VrjjtMa8jhzWHqvqDZe+8Fr8DWmTn4LDCTMX+fuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+cca39e6e84a367a7e6f6@syzkaller.appspotmail.com,
 	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Florian Kauer <florian.kauer@linutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 002/208] bpf: Make sure internal and UAPI bpf_redirect flags dont overlap
-Date: Mon, 28 Oct 2024 07:23:02 +0100
-Message-ID: <20241028062306.711918489@linuxfoundation.org>
+Subject: [PATCH 6.6 003/208] bpf: devmap: provide rxq after redirect
+Date: Mon, 28 Oct 2024 07:23:03 +0100
+Message-ID: <20241028062306.737586768@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
 References: <20241028062306.649733554@linuxfoundation.org>
@@ -68,98 +69,151 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+From: Florian Kauer <florian.kauer@linutronix.de>
 
-[ Upstream commit 09d88791c7cd888d5195c84733caf9183dcfbd16 ]
+[ Upstream commit ca9984c5f0ab3690d98b13937b2485a978c8dd73 ]
 
-The bpf_redirect_info is shared between the SKB and XDP redirect paths,
-and the two paths use the same numeric flag values in the ri->flags
-field (specifically, BPF_F_BROADCAST == BPF_F_NEXTHOP). This means that
-if skb bpf_redirect_neigh() is used with a non-NULL params argument and,
-subsequently, an XDP redirect is performed using the same
-bpf_redirect_info struct, the XDP path will get confused and end up
-crashing, which syzbot managed to trigger.
+rxq contains a pointer to the device from where
+the redirect happened. Currently, the BPF program
+that was executed after a redirect via BPF_MAP_TYPE_DEVMAP*
+does not have it set.
 
-With the stack-allocated bpf_redirect_info, the structure is no longer
-shared between the SKB and XDP paths, so the crash doesn't happen
-anymore. However, different code paths using identically-numbered flag
-values in the same struct field still seems like a bit of a mess, so
-this patch cleans that up by moving the flag definitions together and
-redefining the three flags in BPF_F_REDIRECT_INTERNAL to not overlap
-with the flags used for XDP. It also adds a BUILD_BUG_ON() check to make
-sure the overlap is not re-introduced by mistake.
+This is particularly bad since accessing ingress_ifindex, e.g.
 
-Fixes: e624d4ed4aa8 ("xdp: Extend xdp_redirect_map with broadcast support")
-Reported-by: syzbot+cca39e6e84a367a7e6f6@syzkaller.appspotmail.com
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Closes: https://syzkaller.appspot.com/bug?extid=cca39e6e84a367a7e6f6
-Link: https://lore.kernel.org/bpf/20240920125625.59465-1-toke@redhat.com
+SEC("xdp")
+int prog(struct xdp_md *pkt)
+{
+        return bpf_redirect_map(&dev_redirect_map, 0, 0);
+}
+
+SEC("xdp/devmap")
+int prog_after_redirect(struct xdp_md *pkt)
+{
+        bpf_printk("ifindex %i", pkt->ingress_ifindex);
+        return XDP_PASS;
+}
+
+depends on access to rxq, so a NULL pointer gets dereferenced:
+
+<1>[  574.475170] BUG: kernel NULL pointer dereference, address: 0000000000000000
+<1>[  574.475188] #PF: supervisor read access in kernel mode
+<1>[  574.475194] #PF: error_code(0x0000) - not-present page
+<6>[  574.475199] PGD 0 P4D 0
+<4>[  574.475207] Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+<4>[  574.475217] CPU: 4 UID: 0 PID: 217 Comm: kworker/4:1 Not tainted 6.11.0-rc5-reduced-00859-g780801200300 #23
+<4>[  574.475226] Hardware name: Intel(R) Client Systems NUC13ANHi7/NUC13ANBi7, BIOS ANRPL357.0026.2023.0314.1458 03/14/2023
+<4>[  574.475231] Workqueue: mld mld_ifc_work
+<4>[  574.475247] RIP: 0010:bpf_prog_5e13354d9cf5018a_prog_after_redirect+0x17/0x3c
+<4>[  574.475257] Code: cc cc cc cc cc cc cc 80 00 00 00 cc cc cc cc cc cc cc cc f3 0f 1e fa 0f 1f 44 00 00 66 90 55 48 89 e5 f3 0f 1e fa 48 8b 57 20 <48> 8b 52 00 8b 92 e0 00 00 00 48 bf f8 a6 d5 c4 5d a0 ff ff be 0b
+<4>[  574.475263] RSP: 0018:ffffa62440280c98 EFLAGS: 00010206
+<4>[  574.475269] RAX: ffffa62440280cd8 RBX: 0000000000000001 RCX: 0000000000000000
+<4>[  574.475274] RDX: 0000000000000000 RSI: ffffa62440549048 RDI: ffffa62440280ce0
+<4>[  574.475278] RBP: ffffa62440280c98 R08: 0000000000000002 R09: 0000000000000001
+<4>[  574.475281] R10: ffffa05dc8b98000 R11: ffffa05f577fca40 R12: ffffa05dcab24000
+<4>[  574.475285] R13: ffffa62440280ce0 R14: ffffa62440549048 R15: ffffa62440549000
+<4>[  574.475289] FS:  0000000000000000(0000) GS:ffffa05f4f700000(0000) knlGS:0000000000000000
+<4>[  574.475294] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+<4>[  574.475298] CR2: 0000000000000000 CR3: 000000025522e000 CR4: 0000000000f50ef0
+<4>[  574.475303] PKRU: 55555554
+<4>[  574.475306] Call Trace:
+<4>[  574.475313]  <IRQ>
+<4>[  574.475318]  ? __die+0x23/0x70
+<4>[  574.475329]  ? page_fault_oops+0x180/0x4c0
+<4>[  574.475339]  ? skb_pp_cow_data+0x34c/0x490
+<4>[  574.475346]  ? kmem_cache_free+0x257/0x280
+<4>[  574.475357]  ? exc_page_fault+0x67/0x150
+<4>[  574.475368]  ? asm_exc_page_fault+0x26/0x30
+<4>[  574.475381]  ? bpf_prog_5e13354d9cf5018a_prog_after_redirect+0x17/0x3c
+<4>[  574.475386]  bq_xmit_all+0x158/0x420
+<4>[  574.475397]  __dev_flush+0x30/0x90
+<4>[  574.475407]  veth_poll+0x216/0x250 [veth]
+<4>[  574.475421]  __napi_poll+0x28/0x1c0
+<4>[  574.475430]  net_rx_action+0x32d/0x3a0
+<4>[  574.475441]  handle_softirqs+0xcb/0x2c0
+<4>[  574.475451]  do_softirq+0x40/0x60
+<4>[  574.475458]  </IRQ>
+<4>[  574.475461]  <TASK>
+<4>[  574.475464]  __local_bh_enable_ip+0x66/0x70
+<4>[  574.475471]  __dev_queue_xmit+0x268/0xe40
+<4>[  574.475480]  ? selinux_ip_postroute+0x213/0x420
+<4>[  574.475491]  ? alloc_skb_with_frags+0x4a/0x1d0
+<4>[  574.475502]  ip6_finish_output2+0x2be/0x640
+<4>[  574.475512]  ? nf_hook_slow+0x42/0xf0
+<4>[  574.475521]  ip6_finish_output+0x194/0x300
+<4>[  574.475529]  ? __pfx_ip6_finish_output+0x10/0x10
+<4>[  574.475538]  mld_sendpack+0x17c/0x240
+<4>[  574.475548]  mld_ifc_work+0x192/0x410
+<4>[  574.475557]  process_one_work+0x15d/0x380
+<4>[  574.475566]  worker_thread+0x29d/0x3a0
+<4>[  574.475573]  ? __pfx_worker_thread+0x10/0x10
+<4>[  574.475580]  ? __pfx_worker_thread+0x10/0x10
+<4>[  574.475587]  kthread+0xcd/0x100
+<4>[  574.475597]  ? __pfx_kthread+0x10/0x10
+<4>[  574.475606]  ret_from_fork+0x31/0x50
+<4>[  574.475615]  ? __pfx_kthread+0x10/0x10
+<4>[  574.475623]  ret_from_fork_asm+0x1a/0x30
+<4>[  574.475635]  </TASK>
+<4>[  574.475637] Modules linked in: veth br_netfilter bridge stp llc iwlmvm x86_pkg_temp_thermal iwlwifi efivarfs nvme nvme_core
+<4>[  574.475662] CR2: 0000000000000000
+<4>[  574.475668] ---[ end trace 0000000000000000 ]---
+
+Therefore, provide it to the program by setting rxq properly.
+
+Fixes: cb261b594b41 ("bpf: Run devmap xdp_prog on flush instead of bulk enqueue")
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Signed-off-by: Florian Kauer <florian.kauer@linutronix.de>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20240911-devel-koalo-fix-ingress-ifindex-v4-1-5c643ae10258@linutronix.de
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/bpf.h | 13 +++++--------
- net/core/filter.c        |  8 +++++---
- 2 files changed, 10 insertions(+), 11 deletions(-)
+ kernel/bpf/devmap.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index ba6e346c8d669..4bb38409b26ad 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -5921,11 +5921,6 @@ enum {
- 	BPF_F_MARK_ENFORCE		= (1ULL << 6),
- };
+diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
+index 69e78dc4bb18e..96b0345f76c2c 100644
+--- a/kernel/bpf/devmap.c
++++ b/kernel/bpf/devmap.c
+@@ -322,9 +322,11 @@ static int dev_map_hash_get_next_key(struct bpf_map *map, void *key,
  
--/* BPF_FUNC_clone_redirect and BPF_FUNC_redirect flags. */
--enum {
--	BPF_F_INGRESS			= (1ULL << 0),
--};
--
- /* BPF_FUNC_skb_set_tunnel_key and BPF_FUNC_skb_get_tunnel_key flags. */
- enum {
- 	BPF_F_TUNINFO_IPV6		= (1ULL << 0),
-@@ -6072,10 +6067,12 @@ enum {
- 	BPF_F_BPRM_SECUREEXEC	= (1ULL << 0),
- };
+ static int dev_map_bpf_prog_run(struct bpf_prog *xdp_prog,
+ 				struct xdp_frame **frames, int n,
+-				struct net_device *dev)
++				struct net_device *tx_dev,
++				struct net_device *rx_dev)
+ {
+-	struct xdp_txq_info txq = { .dev = dev };
++	struct xdp_txq_info txq = { .dev = tx_dev };
++	struct xdp_rxq_info rxq = { .dev = rx_dev };
+ 	struct xdp_buff xdp;
+ 	int i, nframes = 0;
  
--/* Flags for bpf_redirect_map helper */
-+/* Flags for bpf_redirect and bpf_redirect_map helpers */
- enum {
--	BPF_F_BROADCAST		= (1ULL << 3),
--	BPF_F_EXCLUDE_INGRESS	= (1ULL << 4),
-+	BPF_F_INGRESS		= (1ULL << 0), /* used for skb path */
-+	BPF_F_BROADCAST		= (1ULL << 3), /* used for XDP path */
-+	BPF_F_EXCLUDE_INGRESS	= (1ULL << 4), /* used for XDP path */
-+#define BPF_F_REDIRECT_FLAGS (BPF_F_INGRESS | BPF_F_BROADCAST | BPF_F_EXCLUDE_INGRESS)
- };
+@@ -335,6 +337,7 @@ static int dev_map_bpf_prog_run(struct bpf_prog *xdp_prog,
  
- #define __bpf_md_ptr(type, name)	\
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 8bfd46a070c16..bbb1432488430 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2423,9 +2423,9 @@ static int __bpf_redirect_neigh(struct sk_buff *skb, struct net_device *dev,
+ 		xdp_convert_frame_to_buff(xdpf, &xdp);
+ 		xdp.txq = &txq;
++		xdp.rxq = &rxq;
  
- /* Internal, non-exposed redirect flags. */
- enum {
--	BPF_F_NEIGH	= (1ULL << 1),
--	BPF_F_PEER	= (1ULL << 2),
--	BPF_F_NEXTHOP	= (1ULL << 3),
-+	BPF_F_NEIGH	= (1ULL << 16),
-+	BPF_F_PEER	= (1ULL << 17),
-+	BPF_F_NEXTHOP	= (1ULL << 18),
- #define BPF_F_REDIRECT_INTERNAL	(BPF_F_NEIGH | BPF_F_PEER | BPF_F_NEXTHOP)
- };
+ 		act = bpf_prog_run_xdp(xdp_prog, &xdp);
+ 		switch (act) {
+@@ -349,7 +352,7 @@ static int dev_map_bpf_prog_run(struct bpf_prog *xdp_prog,
+ 			bpf_warn_invalid_xdp_action(NULL, xdp_prog, act);
+ 			fallthrough;
+ 		case XDP_ABORTED:
+-			trace_xdp_exception(dev, xdp_prog, act);
++			trace_xdp_exception(tx_dev, xdp_prog, act);
+ 			fallthrough;
+ 		case XDP_DROP:
+ 			xdp_return_frame_rx_napi(xdpf);
+@@ -377,7 +380,7 @@ static void bq_xmit_all(struct xdp_dev_bulk_queue *bq, u32 flags)
+ 	}
  
-@@ -2435,6 +2435,8 @@ BPF_CALL_3(bpf_clone_redirect, struct sk_buff *, skb, u32, ifindex, u64, flags)
- 	struct sk_buff *clone;
- 	int ret;
- 
-+	BUILD_BUG_ON(BPF_F_REDIRECT_INTERNAL & BPF_F_REDIRECT_FLAGS);
-+
- 	if (unlikely(flags & (~(BPF_F_INGRESS) | BPF_F_REDIRECT_INTERNAL)))
- 		return -EINVAL;
- 
+ 	if (bq->xdp_prog) {
+-		to_send = dev_map_bpf_prog_run(bq->xdp_prog, bq->q, cnt, dev);
++		to_send = dev_map_bpf_prog_run(bq->xdp_prog, bq->q, cnt, dev, bq->dev_rx);
+ 		if (!to_send)
+ 			goto out;
+ 	}
 -- 
 2.43.0
 
