@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-88342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AAA19B2582
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:31:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 289949B26CB
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:42:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F23D28188C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:31:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E19E3282503
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3CB518D629;
-	Mon, 28 Oct 2024 06:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EBCA18E36D;
+	Mon, 28 Oct 2024 06:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wEDAhkxM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tenEOuhK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F5015B10D;
-	Mon, 28 Oct 2024 06:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF4C15B10D;
+	Mon, 28 Oct 2024 06:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097115; cv=none; b=Yai5/AQ9vlqSaRbFmjrtixyJrayTicdypPMgaUJS0MjYc9sXovHaNUS8CVf85o6poJnXYAc887xLj6/3YVkywm+eR7VNEKX/SH4/1j9rw9mc5JFBKdhwu72iVwxg78kR9zVfYQi0nMP1kZY6dpr21McgsToURUoGUuq+KENGWQY=
+	t=1730097763; cv=none; b=deZFR1vJjAydk4LenhitRx2ReS0zNNtD0LotbY4ae/F1xeCKfWKF0XAVBL+zJQjaH7LXmWGnnkXJTaTI3GSBZXwfV8j7HhaUuxmQwK6IJR6jz8UiCQtxyj3oQS6uFM3UWg7IxR299PFBP7nT3sZUtEYBvK0BNp6Ui4Zj1nbzCgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097115; c=relaxed/simple;
-	bh=3uJX5ZDW7EvJMIORmvyTYYmcBufgdWfvjZWi71uOj7o=;
+	s=arc-20240116; t=1730097763; c=relaxed/simple;
+	bh=xZRzH5tpZ1K6lOamqwJNRkm4bjsvgxIs6SVB7668QW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=khWAV83eX7vqVY6fJKV+BuTb7fEZLzXwZN0R/ks1dW1sQC7lL9YsibtD3lR5rnTrKCpefypRttisLm6qc4UhXrMjFudubYhlStktPLbwVM9wKw76tDoFYfE9UjOZFpgrPbIDjtDhu6C1oX2+f5zo41GurU/L3h54G42ux6mF03o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEDAhkxM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF2FC4CEC7;
-	Mon, 28 Oct 2024 06:31:54 +0000 (UTC)
+	 MIME-Version; b=L6NqM5islDsGTeIzRRS3K2BIfMhZTFfKrJ6gNKDNqQyhW5wnbjjC+xXV1LuBI/+shqWTpfnY1AAPILhGkJzrVbW7uEks1pAC4cHUW6ioJJYFcD/ey8bttyYjdtaacoLTYi1nQ7Wi1jq8+OGifdHjZ2q/SgJefjuULwe57tGWk3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tenEOuhK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1E4C4CEC3;
+	Mon, 28 Oct 2024 06:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097115;
-	bh=3uJX5ZDW7EvJMIORmvyTYYmcBufgdWfvjZWi71uOj7o=;
+	s=korg; t=1730097763;
+	bh=xZRzH5tpZ1K6lOamqwJNRkm4bjsvgxIs6SVB7668QW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wEDAhkxMCaXjezqQTeYwYjCnoDkboVFKs3WEZQBMQGOetvg/S/QLgXwRNYytomiNz
-	 LQigsfcL5OiheTLDcx64Usmf3TK0jL3mrBmZzGJGhjGXualtG9aIw2q0KmxfbuDeow
-	 XsWNBRGnw4HBgO5577NvFYaaF+kHO48nVNplCsbc=
+	b=tenEOuhKnyQPGWd2gMdgiegNS+zTe9EeG3hXGMFKTOSEfBhakE0wxEnkSr9VhwsVH
+	 Ig7g1cgniOa/ADFvkWCuNke2//gs5QDMRWRoyjeT4h4d2EZxVTPIuBMCDbTWFFh0xQ
+	 WLVgtBFbPSVtEbkyivtBckC/esPw7vMdu+Ei2tp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
+	"Lai, Yi" <yi1.lai@linux.intel.com>,
+	Florian Westphal <fw@strlen.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 35/80] KVM: s390: gaccess: Check if guest address is in memslot
+Subject: [PATCH 6.6 135/208] netfilter: bpf: must hold reference on net namespace
 Date: Mon, 28 Oct 2024 07:25:15 +0100
-Message-ID: <20241028062253.598820123@linuxfoundation.org>
+Message-ID: <20241028062309.962437525@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,127 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nico Boehr <nrb@linux.ibm.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit e8061f06185be0a06a73760d6526b8b0feadfe52 ]
+[ Upstream commit 1230fe7ad3974f7bf6c78901473e039b34d4fb1f ]
 
-Previously, access_guest_page() did not check whether the given guest
-address is inside of a memslot. This is not a problem, since
-kvm_write_guest_page/kvm_read_guest_page return -EFAULT in this case.
+BUG: KASAN: slab-use-after-free in __nf_unregister_net_hook+0x640/0x6b0
+Read of size 8 at addr ffff8880106fe400 by task repro/72=
+bpf_nf_link_release+0xda/0x1e0
+bpf_link_free+0x139/0x2d0
+bpf_link_release+0x68/0x80
+__fput+0x414/0xb60
 
-However, -EFAULT is also returned when copy_to/from_user fails.
+Eric says:
+ It seems that bpf was able to defer the __nf_unregister_net_hook()
+ after exit()/close() time.
+ Perhaps a netns reference is missing, because the netns has been
+ dismantled/freed already.
+ bpf_nf_link_attach() does :
+ link->net = net;
+ But I do not see a reference being taken on net.
 
-When emulating a guest instruction, the address being outside a memslot
-usually means that an addressing exception should be injected into the
-guest.
+Add such a reference and release it after hook unreg.
+Note that I was unable to get syzbot reproducer to work, so I
+do not know if this resolves this splat.
 
-Failure in copy_to/from_user however indicates that something is wrong
-in userspace and hence should be handled there.
-
-To be able to distinguish these two cases, return PGM_ADDRESSING in
-access_guest_page() when the guest address is outside guest memory. In
-access_guest_real(), populate vcpu->arch.pgm.code such that
-kvm_s390_inject_prog_cond() can be used in the caller for injecting into
-the guest (if applicable).
-
-Since this adds a new return value to access_guest_page(), we need to make
-sure that other callers are not confused by the new positive return value.
-
-There are the following users of access_guest_page():
-- access_guest_with_key() does the checking itself (in
-  guest_range_to_gpas()), so this case should never happen. Even if, the
-  handling is set up properly.
-- access_guest_real() just passes the return code to its callers, which
-  are:
-    - read_guest_real() - see below
-    - write_guest_real() - see below
-
-There are the following users of read_guest_real():
-- ar_translation() in gaccess.c which already returns PGM_*
-- setup_apcb10(), setup_apcb00(), setup_apcb11() in vsie.c which always
-  return -EFAULT on read_guest_read() nonzero return - no change
-- shadow_crycb(), handle_stfle() always present this as validity, this
-  could be handled better but doesn't change current behaviour - no change
-
-There are the following users of write_guest_real():
-- kvm_s390_store_status_unloaded() always returns -EFAULT on
-  write_guest_real() failure.
-
-Fixes: 2293897805c2 ("KVM: s390: add architecture compliant guest access functions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240917151904.74314-2-nrb@linux.ibm.com
-Acked-by: Janosch Frank <frankja@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: 84601d6ee68a ("bpf: add bpf_link support for BPF_NETFILTER programs")
+Diagnosed-by: Eric Dumazet <edumazet@google.com>
+Reported-by: Lai, Yi <yi1.lai@linux.intel.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/gaccess.c |  4 ++++
- arch/s390/kvm/gaccess.h | 14 ++++++++------
- 2 files changed, 12 insertions(+), 6 deletions(-)
+ net/netfilter/nf_bpf_link.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
-index 4460808c3b9a0..98979db1cde76 100644
---- a/arch/s390/kvm/gaccess.c
-+++ b/arch/s390/kvm/gaccess.c
-@@ -873,6 +873,8 @@ static int access_guest_page(struct kvm *kvm, enum gacc_mode mode, gpa_t gpa,
- 	const gfn_t gfn = gpa_to_gfn(gpa);
- 	int rc;
- 
-+	if (!gfn_to_memslot(kvm, gfn))
-+		return PGM_ADDRESSING;
- 	if (mode == GACC_STORE)
- 		rc = kvm_write_guest_page(kvm, gfn, data, offset, len);
- 	else
-@@ -936,6 +938,8 @@ int access_guest_real(struct kvm_vcpu *vcpu, unsigned long gra,
- 		gra += fragment_len;
- 		data += fragment_len;
+diff --git a/net/netfilter/nf_bpf_link.c b/net/netfilter/nf_bpf_link.c
+index 96015a59db09e..2aad0562a4135 100644
+--- a/net/netfilter/nf_bpf_link.c
++++ b/net/netfilter/nf_bpf_link.c
+@@ -23,6 +23,7 @@ static unsigned int nf_hook_run_bpf(void *bpf_prog, struct sk_buff *skb,
+ struct bpf_nf_link {
+ 	struct bpf_link link;
+ 	struct nf_hook_ops hook_ops;
++	netns_tracker ns_tracker;
+ 	struct net *net;
+ 	u32 dead;
+ 	const struct nf_defrag_hook *defrag_hook;
+@@ -120,6 +121,7 @@ static void bpf_nf_link_release(struct bpf_link *link)
+ 	if (!cmpxchg(&nf_link->dead, 0, 1)) {
+ 		nf_unregister_net_hook(nf_link->net, &nf_link->hook_ops);
+ 		bpf_nf_disable_defrag(nf_link);
++		put_net_track(nf_link->net, &nf_link->ns_tracker);
  	}
-+	if (rc > 0)
-+		vcpu->arch.pgm.code = rc;
- 	return rc;
  }
  
-diff --git a/arch/s390/kvm/gaccess.h b/arch/s390/kvm/gaccess.h
-index 7c72a5e3449f8..8ed2d6c7404ff 100644
---- a/arch/s390/kvm/gaccess.h
-+++ b/arch/s390/kvm/gaccess.h
-@@ -344,11 +344,12 @@ int read_guest_abs(struct kvm_vcpu *vcpu, unsigned long gpa, void *data,
-  * @len: number of bytes to copy
-  *
-  * Copy @len bytes from @data (kernel space) to @gra (guest real address).
-- * It is up to the caller to ensure that the entire guest memory range is
-- * valid memory before calling this function.
-  * Guest low address and key protection are not checked.
-  *
-- * Returns zero on success or -EFAULT on error.
-+ * Returns zero on success, -EFAULT when copying from @data failed, or
-+ * PGM_ADRESSING in case @gra is outside a memslot. In this case, pgm check info
-+ * is also stored to allow injecting into the guest (if applicable) using
-+ * kvm_s390_inject_prog_cond().
-  *
-  * If an error occurs data may have been copied partially to guest memory.
-  */
-@@ -367,11 +368,12 @@ int write_guest_real(struct kvm_vcpu *vcpu, unsigned long gra, void *data,
-  * @len: number of bytes to copy
-  *
-  * Copy @len bytes from @gra (guest real address) to @data (kernel space).
-- * It is up to the caller to ensure that the entire guest memory range is
-- * valid memory before calling this function.
-  * Guest key protection is not checked.
-  *
-- * Returns zero on success or -EFAULT on error.
-+ * Returns zero on success, -EFAULT when copying to @data failed, or
-+ * PGM_ADRESSING in case @gra is outside a memslot. In this case, pgm check info
-+ * is also stored to allow injecting into the guest (if applicable) using
-+ * kvm_s390_inject_prog_cond().
-  *
-  * If an error occurs data may have been copied partially to kernel space.
-  */
+@@ -258,6 +260,8 @@ int bpf_nf_link_attach(const union bpf_attr *attr, struct bpf_prog *prog)
+ 		return err;
+ 	}
+ 
++	get_net_track(net, &link->ns_tracker, GFP_KERNEL);
++
+ 	return bpf_link_settle(&link_primer);
+ }
+ 
 -- 
 2.43.0
 
