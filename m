@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E99E9B26E4
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:43:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFF169B2564
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 047391F23D79
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:43:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86195281832
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6B918E37F;
-	Mon, 28 Oct 2024 06:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59FF518E03A;
+	Mon, 28 Oct 2024 06:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C1v2dj+f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+30jAii"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D15F15B10D;
-	Mon, 28 Oct 2024 06:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A8718CC1F;
+	Mon, 28 Oct 2024 06:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097813; cv=none; b=fkt/a8YJBwzKSPXsybVuzJdJY6SwDLKl/NVVIeflmBV+0Ns4GLyk5BfMv6bdAK2FHin5LnxPQ2SwVwWd4s+j4ihTJGbemIyBEwW7yk3NZGMdQHDALWZtGP1gtvQRrUtwUdSYqoq5VDcYrPLvu5mdAicuB9v0kYEyaGsfeCGFoeA=
+	t=1730096914; cv=none; b=c29G05dseYwUd5n/T5VUlbLuO7sYlI4Y4cz9W3tYY6lZjFogXac0FK8SoY7Ws0+wbEp1HQDFGo+8PEZCDvAhMjytDDRG5OXMZYN9BQdrbRKoXa9L/Q5lLE/MbvlH4IwOTEabS7w8HjIaSj+brE+q73mal10Podwbn+0QSIZZX1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097813; c=relaxed/simple;
-	bh=NcG+Qg9OPmMi68JcGfhd1WHCRE05xNbPNhTgpu8zvLg=;
+	s=arc-20240116; t=1730096914; c=relaxed/simple;
+	bh=1u+ad+wOOJ2o2Wdqczvg7icGXZ2V2Viw1bSG1QP4hzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftEFmeocGPGA0HiQey33kWlMMsIuluKmwm/kSa3EIDWt6P9Hks8p5QVIhCifdXL8ExTOcXxuwlMovuo2kYiBR/XD6HYN2Snb1h2iG7Bm5u5CjmnpbP5RiW0+o6jm9lkJ8pahElS5YVjCATIWUhaelju4Oo16pHc397ycg7NvvBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C1v2dj+f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B113FC4CEC3;
-	Mon, 28 Oct 2024 06:43:32 +0000 (UTC)
+	 MIME-Version; b=lfAoZTjdIdm/BWWaNWk1Yay0m1nGAIAISqwrbY9CUEKZNdG1TrfdwO8HZP1r/aPSMyDEyS6Juz2wF1rPrcoN3rkEZekAh5M+NEgYPrAqxnr1c4gXs2Z9OcWpnFr0ZdmQZlqGmKMSi1UPPA+c5/Df6sU4DSgFR8VHbtV1UeTboEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+30jAii; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB8EC4CEC3;
+	Mon, 28 Oct 2024 06:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097813;
-	bh=NcG+Qg9OPmMi68JcGfhd1WHCRE05xNbPNhTgpu8zvLg=;
+	s=korg; t=1730096913;
+	bh=1u+ad+wOOJ2o2Wdqczvg7icGXZ2V2Viw1bSG1QP4hzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C1v2dj+fAD3pRdCjmCqz6QGQSAXGn5nWjLPL5qLOUhTlK92DGPJNZZJKHiHc3LmWO
-	 dq1uBBHg3ZqK06e3Bl/GVLf6uceK0sNN4LilLnwRGzjRdFspgkWlj5AbevQy5fyMKN
-	 +965dWEe3cQLBQFQJlNtP6g9lGvARI8pkOJv+FQY=
+	b=I+30jAiiwWEnQ6cwtUqMNECG+bkW5AzsZeCWx0h9W+ZCgGhXim1svtm/TxLfcFeea
+	 mnENimuBNp3f9eB+SOBhGBw+ojYr34Ffo1XaE5bdMyV0AAUemxwoJiSdLSjjcMDmgX
+	 oBE9ioB0yM756y7VdCAwgt4I/JZLKDyrepV8xH0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Rashleigh <peter@rashleigh.ca>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 141/208] net: dsa: mv88e6xxx: Fix error when setting port policy on mv88e6393x
-Date: Mon, 28 Oct 2024 07:25:21 +0100
-Message-ID: <20241028062310.106695887@linuxfoundation.org>
+Subject: [PATCH 5.15 42/80] ASoC: codecs: lpass-rx-macro: add missing CDC_RX_BCL_VBAT_RF_PROC2 to default regs values
+Date: Mon, 28 Oct 2024 07:25:22 +0100
+Message-ID: <20241028062253.789340516@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Rashleigh <peter@rashleigh.ca>
+From: Alexey Klimov <alexey.klimov@linaro.org>
 
-[ Upstream commit 12bc14949c4a7272b509af0f1022a0deeb215fd8 ]
+[ Upstream commit e249786b2188107a7c50e7174d35f955a60988a1 ]
 
-mv88e6393x_port_set_policy doesn't correctly shift the ptr value when
-converting the policy format between the old and new styles, so the
-target register ends up with the ptr being written over the data bits.
+CDC_RX_BCL_VBAT_RF_PROC1 is listed twice and its default value
+is 0x2a which is overwriten by its next occurence in rx_defaults[].
+The second one should be missing CDC_RX_BCL_VBAT_RF_PROC2 instead
+and its default value is expected 0x0.
 
-Shift the pointer to align with the format expected by
-mv88e6393x_port_policy_write().
-
-Fixes: 6584b26020fc ("net: dsa: mv88e6xxx: implement .port_set_policy for Amethyst")
-Signed-off-by: Peter Rashleigh <peter@rashleigh.ca>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Message-ID: <20241016040822.3917-1-peter@rashleigh.ca>
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
+Link: https://patch.msgid.link/20240925043823.520218-2-alexey.klimov@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/port.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/codecs/lpass-rx-macro.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/port.c b/drivers/net/dsa/mv88e6xxx/port.c
-index 5394a8cf7bf1d..04053fdc6489a 100644
---- a/drivers/net/dsa/mv88e6xxx/port.c
-+++ b/drivers/net/dsa/mv88e6xxx/port.c
-@@ -1713,6 +1713,7 @@ int mv88e6393x_port_set_policy(struct mv88e6xxx_chip *chip, int port,
- 	ptr = shift / 8;
- 	shift %= 8;
- 	mask >>= ptr * 8;
-+	ptr <<= 8;
- 
- 	err = mv88e6393x_port_policy_read(chip, port, ptr, &reg);
- 	if (err)
+diff --git a/sound/soc/codecs/lpass-rx-macro.c b/sound/soc/codecs/lpass-rx-macro.c
+index 72a0db09c7131..ac195e3b8c46a 100644
+--- a/sound/soc/codecs/lpass-rx-macro.c
++++ b/sound/soc/codecs/lpass-rx-macro.c
+@@ -907,7 +907,7 @@ static const struct reg_default rx_defaults[] = {
+ 	{ CDC_RX_BCL_VBAT_PK_EST2, 0x01 },
+ 	{ CDC_RX_BCL_VBAT_PK_EST3, 0x40 },
+ 	{ CDC_RX_BCL_VBAT_RF_PROC1, 0x2A },
+-	{ CDC_RX_BCL_VBAT_RF_PROC1, 0x00 },
++	{ CDC_RX_BCL_VBAT_RF_PROC2, 0x00 },
+ 	{ CDC_RX_BCL_VBAT_TAC1, 0x00 },
+ 	{ CDC_RX_BCL_VBAT_TAC2, 0x18 },
+ 	{ CDC_RX_BCL_VBAT_TAC3, 0x18 },
 -- 
 2.43.0
 
