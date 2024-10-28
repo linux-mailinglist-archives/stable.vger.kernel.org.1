@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 238E39B2677
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9AB59B2792
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:49:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD662282366
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0756B1C214C5
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:49:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446EF18E368;
-	Mon, 28 Oct 2024 06:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A1218EFDC;
+	Mon, 28 Oct 2024 06:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/6clBRl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGMFiOCv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026242C697;
-	Mon, 28 Oct 2024 06:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611F018D65C;
+	Mon, 28 Oct 2024 06:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097591; cv=none; b=KARHY2PYIVfkiTuppPaqB6yvgSRKKTGSN/65wHXr3RLHIdBGxyNmthVupYh0ER5vSHO47mDfEgaLBAJANv2mpwsAdeTfWAE+IjoDjIUWCjvo2H63u4xGkR4LozRRAqFsqkzC5zFGkQwbW/W8fdNzETggTS/3Bb5ZcAlKDJ6otxg=
+	t=1730098162; cv=none; b=Ixfn8zG1IpqxlkK7pYVUoSb7qIjuBB+cmvUfDhdG2KzUl5fwJaPOWbmBc2lp9W2RwAjSdq2yakim1XWTwhuoGjGXR3GJMxyAVOxp57sn42iwqpLhdZ0d3d6nyYlNTGFOfJiIjhD9xRdqelqvvk9kI/S+vZIafwMpz7KOia17onU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097591; c=relaxed/simple;
-	bh=CIhdBmEToAOqUfz29ttJ0Xwc4V+XIf6YY6wzTPUSG3g=;
+	s=arc-20240116; t=1730098162; c=relaxed/simple;
+	bh=qmjJ6fL85vyaS8TjD1RbxAxQPRLG+ZEcpuG4GLnBkMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eR1YyfknYXs2kyjVlr1HJ2sSch27UT6nHRfXk50G7TSFpxO+cYM7XJ37EiX/4fzSTPgRk+WUwshD5gG7qgbWtTt2yBBANct53jNipH7yuf5x+8wFxfLw64riMbn1B3IZD3qhAfJ9+ZyWWhMWNUmY0otHVKIlM4qEzls+9DrYNns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/6clBRl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F55C4CEC3;
-	Mon, 28 Oct 2024 06:39:50 +0000 (UTC)
+	 MIME-Version; b=IC5Bc+aEgipluaHWYbW6Er24SnOODnF5BZyRKnOxUbQFyig5s+Zqgdn98ZReqofYzbpZpSupif+CKGkd3g7zurF1qG5dwctjm+tYINWbSXry8lQt7m69cQK0R4q92Klttxn1uJECQUT/O2faWiPLMJbyMUz7at9JbytS1+Rduic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGMFiOCv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A05C4CEC3;
+	Mon, 28 Oct 2024 06:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097590;
-	bh=CIhdBmEToAOqUfz29ttJ0Xwc4V+XIf6YY6wzTPUSG3g=;
+	s=korg; t=1730098162;
+	bh=qmjJ6fL85vyaS8TjD1RbxAxQPRLG+ZEcpuG4GLnBkMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a/6clBRloAd4qu4B81AIA8F/eeUqPKQx5QXvwJzdVxAd8mGkx61G+KCCAaK7LPUBB
-	 StjbtUZMQhbHe7UU9L9Ssiyo+vbdT6RKI93YsUlIYIsmUbyDcrVAxh7icZs+XV6t2S
-	 J1edH4zEtj928etXpsPN0WBpPsZFkKgyXpW8t8fY=
+	b=RGMFiOCvwRfU7CsUI2flzPVHgWbYOowF+sdF9r0hjCZbQHg8b4NWyPHuoGdA3uUIl
+	 flKlK6k1oEGe/NNfP0fkQldK9/ToyZpii3TTfK2/kSXjlNZhs21MQIv5ff/lq8oxdx
+	 SeK7LqQHJwmMnCmOnAFXyX2D9EGnEQnIq5CBDayI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Hai <wanghai38@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/208] net: systemport: fix potential memory leak in bcm_sysport_xmit()
+Subject: [PATCH 6.11 097/261] net: ethernet: mtk_eth_soc: fix memory corruption during fq dma init
 Date: Mon, 28 Oct 2024 07:23:59 +0100
-Message-ID: <20241028062308.110062596@linuxfoundation.org>
+Message-ID: <20241028062314.462056291@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Hai <wanghai38@huawei.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit c401ed1c709948e57945485088413e1bb5e94bd1 ]
+[ Upstream commit 88806efc034a9830f483963326b99930ad519af1 ]
 
-The bcm_sysport_xmit() returns NETDEV_TX_OK without freeing skb
-in case of dma_map_single() fails, add dev_kfree_skb() to fix it.
+The loop responsible for allocating up to MTK_FQ_DMA_LENGTH buffers must
+only touch as many descriptors, otherwise it ends up corrupting unrelated
+memory. Fix the loop iteration count accordingly.
 
-Fixes: 80105befdb4b ("net: systemport: add Broadcom SYSTEMPORT Ethernet MAC driver")
-Signed-off-by: Wang Hai <wanghai38@huawei.com>
-Link: https://patch.msgid.link/20241014145115.44977-1-wanghai38@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c57e55819443 ("net: ethernet: mtk_eth_soc: handle dma buffer size soc specific")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241015081755.31060-1-nbd@nbd.name
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bcmsysport.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
-index bf1611cce974a..49e890a7e04a3 100644
---- a/drivers/net/ethernet/broadcom/bcmsysport.c
-+++ b/drivers/net/ethernet/broadcom/bcmsysport.c
-@@ -1359,6 +1359,7 @@ static netdev_tx_t bcm_sysport_xmit(struct sk_buff *skb,
- 		netif_err(priv, tx_err, dev, "DMA map failed at %p (len=%d)\n",
- 			  skb->data, skb_len);
- 		ret = NETDEV_TX_OK;
-+		dev_kfree_skb_any(skb);
- 		goto out;
- 	}
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index 16ca427cf4c3f..ed7313c10a052 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -1171,7 +1171,7 @@ static int mtk_init_fq_dma(struct mtk_eth *eth)
+ 		if (unlikely(dma_mapping_error(eth->dma_dev, dma_addr)))
+ 			return -ENOMEM;
  
+-		for (i = 0; i < cnt; i++) {
++		for (i = 0; i < len; i++) {
+ 			struct mtk_tx_dma_v2 *txd;
+ 
+ 			txd = eth->scratch_ring + (j * MTK_FQ_DMA_LENGTH + i) * soc->tx.desc_size;
 -- 
 2.43.0
 
