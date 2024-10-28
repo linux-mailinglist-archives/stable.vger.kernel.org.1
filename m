@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-88784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB7CA9B277A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:48:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 978F99B2668
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76FB41F2487C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:48:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44C111F21F0A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEAA918A922;
-	Mon, 28 Oct 2024 06:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB9E218EFF3;
+	Mon, 28 Oct 2024 06:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s0bklSoJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0/cN4rZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAAF8837;
-	Mon, 28 Oct 2024 06:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BC518EFE0;
+	Mon, 28 Oct 2024 06:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098115; cv=none; b=XkLhtbhT0ee5LkHGz94Pvfte6eqR8UD/fq1a/xBvJo9NSXSE0Xc+vE6oAQgiPKgH8TERAqfw3GxJ0rX//CGUrsTehQbK+MtD/sQs1rKuOZ9pR1NmkkIfA//hG7g0zRrwlmMQG5Kxh7syqrrV1D4ZKuOU++PHsEbTh7krJM47aY4=
+	t=1730097557; cv=none; b=stswoXGy3/6tz97gdMlZW24cq6thD+3gR7VVxF2aBq8S0VHqEuq2YzKQoV5dWMITQb3hFh2z41iLJX1VS+jWxAi47+N+zqh+MkEpblJj8BZ9lpisDhsKM0tq+J3Epq6NNwHDFQCqKmC30d8TUGstkgpztMd62Yfv6Vl0K24UYl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098115; c=relaxed/simple;
-	bh=5Qds7wpUQYLBJ3zRCyxA6zcIT6t7gcWtq06CSSDzkPk=;
+	s=arc-20240116; t=1730097557; c=relaxed/simple;
+	bh=s37GOEF8KHwCei1kUkh5FqKf7LsDsUtbFjflCXzEmTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQZ8y/PSAayF402EBVRJM1c/YQuuT1be8rOSNalgTWFqK28dofmBud1/sP9EqAIxkQEdBcMCS1WTyyVDXixnzGP5fhBxmrDS7rV9sQrljhpLhNHq23Lxx6/+6o71EyUZ9kmvkujM+oN7hsJaM970lX91GXAz6/5uLd5j3C4oyOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s0bklSoJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1147C4CEC3;
-	Mon, 28 Oct 2024 06:48:34 +0000 (UTC)
+	 MIME-Version; b=ohBRA72xYDxYB1FysjUGyR9imKEbdQVmi+zsiZhVnGFSgUnUNYtBZo/CA4qjf3J9HsL7PCmTxPj2hfD3zT0BMLhstBFGcsvC81JmZ1gAw/kS0jH7Gcx2f/jvhRCY1wPAUvCfGd3nBv8E/Q8aknOm8g2erNTNllz+KA8K1lpICpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0/cN4rZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B58C4CEC3;
+	Mon, 28 Oct 2024 06:39:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098115;
-	bh=5Qds7wpUQYLBJ3zRCyxA6zcIT6t7gcWtq06CSSDzkPk=;
+	s=korg; t=1730097557;
+	bh=s37GOEF8KHwCei1kUkh5FqKf7LsDsUtbFjflCXzEmTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s0bklSoJnjlPIdomliYP8Nb/6oFZoGzimfUO5wrQzyeMAL7DOvpStXf71MMRcJvB+
-	 kKEKRquTl/UdKuOf6c9uDFWo/1tyBj3Q2tD72S2SC1wtjZwQluKDNpnr5tOIoSd8ZT
-	 9dD7CEzuG+sw0gyQ7VExIZc3jPYiqUN1awaRMvlo=
+	b=q0/cN4rZU963o/Pc919SfblVRjrd7PLvokYBvF0zL6HwdLxD1IfXpp4SGgVmGVatz
+	 PbmZ7rUDEc1VuMEI9gzlKWgsKNvJtQpEbnDmn1/yKEOp0BLlUJqFrnHWkYu6OfXk+l
+	 kOdQhgB8cTkYMBpN4tyHRtF+DkseeVQvBfNZ8Aho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawel Dembicki <paweldembicki@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 083/261] net: dsa: vsc73xx: fix reception from VLAN-unaware bridges
+Subject: [PATCH 6.6 045/208] drm/msm: Avoid NULL dereference in msm_disp_state_print_regs()
 Date: Mon, 28 Oct 2024 07:23:45 +0100
-Message-ID: <20241028062314.112781768@linuxfoundation.org>
+Message-ID: <20241028062307.765666696@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 11d06f0aaef89f4cad68b92510bd9decff2d7b87 ]
+[ Upstream commit 293f53263266bc4340d777268ab4328a97f041fa ]
 
-Similar to the situation described for sja1105 in commit 1f9fc48fd302
-("net: dsa: sja1105: fix reception from VLAN-unaware bridges"), the
-vsc73xx driver uses tag_8021q and doesn't need the ds->untag_bridge_pvid
-request. In fact, this option breaks packet reception.
+If the allocation in msm_disp_state_dump_regs() failed then
+`block->state` can be NULL. The msm_disp_state_print_regs() function
+_does_ have code to try to handle it with:
 
-The ds->untag_bridge_pvid option strips VLANs from packets received on
-VLAN-unaware bridge ports. But those VLANs should already be stripped
-by tag_vsc73xx_8021q.c as part of vsc73xx_rcv() - they are not VLANs in
-VLAN-unaware mode, but DSA tags. Thus, dsa_software_vlan_untag() tries
-to untag a VLAN that doesn't exist, corrupting the packet.
+  if (*reg)
+    dump_addr = *reg;
 
-Fixes: 93e4649efa96 ("net: dsa: provide a software untagging function on RX for VLAN-aware bridges")
-Tested-by: Pawel Dembicki <paweldembicki@gmail.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://patch.msgid.link/20241014153041.1110364-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+...but since "dump_addr" is initialized to NULL the above is actually
+a noop. The code then goes on to dereference `dump_addr`.
+
+Make the function print "Registers not stored" when it sees a NULL to
+solve this. Since we're touching the code, fix
+msm_disp_state_print_regs() not to pointlessly take a double-pointer
+and properly mark the pointer as `const`.
+
+Fixes: 98659487b845 ("drm/msm: add support to take dpu snapshot")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/619657/
+Link: https://lore.kernel.org/r/20241014093605.1.Ia1217cecec9ef09eb3c6d125360cc6c8574b0e73@changeid
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/vitesse-vsc73xx-core.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
-index 212421e9d42e4..f5a1fefb76509 100644
---- a/drivers/net/dsa/vitesse-vsc73xx-core.c
-+++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
-@@ -721,7 +721,6 @@ static int vsc73xx_setup(struct dsa_switch *ds)
+diff --git a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
+index add72bbc28b17..bb149281d31fa 100644
+--- a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
++++ b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
+@@ -48,20 +48,21 @@ static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *b
+ 	}
+ }
  
- 	dev_info(vsc->dev, "set up the switch\n");
+-static void msm_disp_state_print_regs(u32 **reg, u32 len, void __iomem *base_addr,
+-		struct drm_printer *p)
++static void msm_disp_state_print_regs(const u32 *dump_addr, u32 len,
++		void __iomem *base_addr, struct drm_printer *p)
+ {
+ 	int i;
+-	u32 *dump_addr = NULL;
+ 	void __iomem *addr;
+ 	u32 num_rows;
  
--	ds->untag_bridge_pvid = true;
- 	ds->max_num_bridges = DSA_TAG_8021Q_MAX_NUM_BRIDGES;
++	if (!dump_addr) {
++		drm_printf(p, "Registers not stored\n");
++		return;
++	}
++
+ 	addr = base_addr;
+ 	num_rows = len / REG_DUMP_ALIGN;
  
- 	/* Issue RESET */
+-	if (*reg)
+-		dump_addr = *reg;
+-
+ 	for (i = 0; i < num_rows; i++) {
+ 		drm_printf(p, "0x%lx : %08x %08x %08x %08x\n",
+ 				(unsigned long)(addr - base_addr),
+@@ -89,7 +90,7 @@ void msm_disp_state_print(struct msm_disp_state *state, struct drm_printer *p)
+ 
+ 	list_for_each_entry_safe(block, tmp, &state->blocks, node) {
+ 		drm_printf(p, "====================%s================\n", block->name);
+-		msm_disp_state_print_regs(&block->state, block->size, block->base_addr, p);
++		msm_disp_state_print_regs(block->state, block->size, block->base_addr, p);
+ 	}
+ 
+ 	drm_printf(p, "===================dpu drm state================\n");
 -- 
 2.43.0
 
