@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-88726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E33539B2735
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:46:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCF5E9B274A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:47:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8526282232
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:46:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95A921F23FBE
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:47:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46ADC18E748;
-	Mon, 28 Oct 2024 06:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B7F2AF07;
+	Mon, 28 Oct 2024 06:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlqsDhRX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEcYslaU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C8418E35B;
-	Mon, 28 Oct 2024 06:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633A318EFD0;
+	Mon, 28 Oct 2024 06:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097983; cv=none; b=ADkwFLcXR3qQtuAnNSxtUTSCjReB8JKa1PHPL+ffNaQaX/qU0072o0kyxa0IgajhxdRDT7g0yq7ngvSX4o9ESkF6b6gT/r7KvGNXOedwvzhn4VIrJQ4UpTFdl+A96quxcQ3CI4zX4iyV5yU9Lx3vpaSKHt/qeSpeoYtKw37ti8g=
+	t=1730098007; cv=none; b=i7hxES2HDdLaJoC2IeINm0F2Q4R1RVQAeAyuHRF7GdZlTqqJ151gxXF85TR6RpjEr01R5GPcLeqOKA9zwTtvaPB8MGtRThwY8MNzVDXJSf70Ng/BYJKRiulQEVfM2VxNtXOFXPLKmlI3g7kEQnptWz0/bkFZdWnY+/n5IvuycGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097983; c=relaxed/simple;
-	bh=exC88oUJc/FILt6cz2wooknUUX0r3/VL0NaIKp0gOlE=;
+	s=arc-20240116; t=1730098007; c=relaxed/simple;
+	bh=DIhGOEAsHXw2/9u1+Qch7GqHHfRCNJYxXY7vjke8MJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DlbW/KtmbtzlH1wjvIzKt28nq8kMedXFkBzmxmkBZnp2pFPr4PXgwXAwHzBXEl+8kJ+BqPPX9luSHjFE/2/Stz3jF0fjrFDQ3A6SlNbLcPmiW2Wio5bGW4vGQAhQQbgD+L5Zfe60y5fumJoURjs1odQ3JoCQE8NBeG81BYXHvho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlqsDhRX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97644C4CEC3;
-	Mon, 28 Oct 2024 06:46:22 +0000 (UTC)
+	 MIME-Version; b=QHn8xCgqwfS6ZYS+J+pjVJI9qdcE40axvWDxeWdzQsWl+d6qRLW/Zoeb78m1ZL1bnifE5kLWHGcFkWTISYj7edbpPzJu3nyr2xnfQ6xY8K2Ek6Pa+gau3NoPZS3aDEQBwCq3xT/tuD9gM0c5qUe7OoAxAF0rOL/0pZecVWpyLf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEcYslaU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05699C4CEC3;
+	Mon, 28 Oct 2024 06:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097982;
-	bh=exC88oUJc/FILt6cz2wooknUUX0r3/VL0NaIKp0gOlE=;
+	s=korg; t=1730098007;
+	bh=DIhGOEAsHXw2/9u1+Qch7GqHHfRCNJYxXY7vjke8MJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RlqsDhRXmsi3mtfaGI9R5X1iOWeVqL4Ptn+pUF1I7KmPxvLT+egsWEq/tGsqh2i8s
-	 ogWmcTE56fBDFlJah3mzA73xLUFMoaBSnc7XwsWPqgioDrbi/Z5Bt8JB5nRbGQIhDB
-	 M4SP4iGMV3fQ84/03CIBK+879w+MX/xmQvT+/p0I=
+	b=fEcYslaUi4ABeSahUjmGLUU+b0u8d04Wb7AHCH21/LIx+G4bNvVk+U2/ls4iUtiQw
+	 11HIpX7Jr0+QgYQ0N7WLvoGKWmQe9Af4ewNw7fAMtfDXAJasawgLS/olEUfZ/aersq
+	 NaWIG/M1SECs/hYz5jxMEDtoTyMhl4o4IkbC3jBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
+	Tyrone Wu <wudevelops@gmail.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Yafang Shao <laoar.shao@gmail.com>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 018/261] bpf: Check the remaining info_cnt before repeating btf fields
-Date: Mon, 28 Oct 2024 07:22:40 +0100
-Message-ID: <20241028062312.467832036@linuxfoundation.org>
+Subject: [PATCH 6.11 019/261] bpf: fix unpopulated name_len field in perf_event link info
+Date: Mon, 28 Oct 2024 07:22:41 +0100
+Message-ID: <20241028062312.493583426@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
 References: <20241028062312.001273460@linuxfoundation.org>
@@ -67,100 +68,126 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Tyrone Wu <wudevelops@gmail.com>
 
-[ Upstream commit 797d73ee232dd1833dec4824bc53a22032e97c1c ]
+[ Upstream commit 4deecdd29cf29844c7bd164d72dc38d2e672f64e ]
 
-When trying to repeat the btf fields for array of nested struct, it
-doesn't check the remaining info_cnt. The following splat will be
-reported when the value of ret * nelems is greater than BTF_FIELDS_MAX:
+Previously when retrieving `bpf_link_info.perf_event` for
+kprobe/uprobe/tracepoint, the `name_len` field was not populated by the
+kernel, leaving it to reflect the value initially set by the user. This
+behavior was inconsistent with how other input/output string buffer
+fields function (e.g. `raw_tracepoint.tp_name_len`).
 
-  ------------[ cut here ]------------
-  UBSAN: array-index-out-of-bounds in ../kernel/bpf/btf.c:3951:49
-  index 11 is out of range for type 'btf_field_info [11]'
-  CPU: 6 UID: 0 PID: 411 Comm: test_progs ...... 6.11.0-rc4+ #1
-  Tainted: [O]=OOT_MODULE
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS ...
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x57/0x70
-   dump_stack+0x10/0x20
-   ubsan_epilogue+0x9/0x40
-   __ubsan_handle_out_of_bounds+0x6f/0x80
-   ? kallsyms_lookup_name+0x48/0xb0
-   btf_parse_fields+0x992/0xce0
-   map_create+0x591/0x770
-   __sys_bpf+0x229/0x2410
-   __x64_sys_bpf+0x1f/0x30
-   x64_sys_call+0x199/0x9f0
-   do_syscall_64+0x3b/0xc0
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  RIP: 0033:0x7fea56f2cc5d
-  ......
-   </TASK>
-  ---[ end trace ]---
+This patch fills `name_len` with the actual size of the string name.
 
-Fix it by checking the remaining info_cnt in btf_repeat_fields() before
-repeating the btf fields.
-
-Fixes: 64e8ee814819 ("bpf: look into the types of the fields of a struct type recursively.")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20241008071114.3718177-2-houtao@huaweicloud.com
+Fixes: 1b715e1b0ec5 ("bpf: Support ->fill_link_info for perf_event")
+Signed-off-by: Tyrone Wu <wudevelops@gmail.com>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Yafang Shao <laoar.shao@gmail.com>
+Link: https://lore.kernel.org/r/20241008164312.46269-1-wudevelops@gmail.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/btf.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ kernel/bpf/syscall.c | 29 ++++++++++++++++++++++-------
+ 1 file changed, 22 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index 9b068afd17953..5f4f1d0bc23a4 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -3528,7 +3528,7 @@ static int btf_get_field_type(const struct btf *btf, const struct btf_type *var_
-  *   (i + 1) * elem_size
-  * where i is the repeat index and elem_size is the size of an element.
-  */
--static int btf_repeat_fields(struct btf_field_info *info,
-+static int btf_repeat_fields(struct btf_field_info *info, int info_cnt,
- 			     u32 field_cnt, u32 repeat_cnt, u32 elem_size)
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 21fb9c4d498fb..26e69d4fc3dad 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -3636,15 +3636,16 @@ static void bpf_perf_link_dealloc(struct bpf_link *link)
+ }
+ 
+ static int bpf_perf_link_fill_common(const struct perf_event *event,
+-				     char __user *uname, u32 ulen,
++				     char __user *uname, u32 *ulenp,
+ 				     u64 *probe_offset, u64 *probe_addr,
+ 				     u32 *fd_type, unsigned long *missed)
  {
- 	u32 i, j;
-@@ -3548,6 +3548,12 @@ static int btf_repeat_fields(struct btf_field_info *info,
- 		}
- 	}
+ 	const char *buf;
+-	u32 prog_id;
++	u32 prog_id, ulen;
+ 	size_t len;
+ 	int err;
  
-+	/* The type of struct size or variable size is u32,
-+	 * so the multiplication will not overflow.
-+	 */
-+	if (field_cnt * (repeat_cnt + 1) > info_cnt)
-+		return -E2BIG;
++	ulen = *ulenp;
+ 	if (!ulen ^ !uname)
+ 		return -EINVAL;
+ 
+@@ -3652,10 +3653,17 @@ static int bpf_perf_link_fill_common(const struct perf_event *event,
+ 				      probe_offset, probe_addr, missed);
+ 	if (err)
+ 		return err;
 +
- 	cur = field_cnt;
- 	for (i = 0; i < repeat_cnt; i++) {
- 		memcpy(&info[cur], &info[0], field_cnt * sizeof(info[0]));
-@@ -3592,7 +3598,7 @@ static int btf_find_nested_struct(const struct btf *btf, const struct btf_type *
- 		info[i].off += off;
- 
- 	if (nelems > 1) {
--		err = btf_repeat_fields(info, ret, nelems - 1, t->size);
-+		err = btf_repeat_fields(info, info_cnt, ret, nelems - 1, t->size);
- 		if (err == 0)
- 			ret *= nelems;
- 		else
-@@ -3686,10 +3692,10 @@ static int btf_find_field_one(const struct btf *btf,
- 
- 	if (ret == BTF_FIELD_IGNORE)
++	if (buf) {
++		len = strlen(buf);
++		*ulenp = len + 1;
++	} else {
++		*ulenp = 1;
++	}
+ 	if (!uname)
  		return 0;
--	if (nelems > info_cnt)
-+	if (!info_cnt)
- 		return -E2BIG;
- 	if (nelems > 1) {
--		ret = btf_repeat_fields(info, 1, nelems - 1, sz);
-+		ret = btf_repeat_fields(info, info_cnt, 1, nelems - 1, sz);
- 		if (ret < 0)
- 			return ret;
- 	}
++
+ 	if (buf) {
+-		len = strlen(buf);
+ 		err = bpf_copy_to_user(uname, buf, ulen, len);
+ 		if (err)
+ 			return err;
+@@ -3680,7 +3688,7 @@ static int bpf_perf_link_fill_kprobe(const struct perf_event *event,
+ 
+ 	uname = u64_to_user_ptr(info->perf_event.kprobe.func_name);
+ 	ulen = info->perf_event.kprobe.name_len;
+-	err = bpf_perf_link_fill_common(event, uname, ulen, &offset, &addr,
++	err = bpf_perf_link_fill_common(event, uname, &ulen, &offset, &addr,
+ 					&type, &missed);
+ 	if (err)
+ 		return err;
+@@ -3688,7 +3696,7 @@ static int bpf_perf_link_fill_kprobe(const struct perf_event *event,
+ 		info->perf_event.type = BPF_PERF_EVENT_KRETPROBE;
+ 	else
+ 		info->perf_event.type = BPF_PERF_EVENT_KPROBE;
+-
++	info->perf_event.kprobe.name_len = ulen;
+ 	info->perf_event.kprobe.offset = offset;
+ 	info->perf_event.kprobe.missed = missed;
+ 	if (!kallsyms_show_value(current_cred()))
+@@ -3710,7 +3718,7 @@ static int bpf_perf_link_fill_uprobe(const struct perf_event *event,
+ 
+ 	uname = u64_to_user_ptr(info->perf_event.uprobe.file_name);
+ 	ulen = info->perf_event.uprobe.name_len;
+-	err = bpf_perf_link_fill_common(event, uname, ulen, &offset, &addr,
++	err = bpf_perf_link_fill_common(event, uname, &ulen, &offset, &addr,
+ 					&type, NULL);
+ 	if (err)
+ 		return err;
+@@ -3719,6 +3727,7 @@ static int bpf_perf_link_fill_uprobe(const struct perf_event *event,
+ 		info->perf_event.type = BPF_PERF_EVENT_URETPROBE;
+ 	else
+ 		info->perf_event.type = BPF_PERF_EVENT_UPROBE;
++	info->perf_event.uprobe.name_len = ulen;
+ 	info->perf_event.uprobe.offset = offset;
+ 	info->perf_event.uprobe.cookie = event->bpf_cookie;
+ 	return 0;
+@@ -3744,12 +3753,18 @@ static int bpf_perf_link_fill_tracepoint(const struct perf_event *event,
+ {
+ 	char __user *uname;
+ 	u32 ulen;
++	int err;
+ 
+ 	uname = u64_to_user_ptr(info->perf_event.tracepoint.tp_name);
+ 	ulen = info->perf_event.tracepoint.name_len;
++	err = bpf_perf_link_fill_common(event, uname, &ulen, NULL, NULL, NULL, NULL);
++	if (err)
++		return err;
++
+ 	info->perf_event.type = BPF_PERF_EVENT_TRACEPOINT;
++	info->perf_event.tracepoint.name_len = ulen;
+ 	info->perf_event.tracepoint.cookie = event->bpf_cookie;
+-	return bpf_perf_link_fill_common(event, uname, ulen, NULL, NULL, NULL, NULL);
++	return 0;
+ }
+ 
+ static int bpf_perf_link_fill_perf_event(const struct perf_event *event,
 -- 
 2.43.0
 
