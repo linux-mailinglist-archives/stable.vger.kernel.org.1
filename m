@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96ACD9B2671
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1421E9B2783
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:48:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E041A1F21CE2
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 459451C20329
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D595718E368;
-	Mon, 28 Oct 2024 06:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF7218DF7D;
+	Mon, 28 Oct 2024 06:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IbfkiJXR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pMsQr/N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9344F18E04F;
-	Mon, 28 Oct 2024 06:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576A62AF07;
+	Mon, 28 Oct 2024 06:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097577; cv=none; b=srKTr8v5PkVY0cArnef/NfJ/nLBAOzoyS6qTS9anzR8y3ltBH5Lgsy7fmltyAntMGJI795evnWNFU50TWpJUO3SFqF9wWHB+p25CSHINbSMp/CyuEJhVlZ8EW6rdfqvkwtlOmUxpZdAi6c/f4AUKzTHO3cG99jcHMbz033JcHpI=
+	t=1730098135; cv=none; b=UuuIHb3efMq+f1VoxX3CKr2GaqanbeOjwd7s5N3wVxqChVF2IzJ5q+gT7mavJaqj85vFw1pY51NVyqAAyzUv2zgZDZJ/OdKAIwIsuXZuICPW8HWYmcR8J+oxiZY0L9NmqLwpkatWBcopdQ6LW1ncUV9Ufp+Z53ArYySbWI/bF/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097577; c=relaxed/simple;
-	bh=WIfYuyTNXfGaON5JsAPkMLRUaGatOh1+lSXJoBaRCOE=;
+	s=arc-20240116; t=1730098135; c=relaxed/simple;
+	bh=gtDe07mVPVWrtbh1RtV5CQAidQ863Oxsd+l3H9sJCdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cs7/n8HpiMq1z/39mlxkbNkT6h9o1ExeEHQp2io4dHs7ZGTzEqAQNu6fyeYxB9iqic9dHT3ZbcaGkk9jqQKlWZwpDja6HCdzZnu/IXtkhX+BASg53zzdLVTuI4D5xnNclEKYz2nAGYKLH+B8JS0Ee003nKxDy5wanZ4LBxA2XPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IbfkiJXR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA17C4CEC3;
-	Mon, 28 Oct 2024 06:39:37 +0000 (UTC)
+	 MIME-Version; b=sqxU6hX+EAo9ms7Hdr7oQA/0G1wPYIz6rfAgxVYfgQc02S9/YahUpWaEOOKYdWrLSPdhWBgGC4fwzzWzoEgMh/XX90x4iWo7KjrW5TVqQtLfIEAianI2Qvs/N2c8pR1qF9/I4fM9w9fht298V8oQ1yPKc1BkSo9WXIdpuixGs8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pMsQr/N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0780C4CEC3;
+	Mon, 28 Oct 2024 06:48:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097577;
-	bh=WIfYuyTNXfGaON5JsAPkMLRUaGatOh1+lSXJoBaRCOE=;
+	s=korg; t=1730098135;
+	bh=gtDe07mVPVWrtbh1RtV5CQAidQ863Oxsd+l3H9sJCdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IbfkiJXRUh7qkcCpbrcxyPa3WNwJQoJ2CYioNmF19Nb0O390zpja06egATxfubED4
-	 Ky7lOP0bjmOzAXdivsTf4Q4a5cEWfwiQvVLxwFNPxOc5i1TZRgDb0B2LwI1KsrTGlu
-	 3l7raNlzIRvzkWtGBXl3nIgjb3HsttzhYV6g+R4k=
+	b=1pMsQr/NDcHAaAea/Q+/+JEhQO+x/NoMVUR5OKXAnYJEXLvDUQQxas1IeD/CFr2r2
+	 KI4gFXW8VcFPsSShhSIkeqv5J7+55AifcLv0NE3MLTo2+xiX5FZj8KLLkAGeqyB3La
+	 PHUzUN1EyvOx9j1AjoZM1zjN3cJcWpM5U0aGwzuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 053/208] macsec: dont increment counters for an unrelated SA
+Subject: [PATCH 6.11 091/261] drm/xe: Take job list lock in xe_sched_add_pending_job
 Date: Mon, 28 Oct 2024 07:23:53 +0100
-Message-ID: <20241028062307.962782550@linuxfoundation.org>
+Message-ID: <20241028062314.312750708@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Matthew Brost <matthew.brost@intel.com>
 
-[ Upstream commit cf58aefb1332db322060cad4a330d5f9292b0f41 ]
+[ Upstream commit ed931fb40e353586f26c3327813d142f782f5f78 ]
 
-On RX, we shouldn't be incrementing the stats for an arbitrary SA in
-case the actual SA hasn't been set up. Those counters are intended to
-track packets for their respective AN when the SA isn't currently
-configured. Due to the way MACsec is implemented, we don't keep
-counters unless the SA is configured, so we can't track those packets,
-and those counters will remain at 0.
+A fragile micro optimization in xe_sched_add_pending_job relied on both
+the GPU scheduler being stopped and fence signaling stopped to safely
+add a job to the pending list without the job list lock in
+xe_sched_add_pending_job. Remove this optimization and just take the job
+list lock.
 
-The RXSC's stats keeps track of those packets without telling us which
-AN they belonged to. We could add counters for non-existent SAs, and
-then find a way to integrate them in the dump to userspace, but I
-don't think it's worth the effort.
-
-Fixes: 91ec9bd57f35 ("macsec: Fix traffic counters/statistics")
-Reported-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/f5ac92aaa5b89343232615f4c03f9f95042c6aa0.1728657709.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7ddb9403dd74 ("drm/xe: Sample ctx timestamp to determine if jobs have timed out")
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241003001657.3517883-2-matthew.brost@intel.com
+(cherry picked from commit 90521df5fc43980e4575bd8c5b1cb62afe1a9f5f)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macsec.c | 18 ------------------
- 1 file changed, 18 deletions(-)
+ drivers/gpu/drm/xe/xe_gpu_scheduler.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 778fb77c5a937..2ada8baf815b1 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -151,19 +151,6 @@ static struct macsec_rx_sa *macsec_rxsa_get(struct macsec_rx_sa __rcu *ptr)
- 	return sa;
+diff --git a/drivers/gpu/drm/xe/xe_gpu_scheduler.h b/drivers/gpu/drm/xe/xe_gpu_scheduler.h
+index 6aac7fe686735..6bdd0a5b36122 100644
+--- a/drivers/gpu/drm/xe/xe_gpu_scheduler.h
++++ b/drivers/gpu/drm/xe/xe_gpu_scheduler.h
+@@ -51,7 +51,9 @@ xe_sched_invalidate_job(struct xe_sched_job *job, int threshold)
+ static inline void xe_sched_add_pending_job(struct xe_gpu_scheduler *sched,
+ 					    struct xe_sched_job *job)
+ {
++	spin_lock(&sched->base.job_list_lock);
+ 	list_add(&job->drm.list, &sched->base.pending_list);
++	spin_unlock(&sched->base.job_list_lock);
  }
  
--static struct macsec_rx_sa *macsec_active_rxsa_get(struct macsec_rx_sc *rx_sc)
--{
--	struct macsec_rx_sa *sa = NULL;
--	int an;
--
--	for (an = 0; an < MACSEC_NUM_AN; an++)	{
--		sa = macsec_rxsa_get(rx_sc->sa[an]);
--		if (sa)
--			break;
--	}
--	return sa;
--}
--
- static void free_rx_sc_rcu(struct rcu_head *head)
- {
- 	struct macsec_rx_sc *rx_sc = container_of(head, struct macsec_rx_sc, rcu_head);
-@@ -1205,15 +1192,12 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 		/* If validateFrames is Strict or the C bit in the
- 		 * SecTAG is set, discard
- 		 */
--		struct macsec_rx_sa *active_rx_sa = macsec_active_rxsa_get(rx_sc);
- 		if (hdr->tci_an & MACSEC_TCI_C ||
- 		    secy->validate_frames == MACSEC_VALIDATE_STRICT) {
- 			u64_stats_update_begin(&rxsc_stats->syncp);
- 			rxsc_stats->stats.InPktsNotUsingSA++;
- 			u64_stats_update_end(&rxsc_stats->syncp);
- 			DEV_STATS_INC(secy->netdev, rx_errors);
--			if (active_rx_sa)
--				this_cpu_inc(active_rx_sa->stats->InPktsNotUsingSA);
- 			goto drop_nosa;
- 		}
- 
-@@ -1223,8 +1207,6 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 		u64_stats_update_begin(&rxsc_stats->syncp);
- 		rxsc_stats->stats.InPktsUnusedSA++;
- 		u64_stats_update_end(&rxsc_stats->syncp);
--		if (active_rx_sa)
--			this_cpu_inc(active_rx_sa->stats->InPktsUnusedSA);
- 		goto deliver;
- 	}
- 
+ static inline
 -- 
 2.43.0
 
