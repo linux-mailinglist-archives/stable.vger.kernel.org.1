@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B16F99B266A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10F0F9B277B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:48:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 957D7B20F44
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B10431F248B0
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B57918F2C3;
-	Mon, 28 Oct 2024 06:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 235CC18D65C;
+	Mon, 28 Oct 2024 06:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="if9IWoD0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7Jxe6b3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD05E18E748;
-	Mon, 28 Oct 2024 06:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43118837;
+	Mon, 28 Oct 2024 06:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097560; cv=none; b=qQs9yKJ/PmTRwi9evqKRC8eXvkYIqX8TC2r5htvuoO70DrLYM4+NAmXNAsnaT8zSjdRcIlmJQFIt+qfP1fWgjW4Z4MqcLX2X5/G+7gNxbHUFBQJea/X41gw6j3hlHogMWsVABz+j2nQj/aKBsCNXCURHGahC4ChXfyfVLRZh0uo=
+	t=1730098117; cv=none; b=sRh0h83WIR6Ezcb5j3h5yxxvtKgIEoT0/hITEAUQ96gLQTFJXqTbCsGpfYP4O5/+PWPfaO3dCuxcbbqSR7Jx62EnxnA4XZPUpgoZGnGawyGlC2cHIM9kJ/6+yZouOhZyqKwTxes3TGLO/yRZvTPDLxz0sIzLb0RPT4f7/985/no=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097560; c=relaxed/simple;
-	bh=4VqRkj3REPfbdykT9FOnnftKW2gfCqtmjymC1dcVa8s=;
+	s=arc-20240116; t=1730098117; c=relaxed/simple;
+	bh=zaz8JUkGDmW+EstlLit+I5j/1zpzG0IYb/0l/9PucdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eVASiXLqrzFCoPGyabilgwFsMqLDM8g6uI7VOfIW403LzMPswp9g5fcuOUXKWDRqtpFjlqLAn+GUCeireqtMk3QmmhaxkwQvtIRrwLBzaF7lwl9G2MFB535VOfIftiGdtfnIEBleKZBcAyPWT+3rckxisJ2rwZnyNmzhmzEjasU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=if9IWoD0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76EADC4CEC3;
-	Mon, 28 Oct 2024 06:39:19 +0000 (UTC)
+	 MIME-Version; b=mrenEFtJIPjSIgY6NzVT7EG6Mm3TgRy9kCqRvRxgclmdIRzXWEJdD63rZ0soIjVWoRJoscwHq+q4Mp6WMPIG/fB9EtKwLS/AO4vDW1jCprHDuES/C9P7yeWHq4eiTuhHAoqZ+zEPnXy5Uhj6YFSrQII9Qh8pBASKteIzHf2sexk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7Jxe6b3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F0B6C4CEC3;
+	Mon, 28 Oct 2024 06:48:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097559;
-	bh=4VqRkj3REPfbdykT9FOnnftKW2gfCqtmjymC1dcVa8s=;
+	s=korg; t=1730098117;
+	bh=zaz8JUkGDmW+EstlLit+I5j/1zpzG0IYb/0l/9PucdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=if9IWoD0cAJjZUsduDQWQLT+RNx8kH50RGjvFc+KJV1dAI3r7gbPIzaFb0BXI7fqJ
-	 XrCjcibUJGhwZdbyG5qLyIlt5l4axIr+FyTdoOrq1bDKsI9+IQs5l+jcfo+Kna3jF1
-	 RRNazzZj4cZOs/XubTcZIm0p3MkNgCiEEOWroANE=
+	b=h7Jxe6b3ayWYsCTWkIX5LDIcIMNed4GWchWtxIhIU5ds9vxl+b7qu+E1n+ZWVIxHK
+	 UpAg5k/+OxecNSIRJkwT6AqLIPP1o2tnkPR/jscHvma7/rMNrw6H9331l2Ze4WbhnA
+	 M9VVEYYNbsBOV76HT6trApyMWQ8v4lK9l6FtY6Dg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Wang Hai <wanghai38@huawei.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 046/208] drm/msm: Allocate memory for disp snapshot with kvzalloc()
+Subject: [PATCH 6.11 084/261] scsi: target: core: Fix null-ptr-deref in target_alloc_device()
 Date: Mon, 28 Oct 2024 07:23:46 +0100
-Message-ID: <20241028062307.791441832@linuxfoundation.org>
+Message-ID: <20241028062314.137836212@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit e4a45582db1b792c57bdb52c45958264f7fcfbdc ]
+[ Upstream commit fca6caeb4a61d240f031914413fcc69534f6dc03 ]
 
-With the "drm/msm: add a display mmu fault handler" series [1] we saw
-issues in the field where memory allocation was failing when
-allocating space for registers in msm_disp_state_dump_regs().
-Specifically we were seeing an order 5 allocation fail. It's not
-surprising that order 5 allocations will sometimes fail after the
-system has been up and running for a while.
+There is a null-ptr-deref issue reported by KASAN:
 
-There's no need here for contiguous memory. Change the allocation to
-kvzalloc() which should make it much less likely to fail.
+BUG: KASAN: null-ptr-deref in target_alloc_device+0xbc4/0xbe0 [target_core_mod]
+...
+ kasan_report+0xb9/0xf0
+ target_alloc_device+0xbc4/0xbe0 [target_core_mod]
+ core_dev_setup_virtual_lun0+0xef/0x1f0 [target_core_mod]
+ target_core_init_configfs+0x205/0x420 [target_core_mod]
+ do_one_initcall+0xdd/0x4e0
+...
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-[1] https://lore.kernel.org/r/20240628214848.4075651-1-quic_abhinavk@quicinc.com/
+In target_alloc_device(), if allocing memory for dev queues fails, then
+dev will be freed by dev->transport->free_device(), but dev->transport
+is not initialized at that time, which will lead to a null pointer
+reference problem.
 
-Fixes: 98659487b845 ("drm/msm: add support to take dpu snapshot")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/619658/
-Link: https://lore.kernel.org/r/20241014093605.2.I72441365ffe91f3dceb17db0a8ec976af8139590@changeid
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Fixing this bug by freeing dev with hba->backend->ops->free_device().
+
+Fixes: 1526d9f10c61 ("scsi: target: Make state_list per CPU")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Link: https://lore.kernel.org/r/20241011113444.40749-1-wanghai38@huawei.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/target/target_core_device.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
-index bb149281d31fa..4d55e3cf570f0 100644
---- a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
-+++ b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
-@@ -26,7 +26,7 @@ static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *b
- 	end_addr = base_addr + aligned_len;
+diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
+index bf4892544cfdb..bb84d304b07e5 100644
+--- a/drivers/target/target_core_device.c
++++ b/drivers/target/target_core_device.c
+@@ -691,7 +691,7 @@ struct se_device *target_alloc_device(struct se_hba *hba, const char *name)
  
- 	if (!(*reg))
--		*reg = kzalloc(len_padded, GFP_KERNEL);
-+		*reg = kvzalloc(len_padded, GFP_KERNEL);
- 
- 	if (*reg)
- 		dump_addr = *reg;
-@@ -162,7 +162,7 @@ void msm_disp_state_free(void *data)
- 
- 	list_for_each_entry_safe(block, tmp, &disp_state->blocks, node) {
- 		list_del(&block->node);
--		kfree(block->state);
-+		kvfree(block->state);
- 		kfree(block);
+ 	dev->queues = kcalloc(nr_cpu_ids, sizeof(*dev->queues), GFP_KERNEL);
+ 	if (!dev->queues) {
+-		dev->transport->free_device(dev);
++		hba->backend->ops->free_device(dev);
+ 		return NULL;
  	}
  
 -- 
