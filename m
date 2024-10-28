@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-88393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5F999B25C8
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:34:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 343BE9B27BE
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:50:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA653280EAC
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:34:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C59E6285931
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ACF418F2C3;
-	Mon, 28 Oct 2024 06:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A334D18A924;
+	Mon, 28 Oct 2024 06:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wNh7Psur"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pBctouQ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0937418E37C;
-	Mon, 28 Oct 2024 06:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC038837;
+	Mon, 28 Oct 2024 06:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097229; cv=none; b=AJZDxgYlZ/wp0wsBCZ4QbPUDAvKr8cp0NtCKpUOqw9CFYbOBmEoWuEkCLJbIONa/1ecRELcggqT7VbD2Rn2blxgC7v1PfnR+ZukW48IP6bX4HtdPl3PFeyFveM9xixhsp9YFN94teic/j+Gk6i/iS8FCUfavCHJKBzB5mzrxxo8=
+	t=1730098247; cv=none; b=Mjh6GAYg6vt2Y4DcFlPcufmJlXziPFxE4MZEgjLe5S691Q/48V15iX1pHJHpObigFJj6Q8QKEJLp1hMkrPZiUrUDVYvyo6GsahUVrOny67SWKV+qMBiB7ldznRaD+9OtX39A4YNh/DGol2bL+KGbyb2xRiViXXFvj6mWq3G8sag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097229; c=relaxed/simple;
-	bh=aFcWet4muh65XQ7BB1W9u+I8XiuOcLq9rJW2UIsGH6c=;
+	s=arc-20240116; t=1730098247; c=relaxed/simple;
+	bh=257HunH8HrP1LIwaqAt/8FOINRRfp6LAU7mhSwtscl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nheLjQh4lvNJRMz2leUmDJBtdahN8o2lNUfWhZrBd+5PLSNk9eUfS1T6DNMuYwStlPIr0exjrzTSzpF4g0EyxGYW7Md/W7gTg8E5CnTXWSDE0hlALJe9bacXfPSKxtIanAz1XHKNwkdEBC/u5TR0a73UrVytzu8O8g5Gk8G1EWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wNh7Psur; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9CCC4CEC7;
-	Mon, 28 Oct 2024 06:33:48 +0000 (UTC)
+	 MIME-Version; b=GP/qtqa48t/HvoYQB438brZ5q5KZu+/X/voWlCzwyDlhGepgzC7Fh4Nhhmx8/Y8VVmMRg24BkJou+b+RM0OmXdCHJzuEWLTcbRXKYUIPwEo9X0O4aDhUNbCX8LgBO2HTKVN7uY71c+kPHW3vTQwpD6g57nO2DgAFsMWIiL+Ia6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pBctouQ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F367CC4CECD;
+	Mon, 28 Oct 2024 06:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097228;
-	bh=aFcWet4muh65XQ7BB1W9u+I8XiuOcLq9rJW2UIsGH6c=;
+	s=korg; t=1730098247;
+	bh=257HunH8HrP1LIwaqAt/8FOINRRfp6LAU7mhSwtscl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wNh7PsurtG7Qi+/HdeZBZiQQmQFzU2P9iWJwpAu9Yn5sdTrMwYbPciNczIzIu7iqU
-	 DyuMA9ggJq4n9PFMbL/EL59c0ZHDvOe+n0aFfYh9vhiR6eILeJYVAL90JeEmN6ELBy
-	 C5CrOIvolPFjp+CEvAVzCEBKi4kdQfrB8C1LZyJ0=
+	b=pBctouQ41I7WJI2kI1a0y1/2n9BIV2Hzs/lpiS84QiuUPy9qtZ571MpjXCpIvM+ou
+	 URub0ahezkemAwC08ARBE1ZSYGhI1fFCZ6xzTrL1zSyeoFggSF8TPXlRyaRrOA9qoP
+	 Am+TiUNj34tKqcXYagg6+h9JoEJe9bPWWYSXnp8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Crag Wang <crag_wang@dell.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 040/137] drm/msm/dpu: Wire up DSC mask for active CTL configuration
+Subject: [PATCH 6.11 135/261] platform/x86: dell-sysman: add support for alienware products
 Date: Mon, 28 Oct 2024 07:24:37 +0100
-Message-ID: <20241028062259.842939133@linuxfoundation.org>
+Message-ID: <20241028062315.426067037@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marijn Suijten <marijn.suijten@somainline.org>
+From: Crag Wang <crag_wang@dell.com>
 
-[ Upstream commit cda3774c242e156cdcc279bd36b404af89f744c6 ]
+[ Upstream commit a561509b4187a8908eb7fbb2d1bf35bbc20ec74b ]
 
-Active CTLs have to configure what DSC block(s) have to be enabled, and
-what DSC block(s) have to be flushed; this value was initialized to zero
-resulting in the necessary register writes to never happen (or would
-write zero otherwise).  This seems to have gotten lost in the DSC v4->v5
-series while refactoring how the combination with merge_3d was handled.
+Alienware supports firmware-attributes and has its own OEM string.
 
-Fixes: 58dca9810749 ("drm/msm/disp/dpu1: Add support for DSC in encoder")
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/515693/
-Link: https://lore.kernel.org/r/20221221231943.1961117-2-marijn.suijten@somainline.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Stable-dep-of: f87f3b80abaf ("drm/msm/dpu: don't always program merge_3d block")
+Signed-off-by: Crag Wang <crag_wang@dell.com>
+Link: https://lore.kernel.org/r/20241004152826.93992-1-crag_wang@dell.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c | 1 +
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/platform/x86/dell/dell-wmi-sysman/sysman.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-index ce58d97818bcd..e05c3ccf07f8e 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-@@ -61,6 +61,7 @@ static void _dpu_encoder_phys_cmd_update_intf_cfg(
- 	intf_cfg.intf_mode_sel = DPU_CTL_MODE_SEL_CMD;
- 	intf_cfg.stream_sel = cmd_enc->stream_sel;
- 	intf_cfg.mode_3d = dpu_encoder_helper_get_3d_blend_mode(phys_enc);
-+	intf_cfg.dsc = dpu_encoder_helper_get_dsc(phys_enc);
- 	ctl->ops.setup_intf_cfg(ctl, &intf_cfg);
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
+index 9def7983d7d66..40ddc6eb75624 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
+@@ -521,6 +521,7 @@ static int __init sysman_init(void)
+ 	int ret = 0;
  
- 	/* setup which pp blk will connect to this intf */
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-index 2baade1cd4876..9232c646747dc 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-@@ -276,6 +276,7 @@ static void dpu_encoder_phys_vid_setup_timing_engine(
- 	intf_cfg.intf_mode_sel = DPU_CTL_MODE_SEL_VID;
- 	intf_cfg.stream_sel = 0; /* Don't care value for video mode */
- 	intf_cfg.mode_3d = dpu_encoder_helper_get_3d_blend_mode(phys_enc);
-+	intf_cfg.dsc = dpu_encoder_helper_get_dsc(phys_enc);
- 	if (phys_enc->hw_pp->merge_3d)
- 		intf_cfg.merge_3d = phys_enc->hw_pp->merge_3d->idx;
- 
+ 	if (!dmi_find_device(DMI_DEV_TYPE_OEM_STRING, "Dell System", NULL) &&
++	    !dmi_find_device(DMI_DEV_TYPE_OEM_STRING, "Alienware", NULL) &&
+ 	    !dmi_find_device(DMI_DEV_TYPE_OEM_STRING, "www.dell.com", NULL)) {
+ 		pr_err("Unable to run on non-Dell system\n");
+ 		return -ENODEV;
 -- 
 2.43.0
 
