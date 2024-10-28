@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-88402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF6F99B25D2
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:35:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 345879B27C0
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:50:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56255281F01
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:35:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A49D1C21524
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBBF318FC7F;
-	Mon, 28 Oct 2024 06:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F4B18EFDC;
+	Mon, 28 Oct 2024 06:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQ99pn4e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uh8tCIAT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A883918F2DF;
-	Mon, 28 Oct 2024 06:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9938C8837;
+	Mon, 28 Oct 2024 06:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097249; cv=none; b=MN4s0xI2iQpoXn3eq8gOdSF1mBYPATGAoTsuKHeSy65v/ylB09Q54PF1XglXXxQ5r6f0tMUByCxmahFYfiKNj24UQS5v4C1CFMrsbKLJG4Po/oHgWxXx0S+ahBDFIxhyKz27cDPA9KpVFFNt2o2u5sqNI12tuITzU1Uk1XwjGJM=
+	t=1730098249; cv=none; b=aN2JQzVwoMOXrnME4qZ7837vafBz5APqC4eIGDGQBmBlH8w9XMFtCAHEhNvhqMCNIL0np1e7e6fCvJ5SMFWq4aOC+0P8nYiOVwNvA6xAAk2s5hZMjkTKx/XQ+LAYewaDPo+Gm+cpC4XywvwYD1JPNlnZUBmKVqU5xIRmSutDC1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097249; c=relaxed/simple;
-	bh=d1byy/q8zWR7rRgI1+dIRkuuj8duRbNFJUNo6BGPX7Q=;
+	s=arc-20240116; t=1730098249; c=relaxed/simple;
+	bh=xocj2Y0AfHYH8lFdGECotd4OgNkNBP4XAAqCTBN4cNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C+3kMmw6q/GkxGRJcSEYTOZQpcswuErq9oPmmTS0KUoa0uJFqG+j838frh6oB/4zHg4uL/P1qIxkX8KF+b6PKJ0a5jsNZj9s9bRh9icCcsw2fOZi0c2YLdoFDnUBQt6pM0h9VZzqo7oWxKGN2NhniZtt8QRfcUi6/C+M3dtQkeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQ99pn4e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4410BC4CEC7;
-	Mon, 28 Oct 2024 06:34:09 +0000 (UTC)
+	 MIME-Version; b=eRTJlC3DaaRgfhuWTR/K/nP7C/RZgL/9yZ5UECtnZJnQpHH6zCoIh1RW+BoldBM0CdEHgybX48GnRURuWkRWw2c3CTXgJ0bpIYJTYAltHZCL8TmtzKghcLMLi0X6xLA/ro8nKQeyDYw8gmJAievwl6hH7W0nD441JWfc9nnqpcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uh8tCIAT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A99DC4CEEA;
+	Mon, 28 Oct 2024 06:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097249;
-	bh=d1byy/q8zWR7rRgI1+dIRkuuj8duRbNFJUNo6BGPX7Q=;
+	s=korg; t=1730098249;
+	bh=xocj2Y0AfHYH8lFdGECotd4OgNkNBP4XAAqCTBN4cNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hQ99pn4eXmGq7Hgo9VBdYgZ/6XLkNFt2ub3OhPw6WQ/s8rQmETrvceF0NoDIBQKlB
-	 PQg2uic2sujm7vuysynGtjQBcUQxv5jxtKwgVdUu8jwbUgE3hbXed1zW61h/Fpd+D9
-	 GWVpj7hE9R2UYeXq5dB3giR4qJ2wE2u7sZx4wYM8=
+	b=Uh8tCIATUj23AatPr8B5Dol0f4pov8v/xjvXvhRBpwMAeab/0qzJKG5+6kOCylLP4
+	 vqCPOTXg3Ub9iaWFwGJ3vVrZrhsPr367fM+QPJNBhlB+jDsnwjW0gMnANFTJ99HnvG
+	 OjRtXPFhqQiwpKXA0OuuQENEarfNzFAByrC82Ta0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	"Lai, Yi" <yi1.lai@linux.intel.com>,
+	Florian Westphal <fw@strlen.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 048/137] usb: typec: altmode should keep reference to parent
-Date: Mon, 28 Oct 2024 07:24:45 +0100
-Message-ID: <20241028062300.070179210@linuxfoundation.org>
+Subject: [PATCH 6.11 144/261] netfilter: bpf: must hold reference on net namespace
+Date: Mon, 28 Oct 2024 07:24:46 +0100
+Message-ID: <20241028062315.653508955@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,132 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit befab3a278c59db0cc88c8799638064f6d3fd6f8 ]
+[ Upstream commit 1230fe7ad3974f7bf6c78901473e039b34d4fb1f ]
 
-The altmode device release refers to its parent device, but without keeping
-a reference to it.
+BUG: KASAN: slab-use-after-free in __nf_unregister_net_hook+0x640/0x6b0
+Read of size 8 at addr ffff8880106fe400 by task repro/72=
+bpf_nf_link_release+0xda/0x1e0
+bpf_link_free+0x139/0x2d0
+bpf_link_release+0x68/0x80
+__fput+0x414/0xb60
 
-When registering the altmode, get a reference to the parent and put it in
-the release function.
+Eric says:
+ It seems that bpf was able to defer the __nf_unregister_net_hook()
+ after exit()/close() time.
+ Perhaps a netns reference is missing, because the netns has been
+ dismantled/freed already.
+ bpf_nf_link_attach() does :
+ link->net = net;
+ But I do not see a reference being taken on net.
 
-Before this fix, when using CONFIG_DEBUG_KOBJECT_RELEASE, we see issues
-like this:
+Add such a reference and release it after hook unreg.
+Note that I was unable to get syzbot reproducer to work, so I
+do not know if this resolves this splat.
 
-[   43.572860] kobject: 'port0.0' (ffff8880057ba008): kobject_release, parent 0000000000000000 (delayed 3000)
-[   43.573532] kobject: 'port0.1' (ffff8880057bd008): kobject_release, parent 0000000000000000 (delayed 1000)
-[   43.574407] kobject: 'port0' (ffff8880057b9008): kobject_release, parent 0000000000000000 (delayed 3000)
-[   43.575059] kobject: 'port1.0' (ffff8880057ca008): kobject_release, parent 0000000000000000 (delayed 4000)
-[   43.575908] kobject: 'port1.1' (ffff8880057c9008): kobject_release, parent 0000000000000000 (delayed 4000)
-[   43.576908] kobject: 'typec' (ffff8880062dbc00): kobject_release, parent 0000000000000000 (delayed 4000)
-[   43.577769] kobject: 'port1' (ffff8880057bf008): kobject_release, parent 0000000000000000 (delayed 3000)
-[   46.612867] ==================================================================
-[   46.613402] BUG: KASAN: slab-use-after-free in typec_altmode_release+0x38/0x129
-[   46.614003] Read of size 8 at addr ffff8880057b9118 by task kworker/2:1/48
-[   46.614538]
-[   46.614668] CPU: 2 UID: 0 PID: 48 Comm: kworker/2:1 Not tainted 6.12.0-rc1-00138-gedbae730ad31 #535
-[   46.615391] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-[   46.616042] Workqueue: events kobject_delayed_cleanup
-[   46.616446] Call Trace:
-[   46.616648]  <TASK>
-[   46.616820]  dump_stack_lvl+0x5b/0x7c
-[   46.617112]  ? typec_altmode_release+0x38/0x129
-[   46.617470]  print_report+0x14c/0x49e
-[   46.617769]  ? rcu_read_unlock_sched+0x56/0x69
-[   46.618117]  ? __virt_addr_valid+0x19a/0x1ab
-[   46.618456]  ? kmem_cache_debug_flags+0xc/0x1d
-[   46.618807]  ? typec_altmode_release+0x38/0x129
-[   46.619161]  kasan_report+0x8d/0xb4
-[   46.619447]  ? typec_altmode_release+0x38/0x129
-[   46.619809]  ? process_scheduled_works+0x3cb/0x85f
-[   46.620185]  typec_altmode_release+0x38/0x129
-[   46.620537]  ? process_scheduled_works+0x3cb/0x85f
-[   46.620907]  device_release+0xaf/0xf2
-[   46.621206]  kobject_delayed_cleanup+0x13b/0x17a
-[   46.621584]  process_scheduled_works+0x4f6/0x85f
-[   46.621955]  ? __pfx_process_scheduled_works+0x10/0x10
-[   46.622353]  ? hlock_class+0x31/0x9a
-[   46.622647]  ? lock_acquired+0x361/0x3c3
-[   46.622956]  ? move_linked_works+0x46/0x7d
-[   46.623277]  worker_thread+0x1ce/0x291
-[   46.623582]  ? __kthread_parkme+0xc8/0xdf
-[   46.623900]  ? __pfx_worker_thread+0x10/0x10
-[   46.624236]  kthread+0x17e/0x190
-[   46.624501]  ? kthread+0xfb/0x190
-[   46.624756]  ? __pfx_kthread+0x10/0x10
-[   46.625015]  ret_from_fork+0x20/0x40
-[   46.625268]  ? __pfx_kthread+0x10/0x10
-[   46.625532]  ret_from_fork_asm+0x1a/0x30
-[   46.625805]  </TASK>
-[   46.625953]
-[   46.626056] Allocated by task 678:
-[   46.626287]  kasan_save_stack+0x24/0x44
-[   46.626555]  kasan_save_track+0x14/0x2d
-[   46.626811]  __kasan_kmalloc+0x3f/0x4d
-[   46.627049]  __kmalloc_noprof+0x1bf/0x1f0
-[   46.627362]  typec_register_port+0x23/0x491
-[   46.627698]  cros_typec_probe+0x634/0xbb6
-[   46.628026]  platform_probe+0x47/0x8c
-[   46.628311]  really_probe+0x20a/0x47d
-[   46.628605]  device_driver_attach+0x39/0x72
-[   46.628940]  bind_store+0x87/0xd7
-[   46.629213]  kernfs_fop_write_iter+0x1aa/0x218
-[   46.629574]  vfs_write+0x1d6/0x29b
-[   46.629856]  ksys_write+0xcd/0x13b
-[   46.630128]  do_syscall_64+0xd4/0x139
-[   46.630420]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[   46.630820]
-[   46.630946] Freed by task 48:
-[   46.631182]  kasan_save_stack+0x24/0x44
-[   46.631493]  kasan_save_track+0x14/0x2d
-[   46.631799]  kasan_save_free_info+0x3f/0x4d
-[   46.632144]  __kasan_slab_free+0x37/0x45
-[   46.632474]  kfree+0x1d4/0x252
-[   46.632725]  device_release+0xaf/0xf2
-[   46.633017]  kobject_delayed_cleanup+0x13b/0x17a
-[   46.633388]  process_scheduled_works+0x4f6/0x85f
-[   46.633764]  worker_thread+0x1ce/0x291
-[   46.634065]  kthread+0x17e/0x190
-[   46.634324]  ret_from_fork+0x20/0x40
-[   46.634621]  ret_from_fork_asm+0x1a/0x30
-
-Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241004123738.2964524-1-cascardo@igalia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 84601d6ee68a ("bpf: add bpf_link support for BPF_NETFILTER programs")
+Diagnosed-by: Eric Dumazet <edumazet@google.com>
+Reported-by: Lai, Yi <yi1.lai@linux.intel.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/class.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/netfilter/nf_bpf_link.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
-index ce83f558fe447..3d44e181dbb50 100644
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -503,6 +503,7 @@ static void typec_altmode_release(struct device *dev)
- 		typec_altmode_put_partner(alt);
- 
- 	altmode_id_remove(alt->adev.dev.parent, alt->id);
-+	put_device(alt->adev.dev.parent);
- 	kfree(alt);
+diff --git a/net/netfilter/nf_bpf_link.c b/net/netfilter/nf_bpf_link.c
+index 797fe8a9971e7..3d64a4511fcfd 100644
+--- a/net/netfilter/nf_bpf_link.c
++++ b/net/netfilter/nf_bpf_link.c
+@@ -23,6 +23,7 @@ static unsigned int nf_hook_run_bpf(void *bpf_prog, struct sk_buff *skb,
+ struct bpf_nf_link {
+ 	struct bpf_link link;
+ 	struct nf_hook_ops hook_ops;
++	netns_tracker ns_tracker;
+ 	struct net *net;
+ 	u32 dead;
+ 	const struct nf_defrag_hook *defrag_hook;
+@@ -120,6 +121,7 @@ static void bpf_nf_link_release(struct bpf_link *link)
+ 	if (!cmpxchg(&nf_link->dead, 0, 1)) {
+ 		nf_unregister_net_hook(nf_link->net, &nf_link->hook_ops);
+ 		bpf_nf_disable_defrag(nf_link);
++		put_net_track(nf_link->net, &nf_link->ns_tracker);
+ 	}
  }
  
-@@ -552,6 +553,8 @@ typec_register_altmode(struct device *parent,
- 	alt->adev.dev.type = &typec_altmode_dev_type;
- 	dev_set_name(&alt->adev.dev, "%s.%u", dev_name(parent), id);
+@@ -258,6 +260,8 @@ int bpf_nf_link_attach(const union bpf_attr *attr, struct bpf_prog *prog)
+ 		return err;
+ 	}
  
-+	get_device(alt->adev.dev.parent);
++	get_net_track(net, &link->ns_tracker, GFP_KERNEL);
 +
- 	/* Link partners and plugs with the ports */
- 	if (!is_port)
- 		typec_altmode_set_partner(alt);
+ 	return bpf_link_settle(&link_primer);
+ }
+ 
 -- 
 2.43.0
 
