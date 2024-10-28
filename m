@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40ECF9B2633
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:37:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E38989B270C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0645D28228C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:37:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BF59282193
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 922B318E020;
-	Mon, 28 Oct 2024 06:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB8818E74D;
+	Mon, 28 Oct 2024 06:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+uJapo+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="msqDYV1X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED8D15B10D;
-	Mon, 28 Oct 2024 06:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D5918E37F;
+	Mon, 28 Oct 2024 06:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097456; cv=none; b=XivJjFdxdrGwHLrp8ojyTDyZSc8p5VD/VyWlNIrV5Epgz4YXnAYvtkQ48E2mnEiXs7ATvNGZHohKmS2aXIHN4Ln7INpVLlJkwgs+PtwmG8jZ0reodGnt9ARKb5+tnVIHbA7WJxe9eR1XB2k3UQ0e8mkhdnRmDN4qpJhwKTrH4OY=
+	t=1730097893; cv=none; b=Z5jz183Hycqx/DXLl953lIsQp0eKec5SSiwFVO6rmFwHFDcc+p4qSjeuxlKkdNfQre+dvrEjLOgi4Khb0Ol+GJYuB/vZZ6UTrrZUwNzK6Xo5eIO81izYCiSygZaGSruX7K9aDTq10/Kmyxg1gq3Fqf/u0y2VSyI40WVUATtDvrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097456; c=relaxed/simple;
-	bh=U8cFNwXchwFqXzUFxj8nZhd7RDSQv/GRoyQjIbSZrbE=;
+	s=arc-20240116; t=1730097893; c=relaxed/simple;
+	bh=IQ0cnZKbbUk/cshIV5O40tTmi0dstdpTrOOLS8VI1Vc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nb7xo89wTRdjIKbQDSiwhEF7+LQsQB8EOUqgtDT/tItekQdq1j4O1XmHxZA+ODpokj8B06tIofUq4J+ZwF/IlqCoapYqoOpnUN60qPO7sOQ8Ffxe960UvDZEijFUYWBjwDyCHbKzovyTX20poUQngIQ5V4+KERB8/za18QNiEpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+uJapo+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFBECC4CEC3;
-	Mon, 28 Oct 2024 06:37:35 +0000 (UTC)
+	 MIME-Version; b=h110w8z/y+4jPzjm6VGyCPurnRmUm7hVDMnuhppn/1dhXCY+bJ8CUcSGgTBH6ophcEFJl07A+xYcrwql1TlTmn0CCg3E4LYUbFWlyvnyw06E5jll+3s6hkvDa5jxzmHPmyU9gl48773nQFD08t3z0icHyAYbVy5UzR9HaEJeLio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=msqDYV1X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39202C4CEC3;
+	Mon, 28 Oct 2024 06:44:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097456;
-	bh=U8cFNwXchwFqXzUFxj8nZhd7RDSQv/GRoyQjIbSZrbE=;
+	s=korg; t=1730097893;
+	bh=IQ0cnZKbbUk/cshIV5O40tTmi0dstdpTrOOLS8VI1Vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j+uJapo+vStFz0qgoZQdI+cYC3qVpZkNHWOfR/zvuA3bigfC/qfsaRQQeoIeULyhS
-	 YZzSKWHuw3aaeH4+zlV2LBBHIhklZeOu/ESMtfyPLYndxvtRZYrHJ0tHQ5aLAbjd2o
-	 Duh17alVTqv1i8UADrQVyPTVgaXWJO8foDs1XAuA=
+	b=msqDYV1X1OD8joy7tB/GwUwjlG/CYxmObCnXi5pF0wJ8CM5PJQK23vF9W8tAUTWWq
+	 kSJmDyZ8SLbGF/g7f7RCbWmAskg2hlHg2TpXWSpEslVC1gnb/jyQIFiooGO26jN+6F
+	 QzvdQGIvvMVmBXU9pftoxfwgq8pWv/WJepxfHzvY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	junhua huang <huang.junhua@zte.com.cn>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.1 137/137] arm64/uprobes: change the uprobe_opcode_t typedef to fix the sparse warning
-Date: Mon, 28 Oct 2024 07:26:14 +0100
-Message-ID: <20241028062302.527434568@linuxfoundation.org>
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 195/208] hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event
+Date: Mon, 28 Oct 2024 07:26:15 +0100
+Message-ID: <20241028062311.435777021@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: junhua huang <huang.junhua@zte.com.cn>
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-commit ef08c0fadd8a17ebe429b85e23952dac3263ad34 upstream.
+commit 4c262801ea60c518b5bebc22a09f5b78b3147da2 upstream.
 
-After we fixed the uprobe inst endian in aarch_be, the sparse check report
-the following warning info:
+The existing code moves VF to the same namespace as the synthetic NIC
+during netvsc_register_vf(). But, if the synthetic device is moved to a
+new namespace after the VF registration, the VF won't be moved together.
 
-sparse warnings: (new ones prefixed by >>)
->> kernel/events/uprobes.c:223:25: sparse: sparse: restricted __le32 degrades to integer
->> kernel/events/uprobes.c:574:56: sparse: sparse: incorrect type in argument 4 (different base types)
-@@     expected unsigned int [addressable] [usertype] opcode @@     got restricted __le32 [usertype] @@
-   kernel/events/uprobes.c:574:56: sparse:     expected unsigned int [addressable] [usertype] opcode
-   kernel/events/uprobes.c:574:56: sparse:     got restricted __le32 [usertype]
->> kernel/events/uprobes.c:1483:32: sparse: sparse: incorrect type in initializer (different base types)
-@@     expected unsigned int [usertype] insn @@     got restricted __le32 [usertype] @@
-   kernel/events/uprobes.c:1483:32: sparse:     expected unsigned int [usertype] insn
-   kernel/events/uprobes.c:1483:32: sparse:     got restricted __le32 [usertype]
+To make the behavior more consistent, add a namespace check for synthetic
+NIC's NETDEV_REGISTER event (generated during its move), and move the VF
+if it is not in the same namespace.
 
-use the __le32 to u32 for uprobe_opcode_t, to keep the same.
-
-Fixes: 60f07e22a73d ("arm64:uprobe fix the uprobe SWBP_INSN in big-endian")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: junhua huang <huang.junhua@zte.com.cn>
-Link: https://lore.kernel.org/r/202212280954121197626@zte.com.cn
-Signed-off-by: Will Deacon <will@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: c0a41b887ce6 ("hv_netvsc: move VF to same namespace as netvsc device")
+Suggested-by: Stephen Hemminger <stephen@networkplumber.org>
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/1729275922-17595-1-git-send-email-haiyangz@microsoft.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/uprobes.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/hyperv/netvsc_drv.c |   30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
---- a/arch/arm64/include/asm/uprobes.h
-+++ b/arch/arm64/include/asm/uprobes.h
-@@ -14,7 +14,7 @@
- #define UPROBE_SWBP_INSN_SIZE	AARCH64_INSN_SIZE
- #define UPROBE_XOL_SLOT_BYTES	AARCH64_INSN_SIZE
- 
--typedef u32 uprobe_opcode_t;
-+typedef __le32 uprobe_opcode_t;
- 
- struct arch_uprobe_task {
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -2795,6 +2795,31 @@ static struct  hv_driver netvsc_drv = {
+ 	},
  };
+ 
++/* Set VF's namespace same as the synthetic NIC */
++static void netvsc_event_set_vf_ns(struct net_device *ndev)
++{
++	struct net_device_context *ndev_ctx = netdev_priv(ndev);
++	struct net_device *vf_netdev;
++	int ret;
++
++	vf_netdev = rtnl_dereference(ndev_ctx->vf_netdev);
++	if (!vf_netdev)
++		return;
++
++	if (!net_eq(dev_net(ndev), dev_net(vf_netdev))) {
++		ret = dev_change_net_namespace(vf_netdev, dev_net(ndev),
++					       "eth%d");
++		if (ret)
++			netdev_err(vf_netdev,
++				   "Cannot move to same namespace as %s: %d\n",
++				   ndev->name, ret);
++		else
++			netdev_info(vf_netdev,
++				    "Moved VF to namespace with: %s\n",
++				    ndev->name);
++	}
++}
++
+ /*
+  * On Hyper-V, every VF interface is matched with a corresponding
+  * synthetic interface. The synthetic interface is presented first
+@@ -2807,6 +2832,11 @@ static int netvsc_netdev_event(struct no
+ 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
+ 	int ret = 0;
+ 
++	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
++		netvsc_event_set_vf_ns(event_dev);
++		return NOTIFY_DONE;
++	}
++
+ 	ret = check_dev_is_matching_vf(event_dev);
+ 	if (ret != 0)
+ 		return NOTIFY_DONE;
 
 
 
