@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-88424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C37159B25EE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF599B27CF
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:51:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E7361F21CEC
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5849A1F227CB
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:51:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1782218EFDC;
-	Mon, 28 Oct 2024 06:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E134318E05D;
+	Mon, 28 Oct 2024 06:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OXokfrRN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FNDfTr7L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B1A18EFD4;
-	Mon, 28 Oct 2024 06:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FADA8837;
+	Mon, 28 Oct 2024 06:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097300; cv=none; b=CD3+NHL8guXWJCEc69DztjiEr815DPv23Nfou4ySRDPWClyoIDasELAqYBh1wm6Osz1njBTjeee7aMxm0MG0mrq4Jh6MPmPzEOS5MSRRvdB54mQKDPuQ0+ZEZvuGsTvSWEJNr1FHiBX9SKkpgQkF1qISfI3/5w81IyIsJJIN5X0=
+	t=1730098283; cv=none; b=c5YRQv8tpLC8QmRTQ7BZCJ+1NPVAPW10JL9fy3WRFh3KrHnJGAlZtl3itwGIip66yby1gWXKEZNne6jeN/V+Qe8l9T02nm4CWncxA7c4OMmG9p3ReemwSBZAVycIDGjaxqKH9fsZpew7odAMSpQWv09Ry6hfNhiKtMArYGhDzXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097300; c=relaxed/simple;
-	bh=Ze6c0BOWosKtr8hTsw4NHTlRZWNjhtJrs1QQo3qm4o8=;
+	s=arc-20240116; t=1730098283; c=relaxed/simple;
+	bh=mwin5plFwmAI2PsiO29dY8ZH2KmN8Y60zhB4kBa1+Bw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dc1Rv8JHCJzX/ZS8T+1B614B2bD/2DW2tbA/01G9S7HkdI5l7KN2SdezDUnT7RJa39OlZwcvjek0h4q3nZsMGCMLVoeWKO0Y4ig8w4SB2dRcBd51HfvUKqWKxfVp8hee21kq1wa1o3NMJzRLLPVAKaXH5NaXNJGqxya2XdaDglA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OXokfrRN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69444C4CEC3;
-	Mon, 28 Oct 2024 06:35:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P4orzA611wIFHxv2JxJKu0My9iuGLDOArGkJnefuXIvYk5NArzIuZeP3TcGbH2snQn64M0woV5pjrHT8Bel14fw5JfuG9cu5/VcnY5dlF4ijZTvhlc9rTZxeyRg7cX2xPofvORm4WOb9IsNPGtVH7eFxuVRdkF72F264sUCsHsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FNDfTr7L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB75FC4CEC3;
+	Mon, 28 Oct 2024 06:51:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097300;
-	bh=Ze6c0BOWosKtr8hTsw4NHTlRZWNjhtJrs1QQo3qm4o8=;
+	s=korg; t=1730098283;
+	bh=mwin5plFwmAI2PsiO29dY8ZH2KmN8Y60zhB4kBa1+Bw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OXokfrRNH5O4TyoX5NYgdP03tc+WL47l2vXJ0FOk+/RsoxnRRT/i7ba6X9oJ3nIDE
-	 ab3QQzVIPOvqKhiuXiK+dPEEV0168HdXf+zePbm5q7LdLOylLWUargwIBuyZ0cL/Se
-	 wGZusmifY4dJkM4aloWRlSOMqwBfR4TQ2XekjT4A=
+	b=FNDfTr7LCfpzXn1MBytJNFJ8EEJVnQvCs/ElHn5PydCSN5bhHnmv01G3UHavlLXEn
+	 M4nSDO5MAvqpj10aRiAGQ/zK5sfwO4nny5KS/nEIhN4SEaTFmpj4rEehGsb1/TYZVz
+	 oFXv6V3iZgSRdW9uWxu8/WIiWbVMlJqoVQVJouBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Keeping <jkeeping@inmusicbrands.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 063/137] usb: gadget: f_uac2: fix non-newline-terminated function name
+Subject: [PATCH 6.11 158/261] net: fix races in netdev_tx_sent_queue()/dev_watchdog()
 Date: Mon, 28 Oct 2024 07:25:00 +0100
-Message-ID: <20241028062300.498285828@linuxfoundation.org>
+Message-ID: <20241028062315.975052857@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,52 +62,120 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Keeping <jkeeping@inmusicbrands.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e60284b63245b84c3ae352427ed5ff8b79266b91 ]
+[ Upstream commit 95ecba62e2fd201bcdcca636f5d774f1cd4f1458 ]
 
-Most writes to configfs handle an optional newline, but do not require
-it.  By using the number of bytes written as the limit for scnprintf()
-it is guaranteed that the final character in the buffer will be
-overwritten.
+Some workloads hit the infamous dev_watchdog() message:
 
-This is expected if it is a newline but is undesirable when a string is
-written "as-is" (as libusbgx does, for example).
+"NETDEV WATCHDOG: eth0 (xxxx): transmit queue XX timed out"
 
-Update the store function to strip an optional newline, matching the
-behaviour of usb_string_copy().
+It seems possible to hit this even for perfectly normal
+BQL enabled drivers:
 
-Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-Link: https://lore.kernel.org/r/20240708142553.3995022-1-jkeeping@inmusicbrands.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 9499327714de ("usb: gadget: f_uac2: fix return value for UAC2_ATTRIBUTE_STRING store")
+1) Assume a TX queue was idle for more than dev->watchdog_timeo
+   (5 seconds unless changed by the driver)
+
+2) Assume a big packet is sent, exceeding current BQL limit.
+
+3) Driver ndo_start_xmit() puts the packet in TX ring,
+   and netdev_tx_sent_queue() is called.
+
+4) QUEUE_STATE_STACK_XOFF could be set from netdev_tx_sent_queue()
+   before txq->trans_start has been written.
+
+5) txq->trans_start is written later, from netdev_start_xmit()
+
+    if (rc == NETDEV_TX_OK)
+          txq_trans_update(txq)
+
+dev_watchdog() running on another cpu could read the old
+txq->trans_start, and then see QUEUE_STATE_STACK_XOFF, because 5)
+did not happen yet.
+
+To solve the issue, write txq->trans_start right before one XOFF bit
+is set :
+
+- _QUEUE_STATE_DRV_XOFF from netif_tx_stop_queue()
+- __QUEUE_STATE_STACK_XOFF from netdev_tx_sent_queue()
+
+>From dev_watchdog(), we have to read txq->state before txq->trans_start.
+
+Add memory barriers to enforce correct ordering.
+
+In the future, we could avoid writing over txq->trans_start for normal
+operations, and rename this field to txq->xoff_start_time.
+
+Fixes: bec251bc8b6a ("net: no longer stop all TX queues in dev_watchdog()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Link: https://patch.msgid.link/20241015194118.3951657-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_uac2.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/linux/netdevice.h | 12 ++++++++++++
+ net/sched/sch_generic.c   |  8 +++++++-
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/function/f_uac2.c b/drivers/usb/gadget/function/f_uac2.c
-index 55a4f07bc9cc1..79d1f87c6cc59 100644
---- a/drivers/usb/gadget/function/f_uac2.c
-+++ b/drivers/usb/gadget/function/f_uac2.c
-@@ -2060,7 +2060,10 @@ static ssize_t f_uac2_opts_##name##_store(struct config_item *item,	\
- 		goto end;						\
- 	}								\
- 									\
--	ret = scnprintf(opts->name, min(sizeof(opts->name), len),	\
-+	if (len && page[len - 1] == '\n')				\
-+		len--;							\
-+									\
-+	ret = scnprintf(opts->name, min(sizeof(opts->name), len + 1),	\
- 			"%s", page);					\
- 									\
- end:									\
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index b26954dc9ed77..93548d71cf697 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -3336,6 +3336,12 @@ static inline void netif_tx_wake_all_queues(struct net_device *dev)
+ 
+ static __always_inline void netif_tx_stop_queue(struct netdev_queue *dev_queue)
+ {
++	/* Paired with READ_ONCE() from dev_watchdog() */
++	WRITE_ONCE(dev_queue->trans_start, jiffies);
++
++	/* This barrier is paired with smp_mb() from dev_watchdog() */
++	smp_mb__before_atomic();
++
+ 	/* Must be an atomic op see netif_txq_try_stop() */
+ 	set_bit(__QUEUE_STATE_DRV_XOFF, &dev_queue->state);
+ }
+@@ -3462,6 +3468,12 @@ static inline void netdev_tx_sent_queue(struct netdev_queue *dev_queue,
+ 	if (likely(dql_avail(&dev_queue->dql) >= 0))
+ 		return;
+ 
++	/* Paired with READ_ONCE() from dev_watchdog() */
++	WRITE_ONCE(dev_queue->trans_start, jiffies);
++
++	/* This barrier is paired with smp_mb() from dev_watchdog() */
++	smp_mb__before_atomic();
++
+ 	set_bit(__QUEUE_STATE_STACK_XOFF, &dev_queue->state);
+ 
+ 	/*
+diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+index 2af24547a82c4..38ec18f73de43 100644
+--- a/net/sched/sch_generic.c
++++ b/net/sched/sch_generic.c
+@@ -512,9 +512,15 @@ static void dev_watchdog(struct timer_list *t)
+ 				struct netdev_queue *txq;
+ 
+ 				txq = netdev_get_tx_queue(dev, i);
+-				trans_start = READ_ONCE(txq->trans_start);
+ 				if (!netif_xmit_stopped(txq))
+ 					continue;
++
++				/* Paired with WRITE_ONCE() + smp_mb...() in
++				 * netdev_tx_sent_queue() and netif_tx_stop_queue().
++				 */
++				smp_mb();
++				trans_start = READ_ONCE(txq->trans_start);
++
+ 				if (time_after(jiffies, trans_start + dev->watchdog_timeo)) {
+ 					timedout_ms = jiffies_to_msecs(jiffies - trans_start);
+ 					atomic_long_inc(&txq->trans_timeout);
 -- 
 2.43.0
 
