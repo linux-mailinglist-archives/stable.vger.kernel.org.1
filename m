@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-88986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B6DB9B2D5C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:52:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D146C9B2D65
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:52:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBD41B22688
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 10:51:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F7C71C203A2
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 10:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61F31D88CA;
-	Mon, 28 Oct 2024 10:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B311D90D4;
+	Mon, 28 Oct 2024 10:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rt6jeDDe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bFzqSECV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AAE1D54FD;
-	Mon, 28 Oct 2024 10:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC961D90AD;
+	Mon, 28 Oct 2024 10:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730112667; cv=none; b=tBKT5WF4tMFZRpfAHS1WLnuqk/Mdxxq0bfVBK8O426zV6N7N1G9yX6V6/BliKlZo2KkCelSzMt5Hq/YkoJbkkOJoKai5pDMWaW8/t/7WZhXK7ko13amgQc0fH1Q2KHoxfqa8remEGxoFvgU9nT/YhwtvKpYjiM4dSo+7MTEtTl8=
+	t=1730112669; cv=none; b=eSceA/vbvacg/2yXx7kA8u4hbdYfCcK20sqnTZVP31ZhLwqWizv23XXh3UKM+IqBhvC+CeD1bEqYkTOwMWDz8aMAeWcPwTseJCVmxk18lxBx7cUoo+FL580T0+OyZKFM6DVG4IwlW5NkZrZmtbLT00L+pcZNrjB31AoLdY5cpqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730112667; c=relaxed/simple;
-	bh=P+bRZ/KufpLKVv018UPYT8JM97TckEQkBQcRlfgvf08=;
+	s=arc-20240116; t=1730112669; c=relaxed/simple;
+	bh=7lam01olvUb3QSFzRWm5ouSmAo57fVc3EtizsiBcnsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fDbtM1QJXY9wxP5hW1FKOZqX9Gdp0ze22BkeW4lU58ZeN84ot+V1tUBR2NxB6Azg+Xj8jfxZ1/XqmxM7TPTQWPgNEC4FmqsePDS17EmQM0A03557DhA1KE8TIORcz71yLngw2RgDZlve+yVp8MYHKeqc2GFLAFZeNACbK9E3xGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rt6jeDDe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F1AC4CEE7;
-	Mon, 28 Oct 2024 10:51:05 +0000 (UTC)
+	 MIME-Version; b=OlVe7Y8+GqY4vABn3mV0FJ/1UdP4YhnJ2jM8+FIq9xSbWC8dJLXRXXaq62mnzbZNvmvaKTd9BeQX7GLAW/FWlXvnKP6JSmqS+bqBLWwjvqfOdId+kz5CFxEygFJxWLuPTIqL6rCZzRR/qPIuafGd1P9VPpjk4ADku/SiEqAmjms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bFzqSECV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B76C4CEE8;
+	Mon, 28 Oct 2024 10:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730112667;
-	bh=P+bRZ/KufpLKVv018UPYT8JM97TckEQkBQcRlfgvf08=;
+	s=k20201202; t=1730112669;
+	bh=7lam01olvUb3QSFzRWm5ouSmAo57fVc3EtizsiBcnsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rt6jeDDeyndAKCF6T8vAwFJOriTPzsIC1s7XH8B5xcRxGel8tIyTwB6RmAGYC7klt
-	 h3e3hbRnC438n4mv4vQxcT7atTTpIBHfOWWnMjRxA1Gxt3ad3/xOAcXDKbu+D9lXcL
-	 6W+QiNcnnx618O68Oy7+H51Z4Lofn+egAteGuEVYZUdqu1JsFb/OzLBSG2HFL8p2zO
-	 vndEKOiWsOnEOiQpvRvDUU9A/U4kObtlDWPsrwiz9ynU2R1QPFbr2vv9HWlKBzDsMl
-	 ofPQSKO5yahPDODeySfRnkhKfyoKcikPyIzoYg8jwP5C0zgDaNiF/EEKpVgck6kjUQ
-	 1VWAG+fI1glqA==
+	b=bFzqSECVcqWowTN2vTltnRV/Oyxyg9LNCwpgEtv16bkNeK53zzb/0Z5M19CUwGBKb
+	 gvqo++yzNZGLVv0dn0C6hmoRVKChatWBkrG8JWNq2j18whCtaPmsccAz5ID1+Et8w8
+	 QGYlQMTd0Gvs4Vqi8FrEgd16R7jUxOC7vNzoOO8IwMsQyq7mUW9/dEkBumf8MQkOJn
+	 JJx7w+1lycK+vyNDkLGTcu3pz193sAvNxL5MlSq914A4CxzihOosEHDAsZS5N1glqj
+	 guOHV8rDIDHsTizXvwmsPTuKx1kO+OAuPsqupKcz+MBah1LjV0O95fNwPR+Qx7lNsS
+	 cKPkFZhhuVP2Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Christian Heusel <christian@heusel.eu>,
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Iuliana Prodan <iuliana.prodan@nxp.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
 	lgirdwood@gmail.com,
 	perex@perex.cz,
 	tiwai@suse.com,
-	mario.limonciello@amd.com,
-	me@jwang.link,
-	end.to.start@mail.ru,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 04/32] ASoC: amd: yc: Add quirk for ASUS Vivobook S15 M3502RA
-Date: Mon, 28 Oct 2024 06:49:46 -0400
-Message-ID: <20241028105050.3559169-4-sashal@kernel.org>
+	linux-sound@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH AUTOSEL 6.11 05/32] ASoC: fsl_esai: change dev_warn to dev_dbg in irq handler
+Date: Mon, 28 Oct 2024 06:49:47 -0400
+Message-ID: <20241028105050.3559169-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241028105050.3559169-1-sashal@kernel.org>
 References: <20241028105050.3559169-1-sashal@kernel.org>
@@ -71,40 +72,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.5
 Content-Transfer-Encoding: 8bit
 
-From: Christian Heusel <christian@heusel.eu>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 182fff3a2aafe4e7f3717a0be9df2fe2ed1a77de ]
+[ Upstream commit 54c805c1eb264c839fa3027d0073bb7f323b0722 ]
 
-As reported the builtin microphone doesn't work on the ASUS Vivobook
-model S15 OLED M3502RA. Therefore add a quirk for it to make it work.
+Irq handler need to be executed as fast as possible, so
+the log in irq handler is better to use dev_dbg which needs
+to be enabled when debugging.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219345
-Signed-off-by: Christian Heusel <christian@heusel.eu>
-Link: https://patch.msgid.link/20241010-bugzilla-219345-asus-vivobook-v1-1-3bb24834e2c3@heusel.eu
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+Link: https://patch.msgid.link/1728622433-2873-1-git-send-email-shengjiu.wang@nxp.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/soc/fsl/fsl_esai.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 06349bf0b6587..e353542dcf636 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -339,6 +339,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "M7600RE"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "M3502RA"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+diff --git a/sound/soc/fsl/fsl_esai.c b/sound/soc/fsl/fsl_esai.c
+index d0d8a01da9bdd..0cf9484183d43 100644
+--- a/sound/soc/fsl/fsl_esai.c
++++ b/sound/soc/fsl/fsl_esai.c
+@@ -119,10 +119,10 @@ static irqreturn_t esai_isr(int irq, void *devid)
+ 		dev_dbg(&pdev->dev, "isr: Transmission Initialized\n");
+ 
+ 	if (esr & ESAI_ESR_RFF_MASK)
+-		dev_warn(&pdev->dev, "isr: Receiving overrun\n");
++		dev_dbg(&pdev->dev, "isr: Receiving overrun\n");
+ 
+ 	if (esr & ESAI_ESR_TFE_MASK)
+-		dev_warn(&pdev->dev, "isr: Transmission underrun\n");
++		dev_dbg(&pdev->dev, "isr: Transmission underrun\n");
+ 
+ 	if (esr & ESAI_ESR_TLS_MASK)
+ 		dev_dbg(&pdev->dev, "isr: Just transmitted the last slot\n");
 -- 
 2.43.0
 
