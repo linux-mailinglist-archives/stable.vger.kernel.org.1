@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A5F9B26B2
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:41:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A29A79B25E0
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:35:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24BFD1F23087
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C689D1C21033
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB9D18E35B;
-	Mon, 28 Oct 2024 06:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A9F1917E3;
+	Mon, 28 Oct 2024 06:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNs2e0OW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V0u4tlIF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391B115B10D;
-	Mon, 28 Oct 2024 06:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80571917D7;
+	Mon, 28 Oct 2024 06:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097710; cv=none; b=ERGNF1DRRPSakZZ825BRYWbr7gxsf9QkgVkOhspjVD/WjNuuHSMt2IcQnGx47MNnX5wiv5+hNkkha157qgT09idxvfKj5L82ajpMePIimSQXY2KZBXERA9U2KeS4k92/O6mwByrYcJzHSxZFlblOOQhgRrtjH2n+jauWl2g8JIc=
+	t=1730097272; cv=none; b=i0CJJxdbZx2EM8iXazhRhoYg0NgoN/nk2PZ3nYItHF8w+f3hc36sFzijl2DRYQpCYLFBwmAekcXXFGKvrtf0HSSJ/RNdjgnj63ZQAhyS1R0bTrc5eYFTEGxp9yPI72KHAQ3t7axBY7IMr6cmd+qts87XAFoc3VbibSQiJNb9zoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097710; c=relaxed/simple;
-	bh=h30Fq4HAsQtM6kuxkkWZm/I1OZPkqeNDa9hVa8KhjaM=;
+	s=arc-20240116; t=1730097272; c=relaxed/simple;
+	bh=DLC+k2USzp75rFYunqtH4/oL3k5wKDU1bMvGupCQe6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S7+imkmW7BldGHW1M2o/BQ3ufoB8b890sv3MzTKe3B74ndK5968ygQv+PvBfIXAbAeMuthQQxo+UJes27vg5Tp9X7S6IIEImpx5/A2gPG+HElTigW8rmNEbPPTap+HeuJ/EkYUaEosagROSf53vvhV75mIaLt1wDnavWK25yMCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNs2e0OW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B520C4CEC3;
-	Mon, 28 Oct 2024 06:41:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UHTqD/3QO43xtI+l6sTfP3hOiDP5LErL6oqDM+4xHDY4GmXhn9o48US+JguSHmVa60XTHIj9DLKSozihEMTxbuES033fE3wvgnqKqZGDF0oMConOwcE4P0Ey2PC40i5S2UMkDrlEGkVo2MDe3M/iC5BN2wqK9IT/RFUeq6bjgbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V0u4tlIF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 682FCC4CEC7;
+	Mon, 28 Oct 2024 06:34:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097709;
-	bh=h30Fq4HAsQtM6kuxkkWZm/I1OZPkqeNDa9hVa8KhjaM=;
+	s=korg; t=1730097272;
+	bh=DLC+k2USzp75rFYunqtH4/oL3k5wKDU1bMvGupCQe6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pNs2e0OWNrrUPBnRXWrVZBsDE0a1tTPO1ZunfNqgFoM/X6724ObZvqqgFkyX3dF0+
-	 lKeSTOQgHBhuLrle+KImAB/g6Icyp/EGPHW5LGFfHV8k9LBrs6GB/DsVj1R+pNfhLj
-	 qWvAS9l8/N5MTJv0USle4aGllJ9pzAzsig9Cywpk=
+	b=V0u4tlIFeqA7Iru2DndXG++8FkIQCvdb1CyXlDoK7Ld/mFty4M7hJwMPX1R3NuLLq
+	 NkHqOyTSas2zgkngBhO9H6gVpi/HTlSD/InsueokqHoTDkEuslV8fWXmDtJS254wuV
+	 cCivy9m2Jnth8sfo+YwMZcEg51YyojaVWnxoGE40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	junhua huang <huang.junhua@zte.com.cn>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/208] exec: dont WARN for racy path_noexec check
+Subject: [PATCH 6.1 057/137] arm64:uprobe fix the uprobe SWBP_INSN in big-endian
 Date: Mon, 28 Oct 2024 07:24:54 +0100
-Message-ID: <20241028062309.465868707@linuxfoundation.org>
+Message-ID: <20241028062300.323158804@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,103 +60,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mateusz Guzik <mjguzik@gmail.com>
+From: junhua huang <huang.junhua@zte.com.cn>
 
-[ Upstream commit 0d196e7589cefe207d5d41f37a0a28a1fdeeb7c6 ]
+[ Upstream commit 60f07e22a73d318cddaafa5ef41a10476807cc07 ]
 
-Both i_mode and noexec checks wrapped in WARN_ON stem from an artifact
-of the previous implementation. They used to legitimately check for the
-condition, but that got moved up in two commits:
-633fb6ac3980 ("exec: move S_ISREG() check earlier")
-0fd338b2d2cd ("exec: move path_noexec() check earlier")
+We use uprobe in aarch64_be, which we found the tracee task would exit
+due to SIGILL when we enable the uprobe trace.
+We can see the replace inst from uprobe is not correct in aarch big-endian.
+As in Armv8-A, instruction fetches are always treated as little-endian,
+we should treat the UPROBE_SWBP_INSN as little-endian。
 
-Instead of being removed said checks are WARN_ON'ed instead, which
-has some debug value.
+The test case is as following。
+bash-4.4# ./mqueue_test_aarchbe 1 1 2 1 10 > /dev/null &
+bash-4.4# cd /sys/kernel/debug/tracing/
+bash-4.4# echo 'p:test /mqueue_test_aarchbe:0xc30 %x0 %x1' > uprobe_events
+bash-4.4# echo 1 > events/uprobes/enable
+bash-4.4#
+bash-4.4# ps
+  PID TTY          TIME CMD
+  140 ?        00:00:01 bash
+  237 ?        00:00:00 ps
+[1]+  Illegal instruction     ./mqueue_test_aarchbe 1 1 2 1 100 > /dev/null
 
-However, the spurious path_noexec check is racy, resulting in
-unwarranted warnings should someone race with setting the noexec flag.
+which we debug use gdb as following:
 
-One can note there is more to perm-checking whether execve is allowed
-and none of the conditions are guaranteed to still hold after they were
-tested for.
+bash-4.4# gdb attach 155
+(gdb) disassemble send
+Dump of assembler code for function send:
+   0x0000000000400c30 <+0>:     .inst   0xa00020d4 ; undefined
+   0x0000000000400c34 <+4>:     mov     x29, sp
+   0x0000000000400c38 <+8>:     str     w0, [sp, #28]
+   0x0000000000400c3c <+12>:    strb    w1, [sp, #27]
+   0x0000000000400c40 <+16>:    str     xzr, [sp, #40]
+   0x0000000000400c44 <+20>:    str     xzr, [sp, #48]
+   0x0000000000400c48 <+24>:    add     x0, sp, #0x1b
+   0x0000000000400c4c <+28>:    mov     w3, #0x0                 // #0
+   0x0000000000400c50 <+32>:    mov     x2, #0x1                 // #1
+   0x0000000000400c54 <+36>:    mov     x1, x0
+   0x0000000000400c58 <+40>:    ldr     w0, [sp, #28]
+   0x0000000000400c5c <+44>:    bl      0x405e10 <mq_send>
+   0x0000000000400c60 <+48>:    str     w0, [sp, #60]
+   0x0000000000400c64 <+52>:    ldr     w0, [sp, #60]
+   0x0000000000400c68 <+56>:    ldp     x29, x30, [sp], #64
+   0x0000000000400c6c <+60>:    ret
+End of assembler dump.
+(gdb) info b
+No breakpoints or watchpoints.
+(gdb) c
+Continuing.
 
-Additionally this does not validate whether the code path did any perm
-checking to begin with -- it will pass if the inode happens to be
-regular.
+Program received signal SIGILL, Illegal instruction.
+0x0000000000400c30 in send ()
+(gdb) x/10x 0x400c30
+0x400c30 <send>:    0xd42000a0   0xfd030091      0xe01f00b9      0xe16f0039
+0x400c40 <send+16>: 0xff1700f9   0xff1b00f9      0xe06f0091      0x03008052
+0x400c50 <send+32>: 0x220080d2   0xe10300aa
+(gdb) disassemble 0x400c30
+Dump of assembler code for function send:
+=> 0x0000000000400c30 <+0>:     .inst   0xa00020d4 ; undefined
+   0x0000000000400c34 <+4>:     mov     x29, sp
+   0x0000000000400c38 <+8>:     str     w0, [sp, #28]
+   0x0000000000400c3c <+12>:    strb    w1, [sp, #27]
+   0x0000000000400c40 <+16>:    str     xzr, [sp, #40]
 
-Keep the redundant path_noexec() check even though it's mindless
-nonsense checking for guarantee that isn't given so drop the WARN.
-
-Reword the commentary and do small tidy ups while here.
-
-Signed-off-by: Mateusz Guzik <mjguzik@gmail.com>
-Link: https://lore.kernel.org/r/20240805131721.765484-1-mjguzik@gmail.com
-[brauner: keep redundant path_noexec() check]
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[cascardo: keep exit label and use it]
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: junhua huang <huang.junhua@zte.com.cn>
+Link: https://lore.kernel.org/r/202212021511106844809@zte.com.cn
+Signed-off-by: Will Deacon <will@kernel.org>
+Stable-dep-of: 13f8f1e05f1d ("arm64: probes: Fix uprobes for big-endian kernels")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exec.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ arch/arm64/include/asm/uprobes.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/exec.c b/fs/exec.c
-index f49b352a60323..7776209d98c10 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -143,13 +143,11 @@ SYSCALL_DEFINE1(uselib, const char __user *, library)
- 		goto out;
+diff --git a/arch/arm64/include/asm/uprobes.h b/arch/arm64/include/asm/uprobes.h
+index 315eef654e39a..ba4bff5ca6749 100644
+--- a/arch/arm64/include/asm/uprobes.h
++++ b/arch/arm64/include/asm/uprobes.h
+@@ -12,7 +12,7 @@
  
- 	/*
--	 * may_open() has already checked for this, so it should be
--	 * impossible to trip now. But we need to be extra cautious
--	 * and check again at the very end too.
-+	 * Check do_open_execat() for an explanation.
- 	 */
- 	error = -EACCES;
--	if (WARN_ON_ONCE(!S_ISREG(file_inode(file)->i_mode) ||
--			 path_noexec(&file->f_path)))
-+	if (WARN_ON_ONCE(!S_ISREG(file_inode(file)->i_mode)) ||
-+	    path_noexec(&file->f_path))
- 		goto exit;
+ #define MAX_UINSN_BYTES		AARCH64_INSN_SIZE
  
- 	error = -ENOEXEC;
-@@ -925,23 +923,22 @@ static struct file *do_open_execat(int fd, struct filename *name, int flags)
+-#define UPROBE_SWBP_INSN	BRK64_OPCODE_UPROBES
++#define UPROBE_SWBP_INSN	cpu_to_le32(BRK64_OPCODE_UPROBES)
+ #define UPROBE_SWBP_INSN_SIZE	AARCH64_INSN_SIZE
+ #define UPROBE_XOL_SLOT_BYTES	MAX_UINSN_BYTES
  
- 	file = do_filp_open(fd, name, &open_exec_flags);
- 	if (IS_ERR(file))
--		goto out;
-+		return file;
- 
- 	/*
--	 * may_open() has already checked for this, so it should be
--	 * impossible to trip now. But we need to be extra cautious
--	 * and check again at the very end too.
-+	 * In the past the regular type check was here. It moved to may_open() in
-+	 * 633fb6ac3980 ("exec: move S_ISREG() check earlier"). Since then it is
-+	 * an invariant that all non-regular files error out before we get here.
- 	 */
- 	err = -EACCES;
--	if (WARN_ON_ONCE(!S_ISREG(file_inode(file)->i_mode) ||
--			 path_noexec(&file->f_path)))
-+	if (WARN_ON_ONCE(!S_ISREG(file_inode(file)->i_mode)) ||
-+	    path_noexec(&file->f_path))
- 		goto exit;
- 
- 	err = deny_write_access(file);
- 	if (err)
- 		goto exit;
- 
--out:
- 	return file;
- 
- exit:
 -- 
 2.43.0
 
