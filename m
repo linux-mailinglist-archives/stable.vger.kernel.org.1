@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-88579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82DCB9B2695
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:40:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A9E9B27AA
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:50:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0A461C20F3D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:40:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D18A6B21034
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4FAD18E37C;
-	Mon, 28 Oct 2024 06:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EF5918E35B;
+	Mon, 28 Oct 2024 06:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avKElBiT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LyetqP+N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E22189BAF;
-	Mon, 28 Oct 2024 06:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3392AF07;
+	Mon, 28 Oct 2024 06:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097651; cv=none; b=t05rJhj3WSx0x3oFEoEumeC71oquHtK/dIRV694mMbIun67iXfaZPB79kYWutFIJ6b1x1YCDikkbyyjk75pcjHVoPWEKB2zxLli3JJPDtiIdghn9D/N4VwdaXyGkJNIb94oWGM/1/YpMz4yLEbICkIHy33D02+rWqiPj4pLWTsg=
+	t=1730098209; cv=none; b=u1TvgaXJA4IoMOXhvhfDBEy0Jm3RiDE9JhkblONFUUJ3V0S/SXHIi5lsTYZgzXa7QEhiN1rIhVx9xKXpze7nKTQKDp+Qd4/hiXnbclfd8OFtbeonrOBIfzYV6+Apiz7u7/sj3RHRDokmv38i//LVCR8Msz6AYUGEISrHPe4vgdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097651; c=relaxed/simple;
-	bh=DwJXaOJrzEn9p64WkLd/Vg0gH369LslyXg5t8nD9YWc=;
+	s=arc-20240116; t=1730098209; c=relaxed/simple;
+	bh=N0BK6ePbJwpjQ4fFsgeI1AEXNjXKzqu0sAnXswzcfkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bBOvngmBezeE3rXBzGrr22GGFYUnCzDPoI0njtLMLAvqEDX2EaCd0Ky8lZ11GViEzV3MDbkmxrD4SJctlb1Ia1eIAKXhDZndhoG2p+dnybMmELSs3/lKssJmBNBOUtUdaluoHgGoZ3/MnP3soECqrTJTd8iER029MTxjXFElRJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avKElBiT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF8CC4CEC3;
-	Mon, 28 Oct 2024 06:40:51 +0000 (UTC)
+	 MIME-Version; b=FI6+3oDdERo/iySoVC5pVw8fI9qN56q5ezr41pfE1ewEe6hdaI/NvsBrCHFSmp/NcmI8QhsnTmGaUCYtqbEnWNqAScSenc8+LAp/cYmZ9VeBIGX1/kl1atF3FBjA/DO5SqskyL7T3yp6IdIf/igJVLQZ4nO6T8SA8xRCBZauFls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LyetqP+N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01F5C4CEC3;
+	Mon, 28 Oct 2024 06:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097651;
-	bh=DwJXaOJrzEn9p64WkLd/Vg0gH369LslyXg5t8nD9YWc=;
+	s=korg; t=1730098209;
+	bh=N0BK6ePbJwpjQ4fFsgeI1AEXNjXKzqu0sAnXswzcfkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=avKElBiT6B0o3zOOs3wlYsYZ/J0kFKtHJIRqcytSOZeqpWiRs8JQ+qu0//KLHlRGH
-	 y0n7VfiCPddG//rJj9usu58VBAbXOvvKnWNYyFYcyGFuQfQkgfif/eDGbyeXDhWd8Z
-	 4gKtz4/PICbNuDU91wrtl1hN1+Gn2pofTXDxOoLo=
+	b=LyetqP+NvugWnli6WnUySQDpBSl25jfqFdcPW7Fc4Ktc+PcUXR/wvuGz/lUXg/paU
+	 dUJThdei2AKt0dJP8Ybt599FoVtvcnyNMsIlDTmHF8dCTDPAmXte2XrGAsf5Nk6Lvc
+	 JAcx3QQgVkXWJmJJHYBE/3jOVam+//Gh7M8SSiTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Butler <wab@google.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 087/208] nvme-pci: set doorbell config before unquiescing
+Subject: [PATCH 6.11 125/261] ASoC: fsl_sai: Enable FIFO continue on error FCONT bit
 Date: Mon, 28 Oct 2024 07:24:27 +0100
-Message-ID: <20241028062308.795284180@linuxfoundation.org>
+Message-ID: <20241028062315.169029245@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Butler <wab@google.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 06c59d427017fcde3107c236177fcc74c9db7909 ]
+[ Upstream commit 72455e33173c1a00c0ce93d2b0198eb45d5f4195 ]
 
-During resets, if queues are unquiesced first, then the host can submit
-IOs to the controller using shadow doorbell logic but the controller
-won't be aware. This can lead to necessary MMIO doorbells from being
-not issued, causing requests to be delayed and timed-out.
+FCONT=1 means On FIFO error, the SAI will continue from the
+same word that caused the FIFO error to set after the FIFO
+warning flag has been cleared.
 
-Signed-off-by: William Butler <wab@google.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Stable-dep-of: 26bc0a81f64c ("nvme-pci: fix race condition between reset and nvme_dev_disable()")
+Set FCONT bit in control register to avoid the channel swap
+issue after SAI xrun.
+
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/1727676508-22830-1-git-send-email-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/fsl/fsl_sai.c | 5 ++++-
+ sound/soc/fsl/fsl_sai.h | 1 +
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 32b5cc76a0223..61c9b175e035f 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2757,10 +2757,10 @@ static void nvme_reset_work(struct work_struct *work)
- 	 * controller around but remove all namespaces.
- 	 */
- 	if (dev->online_queues > 1) {
-+		nvme_dbbuf_set(dev);
- 		nvme_unquiesce_io_queues(&dev->ctrl);
- 		nvme_wait_freeze(&dev->ctrl);
- 		nvme_pci_update_nr_queues(dev);
--		nvme_dbbuf_set(dev);
- 		nvme_unfreeze(&dev->ctrl);
- 	} else {
- 		dev_warn(dev->ctrl.device, "IO queues lost\n");
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index d03b0172b8ad2..a1f03c97b7bb8 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -613,6 +613,9 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+ 
+ 	val_cr4 |= FSL_SAI_CR4_FRSZ(slots);
+ 
++	/* Set to avoid channel swap */
++	val_cr4 |= FSL_SAI_CR4_FCONT;
++
+ 	/* Set to output mode to avoid tri-stated data pins */
+ 	if (tx)
+ 		val_cr4 |= FSL_SAI_CR4_CHMOD;
+@@ -699,7 +702,7 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+ 
+ 	regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx, ofs),
+ 			   FSL_SAI_CR4_SYWD_MASK | FSL_SAI_CR4_FRSZ_MASK |
+-			   FSL_SAI_CR4_CHMOD_MASK,
++			   FSL_SAI_CR4_CHMOD_MASK | FSL_SAI_CR4_FCONT_MASK,
+ 			   val_cr4);
+ 	regmap_update_bits(sai->regmap, FSL_SAI_xCR5(tx, ofs),
+ 			   FSL_SAI_CR5_WNW_MASK | FSL_SAI_CR5_W0W_MASK |
+diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
+index dadbd16ee3945..9c4d19fe22c65 100644
+--- a/sound/soc/fsl/fsl_sai.h
++++ b/sound/soc/fsl/fsl_sai.h
+@@ -137,6 +137,7 @@
+ 
+ /* SAI Transmit and Receive Configuration 4 Register */
+ 
++#define FSL_SAI_CR4_FCONT_MASK	BIT(28)
+ #define FSL_SAI_CR4_FCONT	BIT(28)
+ #define FSL_SAI_CR4_FCOMB_SHIFT BIT(26)
+ #define FSL_SAI_CR4_FCOMB_SOFT  BIT(27)
 -- 
 2.43.0
 
