@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-88446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A24CB9B2604
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 851509B27D1
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:51:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DD771F21EB7
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B70EC1C215AB
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:51:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1546A18FDA7;
-	Mon, 28 Oct 2024 06:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C13518E35B;
+	Mon, 28 Oct 2024 06:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nFtingV6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IHwmmXUu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56DA18FDB0;
-	Mon, 28 Oct 2024 06:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6268837;
+	Mon, 28 Oct 2024 06:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097350; cv=none; b=aKxljjbVnzSuwzrD3hf1dqL6IIAzCioO4wbLhGR3wqthiZc9tOIiggtjuOamArNiXZGCAHs3LhiboizSp4xyqqFrKcntmGF/L+XFjtPMZTm+L4gLzx7rYTpNO4NSd/otPPMqncAl4AN8DwnrOctJeOjUoY1DfASC/7xN9K0Sgd8=
+	t=1730098287; cv=none; b=pDwfQHU29mrVYs4LJk0wNmRVcfkRyD7p0rx2I4ohmIkq94Crl0Byg6023wnBIxxzniyLWe7UDgo+1NYMd+xEvSO4HVnguMAn256xohlHmhitztIWv0iJURknaF26pWbCKvrA1J/DYjj9pilTl/Ur9hzR+w8HUOjhMoplL+mT5m4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097350; c=relaxed/simple;
-	bh=dLGbq/FkL4StWC+6d2xxkdksQhRl+GswuEfmpqZOgUU=;
+	s=arc-20240116; t=1730098287; c=relaxed/simple;
+	bh=lKB4pbxOrcPOgWJUd9DqqStwQs/9ca39miCzl32v680=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=py3aq/HiNK1KSBA68e6k6aYbzPf7nl4jr/mjf+OgDBvi6KomMwMV/nxlyiuu/bShd+gE3xZB3W80XS6MrL8G6SEsLfESAeZ1Z/OKYiNpwyOwWBBwZZu1f8BiRa6PS1lvIeHMOExoqkyJOdbEcItCZwTQQ8WVaqYzmhYQaAdUvaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nFtingV6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66813C4CEC3;
-	Mon, 28 Oct 2024 06:35:50 +0000 (UTC)
+	 MIME-Version; b=d6BUHqP+rKIr8NZ0fbb51V110CNiK04c9xILdfSSOUi8Mg/wZ4SyipKieUoPRwTUZfz8UhxQJ/FytIZ/BBiPfNi2m4aR3pQuh8+yCddS4JRhV1QzWlmiWDYR59+tpj97W9PujnQO5iFDc5kvygLZDBWgw0LzOv5XUIr5JPa397A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IHwmmXUu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BBE1C4CEC3;
+	Mon, 28 Oct 2024 06:51:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097350;
-	bh=dLGbq/FkL4StWC+6d2xxkdksQhRl+GswuEfmpqZOgUU=;
+	s=korg; t=1730098287;
+	bh=lKB4pbxOrcPOgWJUd9DqqStwQs/9ca39miCzl32v680=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nFtingV6GkX1SLuo5RMyScAy/l3L8h/rJlBWpiGvb/PZPuCRAOfkeNwMxoQ/TXngz
-	 yFGJI1J6Z4Du58VH9miSlHqM3d1V/2AOOMvO7QwohJzU6LZm3wsauH41FZaVh/5Lgr
-	 WIxFmTB/sfyQyoE3Z3yj8eZ0IXHgDcSrbKJx728s=
+	b=IHwmmXUuO7p7CqPJgh9R8hHCtj5r3WFYENR/ZlghPRADSmv9dDEshyv8hGJLAJo9j
+	 KsbkQP7SwD8XgCkZzcq2i834JSZdBTWLOxK1jxX/GEoG9mKMrTd2HlJfZT1BVIxj+3
+	 XlTAb0bi9TUcEg3LThHS5rcJtAI70Uo5MNuookwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Elson Roy Serrao <quic_eserrao@quicinc.com>,
+	Yuan Can <yuancan@huawei.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 065/137] usb: gadget: Add function wakeup support
+Subject: [PATCH 6.11 160/261] mlxsw: spectrum_router: fix xa_store() error checking
 Date: Mon, 28 Oct 2024 07:25:02 +0100
-Message-ID: <20241028062300.552528901@linuxfoundation.org>
+Message-ID: <20241028062316.018898727@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,128 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Elson Roy Serrao <quic_eserrao@quicinc.com>
+From: Yuan Can <yuancan@huawei.com>
 
-[ Upstream commit f0db885fb05d35befa81896db6b19eb3ee9ccdfe ]
+[ Upstream commit f7b4cf0306bbea500a613e4b618576452c1df4ba ]
 
-USB3.2 spec section 9.2.5.4 quotes that a function may signal that
-it wants to exit from Function Suspend by sending a Function
-Wake Notification to the host if it is enabled for function
-remote wakeup. Add an api in composite layer that can be used
-by the function drivers to support this feature. Also expose
-a gadget op so that composite layer can trigger a wakeup request
-to the UDC driver.
+It is meant to use xa_err() to extract the error encoded in the return
+value of xa_store().
 
-Reviewed-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
-Link: https://lore.kernel.org/r/1679694482-16430-4-git-send-email-quic_eserrao@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 705e3ce37bcc ("usb: dwc3: core: Fix system suspend on TI AM62 platforms")
+Fixes: 44c2fbebe18a ("mlxsw: spectrum_router: Share nexthop counters in resilient groups")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/20241017023223.74180-1-yuancan@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/composite.c | 40 ++++++++++++++++++++++++++++++++++
- include/linux/usb/composite.h  |  6 +++++
- include/linux/usb/gadget.h     |  1 +
- 3 files changed, 47 insertions(+)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/usb/gadget/composite.c b/drivers/usb/gadget/composite.c
-index f10e43a948fd8..db66242b2918a 100644
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -490,6 +490,46 @@ int usb_interface_id(struct usb_configuration *config,
- }
- EXPORT_SYMBOL_GPL(usb_interface_id);
- 
-+/**
-+ * usb_func_wakeup - sends function wake notification to the host.
-+ * @func: function that sends the remote wakeup notification.
-+ *
-+ * Applicable to devices operating at enhanced superspeed when usb
-+ * functions are put in function suspend state and armed for function
-+ * remote wakeup. On completion, function wake notification is sent. If
-+ * the device is in low power state it tries to bring the device to active
-+ * state before sending the wake notification. Since it is a synchronous
-+ * call, caller must take care of not calling it in interrupt context.
-+ * For devices operating at lower speeds  returns negative errno.
-+ *
-+ * Returns zero on success, else negative errno.
-+ */
-+int usb_func_wakeup(struct usb_function *func)
-+{
-+	struct usb_gadget	*gadget = func->config->cdev->gadget;
-+	int			id;
-+
-+	if (!gadget->ops->func_wakeup)
-+		return -EOPNOTSUPP;
-+
-+	if (!func->func_wakeup_armed) {
-+		ERROR(func->config->cdev, "not armed for func remote wakeup\n");
-+		return -EINVAL;
-+	}
-+
-+	for (id = 0; id < MAX_CONFIG_INTERFACES; id++)
-+		if (func->config->interface[id] == func)
-+			break;
-+
-+	if (id == MAX_CONFIG_INTERFACES) {
-+		ERROR(func->config->cdev, "Invalid function\n");
-+		return -EINVAL;
-+	}
-+
-+	return gadget->ops->func_wakeup(gadget, id);
-+}
-+EXPORT_SYMBOL_GPL(usb_func_wakeup);
-+
- static u8 encode_bMaxPower(enum usb_device_speed speed,
- 		struct usb_configuration *c)
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
+index 800dfb64ec830..7d6d859cef3f9 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
+@@ -3197,7 +3197,6 @@ mlxsw_sp_nexthop_sh_counter_get(struct mlxsw_sp *mlxsw_sp,
  {
-diff --git a/include/linux/usb/composite.h b/include/linux/usb/composite.h
-index 9783b9107d76b..d759208e0a6ce 100644
---- a/include/linux/usb/composite.h
-+++ b/include/linux/usb/composite.h
-@@ -149,6 +149,9 @@ struct usb_os_desc_table {
-  *	GetStatus() request when the recipient is Interface.
-  * @func_suspend: callback to be called when
-  *	SetFeature(FUNCTION_SUSPEND) is reseived
-+ * @func_suspended: Indicates whether the function is in function suspend state.
-+ * @func_wakeup_armed: Indicates whether the function is armed by the host for
-+ *	wakeup signaling.
-  *
-  * A single USB function uses one or more interfaces, and should in most
-  * cases support operation at both full and high speeds.  Each function is
-@@ -219,6 +222,8 @@ struct usb_function {
- 	int			(*get_status)(struct usb_function *);
- 	int			(*func_suspend)(struct usb_function *,
- 						u8 suspend_opt);
-+	bool			func_suspended;
-+	bool			func_wakeup_armed;
- 	/* private: */
- 	/* internals */
- 	struct list_head		list;
-@@ -240,6 +245,7 @@ int config_ep_by_speed_and_alt(struct usb_gadget *g, struct usb_function *f,
+ 	struct mlxsw_sp_nexthop_group *nh_grp = nh->nhgi->nh_grp;
+ 	struct mlxsw_sp_nexthop_counter *nhct;
+-	void *ptr;
+ 	int err;
  
- int config_ep_by_speed(struct usb_gadget *g, struct usb_function *f,
- 			struct usb_ep *_ep);
-+int usb_func_wakeup(struct usb_function *func);
+ 	nhct = xa_load(&nh_grp->nhgi->nexthop_counters, nh->id);
+@@ -3210,12 +3209,10 @@ mlxsw_sp_nexthop_sh_counter_get(struct mlxsw_sp *mlxsw_sp,
+ 	if (IS_ERR(nhct))
+ 		return nhct;
  
- #define	MAX_CONFIG_INTERFACES		16	/* arbitrary; max 255 */
+-	ptr = xa_store(&nh_grp->nhgi->nexthop_counters, nh->id, nhct,
+-		       GFP_KERNEL);
+-	if (IS_ERR(ptr)) {
+-		err = PTR_ERR(ptr);
++	err = xa_err(xa_store(&nh_grp->nhgi->nexthop_counters, nh->id, nhct,
++			      GFP_KERNEL));
++	if (err)
+ 		goto err_store;
+-	}
  
-diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
-index 5bec668b41dcd..705b76f8dddb2 100644
---- a/include/linux/usb/gadget.h
-+++ b/include/linux/usb/gadget.h
-@@ -309,6 +309,7 @@ struct usb_udc;
- struct usb_gadget_ops {
- 	int	(*get_frame)(struct usb_gadget *);
- 	int	(*wakeup)(struct usb_gadget *);
-+	int	(*func_wakeup)(struct usb_gadget *gadget, int intf_id);
- 	int	(*set_remote_wakeup)(struct usb_gadget *, int set);
- 	int	(*set_selfpowered) (struct usb_gadget *, int is_selfpowered);
- 	int	(*vbus_session) (struct usb_gadget *, int is_active);
+ 	return nhct;
+ 
 -- 
 2.43.0
 
