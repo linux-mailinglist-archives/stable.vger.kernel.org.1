@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-88507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B089B2648
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:38:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 208809B275E
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:47:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 916A41F21F25
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:38:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 305362839A3
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:47:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CABD18EFF9;
-	Mon, 28 Oct 2024 06:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD1218A922;
+	Mon, 28 Oct 2024 06:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5OSrDq1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9ldZRRB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175D518E348;
-	Mon, 28 Oct 2024 06:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16EF98837;
+	Mon, 28 Oct 2024 06:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097490; cv=none; b=uFEO3jkvlY2JcKCx9C0339F370J5xHuWgCwjRmQ7STJRo44uS9XNQCMdjiayr7V0UaFShXE0gZANfYKbDzhaXJutX91SZnk5aZihHgRL0QgDHhT2+VcaxTeC7x0Dpa+aRZRyQfxgAy4QUPlxhTvhFdGsR7/e+3mgD0kWwtfLY+E=
+	t=1730098054; cv=none; b=YxUC2PqqJdED1ix8rR2akbKNpXg4x1KBD31Z6T7SEoeDQLbEgYyBelYzJlFJ56Ustei82lSK2V2dl9p3NBL4SDW7o45nGJMZ+uGJW5XidnUV6RLI+pbJaOrg7XKUEnodFKVKAMLeRXpr6NcufHJjEm922GPe0rVABvr3CmW6IVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097490; c=relaxed/simple;
-	bh=2nIE7uJr+WmHS9cD4x8CwFfUcFB24Li7JlpjokoxErs=;
+	s=arc-20240116; t=1730098054; c=relaxed/simple;
+	bh=qyFlKVMBjnhGadEqmkAzWyW9zeXsNuSi51+T8kjSo6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iSdjm+8goCOO/Wyp7YJEykDqwPb4/hszdrWcNhnrdQtGT8uAi3ldWYho7pg+1SiCxCbtioLXDdctn1jCRyxJnX7hZuqEC6e6mbv5UypedADnzni+DTVMnbiKezmoNa/5SfUxAOZE9qMoBr+Pn6iB1QkZZWgDRGil6ZpV06QlP2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5OSrDq1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA74CC4CEC3;
-	Mon, 28 Oct 2024 06:38:09 +0000 (UTC)
+	 MIME-Version; b=LBPUJkUpR2jaIRRMksQSjbrmjQUHTvSp6JizuOfSmgEHYFqSbUQciixxICcxJqLAp3zbyPSSEJPP6eZoR3pviKDXF566NctJSP8fWos27/2Ss+HwoTeE4rMzfHa8AhaZmQ1u5FbB2+FBH5muI8kwmlUjOoxtynPVqcb99nHWsxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9ldZRRB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC56C4CEC3;
+	Mon, 28 Oct 2024 06:47:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097490;
-	bh=2nIE7uJr+WmHS9cD4x8CwFfUcFB24Li7JlpjokoxErs=;
+	s=korg; t=1730098054;
+	bh=qyFlKVMBjnhGadEqmkAzWyW9zeXsNuSi51+T8kjSo6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t5OSrDq1Uezk5w/F4ZkTPPuYGVFw+6WBY5ppg76txjN0yRl4gT75OJVQnz5nlCeMF
-	 /9WXBM8osjQwxtfgeLDHEoreE3qkV3JpXnkjSMW5cXreCHBTcF8hDKUZd6ldscjh2q
-	 /oKXuQi9AijP+BT80wjuFqu6BamxKmGUezQhKRj0=
+	b=F9ldZRRBT5mkOOP5Dpw2A0njyLNgMwEcoINYse52dVbjuMLal1jVcrCoJA4M/ZahG
+	 2yHI3+8+80BLa6rfvYrHE5P/01us/Ro4zi0OkWLEQx1RhtHc3hozElYd2QsmWGNlkc
+	 tAcN9SXwlqhO9m9QHA98cQuN+wBA4a9/r7Q6ZGv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Olsa <jolsa@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Yafang Shao <laoar.shao@gmail.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/208] selftests/bpf: Use bpf_link__destroy in fill_link_info tests
-Date: Mon, 28 Oct 2024 07:23:16 +0100
-Message-ID: <20241028062307.058263939@linuxfoundation.org>
+Subject: [PATCH 6.11 055/261] drm/msm: Avoid NULL dereference in msm_disp_state_print_regs()
+Date: Mon, 28 Oct 2024 07:23:17 +0100
+Message-ID: <20241028062313.393627097@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,136 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 1703612885723869064f18e8816c6f3f87987748 ]
+[ Upstream commit 293f53263266bc4340d777268ab4328a97f041fa ]
 
-The fill_link_info test keeps skeleton open and just creates
-various links. We are wrongly calling bpf_link__detach after
-each test to close them, we need to call bpf_link__destroy.
+If the allocation in msm_disp_state_dump_regs() failed then
+`block->state` can be NULL. The msm_disp_state_print_regs() function
+_does_ have code to try to handle it with:
 
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Acked-by: Yafang Shao <laoar.shao@gmail.com>
-Link: https://lore.kernel.org/bpf/20231125193130.834322-5-jolsa@kernel.org
-Stable-dep-of: 4538a38f654a ("selftests/bpf: fix perf_event link info name_len assertion")
+  if (*reg)
+    dump_addr = *reg;
+
+...but since "dump_addr" is initialized to NULL the above is actually
+a noop. The code then goes on to dereference `dump_addr`.
+
+Make the function print "Registers not stored" when it sees a NULL to
+solve this. Since we're touching the code, fix
+msm_disp_state_print_regs() not to pointlessly take a double-pointer
+and properly mark the pointer as `const`.
+
+Fixes: 98659487b845 ("drm/msm: add support to take dpu snapshot")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/619657/
+Link: https://lore.kernel.org/r/20241014093605.1.Ia1217cecec9ef09eb3c6d125360cc6c8574b0e73@changeid
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/bpf/prog_tests/fill_link_info.c | 44 ++++++++++---------
- 1 file changed, 23 insertions(+), 21 deletions(-)
+ drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/fill_link_info.c b/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
-index 9d768e0837149..7db7f9bd9d58e 100644
---- a/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
-+++ b/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
-@@ -140,14 +140,14 @@ static void test_kprobe_fill_link_info(struct test_fill_link_info *skel,
- 		.retprobe = type == BPF_PERF_EVENT_KRETPROBE,
- 	);
- 	ssize_t entry_offset = 0;
-+	struct bpf_link *link;
- 	int link_fd, err;
- 
--	skel->links.kprobe_run = bpf_program__attach_kprobe_opts(skel->progs.kprobe_run,
--								 KPROBE_FUNC, &opts);
--	if (!ASSERT_OK_PTR(skel->links.kprobe_run, "attach_kprobe"))
-+	link = bpf_program__attach_kprobe_opts(skel->progs.kprobe_run, KPROBE_FUNC, &opts);
-+	if (!ASSERT_OK_PTR(link, "attach_kprobe"))
- 		return;
- 
--	link_fd = bpf_link__fd(skel->links.kprobe_run);
-+	link_fd = bpf_link__fd(link);
- 	if (!invalid) {
- 		/* See also arch_adjust_kprobe_addr(). */
- 		if (skel->kconfig->CONFIG_X86_KERNEL_IBT)
-@@ -157,39 +157,41 @@ static void test_kprobe_fill_link_info(struct test_fill_link_info *skel,
- 	} else {
- 		kprobe_fill_invalid_user_buffer(link_fd);
+diff --git a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
+index add72bbc28b17..bb149281d31fa 100644
+--- a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
++++ b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
+@@ -48,20 +48,21 @@ static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *b
  	}
--	bpf_link__detach(skel->links.kprobe_run);
-+	bpf_link__destroy(link);
  }
  
- static void test_tp_fill_link_info(struct test_fill_link_info *skel)
+-static void msm_disp_state_print_regs(u32 **reg, u32 len, void __iomem *base_addr,
+-		struct drm_printer *p)
++static void msm_disp_state_print_regs(const u32 *dump_addr, u32 len,
++		void __iomem *base_addr, struct drm_printer *p)
  {
-+	struct bpf_link *link;
- 	int link_fd, err;
+ 	int i;
+-	u32 *dump_addr = NULL;
+ 	void __iomem *addr;
+ 	u32 num_rows;
  
--	skel->links.tp_run = bpf_program__attach_tracepoint(skel->progs.tp_run, TP_CAT, TP_NAME);
--	if (!ASSERT_OK_PTR(skel->links.tp_run, "attach_tp"))
-+	link = bpf_program__attach_tracepoint(skel->progs.tp_run, TP_CAT, TP_NAME);
-+	if (!ASSERT_OK_PTR(link, "attach_tp"))
- 		return;
++	if (!dump_addr) {
++		drm_printf(p, "Registers not stored\n");
++		return;
++	}
++
+ 	addr = base_addr;
+ 	num_rows = len / REG_DUMP_ALIGN;
  
--	link_fd = bpf_link__fd(skel->links.tp_run);
-+	link_fd = bpf_link__fd(link);
- 	err = verify_perf_link_info(link_fd, BPF_PERF_EVENT_TRACEPOINT, 0, 0, 0);
- 	ASSERT_OK(err, "verify_perf_link_info");
--	bpf_link__detach(skel->links.tp_run);
-+	bpf_link__destroy(link);
- }
+-	if (*reg)
+-		dump_addr = *reg;
+-
+ 	for (i = 0; i < num_rows; i++) {
+ 		drm_printf(p, "0x%lx : %08x %08x %08x %08x\n",
+ 				(unsigned long)(addr - base_addr),
+@@ -89,7 +90,7 @@ void msm_disp_state_print(struct msm_disp_state *state, struct drm_printer *p)
  
- static void test_uprobe_fill_link_info(struct test_fill_link_info *skel,
- 				       enum bpf_perf_event_type type)
- {
-+	struct bpf_link *link;
- 	int link_fd, err;
- 
--	skel->links.uprobe_run = bpf_program__attach_uprobe(skel->progs.uprobe_run,
--							    type == BPF_PERF_EVENT_URETPROBE,
--							    0, /* self pid */
--							    UPROBE_FILE, uprobe_offset);
--	if (!ASSERT_OK_PTR(skel->links.uprobe_run, "attach_uprobe"))
-+	link = bpf_program__attach_uprobe(skel->progs.uprobe_run,
-+					  type == BPF_PERF_EVENT_URETPROBE,
-+					  0, /* self pid */
-+					  UPROBE_FILE, uprobe_offset);
-+	if (!ASSERT_OK_PTR(link, "attach_uprobe"))
- 		return;
- 
--	link_fd = bpf_link__fd(skel->links.uprobe_run);
-+	link_fd = bpf_link__fd(link);
- 	err = verify_perf_link_info(link_fd, type, 0, uprobe_offset, 0);
- 	ASSERT_OK(err, "verify_perf_link_info");
--	bpf_link__detach(skel->links.uprobe_run);
-+	bpf_link__destroy(link);
- }
- 
- static int verify_kmulti_link_info(int fd, bool retprobe)
-@@ -278,24 +280,24 @@ static void test_kprobe_multi_fill_link_info(struct test_fill_link_info *skel,
- 					     bool retprobe, bool invalid)
- {
- 	LIBBPF_OPTS(bpf_kprobe_multi_opts, opts);
-+	struct bpf_link *link;
- 	int link_fd, err;
- 
- 	opts.syms = kmulti_syms;
- 	opts.cnt = KMULTI_CNT;
- 	opts.retprobe = retprobe;
--	skel->links.kmulti_run = bpf_program__attach_kprobe_multi_opts(skel->progs.kmulti_run,
--								       NULL, &opts);
--	if (!ASSERT_OK_PTR(skel->links.kmulti_run, "attach_kprobe_multi"))
-+	link = bpf_program__attach_kprobe_multi_opts(skel->progs.kmulti_run, NULL, &opts);
-+	if (!ASSERT_OK_PTR(link, "attach_kprobe_multi"))
- 		return;
- 
--	link_fd = bpf_link__fd(skel->links.kmulti_run);
-+	link_fd = bpf_link__fd(link);
- 	if (!invalid) {
- 		err = verify_kmulti_link_info(link_fd, retprobe);
- 		ASSERT_OK(err, "verify_kmulti_link_info");
- 	} else {
- 		verify_kmulti_invalid_user_buffer(link_fd);
+ 	list_for_each_entry_safe(block, tmp, &state->blocks, node) {
+ 		drm_printf(p, "====================%s================\n", block->name);
+-		msm_disp_state_print_regs(&block->state, block->size, block->base_addr, p);
++		msm_disp_state_print_regs(block->state, block->size, block->base_addr, p);
  	}
--	bpf_link__detach(skel->links.kmulti_run);
-+	bpf_link__destroy(link);
- }
  
- void test_fill_link_info(void)
+ 	drm_printf(p, "===================dpu drm state================\n");
 -- 
 2.43.0
 
