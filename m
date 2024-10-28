@@ -1,260 +1,136 @@
-Return-Path: <stable+bounces-89128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AF679B3CC6
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 22:33:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F6C9B3DCA
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 23:34:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F3B9B2150F
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 21:33:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70F85B22130
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 22:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372A61E260A;
-	Mon, 28 Oct 2024 21:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806B11EE021;
+	Mon, 28 Oct 2024 22:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=email-od.com header.i=@email-od.com header.b="QiIQYJo9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HUyxPayQ"
 X-Original-To: stable@vger.kernel.org
-Received: from s1-ba86.socketlabs.email-od.com (s1-ba86.socketlabs.email-od.com [142.0.186.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A785B1E0B7F
-	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 21:33:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=142.0.186.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2247D1D6DA9;
+	Mon, 28 Oct 2024 22:34:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730151226; cv=none; b=S0zSsZh7ubalzydj0OWDRMzz3ioLXawiOa7Ihk08V/Xw/IASRZLVpFGDCUdY2W3KNivN41hICsMl6HFVMUByUBFusfojV5t/HS2olM693c7k6szJX7/GlQrrppoijuxlELXTU0XO4hWeiw6o5PhidatbA16OIdE65eFes4Q7z3A=
+	t=1730154877; cv=none; b=b2JK3IOhtyqLr0kM+buVcjVMau7LilxOrZX2Y1OQh6EFVuSsxqdrchs5zgWCEgdblppsLmKeuHGcx0y8i6CVSg1Ij5g5mYPn0MxVr4643Gr1TW+BHLDE8wzm0dYktvgDeTaE7J6abtPe7++qXo0yha/5wXVgGX6ZtoymAX24iK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730151226; c=relaxed/simple;
-	bh=REJqBIp+u4tgztS67pNZ5sNBdoeBOrImDHIAMRBsbb8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DcoEaXNogtZa6YTrCMiAFzs9ka7ykQalbeYFahugrizl/+jbjSalz0p0a7o7g+rtnNhiWZG2CBZ7r3Y2txlmRH2Urq+6suupx3xvqRxLgPjheADX7+1T4+PWxOlxPSXpH2rfOJzRU0Ra2XtNkKYuY19P9rD24Sb22A1QdxksEhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nalramli.com; spf=pass smtp.mailfrom=email-od.com; dkim=pass (1024-bit key) header.d=email-od.com header.i=@email-od.com header.b=QiIQYJo9; arc=none smtp.client-ip=142.0.186.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nalramli.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=email-od.com
-DKIM-Signature: v=1; a=rsa-sha256; d=email-od.com;i=@email-od.com;s=dkim;
-	c=relaxed/relaxed; q=dns/txt; t=1730151224; x=1732743224;
-	h=content-transfer-encoding:content-type:in-reply-to:from:content-language:references:cc:to:subject:mime-version:date:message-id:x-thread-info:subject:to:from:cc:reply-to;
-	bh=6doGIbPh3Cn0Hzi2wTIVT8G20SoeYWH9IUuwlNVcx4s=;
-	b=QiIQYJo9Xpgvpkw3ExC8C1Cdc2avP6PENEx9fBzB7rzZfAoUQDpU++JKvGU2FMdTzUkIs82c0FeBfJKyA9UpwC2tGKdD/G43fiow2gIEcNA6Cm6/QJmmZw+SlDUfjO9TKRFhdv5cNvyn+rwftMiuH6P7zYqE3wkk2l/2gKNtKDU=
-X-Thread-Info: NDUwNC4xMi40NzFlYTAwMDBjNjAwMGYuc3RhYmxlPXZnZXIua2VybmVsLm9yZw==
-x-xsSpam: eyJTY29yZSI6MCwiRGV0YWlscyI6IltdIn0=
-Received: from [192.168.0.167] (d4-50-191-215.clv.wideopenwest.com [50.4.215.191])
-	by nalramli.com (Postfix) with ESMTPS id 9DD382CE0334;
-	Mon, 28 Oct 2024 17:33:26 -0400 (EDT)
-Message-ID: <894de4c2-ce04-4cc1-97d8-fc7c860e943d@nalramli.com>
-Date: Mon, 28 Oct 2024 17:33:25 -0400
+	s=arc-20240116; t=1730154877; c=relaxed/simple;
+	bh=NS6IGLdfQ4yhfa/h3qM/ZC4AMFpa5EbB0lv5pgr/TGE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=sOnt/AaqEhz7Vey/sSUHceEvDZPmr+8gYqXeW5/b7oaeKb6sgt1F2iL/9/dCOTqW0mVF7bPg98VwdcaiTMQ97PdyGpu16/a9Y2Fm0L3VGg5YgFYxWeq77Bf46mmoRXa4HcLPVOa+isiyV2t9BffOOXrVY9M9zTnGrS5oDmGf/JE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HUyxPayQ; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4315f24a6bbso47059115e9.1;
+        Mon, 28 Oct 2024 15:34:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730154873; x=1730759673; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pdlBwck4NxNHB4pJHNKMUo69aUJHsObvwbILTbB7MwQ=;
+        b=HUyxPayQTpMNk0JyV6UdObc7IcquQMJXKkql6OUZ2Cm+DqKN0Vcfrjru30fWIBjUF8
+         sgWUfklzq+qPozBGVycU0lreWUU13AJ/tgwyhKNU+uy6vebjdKeILD+qZzpqDe0Z8FhX
+         ZCoNk5GkdOt75/ToCPk+ypPwFoohKpJC9jjbJ3qp81RjMW+6ZeW1Sz7tVgJiLdjcZC4/
+         qQ0j/FmPY1pFbuTtPw0oRypgs6QA9tHYQbyQ7k7/Y5vWZf80Ri4R4WFdLzZT9HQhhTLP
+         cO1kysTWI7YL5igLyunuqZh502cqqW56InY5TVio5JUq6+/AGhLuU+jj3vEWIyhv7afD
+         z3wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730154873; x=1730759673;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pdlBwck4NxNHB4pJHNKMUo69aUJHsObvwbILTbB7MwQ=;
+        b=McEDehau8NMulhl/KybAS+cpEPV5iB/f1wC1D/i76lWxgGU5ZIrX/0X+XUDHMX9aUO
+         irAyc0rfYaGYdF9Ikoj3Pse+9jix7H1cXxAE/I/anjKCIT/OQyhqbhVtAalMob2SU3m0
+         xxBzhNpQm6N2QY2Xiskpo8kPagvm7+N31gOUf6LA9/Jzn8p3pHmt4VVnDQTU94wqTSel
+         QL3vJd/YkL+wRBEqPUj7vYW1UfC7S7SevC4NBHArUH1DorSCakSxbdklAyOOrLK1UNg4
+         Ph6gPWCPc7P+S+FbXlyJq/I9aXyqHETBtZHUwlsKhG9ArBfIO6E8ApwcnzRAmi9nqifj
+         uLLw==
+X-Forwarded-Encrypted: i=1; AJvYcCUSN/ayrMGGcQA2FB6j6TUsRSVO9TU1WHbRgcrca1CKK6/+mZND0JAzEBtIOf2AghMCSy1hfafR@vger.kernel.org, AJvYcCXcREnSLtvuPSgC1js6KhRj3CH3sbQM/7hbfxXpi1LveT5LFkz8mICRFuEjvGTA/Xl+2D1FTJb3Qh/7itQ=@vger.kernel.org, AJvYcCXqu2o1Tz+Wl/P9u5hB7GzjVufFD8E3Te0K0Umy+fkNH2bW1e2vXFNGv1iA+h0fQQ5k2n1p+XK5gEk1KnQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YybJZypmu8Hj/f3yOrp47T5PdYL4t1Tt39bkxxFAHEa5DpkSK5r
+	Nm6AMQqlf/lvUNRWpb1+Ee5/TssdVGV4A/g0ufRcYu/daCnOPq2QGPm5gnjj
+X-Google-Smtp-Source: AGHT+IFBiVXTrjD7ImDUCo/xWaGFnVYKS4h7WGj2F2MDCfqbPayAEVeJNVnFEvFnyih3B4YMtk5w7g==
+X-Received: by 2002:a05:600c:5249:b0:431:6052:48c3 with SMTP id 5b1f17b1804b1-4319acacd6amr104870245e9.16.1730154872857;
+        Mon, 28 Oct 2024 15:34:32 -0700 (PDT)
+Received: from [127.0.1.1] (2a02-8389-41cf-e200-b273-88b2-f83b-5936.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:b273:88b2:f83b:5936])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431935f7213sm123899495e9.32.2024.10.28.15.34.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Oct 2024 15:34:32 -0700 (PDT)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH 0/2] phy: tegra: xusb: fix device(_node) release in
+ tegra210_xusb_padctl_probe
+Date: Mon, 28 Oct 2024 23:33:57 +0100
+Message-Id: <20241028-phy-tegra-xusb-tegra210-put_device-v1-0-28f74368c9ba@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 6.1.y 0/1] cpufreq: amd-pstate: Enable CPU boost in
- passive and guided modes
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: "nalramli@fastly.com" <nalramli@fastly.com>,
- "jdamato@fastly.com" <jdamato@fastly.com>,
- "khubert@fastly.com" <khubert@fastly.com>, "Yuan, Perry"
- <Perry.Yuan@amd.com>, "Shenoy, Gautham Ranjal" <gautham.shenoy@amd.com>,
- "Meng, Li (Jassmine)" <Li.Meng@amd.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "Huang, Ray" <Ray.Huang@amd.com>, "rafael@kernel.org" <rafael@kernel.org>,
- "viresh.kumar@linaro.org" <viresh.kumar@linaro.org>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <Zw8Wn5SPqBfRKUhp@LQ3V64L9R2>
- <20241025010527.491605-1-dev@nalramli.com>
- <CYYPR12MB8655545294DAB1B0D174B2AC9C4F2@CYYPR12MB8655.namprd12.prod.outlook.com>
- <3a4596ba-1a83-4cd2-ba17-5132861eac00@amd.com>
-Content-Language: en-US
-From: "Nabil S. Alramli" <dev@nalramli.com>
-In-Reply-To: <3a4596ba-1a83-4cd2-ba17-5132861eac00@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFURIGcC/yWNQQ5AMBAAvyJ7tklbDeIrIlJs2QtNixDp3zXcZ
+ i4zDwTyTAGa7AFPJwfe1iQyz2BczDoT8pQclFBaClWjW27cafYGryMMPyop0B17P6XASGhtZag
+ qtSgGDSnkPFm+vknbxfgCbCfWQnQAAAA=
+To: JC Kuo <jckuo@nvidia.com>, Vinod Koul <vkoul@kernel.org>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>
+Cc: Thierry Reding <treding@nvidia.com>, linux-phy@lists.infradead.org, 
+ linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1730154870; l=1477;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=NS6IGLdfQ4yhfa/h3qM/ZC4AMFpa5EbB0lv5pgr/TGE=;
+ b=BFOEYf0/XRn4Fi3Hhd0BIlIOkJuXsBUVt0jzg+51/ufPqypE/ActPCsKkORjVzpbblCVAMNv2
+ i1eY0ZE4jD3BxAIBPbNzR1O1YTYlFOegmbh+JEke7fTeqDPwWtx879Y
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-Hi Mario,
+This series fixes two similar issues in tegra_210_xusb_padctl_probe().
 
-Thank you for taking a look at my patch.
+Two resources (device_node *np and the device within struct
+platform_device *pdev) are acquired, but never released after they are
+no longer needed. To avoid leaking such resources, calls to
+of_node_put() and put_device() must be added.
 
-What do you think about the following for the commit message in the next
-revision of the PATCH, and omitting the cover letter since most of it is
-incorporated here?
+In this case, the resources are not assigned anywhere in the probe
+function, and they must be released in the error and success paths. If
+I overlooked any assignment, please report it as an error.
 
-***********************************************************************
+I have tried to affect the existing code and execution paths as less as
+possible by releasing the device and device_node as soon as possible,
+but if goto jumps to labels for the cleanup are desired, I can go for
+that approach instead.
 
-cpufreq: amd-pstate: Enable CPU boost in passive and guided modes
+This series has been compiled successfully, but not tested on real
+hardware as I don't have access to it. Any validation with the affected
+hardware is always welcome.
 
-The CPU frequency cannot be boosted when using the amd_pstate driver in
-passive or guided mode. This is fixed here.
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+---
+Javier Carrasco (2):
+      phy: tegra: xusb: fix device release in tegra210_xusb_padctl_probe
+      phy: tegra: xusb: fix device node release in tegra210_xusb_padctl_probe
 
-For example, on a host that has AMD EPYC 7662 64-Core processor without
-this patch running at full CPU load:
+ drivers/phy/tegra/xusb-tegra210.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+---
+base-commit: dec9255a128e19c5fcc3bdb18175d78094cc624d
+change-id: 20241028-phy-tegra-xusb-tegra210-put_device-ff7ae76403b4
 
-$ for i in $(cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq); =
-\
-  do ni=3D$(echo "scale=3D1; $i/1000000" | bc -l); echo "$ni GHz"; done |=
- \
-  sort | uniq -c
+Best regards,
+-- 
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-    128 2.0 GHz
-
-And with this patch:
-
-$ for i in $(cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq); =
-\
-  do ni=3D$(echo "scale=3D1; $i/1000000" | bc -l); echo "$ni GHz"; done |=
- \
-  sort | uniq -c
-
-    128 3.3 GHz
-
-The CPU frequency is dependent on a setting called highest_perf which is
-the multiplier used to compute it. The highest_perf value comes from
-cppc_init_perf when the driver is built-in and from pstate_init_perf when
-it is a loaded module. Both of these calls have the following condition:
-
-        highest_perf =3D amd_get_highest_perf();
-        if (highest_perf > __cppc_highest_perf_)
-                highest_perf =3D __cppc_highest_perf;
-
-Where again __cppc_highest_perf is either the return from
-cppc_get_perf_caps in the built-in case or AMD_CPPC_HIGHEST_PERF in the
-module case. Both of these functions actually return the nominal value,
-Whereas the call to amd_get_highest_perf returns the correct boost
-value, so the condition tests true and highest_perf always ends up being
-the nominal value, therefore never having the ability to boost CPU
-frequency.
-
-Since amd_get_highest_perf already returns the boost value we should
-just eliminate this check.
-
-The issue was introduced in v6.1 via commit bedadcfb011f ("cpufreq:
-amd-pstate: Fix initial highest_perf value"), and exists in stable kernel=
-s
-
-In v6.6.51, a large change, commit 1ec40a175a48 ("cpufreq: amd-pstate:
-Enable amd-pstate preferred core support"), was introduced which
-significantly refactored the code. This commit cannot be ported back on
-its own, and would require reviewing and cherry picking at least a few
-dozen of commits in cpufreq, amd-pstate, ACPI, CPPC.
-
-This means kernels v6.1 up until v6.6.51 are affected by this
-significant performance issue, and cannot be easily remediated. This
-patch simplifies the fix to a single commit.
-
-***********************************************************************
-
-On 10/28/2024 4:07 PM, Mario Limonciello wrote:
-> On 10/24/2024 22:23, Yuan, Perry wrote:
->> [AMD Official Use Only - AMD Internal Distribution Only]
->>
->>> -----Original Message-----
->>> From: Nabil S. Alramli <dev@nalramli.com>
->>> Sent: Friday, October 25, 2024 9:05 AM
->>> To: stable@vger.kernel.org
->>> Cc: nalramli@fastly.com; jdamato@fastly.com; khubert@fastly.com;
->>> Yuan, Perry
->>> <Perry.Yuan@amd.com>; Meng, Li (Jassmine) <Li.Meng@amd.com>; Huang, R=
-ay
->>> <Ray.Huang@amd.com>; rafael@kernel.org; viresh.kumar@linaro.org; linu=
-x-
->>> pm@vger.kernel.org; linux-kernel@vger.kernel.org; Nabil S. Alramli
->>> <dev@nalramli.com>
->>> Subject: [RFC PATCH 6.1.y 0/1] cpufreq: amd-pstate: Enable CPU boost
->>> in passive
->>> and guided modes
->>>
->>> Greetings,
->>>
->>> This is a RFC for a maintenance patch to an issue in the amd_pstate
->>> driver where
->>> CPU frequency cannot be boosted in passive or guided modes. Without
->>> this patch,
->>> AMD machines using stable kernels are unable to get their CPU
->>> frequency boosted,
->>> which is a significant performance issue.
->>>
->>> For example, on a host that has AMD EPYC 7662 64-Core processor
->>> without this
->>> patch running at full CPU load:
->>>
->>> $ for i in $(cat
->>> /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq); \
->>> =C2=A0=C2=A0 do ni=3D$(echo "scale=3D1; $i/1000000" | bc -l); echo "$=
-ni GHz"; done | \
->>> =C2=A0=C2=A0 sort | uniq -c
->>>
->>> =C2=A0=C2=A0=C2=A0=C2=A0 128 2.0 GHz
->>>
->>> And with this patch:
->>>
->>> $ for i in $(cat
->>> /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq); \
->>> =C2=A0=C2=A0 do ni=3D$(echo "scale=3D1; $i/1000000" | bc -l); echo "$=
-ni GHz"; done | \
->>> =C2=A0=C2=A0 sort | uniq -c
->>>
->>> =C2=A0=C2=A0=C2=A0=C2=A0 128 3.3 GHz
->>>
->>> I am not sure what the correct process is for submitting patches
->>> which affect only
->>> stable trees but not the current code base, and do not apply to the
->>> current tree. As
->>> such, I am submitting this directly to stable@, but please let me
->>> know if I should be
->>> submitting this elsewhere.
->>>
->>> The issue was introduced in v6.1 via commit bedadcfb011f ("cpufreq:
->>> amd-pstate: Fix initial highest_perf value"), and exists in stable
->>> kernels up until
->>> v6.6.51.
->>>
->>> In v6.6.51, a large change, commit 1ec40a175a48 ("cpufreq: amd-pstate=
-:
->>> Enable amd-pstate preferred core support"), was introduced which
->>> significantly
->>> refactored the code. This commit cannot be ported back on its own,
->>> and would
->>> require reviewing and cherry picking at least a few dozen of commits
->>> in cpufreq,
->>> amd-pstate, ACPI, CPPC.
->>>
->>> This means kernels v6.1 up until v6.6.51 are affected by this
->>> significant
->>> performance issue, and cannot be easily remediated.
->>>
->>> Thank you for your attention and I look forward to your response in
->>> regards to what
->>> the best way to proceed is for getting this important performance fix
->>> merged.
->>>
->>> Best Regards,
->>>
->>> Nabil S. Alramli (1):
->>> =C2=A0=C2=A0 cpufreq: amd-pstate: Enable CPU boost in passive and gui=
-ded modes
->>>
->>> =C2=A0 drivers/cpufreq/amd-pstate.c | 8 ++------
->>> =C2=A0 1 file changed, 2 insertions(+), 6 deletions(-)
->>>
->>> --=20
->>> 2.35.1
->>
->> Add Mario and Gautham for any help.
->>
->> Perry.
->>
->=20
-> If doing a patch that is only for 6.1.y then I think that some more of
-> this information from the cover letter needs to push into the patch its=
-elf.
->=20
-> But looking over the patch and considering how much we've changed this
-> in the newer kernels I think it is a sensible localized change for 6.1.=
-y.
->=20
-> As this is fixed in 6.6.51 via a more complete backport patch please
-> only tag 6.1 in your "Cc: stable@vger.kernel.org" from the patch.
->=20
 
