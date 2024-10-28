@@ -1,171 +1,123 @@
-Return-Path: <stable+bounces-89063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46B999B302B
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 13:27:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10C729B304A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 13:31:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03D9828107D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 12:27:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBC2A1F2217E
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 12:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE131DB548;
-	Mon, 28 Oct 2024 12:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 548461D6DAA;
+	Mon, 28 Oct 2024 12:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g5FYrXGX"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="e51zsqrR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pv50p00im-ztdg10021201.me.com (pv50p00im-ztdg10021201.me.com [17.58.6.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DAF1DA313;
-	Mon, 28 Oct 2024 12:26:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753A518E03A
+	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 12:31:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730118409; cv=none; b=H7UFHfxwDqEpRnDN0NPWwacsWC9DlnF1+exREBHcieukPswRk2nxGoKeBn5mFr9D65LVl4mUC/HoPRo+eEBcHUrGoAnw1+G0MHF4cgStCfQvKKIyth72O7eTCRolu+FN1pcnRyWTJc6/slGoiFiNNnWAFzSG8ToF/NcotM7aUyE=
+	t=1730118701; cv=none; b=iDn9GDGw3Z044/WCrhsb52t/Y/2pzfVtNNibI/XxX8GdujcICP3rucrmtrpCSZpVulOmISC4J2bF3l5KAPUx4LbOYHbu0IWcgA1urKPF2V3aztSG3iEGffNhBCsy4nhqk+p3YRn4n4/DBqmRx4BIxEF2oXoE5vFfB2l32WMZ1Y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730118409; c=relaxed/simple;
-	bh=F1Cn1OL1mypf4cS71UxXHCw5sbhvfPk0IMePBRByXI8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DDNQiYflj+rhpuD4mkm+3qqKWrB5UNFMF+G3wKhJMgUsUlhLekqmd0SZyjSrUD3ci3kvXrah5TPL7llXDWANux2luyPb2LDGh9wpj04GqSGjhSCHVJAJ8feA6K+e76FUl9H7f6/hWTtraUbl75e9l7cB53cYN/2rBPCC14rlCVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g5FYrXGX; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4314c4cb752so42865695e9.2;
-        Mon, 28 Oct 2024 05:26:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730118405; x=1730723205; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eaMoJV26f6iqcPHM609rRolyRmJ7XA3Ylcaj9EhtV1s=;
-        b=g5FYrXGXutTM+fUWd7mBoMBBhraNxba5fIK3PsiPrXEKU/xHlR+3Lai7t9LhDeJvkl
-         BuwwV+Os9H2+xYe99biBkmxXfrHQWV0ymRB1A4hPY65is3RzkaxHepeHWGRbUzV0bjN/
-         1Xvysl8EdQrNFdOEPs3jHHcUJTB+nliUvzauakm9L0suvG9Y1M7kzL80SyRRVllApRzm
-         8XxcMcYDmPiQ74AG4xvY8yabNGRtLCgUrSF4jQQEUQPqSIgw8tKu1oCzyKHfKJKqbKVR
-         eIx1dsPw/HjbB0sND1eYdvkQg+ZGJ2i1dXTL+Qu+X3SjFsx77wpNeR99/G/AakAOoeDF
-         rgrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730118406; x=1730723206;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eaMoJV26f6iqcPHM609rRolyRmJ7XA3Ylcaj9EhtV1s=;
-        b=WZG/4Ac2ZJsSnEH/CGjSsWES5F+UewiWBqV96b+s9ilrR3jD6UH6mbfAyrN0/tZXUi
-         cwILSUAynW+DvQ3644r2k+W7GMqLoYD+59hseLlTxwqY7vmZjgO8HQrjl0FCybl+5eBM
-         nxkaRu0/7LzRTFqTlGFB9JpqaYVnWM6N3OUtAgqMYduVk4POGNub0y3KNQldt7zqonnw
-         BvQjO/Ndmi0CS7P7qve5VEwuI/iuzLPonBLgngB6vITDF6Pv1crmidcs3Q8efcSdar0i
-         FaXkBZWubMJDuBXKDRdg2/s7VOmhxs9k3YnsmR+ZDANDXS1WsnnATmhDBHYfDvB+lMfg
-         6K+g==
-X-Forwarded-Encrypted: i=1; AJvYcCXX98AXQ8RTvJJez1OnR1BgDgKUVf6sb8pn17giPRdmTyF+khwnYSe7WN+mkFPrtbR2F12j6Yw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YypZjEiSjjM8Z0MQTxd2whvA4kk7ugn7pX6uh/mLXgr6XMbpVvZ
-	Mz7aq+g0mIZTakXCmsg4byrB0TBwGKJB1KElX9OVZjtK5FeCaZXg
-X-Google-Smtp-Source: AGHT+IEgz3MjW/RIHp0JsAJfZ6NmNAuPPgThjTX9drL6n0JMSxMKSAdqvkjvBk4s6JgIj2AsVmjXbA==
-X-Received: by 2002:a05:600c:35c6:b0:42c:b9c7:f54b with SMTP id 5b1f17b1804b1-4319acb105amr80041225e9.16.1730118405302;
-        Mon, 28 Oct 2024 05:26:45 -0700 (PDT)
-Received: from ?IPV6:2a02:8389:41cf:e200:b273:88b2:f83b:5936? (2a02-8389-41cf-e200-b273-88b2-f83b-5936.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:b273:88b2:f83b:5936])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4318b567e18sm136630355e9.26.2024.10.28.05.26.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Oct 2024 05:26:44 -0700 (PDT)
-Message-ID: <e7ca7a5d-749d-40c1-893f-da3d593eb4d4@gmail.com>
-Date: Mon, 28 Oct 2024 13:26:43 +0100
+	s=arc-20240116; t=1730118701; c=relaxed/simple;
+	bh=6T+tlGDLDokB4GfAYtP8X1S5WQV/OIF+bJlMqerzrTU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LGK4rx6D2QnQFOU8EBmmktRm6Xx7U9YXh6ju72q8chF9i5ZyDMITajaDcLfbmSKxP2SREz59adsLqiOnuvRZraID0S25RIPBYN+FPV5UbuHxZbTfQPySq7MATK2PZRryLiGTEFcPiO+JJVxJbsHG47s7KsDJyCmo0n+q1hLtj4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=e51zsqrR; arc=none smtp.client-ip=17.58.6.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; t=1730118699;
+	bh=4bRpvFkGkbd+C5fU8ls9w7Y7zAU16P8zL2Bhr011Hjs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To;
+	b=e51zsqrRoC7ewIP31pce2oT2/9QW9M1TQeuR953WFcO/qiZXQ+cZjbIj7yiEQ5EUS
+	 9w3fz62rfREKyTn8Ur9sI/tIFNh7vcHEDb9f00v72gLecrxF9LN1XFqlZANcnooRB6
+	 Jk3u+VqAaBKQ3DI4N0EuKRO3rCCKdcKZqHEoYv9ouGQ+pz8J+3M5rvvJzIimSZCYS9
+	 cFGi1/dXcmtD9iVhXmUpFUrHDzrkllzSqZ2v0Pymtns83H6GFaFjv6GtEIf0tWBZFt
+	 ecHTfmTRdrC5D+2Z7+pYZOe9KSszUzpcXbGKtHGU9T2X/fkvWOH23xQ8q/1PZZxRF+
+	 9a+lfbUJ9X7kw==
+Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
+	by pv50p00im-ztdg10021201.me.com (Postfix) with ESMTPSA id A0D75680304;
+	Mon, 28 Oct 2024 12:31:31 +0000 (UTC)
+From: Zijun Hu <zijun_hu@icloud.com>
+Date: Mon, 28 Oct 2024 20:31:11 +0800
+Subject: [PATCH RESEND] PM: domains: Fix return value of API
+ dev_pm_get_subsys_data()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] clocksource/drivers/timer-ti-dm: fix child node refcount
- handling
-To: Daniel Lezcano <daniel.lezcano@linaro.org>,
- Thomas Gleixner <tglx@linutronix.de>, Tony Lindgren <tony@atomide.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20241013-timer-ti-dm-systimer-of_node_put-v1-1-0cf0c9a37684@gmail.com>
- <5a535983-6a78-4449-b57b-176869fd55d8@linaro.org>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <5a535983-6a78-4449-b57b-176869fd55d8@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241028-fix_dev_pm_get_subsys_data-v1-1-20385f4b1e17@quicinc.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@ucw.cz>, 
+ Len Brown <len.brown@intel.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Zijun Hu <zijun_hu@icloud.com>, linux-pm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.1
+X-Proofpoint-GUID: NINEBLinZ5ZaqAeUD491sGSSHkS7bpw5
+X-Proofpoint-ORIG-GUID: NINEBLinZ5ZaqAeUD491sGSSHkS7bpw5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-28_04,2024-10-28_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 clxscore=1015
+ mlxlogscore=999 bulkscore=0 adultscore=0 malwarescore=0 suspectscore=0
+ mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2410280101
+X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
 
-On 28/10/2024 12:24, Daniel Lezcano wrote:
-> 
-> Hi Javier,
-> 
-> thanks for spotting the issue
-> 
-> 
-> On 13/10/2024 12:14, Javier Carrasco wrote:
->> of_find_compatible_node() increments the node's refcount, and it must be
->> decremented again with a call to of_node_put() when the pointer is no
->> longer required to avoid leaking memory.
->>
->> Add the missing calls to of_node_put() in dmtimer_percpu_quirck_init()
->> for the 'arm_timer' device node.
->>
->> Cc: stable@vger.kernel.org
->> Fixes: 25de4ce5ed02 ("clocksource/drivers/timer-ti-dm: Handle dra7
->> timer wrap errata i940")
->> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
->> ---
->>   drivers/clocksource/timer-ti-dm-systimer.c | 2 ++
->>   1 file changed, 2 insertions(+)
->>
->> diff --git a/drivers/clocksource/timer-ti-dm-systimer.c b/drivers/
->> clocksource/timer-ti-dm-systimer.c
->> index c2dcd8d68e45..23be1d21ce21 100644
->> --- a/drivers/clocksource/timer-ti-dm-systimer.c
->> +++ b/drivers/clocksource/timer-ti-dm-systimer.c
->> @@ -691,8 +691,10 @@ static int __init
->> dmtimer_percpu_quirk_init(struct device_node *np, u32 pa)
->>       arm_timer = of_find_compatible_node(NULL, NULL, "arm,armv7-timer");
->>       if (of_device_is_available(arm_timer)) {
->>           pr_warn_once("ARM architected timer wrap issue i940
->> detected\n");
->> +        of_node_put(arm_timer);
->>           return 0;
->>       }
->> +    of_node_put(arm_timer);
-> 
-> Best practice would be to group of_node_put into a single place.
-> 
->     bool available;
-> 
->     [ ... ]
-> 
->     available = of_device_is_available(arm_timer);
->     of_node_put(arm_timer);
-> 
->     if (available) {
->         pr_warn_once("ARM architected timer wrap issue i940 detected\n");
->         return 0;
->     }
-> 
-> 
->>       if (pa == 0x4882c000)           /* dra7 dmtimer15 */
->>           return dmtimer_percpu_timer_init(np, 0);
->>
->> ---
->> base-commit: d61a00525464bfc5fe92c6ad713350988e492b88
->> change-id: 20241013-timer-ti-dm-systimer-of_node_put-d42735687698
->>
->> Best regards,
-> 
-> 
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-Hi Daniel, thanks for your feedback.
+dev_pm_get_subsys_data() has below 2 issues under condition
+(@dev->power.subsys_data != NULL):
 
-Actually, if we are going to refactor the code, we would not need the
-extra variable or even the call to of_node_put(), since we could use the
-__free() macro. That would be a second patch after the fix, which could
-stay as it is without refactoring, because it is only to backport the
-missing calls to of_node_put().
+- it will do unnecessary kzalloc() and kfree().
+- it will return -ENOMEM if the kzalloc() fails, that is wrong
+  since the kzalloc() is not needed.
 
-I can send a v2 with the extra patch leaving this one as it is, or if
-really desired, with the available variable.
+Fixed by not doing kzalloc() and returning 0 for the condition.
 
+Fixes: ef27bed1870d ("PM: Reference counting of power.subsys_data")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+---
+ drivers/base/power/common.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/base/power/common.c b/drivers/base/power/common.c
+index 8c34ae1cd8d5..13cb1f2a06e7 100644
+--- a/drivers/base/power/common.c
++++ b/drivers/base/power/common.c
+@@ -26,6 +26,14 @@ int dev_pm_get_subsys_data(struct device *dev)
+ {
+ 	struct pm_subsys_data *psd;
+ 
++	spin_lock_irq(&dev->power.lock);
++	if (dev->power.subsys_data) {
++		dev->power.subsys_data->refcount++;
++		spin_unlock_irq(&dev->power.lock);
++		return 0;
++	}
++	spin_unlock_irq(&dev->power.lock);
++
+ 	psd = kzalloc(sizeof(*psd), GFP_KERNEL);
+ 	if (!psd)
+ 		return -ENOMEM;
+
+---
+base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
+change-id: 20241010-fix_dev_pm_get_subsys_data-2478bb200fde
 
 Best regards,
-Javier Carrasco
+-- 
+Zijun Hu <quic_zijuhu@quicinc.com>
+
 
