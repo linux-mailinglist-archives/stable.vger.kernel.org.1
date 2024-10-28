@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-88926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 345429B2818
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:53:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A3F29B262D
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:37:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6643A1C21622
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:53:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C42D22822A5
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE22918E03D;
-	Mon, 28 Oct 2024 06:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF0218E350;
+	Mon, 28 Oct 2024 06:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rLUR/vuK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pF5t4Lbr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9612AF07;
-	Mon, 28 Oct 2024 06:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD1B15B10D;
+	Mon, 28 Oct 2024 06:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098435; cv=none; b=pomBP1YC3GRY50GdJqDRf7+/mmys/PNm0iLakkw/AkyYwWtQuiEsOUBhPEM4GwlUcxhVst0bfvOo1Hfb7gHSjNW41ok+fCtl9KTC05yqYzWfySpm3O6PZeFKCKceUC8Q9QYOoW9AHThzjMpBAN9VadlDQhXdzOX3IXtZtxJnWXY=
+	t=1730097442; cv=none; b=BkCOjnopNhRCtMZFe2O+C4LS1Vrey1jFGZThhiKUQq8FLx9ScjaCiuk10Xm6qRutwLIkinIPRJd9wxG0TRjFir13MF440ExoeantAATi8a907YcJ9Pzfi75pCF2VTIJ+AiOTl5mSKrI3k4IPrlB//ZsUyywxH55A9Os7wb1eya4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098435; c=relaxed/simple;
-	bh=Qh7STZ94LJG+qaMm1ON1E/PO5CDy0HgkNStx5+E63zs=;
+	s=arc-20240116; t=1730097442; c=relaxed/simple;
+	bh=Bh+Csoz2sM1MgOkkd/nEGTYP7EJ5KPtc6uCWneGoYS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CZzjJrSBI9HwQh8hmmzijSxrniFeuBHC3RTqwiHi4+lLO/ATM/zcqzAwrSLRCTIW/Kq6vAoa/TNLLIxbq4ECoFuY/QJoyZJJCvoFV1luI70dXR4+Kbq8BwvRpP7UUYA442kSFoot//C/kZYb7OOPlelMckL30o/W0qcyqgjZUEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLUR/vuK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC692C4CEC3;
-	Mon, 28 Oct 2024 06:53:54 +0000 (UTC)
+	 MIME-Version; b=kz9KBWrsLqyGfy+jbEFh0LGTlV1agSl7zKClfyDDmlMYyoZSA6LFzxRE9c8NAb3aLJ1LtkRPZ2EUjSYXAdr1NuksKNRjHqCW4lXoShPWRK+ZndWdMkrjt3VLtet4q+XAipAmbqUYkuqSMrCzNmGoZl6/XQ2i30XcImzB0UsspBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pF5t4Lbr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70403C4CEC3;
+	Mon, 28 Oct 2024 06:37:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098435;
-	bh=Qh7STZ94LJG+qaMm1ON1E/PO5CDy0HgkNStx5+E63zs=;
+	s=korg; t=1730097442;
+	bh=Bh+Csoz2sM1MgOkkd/nEGTYP7EJ5KPtc6uCWneGoYS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rLUR/vuKLKhxcumQKZsQm3H+ksnlYNA6tQe+W7SDpIV9xWoihg8KPKot1xComZhom
-	 8HZD/AbiC3ziuVx8TWFaN+YUwU3zJpVYIEWUUHTeO98VK1cmu1eW9nV6m7i6BVl0BD
-	 zDqgkQ0J9bQ4LqL8P8OGzpCsZa8Ocrw9udss5ZKs=
+	b=pF5t4LbrfRB1JOtJdn0JZ2GyacFHdra/pPfhsTYfXpvuwz9Gqg6qfjMsTrVKprXdv
+	 qJosPJtVnNKqnnQfSYPK2awCOjziSg/iauUfHo6GSu+5rbLlcOhMXwbdZqwrgjO07g
+	 2weQosfHCwXFUHXSNchV1PDHDftfUgbC8qEwcNl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jos=C3=A9=20Relvas?= <josemonsantorelvas@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.11 226/261] ALSA: hda/realtek: Add subwoofer quirk for Acer Predator G9-593
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Peter Hurley <peter@hurleysoftware.com>,
+	Tomas Krcka <krckatom@amazon.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 131/137] serial: protect uart_port_dtr_rts() in uart_shutdown() too
 Date: Mon, 28 Oct 2024 07:26:08 +0100
-Message-ID: <20241028062317.777565856@linuxfoundation.org>
+Message-ID: <20241028062302.364261299@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,76 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: José Relvas <josemonsantorelvas@gmail.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-commit 35fdc6e1c16099078bcbd73a6c8f1733ae7f1909 upstream.
+[ Upstream commit 602babaa84d627923713acaf5f7e9a4369e77473 ]
 
-The Acer Predator G9-593 has a 2+1 speaker system which isn't probed
-correctly.
-This patch adds a quirk with the proper pin connections.
+Commit af224ca2df29 (serial: core: Prevent unsafe uart port access, part
+3) added few uport == NULL checks. It added one to uart_shutdown(), so
+the commit assumes, uport can be NULL in there. But right after that
+protection, there is an unprotected "uart_port_dtr_rts(uport, false);"
+call. That is invoked only if HUPCL is set, so I assume that is the
+reason why we do not see lots of these reports.
 
-Note that I do not own this laptop, so I cannot guarantee that this
-fixes the issue.
-Testing was done by other users here:
-https://discussion.fedoraproject.org/t/-/118482
+Or it cannot be NULL at this point at all for some reason :P.
 
-This model appears to have two different dev IDs...
+Until the above is investigated, stay on the safe side and move this
+dereference to the if too.
 
-- 0x1177 (as seen on the forum link above)
-- 0x1178 (as seen on https://linux-hardware.org/?probe=127df9999f)
+I got this inconsistency from Coverity under CID 1585130. Thanks.
 
-I don't think the audio system was changed between model revisions, so
-the patch applies for both IDs.
-
-Signed-off-by: José Relvas <josemonsantorelvas@gmail.com>
-Link: https://patch.msgid.link/20241020102756.225258-1-josemonsantorelvas@gmail.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Cc: Peter Hurley <peter@hurleysoftware.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240805102046.307511-3-jirislaby@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Adapted over commit 5701cb8bf50e ("tty: Call ->dtr_rts() parameter
+active consistently") not in the tree]
+Signed-off-by: Tomas Krcka <krckatom@amazon.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/tty/serial/serial_core.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7631,6 +7631,7 @@ enum {
- 	ALC286_FIXUP_ACER_AIO_HEADSET_MIC,
- 	ALC256_FIXUP_ASUS_HEADSET_MIC,
- 	ALC256_FIXUP_ASUS_MIC_NO_PRESENCE,
-+	ALC255_FIXUP_PREDATOR_SUBWOOFER,
- 	ALC299_FIXUP_PREDATOR_SPK,
- 	ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE,
- 	ALC289_FIXUP_DELL_SPK1,
-@@ -9047,6 +9048,13 @@ static const struct hda_fixup alc269_fix
- 		.chained = true,
- 		.chain_id = ALC256_FIXUP_ASUS_HEADSET_MODE
- 	},
-+	[ALC255_FIXUP_PREDATOR_SUBWOOFER] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x17, 0x90170151 }, /* use as internal speaker (LFE) */
-+			{ 0x1b, 0x90170152 } /* use as internal speaker (back) */
+diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+index c91e3195dc207..19a53801ff9ee 100644
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -339,14 +339,16 @@ static void uart_shutdown(struct tty_struct *tty, struct uart_state *state)
+ 		/*
+ 		 * Turn off DTR and RTS early.
+ 		 */
+-		if (uport && uart_console(uport) && tty) {
+-			uport->cons->cflag = tty->termios.c_cflag;
+-			uport->cons->ispeed = tty->termios.c_ispeed;
+-			uport->cons->ospeed = tty->termios.c_ospeed;
+-		}
++		if (uport) {
++			if (uart_console(uport) && tty) {
++				uport->cons->cflag = tty->termios.c_cflag;
++				uport->cons->ispeed = tty->termios.c_ispeed;
++				uport->cons->ospeed = tty->termios.c_ospeed;
++			}
+ 
+-		if (!tty || C_HUPCL(tty))
+-			uart_port_dtr_rts(uport, 0);
++			if (!tty || C_HUPCL(tty))
++				uart_port_dtr_rts(uport, 0);
 +		}
-+	},
- 	[ALC299_FIXUP_PREDATOR_SPK] = {
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = (const struct hda_pintbl[]) {
-@@ -10138,6 +10146,8 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1025, 0x110e, "Acer Aspire ES1-432", ALC255_FIXUP_ACER_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1025, 0x1166, "Acer Veriton N4640G", ALC269_FIXUP_LIFEBOOK),
- 	SND_PCI_QUIRK(0x1025, 0x1167, "Acer Veriton N6640G", ALC269_FIXUP_LIFEBOOK),
-+	SND_PCI_QUIRK(0x1025, 0x1177, "Acer Predator G9-593", ALC255_FIXUP_PREDATOR_SUBWOOFER),
-+	SND_PCI_QUIRK(0x1025, 0x1178, "Acer Predator G9-593", ALC255_FIXUP_PREDATOR_SUBWOOFER),
- 	SND_PCI_QUIRK(0x1025, 0x1246, "Acer Predator Helios 500", ALC299_FIXUP_PREDATOR_SPK),
- 	SND_PCI_QUIRK(0x1025, 0x1247, "Acer vCopperbox", ALC269VC_FIXUP_ACER_VCOPPERBOX_PINS),
- 	SND_PCI_QUIRK(0x1025, 0x1248, "Acer Veriton N4660G", ALC269VC_FIXUP_ACER_MIC_NO_PRESENCE),
+ 
+ 		uart_port_shutdown(port);
+ 	}
+-- 
+2.43.0
+
 
 
 
