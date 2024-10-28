@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-88450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA43B9B2608
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 012C39B26DC
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:43:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC9A31C2110E
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BE151F23B6D
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C0718FDCC;
-	Mon, 28 Oct 2024 06:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A889715B10D;
+	Mon, 28 Oct 2024 06:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEp+EgG7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFMut9hr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64DA18E36C;
-	Mon, 28 Oct 2024 06:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B1318E354;
+	Mon, 28 Oct 2024 06:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097360; cv=none; b=ToBVDPxmdUGDzWNV18F7EXZxMKvRtNZNiDU4yfbsU+yl0FEyuNp/fpJ80KFPIOfr+NSIt2Ct5ka3V80T3VpP3FpG/3GWdRXH3yvK4U2+Qu4cGKP69Vm/EHTVJS9eWVIUrOIWW0qyU8jq4e75lI5YjvocGO/ZTNFuZoKqmZ/i3Gs=
+	t=1730097797; cv=none; b=lzYbsrmmYHfvzinV02jViOnTjS5tvuoR4mOREVyFgIyo6Knqdt3EWrPKQ5ZPLqxRifV3Y9zyx72xe/GUGwOvCbmMIB6g8Ig4gqiYoxThYFRbbEDcDIrdq2DbXNEgh3H8hZuSzZ6DnV7iO/V5Q+OH+f39rzaIxy7tUHxneIwniBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097360; c=relaxed/simple;
-	bh=X6XZMdFObLAIvIdjs7smjcwfXFxyToMMH9IZe6hLUPc=;
+	s=arc-20240116; t=1730097797; c=relaxed/simple;
+	bh=++RqIgOC//YxDlwdxY+lByvIs5Biw1Bo0pODHYnsqro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iBLv0oI0AqKGqubIN546dJ1zjCu9lCRzq/LbHtcbJ8+AzLPWtqGeDf/o1ZVNbd9Q5TZwcLBWfI6gL7YC0ohgkXm6g6kBIeJCr8RC9NOWzNUEPV6Div4iJkyMAmStlCK/aAfTPnEgAXiCxmm8TbyQJkrlqQeG+pOIpKel2RsGcFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEp+EgG7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EBD5C4CEC3;
-	Mon, 28 Oct 2024 06:35:59 +0000 (UTC)
+	 MIME-Version; b=YCnNXWyIzv5Gc5CfByYQkyUAIkmEQPn88h6iZ42q9kuvlLwnb6TgMEMiCrizdiErIoaW7Cb8o3FGH2homIP1+RiXGQWrLsr87NmXLTdaTw4jtw/4X4E0FX7EY4TSeiq2UAsezlI9nfMydLFYYL2F0Q+QfRuzXwDBoYEa/9SbJ4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFMut9hr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00732C4CEC3;
+	Mon, 28 Oct 2024 06:43:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097359;
-	bh=X6XZMdFObLAIvIdjs7smjcwfXFxyToMMH9IZe6hLUPc=;
+	s=korg; t=1730097797;
+	bh=++RqIgOC//YxDlwdxY+lByvIs5Biw1Bo0pODHYnsqro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nEp+EgG7VMEIwedpTzJRlzL3zUPRW9iFNq3kcHrLKvQYe5kHjNakrOWOVS6ebl5EL
-	 XNLulo3rraQcdXDrlgmdm1DlAnly0sC9FZUKZyzdL1rCbnMqzvNVCEI7dxNllpknJO
-	 lW+KcaHSjxuUXRnBlkITCRFDs3AtmGqEvNgh9WJI=
+	b=zFMut9hrrYJWShyxBuajwC2FyIWo4q/yrr6DHOMDuzLKyg2JImVkgOAyl08BJX6KK
+	 z3zdM8+ifOH2zollwcyk8ErlxQXlbcyxACo4TUqJsxq81G1YTWzQU8g30cVeDk0k/M
+	 zM6NAshGCBiekapXVbWqQMRWPScfO1oYhgpno7oM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <linma@zju.edu.cn>,
-	Loic Poulain <loic.poulain@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 095/137] net: wwan: fix global oob in wwan_rtnl_policy
+Subject: [PATCH 6.6 152/208] bpf: Remove MEM_UNINIT from skb/xdp MTU helpers
 Date: Mon, 28 Oct 2024 07:25:32 +0100
-Message-ID: <20241028062301.383159343@linuxfoundation.org>
+Message-ID: <20241028062310.370946538@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +63,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 47dd5447cab8ce30a847a0337d5341ae4c7476a7 ]
+[ Upstream commit 14a3d3ef02ba53447d5112a2641aac0d10dc994f ]
 
-The variable wwan_rtnl_link_ops assign a *bigger* maxtype which leads to
-a global out-of-bounds read when parsing the netlink attributes. Exactly
-same bug cause as the oob fixed in commit b33fb5b801c6 ("net: qualcomm:
-rmnet: fix global oob in rmnet_policy").
+We can now undo parts of 4b3786a6c539 ("bpf: Zero former ARG_PTR_TO_{LONG,INT}
+args in case of error") as discussed in [0].
 
-==================================================================
-BUG: KASAN: global-out-of-bounds in validate_nla lib/nlattr.c:388 [inline]
-BUG: KASAN: global-out-of-bounds in __nla_validate_parse+0x19d7/0x29a0 lib/nlattr.c:603
-Read of size 1 at addr ffffffff8b09cb60 by task syz.1.66276/323862
+Given the BPF helpers now have MEM_WRITE tag, the MEM_UNINIT can be cleared.
 
-CPU: 0 PID: 323862 Comm: syz.1.66276 Not tainted 6.1.70 #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x177/0x231 lib/dump_stack.c:106
- print_address_description mm/kasan/report.c:284 [inline]
- print_report+0x14f/0x750 mm/kasan/report.c:395
- kasan_report+0x139/0x170 mm/kasan/report.c:495
- validate_nla lib/nlattr.c:388 [inline]
- __nla_validate_parse+0x19d7/0x29a0 lib/nlattr.c:603
- __nla_parse+0x3c/0x50 lib/nlattr.c:700
- nla_parse_nested_deprecated include/net/netlink.h:1269 [inline]
- __rtnl_newlink net/core/rtnetlink.c:3514 [inline]
- rtnl_newlink+0x7bc/0x1fd0 net/core/rtnetlink.c:3623
- rtnetlink_rcv_msg+0x794/0xef0 net/core/rtnetlink.c:6122
- netlink_rcv_skb+0x1de/0x420 net/netlink/af_netlink.c:2508
- netlink_unicast_kernel net/netlink/af_netlink.c:1326 [inline]
- netlink_unicast+0x74b/0x8c0 net/netlink/af_netlink.c:1352
- netlink_sendmsg+0x882/0xb90 net/netlink/af_netlink.c:1874
- sock_sendmsg_nosec net/socket.c:716 [inline]
- __sock_sendmsg net/socket.c:728 [inline]
- ____sys_sendmsg+0x5cc/0x8f0 net/socket.c:2499
- ___sys_sendmsg+0x21c/0x290 net/socket.c:2553
- __sys_sendmsg net/socket.c:2582 [inline]
- __do_sys_sendmsg net/socket.c:2591 [inline]
- __se_sys_sendmsg+0x19e/0x270 net/socket.c:2589
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x45/0x90 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7f67b19a24ad
-RSP: 002b:00007f67b17febb8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f67b1b45f80 RCX: 00007f67b19a24ad
-RDX: 0000000000000000 RSI: 0000000020005e40 RDI: 0000000000000004
-RBP: 00007f67b1a1e01d R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ffd2513764f R14: 00007ffd251376e0 R15: 00007f67b17fed40
- </TASK>
+The mtu_len is an input as well as output argument, meaning, the BPF program
+has to set it to something. It cannot be uninitialized. Therefore, allowing
+uninitialized memory and zeroing it on error would be odd. It was done as
+an interim step in 4b3786a6c539 as the desired behavior could not have been
+expressed before the introduction of MEM_WRITE tag.
 
-The buggy address belongs to the variable:
- wwan_rtnl_policy+0x20/0x40
-
-The buggy address belongs to the physical page:
-page:ffffea00002c2700 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0xb09c
-flags: 0xfff00000001000(reserved|node=0|zone=1|lastcpupid=0x7ff)
-raw: 00fff00000001000 ffffea00002c2708 ffffea00002c2708 0000000000000000
-raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-page_owner info is not present (never set?)
-
-Memory state around the buggy address:
- ffffffff8b09ca00: 05 f9 f9 f9 05 f9 f9 f9 00 01 f9 f9 00 01 f9 f9
- ffffffff8b09ca80: 00 00 00 05 f9 f9 f9 f9 00 00 03 f9 f9 f9 f9 f9
->ffffffff8b09cb00: 00 00 00 00 05 f9 f9 f9 00 00 00 00 f9 f9 f9 f9
-                                                       ^
- ffffffff8b09cb80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-==================================================================
-
-According to the comment of `nla_parse_nested_deprecated`, use correct size
-`IFLA_WWAN_MAX` here to fix this issue.
-
-Fixes: 88b710532e53 ("wwan: add interface creation support")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241015131621.47503-1-linma@zju.edu.cn
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 4b3786a6c539 ("bpf: Zero former ARG_PTR_TO_{LONG,INT} args in case of error")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/a86eb76d-f52f-dee4-e5d2-87e45de3e16f@iogearbox.net [0]
+Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20241021152809.33343-3-daniel@iogearbox.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wwan/wwan_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/filter.c | 42 +++++++++++++++---------------------------
+ 1 file changed, 15 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
-index 62e9f7d6c9fe9..7089cb103885d 100644
---- a/drivers/net/wwan/wwan_core.c
-+++ b/drivers/net/wwan/wwan_core.c
-@@ -994,7 +994,7 @@ static const struct nla_policy wwan_rtnl_policy[IFLA_WWAN_MAX + 1] = {
+diff --git a/net/core/filter.c b/net/core/filter.c
+index a7d928345b1f4..a2467a7c01f9e 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -6223,24 +6223,16 @@ BPF_CALL_5(bpf_skb_check_mtu, struct sk_buff *, skb,
+ {
+ 	int ret = BPF_MTU_CHK_RET_FRAG_NEEDED;
+ 	struct net_device *dev = skb->dev;
+-	int skb_len, dev_len;
+-	int mtu = 0;
++	int mtu, dev_len, skb_len;
  
- static struct rtnl_link_ops wwan_rtnl_link_ops __read_mostly = {
- 	.kind = "wwan",
--	.maxtype = __IFLA_WWAN_MAX,
-+	.maxtype = IFLA_WWAN_MAX,
- 	.alloc = wwan_rtnl_alloc,
- 	.validate = wwan_rtnl_validate,
- 	.newlink = wwan_rtnl_newlink,
+-	if (unlikely(flags & ~(BPF_MTU_CHK_SEGS))) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
+-
+-	if (unlikely(flags & BPF_MTU_CHK_SEGS && (len_diff || *mtu_len))) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
++	if (unlikely(flags & ~(BPF_MTU_CHK_SEGS)))
++		return -EINVAL;
++	if (unlikely(flags & BPF_MTU_CHK_SEGS && (len_diff || *mtu_len)))
++		return -EINVAL;
+ 
+ 	dev = __dev_via_ifindex(dev, ifindex);
+-	if (unlikely(!dev)) {
+-		ret = -ENODEV;
+-		goto out;
+-	}
++	if (unlikely(!dev))
++		return -ENODEV;
+ 
+ 	mtu = READ_ONCE(dev->mtu);
+ 	dev_len = mtu + dev->hard_header_len;
+@@ -6275,19 +6267,15 @@ BPF_CALL_5(bpf_xdp_check_mtu, struct xdp_buff *, xdp,
+ 	struct net_device *dev = xdp->rxq->dev;
+ 	int xdp_len = xdp->data_end - xdp->data;
+ 	int ret = BPF_MTU_CHK_RET_SUCCESS;
+-	int mtu = 0, dev_len;
++	int mtu, dev_len;
+ 
+ 	/* XDP variant doesn't support multi-buffer segment check (yet) */
+-	if (unlikely(flags)) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
++	if (unlikely(flags))
++		return -EINVAL;
+ 
+ 	dev = __dev_via_ifindex(dev, ifindex);
+-	if (unlikely(!dev)) {
+-		ret = -ENODEV;
+-		goto out;
+-	}
++	if (unlikely(!dev))
++		return -ENODEV;
+ 
+ 	mtu = READ_ONCE(dev->mtu);
+ 	dev_len = mtu + dev->hard_header_len;
+@@ -6299,7 +6287,7 @@ BPF_CALL_5(bpf_xdp_check_mtu, struct xdp_buff *, xdp,
+ 	xdp_len += len_diff; /* minus result pass check */
+ 	if (xdp_len > dev_len)
+ 		ret = BPF_MTU_CHK_RET_FRAG_NEEDED;
+-out:
++
+ 	*mtu_len = mtu;
+ 	return ret;
+ }
+@@ -6310,7 +6298,7 @@ static const struct bpf_func_proto bpf_skb_check_mtu_proto = {
+ 	.ret_type	= RET_INTEGER,
+ 	.arg1_type      = ARG_PTR_TO_CTX,
+ 	.arg2_type      = ARG_ANYTHING,
+-	.arg3_type      = ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
++	.arg3_type      = ARG_PTR_TO_FIXED_SIZE_MEM | MEM_WRITE | MEM_ALIGNED,
+ 	.arg3_size	= sizeof(u32),
+ 	.arg4_type      = ARG_ANYTHING,
+ 	.arg5_type      = ARG_ANYTHING,
+@@ -6322,7 +6310,7 @@ static const struct bpf_func_proto bpf_xdp_check_mtu_proto = {
+ 	.ret_type	= RET_INTEGER,
+ 	.arg1_type      = ARG_PTR_TO_CTX,
+ 	.arg2_type      = ARG_ANYTHING,
+-	.arg3_type      = ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
++	.arg3_type      = ARG_PTR_TO_FIXED_SIZE_MEM | MEM_WRITE | MEM_ALIGNED,
+ 	.arg3_size	= sizeof(u32),
+ 	.arg4_type      = ARG_ANYTHING,
+ 	.arg5_type      = ARG_ANYTHING,
 -- 
 2.43.0
 
