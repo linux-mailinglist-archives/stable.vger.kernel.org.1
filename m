@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ABF29B256D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C8AD9B27DF
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B961281395
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EB371C215BF
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9CA18CC1F;
-	Mon, 28 Oct 2024 06:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B92C18F2CF;
+	Mon, 28 Oct 2024 06:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDq576Bs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KyKv2yok"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6965C18E04D;
-	Mon, 28 Oct 2024 06:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A9318DF7D;
+	Mon, 28 Oct 2024 06:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730096934; cv=none; b=qIERDlYGMm65ZhbhVdF3KWecGPJl5c34mt26vR15IU8Ikqybrx9QxmCdAfKsJtpkj16bEYE/02uHUzDS8YYCxo52EbnFzW1JRj2HJJnlt5ucG6/pMTlqxp39/f1J0Xrdh+JJ0b9FWTLBSxFQGXSIf8GgeVtAasLDkN0sm0qIbXc=
+	t=1730098317; cv=none; b=sczTMENC7ba0ZvsL+psq1UFy+aXnfUsax18qjm/AwFPxjayz1Sv4br4fVk1RerPTV2/BvPOB5gxPXhDHWNI8Ba5Vl7T/lC2vX6/DAkc2jdnZLH5bBh8N2HkAdTVKlhUFRVS9szf9y7wBM6aVfz+JG+8ny0CHrpnJLafuExCrj7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730096934; c=relaxed/simple;
-	bh=b3sW+Hg8/dmx21w152C/MplwiD9v1Kt1Jz16iRswAw8=;
+	s=arc-20240116; t=1730098317; c=relaxed/simple;
+	bh=FBzZgnNsRRFtBGxOPrNtyod0X7MuWJCtUILmVY+UF/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgvDSCVQaDOPiJ2qLdwNHKJEBvp3x2b6ccajY67iq9hWXdlaQ78J3Nr2LTUBowVHAcWWTPhdgW7Dz6a3oDPqQp/okfA/Ms4USDGaGPxSk8sSW3rhl/JlKQiCNsnAfYIzWUYsE7on1Tu935ILQMYksHLLDr9OPOFoyNc+eEHvLY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDq576Bs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB4EC4CEC3;
-	Mon, 28 Oct 2024 06:28:53 +0000 (UTC)
+	 MIME-Version; b=V9AnCsv/V3StRQbJt7CAjUFXiiGFJOqedr2K3hlCUF+ua4PKORxjPrODSaFn0Fyigzo78yKcDeJKd0IU1dEDHXAkNuwCrzJ9UtqjJI+2BKfqVtqErjK+qF3FpXLVg1mhGDjkFHm45m5O3DLU2Jr6F7q3qbzVLnP1aPcUls8wF4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KyKv2yok; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CB2C4CEC3;
+	Mon, 28 Oct 2024 06:51:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730096934;
-	bh=b3sW+Hg8/dmx21w152C/MplwiD9v1Kt1Jz16iRswAw8=;
+	s=korg; t=1730098316;
+	bh=FBzZgnNsRRFtBGxOPrNtyod0X7MuWJCtUILmVY+UF/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TDq576BsU/SSSgggrPbuJ7MdJpjLe2bYLGABBut8wFK5ZsjozjQZzYgULE1xNz9kz
-	 Zx8gpAlJzziDUjG+GnL/UYzftitNp9nXBU+RH5toDPyGFn/lYu8CkdpyTg745MzNa1
-	 CDPXolntwAJ0jHasBP1RdewZAc3lZK/ObH50gfZA=
+	b=KyKv2yok+zU6dJZNn3RpOfA10/wspRKBu4bVQVPmgZvtEWXbSP+TFHZ1vgQnLLFvR
+	 Uj/i3LQNycXEAIaojd92hZE7lhyLDxtW3UwPrLCbtHQhnxBEA53SN9Oqs+1pWE2jH6
+	 mOp3Vupl58eTyFFEZROqEEjEhsDVWgty9yyV9Ij0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janis Schoetterl-Glausch <scgl@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	syzbot+4c0d0c4cde787116d465@syzkaller.appspotmail.com,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 33/80] KVM: s390: gaccess: Refactor access address range check
-Date: Mon, 28 Oct 2024 07:25:13 +0100
-Message-ID: <20241028062253.544636416@linuxfoundation.org>
+Subject: [PATCH 6.11 172/261] Bluetooth: SCO: Fix UAF on sco_sock_timeout
+Date: Mon, 28 Oct 2024 07:25:14 +0100
+Message-ID: <20241028062316.304914995@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,235 +62,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janis Schoetterl-Glausch <scgl@linux.ibm.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 7faa543df19bf62d4583a64d3902705747f2ad29 ]
+[ Upstream commit 1bf4470a3939c678fb822073e9ea77a0560bc6bb ]
 
-Do not round down the first address to the page boundary, just translate
-it normally, which gives the value we care about in the first place.
-Given this, translating a single address is just the special case of
-translating a range spanning a single page.
+conn->sk maybe have been unlinked/freed while waiting for sco_conn_lock
+so this checks if the conn->sk is still valid by checking if it part of
+sco_sk_list.
 
-Make the output optional, so the function can be used to just check a
-range.
-
-Signed-off-by: Janis Schoetterl-Glausch <scgl@linux.ibm.com>
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Message-Id: <20211126164549.7046-3-scgl@linux.ibm.com>
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Stable-dep-of: e8061f06185b ("KVM: s390: gaccess: Check if guest address is in memslot")
+Reported-by: syzbot+4c0d0c4cde787116d465@syzkaller.appspotmail.com
+Tested-by: syzbot+4c0d0c4cde787116d465@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4c0d0c4cde787116d465
+Fixes: ba316be1b6a0 ("Bluetooth: schedule SCO timeouts with delayed_work")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/gaccess.c | 122 +++++++++++++++++++++++-----------------
- 1 file changed, 69 insertions(+), 53 deletions(-)
+ include/net/bluetooth/bluetooth.h |  1 +
+ net/bluetooth/af_bluetooth.c      | 22 ++++++++++++++++++++++
+ net/bluetooth/sco.c               | 18 ++++++++++++------
+ 3 files changed, 35 insertions(+), 6 deletions(-)
 
-diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
-index 45966fbba1820..ca7f22a9e0c57 100644
---- a/arch/s390/kvm/gaccess.c
-+++ b/arch/s390/kvm/gaccess.c
-@@ -794,35 +794,74 @@ static int low_address_protection_enabled(struct kvm_vcpu *vcpu,
- 	return 1;
+diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
+index 5d655e109b2c0..f66bc85c6411d 100644
+--- a/include/net/bluetooth/bluetooth.h
++++ b/include/net/bluetooth/bluetooth.h
+@@ -403,6 +403,7 @@ int  bt_sock_register(int proto, const struct net_proto_family *ops);
+ void bt_sock_unregister(int proto);
+ void bt_sock_link(struct bt_sock_list *l, struct sock *s);
+ void bt_sock_unlink(struct bt_sock_list *l, struct sock *s);
++bool bt_sock_linked(struct bt_sock_list *l, struct sock *s);
+ struct sock *bt_sock_alloc(struct net *net, struct socket *sock,
+ 			   struct proto *prot, int proto, gfp_t prio, int kern);
+ int  bt_sock_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+diff --git a/net/bluetooth/af_bluetooth.c b/net/bluetooth/af_bluetooth.c
+index e39fba5565c5d..0b4d0a8bd3614 100644
+--- a/net/bluetooth/af_bluetooth.c
++++ b/net/bluetooth/af_bluetooth.c
+@@ -185,6 +185,28 @@ void bt_sock_unlink(struct bt_sock_list *l, struct sock *sk)
  }
+ EXPORT_SYMBOL(bt_sock_unlink);
  
--static int guest_page_range(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar,
--			    unsigned long *pages, unsigned long nr_pages,
--			    const union asce asce, enum gacc_mode mode)
-+/**
-+ * guest_range_to_gpas() - Calculate guest physical addresses of page fragments
-+ * covering a logical range
-+ * @vcpu: virtual cpu
-+ * @ga: guest address, start of range
-+ * @ar: access register
-+ * @gpas: output argument, may be NULL
-+ * @len: length of range in bytes
-+ * @asce: address-space-control element to use for translation
-+ * @mode: access mode
-+ *
-+ * Translate a logical range to a series of guest absolute addresses,
-+ * such that the concatenation of page fragments starting at each gpa make up
-+ * the whole range.
-+ * The translation is performed as if done by the cpu for the given @asce, @ar,
-+ * @mode and state of the @vcpu.
-+ * If the translation causes an exception, its program interruption code is
-+ * returned and the &struct kvm_s390_pgm_info pgm member of @vcpu is modified
-+ * such that a subsequent call to kvm_s390_inject_prog_vcpu() will inject
-+ * a correct exception into the guest.
-+ * The resulting gpas are stored into @gpas, unless it is NULL.
-+ *
-+ * Note: All fragments except the first one start at the beginning of a page.
-+ *	 When deriving the boundaries of a fragment from a gpa, all but the last
-+ *	 fragment end at the end of the page.
-+ *
-+ * Return:
-+ * * 0		- success
-+ * * <0		- translation could not be performed, for example if  guest
-+ *		  memory could not be accessed
-+ * * >0		- an access exception occurred. In this case the returned value
-+ *		  is the program interruption code and the contents of pgm may
-+ *		  be used to inject an exception into the guest.
-+ */
-+static int guest_range_to_gpas(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar,
-+			       unsigned long *gpas, unsigned long len,
-+			       const union asce asce, enum gacc_mode mode)
++bool bt_sock_linked(struct bt_sock_list *l, struct sock *s)
++{
++	struct sock *sk;
++
++	if (!l || !s)
++		return false;
++
++	read_lock(&l->lock);
++
++	sk_for_each(sk, &l->head) {
++		if (s == sk) {
++			read_unlock(&l->lock);
++			return true;
++		}
++	}
++
++	read_unlock(&l->lock);
++
++	return false;
++}
++EXPORT_SYMBOL(bt_sock_linked);
++
+ void bt_accept_enqueue(struct sock *parent, struct sock *sk, bool bh)
  {
- 	psw_t *psw = &vcpu->arch.sie_block->gpsw;
-+	unsigned int offset = offset_in_page(ga);
-+	unsigned int fragment_len;
- 	int lap_enabled, rc = 0;
- 	enum prot_type prot;
-+	unsigned long gpa;
+ 	const struct cred *old_cred;
+diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
+index a5ac160c592eb..1c7252a368669 100644
+--- a/net/bluetooth/sco.c
++++ b/net/bluetooth/sco.c
+@@ -76,6 +76,16 @@ struct sco_pinfo {
+ #define SCO_CONN_TIMEOUT	(HZ * 40)
+ #define SCO_DISCONN_TIMEOUT	(HZ * 2)
  
- 	lap_enabled = low_address_protection_enabled(vcpu, asce);
--	while (nr_pages) {
-+	while (min(PAGE_SIZE - offset, len) > 0) {
-+		fragment_len = min(PAGE_SIZE - offset, len);
- 		ga = kvm_s390_logical_to_effective(vcpu, ga);
- 		if (mode == GACC_STORE && lap_enabled && is_low_address(ga))
- 			return trans_exc(vcpu, PGM_PROTECTION, ga, ar, mode,
- 					 PROT_TYPE_LA);
--		ga &= PAGE_MASK;
- 		if (psw_bits(*psw).dat) {
--			rc = guest_translate(vcpu, ga, pages, asce, mode, &prot);
-+			rc = guest_translate(vcpu, ga, &gpa, asce, mode, &prot);
- 			if (rc < 0)
- 				return rc;
- 		} else {
--			*pages = kvm_s390_real_to_abs(vcpu, ga);
--			if (kvm_is_error_gpa(vcpu->kvm, *pages))
-+			gpa = kvm_s390_real_to_abs(vcpu, ga);
-+			if (kvm_is_error_gpa(vcpu->kvm, gpa))
- 				rc = PGM_ADDRESSING;
- 		}
- 		if (rc)
- 			return trans_exc(vcpu, rc, ga, ar, mode, prot);
--		ga += PAGE_SIZE;
--		pages++;
--		nr_pages--;
-+		if (gpas)
-+			*gpas++ = gpa;
-+		offset = 0;
-+		ga += fragment_len;
-+		len -= fragment_len;
++static struct sock *sco_sock_hold(struct sco_conn *conn)
++{
++	if (!conn || !bt_sock_linked(&sco_sk_list, conn->sk))
++		return NULL;
++
++	sock_hold(conn->sk);
++
++	return conn->sk;
++}
++
+ static void sco_sock_timeout(struct work_struct *work)
+ {
+ 	struct sco_conn *conn = container_of(work, struct sco_conn,
+@@ -87,9 +97,7 @@ static void sco_sock_timeout(struct work_struct *work)
+ 		sco_conn_unlock(conn);
+ 		return;
  	}
- 	return 0;
- }
-@@ -831,10 +870,10 @@ int access_guest(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar, void *data,
- 		 unsigned long len, enum gacc_mode mode)
- {
- 	psw_t *psw = &vcpu->arch.sie_block->gpsw;
--	unsigned long nr_pages, gpa, idx;
--	unsigned long pages_array[2];
-+	unsigned long nr_pages, idx;
-+	unsigned long gpa_array[2];
- 	unsigned int fragment_len;
--	unsigned long *pages;
-+	unsigned long *gpas;
- 	int need_ipte_lock;
- 	union asce asce;
- 	int rc;
-@@ -846,30 +885,28 @@ int access_guest(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar, void *data,
- 	if (rc)
- 		return rc;
- 	nr_pages = (((ga & ~PAGE_MASK) + len - 1) >> PAGE_SHIFT) + 1;
--	pages = pages_array;
--	if (nr_pages > ARRAY_SIZE(pages_array))
--		pages = vmalloc(array_size(nr_pages, sizeof(unsigned long)));
--	if (!pages)
-+	gpas = gpa_array;
-+	if (nr_pages > ARRAY_SIZE(gpa_array))
-+		gpas = vmalloc(array_size(nr_pages, sizeof(unsigned long)));
-+	if (!gpas)
- 		return -ENOMEM;
- 	need_ipte_lock = psw_bits(*psw).dat && !asce.r;
- 	if (need_ipte_lock)
- 		ipte_lock(vcpu);
--	rc = guest_page_range(vcpu, ga, ar, pages, nr_pages, asce, mode);
-+	rc = guest_range_to_gpas(vcpu, ga, ar, gpas, len, asce, mode);
- 	for (idx = 0; idx < nr_pages && !rc; idx++) {
--		gpa = pages[idx] + offset_in_page(ga);
--		fragment_len = min(PAGE_SIZE - offset_in_page(gpa), len);
-+		fragment_len = min(PAGE_SIZE - offset_in_page(gpas[idx]), len);
- 		if (mode == GACC_STORE)
--			rc = kvm_write_guest(vcpu->kvm, gpa, data, fragment_len);
-+			rc = kvm_write_guest(vcpu->kvm, gpas[idx], data, fragment_len);
- 		else
--			rc = kvm_read_guest(vcpu->kvm, gpa, data, fragment_len);
-+			rc = kvm_read_guest(vcpu->kvm, gpas[idx], data, fragment_len);
- 		len -= fragment_len;
--		ga += fragment_len;
- 		data += fragment_len;
- 	}
- 	if (need_ipte_lock)
- 		ipte_unlock(vcpu);
--	if (nr_pages > ARRAY_SIZE(pages_array))
--		vfree(pages);
-+	if (nr_pages > ARRAY_SIZE(gpa_array))
-+		vfree(gpas);
- 	return rc;
- }
+-	sk = conn->sk;
+-	if (sk)
+-		sock_hold(sk);
++	sk = sco_sock_hold(conn);
+ 	sco_conn_unlock(conn);
  
-@@ -911,8 +948,6 @@ int access_guest_real(struct kvm_vcpu *vcpu, unsigned long gra,
- int guest_translate_address(struct kvm_vcpu *vcpu, unsigned long gva, u8 ar,
- 			    unsigned long *gpa, enum gacc_mode mode)
- {
--	psw_t *psw = &vcpu->arch.sie_block->gpsw;
--	enum prot_type prot;
- 	union asce asce;
- 	int rc;
+ 	if (!sk)
+@@ -194,9 +202,7 @@ static void sco_conn_del(struct hci_conn *hcon, int err)
  
-@@ -920,23 +955,7 @@ int guest_translate_address(struct kvm_vcpu *vcpu, unsigned long gva, u8 ar,
- 	rc = get_vcpu_asce(vcpu, &asce, gva, ar, mode);
- 	if (rc)
- 		return rc;
--	if (is_low_address(gva) && low_address_protection_enabled(vcpu, asce)) {
--		if (mode == GACC_STORE)
--			return trans_exc(vcpu, PGM_PROTECTION, gva, 0,
--					 mode, PROT_TYPE_LA);
--	}
--
--	if (psw_bits(*psw).dat && !asce.r) {	/* Use DAT? */
--		rc = guest_translate(vcpu, gva, gpa, asce, mode, &prot);
--		if (rc > 0)
--			return trans_exc(vcpu, rc, gva, 0, mode, prot);
--	} else {
--		*gpa = kvm_s390_real_to_abs(vcpu, gva);
--		if (kvm_is_error_gpa(vcpu->kvm, *gpa))
--			return trans_exc(vcpu, rc, gva, PGM_ADDRESSING, mode, 0);
--	}
--
--	return rc;
-+	return guest_range_to_gpas(vcpu, gva, ar, gpa, 1, asce, mode);
- }
+ 	/* Kill socket */
+ 	sco_conn_lock(conn);
+-	sk = conn->sk;
+-	if (sk)
+-		sock_hold(sk);
++	sk = sco_sock_hold(conn);
+ 	sco_conn_unlock(conn);
  
- /**
-@@ -950,17 +969,14 @@ int guest_translate_address(struct kvm_vcpu *vcpu, unsigned long gva, u8 ar,
- int check_gva_range(struct kvm_vcpu *vcpu, unsigned long gva, u8 ar,
- 		    unsigned long length, enum gacc_mode mode)
- {
--	unsigned long gpa;
--	unsigned long currlen;
-+	union asce asce;
- 	int rc = 0;
- 
-+	rc = get_vcpu_asce(vcpu, &asce, gva, ar, mode);
-+	if (rc)
-+		return rc;
- 	ipte_lock(vcpu);
--	while (length > 0 && !rc) {
--		currlen = min(length, PAGE_SIZE - (gva % PAGE_SIZE));
--		rc = guest_translate_address(vcpu, gva, ar, &gpa, mode);
--		gva += currlen;
--		length -= currlen;
--	}
-+	rc = guest_range_to_gpas(vcpu, gva, ar, NULL, length, asce, mode);
- 	ipte_unlock(vcpu);
- 
- 	return rc;
+ 	if (sk) {
 -- 
 2.43.0
 
