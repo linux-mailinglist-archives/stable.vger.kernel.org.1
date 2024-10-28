@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 397209B25EA
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82DCB9B2695
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:40:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE2791F2140A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0A461C20F3D
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A2018E77D;
-	Mon, 28 Oct 2024 06:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4FAD18E37C;
+	Mon, 28 Oct 2024 06:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uJ9CYy3l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avKElBiT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4189618E34E;
-	Mon, 28 Oct 2024 06:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E22189BAF;
+	Mon, 28 Oct 2024 06:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097291; cv=none; b=bUbrt3L5FquCZS6vxyY6m8yTpMosOy+etKghNqfIhtyiM3Hj6EwEM0R8QW0Svs6OxLcrtReUIv1zXd6dz+zfut/o61sLly5AWZukzvEK3/Aq/KnwP5ChA6ckS3IAeu0FLsGIt9SeR9R34Q1UwccSCBv2hYV8QfJ65CEJu2hDq94=
+	t=1730097651; cv=none; b=t05rJhj3WSx0x3oFEoEumeC71oquHtK/dIRV694mMbIun67iXfaZPB79kYWutFIJ6b1x1YCDikkbyyjk75pcjHVoPWEKB2zxLli3JJPDtiIdghn9D/N4VwdaXyGkJNIb94oWGM/1/YpMz4yLEbICkIHy33D02+rWqiPj4pLWTsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097291; c=relaxed/simple;
-	bh=JfVic+9u665EiPkTcA1ewwSH/4J5djB+Xr6uARX/O4o=;
+	s=arc-20240116; t=1730097651; c=relaxed/simple;
+	bh=DwJXaOJrzEn9p64WkLd/Vg0gH369LslyXg5t8nD9YWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/9JIbh1vNOYZOfidIItchYY7l+apQ5pvpFIPiXrq2NqgZZYuaZ6UbAMthgDfL/7CgUQQLySoMNDZDb+KFH5L3tgH21378k8ezF3NYdng4CZMVgDA1mf68xUqhH8oBfZgKtsD129Mmz9YOiW8fLd2DvgoJtx7olOPEf97JvoImw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uJ9CYy3l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1CA7C4CEC3;
-	Mon, 28 Oct 2024 06:34:50 +0000 (UTC)
+	 MIME-Version; b=bBOvngmBezeE3rXBzGrr22GGFYUnCzDPoI0njtLMLAvqEDX2EaCd0Ky8lZ11GViEzV3MDbkmxrD4SJctlb1Ia1eIAKXhDZndhoG2p+dnybMmELSs3/lKssJmBNBOUtUdaluoHgGoZ3/MnP3soECqrTJTd8iER029MTxjXFElRJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avKElBiT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF8CC4CEC3;
+	Mon, 28 Oct 2024 06:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097291;
-	bh=JfVic+9u665EiPkTcA1ewwSH/4J5djB+Xr6uARX/O4o=;
+	s=korg; t=1730097651;
+	bh=DwJXaOJrzEn9p64WkLd/Vg0gH369LslyXg5t8nD9YWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uJ9CYy3lBBR4/wR/tUoH9gsynAXbKUg5QFL8bPkVAWg1LCww2rMQ5ViagQ2IvkPtU
-	 55fnVCTztsxyqAk6DZeBHwudZxkCzJwOPwcr5MCGY0yoVfnzY4rac/VjcYNHSHVoeX
-	 Nn/Z8qTSpM+Q/QNrXOfGI2p39SWyElyiNlk6BT6w=
+	b=avKElBiT6B0o3zOOs3wlYsYZ/J0kFKtHJIRqcytSOZeqpWiRs8JQ+qu0//KLHlRGH
+	 y0n7VfiCPddG//rJj9usu58VBAbXOvvKnWNYyFYcyGFuQfQkgfif/eDGbyeXDhWd8Z
+	 4gKtz4/PICbNuDU91wrtl1hN1+Gn2pofTXDxOoLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	William Butler <wab@google.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 030/137] macsec: dont increment counters for an unrelated SA
+Subject: [PATCH 6.6 087/208] nvme-pci: set doorbell config before unquiescing
 Date: Mon, 28 Oct 2024 07:24:27 +0100
-Message-ID: <20241028062259.567632328@linuxfoundation.org>
+Message-ID: <20241028062308.795284180@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: William Butler <wab@google.com>
 
-[ Upstream commit cf58aefb1332db322060cad4a330d5f9292b0f41 ]
+[ Upstream commit 06c59d427017fcde3107c236177fcc74c9db7909 ]
 
-On RX, we shouldn't be incrementing the stats for an arbitrary SA in
-case the actual SA hasn't been set up. Those counters are intended to
-track packets for their respective AN when the SA isn't currently
-configured. Due to the way MACsec is implemented, we don't keep
-counters unless the SA is configured, so we can't track those packets,
-and those counters will remain at 0.
+During resets, if queues are unquiesced first, then the host can submit
+IOs to the controller using shadow doorbell logic but the controller
+won't be aware. This can lead to necessary MMIO doorbells from being
+not issued, causing requests to be delayed and timed-out.
 
-The RXSC's stats keeps track of those packets without telling us which
-AN they belonged to. We could add counters for non-existent SAs, and
-then find a way to integrate them in the dump to userspace, but I
-don't think it's worth the effort.
-
-Fixes: 91ec9bd57f35 ("macsec: Fix traffic counters/statistics")
-Reported-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/f5ac92aaa5b89343232615f4c03f9f95042c6aa0.1728657709.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: William Butler <wab@google.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Stable-dep-of: 26bc0a81f64c ("nvme-pci: fix race condition between reset and nvme_dev_disable()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macsec.c | 18 ------------------
- 1 file changed, 18 deletions(-)
+ drivers/nvme/host/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 8a8fd74110e2c..3a19d6f0e0dd8 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -151,19 +151,6 @@ static struct macsec_rx_sa *macsec_rxsa_get(struct macsec_rx_sa __rcu *ptr)
- 	return sa;
- }
- 
--static struct macsec_rx_sa *macsec_active_rxsa_get(struct macsec_rx_sc *rx_sc)
--{
--	struct macsec_rx_sa *sa = NULL;
--	int an;
--
--	for (an = 0; an < MACSEC_NUM_AN; an++)	{
--		sa = macsec_rxsa_get(rx_sc->sa[an]);
--		if (sa)
--			break;
--	}
--	return sa;
--}
--
- static void free_rx_sc_rcu(struct rcu_head *head)
- {
- 	struct macsec_rx_sc *rx_sc = container_of(head, struct macsec_rx_sc, rcu_head);
-@@ -1210,15 +1197,12 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 		/* If validateFrames is Strict or the C bit in the
- 		 * SecTAG is set, discard
- 		 */
--		struct macsec_rx_sa *active_rx_sa = macsec_active_rxsa_get(rx_sc);
- 		if (hdr->tci_an & MACSEC_TCI_C ||
- 		    secy->validate_frames == MACSEC_VALIDATE_STRICT) {
- 			u64_stats_update_begin(&rxsc_stats->syncp);
- 			rxsc_stats->stats.InPktsNotUsingSA++;
- 			u64_stats_update_end(&rxsc_stats->syncp);
- 			DEV_STATS_INC(secy->netdev, rx_errors);
--			if (active_rx_sa)
--				this_cpu_inc(active_rx_sa->stats->InPktsNotUsingSA);
- 			goto drop_nosa;
- 		}
- 
-@@ -1228,8 +1212,6 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 		u64_stats_update_begin(&rxsc_stats->syncp);
- 		rxsc_stats->stats.InPktsUnusedSA++;
- 		u64_stats_update_end(&rxsc_stats->syncp);
--		if (active_rx_sa)
--			this_cpu_inc(active_rx_sa->stats->InPktsUnusedSA);
- 		goto deliver;
- 	}
- 
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 32b5cc76a0223..61c9b175e035f 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2757,10 +2757,10 @@ static void nvme_reset_work(struct work_struct *work)
+ 	 * controller around but remove all namespaces.
+ 	 */
+ 	if (dev->online_queues > 1) {
++		nvme_dbbuf_set(dev);
+ 		nvme_unquiesce_io_queues(&dev->ctrl);
+ 		nvme_wait_freeze(&dev->ctrl);
+ 		nvme_pci_update_nr_queues(dev);
+-		nvme_dbbuf_set(dev);
+ 		nvme_unfreeze(&dev->ctrl);
+ 	} else {
+ 		dev_warn(dev->ctrl.device, "IO queues lost\n");
 -- 
 2.43.0
 
