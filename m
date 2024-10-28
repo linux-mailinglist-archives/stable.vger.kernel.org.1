@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-88451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 735629B260B
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D1159B26DF
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:43:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E68C6B20E30
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B064B20F65
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A0318FDD0;
-	Mon, 28 Oct 2024 06:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D7118E37F;
+	Mon, 28 Oct 2024 06:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asFJ7sZ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOxbNRQH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2631718E36C;
-	Mon, 28 Oct 2024 06:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EDDD18E35B;
+	Mon, 28 Oct 2024 06:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097362; cv=none; b=Y9FGJRWcWfKN7oCCoMKsofW/785SppY6ramMjtxNcMDm+HubCj9Qhopv5mJczcrjlbsFtuas8T6RVhKYxMOJrnH1zs2o7NsGcPEGWqh5Rqffoxk0COSwbOpm9WH8kMOH3EghcWJyjm8aJpq+pKB+Bo54BUy8O/CFYiH+Z02dJ5U=
+	t=1730097799; cv=none; b=dPU9BhRSS18prlcz6pSsYzwfWiC5v5QdU04Z6hJavU91L3Mw6R8587q5JT8OgbjVbCwBpqsWd7aT7+bGUezeo0A1TrgblJ0Eg4c3yd4mhC3TIUJbG21vP4NcLcUeLQHnyridxvXaxPdCmLC28/wxZBOa7vW0BjppRqtDlFgTd/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097362; c=relaxed/simple;
-	bh=8eeT/K6Zx1ebBcnEOkFTuqZ+Jujp1SYctmVDQ5LNogU=;
+	s=arc-20240116; t=1730097799; c=relaxed/simple;
+	bh=D5bh7zJJD+XNZ4vNGQqawQycrVckgli7nEPSQLj1xiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z2uJpJyZIixIgxPJldA9CgLLaClyphCR53HzVfKvLhnn7H9GLwiOlZDZrkpO68GqHKBeiyEkNTlH/2/fOT6JUostmqbzHLMaz4YhnVK9y0xql+Ed4tKzBmHw7T0YBsJcR3rIyjqVx4Dg954TZ21hRSY0guOqP53iEaEarq03PF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asFJ7sZ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA61C4CEC3;
-	Mon, 28 Oct 2024 06:36:01 +0000 (UTC)
+	 MIME-Version; b=D89eEIq77JJ27na3YdZAo2TMJMVLS97UaQh5bJ9aCwSGjpGx2Hf+m7VzdlDNvA/Bf7GZb2pvDqhE2a5KnwbNchTVXQFXOK1QDocM8xAfgKEUapFowWanZKUJywr0Dd73PbRmN0pPckdmW+ItYqDB+Hui6hr/Wbt9Z+MnrQO3xrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOxbNRQH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36761C4CEC3;
+	Mon, 28 Oct 2024 06:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097362;
-	bh=8eeT/K6Zx1ebBcnEOkFTuqZ+Jujp1SYctmVDQ5LNogU=;
+	s=korg; t=1730097799;
+	bh=D5bh7zJJD+XNZ4vNGQqawQycrVckgli7nEPSQLj1xiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=asFJ7sZ8Di9csJz069cDV5RHaGz32ibySbPX1xPJzHn0azZvBoiQNDI2m67v9ACn7
-	 vu0nAVv031E+HyjezIpBLqoTL9xxNvxWusY6t8LzT1BN9SfvadLhVhwlS2haT1fA8/
-	 0hwJ0TMIoBbRp8bRNxu5/GlZ2quicbBuwxeB+5+s=
+	b=GOxbNRQH9HjjDjjxo9Wxeg7Ze66LELwVPcOSse5fInC2cPCByIjjy1g3J/dgreujY
+	 bX/9KbvkCbBz1fY9ZgtAhW7qpr5ntmwkWwItzCpNdAivkZE0Ej/NIRQLVBnF84UasC
+	 ApLpBunIsCKeyWyoFmcRLwVMN/rJdO2J7vAZU/ks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 096/137] docs: net: reformat driver.rst from a list to sections
+Subject: [PATCH 6.6 153/208] net/sched: act_api: deny mismatched skip_sw/skip_hw flags for actions created by classifiers
 Date: Mon, 28 Oct 2024 07:25:33 +0100
-Message-ID: <20241028062301.412308791@linuxfoundation.org>
+Message-ID: <20241028062310.393030352@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,162 +64,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit d2f5c68e3f7157e874a759e382a5eaffa775b869 ]
+[ Upstream commit 34d35b4edbbe890a91bec939bfd29ad92517a52b ]
 
-driver.rst had a historical form of list of common problems.
-In the age os Sphinx and rendered documentation it's better
-to use the more usual title + text format.
+tcf_action_init() has logic for checking mismatches between action and
+filter offload flags (skip_sw/skip_hw). AFAIU, this is intended to run
+on the transition between the new tc_act_bind(flags) returning true (aka
+now gets bound to classifier) and tc_act_bind(act->tcfa_flags) returning
+false (aka action was not bound to classifier before). Otherwise, the
+check is skipped.
 
-This will allow us to render kdoc into the output more naturally.
+For the case where an action is not standalone, but rather it was
+created by a classifier and is bound to it, tcf_action_init() skips the
+check entirely, and this means it allows mismatched flags to occur.
 
-No changes to the actual text.
+Taking the matchall classifier code path as an example (with mirred as
+an action), the reason is the following:
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 95ecba62e2fd ("net: fix races in netdev_tx_sent_queue()/dev_watchdog()")
+ 1 | mall_change()
+ 2 | -> mall_replace_hw_filter()
+ 3 |   -> tcf_exts_validate_ex()
+ 4 |      -> flags |= TCA_ACT_FLAGS_BIND;
+ 5 |      -> tcf_action_init()
+ 6 |         -> tcf_action_init_1()
+ 7 |            -> a_o->init()
+ 8 |               -> tcf_mirred_init()
+ 9 |                  -> tcf_idr_create_from_flags()
+10 |                     -> tcf_idr_create()
+11 |                        -> p->tcfa_flags = flags;
+12 |         -> tc_act_bind(flags))
+13 |         -> tc_act_bind(act->tcfa_flags)
+
+When invoked from tcf_exts_validate_ex() like matchall does (but other
+classifiers validate their extensions as well), tcf_action_init() runs
+in a call path where "flags" always contains TCA_ACT_FLAGS_BIND (set by
+line 4). So line 12 is always true, and line 13 is always true as well.
+No transition ever takes place, and the check is skipped.
+
+The code was added in this form in commit c86e0209dc77 ("flow_offload:
+validate flags of filter and actions"), but I'm attributing the blame
+even earlier in that series, to when TCA_ACT_FLAGS_SKIP_HW and
+TCA_ACT_FLAGS_SKIP_SW were added to the UAPI.
+
+Following the development process of this change, the check did not
+always exist in this form. A change took place between v3 [1] and v4 [2],
+AFAIU due to review feedback that it doesn't make sense for action flags
+to be different than classifier flags. I think I agree with that
+feedback, but it was translated into code that omits enforcing this for
+"classic" actions created at the same time with the filters themselves.
+
+There are 3 more important cases to discuss. First there is this command:
+
+$ tc qdisc add dev eth0 clasct
+$ tc filter add dev eth0 ingress matchall skip_sw \
+	action mirred ingress mirror dev eth1
+
+which should be allowed, because prior to the concept of dedicated
+action flags, it used to work and it used to mean the action inherited
+the skip_sw/skip_hw flags from the classifier. It's not a mismatch.
+
+Then we have this command:
+
+$ tc qdisc add dev eth0 clasct
+$ tc filter add dev eth0 ingress matchall skip_sw \
+	action mirred ingress mirror dev eth1 skip_hw
+
+where there is a mismatch and it should be rejected.
+
+Finally, we have:
+
+$ tc qdisc add dev eth0 clasct
+$ tc filter add dev eth0 ingress matchall skip_sw \
+	action mirred ingress mirror dev eth1 skip_sw
+
+where the offload flags coincide, and this should be treated the same as
+the first command based on inheritance, and accepted.
+
+[1]: https://lore.kernel.org/netdev/20211028110646.13791-9-simon.horman@corigine.com/
+[2]: https://lore.kernel.org/netdev/20211118130805.23897-10-simon.horman@corigine.com/
+Fixes: 7adc57651211 ("flow_offload: add skip_hw and skip_sw to control if offload the action")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20241017161049.3570037-1-vladimir.oltean@nxp.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/networking/driver.rst | 91 ++++++++++++++++++-----------
- 1 file changed, 56 insertions(+), 35 deletions(-)
+ net/sched/act_api.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/networking/driver.rst b/Documentation/networking/driver.rst
-index 64f7236ff10be..3040a74d421c7 100644
---- a/Documentation/networking/driver.rst
-+++ b/Documentation/networking/driver.rst
-@@ -4,15 +4,19 @@
- Softnet Driver Issues
- =====================
+diff --git a/net/sched/act_api.c b/net/sched/act_api.c
+index 2d6d58e1b278a..4572aa6e0273f 100644
+--- a/net/sched/act_api.c
++++ b/net/sched/act_api.c
+@@ -1489,8 +1489,29 @@ int tcf_action_init(struct net *net, struct tcf_proto *tp, struct nlattr *nla,
+ 			bool skip_sw = tc_skip_sw(fl_flags);
+ 			bool skip_hw = tc_skip_hw(fl_flags);
  
--Transmit path guidelines:
-+Transmit path guidelines
-+========================
- 
--1) The ndo_start_xmit method must not return NETDEV_TX_BUSY under
--   any normal circumstances.  It is considered a hard error unless
--   there is no way your device can tell ahead of time when its
--   transmit function will become busy.
-+Stop queues in advance
-+----------------------
- 
--   Instead it must maintain the queue properly.  For example,
--   for a driver implementing scatter-gather this means::
-+The ndo_start_xmit method must not return NETDEV_TX_BUSY under
-+any normal circumstances.  It is considered a hard error unless
-+there is no way your device can tell ahead of time when its
-+transmit function will become busy.
+-			if (tc_act_bind(act->tcfa_flags))
++			if (tc_act_bind(act->tcfa_flags)) {
++				/* Action is created by classifier and is not
++				 * standalone. Check that the user did not set
++				 * any action flags different than the
++				 * classifier flags, and inherit the flags from
++				 * the classifier for the compatibility case
++				 * where no flags were specified at all.
++				 */
++				if ((tc_act_skip_sw(act->tcfa_flags) && !skip_sw) ||
++				    (tc_act_skip_hw(act->tcfa_flags) && !skip_hw)) {
++					NL_SET_ERR_MSG(extack,
++						       "Mismatch between action and filter offload flags");
++					err = -EINVAL;
++					goto err;
++				}
++				if (skip_sw)
++					act->tcfa_flags |= TCA_ACT_FLAGS_SKIP_SW;
++				if (skip_hw)
++					act->tcfa_flags |= TCA_ACT_FLAGS_SKIP_HW;
+ 				continue;
++			}
 +
-+Instead it must maintain the queue properly.  For example,
-+for a driver implementing scatter-gather this means::
- 
- 	static netdev_tx_t drv_hard_start_xmit(struct sk_buff *skb,
- 					       struct net_device *dev)
-@@ -42,56 +46,73 @@ Transmit path guidelines:
- 		return NETDEV_TX_OK;
- 	}
- 
--   And then at the end of your TX reclamation event handling::
-+And then at the end of your TX reclamation event handling::
- 
- 	if (netif_queue_stopped(dp->dev) &&
- 	    TX_BUFFS_AVAIL(dp) > (MAX_SKB_FRAGS + 1))
- 		netif_wake_queue(dp->dev);
- 
--   For a non-scatter-gather supporting card, the three tests simply become::
-+For a non-scatter-gather supporting card, the three tests simply become::
- 
- 		/* This is a hard error log it. */
- 		if (TX_BUFFS_AVAIL(dp) <= 0)
- 
--   and::
-+and::
- 
- 		if (TX_BUFFS_AVAIL(dp) == 0)
- 
--   and::
-+and::
- 
- 	if (netif_queue_stopped(dp->dev) &&
- 	    TX_BUFFS_AVAIL(dp) > 0)
- 		netif_wake_queue(dp->dev);
- 
--2) An ndo_start_xmit method must not modify the shared parts of a
--   cloned SKB.
-+No exclusive ownership
-+----------------------
-+
-+An ndo_start_xmit method must not modify the shared parts of a
-+cloned SKB.
-+
-+Timely completions
-+------------------
-+
-+Do not forget that once you return NETDEV_TX_OK from your
-+ndo_start_xmit method, it is your driver's responsibility to free
-+up the SKB and in some finite amount of time.
- 
--3) Do not forget that once you return NETDEV_TX_OK from your
--   ndo_start_xmit method, it is your driver's responsibility to free
--   up the SKB and in some finite amount of time.
-+For example, this means that it is not allowed for your TX
-+mitigation scheme to let TX packets "hang out" in the TX
-+ring unreclaimed forever if no new TX packets are sent.
-+This error can deadlock sockets waiting for send buffer room
-+to be freed up.
- 
--   For example, this means that it is not allowed for your TX
--   mitigation scheme to let TX packets "hang out" in the TX
--   ring unreclaimed forever if no new TX packets are sent.
--   This error can deadlock sockets waiting for send buffer room
--   to be freed up.
-+If you return NETDEV_TX_BUSY from the ndo_start_xmit method, you
-+must not keep any reference to that SKB and you must not attempt
-+to free it up.
- 
--   If you return NETDEV_TX_BUSY from the ndo_start_xmit method, you
--   must not keep any reference to that SKB and you must not attempt
--   to free it up.
-+Probing guidelines
-+==================
- 
--Probing guidelines:
-+Address validation
-+------------------
-+
-+Any hardware layer address you obtain for your device should
-+be verified.  For example, for ethernet check it with
-+linux/etherdevice.h:is_valid_ether_addr()
-+
-+Close/stop guidelines
-+=====================
- 
--1) Any hardware layer address you obtain for your device should
--   be verified.  For example, for ethernet check it with
--   linux/etherdevice.h:is_valid_ether_addr()
-+Quiescence
-+----------
- 
--Close/stop guidelines:
-+After the ndo_stop routine has been called, the hardware must
-+not receive or transmit any data.  All in flight packets must
-+be aborted. If necessary, poll or wait for completion of
-+any reset commands.
- 
--1) After the ndo_stop routine has been called, the hardware must
--   not receive or transmit any data.  All in flight packets must
--   be aborted. If necessary, poll or wait for completion of
--   any reset commands.
-+Auto-close
-+----------
- 
--2) The ndo_stop routine will be called by unregister_netdevice
--   if device is still UP.
-+The ndo_stop routine will be called by unregister_netdevice
-+if device is still UP.
++			/* Action is standalone */
+ 			if (skip_sw != tc_act_skip_sw(act->tcfa_flags) ||
+ 			    skip_hw != tc_act_skip_hw(act->tcfa_flags)) {
+ 				NL_SET_ERR_MSG(extack,
 -- 
 2.43.0
 
