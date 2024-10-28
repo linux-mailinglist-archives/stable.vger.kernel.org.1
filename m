@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-88891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BD029B27F2
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 735629B260B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C61B8B2134B
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E68C6B20E30
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6706918E05D;
-	Mon, 28 Oct 2024 06:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A0318FDD0;
+	Mon, 28 Oct 2024 06:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dY2iG28"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asFJ7sZ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248918837;
-	Mon, 28 Oct 2024 06:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2631718E36C;
+	Mon, 28 Oct 2024 06:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098355; cv=none; b=U1fLPF96XfD32dPsYeefaJWMH99Kp6ieiqJVNCFm0GlhCLHBoNvkH+jb7++F7mliShbk5Zcxhbd2j77M7sraz0LxPVB+rHisInw0l5Z3/ZGJGY2JRlG74yET+O508Nj3sxnDpUb5+KDLIv5r7Nw0wddtUQbP0xfmKV7S5K4CbL8=
+	t=1730097362; cv=none; b=Y9FGJRWcWfKN7oCCoMKsofW/785SppY6ramMjtxNcMDm+HubCj9Qhopv5mJczcrjlbsFtuas8T6RVhKYxMOJrnH1zs2o7NsGcPEGWqh5Rqffoxk0COSwbOpm9WH8kMOH3EghcWJyjm8aJpq+pKB+Bo54BUy8O/CFYiH+Z02dJ5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098355; c=relaxed/simple;
-	bh=CavhDw2DsEUv1+rqOA/jnhrRFkXYzoXjjzw/2gNATts=;
+	s=arc-20240116; t=1730097362; c=relaxed/simple;
+	bh=8eeT/K6Zx1ebBcnEOkFTuqZ+Jujp1SYctmVDQ5LNogU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RzCBKbAOdN1+90DhkNmg/atTyiNXrksXIb+MS62OLRnyAqIwTkpGTBbamWbCq+ffjgUfCyzzDlxGMe5k5MKaz0ejoMCpCTx3RLcCuimhqkvX+TVTK4qS7MaIALSZS2jIGCPCKUDC0kFUHTjTRssmTbaUM21WAlRNgRiAsbtOOXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dY2iG28; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822FCC4CECD;
-	Mon, 28 Oct 2024 06:52:34 +0000 (UTC)
+	 MIME-Version; b=Z2uJpJyZIixIgxPJldA9CgLLaClyphCR53HzVfKvLhnn7H9GLwiOlZDZrkpO68GqHKBeiyEkNTlH/2/fOT6JUostmqbzHLMaz4YhnVK9y0xql+Ed4tKzBmHw7T0YBsJcR3rIyjqVx4Dg954TZ21hRSY0guOqP53iEaEarq03PF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asFJ7sZ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA61C4CEC3;
+	Mon, 28 Oct 2024 06:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098355;
-	bh=CavhDw2DsEUv1+rqOA/jnhrRFkXYzoXjjzw/2gNATts=;
+	s=korg; t=1730097362;
+	bh=8eeT/K6Zx1ebBcnEOkFTuqZ+Jujp1SYctmVDQ5LNogU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0dY2iG28Xi2a0w5sADRlzUUwQtsGEmsO+dIM/LflPJcaMHjKq2rmWHnBtSjx0F9b6
-	 hdsf9pBhfa112qKv2A6VBp6ffJsNEy/7hvPKvqQkzqhJzt6vJyXcn5YV2ZoSXJJVh8
-	 zDWTaEc6hxhuCLhdyg7xtpogiABGtCux0Zv9hP3g=
+	b=asFJ7sZ8Di9csJz069cDV5RHaGz32ibySbPX1xPJzHn0azZvBoiQNDI2m67v9ACn7
+	 vu0nAVv031E+HyjezIpBLqoTL9xxNvxWusY6t8LzT1BN9SfvadLhVhwlS2haT1fA8/
+	 0hwJ0TMIoBbRp8bRNxu5/GlZ2quicbBuwxeB+5+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Shumilin <shum.sdl@nppct.ru>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 191/261] ALSA: firewire-lib: Avoid division by zero in apply_constraint_to_size()
+Subject: [PATCH 6.1 096/137] docs: net: reformat driver.rst from a list to sections
 Date: Mon, 28 Oct 2024 07:25:33 +0100
-Message-ID: <20241028062316.811919009@linuxfoundation.org>
+Message-ID: <20241028062301.412308791@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Shumilin <shum.sdl@nppct.ru>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 72cafe63b35d06b5cfbaf807e90ae657907858da ]
+[ Upstream commit d2f5c68e3f7157e874a759e382a5eaffa775b869 ]
 
-The step variable is initialized to zero. It is changed in the loop,
-but if it's not changed it will remain zero. Add a variable check
-before the division.
+driver.rst had a historical form of list of common problems.
+In the age os Sphinx and rendered documentation it's better
+to use the more usual title + text format.
 
-The observed behavior was introduced by commit 826b5de90c0b
-("ALSA: firewire-lib: fix insufficient PCM rule for period/buffer size"),
-and it is difficult to show that any of the interval parameters will
-satisfy the snd_interval_test() condition with data from the
-amdtp_rate_table[] table.
+This will allow us to render kdoc into the output more naturally.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+No changes to the actual text.
 
-Fixes: 826b5de90c0b ("ALSA: firewire-lib: fix insufficient PCM rule for period/buffer size")
-Signed-off-by: Andrey Shumilin <shum.sdl@nppct.ru>
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Link: https://patch.msgid.link/20241018060018.1189537-1-shum.sdl@nppct.ru
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 95ecba62e2fd ("net: fix races in netdev_tx_sent_queue()/dev_watchdog()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/firewire/amdtp-stream.c | 3 +++
- 1 file changed, 3 insertions(+)
+ Documentation/networking/driver.rst | 91 ++++++++++++++++++-----------
+ 1 file changed, 56 insertions(+), 35 deletions(-)
 
-diff --git a/sound/firewire/amdtp-stream.c b/sound/firewire/amdtp-stream.c
-index c827d7d8d8003..ea3a7d69f1c46 100644
---- a/sound/firewire/amdtp-stream.c
-+++ b/sound/firewire/amdtp-stream.c
-@@ -172,6 +172,9 @@ static int apply_constraint_to_size(struct snd_pcm_hw_params *params,
- 			step = max(step, amdtp_syt_intervals[i]);
+diff --git a/Documentation/networking/driver.rst b/Documentation/networking/driver.rst
+index 64f7236ff10be..3040a74d421c7 100644
+--- a/Documentation/networking/driver.rst
++++ b/Documentation/networking/driver.rst
+@@ -4,15 +4,19 @@
+ Softnet Driver Issues
+ =====================
+ 
+-Transmit path guidelines:
++Transmit path guidelines
++========================
+ 
+-1) The ndo_start_xmit method must not return NETDEV_TX_BUSY under
+-   any normal circumstances.  It is considered a hard error unless
+-   there is no way your device can tell ahead of time when its
+-   transmit function will become busy.
++Stop queues in advance
++----------------------
+ 
+-   Instead it must maintain the queue properly.  For example,
+-   for a driver implementing scatter-gather this means::
++The ndo_start_xmit method must not return NETDEV_TX_BUSY under
++any normal circumstances.  It is considered a hard error unless
++there is no way your device can tell ahead of time when its
++transmit function will become busy.
++
++Instead it must maintain the queue properly.  For example,
++for a driver implementing scatter-gather this means::
+ 
+ 	static netdev_tx_t drv_hard_start_xmit(struct sk_buff *skb,
+ 					       struct net_device *dev)
+@@ -42,56 +46,73 @@ Transmit path guidelines:
+ 		return NETDEV_TX_OK;
  	}
  
-+	if (step == 0)
-+		return -EINVAL;
+-   And then at the end of your TX reclamation event handling::
++And then at the end of your TX reclamation event handling::
+ 
+ 	if (netif_queue_stopped(dp->dev) &&
+ 	    TX_BUFFS_AVAIL(dp) > (MAX_SKB_FRAGS + 1))
+ 		netif_wake_queue(dp->dev);
+ 
+-   For a non-scatter-gather supporting card, the three tests simply become::
++For a non-scatter-gather supporting card, the three tests simply become::
+ 
+ 		/* This is a hard error log it. */
+ 		if (TX_BUFFS_AVAIL(dp) <= 0)
+ 
+-   and::
++and::
+ 
+ 		if (TX_BUFFS_AVAIL(dp) == 0)
+ 
+-   and::
++and::
+ 
+ 	if (netif_queue_stopped(dp->dev) &&
+ 	    TX_BUFFS_AVAIL(dp) > 0)
+ 		netif_wake_queue(dp->dev);
+ 
+-2) An ndo_start_xmit method must not modify the shared parts of a
+-   cloned SKB.
++No exclusive ownership
++----------------------
 +
- 	t.min = roundup(s->min, step);
- 	t.max = rounddown(s->max, step);
- 	t.integer = 1;
++An ndo_start_xmit method must not modify the shared parts of a
++cloned SKB.
++
++Timely completions
++------------------
++
++Do not forget that once you return NETDEV_TX_OK from your
++ndo_start_xmit method, it is your driver's responsibility to free
++up the SKB and in some finite amount of time.
+ 
+-3) Do not forget that once you return NETDEV_TX_OK from your
+-   ndo_start_xmit method, it is your driver's responsibility to free
+-   up the SKB and in some finite amount of time.
++For example, this means that it is not allowed for your TX
++mitigation scheme to let TX packets "hang out" in the TX
++ring unreclaimed forever if no new TX packets are sent.
++This error can deadlock sockets waiting for send buffer room
++to be freed up.
+ 
+-   For example, this means that it is not allowed for your TX
+-   mitigation scheme to let TX packets "hang out" in the TX
+-   ring unreclaimed forever if no new TX packets are sent.
+-   This error can deadlock sockets waiting for send buffer room
+-   to be freed up.
++If you return NETDEV_TX_BUSY from the ndo_start_xmit method, you
++must not keep any reference to that SKB and you must not attempt
++to free it up.
+ 
+-   If you return NETDEV_TX_BUSY from the ndo_start_xmit method, you
+-   must not keep any reference to that SKB and you must not attempt
+-   to free it up.
++Probing guidelines
++==================
+ 
+-Probing guidelines:
++Address validation
++------------------
++
++Any hardware layer address you obtain for your device should
++be verified.  For example, for ethernet check it with
++linux/etherdevice.h:is_valid_ether_addr()
++
++Close/stop guidelines
++=====================
+ 
+-1) Any hardware layer address you obtain for your device should
+-   be verified.  For example, for ethernet check it with
+-   linux/etherdevice.h:is_valid_ether_addr()
++Quiescence
++----------
+ 
+-Close/stop guidelines:
++After the ndo_stop routine has been called, the hardware must
++not receive or transmit any data.  All in flight packets must
++be aborted. If necessary, poll or wait for completion of
++any reset commands.
+ 
+-1) After the ndo_stop routine has been called, the hardware must
+-   not receive or transmit any data.  All in flight packets must
+-   be aborted. If necessary, poll or wait for completion of
+-   any reset commands.
++Auto-close
++----------
+ 
+-2) The ndo_stop routine will be called by unregister_netdevice
+-   if device is still UP.
++The ndo_stop routine will be called by unregister_netdevice
++if device is still UP.
 -- 
 2.43.0
 
