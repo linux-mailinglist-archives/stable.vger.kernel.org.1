@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5146B9B2758
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:47:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B22AA9B2644
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:38:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 094581F226B4
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:47:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 512D9B20DAF
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DBCD18FC81;
-	Mon, 28 Oct 2024 06:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0935118E77D;
+	Mon, 28 Oct 2024 06:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XroA29BG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YPFAABQX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2A918FC7F;
-	Mon, 28 Oct 2024 06:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D3518D65C;
+	Mon, 28 Oct 2024 06:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098036; cv=none; b=bV3lyWGMqDvSchdTcaTHghRaxee2qstCWT4FG3mNf1D+hkRt1+HMfm/O0/Fq/iGdgo2c25Q/HOVLlOcfRDykLfpDd0/xb352rGz0ATUIbpjvaZlCMniCjN3UEiTTza4OTKD1ZXL1Aa82ckXjBkeWqL9P223LK+4DweRPgHQXTq8=
+	t=1730097476; cv=none; b=lU8dDbXR/zqlOudEFSejftkIjjBJl8c5SorHLZpP48i1Tf62KZ0675586OG52vjut9yDFQUMqdPgZvzcF0lLeAA0wUch8DxE2MB58M3Ja1M3V7tG3lDz5ErzSFk/Jd6WD9nTxPPCwo00bMYPaQre3MXSPOC46nRuqVr5TtgtB6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098036; c=relaxed/simple;
-	bh=pnc8FeZVaZhhLv7V34PiOAiFFq1ABXnNXeHcB/jU9w0=;
+	s=arc-20240116; t=1730097476; c=relaxed/simple;
+	bh=66zaUuoWfwlq1sS8vRtUuZdrpciw0pxp4HIA2TCC90c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cd+UTG3hoQsCx/DrRZ4zwLYqoi/0oio8FjpV+3ubuVMDGyFovDUogy64j/o3sRtcdpOoa2HxGS8EJZE8CXa/41o6klMHtq7i2ncFqZBEiDkxPp/+Ulru2QfVeQd6esefFcUxpmJeJ/zcuiyTvUFrgxALna0krdP9MYBFrcx3vaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XroA29BG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1361C4CEC3;
-	Mon, 28 Oct 2024 06:47:15 +0000 (UTC)
+	 MIME-Version; b=swKluWZrGAG6Y9jpHnl9YgTp4GFZyrb0+L6Bbwe7SKhvLbXFHnOtVCKLJzMZMLmVq/XN65dyLip5mBWqY02i3M23zWIX1ANBbRhWeHR6wPkVRxSvuWfFZZ04DVSefF9M9l8YL5Sv86+kQ36ZnuSWuv5KV30y3zEN/bsHh+c/25Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YPFAABQX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C24C4CEC3;
+	Mon, 28 Oct 2024 06:37:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098036;
-	bh=pnc8FeZVaZhhLv7V34PiOAiFFq1ABXnNXeHcB/jU9w0=;
+	s=korg; t=1730097476;
+	bh=66zaUuoWfwlq1sS8vRtUuZdrpciw0pxp4HIA2TCC90c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XroA29BGMDmnn6xbKu4IRSVm762+1C+7EUxgzQNw9C4Z+Jwna7fEcJTz88u32KRHI
-	 M805B2Cub5G4cqJBIGm1bQ/A6qULVwMJQpv4O2/aGuRZFw9qx9Q0PV3Tw6cwcM1hOo
-	 LoCPUSvGFcfl7RP+RIBfjG+tfgHagZLjxIDtchp8=
+	b=YPFAABQX2Ooz4qTmcq1cPYwBdEAzbO5K1LRnPDw9bQH1DnAIBuXQ6NxoTtSOSWBYE
+	 v7cWFzzDjRBgIeH++n5QNvLr8Iq75XSwaDgz4L2vOTNN6L3vD2py3B7ZbqzFyZ+yqI
+	 ya0/eBYK4rXImpC3VdDr/poORM/pCw0rKGUSfZCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Anumula Murali Mohan Reddy <anumula@chelsio.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 048/261] accel/qaic: Fix the for loop used to walk SG table
+Subject: [PATCH 6.6 010/208] RDMA/core: Fix ENODEV error for iWARP test over vlan
 Date: Mon, 28 Oct 2024 07:23:10 +0100
-Message-ID: <20241028062313.216643133@linuxfoundation.org>
+Message-ID: <20241028062306.911286655@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>
+From: Anumula Murali Mohan Reddy <anumula@chelsio.com>
 
-[ Upstream commit c5e8e93897b7bb0a336bf3332f82f8d9f2b33f14 ]
+[ Upstream commit 5069d7e202f640a36cf213a432296c85113a52f7 ]
 
-Only for_each_sgtable_dma_sg() should be used to walk through a SG table
-to grab correct bus address and length pair after calling DMA MAP API on
-a SG table as DMA MAP APIs updates the SG table and for_each_sgtable_sg()
-walks through the original SG table.
+If traffic is over vlan, cma_validate_port() fails to match vlan
+net_device ifindex with bound_if_index and results in ENODEV error.
+It is because rdma_copy_src_l2_addr() always assigns bound_if_index with
+real net_device ifindex.
+This patch fixes the issue by assigning bound_if_index with vlan
+net_device index if traffic is over vlan.
 
-Fixes: ff13be830333 ("accel/qaic: Add datapath")
-Fixes: 129776ac2e38 ("accel/qaic: Add control path")
-Signed-off-by: Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241004193252.3888544-1-quic_jhugo@quicinc.com
+Fixes: f8ef1be816bf ("RDMA/cma: Avoid GID lookups on iWARP devices")
+Signed-off-by: Anumula Murali Mohan Reddy <anumula@chelsio.com>
+Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
+Link: https://patch.msgid.link/20241008114334.146702-1-anumula@chelsio.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/qaic/qaic_control.c | 2 +-
- drivers/accel/qaic/qaic_data.c    | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/infiniband/core/addr.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/accel/qaic/qaic_control.c b/drivers/accel/qaic/qaic_control.c
-index 9e8a8cbadf6bb..d8bdab69f8009 100644
---- a/drivers/accel/qaic/qaic_control.c
-+++ b/drivers/accel/qaic/qaic_control.c
-@@ -496,7 +496,7 @@ static int encode_addr_size_pairs(struct dma_xfer *xfer, struct wrapper_list *wr
- 	nents = sgt->nents;
- 	nents_dma = nents;
- 	*size = QAIC_MANAGE_EXT_MSG_LENGTH - msg_hdr_len - sizeof(**out_trans);
--	for_each_sgtable_sg(sgt, sg, i) {
-+	for_each_sgtable_dma_sg(sgt, sg, i) {
- 		*size -= sizeof(*asp);
- 		/* Save 1K for possible follow-up transactions. */
- 		if (*size < SZ_1K) {
-diff --git a/drivers/accel/qaic/qaic_data.c b/drivers/accel/qaic/qaic_data.c
-index e86e71c1cdd86..c20eb63750f51 100644
---- a/drivers/accel/qaic/qaic_data.c
-+++ b/drivers/accel/qaic/qaic_data.c
-@@ -184,7 +184,7 @@ static int clone_range_of_sgt_for_slice(struct qaic_device *qdev, struct sg_tabl
- 	nents = 0;
+diff --git a/drivers/infiniband/core/addr.c b/drivers/infiniband/core/addr.c
+index f253295795f0a..fd78d678877c4 100644
+--- a/drivers/infiniband/core/addr.c
++++ b/drivers/infiniband/core/addr.c
+@@ -269,6 +269,8 @@ rdma_find_ndev_for_src_ip_rcu(struct net *net, const struct sockaddr *src_in)
+ 		break;
+ #endif
+ 	}
++	if (!ret && dev && is_vlan_dev(dev))
++		dev = vlan_dev_real_dev(dev);
+ 	return ret ? ERR_PTR(ret) : dev;
+ }
  
- 	size = size ? size : PAGE_SIZE;
--	for (sg = sgt_in->sgl; sg; sg = sg_next(sg)) {
-+	for_each_sgtable_dma_sg(sgt_in, sg, j) {
- 		len = sg_dma_len(sg);
- 
- 		if (!len)
-@@ -221,7 +221,7 @@ static int clone_range_of_sgt_for_slice(struct qaic_device *qdev, struct sg_tabl
- 
- 	/* copy relevant sg node and fix page and length */
- 	sgn = sgf;
--	for_each_sgtable_sg(sgt, sg, j) {
-+	for_each_sgtable_dma_sg(sgt, sg, j) {
- 		memcpy(sg, sgn, sizeof(*sg));
- 		if (sgn == sgf) {
- 			sg_dma_address(sg) += offf;
-@@ -301,7 +301,7 @@ static int encode_reqs(struct qaic_device *qdev, struct bo_slice *slice,
- 	 * fence.
- 	 */
- 	dev_addr = req->dev_addr;
--	for_each_sgtable_sg(slice->sgt, sg, i) {
-+	for_each_sgtable_dma_sg(slice->sgt, sg, i) {
- 		slice->reqs[i].cmd = cmd;
- 		slice->reqs[i].src_addr = cpu_to_le64(slice->dir == DMA_TO_DEVICE ?
- 						      sg_dma_address(sg) : dev_addr);
 -- 
 2.43.0
 
