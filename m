@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-88948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 099589B282F
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:54:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 719339B271A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:45:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B54D51F217E2
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:54:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 294061F21FFE
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC8D18F2C3;
-	Mon, 28 Oct 2024 06:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971CF2AF07;
+	Mon, 28 Oct 2024 06:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IApYTO2T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OM6hx9D8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD11018DF83;
-	Mon, 28 Oct 2024 06:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562488837;
+	Mon, 28 Oct 2024 06:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098484; cv=none; b=RBK+km1iUHfLWAQIYyCqG0BtCUIPXq3FTo0Ywp84f5Ap+vwHVYGpjtzocbOvwof0ShGq+QLeSbq6g9TIvYkGKTIZshGrELJKGP0Gy2y/fT8fgP4lNJJxGogyRjMXEuEbThY/hMHQBvXqLVWwco1iLPCTlzmKG6HgFdIb6apxXRk=
+	t=1730097927; cv=none; b=n5P/vMW1wPn53ubexl9xt8qgJnzF41oV6q6WZr6DEX7uHyLa09cmjcK4Xd2esM6Zb3WYW3F3WWEqHfjVO9zeqp503/a3VmLhXR/p/VJfSx9KgpCjsRCvOfm+ZZvmlZoFcCLoacJgC/dezplmIyMJH7f64U+qi1CzR60TQApeIQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098484; c=relaxed/simple;
-	bh=XK6ezY1xONK767U9Lk+vjbRYCqceCjp6NPUe3ZtIchI=;
+	s=arc-20240116; t=1730097927; c=relaxed/simple;
+	bh=V+YLAFC5i6ULhrkyC56E9FnDYobR2VLRUH4eALv9hHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=es6u2JwpAl9S6FyZt/JWn3v8enCnlwAb0l4Byfjow+SGQH9e0azIM37en6coMHFC1J/PyihOWMMTR9ucSBgyQRX6wvUvGzdXBHZ74Kzc0AGa4s3pRSXUPICRB4SN2s+faSkstOFzMkv0fCYG4sQhJyaPqlKcy1f4t9JYs+w76eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IApYTO2T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E6DAC4CEC3;
-	Mon, 28 Oct 2024 06:54:44 +0000 (UTC)
+	 MIME-Version; b=I2KPQ0FiHvG2gMe/KPM9nc1jSnm35HLD9oBe1UIE/zECiHwp5I21WdZbzyMl4/H5qJC39BicMNzfqQFcAbK9c6yRLe9KbhUigrV4Vd0sF3u3joQF4YHqbDD3IUeX3RYynAvvAlXvx7erv07PA+svdtN0UOXf02dPsLyt+CDxLwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OM6hx9D8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E73E4C4CEC3;
+	Mon, 28 Oct 2024 06:45:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098484;
-	bh=XK6ezY1xONK767U9Lk+vjbRYCqceCjp6NPUe3ZtIchI=;
+	s=korg; t=1730097927;
+	bh=V+YLAFC5i6ULhrkyC56E9FnDYobR2VLRUH4eALv9hHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IApYTO2TRD2nZ67f6OlDXT/KouABThTP3qbALDX9j2d8RJd53aNDZ+xw/ErnaQbeE
-	 jhtXCPLw3711WWG3N1V3tHoPH5x2ae4gy8d0O9SlbdjtAfN4079x6GmTSjhliKbfs4
-	 nhSBlc4RwsmvfsTPb5YgmKnXptjnQqDfxllpsNHw=
+	b=OM6hx9D891/XlMqL0a0wd4JRzI9hW9xO2MZ7eqDGxlUGLcw5me04ihUhJp0mWwzBD
+	 5waJWTHPF6gNPiT2AajDjzXofgNo43I3FofI0IipnyCeRccbQLdDFZnqpzSU2QQBtr
+	 gfGcnEG4chcpUSJRsRSlRmvVWk4mNZLK/xEFW/xI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.11 246/261] ASoC: SOF: ipc4-topology: Do not set ALH node_id for aggregated DAIs
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	"kernelci.org bot" <bot@kernelci.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.6 208/208] task_work: make TWA_NMI_CURRENT handling conditional on IRQ_WORK
 Date: Mon, 28 Oct 2024 07:26:28 +0100
-Message-ID: <20241028062318.276656503@linuxfoundation.org>
+Message-ID: <20241028062311.771469998@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit 9822b4c90d77e3c6555fb21c459c4a61c6a8619f upstream.
+commit cec6937dd1aae1b38d147bd190cb895d06cf96d0 upstream.
 
-For aggregated DAIs, the node ID is set to the group_id during the DAI
-widget's ipc_prepare op. With the current logic, setting the dai_index
-for node_id in the dai_config is redundant as it will be overwritten
-with the group_id anyway. Removing it will also prevent any accidental
-clearing/resetting of the group_id for aggregated DAIs due to the
-dai_config calls could that happen before the allocated group_id is
-freed.
+The TWA_NMI_CURRENT handling very much depends on IRQ_WORK, but that
+isn't universally enabled everywhere.
 
-Signed-off-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-All: stable@vger.kernel.org # 6.10.x 6.11.x
-Link: https://patch.msgid.link/20241016032910.14601-2-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Maybe the IRQ_WORK infrastructure should just be unconditional - x86
+ends up indirectly enabling it through unconditionally enabling
+PERF_EVENTS, for example.  But it also gets enabled by having SMP
+support, or even if you just have PRINTK enabled.
+
+But in the meantime TWA_NMI_CURRENT causes tons of build failures on
+various odd minimal configs.  Which did show up in linux-next, but
+despite that nobody bothered to fix it or even inform me until -rc1 was
+out.
+
+Fixes: 466e4d801cd4 ("task_work: Add TWA_NMI_CURRENT as an additional notify mode")
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Reported-by: kernelci.org bot <bot@kernelci.org>
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/ipc4-topology.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ kernel/task_work.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/sound/soc/sof/ipc4-topology.c b/sound/soc/sof/ipc4-topology.c
-index 87be7f16e8c2..240fee2166d1 100644
---- a/sound/soc/sof/ipc4-topology.c
-+++ b/sound/soc/sof/ipc4-topology.c
-@@ -3129,9 +3129,20 @@ static int sof_ipc4_dai_config(struct snd_sof_dev *sdev, struct snd_sof_widget *
- 		 * group_id during copier's ipc_prepare op.
- 		 */
- 		if (flags & SOF_DAI_CONFIG_FLAGS_HW_PARAMS) {
-+			struct sof_ipc4_alh_configuration_blob *blob;
-+
-+			blob = (struct sof_ipc4_alh_configuration_blob *)ipc4_copier->copier_config;
- 			ipc4_copier->dai_index = data->dai_node_id;
--			copier_data->gtw_cfg.node_id &= ~SOF_IPC4_NODE_INDEX_MASK;
--			copier_data->gtw_cfg.node_id |= SOF_IPC4_NODE_INDEX(data->dai_node_id);
-+
-+			/*
-+			 * no need to set the node_id for aggregated DAI's. These will be assigned
-+			 * a group_id during widget ipc_prepare
-+			 */
-+			if (blob->alh_cfg.device_count == 1) {
-+				copier_data->gtw_cfg.node_id &= ~SOF_IPC4_NODE_INDEX_MASK;
-+				copier_data->gtw_cfg.node_id |=
-+					SOF_IPC4_NODE_INDEX(data->dai_node_id);
-+			}
- 		}
+--- a/kernel/task_work.c
++++ b/kernel/task_work.c
+@@ -6,12 +6,14 @@
  
+ static struct callback_head work_exited; /* all we need is ->next == NULL */
+ 
++#ifdef CONFIG_IRQ_WORK
+ static void task_work_set_notify_irq(struct irq_work *entry)
+ {
+ 	test_and_set_tsk_thread_flag(current, TIF_NOTIFY_RESUME);
+ }
+ static DEFINE_PER_CPU(struct irq_work, irq_work_NMI_resume) =
+ 	IRQ_WORK_INIT_HARD(task_work_set_notify_irq);
++#endif
+ 
+ /**
+  * task_work_add - ask the @task to execute @work->func()
+@@ -59,6 +61,8 @@ int task_work_add(struct task_struct *ta
+ 	if (notify == TWA_NMI_CURRENT) {
+ 		if (WARN_ON_ONCE(task != current))
+ 			return -EINVAL;
++		if (!IS_ENABLED(CONFIG_IRQ_WORK))
++			return -EINVAL;
+ 	} else {
+ 		/*
+ 		 * Record the work call stack in order to print it in KASAN
+@@ -92,9 +96,11 @@ int task_work_add(struct task_struct *ta
+ 	case TWA_SIGNAL_NO_IPI:
+ 		__set_notify_signal(task);
  		break;
--- 
-2.47.0
-
++#ifdef CONFIG_IRQ_WORK
+ 	case TWA_NMI_CURRENT:
+ 		irq_work_queue(this_cpu_ptr(&irq_work_NMI_resume));
+ 		break;
++#endif
+ 	default:
+ 		WARN_ON_ONCE(1);
+ 		break;
 
 
 
