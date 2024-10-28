@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E38989B270C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 286E19B2820
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:54:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BF59282193
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E32EA286473
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB8818E74D;
-	Mon, 28 Oct 2024 06:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7254118E05D;
+	Mon, 28 Oct 2024 06:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="msqDYV1X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K9L+7HEY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D5918E37F;
-	Mon, 28 Oct 2024 06:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D28B824A3;
+	Mon, 28 Oct 2024 06:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097893; cv=none; b=Z5jz183Hycqx/DXLl953lIsQp0eKec5SSiwFVO6rmFwHFDcc+p4qSjeuxlKkdNfQre+dvrEjLOgi4Khb0Ol+GJYuB/vZZ6UTrrZUwNzK6Xo5eIO81izYCiSygZaGSruX7K9aDTq10/Kmyxg1gq3Fqf/u0y2VSyI40WVUATtDvrw=
+	t=1730098453; cv=none; b=kADsAUhve8bbqSlUo5ud6y+8v2DG3NGz6Q7UR9WAgMq5SOzc4IiYdI01zLHKNssWQqQgmrb72cpulZPcPyC5E31TUt8JIMsPKAMf3wzXdgfMWNCk+QRbv7PSvHspqTXD2Wf0FIDIxUDgLeKzE5BQFaVRo0/pm5/9B1zt+aUcIz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097893; c=relaxed/simple;
-	bh=IQ0cnZKbbUk/cshIV5O40tTmi0dstdpTrOOLS8VI1Vc=;
+	s=arc-20240116; t=1730098453; c=relaxed/simple;
+	bh=9LEDWVIA61+782YjdnP9LfAdZ/KQLlhoNjS/I2FDg+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h110w8z/y+4jPzjm6VGyCPurnRmUm7hVDMnuhppn/1dhXCY+bJ8CUcSGgTBH6ophcEFJl07A+xYcrwql1TlTmn0CCg3E4LYUbFWlyvnyw06E5jll+3s6hkvDa5jxzmHPmyU9gl48773nQFD08t3z0icHyAYbVy5UzR9HaEJeLio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=msqDYV1X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39202C4CEC3;
-	Mon, 28 Oct 2024 06:44:53 +0000 (UTC)
+	 MIME-Version; b=TgbdV83SDLFVuLnnCaD9lcRJqjshlbgvr/0XYJLRKBPSG4Bd8/g9mJcB+SOfgcndKZs2z+HBCPErORUM5oUZ/XtL//I+pa6ZdhUSVJr6e9SrvdL6rcUY7mKNPHloRfhau7UZHCXOg5TlvtrCWnLKguq2Cie2VafIhxuOotUmJ60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K9L+7HEY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0726C4CEC3;
+	Mon, 28 Oct 2024 06:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097893;
-	bh=IQ0cnZKbbUk/cshIV5O40tTmi0dstdpTrOOLS8VI1Vc=;
+	s=korg; t=1730098453;
+	bh=9LEDWVIA61+782YjdnP9LfAdZ/KQLlhoNjS/I2FDg+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=msqDYV1X1OD8joy7tB/GwUwjlG/CYxmObCnXi5pF0wJ8CM5PJQK23vF9W8tAUTWWq
-	 kSJmDyZ8SLbGF/g7f7RCbWmAskg2hlHg2TpXWSpEslVC1gnb/jyQIFiooGO26jN+6F
-	 QzvdQGIvvMVmBXU9pftoxfwgq8pWv/WJepxfHzvY=
+	b=K9L+7HEY5Ksu8pcadGBB2Cr7vtZDfSbbA0RHiyq9RyM6cjIkG0Wdk/CkzaYq8CTKL
+	 J7Thzw1Y34GGfjJOwWk9R3U0TgTu1egPcUEbvFo9aarEybyib1aG65Rg0TFrG9d3RS
+	 /ViwTfuGuwWfZ7/yw3iMv6KucAruNYciOIk3fS38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 195/208] hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.11 233/261] drm/bridge: Fix assignment of the of_node of the parent to aux bridge
 Date: Mon, 28 Oct 2024 07:26:15 +0100
-Message-ID: <20241028062311.435777021@linuxfoundation.org>
+Message-ID: <20241028062317.954794404@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-commit 4c262801ea60c518b5bebc22a09f5b78b3147da2 upstream.
+commit 85e444a68126a631221ae32c63fce882bb18a262 upstream.
 
-The existing code moves VF to the same namespace as the synthetic NIC
-during netvsc_register_vf(). But, if the synthetic device is moved to a
-new namespace after the VF registration, the VF won't be moved together.
+The assignment of the of_node to the aux bridge needs to mark the
+of_node as reused as well, otherwise resource providers like pinctrl will
+report a gpio as already requested by a different device when both pinconf
+and gpios property are present.
+Fix that by using the device_set_of_node_from_dev() helper instead.
 
-To make the behavior more consistent, add a namespace check for synthetic
-NIC's NETDEV_REGISTER event (generated during its move), and move the VF
-if it is not in the same namespace.
-
-Cc: stable@vger.kernel.org
-Fixes: c0a41b887ce6 ("hv_netvsc: move VF to same namespace as netvsc device")
-Suggested-by: Stephen Hemminger <stephen@networkplumber.org>
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/1729275922-17595-1-git-send-email-haiyangz@microsoft.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 6914968a0b52 ("drm/bridge: properly refcount DT nodes in aux bridge drivers")
+Cc: stable@vger.kernel.org      # 6.8
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241018-drm-aux-bridge-mark-of-node-reused-v2-1-aeed1b445c7d@linaro.org
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241018-drm-aux-bridge-mark-of-node-reused-v2-1-aeed1b445c7d@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/hyperv/netvsc_drv.c |   30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ drivers/gpu/drm/bridge/aux-bridge.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -2795,6 +2795,31 @@ static struct  hv_driver netvsc_drv = {
- 	},
- };
+--- a/drivers/gpu/drm/bridge/aux-bridge.c
++++ b/drivers/gpu/drm/bridge/aux-bridge.c
+@@ -58,9 +58,10 @@ int drm_aux_bridge_register(struct devic
+ 	adev->id = ret;
+ 	adev->name = "aux_bridge";
+ 	adev->dev.parent = parent;
+-	adev->dev.of_node = of_node_get(parent->of_node);
+ 	adev->dev.release = drm_aux_bridge_release;
  
-+/* Set VF's namespace same as the synthetic NIC */
-+static void netvsc_event_set_vf_ns(struct net_device *ndev)
-+{
-+	struct net_device_context *ndev_ctx = netdev_priv(ndev);
-+	struct net_device *vf_netdev;
-+	int ret;
++	device_set_of_node_from_dev(&adev->dev, parent);
 +
-+	vf_netdev = rtnl_dereference(ndev_ctx->vf_netdev);
-+	if (!vf_netdev)
-+		return;
-+
-+	if (!net_eq(dev_net(ndev), dev_net(vf_netdev))) {
-+		ret = dev_change_net_namespace(vf_netdev, dev_net(ndev),
-+					       "eth%d");
-+		if (ret)
-+			netdev_err(vf_netdev,
-+				   "Cannot move to same namespace as %s: %d\n",
-+				   ndev->name, ret);
-+		else
-+			netdev_info(vf_netdev,
-+				    "Moved VF to namespace with: %s\n",
-+				    ndev->name);
-+	}
-+}
-+
- /*
-  * On Hyper-V, every VF interface is matched with a corresponding
-  * synthetic interface. The synthetic interface is presented first
-@@ -2807,6 +2832,11 @@ static int netvsc_netdev_event(struct no
- 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
- 	int ret = 0;
- 
-+	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
-+		netvsc_event_set_vf_ns(event_dev);
-+		return NOTIFY_DONE;
-+	}
-+
- 	ret = check_dev_is_matching_vf(event_dev);
- 	if (ret != 0)
- 		return NOTIFY_DONE;
+ 	ret = auxiliary_device_init(adev);
+ 	if (ret) {
+ 		ida_free(&drm_aux_bridge_ida, adev->id);
 
 
 
