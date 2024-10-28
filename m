@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B9A59B2587
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:32:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9810E9B25F9
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 226CE1F21AED
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:32:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7D8E1C21033
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD71218DF8B;
-	Mon, 28 Oct 2024 06:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C5318FC8F;
+	Mon, 28 Oct 2024 06:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1r2+ZJ2f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yd6DetGw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6DC18D629;
-	Mon, 28 Oct 2024 06:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BED18FC65;
+	Mon, 28 Oct 2024 06:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097126; cv=none; b=PpquSdxignNwIY1bNIErCYdOk/qnn3s/53SbJEptHDzK1JPFI9yGV58XWvqD7hzA01tRx8080VaWpFDeRymxFLTMoP4Ls2BoCvk/QljxzXTjWJLQuRMmwzGvVzZo3nYwd3KcxAq3t2egHtRob3TlRq8hiC319yNmUJuK0WMeojM=
+	t=1730097330; cv=none; b=nUZzNGyk2s1ZEI6WD6oX3oYvxigz6S8A1kfT05E6uIQX6Sz4Gh7GfxywiDC6YS6i76ebldRni/8aTlv8BluPnv255U/zo5JPbkHGcV7xiPWbd9YbHNwVYoULjbSR5NKfmx9mYbgIufA/rC3PREbD4J2hL5btsxwQ407bO5pYA6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097126; c=relaxed/simple;
-	bh=PEnxsS8GPdv5zsRDzw4RI5mz1Qn0fiWaOpCOd6Hh74E=;
+	s=arc-20240116; t=1730097330; c=relaxed/simple;
+	bh=l58fGSZBVrYzpiN4IAhgiv2fOqekJTL1qAVsgxgK2/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FYksI9zNpmykXZLInW3VGC0oSsucxCvMyFt+8OZ0T5qReJZP6okwsnFB6cvS4wNOuLcmTTQboFZI0wxBIKUpniviv80kEK0JZEdmFoC6GtcLDJyOO6mx3KqGuE20ahVz8xkyFtkhoKWRRSSc1jdfUh/NXHBuqwekWJsiPh4TpDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1r2+ZJ2f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 051E8C4CEC7;
-	Mon, 28 Oct 2024 06:32:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MLz2JbBG2RLq3So4PW24WoUfaXagJ6Uvh5HrjtjTQIoMTuFGtSAhTzp6TrqQuMhzU7cW1SzQbdDBfTbgBOoCW9aKLNaSnNhMKibpUslq/5d4BYuztt1V83fqe93Lz7uLfV9CVjesX2tXe2w856btVIE8tCof/Y342Ofk39cF+IA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yd6DetGw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8FD6C4CEC3;
+	Mon, 28 Oct 2024 06:35:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097126;
-	bh=PEnxsS8GPdv5zsRDzw4RI5mz1Qn0fiWaOpCOd6Hh74E=;
+	s=korg; t=1730097330;
+	bh=l58fGSZBVrYzpiN4IAhgiv2fOqekJTL1qAVsgxgK2/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1r2+ZJ2f6kMr6eRkBGp9MLABR8iKWQr7arhvJ6rVeDxXaS7Vi+uQup6qvCSJ0T8SM
-	 P8/nnriAriYGCK7kg1FTYUw5PhyeQcIBB3fEWJKO3nvYT3lOauT0BCqGDPbz5t84eX
-	 DddIBWjPECGkiIYUPKlSZiyW7OvmQjhNVpd+wIdg=
+	b=yd6DetGwOZY7GDDBivTsuXdwqUkwmJM2Melo0w0jopDxGT7GWMABTUovOIEDODvEm
+	 y3qiRGgb05N1RcFRU9EOkMVPXEenE0x6fzn5zuL2BjjOoryPgIHx4apCnvR5OSrDjq
+	 opMwqhF7nBps2ZR1hV4xuJxEnJEfxG6bZo5K4zC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 40/80] exec: dont WARN for racy path_noexec check
+Subject: [PATCH 6.1 083/137] LoongArch: Dont crash in stack_top() for tasks without vDSO
 Date: Mon, 28 Oct 2024 07:25:20 +0100
-Message-ID: <20241028062253.735097443@linuxfoundation.org>
+Message-ID: <20241028062301.054498754@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +60,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mateusz Guzik <mjguzik@gmail.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 0d196e7589cefe207d5d41f37a0a28a1fdeeb7c6 ]
+[ Upstream commit 134475a9ab8487527238d270639a8cb74c10aab2 ]
 
-Both i_mode and noexec checks wrapped in WARN_ON stem from an artifact
-of the previous implementation. They used to legitimately check for the
-condition, but that got moved up in two commits:
-633fb6ac3980 ("exec: move S_ISREG() check earlier")
-0fd338b2d2cd ("exec: move path_noexec() check earlier")
+Not all tasks have a vDSO mapped, for example kthreads never do. If such
+a task ever ends up calling stack_top(), it will derefence the NULL vdso
+pointer and crash.
 
-Instead of being removed said checks are WARN_ON'ed instead, which
-has some debug value.
+This can for example happen when using kunit:
 
-However, the spurious path_noexec check is racy, resulting in
-unwarranted warnings should someone race with setting the noexec flag.
+	[<9000000000203874>] stack_top+0x58/0xa8
+	[<90000000002956cc>] arch_pick_mmap_layout+0x164/0x220
+	[<90000000003c284c>] kunit_vm_mmap_init+0x108/0x12c
+	[<90000000003c1fbc>] __kunit_add_resource+0x38/0x8c
+	[<90000000003c2704>] kunit_vm_mmap+0x88/0xc8
+	[<9000000000410b14>] usercopy_test_init+0xbc/0x25c
+	[<90000000003c1db4>] kunit_try_run_case+0x5c/0x184
+	[<90000000003c3d54>] kunit_generic_run_threadfn_adapter+0x24/0x48
+	[<900000000022e4bc>] kthread+0xc8/0xd4
+	[<9000000000200ce8>] ret_from_kernel_thread+0xc/0xa4
 
-One can note there is more to perm-checking whether execve is allowed
-and none of the conditions are guaranteed to still hold after they were
-tested for.
-
-Additionally this does not validate whether the code path did any perm
-checking to begin with -- it will pass if the inode happens to be
-regular.
-
-Keep the redundant path_noexec() check even though it's mindless
-nonsense checking for guarantee that isn't given so drop the WARN.
-
-Reword the commentary and do small tidy ups while here.
-
-Signed-off-by: Mateusz Guzik <mjguzik@gmail.com>
-Link: https://lore.kernel.org/r/20240805131721.765484-1-mjguzik@gmail.com
-[brauner: keep redundant path_noexec() check]
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[cascardo: keep exit label and use it]
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Fixes: 803b0fc5c3f2 ("LoongArch: Add process management")
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exec.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ arch/loongarch/kernel/process.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/fs/exec.c b/fs/exec.c
-index 26f0b79cb4f94..8395e7ff7b940 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -142,13 +142,11 @@ SYSCALL_DEFINE1(uselib, const char __user *, library)
- 		goto out;
+diff --git a/arch/loongarch/kernel/process.c b/arch/loongarch/kernel/process.c
+index 51176e5ecee59..4561bc81c0639 100644
+--- a/arch/loongarch/kernel/process.c
++++ b/arch/loongarch/kernel/process.c
+@@ -271,13 +271,15 @@ unsigned long stack_top(void)
+ {
+ 	unsigned long top = TASK_SIZE & PAGE_MASK;
  
- 	/*
--	 * may_open() has already checked for this, so it should be
--	 * impossible to trip now. But we need to be extra cautious
--	 * and check again at the very end too.
-+	 * Check do_open_execat() for an explanation.
- 	 */
- 	error = -EACCES;
--	if (WARN_ON_ONCE(!S_ISREG(file_inode(file)->i_mode) ||
--			 path_noexec(&file->f_path)))
-+	if (WARN_ON_ONCE(!S_ISREG(file_inode(file)->i_mode)) ||
-+	    path_noexec(&file->f_path))
- 		goto exit;
+-	/* Space for the VDSO & data page */
+-	top -= PAGE_ALIGN(current->thread.vdso->size);
+-	top -= VVAR_SIZE;
+-
+-	/* Space to randomize the VDSO base */
+-	if (current->flags & PF_RANDOMIZE)
+-		top -= VDSO_RANDOMIZE_SIZE;
++	if (current->thread.vdso) {
++		/* Space for the VDSO & data page */
++		top -= PAGE_ALIGN(current->thread.vdso->size);
++		top -= VVAR_SIZE;
++
++		/* Space to randomize the VDSO base */
++		if (current->flags & PF_RANDOMIZE)
++			top -= VDSO_RANDOMIZE_SIZE;
++	}
  
- 	fsnotify_open(file);
-@@ -919,16 +917,16 @@ static struct file *do_open_execat(int fd, struct filename *name, int flags)
- 
- 	file = do_filp_open(fd, name, &open_exec_flags);
- 	if (IS_ERR(file))
--		goto out;
-+		return file;
- 
- 	/*
--	 * may_open() has already checked for this, so it should be
--	 * impossible to trip now. But we need to be extra cautious
--	 * and check again at the very end too.
-+	 * In the past the regular type check was here. It moved to may_open() in
-+	 * 633fb6ac3980 ("exec: move S_ISREG() check earlier"). Since then it is
-+	 * an invariant that all non-regular files error out before we get here.
- 	 */
- 	err = -EACCES;
--	if (WARN_ON_ONCE(!S_ISREG(file_inode(file)->i_mode) ||
--			 path_noexec(&file->f_path)))
-+	if (WARN_ON_ONCE(!S_ISREG(file_inode(file)->i_mode)) ||
-+	    path_noexec(&file->f_path))
- 		goto exit;
- 
- 	err = deny_write_access(file);
-@@ -938,7 +936,6 @@ static struct file *do_open_execat(int fd, struct filename *name, int flags)
- 	if (name->name[0] != '\0')
- 		fsnotify_open(file);
- 
--out:
- 	return file;
- 
- exit:
+ 	return top;
+ }
 -- 
 2.43.0
 
