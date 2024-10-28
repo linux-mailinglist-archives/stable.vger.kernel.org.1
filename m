@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-88628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 289949B26CB
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:42:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E42FE9B25F6
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E19E3282503
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:42:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28257280F7A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EBCA18E36D;
-	Mon, 28 Oct 2024 06:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F0718FC75;
+	Mon, 28 Oct 2024 06:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tenEOuhK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZmGKMfM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF4C15B10D;
-	Mon, 28 Oct 2024 06:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F7318F2FD;
+	Mon, 28 Oct 2024 06:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097763; cv=none; b=deZFR1vJjAydk4LenhitRx2ReS0zNNtD0LotbY4ae/F1xeCKfWKF0XAVBL+zJQjaH7LXmWGnnkXJTaTI3GSBZXwfV8j7HhaUuxmQwK6IJR6jz8UiCQtxyj3oQS6uFM3UWg7IxR299PFBP7nT3sZUtEYBvK0BNp6Ui4Zj1nbzCgQ=
+	t=1730097319; cv=none; b=QntlNBx0vqnbwwNLa7tAJvLAF2Im8VV0D7mDXRccicwdKDz0D5AkNm0lSbe56Am8cpC9/Y03jmXTlXYx944KaEHYM8UbMxjdUkqCbcPkoqmKPLHZRQZn+6Nq+XnZo7UB2xqS2/e/WTG2Qu6eV+Rh0piWhLUWl/O24k04S4HUbrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097763; c=relaxed/simple;
-	bh=xZRzH5tpZ1K6lOamqwJNRkm4bjsvgxIs6SVB7668QW0=;
+	s=arc-20240116; t=1730097319; c=relaxed/simple;
+	bh=YLh2/V7y3hSvFwXOyx04GL5/eh2U1NxgyYhUQaV3u5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L6NqM5islDsGTeIzRRS3K2BIfMhZTFfKrJ6gNKDNqQyhW5wnbjjC+xXV1LuBI/+shqWTpfnY1AAPILhGkJzrVbW7uEks1pAC4cHUW6ioJJYFcD/ey8bttyYjdtaacoLTYi1nQ7Wi1jq8+OGifdHjZ2q/SgJefjuULwe57tGWk3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tenEOuhK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1E4C4CEC3;
-	Mon, 28 Oct 2024 06:42:43 +0000 (UTC)
+	 MIME-Version; b=Tj8AqdaEjX0r2ZurGTqnzV6bUy26f25O/CWvJMxWXGDc1ZqmISdBvldkUOIjrVXMlifIrd/NH+QciW7TsvkmFv0bCxEA/7nhP8m/N8Cvj8trQyDIrWlolRtli2TCKR0J9yCOeNs3j5LjGMouGOfRk3DgZ5MIA/V8iLvy9u9AYdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZmGKMfM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F2BC4CEC3;
+	Mon, 28 Oct 2024 06:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097763;
-	bh=xZRzH5tpZ1K6lOamqwJNRkm4bjsvgxIs6SVB7668QW0=;
+	s=korg; t=1730097318;
+	bh=YLh2/V7y3hSvFwXOyx04GL5/eh2U1NxgyYhUQaV3u5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tenEOuhKnyQPGWd2gMdgiegNS+zTe9EeG3hXGMFKTOSEfBhakE0wxEnkSr9VhwsVH
-	 Ig7g1cgniOa/ADFvkWCuNke2//gs5QDMRWRoyjeT4h4d2EZxVTPIuBMCDbTWFFh0xQ
-	 WLVgtBFbPSVtEbkyivtBckC/esPw7vMdu+Ei2tp4=
+	b=VZmGKMfMvvR2yJX+4NT0NGifE+tjAV3rDBdhCvvguPs9QgklRsQJqmE137tNAOP+J
+	 sr9m9i/J8uYFVzlzcTnrxufdhqcfGlxOOtz4tsO8xy1aTwUZRBIYR3us756GoF2HjR
+	 8igdg2KF9gmYfM61y8yYFcSY4UA+DXH0TpHwBSLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Lai, Yi" <yi1.lai@linux.intel.com>,
-	Florian Westphal <fw@strlen.de>,
-	Eric Dumazet <edumazet@google.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	syzbot+8901c4560b7ab5c2f9df@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.com>,
+	Gianfranco Trad <gianf.trad@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 135/208] netfilter: bpf: must hold reference on net namespace
-Date: Mon, 28 Oct 2024 07:25:15 +0100
-Message-ID: <20241028062309.962437525@linuxfoundation.org>
+Subject: [PATCH 6.1 079/137] udf: fix uninit-value use in udf_get_fileshortad
+Date: Mon, 28 Oct 2024 07:25:16 +0100
+Message-ID: <20241028062300.944460806@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Gianfranco Trad <gianf.trad@gmail.com>
 
-[ Upstream commit 1230fe7ad3974f7bf6c78901473e039b34d4fb1f ]
+[ Upstream commit 264db9d666ad9a35075cc9ed9ec09d021580fbb1 ]
 
-BUG: KASAN: slab-use-after-free in __nf_unregister_net_hook+0x640/0x6b0
-Read of size 8 at addr ffff8880106fe400 by task repro/72=
-bpf_nf_link_release+0xda/0x1e0
-bpf_link_free+0x139/0x2d0
-bpf_link_release+0x68/0x80
-__fput+0x414/0xb60
+Check for overflow when computing alen in udf_current_aext to mitigate
+later uninit-value use in udf_get_fileshortad KMSAN bug[1].
+After applying the patch reproducer did not trigger any issue[2].
 
-Eric says:
- It seems that bpf was able to defer the __nf_unregister_net_hook()
- after exit()/close() time.
- Perhaps a netns reference is missing, because the netns has been
- dismantled/freed already.
- bpf_nf_link_attach() does :
- link->net = net;
- But I do not see a reference being taken on net.
+[1] https://syzkaller.appspot.com/bug?extid=8901c4560b7ab5c2f9df
+[2] https://syzkaller.appspot.com/x/log.txt?x=10242227980000
 
-Add such a reference and release it after hook unreg.
-Note that I was unable to get syzbot reproducer to work, so I
-do not know if this resolves this splat.
-
-Fixes: 84601d6ee68a ("bpf: add bpf_link support for BPF_NETFILTER programs")
-Diagnosed-by: Eric Dumazet <edumazet@google.com>
-Reported-by: Lai, Yi <yi1.lai@linux.intel.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Reported-by: syzbot+8901c4560b7ab5c2f9df@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=8901c4560b7ab5c2f9df
+Tested-by: syzbot+8901c4560b7ab5c2f9df@syzkaller.appspotmail.com
+Suggested-by: Jan Kara <jack@suse.com>
+Signed-off-by: Gianfranco Trad <gianf.trad@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240925074613.8475-3-gianf.trad@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_bpf_link.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/udf/inode.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_bpf_link.c b/net/netfilter/nf_bpf_link.c
-index 96015a59db09e..2aad0562a4135 100644
---- a/net/netfilter/nf_bpf_link.c
-+++ b/net/netfilter/nf_bpf_link.c
-@@ -23,6 +23,7 @@ static unsigned int nf_hook_run_bpf(void *bpf_prog, struct sk_buff *skb,
- struct bpf_nf_link {
- 	struct bpf_link link;
- 	struct nf_hook_ops hook_ops;
-+	netns_tracker ns_tracker;
- 	struct net *net;
- 	u32 dead;
- 	const struct nf_defrag_hook *defrag_hook;
-@@ -120,6 +121,7 @@ static void bpf_nf_link_release(struct bpf_link *link)
- 	if (!cmpxchg(&nf_link->dead, 0, 1)) {
- 		nf_unregister_net_hook(nf_link->net, &nf_link->hook_ops);
- 		bpf_nf_disable_defrag(nf_link);
-+		put_net_track(nf_link->net, &nf_link->ns_tracker);
- 	}
- }
- 
-@@ -258,6 +260,8 @@ int bpf_nf_link_attach(const union bpf_attr *attr, struct bpf_prog *prog)
- 		return err;
- 	}
- 
-+	get_net_track(net, &link->ns_tracker, GFP_KERNEL);
+diff --git a/fs/udf/inode.c b/fs/udf/inode.c
+index fac28caca356a..d7d6ccd0af064 100644
+--- a/fs/udf/inode.c
++++ b/fs/udf/inode.c
+@@ -2107,12 +2107,15 @@ int udf_current_aext(struct inode *inode, struct extent_position *epos,
+ 		alen = udf_file_entry_alloc_offset(inode) +
+ 							iinfo->i_lenAlloc;
+ 	} else {
++		struct allocExtDesc *header =
++			(struct allocExtDesc *)epos->bh->b_data;
 +
- 	return bpf_link_settle(&link_primer);
- }
+ 		if (!epos->offset)
+ 			epos->offset = sizeof(struct allocExtDesc);
+ 		ptr = epos->bh->b_data + epos->offset;
+-		alen = sizeof(struct allocExtDesc) +
+-			le32_to_cpu(((struct allocExtDesc *)epos->bh->b_data)->
+-							lengthAllocDescs);
++		if (check_add_overflow(sizeof(struct allocExtDesc),
++				le32_to_cpu(header->lengthAllocDescs), &alen))
++			return -1;
+ 	}
  
+ 	switch (iinfo->i_alloc_type) {
 -- 
 2.43.0
 
