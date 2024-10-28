@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B12AF9B2619
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E893C9B2589
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:32:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2E271C20F7E
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9AD12818C6
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100FB18F2DF;
-	Mon, 28 Oct 2024 06:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE85A18E03A;
+	Mon, 28 Oct 2024 06:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HmUV8kU3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJQ9UbWt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C218A18EFC8;
-	Mon, 28 Oct 2024 06:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B32315B10D;
+	Mon, 28 Oct 2024 06:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097398; cv=none; b=pSu8tL7Z2JT424YylnRpB4W+RAKkPv4fhxk2cumqmz9fIVlsZZZH9ryjQM2COmZMxKnqv32GMZ5rGCWWx+1WNC7fgUvqnbNmTY9UgqBN0tB6NQq29iLXGHcp8cEfv8q0X1UH405w7s/80n2cHlun0ONOU9LFxtq+j5k/nDkpUwU=
+	t=1730097132; cv=none; b=RG2IZYjYZZR8UGkuV+SQ47mptMFVv9jSDVe7PiyYtlZLRHaZeYvee5t8fcsJ5SyuU4DD2S0ndiT63yuprBRe/sd4RwpYGcUfKLiFvaE6TaHLBfzjVJkuN/dNmD/UOFyDTR2zYJhtoKqgKxXnyDoSD3NMafXscLPVbQASbfLXHgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097398; c=relaxed/simple;
-	bh=8k8AAvvMdiGoDU6bz5QtfHPANWAilmrIJ56rSQrO8dg=;
+	s=arc-20240116; t=1730097132; c=relaxed/simple;
+	bh=L6FYctoEM0P/qmj0KnqMMcGoL0GkczEc8aBg2KG70ZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ksv3pyHlrxhas/GtXUm/QVK299dEDyQPZxL+g5lmmZv0NK7v0tlaJxMJtOSQ+DuHZTYukR1xqQpeoJaRjgvr4bRgPj57qJzPrGOX3djhcetE1Tui/i+WLek3XpoXE2LiHhS3GTTiqweH7tQm7OwTzbeWWZMEeLN6k8eh2517l9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HmUV8kU3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F839C4CEC3;
-	Mon, 28 Oct 2024 06:36:37 +0000 (UTC)
+	 MIME-Version; b=VQknFa9BywLbID09/69yPAjE8FFURFmvk/pRocZXdss7NQuqM3y3sQjp7OxIwcp2HTWzBm8XCEtxSPH7SCOqwUYxoI5ENmsggwD8JMAyN4HWc3jY0PtyHkAfKtlu4V1zLbHQ4E/cUEkt3VDL+ClpH017bv9Gf9D4tPbDr2kA/MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GJQ9UbWt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6DF1C4CEC7;
+	Mon, 28 Oct 2024 06:32:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097398;
-	bh=8k8AAvvMdiGoDU6bz5QtfHPANWAilmrIJ56rSQrO8dg=;
+	s=korg; t=1730097132;
+	bh=L6FYctoEM0P/qmj0KnqMMcGoL0GkczEc8aBg2KG70ZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HmUV8kU30N0U2GSuHvYYWJYPhXzTFebCeQuGCW9ptKsY2cktTL8MMnumzyzpgkiGN
-	 r/29XiGGpfwkN1R/pdU5t+Xvzd7qQNFj6ZiUYd2utmnIe36b73gLbAjMHAbgeKEOVW
-	 Qre99yc/BRW2zS58yichY9edLLiHDXgRXkTM6358=
+	b=GJQ9UbWtprSru1x62O4O+XiImaUWjmjoss2qHSwbCvhR988Dbo14ZVDZ1B3xGfP1g
+	 zngCO45daejANAjrWNVALnBWne1553HRTo7C4t8MOadtIUTj7P5KG3ul+IbRUu8yeJ
+	 F9k0jPWdmJhwW5Kbyowj9U82ZOrT1gmVeBtPW27k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	liwei <liwei728@huawei.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 114/137] cpufreq: CPPC: fix perf_to_khz/khz_to_perf conversion exception
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+985ada84bf055a575c07@syzkaller.appspotmail.com,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.15 71/80] nilfs2: fix kernel bug due to missing clearing of buffer delay flag
 Date: Mon, 28 Oct 2024 07:25:51 +0100
-Message-ID: <20241028062301.897548374@linuxfoundation.org>
+Message-ID: <20241028062254.581903686@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: liwei <liwei728@huawei.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit d93df29bdab133b85e94b3c328e7fe26a0ebd56c ]
+commit 6ed469df0bfbef3e4b44fca954a781919db9f7ab upstream.
 
-When the nominal_freq recorded by the kernel is equal to the lowest_freq,
-and the frequency adjustment operation is triggered externally, there is
-a logic error in cppc_perf_to_khz()/cppc_khz_to_perf(), resulting in perf
-and khz conversion errors.
+Syzbot reported that after nilfs2 reads a corrupted file system image
+and degrades to read-only, the BUG_ON check for the buffer delay flag
+in submit_bh_wbc() may fail, causing a kernel bug.
 
-Fix this by adding a branch processing logic when nominal_freq is equal
-to lowest_freq.
+This is because the buffer delay flag is not cleared when clearing the
+buffer state flags to discard a page/folio or a buffer head. So, fix
+this.
 
-Fixes: ec1c7ad47664 ("cpufreq: CPPC: Fix performance/frequency conversion")
-Signed-off-by: liwei <liwei728@huawei.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/20241024022952.2627694-1-liwei728@huawei.com
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This became necessary when the use of nilfs2's own page clear routine
+was expanded.  This state inconsistency does not occur if the buffer
+is written normally by log writing.
+
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Link: https://lore.kernel.org/r/20241015213300.7114-1-konishi.ryusuke@gmail.com
+Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
+Reported-by: syzbot+985ada84bf055a575c07@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=985ada84bf055a575c07
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/cppc_acpi.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ fs/nilfs2/page.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 8d4b72488eb5e..3d9326172af49 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -1718,9 +1718,15 @@ unsigned int cppc_perf_to_khz(struct cppc_perf_caps *caps, unsigned int perf)
- 	u64 mul, div;
+--- a/fs/nilfs2/page.c
++++ b/fs/nilfs2/page.c
+@@ -77,7 +77,8 @@ void nilfs_forget_buffer(struct buffer_h
+ 	const unsigned long clear_bits =
+ 		(BIT(BH_Uptodate) | BIT(BH_Dirty) | BIT(BH_Mapped) |
+ 		 BIT(BH_Async_Write) | BIT(BH_NILFS_Volatile) |
+-		 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected));
++		 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected) |
++		 BIT(BH_Delay));
  
- 	if (caps->lowest_freq && caps->nominal_freq) {
--		mul = caps->nominal_freq - caps->lowest_freq;
-+		/* Avoid special case when nominal_freq is equal to lowest_freq */
-+		if (caps->lowest_freq == caps->nominal_freq) {
-+			mul = caps->nominal_freq;
-+			div = caps->nominal_perf;
-+		} else {
-+			mul = caps->nominal_freq - caps->lowest_freq;
-+			div = caps->nominal_perf - caps->lowest_perf;
-+		}
- 		mul *= KHZ_PER_MHZ;
--		div = caps->nominal_perf - caps->lowest_perf;
- 		offset = caps->nominal_freq * KHZ_PER_MHZ -
- 			 div64_u64(caps->nominal_perf * mul, div);
- 	} else {
-@@ -1741,11 +1747,17 @@ unsigned int cppc_khz_to_perf(struct cppc_perf_caps *caps, unsigned int freq)
- {
- 	s64 retval, offset = 0;
- 	static u64 max_khz;
--	u64  mul, div;
-+	u64 mul, div;
+ 	lock_buffer(bh);
+ 	set_mask_bits(&bh->b_state, clear_bits, 0);
+@@ -409,7 +410,8 @@ void nilfs_clear_dirty_page(struct page
+ 		const unsigned long clear_bits =
+ 			(BIT(BH_Uptodate) | BIT(BH_Dirty) | BIT(BH_Mapped) |
+ 			 BIT(BH_Async_Write) | BIT(BH_NILFS_Volatile) |
+-			 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected));
++			 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected) |
++			 BIT(BH_Delay));
  
- 	if (caps->lowest_freq && caps->nominal_freq) {
--		mul = caps->nominal_perf - caps->lowest_perf;
--		div = caps->nominal_freq - caps->lowest_freq;
-+		/* Avoid special case when nominal_freq is equal to lowest_freq */
-+		if (caps->lowest_freq == caps->nominal_freq) {
-+			mul = caps->nominal_perf;
-+			div = caps->nominal_freq;
-+		} else {
-+			mul = caps->nominal_perf - caps->lowest_perf;
-+			div = caps->nominal_freq - caps->lowest_freq;
-+		}
- 		/*
- 		 * We don't need to convert to kHz for computing offset and can
- 		 * directly use nominal_freq and lowest_freq as the div64_u64
--- 
-2.43.0
-
+ 		bh = head = page_buffers(page);
+ 		do {
 
 
 
