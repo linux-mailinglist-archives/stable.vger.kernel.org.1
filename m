@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-88915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14DB59B280B
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:53:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AFB79B25FA
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4AC11F2151C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:53:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D87A1F21E8C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B0B18F2C3;
-	Mon, 28 Oct 2024 06:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E319B18F2E2;
+	Mon, 28 Oct 2024 06:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y1Gu/+6J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pi//QGBz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF7F1885BE;
-	Mon, 28 Oct 2024 06:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A028818E34F;
+	Mon, 28 Oct 2024 06:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098410; cv=none; b=lIcKXSooLMCld5gVrdXNJrzuuTuFiKulxQVd+oXt3jzFz4Io9O3hmMZ+bGNoJOCcI3Es2Mu2avynF7h5q/YW190MNZiCjcVOOhPu04PRH3eWDyMC8Vn4wlvD7bgetoYfVHDLJzM+0R7xsOoQyPK11fY9bbT/pGKiwlmWipXVJH4=
+	t=1730097332; cv=none; b=Qr5qHIWC/MHrFvES1UbWumBPOtwKx1cWTOSR4dSXo8SYatJAl1n+jApH4XQMlbsRxvFf1XQweMRPER8yBaZt2KDVWxprz0Eqf50uxyVm0e8KYDa4YhAq9UAX3SUtspxMWml5eoY5s1iwfmwep1AOMX+IBZmdbZUatUARPuB4TRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098410; c=relaxed/simple;
-	bh=jrqEiT4vJg3HEZzYxwJl3OArWjnk94i+aqfdJkQh7bg=;
+	s=arc-20240116; t=1730097332; c=relaxed/simple;
+	bh=cw+7idIYpac/N0kAmoYMXRL0kE5P8b2206QkBcGCjnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bIqYJGNX1k2u30pd2DI8VpvQ1TkEn8RrUaawAegHIhN2Jo/cK+ASGnejNXh1Mg3uaXvazV1kIL+FdjqubLRv7QA8dZSiqAFIgckUHOWSAfjYXnbpWlgNhRW5jrXQ9RNsCrtzbaiGWQy65w24vsSR+aD7NfNI+lhXqausR6Ej0L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y1Gu/+6J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C175C4CEC3;
-	Mon, 28 Oct 2024 06:53:30 +0000 (UTC)
+	 MIME-Version; b=Aa2z0wGootF654J8PGxgf92PjNRxDcCZmGlXGVOdVqf9Gfgd9R7i/sn4iSg+XNXOanGsClIZr5Jv2EitxC25VTKwoNrepXXZvdFu4vr0wRW5QEhuMrDhJCWm3jmyVhpfyKxkYJx148nTQVkGO3xX/2r/fGy4pcsC7+DgaZZ3IWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pi//QGBz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F676C4CEC3;
+	Mon, 28 Oct 2024 06:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098410;
-	bh=jrqEiT4vJg3HEZzYxwJl3OArWjnk94i+aqfdJkQh7bg=;
+	s=korg; t=1730097332;
+	bh=cw+7idIYpac/N0kAmoYMXRL0kE5P8b2206QkBcGCjnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y1Gu/+6JTNqCrLrFAbGKtJwazyjniagNuvRTO9RA4dHE+bCLeMUxPLANWDEI9LKAB
-	 KHWX3PBpnSOTV2OhvpwYhYRBFGmCM/Lbatt/zw5qn5Z8mo++GvmxjXuYa/9B0IcWIC
-	 DBgalkvxkKjNVJmxoxQ5LqOYRUfWQf7LhwSReBN4=
+	b=pi//QGBzd5IDDrMGR32PXkQPiy8JLzDeRN+qahNew2oi+H8xrmygg6YOx1ncdbASG
+	 2uxY+f7MYjusSwE8don/B1h03VEtZSf6sJh7+AE3GsodBMRo27bJbSgQcoGK49iKaE
+	 ejvaj4DqPQweekI1QfMSn6ycc35rT1kNPH1SHOpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenghao Yang <me@shenghaoyang.info>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 179/261] net: dsa: mv88e6xxx: support 4000ps cycle counter period
+Subject: [PATCH 6.1 084/137] jfs: Fix sanity check in dbMount
 Date: Mon, 28 Oct 2024 07:25:21 +0100
-Message-ID: <20241028062316.492501565@linuxfoundation.org>
+Message-ID: <20241028062301.082109459@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenghao Yang <me@shenghaoyang.info>
+From: Dave Kleikamp <dave.kleikamp@oracle.com>
 
-[ Upstream commit 3e65ede526cf4f95636dbc835598d100c7668ab3 ]
+[ Upstream commit 67373ca8404fe57eb1bb4b57f314cff77ce54932 ]
 
-The MV88E6393X family of devices can run its cycle counter off
-an internal 250MHz clock instead of an external 125MHz one.
+MAXAG is a legitimate value for bmp->db_numag
 
-Add support for this cycle counter period by adding another set
-of coefficients and lowering the periodic cycle counter read interval
-to compensate for faster overflows at the increased frequency.
+Fixes: e63866a47556 ("jfs: fix out-of-bounds in dbNextAG() and diAlloc()")
 
-Otherwise, the PHC runs at 2x real time in userspace and cannot be
-synchronized.
-
-Fixes: de776d0d316f ("net: dsa: mv88e6xxx: add support for mv88e6393x family")
-Signed-off-by: Shenghao Yang <me@shenghaoyang.info>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/ptp.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ fs/jfs/jfs_dmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/ptp.c b/drivers/net/dsa/mv88e6xxx/ptp.c
-index a409b8661fadd..aed4a4b07f34b 100644
---- a/drivers/net/dsa/mv88e6xxx/ptp.c
-+++ b/drivers/net/dsa/mv88e6xxx/ptp.c
-@@ -40,7 +40,7 @@ static const struct mv88e6xxx_cc_coeffs mv88e6xxx_cc_10ns_coeffs = {
- 	.cc_mult_dem = 3125ULL,
- };
- 
--/* Other families:
-+/* Other families except MV88E6393X in internal clock mode:
-  * Raw timestamps are in units of 8-ns clock periods.
-  *
-  * clkadj = scaled_ppm * 8*2^28 / (10^6 * 2^16)
-@@ -55,6 +55,21 @@ static const struct mv88e6xxx_cc_coeffs mv88e6xxx_cc_8ns_coeffs = {
- 	.cc_mult_dem = 15625ULL
- };
- 
-+/* Family MV88E6393X using internal clock:
-+ * Raw timestamps are in units of 4-ns clock periods.
-+ *
-+ * clkadj = scaled_ppm * 4*2^28 / (10^6 * 2^16)
-+ * simplifies to
-+ * clkadj = scaled_ppm * 2^8 / 5^6
-+ */
-+#define MV88E6XXX_CC_4NS_SHIFT 28
-+static const struct mv88e6xxx_cc_coeffs mv88e6xxx_cc_4ns_coeffs = {
-+	.cc_shift = MV88E6XXX_CC_4NS_SHIFT,
-+	.cc_mult = 4 << MV88E6XXX_CC_4NS_SHIFT,
-+	.cc_mult_num = 1 << 8,
-+	.cc_mult_dem = 15625ULL
-+};
-+
- #define TAI_EVENT_WORK_INTERVAL msecs_to_jiffies(100)
- 
- #define cc_to_chip(cc) container_of(cc, struct mv88e6xxx_chip, tstamp_cc)
-@@ -110,6 +125,8 @@ mv88e6xxx_cc_coeff_get(struct mv88e6xxx_chip *chip)
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 384aa6dfdb95e..a6b1d748df16b 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -187,7 +187,7 @@ int dbMount(struct inode *ipbmap)
  	}
  
- 	switch (period_ps) {
-+	case 4000:
-+		return &mv88e6xxx_cc_4ns_coeffs;
- 	case 8000:
- 		return &mv88e6xxx_cc_8ns_coeffs;
- 	case 10000:
-@@ -483,10 +500,10 @@ static u64 mv88e6xxx_ptp_clock_read(const struct cyclecounter *cc)
- 	return 0;
- }
- 
--/* With a 125MHz input clock, the 32-bit timestamp counter overflows in ~34.3
-+/* With a 250MHz input clock, the 32-bit timestamp counter overflows in ~17.2
-  * seconds; this task forces periodic reads so that we don't miss any.
-  */
--#define MV88E6XXX_TAI_OVERFLOW_PERIOD (HZ * 16)
-+#define MV88E6XXX_TAI_OVERFLOW_PERIOD (HZ * 8)
- static void mv88e6xxx_ptp_overflow_check(struct work_struct *work)
- {
- 	struct delayed_work *dw = to_delayed_work(work);
+ 	bmp->db_numag = le32_to_cpu(dbmp_le->dn_numag);
+-	if (!bmp->db_numag || bmp->db_numag >= MAXAG) {
++	if (!bmp->db_numag || bmp->db_numag > MAXAG) {
+ 		err = -EINVAL;
+ 		goto err_release_metapage;
+ 	}
 -- 
 2.43.0
 
