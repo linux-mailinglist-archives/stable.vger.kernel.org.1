@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-88697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BA3E9B2717
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:45:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5F29B282C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:54:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4146B1F2199E
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:45:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E4B4282988
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D1CC16F8EF;
-	Mon, 28 Oct 2024 06:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 390C418EFDC;
+	Mon, 28 Oct 2024 06:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+PJElIs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXeR9/j/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B54A8837;
-	Mon, 28 Oct 2024 06:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5AE18D649;
+	Mon, 28 Oct 2024 06:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097918; cv=none; b=ppG8mpPnL5oci5lJ+1flgbJAuzfd45fSSB8lZDwGXkoBYwiHRUfDpZUsrqmbXtkXo47Y0ohqHBiQYUccj1izyS5Pek1d4ccUdi3ZS4sbe4Jwa//o1WF+QyL8rrwlXLlLTcDNqHwXG8nmDZrFr3wX0Swndzzwm6JHkmBqEBhByso=
+	t=1730098478; cv=none; b=l05N1RVdAtNgCuaoef+GMYBaaGU4cYiAMZs2DWNOKHAuu8sPfrg6oG4Aelx0XgpZeHHIBpaQiMSDpIajvIcfAETk04CHj8992Sfq9q8Xiq09eshFXL1qP0CLH45IPABD7DkQMoqgZ6zWJiM5off8TIL8iIRsby/RhJZZyY8R65U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097918; c=relaxed/simple;
-	bh=10vVpccgc8w4hYxxY/ZUYtVGbENYqDkIb4mLZHzXt3Q=;
+	s=arc-20240116; t=1730098478; c=relaxed/simple;
+	bh=AOfmFMT0pIIe72NjYAvICkumgqTfie2WOmY5GCJU7II=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I6PLxR67q31BPceVTfRTzVL1H5tpOKhpS9q1TdoF3pOi4HxdW3g6O3IYP8k/deCsMlnN6nBPq4DcgwEoG7lMSc8E1c3GBc4TNPfkzkFfwBJSEn/DZl27MWKNnyejGKAtJ1EkzeLotlUZfLj1TAJvU5R7yVrTGOM6NMnNpGhFIso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+PJElIs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0990C4CEC3;
-	Mon, 28 Oct 2024 06:45:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Goa3fAfcttSxFoe14MuT0hF7D0L5WsaTG5Pr7lf1MuietFxZFI9nKVo1Sk40BsHLaJFfwXDdNKCaPkjsnfZM+xi+mv1JTnevBfbghdDIAEP8WyY+A/BGaO4RxGte2dYF+KB5ZV5rwcIcnbn3GC1dSutJx5Pn6jkgEhHxOqwQzO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXeR9/j/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC80C4CEC3;
+	Mon, 28 Oct 2024 06:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097918;
-	bh=10vVpccgc8w4hYxxY/ZUYtVGbENYqDkIb4mLZHzXt3Q=;
+	s=korg; t=1730098477;
+	bh=AOfmFMT0pIIe72NjYAvICkumgqTfie2WOmY5GCJU7II=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z+PJElIsi/aYPpXbo62oaDyLBWoA8poxT7Wgb3HW9K6iI/ahSR6aOLdTdcl6YP8fl
-	 X23hmWKMoZw0lX157HUfEpEsmaWyxC0lA7BMZ54Uww08AEexaxJ37lSJIoqHmLm9KV
-	 FS+VPa3JQCA7/l6RSaT8OJ8VpsiUuycHbxikqdgs=
+	b=SXeR9/j/WYw5EDNq52YCny0pjvGj9YxohS/YV1uMQs2gFB98sHfq7zRBEJxBCTSLP
+	 hTnlHPzFoZgTzrMVYpP3XDEN5wPNfiMhVH3O7Y8+xkLll/7U7hKCfKuoydHfR+aVy1
+	 sLPR1k1N/W9KrTsRwRsEPOIntr9zqQy7Icg5PjJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kashyap Desai <kashyap.desai@broadcom.com>,
-	Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 6.6 205/208] RDMA/bnxt_re: Avoid creating fence MR for newer adapters
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.11 243/261] ASoC: SOF: Intel: hda-loader: do not wait for HDaudio IOC
 Date: Mon, 28 Oct 2024 07:26:25 +0100
-Message-ID: <20241028062311.693421524@linuxfoundation.org>
+Message-ID: <20241028062318.200990943@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 
-commit 282fd66e2ef6e5d72b8fcd77efb2b282d2569464 upstream.
+commit 9814c1447f9cc67c9e88e0a4423de3a496078360 upstream.
 
-Limit the usage of fence MR to adapters older than Gen P5 products.
+Commit 9ee3f0d8c999 ("ASOC: SOF: Intel: hda-loader: only wait for
+HDaudio IOC for IPC4 devices") removed DMA wait for IPC3 case.
+Proceed and remove the wait for IPC4 devices as well.
 
-Fixes: 1801d87b3598 ("RDMA/bnxt_re: Support new 5760X P7 devices")
-Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://lore.kernel.org/r/1705985677-15551-2-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+There is no dependency to IPC version in the load logic and
+checking the firmware status is a sufficient check in case of
+errors.
+
+The removed code also had a bug in that -ETIMEDOUT is returned
+without stopping the DMA transfer.
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/thesofproject/linux/issues/5135
+Fixes: 9ee3f0d8c999 ("ASOC: SOF: Intel: hda-loader: only wait for HDaudio IOC for IPC4 devices")
+Suggested-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Signed-off-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://patch.msgid.link/20241008060710.15409-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ sound/soc/sof/intel/hda-loader.c |   17 -----------------
+ 1 file changed, 17 deletions(-)
 
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -400,6 +400,10 @@ static void bnxt_re_create_fence_wqe(str
- 	struct bnxt_re_fence_data *fence = &pd->fence;
- 	struct ib_mr *ib_mr = &fence->mr->ib_mr;
- 	struct bnxt_qplib_swqe *wqe = &fence->bind_wqe;
-+	struct bnxt_re_dev *rdev = pd->rdev;
-+
-+	if (bnxt_qplib_is_chip_gen_p5_p7(rdev->chip_ctx))
-+		return;
+--- a/sound/soc/sof/intel/hda-loader.c
++++ b/sound/soc/sof/intel/hda-loader.c
+@@ -294,14 +294,9 @@ int hda_cl_copy_fw(struct snd_sof_dev *s
+ {
+ 	struct sof_intel_hda_dev *hda = sdev->pdata->hw_pdata;
+ 	const struct sof_intel_dsp_desc *chip = hda->desc;
+-	struct sof_intel_hda_stream *hda_stream;
+-	unsigned long time_left;
+ 	unsigned int reg;
+ 	int ret, status;
  
- 	memset(wqe, 0, sizeof(*wqe));
- 	wqe->type = BNXT_QPLIB_SWQE_TYPE_BIND_MW;
-@@ -454,6 +458,9 @@ static void bnxt_re_destroy_fence_mr(str
- 	struct device *dev = &rdev->en_dev->pdev->dev;
- 	struct bnxt_re_mr *mr = fence->mr;
+-	hda_stream = container_of(hext_stream, struct sof_intel_hda_stream,
+-				  hext_stream);
+-
+ 	dev_dbg(sdev->dev, "Code loader DMA starting\n");
  
-+	if (bnxt_qplib_is_chip_gen_p5_p7(rdev->chip_ctx))
-+		return;
-+
- 	if (fence->mw) {
- 		bnxt_re_dealloc_mw(fence->mw);
- 		fence->mw = NULL;
-@@ -485,6 +492,9 @@ static int bnxt_re_create_fence_mr(struc
- 	struct ib_mw *mw;
- 	int rc;
+ 	ret = hda_cl_trigger(sdev->dev, hext_stream, SNDRV_PCM_TRIGGER_START);
+@@ -310,18 +305,6 @@ int hda_cl_copy_fw(struct snd_sof_dev *s
+ 		return ret;
+ 	}
  
-+	if (bnxt_qplib_is_chip_gen_p5_p7(rdev->chip_ctx))
-+		return 0;
-+
- 	dma_addr = dma_map_single(dev, fence->va, BNXT_RE_FENCE_BYTES,
- 				  DMA_BIDIRECTIONAL);
- 	rc = dma_mapping_error(dev, dma_addr);
+-	if (sdev->pdata->ipc_type == SOF_IPC_TYPE_4) {
+-		/* Wait for completion of transfer */
+-		time_left = wait_for_completion_timeout(&hda_stream->ioc,
+-							msecs_to_jiffies(HDA_CL_DMA_IOC_TIMEOUT_MS));
+-
+-		if (!time_left) {
+-			dev_err(sdev->dev, "Code loader DMA did not complete\n");
+-			return -ETIMEDOUT;
+-		}
+-		dev_dbg(sdev->dev, "Code loader DMA done\n");
+-	}
+-
+ 	dev_dbg(sdev->dev, "waiting for FW_ENTERED status\n");
+ 
+ 	status = snd_sof_dsp_read_poll_timeout(sdev, HDA_DSP_BAR,
 
 
 
