@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-88346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B237A9B2586
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:32:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B4FD9B25FB
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73162281002
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:32:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 711DF1F212CB
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D9E18E348;
-	Mon, 28 Oct 2024 06:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5973D18FC80;
+	Mon, 28 Oct 2024 06:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0aArDEwu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L39Bja6B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F4615B10D;
-	Mon, 28 Oct 2024 06:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1744E18DF68;
+	Mon, 28 Oct 2024 06:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097124; cv=none; b=Ac4oRNDIWleaHr8s7U8nxk0e/AqgO8aQ4Huxn2T2dc4QNbgTshh2jnShmI0rt4mEmXqf0PCvLSixga47wJPcpLuzM0usEvpkoAoEt83UXrJrgL/fpLSR4EFez6Q3xiEb4FDqpoA7IBKQFQ1o+zEu9n/s0VUWcXw+GQzmj594UsU=
+	t=1730097328; cv=none; b=Ohgc3jDSqPX5JRAmjgx2Rb8h+TXayfH2ileS3iSJGuwFgak9fs/jPJ4eyvXezC8St51PJpS1bHwWXw9JuiucDxvc7U2GZpHcSosccmujW/lvImKC1rj0TRqoMdAHlD1Y/G9qQqmhW2JgLSYR1RtRV/ueX9Cc6dTj557ap5iAqBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097124; c=relaxed/simple;
-	bh=DcvNxqgB3o1EJn/6UJV/TmedZEpa7IwekxYqwzqdv+M=;
+	s=arc-20240116; t=1730097328; c=relaxed/simple;
+	bh=W/6yL0fLRQ5nEZxES9bonZfFbACvY1tPS77roY2YKjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rSiSKQlmAl9Fs5BuODJ4ezejvQOj4Ifago4p1vb9DpxW9ph0NSafSDV/m816vwRIbWEPxz4qSP+uIqB7Kl7Rzun265f9T0CFEgw5BWPTHVzwWtRaORXOMB6vjk3ZsH04c0+XOCqN1fKUhtAxdAEkxKauPVeNVel7PdWxel3iPVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0aArDEwu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8370C4CEC7;
-	Mon, 28 Oct 2024 06:32:03 +0000 (UTC)
+	 MIME-Version; b=IrVmBtewSC626QbO/8is6tUZHYju9qLn1VZH33O08l6Rg2AOUrFYQkYTvIUCyqEYTvKnfr82B0wGZhcloSMevCqnOe2gEqLy4kmi9EA60Lu+KgTzByIn7byOZd9KO9oN20zvLMPVxWDTO4iqjluDsvlj8e3rVGZH+rYoPzbYNt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L39Bja6B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA594C4CEC3;
+	Mon, 28 Oct 2024 06:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097124;
-	bh=DcvNxqgB3o1EJn/6UJV/TmedZEpa7IwekxYqwzqdv+M=;
+	s=korg; t=1730097328;
+	bh=W/6yL0fLRQ5nEZxES9bonZfFbACvY1tPS77roY2YKjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0aArDEwuoWFZ9fMZ+DvQAgCTvxp909noEyZfpZGvDFVm6MMWZVGevCSF/p/4VEHy4
-	 V3roI5k6flYEAOCD6t2PnfazDAtny70MlYf/WhZ9kM9T46LCpwHLG1PyojP3ZLKDH+
-	 hS5vF+AGlhq6TRmMkrrTY8/jrx+XHJMJarT8XCl0=
+	b=L39Bja6BvWY8OQxxo6W8pHYWgbO0OQQ3p5J10oEobecmV12GFFUT19B0ieJHG3PS2
+	 iN5jTW8mV4Hoy2vZ3Wx8TZUWNFSkC1LR6GwBgMOapj1iEiHUfmRuWdMI1yd7jmY/KC
+	 xK8zeBlgumzfDYswynXaXSMkMal7KKslDlfmlZb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 39/80] block, bfq: fix procress reference leakage for bfqq in merge chain
+Subject: [PATCH 6.1 082/137] LoongArch: Add support to clone a time namespace
 Date: Mon, 28 Oct 2024 07:25:19 +0100
-Message-ID: <20241028062253.709311621@linuxfoundation.org>
+Message-ID: <20241028062301.026740824@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,161 +60,364 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit 73aeab373557fa6ee4ae0b742c6211ccd9859280 ]
+[ Upstream commit aa5e65dc0818bbf676bf06927368ec46867778fd ]
 
-Original state:
+We can see that "Time namespaces are not supported" on LoongArch:
 
-        Process 1       Process 2       Process 3       Process 4
-         (BIC1)          (BIC2)          (BIC3)          (BIC4)
-          Λ                |               |               |
-           \--------------\ \-------------\ \-------------\|
-                           V               V               V
-          bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
-    ref    0               1               2               4
+(1) clone3 test
+  # cd tools/testing/selftests/clone3 && make && ./clone3
+  ...
+  # Time namespaces are not supported
+  ok 18 # SKIP Skipping clone3() with CLONE_NEWTIME
+  # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:1 error:0
 
-After commit 0e456dba86c7 ("block, bfq: choose the last bfqq from merge
-chain in bfq_setup_cooperator()"), if P1 issues a new IO:
+(2) timens test
+  # cd tools/testing/selftests/timens && make && ./timens
+  ...
+  1..0 # SKIP Time namespaces are not supported
 
-Without the patch:
+On LoongArch the current kernel does not support CONFIG_TIME_NS which
+depends on GENERIC_VDSO_TIME_NS, select GENERIC_VDSO_TIME_NS to enable
+CONFIG_TIME_NS to build kernel/time/namespace.c.
 
-        Process 1       Process 2       Process 3       Process 4
-         (BIC1)          (BIC2)          (BIC3)          (BIC4)
-          Λ                |               |               |
-           \------------------------------\ \-------------\|
-                                           V               V
-          bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
-    ref    0               0               2               4
+Additionally, it needs to define some arch-dependent functions for the
+timens, such as __arch_get_timens_vdso_data(), arch_get_vdso_data() and
+vdso_join_timens().
 
-bfqq3 will be used to handle IO from P1, this is not expected, IO
-should be redirected to bfqq4;
+At the same time, modify the layout of vvar to use one page size for
+generic vdso data, expand another page size for timens vdso data and
+assign LOONGARCH_VDSO_DATA_SIZE (maybe exceeds a page size if expand in
+the future) for loongarch vdso data, at last add the callback function
+vvar_fault() and modify stack_top().
 
-With the patch:
+With this patch under CONFIG_TIME_NS:
 
-          -------------------------------------------
-          |                                         |
-        Process 1       Process 2       Process 3   |   Process 4
-         (BIC1)          (BIC2)          (BIC3)     |    (BIC4)
-                           |               |        |      |
-                            \-------------\ \-------------\|
-                                           V               V
-          bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
-    ref    0               0               2               4
+(1) clone3 test
+  # cd tools/testing/selftests/clone3 && make && ./clone3
+  ...
+  ok 18 [739] Result (0) matches expectation (0)
+  # Totals: pass:18 fail:0 xfail:0 xpass:0 skip:0 error:0
 
-IO is redirected to bfqq4, however, procress reference of bfqq3 is still
-2, while there is only P2 using it.
+(2) timens test
+  # cd tools/testing/selftests/timens && make && ./timens
+  ...
+  # Totals: pass:10 fail:0 xfail:0 xpass:0 skip:0 error:0
 
-Fix the problem by calling bfq_merge_bfqqs() for each bfqq in the merge
-chain. Also change bfqq_merge_bfqqs() to return new_bfqq to simplify
-code.
-
-Fixes: 0e456dba86c7 ("block, bfq: choose the last bfqq from merge chain in bfq_setup_cooperator()")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20240909134154.954924-3-yukuai1@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Stable-dep-of: 134475a9ab84 ("LoongArch: Don't crash in stack_top() for tasks without vDSO")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bfq-iosched.c | 37 +++++++++++++++++--------------------
- 1 file changed, 17 insertions(+), 20 deletions(-)
+ arch/loongarch/Kconfig                        |  1 +
+ arch/loongarch/include/asm/page.h             |  1 +
+ .../loongarch/include/asm/vdso/gettimeofday.h |  9 +-
+ arch/loongarch/include/asm/vdso/vdso.h        | 32 +++++-
+ arch/loongarch/kernel/process.c               |  2 +-
+ arch/loongarch/kernel/vdso.c                  | 98 ++++++++++++++++---
+ arch/loongarch/vdso/vgetcpu.c                 |  2 +-
+ 7 files changed, 121 insertions(+), 24 deletions(-)
 
-diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
-index b0bdb5197530a..c985c944fa654 100644
---- a/block/bfq-iosched.c
-+++ b/block/bfq-iosched.c
-@@ -2981,10 +2981,12 @@ void bfq_release_process_ref(struct bfq_data *bfqd, struct bfq_queue *bfqq)
- 	bfq_put_queue(bfqq);
- }
+diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+index fa3171f563274..f4ba3638b76a8 100644
+--- a/arch/loongarch/Kconfig
++++ b/arch/loongarch/Kconfig
+@@ -78,6 +78,7 @@ config LOONGARCH
+ 	select GENERIC_SCHED_CLOCK
+ 	select GENERIC_SMP_IDLE_THREAD
+ 	select GENERIC_TIME_VSYSCALL
++	select GENERIC_VDSO_TIME_NS
+ 	select GPIOLIB
+ 	select HAVE_ARCH_AUDITSYSCALL
+ 	select HAVE_ARCH_MMAP_RND_BITS if MMU
+diff --git a/arch/loongarch/include/asm/page.h b/arch/loongarch/include/asm/page.h
+index 53f284a961823..bbac81dd73788 100644
+--- a/arch/loongarch/include/asm/page.h
++++ b/arch/loongarch/include/asm/page.h
+@@ -81,6 +81,7 @@ typedef struct { unsigned long pgprot; } pgprot_t;
+ #define __va(x)		((void *)((unsigned long)(x) + PAGE_OFFSET - PHYS_OFFSET))
  
--static void
--bfq_merge_bfqqs(struct bfq_data *bfqd, struct bfq_io_cq *bic,
--		struct bfq_queue *bfqq, struct bfq_queue *new_bfqq)
-+static struct bfq_queue *bfq_merge_bfqqs(struct bfq_data *bfqd,
-+					 struct bfq_io_cq *bic,
-+					 struct bfq_queue *bfqq)
+ #define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
++#define sym_to_pfn(x)		__phys_to_pfn(__pa_symbol(x))
+ 
+ #ifdef CONFIG_FLATMEM
+ 
+diff --git a/arch/loongarch/include/asm/vdso/gettimeofday.h b/arch/loongarch/include/asm/vdso/gettimeofday.h
+index 7b2cd37641e2a..89e6b222c2f2d 100644
+--- a/arch/loongarch/include/asm/vdso/gettimeofday.h
++++ b/arch/loongarch/include/asm/vdso/gettimeofday.h
+@@ -91,9 +91,16 @@ static inline bool loongarch_vdso_hres_capable(void)
+ 
+ static __always_inline const struct vdso_data *__arch_get_vdso_data(void)
  {
-+	struct bfq_queue *new_bfqq = bfqq->new_bfqq;
-+
- 	bfq_log_bfqq(bfqd, bfqq, "merging with queue %lu",
- 		(unsigned long)new_bfqq->pid);
- 	/* Save weight raising and idle window of the merged queues */
-@@ -3078,6 +3080,8 @@ bfq_merge_bfqqs(struct bfq_data *bfqd, struct bfq_io_cq *bic,
- 	bfq_reassign_last_bfqq(bfqq, new_bfqq);
- 
- 	bfq_release_process_ref(bfqd, bfqq);
-+
-+	return new_bfqq;
+-	return get_vdso_data();
++	return (const struct vdso_data *)get_vdso_data();
  }
  
- static bool bfq_allow_bio_merge(struct request_queue *q, struct request *rq,
-@@ -3113,14 +3117,8 @@ static bool bfq_allow_bio_merge(struct request_queue *q, struct request *rq,
- 		 * fulfilled, i.e., bic can be redirected to new_bfqq
- 		 * and bfqq can be put.
- 		 */
--		bfq_merge_bfqqs(bfqd, bfqd->bio_bic, bfqq,
--				new_bfqq);
--		/*
--		 * If we get here, bio will be queued into new_queue,
--		 * so use new_bfqq to decide whether bio and rq can be
--		 * merged.
--		 */
--		bfqq = new_bfqq;
-+		while (bfqq != new_bfqq)
-+			bfqq = bfq_merge_bfqqs(bfqd, bfqd->bio_bic, bfqq);
++#ifdef CONFIG_TIME_NS
++static __always_inline
++const struct vdso_data *__arch_get_timens_vdso_data(const struct vdso_data *vd)
++{
++	return (const struct vdso_data *)(get_vdso_data() + VVAR_TIMENS_PAGE_OFFSET * PAGE_SIZE);
++}
++#endif
+ #endif /* !__ASSEMBLY__ */
  
- 		/*
- 		 * Change also bqfd->bio_bfqq, as
-@@ -5482,9 +5480,7 @@ bfq_do_early_stable_merge(struct bfq_data *bfqd, struct bfq_queue *bfqq,
- 	 * state before killing it.
+ #endif /* __ASM_VDSO_GETTIMEOFDAY_H */
+diff --git a/arch/loongarch/include/asm/vdso/vdso.h b/arch/loongarch/include/asm/vdso/vdso.h
+index 3b55d32a0619c..5a12309d9fb55 100644
+--- a/arch/loongarch/include/asm/vdso/vdso.h
++++ b/arch/loongarch/include/asm/vdso/vdso.h
+@@ -16,10 +16,33 @@ struct vdso_pcpu_data {
+ 
+ struct loongarch_vdso_data {
+ 	struct vdso_pcpu_data pdata[NR_CPUS];
+-	struct vdso_data data[CS_BASES]; /* Arch-independent data */
+ };
+ 
+-#define VDSO_DATA_SIZE PAGE_ALIGN(sizeof(struct loongarch_vdso_data))
++/*
++ * The layout of vvar:
++ *
++ *                      high
++ * +---------------------+--------------------------+
++ * | loongarch vdso data | LOONGARCH_VDSO_DATA_SIZE |
++ * +---------------------+--------------------------+
++ * |  time-ns vdso data  |        PAGE_SIZE         |
++ * +---------------------+--------------------------+
++ * |  generic vdso data  |        PAGE_SIZE         |
++ * +---------------------+--------------------------+
++ *                      low
++ */
++#define LOONGARCH_VDSO_DATA_SIZE PAGE_ALIGN(sizeof(struct loongarch_vdso_data))
++#define LOONGARCH_VDSO_DATA_PAGES (LOONGARCH_VDSO_DATA_SIZE >> PAGE_SHIFT)
++
++enum vvar_pages {
++	VVAR_GENERIC_PAGE_OFFSET,
++	VVAR_TIMENS_PAGE_OFFSET,
++	VVAR_LOONGARCH_PAGES_START,
++	VVAR_LOONGARCH_PAGES_END = VVAR_LOONGARCH_PAGES_START + LOONGARCH_VDSO_DATA_PAGES - 1,
++	VVAR_NR_PAGES,
++};
++
++#define VVAR_SIZE (VVAR_NR_PAGES << PAGE_SHIFT)
+ 
+ static inline unsigned long get_vdso_base(void)
+ {
+@@ -34,10 +57,9 @@ static inline unsigned long get_vdso_base(void)
+ 	return addr;
+ }
+ 
+-static inline const struct vdso_data *get_vdso_data(void)
++static inline unsigned long get_vdso_data(void)
+ {
+-	return (const struct vdso_data *)(get_vdso_base()
+-			- VDSO_DATA_SIZE + SMP_CACHE_BYTES * NR_CPUS);
++	return get_vdso_base() - VVAR_SIZE;
+ }
+ 
+ #endif /* __ASSEMBLY__ */
+diff --git a/arch/loongarch/kernel/process.c b/arch/loongarch/kernel/process.c
+index 1259bc3129790..51176e5ecee59 100644
+--- a/arch/loongarch/kernel/process.c
++++ b/arch/loongarch/kernel/process.c
+@@ -273,7 +273,7 @@ unsigned long stack_top(void)
+ 
+ 	/* Space for the VDSO & data page */
+ 	top -= PAGE_ALIGN(current->thread.vdso->size);
+-	top -= PAGE_SIZE;
++	top -= VVAR_SIZE;
+ 
+ 	/* Space to randomize the VDSO base */
+ 	if (current->flags & PF_RANDOMIZE)
+diff --git a/arch/loongarch/kernel/vdso.c b/arch/loongarch/kernel/vdso.c
+index 8c9826062652e..59aa9dd466e84 100644
+--- a/arch/loongarch/kernel/vdso.c
++++ b/arch/loongarch/kernel/vdso.c
+@@ -14,6 +14,7 @@
+ #include <linux/random.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
++#include <linux/time_namespace.h>
+ #include <linux/timekeeper_internal.h>
+ 
+ #include <asm/page.h>
+@@ -26,12 +27,17 @@ extern char vdso_start[], vdso_end[];
+ 
+ /* Kernel-provided data used by the VDSO. */
+ static union {
+-	u8 page[VDSO_DATA_SIZE];
++	u8 page[PAGE_SIZE];
++	struct vdso_data data[CS_BASES];
++} generic_vdso_data __page_aligned_data;
++
++static union {
++	u8 page[LOONGARCH_VDSO_DATA_SIZE];
+ 	struct loongarch_vdso_data vdata;
+ } loongarch_vdso_data __page_aligned_data;
+ 
+ static struct page *vdso_pages[] = { NULL };
+-struct vdso_data *vdso_data = loongarch_vdso_data.vdata.data;
++struct vdso_data *vdso_data = generic_vdso_data.data;
+ struct vdso_pcpu_data *vdso_pdata = loongarch_vdso_data.vdata.pdata;
+ 
+ static int vdso_mremap(const struct vm_special_mapping *sm, struct vm_area_struct *new_vma)
+@@ -41,6 +47,43 @@ static int vdso_mremap(const struct vm_special_mapping *sm, struct vm_area_struc
+ 	return 0;
+ }
+ 
++static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
++			     struct vm_area_struct *vma, struct vm_fault *vmf)
++{
++	unsigned long pfn;
++	struct page *timens_page = find_timens_vvar_page(vma);
++
++	switch (vmf->pgoff) {
++	case VVAR_GENERIC_PAGE_OFFSET:
++		if (!timens_page)
++			pfn = sym_to_pfn(vdso_data);
++		else
++			pfn = page_to_pfn(timens_page);
++		break;
++#ifdef CONFIG_TIME_NS
++	case VVAR_TIMENS_PAGE_OFFSET:
++		/*
++		 * If a task belongs to a time namespace then a namespace specific
++		 * VVAR is mapped with the VVAR_GENERIC_PAGE_OFFSET and the real
++		 * VVAR page is mapped with the VVAR_TIMENS_PAGE_OFFSET offset.
++		 * See also the comment near timens_setup_vdso_data().
++		 */
++		if (!timens_page)
++			return VM_FAULT_SIGBUS;
++		else
++			pfn = sym_to_pfn(vdso_data);
++		break;
++#endif /* CONFIG_TIME_NS */
++	case VVAR_LOONGARCH_PAGES_START ... VVAR_LOONGARCH_PAGES_END:
++		pfn = sym_to_pfn(&loongarch_vdso_data) + vmf->pgoff - VVAR_LOONGARCH_PAGES_START;
++		break;
++	default:
++		return VM_FAULT_SIGBUS;
++	}
++
++	return vmf_insert_pfn(vma, vmf->address, pfn);
++}
++
+ struct loongarch_vdso_info vdso_info = {
+ 	.vdso = vdso_start,
+ 	.size = PAGE_SIZE,
+@@ -51,6 +94,7 @@ struct loongarch_vdso_info vdso_info = {
+ 	},
+ 	.data_mapping = {
+ 		.name = "[vvar]",
++		.fault = vvar_fault,
+ 	},
+ 	.offset_sigreturn = vdso_offset_sigreturn,
+ };
+@@ -73,6 +117,37 @@ static int __init init_vdso(void)
+ }
+ subsys_initcall(init_vdso);
+ 
++#ifdef CONFIG_TIME_NS
++struct vdso_data *arch_get_vdso_data(void *vvar_page)
++{
++	return (struct vdso_data *)(vvar_page);
++}
++
++/*
++ * The vvar mapping contains data for a specific time namespace, so when a
++ * task changes namespace we must unmap its vvar data for the old namespace.
++ * Subsequent faults will map in data for the new namespace.
++ *
++ * For more details see timens_setup_vdso_data().
++ */
++int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
++{
++	struct mm_struct *mm = task->mm;
++	struct vm_area_struct *vma;
++
++	VMA_ITERATOR(vmi, mm, 0);
++
++	mmap_read_lock(mm);
++	for_each_vma(vmi, vma) {
++		if (vma_is_special_mapping(vma, &vdso_info.data_mapping))
++			zap_vma_pages(vma);
++	}
++	mmap_read_unlock(mm);
++
++	return 0;
++}
++#endif
++
+ static unsigned long vdso_base(void)
+ {
+ 	unsigned long base = STACK_TOP;
+@@ -88,7 +163,7 @@ static unsigned long vdso_base(void)
+ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
+ {
+ 	int ret;
+-	unsigned long vvar_size, size, data_addr, vdso_addr;
++	unsigned long size, data_addr, vdso_addr;
+ 	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct *vma;
+ 	struct loongarch_vdso_info *info = current->thread.vdso;
+@@ -100,32 +175,23 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
+ 	 * Determine total area size. This includes the VDSO data itself
+ 	 * and the data pages.
  	 */
- 	bfqq->bic = bic;
--	bfq_merge_bfqqs(bfqd, bic, bfqq, new_bfqq);
--
--	return new_bfqq;
-+	return bfq_merge_bfqqs(bfqd, bic, bfqq);
- }
+-	vvar_size = VDSO_DATA_SIZE;
+-	size = vvar_size + info->size;
++	size = VVAR_SIZE + info->size;
  
- /*
-@@ -5916,6 +5912,7 @@ static bool __bfq_insert_request(struct bfq_data *bfqd, struct request *rq)
- 	bool waiting, idle_timer_disabled = false;
+ 	data_addr = get_unmapped_area(NULL, vdso_base(), size, 0, 0);
+ 	if (IS_ERR_VALUE(data_addr)) {
+ 		ret = data_addr;
+ 		goto out;
+ 	}
+-	vdso_addr = data_addr + VDSO_DATA_SIZE;
  
- 	if (new_bfqq) {
-+		struct bfq_queue *old_bfqq = bfqq;
- 		/*
- 		 * Release the request's reference to the old bfqq
- 		 * and make sure one is taken to the shared queue.
-@@ -5931,18 +5928,18 @@ static bool __bfq_insert_request(struct bfq_data *bfqd, struct request *rq)
- 		 * then complete the merge and redirect it to
- 		 * new_bfqq.
- 		 */
--		if (bic_to_bfqq(RQ_BIC(rq), 1) == bfqq)
--			bfq_merge_bfqqs(bfqd, RQ_BIC(rq),
--					bfqq, new_bfqq);
-+		if (bic_to_bfqq(RQ_BIC(rq), 1) == bfqq) {
-+			while (bfqq != new_bfqq)
-+				bfqq = bfq_merge_bfqqs(bfqd, RQ_BIC(rq), bfqq);
-+		}
- 
--		bfq_clear_bfqq_just_created(bfqq);
-+		bfq_clear_bfqq_just_created(old_bfqq);
- 		/*
- 		 * rq is about to be enqueued into new_bfqq,
- 		 * release rq reference on bfqq
- 		 */
--		bfq_put_queue(bfqq);
-+		bfq_put_queue(old_bfqq);
- 		rq->elv.priv[1] = new_bfqq;
--		bfqq = new_bfqq;
+-	vma = _install_special_mapping(mm, data_addr, vvar_size,
+-				       VM_READ | VM_MAYREAD,
++	vma = _install_special_mapping(mm, data_addr, VVAR_SIZE,
++				       VM_READ | VM_MAYREAD | VM_PFNMAP,
+ 				       &info->data_mapping);
+ 	if (IS_ERR(vma)) {
+ 		ret = PTR_ERR(vma);
+ 		goto out;
  	}
  
- 	bfq_update_io_thinktime(bfqd, bfqq);
+-	/* Map VDSO data page. */
+-	ret = remap_pfn_range(vma, data_addr,
+-			      virt_to_phys(&loongarch_vdso_data) >> PAGE_SHIFT,
+-			      vvar_size, PAGE_READONLY);
+-	if (ret)
+-		goto out;
+-
+-	/* Map VDSO code page. */
++	vdso_addr = data_addr + VVAR_SIZE;
+ 	vma = _install_special_mapping(mm, vdso_addr, info->size,
+ 				       VM_READ | VM_EXEC | VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC,
+ 				       &info->code_mapping);
+diff --git a/arch/loongarch/vdso/vgetcpu.c b/arch/loongarch/vdso/vgetcpu.c
+index e02e775f53608..9e445be39763a 100644
+--- a/arch/loongarch/vdso/vgetcpu.c
++++ b/arch/loongarch/vdso/vgetcpu.c
+@@ -21,7 +21,7 @@ static __always_inline int read_cpu_id(void)
+ 
+ static __always_inline const struct vdso_pcpu_data *get_pcpu_data(void)
+ {
+-	return (struct vdso_pcpu_data *)(get_vdso_base() - VDSO_DATA_SIZE);
++	return (struct vdso_pcpu_data *)(get_vdso_data() + VVAR_LOONGARCH_PAGES_START * PAGE_SIZE);
+ }
+ 
+ extern
 -- 
 2.43.0
 
