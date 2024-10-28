@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BCC79B264F
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:38:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E2B9B2753
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:47:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5224028228C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:38:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7458B21026
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:47:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D13518E348;
-	Mon, 28 Oct 2024 06:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01EA918EFCD;
+	Mon, 28 Oct 2024 06:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtwTtgKW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvoAp3ul"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB3F18EFD6;
-	Mon, 28 Oct 2024 06:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56B118DF7D;
+	Mon, 28 Oct 2024 06:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097505; cv=none; b=l+m/bhg1QMTn2ETpWJTiege6Ui3bGFQUhetEuFhf2YJ2ZvCkW/pmwbtbh0HgGJ1++gvkKKiS0lU02ZC6JXNXy69XMljH87r5pjy1XT79kl1JYAsDpzQjeAx87EwIPEwmJzpoQErNyMiCyZAFo1dSTbXe6nreLf0bzn3m+wiF81k=
+	t=1730098020; cv=none; b=fnsrDfLQMSNB/6poZlxCxYNndjt+95ymGkXg63EyjzT4F5I4/LnFemyUS66VcPDglMZ+UMLHlLF5An7AJOrt5ob2RrViAlXe+6ICvbWL++ONTtDJumCO7WNZidoXzb+sJO7vFiQe0OfvGQXHyT0libimeRMebhqFzVXrK9NKIF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097505; c=relaxed/simple;
-	bh=AM62Q4Qz+lfhLx1rjg8VP2GWseNUxhs38MOswTtJi3E=;
+	s=arc-20240116; t=1730098020; c=relaxed/simple;
+	bh=GXXh1N0JmRg0qxpfZ7D7vUuK/mfSuebfBHuWSklQapE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gO5jlAop/oIEkgUt5rLKcsoq43Mf1YeYky3GVgBweczpYdF1TfaSJQ+PcxQ0dY3DDL5OGXzC44uJA5tyV7rfASIHOJVc0wvJw9XedLGdMSQBA16jrU0GavpfE0oNt+bLa/+hSDxAysorQ8yVqSkgPN1oDl1rdp8gM84kIORpbzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtwTtgKW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BAA2C4CEC3;
-	Mon, 28 Oct 2024 06:38:25 +0000 (UTC)
+	 MIME-Version; b=P0fpfo3R6RRZYROVYytt3qAIADkI6SiCANQLhi0fBL4ktGfTKcplRGZpOYUaDj1PXHuPGv/vQV+pjSTZKybZIEy1bosvJgZJFiBZiUR7mXNHclTmxkuDcrngHcNoZsjKam/lBoihjMBd/h1srAONPvS0PMaL+blkbZu7DvmTB3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvoAp3ul; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D4CC4CEC3;
+	Mon, 28 Oct 2024 06:47:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097505;
-	bh=AM62Q4Qz+lfhLx1rjg8VP2GWseNUxhs38MOswTtJi3E=;
+	s=korg; t=1730098020;
+	bh=GXXh1N0JmRg0qxpfZ7D7vUuK/mfSuebfBHuWSklQapE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mtwTtgKWDDTqVKp29AMpGyQW3oozEXaqqsY+5d9pRzeoEF4Usv2jn1oBaYE31WTDP
-	 dvc0JzCYokX3F+S/BUNlX7su9zkTNRksJU2GnidjQtI32HbjtX7wnQ0j4VFNpsunHr
-	 mz+kMD53BVFuITKKGAsr9FShTRi5CDdD2YadWEMo=
+	b=hvoAp3ulMRI0cb+0l/gw/42IRf6QsQBa3BesNvVVIG8JsT6dP0ctI2kO2TNwsyhpy
+	 4N4MdoWU5SRpqU3o7C2Z2kUwzYcEoH2++/eIg/NKYiqDiDxdrBtajD7XlpLuFYzvau
+	 5/caEDiHb2umtNMbAxwe+pnxoPOXqbLvPHTBNp6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 004/208] cpufreq/amd-pstate: Fix amd_pstate mode switch on shared memory systems
+Subject: [PATCH 6.11 042/261] RDMA/bnxt_re: Return more meaningful error
 Date: Mon, 28 Oct 2024 07:23:04 +0100
-Message-ID: <20241028062306.761902710@linuxfoundation.org>
+Message-ID: <20241028062313.062974215@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit c10e50a469b5ec91eabf653526a22bdce03a9bca ]
+[ Upstream commit 98647df0178df215b8239c5c365537283b2852a6 ]
 
-While switching the driver mode between active and passive, Collaborative
-Processor Performance Control (CPPC) is disabled in
-amd_pstate_unregister_driver(). But, it is not enabled back while registering
-the new driver (passive or active). This leads to the new driver mode not
-working correctly, so enable it back in amd_pstate_register_driver().
+When the HWRM command fails, driver currently returns -EFAULT(Bad
+address). This does not look correct.
 
-Fixes: 3ca7bc818d8c ("cpufreq: amd-pstate: Add guided mode control support via sysfs")
-Signed-off-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20241004122303.94283-1-Dhananjay.Ugwekar@amd.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Modified to return -EIO(I/O error).
+
+Fixes: cc1ec769b87c ("RDMA/bnxt_re: Fixing the Control path command and response handling")
+Fixes: 65288a22ddd8 ("RDMA/bnxt_re: use shadow qd while posting non blocking rcfw command")
+Link: https://patch.msgid.link/r/1728373302-19530-5-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/amd-pstate.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-index f461f99eb040c..8c16d67b98bfe 100644
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -1061,11 +1061,21 @@ static int amd_pstate_register_driver(int mode)
- 		return -EINVAL;
- 
- 	cppc_state = mode;
-+
-+	ret = amd_pstate_enable(true);
-+	if (ret) {
-+		pr_err("failed to enable cppc during amd-pstate driver registration, return %d\n",
-+		       ret);
-+		amd_pstate_driver_cleanup();
-+		return ret;
-+	}
-+
- 	ret = cpufreq_register_driver(current_pstate_driver);
- 	if (ret) {
- 		amd_pstate_driver_cleanup();
- 		return ret;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+index 3ffaef0c26519..7294221b3316c 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+@@ -525,7 +525,7 @@ static int __bnxt_qplib_rcfw_send_message(struct bnxt_qplib_rcfw *rcfw,
+ 		/* failed with status */
+ 		dev_err(&rcfw->pdev->dev, "cmdq[%#x]=%#x status %#x\n",
+ 			cookie, opcode, evnt->status);
+-		rc = -EFAULT;
++		rc = -EIO;
  	}
-+
- 	return 0;
- }
  
+ 	return rc;
 -- 
 2.43.0
 
