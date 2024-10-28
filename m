@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-88497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 860BD9B263E
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:38:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFCCB9B257E
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:31:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 325801F2162F
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:38:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D9181C210F7
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0565D18C03D;
-	Mon, 28 Oct 2024 06:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C18718DF68;
+	Mon, 28 Oct 2024 06:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snpuPFSw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ita/U7kD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67AD18FC6B;
-	Mon, 28 Oct 2024 06:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18933186E52;
+	Mon, 28 Oct 2024 06:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097467; cv=none; b=RH51bv4/VfbWlA0a4zMH34DLq7t2qaFGtU8PHEIL5KkagtWr4uIBNRqWg8jpE3wAwM6PMctPHAF0UVO2NpBQ1S7f8Y0wO9CEylNsXKhMg/CDWKnwkN8PmUZX21nBg2jFupBSw5wrMzJ/exC8RjmZFMH/3gY78gWzcP5ZUJ+moFM=
+	t=1730097106; cv=none; b=PV9TnE5XSejcum7ksKtOWytZj4z6WH5jZPe1pJ+9enWbyduHakSoS42dYySVMsCLpXAGD0aVwlnTnfmdp+o9t3zdkRWi/40wURuRdrafMhhq/XXv1P53NeldCiN7SdMO7Tb8BzGgQirlX+u8ZkgHeaOjL516d6EM4IDIgoD0W5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097467; c=relaxed/simple;
-	bh=BklojR/XcMtreqgXU1Slbtzu+clPFHu2cRgvR3o1dOA=;
+	s=arc-20240116; t=1730097106; c=relaxed/simple;
+	bh=8YjcNPllK/UZvQOC2voetfrmWv7Ox+5QjxWur2SntKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l1Ux+BFj52yp/5hmKAOX8DYZrL3GcwK/i7qcMeD8MYUn2+dbb4yUzgP3Y+zlxzeoR4BmrdjCHSYMipVRSHxjBwL0JXKTKhoEv9TBDr0Ux/EOsA8Z4ju0Z0lpqFb0ztaP7z7TrKCi96aGIIPBXlglkQC6d/EQ1FWYMaLKOcRkVbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snpuPFSw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103A5C4CEC7;
-	Mon, 28 Oct 2024 06:37:46 +0000 (UTC)
+	 MIME-Version; b=djba6YwOu8N1pkcrZKoSkoxkAaAqXxTiNWtm2Z8xg87rdntJsq2IKsbjb/nSNNtAs3qOnzYTneMs+XwPieshI/cBfagA7bBJ8q1HU+581Z2P3t59tbyHeaM4jPZeWKdeoXDxjs94aN6E8nuuS/8d7v31sp6MzQhT6r3SdMIzcwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ita/U7kD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0B0C4CEC7;
+	Mon, 28 Oct 2024 06:31:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097467;
-	bh=BklojR/XcMtreqgXU1Slbtzu+clPFHu2cRgvR3o1dOA=;
+	s=korg; t=1730097105;
+	bh=8YjcNPllK/UZvQOC2voetfrmWv7Ox+5QjxWur2SntKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=snpuPFSwOsALBFqJD+4ogSpxyOD+7g4PR9IueGFiv3tqqj5jPZw+elo2bH1/udQOl
-	 RG1sXecMM7050xBdlvw78Yx9qCHWS78IaFAjYZYB0gWiNuUCTQemxKdRAAwqZ5tvnj
-	 hYp1QSRUzHN8HdaIz9kVvsQJp0vPAlABg/lKRxzQ=
+	b=Ita/U7kDZsAFyuHiAyMuh+cGeGs5T5SY93DnqEEcTKGlAV9MZa1bH7yJY7K5sD1Ui
+	 HJFJyGZtxl9RU2dWTWOkPpQmnHENOLOaF/TTHyGDByNuDOxfgg5cUp8yUrTHk211nM
+	 p9FjrmQsNXe73BFkNWzaQbxUtu2iUlaOZYg18q0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 109/137] ASoC: dt-bindings: davinci-mcasp: Fix interrupt properties
+Subject: [PATCH 5.15 66/80] ALSA: hda/realtek: Update default depop procedure
 Date: Mon, 28 Oct 2024 07:25:46 +0100
-Message-ID: <20241028062301.761128578@linuxfoundation.org>
+Message-ID: <20241028062254.448226557@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +60,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit 8380dbf1b9ef66e3ce6c1d660fd7259637c2a929 ]
+[ Upstream commit e3ea2757c312e51bbf62ebc434a6f7df1e3a201f ]
 
-Combinations of "tx" alone, "rx" alone and "tx", "rx" together are
-supposedly valid (see link below), which is not the case today as "rx"
-alone is not accepted by the current binding.
+Old procedure has a chance to meet Headphone no output.
 
-Let's rework the two interrupt properties to expose all correct
-possibilities.
-
-Cc: Péter Ujfalusi <peter.ujfalusi@gmail.com>
-Link: https://lore.kernel.org/linux-sound/20241003102552.2c11840e@xps-13/T/#m277fce1d49c50d94e071f7890aed472fa2c64052
-Fixes: 8be90641a0bb ("ASoC: dt-bindings: davinci-mcasp: convert McASP bindings to yaml schema")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20241003083611.461894-1-miquel.raynal@bootlin.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: c2d6af53a43f ("ALSA: hda/realtek - Add default procedure for suspend and resume state")
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/17b717a0a0b04a77aea4a8ec820cba13@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../bindings/sound/davinci-mcasp-audio.yaml    | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ sound/pci/hda/patch_realtek.c | 38 ++++++++++++++++-------------------
+ 1 file changed, 17 insertions(+), 21 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/sound/davinci-mcasp-audio.yaml b/Documentation/devicetree/bindings/sound/davinci-mcasp-audio.yaml
-index b181f7481a951..fe02773a490a9 100644
---- a/Documentation/devicetree/bindings/sound/davinci-mcasp-audio.yaml
-+++ b/Documentation/devicetree/bindings/sound/davinci-mcasp-audio.yaml
-@@ -102,21 +102,21 @@ properties:
-     default: 2
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index d76e0a2618afc..4ce2f042c04e7 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -3848,20 +3848,18 @@ static void alc_default_init(struct hda_codec *codec)
  
-   interrupts:
--    oneOf:
--      - minItems: 1
--        items:
--          - description: TX interrupt
--          - description: RX interrupt
--      - items:
--          - description: common/combined interrupt
-+    minItems: 1
-+    maxItems: 2
+ 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
  
-   interrupt-names:
-     oneOf:
--      - minItems: 1
-+      - description: TX interrupt
-+        const: tx
-+      - description: RX interrupt
-+        const: rx
-+      - description: TX and RX interrupts
-         items:
-           - const: tx
-           - const: rx
--      - const: common
-+      - description: Common/combined interrupt
-+        const: common
+-	if (hp_pin_sense)
++	if (hp_pin_sense) {
+ 		msleep(2);
  
-   fck_parent:
-     $ref: /schemas/types.yaml#/definitions/string
+-	snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+-
+-	if (hp_pin_sense)
+-		msleep(85);
++		snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
+ 
+-	snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
++		msleep(75);
+ 
+-	if (hp_pin_sense)
+-		msleep(100);
++		snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
++		msleep(75);
++	}
+ }
+ 
+ static void alc_default_shutup(struct hda_codec *codec)
+@@ -3877,22 +3875,20 @@ static void alc_default_shutup(struct hda_codec *codec)
+ 
+ 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
+ 
+-	if (hp_pin_sense)
++	if (hp_pin_sense) {
+ 		msleep(2);
+ 
+-	snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+-
+-	if (hp_pin_sense)
+-		msleep(85);
+-
+-	if (!spec->no_shutup_pins)
+ 		snd_hda_codec_write(codec, hp_pin, 0,
+-				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+ 
+-	if (hp_pin_sense)
+-		msleep(100);
++		msleep(75);
+ 
++		if (!spec->no_shutup_pins)
++			snd_hda_codec_write(codec, hp_pin, 0,
++					    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
++
++		msleep(75);
++	}
+ 	alc_auto_setup_eapd(codec, false);
+ 	alc_shutup_pins(codec);
+ }
 -- 
 2.43.0
 
