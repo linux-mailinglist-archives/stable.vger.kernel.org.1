@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-88666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2A729B26F6
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 920F59B261B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:37:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E729B212CC
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14042B20D74
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E84818E37F;
-	Mon, 28 Oct 2024 06:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E3218E744;
+	Mon, 28 Oct 2024 06:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZgBZ639"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zN+HLtMK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF75D18E03A;
-	Mon, 28 Oct 2024 06:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC90F18E35B;
+	Mon, 28 Oct 2024 06:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097849; cv=none; b=Ar8tKicMWmo0ts5QGFFEIUQCf1ptztmjuak0EGwgebj54jPHx9ode1qI92CKyKAuHHVV0tbGL2afcMps1Iggt9bvnrfimv6GL/59QyqryRKYl11VGBYpAlB+njlK695ryMmuy7xJkFtAmugfz99MqjadH0AspG4NQAhN9FxYoP8=
+	t=1730097402; cv=none; b=R5PuJwjOl9Nwr63xlQjMTyZtC1A5suFsksYKiS+TvEx5ZUBBufk0gLUDLtxZ5q7fg4vmkuwp5m606reRz4AhVGos1GtNDSpm1SQPVWnOxZIHgJXsJImQO2FIXreKSYI/uIJEZXnfFUHnghKOL52L+rrnW9asSYj+ZEtDX542lTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097849; c=relaxed/simple;
-	bh=wMcGiDpdvW8j/JpiHCkoes7GAGNtF9q3O1eHvWlEijY=;
+	s=arc-20240116; t=1730097402; c=relaxed/simple;
+	bh=sR4Vswl97Y+AZsUhLSF2jY7No8FzqPp8fXpZnEE2Ye4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SUuuGR9zvc3TyaH7hcktG8nsEiB8wvLOZsm7ldRvs6MMAHiKA1dum+NHXEtm/BXWTdeb7jggG+QZ/WU5XWcel0wxxavbmnt0HCzSVr0Gk4GtUeqUyqRYWtp3bjB05crWsWc0x/idsw15c8Lf9vjQwEUSTQ8x62nMlK3aED7Jm9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UZgBZ639; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F3A3C4CEC3;
-	Mon, 28 Oct 2024 06:44:08 +0000 (UTC)
+	 MIME-Version; b=u8sREBL7gV6gfmoWkWwFFmez+jrpmhtluC6z0rzY5xHYcc19QvD95duvZW5XSHGZ09zLBiTKyo2A2Tlraz1IwwGZSTic7Dw/ck+2SdhRixAa7uOQHxLELYhx7WWbUFkf8ydrC/+oGhoNBHGmZuQKd2vKbE0riO/8YhBVHXsxqXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zN+HLtMK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE36C4CEC3;
+	Mon, 28 Oct 2024 06:36:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097848;
-	bh=wMcGiDpdvW8j/JpiHCkoes7GAGNtF9q3O1eHvWlEijY=;
+	s=korg; t=1730097402;
+	bh=sR4Vswl97Y+AZsUhLSF2jY7No8FzqPp8fXpZnEE2Ye4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UZgBZ639HnSnElDW674yOQ9PQ0zhl1qXJb/T1+aww+oeDn766GRQsm5TNuyKZfGeb
-	 MXCJJbATE8Q4ehDV6xL0mmaOMZtbe6+X2eoq6+c2mS7RQLJNNUXecBzdzb+aOoiCYs
-	 WHb7Uh4Db0AuhQIz8atNd6bL+UDMgBXP7Ib2zKLs=
+	b=zN+HLtMK41a9F16tqSyRWw2ee8he//cKoWyxkO88z6f/OmIkYlWsjhAmebJkT7+hz
+	 WRY7lfVwh+3DJk/RMODBL2H3mniKNsQalXtvENYVo238uI2Fx3wzaJKngKkX3wUiBS
+	 CCudaRtWFyh+M7ObOlF79oVXEe4dsb2rfeBKyOJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 173/208] ALSA: hda/realtek: Update default depop procedure
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 116/137] btrfs: zoned: fix zone unusable accounting for freed reserved extent
 Date: Mon, 28 Oct 2024 07:25:53 +0100
-Message-ID: <20241028062310.893164637@linuxfoundation.org>
+Message-ID: <20241028062301.955352165@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit e3ea2757c312e51bbf62ebc434a6f7df1e3a201f ]
+commit bf9821ba4792a0d9a2e72803ae7b4341faf3d532 upstream.
 
-Old procedure has a chance to meet Headphone no output.
+When btrfs reserves an extent and does not use it (e.g, by an error), it
+calls btrfs_free_reserved_extent() to free the reserved extent. In the
+process, it calls btrfs_add_free_space() and then it accounts the region
+bytes as block_group->zone_unusable.
 
-Fixes: c2d6af53a43f ("ALSA: hda/realtek - Add default procedure for suspend and resume state")
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/17b717a0a0b04a77aea4a8ec820cba13@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, it leaves the space_info->bytes_zone_unusable side not updated. As
+a result, ENOSPC can happen while a space_info reservation succeeded. The
+reservation is fine because the freed region is not added in
+space_info->bytes_zone_unusable, leaving that space as "free". OTOH,
+corresponding block group counts it as zone_unusable and its allocation
+pointer is not rewound, we cannot allocate an extent from that block group.
+That will also negate space_info's async/sync reclaim process, and cause an
+ENOSPC error from the extent allocation process.
+
+Fix that by returning the space to space_info->bytes_zone_unusable.
+Ideally, since a bio is not submitted for this reserved region, we should
+return the space to free space and rewind the allocation pointer. But, it
+needs rework on extent allocation handling, so let it work in this way for
+now.
+
+Fixes: 169e0da91a21 ("btrfs: zoned: track unusable bytes for zones")
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 38 ++++++++++++++++-------------------
- 1 file changed, 17 insertions(+), 21 deletions(-)
+ fs/btrfs/block-group.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 07e1547fff2e5..4dc5c7a18d6e7 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -3857,20 +3857,18 @@ static void alc_default_init(struct hda_codec *codec)
- 
- 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
- 
--	if (hp_pin_sense)
-+	if (hp_pin_sense) {
- 		msleep(2);
- 
--	snd_hda_codec_write(codec, hp_pin, 0,
--			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
--
--	if (hp_pin_sense)
--		msleep(85);
-+		snd_hda_codec_write(codec, hp_pin, 0,
-+				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
- 
--	snd_hda_codec_write(codec, hp_pin, 0,
--			    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
-+		msleep(75);
- 
--	if (hp_pin_sense)
--		msleep(100);
-+		snd_hda_codec_write(codec, hp_pin, 0,
-+				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
-+		msleep(75);
-+	}
- }
- 
- static void alc_default_shutup(struct hda_codec *codec)
-@@ -3886,22 +3884,20 @@ static void alc_default_shutup(struct hda_codec *codec)
- 
- 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
- 
--	if (hp_pin_sense)
-+	if (hp_pin_sense) {
- 		msleep(2);
- 
--	snd_hda_codec_write(codec, hp_pin, 0,
--			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
--
--	if (hp_pin_sense)
--		msleep(85);
--
--	if (!spec->no_shutup_pins)
- 		snd_hda_codec_write(codec, hp_pin, 0,
--				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
-+				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
- 
--	if (hp_pin_sense)
--		msleep(100);
-+		msleep(75);
- 
-+		if (!spec->no_shutup_pins)
-+			snd_hda_codec_write(codec, hp_pin, 0,
-+					    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
-+
-+		msleep(75);
-+	}
- 	alc_auto_setup_eapd(codec, false);
- 	alc_shutup_pins(codec);
- }
--- 
-2.43.0
-
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -3562,6 +3562,8 @@ void btrfs_free_reserved_bytes(struct bt
+ 	spin_lock(&cache->lock);
+ 	if (cache->ro)
+ 		space_info->bytes_readonly += num_bytes;
++	else if (btrfs_is_zoned(cache->fs_info))
++		space_info->bytes_zone_unusable += num_bytes;
+ 	cache->reserved -= num_bytes;
+ 	space_info->bytes_reserved -= num_bytes;
+ 	space_info->max_extent_size = 0;
 
 
 
