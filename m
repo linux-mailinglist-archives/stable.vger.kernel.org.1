@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3C679B2544
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:27:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D0D39B26AF
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:41:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98BE5281840
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:27:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60D111C21349
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA9EC18E340;
-	Mon, 28 Oct 2024 06:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9F718E04F;
+	Mon, 28 Oct 2024 06:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9Atu7MV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MqxAmQjR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF1D18CC1F;
-	Mon, 28 Oct 2024 06:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE5B15B10D;
+	Mon, 28 Oct 2024 06:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730096842; cv=none; b=FDgXCwkBAwFFdfzmxXNMIqPgqiKEUJC81gq8YuvDgq7LjQnd1JyhkKIuF9fg+aie10F9VHfLpD01CyDvvrbi1o2D0DpQu0xrSl6vsCdx9NytHKdWDaT5uFG3pgEcvpuYoXJwR8PbTtG2i/+1vpTnoJiMDaA9no0t5TXTfPyacaI=
+	t=1730097705; cv=none; b=ZTFOClx+fA+LdkVPJGDHjYboB3a/SQmXozYdRgnohCCHf2blBeCjYkIdSN9s5HIcImWPO2LwxTO+kR2GNQJXeXMOFcKto9IpFe221yzFvGO9RKjxWbd3128HHEAUXs54KTec+hB+SzxoSY0hQbxv1KmI47ehjoRUlw/X1RUY4LA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730096842; c=relaxed/simple;
-	bh=gZDe6wERDwtj7AD5ro1ITFfNdVAOxcB+J+vmZMDQiZY=;
+	s=arc-20240116; t=1730097705; c=relaxed/simple;
+	bh=gTO/Jxpat3+yd/v5HklZIi/RsrxW7hRMx0TYLo6kl28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aqTuZ8DzbR45tcjRrKRwzyVm2KcJT1spwY9wtSBK65NCrHulkwP7aSK7hsk+0YsQZgkxZcSJEt6HiL6X/YHqT7bRkQuUUSAGfg2NiOdFD2yLL3Y5GQjS8hUdKW+BaNfAayl4sj+fQYLFJqXbWYw3Rh2nm5GcWg+xwW9BGnWDyR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9Atu7MV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170C6C4CEC3;
-	Mon, 28 Oct 2024 06:27:21 +0000 (UTC)
+	 MIME-Version; b=g8d3uS2b15GoVti/GiFpOH8osgnTJ7CAkFlf7CcOVFp9KvTysr5f0utAJd1hDXWGWMihCYuadP0Po3L/Tx6G2wglCTa4opPfdOghO262YLkDLMZ64k7ginkkbDSh5X7JnJuWlFhR7nIlGvAE9YnH2vo5079mAvhLiUEtXtrlkZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MqxAmQjR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB01C4CEC3;
+	Mon, 28 Oct 2024 06:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730096842;
-	bh=gZDe6wERDwtj7AD5ro1ITFfNdVAOxcB+J+vmZMDQiZY=;
+	s=korg; t=1730097705;
+	bh=gTO/Jxpat3+yd/v5HklZIi/RsrxW7hRMx0TYLo6kl28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R9Atu7MVh3A0VRhUCJ9gjY6FzRYoqwQJ3DpUrUamh+vtybcKptZHK42F1lq4CoOxX
-	 p7tEOJ59nJLnNCcnj6KvV7MpKW6ffpNndQB7XMUERp+W8/P0LauPgI/l2ccBxPIdjg
-	 JlA4hsyFgJ9r4SjbRyib1+aRhi7aVsGRNNKExoQ8=
+	b=MqxAmQjRXFJUFNOvxxvILaNUHruBDngKB0rcZHgpYUMcUci784bSAWlEOHxMl32KS
+	 e521h1A0TvLJ3AHyP03j6DdPPrSCr0yyKQvG625udQV+MOzeHNO66jCJByxUKkbdRf
+	 4oMzP5L+Q0XUDGrzmzKZJWBNI23yF93k7avrrmEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Breno Leitao <leitao@debian.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 11/80] RDMA/bnxt_re: Return more meaningful error
-Date: Mon, 28 Oct 2024 07:24:51 +0100
-Message-ID: <20241028062252.937412253@linuxfoundation.org>
+Subject: [PATCH 6.6 112/208] uprobes: prevent mutex_lock() under rcu_read_lock()
+Date: Mon, 28 Oct 2024 07:24:52 +0100
+Message-ID: <20241028062309.415389381@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 98647df0178df215b8239c5c365537283b2852a6 ]
+[ Upstream commit 699646734ab51bf5b1cd4a7a30c20074f6e74f6e ]
 
-When the HWRM command fails, driver currently returns -EFAULT(Bad
-address). This does not look correct.
+Recent changes made uprobe_cpu_buffer preparation lazy, and moved it
+deeper into __uprobe_trace_func(). This is problematic because
+__uprobe_trace_func() is called inside rcu_read_lock()/rcu_read_unlock()
+block, which then calls prepare_uprobe_buffer() -> uprobe_buffer_get() ->
+mutex_lock(&ucb->mutex), leading to a splat about using mutex under
+non-sleepable RCU:
 
-Modified to return -EIO(I/O error).
+  BUG: sleeping function called from invalid context at kernel/locking/mutex.c:585
+   in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 98231, name: stress-ng-sigq
+   preempt_count: 0, expected: 0
+   RCU nest depth: 1, expected: 0
+   ...
+   Call Trace:
+    <TASK>
+    dump_stack_lvl+0x3d/0xe0
+    __might_resched+0x24c/0x270
+    ? prepare_uprobe_buffer+0xd5/0x1d0
+    __mutex_lock+0x41/0x820
+    ? ___perf_sw_event+0x206/0x290
+    ? __perf_event_task_sched_in+0x54/0x660
+    ? __perf_event_task_sched_in+0x54/0x660
+    prepare_uprobe_buffer+0xd5/0x1d0
+    __uprobe_trace_func+0x4a/0x140
+    uprobe_dispatcher+0x135/0x280
+    ? uprobe_dispatcher+0x94/0x280
+    uprobe_notify_resume+0x650/0xec0
+    ? atomic_notifier_call_chain+0x21/0x110
+    ? atomic_notifier_call_chain+0xf8/0x110
+    irqentry_exit_to_user_mode+0xe2/0x1e0
+    asm_exc_int3+0x35/0x40
+   RIP: 0033:0x7f7e1d4da390
+   Code: 33 04 00 0f 1f 80 00 00 00 00 f3 0f 1e fa b9 01 00 00 00 e9 b2 fc ff ff 66 90 f3 0f 1e fa 31 c9 e9 a5 fc ff ff 0f 1f 44 00 00 <cc> 0f 1e fa b8 27 00 00 00 0f 05 c3 0f 1f 40 00 f3 0f 1e fa b8 6e
+   RSP: 002b:00007ffd2abc3608 EFLAGS: 00000246
+   RAX: 0000000000000000 RBX: 0000000076d325f1 RCX: 0000000000000000
+   RDX: 0000000076d325f1 RSI: 000000000000000a RDI: 00007ffd2abc3690
+   RBP: 000000000000000a R08: 00017fb700000000 R09: 00017fb700000000
+   R10: 00017fb700000000 R11: 0000000000000246 R12: 0000000000017ff2
+   R13: 00007ffd2abc3610 R14: 0000000000000000 R15: 00007ffd2abc3780
+    </TASK>
 
-Fixes: cc1ec769b87c ("RDMA/bnxt_re: Fixing the Control path command and response handling")
-Fixes: 65288a22ddd8 ("RDMA/bnxt_re: use shadow qd while posting non blocking rcfw command")
-Link: https://patch.msgid.link/r/1728373302-19530-5-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Luckily, it's easy to fix by moving prepare_uprobe_buffer() to be called
+slightly earlier: into uprobe_trace_func() and uretprobe_trace_func(), outside
+of RCU locked section. This still keeps this buffer preparation lazy and helps
+avoid the overhead when it's not needed. E.g., if there is only BPF uprobe
+handler installed on a given uprobe, buffer won't be initialized.
+
+Note, the other user of prepare_uprobe_buffer(), __uprobe_perf_func(), is not
+affected, as it doesn't prepare buffer under RCU read lock.
+
+Link: https://lore.kernel.org/all/20240521053017.3708530-1-andrii@kernel.org/
+
+Fixes: 1b8f85defbc8 ("uprobes: prepare uprobe args buffer lazily")
+Reported-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Stable-dep-of: 373b9338c972 ("uprobe: avoid out-of-bounds memory access of fetching args")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace_uprobe.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-index 3b8cb46551bf2..8d5557e3056c4 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-@@ -249,7 +249,7 @@ int bnxt_qplib_rcfw_send_message(struct bnxt_qplib_rcfw *rcfw,
- 		/* failed with status */
- 		dev_err(&rcfw->pdev->dev, "cmdq[%#x]=%#x status %#x\n",
- 			cookie, opcode, evnt->status);
--		rc = -EFAULT;
-+		rc = -EIO;
- 	}
+diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
+index 6c2ab0e316d6a..0d52588329b29 100644
+--- a/kernel/trace/trace_uprobe.c
++++ b/kernel/trace/trace_uprobe.c
+@@ -970,19 +970,17 @@ static struct uprobe_cpu_buffer *prepare_uprobe_buffer(struct trace_uprobe *tu,
  
- 	return rc;
+ static void __uprobe_trace_func(struct trace_uprobe *tu,
+ 				unsigned long func, struct pt_regs *regs,
+-				struct uprobe_cpu_buffer **ucbp,
++				struct uprobe_cpu_buffer *ucb,
+ 				struct trace_event_file *trace_file)
+ {
+ 	struct uprobe_trace_entry_head *entry;
+ 	struct trace_event_buffer fbuffer;
+-	struct uprobe_cpu_buffer *ucb;
+ 	void *data;
+ 	int size, esize;
+ 	struct trace_event_call *call = trace_probe_event_call(&tu->tp);
+ 
+ 	WARN_ON(call != trace_file->event_call);
+ 
+-	ucb = prepare_uprobe_buffer(tu, regs, ucbp);
+ 	if (WARN_ON_ONCE(ucb->dsize > PAGE_SIZE))
+ 		return;
+ 
+@@ -1014,13 +1012,16 @@ static int uprobe_trace_func(struct trace_uprobe *tu, struct pt_regs *regs,
+ 			     struct uprobe_cpu_buffer **ucbp)
+ {
+ 	struct event_file_link *link;
++	struct uprobe_cpu_buffer *ucb;
+ 
+ 	if (is_ret_probe(tu))
+ 		return 0;
+ 
++	ucb = prepare_uprobe_buffer(tu, regs, ucbp);
++
+ 	rcu_read_lock();
+ 	trace_probe_for_each_link_rcu(link, &tu->tp)
+-		__uprobe_trace_func(tu, 0, regs, ucbp, link->file);
++		__uprobe_trace_func(tu, 0, regs, ucb, link->file);
+ 	rcu_read_unlock();
+ 
+ 	return 0;
+@@ -1031,10 +1032,13 @@ static void uretprobe_trace_func(struct trace_uprobe *tu, unsigned long func,
+ 				 struct uprobe_cpu_buffer **ucbp)
+ {
+ 	struct event_file_link *link;
++	struct uprobe_cpu_buffer *ucb;
++
++	ucb = prepare_uprobe_buffer(tu, regs, ucbp);
+ 
+ 	rcu_read_lock();
+ 	trace_probe_for_each_link_rcu(link, &tu->tp)
+-		__uprobe_trace_func(tu, func, regs, ucbp, link->file);
++		__uprobe_trace_func(tu, func, regs, ucb, link->file);
+ 	rcu_read_unlock();
+ }
+ 
 -- 
 2.43.0
 
