@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 775D49B2559
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94CB09B27DD
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DDDB1F21A67
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 180A01F221F4
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49BE18E04F;
-	Mon, 28 Oct 2024 06:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2B418E05D;
+	Mon, 28 Oct 2024 06:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xv1nsjxV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lMcKpWc4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9F018CC1F;
-	Mon, 28 Oct 2024 06:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D15FC8837;
+	Mon, 28 Oct 2024 06:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730096891; cv=none; b=dTBHSFvkeJClU6U+SQoAIigX8t7XpP1utp37aoVaH58qfcmrNWvM9gxBExtDEJulvgdbyuGR/xbbOK35m6LE3ifkJ+rqaqqsMWQ1Yu5xip8vnufhca0mOk2x92roqzRVZIaz6qzsfSRohoCuzU93lIM2Bq3QhHl2pCknq3hQ4qA=
+	t=1730098307; cv=none; b=uxVdBni/0ubC33BFlxJM+12FXzOwhE/bl8b8p39mPkYEgXKvzZ8FFRyCYZ1A37KLEuDrmaF0NyKTck9W5VC0g/9Z6p/hpKwPDBw7yw/lTnZigwcOztwuc+C8x+SRma57fcjOqB9bD3kA2ESKD7bKGk2ht4XyVMtpRuBj1+RHyVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730096891; c=relaxed/simple;
-	bh=SS/L5wTTQldgtLNPE6vswVl4Wth4R2ehHEX/QW0Qrvs=;
+	s=arc-20240116; t=1730098307; c=relaxed/simple;
+	bh=mCJz7rnkuHrP/XDF9W4WYNsLzBVPLOMmzK+7NqgK+8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KCYoREBpLchwrJK1RGztSF/DnmubquPG8Ir+ms6phfUrerJrq9xForbfw9v+jv8MX32UEy4wPb8xn/ZGAetadl7XBcsH4d2toHNbq7GcJdLJD25/iobd/PJStFC02hkMa4V0RzvpsH3WV1ZyREJblZ4DTabwmOuI52u584pYXMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xv1nsjxV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD640C4CEC3;
-	Mon, 28 Oct 2024 06:28:10 +0000 (UTC)
+	 MIME-Version; b=gjmT/JXIidrPLzRp0sb271UktaYaWfABlvAIaDOtCkUbKjR5dOumpQ/3cBqRwMdQIA4IuhpLmc5MGz6Aqn9akPYCcunnPhG/dU/LvxxV9rCwjEqIVxLOmjmtspDUXZWgengoAdFeY+p9dmqWGXGNq8iy2gDXkmvgkNI3sXWjK/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lMcKpWc4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E41BC4CEC3;
+	Mon, 28 Oct 2024 06:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730096891;
-	bh=SS/L5wTTQldgtLNPE6vswVl4Wth4R2ehHEX/QW0Qrvs=;
+	s=korg; t=1730098307;
+	bh=mCJz7rnkuHrP/XDF9W4WYNsLzBVPLOMmzK+7NqgK+8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xv1nsjxVeJYX/6X6ksesGoTdDZ7dCGNsGx8Q06/kaZbv5K6rsFm7XoyK/Lbmypvdi
-	 Zta5bgkmqDXFcHvlCNZuhDu4989nDIxJMwhhpil2QCDL3PPcwlujOPJiTrMJNA4wKm
-	 kHj8y/LsxKZY5fv1SAIR9eKMAxxVm+LLjd5CPksE=
+	b=lMcKpWc4jh6QRryTzh6+6Q185ATCndf+xZuXZiP2T+YdL/tnrGxcmYI1zNzOGULBL
+	 SC0ZZt/PlUdbUP7w103AFXosBbJ6C6B5/1JtYLLMlUhtrSKJLOeUGIEEyZEPtfzOBO
+	 XWJTi72Dn0ZIYzUP62odcQPXsDofjEfI92YCumxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	junhua huang <huang.junhua@zte.com.cn>,
-	Will Deacon <will@kernel.org>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 30/80] arm64:uprobe fix the uprobe SWBP_INSN in big-endian
+Subject: [PATCH 6.11 168/261] net: sched: use RCU read-side critical section in taprio_dump()
 Date: Mon, 28 Oct 2024 07:25:10 +0100
-Message-ID: <20241028062253.465317528@linuxfoundation.org>
+Message-ID: <20241028062316.209491545@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,97 +61,158 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: junhua huang <huang.junhua@zte.com.cn>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 60f07e22a73d318cddaafa5ef41a10476807cc07 ]
+[ Upstream commit b22db8b8befe90b61c98626ca1a2fbb0505e9fe3 ]
 
-We use uprobe in aarch64_be, which we found the tracee task would exit
-due to SIGILL when we enable the uprobe trace.
-We can see the replace inst from uprobe is not correct in aarch big-endian.
-As in Armv8-A, instruction fetches are always treated as little-endian,
-we should treat the UPROBE_SWBP_INSN as little-endian。
+Fix possible use-after-free in 'taprio_dump()' by adding RCU
+read-side critical section there. Never seen on x86 but
+found on a KASAN-enabled arm64 system when investigating
+https://syzkaller.appspot.com/bug?extid=b65e0af58423fc8a73aa:
 
-The test case is as following。
-bash-4.4# ./mqueue_test_aarchbe 1 1 2 1 10 > /dev/null &
-bash-4.4# cd /sys/kernel/debug/tracing/
-bash-4.4# echo 'p:test /mqueue_test_aarchbe:0xc30 %x0 %x1' > uprobe_events
-bash-4.4# echo 1 > events/uprobes/enable
-bash-4.4#
-bash-4.4# ps
-  PID TTY          TIME CMD
-  140 ?        00:00:01 bash
-  237 ?        00:00:00 ps
-[1]+  Illegal instruction     ./mqueue_test_aarchbe 1 1 2 1 100 > /dev/null
+[T15862] BUG: KASAN: slab-use-after-free in taprio_dump+0xa0c/0xbb0
+[T15862] Read of size 4 at addr ffff0000d4bb88f8 by task repro/15862
+[T15862]
+[T15862] CPU: 0 UID: 0 PID: 15862 Comm: repro Not tainted 6.11.0-rc1-00293-gdefaf1a2113a-dirty #2
+[T15862] Hardware name: QEMU QEMU Virtual Machine, BIOS edk2-20240524-5.fc40 05/24/2024
+[T15862] Call trace:
+[T15862]  dump_backtrace+0x20c/0x220
+[T15862]  show_stack+0x2c/0x40
+[T15862]  dump_stack_lvl+0xf8/0x174
+[T15862]  print_report+0x170/0x4d8
+[T15862]  kasan_report+0xb8/0x1d4
+[T15862]  __asan_report_load4_noabort+0x20/0x2c
+[T15862]  taprio_dump+0xa0c/0xbb0
+[T15862]  tc_fill_qdisc+0x540/0x1020
+[T15862]  qdisc_notify.isra.0+0x330/0x3a0
+[T15862]  tc_modify_qdisc+0x7b8/0x1838
+[T15862]  rtnetlink_rcv_msg+0x3c8/0xc20
+[T15862]  netlink_rcv_skb+0x1f8/0x3d4
+[T15862]  rtnetlink_rcv+0x28/0x40
+[T15862]  netlink_unicast+0x51c/0x790
+[T15862]  netlink_sendmsg+0x79c/0xc20
+[T15862]  __sock_sendmsg+0xe0/0x1a0
+[T15862]  ____sys_sendmsg+0x6c0/0x840
+[T15862]  ___sys_sendmsg+0x1ac/0x1f0
+[T15862]  __sys_sendmsg+0x110/0x1d0
+[T15862]  __arm64_sys_sendmsg+0x74/0xb0
+[T15862]  invoke_syscall+0x88/0x2e0
+[T15862]  el0_svc_common.constprop.0+0xe4/0x2a0
+[T15862]  do_el0_svc+0x44/0x60
+[T15862]  el0_svc+0x50/0x184
+[T15862]  el0t_64_sync_handler+0x120/0x12c
+[T15862]  el0t_64_sync+0x190/0x194
+[T15862]
+[T15862] Allocated by task 15857:
+[T15862]  kasan_save_stack+0x3c/0x70
+[T15862]  kasan_save_track+0x20/0x3c
+[T15862]  kasan_save_alloc_info+0x40/0x60
+[T15862]  __kasan_kmalloc+0xd4/0xe0
+[T15862]  __kmalloc_cache_noprof+0x194/0x334
+[T15862]  taprio_change+0x45c/0x2fe0
+[T15862]  tc_modify_qdisc+0x6a8/0x1838
+[T15862]  rtnetlink_rcv_msg+0x3c8/0xc20
+[T15862]  netlink_rcv_skb+0x1f8/0x3d4
+[T15862]  rtnetlink_rcv+0x28/0x40
+[T15862]  netlink_unicast+0x51c/0x790
+[T15862]  netlink_sendmsg+0x79c/0xc20
+[T15862]  __sock_sendmsg+0xe0/0x1a0
+[T15862]  ____sys_sendmsg+0x6c0/0x840
+[T15862]  ___sys_sendmsg+0x1ac/0x1f0
+[T15862]  __sys_sendmsg+0x110/0x1d0
+[T15862]  __arm64_sys_sendmsg+0x74/0xb0
+[T15862]  invoke_syscall+0x88/0x2e0
+[T15862]  el0_svc_common.constprop.0+0xe4/0x2a0
+[T15862]  do_el0_svc+0x44/0x60
+[T15862]  el0_svc+0x50/0x184
+[T15862]  el0t_64_sync_handler+0x120/0x12c
+[T15862]  el0t_64_sync+0x190/0x194
+[T15862]
+[T15862] Freed by task 6192:
+[T15862]  kasan_save_stack+0x3c/0x70
+[T15862]  kasan_save_track+0x20/0x3c
+[T15862]  kasan_save_free_info+0x4c/0x80
+[T15862]  poison_slab_object+0x110/0x160
+[T15862]  __kasan_slab_free+0x3c/0x74
+[T15862]  kfree+0x134/0x3c0
+[T15862]  taprio_free_sched_cb+0x18c/0x220
+[T15862]  rcu_core+0x920/0x1b7c
+[T15862]  rcu_core_si+0x10/0x1c
+[T15862]  handle_softirqs+0x2e8/0xd64
+[T15862]  __do_softirq+0x14/0x20
 
-which we debug use gdb as following:
-
-bash-4.4# gdb attach 155
-(gdb) disassemble send
-Dump of assembler code for function send:
-   0x0000000000400c30 <+0>:     .inst   0xa00020d4 ; undefined
-   0x0000000000400c34 <+4>:     mov     x29, sp
-   0x0000000000400c38 <+8>:     str     w0, [sp, #28]
-   0x0000000000400c3c <+12>:    strb    w1, [sp, #27]
-   0x0000000000400c40 <+16>:    str     xzr, [sp, #40]
-   0x0000000000400c44 <+20>:    str     xzr, [sp, #48]
-   0x0000000000400c48 <+24>:    add     x0, sp, #0x1b
-   0x0000000000400c4c <+28>:    mov     w3, #0x0                 // #0
-   0x0000000000400c50 <+32>:    mov     x2, #0x1                 // #1
-   0x0000000000400c54 <+36>:    mov     x1, x0
-   0x0000000000400c58 <+40>:    ldr     w0, [sp, #28]
-   0x0000000000400c5c <+44>:    bl      0x405e10 <mq_send>
-   0x0000000000400c60 <+48>:    str     w0, [sp, #60]
-   0x0000000000400c64 <+52>:    ldr     w0, [sp, #60]
-   0x0000000000400c68 <+56>:    ldp     x29, x30, [sp], #64
-   0x0000000000400c6c <+60>:    ret
-End of assembler dump.
-(gdb) info b
-No breakpoints or watchpoints.
-(gdb) c
-Continuing.
-
-Program received signal SIGILL, Illegal instruction.
-0x0000000000400c30 in send ()
-(gdb) x/10x 0x400c30
-0x400c30 <send>:    0xd42000a0   0xfd030091      0xe01f00b9      0xe16f0039
-0x400c40 <send+16>: 0xff1700f9   0xff1b00f9      0xe06f0091      0x03008052
-0x400c50 <send+32>: 0x220080d2   0xe10300aa
-(gdb) disassemble 0x400c30
-Dump of assembler code for function send:
-=> 0x0000000000400c30 <+0>:     .inst   0xa00020d4 ; undefined
-   0x0000000000400c34 <+4>:     mov     x29, sp
-   0x0000000000400c38 <+8>:     str     w0, [sp, #28]
-   0x0000000000400c3c <+12>:    strb    w1, [sp, #27]
-   0x0000000000400c40 <+16>:    str     xzr, [sp, #40]
-
-Signed-off-by: junhua huang <huang.junhua@zte.com.cn>
-Link: https://lore.kernel.org/r/202212021511106844809@zte.com.cn
-Signed-off-by: Will Deacon <will@kernel.org>
-Stable-dep-of: 13f8f1e05f1d ("arm64: probes: Fix uprobes for big-endian kernels")
+Fixes: 18cdd2f0998a ("net/sched: taprio: taprio_dump and taprio_change are protected by rtnl_mutex")
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://patch.msgid.link/20241018051339.418890-2-dmantipov@yandex.ru
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/uprobes.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_taprio.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/include/asm/uprobes.h b/arch/arm64/include/asm/uprobes.h
-index 315eef654e39a..ba4bff5ca6749 100644
---- a/arch/arm64/include/asm/uprobes.h
-+++ b/arch/arm64/include/asm/uprobes.h
-@@ -12,7 +12,7 @@
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 9f4e004cdb8be..8623dc0bafc09 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -2374,9 +2374,6 @@ static int taprio_dump(struct Qdisc *sch, struct sk_buff *skb)
+ 	struct tc_mqprio_qopt opt = { 0 };
+ 	struct nlattr *nest, *sched_nest;
  
- #define MAX_UINSN_BYTES		AARCH64_INSN_SIZE
+-	oper = rtnl_dereference(q->oper_sched);
+-	admin = rtnl_dereference(q->admin_sched);
+-
+ 	mqprio_qopt_reconstruct(dev, &opt);
  
--#define UPROBE_SWBP_INSN	BRK64_OPCODE_UPROBES
-+#define UPROBE_SWBP_INSN	cpu_to_le32(BRK64_OPCODE_UPROBES)
- #define UPROBE_SWBP_INSN_SIZE	AARCH64_INSN_SIZE
- #define UPROBE_XOL_SLOT_BYTES	MAX_UINSN_BYTES
+ 	nest = nla_nest_start_noflag(skb, TCA_OPTIONS);
+@@ -2397,18 +2394,23 @@ static int taprio_dump(struct Qdisc *sch, struct sk_buff *skb)
+ 	    nla_put_u32(skb, TCA_TAPRIO_ATTR_TXTIME_DELAY, q->txtime_delay))
+ 		goto options_error;
+ 
++	rcu_read_lock();
++
++	oper = rtnl_dereference(q->oper_sched);
++	admin = rtnl_dereference(q->admin_sched);
++
+ 	if (oper && taprio_dump_tc_entries(skb, q, oper))
+-		goto options_error;
++		goto options_error_rcu;
+ 
+ 	if (oper && dump_schedule(skb, oper))
+-		goto options_error;
++		goto options_error_rcu;
+ 
+ 	if (!admin)
+ 		goto done;
+ 
+ 	sched_nest = nla_nest_start_noflag(skb, TCA_TAPRIO_ATTR_ADMIN_SCHED);
+ 	if (!sched_nest)
+-		goto options_error;
++		goto options_error_rcu;
+ 
+ 	if (dump_schedule(skb, admin))
+ 		goto admin_error;
+@@ -2416,11 +2418,15 @@ static int taprio_dump(struct Qdisc *sch, struct sk_buff *skb)
+ 	nla_nest_end(skb, sched_nest);
+ 
+ done:
++	rcu_read_unlock();
+ 	return nla_nest_end(skb, nest);
+ 
+ admin_error:
+ 	nla_nest_cancel(skb, sched_nest);
+ 
++options_error_rcu:
++	rcu_read_unlock();
++
+ options_error:
+ 	nla_nest_cancel(skb, nest);
  
 -- 
 2.43.0
