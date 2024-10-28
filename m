@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-88894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E14D9B27F5
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C819B2572
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:29:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3409E286303
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A553E1C20F31
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C951818E05D;
-	Mon, 28 Oct 2024 06:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 126EC18E047;
+	Mon, 28 Oct 2024 06:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lppiZmOk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lg/pql0p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869A28837;
-	Mon, 28 Oct 2024 06:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4342152E1C;
+	Mon, 28 Oct 2024 06:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098363; cv=none; b=sGMzG9T0p0EF+Bo7WjJtizS5UfDULC/wnL+/Vk2uy0aWNGEiS7AarZhfNU/y4MhvTNOJdRd0DMonLb6BiXd/T/ANo04ytdoRtnEY2PM15Ax0cSh+l8fEp1ZczHEQ4wCs+qHELIQ8okeat1zD7h+HB1raHYhX9A1om2qhZQa/b/Y=
+	t=1730096945; cv=none; b=EOK8cAG7c/9/bhNET+oFsYPW/KeoaJsJYltfcDue929SnRdfIqyoyAMmZDYgOCIfdfm03fFgbKevT18TMntQHrGxyRGIpuMxKwO/Mv4K2OyBwrm+1YYcyaDuZTjCnnBYUoNaK69CRKFN5z/mb2t/bRKVeway1/MA5BUAFjit4Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098363; c=relaxed/simple;
-	bh=mA33uTefXfbmyP3/FV6HThqcF5LQ55IVIv+WyM9cvA8=;
+	s=arc-20240116; t=1730096945; c=relaxed/simple;
+	bh=lUoMl/E/ZQFG+3DYuz6+RGQM0O0t/PvYt094aZUFvKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lvp+ddhZNqCmLosC736KfhkUYXul7RMYDD1P5ImbYRtT5TzrsMz266w5grjCKZBi5zSfTKGjI5p0OURHGsNvhokYHz1qywGpUcX7N1Th1LzTYA7vzcMPAYl/TW9ZmyuSpn1qFzFUmNt2bbgyOAGwYFiNM8SubRam0V+OEIyagcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lppiZmOk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2559BC4CEC3;
-	Mon, 28 Oct 2024 06:52:43 +0000 (UTC)
+	 MIME-Version; b=TiAFfA3E7cYJQSjZ4DVZddoGzMkn7GLNslbr1k8GWmCGUW/piMRm6FErG2tz0R0jdG9//ExUvvvm6a2m4JAH/5O0m0LHoKTkjE5WHb+xBTyorSRC55xrhCvq+89DAjK29chfo94kyztJMVVfnwf5ap1qZgAECaWqvPpDCU1G+eU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lg/pql0p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D369C4CEC3;
+	Mon, 28 Oct 2024 06:29:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098363;
-	bh=mA33uTefXfbmyP3/FV6HThqcF5LQ55IVIv+WyM9cvA8=;
+	s=korg; t=1730096945;
+	bh=lUoMl/E/ZQFG+3DYuz6+RGQM0O0t/PvYt094aZUFvKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lppiZmOkg4PCd9UCTaO3qZvhnCc6x4xZKlvFEWFOPvBDXPWW+nMvP7Gy4SMwvpTRJ
-	 YUpAiSJCvcc6URuDy7dbJZRvmRrJatomCDQOeNOWpt6OF+HbK4b1nVib67kSJD/PHL
-	 YNNZwbSRuvBSWoMUzPgY0GxTRtKjOhtbaoTWbVhA=
+	b=Lg/pql0phhtTMVn/h6DDrnk26u+7KYkhjSuKeSSmZbFusqRPdJZ6S8kN+ge58S8B3
+	 8eZOb7ZrbL1CSA0XFFoVhgQT0bpYID60ZyQpeSgwBUXskjSETSjlk0On7AchVK3Cf5
+	 GEYUoGYm1VJ1uwuCVZwi1rzWMSz7wGbrtaiuIdiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Can <yuancan@huawei.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Wang Hai <wanghai38@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 193/261] powercap: dtpm_devfreq: Fix error check against dev_pm_qos_add_request()
+Subject: [PATCH 5.15 55/80] be2net: fix potential memory leak in be_xmit()
 Date: Mon, 28 Oct 2024 07:25:35 +0100
-Message-ID: <20241028062316.866023167@linuxfoundation.org>
+Message-ID: <20241028062254.146802673@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Can <yuancan@huawei.com>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit 5209d1b654f1db80509040cc694c7814a1b547e3 ]
+[ Upstream commit e4dd8bfe0f6a23acd305f9b892c00899089bd621 ]
 
-The caller of the function dev_pm_qos_add_request() checks again a non
-zero value but dev_pm_qos_add_request() can return '1' if the request
-already exists. Therefore, the setup function fails while the QoS
-request actually did not failed.
+The be_xmit() returns NETDEV_TX_OK without freeing skb
+in case of be_xmit_enqueue() fails, add dev_kfree_skb_any() to fix it.
 
-Fix that by changing the check against a negative value like all the
-other callers of the function.
-
-Fixes: e44655617317 ("powercap/drivers/dtpm: Add dtpm devfreq with energy model support")
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Link: https://patch.msgid.link/20241018021205.46460-1-yuancan@huawei.com
-[ rjw: Subject edit ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 760c295e0e8d ("be2net: Support for OS2BMC.")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Message-ID: <20241015144802.12150-1-wanghai38@huawei.com>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/powercap/dtpm_devfreq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/emulex/benet/be_main.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/powercap/dtpm_devfreq.c b/drivers/powercap/dtpm_devfreq.c
-index f40bce8176df2..d1dff6ccab120 100644
---- a/drivers/powercap/dtpm_devfreq.c
-+++ b/drivers/powercap/dtpm_devfreq.c
-@@ -178,7 +178,7 @@ static int __dtpm_devfreq_setup(struct devfreq *devfreq, struct dtpm *parent)
- 	ret = dev_pm_qos_add_request(dev, &dtpm_devfreq->qos_req,
- 				     DEV_PM_QOS_MAX_FREQUENCY,
- 				     PM_QOS_MAX_FREQUENCY_DEFAULT_VALUE);
--	if (ret) {
-+	if (ret < 0) {
- 		pr_err("Failed to add QoS request: %d\n", ret);
- 		goto out_dtpm_unregister;
+diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
+index b91029db1f211..13d5fe324d6c7 100644
+--- a/drivers/net/ethernet/emulex/benet/be_main.c
++++ b/drivers/net/ethernet/emulex/benet/be_main.c
+@@ -1382,10 +1382,8 @@ static netdev_tx_t be_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 	be_get_wrb_params_from_skb(adapter, skb, &wrb_params);
+ 
+ 	wrb_cnt = be_xmit_enqueue(adapter, txo, skb, &wrb_params);
+-	if (unlikely(!wrb_cnt)) {
+-		dev_kfree_skb_any(skb);
+-		goto drop;
+-	}
++	if (unlikely(!wrb_cnt))
++		goto drop_skb;
+ 
+ 	/* if os2bmc is enabled and if the pkt is destined to bmc,
+ 	 * enqueue the pkt a 2nd time with mgmt bit set.
+@@ -1394,7 +1392,7 @@ static netdev_tx_t be_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 		BE_WRB_F_SET(wrb_params.features, OS2BMC, 1);
+ 		wrb_cnt = be_xmit_enqueue(adapter, txo, skb, &wrb_params);
+ 		if (unlikely(!wrb_cnt))
+-			goto drop;
++			goto drop_skb;
+ 		else
+ 			skb_get(skb);
  	}
+@@ -1408,6 +1406,8 @@ static netdev_tx_t be_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 		be_xmit_flush(adapter, txo);
+ 
+ 	return NETDEV_TX_OK;
++drop_skb:
++	dev_kfree_skb_any(skb);
+ drop:
+ 	tx_stats(txo)->tx_drv_drops++;
+ 	/* Flush the already enqueued tx requests */
 -- 
 2.43.0
 
