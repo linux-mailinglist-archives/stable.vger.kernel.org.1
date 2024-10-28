@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-88916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 634049B2810
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:53:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE719B2565
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC0D2B2110F
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:53:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED3361C20ED8
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E4518F2D8;
-	Mon, 28 Oct 2024 06:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731DB18E34D;
+	Mon, 28 Oct 2024 06:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2inBFvG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDpLHOUB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D51118E368;
-	Mon, 28 Oct 2024 06:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECDB18E348;
+	Mon, 28 Oct 2024 06:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098413; cv=none; b=gS+tRrgho7oeerYkoe/0utZx7MZTU8oSefoXfl2QV9XDhXSBQW1wZKNUKpeFhpsfH8zEFL+HAqPlPTpvWYzajiblSjtOPIMW59dh6dT6eqSRN+fyIGxpjQeXwugrKGfA6im1pmvksay+7waGgsilgU5sWRgaaobPLaqPepHkAro=
+	t=1730096916; cv=none; b=fCHk+YgWmVdNP05hb298qs3KicPbkJjG0UAF3e/czsB11MYj3aCycrHcQtQuscHpOiGLwqRGUwf6P5rRKy0IfVem7CfbtZ48lYBehaWu8FT7DrdxOfrmXwoi93ONrpyE3xejWelC77cJ/kF3mC3RVWwSjDprORdiCbpRaZoJ+dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098413; c=relaxed/simple;
-	bh=UWeaIFBhrfTWww6R6OQg/bzI2Jc63iGINTDckm2UD2E=;
+	s=arc-20240116; t=1730096916; c=relaxed/simple;
+	bh=18W2BMTXW+jBRzuVfRqyjZYo5V0q3V2Cupgmau6Dnv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pV7B5Q42Hva1yJmLfPqJmYdtM8YOlO61voOp8vvS1zdnD95DpDzKuu3HgSdp9K/w+CLnromdtAOfrzw2RubvDlj4D/HDIMWDZBMzRm8AVsLLw9DLzSwOnrpzszJATQ0ti+oMa6oaUhuXOTPY2pF+/4EMIMsxllhH5EMmNPSvvzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2inBFvG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C40C4CEC3;
-	Mon, 28 Oct 2024 06:53:32 +0000 (UTC)
+	 MIME-Version; b=Ec1AdACpIfhx00QmKHxfSMWBrlYyyG2zgKHBDdGBpD3pWcjXoAbz5Z/StrvK4zft4frQKHqLP96RPJ8JiVTXjrLHSqKWfPfFkJNPvkmGbnpcK2FYJHiqeLgEWGNA9y1f46oar6po62hdM365spZn6P/lAQ4IYsXaOd/bSgjFxUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDpLHOUB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8BE5C4CEC3;
+	Mon, 28 Oct 2024 06:28:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098412;
-	bh=UWeaIFBhrfTWww6R6OQg/bzI2Jc63iGINTDckm2UD2E=;
+	s=korg; t=1730096916;
+	bh=18W2BMTXW+jBRzuVfRqyjZYo5V0q3V2Cupgmau6Dnv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v2inBFvGxe1amNaR72dTAQyw6o1Z9jTYqOlSSiUWHXQdktbesWCSIhSxhIM8yUB29
-	 OTH5dfjKWuNG1FK2Je5VyTd2yBYqQco5pT5AFF04xP6cq4QfppOxd0KT2UK/Dly2qw
-	 P/oMzsBuvxHR9LFk+zKDBOPmdCp2a33M1RKe3uCw=
+	b=sDpLHOUBT4qBZ/4jDDcNixScGIkRfB/3dReNg5GpWlwc+oLVW4gZt6wDUZz/tpuor
+	 tA0fDFseXEFW1lMU+zqKYG/B98FckE8Fgi/J/+jKX73Gyh04BTCh1HXmR/u7AL0dnn
+	 IHkQ6Zw1K1YAb/D7Nlq8mDm7Epkh1cRYtCX/GwDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 180/261] bpf: Add the missing BPF_LINK_TYPE invocation for sockmap
-Date: Mon, 28 Oct 2024 07:25:22 +0100
-Message-ID: <20241028062316.517508516@linuxfoundation.org>
+Subject: [PATCH 5.15 43/80] ASoC: fsl_sai: Enable FIFO continue on error FCONT bit
+Date: Mon, 28 Oct 2024 07:25:23 +0100
+Message-ID: <20241028062253.817111506@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit c2f803052bc7a7feb2e03befccc8e49b6ff1f5f5 ]
+[ Upstream commit 72455e33173c1a00c0ce93d2b0198eb45d5f4195 ]
 
-There is an out-of-bounds read in bpf_link_show_fdinfo() for the sockmap
-link fd. Fix it by adding the missing BPF_LINK_TYPE invocation for
-sockmap link
+FCONT=1 means On FIFO error, the SAI will continue from the
+same word that caused the FIFO error to set after the FIFO
+warning flag has been cleared.
 
-Also add comments for bpf_link_type to prevent missing updates in the
-future.
+Set FCONT bit in control register to avoid the channel swap
+issue after SAI xrun.
 
-Fixes: 699c23f02c65 ("bpf: Add bpf_link support for sk_msg and sk_skb progs")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241024013558.1135167-2-houtao@huaweicloud.com
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/1727676508-22830-1-git-send-email-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf_types.h      | 1 +
- include/uapi/linux/bpf.h       | 3 +++
- tools/include/uapi/linux/bpf.h | 3 +++
- 3 files changed, 7 insertions(+)
+ sound/soc/fsl/fsl_sai.c | 5 ++++-
+ sound/soc/fsl/fsl_sai.h | 1 +
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/bpf_types.h b/include/linux/bpf_types.h
-index 9f2a6b83b49e1..fa78f49d4a9a6 100644
---- a/include/linux/bpf_types.h
-+++ b/include/linux/bpf_types.h
-@@ -146,6 +146,7 @@ BPF_LINK_TYPE(BPF_LINK_TYPE_XDP, xdp)
- BPF_LINK_TYPE(BPF_LINK_TYPE_NETFILTER, netfilter)
- BPF_LINK_TYPE(BPF_LINK_TYPE_TCX, tcx)
- BPF_LINK_TYPE(BPF_LINK_TYPE_NETKIT, netkit)
-+BPF_LINK_TYPE(BPF_LINK_TYPE_SOCKMAP, sockmap)
- #endif
- #ifdef CONFIG_PERF_EVENTS
- BPF_LINK_TYPE(BPF_LINK_TYPE_PERF_EVENT, perf)
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index fea4bca4066c1..b44b3b6c6a8f4 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -1121,6 +1121,9 @@ enum bpf_attach_type {
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index 59dffa5ff34f4..87d324927cd97 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -498,6 +498,9 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
  
- #define MAX_BPF_ATTACH_TYPE __MAX_BPF_ATTACH_TYPE
+ 	val_cr4 |= FSL_SAI_CR4_FRSZ(slots);
  
-+/* Add BPF_LINK_TYPE(type, name) in bpf_types.h to keep bpf_link_type_strs[]
-+ * in sync with the definitions below.
-+ */
- enum bpf_link_type {
- 	BPF_LINK_TYPE_UNSPEC = 0,
- 	BPF_LINK_TYPE_RAW_TRACEPOINT = 1,
-diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-index 35bcf52dbc652..cf9b43b872f9d 100644
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -1121,6 +1121,9 @@ enum bpf_attach_type {
++	/* Set to avoid channel swap */
++	val_cr4 |= FSL_SAI_CR4_FCONT;
++
+ 	/* Set to output mode to avoid tri-stated data pins */
+ 	if (tx)
+ 		val_cr4 |= FSL_SAI_CR4_CHMOD;
+@@ -523,7 +526,7 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+ 			   FSL_SAI_CR3_TRCE((1 << pins) - 1));
+ 	regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx, ofs),
+ 			   FSL_SAI_CR4_SYWD_MASK | FSL_SAI_CR4_FRSZ_MASK |
+-			   FSL_SAI_CR4_CHMOD_MASK,
++			   FSL_SAI_CR4_CHMOD_MASK | FSL_SAI_CR4_FCONT_MASK,
+ 			   val_cr4);
+ 	regmap_update_bits(sai->regmap, FSL_SAI_xCR5(tx, ofs),
+ 			   FSL_SAI_CR5_WNW_MASK | FSL_SAI_CR5_W0W_MASK |
+diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
+index f8c9a8fb78984..0a03e68aadc19 100644
+--- a/sound/soc/fsl/fsl_sai.h
++++ b/sound/soc/fsl/fsl_sai.h
+@@ -132,6 +132,7 @@
  
- #define MAX_BPF_ATTACH_TYPE __MAX_BPF_ATTACH_TYPE
+ /* SAI Transmit and Receive Configuration 4 Register */
  
-+/* Add BPF_LINK_TYPE(type, name) in bpf_types.h to keep bpf_link_type_strs[]
-+ * in sync with the definitions below.
-+ */
- enum bpf_link_type {
- 	BPF_LINK_TYPE_UNSPEC = 0,
- 	BPF_LINK_TYPE_RAW_TRACEPOINT = 1,
++#define FSL_SAI_CR4_FCONT_MASK	BIT(28)
+ #define FSL_SAI_CR4_FCONT	BIT(28)
+ #define FSL_SAI_CR4_FCOMB_SHIFT BIT(26)
+ #define FSL_SAI_CR4_FCOMB_SOFT  BIT(27)
 -- 
 2.43.0
 
