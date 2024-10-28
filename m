@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 053999B267C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:40:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FAC09B2769
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:48:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3739C1C2136F
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:40:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9A06283A5B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6823818E04F;
-	Mon, 28 Oct 2024 06:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E58C18E05D;
+	Mon, 28 Oct 2024 06:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LL076rHC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhExhq8f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C9B2C697;
-	Mon, 28 Oct 2024 06:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BFDB18A924;
+	Mon, 28 Oct 2024 06:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097602; cv=none; b=mdgrMKrU6NhnPUGUyk9Bqpr9Bs1N3bPMMwN9wQtcuVJM5aG5CgijhlRIIHHwICKc68PbGocddPLyF0pSF20C0Du0NFSFDGARKPMZju1C7WOzcrmfKjC/IWL/0+wN6y0J1OVlUn5pdC9b9esxGgmPsPfcnF5Ulio7HZdjyLFFItA=
+	t=1730098077; cv=none; b=gq8AixVczp710KTjRbtEC7WER9pkmSnYb4D8DBcptOr9uH8Y8zbsfzJQ81gT1hrNwxw5llzBugsa+1OX0JJK47p1/fR6azgOMDMuQouZT5Sl3Umuef8/6dWHNgnpxXi2tamjttj1qI+mW+HniGjRhtEUsKIHKY+YEtpfUfDjPI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097602; c=relaxed/simple;
-	bh=aeY3IPcR0z6Wph4lKEeEfO43qylfJuzpT4R9RMizqEE=;
+	s=arc-20240116; t=1730098077; c=relaxed/simple;
+	bh=iOyqcBUwFbFz0b3grGicQxve3mnPcXucpVDY2kU6zMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ts6SXp0bsdSw/JJ21AlTRLQhGxyXXSJHlD55H4BRWbgzImRK5aBY7O+mwu3JIztDnRC7s2o7mr0UlIgE6wMmEIZcvrPcVz3ExSrSXo3BMdXpjIbBctbykiKao4c2VPBwVQ9bPqXwbigYVLaGWaeSou3y8HbEelvsBtBTuRx87rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LL076rHC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F49C4CEC3;
-	Mon, 28 Oct 2024 06:40:01 +0000 (UTC)
+	 MIME-Version; b=I8X+3/dcZVnhPqrdAfDxjL+1+MqXQJY2jKAHkNVMMLKGrLxNqPu0V1g4dbOGWjpzmxYcBD8byk4fo6Dwr9Zho5D1ElJK66yhYtPgT1bw21vjrhIMzKF4+sPcNZiSenWnDPR7W0zmdcmq3XT0/WszFni/lwjtQ3gpffxCnXljoQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LhExhq8f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C018EC4CEC3;
+	Mon, 28 Oct 2024 06:47:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097602;
-	bh=aeY3IPcR0z6Wph4lKEeEfO43qylfJuzpT4R9RMizqEE=;
+	s=korg; t=1730098077;
+	bh=iOyqcBUwFbFz0b3grGicQxve3mnPcXucpVDY2kU6zMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LL076rHCAq83VSI280cMVUy42YTfAGvW/Xb4HiZMQElmTMRX/Ou0BelcQZbOUxzLu
-	 yfVEdKJmgXgdMZSsnPCT/+XqmB4SwOcTL5NzIApQBECWs1/JUk3Lvtd8ILf/kQpoQD
-	 I8kP5DoBHjurnZwhApY4ZE3MMRBLguThfBwV0GaA=
+	b=LhExhq8fJst3KMfO+pgiS3zvIV/2aXZRPmB3i7eUnYv1v8O7qpNBNs9NhQrp2yC/7
+	 qeDLH60ytYzAfarA2lFk5HAiDAX+JuKjkoNKaTS8tng2AWK1UfC3zZTxjDli4wOE/4
+	 VIzAbHd57Yf0j+gVwSTZdUq1iVygcRDQILBxEk9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anumula Murali Mohan Reddy <anumula@chelsio.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Wang Hai <wanghai38@huawei.com>,
+	Gerhard Engleder <gerhard@engleder-embedded.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 029/208] RDMA/cxgb4: Fix RDMA_CM_EVENT_UNREACHABLE error for iWARP
+Subject: [PATCH 6.11 067/261] net: ethernet: aeroflex: fix potential memory leak in greth_start_xmit_gbit()
 Date: Mon, 28 Oct 2024 07:23:29 +0100
-Message-ID: <20241028062307.375562049@linuxfoundation.org>
+Message-ID: <20241028062313.713365112@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anumula Murali Mohan Reddy <anumula@chelsio.com>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit c659b405b82ead335bee6eb33f9691bf718e21e8 ]
+[ Upstream commit cf57b5d7a2aad456719152ecd12007fe031628a3 ]
 
-ip_dev_find() always returns real net_device address, whether traffic is
-running on a vlan or real device, if traffic is over vlan, filling
-endpoint struture with real ndev and an attempt to send a connect request
-will results in RDMA_CM_EVENT_UNREACHABLE error.  This patch fixes the
-issue by using vlan_dev_real_dev().
+The greth_start_xmit_gbit() returns NETDEV_TX_OK without freeing skb
+in case of skb->len being too long, add dev_kfree_skb() to fix it.
 
-Fixes: 830662f6f032 ("RDMA/cxgb4: Add support for active and passive open connection with IPv6 address")
-Link: https://patch.msgid.link/r/20241007132311.70593-1-anumula@chelsio.com
-Signed-off-by: Anumula Murali Mohan Reddy <anumula@chelsio.com>
-Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: d4c41139df6e ("net: Add Aeroflex Gaisler 10/100/1G Ethernet MAC driver")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+Link: https://patch.msgid.link/20241012110434.49265-1-wanghai38@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/cxgb4/cm.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/aeroflex/greth.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/cxgb4/cm.c b/drivers/infiniband/hw/cxgb4/cm.c
-index b3757c6a0457a..8d753e6e0c719 100644
---- a/drivers/infiniband/hw/cxgb4/cm.c
-+++ b/drivers/infiniband/hw/cxgb4/cm.c
-@@ -2086,7 +2086,7 @@ static int import_ep(struct c4iw_ep *ep, int iptype, __u8 *peer_ip,
- 	err = -ENOMEM;
- 	if (n->dev->flags & IFF_LOOPBACK) {
- 		if (iptype == 4)
--			pdev = ip_dev_find(&init_net, *(__be32 *)peer_ip);
-+			pdev = __ip_dev_find(&init_net, *(__be32 *)peer_ip, false);
- 		else if (IS_ENABLED(CONFIG_IPV6))
- 			for_each_netdev(&init_net, pdev) {
- 				if (ipv6_chk_addr(&init_net,
-@@ -2101,12 +2101,12 @@ static int import_ep(struct c4iw_ep *ep, int iptype, __u8 *peer_ip,
- 			err = -ENODEV;
- 			goto out;
- 		}
-+		if (is_vlan_dev(pdev))
-+			pdev = vlan_dev_real_dev(pdev);
- 		ep->l2t = cxgb4_l2t_get(cdev->rdev.lldi.l2t,
- 					n, pdev, rt_tos2priority(tos));
--		if (!ep->l2t) {
--			dev_put(pdev);
-+		if (!ep->l2t)
- 			goto out;
--		}
- 		ep->mtu = pdev->mtu;
- 		ep->tx_chan = cxgb4_port_chan(pdev);
- 		ep->smac_idx = ((struct port_info *)netdev_priv(pdev))->smt_idx;
-@@ -2119,7 +2119,6 @@ static int import_ep(struct c4iw_ep *ep, int iptype, __u8 *peer_ip,
- 		ep->rss_qid = cdev->rdev.lldi.rxq_ids[
- 			cxgb4_port_idx(pdev) * step];
- 		set_tcp_window(ep, (struct port_info *)netdev_priv(pdev));
--		dev_put(pdev);
- 	} else {
- 		pdev = get_real_dev(n->dev);
- 		ep->l2t = cxgb4_l2t_get(cdev->rdev.lldi.l2t,
+diff --git a/drivers/net/ethernet/aeroflex/greth.c b/drivers/net/ethernet/aeroflex/greth.c
+index 27af7746d645b..adf6f67c5fcba 100644
+--- a/drivers/net/ethernet/aeroflex/greth.c
++++ b/drivers/net/ethernet/aeroflex/greth.c
+@@ -484,7 +484,7 @@ greth_start_xmit_gbit(struct sk_buff *skb, struct net_device *dev)
+ 
+ 	if (unlikely(skb->len > MAX_FRAME_SIZE)) {
+ 		dev->stats.tx_errors++;
+-		goto out;
++		goto len_error;
+ 	}
+ 
+ 	/* Save skb pointer. */
+@@ -575,6 +575,7 @@ greth_start_xmit_gbit(struct sk_buff *skb, struct net_device *dev)
+ map_error:
+ 	if (net_ratelimit())
+ 		dev_warn(greth->dev, "Could not create TX DMA mapping\n");
++len_error:
+ 	dev_kfree_skb(skb);
+ out:
+ 	return err;
 -- 
 2.43.0
 
