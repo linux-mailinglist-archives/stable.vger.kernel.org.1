@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42DAD9B2583
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:31:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A1779B27E9
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED3AA1F2187D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:31:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5C1E1F22025
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D96118DF68;
-	Mon, 28 Oct 2024 06:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B0018DF7D;
+	Mon, 28 Oct 2024 06:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0QYcAij"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UR3ZdAjL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5657115B10D;
-	Mon, 28 Oct 2024 06:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECCD8837;
+	Mon, 28 Oct 2024 06:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097117; cv=none; b=opmqdjl5+yJuHAh/ro7+LFtQb2mq0ixJRrNK5qB1F+XwD4RrECgoBxP143npqIFR2Vx8zUFk6P6a5T8Ilfnw8op1CByyMBY4W45E+A26BhlL7xdZDCF7aFuwk4tVnQlUjCS+4CgkvkTbfVuLi7EreADtVkVASi69WHqdr7MFD2k=
+	t=1730098334; cv=none; b=A05WunzzQpOEn8b/TGaXTzpAM3DJ7/QwkMUYiSuVS0B3ngY1zbvmj5IAG3AewGftB/PNY8yEKuWYWk3YjSZ9vAXGfVPeE78+IRQtA6PUsv4yzCFW7efsBPgJ/FM6WfSnoCZpOpG8YP9iGVRj+7Pcj9/H70uNcl9hw+zVSdJmbGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097117; c=relaxed/simple;
-	bh=ZCUsB4ur38sytrwyAG2BghZ/1xKLJ0M4pz6vpla9O5k=;
+	s=arc-20240116; t=1730098334; c=relaxed/simple;
+	bh=F3kOO/IZUoHlT8tNRsDYTXwc6EtE/JtqlG4ZTr30AGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BCL/N1uLKYoQtfuLVIP4JUgqBZIAl/rQ1LeVPcUCE7osE6DKfYeG8QeQcUKiv7i1l1XYUzj8uiIcF7pBVsqdbE7mcuuQBTqnsq1OslznN5jB4LUus0QyZrgkDU8HJ0K6WKVWc/juhvooOiresrngE7hyIB1GbN/KYAEV+EZ2TdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0QYcAij; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA078C4CEC7;
-	Mon, 28 Oct 2024 06:31:56 +0000 (UTC)
+	 MIME-Version; b=qKcCiwyXOmABptvN9J+M2PgJFmYJzq2hd3d791wDjYCdR+wf9Rkzg/EEKBUA0S9pGmkf+5xaExtjfQ+3zgqoiy5GuqGW/nbRp5bbeUoYmtPqBFleu6+o6o19EblmcxQIJBoZtCurvhiynnQCFCaGDNtCB2zmYjvMjzlmdehkCWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UR3ZdAjL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F96CC4CEC3;
+	Mon, 28 Oct 2024 06:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097117;
-	bh=ZCUsB4ur38sytrwyAG2BghZ/1xKLJ0M4pz6vpla9O5k=;
+	s=korg; t=1730098334;
+	bh=F3kOO/IZUoHlT8tNRsDYTXwc6EtE/JtqlG4ZTr30AGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f0QYcAijb+Ze7PAdE5B//7uzg57HhV8Skt22gsRqoRSBej0xHeN1VzPKvoOoetSIh
-	 65BBHaKWLR9aR/Q5eybjcmX7l/4pjODuSputiq7sfORMpoDeOEo8W0D+eXMu3WZZc6
-	 ePhCiLbWXpT4lmWckv4Z8x1HF17NJUiVKp1dh4aA=
+	b=UR3ZdAjLMJ175OSWnsXmQ3Hf+uaMrk+dgQQK+egiKdwWb1jRgMBOkn/j6Y0cxeafT
+	 0rqQu2LY/+0CphqWnkWuRrksIntYMnnDwLgJ6KP/pXoSQ/3OhdXwpzoZPph4aJcNN8
+	 u8pA++01N+LIbp+WCUsi/I/jkZh2/RmEv5GUrmWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Elson Roy Serrao <quic_eserrao@quicinc.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 36/80] usb: gadget: Add function wakeup support
+Subject: [PATCH 6.11 174/261] bpf,perf: Fix perf_event_detach_bpf_prog error handling
 Date: Mon, 28 Oct 2024 07:25:16 +0100
-Message-ID: <20241028062253.627919704@linuxfoundation.org>
+Message-ID: <20241028062316.360189833@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,128 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Elson Roy Serrao <quic_eserrao@quicinc.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit f0db885fb05d35befa81896db6b19eb3ee9ccdfe ]
+[ Upstream commit 0ee288e69d033850bc87abe0f9cc3ada24763d7f ]
 
-USB3.2 spec section 9.2.5.4 quotes that a function may signal that
-it wants to exit from Function Suspend by sending a Function
-Wake Notification to the host if it is enabled for function
-remote wakeup. Add an api in composite layer that can be used
-by the function drivers to support this feature. Also expose
-a gadget op so that composite layer can trigger a wakeup request
-to the UDC driver.
+Peter reported that perf_event_detach_bpf_prog might skip to release
+the bpf program for -ENOENT error from bpf_prog_array_copy.
 
-Reviewed-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
-Link: https://lore.kernel.org/r/1679694482-16430-4-git-send-email-quic_eserrao@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 705e3ce37bcc ("usb: dwc3: core: Fix system suspend on TI AM62 platforms")
+This can't happen because bpf program is stored in perf event and is
+detached and released only when perf event is freed.
+
+Let's drop the -ENOENT check and make sure the bpf program is released
+in any case.
+
+Fixes: 170a7e3ea070 ("bpf: bpf_prog_array_copy() should return -ENOENT if exclude_prog not found")
+Reported-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241023200352.3488610-1-jolsa@kernel.org
+
+Closes: https://lore.kernel.org/lkml/20241022111638.GC16066@noisy.programming.kicks-ass.net/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/composite.c | 40 ++++++++++++++++++++++++++++++++++
- include/linux/usb/composite.h  |  6 +++++
- include/linux/usb/gadget.h     |  1 +
- 3 files changed, 47 insertions(+)
+ kernel/trace/bpf_trace.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/usb/gadget/composite.c b/drivers/usb/gadget/composite.c
-index 3f035e905b242..1052ca4e29bc1 100644
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -477,6 +477,46 @@ int usb_interface_id(struct usb_configuration *config,
- }
- EXPORT_SYMBOL_GPL(usb_interface_id);
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 50c0b1088a9eb..6dbbb3683ab2e 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -2306,8 +2306,6 @@ void perf_event_detach_bpf_prog(struct perf_event *event)
  
-+/**
-+ * usb_func_wakeup - sends function wake notification to the host.
-+ * @func: function that sends the remote wakeup notification.
-+ *
-+ * Applicable to devices operating at enhanced superspeed when usb
-+ * functions are put in function suspend state and armed for function
-+ * remote wakeup. On completion, function wake notification is sent. If
-+ * the device is in low power state it tries to bring the device to active
-+ * state before sending the wake notification. Since it is a synchronous
-+ * call, caller must take care of not calling it in interrupt context.
-+ * For devices operating at lower speeds  returns negative errno.
-+ *
-+ * Returns zero on success, else negative errno.
-+ */
-+int usb_func_wakeup(struct usb_function *func)
-+{
-+	struct usb_gadget	*gadget = func->config->cdev->gadget;
-+	int			id;
-+
-+	if (!gadget->ops->func_wakeup)
-+		return -EOPNOTSUPP;
-+
-+	if (!func->func_wakeup_armed) {
-+		ERROR(func->config->cdev, "not armed for func remote wakeup\n");
-+		return -EINVAL;
-+	}
-+
-+	for (id = 0; id < MAX_CONFIG_INTERFACES; id++)
-+		if (func->config->interface[id] == func)
-+			break;
-+
-+	if (id == MAX_CONFIG_INTERFACES) {
-+		ERROR(func->config->cdev, "Invalid function\n");
-+		return -EINVAL;
-+	}
-+
-+	return gadget->ops->func_wakeup(gadget, id);
-+}
-+EXPORT_SYMBOL_GPL(usb_func_wakeup);
-+
- static u8 encode_bMaxPower(enum usb_device_speed speed,
- 		struct usb_configuration *c)
- {
-diff --git a/include/linux/usb/composite.h b/include/linux/usb/composite.h
-index 0399d1226323b..456fca4d6a253 100644
---- a/include/linux/usb/composite.h
-+++ b/include/linux/usb/composite.h
-@@ -163,6 +163,9 @@ struct usb_os_desc_table {
-  *	GetStatus() request when the recipient is Interface.
-  * @func_suspend: callback to be called when
-  *	SetFeature(FUNCTION_SUSPEND) is reseived
-+ * @func_suspended: Indicates whether the function is in function suspend state.
-+ * @func_wakeup_armed: Indicates whether the function is armed by the host for
-+ *	wakeup signaling.
-  *
-  * A single USB function uses one or more interfaces, and should in most
-  * cases support operation at both full and high speeds.  Each function is
-@@ -233,6 +236,8 @@ struct usb_function {
- 	int			(*get_status)(struct usb_function *);
- 	int			(*func_suspend)(struct usb_function *,
- 						u8 suspend_opt);
-+	bool			func_suspended;
-+	bool			func_wakeup_armed;
- 	/* private: */
- 	/* internals */
- 	struct list_head		list;
-@@ -254,6 +259,7 @@ int config_ep_by_speed_and_alt(struct usb_gadget *g, struct usb_function *f,
- 
- int config_ep_by_speed(struct usb_gadget *g, struct usb_function *f,
- 			struct usb_ep *_ep);
-+int usb_func_wakeup(struct usb_function *func);
- 
- #define	MAX_CONFIG_INTERFACES		16	/* arbitrary; max 255 */
- 
-diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
-index c5bc739266ed6..e4feeaa8bab30 100644
---- a/include/linux/usb/gadget.h
-+++ b/include/linux/usb/gadget.h
-@@ -311,6 +311,7 @@ struct usb_udc;
- struct usb_gadget_ops {
- 	int	(*get_frame)(struct usb_gadget *);
- 	int	(*wakeup)(struct usb_gadget *);
-+	int	(*func_wakeup)(struct usb_gadget *gadget, int intf_id);
- 	int	(*set_remote_wakeup)(struct usb_gadget *, int set);
- 	int	(*set_selfpowered) (struct usb_gadget *, int is_selfpowered);
- 	int	(*vbus_session) (struct usb_gadget *, int is_active);
+ 	old_array = bpf_event_rcu_dereference(event->tp_event->prog_array);
+ 	ret = bpf_prog_array_copy(old_array, event->prog, NULL, 0, &new_array);
+-	if (ret == -ENOENT)
+-		goto unlock;
+ 	if (ret < 0) {
+ 		bpf_prog_array_delete_safe(old_array, event->prog);
+ 	} else {
 -- 
 2.43.0
 
