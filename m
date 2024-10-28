@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C56CC9B2591
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:32:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 817559B2835
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:55:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C51B1F21AE6
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:32:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 467C8282B83
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:54:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A1F18E348;
-	Mon, 28 Oct 2024 06:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C5918D649;
+	Mon, 28 Oct 2024 06:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2u+rZHqE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWPh7m4P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69DC15B10D;
-	Mon, 28 Oct 2024 06:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCCB2AF07;
+	Mon, 28 Oct 2024 06:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097151; cv=none; b=NKesNn63r/q1mSqp+5E+Ab4IPbZtSTgfg8r8bxMQPXJwoNTqJrNZ9iHUVGz6E/X0Mo1zSPu3wLpe1oJWikilyL5wkOpdRVUyNaNpf5CoJ7YaviKFk1vdFxUJo0PK7Z7Pmr58IFzFev/PzkrLeBPip/wGbQnSKT6xNDO9imcAb2A=
+	t=1730098498; cv=none; b=oOoYezdmPUFy87rwGyT5crEMS/7NwnGYBWZrnJGUi7xIuYr74fvhr4gPQi5lTVs6JGGikmJwTAlMDc22HQClRvl8up6z4CxO4QNOWVrsqw8krWVMprB6cW00Y/TjSe0LxWekPLDK6jEwYporan4GqZdu3lm6I9hdVG9YSE7g94M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097151; c=relaxed/simple;
-	bh=3LbHKOzjn+E+Iikhs/9g4QPRBLzxv/wJjGdQFic9D9k=;
+	s=arc-20240116; t=1730098498; c=relaxed/simple;
+	bh=Gl/UWyEGULqNxH0REwABOMvAmYKvtDpbpAzXneuQNCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xwu1f8KjQ81Mh/RT+s0WWIKPZD+jBzo2IGBuKBHiCbxuPAxYNqGiI1ehto4sxorqcP2XZ/C1edI91K1iqrVZ82VSnV9A+Hax3jsR0GULjJO1u8GxLMEruV5kT5vCJY3NpajiA0tRZOm5myC16Ra61wbYthj/cA8zs6kDyHt+WEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2u+rZHqE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB3DC4CEC7;
-	Mon, 28 Oct 2024 06:32:31 +0000 (UTC)
+	 MIME-Version; b=ZoDs1dCG8tClkBnjDZxO1Qze2FsEjeVS46Suin0xD2T9ZCj9bnCxhsqD0XC5QYPa4gjs0o49NXjnfxO9dV1z2+DAd0agvRiBtPOLtjafeDXLyqZFTtG0sLE+DQyF4xO5jSRQ0K9DfzUtThp4bOADXM+ReJEx+7Xi1KBpISFKj6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWPh7m4P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF23AC4CEC3;
+	Mon, 28 Oct 2024 06:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097151;
-	bh=3LbHKOzjn+E+Iikhs/9g4QPRBLzxv/wJjGdQFic9D9k=;
+	s=korg; t=1730098498;
+	bh=Gl/UWyEGULqNxH0REwABOMvAmYKvtDpbpAzXneuQNCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2u+rZHqETKGRysIaOfrr87PE64fUWv4c9+le7U2/Qjfhp/W5pojRS+LO1fcHHo0zc
-	 3R2KwOjTMIL0qRtKn8jXsYy0LgoDUUsxcm3/x3+z4V+5aJ6RfN6gyyx62Rov+xjVcx
-	 hOZIpZ0xb2s6l6R6kA515RkETH9xgAhGtEyBVuC0=
+	b=BWPh7m4PFmksAWTI4wJV2wmtAiVUORkpuR6GXSjMBLczxWwPZNlanlOgZ5GFoH6vX
+	 hsSD8yoOxxxhCnRSERoGaotR7NwMbxSNyOvu0josMPjTtslvydf9qysCB8BrKo52uj
+	 T5zS4VWZVFZwf2R0kzsJ6FllRKbiu156Kc704TEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Peter Hurley <peter@hurleysoftware.com>,
-	Tomas Krcka <krckatom@amazon.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 78/80] serial: protect uart_port_dtr_rts() in uart_shutdown() too
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.11 216/261] xfs: dont fail repairs on metadata files with no attr fork
 Date: Mon, 28 Oct 2024 07:25:58 +0100
-Message-ID: <20241028062254.777163787@linuxfoundation.org>
+Message-ID: <20241028062317.511289669@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 602babaa84d627923713acaf5f7e9a4369e77473 ]
+commit af8512c5277d17aae09be5305daa9118d2fa8881 upstream.
 
-Commit af224ca2df29 (serial: core: Prevent unsafe uart port access, part
-3) added few uport == NULL checks. It added one to uart_shutdown(), so
-the commit assumes, uport can be NULL in there. But right after that
-protection, there is an unprotected "uart_port_dtr_rts(uport, false);"
-call. That is invoked only if HUPCL is set, so I assume that is the
-reason why we do not see lots of these reports.
+Fix a minor bug where we fail repairs on metadata files that do not have
+attr forks because xrep_metadata_inode_subtype doesn't filter ENOENT.
 
-Or it cannot be NULL at this point at all for some reason :P.
-
-Until the above is investigated, stay on the safe side and move this
-dereference to the if too.
-
-I got this inconsistency from Coverity under CID 1585130. Thanks.
-
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Cc: Peter Hurley <peter@hurleysoftware.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20240805102046.307511-3-jirislaby@kernel.org
+Cc: stable@vger.kernel.org # v6.8
+Fixes: 5a8e07e799721b ("xfs: repair the inode core and forks of a metadata inode")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Adapted over commit 5701cb8bf50e ("tty: Call ->dtr_rts() parameter
-active consistently") not in the tree]
-Signed-off-by: Tomas Krcka <krckatom@amazon.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/serial_core.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ fs/xfs/scrub/repair.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-index 7cd12ea88c0b0..404354727d194 100644
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -286,14 +286,16 @@ static void uart_shutdown(struct tty_struct *tty, struct uart_state *state)
- 		/*
- 		 * Turn off DTR and RTS early.
- 		 */
--		if (uport && uart_console(uport) && tty) {
--			uport->cons->cflag = tty->termios.c_cflag;
--			uport->cons->ispeed = tty->termios.c_ispeed;
--			uport->cons->ospeed = tty->termios.c_ospeed;
--		}
-+		if (uport) {
-+			if (uart_console(uport) && tty) {
-+				uport->cons->cflag = tty->termios.c_cflag;
-+				uport->cons->ispeed = tty->termios.c_ispeed;
-+				uport->cons->ospeed = tty->termios.c_ospeed;
-+			}
+--- a/fs/xfs/scrub/repair.c
++++ b/fs/xfs/scrub/repair.c
+@@ -1084,9 +1084,11 @@ xrep_metadata_inode_forks(
+ 		return error;
  
--		if (!tty || C_HUPCL(tty))
--			uart_port_dtr_rts(uport, 0);
-+			if (!tty || C_HUPCL(tty))
-+				uart_port_dtr_rts(uport, 0);
-+		}
+ 	/* Make sure the attr fork looks ok before we delete it. */
+-	error = xrep_metadata_inode_subtype(sc, XFS_SCRUB_TYPE_BMBTA);
+-	if (error)
+-		return error;
++	if (xfs_inode_hasattr(sc->ip)) {
++		error = xrep_metadata_inode_subtype(sc, XFS_SCRUB_TYPE_BMBTA);
++		if (error)
++			return error;
++	}
  
- 		uart_port_shutdown(port);
- 	}
--- 
-2.43.0
-
+ 	/* Clear the reflink flag since metadata never shares. */
+ 	if (xfs_is_reflink_inode(sc->ip)) {
 
 
 
