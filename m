@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-88770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6C4A9B276C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:48:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C77459B265A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 050731C211FE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:48:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 737591F21EE9
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D8A18DF80;
-	Mon, 28 Oct 2024 06:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFEE118FC90;
+	Mon, 28 Oct 2024 06:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0GrxK/fj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hmi2X4ul"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D960718A922;
-	Mon, 28 Oct 2024 06:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4AC18FC89;
+	Mon, 28 Oct 2024 06:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098083; cv=none; b=Wya0yEB4HwNz9nbHfmXueRwhAycwruEOGhKJA5gJ7IFtCkMtqmGuN/T4ZrDL6pONisKZHKvKaeQ20UMcGLeVJSn5W40c3C8BNHrJUdX8mWBWM+SRXOlqD7PubzrV1k7MttmSM9dfPqrvI98mSsy2zWXJZ3aYbdd8ozRsWd5OE3o=
+	t=1730097526; cv=none; b=ITXCZO/nCkmFrtN31xqSVmY+iuxKGJJWXGY6RCrE82suggz7bX5ep96dc4xAQkBM3YlCsLpm4zvMY50Ukc8RjawFKkd7KkjI5kF39DBftwVTVNGmvDK4O5RBkRCAeiTI7qvbsxOWeovwvy3WhQ56A1vl8OlZEne1WXmrmrLRutg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098083; c=relaxed/simple;
-	bh=I0lsKYOQLYyAS/Wa8JCISoGAm+J4SjFvocSeOUPoICg=;
+	s=arc-20240116; t=1730097526; c=relaxed/simple;
+	bh=TNfdy5WtjmRvbsPzp6IiO8kQbSYVm+VtruONcHCRv/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z+9vT8+2k4dDCmKFSVSGSKnzXO8MQwnMcJrKDdLDxbyeScCgR8OV1aibcBpM+/MKud5y2DU5fMxKnNStqHyi8lDkGF2s5TcKeDOg7PWHbGX3wAUoVZ88f8ECgOQ1vyuxKtNUJDtZ/3oxp3V+je84uOtKPcPZm3RFbajsn5VHVVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0GrxK/fj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F3A2C4CEC3;
-	Mon, 28 Oct 2024 06:48:03 +0000 (UTC)
+	 MIME-Version; b=oc28Giaxyd/Kmh9Lq7JDteRxPWTvTsQuRU041dWOWEMuGnNH5aqU3DRSK0BzpM2uw0WojLPe1JLJXi0JZK0jqyqSGax1XM3llerARvMBARek8Qq/SAwpJJCbqJRV9/y1l2qbUWv0J14p+uQKH+YutV+Hg98CpgpMrSGBPjoXQQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hmi2X4ul; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B93A5C4CEC3;
+	Mon, 28 Oct 2024 06:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098083;
-	bh=I0lsKYOQLYyAS/Wa8JCISoGAm+J4SjFvocSeOUPoICg=;
+	s=korg; t=1730097526;
+	bh=TNfdy5WtjmRvbsPzp6IiO8kQbSYVm+VtruONcHCRv/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0GrxK/fj84m5W8rdpvdoTbv6/oLbscjtgt3B+QiBChv5Ls6R9Q1t1BhQ20kJq5puL
-	 QnRYiXc+3+LrFEMJi7vsE7etI6GYV1zSaOOkXl/o3vnlYr4cqw7qAuZzake90ZpIsX
-	 et24Ruym7kG809qNo1b+NlrKDmC/JTLJxAwkEOYI=
+	b=Hmi2X4ulLKGT3+eec4TVc8ypUPB5o91QtOf+osWJf4lWsRLLJLbw6DbMqyJysxwTp
+	 P/TTu6v/Bj1tJKcqtVlTBbvfmPj8GpBq6aUlS/x9SwKPQVzbzYP0ZtrItX5e6nT9dm
+	 oD4B2BCKQtpK/rBIRdtCP7mT0hlgjpOfbmx4lKx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Hai <wanghai38@huawei.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Xin Long <lucien.xin@gmail.com>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 070/261] net: ethernet: rtsn: fix potential memory leak in rtsn_start_xmit()
+Subject: [PATCH 6.6 032/208] ipv4: give an IPv4 dev to blackhole_netdev
 Date: Mon, 28 Oct 2024 07:23:32 +0100
-Message-ID: <20241028062313.786058856@linuxfoundation.org>
+Message-ID: <20241028062307.448678472@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Hai <wanghai38@huawei.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit c186b7a7f2387d9e09ad408420570be025b187c5 ]
+[ Upstream commit 22600596b6756b166fd052d5facb66287e6f0bad ]
 
-The rtsn_start_xmit() returns NETDEV_TX_OK without freeing skb
-in case of skb->len being too long, add dev_kfree_skb_any() to fix it.
+After commit 8d7017fd621d ("blackhole_netdev: use blackhole_netdev to
+invalidate dst entries"), blackhole_netdev was introduced to invalidate
+dst cache entries on the TX path whenever the cache times out or is
+flushed.
 
-Fixes: b0d3969d2b4d ("net: ethernet: rtsn: Add support for Renesas Ethernet-TSN")
-Signed-off-by: Wang Hai <wanghai38@huawei.com>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+When two UDP sockets (sk1 and sk2) send messages to the same destination
+simultaneously, they are using the same dst cache. If the dst cache is
+invalidated on one path (sk2) while the other (sk1) is still transmitting,
+sk1 may try to use the invalid dst entry.
+
+         CPU1                   CPU2
+
+      udp_sendmsg(sk1)       udp_sendmsg(sk2)
+      udp_send_skb()
+      ip_output()
+                                             <--- dst timeout or flushed
+                             dst_dev_put()
+      ip_finish_output2()
+      ip_neigh_for_gw()
+
+This results in a scenario where ip_neigh_for_gw() returns -EINVAL because
+blackhole_dev lacks an in_dev, which is needed to initialize the neigh in
+arp_constructor(). This error is then propagated back to userspace,
+breaking the UDP application.
+
+The patch fixes this issue by assigning an in_dev to blackhole_dev for
+IPv4, similar to what was done for IPv6 in commit e5f80fcf869a ("ipv6:
+give an IPv6 dev to blackhole_netdev"). This ensures that even when the
+dst entry is invalidated with blackhole_dev, it will not fail to create
+the neigh entry.
+
+As devinet_init() is called ealier than blackhole_netdev_init() in system
+booting, it can not assign the in_dev to blackhole_dev in devinet_init().
+As Paolo suggested, add a separate late_initcall() in devinet.c to ensure
+inet_blackhole_dev_init() is called after blackhole_netdev_init().
+
+Fixes: 8d7017fd621d ("blackhole_netdev: use blackhole_netdev to invalidate dst entries")
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
 Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014144250.38802-1-wanghai38@huawei.com
+Link: https://patch.msgid.link/3000792d45ca44e16c785ebe2b092e610e5b3df1.1728499633.git.lucien.xin@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/rtsn.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/devinet.c | 35 +++++++++++++++++++++++++----------
+ 1 file changed, 25 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/rtsn.c b/drivers/net/ethernet/renesas/rtsn.c
-index 0e6cea42f0077..da90adef6b2b7 100644
---- a/drivers/net/ethernet/renesas/rtsn.c
-+++ b/drivers/net/ethernet/renesas/rtsn.c
-@@ -1057,6 +1057,7 @@ static netdev_tx_t rtsn_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 	if (skb->len >= TX_DS) {
- 		priv->stats.tx_dropped++;
- 		priv->stats.tx_errors++;
-+		dev_kfree_skb_any(skb);
- 		goto out;
- 	}
+diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+index cb0c80328eebf..4822f68edbf08 100644
+--- a/net/ipv4/devinet.c
++++ b/net/ipv4/devinet.c
+@@ -283,17 +283,19 @@ static struct in_device *inetdev_init(struct net_device *dev)
+ 	/* Account for reference dev->ip_ptr (below) */
+ 	refcount_set(&in_dev->refcnt, 1);
  
+-	err = devinet_sysctl_register(in_dev);
+-	if (err) {
+-		in_dev->dead = 1;
+-		neigh_parms_release(&arp_tbl, in_dev->arp_parms);
+-		in_dev_put(in_dev);
+-		in_dev = NULL;
+-		goto out;
++	if (dev != blackhole_netdev) {
++		err = devinet_sysctl_register(in_dev);
++		if (err) {
++			in_dev->dead = 1;
++			neigh_parms_release(&arp_tbl, in_dev->arp_parms);
++			in_dev_put(in_dev);
++			in_dev = NULL;
++			goto out;
++		}
++		ip_mc_init_dev(in_dev);
++		if (dev->flags & IFF_UP)
++			ip_mc_up(in_dev);
+ 	}
+-	ip_mc_init_dev(in_dev);
+-	if (dev->flags & IFF_UP)
+-		ip_mc_up(in_dev);
+ 
+ 	/* we can receive as soon as ip_ptr is set -- do this last */
+ 	rcu_assign_pointer(dev->ip_ptr, in_dev);
+@@ -332,6 +334,19 @@ static void inetdev_destroy(struct in_device *in_dev)
+ 	in_dev_put(in_dev);
+ }
+ 
++static int __init inet_blackhole_dev_init(void)
++{
++	int err = 0;
++
++	rtnl_lock();
++	if (!inetdev_init(blackhole_netdev))
++		err = -ENOMEM;
++	rtnl_unlock();
++
++	return err;
++}
++late_initcall(inet_blackhole_dev_init);
++
+ int inet_addr_onlink(struct in_device *in_dev, __be32 a, __be32 b)
+ {
+ 	const struct in_ifaddr *ifa;
 -- 
 2.43.0
 
