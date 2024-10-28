@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-88851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CF439B27C7
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:51:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D94D9B2546
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:27:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAE6A285AF9
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:51:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FF5A1F21B3A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:27:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9896418E35B;
-	Mon, 28 Oct 2024 06:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08EF818E04F;
+	Mon, 28 Oct 2024 06:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mz/lQej"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKNql7Ha"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A3C18A924;
-	Mon, 28 Oct 2024 06:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A6D18CC1F;
+	Mon, 28 Oct 2024 06:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098265; cv=none; b=l51sUhqd4NqQJ2447EknU1DKDfH9xCz4/fcmp2kq0a0N2COrHLSpOdBZYFPa85RbOkw2QvgZRHT5hQWX+oAjcXKLYY4L8o1sfN2iJrcibeEwEITLArbUg704cZFDuHSK0jge0kkt6hiHWeld5m2ZbTIr/E0//kkid96UxSkv8Ck=
+	t=1730096847; cv=none; b=tE2PJjk0lVG380cXeZulKLC+qwQyZ9Lelctk0Ay31uqPkihsb3xfUoq2l2C7nS/5kjyWbreNzOCZmeLtamHX6pXuLUEVbbYv8uU4fMd/WSrOYYGgrsuGlLnHLN4dV8MGLmhm1qj0Saj8qWPJFfX0nSmD12PYpxAoEFYnf/o9pek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098265; c=relaxed/simple;
-	bh=xmUrXTGkwbAp5Z9xyQhW3GmIzYzlAtIUlgY2ezeEw7Q=;
+	s=arc-20240116; t=1730096847; c=relaxed/simple;
+	bh=M+VkIRPjUNTFydhxiFteeDoH9Fw0wjcB30dVu78a5Yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fgtnrx6Psi2c4EB6eaPllcV847RD1511XzXWKdOPp+DBBsKM6rdC42Q2wGVHwIbjyLC8u3cPZlV8oGMt5MbCnC7AtAj1cQB3L4QDuKborb/AO9dFzohVOZBRYZ8qsZ86mNogM/PyuNlkftGHPE6+bJPSxStuAhtjgVwiS6Hvo3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mz/lQej; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0EEC4CEC3;
-	Mon, 28 Oct 2024 06:51:04 +0000 (UTC)
+	 MIME-Version; b=o4SJZrskdbbQwbDBkPfwQbpWKpDqAJo2BJSDhSbxbWnNW3mHXQitwpe8aZgHIoU84L1T83/due6ZS70R84dV60uAmts4c5/iZqRgpCri8MS7NNgQhbHJTqQY8c2S1++mgnN7dp1X/tbJwc1iAHFzcsNuiPTuPySaaE/2MxrwlKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKNql7Ha; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05B2C4CEC3;
+	Mon, 28 Oct 2024 06:27:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098265;
-	bh=xmUrXTGkwbAp5Z9xyQhW3GmIzYzlAtIUlgY2ezeEw7Q=;
+	s=korg; t=1730096847;
+	bh=M+VkIRPjUNTFydhxiFteeDoH9Fw0wjcB30dVu78a5Yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2mz/lQejPfsg0KxUaTrQ24e5zo0tjx1V1OW22P7j2G7z0K9dK6POEocnAiynL+IMc
-	 UtmCOId+DSJrn3idQVzg/3cQERgAq92hTC0CeVN6Vc4pg8LTDapuU9/9BQJi5ioHg0
-	 sFY6lpSnsQpES9HxdETx6ls4pupR5wCgC2QOQ0us=
+	b=OKNql7HaoeAoVeVNKJ5clXWL7rCr/80zcolCsk1sebMJIwhk1FL5nsv5o4NZV7Cn/
+	 qx9svclsKk3wFcy5rsVX3sZTAqtaQrI4pn5b1JAfeWpLrbqWcYpYGduf7RDEEX6OHw
+	 EjGlN1St30qubsaK9odwzo4H+35GbJbRcgNxr/jI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Jonathan Marek <jonathan@marek.ca>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 151/261] octeon_ep: Add SKB allocation failures handling in __octep_oq_process_rx()
+Subject: [PATCH 5.15 13/80] drm/msm/dsi: fix 32-bit signed integer extension in pclk_rate calculation
 Date: Mon, 28 Oct 2024 07:24:53 +0100
-Message-ID: <20241028062315.818968968@linuxfoundation.org>
+Message-ID: <20241028062252.992244227@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Jonathan Marek <jonathan@marek.ca>
 
-[ Upstream commit eb592008f79be52ccef88cd9a5249b3fc0367278 ]
+[ Upstream commit 358b762400bd94db2a14a72dfcef74c7da6bd845 ]
 
-build_skb() returns NULL in case of a memory allocation failure so handle
-it inside __octep_oq_process_rx() to avoid NULL pointer dereference.
+When (mode->clock * 1000) is larger than (1<<31), int to unsigned long
+conversion will sign extend the int to 64 bits and the pclk_rate value
+will be incorrect.
 
-__octep_oq_process_rx() is called during NAPI polling by the driver. If
-skb allocation fails, keep on pulling packets out of the Rx DMA queue: we
-shouldn't break the polling immediately and thus falsely indicate to the
-octep_napi_poll() that the Rx pressure is going down. As there is no
-associated skb in this case, don't process the packets and don't push them
-up the network stack - they are skipped.
+Fix this by making the result of the multiplication unsigned.
 
-Helper function is implemented to unmmap/flush all the fragment buffers
-used by the dropped packet. 'alloc_failures' counter is incremented to
-mark the skb allocation error in driver statistics.
+Note that above (1<<32) would still be broken and require more changes, but
+its unlikely anyone will need that anytime soon.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 37d79d059606 ("octeon_ep: add Tx/Rx processing and interrupt support")
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Fixes: c4d8cfe516dc ("drm/msm/dsi: add implementation for helper functions")
+Signed-off-by: Jonathan Marek <jonathan@marek.ca>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/618434/
+Link: https://lore.kernel.org/r/20241007050157.26855-2-jonathan@marek.ca
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/marvell/octeon_ep/octep_rx.c | 27 +++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ drivers/gpu/drm/msm/dsi/dsi_host.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-index a889c1510518f..8af75cb37c3ee 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-@@ -360,6 +360,27 @@ static void octep_oq_next_pkt(struct octep_oq *oq,
- 		*read_idx = 0;
- }
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+index c563ecf6e7b94..eb7cd96d9ece1 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -678,7 +678,7 @@ static unsigned long dsi_get_pclk_rate(struct msm_dsi_host *msm_host, bool is_bo
+ 	struct drm_display_mode *mode = msm_host->mode;
+ 	unsigned long pclk_rate;
  
-+/**
-+ * octep_oq_drop_rx() - Free the resources associated with a packet.
-+ *
-+ * @oq: Octeon Rx queue data structure.
-+ * @buff_info: Current packet buffer info.
-+ * @read_idx: Current packet index in the ring.
-+ * @desc_used: Current packet descriptor number.
-+ *
-+ */
-+static void octep_oq_drop_rx(struct octep_oq *oq,
-+			     struct octep_rx_buffer *buff_info,
-+			     u32 *read_idx, u32 *desc_used)
-+{
-+	int data_len = buff_info->len - oq->max_single_buffer_size;
-+
-+	while (data_len > 0) {
-+		octep_oq_next_pkt(oq, buff_info, read_idx, desc_used);
-+		data_len -= oq->buffer_size;
-+	};
-+}
-+
- /**
-  * __octep_oq_process_rx() - Process hardware Rx queue and push to stack.
-  *
-@@ -419,6 +440,12 @@ static int __octep_oq_process_rx(struct octep_device *oct,
- 		octep_oq_next_pkt(oq, buff_info, &read_idx, &desc_used);
+-	pclk_rate = mode->clock * 1000;
++	pclk_rate = mode->clock * 1000u;
  
- 		skb = build_skb((void *)resp_hw, PAGE_SIZE);
-+		if (!skb) {
-+			octep_oq_drop_rx(oq, buff_info,
-+					 &read_idx, &desc_used);
-+			oq->stats.alloc_failures++;
-+			continue;
-+		}
- 		skb_reserve(skb, data_offset);
- 
- 		rx_bytes += buff_info->len;
+ 	/*
+ 	 * For bonded DSI mode, the current DRM mode has the complete width of the
 -- 
 2.43.0
 
