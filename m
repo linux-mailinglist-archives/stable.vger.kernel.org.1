@@ -1,115 +1,87 @@
-Return-Path: <stable+bounces-88974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 297689B29B1
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 09:04:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 259919B2522
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:15:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B48F1C21B43
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 08:04:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D88BC28184F
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:15:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B8C1D8E01;
-	Mon, 28 Oct 2024 07:54:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toshiba.co.jp header.i=nobuhiro1.iwamatsu@toshiba.co.jp header.b="OKlHK97i"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B36518DF88;
+	Mon, 28 Oct 2024 06:14:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mo-csw-fb.securemx.jp (mo-csw-fb1121.securemx.jp [210.130.202.129])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C731917DB
-	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 07:54:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.130.202.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D9E18C90B;
+	Mon, 28 Oct 2024 06:14:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730102064; cv=none; b=ladT2K/VbZ7/rrAw/wdMH3IMFJrOsF5pjUYzQLCQP8XHfwd64jbWCBLbl/LuJeyju9AHNavF6ePvFcTRf/7U0WkKEmTHWfX6AVKNDHRD9pmJM5mOxmZ+B0ro+Ixix0SSVOV5tGqpQsvMud2x7Z07auQpoo6EWU7lpUbGodTNwQU=
+	t=1730096098; cv=none; b=UNNYRq0HlSEIGUHWKg2nyPZhQJ7sewfOVeNzlMCObUnvFMP1oYyKH1jjHobY0o07Uq2URg7MisTMgGyeXaTKX6zgv6Md/L85GkWSMqEa5T73KSeuuTWF8A/4dRBtp8elVczfgbOFtXBalIFLFnzrDin71X8OkIjNEVzY0uypk/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730102064; c=relaxed/simple;
-	bh=kVf3IA1poJPqUwEjAIROUVVBuxnvjiVvAmCvtg9YrE8=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=CTQL3xedJQD5Nvph7E4OosMotKHEsHwqf2HLlo+hlGvWQKC+5OYUDlEGXeHPSClT8EmDse15Kjw+tyzH1u4SbTauRw3Q64PKnRN46lJ8E5n/ee9RkX6xO76A5VLcQxrdViOIvRLKA8nzcEB4nFUpYcBlvWzBkUODaHCCb7W1qh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=toshiba.co.jp; spf=pass smtp.mailfrom=toshiba.co.jp; dkim=pass (2048-bit key) header.d=toshiba.co.jp header.i=nobuhiro1.iwamatsu@toshiba.co.jp header.b=OKlHK97i; arc=none smtp.client-ip=210.130.202.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=toshiba.co.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toshiba.co.jp
-Received: by mo-csw-fb.securemx.jp (mx-mo-csw-fb1121) id 49S6AEZQ3686139; Mon, 28 Oct 2024 15:10:23 +0900
-DKIM-Signature: v=1;a=rsa-sha256;c=relaxed/simple;d=toshiba.co.jp;h=From:To:Cc
-	:Subject:Date:Message-Id;i=nobuhiro1.iwamatsu@toshiba.co.jp;s=key2.smx;t=
-	1730095789;x=1731305389;bh=kVf3IA1poJPqUwEjAIROUVVBuxnvjiVvAmCvtg9YrE8=;b=OKl
-	HK97i8geI0dltQSP5IC5DsMTR6m65nuHzRjdvj0jrvU+1NpMaPKm5IePvO1BXPPhWypSWeuJiKrxE
-	YA6KowFLQ2iclajgFqySt1kLVYVoxvlRPIk0G75QXDUJfSPpFCJ24/giOrQ+ZGrf5yGTlX003wB2K
-	7GIaWck2ez4yvFPy4F78Sjv0gswdJZUS6VStS0v94gVO+r8qrZ80QDYZNfQKuRZEcqHvRWAZCaJ5O
-	fIQE2/AwDQmI2Q7c0+8UMIpnNmzGFKNoYC5Oj8DYTipWA3xYWBjWsKE5TRM/oJEDtW9Sj+haQLn2i
-	xcpAeMs0fd3f5sbh5aSQ+E7RkEDlx3w==;
-Received: by mo-csw.securemx.jp (mx-mo-csw1121) id 49S69mVb3039683; Mon, 28 Oct 2024 15:09:48 +0900
-X-Iguazu-Qid: 2rWgUXum6klPp0qBfc
-X-Iguazu-QSIG: v=2; s=0; t=1730095788; q=2rWgUXum6klPp0qBfc; m=ok8mubXbqriqvzOIEqU3Ahubd1WpeePqrWr4zX1Sghk=
-Received: from imx2-a.toshiba.co.jp (imx2-a.toshiba.co.jp [106.186.93.35])
-	by relay.securemx.jp (mx-mr1120) id 49S69kur1263442
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 28 Oct 2024 15:09:46 +0900
-From: Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, sashal@kernel.org,
-        "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-        Martin Liska <mliska@suse.cz>, Jay Vosburgh <j.vosburgh@gmail.com>,
-        Veaceslav Falico <vfalico@gmail.com>,
-        Andy Gospodarek <andy@greyhouse.net>, Jakub Kicinski <kuba@kernel.org>,
-        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
-Subject: [PATCH for 4.19.y] bonding (gcc13): synchronize bond_{a,t}lb_xmit() types
-Date: Mon, 28 Oct 2024 15:09:34 +0900
-X-TSB-HOP2: ON
-Message-Id: <1730095774-12100-1-git-send-email-nobuhiro1.iwamatsu@toshiba.co.jp>
-X-Mailer: git-send-email 2.7.4
+	s=arc-20240116; t=1730096098; c=relaxed/simple;
+	bh=CwFGkITsaLdwGZQxZSE/cRB1x+IdHo2N7RzH4GDuCGQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XYCc9g62w53K8phodsBnXpYeD+NKheiitfr6bCnB5DbJa2rvxLZlmpqXCnO1uNN0M0hGhOLmFnPwVfTj60ugoT/d6xH6XaBp0m1kbXveLRBpUwda8oVXEuXOSRRJDGAE6uYxK9r80YIP5OqDIEHBmx35zafh+MlozG+u5DRy1xA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [192.168.0.224] (ip5f5aeeb2.dynamic.kabel-deutschland.de [95.90.238.178])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id CAF2061BF4882;
+	Mon, 28 Oct 2024 07:13:37 +0100 (CET)
+Message-ID: <88bfa0f8-4900-4c56-bd23-14d3b3c7de85@molgen.mpg.de>
+Date: Mon, 28 Oct 2024 07:13:36 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/3] tpm: Rollback tpm2_load_null()
+To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org,
+ Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+ James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
+ Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu <roberto.sassu@huawei.com>,
+ Stefan Berger <stefanb@linux.ibm.com>, Paul Moore <paul@paul-moore.com>,
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Eric Snowberg <eric.snowberg@oracle.com>, keyrings@vger.kernel.org,
+ linux-security-module@vger.kernel.org, stable@vger.kernel.org
+References: <20241028055007.1708971-1-jarkko@kernel.org>
+ <20241028055007.1708971-3-jarkko@kernel.org>
+Content-Language: en-US
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <20241028055007.1708971-3-jarkko@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-
-commit 777fa87c7682228e155cf0892ba61cb2ab1fe3ae upstream.
-
-Both bond_alb_xmit() and bond_tlb_xmit() produce a valid warning with
-gcc-13:
-  drivers/net/bonding/bond_alb.c:1409:13: error: conflicting types for 'bond_tlb_xmit' due to enum/integer mismatch; have 'netdev_tx_t(struct sk_buff *, struct net_device *)' ...
-  include/net/bond_alb.h:160:5: note: previous declaration of 'bond_tlb_xmit' with type 'int(struct sk_buff *, struct net_device *)'
-
-  drivers/net/bonding/bond_alb.c:1523:13: error: conflicting types for 'bond_alb_xmit' due to enum/integer mismatch; have 'netdev_tx_t(struct sk_buff *, struct net_device *)' ...
-  include/net/bond_alb.h:159:5: note: previous declaration of 'bond_alb_xmit' with type 'int(struct sk_buff *, struct net_device *)'
-
-I.e. the return type of the declaration is int, while the definitions
-spell netdev_tx_t. Synchronize both of them to the latter.
-
-Cc: Martin Liska <mliska@suse.cz>
-Cc: Jay Vosburgh <j.vosburgh@gmail.com>
-Cc: Veaceslav Falico <vfalico@gmail.com>
-Cc: Andy Gospodarek <andy@greyhouse.net>
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20221031114409.10417-1-jirislaby@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[iwamatsu: adjust context]
-Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
----
- include/net/bond_alb.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/include/net/bond_alb.h b/include/net/bond_alb.h
-index 3a6c932b6dcaff..52467d0b4677c9 100644
---- a/include/net/bond_alb.h
-+++ b/include/net/bond_alb.h
-@@ -172,8 +172,8 @@ int bond_alb_init_slave(struct bonding *bond, struct slave *slave);
- void bond_alb_deinit_slave(struct bonding *bond, struct slave *slave);
- void bond_alb_handle_link_change(struct bonding *bond, struct slave *slave, char link);
- void bond_alb_handle_active_change(struct bonding *bond, struct slave *new_slave);
--int bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev);
--int bond_tlb_xmit(struct sk_buff *skb, struct net_device *bond_dev);
-+netdev_tx_t bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev);
-+netdev_tx_t bond_tlb_xmit(struct sk_buff *skb, struct net_device *bond_dev);
- void bond_alb_monitor(struct work_struct *);
- int bond_alb_set_mac_address(struct net_device *bond_dev, void *addr);
- void bond_alb_clear_vlan(struct bonding *bond, unsigned short vlan_id);
--- 
-2.45.2
+Dear Jarkko,
 
 
+Thank you for your patch.
+
+Am 28.10.24 um 06:50 schrieb Jarkko Sakkinen:
+> Do not continue on tpm2_create_primary() failure in tpm2_load_null().
+
+Could you please elaborate, why this is done, that means the motivation 
+for your change?
+
+> Cc: stable@vger.kernel.org # v6.10+
+> Fixes: eb24c9788cd9 ("tpm: disable the TPM if NULL name changes")
+> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+
+
+Kind regards,
+
+Paul
 
