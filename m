@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-88808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B649B2796
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:49:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 661079B2685
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:40:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7B9E1F21E8D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:49:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97AAE1F22603
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76E2518E37F;
-	Mon, 28 Oct 2024 06:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A49618E748;
+	Mon, 28 Oct 2024 06:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QCpDYt+C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kSSin87C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DB018A922;
-	Mon, 28 Oct 2024 06:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159E62C697;
+	Mon, 28 Oct 2024 06:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098169; cv=none; b=QXlo2DxRZjsGh2Z8Cnvrymo7W3o4Ty1bj5U6lcyvpZ37ojowcL6PRYgMFSCBvFfhXFbR36+1h6rKjYF858g4h+jyBoyZBjzr+DT5MjFTWwgJx2kvjlAjwZEt7QtWFZA6TwU+TFjVAbWFn9CZ1QwLho1YbafAS3hQFtqHoOR4lSE=
+	t=1730097611; cv=none; b=npo1cyNtt8eucG1hSBBjDn/83yOEhKdkEYTmoov38U2+zBkWLqXiyWnhLt9MZGRd6cDQdK2IZw87DmiIWvQZummF1V8lcM+j2pm/nZCadxknKibBUz662OsB2GuyOTSoLMWMeg1aetaj6w1b7oLHse/ajAOIiaRl6OZqQWZkEDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098169; c=relaxed/simple;
-	bh=A4ssoDjBrLqBI53W/fpHZ//mFVqIFmn8R/GsU+LABz4=;
+	s=arc-20240116; t=1730097611; c=relaxed/simple;
+	bh=9Xn7rHLsGP7l4xfPpVMu7qBEok5CaB0iXPvMHgHpz44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VO8SeLKOaRBk8XdG7hTvwbaCi6/NYU7nbZwe5YhTbHuAa6Ek/l2A7DipXrikHh8gn5i0OTPRlwtZpC/CtmpRRiqnyAvDRCJnz7M8lPqDS1jPzc7jrUzRqg9dTcC7Yj8Uc2A/xZIE2qiwnr/Wvd8/MyGVz14895pcSxV6mvSaCbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QCpDYt+C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C62EDC4CEC3;
-	Mon, 28 Oct 2024 06:49:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RJ0fYj3KURJMV0x1yT8pnbe2nFqCt4Se7rbqWnz8V9LMAXuSlFNWXJerUvnLeK/wvBiL9EulqOc9KW+bF4vUasGvF3tnFGt7VHx+GoMy3kV7B/4ZQSs0s2nBxxkJA9s6NH5x8GwxnMgtk7A8LmS2GSjBrWr5cb3hE+2pBFLCKmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kSSin87C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C04C4CEE3;
+	Mon, 28 Oct 2024 06:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098169;
-	bh=A4ssoDjBrLqBI53W/fpHZ//mFVqIFmn8R/GsU+LABz4=;
+	s=korg; t=1730097611;
+	bh=9Xn7rHLsGP7l4xfPpVMu7qBEok5CaB0iXPvMHgHpz44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QCpDYt+C3QVE09bq9I7CnOqK6BW5TYQj9Y0gKHP6B3I5/K5G//yfUJYZL+Pcakp5n
-	 EcmjJ4DEM1jmQLOgxmMLhx9P3F2GwU3XvL9LfNIZuhnHztYwVN7nT3WJo1y+/qTIqS
-	 y3cAvAVW6xnD75AagbQGuFL/HL756Un/Ww0UoKGw=
+	b=kSSin87CMPITJxOWVLGAV07XZOLSUK+scOvLEhhZhkkP5noRBZavf1FdfJS48KERZ
+	 sDJV+4X8Zi6xtAD/Uc3Z+qGXkgKo/EUOm6vzJR32xR+S07mKm2uQzMm8SiDv7kKEzj
+	 uHnmC96Ryn0elku/Px/JwnuuXI1c28ti83QgzTj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordan Rome <linux@jordanrome.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Paul Barker <paul.barker.ct@bp.renesas.com>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 108/261] bpf: Fix iter/task tid filtering
+Subject: [PATCH 6.6 070/208] net: ravb: Only advertise Rx/Tx timestamps if hardware supports it
 Date: Mon, 28 Oct 2024 07:24:10 +0100
-Message-ID: <20241028062314.735433731@linuxfoundation.org>
+Message-ID: <20241028062308.376388650@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +62,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordan Rome <linux@jordanrome.com>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-[ Upstream commit 9495a5b731fcaf580448a3438d63601c88367661 ]
+[ Upstream commit 126e799602f45e9ce1ded03ee9eadda68bf470e0 ]
 
-In userspace, you can add a tid filter by setting
-the "task.tid" field for "bpf_iter_link_info".
-However, `get_pid_task` when called for the
-`BPF_TASK_ITER_TID` type should have been using
-`PIDTYPE_PID` (tid) instead of `PIDTYPE_TGID` (pid).
+Recent work moving the reporting of Rx software timestamps to the core
+[1] highlighted an issue where hardware time stamping was advertised
+for the platforms where it is not supported.
 
-Fixes: f0d74c4da1f0 ("bpf: Parameterize task iterators.")
-Signed-off-by: Jordan Rome <linux@jordanrome.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241016210048.1213935-1-linux@jordanrome.com
+Fix this by covering advertising support for hardware timestamps only if
+the hardware supports it. Due to the Tx implementation in RAVB software
+Tx timestamping is also only considered if the hardware supports
+hardware timestamps. This should be addressed in future, but this fix
+only reflects what the driver currently implements.
+
+1. Commit 277901ee3a26 ("ravb: Remove setting of RX software timestamp")
+
+Fixes: 7e09a052dc4e ("ravb: Exclude gPTP feature support for RZ/G2L")
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Paul Barker <paul.barker.ct@bp.renesas.com>
+Tested-by: Paul Barker <paul.barker.ct@bp.renesas.com>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://patch.msgid.link/20241014124343.3875285-1-niklas.soderlund+renesas@ragnatech.se
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/task_iter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 25 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
-diff --git a/kernel/bpf/task_iter.c b/kernel/bpf/task_iter.c
-index 02aa9db8d7961..5af9e130e500f 100644
---- a/kernel/bpf/task_iter.c
-+++ b/kernel/bpf/task_iter.c
-@@ -99,7 +99,7 @@ static struct task_struct *task_seq_get_next(struct bpf_iter_seq_task_common *co
- 		rcu_read_lock();
- 		pid = find_pid_ns(common->pid, common->ns);
- 		if (pid) {
--			task = get_pid_task(pid, PIDTYPE_TGID);
-+			task = get_pid_task(pid, PIDTYPE_PID);
- 			*tid = common->pid;
- 		}
- 		rcu_read_unlock();
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index 8f62cc4517918..58fdc4f8dd483 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1673,20 +1673,19 @@ static int ravb_get_ts_info(struct net_device *ndev,
+ 	struct ravb_private *priv = netdev_priv(ndev);
+ 	const struct ravb_hw_info *hw_info = priv->info;
+ 
+-	info->so_timestamping =
+-		SOF_TIMESTAMPING_TX_SOFTWARE |
+-		SOF_TIMESTAMPING_TX_HARDWARE |
+-		SOF_TIMESTAMPING_RX_HARDWARE |
+-		SOF_TIMESTAMPING_RAW_HARDWARE;
+-	info->tx_types = (1 << HWTSTAMP_TX_OFF) | (1 << HWTSTAMP_TX_ON);
+-	info->rx_filters =
+-		(1 << HWTSTAMP_FILTER_NONE) |
+-		(1 << HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
+-		(1 << HWTSTAMP_FILTER_ALL);
+-	if (hw_info->gptp || hw_info->ccc_gac)
++	if (hw_info->gptp || hw_info->ccc_gac) {
++		info->so_timestamping =
++			SOF_TIMESTAMPING_TX_SOFTWARE |
++			SOF_TIMESTAMPING_TX_HARDWARE |
++			SOF_TIMESTAMPING_RX_HARDWARE |
++			SOF_TIMESTAMPING_RAW_HARDWARE;
++		info->tx_types = (1 << HWTSTAMP_TX_OFF) | (1 << HWTSTAMP_TX_ON);
++		info->rx_filters =
++			(1 << HWTSTAMP_FILTER_NONE) |
++			(1 << HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
++			(1 << HWTSTAMP_FILTER_ALL);
+ 		info->phc_index = ptp_clock_index(priv->ptp.clock);
+-	else
+-		info->phc_index = 0;
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
