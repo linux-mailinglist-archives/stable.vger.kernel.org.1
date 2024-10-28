@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-88327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43D349B2573
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:29:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D5C39B26E1
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:43:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E20AD1F21B66
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:29:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29D501F23ADD
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EBE18E049;
-	Mon, 28 Oct 2024 06:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A7818E354;
+	Mon, 28 Oct 2024 06:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dC5Xewf2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyyQrwne"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24853152E1C;
-	Mon, 28 Oct 2024 06:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5523C15B10D;
+	Mon, 28 Oct 2024 06:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730096948; cv=none; b=uKp5CbJVpt70cg28wZNQ7559pUuPDVKWniz0li/nucIkSO8XzWZf+qZA3/JIW4oMj02QTOLx6z4rNbl6a+eHlLU9WP0KpdZT9EjBJvkh6WThHJ39w/SS9ih/ivCYNn60Q2rINfi3kRkD8obt/PSmd38VyriebDBPbintF9+ll9U=
+	t=1730097806; cv=none; b=W40YBKkyRHYT3SOL6ryVqpKbH/ZAvrri5sNl+s66HwkOOf5OMt9EAUW9IgRTeXb5KgS10OEg9ItnT5/4G+2IbGXtwb21whbtVSIBl2mmQaUn7zOft/LvPReULRopzhcPnVNyChE/9FZjxFpKrq06T2Fp+P1mQSRAMOTTRwayuH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730096948; c=relaxed/simple;
-	bh=+ljw5/ZzWSh2kRwF/jYIpEx56TgJADJ5r5U0BAxA1Lc=;
+	s=arc-20240116; t=1730097806; c=relaxed/simple;
+	bh=PGXNlr52wjhfCOb+6I4hwbV1yuuleiBGiQVr9cvSP8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ntRNztqA0FOpdcw4P6j48t3HCR+1G4RXKFpBoKfiVMxSTLr7N2vJa5RWUf/M+u4haM7bJH1wbeMkX/uV1UYd+b85/Yy/ghkcdvZjsbmFPPWLQqu8mGuT2wZi1yuxWrukwl8hGaJQ5G1OF6DRQd/rlhPUq6rfibjPW3N/UQDtGMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dC5Xewf2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C3BC4CEC3;
-	Mon, 28 Oct 2024 06:29:07 +0000 (UTC)
+	 MIME-Version; b=UWcxBF/59bbRcqKA2atxWZ/qGQM3E78v4PV3d4TPmcWaIgJRcEzmVpfXTLSy7g0QhA2DBBgsLuBs8Os2CENktZeFMUzZOa3AKgosbtElP69hsrKycrSfu8FwfhT7KzuTzAtuv6TmHLTvcXXWU9UV9BLwPhTeufRXtzHb0eOj9gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyyQrwne; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5E5EC4CEC3;
+	Mon, 28 Oct 2024 06:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730096947;
-	bh=+ljw5/ZzWSh2kRwF/jYIpEx56TgJADJ5r5U0BAxA1Lc=;
+	s=korg; t=1730097806;
+	bh=PGXNlr52wjhfCOb+6I4hwbV1yuuleiBGiQVr9cvSP8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dC5Xewf2ylWv347ZitxStvjoDZ4HWrXnq9RCdyz5Ba6OTQJ2B4bEXHDTzi8isUL0j
-	 pweDc1J9Xtu2jjRo5Ab6F2viKJRYqN/RevMBjgLXwkGdWoHqXvmcS0gxLICNEmOQyA
-	 zqSwZRTkWmH/2utLv60eVDEYZXF+LaWSYRJPOE7M=
+	b=dyyQrwnemSInL8Gm5c9QRU0C0fALy+tmGobGjiEebTYBQ2lg389qdzZlRfQrdcGYT
+	 VDGlisdZ4LCx82WC8dWS2wkfo7brWWKeX+DE8WzS55QTV2PP5KQ8R261MX94bCUbC8
+	 1ARocIsEK7twRGp5sec1MgmP+zN11dm8SNbcWEYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Boehm <boehm.jakub@gmail.com>,
+	Atlas Yu <atlas.yu@canonical.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
 	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 56/80] net: plip: fix break; causing plip to never transmit
+Subject: [PATCH 6.6 156/208] r8169: avoid unsolicited interrupts
 Date: Mon, 28 Oct 2024 07:25:36 +0100
-Message-ID: <20241028062254.173670127@linuxfoundation.org>
+Message-ID: <20241028062310.468124820@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Boehm <boehm.jakub@gmail.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit f99cf996ba5a315f8b9f13cc21dff0604a0eb749 ]
+[ Upstream commit 10ce0db787004875f4dba068ea952207d1d8abeb ]
 
-Since commit
-  71ae2cb30531 ("net: plip: Fix fall-through warnings for Clang")
+It was reported that after resume from suspend a PCI error is logged
+and connectivity is broken. Error message is:
+PCI error (cmd = 0x0407, status_errs = 0x0000)
+The message seems to be a red herring as none of the error bits is set,
+and the PCI command register value also is normal. Exception handling
+for a PCI error includes a chip reset what apparently brakes connectivity
+here. The interrupt status bit triggering the PCI error handling isn't
+actually used on PCIe chip versions, so it's not clear why this bit is
+set by the chip. Fix this by ignoring this bit on PCIe chip versions.
 
-plip was not able to send any packets, this patch replaces one
-unintended break; with fallthrough; which was originally missed by
-commit 9525d69a3667 ("net: plip: mark expected switch fall-throughs").
-
-I have verified with a real hardware PLIP connection that everything
-works once again after applying this patch.
-
-Fixes: 71ae2cb30531 ("net: plip: Fix fall-through warnings for Clang")
-Signed-off-by: Jakub Boehm <boehm.jakub@gmail.com>
+Fixes: 0e4851502f84 ("r8169: merge with version 8.001.00 of Realtek's r8168 driver")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219388
+Tested-by: Atlas Yu <atlas.yu@canonical.com>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Message-ID: <20241015-net-plip-tx-fix-v1-1-32d8be1c7e0b@gmail.com>
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/78e2f535-438f-4212-ad94-a77637ac6c9c@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/plip/plip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/plip/plip.c b/drivers/net/plip/plip.c
-index b1776116f9f7d..bea741afe78be 100644
---- a/drivers/net/plip/plip.c
-+++ b/drivers/net/plip/plip.c
-@@ -811,7 +811,7 @@ plip_send_packet(struct net_device *dev, struct net_local *nl,
- 				return HS_TIMEOUT;
- 			}
- 		}
--		break;
-+		fallthrough;
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index b499d8ea6d216..6856eb602f826 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4576,7 +4576,9 @@ static irqreturn_t rtl8169_interrupt(int irq, void *dev_instance)
+ 	if ((status & 0xffff) == 0xffff || !(status & tp->irq_mask))
+ 		return IRQ_NONE;
  
- 	case PLIP_PK_LENGTH_LSB:
- 		if (plip_send(nibble_timeout, dev,
+-	if (unlikely(status & SYSErr)) {
++	/* At least RTL8168fp may unexpectedly set the SYSErr bit */
++	if (unlikely(status & SYSErr &&
++	    tp->mac_version <= RTL_GIGA_MAC_VER_06)) {
+ 		rtl8169_pcierr_interrupt(tp->dev);
+ 		goto out;
+ 	}
 -- 
 2.43.0
 
