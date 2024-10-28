@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA389B26B7
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:42:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B41AE9B27E4
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B53EB20F66
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:42:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 552F6B210C4
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9110118E36D;
-	Mon, 28 Oct 2024 06:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FFD018E35B;
+	Mon, 28 Oct 2024 06:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CUt6l1UT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpHch/qz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAA315B10D;
-	Mon, 28 Oct 2024 06:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263E28837;
+	Mon, 28 Oct 2024 06:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097721; cv=none; b=PMc9faA/2e11ULve/gn1aCdRyF5YE6N6WnQ5W0Bn7szCFBs4HZj06nAebBT/VELXwbfjWWvGAPzeTNk9sQHR/U6OypzK8OHEgYAtaSv1ci8UjtODqfHikb/qelE4pdrito2husdvyWu4oyC4T2kRcxXeVsjaSxPQHoaeA4PPoxY=
+	t=1730098321; cv=none; b=ul9fpp+qGZAh4LObOwVuUuDc0gO5C5F/s341E8s02ianLllpo4F0+nWcsLA7ubZffXjd2KOWOp+6rA7qhqCoLgeFKsDfQuvAl4R5JQw1xn5ZxYkfD7ew8yR3nsIG85izi0HUrQ7NkCktKf/sQAEdfZYo6Crfnxr9p3Rh5SgK0YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097721; c=relaxed/simple;
-	bh=4wRftN5ihR10dgIn1T+1qCsQE3sj0adl7GxNhxuOSdQ=;
+	s=arc-20240116; t=1730098321; c=relaxed/simple;
+	bh=EQl2rlpeZEiboNSQoitkd5ciYCXzALFe4p6CyIJ8DNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EKta/mnJResdmhSZj8LNb3BJ/atKq8hAe1ANLUpHdeJamj4mW2Vn8jOFyYpPBHwekCazhdQ9M0gynRn8x/mVxUZnRZo7pVcBdRa8rnGxMBg22mFBSS8pl4ug/XyEnl/cjLqR8S8FyMxhl5rw2G88TgSKjVFme/BQaOX4LMMOMvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CUt6l1UT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3600C4CEC3;
-	Mon, 28 Oct 2024 06:42:00 +0000 (UTC)
+	 MIME-Version; b=f81N2Y7+yoicqTR1Yhac7N9Y+Uc9TRaSSiFwmPZvt1OXeuMhVq4aC03/HxJSlTQyzMHbZYjCvwM9UMz71rByNm74bbqrcBTFSogqHbpMfFoKcfYcjGHAzLa3EwW/bqZCDrVzK0YTuY24LeQHLXMOBK0Ayp5P8VKtxavIxJ4Vn3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpHch/qz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED75C4CEEB;
+	Mon, 28 Oct 2024 06:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097721;
-	bh=4wRftN5ihR10dgIn1T+1qCsQE3sj0adl7GxNhxuOSdQ=;
+	s=korg; t=1730098321;
+	bh=EQl2rlpeZEiboNSQoitkd5ciYCXzALFe4p6CyIJ8DNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CUt6l1UTIx+Sp39j+iDEHcT0ABq8Cls+29nRSBu1xV3xDL4zZzJdc8UK8ILqgooKX
-	 M9WJFR+k8pQ5PBWCKGH/dWNxV2wUQ/YXmrj8J09d5XuJMEeqDsz/8HoTX6QKDn2Iyj
-	 ksjx0jdnB9EPPUBCi8NIl5nqVq9PSoj7biWL0pFE=
+	b=xpHch/qzSh644ieuVVSvJ1fj4/jsT6F2NmnWCJc3zkEBIiLzJ5m1bHiJpw8+sfDjc
+	 oQYgvU+zUv59DAeW2lirKRquBlpwPS4q9pTe/JIJxtFkKoNK8bC084FQEB8pqlV7QA
+	 3QZs5Rq4FMCnTpq/GgVlKrrwB8PhCRZlHtvL6TIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uday M Bhat <uday.m.bhat@intel.com>,
-	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Mikel Rychliski <mikel@mikelr.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 101/208] xhci: dbc: honor usb transfer size boundaries.
+Subject: [PATCH 6.11 139/261] tracing/probes: Fix MAX_TRACE_ARGS limit handling
 Date: Mon, 28 Oct 2024 07:24:41 +0100
-Message-ID: <20241028062309.146997422@linuxfoundation.org>
+Message-ID: <20241028062315.527422247@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,151 +60,144 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Mikel Rychliski <mikel@mikelr.com>
 
-[ Upstream commit 30c9ae5ece8ecd69d36e6912c2c0896418f2468c ]
+[ Upstream commit 73f35080477e893aa6f4c8d388352b871b288fbc ]
 
-Treat each completed full size write to /dev/ttyDBC0 as a separate usb
-transfer. Make sure the size of the TRBs matches the size of the tty
-write by first queuing as many max packet size TRBs as possible up to
-the last TRB which will be cut short to match the size of the tty write.
+When creating a trace_probe we would set nr_args prior to truncating the
+arguments to MAX_TRACE_ARGS. However, we would only initialize arguments
+up to the limit.
 
-This solves an issue where userspace writes several transfers back to
-back via /dev/ttyDBC0 into a kfifo before dbgtty can find available
-request to turn that kfifo data into TRBs on the transfer ring.
+This caused invalid memory access when attempting to set up probes with
+more than 128 fetchargs.
 
-The boundary between transfer was lost as xhci-dbgtty then turned
-everyting in the kfifo into as many 'max packet size' TRBs as possible.
+  BUG: kernel NULL pointer dereference, address: 0000000000000020
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 0 P4D 0
+  Oops: Oops: 0000 [#1] PREEMPT SMP PTI
+  CPU: 0 UID: 0 PID: 1769 Comm: cat Not tainted 6.11.0-rc7+ #8
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-1.fc39 04/01/2014
+  RIP: 0010:__set_print_fmt+0x134/0x330
 
-DbC would then send more data to the host than intended for that
-transfer, causing host to issue a babble error.
+Resolve the issue by applying the MAX_TRACE_ARGS limit earlier. Return
+an error when there are too many arguments instead of silently
+truncating.
 
-Refuse to write more data to kfifo until previous tty write data is
-turned into properly sized TRBs with data size boundaries matching tty
-write size
+Link: https://lore.kernel.org/all/20240930202656.292869-1-mikel@mikelr.com/
 
-Tested-by: Uday M Bhat <uday.m.bhat@intel.com>
-Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20241016140000.783905-5-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 035ba76014c0 ("tracing/probes: cleanup: Set trace_probe::nr_args at trace_probe_init")
+Signed-off-by: Mikel Rychliski <mikel@mikelr.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-dbgcap.h |  1 +
- drivers/usb/host/xhci-dbgtty.c | 55 ++++++++++++++++++++++++++++++----
- 2 files changed, 51 insertions(+), 5 deletions(-)
+ kernel/trace/trace_eprobe.c | 7 ++++++-
+ kernel/trace/trace_fprobe.c | 6 +++++-
+ kernel/trace/trace_kprobe.c | 6 +++++-
+ kernel/trace/trace_uprobe.c | 4 +++-
+ 4 files changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-dbgcap.h b/drivers/usb/host/xhci-dbgcap.h
-index 54fafebb7bd1f..76170d7a7e7c3 100644
---- a/drivers/usb/host/xhci-dbgcap.h
-+++ b/drivers/usb/host/xhci-dbgcap.h
-@@ -108,6 +108,7 @@ struct dbc_port {
- 	struct tasklet_struct		push;
+diff --git a/kernel/trace/trace_eprobe.c b/kernel/trace/trace_eprobe.c
+index b0e0ec85912e9..ebda68ee9abff 100644
+--- a/kernel/trace/trace_eprobe.c
++++ b/kernel/trace/trace_eprobe.c
+@@ -912,6 +912,11 @@ static int __trace_eprobe_create(int argc, const char *argv[])
+ 		}
+ 	}
  
- 	struct list_head		write_pool;
-+	unsigned int			tx_boundary;
- 
- 	bool				registered;
- };
-diff --git a/drivers/usb/host/xhci-dbgtty.c b/drivers/usb/host/xhci-dbgtty.c
-index 881f5a7e6e0e1..0266c2f5bc0d8 100644
---- a/drivers/usb/host/xhci-dbgtty.c
-+++ b/drivers/usb/host/xhci-dbgtty.c
-@@ -24,6 +24,29 @@ static inline struct dbc_port *dbc_to_port(struct xhci_dbc *dbc)
- 	return dbc->priv;
- }
- 
-+static unsigned int
-+dbc_kfifo_to_req(struct dbc_port *port, char *packet)
-+{
-+	unsigned int	len;
-+
-+	len = kfifo_len(&port->port.xmit_fifo);
-+
-+	if (len == 0)
-+		return 0;
-+
-+	len = min(len, DBC_MAX_PACKET);
-+
-+	if (port->tx_boundary)
-+		len = min(port->tx_boundary, len);
-+
-+	len = kfifo_out(&port->port.xmit_fifo, packet, len);
-+
-+	if (port->tx_boundary)
-+		port->tx_boundary -= len;
-+
-+	return len;
-+}
-+
- static int dbc_start_tx(struct dbc_port *port)
- 	__releases(&port->port_lock)
- 	__acquires(&port->port_lock)
-@@ -36,7 +59,7 @@ static int dbc_start_tx(struct dbc_port *port)
- 
- 	while (!list_empty(pool)) {
- 		req = list_entry(pool->next, struct dbc_request, list_pool);
--		len = kfifo_out(&port->port.xmit_fifo, req->buf, DBC_MAX_PACKET);
-+		len = dbc_kfifo_to_req(port, req->buf);
- 		if (len == 0)
- 			break;
- 		do_tty_wake = true;
-@@ -200,14 +223,32 @@ static ssize_t dbc_tty_write(struct tty_struct *tty, const u8 *buf,
- {
- 	struct dbc_port		*port = tty->driver_data;
- 	unsigned long		flags;
-+	unsigned int		written = 0;
- 
- 	spin_lock_irqsave(&port->port_lock, flags);
--	if (count)
--		count = kfifo_in(&port->port.xmit_fifo, buf, count);
--	dbc_start_tx(port);
-+
-+	/*
-+	 * Treat tty write as one usb transfer. Make sure the writes are turned
-+	 * into TRB request having the same size boundaries as the tty writes.
-+	 * Don't add data to kfifo before previous write is turned into TRBs
-+	 */
-+	if (port->tx_boundary) {
-+		spin_unlock_irqrestore(&port->port_lock, flags);
-+		return 0;
++	if (argc - 2 > MAX_TRACE_ARGS) {
++		ret = -E2BIG;
++		goto error;
 +	}
 +
-+	if (count) {
-+		written = kfifo_in(&port->port.xmit_fifo, buf, count);
-+
-+		if (written == count)
-+			port->tx_boundary = kfifo_len(&port->port.xmit_fifo);
-+
-+		dbc_start_tx(port);
+ 	mutex_lock(&event_mutex);
+ 	event_call = find_and_get_event(sys_name, sys_event);
+ 	ep = alloc_event_probe(group, event, event_call, argc - 2);
+@@ -937,7 +942,7 @@ static int __trace_eprobe_create(int argc, const char *argv[])
+ 
+ 	argc -= 2; argv += 2;
+ 	/* parse arguments */
+-	for (i = 0; i < argc && i < MAX_TRACE_ARGS; i++) {
++	for (i = 0; i < argc; i++) {
+ 		trace_probe_log_set_index(i + 2);
+ 		ret = trace_eprobe_tp_update_arg(ep, argv, i);
+ 		if (ret)
+diff --git a/kernel/trace/trace_fprobe.c b/kernel/trace/trace_fprobe.c
+index 62e6a8f4aae9b..5107d466a1293 100644
+--- a/kernel/trace/trace_fprobe.c
++++ b/kernel/trace/trace_fprobe.c
+@@ -1104,6 +1104,10 @@ static int __trace_fprobe_create(int argc, const char *argv[])
+ 		argc = new_argc;
+ 		argv = new_argv;
+ 	}
++	if (argc > MAX_TRACE_ARGS) {
++		ret = -E2BIG;
++		goto out;
 +	}
-+
- 	spin_unlock_irqrestore(&port->port_lock, flags);
  
--	return count;
-+	return written;
- }
+ 	ret = traceprobe_expand_dentry_args(argc, argv, &dbuf);
+ 	if (ret)
+@@ -1124,7 +1128,7 @@ static int __trace_fprobe_create(int argc, const char *argv[])
+ 				(unsigned long)tf->tpoint->probestub);
  
- static int dbc_tty_put_char(struct tty_struct *tty, u8 ch)
-@@ -241,6 +282,10 @@ static unsigned int dbc_tty_write_room(struct tty_struct *tty)
+ 	/* parse arguments */
+-	for (i = 0; i < argc && i < MAX_TRACE_ARGS; i++) {
++	for (i = 0; i < argc; i++) {
+ 		trace_probe_log_set_index(i + 2);
+ 		ctx.offset = 0;
+ 		ret = traceprobe_parse_probe_arg(&tf->tp, i, argv[i], &ctx);
+diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
+index 61a6da808203e..263fac44d3ca3 100644
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -1013,6 +1013,10 @@ static int __trace_kprobe_create(int argc, const char *argv[])
+ 		argc = new_argc;
+ 		argv = new_argv;
+ 	}
++	if (argc > MAX_TRACE_ARGS) {
++		ret = -E2BIG;
++		goto out;
++	}
  
- 	spin_lock_irqsave(&port->port_lock, flags);
- 	room = kfifo_avail(&port->port.xmit_fifo);
-+
-+	if (port->tx_boundary)
-+		room = 0;
-+
- 	spin_unlock_irqrestore(&port->port_lock, flags);
+ 	ret = traceprobe_expand_dentry_args(argc, argv, &dbuf);
+ 	if (ret)
+@@ -1029,7 +1033,7 @@ static int __trace_kprobe_create(int argc, const char *argv[])
+ 	}
  
- 	return room;
+ 	/* parse arguments */
+-	for (i = 0; i < argc && i < MAX_TRACE_ARGS; i++) {
++	for (i = 0; i < argc; i++) {
+ 		trace_probe_log_set_index(i + 2);
+ 		ctx.offset = 0;
+ 		ret = traceprobe_parse_probe_arg(&tk->tp, i, argv[i], &ctx);
+diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
+index 2c30d948e733c..6de07df05ed8c 100644
+--- a/kernel/trace/trace_uprobe.c
++++ b/kernel/trace/trace_uprobe.c
+@@ -556,6 +556,8 @@ static int __trace_uprobe_create(int argc, const char **argv)
+ 
+ 	if (argc < 2)
+ 		return -ECANCELED;
++	if (argc - 2 > MAX_TRACE_ARGS)
++		return -E2BIG;
+ 
+ 	if (argv[0][1] == ':')
+ 		event = &argv[0][2];
+@@ -681,7 +683,7 @@ static int __trace_uprobe_create(int argc, const char **argv)
+ 	tu->filename = filename;
+ 
+ 	/* parse arguments */
+-	for (i = 0; i < argc && i < MAX_TRACE_ARGS; i++) {
++	for (i = 0; i < argc; i++) {
+ 		struct traceprobe_parse_context ctx = {
+ 			.flags = (is_return ? TPARG_FL_RETURN : 0) | TPARG_FL_USER,
+ 		};
 -- 
 2.43.0
 
