@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-88747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 621659B2754
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:47:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C2E09B2654
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:38:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2822B28354C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:47:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12B201F21D30
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:38:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0265418F2EA;
-	Mon, 28 Oct 2024 06:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0EA18E74C;
+	Mon, 28 Oct 2024 06:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z88Zoppa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0O6fdC9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B541617109B;
-	Mon, 28 Oct 2024 06:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB1618E350;
+	Mon, 28 Oct 2024 06:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098029; cv=none; b=ELkAoLqcFP83bv0wKlXfIPBf19Zn/a59BHz/dtq/GH3voz7v57aHWbjKopMioXCwpbuvZMEocaL7uHc/X7vh0eohHI9220SZ+Xask0CYD/rlEGTVGcSEwNIMyXvZ+4bbbcyajnXyuCk2YpII8ux9rzMCKHbNNEndzNng6Bfx5As=
+	t=1730097514; cv=none; b=kfmYmQP6fFHvs2cMmXdwSAglcIyUNsgcsbFBCOVAIRAotBrB2eEVRA8L2OTDUdrFSX+gYLvbBelg92oAkLX+4Rwpev8cigcHhdQ9PVhicq58Pzn5jZf+ZI4m9g/8dqDUcz+Ya6OtsJR9MWrJVrcX1zQ/86l9THjhHGlawEJ0AFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098029; c=relaxed/simple;
-	bh=OK98xhZaEjk43KNQld2CZz6v7jk1pv+tGj8aKVwBmuw=;
+	s=arc-20240116; t=1730097514; c=relaxed/simple;
+	bh=AHTBypOv4snPwgS/aXzp2uDZ8JQKAPJ4RAVMALkOt/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m6cfPnlbIbUgBkSUBQOk/uTJcHJ+Oszqr5U3DL/5pFJM+VZ2E0KkaaZtU9RGJhLNWNDzexndtiaflZN0kuuyTqifk8LdYP1q+kIU/tnQnGS9m7jVWzXCZh7JikNWZVnARdLnkauHyN9vth7VqLVW1GaBJcfFGF5XMU9x9yndTF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z88Zoppa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57602C4CEC3;
-	Mon, 28 Oct 2024 06:47:09 +0000 (UTC)
+	 MIME-Version; b=WeRiaGoMo8eaEY8GLnU/Bp8aCLPv28B0Ycv9dPJzOFgYxAbCEs+f7kVN5sH548GA4+7Nlh6vQNjTWfK3Fu18JyCcuzRxCfD5U8biEFfCy80/Hzl6D3hQ5FU6jOfOo/CJEsTptDapvitY99SBuJbwecuuNxqCWmjWcVi/k0a+Roc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0O6fdC9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7D0C4CEC3;
+	Mon, 28 Oct 2024 06:38:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098029;
-	bh=OK98xhZaEjk43KNQld2CZz6v7jk1pv+tGj8aKVwBmuw=;
+	s=korg; t=1730097514;
+	bh=AHTBypOv4snPwgS/aXzp2uDZ8JQKAPJ4RAVMALkOt/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z88ZoppafooUirFte8Da1sKY25EJOPGvW5rQknOQ9n1KvqWVWJJNmZiACfkOPETHY
-	 Jy+pC994u46Wn2Q+j+EJXWMYP7wh+Ybgel+stebGVK3IO8hGfop1eBgJ0Y1/sgO3fv
-	 4J+YXcVL2ZM9a8PV8WGJ28RhhIuVDddSBQ3akV9g=
+	b=U0O6fdC9fhScdOc4S7WjenxPcBSVwh5IF/NIfxT9PxJEEJfN3HCuaherioISbpSbf
+	 4B/kET+EeqEhDesyOaIC0/31F0CsRxCfThv+IaDOwb+guDEyLGw0ECd+VdaOyrt7er
+	 VYp4AuVGBUDVjA0FseQkI6jPUyZD4ySpti4NnFD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>,
 	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Chandramohan Akula <chandramohan.akula@broadcom.com>,
+	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
 	Jason Gunthorpe <jgg@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 046/261] RDMA/bnxt_re: Fix a bug while setting up Level-2 PBL pages
+Subject: [PATCH 6.6 008/208] RDMA/bnxt_re: Fix incorrect AVID type in WQE structure
 Date: Mon, 28 Oct 2024 07:23:08 +0100
-Message-ID: <20241028062313.165402746@linuxfoundation.org>
+Message-ID: <20241028062306.861241881@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +66,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>
+From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
 
-[ Upstream commit 7988bdbbb85ac85a847baf09879edcd0f70521dc ]
+[ Upstream commit 9ab20f76ae9fad55ebaf36bdff04aea1c2552374 ]
 
-Avoid memory corruption while setting up Level-2 PBL pages for the non MR
-resources when num_pages > 256K.
+Driver uses internal data structure to construct WQE frame.
+It used avid type as u16 which can accommodate up to 64K AVs.
+When outstanding AVID crosses 64K, driver truncates AVID and
+hence it uses incorrect AVID to WR. This leads to WR failure
+due to invalid AV ID and QP is moved to error state with reason
+set to 19 (INVALID AVID). When RDMA CM path is used, this issue
+hits QP1 and it is moved to error state
 
-There will be a single PDE page address (contiguous pages in the case of >
-PAGE_SIZE), but, current logic assumes multiple pages, leading to invalid
-memory access after 256K PBL entries in the PDE.
-
-Fixes: 0c4dcd602817 ("RDMA/bnxt_re: Refactor hardware queue memory allocation")
-Link: https://patch.msgid.link/r/1728373302-19530-10-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Link: https://patch.msgid.link/r/1726715161-18941-3-git-send-email-selvin.xavier@broadcom.com
+Reviewed-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Reviewed-by: Chandramohan Akula <chandramohan.akula@broadcom.com>
+Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
 Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_res.c | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_fp.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-index 1fdffd6a0f480..96ceec1e8199a 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-@@ -257,22 +257,9 @@ int bnxt_qplib_alloc_init_hwq(struct bnxt_qplib_hwq *hwq,
- 			dst_virt_ptr =
- 				(dma_addr_t **)hwq->pbl[PBL_LVL_0].pg_arr;
- 			src_phys_ptr = hwq->pbl[PBL_LVL_1].pg_map_arr;
--			if (hwq_attr->type == HWQ_TYPE_MR) {
--			/* For MR it is expected that we supply only 1 contigous
--			 * page i.e only 1 entry in the PDL that will contain
--			 * all the PBLs for the user supplied memory region
--			 */
--				for (i = 0; i < hwq->pbl[PBL_LVL_1].pg_count;
--				     i++)
--					dst_virt_ptr[0][i] = src_phys_ptr[i] |
--						flag;
--			} else {
--				for (i = 0; i < hwq->pbl[PBL_LVL_1].pg_count;
--				     i++)
--					dst_virt_ptr[PTR_PG(i)][PTR_IDX(i)] =
--						src_phys_ptr[i] |
--						PTU_PDE_VALID;
--			}
-+			for (i = 0; i < hwq->pbl[PBL_LVL_1].pg_count; i++)
-+				dst_virt_ptr[0][i] = src_phys_ptr[i] | flag;
-+
- 			/* Alloc or init PTEs */
- 			rc = __alloc_pbl(res, &hwq->pbl[PBL_LVL_2],
- 					 hwq_attr->sginfo);
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+index a6f38d8f12efe..56ddff96b5083 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+@@ -169,7 +169,7 @@ struct bnxt_qplib_swqe {
+ 			};
+ 			u32		q_key;
+ 			u32		dst_qp;
+-			u16		avid;
++			u32		avid;
+ 		} send;
+ 
+ 		/* Send Raw Ethernet and QP1 */
 -- 
 2.43.0
 
