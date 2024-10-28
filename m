@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-88801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 749C79B278F
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:49:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E4B9B2678
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A67C11C21576
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:49:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3ED981F21F9F
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E4D318F2DB;
-	Mon, 28 Oct 2024 06:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F30F18E36D;
+	Mon, 28 Oct 2024 06:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTwlq5c4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gpVCN6a/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB402AF07;
-	Mon, 28 Oct 2024 06:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9F82C697;
+	Mon, 28 Oct 2024 06:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098153; cv=none; b=boNPOIpQbttFgdWNyHKADvgHaVFWaJM7vvjnMjL7aXJjnw4BAsBf91PEHCNfjMRZXZwjyIEOSMa5m0wKX+9dLwDMqgtL01VHpFzYkJFhEuglwkCSCMMR0jkPYoT9itl2vnEnv3MvFgYyDUo3Nij9fNCGFGj050f4LUvOkkcQ5ko=
+	t=1730097593; cv=none; b=BLbsnE8yvbVjW8FigoB3o49R4tHpExtW7MZJgEMVDqbgJf0Asv+NQbKE3VDFo9oyBPUKTQ7IzqkFqiqhw7EsQMLMLg18FewOnonr3HIsi5mAk5Sx3eaEgx4im+SD2diepeShJucLRBRj36axkIDqVmQfjESzmcHJmXbc8OKKncw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098153; c=relaxed/simple;
-	bh=2QamZZ4edvzYjoNdK+/T49yFMQJVgJIW7iw7ZB3Kano=;
+	s=arc-20240116; t=1730097593; c=relaxed/simple;
+	bh=kjzkcrsXGZazM2n4foECDYm73fGNB8AFcMfsyT8aWWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TIDpgKW6Q9UkUhQEyeQtAgRfsJbYLGqq/FO5nJ2Od2NMClKPjOTQwpBPDO6gJTlOi1D4txiP/bUN+y1DbKzEdvusMJi/e8LKoy1/u/RgT+ujbKDrsWSsgFObFwl7zxFVd4Bx1un3/F+psVrWEtEYXK7vfDS3lHN18EI5OiPeWRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTwlq5c4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B72C4CECD;
-	Mon, 28 Oct 2024 06:49:12 +0000 (UTC)
+	 MIME-Version; b=hO8qO5Ivib3OFCILWc5TF6eQtQJDBroxwaIm+XXVXYwLyPAHqDtueSl15kMrDmrjP0LC4d8+hDmzI/7QAwaXHLk48JKRNdWD8zelCSE0RujSNvVzc4Z9POrZAgEOLaFleQzW6VVFR+VVxPKvz993cr3wD7q4qu55LTBEs1KpPwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gpVCN6a/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF965C4CEC3;
+	Mon, 28 Oct 2024 06:39:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098153;
-	bh=2QamZZ4edvzYjoNdK+/T49yFMQJVgJIW7iw7ZB3Kano=;
+	s=korg; t=1730097593;
+	bh=kjzkcrsXGZazM2n4foECDYm73fGNB8AFcMfsyT8aWWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pTwlq5c4G0OgrELslmkBDRg191+2ucbOltxyK4TgkCmqpIylrsuPzqF7U6pzosr4E
-	 P+YeZw+WRM2eVMUbecQPeUklcUA3qyBgsJW8DfGL+yRi/cLW/9JaHcjtoy3FeTPARq
-	 1fklvxbNGhkvuUzmAJVrXGbFpsJGx0vgcVMlyHEA=
+	b=gpVCN6a/UfPVl4d1ZYK+/Dfpq3XlfdrCbqUkV0isBZsbr56GyEO5SBhU3aJzGWak4
+	 LHZ0VkyUZ9/80YeLaEQYfDChPnw7qkookvEzvEXSyKkwtU35s//A6Dpp9jqrQy/taC
+	 Nt9bj8gPzGR7jUCVFAyLRRhSuEiUSkP3/orynC8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 063/261] ring-buffer: Fix reader locking when changing the sub buffer order
+Subject: [PATCH 6.6 025/208] task_work: Add TWA_NMI_CURRENT as an additional notify mode.
 Date: Mon, 28 Oct 2024 07:23:25 +0100
-Message-ID: <20241028062313.609943997@linuxfoundation.org>
+Message-ID: <20241028062307.276124331@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,123 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 09661f75e75cb6c1d2d8326a70c311d46729235f ]
+[ Upstream commit 466e4d801cd438a1ab2c8a2cce1bef6b65c31bbb ]
 
-The function ring_buffer_subbuf_order_set() updates each
-ring_buffer_per_cpu and installs new sub buffers that match the requested
-page order. This operation may be invoked concurrently with readers that
-rely on some of the modified data, such as the head bit (RB_PAGE_HEAD), or
-the ring_buffer_per_cpu.pages and reader_page pointers. However, no
-exclusive access is acquired by ring_buffer_subbuf_order_set(). Modifying
-the mentioned data while a reader also operates on them can then result in
-incorrect memory access and various crashes.
+Adding task_work from NMI context requires the following:
+- The kasan_record_aux_stack() is not NMU safe and must be avoided.
+- Using TWA_RESUME is NMI safe. If the NMI occurs while the CPU is in
+  userland then it will continue in userland and not invoke the `work'
+  callback.
 
-Fix the problem by taking the reader_lock when updating a specific
-ring_buffer_per_cpu in ring_buffer_subbuf_order_set().
+Add TWA_NMI_CURRENT as an additional notify mode. In this mode skip
+kasan and use irq_work in hardirq-mode to for needed interrupt. Set
+TIF_NOTIFY_RESUME within the irq_work callback due to k[ac]san
+instrumentation in test_and_set_bit() which does not look NMI safe in
+case of a report.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240715145141.5528-1-petr.pavlu@suse.com/
-Link: https://lore.kernel.org/linux-trace-kernel/20241010195849.2f77cc3f@gandalf.local.home/
-Link: https://lore.kernel.org/linux-trace-kernel/20241011112850.17212b25@gandalf.local.home/
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20241015112440.26987-1-petr.pavlu@suse.com
-Fixes: 8e7b58c27b3c ("ring-buffer: Just update the subbuffers when changing their allocation order")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240704170424.1466941-3-bigeasy@linutronix.de
+Stable-dep-of: 73ab05aa46b0 ("sched/core: Disable page allocation in task_tick_mm_cid()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 44 ++++++++++++++++++++++----------------
- 1 file changed, 26 insertions(+), 18 deletions(-)
+ include/linux/task_work.h |  1 +
+ kernel/task_work.c        | 24 +++++++++++++++++++++---
+ 2 files changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index cebd879a30cbd..fb7b092e79313 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -6008,39 +6008,38 @@ int ring_buffer_subbuf_order_set(struct trace_buffer *buffer, int order)
- 	}
+diff --git a/include/linux/task_work.h b/include/linux/task_work.h
+index 26b8a47f41fca..cf5e7e891a776 100644
+--- a/include/linux/task_work.h
++++ b/include/linux/task_work.h
+@@ -18,6 +18,7 @@ enum task_work_notify_mode {
+ 	TWA_RESUME,
+ 	TWA_SIGNAL,
+ 	TWA_SIGNAL_NO_IPI,
++	TWA_NMI_CURRENT,
+ };
  
- 	for_each_buffer_cpu(buffer, cpu) {
-+		struct buffer_data_page *old_free_data_page;
-+		struct list_head old_pages;
-+		unsigned long flags;
+ static inline bool task_work_pending(struct task_struct *task)
+diff --git a/kernel/task_work.c b/kernel/task_work.c
+index 2134ac8057a94..5c2daa7ad3f90 100644
+--- a/kernel/task_work.c
++++ b/kernel/task_work.c
+@@ -1,10 +1,18 @@
+ // SPDX-License-Identifier: GPL-2.0
++#include <linux/irq_work.h>
+ #include <linux/spinlock.h>
+ #include <linux/task_work.h>
+ #include <linux/resume_user_mode.h>
  
- 		if (!cpumask_test_cpu(cpu, buffer->cpumask))
- 			continue;
+ static struct callback_head work_exited; /* all we need is ->next == NULL */
  
- 		cpu_buffer = buffer->buffers[cpu];
- 
-+		raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
++static void task_work_set_notify_irq(struct irq_work *entry)
++{
++	test_and_set_tsk_thread_flag(current, TIF_NOTIFY_RESUME);
++}
++static DEFINE_PER_CPU(struct irq_work, irq_work_NMI_resume) =
++	IRQ_WORK_INIT_HARD(task_work_set_notify_irq);
 +
- 		/* Clear the head bit to make the link list normal to read */
- 		rb_head_page_deactivate(cpu_buffer);
+ /**
+  * task_work_add - ask the @task to execute @work->func()
+  * @task: the task which should run the callback
+@@ -12,7 +20,7 @@ static struct callback_head work_exited; /* all we need is ->next == NULL */
+  * @notify: how to notify the targeted task
+  *
+  * Queue @work for task_work_run() below and notify the @task if @notify
+- * is @TWA_RESUME, @TWA_SIGNAL, or @TWA_SIGNAL_NO_IPI.
++ * is @TWA_RESUME, @TWA_SIGNAL, @TWA_SIGNAL_NO_IPI or @TWA_NMI_CURRENT.
+  *
+  * @TWA_SIGNAL works like signals, in that the it will interrupt the targeted
+  * task and run the task_work, regardless of whether the task is currently
+@@ -24,6 +32,8 @@ static struct callback_head work_exited; /* all we need is ->next == NULL */
+  * kernel anyway.
+  * @TWA_RESUME work is run only when the task exits the kernel and returns to
+  * user mode, or before entering guest mode.
++ * @TWA_NMI_CURRENT works like @TWA_RESUME, except it can only be used for the
++ * current @task and if the current context is NMI.
+  *
+  * Fails if the @task is exiting/exited and thus it can't process this @work.
+  * Otherwise @work->func() will be called when the @task goes through one of
+@@ -44,8 +54,13 @@ int task_work_add(struct task_struct *task, struct callback_head *work,
+ {
+ 	struct callback_head *head;
  
--		/* Now walk the list and free all the old sub buffers */
--		list_for_each_entry_safe(bpage, tmp, cpu_buffer->pages, list) {
--			list_del_init(&bpage->list);
--			free_buffer_page(bpage);
--		}
--		/* The above loop stopped an the last page needing to be freed */
--		bpage = list_entry(cpu_buffer->pages, struct buffer_page, list);
--		free_buffer_page(bpage);
--
--		/* Free the current reader page */
--		free_buffer_page(cpu_buffer->reader_page);
-+		/*
-+		 * Collect buffers from the cpu_buffer pages list and the
-+		 * reader_page on old_pages, so they can be freed later when not
-+		 * under a spinlock. The pages list is a linked list with no
-+		 * head, adding old_pages turns it into a regular list with
-+		 * old_pages being the head.
-+		 */
-+		list_add(&old_pages, cpu_buffer->pages);
-+		list_add(&cpu_buffer->reader_page->list, &old_pages);
+-	/* record the work call stack in order to print it in KASAN reports */
+-	kasan_record_aux_stack(work);
++	if (notify == TWA_NMI_CURRENT) {
++		if (WARN_ON_ONCE(task != current))
++			return -EINVAL;
++	} else {
++		/* record the work call stack in order to print it in KASAN reports */
++		kasan_record_aux_stack(work);
++	}
  
- 		/* One page was allocated for the reader page */
- 		cpu_buffer->reader_page = list_entry(cpu_buffer->new_pages.next,
- 						     struct buffer_page, list);
- 		list_del_init(&cpu_buffer->reader_page->list);
- 
--		/* The cpu_buffer pages are a link list with no head */
-+		/* Install the new pages, remove the head from the list */
- 		cpu_buffer->pages = cpu_buffer->new_pages.next;
--		cpu_buffer->new_pages.next->prev = cpu_buffer->new_pages.prev;
--		cpu_buffer->new_pages.prev->next = cpu_buffer->new_pages.next;
--
--		/* Clear the new_pages list */
--		INIT_LIST_HEAD(&cpu_buffer->new_pages);
-+		list_del_init(&cpu_buffer->new_pages);
- 
- 		cpu_buffer->head_page
- 			= list_entry(cpu_buffer->pages, struct buffer_page, list);
-@@ -6049,11 +6048,20 @@ int ring_buffer_subbuf_order_set(struct trace_buffer *buffer, int order)
- 		cpu_buffer->nr_pages = cpu_buffer->nr_pages_to_update;
- 		cpu_buffer->nr_pages_to_update = 0;
- 
--		free_pages((unsigned long)cpu_buffer->free_page, old_order);
-+		old_free_data_page = cpu_buffer->free_page;
- 		cpu_buffer->free_page = NULL;
- 
- 		rb_head_page_activate(cpu_buffer);
- 
-+		raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
-+
-+		/* Free old sub buffers */
-+		list_for_each_entry_safe(bpage, tmp, &old_pages, list) {
-+			list_del_init(&bpage->list);
-+			free_buffer_page(bpage);
-+		}
-+		free_pages((unsigned long)old_free_data_page, old_order);
-+
- 		rb_check_pages(cpu_buffer);
- 	}
- 
+ 	head = READ_ONCE(task->task_works);
+ 	do {
+@@ -66,6 +81,9 @@ int task_work_add(struct task_struct *task, struct callback_head *work,
+ 	case TWA_SIGNAL_NO_IPI:
+ 		__set_notify_signal(task);
+ 		break;
++	case TWA_NMI_CURRENT:
++		irq_work_queue(this_cpu_ptr(&irq_work_NMI_resume));
++		break;
+ 	default:
+ 		WARN_ON_ONCE(1);
+ 		break;
 -- 
 2.43.0
 
