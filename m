@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 478489B262A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:37:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7EFC9B2704
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79B951C2128F
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:37:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D8161F247A0
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861DC18E04F;
-	Mon, 28 Oct 2024 06:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21B2718E748;
+	Mon, 28 Oct 2024 06:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGsgtbNI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xk5Qpe+W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4543A15B10D;
-	Mon, 28 Oct 2024 06:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E9C18E368;
+	Mon, 28 Oct 2024 06:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097437; cv=none; b=KvOaKcbTkUBydgcGdDIVJt7HyYZVusjnwf73dWreaCbi1kN8ObpWeAQ3FtAUCqvLidmY0D58FxfiHLbgiOfiRVyZWIaZQhSt0qXsM7mCV7A2vmaTJdNv8cm6W9xJyxXwB3snYnY28/wze/yfchlipfPxu4Wa1GrwBRrqDgsvRQA=
+	t=1730097875; cv=none; b=TnK2Ch9Uqtt4EalCVRaGeHLf7dHlyqJyO/4vx5A/wiAIdw8JoiVD+C63m09ya/dTu6bC2+R6O/mpW02E+cBUtLmTFR1QtNhrjqCLW5ejBHD+F425WaoAtHfO4je/YykBk7XOPp1bYKJ18DePQst+mNlxDVA3WuG+mIWT7oLTY7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097437; c=relaxed/simple;
-	bh=ggNBlSLoTsCK3KifO4bcsK3eHccGxAq4qSQfJ8JZcEY=;
+	s=arc-20240116; t=1730097875; c=relaxed/simple;
+	bh=MYG/MpmUUTdMwaA2qkbhaEEaB2zprtDbPQ9CPhZodLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QMdOLkKPyKe+DvfPtGJ0ryCALqVzSCHw/sy+WKsggajZSdkLa8jDJ+uMqbfH0j55jbsXFXnbRR+t/xMxZv9i16ZKKn3O6PCIIALEGxRHC4ugTQHh+Rno89Xw7ZYdrFc1lJQF17Jy1JRZkfIR4dyQB5dTfN0DMkN/4YcNIRb0NnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGsgtbNI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A506FC4CEC3;
-	Mon, 28 Oct 2024 06:37:16 +0000 (UTC)
+	 MIME-Version; b=cgF3NJ99lM+M+BeNOFfVLvFnwgZjTiEZJHY5wBxpkxMJbgnI9rqxlBsA4yLWvmdtpZTtxQeCzVenuCczswGiUZGg8MKr6zJfwEoOYXoPUPZ6V90KdZSXIEJ9AFOvMHzmtf5ZvwHOoVQjqU13oiVB78xMBHP49F90RCaJJwH0tlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xk5Qpe+W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72234C4CEC3;
+	Mon, 28 Oct 2024 06:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097437;
-	bh=ggNBlSLoTsCK3KifO4bcsK3eHccGxAq4qSQfJ8JZcEY=;
+	s=korg; t=1730097875;
+	bh=MYG/MpmUUTdMwaA2qkbhaEEaB2zprtDbPQ9CPhZodLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TGsgtbNIF8OSLfBCJkLGj4g8DlmOkzSzNF0MThQuyIZcc6hQ061NumktlF7+GeM6s
-	 yIMjiL8oB8jjJaG15dftA1q6uAs2oeDsg+YtCafmcqrMdHMeKdi3SdtkaP8u4yP2oG
-	 pDyCpk1x6xwJ7viNtvUnLVDHRCV+XqQ61JYFJ5ts=
+	b=Xk5Qpe+WZHi40nStu+0X5G5K/irQxYgQwOgSnJd8b0eauchsDOAOU0vguIZReMzXk
+	 rgfnbMtYPkXyk1VTtvaMouPZ3DgNeVwx/3mU13/h63ho5Y76l8iy/yd8fsdo5rxmwu
+	 eNkIyGTvDHXwar1peBMpn1DF/mAriCQXKZj4QQB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Sun <samsun1006219@gmail.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 130/137] selinux: improve error checking in sel_write_load()
+	Alexander Potapenko <glider@google.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.6 187/208] KVM: arm64: Dont eagerly teardown the vgic on init error
 Date: Mon, 28 Oct 2024 07:26:07 +0100
-Message-ID: <20241028062302.335348124@linuxfoundation.org>
+Message-ID: <20241028062311.235000715@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Moore <paul@paul-moore.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 42c773238037c90b3302bf37a57ae3b5c3f6004a ]
+commit df5fd75ee305cb5927e0b1a0b46cc988ad8db2b1 upstream.
 
-Move our existing input sanity checking to the top of sel_write_load()
-and add a check to ensure the buffer size is non-zero.
+As there is very little ordering in the KVM API, userspace can
+instanciate a half-baked GIC (missing its memory map, for example)
+at almost any time.
 
-Move a local variable initialization from the declaration to before it
-is used.
+This means that, with the right timing, a thread running vcpu-0
+can enter the kernel without a GIC configured and get a GIC created
+behind its back by another thread. Amusingly, it will pick up
+that GIC and start messing with the data structures without the
+GIC having been fully initialised.
 
-Minor style adjustments.
+Similarly, a thread running vcpu-1 can enter the kernel, and try
+to init the GIC that was previously created. Since this GIC isn't
+properly configured (no memory map), it fails to correctly initialise.
 
-Reported-by: Sam Sun <samsun1006219@gmail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-[cascardo: keep fsi initialization at its declaration point as it is used earlier]
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+And that's the point where we decide to teardown the GIC, freeing all
+its resources. Behind vcpu-0's back. Things stop pretty abruptly,
+with a variety of symptoms.  Clearly, this isn't good, we should be
+a bit more careful about this.
+
+It is obvious that this guest is not viable, as it is missing some
+important part of its configuration. So instead of trying to tear
+bits of it down, let's just mark it as *dead*. It means that any
+further interaction from userspace will result in -EIO. The memory
+will be released on the "normal" path, when userspace gives up.
+
+Cc: stable@vger.kernel.org
+Reported-by: Alexander Potapenko <glider@google.com>
+Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20241009183603.3221824-1-maz@kernel.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/selinux/selinuxfs.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ arch/arm64/kvm/arm.c            |    3 +++
+ arch/arm64/kvm/vgic/vgic-init.c |    6 +++---
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
-index a00d191394365..ab804d4ea9117 100644
---- a/security/selinux/selinuxfs.c
-+++ b/security/selinux/selinuxfs.c
-@@ -621,6 +621,13 @@ static ssize_t sel_write_load(struct file *file, const char __user *buf,
- 	ssize_t length;
- 	void *data = NULL;
- 
-+	/* no partial writes */
-+	if (*ppos)
-+		return -EINVAL;
-+	/* no empty policies */
-+	if (!count)
-+		return -EINVAL;
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -777,6 +777,9 @@ static int kvm_vcpu_suspend(struct kvm_v
+ static int check_vcpu_requests(struct kvm_vcpu *vcpu)
+ {
+ 	if (kvm_request_pending(vcpu)) {
++		if (kvm_check_request(KVM_REQ_VM_DEAD, vcpu))
++			return -EIO;
 +
- 	mutex_lock(&fsi->state->policy_mutex);
+ 		if (kvm_check_request(KVM_REQ_SLEEP, vcpu))
+ 			kvm_vcpu_sleep(vcpu);
  
- 	length = avc_has_perm(&selinux_state,
-@@ -629,26 +636,21 @@ static ssize_t sel_write_load(struct file *file, const char __user *buf,
- 	if (length)
- 		goto out;
- 
--	/* No partial writes. */
--	length = -EINVAL;
--	if (*ppos != 0)
--		goto out;
--
--	length = -ENOMEM;
- 	data = vmalloc(count);
--	if (!data)
-+	if (!data) {
-+		length = -ENOMEM;
- 		goto out;
--
--	length = -EFAULT;
--	if (copy_from_user(data, buf, count) != 0)
-+	}
-+	if (copy_from_user(data, buf, count) != 0) {
-+		length = -EFAULT;
- 		goto out;
-+	}
- 
- 	length = security_load_policy(fsi->state, data, count, &load_state);
- 	if (length) {
- 		pr_warn_ratelimited("SELinux: failed to load policy\n");
- 		goto out;
- 	}
--
- 	length = sel_make_policy_nodes(fsi, load_state.policy);
- 	if (length) {
- 		pr_warn_ratelimited("SELinux: failed to initialize selinuxfs\n");
-@@ -657,13 +659,12 @@ static ssize_t sel_write_load(struct file *file, const char __user *buf,
- 	}
- 
- 	selinux_policy_commit(fsi->state, &load_state);
--
- 	length = count;
--
- 	audit_log(audit_context(), GFP_KERNEL, AUDIT_MAC_POLICY_LOAD,
- 		"auid=%u ses=%u lsm=selinux res=1",
- 		from_kuid(&init_user_ns, audit_get_loginuid(current)),
- 		audit_get_sessionid(current));
-+
+--- a/arch/arm64/kvm/vgic/vgic-init.c
++++ b/arch/arm64/kvm/vgic/vgic-init.c
+@@ -494,10 +494,10 @@ int kvm_vgic_map_resources(struct kvm *k
  out:
- 	mutex_unlock(&fsi->state->policy_mutex);
- 	vfree(data);
--- 
-2.43.0
-
+ 	mutex_unlock(&kvm->arch.config_lock);
+ out_slots:
+-	mutex_unlock(&kvm->slots_lock);
+-
+ 	if (ret)
+-		kvm_vgic_destroy(kvm);
++		kvm_vm_dead(kvm);
++
++	mutex_unlock(&kvm->slots_lock);
+ 
+ 	return ret;
+ }
 
 
 
