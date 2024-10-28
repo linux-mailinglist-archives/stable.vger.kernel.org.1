@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72C8C9B260A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D7319B26E0
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:43:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A42A71C211DD
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A737B1F23C1E
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2F218E36F;
-	Mon, 28 Oct 2024 06:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E5118E03A;
+	Mon, 28 Oct 2024 06:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uU6eLS1V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r66SDCmt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD0315B10D;
-	Mon, 28 Oct 2024 06:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1745618E35B;
+	Mon, 28 Oct 2024 06:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097366; cv=none; b=WB528AItvSn0BAh09Kzd8soB6E9pjuGPG0TS+KNfu/yXxdMzoOy8+qNDFGrxzDvsvSHgUSbU1VfUpZxTipj7NsiCz7kkrejtPKjBcct3HOnObrA7A1qubIWcbnh8Vrw0RPdeHL4Lrk3Ngk5BNEY+NeMDHBWzeZoj1Sx5csvhF+A=
+	t=1730097804; cv=none; b=d3BuigQgv1YL26EZiMFP7xEYnlOCDW0ttrIll/NHaMLGnGSfGZTIB2WpjcOqBdPDi1j5AGVm/JcshGCjxyNymJHOoAlmh/Ko2GD7F47z64mMsAOzG7+smQJfX6ovPVu/7XNX/NMfmzIySLn5Dd4K+C1lW+Ksxh7M7UoCddkJIHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097366; c=relaxed/simple;
-	bh=c2KuNknOkhKvNX7lann2uNBfXj9vGj6/7KYm5SWhruE=;
+	s=arc-20240116; t=1730097804; c=relaxed/simple;
+	bh=PadF3/ElQJRllbNFh4Z/TSRYj9GJZ9LqVEzAuiFCRAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fd3fdq7IrILDCTWHZgDSfaLE3jd7nCXfLbWdYSCiydzBbyQBFj1ZBq7/HN4FRtBjbks8Y3nFiq+9+zCGgTkk1Ah0bLzxFsiKn9bUmAbg+c2zqurDdcynmMI9mh2DfrsCf6pZsMnfKlTWuDiS0zk2T2167oIdU9iFtcaBVvRlVtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uU6eLS1V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 376DDC4CEC3;
-	Mon, 28 Oct 2024 06:36:06 +0000 (UTC)
+	 MIME-Version; b=n8BqdP0kp8RLCeCq7L0DBG++bgC2p7g3P+MTEnsdPtSnxlSf5asrtzrfcDMvt7kNJGxxO2esPsvHI0lW5HSJDLD/OSP9AzTZJu3DyOgYMSaOhMpbRyV9PXbPnHfNXzOZaldVTLbrXFUBE43KthmAjFbcwTFJvUzaA/LUaTpTkTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r66SDCmt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABEC0C4CEC3;
+	Mon, 28 Oct 2024 06:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097366;
-	bh=c2KuNknOkhKvNX7lann2uNBfXj9vGj6/7KYm5SWhruE=;
+	s=korg; t=1730097804;
+	bh=PadF3/ElQJRllbNFh4Z/TSRYj9GJZ9LqVEzAuiFCRAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uU6eLS1VqJWmg20qFBFEsw3S4T6/7fqjBLfxff2xXBpBUFW7/sZxAc/tELarXpsJj
-	 vJ6ANoY/yBJiSbsMX/3StZ2HA/c9dW1nXu2csGGKv+mW+LKnTg4sSvEx6tDyu5DkXD
-	 cKmekqRzOCdvnuSZIN7IPIJoio2qzD+IlizfheZc=
+	b=r66SDCmtWPU/tFUiYGjI2FZ2d/Nrz6WEUeupJptM2cJvvhVV7rCDeMK0HVi4B4Gc7
+	 2iLuROHm5AyZhrjeV34q8jkLtUCO1MD14fSp9WpD9QnGhWJzvreGI7Y5fB8JB3Bx1x
+	 P5QgAyI96DVHkNQjtsHVG8S0Bv6KyDNejvCkvCIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Praveen Kumar Kannoju <praveen.kannoju@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 098/137] net/sched: adjust device watchdog timer to detect stopped queue at right time
+Subject: [PATCH 6.6 155/208] net: sched: use RCU read-side critical section in taprio_dump()
 Date: Mon, 28 Oct 2024 07:25:35 +0100
-Message-ID: <20241028062301.466631413@linuxfoundation.org>
+Message-ID: <20241028062310.443836186@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Praveen Kumar Kannoju <praveen.kannoju@oracle.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 33fb988b67050d9bb512f77f08453fa00088943c ]
+[ Upstream commit b22db8b8befe90b61c98626ca1a2fbb0505e9fe3 ]
 
-Applications are sensitive to long network latency, particularly
-heartbeat monitoring ones. Longer the tx timeout recovery higher the
-risk with such applications on a production machines. This patch
-remedies, yet honoring device set tx timeout.
+Fix possible use-after-free in 'taprio_dump()' by adding RCU
+read-side critical section there. Never seen on x86 but
+found on a KASAN-enabled arm64 system when investigating
+https://syzkaller.appspot.com/bug?extid=b65e0af58423fc8a73aa:
 
-Modify watchdog next timeout to be shorter than the device specified.
-Compute the next timeout be equal to device watchdog timeout less the
-how long ago queue stop had been done. At next watchdog timeout tx
-timeout handler is called into if still in stopped state. Either called
-or not called, restore the watchdog timeout back to device specified.
+[T15862] BUG: KASAN: slab-use-after-free in taprio_dump+0xa0c/0xbb0
+[T15862] Read of size 4 at addr ffff0000d4bb88f8 by task repro/15862
+[T15862]
+[T15862] CPU: 0 UID: 0 PID: 15862 Comm: repro Not tainted 6.11.0-rc1-00293-gdefaf1a2113a-dirty #2
+[T15862] Hardware name: QEMU QEMU Virtual Machine, BIOS edk2-20240524-5.fc40 05/24/2024
+[T15862] Call trace:
+[T15862]  dump_backtrace+0x20c/0x220
+[T15862]  show_stack+0x2c/0x40
+[T15862]  dump_stack_lvl+0xf8/0x174
+[T15862]  print_report+0x170/0x4d8
+[T15862]  kasan_report+0xb8/0x1d4
+[T15862]  __asan_report_load4_noabort+0x20/0x2c
+[T15862]  taprio_dump+0xa0c/0xbb0
+[T15862]  tc_fill_qdisc+0x540/0x1020
+[T15862]  qdisc_notify.isra.0+0x330/0x3a0
+[T15862]  tc_modify_qdisc+0x7b8/0x1838
+[T15862]  rtnetlink_rcv_msg+0x3c8/0xc20
+[T15862]  netlink_rcv_skb+0x1f8/0x3d4
+[T15862]  rtnetlink_rcv+0x28/0x40
+[T15862]  netlink_unicast+0x51c/0x790
+[T15862]  netlink_sendmsg+0x79c/0xc20
+[T15862]  __sock_sendmsg+0xe0/0x1a0
+[T15862]  ____sys_sendmsg+0x6c0/0x840
+[T15862]  ___sys_sendmsg+0x1ac/0x1f0
+[T15862]  __sys_sendmsg+0x110/0x1d0
+[T15862]  __arm64_sys_sendmsg+0x74/0xb0
+[T15862]  invoke_syscall+0x88/0x2e0
+[T15862]  el0_svc_common.constprop.0+0xe4/0x2a0
+[T15862]  do_el0_svc+0x44/0x60
+[T15862]  el0_svc+0x50/0x184
+[T15862]  el0t_64_sync_handler+0x120/0x12c
+[T15862]  el0t_64_sync+0x190/0x194
+[T15862]
+[T15862] Allocated by task 15857:
+[T15862]  kasan_save_stack+0x3c/0x70
+[T15862]  kasan_save_track+0x20/0x3c
+[T15862]  kasan_save_alloc_info+0x40/0x60
+[T15862]  __kasan_kmalloc+0xd4/0xe0
+[T15862]  __kmalloc_cache_noprof+0x194/0x334
+[T15862]  taprio_change+0x45c/0x2fe0
+[T15862]  tc_modify_qdisc+0x6a8/0x1838
+[T15862]  rtnetlink_rcv_msg+0x3c8/0xc20
+[T15862]  netlink_rcv_skb+0x1f8/0x3d4
+[T15862]  rtnetlink_rcv+0x28/0x40
+[T15862]  netlink_unicast+0x51c/0x790
+[T15862]  netlink_sendmsg+0x79c/0xc20
+[T15862]  __sock_sendmsg+0xe0/0x1a0
+[T15862]  ____sys_sendmsg+0x6c0/0x840
+[T15862]  ___sys_sendmsg+0x1ac/0x1f0
+[T15862]  __sys_sendmsg+0x110/0x1d0
+[T15862]  __arm64_sys_sendmsg+0x74/0xb0
+[T15862]  invoke_syscall+0x88/0x2e0
+[T15862]  el0_svc_common.constprop.0+0xe4/0x2a0
+[T15862]  do_el0_svc+0x44/0x60
+[T15862]  el0_svc+0x50/0x184
+[T15862]  el0t_64_sync_handler+0x120/0x12c
+[T15862]  el0t_64_sync+0x190/0x194
+[T15862]
+[T15862] Freed by task 6192:
+[T15862]  kasan_save_stack+0x3c/0x70
+[T15862]  kasan_save_track+0x20/0x3c
+[T15862]  kasan_save_free_info+0x4c/0x80
+[T15862]  poison_slab_object+0x110/0x160
+[T15862]  __kasan_slab_free+0x3c/0x74
+[T15862]  kfree+0x134/0x3c0
+[T15862]  taprio_free_sched_cb+0x18c/0x220
+[T15862]  rcu_core+0x920/0x1b7c
+[T15862]  rcu_core_si+0x10/0x1c
+[T15862]  handle_softirqs+0x2e8/0xd64
+[T15862]  __do_softirq+0x14/0x20
 
-Signed-off-by: Praveen Kumar Kannoju <praveen.kannoju@oracle.com>
-Link: https://lore.kernel.org/r/20240508133617.4424-1-praveen.kannoju@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 95ecba62e2fd ("net: fix races in netdev_tx_sent_queue()/dev_watchdog()")
+Fixes: 18cdd2f0998a ("net/sched: taprio: taprio_dump and taprio_change are protected by rtnl_mutex")
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://patch.msgid.link/20241018051339.418890-2-dmantipov@yandex.ru
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_generic.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ net/sched/sch_taprio.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-index 6ab9359c1706f..7f0c8df7b63e0 100644
---- a/net/sched/sch_generic.c
-+++ b/net/sched/sch_generic.c
-@@ -505,19 +505,22 @@ static void dev_watchdog(struct timer_list *t)
- 			unsigned int timedout_ms = 0;
- 			unsigned int i;
- 			unsigned long trans_start;
-+			unsigned long oldest_start = jiffies;
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index bc8e55c6d63d1..951a87909c297 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -2397,9 +2397,6 @@ static int taprio_dump(struct Qdisc *sch, struct sk_buff *skb)
+ 	struct tc_mqprio_qopt opt = { 0 };
+ 	struct nlattr *nest, *sched_nest;
  
- 			for (i = 0; i < dev->num_tx_queues; i++) {
- 				struct netdev_queue *txq;
+-	oper = rtnl_dereference(q->oper_sched);
+-	admin = rtnl_dereference(q->admin_sched);
+-
+ 	mqprio_qopt_reconstruct(dev, &opt);
  
- 				txq = netdev_get_tx_queue(dev, i);
- 				trans_start = READ_ONCE(txq->trans_start);
--				if (netif_xmit_stopped(txq) &&
--				    time_after(jiffies, (trans_start +
--							 dev->watchdog_timeo))) {
-+				if (!netif_xmit_stopped(txq))
-+					continue;
-+				if (time_after(jiffies, trans_start + dev->watchdog_timeo)) {
- 					timedout_ms = jiffies_to_msecs(jiffies - trans_start);
- 					atomic_long_inc(&txq->trans_timeout);
- 					break;
- 				}
-+				if (time_after(oldest_start, trans_start))
-+					oldest_start = trans_start;
- 			}
+ 	nest = nla_nest_start_noflag(skb, TCA_OPTIONS);
+@@ -2420,18 +2417,23 @@ static int taprio_dump(struct Qdisc *sch, struct sk_buff *skb)
+ 	    nla_put_u32(skb, TCA_TAPRIO_ATTR_TXTIME_DELAY, q->txtime_delay))
+ 		goto options_error;
  
- 			if (unlikely(timedout_ms)) {
-@@ -530,7 +533,7 @@ static void dev_watchdog(struct timer_list *t)
- 				netif_unfreeze_queues(dev);
- 			}
- 			if (!mod_timer(&dev->watchdog_timer,
--				       round_jiffies(jiffies +
-+				       round_jiffies(oldest_start +
- 						     dev->watchdog_timeo)))
- 				release = false;
- 		}
++	rcu_read_lock();
++
++	oper = rtnl_dereference(q->oper_sched);
++	admin = rtnl_dereference(q->admin_sched);
++
+ 	if (oper && taprio_dump_tc_entries(skb, q, oper))
+-		goto options_error;
++		goto options_error_rcu;
+ 
+ 	if (oper && dump_schedule(skb, oper))
+-		goto options_error;
++		goto options_error_rcu;
+ 
+ 	if (!admin)
+ 		goto done;
+ 
+ 	sched_nest = nla_nest_start_noflag(skb, TCA_TAPRIO_ATTR_ADMIN_SCHED);
+ 	if (!sched_nest)
+-		goto options_error;
++		goto options_error_rcu;
+ 
+ 	if (dump_schedule(skb, admin))
+ 		goto admin_error;
+@@ -2439,11 +2441,15 @@ static int taprio_dump(struct Qdisc *sch, struct sk_buff *skb)
+ 	nla_nest_end(skb, sched_nest);
+ 
+ done:
++	rcu_read_unlock();
+ 	return nla_nest_end(skb, nest);
+ 
+ admin_error:
+ 	nla_nest_cancel(skb, sched_nest);
+ 
++options_error_rcu:
++	rcu_read_unlock();
++
+ options_error:
+ 	nla_nest_cancel(skb, nest);
+ 
 -- 
 2.43.0
 
