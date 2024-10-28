@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-88680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4431C9B2706
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 351169B2819
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:53:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0918C282223
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 670E41C2162A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838FE18E749;
-	Mon, 28 Oct 2024 06:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1AD018E35B;
+	Mon, 28 Oct 2024 06:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BjMVf9mV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+1Eqc2j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E5318E368;
-	Mon, 28 Oct 2024 06:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FE42AF07;
+	Mon, 28 Oct 2024 06:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097880; cv=none; b=JrQBNrVwqTCYJTCiOU9x99S5l39QqI20AK8IiX9BVZXvFvv2KfR4BQd9fC5oBEJTke6oS5Fpun18Whjf7+OTDxhvubAuHmPTn32Lww04OwFFSG0P5+OVr39eD5prce5s0ys1o9z3TCZlmCQYdLepELNEtloFwzNi0ivvaDS3ueg=
+	t=1730098437; cv=none; b=Hts99RfTlOsY4UK9+wyy1PVcQdMt4ImvkHXisPotP+ht5EMSHuI4F86E0cMfLU9ZcQev9UTN52FNqRqKiz4Ke+O3kMNkEIOuz0bbmbRBMl6YEwjiI168wDSVV9sdT24cmGvlOihuqyVdf0FKHfOrUzfFZHr6UDuCwHVM49JKxr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097880; c=relaxed/simple;
-	bh=gwyjGZ7gIxawOm9nlsntJXMI31uTP3DY0kV0+A4bqLE=;
+	s=arc-20240116; t=1730098437; c=relaxed/simple;
+	bh=Ui6/+UConUrq0GNck1yKBzxPBE0I3bvcoSQWBs51W0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SHbkUS/Iy1hDAYKOw/ahOdhGoWDumRi8Nqanc69pLDZqZC3NJZmLpV4julRaepvKiM+iHzRbqfDJx1DezoV0rLY1R49DG+0H7DmYOMlo7p836BcdyxwKZjChLeAO9fj9Zzf1g6p8TA3bysN9jVQt+/Tked6TELOgSveLym/w2mI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BjMVf9mV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D550CC4CEC3;
-	Mon, 28 Oct 2024 06:44:39 +0000 (UTC)
+	 MIME-Version; b=u0wgHmVKMm1jTNyum4+X++rbIeRCLdxcnOrKCSS8wQMijC4gz++qO1mvvpbmwXJbgWf+OX+tqKDsSEcNnofDIDuF8D0r7a/naDYhCpdeu3z1NS7XIqBuH6944J+VepZKX4KJBS9ScyjPpP7tKTvejsIXYNFES5+5FEyiVOiHKhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+1Eqc2j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1097FC4CEC3;
+	Mon, 28 Oct 2024 06:53:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097880;
-	bh=gwyjGZ7gIxawOm9nlsntJXMI31uTP3DY0kV0+A4bqLE=;
+	s=korg; t=1730098437;
+	bh=Ui6/+UConUrq0GNck1yKBzxPBE0I3bvcoSQWBs51W0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BjMVf9mVt2XGKmhmF6FWBHIPKr9qZoUILz14sNbH8K9VvRqa7vHkDBHzGagrPt+vc
-	 O7ZU+LDZKQukIQ7V9Kob4q/FTbPlH4V4fUOo3H7c1faqqkie3z0CSH8JYd3qzI9yIE
-	 g+jLUIC7PY43Y+1cWOuLqQjgSgaM4Orty8fz9r4E=
+	b=k+1Eqc2jzKpaM4doj8GYQ57M1O5206zaNJkbmYhutvnyDvTvyaIMsJfNzGfddRCcv
+	 WIVar+5X4/omfzmJmFRF7nXEtvNc7VDM5ex5ZapKVtEbdB9xGdzwM9oTPKf+1cROZC
+	 MpXLgxCBaw/lQPcimxzjJiOEX/rw7F+SyiEr/RGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 189/208] ALSA: hda/tas2781: select CRC32 instead of CRC32_SARWATE
+	Chao Li <lichao@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.11 227/261] LoongArch: Get correct cores_per_package for SMT systems
 Date: Mon, 28 Oct 2024 07:26:09 +0100
-Message-ID: <20241028062311.285455107@linuxfoundation.org>
+Message-ID: <20241028062317.802797208@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 86c96e7289c5758284b562ac7b5c94429f48d2d9 upstream.
+commit b7296f9d5bf99330063d4bbecc43c9b33fed0137 upstream.
 
-Fix the kconfig option for the tas2781 HDA driver to select CRC32 rather
-than CRC32_SARWATE.  CRC32_SARWATE is an option from the kconfig
-'choice' that selects the specific CRC32 implementation.  Selecting a
-'choice' option seems to have no effect, but even if it did work, it
-would be incorrect for a random driver to override the user's choice.
-CRC32 is the correct option to select for crc32() to be available.
+In loongson_sysconf, The "core" of cores_per_node and cores_per_package
+stands for a logical core, which means in a SMT system it stands for a
+thread indeed. This information is gotten from SMBIOS Type4 Structure,
+so in order to get a correct cores_per_package for both SMT and non-SMT
+systems in parse_cpu_table() we should use SMBIOS_THREAD_PACKAGE_OFFSET
+instead of SMBIOS_CORE_PACKAGE_OFFSET.
 
-Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Link: https://patch.msgid.link/20241020175624.7095-1-ebiggers@kernel.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reported-by: Chao Li <lichao@loongson.cn>
+Tested-by: Chao Li <lichao@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/include/asm/bootinfo.h |    4 ++++
+ arch/loongarch/kernel/setup.c         |    3 ++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/Kconfig
-+++ b/sound/pci/hda/Kconfig
-@@ -173,7 +173,7 @@ config SND_HDA_SCODEC_TAS2781_I2C
- 	depends on SND_SOC
- 	select SND_SOC_TAS2781_COMLIB
- 	select SND_SOC_TAS2781_FMWLIB
--	select CRC32_SARWATE
-+	select CRC32
- 	help
- 	  Say Y or M here to include TAS2781 I2C HD-audio side codec support
- 	  in snd-hda-intel driver, such as ALC287.
+--- a/arch/loongarch/include/asm/bootinfo.h
++++ b/arch/loongarch/include/asm/bootinfo.h
+@@ -26,6 +26,10 @@ struct loongson_board_info {
+ 
+ #define NR_WORDS DIV_ROUND_UP(NR_CPUS, BITS_PER_LONG)
+ 
++/*
++ * The "core" of cores_per_node and cores_per_package stands for a
++ * logical core, which means in a SMT system it stands for a thread.
++ */
+ struct loongson_system_configuration {
+ 	int nr_cpus;
+ 	int nr_nodes;
+--- a/arch/loongarch/kernel/setup.c
++++ b/arch/loongarch/kernel/setup.c
+@@ -55,6 +55,7 @@
+ #define SMBIOS_FREQHIGH_OFFSET		0x17
+ #define SMBIOS_FREQLOW_MASK		0xFF
+ #define SMBIOS_CORE_PACKAGE_OFFSET	0x23
++#define SMBIOS_THREAD_PACKAGE_OFFSET	0x25
+ #define LOONGSON_EFI_ENABLE		(1 << 3)
+ 
+ unsigned long fw_arg0, fw_arg1, fw_arg2;
+@@ -125,7 +126,7 @@ static void __init parse_cpu_table(const
+ 	cpu_clock_freq = freq_temp * 1000000;
+ 
+ 	loongson_sysconf.cpuname = (void *)dmi_string_parse(dm, dmi_data[16]);
+-	loongson_sysconf.cores_per_package = *(dmi_data + SMBIOS_CORE_PACKAGE_OFFSET);
++	loongson_sysconf.cores_per_package = *(dmi_data + SMBIOS_THREAD_PACKAGE_OFFSET);
+ 
+ 	pr_info("CpuClock = %llu\n", cpu_clock_freq);
+ }
 
 
 
