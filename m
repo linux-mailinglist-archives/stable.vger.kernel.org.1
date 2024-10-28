@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BD789B279F
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:49:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD2B29B25AE
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:33:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E4CCB20B09
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:49:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94A2C1F214D5
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:33:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43ECC18E35B;
-	Mon, 28 Oct 2024 06:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E9A18E748;
+	Mon, 28 Oct 2024 06:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pv6h0zeV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HRT8GjQa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F392E18A922;
-	Mon, 28 Oct 2024 06:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CF718E36D;
+	Mon, 28 Oct 2024 06:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098187; cv=none; b=hdXY7gZ2EFbriLWeRR4UeR3UxHWPgB0X7IpgvihJcDJLFK+HgVtqHzz07fxEvho3NmCCA47lQbRL7S+4m7RqxhfTSh72gwLVKtAgDSlF38k1l9sN3ayxf/E0+rsbm2AehKyCBunPL6kSEY2aRbg1IbDEZnuFaD2uzGICL1WF2UA=
+	t=1730097193; cv=none; b=AKfKuWlsIyOiKEQMR9LUAc98usgcXHBceuw/KpkJh8Bhj0cVzGn9R6r5AcJ2F3hnNpGK0qPkFJtlOcu/ESgz/bXZeIXUQGgzUixXtd8B4VjSBcMI97Bvfcy3fGMNSds3tssgQ0iXcaAEo+CaXJXqSHW7KJTcLV53E0iQPvIFiVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098187; c=relaxed/simple;
-	bh=CbgIcgyhUDY49IDNYM0cT5k7Rp43ZyN/Lvz5oTzT9Yo=;
+	s=arc-20240116; t=1730097193; c=relaxed/simple;
+	bh=Y8SAEwjIKOirkQgmmmy8Gzv0i8ErJchx3wnEzCOUTZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qWcU57B6DlDw9/5r2yfaaJnSoiP0fKK6OJztkFo2ESjf+GBaRw5FdYQ13XhPXRPRP6wCOuI2kWy7CUoWWPBrArWo+Q8imBwvRcY2isa88bEak1MlhcbZFUhvBqvdd3p5McnV63L7z/Fi+lHJX9ut9qUlm3b8PLXwJ+n547c4K8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pv6h0zeV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B45C4CEC3;
-	Mon, 28 Oct 2024 06:49:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rG3HWZjj1cVOqpLx0TYVhSN0esZSMGfHEGaaIwz9y9yhFQXe6Q4NtPylB/VlvPnN4m/PXflXGVDZJGa90OLn+KuRltzRSlzAekg2aaOXCHGNzVb9rzuVW9MoyzKbLW4im/HhuPYkx9Z8slanr+gMGAxfX/DOakjucSunTiC0sHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HRT8GjQa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288F1C4CEC7;
+	Mon, 28 Oct 2024 06:33:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098186;
-	bh=CbgIcgyhUDY49IDNYM0cT5k7Rp43ZyN/Lvz5oTzT9Yo=;
+	s=korg; t=1730097192;
+	bh=Y8SAEwjIKOirkQgmmmy8Gzv0i8ErJchx3wnEzCOUTZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pv6h0zeVAyUIGvm4Aoh2FV6mUJsoa3FKaJFV4jGoDG/sNJPx9TJCpA/S7Or0dMB9e
-	 2nk6lvTEsNZma8i9bAnqSWW5SaHVflCN2FxbEPDp0YW3cvcTn+lnxq4Vc0liTqfUnk
-	 /CtY0py4F1OdDccI91IFjnQfEAD4CguwTCUZhiUQ=
+	b=HRT8GjQaaTsku8gTP2QDnW31ICAPVV+9HEHJkgbdAHYTUGAJJCWuRcQvFlxH6uN5p
+	 FkPQLlaFzosgYguZroaiJvmXis95SVB4JX8Mnnxkv8jV6Qq8/cQRiv0IPnfMDn3vrd
+	 PUGXnQHaWmwui0GAX4MwoFZva+I04kWoTx7vwKIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	syzbot+cca39e6e84a367a7e6f6@syzkaller.appspotmail.com,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 098/261] net/mlx5: Check for invalid vector index on EQ creation
+Subject: [PATCH 6.1 003/137] bpf: Make sure internal and UAPI bpf_redirect flags dont overlap
 Date: Mon, 28 Oct 2024 07:24:00 +0100
-Message-ID: <20241028062314.486835281@linuxfoundation.org>
+Message-ID: <20241028062258.802804529@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +61,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maher Sanalla <msanalla@nvidia.com>
+From: Toke Høiland-Jørgensen <toke@redhat.com>
 
-[ Upstream commit d4f25be27e3ef7e23998fbd3dd4bff0602de7ae5 ]
+[ Upstream commit 09d88791c7cd888d5195c84733caf9183dcfbd16 ]
 
-Currently, mlx5 driver does not enforce vector index to be lower than
-the maximum number of supported completion vectors when requesting a
-new completion EQ. Thus, mlx5_comp_eqn_get() fails when trying to
-acquire an IRQ with an improper vector index.
+The bpf_redirect_info is shared between the SKB and XDP redirect paths,
+and the two paths use the same numeric flag values in the ri->flags
+field (specifically, BPF_F_BROADCAST == BPF_F_NEXTHOP). This means that
+if skb bpf_redirect_neigh() is used with a non-NULL params argument and,
+subsequently, an XDP redirect is performed using the same
+bpf_redirect_info struct, the XDP path will get confused and end up
+crashing, which syzbot managed to trigger.
 
-To prevent the case above, enforce that vector index value is
-valid and lower than maximum in mlx5_comp_eqn_get() before handling the
-request.
+With the stack-allocated bpf_redirect_info, the structure is no longer
+shared between the SKB and XDP paths, so the crash doesn't happen
+anymore. However, different code paths using identically-numbered flag
+values in the same struct field still seems like a bit of a mess, so
+this patch cleans that up by moving the flag definitions together and
+redefining the three flags in BPF_F_REDIRECT_INTERNAL to not overlap
+with the flags used for XDP. It also adds a BUILD_BUG_ON() check to make
+sure the overlap is not re-introduced by mistake.
 
-Fixes: f14c1a14e632 ("net/mlx5: Allocate completion EQs dynamically")
-Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: e624d4ed4aa8 ("xdp: Extend xdp_redirect_map with broadcast support")
+Reported-by: syzbot+cca39e6e84a367a7e6f6@syzkaller.appspotmail.com
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Closes: https://syzkaller.appspot.com/bug?extid=cca39e6e84a367a7e6f6
+Link: https://lore.kernel.org/bpf/20240920125625.59465-1-toke@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/eq.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/uapi/linux/bpf.h | 13 +++++--------
+ net/core/filter.c        |  8 +++++---
+ 2 files changed, 10 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eq.c b/drivers/net/ethernet/mellanox/mlx5/core/eq.c
-index cb7e7e4104aff..99d9e8863bfd6 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eq.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eq.c
-@@ -1080,6 +1080,12 @@ int mlx5_comp_eqn_get(struct mlx5_core_dev *dev, u16 vecidx, int *eqn)
- 	struct mlx5_eq_comp *eq;
- 	int ret = 0;
+diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+index 58c7fc75da752..667f49a64a50b 100644
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -5717,11 +5717,6 @@ enum {
+ 	BPF_F_MARK_ENFORCE		= (1ULL << 6),
+ };
  
-+	if (vecidx >= table->max_comp_eqs) {
-+		mlx5_core_dbg(dev, "Requested vector index %u should be less than %u",
-+			      vecidx, table->max_comp_eqs);
-+		return -EINVAL;
-+	}
+-/* BPF_FUNC_clone_redirect and BPF_FUNC_redirect flags. */
+-enum {
+-	BPF_F_INGRESS			= (1ULL << 0),
+-};
+-
+ /* BPF_FUNC_skb_set_tunnel_key and BPF_FUNC_skb_get_tunnel_key flags. */
+ enum {
+ 	BPF_F_TUNINFO_IPV6		= (1ULL << 0),
+@@ -5865,10 +5860,12 @@ enum {
+ 	BPF_F_BPRM_SECUREEXEC	= (1ULL << 0),
+ };
+ 
+-/* Flags for bpf_redirect_map helper */
++/* Flags for bpf_redirect and bpf_redirect_map helpers */
+ enum {
+-	BPF_F_BROADCAST		= (1ULL << 3),
+-	BPF_F_EXCLUDE_INGRESS	= (1ULL << 4),
++	BPF_F_INGRESS		= (1ULL << 0), /* used for skb path */
++	BPF_F_BROADCAST		= (1ULL << 3), /* used for XDP path */
++	BPF_F_EXCLUDE_INGRESS	= (1ULL << 4), /* used for XDP path */
++#define BPF_F_REDIRECT_FLAGS (BPF_F_INGRESS | BPF_F_BROADCAST | BPF_F_EXCLUDE_INGRESS)
+ };
+ 
+ #define __bpf_md_ptr(type, name)	\
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 6f65c6eb0d90d..3f3286cf438e7 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2416,9 +2416,9 @@ static int __bpf_redirect_neigh(struct sk_buff *skb, struct net_device *dev,
+ 
+ /* Internal, non-exposed redirect flags. */
+ enum {
+-	BPF_F_NEIGH	= (1ULL << 1),
+-	BPF_F_PEER	= (1ULL << 2),
+-	BPF_F_NEXTHOP	= (1ULL << 3),
++	BPF_F_NEIGH	= (1ULL << 16),
++	BPF_F_PEER	= (1ULL << 17),
++	BPF_F_NEXTHOP	= (1ULL << 18),
+ #define BPF_F_REDIRECT_INTERNAL	(BPF_F_NEIGH | BPF_F_PEER | BPF_F_NEXTHOP)
+ };
+ 
+@@ -2428,6 +2428,8 @@ BPF_CALL_3(bpf_clone_redirect, struct sk_buff *, skb, u32, ifindex, u64, flags)
+ 	struct sk_buff *clone;
+ 	int ret;
+ 
++	BUILD_BUG_ON(BPF_F_REDIRECT_INTERNAL & BPF_F_REDIRECT_FLAGS);
 +
- 	mutex_lock(&table->comp_lock);
- 	eq = xa_load(&table->comp_eqs, vecidx);
- 	if (eq) {
+ 	if (unlikely(flags & (~(BPF_F_INGRESS) | BPF_F_REDIRECT_INTERNAL)))
+ 		return -EINVAL;
+ 
 -- 
 2.43.0
 
