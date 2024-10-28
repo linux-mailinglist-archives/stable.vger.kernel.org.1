@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-88675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B2AD9B2701
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 595429B256B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00A37281FAB
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B29D1C20EAE
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A344E18E77D;
-	Mon, 28 Oct 2024 06:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4632F18E04D;
+	Mon, 28 Oct 2024 06:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w71+gya6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hzq6zCuB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611E718E35B;
-	Mon, 28 Oct 2024 06:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0436218E03A;
+	Mon, 28 Oct 2024 06:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097869; cv=none; b=WQPW/DH2b66xmSzZDMbApEc5PwhTar0K4LkMXT1bUs/qIBdnlYThOMVkldE1V3Zuh5x5jTdbf8rU48VZuqondaU1TQJDKKwXCKFsTFqGTB8dlmX3MC8csVhPxvL18FNEt9uUGRphoyNV1Td88D0+6pBo+++LvdXdtK6U/bfVL9M=
+	t=1730096930; cv=none; b=LGqlU1cO/6K/2Ntzi8s1Fh031G7eys69llk5VjQAico+qbVOUAqF0d84YbcMGWiRck1HTfnDw374OARSDri4NGWNlmdet0FElUfB+r2q+FAdKWXjnF5fO/pnfwv05cfwYgD/t5/KJi2Cpe8kibzpW54vFFr5HzLjYpRTsmkkzOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097869; c=relaxed/simple;
-	bh=8keeAWDEHn7iwb0/ZRUVomayuxGClYpoMW2nQw+wwP8=;
+	s=arc-20240116; t=1730096930; c=relaxed/simple;
+	bh=b8UauKl+zaHHhHOcabPOnBXITxSUG3jU5WwqKbZg0N8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UswDt762sloEd5Y7pxoS+JRhOm/A7NnJngPyL2fsaP14qHKEPPPQiFzGYxTACvrL/TfVKQnwdmncwahGmc1GJ2WdXiMWSVca8zxCG32AUbz7u5aZUt1uYPhfLGjg0Bf+yrAsvQiFkaH7XFuCkJTlb+E9vFmDknYX44dye2YAuQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w71+gya6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E49C4CEC3;
-	Mon, 28 Oct 2024 06:44:28 +0000 (UTC)
+	 MIME-Version; b=bmC3FQGzn/f3O/oVLNvT5JvZCstqGBP+p+Wj75el5Md9YT9r5ZUX2KUY2BGCSAyz8i1pFcCnU1OJ02okkZZiDn97ebDwpvz3fJbr/vSfT5fxwzazYJERRjJ9MlZ1SW+4pdN77h9GUaj+EtSrUvrBrQI13kRY0dm5Aweb+/dmusc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hzq6zCuB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EBAAC4CEC3;
+	Mon, 28 Oct 2024 06:28:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097868;
-	bh=8keeAWDEHn7iwb0/ZRUVomayuxGClYpoMW2nQw+wwP8=;
+	s=korg; t=1730096929;
+	bh=b8UauKl+zaHHhHOcabPOnBXITxSUG3jU5WwqKbZg0N8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w71+gya6FyyiMKIPu8P+2H0PjOGDMAok3LJr9QTS4EpNmJgG2Mc9ZRMg+wPO/69QM
-	 6pEMvp6h2XAJBVBaWxW+XlwKX8sTYoQSNhbqtfIY5fvgNDtac5CuMh0+eMJRsX61bC
-	 TWJD7uszTDqlN3AB60uqOL1Nbc4wbvrkmvDMREks=
+	b=Hzq6zCuBznVpnSdFEovopwCIPWao7UwCHbBoIVXMnlSDoDakwmq7JRMXVMif4Ke7u
+	 J8o77ullXisM5ykgMWreXUYl6/gr2oCGtOs6zklKfCRWaWsNR2b+DHOcUbnYDEAJjw
+	 MAoMD2k30/jYsN9ktQeoodQp25DVlVUma7PO+Akk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Greg Thelen <gthelen@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	John Sperbeck <jsperbeck@google.com>
-Subject: [PATCH 6.6 148/208] net: usb: usbnet: fix name regression
-Date: Mon, 28 Oct 2024 07:25:28 +0100
-Message-ID: <20241028062310.274530503@linuxfoundation.org>
+	Crag Wang <crag_wang@dell.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 49/80] platform/x86: dell-sysman: add support for alienware products
+Date: Mon, 28 Oct 2024 07:25:29 +0100
+Message-ID: <20241028062253.981556375@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Crag Wang <crag_wang@dell.com>
 
-[ Upstream commit 8a7d12d674ac6f2147c18f36d1e15f1a48060edf ]
+[ Upstream commit a561509b4187a8908eb7fbb2d1bf35bbc20ec74b ]
 
-The fix for MAC addresses broke detection of the naming convention
-because it gave network devices no random MAC before bind()
-was called. This means that the check for the local assignment bit
-was always negative as the address was zeroed from allocation,
-instead of from overwriting the MAC with a unique hardware address.
+Alienware supports firmware-attributes and has its own OEM string.
 
-The correct check for whether bind() has altered the MAC is
-done with is_zero_ether_addr
-
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Reported-by: Greg Thelen <gthelen@google.com>
-Diagnosed-by: John Sperbeck <jsperbeck@google.com>
-Fixes: bab8eb0dd4cb9 ("usbnet: modern method to get random MAC")
-Link: https://patch.msgid.link/20241017071849.389636-1-oneukum@suse.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Crag Wang <crag_wang@dell.com>
+Link: https://lore.kernel.org/r/20241004152826.93992-1-crag_wang@dell.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/usbnet.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/platform/x86/dell/dell-wmi-sysman/sysman.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 4f5a3a4aac89e..9f66c47dc58bc 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1771,7 +1771,8 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
- 		// can rename the link if it knows better.
- 		if ((dev->driver_info->flags & FLAG_ETHER) != 0 &&
- 		    ((dev->driver_info->flags & FLAG_POINTTOPOINT) == 0 ||
--		     (net->dev_addr [0] & 0x02) == 0))
-+		     /* somebody touched it*/
-+		     !is_zero_ether_addr(net->dev_addr)))
- 			strscpy(net->name, "eth%d", sizeof(net->name));
- 		/* WLAN devices should always be named "wlan%d" */
- 		if ((dev->driver_info->flags & FLAG_WLAN) != 0)
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
+index 907fde53e95c4..47f8c5a63343d 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
+@@ -524,6 +524,7 @@ static int __init sysman_init(void)
+ 	int ret = 0;
+ 
+ 	if (!dmi_find_device(DMI_DEV_TYPE_OEM_STRING, "Dell System", NULL) &&
++	    !dmi_find_device(DMI_DEV_TYPE_OEM_STRING, "Alienware", NULL) &&
+ 	    !dmi_find_device(DMI_DEV_TYPE_OEM_STRING, "www.dell.com", NULL)) {
+ 		pr_err("Unable to run on non-Dell system\n");
+ 		return -ENODEV;
 -- 
 2.43.0
 
