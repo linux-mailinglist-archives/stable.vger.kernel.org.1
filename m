@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-88250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 903019B2194
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 01:41:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 679069B2195
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 01:41:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78BF1B20CBC
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 00:41:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D00D7B20DCF
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 00:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FEA73F8F7;
-	Mon, 28 Oct 2024 00:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA1C40862;
+	Mon, 28 Oct 2024 00:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zbi1CNPl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PLSWlqc8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FCA6EEA8
-	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 00:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B937CA5A
+	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 00:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730076110; cv=none; b=JIkBq5Rw1FXltuldPAlmKuqVIsJYj6EYVazi/tYD5dV9FuW8uD8ESYtBYARHPSFZPVx6ZsaqvDzZ+THN8P3jIxRK1jplBwlHt6K9BvST9LECZlZqQuMvU6WeZckbzSzfPtPqZGs1cZixwMtRscVuleEgqW4I3KFXlPCD/baErco=
+	t=1730076112; cv=none; b=FHUrIpDXpBCMZvvk13pIBYMZ+BxRMO0JJTEkTL4+970+AZQTsBJCP0ma7/+J+/3vlcgrdeMBOiQHnDY7aLo6weG1vUoZa3qOTpgxB8NKthIlWx1t8kMYPG2lEzSxQyr26ZUgTuGqVTBHnAfGNcrFicbocnV7BhKplyYA3yMEtDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730076110; c=relaxed/simple;
-	bh=YtnkpjbQu9PJnEX193Gl7E14zmfiEUCtWAZbzKHZaSg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ttu9Criqb7d7Mg5Kx4D6G1tk7fd80r1ATXtaPQIZ3RZMQn2H7msfMSw/oibvY8Wy3EgMmtLprWc1QHSOx4GSC9TeZDGwpXp8j2GIAg0saI6r64wapbKXhZY4R7URuQxgdn/JAVPDTpJswEVNsbBE6upZmYYj51OY/wr9YNhWRUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zbi1CNPl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8976FC4CEC3;
-	Mon, 28 Oct 2024 00:41:49 +0000 (UTC)
+	s=arc-20240116; t=1730076112; c=relaxed/simple;
+	bh=03gzeikRYqodoM4UnO4M4Y6beEEYuTZVsl1alZynSe8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NbPXqtadeG9wZ0fOWqKxYXOUksI/u/ni9ySF0AkmHozpbjTulfM9EBVM0gZ0RTSfpk4dsd9652wCyb2mytqb6tATMIcgJrlP9/Lj0zKl58TUSwnWrwdtWmqPRo03z+LXK2JQTQDnqdjXnCnZ9QOLOxdbav3NRtGUSUMO25XMg9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PLSWlqc8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E918BC4CEC3;
+	Mon, 28 Oct 2024 00:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730076109;
-	bh=YtnkpjbQu9PJnEX193Gl7E14zmfiEUCtWAZbzKHZaSg=;
+	s=korg; t=1730076112;
+	bh=03gzeikRYqodoM4UnO4M4Y6beEEYuTZVsl1alZynSe8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Zbi1CNPlGFkg66484iiE5REbJ8MRjehprQz5t5fcS9v3MBM0MnRGf80Kc61b2tdlF
-	 qB/fLUxwR1dklpMylCoXSqLj7UFiuk9UOBE1Men91XXgCGv8kjHVXOduzwCPb+edgU
-	 MHqfdlaVxXq71sBoaRHQNgDvP1kmo2Cgo5FtnvFM=
-Subject: FAILED: patch "[PATCH] nfsd: fix race between laundromat and free_stateid" failed to apply to 5.15-stable tree
+	b=PLSWlqc8DCGZTxfNZrlB4YaBKEaGOzx1lPBZm4adcS6PdH9EFArb0SG9FVgM1WevF
+	 PgBiLsGOCBXgXQ3eq4yX2ESbVqM5DOeyPSW/kL03zwLJ1hFs55UA412VAhHbmpNFbm
+	 bgrdiKJkQk+7jnsDIxcbyqwx9KU6P12ppPT64pKc=
+Subject: FAILED: patch "[PATCH] nfsd: fix race between laundromat and free_stateid" failed to apply to 5.10-stable tree
 To: okorniev@redhat.com,chuck.lever@oracle.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 28 Oct 2024 01:41:37 +0100
-Message-ID: <2024102837-elusive-service-68d6@gregkh>
+Date: Mon, 28 Oct 2024 01:41:39 +0100
+Message-ID: <2024102839-bullhorn-canister-fae3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 8dd91e8d31febf4d9cca3ae1bb4771d33ae7ee5a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024102837-elusive-service-68d6@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024102839-bullhorn-canister-fae3@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
