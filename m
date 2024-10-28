@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-88941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 298349B2827
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:54:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B027F9B282A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:54:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AD5F1C21673
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:54:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B2BE1F21F90
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:54:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343AA18EFDC;
-	Mon, 28 Oct 2024 06:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B508C2AF07;
+	Mon, 28 Oct 2024 06:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0avPTYBO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b3ekb/+j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C57824A3;
-	Mon, 28 Oct 2024 06:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734C218E35B;
+	Mon, 28 Oct 2024 06:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098469; cv=none; b=F0ifjcmSpSTtqDOmuYAhvqXXaWSv903RVELaIKhlGFwnBoQOkrkBGkHrHOGKWlvn5dcV1YfsTltDLaXkbOPFkiHeyVLcq9NXUw4ubf09x6eV9PDjiD0Ao2lADxabfTnpWGKfMmbAOKMS7L6IAm2nsh+DyFpZ2gpOVPn0rUdqAY4=
+	t=1730098473; cv=none; b=sc4RcZeyP1utaWgjfKSQiJJoid3A6mFB2dgDVa2DcNfoy8M3Og0NNMh3Yt5JI4PgAV5w8bskBNfK8Wl8wL0yqw/f+Y8wCylkSRH1RdYMhpV4HWA9NGAUb4eraykbiWffOjxyAHNKQE4Uv3r4tnK2/JS27eHy3Mm6UohV519Tbag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098469; c=relaxed/simple;
-	bh=N0TEKEpbDJ4QsO0llCz/MOg4wfffMVa4eqhJSmpgq3M=;
+	s=arc-20240116; t=1730098473; c=relaxed/simple;
+	bh=gmZgAM/+NLnfo0vKmoSyZrUOsi1xqy4uC8R7ZY8RMGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UP+ZUV8zkHPbaCOStKBtQSCgSqJhoG+0SJ/EPV6xJtY7psKqm9qdIVGX6HHKDi6YK7sRV1RgEt3BzeqV3RnNeiqerYL855Z5Je1ObHs0GjGW6wqYzwIMD2T8V7ZhPQWqKX4knc3vZPr3lQ5o0uPcSrzzUp3zz8fV5oA08Tk7a9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0avPTYBO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8541EC4CEC7;
-	Mon, 28 Oct 2024 06:54:28 +0000 (UTC)
+	 MIME-Version; b=ulKDPdY9z3kMRiP4UPm1FDsw5UtqatFNHZHcFRsYeedZNvRPxEzF9F2W+ONF+gX1P0nWmWO7cpmhTrCQHHhwSssFgmkXRDtUnxPgkzmH/ea37q61sHZ1ApN9vKJXzdqBAlSWQx///Sug9ssEQA9OBEb/WW06zVA+ypEYLOtGUFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b3ekb/+j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD67C4CEC3;
+	Mon, 28 Oct 2024 06:54:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098468;
-	bh=N0TEKEpbDJ4QsO0llCz/MOg4wfffMVa4eqhJSmpgq3M=;
+	s=korg; t=1730098473;
+	bh=gmZgAM/+NLnfo0vKmoSyZrUOsi1xqy4uC8R7ZY8RMGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0avPTYBOiPgClA00FYsVqAo29BbYgOrxojhbKMat4RuigCHy5TH9mLFgERV72i6/N
-	 Ej0rL5BOpb2TaAuWxG3JnSuFt03UEFHk4Ec1TAaXW1D5W4RFcxbnceuRPcMn2akGR0
-	 2EJfbIeJHrrLBLXLkBNRTyatu0H9LRYTp+AOtxW8=
+	b=b3ekb/+jLt/o48Um1LHQfcE68itDVod++5G6zbeJUoiJZQ0c5bN/93V1DBW7ydAHG
+	 /6SupNV6cgdcRZtgdSkML92bVj4KpuHiVhibrvE8jiNHy+tb95nGunPhsO4flLXFya
+	 G3Hjecyh++vZ4IqERBscsff/nSFGXjJAbPjqtG9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xinyu Zhang <xizhang@purestorage.com>,
-	Uday Shankar <ushankar@purestorage.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.11 240/261] block: fix sanity checks in blk_rq_map_user_bvec
-Date: Mon, 28 Oct 2024 07:26:22 +0100
-Message-ID: <20241028062318.131269016@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Dillon Varone <dillon.varone@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.11 241/261] drm/amd/display: temp w/a for DP Link Layer compliance
+Date: Mon, 28 Oct 2024 07:26:23 +0100
+Message-ID: <20241028062318.153333834@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
 References: <20241028062312.001273460@linuxfoundation.org>
@@ -66,55 +69,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xinyu Zhang <xizhang@purestorage.com>
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 
-commit 2ff949441802a8d076d9013c7761f63e8ae5a9bd upstream.
+commit 63feb35cd26557572ad95fc062ede344bb61d9ad upstream.
 
-blk_rq_map_user_bvec contains a check bytes + bv->bv_len > nr_iter which
-causes unnecessary failures in NVMe passthrough I/O, reproducible as
-follows:
+[Why&How]
+Disabling P-State support on full updates for DCN401 results in
+introducing additional communication with SMU. A UCLK hard min message
+to SMU takes 4 seconds to go through, which was due to DCN not allowing
+pstate switch, which was caused by incorrect value for TTU watermark
+before blanking the HUBP prior to DPG on for servicing the test request.
 
-- register a 2 page, page-aligned buffer against a ring
-- use that buffer to do a 1 page io_uring NVMe passthrough read
+Fix the issue temporarily by disallowing pstate changes for compliance
+test while test request handler is reworked for a proper fix.
 
-The second (i = 1) iteration of the loop in blk_rq_map_user_bvec will
-then have nr_iter == 1 page, bytes == 1 page, bv->bv_len == 1 page, so
-the check bytes + bv->bv_len > nr_iter will succeed, causing the I/O to
-fail. This failure is unnecessary, as when the check succeeds, it means
-we've checked the entire buffer that will be used by the request - i.e.
-blk_rq_map_user_bvec should complete successfully. Therefore, terminate
-the loop early and return successfully when the check bytes + bv->bv_len
-> nr_iter succeeds.
-
-While we're at it, also remove the check that all segments in the bvec
-are single-page. While this seems to be true for all users of the
-function, it doesn't appear to be required anywhere downstream.
-
-CC: stable@vger.kernel.org
-Signed-off-by: Xinyu Zhang <xizhang@purestorage.com>
-Co-developed-by: Uday Shankar <ushankar@purestorage.com>
-Signed-off-by: Uday Shankar <ushankar@purestorage.com>
-Fixes: 37987547932c ("block: extend functionality to map bvec iterator")
-Link: https://lore.kernel.org/r/20241023211519.4177873-1-ushankar@purestorage.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 67ea53a4bd9d ("drm/amd/display: Disable DCN401 UCLK P-State support on full updates")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Dillon Varone <dillon.varone@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 8a79f7cdbb41bb0ddfd4d7662b4428d4a9d5306d)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-map.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/block/blk-map.c
-+++ b/block/blk-map.c
-@@ -600,9 +600,7 @@ static int blk_rq_map_user_bvec(struct r
- 		if (nsegs >= nr_segs || bytes > UINT_MAX - bv->bv_len)
- 			goto put_bio;
- 		if (bytes + bv->bv_len > nr_iter)
--			goto put_bio;
--		if (bv->bv_offset + bv->bv_len > PAGE_SIZE)
--			goto put_bio;
-+			break;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
+@@ -44,6 +44,7 @@
  
- 		nsegs++;
- 		bytes += bv->bv_len;
+ #include "dm_helpers.h"
+ #include "ddc_service_types.h"
++#include "clk_mgr.h"
+ 
+ static u32 edid_extract_panel_id(struct edid *edid)
+ {
+@@ -1121,6 +1122,8 @@ bool dm_helpers_dp_handle_test_pattern_r
+ 	struct pipe_ctx *pipe_ctx = NULL;
+ 	struct amdgpu_dm_connector *aconnector = link->priv;
+ 	struct drm_device *dev = aconnector->base.dev;
++	struct dc_state *dc_state = ctx->dc->current_state;
++	struct clk_mgr *clk_mgr = ctx->dc->clk_mgr;
+ 	int i;
+ 
+ 	for (i = 0; i < MAX_PIPES; i++) {
+@@ -1221,6 +1224,16 @@ bool dm_helpers_dp_handle_test_pattern_r
+ 	pipe_ctx->stream->test_pattern.type = test_pattern;
+ 	pipe_ctx->stream->test_pattern.color_space = test_pattern_color_space;
+ 
++	/* Temp W/A for compliance test failure */
++	dc_state->bw_ctx.bw.dcn.clk.p_state_change_support = false;
++	dc_state->bw_ctx.bw.dcn.clk.dramclk_khz = clk_mgr->dc_mode_softmax_enabled ?
++		clk_mgr->bw_params->dc_mode_softmax_memclk : clk_mgr->bw_params->max_memclk_mhz;
++	dc_state->bw_ctx.bw.dcn.clk.idle_dramclk_khz = dc_state->bw_ctx.bw.dcn.clk.dramclk_khz;
++	ctx->dc->clk_mgr->funcs->update_clocks(
++			ctx->dc->clk_mgr,
++			dc_state,
++			false);
++
+ 	dc_link_dp_set_test_pattern(
+ 		(struct dc_link *) link,
+ 		test_pattern,
 
 
 
