@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-88866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0A149B27D5
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:51:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBB809B2555
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E499B1C214C8
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:51:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 290DF1C20FC1
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C98918E05D;
-	Mon, 28 Oct 2024 06:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AFEC18CC1F;
+	Mon, 28 Oct 2024 06:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wlMquWfb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUjGIH0e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1DB2AF07;
-	Mon, 28 Oct 2024 06:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA81118DF8B;
+	Mon, 28 Oct 2024 06:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098299; cv=none; b=JUfN02wCMuQyb3nBmoznmXIM2RaMvv3FLpQWjy7dONxNrSxU/W2X/MKnHkp/5hJOezkgb7U4DaGSYvVYywQFk2pJ+UTCZIn9hsW/cR3Azq8iLKNWpkRoytIIXo2qtQM0OAbaUTSxDqgcAoKxatSTlfYy2liUKcJUwK+fx8jF8PI=
+	t=1730096882; cv=none; b=Hn0NXKMo+EFaBCcPupLLnnMtj/73T8Rz2V6Nvip7+OuYEsKXbUep8OuxTFVRjisLS1THNKQUfedB00rsDgfeC1jUZuIi86HZzzcNHy2VEOb4RFDC5GwuMZsdGFLxoTgqwgmyXssL4obZKNQy2deqkbDo3xDLsDKFzeRc/EfViaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098299; c=relaxed/simple;
-	bh=ujOICgCXproV/aMiNei1iy6n15IB6ereRay/omMIJjU=;
+	s=arc-20240116; t=1730096882; c=relaxed/simple;
+	bh=b957jsAtOrzbi2mXsA5t2nymv9BwP0RjJS3B5s7ibN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UtlESFBdgRyfppBEzJR8hNKdcJd3LGlHFjhTBz4O15JRB2Cg3tpgHVnlKG9rDmy4PLiWHhc1gKtnPSR8PaPSpHYgYiQrG/8NyFQWVQQG+GwJit6rUfgbeu5zYy+jGHX8TMYQeozlT6PCalGaJWq9zJ/72RTA6vY76XQPsIT4GB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wlMquWfb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C310C4CEC3;
-	Mon, 28 Oct 2024 06:51:38 +0000 (UTC)
+	 MIME-Version; b=oEU5OwC6irKd3wUCzCf4OUSGHlw0+yZT7OBB0wKGVHSZXDMLLuf8gAhkdwfibdXmu3ADTRxxnYMwUaOYzOiPTTZbZ1S9vgcKHvsm0EUGlg9rmY3yo6ZvRCuZKXI9rMhOmlmXurAFx4IniFntM9qBclCWEapzJvDvnVTmUqfBCa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FUjGIH0e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AAACC4CEC3;
+	Mon, 28 Oct 2024 06:28:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098298;
-	bh=ujOICgCXproV/aMiNei1iy6n15IB6ereRay/omMIJjU=;
+	s=korg; t=1730096881;
+	bh=b957jsAtOrzbi2mXsA5t2nymv9BwP0RjJS3B5s7ibN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wlMquWfbpFrZn/l8XLyWZfXkhefCZ0psgjvJw0SCAOkl7eit8l4QfFZDPdgGpDzEL
-	 4hlYrqjvPWY+zZ5O3/wxUIKbtmiKxVULioT0PTE7OrIg1wY81tT4yN9TQC703WO2Ma
-	 OkwGuoGp+ZDwLivgI8ltEDJZUM9U5Kc6Xe5Wi618=
+	b=FUjGIH0eiTGNRqz8feBPQ1CCCxDZ0/n73AEQ0yKJbLAeHM9TnDKZISzQIW7PhA5wN
+	 v/y7kCOYBCSpRrNlqQmXuu0zzS5PWVZHIc2yuJdSVFtEkJ+sK1CISHBHe8pGNXTSYf
+	 iJ7fd2E5jR2untHEmcOi5jGTaT2GBSt93zNeNq2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lonial Con <kongln9170@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 164/261] bpf: Fix overloading of MEM_UNINITs meaning
-Date: Mon, 28 Oct 2024 07:25:06 +0100
-Message-ID: <20241028062316.111440596@linuxfoundation.org>
+Subject: [PATCH 5.15 27/80] usb: typec: altmode should keep reference to parent
+Date: Mon, 28 Oct 2024 07:25:07 +0100
+Message-ID: <20241028062253.384970437@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,271 +63,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-[ Upstream commit 8ea607330a39184f51737c6ae706db7fdca7628e ]
+[ Upstream commit befab3a278c59db0cc88c8799638064f6d3fd6f8 ]
 
-Lonial reported an issue in the BPF verifier where check_mem_size_reg()
-has the following code:
+The altmode device release refers to its parent device, but without keeping
+a reference to it.
 
-    if (!tnum_is_const(reg->var_off))
-        /* For unprivileged variable accesses, disable raw
-         * mode so that the program is required to
-         * initialize all the memory that the helper could
-         * just partially fill up.
-         */
-         meta = NULL;
+When registering the altmode, get a reference to the parent and put it in
+the release function.
 
-This means that writes are not checked when the register containing the
-size of the passed buffer has not a fixed size. Through this bug, a BPF
-program can write to a map which is marked as read-only, for example,
-.rodata global maps.
+Before this fix, when using CONFIG_DEBUG_KOBJECT_RELEASE, we see issues
+like this:
 
-The problem is that MEM_UNINIT's initial meaning that "the passed buffer
-to the BPF helper does not need to be initialized" which was added back
-in commit 435faee1aae9 ("bpf, verifier: add ARG_PTR_TO_RAW_STACK type")
-got overloaded over time with "the passed buffer is being written to".
+[   43.572860] kobject: 'port0.0' (ffff8880057ba008): kobject_release, parent 0000000000000000 (delayed 3000)
+[   43.573532] kobject: 'port0.1' (ffff8880057bd008): kobject_release, parent 0000000000000000 (delayed 1000)
+[   43.574407] kobject: 'port0' (ffff8880057b9008): kobject_release, parent 0000000000000000 (delayed 3000)
+[   43.575059] kobject: 'port1.0' (ffff8880057ca008): kobject_release, parent 0000000000000000 (delayed 4000)
+[   43.575908] kobject: 'port1.1' (ffff8880057c9008): kobject_release, parent 0000000000000000 (delayed 4000)
+[   43.576908] kobject: 'typec' (ffff8880062dbc00): kobject_release, parent 0000000000000000 (delayed 4000)
+[   43.577769] kobject: 'port1' (ffff8880057bf008): kobject_release, parent 0000000000000000 (delayed 3000)
+[   46.612867] ==================================================================
+[   46.613402] BUG: KASAN: slab-use-after-free in typec_altmode_release+0x38/0x129
+[   46.614003] Read of size 8 at addr ffff8880057b9118 by task kworker/2:1/48
+[   46.614538]
+[   46.614668] CPU: 2 UID: 0 PID: 48 Comm: kworker/2:1 Not tainted 6.12.0-rc1-00138-gedbae730ad31 #535
+[   46.615391] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+[   46.616042] Workqueue: events kobject_delayed_cleanup
+[   46.616446] Call Trace:
+[   46.616648]  <TASK>
+[   46.616820]  dump_stack_lvl+0x5b/0x7c
+[   46.617112]  ? typec_altmode_release+0x38/0x129
+[   46.617470]  print_report+0x14c/0x49e
+[   46.617769]  ? rcu_read_unlock_sched+0x56/0x69
+[   46.618117]  ? __virt_addr_valid+0x19a/0x1ab
+[   46.618456]  ? kmem_cache_debug_flags+0xc/0x1d
+[   46.618807]  ? typec_altmode_release+0x38/0x129
+[   46.619161]  kasan_report+0x8d/0xb4
+[   46.619447]  ? typec_altmode_release+0x38/0x129
+[   46.619809]  ? process_scheduled_works+0x3cb/0x85f
+[   46.620185]  typec_altmode_release+0x38/0x129
+[   46.620537]  ? process_scheduled_works+0x3cb/0x85f
+[   46.620907]  device_release+0xaf/0xf2
+[   46.621206]  kobject_delayed_cleanup+0x13b/0x17a
+[   46.621584]  process_scheduled_works+0x4f6/0x85f
+[   46.621955]  ? __pfx_process_scheduled_works+0x10/0x10
+[   46.622353]  ? hlock_class+0x31/0x9a
+[   46.622647]  ? lock_acquired+0x361/0x3c3
+[   46.622956]  ? move_linked_works+0x46/0x7d
+[   46.623277]  worker_thread+0x1ce/0x291
+[   46.623582]  ? __kthread_parkme+0xc8/0xdf
+[   46.623900]  ? __pfx_worker_thread+0x10/0x10
+[   46.624236]  kthread+0x17e/0x190
+[   46.624501]  ? kthread+0xfb/0x190
+[   46.624756]  ? __pfx_kthread+0x10/0x10
+[   46.625015]  ret_from_fork+0x20/0x40
+[   46.625268]  ? __pfx_kthread+0x10/0x10
+[   46.625532]  ret_from_fork_asm+0x1a/0x30
+[   46.625805]  </TASK>
+[   46.625953]
+[   46.626056] Allocated by task 678:
+[   46.626287]  kasan_save_stack+0x24/0x44
+[   46.626555]  kasan_save_track+0x14/0x2d
+[   46.626811]  __kasan_kmalloc+0x3f/0x4d
+[   46.627049]  __kmalloc_noprof+0x1bf/0x1f0
+[   46.627362]  typec_register_port+0x23/0x491
+[   46.627698]  cros_typec_probe+0x634/0xbb6
+[   46.628026]  platform_probe+0x47/0x8c
+[   46.628311]  really_probe+0x20a/0x47d
+[   46.628605]  device_driver_attach+0x39/0x72
+[   46.628940]  bind_store+0x87/0xd7
+[   46.629213]  kernfs_fop_write_iter+0x1aa/0x218
+[   46.629574]  vfs_write+0x1d6/0x29b
+[   46.629856]  ksys_write+0xcd/0x13b
+[   46.630128]  do_syscall_64+0xd4/0x139
+[   46.630420]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   46.630820]
+[   46.630946] Freed by task 48:
+[   46.631182]  kasan_save_stack+0x24/0x44
+[   46.631493]  kasan_save_track+0x14/0x2d
+[   46.631799]  kasan_save_free_info+0x3f/0x4d
+[   46.632144]  __kasan_slab_free+0x37/0x45
+[   46.632474]  kfree+0x1d4/0x252
+[   46.632725]  device_release+0xaf/0xf2
+[   46.633017]  kobject_delayed_cleanup+0x13b/0x17a
+[   46.633388]  process_scheduled_works+0x4f6/0x85f
+[   46.633764]  worker_thread+0x1ce/0x291
+[   46.634065]  kthread+0x17e/0x190
+[   46.634324]  ret_from_fork+0x20/0x40
+[   46.634621]  ret_from_fork_asm+0x1a/0x30
 
-The problem however is that checks such as the above which were added later
-via 06c1c049721a ("bpf: allow helpers access to variable memory") set meta
-to NULL in order force the user to always initialize the passed buffer to
-the helper. Due to the current double meaning of MEM_UNINIT, this bypasses
-verifier write checks to the memory (not boundary checks though) and only
-assumes the latter memory is read instead.
-
-Fix this by reverting MEM_UNINIT back to its original meaning, and having
-MEM_WRITE as an annotation to BPF helpers in order to then trigger the
-BPF verifier checks for writing to memory.
-
-Some notes: check_arg_pair_ok() ensures that for ARG_CONST_SIZE{,_OR_ZERO}
-we can access fn->arg_type[arg - 1] since it must contain a preceding
-ARG_PTR_TO_MEM. For check_mem_reg() the meta argument can be removed
-altogether since we do check both BPF_READ and BPF_WRITE. Same for the
-equivalent check_kfunc_mem_size_reg().
-
-Fixes: 7b3552d3f9f6 ("bpf: Reject writes for PTR_TO_MAP_KEY in check_helper_mem_access")
-Fixes: 97e6d7dab1ca ("bpf: Check PTR_TO_MEM | MEM_RDONLY in check_helper_mem_access")
-Fixes: 15baa55ff5b0 ("bpf/verifier: allow all functions to read user provided context")
-Reported-by: Lonial Con <kongln9170@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20241021152809.33343-2-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241004123738.2964524-1-cascardo@igalia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 73 +++++++++++++++++++++----------------------
- 1 file changed, 35 insertions(+), 38 deletions(-)
+ drivers/usb/typec/class.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 5b8b1d0e76cf1..62efe7f0aa46f 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -7344,7 +7344,8 @@ static int check_stack_range_initialized(
+diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
+index 173d86d120daf..af75911899f53 100644
+--- a/drivers/usb/typec/class.c
++++ b/drivers/usb/typec/class.c
+@@ -501,6 +501,7 @@ static void typec_altmode_release(struct device *dev)
+ 		typec_altmode_put_partner(alt);
+ 
+ 	altmode_id_remove(alt->adev.dev.parent, alt->id);
++	put_device(alt->adev.dev.parent);
+ 	kfree(alt);
  }
  
- static int check_helper_mem_access(struct bpf_verifier_env *env, int regno,
--				   int access_size, bool zero_size_allowed,
-+				   int access_size, enum bpf_access_type access_type,
-+				   bool zero_size_allowed,
- 				   struct bpf_call_arg_meta *meta)
- {
- 	struct bpf_reg_state *regs = cur_regs(env), *reg = &regs[regno];
-@@ -7356,7 +7357,7 @@ static int check_helper_mem_access(struct bpf_verifier_env *env, int regno,
- 		return check_packet_access(env, regno, reg->off, access_size,
- 					   zero_size_allowed);
- 	case PTR_TO_MAP_KEY:
--		if (meta && meta->raw_mode) {
-+		if (access_type == BPF_WRITE) {
- 			verbose(env, "R%d cannot write into %s\n", regno,
- 				reg_type_str(env, reg->type));
- 			return -EACCES;
-@@ -7364,15 +7365,13 @@ static int check_helper_mem_access(struct bpf_verifier_env *env, int regno,
- 		return check_mem_region_access(env, regno, reg->off, access_size,
- 					       reg->map_ptr->key_size, false);
- 	case PTR_TO_MAP_VALUE:
--		if (check_map_access_type(env, regno, reg->off, access_size,
--					  meta && meta->raw_mode ? BPF_WRITE :
--					  BPF_READ))
-+		if (check_map_access_type(env, regno, reg->off, access_size, access_type))
- 			return -EACCES;
- 		return check_map_access(env, regno, reg->off, access_size,
- 					zero_size_allowed, ACCESS_HELPER);
- 	case PTR_TO_MEM:
- 		if (type_is_rdonly_mem(reg->type)) {
--			if (meta && meta->raw_mode) {
-+			if (access_type == BPF_WRITE) {
- 				verbose(env, "R%d cannot write into %s\n", regno,
- 					reg_type_str(env, reg->type));
- 				return -EACCES;
-@@ -7383,7 +7382,7 @@ static int check_helper_mem_access(struct bpf_verifier_env *env, int regno,
- 					       zero_size_allowed);
- 	case PTR_TO_BUF:
- 		if (type_is_rdonly_mem(reg->type)) {
--			if (meta && meta->raw_mode) {
-+			if (access_type == BPF_WRITE) {
- 				verbose(env, "R%d cannot write into %s\n", regno,
- 					reg_type_str(env, reg->type));
- 				return -EACCES;
-@@ -7411,7 +7410,6 @@ static int check_helper_mem_access(struct bpf_verifier_env *env, int regno,
- 		 * Dynamically check it now.
- 		 */
- 		if (!env->ops->convert_ctx_access) {
--			enum bpf_access_type atype = meta && meta->raw_mode ? BPF_WRITE : BPF_READ;
- 			int offset = access_size - 1;
+@@ -550,6 +551,8 @@ typec_register_altmode(struct device *parent,
+ 	alt->adev.dev.type = &typec_altmode_dev_type;
+ 	dev_set_name(&alt->adev.dev, "%s.%u", dev_name(parent), id);
  
- 			/* Allow zero-byte read from PTR_TO_CTX */
-@@ -7419,7 +7417,7 @@ static int check_helper_mem_access(struct bpf_verifier_env *env, int regno,
- 				return zero_size_allowed ? 0 : -EACCES;
- 
- 			return check_mem_access(env, env->insn_idx, regno, offset, BPF_B,
--						atype, -1, false, false);
-+						access_type, -1, false, false);
- 		}
- 
- 		fallthrough;
-@@ -7444,6 +7442,7 @@ static int check_helper_mem_access(struct bpf_verifier_env *env, int regno,
-  */
- static int check_mem_size_reg(struct bpf_verifier_env *env,
- 			      struct bpf_reg_state *reg, u32 regno,
-+			      enum bpf_access_type access_type,
- 			      bool zero_size_allowed,
- 			      struct bpf_call_arg_meta *meta)
- {
-@@ -7459,15 +7458,12 @@ static int check_mem_size_reg(struct bpf_verifier_env *env,
- 	 */
- 	meta->msize_max_value = reg->umax_value;
- 
--	/* The register is SCALAR_VALUE; the access check
--	 * happens using its boundaries.
-+	/* The register is SCALAR_VALUE; the access check happens using
-+	 * its boundaries. For unprivileged variable accesses, disable
-+	 * raw mode so that the program is required to initialize all
-+	 * the memory that the helper could just partially fill up.
- 	 */
- 	if (!tnum_is_const(reg->var_off))
--		/* For unprivileged variable accesses, disable raw
--		 * mode so that the program is required to
--		 * initialize all the memory that the helper could
--		 * just partially fill up.
--		 */
- 		meta = NULL;
- 
- 	if (reg->smin_value < 0) {
-@@ -7487,9 +7483,8 @@ static int check_mem_size_reg(struct bpf_verifier_env *env,
- 			regno);
- 		return -EACCES;
- 	}
--	err = check_helper_mem_access(env, regno - 1,
--				      reg->umax_value,
--				      zero_size_allowed, meta);
-+	err = check_helper_mem_access(env, regno - 1, reg->umax_value,
-+				      access_type, zero_size_allowed, meta);
- 	if (!err)
- 		err = mark_chain_precision(env, regno);
- 	return err;
-@@ -7500,13 +7495,11 @@ static int check_mem_reg(struct bpf_verifier_env *env, struct bpf_reg_state *reg
- {
- 	bool may_be_null = type_may_be_null(reg->type);
- 	struct bpf_reg_state saved_reg;
--	struct bpf_call_arg_meta meta;
- 	int err;
- 
- 	if (register_is_null(reg))
- 		return 0;
- 
--	memset(&meta, 0, sizeof(meta));
- 	/* Assuming that the register contains a value check if the memory
- 	 * access is safe. Temporarily save and restore the register's state as
- 	 * the conversion shouldn't be visible to a caller.
-@@ -7516,10 +7509,8 @@ static int check_mem_reg(struct bpf_verifier_env *env, struct bpf_reg_state *reg
- 		mark_ptr_not_null_reg(reg);
- 	}
- 
--	err = check_helper_mem_access(env, regno, mem_size, true, &meta);
--	/* Check access for BPF_WRITE */
--	meta.raw_mode = true;
--	err = err ?: check_helper_mem_access(env, regno, mem_size, true, &meta);
-+	err = check_helper_mem_access(env, regno, mem_size, BPF_READ, true, NULL);
-+	err = err ?: check_helper_mem_access(env, regno, mem_size, BPF_WRITE, true, NULL);
- 
- 	if (may_be_null)
- 		*reg = saved_reg;
-@@ -7545,13 +7536,12 @@ static int check_kfunc_mem_size_reg(struct bpf_verifier_env *env, struct bpf_reg
- 		mark_ptr_not_null_reg(mem_reg);
- 	}
- 
--	err = check_mem_size_reg(env, reg, regno, true, &meta);
--	/* Check access for BPF_WRITE */
--	meta.raw_mode = true;
--	err = err ?: check_mem_size_reg(env, reg, regno, true, &meta);
-+	err = check_mem_size_reg(env, reg, regno, BPF_READ, true, &meta);
-+	err = err ?: check_mem_size_reg(env, reg, regno, BPF_WRITE, true, &meta);
- 
- 	if (may_be_null)
- 		*mem_reg = saved_reg;
++	get_device(alt->adev.dev.parent);
 +
- 	return err;
- }
- 
-@@ -8825,9 +8815,8 @@ static int check_func_arg(struct bpf_verifier_env *env, u32 arg,
- 			verbose(env, "invalid map_ptr to access map->key\n");
- 			return -EACCES;
- 		}
--		err = check_helper_mem_access(env, regno,
--					      meta->map_ptr->key_size, false,
--					      NULL);
-+		err = check_helper_mem_access(env, regno, meta->map_ptr->key_size,
-+					      BPF_READ, false, NULL);
- 		break;
- 	case ARG_PTR_TO_MAP_VALUE:
- 		if (type_may_be_null(arg_type) && register_is_null(reg))
-@@ -8842,9 +8831,9 @@ static int check_func_arg(struct bpf_verifier_env *env, u32 arg,
- 			return -EACCES;
- 		}
- 		meta->raw_mode = arg_type & MEM_UNINIT;
--		err = check_helper_mem_access(env, regno,
--					      meta->map_ptr->value_size, false,
--					      meta);
-+		err = check_helper_mem_access(env, regno, meta->map_ptr->value_size,
-+					      arg_type & MEM_WRITE ? BPF_WRITE : BPF_READ,
-+					      false, meta);
- 		break;
- 	case ARG_PTR_TO_PERCPU_BTF_ID:
- 		if (!reg->btf_id) {
-@@ -8886,7 +8875,9 @@ static int check_func_arg(struct bpf_verifier_env *env, u32 arg,
- 		 */
- 		meta->raw_mode = arg_type & MEM_UNINIT;
- 		if (arg_type & MEM_FIXED_SIZE) {
--			err = check_helper_mem_access(env, regno, fn->arg_size[arg], false, meta);
-+			err = check_helper_mem_access(env, regno, fn->arg_size[arg],
-+						      arg_type & MEM_WRITE ? BPF_WRITE : BPF_READ,
-+						      false, meta);
- 			if (err)
- 				return err;
- 			if (arg_type & MEM_ALIGNED)
-@@ -8894,10 +8885,16 @@ static int check_func_arg(struct bpf_verifier_env *env, u32 arg,
- 		}
- 		break;
- 	case ARG_CONST_SIZE:
--		err = check_mem_size_reg(env, reg, regno, false, meta);
-+		err = check_mem_size_reg(env, reg, regno,
-+					 fn->arg_type[arg - 1] & MEM_WRITE ?
-+					 BPF_WRITE : BPF_READ,
-+					 false, meta);
- 		break;
- 	case ARG_CONST_SIZE_OR_ZERO:
--		err = check_mem_size_reg(env, reg, regno, true, meta);
-+		err = check_mem_size_reg(env, reg, regno,
-+					 fn->arg_type[arg - 1] & MEM_WRITE ?
-+					 BPF_WRITE : BPF_READ,
-+					 true, meta);
- 		break;
- 	case ARG_PTR_TO_DYNPTR:
- 		err = process_dynptr_func(env, regno, insn_idx, arg_type, 0);
+ 	/* Link partners and plugs with the ports */
+ 	if (!is_port)
+ 		typec_altmode_set_partner(alt);
 -- 
 2.43.0
 
