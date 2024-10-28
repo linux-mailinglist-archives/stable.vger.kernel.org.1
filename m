@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-88542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C819B266C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 903959B2780
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:48:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3104E1F21F36
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55C08284211
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0592618E74D;
-	Mon, 28 Oct 2024 06:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB89918DF7D;
+	Mon, 28 Oct 2024 06:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K1/ZwZLk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mW/l+Owv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F9D2C697;
-	Mon, 28 Oct 2024 06:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA48A8837;
+	Mon, 28 Oct 2024 06:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097568; cv=none; b=HPOnL4QfIXI8E25aYA3uZw838zkgZzrASGKE6VVcIINROmtG5q7FF9vcjXbmFacniVRTI+owuyAp2zNO5/t3fXJdcOAiQdodPhZMYfB91gFZwxAEk5Bie3W1CG1Ns08euI5evDpLA6Pmxv8XCh/BI8SrHEF6XdvFOM86YvUT6XM=
+	t=1730098128; cv=none; b=i8PTIHUu3CtVgx1lP1BwidErGHQ0QIjYIdvKJlB+gbqp2Y0wyedrZYWgl7oHv4X6u8WQAlUUN4pGI8BMGStcHohwN+8j5+8InQ+7NReu1iMyMgw5X/GHQqdpTH/rY0/ep3d/pXYEOqq1tZ4jJyFPX+jMLxMQ4ibacSYqV+Ivt8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097568; c=relaxed/simple;
-	bh=8aY7LsJtNdLbstKGwVKGe9LuuWqQbJ/Nb1fgeKWT5oQ=;
+	s=arc-20240116; t=1730098128; c=relaxed/simple;
+	bh=rsZ9LlPgvm+yU/1HIO8hGJUW/AN6n6l8SShbJj8NG84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XaJrMwq2lQWQ89918+PLA6TugNcgR01EYrR8+d0btjQ9QoDhHoUemfI/wDs8/aLqFZRonzCe27uDlD2N+if0DU1hZ0B1R9aoWWaXzbsLEfOfJG3MYDbqWKwjwMKx74+L072FlzFoeTKaHHjCsXlOC/cQ48UemVzH6wfanMikNLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K1/ZwZLk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5499FC4CEC3;
-	Mon, 28 Oct 2024 06:39:28 +0000 (UTC)
+	 MIME-Version; b=SK5TdcinZrTA2kJUlpV52YUFZZ1XZ0DGVclsUh3yp0r5yQrbr396AilQ2WpokoUkyU5eNaMh7FHeREbQL/+UnGhNGLfmkGoKPnogO1mp52fHmbYjeqYc9Bu+m/2oJSjC1zk1ZPT58mpb/tQ6kLf6zV20Hz9DnZYsz/r7akLhxzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mW/l+Owv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43FF9C4CEC3;
+	Mon, 28 Oct 2024 06:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097568;
-	bh=8aY7LsJtNdLbstKGwVKGe9LuuWqQbJ/Nb1fgeKWT5oQ=;
+	s=korg; t=1730098128;
+	bh=rsZ9LlPgvm+yU/1HIO8hGJUW/AN6n6l8SShbJj8NG84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K1/ZwZLkkqzfcbnzm7eCNimjyjSD/36e87ElHIMC4AhhfBq5JkaMi8h4CEhDnNih7
-	 UJz9c+phQXZRYq8PLL5pMFgCHXo0M8HNWMeXFHBGVBZuaBQfrag9wg0uRa3FgtVb9/
-	 KPA+yjyQneQzYcIf0dlStt7c1n4fjsc/daw0Su2k=
+	b=mW/l+OwvWCffy8lQ3aCF+OtOtTyC/Tykklf28VA9kLO8tjhnJjQVa2xoP5/zkZn3Q
+	 TAgTgQeW9d3j70hwxuuSnkduzOHDOuZ1N68LDiNgwl34HBiYi0/rYcflcZguoc+/+/
+	 IM2g4nMoSaG6k895Via30E40yJYpX1AmDJHHPgpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paritosh Dixit <paritoshd@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/208] net: stmmac: dwmac-tegra: Fix link bring-up sequence
+Subject: [PATCH 6.11 088/261] s390: Initialize psw mask in perf_arch_fetch_caller_regs()
 Date: Mon, 28 Oct 2024 07:23:50 +0100
-Message-ID: <20241028062307.890234845@linuxfoundation.org>
+Message-ID: <20241028062314.240284927@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paritosh Dixit <paritoshd@nvidia.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 1cff6ff302f5703a627f9ee1d99131161ea2683e ]
+[ Upstream commit 223e7fb979fa06934f1595b6ad0ae1d4ead1147f ]
 
-The Tegra MGBE driver sometimes fails to initialize, reporting the
-following error, and as a result, it is unable to acquire an IP
-address with DHCP:
+Also initialize regs->psw.mask in perf_arch_fetch_caller_regs().
+This way user_mode(regs) will return false, like it should.
 
- tegra-mgbe 6800000.ethernet: timeout waiting for link to become ready
+It looks like all current users initialize regs to zero, so that this
+doesn't fix a bug currently. However it is better to not rely on callers
+to do this.
 
-As per the recommendation from the Tegra hardware design team, fix this
-issue by:
-- clearing the PHY_RDY bit before setting the CDR_RESET bit and then
-setting PHY_RDY bit before clearing CDR_RESET bit. This ensures valid
-data is present at UPHY RX inputs before starting the CDR lock.
-- adding the required delays when bringing up the UPHY lane. Note we
-need to use delays here because there is no alternative, such as
-polling, for these cases. Using the usleep_range() instead of ndelay()
-as sleeping is preferred over busy wait loop.
-
-Without this change we would see link failures on boot sometimes as
-often as 1 in 5 boots. With this fix we have not observed any failures
-in over 1000 boots.
-
-Fixes: d8ca113724e7 ("net: stmmac: tegra: Add MGBE support")
-Signed-off-by: Paritosh Dixit <paritoshd@nvidia.com>
-Link: https://patch.msgid.link/20241010142908.602712-1-paritoshd@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 914d52e46490 ("s390: implement perf_arch_fetch_caller_regs")
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ arch/s390/include/asm/perf_event.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
-index e0f3cbd36852e..e2d61a3a7712d 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
-@@ -127,10 +127,12 @@ static int mgbe_uphy_lane_bringup_serdes_up(struct net_device *ndev, void *mgbe_
- 	value &= ~XPCS_WRAP_UPHY_RX_CONTROL_AUX_RX_IDDQ;
- 	writel(value, mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
+diff --git a/arch/s390/include/asm/perf_event.h b/arch/s390/include/asm/perf_event.h
+index 9917e2717b2b4..66aff768f8151 100644
+--- a/arch/s390/include/asm/perf_event.h
++++ b/arch/s390/include/asm/perf_event.h
+@@ -73,6 +73,7 @@ struct perf_sf_sde_regs {
+ #define SAMPLE_FREQ_MODE(hwc)	(SAMPL_FLAGS(hwc) & PERF_CPUM_SF_FREQ_MODE)
  
-+	usleep_range(10, 20);  /* 50ns min delay needed as per HW design */
- 	value = readl(mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
- 	value &= ~XPCS_WRAP_UPHY_RX_CONTROL_RX_SLEEP;
- 	writel(value, mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
- 
-+	usleep_range(10, 20);  /* 500ns min delay needed as per HW design */
- 	value = readl(mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
- 	value |= XPCS_WRAP_UPHY_RX_CONTROL_RX_CAL_EN;
- 	writel(value, mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
-@@ -143,22 +145,30 @@ static int mgbe_uphy_lane_bringup_serdes_up(struct net_device *ndev, void *mgbe_
- 		return err;
- 	}
- 
-+	usleep_range(10, 20);  /* 50ns min delay needed as per HW design */
- 	value = readl(mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
- 	value |= XPCS_WRAP_UPHY_RX_CONTROL_RX_DATA_EN;
- 	writel(value, mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
- 
- 	value = readl(mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
--	value |= XPCS_WRAP_UPHY_RX_CONTROL_RX_CDR_RESET;
-+	value &= ~XPCS_WRAP_UPHY_RX_CONTROL_RX_PCS_PHY_RDY;
- 	writel(value, mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
- 
-+	usleep_range(10, 20);  /* 50ns min delay needed as per HW design */
- 	value = readl(mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
--	value &= ~XPCS_WRAP_UPHY_RX_CONTROL_RX_CDR_RESET;
-+	value |= XPCS_WRAP_UPHY_RX_CONTROL_RX_CDR_RESET;
- 	writel(value, mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
- 
-+	usleep_range(10, 20);  /* 50ns min delay needed as per HW design */
- 	value = readl(mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
- 	value |= XPCS_WRAP_UPHY_RX_CONTROL_RX_PCS_PHY_RDY;
- 	writel(value, mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
- 
-+	msleep(30);  /* 30ms delay needed as per HW design */
-+	value = readl(mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
-+	value &= ~XPCS_WRAP_UPHY_RX_CONTROL_RX_CDR_RESET;
-+	writel(value, mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
-+
- 	err = readl_poll_timeout(mgbe->xpcs + XPCS_WRAP_IRQ_STATUS, value,
- 				 value & XPCS_WRAP_IRQ_STATUS_PCS_LINK_STS,
- 				 500, 500 * 2000);
+ #define perf_arch_fetch_caller_regs(regs, __ip) do {			\
++	(regs)->psw.mask = 0;						\
+ 	(regs)->psw.addr = (__ip);					\
+ 	(regs)->gprs[15] = (unsigned long)__builtin_frame_address(0) -	\
+ 		offsetof(struct stack_frame, back_chain);		\
 -- 
 2.43.0
 
