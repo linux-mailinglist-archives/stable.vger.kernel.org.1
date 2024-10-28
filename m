@@ -1,120 +1,105 @@
-Return-Path: <stable+bounces-88971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B4629B2846
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:55:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA1629B284B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 08:00:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C347B20855
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:55:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51CE82823D1
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5CA318E03D;
-	Mon, 28 Oct 2024 06:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85E018E749;
+	Mon, 28 Oct 2024 07:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+9PpYou"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Ewz72AmO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6766318E05D
-	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 06:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC4216D9DF
+	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 07:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098536; cv=none; b=GIllKLlhCp9dqH38RKjafmRrNyGvdXm0pt2qjC0SZXzJieSYShG3ObsQqClIZLkQesuPeFcNXwRzeEKV/kJVi8NITjsawENib7DFvwHKjB/5IMINCiHY2aK8z5xod0tHsm7F4f/lS2NTS2siuy8RQUxBQQfp7xCIqV6yH4s8mEU=
+	t=1730098844; cv=none; b=LVMoEoclyqiLW5Jk7vb1iPGEVy5EjqngPJmM3B0me5MTuLZ3XHP/SF+Slw2isIfJMJp4LbBaJX6nOQy7LqRm7Vz2U5OUGWKqwx0XnrZvIWx0rAH6wVN5Rv7b7/GE/pe3G613tkpR+72BdoQsOgURxktMSHKoBOD+XhoDGCHYjyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098536; c=relaxed/simple;
-	bh=OVGinUkP8rhCFfSkYkOW8qBTUitqvzirIBFM61wYPH4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NVBAlWjVD+rSY7By7yJvQpbRJlf/RpkKh5qUPbe+p9G2FzWmrD/rrbkbqYbaoDbia6qGq6nDnaHMerfP5BJAnLu0uBxjQ7jO7GbXijuKesSL4PApwFeZtWcAIBjIHC+xAqJYKMGdvFxsZUMkKHcgo66/VOq01kBhQUispABGtUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+9PpYou; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09CDEC4CEC3;
-	Mon, 28 Oct 2024 06:55:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098536;
-	bh=OVGinUkP8rhCFfSkYkOW8qBTUitqvzirIBFM61wYPH4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P+9PpYouCCR4w7jiIsOmjVKUsNmpndXEF7eax8hXcsb2714YvuBIDK79J6u7GEU+6
-	 nngS7BS2USaJZT5AyfPYzXASwq1s4mXfOYZbb2N5UXMTgiJ6WMsTfTc4+xh0jj0omA
-	 QjBsQD4YHBfq8MtVN9dQ1M99jL0BwvQR+mXO6I/I=
-Date: Mon, 28 Oct 2024 07:33:06 +0100
-From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-To: Jason-JH Lin =?utf-8?B?KOael+edv+elpSk=?= <Jason-JH.Lin@mediatek.com>
-Cc: "saravanak@google.com" <saravanak@google.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Seiya Wang =?utf-8?B?KOeOi+i/uuWQmyk=?= <seiya.wang@mediatek.com>,
-	Singo Chang =?utf-8?B?KOW8teiIiOWciyk=?= <Singo.Chang@mediatek.com>
-Subject: Re: [PATCH] Revert "drm/mipi-dsi: Set the fwnode for mipi_dsi_device"
-Message-ID: <2024102801-canopy-cruelness-ee23@gregkh>
-References: <20241024-fixup-5-15-v1-1-62f21a32b5a5@mediatek.com>
- <2024102847-enrage-cavalier-77e2@gregkh>
- <0e2fa50d4eee77f310362248cb2f95457ba341ad.camel@mediatek.com>
+	s=arc-20240116; t=1730098844; c=relaxed/simple;
+	bh=oXeJH9+dd3cazFRcmOcTf4KQwEKjtruutzeaxtbL0pk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aXOnkdxzZu67BIBYzYo34DIXaJbwAQrxC14qRJbGuTAwBzvi448V/77csSYfwefshmWSUwULP4CpTKGgMFMkkNmsjZ1a3xKh+j4fCizTR0qmUVgL/r0HV6/bN+H8mTz9G/qoiScTz5FYGXbhZFPZ0SsEL26ZN46cq4tEeDS0xDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Ewz72AmO; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-539f4d8ef66so5213109e87.1
+        for <stable@vger.kernel.org>; Mon, 28 Oct 2024 00:00:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1730098841; x=1730703641; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oXeJH9+dd3cazFRcmOcTf4KQwEKjtruutzeaxtbL0pk=;
+        b=Ewz72AmOE7o2HKbvwGZTGFqWiR6TFCecQrEUYj/JFkxR6twAB7ULmyBz9jkTyCgPfJ
+         f5PI6tkq1bOHkxGira8EwTeDOgf2ciuCm0j9K+8350AQM8EKmY9EFCNUxuRESbZmI7pM
+         7jb63oW55pTP6LbqM5M0mSoIr9PNPy4FzbLy8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730098841; x=1730703641;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oXeJH9+dd3cazFRcmOcTf4KQwEKjtruutzeaxtbL0pk=;
+        b=NjXLB4h5wH4nuycGC3LFTebmw7mz0/wZYhMCIh6TXbmIEvCwEC8C4xKI2PQHX1dUqz
+         Ws2rmvicSskfc2mr2rbsuaBMVZ2qUENf2ZiXZB5kKd45ho3nUijcwzfJw+x+hFGTkhVj
+         JDuXDPuzIBhjR0ghjmlMnP+EXgFa3rIa2joLr8eH/hhG1Kyxjq9Xfdkcjp2QHvhT1eDo
+         BF42p3sAkzmVueBI8iCf4zhKuq0mqPT3FX0y10nPGU4Ym9PCbmL9hSySDEbprqj3IZvx
+         km8BuhnDL8RrxAM4hQHZUdFr/e6W/j545A8GjNZQYvmSb7EtrOnksc0x+iSbwknHDjzc
+         mfYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWURiVrpw/Q/SSiGQL580BOdNGGkbtlhw3+7dVCXtYR2Zn1Hf+vNF3pYELjSvobSGF32ZngxTc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOFIFiqYM3Gf117bWkIcEEI5PVs+vjd1K5yF/fdCgnv9e55+qt
+	LdgVK76m2mcsMS26HRkWtJdxI/2wgr65pmjphE+hWB7pOFO7hq2ktT3SQIBcL1oSRXhG1OvjnFQ
+	Kd7tSsfpaW0Z7FySQ3KfnrK6SPg3T8NF77+pW
+X-Google-Smtp-Source: AGHT+IG0bSkKwUt4vIe/DSFsd27a0aZcM775T78oioXCX/0ert+iimxun6TtbNvBDPU5UOHkKZf2rc0Rt4hi62j6fcI=
+X-Received: by 2002:a05:6512:3ba3:b0:539:eb44:7ec3 with SMTP id
+ 2adb3069b0e04-53b3490fabamr2408370e87.31.1730098840615; Mon, 28 Oct 2024
+ 00:00:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0e2fa50d4eee77f310362248cb2f95457ba341ad.camel@mediatek.com>
+References: <20241011-mtk_drm_drv_memleak-v1-0-2b40c74c8d75@gmail.com> <20241011-mtk_drm_drv_memleak-v1-1-2b40c74c8d75@gmail.com>
+In-Reply-To: <20241011-mtk_drm_drv_memleak-v1-1-2b40c74c8d75@gmail.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
+Date: Mon, 28 Oct 2024 15:00:29 +0800
+Message-ID: <CAGXv+5Ge_qcXaSBQ9d8QZOWe3x_9-6r9LhDGvAbUHNKYMwevUA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] drm/mediatek: Fix child node refcount handling in
+ early exit
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Alexandre Mergnat <amergnat@baylibre.com>, CK Hu <ck.hu@mediatek.com>, 
+	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>, dri-devel@lists.freedesktop.org, 
+	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 28, 2024 at 06:08:15AM +0000, Jason-JH Lin (林睿祥) wrote:
-> On Mon, 2024-10-28 at 06:38 +0100, Greg KH wrote:
-> > External email : Please do not click links or open attachments until
-> > you have verified the sender or the content.
-> > 
-> > 
-> > On Thu, Oct 24, 2024 at 06:30:01PM +0800, Jason-JH.Lin via B4 Relay
-> > wrote:
-> > > From: "Jason-JH.Lin" <jason-jh.lin@mediatek.com>
-> > > 
-> > > This reverts commit ac88a1f41f93499df6f50fd18ea835e6ff4f3200.
-> > > 
-> > > Reason for revert:
-> > > 1. The commit [1] does not land on linux-5.15, so this patch does
-> > > not
-> > > fix anything.
-> > > 
-> > > 2. Since the fw_device improvements series [2] does not land on
-> > > linux-5.15, using device_set_fwnode() causes the panel to flash
-> > > during
-> > > bootup.
-> > > 
-> > > Incorrect link management may lead to incorrect device
-> > > initialization,
-> > > affecting firmware node links and consumer relationships.
-> > > The fwnode setting of panel to the DSI device would cause a DSI
-> > > initialization error without series[2], so this patch was reverted
-> > > to
-> > > avoid using the incomplete fw_devlink functionality.
-> > > 
-> > > [1] commit 3fb16866b51d ("driver core: fw_devlink: Make cycle
-> > > detection more robust")
-> > > [2] Link: 
-> > > https://lore.kernel.org/all/20230207014207.1678715-1-saravanak@google.com
-> > > 
-> > > Cc: stable@vger.kernel.org # 5.15.169
-> > 
-> > What about 5.10.y and 5.4.y as well?  Aren't those also affected?
-> 
-> Oh, Yes.
-> 
-> I'll send v3 for these versions as well.
+On Sat, Oct 12, 2024 at 3:22=E2=80=AFAM Javier Carrasco
+<javier.carrasco.cruz@gmail.com> wrote:
+>
+> Early exits (goto, break, return) from for_each_child_of_node() required
+> an explicit call to of_node_put(), which was not introduced with the
+> break if cnt =3D=3D MAX_CRTC.
+>
+> Add the missing of_node_put() before the break.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: d761b9450e31 ("drm/mediatek: Add cnt checking for coverity issue")
+>
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-Thank you.
-
-> BTW, how can I know what other branches should I revert the patch as
-> well? Just in case I missed it in another branch.
-
-You can look at all the branches to verify if it has been applied or
-not.  There are some tools that do this for you, I use the one I created
-that can be found at:
-	https://git.sr.ht/~gregkh/linux-stable_commit_tree
-
-thanks,
-
-greg k-h
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
 
