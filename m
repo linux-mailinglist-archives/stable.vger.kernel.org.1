@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-88540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2B809B266B
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCB9C9B277F
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:48:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D979E1F21F74
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40B011F248DF
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A28518E740;
-	Mon, 28 Oct 2024 06:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42C418DF80;
+	Mon, 28 Oct 2024 06:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWy+zABH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Di9q6n4q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46CD12C697;
-	Mon, 28 Oct 2024 06:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8F28837;
+	Mon, 28 Oct 2024 06:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097564; cv=none; b=g0ldV5QNA2ULN5nEzR/IxmymDtmfedfeUIGtr1JpBhVcuONjDJclOlbav7LmhBcjYfkCwVqCDaor04iZ+JpJh8wvJNYpOQ5/bB2mWDpU0cto08BJBsPtrcKGM1xK1iWPVP9VSM3Qs8a7XhkmqDND60mOYZzncPUshcKpkgd01Ww=
+	t=1730098126; cv=none; b=H7DT8VJSuwl4eSRujGh7kEwloP8FiFZjTPCfIuV8UI5iie2LEwJ4UTajpqL8UlS+rwM+sWLYT1Q6QYPMT87MLn+Jb4R1mtn91DpPyhyxhCYLJerqPsPiiReUVDLUCX2d7S8as1kJILl+QuFiQ+wQ8dQ2pQtHgwSkz1TCqwHg+Yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097564; c=relaxed/simple;
-	bh=c4pXM+k2ef6QmbLOBGZ7r9e4AuLwhOX3jaGsNxTvck4=;
+	s=arc-20240116; t=1730098126; c=relaxed/simple;
+	bh=vGmrivaPgr9d2JxZ8HZThWoGzEpcE+gqSdaTQbL9yeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fckXOX4hk/srXjhvr9U/jncLb9srUpepP5mjZZRkBUowdZXiZOGvvv3ARwD6R/+1tIHXPBHwIYA4xlJUfR82KGcYko64T87yvvSaavV3I6c3awPBM2iApVAg9g2NOwieoFcNdx9oTqtQrvCu7WciRcYma7zKl6jN+mw8Hr8o4Bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWy+zABH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED25C4CEC3;
-	Mon, 28 Oct 2024 06:39:23 +0000 (UTC)
+	 MIME-Version; b=nPbLpoQfE2sP8GfVA9wtitAaSFIaj+SCenCT6/O2VovVn6m4vFmO5R7Eor9F73ZJD8/eZr/9kOcBRw+/dFQzveA53Q6Me54CPaHE8VYOTIJIHULDU66+9S6CVbTFTJQsA1SKJDh65tw4ydZEq73Uj05iQJ9WjnzFSyGe8pk2reA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Di9q6n4q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 113F4C4CEC3;
+	Mon, 28 Oct 2024 06:48:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097564;
-	bh=c4pXM+k2ef6QmbLOBGZ7r9e4AuLwhOX3jaGsNxTvck4=;
+	s=korg; t=1730098126;
+	bh=vGmrivaPgr9d2JxZ8HZThWoGzEpcE+gqSdaTQbL9yeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lWy+zABH3mFDU7RnhBoDApC3vkr/qBZZRH3Mqdx4cbHCOf55enHPexMLqXW39JbzL
-	 DS3BikXujcG10HJYiw67zQQ5rEKGfOU6BKU3z4B0tMk+NkF7IMkG1V3qm6kGeWt4vY
-	 o96FIwHHGYNEYRVoV58ixeJagr1hQUUmmFbIMBS4=
+	b=Di9q6n4q8dgPpcYYoFAT8uvU01s2R31Un4PI8phrhg/aMdgEtLngqhlpHKhOMcMqS
+	 y5PdBiQxLai/l1J0cHgBUz8MHUpP/3yLirnoa8KQ28rxGoJjamksDNnuqBZ5LjKHN0
+	 yMAeHK4FiHTT62YVcsZDbfPeIsCA4Oi59mOk93mQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai Shen <KaiShen@linux.alibaba.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/208] net/smc: Fix memory leak when using percpu refs
-Date: Mon, 28 Oct 2024 07:23:48 +0100
-Message-ID: <20241028062307.840142580@linuxfoundation.org>
+Subject: [PATCH 6.11 087/261] usb: typec: altmode should keep reference to parent
+Date: Mon, 28 Oct 2024 07:23:49 +0100
+Message-ID: <20241028062314.215634166@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +63,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Shen <KaiShen@linux.alibaba.com>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-[ Upstream commit 25c12b459db8365fee84b63f3dd7910f70627f29 ]
+[ Upstream commit befab3a278c59db0cc88c8799638064f6d3fd6f8 ]
 
-This patch adds missing percpu_ref_exit when releasing percpu refs.
-When releasing percpu refs, percpu_ref_exit should be called.
-Otherwise, memory leak happens.
+The altmode device release refers to its parent device, but without keeping
+a reference to it.
 
-Fixes: 79a22238b4f2 ("net/smc: Use percpu ref for wr tx reference")
-Signed-off-by: Kai Shen <KaiShen@linux.alibaba.com>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
-Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
-Link: https://patch.msgid.link/20241010115624.7769-1-KaiShen@linux.alibaba.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+When registering the altmode, get a reference to the parent and put it in
+the release function.
+
+Before this fix, when using CONFIG_DEBUG_KOBJECT_RELEASE, we see issues
+like this:
+
+[   43.572860] kobject: 'port0.0' (ffff8880057ba008): kobject_release, parent 0000000000000000 (delayed 3000)
+[   43.573532] kobject: 'port0.1' (ffff8880057bd008): kobject_release, parent 0000000000000000 (delayed 1000)
+[   43.574407] kobject: 'port0' (ffff8880057b9008): kobject_release, parent 0000000000000000 (delayed 3000)
+[   43.575059] kobject: 'port1.0' (ffff8880057ca008): kobject_release, parent 0000000000000000 (delayed 4000)
+[   43.575908] kobject: 'port1.1' (ffff8880057c9008): kobject_release, parent 0000000000000000 (delayed 4000)
+[   43.576908] kobject: 'typec' (ffff8880062dbc00): kobject_release, parent 0000000000000000 (delayed 4000)
+[   43.577769] kobject: 'port1' (ffff8880057bf008): kobject_release, parent 0000000000000000 (delayed 3000)
+[   46.612867] ==================================================================
+[   46.613402] BUG: KASAN: slab-use-after-free in typec_altmode_release+0x38/0x129
+[   46.614003] Read of size 8 at addr ffff8880057b9118 by task kworker/2:1/48
+[   46.614538]
+[   46.614668] CPU: 2 UID: 0 PID: 48 Comm: kworker/2:1 Not tainted 6.12.0-rc1-00138-gedbae730ad31 #535
+[   46.615391] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+[   46.616042] Workqueue: events kobject_delayed_cleanup
+[   46.616446] Call Trace:
+[   46.616648]  <TASK>
+[   46.616820]  dump_stack_lvl+0x5b/0x7c
+[   46.617112]  ? typec_altmode_release+0x38/0x129
+[   46.617470]  print_report+0x14c/0x49e
+[   46.617769]  ? rcu_read_unlock_sched+0x56/0x69
+[   46.618117]  ? __virt_addr_valid+0x19a/0x1ab
+[   46.618456]  ? kmem_cache_debug_flags+0xc/0x1d
+[   46.618807]  ? typec_altmode_release+0x38/0x129
+[   46.619161]  kasan_report+0x8d/0xb4
+[   46.619447]  ? typec_altmode_release+0x38/0x129
+[   46.619809]  ? process_scheduled_works+0x3cb/0x85f
+[   46.620185]  typec_altmode_release+0x38/0x129
+[   46.620537]  ? process_scheduled_works+0x3cb/0x85f
+[   46.620907]  device_release+0xaf/0xf2
+[   46.621206]  kobject_delayed_cleanup+0x13b/0x17a
+[   46.621584]  process_scheduled_works+0x4f6/0x85f
+[   46.621955]  ? __pfx_process_scheduled_works+0x10/0x10
+[   46.622353]  ? hlock_class+0x31/0x9a
+[   46.622647]  ? lock_acquired+0x361/0x3c3
+[   46.622956]  ? move_linked_works+0x46/0x7d
+[   46.623277]  worker_thread+0x1ce/0x291
+[   46.623582]  ? __kthread_parkme+0xc8/0xdf
+[   46.623900]  ? __pfx_worker_thread+0x10/0x10
+[   46.624236]  kthread+0x17e/0x190
+[   46.624501]  ? kthread+0xfb/0x190
+[   46.624756]  ? __pfx_kthread+0x10/0x10
+[   46.625015]  ret_from_fork+0x20/0x40
+[   46.625268]  ? __pfx_kthread+0x10/0x10
+[   46.625532]  ret_from_fork_asm+0x1a/0x30
+[   46.625805]  </TASK>
+[   46.625953]
+[   46.626056] Allocated by task 678:
+[   46.626287]  kasan_save_stack+0x24/0x44
+[   46.626555]  kasan_save_track+0x14/0x2d
+[   46.626811]  __kasan_kmalloc+0x3f/0x4d
+[   46.627049]  __kmalloc_noprof+0x1bf/0x1f0
+[   46.627362]  typec_register_port+0x23/0x491
+[   46.627698]  cros_typec_probe+0x634/0xbb6
+[   46.628026]  platform_probe+0x47/0x8c
+[   46.628311]  really_probe+0x20a/0x47d
+[   46.628605]  device_driver_attach+0x39/0x72
+[   46.628940]  bind_store+0x87/0xd7
+[   46.629213]  kernfs_fop_write_iter+0x1aa/0x218
+[   46.629574]  vfs_write+0x1d6/0x29b
+[   46.629856]  ksys_write+0xcd/0x13b
+[   46.630128]  do_syscall_64+0xd4/0x139
+[   46.630420]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   46.630820]
+[   46.630946] Freed by task 48:
+[   46.631182]  kasan_save_stack+0x24/0x44
+[   46.631493]  kasan_save_track+0x14/0x2d
+[   46.631799]  kasan_save_free_info+0x3f/0x4d
+[   46.632144]  __kasan_slab_free+0x37/0x45
+[   46.632474]  kfree+0x1d4/0x252
+[   46.632725]  device_release+0xaf/0xf2
+[   46.633017]  kobject_delayed_cleanup+0x13b/0x17a
+[   46.633388]  process_scheduled_works+0x4f6/0x85f
+[   46.633764]  worker_thread+0x1ce/0x291
+[   46.634065]  kthread+0x17e/0x190
+[   46.634324]  ret_from_fork+0x20/0x40
+[   46.634621]  ret_from_fork_asm+0x1a/0x30
+
+Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241004123738.2964524-1-cascardo@igalia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_wr.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/usb/typec/class.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/smc/smc_wr.c b/net/smc/smc_wr.c
-index 0021065a600a0..994c0cd4fddbf 100644
---- a/net/smc/smc_wr.c
-+++ b/net/smc/smc_wr.c
-@@ -648,8 +648,10 @@ void smc_wr_free_link(struct smc_link *lnk)
- 	smc_wr_tx_wait_no_pending_sends(lnk);
- 	percpu_ref_kill(&lnk->wr_reg_refs);
- 	wait_for_completion(&lnk->reg_ref_comp);
-+	percpu_ref_exit(&lnk->wr_reg_refs);
- 	percpu_ref_kill(&lnk->wr_tx_refs);
- 	wait_for_completion(&lnk->tx_ref_comp);
-+	percpu_ref_exit(&lnk->wr_tx_refs);
+diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
+index 9262fcd4144f8..d61b4c74648df 100644
+--- a/drivers/usb/typec/class.c
++++ b/drivers/usb/typec/class.c
+@@ -519,6 +519,7 @@ static void typec_altmode_release(struct device *dev)
+ 		typec_altmode_put_partner(alt);
  
- 	if (lnk->wr_rx_dma_addr) {
- 		ib_dma_unmap_single(ibdev, lnk->wr_rx_dma_addr,
-@@ -912,11 +914,13 @@ int smc_wr_create_link(struct smc_link *lnk)
- 	init_waitqueue_head(&lnk->wr_reg_wait);
- 	rc = percpu_ref_init(&lnk->wr_reg_refs, smcr_wr_reg_refs_free, 0, GFP_KERNEL);
- 	if (rc)
--		goto dma_unmap;
-+		goto cancel_ref;
- 	init_completion(&lnk->reg_ref_comp);
- 	init_waitqueue_head(&lnk->wr_rx_empty_wait);
- 	return rc;
+ 	altmode_id_remove(alt->adev.dev.parent, alt->id);
++	put_device(alt->adev.dev.parent);
+ 	kfree(alt);
+ }
  
-+cancel_ref:
-+	percpu_ref_exit(&lnk->wr_tx_refs);
- dma_unmap:
- 	if (lnk->wr_rx_v2_dma_addr) {
- 		ib_dma_unmap_single(ibdev, lnk->wr_rx_v2_dma_addr,
+@@ -568,6 +569,8 @@ typec_register_altmode(struct device *parent,
+ 	alt->adev.dev.type = &typec_altmode_dev_type;
+ 	dev_set_name(&alt->adev.dev, "%s.%u", dev_name(parent), id);
+ 
++	get_device(alt->adev.dev.parent);
++
+ 	/* Link partners and plugs with the ports */
+ 	if (!is_port)
+ 		typec_altmode_set_partner(alt);
 -- 
 2.43.0
 
