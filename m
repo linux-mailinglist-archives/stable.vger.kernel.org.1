@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-89006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A4859B2DA1
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:57:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 534789B2DA3
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:57:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E0091C21522
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 10:57:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F40971F21605
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 10:57:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2DDE1D86ED;
-	Mon, 28 Oct 2024 10:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8DF31DE8A7;
+	Mon, 28 Oct 2024 10:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dzB1h5uo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CFYZb920"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDBE1DE4EA;
-	Mon, 28 Oct 2024 10:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802781DE896;
+	Mon, 28 Oct 2024 10:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730112712; cv=none; b=dxjrkYbTa1VmF56pmynfXuQVBIkFtC21eBUlCDrwnusO35+CmjHxb38Wn4fvIIDYyaduJIkrTPFh84vZiA0GUVFs1yNRU8z4pQfKJsFPIVHX6dJLLUMn4Jqj/XZZ/C26v/8VV0f+iyCD18PiDgvQdP+HjaO8n3VlxGKSPX7IyBs=
+	t=1730112714; cv=none; b=TGb5NcQrRWOE3mGm4drdhAqrtu8nreIOVtKzuz2+zJ5zvXU3nPQwW8NEdU63vQfO+EUcJ+hAMXAQUwTBrnKqr8HC/AqhHNHXuPS6DMC8xiN+hfgpyYyIzbhAQ0Ojh3EpJA+iOQcnbobq3AHFWNGdATIH5gx3XmdTHaqlAeS4RHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730112712; c=relaxed/simple;
-	bh=7CXEDfxOh5O+u15aWw6ujchv9sh90OKuVDVKVuAf0sg=;
+	s=arc-20240116; t=1730112714; c=relaxed/simple;
+	bh=OWxOGNmUPDrLPuT3wSvfntoRXHJZRuAiTlwBH3kokJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qaa9tw37Ng3OlDv43JVp2K+OadGSlrCQ6yYVeoO5ESPeSAzg/cwrkoqeDZOqxmG+sxqvxu0qZ8/dy2FqOk5OdkdIgdK2kNf7UuABBkByK06diBxDXtB2Vk4RR5qrdar6Yb2qPoEmOnAhkKQCeLa1C7VuFxlWfQOm31jsLVYWRR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dzB1h5uo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15C3C4CEE3;
-	Mon, 28 Oct 2024 10:51:50 +0000 (UTC)
+	 MIME-Version; b=PB8wm/hKE/3RUZ0hY6NmyDJ/8EO1IKJTbVpT3NxBwDjL5NhbP84it67yDkxMjvcaGIDp122zpgSFCc7ZuZ+H2jsxXCfuFQoEyZaROJk55rljfTf1D7DudJq9/Ru67j3hMeLBPqLdgIbRkk2VegIfrZjo6Oi7+g17AxB5lUfCmGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CFYZb920; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3975C4CEC3;
+	Mon, 28 Oct 2024 10:51:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730112712;
-	bh=7CXEDfxOh5O+u15aWw6ujchv9sh90OKuVDVKVuAf0sg=;
+	s=k20201202; t=1730112714;
+	bh=OWxOGNmUPDrLPuT3wSvfntoRXHJZRuAiTlwBH3kokJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dzB1h5uofJgYDGfH8KpVDMU6Ka+cCd0x0Razm8fr29FkcmM3DQysrrnOpr3hs2Pxm
-	 K6Y49AE/uzKZir+uO5ScycMbu5AlMwxT+RAAiuDj7qKP1B6IyLIozPNa83brFJTwVt
-	 IMW56idwCJ2R9eEyE19SS+JDgabpl/hKcOg+nvQu0D4qzBJ47ZSwp/AiRXMDJQJK5F
-	 INJRZtstSOCXZUZeMklLcgs8TjpstnOyU9ry9OBQN+0R+U9S5RbsvogNW5yDahvwKY
-	 MCqZ7ouYTlhH5wAX+WqeJYxFGFFayKvvxeM+9v7xKoENyh6PXH+zrv2ropYTYVU/84
-	 hpWhyQpytQ2Ew==
+	b=CFYZb920CGPX7sVtjYlZfcgoDy1A43SRU62DqIRMMTajhwccKxHm+c8OgqFk41Tw5
+	 fn2o1V0l06wlklJK4Rm4IUgAEwVdI4gr1Wtv1ls+tCKNrAg17LFKfVVQ5pLxzXAed2
+	 2wtRYkXsQBVOSP6PLQe3vi0PN9TUyj8KtLod6F70WGaA36PBsicyJcfnF4ZJjCo3yz
+	 q5f0b6z0Zsh3TLqRQnEyuvGbGGLa2wqx2/NTXhA8vsrJ1/dZDFIhdgkoiGvQqWL8sz
+	 c0wPPAULAYz03CxkdgRLTmJvrWfQY9dzCucRqltEaL9ynKcGSQ8JWAS98hgJgPMZrW
+	 zg+KDicpusiww==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Huacai Chen <chenhuacai@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>,
-	shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.11 24/32] ASoC: fsl_micfil: Add sample rate constraint
-Date: Mon, 28 Oct 2024 06:50:06 -0400
-Message-ID: <20241028105050.3559169-24-sashal@kernel.org>
+	zhaotianrui@loongson.cn,
+	chenhuacai@kernel.org,
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	rostedt@goodmis.org,
+	kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-rt-devel@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.11 25/32] LoongArch: KVM: Mark hrtimer to expire in hard interrupt context
+Date: Mon, 28 Oct 2024 06:50:07 -0400
+Message-ID: <20241028105050.3559169-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241028105050.3559169-1-sashal@kernel.org>
 References: <20241028105050.3559169-1-sashal@kernel.org>
@@ -71,106 +72,99 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.5
 Content-Transfer-Encoding: 8bit
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit b9a8ecf81066e01e8a3de35517481bc5aa0439e5 ]
+[ Upstream commit 73adbd92f3223dc0c3506822b71c6b259d5d537b ]
 
-On some platforms, for example i.MX93, there is only one
-audio PLL source, so some sample rate can't be supported.
-If the PLL source is used for 8kHz series rates, then 11kHz
-series rates can't be supported.
+Like commit 2c0d278f3293f ("KVM: LAPIC: Mark hrtimer to expire in hard
+interrupt context") and commit 9090825fa9974 ("KVM: arm/arm64: Let the
+timer expire in hardirq context on RT"), On PREEMPT_RT enabled kernels
+unmarked hrtimers are moved into soft interrupt expiry mode by default.
+Then the timers are canceled from an preempt-notifier which is invoked
+with disabled preemption which is not allowed on PREEMPT_RT.
 
-So add constraints according to the frequency of available
-clock sources, then alsa-lib will help to convert the
-unsupported rate for the driver.
+The timer callback is short so in could be invoked in hard-IRQ context.
+So let the timer expire on hard-IRQ context even on -RT.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/1728884313-6778-1-git-send-email-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This fix a "scheduling while atomic" bug for PREEMPT_RT enabled kernels:
+
+ BUG: scheduling while atomic: qemu-system-loo/1011/0x00000002
+ Modules linked in: amdgpu rfkill nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat ns
+ CPU: 1 UID: 0 PID: 1011 Comm: qemu-system-loo Tainted: G        W          6.12.0-rc2+ #1774
+ Tainted: [W]=WARN
+ Hardware name: Loongson Loongson-3A5000-7A1000-1w-CRB/Loongson-LS3A5000-7A1000-1w-CRB, BIOS vUDK2018-LoongArch-V2.0.0-prebeta9 10/21/2022
+ Stack : ffffffffffffffff 0000000000000000 9000000004e3ea38 9000000116744000
+         90000001167475a0 0000000000000000 90000001167475a8 9000000005644830
+         90000000058dc000 90000000058dbff8 9000000116747420 0000000000000001
+         0000000000000001 6a613fc938313980 000000000790c000 90000001001c1140
+         00000000000003fe 0000000000000001 000000000000000d 0000000000000003
+         0000000000000030 00000000000003f3 000000000790c000 9000000116747830
+         90000000057ef000 0000000000000000 9000000005644830 0000000000000004
+         0000000000000000 90000000057f4b58 0000000000000001 9000000116747868
+         900000000451b600 9000000005644830 9000000003a13998 0000000010000020
+         00000000000000b0 0000000000000004 0000000000000000 0000000000071c1d
+         ...
+ Call Trace:
+ [<9000000003a13998>] show_stack+0x38/0x180
+ [<9000000004e3ea34>] dump_stack_lvl+0x84/0xc0
+ [<9000000003a71708>] __schedule_bug+0x48/0x60
+ [<9000000004e45734>] __schedule+0x1114/0x1660
+ [<9000000004e46040>] schedule_rtlock+0x20/0x60
+ [<9000000004e4e330>] rtlock_slowlock_locked+0x3f0/0x10a0
+ [<9000000004e4f038>] rt_spin_lock+0x58/0x80
+ [<9000000003b02d68>] hrtimer_cancel_wait_running+0x68/0xc0
+ [<9000000003b02e30>] hrtimer_cancel+0x70/0x80
+ [<ffff80000235eb70>] kvm_restore_timer+0x50/0x1a0 [kvm]
+ [<ffff8000023616c8>] kvm_arch_vcpu_load+0x68/0x2a0 [kvm]
+ [<ffff80000234c2d4>] kvm_sched_in+0x34/0x60 [kvm]
+ [<9000000003a749a0>] finish_task_switch.isra.0+0x140/0x2e0
+ [<9000000004e44a70>] __schedule+0x450/0x1660
+ [<9000000004e45cb0>] schedule+0x30/0x180
+ [<ffff800002354c70>] kvm_vcpu_block+0x70/0x120 [kvm]
+ [<ffff800002354d80>] kvm_vcpu_halt+0x60/0x3e0 [kvm]
+ [<ffff80000235b194>] kvm_handle_gspr+0x3f4/0x4e0 [kvm]
+ [<ffff80000235f548>] kvm_handle_exit+0x1c8/0x260 [kvm]
+
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_micfil.c | 38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ arch/loongarch/kvm/timer.c | 7 ++++---
+ arch/loongarch/kvm/vcpu.c  | 2 +-
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
-index 22b240a70ad48..49afc59ed4ed9 100644
---- a/sound/soc/fsl/fsl_micfil.c
-+++ b/sound/soc/fsl/fsl_micfil.c
-@@ -28,6 +28,13 @@
+diff --git a/arch/loongarch/kvm/timer.c b/arch/loongarch/kvm/timer.c
+index 74a4b5c272d60..32dc213374bea 100644
+--- a/arch/loongarch/kvm/timer.c
++++ b/arch/loongarch/kvm/timer.c
+@@ -161,10 +161,11 @@ static void _kvm_save_timer(struct kvm_vcpu *vcpu)
+ 	if (kvm_vcpu_is_blocking(vcpu)) {
  
- #define MICFIL_OSR_DEFAULT	16
- 
-+#define MICFIL_NUM_RATES	7
-+#define MICFIL_CLK_SRC_NUM	3
-+/* clock source ids */
-+#define MICFIL_AUDIO_PLL1	0
-+#define MICFIL_AUDIO_PLL2	1
-+#define MICFIL_CLK_EXT3		2
-+
- enum quality {
- 	QUALITY_HIGH,
- 	QUALITY_MEDIUM,
-@@ -45,9 +52,12 @@ struct fsl_micfil {
- 	struct clk *mclk;
- 	struct clk *pll8k_clk;
- 	struct clk *pll11k_clk;
-+	struct clk *clk_src[MICFIL_CLK_SRC_NUM];
- 	struct snd_dmaengine_dai_dma_data dma_params_rx;
- 	struct sdma_peripheral_config sdmacfg;
- 	struct snd_soc_card *card;
-+	struct snd_pcm_hw_constraint_list constraint_rates;
-+	unsigned int constraint_rates_list[MICFIL_NUM_RATES];
- 	unsigned int dataline;
- 	char name[32];
- 	int irq[MICFIL_IRQ_LINES];
-@@ -449,12 +459,34 @@ static int fsl_micfil_startup(struct snd_pcm_substream *substream,
- 			      struct snd_soc_dai *dai)
- {
- 	struct fsl_micfil *micfil = snd_soc_dai_get_drvdata(dai);
-+	unsigned int rates[MICFIL_NUM_RATES] = {8000, 11025, 16000, 22050, 32000, 44100, 48000};
-+	int i, j, k = 0;
-+	u64 clk_rate;
- 
- 	if (!micfil) {
- 		dev_err(dai->dev, "micfil dai priv_data not set\n");
- 		return -EINVAL;
+ 		/*
+-		 * HRTIMER_MODE_PINNED is suggested since vcpu may run in
+-		 * the same physical cpu in next time
++		 * HRTIMER_MODE_PINNED_HARD is suggested since vcpu may run in
++		 * the same physical cpu in next time, and the timer should run
++		 * in hardirq context even in the PREEMPT_RT case.
+ 		 */
+-		hrtimer_start(&vcpu->arch.swtimer, expire, HRTIMER_MODE_ABS_PINNED);
++		hrtimer_start(&vcpu->arch.swtimer, expire, HRTIMER_MODE_ABS_PINNED_HARD);
  	}
- 
-+	micfil->constraint_rates.list = micfil->constraint_rates_list;
-+	micfil->constraint_rates.count = 0;
-+
-+	for (j = 0; j < MICFIL_NUM_RATES; j++) {
-+		for (i = 0; i < MICFIL_CLK_SRC_NUM; i++) {
-+			clk_rate = clk_get_rate(micfil->clk_src[i]);
-+			if (clk_rate != 0 && do_div(clk_rate, rates[j]) == 0) {
-+				micfil->constraint_rates_list[k++] = rates[j];
-+				micfil->constraint_rates.count++;
-+				break;
-+			}
-+		}
-+	}
-+
-+	if (micfil->constraint_rates.count > 0)
-+		snd_pcm_hw_constraint_list(substream->runtime, 0,
-+					   SNDRV_PCM_HW_PARAM_RATE,
-+					   &micfil->constraint_rates);
-+
- 	return 0;
  }
  
-@@ -1134,6 +1166,12 @@ static int fsl_micfil_probe(struct platform_device *pdev)
- 	fsl_asoc_get_pll_clocks(&pdev->dev, &micfil->pll8k_clk,
- 				&micfil->pll11k_clk);
+diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+index 6905283f535b9..9218fc521c22d 100644
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -1144,7 +1144,7 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+ 	vcpu->arch.vpid = 0;
+ 	vcpu->arch.flush_gpa = INVALID_GPA;
  
-+	micfil->clk_src[MICFIL_AUDIO_PLL1] = micfil->pll8k_clk;
-+	micfil->clk_src[MICFIL_AUDIO_PLL2] = micfil->pll11k_clk;
-+	micfil->clk_src[MICFIL_CLK_EXT3] = devm_clk_get(&pdev->dev, "clkext3");
-+	if (IS_ERR(micfil->clk_src[MICFIL_CLK_EXT3]))
-+		micfil->clk_src[MICFIL_CLK_EXT3] = NULL;
-+
- 	/* init regmap */
- 	regs = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
- 	if (IS_ERR(regs))
+-	hrtimer_init(&vcpu->arch.swtimer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED);
++	hrtimer_init(&vcpu->arch.swtimer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED_HARD);
+ 	vcpu->arch.swtimer.function = kvm_swtimer_wakeup;
+ 
+ 	vcpu->arch.handle_exit = kvm_handle_exit;
 -- 
 2.43.0
 
