@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D809B27DA
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:51:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A1C89B2612
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40709B213B3
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:51:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 206D92822A0
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE77D18F2DD;
-	Mon, 28 Oct 2024 06:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5460118EFF1;
+	Mon, 28 Oct 2024 06:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0djluqxX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fl1+n+8E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEA418F2C3;
-	Mon, 28 Oct 2024 06:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A7F15B10D;
+	Mon, 28 Oct 2024 06:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098301; cv=none; b=EjZmlzuv2qPRbvNtbt9zWfvrwTmvR9GhNYPQbGE0Bxu3CQHgu6AXJboFcEVRWs3EkN6Yg5+ZFOo2ZZjdlydagTAPlkUlt1IUknv+dPhHhKZJthOvnbnb49XyDnsAPxqAtN9J5aO0WJwBmaFN1KL7I1BjP9bnKOJbzg1lL1GgfPM=
+	t=1730097383; cv=none; b=lHtUEUj1+6u31bgjb9jbLl8RN0erdjPJYVgufQfukPHMoIBJJ+Hy9/YXnrX0IWfJDyPMAfl12yxluycGpYDIDTivoIVI6TCCZtZ0WWT7nDZoMmMC3OM9ju+In48SH2eGsf0t+sTrSVoHpAhLLamhaCgpNHSbumluEt9rtfUeL5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098301; c=relaxed/simple;
-	bh=3UeIMF9JVQv7KhXZ7s7O9tw/nvjKldOAYBv9vmZABa8=;
+	s=arc-20240116; t=1730097383; c=relaxed/simple;
+	bh=hnjfmTAALp/TBvv7X4yK89F56VJ15pRw8n9fSHGiz8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I18CSkdsAbdksndlw7/TMc0rM3xwSp0Cry5cFYl4jGsGjnP5ucv8ePi7FnZ5TSPzidSgR/lQ2h3CbH8uI31b19jsNfSuIHzKd3apBB+R3+fTP/Oqq66Y1TZ4EFU04lnaJ5UGwqKRiKtSCvoJtWH0ECatmFuA/ZqYC4DK2+iCwYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0djluqxX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF154C4CEC3;
-	Mon, 28 Oct 2024 06:51:40 +0000 (UTC)
+	 MIME-Version; b=Pi88nGnMMiWdpwBuyggOC0ShbvKuLVIo1wBLPvmwUhvm0gYsxpg2WVmGJwulAElnUU8xC2Df4L4NEuES+QeLcM3idhJBfm7eTFRCVZiMDyoxEev/TQhXqWwdFKW2l9dKqVVEhyvUqOVRRGGXz4tz6MH+dPMY1a+ATQDuFz2sz5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fl1+n+8E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1EAC4CEC3;
+	Mon, 28 Oct 2024 06:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098301;
-	bh=3UeIMF9JVQv7KhXZ7s7O9tw/nvjKldOAYBv9vmZABa8=;
+	s=korg; t=1730097382;
+	bh=hnjfmTAALp/TBvv7X4yK89F56VJ15pRw8n9fSHGiz8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0djluqxXfVD+jsAOQrYOC6btU8BTZ3l+JMR9YlNG5Fki896BVLPGiRP+qynRZN42m
-	 5KyVVvcFsyQ9CIuXp1XwfQkH25jHASl84f6Sh8nKHa7I9bJIjMisv8sigONKWD72Wz
-	 ZgWTo0I+Skcgk0wqzWYQCmm1x8piV/LJWu9d3HiY=
+	b=fl1+n+8EwtHxswAaa0hVczeKNID5GLLGT5okJIrS7UTHwCrTEOdSEuguPopkYbjqW
+	 cRfxlgFoMmKze4vO2eFG74Z5wwYGOLUqyBOd2eSsKvuVCs+1Vy47CtSoCiYp3UnkAl
+	 ovwIkhncu9xwbK9hQFv2MrOLeVwnbBAv1DUVWQ6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	stable <stable@kernel.org>,
+	Esben Haabendal <esben@geanix.com>,
+	Marek Vasut <marex@denx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 165/261] bpf: Remove MEM_UNINIT from skb/xdp MTU helpers
+Subject: [PATCH 6.1 070/137] serial: imx: Update mctrl old_status on RTSD interrupt
 Date: Mon, 28 Oct 2024 07:25:07 +0100
-Message-ID: <20241028062316.136031992@linuxfoundation.org>
+Message-ID: <20241028062300.696270787@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,124 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 14a3d3ef02ba53447d5112a2641aac0d10dc994f ]
+[ Upstream commit 40d7903386df4d18f04d90510ba90eedee260085 ]
 
-We can now undo parts of 4b3786a6c539 ("bpf: Zero former ARG_PTR_TO_{LONG,INT}
-args in case of error") as discussed in [0].
+When sending data using DMA at high baudrate (4 Mbdps in local test case) to
+a device with small RX buffer which keeps asserting RTS after every received
+byte, it is possible that the iMX UART driver would not recognize the falling
+edge of RTS input signal and get stuck, unable to transmit any more data.
 
-Given the BPF helpers now have MEM_WRITE tag, the MEM_UNINIT can be cleared.
+This condition happens when the following sequence of events occur:
+- imx_uart_mctrl_check() is called at some point and takes a snapshot of UART
+  control signal status into sport->old_status using imx_uart_get_hwmctrl().
+  The RTSS/TIOCM_CTS bit is of interest here (*).
+- DMA transfer occurs, the remote device asserts RTS signal after each byte.
+  The i.MX UART driver recognizes each such RTS signal change, raises an
+  interrupt with USR1 register RTSD bit set, which leads to invocation of
+  __imx_uart_rtsint(), which calls uart_handle_cts_change().
+  - If the RTS signal is deasserted, uart_handle_cts_change() clears
+    port->hw_stopped and unblocks the port for further data transfers.
+  - If the RTS is asserted, uart_handle_cts_change() sets port->hw_stopped
+    and blocks the port for further data transfers. This may occur as the
+    last interrupt of a transfer, which means port->hw_stopped remains set
+    and the port remains blocked (**).
+- Any further data transfer attempts will trigger imx_uart_mctrl_check(),
+  which will read current status of UART control signals by calling
+  imx_uart_get_hwmctrl() (***) and compare it with sport->old_status .
+  - If current status differs from sport->old_status for RTS signal,
+    uart_handle_cts_change() is called and possibly unblocks the port
+    by clearing port->hw_stopped .
+  - If current status does not differ from sport->old_status for RTS
+    signal, no action occurs. This may occur in case prior snapshot (*)
+    was taken before any transfer so the RTS is deasserted, current
+    snapshot (***) was taken after a transfer and therefore RTS is
+    deasserted again, which means current status and sport->old_status
+    are identical. In case (**) triggered when RTS got asserted, and
+    made port->hw_stopped set, the port->hw_stopped will remain set
+    because no change on RTS line is recognized by this driver and
+    uart_handle_cts_change() is not called from here to unblock the
+    port->hw_stopped.
 
-The mtu_len is an input as well as output argument, meaning, the BPF program
-has to set it to something. It cannot be uninitialized. Therefore, allowing
-uninitialized memory and zeroing it on error would be odd. It was done as
-an interim step in 4b3786a6c539 as the desired behavior could not have been
-expressed before the introduction of MEM_WRITE tag.
+Update sport->old_status in __imx_uart_rtsint() accordingly to make
+imx_uart_mctrl_check() detect such RTS change. Note that TIOCM_CAR
+and TIOCM_RI bits in sport->old_status do not suffer from this problem.
 
-Fixes: 4b3786a6c539 ("bpf: Zero former ARG_PTR_TO_{LONG,INT} args in case of error")
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/a86eb76d-f52f-dee4-e5d2-87e45de3e16f@iogearbox.net [0]
-Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20241021152809.33343-3-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: ceca629e0b48 ("[ARM] 2971/1: i.MX uart handle rts irq")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Esben Haabendal <esben@geanix.com>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Link: https://lore.kernel.org/r/20241002184133.19427-1-marex@denx.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 42 +++++++++++++++---------------------------
- 1 file changed, 15 insertions(+), 27 deletions(-)
+ drivers/tty/serial/imx.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index ddcf35e91a5e4..b2b551401bc29 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -6263,24 +6263,16 @@ BPF_CALL_5(bpf_skb_check_mtu, struct sk_buff *, skb,
- {
- 	int ret = BPF_MTU_CHK_RET_FRAG_NEEDED;
- 	struct net_device *dev = skb->dev;
--	int skb_len, dev_len;
--	int mtu = 0;
-+	int mtu, dev_len, skb_len;
+diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+index bba54ad0d434d..94e0781e00e80 100644
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -801,6 +801,21 @@ static irqreturn_t __imx_uart_rtsint(int irq, void *dev_id)
  
--	if (unlikely(flags & ~(BPF_MTU_CHK_SEGS))) {
--		ret = -EINVAL;
--		goto out;
--	}
--
--	if (unlikely(flags & BPF_MTU_CHK_SEGS && (len_diff || *mtu_len))) {
--		ret = -EINVAL;
--		goto out;
--	}
-+	if (unlikely(flags & ~(BPF_MTU_CHK_SEGS)))
-+		return -EINVAL;
-+	if (unlikely(flags & BPF_MTU_CHK_SEGS && (len_diff || *mtu_len)))
-+		return -EINVAL;
+ 	imx_uart_writel(sport, USR1_RTSD, USR1);
+ 	usr1 = imx_uart_readl(sport, USR1) & USR1_RTSS;
++	/*
++	 * Update sport->old_status here, so any follow-up calls to
++	 * imx_uart_mctrl_check() will be able to recognize that RTS
++	 * state changed since last imx_uart_mctrl_check() call.
++	 *
++	 * In case RTS has been detected as asserted here and later on
++	 * deasserted by the time imx_uart_mctrl_check() was called,
++	 * imx_uart_mctrl_check() can detect the RTS state change and
++	 * trigger uart_handle_cts_change() to unblock the port for
++	 * further TX transfers.
++	 */
++	if (usr1 & USR1_RTSS)
++		sport->old_status |= TIOCM_CTS;
++	else
++		sport->old_status &= ~TIOCM_CTS;
+ 	uart_handle_cts_change(&sport->port, usr1);
+ 	wake_up_interruptible(&sport->port.state->port.delta_msr_wait);
  
- 	dev = __dev_via_ifindex(dev, ifindex);
--	if (unlikely(!dev)) {
--		ret = -ENODEV;
--		goto out;
--	}
-+	if (unlikely(!dev))
-+		return -ENODEV;
- 
- 	mtu = READ_ONCE(dev->mtu);
- 	dev_len = mtu + dev->hard_header_len;
-@@ -6315,19 +6307,15 @@ BPF_CALL_5(bpf_xdp_check_mtu, struct xdp_buff *, xdp,
- 	struct net_device *dev = xdp->rxq->dev;
- 	int xdp_len = xdp->data_end - xdp->data;
- 	int ret = BPF_MTU_CHK_RET_SUCCESS;
--	int mtu = 0, dev_len;
-+	int mtu, dev_len;
- 
- 	/* XDP variant doesn't support multi-buffer segment check (yet) */
--	if (unlikely(flags)) {
--		ret = -EINVAL;
--		goto out;
--	}
-+	if (unlikely(flags))
-+		return -EINVAL;
- 
- 	dev = __dev_via_ifindex(dev, ifindex);
--	if (unlikely(!dev)) {
--		ret = -ENODEV;
--		goto out;
--	}
-+	if (unlikely(!dev))
-+		return -ENODEV;
- 
- 	mtu = READ_ONCE(dev->mtu);
- 	dev_len = mtu + dev->hard_header_len;
-@@ -6339,7 +6327,7 @@ BPF_CALL_5(bpf_xdp_check_mtu, struct xdp_buff *, xdp,
- 	xdp_len += len_diff; /* minus result pass check */
- 	if (xdp_len > dev_len)
- 		ret = BPF_MTU_CHK_RET_FRAG_NEEDED;
--out:
-+
- 	*mtu_len = mtu;
- 	return ret;
- }
-@@ -6350,7 +6338,7 @@ static const struct bpf_func_proto bpf_skb_check_mtu_proto = {
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type      = ARG_PTR_TO_CTX,
- 	.arg2_type      = ARG_ANYTHING,
--	.arg3_type      = ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
-+	.arg3_type      = ARG_PTR_TO_FIXED_SIZE_MEM | MEM_WRITE | MEM_ALIGNED,
- 	.arg3_size	= sizeof(u32),
- 	.arg4_type      = ARG_ANYTHING,
- 	.arg5_type      = ARG_ANYTHING,
-@@ -6362,7 +6350,7 @@ static const struct bpf_func_proto bpf_xdp_check_mtu_proto = {
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type      = ARG_PTR_TO_CTX,
- 	.arg2_type      = ARG_ANYTHING,
--	.arg3_type      = ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
-+	.arg3_type      = ARG_PTR_TO_FIXED_SIZE_MEM | MEM_WRITE | MEM_ALIGNED,
- 	.arg3_size	= sizeof(u32),
- 	.arg4_type      = ARG_ANYTHING,
- 	.arg5_type      = ARG_ANYTHING,
 -- 
 2.43.0
 
