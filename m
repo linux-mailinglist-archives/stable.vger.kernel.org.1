@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B1B79B2649
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:38:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C878D9B2791
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:49:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF9691F21ECD
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:38:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06F841C2156A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97AD618DF68;
-	Mon, 28 Oct 2024 06:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7059B18EFC9;
+	Mon, 28 Oct 2024 06:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yAKZscu2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDZrXqh5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A8518C03D;
-	Mon, 28 Oct 2024 06:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED4418E368;
+	Mon, 28 Oct 2024 06:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097492; cv=none; b=g5QGEk9eOJjYpo6CPV5OiePrKbFfxFOFQre//usCK1qap/5r2N1k2vWuSVrnCoKRSgfanZ1VQeu79d/CVpZt1o76/5ChkUyBtyrILIk1FVPd6gVjywF6EGTDMSy3aPkjRXHpbO4JyBTFUPN3X4FREYxzUOtUAoTktpc92TTji9A=
+	t=1730098160; cv=none; b=iTVDfPkQu27tAAu15CRfp/Y2w2SoaNQAbyLzCMttPHYFiWqXSHR1c+H2U4QmrXW2j0pfxowACjwnaE+5OtH6ReWG8hMixEVKs+50AFcMspOfNvXlxJe9Hxv0/poiNYsjSd7zL1oHikn6yS/ca2RbsNokkg3sKqklhWE4tAG4bng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097492; c=relaxed/simple;
-	bh=xvuClqpS7sVb8zhWL8bZ5nOcg7AbkmM/EnMWsQwdr1A=;
+	s=arc-20240116; t=1730098160; c=relaxed/simple;
+	bh=uMdTrMAmAacO/ZFV+XIz80fDnj3L/BPrb+miaxZ77SU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FFy+CAe+D2TZKLWEk7tiP0KEwvM2+iP8Dnf2Rm3YhsNz2xoj6kIiOcpHLbUAXVSqC/mYz9ddhJY5PKk/ndu/SZyVykneyzM1MfXVNo4jlTY8zTJDsJaaqUJrbe6zLhnWmAKSOsyRnlgedUav/AELTC0LBPp4JtlnK0htNFoL2G0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yAKZscu2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A34C4CEC3;
-	Mon, 28 Oct 2024 06:38:11 +0000 (UTC)
+	 MIME-Version; b=mOkzCXJ1bMD5DAEPco9MzszwKerCptwX7bG8vRvOsXYfqQhbXuhRwldpAoDEkgD8+ixsoHjKPFA1nKmp0hBeYS0CbLkWNnFKmK8sn/Ow+riM0YTu/hUa3ffpguVVyYR5PpzKmGUlkapoZjaCy7Xpn2/Kxvw33tXkSyfmKsTnqlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDZrXqh5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16CAC4CEC3;
+	Mon, 28 Oct 2024 06:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097492;
-	bh=xvuClqpS7sVb8zhWL8bZ5nOcg7AbkmM/EnMWsQwdr1A=;
+	s=korg; t=1730098160;
+	bh=uMdTrMAmAacO/ZFV+XIz80fDnj3L/BPrb+miaxZ77SU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yAKZscu2GGtPS3UM+o/LDTPnh9fzSwwDwtOpMokI+DQ7i3aCXN9stEDnnNtNqd9Ae
-	 u0Bm3XeWxIcS1yfNNz0LDEuZnKy98Zlf65q5wUkrHFj8QUZYyE73uBgxazWFOnzX1j
-	 oBLwQiyrWC6ZDiD6rgG1J9qp8xag5ddJHSLet8bo=
+	b=uDZrXqh51+aenqmtGkQASks7H80VykPiZN9/gCKl853UBNCxrFVNGZk/jO/+4u6Wj
+	 EizKNdyNCW8CzjfuzeGZMgmZD8TxzAGJx0q7d6bOjMOyrPoibP8HhbC6lcGEMRrMpS
+	 VmIssqg+OyJhxgp2VQ8ZFuET7goXB8HFnOWAFHsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Olsa <jolsa@kernel.org>,
-	Song Liu <song@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/208] selftests/bpf: Add cookies check for perf_event fill_link_info test
-Date: Mon, 28 Oct 2024 07:23:17 +0100
-Message-ID: <20241028062307.083165221@linuxfoundation.org>
+Subject: [PATCH 6.11 056/261] drm/msm: Allocate memory for disp snapshot with kvzalloc()
+Date: Mon, 28 Oct 2024 07:23:18 +0100
+Message-ID: <20241028062313.422204265@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit d74179708473c649c653f1db280e29875a532e99 ]
+[ Upstream commit e4a45582db1b792c57bdb52c45958264f7fcfbdc ]
 
-Now that we get cookies for perf_event probes, adding tests
-for cookie for kprobe/uprobe/tracepoint.
+With the "drm/msm: add a display mmu fault handler" series [1] we saw
+issues in the field where memory allocation was failing when
+allocating space for registers in msm_disp_state_dump_regs().
+Specifically we were seeing an order 5 allocation fail. It's not
+surprising that order 5 allocations will sometimes fail after the
+system has been up and running for a while.
 
-The perf_event test needs to be added completely and is coming
-in following change.
+There's no need here for contiguous memory. Change the allocation to
+kvzalloc() which should make it much less likely to fail.
 
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240119110505.400573-6-jolsa@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: 4538a38f654a ("selftests/bpf: fix perf_event link info name_len assertion")
+[1] https://lore.kernel.org/r/20240628214848.4075651-1-quic_abhinavk@quicinc.com/
+
+Fixes: 98659487b845 ("drm/msm: add support to take dpu snapshot")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/619658/
+Link: https://lore.kernel.org/r/20241014093605.2.I72441365ffe91f3dceb17db0a8ec976af8139590@changeid
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/bpf/prog_tests/fill_link_info.c | 26 +++++++++++++++----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/fill_link_info.c b/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
-index 7db7f9bd9d58e..9eb93258614f9 100644
---- a/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
-+++ b/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
-@@ -30,6 +30,8 @@ static noinline void uprobe_func(void)
- 	asm volatile ("");
- }
+diff --git a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
+index bb149281d31fa..4d55e3cf570f0 100644
+--- a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
++++ b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
+@@ -26,7 +26,7 @@ static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *b
+ 	end_addr = base_addr + aligned_len;
  
-+#define PERF_EVENT_COOKIE 0xdeadbeef
-+
- static int verify_perf_link_info(int fd, enum bpf_perf_event_type type, long addr,
- 				 ssize_t offset, ssize_t entry_offset)
- {
-@@ -61,6 +63,8 @@ static int verify_perf_link_info(int fd, enum bpf_perf_event_type type, long add
- 			ASSERT_EQ(info.perf_event.kprobe.addr, addr + entry_offset,
- 				  "kprobe_addr");
+ 	if (!(*reg))
+-		*reg = kzalloc(len_padded, GFP_KERNEL);
++		*reg = kvzalloc(len_padded, GFP_KERNEL);
  
-+		ASSERT_EQ(info.perf_event.kprobe.cookie, PERF_EVENT_COOKIE, "kprobe_cookie");
-+
- 		if (!info.perf_event.kprobe.func_name) {
- 			ASSERT_EQ(info.perf_event.kprobe.name_len, 0, "name_len");
- 			info.perf_event.kprobe.func_name = ptr_to_u64(&buf);
-@@ -80,6 +84,8 @@ static int verify_perf_link_info(int fd, enum bpf_perf_event_type type, long add
- 			goto again;
- 		}
+ 	if (*reg)
+ 		dump_addr = *reg;
+@@ -162,7 +162,7 @@ void msm_disp_state_free(void *data)
  
-+		ASSERT_EQ(info.perf_event.tracepoint.cookie, PERF_EVENT_COOKIE, "tracepoint_cookie");
-+
- 		err = strncmp(u64_to_ptr(info.perf_event.tracepoint.tp_name), TP_NAME,
- 			      strlen(TP_NAME));
- 		ASSERT_EQ(err, 0, "cmp_tp_name");
-@@ -95,6 +101,8 @@ static int verify_perf_link_info(int fd, enum bpf_perf_event_type type, long add
- 			goto again;
- 		}
- 
-+		ASSERT_EQ(info.perf_event.uprobe.cookie, PERF_EVENT_COOKIE, "uprobe_cookie");
-+
- 		err = strncmp(u64_to_ptr(info.perf_event.uprobe.file_name), UPROBE_FILE,
- 			      strlen(UPROBE_FILE));
- 			ASSERT_EQ(err, 0, "cmp_file_name");
-@@ -138,6 +146,7 @@ static void test_kprobe_fill_link_info(struct test_fill_link_info *skel,
- 	DECLARE_LIBBPF_OPTS(bpf_kprobe_opts, opts,
- 		.attach_mode = PROBE_ATTACH_MODE_LINK,
- 		.retprobe = type == BPF_PERF_EVENT_KRETPROBE,
-+		.bpf_cookie = PERF_EVENT_COOKIE,
- 	);
- 	ssize_t entry_offset = 0;
- 	struct bpf_link *link;
-@@ -162,10 +171,13 @@ static void test_kprobe_fill_link_info(struct test_fill_link_info *skel,
- 
- static void test_tp_fill_link_info(struct test_fill_link_info *skel)
- {
-+	DECLARE_LIBBPF_OPTS(bpf_tracepoint_opts, opts,
-+		.bpf_cookie = PERF_EVENT_COOKIE,
-+	);
- 	struct bpf_link *link;
- 	int link_fd, err;
- 
--	link = bpf_program__attach_tracepoint(skel->progs.tp_run, TP_CAT, TP_NAME);
-+	link = bpf_program__attach_tracepoint_opts(skel->progs.tp_run, TP_CAT, TP_NAME, &opts);
- 	if (!ASSERT_OK_PTR(link, "attach_tp"))
- 		return;
- 
-@@ -178,13 +190,17 @@ static void test_tp_fill_link_info(struct test_fill_link_info *skel)
- static void test_uprobe_fill_link_info(struct test_fill_link_info *skel,
- 				       enum bpf_perf_event_type type)
- {
-+	DECLARE_LIBBPF_OPTS(bpf_uprobe_opts, opts,
-+		.retprobe = type == BPF_PERF_EVENT_URETPROBE,
-+		.bpf_cookie = PERF_EVENT_COOKIE,
-+	);
- 	struct bpf_link *link;
- 	int link_fd, err;
- 
--	link = bpf_program__attach_uprobe(skel->progs.uprobe_run,
--					  type == BPF_PERF_EVENT_URETPROBE,
--					  0, /* self pid */
--					  UPROBE_FILE, uprobe_offset);
-+	link = bpf_program__attach_uprobe_opts(skel->progs.uprobe_run,
-+					       0, /* self pid */
-+					       UPROBE_FILE, uprobe_offset,
-+					       &opts);
- 	if (!ASSERT_OK_PTR(link, "attach_uprobe"))
- 		return;
+ 	list_for_each_entry_safe(block, tmp, &disp_state->blocks, node) {
+ 		list_del(&block->node);
+-		kfree(block->state);
++		kvfree(block->state);
+ 		kfree(block);
+ 	}
  
 -- 
 2.43.0
