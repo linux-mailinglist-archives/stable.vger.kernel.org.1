@@ -1,258 +1,144 @@
-Return-Path: <stable+bounces-89139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B6E89B3E9E
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 00:46:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17F8B9B3EAE
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 00:52:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DF911C217DC
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 23:46:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 499681C221A3
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 23:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B031FF5F7;
-	Mon, 28 Oct 2024 23:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471901F4272;
+	Mon, 28 Oct 2024 23:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rOcGpvsk"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="cfzYzDj1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496BE1FBC86
-	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 23:45:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E4B1D5171;
+	Mon, 28 Oct 2024 23:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730159144; cv=none; b=AFC1465ZlAL60xW8bXIAzyzJ5d/J9k+86XW+1VqskSV468PZJTze3qOMDx1GIET1GGGcW/6s2myzQxFVckngQwu2l8DvDthOh7b41HPEHeKNtZkjiQag0O5hdkp3ByVlK4DM0B38NLZSF5PNH+6rvrgCvbxsyDlHtAUyVf8Jc68=
+	t=1730159533; cv=none; b=R6VM0qCeSjXU4Gq9QISAwAjBJS8+rQyVKJN+ZqC/P9/8oF1pbxrws1ampKRKvlCYeGb1lQwskEaaTYQoLYplvpRvhiITO7nCgsbskWTS05FDL4Q3ikRaGAR4/2XAgybqsDUC0/b8u45L1uoM2SsIhpOv7WajNRNQqYTuX3bYRE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730159144; c=relaxed/simple;
-	bh=9V3FbFyXgQzKFK6AQW5eG6dWWdm+z29ILibwly8RDYw=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=P76Kq+9m8hulpj3q2+aIpha6Occ3aigg3Uy696006Tpe7zJbHCP0JG52HTODhK70lWLF4DtHimIjSX44ivPhKtOT29jzSrlB+YTPRz5iS4B3Val7hg1fRPFotvFcpN7XVIy1iAUxJp5nrUtAVd7WHFQp7Jhmt/A91BHKZNnlpHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rananta.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rOcGpvsk; arc=none smtp.client-ip=209.85.219.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--rananta.bounces.google.com
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e293150c2c6so10380780276.1
-        for <stable@vger.kernel.org>; Mon, 28 Oct 2024 16:45:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730159140; x=1730763940; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=weKc7pUE07xNeQr09+d551wOOvD9evRa1kruXuN5EzI=;
-        b=rOcGpvskRgru7OaFQkCJuHDTdR8+h4Wym5bxY7Wbcdat0cjT+T0i0mFMld7FXH9rBM
-         MIFojTIXypt1RoemeGV1WPMlRx+HzB0aHYh6kvDvpTYQ/Neft2rd5mfSfWb6vd/6ei2U
-         6ohI3lSzXvlgiF9wVYKLZ9boUwtzS4M4Irx96pF9+1hPr6J8RehOnSwJ4orJpj63/n/s
-         0uwiF2tBfkJWh88Sbgiew32sI2tuzg6UTxtTWWU35FaNmfVT1m1DDNEa5souS8QjtT/i
-         fYu5P0kN6R7wjkJAjZBCUADZAyEMQMtqSj8jwWUfCfn92JUQgw7iio2dQElhhKQqMO8a
-         f+Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730159140; x=1730763940;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=weKc7pUE07xNeQr09+d551wOOvD9evRa1kruXuN5EzI=;
-        b=iud7iE0WZAIk0vGGDj5SfQLtvL6FdHLvnjXc7H+B8NBOf8lRINZdkJU4L3a7Fw1TE6
-         hRawozEsCFsYCUVwBM0xDnvx1LFMKbNJ7qOm7oKQmyXlRNzDuUzJEDKcWSfFkGsl51JE
-         kdPT8J3r2VpXKc2Fpi8H7ZB51dURZ9KUqFmWeyABwSW7wWT6dCM/KsIisVSm48bdoX7X
-         sppL1LZNWnaOLq6jkXg4BE+5JSPubJTfUJUGIHBmhtYyxxjKbPtwp2m5p8cSaDWy+9sf
-         QBOtkAOG/ZRamB3o/doS5Z0YRB6ILselnPo7HsVru4zE3VA0q4NCL+1BrYDwddnziXFl
-         I6Cg==
-X-Forwarded-Encrypted: i=1; AJvYcCVHAW4j/V6sGQyrcnV2dEWmB7UXe4wp/MaHmYF51gMBJi+D2NqkVCufh9C+37pJoFJL4hFhcpc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVn8IFxIUQ00tCP/+VW9YVaLoxApCBFMHXVuxm41uGcfu6FCQ7
-	h68plZTK5dXO9ZOmMtd1MeC82Dv10K6TJzLLKKiWzMlrJt+Dmu/CKeIoCYb59GqGE6U8meiJ8F3
-	awoo0rQ==
-X-Google-Smtp-Source: AGHT+IF4LmiHNOFeP+dSBPOKHULSDdtDWGw1BAC4q4CWY/ss/tKZYDeGiq6b6X1zvQASXhcbrNhz5/FwP0y8
-X-Received: from rananta-linux.c.googlers.com ([fda3:e722:ac3:cc00:11b:3898:ac11:fac1])
- (user=rananta job=sendgmr) by 2002:a25:c50a:0:b0:e2b:e955:d57f with SMTP id
- 3f1490d57ef6-e3087bcecebmr5816276.7.1730159139417; Mon, 28 Oct 2024 16:45:39
- -0700 (PDT)
-Date: Mon, 28 Oct 2024 23:45:33 +0000
+	s=arc-20240116; t=1730159533; c=relaxed/simple;
+	bh=JQ/lrItjqcXm/4ktsrc19zrWcrH8BaO6JqbI7d3GTnQ=;
+	h=Date:To:From:Subject:Message-Id; b=Nl5meNuvXebNbrYOPo2yd0J6DQCrbamOd68ToC67uktVY1bZorVHTZWWlIjBZDxGNI9yuuH/0S1FucQP/Sy/H16jQKHRYdyWg/Xt0ESIDOzzmZOckbJCUHTg+57RgBJD6LfedZdIdwRPs2Q2X7S6Pd2ZUy96gH3Qt/XW4hBTcv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=cfzYzDj1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42146C4CEC3;
+	Mon, 28 Oct 2024 23:52:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1730159532;
+	bh=JQ/lrItjqcXm/4ktsrc19zrWcrH8BaO6JqbI7d3GTnQ=;
+	h=Date:To:From:Subject:From;
+	b=cfzYzDj1taYm1kyUe7izTNFgapsvhMD7OuYgFrHmBt+fkk/Ke5bjbFkdkOAeDsvLY
+	 RgqwL2YmQenFXDTZp5DNcoCCJa9mSpNd0j1scP8bZwEb+TruJdmPdeXjaIFH4okXGM
+	 1xWZ1eX+S+MjKd6DqZ8wAHHFXkYLhOY3lJM5bXzY=
+Date: Mon, 28 Oct 2024 16:52:11 -0700
+To: mm-commits@vger.kernel.org,ying.huang@intel.com,weixugc@google.com,stable@vger.kernel.org,shy828301@gmail.com,osalvador@suse.de,dave.hansen@linux.intel.com,gourry@gourry.net,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + vmscanmigrate-fix-double-decrement-on-node-stats-when-demoting-pages.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241028235212.42146C4CEC3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.47.0.163.g1226f6d8fa-goog
-Message-ID: <20241028234533.942542-1-rananta@google.com>
-Subject: [PATCH v2] KVM: arm64: Get rid of userspace_irqchip_in_use
-From: Raghavendra Rao Ananta <rananta@google.com>
-To: Oliver Upton <oliver.upton@linux.dev>, Marc Zyngier <maz@kernel.org>
-Cc: Raghavendra Rao Anata <rananta@google.com>, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	stable@vger.kernel.org, syzbot <syzkaller@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
 
-Improper use of userspace_irqchip_in_use led to syzbot hitting the
-following WARN_ON() in kvm_timer_update_irq():
 
-WARNING: CPU: 0 PID: 3281 at arch/arm64/kvm/arch_timer.c:459
-kvm_timer_update_irq+0x21c/0x394
-Call trace:
-  kvm_timer_update_irq+0x21c/0x394 arch/arm64/kvm/arch_timer.c:459
-  kvm_timer_vcpu_reset+0x158/0x684 arch/arm64/kvm/arch_timer.c:968
-  kvm_reset_vcpu+0x3b4/0x560 arch/arm64/kvm/reset.c:264
-  kvm_vcpu_set_target arch/arm64/kvm/arm.c:1553 [inline]
-  kvm_arch_vcpu_ioctl_vcpu_init arch/arm64/kvm/arm.c:1573 [inline]
-  kvm_arch_vcpu_ioctl+0x112c/0x1b3c arch/arm64/kvm/arm.c:1695
-  kvm_vcpu_ioctl+0x4ec/0xf74 virt/kvm/kvm_main.c:4658
-  vfs_ioctl fs/ioctl.c:51 [inline]
-  __do_sys_ioctl fs/ioctl.c:907 [inline]
-  __se_sys_ioctl fs/ioctl.c:893 [inline]
-  __arm64_sys_ioctl+0x108/0x184 fs/ioctl.c:893
-  __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
-  invoke_syscall+0x78/0x1b8 arch/arm64/kernel/syscall.c:49
-  el0_svc_common+0xe8/0x1b0 arch/arm64/kernel/syscall.c:132
-  do_el0_svc+0x40/0x50 arch/arm64/kernel/syscall.c:151
-  el0_svc+0x54/0x14c arch/arm64/kernel/entry-common.c:712
-  el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
-  el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
+The patch titled
+     Subject: vmscan,migrate: fix page count imbalance on node stats when demoting pages
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     vmscanmigrate-fix-double-decrement-on-node-stats-when-demoting-pages.patch
 
-The following sequence led to the scenario:
- - Userspace creates a VM and a vCPU.
- - The vCPU is initialized with KVM_ARM_VCPU_PMU_V3 during
-   KVM_ARM_VCPU_INIT.
- - Without any other setup, such as vGIC or vPMU, userspace issues
-   KVM_RUN on the vCPU. Since the vPMU is requested, but not setup,
-   kvm_arm_pmu_v3_enable() fails in kvm_arch_vcpu_run_pid_change().
-   As a result, KVM_RUN returns after enabling the timer, but before
-   incrementing 'userspace_irqchip_in_use':
-   kvm_arch_vcpu_run_pid_change()
-       ret = kvm_arm_pmu_v3_enable()
-           if (!vcpu->arch.pmu.created)
-               return -EINVAL;
-       if (ret)
-           return ret;
-       [...]
-       if (!irqchip_in_kernel(kvm))
-           static_branch_inc(&userspace_irqchip_in_use);
- - Userspace ignores the error and issues KVM_ARM_VCPU_INIT again.
-   Since the timer is already enabled, control moves through the
-   following flow, ultimately hitting the WARN_ON():
-   kvm_timer_vcpu_reset()
-       if (timer->enabled)
-          kvm_timer_update_irq()
-              if (!userspace_irqchip())
-                  ret = kvm_vgic_inject_irq()
-                      ret = vgic_lazy_init()
-                          if (unlikely(!vgic_initialized(kvm)))
-                              if (kvm->arch.vgic.vgic_model !=
-                                  KVM_DEV_TYPE_ARM_VGIC_V2)
-                                      return -EBUSY;
-                  WARN_ON(ret);
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/vmscanmigrate-fix-double-decrement-on-node-stats-when-demoting-pages.patch
 
-Theoretically, since userspace_irqchip_in_use's functionality can be
-simply replaced by '!irqchip_in_kernel()', get rid of the static key
-to avoid the mismanagement, which also helps with the syzbot issue.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Gregory Price <gourry@gourry.net>
+Subject: vmscan,migrate: fix page count imbalance on node stats when demoting pages
+Date: Fri, 25 Oct 2024 10:17:24 -0400
+
+When numa balancing is enabled with demotion, vmscan will call
+migrate_pages when shrinking LRUs.  migrate_pages will decrement the
+the node's isolated page count, leading to an imbalanced count when
+invoked from (MG)LRU code.
+
+The result is dmesg output like such:
+
+$ cat /proc/sys/vm/stat_refresh
+
+[77383.088417] vmstat_refresh: nr_isolated_anon -103212
+[77383.088417] vmstat_refresh: nr_isolated_file -899642
+
+This negative value may impact compaction and reclaim throttling.
+
+The following path produces the decrement:
+
+shrink_folio_list
+  demote_folio_list
+    migrate_pages
+      migrate_pages_batch
+        migrate_folio_move
+          migrate_folio_done
+            mod_node_page_state(-ve) <- decrement
+
+This path happens for SUCCESSFUL migrations, not failures.  Typically
+callers to migrate_pages are required to handle putback/accounting for
+failures, but this is already handled in the shrink code.
+
+When accounting for migrations, instead do not decrement the count when
+the migration reason is MR_DEMOTION.  As of v6.11, this demotion logic
+is the only source of MR_DEMOTION.
+
+Link: https://lkml.kernel.org/r/20241025141724.17927-1-gourry@gourry.net
+Fixes: 26aa2d199d6f ("mm/migrate: demote pages during reclaim")
+Signed-off-by: Gregory Price <gourry@gourry.net>
+Reviewed-by: Yang Shi <shy828301@gmail.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Huang Ying <ying.huang@intel.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Wei Xu <weixugc@google.com>
 Cc: <stable@vger.kernel.org>
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Suggested-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
-v2:
-  - Picked the diff shared by Marc to get rid of
-    'userspace_irqchip_in_use' (thanks).
-  - Adjusted the commit message accordingly.
-v1: https://lore.kernel.org/all/20241025221220.2985227-1-rananta@google.com/
+ mm/migrate.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- arch/arm64/include/asm/kvm_host.h |  2 --
- arch/arm64/kvm/arch_timer.c       |  3 +--
- arch/arm64/kvm/arm.c              | 18 +++---------------
- 3 files changed, 4 insertions(+), 19 deletions(-)
-
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index 329619c6fa961..9f96594a0e05d 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -73,8 +73,6 @@ enum kvm_mode kvm_get_mode(void);
- static inline enum kvm_mode kvm_get_mode(void) { return KVM_MODE_NONE; };
- #endif
- 
--DECLARE_STATIC_KEY_FALSE(userspace_irqchip_in_use);
--
- extern unsigned int __ro_after_init kvm_sve_max_vl;
- extern unsigned int __ro_after_init kvm_host_sve_max_vl;
- int __init kvm_arm_init_sve(void);
-diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
-index 879982b1cc739..1215df5904185 100644
---- a/arch/arm64/kvm/arch_timer.c
-+++ b/arch/arm64/kvm/arch_timer.c
-@@ -206,8 +206,7 @@ void get_timer_map(struct kvm_vcpu *vcpu, struct timer_map *map)
- 
- static inline bool userspace_irqchip(struct kvm *kvm)
- {
--	return static_branch_unlikely(&userspace_irqchip_in_use) &&
--		unlikely(!irqchip_in_kernel(kvm));
-+	return unlikely(!irqchip_in_kernel(kvm));
- }
- 
- static void soft_timer_start(struct hrtimer *hrt, u64 ns)
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index a0d01c46e4084..63f5c05e9dec6 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -69,7 +69,6 @@ DECLARE_KVM_NVHE_PER_CPU(struct kvm_cpu_context, kvm_hyp_ctxt);
- static bool vgic_present, kvm_arm_initialised;
- 
- static DEFINE_PER_CPU(unsigned char, kvm_hyp_initialized);
--DEFINE_STATIC_KEY_FALSE(userspace_irqchip_in_use);
- 
- bool is_kvm_arm_initialised(void)
- {
-@@ -503,9 +502,6 @@ void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu)
- 
- void kvm_arch_vcpu_destroy(struct kvm_vcpu *vcpu)
- {
--	if (vcpu_has_run_once(vcpu) && unlikely(!irqchip_in_kernel(vcpu->kvm)))
--		static_branch_dec(&userspace_irqchip_in_use);
--
- 	kvm_mmu_free_memory_cache(&vcpu->arch.mmu_page_cache);
- 	kvm_timer_vcpu_terminate(vcpu);
- 	kvm_pmu_vcpu_destroy(vcpu);
-@@ -848,14 +844,6 @@ int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vcpu)
- 			return ret;
- 	}
- 
--	if (!irqchip_in_kernel(kvm)) {
--		/*
--		 * Tell the rest of the code that there are userspace irqchip
--		 * VMs in the wild.
--		 */
--		static_branch_inc(&userspace_irqchip_in_use);
--	}
--
- 	/*
- 	 * Initialize traps for protected VMs.
- 	 * NOTE: Move to run in EL2 directly, rather than via a hypercall, once
-@@ -1072,7 +1060,7 @@ static bool kvm_vcpu_exit_request(struct kvm_vcpu *vcpu, int *ret)
- 	 * state gets updated in kvm_timer_update_run and
- 	 * kvm_pmu_update_run below).
+--- a/mm/migrate.c~vmscanmigrate-fix-double-decrement-on-node-stats-when-demoting-pages
++++ a/mm/migrate.c
+@@ -1178,7 +1178,7 @@ static void migrate_folio_done(struct fo
+ 	 * not accounted to NR_ISOLATED_*. They can be recognized
+ 	 * as __folio_test_movable
  	 */
--	if (static_branch_unlikely(&userspace_irqchip_in_use)) {
-+	if (unlikely(!irqchip_in_kernel(vcpu->kvm))) {
- 		if (kvm_timer_should_notify_user(vcpu) ||
- 		    kvm_pmu_should_notify_user(vcpu)) {
- 			*ret = -EINTR;
-@@ -1194,7 +1182,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
- 			vcpu->mode = OUTSIDE_GUEST_MODE;
- 			isb(); /* Ensure work in x_flush_hwstate is committed */
- 			kvm_pmu_sync_hwstate(vcpu);
--			if (static_branch_unlikely(&userspace_irqchip_in_use))
-+			if (unlikely(!irqchip_in_kernel(vcpu->kvm)))
- 				kvm_timer_sync_user(vcpu);
- 			kvm_vgic_sync_hwstate(vcpu);
- 			local_irq_enable();
-@@ -1240,7 +1228,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
- 		 * we don't want vtimer interrupts to race with syncing the
- 		 * timer virtual interrupt state.
- 		 */
--		if (static_branch_unlikely(&userspace_irqchip_in_use))
-+		if (unlikely(!irqchip_in_kernel(vcpu->kvm)))
- 			kvm_timer_sync_user(vcpu);
+-	if (likely(!__folio_test_movable(src)))
++	if (likely(!__folio_test_movable(src)) && reason != MR_DEMOTION)
+ 		mod_node_page_state(folio_pgdat(src), NR_ISOLATED_ANON +
+ 				    folio_is_file_lru(src), -folio_nr_pages(src));
  
- 		kvm_arch_vcpu_ctxsync_fp(vcpu);
+_
 
-base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
--- 
-2.47.0.163.g1226f6d8fa-goog
+Patches currently in -mm which might be from gourry@gourry.net are
+
+vmscanmigrate-fix-double-decrement-on-node-stats-when-demoting-pages.patch
 
 
