@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-88895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 081959B27F6
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B01059B260C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B38E61F21016
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2C851C2115C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A0F18E368;
-	Mon, 28 Oct 2024 06:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C80018E743;
+	Mon, 28 Oct 2024 06:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6g8WJN8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X8OyTeuF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D988837;
-	Mon, 28 Oct 2024 06:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0E115B10D;
+	Mon, 28 Oct 2024 06:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098365; cv=none; b=a0XxjJzVghKqYO0BpW/091wEJKSbzHFAlI5LZ7sDjqYnqKTIuu2CiZyr/9YrDvnIUZL2IC8voNm13UJ8ZA9/HFZv4kXhHyqC4zx1m3Rr1YDcPczSIEXk9yA3Wdlj0gyHzybLUk9923iJBdf2WkydIZh5UrsesL/wjubXR+vOkbc=
+	t=1730097369; cv=none; b=BJhQlIxnPv73uQYEs/XBKHGW2dXcYLHm0PCpf4mk3RF4Rm4Klufm8Lgro0zbYonqLa6vJ0r4IR9unyDgDk8YyWdruchu9St88KsKMideTSBmGgGeKY6MwhK1SBBRamSnUobzJxwhWuBsVBugXBJeDF73e2/l1xeDshytXDKrPeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098365; c=relaxed/simple;
-	bh=6M8d4IO8lW14ljv99xl7lG7EUUBOnCJrTYek/u3CKVk=;
+	s=arc-20240116; t=1730097369; c=relaxed/simple;
+	bh=g5AtEA4oWyb7U+3ib0YotbWDhoPj+5OCokED6WOTpQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XFzwR9JoHuywmmynB12MCasuJ0AnsIRu6Mpy1sLBXo+dJItbMVZPKLoeVTxhWnQ/T5mW3l5We0gyWcabIWDJtOy+T7T7kd/JBZ7XkifEim2ig0YdFmOrybfcvBhw3NKUDrjgBWwuaNTyd6YgODDs++AYUUGRtC+RwsJFSyfTaTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6g8WJN8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59A95C4CEC3;
-	Mon, 28 Oct 2024 06:52:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Fb332hYg61m/b0zFF0i4reqE6E7dUAskOFNel0cRbY+Xf2H4Ltf2Vhuapel4eybZf0RWuvT1BlAZMc7QTRBh+jzwDRUQySIsu3phERUcMa0bnHvBYAAbHHQpUerLik7GrZsIu8FM/0oo2qZK+GatF2BSPVneK4vCk8zd0mtxkJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X8OyTeuF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCEE4C4CEC3;
+	Mon, 28 Oct 2024 06:36:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098365;
-	bh=6M8d4IO8lW14ljv99xl7lG7EUUBOnCJrTYek/u3CKVk=;
+	s=korg; t=1730097369;
+	bh=g5AtEA4oWyb7U+3ib0YotbWDhoPj+5OCokED6WOTpQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H6g8WJN83eBhl4oeezHu9BAMl1TuMb+1SFLODHRmU5B/QXBSP0nH/0Hnfk1PX8jlf
-	 xvCzIC+3HY9QKZEKCrt+m3/LMpExXAo6dSBVZui5y+OqaTMQljAyhw+7agcCU4D4tj
-	 eu1ivcVzS6ZfNeUoKbkW9Yf4EApda46bm2iZ++sc=
+	b=X8OyTeuFqAah0ugs36Ub7LjIW1C+FyCEwkZHdiATAUUOd2HVipfcR7mPaih9MjrKH
+	 vazdPUDNyxTN+ayYk5ZViM5H/CCqL0+/SY9MEgP0/YJ+dxef4KCeDmZ+3nrq5BaWra
+	 cOE899vmUrhj5LvkaTkVfVJHsfryBj7USPYTAJTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Erkun <yangerkun@huaweicloud.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 194/261] nfsd: cancel nfsd_shrinker_work using sync mode in nfs4_state_shutdown_net
+Subject: [PATCH 6.1 099/137] net: fix races in netdev_tx_sent_queue()/dev_watchdog()
 Date: Mon, 28 Oct 2024 07:25:36 +0100
-Message-ID: <20241028062316.894937529@linuxfoundation.org>
+Message-ID: <20241028062301.491963685@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,106 +62,120 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Erkun <yangerkun@huaweicloud.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit d5ff2fb2e7167e9483846e34148e60c0c016a1f6 ]
+[ Upstream commit 95ecba62e2fd201bcdcca636f5d774f1cd4f1458 ]
 
-In the normal case, when we excute `echo 0 > /proc/fs/nfsd/threads`, the
-function `nfs4_state_destroy_net` in `nfs4_state_shutdown_net` will
-release all resources related to the hashed `nfs4_client`. If the
-`nfsd_client_shrinker` is running concurrently, the `expire_client`
-function will first unhash this client and then destroy it. This can
-lead to the following warning. Additionally, numerous use-after-free
-errors may occur as well.
+Some workloads hit the infamous dev_watchdog() message:
 
-nfsd_client_shrinker         echo 0 > /proc/fs/nfsd/threads
+"NETDEV WATCHDOG: eth0 (xxxx): transmit queue XX timed out"
 
-expire_client                nfsd_shutdown_net
-  unhash_client                ...
-                               nfs4_state_shutdown_net
-                                 /* won't wait shrinker exit */
-  /*                             cancel_work(&nn->nfsd_shrinker_work)
-   * nfsd_file for this          /* won't destroy unhashed client1 */
-   * client1 still alive         nfs4_state_destroy_net
-   */
+It seems possible to hit this even for perfectly normal
+BQL enabled drivers:
 
-                               nfsd_file_cache_shutdown
-                                 /* trigger warning */
-                                 kmem_cache_destroy(nfsd_file_slab)
-                                 kmem_cache_destroy(nfsd_file_mark_slab)
-  /* release nfsd_file and mark */
-  __destroy_client
+1) Assume a TX queue was idle for more than dev->watchdog_timeo
+   (5 seconds unless changed by the driver)
 
-====================================================================
-BUG nfsd_file (Not tainted): Objects remaining in nfsd_file on
-__kmem_cache_shutdown()
---------------------------------------------------------------------
-CPU: 4 UID: 0 PID: 764 Comm: sh Not tainted 6.12.0-rc3+ #1
+2) Assume a big packet is sent, exceeding current BQL limit.
 
- dump_stack_lvl+0x53/0x70
- slab_err+0xb0/0xf0
- __kmem_cache_shutdown+0x15c/0x310
- kmem_cache_destroy+0x66/0x160
- nfsd_file_cache_shutdown+0xac/0x210 [nfsd]
- nfsd_destroy_serv+0x251/0x2a0 [nfsd]
- nfsd_svc+0x125/0x1e0 [nfsd]
- write_threads+0x16a/0x2a0 [nfsd]
- nfsctl_transaction_write+0x74/0xa0 [nfsd]
- vfs_write+0x1a5/0x6d0
- ksys_write+0xc1/0x160
- do_syscall_64+0x5f/0x170
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+3) Driver ndo_start_xmit() puts the packet in TX ring,
+   and netdev_tx_sent_queue() is called.
 
-====================================================================
-BUG nfsd_file_mark (Tainted: G    B   W         ): Objects remaining
-nfsd_file_mark on __kmem_cache_shutdown()
---------------------------------------------------------------------
+4) QUEUE_STATE_STACK_XOFF could be set from netdev_tx_sent_queue()
+   before txq->trans_start has been written.
 
- dump_stack_lvl+0x53/0x70
- slab_err+0xb0/0xf0
- __kmem_cache_shutdown+0x15c/0x310
- kmem_cache_destroy+0x66/0x160
- nfsd_file_cache_shutdown+0xc8/0x210 [nfsd]
- nfsd_destroy_serv+0x251/0x2a0 [nfsd]
- nfsd_svc+0x125/0x1e0 [nfsd]
- write_threads+0x16a/0x2a0 [nfsd]
- nfsctl_transaction_write+0x74/0xa0 [nfsd]
- vfs_write+0x1a5/0x6d0
- ksys_write+0xc1/0x160
- do_syscall_64+0x5f/0x170
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+5) txq->trans_start is written later, from netdev_start_xmit()
 
-To resolve this issue, cancel `nfsd_shrinker_work` using synchronous
-mode in nfs4_state_shutdown_net.
+    if (rc == NETDEV_TX_OK)
+          txq_trans_update(txq)
 
-Fixes: 7c24fa225081 ("NFSD: replace delayed_work with work_struct for nfsd_client_shrinker")
-Signed-off-by: Yang Erkun <yangerkun@huaweicloud.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+dev_watchdog() running on another cpu could read the old
+txq->trans_start, and then see QUEUE_STATE_STACK_XOFF, because 5)
+did not happen yet.
+
+To solve the issue, write txq->trans_start right before one XOFF bit
+is set :
+
+- _QUEUE_STATE_DRV_XOFF from netif_tx_stop_queue()
+- __QUEUE_STATE_STACK_XOFF from netdev_tx_sent_queue()
+
+>From dev_watchdog(), we have to read txq->state before txq->trans_start.
+
+Add memory barriers to enforce correct ordering.
+
+In the future, we could avoid writing over txq->trans_start for normal
+operations, and rename this field to txq->xoff_start_time.
+
+Fixes: bec251bc8b6a ("net: no longer stop all TX queues in dev_watchdog()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Link: https://patch.msgid.link/20241015194118.3951657-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/netdevice.h | 12 ++++++++++++
+ net/sched/sch_generic.c   |  8 +++++++-
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 64cf5d7b7a4e2..150b637f03ee6 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -8687,7 +8687,7 @@ nfs4_state_shutdown_net(struct net *net)
- 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 8b67b266cce63..fbbd0df1106b6 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -3274,6 +3274,12 @@ static inline void netif_tx_wake_all_queues(struct net_device *dev)
  
- 	shrinker_free(nn->nfsd_client_shrinker);
--	cancel_work(&nn->nfsd_shrinker_work);
-+	cancel_work_sync(&nn->nfsd_shrinker_work);
- 	cancel_delayed_work_sync(&nn->laundromat_work);
- 	locks_end_grace(&nn->nfsd4_manager);
+ static __always_inline void netif_tx_stop_queue(struct netdev_queue *dev_queue)
+ {
++	/* Paired with READ_ONCE() from dev_watchdog() */
++	WRITE_ONCE(dev_queue->trans_start, jiffies);
++
++	/* This barrier is paired with smp_mb() from dev_watchdog() */
++	smp_mb__before_atomic();
++
+ 	/* Must be an atomic op see netif_txq_try_stop() */
+ 	set_bit(__QUEUE_STATE_DRV_XOFF, &dev_queue->state);
+ }
+@@ -3390,6 +3396,12 @@ static inline void netdev_tx_sent_queue(struct netdev_queue *dev_queue,
+ 	if (likely(dql_avail(&dev_queue->dql) >= 0))
+ 		return;
  
++	/* Paired with READ_ONCE() from dev_watchdog() */
++	WRITE_ONCE(dev_queue->trans_start, jiffies);
++
++	/* This barrier is paired with smp_mb() from dev_watchdog() */
++	smp_mb__before_atomic();
++
+ 	set_bit(__QUEUE_STATE_STACK_XOFF, &dev_queue->state);
+ 
+ 	/*
+diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+index 7f0c8df7b63e0..b51af871a621c 100644
+--- a/net/sched/sch_generic.c
++++ b/net/sched/sch_generic.c
+@@ -511,9 +511,15 @@ static void dev_watchdog(struct timer_list *t)
+ 				struct netdev_queue *txq;
+ 
+ 				txq = netdev_get_tx_queue(dev, i);
+-				trans_start = READ_ONCE(txq->trans_start);
+ 				if (!netif_xmit_stopped(txq))
+ 					continue;
++
++				/* Paired with WRITE_ONCE() + smp_mb...() in
++				 * netdev_tx_sent_queue() and netif_tx_stop_queue().
++				 */
++				smp_mb();
++				trans_start = READ_ONCE(txq->trans_start);
++
+ 				if (time_after(jiffies, trans_start + dev->watchdog_timeo)) {
+ 					timedout_ms = jiffies_to_msecs(jiffies - trans_start);
+ 					atomic_long_inc(&txq->trans_timeout);
 -- 
 2.43.0
 
