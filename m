@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-88382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 286CA9B25B3
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:33:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF8679B26A3
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:41:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D98512817BC
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:33:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BC8A1F22C41
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD1E18E77B;
-	Mon, 28 Oct 2024 06:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D32818E368;
+	Mon, 28 Oct 2024 06:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PmIrsE7m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DCHbahU1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F5B18DF68;
-	Mon, 28 Oct 2024 06:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE852C697;
+	Mon, 28 Oct 2024 06:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097204; cv=none; b=B4mqYBHI3JvKWuhyp9n7DivVsitxitepkjO3t+Cdk8oJ1211XwoCUbpBb9eN4Pweh1RdcVTuxNPNJibFDaxa1j7nb4g8o3//3GSpXcIRLf+Du/dU+rGdYs+F+QdwpcuoiPe6auplFLNFG4m2KK9l9QUJJQP7guChTP9BAUPeKUo=
+	t=1730097683; cv=none; b=dp+nVgNGz9nyOvgrm20l84tHYF6ONYNS0AkSRgN4ZqP6jJ+2GVvj3KwcSUGyljC0Xm5Th5eRZfVfb+Xdsyd9KewzHQix09Mlk7iWR+jWJXSqBQEZFRzdgI4Qs1dkBwEHa95S33cLijOXxpnUl1Y3Wz4m9VJ/2EuE3f3H5ilEJLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097204; c=relaxed/simple;
-	bh=K8keYF/FhTXxLLQZMaMI3jEK52ZfJGi9r0QlS9EpUNo=;
+	s=arc-20240116; t=1730097683; c=relaxed/simple;
+	bh=RmA09PuJT7bP+u/hIfPQWapYUaeSO4EA/Y848uUArBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dg2BdftjA/MfOQtuOkBdD9SYaa/tdeqRGWlyw2GlFv5Lv4dJFk2nbdhJB9aJ6aS169WGH0bRQ2YsAB0fo1ufQSrIAWU3cbv0GgVgEwP3vSk2gGogHnIOcuTImYvcc+yb0FP4B+E4UUyrVrBG69DIzcX2PfmrYKFjYuJgBkgLPX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PmIrsE7m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 747EDC4CECD;
-	Mon, 28 Oct 2024 06:33:23 +0000 (UTC)
+	 MIME-Version; b=seiVKAabcr78uDSdGt3Yv1UWh3NRp/420NborBkYKWF17tgact1zVln9qB8R5xVio298ci71axNNDc2V7br/um/Rc14NgjjGq8MVvu1vGaFxy4xJgGqQ8N3E3yUPtqRqd4ZIk9jJ49Pg4UqHNSdkEl7RK1tPmVrvPaH91kEFqN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DCHbahU1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 748C6C4CEC3;
+	Mon, 28 Oct 2024 06:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097203;
-	bh=K8keYF/FhTXxLLQZMaMI3jEK52ZfJGi9r0QlS9EpUNo=;
+	s=korg; t=1730097682;
+	bh=RmA09PuJT7bP+u/hIfPQWapYUaeSO4EA/Y848uUArBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PmIrsE7mcRxzKAOk3ROobdCpwa9+T7ZrD+mJpx/gFx9GaAXCdBlnzW1GL06xHM8Uq
-	 yLZY5+1EwQhzSgipI3a79yHcGpKD0YWl8RxREspGhTOJzKRVQvul9o9ONzMz+Ziaep
-	 z0rirTNvRG+J+ZwFs7bcmswcYamFVI84TTRGtsUE=
+	b=DCHbahU14d85YEzRHJFl3J+BkPPGPHQf9+BKYiIIqwmH3C2srRtbYz9GeQcJUsYIC
+	 h2UEiyulG7KU0WQ5+sXJ3xZaARtuqGQDioEay1YJA5pduj9LBGeGhE45U1M/TQYqwK
+	 prCOq6/2/FQL3wLIWP/j4t2Ub/7eAaXsgeQFUHsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Martin Kletzander <nert.pinx@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Tony Luck <tony.luck@intel.com>,
+	Wang Hai <wanghai38@huawei.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 008/137] x86/resctrl: Avoid overflow in MB settings in bw_validate()
+Subject: [PATCH 6.6 065/208] net: bcmasp: fix potential memory leak in bcmasp_xmit()
 Date: Mon, 28 Oct 2024 07:24:05 +0100
-Message-ID: <20241028062258.947490321@linuxfoundation.org>
+Message-ID: <20241028062308.254766197@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Kletzander <nert.pinx@gmail.com>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit 2b5648416e47933939dc310c4ea1e29404f35630 ]
+[ Upstream commit fed07d3eb8a8d9fcc0e455175a89bc6445d6faed ]
 
-The resctrl schemata file supports specifying memory bandwidth associated with
-the Memory Bandwidth Allocation (MBA) feature via a percentage (this is the
-default) or bandwidth in MiBps (when resctrl is mounted with the "mba_MBps"
-option).
+The bcmasp_xmit() returns NETDEV_TX_OK without freeing skb
+in case of mapping fails, add dev_kfree_skb() to fix it.
 
-The allowed range for the bandwidth percentage is from
-/sys/fs/resctrl/info/MB/min_bandwidth to 100, using a granularity of
-/sys/fs/resctrl/info/MB/bandwidth_gran. The supported range for the MiBps
-bandwidth is 0 to U32_MAX.
-
-There are two issues with parsing of MiBps memory bandwidth:
-
-* The user provided MiBps is mistakenly rounded up to the granularity
-  that is unique to percentage input.
-
-* The user provided MiBps is parsed using unsigned long (thus accepting
-  values up to ULONG_MAX), and then assigned to u32 that could result in
-  overflow.
-
-Do not round up the MiBps value and parse user provided bandwidth as the u32
-it is intended to be. Use the appropriate kstrtou32() that can detect out of
-range values.
-
-Fixes: 8205a078ba78 ("x86/intel_rdt/mba_sc: Add schemata support")
-Fixes: 6ce1560d35f6 ("x86/resctrl: Switch over to the resctrl mbps_val list")
-Co-developed-by: Reinette Chatre <reinette.chatre@intel.com>
-Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
-Signed-off-by: Martin Kletzander <nert.pinx@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
+Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20241014145901.48940-1-wanghai38@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/resctrl/ctrlmondata.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/ctrlmondata.c b/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
-index 84f23327caed4..d2cb96738ff6b 100644
---- a/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
-+++ b/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
-@@ -27,10 +27,10 @@
-  * hardware. The allocated bandwidth percentage is rounded to the next
-  * control step available on the hardware.
-  */
--static bool bw_validate(char *buf, unsigned long *data, struct rdt_resource *r)
-+static bool bw_validate(char *buf, u32 *data, struct rdt_resource *r)
- {
--	unsigned long bw;
- 	int ret;
-+	u32 bw;
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+index 6bf149d645941..f0647286c68b2 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+@@ -322,6 +322,7 @@ static netdev_tx_t bcmasp_xmit(struct sk_buff *skb, struct net_device *dev)
+ 			}
+ 			/* Rewind so we do not have a hole */
+ 			spb_index = intf->tx_spb_index;
++			dev_kfree_skb(skb);
+ 			return NETDEV_TX_OK;
+ 		}
  
- 	/*
- 	 * Only linear delay values is supported for current Intel SKUs.
-@@ -40,16 +40,21 @@ static bool bw_validate(char *buf, unsigned long *data, struct rdt_resource *r)
- 		return false;
- 	}
- 
--	ret = kstrtoul(buf, 10, &bw);
-+	ret = kstrtou32(buf, 10, &bw);
- 	if (ret) {
--		rdt_last_cmd_printf("Non-decimal digit in MB value %s\n", buf);
-+		rdt_last_cmd_printf("Invalid MB value %s\n", buf);
- 		return false;
- 	}
- 
--	if ((bw < r->membw.min_bw || bw > r->default_ctrl) &&
--	    !is_mba_sc(r)) {
--		rdt_last_cmd_printf("MB value %ld out of range [%d,%d]\n", bw,
--				    r->membw.min_bw, r->default_ctrl);
-+	/* Nothing else to do if software controller is enabled. */
-+	if (is_mba_sc(r)) {
-+		*data = bw;
-+		return true;
-+	}
-+
-+	if (bw < r->membw.min_bw || bw > r->default_ctrl) {
-+		rdt_last_cmd_printf("MB value %u out of range [%d,%d]\n",
-+				    bw, r->membw.min_bw, r->default_ctrl);
- 		return false;
- 	}
- 
-@@ -63,7 +68,7 @@ int parse_bw(struct rdt_parse_data *data, struct resctrl_schema *s,
- 	struct resctrl_staged_config *cfg;
- 	u32 closid = data->rdtgrp->closid;
- 	struct rdt_resource *r = s->res;
--	unsigned long bw_val;
-+	u32 bw_val;
- 
- 	cfg = &d->staged_config[s->conf_type];
- 	if (cfg->have_new_ctrl) {
 -- 
 2.43.0
 
