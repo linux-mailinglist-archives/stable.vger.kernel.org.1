@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F6A9B2793
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:49:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6A969B267A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFADDB212C8
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:49:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04EFC1C2139A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4C718EFEB;
-	Mon, 28 Oct 2024 06:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7C2B18E36D;
+	Mon, 28 Oct 2024 06:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzHwiQhf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3qPsiwh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E249518E748;
-	Mon, 28 Oct 2024 06:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A527618DF68;
+	Mon, 28 Oct 2024 06:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098158; cv=none; b=iQ6U1n1FEr5NKanLPi7MLSOuYJ4US2SRZrMpnjKPura87hg8SuM6WYZ9xwSy5AB0qTt4E8q65EDK7mWFWiIAvVINzPd2SqRlthGAfJZ9W0aq7Gazh6n03F/d2NnlOwwsAH2UxfL3UFBt3Cf+hPoCpd1ou1/oueoH10kCJhaf6II=
+	t=1730097597; cv=none; b=jDTugB9dt8MjddZHPiSFoHWy5rQvvN9nbfiX2RhyDCLwwqL31Tiikds4nn5rzrCr41nUBll8wurKINaab7fSHqi0l+KKz4aX7HlG0NoYMhGdmd4CwRJxBqg7ihc++kN7Ru370am6e6TzdG9Qpz42g3U2ViRWBaDNscBwjYTgXqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098158; c=relaxed/simple;
-	bh=JTl8/aHinzCzYgbdHMT3amsWbl8pch1j0OZSUEAaStg=;
+	s=arc-20240116; t=1730097597; c=relaxed/simple;
+	bh=lWMV+jzZacoBFR1wI2JwTvsJVoEp0+YrepVzi9LAKW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EajvKPAJAowMYrwr0cADfZelj+76U3FbqKiSMwodGs01+7NhvAvsIiH8ZrwJxfv4FdlV0M8Xyc4IYNFPn1rA2Wityko1EqNj3xDTkfp0Q4Jg9JbqP5e/Ky59oy4yp5wblLRLktvaLhUc5aVfUAIFOl8n3T4MuGa9LFTT8tzjcC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzHwiQhf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61892C4CEC7;
-	Mon, 28 Oct 2024 06:49:17 +0000 (UTC)
+	 MIME-Version; b=rNshKvGkJnuQdzIiKgKabHj9TeBRCKF9VffaX6SMBZpkTD79fJLkrj4lPJ25y+Ye45utHA4L2QrGmcvWrg+Ld9mcK9kZGOR3f0m/MRC/4ybALY/EbeNeh9sF1pigCrqMDkN0+eXRcfV2sf3yRGABd2efB0jS9XFSLtb57CC6v9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3qPsiwh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46928C4CEC3;
+	Mon, 28 Oct 2024 06:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098157;
-	bh=JTl8/aHinzCzYgbdHMT3amsWbl8pch1j0OZSUEAaStg=;
+	s=korg; t=1730097597;
+	bh=lWMV+jzZacoBFR1wI2JwTvsJVoEp0+YrepVzi9LAKW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WzHwiQhfLNCh6l9ci+FXIuJzWZ9aexbIoNLmMEeK2yQsXVVV1GYHrHHaTo4AprReo
-	 BT6VIfwg35RFGCpG+vwXJc2BwKdjZMKPJuhWm23DwCmUT34XY3KpYxPhDmo/V09wTf
-	 OdFya39x8gNrRh2URDwzOENCbvZAJhsio5YPx1nw=
+	b=d3qPsiwhT76C/hMQKD6yVQN/o1CZp5+u0bHoj2OCbdT91vLYOcMVT3xJeXoSOZEnW
+	 YZ3nfEUcMlmpaWlM5BoCDo3U/N08/8Vdrk6TYCsKVmUOcTsPeLXJlZNLjyyBms6M+O
+	 /gBUo+9SrvzSyOd8139v42g9SErlk7tbLFkL/fAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Murad Masimov <m.masimov@maxima.ru>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 065/261] macsec: dont increment counters for an unrelated SA
+Subject: [PATCH 6.6 027/208] ALSA: hda/cs8409: Fix possible NULL dereference
 Date: Mon, 28 Oct 2024 07:23:27 +0100
-Message-ID: <20241028062313.661662865@linuxfoundation.org>
+Message-ID: <20241028062307.325354615@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Murad Masimov <m.masimov@maxima.ru>
 
-[ Upstream commit cf58aefb1332db322060cad4a330d5f9292b0f41 ]
+[ Upstream commit c9bd4a82b4ed32c6d1c90500a52063e6e341517f ]
 
-On RX, we shouldn't be incrementing the stats for an arbitrary SA in
-case the actual SA hasn't been set up. Those counters are intended to
-track packets for their respective AN when the SA isn't currently
-configured. Due to the way MACsec is implemented, we don't keep
-counters unless the SA is configured, so we can't track those packets,
-and those counters will remain at 0.
+If snd_hda_gen_add_kctl fails to allocate memory and returns NULL, then
+NULL pointer dereference will occur in the next line.
 
-The RXSC's stats keeps track of those packets without telling us which
-AN they belonged to. We could add counters for non-existent SAs, and
-then find a way to integrate them in the dump to userspace, but I
-don't think it's worth the effort.
+Since dolphin_fixups function is a hda_fixup function which is not supposed
+to return any errors, add simple check before dereference, ignore the fail.
 
-Fixes: 91ec9bd57f35 ("macsec: Fix traffic counters/statistics")
-Reported-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/f5ac92aaa5b89343232615f4c03f9f95042c6aa0.1728657709.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 20e507724113 ("ALSA: hda/cs8409: Add support for dolphin")
+Signed-off-by: Murad Masimov <m.masimov@maxima.ru>
+Link: https://patch.msgid.link/20241010221649.1305-1-m.masimov@maxima.ru
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macsec.c | 18 ------------------
- 1 file changed, 18 deletions(-)
+ sound/pci/hda/patch_cs8409.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 2da70bc3dd869..2a31d09d43ed4 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -154,19 +154,6 @@ static struct macsec_rx_sa *macsec_rxsa_get(struct macsec_rx_sa __rcu *ptr)
- 	return sa;
- }
- 
--static struct macsec_rx_sa *macsec_active_rxsa_get(struct macsec_rx_sc *rx_sc)
--{
--	struct macsec_rx_sa *sa = NULL;
--	int an;
--
--	for (an = 0; an < MACSEC_NUM_AN; an++)	{
--		sa = macsec_rxsa_get(rx_sc->sa[an]);
--		if (sa)
--			break;
--	}
--	return sa;
--}
--
- static void free_rx_sc_rcu(struct rcu_head *head)
- {
- 	struct macsec_rx_sc *rx_sc = container_of(head, struct macsec_rx_sc, rcu_head);
-@@ -1208,15 +1195,12 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 		/* If validateFrames is Strict or the C bit in the
- 		 * SecTAG is set, discard
- 		 */
--		struct macsec_rx_sa *active_rx_sa = macsec_active_rxsa_get(rx_sc);
- 		if (hdr->tci_an & MACSEC_TCI_C ||
- 		    secy->validate_frames == MACSEC_VALIDATE_STRICT) {
- 			u64_stats_update_begin(&rxsc_stats->syncp);
- 			rxsc_stats->stats.InPktsNotUsingSA++;
- 			u64_stats_update_end(&rxsc_stats->syncp);
- 			DEV_STATS_INC(secy->netdev, rx_errors);
--			if (active_rx_sa)
--				this_cpu_inc(active_rx_sa->stats->InPktsNotUsingSA);
- 			goto drop_nosa;
- 		}
- 
-@@ -1226,8 +1210,6 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 		u64_stats_update_begin(&rxsc_stats->syncp);
- 		rxsc_stats->stats.InPktsUnusedSA++;
- 		u64_stats_update_end(&rxsc_stats->syncp);
--		if (active_rx_sa)
--			this_cpu_inc(active_rx_sa->stats->InPktsUnusedSA);
- 		goto deliver;
- 	}
- 
+diff --git a/sound/pci/hda/patch_cs8409.c b/sound/pci/hda/patch_cs8409.c
+index e41316e2e9833..892223d9e64ab 100644
+--- a/sound/pci/hda/patch_cs8409.c
++++ b/sound/pci/hda/patch_cs8409.c
+@@ -1411,8 +1411,9 @@ void dolphin_fixups(struct hda_codec *codec, const struct hda_fixup *fix, int ac
+ 		kctrl = snd_hda_gen_add_kctl(&spec->gen, "Line Out Playback Volume",
+ 					     &cs42l42_dac_volume_mixer);
+ 		/* Update Line Out kcontrol template */
+-		kctrl->private_value = HDA_COMPOSE_AMP_VAL_OFS(DOLPHIN_HP_PIN_NID, 3, CS8409_CODEC1,
+-				       HDA_OUTPUT, CS42L42_VOL_DAC) | HDA_AMP_VAL_MIN_MUTE;
++		if (kctrl)
++			kctrl->private_value = HDA_COMPOSE_AMP_VAL_OFS(DOLPHIN_HP_PIN_NID, 3, CS8409_CODEC1,
++					       HDA_OUTPUT, CS42L42_VOL_DAC) | HDA_AMP_VAL_MIN_MUTE;
+ 		cs8409_enable_ur(codec, 0);
+ 		snd_hda_codec_set_name(codec, "CS8409/CS42L42");
+ 		break;
 -- 
 2.43.0
 
