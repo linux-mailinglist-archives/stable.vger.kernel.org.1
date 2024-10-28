@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-88512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DD5C9B264C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:38:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FAA89B2772
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:48:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF5201C2124C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:38:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 513271C20BA5
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA642C697;
-	Mon, 28 Oct 2024 06:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FAA817109B;
+	Mon, 28 Oct 2024 06:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZ/6iofZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZtbHZTkV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B34B18C03D;
-	Mon, 28 Oct 2024 06:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D31D2AF07;
+	Mon, 28 Oct 2024 06:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097501; cv=none; b=OsKD2tzta48Wk5vAW+FifWsRLa58GGYSGeeDve/7IetV+ZaxErepmN594nt0KGLijQA85YzXW4h03FDwGulCm9Js3UhxyzgLymL39ewqfpRDNcC4AaDW4CD3s49Ff2Ts/A+vB9k6SRvMo2EoaS9+A+NwkbnsvVfKqqa1ggcW8DA=
+	t=1730098097; cv=none; b=G4C0CKYaUQOxmFuFGuAmLje7VPbvc7ipqlLPHax2YWkvWCYRf9Wf+k9nAjLTIpzhuIHicOLx9z+65bj6+lUOjGnGWa6MjRf9xrt4BKdE+N+FXmVSdSI4aErUkVnsPMXde8Ajaw7Lk27c8dtaj6U40ELLXCF7ohcUlJ3w0MeH9ZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097501; c=relaxed/simple;
-	bh=Xb6GExwADol7koVSq/1qU74muGAiKZs1VracmWWMxic=;
+	s=arc-20240116; t=1730098097; c=relaxed/simple;
+	bh=DZRIhyol6UAcTzO7rIy9qxMclg2laubqvd8Q4dTkBCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MX6a+2aqFm4mgGcpriM5FIgR2OQnJmMRwOoeMBIarv3KYpjwgR/PMXlM7h91E3VOtozWc8VKlKPYUnU/w/+xH/TPNoYiIegmbcRGYPWB0+ISFkjrv9yqv0DR5eMtrBlNJ/W4JUabW3GhEoCi8m7VhM7muSPwLFeZ7cquf66rKzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZ/6iofZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B560C4CEC3;
-	Mon, 28 Oct 2024 06:38:20 +0000 (UTC)
+	 MIME-Version; b=aS9xJst9QXZKhr6cWPX6dbLadYWRqEMqZmnl6EiIm57iJJPO/dnNllVlkjBZF2T/iH6jjk/Cl6WRGRf94Ejv/nEXTazxeI40m+fa6dI337gR4zUFh7WZHwFrmIidkg+Ft4Ll3NZpFnajChDRGKv5HOTevcIlKaeXjPU9aGQdknU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZtbHZTkV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E068BC4CEC3;
+	Mon, 28 Oct 2024 06:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097501;
-	bh=Xb6GExwADol7koVSq/1qU74muGAiKZs1VracmWWMxic=;
+	s=korg; t=1730098097;
+	bh=DZRIhyol6UAcTzO7rIy9qxMclg2laubqvd8Q4dTkBCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gZ/6iofZ7A6VKeLa4gGeay6OoSBlM5ryBbyuTSRl49ZtOOoFh8HdT0krb+olPdjPr
-	 t1eD5WuKR3/XbOvAhh4ZpsxhKgU3nT5eks85YZ5pbOQPDG9X+30jZgYmF1n8bG6eyw
-	 WOS7OIQ0iaiVSxnL+jvz2xVz2GC4Iju8NeOnJzik=
+	b=ZtbHZTkVG086R9dy1FOZobEX9IGY2fPEz99iPxUEG+YGE2fFfIxerh7Uobe1ive04
+	 J3IFXp6j0IZguK242KbHCq+wxSfAcVEBt76qKyhdGvBKf8/+LyENvT8SNJfPWluzOD
+	 gARZNjw2oh+3Ex5JxfZxlMvNOjUOC9iSWOShFkKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Sundberg <simon.sundberg@kau.se>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Kai Shen <KaiShen@linux.alibaba.com>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/208] bpf: fix kfunc btf caching for modules
+Subject: [PATCH 6.11 058/261] net/smc: Fix memory leak when using percpu refs
 Date: Mon, 28 Oct 2024 07:23:20 +0100
-Message-ID: <20241028062307.155315180@linuxfoundation.org>
+Message-ID: <20241028062313.478097687@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +62,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+From: Kai Shen <KaiShen@linux.alibaba.com>
 
-[ Upstream commit 6cb86a0fdece87e126323ec1bb19deb16a52aedf ]
+[ Upstream commit 25c12b459db8365fee84b63f3dd7910f70627f29 ]
 
-The verifier contains a cache for looking up module BTF objects when
-calling kfuncs defined in modules. This cache uses a 'struct
-bpf_kfunc_btf_tab', which contains a sorted list of BTF objects that
-were already seen in the current verifier run, and the BTF objects are
-looked up by the offset stored in the relocated call instruction using
-bsearch().
+This patch adds missing percpu_ref_exit when releasing percpu refs.
+When releasing percpu refs, percpu_ref_exit should be called.
+Otherwise, memory leak happens.
 
-The first time a given offset is seen, the module BTF is loaded from the
-file descriptor passed in by libbpf, and stored into the cache. However,
-there's a bug in the code storing the new entry: it stores a pointer to
-the new cache entry, then calls sort() to keep the cache sorted for the
-next lookup using bsearch(), and then returns the entry that was just
-stored through the stored pointer. However, because sort() modifies the
-list of entries in place *by value*, the stored pointer may no longer
-point to the right entry, in which case the wrong BTF object will be
-returned.
-
-The end result of this is an intermittent bug where, if a BPF program
-calls two functions with the same signature in two different modules,
-the function from the wrong module may sometimes end up being called.
-Whether this happens depends on the order of the calls in the BPF
-program (as that affects whether sort() reorders the array of BTF
-objects), making it especially hard to track down. Simon, credited as
-reporter below, spent significant effort analysing and creating a
-reproducer for this issue. The reproducer is added as a selftest in a
-subsequent patch.
-
-The fix is straight forward: simply don't use the stored pointer after
-calling sort(). Since we already have an on-stack pointer to the BTF
-object itself at the point where the function return, just use that, and
-populate it from the cache entry in the branch where the lookup
-succeeds.
-
-Fixes: 2357672c54c3 ("bpf: Introduce BPF support for kernel module function calls")
-Reported-by: Simon Sundberg <simon.sundberg@kau.se>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Link: https://lore.kernel.org/r/20241010-fix-kfunc-btf-caching-for-modules-v2-1-745af6c1af98@redhat.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 79a22238b4f2 ("net/smc: Use percpu ref for wr tx reference")
+Signed-off-by: Kai Shen <KaiShen@linux.alibaba.com>
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
+Link: https://patch.msgid.link/20241010115624.7769-1-KaiShen@linux.alibaba.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/smc/smc_wr.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 3032a464d31bb..d1050479cbb33 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -2799,10 +2799,16 @@ static struct btf *__find_kfunc_desc_btf(struct bpf_verifier_env *env,
- 		b->module = mod;
- 		b->offset = offset;
+diff --git a/net/smc/smc_wr.c b/net/smc/smc_wr.c
+index 0021065a600a0..994c0cd4fddbf 100644
+--- a/net/smc/smc_wr.c
++++ b/net/smc/smc_wr.c
+@@ -648,8 +648,10 @@ void smc_wr_free_link(struct smc_link *lnk)
+ 	smc_wr_tx_wait_no_pending_sends(lnk);
+ 	percpu_ref_kill(&lnk->wr_reg_refs);
+ 	wait_for_completion(&lnk->reg_ref_comp);
++	percpu_ref_exit(&lnk->wr_reg_refs);
+ 	percpu_ref_kill(&lnk->wr_tx_refs);
+ 	wait_for_completion(&lnk->tx_ref_comp);
++	percpu_ref_exit(&lnk->wr_tx_refs);
  
-+		/* sort() reorders entries by value, so b may no longer point
-+		 * to the right entry after this
-+		 */
- 		sort(tab->descs, tab->nr_descs, sizeof(tab->descs[0]),
- 		     kfunc_btf_cmp_by_off, NULL);
-+	} else {
-+		btf = b->btf;
- 	}
--	return b->btf;
-+
-+	return btf;
- }
+ 	if (lnk->wr_rx_dma_addr) {
+ 		ib_dma_unmap_single(ibdev, lnk->wr_rx_dma_addr,
+@@ -912,11 +914,13 @@ int smc_wr_create_link(struct smc_link *lnk)
+ 	init_waitqueue_head(&lnk->wr_reg_wait);
+ 	rc = percpu_ref_init(&lnk->wr_reg_refs, smcr_wr_reg_refs_free, 0, GFP_KERNEL);
+ 	if (rc)
+-		goto dma_unmap;
++		goto cancel_ref;
+ 	init_completion(&lnk->reg_ref_comp);
+ 	init_waitqueue_head(&lnk->wr_rx_empty_wait);
+ 	return rc;
  
- void bpf_free_kfunc_btf_tab(struct bpf_kfunc_btf_tab *tab)
++cancel_ref:
++	percpu_ref_exit(&lnk->wr_tx_refs);
+ dma_unmap:
+ 	if (lnk->wr_rx_v2_dma_addr) {
+ 		ib_dma_unmap_single(ibdev, lnk->wr_rx_v2_dma_addr,
 -- 
 2.43.0
 
