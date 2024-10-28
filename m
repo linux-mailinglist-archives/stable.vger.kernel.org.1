@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-88611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6315C9B26B8
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:42:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 538439B254C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:27:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28ED82824AA
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:42:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1097C281879
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF2018E354;
-	Mon, 28 Oct 2024 06:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F97818E047;
+	Mon, 28 Oct 2024 06:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RRFOAngY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YmzhDA6Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DBE15B10D;
-	Mon, 28 Oct 2024 06:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AFB918CC1F;
+	Mon, 28 Oct 2024 06:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097723; cv=none; b=qyWw+SVXM1Hb6sTmGkjS/wtwO0HpQdFvOC8pv+s7RnzwexNtQmpyBY41slnct7TjLi9kdapsSKmUg7AX2WzACuAGhZkH8kEX24ncc6J1u0LWslYFTWT6f8YqQGuFkfwP21akVTcuTCy3MvnTw1c+McrywCWDfDOynea8cG1GrWY=
+	t=1730096861; cv=none; b=LD08/PoXLqgUM2CXNB9gWpo4rWG+gW1o1LgKU7fd0A1Kz/BiY0N+EQE9NduhBQgSJa9m4/xWaHN3NuXmfacm6pdF8Lv18Xn4tMHqytfjGqAeuYmvXQdMvQfDjYqoVBiy0WT+NlKVVjmkbk1H33ttzAakNP+okD3OEsl99Fzhlrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097723; c=relaxed/simple;
-	bh=KDCZy1JaavHoVfHOi6xNb3bikkNzg5Wd3B2z2ICinz8=;
+	s=arc-20240116; t=1730096861; c=relaxed/simple;
+	bh=L6MKVECotlv/h6leW4Bc17vEJvbTbDsHeGQkiFvYaCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WdSCmY23EXt2O2ngauLUnop4G2d8cp/+hZH+/GD+cEMJSrTCOccxpvQYNtuLpuudSVHJcxmasqweUNpuILZZM2uuyd7qpX+vOAr42ERwOVmH26oBVn5WrUQXIP0W+FEElx6eS+olTDZHbJLT8z2gt70NY6uoOlpzAf4iVfbAuOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RRFOAngY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2075EC4CEC7;
-	Mon, 28 Oct 2024 06:42:02 +0000 (UTC)
+	 MIME-Version; b=VlDgmDhjoCICLKLt0ZGS7augNVDM7C73ssoNHqqNv0/JCI1AmtiN+bDuppNkRGXl/FB5NNFt4QSQtzrgK8A093a8sNDlc4emTaUQJlbv0qGI0lBZgOZ586v8MU04FCaZt9GGKSo83ug7YKvMWa+pp6YwLu9vfAWeVCVq4viDJpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YmzhDA6Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4105C4CEC3;
+	Mon, 28 Oct 2024 06:27:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097723;
-	bh=KDCZy1JaavHoVfHOi6xNb3bikkNzg5Wd3B2z2ICinz8=;
+	s=korg; t=1730096861;
+	bh=L6MKVECotlv/h6leW4Bc17vEJvbTbDsHeGQkiFvYaCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RRFOAngYeKIcZOj8j9IYlYYjuzdggtoe01EezS/sC7nzL1XSeF4n5iAGIEyL00xao
-	 FM1eq1zpVnn7ITacvLbcZrKCZpQ/7rULAc6DM1wTX9oEdsQAvI7BqsKurog2xDBxaR
-	 7P7QF2aKHvBohsqBN+okgGGKBtK02XzUbwKCJsJo=
+	b=YmzhDA6ZzETtZAcQEtwNbDDxjrKGCifHoozcbIkUS+rJcdxxu+rVHqqIZ1ylUFd/g
+	 WV/nVBBKVqBCkmSXlpMg5zsS1jW5UDMqZj6CkS1SFjYZPAhxfDcku2j7DlQ/8YeLIK
+	 tFO1BgZ3P3LHwOm2yEj4GWDnEKbK0IeYKt6h4/mA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Wang Hai <wanghai38@huawei.com>,
+	Gerhard Engleder <gerhard@engleder-embedded.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 119/208] arm64: Force position-independent veneers
+Subject: [PATCH 5.15 19/80] net: ethernet: aeroflex: fix potential memory leak in greth_start_xmit_gbit()
 Date: Mon, 28 Oct 2024 07:24:59 +0100
-Message-ID: <20241028062309.583865140@linuxfoundation.org>
+Message-ID: <20241028062253.157927452@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,115 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit 9abe390e689f4f5c23c5f507754f8678431b4f72 ]
+[ Upstream commit cf57b5d7a2aad456719152ecd12007fe031628a3 ]
 
-Certain portions of code always need to be position-independent
-regardless of CONFIG_RELOCATABLE, including code which is executed in an
-idmap or which is executed before relocations are applied. In some
-kernel configurations the LLD linker generates position-dependent
-veneers for such code, and when executed these result in early boot-time
-failures.
+The greth_start_xmit_gbit() returns NETDEV_TX_OK without freeing skb
+in case of skb->len being too long, add dev_kfree_skb() to fix it.
 
-Marc Zyngier encountered a boot failure resulting from this when
-building a (particularly cursed) configuration with LLVM, as he reported
-to the list:
-
-  https://lore.kernel.org/linux-arm-kernel/86wmjwvatn.wl-maz@kernel.org/
-
-In Marc's kernel configuration, the .head.text and .rodata.text sections
-end up more than 128MiB apart, requiring a veneer to branch between the
-two:
-
-| [mark@lakrids:~/src/linux]% usekorg 14.1.0 aarch64-linux-objdump -t vmlinux | grep -w _text
-| ffff800080000000 g       .head.text     0000000000000000 _text
-| [mark@lakrids:~/src/linux]% usekorg 14.1.0 aarch64-linux-objdump -t vmlinux | grep -w primary_entry
-| ffff8000889df0e0 g       .rodata.text   000000000000006c primary_entry,
-
-... consequently, LLD inserts a position-dependent veneer for the branch
-from _stext (in .head.text) to primary_entry (in .rodata.text):
-
-| ffff800080000000 <_text>:
-| ffff800080000000:       fa405a4d        ccmp    x18, #0x0, #0xd, pl     // pl = nfrst
-| ffff800080000004:       14003fff        b       ffff800080010000 <__AArch64AbsLongThunk_primary_entry>
-...
-| ffff800080010000 <__AArch64AbsLongThunk_primary_entry>:
-| ffff800080010000:       58000050        ldr     x16, ffff800080010008 <__AArch64AbsLongThunk_primary_entry+0x8>
-| ffff800080010004:       d61f0200        br      x16
-| ffff800080010008:       889df0e0        .word   0x889df0e0
-| ffff80008001000c:       ffff8000        .word   0xffff8000
-
-... and as this is executed early in boot before the kernel is mapped in
-TTBR1 this results in a silent boot failure.
-
-Fix this by passing '--pic-veneer' to the linker, which will cause the
-linker to use position-independent veneers, e.g.
-
-| ffff800080000000 <_text>:
-| ffff800080000000:       fa405a4d        ccmp    x18, #0x0, #0xd, pl     // pl = nfrst
-| ffff800080000004:       14003fff        b       ffff800080010000 <__AArch64ADRPThunk_primary_entry>
-...
-| ffff800080010000 <__AArch64ADRPThunk_primary_entry>:
-| ffff800080010000:       f004e3f0        adrp    x16, ffff800089c8f000 <__idmap_text_start>
-| ffff800080010004:       91038210        add     x16, x16, #0xe0
-| ffff800080010008:       d61f0200        br      x16
-
-I've opted to pass '--pic-veneer' unconditionally, as:
-
-* In addition to solving the boot failure, these sequences are generally
-  nicer as they require fewer instructions and don't need to perform
-  data accesses.
-
-* While the position-independent veneer sequences have a limited +/-2GiB
-  range, this is not a new restriction. Even kernels built with
-  CONFIG_RELOCATABLE=n are limited to 2GiB in size as we have several
-  structues using 32-bit relative offsets and PPREL32 relocations, which
-  are similarly limited to +/-2GiB in range. These include extable
-  entries, jump table entries, and alt_instr entries.
-
-* GNU LD defaults to using position-independent veneers, and supports
-  the same '--pic-veneer' option, so this change is not expected to
-  adversely affect GNU LD.
-
-I've tested with GNU LD 2.30 to 2.42 inclusive and LLVM 13.0.1 to 19.1.0
-inclusive, using the kernel.org binaries from:
-
-* https://mirrors.edge.kernel.org/pub/tools/crosstool/
-* https://mirrors.edge.kernel.org/pub/tools/llvm/
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Reported-by: Marc Zyngier <maz@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Will Deacon <will@kernel.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20240927101838.3061054-1-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: d4c41139df6e ("net: Add Aeroflex Gaisler 10/100/1G Ethernet MAC driver")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+Link: https://patch.msgid.link/20241012110434.49265-1-wanghai38@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/aeroflex/greth.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-index 9a2d3723cd0fa..11782860717fa 100644
---- a/arch/arm64/Makefile
-+++ b/arch/arm64/Makefile
-@@ -10,7 +10,7 @@
- #
- # Copyright (C) 1995-2001 by Russell King
+diff --git a/drivers/net/ethernet/aeroflex/greth.c b/drivers/net/ethernet/aeroflex/greth.c
+index a95bac4e14f6a..538043cd9e24c 100644
+--- a/drivers/net/ethernet/aeroflex/greth.c
++++ b/drivers/net/ethernet/aeroflex/greth.c
+@@ -484,7 +484,7 @@ greth_start_xmit_gbit(struct sk_buff *skb, struct net_device *dev)
  
--LDFLAGS_vmlinux	:=--no-undefined -X
-+LDFLAGS_vmlinux	:=--no-undefined -X --pic-veneer
+ 	if (unlikely(skb->len > MAX_FRAME_SIZE)) {
+ 		dev->stats.tx_errors++;
+-		goto out;
++		goto len_error;
+ 	}
  
- ifeq ($(CONFIG_RELOCATABLE), y)
- # Pass --no-apply-dynamic-relocs to restore pre-binutils-2.27 behaviour
+ 	/* Save skb pointer. */
+@@ -575,6 +575,7 @@ greth_start_xmit_gbit(struct sk_buff *skb, struct net_device *dev)
+ map_error:
+ 	if (net_ratelimit())
+ 		dev_warn(greth->dev, "Could not create TX DMA mapping\n");
++len_error:
+ 	dev_kfree_skb(skb);
+ out:
+ 	return err;
 -- 
 2.43.0
 
