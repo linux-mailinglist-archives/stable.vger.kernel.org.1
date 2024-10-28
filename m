@@ -1,117 +1,149 @@
-Return-Path: <stable+bounces-89116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 563FB9B3A53
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 20:21:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB9909B3A6A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 20:29:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF89C1F22A20
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 19:21:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F6EF1F2258A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 19:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A64918F2EA;
-	Mon, 28 Oct 2024 19:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6CF18F2DF;
+	Mon, 28 Oct 2024 19:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="Wpn2gb/e"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QHHhlu+G"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C221618EFF1;
-	Mon, 28 Oct 2024 19:20:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD75155A52
+	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 19:28:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730143261; cv=none; b=GyEO3ZM0Ow93CNbv0y/DfHrfKs+bISbe6Cz8znH3mRLaQmud+LUQuz13oOrA0d8jZtmv+fUjsj8fA5kDnJEYlguwdiPdLkaJR+PVkHkAlI6ECMDNTeOSNrxGm/dC3dKgI7LA+4x6nZdp2aGwaq+SgM1UBg/kpRtDkZzrlFaVlRU=
+	t=1730143736; cv=none; b=NgKkKX7AantIxE8e4BWM3iYfSLXYWv/IVhpqihVoQbkBr9J3Cu5aL/nqizEtpUqFq3psylAPC0RP5jcGxgKrFL7PDbFwR7IgNpLnn2KdsepOhUkWip2JFF5Tsm8A5d7qry6gBwxoZPIkFXG3qMZPolnSS/zcwldv3DvOjonCABk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730143261; c=relaxed/simple;
-	bh=F981mQfK+GakF4x7z8yIC7+kOIceY26cwCoUqATTl8I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RyyfNb7qRD+9pQP+1UA0B5Hhqjn9ut8AVYTZ+xIFpyXYUUeq3fMMtKmAJ3srwjInZRdmexllE+luQqWG9yCbLuj26W/nRV+nai/SywjFX/7quwOtmphRNWKTUgMttUL/tPgH8yR+HMYs265n0WZ2MIlD+ZCPAT0fgfMTjrVOCEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=Wpn2gb/e; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4315e9e9642so43418875e9.0;
-        Mon, 28 Oct 2024 12:20:59 -0700 (PDT)
+	s=arc-20240116; t=1730143736; c=relaxed/simple;
+	bh=zhRPxXpMYUnQtlDg/EcB2mvGN8pwmlAOQ7q9ehSkUoM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LtX5OIt4OZAq/QC70zxhOsI5JdBSNigtyvF3BqpCn1Qh7HUGsPW0D0L9TeDJqcNq0jW8oMTnEzujia7AwWrJbSZxmKN4JOS6lGiAGx77u/8j1HyIEHp6mDvpBjwPWifE5ybHVRYU/BuGW2CSNn8oTqnAF8a8G2ca7UziLuWYyuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QHHhlu+G; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-7ea7e250c54so3486580a12.0
+        for <stable@vger.kernel.org>; Mon, 28 Oct 2024 12:28:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1730143258; x=1730748058; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nmyfLhJgqZpTB9dOyWQs56gLuQycztkSBu1M1yDh9Ag=;
-        b=Wpn2gb/eAMB/2+wEr27/rIg8p2Fcs/6Oa9bTzcrgaEMMCzI61J1wV2K/o09HTcf6Ob
-         n9j/IYOO2dDoiz1XQB23QDYJdcizG9L5VzAcU0TwPRBdAipsL43SWdSpTIKUqjwtpZnD
-         zhbODrRiOxUrXMQMZpPuf5pLocBC4PoeLCoSsjs3GNbs+zi77sObU3vdszZDYPsMB/Oo
-         UFAASlUtEgPW9LWbJoZvz/glRMeID7i9YPWji80qUN/6c9n5L3r3uOpb9foNRaUG3yYs
-         brHtj0/HHiPzb2S0DjIkAI3C55aPcSjJDeYiRb19aTQPg4dlsxsaPyb4HSAAzJFtU3/v
-         IJHg==
+        d=google.com; s=20230601; t=1730143733; x=1730748533; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0T1n6fU/OspCYIpwClSLWKrMUBp9ZorJc3H+/WkDpNU=;
+        b=QHHhlu+GhVRLJtiL6Hu7xltJVQmSbcfod+5OUQDFFw8xe0Tfj+wC9laFxqkVLJyhtK
+         Bxf2+NK4bchFzzbMcRMS3yeTrvfoCN056eY8S6D5d71+Kx2A7zuMMeXlWUO/T8Qp7OYk
+         G7sIfQgyLMI5xR1QWciJBw1Jy0lysfYQSa1OueHJbBeDmzzL1DXLIIYTDGZ8zxwHOb25
+         2PEBLj4o7jj5CXCdcavAFRRoHnD95/wQj5DPn4xAbrMvfnXXMIPQPlrgjda2l/1+IoAf
+         rkZRsLCeu/1/QlcK+SUNZKN+xFU1RwNpeqm87LuW9t9dsKV5SdDM+2Pwl5RuLcAehGrP
+         5N3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730143258; x=1730748058;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nmyfLhJgqZpTB9dOyWQs56gLuQycztkSBu1M1yDh9Ag=;
-        b=V3N5Tcd9WbLWT8Kw83EzV2Zalr691laGzHO98xC/Bdso+fmEXFYAhq5/2in+t1LLck
-         mGDdsRiQGCQJ+qOQiRUuBdWRlpLexyYnZr+3dQ9Fe1oriqwtGciOTfPuZlPrdWCzR14K
-         f37s6KqDwhv/hBrVoEN1GNXQY1pqqTv3az0yN124g/I/b6ujppICpgUDiNt+rmPFmWIl
-         7RvbwFKipqiGtsqIDduZGqG20PZ26ay+eonJCMI+oTr+zJRk5XhFz2r8gECwgIJ4qIge
-         ShkMFgxJL8v3kKveK2rvHjJqrlNp14C4GGp/2+an7cc2+ifnIYg0J2JC29cVs55OqO3Y
-         YNMA==
-X-Forwarded-Encrypted: i=1; AJvYcCUP3Y075nJy2AfwDHUwkgweRcz3sY8r+YKlkTAf315drP2cetJSyg/wqNzbLfpJunoBWr5Kdw5u@vger.kernel.org, AJvYcCVmDQRrDqQcFlo2ODIG46s/b++RscXLVOLrTmeEM/u0K66YUV4S745vRqeUyzQ2NqemrSQBtXuIPNrUcSc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFN2pOXKxKZV3AWU59Y8w57ijkVFhXZ3m8NUb2q7JE9QvOBu9T
-	7QlwZTLG/quXjvQU7kZcYCTtGR42FcN5wc5I/ka5pmIK6wYul2ukvqYlNUo=
-X-Google-Smtp-Source: AGHT+IHdJPH8eCW/evibf4e02yyUQeiLZFkHgIBy7hWOQsM3sVPbez5w+tlVulpQhfUSmgb2F6Wm7g==
-X-Received: by 2002:a05:600c:1d15:b0:431:4a83:2d80 with SMTP id 5b1f17b1804b1-4319ab94761mr79671595e9.0.1730143257909;
-        Mon, 28 Oct 2024 12:20:57 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2ace6d.dip0.t-ipconnect.de. [91.42.206.109])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b8c394sm10322778f8f.90.2024.10.28.12.20.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Oct 2024 12:20:57 -0700 (PDT)
-Message-ID: <7d6ae25f-0ad4-47a4-a155-e3efc6d9ee1a@googlemail.com>
-Date: Mon, 28 Oct 2024 20:20:56 +0100
+        d=1e100.net; s=20230601; t=1730143733; x=1730748533;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0T1n6fU/OspCYIpwClSLWKrMUBp9ZorJc3H+/WkDpNU=;
+        b=gVViHDDienJcU5RTEr3DwLZa5//DWp6XzvEU8b+iXUYJgg2VD1cNT1VaBPqUcvx6iZ
+         iycDlw4BFAXTnT3S2pYN69qnGxFyujZHG/KcW5MN39/6Xd0QL0ozOvye8H7NeRQ/pqbC
+         kf+Y6IQjYR4L5mOZiILX3OnE0cIDvlMHN4AZR6tyOMoNZ6nqqFvJjDHMtOxJPX0XRAPr
+         r8dmg4W5icMTcqn8d5G4cEby1r32owXQRo6vvpI22DQW/HSD8FytJ7wkoBE4tsJpFVtU
+         ufJv+aHH3FZyrSvoc562iiHOzmO+wwnx0qwvcxWpLxLAXNLpU5NBYbZh90qHO97he6nu
+         crng==
+X-Gm-Message-State: AOJu0Yzsb0AHjp/fiRBokfv8A6KKpsHRYBf5vx02jh7EBL3F9I2tqEGx
+	yuNQnPCjPR+KzblStmXR0fAGook8vmFzW4NOhMssrEx9L7U0Oc026yfz29+2IUwzHfOn5GmU47h
+	DAjnCoYgs9gsmp4uZoswCBH2iZ/VvQ5oQ+ABtKYmUjAE3kvS7V6nO
+X-Google-Smtp-Source: AGHT+IGfUL4JfHmkwexIT1dWy3Jk714LEvjyZjrFRN52GqN1249MrUze423hF7+YremtB2e0U4s6nXBRqNL8k5aS/VU=
+X-Received: by 2002:a05:6a21:1798:b0:1d9:18b7:496 with SMTP id
+ adf61e73a8af0-1d9a851e099mr13212445637.45.1730143732983; Mon, 28 Oct 2024
+ 12:28:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.6 000/208] 6.6.59-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20241028062306.649733554@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20241028-fixup-5-15-v3-1-078531a8d70a@mediatek.com>
+In-Reply-To: <20241028-fixup-5-15-v3-1-078531a8d70a@mediatek.com>
+From: Saravana Kannan <saravanak@google.com>
+Date: Mon, 28 Oct 2024 12:28:14 -0700
+Message-ID: <CAGETcx-kaXLPdZgDghT41=2uxN=Ck=kaAj5wkF_yqpjyz=6_2w@mail.gmail.com>
+Subject: Re: [PATCH v3] Revert "drm/mipi-dsi: Set the fwnode for mipi_dsi_device"
+To: jason-jh.lin@mediatek.com
+Cc: stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>, 
+	Seiya Wang <seiya.wang@mediatek.com>, Singo Chang <singo.chang@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Am 28.10.2024 um 07:23 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.6.59 release.
-> There are 208 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Sun, Oct 27, 2024 at 11:33=E2=80=AFPM Jason-JH.Lin via B4 Relay
+<devnull+jason-jh.lin.mediatek.com@kernel.org> wrote:
+>
+> From: "Jason-JH.Lin" <jason-jh.lin@mediatek.com>
+>
+> This reverts commit ac88a1f41f93499df6f50fd18ea835e6ff4f3200.
+>
+> Reason for revert:
+> 1. The commit [1] does not land on linux-5.15, so this patch does not
+> fix anything.
+>
+> 2. Since the fw_device improvements series [2] does not land on
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+fw_devlink. Not fw_device.
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+-Saravana
 
-Beste Grüße,
-Peter Schneider
-
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
-
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+> linux-5.15, using device_set_fwnode() causes the panel to flash during
+> bootup.
+>
+> Incorrect link management may lead to incorrect device initialization,
+> affecting firmware node links and consumer relationships.
+> The fwnode setting of panel to the DSI device would cause a DSI
+> initialization error without series[2], so this patch was reverted to
+> avoid using the incomplete fw_devlink functionality.
+>
+> [1] commit 3fb16866b51d ("driver core: fw_devlink: Make cycle detection m=
+ore robust")
+> [2] Link: https://lore.kernel.org/all/20230207014207.1678715-1-saravanak@=
+google.com
+>
+> Cc: stable@vger.kernel.org # 5.15.169
+> Cc: stable@vger.kernel.org # 5.10.228
+> Cc: stable@vger.kernel.org # 5.4.284
+> Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+> ---
+>  drivers/gpu/drm/drm_mipi_dsi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/drm_mipi_dsi.c b/drivers/gpu/drm/drm_mipi_ds=
+i.c
+> index 24606b632009..468a3a7cb6a5 100644
+> --- a/drivers/gpu/drm/drm_mipi_dsi.c
+> +++ b/drivers/gpu/drm/drm_mipi_dsi.c
+> @@ -221,7 +221,7 @@ mipi_dsi_device_register_full(struct mipi_dsi_host *h=
+ost,
+>                 return dsi;
+>         }
+>
+> -       device_set_node(&dsi->dev, of_fwnode_handle(info->node));
+> +       dsi->dev.of_node =3D info->node;
+>         dsi->channel =3D info->channel;
+>         strlcpy(dsi->name, info->type, sizeof(dsi->name));
+>
+>
+> ---
+> base-commit: 74cdd62cb4706515b454ce5bacb73b566c1d1bcf
+> change-id: 20241024-fixup-5-15-5fdd68dae707
+>
+> Best regards,
+> --
+> Jason-JH.Lin <jason-jh.lin@mediatek.com>
+>
+>
 
