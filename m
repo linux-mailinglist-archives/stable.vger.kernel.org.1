@@ -1,109 +1,128 @@
-Return-Path: <stable+bounces-89103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E1289B3767
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 18:13:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B5B9B37CD
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 18:39:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02D38281921
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 17:13:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A0EE282994
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 17:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E334B1DF252;
-	Mon, 28 Oct 2024 17:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2E51DF735;
+	Mon, 28 Oct 2024 17:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ISoeuTHA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S8dIViFS"
 X-Original-To: stable@vger.kernel.org
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D98C1DF725
-	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 17:13:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0D91DEFFE;
+	Mon, 28 Oct 2024 17:39:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730135582; cv=none; b=HRRkFAOY1wkiw/hl4qhsWOvKBWPhNGChDJIq7jrPnrr0XWkraSni52CyPZ0S0pMUSfsWORPoVFA2/1UKLdp5DZoQT+exEpwLj6mytjdi7HayVAMAHeZN5L2ZYN5Z34n1Y1EolFWUOOTna0eeYNhtOzRZekmXRTJ3Y2fE6hydrBU=
+	t=1730137164; cv=none; b=F2cReDUz2+rzxqPnL1RzmNWfT6PBzwUaV2uV4PA2TZ6YukwFnRcc5S4F0aW/vgXY5d6PLS3Jp59bzCLDSHsaaOxrAiitOWGV9zb9EjfPj2nfPmJNvgpiFOMwvP6+XJXIXHn1GbtoZCl+Hu3OIRzxbWyuBCxvAmU+rAZNrdbFyDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730135582; c=relaxed/simple;
-	bh=9bYoCIsnrgKl6DpNAORtUU0H6P5iGPO4aZKZIFs2FaI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FuTsB22XjbMVat1ItlHfgnjJ/HLbVMXqhGDIiSk+kqiC6pxW4m7eU1WbXh8xMsEdydHSxr9WtQ+w88AwXO3o5Xeeh/URMvYOMiKTonSjtjHBT8z8rOetNuy0wYeqA60110qmrCvP4mBIDie4IwBcjv5gamtj4iYfOv6b/OShS00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ISoeuTHA; arc=none smtp.client-ip=95.215.58.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Mon, 28 Oct 2024 10:12:46 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1730135573;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xJZPIUyASHKIZLcZxFmHyTQ9c7DQ9IIhScA6QACGQKE=;
-	b=ISoeuTHAKwgwBa2kBiuaCcAGs7PdxTWGaWY/mOQZ9bZkhdCOVcSRoidFFrOLPrTdVkuGrV
-	dzVigfMa+dOk0U+4Wokxm7lP7150WrsL30abwP2Oe6nC8YZw/zchsSxzefQykjeM7+Q5B6
-	JaC3dxU+91EV66rlqx4xWmYmItFxONM=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Oliver Upton <oliver.upton@linux.dev>
-To: Raghavendra Rao Ananta <rananta@google.com>
-Cc: Marc Zyngier <maz@kernel.org>, linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, stable@vger.kernel.org,
-	syzbot <syzkaller@googlegroups.com>
-Subject: Re: [PATCH] KVM: arm64: Mark the VM as dead for failed
- initializations
-Message-ID: <Zx_GDqLO4lBQHnxL@linux.dev>
-References: <20241025221220.2985227-1-rananta@google.com>
- <Zxx_X9-MdmAFzHUO@linux.dev>
- <87ttcztili.wl-maz@kernel.org>
- <Zx0CT1gdSWVyKLuD@linux.dev>
- <CAJHc60wn=vA9j421FhVkMqYc0w8u2ZYuc-9TJ+rvriSXjseKHw@mail.gmail.com>
+	s=arc-20240116; t=1730137164; c=relaxed/simple;
+	bh=ONuuDiYLRjdUk08u6t8h92cYxGhFK3fxHfskWa+DLg4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YjVBMjTmv6t8Vg/RUBNpgQ+NjeNEAUABnkjZQbV/S1WgLu5M+gZ2UZqsm41BMsrlzLVHSpy8Dk3I+MH7W+5+mX9aqhQV4fYbcacfFrqSDW44mf2j3P6UM1vm09IDYwX7CIq4Wo4YbrFg/3YVm6yuFbw9F+zSMq4NP93CfYhggP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S8dIViFS; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-71e4244fdc6so3234865b3a.0;
+        Mon, 28 Oct 2024 10:39:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730137161; x=1730741961; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=52cHL+kkoHexuQnNy/1lv0K/vO+Nk3Hw8bZvy1tjRmc=;
+        b=S8dIViFSEXU8I6xbIiYfdSJJIUiQlxerRKRCxHfa4XtSkLbd3c+egJdtNohxaE5bbF
+         EoSEsNuiilv0zF4flkNt+XMv2jKULAjr4jO3bgHcAKCU4G9vwQY2p6FKmtTWTTkymZQN
+         inabE3lqQjLPsCwRHz9SNjXAKdbIdTuOTnFn4TbUdFyT1JznKC3k5imGyddMDGkbFwpP
+         tK/f1Znm8wsdzCANmffuLy6mHo95m7xKrjyrutbghsK8BIS6unHyMMhq5jbsDQBsMREm
+         H+5HyKYjNYLrkN5omxoyIM+XnpQsj4BbMFud5k9Oe4ZLGHqarSm30RTiabHDqyhTV0lr
+         Kszw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730137161; x=1730741961;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=52cHL+kkoHexuQnNy/1lv0K/vO+Nk3Hw8bZvy1tjRmc=;
+        b=TQXcygby9w/X9OjRJmIXrEkq65t/NwuxmjCIM/sxZ2Zu80ZaPcuOXBEl12L9BGojJy
+         Td2feCdUcvSGEpsiG+/vxG6lsd6HuC2mIJDetQWoOE0fK5OAiUKuUCIqpyy4D5FefAlQ
+         NqQRgBeYsPWX8bCOV99WAkB4D4F3FEkzTxio364CgMtmdACIEPFn2MtYTjbiwlJO9pCb
+         l2wnT6fX/DGVmEKkF7Bxl9eLswZ0dMthFQgJZgbpfeV3dWwWhDyJdllEsaTPCTnszb+W
+         JElp6etKh3dLon4kOsotWMBpbeat3i4XW7avBTlFwqAM5d8MjAjmMZJemFbKLyByHtVy
+         STCw==
+X-Forwarded-Encrypted: i=1; AJvYcCX1u/PYsoG+L7bL3IgaDvbK13zsN7A2q6d8RYgjMIGqvMz11KRlU0e66mvvI2PFoNqzCWpud9Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6dgCr3w7lRlqZ/yruQiBsgxVAcCnAjTmewp9vXAYZ2TRlXlTG
+	cL33tIv6Hxn5CH0B13xFvBfmPg6yTXGB4beM/8if2uIf31PeozUUJQi9rA==
+X-Google-Smtp-Source: AGHT+IHt7NIir7gDJOM7rc6D9fF3NSTV0liYf3gnMw3XzO3e2ts76eWtU9RJPgtXqCL8qx9smkL+9Q==
+X-Received: by 2002:a05:6a00:3d55:b0:71e:3b8f:92e with SMTP id d2e1a72fcca58-72062f4bdc7mr13140274b3a.3.1730137160973;
+        Mon, 28 Oct 2024 10:39:20 -0700 (PDT)
+Received: from localhost.localdomain (75-164-192-68.ptld.qwest.net. [75.164.192.68])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72057a1fbb9sm6009449b3a.158.2024.10.28.10.39.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Oct 2024 10:39:20 -0700 (PDT)
+From: "Gerecke, Jason" <killertofu@gmail.com>
+X-Google-Original-From: "Gerecke, Jason" <jason.gerecke@wacom.com>
+To: linux-input@vger.kernel.org,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Cc: Ping Cheng <pinglinux@gmail.com>,
+	Joshua Dickens <Joshua@Joshua-Dickens.com>,
+	Erin Skomra <skomra@gmail.com>,
+	"Tobita, Tatsunosuke" <tatsunosuke.tobita@wacom.com>,
+	Jason Gerecke <jason.gerecke@wacom.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] wacom: Interpret tilt data from Intuos Pro BT as signed values
+Date: Mon, 28 Oct 2024 10:39:14 -0700
+Message-ID: <20241028173914.68311-1-jason.gerecke@wacom.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJHc60wn=vA9j421FhVkMqYc0w8u2ZYuc-9TJ+rvriSXjseKHw@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
 
-On Mon, Oct 28, 2024 at 09:43:45AM -0700, Raghavendra Rao Ananta wrote:
-> On Sat, Oct 26, 2024 at 7:53 AM Oliver Upton <oliver.upton@linux.dev> wrote:
-> > On Sat, Oct 26, 2024 at 08:43:21AM +0100, Marc Zyngier wrote:
-> > > I think this would fix the problem you're seeing without changing the
-> > > userspace view of an erroneous configuration. It would also pave the
-> > > way for the complete removal of the interrupt notification to
-> > > userspace, which I claim has no user and is just a shit idea.
-> >
-> > Yeah, looks like this ought to get it done.
-> >
-> > Even with a fix for this particular issue I do wonder if we should
-> > categorically harden against late initialization failures and un-init
-> > the vCPU (or bug VM, where necessary) to avoid dealing with half-baked
-> > vCPUs/VMs across our UAPI surfaces.
-> >
-> > A sane userspace will probably crash when KVM_RUN returns EINVAL anyway.
-> 
-> Thanks for the suggestion. Sure, I'll take another look at the
-> possible things that we can uninitialize and try to re-spin the patch.
-> 
-> Marc,
-> 
-> If you feel userspace_irqchip_in_use is not necessary anymore, and as
-> a quick fix to this issue, we can get rid of that independent of the
-> un-init effort.
+From: Jason Gerecke <jason.gerecke@wacom.com>
 
-It's a good cleanup to begin with, even better that it fixes a genuine
-bug.
+The tilt data contained in the Bluetooth packets of an Intuos Pro are
+supposed to be interpreted as signed values. Simply casting the values
+to type `char` is not guaranteed to work since it is implementation-
+defined whether it is signed or unsigned. At least one user has noticed
+the data being reported incorrectly on their system. To ensure that the
+data is interpreted properly, we specifically cast to `signed char`
+instead.
 
-Raghu, could you please test Marc's diff and send it as a patch (w/
-correct attribution) if it works? I'm willing to bet that we have more
-init/uninit bugs lurking, so we can still follow up w/ robustness
-improvements once we're happy w/ the shape of them.
+Link: https://github.com/linuxwacom/input-wacom/issues/445
+Fixes: 4922cd26f03c ("HID: wacom: Support 2nd-gen Intuos Pro's Bluetooth classic interface")
+CC: stable@vger.kernel.org # 4.11+
+Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+---
+ drivers/hid/wacom_wac.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
+index 413606bdf476..5a599c90e7a2 100644
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -1353,9 +1353,9 @@ static void wacom_intuos_pro2_bt_pen(struct wacom_wac *wacom)
+ 					rotation -= 1800;
+ 
+ 				input_report_abs(pen_input, ABS_TILT_X,
+-						 (char)frame[7]);
++						 (signed char)frame[7]);
+ 				input_report_abs(pen_input, ABS_TILT_Y,
+-						 (char)frame[8]);
++						 (signed char)frame[8]);
+ 				input_report_abs(pen_input, ABS_Z, rotation);
+ 				input_report_abs(pen_input, ABS_WHEEL,
+ 						 get_unaligned_le16(&frame[11]));
 -- 
-Thanks,
-Oliver
+2.47.0
+
 
