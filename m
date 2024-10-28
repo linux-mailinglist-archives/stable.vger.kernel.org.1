@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-88937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB85F9B2823
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:54:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C69C59B2711
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:45:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 915B1286487
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:54:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E31B1F247FA
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA2718E77D;
-	Mon, 28 Oct 2024 06:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF1E18EFD6;
+	Mon, 28 Oct 2024 06:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JNZeHdra"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O4GfYUr9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC82D824A3;
-	Mon, 28 Oct 2024 06:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF32C2AF07;
+	Mon, 28 Oct 2024 06:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098460; cv=none; b=g/0rgZyInFb7bUJXMzp+TJUUbDJnqtSJIqeqeuF0r2LRRbQW0jDb9el21aI7Am+3afEM+HaX0wZ8ncFQoQmdkSQ1PhgNPp0TigWKzj8gjRkSYCsGRT0OYWkrV2bXO+TKig9o0waxS54bpU7O/2p8whmPVrSxrolizouB1vPJFvI=
+	t=1730097904; cv=none; b=Mc8cQk/xqzuuFrDF7BvmngBnbp3bmdCuGazJkcRlKY9AfUZcyZxpXUxR+7ffLifKVLLfDqaL8b4iLYvFJ2WT3Zvl0llOSXF/I/NpYA507oOYS47vbY62dNl2qLKmUPDU3VgrpaZkB2i1uzTuAZWsUdqzOBQlYXziNSkAXl50SvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098460; c=relaxed/simple;
-	bh=uIFigDd9Mg7S0pmCa0FvLm2WXw8I8ehEezrMhwGbS64=;
+	s=arc-20240116; t=1730097904; c=relaxed/simple;
+	bh=SiD7FJhfgW+qhc7xzHxZ4BiFPXIgKHALW5X5uO4qjQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HKN41/AzLWrC02CWiwB2Ojd3ne4SmrU+RYN1erLzYJYwHGo5eYCDL2GukmLSL+ubtGEE9upnUwfHqSvHGDI2qX3Adms/nG7cZjoMuQKzZZAg0z3ZG80DrISNwyHD1plonVqzSXev+TTsoPO1L0c/VqzFNOxONBwz80usHavJYOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JNZeHdra; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E015C4CEC3;
-	Mon, 28 Oct 2024 06:54:19 +0000 (UTC)
+	 MIME-Version; b=YJWJKClFCFPLH5rWPJtvlFQYiOiH0anzYoPKjmgELSYTCVJXTOkSU5yeJWJ5vh0uNe5Nq8RnqIrklzFh034EvP3pDRRDFW6Xkk23XMBI+8O6JK1+UtJDkmHziWLa+5nrQb89CJI0BUmYlNGRDSAJAqfv7PIrLRJOGtvLt3RzzgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O4GfYUr9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB29C4CEC3;
+	Mon, 28 Oct 2024 06:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098459;
-	bh=uIFigDd9Mg7S0pmCa0FvLm2WXw8I8ehEezrMhwGbS64=;
+	s=korg; t=1730097904;
+	bh=SiD7FJhfgW+qhc7xzHxZ4BiFPXIgKHALW5X5uO4qjQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JNZeHdrazvgLd8IWA6bUqjUJvZm+A4HoddrRtcrNqTmuzTnphMnJV4adp/OX70lrz
-	 aLw54YaOQTt1Ol0IR8VSfHDc6ir/2CDoNev8qOkx+MfhyS9925kqvXvO1wPGku65OO
-	 shJ8WefqrwPTM4yaPjucaK3ZahKzVG23Xsb+80ms=
+	b=O4GfYUr9aSNewyDeysiYMyizW0pvLHlLeMf1fB3Yb58t8qJ7rENWQ97mei4GhzfGS
+	 TVVgD51OiRkcczNCNJZWpgELNWodS4/vsUUTOWsN7/qjHJjEal2CKF3K+JuUz1NYnt
+	 0YyO4RWvdvmWCC+ATldKFBfi38Kc1I1NGp7G7Y8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Li Huafei <lihuafei1@huawei.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 236/261] fgraph: Fix missing unlock in register_ftrace_graph()
-Date: Mon, 28 Oct 2024 07:26:18 +0100
-Message-ID: <20241028062318.033207381@linuxfoundation.org>
+	Xinyu Zhang <xizhang@purestorage.com>,
+	Uday Shankar <ushankar@purestorage.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 199/208] block: fix sanity checks in blk_rq_map_user_bvec
+Date: Mon, 28 Oct 2024 07:26:19 +0100
+Message-ID: <20241028062311.538282727@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Huafei <lihuafei1@huawei.com>
+From: Xinyu Zhang <xizhang@purestorage.com>
 
-[ Upstream commit bd3734db86e01e20dd239a40b419059a0ce9c901 ]
+commit 2ff949441802a8d076d9013c7761f63e8ae5a9bd upstream.
 
-Use guard(mutex)() to acquire and automatically release ftrace_lock,
-fixing the issue of not unlocking when calling cpuhp_setup_state()
-fails.
+blk_rq_map_user_bvec contains a check bytes + bv->bv_len > nr_iter which
+causes unnecessary failures in NVMe passthrough I/O, reproducible as
+follows:
 
-Fixes smatch warning:
+- register a 2 page, page-aligned buffer against a ring
+- use that buffer to do a 1 page io_uring NVMe passthrough read
 
-kernel/trace/fgraph.c:1317 register_ftrace_graph() warn: inconsistent returns '&ftrace_lock'.
+The second (i = 1) iteration of the loop in blk_rq_map_user_bvec will
+then have nr_iter == 1 page, bytes == 1 page, bv->bv_len == 1 page, so
+the check bytes + bv->bv_len > nr_iter will succeed, causing the I/O to
+fail. This failure is unnecessary, as when the check succeeds, it means
+we've checked the entire buffer that will be used by the request - i.e.
+blk_rq_map_user_bvec should complete successfully. Therefore, terminate
+the loop early and return successfully when the check bytes + bv->bv_len
+> nr_iter succeeds.
 
-Link: https://lore.kernel.org/20241024155917.1019580-1-lihuafei1@huawei.com
-Fixes: 2c02f7375e65 ("fgraph: Use CPU hotplug mechanism to initialize idle shadow stacks")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202410220121.wxg0olfd-lkp@intel.com/
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Li Huafei <lihuafei1@huawei.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While we're at it, also remove the check that all segments in the bvec
+are single-page. While this seems to be true for all users of the
+function, it doesn't appear to be required anywhere downstream.
+
+CC: stable@vger.kernel.org
+Signed-off-by: Xinyu Zhang <xizhang@purestorage.com>
+Co-developed-by: Uday Shankar <ushankar@purestorage.com>
+Signed-off-by: Uday Shankar <ushankar@purestorage.com>
+Fixes: 37987547932c ("block: extend functionality to map bvec iterator")
+Link: https://lore.kernel.org/r/20241023211519.4177873-1-ushankar@purestorage.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/fgraph.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ block/blk-map.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/kernel/trace/fgraph.c b/kernel/trace/fgraph.c
-index 41e7a15dcb50c..cd1c2946018c8 100644
---- a/kernel/trace/fgraph.c
-+++ b/kernel/trace/fgraph.c
-@@ -1252,7 +1252,7 @@ int register_ftrace_graph(struct fgraph_ops *gops)
- 	int ret = 0;
- 	int i = -1;
+--- a/block/blk-map.c
++++ b/block/blk-map.c
+@@ -600,9 +600,7 @@ static int blk_rq_map_user_bvec(struct r
+ 		if (nsegs >= nr_segs || bytes > UINT_MAX - bv->bv_len)
+ 			goto put_bio;
+ 		if (bytes + bv->bv_len > nr_iter)
+-			goto put_bio;
+-		if (bv->bv_offset + bv->bv_len > PAGE_SIZE)
+-			goto put_bio;
++			break;
  
--	mutex_lock(&ftrace_lock);
-+	guard(mutex)(&ftrace_lock);
- 
- 	if (!fgraph_initialized) {
- 		ret = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "fgraph_idle_init",
-@@ -1273,10 +1273,8 @@ int register_ftrace_graph(struct fgraph_ops *gops)
- 	}
- 
- 	i = fgraph_lru_alloc_index();
--	if (i < 0 || WARN_ON_ONCE(fgraph_array[i] != &fgraph_stub)) {
--		ret = -ENOSPC;
--		goto out;
--	}
-+	if (i < 0 || WARN_ON_ONCE(fgraph_array[i] != &fgraph_stub))
-+		return -ENOSPC;
- 	gops->idx = i;
- 
- 	ftrace_graph_active++;
-@@ -1313,8 +1311,6 @@ int register_ftrace_graph(struct fgraph_ops *gops)
- 		gops->saved_func = NULL;
- 		fgraph_lru_release_index(i);
- 	}
--out:
--	mutex_unlock(&ftrace_lock);
- 	return ret;
- }
- 
--- 
-2.43.0
-
+ 		nsegs++;
+ 		bytes += bv->bv_len;
 
 
 
