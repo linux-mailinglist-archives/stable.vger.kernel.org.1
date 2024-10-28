@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-88561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 661079B2685
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:40:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D1EB9B259C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:32:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97AAE1F22603
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:40:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD298B20D22
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:32:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A49618E748;
-	Mon, 28 Oct 2024 06:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6804818E357;
+	Mon, 28 Oct 2024 06:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kSSin87C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oj99BN9S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159E62C697;
-	Mon, 28 Oct 2024 06:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BEF18C03D;
+	Mon, 28 Oct 2024 06:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097611; cv=none; b=npo1cyNtt8eucG1hSBBjDn/83yOEhKdkEYTmoov38U2+zBkWLqXiyWnhLt9MZGRd6cDQdK2IZw87DmiIWvQZummF1V8lcM+j2pm/nZCadxknKibBUz662OsB2GuyOTSoLMWMeg1aetaj6w1b7oLHse/ajAOIiaRl6OZqQWZkEDc=
+	t=1730097168; cv=none; b=H42j1FtM9+urDqhVf1/2/YGOkwwQ/aNw9mPtmcw4UysAkmANl2O6/Becl4l/qDXqJLq55qPL6Vq0yxSKcIYNuqgki8sJcSOUuIuuuL4NuD65ue80rU2EsdHV+PlM1eHU7zphLlAbjLHi+bBamPI21JoFCaLndBm3yHmj/0y9gfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097611; c=relaxed/simple;
-	bh=9Xn7rHLsGP7l4xfPpVMu7qBEok5CaB0iXPvMHgHpz44=;
+	s=arc-20240116; t=1730097168; c=relaxed/simple;
+	bh=If3yIy8T4riHXSnvPnA+DvaTxnAJunfxDvttWY0EjFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RJ0fYj3KURJMV0x1yT8pnbe2nFqCt4Se7rbqWnz8V9LMAXuSlFNWXJerUvnLeK/wvBiL9EulqOc9KW+bF4vUasGvF3tnFGt7VHx+GoMy3kV7B/4ZQSs0s2nBxxkJA9s6NH5x8GwxnMgtk7A8LmS2GSjBrWr5cb3hE+2pBFLCKmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kSSin87C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C04C4CEE3;
-	Mon, 28 Oct 2024 06:40:10 +0000 (UTC)
+	 MIME-Version; b=rOh5Rs1kBSFO//zJ+B6srOL0hPxmqbgsWi6ncgn6q77k9tH/0m+Cq50bGu0PEBePKpIgbLy23q6EWP0JxCxjOKV9N9DFnj1zmhGHH96r3fi7qzDqLCV6lyN+XFpogdyb8dH0QVR8IKjPR3T7dWi+C0K8PsMoe0zTzQBtncmMPws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oj99BN9S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F624C4CEC7;
+	Mon, 28 Oct 2024 06:32:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097611;
-	bh=9Xn7rHLsGP7l4xfPpVMu7qBEok5CaB0iXPvMHgHpz44=;
+	s=korg; t=1730097167;
+	bh=If3yIy8T4riHXSnvPnA+DvaTxnAJunfxDvttWY0EjFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kSSin87CMPITJxOWVLGAV07XZOLSUK+scOvLEhhZhkkP5noRBZavf1FdfJS48KERZ
-	 sDJV+4X8Zi6xtAD/Uc3Z+qGXkgKo/EUOm6vzJR32xR+S07mKm2uQzMm8SiDv7kKEzj
-	 uHnmC96Ryn0elku/Px/JwnuuXI1c28ti83QgzTj8=
+	b=oj99BN9SAIH4IDH6sgK3qNgKdqftrdc9c4sAg9ruGVHsFC/Cojnwc2Sjfo3nEMTep
+	 wd/63LKxpStkkG7a8QAWnymjTZSqUO8wSNVbMeKdTCjWhhkGyciJqeuFoyi135EoXm
+	 WSqn+GgDanniu9+h95J6KaCeM+hEpZAzPB+97rog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Paul Barker <paul.barker.ct@bp.renesas.com>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/208] net: ravb: Only advertise Rx/Tx timestamps if hardware supports it
+Subject: [PATCH 6.1 013/137] iio: frequency: admv4420: fix missing select REMAP_SPI in Kconfig
 Date: Mon, 28 Oct 2024 07:24:10 +0100
-Message-ID: <20241028062308.376388650@linuxfoundation.org>
+Message-ID: <20241028062259.091771242@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 126e799602f45e9ce1ded03ee9eadda68bf470e0 ]
+[ Upstream commit 6b8e9dbfaed471627f7b863633b9937717df1d4d ]
 
-Recent work moving the reporting of Rx software timestamps to the core
-[1] highlighted an issue where hardware time stamping was advertised
-for the platforms where it is not supported.
+This driver makes use of regmap_spi, but does not select the required
+module.
+Add the missing 'select REGMAP_SPI'.
 
-Fix this by covering advertising support for hardware timestamps only if
-the hardware supports it. Due to the Tx implementation in RAVB software
-Tx timestamping is also only considered if the hardware supports
-hardware timestamps. This should be addressed in future, but this fix
-only reflects what the driver currently implements.
-
-1. Commit 277901ee3a26 ("ravb: Remove setting of RX software timestamp")
-
-Fixes: 7e09a052dc4e ("ravb: Exclude gPTP feature support for RZ/G2L")
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Paul Barker <paul.barker.ct@bp.renesas.com>
-Tested-by: Paul Barker <paul.barker.ct@bp.renesas.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://patch.msgid.link/20241014124343.3875285-1-niklas.soderlund+renesas@ragnatech.se
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: b59c04155901 ("iio: frequency: admv4420.c: Add support for ADMV4420")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241007-ad2s1210-select-v2-2-7345d228040f@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 25 ++++++++++++------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ drivers/iio/frequency/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 8f62cc4517918..58fdc4f8dd483 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -1673,20 +1673,19 @@ static int ravb_get_ts_info(struct net_device *ndev,
- 	struct ravb_private *priv = netdev_priv(ndev);
- 	const struct ravb_hw_info *hw_info = priv->info;
- 
--	info->so_timestamping =
--		SOF_TIMESTAMPING_TX_SOFTWARE |
--		SOF_TIMESTAMPING_TX_HARDWARE |
--		SOF_TIMESTAMPING_RX_HARDWARE |
--		SOF_TIMESTAMPING_RAW_HARDWARE;
--	info->tx_types = (1 << HWTSTAMP_TX_OFF) | (1 << HWTSTAMP_TX_ON);
--	info->rx_filters =
--		(1 << HWTSTAMP_FILTER_NONE) |
--		(1 << HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
--		(1 << HWTSTAMP_FILTER_ALL);
--	if (hw_info->gptp || hw_info->ccc_gac)
-+	if (hw_info->gptp || hw_info->ccc_gac) {
-+		info->so_timestamping =
-+			SOF_TIMESTAMPING_TX_SOFTWARE |
-+			SOF_TIMESTAMPING_TX_HARDWARE |
-+			SOF_TIMESTAMPING_RX_HARDWARE |
-+			SOF_TIMESTAMPING_RAW_HARDWARE;
-+		info->tx_types = (1 << HWTSTAMP_TX_OFF) | (1 << HWTSTAMP_TX_ON);
-+		info->rx_filters =
-+			(1 << HWTSTAMP_FILTER_NONE) |
-+			(1 << HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
-+			(1 << HWTSTAMP_FILTER_ALL);
- 		info->phc_index = ptp_clock_index(priv->ptp.clock);
--	else
--		info->phc_index = 0;
-+	}
- 
- 	return 0;
- }
+diff --git a/drivers/iio/frequency/Kconfig b/drivers/iio/frequency/Kconfig
+index 599a5f67fe11a..023997786ce0a 100644
+--- a/drivers/iio/frequency/Kconfig
++++ b/drivers/iio/frequency/Kconfig
+@@ -73,6 +73,7 @@ config ADMV1014
+ config ADMV4420
+ 	tristate "Analog Devices ADMV4420 K Band Downconverter"
+ 	depends on SPI
++	select REGMAP_SPI
+ 	help
+ 	  Say yes here to build support for Analog Devices K Band
+ 	  Downconverter with integrated Fractional-N PLL and VCO.
 -- 
 2.43.0
 
