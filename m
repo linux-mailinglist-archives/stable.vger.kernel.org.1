@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B41259B2767
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:47:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46D9B9B264B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:38:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E64901C213F4
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:47:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78B1C1C2112C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:38:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA57818E35B;
-	Mon, 28 Oct 2024 06:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD8118E778;
+	Mon, 28 Oct 2024 06:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLk3K2VH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6Lwdi6m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84568837;
-	Mon, 28 Oct 2024 06:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3068E2C697;
+	Mon, 28 Oct 2024 06:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098072; cv=none; b=XVFHiB5DBpsZLzV3BdwcNueRuPDH73bZVlfbQpLUncZpWvIL66mfEBEA7DIQAkCW9wbPx4Npm2MhoVJBvWXi+jOVXHaUDEwPALlMB9aZ6s7gHJCIORccKOsrF/tS0EkLTToBAj42ZiAWuKofoJbEV58+e7ICKYjrQSzbWUEdg7E=
+	t=1730097497; cv=none; b=n3G6X8oGm6qILRro5/ecdEkABgfr0rIn9cLM8yZT4r9UUIEmPIyszQ1rPrXq/qZtDK2S8FxWLuR6tORGGAGXupkBD4yoW6MHpaizLWNfmpozTCXOElmxuLmlzw1uu+q/IMCXLmkDNNV/tuH13TR56nxe/sjCceCsVnevaCZIR3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098072; c=relaxed/simple;
-	bh=7Qe93v79hXWRCuHyAiSlnT4kO9FtzFg3MbmA236Eye4=;
+	s=arc-20240116; t=1730097497; c=relaxed/simple;
+	bh=sZnvWuvQSRy7SK88k1ED4m0ZRoFCmwbAmAgxD6P0LWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YGtMU1qhRIiWXVsOowCNacs5TFcZ1KWrz4ojdDPokk/ga9SWsZhYNIbWeSNlm7OVoDZMHJqCbgHplv8GP6bj6yOiDPkryf9wmpFkKGUoEM5+VWZSK56FLuc3iRHb4N8ax7nwuWaRyU+C4T4f+mBqNmdWAtuKEEPDM+u6gy500Sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLk3K2VH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4589BC4CEC3;
-	Mon, 28 Oct 2024 06:47:52 +0000 (UTC)
+	 MIME-Version; b=logv7SfnzXgtXLhyysiWBqtIaz+xCyTOmJwsg7TFnXBnQZExlDomp/jgCtbXfeuFQvNuVfPFzZi/ibVeSRT/P33MItM4jNbDs5yzZGwrzMBruIvxXhiTmExDJQhb8TwxFxSIE0iAEzkd9bhWancoH5iZtHfXe7ZUSDjvZnX1rMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6Lwdi6m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EFC5C4CEC3;
+	Mon, 28 Oct 2024 06:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098072;
-	bh=7Qe93v79hXWRCuHyAiSlnT4kO9FtzFg3MbmA236Eye4=;
+	s=korg; t=1730097496;
+	bh=sZnvWuvQSRy7SK88k1ED4m0ZRoFCmwbAmAgxD6P0LWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eLk3K2VHYWKkM1CdlFPCacXYwSSlWXTTJdopcxmSkr/0IhXY3IVeyZctMxFDKKH+7
-	 RynHsPOxTDNf3K0rfVEt9xN0fYl8pZ4m+7avKBRjXKRgY84UCb7TDxKFIQr2e6FfEr
-	 CrrAh/ydhfU0I6xKd6ROw4Re5c913UD2H0AupvSc=
+	b=Q6Lwdi6mta2f4TkQVTnGbaJjlymQ/A0zACn8Zwu2ymcMOAy7SF7mFU1L2mirB42Hj
+	 W4Au2l9WM8muV6wkHkCObsAcf8mhBQeag/fqTZ0ALBJtTga/fp4mvd38nFurWsV7F7
+	 vOrMsbdpChurUMkCLlfUVuRKoGhH3xFFW7xDK9dM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Chen <justin.chen@broadcom.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 057/261] firmware: arm_scmi: Queue in scmi layer for mailbox implementation
+Subject: [PATCH 6.6 019/208] s390/pci: Handle PCI error codes other than 0x3a
 Date: Mon, 28 Oct 2024 07:23:19 +0100
-Message-ID: <20241028062313.450279205@linuxfoundation.org>
+Message-ID: <20241028062307.131953828@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Chen <justin.chen@broadcom.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit da1642bc97c4ef67f347edcd493bd0a52f88777b ]
+[ Upstream commit 3cd03ea57e8e16cc78cc357d5e9f26078426f236 ]
 
-send_message() does not block in the MBOX implementation. This is
-because the mailbox layer has its own queue. However, this confuses
-the per xfer timeouts as they all start their timeout ticks in
-parallel.
+The Linux implementation of PCI error recovery for s390 was based on the
+understanding that firmware error recovery is a two step process with an
+optional initial error event to indicate the cause of the error if known
+followed by either error event 0x3A (Success) or 0x3B (Failure) to
+indicate whether firmware was able to recover. While this has been the
+case in testing and the error cases seen in the wild it turns out this
+is not correct. Instead firmware only generates 0x3A for some error and
+service scenarios and expects the OS to perform recovery for all PCI
+events codes except for those indicating permanent error (0x3B, 0x40)
+and those indicating errors on the function measurement block (0x2A,
+0x2B, 0x2C). Align Linux behavior with these expectations.
 
-Consider a case where the xfer timeout is 30ms and a SCMI transaction
-takes 25ms:
-
-  | 0ms: Message #0 is queued in mailbox layer and sent out, then sits
-  |      at scmi_wait_for_message_response() with a timeout of 30ms
-  | 1ms: Message #1 is queued in mailbox layer but not sent out yet.
-  |      Since send_message() doesn't block, it also sits at
-  |      scmi_wait_for_message_response() with a timeout of 30ms
-  |  ...
-  | 25ms: Message #0 is completed, txdone is called and message #1 is sent
-  | 31ms: Message #1 times out since the count started at 1ms. Even though
-  |       it has only been inflight for 6ms.
-
-Fixes: 5c8a47a5a91d ("firmware: arm_scmi: Make scmi core independent of the transport type")
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Message-Id: <20241014160717.1678953-1-justin.chen@broadcom.com>
-Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-Tested-by: Cristian Marussi <cristian.marussi@arm.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: 4cdf2f4e24ff ("s390/pci: implement minimal PCI error recovery")
+Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/mailbox.c | 32 +++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+ arch/s390/pci/pci_event.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/firmware/arm_scmi/mailbox.c b/drivers/firmware/arm_scmi/mailbox.c
-index 0219a12e3209a..06087cb785f36 100644
---- a/drivers/firmware/arm_scmi/mailbox.c
-+++ b/drivers/firmware/arm_scmi/mailbox.c
-@@ -24,6 +24,7 @@
-  * @chan_platform_receiver: Optional Platform Receiver mailbox unidirectional channel
-  * @cinfo: SCMI channel info
-  * @shmem: Transmit/Receive shared memory area
-+ * @chan_lock: Lock that prevents multiple xfers from being queued
-  */
- struct scmi_mailbox {
- 	struct mbox_client cl;
-@@ -32,6 +33,7 @@ struct scmi_mailbox {
- 	struct mbox_chan *chan_platform_receiver;
- 	struct scmi_chan_info *cinfo;
- 	struct scmi_shared_mem __iomem *shmem;
-+	struct mutex chan_lock;
- };
+diff --git a/arch/s390/pci/pci_event.c b/arch/s390/pci/pci_event.c
+index b9324ca2eb940..b3961f1016ea0 100644
+--- a/arch/s390/pci/pci_event.c
++++ b/arch/s390/pci/pci_event.c
+@@ -272,18 +272,19 @@ static void __zpci_event_error(struct zpci_ccdf_err *ccdf)
+ 		goto no_pdev;
  
- #define client_to_scmi_mailbox(c) container_of(c, struct scmi_mailbox, cl)
-@@ -255,6 +257,7 @@ static int mailbox_chan_setup(struct scmi_chan_info *cinfo, struct device *dev,
- 
- 	cinfo->transport_info = smbox;
- 	smbox->cinfo = cinfo;
-+	mutex_init(&smbox->chan_lock);
- 
- 	return 0;
- }
-@@ -284,13 +287,23 @@ static int mailbox_send_message(struct scmi_chan_info *cinfo,
- 	struct scmi_mailbox *smbox = cinfo->transport_info;
- 	int ret;
- 
--	ret = mbox_send_message(smbox->chan, xfer);
-+	/*
-+	 * The mailbox layer has its own queue. However the mailbox queue
-+	 * confuses the per message SCMI timeouts since the clock starts when
-+	 * the message is submitted into the mailbox queue. So when multiple
-+	 * messages are queued up the clock starts on all messages instead of
-+	 * only the one inflight.
-+	 */
-+	mutex_lock(&smbox->chan_lock);
- 
--	/* mbox_send_message returns non-negative value on success, so reset */
--	if (ret > 0)
--		ret = 0;
-+	ret = mbox_send_message(smbox->chan, xfer);
-+	/* mbox_send_message returns non-negative value on success */
-+	if (ret < 0) {
-+		mutex_unlock(&smbox->chan_lock);
-+		return ret;
-+	}
- 
--	return ret;
-+	return 0;
- }
- 
- static void mailbox_mark_txdone(struct scmi_chan_info *cinfo, int ret,
-@@ -298,13 +311,10 @@ static void mailbox_mark_txdone(struct scmi_chan_info *cinfo, int ret,
- {
- 	struct scmi_mailbox *smbox = cinfo->transport_info;
- 
--	/*
--	 * NOTE: we might prefer not to need the mailbox ticker to manage the
--	 * transfer queueing since the protocol layer queues things by itself.
--	 * Unfortunately, we have to kick the mailbox framework after we have
--	 * received our message.
--	 */
- 	mbox_client_txdone(smbox->chan, ret);
-+
-+	/* Release channel */
-+	mutex_unlock(&smbox->chan_lock);
- }
- 
- static void mailbox_fetch_response(struct scmi_chan_info *cinfo,
+ 	switch (ccdf->pec) {
+-	case 0x003a: /* Service Action or Error Recovery Successful */
++	case 0x002a: /* Error event concerns FMB */
++	case 0x002b:
++	case 0x002c:
++		break;
++	case 0x0040: /* Service Action or Error Recovery Failed */
++	case 0x003b:
++		zpci_event_io_failure(pdev, pci_channel_io_perm_failure);
++		break;
++	default: /* PCI function left in the error state attempt to recover */
+ 		ers_res = zpci_event_attempt_error_recovery(pdev);
+ 		if (ers_res != PCI_ERS_RESULT_RECOVERED)
+ 			zpci_event_io_failure(pdev, pci_channel_io_perm_failure);
+ 		break;
+-	default:
+-		/*
+-		 * Mark as frozen not permanently failed because the device
+-		 * could be subsequently recovered by the platform.
+-		 */
+-		zpci_event_io_failure(pdev, pci_channel_io_frozen);
+-		break;
+ 	}
+ 	pci_dev_put(pdev);
+ no_pdev:
 -- 
 2.43.0
 
