@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-88678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7EFC9B2704
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 345429B2818
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:53:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D8161F247A0
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6643A1C21622
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21B2718E748;
-	Mon, 28 Oct 2024 06:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE22918E03D;
+	Mon, 28 Oct 2024 06:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xk5Qpe+W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rLUR/vuK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E9C18E368;
-	Mon, 28 Oct 2024 06:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9612AF07;
+	Mon, 28 Oct 2024 06:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097875; cv=none; b=TnK2Ch9Uqtt4EalCVRaGeHLf7dHlyqJyO/4vx5A/wiAIdw8JoiVD+C63m09ya/dTu6bC2+R6O/mpW02E+cBUtLmTFR1QtNhrjqCLW5ejBHD+F425WaoAtHfO4je/YykBk7XOPp1bYKJ18DePQst+mNlxDVA3WuG+mIWT7oLTY7E=
+	t=1730098435; cv=none; b=pomBP1YC3GRY50GdJqDRf7+/mmys/PNm0iLakkw/AkyYwWtQuiEsOUBhPEM4GwlUcxhVst0bfvOo1Hfb7gHSjNW41ok+fCtl9KTC05yqYzWfySpm3O6PZeFKCKceUC8Q9QYOoW9AHThzjMpBAN9VadlDQhXdzOX3IXtZtxJnWXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097875; c=relaxed/simple;
-	bh=MYG/MpmUUTdMwaA2qkbhaEEaB2zprtDbPQ9CPhZodLI=;
+	s=arc-20240116; t=1730098435; c=relaxed/simple;
+	bh=Qh7STZ94LJG+qaMm1ON1E/PO5CDy0HgkNStx5+E63zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgF3NJ99lM+M+BeNOFfVLvFnwgZjTiEZJHY5wBxpkxMJbgnI9rqxlBsA4yLWvmdtpZTtxQeCzVenuCczswGiUZGg8MKr6zJfwEoOYXoPUPZ6V90KdZSXIEJ9AFOvMHzmtf5ZvwHOoVQjqU13oiVB78xMBHP49F90RCaJJwH0tlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xk5Qpe+W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72234C4CEC3;
-	Mon, 28 Oct 2024 06:44:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CZzjJrSBI9HwQh8hmmzijSxrniFeuBHC3RTqwiHi4+lLO/ATM/zcqzAwrSLRCTIW/Kq6vAoa/TNLLIxbq4ECoFuY/QJoyZJJCvoFV1luI70dXR4+Kbq8BwvRpP7UUYA442kSFoot//C/kZYb7OOPlelMckL30o/W0qcyqgjZUEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLUR/vuK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC692C4CEC3;
+	Mon, 28 Oct 2024 06:53:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097875;
-	bh=MYG/MpmUUTdMwaA2qkbhaEEaB2zprtDbPQ9CPhZodLI=;
+	s=korg; t=1730098435;
+	bh=Qh7STZ94LJG+qaMm1ON1E/PO5CDy0HgkNStx5+E63zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xk5Qpe+WZHi40nStu+0X5G5K/irQxYgQwOgSnJd8b0eauchsDOAOU0vguIZReMzXk
-	 rgfnbMtYPkXyk1VTtvaMouPZ3DgNeVwx/3mU13/h63ho5Y76l8iy/yd8fsdo5rxmwu
-	 eNkIyGTvDHXwar1peBMpn1DF/mAriCQXKZj4QQB0=
+	b=rLUR/vuKLKhxcumQKZsQm3H+ksnlYNA6tQe+W7SDpIV9xWoihg8KPKot1xComZhom
+	 8HZD/AbiC3ziuVx8TWFaN+YUwU3zJpVYIEWUUHTeO98VK1cmu1eW9nV6m7i6BVl0BD
+	 zDqgkQ0J9bQ4LqL8P8OGzpCsZa8Ocrw9udss5ZKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.6 187/208] KVM: arm64: Dont eagerly teardown the vgic on init error
-Date: Mon, 28 Oct 2024 07:26:07 +0100
-Message-ID: <20241028062311.235000715@linuxfoundation.org>
+	=?UTF-8?q?Jos=C3=A9=20Relvas?= <josemonsantorelvas@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.11 226/261] ALSA: hda/realtek: Add subwoofer quirk for Acer Predator G9-593
+Date: Mon, 28 Oct 2024 07:26:08 +0100
+Message-ID: <20241028062317.777565856@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,80 +59,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: José Relvas <josemonsantorelvas@gmail.com>
 
-commit df5fd75ee305cb5927e0b1a0b46cc988ad8db2b1 upstream.
+commit 35fdc6e1c16099078bcbd73a6c8f1733ae7f1909 upstream.
 
-As there is very little ordering in the KVM API, userspace can
-instanciate a half-baked GIC (missing its memory map, for example)
-at almost any time.
+The Acer Predator G9-593 has a 2+1 speaker system which isn't probed
+correctly.
+This patch adds a quirk with the proper pin connections.
 
-This means that, with the right timing, a thread running vcpu-0
-can enter the kernel without a GIC configured and get a GIC created
-behind its back by another thread. Amusingly, it will pick up
-that GIC and start messing with the data structures without the
-GIC having been fully initialised.
+Note that I do not own this laptop, so I cannot guarantee that this
+fixes the issue.
+Testing was done by other users here:
+https://discussion.fedoraproject.org/t/-/118482
 
-Similarly, a thread running vcpu-1 can enter the kernel, and try
-to init the GIC that was previously created. Since this GIC isn't
-properly configured (no memory map), it fails to correctly initialise.
+This model appears to have two different dev IDs...
 
-And that's the point where we decide to teardown the GIC, freeing all
-its resources. Behind vcpu-0's back. Things stop pretty abruptly,
-with a variety of symptoms.  Clearly, this isn't good, we should be
-a bit more careful about this.
+- 0x1177 (as seen on the forum link above)
+- 0x1178 (as seen on https://linux-hardware.org/?probe=127df9999f)
 
-It is obvious that this guest is not viable, as it is missing some
-important part of its configuration. So instead of trying to tear
-bits of it down, let's just mark it as *dead*. It means that any
-further interaction from userspace will result in -EIO. The memory
-will be released on the "normal" path, when userspace gives up.
+I don't think the audio system was changed between model revisions, so
+the patch applies for both IDs.
 
-Cc: stable@vger.kernel.org
-Reported-by: Alexander Potapenko <glider@google.com>
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20241009183603.3221824-1-maz@kernel.org
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: José Relvas <josemonsantorelvas@gmail.com>
+Link: https://patch.msgid.link/20241020102756.225258-1-josemonsantorelvas@gmail.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/arm.c            |    3 +++
- arch/arm64/kvm/vgic/vgic-init.c |    6 +++---
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ sound/pci/hda/patch_realtek.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -777,6 +777,9 @@ static int kvm_vcpu_suspend(struct kvm_v
- static int check_vcpu_requests(struct kvm_vcpu *vcpu)
- {
- 	if (kvm_request_pending(vcpu)) {
-+		if (kvm_check_request(KVM_REQ_VM_DEAD, vcpu))
-+			return -EIO;
-+
- 		if (kvm_check_request(KVM_REQ_SLEEP, vcpu))
- 			kvm_vcpu_sleep(vcpu);
- 
---- a/arch/arm64/kvm/vgic/vgic-init.c
-+++ b/arch/arm64/kvm/vgic/vgic-init.c
-@@ -494,10 +494,10 @@ int kvm_vgic_map_resources(struct kvm *k
- out:
- 	mutex_unlock(&kvm->arch.config_lock);
- out_slots:
--	mutex_unlock(&kvm->slots_lock);
--
- 	if (ret)
--		kvm_vgic_destroy(kvm);
-+		kvm_vm_dead(kvm);
-+
-+	mutex_unlock(&kvm->slots_lock);
- 
- 	return ret;
- }
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7631,6 +7631,7 @@ enum {
+ 	ALC286_FIXUP_ACER_AIO_HEADSET_MIC,
+ 	ALC256_FIXUP_ASUS_HEADSET_MIC,
+ 	ALC256_FIXUP_ASUS_MIC_NO_PRESENCE,
++	ALC255_FIXUP_PREDATOR_SUBWOOFER,
+ 	ALC299_FIXUP_PREDATOR_SPK,
+ 	ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE,
+ 	ALC289_FIXUP_DELL_SPK1,
+@@ -9047,6 +9048,13 @@ static const struct hda_fixup alc269_fix
+ 		.chained = true,
+ 		.chain_id = ALC256_FIXUP_ASUS_HEADSET_MODE
+ 	},
++	[ALC255_FIXUP_PREDATOR_SUBWOOFER] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x17, 0x90170151 }, /* use as internal speaker (LFE) */
++			{ 0x1b, 0x90170152 } /* use as internal speaker (back) */
++		}
++	},
+ 	[ALC299_FIXUP_PREDATOR_SPK] = {
+ 		.type = HDA_FIXUP_PINS,
+ 		.v.pins = (const struct hda_pintbl[]) {
+@@ -10138,6 +10146,8 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1025, 0x110e, "Acer Aspire ES1-432", ALC255_FIXUP_ACER_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1025, 0x1166, "Acer Veriton N4640G", ALC269_FIXUP_LIFEBOOK),
+ 	SND_PCI_QUIRK(0x1025, 0x1167, "Acer Veriton N6640G", ALC269_FIXUP_LIFEBOOK),
++	SND_PCI_QUIRK(0x1025, 0x1177, "Acer Predator G9-593", ALC255_FIXUP_PREDATOR_SUBWOOFER),
++	SND_PCI_QUIRK(0x1025, 0x1178, "Acer Predator G9-593", ALC255_FIXUP_PREDATOR_SUBWOOFER),
+ 	SND_PCI_QUIRK(0x1025, 0x1246, "Acer Predator Helios 500", ALC299_FIXUP_PREDATOR_SPK),
+ 	SND_PCI_QUIRK(0x1025, 0x1247, "Acer vCopperbox", ALC269VC_FIXUP_ACER_VCOPPERBOX_PINS),
+ 	SND_PCI_QUIRK(0x1025, 0x1248, "Acer Veriton N4660G", ALC269VC_FIXUP_ACER_MIC_NO_PRESENCE),
 
 
 
