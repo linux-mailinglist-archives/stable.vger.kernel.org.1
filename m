@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-89047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 086D89B2E1A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 12:08:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 239929B2E1D
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 12:08:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 203531C2364F
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:08:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE70F1F21EA7
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD6720371F;
-	Mon, 28 Oct 2024 10:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8817A2038CB;
+	Mon, 28 Oct 2024 10:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jc3RxdG6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NUOh814+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59785203712;
-	Mon, 28 Oct 2024 10:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3B72038BF;
+	Mon, 28 Oct 2024 10:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730112813; cv=none; b=aCQsBST5zzZWotNyhOvvnW3Egv4NOvN910rd/zBaYSLoBK/khoK7nbMjYBd67QsUk1V/EDbJel2bUx5ElVvc60KcBtHEMa1nZ9bSA9hTCqsM5r45HgI9FuFckguufymOr5xrqpch3NmRmIcO1yrA+KpSy+y34HP1MC7hBF8sY+E=
+	t=1730112815; cv=none; b=o5GWgwVRWzOcDi7InBjJmrKL9w3ZVErsfa3LROdJioGUZTyp7nbxvdcCkiBd2QcnEQ8I+9mRMSwEMePuvx3bI6ype78HhjRj73h4cXiC3WaiU0fXGoERlG6CEARWhXii9GU6jImnI/fq0W5zQXEN8rL/QrCcVUi0weVWj0Ys7Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730112813; c=relaxed/simple;
-	bh=5sGIjL7wdVbJxTSTNLF1P3ztjNzHxtaRoXFM3tm8Ek8=;
+	s=arc-20240116; t=1730112815; c=relaxed/simple;
+	bh=NcUkA5cfvb0pfMF3MOufdv8obnxCSpleuqmwojTi24g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=okQwJnE9FL+jK5xJbXWuhlskcVJQUMd5ADWecajucw4gv7pxacqg9XyJIMLAwsE0Cinwq9en4hOn4E6mdDLGzpYHSnNBWlspR/aWNONNmaaEfvMwMXFVWWPkm6mOCGsgX4IoyKu/7IaO16LBH1BgYVkoRj72/XrJytqXX5qCw8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jc3RxdG6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE3FC4CEE8;
-	Mon, 28 Oct 2024 10:53:31 +0000 (UTC)
+	 MIME-Version; b=bdbMFKiQD/3Q0sRoqQAjiVB9/tJYRa4Hkp1mof76YE9TZlfRKoEsyKJ+pylID7qyKZ3g1RCtfV6Dkayv+SgkPwPmu8x9123NTIDDDdYNc903MayhAOp/im5h6dErQrjaUzpjcSuWZnPlQ6BwdokmDq7vlNrytKgl6qrQjxm86oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NUOh814+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B11C5C4CEE7;
+	Mon, 28 Oct 2024 10:53:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730112813;
-	bh=5sGIjL7wdVbJxTSTNLF1P3ztjNzHxtaRoXFM3tm8Ek8=;
+	s=k20201202; t=1730112815;
+	bh=NcUkA5cfvb0pfMF3MOufdv8obnxCSpleuqmwojTi24g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jc3RxdG65XoCDlovNYk86Qp4dDClnhcKfCnz7NTSuD1HIWN9yXiOVi3BVst9xbIPU
-	 DMbmOOSBqRoD57oAYc+G65w5Ovyir5KnGEthbEcmXzzxUD7k91F5LLB7yeznDJk0ux
-	 JgcvMQzhufyt6mYm8oNqN7mgSNH+lMQwSir4vs8zbgeWPEsj0uStofZHvVAoWGOMn4
-	 wwGHV9pVTMVS6MPNm0nyBa8OLmZbaGMFekoM7R9ktu3sbulaExB3C7jbKWu82td0FX
-	 7TYdNeYkow820cZO0RscC3CjKmK4ABV4SIWRUbYJwnHFsouGJYcw8RqF72xMeAUbh1
-	 6sF4SdzKQibZA==
+	b=NUOh814+oa14DGHyTJqxIq4o+TJ4zRbRIZqo6VEfVfdJ0McJKpUV2uP3Gz/Ud+65X
+	 AjGFQGKAsGcJ/TAecciwUnsrLsk6fL+ch66e7RWEa4nkiFLjqJHZGlNz5OglxhseQr
+	 YOsY+Z9rAyNqS5o0qcM3oGPqLZjMSz93bmpF2D5rcKXcVy0Fj2krzxlxrQ3T4+axDk
+	 YMHPrv5vycT4bEeWoBhgmxhLiAhGtc+8IR76h4JiwRXQkrP7xrKtM+4NlSEmu8syig
+	 xXDeceA/5M400Ypm0jjN9Kr1USNJvUBE51OFDOiQsbjDo1IYy5TACQptqZe68RHsVE
+	 dDL4duDdtnn4w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alessandro Zanni <alessandro.zanni87@gmail.com>,
-	syzbot+6c55f725d1bdc8c52058@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Reinhard Speyerer <rspmn@arcor.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mark@fasheh.com,
-	jlbec@evilplan.org,
-	joseph.qi@linux.alibaba.com,
-	ocfs2-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 5.10 3/4] fs: Fix uninitialized value issue in from_kuid and from_kgid
-Date: Mon, 28 Oct 2024 06:53:24 -0400
-Message-ID: <20241028105327.3560637-3-sashal@kernel.org>
+	bjorn@mork.no,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 4/4] net: usb: qmi_wwan: add Fibocom FG132 0x0112 composition
+Date: Mon, 28 Oct 2024 06:53:25 -0400
+Message-ID: <20241028105327.3560637-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241028105327.3560637-1-sashal@kernel.org>
 References: <20241028105327.3560637-1-sashal@kernel.org>
@@ -70,47 +71,55 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.228
 Content-Transfer-Encoding: 8bit
 
-From: Alessandro Zanni <alessandro.zanni87@gmail.com>
+From: Reinhard Speyerer <rspmn@arcor.de>
 
-[ Upstream commit 15f34347481648a567db67fb473c23befb796af5 ]
+[ Upstream commit 64761c980cbf71fb7a532a8c7299907ea972a88c ]
 
-ocfs2_setattr() uses attr->ia_mode, attr->ia_uid and attr->ia_gid in
-a trace point even though ATTR_MODE, ATTR_UID and ATTR_GID aren't set.
+Add Fibocom FG132 0x0112 composition:
 
-Initialize all fields of newattrs to avoid uninitialized variables, by
-checking if ATTR_MODE, ATTR_UID, ATTR_GID are initialized, otherwise 0.
+T:  Bus=03 Lev=02 Prnt=06 Port=01 Cnt=02 Dev#= 10 Spd=12   MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2cb7 ProdID=0112 Rev= 5.15
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=Fibocom Module
+S:  SerialNumber=xxxxxxxx
+C:* #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=86(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
 
-Reported-by: syzbot+6c55f725d1bdc8c52058@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6c55f725d1bdc8c52058
-Signed-off-by: Alessandro Zanni <alessandro.zanni87@gmail.com>
-Link: https://lore.kernel.org/r/20241017120553.55331-1-alessandro.zanni87@gmail.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
+
+Link: https://patch.msgid.link/ZxLKp5YZDy-OM0-e@arcor.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/file.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ocfs2/file.c b/fs/ocfs2/file.c
-index 5fd565a6228f7..22ce4c171b7bd 100644
---- a/fs/ocfs2/file.c
-+++ b/fs/ocfs2/file.c
-@@ -1133,9 +1133,12 @@ int ocfs2_setattr(struct dentry *dentry, struct iattr *attr)
- 	trace_ocfs2_setattr(inode, dentry,
- 			    (unsigned long long)OCFS2_I(inode)->ip_blkno,
- 			    dentry->d_name.len, dentry->d_name.name,
--			    attr->ia_valid, attr->ia_mode,
--			    from_kuid(&init_user_ns, attr->ia_uid),
--			    from_kgid(&init_user_ns, attr->ia_gid));
-+			    attr->ia_valid,
-+				attr->ia_valid & ATTR_MODE ? attr->ia_mode : 0,
-+				attr->ia_valid & ATTR_UID ?
-+					from_kuid(&init_user_ns, attr->ia_uid) : 0,
-+				attr->ia_valid & ATTR_GID ?
-+					from_kgid(&init_user_ns, attr->ia_gid) : 0);
- 
- 	/* ensuring we don't even attempt to truncate a symlink */
- 	if (S_ISLNK(inode->i_mode))
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index 0a1ab8c30a003..3b1076eea6702 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1360,6 +1360,7 @@ static const struct usb_device_id products[] = {
+ 	{QMI_FIXED_INTF(0x2c7c, 0x0296, 4)},	/* Quectel BG96 */
+ 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x030e, 4)},	/* Quectel EM05GV2 */
+ 	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0104, 4)},	/* Fibocom NL678 series */
++	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0112, 0)},	/* Fibocom FG132 */
+ 	{QMI_FIXED_INTF(0x0489, 0xe0b4, 0)},	/* Foxconn T77W968 LTE */
+ 	{QMI_FIXED_INTF(0x0489, 0xe0b5, 0)},	/* Foxconn T77W968 LTE with eSIM support*/
+ 	{QMI_FIXED_INTF(0x2692, 0x9025, 4)},    /* Cellient MPL200 (rebranded Qualcomm 05c6:9025) */
 -- 
 2.43.0
 
