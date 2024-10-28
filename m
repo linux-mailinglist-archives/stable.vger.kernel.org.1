@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-88562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA0009B268C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:40:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF34E9B259A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:32:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9F8C2823BE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:40:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A498B281A3D
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:32:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB9D18E77B;
-	Mon, 28 Oct 2024 06:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5157418E36E;
+	Mon, 28 Oct 2024 06:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4ZCURdE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GxpceRtr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D71A2C697;
-	Mon, 28 Oct 2024 06:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FECD186E52;
+	Mon, 28 Oct 2024 06:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097613; cv=none; b=I7wUSmwmitfKMzR7bptRkB9dBtT/mJysdcysyavIXJF5MyUcRxIwFKokyoC0GuXT5urktJBueXf/5ABWuR4h80GQr9qXwIU1QXvVCzoiASboPwMVpmka3t094b7URlTpOQUACtmDsnaf8y8ynCKv9lOyXX6fYE4TJusoY4LkPm8=
+	t=1730097170; cv=none; b=MlgWtb03AhenLiYw1v27vdky5VoxjtbOZJ21z2ZM1+L9qTbUugslEp4A3Q5wtKIDnsFLeMwdfylBBAkbU7d9YR/dmwFRaA41e1tKmVQELXEFOcXbWvMvS/Dm2p+8eo9y2670ijbRR95D2EGNefSOSgpK/+3xhowyRqwN1mod9dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097613; c=relaxed/simple;
-	bh=hguTVCCMRroEBtJjW+QlnsbfXixfv9jy2/Sjp/Uh5Fg=;
+	s=arc-20240116; t=1730097170; c=relaxed/simple;
+	bh=pBOTlf/fNGZLmz9WXmXirbN+9NxtsujK9WgJYxXwJRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G7JutRAFA2F3/nvdqF2iibmNj5BQj7TnTvKdRtTiPEtjR0fYTKlQ8MEiT9OyYriCeZ1tdBqkHc5ImMWF8DEkZKIl9hye/G3DA+wk0MYCHqAH86FZFf8NdhMHIhY4IbSi0FDQofQh4SBnuokf1rtjjdtucuMmhcPSItIdTRMuAGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4ZCURdE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3EEBC4CEC3;
-	Mon, 28 Oct 2024 06:40:12 +0000 (UTC)
+	 MIME-Version; b=E293Jz5CdiaF7hrdwvT+QjQcXYlcVs7vLgHv4gUnu3tjUfwPT0waCXxPP12/PSc2cPSHShvFVWjunKDGmy9DYcwGziifU714NJa8OBbL9VLv3rSTgTaz9KaITLL2wLsgRs5rCZeT8ZU/KJuxYTP+5y4NdkPb1siXfZVIzSiIWS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GxpceRtr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6570C4CEC7;
+	Mon, 28 Oct 2024 06:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097613;
-	bh=hguTVCCMRroEBtJjW+QlnsbfXixfv9jy2/Sjp/Uh5Fg=;
+	s=korg; t=1730097169;
+	bh=pBOTlf/fNGZLmz9WXmXirbN+9NxtsujK9WgJYxXwJRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j4ZCURdE+iHVCf9L0qqkn1E3WjE4lQqxmVgaa6unln1E2KJRZriaV/z6xCgQJW2Yv
-	 DYgsxaZF6fxseST35yGV8zToJLCAza+1Q0qfp1kifYKMx+xWJRjSiz+TMk6y5vI+yz
-	 4bNleSyc9Fq/jwBQ4mcppfWkji8wr4lU2ujmrgL8=
+	b=GxpceRtrou34PaMqLgPtz2hoILzNJMvlUCxsMW2ApXaUNEoeVgPCUxV2xb6QIiVsy
+	 X80pvCkNqUQAFlAgNGCs2AmHs6z+QErThfbw42pLSwQ0kds0fj/MBx/WI1s2fcYWod
+	 nbN6+Lv7zFQOuPwvuSev5o2u6McsgrCgJsVNDwZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Hai <wanghai38@huawei.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Martin Krastev <martin.krastev@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 071/208] scsi: target: core: Fix null-ptr-deref in target_alloc_device()
+Subject: [PATCH 6.1 014/137] drm/vmwgfx: Handle possible ENOMEM in vmw_stdu_connector_atomic_check
 Date: Mon, 28 Oct 2024 07:24:11 +0100
-Message-ID: <20241028062308.399100548@linuxfoundation.org>
+Message-ID: <20241028062259.119311896@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Hai <wanghai38@huawei.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit fca6caeb4a61d240f031914413fcc69534f6dc03 ]
+[ Upstream commit 4809a017a2bc42ff239d53ade4b2e70f2fe81348 ]
 
-There is a null-ptr-deref issue reported by KASAN:
+Handle unlikely ENOMEN condition and other errors in
+vmw_stdu_connector_atomic_check.
 
-BUG: KASAN: null-ptr-deref in target_alloc_device+0xbc4/0xbe0 [target_core_mod]
-...
- kasan_report+0xb9/0xf0
- target_alloc_device+0xbc4/0xbe0 [target_core_mod]
- core_dev_setup_virtual_lun0+0xef/0x1f0 [target_core_mod]
- target_core_init_configfs+0x205/0x420 [target_core_mod]
- do_one_initcall+0xdd/0x4e0
-...
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-In target_alloc_device(), if allocing memory for dev queues fails, then
-dev will be freed by dev->transport->free_device(), but dev->transport
-is not initialized at that time, which will lead to a null pointer
-reference problem.
-
-Fixing this bug by freeing dev with hba->backend->ops->free_device().
-
-Fixes: 1526d9f10c61 ("scsi: target: Make state_list per CPU")
-Signed-off-by: Wang Hai <wanghai38@huawei.com>
-Link: https://lore.kernel.org/r/20241011113444.40749-1-wanghai38@huawei.com
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: 75c3e8a26a35 ("drm/vmwgfx: Trigger a modeset when the screen moves")
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240809183756.27283-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_device.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
-index 86590a7e29f6a..dd041ee18ac9b 100644
---- a/drivers/target/target_core_device.c
-+++ b/drivers/target/target_core_device.c
-@@ -692,7 +692,7 @@ struct se_device *target_alloc_device(struct se_hba *hba, const char *name)
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
+index e98fde90f4e0c..2f775679a5076 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
+@@ -1028,6 +1028,10 @@ static int vmw_stdu_connector_atomic_check(struct drm_connector *conn,
+ 	struct drm_crtc_state *new_crtc_state;
  
- 	dev->queues = kcalloc(nr_cpu_ids, sizeof(*dev->queues), GFP_KERNEL);
- 	if (!dev->queues) {
--		dev->transport->free_device(dev);
-+		hba->backend->ops->free_device(dev);
- 		return NULL;
- 	}
+ 	conn_state = drm_atomic_get_connector_state(state, conn);
++
++	if (IS_ERR(conn_state))
++		return PTR_ERR(conn_state);
++
+ 	du = vmw_connector_to_stdu(conn);
  
+ 	if (!conn_state->crtc)
 -- 
 2.43.0
 
