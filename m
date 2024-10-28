@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 036CA9B26BD
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:42:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A24CB9B2604
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 270AE1C210DC
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:42:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DD771F21EB7
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4B218E744;
-	Mon, 28 Oct 2024 06:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1546A18FDA7;
+	Mon, 28 Oct 2024 06:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P181gFST"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nFtingV6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7939918EFE6;
-	Mon, 28 Oct 2024 06:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56DA18FDB0;
+	Mon, 28 Oct 2024 06:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097730; cv=none; b=HTpVD2pjeDGmxTrNUgrw4f59HkDNIipLyhA+DuR2O5LQUAFzmRlgL0PS+Ibrl5LXLfyp6P9sSV4L+7NLzAzssm3hGcOF5B2SBuBZfdpjmPAINkZvCCKuHsC/vdKQXD4BZVCMPHBPNHSLUjnRHscHdTLiaMmiZFWlO84uwFopo2s=
+	t=1730097350; cv=none; b=aKxljjbVnzSuwzrD3hf1dqL6IIAzCioO4wbLhGR3wqthiZc9tOIiggtjuOamArNiXZGCAHs3LhiboizSp4xyqqFrKcntmGF/L+XFjtPMZTm+L4gLzx7rYTpNO4NSd/otPPMqncAl4AN8DwnrOctJeOjUoY1DfASC/7xN9K0Sgd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097730; c=relaxed/simple;
-	bh=ZKF9x8v6uP9j0fxnM3nfTTkODUuYlDOV3dn/tiow52g=;
+	s=arc-20240116; t=1730097350; c=relaxed/simple;
+	bh=dLGbq/FkL4StWC+6d2xxkdksQhRl+GswuEfmpqZOgUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BlueN8+3oUnqZSqp5WQZVR/aykxkNRdpFJbdbwBIo1ZGVg3W1GyolJZhIW9z1dorq0PeFoquYmKE3a7Opa2FD/X+X2hvLYzedDj+sPEp8424rqnph74apkuS46UiAIEuSZnynOCADN4fJIQf+3UXwJQuC+VveK387oXlh0gA8HY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P181gFST; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C392DC4CEE3;
-	Mon, 28 Oct 2024 06:42:09 +0000 (UTC)
+	 MIME-Version; b=py3aq/HiNK1KSBA68e6k6aYbzPf7nl4jr/mjf+OgDBvi6KomMwMV/nxlyiuu/bShd+gE3xZB3W80XS6MrL8G6SEsLfESAeZ1Z/OKYiNpwyOwWBBwZZu1f8BiRa6PS1lvIeHMOExoqkyJOdbEcItCZwTQQ8WVaqYzmhYQaAdUvaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nFtingV6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66813C4CEC3;
+	Mon, 28 Oct 2024 06:35:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097730;
-	bh=ZKF9x8v6uP9j0fxnM3nfTTkODUuYlDOV3dn/tiow52g=;
+	s=korg; t=1730097350;
+	bh=dLGbq/FkL4StWC+6d2xxkdksQhRl+GswuEfmpqZOgUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P181gFSTWxBaZvo04A4g9TX9cayAUfHk++SUYk1OakUFU5hcEXMjvHTyFVPKSfght
-	 K4cwnchQMupK2AF/4UlVXs9A8SCqRtIckvFhU+c/HT3c/PqhDqREYh/ON1sDQGXt2u
-	 8dR+kMW1igmr/6OieY10k9oEQqk7ehDucrM6R33M=
+	b=nFtingV6GkX1SLuo5RMyScAy/l3L8h/rJlBWpiGvb/PZPuCRAOfkeNwMxoQ/TXngz
+	 yFGJI1J6Z4Du58VH9miSlHqM3d1V/2AOOMvO7QwohJzU6LZm3wsauH41FZaVh/5Lgr
+	 WIxFmTB/sfyQyoE3Z3yj8eZ0IXHgDcSrbKJx728s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7a4842f0b1801230a989@syzkaller.appspotmail.com,
-	Zhao Mengmeng <zhaomengmeng@kylinos.cn>,
-	Jan Kara <jack@suse.cz>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Elson Roy Serrao <quic_eserrao@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 122/208] udf: refactor inode_bmap() to handle error
+Subject: [PATCH 6.1 065/137] usb: gadget: Add function wakeup support
 Date: Mon, 28 Oct 2024 07:25:02 +0100
-Message-ID: <20241028062309.652443695@linuxfoundation.org>
+Message-ID: <20241028062300.552528901@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,242 +62,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
+From: Elson Roy Serrao <quic_eserrao@quicinc.com>
 
-[ Upstream commit c226964ec786f3797ed389a16392ce4357697d24 ]
+[ Upstream commit f0db885fb05d35befa81896db6b19eb3ee9ccdfe ]
 
-Refactor inode_bmap() to handle error since udf_next_aext() can return
-error now. On situations like ftruncate, udf_extend_file() can now
-detect errors and bail out early without resorting to checking for
-particular offsets and assuming internal behavior of these functions.
+USB3.2 spec section 9.2.5.4 quotes that a function may signal that
+it wants to exit from Function Suspend by sending a Function
+Wake Notification to the host if it is enabled for function
+remote wakeup. Add an api in composite layer that can be used
+by the function drivers to support this feature. Also expose
+a gadget op so that composite layer can trigger a wakeup request
+to the UDC driver.
 
-Reported-by: syzbot+7a4842f0b1801230a989@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7a4842f0b1801230a989
-Tested-by: syzbot+7a4842f0b1801230a989@syzkaller.appspotmail.com
-Signed-off-by: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20241001115425.266556-4-zhaomzhao@126.com
+Reviewed-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
+Link: https://lore.kernel.org/r/1679694482-16430-4-git-send-email-quic_eserrao@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 705e3ce37bcc ("usb: dwc3: core: Fix system suspend on TI AM62 platforms")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/directory.c | 13 ++++++++-----
- fs/udf/inode.c     | 40 +++++++++++++++++++++++++---------------
- fs/udf/partition.c |  6 ++++--
- fs/udf/truncate.c  |  6 ++++--
- fs/udf/udfdecl.h   |  5 +++--
- 5 files changed, 44 insertions(+), 26 deletions(-)
+ drivers/usb/gadget/composite.c | 40 ++++++++++++++++++++++++++++++++++
+ include/linux/usb/composite.h  |  6 +++++
+ include/linux/usb/gadget.h     |  1 +
+ 3 files changed, 47 insertions(+)
 
-diff --git a/fs/udf/directory.c b/fs/udf/directory.c
-index c6950050e7aeb..632453aa38934 100644
---- a/fs/udf/directory.c
-+++ b/fs/udf/directory.c
-@@ -246,6 +246,7 @@ int udf_fiiter_init(struct udf_fileident_iter *iter, struct inode *dir,
- {
- 	struct udf_inode_info *iinfo = UDF_I(dir);
- 	int err = 0;
-+	int8_t etype;
- 
- 	iter->dir = dir;
- 	iter->bh[0] = iter->bh[1] = NULL;
-@@ -265,9 +266,9 @@ int udf_fiiter_init(struct udf_fileident_iter *iter, struct inode *dir,
- 		goto out;
- 	}
- 
--	if (inode_bmap(dir, iter->pos >> dir->i_blkbits, &iter->epos,
--		       &iter->eloc, &iter->elen, &iter->loffset) !=
--	    (EXT_RECORDED_ALLOCATED >> 30)) {
-+	err = inode_bmap(dir, iter->pos >> dir->i_blkbits, &iter->epos,
-+			 &iter->eloc, &iter->elen, &iter->loffset, &etype);
-+	if (err <= 0 || etype != (EXT_RECORDED_ALLOCATED >> 30)) {
- 		if (pos == dir->i_size)
- 			return 0;
- 		udf_err(dir->i_sb,
-@@ -463,6 +464,7 @@ int udf_fiiter_append_blk(struct udf_fileident_iter *iter)
- 	sector_t block;
- 	uint32_t old_elen = iter->elen;
- 	int err;
-+	int8_t etype;
- 
- 	if (WARN_ON_ONCE(iinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB))
- 		return -EINVAL;
-@@ -477,8 +479,9 @@ int udf_fiiter_append_blk(struct udf_fileident_iter *iter)
- 		udf_fiiter_update_elen(iter, old_elen);
- 		return err;
- 	}
--	if (inode_bmap(iter->dir, block, &iter->epos, &iter->eloc, &iter->elen,
--		       &iter->loffset) != (EXT_RECORDED_ALLOCATED >> 30)) {
-+	err = inode_bmap(iter->dir, block, &iter->epos, &iter->eloc, &iter->elen,
-+		   &iter->loffset, &etype);
-+	if (err <= 0 || etype != (EXT_RECORDED_ALLOCATED >> 30)) {
- 		udf_err(iter->dir->i_sb,
- 			"block %llu not allocated in directory (ino %lu)\n",
- 			(unsigned long long)block, iter->dir->i_ino);
-diff --git a/fs/udf/inode.c b/fs/udf/inode.c
-index f7623b49ec349..37fa27136fafb 100644
---- a/fs/udf/inode.c
-+++ b/fs/udf/inode.c
-@@ -408,7 +408,7 @@ struct udf_map_rq {
- 
- static int udf_map_block(struct inode *inode, struct udf_map_rq *map)
- {
--	int err;
-+	int ret;
- 	struct udf_inode_info *iinfo = UDF_I(inode);
- 
- 	if (WARN_ON_ONCE(iinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB))
-@@ -420,18 +420,24 @@ static int udf_map_block(struct inode *inode, struct udf_map_rq *map)
- 		uint32_t elen;
- 		sector_t offset;
- 		struct extent_position epos = {};
-+		int8_t etype;
- 
- 		down_read(&iinfo->i_data_sem);
--		if (inode_bmap(inode, map->lblk, &epos, &eloc, &elen, &offset)
--				== (EXT_RECORDED_ALLOCATED >> 30)) {
-+		ret = inode_bmap(inode, map->lblk, &epos, &eloc, &elen, &offset,
-+				 &etype);
-+		if (ret < 0)
-+			goto out_read;
-+		if (ret > 0 && etype == (EXT_RECORDED_ALLOCATED >> 30)) {
- 			map->pblk = udf_get_lb_pblock(inode->i_sb, &eloc,
- 							offset);
- 			map->oflags |= UDF_BLK_MAPPED;
-+			ret = 0;
- 		}
-+out_read:
- 		up_read(&iinfo->i_data_sem);
- 		brelse(epos.bh);
- 
--		return 0;
-+		return ret;
- 	}
- 
- 	down_write(&iinfo->i_data_sem);
-@@ -442,9 +448,9 @@ static int udf_map_block(struct inode *inode, struct udf_map_rq *map)
- 	if (((loff_t)map->lblk) << inode->i_blkbits >= iinfo->i_lenExtents)
- 		udf_discard_prealloc(inode);
- 	udf_clear_extent_cache(inode);
--	err = inode_getblk(inode, map);
-+	ret = inode_getblk(inode, map);
- 	up_write(&iinfo->i_data_sem);
--	return err;
-+	return ret;
+diff --git a/drivers/usb/gadget/composite.c b/drivers/usb/gadget/composite.c
+index f10e43a948fd8..db66242b2918a 100644
+--- a/drivers/usb/gadget/composite.c
++++ b/drivers/usb/gadget/composite.c
+@@ -490,6 +490,46 @@ int usb_interface_id(struct usb_configuration *config,
  }
+ EXPORT_SYMBOL_GPL(usb_interface_id);
  
- static int __udf_get_block(struct inode *inode, sector_t block,
-@@ -666,8 +672,10 @@ static int udf_extend_file(struct inode *inode, loff_t newsize)
- 	 */
- 	udf_discard_prealloc(inode);
- 
--	etype = inode_bmap(inode, first_block, &epos, &eloc, &elen, &offset);
--	within_last_ext = (etype != -1);
-+	err = inode_bmap(inode, first_block, &epos, &eloc, &elen, &offset, &etype);
-+	if (err < 0)
-+		goto out;
-+	within_last_ext = (err == 1);
- 	/* We don't expect extents past EOF... */
- 	WARN_ON_ONCE(within_last_ext &&
- 		     elen > ((loff_t)offset + 1) << inode->i_blkbits);
-@@ -2401,13 +2409,15 @@ int8_t udf_delete_aext(struct inode *inode, struct extent_position epos)
- 	return (elen >> 30);
- }
- 
--int8_t inode_bmap(struct inode *inode, sector_t block,
--		  struct extent_position *pos, struct kernel_lb_addr *eloc,
--		  uint32_t *elen, sector_t *offset)
-+/*
-+ * Returns 1 on success, -errno on error, 0 on hit EOF.
++/**
++ * usb_func_wakeup - sends function wake notification to the host.
++ * @func: function that sends the remote wakeup notification.
++ *
++ * Applicable to devices operating at enhanced superspeed when usb
++ * functions are put in function suspend state and armed for function
++ * remote wakeup. On completion, function wake notification is sent. If
++ * the device is in low power state it tries to bring the device to active
++ * state before sending the wake notification. Since it is a synchronous
++ * call, caller must take care of not calling it in interrupt context.
++ * For devices operating at lower speeds  returns negative errno.
++ *
++ * Returns zero on success, else negative errno.
 + */
-+int inode_bmap(struct inode *inode, sector_t block, struct extent_position *pos,
-+	       struct kernel_lb_addr *eloc, uint32_t *elen, sector_t *offset,
-+	       int8_t *etype)
++int usb_func_wakeup(struct usb_function *func)
++{
++	struct usb_gadget	*gadget = func->config->cdev->gadget;
++	int			id;
++
++	if (!gadget->ops->func_wakeup)
++		return -EOPNOTSUPP;
++
++	if (!func->func_wakeup_armed) {
++		ERROR(func->config->cdev, "not armed for func remote wakeup\n");
++		return -EINVAL;
++	}
++
++	for (id = 0; id < MAX_CONFIG_INTERFACES; id++)
++		if (func->config->interface[id] == func)
++			break;
++
++	if (id == MAX_CONFIG_INTERFACES) {
++		ERROR(func->config->cdev, "Invalid function\n");
++		return -EINVAL;
++	}
++
++	return gadget->ops->func_wakeup(gadget, id);
++}
++EXPORT_SYMBOL_GPL(usb_func_wakeup);
++
+ static u8 encode_bMaxPower(enum usb_device_speed speed,
+ 		struct usb_configuration *c)
  {
- 	unsigned char blocksize_bits = inode->i_sb->s_blocksize_bits;
- 	loff_t lbcount = 0, bcount = (loff_t) block << blocksize_bits;
--	int8_t etype;
- 	struct udf_inode_info *iinfo;
- 	int err = 0;
+diff --git a/include/linux/usb/composite.h b/include/linux/usb/composite.h
+index 9783b9107d76b..d759208e0a6ce 100644
+--- a/include/linux/usb/composite.h
++++ b/include/linux/usb/composite.h
+@@ -149,6 +149,9 @@ struct usb_os_desc_table {
+  *	GetStatus() request when the recipient is Interface.
+  * @func_suspend: callback to be called when
+  *	SetFeature(FUNCTION_SUSPEND) is reseived
++ * @func_suspended: Indicates whether the function is in function suspend state.
++ * @func_wakeup_armed: Indicates whether the function is armed by the host for
++ *	wakeup signaling.
+  *
+  * A single USB function uses one or more interfaces, and should in most
+  * cases support operation at both full and high speeds.  Each function is
+@@ -219,6 +222,8 @@ struct usb_function {
+ 	int			(*get_status)(struct usb_function *);
+ 	int			(*func_suspend)(struct usb_function *,
+ 						u8 suspend_opt);
++	bool			func_suspended;
++	bool			func_wakeup_armed;
+ 	/* private: */
+ 	/* internals */
+ 	struct list_head		list;
+@@ -240,6 +245,7 @@ int config_ep_by_speed_and_alt(struct usb_gadget *g, struct usb_function *f,
  
-@@ -2419,13 +2429,13 @@ int8_t inode_bmap(struct inode *inode, sector_t block,
- 	}
- 	*elen = 0;
- 	do {
--		err = udf_next_aext(inode, pos, eloc, elen, &etype, 1);
-+		err = udf_next_aext(inode, pos, eloc, elen, etype, 1);
- 		if (err <= 0) {
- 			if (err == 0) {
- 				*offset = (bcount - lbcount) >> blocksize_bits;
- 				iinfo->i_lenExtents = lbcount;
- 			}
--			return -1;
-+			return err;
- 		}
- 		lbcount += *elen;
- 	} while (lbcount <= bcount);
-@@ -2433,5 +2443,5 @@ int8_t inode_bmap(struct inode *inode, sector_t block,
- 	udf_update_extent_cache(inode, lbcount - *elen, pos);
- 	*offset = (bcount + *elen - lbcount) >> blocksize_bits;
+ int config_ep_by_speed(struct usb_gadget *g, struct usb_function *f,
+ 			struct usb_ep *_ep);
++int usb_func_wakeup(struct usb_function *func);
  
--	return etype;
-+	return 1;
- }
-diff --git a/fs/udf/partition.c b/fs/udf/partition.c
-index af877991edc13..2b85c9501bed8 100644
---- a/fs/udf/partition.c
-+++ b/fs/udf/partition.c
-@@ -282,9 +282,11 @@ static uint32_t udf_try_read_meta(struct inode *inode, uint32_t block,
- 	sector_t ext_offset;
- 	struct extent_position epos = {};
- 	uint32_t phyblock;
-+	int8_t etype;
-+	int err = 0;
+ #define	MAX_CONFIG_INTERFACES		16	/* arbitrary; max 255 */
  
--	if (inode_bmap(inode, block, &epos, &eloc, &elen, &ext_offset) !=
--						(EXT_RECORDED_ALLOCATED >> 30))
-+	err = inode_bmap(inode, block, &epos, &eloc, &elen, &ext_offset, &etype);
-+	if (err <= 0 || etype != (EXT_RECORDED_ALLOCATED >> 30))
- 		phyblock = 0xFFFFFFFF;
- 	else {
- 		map = &UDF_SB(sb)->s_partmaps[partition];
-diff --git a/fs/udf/truncate.c b/fs/udf/truncate.c
-index 399958f891d14..4f33a4a488861 100644
---- a/fs/udf/truncate.c
-+++ b/fs/udf/truncate.c
-@@ -214,10 +214,12 @@ int udf_truncate_extents(struct inode *inode)
- 	else
- 		BUG();
- 
--	etype = inode_bmap(inode, first_block, &epos, &eloc, &elen, &offset);
-+	ret = inode_bmap(inode, first_block, &epos, &eloc, &elen, &offset, &etype);
-+	if (ret < 0)
-+		return ret;
- 	byte_offset = (offset << sb->s_blocksize_bits) +
- 		(inode->i_size & (sb->s_blocksize - 1));
--	if (etype == -1) {
-+	if (ret == 0) {
- 		/* We should extend the file? */
- 		WARN_ON(byte_offset);
- 		return 0;
-diff --git a/fs/udf/udfdecl.h b/fs/udf/udfdecl.h
-index 5067ed68a8b45..d159f20d61e89 100644
---- a/fs/udf/udfdecl.h
-+++ b/fs/udf/udfdecl.h
-@@ -157,8 +157,9 @@ extern struct buffer_head *udf_bread(struct inode *inode, udf_pblk_t block,
- extern int udf_setsize(struct inode *, loff_t);
- extern void udf_evict_inode(struct inode *);
- extern int udf_write_inode(struct inode *, struct writeback_control *wbc);
--extern int8_t inode_bmap(struct inode *, sector_t, struct extent_position *,
--			 struct kernel_lb_addr *, uint32_t *, sector_t *);
-+extern int inode_bmap(struct inode *inode, sector_t block,
-+		      struct extent_position *pos, struct kernel_lb_addr *eloc,
-+		      uint32_t *elen, sector_t *offset, int8_t *etype);
- int udf_get_block(struct inode *, sector_t, struct buffer_head *, int);
- extern int udf_setup_indirect_aext(struct inode *inode, udf_pblk_t block,
- 				   struct extent_position *epos);
+diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
+index 5bec668b41dcd..705b76f8dddb2 100644
+--- a/include/linux/usb/gadget.h
++++ b/include/linux/usb/gadget.h
+@@ -309,6 +309,7 @@ struct usb_udc;
+ struct usb_gadget_ops {
+ 	int	(*get_frame)(struct usb_gadget *);
+ 	int	(*wakeup)(struct usb_gadget *);
++	int	(*func_wakeup)(struct usb_gadget *gadget, int intf_id);
+ 	int	(*set_remote_wakeup)(struct usb_gadget *, int set);
+ 	int	(*set_selfpowered) (struct usb_gadget *, int is_selfpowered);
+ 	int	(*vbus_session) (struct usb_gadget *, int is_active);
 -- 
 2.43.0
 
