@@ -1,93 +1,72 @@
-Return-Path: <stable+bounces-88973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B5039B2998
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 09:03:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 015249B29CC
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 09:06:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED7482817FE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 08:03:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 335061C21B5A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 08:06:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363BA1C3302;
-	Mon, 28 Oct 2024 07:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B92A71917D8;
+	Mon, 28 Oct 2024 08:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TvNsGOBK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JAMlfA3W"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DDCA190472
-	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 07:44:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F61319005F;
+	Mon, 28 Oct 2024 08:02:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730101503; cv=none; b=XCg3ak/8gZILzNarc2NGB3ZyOe/X8ZMwTnkis49OIm+fnBXFti37w2AVVyPLJKJFJ9j+tCK6etuO25uJVotDOd0pjJ7KZ1fYdx4W2pVOL7LfZmy4sKnE8FImN3J8SyWF4Q5IKkL0t4NYDBIi1f0QWu9SwrIsPDH/bVjx3onv+AQ=
+	t=1730102566; cv=none; b=mlVksBJAJENxHzO2PmVYqE7IM5H1rLKSDsriBF5RuQGkSQH/FFpfOm9NJ9IqTA4g3yGUVsU4eDKnxXWmtlXWShTT20lfC55QNg3rASE+1W+ex19UxtAYZgw1PhF3tmF+hFhBsj9Ljb5n+XDGt9h3KSsBromrS/H3GMGdZleV1i4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730101503; c=relaxed/simple;
-	bh=PEZr0dlQokSOg0EnOX8DNbTQF91ffCeHj6qA1SGw03M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CusiDZYzh91lf4sb245QeziyszqaaG7TpbgXMi8nhanVocIU+R8yJW0Vu8hFlhrVhRsxjz/53RspsObE6czVZhiw7sObcBGjjGKtatJpdCkhKgZWs3Bg06I86zbUOHOdsuQGLrg3Y/FjNt0VvEVqZaITZRlfLZgPkORt1WYaw9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TvNsGOBK; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1730101498;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=hbIQ/VhVhZ0OvUIRysIuQ3OzP1NdlYynlJ50dCrgjTU=;
-	b=TvNsGOBKVn06rVFRyUh1lwM4XkthQxFNKDtC+2ODR2aS1aAhhxbAh8TXvgymsnNNn0C6sM
-	WAe7gz4VxcKh039ckt1IE/S/nOANuLuwcBcnFrGdWRdaEeVBxWQGPLNDYmw+KYvylhH2Of
-	m3zB3R7HGwJywmhHqexOhfLOizuuGmU=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-447-4Dl9PGQoPFKgAFrlW_agMg-1; Mon, 28 Oct 2024 03:44:57 -0400
-X-MC-Unique: 4Dl9PGQoPFKgAFrlW_agMg-1
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6cbe933e877so73143006d6.1
-        for <stable@vger.kernel.org>; Mon, 28 Oct 2024 00:44:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730101496; x=1730706296;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hbIQ/VhVhZ0OvUIRysIuQ3OzP1NdlYynlJ50dCrgjTU=;
-        b=FHdBf9Sk9kWjCuFq83aWWpI0Fa4Bo0A5Se/zNGVKSTXB8xS8fytDffSkMgJwJRLulP
-         NGGEtcay8Od2uz54nFUdogX2DKwGFqKfNrll9lMrQni/Jni5plWDsmOMAqBVDxKBmS75
-         rbjb1Hp3UK0ADiEA5k90DGUFE6dSX8BWH6dsgG7owUuxd18BCB6s71QAiIzrMtOsiBEB
-         NhiTRGmi2z9w+mDd7Py1MhG09B14oRkUtb1lqpaAI1dDW51xnboL39Q2TbXf3h9WsNV9
-         00JKibDDTV/TnX4YEE0w9ou0TvzYHmlNbPJ6JB4VLPlWPLkEtbr6ijQ5w7+QUftl8130
-         6NGw==
-X-Forwarded-Encrypted: i=1; AJvYcCXEEAJtR+wou2q0+58WlEVvzYI8qnVjqU55/OccVJVaFhByXHFkjm6p2oygkXdqS70GPU6kKmI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVgI4n1vYb4pKFUli8VvioAxI0m6h30zmRpAqBtvGJjq9Cn9Dk
-	1Q9AflW8g0Hmkq84y5Y7Qp7kkzVHI3vxsaQuOIqI44x7qwNd5PdaWeyECD3Endw6RiXzKeCj/OJ
-	O3pjsxSNk3JXUn5Y/+nQXXscCBX1rjash3DYtQ2RLJGtDAZ5rLgn+GA==
-X-Received: by 2002:a05:6214:2dc6:b0:6cb:cee6:d834 with SMTP id 6a1803df08f44-6d18585e762mr121038976d6.45.1730101496513;
-        Mon, 28 Oct 2024 00:44:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEYrXXTQPuJOobZASjIKDFRnHrChhHyjJipSBygd3ZhctAHecyDi+Abnul9u/vpmNdW1daW7Q==
-X-Received: by 2002:a05:6214:2dc6:b0:6cb:cee6:d834 with SMTP id 6a1803df08f44-6d18585e762mr121038756d6.45.1730101496220;
-        Mon, 28 Oct 2024 00:44:56 -0700 (PDT)
-Received: from eisenberg.redhat.com (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d17972f566sm30237716d6.13.2024.10.28.00.44.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Oct 2024 00:44:55 -0700 (PDT)
-From: Philipp Stanner <pstanner@redhat.com>
-To: Alvaro Karsz <alvaro.karsz@solid-run.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Philipp Stanner <pstanner@redhat.com>
-Cc: virtualization@lists.linux.dev,
+	s=arc-20240116; t=1730102566; c=relaxed/simple;
+	bh=K8ruHr4Vpi6UuS7UYRX7Do+93K2LGPQkisXuaj/syr4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kpqg5t2IH0iZforrMAGUxsjY+Y3WSN1NLQrBqpAcnixXP7yggfvT9ZPA5w2Z3J5dZPjJ3AAEzivJfODiRmXDPagg4iDzo3Zg+fYYoF4hBo9SUyz4MGrSfPy3ZQGSTRCC1+UPj+zTRz6voJYbJ/viqGKCSTcQneXqqnbEjKL6Zr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JAMlfA3W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81376C4CEC3;
+	Mon, 28 Oct 2024 08:02:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730102566;
+	bh=K8ruHr4Vpi6UuS7UYRX7Do+93K2LGPQkisXuaj/syr4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=JAMlfA3WanPo/YvYH/hFi5moQ1zRFVz5T20FSKviO0FbXMlxafGT66PmrS3aQXxHG
+	 3U0qygwaQilMl8bR46BygNTi7JK8jKlGby+LBBuoS9d22nEJQp0qU6aqE7tjvC7WVb
+	 C1Kci0jnyeosZAIIf0AvKsdpcm9coPQJgwb2NgkNdRL5WEVsQMSuDXiQ2/Z6SgFeQv
+	 Mz9bgr5v8QSULJIZtc5myt5pAqouiXwR3L5lWOIgmewILbcq4XPXSa1I1Vo7DvCKac
+	 vxcw8oGxr3VhW7G1P69m9eXwuKXAwobdleyXEhDaOxR/U+tAw4C9jGkCy/uP73copZ
+	 +sbsn0Xp5VeNQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: akpm@linux-foundation.org,
+	allen.lkml@gmail.com,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	jonathanh@nvidia.com,
 	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@denx.de,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	srw@sladewatkins.net,
 	stable@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Andy Shevchenko <andy@kernel.org>
-Subject: [PATCH v2] vdpa: solidrun: Fix UB bug with devres
-Date: Mon, 28 Oct 2024 08:43:59 +0100
-Message-ID: <20241028074357.9104-3-pstanner@redhat.com>
-X-Mailer: git-send-email 2.47.0
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH 6.11 000/261] 6.11.6-rc1 review
+Date: Mon, 28 Oct 2024 09:02:32 +0100
+Message-ID: <20241028080232.589602-1-ojeda@kernel.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,72 +75,23 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In psnet_open_pf_bar() and snet_open_vf_bar() a string later passed to
-pcim_iomap_regions() is placed on the stack. Neither
-pcim_iomap_regions() nor the functions it calls copy that string.
+On Mon, 28 Oct 2024 07:22:22 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.11.6 release.
+> There are 261 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 30 Oct 2024 06:22:39 +0000.
+> Anything received after that time might be too late.
 
-Should the string later ever be used, this, consequently, causes
-undefined behavior since the stack frame will by then have disappeared.
+Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
+for loongarch64:
 
-Fix the bug by allocating the strings on the heap through
-devm_kasprintf().
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
 
-Cc: stable@vger.kernel.org	# v6.3
-Fixes: 51a8f9d7f587 ("virtio: vdpa: new SolidNET DPU driver.")
-Reported-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Closes: https://lore.kernel.org/all/74e9109a-ac59-49e2-9b1d-d825c9c9f891@wanadoo.fr/
-Suggested-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
----
-Changes in v2:
-  - Add Stefano's RB
----
- drivers/vdpa/solidrun/snet_main.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+Thanks!
 
-diff --git a/drivers/vdpa/solidrun/snet_main.c b/drivers/vdpa/solidrun/snet_main.c
-index 99428a04068d..c8b74980dbd1 100644
---- a/drivers/vdpa/solidrun/snet_main.c
-+++ b/drivers/vdpa/solidrun/snet_main.c
-@@ -555,7 +555,7 @@ static const struct vdpa_config_ops snet_config_ops = {
- 
- static int psnet_open_pf_bar(struct pci_dev *pdev, struct psnet *psnet)
- {
--	char name[50];
-+	char *name;
- 	int ret, i, mask = 0;
- 	/* We don't know which BAR will be used to communicate..
- 	 * We will map every bar with len > 0.
-@@ -573,7 +573,10 @@ static int psnet_open_pf_bar(struct pci_dev *pdev, struct psnet *psnet)
- 		return -ENODEV;
- 	}
- 
--	snprintf(name, sizeof(name), "psnet[%s]-bars", pci_name(pdev));
-+	name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "psnet[%s]-bars", pci_name(pdev));
-+	if (!name)
-+		return -ENOMEM;
-+
- 	ret = pcim_iomap_regions(pdev, mask, name);
- 	if (ret) {
- 		SNET_ERR(pdev, "Failed to request and map PCI BARs\n");
-@@ -590,10 +593,13 @@ static int psnet_open_pf_bar(struct pci_dev *pdev, struct psnet *psnet)
- 
- static int snet_open_vf_bar(struct pci_dev *pdev, struct snet *snet)
- {
--	char name[50];
-+	char *name;
- 	int ret;
- 
--	snprintf(name, sizeof(name), "snet[%s]-bar", pci_name(pdev));
-+	name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "snet[%s]-bars", pci_name(pdev));
-+	if (!name)
-+		return -ENOMEM;
-+
- 	/* Request and map BAR */
- 	ret = pcim_iomap_regions(pdev, BIT(snet->psnet->cfg.vf_bar), name);
- 	if (ret) {
--- 
-2.47.0
-
+Cheers,
+Miguel
 
