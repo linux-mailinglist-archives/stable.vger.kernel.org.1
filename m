@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-88658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 095BA9B26EC
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:43:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B83829B2801
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:53:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3177282588
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:43:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A791B21391
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:53:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42FA718E354;
-	Mon, 28 Oct 2024 06:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D60418E368;
+	Mon, 28 Oct 2024 06:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cDmv2kD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHl2tiRk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F055C15B10D;
-	Mon, 28 Oct 2024 06:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD0E8837;
+	Mon, 28 Oct 2024 06:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097831; cv=none; b=RswdaCAe1xJh6KydokylpsOwaX2S2UzuLAljyaZ9FUItDr65K3wV/2IWD9lt2KrYiqzDui4EzkVBi6mLvewGxDvtJtG8pF/1LF73Dk4NFoMn3XEHd4JNUsyiv4AfDBQkp/pb+bay88tcuzacUl4A9o8Fk9TFA2gihIG55n5bN3o=
+	t=1730098390; cv=none; b=BP0u5qqMK1oAR/w197DK+94qa4ogwqbCD/9m+TfyOi2o8U+jBTGHT3SCITEeBGiaSbq+zJYbaCnM+KOmUHqgElEjUPqvI04ltWDuu12AsGA1faos/fInWqF03waJ5kZs8GS2eFgM47GHHH9dvOJ+x1PZ0wnKgIUisPu2ZvWIDVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097831; c=relaxed/simple;
-	bh=ZQImhHMdSHi9h+0zUzG07+iLWS3/tbLO2cSSm/J9jeo=;
+	s=arc-20240116; t=1730098390; c=relaxed/simple;
+	bh=XyR67GEnlWdhVWkjwNmOQFt8L4KAaOJ5lWsMc0jxICc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KgcEffx+vl4Xqxjb06TpKnb2GM/wxRxFDU43gkw7mjrEOYwdB92013eIHHUA6B1b+jOFe0WncznIubVEr+Hivv7kB1nOwUJfhEI0Up9tSdwvFgl3UCPF2Ydcz4PjN7YOVeFOcEiS9QOGsfZwZGJkAcRUVJrCk39GxzDL6CKuyzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0cDmv2kD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCDDC4CEC3;
-	Mon, 28 Oct 2024 06:43:50 +0000 (UTC)
+	 MIME-Version; b=jRxvz6APydmvW7LgSXUsBpx1PDrN3ddcgRCEDUtBFHld9c8/UuFKVDC3p3eY+L6t9kG3Sgl/Ml9A72PHOOOVelggTjb7MuwWmubXF8tN9RJXtceuj/g4SbpVD3FMRyOVX0++w5/oa5iIORvOR1DFzFeu68BhAt32CSDSbildT2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHl2tiRk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D047CC4CEC3;
+	Mon, 28 Oct 2024 06:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097830;
-	bh=ZQImhHMdSHi9h+0zUzG07+iLWS3/tbLO2cSSm/J9jeo=;
+	s=korg; t=1730098390;
+	bh=XyR67GEnlWdhVWkjwNmOQFt8L4KAaOJ5lWsMc0jxICc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0cDmv2kDH79BwXchqzf4tggNDwjN4l6eKanv2Twocm+iZMriTeItJo0wMibfATAmd
-	 MA8Y6Nj7LkC5KnLhEdwe1o3goe0FwUVLEI8+VbC3Svr0RLvQb1y5BG3gsAhf0uWFqw
-	 Kse124XbzvPzZJIdb2Yd9UZPScYFygEXjOzf1sg4=
+	b=wHl2tiRkDOX/coA0xt4lry/lS4z1jMBMmKeSTzuuG6YI4oBLaGla9y89NPN3hhysB
+	 AgS4TEGTT2zwKQESmJTg8U1iJXSslWpAafMDyjZ8mlqDCasnON7FHvEV9o0drlRSWe
+	 A5jxkvqcEOYoYVX0YQXADSSIujrlnShM8HN3GYMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 166/208] ASoC: loongson: Fix component check failed on FDT systems
+	Richard Gong <richard.gong@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Yazen Ghannam <yazen.ghannam@amd.com>
+Subject: [PATCH 6.11 204/261] x86/amd_nb: Add new PCI IDs for AMD family 1Ah model 60h-70h
 Date: Mon, 28 Oct 2024 07:25:46 +0100
-Message-ID: <20241028062310.718500661@linuxfoundation.org>
+Message-ID: <20241028062317.179125352@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Binbin Zhou <zhoubinbin@loongson.cn>
+From: Richard Gong <richard.gong@amd.com>
 
-[ Upstream commit a6134e7b4d4a14e0942f113a6df1d518baa2a0a4 ]
+commit 0f70fdd42559b4eed8f74bf7389656a8ae3eb5c3 upstream.
 
-Add missing snd_soc_dai_link.platforms assignment to avoid
-soc_dai_link_sanity_check() failure.
+Add new PCI IDs for Device 18h and Function 4 to enable the amd_atl driver
+on those systems.
 
-Fixes: d24028606e76 ("ASoC: loongson: Add Loongson ASoC Sound Card Support")
-Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Link: https://patch.msgid.link/6645888f2f9e8a1d8d799109f867d0f97fd78c58.1728459624.git.zhoubinbin@loongson.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Richard Gong <richard.gong@amd.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Link: https://lore.kernel.org/all/20240819123041.915734-1-richard.gong@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/loongson/loongson_card.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/amd_nb.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/sound/soc/loongson/loongson_card.c b/sound/soc/loongson/loongson_card.c
-index 8cc54aedd0024..010e959d4c69a 100644
---- a/sound/soc/loongson/loongson_card.c
-+++ b/sound/soc/loongson/loongson_card.c
-@@ -137,6 +137,7 @@ static int loongson_card_parse_of(struct loongson_card_data *data)
- 			dev_err(dev, "getting cpu dlc error (%d)\n", ret);
- 			goto err;
- 		}
-+		loongson_dai_links[i].platforms->of_node = loongson_dai_links[i].cpus->of_node;
+--- a/arch/x86/kernel/amd_nb.c
++++ b/arch/x86/kernel/amd_nb.c
+@@ -44,6 +44,8 @@
+ #define PCI_DEVICE_ID_AMD_19H_M70H_DF_F4	0x14f4
+ #define PCI_DEVICE_ID_AMD_19H_M78H_DF_F4	0x12fc
+ #define PCI_DEVICE_ID_AMD_1AH_M00H_DF_F4	0x12c4
++#define PCI_DEVICE_ID_AMD_1AH_M60H_DF_F4	0x124c
++#define PCI_DEVICE_ID_AMD_1AH_M70H_DF_F4	0x12bc
+ #define PCI_DEVICE_ID_AMD_MI200_DF_F4		0x14d4
+ #define PCI_DEVICE_ID_AMD_MI300_DF_F4		0x152c
  
- 		ret = snd_soc_of_get_dlc(codec, NULL, loongson_dai_links[i].codecs, 0);
- 		if (ret < 0) {
--- 
-2.43.0
-
+@@ -125,6 +127,8 @@ static const struct pci_device_id amd_nb
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M78H_DF_F4) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_CNB17H_F4) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M00H_DF_F4) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M60H_DF_F4) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M70H_DF_F4) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_MI200_DF_F4) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_MI300_DF_F4) },
+ 	{}
 
 
 
