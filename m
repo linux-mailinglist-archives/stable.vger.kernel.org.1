@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-88367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EE9E9B259D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:32:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A951D9B2799
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:49:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 081521C208BE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:32:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 552A61F21E47
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C98E418DF8B;
-	Mon, 28 Oct 2024 06:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3023D18E77D;
+	Mon, 28 Oct 2024 06:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4jGpc86"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gEGy9yT8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B7D15B10D;
-	Mon, 28 Oct 2024 06:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A0618A924;
+	Mon, 28 Oct 2024 06:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097174; cv=none; b=cslvFCAtiL5S9zvXetY4J5XmxgYDBOPAEuFzh2BzGBLcR0yjP02H5WGCZLzYlE3Uf8NjCXiD5YO5VXe8lpRyYtzf4r9JfRjsO1q54C093hssub/9u+Wu9ZxwjQyf4lcDY5Nfed8eDwGkNB7MKrjGr2axh+cqfXaKWvmL1/q10u8=
+	t=1730098176; cv=none; b=EBhHRlBn20DtUG3r+EBHY4KwDLiym6U+mjHFwB8lUuHhXLWa48vIOYLffuKqpaHsk+b5JhdC9BDKWESm1Z2ON5JlcjFoC60iPmWSq7+kYH8tEFhUEu5Vn8Nm2B9wVBHhofX3wcYlmpV27YdirgHEyVYUhPeKN6DtjxN98TrDzlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097174; c=relaxed/simple;
-	bh=lIGRNmQYScDkWhPffwnCr4MjE2kmm/0T7O9Kz1qWCT0=;
+	s=arc-20240116; t=1730098176; c=relaxed/simple;
+	bh=Qgx/IOt2pU/WCc7WtaySsj4SjOnq0mYVrLXci2rl9d0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FCfnqBInFD2P5H5ese/BPvQm4EwEjKDXMdiarKOr//HMZWTCO7nQwxQ303MRBEN516O3Z08YaR4pFGdmbZgjxGDckKd65N1U40aWZCcHvjwB4t4RO2I45PGHE9NjENWhCtnsmaLbvC36KDV1Z4UWLWJH+GQw6JOSQG6d4MewoMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4jGpc86; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23557C4CEC7;
-	Mon, 28 Oct 2024 06:32:54 +0000 (UTC)
+	 MIME-Version; b=gdMOnqmJ5y6O1yQD63jS6IDJi3fA+q45TeCDcxAtW+NvPM7m/OVpXZcA7lnoOpocBo5oxHkcWrR4txjwCLaAaOhzNj3L2/RAOZh9JAC+SwKjPGWXI1ZzzYjvYfXts3LQgsKmri7iQ8CX6K+8KXXVJRuiwbb1GPJSeIR15JwPo7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gEGy9yT8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F5EDC4CEC3;
+	Mon, 28 Oct 2024 06:49:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097174;
-	bh=lIGRNmQYScDkWhPffwnCr4MjE2kmm/0T7O9Kz1qWCT0=;
+	s=korg; t=1730098175;
+	bh=Qgx/IOt2pU/WCc7WtaySsj4SjOnq0mYVrLXci2rl9d0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i4jGpc86a1mW5aSwRlUZHFhkRP9tUZa4VwublY8myhAplJ3Na2kP7CL36FbFZXrqf
-	 XqHIHe8shWFtXnvlP7r9PZk2v5yExguUdK9FDwwMjxfF11Wc1UI1o06efLI/F7RU5a
-	 sehEt5Lr+kq1SpTQGD5FPn2wuYTibyuzaEids/uI=
+	b=gEGy9yT8myjqELJx41Ohrz76XpFSJXzA1spu2IBZfuBHYvNUuv+UJY3P2oUBiOmhC
+	 Fae2aWi9iGRz7hn1Xqm6xa68KO4ptfCPQVdIAgooME3Tz0utYMWrEBRHEk+tdhwqTp
+	 RQyowy5USSk24v87P45rOTYSZZV0ZlQb6wJXJzZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@maxima.ru>,
-	Takashi Iwai <tiwai@suse.de>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 016/137] ALSA: hda/cs8409: Fix possible NULL dereference
+Subject: [PATCH 6.11 111/261] cdrom: Avoid barrier_nospec() in cdrom_ioctl_media_changed()
 Date: Mon, 28 Oct 2024 07:24:13 +0100
-Message-ID: <20241028062259.176214525@linuxfoundation.org>
+Message-ID: <20241028062314.811289260@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@maxima.ru>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit c9bd4a82b4ed32c6d1c90500a52063e6e341517f ]
+[ Upstream commit b0bf1afde7c34698cf61422fa8ee60e690dc25c3 ]
 
-If snd_hda_gen_add_kctl fails to allocate memory and returns NULL, then
-NULL pointer dereference will occur in the next line.
+The barrier_nospec() after the array bounds check is overkill and
+painfully slow for arches which implement it.
 
-Since dolphin_fixups function is a hda_fixup function which is not supposed
-to return any errors, add simple check before dereference, ignore the fail.
+Furthermore, most arches don't implement it, so they remain exposed to
+Spectre v1 (which can affect pretty much any CPU with branch
+prediction).
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Instead, clamp the user pointer to a valid range so it's guaranteed to
+be a valid array index even when the bounds check mispredicts.
 
-Fixes: 20e507724113 ("ALSA: hda/cs8409: Add support for dolphin")
-Signed-off-by: Murad Masimov <m.masimov@maxima.ru>
-Link: https://patch.msgid.link/20241010221649.1305-1-m.masimov@maxima.ru
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 8270cb10c068 ("cdrom: Fix spectre-v1 gadget")
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/1d86f4d9d8fba68e5ca64cdeac2451b95a8bf872.1729202937.git.jpoimboe@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_cs8409.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/cdrom/cdrom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_cs8409.c b/sound/pci/hda/patch_cs8409.c
-index e41316e2e9833..892223d9e64ab 100644
---- a/sound/pci/hda/patch_cs8409.c
-+++ b/sound/pci/hda/patch_cs8409.c
-@@ -1411,8 +1411,9 @@ void dolphin_fixups(struct hda_codec *codec, const struct hda_fixup *fix, int ac
- 		kctrl = snd_hda_gen_add_kctl(&spec->gen, "Line Out Playback Volume",
- 					     &cs42l42_dac_volume_mixer);
- 		/* Update Line Out kcontrol template */
--		kctrl->private_value = HDA_COMPOSE_AMP_VAL_OFS(DOLPHIN_HP_PIN_NID, 3, CS8409_CODEC1,
--				       HDA_OUTPUT, CS42L42_VOL_DAC) | HDA_AMP_VAL_MIN_MUTE;
-+		if (kctrl)
-+			kctrl->private_value = HDA_COMPOSE_AMP_VAL_OFS(DOLPHIN_HP_PIN_NID, 3, CS8409_CODEC1,
-+					       HDA_OUTPUT, CS42L42_VOL_DAC) | HDA_AMP_VAL_MIN_MUTE;
- 		cs8409_enable_ur(codec, 0);
- 		snd_hda_codec_set_name(codec, "CS8409/CS42L42");
- 		break;
+diff --git a/drivers/cdrom/cdrom.c b/drivers/cdrom/cdrom.c
+index 9b0f37d4b9d49..6a99a459b80b2 100644
+--- a/drivers/cdrom/cdrom.c
++++ b/drivers/cdrom/cdrom.c
+@@ -2313,7 +2313,7 @@ static int cdrom_ioctl_media_changed(struct cdrom_device_info *cdi,
+ 		return -EINVAL;
+ 
+ 	/* Prevent arg from speculatively bypassing the length check */
+-	barrier_nospec();
++	arg = array_index_nospec(arg, cdi->capacity);
+ 
+ 	info = kmalloc(sizeof(*info), GFP_KERNEL);
+ 	if (!info)
 -- 
 2.43.0
 
