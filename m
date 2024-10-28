@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 084CF9B2568
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E93A09B26FD
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A7FF1C20DB6
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEE19281FAB
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A041152E1C;
-	Mon, 28 Oct 2024 06:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14C0718EFD2;
+	Mon, 28 Oct 2024 06:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQMOzYXz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sNGVKG9Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F7B18E05D;
-	Mon, 28 Oct 2024 06:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3A418E779;
+	Mon, 28 Oct 2024 06:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730096923; cv=none; b=Lwj/4O9FMtRDKEzy/wd73wPLbP05jQrPc5iCbVfkVsq6zyKS9UY9633IEABkf2mA4f7Fy3EQ4ooy9r0xHDl4V92dTrEfNwCDYe1J3sdcxGseLRLAUKXt2n36XGIqKsbj7AaWUy/XRqURcjTS0hQLZK5l192EB2Dk8SDxQiDPtmI=
+	t=1730097864; cv=none; b=khIpYgYDSPgPZkhttiVFRmXqe95DnDSnItcGh+DuYHxZRdBTlIgklCFPOAz0/LdbvuHuaHl4yttvT9u7/B/81LJHiN1dHsD4JMJGDgc97i0/V1v7cUh2pljmj2F5QqEA6iJeTOfEfzDHhIt3o69uL3prDjp81Tjkhbv2JfWzWUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730096923; c=relaxed/simple;
-	bh=FwqZmJcmtMN7XeA+2gXdpw466q1rrl7FAgJZVJ7SKHc=;
+	s=arc-20240116; t=1730097864; c=relaxed/simple;
+	bh=XN+E9XOUl7A1ptbPxpeijMzZOAn9LIVkW/1DmTu7mb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TrjzPX8XJSk6Kxp2G66nxY7gYrVLaZeqmY06vBOGUE4cbw+IMEAL8gCXFzkIopjPNvxSQ+Gqxi0mub9/cJbrcusvNXrPo1KgfsXVo+/LfVhehVn+uRx7hRoC5MnF2Jdab+YtfVza3BQa6asn7KF+gcaLC8NrpaTO+B22AssIrWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQMOzYXz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F634C4CEC3;
-	Mon, 28 Oct 2024 06:28:42 +0000 (UTC)
+	 MIME-Version; b=SdmwgYEI1ALGcvqHbLVeXcjv3lEJpec5CGk0KrRKlxiZiUijCb6NQxsyzGoyKln/lBphE1Ox086qtgDSg+9Ro0FNq8eksvqRyNQ1h9u1KGVj9BWUFRZ82buH2OjuxTNULaq5KvCSe8CTNztm/jlc6V5fw1+4GeTsIgs9T0+c/8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sNGVKG9Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3788AC4CEC3;
+	Mon, 28 Oct 2024 06:44:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730096922;
-	bh=FwqZmJcmtMN7XeA+2gXdpw466q1rrl7FAgJZVJ7SKHc=;
+	s=korg; t=1730097864;
+	bh=XN+E9XOUl7A1ptbPxpeijMzZOAn9LIVkW/1DmTu7mb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vQMOzYXzVxMIGjzitVTFUzWO+FwHh+Y4aX1vDMSxfG0urcYskLpElT+NNMfz39jJq
-	 svfDTJOpXuSpC48XGnar+Maog3tGIPGTA5jJtYDl8i6aZ7DzvnUZVdlvupzQT+ap46
-	 zDJAStwFUMP4SsrlBpMmNGgUoqP+CYY47qUFDQTM=
+	b=sNGVKG9YlqcGnTbbaa+6P+TQmcV0HNVuqpPCPyTx2eFV+yLY+o9Z4mUpBkJ4+1R+g
+	 Xki5WtxHj2O66n2sT7fWHI2X/+LpdUesnE6s2eVRg4ghLh+NIEdbklqexzaeavVgbq
+	 NFW4vMvXyI+BSAWFMHQKX4kWbI9g6/QlxTIijtiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	siddharth.manthan@gmail.com,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 5.15 46/80] platform/x86: dell-wmi: Ignore suspend notifications
+	Praveen Kumar Kannoju <praveen.kannoju@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 146/208] net/sched: adjust device watchdog timer to detect stopped queue at right time
 Date: Mon, 28 Oct 2024 07:25:26 +0100
-Message-ID: <20241028062253.899733468@linuxfoundation.org>
+Message-ID: <20241028062310.225149432@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +60,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Praveen Kumar Kannoju <praveen.kannoju@oracle.com>
 
-commit a7990957fa53326fe9b47f0349373ed99bb69aaa upstream.
+[ Upstream commit 33fb988b67050d9bb512f77f08453fa00088943c ]
 
-Some machines like the Dell G15 5155 emit WMI events when
-suspending/resuming. Ignore those WMI events.
+Applications are sensitive to long network latency, particularly
+heartbeat monitoring ones. Longer the tx timeout recovery higher the
+risk with such applications on a production machines. This patch
+remedies, yet honoring device set tx timeout.
 
-Tested-by: siddharth.manthan@gmail.com
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Acked-by: Pali Rohár <pali@kernel.org>
-Link: https://lore.kernel.org/r/20241014220529.397390-1-W_Armin@gmx.de
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Modify watchdog next timeout to be shorter than the device specified.
+Compute the next timeout be equal to device watchdog timeout less the
+how long ago queue stop had been done. At next watchdog timeout tx
+timeout handler is called into if still in stopped state. Either called
+or not called, restore the watchdog timeout back to device specified.
+
+Signed-off-by: Praveen Kumar Kannoju <praveen.kannoju@oracle.com>
+Link: https://lore.kernel.org/r/20240508133617.4424-1-praveen.kannoju@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 95ecba62e2fd ("net: fix races in netdev_tx_sent_queue()/dev_watchdog()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell-wmi-base.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/sched/sch_generic.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/platform/x86/dell/dell-wmi-base.c
-+++ b/drivers/platform/x86/dell/dell-wmi-base.c
-@@ -263,6 +263,15 @@ static const struct key_entry dell_wmi_k
- 	/*Speaker Mute*/
- 	{ KE_KEY, 0x109, { KEY_MUTE} },
+diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+index 6ab9359c1706f..7f0c8df7b63e0 100644
+--- a/net/sched/sch_generic.c
++++ b/net/sched/sch_generic.c
+@@ -505,19 +505,22 @@ static void dev_watchdog(struct timer_list *t)
+ 			unsigned int timedout_ms = 0;
+ 			unsigned int i;
+ 			unsigned long trans_start;
++			unsigned long oldest_start = jiffies;
  
-+	/* S2Idle screen off */
-+	{ KE_IGNORE, 0x120, { KEY_RESERVED }},
-+
-+	/* Leaving S4 or S2Idle suspend */
-+	{ KE_IGNORE, 0x130, { KEY_RESERVED }},
-+
-+	/* Entering S2Idle suspend */
-+	{ KE_IGNORE, 0x140, { KEY_RESERVED }},
-+
- 	/* Mic mute */
- 	{ KE_KEY, 0x150, { KEY_MICMUTE } },
+ 			for (i = 0; i < dev->num_tx_queues; i++) {
+ 				struct netdev_queue *txq;
  
+ 				txq = netdev_get_tx_queue(dev, i);
+ 				trans_start = READ_ONCE(txq->trans_start);
+-				if (netif_xmit_stopped(txq) &&
+-				    time_after(jiffies, (trans_start +
+-							 dev->watchdog_timeo))) {
++				if (!netif_xmit_stopped(txq))
++					continue;
++				if (time_after(jiffies, trans_start + dev->watchdog_timeo)) {
+ 					timedout_ms = jiffies_to_msecs(jiffies - trans_start);
+ 					atomic_long_inc(&txq->trans_timeout);
+ 					break;
+ 				}
++				if (time_after(oldest_start, trans_start))
++					oldest_start = trans_start;
+ 			}
+ 
+ 			if (unlikely(timedout_ms)) {
+@@ -530,7 +533,7 @@ static void dev_watchdog(struct timer_list *t)
+ 				netif_unfreeze_queues(dev);
+ 			}
+ 			if (!mod_timer(&dev->watchdog_timer,
+-				       round_jiffies(jiffies +
++				       round_jiffies(oldest_start +
+ 						     dev->watchdog_timeo)))
+ 				release = false;
+ 		}
+-- 
+2.43.0
+
 
 
 
