@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-88959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7886D9B283A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:55:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 709329B258C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:32:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 301EC1F21EE6
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:55:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 139751F21A7C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35CD18E35B;
-	Mon, 28 Oct 2024 06:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4573418E348;
+	Mon, 28 Oct 2024 06:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNlOWR7F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TrqZfSNn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727E82AF07;
-	Mon, 28 Oct 2024 06:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FA015B10D;
+	Mon, 28 Oct 2024 06:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098509; cv=none; b=DYzAT4hSKpZm7/mtZ1MYKIieQaKtOXMIFwL85quOlUQcAoBlGA9VCPAPLvJQK95J9FZo3eFW3YRFZaatX4YjnpLam9foNnNgKj4E1wlbPhe+rowfKqCKpfCsXPGClrlZ67jQm/4wDthQ4rsUjYary6vXzfnb+0zSBYHFP0LPAOw=
+	t=1730097140; cv=none; b=ImG/5uNgmtjeOOYPNsxc3oQzLC47HyeT8ta7U1tCIrjKA6e3r/qSd3YVVrXsYdKa8ylWPv9bLCZ0kFebXEMCJAtOl+g3wGbRkPLjkLk1yxq2QafTAIQ4Gk6IX/2DU1vHYCn4ScOHiY/QkdDFNYg3foPjv7fyuSRMNmJAgIjPceM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098509; c=relaxed/simple;
-	bh=CKtnxhp3CRTzFGx6wLJY3LT1YGd/M2nxh8zi5efYBDM=;
+	s=arc-20240116; t=1730097140; c=relaxed/simple;
+	bh=832vqsWvf3xEtaFUYueKQhbmtwptwaFMDFaNB8XU9qs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZZNBVyLN7Bch+qPAn1r02js8USxizCzNwWuc9M7fxONp3Tm6lUqs2HP+LR0xeary/jKtA4d7qrGFB6BIpLoOA3Qp+amCj26LIGb8XYTSQIC3fXTjEQfukuMJHsM6Cbrs0ibYSqrQQzALZ349KlJX7hYOPPiFakbksGp4Qj5cQug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNlOWR7F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B879C4CEC3;
-	Mon, 28 Oct 2024 06:55:08 +0000 (UTC)
+	 MIME-Version; b=hHrOmgYVo7zFILdkehzJzRTaKBPGiUzN+ZHEC5zpnb/bfhBi24KLXf7IjsDmwft5npNStnmSl6TeMjtq4B9FI4C4VSAKYBk8dmy2qhwD7rRAHzSMPD/FpBmyi+tJrBqEK0KiLSnekEhXtOQQCWZ58jynsWR7JC53BQ3s9TPygzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrqZfSNn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE6FC4CEC7;
+	Mon, 28 Oct 2024 06:32:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098509;
-	bh=CKtnxhp3CRTzFGx6wLJY3LT1YGd/M2nxh8zi5efYBDM=;
+	s=korg; t=1730097139;
+	bh=832vqsWvf3xEtaFUYueKQhbmtwptwaFMDFaNB8XU9qs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eNlOWR7F55exoS2msz34fetlLPSgyMidC+B7eSvRn/GasdcT/1j1W975wYU//BP8A
-	 Gzik2WN42xXUwNqIZJlnHhVUPfn9d5Anp+OQCVFyC7f3WzoEpUCj5Vwr5B2LCInRTJ
-	 b+8Iq0kpJgD4ygrM1SxeTuShSWIt9QGrXDa5PKak=
+	b=TrqZfSNndpyq84I5p9O5rHd55JcUOl8o9jZ7ESGDIF/5YVMTaGTwYorEuK1nsNt9V
+	 33df1fbWM68DQZxnH9r31A6+mbeqysK3ebC8fnfyk7/JNAAlUQCFucEVkX3Gn9Y7Nm
+	 7SW9qjTxPmYfMppX8fiK+vv5DllusVXkoEyQMNzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dirk Holten <dirk.holten@gmx.de>,
-	Christian Heusel <christian@heusel.eu>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.11 211/261] ACPI: resource: Add LG 16T90SP to irq1_level_low_skip_override[]
+	Kirk Swidowski <swidowski@google.com>,
+	Andy Nguyen <theflow@google.com>,
+	3pvd <3pvd@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 5.15 73/80] KVM: nSVM: Ignore nCR3[4:0] when loading PDPTEs from memory
 Date: Mon, 28 Oct 2024 07:25:53 +0100
-Message-ID: <20241028062317.369854710@linuxfoundation.org>
+Message-ID: <20241028062254.637693813@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Heusel <christian@heusel.eu>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 53f1a907d36fb3aa02a4d34073bcec25823a6c74 upstream.
+commit f559b2e9c5c5308850544ab59396b7d53cfc67bd upstream.
 
-The LG Gram Pro 16 2-in-1 (2024) the 16T90SP has its keybopard IRQ (1)
-described as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh
-which breaks the keyboard.
+Ignore nCR3[4:0] when loading PDPTEs from memory for nested SVM, as bits
+4:0 of CR3 are ignored when PAE paging is used, and thus VMRUN doesn't
+enforce 32-byte alignment of nCR3.
 
-Add the 16T90SP to the irq1_level_low_skip_override[] quirk table to fix
-this.
+In the absolute worst case scenario, failure to ignore bits 4:0 can result
+in an out-of-bounds read, e.g. if the target page is at the end of a
+memslot, and the VMM isn't using guard pages.
 
-Reported-by: Dirk Holten <dirk.holten@gmx.de>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219382
-Cc: All applicable <stable@vger.kernel.org>
-Suggested-by: Dirk Holten <dirk.holten@gmx.de>
-Signed-off-by: Christian Heusel <christian@heusel.eu>
-Link: https://patch.msgid.link/20241017-lg-gram-pro-keyboard-v2-1-7c8fbf6ff718@heusel.eu
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Per the APM:
+
+  The CR3 register points to the base address of the page-directory-pointer
+  table. The page-directory-pointer table is aligned on a 32-byte boundary,
+  with the low 5 address bits 4:0 assumed to be 0.
+
+And the SDM's much more explicit:
+
+  4:0    Ignored
+
+Note, KVM gets this right when loading PDPTRs, it's only the nSVM flow
+that is broken.
+
+Fixes: e4e517b4be01 ("KVM: MMU: Do not unconditionally read PDPTE from guest memory")
+Reported-by: Kirk Swidowski <swidowski@google.com>
+Cc: Andy Nguyen <theflow@google.com>
+Cc: 3pvd <3pvd@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20241009140838.1036226-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/kvm/svm/nested.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -538,6 +538,13 @@ static const struct dmi_system_id irq1_l
- 			DMI_MATCH(DMI_BOARD_NAME, "17U70P"),
- 		},
- 	},
-+	{
-+		/* LG Electronics 16T90SP */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LG Electronics"),
-+			DMI_MATCH(DMI_BOARD_NAME, "16T90SP"),
-+		},
-+	},
- 	{ }
- };
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -77,8 +77,12 @@ static u64 nested_svm_get_tdp_pdptr(stru
+ 	u64 pdpte;
+ 	int ret;
  
++	/*
++	 * Note, nCR3 is "assumed" to be 32-byte aligned, i.e. the CPU ignores
++	 * nCR3[4:0] when loading PDPTEs from memory.
++	 */
+ 	ret = kvm_vcpu_read_guest_page(vcpu, gpa_to_gfn(cr3), &pdpte,
+-				       offset_in_page(cr3) + index * 8, 8);
++				       (cr3 & GENMASK(11, 5)) + index * 8, 8);
+ 	if (ret)
+ 		return 0;
+ 	return pdpte;
 
 
 
