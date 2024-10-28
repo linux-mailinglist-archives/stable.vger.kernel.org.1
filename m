@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-88842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 340449B27BD
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:50:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E62F9B2674
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A61FF285991
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:50:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67C1E1F21F31
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFF118E35B;
-	Mon, 28 Oct 2024 06:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A58618E348;
+	Mon, 28 Oct 2024 06:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BHJ99Jdz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7JA6Sjd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2986718EFC9;
-	Mon, 28 Oct 2024 06:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8162C697;
+	Mon, 28 Oct 2024 06:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098245; cv=none; b=YBeNRH0EgfRNa1A9iTFFjmMo7bPYPyRTMsIl/0+Xs74jUsCpkWeLDONeReH239DfP2ZwwK5wM9tcUfFZZ32ZX7MV5JA6UE026fA7KdoKjcRz+RLPWvaZ8XmKmKkzoy3sMLVgnU81rI/0PBWJKYNMAQU/B6OZXlbVpm8VdwXSHWE=
+	t=1730097588; cv=none; b=nQJRSdg3j5PkElGwcd228PYxd3M4KJdWb6h7QRXT3KHv60O8/lxvZWrTiVc2wwtdY9ioGlAX2n7TT5K8WZFp2XLJ8TcqB3dJLqslOu34L6Xb6Llo3sTU7sD6vnZy3oYOLICikV/2bJC35JAqDfzF5TNWWWx2UDJYKNzUn7Mv1ZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098245; c=relaxed/simple;
-	bh=dXwnD+X6G/LKRixxaIZpPRyc1hzDfApL0WVOUaY+i5A=;
+	s=arc-20240116; t=1730097588; c=relaxed/simple;
+	bh=utKjMbNYSAvEiTUvHuMgUfG7YbTSlHO81jWOBZWbTB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HaOm649r9ig9bxpMkZ7sZJK/alGk1ulcruzuX3dRdNE2rGvDGfk4NLBhYtX2qMgo8R8pCw1L6acSBYWvUb3RFRwHthDRZ8BpTQ+yUkb3uIb9UUULeEMbSmb+rtD27QSjj1TMjdLLm1iLt28UAXwtJpo1nuDCuaieT5MfbQD0ZdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BHJ99Jdz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE87AC4CECD;
-	Mon, 28 Oct 2024 06:50:44 +0000 (UTC)
+	 MIME-Version; b=ia3oL+aw5OKG4VF19CHlKSRp5IMg/aTDRvpaYcnX4QtM/M7Eln4VSwHmZlNfEUY76jF9R7LmvCQ61pRGabrLxcN+qfq21unIerV802+ay8OvyYRpKxcuHpK3ckJKnGpHfJRSYs+9nzZknBfnmJsgGxmZL43l4Xlg6+c3Iux8O3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7JA6Sjd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B499C4CEC3;
+	Mon, 28 Oct 2024 06:39:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098245;
-	bh=dXwnD+X6G/LKRixxaIZpPRyc1hzDfApL0WVOUaY+i5A=;
+	s=korg; t=1730097588;
+	bh=utKjMbNYSAvEiTUvHuMgUfG7YbTSlHO81jWOBZWbTB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BHJ99JdzMc7BQUxhoEn2jCX7kLKV1X3sidvo84tWOlgw/S1pvPx6Eud/DcUITntin
-	 VaS5mvrzW1NWvi77M3zJrqPtTuSJSz6I0SIM/n3B6fLXhs+6Z6VBANcf+hP9xcuUV0
-	 dIUU1DbCu0hS4erYDhfXCtIRcZa15rVn89OD/7hM=
+	b=o7JA6Sjd/NJ4Mk/ArCQHwyyHB7fBJifHm/98Ooyzsaxa9LySpYXjUCW3KMVp9uBmF
+	 IcDW9aetr51VXdpfdEs1fZh4hpSLpSCRHTYe3mghS5z0tDO0aS/fYuaN0Du1XCioCn
+	 kq1RO4puyBsf3X1RXtNwerYi5s+MiVPkPj101Pg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Sauber <andrew.sauber@isovalent.com>,
-	Nikolay Nikolaev <nikolay.nikolaev@isovalent.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Anton Protopopov <aspsk@isovalent.com>,
-	William Tu <witu@nvidia.com>,
-	Ronak Doshi <ronak.doshi@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Zac Ecob <zacecob@protonmail.com>,
+	Dimitar Kanaliev <dimitar.kanaliev@siteground.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 096/261] vmxnet3: Fix packet corruption in vmxnet3_xdp_xmit_frame
+Subject: [PATCH 6.6 058/208] bpf: Fix truncation bug in coerce_reg_to_size_sx()
 Date: Mon, 28 Oct 2024 07:23:58 +0100
-Message-ID: <20241028062314.436568482@linuxfoundation.org>
+Message-ID: <20241028062308.084694705@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,66 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Dimitar Kanaliev <dimitar.kanaliev@siteground.com>
 
-[ Upstream commit 4678adf94da4a9e9683817b246b58ce15fb81782 ]
+[ Upstream commit ae67b9fb8c4e981e929a665dcaa070f4b05ebdb4 ]
 
-Andrew and Nikolay reported connectivity issues with Cilium's service
-load-balancing in case of vmxnet3.
+coerce_reg_to_size_sx() updates the register state after a sign-extension
+operation. However, there's a bug in the assignment order of the unsigned
+min/max values, leading to incorrect truncation:
 
-If a BPF program for native XDP adds an encapsulation header such as
-IPIP and transmits the packet out the same interface, then in case
-of vmxnet3 a corrupted packet is being sent and subsequently dropped
-on the path.
+  0: (85) call bpf_get_prandom_u32#7    ; R0_w=scalar()
+  1: (57) r0 &= 1                       ; R0_w=scalar(smin=smin32=0,smax=umax=smax32=umax32=1,var_off=(0x0; 0x1))
+  2: (07) r0 += 254                     ; R0_w=scalar(smin=umin=smin32=umin32=254,smax=umax=smax32=umax32=255,var_off=(0xfe; 0x1))
+  3: (bf) r0 = (s8)r0                   ; R0_w=scalar(smin=smin32=-2,smax=smax32=-1,umin=umin32=0xfffffffe,umax=0xffffffff,var_off=(0xfffffffffffffffe; 0x1))
 
-vmxnet3_xdp_xmit_frame() which is called e.g. via vmxnet3_run_xdp()
-through vmxnet3_xdp_xmit_back() calculates an incorrect DMA address:
+In the current implementation, the unsigned 32-bit min/max values
+(u32_min_value and u32_max_value) are assigned directly from the 64-bit
+signed min/max values (s64_min and s64_max):
 
-  page = virt_to_page(xdpf->data);
-  tbi->dma_addr = page_pool_get_dma_addr(page) +
-                  VMXNET3_XDP_HEADROOM;
-  dma_sync_single_for_device(&adapter->pdev->dev,
-                             tbi->dma_addr, buf_size,
-                             DMA_TO_DEVICE);
+  reg->umin_value = reg->u32_min_value = s64_min;
+  reg->umax_value = reg->u32_max_value = s64_max;
 
-The above assumes a fixed offset (VMXNET3_XDP_HEADROOM), but the XDP
-BPF program could have moved xdp->data. While the passed buf_size is
-correct (xdpf->len), the dma_addr needs to have a dynamic offset which
-can be calculated as xdpf->data - (void *)xdpf, that is, xdp->data -
-xdp->data_hard_start.
+Due to the chain assigmnent, this is equivalent to:
 
-Fixes: 54f00cce1178 ("vmxnet3: Add XDP support.")
-Reported-by: Andrew Sauber <andrew.sauber@isovalent.com>
-Reported-by: Nikolay Nikolaev <nikolay.nikolaev@isovalent.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Nikolay Nikolaev <nikolay.nikolaev@isovalent.com>
-Acked-by: Anton Protopopov <aspsk@isovalent.com>
-Cc: William Tu <witu@nvidia.com>
-Cc: Ronak Doshi <ronak.doshi@broadcom.com>
-Link: https://patch.msgid.link/a0888656d7f09028f9984498cc698bb5364d89fc.1728931137.git.daniel@iogearbox.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+  reg->u32_min_value = s64_min;  // Unintended truncation
+  reg->umin_value = reg->u32_min_value;
+  reg->u32_max_value = s64_max;  // Unintended truncation
+  reg->umax_value = reg->u32_max_value;
+
+Fixes: 1f9a1ea821ff ("bpf: Support new sign-extension load insns")
+Reported-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Reported-by: Zac Ecob <zacecob@protonmail.com>
+Signed-off-by: Dimitar Kanaliev <dimitar.kanaliev@siteground.com>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Reviewed-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Link: https://lore.kernel.org/r/20241014121155.92887-2-dimitar.kanaliev@siteground.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vmxnet3/vmxnet3_xdp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/verifier.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/vmxnet3/vmxnet3_xdp.c b/drivers/net/vmxnet3/vmxnet3_xdp.c
-index a6c787454a1ae..1341374a4588a 100644
---- a/drivers/net/vmxnet3/vmxnet3_xdp.c
-+++ b/drivers/net/vmxnet3/vmxnet3_xdp.c
-@@ -148,7 +148,7 @@ vmxnet3_xdp_xmit_frame(struct vmxnet3_adapter *adapter,
- 	} else { /* XDP buffer from page pool */
- 		page = virt_to_page(xdpf->data);
- 		tbi->dma_addr = page_pool_get_dma_addr(page) +
--				VMXNET3_XDP_HEADROOM;
-+				(xdpf->data - (void *)xdpf);
- 		dma_sync_single_for_device(&adapter->pdev->dev,
- 					   tbi->dma_addr, buf_size,
- 					   DMA_TO_DEVICE);
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index d1050479cbb33..28b09ca5525f0 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -6143,10 +6143,10 @@ static void coerce_reg_to_size_sx(struct bpf_reg_state *reg, int size)
+ 
+ 	/* both of s64_max/s64_min positive or negative */
+ 	if ((s64_max >= 0) == (s64_min >= 0)) {
+-		reg->smin_value = reg->s32_min_value = s64_min;
+-		reg->smax_value = reg->s32_max_value = s64_max;
+-		reg->umin_value = reg->u32_min_value = s64_min;
+-		reg->umax_value = reg->u32_max_value = s64_max;
++		reg->s32_min_value = reg->smin_value = s64_min;
++		reg->s32_max_value = reg->smax_value = s64_max;
++		reg->u32_min_value = reg->umin_value = s64_min;
++		reg->u32_max_value = reg->umax_value = s64_max;
+ 		reg->var_off = tnum_range(s64_min, s64_max);
+ 		return;
+ 	}
 -- 
 2.43.0
 
