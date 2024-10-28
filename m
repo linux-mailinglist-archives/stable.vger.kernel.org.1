@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A21E9B25AC
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:33:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB5579B27A0
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:49:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BEA31C20DB6
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:33:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 486AF1F2158A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:49:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0AA318E36E;
-	Mon, 28 Oct 2024 06:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF3D18DF80;
+	Mon, 28 Oct 2024 06:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtkZx4w9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UF7RC9m2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9B318E03A;
-	Mon, 28 Oct 2024 06:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786512AF07;
+	Mon, 28 Oct 2024 06:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097190; cv=none; b=HtADeMo3UK5dPLSSAAQczvAeJ8//UG42D0vc1iQl6a49Nk2VT2/LXgYx34389FywoCXuHyK8oEuV4aWXBnb5war+wvxbcS7qpjOjXYQL9IiTeso9t8ksu8n/mjrXkArcM65aYg0bat4twwCPQiBRG8hXx90GKrM1MdXCD9nHYKc=
+	t=1730098191; cv=none; b=dk41tGSec0N7GOnnanrEfqflAdw45BSVehPZKRZhC0OIuGDI8jIpPHpYDMQx8sXI0rl4ICKW9yE7ALpWlpAztARJTsRKWqiNq2o52VkhhiYv/JoSpWTlTHwt9Ab4s7BMsRu9NGgx1QZoZgCAkvlTaZLFGC2A6kO8knCitTQgCqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097190; c=relaxed/simple;
-	bh=z73PyksYqszyqDo0umROvnNoyGCCfNfd1viVXddjXUg=;
+	s=arc-20240116; t=1730098191; c=relaxed/simple;
+	bh=sgdCx1knkQh6xtcdSJsuuCgcmS+GMja05BXeo6QrhfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g2k0oDT2Qa8xeUhf4x82OhOZihWpjuO0p6MQVQdnkvAZnVCnToNH9AeNP3YQ2Hk38jdIz0iy2tQlLQki4EwXda9yimapYjB+V3jMsjOOw8zhT0sdsUxTAIymRgXw09rg5ULIOIM3PMQ1SBMDl4SNkY7HjJSOIracTBUeLskZ2Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtkZx4w9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA7EC4CEC7;
-	Mon, 28 Oct 2024 06:33:09 +0000 (UTC)
+	 MIME-Version; b=FO3iLRyirhZKZLhohM6KYuPCAungX8ouuLxg9jIHxg4nXCD/uGpq2AVzADXLOYKZA7eHE2Lg36DwbWufFQ58EahYCCrlEvXR0kHiiCaNCj5264304wUPSSFIKHZGS+fWIBzzB+WhrulmEw65JAm6g7AJ4Y4+BYArBcvUHKfIw6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UF7RC9m2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174A6C4CEC3;
+	Mon, 28 Oct 2024 06:49:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097190;
-	bh=z73PyksYqszyqDo0umROvnNoyGCCfNfd1viVXddjXUg=;
+	s=korg; t=1730098191;
+	bh=sgdCx1knkQh6xtcdSJsuuCgcmS+GMja05BXeo6QrhfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qtkZx4w95y4IQcE4rBCSBrAGomUyun2kYuHW7zvuILq3mkLHeI7HAohHtY8mJqCSs
-	 uZnJv7aMfSTHQYt7BEgxCewMZSK5iq5IXeqaeb4AKPFCBSsV3UR4EorKOKV+aBPnMe
-	 sdMGDrLkvKA7p53KOVN2p3vFgZqc5F7xC3Qn7QTA=
+	b=UF7RC9m2RyykBNnWLplqNUY3TVwDOvmaRqaIA8bAiRlzi23/pCCt9v2xpt3o/UyaY
+	 2daNGuunkk6/6xaJoZc4Ybuyjl0pB8C+mFTJs+tsdheHR4tu2GGpOmEPJV1UmOPN7E
+	 jUYl4yqWrb/lVAgyy94b+CYW4pWU01HHTT4ue+uA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 022/137] RDMA/bnxt_re: Fix a bug while setting up Level-2 PBL pages
+Subject: [PATCH 6.11 117/261] iio: adc: ti-lmp92064: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
 Date: Mon, 28 Oct 2024 07:24:19 +0100
-Message-ID: <20241028062259.344698595@linuxfoundation.org>
+Message-ID: <20241028062314.962608507@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 7988bdbbb85ac85a847baf09879edcd0f70521dc ]
+[ Upstream commit a985576af824426e33100554a5958a6beda60a13 ]
 
-Avoid memory corruption while setting up Level-2 PBL pages for the non MR
-resources when num_pages > 256K.
+This driver makes use of triggered buffers, but does not select the
+required modules.
 
-There will be a single PDE page address (contiguous pages in the case of >
-PAGE_SIZE), but, current logic assumes multiple pages, leading to invalid
-memory access after 256K PBL entries in the PDE.
+Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
 
-Fixes: 0c4dcd602817 ("RDMA/bnxt_re: Refactor hardware queue memory allocation")
-Link: https://patch.msgid.link/r/1728373302-19530-10-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 6c7bc1d27bb2 ("iio: adc: ti-lmp92064: add buffering support")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241003-iio-select-v1-6-67c0385197cd@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_res.c | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ drivers/iio/adc/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-index 1dd36af9e68f2..203350c6e00f5 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-@@ -257,22 +257,9 @@ int bnxt_qplib_alloc_init_hwq(struct bnxt_qplib_hwq *hwq,
- 			dst_virt_ptr =
- 				(dma_addr_t **)hwq->pbl[PBL_LVL_0].pg_arr;
- 			src_phys_ptr = hwq->pbl[PBL_LVL_1].pg_map_arr;
--			if (hwq_attr->type == HWQ_TYPE_MR) {
--			/* For MR it is expected that we supply only 1 contigous
--			 * page i.e only 1 entry in the PDL that will contain
--			 * all the PBLs for the user supplied memory region
--			 */
--				for (i = 0; i < hwq->pbl[PBL_LVL_1].pg_count;
--				     i++)
--					dst_virt_ptr[0][i] = src_phys_ptr[i] |
--						flag;
--			} else {
--				for (i = 0; i < hwq->pbl[PBL_LVL_1].pg_count;
--				     i++)
--					dst_virt_ptr[PTR_PG(i)][PTR_IDX(i)] =
--						src_phys_ptr[i] |
--						PTU_PDE_VALID;
--			}
-+			for (i = 0; i < hwq->pbl[PBL_LVL_1].pg_count; i++)
-+				dst_virt_ptr[0][i] = src_phys_ptr[i] | flag;
-+
- 			/* Alloc or init PTEs */
- 			rc = __alloc_pbl(res, &hwq->pbl[PBL_LVL_2],
- 					 hwq_attr->sginfo);
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index cceac30e2bb9f..c16316664db38 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -1486,6 +1486,8 @@ config TI_LMP92064
+ 	tristate "Texas Instruments LMP92064 ADC driver"
+ 	depends on SPI
+ 	select REGMAP_SPI
++	select IIO_BUFFER
++	select IIO_TRIGGERED_BUFFER
+ 	help
+ 	  Say yes here to build support for the LMP92064 Precision Current and Voltage
+ 	  sensor.
 -- 
 2.43.0
 
