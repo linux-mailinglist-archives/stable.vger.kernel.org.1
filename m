@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5EC29B26C9
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:42:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ABF29B256D
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D973B21105
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:42:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B961281395
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA4F18E37F;
-	Mon, 28 Oct 2024 06:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9CA18CC1F;
+	Mon, 28 Oct 2024 06:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C8HRyzod"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDq576Bs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F3315B10D;
-	Mon, 28 Oct 2024 06:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6965C18E04D;
+	Mon, 28 Oct 2024 06:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097759; cv=none; b=nj27IHJFXGB/bMBV3UW/KFw55vQA2h6zxMTHZxYZhpedwvQZREY1AD4gJtHl4JRx93AshGx461H7vbSfls2owNfOWNlKRt+Tc1Xra9DorebSv+aWFM6+fUY2xutTjKQwNAr7GBDDMa3PSdadIHBrJcV83W9rK6Inm9x0z9LZm9s=
+	t=1730096934; cv=none; b=qIERDlYGMm65ZhbhVdF3KWecGPJl5c34mt26vR15IU8Ikqybrx9QxmCdAfKsJtpkj16bEYE/02uHUzDS8YYCxo52EbnFzW1JRj2HJJnlt5ucG6/pMTlqxp39/f1J0Xrdh+JJ0b9FWTLBSxFQGXSIf8GgeVtAasLDkN0sm0qIbXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097759; c=relaxed/simple;
-	bh=VYafmLqd6kf9j63MNrYqPXFQsk+0WRHO7F0njLKQCUU=;
+	s=arc-20240116; t=1730096934; c=relaxed/simple;
+	bh=b3sW+Hg8/dmx21w152C/MplwiD9v1Kt1Jz16iRswAw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GaD8dbklTrlgsSH3qAHg0QjfsjD2WvILrixqlg4C+n8pIOF+FgMwtK9mVqgG23fKfzllcQrSLKYlMbhqc1cOuF8o4ReCNJVpG7Bt4IKAL1/vyj3gokwrozWt55dkxnojbB98HFvS1cKRpcdd6fqHlXciSSIR3DNQQvmHBII9Kp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C8HRyzod; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF34C4CEC3;
-	Mon, 28 Oct 2024 06:42:38 +0000 (UTC)
+	 MIME-Version; b=cgvDSCVQaDOPiJ2qLdwNHKJEBvp3x2b6ccajY67iq9hWXdlaQ78J3Nr2LTUBowVHAcWWTPhdgW7Dz6a3oDPqQp/okfA/Ms4USDGaGPxSk8sSW3rhl/JlKQiCNsnAfYIzWUYsE7on1Tu935ILQMYksHLLDr9OPOFoyNc+eEHvLY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDq576Bs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB4EC4CEC3;
+	Mon, 28 Oct 2024 06:28:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097759;
-	bh=VYafmLqd6kf9j63MNrYqPXFQsk+0WRHO7F0njLKQCUU=;
+	s=korg; t=1730096934;
+	bh=b3sW+Hg8/dmx21w152C/MplwiD9v1Kt1Jz16iRswAw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C8HRyzodkq4hPjfwx+CfyTsVhrfH/54zf/gXlw6yo4d+dZ714sw+Mlzp4icGRXit5
-	 +zPstTvPz9ZYq0BQEvd9dWvIsGoCmxKr58dJ0O9j+z4q8thiFOpM/yNn+NzGSLdrJB
-	 33sW1AvPDOYxgiOwSpKBPs7cXcUOcVq6+xDvQCLo=
+	b=TDq576BsU/SSSgggrPbuJ7MdJpjLe2bYLGABBut8wFK5ZsjozjQZzYgULE1xNz9kz
+	 Zx8gpAlJzziDUjG+GnL/UYzftitNp9nXBU+RH5toDPyGFn/lYu8CkdpyTg745MzNa1
+	 CDPXolntwAJ0jHasBP1RdewZAc3lZK/ObH50gfZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antony Antony <antony.antony@secunet.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Janis Schoetterl-Glausch <scgl@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 133/208] xfrm: Add Direction to the SA in or out
+Subject: [PATCH 5.15 33/80] KVM: s390: gaccess: Refactor access address range check
 Date: Mon, 28 Oct 2024 07:25:13 +0100
-Message-ID: <20241028062309.914261564@linuxfoundation.org>
+Message-ID: <20241028062253.544636416@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,431 +63,235 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antony Antony <antony.antony@secunet.com>
+From: Janis Schoetterl-Glausch <scgl@linux.ibm.com>
 
-[ Upstream commit a4a87fa4e96c7746e009de06a567688fd9af6013 ]
+[ Upstream commit 7faa543df19bf62d4583a64d3902705747f2ad29 ]
 
-This patch introduces the 'dir' attribute, 'in' or 'out', to the
-xfrm_state, SA, enhancing usability by delineating the scope of values
-based on direction. An input SA will restrict values pertinent to input,
-effectively segregating them from output-related values.
-And an output SA will restrict attributes for output. This change aims
-to streamline the configuration process and improve the overall
-consistency of SA attributes during configuration.
+Do not round down the first address to the page boundary, just translate
+it normally, which gives the value we care about in the first place.
+Given this, translating a single address is just the special case of
+translating a range spanning a single page.
 
-This feature sets the groundwork for future patches, including
-the upcoming IP-TFS patch.
+Make the output optional, so the function can be used to just check a
+range.
 
-Signed-off-by: Antony Antony <antony.antony@secunet.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Stable-dep-of: 3f0ab59e6537 ("xfrm: validate new SA's prefixlen using SA family when sel.family is unset")
+Signed-off-by: Janis Schoetterl-Glausch <scgl@linux.ibm.com>
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Message-Id: <20211126164549.7046-3-scgl@linux.ibm.com>
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Stable-dep-of: e8061f06185b ("KVM: s390: gaccess: Check if guest address is in memslot")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/xfrm.h        |   1 +
- include/uapi/linux/xfrm.h |   6 ++
- net/xfrm/xfrm_compat.c    |   7 +-
- net/xfrm/xfrm_device.c    |   6 ++
- net/xfrm/xfrm_replay.c    |   3 +-
- net/xfrm/xfrm_state.c     |   8 +++
- net/xfrm/xfrm_user.c      | 138 ++++++++++++++++++++++++++++++++++++--
- 7 files changed, 160 insertions(+), 9 deletions(-)
+ arch/s390/kvm/gaccess.c | 122 +++++++++++++++++++++++-----------------
+ 1 file changed, 69 insertions(+), 53 deletions(-)
 
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index 93a9866ee481f..c5cf062afd4a2 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -292,6 +292,7 @@ struct xfrm_state {
- 	/* Private data of this transformer, format is opaque,
- 	 * interpreted by xfrm_type methods. */
- 	void			*data;
-+	u8			dir;
- };
+diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
+index 45966fbba1820..ca7f22a9e0c57 100644
+--- a/arch/s390/kvm/gaccess.c
++++ b/arch/s390/kvm/gaccess.c
+@@ -794,35 +794,74 @@ static int low_address_protection_enabled(struct kvm_vcpu *vcpu,
+ 	return 1;
+ }
  
- static inline struct net *xs_net(struct xfrm_state *x)
-diff --git a/include/uapi/linux/xfrm.h b/include/uapi/linux/xfrm.h
-index 23543c33fee82..7cd491caef354 100644
---- a/include/uapi/linux/xfrm.h
-+++ b/include/uapi/linux/xfrm.h
-@@ -140,6 +140,11 @@ enum {
- 	XFRM_POLICY_MAX	= 3
- };
+-static int guest_page_range(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar,
+-			    unsigned long *pages, unsigned long nr_pages,
+-			    const union asce asce, enum gacc_mode mode)
++/**
++ * guest_range_to_gpas() - Calculate guest physical addresses of page fragments
++ * covering a logical range
++ * @vcpu: virtual cpu
++ * @ga: guest address, start of range
++ * @ar: access register
++ * @gpas: output argument, may be NULL
++ * @len: length of range in bytes
++ * @asce: address-space-control element to use for translation
++ * @mode: access mode
++ *
++ * Translate a logical range to a series of guest absolute addresses,
++ * such that the concatenation of page fragments starting at each gpa make up
++ * the whole range.
++ * The translation is performed as if done by the cpu for the given @asce, @ar,
++ * @mode and state of the @vcpu.
++ * If the translation causes an exception, its program interruption code is
++ * returned and the &struct kvm_s390_pgm_info pgm member of @vcpu is modified
++ * such that a subsequent call to kvm_s390_inject_prog_vcpu() will inject
++ * a correct exception into the guest.
++ * The resulting gpas are stored into @gpas, unless it is NULL.
++ *
++ * Note: All fragments except the first one start at the beginning of a page.
++ *	 When deriving the boundaries of a fragment from a gpa, all but the last
++ *	 fragment end at the end of the page.
++ *
++ * Return:
++ * * 0		- success
++ * * <0		- translation could not be performed, for example if  guest
++ *		  memory could not be accessed
++ * * >0		- an access exception occurred. In this case the returned value
++ *		  is the program interruption code and the contents of pgm may
++ *		  be used to inject an exception into the guest.
++ */
++static int guest_range_to_gpas(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar,
++			       unsigned long *gpas, unsigned long len,
++			       const union asce asce, enum gacc_mode mode)
+ {
+ 	psw_t *psw = &vcpu->arch.sie_block->gpsw;
++	unsigned int offset = offset_in_page(ga);
++	unsigned int fragment_len;
+ 	int lap_enabled, rc = 0;
+ 	enum prot_type prot;
++	unsigned long gpa;
  
-+enum xfrm_sa_dir {
-+	XFRM_SA_DIR_IN	= 1,
-+	XFRM_SA_DIR_OUT = 2
-+};
-+
- enum {
- 	XFRM_SHARE_ANY,		/* No limitations */
- 	XFRM_SHARE_SESSION,	/* For this session only */
-@@ -314,6 +319,7 @@ enum xfrm_attr_type_t {
- 	XFRMA_SET_MARK_MASK,	/* __u32 */
- 	XFRMA_IF_ID,		/* __u32 */
- 	XFRMA_MTIMER_THRESH,	/* __u32 in seconds for input SA */
-+	XFRMA_SA_DIR,		/* __u8 */
- 	__XFRMA_MAX
- 
- #define XFRMA_OUTPUT_MARK XFRMA_SET_MARK	/* Compatibility */
-diff --git a/net/xfrm/xfrm_compat.c b/net/xfrm/xfrm_compat.c
-index 655fe4ff86212..703d4172c7d73 100644
---- a/net/xfrm/xfrm_compat.c
-+++ b/net/xfrm/xfrm_compat.c
-@@ -98,6 +98,7 @@ static const int compat_msg_min[XFRM_NR_MSGTYPES] = {
- };
- 
- static const struct nla_policy compat_policy[XFRMA_MAX+1] = {
-+	[XFRMA_UNSPEC]          = { .strict_start_type = XFRMA_SA_DIR },
- 	[XFRMA_SA]		= { .len = XMSGSIZE(compat_xfrm_usersa_info)},
- 	[XFRMA_POLICY]		= { .len = XMSGSIZE(compat_xfrm_userpolicy_info)},
- 	[XFRMA_LASTUSED]	= { .type = NLA_U64},
-@@ -129,6 +130,7 @@ static const struct nla_policy compat_policy[XFRMA_MAX+1] = {
- 	[XFRMA_SET_MARK_MASK]	= { .type = NLA_U32 },
- 	[XFRMA_IF_ID]		= { .type = NLA_U32 },
- 	[XFRMA_MTIMER_THRESH]	= { .type = NLA_U32 },
-+	[XFRMA_SA_DIR]          = NLA_POLICY_RANGE(NLA_U8, XFRM_SA_DIR_IN, XFRM_SA_DIR_OUT),
- };
- 
- static struct nlmsghdr *xfrm_nlmsg_put_compat(struct sk_buff *skb,
-@@ -277,9 +279,10 @@ static int xfrm_xlate64_attr(struct sk_buff *dst, const struct nlattr *src)
- 	case XFRMA_SET_MARK_MASK:
- 	case XFRMA_IF_ID:
- 	case XFRMA_MTIMER_THRESH:
-+	case XFRMA_SA_DIR:
- 		return xfrm_nla_cpy(dst, src, nla_len(src));
- 	default:
--		BUILD_BUG_ON(XFRMA_MAX != XFRMA_MTIMER_THRESH);
-+		BUILD_BUG_ON(XFRMA_MAX != XFRMA_SA_DIR);
- 		pr_warn_once("unsupported nla_type %d\n", src->nla_type);
- 		return -EOPNOTSUPP;
- 	}
-@@ -434,7 +437,7 @@ static int xfrm_xlate32_attr(void *dst, const struct nlattr *nla,
- 	int err;
- 
- 	if (type > XFRMA_MAX) {
--		BUILD_BUG_ON(XFRMA_MAX != XFRMA_MTIMER_THRESH);
-+		BUILD_BUG_ON(XFRMA_MAX != XFRMA_SA_DIR);
- 		NL_SET_ERR_MSG(extack, "Bad attribute");
- 		return -EOPNOTSUPP;
- 	}
-diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
-index 04dc0c8a83707..fc18b9b4f22f3 100644
---- a/net/xfrm/xfrm_device.c
-+++ b/net/xfrm/xfrm_device.c
-@@ -253,6 +253,12 @@ int xfrm_dev_state_add(struct net *net, struct xfrm_state *x,
- 		return -EINVAL;
- 	}
- 
-+	if ((xuo->flags & XFRM_OFFLOAD_INBOUND && x->dir == XFRM_SA_DIR_OUT) ||
-+	    (!(xuo->flags & XFRM_OFFLOAD_INBOUND) && x->dir == XFRM_SA_DIR_IN)) {
-+		NL_SET_ERR_MSG(extack, "Mismatched SA and offload direction");
-+		return -EINVAL;
-+	}
-+
- 	is_packet_offload = xuo->flags & XFRM_OFFLOAD_PACKET;
- 
- 	/* We don't yet support UDP encapsulation and TFC padding. */
-diff --git a/net/xfrm/xfrm_replay.c b/net/xfrm/xfrm_replay.c
-index ce56d659c55a6..bc56c63057252 100644
---- a/net/xfrm/xfrm_replay.c
-+++ b/net/xfrm/xfrm_replay.c
-@@ -778,7 +778,8 @@ int xfrm_init_replay(struct xfrm_state *x, struct netlink_ext_ack *extack)
+ 	lap_enabled = low_address_protection_enabled(vcpu, asce);
+-	while (nr_pages) {
++	while (min(PAGE_SIZE - offset, len) > 0) {
++		fragment_len = min(PAGE_SIZE - offset, len);
+ 		ga = kvm_s390_logical_to_effective(vcpu, ga);
+ 		if (mode == GACC_STORE && lap_enabled && is_low_address(ga))
+ 			return trans_exc(vcpu, PGM_PROTECTION, ga, ar, mode,
+ 					 PROT_TYPE_LA);
+-		ga &= PAGE_MASK;
+ 		if (psw_bits(*psw).dat) {
+-			rc = guest_translate(vcpu, ga, pages, asce, mode, &prot);
++			rc = guest_translate(vcpu, ga, &gpa, asce, mode, &prot);
+ 			if (rc < 0)
+ 				return rc;
+ 		} else {
+-			*pages = kvm_s390_real_to_abs(vcpu, ga);
+-			if (kvm_is_error_gpa(vcpu->kvm, *pages))
++			gpa = kvm_s390_real_to_abs(vcpu, ga);
++			if (kvm_is_error_gpa(vcpu->kvm, gpa))
+ 				rc = PGM_ADDRESSING;
  		}
- 
- 		if (x->props.flags & XFRM_STATE_ESN) {
--			if (replay_esn->replay_window == 0) {
-+			if (replay_esn->replay_window == 0 &&
-+			    (!x->dir || x->dir == XFRM_SA_DIR_IN)) {
- 				NL_SET_ERR_MSG(extack, "ESN replay window must be > 0");
- 				return -EINVAL;
- 			}
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 8a6e8656d014f..93c19f64746fa 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -1349,6 +1349,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 		if (km_query(x, tmpl, pol) == 0) {
- 			spin_lock_bh(&net->xfrm.xfrm_state_lock);
- 			x->km.state = XFRM_STATE_ACQ;
-+			x->dir = XFRM_SA_DIR_OUT;
- 			list_add(&x->km.all, &net->xfrm.state_all);
- 			XFRM_STATE_INSERT(bydst, &x->bydst,
- 					  net->xfrm.state_bydst + h,
-@@ -1801,6 +1802,7 @@ static struct xfrm_state *xfrm_state_clone(struct xfrm_state *orig,
- 	x->lastused = orig->lastused;
- 	x->new_mapping = 0;
- 	x->new_mapping_sport = 0;
-+	x->dir = orig->dir;
- 
- 	return x;
- 
-@@ -1921,8 +1923,14 @@ int xfrm_state_update(struct xfrm_state *x)
+ 		if (rc)
+ 			return trans_exc(vcpu, rc, ga, ar, mode, prot);
+-		ga += PAGE_SIZE;
+-		pages++;
+-		nr_pages--;
++		if (gpas)
++			*gpas++ = gpa;
++		offset = 0;
++		ga += fragment_len;
++		len -= fragment_len;
  	}
- 
- 	if (x1->km.state == XFRM_STATE_ACQ) {
-+		if (x->dir && x1->dir != x->dir)
-+			goto out;
-+
- 		__xfrm_state_insert(x);
- 		x = NULL;
-+	} else {
-+		if (x1->dir != x->dir)
-+			goto out;
- 	}
- 	err = 0;
- 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 979f23cded401..4328e81ea6a31 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -130,7 +130,7 @@ static inline int verify_sec_ctx_len(struct nlattr **attrs, struct netlink_ext_a
- }
- 
- static inline int verify_replay(struct xfrm_usersa_info *p,
--				struct nlattr **attrs,
-+				struct nlattr **attrs, u8 sa_dir,
- 				struct netlink_ext_ack *extack)
- {
- 	struct nlattr *rt = attrs[XFRMA_REPLAY_ESN_VAL];
-@@ -168,6 +168,30 @@ static inline int verify_replay(struct xfrm_usersa_info *p,
- 		return -EINVAL;
- 	}
- 
-+	if (sa_dir == XFRM_SA_DIR_OUT)  {
-+		if (rs->replay_window) {
-+			NL_SET_ERR_MSG(extack, "Replay window should be 0 for output SA");
-+			return -EINVAL;
-+		}
-+		if (rs->seq || rs->seq_hi) {
-+			NL_SET_ERR_MSG(extack,
-+				       "Replay seq and seq_hi should be 0 for output SA");
-+			return -EINVAL;
-+		}
-+		if (rs->bmp_len) {
-+			NL_SET_ERR_MSG(extack, "Replay bmp_len should 0 for output SA");
-+			return -EINVAL;
-+		}
-+	}
-+
-+	if (sa_dir == XFRM_SA_DIR_IN)  {
-+		if (rs->oseq || rs->oseq_hi) {
-+			NL_SET_ERR_MSG(extack,
-+				       "Replay oseq and oseq_hi should be 0 for input SA");
-+			return -EINVAL;
-+		}
-+	}
-+
  	return 0;
  }
- 
-@@ -176,6 +200,7 @@ static int verify_newsa_info(struct xfrm_usersa_info *p,
- 			     struct netlink_ext_ack *extack)
+@@ -831,10 +870,10 @@ int access_guest(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar, void *data,
+ 		 unsigned long len, enum gacc_mode mode)
  {
- 	int err;
-+	u8 sa_dir = attrs[XFRMA_SA_DIR] ? nla_get_u8(attrs[XFRMA_SA_DIR]) : 0;
- 
- 	err = -EINVAL;
- 	switch (p->family) {
-@@ -334,7 +359,7 @@ static int verify_newsa_info(struct xfrm_usersa_info *p,
- 		goto out;
- 	if ((err = verify_sec_ctx_len(attrs, extack)))
- 		goto out;
--	if ((err = verify_replay(p, attrs, extack)))
-+	if ((err = verify_replay(p, attrs, sa_dir, extack)))
- 		goto out;
- 
- 	err = -EINVAL;
-@@ -358,6 +383,77 @@ static int verify_newsa_info(struct xfrm_usersa_info *p,
- 			err = -EINVAL;
- 			goto out;
- 		}
-+
-+		if (sa_dir == XFRM_SA_DIR_OUT) {
-+			NL_SET_ERR_MSG(extack,
-+				       "MTIMER_THRESH attribute should not be set on output SA");
-+			err = -EINVAL;
-+			goto out;
-+		}
-+	}
-+
-+	if (sa_dir == XFRM_SA_DIR_OUT) {
-+		if (p->flags & XFRM_STATE_DECAP_DSCP) {
-+			NL_SET_ERR_MSG(extack, "Flag DECAP_DSCP should not be set for output SA");
-+			err = -EINVAL;
-+			goto out;
-+		}
-+
-+		if (p->flags & XFRM_STATE_ICMP) {
-+			NL_SET_ERR_MSG(extack, "Flag ICMP should not be set for output SA");
-+			err = -EINVAL;
-+			goto out;
-+		}
-+
-+		if (p->flags & XFRM_STATE_WILDRECV) {
-+			NL_SET_ERR_MSG(extack, "Flag WILDRECV should not be set for output SA");
-+			err = -EINVAL;
-+			goto out;
-+		}
-+
-+		if (p->replay_window) {
-+			NL_SET_ERR_MSG(extack, "Replay window should be 0 for output SA");
-+			err = -EINVAL;
-+			goto out;
-+		}
-+
-+		if (attrs[XFRMA_REPLAY_VAL]) {
-+			struct xfrm_replay_state *replay;
-+
-+			replay = nla_data(attrs[XFRMA_REPLAY_VAL]);
-+
-+			if (replay->seq || replay->bitmap) {
-+				NL_SET_ERR_MSG(extack,
-+					       "Replay seq and bitmap should be 0 for output SA");
-+				err = -EINVAL;
-+				goto out;
-+			}
-+		}
-+	}
-+
-+	if (sa_dir == XFRM_SA_DIR_IN) {
-+		if (p->flags & XFRM_STATE_NOPMTUDISC) {
-+			NL_SET_ERR_MSG(extack, "Flag NOPMTUDISC should not be set for input SA");
-+			err = -EINVAL;
-+			goto out;
-+		}
-+
-+		if (attrs[XFRMA_SA_EXTRA_FLAGS]) {
-+			u32 xflags = nla_get_u32(attrs[XFRMA_SA_EXTRA_FLAGS]);
-+
-+			if (xflags & XFRM_SA_XFLAG_DONT_ENCAP_DSCP) {
-+				NL_SET_ERR_MSG(extack, "Flag DONT_ENCAP_DSCP should not be set for input SA");
-+				err = -EINVAL;
-+				goto out;
-+			}
-+
-+			if (xflags & XFRM_SA_XFLAG_OSEQ_MAY_WRAP) {
-+				NL_SET_ERR_MSG(extack, "Flag OSEQ_MAY_WRAP should not be set for input SA");
-+				err = -EINVAL;
-+				goto out;
-+			}
-+
-+		}
+ 	psw_t *psw = &vcpu->arch.sie_block->gpsw;
+-	unsigned long nr_pages, gpa, idx;
+-	unsigned long pages_array[2];
++	unsigned long nr_pages, idx;
++	unsigned long gpa_array[2];
+ 	unsigned int fragment_len;
+-	unsigned long *pages;
++	unsigned long *gpas;
+ 	int need_ipte_lock;
+ 	union asce asce;
+ 	int rc;
+@@ -846,30 +885,28 @@ int access_guest(struct kvm_vcpu *vcpu, unsigned long ga, u8 ar, void *data,
+ 	if (rc)
+ 		return rc;
+ 	nr_pages = (((ga & ~PAGE_MASK) + len - 1) >> PAGE_SHIFT) + 1;
+-	pages = pages_array;
+-	if (nr_pages > ARRAY_SIZE(pages_array))
+-		pages = vmalloc(array_size(nr_pages, sizeof(unsigned long)));
+-	if (!pages)
++	gpas = gpa_array;
++	if (nr_pages > ARRAY_SIZE(gpa_array))
++		gpas = vmalloc(array_size(nr_pages, sizeof(unsigned long)));
++	if (!gpas)
+ 		return -ENOMEM;
+ 	need_ipte_lock = psw_bits(*psw).dat && !asce.r;
+ 	if (need_ipte_lock)
+ 		ipte_lock(vcpu);
+-	rc = guest_page_range(vcpu, ga, ar, pages, nr_pages, asce, mode);
++	rc = guest_range_to_gpas(vcpu, ga, ar, gpas, len, asce, mode);
+ 	for (idx = 0; idx < nr_pages && !rc; idx++) {
+-		gpa = pages[idx] + offset_in_page(ga);
+-		fragment_len = min(PAGE_SIZE - offset_in_page(gpa), len);
++		fragment_len = min(PAGE_SIZE - offset_in_page(gpas[idx]), len);
+ 		if (mode == GACC_STORE)
+-			rc = kvm_write_guest(vcpu->kvm, gpa, data, fragment_len);
++			rc = kvm_write_guest(vcpu->kvm, gpas[idx], data, fragment_len);
+ 		else
+-			rc = kvm_read_guest(vcpu->kvm, gpa, data, fragment_len);
++			rc = kvm_read_guest(vcpu->kvm, gpas[idx], data, fragment_len);
+ 		len -= fragment_len;
+-		ga += fragment_len;
+ 		data += fragment_len;
  	}
- 
- out:
-@@ -734,6 +830,9 @@ static struct xfrm_state *xfrm_state_construct(struct net *net,
- 	if (attrs[XFRMA_IF_ID])
- 		x->if_id = nla_get_u32(attrs[XFRMA_IF_ID]);
- 
-+	if (attrs[XFRMA_SA_DIR])
-+		x->dir = nla_get_u8(attrs[XFRMA_SA_DIR]);
-+
- 	err = __xfrm_init_state(x, false, attrs[XFRMA_OFFLOAD_DEV], extack);
- 	if (err)
- 		goto error;
-@@ -1182,8 +1281,13 @@ static int copy_to_user_state_extra(struct xfrm_state *x,
- 		if (ret)
- 			goto out;
- 	}
--	if (x->mapping_maxage)
-+	if (x->mapping_maxage) {
- 		ret = nla_put_u32(skb, XFRMA_MTIMER_THRESH, x->mapping_maxage);
-+		if (ret)
-+			goto out;
-+	}
-+	if (x->dir)
-+		ret = nla_put_u8(skb, XFRMA_SA_DIR, x->dir);
- out:
- 	return ret;
- }
-@@ -1618,6 +1722,9 @@ static int xfrm_alloc_userspi(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	if (err)
- 		goto out;
- 
-+	if (attrs[XFRMA_SA_DIR])
-+		x->dir = nla_get_u8(attrs[XFRMA_SA_DIR]);
-+
- 	resp_skb = xfrm_state_netlink(skb, x, nlh->nlmsg_seq);
- 	if (IS_ERR(resp_skb)) {
- 		err = PTR_ERR(resp_skb);
-@@ -2401,7 +2508,8 @@ static inline unsigned int xfrm_aevent_msgsize(struct xfrm_state *x)
- 	       + nla_total_size_64bit(sizeof(struct xfrm_lifetime_cur))
- 	       + nla_total_size(sizeof(struct xfrm_mark))
- 	       + nla_total_size(4) /* XFRM_AE_RTHR */
--	       + nla_total_size(4); /* XFRM_AE_ETHR */
-+	       + nla_total_size(4) /* XFRM_AE_ETHR */
-+	       + nla_total_size(sizeof(x->dir)); /* XFRMA_SA_DIR */
+ 	if (need_ipte_lock)
+ 		ipte_unlock(vcpu);
+-	if (nr_pages > ARRAY_SIZE(pages_array))
+-		vfree(pages);
++	if (nr_pages > ARRAY_SIZE(gpa_array))
++		vfree(gpas);
+ 	return rc;
  }
  
- static int build_aevent(struct sk_buff *skb, struct xfrm_state *x, const struct km_event *c)
-@@ -2458,6 +2566,12 @@ static int build_aevent(struct sk_buff *skb, struct xfrm_state *x, const struct
- 	if (err)
- 		goto out_cancel;
- 
-+	if (x->dir) {
-+		err = nla_put_u8(skb, XFRMA_SA_DIR, x->dir);
-+		if (err)
-+			goto out_cancel;
-+	}
-+
- 	nlmsg_end(skb, nlh);
- 	return 0;
- 
-@@ -3017,6 +3131,7 @@ EXPORT_SYMBOL_GPL(xfrm_msg_min);
- #undef XMSGSIZE
- 
- const struct nla_policy xfrma_policy[XFRMA_MAX+1] = {
-+	[XFRMA_UNSPEC]		= { .strict_start_type = XFRMA_SA_DIR },
- 	[XFRMA_SA]		= { .len = sizeof(struct xfrm_usersa_info)},
- 	[XFRMA_POLICY]		= { .len = sizeof(struct xfrm_userpolicy_info)},
- 	[XFRMA_LASTUSED]	= { .type = NLA_U64},
-@@ -3048,6 +3163,7 @@ const struct nla_policy xfrma_policy[XFRMA_MAX+1] = {
- 	[XFRMA_SET_MARK_MASK]	= { .type = NLA_U32 },
- 	[XFRMA_IF_ID]		= { .type = NLA_U32 },
- 	[XFRMA_MTIMER_THRESH]   = { .type = NLA_U32 },
-+	[XFRMA_SA_DIR]          = NLA_POLICY_RANGE(NLA_U8, XFRM_SA_DIR_IN, XFRM_SA_DIR_OUT),
- };
- EXPORT_SYMBOL_GPL(xfrma_policy);
- 
-@@ -3188,8 +3304,9 @@ static void xfrm_netlink_rcv(struct sk_buff *skb)
- 
- static inline unsigned int xfrm_expire_msgsize(void)
+@@ -911,8 +948,6 @@ int access_guest_real(struct kvm_vcpu *vcpu, unsigned long gra,
+ int guest_translate_address(struct kvm_vcpu *vcpu, unsigned long gva, u8 ar,
+ 			    unsigned long *gpa, enum gacc_mode mode)
  {
--	return NLMSG_ALIGN(sizeof(struct xfrm_user_expire))
--	       + nla_total_size(sizeof(struct xfrm_mark));
-+	return NLMSG_ALIGN(sizeof(struct xfrm_user_expire)) +
-+	       nla_total_size(sizeof(struct xfrm_mark)) +
-+	       nla_total_size(sizeof_field(struct xfrm_state, dir));
+-	psw_t *psw = &vcpu->arch.sie_block->gpsw;
+-	enum prot_type prot;
+ 	union asce asce;
+ 	int rc;
+ 
+@@ -920,23 +955,7 @@ int guest_translate_address(struct kvm_vcpu *vcpu, unsigned long gva, u8 ar,
+ 	rc = get_vcpu_asce(vcpu, &asce, gva, ar, mode);
+ 	if (rc)
+ 		return rc;
+-	if (is_low_address(gva) && low_address_protection_enabled(vcpu, asce)) {
+-		if (mode == GACC_STORE)
+-			return trans_exc(vcpu, PGM_PROTECTION, gva, 0,
+-					 mode, PROT_TYPE_LA);
+-	}
+-
+-	if (psw_bits(*psw).dat && !asce.r) {	/* Use DAT? */
+-		rc = guest_translate(vcpu, gva, gpa, asce, mode, &prot);
+-		if (rc > 0)
+-			return trans_exc(vcpu, rc, gva, 0, mode, prot);
+-	} else {
+-		*gpa = kvm_s390_real_to_abs(vcpu, gva);
+-		if (kvm_is_error_gpa(vcpu->kvm, *gpa))
+-			return trans_exc(vcpu, rc, gva, PGM_ADDRESSING, mode, 0);
+-	}
+-
+-	return rc;
++	return guest_range_to_gpas(vcpu, gva, ar, gpa, 1, asce, mode);
  }
  
- static int build_expire(struct sk_buff *skb, struct xfrm_state *x, const struct km_event *c)
-@@ -3216,6 +3333,12 @@ static int build_expire(struct sk_buff *skb, struct xfrm_state *x, const struct
- 	if (err)
- 		return err;
+ /**
+@@ -950,17 +969,14 @@ int guest_translate_address(struct kvm_vcpu *vcpu, unsigned long gva, u8 ar,
+ int check_gva_range(struct kvm_vcpu *vcpu, unsigned long gva, u8 ar,
+ 		    unsigned long length, enum gacc_mode mode)
+ {
+-	unsigned long gpa;
+-	unsigned long currlen;
++	union asce asce;
+ 	int rc = 0;
  
-+	if (x->dir) {
-+		err = nla_put_u8(skb, XFRMA_SA_DIR, x->dir);
-+		if (err)
-+			return err;
-+	}
-+
- 	nlmsg_end(skb, nlh);
- 	return 0;
- }
-@@ -3323,6 +3446,9 @@ static inline unsigned int xfrm_sa_len(struct xfrm_state *x)
- 	if (x->mapping_maxage)
- 		l += nla_total_size(sizeof(x->mapping_maxage));
++	rc = get_vcpu_asce(vcpu, &asce, gva, ar, mode);
++	if (rc)
++		return rc;
+ 	ipte_lock(vcpu);
+-	while (length > 0 && !rc) {
+-		currlen = min(length, PAGE_SIZE - (gva % PAGE_SIZE));
+-		rc = guest_translate_address(vcpu, gva, ar, &gpa, mode);
+-		gva += currlen;
+-		length -= currlen;
+-	}
++	rc = guest_range_to_gpas(vcpu, gva, ar, NULL, length, asce, mode);
+ 	ipte_unlock(vcpu);
  
-+	if (x->dir)
-+		l += nla_total_size(sizeof(x->dir));
-+
- 	return l;
- }
- 
+ 	return rc;
 -- 
 2.43.0
 
