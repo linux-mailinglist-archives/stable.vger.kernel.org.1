@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-88470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE58C9B261D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:37:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6089B26F5
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47D1BB20D77
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:37:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 714652824F3
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689B418C03D;
-	Mon, 28 Oct 2024 06:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6582B18E77D;
+	Mon, 28 Oct 2024 06:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVMW5wkg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yf5u9EYH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2720418E350;
-	Mon, 28 Oct 2024 06:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A7318E743;
+	Mon, 28 Oct 2024 06:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097405; cv=none; b=jk0bHCw5BQQ1jnn+uQrH7DNyiHS3HvwoHaIVeOB+mq+wJeLLaWZQvn3qWzCExMxMii0p2zPZFLh1wDJYO46L1Widex2yN9o1EbBUJ56lXLW0KpzZl+fyUtllojUHEWDxxur84TDr15E8Hdog6qTE2uafq6ofrtqPS5O1NQnxbJ8=
+	t=1730097851; cv=none; b=Kzkv7/mfKD/i1yhNtXquoGlTZtufMhDsvCnwnERTXnTDE83TEKLfmm0Lzh0LOoVf2a6Qu1AMxqCU7Ybxro0NkQlY4JglerM1gbqq2KWm4wsPfAxJSCMTUbrefuhnYwoBbiy1Go0zR8FPRhzaV9SdbEJaXC4kdWaOwJ19TgrCaaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097405; c=relaxed/simple;
-	bh=hc0kMHJXMg+NdRR1n2DbW5z65MNzAUnc0aDariZfwSU=;
+	s=arc-20240116; t=1730097851; c=relaxed/simple;
+	bh=Gq6uneiOL8AnpEeFeBGX6+JhVSPuTQDjTCXRrB7azyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F5YuYMw0JU+Nd7QDGDb/sLX1LzshHyZVlGnqTzZOY1ebCCRQewu463O6VTw3vCFgZJJOcmxYOqZS//n4yEB2nheGJcfsn9dkQ1gLOK3x9WPpVYlpxEdjhdyoMzdkSTVQL6eAfQnp4al+LUeW9bzDlk9j7CXTPoPg1A0QfZRBt+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IVMW5wkg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB1C9C4CEC3;
-	Mon, 28 Oct 2024 06:36:44 +0000 (UTC)
+	 MIME-Version; b=hzc1LIXkkO37B2Dv+I1sAhGDc3ihEWuWrVzpIG4ctKulciUKjfZc3KB7yVnb6VbgUOJdtCWRsJ3Q0aasPVCnm/MvCQvP9bIxXj+sq14dw+o3jh8q8Tz/4+Ey6nh2z40vuG6WxiBOu6lnU7DO21sJc8z7HKcBrZhdUj2dOY1waP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yf5u9EYH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2671C4CEC3;
+	Mon, 28 Oct 2024 06:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097405;
-	bh=hc0kMHJXMg+NdRR1n2DbW5z65MNzAUnc0aDariZfwSU=;
+	s=korg; t=1730097851;
+	bh=Gq6uneiOL8AnpEeFeBGX6+JhVSPuTQDjTCXRrB7azyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IVMW5wkgyRjUmq4flpabqyqIfQZ/HLhyezebPymxqI+yQx88ypNYeOlnLEOBQeKBV
-	 4lcBFNW9BKwny7LIZPrYQL75Z7tLItl/KnTVStiJvCXCeJiwZK94kOAKPc9kK1GKic
-	 J61DmsiQ4rTpEhjwQuLDBPIl5Tf6Bx3ZYMJV3OHQ=
+	b=Yf5u9EYHSvNY4pg+JltoeUAEy4zHU6RNbrQJANPLWpqf/vpUyZmvFQ1IZ5/5COoSs
+	 I/rb6Das9C2KBsIVa+WVTfglSngKHLvCFFX29PD3ALGJJ0+Hle0JttKA2WemBFOsRX
+	 50xRWf9FlIUlkJpmnvFjYSKelcOZWGHkiIlFyU9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.1 117/137] drm/amd: Guard against bad data for ATIF ACPI method
+	Haoxiang Li <make24@iscas.ac.cn>,
+	Henrique Carvalho <henrique.carvalho@suse.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 174/208] smb: client: Handle kstrdup failures for passwords
 Date: Mon, 28 Oct 2024 07:25:54 +0100
-Message-ID: <20241028062301.984538419@linuxfoundation.org>
+Message-ID: <20241028062310.917099455@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Henrique Carvalho <henrique.carvalho@suse.com>
 
-commit bf58f03931fdcf7b3c45cb76ac13244477a60f44 upstream.
+[ Upstream commit 9a5dd61151399ad5a5d69aad28ab164734c1e3bc ]
 
-If a BIOS provides bad data in response to an ATIF method call
-this causes a NULL pointer dereference in the caller.
+In smb3_reconfigure(), after duplicating ctx->password and
+ctx->password2 with kstrdup(), we need to check for allocation
+failures.
 
-```
-? show_regs (arch/x86/kernel/dumpstack.c:478 (discriminator 1))
-? __die (arch/x86/kernel/dumpstack.c:423 arch/x86/kernel/dumpstack.c:434)
-? page_fault_oops (arch/x86/mm/fault.c:544 (discriminator 2) arch/x86/mm/fault.c:705 (discriminator 2))
-? do_user_addr_fault (arch/x86/mm/fault.c:440 (discriminator 1) arch/x86/mm/fault.c:1232 (discriminator 1))
-? acpi_ut_update_object_reference (drivers/acpi/acpica/utdelete.c:642)
-? exc_page_fault (arch/x86/mm/fault.c:1542)
-? asm_exc_page_fault (./arch/x86/include/asm/idtentry.h:623)
-? amdgpu_atif_query_backlight_caps.constprop.0 (drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c:387 (discriminator 2)) amdgpu
-? amdgpu_atif_query_backlight_caps.constprop.0 (drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c:386 (discriminator 1)) amdgpu
-```
+If ses->password allocation fails, return -ENOMEM.
+If ses->password2 allocation fails, free ses->password, set it
+to NULL, and return -ENOMEM.
 
-It has been encountered on at least one system, so guard for it.
-
-Fixes: d38ceaf99ed0 ("drm/amdgpu: add core driver (v4)")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit c9b7c809b89f24e9372a4e7f02d64c950b07fdee)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c1eb537bf456 ("cifs: allow changing password during remount")
+Reviewed-by: David Howells <dhowells@redhat.com
+Signed-off-by: Haoxiang Li <make24@iscas.ac.cn>
+Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ fs/smb/client/fs_context.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-@@ -107,6 +107,7 @@ static union acpi_object *amdgpu_atif_ca
- 					   struct acpi_buffer *params)
- {
- 	acpi_status status;
-+	union acpi_object *obj;
- 	union acpi_object atif_arg_elements[2];
- 	struct acpi_object_list atif_arg;
- 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
-@@ -129,16 +130,24 @@ static union acpi_object *amdgpu_atif_ca
- 
- 	status = acpi_evaluate_object(atif->handle, NULL, &atif_arg,
- 				      &buffer);
-+	obj = (union acpi_object *)buffer.pointer;
- 
--	/* Fail only if calling the method fails and ATIF is supported */
-+	/* Fail if calling the method fails and ATIF is supported */
- 	if (ACPI_FAILURE(status) && status != AE_NOT_FOUND) {
- 		DRM_DEBUG_DRIVER("failed to evaluate ATIF got %s\n",
- 				 acpi_format_exception(status));
--		kfree(buffer.pointer);
-+		kfree(obj);
- 		return NULL;
+diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
+index 3bbac925d0766..8d7484400fe8e 100644
+--- a/fs/smb/client/fs_context.c
++++ b/fs/smb/client/fs_context.c
+@@ -918,8 +918,15 @@ static int smb3_reconfigure(struct fs_context *fc)
+ 	else  {
+ 		kfree_sensitive(ses->password);
+ 		ses->password = kstrdup(ctx->password, GFP_KERNEL);
++		if (!ses->password)
++			return -ENOMEM;
+ 		kfree_sensitive(ses->password2);
+ 		ses->password2 = kstrdup(ctx->password2, GFP_KERNEL);
++		if (!ses->password2) {
++			kfree_sensitive(ses->password);
++			ses->password = NULL;
++			return -ENOMEM;
++		}
  	}
- 
--	return buffer.pointer;
-+	if (obj->type != ACPI_TYPE_BUFFER) {
-+		DRM_DEBUG_DRIVER("bad object returned from ATIF: %d\n",
-+				 obj->type);
-+		kfree(obj);
-+		return NULL;
-+	}
-+
-+	return obj;
- }
- 
- /**
+ 	STEAL_STRING(cifs_sb, ctx, domainname);
+ 	STEAL_STRING(cifs_sb, ctx, nodename);
+-- 
+2.43.0
+
 
 
 
