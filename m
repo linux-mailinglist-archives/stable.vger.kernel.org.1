@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E893C9B2589
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:32:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23C319B26F2
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9AD12818C6
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:32:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCB6A282553
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE85A18E03A;
-	Mon, 28 Oct 2024 06:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC36918E77B;
+	Mon, 28 Oct 2024 06:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJQ9UbWt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GpNyRUs7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B32315B10D;
-	Mon, 28 Oct 2024 06:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6612818E37C;
+	Mon, 28 Oct 2024 06:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097132; cv=none; b=RG2IZYjYZZR8UGkuV+SQ47mptMFVv9jSDVe7PiyYtlZLRHaZeYvee5t8fcsJ5SyuU4DD2S0ndiT63yuprBRe/sd4RwpYGcUfKLiFvaE6TaHLBfzjVJkuN/dNmD/UOFyDTR2zYJhtoKqgKxXnyDoSD3NMafXscLPVbQASbfLXHgI=
+	t=1730097844; cv=none; b=G3hcEwU9v2tQO1J2sNduJMtCYBiRI496fK3++I0lzPeyrlLe6Epu5grB87E4XhygJwuoh9hGlMXiXC2MctE4Hnp1pXHguNch1wJzVBJQPf14+D6HTRiCkACVRH5RuYV9srjPKmgEDMZdStJLtTUJhRn5MddqjLWWaxQ5X8v+wAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097132; c=relaxed/simple;
-	bh=L6FYctoEM0P/qmj0KnqMMcGoL0GkczEc8aBg2KG70ZY=;
+	s=arc-20240116; t=1730097844; c=relaxed/simple;
+	bh=30AYUa07JSkdioJyu0m1MszhFaxz0SZxjhvwYEonTF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VQknFa9BywLbID09/69yPAjE8FFURFmvk/pRocZXdss7NQuqM3y3sQjp7OxIwcp2HTWzBm8XCEtxSPH7SCOqwUYxoI5ENmsggwD8JMAyN4HWc3jY0PtyHkAfKtlu4V1zLbHQ4E/cUEkt3VDL+ClpH017bv9Gf9D4tPbDr2kA/MY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GJQ9UbWt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6DF1C4CEC7;
-	Mon, 28 Oct 2024 06:32:11 +0000 (UTC)
+	 MIME-Version; b=oBHXtPeApDpEnrgdIxdDgww0f0cYpnYq0tdsK2dNmCrrIM+2it0wPsd+O46j5pjuXaAD+meWPcY/XbTzDVyXO+pX8AKDlNe3XCV5aQCxVueGBfZSlKX9L9np58UACHWsQKAkqwPJUTy4qd9DLBVS6jU90yhCByom9wFmuL9SV7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GpNyRUs7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0756EC4CEC3;
+	Mon, 28 Oct 2024 06:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097132;
-	bh=L6FYctoEM0P/qmj0KnqMMcGoL0GkczEc8aBg2KG70ZY=;
+	s=korg; t=1730097844;
+	bh=30AYUa07JSkdioJyu0m1MszhFaxz0SZxjhvwYEonTF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GJQ9UbWtprSru1x62O4O+XiImaUWjmjoss2qHSwbCvhR988Dbo14ZVDZ1B3xGfP1g
-	 zngCO45daejANAjrWNVALnBWne1553HRTo7C4t8MOadtIUTj7P5KG3ul+IbRUu8yeJ
-	 F9k0jPWdmJhwW5Kbyowj9U82ZOrT1gmVeBtPW27k=
+	b=GpNyRUs7hTONlIRptxVPt12MkpgwicyO/vPEbyRuOBFrO94HPgf17a9m2mis+PucN
+	 7QTMlB1FwTyKTCDC41/j2BS1LhClP0moEGLkOyxWXBBzW7a3IMvetb8A2xCJ8nu7ub
+	 AeCxGYUeoVRuo5ZpVZ4m6IxnvhFsWmSWi2fqgwUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+985ada84bf055a575c07@syzkaller.appspotmail.com,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.15 71/80] nilfs2: fix kernel bug due to missing clearing of buffer delay flag
+	Yuan Can <yuancan@huawei.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 171/208] powercap: dtpm_devfreq: Fix error check against dev_pm_qos_add_request()
 Date: Mon, 28 Oct 2024 07:25:51 +0100
-Message-ID: <20241028062254.581903686@linuxfoundation.org>
+Message-ID: <20241028062310.842725680@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Yuan Can <yuancan@huawei.com>
 
-commit 6ed469df0bfbef3e4b44fca954a781919db9f7ab upstream.
+[ Upstream commit 5209d1b654f1db80509040cc694c7814a1b547e3 ]
 
-Syzbot reported that after nilfs2 reads a corrupted file system image
-and degrades to read-only, the BUG_ON check for the buffer delay flag
-in submit_bh_wbc() may fail, causing a kernel bug.
+The caller of the function dev_pm_qos_add_request() checks again a non
+zero value but dev_pm_qos_add_request() can return '1' if the request
+already exists. Therefore, the setup function fails while the QoS
+request actually did not failed.
 
-This is because the buffer delay flag is not cleared when clearing the
-buffer state flags to discard a page/folio or a buffer head. So, fix
-this.
+Fix that by changing the check against a negative value like all the
+other callers of the function.
 
-This became necessary when the use of nilfs2's own page clear routine
-was expanded.  This state inconsistency does not occur if the buffer
-is written normally by log writing.
-
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Link: https://lore.kernel.org/r/20241015213300.7114-1-konishi.ryusuke@gmail.com
-Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
-Reported-by: syzbot+985ada84bf055a575c07@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=985ada84bf055a575c07
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e44655617317 ("powercap/drivers/dtpm: Add dtpm devfreq with energy model support")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Link: https://patch.msgid.link/20241018021205.46460-1-yuancan@huawei.com
+[ rjw: Subject edit ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/page.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/powercap/dtpm_devfreq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nilfs2/page.c
-+++ b/fs/nilfs2/page.c
-@@ -77,7 +77,8 @@ void nilfs_forget_buffer(struct buffer_h
- 	const unsigned long clear_bits =
- 		(BIT(BH_Uptodate) | BIT(BH_Dirty) | BIT(BH_Mapped) |
- 		 BIT(BH_Async_Write) | BIT(BH_NILFS_Volatile) |
--		 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected));
-+		 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected) |
-+		 BIT(BH_Delay));
- 
- 	lock_buffer(bh);
- 	set_mask_bits(&bh->b_state, clear_bits, 0);
-@@ -409,7 +410,8 @@ void nilfs_clear_dirty_page(struct page
- 		const unsigned long clear_bits =
- 			(BIT(BH_Uptodate) | BIT(BH_Dirty) | BIT(BH_Mapped) |
- 			 BIT(BH_Async_Write) | BIT(BH_NILFS_Volatile) |
--			 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected));
-+			 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected) |
-+			 BIT(BH_Delay));
- 
- 		bh = head = page_buffers(page);
- 		do {
+diff --git a/drivers/powercap/dtpm_devfreq.c b/drivers/powercap/dtpm_devfreq.c
+index 612c3b59dd5be..0ca53db7a90eb 100644
+--- a/drivers/powercap/dtpm_devfreq.c
++++ b/drivers/powercap/dtpm_devfreq.c
+@@ -166,7 +166,7 @@ static int __dtpm_devfreq_setup(struct devfreq *devfreq, struct dtpm *parent)
+ 	ret = dev_pm_qos_add_request(dev, &dtpm_devfreq->qos_req,
+ 				     DEV_PM_QOS_MAX_FREQUENCY,
+ 				     PM_QOS_MAX_FREQUENCY_DEFAULT_VALUE);
+-	if (ret) {
++	if (ret < 0) {
+ 		pr_err("Failed to add QoS request: %d\n", ret);
+ 		goto out_dtpm_unregister;
+ 	}
+-- 
+2.43.0
+
 
 
 
