@@ -1,75 +1,76 @@
-Return-Path: <stable+bounces-89101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57D19B3751
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 18:06:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D60449B3753
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 18:07:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6ACE92828EA
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 17:06:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25FE3B24C75
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 17:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DD51DF253;
-	Mon, 28 Oct 2024 17:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9CB31DF275;
+	Mon, 28 Oct 2024 17:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OFtvX7yT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UC3y/4B7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBE31DF252;
-	Mon, 28 Oct 2024 17:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99AD13AD11;
+	Mon, 28 Oct 2024 17:06:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730135208; cv=none; b=pZiDOiQGxjjdroPxa5n+reDIeeACVXChy7BfkZBo5mPKiyfQ9G++SU95+Rfpir6tAUxFOcw2GaNTt87Iq3+QaK09eqYdg67ugkDJrB5rwZC2QUJXn4MAktAJZ+mNmEVkx09Vd4K6sCOePNEjwREnUg2boxaLrqcNRZDxwxYck0I=
+	t=1730135209; cv=none; b=c90At8SI/f/xFkTgeMDwfA1yky9xhXV21j5hmSWvCqCJQTnl7tPOcJVDoUmahXWRaOwJTPkH+K2PmzO8i+AWoU2YHQDVCbN40puaT2G6IG/pLRPjs8dsjAELj3vt/xl0eSZNUPauVZ2PAVTwIsc2gFKQkVUKZ1sAPHHt+sTVkGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730135208; c=relaxed/simple;
-	bh=uv8UhE2oHj/jAoSYFDFHGa6v1zWyBJnbSc/opV4Ew7s=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DQzbjnPFD57QniQDeEVPGLbakgf/z00WAE10nQ5CZb913o6m79s8PtwuVHrqtTG+FHBJ8+Jwi9S/AqGoqdJd65AAtid06QTCEUyDQvE1CirsM0z/xrgCq4cBLHBs15Cs69ohKClr8sI47GzYrD3y+HajIGT3REdwdEylLFZsokU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OFtvX7yT; arc=none smtp.client-ip=209.85.128.47
+	s=arc-20240116; t=1730135209; c=relaxed/simple;
+	bh=hSFWp27IFs8R/mtXYTZDTyF+KDUDuBjLR3DwK1+aO9E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=U9twJSH7HpR/pp/hzHXUNFgKcQ01h9R+98wl9fFbbLR0nwr34d9dqEqicX/EtFx/Ov2uouULPr/dlUfBXwdHPoaEzq783Hj+4G1KSmYjSd86zv04ueJTd+TL4UPCw3BQse8EozGSPcjNGQ+2i+0lSMG/c2umGJJ25L3GZT6V8fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UC3y/4B7; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43152b79d25so42341975e9.1;
-        Mon, 28 Oct 2024 10:06:45 -0700 (PDT)
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-37d4d1b48f3so3378709f8f.1;
+        Mon, 28 Oct 2024 10:06:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730135204; x=1730740004; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nirCWzG2Wn5O48MYiFe6S6iiaaXRgl7t6gTboEBb224=;
-        b=OFtvX7yTKrR7l0V+JGoibB0ikjgDjCXmp8+j4LoQapoEF37A75NBjDjAkNFM0txtzB
-         WOp6DOWY/ATvdv2sepJQVDhNLujI+C3ZEIpO9Eryw/81a63r7rZZntL6vitRLM+6QXvI
-         whZ5sopxdH3h9V/ipVfLcjyXokybha9lvXvgiQo5hiQ9bDP2SZEHPrafc705HvDXuTGs
-         smx/wUNffX9VtwvvMH09e83tcpC4/RMyPCAZLkOlQNnXVZRIVZZZP932oQrD7o1vRV+5
-         3rfISzlAPKuVBRx/CWup/YyEloYTVQ4cd71S5XvjRN0t2cMyIJFT8lEP4w9rJaC0tC82
-         KOVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730135204; x=1730740004;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1730135206; x=1730740006; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=nirCWzG2Wn5O48MYiFe6S6iiaaXRgl7t6gTboEBb224=;
-        b=CorzkyYf1HBn1V2lb7ScG/WPtTpCoQGqND3NS2wbs5txnQ+QqakVOXE+0kyMORAdeH
-         /a3V4pNnx9UWjanMWg0sU+M+E6ZeWOrOdvFn78vm59PZrDJqNL9mPPe6TglatnpZ9fMx
-         r3Su8GDJ+xlQtqmdlsfsuMJY84npVF8qJbZDaYeEqOXQkwivUtRm9RyA7+pCFHh+u7h4
-         CkOzuqZFkY3lXZ52AT7Mpcrl8BwQ3BVxHIaeLEeSU9+nDBtDD/tmCxJlUMQx+ukK9Npp
-         OfBmZCIDdq5FbRO3w4MFBtZow0zT377P7f6sqwP/AdJumM5Y2pE7EhRVWc5AVAs+tUX7
-         QLfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVQbyQmgehMXtugFNovglVJhM/qEHXAwpjQHRCGOSf+qRCxgMbcbbCDNeUUj7kF/Y/WPow8Ivc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeVfpdvk/DhFd+eEOkdluspShlELEk5QZZQjFf2nYznizyGD5I
-	E6r1/cA7d1wFyepOOoZ2ydjVX1T1J8Fa/o6gTN3RcSrKbKFBHV5T
-X-Google-Smtp-Source: AGHT+IEQC1BU8VU12ifQwvyH5dCRImXcjuHtW31p5zdb2omPfodR6YsUxwjQjlwh9jpeYW+c4MHuKw==
-X-Received: by 2002:a05:600c:1c03:b0:431:5d89:646e with SMTP id 5b1f17b1804b1-4319ad30bfcmr80043155e9.32.1730135204497;
-        Mon, 28 Oct 2024 10:06:44 -0700 (PDT)
+        bh=O05QR5jut87q0up8QxTT54jxN1Q5tSHRGwMyYGGlNAQ=;
+        b=UC3y/4B7qh0JyQ3JAWgqdcIwB8U0pTWJQDgbXG1ktsIarQkNzx1jjYoANKw+4O20D3
+         CMc1c2Ms3sAuzE4tnkre1AI9+N3j3jT9HBmSs+4Nf8kKXfW1srJiRUiaIhfq6lzjJvk4
+         hthUwC16MawfJR2VaPUhVRUdVnGOSyZQK7viFihQFiBh+dEWaKYBSEhfVM4p51hOmtAW
+         +fjmV07qU4uP0emhSfICQajRUMJ73nB9c5jXFrrNIgA5i/FOcG5oiGkGC6TxC09AyubU
+         EUGCzGEOtyhBGFlhBebMIB7LSmwjrWVwtsEDBidcrhsJFhKrh9LqWSwJZhIYJ+KMdZnR
+         bcAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730135206; x=1730740006;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=O05QR5jut87q0up8QxTT54jxN1Q5tSHRGwMyYGGlNAQ=;
+        b=jndsg287MClZlnyydkEv5iffwDVLetHNBhbRPW+GMZf1Vw7JEdAkgnuzEQFnIjFSuN
+         bWKf6B+sOpikO9mN/VK2WIv5ovi38nPBXzX3oF8yszxTZrINJZkNMMB92RUK7kkYyVzq
+         wEot1KxVffZLiFeJyGo0hue7yunxXM46S4jG0N8Ewf8UMCd1YsuhmTYAJejaqGlftyde
+         eRFm02XaZG9FiU/fGYLJtZ8oDcJlcjb/HT6NSek2zozApjrqa1YxXtUPMdolbgQFs5aO
+         ACTEtdfYscq5+zR7bj1h9KYyOQoHIG74fAPKZriVds391WTGBTsaS1plPHkKbPh/a7Eo
+         tkfw==
+X-Forwarded-Encrypted: i=1; AJvYcCWpZPW+4vGPPszw9NqAqVVDp6dwjNMR0VG6TVMlSq6nBZs/Evp3pEB/oUNZognH56tcV4tjjxU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLqXhOYSg/vDaRnO9MDnocUanRFVTx4SRsNEv22tsj6rb1fxUL
+	t+MHgnICmAhLUQzK4EAnDzTL5GkoxIl1YpU85BqMlJonwLTg/kP29zDIgg==
+X-Google-Smtp-Source: AGHT+IGa1uhTEJFoxnQBiuZRd5TCVIlWMs8Q6pstlSN3rogDlsUEsdrtJYdkP1xqZNrNL8psxveD/Q==
+X-Received: by 2002:a05:6000:1:b0:37c:cca1:b1e3 with SMTP id ffacd0b85a97d-380611dcb75mr5913150f8f.41.1730135205833;
+        Mon, 28 Oct 2024 10:06:45 -0700 (PDT)
 Received: from [127.0.1.1] (2a02-8389-41cf-e200-b273-88b2-f83b-5936.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:b273:88b2:f83b:5936])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b1323bsm10089732f8f.9.2024.10.28.10.06.43
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b1323bsm10089732f8f.9.2024.10.28.10.06.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Oct 2024 10:06:44 -0700 (PDT)
+        Mon, 28 Oct 2024 10:06:45 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Subject: [PATCH v2 0/2] clocksource/drivers/timer-ti-dm: fix child node
+Date: Mon, 28 Oct 2024 18:06:42 +0100
+Subject: [PATCH v2 1/2] clocksource/drivers/timer-ti-dm: fix child node
  refcount handling
-Date: Mon, 28 Oct 2024 18:06:41 +0100
-Message-Id: <20241028-timer-ti-dm-systimer-of_node_put-v2-0-e6b9a1b3fe67@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,47 +79,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAKHEH2cC/5WNTQqDMBBGryKz7pQkWv9WvUcRkWTUgcZIYqUi3
- r2pPUE3H7xv8d4OgTxTgDrZwdPKgd0UQV0S0GM3DYRsIoMSKpNCpriwJR8XjcWwhR+6vp2coXZ
- +LWgyVaS3vCzyqoSomT31/D4TjybyyGFxfjuLq/y+f8hXiRKF7oWuurTIy+w+2I6fV+0sNMdxf
- ABs5xWV0AAAAA==
+Message-Id: <20241028-timer-ti-dm-systimer-of_node_put-v2-1-e6b9a1b3fe67@gmail.com>
+References: <20241028-timer-ti-dm-systimer-of_node_put-v2-0-e6b9a1b3fe67@gmail.com>
+In-Reply-To: <20241028-timer-ti-dm-systimer-of_node_put-v2-0-e6b9a1b3fe67@gmail.com>
 To: Daniel Lezcano <daniel.lezcano@linaro.org>, 
  Thomas Gleixner <tglx@linutronix.de>, Tony Lindgren <tony@atomide.com>
 Cc: linux-kernel@vger.kernel.org, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1730135203; l=974;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1730135203; l=1295;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=uv8UhE2oHj/jAoSYFDFHGa6v1zWyBJnbSc/opV4Ew7s=;
- b=42unLjeMw9UF99FvGsX6qXi7uZzLc/XRF9h4810jk+s6XqJBcJInQHlaRgHhW6ILfuw4MgXH0
- doTmV0BNonPD0WakPhDx1KYrgD1eb1WKtTTCVLyoSggNys+Ecs1c3XP
+ bh=hSFWp27IFs8R/mtXYTZDTyF+KDUDuBjLR3DwK1+aO9E=;
+ b=2WgFXXCVveFXjC4UEs/m3Aja//8HRNHEHDCSX8+CqiQIu8rShgEEodvNYiXQCD4s1ZcnTKOJE
+ X5jzJDEbodgDXA1SKaJdvVY/FgCUTQt8zFglztTTpDEmcJT9ZwBe0TC
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-This series adds the missing calls to of_node_put(arm_timer) to release
-the resource, and then switches to the more robust approach that makes
-use of the automatic cleanup facility (not available for all stable
-kernels).
+of_find_compatible_node() increments the node's refcount, and it must be
+decremented again with a call to of_node_put() when the pointer is no
+longer required to avoid leaking memory.
 
+Add the missing calls to of_node_put() in dmtimer_percpu_quirck_init()
+for the 'arm_timer' device node.
+
+Cc: stable@vger.kernel.org
+Fixes: 25de4ce5ed02 ("clocksource/drivers/timer-ti-dm: Handle dra7 timer wrap errata i940")
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
-Changes in v2:
-- Add second patch for automatic cleanup.
-- Link to v1: https://lore.kernel.org/r/20241013-timer-ti-dm-systimer-of_node_put-v1-1-0cf0c9a37684@gmail.com
+ drivers/clocksource/timer-ti-dm-systimer.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
----
-Javier Carrasco (2):
-      clocksource/drivers/timer-ti-dm: fix child node refcount handling
-      clocksource/drivers/timer-ti-dm: automate device_node cleanup in dmtimer_percpu_quirk_init()
+diff --git a/drivers/clocksource/timer-ti-dm-systimer.c b/drivers/clocksource/timer-ti-dm-systimer.c
+index c2dcd8d68e45..23be1d21ce21 100644
+--- a/drivers/clocksource/timer-ti-dm-systimer.c
++++ b/drivers/clocksource/timer-ti-dm-systimer.c
+@@ -691,8 +691,10 @@ static int __init dmtimer_percpu_quirk_init(struct device_node *np, u32 pa)
+ 	arm_timer = of_find_compatible_node(NULL, NULL, "arm,armv7-timer");
+ 	if (of_device_is_available(arm_timer)) {
+ 		pr_warn_once("ARM architected timer wrap issue i940 detected\n");
++		of_node_put(arm_timer);
+ 		return 0;
+ 	}
++	of_node_put(arm_timer);
+ 
+ 	if (pa == 0x4882c000)           /* dra7 dmtimer15 */
+ 		return dmtimer_percpu_timer_init(np, 0);
 
- drivers/clocksource/timer-ti-dm-systimer.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
----
-base-commit: d61a00525464bfc5fe92c6ad713350988e492b88
-change-id: 20241013-timer-ti-dm-systimer-of_node_put-d42735687698
-
-Best regards,
 -- 
-Javier Carrasco <javier.carrasco.cruz@gmail.com>
+2.43.0
 
 
