@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4E09B2672
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E07C9B2787
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:49:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 327C31F21FAA
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FD341C2139C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30CB189BAF;
-	Mon, 28 Oct 2024 06:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB3718D65C;
+	Mon, 28 Oct 2024 06:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pDx53L4q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZpuaE+z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 815B42C697;
-	Mon, 28 Oct 2024 06:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4958837;
+	Mon, 28 Oct 2024 06:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097586; cv=none; b=Qyqj3okLRGdGh7UdJG3/I/rgC3ylsNqeaY0dxiZFCAjsXXNfUD8xMwSEj+w5VpC2iqjc64bC57rIktktcmW1/HRLj6uliUjxfqPNcIPsu25Pkvehy/3k/D5cPz8mQEgklHTX/yq4Fdp2AJlQsQZVpR+tDhQ/JAb2uGIo5osWY0o=
+	t=1730098144; cv=none; b=juZ9x9vt2imEL3O8L/iMlML3219Ltx1QpFbQnx1NqcF2XeeCRh1tWs+CxZ5tl4BbhlqjDsBUw0K4yH1d4+rh13haHopiG5gjMwEyWea+jtwrBEzio8iD/sv7eXjDDoit/Fapvfo5KWTwRt+TTDMH1GqLprfiWRa0EwZsawgCLwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097586; c=relaxed/simple;
-	bh=p4wJmBduhxpAmjKUktIHObOC9opLKy0sd8Ww3zD3law=;
+	s=arc-20240116; t=1730098144; c=relaxed/simple;
+	bh=6PYaXre/ZoHv9b7CKjwZH9BHYNVsjRMRayWktefTU6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O4iw2CI1D7CAbpe+LJa4EFzqVEgtgEW4JJX4K/K1Nh56yGTvZ17/XcWls4FI0FM169xaA4q+r92EypmAdun3rCqGrYKBqKeh5bVfnjQUOATTY4XqN0PXiCjvizXTzvVrbEwUjbei7DRtxaVAClFe1hRvp73Idh6JAcPROJyMsT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pDx53L4q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204CAC4CEC3;
-	Mon, 28 Oct 2024 06:39:45 +0000 (UTC)
+	 MIME-Version; b=LE659V5JoHnHUw+DKf+JZMQO4kmuKKQ2n1Jn8glsxjygn2x5NiIg/GpSO6p7yJc90JtUVA6HlAidPaBu6xF8LWOUtGHDPU5akMLl+rYFw25ZGqKIhvSk/Ze52GpG25UblXOqgvnAkpqUtzBS8JwjisXXPr7rX8MsJ8MM9Fm51lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZpuaE+z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002EDC4CEC3;
+	Mon, 28 Oct 2024 06:49:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097586;
-	bh=p4wJmBduhxpAmjKUktIHObOC9opLKy0sd8Ww3zD3law=;
+	s=korg; t=1730098144;
+	bh=6PYaXre/ZoHv9b7CKjwZH9BHYNVsjRMRayWktefTU6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pDx53L4qJpCkx9evb9QRAtbDNW60grw7jTOAaWu4Q/nOQskGSAV+OEObhNi9oJYAf
-	 BtQzbgEUP65/RerZils4p448KcnJoyHtWwgZa4W3ov8ybKK0FDqWQ7JPCj4t2Mtsem
-	 IAtS+GAMgBqinoRnF0AtIGi6VovQgd2FiPiAbDfc=
+	b=YZpuaE+z/R27RIAoq4D6UrU+YnSpDrnvUi63u6bGaOTRfyc0OWDF0pbSq9KNW9WkE
+	 Cl0jLtShEJ35OX5Ipg3GdfibfSQT9w99/KYUVLw7DYSqzp6yKRDo433TTw7FNtz4Ls
+	 EaQQsnyKIJ3zj8CFunq+z0x2cJAJy8Radsxdubxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Hai <wanghai38@huawei.com>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ye Bin <yebin10@huawei.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/208] net: xilinx: axienet: fix potential memory leak in axienet_start_xmit()
+Subject: [PATCH 6.11 095/261] Bluetooth: bnep: fix wild-memory-access in proto_unregister
 Date: Mon, 28 Oct 2024 07:23:57 +0100
-Message-ID: <20241028062308.060132991@linuxfoundation.org>
+Message-ID: <20241028062314.412517309@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Hai <wanghai38@huawei.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit 99714e37e8333bbc22496fe80f241d5b35380e83 ]
+[ Upstream commit 64a90991ba8d4e32e3173ddd83d0b24167a5668c ]
 
-The axienet_start_xmit() returns NETDEV_TX_OK without freeing skb
-in case of dma_map_single() fails, add dev_kfree_skb_any() to fix it.
+There's issue as follows:
+  KASAN: maybe wild-memory-access in range [0xdead...108-0xdead...10f]
+  CPU: 3 UID: 0 PID: 2805 Comm: rmmod Tainted: G        W
+  RIP: 0010:proto_unregister+0xee/0x400
+  Call Trace:
+   <TASK>
+   __do_sys_delete_module+0x318/0x580
+   do_syscall_64+0xc1/0x1d0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fixes: 71791dc8bdea ("net: axienet: Check for DMA mapping errors")
-Signed-off-by: Wang Hai <wanghai38@huawei.com>
-Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Link: https://patch.msgid.link/20241014143704.31938-1-wanghai38@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+As bnep_init() ignore bnep_sock_init()'s return value, and bnep_sock_init()
+will cleanup all resource. Then when remove bnep module will call
+bnep_sock_cleanup() to cleanup sock's resource.
+To solve above issue just return bnep_sock_init()'s return value in
+bnep_exit().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/bluetooth/bnep/core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 62c10eb4f0adf..9f779653ed622 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -845,6 +845,7 @@ axienet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 		if (net_ratelimit())
- 			netdev_err(ndev, "TX DMA mapping error\n");
- 		ndev->stats.tx_dropped++;
-+		dev_kfree_skb_any(skb);
- 		return NETDEV_TX_OK;
- 	}
- 	desc_set_phys_addr(lp, phys, cur_p);
-@@ -865,6 +866,7 @@ axienet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 			ndev->stats.tx_dropped++;
- 			axienet_free_tx_chain(lp, orig_tail_ptr, ii + 1,
- 					      true, NULL, 0);
-+			dev_kfree_skb_any(skb);
- 			return NETDEV_TX_OK;
- 		}
- 		desc_set_phys_addr(lp, phys, cur_p);
+diff --git a/net/bluetooth/bnep/core.c b/net/bluetooth/bnep/core.c
+index ec45f77fce218..344e2e063be68 100644
+--- a/net/bluetooth/bnep/core.c
++++ b/net/bluetooth/bnep/core.c
+@@ -745,8 +745,7 @@ static int __init bnep_init(void)
+ 	if (flt[0])
+ 		BT_INFO("BNEP filters: %s", flt);
+ 
+-	bnep_sock_init();
+-	return 0;
++	return bnep_sock_init();
+ }
+ 
+ static void __exit bnep_exit(void)
 -- 
 2.43.0
 
