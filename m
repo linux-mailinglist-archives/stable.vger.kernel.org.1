@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-88893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D45E9B27F3
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B84B9B26CD
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:42:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49ABE1C215CA
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D8CB1C21425
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:42:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AFF18E05D;
-	Mon, 28 Oct 2024 06:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0C418E374;
+	Mon, 28 Oct 2024 06:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vm5iD2a9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ipZWExZw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5078D8837;
-	Mon, 28 Oct 2024 06:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6897D15B10D;
+	Mon, 28 Oct 2024 06:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098361; cv=none; b=aWFI2aamwriIX8fqAfjAdu+Zh6J6JZgpuHPaCiVEYh6JDRsYdztqnI/iq8p08tUhSo0czpUOsrspbsYhVI25jWbki0UiPTdlONWoX3yeoks5KjESHgSujdrupqr9UP66su1LBEhwWXDGL7A65l4j8Mbuw4RuDmonfzN5lByiGmk=
+	t=1730097768; cv=none; b=LJgPAI48KRsL7j412vO3jnJvcXQgB1ZLSYPfS4Ap2QnzEVVfVCpmnTRGU0lnvMaKpyx0nVfvj0nTJJmiA9xITW1v0eInYik8jFXp0nFNAQFfbRZni28+veUcCeAFxkHBoSIjsC1OxOnELuSagcSY3SddIq+3RsdLgAXkmuo/QfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098361; c=relaxed/simple;
-	bh=5MMxQU0/BqZz5OrG/7nKrc44FDWoGmpUOTOUlaRXS7M=;
+	s=arc-20240116; t=1730097768; c=relaxed/simple;
+	bh=svvvEhcpGywSLI/LXc5481SikhakX6gu4dgZIAMhlLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZFle67F8+7fevXujF57RncIdgvol15Ld2XFydcEWlqp2ykuBhGIuXjMNn82etaG5DlrXg0K21+7vQA9z6sqd9iYUpV+SaV2UZSmt+7WiyCrjzFDT5VAOFOFln2/WA9sO+qXbWe34aOIN2uOYNqHiGxNN6ip9BSQ72cExnwVSPys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vm5iD2a9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6061C4CEC3;
-	Mon, 28 Oct 2024 06:52:40 +0000 (UTC)
+	 MIME-Version; b=r2DNxeNsnxytZluElf4Z9AtvOmPrBxjpv3Q/je6LqYXPLUjJhBZiEl+KWMK11qotlOibllTtr/Pll8dWlsmqWnFM2StYP5vTzFowEiKzmah85DPOcaM2tP3L5KYrmeOUBUtOVmxAIBVlBQCPTuguaS9L3KWIlDEI2WJvK38Vx0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ipZWExZw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7058C4CEC3;
+	Mon, 28 Oct 2024 06:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098361;
-	bh=5MMxQU0/BqZz5OrG/7nKrc44FDWoGmpUOTOUlaRXS7M=;
+	s=korg; t=1730097768;
+	bh=svvvEhcpGywSLI/LXc5481SikhakX6gu4dgZIAMhlLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vm5iD2a9m0RsTmFmKZsfirfUyz5V7ycKN8AJkXvRHdMmFEA3lBLFl4Usi0mhk8kq7
-	 tBZQtZsvwfhD89VzwTO7L3N6NmRB51pznoyFsmegaCqdkGuSQ/jvo3NLHMFfhYo7lD
-	 VtnmNHEQkFgpR5fRd7l0pZPOHQUO+flERwmNCb/Q=
+	b=ipZWExZwHV8s1i6own05/89sNGQk2uX8e9vOKdGSuEsPBhSeSIIG1dTIjuLqmOfO3
+	 WCKETu44vLBAcRC7XwNUkRpm4uOVZQNA2u4SBymeu6dO/D1WQ/lYZJxIrJIen6Mp7y
+	 gCQxnCbEMKvrFFkQWc7HKdALDCHVCeaTAOymYHtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Wang Hai <wanghai38@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 175/261] bpf: fix do_misc_fixups() for bpf_get_branch_snapshot()
+Subject: [PATCH 6.6 137/208] be2net: fix potential memory leak in be_xmit()
 Date: Mon, 28 Oct 2024 07:25:17 +0100
-Message-ID: <20241028062316.387859903@linuxfoundation.org>
+Message-ID: <20241028062310.011277186@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit 9806f283140ef3e4d259b7646bd8c66026bbaac5 ]
+[ Upstream commit e4dd8bfe0f6a23acd305f9b892c00899089bd621 ]
 
-We need `goto next_insn;` at the end of patching instead of `continue;`.
-It currently works by accident by making verifier re-process patched
-instructions.
+The be_xmit() returns NETDEV_TX_OK without freeing skb
+in case of be_xmit_enqueue() fails, add dev_kfree_skb_any() to fix it.
 
-Reported-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Fixes: 314a53623cd4 ("bpf: inline bpf_get_branch_snapshot() helper")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Acked-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Link: https://lore.kernel.org/r/20241023161916.2896274-1-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 760c295e0e8d ("be2net: Support for OS2BMC.")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Message-ID: <20241015144802.12150-1-wanghai38@huawei.com>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/emulex/benet/be_main.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 62efe7f0aa46f..77b60896200ef 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -20675,7 +20675,7 @@ static int do_misc_fixups(struct bpf_verifier_env *env)
- 			delta    += cnt - 1;
- 			env->prog = prog = new_prog;
- 			insn      = new_prog->insnsi + i + delta;
--			continue;
-+			goto next_insn;
- 		}
+diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
+index ad862ed7888ac..9d425ece33fd2 100644
+--- a/drivers/net/ethernet/emulex/benet/be_main.c
++++ b/drivers/net/ethernet/emulex/benet/be_main.c
+@@ -1381,10 +1381,8 @@ static netdev_tx_t be_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 	be_get_wrb_params_from_skb(adapter, skb, &wrb_params);
  
- 		/* Implement bpf_kptr_xchg inline */
+ 	wrb_cnt = be_xmit_enqueue(adapter, txo, skb, &wrb_params);
+-	if (unlikely(!wrb_cnt)) {
+-		dev_kfree_skb_any(skb);
+-		goto drop;
+-	}
++	if (unlikely(!wrb_cnt))
++		goto drop_skb;
+ 
+ 	/* if os2bmc is enabled and if the pkt is destined to bmc,
+ 	 * enqueue the pkt a 2nd time with mgmt bit set.
+@@ -1393,7 +1391,7 @@ static netdev_tx_t be_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 		BE_WRB_F_SET(wrb_params.features, OS2BMC, 1);
+ 		wrb_cnt = be_xmit_enqueue(adapter, txo, skb, &wrb_params);
+ 		if (unlikely(!wrb_cnt))
+-			goto drop;
++			goto drop_skb;
+ 		else
+ 			skb_get(skb);
+ 	}
+@@ -1407,6 +1405,8 @@ static netdev_tx_t be_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 		be_xmit_flush(adapter, txo);
+ 
+ 	return NETDEV_TX_OK;
++drop_skb:
++	dev_kfree_skb_any(skb);
+ drop:
+ 	tx_stats(txo)->tx_drv_drops++;
+ 	/* Flush the already enqueued tx requests */
 -- 
 2.43.0
 
