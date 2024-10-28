@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D711D9B25D1
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:35:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEADC9B27E5
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F32C280298
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:35:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94060286365
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB4418FC75;
-	Mon, 28 Oct 2024 06:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A18418E368;
+	Mon, 28 Oct 2024 06:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gooYz9PR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+y5XTnK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A94018FC67;
-	Mon, 28 Oct 2024 06:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8A62AF07;
+	Mon, 28 Oct 2024 06:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097247; cv=none; b=V6FowA8H/IjIR2xtv0WiZYjbaxB1xLN+E98nk9YI3ctjiMTUW+FOfcbOEgpJaYCZWpaQEoU4ISus9eIeoohfMu+eJMLLw8veGbdvrfrDE0HO1NF5ye7stlTD4u9qzCq0700gguMPfU+iLTtKyQw9OrUHQY8/tg/+SVDoj2OD31c=
+	t=1730098328; cv=none; b=mFRsYJVPTEGzI9iLZF7YdELLvxcXL3/u+b9bJ7jjbV+lsXh37GQXOaUvyTOPJ6HMIyBXiIfAB4KLvI6zbu0eJTQaHm4QzCZjGpQ2zxPFfE422COhz+ZRxZVAHOFhMyALJKtXnV5BNqNjikBQuOxIt4t9N5dGYM+Gx8mPsJfH988=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097247; c=relaxed/simple;
-	bh=uUOBnS7jSR/TUR4uQc5bnHOyPz1WPy1oeMHy6XGnr1s=;
+	s=arc-20240116; t=1730098328; c=relaxed/simple;
+	bh=mULpL3nNSjgqQHG2XX18wo4jW2prXaekUKb9JmtFiYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VbtKjLyiLJ6qrcRfnyalu9WXHX8ENY51M4It7xWfrutWmKjjBekeL0QcaGbB25ysdEqxAHU3TJ6HAqP2+p9AiiyrqVIJ8lORBqgiNHkNc1t3wJcIa4caYLfDK14vjKudrWmXZt9azL9EvpIQ/iSZsu3VRO6VrIok81mq7k5q/Pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gooYz9PR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0E9C4CEC7;
-	Mon, 28 Oct 2024 06:34:06 +0000 (UTC)
+	 MIME-Version; b=bbV94Kn556UQGaX4V5ssO7CITv3GrdE8wxrXbVCH34uKUS/cAEIOuD/Vba1m14jib7Lsf2QQ6AcCYYN+wc+4qfBf/bndLw2CST5ArHdq02Jm8jJA2SqJTMAMStptCixaxzdT2YUjRNibuHkQYrWtYXRE7fiG8yarDjd2AN47X+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+y5XTnK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F8B5C4CEC3;
+	Mon, 28 Oct 2024 06:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097247;
-	bh=uUOBnS7jSR/TUR4uQc5bnHOyPz1WPy1oeMHy6XGnr1s=;
+	s=korg; t=1730098327;
+	bh=mULpL3nNSjgqQHG2XX18wo4jW2prXaekUKb9JmtFiYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gooYz9PRBtJlivVo+i3+Qjfl8kfs12W0CnKRw/OXAh7GI7t8QJeexQS03gdYvCnsP
-	 CMYNkQj7ci9cZNscOT5YITFr5K+8qRzWl80AS2BQFC1m1pNJpTnUEttf/1DEutEIjw
-	 9fcxMELU12BhXEs/7nDEyd290N3+0GaZdrjWOmJ8=
+	b=f+y5XTnKRIHCoeBCBeue9ZQJ4lysrbCnpLa6XnDtdmyfD9TMROhPW/9SX/OXpJali
+	 RcCu5ueHlGd1ba3HgknGL2uKMAIzJgcMek1QLBs3N5MxmCe1vQBocmbzJ7emE0vTis
+	 j6pEppitArdWGIspRmIDEON7mN/0/RP8WZ/WUtcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	Eyal Birger <eyal.birger@gmail.com>,
+	Antony Antony <antony.antony@secunet.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/137] smb: client: fix OOBs when building SMB2_IOCTL request
+Subject: [PATCH 6.11 142/261] xfrm: respect ip protocols rules criteria when performing dst lookups
 Date: Mon, 28 Oct 2024 07:24:44 +0100
-Message-ID: <20241028062300.043368747@linuxfoundation.org>
+Message-ID: <20241028062315.602193769@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Eyal Birger <eyal.birger@gmail.com>
 
-[ Upstream commit 1ab60323c5201bef25f2a3dc0ccc404d9aca77f1 ]
+[ Upstream commit b8469721034300bbb6dec5b4bf32492c95e16a0c ]
 
-When using encryption, either enforced by the server or when using
-'seal' mount option, the client will squash all compound request buffers
-down for encryption into a single iov in smb2_set_next_command().
+The series in the "fixes" tag added the ability to consider L4 attributes
+in routing rules.
 
-SMB2_ioctl_init() allocates a small buffer (448 bytes) to hold the
-SMB2_IOCTL request in the first iov, and if the user passes an input
-buffer that is greater than 328 bytes, smb2_set_next_command() will
-end up writing off the end of @rqst->iov[0].iov_base as shown below:
+The dst lookup on the outer packet of encapsulated traffic in the xfrm
+code was not adapted to this change, thus routing behavior that relies
+on L4 information is not respected.
 
-  mount.cifs //srv/share /mnt -o ...,seal
-  ln -s $(perl -e "print('a')for 1..1024") /mnt/link
+Pass the ip protocol information when performing dst lookups.
 
-  BUG: KASAN: slab-out-of-bounds in
-  smb2_set_next_command.cold+0x1d6/0x24c [cifs]
-  Write of size 4116 at addr ffff8881148fcab8 by task ln/859
-
-  CPU: 1 UID: 0 PID: 859 Comm: ln Not tainted 6.12.0-rc3 #1
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-  1.16.3-2.fc40 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x5d/0x80
-   ? smb2_set_next_command.cold+0x1d6/0x24c [cifs]
-   print_report+0x156/0x4d9
-   ? smb2_set_next_command.cold+0x1d6/0x24c [cifs]
-   ? __virt_addr_valid+0x145/0x310
-   ? __phys_addr+0x46/0x90
-   ? smb2_set_next_command.cold+0x1d6/0x24c [cifs]
-   kasan_report+0xda/0x110
-   ? smb2_set_next_command.cold+0x1d6/0x24c [cifs]
-   kasan_check_range+0x10f/0x1f0
-   __asan_memcpy+0x3c/0x60
-   smb2_set_next_command.cold+0x1d6/0x24c [cifs]
-   smb2_compound_op+0x238c/0x3840 [cifs]
-   ? kasan_save_track+0x14/0x30
-   ? kasan_save_free_info+0x3b/0x70
-   ? vfs_symlink+0x1a1/0x2c0
-   ? do_symlinkat+0x108/0x1c0
-   ? __pfx_smb2_compound_op+0x10/0x10 [cifs]
-   ? kmem_cache_free+0x118/0x3e0
-   ? cifs_get_writable_path+0xeb/0x1a0 [cifs]
-   smb2_get_reparse_inode+0x423/0x540 [cifs]
-   ? __pfx_smb2_get_reparse_inode+0x10/0x10 [cifs]
-   ? rcu_is_watching+0x20/0x50
-   ? __kmalloc_noprof+0x37c/0x480
-   ? smb2_create_reparse_symlink+0x257/0x490 [cifs]
-   ? smb2_create_reparse_symlink+0x38f/0x490 [cifs]
-   smb2_create_reparse_symlink+0x38f/0x490 [cifs]
-   ? __pfx_smb2_create_reparse_symlink+0x10/0x10 [cifs]
-   ? find_held_lock+0x8a/0xa0
-   ? hlock_class+0x32/0xb0
-   ? __build_path_from_dentry_optional_prefix+0x19d/0x2e0 [cifs]
-   cifs_symlink+0x24f/0x960 [cifs]
-   ? __pfx_make_vfsuid+0x10/0x10
-   ? __pfx_cifs_symlink+0x10/0x10 [cifs]
-   ? make_vfsgid+0x6b/0xc0
-   ? generic_permission+0x96/0x2d0
-   vfs_symlink+0x1a1/0x2c0
-   do_symlinkat+0x108/0x1c0
-   ? __pfx_do_symlinkat+0x10/0x10
-   ? strncpy_from_user+0xaa/0x160
-   __x64_sys_symlinkat+0xb9/0xf0
-   do_syscall_64+0xbb/0x1d0
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  RIP: 0033:0x7f08d75c13bb
-
-Reported-by: David Howells <dhowells@redhat.com>
-Fixes: e77fe73c7e38 ("cifs: we can not use small padding iovs together with encryption")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: a25724b05af0 ("Merge branch 'fib_rules-support-sport-dport-and-proto-match'")
+Signed-off-by: Eyal Birger <eyal.birger@gmail.com>
+Tested-by: Antony Antony <antony.antony@secunet.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2pdu.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ include/net/xfrm.h      |  2 ++
+ net/ipv4/xfrm4_policy.c |  2 ++
+ net/ipv6/xfrm6_policy.c |  3 +++
+ net/xfrm/xfrm_policy.c  | 15 +++++++++++++++
+ 4 files changed, 22 insertions(+)
 
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 992ac7d20e5eb..9975711236b26 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -3131,6 +3131,15 @@ SMB2_ioctl_init(struct cifs_tcon *tcon, struct TCP_Server_Info *server,
- 		return rc;
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index 0f49f70dfd141..2a98d14b036fa 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -356,6 +356,8 @@ struct xfrm_dst_lookup_params {
+ 	xfrm_address_t *saddr;
+ 	xfrm_address_t *daddr;
+ 	u32 mark;
++	__u8 ipproto;
++	union flowi_uli uli;
+ };
  
- 	if (indatalen) {
-+		unsigned int len;
+ struct net_device;
+diff --git a/net/ipv4/xfrm4_policy.c b/net/ipv4/xfrm4_policy.c
+index ac1a28ef0c560..7e1c2faed1ff9 100644
+--- a/net/ipv4/xfrm4_policy.c
++++ b/net/ipv4/xfrm4_policy.c
+@@ -30,6 +30,8 @@ static struct dst_entry *__xfrm4_dst_lookup(struct flowi4 *fl4,
+ 	fl4->flowi4_mark = params->mark;
+ 	if (params->saddr)
+ 		fl4->saddr = params->saddr->a4;
++	fl4->flowi4_proto = params->ipproto;
++	fl4->uli = params->uli;
+ 
+ 	rt = __ip_route_output_key(params->net, fl4);
+ 	if (!IS_ERR(rt))
+diff --git a/net/ipv6/xfrm6_policy.c b/net/ipv6/xfrm6_policy.c
+index fc3f5eec68985..1f19b6f14484c 100644
+--- a/net/ipv6/xfrm6_policy.c
++++ b/net/ipv6/xfrm6_policy.c
+@@ -37,6 +37,9 @@ static struct dst_entry *xfrm6_dst_lookup(const struct xfrm_dst_lookup_params *p
+ 	if (params->saddr)
+ 		memcpy(&fl6.saddr, params->saddr, sizeof(fl6.saddr));
+ 
++	fl6.flowi4_proto = params->ipproto;
++	fl6.uli = params->uli;
 +
-+		if (WARN_ON_ONCE(smb3_encryption_required(tcon) &&
-+				 (check_add_overflow(total_len - 1,
-+						     ALIGN(indatalen, 8), &len) ||
-+				  len > MAX_CIFS_SMALL_BUFFER_SIZE))) {
-+			cifs_small_buf_release(req);
-+			return -EIO;
+ 	dst = ip6_route_output(params->net, NULL, &fl6);
+ 
+ 	err = dst->error;
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index 1025b5b3a1dd6..d30a22cd5c621 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -312,6 +312,21 @@ static inline struct dst_entry *xfrm_dst_lookup(struct xfrm_state *x,
+ 	params.tos = tos;
+ 	params.oif = oif;
+ 	params.mark = mark;
++	params.ipproto = x->id.proto;
++	if (x->encap) {
++		switch (x->encap->encap_type) {
++		case UDP_ENCAP_ESPINUDP:
++			params.ipproto = IPPROTO_UDP;
++			params.uli.ports.sport = x->encap->encap_sport;
++			params.uli.ports.dport = x->encap->encap_dport;
++			break;
++		case TCP_ENCAP_ESPINTCP:
++			params.ipproto = IPPROTO_TCP;
++			params.uli.ports.sport = x->encap->encap_sport;
++			params.uli.ports.dport = x->encap->encap_dport;
++			break;
 +		}
- 		/*
- 		 * indatalen is usually small at a couple of bytes max, so
- 		 * just allocate through generic pool
++	}
+ 
+ 	dst = __xfrm_dst_lookup(family, &params);
+ 
 -- 
 2.43.0
 
