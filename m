@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B02D09B26A9
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:41:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BD789B279F
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:49:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C0D61F22E7E
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E4CCB20B09
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:49:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AFE318E368;
-	Mon, 28 Oct 2024 06:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43ECC18E35B;
+	Mon, 28 Oct 2024 06:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TqP7jNmi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pv6h0zeV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0E515B10D;
-	Mon, 28 Oct 2024 06:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F392E18A922;
+	Mon, 28 Oct 2024 06:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097694; cv=none; b=HutvcvgYDVszgdWXnxn3WimsE1z8rM8U0kfYz5SEdoXyv6lQOakoAjQBLYE0v530fE66ekeao53nwQTYfoDWyraf9n9twyilTPQt2eLt/fp3RPAobH+9h51VBK5ydTXDyvBt7BsBysyZHwi1QcWljXKyemT4rb96uBgaPAJ4FPg=
+	t=1730098187; cv=none; b=hdXY7gZ2EFbriLWeRR4UeR3UxHWPgB0X7IpgvihJcDJLFK+HgVtqHzz07fxEvho3NmCCA47lQbRL7S+4m7RqxhfTSh72gwLVKtAgDSlF38k1l9sN3ayxf/E0+rsbm2AehKyCBunPL6kSEY2aRbg1IbDEZnuFaD2uzGICL1WF2UA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097694; c=relaxed/simple;
-	bh=WuX0ZQIua3u+qJOF2b2beFng56v0BMtMRS3UQJPxmKk=;
+	s=arc-20240116; t=1730098187; c=relaxed/simple;
+	bh=CbgIcgyhUDY49IDNYM0cT5k7Rp43ZyN/Lvz5oTzT9Yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tLt78Tgk8mrBQBvOwOZEci25aq6clWBp+Q86+a0aLpi5z4KT13FRO8RRExT8LcND3uVki7PVna6zPNdw0fn9f+WUlYwNkVuycnl2SxPzdkPoix2ZGdFhqo1iUBrlUAqHneHU0yK1kqYw1NPmxzLkYdnh6DrAgk7nJJlPFExS5wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TqP7jNmi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF825C4CEC3;
-	Mon, 28 Oct 2024 06:41:33 +0000 (UTC)
+	 MIME-Version; b=qWcU57B6DlDw9/5r2yfaaJnSoiP0fKK6OJztkFo2ESjf+GBaRw5FdYQ13XhPXRPRP6wCOuI2kWy7CUoWWPBrArWo+Q8imBwvRcY2isa88bEak1MlhcbZFUhvBqvdd3p5McnV63L7z/Fi+lHJX9ut9qUlm3b8PLXwJ+n547c4K8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pv6h0zeV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B45C4CEC3;
+	Mon, 28 Oct 2024 06:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097694;
-	bh=WuX0ZQIua3u+qJOF2b2beFng56v0BMtMRS3UQJPxmKk=;
+	s=korg; t=1730098186;
+	bh=CbgIcgyhUDY49IDNYM0cT5k7Rp43ZyN/Lvz5oTzT9Yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TqP7jNmiWGkmA/ZoPYAY/QBEXHXtmZRIK4FjfiAFAqA6qx/REkhob8s+MoZ4UTQpj
-	 aYXQWakO58B9dtKUZy+Ng0tJyF+Kqmy05YYR6orlm+aFKoXUf+XFaDdTAOlMMJreOz
-	 Y7shS2kvypg2uB+W50QFUaDNPEfVPpukjh3Y23mE=
+	b=pv6h0zeVAyUIGvm4Aoh2FV6mUJsoa3FKaJFV4jGoDG/sNJPx9TJCpA/S7Or0dMB9e
+	 2nk6lvTEsNZma8i9bAnqSWW5SaHVflCN2FxbEPDp0YW3cvcTn+lnxq4Vc0liTqfUnk
+	 /CtY0py4F1OdDccI91IFjnQfEAD4CguwTCUZhiUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 060/208] irqchip/renesas-rzg2l: Align struct member names to tabs
+Subject: [PATCH 6.11 098/261] net/mlx5: Check for invalid vector index on EQ creation
 Date: Mon, 28 Oct 2024 07:24:00 +0100
-Message-ID: <20241028062308.134492519@linuxfoundation.org>
+Message-ID: <20241028062314.486835281@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Maher Sanalla <msanalla@nvidia.com>
 
-[ Upstream commit 02f6507640173addeeb3af035d2c6f0b3cff1567 ]
+[ Upstream commit d4f25be27e3ef7e23998fbd3dd4bff0602de7ae5 ]
 
-Align struct member names to tabs to follow the requirements from
-maintainer-tip file. 3 tabs were used at the moment as the next commits
-will add a new member which requires 3 tabs for a better view.
+Currently, mlx5 driver does not enforce vector index to be lower than
+the maximum number of supported completion vectors when requesting a
+new completion EQ. Thus, mlx5_comp_eqn_get() fails when trying to
+acquire an IRQ with an improper vector index.
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20231120111820.87398-4-claudiu.beznea.uj@bp.renesas.com
-Stable-dep-of: d038109ac1c6 ("irqchip/renesas-rzg2l: Fix missing put_device")
+To prevent the case above, enforce that vector index value is
+valid and lower than maximum in mlx5_comp_eqn_get() before handling the
+request.
+
+Fixes: f14c1a14e632 ("net/mlx5: Allocate completion EQs dynamically")
+Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-renesas-rzg2l.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/eq.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index ea4b921e5e158..3ea312a27492b 100644
---- a/drivers/irqchip/irq-renesas-rzg2l.c
-+++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -56,9 +56,9 @@
- #define TINT_EXTRACT_GPIOINT(x)         FIELD_GET(GENMASK(31, 16), (x))
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eq.c b/drivers/net/ethernet/mellanox/mlx5/core/eq.c
+index cb7e7e4104aff..99d9e8863bfd6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eq.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eq.c
+@@ -1080,6 +1080,12 @@ int mlx5_comp_eqn_get(struct mlx5_core_dev *dev, u16 vecidx, int *eqn)
+ 	struct mlx5_eq_comp *eq;
+ 	int ret = 0;
  
- struct rzg2l_irqc_priv {
--	void __iomem *base;
--	struct irq_fwspec fwspec[IRQC_NUM_IRQ];
--	raw_spinlock_t lock;
-+	void __iomem			*base;
-+	struct irq_fwspec		fwspec[IRQC_NUM_IRQ];
-+	raw_spinlock_t			lock;
- };
- 
- static struct rzg2l_irqc_priv *irq_data_to_priv(struct irq_data *data)
++	if (vecidx >= table->max_comp_eqs) {
++		mlx5_core_dbg(dev, "Requested vector index %u should be less than %u",
++			      vecidx, table->max_comp_eqs);
++		return -EINVAL;
++	}
++
+ 	mutex_lock(&table->comp_lock);
+ 	eq = xa_load(&table->comp_eqs, vecidx);
+ 	if (eq) {
 -- 
 2.43.0
 
