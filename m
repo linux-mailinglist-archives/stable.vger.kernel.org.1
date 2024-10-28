@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BA2F9B2771
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:48:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A37C99B265E
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C12E5B2126E
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:48:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68D1C2822EF
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2310A18DF80;
-	Mon, 28 Oct 2024 06:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60DC618F2D8;
+	Mon, 28 Oct 2024 06:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ycnP6Me2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNC6zNLB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5618837;
-	Mon, 28 Oct 2024 06:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C34418E74D;
+	Mon, 28 Oct 2024 06:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098092; cv=none; b=soItjfmWlM9quxEwHzOQZIwOYOW9iL4sQr6VKhC6U34Fu/b6Iwontv03q87GdzBP5EbXlP5vfkJ4v8h13yYYtCotJaP84f7MTzRaOm8+lxM4yDTMrpfO2XNWRr/uY7Jff3AEyYtyHv1oJs6OeuV6fWfmfH1R+fAB1pITgGy0rnU=
+	t=1730097535; cv=none; b=Az+M4r83cCPeWRdyMNu/5FPh8yG6l+coQOonlwSiyM1oxGiFlA2D/z/PRkypvz2akhlu7uVQOSjKppUpXW0eRuOLpUTouCfM1oqye22UIjWubGmlC8VlxribbzQL1r+EapEWi6Djn+q6DzqoNtPfkSdiLDCiZEbAg19OMvnVKUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098092; c=relaxed/simple;
-	bh=wenoaY4pVxLaCsImAI7KLiVvMF6lsdQ/rqXsg2h+b6M=;
+	s=arc-20240116; t=1730097535; c=relaxed/simple;
+	bh=1MyaD+0ZlNM6qnhtXDPiWbiMyx3l0Fv70FWcXJKim34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VlmdK4KUOvuOLoK4VVvUK9nLbejCT+HxWUjBtbfSEVe3GaUzJdS/Lh+l4yEAuAOutv6sc6pgFQKuUWUw7+PqKLjd5lvP9PXJ8rX2R5QBSp1oofG6HzsLgD1kL//NrNhJwf3/3lCb3qD+T1gDJRd0Kqn/QCTuDbm37bDMucLN1TU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ycnP6Me2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E5C8C4CEC3;
-	Mon, 28 Oct 2024 06:48:12 +0000 (UTC)
+	 MIME-Version; b=IDsiEImj2n9LsQp2j4HwQKW1poSeab9lt3wQeTQ+RLu1Y9HXGwair7MX0FF2JA9Jzd76t0pgiGskh9YU9FC2fcl5gFx2bqT5IKA5tzOzmVuQg4gvGSHvGZPPHrVo98zEzx4/UEBdEW+t6IBrWqpH5MeBCtSXEgvVWmujM9NwjFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNC6zNLB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD282C4CEC3;
+	Mon, 28 Oct 2024 06:38:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098092;
-	bh=wenoaY4pVxLaCsImAI7KLiVvMF6lsdQ/rqXsg2h+b6M=;
+	s=korg; t=1730097535;
+	bh=1MyaD+0ZlNM6qnhtXDPiWbiMyx3l0Fv70FWcXJKim34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ycnP6Me2VRHnarqhWxGpy09bYXWcICiN9FHACvAU9XIm3B2tA9u9so3tkWOa3b3w/
-	 2Rr6Z4YyJCv/6P56ImbIY6q17BUWOoQRVGlRpC/rapgxe1nf3zNjvh4NcQUtm+Wuez
-	 aFeoDpsPbuUbZ/EMn3eSQO4/HlPwC6lWD5HegePA=
+	b=lNC6zNLBRDUBV+5AYEU64WE/fCw+W24tK377W+3IXIS3IPr3qFE8HZ5b4sDN0N0k+
+	 csn+wzK8HcrdEpvdXTaY+DDjW8w3ziZeXdnnC2vG89MNduOizCLy/OYPIy/y7gqgIF
+	 gye1oY3MJYl2AITTkHbmzglZBj/LEom2ZpoVmDyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 074/261] drm/msm/dpu: Dont always set merge_3d pending flush
+Subject: [PATCH 6.6 036/208] RDMA/bnxt_re: Return more meaningful error
 Date: Mon, 28 Oct 2024 07:23:36 +0100
-Message-ID: <20241028062313.883873532@linuxfoundation.org>
+Message-ID: <20241028062307.546868335@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit 40dad89cb86ce824f2080441b2a6b7aedf695329 ]
+[ Upstream commit 98647df0178df215b8239c5c365537283b2852a6 ]
 
-Don't set the merge_3d pending flush bits if the mode_3d is
-BLEND_3D_NONE.
+When the HWRM command fails, driver currently returns -EFAULT(Bad
+address). This does not look correct.
 
-Always flushing merge_3d can cause timeout issues when there are
-multiple commits with concurrent writeback enabled.
+Modified to return -EIO(I/O error).
 
-This is because the video phys enc waits for the hw_ctl flush register
-to be completely cleared [1] in its wait_for_commit_done(), but the WB
-encoder always sets the merge_3d pending flush during each commit
-regardless of if the merge_3d is actually active.
-
-This means that the hw_ctl flush register will never be 0 when there are
-multiple CWB commits and the video phys enc will hit vblank timeout
-errors after the first CWB commit.
-
-[1] commit fe9df3f50c39 ("drm/msm/dpu: add real wait_for_commit_done()")
-
-Fixes: 3e79527a33a8 ("drm/msm/dpu: enable merge_3d support on sm8150/sm8250")
-Fixes: d7d0e73f7de3 ("drm/msm/dpu: introduce the dpu_encoder_phys_* for writeback")
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/619092/
-Link: https://lore.kernel.org/r/20241009-mode3d-fix-v1-1-c0258354fadc@quicinc.com
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Fixes: cc1ec769b87c ("RDMA/bnxt_re: Fixing the Control path command and response handling")
+Fixes: 65288a22ddd8 ("RDMA/bnxt_re: use shadow qd while posting non blocking rcfw command")
+Link: https://patch.msgid.link/r/1728373302-19530-5-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c | 5 ++++-
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c  | 5 ++++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-index ba8878d21cf0e..8864ace938e03 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-@@ -440,10 +440,12 @@ static void dpu_encoder_phys_vid_enable(struct dpu_encoder_phys *phys_enc)
- 	struct dpu_hw_ctl *ctl;
- 	const struct msm_format *fmt;
- 	u32 fmt_fourcc;
-+	u32 mode_3d;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+index 3ffaef0c26519..7294221b3316c 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+@@ -525,7 +525,7 @@ static int __bnxt_qplib_rcfw_send_message(struct bnxt_qplib_rcfw *rcfw,
+ 		/* failed with status */
+ 		dev_err(&rcfw->pdev->dev, "cmdq[%#x]=%#x status %#x\n",
+ 			cookie, opcode, evnt->status);
+-		rc = -EFAULT;
++		rc = -EIO;
+ 	}
  
- 	ctl = phys_enc->hw_ctl;
- 	fmt_fourcc = dpu_encoder_get_drm_fmt(phys_enc);
- 	fmt = mdp_get_format(&phys_enc->dpu_kms->base, fmt_fourcc, 0);
-+	mode_3d = dpu_encoder_helper_get_3d_blend_mode(phys_enc);
- 
- 	DPU_DEBUG_VIDENC(phys_enc, "\n");
- 
-@@ -466,7 +468,8 @@ static void dpu_encoder_phys_vid_enable(struct dpu_encoder_phys *phys_enc)
- 		goto skip_flush;
- 
- 	ctl->ops.update_pending_flush_intf(ctl, phys_enc->hw_intf->idx);
--	if (ctl->ops.update_pending_flush_merge_3d && phys_enc->hw_pp->merge_3d)
-+	if (mode_3d && ctl->ops.update_pending_flush_merge_3d &&
-+	    phys_enc->hw_pp->merge_3d)
- 		ctl->ops.update_pending_flush_merge_3d(ctl, phys_enc->hw_pp->merge_3d->idx);
- 
- 	if (ctl->ops.update_pending_flush_cdm && phys_enc->hw_cdm)
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
-index 882c717859cec..07035ab77b792 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
-@@ -275,6 +275,7 @@ static void _dpu_encoder_phys_wb_update_flush(struct dpu_encoder_phys *phys_enc)
- 	struct dpu_hw_pingpong *hw_pp;
- 	struct dpu_hw_cdm *hw_cdm;
- 	u32 pending_flush = 0;
-+	u32 mode_3d;
- 
- 	if (!phys_enc)
- 		return;
-@@ -283,6 +284,7 @@ static void _dpu_encoder_phys_wb_update_flush(struct dpu_encoder_phys *phys_enc)
- 	hw_pp = phys_enc->hw_pp;
- 	hw_ctl = phys_enc->hw_ctl;
- 	hw_cdm = phys_enc->hw_cdm;
-+	mode_3d = dpu_encoder_helper_get_3d_blend_mode(phys_enc);
- 
- 	DPU_DEBUG("[wb:%d]\n", hw_wb->idx - WB_0);
- 
-@@ -294,7 +296,8 @@ static void _dpu_encoder_phys_wb_update_flush(struct dpu_encoder_phys *phys_enc)
- 	if (hw_ctl->ops.update_pending_flush_wb)
- 		hw_ctl->ops.update_pending_flush_wb(hw_ctl, hw_wb->idx);
- 
--	if (hw_ctl->ops.update_pending_flush_merge_3d && hw_pp && hw_pp->merge_3d)
-+	if (mode_3d && hw_ctl->ops.update_pending_flush_merge_3d &&
-+	    hw_pp && hw_pp->merge_3d)
- 		hw_ctl->ops.update_pending_flush_merge_3d(hw_ctl,
- 				hw_pp->merge_3d->idx);
- 
+ 	return rc;
 -- 
 2.43.0
 
