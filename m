@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B049B276F
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:48:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A18869B265D
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93CD5B2125B
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:48:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D1BA1F21C80
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6DC818A922;
-	Mon, 28 Oct 2024 06:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5918C18E748;
+	Mon, 28 Oct 2024 06:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s7REGWcZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgXIvvD2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37A08837;
-	Mon, 28 Oct 2024 06:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F9318E74D;
+	Mon, 28 Oct 2024 06:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098090; cv=none; b=dQhD+nhIKZV7QiwYik1u8JpPEYYZ+yKlX2ZcmlTWSM+jUjiuYv3aolXaHyKYjw/4D9blg7bTm1TZjfVCxx6DdrmCS+jEyoLswSj5xjwqtm9/MSRjotL3zNi+Y5wmsJkEfdwN2Sn68/MDaFB2kjaJCVmYTicklWI6T55jTQIYHXI=
+	t=1730097533; cv=none; b=guL5CqN0Tp3J+XwNbJF1JcmTCuGdfn6azLSCF/3k7E5S1M/zV5dpEaPYwDIkYpBnBwTaU+Ne76HVPMX4WnkT29riegvK5qIJ+l8idLyki3UDeacMwVkyEpSpagTHgkoOjKHp4BAgrdOagWHNrfgCT5Fykt6M1XyMD8Nco0kaF8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098090; c=relaxed/simple;
-	bh=YyHjvEWTsByn7U1KgT+CmSarySK2q3NWgeoVo6qteqE=;
+	s=arc-20240116; t=1730097533; c=relaxed/simple;
+	bh=s/rByy9AX1GuWzCuUX/dYHFNw+rThpjgmkn2/moCBvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nNOMm+DiAoivY5tlLtlEBmGNfsoQgcztKt2y6gPK72jgIYgUkPEGHeqwl8TDpiyK1gFLQHyqbNKCE7SFa5GWeFdJNhDiNj+erv23wijjOuOdJ9dd9mQ9zjH16ogCc0cbaXuaWnTvO2UrHNo1NXhxG0v7ks/o7aaRFTjIgo9KpI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s7REGWcZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ADB4C4CEC3;
-	Mon, 28 Oct 2024 06:48:10 +0000 (UTC)
+	 MIME-Version; b=SunZ+6JpHg2bg5PwKyPPKgUa/w04MozKMvzblv0SC13suqpuRV2xKAuR5G1nrx/lSLNVUDPosqpO1kUelB3EiDzrGSqVdcJGvSrflqluocQ3MSWb3MzZ9sj+LQRAd1+KseZD74W2TyhPEFtpZz7xcV6AWh1ocJbV1QQmKcTUd9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgXIvvD2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71AE8C4CEC3;
+	Mon, 28 Oct 2024 06:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098090;
-	bh=YyHjvEWTsByn7U1KgT+CmSarySK2q3NWgeoVo6qteqE=;
+	s=korg; t=1730097532;
+	bh=s/rByy9AX1GuWzCuUX/dYHFNw+rThpjgmkn2/moCBvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s7REGWcZWWt9hgKhjr5nHjz6uZsVh/h2qKKAehP0dpAHDHMT+CdSThHXWXdh4tza2
-	 UXh1x/rV5SS25V4OlBzVIQSzF7ey0OqBtRlcb3n8fknlR2bt6aOZsNCVRNqZjUhkeI
-	 2cHLopQmsY2tFCUQKjMF+gpvn7h4IOTzOcnq1VwI=
+	b=vgXIvvD23buathuE6Xoquhe6R7k/AGJmeP2X6QrQh5IdleSjNbtAotmRe/OyVfoei
+	 Z9yhaKaUETiEw6Ds8RSvvJNkMs3OZmvEXIeSKBr8g15137nH4Sn9bZSfZZjmrWFtzR
+	 A+m2o9iIdmzWUz7PcXDWZ5JNjXbt4aMxWh9sq8ZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 073/261] irqchip/renesas-rzg2l: Fix missing put_device
+Subject: [PATCH 6.6 035/208] RDMA/bnxt_re: Fix out of bound check
 Date: Mon, 28 Oct 2024 07:23:35 +0100
-Message-ID: <20241028062313.858771596@linuxfoundation.org>
+Message-ID: <20241028062307.521784209@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit d038109ac1c6bf619473dda03a16a6de58170f7f ]
+[ Upstream commit a9e6e7443922ac0a48243c35d03834c96926bff1 ]
 
-rzg2l_irqc_common_init() calls of_find_device_by_node(), but the
-corresponding put_device() call is missing.  This also gets reported by
-make coccicheck.
+Driver exports pacing stats only on GenP5 and P7 adapters. But while
+parsing the pacing stats, driver has a check for "rdev->dbr_pacing".  This
+caused a trace when KASAN is enabled.
 
-Make use of the cleanup interfaces from cleanup.h to call into
-__free_put_device(), which in turn calls into put_device when leaving
-function rzg2l_irqc_common_init() and variable "dev" goes out of scope.
+BUG: KASAN: slab-out-of-bounds in bnxt_re_get_hw_stats+0x2b6a/0x2e00 [bnxt_re]
+Write of size 8 at addr ffff8885942a6340 by task modprobe/4809
 
-To prevent that the device is put on successful completion, assign NULL to
-"dev" to prevent __free_put_device() from calling into put_device() within
-the successful path.
-
-"make coccicheck" will still complain about missing put_device() calls,
-but those are false positives now.
-
-Fixes: 3fed09559cd8 ("irqchip: Add RZ/G2L IA55 Interrupt Controller driver")
-Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20241011172003.1242841-1-fabrizio.castro.jz@renesas.com
+Fixes: 8b6573ff3420 ("bnxt_re: Update the debug counters for doorbell pacing")
+Link: https://patch.msgid.link/r/1728373302-19530-3-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-renesas-rzg2l.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/bnxt_re/hw_counters.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index 693ff285ca2c6..99e27e01b0b19 100644
---- a/drivers/irqchip/irq-renesas-rzg2l.c
-+++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -8,6 +8,7 @@
-  */
+diff --git a/drivers/infiniband/hw/bnxt_re/hw_counters.c b/drivers/infiniband/hw/bnxt_re/hw_counters.c
+index 128651c015956..1e63f80917483 100644
+--- a/drivers/infiniband/hw/bnxt_re/hw_counters.c
++++ b/drivers/infiniband/hw/bnxt_re/hw_counters.c
+@@ -366,7 +366,7 @@ int bnxt_re_ib_get_hw_stats(struct ib_device *ibdev,
+ 				goto done;
+ 			}
+ 		}
+-		if (rdev->pacing.dbr_pacing)
++		if (rdev->pacing.dbr_pacing && bnxt_qplib_is_chip_gen_p5_p7(rdev->chip_ctx))
+ 			bnxt_re_copy_db_pacing_stats(rdev, stats);
+ 	}
  
- #include <linux/bitfield.h>
-+#include <linux/cleanup.h>
- #include <linux/clk.h>
- #include <linux/err.h>
- #include <linux/io.h>
-@@ -530,12 +531,12 @@ static int rzg2l_irqc_parse_interrupts(struct rzg2l_irqc_priv *priv,
- static int rzg2l_irqc_common_init(struct device_node *node, struct device_node *parent,
- 				  const struct irq_chip *irq_chip)
- {
-+	struct platform_device *pdev = of_find_device_by_node(node);
-+	struct device *dev __free(put_device) = pdev ? &pdev->dev : NULL;
- 	struct irq_domain *irq_domain, *parent_domain;
--	struct platform_device *pdev;
- 	struct reset_control *resetn;
- 	int ret;
- 
--	pdev = of_find_device_by_node(node);
- 	if (!pdev)
- 		return -ENODEV;
- 
-@@ -591,6 +592,17 @@ static int rzg2l_irqc_common_init(struct device_node *node, struct device_node *
- 
- 	register_syscore_ops(&rzg2l_irqc_syscore_ops);
- 
-+	/*
-+	 * Prevent the cleanup function from invoking put_device by assigning
-+	 * NULL to dev.
-+	 *
-+	 * make coccicheck will complain about missing put_device calls, but
-+	 * those are false positives, as dev will be automatically "put" via
-+	 * __free_put_device on the failing path.
-+	 * On the successful path we don't actually want to "put" dev.
-+	 */
-+	dev = NULL;
-+
- 	return 0;
- 
- pm_put:
 -- 
 2.43.0
 
