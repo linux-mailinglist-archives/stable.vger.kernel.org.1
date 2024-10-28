@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-88621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA2BF9B26C4
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:42:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 045EA9B25CF
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:35:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55DDF1F23632
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:42:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E06C1F21BD8
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C36918E743;
-	Mon, 28 Oct 2024 06:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51DD318EFF3;
+	Mon, 28 Oct 2024 06:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BU8JyASK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgnCQjGf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1880515B10D;
-	Mon, 28 Oct 2024 06:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1F918C03D;
+	Mon, 28 Oct 2024 06:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097748; cv=none; b=izm96m+QrIunKa1kYcIXM0kFtH0A5FDwgSPxr8zTBMaZimmdmqksLRsQg9u6ZQGzePBMvCQ9QPUjBk61zidRgF0+A9CZBKW+H9L4melvBO4q/XTAIzFU6esKfhxpMwP9CPmzkdb15DGzBWyW4x0sdICHMvF9DP7p3X49EjTKc4Q=
+	t=1730097243; cv=none; b=Fz3FZ2sTVYPb2lbnNeW26LDZEmhtWIqmN+dvOjRtBVCHjRj8Cxyzpyhec5guLl+SHP+aYvcQfFapzFvOPzvDbNf7893UfpJtBktcZWFkzkkq0tuazDuvXyq7/aoKVlv118Gb5RjaBG5SECsI1Y5pnqqaMKb/FY78k5BtzjokSkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097748; c=relaxed/simple;
-	bh=/1vty4VzPcd/S9L1pd893Vm+3TlS3d0RbYxVS/mPCtE=;
+	s=arc-20240116; t=1730097243; c=relaxed/simple;
+	bh=OgrRwVJduXMH0kPanKrVzVr/QDjxPqubsyZXJfYlWEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lXwMSVdHdTldMLwf9vGkvyXizqsFtkOLQYPIcHLWnJ7s8cH9StNoI/9BHlYK3t/chKtIfOsvqlvZO8BPsMLbHSo0rb5Ry+hTgzKrhhGa6ItBA33Mp2JxlnHxyshOAGrUZ9zfl4gIbWGcmvVlz3IHn+NQjhirYoQZy562D4zw8gA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BU8JyASK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0E0C4CEC3;
-	Mon, 28 Oct 2024 06:42:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BjYzCm/mWkyJ8nifz7dHA78HMzOaJrF3DCtuvnghD1smdRe7FzQrwVl1odqSaJVbxnl+P+ITh71hZ/30FCKpzLbVbc4zrgsw+gr9wS4VqoEI3AHYYd9ZzUIgPwj+6X2IHCysKHt6dwfs0SJ3VTOZXgQ1Udj2OnhIuc9FM/CwgKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgnCQjGf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4E8C4CEC7;
+	Mon, 28 Oct 2024 06:34:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097748;
-	bh=/1vty4VzPcd/S9L1pd893Vm+3TlS3d0RbYxVS/mPCtE=;
+	s=korg; t=1730097242;
+	bh=OgrRwVJduXMH0kPanKrVzVr/QDjxPqubsyZXJfYlWEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BU8JyASKnpt0s0qgYyZFrfEcCOqj/RPRgnM6Vo0cUZCHQkbWjqpRrgVrSdZifJKQc
-	 dDsP3i4a99EMeBN7hTCEETMUqQA1GbPWmpYQICHeIXd+K/Cfq1DJu2eqgJ0Y/AcFHC
-	 IFrh9FJflu/Pke16zPBUAXa7rRl4UbEBHROiG2E4=
+	b=MgnCQjGfw1iNeqdu0z7DzLS2CdSU6Q4Bw6/b4eHH8w0o127thuc5yMDMBMJA8r7L2
+	 W5ZLrAzrd0TUVtOcoGYBaAM3PzmV6jgMVCyhwBYQKnVJijL3qvKdm70TqeNA4mJuC3
+	 MgpAS2HNtKIcJtQ899fB+mWYfsUnIpOvXvEOrr4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Gruber <jimmyjgruber@gmail.com>,
-	Yadwinder Singh <yadi.brar01@gmail.com>,
-	Jaswinder Singh <jaswinder.singh@linaro.org>,
-	Ruslan Bilovol <ruslan.bilovol@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Paul Barker <paul.barker.ct@bp.renesas.com>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 102/208] usb: gadget: f_uac2: Replace snprintf() with the safer scnprintf() variant
+Subject: [PATCH 6.1 045/137] net: ravb: Only advertise Rx/Tx timestamps if hardware supports it
 Date: Mon, 28 Oct 2024 07:24:42 +0100
-Message-ID: <20241028062309.171191072@linuxfoundation.org>
+Message-ID: <20241028062259.986112302@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee Jones <lee@kernel.org>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-[ Upstream commit 60034e0aedf507888c4a880f57011bb7f5d7700c ]
+[ Upstream commit 126e799602f45e9ce1ded03ee9eadda68bf470e0 ]
 
-There is a general misunderstanding amongst engineers that {v}snprintf()
-returns the length of the data *actually* encoded into the destination
-array.  However, as per the C99 standard {v}snprintf() really returns
-the length of the data that *would have been* written if there were
-enough space for it.  This misunderstanding has led to buffer-overruns
-in the past.  It's generally considered safer to use the {v}scnprintf()
-variants in their place (or even sprintf() in simple cases).  So let's
-do that.
+Recent work moving the reporting of Rx software timestamps to the core
+[1] highlighted an issue where hardware time stamping was advertised
+for the platforms where it is not supported.
 
-Link: https://lwn.net/Articles/69419/
-Link: https://github.com/KSPP/linux/issues/105
-Cc: James Gruber <jimmyjgruber@gmail.com>
-Cc: Yadwinder Singh <yadi.brar01@gmail.com>
-Cc: Jaswinder Singh <jaswinder.singh@linaro.org>
-Cc: Ruslan Bilovol <ruslan.bilovol@gmail.com>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/20231213164246.1021885-4-lee@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 9499327714de ("usb: gadget: f_uac2: fix return value for UAC2_ATTRIBUTE_STRING store")
+Fix this by covering advertising support for hardware timestamps only if
+the hardware supports it. Due to the Tx implementation in RAVB software
+Tx timestamping is also only considered if the hardware supports
+hardware timestamps. This should be addressed in future, but this fix
+only reflects what the driver currently implements.
+
+1. Commit 277901ee3a26 ("ravb: Remove setting of RX software timestamp")
+
+Fixes: 7e09a052dc4e ("ravb: Exclude gPTP feature support for RZ/G2L")
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Paul Barker <paul.barker.ct@bp.renesas.com>
+Tested-by: Paul Barker <paul.barker.ct@bp.renesas.com>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://patch.msgid.link/20241014124343.3875285-1-niklas.soderlund+renesas@ragnatech.se
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_uac2.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 25 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/f_uac2.c b/drivers/usb/gadget/function/f_uac2.c
-index 0219cd79493a7..55a4f07bc9cc1 100644
---- a/drivers/usb/gadget/function/f_uac2.c
-+++ b/drivers/usb/gadget/function/f_uac2.c
-@@ -2042,7 +2042,7 @@ static ssize_t f_uac2_opts_##name##_show(struct config_item *item,	\
- 	int result;							\
- 									\
- 	mutex_lock(&opts->lock);					\
--	result = snprintf(page, sizeof(opts->name), "%s", opts->name);	\
-+	result = scnprintf(page, sizeof(opts->name), "%s", opts->name);	\
- 	mutex_unlock(&opts->lock);					\
- 									\
- 	return result;							\
-@@ -2060,7 +2060,7 @@ static ssize_t f_uac2_opts_##name##_store(struct config_item *item,	\
- 		goto end;						\
- 	}								\
- 									\
--	ret = snprintf(opts->name, min(sizeof(opts->name), len),	\
-+	ret = scnprintf(opts->name, min(sizeof(opts->name), len),	\
- 			"%s", page);					\
- 									\
- end:									\
-@@ -2178,7 +2178,7 @@ static struct usb_function_instance *afunc_alloc_inst(void)
- 	opts->req_number = UAC2_DEF_REQ_NUM;
- 	opts->fb_max = FBACK_FAST_MAX;
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index 96467b8d48b00..705010ea1d568 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1689,20 +1689,19 @@ static int ravb_get_ts_info(struct net_device *ndev,
+ 	struct ravb_private *priv = netdev_priv(ndev);
+ 	const struct ravb_hw_info *hw_info = priv->info;
  
--	snprintf(opts->function_name, sizeof(opts->function_name), "Source/Sink");
-+	scnprintf(opts->function_name, sizeof(opts->function_name), "Source/Sink");
+-	info->so_timestamping =
+-		SOF_TIMESTAMPING_TX_SOFTWARE |
+-		SOF_TIMESTAMPING_TX_HARDWARE |
+-		SOF_TIMESTAMPING_RX_HARDWARE |
+-		SOF_TIMESTAMPING_RAW_HARDWARE;
+-	info->tx_types = (1 << HWTSTAMP_TX_OFF) | (1 << HWTSTAMP_TX_ON);
+-	info->rx_filters =
+-		(1 << HWTSTAMP_FILTER_NONE) |
+-		(1 << HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
+-		(1 << HWTSTAMP_FILTER_ALL);
+-	if (hw_info->gptp || hw_info->ccc_gac)
++	if (hw_info->gptp || hw_info->ccc_gac) {
++		info->so_timestamping =
++			SOF_TIMESTAMPING_TX_SOFTWARE |
++			SOF_TIMESTAMPING_TX_HARDWARE |
++			SOF_TIMESTAMPING_RX_HARDWARE |
++			SOF_TIMESTAMPING_RAW_HARDWARE;
++		info->tx_types = (1 << HWTSTAMP_TX_OFF) | (1 << HWTSTAMP_TX_ON);
++		info->rx_filters =
++			(1 << HWTSTAMP_FILTER_NONE) |
++			(1 << HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
++			(1 << HWTSTAMP_FILTER_ALL);
+ 		info->phc_index = ptp_clock_index(priv->ptp.clock);
+-	else
+-		info->phc_index = 0;
++	}
  
- 	return &opts->func_inst;
+ 	return 0;
  }
 -- 
 2.43.0
