@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820009B281F
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:54:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 685269B270B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E3511F21A91
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:54:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 287C8282176
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB8918E77D;
-	Mon, 28 Oct 2024 06:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF1B15B10D;
+	Mon, 28 Oct 2024 06:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wugi5fyT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/Jbjf+7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE20A2AF07;
-	Mon, 28 Oct 2024 06:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4402C697;
+	Mon, 28 Oct 2024 06:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098451; cv=none; b=V8iAQ4fg1lN5b3xYcPGh/fRfpu+tkYOLdGL6w/0erppf2/qSaDdyI2wXVPmmhzB9H+PhSNvZ2SWDY36OoqsVTBK6FENeiPg4V5M5CDrIQHSWDuoFgPzE45UIH/Z9CqkbxxG8+XMn50f5SoUhRiL5jH5OtRY3fXXpB0vthcoj8rg=
+	t=1730097891; cv=none; b=NQZ2+6FaafgB4BTcpVE9BvIC9zaQk5arZKr4xXK/fIhlon3fekYCaKwYfYVX9Ql8Gj3bE8Nbns5SE3s6vEjMab8hylRisMTTMdhSUgX6gjdyw8UE7xSHgsPFKp3HPiRO99ZD/OA6meUK5JRwQmqkHt2F8P9WjzYiWBg8/4uF+d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098451; c=relaxed/simple;
-	bh=AzYby7oLct5q6iyS3pEQ9cLbkiHbl85xX2xQUmfZTCY=;
+	s=arc-20240116; t=1730097891; c=relaxed/simple;
+	bh=9EwzbaQIXvkxDkYaf4JTrAgVYysIMXEQovUfE7dpgzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PL7BW3faBIRd1Pqen00PtVRuBdpMYI96uDOh1b3dfASsfch1WziCviB9qtc6N+Jw8YI1I2YMqpmq6dBuoXB68Kh/Ej/SC9VxNr/pvNV4LjrToCTZ0XZsaqIjCybfibi26FC4Qp37UIOsOGcpWwx32JNHz9SacZSdSf+zPE+9bSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wugi5fyT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F0B4C4CECD;
-	Mon, 28 Oct 2024 06:54:10 +0000 (UTC)
+	 MIME-Version; b=aYau+dmgaxQMkCWRMXQVfHDQON4g3C33vpvviz/GfZ/atAKFRntQyFEPEugLS4SyJgqGAN/LjVb0BrqJXn/lT8KQOGJktvmoOnXyDdv68wi/ocIbz9LuGCwvyYlJdWWcEyQ+K+S7K+Vq7+9je6VaaJIRwmUd8lWHKRxCPi5eV+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/Jbjf+7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11ACC4CEC3;
+	Mon, 28 Oct 2024 06:44:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098450;
-	bh=AzYby7oLct5q6iyS3pEQ9cLbkiHbl85xX2xQUmfZTCY=;
+	s=korg; t=1730097891;
+	bh=9EwzbaQIXvkxDkYaf4JTrAgVYysIMXEQovUfE7dpgzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wugi5fyTz8GNQt+XsQpTOis4qjXbw3tyZ7DarVyaU70V+461aKGO59H0cMcstHIZF
-	 2DEo75/wXVkAdbq0Aoxd7zzcI/3LpQeIrPaBVjwUjSsrvA+QeVjlR7lBN4/M3qwpM3
-	 JGUSn/r1DcN3cTM+VXYe6ukO99PlCwSAelblMdRg=
+	b=V/Jbjf+7H/ROwjECZJaR3mv4l5Siq10HKtAznIiN3NAvuylLeEDKsOR9C/fN7jLkV
+	 F2byqnyYHKRrJnuqrD0boQUjn9NlOVfJw7AsVrN5nKBRU2GIxATji6htTQfbNLD4Yk
+	 hOPE3YpCtgcaCQhGxidZQ4poTLyTxPlaxILiNEvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Song Liu <song@kernel.org>,
-	ValdikSS <iam@valdikss.org.ru>
-Subject: [PATCH 6.11 232/261] md/raid10: fix null ptr dereference in raid10_size()
+	Boris Tonofa <b.tonofa@ideco.ru>,
+	Petr Vaganov <p.vaganov@ideco.ru>,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 6.6 194/208] xfrm: fix one more kernel-infoleak in algo dumping
 Date: Mon, 28 Oct 2024 07:26:14 +0100
-Message-ID: <20241028062317.930439281@linuxfoundation.org>
+Message-ID: <20241028062311.410612158@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Petr Vaganov <p.vaganov@ideco.ru>
 
-commit 825711e00117fc686ab89ac36a9a7b252dc349c6 upstream.
+commit 6889cd2a93e1e3606b3f6e958aa0924e836de4d2 upstream.
 
-In raid10_run() if raid10_set_queue_limits() succeed, the return value
-is set to zero, and if following procedures failed raid10_run() will
-return zero while mddev->private is still NULL, causing null ptr
-dereference in raid10_size().
+During fuzz testing, the following issue was discovered:
 
-Fix the problem by only overwrite the return value if
-raid10_set_queue_limits() failed.
+BUG: KMSAN: kernel-infoleak in _copy_to_iter+0x598/0x2a30
+ _copy_to_iter+0x598/0x2a30
+ __skb_datagram_iter+0x168/0x1060
+ skb_copy_datagram_iter+0x5b/0x220
+ netlink_recvmsg+0x362/0x1700
+ sock_recvmsg+0x2dc/0x390
+ __sys_recvfrom+0x381/0x6d0
+ __x64_sys_recvfrom+0x130/0x200
+ x64_sys_call+0x32c8/0x3cc0
+ do_syscall_64+0xd8/0x1c0
+ entry_SYSCALL_64_after_hwframe+0x79/0x81
 
-Fixes: 3d8466ba68d4 ("md/raid10: use the atomic queue limit update APIs")
+Uninit was stored to memory at:
+ copy_to_user_state_extra+0xcc1/0x1e00
+ dump_one_state+0x28c/0x5f0
+ xfrm_state_walk+0x548/0x11e0
+ xfrm_dump_sa+0x1e0/0x840
+ netlink_dump+0x943/0x1c40
+ __netlink_dump_start+0x746/0xdb0
+ xfrm_user_rcv_msg+0x429/0xc00
+ netlink_rcv_skb+0x613/0x780
+ xfrm_netlink_rcv+0x77/0xc0
+ netlink_unicast+0xe90/0x1280
+ netlink_sendmsg+0x126d/0x1490
+ __sock_sendmsg+0x332/0x3d0
+ ____sys_sendmsg+0x863/0xc30
+ ___sys_sendmsg+0x285/0x3e0
+ __x64_sys_sendmsg+0x2d6/0x560
+ x64_sys_call+0x1316/0x3cc0
+ do_syscall_64+0xd8/0x1c0
+ entry_SYSCALL_64_after_hwframe+0x79/0x81
+
+Uninit was created at:
+ __kmalloc+0x571/0xd30
+ attach_auth+0x106/0x3e0
+ xfrm_add_sa+0x2aa0/0x4230
+ xfrm_user_rcv_msg+0x832/0xc00
+ netlink_rcv_skb+0x613/0x780
+ xfrm_netlink_rcv+0x77/0xc0
+ netlink_unicast+0xe90/0x1280
+ netlink_sendmsg+0x126d/0x1490
+ __sock_sendmsg+0x332/0x3d0
+ ____sys_sendmsg+0x863/0xc30
+ ___sys_sendmsg+0x285/0x3e0
+ __x64_sys_sendmsg+0x2d6/0x560
+ x64_sys_call+0x1316/0x3cc0
+ do_syscall_64+0xd8/0x1c0
+ entry_SYSCALL_64_after_hwframe+0x79/0x81
+
+Bytes 328-379 of 732 are uninitialized
+Memory access of size 732 starts at ffff88800e18e000
+Data copied to user address 00007ff30f48aff0
+
+CPU: 2 PID: 18167 Comm: syz-executor.0 Not tainted 6.8.11 #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+
+Fixes copying of xfrm algorithms where some random
+data of the structure fields can end up in userspace.
+Padding in structures may be filled with random (possibly sensitve)
+data and should never be given directly to user-space.
+
+A similar issue was resolved in the commit
+8222d5910dae ("xfrm: Zero padding when dumping algos and encap")
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: c7a5899eb26e ("xfrm: redact SA secret with lockdown confidentiality")
 Cc: stable@vger.kernel.org
-Reported-and-tested-by: ValdikSS <iam@valdikss.org.ru>
-Closes: https://lore.kernel.org/all/0dd96820-fe52-4841-bc58-dbf14d6bfcc8@valdikss.org.ru/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20241009014914.1682037-1-yukuai1@huaweicloud.com
-Signed-off-by: Song Liu <song@kernel.org>
+Co-developed-by: Boris Tonofa <b.tonofa@ideco.ru>
+Signed-off-by: Boris Tonofa <b.tonofa@ideco.ru>
+Signed-off-by: Petr Vaganov <p.vaganov@ideco.ru>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid10.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/xfrm/xfrm_user.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -4055,9 +4055,12 @@ static int raid10_run(struct mddev *mdde
- 	}
- 
- 	if (!mddev_is_dm(conf->mddev)) {
--		ret = raid10_set_queue_limits(mddev);
--		if (ret)
-+		int err = raid10_set_queue_limits(mddev);
-+
-+		if (err) {
-+			ret = err;
- 			goto out_free_conf;
-+		}
- 	}
- 
- 	/* need to check that every block has at least one working mirror */
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -1098,7 +1098,9 @@ static int copy_to_user_auth(struct xfrm
+ 	if (!nla)
+ 		return -EMSGSIZE;
+ 	ap = nla_data(nla);
+-	memcpy(ap, auth, sizeof(struct xfrm_algo_auth));
++	strscpy_pad(ap->alg_name, auth->alg_name, sizeof(ap->alg_name));
++	ap->alg_key_len = auth->alg_key_len;
++	ap->alg_trunc_len = auth->alg_trunc_len;
+ 	if (redact_secret && auth->alg_key_len)
+ 		memset(ap->alg_key, 0, (auth->alg_key_len + 7) / 8);
+ 	else
 
 
 
