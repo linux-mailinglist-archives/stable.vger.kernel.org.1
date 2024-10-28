@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFF169B2564
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68B4A9B25FD
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86195281832
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 148C61F20ECE
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59FF518E03A;
-	Mon, 28 Oct 2024 06:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9CA18FC7F;
+	Mon, 28 Oct 2024 06:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+30jAii"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gu74W+St"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A8718CC1F;
-	Mon, 28 Oct 2024 06:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1BE18E34F;
+	Mon, 28 Oct 2024 06:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730096914; cv=none; b=c29G05dseYwUd5n/T5VUlbLuO7sYlI4Y4cz9W3tYY6lZjFogXac0FK8SoY7Ws0+wbEp1HQDFGo+8PEZCDvAhMjytDDRG5OXMZYN9BQdrbRKoXa9L/Q5lLE/MbvlH4IwOTEabS7w8HjIaSj+brE+q73mal10Podwbn+0QSIZZX1M=
+	t=1730097335; cv=none; b=Tkwg3E3UMyBqyHp/Cyhd/lMDNhNp2sy2JVfeQS0SdwRP04lRvlGp4dJQfHiQeVIgamG7vx3gEyV5PEvGqBiw7fjA0IJnSUDRgTSoP9gURc/Su4sm86U6qDaiGkr59mAf4SC9dVD7+G4/IBxrS2xavnpDZqLIiPV7RFus0RKCsvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730096914; c=relaxed/simple;
-	bh=1u+ad+wOOJ2o2Wdqczvg7icGXZ2V2Viw1bSG1QP4hzs=;
+	s=arc-20240116; t=1730097335; c=relaxed/simple;
+	bh=rEcYq3Pn7/iOgxuWQ09jTuhTX2Hfb3mB9CijSqSm3qA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lfAoZTjdIdm/BWWaNWk1Yay0m1nGAIAISqwrbY9CUEKZNdG1TrfdwO8HZP1r/aPSMyDEyS6Juz2wF1rPrcoN3rkEZekAh5M+NEgYPrAqxnr1c4gXs2Z9OcWpnFr0ZdmQZlqGmKMSi1UPPA+c5/Df6sU4DSgFR8VHbtV1UeTboEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+30jAii; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB8EC4CEC3;
-	Mon, 28 Oct 2024 06:28:33 +0000 (UTC)
+	 MIME-Version; b=sasTYHk3LWRkwbJwYKr3fxTluW6By/wC+NLYIbaGl3jiLWa7pVArFy082dRqSKDbhG6GNlVDydVFB5mYggcUNQgy+CJQiTXVrMORDGtdO7EA+pL+XQdbY9h5BLJbh/dZfjqyyl9T098ALfvzcd3uDDgAXiR9FagEqT2NuQklajo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gu74W+St; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89FF3C4CEC3;
+	Mon, 28 Oct 2024 06:35:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730096913;
-	bh=1u+ad+wOOJ2o2Wdqczvg7icGXZ2V2Viw1bSG1QP4hzs=;
+	s=korg; t=1730097334;
+	bh=rEcYq3Pn7/iOgxuWQ09jTuhTX2Hfb3mB9CijSqSm3qA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I+30jAiiwWEnQ6cwtUqMNECG+bkW5AzsZeCWx0h9W+ZCgGhXim1svtm/TxLfcFeea
-	 mnENimuBNp3f9eB+SOBhGBw+ojYr34Ffo1XaE5bdMyV0AAUemxwoJiSdLSjjcMDmgX
-	 oBE9ioB0yM756y7VdCAwgt4I/JZLKDyrepV8xH0s=
+	b=Gu74W+StFocjjFPH9pEeyA2VhjLC563X0H8oYQ27eSXeEdQXOcezmEolgu/E47piS
+	 OroRbHOkt4w3OJTaMfA5ljpPtGhiEzYGJhQzkZwWQOAQLbxheegqtAMp71TVisoI4B
+	 DVHWesf6CpuHRVepmQBAEgAMMandZIvaeRgtWyu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Leo Yan <leo.yan@arm.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 42/80] ASoC: codecs: lpass-rx-macro: add missing CDC_RX_BCL_VBAT_RF_PROC2 to default regs values
+Subject: [PATCH 6.1 085/137] tracing: Consider the NULL character when validating the event length
 Date: Mon, 28 Oct 2024 07:25:22 +0100
-Message-ID: <20241028062253.789340516@linuxfoundation.org>
+Message-ID: <20241028062301.107577084@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Klimov <alexey.klimov@linaro.org>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit e249786b2188107a7c50e7174d35f955a60988a1 ]
+[ Upstream commit 0b6e2e22cb23105fcb171ab92f0f7516c69c8471 ]
 
-CDC_RX_BCL_VBAT_RF_PROC1 is listed twice and its default value
-is 0x2a which is overwriten by its next occurence in rx_defaults[].
-The second one should be missing CDC_RX_BCL_VBAT_RF_PROC2 instead
-and its default value is expected 0x0.
+strlen() returns a string length excluding the null byte. If the string
+length equals to the maximum buffer length, the buffer will have no
+space for the NULL terminating character.
 
-Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-Link: https://patch.msgid.link/20240925043823.520218-2-alexey.klimov@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This commit checks this condition and returns failure for it.
+
+Link: https://lore.kernel.org/all/20241007144724.920954-1-leo.yan@arm.com/
+
+Fixes: dec65d79fd26 ("tracing/probe: Check event name length correctly")
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/lpass-rx-macro.c | 2 +-
+ kernel/trace/trace_probe.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/lpass-rx-macro.c b/sound/soc/codecs/lpass-rx-macro.c
-index 72a0db09c7131..ac195e3b8c46a 100644
---- a/sound/soc/codecs/lpass-rx-macro.c
-+++ b/sound/soc/codecs/lpass-rx-macro.c
-@@ -907,7 +907,7 @@ static const struct reg_default rx_defaults[] = {
- 	{ CDC_RX_BCL_VBAT_PK_EST2, 0x01 },
- 	{ CDC_RX_BCL_VBAT_PK_EST3, 0x40 },
- 	{ CDC_RX_BCL_VBAT_RF_PROC1, 0x2A },
--	{ CDC_RX_BCL_VBAT_RF_PROC1, 0x00 },
-+	{ CDC_RX_BCL_VBAT_RF_PROC2, 0x00 },
- 	{ CDC_RX_BCL_VBAT_TAC1, 0x00 },
- 	{ CDC_RX_BCL_VBAT_TAC2, 0x18 },
- 	{ CDC_RX_BCL_VBAT_TAC3, 0x18 },
+diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
+index eef9806bb9b14..ba48b5e270e1f 100644
+--- a/kernel/trace/trace_probe.c
++++ b/kernel/trace/trace_probe.c
+@@ -265,7 +265,7 @@ int traceprobe_parse_event_name(const char **pevent, const char **pgroup,
+ 		}
+ 		trace_probe_log_err(offset, NO_EVENT_NAME);
+ 		return -EINVAL;
+-	} else if (len > MAX_EVENT_NAME_LEN) {
++	} else if (len >= MAX_EVENT_NAME_LEN) {
+ 		trace_probe_log_err(offset, EVENT_TOO_LONG);
+ 		return -EINVAL;
+ 	}
 -- 
 2.43.0
 
