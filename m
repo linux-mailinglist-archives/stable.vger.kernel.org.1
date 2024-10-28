@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-88502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6F809B2642
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:38:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D65369B2759
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:47:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 632C91F21F57
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:38:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 811EB1F24899
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B8318E76F;
-	Mon, 28 Oct 2024 06:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F8E18EFDC;
+	Mon, 28 Oct 2024 06:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKg0Ikly"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xc52ne2e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA70D18D65C;
-	Mon, 28 Oct 2024 06:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F8E17109B;
+	Mon, 28 Oct 2024 06:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097478; cv=none; b=lG0KoE7QLzjOI++fU43wW5lQaKE5Y/F10g3GJ5EXZLpCYcyNayxgbcFNjgopBH79JbwGW3c+XwA26mQ8AqkcoBEegNfPDKiBp81RcwkXXtxPhjn2npc2IAheWoJPYi2YmF192yZBBZNELax99JJAb7+NqNyjpD8qCaczr+Wkxbc=
+	t=1730098038; cv=none; b=gl+TPzIIQnrXks+M5JkGP4HyjsD6VxdVo7JmRImGdbQ3ZS+tCF6Ctea32kcF+cgBLH/JYTrmRZUa7/t8tgG43acoM6ZgZv4gULiLku72HElRuNFnt9zSbbiTO0MSFhbtB+RRIT2aF2s29Dsd683XALHBYPGfG+Bpemk5rKW1ivI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097478; c=relaxed/simple;
-	bh=k435R9XfFJbb80XTiEnSovSjZLcKqrEsgjc+QwtMlos=;
+	s=arc-20240116; t=1730098038; c=relaxed/simple;
+	bh=FVuP/Y7d9gJd8MttiFF+6cksBFWbPjh9UzbqC/kspPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EsLZSP2u9/yEldDUhxs6QXyW8H7h8Lerkh6daxHYJd8jKETOvgUtUXtNzgv+bH2PsF9ZQWsMw4OzAFTlXPaFX0EmnCNJLoX9I2cyvGBNedc/GBES+C+3k8hpJRarpynC+RsR/jMcVtMVPv+J1+ig93nPWBe0TbTMNX7W0ntAaas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKg0Ikly; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B66C4CEC3;
-	Mon, 28 Oct 2024 06:37:58 +0000 (UTC)
+	 MIME-Version; b=AHNDMtUEgdceFiAl5vDD/sdRnIgY7p/9nU5X9hngFTtfBiuuuGQwEbTRmUCVXnNYTPwNETfaoABkhTqEhwBdLUYwgUUcUffhoHY+m/AHcyyySN6gvPLQvzdtz6GohDBaLbM1MFgsVNBbdeANI3OoyPqQTlWKUmjHQfD4OKsuroE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xc52ne2e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D38C4CEC3;
+	Mon, 28 Oct 2024 06:47:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097478;
-	bh=k435R9XfFJbb80XTiEnSovSjZLcKqrEsgjc+QwtMlos=;
+	s=korg; t=1730098038;
+	bh=FVuP/Y7d9gJd8MttiFF+6cksBFWbPjh9UzbqC/kspPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KKg0Iklydr2JB6jjNOf7HZ2V6nJAakP6gu+wKkSLJ2Z0XBgUsNoyARKu3oJp6Aw0K
-	 W5FAOnNbB/wLfPzIWJmliwKjlW4oeeuI/pzBxn1HZl8ofR+rF5x24Ai1MB219K6I+v
-	 Ft2HEqHbS97YE81RfKW7F6oIxnMMgDArE+Io523g=
+	b=Xc52ne2eOEAw7p4R154Odpw/7+Tc1kimOTALCzYwN0FSFYpmehbabYTJyhX7XrYnz
+	 Pc5xTIGNsohm9bSX33762qX1H4NxE0T1w+lyEUUu2H7l37RBb4ApTW/hxeNxk7pmnq
+	 Ok0+ENdzsvs7ELStJYK++E++mol4qOMXO7CO3syo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Martin Kletzander <nert.pinx@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Tony Luck <tony.luck@intel.com>,
+	Cong Yang <yangcong5@huaqin.corp-partner.google.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/208] x86/resctrl: Avoid overflow in MB settings in bw_validate()
+Subject: [PATCH 6.11 049/261] drm/panel: himax-hx83102: Adjust power and gamma to optimize brightness
 Date: Mon, 28 Oct 2024 07:23:11 +0100
-Message-ID: <20241028062306.935780692@linuxfoundation.org>
+Message-ID: <20241028062313.243338428@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Kletzander <nert.pinx@gmail.com>
+From: Cong Yang <yangcong5@huaqin.corp-partner.google.com>
 
-[ Upstream commit 2b5648416e47933939dc310c4ea1e29404f35630 ]
+[ Upstream commit fcf38bc321fbc87dfcd829f42e64e541f17599f7 ]
 
-The resctrl schemata file supports specifying memory bandwidth associated with
-the Memory Bandwidth Allocation (MBA) feature via a percentage (this is the
-default) or bandwidth in MiBps (when resctrl is mounted with the "mba_MBps"
-option).
+The current panel brightness is only 360 nit. Adjust the power and gamma to
+optimize the panel brightness. The brightness after adjustment is 390 nit.
 
-The allowed range for the bandwidth percentage is from
-/sys/fs/resctrl/info/MB/min_bandwidth to 100, using a granularity of
-/sys/fs/resctrl/info/MB/bandwidth_gran. The supported range for the MiBps
-bandwidth is 0 to U32_MAX.
-
-There are two issues with parsing of MiBps memory bandwidth:
-
-* The user provided MiBps is mistakenly rounded up to the granularity
-  that is unique to percentage input.
-
-* The user provided MiBps is parsed using unsigned long (thus accepting
-  values up to ULONG_MAX), and then assigned to u32 that could result in
-  overflow.
-
-Do not round up the MiBps value and parse user provided bandwidth as the u32
-it is intended to be. Use the appropriate kstrtou32() that can detect out of
-range values.
-
-Fixes: 8205a078ba78 ("x86/intel_rdt/mba_sc: Add schemata support")
-Fixes: 6ce1560d35f6 ("x86/resctrl: Switch over to the resctrl mbps_val list")
-Co-developed-by: Reinette Chatre <reinette.chatre@intel.com>
-Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
-Signed-off-by: Martin Kletzander <nert.pinx@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
+Fixes: 3179338750d8 ("drm/panel: himax-hx83102: Support for IVO t109nw41 MIPI-DSI panel")
+Signed-off-by: Cong Yang <yangcong5@huaqin.corp-partner.google.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241011020819.1254157-1-yangcong5@huaqin.corp-partner.google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/resctrl/ctrlmondata.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/panel/panel-himax-hx83102.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/ctrlmondata.c b/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
-index b44c487727d45..a701e7921ea5c 100644
---- a/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
-+++ b/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
-@@ -27,10 +27,10 @@
-  * hardware. The allocated bandwidth percentage is rounded to the next
-  * control step available on the hardware.
-  */
--static bool bw_validate(char *buf, unsigned long *data, struct rdt_resource *r)
-+static bool bw_validate(char *buf, u32 *data, struct rdt_resource *r)
- {
--	unsigned long bw;
- 	int ret;
-+	u32 bw;
+diff --git a/drivers/gpu/drm/panel/panel-himax-hx83102.c b/drivers/gpu/drm/panel/panel-himax-hx83102.c
+index 6e4b7e4644ce0..8b48bba181316 100644
+--- a/drivers/gpu/drm/panel/panel-himax-hx83102.c
++++ b/drivers/gpu/drm/panel/panel-himax-hx83102.c
+@@ -298,7 +298,7 @@ static int ivo_t109nw41_init(struct hx83102 *ctx)
+ 	msleep(60);
  
- 	/*
- 	 * Only linear delay values is supported for current Intel SKUs.
-@@ -40,16 +40,21 @@ static bool bw_validate(char *buf, unsigned long *data, struct rdt_resource *r)
- 		return false;
- 	}
- 
--	ret = kstrtoul(buf, 10, &bw);
-+	ret = kstrtou32(buf, 10, &bw);
- 	if (ret) {
--		rdt_last_cmd_printf("Non-decimal digit in MB value %s\n", buf);
-+		rdt_last_cmd_printf("Invalid MB value %s\n", buf);
- 		return false;
- 	}
- 
--	if ((bw < r->membw.min_bw || bw > r->default_ctrl) &&
--	    !is_mba_sc(r)) {
--		rdt_last_cmd_printf("MB value %ld out of range [%d,%d]\n", bw,
--				    r->membw.min_bw, r->default_ctrl);
-+	/* Nothing else to do if software controller is enabled. */
-+	if (is_mba_sc(r)) {
-+		*data = bw;
-+		return true;
-+	}
-+
-+	if (bw < r->membw.min_bw || bw > r->default_ctrl) {
-+		rdt_last_cmd_printf("MB value %u out of range [%d,%d]\n",
-+				    bw, r->membw.min_bw, r->default_ctrl);
- 		return false;
- 	}
- 
-@@ -63,7 +68,7 @@ int parse_bw(struct rdt_parse_data *data, struct resctrl_schema *s,
- 	struct resctrl_staged_config *cfg;
- 	u32 closid = data->rdtgrp->closid;
- 	struct rdt_resource *r = s->res;
--	unsigned long bw_val;
-+	u32 bw_val;
- 
- 	cfg = &d->staged_config[s->conf_type];
- 	if (cfg->have_new_ctrl) {
+ 	hx83102_enable_extended_cmds(&dsi_ctx, true);
+-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETPOWER, 0x2c, 0xed, 0xed, 0x0f, 0xcf, 0x42,
++	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETPOWER, 0x2c, 0xed, 0xed, 0x27, 0xe7, 0x52,
+ 				     0xf5, 0x39, 0x36, 0x36, 0x36, 0x36, 0x32, 0x8b, 0x11, 0x65, 0x00, 0x88,
+ 				     0xfa, 0xff, 0xff, 0x8f, 0xff, 0x08, 0xd6, 0x33);
+ 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETDISP, 0x00, 0x47, 0xb0, 0x80, 0x00, 0x12,
+@@ -343,11 +343,11 @@ static int ivo_t109nw41_init(struct hx83102 *ctx)
+ 				     0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xa0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+ 				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+ 				     0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
+-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETGMA, 0x04, 0x04, 0x06, 0x0a, 0x0a, 0x05,
+-				     0x12, 0x14, 0x17, 0x13, 0x2c, 0x33, 0x39, 0x4b, 0x4c, 0x56, 0x61, 0x78,
+-				     0x7a, 0x41, 0x50, 0x68, 0x73, 0x04, 0x04, 0x06, 0x0a, 0x0a, 0x05, 0x12,
+-				     0x14, 0x17, 0x13, 0x2c, 0x33, 0x39, 0x4b, 0x4c, 0x56, 0x61, 0x78, 0x7a,
+-				     0x41, 0x50, 0x68, 0x73);
++	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETGMA, 0x00, 0x07, 0x10, 0x17, 0x1c, 0x33,
++				     0x48, 0x50, 0x57, 0x50, 0x68, 0x6e, 0x71, 0x7f, 0x81, 0x8a, 0x8e, 0x9b,
++				     0x9c, 0x4d, 0x56, 0x5d, 0x73, 0x00, 0x07, 0x10, 0x17, 0x1c, 0x33, 0x48,
++				     0x50, 0x57, 0x50, 0x68, 0x6e, 0x71, 0x7f, 0x81, 0x8a, 0x8e, 0x9b, 0x9c,
++				     0x4d, 0x56, 0x5d, 0x73);
+ 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, HX83102_SETTP1, 0x07, 0x10, 0x10, 0x1a, 0x26, 0x9e,
+ 				     0x00, 0x4f, 0xa0, 0x14, 0x14, 0x00, 0x00, 0x00, 0x00, 0x12, 0x0a, 0x02,
+ 				     0x02, 0x00, 0x33, 0x02, 0x04, 0x18, 0x01);
 -- 
 2.43.0
 
