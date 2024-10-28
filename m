@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-88927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 351169B2819
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:53:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 229C09B262E
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:37:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 670E41C2162A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:53:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC97828227E
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:37:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1AD018E35B;
-	Mon, 28 Oct 2024 06:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52DE118E368;
+	Mon, 28 Oct 2024 06:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+1Eqc2j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BvExk9Vv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FE42AF07;
-	Mon, 28 Oct 2024 06:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F72D15B10D;
+	Mon, 28 Oct 2024 06:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098437; cv=none; b=Hts99RfTlOsY4UK9+wyy1PVcQdMt4ImvkHXisPotP+ht5EMSHuI4F86E0cMfLU9ZcQev9UTN52FNqRqKiz4Ke+O3kMNkEIOuz0bbmbRBMl6YEwjiI168wDSVV9sdT24cmGvlOihuqyVdf0FKHfOrUzfFZHr6UDuCwHVM49JKxr8=
+	t=1730097445; cv=none; b=E0Csj6wETkLrC1KUreifGor3Vq93zsA9DXn91eMPgYwzIYC/Adfnh5AIyF12OtCqQ99ZKYI4g5X9UlwWktrOpRyoSN9hlVXYht7QArdwjPfars+Iftf72KbDsyhMESGpCg2HU9vRGcCKFlSvwO1iInyWzZlBckPq7F5YqlIUUoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098437; c=relaxed/simple;
-	bh=Ui6/+UConUrq0GNck1yKBzxPBE0I3bvcoSQWBs51W0k=;
+	s=arc-20240116; t=1730097445; c=relaxed/simple;
+	bh=9xPJHNpDSfI4Rib/SdRIGyNGBuOUXL1H4Tg7QyiLAFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u0wgHmVKMm1jTNyum4+X++rbIeRCLdxcnOrKCSS8wQMijC4gz++qO1mvvpbmwXJbgWf+OX+tqKDsSEcNnofDIDuF8D0r7a/naDYhCpdeu3z1NS7XIqBuH6944J+VepZKX4KJBS9ScyjPpP7tKTvejsIXYNFES5+5FEyiVOiHKhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+1Eqc2j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1097FC4CEC3;
-	Mon, 28 Oct 2024 06:53:56 +0000 (UTC)
+	 MIME-Version; b=i/q6lvWCq3mp30JuozuX6ZidqwPSqJHbS6fT+2aqGU4mErl+atP7eXlXBhvGTNKUDKOtBIsG0OxYhPiEErLVPARFC1ar1FGCqUGh6Cm9Ki+TK6LU1mOrnWI/sd/naGl4lftZysdrQqo8g+T6F9b2uTgdHSGI7UYozEP8msgbwrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BvExk9Vv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A33EAC4CEC3;
+	Mon, 28 Oct 2024 06:37:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098437;
-	bh=Ui6/+UConUrq0GNck1yKBzxPBE0I3bvcoSQWBs51W0k=;
+	s=korg; t=1730097444;
+	bh=9xPJHNpDSfI4Rib/SdRIGyNGBuOUXL1H4Tg7QyiLAFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k+1Eqc2jzKpaM4doj8GYQ57M1O5206zaNJkbmYhutvnyDvTvyaIMsJfNzGfddRCcv
-	 WIVar+5X4/omfzmJmFRF7nXEtvNc7VDM5ex5ZapKVtEbdB9xGdzwM9oTPKf+1cROZC
-	 MpXLgxCBaw/lQPcimxzjJiOEX/rw7F+SyiEr/RGo=
+	b=BvExk9VvlNlGHDllcZdMuTILP9OcPO5eN2t2KmZy7qWv4lLQt61/hfyQn4Xk9teAN
+	 Z9CnottYWbD2uT9oeydM3ZOtpaMYoQlbNU9xNa3MwBEIyI9NXe3xwEZgOMofx1vMpP
+	 mXgoThUyN90piIn1hUFgcz/um5i2XJqHR71OlN2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Li <lichao@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.11 227/261] LoongArch: Get correct cores_per_package for SMT systems
+	Alex Michel <alex.michel@wiedemann-group.com>,
+	Andrew Lunn <andrew@lunn.ch>
+Subject: [PATCH 6.1 132/137] net: phy: dp83822: Fix reset pin definitions
 Date: Mon, 28 Oct 2024 07:26:09 +0100
-Message-ID: <20241028062317.802797208@linuxfoundation.org>
+Message-ID: <20241028062302.390732194@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Michel Alex <Alex.Michel@wiedemann-group.com>
 
-commit b7296f9d5bf99330063d4bbecc43c9b33fed0137 upstream.
+commit de96f6a3003513c796bbe4e23210a446913f5c00 upstream.
 
-In loongson_sysconf, The "core" of cores_per_node and cores_per_package
-stands for a logical core, which means in a SMT system it stands for a
-thread indeed. This information is gotten from SMBIOS Type4 Structure,
-so in order to get a correct cores_per_package for both SMT and non-SMT
-systems in parse_cpu_table() we should use SMBIOS_THREAD_PACKAGE_OFFSET
-instead of SMBIOS_CORE_PACKAGE_OFFSET.
+This change fixes a rare issue where the PHY fails to detect a link
+due to incorrect reset behavior.
+
+The SW_RESET definition was incorrectly assigned to bit 14, which is the
+Digital Restart bit according to the datasheet. This commit corrects
+SW_RESET to bit 15 and assigns DIG_RESTART to bit 14 as per the
+datasheet specifications.
+
+The SW_RESET define is only used in the phy_reset function, which fully
+re-initializes the PHY after the reset is performed. The change in the
+bit definitions should not have any negative impact on the functionality
+of the PHY.
+
+v2:
+- added Fixes tag
+- improved commit message
 
 Cc: stable@vger.kernel.org
-Reported-by: Chao Li <lichao@loongson.cn>
-Tested-by: Chao Li <lichao@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 5dc39fd5ef35 ("net: phy: DP83822: Add ability to advertise Fiber connection")
+Signed-off-by: Alex Michel <alex.michel@wiedemann-group.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Message-ID: <AS1P250MB0608A798661549BF83C4B43EA9462@AS1P250MB0608.EURP250.PROD.OUTLOOK.COM>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/bootinfo.h |    4 ++++
- arch/loongarch/kernel/setup.c         |    3 ++-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/phy/dp83822.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/include/asm/bootinfo.h
-+++ b/arch/loongarch/include/asm/bootinfo.h
-@@ -26,6 +26,10 @@ struct loongson_board_info {
+--- a/drivers/net/phy/dp83822.c
++++ b/drivers/net/phy/dp83822.c
+@@ -40,8 +40,8 @@
+ /* Control Register 2 bits */
+ #define DP83822_FX_ENABLE	BIT(14)
  
- #define NR_WORDS DIV_ROUND_UP(NR_CPUS, BITS_PER_LONG)
+-#define DP83822_HW_RESET	BIT(15)
+-#define DP83822_SW_RESET	BIT(14)
++#define DP83822_SW_RESET	BIT(15)
++#define DP83822_DIG_RESTART	BIT(14)
  
-+/*
-+ * The "core" of cores_per_node and cores_per_package stands for a
-+ * logical core, which means in a SMT system it stands for a thread.
-+ */
- struct loongson_system_configuration {
- 	int nr_cpus;
- 	int nr_nodes;
---- a/arch/loongarch/kernel/setup.c
-+++ b/arch/loongarch/kernel/setup.c
-@@ -55,6 +55,7 @@
- #define SMBIOS_FREQHIGH_OFFSET		0x17
- #define SMBIOS_FREQLOW_MASK		0xFF
- #define SMBIOS_CORE_PACKAGE_OFFSET	0x23
-+#define SMBIOS_THREAD_PACKAGE_OFFSET	0x25
- #define LOONGSON_EFI_ENABLE		(1 << 3)
- 
- unsigned long fw_arg0, fw_arg1, fw_arg2;
-@@ -125,7 +126,7 @@ static void __init parse_cpu_table(const
- 	cpu_clock_freq = freq_temp * 1000000;
- 
- 	loongson_sysconf.cpuname = (void *)dmi_string_parse(dm, dmi_data[16]);
--	loongson_sysconf.cores_per_package = *(dmi_data + SMBIOS_CORE_PACKAGE_OFFSET);
-+	loongson_sysconf.cores_per_package = *(dmi_data + SMBIOS_THREAD_PACKAGE_OFFSET);
- 
- 	pr_info("CpuClock = %llu\n", cpu_clock_freq);
- }
+ /* PHY STS bits */
+ #define DP83822_PHYSTS_DUPLEX			BIT(2)
 
 
 
