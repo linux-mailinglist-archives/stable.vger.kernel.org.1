@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 829D59B254B
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:27:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC4CD9B25E6
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:35:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2466B20B2F
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:27:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CA572821A0
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C105718E04F;
-	Mon, 28 Oct 2024 06:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5689F190470;
+	Mon, 28 Oct 2024 06:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="14QcC3L9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eKSJxjnT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B73318CC1F;
-	Mon, 28 Oct 2024 06:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1241015B10D;
+	Mon, 28 Oct 2024 06:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730096856; cv=none; b=HtBWLtX0EQEF3IyOkLY4/D5Ctw8popAoIxhfITv4KpguVGdEK3ltQ7g7OAQm1zosfLWkH799g886miL2bMFlOW4ldsEJ5wNWr+Rdh9RxY64sGzfZTakIXPTdvex2oiCkVFB0taZLOdkEigYq4219Jv6rjx8fI94RT8suXKrIPpk=
+	t=1730097282; cv=none; b=Orym06Oh/oPBKkc6BQFHz4ZigvYQtXJkrVseZJhHUexK0nYaVpVqYNeiPzT4KcRooZX7zBAnxvWDifEBzjJ1OOLyZEHUAI9vnpOUkACQPEbiL7XdBzhxnkvKmSteGUGq3iNKZsuGjnRVaisE9FpQZ6a60zO/Ubw85q6alTJ6b3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730096856; c=relaxed/simple;
-	bh=zKwCDbSRVDjxwheDWQ5A44usDuy4ly0QMS57oStfrqw=;
+	s=arc-20240116; t=1730097282; c=relaxed/simple;
+	bh=YrZpVut7wzslC8mZ1V9t02cI+jFLHD/1r6UdNqFLXC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hco2s/oj1JgrfxukqczYitVRMlvyMMVzIV2DSnl9XlgTN4w2o6si5HbsFPYJ6mfZOSimo+xj7txrEBk02bRf2WWw8RwRrMQRHqPiwzurEshM0FDicEoqPZR2onqRmaQejiACf6Jbqc67RXfLJ94ZCuI8fUBeEzq1UiN/KvxxsqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=14QcC3L9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B31C4CEC3;
-	Mon, 28 Oct 2024 06:27:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=T2a3rZIYbQaKHgePzXOC92vvcYJmE5MiMuqcyhxEKWk4JUmmARvrsDvxFBU8O/OqESakAhKUaAQUUquZIY6SjKnmiaVNpMeLjVyJ4ipbSKl9oRpfFSVb5gK5CkXi0DgbCg/VaEg7/4o9O5XvK/5QtHbNXc6DysfodKv3RziudbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eKSJxjnT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3132C4CEC3;
+	Mon, 28 Oct 2024 06:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730096856;
-	bh=zKwCDbSRVDjxwheDWQ5A44usDuy4ly0QMS57oStfrqw=;
+	s=korg; t=1730097281;
+	bh=YrZpVut7wzslC8mZ1V9t02cI+jFLHD/1r6UdNqFLXC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=14QcC3L9T0cE8CvUyNdCeMEn+e79fnqcDfyN6KjqI2XHjxXL65875uj6j59VRM0GY
-	 fVwnmwqRcbH05K+q9Sn8PiU4F4fPKkWD1xy39M3kznfjiKq7jYjwex7eowOJc405/I
-	 ml/nnhS4FXdtJKZhuJ3jmFHBA/Bvhp9+89Yg3AJM=
+	b=eKSJxjnT5TxgUZP/zFAgZAZ6LFE4Mah/vXPZEO4HtWYTIfCu08WIhkiCSH73eLsaj
+	 rEsXzfoZsnkyxgqnR1ssZamWzLoH2jMPat+h1jfXhvNDbVOSqxdevfttSTzhc2AUYd
+	 eayPHN8QrJDyqGI3+0K+gjp6ddXXonGzo7V7kFio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Uday M Bhat <uday.m.bhat@intel.com>,
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 17/80] octeontx2-af: Fix potential integer overflows on integer shifts
-Date: Mon, 28 Oct 2024 07:24:57 +0100
-Message-ID: <20241028062253.099938442@linuxfoundation.org>
+Subject: [PATCH 6.1 061/137] xhci: dbc: honor usb transfer size boundaries.
+Date: Mon, 28 Oct 2024 07:24:58 +0100
+Message-ID: <20241028062300.443161778@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,151 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 637c4f6fe40befa04f19c38b5d15429cbb9191d9 ]
+[ Upstream commit 30c9ae5ece8ecd69d36e6912c2c0896418f2468c ]
 
-The left shift int 32 bit integer constants 1 is evaluated using 32 bit
-arithmetic and then assigned to a 64 bit unsigned integer. In the case
-where the shift is 32 or more this can lead to an overflow. Avoid this
-by shifting using the BIT_ULL macro instead.
+Treat each completed full size write to /dev/ttyDBC0 as a separate usb
+transfer. Make sure the size of the TRBs matches the size of the tty
+write by first queuing as many max packet size TRBs as possible up to
+the last TRB which will be cut short to match the size of the tty write.
 
-Fixes: 019aba04f08c ("octeontx2-af: Modify SMQ flush sequence to drop packets")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20241010154519.768785-1-colin.i.king@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+This solves an issue where userspace writes several transfers back to
+back via /dev/ttyDBC0 into a kfifo before dbgtty can find available
+request to turn that kfifo data into TRBs on the transfer ring.
+
+The boundary between transfer was lost as xhci-dbgtty then turned
+everyting in the kfifo into as many 'max packet size' TRBs as possible.
+
+DbC would then send more data to the host than intended for that
+transfer, causing host to issue a babble error.
+
+Refuse to write more data to kfifo until previous tty write data is
+turned into properly sized TRBs with data size boundaries matching tty
+write size
+
+Tested-by: Uday M Bhat <uday.m.bhat@intel.com>
+Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241016140000.783905-5-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-dbgcap.h |  1 +
+ drivers/usb/host/xhci-dbgtty.c | 55 ++++++++++++++++++++++++++++++----
+ 2 files changed, 51 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index f2e1c63035e85..8bdde74b34b6d 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -2239,7 +2239,7 @@ static int nix_smq_flush(struct rvu *rvu, int blkaddr,
- 				 NIX_AF_TL3_TL2X_LINKX_CFG(tl2_tl3_link_schq, link));
- 		if (!(cfg & BIT_ULL(12)))
- 			continue;
--		bmap |= (1 << i);
-+		bmap |= BIT_ULL(i);
- 		cfg &= ~BIT_ULL(12);
- 		rvu_write64(rvu, blkaddr,
- 			    NIX_AF_TL3_TL2X_LINKX_CFG(tl2_tl3_link_schq, link), cfg);
-@@ -2260,7 +2260,7 @@ static int nix_smq_flush(struct rvu *rvu, int blkaddr,
+diff --git a/drivers/usb/host/xhci-dbgcap.h b/drivers/usb/host/xhci-dbgcap.h
+index 0d4d60758af97..caeadfb8760b6 100644
+--- a/drivers/usb/host/xhci-dbgcap.h
++++ b/drivers/usb/host/xhci-dbgcap.h
+@@ -108,6 +108,7 @@ struct dbc_port {
+ 	struct tasklet_struct		push;
  
- 	/* Set NIX_AF_TL3_TL2_LINKX_CFG[ENA] for the TL3/TL2 queue */
- 	for (i = 0; i < (rvu->hw->cgx_links + rvu->hw->lbk_links); i++) {
--		if (!(bmap & (1 << i)))
-+		if (!(bmap & BIT_ULL(i)))
- 			continue;
- 		cfg = rvu_read64(rvu, blkaddr,
- 				 NIX_AF_TL3_TL2X_LINKX_CFG(tl2_tl3_link_schq, link));
+ 	struct list_head		write_pool;
++	unsigned int			tx_boundary;
+ 
+ 	bool				registered;
+ };
+diff --git a/drivers/usb/host/xhci-dbgtty.c b/drivers/usb/host/xhci-dbgtty.c
+index f6e25a1cec115..6dd7e8c8eed08 100644
+--- a/drivers/usb/host/xhci-dbgtty.c
++++ b/drivers/usb/host/xhci-dbgtty.c
+@@ -24,6 +24,29 @@ static inline struct dbc_port *dbc_to_port(struct xhci_dbc *dbc)
+ 	return dbc->priv;
+ }
+ 
++static unsigned int
++dbc_kfifo_to_req(struct dbc_port *port, char *packet)
++{
++	unsigned int	len;
++
++	len = kfifo_len(&port->port.xmit_fifo);
++
++	if (len == 0)
++		return 0;
++
++	len = min(len, DBC_MAX_PACKET);
++
++	if (port->tx_boundary)
++		len = min(port->tx_boundary, len);
++
++	len = kfifo_out(&port->port.xmit_fifo, packet, len);
++
++	if (port->tx_boundary)
++		port->tx_boundary -= len;
++
++	return len;
++}
++
+ static int dbc_start_tx(struct dbc_port *port)
+ 	__releases(&port->port_lock)
+ 	__acquires(&port->port_lock)
+@@ -36,7 +59,7 @@ static int dbc_start_tx(struct dbc_port *port)
+ 
+ 	while (!list_empty(pool)) {
+ 		req = list_entry(pool->next, struct dbc_request, list_pool);
+-		len = kfifo_out(&port->port.xmit_fifo, req->buf, DBC_MAX_PACKET);
++		len = dbc_kfifo_to_req(port, req->buf);
+ 		if (len == 0)
+ 			break;
+ 		do_tty_wake = true;
+@@ -201,14 +224,32 @@ static int dbc_tty_write(struct tty_struct *tty,
+ {
+ 	struct dbc_port		*port = tty->driver_data;
+ 	unsigned long		flags;
++	unsigned int		written = 0;
+ 
+ 	spin_lock_irqsave(&port->port_lock, flags);
+-	if (count)
+-		count = kfifo_in(&port->port.xmit_fifo, buf, count);
+-	dbc_start_tx(port);
++
++	/*
++	 * Treat tty write as one usb transfer. Make sure the writes are turned
++	 * into TRB request having the same size boundaries as the tty writes.
++	 * Don't add data to kfifo before previous write is turned into TRBs
++	 */
++	if (port->tx_boundary) {
++		spin_unlock_irqrestore(&port->port_lock, flags);
++		return 0;
++	}
++
++	if (count) {
++		written = kfifo_in(&port->port.xmit_fifo, buf, count);
++
++		if (written == count)
++			port->tx_boundary = kfifo_len(&port->port.xmit_fifo);
++
++		dbc_start_tx(port);
++	}
++
+ 	spin_unlock_irqrestore(&port->port_lock, flags);
+ 
+-	return count;
++	return written;
+ }
+ 
+ static int dbc_tty_put_char(struct tty_struct *tty, unsigned char ch)
+@@ -242,6 +283,10 @@ static unsigned int dbc_tty_write_room(struct tty_struct *tty)
+ 
+ 	spin_lock_irqsave(&port->port_lock, flags);
+ 	room = kfifo_avail(&port->port.xmit_fifo);
++
++	if (port->tx_boundary)
++		room = 0;
++
+ 	spin_unlock_irqrestore(&port->port_lock, flags);
+ 
+ 	return room;
 -- 
 2.43.0
 
