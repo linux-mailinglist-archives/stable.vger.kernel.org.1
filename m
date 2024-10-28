@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-88249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FB999B2191
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 01:41:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 903019B2194
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 01:41:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69F811C20D7A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 00:41:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78BF1B20CBC
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 00:41:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBDA3CF58;
-	Mon, 28 Oct 2024 00:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FEA73F8F7;
+	Mon, 28 Oct 2024 00:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CVx+Fzik"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zbi1CNPl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7F8EEA8
-	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 00:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FCA6EEA8
+	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 00:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730076107; cv=none; b=DI4JDfp3fwQZ890rXSJQsRR7t1XcFq9+jdEYnawhj06U7/30fKWilzpLElB+8IHre2dKTCmpP5vR7L9HpAwhnxB4QgQ2YDOl+dogwXp3jy57uf7iaNqtzL2lzhLHT6u2Ilykrvtsng/v+wzo899TiEoeVtUILMZqMux9JiKOn2s=
+	t=1730076110; cv=none; b=JIkBq5Rw1FXltuldPAlmKuqVIsJYj6EYVazi/tYD5dV9FuW8uD8ESYtBYARHPSFZPVx6ZsaqvDzZ+THN8P3jIxRK1jplBwlHt6K9BvST9LECZlZqQuMvU6WeZckbzSzfPtPqZGs1cZixwMtRscVuleEgqW4I3KFXlPCD/baErco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730076107; c=relaxed/simple;
-	bh=7rmSlLD0f7MCHKX68MGKoBPObnveGnL1cd/VrQmRQOk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Jzfze9GzPqia0rljF/T50QWCFsN4W6OKBZwyyO2RNEpsEGPXcbsEf53AJ2B9+1xJ/C7QlUHh/2JVOeOujUDSXuNcGUE4Ms7aTskwV/ldJQKzTbKKPXMhDC6Fverb3gaaLrhhXQLiyY9q6lKFezZW5DbuqfmZXtEzl2gXYBCvVys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CVx+Fzik; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34CD5C4CEC3;
-	Mon, 28 Oct 2024 00:41:47 +0000 (UTC)
+	s=arc-20240116; t=1730076110; c=relaxed/simple;
+	bh=YtnkpjbQu9PJnEX193Gl7E14zmfiEUCtWAZbzKHZaSg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ttu9Criqb7d7Mg5Kx4D6G1tk7fd80r1ATXtaPQIZ3RZMQn2H7msfMSw/oibvY8Wy3EgMmtLprWc1QHSOx4GSC9TeZDGwpXp8j2GIAg0saI6r64wapbKXhZY4R7URuQxgdn/JAVPDTpJswEVNsbBE6upZmYYj51OY/wr9YNhWRUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zbi1CNPl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8976FC4CEC3;
+	Mon, 28 Oct 2024 00:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730076107;
-	bh=7rmSlLD0f7MCHKX68MGKoBPObnveGnL1cd/VrQmRQOk=;
+	s=korg; t=1730076109;
+	bh=YtnkpjbQu9PJnEX193Gl7E14zmfiEUCtWAZbzKHZaSg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=CVx+Fzik8t3v9Ok57WBKBNH3od1ZntFWL5TwGeAYTNlDfIHofWqMMFUYJBSZz4q2I
-	 WoQTeXyU3GmWGYGRQQU/78CgOo0X6VWnJkurqRUk7j5NS2w/XSmd1yAw9Jj9Bd0q3e
-	 rTxFzeoC/+26zl5RW66assy9+YNnfCsbe10Tu+S8=
-Subject: FAILED: patch "[PATCH] nfsd: fix race between laundromat and free_stateid" failed to apply to 6.1-stable tree
+	b=Zbi1CNPlGFkg66484iiE5REbJ8MRjehprQz5t5fcS9v3MBM0MnRGf80Kc61b2tdlF
+	 qB/fLUxwR1dklpMylCoXSqLj7UFiuk9UOBE1Men91XXgCGv8kjHVXOduzwCPb+edgU
+	 MHqfdlaVxXq71sBoaRHQNgDvP1kmo2Cgo5FtnvFM=
+Subject: FAILED: patch "[PATCH] nfsd: fix race between laundromat and free_stateid" failed to apply to 5.15-stable tree
 To: okorniev@redhat.com,chuck.lever@oracle.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 28 Oct 2024 01:41:35 +0100
-Message-ID: <2024102835-pungent-sadly-717e@gregkh>
+Date: Mon, 28 Oct 2024 01:41:37 +0100
+Message-ID: <2024102837-elusive-service-68d6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 8dd91e8d31febf4d9cca3ae1bb4771d33ae7ee5a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024102835-pungent-sadly-717e@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024102837-elusive-service-68d6@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
