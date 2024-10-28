@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BBCD9B2686
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:40:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D62BF9B259E
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:33:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E9001F226EB
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:40:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 140421C203BC
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53DC618EFC8;
-	Mon, 28 Oct 2024 06:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DBA18E03A;
+	Mon, 28 Oct 2024 06:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hjUXMo2e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K41yhwWd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1112A189BAF;
-	Mon, 28 Oct 2024 06:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3207115B10D;
+	Mon, 28 Oct 2024 06:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097620; cv=none; b=neh93xYesd3m2CB/q/TT3dFcuEBixI0g/C0lu9WTzblM3AL0Rvu2YJ7nHyaEyYiE50LJc+Cg/J8rF461q+H4mXl1/3ZhMRMEPnobeV5sRZllvCL9ikur5JiTn6V1ZxfaSIkWTpXCtsJJepZydRsK9WU9qP9cQFjO7Mlsemd90e8=
+	t=1730097177; cv=none; b=l2svAKZGYhQnbCmTT35CURHFWsUd7YYbOJ/QDvo9DRo3C+vJ+PwlGXtrtqp8fI92DPqTfl6cpEvZm5375hRPWmrC71fy4b8ON0eNaIPuMfgFH1sPZW6hvY2QBmfJeevQim8wkyvqAXQqZ8z1WmKeqIGadN8go7TUDC9Vd+5rJgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097620; c=relaxed/simple;
-	bh=zZFbAVeInYxyod+CIm0KQj+DXmRCuzVmor6WzVS5c7c=;
+	s=arc-20240116; t=1730097177; c=relaxed/simple;
+	bh=7pn4elU4MDqca0EPDyljspt8eWP1ouEeumkja4/VqkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tSfOwjKTZcBHCfxr911EUZY+Do3G6hDPng3kI9YdtnpnD99lhNmXJo9AMwOCZeXHfh4rWMWL6NNQaDOlVFbWw8Upx30nokCYfB93fEZ1M6nLnHCWXU84hnqSkQKhn2OQmVGVieUkqoKOMkI7hkSFwANWKzZRqCo8Ua1mGkYJ5Qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hjUXMo2e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A29BDC4CEC3;
-	Mon, 28 Oct 2024 06:40:19 +0000 (UTC)
+	 MIME-Version; b=idWTbk40FjkG2uYGHkH9wAvPKK/Z4E/Upps48ioGg6ewXY3FK6NsUd1+537OteI4bHUQ2QCr1hZP3dfTwHoC+1h7AHgmaTIXIjeyqSJfuFIJYolG3cDm2PUmNEySDpdyYq0Oxy/0LQqJfun6OxKuajg1LoJPlVlXgzrNdZp5uzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K41yhwWd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC3DC4CEC7;
+	Mon, 28 Oct 2024 06:32:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097619;
-	bh=zZFbAVeInYxyod+CIm0KQj+DXmRCuzVmor6WzVS5c7c=;
+	s=korg; t=1730097176;
+	bh=7pn4elU4MDqca0EPDyljspt8eWP1ouEeumkja4/VqkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hjUXMo2erEv3KA8ULwCH2VuuIw8h0BVceSE4zoUxH05xbcVjr/RQh+gIoPR3MjbET
-	 uo895z+8SkQBB8+N0R+tQ4FqqoaAlbqMYNkTeGZyQ4aO+halRh5Y6wJfgnDvxdObfy
-	 GXUoK5FkptKYLpEJrtxnyrdJsgLswUV6F5pyW7EE=
+	b=K41yhwWdeU0NV4UeOS7FgmJiIt++Az+871Q9uoUYgnV5CODevN2+ps2x2Hgdkx8/h
+	 Nyl90Gf6/4hMjHuTE/OxSf7X1xbnGAudtI9BRYxJdqcc+hfEpXYBMM2FibWQmH+NJw
+	 /mvstRL7KFmWpdNX8ZyNQPy8fo9V03ZfcsaZJmf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Anumula Murali Mohan Reddy <anumula@chelsio.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 074/208] usb: typec: altmode should keep reference to parent
+Subject: [PATCH 6.1 017/137] RDMA/cxgb4: Fix RDMA_CM_EVENT_UNREACHABLE error for iWARP
 Date: Mon, 28 Oct 2024 07:24:14 +0100
-Message-ID: <20241028062308.469712951@linuxfoundation.org>
+Message-ID: <20241028062259.206231891@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,132 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Anumula Murali Mohan Reddy <anumula@chelsio.com>
 
-[ Upstream commit befab3a278c59db0cc88c8799638064f6d3fd6f8 ]
+[ Upstream commit c659b405b82ead335bee6eb33f9691bf718e21e8 ]
 
-The altmode device release refers to its parent device, but without keeping
-a reference to it.
+ip_dev_find() always returns real net_device address, whether traffic is
+running on a vlan or real device, if traffic is over vlan, filling
+endpoint struture with real ndev and an attempt to send a connect request
+will results in RDMA_CM_EVENT_UNREACHABLE error.  This patch fixes the
+issue by using vlan_dev_real_dev().
 
-When registering the altmode, get a reference to the parent and put it in
-the release function.
-
-Before this fix, when using CONFIG_DEBUG_KOBJECT_RELEASE, we see issues
-like this:
-
-[   43.572860] kobject: 'port0.0' (ffff8880057ba008): kobject_release, parent 0000000000000000 (delayed 3000)
-[   43.573532] kobject: 'port0.1' (ffff8880057bd008): kobject_release, parent 0000000000000000 (delayed 1000)
-[   43.574407] kobject: 'port0' (ffff8880057b9008): kobject_release, parent 0000000000000000 (delayed 3000)
-[   43.575059] kobject: 'port1.0' (ffff8880057ca008): kobject_release, parent 0000000000000000 (delayed 4000)
-[   43.575908] kobject: 'port1.1' (ffff8880057c9008): kobject_release, parent 0000000000000000 (delayed 4000)
-[   43.576908] kobject: 'typec' (ffff8880062dbc00): kobject_release, parent 0000000000000000 (delayed 4000)
-[   43.577769] kobject: 'port1' (ffff8880057bf008): kobject_release, parent 0000000000000000 (delayed 3000)
-[   46.612867] ==================================================================
-[   46.613402] BUG: KASAN: slab-use-after-free in typec_altmode_release+0x38/0x129
-[   46.614003] Read of size 8 at addr ffff8880057b9118 by task kworker/2:1/48
-[   46.614538]
-[   46.614668] CPU: 2 UID: 0 PID: 48 Comm: kworker/2:1 Not tainted 6.12.0-rc1-00138-gedbae730ad31 #535
-[   46.615391] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-[   46.616042] Workqueue: events kobject_delayed_cleanup
-[   46.616446] Call Trace:
-[   46.616648]  <TASK>
-[   46.616820]  dump_stack_lvl+0x5b/0x7c
-[   46.617112]  ? typec_altmode_release+0x38/0x129
-[   46.617470]  print_report+0x14c/0x49e
-[   46.617769]  ? rcu_read_unlock_sched+0x56/0x69
-[   46.618117]  ? __virt_addr_valid+0x19a/0x1ab
-[   46.618456]  ? kmem_cache_debug_flags+0xc/0x1d
-[   46.618807]  ? typec_altmode_release+0x38/0x129
-[   46.619161]  kasan_report+0x8d/0xb4
-[   46.619447]  ? typec_altmode_release+0x38/0x129
-[   46.619809]  ? process_scheduled_works+0x3cb/0x85f
-[   46.620185]  typec_altmode_release+0x38/0x129
-[   46.620537]  ? process_scheduled_works+0x3cb/0x85f
-[   46.620907]  device_release+0xaf/0xf2
-[   46.621206]  kobject_delayed_cleanup+0x13b/0x17a
-[   46.621584]  process_scheduled_works+0x4f6/0x85f
-[   46.621955]  ? __pfx_process_scheduled_works+0x10/0x10
-[   46.622353]  ? hlock_class+0x31/0x9a
-[   46.622647]  ? lock_acquired+0x361/0x3c3
-[   46.622956]  ? move_linked_works+0x46/0x7d
-[   46.623277]  worker_thread+0x1ce/0x291
-[   46.623582]  ? __kthread_parkme+0xc8/0xdf
-[   46.623900]  ? __pfx_worker_thread+0x10/0x10
-[   46.624236]  kthread+0x17e/0x190
-[   46.624501]  ? kthread+0xfb/0x190
-[   46.624756]  ? __pfx_kthread+0x10/0x10
-[   46.625015]  ret_from_fork+0x20/0x40
-[   46.625268]  ? __pfx_kthread+0x10/0x10
-[   46.625532]  ret_from_fork_asm+0x1a/0x30
-[   46.625805]  </TASK>
-[   46.625953]
-[   46.626056] Allocated by task 678:
-[   46.626287]  kasan_save_stack+0x24/0x44
-[   46.626555]  kasan_save_track+0x14/0x2d
-[   46.626811]  __kasan_kmalloc+0x3f/0x4d
-[   46.627049]  __kmalloc_noprof+0x1bf/0x1f0
-[   46.627362]  typec_register_port+0x23/0x491
-[   46.627698]  cros_typec_probe+0x634/0xbb6
-[   46.628026]  platform_probe+0x47/0x8c
-[   46.628311]  really_probe+0x20a/0x47d
-[   46.628605]  device_driver_attach+0x39/0x72
-[   46.628940]  bind_store+0x87/0xd7
-[   46.629213]  kernfs_fop_write_iter+0x1aa/0x218
-[   46.629574]  vfs_write+0x1d6/0x29b
-[   46.629856]  ksys_write+0xcd/0x13b
-[   46.630128]  do_syscall_64+0xd4/0x139
-[   46.630420]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[   46.630820]
-[   46.630946] Freed by task 48:
-[   46.631182]  kasan_save_stack+0x24/0x44
-[   46.631493]  kasan_save_track+0x14/0x2d
-[   46.631799]  kasan_save_free_info+0x3f/0x4d
-[   46.632144]  __kasan_slab_free+0x37/0x45
-[   46.632474]  kfree+0x1d4/0x252
-[   46.632725]  device_release+0xaf/0xf2
-[   46.633017]  kobject_delayed_cleanup+0x13b/0x17a
-[   46.633388]  process_scheduled_works+0x4f6/0x85f
-[   46.633764]  worker_thread+0x1ce/0x291
-[   46.634065]  kthread+0x17e/0x190
-[   46.634324]  ret_from_fork+0x20/0x40
-[   46.634621]  ret_from_fork_asm+0x1a/0x30
-
-Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241004123738.2964524-1-cascardo@igalia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 830662f6f032 ("RDMA/cxgb4: Add support for active and passive open connection with IPv6 address")
+Link: https://patch.msgid.link/r/20241007132311.70593-1-anumula@chelsio.com
+Signed-off-by: Anumula Murali Mohan Reddy <anumula@chelsio.com>
+Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/class.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/infiniband/hw/cxgb4/cm.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
-index f92fc2acfcba0..79cad8d61dacd 100644
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -502,6 +502,7 @@ static void typec_altmode_release(struct device *dev)
- 		typec_altmode_put_partner(alt);
- 
- 	altmode_id_remove(alt->adev.dev.parent, alt->id);
-+	put_device(alt->adev.dev.parent);
- 	kfree(alt);
- }
- 
-@@ -551,6 +552,8 @@ typec_register_altmode(struct device *parent,
- 	alt->adev.dev.type = &typec_altmode_dev_type;
- 	dev_set_name(&alt->adev.dev, "%s.%u", dev_name(parent), id);
- 
-+	get_device(alt->adev.dev.parent);
-+
- 	/* Link partners and plugs with the ports */
- 	if (!is_port)
- 		typec_altmode_set_partner(alt);
+diff --git a/drivers/infiniband/hw/cxgb4/cm.c b/drivers/infiniband/hw/cxgb4/cm.c
+index b3757c6a0457a..8d753e6e0c719 100644
+--- a/drivers/infiniband/hw/cxgb4/cm.c
++++ b/drivers/infiniband/hw/cxgb4/cm.c
+@@ -2086,7 +2086,7 @@ static int import_ep(struct c4iw_ep *ep, int iptype, __u8 *peer_ip,
+ 	err = -ENOMEM;
+ 	if (n->dev->flags & IFF_LOOPBACK) {
+ 		if (iptype == 4)
+-			pdev = ip_dev_find(&init_net, *(__be32 *)peer_ip);
++			pdev = __ip_dev_find(&init_net, *(__be32 *)peer_ip, false);
+ 		else if (IS_ENABLED(CONFIG_IPV6))
+ 			for_each_netdev(&init_net, pdev) {
+ 				if (ipv6_chk_addr(&init_net,
+@@ -2101,12 +2101,12 @@ static int import_ep(struct c4iw_ep *ep, int iptype, __u8 *peer_ip,
+ 			err = -ENODEV;
+ 			goto out;
+ 		}
++		if (is_vlan_dev(pdev))
++			pdev = vlan_dev_real_dev(pdev);
+ 		ep->l2t = cxgb4_l2t_get(cdev->rdev.lldi.l2t,
+ 					n, pdev, rt_tos2priority(tos));
+-		if (!ep->l2t) {
+-			dev_put(pdev);
++		if (!ep->l2t)
+ 			goto out;
+-		}
+ 		ep->mtu = pdev->mtu;
+ 		ep->tx_chan = cxgb4_port_chan(pdev);
+ 		ep->smac_idx = ((struct port_info *)netdev_priv(pdev))->smt_idx;
+@@ -2119,7 +2119,6 @@ static int import_ep(struct c4iw_ep *ep, int iptype, __u8 *peer_ip,
+ 		ep->rss_qid = cdev->rdev.lldi.rxq_ids[
+ 			cxgb4_port_idx(pdev) * step];
+ 		set_tcp_window(ep, (struct port_info *)netdev_priv(pdev));
+-		dev_put(pdev);
+ 	} else {
+ 		pdev = get_real_dev(n->dev);
+ 		ep->l2t = cxgb4_l2t_get(cdev->rdev.lldi.l2t,
 -- 
 2.43.0
 
