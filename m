@@ -1,196 +1,260 @@
-Return-Path: <stable+bounces-89127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 669C09B3CA0
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 22:25:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AF679B3CC6
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 22:33:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 266832833C0
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 21:25:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F3B9B2150F
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 21:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D841E1A27;
-	Mon, 28 Oct 2024 21:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372A61E260A;
+	Mon, 28 Oct 2024 21:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="XC62+How"
+	dkim=pass (1024-bit key) header.d=email-od.com header.i=@email-od.com header.b="QiIQYJo9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from s1-ba86.socketlabs.email-od.com (s1-ba86.socketlabs.email-od.com [142.0.186.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76EB9192585
-	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 21:25:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A785B1E0B7F
+	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 21:33:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=142.0.186.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730150715; cv=none; b=pF5BKR5hT0mIrrMCb+4WNGUa0dxQCjF+g2hY4aLW6Xri6Mei56qrJPQIwUBO+CFzIy1kLPcuSgx/MElLDjmDJJ5rH+6DCUJfJwMFmDDmn5F8GCKzvjbZq7sz0pfvLBmnPb9UZ47O5/AprNiNFtynms/Utd5IbWr+8nxIuMSZR6Q=
+	t=1730151226; cv=none; b=S0zSsZh7ubalzydj0OWDRMzz3ioLXawiOa7Ihk08V/Xw/IASRZLVpFGDCUdY2W3KNivN41hICsMl6HFVMUByUBFusfojV5t/HS2olM693c7k6szJX7/GlQrrppoijuxlELXTU0XO4hWeiw6o5PhidatbA16OIdE65eFes4Q7z3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730150715; c=relaxed/simple;
-	bh=pLRRnqJAPwskef6FrBxl1E3683EQf+jkK+gJCpfUKQc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GLmLriMLxt8fUnqXqWjQH9pSp31AZc770YEOf3+t6hmvQR9CMd43nM6nws3JxBqKzxcEu1ekc4U1gUQytb2FFo/soYGnsXPuIajJy8geaUMm/i8cee3bZScwXH6IFWQkl0V5Nozfr67B+4ly9JMYNRnWTk9WC3tgBvp5v9QDPzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=XC62+How; arc=none smtp.client-ip=209.85.222.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7b152a923a3so373710885a.3
-        for <stable@vger.kernel.org>; Mon, 28 Oct 2024 14:25:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1730150711; x=1730755511; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=585mKsRT7d06ESGh3mIJ8b6bPBzsGlMV5JaQkeOeFsk=;
-        b=XC62+HowIJktyI/3WW5ZLGPefmhKPm3wy+9PmDYAPVHcFC9mtB59PtecfTUDIfU/s+
-         X5UIPHFspbHkTTtmtWHnbv0yw63RljM5HbPR9OMyQj2xonxR2ds9wiCYPaxmJnXZvBww
-         c41SFDh0bCV0IdMXHqNjVdpzHCFvgV5yFPtNxkgQ/bBneUMS64yLMsmxDbQmT2ouFsmh
-         10w+x1NSXmEdyxCZnXhlF7xL9oHJYVGUXy6WZ1LkrpxvS9aF4OXOk6GJYSDqwcLOpq0o
-         o70KA3l6bVvu2Ni/P0WSRTh8zZUtGOf9xSirPUjldRndpKfnIo8ze4zaz0+ZkFJZyf2p
-         OQHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730150711; x=1730755511;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=585mKsRT7d06ESGh3mIJ8b6bPBzsGlMV5JaQkeOeFsk=;
-        b=JujCLWNYBRRykm8bwZ8OYjuU1kXgSmLGlNCk6Ka+qY5nmRwDSkGMmvJ+G5QVNbovy+
-         GHYwxjzCDQByJge6dXMde6N9jW8HK+3tH/9sp/S/cL+jokK5oXrJtIYKX7Rt4/SCM4OK
-         ZyS2GIHHE2IlKl6L37WYNJIw/Wl54rBXC97si7j4P2y2RLhDFCq5bF9A9AennqicoV6B
-         HggAY35d1bH2E72VjWwxHqHmRaOoV325pedMORcXk9W38HT6E+mgOxrH4iP9DBDgKTwq
-         Dyj1izNuVL2ZS3LDcnv/hmRZWzRrFuzkC3VcOOHisEaVWDgC0bUdFWzw356RHq+PLaD7
-         eCKg==
-X-Forwarded-Encrypted: i=1; AJvYcCUriqzD8OYsOTnv9Lvfvup/alu7wIFCjVvxi+pqhZroxtxdFUTKM37j9zp6XIjouexUdDNKckc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMEk0pWPPYv+W9paMeQo9xMNIjfitcRMx9nOFVQiZ73AzM0vSc
-	d3gOF8WgTIdolbPGll9o07ptFOJMqK+b6oRBGpPB3KpcS4fjVyVlqG2iZk7uz5o=
-X-Google-Smtp-Source: AGHT+IFzTlrI74jY4d3DbIaVjhK5zLVVE83AfXgTDT4O8X7A3dLUwf3PsR3yfJKmz8swudu8twoovw==
-X-Received: by 2002:a05:620a:29c3:b0:7b1:54f6:d1e0 with SMTP id af79cd13be357-7b193f59b61mr1413923985a.62.1730150711346;
-        Mon, 28 Oct 2024 14:25:11 -0700 (PDT)
-Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b18d3484b6sm356677985a.124.2024.10.28.14.25.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Oct 2024 14:25:10 -0700 (PDT)
-Date: Mon, 28 Oct 2024 17:25:15 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Yang Shi <shy828301@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com,
-	akpm@linux-foundation.org, ying.huang@intel.com, weixugc@google.com,
-	dave.hansen@linux.intel.com, osalvador@suse.de,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] vmscan,migrate: fix double-decrement on node stats when
- demoting pages
-Message-ID: <ZyABO4wOoXs9vC3F@PC2K9PVX.TheFacebook.com>
-References: <20241025141724.17927-1-gourry@gourry.net>
- <CAHbLzkqYoHTQz6ifZHuVkWL449EVt9H1v2ukXhS+ExDC2JZMHA@mail.gmail.com>
+	s=arc-20240116; t=1730151226; c=relaxed/simple;
+	bh=REJqBIp+u4tgztS67pNZ5sNBdoeBOrImDHIAMRBsbb8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DcoEaXNogtZa6YTrCMiAFzs9ka7ykQalbeYFahugrizl/+jbjSalz0p0a7o7g+rtnNhiWZG2CBZ7r3Y2txlmRH2Urq+6suupx3xvqRxLgPjheADX7+1T4+PWxOlxPSXpH2rfOJzRU0Ra2XtNkKYuY19P9rD24Sb22A1QdxksEhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nalramli.com; spf=pass smtp.mailfrom=email-od.com; dkim=pass (1024-bit key) header.d=email-od.com header.i=@email-od.com header.b=QiIQYJo9; arc=none smtp.client-ip=142.0.186.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nalramli.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=email-od.com
+DKIM-Signature: v=1; a=rsa-sha256; d=email-od.com;i=@email-od.com;s=dkim;
+	c=relaxed/relaxed; q=dns/txt; t=1730151224; x=1732743224;
+	h=content-transfer-encoding:content-type:in-reply-to:from:content-language:references:cc:to:subject:mime-version:date:message-id:x-thread-info:subject:to:from:cc:reply-to;
+	bh=6doGIbPh3Cn0Hzi2wTIVT8G20SoeYWH9IUuwlNVcx4s=;
+	b=QiIQYJo9Xpgvpkw3ExC8C1Cdc2avP6PENEx9fBzB7rzZfAoUQDpU++JKvGU2FMdTzUkIs82c0FeBfJKyA9UpwC2tGKdD/G43fiow2gIEcNA6Cm6/QJmmZw+SlDUfjO9TKRFhdv5cNvyn+rwftMiuH6P7zYqE3wkk2l/2gKNtKDU=
+X-Thread-Info: NDUwNC4xMi40NzFlYTAwMDBjNjAwMGYuc3RhYmxlPXZnZXIua2VybmVsLm9yZw==
+x-xsSpam: eyJTY29yZSI6MCwiRGV0YWlscyI6IltdIn0=
+Received: from [192.168.0.167] (d4-50-191-215.clv.wideopenwest.com [50.4.215.191])
+	by nalramli.com (Postfix) with ESMTPS id 9DD382CE0334;
+	Mon, 28 Oct 2024 17:33:26 -0400 (EDT)
+Message-ID: <894de4c2-ce04-4cc1-97d8-fc7c860e943d@nalramli.com>
+Date: Mon, 28 Oct 2024 17:33:25 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHbLzkqYoHTQz6ifZHuVkWL449EVt9H1v2ukXhS+ExDC2JZMHA@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 6.1.y 0/1] cpufreq: amd-pstate: Enable CPU boost in
+ passive and guided modes
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: "nalramli@fastly.com" <nalramli@fastly.com>,
+ "jdamato@fastly.com" <jdamato@fastly.com>,
+ "khubert@fastly.com" <khubert@fastly.com>, "Yuan, Perry"
+ <Perry.Yuan@amd.com>, "Shenoy, Gautham Ranjal" <gautham.shenoy@amd.com>,
+ "Meng, Li (Jassmine)" <Li.Meng@amd.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "Huang, Ray" <Ray.Huang@amd.com>, "rafael@kernel.org" <rafael@kernel.org>,
+ "viresh.kumar@linaro.org" <viresh.kumar@linaro.org>,
+ "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <Zw8Wn5SPqBfRKUhp@LQ3V64L9R2>
+ <20241025010527.491605-1-dev@nalramli.com>
+ <CYYPR12MB8655545294DAB1B0D174B2AC9C4F2@CYYPR12MB8655.namprd12.prod.outlook.com>
+ <3a4596ba-1a83-4cd2-ba17-5132861eac00@amd.com>
+Content-Language: en-US
+From: "Nabil S. Alramli" <dev@nalramli.com>
+In-Reply-To: <3a4596ba-1a83-4cd2-ba17-5132861eac00@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 28, 2024 at 01:45:48PM -0700, Yang Shi wrote:
-> On Fri, Oct 25, 2024 at 7:17 AM Gregory Price <gourry@gourry.net> wrote:
-> >
-> > When numa balancing is enabled with demotion, vmscan will call
-> > migrate_pages when shrinking LRUs.  Successful demotions will
-> > cause node vmstat numbers to double-decrement, leading to an
-> > imbalanced page count.  The result is dmesg output like such:
-> >
-> > $ cat /proc/sys/vm/stat_refresh
-> >
-> > [77383.088417] vmstat_refresh: nr_isolated_anon -103212
-> > [77383.088417] vmstat_refresh: nr_isolated_file -899642
-> >
-> > This negative value may impact compaction and reclaim throttling.
-> >
-> > The double-decrement occurs in the migrate_pages path:
-> >
-> > caller to shrink_folio_list decrements the count
-> >   shrink_folio_list
-> >     demote_folio_list
-> >       migrate_pages
-> >         migrate_pages_batch
-> >           migrate_folio_move
-> >             migrate_folio_done
-> >               mod_node_page_state(-ve) <- second decrement
-> >
-> > This path happens for SUCCESSFUL migrations, not failures. Typically
-> > callers to migrate_pages are required to handle putback/accounting for
-> > failures, but this is already handled in the shrink code.
-> 
-> AFAIK, MGLRU doesn't dec/inc this counter, so it is not
-> double-decrement for MGLRU. Maybe "imbalance update" is better?
-> Anyway, it is just a nit. I'd suggest capturing the MGLRU case in the
-> commit log too.
->
+Hi Mario,
 
-Gotcha, so yeah saying it's an imbalance fix is more accurate.
+Thank you for taking a look at my patch.
 
-So more accurate changelog is:
+What do you think about the following for the commit message in the next
+revision of the PATCH, and omitting the cover letter since most of it is
+incorporated here?
 
+***********************************************************************
 
-[PATCH] vmscan,migrate: fix page count imbalance on node stats when demoting pages
+cpufreq: amd-pstate: Enable CPU boost in passive and guided modes
 
-When numa balancing is enabled with demotion, vmscan will call
-migrate_pages when shrinking LRUs.  migrate_pages will decrement the
-the node's isolated page count, leading to an imbalanced count when
-invoked from (MG)LRU code.
+The CPU frequency cannot be boosted when using the amd_pstate driver in
+passive or guided mode. This is fixed here.
 
-The result is dmesg output like such:
+For example, on a host that has AMD EPYC 7662 64-Core processor without
+this patch running at full CPU load:
 
-$ cat /proc/sys/vm/stat_refresh
+$ for i in $(cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq); =
+\
+  do ni=3D$(echo "scale=3D1; $i/1000000" | bc -l); echo "$ni GHz"; done |=
+ \
+  sort | uniq -c
 
-[77383.088417] vmstat_refresh: nr_isolated_anon -103212
-[77383.088417] vmstat_refresh: nr_isolated_file -899642
+    128 2.0 GHz
 
-This negative value may impact compaction and reclaim throttling.
+And with this patch:
 
-The following path produces the decrement:
+$ for i in $(cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq); =
+\
+  do ni=3D$(echo "scale=3D1; $i/1000000" | bc -l); echo "$ni GHz"; done |=
+ \
+  sort | uniq -c
 
-shrink_folio_list
-  demote_folio_list
-    migrate_pages
-      migrate_pages_batch
-        migrate_folio_move
-          migrate_folio_done
-            mod_node_page_state(-ve) <- decrement
+    128 3.3 GHz
 
-This path happens for SUCCESSFUL migrations, not failures. Typically
-callers to migrate_pages are required to handle putback/accounting for
-failures, but this is already handled in the shrink code.
+The CPU frequency is dependent on a setting called highest_perf which is
+the multiplier used to compute it. The highest_perf value comes from
+cppc_init_perf when the driver is built-in and from pstate_init_perf when
+it is a loaded module. Both of these calls have the following condition:
 
-When accounting for migrations, instead do not decrement the count
-when the migration reason is MR_DEMOTION. As of v6.11, this demotion
-logic is the only source of MR_DEMOTION.
+        highest_perf =3D amd_get_highest_perf();
+        if (highest_perf > __cppc_highest_perf_)
+                highest_perf =3D __cppc_highest_perf;
 
+Where again __cppc_highest_perf is either the return from
+cppc_get_perf_caps in the built-in case or AMD_CPPC_HIGHEST_PERF in the
+module case. Both of these functions actually return the nominal value,
+Whereas the call to amd_get_highest_perf returns the correct boost
+value, so the condition tests true and highest_perf always ends up being
+the nominal value, therefore never having the ability to boost CPU
+frequency.
 
-> >
-> > Signed-off-by: Gregory Price <gourry@gourry.net>
-> > Fixes: 26aa2d199d6f2 ("mm/migrate: demote pages during reclaim")
-> > Cc: stable@vger.kernel.org
-> 
-> Thanks for catching this. Reviewed-by: Yang Shi <shy828301@gmail.com>
-> 
-> > ---
-> >  mm/migrate.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/mm/migrate.c b/mm/migrate.c
-> > index 923ea80ba744..e3aac274cf16 100644
-> > --- a/mm/migrate.c
-> > +++ b/mm/migrate.c
-> > @@ -1099,7 +1099,7 @@ static void migrate_folio_done(struct folio *src,
-> >          * not accounted to NR_ISOLATED_*. They can be recognized
-> >          * as __folio_test_movable
-> >          */
-> > -       if (likely(!__folio_test_movable(src)))
-> > +       if (likely(!__folio_test_movable(src)) && reason != MR_DEMOTION)
-> >                 mod_node_page_state(folio_pgdat(src), NR_ISOLATED_ANON +
-> >                                     folio_is_file_lru(src), -folio_nr_pages(src));
-> >
-> > --
-> > 2.43.0
-> >
+Since amd_get_highest_perf already returns the boost value we should
+just eliminate this check.
+
+The issue was introduced in v6.1 via commit bedadcfb011f ("cpufreq:
+amd-pstate: Fix initial highest_perf value"), and exists in stable kernel=
+s
+
+In v6.6.51, a large change, commit 1ec40a175a48 ("cpufreq: amd-pstate:
+Enable amd-pstate preferred core support"), was introduced which
+significantly refactored the code. This commit cannot be ported back on
+its own, and would require reviewing and cherry picking at least a few
+dozen of commits in cpufreq, amd-pstate, ACPI, CPPC.
+
+This means kernels v6.1 up until v6.6.51 are affected by this
+significant performance issue, and cannot be easily remediated. This
+patch simplifies the fix to a single commit.
+
+***********************************************************************
+
+On 10/28/2024 4:07 PM, Mario Limonciello wrote:
+> On 10/24/2024 22:23, Yuan, Perry wrote:
+>> [AMD Official Use Only - AMD Internal Distribution Only]
+>>
+>>> -----Original Message-----
+>>> From: Nabil S. Alramli <dev@nalramli.com>
+>>> Sent: Friday, October 25, 2024 9:05 AM
+>>> To: stable@vger.kernel.org
+>>> Cc: nalramli@fastly.com; jdamato@fastly.com; khubert@fastly.com;
+>>> Yuan, Perry
+>>> <Perry.Yuan@amd.com>; Meng, Li (Jassmine) <Li.Meng@amd.com>; Huang, R=
+ay
+>>> <Ray.Huang@amd.com>; rafael@kernel.org; viresh.kumar@linaro.org; linu=
+x-
+>>> pm@vger.kernel.org; linux-kernel@vger.kernel.org; Nabil S. Alramli
+>>> <dev@nalramli.com>
+>>> Subject: [RFC PATCH 6.1.y 0/1] cpufreq: amd-pstate: Enable CPU boost
+>>> in passive
+>>> and guided modes
+>>>
+>>> Greetings,
+>>>
+>>> This is a RFC for a maintenance patch to an issue in the amd_pstate
+>>> driver where
+>>> CPU frequency cannot be boosted in passive or guided modes. Without
+>>> this patch,
+>>> AMD machines using stable kernels are unable to get their CPU
+>>> frequency boosted,
+>>> which is a significant performance issue.
+>>>
+>>> For example, on a host that has AMD EPYC 7662 64-Core processor
+>>> without this
+>>> patch running at full CPU load:
+>>>
+>>> $ for i in $(cat
+>>> /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq); \
+>>> =C2=A0=C2=A0 do ni=3D$(echo "scale=3D1; $i/1000000" | bc -l); echo "$=
+ni GHz"; done | \
+>>> =C2=A0=C2=A0 sort | uniq -c
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 128 2.0 GHz
+>>>
+>>> And with this patch:
+>>>
+>>> $ for i in $(cat
+>>> /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq); \
+>>> =C2=A0=C2=A0 do ni=3D$(echo "scale=3D1; $i/1000000" | bc -l); echo "$=
+ni GHz"; done | \
+>>> =C2=A0=C2=A0 sort | uniq -c
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 128 3.3 GHz
+>>>
+>>> I am not sure what the correct process is for submitting patches
+>>> which affect only
+>>> stable trees but not the current code base, and do not apply to the
+>>> current tree. As
+>>> such, I am submitting this directly to stable@, but please let me
+>>> know if I should be
+>>> submitting this elsewhere.
+>>>
+>>> The issue was introduced in v6.1 via commit bedadcfb011f ("cpufreq:
+>>> amd-pstate: Fix initial highest_perf value"), and exists in stable
+>>> kernels up until
+>>> v6.6.51.
+>>>
+>>> In v6.6.51, a large change, commit 1ec40a175a48 ("cpufreq: amd-pstate=
+:
+>>> Enable amd-pstate preferred core support"), was introduced which
+>>> significantly
+>>> refactored the code. This commit cannot be ported back on its own,
+>>> and would
+>>> require reviewing and cherry picking at least a few dozen of commits
+>>> in cpufreq,
+>>> amd-pstate, ACPI, CPPC.
+>>>
+>>> This means kernels v6.1 up until v6.6.51 are affected by this
+>>> significant
+>>> performance issue, and cannot be easily remediated.
+>>>
+>>> Thank you for your attention and I look forward to your response in
+>>> regards to what
+>>> the best way to proceed is for getting this important performance fix
+>>> merged.
+>>>
+>>> Best Regards,
+>>>
+>>> Nabil S. Alramli (1):
+>>> =C2=A0=C2=A0 cpufreq: amd-pstate: Enable CPU boost in passive and gui=
+ded modes
+>>>
+>>> =C2=A0 drivers/cpufreq/amd-pstate.c | 8 ++------
+>>> =C2=A0 1 file changed, 2 insertions(+), 6 deletions(-)
+>>>
+>>> --=20
+>>> 2.35.1
+>>
+>> Add Mario and Gautham for any help.
+>>
+>> Perry.
+>>
+>=20
+> If doing a patch that is only for 6.1.y then I think that some more of
+> this information from the cover letter needs to push into the patch its=
+elf.
+>=20
+> But looking over the patch and considering how much we've changed this
+> in the newer kernels I think it is a sensible localized change for 6.1.=
+y.
+>=20
+> As this is fixed in 6.6.51 via a more complete backport patch please
+> only tag 6.1 in your "Cc: stable@vger.kernel.org" from the patch.
+>=20
 
