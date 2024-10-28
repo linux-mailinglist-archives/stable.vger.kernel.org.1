@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-88491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD2329B2632
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:37:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B5F59B281E
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:54:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B5E71C212C6
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:37:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC3C51C215AC
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6131018DF68;
-	Mon, 28 Oct 2024 06:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4955B18E368;
+	Mon, 28 Oct 2024 06:54:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dx3TkKSn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIyNamZR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D09915B10D;
-	Mon, 28 Oct 2024 06:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072DF2AF07;
+	Mon, 28 Oct 2024 06:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097454; cv=none; b=On4FG+Cvi0MDTx/FPu9JoP9ID1dJtZlDRhdZLUTXXTh+PCR1gWoN8RfKMtH4eNWLiLVf8nKO/l8qrnIpBhWb0SewPUNx4o0xvP+lFpgmLORUP+otMMZrzO9IlQHnq7mNwHFeoOtDvdC7TFA6gLCSpj8hXTpjNXP7Jw4X2xjWwDs=
+	t=1730098449; cv=none; b=DaEnrkCut0rE/TDI+y527dC5qkRrjiyjYT/L6CsGMV2ahqBEjl03qycXNzP1/Oc9pvP7HQMZrJDm0LnbUCsVjNNWgXMZN/83XhNdKrLUJB1+FxlMoxMmbvRQbDa5xFY1BtS3zkD1pEp1QDXpL/18q7kn26YOvqidS8VOjTX4iEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097454; c=relaxed/simple;
-	bh=E8xXebdGbpG0MCPP09ZLVKeWJmMvhS+B/eKSh96bO3M=;
+	s=arc-20240116; t=1730098449; c=relaxed/simple;
+	bh=xzEAn5x6UcaQZHUatRM5lNK5uVSIYeQIkTKW3J6bGtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aNkBhXGBECKREwn3bOPKy/weckUO2rXTROaj37KW9hOPhNzUfELzzS7hhtcVBT9n3ZujmZDnocX8yKdXUj6/YPwV47iv3LV/7ho3FXhiRezfHWQnivv7NXW1ChNAlp9+Apx6advOJm1e817u0M55N0iMIUGN6lG8FUMSEvmtniw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dx3TkKSn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 904D5C4CEC7;
-	Mon, 28 Oct 2024 06:37:33 +0000 (UTC)
+	 MIME-Version; b=BXrvarFGjygUsLdw3SYhlflPl04Gixu+LOhCr5MGmIQRn4DCb0mNifu8WKu0Q7TLKTlrK66lBqeEg4yglrkveEPZFnZ2MKvpsxDkjFaSvIac0MGLyF6lSFw9cBb4h34iE9xEHAGhGjrPuFASisXINkDNL3RpXH7JR06aaxQDFhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIyNamZR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5521DC4CEC3;
+	Mon, 28 Oct 2024 06:54:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097454;
-	bh=E8xXebdGbpG0MCPP09ZLVKeWJmMvhS+B/eKSh96bO3M=;
+	s=korg; t=1730098448;
+	bh=xzEAn5x6UcaQZHUatRM5lNK5uVSIYeQIkTKW3J6bGtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dx3TkKSnNLxfSREXldNtL8aTGuzolSLTMkTZp5ndY9M7PhDSTrs0ldluRaZymh8Po
-	 x8UlDLVH8HEDvP012GtUU7oKp2F3smkx/t4epFC5ZclBiWh25cr8b8Ww8BW7Wrzfew
-	 vAGW20thPwwkXJkmtglzSJ6vuWTueszT9KjmL+wI=
+	b=VIyNamZRkJhxWv+TclqyMb1OTwX03bmm/l9LjGi+H95eZ3A6lCKJuVqHVWFtAgKBy
+	 oCpynyiGpqyMswhEMuQsQ4Sbd0elmWGTFj4bMZKRzM2RiAvTqu6zULq6ty1aqRKKzK
+	 C9qfFvv5w+QhMe58RNAjVr1Vl+glIEZ5cnPfXZ6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.1 136/137] ACPI: PRM: Clean up guid type in struct prm_handler_info
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.11 231/261] hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event
 Date: Mon, 28 Oct 2024 07:26:13 +0100
-Message-ID: <20241028062302.500077946@linuxfoundation.org>
+Message-ID: <20241028062317.905185371@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-commit 3d1c651272cf1df8aac7d9b6d92d836d27bed50f upstream.
+commit 4c262801ea60c518b5bebc22a09f5b78b3147da2 upstream.
 
-Clang 19 prints a warning when we pass &th->guid to efi_pa_va_lookup():
+The existing code moves VF to the same namespace as the synthetic NIC
+during netvsc_register_vf(). But, if the synthetic device is moved to a
+new namespace after the VF registration, the VF won't be moved together.
 
-drivers/acpi/prmt.c:156:29: error: passing 1-byte aligned argument to
-4-byte aligned parameter 1 of 'efi_pa_va_lookup' may result in an
-unaligned pointer access [-Werror,-Walign-mismatch]
-  156 |                         (void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
-      |                                                  ^
+To make the behavior more consistent, add a namespace check for synthetic
+NIC's NETDEV_REGISTER event (generated during its move), and move the VF
+if it is not in the same namespace.
 
-The problem is that efi_pa_va_lookup() takes a efi_guid_t and &th->guid
-is a regular guid_t.  The difference between the two types is the
-alignment.  efi_guid_t is a typedef.
-
-	typedef guid_t efi_guid_t __aligned(__alignof__(u32));
-
-It's possible that this a bug in Clang 19.  Even though the alignment of
-&th->guid is not explicitly specified, it will still end up being aligned
-at 4 or 8 bytes.
-
-Anyway, as Ard points out, it's cleaner to change guid to efi_guid_t type
-and that also makes the warning go away.
-
-Fixes: 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM handler and context")
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Suggested-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://patch.msgid.link/3777d71b-9e19-45f4-be4e-17bf4fa7a834@stanley.mountain
-[ rjw: Subject edit ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: c0a41b887ce6 ("hv_netvsc: move VF to same namespace as netvsc device")
+Suggested-by: Stephen Hemminger <stephen@networkplumber.org>
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/1729275922-17595-1-git-send-email-haiyangz@microsoft.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/prmt.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/hyperv/netvsc_drv.c |   30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
---- a/drivers/acpi/prmt.c
-+++ b/drivers/acpi/prmt.c
-@@ -52,7 +52,7 @@ struct prm_context_buffer {
- static LIST_HEAD(prm_module_list);
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -2797,6 +2797,31 @@ static struct  hv_driver netvsc_drv = {
+ 	},
+ };
  
- struct prm_handler_info {
--	guid_t guid;
-+	efi_guid_t guid;
- 	void *handler_addr;
- 	u64 static_data_buffer_addr;
- 	u64 acpi_param_buffer_addr;
++/* Set VF's namespace same as the synthetic NIC */
++static void netvsc_event_set_vf_ns(struct net_device *ndev)
++{
++	struct net_device_context *ndev_ctx = netdev_priv(ndev);
++	struct net_device *vf_netdev;
++	int ret;
++
++	vf_netdev = rtnl_dereference(ndev_ctx->vf_netdev);
++	if (!vf_netdev)
++		return;
++
++	if (!net_eq(dev_net(ndev), dev_net(vf_netdev))) {
++		ret = dev_change_net_namespace(vf_netdev, dev_net(ndev),
++					       "eth%d");
++		if (ret)
++			netdev_err(vf_netdev,
++				   "Cannot move to same namespace as %s: %d\n",
++				   ndev->name, ret);
++		else
++			netdev_info(vf_netdev,
++				    "Moved VF to namespace with: %s\n",
++				    ndev->name);
++	}
++}
++
+ /*
+  * On Hyper-V, every VF interface is matched with a corresponding
+  * synthetic interface. The synthetic interface is presented first
+@@ -2809,6 +2834,11 @@ static int netvsc_netdev_event(struct no
+ 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
+ 	int ret = 0;
+ 
++	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
++		netvsc_event_set_vf_ns(event_dev);
++		return NOTIFY_DONE;
++	}
++
+ 	ret = check_dev_is_matching_vf(event_dev);
+ 	if (ret != 0)
+ 		return NOTIFY_DONE;
 
 
 
