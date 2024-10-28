@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-88368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D62BF9B259E
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:33:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94FFA9B279A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:49:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 140421C203BC
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:33:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A78E284B9E
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DBA18E03A;
-	Mon, 28 Oct 2024 06:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7F3718E05D;
+	Mon, 28 Oct 2024 06:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K41yhwWd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xlRZy3Ik"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3207115B10D;
-	Mon, 28 Oct 2024 06:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7539E18A924;
+	Mon, 28 Oct 2024 06:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097177; cv=none; b=l2svAKZGYhQnbCmTT35CURHFWsUd7YYbOJ/QDvo9DRo3C+vJ+PwlGXtrtqp8fI92DPqTfl6cpEvZm5375hRPWmrC71fy4b8ON0eNaIPuMfgFH1sPZW6hvY2QBmfJeevQim8wkyvqAXQqZ8z1WmKeqIGadN8go7TUDC9Vd+5rJgg=
+	t=1730098178; cv=none; b=mqmOSqgvkM+yrflPFabQLLjZnVmxakwFBB2GDUqoOAl0/wQhZgu7phNwETy6fz+Gz7vw8tV4y3QotnlCSwPegOZ/TSzw3GiCpsyleEhPvUYfD/4g46yZtZEkdsf6UQdOoKWG+7MJBlmD48DpYzMMaC95I/vUczHqj5wCtM5HHQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097177; c=relaxed/simple;
-	bh=7pn4elU4MDqca0EPDyljspt8eWP1ouEeumkja4/VqkE=;
+	s=arc-20240116; t=1730098178; c=relaxed/simple;
+	bh=CIQFlOh5VqV2moGCnCPiwlhAOsqNp1d4GJqGOnmkphQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=idWTbk40FjkG2uYGHkH9wAvPKK/Z4E/Upps48ioGg6ewXY3FK6NsUd1+537OteI4bHUQ2QCr1hZP3dfTwHoC+1h7AHgmaTIXIjeyqSJfuFIJYolG3cDm2PUmNEySDpdyYq0Oxy/0LQqJfun6OxKuajg1LoJPlVlXgzrNdZp5uzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K41yhwWd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC3DC4CEC7;
-	Mon, 28 Oct 2024 06:32:56 +0000 (UTC)
+	 MIME-Version; b=WqZn4zl50IszYGpMCUMhi+3LXmJEfeNVtIW/KGc6w3AfHwACtTDzZydAgUonxm0UP0a+7rFoTqqoR610sacButjfX9jvSUmo/rcJ2kPgdqU+LdyC9gLQGregKsdNKsW/ySX1PYuk2wXucqlfLIAlASf/e1MvEiW3QzfPeoJvcjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xlRZy3Ik; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5378C4CEC3;
+	Mon, 28 Oct 2024 06:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097176;
-	bh=7pn4elU4MDqca0EPDyljspt8eWP1ouEeumkja4/VqkE=;
+	s=korg; t=1730098178;
+	bh=CIQFlOh5VqV2moGCnCPiwlhAOsqNp1d4GJqGOnmkphQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K41yhwWdeU0NV4UeOS7FgmJiIt++Az+871Q9uoUYgnV5CODevN2+ps2x2Hgdkx8/h
-	 Nyl90Gf6/4hMjHuTE/OxSf7X1xbnGAudtI9BRYxJdqcc+hfEpXYBMM2FibWQmH+NJw
-	 /mvstRL7KFmWpdNX8ZyNQPy8fo9V03ZfcsaZJmf0=
+	b=xlRZy3IkJJpg533PIrbCmTzMwtxLXssxnjKvLCSScjlSV31NqRROgiFIwLpQpd8pZ
+	 BwcmpBULYrunP3zZV8/oZ9JpKg0cIfvqrCiYGrkaEyC9NmlXteo6pJPdI2R0/36oKL
+	 rGC8gkNyhQqRdqR3XVl8KIlP0k9MNz7mw88RcW+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anumula Murali Mohan Reddy <anumula@chelsio.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 017/137] RDMA/cxgb4: Fix RDMA_CM_EVENT_UNREACHABLE error for iWARP
+Subject: [PATCH 6.11 112/261] fgraph: Allocate ret_stack_list with proper size
 Date: Mon, 28 Oct 2024 07:24:14 +0100
-Message-ID: <20241028062259.206231891@linuxfoundation.org>
+Message-ID: <20241028062314.838100910@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anumula Murali Mohan Reddy <anumula@chelsio.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit c659b405b82ead335bee6eb33f9691bf718e21e8 ]
+[ Upstream commit fae4078c289a2f24229c0de652249948b1cd6bdb ]
 
-ip_dev_find() always returns real net_device address, whether traffic is
-running on a vlan or real device, if traffic is over vlan, filling
-endpoint struture with real ndev and an attempt to send a connect request
-will results in RDMA_CM_EVENT_UNREACHABLE error.  This patch fixes the
-issue by using vlan_dev_real_dev().
+The ret_stack_list is an array of ret_stack shadow stacks for the function
+graph usage. When the first function graph is enabled, all tasks in the
+system get a shadow stack. The ret_stack_list is a 32 element array of
+pointers to these shadow stacks. It allocates the shadow stack in batches
+(32 stacks at a time), assigns them to running tasks, and continues until
+all tasks are covered.
 
-Fixes: 830662f6f032 ("RDMA/cxgb4: Add support for active and passive open connection with IPv6 address")
-Link: https://patch.msgid.link/r/20241007132311.70593-1-anumula@chelsio.com
-Signed-off-by: Anumula Murali Mohan Reddy <anumula@chelsio.com>
-Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+When the function graph shadow stack changed from an array of
+ftrace_ret_stack structures to an array of longs, the allocation of
+ret_stack_list went from allocating an array of 32 elements to just a
+block defined by SHADOW_STACK_SIZE. Luckily, that's defined as PAGE_SIZE
+and is much more than enough to hold 32 pointers. But it is way overkill
+for the amount needed to allocate.
+
+Change the allocation of ret_stack_list back to a kcalloc() of
+FTRACE_RETSTACK_ALLOC_SIZE pointers.
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20241018215212.23f13f40@rorschach
+Fixes: 42675b723b484 ("function_graph: Convert ret_stack to a series of longs")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/cxgb4/cm.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ kernel/trace/fgraph.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/cxgb4/cm.c b/drivers/infiniband/hw/cxgb4/cm.c
-index b3757c6a0457a..8d753e6e0c719 100644
---- a/drivers/infiniband/hw/cxgb4/cm.c
-+++ b/drivers/infiniband/hw/cxgb4/cm.c
-@@ -2086,7 +2086,7 @@ static int import_ep(struct c4iw_ep *ep, int iptype, __u8 *peer_ip,
- 	err = -ENOMEM;
- 	if (n->dev->flags & IFF_LOOPBACK) {
- 		if (iptype == 4)
--			pdev = ip_dev_find(&init_net, *(__be32 *)peer_ip);
-+			pdev = __ip_dev_find(&init_net, *(__be32 *)peer_ip, false);
- 		else if (IS_ENABLED(CONFIG_IPV6))
- 			for_each_netdev(&init_net, pdev) {
- 				if (ipv6_chk_addr(&init_net,
-@@ -2101,12 +2101,12 @@ static int import_ep(struct c4iw_ep *ep, int iptype, __u8 *peer_ip,
- 			err = -ENODEV;
- 			goto out;
- 		}
-+		if (is_vlan_dev(pdev))
-+			pdev = vlan_dev_real_dev(pdev);
- 		ep->l2t = cxgb4_l2t_get(cdev->rdev.lldi.l2t,
- 					n, pdev, rt_tos2priority(tos));
--		if (!ep->l2t) {
--			dev_put(pdev);
-+		if (!ep->l2t)
- 			goto out;
--		}
- 		ep->mtu = pdev->mtu;
- 		ep->tx_chan = cxgb4_port_chan(pdev);
- 		ep->smac_idx = ((struct port_info *)netdev_priv(pdev))->smt_idx;
-@@ -2119,7 +2119,6 @@ static int import_ep(struct c4iw_ep *ep, int iptype, __u8 *peer_ip,
- 		ep->rss_qid = cdev->rdev.lldi.rxq_ids[
- 			cxgb4_port_idx(pdev) * step];
- 		set_tcp_window(ep, (struct port_info *)netdev_priv(pdev));
--		dev_put(pdev);
- 	} else {
- 		pdev = get_real_dev(n->dev);
- 		ep->l2t = cxgb4_l2t_get(cdev->rdev.lldi.l2t,
+diff --git a/kernel/trace/fgraph.c b/kernel/trace/fgraph.c
+index 43f4e3f57438b..41e7a15dcb50c 100644
+--- a/kernel/trace/fgraph.c
++++ b/kernel/trace/fgraph.c
+@@ -1162,7 +1162,8 @@ static int start_graph_tracing(void)
+ 	unsigned long **ret_stack_list;
+ 	int ret;
+ 
+-	ret_stack_list = kmalloc(SHADOW_STACK_SIZE, GFP_KERNEL);
++	ret_stack_list = kcalloc(FTRACE_RETSTACK_ALLOC_SIZE,
++				 sizeof(*ret_stack_list), GFP_KERNEL);
+ 
+ 	if (!ret_stack_list)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
