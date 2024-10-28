@@ -1,99 +1,115 @@
-Return-Path: <stable+bounces-89074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8E249B31C0
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 14:33:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF9089B31EA
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 14:42:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA9F01C218E7
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 13:33:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D3E81C21743
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 13:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEC041DB54B;
-	Mon, 28 Oct 2024 13:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F221DBB13;
+	Mon, 28 Oct 2024 13:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jrr6CxFo"
+	dkim=pass (2048-bit key) header.d=steffen.cc header.i=@steffen.cc header.b="TLwDU7Ed"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A242E185B58
-	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 13:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5AF1DB92A;
+	Mon, 28 Oct 2024 13:42:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730122385; cv=none; b=E0tFbNGuiVFzGowSW7ZLWAi01l0Qu3Yjcw1QD1L7E4NIg7JegIrmMXS+Z73cQ7V8CbC3g3uecCOH0f0hSvcVy/7UZnMhzFopV3kB8JDChAbestk3CuV4hpatx4/wvPyOr6T2vqPqer1v4wD0EpEVR9uO0lKZVeDJesJhnvALnRk=
+	t=1730122963; cv=none; b=dM2P89bYgaby/y2aySDkkvh2lgh0aW3ne+Wqdg/jnL9ItGrKdzG80z6h1/tu6VxCfuED8Oqxo7FDebqibNdOCmoWG+RIy2w7HsEkYxIH/CcvwCjMva9o7jAIhtn61SKO+707TSldpMLjVhGGNf4cDY8xhAhRU7qyxUppcZg0gjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730122385; c=relaxed/simple;
-	bh=K3JTVNxt4daTB+iZYPMb6lhrl/O9vAeWrW/JfFvSVs0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=l9obaOgTN68wcU6ikmYVbsmhTpeF4aOXoam6ekMwrc5BRzAIunR8bzi6+edZ+jZ9IjLOwO/3iISaNpAeSeoDjmeS1M/DYgwi9JdCeoLbypxi80wYOVqlbbabKnR8x3bbnSYz4BNmborC8zk6h5QiCMoOm4Mmf8dSKZxsAg8cysY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jrr6CxFo; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730122383; x=1761658383;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=K3JTVNxt4daTB+iZYPMb6lhrl/O9vAeWrW/JfFvSVs0=;
-  b=Jrr6CxFoeX/Ol5AQnycftJ9YeNBKNXGFnPc6dLiOwoKYKukvtoI4/MKo
-   j9FmJhOBrkIX5qXFXatF7nHF60JDmpDahW7bdESgOZy7CYRRKryqSVaaf
-   AchRe8aatnOxMb0uhg86nIoRMjP8cPpVfy/Ezbh+5a81tat06Dmrj3IxL
-   47mXVyFFcBtClkFzFPF5l9q+GDMJqW9fvhtKcMJNoZDViXpC/ujtqalH2
-   4UUE/AdPtKdLW2OWyhBq6fKKSY2TUft8ApdbPK5BQ4821QkzrVA1bAHy6
-   Z3LlG8MoJWkoIkmFjpFRZvbsvN0G3SWOLH2iRhPUWonCr1bopMMn6pt/v
-   w==;
-X-CSE-ConnectionGUID: 1iYBxhkTTlao9jSo1P0NHw==
-X-CSE-MsgGUID: mkEAwISvQ92QYxZzxZx76g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29580095"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="29580095"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 06:33:03 -0700
-X-CSE-ConnectionGUID: iZOndzyDRXObJjHvPpDWBQ==
-X-CSE-MsgGUID: 2lRfUCrDS06nimMahXgflQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
-   d="scan'208";a="119081705"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 28 Oct 2024 06:33:02 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t5Prg-000cTv-0b;
-	Mon, 28 Oct 2024 13:33:00 +0000
-Date: Mon, 28 Oct 2024 21:32:50 +0800
-From: kernel test robot <lkp@intel.com>
-To: Steffen Dirkwinkel <lists@steffen.cc>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2] drm: xlnx: zynqmp_dpsub: fix hotplug detection
-Message-ID: <Zx-Sgv9-7QWYiJwN@433b1ac7a1a4>
+	s=arc-20240116; t=1730122963; c=relaxed/simple;
+	bh=V2bm68Aam0kLjC158+jZ/CWLV08CnutoQAqhJ/ADHIs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cTB5WnOFf33KDpLFcEzYPQXeu8L+HaQpMpu627VVX9kX4KPVhNlFvBXYyeOqrOa+2A6aDNTj7Z8nW4c7FoTTEaJ8N0Pp1BhpV7eWIQQixR4hFpAiiHvfsO93iFy1hWi2maa3fQeT8f9UmU2CIKh10UcN3Osv5PEdWNnRfmpFHTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=steffen.cc; spf=pass smtp.mailfrom=steffen.cc; dkim=pass (2048-bit key) header.d=steffen.cc header.i=@steffen.cc header.b=TLwDU7Ed; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=steffen.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=steffen.cc
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4XcZMB4z28z9spY;
+	Mon, 28 Oct 2024 14:42:30 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=steffen.cc; s=MBO0001;
+	t=1730122950;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SnAt2WGdW9o/tfYw/mDO16S2oXry5gmhCCzZ6QXpMaY=;
+	b=TLwDU7EdjMHnB/kN4w7klFnTpfTh39T+w2Ip2Z+SNLYnTrNRaz3gaXvV6Rj26Swm4jMozt
+	rLKv2xX7gKI++qMioucgmHWSs57O7qvQwMKA6i+OgpSiyFaRuilbGMvTebtZESFRtkV/F3
+	J/bhWVMteFxlD2ypar6tvgSmhqcMprefpYQE2/QfSHPyPTcPTUYIZu8t3GdoD9k3xwA0ac
+	OFfIaZRGYLf2VaObHIenOR+PQ41w6FwUflA9yJ8i/3BOYY0aU40tRil1kdb3BaKMKdP7lP
+	jU/qYdtuqGQg/QFUnCp6XPVmYboQXtIviDqqeEtmOzHIunSinUueiboohKBE8A==
+From: Steffen Dirkwinkel <lists@steffen.cc>
+To: dri-devel@lists.freedesktop.org,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	stable@vger.kernel.org,
+	Steffen Dirkwinkel <s.dirkwinkel@beckhoff.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Michal Simek <michal.simek@amd.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] drm: xlnx: zynqmp_dpsub: fix hotplug detection
+Date: Mon, 28 Oct 2024 14:42:17 +0100
+Message-ID: <20241028134218.54727-1-lists@steffen.cc>
+In-Reply-To: <f7fbd696-d739-457b-bebb-571b32ecc1d6@ideasonboard.com>
+References: <f7fbd696-d739-457b-bebb-571b32ecc1d6@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241028133138.52973-1-lists@steffen.cc>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Steffen Dirkwinkel <s.dirkwinkel@beckhoff.com>
 
-Thanks for your patch.
+drm_kms_helper_poll_init needs to be called after zynqmp_dpsub_kms_init.
+zynqmp_dpsub_kms_init creates the connector and without it we don't
+enable hotplug detection.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Fixes: eb2d64bfcc17 ("drm: xlnx: zynqmp_dpsub: Report HPD through the bridge")
+Cc: stable@vger.kernel.org
+Signed-off-by: Steffen Dirkwinkel <s.dirkwinkel@beckhoff.com>
+---
+ drivers/gpu/drm/xlnx/zynqmp_kms.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v2] drm: xlnx: zynqmp_dpsub: fix hotplug detection
-Link: https://lore.kernel.org/stable/20241028133138.52973-1-lists%40steffen.cc
-
+diff --git a/drivers/gpu/drm/xlnx/zynqmp_kms.c b/drivers/gpu/drm/xlnx/zynqmp_kms.c
+index bd1368df7870..311397cee5ca 100644
+--- a/drivers/gpu/drm/xlnx/zynqmp_kms.c
++++ b/drivers/gpu/drm/xlnx/zynqmp_kms.c
+@@ -509,12 +509,12 @@ int zynqmp_dpsub_drm_init(struct zynqmp_dpsub *dpsub)
+ 	if (ret)
+ 		return ret;
+ 
+-	drm_kms_helper_poll_init(drm);
+-
+ 	ret = zynqmp_dpsub_kms_init(dpsub);
+ 	if (ret < 0)
+ 		goto err_poll_fini;
+ 
++	drm_kms_helper_poll_init(drm);
++
+ 	/* Reset all components and register the DRM device. */
+ 	drm_mode_config_reset(drm);
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.47.0
 
 
