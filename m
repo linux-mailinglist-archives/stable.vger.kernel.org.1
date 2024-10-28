@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-88360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4788E9B2596
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:32:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 340449B27BD
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:50:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0FF31F21D06
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:32:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A61FF285991
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD8218C03D;
-	Mon, 28 Oct 2024 06:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFF118E35B;
+	Mon, 28 Oct 2024 06:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8BnKdbl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BHJ99Jdz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A712718E348;
-	Mon, 28 Oct 2024 06:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2986718EFC9;
+	Mon, 28 Oct 2024 06:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097158; cv=none; b=ICt8RxFS2wNL9dumG10b7gSphZcIK3sqZU3Sbg4NxDfe54D+fptbmFM/kzuEl1mmv/0smO9pbXeFN2uy7cC3MDYBW5gZTOmD7ZZG1No7r0v2dnqHNMmTWGJc2rMMxX6ju2fwasgGErqFwo18HEUX1tz9gfuUjMjjclsXuJ6Fs70=
+	t=1730098245; cv=none; b=YBeNRH0EgfRNa1A9iTFFjmMo7bPYPyRTMsIl/0+Xs74jUsCpkWeLDONeReH239DfP2ZwwK5wM9tcUfFZZ32ZX7MV5JA6UE026fA7KdoKjcRz+RLPWvaZ8XmKmKkzoy3sMLVgnU81rI/0PBWJKYNMAQU/B6OZXlbVpm8VdwXSHWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097158; c=relaxed/simple;
-	bh=wZPbY6l/qN0wPYQVyWE0yKb0MBYwFUusnr164yO7cOo=;
+	s=arc-20240116; t=1730098245; c=relaxed/simple;
+	bh=dXwnD+X6G/LKRixxaIZpPRyc1hzDfApL0WVOUaY+i5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t/pHscMii6Y+elhsqfc/L3tLKEYEOUWJckJVuyi4ZYnFxcLQuO4PKb6kY/Xp3iEieScCettjtOI6S6VV4aPvvRDKhN35/sTCEVn8GKc2DXKgU5HcqCGSqN8giBxe0RUaGFZ2tnE8OsqL0OYxQ5/r50OmcHqMOIBc/LI1heQ9j7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8BnKdbl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 454C3C4CEE3;
-	Mon, 28 Oct 2024 06:32:38 +0000 (UTC)
+	 MIME-Version; b=HaOm649r9ig9bxpMkZ7sZJK/alGk1ulcruzuX3dRdNE2rGvDGfk4NLBhYtX2qMgo8R8pCw1L6acSBYWvUb3RFRwHthDRZ8BpTQ+yUkb3uIb9UUULeEMbSmb+rtD27QSjj1TMjdLLm1iLt28UAXwtJpo1nuDCuaieT5MfbQD0ZdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BHJ99Jdz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE87AC4CECD;
+	Mon, 28 Oct 2024 06:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097158;
-	bh=wZPbY6l/qN0wPYQVyWE0yKb0MBYwFUusnr164yO7cOo=;
+	s=korg; t=1730098245;
+	bh=dXwnD+X6G/LKRixxaIZpPRyc1hzDfApL0WVOUaY+i5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j8BnKdblgHxX3e3ClsmTnt3Ashg3M+duAfi4QtEu9iiLaPa5P68L347XdwdvhYquw
-	 lfkhKNoWwDH7OjBBo83mhpnoieYPJFunTrOZrknAYA7foRTUjvN3oh9Aq3SzR6bvH2
-	 0pewL6zzoi/PEpQJOcrWTyKSqQ3FajEPvJVBvGpk=
+	b=BHJ99JdzMc7BQUxhoEn2jCX7kLKV1X3sidvo84tWOlgw/S1pvPx6Eud/DcUITntin
+	 VaS5mvrzW1NWvi77M3zJrqPtTuSJSz6I0SIM/n3B6fLXhs+6Z6VBANcf+hP9xcuUV0
+	 dIUU1DbCu0hS4erYDhfXCtIRcZa15rVn89OD/7hM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Grech <bgrech@redhat.com>,
-	Wander Lairson Costa <wander.lairson@gmail.com>,
-	Wander Lairson Costa <wander@redhat.com>,
+	Andrew Sauber <andrew.sauber@isovalent.com>,
+	Nikolay Nikolaev <nikolay.nikolaev@isovalent.com>,
 	Daniel Borkmann <daniel@iogearbox.net>,
+	Anton Protopopov <aspsk@isovalent.com>,
+	William Tu <witu@nvidia.com>,
+	Ronak Doshi <ronak.doshi@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 001/137] bpf: Use raw_spinlock_t in ringbuf
+Subject: [PATCH 6.11 096/261] vmxnet3: Fix packet corruption in vmxnet3_xdp_xmit_frame
 Date: Mon, 28 Oct 2024 07:23:58 +0100
-Message-ID: <20241028062258.750025400@linuxfoundation.org>
+Message-ID: <20241028062314.436568482@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +67,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wander Lairson Costa <wander.lairson@gmail.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 8b62645b09f870d70c7910e7550289d444239a46 ]
+[ Upstream commit 4678adf94da4a9e9683817b246b58ce15fb81782 ]
 
-The function __bpf_ringbuf_reserve is invoked from a tracepoint, which
-disables preemption. Using spinlock_t in this context can lead to a
-"sleep in atomic" warning in the RT variant. This issue is illustrated
-in the example below:
+Andrew and Nikolay reported connectivity issues with Cilium's service
+load-balancing in case of vmxnet3.
 
-BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 556208, name: test_progs
-preempt_count: 1, expected: 0
-RCU nest depth: 1, expected: 1
-INFO: lockdep is turned off.
-Preemption disabled at:
-[<ffffd33a5c88ea44>] migrate_enable+0xc0/0x39c
-CPU: 7 PID: 556208 Comm: test_progs Tainted: G
-Hardware name: Qualcomm SA8775P Ride (DT)
-Call trace:
- dump_backtrace+0xac/0x130
- show_stack+0x1c/0x30
- dump_stack_lvl+0xac/0xe8
- dump_stack+0x18/0x30
- __might_resched+0x3bc/0x4fc
- rt_spin_lock+0x8c/0x1a4
- __bpf_ringbuf_reserve+0xc4/0x254
- bpf_ringbuf_reserve_dynptr+0x5c/0xdc
- bpf_prog_ac3d15160d62622a_test_read_write+0x104/0x238
- trace_call_bpf+0x238/0x774
- perf_call_bpf_enter.isra.0+0x104/0x194
- perf_syscall_enter+0x2f8/0x510
- trace_sys_enter+0x39c/0x564
- syscall_trace_enter+0x220/0x3c0
- do_el0_svc+0x138/0x1dc
- el0_svc+0x54/0x130
- el0t_64_sync_handler+0x134/0x150
- el0t_64_sync+0x17c/0x180
+If a BPF program for native XDP adds an encapsulation header such as
+IPIP and transmits the packet out the same interface, then in case
+of vmxnet3 a corrupted packet is being sent and subsequently dropped
+on the path.
 
-Switch the spinlock to raw_spinlock_t to avoid this error.
+vmxnet3_xdp_xmit_frame() which is called e.g. via vmxnet3_run_xdp()
+through vmxnet3_xdp_xmit_back() calculates an incorrect DMA address:
 
-Fixes: 457f44363a88 ("bpf: Implement BPF ring buffer and verifier support for it")
-Reported-by: Brian Grech <bgrech@redhat.com>
-Signed-off-by: Wander Lairson Costa <wander.lairson@gmail.com>
-Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+  page = virt_to_page(xdpf->data);
+  tbi->dma_addr = page_pool_get_dma_addr(page) +
+                  VMXNET3_XDP_HEADROOM;
+  dma_sync_single_for_device(&adapter->pdev->dev,
+                             tbi->dma_addr, buf_size,
+                             DMA_TO_DEVICE);
+
+The above assumes a fixed offset (VMXNET3_XDP_HEADROOM), but the XDP
+BPF program could have moved xdp->data. While the passed buf_size is
+correct (xdpf->len), the dma_addr needs to have a dynamic offset which
+can be calculated as xdpf->data - (void *)xdpf, that is, xdp->data -
+xdp->data_hard_start.
+
+Fixes: 54f00cce1178 ("vmxnet3: Add XDP support.")
+Reported-by: Andrew Sauber <andrew.sauber@isovalent.com>
+Reported-by: Nikolay Nikolaev <nikolay.nikolaev@isovalent.com>
 Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/r/20240920190700.617253-1-wander@redhat.com
+Tested-by: Nikolay Nikolaev <nikolay.nikolaev@isovalent.com>
+Acked-by: Anton Protopopov <aspsk@isovalent.com>
+Cc: William Tu <witu@nvidia.com>
+Cc: Ronak Doshi <ronak.doshi@broadcom.com>
+Link: https://patch.msgid.link/a0888656d7f09028f9984498cc698bb5364d89fc.1728931137.git.daniel@iogearbox.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/ringbuf.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/vmxnet3/vmxnet3_xdp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/ringbuf.c b/kernel/bpf/ringbuf.c
-index a1911391a864c..af75c54eb84fb 100644
---- a/kernel/bpf/ringbuf.c
-+++ b/kernel/bpf/ringbuf.c
-@@ -37,7 +37,7 @@ struct bpf_ringbuf {
- 	u64 mask;
- 	struct page **pages;
- 	int nr_pages;
--	spinlock_t spinlock ____cacheline_aligned_in_smp;
-+	raw_spinlock_t spinlock ____cacheline_aligned_in_smp;
- 	/* For user-space producer ring buffers, an atomic_t busy bit is used
- 	 * to synchronize access to the ring buffers in the kernel, rather than
- 	 * the spinlock that is used for kernel-producer ring buffers. This is
-@@ -170,7 +170,7 @@ static struct bpf_ringbuf *bpf_ringbuf_alloc(size_t data_sz, int numa_node)
- 	if (!rb)
- 		return NULL;
- 
--	spin_lock_init(&rb->spinlock);
-+	raw_spin_lock_init(&rb->spinlock);
- 	atomic_set(&rb->busy, 0);
- 	init_waitqueue_head(&rb->waitq);
- 	init_irq_work(&rb->work, bpf_ringbuf_notify);
-@@ -407,10 +407,10 @@ static void *__bpf_ringbuf_reserve(struct bpf_ringbuf *rb, u64 size)
- 	cons_pos = smp_load_acquire(&rb->consumer_pos);
- 
- 	if (in_nmi()) {
--		if (!spin_trylock_irqsave(&rb->spinlock, flags))
-+		if (!raw_spin_trylock_irqsave(&rb->spinlock, flags))
- 			return NULL;
- 	} else {
--		spin_lock_irqsave(&rb->spinlock, flags);
-+		raw_spin_lock_irqsave(&rb->spinlock, flags);
- 	}
- 
- 	pend_pos = rb->pending_pos;
-@@ -436,7 +436,7 @@ static void *__bpf_ringbuf_reserve(struct bpf_ringbuf *rb, u64 size)
- 	 */
- 	if (new_prod_pos - cons_pos > rb->mask ||
- 	    new_prod_pos - pend_pos > rb->mask) {
--		spin_unlock_irqrestore(&rb->spinlock, flags);
-+		raw_spin_unlock_irqrestore(&rb->spinlock, flags);
- 		return NULL;
- 	}
- 
-@@ -448,7 +448,7 @@ static void *__bpf_ringbuf_reserve(struct bpf_ringbuf *rb, u64 size)
- 	/* pairs with consumer's smp_load_acquire() */
- 	smp_store_release(&rb->producer_pos, new_prod_pos);
- 
--	spin_unlock_irqrestore(&rb->spinlock, flags);
-+	raw_spin_unlock_irqrestore(&rb->spinlock, flags);
- 
- 	return (void *)hdr + BPF_RINGBUF_HDR_SZ;
- }
+diff --git a/drivers/net/vmxnet3/vmxnet3_xdp.c b/drivers/net/vmxnet3/vmxnet3_xdp.c
+index a6c787454a1ae..1341374a4588a 100644
+--- a/drivers/net/vmxnet3/vmxnet3_xdp.c
++++ b/drivers/net/vmxnet3/vmxnet3_xdp.c
+@@ -148,7 +148,7 @@ vmxnet3_xdp_xmit_frame(struct vmxnet3_adapter *adapter,
+ 	} else { /* XDP buffer from page pool */
+ 		page = virt_to_page(xdpf->data);
+ 		tbi->dma_addr = page_pool_get_dma_addr(page) +
+-				VMXNET3_XDP_HEADROOM;
++				(xdpf->data - (void *)xdpf);
+ 		dma_sync_single_for_device(&adapter->pdev->dev,
+ 					   tbi->dma_addr, buf_size,
+ 					   DMA_TO_DEVICE);
 -- 
 2.43.0
 
