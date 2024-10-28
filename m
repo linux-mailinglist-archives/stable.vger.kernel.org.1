@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-88943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B027F9B282A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:54:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA279B2715
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:45:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B2BE1F21F90
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:54:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4EC62820B3
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:45:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B508C2AF07;
-	Mon, 28 Oct 2024 06:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06BDE18CC1F;
+	Mon, 28 Oct 2024 06:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b3ekb/+j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fRrd4PYd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734C218E35B;
-	Mon, 28 Oct 2024 06:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96C0A47;
+	Mon, 28 Oct 2024 06:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098473; cv=none; b=sc4RcZeyP1utaWgjfKSQiJJoid3A6mFB2dgDVa2DcNfoy8M3Og0NNMh3Yt5JI4PgAV5w8bskBNfK8Wl8wL0yqw/f+Y8wCylkSRH1RdYMhpV4HWA9NGAUb4eraykbiWffOjxyAHNKQE4Uv3r4tnK2/JS27eHy3Mm6UohV519Tbag=
+	t=1730097913; cv=none; b=k/t6h9QszYV23QQr4JXTTwz8BiKgKubTkXkJgGZiYSuOYpjE1LFtv110TqhN6iWp8z23YfbiVAyLsolaf1fwltATbwVCKOrnnigDs3ac9jYJnEYddVNgRLzoXHQRgAr8/WqYNcS3ym/4j3RuIQx8sjUpCMXagPWj+xZJT2/8SX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098473; c=relaxed/simple;
-	bh=gmZgAM/+NLnfo0vKmoSyZrUOsi1xqy4uC8R7ZY8RMGk=;
+	s=arc-20240116; t=1730097913; c=relaxed/simple;
+	bh=IpoNLsA8EB0TX4ViwuT2mPnxXVS130rvOCbcJ2cRcSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ulKDPdY9z3kMRiP4UPm1FDsw5UtqatFNHZHcFRsYeedZNvRPxEzF9F2W+ONF+gX1P0nWmWO7cpmhTrCQHHhwSssFgmkXRDtUnxPgkzmH/ea37q61sHZ1ApN9vKJXzdqBAlSWQx///Sug9ssEQA9OBEb/WW06zVA+ypEYLOtGUFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b3ekb/+j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD67C4CEC3;
-	Mon, 28 Oct 2024 06:54:32 +0000 (UTC)
+	 MIME-Version; b=g22raIWCaGicfGjLRz/dKJufWfiAlon2118wU+fkCVFEKORs/Yc5BQVDvGASHDPKDsh8ixRPDb80zZfd1/hAWaAgz0Yl8l7z5lfA+2LZ8fWY9MDNZ94+ur5T9gJzxblF87LYGX/y8ghBDpBHCfcRSqw3t1kAgR1ApicpfeEjWGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fRrd4PYd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A0CEC4CEC3;
+	Mon, 28 Oct 2024 06:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098473;
-	bh=gmZgAM/+NLnfo0vKmoSyZrUOsi1xqy4uC8R7ZY8RMGk=;
+	s=korg; t=1730097913;
+	bh=IpoNLsA8EB0TX4ViwuT2mPnxXVS130rvOCbcJ2cRcSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b3ekb/+jLt/o48Um1LHQfcE68itDVod++5G6zbeJUoiJZQ0c5bN/93V1DBW7ydAHG
-	 /6SupNV6cgdcRZtgdSkML92bVj4KpuHiVhibrvE8jiNHy+tb95nGunPhsO4flLXFya
-	 G3Hjecyh++vZ4IqERBscsff/nSFGXjJAbPjqtG9w=
+	b=fRrd4PYdCgN3vMFSJHQGezMCjxGv4TGOtuf6dSYkaTN1SRxRMLCXXT/kRLS+veEUc
+	 DV4FJA52pztFYOk2uWkT4m1AbCLDwqdjPWyjjN6uqT5YnoiHcI5+sLXHTQPANNIiTl
+	 0ZyvDbOLnlv9VeByJZ5cpFAOJ/L/hdPtCMonnefg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Dillon Varone <dillon.varone@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.11 241/261] drm/amd/display: temp w/a for DP Link Layer compliance
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 203/208] ACPI: PRM: Clean up guid type in struct prm_handler_info
 Date: Mon, 28 Oct 2024 07:26:23 +0100
-Message-ID: <20241028062318.153333834@linuxfoundation.org>
+Message-ID: <20241028062311.644446509@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 63feb35cd26557572ad95fc062ede344bb61d9ad upstream.
+commit 3d1c651272cf1df8aac7d9b6d92d836d27bed50f upstream.
 
-[Why&How]
-Disabling P-State support on full updates for DCN401 results in
-introducing additional communication with SMU. A UCLK hard min message
-to SMU takes 4 seconds to go through, which was due to DCN not allowing
-pstate switch, which was caused by incorrect value for TTU watermark
-before blanking the HUBP prior to DPG on for servicing the test request.
+Clang 19 prints a warning when we pass &th->guid to efi_pa_va_lookup():
 
-Fix the issue temporarily by disallowing pstate changes for compliance
-test while test request handler is reworked for a proper fix.
+drivers/acpi/prmt.c:156:29: error: passing 1-byte aligned argument to
+4-byte aligned parameter 1 of 'efi_pa_va_lookup' may result in an
+unaligned pointer access [-Werror,-Walign-mismatch]
+  156 |                         (void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
+      |                                                  ^
 
-Fixes: 67ea53a4bd9d ("drm/amd/display: Disable DCN401 UCLK P-State support on full updates")
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Dillon Varone <dillon.varone@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8a79f7cdbb41bb0ddfd4d7662b4428d4a9d5306d)
-Cc: stable@vger.kernel.org
+The problem is that efi_pa_va_lookup() takes a efi_guid_t and &th->guid
+is a regular guid_t.  The difference between the two types is the
+alignment.  efi_guid_t is a typedef.
+
+	typedef guid_t efi_guid_t __aligned(__alignof__(u32));
+
+It's possible that this a bug in Clang 19.  Even though the alignment of
+&th->guid is not explicitly specified, it will still end up being aligned
+at 4 or 8 bytes.
+
+Anyway, as Ard points out, it's cleaner to change guid to efi_guid_t type
+and that also makes the warning go away.
+
+Fixes: 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM handler and context")
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://patch.msgid.link/3777d71b-9e19-45f4-be4e-17bf4fa7a834@stanley.mountain
+[ rjw: Subject edit ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/acpi/prmt.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-@@ -44,6 +44,7 @@
+--- a/drivers/acpi/prmt.c
++++ b/drivers/acpi/prmt.c
+@@ -52,7 +52,7 @@ struct prm_context_buffer {
+ static LIST_HEAD(prm_module_list);
  
- #include "dm_helpers.h"
- #include "ddc_service_types.h"
-+#include "clk_mgr.h"
- 
- static u32 edid_extract_panel_id(struct edid *edid)
- {
-@@ -1121,6 +1122,8 @@ bool dm_helpers_dp_handle_test_pattern_r
- 	struct pipe_ctx *pipe_ctx = NULL;
- 	struct amdgpu_dm_connector *aconnector = link->priv;
- 	struct drm_device *dev = aconnector->base.dev;
-+	struct dc_state *dc_state = ctx->dc->current_state;
-+	struct clk_mgr *clk_mgr = ctx->dc->clk_mgr;
- 	int i;
- 
- 	for (i = 0; i < MAX_PIPES; i++) {
-@@ -1221,6 +1224,16 @@ bool dm_helpers_dp_handle_test_pattern_r
- 	pipe_ctx->stream->test_pattern.type = test_pattern;
- 	pipe_ctx->stream->test_pattern.color_space = test_pattern_color_space;
- 
-+	/* Temp W/A for compliance test failure */
-+	dc_state->bw_ctx.bw.dcn.clk.p_state_change_support = false;
-+	dc_state->bw_ctx.bw.dcn.clk.dramclk_khz = clk_mgr->dc_mode_softmax_enabled ?
-+		clk_mgr->bw_params->dc_mode_softmax_memclk : clk_mgr->bw_params->max_memclk_mhz;
-+	dc_state->bw_ctx.bw.dcn.clk.idle_dramclk_khz = dc_state->bw_ctx.bw.dcn.clk.dramclk_khz;
-+	ctx->dc->clk_mgr->funcs->update_clocks(
-+			ctx->dc->clk_mgr,
-+			dc_state,
-+			false);
-+
- 	dc_link_dp_set_test_pattern(
- 		(struct dc_link *) link,
- 		test_pattern,
+ struct prm_handler_info {
+-	guid_t guid;
++	efi_guid_t guid;
+ 	efi_status_t (__efiapi *handler_addr)(u64, void *);
+ 	u64 static_data_buffer_addr;
+ 	u64 acpi_param_buffer_addr;
 
 
 
