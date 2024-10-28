@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-88604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B36469B26B1
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:41:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4972F9B25DF
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:35:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73E452824C5
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0072F1F2111E
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:35:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC9F118E743;
-	Mon, 28 Oct 2024 06:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D100B1917D2;
+	Mon, 28 Oct 2024 06:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iO8ReFOP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SUT5pU0d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EA018E368;
-	Mon, 28 Oct 2024 06:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6E719067C;
+	Mon, 28 Oct 2024 06:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097707; cv=none; b=dQvOsFjFHujsdvt5YnP9Hpu7F6jLfSz09sNBlQ0EQbSn5CGQ1f7qikj/ujh6C3RaD+Nfsv8mzFHAz8Fj3TD2s7xDXqJHEC9hehw/PI+vkKgoyxtF3jQd9lLvt4wz7bT917+GQexMrpwBaM7I/0L1P2zkfapDnk7aKLfa3hd/or0=
+	t=1730097270; cv=none; b=ZOysfQ7DS7NGMWsh1eHdZE3Wf9+6HDD9tHOFm1kUZQRF18Y5ZwKYtV76KaYT0ZvnfSa/321E9pW99rBsCZczUKiqL/j3usLKOwyYdMPmKT2CfpLIMiilY8jwfjMCza1RNm051Adw/FhclE0F5oyTQJcBbN1AyXI4Y2Sj9nBSRQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097707; c=relaxed/simple;
-	bh=bvxD74H0aZnv2PKKlWdOWmlXU+lyBq7MYVtyPNW0FZE=;
+	s=arc-20240116; t=1730097270; c=relaxed/simple;
+	bh=ozdYqmXY66xrJraDMKX7wvPGhCCk5OxJkLHsLnpZ51s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrlUdJuUfYSO1MX9kHbwssyPujhJN1KT0e92MyuKTVBZOcQJIls1VXaorlRDSa1xnum9ItbgvYq2WBB/iZOaURnwnEaRw7fd5jdQ0S6NTfYbBekt1oBRH8gB67Lb5cJo/tARF8ALF+zRPSgP+tTIsqvKWhUMPCp/wk5LfanSjPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iO8ReFOP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 480A9C4CEC3;
-	Mon, 28 Oct 2024 06:41:47 +0000 (UTC)
+	 MIME-Version; b=kd11NKHBwVmPbNEA4UhGXW76SvY2AlJFy3LVIPkxYJxA9+hal9Y/wC1JqzeeSIX+BYRvo25btr5+sHmyOTNCuP+dewhyRr1Y4DhN/o4lsq7Z/q46kDwTEDxJELFUjpSLeuAzs9XeNeFlkJCWMRs+FAO3A30CDqgjkL+Wxj6y7FU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SUT5pU0d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E28DC4CEED;
+	Mon, 28 Oct 2024 06:34:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097707;
-	bh=bvxD74H0aZnv2PKKlWdOWmlXU+lyBq7MYVtyPNW0FZE=;
+	s=korg; t=1730097270;
+	bh=ozdYqmXY66xrJraDMKX7wvPGhCCk5OxJkLHsLnpZ51s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iO8ReFOPt1MLyW2zTjTFyFE7rSWLDttsfEbaZkZyAY4TjRNFgmspYF7BzpLszCo7P
-	 wanTFh9UN5ncoYbmYnzprZDshk6An+wNRLxvc83AakAztYMtmk23TXV6W0PBRmzyTd
-	 HpCG3GHIVvKGNT6FTdnOXpAfpjqjYrGgBPYY/sao=
+	b=SUT5pU0dVy25XHG+9mtoLl0zN+d4SOcV5kZuGijt+jROMCft5QgCgLTplcWhF9PZ4
+	 H+WXoW1f7Yf+cn2lAt9BRsSGbAMu/zedJxVKDRfdt82mfbN50dYoyytLUJ1yWTR0gN
+	 hGV7EnqcV6B/2/ZEiZz0hog4RoJGxFvHJSEa6TuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiao Ma <mqaio@linux.alibaba.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Jordan Rome <linux@jordanrome.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 113/208] uprobe: avoid out-of-bounds memory access of fetching args
+Subject: [PATCH 6.1 056/137] bpf: Fix iter/task tid filtering
 Date: Mon, 28 Oct 2024 07:24:53 +0100
-Message-ID: <20241028062309.440436701@linuxfoundation.org>
+Message-ID: <20241028062300.294485465@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,185 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiao Ma <mqaio@linux.alibaba.com>
+From: Jordan Rome <linux@jordanrome.com>
 
-[ Upstream commit 373b9338c9722a368925d83bc622c596896b328e ]
+[ Upstream commit 9495a5b731fcaf580448a3438d63601c88367661 ]
 
-Uprobe needs to fetch args into a percpu buffer, and then copy to ring
-buffer to avoid non-atomic context problem.
+In userspace, you can add a tid filter by setting
+the "task.tid" field for "bpf_iter_link_info".
+However, `get_pid_task` when called for the
+`BPF_TASK_ITER_TID` type should have been using
+`PIDTYPE_PID` (tid) instead of `PIDTYPE_TGID` (pid).
 
-Sometimes user-space strings, arrays can be very large, but the size of
-percpu buffer is only page size. And store_trace_args() won't check
-whether these data exceeds a single page or not, caused out-of-bounds
-memory access.
-
-It could be reproduced by following steps:
-1. build kernel with CONFIG_KASAN enabled
-2. save follow program as test.c
-
-```
-\#include <stdio.h>
-\#include <stdlib.h>
-\#include <string.h>
-
-// If string length large than MAX_STRING_SIZE, the fetch_store_strlen()
-// will return 0, cause __get_data_size() return shorter size, and
-// store_trace_args() will not trigger out-of-bounds access.
-// So make string length less than 4096.
-\#define STRLEN 4093
-
-void generate_string(char *str, int n)
-{
-    int i;
-    for (i = 0; i < n; ++i)
-    {
-        char c = i % 26 + 'a';
-        str[i] = c;
-    }
-    str[n-1] = '\0';
-}
-
-void print_string(char *str)
-{
-    printf("%s\n", str);
-}
-
-int main()
-{
-    char tmp[STRLEN];
-
-    generate_string(tmp, STRLEN);
-    print_string(tmp);
-
-    return 0;
-}
-```
-3. compile program
-`gcc -o test test.c`
-
-4. get the offset of `print_string()`
-```
-objdump -t test | grep -w print_string
-0000000000401199 g     F .text  000000000000001b              print_string
-```
-
-5. configure uprobe with offset 0x1199
-```
-off=0x1199
-
-cd /sys/kernel/debug/tracing/
-echo "p /root/test:${off} arg1=+0(%di):ustring arg2=\$comm arg3=+0(%di):ustring"
- > uprobe_events
-echo 1 > events/uprobes/enable
-echo 1 > tracing_on
-```
-
-6. run `test`, and kasan will report error.
-==================================================================
-BUG: KASAN: use-after-free in strncpy_from_user+0x1d6/0x1f0
-Write of size 8 at addr ffff88812311c004 by task test/499CPU: 0 UID: 0 PID: 499 Comm: test Not tainted 6.12.0-rc3+ #18
-Hardware name: Red Hat KVM, BIOS 1.16.0-4.al8 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x55/0x70
- print_address_description.constprop.0+0x27/0x310
- kasan_report+0x10f/0x120
- ? strncpy_from_user+0x1d6/0x1f0
- strncpy_from_user+0x1d6/0x1f0
- ? rmqueue.constprop.0+0x70d/0x2ad0
- process_fetch_insn+0xb26/0x1470
- ? __pfx_process_fetch_insn+0x10/0x10
- ? _raw_spin_lock+0x85/0xe0
- ? __pfx__raw_spin_lock+0x10/0x10
- ? __pte_offset_map+0x1f/0x2d0
- ? unwind_next_frame+0xc5f/0x1f80
- ? arch_stack_walk+0x68/0xf0
- ? is_bpf_text_address+0x23/0x30
- ? kernel_text_address.part.0+0xbb/0xd0
- ? __kernel_text_address+0x66/0xb0
- ? unwind_get_return_address+0x5e/0xa0
- ? __pfx_stack_trace_consume_entry+0x10/0x10
- ? arch_stack_walk+0xa2/0xf0
- ? _raw_spin_lock_irqsave+0x8b/0xf0
- ? __pfx__raw_spin_lock_irqsave+0x10/0x10
- ? depot_alloc_stack+0x4c/0x1f0
- ? _raw_spin_unlock_irqrestore+0xe/0x30
- ? stack_depot_save_flags+0x35d/0x4f0
- ? kasan_save_stack+0x34/0x50
- ? kasan_save_stack+0x24/0x50
- ? mutex_lock+0x91/0xe0
- ? __pfx_mutex_lock+0x10/0x10
- prepare_uprobe_buffer.part.0+0x2cd/0x500
- uprobe_dispatcher+0x2c3/0x6a0
- ? __pfx_uprobe_dispatcher+0x10/0x10
- ? __kasan_slab_alloc+0x4d/0x90
- handler_chain+0xdd/0x3e0
- handle_swbp+0x26e/0x3d0
- ? __pfx_handle_swbp+0x10/0x10
- ? uprobe_pre_sstep_notifier+0x151/0x1b0
- irqentry_exit_to_user_mode+0xe2/0x1b0
- asm_exc_int3+0x39/0x40
-RIP: 0033:0x401199
-Code: 01 c2 0f b6 45 fb 88 02 83 45 fc 01 8b 45 fc 3b 45 e4 7c b7 8b 45 e4 48 98 48 8d 50 ff 48 8b 45 e8 48 01 d0 ce
-RSP: 002b:00007ffdf00576a8 EFLAGS: 00000206
-RAX: 00007ffdf00576b0 RBX: 0000000000000000 RCX: 0000000000000ff2
-RDX: 0000000000000ffc RSI: 0000000000000ffd RDI: 00007ffdf00576b0
-RBP: 00007ffdf00586b0 R08: 00007feb2f9c0d20 R09: 00007feb2f9c0d20
-R10: 0000000000000001 R11: 0000000000000202 R12: 0000000000401040
-R13: 00007ffdf0058780 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-
-This commit enforces the buffer's maxlen less than a page-size to avoid
-store_trace_args() out-of-memory access.
-
-Link: https://lore.kernel.org/all/20241015060148.1108331-1-mqaio@linux.alibaba.com/
-
-Fixes: dcad1a204f72 ("tracing/uprobes: Fetch args before reserving a ring buffer")
-Signed-off-by: Qiao Ma <mqaio@linux.alibaba.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: f0d74c4da1f0 ("bpf: Parameterize task iterators.")
+Signed-off-by: Jordan Rome <linux@jordanrome.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241016210048.1213935-1-linux@jordanrome.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_uprobe.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ kernel/bpf/task_iter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
-index 0d52588329b29..d72ac9dde5321 100644
---- a/kernel/trace/trace_uprobe.c
-+++ b/kernel/trace/trace_uprobe.c
-@@ -858,6 +858,7 @@ struct uprobe_cpu_buffer {
- };
- static struct uprobe_cpu_buffer __percpu *uprobe_cpu_buffer;
- static int uprobe_buffer_refcnt;
-+#define MAX_UCB_BUFFER_SIZE PAGE_SIZE
- 
- static int uprobe_buffer_init(void)
- {
-@@ -962,6 +963,11 @@ static struct uprobe_cpu_buffer *prepare_uprobe_buffer(struct trace_uprobe *tu,
- 	ucb = uprobe_buffer_get();
- 	ucb->dsize = tu->tp.size + dsize;
- 
-+	if (WARN_ON_ONCE(ucb->dsize > MAX_UCB_BUFFER_SIZE)) {
-+		ucb->dsize = MAX_UCB_BUFFER_SIZE;
-+		dsize = MAX_UCB_BUFFER_SIZE - tu->tp.size;
-+	}
-+
- 	store_trace_args(ucb->buf, &tu->tp, regs, NULL, esize, dsize);
- 
- 	*ucbp = ucb;
-@@ -981,9 +987,6 @@ static void __uprobe_trace_func(struct trace_uprobe *tu,
- 
- 	WARN_ON(call != trace_file->event_call);
- 
--	if (WARN_ON_ONCE(ucb->dsize > PAGE_SIZE))
--		return;
--
- 	if (trace_trigger_soft_disabled(trace_file))
- 		return;
- 
+diff --git a/kernel/bpf/task_iter.c b/kernel/bpf/task_iter.c
+index c4ab9d6cdbe9c..f7ef58090c7d0 100644
+--- a/kernel/bpf/task_iter.c
++++ b/kernel/bpf/task_iter.c
+@@ -119,7 +119,7 @@ static struct task_struct *task_seq_get_next(struct bpf_iter_seq_task_common *co
+ 		rcu_read_lock();
+ 		pid = find_pid_ns(common->pid, common->ns);
+ 		if (pid) {
+-			task = get_pid_task(pid, PIDTYPE_TGID);
++			task = get_pid_task(pid, PIDTYPE_PID);
+ 			*tid = common->pid;
+ 		}
+ 		rcu_read_unlock();
 -- 
 2.43.0
 
