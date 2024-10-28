@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-88592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8731E9B26A2
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:41:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 037519B27BA
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:50:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B21B28249F
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC75E28552A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D720218E36D;
-	Mon, 28 Oct 2024 06:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51E118F2C3;
+	Mon, 28 Oct 2024 06:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lU1mB9+H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMwMFduK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A662C697;
-	Mon, 28 Oct 2024 06:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7297518EFDC;
+	Mon, 28 Oct 2024 06:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097680; cv=none; b=ByYELYci8seOnOkwmI0AGe1W249pnvl7PEpELas8v219AgUEq5/m8OnSM4YT2DTgkbUHygtfJHHFhJXBTYmNGDkzKMhvFlS7V47ZfkKaqB/LBqZY3nMi09rDYQPyV+JxFexUYEQzFLPByCh6tVHpz4ZhsMnvny1FFEHqodRpMMw=
+	t=1730098238; cv=none; b=LkmWejzIhSq4vkAz8BKW30YVnibtvgktaEkSCAHmnoAIW79p2eOR5I46a69UJekgVuayiueZ2Lj6BP/xdkn7820T4lc8sQ5c9SRjrBhDyYEfRYsnxXrhaH2+8uqQzBbWrUafuGB8B6Aj1IPmxcQXGOmV0IFmbZz6BnXGKasNvOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097680; c=relaxed/simple;
-	bh=QDn0xkD66CXfE5G0X0GmTP0euRR8mpBmpFiUD8sw8KU=;
+	s=arc-20240116; t=1730098238; c=relaxed/simple;
+	bh=cMISpjrbbCE1wxvAYyLVaIZSO4bOJYv+nWEXP0VCYLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uk0GAoqsoDFM26K2+BM6sIAgcWnLRlS84FZZrBLfRXl+zlOSdGkrUbj3837jz+3c4iLgmx6IeI7hzGCzrRYnmD+aIA+uSx/hgJhi8Hzo2DPyE5xHOvVCheA7YnGxQ7Qn47BOEKw4bUlf20HWwePl7FA26xHlQX3GQldqUbAwgdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lU1mB9+H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31957C4CEC3;
-	Mon, 28 Oct 2024 06:41:20 +0000 (UTC)
+	 MIME-Version; b=Rg73YLKtzuUihGEss44e53aFC4v2XX5oOsZfHZgojSHpdakx8wkieqP2Y+1ImlwC9vUgIAdJV43ahSAkrO7C2iGxxntJWMhmY9S/q2kjGYhe3Mhb6aKJ4i21U/7n+cKoooQPX8SLt4omkvy2n2k0Jj3PbP4Hp5TrNpfm6Fj+T34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMwMFduK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11714C4CEEB;
+	Mon, 28 Oct 2024 06:50:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097680;
-	bh=QDn0xkD66CXfE5G0X0GmTP0euRR8mpBmpFiUD8sw8KU=;
+	s=korg; t=1730098238;
+	bh=cMISpjrbbCE1wxvAYyLVaIZSO4bOJYv+nWEXP0VCYLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lU1mB9+H8VPux+d2tG3bKykeZ3AFhPK+qOUDTsQ+c87KnmT3prh29ViUSPc/+iykg
-	 JD1JCWLoiwWK5j0oOm0usaTJfRBJ6Rq+dQzJiK2HJICmHNJdZgrwMbQ52y+lGRbPja
-	 0nE+pqi0q4iCelx8uXs6EDHZ43XTX+qdazbqzmJk=
+	b=gMwMFduKn1kUkYmJyFFeyPJLlbCuPMlKICJsjQdu3TCxvaBrpHJFINOLXoUbXj/y8
+	 8z2Ce50gIZYOAcH5DLkAqz8jkr5jlvUGdACG8NEpmKmlPVnJuIXT2CVk32L6bnkwyH
+	 yeT2Pl/Ow3J0a4nICjL+GdwikOpXQczgfM2qNXZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 064/208] drm/msm/dpu: dont always program merge_3d block
-Date: Mon, 28 Oct 2024 07:24:04 +0100
-Message-ID: <20241028062308.230405138@linuxfoundation.org>
+Subject: [PATCH 6.11 103/261] vsock: Update rx_bytes on read_skb()
+Date: Mon, 28 Oct 2024 07:24:05 +0100
+Message-ID: <20241028062314.612708275@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit f87f3b80abaf7949e638dd17dfdc267066eb52d5 ]
+[ Upstream commit 3543152f2d330141d9394d28855cb90b860091d2 ]
 
-Only program the merge_3d block for the video phys encoder when the 3d
-blend mode is not NONE
+Make sure virtio_transport_inc_rx_pkt() and virtio_transport_dec_rx_pkt()
+calls are balanced (i.e. virtio_vsock_sock::rx_bytes doesn't lie) after
+vsock_transport::read_skb().
 
-Fixes: 3e79527a33a8 ("drm/msm/dpu: enable merge_3d support on sm8150/sm8250")
-Suggested-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/619095/
-Link: https://lore.kernel.org/r/20241009-merge3d-fix-v1-1-0d0b6f5c244e@quicinc.com
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+While here, also inform the peer that we've freed up space and it has more
+credit.
+
+Failing to update rx_bytes after packet is dequeued leads to a warning on
+SOCK_STREAM recv():
+
+[  233.396654] rx_queue is empty, but rx_bytes is non-zero
+[  233.396702] WARNING: CPU: 11 PID: 40601 at net/vmw_vsock/virtio_transport_common.c:589
+
+Fixes: 634f1a7110b4 ("vsock: support sockmap")
+Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/bpf/20241013-vsock-fixes-for-redir-v2-2-d6577bbfe742@rbox.co
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/vmw_vsock/virtio_transport_common.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-index daaf0e6047538..20c8b9af7a219 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-@@ -280,7 +280,7 @@ static void dpu_encoder_phys_vid_setup_timing_engine(
- 	intf_cfg.stream_sel = 0; /* Don't care value for video mode */
- 	intf_cfg.mode_3d = dpu_encoder_helper_get_3d_blend_mode(phys_enc);
- 	intf_cfg.dsc = dpu_encoder_helper_get_dsc(phys_enc);
--	if (phys_enc->hw_pp->merge_3d)
-+	if (intf_cfg.mode_3d && phys_enc->hw_pp->merge_3d)
- 		intf_cfg.merge_3d = phys_enc->hw_pp->merge_3d->idx;
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 16ff976a86e3e..0f67cb0c64702 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -1672,6 +1672,7 @@ int virtio_transport_read_skb(struct vsock_sock *vsk, skb_read_actor_t recv_acto
+ {
+ 	struct virtio_vsock_sock *vvs = vsk->trans;
+ 	struct sock *sk = sk_vsock(vsk);
++	struct virtio_vsock_hdr *hdr;
+ 	struct sk_buff *skb;
+ 	int off = 0;
+ 	int err;
+@@ -1681,10 +1682,16 @@ int virtio_transport_read_skb(struct vsock_sock *vsk, skb_read_actor_t recv_acto
+ 	 * works for types other than dgrams.
+ 	 */
+ 	skb = __skb_recv_datagram(sk, &vvs->rx_queue, MSG_DONTWAIT, &off, &err);
++	if (!skb) {
++		spin_unlock_bh(&vvs->rx_lock);
++		return err;
++	}
++
++	hdr = virtio_vsock_hdr(skb);
++	virtio_transport_dec_rx_pkt(vvs, le32_to_cpu(hdr->len));
+ 	spin_unlock_bh(&vvs->rx_lock);
  
- 	spin_lock_irqsave(phys_enc->enc_spinlock, lock_flags);
+-	if (!skb)
+-		return err;
++	virtio_transport_send_credit_update(vsk);
+ 
+ 	return recv_actor(sk, skb);
+ }
 -- 
 2.43.0
 
