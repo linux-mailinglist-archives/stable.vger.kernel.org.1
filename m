@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-88410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35E729B25DC
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:35:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D7199B2545
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:27:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFC7728176F
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:35:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51ADE281F20
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6C818FC89;
-	Mon, 28 Oct 2024 06:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B268D18E049;
+	Mon, 28 Oct 2024 06:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GhIotf2/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EWvjKZij"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459CC18DF68;
-	Mon, 28 Oct 2024 06:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D77618CC1F;
+	Mon, 28 Oct 2024 06:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097268; cv=none; b=iBwRgtm/yJqbB7Ok0/sUCjTBSHveCP4wG5dGaJqHaaremsQFRZcIsdZNUiNSbI5Y3IfRc7uNiGTz/WsFS95ZJtKT1yvSjUo7/Ijg6/LLX39zHUmhxqzidLERTA7js1suFxhRUQse6SylVDELcINDrsyQuFbcrBemOmigZyOKvEc=
+	t=1730096845; cv=none; b=uT03tXUrAuQfnZJ22mx7J6qS+Hty/bZ283I6vwR043SLuZU0AfuEt/XztFt/pe1TIH1zNVlZ6F2sPsqe0UVTKQMU4hvwy2qVfirdmWBaEGyX1g0CKtykeA9L7WHoQXqlJ83XA5t6nJvkZvbmRaNig8DhQVnP9hjiODke4a88t5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097268; c=relaxed/simple;
-	bh=XdWJINPG8rxTss3qV6mrc6OCHbAuczFABp4Jt7UOlc8=;
+	s=arc-20240116; t=1730096845; c=relaxed/simple;
+	bh=dpR6QvW/Gi4HswdA9Enx/sYgecOsuZHWHTrySlANfaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lHIvbFDYVk8F3wZrvl+bvK+oSkbG0tQlK9CzndCD7tPsy3dIduwFCdgP+q6PpmdsUZMelXsGgbyD7pUFGUtnPfK8HwQM5J/VezKQxxvpEYzVs+oq44tR3TpNdk3h39o6CFI8q/z1iP5121P0IHqtspfx0X4IYM2hUzhyHIVBUxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GhIotf2/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B450AC4CEC7;
-	Mon, 28 Oct 2024 06:34:27 +0000 (UTC)
+	 MIME-Version; b=suWZQz+6CF8cVMjdOarT/d/x6b3FoQS27u6QlO3VgyyR7JE5fsiUudJ+6spyA4Jdex4HL6U9sa+QPM5XSNSoHkLYF483pOw4QjdYi/Eqr76byap9Ozbt2m39roLPpyUlEkY3cBJLXEaG7BRmIBCpUtwII9efXKplPDw3ONz9vYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EWvjKZij; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C43EC4CEC3;
+	Mon, 28 Oct 2024 06:27:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097268;
-	bh=XdWJINPG8rxTss3qV6mrc6OCHbAuczFABp4Jt7UOlc8=;
+	s=korg; t=1730096844;
+	bh=dpR6QvW/Gi4HswdA9Enx/sYgecOsuZHWHTrySlANfaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GhIotf2/nbo+vg/NkpGDe8P9+TAykivaGO6PBhCGKvyPndd4r4S/blNH6aKfmYuij
-	 10qsYvlY9LHx6oFUBxy+IT2lys7ew66P/cfUeoeAGelssWdnPqMSWpZQMpGAQNZMIs
-	 97+YGRIpC1AcCpW5QA/YWtd+qBpCbBW6NR4o3j3U=
+	b=EWvjKZijAUBhNHPDseqFItwUnxgIpFnMA5ziDb4cwSjc1RGSrZtl7vp5SkWPPUALR
+	 F2TQEnR2fYscj5lGDSkbiVEjW5KEy50Yk34zR7DZVud/yguifshISu4k/iESsd2+bF
+	 pA5WIemIAlavwLdtcrqSqFJpSS7pD7ufHj7U0y54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Parri <parri.andrea@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 055/137] riscv, bpf: Make BPF_CMPXCHG fully ordered
+Subject: [PATCH 5.15 12/80] RDMA/bnxt_re: Fix a bug while setting up Level-2 PBL pages
 Date: Mon, 28 Oct 2024 07:24:52 +0100
-Message-ID: <20241028062300.265581788@linuxfoundation.org>
+Message-ID: <20241028062252.965407643@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea Parri <parri.andrea@gmail.com>
+From: Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>
 
-[ Upstream commit e59db0623f6955986d1be0880b351a1f56e7fd6d ]
+[ Upstream commit 7988bdbbb85ac85a847baf09879edcd0f70521dc ]
 
-According to the prototype formal BPF memory consistency model
-discussed e.g. in [1] and following the ordering properties of
-the C/in-kernel macro atomic_cmpxchg(), a BPF atomic operation
-with the BPF_CMPXCHG modifier is fully ordered.  However, the
-current RISC-V JIT lowerings fail to meet such memory ordering
-property.  This is illustrated by the following litmus test:
+Avoid memory corruption while setting up Level-2 PBL pages for the non MR
+resources when num_pages > 256K.
 
-BPF BPF__MP+success_cmpxchg+fence
-{
- 0:r1=x; 0:r3=y; 0:r5=1;
- 1:r2=y; 1:r4=f; 1:r7=x;
-}
- P0                               | P1                                         ;
- *(u64 *)(r1 + 0) = 1             | r1 = *(u64 *)(r2 + 0)                      ;
- r2 = cmpxchg_64 (r3 + 0, r4, r5) | r3 = atomic_fetch_add((u64 *)(r4 + 0), r5) ;
-                                  | r6 = *(u64 *)(r7 + 0)                      ;
-exists (1:r1=1 /\ 1:r6=0)
+There will be a single PDE page address (contiguous pages in the case of >
+PAGE_SIZE), but, current logic assumes multiple pages, leading to invalid
+memory access after 256K PBL entries in the PDE.
 
-whose "exists" clause is not satisfiable according to the BPF
-memory model.  Using the current RISC-V JIT lowerings, the test
-can be mapped to the following RISC-V litmus test:
-
-RISCV RISCV__MP+success_cmpxchg+fence
-{
- 0:x1=x; 0:x3=y; 0:x5=1;
- 1:x2=y; 1:x4=f; 1:x7=x;
-}
- P0                 | P1                          ;
- sd x5, 0(x1)       | ld x1, 0(x2)                ;
- L00:               | amoadd.d.aqrl x3, x5, 0(x4) ;
- lr.d x2, 0(x3)     | ld x6, 0(x7)                ;
- bne x2, x4, L01    |                             ;
- sc.d x6, x5, 0(x3) |                             ;
- bne x6, x4, L00    |                             ;
- fence rw, rw       |                             ;
- L01:               |                             ;
-exists (1:x1=1 /\ 1:x6=0)
-
-where the two stores in P0 can be reordered.  Update the RISC-V
-JIT lowerings/implementation of BPF_CMPXCHG to emit an SC with
-RELEASE ("rl") annotation in order to meet the expected memory
-ordering guarantees.  The resulting RISC-V JIT lowerings of
-BPF_CMPXCHG match the RISC-V lowerings of the C atomic_cmpxchg().
-
-Other lowerings were fixed via 20a759df3bba ("riscv, bpf: make
-some atomic operations fully ordered").
-
-Fixes: dd642ccb45ec ("riscv, bpf: Implement more atomic operations for RV64")
-Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Puranjay Mohan <puranjay@kernel.org>
-Acked-by: Björn Töpel <bjorn@kernel.org>
-Link: https://lpc.events/event/18/contributions/1949/attachments/1665/3441/bpfmemmodel.2024.09.19p.pdf [1]
-Link: https://lore.kernel.org/bpf/20241017143628.2673894-1-parri.andrea@gmail.com
+Fixes: 0c4dcd602817 ("RDMA/bnxt_re: Refactor hardware queue memory allocation")
+Link: https://patch.msgid.link/r/1728373302-19530-10-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/net/bpf_jit_comp64.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_res.c | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
-diff --git a/arch/riscv/net/bpf_jit_comp64.c b/arch/riscv/net/bpf_jit_comp64.c
-index 4c4ac563326b5..66ee5f00ec54a 100644
---- a/arch/riscv/net/bpf_jit_comp64.c
-+++ b/arch/riscv/net/bpf_jit_comp64.c
-@@ -542,8 +542,8 @@ static void emit_atomic(u8 rd, u8 rs, s16 off, s32 imm, bool is64,
- 		     rv_lr_w(r0, 0, rd, 0, 0), ctx);
- 		jmp_offset = ninsns_rvoff(8);
- 		emit(rv_bne(RV_REG_T2, r0, jmp_offset >> 1), ctx);
--		emit(is64 ? rv_sc_d(RV_REG_T3, rs, rd, 0, 0) :
--		     rv_sc_w(RV_REG_T3, rs, rd, 0, 0), ctx);
-+		emit(is64 ? rv_sc_d(RV_REG_T3, rs, rd, 0, 1) :
-+		     rv_sc_w(RV_REG_T3, rs, rd, 0, 1), ctx);
- 		jmp_offset = ninsns_rvoff(-6);
- 		emit(rv_bne(RV_REG_T3, 0, jmp_offset >> 1), ctx);
- 		emit(rv_fence(0x3, 0x3), ctx);
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+index 00ef5f99929c4..401cb3e22f310 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+@@ -256,22 +256,9 @@ int bnxt_qplib_alloc_init_hwq(struct bnxt_qplib_hwq *hwq,
+ 			dst_virt_ptr =
+ 				(dma_addr_t **)hwq->pbl[PBL_LVL_0].pg_arr;
+ 			src_phys_ptr = hwq->pbl[PBL_LVL_1].pg_map_arr;
+-			if (hwq_attr->type == HWQ_TYPE_MR) {
+-			/* For MR it is expected that we supply only 1 contigous
+-			 * page i.e only 1 entry in the PDL that will contain
+-			 * all the PBLs for the user supplied memory region
+-			 */
+-				for (i = 0; i < hwq->pbl[PBL_LVL_1].pg_count;
+-				     i++)
+-					dst_virt_ptr[0][i] = src_phys_ptr[i] |
+-						flag;
+-			} else {
+-				for (i = 0; i < hwq->pbl[PBL_LVL_1].pg_count;
+-				     i++)
+-					dst_virt_ptr[PTR_PG(i)][PTR_IDX(i)] =
+-						src_phys_ptr[i] |
+-						PTU_PDE_VALID;
+-			}
++			for (i = 0; i < hwq->pbl[PBL_LVL_1].pg_count; i++)
++				dst_virt_ptr[0][i] = src_phys_ptr[i] | flag;
++
+ 			/* Alloc or init PTEs */
+ 			rc = __alloc_pbl(res, &hwq->pbl[PBL_LVL_2],
+ 					 hwq_attr->sginfo);
 -- 
 2.43.0
 
