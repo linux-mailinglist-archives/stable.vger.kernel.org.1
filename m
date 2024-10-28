@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62C699B2636
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:37:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C79369B27FE
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:53:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EC7B1F20F97
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:37:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89057286408
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:53:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47DDD18E348;
-	Mon, 28 Oct 2024 06:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C533B18EFC8;
+	Mon, 28 Oct 2024 06:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lLibwTfX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yum2DKGD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F318C15B10D;
-	Mon, 28 Oct 2024 06:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A398837;
+	Mon, 28 Oct 2024 06:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097463; cv=none; b=Z9wxgq8kJXBX5BxQck3OuQ292im3nbCbWoUQclXpfsju/vfinjUoRwbLxInXmn+AUTxRrWGGJtz4EofJw7xBBNvUb0pnPab3hV+PItOMc15uMIuiyzhdC2VMW7dJ9P/P6tV8LksxbOOB31brAfssZriwgv7HafeKIoq0hyquiCc=
+	t=1730098383; cv=none; b=LBUw6LeUXqvHbPvF5c1e4UoxNVrI0jrtdWiOUWlKLNJx96bATdRAa7ROtARoJ62Ct8/YMs6jVv926LEq77OSuBqxu7OBxc94pZQ6a5vXOe3E7vqp/VdHbpNKcZfKplYBJLpv4PJ5aLAe1EaLhjoJmo426xapjjvLHswgeURGxI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097463; c=relaxed/simple;
-	bh=T7y5af1uAyjpEfREG+/TLgvR9pPdCFhiWtsBM7E37EE=;
+	s=arc-20240116; t=1730098383; c=relaxed/simple;
+	bh=LwvZ+n65uKRjcaxDjt/JHN+RVeD9OtITbEj0nrRQQ74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OhrG3A4Pic4BqALmgPjNkIfNL7vCUTJuhDVaR/Qd/zmoF5S9b52MaPGKzI0mEolpupW71f5pdmw3jnGjb1hS/5wXX4vOEWB4Bp4mPd9QtIfoklPIndF3+Jo691irfMoZvUHX0LAneDvdyG1De86xx86b/Vz2CWjb1Nc4/2D8VxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lLibwTfX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94342C4CEC3;
-	Mon, 28 Oct 2024 06:37:42 +0000 (UTC)
+	 MIME-Version; b=Ty2N0IvpbP46poxXMjAgEyigfTdxBRY4lDbPgt9mzphMNjDA8mVE/usdi2BmE3UXLemdpJASH9ck5FsGF14EUmeVYYJ/yP0BF+CHZKW6oEEGsUchjEULlp66y83gDeXVXL1EFjLF5wnlMMsMpVV4FtndrJ0CMSgayzLInrfRRDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yum2DKGD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22883C4CEC7;
+	Mon, 28 Oct 2024 06:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097462;
-	bh=T7y5af1uAyjpEfREG+/TLgvR9pPdCFhiWtsBM7E37EE=;
+	s=korg; t=1730098383;
+	bh=LwvZ+n65uKRjcaxDjt/JHN+RVeD9OtITbEj0nrRQQ74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lLibwTfXAUzQDSbBAkO0HdZhpRRveko5adUO5FhprwvgWLKuyWEEzizGXSqRG4Pfb
-	 gLrsQjZ7sCFHgs1r5EHGuMeRlSNDAfSwN0pGefK+8ws8hLPQCgjUXingYHLK963rZ7
-	 M2ncnC16QIrbbDFPVGJaqUryju7vXe9EoSUmoztQ=
+	b=Yum2DKGDDecIWKvOxVsMNDYNskjkfI4LhX+5Ya/V7KdjJXweUGfOwtgm7rsR82at1
+	 InItXdJD5LlBp+gco63H/ThdftxAQxv4sUz5Yi/GHDtK7loWQscPgDKajaR0tBkm3S
+	 6//t6mEtrXYnIDSEO/umaCg4dgbeZktyytv8sM04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Zijlstra <peterz@infradead.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 107/137] bpf,perf: Fix perf_event_detach_bpf_prog error handling
+	Roman Mamedov <rm@romanrm.net>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.11 202/261] btrfs: clear force-compress on remount when compress mount option is given
 Date: Mon, 28 Oct 2024 07:25:44 +0100
-Message-ID: <20241028062301.708317392@linuxfoundation.org>
+Message-ID: <20241028062317.120060647@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 0ee288e69d033850bc87abe0f9cc3ada24763d7f ]
+commit 3510e684b8f6a569c2f8b86870da116e2ffeec2d upstream.
 
-Peter reported that perf_event_detach_bpf_prog might skip to release
-the bpf program for -ENOENT error from bpf_prog_array_copy.
+After the migration to use fs context for processing mount options we had
+a slight change in the semantics for remounting a filesystem that was
+mounted with compress-force. Before we could clear compress-force by
+passing only "-o compress[=algo]" during a remount, but after that change
+that does not work anymore, force-compress is still present and one needs
+to pass "-o compress-force=no,compress[=algo]" to the mount command.
 
-This can't happen because bpf program is stored in perf event and is
-detached and released only when perf event is freed.
+Example, when running on a kernel 6.8+:
 
-Let's drop the -ENOENT check and make sure the bpf program is released
-in any case.
+  $ mount -o compress-force=zlib:9 /dev/sdi /mnt/sdi
+  $ mount | grep sdi
+  /dev/sdi on /mnt/sdi type btrfs (rw,relatime,compress-force=zlib:9,discard=async,space_cache=v2,subvolid=5,subvol=/)
 
-Fixes: 170a7e3ea070 ("bpf: bpf_prog_array_copy() should return -ENOENT if exclude_prog not found")
-Reported-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241023200352.3488610-1-jolsa@kernel.org
+  $ mount -o remount,compress=zlib:5 /mnt/sdi
+  $ mount | grep sdi
+  /dev/sdi on /mnt/sdi type btrfs (rw,relatime,compress-force=zlib:5,discard=async,space_cache=v2,subvolid=5,subvol=/)
 
-Closes: https://lore.kernel.org/lkml/20241022111638.GC16066@noisy.programming.kicks-ass.net/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On a 6.7 kernel (or older):
+
+  $ mount -o compress-force=zlib:9 /dev/sdi /mnt/sdi
+  $ mount | grep sdi
+  /dev/sdi on /mnt/sdi type btrfs (rw,relatime,compress-force=zlib:9,discard=async,space_cache=v2,subvolid=5,subvol=/)
+
+  $ mount -o remount,compress=zlib:5 /mnt/sdi
+  $ mount | grep sdi
+  /dev/sdi on /mnt/sdi type btrfs (rw,relatime,compress=zlib:5,discard=async,space_cache=v2,subvolid=5,subvol=/)
+
+So update btrfs_parse_param() to clear "compress-force" when "compress" is
+given, providing the same semantics as kernel 6.7 and older.
+
+Reported-by: Roman Mamedov <rm@romanrm.net>
+Link: https://lore.kernel.org/linux-btrfs/20241014182416.13d0f8b0@nvm/
+CC: stable@vger.kernel.org # 6.8+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/bpf_trace.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/btrfs/super.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index 3fdde232eaa92..583961a9e539a 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -2179,8 +2179,6 @@ void perf_event_detach_bpf_prog(struct perf_event *event)
- 
- 	old_array = bpf_event_rcu_dereference(event->tp_event->prog_array);
- 	ret = bpf_prog_array_copy(old_array, event->prog, NULL, 0, &new_array);
--	if (ret == -ENOENT)
--		goto unlock;
- 	if (ret < 0) {
- 		bpf_prog_array_delete_safe(old_array, event->prog);
- 	} else {
+diff --git a/fs/btrfs/super.c b/fs/btrfs/super.c
+index 98fa0f382480..3f8673f97432 100644
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -340,6 +340,15 @@ static int btrfs_parse_param(struct fs_context *fc, struct fs_parameter *param)
+ 		fallthrough;
+ 	case Opt_compress:
+ 	case Opt_compress_type:
++		/*
++		 * Provide the same semantics as older kernels that don't use fs
++		 * context, specifying the "compress" option clears
++		 * "force-compress" without the need to pass
++		 * "compress-force=[no|none]" before specifying "compress".
++		 */
++		if (opt != Opt_compress_force && opt != Opt_compress_force_type)
++			btrfs_clear_opt(ctx->mount_opt, FORCE_COMPRESS);
++
+ 		if (opt == Opt_compress || opt == Opt_compress_force) {
+ 			ctx->compress_type = BTRFS_COMPRESS_ZLIB;
+ 			ctx->compress_level = BTRFS_ZLIB_DEFAULT_LEVEL;
 -- 
-2.43.0
+2.47.0
 
 
 
