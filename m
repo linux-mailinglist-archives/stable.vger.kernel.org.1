@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-88535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 069A19B2666
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 304E99B2778
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:48:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38BD61C21393
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC0671F2476B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:48:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C4718EFEC;
-	Mon, 28 Oct 2024 06:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A77218D65C;
+	Mon, 28 Oct 2024 06:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBkzxLfD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EfpgTa68"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255F118EFD4;
-	Mon, 28 Oct 2024 06:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281928837;
+	Mon, 28 Oct 2024 06:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097553; cv=none; b=pJ6uGsMCZXws6WtwJRTADnvk2o8ZBUKTKpwXFeXT8fKiIqIKCDku+aYtJ106gRGsoGM0SBTYlIXkDX03gW5B0ATkLQhTAy3rMrNXdDY9wUrs8e7hotxhFVEJyJ9F82DdB3R9zFXpokxRZ0jNceHj3ASYomZO3vVYdXUvYuOf3qU=
+	t=1730098111; cv=none; b=mQrCk9HaDCSf8Svvw/z6xe6zb2Oxec92ZbPOKVaqmjntCdjiBCMDsWR255yyhZPSw+rdLimBMpfzIbNqqhqtUH9aTXDutB1y9bJzSvTLUe1eGh3oBlqoglbyM2vex3HXfLRcqt7IHPKYdpi5Mw9KOBaE1quq7cQdcWLckQ+l+GI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097553; c=relaxed/simple;
-	bh=W0iaxcirB3oEhRP9luCbBE9GYf7MUWKuV6Viv1070po=;
+	s=arc-20240116; t=1730098111; c=relaxed/simple;
+	bh=OHOaxog6dkf0xUTWSTu57vK/ElyZkN83v8NBolTFx+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oDVuFhruYKLjtITmoYiLSZf/LSdPCoCNbQy6eQVgWizlXQ6hfg/BidilVYCM/8slAfg/5ARThZUPp/L5e+mgTo1EiT5LXs4Sp52Q1qALmdJ7YdLYPnSP1kRzxKyYmPKhOu1RW53xtfdu4DnmlGqnYYCwP9yCGQF4KrZbixvRjxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBkzxLfD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B956EC4CEC3;
-	Mon, 28 Oct 2024 06:39:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cavTzN0epjMmr0uDSmYvaK+kOxkh1U+fLQzK3kC67xy6QC/kX4vOnNpui73zprQFbvBL+k4x3sjXKNby8vteiYzOQ4JL19hn2C6vcqM4gEqYhjsQJDddWjNHUaqaTQpPBBNupR1ACQzpR4KmkAervUEcYxXS0tvSaK8zD6Tnpls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EfpgTa68; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696C1C4CEC3;
+	Mon, 28 Oct 2024 06:48:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097553;
-	bh=W0iaxcirB3oEhRP9luCbBE9GYf7MUWKuV6Viv1070po=;
+	s=korg; t=1730098110;
+	bh=OHOaxog6dkf0xUTWSTu57vK/ElyZkN83v8NBolTFx+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uBkzxLfDe415OSA9qMauKIBj3Lxjp7J1dCRs8YciWGMu60z5JKLjVgDA70gcc7Kz8
-	 +w4MRoWdgYcGoPkAl2nomVMYOEbdZWX0/Nh7ku/Gp5nTvg//opdMxJy6VABenhfy+V
-	 fJ2aS41qrJpkLerpExlO76jpqjjcuTlAcwY8Ssbg=
+	b=EfpgTa68K3leMy5BnAOUP6mgQuY6wN13ghAnptiAFGNI8ixp3905JlQYYI4xpwNH4
+	 jeX0/+BsuBh6XEi32iYuDy9jO86xWIHY5LBv7paRl2baBoCHucRz/IsSItxcDiodbA
+	 wtb106s7+bGkdcS/l74DGlii7q18LS1T0lRgulaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Marek <jonathan@marek.ca>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/208] drm/msm/dsi: improve/fix dsc pclk calculation
+Subject: [PATCH 6.11 081/261] ravb: Remove setting of RX software timestamp
 Date: Mon, 28 Oct 2024 07:23:43 +0100
-Message-ID: <20241028062307.716843656@linuxfoundation.org>
+Message-ID: <20241028062314.059756867@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +64,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Marek <jonathan@marek.ca>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit 24436a540d16ca6a523b8e5441180001c31b6b35 ]
+[ Upstream commit 277901ee3a2620679e2c8797377d2a72f4358068 ]
 
-drm_mode_vrefresh() can introduce a large rounding error, avoid it.
+The responsibility for reporting of RX software timestamp has moved to
+the core layer (see __ethtool_get_ts_info()), remove usage from the
+device drivers.
 
-Fixes: 7c9e4a554d4a ("drm/msm/dsi: Reduce pclk rate for compression")
-Signed-off-by: Jonathan Marek <jonathan@marek.ca>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/618432/
-Link: https://lore.kernel.org/r/20241007050157.26855-1-jonathan@marek.ca
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://patch.msgid.link/20240901112803.212753-8-gal@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 126e799602f4 ("net: ravb: Only advertise Rx/Tx timestamps if hardware supports it")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_host.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
-index 77b805eacb1b1..fcfe612416b0b 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_host.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-@@ -537,7 +537,7 @@ static unsigned long dsi_adjust_pclk_for_compression(const struct drm_display_mo
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index 6b82df11fe8d0..d2a6518532f37 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1752,8 +1752,6 @@ static int ravb_get_ts_info(struct net_device *ndev,
  
- 	int new_htotal = mode->htotal - mode->hdisplay + new_hdisplay;
+ 	info->so_timestamping =
+ 		SOF_TIMESTAMPING_TX_SOFTWARE |
+-		SOF_TIMESTAMPING_RX_SOFTWARE |
+-		SOF_TIMESTAMPING_SOFTWARE |
+ 		SOF_TIMESTAMPING_TX_HARDWARE |
+ 		SOF_TIMESTAMPING_RX_HARDWARE |
+ 		SOF_TIMESTAMPING_RAW_HARDWARE;
+@@ -1764,6 +1762,8 @@ static int ravb_get_ts_info(struct net_device *ndev,
+ 		(1 << HWTSTAMP_FILTER_ALL);
+ 	if (hw_info->gptp || hw_info->ccc_gac)
+ 		info->phc_index = ptp_clock_index(priv->ptp.clock);
++	else
++		info->phc_index = 0;
  
--	return new_htotal * mode->vtotal * drm_mode_vrefresh(mode);
-+	return mult_frac(mode->clock * 1000u, new_htotal, mode->htotal);
+ 	return 0;
  }
- 
- static unsigned long dsi_get_pclk_rate(const struct drm_display_mode *mode,
 -- 
 2.43.0
 
