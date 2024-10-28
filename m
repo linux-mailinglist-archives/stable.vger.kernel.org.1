@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFA889B27EB
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 084CF9B2568
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11AF81C2153C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A7FF1C20DB6
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F86B18E748;
-	Mon, 28 Oct 2024 06:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A041152E1C;
+	Mon, 28 Oct 2024 06:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ECmo39e7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQMOzYXz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8D48837;
-	Mon, 28 Oct 2024 06:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F7B18E05D;
+	Mon, 28 Oct 2024 06:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098339; cv=none; b=R/S5C9LUhZYMelyJsrqCyTlw1ffyDCSGt2Pth/Yx4wBdoIl9qsC14X3ARwEWomr0S5HhFwmVKWazhwMVoGCM6gUaOyu/ceDN64XcXH0wLclCrBn4cJCzBaA7V+bUjCkCWcNhEkuLWU3cbM7T9vosrqlOXym3XQ2o71tDISya14E=
+	t=1730096923; cv=none; b=Lwj/4O9FMtRDKEzy/wd73wPLbP05jQrPc5iCbVfkVsq6zyKS9UY9633IEABkf2mA4f7Fy3EQ4ooy9r0xHDl4V92dTrEfNwCDYe1J3sdcxGseLRLAUKXt2n36XGIqKsbj7AaWUy/XRqURcjTS0hQLZK5l192EB2Dk8SDxQiDPtmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098339; c=relaxed/simple;
-	bh=llnBL7wGVJe8Cz3QcdLSXCOQDv9MdVpBmjB7X4/JZcA=;
+	s=arc-20240116; t=1730096923; c=relaxed/simple;
+	bh=FwqZmJcmtMN7XeA+2gXdpw466q1rrl7FAgJZVJ7SKHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TDd4ZdHuL9uk45UZuJ/7aTghNbX1rHNkj5jtu7TJxWfPRa8zk3DnApAXjUNbCaGt5VGGFbxQClw//bL9M6R0X+fZbq/aHLP9F+WsZJFm2aU2FJXPDqGgZvHdp4K6XW/ihYo6WoLpKsqsM+iqNYrwEP+GrUA2Kk44HadP9rg6tLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ECmo39e7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2684C4CEC3;
-	Mon, 28 Oct 2024 06:52:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TrjzPX8XJSk6Kxp2G66nxY7gYrVLaZeqmY06vBOGUE4cbw+IMEAL8gCXFzkIopjPNvxSQ+Gqxi0mub9/cJbrcusvNXrPo1KgfsXVo+/LfVhehVn+uRx7hRoC5MnF2Jdab+YtfVza3BQa6asn7KF+gcaLC8NrpaTO+B22AssIrWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQMOzYXz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F634C4CEC3;
+	Mon, 28 Oct 2024 06:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098339;
-	bh=llnBL7wGVJe8Cz3QcdLSXCOQDv9MdVpBmjB7X4/JZcA=;
+	s=korg; t=1730096922;
+	bh=FwqZmJcmtMN7XeA+2gXdpw466q1rrl7FAgJZVJ7SKHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ECmo39e7COdW4VOuz7UYKNIh0jLIFG4gxcFL9NUnb2375gp+WUfQJ/bVi6D+nI+Nw
-	 3JxYd+x4QLo3n6F6/lyYFuRJdKThS/hfcffZQ4PRHCVsaFzKfCT5esrkDxqF2cSq9S
-	 reLvVL0DoGp2PwKqk1pQtuhSIbRe+wbReRP2VmJc=
+	b=vQMOzYXzVxMIGjzitVTFUzWO+FwHh+Y4aX1vDMSxfG0urcYskLpElT+NNMfz39jJq
+	 svfDTJOpXuSpC48XGnar+Maog3tGIPGTA5jJtYDl8i6aZ7DzvnUZVdlvupzQT+ap46
+	 zDJAStwFUMP4SsrlBpMmNGgUoqP+CYY47qUFDQTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 184/261] ASoC: topology: Bump minimal topology ABI version
+	siddharth.manthan@gmail.com,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 5.15 46/80] platform/x86: dell-wmi: Ignore suspend notifications
 Date: Mon, 28 Oct 2024 07:25:26 +0100
-Message-ID: <20241028062316.620096146@linuxfoundation.org>
+Message-ID: <20241028062253.899733468@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +64,46 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 9eb2142a2ae8c8fdfce2aaa4c110f5a6f6b0b56e ]
+commit a7990957fa53326fe9b47f0349373ed99bb69aaa upstream.
 
-When v4 topology support was removed, minimal topology ABI version
-should have been bumped.
+Some machines like the Dell G15 5155 emit WMI events when
+suspending/resuming. Ignore those WMI events.
 
-Fixes: fe4a07454256 ("ASoC: Drop soc-topology ABI v4 support")
-Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://patch.msgid.link/20241009081230.304918-1-amadeuszx.slawinski@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Tested-by: siddharth.manthan@gmail.com
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Acked-by: Pali Rohár <pali@kernel.org>
+Link: https://lore.kernel.org/r/20241014220529.397390-1-W_Armin@gmx.de
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/sound/asoc.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/dell/dell-wmi-base.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/include/uapi/sound/asoc.h b/include/uapi/sound/asoc.h
-index 99333cbd3114e..c117672d44394 100644
---- a/include/uapi/sound/asoc.h
-+++ b/include/uapi/sound/asoc.h
-@@ -88,7 +88,7 @@
+--- a/drivers/platform/x86/dell/dell-wmi-base.c
++++ b/drivers/platform/x86/dell/dell-wmi-base.c
+@@ -263,6 +263,15 @@ static const struct key_entry dell_wmi_k
+ 	/*Speaker Mute*/
+ 	{ KE_KEY, 0x109, { KEY_MUTE} },
  
- /* ABI version */
- #define SND_SOC_TPLG_ABI_VERSION	0x5	/* current version */
--#define SND_SOC_TPLG_ABI_VERSION_MIN	0x4	/* oldest version supported */
-+#define SND_SOC_TPLG_ABI_VERSION_MIN	0x5	/* oldest version supported */
++	/* S2Idle screen off */
++	{ KE_IGNORE, 0x120, { KEY_RESERVED }},
++
++	/* Leaving S4 or S2Idle suspend */
++	{ KE_IGNORE, 0x130, { KEY_RESERVED }},
++
++	/* Entering S2Idle suspend */
++	{ KE_IGNORE, 0x140, { KEY_RESERVED }},
++
+ 	/* Mic mute */
+ 	{ KE_KEY, 0x150, { KEY_MICMUTE } },
  
- /* Max size of TLV data */
- #define SND_SOC_TPLG_TLV_SIZE		32
--- 
-2.43.0
-
 
 
 
