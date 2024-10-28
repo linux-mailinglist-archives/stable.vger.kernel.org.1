@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65D1C9B2569
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 448429B2602
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D85B1F2116D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B727280F7A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D5318CC1F;
-	Mon, 28 Oct 2024 06:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B2A18E76F;
+	Mon, 28 Oct 2024 06:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jn/3HukP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="grXTp2JN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E2518DF8B;
-	Mon, 28 Oct 2024 06:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4826418FDA7;
+	Mon, 28 Oct 2024 06:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730096925; cv=none; b=Wwxo2ljyfDn7FH8kDEzfwXaMSYiDxPSYVGu6Z9jr1Towf65MfLcmrn4Qi2iaRcN/Mv+Ubas3noo+S8dt7pQvxcayyc9XuGDhPxH3kkBLTgGGwAYVXMwcMWeeSDBgCKvA5sLuE2F060JbekwFxzRSA1XCEpD452qv2ZrCRyD1GhY=
+	t=1730097346; cv=none; b=r9lojam234O7ayAuarxBoVno3SI4vmS4V5+OoiAR5Qq6x3J7PCVFXgt5/4owMRnmv7W7/X7T8r8mry3A+fgwm5byyr+Bb3yCI0V3sBKfP1B/r2QacWFmGqCje0G0i0xfVaDafn2Iuaw9jzZRFyZ+RrVGsbDktKrfWRyAOJK0wK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730096925; c=relaxed/simple;
-	bh=xPjvFj/iRByPz4WaHa/SEgZT8MYWiywK+F23bGjlG5U=;
+	s=arc-20240116; t=1730097346; c=relaxed/simple;
+	bh=H1tttnmm0LRvw8fGTkkZ1+zlj/zVqfMb+oJHbzAX+LU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qk1l6U9o8rjnDxrKQ+19KxQ/Z4d092KPB//M+Fo67zFD+HY95ne/fJ8pXgHAe8zR6uw25SorrjHjkV3bgrvRUJGfQXdkhpHX0dQJOGew5YWxQWM28K6dIH6UoC5lEw+KuAJVhC/q9EiVdeIP9sM+37/TSqHZD3QGDuT1ftRevAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jn/3HukP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF16EC4CEC3;
-	Mon, 28 Oct 2024 06:28:44 +0000 (UTC)
+	 MIME-Version; b=RsHUue1Ltl0BEeEbR9gp+KUdn8DXHNzJ0JmiHfVzZzIHcAogx0rAxLnDREAVt72PFwQewHheaEWT0aS6zIzuOt/lB5UCyvokFaUYsRoKvVHX4qe1UeN1gVWs8474upmCK58+Qpe+4D2puqMoSQNroTif9ZiTXU7T1MkrJx1eMD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=grXTp2JN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8A6DC4CEC3;
+	Mon, 28 Oct 2024 06:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730096925;
-	bh=xPjvFj/iRByPz4WaHa/SEgZT8MYWiywK+F23bGjlG5U=;
+	s=korg; t=1730097346;
+	bh=H1tttnmm0LRvw8fGTkkZ1+zlj/zVqfMb+oJHbzAX+LU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jn/3HukPE0sB6Bno8mGoVLq2f4lzZgp2cUO2nHbbAy2+WoxLmsGmRGr5uu8UPsOUU
-	 mxmfAJ0/FsAwN9/vV8sUXmmMEpeE2u5CzWL/86hu/N8ScpIGCh0Z8GY5E6aonTR0go
-	 XOedXB+kDfDkR36Vro6zfcZG3e1O6ap214f+iOkc=
+	b=grXTp2JNH93CG+O6giakcBq0YMPHLWfxvsRxPQCFHBwlgsRiO28CwLfW/V910S7h2
+	 MOE/XOkmwX+ZX1hHrAmBkRe3lqjDnExSJMCeAJrwCys6JV5uRFxIDM/wYbuJSlDJ2t
+	 1Gge3WvwNzAU0Hl7NLZQczvoxnZuLNQvmOm3BbS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	junhua huang <huang.junhua@zte.com.cn>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 5.15 47/80] arm64/uprobes: change the uprobe_opcode_t typedef to fix the sparse warning
+	Jakub Boehm <boehm.jakub@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 090/137] net: plip: fix break; causing plip to never transmit
 Date: Mon, 28 Oct 2024 07:25:27 +0100
-Message-ID: <20241028062253.926694718@linuxfoundation.org>
+Message-ID: <20241028062301.240185641@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: junhua huang <huang.junhua@zte.com.cn>
+From: Jakub Boehm <boehm.jakub@gmail.com>
 
-commit ef08c0fadd8a17ebe429b85e23952dac3263ad34 upstream.
+[ Upstream commit f99cf996ba5a315f8b9f13cc21dff0604a0eb749 ]
 
-After we fixed the uprobe inst endian in aarch_be, the sparse check report
-the following warning info:
+Since commit
+  71ae2cb30531 ("net: plip: Fix fall-through warnings for Clang")
 
-sparse warnings: (new ones prefixed by >>)
->> kernel/events/uprobes.c:223:25: sparse: sparse: restricted __le32 degrades to integer
->> kernel/events/uprobes.c:574:56: sparse: sparse: incorrect type in argument 4 (different base types)
-@@     expected unsigned int [addressable] [usertype] opcode @@     got restricted __le32 [usertype] @@
-   kernel/events/uprobes.c:574:56: sparse:     expected unsigned int [addressable] [usertype] opcode
-   kernel/events/uprobes.c:574:56: sparse:     got restricted __le32 [usertype]
->> kernel/events/uprobes.c:1483:32: sparse: sparse: incorrect type in initializer (different base types)
-@@     expected unsigned int [usertype] insn @@     got restricted __le32 [usertype] @@
-   kernel/events/uprobes.c:1483:32: sparse:     expected unsigned int [usertype] insn
-   kernel/events/uprobes.c:1483:32: sparse:     got restricted __le32 [usertype]
+plip was not able to send any packets, this patch replaces one
+unintended break; with fallthrough; which was originally missed by
+commit 9525d69a3667 ("net: plip: mark expected switch fall-throughs").
 
-use the __le32 to u32 for uprobe_opcode_t, to keep the same.
+I have verified with a real hardware PLIP connection that everything
+works once again after applying this patch.
 
-Fixes: 60f07e22a73d ("arm64:uprobe fix the uprobe SWBP_INSN in big-endian")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: junhua huang <huang.junhua@zte.com.cn>
-Link: https://lore.kernel.org/r/202212280954121197626@zte.com.cn
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 71ae2cb30531 ("net: plip: Fix fall-through warnings for Clang")
+Signed-off-by: Jakub Boehm <boehm.jakub@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Message-ID: <20241015-net-plip-tx-fix-v1-1-32d8be1c7e0b@gmail.com>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/uprobes.h |    2 +-
+ drivers/net/plip/plip.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/include/asm/uprobes.h
-+++ b/arch/arm64/include/asm/uprobes.h
-@@ -14,7 +14,7 @@
- #define UPROBE_SWBP_INSN_SIZE	AARCH64_INSN_SIZE
- #define UPROBE_XOL_SLOT_BYTES	AARCH64_INSN_SIZE
+diff --git a/drivers/net/plip/plip.c b/drivers/net/plip/plip.c
+index 40ce8abe69995..6019811920a44 100644
+--- a/drivers/net/plip/plip.c
++++ b/drivers/net/plip/plip.c
+@@ -815,7 +815,7 @@ plip_send_packet(struct net_device *dev, struct net_local *nl,
+ 				return HS_TIMEOUT;
+ 			}
+ 		}
+-		break;
++		fallthrough;
  
--typedef u32 uprobe_opcode_t;
-+typedef __le32 uprobe_opcode_t;
- 
- struct arch_uprobe_task {
- };
+ 	case PLIP_PK_LENGTH_LSB:
+ 		if (plip_send(nibble_timeout, dev,
+-- 
+2.43.0
+
 
 
 
