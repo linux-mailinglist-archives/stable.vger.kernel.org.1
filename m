@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-88455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 595189B260D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 544959B26E2
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:43:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1017B1F21271
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86A381C210CE
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:43:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1A518E374;
-	Mon, 28 Oct 2024 06:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3A1718E37C;
+	Mon, 28 Oct 2024 06:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZW0eK5A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcA34oIp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8843B15B10D;
-	Mon, 28 Oct 2024 06:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9263815B10D;
+	Mon, 28 Oct 2024 06:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097371; cv=none; b=tcYbKWTIGxWXJPH3vBmvPcFfjIaIvlzt+88cJ/BoSL6zier5h2sLu7vmYp4GMkWiTTGQPx+p4jj83fo2AN+VZmocc7QK/i/SU38p24kdboBz4s9QzRNQ2PVfZul7ycPZmHLP2HK0ld4yS5n7lDVS7FhnoHJhO6UKsM1nnYr89Fo=
+	t=1730097808; cv=none; b=Kd/6JE0Cn6HRRvSb6br2RgePz/L2CekoHE8gGANXsshcO3dUJb7YKsFQaQBnWtwxLkv41lXcss24p3EFfSBJKYwmzgOr8F7UxB1aPcT9GeLabe8Qs9ipyMyOr2rq09W7rDg6fWCnxwc8zFMoZ780OTwhAN0KwdaqEZ2qx541ZbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097371; c=relaxed/simple;
-	bh=VnsEQ4BzYiQjEYWVzHKODLNmV+ljI4Rbxdhj00iefpU=;
+	s=arc-20240116; t=1730097808; c=relaxed/simple;
+	bh=zj1sAU5L81tBqP1Q6YiS84WM4KxJ0s4CeF6t2EhN4J0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5C1DvGitKYJcbiD7I/MOBrW1OgSJ7fhvg+5KIcY8wntBC0+c1OBOVC0/eW3V+XavgFNovuDpDre89Uk56fjty51k/0pga4gDyiJkSrnDaZTs4ShzfqTyWaCnivnt2KgHLd9ablUj44xtLawvLgU7LO92UOov9YqT2VLvXN0RxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZW0eK5A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2662DC4CEC3;
-	Mon, 28 Oct 2024 06:36:11 +0000 (UTC)
+	 MIME-Version; b=mV4NPzYBzWbddkB7koVJ+eHOy87vMxwtafnG5B8kUvQkPD1cK/RNQHh+K0OySdDpBr8SUGSXhS7Br8Nr9Zwtq2wQlJZf5SGmAvI//bMhJ0bwTuUCsV82fXhn6R4DT854LgiqdAqUajaco4aAgvKcfpbGEEWqFwBh6HJBHPkfH6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcA34oIp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FECBC4CEC3;
+	Mon, 28 Oct 2024 06:43:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097371;
-	bh=VnsEQ4BzYiQjEYWVzHKODLNmV+ljI4Rbxdhj00iefpU=;
+	s=korg; t=1730097808;
+	bh=zj1sAU5L81tBqP1Q6YiS84WM4KxJ0s4CeF6t2EhN4J0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YZW0eK5AePL/fFJZrCy7M7xHJdiQWYDMx1yDRDH+5ZEmxqrNH+cTTAK5wFfdKSJ0R
-	 bC/r9OXYyOjBYoUa/rKQShVx+FvxTb40b1iZbUAPMM1nIQoQo/g7fgcdzi39K47vHd
-	 w8jDoh3q/nmj+L0l2KOFNatFuAcwa8nEyU0re44c=
+	b=gcA34oIpCAsxROfHtLJS4WFn881WZFKSd4JB4ATm60OyaUzLzUXLzo99wy4Q8+eBB
+	 qytxyMli5MCCzRQ62pNpc9ruwi4zpxKNpMXMhghZG+p4WqxOfg0KdhQk3TVTc5FstT
+	 WYPzmoj4ivWepI204KENJXV2SVQSGdOxjmHjhIWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Greg Thelen <gthelen@google.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	John Sperbeck <jsperbeck@google.com>
-Subject: [PATCH 6.1 100/137] net: usb: usbnet: fix name regression
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 157/208] posix-clock: posix-clock: Fix unbalanced locking in pc_clock_settime()
 Date: Mon, 28 Oct 2024 07:25:37 +0100
-Message-ID: <20241028062301.519637317@linuxfoundation.org>
+Message-ID: <20241028062310.493769353@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 8a7d12d674ac6f2147c18f36d1e15f1a48060edf ]
+[ Upstream commit 6e62807c7fbb3c758d233018caf94dfea9c65dbd ]
 
-The fix for MAC addresses broke detection of the naming convention
-because it gave network devices no random MAC before bind()
-was called. This means that the check for the local assignment bit
-was always negative as the address was zeroed from allocation,
-instead of from overwriting the MAC with a unique hardware address.
+If get_clock_desc() succeeds, it calls fget() for the clockid's fd,
+and get the clk->rwsem read lock, so the error path should release
+the lock to make the lock balance and fput the clockid's fd to make
+the refcount balance and release the fd related resource.
 
-The correct check for whether bind() has altered the MAC is
-done with is_zero_ether_addr
+However the below commit left the error path locked behind resulting in
+unbalanced locking. Check timespec64_valid_strict() before
+get_clock_desc() to fix it, because the "ts" is not changed
+after that.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Reported-by: Greg Thelen <gthelen@google.com>
-Diagnosed-by: John Sperbeck <jsperbeck@google.com>
-Fixes: bab8eb0dd4cb9 ("usbnet: modern method to get random MAC")
-Link: https://patch.msgid.link/20241017071849.389636-1-oneukum@suse.com
+Fixes: d8794ac20a29 ("posix-clock: Fix missing timespec64 check in pc_clock_settime()")
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Acked-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+[pabeni@redhat.com: fixed commit message typo]
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/usbnet.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/time/posix-clock.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index ce587a12b894c..ae1282487b02a 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1766,7 +1766,8 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
- 		// can rename the link if it knows better.
- 		if ((dev->driver_info->flags & FLAG_ETHER) != 0 &&
- 		    ((dev->driver_info->flags & FLAG_POINTTOPOINT) == 0 ||
--		     (net->dev_addr [0] & 0x02) == 0))
-+		     /* somebody touched it*/
-+		     !is_zero_ether_addr(net->dev_addr)))
- 			strscpy(net->name, "eth%d", sizeof(net->name));
- 		/* WLAN devices should always be named "wlan%d" */
- 		if ((dev->driver_info->flags & FLAG_WLAN) != 0)
+diff --git a/kernel/time/posix-clock.c b/kernel/time/posix-clock.c
+index 8127673bfc45e..05e73d209aa87 100644
+--- a/kernel/time/posix-clock.c
++++ b/kernel/time/posix-clock.c
+@@ -290,6 +290,9 @@ static int pc_clock_settime(clockid_t id, const struct timespec64 *ts)
+ 	struct posix_clock_desc cd;
+ 	int err;
+ 
++	if (!timespec64_valid_strict(ts))
++		return -EINVAL;
++
+ 	err = get_clock_desc(id, &cd);
+ 	if (err)
+ 		return err;
+@@ -299,9 +302,6 @@ static int pc_clock_settime(clockid_t id, const struct timespec64 *ts)
+ 		goto out;
+ 	}
+ 
+-	if (!timespec64_valid_strict(ts))
+-		return -EINVAL;
+-
+ 	if (cd.clk->ops.clock_settime)
+ 		err = cd.clk->ops.clock_settime(cd.clk, ts);
+ 	else
 -- 
 2.43.0
 
