@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-88928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F02269B281A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:54:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40DB29B2707
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 772D0B21371
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:54:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71F0A1C21128
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04E6F18D649;
-	Mon, 28 Oct 2024 06:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4E618E77D;
+	Mon, 28 Oct 2024 06:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4kjQ7vx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zzhgc22U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58922AF07;
-	Mon, 28 Oct 2024 06:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7805E189BAF;
+	Mon, 28 Oct 2024 06:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098439; cv=none; b=UQuG+u6Ti+XvANeN/BLQru15S/8cSgpzvUOBMUXvH9dUqRa/8lM0Eif5TVLdriNpJbRAs4p8T0qjCIv3P66Qk2dTGPHyMnW5erc2Mo6mfi7H4Mo8Hdhoy2xEttOHg3lvnlk7eMvuS6Wngu8Y1PZHYxlDKoHM1KAaWlZ9am2cZqA=
+	t=1730097882; cv=none; b=uMBV2VCgFsf26vtEVt0QIXiKfcf+ITSuSf+iH1e+6QUDH3rFnUVoDStZLPrwqGtNIJJJkE4F0tsusw0FwY/QbOkjeWfI7JdEvgTdGfd9moU7Yqj4aRZ4loPH4chx74c+W3/1g38kUwgjthCRFcY3z9YQayM5J9oRH5CSf4/RnD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098439; c=relaxed/simple;
-	bh=HR2ubYf+VZa3+pZoUex4Zn4Mn65Gk02g7tTijz6kepg=;
+	s=arc-20240116; t=1730097882; c=relaxed/simple;
+	bh=9a3FwVbjpM41o6oA4tgaFNqK6ARWZU5xSevjYUrUPHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r04V3kKNejHXYdvBbmmoS80JAXJKZKsrXWhcukV6xODJNZpfdz+PdMPTiRuKK0wDPWxK1PU7LIndwa84S6mKS8MLsw8Or8pQCrmTd1rYJQSBOPlvQ/Csz07w1sbK07vx09p6d3tWxVDd1CegLkkNmNuKuvUfYsudVIG3SWGEWPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4kjQ7vx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52958C4CEC3;
-	Mon, 28 Oct 2024 06:53:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sQEfKuo9fz5XswZkgaXPvSk0pwX0Ryh+ztk/PQyK4UWwYU0MDL7VWboSZQe17GmwE/TQOoIs7yR1FTsiTUp+30zdaOnd80R1I5V6EpUr5ZEeF6fgBwblPdhwWucgdMj2S8NSGKPkUChBoN2QeKkjpbHYUG36W/4QTUoK3ISq+Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zzhgc22U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C91C4CEC3;
+	Mon, 28 Oct 2024 06:44:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098439;
-	bh=HR2ubYf+VZa3+pZoUex4Zn4Mn65Gk02g7tTijz6kepg=;
+	s=korg; t=1730097882;
+	bh=9a3FwVbjpM41o6oA4tgaFNqK6ARWZU5xSevjYUrUPHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p4kjQ7vxO74a5sJCTuhFpno8NLxZDLAc9AHOIefo4506ecYObbqQb6UmHIjhIMXvn
-	 cRpoJi1DGoYzRaOZxFEXQv2L1RwzaDUhTZ7WJBqc3rssMo/uhoQInpbVariFrdFIOp
-	 oUHxfUtOvh4B/gv0VLwKso00aYvMH4RLRVeRc1i8=
+	b=Zzhgc22UrHEUIrxyMOY96HSUXJn2SHO9hyb7VR+/LqLafJyKd8rpb6P51QkFc9RYR
+	 GGeY63/IYTV86DvH5E3pGR8fpQdr8B+WqrZegtTW7hUFHM206kiB/RIdir+9mrrVty
+	 oJgiKNPiBB20q5kAUSVdWacWeqhnEnbvL4uCKSCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.11 228/261] LoongArch: Enable IRQ if do_ale() triggered in irq-enabled context
+	=?UTF-8?q?Jos=C3=A9=20Relvas?= <josemonsantorelvas@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 190/208] ALSA: hda/realtek: Add subwoofer quirk for Acer Predator G9-593
 Date: Mon, 28 Oct 2024 07:26:10 +0100
-Message-ID: <20241028062317.828376439@linuxfoundation.org>
+Message-ID: <20241028062311.310088059@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,77 +59,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: José Relvas <josemonsantorelvas@gmail.com>
 
-commit 69cc6fad5df4ce652d969be69acc60e269e5eea1 upstream.
+commit 35fdc6e1c16099078bcbd73a6c8f1733ae7f1909 upstream.
 
-Unaligned access exception can be triggered in irq-enabled context such
-as user mode, in this case do_ale() may call get_user() which may cause
-sleep. Then we will get:
+The Acer Predator G9-593 has a 2+1 speaker system which isn't probed
+correctly.
+This patch adds a quirk with the proper pin connections.
 
- BUG: sleeping function called from invalid context at arch/loongarch/kernel/access-helper.h:7
- in_atomic(): 0, irqs_disabled(): 1, non_block: 0, pid: 129, name: modprobe
- preempt_count: 0, expected: 0
- RCU nest depth: 0, expected: 0
- CPU: 0 UID: 0 PID: 129 Comm: modprobe Tainted: G        W          6.12.0-rc1+ #1723
- Tainted: [W]=WARN
- Stack : 9000000105e0bd48 0000000000000000 9000000003803944 9000000105e08000
-         9000000105e0bc70 9000000105e0bc78 0000000000000000 0000000000000000
-         9000000105e0bc78 0000000000000001 9000000185e0ba07 9000000105e0b890
-         ffffffffffffffff 9000000105e0bc78 73924b81763be05b 9000000100194500
-         000000000000020c 000000000000000a 0000000000000000 0000000000000003
-         00000000000023f0 00000000000e1401 00000000072f8000 0000007ffbb0e260
-         0000000000000000 0000000000000000 9000000005437650 90000000055d5000
-         0000000000000000 0000000000000003 0000007ffbb0e1f0 0000000000000000
-         0000005567b00490 0000000000000000 9000000003803964 0000007ffbb0dfec
-         00000000000000b0 0000000000000007 0000000000000003 0000000000071c1d
-         ...
- Call Trace:
- [<9000000003803964>] show_stack+0x64/0x1a0
- [<9000000004c57464>] dump_stack_lvl+0x74/0xb0
- [<9000000003861ab4>] __might_resched+0x154/0x1a0
- [<900000000380c96c>] emulate_load_store_insn+0x6c/0xf60
- [<9000000004c58118>] do_ale+0x78/0x180
- [<9000000003801bc8>] handle_ale+0x128/0x1e0
+Note that I do not own this laptop, so I cannot guarantee that this
+fixes the issue.
+Testing was done by other users here:
+https://discussion.fedoraproject.org/t/-/118482
 
-So enable IRQ if unaligned access exception is triggered in irq-enabled
-context to fix it.
+This model appears to have two different dev IDs...
 
-Cc: stable@vger.kernel.org
-Reported-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+- 0x1177 (as seen on the forum link above)
+- 0x1178 (as seen on https://linux-hardware.org/?probe=127df9999f)
+
+I don't think the audio system was changed between model revisions, so
+the patch applies for both IDs.
+
+Signed-off-by: José Relvas <josemonsantorelvas@gmail.com>
+Link: https://patch.msgid.link/20241020102756.225258-1-josemonsantorelvas@gmail.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/traps.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ sound/pci/hda/patch_realtek.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/arch/loongarch/kernel/traps.c
-+++ b/arch/loongarch/kernel/traps.c
-@@ -555,6 +555,9 @@ asmlinkage void noinstr do_ale(struct pt
- #else
- 	unsigned int *pc;
- 
-+	if (regs->csr_prmd & CSR_PRMD_PIE)
-+		local_irq_enable();
-+
- 	perf_sw_event(PERF_COUNT_SW_ALIGNMENT_FAULTS, 1, regs, regs->csr_badvaddr);
- 
- 	/*
-@@ -579,6 +582,8 @@ sigbus:
- 	die_if_kernel("Kernel ale access", regs);
- 	force_sig_fault(SIGBUS, BUS_ADRALN, (void __user *)regs->csr_badvaddr);
- out:
-+	if (regs->csr_prmd & CSR_PRMD_PIE)
-+		local_irq_disable();
- #endif
- 	irqentry_exit(regs, state);
- }
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7358,6 +7358,7 @@ enum {
+ 	ALC286_FIXUP_ACER_AIO_HEADSET_MIC,
+ 	ALC256_FIXUP_ASUS_HEADSET_MIC,
+ 	ALC256_FIXUP_ASUS_MIC_NO_PRESENCE,
++	ALC255_FIXUP_PREDATOR_SUBWOOFER,
+ 	ALC299_FIXUP_PREDATOR_SPK,
+ 	ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE,
+ 	ALC289_FIXUP_DELL_SPK1,
+@@ -8705,6 +8706,13 @@ static const struct hda_fixup alc269_fix
+ 		.chained = true,
+ 		.chain_id = ALC256_FIXUP_ASUS_HEADSET_MODE
+ 	},
++	[ALC255_FIXUP_PREDATOR_SUBWOOFER] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x17, 0x90170151 }, /* use as internal speaker (LFE) */
++			{ 0x1b, 0x90170152 } /* use as internal speaker (back) */
++		}
++	},
+ 	[ALC299_FIXUP_PREDATOR_SPK] = {
+ 		.type = HDA_FIXUP_PINS,
+ 		.v.pins = (const struct hda_pintbl[]) {
+@@ -9678,6 +9686,8 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1025, 0x110e, "Acer Aspire ES1-432", ALC255_FIXUP_ACER_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1025, 0x1166, "Acer Veriton N4640G", ALC269_FIXUP_LIFEBOOK),
+ 	SND_PCI_QUIRK(0x1025, 0x1167, "Acer Veriton N6640G", ALC269_FIXUP_LIFEBOOK),
++	SND_PCI_QUIRK(0x1025, 0x1177, "Acer Predator G9-593", ALC255_FIXUP_PREDATOR_SUBWOOFER),
++	SND_PCI_QUIRK(0x1025, 0x1178, "Acer Predator G9-593", ALC255_FIXUP_PREDATOR_SUBWOOFER),
+ 	SND_PCI_QUIRK(0x1025, 0x1246, "Acer Predator Helios 500", ALC299_FIXUP_PREDATOR_SPK),
+ 	SND_PCI_QUIRK(0x1025, 0x1247, "Acer vCopperbox", ALC269VC_FIXUP_ACER_VCOPPERBOX_PINS),
+ 	SND_PCI_QUIRK(0x1025, 0x1248, "Acer Veriton N4660G", ALC269VC_FIXUP_ACER_MIC_NO_PRESENCE),
 
 
 
