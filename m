@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-88572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BCEF9B268E
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:40:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C48C99B25ED
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A68AB20FCC
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:40:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A37D1F21E9A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90DA918E744;
-	Mon, 28 Oct 2024 06:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999F018E34E;
+	Mon, 28 Oct 2024 06:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXjfuF7C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ldeet0Vo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6322C697;
-	Mon, 28 Oct 2024 06:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E17718EFD6;
+	Mon, 28 Oct 2024 06:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097636; cv=none; b=eJ/SYPfY+byiLnSt6L3LtOxtTvTky/aadUhIlHVbtP3ji/j7Wqm2xyNGonJHK1q3aQ/eat+mzrSRVEekat5cwJ/rFj7J2dkPfguyK2czizc5i2TMgOJ5Gze5W4I+oYqLM94OeRGG/whAjYjrHwVq7ocHir766GWk1S1AmRaiunM=
+	t=1730097298; cv=none; b=PjEuKvmC93Euf+hMWGYViUIp3R6KNqBxdr5NhfEjPO7Y+YHuOQ/EDNEDKrWXp+eYzboxTKAv674nRDLMddaA+B++nNi1C69kEuNy3A3dDslk/h6fJjcpNIzu3GapLPPkBI6hdO9dcV68UbeoZVInAwhRKVQnva9W3y55z3On9sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097636; c=relaxed/simple;
-	bh=Q8GnSz4kK6Ezu1SVWoQ7pP/TjmxGAo89digEhntLdpo=;
+	s=arc-20240116; t=1730097298; c=relaxed/simple;
+	bh=O49dpKvS64nT1RBjfHt/N4EquhI1cwiLeclxc0w/jac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQQUJdAYZLd27cibkVJFnTbG6+7n3+qrV8faUWlQUn7wecw5CqXgoG/S7Y01bsk9KRsvzEvs6kAJxfai4EozCQu1usi4DGJQgDP7i6BxyYOub5roZZQR63sWXHl/pnBXmv5ine7jr3xVSa5aGwxk4oSEa77jeT+SlN51fTETElw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXjfuF7C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95FABC4CEC3;
-	Mon, 28 Oct 2024 06:40:35 +0000 (UTC)
+	 MIME-Version; b=sMlyhYRwEP5MpVrbIfXWSoMzYZ6k9eLTpZe+5QV1G987USEOPbFZ9yYwEpSB4jJu2+tHO5btvCgHpnthyAopGJvu+FYp0arsvJw8Qm3eXwz03zLl30fBYOanEdcxmKIVUERY7V9dJxHY3Pjg6rsJxZ6VV/ygvLt0M4aNvKnmCcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ldeet0Vo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02C2C4CEC3;
+	Mon, 28 Oct 2024 06:34:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097635;
-	bh=Q8GnSz4kK6Ezu1SVWoQ7pP/TjmxGAo89digEhntLdpo=;
+	s=korg; t=1730097298;
+	bh=O49dpKvS64nT1RBjfHt/N4EquhI1cwiLeclxc0w/jac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IXjfuF7CGZoKSI/Yxc2D3gelaDMrfsCBwh+/COT3+6WukzpRwaMa3Q4jjVR4dW25m
-	 ynOHvwUDi9xu6s4nHFzU+Fh1LnL8lDOhskNl5bKRHMhIMuF75uuMH4QEZ1cWn0nbDG
-	 ug/vexttq5dk2R3igLwJ2AhzwvxwENpBEWK8XA50=
+	b=ldeet0Vo7kXS1Km2POklyfTEtOwHf120SgKvIFAyXXUMvRq7ComhG+VRJnIea2Ivc
+	 NJOtexxyOuHP9PNPkJA0n8xqEKYGmKW5PpEKBHDUEcUJganhUbUo102x+vwjvSRd/K
+	 os9DR3UVvKFfGIzfIH8OWQBePwEyWU8sDrU5RShE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/208] net/mlx5: Fix command bitmask initialization
+Subject: [PATCH 6.1 023/137] drm/msm/dpu: make sure phys resources are properly initialized
 Date: Mon, 28 Oct 2024 07:24:20 +0100
-Message-ID: <20241028062308.617672134@linuxfoundation.org>
+Message-ID: <20241028062259.371035325@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,102 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit d62b14045c6511a7b2d4948d1a83a4e592deeb05 ]
+[ Upstream commit bfecbc2cfba9b06d67d9d249c33d92e570e2fa70 ]
 
-Command bitmask have a dedicated bit for MANAGE_PAGES command, this bit
-isn't Initialize during command bitmask Initialization, only during
-MANAGE_PAGES.
+The commit b954fa6baaca ("drm/msm/dpu: Refactor rm iterator") removed
+zero-init of the hw_ctl array, but didn't change the error condition,
+that checked for hw_ctl[i] being NULL. At the same time because of the
+early returns in case of an error dpu_encoder_phys might be left with
+the resources assigned in the previous state. Rework assigning of hw_pp
+/ hw_ctl to the dpu_encoder_phys in order to make sure they are always
+set correctly.
 
-In addition, mlx5_cmd_trigger_completions() is trying to trigger
-completion for MANAGE_PAGES command as well.
-
-Hence, in case health error occurred before any MANAGE_PAGES command
-have been invoke (for example, during mlx5_enable_hca()),
-mlx5_cmd_trigger_completions() will try to trigger completion for
-MANAGE_PAGES command, which will result in null-ptr-deref error.[1]
-
-Fix it by Initialize command bitmask correctly.
-
-While at it, re-write the code for better understanding.
-
-[1]
-BUG: KASAN: null-ptr-deref in mlx5_cmd_trigger_completions+0x1db/0x600 [mlx5_core]
-Write of size 4 at addr 0000000000000214 by task kworker/u96:2/12078
-CPU: 10 PID: 12078 Comm: kworker/u96:2 Not tainted 6.9.0-rc2_for_upstream_debug_2024_04_07_19_01 #1
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-Workqueue: mlx5_health0000:08:00.0 mlx5_fw_fatal_reporter_err_work [mlx5_core]
-Call Trace:
- <TASK>
- dump_stack_lvl+0x7e/0xc0
- kasan_report+0xb9/0xf0
- kasan_check_range+0xec/0x190
- mlx5_cmd_trigger_completions+0x1db/0x600 [mlx5_core]
- mlx5_cmd_flush+0x94/0x240 [mlx5_core]
- enter_error_state+0x6c/0xd0 [mlx5_core]
- mlx5_fw_fatal_reporter_err_work+0xf3/0x480 [mlx5_core]
- process_one_work+0x787/0x1490
- ? lockdep_hardirqs_on_prepare+0x400/0x400
- ? pwq_dec_nr_in_flight+0xda0/0xda0
- ? assign_work+0x168/0x240
- worker_thread+0x586/0xd30
- ? rescuer_thread+0xae0/0xae0
- kthread+0x2df/0x3b0
- ? kthread_complete_and_exit+0x20/0x20
- ret_from_fork+0x2d/0x70
- ? kthread_complete_and_exit+0x20/0x20
- ret_from_fork_asm+0x11/0x20
- </TASK>
-
-Fixes: 9b98d395b85d ("net/mlx5: Start health poll at earlier stage of driver load")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: b954fa6baaca ("drm/msm/dpu: Refactor rm iterator")
+Suggested-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/612233/
+Link: https://lore.kernel.org/r/20240903-dpu-mode-config-width-v6-1-617e1ecc4b7a@linaro.org
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-index 48dc4ae87af09..80af0fc7101fd 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-@@ -1758,6 +1758,10 @@ static void mlx5_cmd_comp_handler(struct mlx5_core_dev *dev, u64 vec, bool force
- 	}
- }
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+index 1bf41a82cd0f9..ba8f2ba046298 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+@@ -1106,21 +1106,20 @@ static void dpu_encoder_virt_atomic_mode_set(struct drm_encoder *drm_enc,
+ 	for (i = 0; i < dpu_enc->num_phys_encs; i++) {
+ 		struct dpu_encoder_phys *phys = dpu_enc->phys_encs[i];
  
-+#define MLX5_MAX_MANAGE_PAGES_CMD_ENT 1
-+#define MLX5_CMD_MASK ((1UL << (cmd->vars.max_reg_cmds + \
-+			   MLX5_MAX_MANAGE_PAGES_CMD_ENT)) - 1)
-+
- static void mlx5_cmd_trigger_completions(struct mlx5_core_dev *dev)
- {
- 	struct mlx5_cmd *cmd = &dev->cmd;
-@@ -1769,7 +1773,7 @@ static void mlx5_cmd_trigger_completions(struct mlx5_core_dev *dev)
- 	/* wait for pending handlers to complete */
- 	mlx5_eq_synchronize_cmd_irq(dev);
- 	spin_lock_irqsave(&dev->cmd.alloc_lock, flags);
--	vector = ~dev->cmd.vars.bitmask & ((1ul << (1 << dev->cmd.vars.log_sz)) - 1);
-+	vector = ~dev->cmd.vars.bitmask & MLX5_CMD_MASK;
- 	if (!vector)
- 		goto no_trig;
+-		if (!dpu_enc->hw_pp[i]) {
++		phys->hw_pp = dpu_enc->hw_pp[i];
++		if (!phys->hw_pp) {
+ 			DPU_ERROR_ENC(dpu_enc,
+ 				"no pp block assigned at idx: %d\n", i);
+ 			return;
+ 		}
  
-@@ -2275,7 +2279,7 @@ int mlx5_cmd_enable(struct mlx5_core_dev *dev)
+-		if (!hw_ctl[i]) {
++		phys->hw_ctl = i < num_ctl ? to_dpu_hw_ctl(hw_ctl[i]) : NULL;
++		if (!phys->hw_ctl) {
+ 			DPU_ERROR_ENC(dpu_enc,
+ 				"no ctl block assigned at idx: %d\n", i);
+ 			return;
+ 		}
  
- 	cmd->state = MLX5_CMDIF_STATE_DOWN;
- 	cmd->vars.max_reg_cmds = (1 << cmd->vars.log_sz) - 1;
--	cmd->vars.bitmask = (1UL << cmd->vars.max_reg_cmds) - 1;
-+	cmd->vars.bitmask = MLX5_CMD_MASK;
- 
- 	sema_init(&cmd->vars.sem, cmd->vars.max_reg_cmds);
- 	sema_init(&cmd->vars.pages_sem, 1);
+-		phys->hw_pp = dpu_enc->hw_pp[i];
+-		phys->hw_ctl = to_dpu_hw_ctl(hw_ctl[i]);
+-
+ 		phys->cached_mode = crtc_state->adjusted_mode;
+ 		if (phys->ops.atomic_mode_set)
+ 			phys->ops.atomic_mode_set(phys, crtc_state, conn_state);
 -- 
 2.43.0
 
