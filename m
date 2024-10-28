@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-88700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26AE39B271B
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:45:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 287679B282E
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:54:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74FFEB20E25
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:45:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93E45282921
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6677518CC1F;
-	Mon, 28 Oct 2024 06:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E579518E77D;
+	Mon, 28 Oct 2024 06:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yg+zMlWS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OCLiu+MF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E498837;
-	Mon, 28 Oct 2024 06:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B74824A3;
+	Mon, 28 Oct 2024 06:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097925; cv=none; b=NaoVDDzdydoEMMDgwh3XeE+nvUAm/g+K6qYzQHJd6fwVvH1aFgHHuW3KeRn/by0E6YJMKYodwMqrI+NGe5jIDmKJqt9Ft91KsrMR3vt4eCFb4GOugQdJGfMBGeEgqinkKCSzAhLrVc9j9l5G98zBBb4Bdn4+iZx6wtUQAVxifRU=
+	t=1730098482; cv=none; b=uzxM7bXfD0Wmt9v+Majw9RgWe33GVxqr3qxIqfe5m+/Dsz13Lhkskhy1yy3ROARx30BAd72xy0KIkLhsEa3bV2fw/2MdAwpPvBtNuJ+HWBdRIVMvdeUQDSvE9+TSsw/tMQz/ZeqoHOM4b659Y/Qqpgrfo7zwgNqomzkwmo+D6PY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097925; c=relaxed/simple;
-	bh=dTkEsvONIwE/Qp6MIU/xJm3wtWsmUvWBT/tD8tkPvDU=;
+	s=arc-20240116; t=1730098482; c=relaxed/simple;
+	bh=O1BA+/lAoZqoqCCOP56/wt1b4TYv6QiaDTG3YtfQ0Pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eQQBkgiSTvtWhtWDm54/twpV9Tr6DzT09JtSCUyCjl9nFdjgU8JBjXxyEijWPrigcVtCsHjFhoXnR3ZWZBqcBCIx4VhT16BHE+/b1vnmZwu5ZrNeB/KvDqet2+Htx3vKyzneiogd9WgJa8EWEzuVKjo7Tg7fUsDNh2j9v0g30gA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yg+zMlWS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9283C4CEC3;
-	Mon, 28 Oct 2024 06:45:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sUgemUznPkajKWXNYOe5RpCego2O5zZDH5IfxnKygYwlYwfWZ9ifr3GELab76DODNSUgEEl4Lv0LVFOdeKCOxTXn51HKZEHP+2oZnewfembmDaUiTWQ0Cj18QGEbPMM7US2SpJ0JVmmX7MOAcZxRA9RiGQ/V/+jdv9dVcLtFCsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OCLiu+MF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA8E0C4CEC3;
+	Mon, 28 Oct 2024 06:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097925;
-	bh=dTkEsvONIwE/Qp6MIU/xJm3wtWsmUvWBT/tD8tkPvDU=;
+	s=korg; t=1730098482;
+	bh=O1BA+/lAoZqoqCCOP56/wt1b4TYv6QiaDTG3YtfQ0Pg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yg+zMlWS8cKwRdUEedlwmwiE+jE/cJWUSs2mwATStgLbfysadJ4IfW3U6tz5/8+Bd
-	 28tun6Acfb2s4SU5ie63332zfdrERwPC9jUzamEorYD/8p38z/s+5jd5/Z38rvBo1s
-	 UZflO95sQXpayWSVmqeDQLO9uC+fGlaLwZi0aPkM=
+	b=OCLiu+MF7GUaIXx6zAGR5DiKj0TJETUfEEOGhW3mZ7shuD5jHFzkchZzKS3jXwEqI
+	 NvCDTjbP4QGnuJPZBN3ofReW8fU0grHHv5XY5MCRQAXSv9wjr4JZbL/chB+AYCAFj6
+	 ao90zGq6ZRMVrtxIm8gyaz/sUBZOT5DvEwv8yNkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.6 207/208] tracing: probes: Fix to zero initialize a local variable
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.11 245/261] ASoC: SOF: Intel: hda: Always clean up link DMA during stop
 Date: Mon, 28 Oct 2024 07:26:27 +0100
-Message-ID: <20241028062311.744855440@linuxfoundation.org>
+Message-ID: <20241028062318.253239348@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +62,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
 
-commit 0add699ad068d26e5b1da9ff28b15461fc4005df upstream.
+commit ab5593793e9088abcddce30ba8e376e31b7285fd upstream.
 
-Fix to initialize 'val' local variable with zero.
-Dan reported that Smatch static code checker reports an error that a local
-'val' variable needs to be initialized. Actually, the 'val' is expected to
-be initialized by FETCH_OP_ARG in the same loop, but it is not obvious. So
-initialize it with zero.
+This is required to reset the DMA read/write pointers when the stream is
+prepared and restarted after a call to snd_pcm_drain()/snd_pcm_drop().
+Also, now that the stream is reset during stop, do not save LLP registers
+in the case of STOP/suspend to avoid erroneous delay reporting.
 
-Link: https://lore.kernel.org/all/171092223833.237219.17304490075697026697.stgit@devnote2/
-
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/b010488e-68aa-407c-add0-3e059254aaa0@moroto.mountain/
-Fixes: 25f00e40ce79 ("tracing/probes: Support $argN in return probe (kprobe and fprobe)")
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://github.com/thesofproject/sof/issues/9502
+Signed-off-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+All: stable@vger.kernel.org # 6.10.x 6.11.x
+Link: https://patch.msgid.link/20241016032910.14601-5-yung-chuan.liao@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_probe.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sof/intel/hda-dai-ops.c |   23 ++++++++++-------------
+ sound/soc/sof/intel/hda-dai.c     |    1 +
+ 2 files changed, 11 insertions(+), 13 deletions(-)
 
---- a/kernel/trace/trace_probe.c
-+++ b/kernel/trace/trace_probe.c
-@@ -843,7 +843,7 @@ out:
- void store_trace_entry_data(void *edata, struct trace_probe *tp, struct pt_regs *regs)
+--- a/sound/soc/sof/intel/hda-dai-ops.c
++++ b/sound/soc/sof/intel/hda-dai-ops.c
+@@ -346,20 +346,21 @@ static int hda_trigger(struct snd_sof_de
+ 	case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
+ 		snd_hdac_ext_stream_start(hext_stream);
+ 		break;
+-	case SNDRV_PCM_TRIGGER_SUSPEND:
+-	case SNDRV_PCM_TRIGGER_STOP:
+ 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
+-		snd_hdac_ext_stream_clear(hext_stream);
+-
+ 		/*
+-		 * Save the LLP registers in case the stream is
+-		 * restarting due PAUSE_RELEASE, or START without a pcm
+-		 * close/open since in this case the LLP register is not reset
+-		 * to 0 and the delay calculation will return with invalid
+-		 * results.
++		 * Save the LLP registers since in case of PAUSE the LLP
++		 * register are not reset to 0, the delay calculation will use
++		 * the saved offsets for compensating the delay calculation.
+ 		 */
+ 		hext_stream->pplcllpl = readl(hext_stream->pplc_addr + AZX_REG_PPLCLLPL);
+ 		hext_stream->pplcllpu = readl(hext_stream->pplc_addr + AZX_REG_PPLCLLPU);
++		snd_hdac_ext_stream_clear(hext_stream);
++		break;
++	case SNDRV_PCM_TRIGGER_SUSPEND:
++	case SNDRV_PCM_TRIGGER_STOP:
++		hext_stream->pplcllpl = 0;
++		hext_stream->pplcllpu = 0;
++		snd_hdac_ext_stream_clear(hext_stream);
+ 		break;
+ 	default:
+ 		dev_err(sdev->dev, "unknown trigger command %d\n", cmd);
+@@ -512,7 +513,6 @@ static const struct hda_dai_widget_dma_o
+ static int hda_ipc3_post_trigger(struct snd_sof_dev *sdev, struct snd_soc_dai *cpu_dai,
+ 				 struct snd_pcm_substream *substream, int cmd)
  {
- 	struct probe_entry_arg *earg = tp->entry_arg;
--	unsigned long val;
-+	unsigned long val = 0;
- 	int i;
+-	struct hdac_ext_stream *hext_stream = hda_get_hext_stream(sdev, cpu_dai, substream);
+ 	struct snd_soc_dapm_widget *w = snd_soc_dai_get_widget(cpu_dai, substream->stream);
  
- 	if (!earg)
+ 	switch (cmd) {
+@@ -527,9 +527,6 @@ static int hda_ipc3_post_trigger(struct
+ 		if (ret < 0)
+ 			return ret;
+ 
+-		if (cmd == SNDRV_PCM_TRIGGER_STOP)
+-			return hda_link_dma_cleanup(substream, hext_stream, cpu_dai);
+-
+ 		break;
+ 	}
+ 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
+--- a/sound/soc/sof/intel/hda-dai.c
++++ b/sound/soc/sof/intel/hda-dai.c
+@@ -302,6 +302,7 @@ static int __maybe_unused hda_dai_trigge
+ 	}
+ 
+ 	switch (cmd) {
++	case SNDRV_PCM_TRIGGER_STOP:
+ 	case SNDRV_PCM_TRIGGER_SUSPEND:
+ 		ret = hda_link_dma_cleanup(substream, hext_stream, dai);
+ 		if (ret < 0) {
 
 
 
