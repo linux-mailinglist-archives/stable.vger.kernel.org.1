@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-88763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CA879B2764
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:47:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A475A9B2736
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:46:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 332F3283B0A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:47:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C0221F248B0
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:46:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7152118DF80;
-	Mon, 28 Oct 2024 06:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C02118EFC8;
+	Mon, 28 Oct 2024 06:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eu2hTdoy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FzV1KOLV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E77E1DFFD;
-	Mon, 28 Oct 2024 06:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF9318D65C;
+	Mon, 28 Oct 2024 06:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098068; cv=none; b=eZSrAAGS/wFfIIIcf4aICmbKZ08Zb22QXJpdLWv12M1H3T6uYwugdywgAsLhvt2miXehV9tf+ZCGs/ljj8KARUpbeb9qheaX4syAI7su5XAQl3Tqx37WHDhM6fL/LmYnXC9a1sUUlmFG/Uq5b6QjKL5xC6sJ+Lh+VFsHIsifckY=
+	t=1730097985; cv=none; b=Jej6Z5KUhbRarJ4YN3oHLUlqFTRt8Wg8G5VGDXTXQ1DhwhEJJA8Luwrm9lO8uaCbBhklBV4PpEdzPjTP2mIMp8usUm1VmmecbBcwkKxaiDJjYp1pFpJwcUg3UeCq03LKIV/mylRSOsHXnqifmgmYHxeTThrG8FP9ULM0lVMbE+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098068; c=relaxed/simple;
-	bh=2Bxy0KzWRLTuYf6fZvKKxIeb3Tjp08r8ZEt4lxqVtF0=;
+	s=arc-20240116; t=1730097985; c=relaxed/simple;
+	bh=pDjZ2UXNt4SzsO6h7t2Eomn23eJnw40kxVgwAThOpM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KA/HmNcI1g87XXAesMPZTuMyHAcSUSHEFn8Zd/avJr91fTZfcK/zO/e7LPWvygK7277PG2nn20jeQcvfr/JXr7vhk7FzGVRsJVoH/qnrI+hznp9XmhVyGu4Sj1thjKhP8EMQVGHXXfoOStqrQnYrjMEvhAZXt8oxSWrSJ+aHoTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eu2hTdoy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C45CDC4CEC3;
-	Mon, 28 Oct 2024 06:47:47 +0000 (UTC)
+	 MIME-Version; b=H8Qhol5HKJT/eGnQ5d3WHs8UU47qbDAV4eDJtoodEJgIxkukjJUFqyWFMzHNek5sZBPv1OaaEkpS8nw/PgKvIw0iDOp9yCLXFvWOn1B7Dxe/5r0r7ClyqlFB6YR0gaqN4PUP9zmLD1ZVsG2hcjZvUZsopbE6UGX4v9eIAucZzCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FzV1KOLV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C228AC4CEC3;
+	Mon, 28 Oct 2024 06:46:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098068;
-	bh=2Bxy0KzWRLTuYf6fZvKKxIeb3Tjp08r8ZEt4lxqVtF0=;
+	s=korg; t=1730097985;
+	bh=pDjZ2UXNt4SzsO6h7t2Eomn23eJnw40kxVgwAThOpM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eu2hTdoyN7esM1CKJrbAaWdFP6xa+jn7dVLevhRQvKhrgRE5TZm+XTfojBv+I6eRw
-	 c/lr6zpB0RW9XHmc9VJTGwXlyidzt1K1ful7tmOLkohOD08rEJEOPhvxMmmotLcRGp
-	 EYJAMxSA84Nl31kqZJ+VpQ+DxAj4d6MFK/R5iBgg=
+	b=FzV1KOLVZT3aXnjOqGm24u+5vKNhl0t7ne5KFODR8ZnEH+F9IHiJCAWyUamx9+nlb
+	 btMVoQ6MFwROc4BpEk0p9s45laEc0KBIVTLaiXTN8R+oiAH3/ruXMsYuDd3ffNOPvs
+	 YS9E58MWzEtQ+Lgx2YjgSn2rSFv8DHMwkcYQN55A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Martin Krastev <martin.krastev@broadcom.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 026/261] drm/vmwgfx: Handle possible ENOMEM in vmw_stdu_connector_atomic_check
-Date: Mon, 28 Oct 2024 07:22:48 +0100
-Message-ID: <20241028062312.672744901@linuxfoundation.org>
+Subject: [PATCH 6.11 027/261] selftests/bpf: Fix cross-compiling urandom_read
+Date: Mon, 28 Oct 2024 07:22:49 +0100
+Message-ID: <20241028062312.697044221@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
 References: <20241028062312.001273460@linuxfoundation.org>
@@ -68,40 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 4809a017a2bc42ff239d53ade4b2e70f2fe81348 ]
+[ Upstream commit fd526e121c4d6f71aed82d21a8b8277b03e60b43 ]
 
-Handle unlikely ENOMEN condition and other errors in
-vmw_stdu_connector_atomic_check.
+Linking of urandom_read and liburandom_read.so prefers LLVM's 'ld.lld' but
+falls back to using 'ld' if unsupported. However, this fallback discards
+any existing makefile macro for LD and can break cross-compilation.
 
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Fixes: 75c3e8a26a35 ("drm/vmwgfx: Trigger a modeset when the screen moves")
-Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
-Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240809183756.27283-1-ian.forbes@broadcom.com
+Fix by changing the fallback to use the target linker $(LD), passed via
+'-fuse-ld=' using an absolute path rather than a linker "flavour".
+
+Fixes: 08c79c9cd67f ("selftests/bpf: Don't force lld on non-x86 architectures")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241009040720.635260-1-tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/bpf/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
-index fab155a68054a..82d18b88f4a7e 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
-@@ -886,6 +886,10 @@ static int vmw_stdu_connector_atomic_check(struct drm_connector *conn,
- 	struct drm_crtc_state *new_crtc_state;
+diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
+index 848fffa250227..555fd34c6e1fc 100644
+--- a/tools/testing/selftests/bpf/Makefile
++++ b/tools/testing/selftests/bpf/Makefile
+@@ -221,7 +221,7 @@ $(OUTPUT)/%:%.c
+ ifeq ($(SRCARCH),$(filter $(SRCARCH),x86 riscv))
+ LLD := lld
+ else
+-LLD := ld
++LLD := $(shell command -v $(LD))
+ endif
  
- 	conn_state = drm_atomic_get_connector_state(state, conn);
-+
-+	if (IS_ERR(conn_state))
-+		return PTR_ERR(conn_state);
-+
- 	du = vmw_connector_to_stdu(conn);
- 
- 	if (!conn_state->crtc)
+ # Filter out -static for liburandom_read.so and its dependent targets so that static builds
 -- 
 2.43.0
 
