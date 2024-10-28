@@ -1,190 +1,173 @@
-Return-Path: <stable+bounces-89072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 547E19B3138
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 14:01:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEB6A9B3183
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 14:19:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10240282729
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 13:01:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48A42B21226
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 13:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 358AD1D9587;
-	Mon, 28 Oct 2024 13:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42D71DB37B;
+	Mon, 28 Oct 2024 13:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="gZ425BEn"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="D5FX2dwG";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/vAsEctH"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B07A1E519;
-	Mon, 28 Oct 2024 13:01:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F0F3D3B8;
+	Mon, 28 Oct 2024 13:19:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730120463; cv=none; b=lknVHaQ/lNZE/6Mi3GXMLJs2lHMdyARNrOgZVYzNbgJFUlSfqgmjgGpcamxvbht3F3nd5+Mpnp5l3+2ap8b8iOV3pmoxWv4CJLcGcD7H/ON+iRkxuEok8rvn2kAYswqDizIXsPfmllJUG6W8ZPIy+e2VY3Q8cQlxWLlrpO4IAYU=
+	t=1730121569; cv=none; b=Bd7aa3fz8Vep3yTBI9yX6lw0kClzko6oqgaXSJfa0+nSxg5pk8R1GZHKcDpeld89MDmQiR1KTN3yl6ivv60DnjnywODWem8DESqgSxTDX5bjTl8Xf46Q3DFe9cTb3q0wlHAj78qaW3I4A3VKS2Qw5DrrEqBymb1tUzDZfIwLzoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730120463; c=relaxed/simple;
-	bh=l9v3vKArLjj24VREBGBj/ErZeIFdYN2suaGECGgbByE=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=hNVNif3L2Hnr5by+cowOkEMj4lX3mVED0HNB+kosExwzduyz3AiqeEYNGlkaRS2KFHMF8fqKq1bpbPM3x+06b+GJGUHb8r3+ZewZEulDmoQ/UWMqEd5nxL0d5KcW2HlNEOMWFmD5X0aSjRkQYWY6xgiRrq8p7SSanjP8GglXzng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=gZ425BEn; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49SCarnq024817;
-	Mon, 28 Oct 2024 13:00:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=oBmDpw
-	YNe84I09VKwn/ofeAOrg0jpJFVYeqd3MTN4WE=; b=gZ425BEn4oql0Xzz69kBF7
-	PUoWGFRa/UHLGEVtqVgwAU17d3cZL6k5raOKCaBNzOo5yKE3MkY1o8tuM7zX6Szh
-	95NEAQXER8NheVVsIOeuJP3sE6gVhJbG00Ju53/bT3gt3P0qKLjW4GZ6lfN8erDu
-	PEnYn+Voir4cArTtNaUO5lirZT7RmjwjDxpPu4DnGu+r6inlqGaxBfPqNB835feY
-	IyvcWN7OgJ+dbw356aw7ieRjAohB9b3VeD8LfyRvOoibrw9b+Cno4EUspm+SrwN4
-	FluZzF3yOcodcNY36V2yWrLLa4kq9zWv1D1gn3PN7bMKL3XpiHuCwtcCgEyuQnLw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42j43fthqb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 28 Oct 2024 13:00:34 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49SCrYOA005507;
-	Mon, 28 Oct 2024 13:00:34 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42j43fthq6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 28 Oct 2024 13:00:33 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49SCZSZu018383;
-	Mon, 28 Oct 2024 13:00:32 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42hc8jx648-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 28 Oct 2024 13:00:32 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49SD0VSQ30343528
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 28 Oct 2024 13:00:32 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D2B1058056;
-	Mon, 28 Oct 2024 13:00:31 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DE60C58063;
-	Mon, 28 Oct 2024 13:00:30 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 28 Oct 2024 13:00:30 +0000 (GMT)
-Message-ID: <04887ab4-3e30-467a-973c-4c004283476e@linux.ibm.com>
-Date: Mon, 28 Oct 2024 09:00:30 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 1/3] tpm: Return tpm2_sessions_init() when null key
- creation fails
-To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org,
-        Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-        James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        Eric Snowberg <eric.snowberg@oracle.com>,
-        "open list:KEYS-TRUSTED" <keyrings@vger.kernel.org>,
-        "open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>,
-        stable@vger.kernel.org
-References: <20241028055007.1708971-1-jarkko@kernel.org>
- <20241028055007.1708971-2-jarkko@kernel.org>
-Content-Language: en-US
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20241028055007.1708971-2-jarkko@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: wrV6d_5Hf2d-impEjk1QDiYe4EVOmJqo
-X-Proofpoint-ORIG-GUID: QVsqHa21LWF-oSSjeQDdvmmUq_PCechQ
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	s=arc-20240116; t=1730121569; c=relaxed/simple;
+	bh=vxjXarRkNCMSgEfVKy18nrdwExeL240oyx4KPnn4B5E=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=Pd4BkC0lBoPDuWCDiedAGYUxakzQ2pet6PAMbfMsidj68UfOflaJ+RnEBRtnj7/GuR4ZdhhB1aDmw4WM9rOzkkL/UMvaO8g8utBrUrpXQzN9ubOSuQ1VJVIcJmNophgq8Xl9PgR7A3LSzaqHY8zCt7bukcSyl9tmbiT2s9Lo5WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=D5FX2dwG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/vAsEctH; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 28 Oct 2024 13:19:23 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1730121564;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0AbZsj0GtD/wXNWAFiarprco/IaXQ2DaH4S9HgmRnKA=;
+	b=D5FX2dwG2FUikQEmnPmT4qTJ664StfC3CyVdHO+r0GOD2vb9sX+Pb9LT1loMHY0XbTTlqc
+	Cr7MZGynZx2Nby8+yxszFagie/38GaU9JN426/gGuQ0XTXJnzIYwVnVFuyhQz/ylEGsRov
+	tTS7OOWPFvYBIp9EAiror7z3kp+dGcbXLzFgUyBBBwEOnkktlU61xW0TZQET3Aj3y/9GVW
+	T9jjwiWjBeMwtvbsXAcPZZM5pZ+Cv+WYTxTFhZK4hrtiLX7SC/77lLxwEX9oPRT66ynRin
+	VhtcMTpCL3/oC6PzhB/2ixYN6irz2MEfnTt/44onnbgDK5LbRvCbN+8NB30qLQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1730121564;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0AbZsj0GtD/wXNWAFiarprco/IaXQ2DaH4S9HgmRnKA=;
+	b=/vAsEctHyO3XEJW4oNJEmGEbgljauUrIZWJj/S+RI6m8k8kOxIdzXFAd7aTQ0WgfMro/lb
+	uIGklWJiM7mL1RCg==
+From: "tip-bot2 for Shawn Wang" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: sched/urgent] sched/numa: Fix the potential null pointer
+ dereference in task_numa_work()
+Cc: Shawn Wang <shawnwang@linux.alibaba.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	stable@vger.kernel.org, #@tip-bot2.tec.linutronix.de,
+	v6.2+@tip-bot2.tec.linutronix.de, x86@kernel.org,
+	linux-kernel@vger.kernel.org
+In-Reply-To: <20241025022208.125527-1-shawnwang@linux.alibaba.com>
+References: <20241025022208.125527-1-shawnwang@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 clxscore=1011
- adultscore=0 mlxscore=0 priorityscore=1501 spamscore=0 malwarescore=0
- impostorscore=0 lowpriorityscore=0 bulkscore=0 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2410280103
+Message-ID: <173012156393.1442.1751639070858226239.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
+The following commit has been merged into the sched/urgent branch of tip:
 
+Commit-ID:     9c70b2a33cd2aa6a5a59c5523ef053bd42265209
+Gitweb:        https://git.kernel.org/tip/9c70b2a33cd2aa6a5a59c5523ef053bd42265209
+Author:        Shawn Wang <shawnwang@linux.alibaba.com>
+AuthorDate:    Fri, 25 Oct 2024 10:22:08 +08:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Sat, 26 Oct 2024 09:28:37 +02:00
 
-On 10/28/24 1:49 AM, Jarkko Sakkinen wrote:
-> Do not continue tpm2_sessions_init() further if the null key pair creation
-> fails.
-> 
-> Cc: stable@vger.kernel.org # v6.10+
-> Fixes: d2add27cf2b8 ("tpm: Add NULL primary creation")
-> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+sched/numa: Fix the potential null pointer dereference in task_numa_work()
 
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+When running stress-ng-vm-segv test, we found a null pointer dereference
+error in task_numa_work(). Here is the backtrace:
 
-> ---
-> v8:
-> - Refine commit message.
-> v7:
-> - Add the error message back but fix it up a bit:
->    1. Remove 'TPM:' given dev_err().
->    2. s/NULL/null/ as this has nothing to do with the macro in libc.
->    3. Fix the reasoning: null key creation failed
-> v6:
-> - Address:
->    https://lore.kernel.org/linux-integrity/69c893e7-6b87-4daa-80db-44d1120e80fe@linux.ibm.com/
->    as TPM RC is taken care of at the call site. Add also the missing
->    documentation for the return values.
-> v5:
-> - Do not print klog messages on error, as tpm2_save_context() already
->    takes care of this.
-> v4:
-> - Fixed up stable version.
-> v3:
-> - Handle TPM and POSIX error separately and return -ENODEV always back
->    to the caller.
-> v2:
-> - Refined the commit message.
-> ---
->   drivers/char/tpm/tpm2-sessions.c | 11 +++++++++--
->   1 file changed, 9 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-> index d3521aadd43e..a0306126e86c 100644
-> --- a/drivers/char/tpm/tpm2-sessions.c
-> +++ b/drivers/char/tpm/tpm2-sessions.c
-> @@ -1347,14 +1347,21 @@ static int tpm2_create_null_primary(struct tpm_chip *chip)
->    *
->    * Derive and context save the null primary and allocate memory in the
->    * struct tpm_chip for the authorizations.
-> + *
-> + * Return:
-> + * * 0		- OK
-> + * * -errno	- A system error
-> + * * TPM_RC	- A TPM error
->    */
->   int tpm2_sessions_init(struct tpm_chip *chip)
->   {
->   	int rc;
->   
->   	rc = tpm2_create_null_primary(chip);
-> -	if (rc)
-> -		dev_err(&chip->dev, "TPM: security failed (NULL seed derivation): %d\n", rc);
-> +	if (rc) {
-> +		dev_err(&chip->dev, "null key creation failed with %d\n", rc);
-> +		return rc;
-> +	}
->   
->   	chip->auth = kmalloc(sizeof(*chip->auth), GFP_KERNEL);
->   	if (!chip->auth)
+  [323676.066985] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000020
+  ......
+  [323676.067108] CPU: 35 PID: 2694524 Comm: stress-ng-vm-se
+  ......
+  [323676.067113] pstate: 23401009 (nzCv daif +PAN -UAO +TCO +DIT +SSBS BTYPE=--)
+  [323676.067115] pc : vma_migratable+0x1c/0xd0
+  [323676.067122] lr : task_numa_work+0x1ec/0x4e0
+  [323676.067127] sp : ffff8000ada73d20
+  [323676.067128] x29: ffff8000ada73d20 x28: 0000000000000000 x27: 000000003e89f010
+  [323676.067130] x26: 0000000000080000 x25: ffff800081b5c0d8 x24: ffff800081b27000
+  [323676.067133] x23: 0000000000010000 x22: 0000000104d18cc0 x21: ffff0009f7158000
+  [323676.067135] x20: 0000000000000000 x19: 0000000000000000 x18: ffff8000ada73db8
+  [323676.067138] x17: 0001400000000000 x16: ffff800080df40b0 x15: 0000000000000035
+  [323676.067140] x14: ffff8000ada73cc8 x13: 1fffe0017cc72001 x12: ffff8000ada73cc8
+  [323676.067142] x11: ffff80008001160c x10: ffff000be639000c x9 : ffff8000800f4ba4
+  [323676.067145] x8 : ffff000810375000 x7 : ffff8000ada73974 x6 : 0000000000000001
+  [323676.067147] x5 : 0068000b33e26707 x4 : 0000000000000001 x3 : ffff0009f7158000
+  [323676.067149] x2 : 0000000000000041 x1 : 0000000000004400 x0 : 0000000000000000
+  [323676.067152] Call trace:
+  [323676.067153]  vma_migratable+0x1c/0xd0
+  [323676.067155]  task_numa_work+0x1ec/0x4e0
+  [323676.067157]  task_work_run+0x78/0xd8
+  [323676.067161]  do_notify_resume+0x1ec/0x290
+  [323676.067163]  el0_svc+0x150/0x160
+  [323676.067167]  el0t_64_sync_handler+0xf8/0x128
+  [323676.067170]  el0t_64_sync+0x17c/0x180
+  [323676.067173] Code: d2888001 910003fd f9000bf3 aa0003f3 (f9401000)
+  [323676.067177] SMP: stopping secondary CPUs
+  [323676.070184] Starting crashdump kernel...
 
+stress-ng-vm-segv in stress-ng is used to stress test the SIGSEGV error
+handling function of the system, which tries to cause a SIGSEGV error on
+return from unmapping the whole address space of the child process.
+
+Normally this program will not cause kernel crashes. But before the
+munmap system call returns to user mode, a potential task_numa_work()
+for numa balancing could be added and executed. In this scenario, since the
+child process has no vma after munmap, the vma_next() in task_numa_work()
+will return a null pointer even if the vma iterator restarts from 0.
+
+Recheck the vma pointer before dereferencing it in task_numa_work().
+
+Fixes: 214dbc428137 ("sched: convert to vma iterator")
+Signed-off-by: Shawn Wang <shawnwang@linux.alibaba.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org # v6.2+
+Link: https://lkml.kernel.org/r/20241025022208.125527-1-shawnwang@linux.alibaba.com
+---
+ kernel/sched/fair.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 8796146..2d16c85 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3369,7 +3369,7 @@ retry_pids:
+ 		vma = vma_next(&vmi);
+ 	}
+ 
+-	do {
++	for (; vma; vma = vma_next(&vmi)) {
+ 		if (!vma_migratable(vma) || !vma_policy_mof(vma) ||
+ 			is_vm_hugetlb_page(vma) || (vma->vm_flags & VM_MIXEDMAP)) {
+ 			trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_UNSUITABLE);
+@@ -3491,7 +3491,7 @@ retry_pids:
+ 		 */
+ 		if (vma_pids_forced)
+ 			break;
+-	} for_each_vma(vmi, vma);
++	}
+ 
+ 	/*
+ 	 * If no VMAs are remaining and VMAs were skipped due to the PID
 
