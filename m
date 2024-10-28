@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-88300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8D139B2557
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5455B9B27DC
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 651711F21478
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F02711F2200D
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58F018E05A;
-	Mon, 28 Oct 2024 06:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE0FE18EFC9;
+	Mon, 28 Oct 2024 06:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lL3sZ5kq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="huBTCYyg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930E518CC1F;
-	Mon, 28 Oct 2024 06:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE488837;
+	Mon, 28 Oct 2024 06:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730096886; cv=none; b=i86vZGoHwmwhTcVkzT2xNGyI439MZvzQAptKRPXHN/05iyToFli4/TyZPyE6LjFUqbcKu2/EHuZjk2/ahpBj4NPliuEtL9Bt7tM2BD5PcPcEk6N5bNdNwtf9yu+mIu4xACSKOFYEowONmtCJWo0lTrgEseh4o5Z5mmFzkfq7Q/M=
+	t=1730098305; cv=none; b=ewOLIetKZGPbEbs8hhnn0OpwfyvUDJjUhb3dy0JQ+qxt244qqEwI7dlxePOYu6tjZGvPrOaTJgeJx4pQDpT3jMwlGYSQ170cqdQ9PZBpoFba+mifEvefTLyY8lpUnat93V1tVubVECM0BahSh4AsguDM5AIiPnoFa7eIGoGPuzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730096886; c=relaxed/simple;
-	bh=LcfPqFrlavnnF77Y8ch5qh0CFFXYil1xjE6hr8jw+MA=;
+	s=arc-20240116; t=1730098305; c=relaxed/simple;
+	bh=1qp1vvDfKCOpFbbi4HMOQcKbhnHdvWIxr0kuxBFWT6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S8TqtNW2M0NVr+sbSaQyHqx38YGTzNxfigvuppFI8SDyxDWmEyCusI2YxG3KN13fS99XB6hAgpf/uvqscI01vcooOzEWRZNe7pKHpyb2Dc6z8uS1q7Q05lawDmilq9nJajKBB8j7OpFrAB7kVOnMdKrw6P0s7/YJ+A+7hUiZBCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lL3sZ5kq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3071EC4CEC7;
-	Mon, 28 Oct 2024 06:28:06 +0000 (UTC)
+	 MIME-Version; b=QWpp2CwVHcI7Q5n3PdtnvQ19bo/0Fp7PiEYAJgJ1AZxyYaJnW3Id3aq78Kkdsr2riYnFHlzYD1y5fURA0viUsh3HGaTmByH7Uen7yZq8XVODXhpvFQIyUV9qXzTeR+2bxS82SrjZqRSzVuJRzD0mLrCPfbXr7DQw1lBPpLXngzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=huBTCYyg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36275C4CEC3;
+	Mon, 28 Oct 2024 06:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730096886;
-	bh=LcfPqFrlavnnF77Y8ch5qh0CFFXYil1xjE6hr8jw+MA=;
+	s=korg; t=1730098305;
+	bh=1qp1vvDfKCOpFbbi4HMOQcKbhnHdvWIxr0kuxBFWT6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lL3sZ5kqhhwpA7BVkDccq/NRLYICLQQh8vgbHIGrSUAk4/4owfeTJMVOFAF0s+Cak
-	 mi2rmCaVWH6XOcz20PISIuV+8pvdjmJ39YZUC+fGP9PngMPPznJW/ALRZvALus7fFA
-	 GMOd8kHmqG++YqX4AmucPhAbVZNR7j02bA5LHZT0=
+	b=huBTCYygh7Z2j0mVZZ+E4xXjLbA6z1qprHz6p3xj2il6KiWxwYGldCMKUrqGfx05Y
+	 HnQnLrtC/d8vBgz2VWz5eYMCwB5+LFcXyXF4dSiarHXO7papvC0eRv4DHMCu4gUGZ/
+	 qODNJgncoXSYurgEJ8B3BVtSoRppohNFJkB2yrPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	syzbot+b65e0af58423fc8a73aa@syzkaller.appspotmail.com,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 29/80] Bluetooth: bnep: fix wild-memory-access in proto_unregister
+Subject: [PATCH 6.11 167/261] net: sched: fix use-after-free in taprio_change()
 Date: Mon, 28 Oct 2024 07:25:09 +0100
-Message-ID: <20241028062253.438425141@linuxfoundation.org>
+Message-ID: <20241028062316.185009381@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 64a90991ba8d4e32e3173ddd83d0b24167a5668c ]
+[ Upstream commit f504465970aebb2467da548f7c1efbbf36d0f44b ]
 
-There's issue as follows:
-  KASAN: maybe wild-memory-access in range [0xdead...108-0xdead...10f]
-  CPU: 3 UID: 0 PID: 2805 Comm: rmmod Tainted: G        W
-  RIP: 0010:proto_unregister+0xee/0x400
-  Call Trace:
-   <TASK>
-   __do_sys_delete_module+0x318/0x580
-   do_syscall_64+0xc1/0x1d0
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+In 'taprio_change()', 'admin' pointer may become dangling due to sched
+switch / removal caused by 'advance_sched()', and critical section
+protected by 'q->current_entry_lock' is too small to prevent from such
+a scenario (which causes use-after-free detected by KASAN). Fix this
+by prefer 'rcu_replace_pointer()' over 'rcu_assign_pointer()' to update
+'admin' immediately before an attempt to schedule freeing.
 
-As bnep_init() ignore bnep_sock_init()'s return value, and bnep_sock_init()
-will cleanup all resource. Then when remove bnep module will call
-bnep_sock_cleanup() to cleanup sock's resource.
-To solve above issue just return bnep_sock_init()'s return value in
-bnep_exit().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: a3d43c0d56f1 ("taprio: Add support adding an admin schedule")
+Reported-by: syzbot+b65e0af58423fc8a73aa@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b65e0af58423fc8a73aa
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://patch.msgid.link/20241018051339.418890-1-dmantipov@yandex.ru
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/bnep/core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/sched/sch_taprio.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/bnep/core.c b/net/bluetooth/bnep/core.c
-index 8bb6c8ad11313..ca46441d0657b 100644
---- a/net/bluetooth/bnep/core.c
-+++ b/net/bluetooth/bnep/core.c
-@@ -745,8 +745,7 @@ static int __init bnep_init(void)
- 	if (flt[0])
- 		BT_INFO("BNEP filters: %s", flt);
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 8498d0606b248..9f4e004cdb8be 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -1965,7 +1965,8 @@ static int taprio_change(struct Qdisc *sch, struct nlattr *opt,
  
--	bnep_sock_init();
--	return 0;
-+	return bnep_sock_init();
- }
+ 		taprio_start_sched(sch, start, new_admin);
  
- static void __exit bnep_exit(void)
+-		rcu_assign_pointer(q->admin_sched, new_admin);
++		admin = rcu_replace_pointer(q->admin_sched, new_admin,
++					    lockdep_rtnl_is_held());
+ 		if (admin)
+ 			call_rcu(&admin->rcu, taprio_free_sched_cb);
+ 
 -- 
 2.43.0
 
