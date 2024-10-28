@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-88638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E469E9B26D8
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:43:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43D3E9B27D6
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:51:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59589B2116D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:43:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B09D1B2127B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:51:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3D518E37F;
-	Mon, 28 Oct 2024 06:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E1418E05D;
+	Mon, 28 Oct 2024 06:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ls78juTI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIymj9NK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394EA15B10D;
-	Mon, 28 Oct 2024 06:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFEE8837;
+	Mon, 28 Oct 2024 06:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097786; cv=none; b=Z0pb0ZM3g3HsDWG8qyG0/Kfjx8muEOcRUbgrYRRpDDIveiOOaN9xUVEOjhhOyv/G2XOn1yjuGDdZ55hhPcl4EJCQHIgSvdsxMKFaEjsd3QFFy9GAyoTpDGIw4OsRkhpudZ+PrF0RzZvoj3TDHw14vNkB6Ne1/ixQbOQgoAiuMhY=
+	t=1730098296; cv=none; b=iQTIY8xn8UWW+7NpOHLxG8VSjSO0MGPsxDUoW+baXuwizEzHaQnezGUEp7rzG5pQIYuFAV8q8m1dyjmOBiLKehpeNK+bpJmaVyWXMYJBrf7J7kvqQFZtIhJir/e44OR6MKd6AFBZ3AAj3K8kNE+LhVLrte8kZuL+gQbl6XkfP3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097786; c=relaxed/simple;
-	bh=etOc61GOWEq55gB9pJzoCCWTB3s4KYw6I2M+NTglx5E=;
+	s=arc-20240116; t=1730098296; c=relaxed/simple;
+	bh=IZru7iNaXlNS0r9if6A2PrPlPzgADz+QyMvj7yU6ITc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K+Ldn4n4nI+gateqKEhHF2bKQppr2ZQW1lxpYU4PRKgiCD3xVYyrGpXEhsCceux68Z+FfSiX0bkou+1f9dbF/DG3BKAizUBPv0tvRecZMQpRaKxnWPldjh8eijm/kKrRrJe9Q1Fl5200/NOQCImq6ChatdX32PoucreNuXtwyb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ls78juTI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3A3C4CEC3;
-	Mon, 28 Oct 2024 06:43:05 +0000 (UTC)
+	 MIME-Version; b=OHeABwIGZWaesZR8LPWE4d/ua4HJvXALJXutMEgHVQUXlAlmDsvR6mRdgyTu59QdDGfRvdwwAjKI+ez3lo127JaghJO/M5LDRxxLqQ5SNZizrdvP2uVOd4gk6RSmuvV1gY3cywCzxErjbYkEI3H6mzDYLWG293QkP7+gHHtrEy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIymj9NK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EAC1C4CEC3;
+	Mon, 28 Oct 2024 06:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097786;
-	bh=etOc61GOWEq55gB9pJzoCCWTB3s4KYw6I2M+NTglx5E=;
+	s=korg; t=1730098296;
+	bh=IZru7iNaXlNS0r9if6A2PrPlPzgADz+QyMvj7yU6ITc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ls78juTI4JLHM95rPEDPO6AToyjFKGOhWjjMtijn5YjZ92+l1a+o5qPir5S6ZIMrZ
-	 SJ2wHumbaxjbhFpXh/5DpVlHwwizXoXn2m3gQz67W+Npjc4OkSm1inBrxIJ8gZOq7/
-	 d1kTShKX0qbQUUq1yZNWDGnqXb1GM4KgTuWEPPvw=
+	b=VIymj9NKVXe6LYXPpYK1QL+DYlaC1UfTxVcSH+ap9H3qPkRnV8DygR7Eib+DvD5/8
+	 hWTEDka1gD+QCdM9MXBTxtWoYxiN2cU/ADi3dKO/gWJebUKMwNORE69tf7dols7SW2
+	 /LE8xJ5Vyl0Jo4Z350bL/EbCSnuVb0yyYEf8EtHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Mathias Nyman <mathias.nyman@intel.com>,
-	linux-usb@vger.kernel.org,
+	Viktor Malik <vmalik@redhat.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Matt Wu <wuqiang.matt@bytedance.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 099/208] xhci: dbgtty: remove kfifo_out() wrapper
+Subject: [PATCH 6.11 137/261] objpool: fix choosing allocation for percpu slots
 Date: Mon, 28 Oct 2024 07:24:39 +0100
-Message-ID: <20241028062309.097589043@linuxfoundation.org>
+Message-ID: <20241028062315.477268242@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Viktor Malik <vmalik@redhat.com>
 
-[ Upstream commit 2b217514436744dd98c4d9fa48d60610f9f67d61 ]
+[ Upstream commit aff1871bfc81e9dffa7d2a77e67cc5441cc37f81 ]
 
-There is no need to check against kfifo_len() before kfifo_out(). Just
-ask the latter for data and it tells how much it retrieved. Or returns 0
-in case there are no more.
+objpool intends to use vmalloc for default (non-atomic) allocations of
+percpu slots and objects. However, the condition checking if GFP flags
+set any bit of GFP_ATOMIC is wrong b/c GFP_ATOMIC is a combination of bits
+(__GFP_HIGH|__GFP_KSWAPD_RECLAIM) and so `pool->gfp & GFP_ATOMIC` will
+be true if either bit is set. Since GFP_ATOMIC and GFP_KERNEL share the
+___GFP_KSWAPD_RECLAIM bit, kmalloc will be used in cases when GFP_KERNEL
+is specified, i.e. in all current usages of objpool.
 
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Cc: Mathias Nyman <mathias.nyman@intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org
-Link: https://lore.kernel.org/r/20240808103549.429349-5-jirislaby@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 30c9ae5ece8e ("xhci: dbc: honor usb transfer size boundaries.")
+This may lead to unexpected OOM errors since kmalloc cannot allocate
+large amounts of memory.
+
+For instance, objpool is used by fprobe rethook which in turn is used by
+BPF kretprobe.multi and kprobe.session probe types. Trying to attach
+these to all kernel functions with libbpf using
+
+    SEC("kprobe.session/*")
+    int kprobe(struct pt_regs *ctx)
+    {
+        [...]
+    }
+
+fails on objpool slot allocation with ENOMEM.
+
+Fix the condition to truly use vmalloc by default.
+
+Link: https://lore.kernel.org/all/20240826060718.267261-1-vmalik@redhat.com/
+
+Fixes: b4edb8d2d464 ("lib: objpool added: ring-array based lockless MPMC")
+Signed-off-by: Viktor Malik <vmalik@redhat.com>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Matt Wu <wuqiang.matt@bytedance.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-dbgtty.c | 15 +--------------
- 1 file changed, 1 insertion(+), 14 deletions(-)
+ lib/objpool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-dbgtty.c b/drivers/usb/host/xhci-dbgtty.c
-index b74e98e943932..64ea964949975 100644
---- a/drivers/usb/host/xhci-dbgtty.c
-+++ b/drivers/usb/host/xhci-dbgtty.c
-@@ -24,19 +24,6 @@ static inline struct dbc_port *dbc_to_port(struct xhci_dbc *dbc)
- 	return dbc->priv;
- }
- 
--static unsigned int
--dbc_send_packet(struct dbc_port *port, char *packet, unsigned int size)
--{
--	unsigned int		len;
--
--	len = kfifo_len(&port->write_fifo);
--	if (len < size)
--		size = len;
--	if (size != 0)
--		size = kfifo_out(&port->write_fifo, packet, size);
--	return size;
--}
--
- static int dbc_start_tx(struct dbc_port *port)
- 	__releases(&port->port_lock)
- 	__acquires(&port->port_lock)
-@@ -49,7 +36,7 @@ static int dbc_start_tx(struct dbc_port *port)
- 
- 	while (!list_empty(pool)) {
- 		req = list_entry(pool->next, struct dbc_request, list_pool);
--		len = dbc_send_packet(port, req->buf, DBC_MAX_PACKET);
-+		len = kfifo_out(&port->write_fifo, req->buf, DBC_MAX_PACKET);
- 		if (len == 0)
- 			break;
- 		do_tty_wake = true;
+diff --git a/lib/objpool.c b/lib/objpool.c
+index 234f9d0bd081a..fd108fe0d095a 100644
+--- a/lib/objpool.c
++++ b/lib/objpool.c
+@@ -76,7 +76,7 @@ objpool_init_percpu_slots(struct objpool_head *pool, int nr_objs,
+ 		 * mimimal size of vmalloc is one page since vmalloc would
+ 		 * always align the requested size to page size
+ 		 */
+-		if (pool->gfp & GFP_ATOMIC)
++		if ((pool->gfp & GFP_ATOMIC) == GFP_ATOMIC)
+ 			slot = kmalloc_node(size, pool->gfp, cpu_to_node(i));
+ 		else
+ 			slot = __vmalloc_node(size, sizeof(void *), pool->gfp,
 -- 
 2.43.0
 
