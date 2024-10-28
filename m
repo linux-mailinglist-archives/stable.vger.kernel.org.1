@@ -1,108 +1,101 @@
-Return-Path: <stable+bounces-89135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AE299B3E02
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 23:49:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3420A9B3E0C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 23:53:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAAF71F22D5E
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 22:49:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 655ED1C223CA
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 22:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8162B1DB361;
-	Mon, 28 Oct 2024 22:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 993C11F4275;
+	Mon, 28 Oct 2024 22:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oJt/pYcu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W7BBxUbC"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6060518EFEC
-	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 22:49:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4424B18C02D;
+	Mon, 28 Oct 2024 22:53:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730155748; cv=none; b=CdHC/Ho+++g9RlwyEONlKhfqKqYfyP5GeojLDUNudlahIlqs3wim2UBULUBKUn8AoofftgS3a2iPvsU2PXXqg8IW3dJAbZoMp+BxPameSXu4GY0oxHpTStL5n/HA4rbVNumt3kstyTS3u7TZNAoHMWr92A+CIl8TTOsjTzDAA+4=
+	t=1730155996; cv=none; b=IB2TderYuoHrZnFarcsifN+FFfeW0wXhxJk+xUWnfTtKgvjBZ2RGB2qKxVE2XfK25X3xDLRmUEfMgWAojfvHNIKdAp1nFmYAckD9Eoxboww2rHOQ14PQfoFIDT0hx5YuTNQWcgG+bJntv/8ZHQbdv2q7li7ZTdnogTn0pBkk4vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730155748; c=relaxed/simple;
-	bh=+VK0bp7GVG0iFUBjiyzCQLOd+cDaNoFlhay2GRGU+DQ=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f8dKFmnMW6e82k73pvqZKUoxZljOqrc66bVY11Sv4aBBAX3+VaOPy2sdruJB3kyb+lsSkt28jacATBfOTeaVYgGIqYiMBDoMlHbzAGC53jJjOkctqPy2Kd8H0qKzCMUYHTVLJdq+9AAzl0vEuxh4dcHnHiVxBrR1kRiisyAUnvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oJt/pYcu; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730155746; x=1761691746;
-  h=date:message-id:from:to:cc:subject:in-reply-to:
-   references:mime-version;
-  bh=+VK0bp7GVG0iFUBjiyzCQLOd+cDaNoFlhay2GRGU+DQ=;
-  b=oJt/pYcuAfv0wDcAyX+YcO+rQBtS4idXTMsdxJr/+3FcXC/qBI1JI+fT
-   6EmxZ3mYjC4XJo5fTNjA6CeuRR3plOhuAoAnl8NqqhKXso3tyeMAms6cR
-   QzRl8Ey4uSBlVp96a1cz4OIwv3P01ygraaWuMj9YKh/I1bA3p4eZISili
-   Z5onmk8UZ6FOyWdU8EZDmSt3Z+1rL7kD8dtjbzOlS5W4l7S3kbJxgbK4I
-   kvH269TXotNhWk/P45ZrIeVofHfpfA0U4eOPM6aIrX4OefFTvCBIhZWAk
-   l8MfqUi817A99ZQ8RsT6CycclNZacw65o/+n3ZHoHd87l06t/+RDMdPlG
-   g==;
-X-CSE-ConnectionGUID: ur0xiH+UTsWPEe1xpC6yEA==
-X-CSE-MsgGUID: E5j90GMlQnSvm02uaaDeiw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11239"; a="41170619"
-X-IronPort-AV: E=Sophos;i="6.11,240,1725346800"; 
-   d="scan'208";a="41170619"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 15:49:05 -0700
-X-CSE-ConnectionGUID: Kx+MAc/qS+iHZJkHb8gNFQ==
-X-CSE-MsgGUID: ARYC94/8QBW3d+gz4X4Jjw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,240,1725346800"; 
-   d="scan'208";a="81917517"
-Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com) ([10.165.21.142])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 15:49:06 -0700
-Date: Mon, 28 Oct 2024 15:49:05 -0700
-Message-ID: <855xpbzvvi.wl-ashutosh.dixit@intel.com>
-From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-To: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Cc: intel-xe@lists.freedesktop.org,
-	saurabhg.gupta@intel.com,
-	alex.zuo@intel.com,
-	umesh.nerlige.ramappa@intel.com,
-	john.c.harrison@intel.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] drm/xe/xe_guc_ads: save/restore OA registers
-In-Reply-To: <20241023200716.82624-1-jonathan.cavitt@intel.com>
-References: <20241023200716.82624-1-jonathan.cavitt@intel.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
- Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1730155996; c=relaxed/simple;
+	bh=HSm7l+dIvXw5CpFH9RjYr70BRYS7SglQogW4EmAuIbg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gjTgjWwbyWXYsMetmJ+rlMNgEmw7j2b/qb9WqWzbh/fCqSwh5ZLe6YK9gQGtKfOjej951tGO2T/T2ZsP3CAdbzM6QL+luTPb7QriAdW8SKv4BNpjSEbspydfPEuBHGQgRzLPHStowpTwaJ7PFa7eh/AFI4RzhYxSPTSpQ9zPLTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W7BBxUbC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19080C4CECD;
+	Mon, 28 Oct 2024 22:53:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730155995;
+	bh=HSm7l+dIvXw5CpFH9RjYr70BRYS7SglQogW4EmAuIbg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=W7BBxUbCUrpS1iA89avK18t+SK0ADv78ODLgmI54adILN5wvAAJVYJybo+/S0hL2f
+	 RZsX9vVZN2k1yUROABIxWJkyZvyjSw/3FKX3Szs4lwGgdlSdopCs/198Sv1kDxiLnp
+	 +UHpZk8GJMUbhcsk7z2latVFM/yF6i0bS0SFMMkLxVY9lMwdhx9BtuveqECxhc3jJ3
+	 I2lr9iTGr4PpHojDmiwszyLUo1XigcWGUeuwUNN4kGZABsguU+bSMck91rBaNuKbYU
+	 fRI+h1qqMRKi2+DndcTcELVb8Pi7bPMaClCB7ALR1nW9X/JbbnoG61FP7/T2PU0EKn
+	 eEsV/9WhutF/A==
+Date: Mon, 28 Oct 2024 15:53:14 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: Simon Horman <horms@kernel.org>, mptcp@lists.linux.dev, Mat Martineau
+ <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Gregory Detal <gregory.detal@gmail.com>, Shuah
+ Khan <shuah@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net 2/3] mptcp: remove unneeded lock when listing scheds
+Message-ID: <20241028155314.006f9063@kernel.org>
+In-Reply-To: <4ca239db-6a05-4735-916c-73cee0ee22a0@kernel.org>
+References: <20241021-net-mptcp-sched-lock-v1-0-637759cf061c@kernel.org>
+	<20241021-net-mptcp-sched-lock-v1-2-637759cf061c@kernel.org>
+	<20241023122128.GT402847@kernel.org>
+	<4ca239db-6a05-4735-916c-73cee0ee22a0@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 23 Oct 2024 13:07:15 -0700, Jonathan Cavitt wrote:
->
-> Several OA registers and allowlist registers were missing from the
-> save/restore list for GuC and could be lost during an engine reset.  Add
-> them to the list.
->
-> v2:
-> - Fix commit message (Umesh)
-> - Add missing closes (Ashutosh)
->
-> v3:
-> - Add missing fixes (Ashutosh)
->
-> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2249
-> Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-> Suggested-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-> Suggested-by: John Harrison <john.c.harrison@intel.com>
-> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> CC: stable@vger.kernel.org # v6.11+
-> Acked-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+On Wed, 23 Oct 2024 16:13:36 +0200 Matthieu Baerts wrote:
+> On 23/10/2024 14:21, Simon Horman wrote:
+> > On Mon, Oct 21, 2024 at 12:25:27PM +0200, Matthieu Baerts (NGI0) wrote:  
+> >> mptcp_get_available_schedulers() needs to iterate over the schedulers'
+> >> list only to read the names: it doesn't modify anything there.
+> >>
+> >> In this case, it is enough to hold the RCU read lock, no need to combine
+> >> this with the associated spin lock.
+> >>
+> >> Fixes: 73c900aa3660 ("mptcp: add net.mptcp.available_schedulers")
+> >> Cc: stable@vger.kernel.org
+> >> Suggested-by: Paolo Abeni <pabeni@redhat.com>
+> >> Reviewed-by: Geliang Tang <geliang@kernel.org>
+> >> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>  
+> > 
+> > I do wonder if it would be more appropriate to route this via net-next
+> > (without a fixes tag) rather than via net. But either way this looks good
+> > to me.  
+> Good point. On one hand, I marked it as a fix, because when working on
+> the patch 1/3, we noticed these spin_(un)lock() were not supposed to be
+> there in the first place. On the other hand, even it's fixing a small
+> performance issue, it is not fixing a regression.
+> 
+> I think it is easier to route this via -net, but I'm fine if it is
+> applied in net-next.
 
-Thanks for chasing this and the patch, merged to drm-xe-next.
+I agree with Simon's initial response. Let's not blur the lines.
+Please re-queue for net-next, I'll apply the rest.
+
+BTW thanks a lot for proactively fixing the CONFIG_PROVE_RCU_LIST
+splats!
 
