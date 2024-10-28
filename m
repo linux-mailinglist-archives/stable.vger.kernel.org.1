@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-88599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A0519B26AB
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:41:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68A3F9B25CD
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:35:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 067651F22DCD
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 210A61F214B5
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:35:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951C518E03A;
-	Mon, 28 Oct 2024 06:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109EA18F2FA;
+	Mon, 28 Oct 2024 06:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkmVeF+5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hln5N+ST"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506DE15B10D;
-	Mon, 28 Oct 2024 06:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2D218F2DD;
+	Mon, 28 Oct 2024 06:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097696; cv=none; b=GASmBNTNY3S+xO/Yvj3ilrHJPNWgF49zfwdvFM9AcCYIenZ5IqrvW8DjUmSW7KyIkEnnJyHbe45R+AeipdJa3GSqy78ksnNb3mTiNjf8DRH1pVk2iDrEGd2QczL6MuaCWHw6F/T1obvXUr80RzO6/kGQ3Ib8CHSKBEfGEGfR/Jk=
+	t=1730097240; cv=none; b=qF4dtsigATbPBAw8mplEPDsjwBH7AVLcSnjqmBapwP0Sm3+rGlI+4fXv+YPNdMQx9hcxpZsKMRf8EQ5/VraWOV+ZduBWSRS2IBrSGeA9syfzaC5t9+VYWpRbstVq+gq1UI+KulovRe2VlZe2X3P4L7hwup/pS2nEyUpJB8gFdNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097696; c=relaxed/simple;
-	bh=Bcx5vrtubHsJSZKsJ6QFfLuaip7w7moM0PTTYyZYtao=;
+	s=arc-20240116; t=1730097240; c=relaxed/simple;
+	bh=oWnTWUbpsbX7pEdE4B22JcVt6E05g9H2SghnWwlTLhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AFpr3tdK+Oqus0uUpEC5sXYvweAjjgXM2c0JX9KU7wmucZOowiet9Pgb1q9Q8alLK7gUvsLso5rCQUX87Qzobi3Qyv7k67iZyU6eYLeqJ/KGy8O1oOL+c5sZx+m5oKvvYdoDtnoBBZ13HZO6lg/ZWCv5LWTswO5busVJ9GyHDV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkmVeF+5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53ABC4CEC3;
-	Mon, 28 Oct 2024 06:41:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FaiBItTdV+ClfqF4wen98kV174UaAeHEpw0n4uaNccTWQk8SZ6MXidCsmOTsUmFyvZAWg34c7ArFgtu4Mn+s7tQKgKdh+Z4HkKHpv2C8yq7zZkzof/R3+Ac5F3B8EMhZRHqnlhUpOp2ZIoscnpIQSx2BYtdSQSosj5acnZ1EiAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hln5N+ST; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1B8C4CEC7;
+	Mon, 28 Oct 2024 06:33:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097696;
-	bh=Bcx5vrtubHsJSZKsJ6QFfLuaip7w7moM0PTTYyZYtao=;
+	s=korg; t=1730097240;
+	bh=oWnTWUbpsbX7pEdE4B22JcVt6E05g9H2SghnWwlTLhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FkmVeF+57PWa+EWqtgorQlAhF16oOdSNAJ/FrFH9fO08WdwIhJB/D0LxuhMve0nK7
-	 dX1dCnIOYqp+8oyNVPZTMA+LIuOuq2XWX0dT9YyAJK9Hl8kxdtVNFDH2AaRXV1MR35
-	 iyGfFT2HJv2JK7SKh7RBHRI6oZj+OnnDqbF8D/ZQ=
+	b=Hln5N+STB7viYbrqj3m9b5Q6+NI0so1AR4U0FZroPmanXa6gyo+03BoWew9oNUMIj
+	 EPvEIFfPzZCSonVP1gXIUUpKsqtj27/f26OhtyEIxcZxCsoUiQlj+8udpToQpgwgc6
+	 HmuaJ2jBsj4o+DLmidxc/Qhsiwr5XnF27SfCMo7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Mathias Nyman <mathias.nyman@intel.com>,
-	linux-usb@vger.kernel.org,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 100/208] xhci: dbgtty: use kfifo from tty_port struct
-Date: Mon, 28 Oct 2024 07:24:40 +0100
-Message-ID: <20241028062309.121888362@linuxfoundation.org>
+Subject: [PATCH 6.1 044/137] ravb: Remove setting of RX software timestamp
+Date: Mon, 28 Oct 2024 07:24:41 +0100
+Message-ID: <20241028062259.958251077@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,121 +64,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit 866025f0237609532bc8e4af5ef4d7252d3b55b6 ]
+[ Upstream commit 277901ee3a2620679e2c8797377d2a72f4358068 ]
 
-There is no need to define one in a custom structure. The tty_port one
-is free to use.
+The responsibility for reporting of RX software timestamp has moved to
+the core layer (see __ethtool_get_ts_info()), remove usage from the
+device drivers.
 
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Cc: Mathias Nyman <mathias.nyman@intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org
-Link: https://lore.kernel.org/r/20240808103549.429349-6-jirislaby@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 30c9ae5ece8e ("xhci: dbc: honor usb transfer size boundaries.")
+Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://patch.msgid.link/20240901112803.212753-8-gal@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 126e799602f4 ("net: ravb: Only advertise Rx/Tx timestamps if hardware supports it")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-dbgcap.h |  1 -
- drivers/usb/host/xhci-dbgtty.c | 17 +++++++++--------
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-dbgcap.h b/drivers/usb/host/xhci-dbgcap.h
-index 51a7ab3ba0cac..54fafebb7bd1f 100644
---- a/drivers/usb/host/xhci-dbgcap.h
-+++ b/drivers/usb/host/xhci-dbgcap.h
-@@ -108,7 +108,6 @@ struct dbc_port {
- 	struct tasklet_struct		push;
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index 756ac4a07f60b..96467b8d48b00 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1691,8 +1691,6 @@ static int ravb_get_ts_info(struct net_device *ndev,
  
- 	struct list_head		write_pool;
--	struct kfifo			write_fifo;
+ 	info->so_timestamping =
+ 		SOF_TIMESTAMPING_TX_SOFTWARE |
+-		SOF_TIMESTAMPING_RX_SOFTWARE |
+-		SOF_TIMESTAMPING_SOFTWARE |
+ 		SOF_TIMESTAMPING_TX_HARDWARE |
+ 		SOF_TIMESTAMPING_RX_HARDWARE |
+ 		SOF_TIMESTAMPING_RAW_HARDWARE;
+@@ -1703,6 +1701,8 @@ static int ravb_get_ts_info(struct net_device *ndev,
+ 		(1 << HWTSTAMP_FILTER_ALL);
+ 	if (hw_info->gptp || hw_info->ccc_gac)
+ 		info->phc_index = ptp_clock_index(priv->ptp.clock);
++	else
++		info->phc_index = 0;
  
- 	bool				registered;
- };
-diff --git a/drivers/usb/host/xhci-dbgtty.c b/drivers/usb/host/xhci-dbgtty.c
-index 64ea964949975..881f5a7e6e0e1 100644
---- a/drivers/usb/host/xhci-dbgtty.c
-+++ b/drivers/usb/host/xhci-dbgtty.c
-@@ -36,7 +36,7 @@ static int dbc_start_tx(struct dbc_port *port)
- 
- 	while (!list_empty(pool)) {
- 		req = list_entry(pool->next, struct dbc_request, list_pool);
--		len = kfifo_out(&port->write_fifo, req->buf, DBC_MAX_PACKET);
-+		len = kfifo_out(&port->port.xmit_fifo, req->buf, DBC_MAX_PACKET);
- 		if (len == 0)
- 			break;
- 		do_tty_wake = true;
-@@ -203,7 +203,7 @@ static ssize_t dbc_tty_write(struct tty_struct *tty, const u8 *buf,
- 
- 	spin_lock_irqsave(&port->port_lock, flags);
- 	if (count)
--		count = kfifo_in(&port->write_fifo, buf, count);
-+		count = kfifo_in(&port->port.xmit_fifo, buf, count);
- 	dbc_start_tx(port);
- 	spin_unlock_irqrestore(&port->port_lock, flags);
- 
-@@ -217,7 +217,7 @@ static int dbc_tty_put_char(struct tty_struct *tty, u8 ch)
- 	int			status;
- 
- 	spin_lock_irqsave(&port->port_lock, flags);
--	status = kfifo_put(&port->write_fifo, ch);
-+	status = kfifo_put(&port->port.xmit_fifo, ch);
- 	spin_unlock_irqrestore(&port->port_lock, flags);
- 
- 	return status;
-@@ -240,7 +240,7 @@ static unsigned int dbc_tty_write_room(struct tty_struct *tty)
- 	unsigned int		room;
- 
- 	spin_lock_irqsave(&port->port_lock, flags);
--	room = kfifo_avail(&port->write_fifo);
-+	room = kfifo_avail(&port->port.xmit_fifo);
- 	spin_unlock_irqrestore(&port->port_lock, flags);
- 
- 	return room;
-@@ -253,7 +253,7 @@ static unsigned int dbc_tty_chars_in_buffer(struct tty_struct *tty)
- 	unsigned int		chars;
- 
- 	spin_lock_irqsave(&port->port_lock, flags);
--	chars = kfifo_len(&port->write_fifo);
-+	chars = kfifo_len(&port->port.xmit_fifo);
- 	spin_unlock_irqrestore(&port->port_lock, flags);
- 
- 	return chars;
-@@ -411,7 +411,8 @@ static int xhci_dbc_tty_register_device(struct xhci_dbc *dbc)
- 		goto err_idr;
- 	}
- 
--	ret = kfifo_alloc(&port->write_fifo, DBC_WRITE_BUF_SIZE, GFP_KERNEL);
-+	ret = kfifo_alloc(&port->port.xmit_fifo, DBC_WRITE_BUF_SIZE,
-+			  GFP_KERNEL);
- 	if (ret)
- 		goto err_exit_port;
- 
-@@ -440,7 +441,7 @@ static int xhci_dbc_tty_register_device(struct xhci_dbc *dbc)
- 	xhci_dbc_free_requests(&port->read_pool);
- 	xhci_dbc_free_requests(&port->write_pool);
- err_free_fifo:
--	kfifo_free(&port->write_fifo);
-+	kfifo_free(&port->port.xmit_fifo);
- err_exit_port:
- 	idr_remove(&dbc_tty_minors, port->minor);
- err_idr:
-@@ -465,7 +466,7 @@ static void xhci_dbc_tty_unregister_device(struct xhci_dbc *dbc)
- 	idr_remove(&dbc_tty_minors, port->minor);
- 	mutex_unlock(&dbc_tty_minors_lock);
- 
--	kfifo_free(&port->write_fifo);
-+	kfifo_free(&port->port.xmit_fifo);
- 	xhci_dbc_free_requests(&port->read_pool);
- 	xhci_dbc_free_requests(&port->read_queue);
- 	xhci_dbc_free_requests(&port->write_pool);
+ 	return 0;
+ }
 -- 
 2.43.0
 
