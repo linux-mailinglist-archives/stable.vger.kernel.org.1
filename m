@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF8679B26A3
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:41:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D72E9B25B4
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:33:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BC8A1F22C41
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE4541F214D5
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D32818E368;
-	Mon, 28 Oct 2024 06:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C918218E35B;
+	Mon, 28 Oct 2024 06:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DCHbahU1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ew1fQ66+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE852C697;
-	Mon, 28 Oct 2024 06:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8550718DF88;
+	Mon, 28 Oct 2024 06:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097683; cv=none; b=dp+nVgNGz9nyOvgrm20l84tHYF6ONYNS0AkSRgN4ZqP6jJ+2GVvj3KwcSUGyljC0Xm5Th5eRZfVfb+Xdsyd9KewzHQix09Mlk7iWR+jWJXSqBQEZFRzdgI4Qs1dkBwEHa95S33cLijOXxpnUl1Y3Wz4m9VJ/2EuE3f3H5ilEJLg=
+	t=1730097206; cv=none; b=sqWxo9zhvW73AnltkXk9zNaIRXnjEFse2opeWCq9LfguQ9ekqdBOWpjgDqZrFr+AdTw4tPmYhXV68FGx/tNVtDBRAZN1f5dvayzDHxFIyyZo6yJgfcJB78ihFQr38J7lvCOg/1Fj0x5GtL4zGL9KpVwh4K7l/cESJwbkf7UwsUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097683; c=relaxed/simple;
-	bh=RmA09PuJT7bP+u/hIfPQWapYUaeSO4EA/Y848uUArBM=;
+	s=arc-20240116; t=1730097206; c=relaxed/simple;
+	bh=GDEogbKHjuyzxNxBXwBmxor1vVs5oFzeUhidBCGr37U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=seiVKAabcr78uDSdGt3Yv1UWh3NRp/420NborBkYKWF17tgact1zVln9qB8R5xVio298ci71axNNDc2V7br/um/Rc14NgjjGq8MVvu1vGaFxy4xJgGqQ8N3E3yUPtqRqd4ZIk9jJ49Pg4UqHNSdkEl7RK1tPmVrvPaH91kEFqN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DCHbahU1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 748C6C4CEC3;
-	Mon, 28 Oct 2024 06:41:22 +0000 (UTC)
+	 MIME-Version; b=VIljYBmMoLcSRgOzvM1n6ve4EehxPYqkADDJpOcG1PTBomoWDv7WfN/7r0Rxdn5hZEx1cuIqFVgs2kO77euJSkYOsND7pxs4KmsenK+DoBSSAwJvKGhWkXfopGsW5KIQdsSZls43S70hB7fuJU5AICuXbj6GVAGhH7wkWIKwEf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ew1fQ66+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC8F7C4CECD;
+	Mon, 28 Oct 2024 06:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097682;
-	bh=RmA09PuJT7bP+u/hIfPQWapYUaeSO4EA/Y848uUArBM=;
+	s=korg; t=1730097206;
+	bh=GDEogbKHjuyzxNxBXwBmxor1vVs5oFzeUhidBCGr37U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DCHbahU14d85YEzRHJFl3J+BkPPGPHQf9+BKYiIIqwmH3C2srRtbYz9GeQcJUsYIC
-	 h2UEiyulG7KU0WQ5+sXJ3xZaARtuqGQDioEay1YJA5pduj9LBGeGhE45U1M/TQYqwK
-	 prCOq6/2/FQL3wLIWP/j4t2Ub/7eAaXsgeQFUHsU=
+	b=ew1fQ66+r57j9MzzzW6Aj7cX3tCbtAvcfn3eOmMpE/wd2+SUpa2kM0lKAwqMAZPdw
+	 D3DNMvCKFYexT/MXZ00JUmF6MkteB+iSRv7rsvlkYiJv+5+LpWDypV08wCbBwq1Cy4
+	 q+JOlYCf2n9g5JmNt5oHjjhYSVPX0OsHleDOToyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Hai <wanghai38@huawei.com>,
+	Florian Klink <flokli@flokli.de>,
+	Stefan Wahren <wahrenst@gmx.net>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 065/208] net: bcmasp: fix potential memory leak in bcmasp_xmit()
-Date: Mon, 28 Oct 2024 07:24:05 +0100
-Message-ID: <20241028062308.254766197@linuxfoundation.org>
+Subject: [PATCH 6.1 009/137] ARM: dts: bcm2837-rpi-cm3-io3: Fix HDMI hpd-gpio pin
+Date: Mon, 28 Oct 2024 07:24:06 +0100
+Message-ID: <20241028062258.976592277@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Hai <wanghai38@huawei.com>
+From: Florian Klink <flokli@flokli.de>
 
-[ Upstream commit fed07d3eb8a8d9fcc0e455175a89bc6445d6faed ]
+[ Upstream commit dc7785e4723510616d776862ddb4c08857a1bdb2 ]
 
-The bcmasp_xmit() returns NETDEV_TX_OK without freeing skb
-in case of mapping fails, add dev_kfree_skb() to fix it.
+HDMI_HPD_N_1V8 is connected to GPIO pin 0, not 1.
 
-Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
-Signed-off-by: Wang Hai <wanghai38@huawei.com>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20241014145901.48940-1-wanghai38@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This fixes HDMI hotplug/output detection.
+
+See https://datasheets.raspberrypi.com/cm/cm3-schematics.pdf
+
+Signed-off-by: Florian Klink <flokli@flokli.de>
+Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20240715230311.685641-1-flokli@flokli.de
+Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+Fixes: a54fe8a6cf66 ("ARM: dts: add Raspberry Pi Compute Module 3 and IO board")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/bcm2837-rpi-cm3-io3.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-index 6bf149d645941..f0647286c68b2 100644
---- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-+++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-@@ -322,6 +322,7 @@ static netdev_tx_t bcmasp_xmit(struct sk_buff *skb, struct net_device *dev)
- 			}
- 			/* Rewind so we do not have a hole */
- 			spb_index = intf->tx_spb_index;
-+			dev_kfree_skb(skb);
- 			return NETDEV_TX_OK;
- 		}
+diff --git a/arch/arm/boot/dts/bcm2837-rpi-cm3-io3.dts b/arch/arm/boot/dts/bcm2837-rpi-cm3-io3.dts
+index cf84e69fced83..4b2f63e0ae7c0 100644
+--- a/arch/arm/boot/dts/bcm2837-rpi-cm3-io3.dts
++++ b/arch/arm/boot/dts/bcm2837-rpi-cm3-io3.dts
+@@ -76,7 +76,7 @@
+ };
  
+ &hdmi {
+-	hpd-gpios = <&expgpio 1 GPIO_ACTIVE_LOW>;
++	hpd-gpios = <&expgpio 0 GPIO_ACTIVE_LOW>;
+ 	power-domains = <&power RPI_POWER_DOMAIN_HDMI>;
+ 	status = "okay";
+ };
 -- 
 2.43.0
 
