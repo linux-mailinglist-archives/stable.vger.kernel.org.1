@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A566C9B2588
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:32:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D731A9B26C8
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:42:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C970A1C20A2A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:32:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66BDF1F236EC
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:42:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D4B18D629;
-	Mon, 28 Oct 2024 06:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EBE18E35B;
+	Mon, 28 Oct 2024 06:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZqFve6Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IKjj7eh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21DF15B10D;
-	Mon, 28 Oct 2024 06:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1566618E03A;
+	Mon, 28 Oct 2024 06:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097129; cv=none; b=JxJ234xk3htZcFV2Y+Fc/+24cNX7+4GtmH+CxiMPtVCYl0trzj0oWGF2SFYjtTn4REZM5yYsSz72SwYLqAx8wzItpcfJMlEYR8Uwko/4Ui7Oc+/Y3kWdHTfQSgsEcsEr+Jq0BwU6NUFEg+mpURuYzoRcAOekX2lFd9QJ0J1WP1Y=
+	t=1730097755; cv=none; b=BXWQ5k7/p66TnyBEYRbepW39DcPAdzbORHq5i3JMPyn1y8uN/7z54i1I+Ek1awqv3CQR2PPCSRyxPWyZXmNb7vsMtOkR4Jjhz2tSYnGyPdNaHS6D9iRU94b52TzrIuFLk2bfxVJfcDEjITCD6N8InPV5nLMR0GP3KU7kPtp2Bwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097129; c=relaxed/simple;
-	bh=dfTYDuhMOBdNzIGQg47DKgxzlRM9HR3knvTizRznSlo=;
+	s=arc-20240116; t=1730097755; c=relaxed/simple;
+	bh=XfLsyAWrxqLCTVM2ko48bJfbEEqcoJSsGpBpk9YHw1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kOpz1/UqbkmdeFpBE+CfjmqMIM2Rjw9TnyL6CkrIuLUOeo3zMCsSffz1Fv4RKIV2gvVWcwDj4JhQvqOn4ovkio8jvnylPk77QnXvPfkKMQrRzC4uziHdqyShRLmaWmpfhi2BFyEPS4eh391+JNfML3QODZ76NOH2Y95cGZrXyNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZqFve6Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC78C4CEC7;
-	Mon, 28 Oct 2024 06:32:08 +0000 (UTC)
+	 MIME-Version; b=iUO9eXd8nBcwbiOu4u4DKfrJsGHFkzIC8wLCCaLkHgBpM+oVwzYGfMBb4n7y6VvOpMDM9Zx8v6hu7yaNSaVQxUlUF7QLo/oF3p1iF6/o/8pbaf0uq5fVoeTwPrsPUc2PooAAAHkYl5uG9vsS/BhuuxDbD54zaR2Tv9DU0JC2sbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IKjj7eh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60AFCC4CEC3;
+	Mon, 28 Oct 2024 06:42:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097128;
-	bh=dfTYDuhMOBdNzIGQg47DKgxzlRM9HR3knvTizRznSlo=;
+	s=korg; t=1730097754;
+	bh=XfLsyAWrxqLCTVM2ko48bJfbEEqcoJSsGpBpk9YHw1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GZqFve6YXo7IR72nuUWdoRNW7ebhcG2O7nD1+iBB3fPfgSN9qZHRtnreCc/8Royt8
-	 zebKT4+sRJ/piIs1v+L156IN8mLpA0I2hs7rhmOVWpCKf9FQyvjtzN5I3iYrKD2xBt
-	 3nqiy1GG3x3WQN/2nSxp2fDL/t7uMTid5pCxvXoQ=
+	b=0IKjj7ehiX2Lwp2eFiz9RG2VzYLLjtrJbDLnw2Ngap142XsB2X84eVmsJbP11GNjr
+	 heNFpQXb+ASjSFyWMnaZKqke9RY62yITmRD+fPNSuhLWikCj1kWbdGB6P+FDDRFgtu
+	 3ZO+FoQxCaVlSdapzwi76NPyrP2Jf6o3fjJ/EO2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Eyal Birger <eyal.birger@gmail.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 31/80] arm64: probes: Fix uprobes for big-endian kernels
+Subject: [PATCH 6.6 131/208] xfrm: extract dst lookup parameters into a struct
 Date: Mon, 28 Oct 2024 07:25:11 +0100
-Message-ID: <20241028062253.492228912@linuxfoundation.org>
+Message-ID: <20241028062309.868166944@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,178 +62,327 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Eyal Birger <eyal.birger@gmail.com>
 
-[ Upstream commit 13f8f1e05f1dc36dbba6cba0ae03354c0dafcde7 ]
+[ Upstream commit e509996b16728e37d5a909a5c63c1bd64f23b306 ]
 
-The arm64 uprobes code is broken for big-endian kernels as it doesn't
-convert the in-memory instruction encoding (which is always
-little-endian) into the kernel's native endianness before analyzing and
-simulating instructions. This may result in a few distinct problems:
+Preparation for adding more fields to dst lookup functions without
+changing their signatures.
 
-* The kernel may may erroneously reject probing an instruction which can
-  safely be probed.
-
-* The kernel may erroneously erroneously permit stepping an
-  instruction out-of-line when that instruction cannot be stepped
-  out-of-line safely.
-
-* The kernel may erroneously simulate instruction incorrectly dur to
-  interpretting the byte-swapped encoding.
-
-The endianness mismatch isn't caught by the compiler or sparse because:
-
-* The arch_uprobe::{insn,ixol} fields are encoded as arrays of u8, so
-  the compiler and sparse have no idea these contain a little-endian
-  32-bit value. The core uprobes code populates these with a memcpy()
-  which similarly does not handle endianness.
-
-* While the uprobe_opcode_t type is an alias for __le32, both
-  arch_uprobe_analyze_insn() and arch_uprobe_skip_sstep() cast from u8[]
-  to the similarly-named probe_opcode_t, which is an alias for u32.
-  Hence there is no endianness conversion warning.
-
-Fix this by changing the arch_uprobe::{insn,ixol} fields to __le32 and
-adding the appropriate __le32_to_cpu() conversions prior to consuming
-the instruction encoding. The core uprobes copies these fields as opaque
-ranges of bytes, and so is unaffected by this change.
-
-At the same time, remove MAX_UINSN_BYTES and consistently use
-AARCH64_INSN_SIZE for clarity.
-
-Tested with the following:
-
-| #include <stdio.h>
-| #include <stdbool.h>
-|
-| #define noinline __attribute__((noinline))
-|
-| static noinline void *adrp_self(void)
-| {
-|         void *addr;
-|
-|         asm volatile(
-|         "       adrp    %x0, adrp_self\n"
-|         "       add     %x0, %x0, :lo12:adrp_self\n"
-|         : "=r" (addr));
-| }
-|
-|
-| int main(int argc, char *argv)
-| {
-|         void *ptr = adrp_self();
-|         bool equal = (ptr == adrp_self);
-|
-|         printf("adrp_self   => %p\n"
-|                "adrp_self() => %p\n"
-|                "%s\n",
-|                adrp_self, ptr, equal ? "EQUAL" : "NOT EQUAL");
-|
-|         return 0;
-| }
-
-.... where the adrp_self() function was compiled to:
-
-| 00000000004007e0 <adrp_self>:
-|   4007e0:       90000000        adrp    x0, 400000 <__ehdr_start>
-|   4007e4:       911f8000        add     x0, x0, #0x7e0
-|   4007e8:       d65f03c0        ret
-
-Before this patch, the ADRP is not recognized, and is assumed to be
-steppable, resulting in corruption of the result:
-
-| # ./adrp-self
-| adrp_self   => 0x4007e0
-| adrp_self() => 0x4007e0
-| EQUAL
-| # echo 'p /root/adrp-self:0x007e0' > /sys/kernel/tracing/uprobe_events
-| # echo 1 > /sys/kernel/tracing/events/uprobes/enable
-| # ./adrp-self
-| adrp_self   => 0x4007e0
-| adrp_self() => 0xffffffffff7e0
-| NOT EQUAL
-
-After this patch, the ADRP is correctly recognized and simulated:
-
-| # ./adrp-self
-| adrp_self   => 0x4007e0
-| adrp_self() => 0x4007e0
-| EQUAL
-| #
-| # echo 'p /root/adrp-self:0x007e0' > /sys/kernel/tracing/uprobe_events
-| # echo 1 > /sys/kernel/tracing/events/uprobes/enable
-| # ./adrp-self
-| adrp_self   => 0x4007e0
-| adrp_self() => 0x4007e0
-| EQUAL
-
-Fixes: 9842ceae9fa8 ("arm64: Add uprobe support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20241008155851.801546-4-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Eyal Birger <eyal.birger@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Stable-dep-of: b84697210343 ("xfrm: respect ip protocols rules criteria when performing dst lookups")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/uprobes.h   | 8 +++-----
- arch/arm64/kernel/probes/uprobes.c | 4 ++--
- 2 files changed, 5 insertions(+), 7 deletions(-)
+ include/net/xfrm.h      | 26 +++++++++++++-------------
+ net/ipv4/xfrm4_policy.c | 38 ++++++++++++++++----------------------
+ net/ipv6/xfrm6_policy.c | 28 +++++++++++++---------------
+ net/xfrm/xfrm_device.c  | 11 ++++++++---
+ net/xfrm/xfrm_policy.c  | 35 +++++++++++++++++++++++------------
+ 5 files changed, 73 insertions(+), 65 deletions(-)
 
-diff --git a/arch/arm64/include/asm/uprobes.h b/arch/arm64/include/asm/uprobes.h
-index ba4bff5ca6749..98f29a43bfe89 100644
---- a/arch/arm64/include/asm/uprobes.h
-+++ b/arch/arm64/include/asm/uprobes.h
-@@ -10,11 +10,9 @@
- #include <asm/insn.h>
- #include <asm/probes.h>
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index b280e7c460116..93207d87e1c7f 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -342,20 +342,23 @@ struct xfrm_if_cb {
+ void xfrm_if_register_cb(const struct xfrm_if_cb *ifcb);
+ void xfrm_if_unregister_cb(void);
  
--#define MAX_UINSN_BYTES		AARCH64_INSN_SIZE
++struct xfrm_dst_lookup_params {
++	struct net *net;
++	int tos;
++	int oif;
++	xfrm_address_t *saddr;
++	xfrm_address_t *daddr;
++	u32 mark;
++};
++
+ struct net_device;
+ struct xfrm_type;
+ struct xfrm_dst;
+ struct xfrm_policy_afinfo {
+ 	struct dst_ops		*dst_ops;
+-	struct dst_entry	*(*dst_lookup)(struct net *net,
+-					       int tos, int oif,
+-					       const xfrm_address_t *saddr,
+-					       const xfrm_address_t *daddr,
+-					       u32 mark);
+-	int			(*get_saddr)(struct net *net, int oif,
+-					     xfrm_address_t *saddr,
+-					     xfrm_address_t *daddr,
+-					     u32 mark);
++	struct dst_entry	*(*dst_lookup)(const struct xfrm_dst_lookup_params *params);
++	int			(*get_saddr)(xfrm_address_t *saddr,
++					     const struct xfrm_dst_lookup_params *params);
+ 	int			(*fill_dst)(struct xfrm_dst *xdst,
+ 					    struct net_device *dev,
+ 					    const struct flowi *fl);
+@@ -1728,10 +1731,7 @@ static inline int xfrm_user_policy(struct sock *sk, int optname,
+ }
+ #endif
+ 
+-struct dst_entry *__xfrm_dst_lookup(struct net *net, int tos, int oif,
+-				    const xfrm_address_t *saddr,
+-				    const xfrm_address_t *daddr,
+-				    int family, u32 mark);
++struct dst_entry *__xfrm_dst_lookup(int family, const struct xfrm_dst_lookup_params *params);
+ 
+ struct xfrm_policy *xfrm_policy_alloc(struct net *net, gfp_t gfp);
+ 
+diff --git a/net/ipv4/xfrm4_policy.c b/net/ipv4/xfrm4_policy.c
+index c33bca2c38415..01d4f6f4dbb8c 100644
+--- a/net/ipv4/xfrm4_policy.c
++++ b/net/ipv4/xfrm4_policy.c
+@@ -17,47 +17,41 @@
+ #include <net/ip.h>
+ #include <net/l3mdev.h>
+ 
+-static struct dst_entry *__xfrm4_dst_lookup(struct net *net, struct flowi4 *fl4,
+-					    int tos, int oif,
+-					    const xfrm_address_t *saddr,
+-					    const xfrm_address_t *daddr,
+-					    u32 mark)
++static struct dst_entry *__xfrm4_dst_lookup(struct flowi4 *fl4,
++					    const struct xfrm_dst_lookup_params *params)
+ {
+ 	struct rtable *rt;
+ 
+ 	memset(fl4, 0, sizeof(*fl4));
+-	fl4->daddr = daddr->a4;
+-	fl4->flowi4_tos = tos;
+-	fl4->flowi4_l3mdev = l3mdev_master_ifindex_by_index(net, oif);
+-	fl4->flowi4_mark = mark;
+-	if (saddr)
+-		fl4->saddr = saddr->a4;
 -
- #define UPROBE_SWBP_INSN	cpu_to_le32(BRK64_OPCODE_UPROBES)
- #define UPROBE_SWBP_INSN_SIZE	AARCH64_INSN_SIZE
--#define UPROBE_XOL_SLOT_BYTES	MAX_UINSN_BYTES
-+#define UPROBE_XOL_SLOT_BYTES	AARCH64_INSN_SIZE
+-	rt = __ip_route_output_key(net, fl4);
++	fl4->daddr = params->daddr->a4;
++	fl4->flowi4_tos = params->tos;
++	fl4->flowi4_l3mdev = l3mdev_master_ifindex_by_index(params->net,
++							    params->oif);
++	fl4->flowi4_mark = params->mark;
++	if (params->saddr)
++		fl4->saddr = params->saddr->a4;
++
++	rt = __ip_route_output_key(params->net, fl4);
+ 	if (!IS_ERR(rt))
+ 		return &rt->dst;
  
- typedef u32 uprobe_opcode_t;
+ 	return ERR_CAST(rt);
+ }
  
-@@ -23,8 +21,8 @@ struct arch_uprobe_task {
+-static struct dst_entry *xfrm4_dst_lookup(struct net *net, int tos, int oif,
+-					  const xfrm_address_t *saddr,
+-					  const xfrm_address_t *daddr,
+-					  u32 mark)
++static struct dst_entry *xfrm4_dst_lookup(const struct xfrm_dst_lookup_params *params)
+ {
+ 	struct flowi4 fl4;
  
- struct arch_uprobe {
- 	union {
--		u8 insn[MAX_UINSN_BYTES];
--		u8 ixol[MAX_UINSN_BYTES];
-+		__le32 insn;
-+		__le32 ixol;
- 	};
- 	struct arch_probe_insn api;
- 	bool simulate;
-diff --git a/arch/arm64/kernel/probes/uprobes.c b/arch/arm64/kernel/probes/uprobes.c
-index d49aef2657cdf..a2f137a595fc1 100644
---- a/arch/arm64/kernel/probes/uprobes.c
-+++ b/arch/arm64/kernel/probes/uprobes.c
-@@ -42,7 +42,7 @@ int arch_uprobe_analyze_insn(struct arch_uprobe *auprobe, struct mm_struct *mm,
- 	else if (!IS_ALIGNED(addr, AARCH64_INSN_SIZE))
+-	return __xfrm4_dst_lookup(net, &fl4, tos, oif, saddr, daddr, mark);
++	return __xfrm4_dst_lookup(&fl4, params);
+ }
+ 
+-static int xfrm4_get_saddr(struct net *net, int oif,
+-			   xfrm_address_t *saddr, xfrm_address_t *daddr,
+-			   u32 mark)
++static int xfrm4_get_saddr(xfrm_address_t *saddr,
++			   const struct xfrm_dst_lookup_params *params)
+ {
+ 	struct dst_entry *dst;
+ 	struct flowi4 fl4;
+ 
+-	dst = __xfrm4_dst_lookup(net, &fl4, 0, oif, NULL, daddr, mark);
++	dst = __xfrm4_dst_lookup(&fl4, params);
+ 	if (IS_ERR(dst))
+ 		return -EHOSTUNREACH;
+ 
+diff --git a/net/ipv6/xfrm6_policy.c b/net/ipv6/xfrm6_policy.c
+index 444b0b4469a49..246a0cea77c26 100644
+--- a/net/ipv6/xfrm6_policy.c
++++ b/net/ipv6/xfrm6_policy.c
+@@ -23,23 +23,21 @@
+ #include <net/ip6_route.h>
+ #include <net/l3mdev.h>
+ 
+-static struct dst_entry *xfrm6_dst_lookup(struct net *net, int tos, int oif,
+-					  const xfrm_address_t *saddr,
+-					  const xfrm_address_t *daddr,
+-					  u32 mark)
++static struct dst_entry *xfrm6_dst_lookup(const struct xfrm_dst_lookup_params *params)
+ {
+ 	struct flowi6 fl6;
+ 	struct dst_entry *dst;
+ 	int err;
+ 
+ 	memset(&fl6, 0, sizeof(fl6));
+-	fl6.flowi6_l3mdev = l3mdev_master_ifindex_by_index(net, oif);
+-	fl6.flowi6_mark = mark;
+-	memcpy(&fl6.daddr, daddr, sizeof(fl6.daddr));
+-	if (saddr)
+-		memcpy(&fl6.saddr, saddr, sizeof(fl6.saddr));
++	fl6.flowi6_l3mdev = l3mdev_master_ifindex_by_index(params->net,
++							   params->oif);
++	fl6.flowi6_mark = params->mark;
++	memcpy(&fl6.daddr, params->daddr, sizeof(fl6.daddr));
++	if (params->saddr)
++		memcpy(&fl6.saddr, params->saddr, sizeof(fl6.saddr));
+ 
+-	dst = ip6_route_output(net, NULL, &fl6);
++	dst = ip6_route_output(params->net, NULL, &fl6);
+ 
+ 	err = dst->error;
+ 	if (dst->error) {
+@@ -50,15 +48,14 @@ static struct dst_entry *xfrm6_dst_lookup(struct net *net, int tos, int oif,
+ 	return dst;
+ }
+ 
+-static int xfrm6_get_saddr(struct net *net, int oif,
+-			   xfrm_address_t *saddr, xfrm_address_t *daddr,
+-			   u32 mark)
++static int xfrm6_get_saddr(xfrm_address_t *saddr,
++			   const struct xfrm_dst_lookup_params *params)
+ {
+ 	struct dst_entry *dst;
+ 	struct net_device *dev;
+ 	struct inet6_dev *idev;
+ 
+-	dst = xfrm6_dst_lookup(net, 0, oif, NULL, daddr, mark);
++	dst = xfrm6_dst_lookup(params);
+ 	if (IS_ERR(dst))
+ 		return -EHOSTUNREACH;
+ 
+@@ -68,7 +65,8 @@ static int xfrm6_get_saddr(struct net *net, int oif,
+ 		return -EHOSTUNREACH;
+ 	}
+ 	dev = idev->dev;
+-	ipv6_dev_get_saddr(dev_net(dev), dev, &daddr->in6, 0, &saddr->in6);
++	ipv6_dev_get_saddr(dev_net(dev), dev, &params->daddr->in6, 0,
++			   &saddr->in6);
+ 	dst_release(dst);
+ 	return 0;
+ }
+diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
+index 6346690d5c699..04dc0c8a83707 100644
+--- a/net/xfrm/xfrm_device.c
++++ b/net/xfrm/xfrm_device.c
+@@ -263,6 +263,8 @@ int xfrm_dev_state_add(struct net *net, struct xfrm_state *x,
+ 
+ 	dev = dev_get_by_index(net, xuo->ifindex);
+ 	if (!dev) {
++		struct xfrm_dst_lookup_params params;
++
+ 		if (!(xuo->flags & XFRM_OFFLOAD_INBOUND)) {
+ 			saddr = &x->props.saddr;
+ 			daddr = &x->id.daddr;
+@@ -271,9 +273,12 @@ int xfrm_dev_state_add(struct net *net, struct xfrm_state *x,
+ 			daddr = &x->props.saddr;
+ 		}
+ 
+-		dst = __xfrm_dst_lookup(net, 0, 0, saddr, daddr,
+-					x->props.family,
+-					xfrm_smark_get(0, x));
++		memset(&params, 0, sizeof(params));
++		params.net = net;
++		params.saddr = saddr;
++		params.daddr = daddr;
++		params.mark = xfrm_smark_get(0, x);
++		dst = __xfrm_dst_lookup(x->props.family, &params);
+ 		if (IS_ERR(dst))
+ 			return (is_packet_offload) ? -EINVAL : 0;
+ 
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index b699cc2ec35ac..1395d3de1ec70 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -251,10 +251,8 @@ static const struct xfrm_if_cb *xfrm_if_get_cb(void)
+ 	return rcu_dereference(xfrm_if_cb);
+ }
+ 
+-struct dst_entry *__xfrm_dst_lookup(struct net *net, int tos, int oif,
+-				    const xfrm_address_t *saddr,
+-				    const xfrm_address_t *daddr,
+-				    int family, u32 mark)
++struct dst_entry *__xfrm_dst_lookup(int family,
++				    const struct xfrm_dst_lookup_params *params)
+ {
+ 	const struct xfrm_policy_afinfo *afinfo;
+ 	struct dst_entry *dst;
+@@ -263,7 +261,7 @@ struct dst_entry *__xfrm_dst_lookup(struct net *net, int tos, int oif,
+ 	if (unlikely(afinfo == NULL))
+ 		return ERR_PTR(-EAFNOSUPPORT);
+ 
+-	dst = afinfo->dst_lookup(net, tos, oif, saddr, daddr, mark);
++	dst = afinfo->dst_lookup(params);
+ 
+ 	rcu_read_unlock();
+ 
+@@ -277,6 +275,7 @@ static inline struct dst_entry *xfrm_dst_lookup(struct xfrm_state *x,
+ 						xfrm_address_t *prev_daddr,
+ 						int family, u32 mark)
+ {
++	struct xfrm_dst_lookup_params params;
+ 	struct net *net = xs_net(x);
+ 	xfrm_address_t *saddr = &x->props.saddr;
+ 	xfrm_address_t *daddr = &x->id.daddr;
+@@ -291,7 +290,14 @@ static inline struct dst_entry *xfrm_dst_lookup(struct xfrm_state *x,
+ 		daddr = x->coaddr;
+ 	}
+ 
+-	dst = __xfrm_dst_lookup(net, tos, oif, saddr, daddr, family, mark);
++	params.net = net;
++	params.saddr = saddr;
++	params.daddr = daddr;
++	params.tos = tos;
++	params.oif = oif;
++	params.mark = mark;
++
++	dst = __xfrm_dst_lookup(family, &params);
+ 
+ 	if (!IS_ERR(dst)) {
+ 		if (prev_saddr != saddr)
+@@ -2424,15 +2430,15 @@ int __xfrm_sk_clone_policy(struct sock *sk, const struct sock *osk)
+ }
+ 
+ static int
+-xfrm_get_saddr(struct net *net, int oif, xfrm_address_t *local,
+-	       xfrm_address_t *remote, unsigned short family, u32 mark)
++xfrm_get_saddr(unsigned short family, xfrm_address_t *saddr,
++	       const struct xfrm_dst_lookup_params *params)
+ {
+ 	int err;
+ 	const struct xfrm_policy_afinfo *afinfo = xfrm_policy_get_afinfo(family);
+ 
+ 	if (unlikely(afinfo == NULL))
  		return -EINVAL;
- 
--	insn = *(probe_opcode_t *)(&auprobe->insn[0]);
-+	insn = le32_to_cpu(auprobe->insn);
- 
- 	switch (arm_probe_decode_insn(insn, &auprobe->api)) {
- 	case INSN_REJECTED:
-@@ -108,7 +108,7 @@ bool arch_uprobe_skip_sstep(struct arch_uprobe *auprobe, struct pt_regs *regs)
- 	if (!auprobe->simulate)
- 		return false;
- 
--	insn = *(probe_opcode_t *)(&auprobe->insn[0]);
-+	insn = le32_to_cpu(auprobe->insn);
- 	addr = instruction_pointer(regs);
- 
- 	if (auprobe->api.handler)
+-	err = afinfo->get_saddr(net, oif, local, remote, mark);
++	err = afinfo->get_saddr(saddr, params);
+ 	rcu_read_unlock();
+ 	return err;
+ }
+@@ -2461,9 +2467,14 @@ xfrm_tmpl_resolve_one(struct xfrm_policy *policy, const struct flowi *fl,
+ 			remote = &tmpl->id.daddr;
+ 			local = &tmpl->saddr;
+ 			if (xfrm_addr_any(local, tmpl->encap_family)) {
+-				error = xfrm_get_saddr(net, fl->flowi_oif,
+-						       &tmp, remote,
+-						       tmpl->encap_family, 0);
++				struct xfrm_dst_lookup_params params;
++
++				memset(&params, 0, sizeof(params));
++				params.net = net;
++				params.oif = fl->flowi_oif;
++				params.daddr = remote;
++				error = xfrm_get_saddr(tmpl->encap_family, &tmp,
++						       &params);
+ 				if (error)
+ 					goto fail;
+ 				local = &tmp;
 -- 
 2.43.0
 
