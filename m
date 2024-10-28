@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFA339B27C8
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:51:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46B6B9B2547
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:27:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E03A285BC5
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:51:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78EC51C20FD0
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:27:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE2818E368;
-	Mon, 28 Oct 2024 06:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9D618E03A;
+	Mon, 28 Oct 2024 06:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+6K4M6T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YUhzVxmq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFA68837;
-	Mon, 28 Oct 2024 06:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0CF18DF8B;
+	Mon, 28 Oct 2024 06:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098268; cv=none; b=mg/RKkWNNtKkJA5Drfyb4WCePrRHdrM3NczZ3YK2W1FudOZv7sQROpGaSaCoa6Nz1e2C3/3clE6NJ4z1nde6HuuLzUQfafyJjiGNVCd2+CBvEKMWgmWVY1OcVVnmSpsjj/ZF/l8lqOhScv+aME7Vbqc0ivhrPckmWADX9LGBfqw=
+	t=1730096850; cv=none; b=rkfySvxRLlxu4uLEyVb29uX3kPyuNGYKVCRK7FQFIhxudpWrgtggqNrS5ECi1huE5ROsutGx+wkGcAflZIU1hWRZu5yBlWOg3+GoK2Eiz0EO06O56QRZTwjXBLtx/5itIERAoDSrMdL6gCqhOPvkYTZFBUkT7wfqDWEOdTMrk14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098268; c=relaxed/simple;
-	bh=zHrtZO3fDefGEo5K3iJtpkZvN37yh/6mtGN59OT5fUA=;
+	s=arc-20240116; t=1730096850; c=relaxed/simple;
+	bh=Z1iJAxZXJ6ijQD1KpnDHjkGf1nr5SiaWS62VL5uR8Ak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s7JyHPAZHIRMIx4zvAi5mGy47qI+d4HV9lxWnhcHccwA8QLILFsu1biSteDL4kB1YKXvUJxOjGHCToysopG/TCQraOV6b0vwhqFy2uYSWIhm6DWMuKgX76iL4ZijsBxuSIfbUXAyX7yAzmX9eAGeX07KN7bOE0F29lk6sH3wmpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+6K4M6T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30544C4CEC3;
-	Mon, 28 Oct 2024 06:51:07 +0000 (UTC)
+	 MIME-Version; b=cc3W3jRe+nZzH2ATwPsdHJe6mYTqqJfpw1RqrR7tv6XiDnFoMCu+/8whdZi+RRLZ+9RwZM+pFtRb08KmyohGwhBlRVss5MIkcNXxbpcyEI0a/wr9JtjJz8ATKX5WKoAqsOXQcYjsibyPS6WtuPF5UgwkXLjVBOKEgJxIxRW8M2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YUhzVxmq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32448C4CEC3;
+	Mon, 28 Oct 2024 06:27:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098267;
-	bh=zHrtZO3fDefGEo5K3iJtpkZvN37yh/6mtGN59OT5fUA=;
+	s=korg; t=1730096849;
+	bh=Z1iJAxZXJ6ijQD1KpnDHjkGf1nr5SiaWS62VL5uR8Ak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t+6K4M6T9mVxg/ZlvIyY8WMnV5CoEQc7TEltPjSKHAiB3+wSu1VXU5iNi1BfulN+k
-	 LQakzzMPBGX+O4mIkNsXKVOdE6bOusLe+LoltYK2ZGaxFO9ud2QE1zTLGKAV54pcP3
-	 9H4ZuAMtAl7Z3V3DSdGKXsa4dpctObaVpgHd2+0Y=
+	b=YUhzVxmqFFwBLuNq0B4seLmi9VUPEvkT/PKPYvszyqN/r6OqmwyI/ynuZQaeBD9Gl
+	 tnaCzNEk3WqTwa2G8xEhXUI8W9ecDUp/dIcDUYbMNXAtD593H8a578yVxkHhEuZqsc
+	 7hMmAO2IqOZI3jDzUgDveYhZKNroA+D23oRcYnv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Rashleigh <peter@rashleigh.ca>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Douglas Anderson <dianders@chromium.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 152/261] net: dsa: mv88e6xxx: Fix error when setting port policy on mv88e6393x
+Subject: [PATCH 5.15 14/80] drm/msm: Avoid NULL dereference in msm_disp_state_print_regs()
 Date: Mon, 28 Oct 2024 07:24:54 +0100
-Message-ID: <20241028062315.841444592@linuxfoundation.org>
+Message-ID: <20241028062253.019032131@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Rashleigh <peter@rashleigh.ca>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 12bc14949c4a7272b509af0f1022a0deeb215fd8 ]
+[ Upstream commit 293f53263266bc4340d777268ab4328a97f041fa ]
 
-mv88e6393x_port_set_policy doesn't correctly shift the ptr value when
-converting the policy format between the old and new styles, so the
-target register ends up with the ptr being written over the data bits.
+If the allocation in msm_disp_state_dump_regs() failed then
+`block->state` can be NULL. The msm_disp_state_print_regs() function
+_does_ have code to try to handle it with:
 
-Shift the pointer to align with the format expected by
-mv88e6393x_port_policy_write().
+  if (*reg)
+    dump_addr = *reg;
 
-Fixes: 6584b26020fc ("net: dsa: mv88e6xxx: implement .port_set_policy for Amethyst")
-Signed-off-by: Peter Rashleigh <peter@rashleigh.ca>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Message-ID: <20241016040822.3917-1-peter@rashleigh.ca>
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+...but since "dump_addr" is initialized to NULL the above is actually
+a noop. The code then goes on to dereference `dump_addr`.
+
+Make the function print "Registers not stored" when it sees a NULL to
+solve this. Since we're touching the code, fix
+msm_disp_state_print_regs() not to pointlessly take a double-pointer
+and properly mark the pointer as `const`.
+
+Fixes: 98659487b845 ("drm/msm: add support to take dpu snapshot")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/619657/
+Link: https://lore.kernel.org/r/20241014093605.1.Ia1217cecec9ef09eb3c6d125360cc6c8574b0e73@changeid
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/port.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/port.c b/drivers/net/dsa/mv88e6xxx/port.c
-index 5394a8cf7bf1d..04053fdc6489a 100644
---- a/drivers/net/dsa/mv88e6xxx/port.c
-+++ b/drivers/net/dsa/mv88e6xxx/port.c
-@@ -1713,6 +1713,7 @@ int mv88e6393x_port_set_policy(struct mv88e6xxx_chip *chip, int port,
- 	ptr = shift / 8;
- 	shift %= 8;
- 	mask >>= ptr * 8;
-+	ptr <<= 8;
+diff --git a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
+index 8746ceae8fca9..06f2f5a5e267e 100644
+--- a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
++++ b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
+@@ -46,20 +46,21 @@ static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *b
+ 	}
+ }
  
- 	err = mv88e6393x_port_policy_read(chip, port, ptr, &reg);
- 	if (err)
+-static void msm_disp_state_print_regs(u32 **reg, u32 len, void __iomem *base_addr,
+-		struct drm_printer *p)
++static void msm_disp_state_print_regs(const u32 *dump_addr, u32 len,
++		void __iomem *base_addr, struct drm_printer *p)
+ {
+ 	int i;
+-	u32 *dump_addr = NULL;
+ 	void __iomem *addr;
+ 	u32 num_rows;
+ 
++	if (!dump_addr) {
++		drm_printf(p, "Registers not stored\n");
++		return;
++	}
++
+ 	addr = base_addr;
+ 	num_rows = len / REG_DUMP_ALIGN;
+ 
+-	if (*reg)
+-		dump_addr = *reg;
+-
+ 	for (i = 0; i < num_rows; i++) {
+ 		drm_printf(p, "0x%lx : %08x %08x %08x %08x\n",
+ 				(unsigned long)(addr - base_addr),
+@@ -86,7 +87,7 @@ void msm_disp_state_print(struct msm_disp_state *state, struct drm_printer *p)
+ 
+ 	list_for_each_entry_safe(block, tmp, &state->blocks, node) {
+ 		drm_printf(p, "====================%s================\n", block->name);
+-		msm_disp_state_print_regs(&block->state, block->size, block->base_addr, p);
++		msm_disp_state_print_regs(block->state, block->size, block->base_addr, p);
+ 	}
+ 
+ 	drm_printf(p, "===================dpu drm state================\n");
 -- 
 2.43.0
 
