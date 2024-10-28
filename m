@@ -1,117 +1,123 @@
-Return-Path: <stable+bounces-88259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461BF9B231B
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 03:48:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38EDD9B234B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 03:54:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 060A52818A4
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 02:48:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AF861C223F0
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 02:54:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F7415B54C;
-	Mon, 28 Oct 2024 02:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C4918A959;
+	Mon, 28 Oct 2024 02:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QeSMS0UA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RWWQ+h+C"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8B02C697
-	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 02:47:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A81918A92C;
+	Mon, 28 Oct 2024 02:54:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730083681; cv=none; b=bcU+Fzf8ERBabcmSf/6JMgV0DAOTmboZG5jvXQiDRgMIXZZ+YGiQzIEuH0dV1dqQtzIwJeOhtW34EC7tNnzKLw2oQLnqgGxP3Znne1FhC0wLqGYnuNB8K9KWy80HZFHWDEkkqO5wOH2GRd/0jy0rKdiA5Gu1mSAaye1BgWSjp98=
+	t=1730084063; cv=none; b=pmbDbGBUL9AYUQRKACbUfF+04eBgBh2TtdKo9KGxfx3dfvs9efkGTavfUCiB7EaESwZlCqYEapPtE5yehBjcZ2OGSBJxPlVPJfKngcdSveHy6f0QMW07r1N33l0rMiokUh00SByZDXh11/SPIAbw++Nd4hVc4jIl7XHKZW1oeHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730083681; c=relaxed/simple;
-	bh=qTIoHv5eUAvFOvAv9kQlKA1yfTJ92EPInupbVJRFQxc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r/xeT8yj+z42w2iqYiKZ2LJGX/UisxeQRuj+RY8CX/nuP115CkSd5d8VE+r5tNAM3ITQdpR4GpDNCkLGjG3kR2fwBl/AkgTQ4I6ftpdCEFMkXnDPR//KziY0iveuHaJuIn0bDDNuObz+Fnj7PUYGTlrPbecTm3Gz0ERZib+9oKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QeSMS0UA; arc=none smtp.client-ip=209.85.218.54
+	s=arc-20240116; t=1730084063; c=relaxed/simple;
+	bh=8yAOCH/5oVbc/VWtxtpJpnWwkugwBt/hyzC1N8Mplpo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=itLzRHLqOMjb329qUL60+D4ByFcmIIW8DsPZSoF05Pge4g4Fl6524dddJvXAMlfIBJRzLqHTwS9o7ujPB0zh0UFiYtQO6XHyZAfXTa2MX4NdLgd2eQcnFz6gU3uDzWDtunIttrLZgKcZlok0ohaRevJmcFR91koZYxsPIW20X4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RWWQ+h+C; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a7aa086b077so471014266b.0
-        for <stable@vger.kernel.org>; Sun, 27 Oct 2024 19:47:58 -0700 (PDT)
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2e2a97c2681so2714613a91.2;
+        Sun, 27 Oct 2024 19:54:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730083677; x=1730688477; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1730084060; x=1730688860; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/IHc5w1UyhVRJnRjGZPqOL75Dby7lM4tAlHnRtwB4D4=;
-        b=QeSMS0UAX1ZXBTHwtVsxh+++qZbajaME42jv4cwB2Y7qZVhX4SCpuQSXLu19EJkXKJ
-         Eb5wn16dedW6oSKCxWiLEVJC8XfggUmFhZp3cssiW8iR2jzkF1KWXAhAJxbRZbyTfYiJ
-         mxQEokcMlC9s/Tv/6eTiwNyboNSmiJLZG7b3dZ8cYNxNBO4CZ5aRkF/zax/uPJOZQSfr
-         EfiOBPd69dwGzjY3IK8DPCe9wcYv8cBm1rkPij9BxRa1lS5slLNgkGf7TtWcjyMB57Mf
-         yDnC0WgixZ1BPds9L4ZXYn0IqU6/QvrDUc0X6hSvy1dF4kN1JZfR1z0SJ10OfkxFvtm4
-         GemA==
+        bh=icnzZRaIqKkWcfBQ8BZ/wsCIQ7yvPTT6fqKPWIQ7kVs=;
+        b=RWWQ+h+CjqLZ0D6pSS1eBPlok3Eq9dAhkKLUvTD1tq2X5rUar6Sk8Khr+4/5XhbRHA
+         W8UtYyM3QU2kh9ghLgY5IYXOgbymN047hq+GJCAmNtSn4BDAQIk3FS6FifOcJsrv3N/X
+         ro5zuoaBvIyr42h/oSnMjtQJoA++hroVh8Ioxcqg3n/2078H8JNyv7680artNSL2ynfo
+         T4dOGdT3FH26Th6tzKte/nE+dijA0f4RFUDAW/4eZWWN1QkeVfjfDvqr7L+6tN+KXcOl
+         zAnLCx+KUhd5GLzauQM2qxh0pl8jzAbojpHvssjEoqVK/RtkCdxPPo/Ew+nHIhGL96e7
+         enHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730083677; x=1730688477;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/IHc5w1UyhVRJnRjGZPqOL75Dby7lM4tAlHnRtwB4D4=;
-        b=XY2RhAqSo2qPX7mn/ZUenfaZ+0wxGr/Iu4nzeiuspXuvZOd+0qyPb+PYaQ+w0aP0pj
-         DjM4cNaKQnO1Djl+QScB8Zz3cV10rGA8Y/gZoZT7r9KNBZK6eEofCzpq5R/Fh1bbr3oc
-         WvQxR6KXWunYiHkzyLtWWB/nxM0uId4y/X6DN3/Z7WOUtGMjm3DVHblY5DRJROsO+mpl
-         lEk9VYqDCiiWMThKVoGG8xnOpGNGbAl8Mo4AAVe1650RsJqmJ68k6lvtWQnqvBouXh9W
-         lNoO9vQIYqFdiMMjTNHf5tKrQoFj6gSxkbnzHd5Bjd1ty2DgSqBWCI1cxfZS58FbHj5I
-         C5eg==
-X-Forwarded-Encrypted: i=1; AJvYcCUQUpogLdHVv029xHVtdcnlpgyaisXANkRc1oITxt37X/xp7jjDXah7yNFr5sNvzHS1SpX5Sjk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywzg0OfjYY9VL9Kx9PFvPOXXecMKtLYBtnXZiJsZYIEijPSDXT8
-	ZeC4mwBBStleA/gY+bA1t1JTQ9676AA2XiZK2bJoH4N8uNetm8t8
-X-Google-Smtp-Source: AGHT+IGOEvzSI1JPj11nwnADDIynGv3TJKAgVsP3a+SvqU1QnwUGUy4Oi2gld9G0oLks46PxWlMvKw==
-X-Received: by 2002:a17:907:72d1:b0:a99:65c6:7f34 with SMTP id a640c23a62f3a-a9de5c91b63mr593435566b.7.1730083676928;
-        Sun, 27 Oct 2024 19:47:56 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b30f58991sm328091966b.159.2024.10.27.19.47.54
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 27 Oct 2024 19:47:55 -0700 (PDT)
-Date: Mon, 28 Oct 2024 02:47:53 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, vbabka@suse.cz,
-	lorenzo.stoakes@oracle.com, linux-mm@kvack.org,
-	"Liam R . Howlett" <Liam.Howlett@Oracle.com>,
-	Jann Horn <jannh@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH hotfix 6.12 v2] mm/mlock: set the correct prev on failure
-Message-ID: <20241028024753.yqteimzthoj2rmmi@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20241027123321.19511-1-richard.weiyang@gmail.com>
- <20241027175347.af0faeac9fdfc2fc8ae051e9@linux-foundation.org>
+        d=1e100.net; s=20230601; t=1730084060; x=1730688860;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=icnzZRaIqKkWcfBQ8BZ/wsCIQ7yvPTT6fqKPWIQ7kVs=;
+        b=bLWd+oEcJ8Ddhf8i0tV5KQhiVUkaBypQmSPpYBKV76FivZbYeP7Mr6rf4i4CIUlWfZ
+         M/qTaiO65s/SK3qG9h/AYgdUQ4vsOch2VWgeMVS5acj85NdSXB2I4iPNZ1+RnTApdgaw
+         czx0wrO+b5uA2UrxyInpkxw/wHft2WzmOAg2uTBQATzccCw2COuk85s4RsbexwDfJUOp
+         ZdfB1h44jEdGDI5XlWPOoIY/tdvGWSDeteiZAacim6/IGOvD0JigseWqDAg7sZWRqe4/
+         Oqmm0JSzvvNJoPANCxadmXGslTSXMTK44v9VjPXTuWtveA8QkSN7S9+LmRQYMomMJi+0
+         sEYw==
+X-Forwarded-Encrypted: i=1; AJvYcCVAg+eiQ4StqdbY/0NbrwWuyrPUUzBorRBPWkjV4VHwaE66i1xNIFxvtdspG2adqYJh1Uep0/4f@vger.kernel.org, AJvYcCWQWRC10hg0VnX+CvYE4lPzInXJ0dMdsuA6Fho/5kwY1L6Pm2X7gb+mcxaHsoyA8fannFCok93Peze3qZQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyeOC7GyHLTZWqd9lkT4NXJUM2BauC81LYa5wSOTLcEFhxNmgFG
+	kSWAvqBZpM/ibVUhFw6+lOwQ2Bec4ttiMvHXr+R0GuYldv9EDHR7
+X-Google-Smtp-Source: AGHT+IF/DXrsSgB53/f+vdHvP5JHLMOMaohlipY5A+64+th+HvseCzk+rsVXgoEiH2HMAvyZoeY2PQ==
+X-Received: by 2002:a17:90b:3ec9:b0:2d3:da6d:8330 with SMTP id 98e67ed59e1d1-2e8f10507f6mr9070599a91.4.1730084060261;
+        Sun, 27 Oct 2024 19:54:20 -0700 (PDT)
+Received: from kic-machine.localdomain (122-117-151-175.hinet-ip.hinet.net. [122.117.151.175])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e77e4ca3fcsm8062236a91.13.2024.10.27.19.54.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Oct 2024 19:54:19 -0700 (PDT)
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
+To: mathias.nyman@intel.com,
+	gregkh@linuxfoundation.org
+Cc: linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ki.chiang65@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/5] xhci: Combine two if statements for Etron xHCI host
+Date: Mon, 28 Oct 2024 10:53:33 +0800
+Message-Id: <20241028025337.6372-2-ki.chiang65@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20241028025337.6372-1-ki.chiang65@gmail.com>
+References: <20241028025337.6372-1-ki.chiang65@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241027175347.af0faeac9fdfc2fc8ae051e9@linux-foundation.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Transfer-Encoding: 8bit
 
-On Sun, Oct 27, 2024 at 05:53:47PM -0700, Andrew Morton wrote:
->On Sun, 27 Oct 2024 12:33:21 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
->
->> After commit 94d7d9233951 ("mm: abstract the vma_merge()/split_vma()
->> pattern for mprotect() et al."), if vma_modify_flags() return error, the
->> vma is set to an error code. This will lead to an invalid prev be
->> returned.
->> 
->> Generally this shouldn't matter as the caller should treat an error as
->> indicating state is now invalidated, however unfortunately
->> apply_mlockall_flags() does not check for errors and assumes that
->> mlock_fixup() correctly maintains prev even if an error were to occur.
->
->And what is the userspace-visible effect when this occurs?
->
+Combine two if statements, because these hosts have the same
+quirk flags applied.
 
-When error occurs, prev would be set to (-ENOMEM). And accessing this address
-would lead to a kernel crash.
+Fixes: 91f7a1524a92 ("xhci: Apply broken streams quirk to Etron EJ188 xHCI host")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+---
+ drivers/usb/host/xhci-pci.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-So looks no userspace-visible effect for this.
-
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index 7e538194a0a4..33a6d99afc10 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -395,12 +395,8 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
+ 		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
+ 
+ 	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
+-			pdev->device == PCI_DEVICE_ID_EJ168) {
+-		xhci->quirks |= XHCI_RESET_ON_RESUME;
+-		xhci->quirks |= XHCI_BROKEN_STREAMS;
+-	}
+-	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
+-			pdev->device == PCI_DEVICE_ID_EJ188) {
++	    (pdev->device == PCI_DEVICE_ID_EJ168 ||
++	     pdev->device == PCI_DEVICE_ID_EJ188)) {
+ 		xhci->quirks |= XHCI_RESET_ON_RESUME;
+ 		xhci->quirks |= XHCI_BROKEN_STREAMS;
+ 	}
 -- 
-Wei Yang
-Help you, Help me
+2.25.1
+
 
