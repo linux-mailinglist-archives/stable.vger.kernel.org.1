@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 515929B2574
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:29:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2682C9B27F7
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F25711F21B69
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:29:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE988286328
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E4CC18E05A;
-	Mon, 28 Oct 2024 06:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F49418E77D;
+	Mon, 28 Oct 2024 06:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SA8cbObr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ei/ShPVd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC1218DF8B;
-	Mon, 28 Oct 2024 06:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F109C8837;
+	Mon, 28 Oct 2024 06:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730096950; cv=none; b=aXfGFgaCtbNsyrmfnnDyUSVC06VmrpnVnQ70j8N0rMCkRb/Ld8QoU6syWFr49dRqePDpauTYN3T90dwXGNKWSTMZ7vGR5s49OJkK03sFQxnrLu7kBm6OirZ6sKbsdPzOxC4G+Rj3oro61HojpaDegPmBMeXTT/qXrtv9xqPgEtA=
+	t=1730098368; cv=none; b=c0fR7bwQg6yM56bh9qo4xpgquWawdkvijx05D82NHdzSmod7ekgVzUVmmFNtnmQYDtVLPTc/2nRKQVadEw/xxAecWLQMlpa0mqmRNi1tZNZqHiCVSCYKjbVGWJQsoYXnpAUFTKHnaJ3dUiaKpuC2SiDPVFjS8IpAzbWnOCBwl+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730096950; c=relaxed/simple;
-	bh=FTH6Bn7+VXYA00lKJLay2rIDHSeXqgSFcqPTBp5um5I=;
+	s=arc-20240116; t=1730098368; c=relaxed/simple;
+	bh=Vds6XEChiEGiZ1mcljqMyqNhjvi60pUg4dwFQ7qYaog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RSXUHIHz4yG34IUaQSAhksBwHUdoy8ZpMfmt1oU0i1kcjv3R69gef6WnJsEQVcgiGB4vmY3XpU9J6TlP0xpHhJwhm5DEweQCvFKTq7tepbd+S39NwEVg0MLUBnPNuKY2MEx6USz39gqySqgwBQnZgdlfpuAFt3RZZbSiD+RBdNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SA8cbObr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1163C4CEC3;
-	Mon, 28 Oct 2024 06:29:09 +0000 (UTC)
+	 MIME-Version; b=RqDaFjnM1luDMfjkvnLfQXLpH/wGVwCXsK5fW1joVub+Ktpg0zIvS7qIHFA79WKSVB4i/p/G1uQIsR0veUGFB8bEPVnLelyrwIu6RFipu0djEx8EjnfZWvK05JtjnQgNiOKt0eddZwgA0IDJMBYQSAbRvchr1D+5JMhdWBFOHfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ei/ShPVd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93593C4CEC3;
+	Mon, 28 Oct 2024 06:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730096949;
-	bh=FTH6Bn7+VXYA00lKJLay2rIDHSeXqgSFcqPTBp5um5I=;
+	s=korg; t=1730098367;
+	bh=Vds6XEChiEGiZ1mcljqMyqNhjvi60pUg4dwFQ7qYaog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SA8cbObrOCN10/e2xprhi1VkNZVRnRQl/yDLnnYkzTXWPSZrDUQ1+TIVbYb/V+tmB
-	 zJzrElC/I2V29yc3kMwwnwneUulNVWJSSu84V86OSJD9rWjMcXdVcNtsTGYMDJJo91
-	 dbP03opUfygKvePcitDugLU4e3eTRckcrxDe72VM=
+	b=Ei/ShPVdkJhINfhq8sdc1CMqGvA9oZBGkm7RimKpIKRtLMCm8cvpfje47UgONkOEu
+	 sO2eupTlt7U3z7FrtP2VbLVoGGHHyJ1zNlTvGuI92qdOeQHAzzrjBpKBxMemDkfGdr
+	 Lm2VYGfwCNW9F2YsQF79RHxpF4hSHbzBuYZs3Iu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Rashleigh <peter@rashleigh.ca>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 57/80] net: dsa: mv88e6xxx: Fix error when setting port policy on mv88e6393x
+Subject: [PATCH 6.11 195/261] ALSA: hda/realtek: Update default depop procedure
 Date: Mon, 28 Oct 2024 07:25:37 +0100
-Message-ID: <20241028062254.200884273@linuxfoundation.org>
+Message-ID: <20241028062316.925423879@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Rashleigh <peter@rashleigh.ca>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit 12bc14949c4a7272b509af0f1022a0deeb215fd8 ]
+[ Upstream commit e3ea2757c312e51bbf62ebc434a6f7df1e3a201f ]
 
-mv88e6393x_port_set_policy doesn't correctly shift the ptr value when
-converting the policy format between the old and new styles, so the
-target register ends up with the ptr being written over the data bits.
+Old procedure has a chance to meet Headphone no output.
 
-Shift the pointer to align with the format expected by
-mv88e6393x_port_policy_write().
-
-Fixes: 6584b26020fc ("net: dsa: mv88e6xxx: implement .port_set_policy for Amethyst")
-Signed-off-by: Peter Rashleigh <peter@rashleigh.ca>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Message-ID: <20241016040822.3917-1-peter@rashleigh.ca>
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Fixes: c2d6af53a43f ("ALSA: hda/realtek - Add default procedure for suspend and resume state")
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/17b717a0a0b04a77aea4a8ec820cba13@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/port.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/pci/hda/patch_realtek.c | 38 ++++++++++++++++-------------------
+ 1 file changed, 17 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/port.c b/drivers/net/dsa/mv88e6xxx/port.c
-index ab41619a809b3..c94f2de6401cd 100644
---- a/drivers/net/dsa/mv88e6xxx/port.c
-+++ b/drivers/net/dsa/mv88e6xxx/port.c
-@@ -1699,6 +1699,7 @@ int mv88e6393x_port_set_policy(struct mv88e6xxx_chip *chip, int port,
- 	ptr = shift / 8;
- 	shift %= 8;
- 	mask >>= ptr * 8;
-+	ptr <<= 8;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index a2737c1ff9204..60929ea679f3d 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -3857,20 +3857,18 @@ static void alc_default_init(struct hda_codec *codec)
  
- 	err = mv88e6393x_port_policy_read(chip, port, ptr, &reg);
- 	if (err)
+ 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
+ 
+-	if (hp_pin_sense)
++	if (hp_pin_sense) {
+ 		msleep(2);
+ 
+-	snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+-
+-	if (hp_pin_sense)
+-		msleep(85);
++		snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
+ 
+-	snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
++		msleep(75);
+ 
+-	if (hp_pin_sense)
+-		msleep(100);
++		snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
++		msleep(75);
++	}
+ }
+ 
+ static void alc_default_shutup(struct hda_codec *codec)
+@@ -3886,22 +3884,20 @@ static void alc_default_shutup(struct hda_codec *codec)
+ 
+ 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
+ 
+-	if (hp_pin_sense)
++	if (hp_pin_sense) {
+ 		msleep(2);
+ 
+-	snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+-
+-	if (hp_pin_sense)
+-		msleep(85);
+-
+-	if (!spec->no_shutup_pins)
+ 		snd_hda_codec_write(codec, hp_pin, 0,
+-				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+ 
+-	if (hp_pin_sense)
+-		msleep(100);
++		msleep(75);
+ 
++		if (!spec->no_shutup_pins)
++			snd_hda_codec_write(codec, hp_pin, 0,
++					    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
++
++		msleep(75);
++	}
+ 	alc_auto_setup_eapd(codec, false);
+ 	alc_shutup_pins(codec);
+ }
 -- 
 2.43.0
 
