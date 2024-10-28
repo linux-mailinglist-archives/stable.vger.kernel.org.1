@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-88904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B16A69B27FF
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:53:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71DB99B2585
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:32:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 775D82863ED
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:53:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 939301C210C1
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:32:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 134AC18E05D;
-	Mon, 28 Oct 2024 06:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29F1C18E03A;
+	Mon, 28 Oct 2024 06:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izup02ge"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bd/iKC1k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D648837;
-	Mon, 28 Oct 2024 06:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB15515B10D;
+	Mon, 28 Oct 2024 06:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098385; cv=none; b=LG+auBMxh09IqATurw96cgPjIDha/mY7oFtHKPnnqGhANmOFPzx7TtXHkex2KfKxWU94x+3uleU63et+XV5g+DsJ640QE36iHykDcc3si2efQ4YoWPMydlri8O4f0hKsWt9Bnit5hqeLY9XZ3e/VDKcw5VXIh/JR0EgNaTuovwY=
+	t=1730097121; cv=none; b=kHyBXHYijrOlgEtLHeuepQUxAMfPNORVV/9qm8zlUd8yaEqIjX1aZYCG7/jD3Ba+lIgocBcIyx23lrP4wIJZwKyz29LMKSp8MWmvq/uvBwD9edJQiRe7yzZX2J5N+d1ozYQteXhLSKD9HqbHgLhKgEyxdyoBDKowMiUigP6vxR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098385; c=relaxed/simple;
-	bh=x03zpb1kTnGrHdtPGgV0QOSV4zwamE+3EXYAtH/uROs=;
+	s=arc-20240116; t=1730097121; c=relaxed/simple;
+	bh=Rr3zu1fNMo0iDuXSPnzsbmFQJVc38vriVlFlqPUMgvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IadIt0vyoGmtokPr5mFyrVHp3uLVOOH/ChA7Hu5sXXY3oHDr1h5Gb0RKwKUxbuSPsT2Temx6iOTv2T/M8wWfb2rT+4AYaAzjONuj3dVN4bQnkVm8Gc3siLp1CaXuC6dX85wdt0WX+XalurmlLQ7th5Tu1g21wgBBX8RN/+4qL4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izup02ge; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E91C4CEC3;
-	Mon, 28 Oct 2024 06:53:05 +0000 (UTC)
+	 MIME-Version; b=jZ5rQJueJEKmv1Sy9G/DGl1DHATT0tH+bbtR1GW7t4pa/HFxHbIls8MLDiUYt0BIMNS5Wr/fXxX9xYK8y0k5FbNAfmpz+/d0CifFfrRJcXeOvgEuQPXqGFyAt7CJmv4glm1bIPjQoTu7VbX86xHUL+uoN9tPiih3RYKPsD90rZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bd/iKC1k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 799E5C4CEC7;
+	Mon, 28 Oct 2024 06:32:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098385;
-	bh=x03zpb1kTnGrHdtPGgV0QOSV4zwamE+3EXYAtH/uROs=;
+	s=korg; t=1730097121;
+	bh=Rr3zu1fNMo0iDuXSPnzsbmFQJVc38vriVlFlqPUMgvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=izup02gePcu7pMm0Flu/B7agl86wIqdgLbWAjoNXm9/G8w+uDBWA/mjJacLoa86qQ
-	 nunKSfLBgeXqVBGdvBeKqRhyE/NFMbz+7A9iM+hVbk9w/H+rkSb87vnYecYYBds4hH
-	 2qN0XN1zNzuDJWWArg6tmBE95at9qX27TmYRW9UA=
+	b=Bd/iKC1kr2i/jDSwexXf5Qf4ZCg5Mf/r5ewFuF80PqiQ4TWKNm4YvNySkf47XPpJ+
+	 o1+Pl4uObIYzomsq7F2ODuG93mOyKcUM0+N2W1P870VnETRiWBeMqVJIkKyFgTH78S
+	 1RSUYM5U4l6JoTOBL4WX9oErqniqrshCeyK3Xddc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Harvey <tharvey@gateworks.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Markus Schneider-Pargmann <msp@baylibre.com>,
+	Dhruva Gole <d-gole@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 176/261] net: dsa: microchip: disable EEE for KSZ879x/KSZ877x/KSZ876x
+Subject: [PATCH 5.15 38/80] usb: dwc3: core: Fix system suspend on TI AM62 platforms
 Date: Mon, 28 Oct 2024 07:25:18 +0100
-Message-ID: <20241028062316.415053865@linuxfoundation.org>
+Message-ID: <20241028062253.680926796@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +64,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Harvey <tharvey@gateworks.com>
+From: Roger Quadros <rogerq@kernel.org>
 
-[ Upstream commit ee76eb24343bdd5450eb87572865a4d7fffd335b ]
+[ Upstream commit 705e3ce37bccdf2ed6f848356ff355f480d51a91 ]
 
-The well-known errata regarding EEE not being functional on various KSZ
-switches has been refactored a few times. Recently the refactoring has
-excluded several switches that the errata should also apply to.
+Since commit 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init"),
+system suspend is broken on AM62 TI platforms.
 
-Disable EEE for additional switches with this errata and provide
-additional comments referring to the public errata document.
+Before that commit, both DWC3_GUSB3PIPECTL_SUSPHY and DWC3_GUSB2PHYCFG_SUSPHY
+bits (hence forth called 2 SUSPHY bits) were being set during core
+initialization and even during core re-initialization after a system
+suspend/resume.
 
-The original workaround for the errata was applied with a register
-write to manually disable the EEE feature in MMD 7:60 which was being
-applied for KSZ9477/KSZ9897/KSZ9567 switch ID's.
+These bits are required to be set for system suspend/resume to work correctly
+on AM62 platforms.
 
-Then came commit 26dd2974c5b5 ("net: phy: micrel: Move KSZ9477 errata
-fixes to PHY driver") and commit 6068e6d7ba50 ("net: dsa: microchip:
-remove KSZ9477 PHY errata handling") which moved the errata from the
-switch driver to the PHY driver but only for PHY_ID_KSZ9477 (PHY ID)
-however that PHY code was dead code because an entry was never added
-for PHY_ID_KSZ9477 via MODULE_DEVICE_TABLE.
+Since that commit, the 2 SUSPHY bits are not set for DEVICE/OTG mode if gadget
+driver is not loaded and started.
+For Host mode, the 2 SUSPHY bits are set before the first system suspend but
+get cleared at system resume during core re-init and are never set again.
 
-This was apparently realized much later and commit 54a4e5c16382 ("net:
-phy: micrel: add Microchip KSZ 9477 to the device table") added the
-PHY_ID_KSZ9477 to the PHY driver but as the errata was only being
-applied to PHY_ID_KSZ9477 it's not completely clear what switches
-that relates to.
+This patch resovles these two issues by ensuring the 2 SUSPHY bits are set
+before system suspend and restored to the original state during system resume.
 
-Later commit 6149db4997f5 ("net: phy: micrel: fix KSZ9477 PHY issues
-after suspend/resume") breaks this again for all but KSZ9897 by only
-applying the errata for that PHY ID.
-
-Following that this was affected with commit 08c6d8bae48c("net: phy:
-Provide Module 4 KSZ9477 errata (DS80000754C)") which removes
-the blatant register write to MMD 7:60 and replaces it by
-setting phydev->eee_broken_modes = -1 so that the generic phy-c45 code
-disables EEE but this is only done for the KSZ9477_CHIP_ID (Switch ID).
-
-Lastly commit 0411f73c13af ("net: dsa: microchip: disable EEE for
-KSZ8567/KSZ9567/KSZ9896/KSZ9897.") adds some additional switches
-that were missing to the errata due to the previous changes.
-
-This commit adds an additional set of switches.
-
-Fixes: 0411f73c13af ("net: dsa: microchip: disable EEE for KSZ8567/KSZ9567/KSZ9896/KSZ9897.")
-Signed-off-by: Tim Harvey <tharvey@gateworks.com>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20241018160658.781564-1-tharvey@gateworks.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: stable@vger.kernel.org # v6.9+
+Fixes: 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init")
+Link: https://lore.kernel.org/all/1519dbe7-73b6-4afc-bfe3-23f4f75d772f@kernel.org/
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Tested-by: Markus Schneider-Pargmann <msp@baylibre.com>
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Link: https://lore.kernel.org/r/20241011-am62-lpm-usb-v3-1-562d445625b5@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/microchip/ksz_common.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/usb/dwc3/core.c | 19 +++++++++++++++++++
+ drivers/usb/dwc3/core.h |  3 +++
+ 2 files changed, 22 insertions(+)
 
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index 1491099528be8..5ec21bda8ab63 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -2579,26 +2579,27 @@ static u32 ksz_get_phy_flags(struct dsa_switch *ds, int port)
- 			return MICREL_KSZ8_P1_ERRATA;
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 6c740dc633e7c..0ca06a3ab7179 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1796,6 +1796,11 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+ {
+ 	u32 reg;
+ 
++	dwc->susphy_state = (dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
++			    DWC3_GUSB2PHYCFG_SUSPHY) ||
++			    (dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0)) &
++			    DWC3_GUSB3PIPECTL_SUSPHY);
++
+ 	switch (dwc->current_dr_role) {
+ 	case DWC3_GCTL_PRTCAP_DEVICE:
+ 		if (pm_runtime_suspended(dwc->dev))
+@@ -1843,6 +1848,15 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
  		break;
- 	case KSZ8567_CHIP_ID:
-+		/* KSZ8567R Errata DS80000752C Module 4 */
-+	case KSZ8765_CHIP_ID:
-+	case KSZ8794_CHIP_ID:
-+	case KSZ8795_CHIP_ID:
-+		/* KSZ879x/KSZ877x/KSZ876x Errata DS80000687C Module 2 */
- 	case KSZ9477_CHIP_ID:
-+		/* KSZ9477S Errata DS80000754A Module 4 */
- 	case KSZ9567_CHIP_ID:
-+		/* KSZ9567S Errata DS80000756A Module 4 */
- 	case KSZ9896_CHIP_ID:
-+		/* KSZ9896C Errata DS80000757A Module 3 */
- 	case KSZ9897_CHIP_ID:
--		/* KSZ9477 Errata DS80000754C
--		 *
--		 * Module 4: Energy Efficient Ethernet (EEE) feature select must
--		 * be manually disabled
-+		/* KSZ9897R Errata DS80000758C Module 4 */
-+		/* Energy Efficient Ethernet (EEE) feature select must be manually disabled
- 		 *   The EEE feature is enabled by default, but it is not fully
- 		 *   operational. It must be manually disabled through register
- 		 *   controls. If not disabled, the PHY ports can auto-negotiate
- 		 *   to enable EEE, and this feature can cause link drops when
- 		 *   linked to another device supporting EEE.
- 		 *
--		 * The same item appears in the errata for the KSZ9567, KSZ9896,
--		 * and KSZ9897.
--		 *
--		 * A similar item appears in the errata for the KSZ8567, but
--		 * provides an alternative workaround. For now, use the simple
--		 * workaround of disabling the EEE feature for this device too.
-+		 * The same item appears in the errata for all switches above.
- 		 */
- 		return MICREL_NO_EEE;
  	}
+ 
++	if (!PMSG_IS_AUTO(msg)) {
++		/*
++		 * TI AM62 platform requires SUSPHY to be
++		 * enabled for system suspend to work.
++		 */
++		if (!dwc->susphy_state)
++			dwc3_enable_susphy(dwc, true);
++	}
++
+ 	return 0;
+ }
+ 
+@@ -1905,6 +1919,11 @@ static int dwc3_resume_common(struct dwc3 *dwc, pm_message_t msg)
+ 		break;
+ 	}
+ 
++	if (!PMSG_IS_AUTO(msg)) {
++		/* restore SUSPHY state to that before system suspend. */
++		dwc3_enable_susphy(dwc, dwc->susphy_state);
++	}
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
+index 7e7820ce21bf5..3d434c110bdb6 100644
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -1085,6 +1085,8 @@ struct dwc3_scratchpad_array {
+  * @dis_metastability_quirk: set to disable metastability quirk.
+  * @dis_split_quirk: set to disable split boundary.
+  * @suspended: set to track suspend event due to U3/L2.
++ * @susphy_state: state of DWC3_GUSB2PHYCFG_SUSPHY + DWC3_GUSB3PIPECTL_SUSPHY
++ *		  before PM suspend.
+  * @imod_interval: set the interrupt moderation interval in 250ns
+  *			increments or 0 to disable.
+  * @max_cfg_eps: current max number of IN eps used across all USB configs.
+@@ -1300,6 +1302,7 @@ struct dwc3 {
+ 	unsigned		dis_split_quirk:1;
+ 	unsigned		async_callbacks:1;
+ 	unsigned		suspended:1;
++	unsigned		susphy_state:1;
+ 
+ 	u16			imod_interval;
+ 
 -- 
 2.43.0
 
