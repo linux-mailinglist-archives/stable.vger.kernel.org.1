@@ -1,63 +1,67 @@
-Return-Path: <stable+bounces-89000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2C1D9B2D92
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:55:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E90D9B2D94
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:56:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5150C1F21F7E
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 10:55:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 241731F21F7E
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 10:56:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D221DDC24;
-	Mon, 28 Oct 2024 10:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDC81D79B4;
+	Mon, 28 Oct 2024 10:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V1urPzAi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JjeXHdmZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0721DDC15;
-	Mon, 28 Oct 2024 10:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E241DD9A8;
+	Mon, 28 Oct 2024 10:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730112700; cv=none; b=hUwr9jqLKn4L77hglUsuaEwCgRiojMogkpYguej/92/isTh6NGvMv4VuzqhBbYsReYwP2rbHVGzp7i4Gm2T0llNJZWNX10sLMa9VVl/HkYDCckOQa4NinYr9iKD/9hf5GNNGaHwDP8ee7A0AMULVkFyI4s335FgOZ70TwDIPD98=
+	t=1730112702; cv=none; b=Ujjd0Ngq/UssSbJaE3YvZvtPjO7N7u3DXKvkOTv6pil6HzjsM0PwYCViJRvPX6wr+EmYHeabIi+fELfJ7+BcCzIcwZnNXZXaQYKdx4of82zqz1caQ7y0uPYcqnVMiMX2673/dv0Usw+9UA78GniX+3z+S6g4VM72XLrTaWkAUno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730112700; c=relaxed/simple;
-	bh=bM+QI0csOazbnWg7hovcu4YTxqNdw7aAGIDhttFynQk=;
+	s=arc-20240116; t=1730112702; c=relaxed/simple;
+	bh=3q8OmelhAQAHtJG0+WA+DXqVRpr3cx7P46HkfwupuDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QxheqxzmcUMpalVxqbhXCMRfBsyeK8691WCWpwg49Evoroo4AgVMtnAxJIIYLNb7wh+IwxDGcqua3rZkfsq9R+3ZghFFHc4dHKQU7FWd1klRjZpAnEI3fUvlG/9mSAfytC5FfAZwE0N6kYs2ypzyPw8McyyuYFlF5anuTrHfWLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V1urPzAi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F635C4CEE7;
-	Mon, 28 Oct 2024 10:51:38 +0000 (UTC)
+	 MIME-Version; b=JeCeANLBsKxS7FMTWQlArOnwIiiYn/d60ozH23YB7Pr19/AXDVdhpTDpbJlC6VyKvenIzpOCqkcKGqOaofwk33Y2jczmvR4AJWuDnOlq6Wy+mZlVyP2pMWod0d4kSgk3SdvOyFh5VWhvwhB8ju4ty3KZmGLLZVb6DCCNhIiEaZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JjeXHdmZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83936C4CEE8;
+	Mon, 28 Oct 2024 10:51:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730112700;
-	bh=bM+QI0csOazbnWg7hovcu4YTxqNdw7aAGIDhttFynQk=;
+	s=k20201202; t=1730112702;
+	bh=3q8OmelhAQAHtJG0+WA+DXqVRpr3cx7P46HkfwupuDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V1urPzAiA2tJzQGOm1xlbw/hFm8lDRgxazq4NOS0hFsgdNf5XcZ97cmzq2hWK0rTC
-	 2OtL/X1BDPvfbR+08HpL/lo/dcJ3z0O1yl7sHZY1SoduWOJ1U/VCaml83oT52kWbzQ
-	 N7G4j9cMltOP1ASK7lbdYkBLu7HM1raSrDqLVJLDiKHhAps03TiYCdt1GG7C2hdPLC
-	 RRo3AmQAPvy3fbi0VlixGLDabjFqeJ1ucU+80NWqHGGgAhjHVouLh6Bze0CbSDRMmV
-	 9tDqxexoOdPcQ5D/IzbO+1OvGH9eJ1oLY1YXNLCAxOifo7w/AHJnriUHx+K9CLQakS
-	 H21CKXvWBLLKQ==
+	b=JjeXHdmZfO1kM+2WfmAFE1FeuLDlA1lgyzfSm6gh8yC7cz/gBTy6p+ffVYLw5gggB
+	 PNQlE38TAHKljbklsV3FJYHwAxz3Z/6EPUS6UBNHin4vlt6uB7U1pc00hZD44XsxuE
+	 qbUUcEFphwIS+LtL7/AWczSmlYgPFxQcvwQt3NEZHzNzW4+LoHxBWpGjWlnhY5Xmch
+	 9mComtwHBnrbdCSttFSCyzFWl4DHfst0loNyxVWOPRJa0voEJRtaShcsHnJq/Fg4/F
+	 l7L32ROEETxZ/BQP+DVM7e60fyy1Qu1c9VGLghGd1RliDUg6XQcYEXy5Zl8NRbIdrr
+	 34pqoe3/YO57A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alexey Klimov <alexey.klimov@linaro.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Cyan Yang <cyan.yang@sifive.com>,
+	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
+	Anup Patel <anup@brainfault.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 18/32] ASoC: codecs: lpass-rx-macro: fix RXn(rx,n) macro for DSM_CTL and SEC7 regs
-Date: Mon, 28 Oct 2024 06:50:00 -0400
-Message-ID: <20241028105050.3559169-18-sashal@kernel.org>
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	rostedt@goodmis.org,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-rt-devel@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.11 19/32] RISCV: KVM: use raw_spinlock for critical section in imsic
+Date: Mon, 28 Oct 2024 06:50:01 -0400
+Message-ID: <20241028105050.3559169-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241028105050.3559169-1-sashal@kernel.org>
 References: <20241028105050.3559169-1-sashal@kernel.org>
@@ -72,110 +76,65 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.5
 Content-Transfer-Encoding: 8bit
 
-From: Alexey Klimov <alexey.klimov@linaro.org>
+From: Cyan Yang <cyan.yang@sifive.com>
 
-[ Upstream commit 9fc9ef05727ccb45fd881770f2aa5c3774b2e8e2 ]
+[ Upstream commit 3ec4350d4efb5ccb6bd0e11d9cf7f2be4f47297d ]
 
-Turns out some registers of pre-2.5 version of rxmacro codecs are not
-located at the expected offsets but 0xc further away in memory. So far
-the detected registers are CDC_RX_RX2_RX_PATH_SEC7 and
-CDC_RX_RX2_RX_PATH_DSM_CTL.
+For the external interrupt updating procedure in imsic, there was a
+spinlock to protect it already. But since it should not be preempted in
+any cases, we should turn to use raw_spinlock to prevent any preemption
+in case PREEMPT_RT was enabled.
 
-CDC_RX_RXn_RX_PATH_DSM_CTL(rx, n) macro incorrectly generates the address
-0x540 for RX2 but it should be 0x54C and it also overwrites
-CDC_RX_RX2_RX_PATH_SEC7 which is located at 0x540.
-The same goes for CDC_RX_RXn_RX_PATH_SEC7(rx, n).
-
-Fix this by introducing additional rxn_reg_stride2 offset. For 2.5 version
-and above this offset will be equal to 0.
-With such change the corresponding RXn() macros will generate the same
-values for 2.5 codec version for all RX paths and the same old values
-for pre-2.5 version for RX0 and RX1. However for the latter case with
-RX2 path it will also add rxn_reg_stride2 on top.
-
-While at this, also remove specific if-check for INTERP_AUX from
-rx_macro_digital_mute() and rx_macro_enable_interp_clk(). These if-check
-was used to handle such special offset for AUX interpolator but since
-CDC_RX_RXn_RX_PATH_SEC7(rx, n) and CDC_RX_RXn_RX_PATH_DSM_CTL(rx, n)
-macros will generate the correst addresses of dsm register, they are no
-longer needed.
-
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patch.msgid.link/20241016221049.1145101-1-alexey.klimov@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Cyan Yang <cyan.yang@sifive.com>
+Reviewed-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Message-ID: <20240919160126.44487-1-cyan.yang@sifive.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/lpass-rx-macro.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ arch/riscv/kvm/aia_imsic.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/codecs/lpass-rx-macro.c b/sound/soc/codecs/lpass-rx-macro.c
-index ce42749660c87..541febab9451a 100644
---- a/sound/soc/codecs/lpass-rx-macro.c
-+++ b/sound/soc/codecs/lpass-rx-macro.c
-@@ -202,12 +202,14 @@
- #define CDC_RX_RXn_RX_PATH_SEC3(rx, n)	(0x042c  + rx->rxn_reg_stride * n)
- #define CDC_RX_RX0_RX_PATH_SEC4		(0x0430)
- #define CDC_RX_RX0_RX_PATH_SEC7		(0x0434)
--#define CDC_RX_RXn_RX_PATH_SEC7(rx, n)	(0x0434  + rx->rxn_reg_stride * n)
-+#define CDC_RX_RXn_RX_PATH_SEC7(rx, n)		\
-+	(0x0434 + (rx->rxn_reg_stride * n) + ((n > 1) ? rx->rxn_reg_stride2 : 0))
- #define CDC_RX_DSM_OUT_DELAY_SEL_MASK	GENMASK(2, 0)
- #define CDC_RX_DSM_OUT_DELAY_TWO_SAMPLE	0x2
- #define CDC_RX_RX0_RX_PATH_MIX_SEC0	(0x0438)
- #define CDC_RX_RX0_RX_PATH_MIX_SEC1	(0x043C)
--#define CDC_RX_RXn_RX_PATH_DSM_CTL(rx, n)	(0x0440  + rx->rxn_reg_stride * n)
-+#define CDC_RX_RXn_RX_PATH_DSM_CTL(rx, n)	\
-+	(0x0440 + (rx->rxn_reg_stride * n) + ((n > 1) ? rx->rxn_reg_stride2 : 0))
- #define CDC_RX_RXn_DSM_CLK_EN_MASK	BIT(0)
- #define CDC_RX_RX0_RX_PATH_DSM_CTL	(0x0440)
- #define CDC_RX_RX0_RX_PATH_DSM_DATA1	(0x0444)
-@@ -645,6 +647,7 @@ struct rx_macro {
- 	int rx_mclk_cnt;
- 	enum lpass_codec_version codec_version;
- 	int rxn_reg_stride;
-+	int rxn_reg_stride2;
- 	bool is_ear_mode_on;
- 	bool hph_pwr_mode;
- 	bool hph_hd2_mode;
-@@ -1929,9 +1932,6 @@ static int rx_macro_digital_mute(struct snd_soc_dai *dai, int mute, int stream)
- 							      CDC_RX_PATH_PGA_MUTE_MASK, 0x0);
- 			}
+diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
+index 0a1e859323b45..a8085cd8215e3 100644
+--- a/arch/riscv/kvm/aia_imsic.c
++++ b/arch/riscv/kvm/aia_imsic.c
+@@ -55,7 +55,7 @@ struct imsic {
+ 	/* IMSIC SW-file */
+ 	struct imsic_mrif *swfile;
+ 	phys_addr_t swfile_pa;
+-	spinlock_t swfile_extirq_lock;
++	raw_spinlock_t swfile_extirq_lock;
+ };
  
--			if (j == INTERP_AUX)
--				dsm_reg = CDC_RX_RXn_RX_PATH_DSM_CTL(rx, 2);
--
- 			int_mux_cfg0 = CDC_RX_INP_MUX_RX_INT0_CFG0 + j * 8;
- 			int_mux_cfg1 = int_mux_cfg0 + 4;
- 			int_mux_cfg0_val = snd_soc_component_read(component, int_mux_cfg0);
-@@ -2702,9 +2702,6 @@ static int rx_macro_enable_interp_clk(struct snd_soc_component *component,
+ #define imsic_vs_csr_read(__c)			\
+@@ -622,7 +622,7 @@ static void imsic_swfile_extirq_update(struct kvm_vcpu *vcpu)
+ 	 * interruptions between reading topei and updating pending status.
+ 	 */
  
- 	main_reg = CDC_RX_RXn_RX_PATH_CTL(rx, interp_idx);
- 	dsm_reg = CDC_RX_RXn_RX_PATH_DSM_CTL(rx, interp_idx);
--	if (interp_idx == INTERP_AUX)
--		dsm_reg = CDC_RX_RXn_RX_PATH_DSM_CTL(rx, 2);
--
- 	rx_cfg2_reg = CDC_RX_RXn_RX_PATH_CFG2(rx, interp_idx);
+-	spin_lock_irqsave(&imsic->swfile_extirq_lock, flags);
++	raw_spin_lock_irqsave(&imsic->swfile_extirq_lock, flags);
  
- 	if (SND_SOC_DAPM_EVENT_ON(event)) {
-@@ -3821,6 +3818,7 @@ static int rx_macro_probe(struct platform_device *pdev)
- 	case LPASS_CODEC_VERSION_2_0:
- 	case LPASS_CODEC_VERSION_2_1:
- 		rx->rxn_reg_stride = 0x80;
-+		rx->rxn_reg_stride2 = 0xc;
- 		def_count = ARRAY_SIZE(rx_defaults) + ARRAY_SIZE(rx_pre_2_5_defaults);
- 		reg_defaults = kmalloc_array(def_count, sizeof(struct reg_default), GFP_KERNEL);
- 		if (!reg_defaults)
-@@ -3834,6 +3832,7 @@ static int rx_macro_probe(struct platform_device *pdev)
- 	case LPASS_CODEC_VERSION_2_7:
- 	case LPASS_CODEC_VERSION_2_8:
- 		rx->rxn_reg_stride = 0xc0;
-+		rx->rxn_reg_stride2 = 0x0;
- 		def_count = ARRAY_SIZE(rx_defaults) + ARRAY_SIZE(rx_2_5_defaults);
- 		reg_defaults = kmalloc_array(def_count, sizeof(struct reg_default), GFP_KERNEL);
- 		if (!reg_defaults)
+ 	if (imsic_mrif_atomic_read(mrif, &mrif->eidelivery) &&
+ 	    imsic_mrif_topei(mrif, imsic->nr_eix, imsic->nr_msis))
+@@ -630,7 +630,7 @@ static void imsic_swfile_extirq_update(struct kvm_vcpu *vcpu)
+ 	else
+ 		kvm_riscv_vcpu_unset_interrupt(vcpu, IRQ_VS_EXT);
+ 
+-	spin_unlock_irqrestore(&imsic->swfile_extirq_lock, flags);
++	raw_spin_unlock_irqrestore(&imsic->swfile_extirq_lock, flags);
+ }
+ 
+ static void imsic_swfile_read(struct kvm_vcpu *vcpu, bool clear,
+@@ -1051,7 +1051,7 @@ int kvm_riscv_vcpu_aia_imsic_init(struct kvm_vcpu *vcpu)
+ 	}
+ 	imsic->swfile = page_to_virt(swfile_page);
+ 	imsic->swfile_pa = page_to_phys(swfile_page);
+-	spin_lock_init(&imsic->swfile_extirq_lock);
++	raw_spin_lock_init(&imsic->swfile_extirq_lock);
+ 
+ 	/* Setup IO device */
+ 	kvm_iodevice_init(&imsic->iodev, &imsic_iodoev_ops);
 -- 
 2.43.0
 
