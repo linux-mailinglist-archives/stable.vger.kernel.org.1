@@ -1,130 +1,141 @@
-Return-Path: <stable+bounces-88268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CAC99B2489
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:43:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 506B39B249B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:50:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EC9A1C21162
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 05:43:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81F981C20EC6
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 05:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E9218C92F;
-	Mon, 28 Oct 2024 05:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEBAD18DF90;
+	Mon, 28 Oct 2024 05:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qaNqX7AR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uTtuA7QU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F2218C350
-	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 05:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE9018DF7B;
+	Mon, 28 Oct 2024 05:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730094180; cv=none; b=S4nBNyGPhK5eSpa3VrLC5KG8pnbyjmypzfRtKFAUrOUk4A0bh2aZ0SVyPmApjpirs2Yc7KQzFh+I/JKYg/HEV5diGKrNtzmmqbLdCBe6BpLKYIdXG+v1spSQ2+RjU/X8hamYYaRX1z4ggcNIa6MsLpwq+vPT8YtVJ2Y68HC2+us=
+	t=1730094625; cv=none; b=krz1O0ZCjvwE/YxAcF0wWCkpi6HbdU3YH2lnVQe4XuMQ7mq6hQag1eZEEUGhrhUypLDBMKOGVOkJmTCMOk3ZdxYlAH/O4QWTdMr6XVqyB8Fntm7ISyZYwenTNfxCLYRRK5EFR16yqRuNGoI7Yha/TzHQ9SRw1cITtqw9g6wZyKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730094180; c=relaxed/simple;
-	bh=74d4N95sj2T/XoWX9vIlcTtSjwi0Hb+K3U9pU5LCDcw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=rO3J5LvDvZBvDkKU6zIVcwa/ifDt2RldLaRN3WO1iwP4sSAkh4dvH80tHzg3BproTGIHh2WSLF8wXUWTAa0FMgSUhFDChGIZKhDnXVq5W4uld+sJxgFZSgcVQNEbXCCCzRfH6waypsj3vFYAooe1t40UNrCdN4PAPowLMBnS+yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qaNqX7AR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D09FBC4CEC3;
-	Mon, 28 Oct 2024 05:42:59 +0000 (UTC)
+	s=arc-20240116; t=1730094625; c=relaxed/simple;
+	bh=cphvGT84GpWQdpKAIyfVpKkY71YTs0aVCk6EV1mh/Lc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GadcqZI0wR0HKqxO6SJXFvg/GSSfsQUpmXyKnKW/9mL4SiNANUIYT2aUey3VeftxEyzQ4ARIntfzZfjaH/2YvJ5TMhMI/V+lAABzhFVF6aRHO3K+tCoVCWAM4Tem+SAyMXgRfGRXTY7dG7437LdhN3ELV3lY4vdODS0pLIUtPd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uTtuA7QU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CAA0C4CEC3;
+	Mon, 28 Oct 2024 05:50:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730094179;
-	bh=74d4N95sj2T/XoWX9vIlcTtSjwi0Hb+K3U9pU5LCDcw=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=qaNqX7ARdr32r30Ty4xP6LZdDbwJK/3E7MPoRR3exNMNfX1zdygVcLMwUcz2bLlRl
-	 znui1XS5z2l/o6MvYhywNAIZeWAfv5Q1zKMp7S3z0nIR8Bw0bSfxJ/gLbV72RWPXem
-	 6374inscryOAJqsR3BrdCtyRpA/5wTLDZoUUIDwxoFPpHZQ2h108OaD2kEsA6WY+cl
-	 BxW6eBW4rrq4R6lH7/oJ08A11JzAw03CryaB3v8iIrQopXvRZlh/74mIsK+w+U0TpG
-	 SYbwtU7d9bxOZPjM4b7ACHPi5iv3CV1HhcvadlG/dARBnBJ2o2Brj69+XWt3sAFXSb
-	 qjNk9ru7d4iPA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA919D1358C;
-	Mon, 28 Oct 2024 05:42:59 +0000 (UTC)
-From: "Jason-JH.Lin via B4 Relay" <devnull+jason-jh.lin.mediatek.com@kernel.org>
-Date: Mon, 28 Oct 2024 13:42:49 +0800
-Subject: [PATCH v2] Revert "drm/mipi-dsi: Set the fwnode for
- mipi_dsi_device"
+	s=k20201202; t=1730094625;
+	bh=cphvGT84GpWQdpKAIyfVpKkY71YTs0aVCk6EV1mh/Lc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uTtuA7QUYZswPSu3j8yKgx7hvjTM4TiKnXDnkS5abTEXhfg6EmiRiLMwTGk77o8Qr
+	 P3fq7fyGoo75+YX8A/HAys7Zsu/LQKImvwgUgvZBIdJXmAFwIczBCWovDIQ0qXHmTT
+	 1nR7dEVXUDNXx0BEsN9G0nqJxMbrrMjrJCiIn//BQ9schZbzYf7s3Ixky829+nv+hY
+	 fwpXJ7RK8VLdGcN3+Fe1GYzS1kZpCtagRd8dZstgefSFNYCciyvYX2i3MF5aSEZfdU
+	 ELC/kXjPDS/e35O0vPJgOwcr2tbu3NrUbCxDMHUTe3+EZwqH4puT0TgCyfldTcfeHf
+	 e0Z6djDubZKOQ==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-integrity@vger.kernel.org,
+	Peter Huewe <peterhuewe@gmx.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: linux-kernel@vger.kernel.org,
+	David Howells <dhowells@redhat.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	keyrings@vger.kernel.org (open list:KEYS-TRUSTED),
+	linux-security-module@vger.kernel.org (open list:SECURITY SUBSYSTEM),
+	stable@vger.kernel.org
+Subject: [PATCH v8 1/3] tpm: Return tpm2_sessions_init() when null key creation fails
+Date: Mon, 28 Oct 2024 07:49:59 +0200
+Message-ID: <20241028055007.1708971-2-jarkko@kernel.org>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241028055007.1708971-1-jarkko@kernel.org>
+References: <20241028055007.1708971-1-jarkko@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241028-fixup-5-15-v2-1-40216f0fe383@mediatek.com>
-X-B4-Tracking: v=1; b=H4sIAFgkH2cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
- vPSU3UzU4B8JSMDIxNDINZNy6woLdA11TU01TVNS0kxs0hJTDU3MFcCaigoSgXKgg2Ljq2tBQD
- YM+NdXAAAAA==
-To: stable@vger.kernel.org, Saravana Kannan <saravanak@google.com>, 
- Greg KH <gregkh@linuxfoundation.org>
-Cc: Seiya Wang <seiya.wang@mediatek.com>, 
- "Jason-JH.Lin" <jason-jh.lin@mediatek.com>, 
- Singo Chang <singo.chang@mediatek.com>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1730094178; l=1663;
- i=jason-jh.lin@mediatek.com; s=20240718; h=from:subject:message-id;
- bh=8ojWfopcwKup0laonpHcvKr5CiOjB346s5EoLYHs1DY=;
- b=5G5P3Yj1R/AQV7XiUAhveRxNe04tFWOZ3YTvRakAKWohbP+GuzP8ihOdNdb8/zDmsAHIAzcTI
- EfqxdQk3UHpB1+jJMCgJShZLo+hJC9RSp8eoNTbS3FsiosUhxHRktn4
-X-Developer-Key: i=jason-jh.lin@mediatek.com; a=ed25519;
- pk=7Hn+BnFBlPrluT5ks5tKVWb3f7O/bMBs6qEemVJwqOo=
-X-Endpoint-Received: by B4 Relay for jason-jh.lin@mediatek.com/20240718
- with auth_id=187
-X-Original-From: "Jason-JH.Lin" <jason-jh.lin@mediatek.com>
-Reply-To: jason-jh.lin@mediatek.com
+Content-Transfer-Encoding: 8bit
 
-From: "Jason-JH.Lin" <jason-jh.lin@mediatek.com>
+Do not continue tpm2_sessions_init() further if the null key pair creation
+fails.
 
-This reverts commit ac88a1f41f93499df6f50fd18ea835e6ff4f3200.
-
-Reason for revert:
-1. The commit [1] does not land on linux-5.15, so this patch does not
-fix anything.
-
-2. Since the fw_device improvements series [2] does not land on
-linux-5.15, using device_set_fwnode() causes the panel to flash during
-bootup.
-
-Incorrect link management may lead to incorrect device initialization,
-affecting firmware node links and consumer relationships.
-The fwnode setting of panel to the DSI device would cause a DSI
-initialization error without series[2], so this patch was reverted to
-avoid using the incomplete fw_devlink functionality.
-
-[1] commit 3fb16866b51d ("driver core: fw_devlink: Make cycle detection more robust")
-[2] Link: https://lore.kernel.org/all/20230207014207.1678715-1-saravanak@google.com
-
-Cc: stable@vger.kernel.org # 5.15.169
-Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+Cc: stable@vger.kernel.org # v6.10+
+Fixes: d2add27cf2b8 ("tpm: Add NULL primary creation")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- drivers/gpu/drm/drm_mipi_dsi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/drm_mipi_dsi.c b/drivers/gpu/drm/drm_mipi_dsi.c
-index 24606b632009..468a3a7cb6a5 100644
---- a/drivers/gpu/drm/drm_mipi_dsi.c
-+++ b/drivers/gpu/drm/drm_mipi_dsi.c
-@@ -221,7 +221,7 @@ mipi_dsi_device_register_full(struct mipi_dsi_host *host,
- 		return dsi;
- 	}
- 
--	device_set_node(&dsi->dev, of_fwnode_handle(info->node));
-+	dsi->dev.of_node = info->node;
- 	dsi->channel = info->channel;
- 	strlcpy(dsi->name, info->type, sizeof(dsi->name));
- 
-
+v8:
+- Refine commit message.
+v7:
+- Add the error message back but fix it up a bit:
+  1. Remove 'TPM:' given dev_err().
+  2. s/NULL/null/ as this has nothing to do with the macro in libc.
+  3. Fix the reasoning: null key creation failed
+v6:
+- Address:
+  https://lore.kernel.org/linux-integrity/69c893e7-6b87-4daa-80db-44d1120e80fe@linux.ibm.com/
+  as TPM RC is taken care of at the call site. Add also the missing
+  documentation for the return values.
+v5:
+- Do not print klog messages on error, as tpm2_save_context() already
+  takes care of this.
+v4:
+- Fixed up stable version.
+v3:
+- Handle TPM and POSIX error separately and return -ENODEV always back
+  to the caller.
+v2:
+- Refined the commit message.
 ---
-base-commit: 74cdd62cb4706515b454ce5bacb73b566c1d1bcf
-change-id: 20241024-fixup-5-15-5fdd68dae707
+ drivers/char/tpm/tpm2-sessions.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-Best regards,
+diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+index d3521aadd43e..a0306126e86c 100644
+--- a/drivers/char/tpm/tpm2-sessions.c
++++ b/drivers/char/tpm/tpm2-sessions.c
+@@ -1347,14 +1347,21 @@ static int tpm2_create_null_primary(struct tpm_chip *chip)
+  *
+  * Derive and context save the null primary and allocate memory in the
+  * struct tpm_chip for the authorizations.
++ *
++ * Return:
++ * * 0		- OK
++ * * -errno	- A system error
++ * * TPM_RC	- A TPM error
+  */
+ int tpm2_sessions_init(struct tpm_chip *chip)
+ {
+ 	int rc;
+ 
+ 	rc = tpm2_create_null_primary(chip);
+-	if (rc)
+-		dev_err(&chip->dev, "TPM: security failed (NULL seed derivation): %d\n", rc);
++	if (rc) {
++		dev_err(&chip->dev, "null key creation failed with %d\n", rc);
++		return rc;
++	}
+ 
+ 	chip->auth = kmalloc(sizeof(*chip->auth), GFP_KERNEL);
+ 	if (!chip->auth)
 -- 
-Jason-JH.Lin <jason-jh.lin@mediatek.com>
-
+2.47.0
 
 
