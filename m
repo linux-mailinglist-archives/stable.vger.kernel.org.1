@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 784B29B2776
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:48:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5D4C9B2665
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EFD91F248BF
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:48:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02FB81C2133D
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A392418DF7D;
-	Mon, 28 Oct 2024 06:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A5EE18EFD6;
+	Mon, 28 Oct 2024 06:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R0y/oVWp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJCPyZ8W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6016D8837;
-	Mon, 28 Oct 2024 06:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA07118EFCD;
+	Mon, 28 Oct 2024 06:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098106; cv=none; b=Aq/uYjsKa7OW8wnL27z8y6DcdsMbejaGJ+30RMPCF5SXAK9wdXCsDaKWwzUC5oJyhSqXBF3sxpcrf1hc3VsJGJCYjJ5EP4Op2RWEioiveZiRs1pPASI/40373ngAsVxU6QHuabPd4ppSW9ORGoE2Xfz9m5Ycfnc+2snRg/9Q22A=
+	t=1730097550; cv=none; b=dZCSKcIIjYG1gu52N6xjUgZRTPry+IZDUwzIjhqZe+DJsTmKCA3vYC0ZDuqpDiJHgVXjBH0d1hIxzYioj/U2W/SxVQc7ZbVbAWd3MXzQZ1C/wXwjzjUeTjsiRc9ULgBnZsv9wUyqlABPSrbfPDUJ3ZOhYCtT8Fxkd/aimw5azw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098106; c=relaxed/simple;
-	bh=XBJ/ngkKuBdM28CSpxMxvn1dqbUT2PkvsPOQOgghofY=;
+	s=arc-20240116; t=1730097550; c=relaxed/simple;
+	bh=+mUVeOV+hOd4iQP2VY3GJfKy3yN0RSfHlIKaERt9N/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GoMxCmx5t9NmKQc0cHWP9i/5JXcgSR2J+074Orwt1cwm0mVa+lj0aY9NfTrtJlANsteYzIP6+0nzeehxMXROg0X1g6823fWPiM9U5yjgbIEqkDz0QMMqx0/DreZHqCVvQNO43cYqJHeYLskOJPlREr6UecvqiyfmmNtrxkxKkNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R0y/oVWp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9736C4CEE3;
-	Mon, 28 Oct 2024 06:48:25 +0000 (UTC)
+	 MIME-Version; b=fTIeAKOEki4oQ7SLHZgvXLN1MHFiORiK/9fWRkcZeRxxrIoXz2G0cXT2DDD7R8g3MaVn8iZxw2KJc2L6ijHEDyxppsj+t/lKOelCkOA603JxWlCrl5XqPFlRCll2A/NzozT03iMHaVIj6GNOhiYUZ++tVf1CEZAiw5lewewXckw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJCPyZ8W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE8CC4CEC3;
+	Mon, 28 Oct 2024 06:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098106;
-	bh=XBJ/ngkKuBdM28CSpxMxvn1dqbUT2PkvsPOQOgghofY=;
+	s=korg; t=1730097550;
+	bh=+mUVeOV+hOd4iQP2VY3GJfKy3yN0RSfHlIKaERt9N/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R0y/oVWpdcn3c1kK3pZaoYc4DZy1lIg3ahtB6WDyxlSmMEhVJMVaLgHJ+coG9g2wh
-	 Hf7/iC8QFbZa4MdxExgalnJTclfJycN3GsQRMZdf+Dj0wDX9AX4Kk7gvadmiXBkMGr
-	 ekVNRT6lGqBk2Xp5wi4wro1chs9kDf+nRqaDm35g=
+	b=SJCPyZ8WXqiT6EIvEsZ2SswID6G48u1Q4fcDYWh6eQn4aZJDvX2bFbCFUA8IAPr05
+	 YE0ai50f6a+n+K+/0hxzNo7PNJ/zXPkOv8MxfkCgs76eelnoXO1Z39bnHzvoNyupkB
+	 IJKNCFhdIonBlbcnNAP1Ekux8SechZNn6wYXf0gU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Rashleigh <peter@rashleigh.ca>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 079/261] net: dsa: mv88e6xxx: Fix the max_vid definition for the MV88E6361
-Date: Mon, 28 Oct 2024 07:23:41 +0100
-Message-ID: <20241028062314.009637294@linuxfoundation.org>
+Subject: [PATCH 6.6 042/208] drm/msm/dpu: check for overflow in _dpu_crtc_setup_lm_bounds()
+Date: Mon, 28 Oct 2024 07:23:42 +0100
+Message-ID: <20241028062307.691691854@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Rashleigh <peter@rashleigh.ca>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 1833d8a26f057128fd63e126b4428203ece84684 ]
+[ Upstream commit 3a0851b442d1f63ba42ecfa2506d3176cfabf9d4 ]
 
-According to the Marvell datasheet the 88E6361 has two VTU pages
-(4k VIDs per page) so the max_vid should be 8191, not 4095.
+Make _dpu_crtc_setup_lm_bounds() check that CRTC width is not
+overflowing LM requirements. Rename the function accordingly.
 
-In the current implementation mv88e6xxx_vtu_walk() gives unexpected
-results because of this error. I verified that mv88e6xxx_vtu_walk()
-works correctly on the MV88E6361 with this patch in place.
-
-Fixes: 12899f299803 ("net: dsa: mv88e6xxx: enable support for 88E6361 switch")
-Signed-off-by: Peter Rashleigh <peter@rashleigh.ca>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20241014204342.5852-1-peter@rashleigh.ca
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Tested-by: Abhinav Kumar <quic_abhinavk@quicinc.com> # sc7280
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/612237/
+Link: https://lore.kernel.org/r/20240903-dpu-mode-config-width-v6-3-617e1ecc4b7a@linaro.org
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 5b4e2ce5470d9..284270a4ade1c 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -6347,7 +6347,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.invalid_port_mask = BIT(1) | BIT(2) | BIT(8),
- 		.num_internal_phys = 5,
- 		.internal_phys_offset = 3,
--		.max_vid = 4095,
-+		.max_vid = 8191,
- 		.max_sid = 63,
- 		.port_base_addr = 0x0,
- 		.phy_base_addr = 0x0,
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
+index e238e4e8116ca..ad57368dc13f0 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
+@@ -722,12 +722,13 @@ void dpu_crtc_complete_commit(struct drm_crtc *crtc)
+ 	_dpu_crtc_complete_flip(crtc);
+ }
+ 
+-static void _dpu_crtc_setup_lm_bounds(struct drm_crtc *crtc,
++static int _dpu_crtc_check_and_setup_lm_bounds(struct drm_crtc *crtc,
+ 		struct drm_crtc_state *state)
+ {
+ 	struct dpu_crtc_state *cstate = to_dpu_crtc_state(state);
+ 	struct drm_display_mode *adj_mode = &state->adjusted_mode;
+ 	u32 crtc_split_width = adj_mode->hdisplay / cstate->num_mixers;
++	struct dpu_kms *dpu_kms = _dpu_crtc_get_kms(crtc);
+ 	int i;
+ 
+ 	for (i = 0; i < cstate->num_mixers; i++) {
+@@ -738,7 +739,12 @@ static void _dpu_crtc_setup_lm_bounds(struct drm_crtc *crtc,
+ 		r->y2 = adj_mode->vdisplay;
+ 
+ 		trace_dpu_crtc_setup_lm_bounds(DRMID(crtc), i, r);
++
++		if (drm_rect_width(r) > dpu_kms->catalog->caps->max_mixer_width)
++			return -E2BIG;
+ 	}
++
++	return 0;
+ }
+ 
+ static void _dpu_crtc_get_pcc_coeff(struct drm_crtc_state *state,
+@@ -814,7 +820,7 @@ static void dpu_crtc_atomic_begin(struct drm_crtc *crtc,
+ 
+ 	DRM_DEBUG_ATOMIC("crtc%d\n", crtc->base.id);
+ 
+-	_dpu_crtc_setup_lm_bounds(crtc, crtc->state);
++	_dpu_crtc_check_and_setup_lm_bounds(crtc, crtc->state);
+ 
+ 	/* encoder will trigger pending mask now */
+ 	drm_for_each_encoder_mask(encoder, crtc->dev, crtc->state->encoder_mask)
+@@ -1208,8 +1214,11 @@ static int dpu_crtc_atomic_check(struct drm_crtc *crtc,
+ 	if (crtc_state->active_changed)
+ 		crtc_state->mode_changed = true;
+ 
+-	if (cstate->num_mixers)
+-		_dpu_crtc_setup_lm_bounds(crtc, crtc_state);
++	if (cstate->num_mixers) {
++		rc = _dpu_crtc_check_and_setup_lm_bounds(crtc, crtc_state);
++		if (rc)
++			return rc;
++	}
+ 
+ 	/* FIXME: move this to dpu_plane_atomic_check? */
+ 	drm_atomic_crtc_state_for_each_plane_state(plane, pstate, crtc_state) {
 -- 
 2.43.0
 
