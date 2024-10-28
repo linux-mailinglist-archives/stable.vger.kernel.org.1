@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-88581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 830859B2696
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:40:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9CDD9B27AD
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:50:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4462C1C21386
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:40:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7CC12851C7
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EFB018E368;
-	Mon, 28 Oct 2024 06:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E8B018E35B;
+	Mon, 28 Oct 2024 06:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iTCetCvf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ccEHhrcJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CCF4189BAF;
-	Mon, 28 Oct 2024 06:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F067718A922;
+	Mon, 28 Oct 2024 06:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097656; cv=none; b=f24jTSzOKwIXqk4NLc0L86iSLWiEZSeszPCheDRGCtTzk0DH1L3MFjUt5qVaaf2LF4puDmcbx1MPQ1PvbFXjuLWaNKg1rCqKLdRDQeXzalfQG74U+wjDtCc8JlxLECI4sHzlvzbdRTqA5fb/eEfDfPegN6GCKQiKOBozw3WetNQ=
+	t=1730098216; cv=none; b=sOY3708UJzXLSvuEJoU4knpP0+6945YYegAhMbUTwoq7Qo9spnPgcpRNOBICCJJTM6r1+/Bm7nv2c4q2ghrPxCDoifuNN1T902lYo60jEgUk2ZxjosaQ6+Qt29P0GJiPl7TcyoIb+2u7xYLxWzrw819dc2t/RWfk/3t3SNP1UnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097656; c=relaxed/simple;
-	bh=CeuZXRyP7Tpk5eWInQpkw0HHhP5d0BOIIN6DH/GtZo8=;
+	s=arc-20240116; t=1730098216; c=relaxed/simple;
+	bh=CdXtI4GiuQ/l1Q/TpMVbOhebb1aP3LGbyTmv8XwKhVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IpoUHQyXLFTPsoJMtKg6F+ScYT9uNHQzDHfia0rFLvo1M1G9cQBAhd+taoJ2WYDSDJtHbzCgauf3tpXPGbguCzyAmybXyPzwWTDCeSjwjSZXYiQ1QcQycmqnPumQKmeswoKJT5qECxyLpiLkkT3NfPJycajhz9v7j8ZNCis1Hu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iTCetCvf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B084AC4CEC3;
-	Mon, 28 Oct 2024 06:40:55 +0000 (UTC)
+	 MIME-Version; b=cid3IPhIjwbUxL/gRoo7+dOSvcB2wi8A60D4fcA9r772z1Qbwv+fiIVv+cok0/E+z9QAWZXpteUwp+IhfVe5XCT8wB1ckEER1G4n567j/bKnQLbvIIY3XeAitgsKziZi+OPpRtS1l3X4bbhr4Scz3xeJgc40ZMEzIRllV/EbXq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ccEHhrcJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F91C4CEC3;
+	Mon, 28 Oct 2024 06:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097656;
-	bh=CeuZXRyP7Tpk5eWInQpkw0HHhP5d0BOIIN6DH/GtZo8=;
+	s=korg; t=1730098215;
+	bh=CdXtI4GiuQ/l1Q/TpMVbOhebb1aP3LGbyTmv8XwKhVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iTCetCvfjqWZN2BptDGWqNfahhdyQEzrX/2xkdomZUr98GACHWy0C207m1XHrEJdo
-	 aM7w1aQZ1PUYk6+vs9it6jP7baHijYFXku9s7Olhyk+apy/9N/C+BJCwsWCO86W5o6
-	 qnTTW/Gse727cpOgLIMjVL+vcbi2+q8ILKoJ+VuQ=
+	b=ccEHhrcJCxxFwnFZgQiFtgSOLI80eZttLVs1TFPFcMD9dyCB/Vsmt78GRxddAyyq4
+	 jVF9tO6S0HkbCM2mJPbO+jo21P4alCtFfNLYytFDKLTpDOuOMohVQ8ASIxGK35BYdh
+	 iK9FREqF0mTmXPg6FUj+M3oxaUHS30K1dbpDvifM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordan Rome <linux@jordanrome.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Zhao Mengmeng <zhaomengmeng@kylinos.cn>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/208] bpf: Fix iter/task tid filtering
+Subject: [PATCH 6.11 127/261] udf: refactor udf_current_aext() to handle error
 Date: Mon, 28 Oct 2024 07:24:29 +0100
-Message-ID: <20241028062308.840521568@linuxfoundation.org>
+Message-ID: <20241028062315.220186521@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,189 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordan Rome <linux@jordanrome.com>
+From: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
 
-[ Upstream commit 9495a5b731fcaf580448a3438d63601c88367661 ]
+[ Upstream commit ee703a7068f95764cfb62b57db1d36e465cb9b26 ]
 
-In userspace, you can add a tid filter by setting
-the "task.tid" field for "bpf_iter_link_info".
-However, `get_pid_task` when called for the
-`BPF_TASK_ITER_TID` type should have been using
-`PIDTYPE_PID` (tid) instead of `PIDTYPE_TGID` (pid).
+As Jan suggested in links below, refactor udf_current_aext() to
+differentiate between error, hit EOF and success, it now takes pointer to
+etype to store the extent type, return 1 when getting etype success,
+return 0 when hitting EOF and return -errno when err.
 
-Fixes: f0d74c4da1f0 ("bpf: Parameterize task iterators.")
-Signed-off-by: Jordan Rome <linux@jordanrome.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241016210048.1213935-1-linux@jordanrome.com
+Link: https://lore.kernel.org/all/20240912111235.6nr3wuqvktecy3vh@quack3/
+Signed-off-by: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20241001115425.266556-2-zhaomzhao@126.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/task_iter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/udf/inode.c    | 40 ++++++++++++++++++++++++++--------------
+ fs/udf/truncate.c | 10 ++++++++--
+ fs/udf/udfdecl.h  |  5 +++--
+ 3 files changed, 37 insertions(+), 18 deletions(-)
 
-diff --git a/kernel/bpf/task_iter.c b/kernel/bpf/task_iter.c
-index c4ab9d6cdbe9c..f7ef58090c7d0 100644
---- a/kernel/bpf/task_iter.c
-+++ b/kernel/bpf/task_iter.c
-@@ -119,7 +119,7 @@ static struct task_struct *task_seq_get_next(struct bpf_iter_seq_task_common *co
- 		rcu_read_lock();
- 		pid = find_pid_ns(common->pid, common->ns);
- 		if (pid) {
--			task = get_pid_task(pid, PIDTYPE_TGID);
-+			task = get_pid_task(pid, PIDTYPE_PID);
- 			*tid = common->pid;
+diff --git a/fs/udf/inode.c b/fs/udf/inode.c
+index 4726a4d014b60..c64c2eff3399a 100644
+--- a/fs/udf/inode.c
++++ b/fs/udf/inode.c
+@@ -1955,6 +1955,7 @@ int udf_setup_indirect_aext(struct inode *inode, udf_pblk_t block,
+ 	struct extent_position nepos;
+ 	struct kernel_lb_addr neloc;
+ 	int ver, adsize;
++	int err = 0;
+ 
+ 	if (UDF_I(inode)->i_alloc_type == ICBTAG_FLAG_AD_SHORT)
+ 		adsize = sizeof(struct short_ad);
+@@ -1999,10 +2000,12 @@ int udf_setup_indirect_aext(struct inode *inode, udf_pblk_t block,
+ 	if (epos->offset + adsize > sb->s_blocksize) {
+ 		struct kernel_lb_addr cp_loc;
+ 		uint32_t cp_len;
+-		int cp_type;
++		int8_t cp_type;
+ 
+ 		epos->offset -= adsize;
+-		cp_type = udf_current_aext(inode, epos, &cp_loc, &cp_len, 0);
++		err = udf_current_aext(inode, epos, &cp_loc, &cp_len, &cp_type, 0);
++		if (err <= 0)
++			goto err_out;
+ 		cp_len |= ((uint32_t)cp_type) << 30;
+ 
+ 		__udf_add_aext(inode, &nepos, &cp_loc, cp_len, 1);
+@@ -2017,6 +2020,9 @@ int udf_setup_indirect_aext(struct inode *inode, udf_pblk_t block,
+ 	*epos = nepos;
+ 
+ 	return 0;
++err_out:
++	brelse(bh);
++	return err;
+ }
+ 
+ /*
+@@ -2167,9 +2173,12 @@ int8_t udf_next_aext(struct inode *inode, struct extent_position *epos,
+ {
+ 	int8_t etype;
+ 	unsigned int indirections = 0;
++	int ret = 0;
+ 
+-	while ((etype = udf_current_aext(inode, epos, eloc, elen, inc)) ==
+-	       (EXT_NEXT_EXTENT_ALLOCDESCS >> 30)) {
++	while ((ret = udf_current_aext(inode, epos, eloc, elen,
++				       &etype, inc)) > 0) {
++		if (etype != (EXT_NEXT_EXTENT_ALLOCDESCS >> 30))
++			break;
+ 		udf_pblk_t block;
+ 
+ 		if (++indirections > UDF_MAX_INDIR_EXTS) {
+@@ -2190,14 +2199,17 @@ int8_t udf_next_aext(struct inode *inode, struct extent_position *epos,
  		}
- 		rcu_read_unlock();
+ 	}
+ 
+-	return etype;
++	return ret > 0 ? etype : -1;
+ }
+ 
+-int8_t udf_current_aext(struct inode *inode, struct extent_position *epos,
+-			struct kernel_lb_addr *eloc, uint32_t *elen, int inc)
++/*
++ * Returns 1 on success, -errno on error, 0 on hit EOF.
++ */
++int udf_current_aext(struct inode *inode, struct extent_position *epos,
++		     struct kernel_lb_addr *eloc, uint32_t *elen, int8_t *etype,
++		     int inc)
+ {
+ 	int alen;
+-	int8_t etype;
+ 	uint8_t *ptr;
+ 	struct short_ad *sad;
+ 	struct long_ad *lad;
+@@ -2224,8 +2236,8 @@ int8_t udf_current_aext(struct inode *inode, struct extent_position *epos,
+ 	case ICBTAG_FLAG_AD_SHORT:
+ 		sad = udf_get_fileshortad(ptr, alen, &epos->offset, inc);
+ 		if (!sad)
+-			return -1;
+-		etype = le32_to_cpu(sad->extLength) >> 30;
++			return 0;
++		*etype = le32_to_cpu(sad->extLength) >> 30;
+ 		eloc->logicalBlockNum = le32_to_cpu(sad->extPosition);
+ 		eloc->partitionReferenceNum =
+ 				iinfo->i_location.partitionReferenceNum;
+@@ -2234,17 +2246,17 @@ int8_t udf_current_aext(struct inode *inode, struct extent_position *epos,
+ 	case ICBTAG_FLAG_AD_LONG:
+ 		lad = udf_get_filelongad(ptr, alen, &epos->offset, inc);
+ 		if (!lad)
+-			return -1;
+-		etype = le32_to_cpu(lad->extLength) >> 30;
++			return 0;
++		*etype = le32_to_cpu(lad->extLength) >> 30;
+ 		*eloc = lelb_to_cpu(lad->extLocation);
+ 		*elen = le32_to_cpu(lad->extLength) & UDF_EXTENT_LENGTH_MASK;
+ 		break;
+ 	default:
+ 		udf_debug("alloc_type = %u unsupported\n", iinfo->i_alloc_type);
+-		return -1;
++		return -EINVAL;
+ 	}
+ 
+-	return etype;
++	return 1;
+ }
+ 
+ static int udf_insert_aext(struct inode *inode, struct extent_position epos,
+diff --git a/fs/udf/truncate.c b/fs/udf/truncate.c
+index a686c10fd709d..4758ba7b5f51c 100644
+--- a/fs/udf/truncate.c
++++ b/fs/udf/truncate.c
+@@ -188,6 +188,7 @@ int udf_truncate_extents(struct inode *inode)
+ 	loff_t byte_offset;
+ 	int adsize;
+ 	struct udf_inode_info *iinfo = UDF_I(inode);
++	int ret = 0;
+ 
+ 	if (iinfo->i_alloc_type == ICBTAG_FLAG_AD_SHORT)
+ 		adsize = sizeof(struct short_ad);
+@@ -217,8 +218,8 @@ int udf_truncate_extents(struct inode *inode)
+ 	else
+ 		lenalloc -= sizeof(struct allocExtDesc);
+ 
+-	while ((etype = udf_current_aext(inode, &epos, &eloc,
+-					 &elen, 0)) != -1) {
++	while ((ret = udf_current_aext(inode, &epos, &eloc,
++				       &elen, &etype, 0)) > 0) {
+ 		if (etype == (EXT_NEXT_EXTENT_ALLOCDESCS >> 30)) {
+ 			udf_write_aext(inode, &epos, &neloc, nelen, 0);
+ 			if (indirect_ext_len) {
+@@ -253,6 +254,11 @@ int udf_truncate_extents(struct inode *inode)
+ 		}
+ 	}
+ 
++	if (ret < 0) {
++		brelse(epos.bh);
++		return ret;
++	}
++
+ 	if (indirect_ext_len) {
+ 		BUG_ON(!epos.bh);
+ 		udf_free_blocks(sb, NULL, &epos.block, 0, indirect_ext_len);
+diff --git a/fs/udf/udfdecl.h b/fs/udf/udfdecl.h
+index 88692512a4668..d893db95ac70e 100644
+--- a/fs/udf/udfdecl.h
++++ b/fs/udf/udfdecl.h
+@@ -171,8 +171,9 @@ extern void udf_write_aext(struct inode *, struct extent_position *,
+ extern int8_t udf_delete_aext(struct inode *, struct extent_position);
+ extern int8_t udf_next_aext(struct inode *, struct extent_position *,
+ 			    struct kernel_lb_addr *, uint32_t *, int);
+-extern int8_t udf_current_aext(struct inode *, struct extent_position *,
+-			       struct kernel_lb_addr *, uint32_t *, int);
++extern int udf_current_aext(struct inode *inode, struct extent_position *epos,
++			    struct kernel_lb_addr *eloc, uint32_t *elen,
++			    int8_t *etype, int inc);
+ extern void udf_update_extra_perms(struct inode *inode, umode_t mode);
+ 
+ /* misc.c */
 -- 
 2.43.0
 
