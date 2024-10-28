@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-89007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 534789B2DA3
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:57:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B9A9B2DA6
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:58:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F40971F21605
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 10:57:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C4941F219BE
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 10:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8DF31DE8A7;
-	Mon, 28 Oct 2024 10:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49011DED51;
+	Mon, 28 Oct 2024 10:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CFYZb920"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ua0SD3my"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802781DE896;
-	Mon, 28 Oct 2024 10:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599491DED47;
+	Mon, 28 Oct 2024 10:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730112714; cv=none; b=TGb5NcQrRWOE3mGm4drdhAqrtu8nreIOVtKzuz2+zJ5zvXU3nPQwW8NEdU63vQfO+EUcJ+hAMXAQUwTBrnKqr8HC/AqhHNHXuPS6DMC8xiN+hfgpyYyIzbhAQ0Ojh3EpJA+iOQcnbobq3AHFWNGdATIH5gx3XmdTHaqlAeS4RHo=
+	t=1730112716; cv=none; b=Q7T/wedKMEagLqnMjwOK4YAUMUCaDh286CLNRF01ee6Us+Z/Cv/prF+x30eIi1kHOxjDIu/KsK75DQ2WzW1xymax31rob9bLVsxbrmTLyGDMfM4l7TNULSdIO55UZlY7bLOqDx0ySxpz9MlYtqyGRZ7i/A1QzHdzeC3lLO9i0CY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730112714; c=relaxed/simple;
-	bh=OWxOGNmUPDrLPuT3wSvfntoRXHJZRuAiTlwBH3kokJ0=;
+	s=arc-20240116; t=1730112716; c=relaxed/simple;
+	bh=bTDJbkidu2AHkisvua6Gnnv0DFKZ72/Vz61qoxw9XYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PB8wm/hKE/3RUZ0hY6NmyDJ/8EO1IKJTbVpT3NxBwDjL5NhbP84it67yDkxMjvcaGIDp122zpgSFCc7ZuZ+H2jsxXCfuFQoEyZaROJk55rljfTf1D7DudJq9/Ru67j3hMeLBPqLdgIbRkk2VegIfrZjo6Oi7+g17AxB5lUfCmGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CFYZb920; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3975C4CEC3;
-	Mon, 28 Oct 2024 10:51:52 +0000 (UTC)
+	 MIME-Version; b=U4WMC3Lrw/7J3zaeEKl/kdUFLw3R2sjrDw6PGsp60QwrQemzcHdcc1moAXUNbwNB+dLLEIh5XTdLH88Wd9uD0V0wTQxgUOV57hNN6DtH/WosRemI3EevD+69qipnDhHyrL2OenboeX0tDc8wNGpQ3JpDAYZKbFe6PLE4dLr4ir4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ua0SD3my; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6936C4CEE4;
+	Mon, 28 Oct 2024 10:51:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730112714;
-	bh=OWxOGNmUPDrLPuT3wSvfntoRXHJZRuAiTlwBH3kokJ0=;
+	s=k20201202; t=1730112716;
+	bh=bTDJbkidu2AHkisvua6Gnnv0DFKZ72/Vz61qoxw9XYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CFYZb920CGPX7sVtjYlZfcgoDy1A43SRU62DqIRMMTajhwccKxHm+c8OgqFk41Tw5
-	 fn2o1V0l06wlklJK4Rm4IUgAEwVdI4gr1Wtv1ls+tCKNrAg17LFKfVVQ5pLxzXAed2
-	 2wtRYkXsQBVOSP6PLQe3vi0PN9TUyj8KtLod6F70WGaA36PBsicyJcfnF4ZJjCo3yz
-	 q5f0b6z0Zsh3TLqRQnEyuvGbGGLa2wqx2/NTXhA8vsrJ1/dZDFIhdgkoiGvQqWL8sz
-	 c0wPPAULAYz03CxkdgRLTmJvrWfQY9dzCucRqltEaL9ynKcGSQ8JWAS98hgJgPMZrW
-	 zg+KDicpusiww==
+	b=ua0SD3my89JjYOM6U+oB33syY1K3c2AEyh0OntWyij5jsbFL1A/BtcRiZRR+MOTs8
+	 TjUYC8RzLx7HtZZUOtcaZVrJOPSszLUUCTDynt4UJTpPuSXY8OpVssZS1qK6z6fF91
+	 rEdjNRgLbx96dEAcGzrwIXqTm+9H4m0c2GvszJBbeYQhMU5ig1AI8iBl7Hy4G+btK7
+	 jvcDb/YODGrqGVbRMB+MiSBGiaOrmuhrDdeXZUq0hCm/c9JpflmK2ghRtn9kzkj+Z+
+	 XXWQ/gQqDFn1Ex9RLjTGMzFMoCTeZS1eSwXUjuF0JnnTyiOdOmnr4vfYmA5pGQvyNZ
+	 JYBnWLPHW1cOw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Huacai Chen <chenhuacai@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>,
+Cc: Reinhard Speyerer <rspmn@arcor.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	zhaotianrui@loongson.cn,
-	chenhuacai@kernel.org,
-	bigeasy@linutronix.de,
-	clrkwllms@kernel.org,
-	rostedt@goodmis.org,
-	kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-rt-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.11 25/32] LoongArch: KVM: Mark hrtimer to expire in hard interrupt context
-Date: Mon, 28 Oct 2024 06:50:07 -0400
-Message-ID: <20241028105050.3559169-25-sashal@kernel.org>
+	bjorn@mork.no,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 26/32] net: usb: qmi_wwan: add Fibocom FG132 0x0112 composition
+Date: Mon, 28 Oct 2024 06:50:08 -0400
+Message-ID: <20241028105050.3559169-26-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241028105050.3559169-1-sashal@kernel.org>
 References: <20241028105050.3559169-1-sashal@kernel.org>
@@ -72,99 +71,55 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.5
 Content-Transfer-Encoding: 8bit
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Reinhard Speyerer <rspmn@arcor.de>
 
-[ Upstream commit 73adbd92f3223dc0c3506822b71c6b259d5d537b ]
+[ Upstream commit 64761c980cbf71fb7a532a8c7299907ea972a88c ]
 
-Like commit 2c0d278f3293f ("KVM: LAPIC: Mark hrtimer to expire in hard
-interrupt context") and commit 9090825fa9974 ("KVM: arm/arm64: Let the
-timer expire in hardirq context on RT"), On PREEMPT_RT enabled kernels
-unmarked hrtimers are moved into soft interrupt expiry mode by default.
-Then the timers are canceled from an preempt-notifier which is invoked
-with disabled preemption which is not allowed on PREEMPT_RT.
+Add Fibocom FG132 0x0112 composition:
 
-The timer callback is short so in could be invoked in hard-IRQ context.
-So let the timer expire on hard-IRQ context even on -RT.
+T:  Bus=03 Lev=02 Prnt=06 Port=01 Cnt=02 Dev#= 10 Spd=12   MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2cb7 ProdID=0112 Rev= 5.15
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=Fibocom Module
+S:  SerialNumber=xxxxxxxx
+C:* #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=86(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
 
-This fix a "scheduling while atomic" bug for PREEMPT_RT enabled kernels:
+Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
 
- BUG: scheduling while atomic: qemu-system-loo/1011/0x00000002
- Modules linked in: amdgpu rfkill nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat ns
- CPU: 1 UID: 0 PID: 1011 Comm: qemu-system-loo Tainted: G        W          6.12.0-rc2+ #1774
- Tainted: [W]=WARN
- Hardware name: Loongson Loongson-3A5000-7A1000-1w-CRB/Loongson-LS3A5000-7A1000-1w-CRB, BIOS vUDK2018-LoongArch-V2.0.0-prebeta9 10/21/2022
- Stack : ffffffffffffffff 0000000000000000 9000000004e3ea38 9000000116744000
-         90000001167475a0 0000000000000000 90000001167475a8 9000000005644830
-         90000000058dc000 90000000058dbff8 9000000116747420 0000000000000001
-         0000000000000001 6a613fc938313980 000000000790c000 90000001001c1140
-         00000000000003fe 0000000000000001 000000000000000d 0000000000000003
-         0000000000000030 00000000000003f3 000000000790c000 9000000116747830
-         90000000057ef000 0000000000000000 9000000005644830 0000000000000004
-         0000000000000000 90000000057f4b58 0000000000000001 9000000116747868
-         900000000451b600 9000000005644830 9000000003a13998 0000000010000020
-         00000000000000b0 0000000000000004 0000000000000000 0000000000071c1d
-         ...
- Call Trace:
- [<9000000003a13998>] show_stack+0x38/0x180
- [<9000000004e3ea34>] dump_stack_lvl+0x84/0xc0
- [<9000000003a71708>] __schedule_bug+0x48/0x60
- [<9000000004e45734>] __schedule+0x1114/0x1660
- [<9000000004e46040>] schedule_rtlock+0x20/0x60
- [<9000000004e4e330>] rtlock_slowlock_locked+0x3f0/0x10a0
- [<9000000004e4f038>] rt_spin_lock+0x58/0x80
- [<9000000003b02d68>] hrtimer_cancel_wait_running+0x68/0xc0
- [<9000000003b02e30>] hrtimer_cancel+0x70/0x80
- [<ffff80000235eb70>] kvm_restore_timer+0x50/0x1a0 [kvm]
- [<ffff8000023616c8>] kvm_arch_vcpu_load+0x68/0x2a0 [kvm]
- [<ffff80000234c2d4>] kvm_sched_in+0x34/0x60 [kvm]
- [<9000000003a749a0>] finish_task_switch.isra.0+0x140/0x2e0
- [<9000000004e44a70>] __schedule+0x450/0x1660
- [<9000000004e45cb0>] schedule+0x30/0x180
- [<ffff800002354c70>] kvm_vcpu_block+0x70/0x120 [kvm]
- [<ffff800002354d80>] kvm_vcpu_halt+0x60/0x3e0 [kvm]
- [<ffff80000235b194>] kvm_handle_gspr+0x3f4/0x4e0 [kvm]
- [<ffff80000235f548>] kvm_handle_exit+0x1c8/0x260 [kvm]
-
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://patch.msgid.link/ZxLKp5YZDy-OM0-e@arcor.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kvm/timer.c | 7 ++++---
- arch/loongarch/kvm/vcpu.c  | 2 +-
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/loongarch/kvm/timer.c b/arch/loongarch/kvm/timer.c
-index 74a4b5c272d60..32dc213374bea 100644
---- a/arch/loongarch/kvm/timer.c
-+++ b/arch/loongarch/kvm/timer.c
-@@ -161,10 +161,11 @@ static void _kvm_save_timer(struct kvm_vcpu *vcpu)
- 	if (kvm_vcpu_is_blocking(vcpu)) {
- 
- 		/*
--		 * HRTIMER_MODE_PINNED is suggested since vcpu may run in
--		 * the same physical cpu in next time
-+		 * HRTIMER_MODE_PINNED_HARD is suggested since vcpu may run in
-+		 * the same physical cpu in next time, and the timer should run
-+		 * in hardirq context even in the PREEMPT_RT case.
- 		 */
--		hrtimer_start(&vcpu->arch.swtimer, expire, HRTIMER_MODE_ABS_PINNED);
-+		hrtimer_start(&vcpu->arch.swtimer, expire, HRTIMER_MODE_ABS_PINNED_HARD);
- 	}
- }
- 
-diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-index 6905283f535b9..9218fc521c22d 100644
---- a/arch/loongarch/kvm/vcpu.c
-+++ b/arch/loongarch/kvm/vcpu.c
-@@ -1144,7 +1144,7 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
- 	vcpu->arch.vpid = 0;
- 	vcpu->arch.flush_gpa = INVALID_GPA;
- 
--	hrtimer_init(&vcpu->arch.swtimer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED);
-+	hrtimer_init(&vcpu->arch.swtimer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED_HARD);
- 	vcpu->arch.swtimer.function = kvm_swtimer_wakeup;
- 
- 	vcpu->arch.handle_exit = kvm_handle_exit;
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index 4823dbdf54656..f137c82f1c0f7 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1426,6 +1426,7 @@ static const struct usb_device_id products[] = {
+ 	{QMI_FIXED_INTF(0x2c7c, 0x0296, 4)},	/* Quectel BG96 */
+ 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x030e, 4)},	/* Quectel EM05GV2 */
+ 	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0104, 4)},	/* Fibocom NL678 series */
++	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0112, 0)},	/* Fibocom FG132 */
+ 	{QMI_FIXED_INTF(0x0489, 0xe0b4, 0)},	/* Foxconn T77W968 LTE */
+ 	{QMI_FIXED_INTF(0x0489, 0xe0b5, 0)},	/* Foxconn T77W968 LTE with eSIM support*/
+ 	{QMI_FIXED_INTF(0x2692, 0x9025, 4)},    /* Cellient MPL200 (rebranded Qualcomm 05c6:9025) */
 -- 
 2.43.0
 
