@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-88922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C1439B2814
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:53:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D62129B2628
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:37:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02BD9286436
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:53:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 824571F21EE6
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:37:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7B018EFEC;
-	Mon, 28 Oct 2024 06:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D7318E36D;
+	Mon, 28 Oct 2024 06:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XW25Ehsf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1Am325z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4984818E05D;
-	Mon, 28 Oct 2024 06:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CE318DF68;
+	Mon, 28 Oct 2024 06:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098426; cv=none; b=VPezRiLivljHp11jD8gf85p36mC4kPVIrIIhyVZcHn4WcbnI21zBtl+6/Yq6L9pZEtAyy3uYkz2eV5HIx1UKDAZd4tDOMXMfE4hUhjzAQD/W4xHprPozp5hwGv+7dz4z4xH0KK8vsdKViujM7vEWUJnJhziOFAIWmUdPt9TUMi4=
+	t=1730097431; cv=none; b=FSUVKEuXoVWrdJ9Ej0Mrp4pxDBoMxTL4onFDAVl+8rDVnDbWmcPZVJT8+/pifJJILe11H4LB7BUrUirnwPwwjRUXMOMQ3MzsXj9ErLWqWljKwNL0nPAW8a1nE9RbML85u1h2rGjT0moOmtqz3Eq23EdPqbNLGNh5c3o+nh5zpiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098426; c=relaxed/simple;
-	bh=6KJF4MLEvWJP+Mv/ttjtipYkQPKyCvmpKiwBsUXINSc=;
+	s=arc-20240116; t=1730097431; c=relaxed/simple;
+	bh=OshzA7/5SK/7Uipc7qFOmSIHOtIzCR9SbPk2fCdfJWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NgB7rjLJkM4nRN8hS1VuKQ8RFkqCVXoSHSP6mLXb4jEo7+ryV69bBFJAH4jrVmqP430jxg12x580Pb1/pc6Q3rBKoLI0HnqJ9LomD5NudDeMOaGHuepRm1+PjJMx1RpNb3HN4/cxBHb1hBCPcQZygJl1GqY4HTUdFjBPiyQtxBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XW25Ehsf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAE57C4CEC3;
-	Mon, 28 Oct 2024 06:53:45 +0000 (UTC)
+	 MIME-Version; b=UuLXKIdCXXlBAQyYnk9/JHp5VAjvl+v8FKd57TonzjASu0H2TFUg5NWED+j/bwymZYvHnlq/T5KD+yDR1R6J8Ygm7kgXUcdbmC+XokfDdiG3RnapDoQuy+P7a+yUazbGLxMEoolEz5gUqVofAYU2Q+lPpsj+plZZ2sePs5dWRHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1Am325z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5396DC4CEC3;
+	Mon, 28 Oct 2024 06:37:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098426;
-	bh=6KJF4MLEvWJP+Mv/ttjtipYkQPKyCvmpKiwBsUXINSc=;
+	s=korg; t=1730097431;
+	bh=OshzA7/5SK/7Uipc7qFOmSIHOtIzCR9SbPk2fCdfJWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XW25Ehsf6BmGlgDnbdEswQo4peEM6qWRLit8kAJd7CnBknhsjtuLM5IEzu55QIIEy
-	 odgpVBkCqBR1FA4n/CKnxKPRHyNhCeqmWYhoVLg4ov8WqT5MGvTrE5wGc2A2XzaF4k
-	 hbyjywuCJxa1yNXQPn0mZjWuRLILCesEKO//6R6o=
+	b=e1Am325zOoedtv/GXAafUGKi/gBsbewfm16DsLxCdud5CUgdY31x3ZbmICQPp3ClA
+	 t/SvpTuh8lPJthZ6kz0+7xj6G5BmMS8tG+uxCiQIQbplIUDoeRjXtC78XP6iqUJAmD
+	 KkonDUSa2I3wod3sKr37YAmotgMqxmhXLhqimohk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edmund Raile <edmund.raile@proton.me>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Subject: [PATCH 6.11 222/261] firewire: core: fix invalid port index for parent device
-Date: Mon, 28 Oct 2024 07:26:04 +0100
-Message-ID: <20241028062317.672640429@linuxfoundation.org>
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 128/137] hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event
+Date: Mon, 28 Oct 2024 07:26:05 +0100
+Message-ID: <20241028062302.279496258@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-commit f6a6780e0b9bbcf311a727afed06fee533a5e957 upstream.
+commit 4c262801ea60c518b5bebc22a09f5b78b3147da2 upstream.
 
-In a commit 24b7f8e5cd65 ("firewire: core: use helper functions for self
-ID sequence"), the enumeration over self ID sequence was refactored with
-some helper functions with KUnit tests. These helper functions are
-guaranteed to work expectedly by the KUnit tests, however their application
-includes a mistake to assign invalid value to the index of port connected
-to parent device.
+The existing code moves VF to the same namespace as the synthetic NIC
+during netvsc_register_vf(). But, if the synthetic device is moved to a
+new namespace after the VF registration, the VF won't be moved together.
 
-This bug affects the case that any extra node devices which has three or
-more ports are connected to 1394 OHCI controller. In the case, the path
-to update the tree cache could hits WARN_ON(), and gets general protection
-fault due to the access to invalid address computed by the invalid value.
-
-This commit fixes the bug to assign correct port index.
+To make the behavior more consistent, add a namespace check for synthetic
+NIC's NETDEV_REGISTER event (generated during its move), and move the VF
+if it is not in the same namespace.
 
 Cc: stable@vger.kernel.org
-Reported-by: Edmund Raile <edmund.raile@proton.me>
-Closes: https://lore.kernel.org/lkml/8a9902a4ece9329af1e1e42f5fea76861f0bf0e8.camel@proton.me/
-Fixes: 24b7f8e5cd65 ("firewire: core: use helper functions for self ID sequence")
-Link: https://lore.kernel.org/r/20241025034137.99317-1-o-takashi@sakamocchi.jp
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Fixes: c0a41b887ce6 ("hv_netvsc: move VF to same namespace as netvsc device")
+Suggested-by: Stephen Hemminger <stephen@networkplumber.org>
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/1729275922-17595-1-git-send-email-haiyangz@microsoft.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firewire/core-topology.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/hyperv/netvsc_drv.c |   30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/drivers/firewire/core-topology.c b/drivers/firewire/core-topology.c
-index 6adadb11962e..892b94cfd626 100644
---- a/drivers/firewire/core-topology.c
-+++ b/drivers/firewire/core-topology.c
-@@ -204,7 +204,7 @@ static struct fw_node *build_tree(struct fw_card *card, const u32 *sid, int self
- 				// the node->ports array where the parent node should be.  Later,
- 				// when we handle the parent node, we fix up the reference.
- 				++parent_count;
--				node->color = i;
-+				node->color = port_index;
- 				break;
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -2791,6 +2791,31 @@ static struct  hv_driver netvsc_drv = {
+ 	},
+ };
  
- 			case PHY_PACKET_SELF_ID_PORT_STATUS_CHILD:
--- 
-2.47.0
-
++/* Set VF's namespace same as the synthetic NIC */
++static void netvsc_event_set_vf_ns(struct net_device *ndev)
++{
++	struct net_device_context *ndev_ctx = netdev_priv(ndev);
++	struct net_device *vf_netdev;
++	int ret;
++
++	vf_netdev = rtnl_dereference(ndev_ctx->vf_netdev);
++	if (!vf_netdev)
++		return;
++
++	if (!net_eq(dev_net(ndev), dev_net(vf_netdev))) {
++		ret = dev_change_net_namespace(vf_netdev, dev_net(ndev),
++					       "eth%d");
++		if (ret)
++			netdev_err(vf_netdev,
++				   "Cannot move to same namespace as %s: %d\n",
++				   ndev->name, ret);
++		else
++			netdev_info(vf_netdev,
++				    "Moved VF to namespace with: %s\n",
++				    ndev->name);
++	}
++}
++
+ /*
+  * On Hyper-V, every VF interface is matched with a corresponding
+  * synthetic interface. The synthetic interface is presented first
+@@ -2803,6 +2828,11 @@ static int netvsc_netdev_event(struct no
+ 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
+ 	int ret = 0;
+ 
++	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
++		netvsc_event_set_vf_ns(event_dev);
++		return NOTIFY_DONE;
++	}
++
+ 	ret = check_dev_is_matching_vf(event_dev);
+ 	if (ret != 0)
+ 		return NOTIFY_DONE;
 
 
 
