@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-88500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90B439B2641
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:38:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FAE89B274C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:47:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 009C8B20FF6
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:38:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA0C92831F6
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 754BE18E74D;
-	Mon, 28 Oct 2024 06:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C193018F2E2;
+	Mon, 28 Oct 2024 06:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uwclDcz1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v8iwHyTt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E9018E374;
-	Mon, 28 Oct 2024 06:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7750D18F2DB;
+	Mon, 28 Oct 2024 06:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097474; cv=none; b=L/Abg8Lner6uQPtEN6IhCq1VzfRffbQWlFGCh3OHeJR0bl+hhbBWruIa7HY1He9v1iNixWxNPKyO7R5kO3Tj/DAArx6WBM6FaSv9jzhB8rI4dOHACksVoiHhSMFK+ly5x83BcWzscKAzuyir4eU+gNulBo+HibnRMbswQSy/x3E=
+	t=1730098014; cv=none; b=RHgMra7+xYKHQR7NolmFY+eXUbJDyIdpKwWH752bEYvD2A8wUWafPaMlyHFVh2/TveqI2nIFv0Rc+HhDwAxni8gqEkRtP/MCZCU6N/4/tcw5SyNegQgps0i7kQ+uuaihgeXinA1aPQiz/kHge1W/Yfskbe9uTkZ1FXAc2+pHNcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097474; c=relaxed/simple;
-	bh=BFHM6rURAxbTJgBLhs6/bSMolIZAdZ13HgDODNCx5hU=;
+	s=arc-20240116; t=1730098014; c=relaxed/simple;
+	bh=ECBTRyWiP9tGuczLwGWIPeGOYIIBQvc72G2GpSWtP1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tTi3tX//lcy2wC+mDe2Nn6UFm+ekb76LE6nQOzVdwd0qKIY3wSuoNhEolbcjE1VuFDTfNgPKqzreLV1ycBBlPitAxcaHGGy5USn/cnLkRkfyGhC1jAaZQIiFKcZtu5/JUTUUdvZqjxptqtoDTQMWbrMrwVUOD0abuWSatt2/4y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uwclDcz1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1081C4CEE3;
-	Mon, 28 Oct 2024 06:37:53 +0000 (UTC)
+	 MIME-Version; b=CgT7oWaTxP8a3DX39G9LUxnWGzVOB5Yv7aRrc32HmJlLwGMa1BeS6wR67Q4KUUgoAopyu0pYqq4RH6ba/DkbWap4dI7ihFOOYza5ZkdxqwYOlyW4H94GctHC74v7+mijE1EstoPLQHfqZxR8p4igdME9agpe/sUgzj5RJ4tLYpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v8iwHyTt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6287C4CEC3;
+	Mon, 28 Oct 2024 06:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097474;
-	bh=BFHM6rURAxbTJgBLhs6/bSMolIZAdZ13HgDODNCx5hU=;
+	s=korg; t=1730098013;
+	bh=ECBTRyWiP9tGuczLwGWIPeGOYIIBQvc72G2GpSWtP1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uwclDcz1wEazMk5Ep8i28iJhVgRZx05+us7lK7/jf7+dPTRh7hJeR8KkQeyZsX7M2
-	 q1B2fc7tHioe1q4HDQoDtdK4RB61AHiiFU1zpo3WyebaDnBYWJpYz6d7i8mcHuOA7m
-	 uiNa+IwxMCw7eNYLHfLzbWvhyvw14/jw68hHw/gc=
+	b=v8iwHyTtNu5OlrolR3wR6gy8zmNuuNUAsw7KDRtQpyQsxa/g1XdIjDSEA0DY2lQPF
+	 mKvVYAjEyiUlH3wqIHqqC7Y6I8HLiz12xO3uNg/RoGFN+ylINMPz/L9/8X0sIpuJbj
+	 YjuN0/sTxPnoTIEGqz/7GmoOA8iasNf0P78qdqJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Lobanov <m.lobanov@rosalinux.ru>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Abhishek Mohapatra <abhishek.mohapatra@broadcom.com>,
+	Chandramohan Akula <chandramohan.akula@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 001/208] iio: accel: bma400: Fix uninitialized variable field_value in tap event handling.
+Subject: [PATCH 6.11 039/261] RDMA/bnxt_re: Fix the max CQ WQEs for older adapters
 Date: Mon, 28 Oct 2024 07:23:01 +0100
-Message-ID: <20241028062306.687286724@linuxfoundation.org>
+Message-ID: <20241028062312.989190529@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Lobanov <m.lobanov@rosalinux.ru>
+From: Abhishek Mohapatra <abhishek.mohapatra@broadcom.com>
 
-[ Upstream commit db9795a43dc944f048a37b65e06707f60f713e34 ]
+[ Upstream commit ac6df53738b465053d38d491fff87bd7d37fdc07 ]
 
-In the current implementation, the local variable field_value is used
-without prior initialization, which may lead to reading uninitialized
-memory. Specifically, in the macro set_mask_bits, the initial
-(potentially uninitialized) value of the buffer is copied into old__,
-and a mask is applied to calculate new__. A similar issue was resolved in
-commit 6ee2a7058fea ("iio: accel: bma400: Fix smatch warning based on use
-of unintialized value.").
+Older adapters doesn't support the MAX CQ WQEs reported by older FW. So
+restrict the value reported to 1M always for older adapters.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 961db2da159d ("iio: accel: bma400: Add support for single and double tap events")
-Signed-off-by: Mikhail Lobanov <m.lobanov@rosalinux.ru>
-Link: https://patch.msgid.link/20240910083624.27224-1-m.lobanov@rosalinux.ru
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Link: https://patch.msgid.link/r/1728373302-19530-2-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Abhishek Mohapatra<abhishek.mohapatra@broadcom.com>
+Reviewed-by: Chandramohan Akula <chandramohan.akula@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/bma400_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/qplib_sp.c | 2 ++
+ drivers/infiniband/hw/bnxt_re/qplib_sp.h | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
-index e90e2f01550ad..04083b7395ab8 100644
---- a/drivers/iio/accel/bma400_core.c
-+++ b/drivers/iio/accel/bma400_core.c
-@@ -1219,7 +1219,8 @@ static int bma400_activity_event_en(struct bma400_data *data,
- static int bma400_tap_event_en(struct bma400_data *data,
- 			       enum iio_event_direction dir, int state)
- {
--	unsigned int mask, field_value;
-+	unsigned int mask;
-+	unsigned int field_value = 0;
- 	int ret;
- 
- 	/*
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+index 9328db92fa6db..8e59422dd137e 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+@@ -137,6 +137,8 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
+ 			    6 : sb->max_sge;
+ 	attr->max_cq = le32_to_cpu(sb->max_cq);
+ 	attr->max_cq_wqes = le32_to_cpu(sb->max_cqe);
++	if (!bnxt_qplib_is_chip_gen_p7(rcfw->res->cctx))
++		attr->max_cq_wqes = min_t(u32, BNXT_QPLIB_MAX_CQ_WQES, attr->max_cq_wqes);
+ 	attr->max_cq_sges = attr->max_qp_sges;
+ 	attr->max_mr = le32_to_cpu(sb->max_mr);
+ 	attr->max_mw = le32_to_cpu(sb->max_mw);
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.h b/drivers/infiniband/hw/bnxt_re/qplib_sp.h
+index 16a67d70a6fc4..2f16f3db093ea 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_sp.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.h
+@@ -55,6 +55,7 @@ struct bnxt_qplib_dev_attr {
+ 	u32				max_qp_wqes;
+ 	u32				max_qp_sges;
+ 	u32				max_cq;
++#define BNXT_QPLIB_MAX_CQ_WQES          0xfffff
+ 	u32				max_cq_wqes;
+ 	u32				max_cq_sges;
+ 	u32				max_mr;
 -- 
 2.43.0
 
