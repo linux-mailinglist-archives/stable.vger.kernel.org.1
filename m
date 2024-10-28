@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-88886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C38B49B27ED
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B2AD9B2701
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FF16B2110F
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00A37281FAB
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C389718DF7D;
-	Mon, 28 Oct 2024 06:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A344E18E77D;
+	Mon, 28 Oct 2024 06:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HKIFJW5Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w71+gya6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812318837;
-	Mon, 28 Oct 2024 06:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611E718E35B;
+	Mon, 28 Oct 2024 06:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098343; cv=none; b=jerz9z9hhiFCfz3CP7zwD6ES1UMKB2szAtpxSzAjINfx+4TIEcRQErKKMRgpYT5t94M8JVXoMXoC3sr+MnA3G4VdBFvRjOB7Fp+9gNjTZloWW30ldid6P7PK9N5oRxOm38bjMKu4gvQx/2Bee8HDHEgT2XEhXb+AikirWPusVNs=
+	t=1730097869; cv=none; b=WQPW/DH2b66xmSzZDMbApEc5PwhTar0K4LkMXT1bUs/qIBdnlYThOMVkldE1V3Zuh5x5jTdbf8rU48VZuqondaU1TQJDKKwXCKFsTFqGTB8dlmX3MC8csVhPxvL18FNEt9uUGRphoyNV1Td88D0+6pBo+++LvdXdtK6U/bfVL9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098343; c=relaxed/simple;
-	bh=DSLMIBITShn+0TBF0ugID2Ki7F964EZPZFYkVK7kFJk=;
+	s=arc-20240116; t=1730097869; c=relaxed/simple;
+	bh=8keeAWDEHn7iwb0/ZRUVomayuxGClYpoMW2nQw+wwP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WXsH/fLgd11UUfDSigf1qk6xEs91slE+att+uISRVRQyLGb2L/3dJhXWMZerVqbHSjXH/KzfDIX0Ln+hTqhwm5EpAqCs7TJivvr7f9I0ucfIw6d1AQ174fzn7qmDvR7fX9fnqBV0yy3rqXFAmah7lxTCDoFpzIMKKYcJKZNzCPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HKIFJW5Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2324FC4CEC3;
-	Mon, 28 Oct 2024 06:52:23 +0000 (UTC)
+	 MIME-Version; b=UswDt762sloEd5Y7pxoS+JRhOm/A7NnJngPyL2fsaP14qHKEPPPQiFzGYxTACvrL/TfVKQnwdmncwahGmc1GJ2WdXiMWSVca8zxCG32AUbz7u5aZUt1uYPhfLGjg0Bf+yrAsvQiFkaH7XFuCkJTlb+E9vFmDknYX44dye2YAuQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w71+gya6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E49C4CEC3;
+	Mon, 28 Oct 2024 06:44:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098343;
-	bh=DSLMIBITShn+0TBF0ugID2Ki7F964EZPZFYkVK7kFJk=;
+	s=korg; t=1730097868;
+	bh=8keeAWDEHn7iwb0/ZRUVomayuxGClYpoMW2nQw+wwP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HKIFJW5Q+4J9VCdI3qg61qcSATpoAAaJHVfgrIh+6SS3RvcAtgszF7it9ZV67+KIy
-	 Tk2pxcR35C07swga1n+4ep++lU8Fr6mzlSmr1nv7qVxdjGa6Yaxa+DPUh/ipgW48ZI
-	 i9uKpXJAB1KchV83ifLYH1OFTdmSrsIe2W4SDFYI=
+	b=w71+gya6FyyiMKIPu8P+2H0PjOGDMAok3LJr9QTS4EpNmJgG2Mc9ZRMg+wPO/69QM
+	 6pEMvp6h2XAJBVBaWxW+XlwKX8sTYoQSNhbqtfIY5fvgNDtac5CuMh0+eMJRsX61bC
+	 TWJD7uszTDqlN3AB60uqOL1Nbc4wbvrkmvDMREks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 186/261] ASoC: rsnd: Fix probe failure on HiHope boards due to endpoint parsing
+	Oliver Neukum <oneukum@suse.com>,
+	Greg Thelen <gthelen@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	John Sperbeck <jsperbeck@google.com>
+Subject: [PATCH 6.6 148/208] net: usb: usbnet: fix name regression
 Date: Mon, 28 Oct 2024 07:25:28 +0100
-Message-ID: <20241028062316.675342489@linuxfoundation.org>
+Message-ID: <20241028062310.274530503@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 9b064d200aa8fee9d1d7ced05d8a617e45966715 ]
+[ Upstream commit 8a7d12d674ac6f2147c18f36d1e15f1a48060edf ]
 
-On the HiHope boards, we have a single port with a single endpoint defined
-as below:
-....
-        rsnd_port: port {
-                rsnd_endpoint: endpoint {
-                        remote-endpoint = <&dw_hdmi0_snd_in>;
+The fix for MAC addresses broke detection of the naming convention
+because it gave network devices no random MAC before bind()
+was called. This means that the check for the local assignment bit
+was always negative as the address was zeroed from allocation,
+instead of from overwriting the MAC with a unique hardware address.
 
-                        dai-format = "i2s";
-                        bitclock-master = <&rsnd_endpoint>;
-                        frame-master = <&rsnd_endpoint>;
+The correct check for whether bind() has altered the MAC is
+done with is_zero_ether_addr
 
-                        playback = <&ssi2>;
-                };
-        };
-....
-
-With commit 547b02f74e4a ("ASoC: rsnd: enable multi Component support for
-Audio Graph Card/Card2"), support for multiple ports was added. This caused
-probe failures on HiHope boards, as the endpoint could not be retrieved due
-to incorrect device node pointers being used.
-
-This patch fixes the issue by updating the `rsnd_dai_of_node()` and
-`rsnd_dai_probe()` functions to use the correct device node pointers based
-on the port names ('port' or 'ports'). It ensures that the endpoint is
-properly parsed for both single and multi-port configurations, restoring
-compatibility with HiHope boards.
-
-Fixes: 547b02f74e4a ("ASoC: rsnd: enable multi Component support for Audio Graph Card/Card2")
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/20241010141432.716868-1-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Reported-by: Greg Thelen <gthelen@google.com>
+Diagnosed-by: John Sperbeck <jsperbeck@google.com>
+Fixes: bab8eb0dd4cb9 ("usbnet: modern method to get random MAC")
+Link: https://patch.msgid.link/20241017071849.389636-1-oneukum@suse.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sh/rcar/core.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/usb/usbnet.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/sh/rcar/core.c b/sound/soc/sh/rcar/core.c
-index 63b3c8bf0fdef..eda8de2264395 100644
---- a/sound/soc/sh/rcar/core.c
-+++ b/sound/soc/sh/rcar/core.c
-@@ -1298,7 +1298,9 @@ static int rsnd_dai_of_node(struct rsnd_priv *priv, int *is_graph)
- 		if (!of_node_name_eq(ports, "ports") &&
- 		    !of_node_name_eq(ports, "port"))
- 			continue;
--		priv->component_dais[i] = of_graph_get_endpoint_count(ports);
-+		priv->component_dais[i] =
-+			of_graph_get_endpoint_count(of_node_name_eq(ports, "ports") ?
-+						    ports : np);
- 		nr += priv->component_dais[i];
- 		i++;
- 		if (i >= RSND_MAX_COMPONENT) {
-@@ -1510,7 +1512,8 @@ static int rsnd_dai_probe(struct rsnd_priv *priv)
- 			if (!of_node_name_eq(ports, "ports") &&
- 			    !of_node_name_eq(ports, "port"))
- 				continue;
--			for_each_endpoint_of_node(ports, dai_np) {
-+			for_each_endpoint_of_node(of_node_name_eq(ports, "ports") ?
-+						  ports : np, dai_np) {
- 				__rsnd_dai_probe(priv, dai_np, dai_np, 0, dai_i);
- 				if (!rsnd_is_gen1(priv) && !rsnd_is_gen2(priv)) {
- 					rdai = rsnd_rdai_get(priv, dai_i);
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 4f5a3a4aac89e..9f66c47dc58bc 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1771,7 +1771,8 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
+ 		// can rename the link if it knows better.
+ 		if ((dev->driver_info->flags & FLAG_ETHER) != 0 &&
+ 		    ((dev->driver_info->flags & FLAG_POINTTOPOINT) == 0 ||
+-		     (net->dev_addr [0] & 0x02) == 0))
++		     /* somebody touched it*/
++		     !is_zero_ether_addr(net->dev_addr)))
+ 			strscpy(net->name, "eth%d", sizeof(net->name));
+ 		/* WLAN devices should always be named "wlan%d" */
+ 		if ((dev->driver_info->flags & FLAG_WLAN) != 0)
 -- 
 2.43.0
 
