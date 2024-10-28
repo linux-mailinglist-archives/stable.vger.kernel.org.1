@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-88339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9F7D9B2581
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:31:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBBA69B2802
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:53:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 459F6B2038A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:31:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 738871F2178F
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:53:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9154D18D629;
-	Mon, 28 Oct 2024 06:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB882AF07;
+	Mon, 28 Oct 2024 06:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RW3foXIn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZR1Z+xG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF8D15B10D;
-	Mon, 28 Oct 2024 06:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13638837;
+	Mon, 28 Oct 2024 06:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097108; cv=none; b=o00zMdVLLPaF48Dz+ov4KYsnRSyM+0z9cCBxmF+qQf4FWGyBeigJ+1zL4mev4CQ+0DC7PXWfQNld4QpIyu6iBLsTr5AqPAkIUtXo6nEsl5rbWh2V1BbiYXRve2n232hUOb4Bjqy+5rr0Kck//im0BqaRWVWS/ryISnwII5/aZ+k=
+	t=1730098392; cv=none; b=YPiZsPRrf2YKWPUBX906LYPdHZVlPmOieuTZe6goH36qn2KIPuWwL6JF1/KO6haNYXlb/IOi1nxRuhsSe/g/p2BmsOC2FeQLsmADsqO4jyuDH1QiSyHMjnSD5N4dQxbfe0RKGssWaBae340PcbhM7ffovUa7O8mu27cRqoAvl2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097108; c=relaxed/simple;
-	bh=mqWCJ1C4ip5SWKnpdmm6L6zN3F3ikkLv4Gje/kHQYso=;
+	s=arc-20240116; t=1730098392; c=relaxed/simple;
+	bh=DcNAKwwCcrR7ZQ5uDjxD8QXJUhzki5cowCNSUuBsGec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jMjqiBVSei5IN3oqlu7fTizr1tJ+ljosN72dvX6hvNEBakmQpr5oxEjlCo+LTCVi1XtSwAHarkdGWxhZuZNyNPfDRZsigfG8xb4QbcBCBvUFPnpufnx9rOW8evSPt+D4aRLveLPvkBICXu+poDRJWTbcCC+SvDvI5WsBB2R3Sv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RW3foXIn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D92C4CEC7;
-	Mon, 28 Oct 2024 06:31:47 +0000 (UTC)
+	 MIME-Version; b=O9BIFLa/5KYlbYYIop5Lmi7KLRRJ/jbVeba3+HEFycvYMllQKbbUS676Pl414q/WHQsEsbABjn1472SQO2Xc9cHbr2cwFwlCPhO0IZtJtCeluQ5Pv3B+pgexrCCTkDMgg4QWSl7pDioFE/yDCSCQ5zBtofWMlQKBTOb9dn39GFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZR1Z+xG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16EADC4CEC3;
+	Mon, 28 Oct 2024 06:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097108;
-	bh=mqWCJ1C4ip5SWKnpdmm6L6zN3F3ikkLv4Gje/kHQYso=;
+	s=korg; t=1730098392;
+	bh=DcNAKwwCcrR7ZQ5uDjxD8QXJUhzki5cowCNSUuBsGec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RW3foXIn6jZsaHd/i7CgcGqOIs1vru/xKyR/bhUUZAx9FlJ87Wkmx6hAWyWrhVm8g
-	 t52/Dj5yLdGp8WF8zlBVPW6cxuLJHIT/slrbuCFuwA6C2qI5053OLosa50IkQOaOAH
-	 hq/gGzdHmarIfmkEqwbv2uQXlld96ZqrhsnGpYkc=
+	b=IZR1Z+xGz5+3MB6oDWoGcz+3dufynfa2Mmx7ZIY5Eho7csCFmoSbHCes75w5ejjR+
+	 9bS7v4mdOa0EQgPqUp61jrijaghlIPh2ma3heSWbGSoAEXIZPAZOswOk9wfThJvTdp
+	 P0yEh36+0wbsJpwM62HuUsytbAjs+tMU3HpzV2tE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.15 67/80] btrfs: zoned: fix zone unusable accounting for freed reserved extent
+	Richard Gong <richard.gong@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Yazen Ghannam <yazen.ghannam@amd.com>
+Subject: [PATCH 6.11 205/261] x86/amd_nb: Add new PCI ID for AMD family 1Ah model 20h
 Date: Mon, 28 Oct 2024 07:25:47 +0100
-Message-ID: <20241028062254.474197598@linuxfoundation.org>
+Message-ID: <20241028062317.206068793@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Richard Gong <richard.gong@amd.com>
 
-commit bf9821ba4792a0d9a2e72803ae7b4341faf3d532 upstream.
+commit f8bc84b6096f1ffa67252f0f88d86e77f6bbe348 upstream.
 
-When btrfs reserves an extent and does not use it (e.g, by an error), it
-calls btrfs_free_reserved_extent() to free the reserved extent. In the
-process, it calls btrfs_add_free_space() and then it accounts the region
-bytes as block_group->zone_unusable.
+Add new PCI ID for Device 18h and Function 4.
 
-However, it leaves the space_info->bytes_zone_unusable side not updated. As
-a result, ENOSPC can happen while a space_info reservation succeeded. The
-reservation is fine because the freed region is not added in
-space_info->bytes_zone_unusable, leaving that space as "free". OTOH,
-corresponding block group counts it as zone_unusable and its allocation
-pointer is not rewound, we cannot allocate an extent from that block group.
-That will also negate space_info's async/sync reclaim process, and cause an
-ENOSPC error from the extent allocation process.
-
-Fix that by returning the space to space_info->bytes_zone_unusable.
-Ideally, since a bio is not submitted for this reserved region, we should
-return the space to free space and rewind the allocation pointer. But, it
-needs rework on extent allocation handling, so let it work in this way for
-now.
-
-Fixes: 169e0da91a21 ("btrfs: zoned: track unusable bytes for zones")
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Richard Gong <richard.gong@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Link: https://lore.kernel.org/r/20240913162903.649519-1-richard.gong@amd.com
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/block-group.c |    2 ++
+ arch/x86/kernel/amd_nb.c |    2 ++
  1 file changed, 2 insertions(+)
 
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -3386,6 +3386,8 @@ void btrfs_free_reserved_bytes(struct bt
- 	spin_lock(&cache->lock);
- 	if (cache->ro)
- 		space_info->bytes_readonly += num_bytes;
-+	else if (btrfs_is_zoned(cache->fs_info))
-+		space_info->bytes_zone_unusable += num_bytes;
- 	cache->reserved -= num_bytes;
- 	space_info->bytes_reserved -= num_bytes;
- 	space_info->max_extent_size = 0;
+--- a/arch/x86/kernel/amd_nb.c
++++ b/arch/x86/kernel/amd_nb.c
+@@ -44,6 +44,7 @@
+ #define PCI_DEVICE_ID_AMD_19H_M70H_DF_F4	0x14f4
+ #define PCI_DEVICE_ID_AMD_19H_M78H_DF_F4	0x12fc
+ #define PCI_DEVICE_ID_AMD_1AH_M00H_DF_F4	0x12c4
++#define PCI_DEVICE_ID_AMD_1AH_M20H_DF_F4	0x16fc
+ #define PCI_DEVICE_ID_AMD_1AH_M60H_DF_F4	0x124c
+ #define PCI_DEVICE_ID_AMD_1AH_M70H_DF_F4	0x12bc
+ #define PCI_DEVICE_ID_AMD_MI200_DF_F4		0x14d4
+@@ -127,6 +128,7 @@ static const struct pci_device_id amd_nb
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M78H_DF_F4) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_CNB17H_F4) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M00H_DF_F4) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M20H_DF_F4) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M60H_DF_F4) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M70H_DF_F4) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_MI200_DF_F4) },
 
 
 
