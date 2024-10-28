@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C7D9B25C3
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:34:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7286A9B269B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:41:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42B391F21DAC
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:34:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E4481F22AAB
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D4C18F2DB;
-	Mon, 28 Oct 2024 06:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442AC18E37C;
+	Mon, 28 Oct 2024 06:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eDchz5/U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jy7my4Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D991718E37C;
-	Mon, 28 Oct 2024 06:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003822C697;
+	Mon, 28 Oct 2024 06:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097217; cv=none; b=suLOifrknQqtxpqB7m1F3juWy+YU9gbHhk/MYoeFuPkjtVZ0UI2PrRfheetMqPVD0rkc8TswvnPL3PrZTHQuEI6TV+92ArOezyAJJ+83wa235RaPwOlzYzfdn/g855eCLMFvzBm0cdT4GDLCJSyeemqv51oqhvyPCRJVHzLQVNg=
+	t=1730097665; cv=none; b=PTVkYoI0kbRxIkn4iDF2iLqtJHdMa67cdgD7cQ0k5rtYpJbzrLIdOpDpjF+T24cLTsVJ/gyWLRDZyLx5cFGl1nMuf4jZsQCYbqdvPKJ8hoZt4D6KTeOmLHi+Q4gju7pgVMfmmXJZcog9rp2HNIl4cPlkxqk5VervUiB0sYBqBBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097217; c=relaxed/simple;
-	bh=ukMEKbwS1EbOS6HiDq/GWxJyeBCUzINhn7IJ3VdqLKc=;
+	s=arc-20240116; t=1730097665; c=relaxed/simple;
+	bh=5A4FjDgB+Uq3AgiKKBv6JvsvZzsCmFCFmVby+u63Q8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jz0UanXKPX2GkimlW8Snes4mfeQ7khNzjrdm+Jmy+QbIHzvp37kOq4aBhyFyvAv8sQiSwBvPkBjLz2lyntbaEOto/Ur6DaCEenmCDmm9GcdacK51bgqdJa7p+K9ylMAYElPEH/luz/vmOsILEOXxF/IsPXdj7O0L5tA4sUyroRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eDchz5/U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D640C4CEC7;
-	Mon, 28 Oct 2024 06:33:37 +0000 (UTC)
+	 MIME-Version; b=r+UwdNTeOfpJe/rQao7Rzz9Eh4MJZaWecPRbnbZXt6BI4PUA8rqO3hlrlxf1g6PqVO9uKS9Ppbe+IR3fN8rTJjsFnL5YGl6Z+lvBPj+Ku5LAdtZW/3JW6rIba6xI12o30yPgPgSix4RVd0rq1dTFhf7Dn/Sj6xfYTDJkk070oaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jy7my4Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2F9C4CEC3;
+	Mon, 28 Oct 2024 06:41:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097217;
-	bh=ukMEKbwS1EbOS6HiDq/GWxJyeBCUzINhn7IJ3VdqLKc=;
+	s=korg; t=1730097664;
+	bh=5A4FjDgB+Uq3AgiKKBv6JvsvZzsCmFCFmVby+u63Q8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eDchz5/UdsQt3/FZHwpaeHhZIOpG/VAhrgkqHa7IQTCpAB9XfhUg3PLW9IZpwPfSW
-	 ZCm4tD0ODLM0gxiz1dI/YOZeTdRB6+PYAJcP3UqqHv4QZLqs4aeHVHF8RFMVYGVEhm
-	 SpdZ8zEdXtEH9J12KLgNy6M1tsZvL5iTZHS3JI6s=
+	b=1jy7my4QxfEsyal7TmuVfkTMiHeOzD4GH7mjxrqwJYMIe8envRIIDXqbL6lheAQas
+	 30eM+XVYS8clmzNqrK7cU6qTj83GAbP8ZvE6wRq98wRJicOUBvHXojY3Asu+V9HUHG
+	 kJ3yvD4cVqt0XhNp92vdrGjHLU76MVfZb4nUqWgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Hai <wanghai38@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 035/137] net: systemport: fix potential memory leak in bcm_sysport_xmit()
+Subject: [PATCH 6.6 092/208] mm: convert collapse_huge_page() to use a folio
 Date: Mon, 28 Oct 2024 07:24:32 +0100
-Message-ID: <20241028062259.706543084@linuxfoundation.org>
+Message-ID: <20241028062308.919434399@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Hai <wanghai38@huawei.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit c401ed1c709948e57945485088413e1bb5e94bd1 ]
+[ Upstream commit 5432726848bb27a01badcbc93b596f39ee6c5ffb ]
 
-The bcm_sysport_xmit() returns NETDEV_TX_OK without freeing skb
-in case of dma_map_single() fails, add dev_kfree_skb() to fix it.
+Replace three calls to compound_head() with one.
 
-Fixes: 80105befdb4b ("net: systemport: add Broadcom SYSTEMPORT Ethernet MAC driver")
-Signed-off-by: Wang Hai <wanghai38@huawei.com>
-Link: https://patch.msgid.link/20241014145115.44977-1-wanghai38@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lkml.kernel.org/r/20231211162214.2146080-9-willy@infradead.org
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 37f0b47c5143 ("mm: khugepaged: fix the arguments order in khugepaged_collapse_file trace point")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bcmsysport.c | 1 +
- 1 file changed, 1 insertion(+)
+ mm/khugepaged.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
-index 425d6ccd5413a..1693f6c60efc7 100644
---- a/drivers/net/ethernet/broadcom/bcmsysport.c
-+++ b/drivers/net/ethernet/broadcom/bcmsysport.c
-@@ -1348,6 +1348,7 @@ static netdev_tx_t bcm_sysport_xmit(struct sk_buff *skb,
- 		netif_err(priv, tx_err, dev, "DMA map failed at %p (len=%d)\n",
- 			  skb->data, skb_len);
- 		ret = NETDEV_TX_OK;
-+		dev_kfree_skb_any(skb);
- 		goto out;
- 	}
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 97cc4ef061832..24d05e0a672dc 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1088,6 +1088,7 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
+ 	pmd_t *pmd, _pmd;
+ 	pte_t *pte;
+ 	pgtable_t pgtable;
++	struct folio *folio;
+ 	struct page *hpage;
+ 	spinlock_t *pmd_ptl, *pte_ptl;
+ 	int result = SCAN_FAIL;
+@@ -1207,13 +1208,13 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
+ 	if (unlikely(result != SCAN_SUCCEED))
+ 		goto out_up_write;
  
++	folio = page_folio(hpage);
+ 	/*
+-	 * spin_lock() below is not the equivalent of smp_wmb(), but
+-	 * the smp_wmb() inside __SetPageUptodate() can be reused to
+-	 * avoid the copy_huge_page writes to become visible after
+-	 * the set_pmd_at() write.
++	 * The smp_wmb() inside __folio_mark_uptodate() ensures the
++	 * copy_huge_page writes become visible before the set_pmd_at()
++	 * write.
+ 	 */
+-	__SetPageUptodate(hpage);
++	__folio_mark_uptodate(folio);
+ 	pgtable = pmd_pgtable(_pmd);
+ 
+ 	_pmd = mk_huge_pmd(hpage, vma->vm_page_prot);
+@@ -1221,8 +1222,8 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
+ 
+ 	spin_lock(pmd_ptl);
+ 	BUG_ON(!pmd_none(*pmd));
+-	page_add_new_anon_rmap(hpage, vma, address);
+-	lru_cache_add_inactive_or_unevictable(hpage, vma);
++	folio_add_new_anon_rmap(folio, vma, address);
++	folio_add_lru_vma(folio, vma);
+ 	pgtable_trans_huge_deposit(mm, pmd, pgtable);
+ 	set_pmd_at(mm, address, pmd, _pmd);
+ 	update_mmu_cache_pmd(vma, address, pmd);
 -- 
 2.43.0
 
