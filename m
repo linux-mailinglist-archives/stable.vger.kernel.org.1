@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-88358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 598599B2592
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:32:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70C1B9B2836
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:55:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA997B20A6D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:32:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A26601C2161C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:55:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657BB18E03A;
-	Mon, 28 Oct 2024 06:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 103BA18E05D;
+	Mon, 28 Oct 2024 06:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07CRYfwZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IWMoueCS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2115815B10D;
-	Mon, 28 Oct 2024 06:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BEE2AF07;
+	Mon, 28 Oct 2024 06:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097154; cv=none; b=dotRMk/fhTpQUsivfveojmu/eAZy5+K9vgZJ9mdKg/f+zUVaKCFY0g03yT4tbdY+jPFcucgAPCZyUFQzYBUSmoMORXBri14Bw3Q0zDSwjdec9ID0MFkCP3zd1t+9Q7ArOSA7kyZPgTPs1+ysNS17K5R9MTYowlrGkbhGXgoaP9U=
+	t=1730098500; cv=none; b=mS/2Gs5GzwBhxGOSD6OrH1jcgT1/0GCqLWfespEHDenxQ8fuVXwu4fvO70DBJeIiN9PFsSRjjWbHfUsuFYPR5G2aYTQneSspQfkMT2yMvcYQ8Lyui8gVr2OKUTB1TNFSLrKNeMeMb/n5IE5sWv0e4DHXgYst1lvYEBMEgqOtTXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097154; c=relaxed/simple;
-	bh=JbxUPpF0xxmAT6ReJ2ouS/6Je1PWCrzdpgjpjy8c4eY=;
+	s=arc-20240116; t=1730098500; c=relaxed/simple;
+	bh=Y6vRBI1Io89n40zrnJSPg2n2wJH4P68Pg7KuI5a9LIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WSysK4QFz2p2xDxEQRQsHwi4LDm7HQEAKnaMAu5EtsGdCLuGc1xebq1T8TGY+tn9zVgcdt8vNhvHf78bNjOPfy4UgOQVOCsyEjq0TbJbdG0pV9b00ksXkvrcoJsZaf2P9G7CM7qz9Rf+sRmzND54H2LyWseg6kXjDWwmYqpZiic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07CRYfwZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F27C4CEC7;
-	Mon, 28 Oct 2024 06:32:33 +0000 (UTC)
+	 MIME-Version; b=Dni7pdnC2aX6EGIrz868nceVmNXQU5cUtBTYrNnDQOV28MrnbwOqemRpuU3ZtACDAGo51BQVwJelPi6hl4ph8aV9/KYLBzYgdXpd10KcmFyzLbWlpIK8nR7y4ZWgJwRE9ZsrucCWrV3gluarH1DfUv51S/kuuE/caTZmUl7yxx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IWMoueCS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1551EC4CEC3;
+	Mon, 28 Oct 2024 06:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097154;
-	bh=JbxUPpF0xxmAT6ReJ2ouS/6Je1PWCrzdpgjpjy8c4eY=;
+	s=korg; t=1730098500;
+	bh=Y6vRBI1Io89n40zrnJSPg2n2wJH4P68Pg7KuI5a9LIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=07CRYfwZEAq9AxdGO6gIOTO+OD6moLwXUNxX/cdDJIgWiGrZJCZ0ZCBQSEGQXL5lz
-	 /IQuOJ4/GjafyNbOxsTl1sqttw+DyXtFV+bwCZf3FweTJ3yLVaLu7RM9qEFZbwA9oz
-	 mmNXJG0AHgGUjQRybmpUFV76uvNuDt6U6dRtErTU=
+	b=IWMoueCSvukaoUudke3ClTRe/Ry6TNGWwFOKr0254QbdGHhmMKhMJk7N143bF0wKJ
+	 +v3cMQmZCywYrGxxR7l/WvDKF4NXXrV6Z9MHFcT1+6YM9Hd68fsGmAQv1Uoy2Kuxen
+	 Q5l1EsQyYavMVzTNAHaDH6DW3xWkrZldsnbt5F0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Michel <alex.michel@wiedemann-group.com>,
-	Andrew Lunn <andrew@lunn.ch>
-Subject: [PATCH 5.15 79/80] net: phy: dp83822: Fix reset pin definitions
+	Aleksa Sarai <cyphar@cyphar.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.11 217/261] openat2: explicitly return -E2BIG for (usize > PAGE_SIZE)
 Date: Mon, 28 Oct 2024 07:25:59 +0100
-Message-ID: <20241028062254.805814568@linuxfoundation.org>
+Message-ID: <20241028062317.539562888@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michel Alex <Alex.Michel@wiedemann-group.com>
+From: Aleksa Sarai <cyphar@cyphar.com>
 
-commit de96f6a3003513c796bbe4e23210a446913f5c00 upstream.
+commit f92f0a1b05698340836229d791b3ffecc71b265a upstream.
 
-This change fixes a rare issue where the PHY fails to detect a link
-due to incorrect reset behavior.
+While we do currently return -EFAULT in this case, it seems prudent to
+follow the behaviour of other syscalls like clone3. It seems quite
+unlikely that anyone depends on this error code being EFAULT, but we can
+always revert this if it turns out to be an issue.
 
-The SW_RESET definition was incorrectly assigned to bit 14, which is the
-Digital Restart bit according to the datasheet. This commit corrects
-SW_RESET to bit 15 and assigns DIG_RESTART to bit 14 as per the
-datasheet specifications.
-
-The SW_RESET define is only used in the phy_reset function, which fully
-re-initializes the PHY after the reset is performed. The change in the
-bit definitions should not have any negative impact on the functionality
-of the PHY.
-
-v2:
-- added Fixes tag
-- improved commit message
-
-Cc: stable@vger.kernel.org
-Fixes: 5dc39fd5ef35 ("net: phy: DP83822: Add ability to advertise Fiber connection")
-Signed-off-by: Alex Michel <alex.michel@wiedemann-group.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Message-ID: <AS1P250MB0608A798661549BF83C4B43EA9462@AS1P250MB0608.EURP250.PROD.OUTLOOK.COM>
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Cc: stable@vger.kernel.org # v5.6+
+Fixes: fddb5d430ad9 ("open: introduce openat2(2) syscall")
+Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+Link: https://lore.kernel.org/r/20241010-extensible-structs-check_fields-v3-3-d2833dfe6edd@cyphar.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/dp83822.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/open.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/phy/dp83822.c
-+++ b/drivers/net/phy/dp83822.c
-@@ -40,8 +40,8 @@
- /* Control Register 2 bits */
- #define DP83822_FX_ENABLE	BIT(14)
+--- a/fs/open.c
++++ b/fs/open.c
+@@ -1458,6 +1458,8 @@ SYSCALL_DEFINE4(openat2, int, dfd, const
  
--#define DP83822_HW_RESET	BIT(15)
--#define DP83822_SW_RESET	BIT(14)
-+#define DP83822_SW_RESET	BIT(15)
-+#define DP83822_DIG_RESTART	BIT(14)
+ 	if (unlikely(usize < OPEN_HOW_SIZE_VER0))
+ 		return -EINVAL;
++	if (unlikely(usize > PAGE_SIZE))
++		return -E2BIG;
  
- /* PHY STS bits */
- #define DP83822_PHYSTS_DUPLEX			BIT(2)
+ 	err = copy_struct_from_user(&tmp, sizeof(tmp), how, usize);
+ 	if (err)
 
 
 
