@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-88652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE719B26E6
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:43:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4806E9B2620
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:37:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 833FEB2115D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:43:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D8732821E2
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25EE18E35B;
-	Mon, 28 Oct 2024 06:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB3818EFC9;
+	Mon, 28 Oct 2024 06:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZYmC1E6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYWRS1K/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC7E15B10D;
-	Mon, 28 Oct 2024 06:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BD515B10D;
+	Mon, 28 Oct 2024 06:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097817; cv=none; b=Nv6YF0iFsTjFdCnYSs4FOMbF59mY6p0mwqwMf2xWcDShDwTvS7ZZWN6AipVEuQMLgHvu6KyHsSDr71RT2+ycyHFKG8ATLX8eCRApj3O83JSo13I2wVniovJtJanauEbbujnWovH/a5mFqPun1WqRrmm22gmiLCMydVg0p3XFpvM=
+	t=1730097414; cv=none; b=nZzSb5h7AQ+3PyPxEuwiHeTkeStLMJCIEGLDM9ggUvXlYUkNkueutjtrbSAePUd9Z6P8g8L3UJsUGosixAG1NANPL6hgxycSRmuJ92YJgLgs8jZfvYmq/36XHXF1CXKKFxE/50e8FltiSfWdbg71avWvU9Y5v0QHCaK2GLlAIcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097817; c=relaxed/simple;
-	bh=YtFGpKQzb7mgSF6joCvQA9GxHzMCp4YgwDi0yCzS4+Q=;
+	s=arc-20240116; t=1730097414; c=relaxed/simple;
+	bh=vvUX10xGAw3G6tW6Ag4+vJKQAWAj2BsK6Yp/L3uPNjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RwFqC9LDqQvutn42VtzS65pT4G9WqXBMSSXzzWSa2aEpTACasK1DO2tAPEoJzYHqq/i0C9Y+l4uoz7mVEXogTkY68iQE+X5Rarcwa2BGoCpYwD1hf3/iV+B6YA2XydSIVcmTJkZsJNF8Cw6L+SlQH9Em8vrUDw/XK7yRY9+hDho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZYmC1E6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 307F8C4CEC3;
-	Mon, 28 Oct 2024 06:43:37 +0000 (UTC)
+	 MIME-Version; b=jm1A/0joF8chwWZwF4aJ/X8ivqimjZy2IHAjSDgwK3aeaEZkJWnweF4c9OUK5RXcOjuK2UugeY+P6wJ4+UBdw/yiA7TSqAG3rqUjlhzPYmPzUjH32RsrFvDkCN3knpVjywuFN7fJN245SFq3IWfNWDAbIzyYwvgOxD5udCjkzG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYWRS1K/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4F21C4CEC3;
+	Mon, 28 Oct 2024 06:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097817;
-	bh=YtFGpKQzb7mgSF6joCvQA9GxHzMCp4YgwDi0yCzS4+Q=;
+	s=korg; t=1730097413;
+	bh=vvUX10xGAw3G6tW6Ag4+vJKQAWAj2BsK6Yp/L3uPNjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yZYmC1E6z0bjo0+Fn8uDH1ZIEjDrU2Ut+COn6gLCTM91DXn4m2Dvw6yN/dR21NxUA
-	 3XBce98yJsX/gsmFnATo2aWX2TXhBr7rUc74a64e1MX/MX42zS/0gsmJ0WL7j9NQyF
-	 YVGi8YIrIENUfwGQVv03ebe8KtUvRT9sUm3z/TUY=
+	b=SYWRS1K/Puq+GDkQ7F+tS+E4Q4MtB4FR6PElul/u/Ef95WE5EDmRsq2F+GEbAYmhP
+	 o4M9TtSUKq4bpbCAu7IsB9bFZfoAcfWMogkbD8jcfdgoaN0nHuNtthe8MXp7oK8apv
+	 396bwlxGDvdh4WkEGZ8SnrdrmfUqiTfHGae/OGS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Zijlstra <peterz@infradead.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Atlas Yu <atlas.yu@canonical.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 160/208] bpf,perf: Fix perf_event_detach_bpf_prog error handling
+Subject: [PATCH 6.1 103/137] r8169: avoid unsolicited interrupts
 Date: Mon, 28 Oct 2024 07:25:40 +0100
-Message-ID: <20241028062310.568612113@linuxfoundation.org>
+Message-ID: <20241028062301.601950580@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 0ee288e69d033850bc87abe0f9cc3ada24763d7f ]
+[ Upstream commit 10ce0db787004875f4dba068ea952207d1d8abeb ]
 
-Peter reported that perf_event_detach_bpf_prog might skip to release
-the bpf program for -ENOENT error from bpf_prog_array_copy.
+It was reported that after resume from suspend a PCI error is logged
+and connectivity is broken. Error message is:
+PCI error (cmd = 0x0407, status_errs = 0x0000)
+The message seems to be a red herring as none of the error bits is set,
+and the PCI command register value also is normal. Exception handling
+for a PCI error includes a chip reset what apparently brakes connectivity
+here. The interrupt status bit triggering the PCI error handling isn't
+actually used on PCIe chip versions, so it's not clear why this bit is
+set by the chip. Fix this by ignoring this bit on PCIe chip versions.
 
-This can't happen because bpf program is stored in perf event and is
-detached and released only when perf event is freed.
-
-Let's drop the -ENOENT check and make sure the bpf program is released
-in any case.
-
-Fixes: 170a7e3ea070 ("bpf: bpf_prog_array_copy() should return -ENOENT if exclude_prog not found")
-Reported-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241023200352.3488610-1-jolsa@kernel.org
-
-Closes: https://lore.kernel.org/lkml/20241022111638.GC16066@noisy.programming.kicks-ass.net/
+Fixes: 0e4851502f84 ("r8169: merge with version 8.001.00 of Realtek's r8168 driver")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219388
+Tested-by: Atlas Yu <atlas.yu@canonical.com>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/78e2f535-438f-4212-ad94-a77637ac6c9c@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/bpf_trace.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index ecc86a595b754..9064f75de7e46 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -2217,8 +2217,6 @@ void perf_event_detach_bpf_prog(struct perf_event *event)
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 8b35e14fba3a8..a74e33bf0302e 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4617,7 +4617,9 @@ static irqreturn_t rtl8169_interrupt(int irq, void *dev_instance)
+ 	if ((status & 0xffff) == 0xffff || !(status & tp->irq_mask))
+ 		return IRQ_NONE;
  
- 	old_array = bpf_event_rcu_dereference(event->tp_event->prog_array);
- 	ret = bpf_prog_array_copy(old_array, event->prog, NULL, 0, &new_array);
--	if (ret == -ENOENT)
--		goto unlock;
- 	if (ret < 0) {
- 		bpf_prog_array_delete_safe(old_array, event->prog);
- 	} else {
+-	if (unlikely(status & SYSErr)) {
++	/* At least RTL8168fp may unexpectedly set the SYSErr bit */
++	if (unlikely(status & SYSErr &&
++	    tp->mac_version <= RTL_GIGA_MAC_VER_06)) {
+ 		rtl8169_pcierr_interrupt(tp->dev);
+ 		goto out;
+ 	}
 -- 
 2.43.0
 
