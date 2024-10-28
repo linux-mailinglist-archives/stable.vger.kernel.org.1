@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-88429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F052E9B25F7
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF2FD9B27E2
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7AC52813CD
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42668B2132A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C5D18F2CF;
-	Mon, 28 Oct 2024 06:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DA3918EFF9;
+	Mon, 28 Oct 2024 06:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9etVN4M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9iEgrgv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3787318DF68;
-	Mon, 28 Oct 2024 06:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC25C18DF7D;
+	Mon, 28 Oct 2024 06:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097312; cv=none; b=h92oY/7USYDUh97491MpeQ1oFPdGHkHo+NzjNhZJjsfVdUAFkTiQkqvYCkVBeMnW5xplHBsD8B46TC4/UNhF9lA62yfUIebsjmw3T5l+dJ+f3j4XGB1ODFwY9NMMVGa9+kD4j5t4tGoahqBFzeYpMfrdeKI8RTI16jxIOrKPcEk=
+	t=1730098314; cv=none; b=CtrOI31r4ikjkgOA9N8pF2ullZNmvuIMbQVkjJoFXiadd/uuw6+jqRnss1clONE2SeupEfSsalPnHzmHpKaXPgmBsXnoCtRox3Vq8RyrOU8IM7aTiOZpJwKqy1gf9VoU7H3vL70Gc+RTYb7tLFKz9kPubQkqvOQlSH/6VCeQuuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097312; c=relaxed/simple;
-	bh=an89KyuP0gLBUSoZU3KLfUBoCYQ2r9SqNPj/HgLgCnE=;
+	s=arc-20240116; t=1730098314; c=relaxed/simple;
+	bh=uoWiSB6CaoDRruGode2gRvKpgkQnPT96w0fUXLgnAC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nw/cAlD4BIKeoj7XuSWnal7CBs0beaehlVHIhqxkJlu77qQmLz+yvti+78bkszXM3/s2lp/vX4ywKPSX8C3siG3eW3sAmT76NXPpt5/g2shG6AvRHJfs+d28S9fTZFACFhcIDPZuAuzxKmfyg7R2OZ0RLb9H1b8oJENibmxuSJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9etVN4M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC7EEC4CEC3;
-	Mon, 28 Oct 2024 06:35:11 +0000 (UTC)
+	 MIME-Version; b=cgvL9IRkZUEigyumhbEJj4preNq4bBPWeXQfZ2H3bzeeLFctpq3QE0DKKNqVFcX2rl3qcX8pRh2Fp4Zghw/PTxTE1Ut587gP2HHgpmJr5E47tRy/OlHX76prmSUxyAYGUQXxf4sttzKyGyDBzN5mI3WOlH2HWqwzPNePvaiQcg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9iEgrgv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FAB9C4CEC3;
+	Mon, 28 Oct 2024 06:51:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097312;
-	bh=an89KyuP0gLBUSoZU3KLfUBoCYQ2r9SqNPj/HgLgCnE=;
+	s=korg; t=1730098314;
+	bh=uoWiSB6CaoDRruGode2gRvKpgkQnPT96w0fUXLgnAC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N9etVN4MBpdYFJeAHtG0JF+dFx/JsSZoFjCKcYpPcysJ5bbBQUlp7VY7O+EPcU1bd
-	 Mo3VqIubVbEOsgXy8i8gQJmZFXDo68m7gHZZoc5kV8lg3qJpK7rfmHjM+9mYmeDUuB
-	 xjysY9WOAYNjpyo4/GD5j0mnDBC/27bMP9EMxwBg=
+	b=k9iEgrgvtru+MXKB3bhc+x6l2eR8ipoFr5fSkS4Qyb9Z2cUrUAS+ns1V0gljninWZ
+	 E1jaKvUJEDKjYcCa81U2XfzKJAGqJ7/Na7zmo/tg1btSmyIYHAzruiuPtjvW6kchf5
+	 LatevzU3AflMh5cY1fZttLO8usO4+7/fj6DZnZyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 076/137] ASoC: fsl_sai: Enable FIFO continue on error FCONT bit
+Subject: [PATCH 6.11 171/261] Bluetooth: hci_core: Disable works on hci_unregister_dev
 Date: Mon, 28 Oct 2024 07:25:13 +0100
-Message-ID: <20241028062300.860970926@linuxfoundation.org>
+Message-ID: <20241028062316.280318850@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 72455e33173c1a00c0ce93d2b0198eb45d5f4195 ]
+[ Upstream commit 989fa5171f005ecf63440057218d8aeb1795287d ]
 
-FCONT=1 means On FIFO error, the SAI will continue from the
-same word that caused the FIFO error to set after the FIFO
-warning flag has been cleared.
+This make use of disable_work_* on hci_unregister_dev since the hci_dev is
+about to be freed new submissions are not disarable.
 
-Set FCONT bit in control register to avoid the channel swap
-issue after SAI xrun.
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/1727676508-22830-1-git-send-email-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 0d151a103775 ("Bluetooth: hci_core: cancel all works upon hci_unregister_dev()")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_sai.c | 5 ++++-
- sound/soc/fsl/fsl_sai.h | 1 +
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_core.c | 24 +++++++++++++++---------
+ net/bluetooth/hci_sync.c | 12 +++++++++---
+ 2 files changed, 24 insertions(+), 12 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index cf1cd0460ad98..4b155e49cbfc5 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -604,6 +604,9 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index b2f8f9c5b6106..6e07350817bec 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -1644,12 +1644,12 @@ void hci_adv_instances_clear(struct hci_dev *hdev)
+ 	struct adv_info *adv_instance, *n;
  
- 	val_cr4 |= FSL_SAI_CR4_FRSZ(slots);
+ 	if (hdev->adv_instance_timeout) {
+-		cancel_delayed_work(&hdev->adv_instance_expire);
++		disable_delayed_work(&hdev->adv_instance_expire);
+ 		hdev->adv_instance_timeout = 0;
+ 	}
  
-+	/* Set to avoid channel swap */
-+	val_cr4 |= FSL_SAI_CR4_FCONT;
+ 	list_for_each_entry_safe(adv_instance, n, &hdev->adv_instances, list) {
+-		cancel_delayed_work_sync(&adv_instance->rpa_expired_cb);
++		disable_delayed_work_sync(&adv_instance->rpa_expired_cb);
+ 		list_del(&adv_instance->list);
+ 		kfree(adv_instance);
+ 	}
+@@ -2685,11 +2685,11 @@ void hci_unregister_dev(struct hci_dev *hdev)
+ 	list_del(&hdev->list);
+ 	write_unlock(&hci_dev_list_lock);
+ 
+-	cancel_work_sync(&hdev->rx_work);
+-	cancel_work_sync(&hdev->cmd_work);
+-	cancel_work_sync(&hdev->tx_work);
+-	cancel_work_sync(&hdev->power_on);
+-	cancel_work_sync(&hdev->error_reset);
++	disable_work_sync(&hdev->rx_work);
++	disable_work_sync(&hdev->cmd_work);
++	disable_work_sync(&hdev->tx_work);
++	disable_work_sync(&hdev->power_on);
++	disable_work_sync(&hdev->error_reset);
+ 
+ 	hci_cmd_sync_clear(hdev);
+ 
+@@ -2796,8 +2796,14 @@ static void hci_cancel_cmd_sync(struct hci_dev *hdev, int err)
+ {
+ 	bt_dev_dbg(hdev, "err 0x%2.2x", err);
+ 
+-	cancel_delayed_work_sync(&hdev->cmd_timer);
+-	cancel_delayed_work_sync(&hdev->ncmd_timer);
++	if (hci_dev_test_flag(hdev, HCI_UNREGISTER)) {
++		disable_delayed_work_sync(&hdev->cmd_timer);
++		disable_delayed_work_sync(&hdev->ncmd_timer);
++	} else  {
++		cancel_delayed_work_sync(&hdev->cmd_timer);
++		cancel_delayed_work_sync(&hdev->ncmd_timer);
++	}
 +
- 	/* Set to output mode to avoid tri-stated data pins */
- 	if (tx)
- 		val_cr4 |= FSL_SAI_CR4_CHMOD;
-@@ -690,7 +693,7 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+ 	atomic_set(&hdev->cmd_cnt, 1);
  
- 	regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx, ofs),
- 			   FSL_SAI_CR4_SYWD_MASK | FSL_SAI_CR4_FRSZ_MASK |
--			   FSL_SAI_CR4_CHMOD_MASK,
-+			   FSL_SAI_CR4_CHMOD_MASK | FSL_SAI_CR4_FCONT_MASK,
- 			   val_cr4);
- 	regmap_update_bits(sai->regmap, FSL_SAI_xCR5(tx, ofs),
- 			   FSL_SAI_CR5_WNW_MASK | FSL_SAI_CR5_W0W_MASK |
-diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
-index b4d616a44023c..e2799f39a81ed 100644
---- a/sound/soc/fsl/fsl_sai.h
-+++ b/sound/soc/fsl/fsl_sai.h
-@@ -137,6 +137,7 @@
+ 	hci_cmd_sync_cancel_sync(hdev, err);
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 40ccdef168d7d..ae7a5817883aa 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -5131,9 +5131,15 @@ int hci_dev_close_sync(struct hci_dev *hdev)
  
- /* SAI Transmit and Receive Configuration 4 Register */
+ 	bt_dev_dbg(hdev, "");
  
-+#define FSL_SAI_CR4_FCONT_MASK	BIT(28)
- #define FSL_SAI_CR4_FCONT	BIT(28)
- #define FSL_SAI_CR4_FCOMB_SHIFT BIT(26)
- #define FSL_SAI_CR4_FCOMB_SOFT  BIT(27)
+-	cancel_delayed_work(&hdev->power_off);
+-	cancel_delayed_work(&hdev->ncmd_timer);
+-	cancel_delayed_work(&hdev->le_scan_disable);
++	if (hci_dev_test_flag(hdev, HCI_UNREGISTER)) {
++		disable_delayed_work(&hdev->power_off);
++		disable_delayed_work(&hdev->ncmd_timer);
++		disable_delayed_work(&hdev->le_scan_disable);
++	} else {
++		cancel_delayed_work(&hdev->power_off);
++		cancel_delayed_work(&hdev->ncmd_timer);
++		cancel_delayed_work(&hdev->le_scan_disable);
++	}
+ 
+ 	hci_cmd_sync_cancel_sync(hdev, ENODEV);
+ 
 -- 
 2.43.0
 
