@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-88844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 345879B27C0
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:50:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A8969B25D3
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:35:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A49D1C21524
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:50:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 020EE1F20C9E
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F4B18EFDC;
-	Mon, 28 Oct 2024 06:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B47018FC91;
+	Mon, 28 Oct 2024 06:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uh8tCIAT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSAoMtIj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9938C8837;
-	Mon, 28 Oct 2024 06:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491D218FC84;
+	Mon, 28 Oct 2024 06:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098249; cv=none; b=aN2JQzVwoMOXrnME4qZ7837vafBz5APqC4eIGDGQBmBlH8w9XMFtCAHEhNvhqMCNIL0np1e7e6fCvJ5SMFWq4aOC+0P8nYiOVwNvA6xAAk2s5hZMjkTKx/XQ+LAYewaDPo+Gm+cpC4XywvwYD1JPNlnZUBmKVqU5xIRmSutDC1I=
+	t=1730097252; cv=none; b=mO5F9yAd6E00e9qc0BA9uj6GYp3/a/GPnWdGTqMvkrxQhEv14LXvs2m1yG/3e6iLlxfxkX4w5RkUo5z1WrvZ7TtFqn7SaBkHi7iPMBCdbm0ifuTxocYwDDIvtGCeoQFFyXCRAvqzyGe83QWTTo3t7LYAcUDo9I5rOesv9/KdRHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098249; c=relaxed/simple;
-	bh=xocj2Y0AfHYH8lFdGECotd4OgNkNBP4XAAqCTBN4cNA=;
+	s=arc-20240116; t=1730097252; c=relaxed/simple;
+	bh=T78wH5QcuEKYNuaL74OQSKhMwTuA7XRRO73q4+QXy6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eRTJlC3DaaRgfhuWTR/K/nP7C/RZgL/9yZ5UECtnZJnQpHH6zCoIh1RW+BoldBM0CdEHgybX48GnRURuWkRWw2c3CTXgJ0bpIYJTYAltHZCL8TmtzKghcLMLi0X6xLA/ro8nKQeyDYw8gmJAievwl6hH7W0nD441JWfc9nnqpcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uh8tCIAT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A99DC4CEEA;
-	Mon, 28 Oct 2024 06:50:49 +0000 (UTC)
+	 MIME-Version; b=s7F5qUgoVYGb3LqoDk59Bg202V6FvPDH5+zCejiAklSlFivGV25sqzFZLHK+QPL/4iY1GAPtR8GNeKlbZcfAjLcPLMqA844UM3ls4kpKEH8yGnN9sjnW8NUAz7rfwQvcK9c/f6RUYl+jMOhZ0CJnLc1hFpk5K97eeuqm5xDP/Pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSAoMtIj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83400C4CEC7;
+	Mon, 28 Oct 2024 06:34:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098249;
-	bh=xocj2Y0AfHYH8lFdGECotd4OgNkNBP4XAAqCTBN4cNA=;
+	s=korg; t=1730097251;
+	bh=T78wH5QcuEKYNuaL74OQSKhMwTuA7XRRO73q4+QXy6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uh8tCIATUj23AatPr8B5Dol0f4pov8v/xjvXvhRBpwMAeab/0qzJKG5+6kOCylLP4
-	 vqCPOTXg3Ub9iaWFwGJ3vVrZrhsPr367fM+QPJNBhlB+jDsnwjW0gMnANFTJ99HnvG
-	 OjRtXPFhqQiwpKXA0OuuQENEarfNzFAByrC82Ta0=
+	b=MSAoMtIjWvDb0XCeZ7csQsfKM+BujoQnILo0ZHaAMoHtH4SfE8VydwOHJ3jXIYHlY
+	 u2aFwDZPZfK0V7g4QcfVUTVBiKi+POY3r6qTJD9ZslKvYKZeVXFm74PCBjtDqcT0jL
+	 Bid1iQaTKpU68YRT2r3TPimEMlA1GhRlZ/qmPLGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Lai, Yi" <yi1.lai@linux.intel.com>,
-	Florian Westphal <fw@strlen.de>,
-	Eric Dumazet <edumazet@google.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 144/261] netfilter: bpf: must hold reference on net namespace
+Subject: [PATCH 6.1 049/137] s390: Initialize psw mask in perf_arch_fetch_caller_regs()
 Date: Mon, 28 Oct 2024 07:24:46 +0100
-Message-ID: <20241028062315.653508955@linuxfoundation.org>
+Message-ID: <20241028062300.100100405@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 1230fe7ad3974f7bf6c78901473e039b34d4fb1f ]
+[ Upstream commit 223e7fb979fa06934f1595b6ad0ae1d4ead1147f ]
 
-BUG: KASAN: slab-use-after-free in __nf_unregister_net_hook+0x640/0x6b0
-Read of size 8 at addr ffff8880106fe400 by task repro/72=
-bpf_nf_link_release+0xda/0x1e0
-bpf_link_free+0x139/0x2d0
-bpf_link_release+0x68/0x80
-__fput+0x414/0xb60
+Also initialize regs->psw.mask in perf_arch_fetch_caller_regs().
+This way user_mode(regs) will return false, like it should.
 
-Eric says:
- It seems that bpf was able to defer the __nf_unregister_net_hook()
- after exit()/close() time.
- Perhaps a netns reference is missing, because the netns has been
- dismantled/freed already.
- bpf_nf_link_attach() does :
- link->net = net;
- But I do not see a reference being taken on net.
+It looks like all current users initialize regs to zero, so that this
+doesn't fix a bug currently. However it is better to not rely on callers
+to do this.
 
-Add such a reference and release it after hook unreg.
-Note that I was unable to get syzbot reproducer to work, so I
-do not know if this resolves this splat.
-
-Fixes: 84601d6ee68a ("bpf: add bpf_link support for BPF_NETFILTER programs")
-Diagnosed-by: Eric Dumazet <edumazet@google.com>
-Reported-by: Lai, Yi <yi1.lai@linux.intel.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 914d52e46490 ("s390: implement perf_arch_fetch_caller_regs")
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_bpf_link.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/s390/include/asm/perf_event.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/netfilter/nf_bpf_link.c b/net/netfilter/nf_bpf_link.c
-index 797fe8a9971e7..3d64a4511fcfd 100644
---- a/net/netfilter/nf_bpf_link.c
-+++ b/net/netfilter/nf_bpf_link.c
-@@ -23,6 +23,7 @@ static unsigned int nf_hook_run_bpf(void *bpf_prog, struct sk_buff *skb,
- struct bpf_nf_link {
- 	struct bpf_link link;
- 	struct nf_hook_ops hook_ops;
-+	netns_tracker ns_tracker;
- 	struct net *net;
- 	u32 dead;
- 	const struct nf_defrag_hook *defrag_hook;
-@@ -120,6 +121,7 @@ static void bpf_nf_link_release(struct bpf_link *link)
- 	if (!cmpxchg(&nf_link->dead, 0, 1)) {
- 		nf_unregister_net_hook(nf_link->net, &nf_link->hook_ops);
- 		bpf_nf_disable_defrag(nf_link);
-+		put_net_track(nf_link->net, &nf_link->ns_tracker);
- 	}
- }
+diff --git a/arch/s390/include/asm/perf_event.h b/arch/s390/include/asm/perf_event.h
+index b9da71632827f..ea340b9018398 100644
+--- a/arch/s390/include/asm/perf_event.h
++++ b/arch/s390/include/asm/perf_event.h
+@@ -75,6 +75,7 @@ struct perf_sf_sde_regs {
+ #define SAMPLE_FREQ_MODE(hwc)	(SAMPL_FLAGS(hwc) & PERF_CPUM_SF_FREQ_MODE)
  
-@@ -258,6 +260,8 @@ int bpf_nf_link_attach(const union bpf_attr *attr, struct bpf_prog *prog)
- 		return err;
- 	}
- 
-+	get_net_track(net, &link->ns_tracker, GFP_KERNEL);
-+
- 	return bpf_link_settle(&link_primer);
- }
- 
+ #define perf_arch_fetch_caller_regs(regs, __ip) do {			\
++	(regs)->psw.mask = 0;						\
+ 	(regs)->psw.addr = (__ip);					\
+ 	(regs)->gprs[15] = (unsigned long)__builtin_frame_address(0) -	\
+ 		offsetof(struct stack_frame, back_chain);		\
 -- 
 2.43.0
 
