@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-88299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F9459B2556
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57A959B26C3
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:42:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3587B1F21B13
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1695C28240F
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:42:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C47B818E04F;
-	Mon, 28 Oct 2024 06:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A2818E748;
+	Mon, 28 Oct 2024 06:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNiSN/6O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R/5omt40"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F13418DF8B;
-	Mon, 28 Oct 2024 06:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E32118E374;
+	Mon, 28 Oct 2024 06:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730096884; cv=none; b=MqdIsTDPFqUsZ7MWLNF4UeUiLMeP9TKx/0iEPmWWDgUn0Ety9+TuUb993vFq91ttHvLSKMmuxnbFsoyDZ2BAnK8UNtyJ1SFWn1kFleSlF91Z/kqPU0Aw8AQL6Izt5HU+ggFgA+Z9m/zH2dNztuztOgpBKDs07d9ewYQ9KGJMeR8=
+	t=1730097745; cv=none; b=u/bW5srTrnX45kSMF9SkwYtZBpbYggpwzed22R2I6NTjSUThzhCqYQjWoQ6CX3osVqwmw5/LQMG8j2gWoyfzCX/6w772OnJuIlyJ+IO/mr1KcQwhgAo8s5gMHqJHjrReAx+AW5bxNUGljWrg9k5Zo23teFVjR+Bc1BO4JHDyeoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730096884; c=relaxed/simple;
-	bh=ZsuP0SJB0MV8TV4VCvdgM45pQ7XpkfR8OSjRdk/EtQQ=;
+	s=arc-20240116; t=1730097745; c=relaxed/simple;
+	bh=zTN2OE+szvuaUtBU9IU+3/He7aHGqq4frPiYsdqv4gk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bwDMspbGXA8zOPMDw+RySUJFyLGGYybVln4Y+s8HkKbMThx9Rs65x9VfmkDbJotS0/+lwbjA8gOMdcJ4qpcQsXhuQg28s67ylpear9bGT8/znxiy1ecRSkM1NOA6f2kA8ruCQ40+1Ry8THSrHKyqIx4IkWUJX3Ol5juN/gBwP+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNiSN/6O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65EEC4CECD;
-	Mon, 28 Oct 2024 06:28:03 +0000 (UTC)
+	 MIME-Version; b=LTr95Zmv86TYMAgn+G5ohh8f5hqsmRk5kYXRDvkRgTiO2bF2/aJDw7VGk3BQ1S0+KvKP7wU1GE96SxIXQSqVQCalyuSH/JKUraQ72sz7qk8tIYWmHRBQlEBHLM9j5hrFxoqg06KKdHWGLfOpwz1su7QdfIHAKrBgjFhzRzgJ5CI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R/5omt40; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2520C4CEC3;
+	Mon, 28 Oct 2024 06:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730096884;
-	bh=ZsuP0SJB0MV8TV4VCvdgM45pQ7XpkfR8OSjRdk/EtQQ=;
+	s=korg; t=1730097745;
+	bh=zTN2OE+szvuaUtBU9IU+3/He7aHGqq4frPiYsdqv4gk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hNiSN/6OguZC1R4txOWR7Y76ygOfLQ1vZZFF2FfG2hf/gVSyb8V8r/aVJIUfLCse7
-	 +GGHd4MT4+5W10RzgqAAl3J01VYzcYQBM4+LejrYPZmKVP5BAeX2M4cDAc1E4vFoBM
-	 9WswFVk/IuJC+beZ+0bx1KMEEIeSdOSa5vQMmHb4=
+	b=R/5omt401qbmP3V4IZc15+0A5nDUqCKYBDX1gcuToTzQoyrXDuSH0+2kZJDOGrN+L
+	 rhg0s6WlaMqhNggxVvm3fsQJlj608yMGlKce+pvEUNdrbG7MAg9ENTNrpaBOTHF83o
+	 zgU5wZulw73IB8IVy1cevTFluJWdMx+8naLBhzpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 28/80] s390: Initialize psw mask in perf_arch_fetch_caller_regs()
+Subject: [PATCH 6.6 128/208] jfs: Fix sanity check in dbMount
 Date: Mon, 28 Oct 2024 07:25:08 +0100
-Message-ID: <20241028062253.411697789@linuxfoundation.org>
+Message-ID: <20241028062309.794852242@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Dave Kleikamp <dave.kleikamp@oracle.com>
 
-[ Upstream commit 223e7fb979fa06934f1595b6ad0ae1d4ead1147f ]
+[ Upstream commit 67373ca8404fe57eb1bb4b57f314cff77ce54932 ]
 
-Also initialize regs->psw.mask in perf_arch_fetch_caller_regs().
-This way user_mode(regs) will return false, like it should.
+MAXAG is a legitimate value for bmp->db_numag
 
-It looks like all current users initialize regs to zero, so that this
-doesn't fix a bug currently. However it is better to not rely on callers
-to do this.
+Fixes: e63866a47556 ("jfs: fix out-of-bounds in dbNextAG() and diAlloc()")
 
-Fixes: 914d52e46490 ("s390: implement perf_arch_fetch_caller_regs")
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/perf_event.h | 1 +
- 1 file changed, 1 insertion(+)
+ fs/jfs/jfs_dmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/include/asm/perf_event.h b/arch/s390/include/asm/perf_event.h
-index b9da71632827f..ea340b9018398 100644
---- a/arch/s390/include/asm/perf_event.h
-+++ b/arch/s390/include/asm/perf_event.h
-@@ -75,6 +75,7 @@ struct perf_sf_sde_regs {
- #define SAMPLE_FREQ_MODE(hwc)	(SAMPL_FLAGS(hwc) & PERF_CPUM_SF_FREQ_MODE)
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 974ecf5e0d952..3ab410059dc20 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -187,7 +187,7 @@ int dbMount(struct inode *ipbmap)
+ 	}
  
- #define perf_arch_fetch_caller_regs(regs, __ip) do {			\
-+	(regs)->psw.mask = 0;						\
- 	(regs)->psw.addr = (__ip);					\
- 	(regs)->gprs[15] = (unsigned long)__builtin_frame_address(0) -	\
- 		offsetof(struct stack_frame, back_chain);		\
+ 	bmp->db_numag = le32_to_cpu(dbmp_le->dn_numag);
+-	if (!bmp->db_numag || bmp->db_numag >= MAXAG) {
++	if (!bmp->db_numag || bmp->db_numag > MAXAG) {
+ 		err = -EINVAL;
+ 		goto err_release_metapage;
+ 	}
 -- 
 2.43.0
 
