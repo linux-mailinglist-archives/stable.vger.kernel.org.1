@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6BD79B25C5
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:34:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 847649B269D
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:41:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 631831F21D7D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:34:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49641282448
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7488118EFD8;
-	Mon, 28 Oct 2024 06:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A57F818E36D;
+	Mon, 28 Oct 2024 06:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7xM/CZr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbaBAQC9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3226618E34D;
-	Mon, 28 Oct 2024 06:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CF92C697;
+	Mon, 28 Oct 2024 06:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097222; cv=none; b=He3LdTPfC8YEkS7vTFjjm//u5tZQGK4oeptw66kjfS5c1d+0y6WQMm2F1rfLvAukEDMXHm7wDh20jWrG6pPVCUdxhjxKqfhPowm1SKwqr5MDowkPiJhmATsbmQR9gDXYCOgOfB28GtmPLmRMJStzhpBCLC7oTvt4aVoXSSHgB+c=
+	t=1730097669; cv=none; b=TnOxxDbYpTn3Mk0Tsh0SMzQKBInEkFxveWH6FMDW8JoqvEF0TJPgZsPGisSbQP9kKkJTzuG/cPdloJd9Iu//ydzD9hSgO98nQaHIUcmtBMUnSeBQmDUjys9Yo9HORlaXI1EQmrh710sD58wZpr5m87KZ0eVQLW8Z9KoQ34C5sNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097222; c=relaxed/simple;
-	bh=1ygkXT6LKoIwKbaINFVyiY61aMmeVH7V/d+KY7AN0cA=;
+	s=arc-20240116; t=1730097669; c=relaxed/simple;
+	bh=StoG53KJ3PP/AU3n5Fe3jQlKMElG7r9CdLAKYnHJj1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mI0KKR7ForUT/5VNTvVcICl/TmY5c7Qjh238Z8iNqK65C0fV8vVuOKUlpMgM3YA1kMm1fL5UeFUVwTXMqbmV62QPmDz0WMU4vxYsk7VaM/7CP28YKkZumwBGix+RJB/67P706SNINZYx8ERhJis4PSpeqkge7WCqdlEHhfNB7wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7xM/CZr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1494C4CEC7;
-	Mon, 28 Oct 2024 06:33:41 +0000 (UTC)
+	 MIME-Version; b=WxURy5LX3KPWjAFeZ84YrYVnKJhVWfJZOUQAsTX+iyx53N/WccY0IGYVMV7+SlrNebAgQIGPGh3q9yER0zD5Ufle8zvKNuQHzvbxeMUKzpdpHSvDLDs7zvShN5ttKXAe78fUHUAL42ZVpszlJFToxxzR1FhLuXgALxIAMSYkZiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbaBAQC9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01457C4CEC3;
+	Mon, 28 Oct 2024 06:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097222;
-	bh=1ygkXT6LKoIwKbaINFVyiY61aMmeVH7V/d+KY7AN0cA=;
+	s=korg; t=1730097669;
+	bh=StoG53KJ3PP/AU3n5Fe3jQlKMElG7r9CdLAKYnHJj1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v7xM/CZrOxSMARxz0MZmF5Ar4jEN9yRSaQimt8OzEUH8t8ma78YM89Iq8mctUSHyj
-	 /i4wOkvezNBe+SP2LlfzT00TUF8jV7pbQjDzw444YKG9OtMqVLe9qB6YOXphV5jS+X
-	 2qmw9XvC8zOmce7Ks5oHf+zDRafq9jWomk4VYtg4=
+	b=FbaBAQC9yozCor9snzvuxwRYKwYjO83RI5n9cwjCHYzJ+K/C6m9KwJ3A34Hku+ure
+	 oTAlhJ4hh1qI3NAASGHfWn9p9EaxQdqtzulzEgcir5lrWw7JVPhOiEqfFk3qvQLcEl
+	 tAvgQBQqXFTdoA4SpubJmhqS7rVv6upNOMVr1TSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 037/137] irqchip/renesas-rzg2l: Document structure members
+Subject: [PATCH 6.6 094/208] khugepaged: inline hpage_collapse_alloc_folio()
 Date: Mon, 28 Oct 2024 07:24:34 +0100
-Message-ID: <20241028062259.758297571@linuxfoundation.org>
+Message-ID: <20241028062308.972084113@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit b94f455372ad6e6b4da8e8ed9864d9c7daaf54b8 ]
+[ Upstream commit 4746f5ce0fa52e21b5fe432970fe9516d1a45ebc ]
 
-Document structure members to follow the requirements specified in
-maintainer-tip, section 4.3.7. Struct declarations and initializers.
+Patch series "khugepaged folio conversions".
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20231120111820.87398-5-claudiu.beznea.uj@bp.renesas.com
-Stable-dep-of: d038109ac1c6 ("irqchip/renesas-rzg2l: Fix missing put_device")
+We've been kind of hacking piecemeal at converting khugepaged to use
+folios instead of compound pages, and so this patchset is a little larger
+than it should be as I undo some of our wrong moves in the past.  In
+particular, collapse_file() now consistently uses 'new_folio' for the
+freshly allocated folio and 'folio' for the one that's currently in use.
+
+This patch (of 7):
+
+This function has one caller, and the combined function is simpler to
+read, reason about and modify.
+
+Link: https://lkml.kernel.org/r/20240403171838.1445826-1-willy@infradead.org
+Link: https://lkml.kernel.org/r/20240403171838.1445826-2-willy@infradead.org
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 37f0b47c5143 ("mm: khugepaged: fix the arguments order in khugepaged_collapse_file trace point")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-renesas-rzg2l.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ mm/khugepaged.c | 19 ++++---------------
+ 1 file changed, 4 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index 884379f207d50..61502a81dbb54 100644
---- a/drivers/irqchip/irq-renesas-rzg2l.c
-+++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -55,6 +55,12 @@
- #define TINT_EXTRACT_HWIRQ(x)           FIELD_GET(GENMASK(15, 0), (x))
- #define TINT_EXTRACT_GPIOINT(x)         FIELD_GET(GENMASK(31, 16), (x))
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index cb6a243688045..d0fcfa47085b4 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -887,20 +887,6 @@ static int hpage_collapse_find_target_node(struct collapse_control *cc)
+ }
+ #endif
  
-+/**
-+ * struct rzg2l_irqc_priv - IRQ controller private data structure
-+ * @base:	Controller's base address
-+ * @fwspec:	IRQ firmware specific data
-+ * @lock:	Lock to serialize access to hardware registers
-+ */
- struct rzg2l_irqc_priv {
- 	void __iomem			*base;
- 	struct irq_fwspec		fwspec[IRQC_NUM_IRQ];
+-static bool hpage_collapse_alloc_folio(struct folio **folio, gfp_t gfp, int node,
+-				      nodemask_t *nmask)
+-{
+-	*folio = __folio_alloc(gfp, HPAGE_PMD_ORDER, node, nmask);
+-
+-	if (unlikely(!*folio)) {
+-		count_vm_event(THP_COLLAPSE_ALLOC_FAILED);
+-		return false;
+-	}
+-
+-	count_vm_event(THP_COLLAPSE_ALLOC);
+-	return true;
+-}
+-
+ /*
+  * If mmap_lock temporarily dropped, revalidate vma
+  * before taking mmap_lock.
+@@ -1063,11 +1049,14 @@ static int alloc_charge_hpage(struct page **hpage, struct mm_struct *mm,
+ 	int node = hpage_collapse_find_target_node(cc);
+ 	struct folio *folio;
+ 
+-	if (!hpage_collapse_alloc_folio(&folio, gfp, node, &cc->alloc_nmask)) {
++	folio = __folio_alloc(gfp, HPAGE_PMD_ORDER, node, &cc->alloc_nmask);
++	if (!folio) {
+ 		*hpage = NULL;
++		count_vm_event(THP_COLLAPSE_ALLOC_FAILED);
+ 		return SCAN_ALLOC_HUGE_PAGE_FAIL;
+ 	}
+ 
++	count_vm_event(THP_COLLAPSE_ALLOC);
+ 	if (unlikely(mem_cgroup_charge(folio, mm, gfp))) {
+ 		folio_put(folio);
+ 		*hpage = NULL;
 -- 
 2.43.0
 
