@@ -1,113 +1,156 @@
-Return-Path: <stable+bounces-89057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B5CA9B2EAC
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 12:22:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AB329B2ED4
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 12:25:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D0301C21324
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:22:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CC592870A0
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 802741D2B1B;
-	Mon, 28 Oct 2024 11:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F9011D9339;
+	Mon, 28 Oct 2024 11:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KOvO4llG"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zB8tT5T3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f53.google.com (mail-io1-f53.google.com [209.85.166.53])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7961D79B3
-	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 11:15:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AED054765
+	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 11:24:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730114124; cv=none; b=l0efOtZOIEjz3vIjB3to2XaBUJvcZujKzIgE3AMWXdkzi2vbj9dZ+gDC7UQCpkOW6zd6ughmdllqOkKp2V8iAIsB3NByWM/h4PK9rptJViUwsXUV2zhdJqvqLvmC1VV5SXj+vyvat2y99XA9QUdrzj5Est8GrD4jTOeDlHe7Exo=
+	t=1730114650; cv=none; b=MRo9ms2y33Eetq0wZQhQ0fIadtBsY7g25NLa9IhfPw2p0OIdy+gXM3z2i+tv91zNeUAHKsYgnfkzpexirHIr3xO6ALna0V4HVIzYYVnrPuk3OcpqvaMh2tjzCXxJMIRXNRdtrKad4Du7R7hkA3qvjOBa8svt38bVLz+NcZv+U3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730114124; c=relaxed/simple;
-	bh=o40vLJF3BhZaPEsLLLDudzK2h1sDZMe+2JjzMNY6nBU=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=StjvopXySZOnkWU/WcPOs+jRma1jG7LZho8SIu0QjM8dzohlsMVBQulOu+GjUbGxo7bC84vMaoYmPTYmy6ax9L4GrN67isPvIaqbaPZIw9ySPY8CekJi9qpftqt/qCwftAc9VgJABCnb/z3daYgJ2h5B93wEncbPmISJufXTelY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KOvO4llG; arc=none smtp.client-ip=209.85.166.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-io1-f53.google.com with SMTP id ca18e2360f4ac-83ac4dacaf9so147814639f.2
-        for <stable@vger.kernel.org>; Mon, 28 Oct 2024 04:15:22 -0700 (PDT)
+	s=arc-20240116; t=1730114650; c=relaxed/simple;
+	bh=OucdZC060IUL/sm8antyDtOyqKVTT8W8wH7gc66OPJY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XPZWxLTg4rV9IOKSGQCqnmAD8TXfZ7X1MisCkbYjfCK8gp1P0iPHEYoLabnN0xztBxiJ3bKk8DLa8KMjwQtvqDELITtcCz5ywO/wCHl78NtlwyuhuEeXh3dC/O29nX2vqEirk9GDHnT7K548FjGjO2Ste9RmQ4NL+y+0UyEYB7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zB8tT5T3; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-539d9fffea1so3897681e87.2
+        for <stable@vger.kernel.org>; Mon, 28 Oct 2024 04:24:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730114121; x=1730718921; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=o40vLJF3BhZaPEsLLLDudzK2h1sDZMe+2JjzMNY6nBU=;
-        b=KOvO4llGvPaR1c2rAGklWRUTkxvsHWOfmLdRWC/qdcHO+2SQnjxur7xj0oqkvqPeNO
-         wPHhvGEHF89nRVeydJq0O+IMB+cmQpE3zspsuxBUJLkqlvH9N2eLRvuJIUsl3k/0fYMJ
-         OUmkP5tDM2rsgSzpCFMMZFE7XJtJyUZG8W8P7uUUu5qm6hlxnDrBWYwEBhpFBUmNIcIy
-         i6Ongg/TYLHcuc5MaiE8hFcW2whGvODiHm3lIfM7WN+prugqGDWOw2xMHk1xDs/XuM69
-         uSoMI2N+vWAGt5siF/JQnshJehWCskjDsww//fn2ilIxO/yEEPGTU5nTstFrTDtLMWj9
-         Xo4A==
+        d=linaro.org; s=google; t=1730114645; x=1730719445; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jJJbPGU65AhhUIO8bz7yn184UqOJUlvgFCxYhC4bO60=;
+        b=zB8tT5T3/8Mzneq/eRg18KypAjfEc86x1a+P+PSWN22bFtFn/mZVhZqHm/P36ECNlb
+         v092UCXSWHZkafYrbbBkGmXqXvow1Rft+1RHxpdPyI23vv0FMNof9+4/wvvhbpRg/bHz
+         2FDZykGaWn60MLRGsKTmnSsHbQoovikaKLMaggg6nG4pNl54EiEJ706es0bRz/tAteIr
+         y5ERjHj986dHHMd9+D3v5fiPQdm5kgXKoxEa/Hfxw7m+o7dil5u0BVsqjugRae9f34rG
+         3bQGDAi/ebn8GO5wc2MBpU0ZkH7obxeGP8kIT24lm5vHoGf9rQBmwbhi5cxEeZIBFgxq
+         YwRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730114121; x=1730718921;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=o40vLJF3BhZaPEsLLLDudzK2h1sDZMe+2JjzMNY6nBU=;
-        b=hknvQDQ0bVtO+fulRq9Kr98uZ4/k5pPUkKikjwnPoJy7UG0rsAqQ6oRK1CGYdTrGU0
-         wXQ7gQNeH86GLFPW0dvNjco/tlaU66ZOp/4Lu0V7Kaeri0jq7tjZ5tIFkjCoaygtBXmp
-         S0fX04rJ0EjYEmTWkgIFMSlbd3cCJk1qCgOA6JTJox3IlRBMdxD3b644ClqMUXTmOeeO
-         7D2ZWt2wMhhEDS2k7xcFLnusEmjkVxbJlStLcY4il9jU0yLbPV7seO5YCw9IKFyM8GGW
-         vtlR10RxZ3866ZOsbTg/I+JWMoioWUT9uWes8vf8K3qKsPkaE7JBAbSYnWhEefE9Ho8I
-         HRQA==
-X-Gm-Message-State: AOJu0YwmvKbkfdaMphSGlut1Tv65yXdjbKPu+poiTnWdlkhyleGLS5jz
-	bA/qXoJVRo/zv9uNk4BHz51VGnw/HJlDHLokoyh2dLY4tYxDEY3AGUiabJ1MXJ5vjn3OT2ab6rd
-	Tzt2RL2I9H2zMeJr5zSQA1+moAoYxH/nK
-X-Google-Smtp-Source: AGHT+IGLdmWh31jtT64TtCjVtFG4zpYJXxVdqe86MxZJhnLUBdxBzPK009ielBNty80zQFy5wKN4MMegA9wKklLCdrA=
-X-Received: by 2002:a05:6602:641c:b0:83a:a8c6:21ad with SMTP id
- ca18e2360f4ac-83b1c41a25amr618176139f.7.1730114121119; Mon, 28 Oct 2024
- 04:15:21 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1730114645; x=1730719445;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jJJbPGU65AhhUIO8bz7yn184UqOJUlvgFCxYhC4bO60=;
+        b=dsTHZ+Igx3X4RT50BrbuXDw77AvtDIllDjO5RzxNa0YVNJrcOywLDj7FxMN70+hrBB
+         2PCfQLiEo5Gp9QtZ6G5kXpqzU9n1sEJxVSIByytLOA1PWynwA9ZsiuEFBwGU7dxBA+WK
+         qhWHuhBadvGnrqakNthPFJe4i3+/HH+ICzEWbvQOFDko6MuZhRQJUJb4KjPiw87HME8j
+         9Us2t6dmLI98zqsgvxnnigJ2RvTFab0WjkXN53dKN4/kV1gYTVYyygpFDT3xHdgCfC3y
+         si0vd/pnMhQW6kHln/TSkSn7k9+cAEJcZqHs7dTCqNObIPaPk1kUEfNxrU/Rg0UY+PZU
+         aQDA==
+X-Forwarded-Encrypted: i=1; AJvYcCX+QIPOsv9UYdcq8VKzw7ZvNHo/8kr6Saio6XPInuq2ODVk4HHcd/o4hkcpYFTxjKFYWCIMn4Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzpciOcFW1VnI++88w7YHmE4KaNFgJSSB+jK6ZWojdaoFU+NIg
+	DS6TCtVibdMPeTMfxe/ggRDshJ3FDK8+U1hoi8+X3ohFT5T18tP2n7JFkZqproA=
+X-Google-Smtp-Source: AGHT+IGLiSIAISzevLLOUIE76KOJqCg/OoYL8vVQijw6yuxou4BSnghLLrEm4/v7x/wuFbPvQ450+A==
+X-Received: by 2002:a05:6512:1392:b0:536:73b5:d971 with SMTP id 2adb3069b0e04-53b34c5f886mr3246487e87.38.1730114645508;
+        Mon, 28 Oct 2024 04:24:05 -0700 (PDT)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-43193573cd4sm106753715e9.5.2024.10.28.04.24.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Oct 2024 04:24:05 -0700 (PDT)
+Message-ID: <5a535983-6a78-4449-b57b-176869fd55d8@linaro.org>
+Date: Mon, 28 Oct 2024 12:24:04 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Rui Ueyama <rui314@gmail.com>
-Date: Mon, 28 Oct 2024 20:15:09 +0900
-Message-ID: <CACKH++YAtEMYu2nTLUyfmxZoGO37fqogKMDkBpddmNaz5HE6ng@mail.gmail.com>
-Subject: [REGRESSION] mold linker depends on ETXTBSY, but open(2) no longer
- returns it
-To: stable@vger.kernel.org
-Cc: brauner@kernel.org, regressions@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] clocksource/drivers/timer-ti-dm: fix child node refcount
+ handling
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Tony Lindgren <tony@atomide.com>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20241013-timer-ti-dm-systimer-of_node_put-v1-1-0cf0c9a37684@gmail.com>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <20241013-timer-ti-dm-systimer-of_node_put-v1-1-0cf0c9a37684@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-I'm the creator and the maintainer of the mold linker
-(https://github.com/rui314/mold). Recently, we discovered that mold
-started causing process crashes in certain situations due to a change
-in the Linux kernel. Here are the details:
 
-- In general, overwriting an existing file is much faster than
-creating an empty file and writing to it on Linux, so mold attempts to
-reuse an existing executable file if it exists.
+Hi Javier,
 
-- If a program is running, opening the executable file for writing
-previously failed with ETXTBSY. If that happens, mold falls back to
-creating a new file.
+thanks for spotting the issue
 
-- However, the Linux kernel recently changed the behavior so that
-writing to an executable file is now always permitted
-(https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/=
-?id=3D2a010c412853).
-That caused mold to write to an executable file even if there's a
-process running that file. Since changes to mmap'ed files are
-immediately visible to other processes, any processes running that
-file would almost certainly crash in a very mysterious way.
-Identifying the cause of these random crashes took us a few days.
 
-Rejecting writes to an executable file that is currently running is a
-well-known behavior, and Linux had operated that way for a very long
-time. So, I don=E2=80=99t believe relying on this behavior was our mistake;
-rather, I see this as a regression in the Linux kernel.
+On 13/10/2024 12:14, Javier Carrasco wrote:
+> of_find_compatible_node() increments the node's refcount, and it must be
+> decremented again with a call to of_node_put() when the pointer is no
+> longer required to avoid leaking memory.
+> 
+> Add the missing calls to of_node_put() in dmtimer_percpu_quirck_init()
+> for the 'arm_timer' device node.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 25de4ce5ed02 ("clocksource/drivers/timer-ti-dm: Handle dra7 timer wrap errata i940")
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> ---
+>   drivers/clocksource/timer-ti-dm-systimer.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/clocksource/timer-ti-dm-systimer.c b/drivers/clocksource/timer-ti-dm-systimer.c
+> index c2dcd8d68e45..23be1d21ce21 100644
+> --- a/drivers/clocksource/timer-ti-dm-systimer.c
+> +++ b/drivers/clocksource/timer-ti-dm-systimer.c
+> @@ -691,8 +691,10 @@ static int __init dmtimer_percpu_quirk_init(struct device_node *np, u32 pa)
+>   	arm_timer = of_find_compatible_node(NULL, NULL, "arm,armv7-timer");
+>   	if (of_device_is_available(arm_timer)) {
+>   		pr_warn_once("ARM architected timer wrap issue i940 detected\n");
+> +		of_node_put(arm_timer);
+>   		return 0;
+>   	}
+> +	of_node_put(arm_timer);
 
-Here is a bug report to the mold linker:
-https://github.com/rui314/mold/issues/1361
+Best practice would be to group of_node_put into a single place.
 
-#regzbot introduced: 2a010c41285345da60cece35575b4e0af7e7bf44
+	bool available;
+
+	[ ... ]
+
+	available = of_device_is_available(arm_timer);
+	of_node_put(arm_timer);
+
+	if (available) {
+		pr_warn_once("ARM architected timer wrap issue i940 detected\n");
+		return 0;
+	}
+
+
+>   	if (pa == 0x4882c000)           /* dra7 dmtimer15 */
+>   		return dmtimer_percpu_timer_init(np, 0);
+> 
+> ---
+> base-commit: d61a00525464bfc5fe92c6ad713350988e492b88
+> change-id: 20241013-timer-ti-dm-systimer-of_node_put-d42735687698
+> 
+> Best regards,
+
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
