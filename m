@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 208E29B25F2
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D4E59B26C7
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:42:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C09BB1F21C87
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 444F42824D9
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:42:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B85718F2D4;
-	Mon, 28 Oct 2024 06:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552CC18E36D;
+	Mon, 28 Oct 2024 06:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWio1/2v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C+bsu5os"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA35B18EFF9;
-	Mon, 28 Oct 2024 06:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5DE18E03A;
+	Mon, 28 Oct 2024 06:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097309; cv=none; b=MqsWk/Esz39dDRUY9+bwGkR5DPmrx0V51IbPBwiH/ViXrCI2us/WNeUAlZhPnuR1WntWKHkoTSgE9kQYpl/JyiyXd8nR0WUwh8WHRZQgIbf7LF5CBtx9Sa9KIdMFSQmsDy2sC5qBz+ihRrqZjhkh5DlRhDBKrd0g7xh2i4xEJJI=
+	t=1730097757; cv=none; b=VtSXIhi9aAx30rD1BzzvYNHBqYZ9Ci2OEYsyyHcJyN2UkT+wiEnO6lMygnenycuHBooSmd16bPUKJV0T8f/Nyrjd9sscXmsEJtlUSVq8HYDDPIEppPBXbQd1tBf+yneRlw0pvHUNUfD9Wa7I6Nt2Db+7HJq0bntlVqCaBf7Eosw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097309; c=relaxed/simple;
-	bh=5qyOCq/qFOoAGR7Cg4iHspinEFnwfe0JKXUEuDw6PCo=;
+	s=arc-20240116; t=1730097757; c=relaxed/simple;
+	bh=rIVfVArDv6jsi4npiMqJigAqcJcqS80UgLT4F0SWY4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u2LzpVjui9RedWFhxT9pDr+3w3TbxJmaONkNVdB3jF2BTRPYYksXR/OsbkvIB4ZqVZDMPrMkLxz2MDTMwklKvn+cZKNg+M7YH+/91N7ymkxg4XS6PiLFCSjdO1Js40t4/Fr9e4KlwU2gtXXcYT2om0tb1UQ9BxS0B4Kbtiowr0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWio1/2v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 754D9C4CEC3;
-	Mon, 28 Oct 2024 06:35:09 +0000 (UTC)
+	 MIME-Version; b=P+3RkGMaPsO3vc3uWuxKFzk9/BE4hpwM9BN2fADNVxy+6Rqzt6QcZMX5lngvrrUpwcpT69iCcVYb/2XGDSenWedTHaj7o0ckfw4NfQdDOS/+P63gVNGz8MyRo9M2r4JzEQhe0fTQdyAWlhKUyjuP/L9JBB++ILikNC4iCvlv21Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C+bsu5os; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D138C4CEC3;
+	Mon, 28 Oct 2024 06:42:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097309;
-	bh=5qyOCq/qFOoAGR7Cg4iHspinEFnwfe0JKXUEuDw6PCo=;
+	s=korg; t=1730097756;
+	bh=rIVfVArDv6jsi4npiMqJigAqcJcqS80UgLT4F0SWY4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TWio1/2vYkSkxJ6hzHZCW7R14or1Lx6NMrQZL3E/xstqAFRZ3g8DWu0kN59/cm8oj
-	 5KgpY6k4WgkyxWHgujJVkAr1ztH7ba3niXewW3B4Rx0DMrWZSbfyYHQaSOS/FgQa3f
-	 WYlgE2dbiWFD3Li9n90w4EFZRac8B2eYf3gVyjSA=
+	b=C+bsu5osj667eNrAMDiq7AKAYYg7i9tpzTvkkYMtgMC7FupBxvVWqawxGpb6IKxUm
+	 kFm/XufZ/3mqTc5KZxv9S/hYlYlCF9VwpnIbSyz4SfGTGly9C7QCNKk8No9/Y/0wXJ
+	 ihgvus1uQ5ZBYTxnZIvGb/FqvlUW+wc7D6WjTwto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Eyal Birger <eyal.birger@gmail.com>,
+	Antony Antony <antony.antony@secunet.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 075/137] ASoC: codecs: lpass-rx-macro: add missing CDC_RX_BCL_VBAT_RF_PROC2 to default regs values
+Subject: [PATCH 6.6 132/208] xfrm: respect ip protocols rules criteria when performing dst lookups
 Date: Mon, 28 Oct 2024 07:25:12 +0100
-Message-ID: <20241028062300.833805460@linuxfoundation.org>
+Message-ID: <20241028062309.891204162@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Klimov <alexey.klimov@linaro.org>
+From: Eyal Birger <eyal.birger@gmail.com>
 
-[ Upstream commit e249786b2188107a7c50e7174d35f955a60988a1 ]
+[ Upstream commit b8469721034300bbb6dec5b4bf32492c95e16a0c ]
 
-CDC_RX_BCL_VBAT_RF_PROC1 is listed twice and its default value
-is 0x2a which is overwriten by its next occurence in rx_defaults[].
-The second one should be missing CDC_RX_BCL_VBAT_RF_PROC2 instead
-and its default value is expected 0x0.
+The series in the "fixes" tag added the ability to consider L4 attributes
+in routing rules.
 
-Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-Link: https://patch.msgid.link/20240925043823.520218-2-alexey.klimov@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The dst lookup on the outer packet of encapsulated traffic in the xfrm
+code was not adapted to this change, thus routing behavior that relies
+on L4 information is not respected.
+
+Pass the ip protocol information when performing dst lookups.
+
+Fixes: a25724b05af0 ("Merge branch 'fib_rules-support-sport-dport-and-proto-match'")
+Signed-off-by: Eyal Birger <eyal.birger@gmail.com>
+Tested-by: Antony Antony <antony.antony@secunet.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/lpass-rx-macro.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/xfrm.h      |  2 ++
+ net/ipv4/xfrm4_policy.c |  2 ++
+ net/ipv6/xfrm6_policy.c |  3 +++
+ net/xfrm/xfrm_policy.c  | 15 +++++++++++++++
+ 4 files changed, 22 insertions(+)
 
-diff --git a/sound/soc/codecs/lpass-rx-macro.c b/sound/soc/codecs/lpass-rx-macro.c
-index 1639f3b66facb..aa45c472994e3 100644
---- a/sound/soc/codecs/lpass-rx-macro.c
-+++ b/sound/soc/codecs/lpass-rx-macro.c
-@@ -909,7 +909,7 @@ static const struct reg_default rx_defaults[] = {
- 	{ CDC_RX_BCL_VBAT_PK_EST2, 0x01 },
- 	{ CDC_RX_BCL_VBAT_PK_EST3, 0x40 },
- 	{ CDC_RX_BCL_VBAT_RF_PROC1, 0x2A },
--	{ CDC_RX_BCL_VBAT_RF_PROC1, 0x00 },
-+	{ CDC_RX_BCL_VBAT_RF_PROC2, 0x00 },
- 	{ CDC_RX_BCL_VBAT_TAC1, 0x00 },
- 	{ CDC_RX_BCL_VBAT_TAC2, 0x18 },
- 	{ CDC_RX_BCL_VBAT_TAC3, 0x18 },
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index 93207d87e1c7f..93a9866ee481f 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -349,6 +349,8 @@ struct xfrm_dst_lookup_params {
+ 	xfrm_address_t *saddr;
+ 	xfrm_address_t *daddr;
+ 	u32 mark;
++	__u8 ipproto;
++	union flowi_uli uli;
+ };
+ 
+ struct net_device;
+diff --git a/net/ipv4/xfrm4_policy.c b/net/ipv4/xfrm4_policy.c
+index 01d4f6f4dbb8c..63bbc7f6a5a88 100644
+--- a/net/ipv4/xfrm4_policy.c
++++ b/net/ipv4/xfrm4_policy.c
+@@ -30,6 +30,8 @@ static struct dst_entry *__xfrm4_dst_lookup(struct flowi4 *fl4,
+ 	fl4->flowi4_mark = params->mark;
+ 	if (params->saddr)
+ 		fl4->saddr = params->saddr->a4;
++	fl4->flowi4_proto = params->ipproto;
++	fl4->uli = params->uli;
+ 
+ 	rt = __ip_route_output_key(params->net, fl4);
+ 	if (!IS_ERR(rt))
+diff --git a/net/ipv6/xfrm6_policy.c b/net/ipv6/xfrm6_policy.c
+index 246a0cea77c26..4cd625af91e6c 100644
+--- a/net/ipv6/xfrm6_policy.c
++++ b/net/ipv6/xfrm6_policy.c
+@@ -37,6 +37,9 @@ static struct dst_entry *xfrm6_dst_lookup(const struct xfrm_dst_lookup_params *p
+ 	if (params->saddr)
+ 		memcpy(&fl6.saddr, params->saddr, sizeof(fl6.saddr));
+ 
++	fl6.flowi4_proto = params->ipproto;
++	fl6.uli = params->uli;
++
+ 	dst = ip6_route_output(params->net, NULL, &fl6);
+ 
+ 	err = dst->error;
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index 1395d3de1ec70..d788baffbf104 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -296,6 +296,21 @@ static inline struct dst_entry *xfrm_dst_lookup(struct xfrm_state *x,
+ 	params.tos = tos;
+ 	params.oif = oif;
+ 	params.mark = mark;
++	params.ipproto = x->id.proto;
++	if (x->encap) {
++		switch (x->encap->encap_type) {
++		case UDP_ENCAP_ESPINUDP:
++			params.ipproto = IPPROTO_UDP;
++			params.uli.ports.sport = x->encap->encap_sport;
++			params.uli.ports.dport = x->encap->encap_dport;
++			break;
++		case TCP_ENCAP_ESPINTCP:
++			params.ipproto = IPPROTO_TCP;
++			params.uli.ports.sport = x->encap->encap_sport;
++			params.uli.ports.dport = x->encap->encap_dport;
++			break;
++		}
++	}
+ 
+ 	dst = __xfrm_dst_lookup(family, &params);
+ 
 -- 
 2.43.0
 
