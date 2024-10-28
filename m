@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D729B27A1
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:49:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 311D39B25BE
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:34:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C88341C214CC
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:49:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1C481F21C36
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5969918A924;
-	Mon, 28 Oct 2024 06:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7406418E36D;
+	Mon, 28 Oct 2024 06:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aCr6zb//"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xce0v7ZZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FC12AF07;
-	Mon, 28 Oct 2024 06:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E10118FC65;
+	Mon, 28 Oct 2024 06:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098194; cv=none; b=VeR2N/lkvQeAjXOezSZpPecE2zsUSdbJyipfDdGL/ONDyUuMEBWGVrtvVr+iXjIwneLhjhoLnU/ikzAa355CSqXYlAyq0/ny8dfd2RyR7qMNyo+RwH6DVbtnHtKH6kI2KiJt/zN08UW0+OIERGV1BP2lp2pdLbGU6u/OnCOq+1Y=
+	t=1730097211; cv=none; b=bPKuB9qSiO6G1NP78DI42Am2heEaGi4FDm6Z5qujQtsyFHxhrFNKWZqlvo7pQGPe3oC5dBBxDwV8vKP7Cq+yMi9g+lw6krVnL34xaUQlrI86PwkciyzhdFkviGZe0cJeeBKspqQUVPc/unykOZKR+oZz2JnAQQZ/81JALDG2rSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098194; c=relaxed/simple;
-	bh=Y7ZjMiapGG1bHLQr8lLVDs0fMGvnyOJfaTOenx17yYw=;
+	s=arc-20240116; t=1730097211; c=relaxed/simple;
+	bh=1JqpSEZ1ORkaXXiBiDF/pKTasEFvm3efo2NMw2S2sag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mgWa9PfK+9cMq6XP/WNw905QoTnKHPSElObm4xUbjY8UhuZ90WFkHWX2rUlBnxuUGiLGbnhIiJDW9BtgNj+Wf8IA759nR42u7U0CtxpHSGN6+hDigP4d9lswcxQBfRu19+drIiDhHgtqn9dfWP8tVUNCJsLrZsOxEOngCT5UD7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aCr6zb//; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439C3C4CEC3;
-	Mon, 28 Oct 2024 06:49:53 +0000 (UTC)
+	 MIME-Version; b=bbNcvgnpWUI/AHCLO3S0IrQFOqHgKBW3SFXoVF7OlbNyO7lgM6BdtQFezWY6hKa3UZkUceW/x98lJyeVCn3me76CHjaUB6XaNsDmhShxPrp+7H3qTZLGCSUxvfIt1bEJEz/NBUUrOcpLraeMfdy2SJ3N7cXEpZDc2ZiUt/naTuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xce0v7ZZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D11C4CEEA;
+	Mon, 28 Oct 2024 06:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098193;
-	bh=Y7ZjMiapGG1bHLQr8lLVDs0fMGvnyOJfaTOenx17yYw=;
+	s=korg; t=1730097210;
+	bh=1JqpSEZ1ORkaXXiBiDF/pKTasEFvm3efo2NMw2S2sag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aCr6zb//PKexMjVLblWdxr0PbE/Ksseau4MtCb4Vp6QDWoFuMdB1t340Hqznig49b
-	 Jx5bh2A2ZhUhLDXYeaJpbhUBtS+mBWYUa+5hIsqlWlUdJgz0jqCVbrquo7os2zBOfq
-	 d+VlCDb6ICY8UKufiME/sveq6X5S15nbi2DHQfzE=
+	b=Xce0v7ZZ6FXHFGUew+6txGwISoCH2Xr5Tt2GSSlOVK7N/F+OsERjRVjtpmd/ep0LI
+	 cIBR0ANOIxEw1U0bhdPsAuL63WdEWGd6LrCoXRbfvc5isc4oIVxqssk1MC75oLUlPD
+	 1VA+0+iF7bkJxexnZ2g+kKsoqkI25zLN6ntQtm7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Mathias Nyman <mathias.nyman@intel.com>,
-	linux-usb@vger.kernel.org,
+	Jonathan Marek <jonathan@marek.ca>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 118/261] xhci: dbgtty: remove kfifo_out() wrapper
-Date: Mon, 28 Oct 2024 07:24:20 +0100
-Message-ID: <20241028062314.987043179@linuxfoundation.org>
+Subject: [PATCH 6.1 024/137] drm/msm/dsi: fix 32-bit signed integer extension in pclk_rate calculation
+Date: Mon, 28 Oct 2024 07:24:21 +0100
+Message-ID: <20241028062259.396962435@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Jonathan Marek <jonathan@marek.ca>
 
-[ Upstream commit 2b217514436744dd98c4d9fa48d60610f9f67d61 ]
+[ Upstream commit 358b762400bd94db2a14a72dfcef74c7da6bd845 ]
 
-There is no need to check against kfifo_len() before kfifo_out(). Just
-ask the latter for data and it tells how much it retrieved. Or returns 0
-in case there are no more.
+When (mode->clock * 1000) is larger than (1<<31), int to unsigned long
+conversion will sign extend the int to 64 bits and the pclk_rate value
+will be incorrect.
 
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Cc: Mathias Nyman <mathias.nyman@intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org
-Link: https://lore.kernel.org/r/20240808103549.429349-5-jirislaby@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 30c9ae5ece8e ("xhci: dbc: honor usb transfer size boundaries.")
+Fix this by making the result of the multiplication unsigned.
+
+Note that above (1<<32) would still be broken and require more changes, but
+its unlikely anyone will need that anytime soon.
+
+Fixes: c4d8cfe516dc ("drm/msm/dsi: add implementation for helper functions")
+Signed-off-by: Jonathan Marek <jonathan@marek.ca>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/618434/
+Link: https://lore.kernel.org/r/20241007050157.26855-2-jonathan@marek.ca
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-dbgtty.c | 15 +--------------
- 1 file changed, 1 insertion(+), 14 deletions(-)
+ drivers/gpu/drm/msm/dsi/dsi_host.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-dbgtty.c b/drivers/usb/host/xhci-dbgtty.c
-index b74e98e943932..64ea964949975 100644
---- a/drivers/usb/host/xhci-dbgtty.c
-+++ b/drivers/usb/host/xhci-dbgtty.c
-@@ -24,19 +24,6 @@ static inline struct dbc_port *dbc_to_port(struct xhci_dbc *dbc)
- 	return dbc->priv;
- }
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+index 034ad810fd653..88843505d89c9 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -576,7 +576,7 @@ static unsigned long dsi_get_pclk_rate(struct msm_dsi_host *msm_host, bool is_bo
+ 	struct drm_display_mode *mode = msm_host->mode;
+ 	unsigned long pclk_rate;
  
--static unsigned int
--dbc_send_packet(struct dbc_port *port, char *packet, unsigned int size)
--{
--	unsigned int		len;
--
--	len = kfifo_len(&port->write_fifo);
--	if (len < size)
--		size = len;
--	if (size != 0)
--		size = kfifo_out(&port->write_fifo, packet, size);
--	return size;
--}
--
- static int dbc_start_tx(struct dbc_port *port)
- 	__releases(&port->port_lock)
- 	__acquires(&port->port_lock)
-@@ -49,7 +36,7 @@ static int dbc_start_tx(struct dbc_port *port)
+-	pclk_rate = mode->clock * 1000;
++	pclk_rate = mode->clock * 1000u;
  
- 	while (!list_empty(pool)) {
- 		req = list_entry(pool->next, struct dbc_request, list_pool);
--		len = dbc_send_packet(port, req->buf, DBC_MAX_PACKET);
-+		len = kfifo_out(&port->write_fifo, req->buf, DBC_MAX_PACKET);
- 		if (len == 0)
- 			break;
- 		do_tty_wake = true;
+ 	/*
+ 	 * For bonded DSI mode, the current DRM mode has the complete width of the
 -- 
 2.43.0
 
