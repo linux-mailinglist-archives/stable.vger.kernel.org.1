@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-88404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB499B25D6
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:35:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 323DA9B255D
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40219280E6D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:35:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC67E2820C5
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84905191478;
-	Mon, 28 Oct 2024 06:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B8EF18E04F;
+	Mon, 28 Oct 2024 06:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5DR2R48"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPs5e9/C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EFA18FDA9;
-	Mon, 28 Oct 2024 06:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E6918CC1F;
+	Mon, 28 Oct 2024 06:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097254; cv=none; b=Zls7HL4CtNPDrPTb2vKQMb19HKFXq/xs24j1DB8feENAAwF1ht+/5jU9GPxI+NSATJAcxWD6lRkO7OU3EzX3hYXiTPyrdt0/iYlfdjVHXA0FDJXNsIOWe9pENN4PTE4L8EKj4/95SuzD8xdb41Rqro3PUHQ12hO+R+JAdMI7zsQ=
+	t=1730096900; cv=none; b=Y0f32sOW23Ld4ZlxUeleiyv9LRzdSCOAI7ga2h/T3G8ShHv6yLZLIOypsfrtQGHPQ+8X0f/+O45VfSgMsSVRAvgH6VRCCJSX8LW0ayywH9fapvmkLu+aVn4AYt0sF4vypdB75Zs9HfQCDvTlJNMDS27QhvW86gtLlazB8d/NyRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097254; c=relaxed/simple;
-	bh=DqyA4julni/IOsS1/zRVoUAnK0jv7SvzbseTwOI+uR8=;
+	s=arc-20240116; t=1730096900; c=relaxed/simple;
+	bh=2gon24p5GKFjS5wVcV1nqPzoPhNXK2c0jaXS6Qy8cVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tTdkeFOnxYFjV7izUj/9bW+6ktJ+Pwayi3IacHBPm/kvuGo6tZt7jlSWt7hKM4IyRb8sakVV/0Jlcf6dNqNbEYjSV0NzyCdkm0wNtYSoL6Ufzi0KQBSi/L5a29NX9LABG6Ey+/AOvITl2iR8cZISE08+Kb7FM+N77rY0lcP1Ri8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5DR2R48; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4708C4CEC7;
-	Mon, 28 Oct 2024 06:34:13 +0000 (UTC)
+	 MIME-Version; b=NYPkg6zutubDJsGu04xOzolrkZvb/niyXlPEBurCfHSVP84GI8CYBm6q+bxqfnvLWw6bpbuiaqdVoytx2ZSn7knB48HAioV33U4rkbDCxGqz5WlsqoGRZxJ140BDK0Uc9vdM/N4+Sp6IjXBzOoy3PQeMi+qEzz/iNT1q7jBtc68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPs5e9/C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC31AC4CEC3;
+	Mon, 28 Oct 2024 06:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097254;
-	bh=DqyA4julni/IOsS1/zRVoUAnK0jv7SvzbseTwOI+uR8=;
+	s=korg; t=1730096900;
+	bh=2gon24p5GKFjS5wVcV1nqPzoPhNXK2c0jaXS6Qy8cVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a5DR2R48nkdX+0FUVQT6jpeVbI/v0yqN2amTW1r3dI0gx+Di/qylkuMb7kfVEVTDV
-	 wca2oD30p3nxlgyl54CDEBknj5muPjEi+fuecJIyrc+/BEE1dXtT56N7MS6XV8/Abi
-	 CtlxcbupOT7sz+fUysUDX/rzuApo1kdTlEsT1VHg=
+	b=WPs5e9/CpgtNhF1psDO6RhvmUzCBrGX6klu+ElT7+nPT1UBwVqSSirqm37I6ydrRL
+	 W9MwEXf4LyEErYqiC2b50G+Ag9qMi57pqIG/frW63AwbOZHzZtHqiCC/ieKXHNlBVI
+	 lIeom2D9r4xKjZPGkj60+LUaKcuqMo6AGMk35nbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Murad Masimov <m.masimov@maxima.ru>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 050/137] Bluetooth: bnep: fix wild-memory-access in proto_unregister
+Subject: [PATCH 5.15 07/80] ALSA: hda/cs8409: Fix possible NULL dereference
 Date: Mon, 28 Oct 2024 07:24:47 +0100
-Message-ID: <20241028062300.127744354@linuxfoundation.org>
+Message-ID: <20241028062252.825896113@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Murad Masimov <m.masimov@maxima.ru>
 
-[ Upstream commit 64a90991ba8d4e32e3173ddd83d0b24167a5668c ]
+[ Upstream commit c9bd4a82b4ed32c6d1c90500a52063e6e341517f ]
 
-There's issue as follows:
-  KASAN: maybe wild-memory-access in range [0xdead...108-0xdead...10f]
-  CPU: 3 UID: 0 PID: 2805 Comm: rmmod Tainted: G        W
-  RIP: 0010:proto_unregister+0xee/0x400
-  Call Trace:
-   <TASK>
-   __do_sys_delete_module+0x318/0x580
-   do_syscall_64+0xc1/0x1d0
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+If snd_hda_gen_add_kctl fails to allocate memory and returns NULL, then
+NULL pointer dereference will occur in the next line.
 
-As bnep_init() ignore bnep_sock_init()'s return value, and bnep_sock_init()
-will cleanup all resource. Then when remove bnep module will call
-bnep_sock_cleanup() to cleanup sock's resource.
-To solve above issue just return bnep_sock_init()'s return value in
-bnep_exit().
+Since dolphin_fixups function is a hda_fixup function which is not supposed
+to return any errors, add simple check before dereference, ignore the fail.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 20e507724113 ("ALSA: hda/cs8409: Add support for dolphin")
+Signed-off-by: Murad Masimov <m.masimov@maxima.ru>
+Link: https://patch.msgid.link/20241010221649.1305-1-m.masimov@maxima.ru
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/bnep/core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/pci/hda/patch_cs8409.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/bnep/core.c b/net/bluetooth/bnep/core.c
-index a660c428e2207..38f542665f196 100644
---- a/net/bluetooth/bnep/core.c
-+++ b/net/bluetooth/bnep/core.c
-@@ -745,8 +745,7 @@ static int __init bnep_init(void)
- 	if (flt[0])
- 		BT_INFO("BNEP filters: %s", flt);
- 
--	bnep_sock_init();
--	return 0;
-+	return bnep_sock_init();
- }
- 
- static void __exit bnep_exit(void)
+diff --git a/sound/pci/hda/patch_cs8409.c b/sound/pci/hda/patch_cs8409.c
+index abf4eef9afa08..7285220c36f01 100644
+--- a/sound/pci/hda/patch_cs8409.c
++++ b/sound/pci/hda/patch_cs8409.c
+@@ -1237,8 +1237,9 @@ void dolphin_fixups(struct hda_codec *codec, const struct hda_fixup *fix, int ac
+ 		kctrl = snd_hda_gen_add_kctl(&spec->gen, "Line Out Playback Volume",
+ 					     &cs42l42_dac_volume_mixer);
+ 		/* Update Line Out kcontrol template */
+-		kctrl->private_value = HDA_COMPOSE_AMP_VAL_OFS(DOLPHIN_HP_PIN_NID, 3, CS8409_CODEC1,
+-				       HDA_OUTPUT, CS42L42_VOL_DAC) | HDA_AMP_VAL_MIN_MUTE;
++		if (kctrl)
++			kctrl->private_value = HDA_COMPOSE_AMP_VAL_OFS(DOLPHIN_HP_PIN_NID, 3, CS8409_CODEC1,
++					       HDA_OUTPUT, CS42L42_VOL_DAC) | HDA_AMP_VAL_MIN_MUTE;
+ 		cs8409_enable_ur(codec, 0);
+ 		snd_hda_codec_set_name(codec, "CS8409/CS42L42");
+ 		break;
 -- 
 2.43.0
 
