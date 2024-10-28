@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-88583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BDB09B2699
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:41:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9EE99B25C1
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:34:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CEC81C213AE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 273621C21010
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:34:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B3818E35B;
-	Mon, 28 Oct 2024 06:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D6919048A;
+	Mon, 28 Oct 2024 06:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPcAFzPy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMjlrGBN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8893F2C697;
-	Mon, 28 Oct 2024 06:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6277F18E34E;
+	Mon, 28 Oct 2024 06:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097660; cv=none; b=IoZ4DMP0TXniHK17WhOY8NSSH+8ydSr7dgJECmzYC6/+wHrM+qWzDJdUelmcsCT4MiAxY29/EQZKekNwseh4p97altVJTgKI253+lFU/Lxz9+RrdG0ElVnJ8uOkYQ05kpiHESCKjojXccT5AyVDms81FnLt8vNkIq66r1apESo4=
+	t=1730097213; cv=none; b=eYulb59TlDVlSprRP+kqLrtdpfCuIza5B8ZbpbjN2I1sUf7xDyoP1Qu63+Mv8P/ng5YyR7AMjv4Y9ETANWDBaLrXNnGoNf5j8dDUhxaT6m8CuC0ESn8czWjU8/4hoSaEby2H2YOaT8vTivoTEG0kO5bYpA7wvXiDheIBtTKPY4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097660; c=relaxed/simple;
-	bh=fhax/LK1yMF6yVs+V4kMj4mYRNP0xXXH/HQfmq9w05Y=;
+	s=arc-20240116; t=1730097213; c=relaxed/simple;
+	bh=m+5LCA5GsNcCgqfI3IlfbZZX50TQBnc3a1/5vLYHcBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZJmfhF8pJBRx1aZaLgoICfeHQwu17GH0xSjDpbh/eE3Tu6fRqpDCBuBfnh1zrzRni0/JZkcAXHhO4GfwULHKsvVjxsoJNSr/nRVQMOy4estns15VCHhqWyaHiBwWaqgQ2dLcicsn7HfeVfQEAaOHj3GaQEHedwtLlzPz54QVuhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPcAFzPy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29741C4CEC3;
-	Mon, 28 Oct 2024 06:41:00 +0000 (UTC)
+	 MIME-Version; b=nbQkWCaQKnNcVxbLF7BTkyhAwYSvb55SoDKyIdVghpwwK7yC4jDNMH/4UxsJ+XBGzcNm/wBKTK8Q6DaoSMzt78+inPsJipR+wbVdmfJVMAlscRpPWiYzY1+C1yt2AMMaD5iVAwy2XtcFy6pGAnDJ+LOtFjh7861D8HLE7NiJqX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMjlrGBN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B27BC4CECD;
+	Mon, 28 Oct 2024 06:33:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097660;
-	bh=fhax/LK1yMF6yVs+V4kMj4mYRNP0xXXH/HQfmq9w05Y=;
+	s=korg; t=1730097212;
+	bh=m+5LCA5GsNcCgqfI3IlfbZZX50TQBnc3a1/5vLYHcBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tPcAFzPymY71qv460NV6H0MjPc948PgzwhOjkYrLEhqb1KanCo5gzGkajSDvVXING
-	 HlYDxExik8XGP3wFOSV1HqOy2hbaquYFI4/2DUbmvyyJAeyGiEuiFNRrWOwgNDaQzu
-	 vyvBnxZmhwjmaAx7Juao9Jz/FyDl8HFF5Pu7EPp4=
+	b=zMjlrGBN27vEHtQIe3lp+ueEVelYxTgJ+7KOnb3Gb7OavTcPbDr8WwuDdZOclxleE
+	 2NQriaOKKQCzw34+z80lSjC88XvSJKjcYLE63+0ohf9gzz0Zvh/zmj692IOdAMPO7P
+	 0JtuHJr1Y5h+9tKSwJlYpgQBDSb0V4dejcE+hSx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	Li RongQing <lirongqing@baidu.com>,
+	Simon Horman <horms@kernel.org>,
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/208] cdrom: Avoid barrier_nospec() in cdrom_ioctl_media_changed()
+Subject: [PATCH 6.1 033/137] net/smc: Fix searching in list of known pnetids in smc_pnet_add_pnetid
 Date: Mon, 28 Oct 2024 07:24:30 +0100
-Message-ID: <20241028062308.866498546@linuxfoundation.org>
+Message-ID: <20241028062259.651216004@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +66,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Li RongQing <lirongqing@baidu.com>
 
-[ Upstream commit b0bf1afde7c34698cf61422fa8ee60e690dc25c3 ]
+[ Upstream commit 82ac39ebd6db0c9f7a97a934bda1e3e101a9d201 ]
 
-The barrier_nospec() after the array bounds check is overkill and
-painfully slow for arches which implement it.
+pnetid of pi (not newly allocated pe) should be compared
 
-Furthermore, most arches don't implement it, so they remain exposed to
-Spectre v1 (which can affect pretty much any CPU with branch
-prediction).
-
-Instead, clamp the user pointer to a valid range so it's guaranteed to
-be a valid array index even when the bounds check mispredicts.
-
-Fixes: 8270cb10c068 ("cdrom: Fix spectre-v1 gadget")
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lore.kernel.org/r/1d86f4d9d8fba68e5ca64cdeac2451b95a8bf872.1729202937.git.jpoimboe@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: e888a2e8337c ("net/smc: introduce list of pnetids for Ethernet devices")
+Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
+Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
+Link: https://patch.msgid.link/20241014115321.33234-1-lirongqing@baidu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cdrom/cdrom.c | 2 +-
+ net/smc/smc_pnet.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cdrom/cdrom.c b/drivers/cdrom/cdrom.c
-index 01f46caf1f88b..54b80911f3e28 100644
---- a/drivers/cdrom/cdrom.c
-+++ b/drivers/cdrom/cdrom.c
-@@ -2313,7 +2313,7 @@ static int cdrom_ioctl_media_changed(struct cdrom_device_info *cdi,
- 		return -EINVAL;
+diff --git a/net/smc/smc_pnet.c b/net/smc/smc_pnet.c
+index 21b8bf23e4ee6..399314cfab90a 100644
+--- a/net/smc/smc_pnet.c
++++ b/net/smc/smc_pnet.c
+@@ -749,7 +749,7 @@ static int smc_pnet_add_pnetid(struct net *net, u8 *pnetid)
  
- 	/* Prevent arg from speculatively bypassing the length check */
--	barrier_nospec();
-+	arg = array_index_nospec(arg, cdi->capacity);
- 
- 	info = kmalloc(sizeof(*info), GFP_KERNEL);
- 	if (!info)
+ 	write_lock(&sn->pnetids_ndev.lock);
+ 	list_for_each_entry(pi, &sn->pnetids_ndev.list, list) {
+-		if (smc_pnet_match(pnetid, pe->pnetid)) {
++		if (smc_pnet_match(pnetid, pi->pnetid)) {
+ 			refcount_inc(&pi->refcnt);
+ 			kfree(pe);
+ 			goto unlock;
 -- 
 2.43.0
 
