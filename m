@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-88845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C5F09B27C1
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:51:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BB499B25D6
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:35:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4036285A51
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:50:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40219280E6D
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A48D18EFF3;
-	Mon, 28 Oct 2024 06:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84905191478;
+	Mon, 28 Oct 2024 06:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cy5HKxhq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5DR2R48"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D154418EFEB;
-	Mon, 28 Oct 2024 06:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EFA18FDA9;
+	Mon, 28 Oct 2024 06:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098251; cv=none; b=jP005ejFkMRLFYdvCoThJJBmxkWS9e9VYaIwg2Iue4gXSRGJLfY6Xt94aaMgfHAYcN4OPOwOdAo8z4NAUeN2k8pN2Xoo+m0u/JbrIiS10JjHjfE8gWjSk78A2TfoHWxbDQG0YS58990LAemu9/NXQEDEMLWDlvMqe5i7g0CAujM=
+	t=1730097254; cv=none; b=Zls7HL4CtNPDrPTb2vKQMb19HKFXq/xs24j1DB8feENAAwF1ht+/5jU9GPxI+NSATJAcxWD6lRkO7OU3EzX3hYXiTPyrdt0/iYlfdjVHXA0FDJXNsIOWe9pENN4PTE4L8EKj4/95SuzD8xdb41Rqro3PUHQ12hO+R+JAdMI7zsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098251; c=relaxed/simple;
-	bh=1Oie/kzVbXHtEDXHaZGLeevzTIJwsWWma02i9FQvjC4=;
+	s=arc-20240116; t=1730097254; c=relaxed/simple;
+	bh=DqyA4julni/IOsS1/zRVoUAnK0jv7SvzbseTwOI+uR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P8vVrIwUCkPFusxMdmdSD0bj0UG9yAKp4p5UgqRqhMHs3FowEYE/2TFxlbP0b5gbpQyE4dHDvmOG8d9nWdp8uxMy/iNLgIuQMiKXCQ/Z2/IC02MB1PHKp+I3Y2h4sy1bL4EkERwITNdV5kC+wfZzp8zOz8AI9MhlHhjSekjS6No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cy5HKxhq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72DE6C4CEC3;
-	Mon, 28 Oct 2024 06:50:51 +0000 (UTC)
+	 MIME-Version; b=tTdkeFOnxYFjV7izUj/9bW+6ktJ+Pwayi3IacHBPm/kvuGo6tZt7jlSWt7hKM4IyRb8sakVV/0Jlcf6dNqNbEYjSV0NzyCdkm0wNtYSoL6Ufzi0KQBSi/L5a29NX9LABG6Ey+/AOvITl2iR8cZISE08+Kb7FM+N77rY0lcP1Ri8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5DR2R48; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4708C4CEC7;
+	Mon, 28 Oct 2024 06:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098251;
-	bh=1Oie/kzVbXHtEDXHaZGLeevzTIJwsWWma02i9FQvjC4=;
+	s=korg; t=1730097254;
+	bh=DqyA4julni/IOsS1/zRVoUAnK0jv7SvzbseTwOI+uR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cy5HKxhqZ3Y6tNQq+Ak6kBt++k+E09XCInLDXsEOwxKA8S+LLjkueeSxIZHudmIjX
-	 MWQoyxOrtVRvH5pWzSMLJ2ZKYloujdJ5guL10TzrKnF1WpvdLHdgSWEvAeU+uj2hBB
-	 GKfbkBMWGbrSiiH1epZMTVpAQDBjrPjiNf3vfx7E=
+	b=a5DR2R48nkdX+0FUVQT6jpeVbI/v0yqN2amTW1r3dI0gx+Di/qylkuMb7kfVEVTDV
+	 wca2oD30p3nxlgyl54CDEBknj5muPjEi+fuecJIyrc+/BEE1dXtT56N7MS6XV8/Abi
+	 CtlxcbupOT7sz+fUysUDX/rzuApo1kdTlEsT1VHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Simon Horman <horms@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Ye Bin <yebin10@huawei.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 145/261] net: pse-pd: Fix out of bound for loop
+Subject: [PATCH 6.1 050/137] Bluetooth: bnep: fix wild-memory-access in proto_unregister
 Date: Mon, 28 Oct 2024 07:24:47 +0100
-Message-ID: <20241028062315.678055234@linuxfoundation.org>
+Message-ID: <20241028062300.127744354@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kory Maincent <kory.maincent@bootlin.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit f2767a41959e60763949c73ee180e40c686e807e ]
+[ Upstream commit 64a90991ba8d4e32e3173ddd83d0b24167a5668c ]
 
-Adjust the loop limit to prevent out-of-bounds access when iterating over
-PI structures. The loop should not reach the index pcdev->nr_lines since
-we allocate exactly pcdev->nr_lines number of PI structures. This fix
-ensures proper bounds are maintained during iterations.
+There's issue as follows:
+  KASAN: maybe wild-memory-access in range [0xdead...108-0xdead...10f]
+  CPU: 3 UID: 0 PID: 2805 Comm: rmmod Tainted: G        W
+  RIP: 0010:proto_unregister+0xee/0x400
+  Call Trace:
+   <TASK>
+   __do_sys_delete_module+0x318/0x580
+   do_syscall_64+0xc1/0x1d0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fixes: 9be9567a7c59 ("net: pse-pd: Add support for PSE PIs")
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Message-ID: <20241015130255.125508-1-kory.maincent@bootlin.com>
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+As bnep_init() ignore bnep_sock_init()'s return value, and bnep_sock_init()
+will cleanup all resource. Then when remove bnep module will call
+bnep_sock_cleanup() to cleanup sock's resource.
+To solve above issue just return bnep_sock_init()'s return value in
+bnep_exit().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/pse-pd/pse_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/bluetooth/bnep/core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-index f8e6854781e6e..2906ce173f66c 100644
---- a/drivers/net/pse-pd/pse_core.c
-+++ b/drivers/net/pse-pd/pse_core.c
-@@ -113,7 +113,7 @@ static void pse_release_pis(struct pse_controller_dev *pcdev)
- {
- 	int i;
+diff --git a/net/bluetooth/bnep/core.c b/net/bluetooth/bnep/core.c
+index a660c428e2207..38f542665f196 100644
+--- a/net/bluetooth/bnep/core.c
++++ b/net/bluetooth/bnep/core.c
+@@ -745,8 +745,7 @@ static int __init bnep_init(void)
+ 	if (flt[0])
+ 		BT_INFO("BNEP filters: %s", flt);
  
--	for (i = 0; i <= pcdev->nr_lines; i++) {
-+	for (i = 0; i < pcdev->nr_lines; i++) {
- 		of_node_put(pcdev->pi[i].pairset[0].np);
- 		of_node_put(pcdev->pi[i].pairset[1].np);
- 		of_node_put(pcdev->pi[i].np);
-@@ -647,7 +647,7 @@ static int of_pse_match_pi(struct pse_controller_dev *pcdev,
- {
- 	int i;
+-	bnep_sock_init();
+-	return 0;
++	return bnep_sock_init();
+ }
  
--	for (i = 0; i <= pcdev->nr_lines; i++) {
-+	for (i = 0; i < pcdev->nr_lines; i++) {
- 		if (pcdev->pi[i].np == np)
- 			return i;
- 	}
+ static void __exit bnep_exit(void)
 -- 
 2.43.0
 
