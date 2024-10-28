@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-88319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 595429B256B
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FE439B27EE
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B29D1C20EAE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB0422863E4
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4632F18E04D;
-	Mon, 28 Oct 2024 06:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67EC618E748;
+	Mon, 28 Oct 2024 06:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hzq6zCuB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gppAdYAt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0436218E03A;
-	Mon, 28 Oct 2024 06:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B17B2AF07;
+	Mon, 28 Oct 2024 06:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730096930; cv=none; b=LGqlU1cO/6K/2Ntzi8s1Fh031G7eys69llk5VjQAico+qbVOUAqF0d84YbcMGWiRck1HTfnDw374OARSDri4NGWNlmdet0FElUfB+r2q+FAdKWXjnF5fO/pnfwv05cfwYgD/t5/KJi2Cpe8kibzpW54vFFr5HzLjYpRTsmkkzOQ=
+	t=1730098346; cv=none; b=WEz3p3ujpQyG4MwD3zL0dUtJKFKYgyjrPpvfBRuUZu3D6MkaNG9yfFyvMj71h9mgPfQu6CEyOn97KLMR3LbpkJSy+lLyxLwle13LFaEcADs6pGii+r4eDWfpG7QKcmU9cDGEzbiI3ocjSjmtGBlrA1BJPd9j3ky0+7TkMOD/VV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730096930; c=relaxed/simple;
-	bh=b8UauKl+zaHHhHOcabPOnBXITxSUG3jU5WwqKbZg0N8=;
+	s=arc-20240116; t=1730098346; c=relaxed/simple;
+	bh=f2TG4ivWerYv6kBndIV6XhLX00vW56oLW9X9YvInfkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bmC3FQGzn/f3O/oVLNvT5JvZCstqGBP+p+Wj75el5Md9YT9r5ZUX2KUY2BGCSAyz8i1pFcCnU1OJ02okkZZiDn97ebDwpvz3fJbr/vSfT5fxwzazYJERRjJ9MlZ1SW+4pdN77h9GUaj+EtSrUvrBrQI13kRY0dm5Aweb+/dmusc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hzq6zCuB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EBAAC4CEC3;
-	Mon, 28 Oct 2024 06:28:49 +0000 (UTC)
+	 MIME-Version; b=Yr4WaClxSQnRnZOGXWCLO+ore052pJY/+q6OXWfk2Xccf7PKzTwotlBI5F6pTynWLBc/AjNUcdxXxQl+4O5cj5CMaYwSHE+sPVhwrnXdCaKVMz8fGDr+CkilFKoxP4dR6pOa2rnKHazuH6QEBkYoU3iyxQSq9X2kS7oTMflkdcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gppAdYAt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C87C4CEC3;
+	Mon, 28 Oct 2024 06:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730096929;
-	bh=b8UauKl+zaHHhHOcabPOnBXITxSUG3jU5WwqKbZg0N8=;
+	s=korg; t=1730098345;
+	bh=f2TG4ivWerYv6kBndIV6XhLX00vW56oLW9X9YvInfkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hzq6zCuBznVpnSdFEovopwCIPWao7UwCHbBoIVXMnlSDoDakwmq7JRMXVMif4Ke7u
-	 J8o77ullXisM5ykgMWreXUYl6/gr2oCGtOs6zklKfCRWaWsNR2b+DHOcUbnYDEAJjw
-	 MAoMD2k30/jYsN9ktQeoodQp25DVlVUma7PO+Akk=
+	b=gppAdYAtbsKdrLeZtWPE/PTJR2XEdoZvGf3tAKNk+SR+WSMhJV39hICS/lCxZF4C/
+	 9y59gMEoEPTw/6Dvm3xeqGk6XjMmPGQ+CAZqsoB5h9+lAPQRv/aWJ36hFcx6DmKdR4
+	 RnA0OFW4/KltL4hNoDiKdKWuIYOsRuIznu0ktCOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Crag Wang <crag_wang@dell.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 49/80] platform/x86: dell-sysman: add support for alienware products
+Subject: [PATCH 6.11 187/261] PCI: Hold rescan lock while adding devices during host probe
 Date: Mon, 28 Oct 2024 07:25:29 +0100
-Message-ID: <20241028062253.981556375@linuxfoundation.org>
+Message-ID: <20241028062316.704411200@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Crag Wang <crag_wang@dell.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit a561509b4187a8908eb7fbb2d1bf35bbc20ec74b ]
+[ Upstream commit 1d59d474e1cb7d4fdf87dfaf96f44647f13ea590 ]
 
-Alienware supports firmware-attributes and has its own OEM string.
+Since adding the PCI power control code, we may end up with a race between
+the pwrctl platform device rescanning the bus and host controller probe
+functions. The latter need to take the rescan lock when adding devices or
+we may end up in an undefined state having two incompletely added devices
+and hit the following crash when trying to remove the device over sysfs:
 
-Signed-off-by: Crag Wang <crag_wang@dell.com>
-Link: https://lore.kernel.org/r/20241004152826.93992-1-crag_wang@dell.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+  Internal error: Oops: 0000000096000004 [#1] SMP
+  Call trace:
+    __pi_strlen+0x14/0x150
+    kernfs_find_ns+0x80/0x13c
+    kernfs_remove_by_name_ns+0x54/0xf0
+    sysfs_remove_bin_file+0x24/0x34
+    pci_remove_resource_files+0x3c/0x84
+    pci_remove_sysfs_dev_files+0x28/0x38
+    pci_stop_bus_device+0x8c/0xd8
+    pci_stop_bus_device+0x40/0xd8
+    pci_stop_and_remove_bus_device_locked+0x28/0x48
+    remove_store+0x70/0xb0
+    dev_attr_store+0x20/0x38
+    sysfs_kf_write+0x58/0x78
+    kernfs_fop_write_iter+0xe8/0x184
+    vfs_write+0x2dc/0x308
+    ksys_write+0x7c/0xec
+
+Fixes: 4565d2652a37 ("PCI/pwrctl: Add PCI power control core code")
+Link: https://lore.kernel.org/r/20241003084342.27501-1-brgl@bgdev.pl
+Reported-by: Konrad Dybcio <konradybcio@kernel.org>
+Tested-by: Konrad Dybcio <konradybcio@kernel.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell-wmi-sysman/sysman.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/probe.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-index 907fde53e95c4..47f8c5a63343d 100644
---- a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-+++ b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-@@ -524,6 +524,7 @@ static int __init sysman_init(void)
- 	int ret = 0;
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index e9e56bbb3b59d..d203e23b75620 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -3106,7 +3106,9 @@ int pci_host_probe(struct pci_host_bridge *bridge)
+ 	list_for_each_entry(child, &bus->children, node)
+ 		pcie_bus_configure_settings(child);
  
- 	if (!dmi_find_device(DMI_DEV_TYPE_OEM_STRING, "Dell System", NULL) &&
-+	    !dmi_find_device(DMI_DEV_TYPE_OEM_STRING, "Alienware", NULL) &&
- 	    !dmi_find_device(DMI_DEV_TYPE_OEM_STRING, "www.dell.com", NULL)) {
- 		pr_err("Unable to run on non-Dell system\n");
- 		return -ENODEV;
++	pci_lock_rescan_remove();
+ 	pci_bus_add_devices(bus);
++	pci_unlock_rescan_remove();
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(pci_host_probe);
 -- 
 2.43.0
 
