@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-88580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 831199B2697
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:40:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D742E9B27AC
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:50:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC341B20A93
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:40:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D06C21C20329
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:50:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F3518E374;
-	Mon, 28 Oct 2024 06:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9092AF07;
+	Mon, 28 Oct 2024 06:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSSe8uKJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8mggmsj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67BD189BAF;
-	Mon, 28 Oct 2024 06:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD53B18A922;
+	Mon, 28 Oct 2024 06:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097653; cv=none; b=u8sRuebyQHkCQFJgesl2E0KdOoveo9oh+ksfwMr1IQsxUnGbEj4LqLl6ag9XASSrHeYpBAZwtq/wT8YkpjI7JbrwIGC75yc2irk9RE/osmNxfa/Bbwk3S89G5z5abU/06e1FsU0U5SqefRMtJH5SG4d/X5pXvFbO8WDzyOOPSh8=
+	t=1730098213; cv=none; b=TBAvAm4w+N/aWGB1ZOpNF1EBQj0S+ZrmP9qdHPQKlqPCy+Rgc6qSnVjvpvN44Q5AFOackEcyMvg3O/J1szgmgMmhVg4snK0mf9hlKP7cqEMntWcgfXWtTgyZBrIWlTdW1fjnRF779cK8EqDalh5YoYZ5lFJFxcS4cGYWPMMNKtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097653; c=relaxed/simple;
-	bh=fsXKBYOXQVVMhUcn1ZjmeVDt0ykyj97QAAHiVdjcU34=;
+	s=arc-20240116; t=1730098213; c=relaxed/simple;
+	bh=AMiSNsdxD5kM9sTh2/TaccGw7AcdJTNYlNWlLJShzBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tLiXYTYhfvyt6dDkbhkrrG2KI+U7oIVj/1yqdSdOYDOSgFCyRezWbrJZgJMYeaxd0gZ2yMFKbioJ8D2Q4XNoapNpectGtysm3tu5s+HU5JRXQwhALU3ToWpOTA9Isp6rAMOGXvwcDpkdL41uQ9sK71HIn9BgvoZc6PfVpnyJFeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSSe8uKJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F04EC4CEC3;
-	Mon, 28 Oct 2024 06:40:53 +0000 (UTC)
+	 MIME-Version; b=WxyqYDO+Nfb8VuubHy8Da9qJB7wWvG5HFS3VLodxcbQ8j3mRwo2g5L3Z0bMy7lanofsuAl4nxXnaSl5BoURMxAXHDsOc4bllSeiW3KMpPHrcLf/evx77OxM9ysQjKvsdmqowMfjH7/p3z2reRyip+upUpkyO7JXxS4sH8XP0pvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8mggmsj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2CDC4CEC3;
+	Mon, 28 Oct 2024 06:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097653;
-	bh=fsXKBYOXQVVMhUcn1ZjmeVDt0ykyj97QAAHiVdjcU34=;
+	s=korg; t=1730098213;
+	bh=AMiSNsdxD5kM9sTh2/TaccGw7AcdJTNYlNWlLJShzBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HSSe8uKJMx4Wzwj091CsfzcRwKYZ8L7JMhAFzMnVWQHsj6ape4oJSIbA6fRw+tOBK
-	 1+TwYOfdQl8T8ZgeCHfO/7qcdWSdhNsRcGxmwQiO6Ry2yD8D/39Ktb4DOIKtshT+6b
-	 wl+wBS16GAQptLE2LANveeEM9wYqTBIihbJ4u7Co=
+	b=H8mggmsjSR4dSD4kxpf6DLZGDF0MiMYz/CPVBqDT1Z0VO4AIzMOp623q4kPOMRqhJ
+	 n+mOSflaxXasiXI/5zzS5y3G+rsM+U7BhN9wKj1QnSVpq+sheZXGzYUoAMfkku90iI
+	 maNPjTUf3Ig7ar+vVxqmVNu9kklVbzQx1IOpVftQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Zhang <yi.zhang@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 088/208] nvme-pci: fix race condition between reset and nvme_dev_disable()
+Subject: [PATCH 6.11 126/261] arm64: Force position-independent veneers
 Date: Mon, 28 Oct 2024 07:24:28 +0100
-Message-ID: <20241028062308.817644636@linuxfoundation.org>
+Message-ID: <20241028062315.192998495@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +67,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 26bc0a81f64ce00fc4342c38eeb2eddaad084dd2 ]
+[ Upstream commit 9abe390e689f4f5c23c5f507754f8678431b4f72 ]
 
-nvme_dev_disable() modifies the dev->online_queues field, therefore
-nvme_pci_update_nr_queues() should avoid racing against it, otherwise
-we could end up passing invalid values to blk_mq_update_nr_hw_queues().
+Certain portions of code always need to be position-independent
+regardless of CONFIG_RELOCATABLE, including code which is executed in an
+idmap or which is executed before relocations are applied. In some
+kernel configurations the LLD linker generates position-dependent
+veneers for such code, and when executed these result in early boot-time
+failures.
 
- WARNING: CPU: 39 PID: 61303 at drivers/pci/msi/api.c:347
-          pci_irq_get_affinity+0x187/0x210
- Workqueue: nvme-reset-wq nvme_reset_work [nvme]
- RIP: 0010:pci_irq_get_affinity+0x187/0x210
- Call Trace:
-  <TASK>
-  ? blk_mq_pci_map_queues+0x87/0x3c0
-  ? pci_irq_get_affinity+0x187/0x210
-  blk_mq_pci_map_queues+0x87/0x3c0
-  nvme_pci_map_queues+0x189/0x460 [nvme]
-  blk_mq_update_nr_hw_queues+0x2a/0x40
-  nvme_reset_work+0x1be/0x2a0 [nvme]
+Marc Zyngier encountered a boot failure resulting from this when
+building a (particularly cursed) configuration with LLVM, as he reported
+to the list:
 
-Fix the bug by locking the shutdown_lock mutex before using
-dev->online_queues. Give up if nvme_dev_disable() is running or if
-it has been executed already.
+  https://lore.kernel.org/linux-arm-kernel/86wmjwvatn.wl-maz@kernel.org/
 
-Fixes: 949928c1c731 ("NVMe: Fix possible queue use after freed")
-Tested-by: Yi Zhang <yi.zhang@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+In Marc's kernel configuration, the .head.text and .rodata.text sections
+end up more than 128MiB apart, requiring a veneer to branch between the
+two:
+
+| [mark@lakrids:~/src/linux]% usekorg 14.1.0 aarch64-linux-objdump -t vmlinux | grep -w _text
+| ffff800080000000 g       .head.text     0000000000000000 _text
+| [mark@lakrids:~/src/linux]% usekorg 14.1.0 aarch64-linux-objdump -t vmlinux | grep -w primary_entry
+| ffff8000889df0e0 g       .rodata.text   000000000000006c primary_entry,
+
+... consequently, LLD inserts a position-dependent veneer for the branch
+from _stext (in .head.text) to primary_entry (in .rodata.text):
+
+| ffff800080000000 <_text>:
+| ffff800080000000:       fa405a4d        ccmp    x18, #0x0, #0xd, pl     // pl = nfrst
+| ffff800080000004:       14003fff        b       ffff800080010000 <__AArch64AbsLongThunk_primary_entry>
+...
+| ffff800080010000 <__AArch64AbsLongThunk_primary_entry>:
+| ffff800080010000:       58000050        ldr     x16, ffff800080010008 <__AArch64AbsLongThunk_primary_entry+0x8>
+| ffff800080010004:       d61f0200        br      x16
+| ffff800080010008:       889df0e0        .word   0x889df0e0
+| ffff80008001000c:       ffff8000        .word   0xffff8000
+
+... and as this is executed early in boot before the kernel is mapped in
+TTBR1 this results in a silent boot failure.
+
+Fix this by passing '--pic-veneer' to the linker, which will cause the
+linker to use position-independent veneers, e.g.
+
+| ffff800080000000 <_text>:
+| ffff800080000000:       fa405a4d        ccmp    x18, #0x0, #0xd, pl     // pl = nfrst
+| ffff800080000004:       14003fff        b       ffff800080010000 <__AArch64ADRPThunk_primary_entry>
+...
+| ffff800080010000 <__AArch64ADRPThunk_primary_entry>:
+| ffff800080010000:       f004e3f0        adrp    x16, ffff800089c8f000 <__idmap_text_start>
+| ffff800080010004:       91038210        add     x16, x16, #0xe0
+| ffff800080010008:       d61f0200        br      x16
+
+I've opted to pass '--pic-veneer' unconditionally, as:
+
+* In addition to solving the boot failure, these sequences are generally
+  nicer as they require fewer instructions and don't need to perform
+  data accesses.
+
+* While the position-independent veneer sequences have a limited +/-2GiB
+  range, this is not a new restriction. Even kernels built with
+  CONFIG_RELOCATABLE=n are limited to 2GiB in size as we have several
+  structues using 32-bit relative offsets and PPREL32 relocations, which
+  are similarly limited to +/-2GiB in range. These include extable
+  entries, jump table entries, and alt_instr entries.
+
+* GNU LD defaults to using position-independent veneers, and supports
+  the same '--pic-veneer' option, so this change is not expected to
+  adversely affect GNU LD.
+
+I've tested with GNU LD 2.30 to 2.42 inclusive and LLVM 13.0.1 to 19.1.0
+inclusive, using the kernel.org binaries from:
+
+* https://mirrors.edge.kernel.org/pub/tools/crosstool/
+* https://mirrors.edge.kernel.org/pub/tools/llvm/
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Reported-by: Marc Zyngier <maz@kernel.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Will Deacon <will@kernel.org>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20240927101838.3061054-1-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ arch/arm64/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 61c9b175e035f..b701969cf1c2a 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2469,17 +2469,29 @@ static unsigned int nvme_pci_nr_maps(struct nvme_dev *dev)
- 	return 1;
- }
+diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
+index f6bc3da1ef110..c8e237b20ef29 100644
+--- a/arch/arm64/Makefile
++++ b/arch/arm64/Makefile
+@@ -10,7 +10,7 @@
+ #
+ # Copyright (C) 1995-2001 by Russell King
  
--static void nvme_pci_update_nr_queues(struct nvme_dev *dev)
-+static bool nvme_pci_update_nr_queues(struct nvme_dev *dev)
- {
- 	if (!dev->ctrl.tagset) {
- 		nvme_alloc_io_tag_set(&dev->ctrl, &dev->tagset, &nvme_mq_ops,
- 				nvme_pci_nr_maps(dev), sizeof(struct nvme_iod));
--		return;
-+		return true;
-+	}
-+
-+	/* Give up if we are racing with nvme_dev_disable() */
-+	if (!mutex_trylock(&dev->shutdown_lock))
-+		return false;
-+
-+	/* Check if nvme_dev_disable() has been executed already */
-+	if (!dev->online_queues) {
-+		mutex_unlock(&dev->shutdown_lock);
-+		return false;
- 	}
+-LDFLAGS_vmlinux	:=--no-undefined -X
++LDFLAGS_vmlinux	:=--no-undefined -X --pic-veneer
  
- 	blk_mq_update_nr_hw_queues(&dev->tagset, dev->online_queues - 1);
- 	/* free previously allocated queues that are no longer usable */
- 	nvme_free_queues(dev, dev->online_queues);
-+	mutex_unlock(&dev->shutdown_lock);
-+	return true;
- }
- 
- static int nvme_pci_enable(struct nvme_dev *dev)
-@@ -2760,7 +2772,8 @@ static void nvme_reset_work(struct work_struct *work)
- 		nvme_dbbuf_set(dev);
- 		nvme_unquiesce_io_queues(&dev->ctrl);
- 		nvme_wait_freeze(&dev->ctrl);
--		nvme_pci_update_nr_queues(dev);
-+		if (!nvme_pci_update_nr_queues(dev))
-+			goto out;
- 		nvme_unfreeze(&dev->ctrl);
- 	} else {
- 		dev_warn(dev->ctrl.device, "IO queues lost\n");
+ ifeq ($(CONFIG_RELOCATABLE), y)
+ # Pass --no-apply-dynamic-relocs to restore pre-binutils-2.27 behaviour
 -- 
 2.43.0
 
