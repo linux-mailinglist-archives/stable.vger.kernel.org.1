@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-88944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB28E9B282B
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:54:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA3E9B2717
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:45:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7214B2829F6
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:54:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4146B1F2199E
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:45:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D4418E35B;
-	Mon, 28 Oct 2024 06:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D1CC16F8EF;
+	Mon, 28 Oct 2024 06:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WhPn+C6U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+PJElIs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42AA18D649;
-	Mon, 28 Oct 2024 06:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B54A8837;
+	Mon, 28 Oct 2024 06:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098475; cv=none; b=bMwvxNnfvKr43/dNKkMazsNR4Z6QqyWXU60dDUdXN4BFt3KGurKPjWDu4dGG3Jxs7H1GedYRhx4JHpBj+nNOP76fMf1FiuWiHgXP1FZIdDJ/23Hv4Lp1IaXDqWLlOiOiompTuScBnZkiigDz0enhxsSSJrTF455VcZ8b3bJyNPU=
+	t=1730097918; cv=none; b=ppG8mpPnL5oci5lJ+1flgbJAuzfd45fSSB8lZDwGXkoBYwiHRUfDpZUsrqmbXtkXo47Y0ohqHBiQYUccj1izyS5Pek1d4ccUdi3ZS4sbe4Jwa//o1WF+QyL8rrwlXLlLTcDNqHwXG8nmDZrFr3wX0Swndzzwm6JHkmBqEBhByso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098475; c=relaxed/simple;
-	bh=9VlHY3OfG/hlftpgKumvvr5VsGMV8HZy/9EuH7x270E=;
+	s=arc-20240116; t=1730097918; c=relaxed/simple;
+	bh=10vVpccgc8w4hYxxY/ZUYtVGbENYqDkIb4mLZHzXt3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VMJYECiZVG9yR+UJRgzvz+2tpCApxJD0EKQxoQgqvw6P9kO5YzMYdrOCHRnOc6ELviUD4AltswBuEghtU3xEIKl/2XZIDLmi2KCqmIB+i+zUy+EHqamGWldZPtYccA8LA/4u/LSHTS3bwHI8LGgUE7lIpDE19uMsyRA2o/6jDfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WhPn+C6U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C472C4CEC3;
-	Mon, 28 Oct 2024 06:54:35 +0000 (UTC)
+	 MIME-Version; b=I6PLxR67q31BPceVTfRTzVL1H5tpOKhpS9q1TdoF3pOi4HxdW3g6O3IYP8k/deCsMlnN6nBPq4DcgwEoG7lMSc8E1c3GBc4TNPfkzkFfwBJSEn/DZl27MWKNnyejGKAtJ1EkzeLotlUZfLj1TAJvU5R7yVrTGOM6NMnNpGhFIso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+PJElIs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0990C4CEC3;
+	Mon, 28 Oct 2024 06:45:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098475;
-	bh=9VlHY3OfG/hlftpgKumvvr5VsGMV8HZy/9EuH7x270E=;
+	s=korg; t=1730097918;
+	bh=10vVpccgc8w4hYxxY/ZUYtVGbENYqDkIb4mLZHzXt3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WhPn+C6UE1HuidifMowFqscEJnb5llLUVaKHF7x/AGe6HWdpXOcWZ00bl18VQhBKf
-	 xoM1rM3akZ9ms0Mol7f8Z0eX2j+GI3eU0t4p0PxHeDY2ERp91gqmzwm6lys8Rj7DQ9
-	 g1Pc6pNqgC47Mdr0JrhbwM1d5p1oyy7u5CO8Oopc=
+	b=z+PJElIsi/aYPpXbo62oaDyLBWoA8poxT7Wgb3HW9K6iI/ahSR6aOLdTdcl6YP8fl
+	 X23hmWKMoZw0lX157HUfEpEsmaWyxC0lA7BMZ54Uww08AEexaxJ37lSJIoqHmLm9KV
+	 FS+VPa3JQCA7/l6RSaT8OJ8VpsiUuycHbxikqdgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Lai, Yi" <yi1.lai@linux.intel.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.11 242/261] ata: libata: Set DID_TIME_OUT for commands that actually timed out
-Date: Mon, 28 Oct 2024 07:26:24 +0100
-Message-ID: <20241028062318.179040106@linuxfoundation.org>
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.6 205/208] RDMA/bnxt_re: Avoid creating fence MR for newer adapters
+Date: Mon, 28 Oct 2024 07:26:25 +0100
+Message-ID: <20241028062311.693421524@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-commit 8e59a2a5459fd9840dbe2cbde85fe154b11e1727 upstream.
+commit 282fd66e2ef6e5d72b8fcd77efb2b282d2569464 upstream.
 
-When ata_qc_complete() schedules a command for EH using
-ata_qc_schedule_eh(), blk_abort_request() will be called, which leads to
-req->q->mq_ops->timeout() / scsi_timeout() being called.
+Limit the usage of fence MR to adapters older than Gen P5 products.
 
-scsi_timeout(), if the LLDD has no abort handler (libata has no abort
-handler), will set host byte to DID_TIME_OUT, and then call
-scsi_eh_scmd_add() to add the command to EH.
-
-Thus, when commands first enter libata's EH strategy_handler, all the
-commands that have been added to EH will have DID_TIME_OUT set.
-
-Commit e5dd410acb34 ("ata: libata: Clear DID_TIME_OUT for ATA PT commands
-with sense data") clears this bogus DID_TIME_OUT flag for all commands
-that reached libata's EH strategy_handler.
-
-libata has its own flag (AC_ERR_TIMEOUT), that it sets for commands that
-have not received a completion at the time of entering EH.
-
-ata_eh_worth_retry() has no special handling for AC_ERR_TIMEOUT, so by
-default timed out commands will get flag ATA_QCFLAG_RETRY set, and will be
-retried after the port has been reset (ata_eh_link_autopsy() always
-triggers a port reset if any command has AC_ERR_TIMEOUT set).
-
-For a command that has ATA_QCFLAG_RETRY set, while also having an error
-flag set (e.g. AC_ERR_TIMEOUT), ata_eh_finish() will not increment
-scmd->allowed, so the command will at most be retried scmd->allowed number
-of times (which by default is set to 3).
-
-However, scsi_eh_flush_done_q() will only retry commands for which
-scsi_noretry_cmd() returns false.
-
-For a command that has DID_TIME_OUT set, while also having either the
-FAILFAST flag set, or the command being a passthrough command,
-scsi_noretry_cmd() will return true. Thus, such a command will never be
-retried.
-
-Thus, make sure that libata sets SCSI's DID_TIME_OUT flag for commands that
-actually timed out (libata's AC_ERR_TIMEOUT flag), such that timed out
-commands will once again not be retried if they are also a FAILFAST or
-passthrough command.
-
-Cc: stable@vger.kernel.org
-Fixes: e5dd410acb34 ("ata: libata: Clear DID_TIME_OUT for ATA PT commands with sense data")
-Reported-by: Lai, Yi <yi1.lai@linux.intel.com>
-Closes: https://lore.kernel.org/linux-ide/ZxYz871I3Blsi30F@ly-workstation/
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20241023105540.1070012-2-cassel@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Fixes: 1801d87b3598 ("RDMA/bnxt_re: Support new 5760X P7 devices")
+Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://lore.kernel.org/r/1705985677-15551-2-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-eh.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/ata/libata-eh.c
-+++ b/drivers/ata/libata-eh.c
-@@ -648,6 +648,7 @@ void ata_scsi_cmd_error_handler(struct S
- 			/* the scmd has an associated qc */
- 			if (!(qc->flags & ATA_QCFLAG_EH)) {
- 				/* which hasn't failed yet, timeout */
-+				set_host_byte(scmd, DID_TIME_OUT);
- 				qc->err_mask |= AC_ERR_TIMEOUT;
- 				qc->flags |= ATA_QCFLAG_EH;
- 				nr_timedout++;
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -400,6 +400,10 @@ static void bnxt_re_create_fence_wqe(str
+ 	struct bnxt_re_fence_data *fence = &pd->fence;
+ 	struct ib_mr *ib_mr = &fence->mr->ib_mr;
+ 	struct bnxt_qplib_swqe *wqe = &fence->bind_wqe;
++	struct bnxt_re_dev *rdev = pd->rdev;
++
++	if (bnxt_qplib_is_chip_gen_p5_p7(rdev->chip_ctx))
++		return;
+ 
+ 	memset(wqe, 0, sizeof(*wqe));
+ 	wqe->type = BNXT_QPLIB_SWQE_TYPE_BIND_MW;
+@@ -454,6 +458,9 @@ static void bnxt_re_destroy_fence_mr(str
+ 	struct device *dev = &rdev->en_dev->pdev->dev;
+ 	struct bnxt_re_mr *mr = fence->mr;
+ 
++	if (bnxt_qplib_is_chip_gen_p5_p7(rdev->chip_ctx))
++		return;
++
+ 	if (fence->mw) {
+ 		bnxt_re_dealloc_mw(fence->mw);
+ 		fence->mw = NULL;
+@@ -485,6 +492,9 @@ static int bnxt_re_create_fence_mr(struc
+ 	struct ib_mw *mw;
+ 	int rc;
+ 
++	if (bnxt_qplib_is_chip_gen_p5_p7(rdev->chip_ctx))
++		return 0;
++
+ 	dma_addr = dma_map_single(dev, fence->va, BNXT_RE_FENCE_BYTES,
+ 				  DMA_BIDIRECTIONAL);
+ 	rc = dma_mapping_error(dev, dma_addr);
 
 
 
