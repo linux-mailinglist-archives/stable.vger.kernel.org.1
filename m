@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-88519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F6549B2655
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:38:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5146B9B2758
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:47:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60DFF1C2124C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:38:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 094581F226B4
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:47:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7703118E77B;
-	Mon, 28 Oct 2024 06:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DBCD18FC81;
+	Mon, 28 Oct 2024 06:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F68LeRA6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XroA29BG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DD318E348;
-	Mon, 28 Oct 2024 06:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2A918FC7F;
+	Mon, 28 Oct 2024 06:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097517; cv=none; b=XT8Y9yKAhkPpw5UZm/RH5pJzcEvrPWAxD38Ir34hUx/Ievi1pXFQlxjzPkJKRA0hR0d8dEbaWYBZhLYKte7I/iQqZQavpBZ/ejxuOmJROIFlGcOySraegcEdZoSHnBWb5VJi7Th+2uT3wOOY9DJuOgUYxmTjjYcsx/4CTge/NI0=
+	t=1730098036; cv=none; b=bV3lyWGMqDvSchdTcaTHghRaxee2qstCWT4FG3mNf1D+hkRt1+HMfm/O0/Fq/iGdgo2c25Q/HOVLlOcfRDykLfpDd0/xb352rGz0ATUIbpjvaZlCMniCjN3UEiTTza4OTKD1ZXL1Aa82ckXjBkeWqL9P223LK+4DweRPgHQXTq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097517; c=relaxed/simple;
-	bh=05/oJvxDdTeZaVwyWHp/DyoDlH3cgObtWZkudRlW4iY=;
+	s=arc-20240116; t=1730098036; c=relaxed/simple;
+	bh=pnc8FeZVaZhhLv7V34PiOAiFFq1ABXnNXeHcB/jU9w0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jAE2mjgfNVul9ovmuLJgOPglpNF14ijoSfEgh4YXRbYaEK66gLn1zRFsMRC6SgxSnu7wYNrW2sUtv5TBsZxQxeaK61Thtu0+sxU7HKADVXdwSnSBtoTaTDB9pFZgi2E6OYiy5ZHY6EgOcjpXKi6kS+ZST5hmG0xHYFHJ88imHuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F68LeRA6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80903C4CEC3;
-	Mon, 28 Oct 2024 06:38:36 +0000 (UTC)
+	 MIME-Version; b=Cd+UTG3hoQsCx/DrRZ4zwLYqoi/0oio8FjpV+3ubuVMDGyFovDUogy64j/o3sRtcdpOoa2HxGS8EJZE8CXa/41o6klMHtq7i2ncFqZBEiDkxPp/+Ulru2QfVeQd6esefFcUxpmJeJ/zcuiyTvUFrgxALna0krdP9MYBFrcx3vaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XroA29BG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1361C4CEC3;
+	Mon, 28 Oct 2024 06:47:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097516;
-	bh=05/oJvxDdTeZaVwyWHp/DyoDlH3cgObtWZkudRlW4iY=;
+	s=korg; t=1730098036;
+	bh=pnc8FeZVaZhhLv7V34PiOAiFFq1ABXnNXeHcB/jU9w0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F68LeRA6qrndBuAyk8tQfaBTHo9izCJvcrhUjjzvNrOXfK6Rq2b+YVBiLUSX5Gfv6
-	 A6Qg9h7fbnZ962wgZmKQi66/gdvXfYtHqoriFFg4TmW4GTcC96gpml+JItQHEnU0og
-	 +ytWK+zABIxzMDQUIAx+ih1n2q2zep94IwDYfg1I=
+	b=XroA29BGMDmnn6xbKu4IRSVm762+1C+7EUxgzQNw9C4Z+Jwna7fEcJTz88u32KRHI
+	 M805B2Cub5G4cqJBIGm1bQ/A6qULVwMJQpv4O2/aGuRZFw9qx9Q0PV3Tw6cwcM1hOo
+	 LoCPUSvGFcfl7RP+RIBfjG+tfgHagZLjxIDtchp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/208] RDMA/bnxt_re: Add a check for memory allocation
-Date: Mon, 28 Oct 2024 07:23:09 +0100
-Message-ID: <20241028062306.887444446@linuxfoundation.org>
+Subject: [PATCH 6.11 048/261] accel/qaic: Fix the for loop used to walk SG table
+Date: Mon, 28 Oct 2024 07:23:10 +0100
+Message-ID: <20241028062313.216643133@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>
 
-[ Upstream commit c5c1ae73b7741fa3b58e6e001b407825bb971225 ]
+[ Upstream commit c5e8e93897b7bb0a336bf3332f82f8d9f2b33f14 ]
 
-__alloc_pbl() can return error when memory allocation fails.
-Driver is not checking the status on one of the instances.
+Only for_each_sgtable_dma_sg() should be used to walk through a SG table
+to grab correct bus address and length pair after calling DMA MAP API on
+a SG table as DMA MAP APIs updates the SG table and for_each_sgtable_sg()
+walks through the original SG table.
 
-Fixes: 0c4dcd602817 ("RDMA/bnxt_re: Refactor hardware queue memory allocation")
-Link: https://patch.msgid.link/r/1726715161-18941-4-git-send-email-selvin.xavier@broadcom.com
-Reviewed-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: ff13be830333 ("accel/qaic: Add datapath")
+Fixes: 129776ac2e38 ("accel/qaic: Add control path")
+Signed-off-by: Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241004193252.3888544-1-quic_jhugo@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_res.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/accel/qaic/qaic_control.c | 2 +-
+ drivers/accel/qaic/qaic_data.c    | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-index ae2bde34e785b..47406ab8879c1 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-@@ -244,6 +244,8 @@ int bnxt_qplib_alloc_init_hwq(struct bnxt_qplib_hwq *hwq,
- 			sginfo.pgsize = npde * pg_size;
- 			sginfo.npages = 1;
- 			rc = __alloc_pbl(res, &hwq->pbl[PBL_LVL_0], &sginfo);
-+			if (rc)
-+				goto fail;
+diff --git a/drivers/accel/qaic/qaic_control.c b/drivers/accel/qaic/qaic_control.c
+index 9e8a8cbadf6bb..d8bdab69f8009 100644
+--- a/drivers/accel/qaic/qaic_control.c
++++ b/drivers/accel/qaic/qaic_control.c
+@@ -496,7 +496,7 @@ static int encode_addr_size_pairs(struct dma_xfer *xfer, struct wrapper_list *wr
+ 	nents = sgt->nents;
+ 	nents_dma = nents;
+ 	*size = QAIC_MANAGE_EXT_MSG_LENGTH - msg_hdr_len - sizeof(**out_trans);
+-	for_each_sgtable_sg(sgt, sg, i) {
++	for_each_sgtable_dma_sg(sgt, sg, i) {
+ 		*size -= sizeof(*asp);
+ 		/* Save 1K for possible follow-up transactions. */
+ 		if (*size < SZ_1K) {
+diff --git a/drivers/accel/qaic/qaic_data.c b/drivers/accel/qaic/qaic_data.c
+index e86e71c1cdd86..c20eb63750f51 100644
+--- a/drivers/accel/qaic/qaic_data.c
++++ b/drivers/accel/qaic/qaic_data.c
+@@ -184,7 +184,7 @@ static int clone_range_of_sgt_for_slice(struct qaic_device *qdev, struct sg_tabl
+ 	nents = 0;
  
- 			/* Alloc PBL pages */
- 			sginfo.npages = npbl;
+ 	size = size ? size : PAGE_SIZE;
+-	for (sg = sgt_in->sgl; sg; sg = sg_next(sg)) {
++	for_each_sgtable_dma_sg(sgt_in, sg, j) {
+ 		len = sg_dma_len(sg);
+ 
+ 		if (!len)
+@@ -221,7 +221,7 @@ static int clone_range_of_sgt_for_slice(struct qaic_device *qdev, struct sg_tabl
+ 
+ 	/* copy relevant sg node and fix page and length */
+ 	sgn = sgf;
+-	for_each_sgtable_sg(sgt, sg, j) {
++	for_each_sgtable_dma_sg(sgt, sg, j) {
+ 		memcpy(sg, sgn, sizeof(*sg));
+ 		if (sgn == sgf) {
+ 			sg_dma_address(sg) += offf;
+@@ -301,7 +301,7 @@ static int encode_reqs(struct qaic_device *qdev, struct bo_slice *slice,
+ 	 * fence.
+ 	 */
+ 	dev_addr = req->dev_addr;
+-	for_each_sgtable_sg(slice->sgt, sg, i) {
++	for_each_sgtable_dma_sg(slice->sgt, sg, i) {
+ 		slice->reqs[i].cmd = cmd;
+ 		slice->reqs[i].src_addr = cpu_to_le64(slice->dir == DMA_TO_DEVICE ?
+ 						      sg_dma_address(sg) : dev_addr);
 -- 
 2.43.0
 
