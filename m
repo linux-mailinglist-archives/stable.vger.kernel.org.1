@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 305A39B25A2
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:33:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B02D09B26A9
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:41:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6225C1C20FF8
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:33:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C0D61F22E7E
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B923C18E34E;
-	Mon, 28 Oct 2024 06:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AFE318E368;
+	Mon, 28 Oct 2024 06:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MS5oz5BD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TqP7jNmi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7762C15B10D;
-	Mon, 28 Oct 2024 06:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0E515B10D;
+	Mon, 28 Oct 2024 06:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097183; cv=none; b=Vo8J6hZAfotImA+seMntpaoCPwHmwupWfRxmP4IDInhsS/Nspu51M+uJXYVio+iJPgi9owYxaI6f4ub9iLeknCHYtERiIyTk/g0fnnsSwwJOrYDq7srFzwEhTGblmqCjDUX6s3g6eXkLWUHJkfNDeKIu96MxRTKZEJksYEfPeVU=
+	t=1730097694; cv=none; b=HutvcvgYDVszgdWXnxn3WimsE1z8rM8U0kfYz5SEdoXyv6lQOakoAjQBLYE0v530fE66ekeao53nwQTYfoDWyraf9n9twyilTPQt2eLt/fp3RPAobH+9h51VBK5ydTXDyvBt7BsBysyZHwi1QcWljXKyemT4rb96uBgaPAJ4FPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097183; c=relaxed/simple;
-	bh=/MalBJjyUdC7NnfB94fZHQmM9bBJpOA9HGWJiSgaOsA=;
+	s=arc-20240116; t=1730097694; c=relaxed/simple;
+	bh=WuX0ZQIua3u+qJOF2b2beFng56v0BMtMRS3UQJPxmKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cYwYNXr7aof81YJqWUcyzCxxaDWCwla+4LoqommzW+NCW2SjEYPH34zKDP1GDZt+KJ5ltvjxJtQtjpncX5Y76mXzWmUiyUBBfXptxVXteKCBH1X1y71CDKFJ9PAz3jNmbQHfOSTA1xrNc8S5e2aQFgP6v7vUaplD5N3dUi+hCao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MS5oz5BD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 169C9C4CEE3;
-	Mon, 28 Oct 2024 06:33:02 +0000 (UTC)
+	 MIME-Version; b=tLt78Tgk8mrBQBvOwOZEci25aq6clWBp+Q86+a0aLpi5z4KT13FRO8RRExT8LcND3uVki7PVna6zPNdw0fn9f+WUlYwNkVuycnl2SxPzdkPoix2ZGdFhqo1iUBrlUAqHneHU0yK1kqYw1NPmxzLkYdnh6DrAgk7nJJlPFExS5wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TqP7jNmi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF825C4CEC3;
+	Mon, 28 Oct 2024 06:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097183;
-	bh=/MalBJjyUdC7NnfB94fZHQmM9bBJpOA9HGWJiSgaOsA=;
+	s=korg; t=1730097694;
+	bh=WuX0ZQIua3u+qJOF2b2beFng56v0BMtMRS3UQJPxmKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MS5oz5BD3EzmRDHta5LCS7TGeH/xB0JlZcUIlFkjjaO11pi2a4iSfxgEO2uutWEe4
-	 SxhPCOTRDxlN25GPDjk0DNHG50KiaNOTHJ4FO8uqUTsCYUVdxelh1Jxq1+E+Q3enyq
-	 Cb413QYDfulYdPzWY96uDDGV9wY+Mdk0lSZXBLbo=
+	b=TqP7jNmiWGkmA/ZoPYAY/QBEXHXtmZRIK4FjfiAFAqA6qx/REkhob8s+MoZ4UTQpj
+	 aYXQWakO58B9dtKUZy+Ng0tJyF+Kqmy05YYR6orlm+aFKoXUf+XFaDdTAOlMMJreOz
+	 Y7shS2kvypg2uB+W50QFUaDNPEfVPpukjh3Y23mE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Lobanov <m.lobanov@rosalinux.ru>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 002/137] iio: accel: bma400: Fix uninitialized variable field_value in tap event handling.
-Date: Mon, 28 Oct 2024 07:23:59 +0100
-Message-ID: <20241028062258.776726631@linuxfoundation.org>
+Subject: [PATCH 6.6 060/208] irqchip/renesas-rzg2l: Align struct member names to tabs
+Date: Mon, 28 Oct 2024 07:24:00 +0100
+Message-ID: <20241028062308.134492519@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Lobanov <m.lobanov@rosalinux.ru>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit db9795a43dc944f048a37b65e06707f60f713e34 ]
+[ Upstream commit 02f6507640173addeeb3af035d2c6f0b3cff1567 ]
 
-In the current implementation, the local variable field_value is used
-without prior initialization, which may lead to reading uninitialized
-memory. Specifically, in the macro set_mask_bits, the initial
-(potentially uninitialized) value of the buffer is copied into old__,
-and a mask is applied to calculate new__. A similar issue was resolved in
-commit 6ee2a7058fea ("iio: accel: bma400: Fix smatch warning based on use
-of unintialized value.").
+Align struct member names to tabs to follow the requirements from
+maintainer-tip file. 3 tabs were used at the moment as the next commits
+will add a new member which requires 3 tabs for a better view.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 961db2da159d ("iio: accel: bma400: Add support for single and double tap events")
-Signed-off-by: Mikhail Lobanov <m.lobanov@rosalinux.ru>
-Link: https://patch.msgid.link/20240910083624.27224-1-m.lobanov@rosalinux.ru
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20231120111820.87398-4-claudiu.beznea.uj@bp.renesas.com
+Stable-dep-of: d038109ac1c6 ("irqchip/renesas-rzg2l: Fix missing put_device")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/bma400_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-renesas-rzg2l.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
-index 6e4d10a7cd322..4d91747b20270 100644
---- a/drivers/iio/accel/bma400_core.c
-+++ b/drivers/iio/accel/bma400_core.c
-@@ -1245,7 +1245,8 @@ static int bma400_activity_event_en(struct bma400_data *data,
- static int bma400_tap_event_en(struct bma400_data *data,
- 			       enum iio_event_direction dir, int state)
- {
--	unsigned int mask, field_value;
-+	unsigned int mask;
-+	unsigned int field_value = 0;
- 	int ret;
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index ea4b921e5e158..3ea312a27492b 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -56,9 +56,9 @@
+ #define TINT_EXTRACT_GPIOINT(x)         FIELD_GET(GENMASK(31, 16), (x))
  
- 	/*
+ struct rzg2l_irqc_priv {
+-	void __iomem *base;
+-	struct irq_fwspec fwspec[IRQC_NUM_IRQ];
+-	raw_spinlock_t lock;
++	void __iomem			*base;
++	struct irq_fwspec		fwspec[IRQC_NUM_IRQ];
++	raw_spinlock_t			lock;
+ };
+ 
+ static struct rzg2l_irqc_priv *irq_data_to_priv(struct irq_data *data)
 -- 
 2.43.0
 
