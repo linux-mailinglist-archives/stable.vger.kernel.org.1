@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-88902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27C49B27FD
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:53:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F249B257B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:31:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C06251C215F3
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:53:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44B621C20F69
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:31:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9427218E748;
-	Mon, 28 Oct 2024 06:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD85F18D629;
+	Mon, 28 Oct 2024 06:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWPBZZXp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbmpGuk5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A7E8837;
-	Mon, 28 Oct 2024 06:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB8015B10D;
+	Mon, 28 Oct 2024 06:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098381; cv=none; b=Zlqyh9xzx/5rI2ePhe7XalYAvzS6aP4xIw3SIVzhgz2rW33wVO3XX7YT9yIun1U3xP4tFMXcXWL0dBdrxvW/y6A7wFHzNwtV1fYrptHxfaYcHBPD7yq+B+40fl0YmJL1E4sCTewqVQ0k0JmLiLQ/8wG+fWS08X9k6CT//jHg3aE=
+	t=1730097099; cv=none; b=VfLKZ/i54KdYxWQulk2VH8WgQ4gpng6PQ0KhAlTulK4O3oIfXUicIye+qZdX+W2AQDv+4x9OgkYtc1dRoMgYzzIi7RJgeiHWbB84rfCxrEmZ+kXmvvnZOUhrSIvNsFUiY1ZFD6aVxhqfWGtZwD1350X5d6B60+h0RjBzs8tKyQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098381; c=relaxed/simple;
-	bh=7WG31JQRnV63uGnjNX1mFYfUmtniXWsRBlPykdSiJLk=;
+	s=arc-20240116; t=1730097099; c=relaxed/simple;
+	bh=9AZpJ8n94KusZ1rpejlXBF3ooo+HMB1xe4s+dTnK+RM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IkIvkIPMbaHbFrybL3Psv/r/v4/gSZ91yjMpVuJuV7EMAbBt2D62yEA2NqB0UUl1DgQUfy9jV0doZKPhpIsxK4C62lb9g34USkV8VtWhYSjizTzQZWVwLW5ktBSVhWoH1hBm70qLWasd/P19OoSoMV0NL/jjUq+0G1AxAYF7Suo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWPBZZXp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D48C4CEC7;
-	Mon, 28 Oct 2024 06:53:00 +0000 (UTC)
+	 MIME-Version; b=ViE6voZWHaHEg2LK2LKeB1fjLqqEyNFxNOI552kzFdFyHwlDcERJ04CdCciljkaRVBU78w/yY6wgSPGn1eVwW1a3LDE54wSQLySXZL4KwozNBMvmuyvp1wftX55EARfuhBWEs6A3jpZ4C6ZlMVw2bkIEmyObd/0/hw+qpkuwIgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbmpGuk5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB2B4C4CEC7;
+	Mon, 28 Oct 2024 06:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098381;
-	bh=7WG31JQRnV63uGnjNX1mFYfUmtniXWsRBlPykdSiJLk=;
+	s=korg; t=1730097099;
+	bh=9AZpJ8n94KusZ1rpejlXBF3ooo+HMB1xe4s+dTnK+RM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iWPBZZXpt0k+Kd1sHa8Nff6Cvet/DQInULk3cjuk/Fak9pcxmTkKKAF4wP3nUgI2X
-	 c9S1LTb65dIowuWfIa8uQnfTWCzXbVnVpZxs9BWz0MySzNLF/FIg4fzx+5HM2NzbgZ
-	 E3C8wUVUjbZMgYuwO1urNrSNwR55GN7uKGUD8Q40=
+	b=fbmpGuk5UpA3MiwsbMdFeVWPgHDYCA+UmUCG9d3yWXeQHLmffzliD9GgO2H8L98d+
+	 w23HixW6547yLTakRrfORPjaj3l30MeeRZmh9GqbdZzZDMyQprGu6X8o/S/bayra0Z
+	 Q25nHlLrLBrQrNhClkdGvav/pnqt1D+IwQu7wrQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.11 201/261] btrfs: qgroup: set a more sane default value for subtree drop threshold
+	Richard Cochran <richardcochran@gmail.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 63/80] posix-clock: posix-clock: Fix unbalanced locking in pc_clock_settime()
 Date: Mon, 28 Oct 2024 07:25:43 +0100
-Message-ID: <20241028062317.090545510@linuxfoundation.org>
+Message-ID: <20241028062254.365037065@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit 5f9062a48db260fd6b53d86ecfb4d5dc59266316 upstream.
+[ Upstream commit 6e62807c7fbb3c758d233018caf94dfea9c65dbd ]
 
-Since commit 011b46c30476 ("btrfs: skip subtree scan if it's too high to
-avoid low stall in btrfs_commit_transaction()"), btrfs qgroup can
-automatically skip large subtree scan at the cost of marking qgroup
-inconsistent.
+If get_clock_desc() succeeds, it calls fget() for the clockid's fd,
+and get the clk->rwsem read lock, so the error path should release
+the lock to make the lock balance and fput the clockid's fd to make
+the refcount balance and release the fd related resource.
 
-It's designed to address the final performance problem of snapshot drop
-with qgroup enabled, but to be safe the default value is
-BTRFS_MAX_LEVEL, requiring a user space daemon to set a different value
-to make it work.
+However the below commit left the error path locked behind resulting in
+unbalanced locking. Check timespec64_valid_strict() before
+get_clock_desc() to fix it, because the "ts" is not changed
+after that.
 
-I'd say it's not a good idea to rely on user space tool to set this
-default value, especially when some operations (snapshot dropping) can
-be triggered immediately after mount, leaving a very small window to
-that that sysfs interface.
-
-So instead of disabling this new feature by default, enable it with a
-low threshold (3), so that large subvolume tree drop at mount time won't
-cause huge qgroup workload.
-
-CC: stable@vger.kernel.org # 6.1
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d8794ac20a29 ("posix-clock: Fix missing timespec64 check in pc_clock_settime()")
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Acked-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+[pabeni@redhat.com: fixed commit message typo]
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c |    2 +-
- fs/btrfs/qgroup.c  |    2 +-
- fs/btrfs/qgroup.h  |    2 ++
- 3 files changed, 4 insertions(+), 2 deletions(-)
+ kernel/time/posix-clock.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -1960,7 +1960,7 @@ static void btrfs_init_qgroup(struct btr
- 	fs_info->qgroup_seq = 1;
- 	fs_info->qgroup_ulist = NULL;
- 	fs_info->qgroup_rescan_running = false;
--	fs_info->qgroup_drop_subtree_thres = BTRFS_MAX_LEVEL;
-+	fs_info->qgroup_drop_subtree_thres = BTRFS_QGROUP_DROP_SUBTREE_THRES_DEFAULT;
- 	mutex_init(&fs_info->qgroup_rescan_lock);
- }
+diff --git a/kernel/time/posix-clock.c b/kernel/time/posix-clock.c
+index 8127673bfc45e..05e73d209aa87 100644
+--- a/kernel/time/posix-clock.c
++++ b/kernel/time/posix-clock.c
+@@ -290,6 +290,9 @@ static int pc_clock_settime(clockid_t id, const struct timespec64 *ts)
+ 	struct posix_clock_desc cd;
+ 	int err;
  
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1407,7 +1407,7 @@ int btrfs_quota_disable(struct btrfs_fs_
- 	fs_info->quota_root = NULL;
- 	fs_info->qgroup_flags &= ~BTRFS_QGROUP_STATUS_FLAG_ON;
- 	fs_info->qgroup_flags &= ~BTRFS_QGROUP_STATUS_FLAG_SIMPLE_MODE;
--	fs_info->qgroup_drop_subtree_thres = BTRFS_MAX_LEVEL;
-+	fs_info->qgroup_drop_subtree_thres = BTRFS_QGROUP_DROP_SUBTREE_THRES_DEFAULT;
- 	spin_unlock(&fs_info->qgroup_lock);
- 
- 	btrfs_free_qgroup_config(fs_info);
---- a/fs/btrfs/qgroup.h
-+++ b/fs/btrfs/qgroup.h
-@@ -121,6 +121,8 @@ struct btrfs_inode;
- #define BTRFS_QGROUP_RUNTIME_FLAG_CANCEL_RESCAN		(1ULL << 63)
- #define BTRFS_QGROUP_RUNTIME_FLAG_NO_ACCOUNTING		(1ULL << 62)
- 
-+#define BTRFS_QGROUP_DROP_SUBTREE_THRES_DEFAULT		(3)
++	if (!timespec64_valid_strict(ts))
++		return -EINVAL;
 +
- /*
-  * Record a dirty extent, and info qgroup to update quota on it
-  */
+ 	err = get_clock_desc(id, &cd);
+ 	if (err)
+ 		return err;
+@@ -299,9 +302,6 @@ static int pc_clock_settime(clockid_t id, const struct timespec64 *ts)
+ 		goto out;
+ 	}
+ 
+-	if (!timespec64_valid_strict(ts))
+-		return -EINVAL;
+-
+ 	if (cd.clk->ops.clock_settime)
+ 		err = cd.clk->ops.clock_settime(cd.clk, ts);
+ 	else
+-- 
+2.43.0
+
 
 
 
