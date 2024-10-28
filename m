@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA3289B25DA
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:35:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75C969B255E
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 791F4B20B14
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:35:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B738282117
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4E3E18F2C5;
-	Mon, 28 Oct 2024 06:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C902218E05D;
+	Mon, 28 Oct 2024 06:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5nuHllb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ej0DWlR1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92499190685;
-	Mon, 28 Oct 2024 06:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864AF18CC1F;
+	Mon, 28 Oct 2024 06:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097256; cv=none; b=qVQI3f46Fwow8DXwZw27ClvFE7eP3OVRA2q39tniv1pG9HDJ8OpJl3a+qw8dmAEGYz/BLJ9oRwFJpKjSfPi9oonuQnc2retOgaG6SJuv6bVEdlaEFn3Bh75d3byECvFIRi0KUxiTE+MWZqWDSQhwkyrToQK73Z8AWPWU0ok0bSc=
+	t=1730096902; cv=none; b=Lw6Z8DGvS8+euxuICn/iDEoQ0J7pnpF0r/vXktXMd1PonF1lT5kKMCT5/k5GDaJIo8Ajceqq0fJeGv68w7u88w9OIKgjGGmr2TyDYuqfDYxaBxinfXjbpjxQ+4KO7oGtHdMAk3WKxehDDEkehY/xb+0Y+iklFSM3wIP4uWj8yUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097256; c=relaxed/simple;
-	bh=ukxpretWohzrP+ZUhnz8ImkjyPU0LZtZHb8kfcvmIOI=;
+	s=arc-20240116; t=1730096902; c=relaxed/simple;
+	bh=chKyJQdVYTveFt1IPC6BlCbnlUohzFsjYPh1iOtDbyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K9TueUVQKzFafBQbFNkLFBdBQzV7/MFW3i5m26AG7l4zASxgoupVdjRpV4SndBPbMlVJCCgCj6P6tDJcPgl7oC13FCPneorIuKqgMldxbYaF+uGezud4t7SiVJRHn1ZLAWcWZabZEdHKVA7E6GOUFV/rZ+i+g/E5Owm6pdJVrdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q5nuHllb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E653C4CEE3;
-	Mon, 28 Oct 2024 06:34:15 +0000 (UTC)
+	 MIME-Version; b=GpcysnHxckAVrfFgmufOitdFd2X1oUApiHQpGp3OVOyS8PsNfXi90LfYSsgP/xSAhFblRI9GT7EcKO1zKNPXMhAz1XtC2aL4/VYXGxNdQh2OoGSUar9QdSzEO9erZwpf8D+kX8MmPagb6aOVFEmB7Baez30d8h6q5S0MJa88W9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ej0DWlR1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25317C4CEC3;
+	Mon, 28 Oct 2024 06:28:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097256;
-	bh=ukxpretWohzrP+ZUhnz8ImkjyPU0LZtZHb8kfcvmIOI=;
+	s=korg; t=1730096902;
+	bh=chKyJQdVYTveFt1IPC6BlCbnlUohzFsjYPh1iOtDbyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q5nuHllb+hjbi19DmGV2WA5n55GcXAm2fdGhY0svtUYJLxTjZ5TGaV23oAauzrkOk
-	 S6S1xh3xFY9KJ4RWxADen61W+nCtbQrn26wRF/wZhzeJRILatxgYD/JO70zHNJAGcO
-	 rdTgCPuKs+KTU52tSH5S55BEkltL4xQO4DJzQDD4=
+	b=ej0DWlR10rhbXr3uwMFZeh74Xr8E878m4EiAoEvMiRoMCK/DRQ3qk2+w5apKgKvg4
+	 nAEPbEAx59nIVIxNHMOGzWZ1CdY9Wnxpuallu2jL0z2OIJwD2IvI6X8Z1esJsZCJ8k
+	 Gm1OYQlaJlq7vdd+4hzII6cQwGo4b8OQnUvBwcYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
+	Anumula Murali Mohan Reddy <anumula@chelsio.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 051/137] net/mlx5: Remove redundant cmdif revision check
+Subject: [PATCH 5.15 08/80] RDMA/cxgb4: Fix RDMA_CM_EVENT_UNREACHABLE error for iWARP
 Date: Mon, 28 Oct 2024 07:24:48 +0100
-Message-ID: <20241028062300.153487433@linuxfoundation.org>
+Message-ID: <20241028062252.854497027@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Anumula Murali Mohan Reddy <anumula@chelsio.com>
 
-[ Upstream commit 0714ec9ea1f291447a925657e0808f34b8fbce2b ]
+[ Upstream commit c659b405b82ead335bee6eb33f9691bf718e21e8 ]
 
-mlx5 is checking the cmdif revision twice, for no reason.
-Remove the latter check.
+ip_dev_find() always returns real net_device address, whether traffic is
+running on a vlan or real device, if traffic is over vlan, filling
+endpoint struture with real ndev and an attempt to send a connect request
+will results in RDMA_CM_EVENT_UNREACHABLE error.  This patch fixes the
+issue by using vlan_dev_real_dev().
 
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Stable-dep-of: d62b14045c65 ("net/mlx5: Fix command bitmask initialization")
+Fixes: 830662f6f032 ("RDMA/cxgb4: Add support for active and passive open connection with IPv6 address")
+Link: https://patch.msgid.link/r/20241007132311.70593-1-anumula@chelsio.com
+Signed-off-by: Anumula Murali Mohan Reddy <anumula@chelsio.com>
+Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+ drivers/infiniband/hw/cxgb4/cm.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-index 465d2adbf3c00..2269f5e0e3c75 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-@@ -2216,16 +2216,15 @@ int mlx5_cmd_init(struct mlx5_core_dev *dev)
- 	int align = roundup_pow_of_two(size);
- 	struct mlx5_cmd *cmd = &dev->cmd;
- 	u32 cmd_h, cmd_l;
--	u16 cmd_if_rev;
- 	int err;
- 	int i;
- 
- 	memset(cmd, 0, sizeof(*cmd));
--	cmd_if_rev = cmdif_rev(dev);
--	if (cmd_if_rev != CMD_IF_REV) {
-+	cmd->vars.cmdif_rev = cmdif_rev(dev);
-+	if (cmd->vars.cmdif_rev != CMD_IF_REV) {
- 		mlx5_core_err(dev,
- 			      "Driver cmdif rev(%d) differs from firmware's(%d)\n",
--			      CMD_IF_REV, cmd_if_rev);
-+			      CMD_IF_REV, cmd->vars.cmdif_rev);
- 		return -EINVAL;
- 	}
- 
-@@ -2258,14 +2257,6 @@ int mlx5_cmd_init(struct mlx5_core_dev *dev)
- 	cmd->vars.max_reg_cmds = (1 << cmd->vars.log_sz) - 1;
- 	cmd->vars.bitmask = (1UL << cmd->vars.max_reg_cmds) - 1;
- 
--	cmd->vars.cmdif_rev = ioread32be(&dev->iseg->cmdif_rev_fw_sub) >> 16;
--	if (cmd->vars.cmdif_rev > CMD_IF_REV) {
--		mlx5_core_err(dev, "driver does not support command interface version. driver %d, firmware %d\n",
--			      CMD_IF_REV, cmd->vars.cmdif_rev);
--		err = -EOPNOTSUPP;
--		goto err_free_page;
--	}
--
- 	spin_lock_init(&cmd->alloc_lock);
- 	spin_lock_init(&cmd->token_lock);
- 	for (i = 0; i < MLX5_CMD_OP_MAX; i++)
+diff --git a/drivers/infiniband/hw/cxgb4/cm.c b/drivers/infiniband/hw/cxgb4/cm.c
+index e6343c89c892e..3efd06d5f7e70 100644
+--- a/drivers/infiniband/hw/cxgb4/cm.c
++++ b/drivers/infiniband/hw/cxgb4/cm.c
+@@ -2086,7 +2086,7 @@ static int import_ep(struct c4iw_ep *ep, int iptype, __u8 *peer_ip,
+ 	err = -ENOMEM;
+ 	if (n->dev->flags & IFF_LOOPBACK) {
+ 		if (iptype == 4)
+-			pdev = ip_dev_find(&init_net, *(__be32 *)peer_ip);
++			pdev = __ip_dev_find(&init_net, *(__be32 *)peer_ip, false);
+ 		else if (IS_ENABLED(CONFIG_IPV6))
+ 			for_each_netdev(&init_net, pdev) {
+ 				if (ipv6_chk_addr(&init_net,
+@@ -2101,12 +2101,12 @@ static int import_ep(struct c4iw_ep *ep, int iptype, __u8 *peer_ip,
+ 			err = -ENODEV;
+ 			goto out;
+ 		}
++		if (is_vlan_dev(pdev))
++			pdev = vlan_dev_real_dev(pdev);
+ 		ep->l2t = cxgb4_l2t_get(cdev->rdev.lldi.l2t,
+ 					n, pdev, rt_tos2priority(tos));
+-		if (!ep->l2t) {
+-			dev_put(pdev);
++		if (!ep->l2t)
+ 			goto out;
+-		}
+ 		ep->mtu = pdev->mtu;
+ 		ep->tx_chan = cxgb4_port_chan(pdev);
+ 		ep->smac_idx = ((struct port_info *)netdev_priv(pdev))->smt_idx;
+@@ -2119,7 +2119,6 @@ static int import_ep(struct c4iw_ep *ep, int iptype, __u8 *peer_ip,
+ 		ep->rss_qid = cdev->rdev.lldi.rxq_ids[
+ 			cxgb4_port_idx(pdev) * step];
+ 		set_tcp_window(ep, (struct port_info *)netdev_priv(pdev));
+-		dev_put(pdev);
+ 	} else {
+ 		pdev = get_real_dev(n->dev);
+ 		ep->l2t = cxgb4_l2t_get(cdev->rdev.lldi.l2t,
 -- 
 2.43.0
 
