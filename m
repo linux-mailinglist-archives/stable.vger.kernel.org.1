@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-88499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D9059B2640
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:38:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 660C49B2575
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:29:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A61D6B20EBE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:38:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CCDC1F21C24
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3603C18E740;
-	Mon, 28 Oct 2024 06:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B84F18E047;
+	Mon, 28 Oct 2024 06:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ci5o4WtI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0nfWKAmg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E821B18D65C;
-	Mon, 28 Oct 2024 06:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E3D152E1C;
+	Mon, 28 Oct 2024 06:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097472; cv=none; b=VjZFRclf5LGfdkzD1qqtymm7e3f/TpeIdqqEE+xe1UuGuTlz1m/UNvZWZlDuI8SWL5eE/Dh7Cx/yZpkP8zdSWcqA1RpjsQRH5GzhrCtgIhMoa1znsRCI1ufKH6UJr6dYTADZkQq3Yg/fObd0jZnEZMkDKpnhqxOcNZQz+Hli/d0=
+	t=1730096952; cv=none; b=k5nH57sUkgCfg6Z64tRYDLQxyoHzCJqXGEOupnrRzvpxXtMd5kpQZ6Cca9ceKxz762lA97Sq8bBHygY5G3/jRngCJu2OsbibpP7snR3jEuOoQHhm4L9GD5abDEkB2sWzIVO2fHC0ufDyuCG+T8PHpoQ7Sk+RTy6U3ppL4TEnBBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097472; c=relaxed/simple;
-	bh=PqHr7qm7gHZF0QwaU+LVH7Ys3auU7xlAFDttsEjr2mc=;
+	s=arc-20240116; t=1730096952; c=relaxed/simple;
+	bh=sLNdEQ+FtFjH5ZpzcghUra0ocye529uvoKqHYEkdsu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bzAxvMqjLhmwRccuR9EwqgFnXdnEPndVg8XfqhOB0y+9tiP7Q5MMurPVl+C7zbzMswQlyCCd6ILno67JEemShluQTKrWhJfJLATMKDhMpFYm5UfZGKX2i/WBWDRVSrRkHPv27Im0lnJmt7WGA5UIjjBn+5cVrn975zoa9TPhSm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ci5o4WtI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8780FC4CEC3;
-	Mon, 28 Oct 2024 06:37:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E2MQU58N3xaKZjKGXFxu6TM4VsA43SQjlycHO5oRPgOxDI6+0PeBXc4+MDXdz+gvcbn7XwzII4rUbwQ9hvTCQx3GYKy6RbCNAzizDB+rkxACVCs+z1uuah3DvdprXlV+uwnyUITy8g/j5d67YIO9GVZelhBmFV0e+Aj8JxQNkYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0nfWKAmg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA0EC4CEC3;
+	Mon, 28 Oct 2024 06:29:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097471;
-	bh=PqHr7qm7gHZF0QwaU+LVH7Ys3auU7xlAFDttsEjr2mc=;
+	s=korg; t=1730096952;
+	bh=sLNdEQ+FtFjH5ZpzcghUra0ocye529uvoKqHYEkdsu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ci5o4WtIuLl0XZIjhcwErc9tnMKA+H3sD2avD5qVVkIVtBP9MucmV/qat1q6mztcz
-	 /c10IT3dC5pWTTyt8IdXLRn3KzXOIYENop/F2Xw2SngLFGVPGoRIzygdJh1RHssYZ9
-	 iXn5sPR5gcVI1XiXbxp3he5XC0nfn4gb5fISjeII=
+	b=0nfWKAmgojgBwcL6LihdqOP+ISrO14SFC7iJE8qSJQWr8a71cipC6wGJPTtGw/oPZ
+	 W6hqWeI8d+xPJ/VgOiZHO1ZGHYx/kbaMkyaIdhgUdUFuksvnXNOXoxoWFn3JlYtl2S
+	 r9Ugy81pEQEOk1mB7O3oheTlTEuAVg+EBPD4yKL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Simon Horman <horms@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Ilya Katsnelson <me@0upti.me>,
+	=?UTF-8?q?Krzysztof=20Ol=C4=99dzki?= <ole@ans.pl>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 101/137] net/sched: act_api: deny mismatched skip_sw/skip_hw flags for actions created by classifiers
+Subject: [PATCH 5.15 58/80] netfilter: xtables: fix typo causing some targets not to load on IPv6
 Date: Mon, 28 Oct 2024 07:25:38 +0100
-Message-ID: <20241028062301.547237336@linuxfoundation.org>
+Message-ID: <20241028062254.227317174@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,138 +62,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 34d35b4edbbe890a91bec939bfd29ad92517a52b ]
+[ Upstream commit 306ed1728e8438caed30332e1ab46b28c25fe3d8 ]
 
-tcf_action_init() has logic for checking mismatches between action and
-filter offload flags (skip_sw/skip_hw). AFAIU, this is intended to run
-on the transition between the new tc_act_bind(flags) returning true (aka
-now gets bound to classifier) and tc_act_bind(act->tcfa_flags) returning
-false (aka action was not bound to classifier before). Otherwise, the
-check is skipped.
+- There is no NFPROTO_IPV6 family for mark and NFLOG.
+- TRACE is also missing module autoload with NFPROTO_IPV6.
 
-For the case where an action is not standalone, but rather it was
-created by a classifier and is bound to it, tcf_action_init() skips the
-check entirely, and this means it allows mismatched flags to occur.
+This results in ip6tables failing to restore a ruleset. This issue has been
+reported by several users providing incomplete patches.
 
-Taking the matchall classifier code path as an example (with mirred as
-an action), the reason is the following:
+Very similar to Ilya Katsnelson's patch including a missing chunk in the
+TRACE extension.
 
- 1 | mall_change()
- 2 | -> mall_replace_hw_filter()
- 3 |   -> tcf_exts_validate_ex()
- 4 |      -> flags |= TCA_ACT_FLAGS_BIND;
- 5 |      -> tcf_action_init()
- 6 |         -> tcf_action_init_1()
- 7 |            -> a_o->init()
- 8 |               -> tcf_mirred_init()
- 9 |                  -> tcf_idr_create_from_flags()
-10 |                     -> tcf_idr_create()
-11 |                        -> p->tcfa_flags = flags;
-12 |         -> tc_act_bind(flags))
-13 |         -> tc_act_bind(act->tcfa_flags)
-
-When invoked from tcf_exts_validate_ex() like matchall does (but other
-classifiers validate their extensions as well), tcf_action_init() runs
-in a call path where "flags" always contains TCA_ACT_FLAGS_BIND (set by
-line 4). So line 12 is always true, and line 13 is always true as well.
-No transition ever takes place, and the check is skipped.
-
-The code was added in this form in commit c86e0209dc77 ("flow_offload:
-validate flags of filter and actions"), but I'm attributing the blame
-even earlier in that series, to when TCA_ACT_FLAGS_SKIP_HW and
-TCA_ACT_FLAGS_SKIP_SW were added to the UAPI.
-
-Following the development process of this change, the check did not
-always exist in this form. A change took place between v3 [1] and v4 [2],
-AFAIU due to review feedback that it doesn't make sense for action flags
-to be different than classifier flags. I think I agree with that
-feedback, but it was translated into code that omits enforcing this for
-"classic" actions created at the same time with the filters themselves.
-
-There are 3 more important cases to discuss. First there is this command:
-
-$ tc qdisc add dev eth0 clasct
-$ tc filter add dev eth0 ingress matchall skip_sw \
-	action mirred ingress mirror dev eth1
-
-which should be allowed, because prior to the concept of dedicated
-action flags, it used to work and it used to mean the action inherited
-the skip_sw/skip_hw flags from the classifier. It's not a mismatch.
-
-Then we have this command:
-
-$ tc qdisc add dev eth0 clasct
-$ tc filter add dev eth0 ingress matchall skip_sw \
-	action mirred ingress mirror dev eth1 skip_hw
-
-where there is a mismatch and it should be rejected.
-
-Finally, we have:
-
-$ tc qdisc add dev eth0 clasct
-$ tc filter add dev eth0 ingress matchall skip_sw \
-	action mirred ingress mirror dev eth1 skip_sw
-
-where the offload flags coincide, and this should be treated the same as
-the first command based on inheritance, and accepted.
-
-[1]: https://lore.kernel.org/netdev/20211028110646.13791-9-simon.horman@corigine.com/
-[2]: https://lore.kernel.org/netdev/20211118130805.23897-10-simon.horman@corigine.com/
-Fixes: 7adc57651211 ("flow_offload: add skip_hw and skip_sw to control if offload the action")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20241017161049.3570037-1-vladimir.oltean@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 0bfcb7b71e73 ("netfilter: xtables: avoid NFPROTO_UNSPEC where needed")
+Reported-by: Ignat Korchagin <ignat@cloudflare.com>
+Reported-by: Ilya Katsnelson <me@0upti.me>
+Reported-by: Krzysztof Olędzki <ole@ans.pl>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_api.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ net/netfilter/xt_NFLOG.c | 2 +-
+ net/netfilter/xt_TRACE.c | 1 +
+ net/netfilter/xt_mark.c  | 2 +-
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/act_api.c b/net/sched/act_api.c
-index 5a361deb804a3..05bd1e9bca36a 100644
---- a/net/sched/act_api.c
-+++ b/net/sched/act_api.c
-@@ -1493,8 +1493,29 @@ int tcf_action_init(struct net *net, struct tcf_proto *tp, struct nlattr *nla,
- 			bool skip_sw = tc_skip_sw(fl_flags);
- 			bool skip_hw = tc_skip_hw(fl_flags);
- 
--			if (tc_act_bind(act->tcfa_flags))
-+			if (tc_act_bind(act->tcfa_flags)) {
-+				/* Action is created by classifier and is not
-+				 * standalone. Check that the user did not set
-+				 * any action flags different than the
-+				 * classifier flags, and inherit the flags from
-+				 * the classifier for the compatibility case
-+				 * where no flags were specified at all.
-+				 */
-+				if ((tc_act_skip_sw(act->tcfa_flags) && !skip_sw) ||
-+				    (tc_act_skip_hw(act->tcfa_flags) && !skip_hw)) {
-+					NL_SET_ERR_MSG(extack,
-+						       "Mismatch between action and filter offload flags");
-+					err = -EINVAL;
-+					goto err;
-+				}
-+				if (skip_sw)
-+					act->tcfa_flags |= TCA_ACT_FLAGS_SKIP_SW;
-+				if (skip_hw)
-+					act->tcfa_flags |= TCA_ACT_FLAGS_SKIP_HW;
- 				continue;
-+			}
-+
-+			/* Action is standalone */
- 			if (skip_sw != tc_act_skip_sw(act->tcfa_flags) ||
- 			    skip_hw != tc_act_skip_hw(act->tcfa_flags)) {
- 				NL_SET_ERR_MSG(extack,
+diff --git a/net/netfilter/xt_NFLOG.c b/net/netfilter/xt_NFLOG.c
+index d80abd6ccaf8f..6dcf4bc7e30b2 100644
+--- a/net/netfilter/xt_NFLOG.c
++++ b/net/netfilter/xt_NFLOG.c
+@@ -79,7 +79,7 @@ static struct xt_target nflog_tg_reg[] __read_mostly = {
+ 	{
+ 		.name       = "NFLOG",
+ 		.revision   = 0,
+-		.family     = NFPROTO_IPV4,
++		.family     = NFPROTO_IPV6,
+ 		.checkentry = nflog_tg_check,
+ 		.destroy    = nflog_tg_destroy,
+ 		.target     = nflog_tg,
+diff --git a/net/netfilter/xt_TRACE.c b/net/netfilter/xt_TRACE.c
+index f3fa4f11348cd..a642ff09fc8e8 100644
+--- a/net/netfilter/xt_TRACE.c
++++ b/net/netfilter/xt_TRACE.c
+@@ -49,6 +49,7 @@ static struct xt_target trace_tg_reg[] __read_mostly = {
+ 		.target		= trace_tg,
+ 		.checkentry	= trace_tg_check,
+ 		.destroy	= trace_tg_destroy,
++		.me		= THIS_MODULE,
+ 	},
+ #endif
+ };
+diff --git a/net/netfilter/xt_mark.c b/net/netfilter/xt_mark.c
+index f76fe04fc9a4e..65b965ca40ea7 100644
+--- a/net/netfilter/xt_mark.c
++++ b/net/netfilter/xt_mark.c
+@@ -62,7 +62,7 @@ static struct xt_target mark_tg_reg[] __read_mostly = {
+ 	{
+ 		.name           = "MARK",
+ 		.revision       = 2,
+-		.family         = NFPROTO_IPV4,
++		.family         = NFPROTO_IPV6,
+ 		.target         = mark_tg,
+ 		.targetsize     = sizeof(struct xt_mark_tginfo2),
+ 		.me             = THIS_MODULE,
 -- 
 2.43.0
 
