@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-88681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40DB29B2707
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2954A9B281B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:54:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71F0A1C21128
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA5B51F21E1E
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4E618E77D;
-	Mon, 28 Oct 2024 06:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4304D18E368;
+	Mon, 28 Oct 2024 06:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zzhgc22U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7FF4Yg+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7805E189BAF;
-	Mon, 28 Oct 2024 06:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40232AF07;
+	Mon, 28 Oct 2024 06:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097882; cv=none; b=uMBV2VCgFsf26vtEVt0QIXiKfcf+ITSuSf+iH1e+6QUDH3rFnUVoDStZLPrwqGtNIJJJkE4F0tsusw0FwY/QbOkjeWfI7JdEvgTdGfd9moU7Yqj4aRZ4loPH4chx74c+W3/1g38kUwgjthCRFcY3z9YQayM5J9oRH5CSf4/RnD0=
+	t=1730098442; cv=none; b=CC6uvorv8O/g0bkHn9VacfgYIq6igeiI7iaDTeOoq1uzu4NHCni2Nwj0gQIv2npEHD21BW5r4sRSTEn8i1FzF1vjm7iEnIrGflZuZtWlhNNxjba+L6Qn4CyclN6eKZd38vp7/65M/WQDspquJCgZnhrgAo16v/oHTezGVcgLwhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097882; c=relaxed/simple;
-	bh=9a3FwVbjpM41o6oA4tgaFNqK6ARWZU5xSevjYUrUPHg=;
+	s=arc-20240116; t=1730098442; c=relaxed/simple;
+	bh=FHs/J0EKQEXvxNFfbVPalYoYztR9TpXRWoP8TNLVGSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sQEfKuo9fz5XswZkgaXPvSk0pwX0Ryh+ztk/PQyK4UWwYU0MDL7VWboSZQe17GmwE/TQOoIs7yR1FTsiTUp+30zdaOnd80R1I5V6EpUr5ZEeF6fgBwblPdhwWucgdMj2S8NSGKPkUChBoN2QeKkjpbHYUG36W/4QTUoK3ISq+Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zzhgc22U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C91C4CEC3;
-	Mon, 28 Oct 2024 06:44:41 +0000 (UTC)
+	 MIME-Version; b=quPv6w3wjYz2NmKG+7QiPbEtYQ0voBiTL3U9QLKtlsqhObcnvJa0F10QPAXII7mI0Y2VApdiGZ93187E1EVC62fQI5hPtAcvxjM38wJfB9sFOsa/h8lEzOT50nv51AabcnM1/r8IOrYAj1bLnu7mEph/WtpVLQZE7x8JrbX/Ho0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7FF4Yg+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92EA1C4CEC3;
+	Mon, 28 Oct 2024 06:54:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097882;
-	bh=9a3FwVbjpM41o6oA4tgaFNqK6ARWZU5xSevjYUrUPHg=;
+	s=korg; t=1730098441;
+	bh=FHs/J0EKQEXvxNFfbVPalYoYztR9TpXRWoP8TNLVGSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zzhgc22UrHEUIrxyMOY96HSUXJn2SHO9hyb7VR+/LqLafJyKd8rpb6P51QkFc9RYR
-	 GGeY63/IYTV86DvH5E3pGR8fpQdr8B+WqrZegtTW7hUFHM206kiB/RIdir+9mrrVty
-	 oJgiKNPiBB20q5kAUSVdWacWeqhnEnbvL4uCKSCA=
+	b=P7FF4Yg+OE3AhMH5TLpp6aYeItuQjBFaMVA+sBkxE5RdlYeiMKMjqN1XQX+5YWmsE
+	 9q03phq+Jadkfr0mHazt74QVkLFmRvFkuKeS4F7qCsKdMMCz/+T1o06K8KA97+mvQx
+	 Z0ApjWcwnED0iVPsgBdliEXEn7/GMt/l23adnsKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jos=C3=A9=20Relvas?= <josemonsantorelvas@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 190/208] ALSA: hda/realtek: Add subwoofer quirk for Acer Predator G9-593
-Date: Mon, 28 Oct 2024 07:26:10 +0100
-Message-ID: <20241028062311.310088059@linuxfoundation.org>
+	Kanglong Wang <wangkanglong@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.11 229/261] LoongArch: Make KASAN usable for variable cpu_vabits
+Date: Mon, 28 Oct 2024 07:26:11 +0100
+Message-ID: <20241028062317.854209753@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,76 +59,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: José Relvas <josemonsantorelvas@gmail.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 35fdc6e1c16099078bcbd73a6c8f1733ae7f1909 upstream.
+commit 3c252263be801f937f56b4bcd8e8e2b5307c1ce5 upstream.
 
-The Acer Predator G9-593 has a 2+1 speaker system which isn't probed
-correctly.
-This patch adds a quirk with the proper pin connections.
+Currently, KASAN on LoongArch assume the CPU VA bits is 48, which is
+true for Loongson-3 series, but not for Loongson-2 series (only 40 or
+lower), this patch fix that issue and make KASAN usable for variable
+cpu_vabits.
 
-Note that I do not own this laptop, so I cannot guarantee that this
-fixes the issue.
-Testing was done by other users here:
-https://discussion.fedoraproject.org/t/-/118482
+Solution is very simple: Just define XRANGE_SHADOW_SHIFT which means
+valid address length from VA_BITS to min(cpu_vabits, VA_BITS).
 
-This model appears to have two different dev IDs...
-
-- 0x1177 (as seen on the forum link above)
-- 0x1178 (as seen on https://linux-hardware.org/?probe=127df9999f)
-
-I don't think the audio system was changed between model revisions, so
-the patch applies for both IDs.
-
-Signed-off-by: José Relvas <josemonsantorelvas@gmail.com>
-Link: https://patch.msgid.link/20241020102756.225258-1-josemonsantorelvas@gmail.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Kanglong Wang <wangkanglong@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/loongarch/include/asm/kasan.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7358,6 +7358,7 @@ enum {
- 	ALC286_FIXUP_ACER_AIO_HEADSET_MIC,
- 	ALC256_FIXUP_ASUS_HEADSET_MIC,
- 	ALC256_FIXUP_ASUS_MIC_NO_PRESENCE,
-+	ALC255_FIXUP_PREDATOR_SUBWOOFER,
- 	ALC299_FIXUP_PREDATOR_SPK,
- 	ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE,
- 	ALC289_FIXUP_DELL_SPK1,
-@@ -8705,6 +8706,13 @@ static const struct hda_fixup alc269_fix
- 		.chained = true,
- 		.chain_id = ALC256_FIXUP_ASUS_HEADSET_MODE
- 	},
-+	[ALC255_FIXUP_PREDATOR_SUBWOOFER] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x17, 0x90170151 }, /* use as internal speaker (LFE) */
-+			{ 0x1b, 0x90170152 } /* use as internal speaker (back) */
-+		}
-+	},
- 	[ALC299_FIXUP_PREDATOR_SPK] = {
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = (const struct hda_pintbl[]) {
-@@ -9678,6 +9686,8 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1025, 0x110e, "Acer Aspire ES1-432", ALC255_FIXUP_ACER_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1025, 0x1166, "Acer Veriton N4640G", ALC269_FIXUP_LIFEBOOK),
- 	SND_PCI_QUIRK(0x1025, 0x1167, "Acer Veriton N6640G", ALC269_FIXUP_LIFEBOOK),
-+	SND_PCI_QUIRK(0x1025, 0x1177, "Acer Predator G9-593", ALC255_FIXUP_PREDATOR_SUBWOOFER),
-+	SND_PCI_QUIRK(0x1025, 0x1178, "Acer Predator G9-593", ALC255_FIXUP_PREDATOR_SUBWOOFER),
- 	SND_PCI_QUIRK(0x1025, 0x1246, "Acer Predator Helios 500", ALC299_FIXUP_PREDATOR_SPK),
- 	SND_PCI_QUIRK(0x1025, 0x1247, "Acer vCopperbox", ALC269VC_FIXUP_ACER_VCOPPERBOX_PINS),
- 	SND_PCI_QUIRK(0x1025, 0x1248, "Acer Veriton N4660G", ALC269VC_FIXUP_ACER_MIC_NO_PRESENCE),
+--- a/arch/loongarch/include/asm/kasan.h
++++ b/arch/loongarch/include/asm/kasan.h
+@@ -16,7 +16,7 @@
+ #define XRANGE_SHIFT (48)
+ 
+ /* Valid address length */
+-#define XRANGE_SHADOW_SHIFT	(PGDIR_SHIFT + PAGE_SHIFT - 3)
++#define XRANGE_SHADOW_SHIFT	min(cpu_vabits, VA_BITS)
+ /* Used for taking out the valid address */
+ #define XRANGE_SHADOW_MASK	GENMASK_ULL(XRANGE_SHADOW_SHIFT - 1, 0)
+ /* One segment whole address space size */
 
 
 
