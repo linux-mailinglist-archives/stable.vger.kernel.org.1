@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-88887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FE439B27EE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA5D9B26DB
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:43:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB0422863E4
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DCAEB21193
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:43:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67EC618E748;
-	Mon, 28 Oct 2024 06:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04E5C18E743;
+	Mon, 28 Oct 2024 06:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gppAdYAt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPfvakwG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B17B2AF07;
-	Mon, 28 Oct 2024 06:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E8A18E03A;
+	Mon, 28 Oct 2024 06:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098346; cv=none; b=WEz3p3ujpQyG4MwD3zL0dUtJKFKYgyjrPpvfBRuUZu3D6MkaNG9yfFyvMj71h9mgPfQu6CEyOn97KLMR3LbpkJSy+lLyxLwle13LFaEcADs6pGii+r4eDWfpG7QKcmU9cDGEzbiI3ocjSjmtGBlrA1BJPd9j3ky0+7TkMOD/VV8=
+	t=1730097790; cv=none; b=nNvZQiW6LxG3AecbAWSdhjzFUHxFeQB1KJetGp82CdnsgoRDJpnDT20tXXn+/YHDv1pvdeOUZL73D63lAQ6NBxngbJLCj/GATG3gdY58y6WdCrd3bHLnIx5kJliKG4XSYDLfdR9+b1E8jZMHobEOOZQCXn2gF6XrfBznSQ9cRCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098346; c=relaxed/simple;
-	bh=f2TG4ivWerYv6kBndIV6XhLX00vW56oLW9X9YvInfkM=;
+	s=arc-20240116; t=1730097790; c=relaxed/simple;
+	bh=sasILKbZ4Zw2fcSOTNGqGxva6G7f14cJYAYv0/GoSr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yr4WaClxSQnRnZOGXWCLO+ore052pJY/+q6OXWfk2Xccf7PKzTwotlBI5F6pTynWLBc/AjNUcdxXxQl+4O5cj5CMaYwSHE+sPVhwrnXdCaKVMz8fGDr+CkilFKoxP4dR6pOa2rnKHazuH6QEBkYoU3iyxQSq9X2kS7oTMflkdcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gppAdYAt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C87C4CEC3;
-	Mon, 28 Oct 2024 06:52:25 +0000 (UTC)
+	 MIME-Version; b=NEiv4TAV9jLMwmJzLue2+/Hy7uvGOHZSzeywV+MR2pZsDZPezv1Ab4YSII/PmUchlTX/D6sh/sV7UQoVNiVJQr/vcaBorfj33xbEZSKLB/YT/9GAVTvJIQNRT3h8gChar/j93w++qbsblB8jAqnA1xEVC7oxMlkgTxn8pil6GIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPfvakwG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48244C4CEC7;
+	Mon, 28 Oct 2024 06:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098345;
-	bh=f2TG4ivWerYv6kBndIV6XhLX00vW56oLW9X9YvInfkM=;
+	s=korg; t=1730097790;
+	bh=sasILKbZ4Zw2fcSOTNGqGxva6G7f14cJYAYv0/GoSr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gppAdYAtbsKdrLeZtWPE/PTJR2XEdoZvGf3tAKNk+SR+WSMhJV39hICS/lCxZF4C/
-	 9y59gMEoEPTw/6Dvm3xeqGk6XjMmPGQ+CAZqsoB5h9+lAPQRv/aWJ36hFcx6DmKdR4
-	 RnA0OFW4/KltL4hNoDiKdKWuIYOsRuIznu0ktCOM=
+	b=cPfvakwG6BsXTtTm3lptIOhZ+md8hN2RcyNEj++WAPZ6gihSOSBtY30Eopw7YUkQy
+	 j+BFNx0Urtyjli1ghKs3JM6Be4iXqLfNd35COaUROz0PtakKFPrDAfiXIh+EnxZEnT
+	 VL+f4xXZpD3vFqaGV73Er8eqGmQFxVsGGMdv0+Bc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Andrei Matei <andreimatei1@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 187/261] PCI: Hold rescan lock while adding devices during host probe
+Subject: [PATCH 6.6 149/208] bpf: Simplify checking size of helper accesses
 Date: Mon, 28 Oct 2024 07:25:29 +0100
-Message-ID: <20241028062316.704411200@linuxfoundation.org>
+Message-ID: <20241028062310.298229048@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +62,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Andrei Matei <andreimatei1@gmail.com>
 
-[ Upstream commit 1d59d474e1cb7d4fdf87dfaf96f44647f13ea590 ]
+[ Upstream commit 8a021e7fa10576eeb3938328f39bbf98fe7d4715 ]
 
-Since adding the PCI power control code, we may end up with a race between
-the pwrctl platform device rescanning the bus and host controller probe
-functions. The latter need to take the rescan lock when adding devices or
-we may end up in an undefined state having two incompletely added devices
-and hit the following crash when trying to remove the device over sysfs:
+This patch simplifies the verification of size arguments associated to
+pointer arguments to helpers and kfuncs. Many helpers take a pointer
+argument followed by the size of the memory access performed to be
+performed through that pointer. Before this patch, the handling of the
+size argument in check_mem_size_reg() was confusing and wasteful: if the
+size register's lower bound was 0, then the verification was done twice:
+once considering the size of the access to be the lower-bound of the
+respective argument, and once considering the upper bound (even if the
+two are the same). The upper bound checking is a super-set of the
+lower-bound checking(*), except: the only point of the lower-bound check
+is to handle the case where zero-sized-accesses are explicitly not
+allowed and the lower-bound is zero. This static condition is now
+checked explicitly, replacing a much more complex, expensive and
+confusing verification call to check_helper_mem_access().
 
-  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-  Internal error: Oops: 0000000096000004 [#1] SMP
-  Call trace:
-    __pi_strlen+0x14/0x150
-    kernfs_find_ns+0x80/0x13c
-    kernfs_remove_by_name_ns+0x54/0xf0
-    sysfs_remove_bin_file+0x24/0x34
-    pci_remove_resource_files+0x3c/0x84
-    pci_remove_sysfs_dev_files+0x28/0x38
-    pci_stop_bus_device+0x8c/0xd8
-    pci_stop_bus_device+0x40/0xd8
-    pci_stop_and_remove_bus_device_locked+0x28/0x48
-    remove_store+0x70/0xb0
-    dev_attr_store+0x20/0x38
-    sysfs_kf_write+0x58/0x78
-    kernfs_fop_write_iter+0xe8/0x184
-    vfs_write+0x2dc/0x308
-    ksys_write+0x7c/0xec
+Error messages change in this patch. Before, messages about illegal
+zero-size accesses depended on the type of the pointer and on other
+conditions, and sometimes the message was plain wrong: in some tests
+that changed you'll see that the old message was something like "R1 min
+value is outside of the allowed memory range", where R1 is the pointer
+register; the error was wrongly claiming that the pointer was bad
+instead of the size being bad. Other times the information that the size
+came for a register with a possible range of values was wrong, and the
+error presented the size as a fixed zero. Now the errors refer to the
+right register. However, the old error messages did contain useful
+information about the pointer register which is now lost; recovering
+this information was deemed not important enough.
 
-Fixes: 4565d2652a37 ("PCI/pwrctl: Add PCI power control core code")
-Link: https://lore.kernel.org/r/20241003084342.27501-1-brgl@bgdev.pl
-Reported-by: Konrad Dybcio <konradybcio@kernel.org>
-Tested-by: Konrad Dybcio <konradybcio@kernel.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+(*) Besides standing to reason that the checks for a bigger size access
+are a super-set of the checks for a smaller size access, I have also
+mechanically verified this by reading the code for all types of
+pointers. I could convince myself that it's true for all but
+PTR_TO_BTF_ID (check_ptr_to_btf_access). There, simply looking
+line-by-line does not immediately prove what we want. If anyone has any
+qualms, let me know.
+
+Signed-off-by: Andrei Matei <andreimatei1@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20231221232225.568730-2-andreimatei1@gmail.com
+Stable-dep-of: 8ea607330a39 ("bpf: Fix overloading of MEM_UNINIT's meaning")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/probe.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/bpf/verifier.c                                  | 10 ++++------
+ .../selftests/bpf/progs/verifier_helper_value_access.c |  8 ++++----
+ tools/testing/selftests/bpf/progs/verifier_raw_stack.c |  2 +-
+ 3 files changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index e9e56bbb3b59d..d203e23b75620 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -3106,7 +3106,9 @@ int pci_host_probe(struct pci_host_bridge *bridge)
- 	list_for_each_entry(child, &bus->children, node)
- 		pcie_bus_configure_settings(child);
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 28b09ca5525f0..f24d570d67ca5 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -7324,12 +7324,10 @@ static int check_mem_size_reg(struct bpf_verifier_env *env,
+ 		return -EACCES;
+ 	}
  
-+	pci_lock_rescan_remove();
- 	pci_bus_add_devices(bus);
-+	pci_unlock_rescan_remove();
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(pci_host_probe);
+-	if (reg->umin_value == 0) {
+-		err = check_helper_mem_access(env, regno - 1, 0,
+-					      zero_size_allowed,
+-					      meta);
+-		if (err)
+-			return err;
++	if (reg->umin_value == 0 && !zero_size_allowed) {
++		verbose(env, "R%d invalid zero-sized read: u64=[%lld,%lld]\n",
++			regno, reg->umin_value, reg->umax_value);
++		return -EACCES;
+ 	}
+ 
+ 	if (reg->umax_value >= BPF_MAX_VAR_SIZ) {
+diff --git a/tools/testing/selftests/bpf/progs/verifier_helper_value_access.c b/tools/testing/selftests/bpf/progs/verifier_helper_value_access.c
+index 692216c0ad3d4..3e8340c2408f3 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_helper_value_access.c
++++ b/tools/testing/selftests/bpf/progs/verifier_helper_value_access.c
+@@ -91,7 +91,7 @@ l0_%=:	exit;						\
+ 
+ SEC("tracepoint")
+ __description("helper access to map: empty range")
+-__failure __msg("invalid access to map value, value_size=48 off=0 size=0")
++__failure __msg("R2 invalid zero-sized read")
+ __naked void access_to_map_empty_range(void)
+ {
+ 	asm volatile ("					\
+@@ -221,7 +221,7 @@ l0_%=:	exit;						\
+ 
+ SEC("tracepoint")
+ __description("helper access to adjusted map (via const imm): empty range")
+-__failure __msg("invalid access to map value, value_size=48 off=4 size=0")
++__failure __msg("R2 invalid zero-sized read")
+ __naked void via_const_imm_empty_range(void)
+ {
+ 	asm volatile ("					\
+@@ -386,7 +386,7 @@ l0_%=:	exit;						\
+ 
+ SEC("tracepoint")
+ __description("helper access to adjusted map (via const reg): empty range")
+-__failure __msg("R1 min value is outside of the allowed memory range")
++__failure __msg("R2 invalid zero-sized read")
+ __naked void via_const_reg_empty_range(void)
+ {
+ 	asm volatile ("					\
+@@ -556,7 +556,7 @@ l0_%=:	exit;						\
+ 
+ SEC("tracepoint")
+ __description("helper access to adjusted map (via variable): empty range")
+-__failure __msg("R1 min value is outside of the allowed memory range")
++__failure __msg("R2 invalid zero-sized read")
+ __naked void map_via_variable_empty_range(void)
+ {
+ 	asm volatile ("					\
+diff --git a/tools/testing/selftests/bpf/progs/verifier_raw_stack.c b/tools/testing/selftests/bpf/progs/verifier_raw_stack.c
+index f67390224a9cf..7cc83acac7271 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_raw_stack.c
++++ b/tools/testing/selftests/bpf/progs/verifier_raw_stack.c
+@@ -64,7 +64,7 @@ __naked void load_bytes_negative_len_2(void)
+ 
+ SEC("tc")
+ __description("raw_stack: skb_load_bytes, zero len")
+-__failure __msg("invalid zero-sized read")
++__failure __msg("R4 invalid zero-sized read: u64=[0,0]")
+ __naked void skb_load_bytes_zero_len(void)
+ {
+ 	asm volatile ("					\
 -- 
 2.43.0
 
