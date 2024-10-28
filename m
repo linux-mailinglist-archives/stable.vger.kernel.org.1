@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 813C29B26A1
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:41:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68F2D9B27CA
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:51:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CB051F22BDB
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FF0F1F223D4
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B4018E368;
-	Mon, 28 Oct 2024 06:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACCB118D65C;
+	Mon, 28 Oct 2024 06:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vxmqc1wE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rd+yZnlh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57441189BAF;
-	Mon, 28 Oct 2024 06:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB9B8837;
+	Mon, 28 Oct 2024 06:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097678; cv=none; b=jw++YUQYNoFnQrAcTLRT9wm/mt8ULs4mzKBpMu0t6FJgvobDVhJrOXdLLkqiEVYqC9P9bUHjIK2pXJ+v3n5gqMVo7dOKn/SqDQsd3FDIFu7fdG3JUFBpNTZg8cBE9G8UAGY0GJrOlAwP8UnOBLxu632FMXK0CDfiGj0HNkCjCrU=
+	t=1730098272; cv=none; b=BV1u8uH/1i7GYs8SP3JVfsnGrlsqvoFDa0zw5/ZGO+D33ntprhdTPwoubtZtdQStCedJB2CImBVQh8MzKAL7GRSQGA7AMiCDay4o6OLrDpz29OWi2OQCx4FcjUn/PJhxpLfGDoGKxXX17nrYxwzcgs+QnZ3Yl/XMQhJkRmLIigg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097678; c=relaxed/simple;
-	bh=px81CAZ0uG2VYP6BrAigVYGCwPAaG58xFCV5u/08HW4=;
+	s=arc-20240116; t=1730098272; c=relaxed/simple;
+	bh=1LDit7OxT6lI63a/+PTgkbJSjdijO6eTCOzlCKIyBNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lthpzkoDP/NSleiH3T5ohKWFyuL/z07NoC08ArwpahYJjiKEeCwO4HOpiTbMg4hMsAP8SVbiY+4vy+QnzUWnSBLvxdDCz3aWbHlbGWFD72HLlR+jwLzwlf917Bkf43hYF5Cc8rNpwckU/ZdN6deJysdrxaq6VyiCQZuZCwYDQww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vxmqc1wE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE2EC4CEC3;
-	Mon, 28 Oct 2024 06:41:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ny6kFy7mgKd+8RGGd1wIjvYEQYvQFQRxddyeEUIvlHxN4lpIDN6prdB5Hkbtz0/wW9OvwDmMqmAE2jh4o1QFpD9ajeFWr97s/mu7atSpMmKixEBusopiAmu3JXCAW2pBw2HmuOx2NqrdYKtHCMz/U2krsBsfh66eEFGGbWZMfWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rd+yZnlh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4410C4CEC3;
+	Mon, 28 Oct 2024 06:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097678;
-	bh=px81CAZ0uG2VYP6BrAigVYGCwPAaG58xFCV5u/08HW4=;
+	s=korg; t=1730098272;
+	bh=1LDit7OxT6lI63a/+PTgkbJSjdijO6eTCOzlCKIyBNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vxmqc1wEH1ekpfsZJ1Y15FAY+3YQphbQ0A6RHgjfo2H+2NeJFpTY6lHXRASuqJ8eR
-	 xdy/mz9BGp3IeFcYFV7AQXSeucnlFZ9jCA7AFrEQrTn/XGu1MYf2trVFOCMg8RAhw/
-	 Kk54AdAJRHGQmV+ruCTk7sy2I5kLvEyQ8STNFn9k=
+	b=rd+yZnlhaoKaElFJsP3gKJRK7+W34fbqNzzyngMUEb4fDc58ioKYTstireTkQFSSp
+	 ZYsPd6tHS4V0f3wzUCCC0BpeDrQY2RfLXdEs40K5ZBbEfFJtQoy439c/HUMdp56rHC
+	 jr/7tDa5D0sYFF0g/aG909Ulcv+v5+OxzLvJLPtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 098/208] iio: adc: ti-lmp92064: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+Subject: [PATCH 6.11 136/261] LoongArch: Dont crash in stack_top() for tasks without vDSO
 Date: Mon, 28 Oct 2024 07:24:38 +0100
-Message-ID: <20241028062309.073203050@linuxfoundation.org>
+Message-ID: <20241028062315.452761145@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +60,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit a985576af824426e33100554a5958a6beda60a13 ]
+[ Upstream commit 134475a9ab8487527238d270639a8cb74c10aab2 ]
 
-This driver makes use of triggered buffers, but does not select the
-required modules.
+Not all tasks have a vDSO mapped, for example kthreads never do. If such
+a task ever ends up calling stack_top(), it will derefence the NULL vdso
+pointer and crash.
 
-Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
+This can for example happen when using kunit:
 
-Fixes: 6c7bc1d27bb2 ("iio: adc: ti-lmp92064: add buffering support")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241003-iio-select-v1-6-67c0385197cd@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+	[<9000000000203874>] stack_top+0x58/0xa8
+	[<90000000002956cc>] arch_pick_mmap_layout+0x164/0x220
+	[<90000000003c284c>] kunit_vm_mmap_init+0x108/0x12c
+	[<90000000003c1fbc>] __kunit_add_resource+0x38/0x8c
+	[<90000000003c2704>] kunit_vm_mmap+0x88/0xc8
+	[<9000000000410b14>] usercopy_test_init+0xbc/0x25c
+	[<90000000003c1db4>] kunit_try_run_case+0x5c/0x184
+	[<90000000003c3d54>] kunit_generic_run_threadfn_adapter+0x24/0x48
+	[<900000000022e4bc>] kthread+0xc8/0xd4
+	[<9000000000200ce8>] ret_from_kernel_thread+0xc/0xa4
+
+Fixes: 803b0fc5c3f2 ("LoongArch: Add process management")
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/Kconfig | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/loongarch/kernel/process.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index e46817cb5581c..6dee3b686effd 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -1335,6 +1335,8 @@ config TI_LMP92064
- 	tristate "Texas Instruments LMP92064 ADC driver"
- 	depends on SPI
- 	select REGMAP_SPI
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
- 	help
- 	  Say yes here to build support for the LMP92064 Precision Current and Voltage
- 	  sensor.
+diff --git a/arch/loongarch/kernel/process.c b/arch/loongarch/kernel/process.c
+index f2ff8b5d591e4..6e58f65455c7c 100644
+--- a/arch/loongarch/kernel/process.c
++++ b/arch/loongarch/kernel/process.c
+@@ -293,13 +293,15 @@ unsigned long stack_top(void)
+ {
+ 	unsigned long top = TASK_SIZE & PAGE_MASK;
+ 
+-	/* Space for the VDSO & data page */
+-	top -= PAGE_ALIGN(current->thread.vdso->size);
+-	top -= VVAR_SIZE;
+-
+-	/* Space to randomize the VDSO base */
+-	if (current->flags & PF_RANDOMIZE)
+-		top -= VDSO_RANDOMIZE_SIZE;
++	if (current->thread.vdso) {
++		/* Space for the VDSO & data page */
++		top -= PAGE_ALIGN(current->thread.vdso->size);
++		top -= VVAR_SIZE;
++
++		/* Space to randomize the VDSO base */
++		if (current->flags & PF_RANDOMIZE)
++			top -= VDSO_RANDOMIZE_SIZE;
++	}
+ 
+ 	return top;
+ }
 -- 
 2.43.0
 
