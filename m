@@ -1,80 +1,78 @@
-Return-Path: <stable+bounces-89055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E08F79B2E77
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 12:17:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B4369B2E8A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 12:19:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 440DFB21EA1
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:17:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDDE5281D7B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:19:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6791DF75C;
-	Mon, 28 Oct 2024 11:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8ED1DB52A;
+	Mon, 28 Oct 2024 11:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="k/s6thup"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="e4JJv4ih"
 X-Original-To: stable@vger.kernel.org
 Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D9A1DF720;
-	Mon, 28 Oct 2024 11:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF851DB520
+	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 11:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730113604; cv=none; b=oDo/PFKiwwThxtJqljBSWQa9VxNy+Ro3+ciTfmydn8Cudmw1rSbroDummkIJA5fObl5dGkH/S3UFcCs6IJfLXCpd4hlIX0EnV1Suf46XIen1wasJrzWIu1NKMrP1qOePUnxodA1z2MjcaZAP66LayqgKtITvrKpGD9UVKL9eIFk=
+	t=1730113718; cv=none; b=QC6uq//jxTqKRWJ+8XTcEOzoRw6PK9orlTwR7WouzazhWV7HpqhHERO1c2cRKY/8krV7438dOnsK0fPcDerdc9LKGUmlLUI7SuzZeSCGMIilo/BdZLbMgKW2i1U+9PLAFrGHMzT3+iUIBeFZYGVYqbai8q44xiAXpDGctvQDd74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730113604; c=relaxed/simple;
-	bh=m2+0QMSnYT5eoRd6jh26jiPKiBxhteKcWXAqeQ1LX/k=;
+	s=arc-20240116; t=1730113718; c=relaxed/simple;
+	bh=VTwTyhTyWMzt5lJAgMkPHrW1D1b1Q6BEBA7wLZtsgiE=;
 	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qIMhU5I7xd6GBrXa0XPml1OujHrMPGBl7TqIg1qArLcDl1MiQb5H2AqNOPQN97IAMe7pS1cxxmqP7kIRZ1UVhG7H+cc+GeLNmxcXRp63ts2/PJJLkQ7STM/JR+0w4wwbuJ+1NHunJLmusQJyO1DUqWEV+gKr+t3y1Syz/tqwAOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=k/s6thup; arc=none smtp.client-ip=62.96.220.36
+	 Content-Type:Content-Disposition:In-Reply-To; b=W4XZFFvQiTjlpbZO6IECwzxGBTr601Q0cypWpdohsv60Uv6EOBQFXrjyEQQYyehxZF6mJsKPQQ+kTUTu/yoQ3nr42NWjshX1Cd6mPlfHkD1c9VSE5+IPedyX4tpQVDPs8VeQjMnAn6WEyujFFVgcTOHvSa4JDHg6Z7M0dd6CdO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=e4JJv4ih; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Received: from localhost (localhost [127.0.0.1])
-	by a.mx.secunet.com (Postfix) with ESMTP id 930612067F;
-	Mon, 28 Oct 2024 12:06:32 +0100 (CET)
+	by a.mx.secunet.com (Postfix) with ESMTP id C048D20758;
+	Mon, 28 Oct 2024 12:08:32 +0100 (CET)
 X-Virus-Scanned: by secunet
 Received: from a.mx.secunet.com ([127.0.0.1])
 	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id pDFM8yyW7dzL; Mon, 28 Oct 2024 12:06:31 +0100 (CET)
-Received: from cas-essen-02.secunet.de (rl2.secunet.de [10.53.40.202])
+	with ESMTP id OlZ9Kt7b5G19; Mon, 28 Oct 2024 12:08:31 +0100 (CET)
+Received: from cas-essen-01.secunet.de (rl1.secunet.de [10.53.40.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by a.mx.secunet.com (Postfix) with ESMTPS id 2F823201A7;
-	Mon, 28 Oct 2024 12:06:31 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 2F823201A7
+	by a.mx.secunet.com (Postfix) with ESMTPS id A457F20508;
+	Mon, 28 Oct 2024 12:08:31 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com A457F20508
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1730113591;
-	bh=HJxA7WsJpIyN4AmUIImZsVdZp5Tw5bDg/w+ALYlibcI=;
+	s=202301; t=1730113711;
+	bh=lrjWMqo/Cp30yEr3PVAbl559CFc2LaEdv9IbyyrWZ2g=;
 	h=Date:From:To:CC:Subject:Reply-To:References:In-Reply-To:From;
-	b=k/s6thupIUWIUOZBC837gn/aY+xjSgOkzQ29/O5EvWhZGlcLSnbqusKEevUkXQ8/7
-	 Lc+Jw8Qqnu3mt6jNB8VDO0er1Rzbqb8DQfr1TXf77rlRJkohX6oe9YLzlfQis1IIRH
-	 mhifxhlUPdDS9IAc+H0rIAlGjDWO66LKKqXTfNVFtvfnz9KfXNrC1BBGFjETQ49wQz
-	 tR+CNEz7eLHvd/4uxo+p9uHBbNd9DWeD+ByXCjLgNax2AZdWjTzEuYPzZ5ypDFjO/N
-	 +YJaEnb33K/Ieos5M0+ji1rbdGPxi0XpIGzwoSl/O4bQt2Qp3zJSehbRoJP/bTQ3XL
-	 Wq9Ko00Rq01NA==
+	b=e4JJv4ihM3rg4tawYaeOjCcHhROimpumlTSf1808spjIrlVzmaGLyKgCzUOa/8DE8
+	 +jm/OIcRQmbOSNnnMLQH0vmMhW3sqgDP+/nC0ygjtq0Zq4GFQSIqgJ+RN1bpNpamY5
+	 f+XTZJdPos9iKSIgmEHyQs+K4/IwokthHEN0p9bKioe1EhdBoKC2Pa3LgAbIyPuRq5
+	 AmOvInZnm6cZwR2YujhMmSs166e/VWoCrgX9C7Q/PEqKqKOvFgEjE/IOw7mmqR6JH9
+	 /009MzNqA103pseR8aukVH7dF4kroz7tJ6ODnGKUzLRMAJZRMZK16buYCJumdAYfLO
+	 a00Deglpi0c7g==
 Received: from mbx-essen-01.secunet.de (10.53.40.197) by
- cas-essen-02.secunet.de (10.53.40.202) with Microsoft SMTP Server
+ cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 28 Oct 2024 12:06:31 +0100
+ 15.1.2507.39; Mon, 28 Oct 2024 12:08:31 +0100
 Received: from moon.secunet.de (172.18.149.1) by mbx-essen-01.secunet.de
  (10.53.40.197) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 28 Oct
- 2024 12:06:30 +0100
-Date: Mon, 28 Oct 2024 12:06:23 +0100
+ 2024 12:08:30 +0100
+Date: Mon, 28 Oct 2024 12:08:23 +0100
 From: Antony Antony <antony.antony@secunet.com>
-To: <stable@vger.kernel.org>
-CC: <stable-commits@vger.kernel.org>, <antony.antony@secunet.com>, "Steffen
- Klassert" <steffen.klassert@secunet.com>, Herbert Xu
-	<herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Subject: Re: Patch "xfrm: Add Direction to the SA in or out" has been added
- to the 6.6-stable tree
-Message-ID: <Zx9wL3b1iLm48nNS@moon.secunet.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: <stable@vger.kernel.org>, <patches@lists.linux.dev>, Antony Antony
+	<antony.antony@secunet.com>, Sabrina Dubroca <sd@queasysnail.net>, "Steffen
+ Klassert" <steffen.klassert@secunet.com>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.6 133/208] xfrm: Add Direction to the SA in or out
+Message-ID: <Zx9wp6atLMR1UcCL@moon.secunet.de>
 Reply-To: <antony.antony@secunet.com>
-References: <20241026074003.3338555-1-sashal@kernel.org>
+References: <20241028062306.649733554@linuxfoundation.org>
+ <20241028062309.914261564@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,18 +81,18 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20241026074003.3338555-1-sashal@kernel.org>
+In-Reply-To: <20241028062309.914261564@linuxfoundation.org>
 Precedence: first-class
 Priority: normal
 Organization: secunet
-X-ClientProxiedBy: cas-essen-02.secunet.de (10.53.40.202) To
+X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
  mbx-essen-01.secunet.de (10.53.40.197)
 X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 
-On Sat, Oct 26, 2024 at 03:40:02 -0400, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
-> 
->     xfrm: Add Direction to the SA in or out
+On Mon, Oct 28, 2024 at 07:25:13 +0100, Greg Kroah-Hartman wrote:
+> 6.6-stable review patch.  If anyone has any objections, please let me know.
+
+Hi Greg,
 
 This patch is a part of a new feature SA direction and it appears the auto
 patch selector picked one patch out of patch set?
@@ -104,42 +102,37 @@ I think this patch alone should not be applied to older stable kernel.
 
 
 > 
-> to the 6.6-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> ------------------
 > 
-> The filename of the patch is:
->      xfrm-add-direction-to-the-sa-in-or-out.patch
-> and it can be found in the queue-6.6 subdirectory.
+> From: Antony Antony <antony.antony@secunet.com>
 > 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
+> [ Upstream commit a4a87fa4e96c7746e009de06a567688fd9af6013 ]
 > 
+> This patch introduces the 'dir' attribute, 'in' or 'out', to the
+> xfrm_state, SA, enhancing usability by delineating the scope of values
+> based on direction. An input SA will restrict values pertinent to input,
+> effectively segregating them from output-related values.
+> And an output SA will restrict attributes for output. This change aims
+> to streamline the configuration process and improve the overall
+> consistency of SA attributes during configuration.
 > 
+> This feature sets the groundwork for future patches, including
+> the upcoming IP-TFS patch.
 > 
-> commit 3f97c69c749f417158bc3d69478204562fc8c98d
-> Author: Antony Antony <antony.antony@secunet.com>
-> Date:   Tue Apr 30 09:08:52 2024 +0200
-> 
->     xfrm: Add Direction to the SA in or out
->     
->     [ Upstream commit a4a87fa4e96c7746e009de06a567688fd9af6013 ]
->     
->     This patch introduces the 'dir' attribute, 'in' or 'out', to the
->     xfrm_state, SA, enhancing usability by delineating the scope of values
->     based on direction. An input SA will restrict values pertinent to input,
->     effectively segregating them from output-related values.
->     And an output SA will restrict attributes for output. This change aims
->     to streamline the configuration process and improve the overall
->     consistency of SA attributes during configuration.
->     
->     This feature sets the groundwork for future patches, including
->     the upcoming IP-TFS patch.
->     
->     Signed-off-by: Antony Antony <antony.antony@secunet.com>
->     Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
->     Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
->     Stable-dep-of: 3f0ab59e6537 ("xfrm: validate new SA's prefixlen using SA family when sel.family is unset")
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> Signed-off-by: Antony Antony <antony.antony@secunet.com>
+> Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+> Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+> Stable-dep-of: 3f0ab59e6537 ("xfrm: validate new SA's prefixlen using SA family when sel.family is unset")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  include/net/xfrm.h        |   1 +
+>  include/uapi/linux/xfrm.h |   6 ++
+>  net/xfrm/xfrm_compat.c    |   7 +-
+>  net/xfrm/xfrm_device.c    |   6 ++
+>  net/xfrm/xfrm_replay.c    |   3 +-
+>  net/xfrm/xfrm_state.c     |   8 +++
+>  net/xfrm/xfrm_user.c      | 138 ++++++++++++++++++++++++++++++++++++--
+>  7 files changed, 160 insertions(+), 9 deletions(-)
 > 
 > diff --git a/include/net/xfrm.h b/include/net/xfrm.h
 > index 93a9866ee481f..c5cf062afd4a2 100644
@@ -532,4 +525,9 @@ I think this patch alone should not be applied to older stable kernel.
 >  	return l;
 >  }
 >  
+> -- 
+> 2.43.0
+> 
+> 
+> 
 
