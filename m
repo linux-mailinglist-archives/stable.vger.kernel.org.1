@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-89034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FF669B2DF4
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 12:05:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02C9F9B2DF6
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 12:05:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C16CD1C21FD4
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:05:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33C251C22250
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5071FF618;
-	Mon, 28 Oct 2024 10:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85EE2200BA5;
+	Mon, 28 Oct 2024 10:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DgSTH/vl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B5eofh7b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661831FF5F3;
-	Mon, 28 Oct 2024 10:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4212A200B8E;
+	Mon, 28 Oct 2024 10:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730112782; cv=none; b=tgxU9x+ZhsukKamxZd9xldSZGc+VDO9fhRbiMEUjBhBALY/yhaEQ/AZuLy/XvMU6sYohcqJNDx9/fIPoP+1kooZ4BVB4BPJuHfSiZ7JIzbKmmaA+Xji+SFJNuS8uNchIZs1n8LAvA3HKNumGOufJ8ryktqwIMNA1xaE+7c5mFlg=
+	t=1730112785; cv=none; b=OIWMs6Ug2+UhjQbd3QebnYE2+sIVWkyAi3x22bW6NeBVHdo/UgKbltE5F/Mqq30xYv9ybi9FB/1lC/kEEJ1baux2UMPnnS9PbrAbcOfQKh0BV8D2XReCHYGDKAS9WXlNeDt5yy6zE0rjcSENz7vqFz3g1ZJhA+8+BCl/L5o8AXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730112782; c=relaxed/simple;
-	bh=0pB+SFuonPiYVgHLGX4PGHhmVAtheFXv+n2PUaKa9Q0=;
+	s=arc-20240116; t=1730112785; c=relaxed/simple;
+	bh=32MnMsbpgABlYs4RbL3vPVXd0eqsEm84FdrjGK51Owk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OHJO7qRQ0VHChxUcjGz1dXWFi3wX8lMP1ZWMro+qSq9XBjCnJbKHtBqMJMn5zz77ez8/x/aOjR5CAYwQm7RcBkmnMWi8vUkl+RpDbPX6VwyH25UL7wjqgKaJik+p6GrgEkpmOjq6ivHEpsTOHN+UtKRcyMqGubH2aTkYsIW8M00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DgSTH/vl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34640C4CEC3;
-	Mon, 28 Oct 2024 10:53:01 +0000 (UTC)
+	 MIME-Version; b=l3NQbqa2+cGqulNjiJtEBw7mMs7Sx8M7zKBOxjAqBfMc8ckOPlO5h4eqUBHitxKlEB6RNuV+zZNkaMvZluz3T9K4QY3eWvpqqPkklGX+ecXGKdJfhMxuqdKGk5WiTvHkSJdkrdV+1PHafrdXWeR8ygf/hiZtquswiPYKpDXPYxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B5eofh7b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83ABC4CEC3;
+	Mon, 28 Oct 2024 10:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730112782;
-	bh=0pB+SFuonPiYVgHLGX4PGHhmVAtheFXv+n2PUaKa9Q0=;
+	s=k20201202; t=1730112785;
+	bh=32MnMsbpgABlYs4RbL3vPVXd0eqsEm84FdrjGK51Owk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DgSTH/vl3MLjSHjgzcjbXhkU4ou18jiu3Ei1t38eIK/5XIDxzFLVqc1tnp+zOlYf2
-	 TmZQuxkHC6/fJJLI0XtO0JomsyB5Ax9sFnY+Hhrkc/t4aXC+ZF7TFSrzbh8ogF6Qll
-	 vO+3chqMXPYJ8oiMe4tXF+4ICG+vfFdX9mggZCNyOKaPTB+DnmCHnX0a+hHj7v2W93
-	 JCWQSajONorRu+yBLqgNX+mQ0GebCnZYI0nsV9v7EqAm4g04rqs6eo5rqCYL8rn9IJ
-	 9N4pCl8yfTzghXYXZwuIbZjO8R42KC3Qa0Nbb6nWRRPoYfOvsLP4PnlBk161w/wPyv
-	 A6NhQdsrbQumg==
+	b=B5eofh7bhznA1DqZwLOKh1APKXMoRd1TZTNojYikJIXeMzlIPzugXSUdlHIdHmAQj
+	 g6lCH5smA2sLgZYp7rzVYgxJ/XxYXTAODM3EPRkIpa9AM2WFQUtcohJBzBZUeaNNEK
+	 KsKcm8Gr3dI4BNMUICkM9xWpXvm4dJxe1FKBXL6WaHLnMZXz97uVnB6MS+5rYu+qo2
+	 KiypwwVUuHv1m8h3nbGCDjNROi5oWMHV5dIhTBhqEktzlA/fAvqmLwq8Qal5ncyJpi
+	 UljYHsyPoBkHmUjaOdUFJiknO4822K8Fq7sOYBEVS5A6djUBZke+IVh52fctZEwQOc
+	 9xXD/b/47e+JA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Izhar Firdaus <izhar@fedoraproject.org>,
-	Jiri Kosina <jkosina@suse.com>,
+Cc: Yanteng Si <siyanteng@cqsoftware.com.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	bentiss@kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 5/8] HID: lenovo: Add support for Thinkpad X1 Tablet Gen 3 keyboard
-Date: Mon, 28 Oct 2024 06:52:46 -0400
-Message-ID: <20241028105252.3560220-5-sashal@kernel.org>
+	chenhuacai@kernel.org,
+	maobibo@loongson.cn,
+	tglx@linutronix.de,
+	zhangtianyang@loongson.cn,
+	jiaxun.yang@flygoat.com,
+	gaosong@loongson.cn,
+	xry111@xry111.site,
+	loongarch@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.1 6/8] LoongArch: Use "Exception return address" to comment ERA
+Date: Mon, 28 Oct 2024 06:52:47 -0400
+Message-ID: <20241028105252.3560220-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241028105252.3560220-1-sashal@kernel.org>
 References: <20241028105252.3560220-1-sashal@kernel.org>
@@ -68,85 +72,33 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.114
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Yanteng Si <siyanteng@cqsoftware.com.cn>
 
-[ Upstream commit 51268879eb2bfc563a91cdce69362d9dbf707e7e ]
+[ Upstream commit b69269c870ece1bc7d2e3e39ca76f4602f2cb0dd ]
 
-The Thinkpad X1 Tablet Gen 3 keyboard has the same Lenovo specific quirks
-as the original  Thinkpad X1 Tablet keyboard.
+The information contained in the comment for LOONGARCH_CSR_ERA is even
+less informative than the macro itself, which can cause confusion for
+junior developers. Let's use the full English term.
 
-Add the PID for the "Thinkpad X1 Tablet Gen 3 keyboard" to the hid-lenovo
-driver to fix the FnLock, Mute and media buttons not working.
-
-Suggested-by: Izhar Firdaus <izhar@fedoraproject.org>
-Closes https://bugzilla.redhat.com/show_bug.cgi?id=2315395
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Yanteng Si <siyanteng@cqsoftware.com.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-lenovo.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/loongarch/include/asm/loongarch.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-lenovo.c b/drivers/hid/hid-lenovo.c
-index f86c1ea83a037..a4062f617ba20 100644
---- a/drivers/hid/hid-lenovo.c
-+++ b/drivers/hid/hid-lenovo.c
-@@ -473,6 +473,7 @@ static int lenovo_input_mapping(struct hid_device *hdev,
- 		return lenovo_input_mapping_tp10_ultrabook_kbd(hdev, hi, field,
- 							       usage, bit, max);
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		return lenovo_input_mapping_x1_tab_kbd(hdev, hi, field, usage, bit, max);
- 	default:
- 		return 0;
-@@ -583,6 +584,7 @@ static ssize_t attr_fn_lock_store(struct device *dev,
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		ret = lenovo_led_set_tp10ubkbd(hdev, TP10UBKBD_FN_LOCK_LED, value);
- 		if (ret)
- 			return ret;
-@@ -777,6 +779,7 @@ static int lenovo_event(struct hid_device *hdev, struct hid_field *field,
- 		return lenovo_event_cptkbd(hdev, field, usage, value);
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		return lenovo_event_tp10ubkbd(hdev, field, usage, value);
- 	default:
- 		return 0;
-@@ -1059,6 +1062,7 @@ static int lenovo_led_brightness_set(struct led_classdev *led_cdev,
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		ret = lenovo_led_set_tp10ubkbd(hdev, tp10ubkbd_led[led_nr], value);
- 		break;
- 	}
-@@ -1289,6 +1293,7 @@ static int lenovo_probe(struct hid_device *hdev,
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		ret = lenovo_probe_tp10ubkbd(hdev);
- 		break;
- 	default:
-@@ -1375,6 +1380,7 @@ static void lenovo_remove(struct hid_device *hdev)
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		lenovo_remove_tp10ubkbd(hdev);
- 		break;
- 	}
-@@ -1424,6 +1430,8 @@ static const struct hid_device_id lenovo_devices[] = {
- 	 */
- 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
- 		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB) },
-+	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
-+		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB3) },
- 	{ }
- };
+diff --git a/arch/loongarch/include/asm/loongarch.h b/arch/loongarch/include/asm/loongarch.h
+index 3d15fa5bef37d..710b005fc8a69 100644
+--- a/arch/loongarch/include/asm/loongarch.h
++++ b/arch/loongarch/include/asm/loongarch.h
+@@ -325,7 +325,7 @@ static __always_inline void iocsr_write64(u64 val, u32 reg)
+ #define  CSR_ESTAT_IS_WIDTH		15
+ #define  CSR_ESTAT_IS			(_ULCAST_(0x7fff) << CSR_ESTAT_IS_SHIFT)
+ 
+-#define LOONGARCH_CSR_ERA		0x6	/* ERA */
++#define LOONGARCH_CSR_ERA		0x6	/* Exception return address */
+ 
+ #define LOONGARCH_CSR_BADV		0x7	/* Bad virtual address */
  
 -- 
 2.43.0
