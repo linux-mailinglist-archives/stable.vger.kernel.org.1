@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-88690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC4859B2710
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:45:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB85F9B2823
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:54:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E84011C214C4
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:45:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 915B1286487
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1814218E35B;
-	Mon, 28 Oct 2024 06:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA2718E77D;
+	Mon, 28 Oct 2024 06:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bi2F0rXM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JNZeHdra"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97E418E743;
-	Mon, 28 Oct 2024 06:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC82D824A3;
+	Mon, 28 Oct 2024 06:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097902; cv=none; b=PwkCrkhmFMENPrEJXrRwXHKw+WLDp10eYUQ5lCQ4AE3TaEULA1GmIm6abDd7RUHycrwiNAqThGbvkGBPp/sJyQ7i/cMd9XpzrIRFlm7vGdjMK6cBFBWe/Zwe7VD+r3uWo0OWn5wKbNFKKVDNeZcv20f9o+jeNf0IlCluq/vwNoo=
+	t=1730098460; cv=none; b=g/0rgZyInFb7bUJXMzp+TJUUbDJnqtSJIqeqeuF0r2LRRbQW0jDb9el21aI7Am+3afEM+HaX0wZ8ncFQoQmdkSQ1PhgNPp0TigWKzj8gjRkSYCsGRT0OYWkrV2bXO+TKig9o0waxS54bpU7O/2p8whmPVrSxrolizouB1vPJFvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097902; c=relaxed/simple;
-	bh=J6snH/5xi0Rx2pJ/4cS7h+ztFL3HQZZw0pSjBLoWnM8=;
+	s=arc-20240116; t=1730098460; c=relaxed/simple;
+	bh=uIFigDd9Mg7S0pmCa0FvLm2WXw8I8ehEezrMhwGbS64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IvHk16wY6mhafApkbEaMQJZZsruN3joJikzArN5C8ssyV7/HDRUh29jedfdARYJK2lGe6aqW0nE5so+16/fq2JIiosPNZuywLSHMTlCgLkrcE6pPrOoK/vMeC4Xv/fHOkkF7bv4MkBjwZ0QKpvdHCtTWuRKDcUpT9jWNpv8/rHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bi2F0rXM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29AA8C4CEC3;
-	Mon, 28 Oct 2024 06:45:02 +0000 (UTC)
+	 MIME-Version; b=HKN41/AzLWrC02CWiwB2Ojd3ne4SmrU+RYN1erLzYJYwHGo5eYCDL2GukmLSL+ubtGEE9upnUwfHqSvHGDI2qX3Adms/nG7cZjoMuQKzZZAg0z3ZG80DrISNwyHD1plonVqzSXev+TTsoPO1L0c/VqzFNOxONBwz80usHavJYOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JNZeHdra; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E015C4CEC3;
+	Mon, 28 Oct 2024 06:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097902;
-	bh=J6snH/5xi0Rx2pJ/4cS7h+ztFL3HQZZw0pSjBLoWnM8=;
+	s=korg; t=1730098459;
+	bh=uIFigDd9Mg7S0pmCa0FvLm2WXw8I8ehEezrMhwGbS64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bi2F0rXMDIlqad45AWWUQd+gGkvXFRnwjxDdJ7MKU1hbIkPW6GHM+w3JHZbmaZ5S/
-	 47paudLhxfJWsnbetuDXoWSS3nq74jqJkgwmkbyrmejh0w36PEUCtdVPH1chh1JmS7
-	 FSHInGuxT4RR1/oqRWzN/ooimmikRcxbQd1pGqIo=
+	b=JNZeHdrazvgLd8IWA6bUqjUJvZm+A4HoddrRtcrNqTmuzTnphMnJV4adp/OX70lrz
+	 aLw54YaOQTt1Ol0IR8VSfHDc6ir/2CDoNev8qOkx+MfhyS9925kqvXvO1wPGku65OO
+	 shJ8WefqrwPTM4yaPjucaK3ZahKzVG23Xsb+80ms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Michel <alex.michel@wiedemann-group.com>,
-	Andrew Lunn <andrew@lunn.ch>
-Subject: [PATCH 6.6 198/208] net: phy: dp83822: Fix reset pin definitions
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Li Huafei <lihuafei1@huawei.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 236/261] fgraph: Fix missing unlock in register_ftrace_graph()
 Date: Mon, 28 Oct 2024 07:26:18 +0100
-Message-ID: <20241028062311.512198892@linuxfoundation.org>
+Message-ID: <20241028062318.033207381@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +65,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michel Alex <Alex.Michel@wiedemann-group.com>
+From: Li Huafei <lihuafei1@huawei.com>
 
-commit de96f6a3003513c796bbe4e23210a446913f5c00 upstream.
+[ Upstream commit bd3734db86e01e20dd239a40b419059a0ce9c901 ]
 
-This change fixes a rare issue where the PHY fails to detect a link
-due to incorrect reset behavior.
+Use guard(mutex)() to acquire and automatically release ftrace_lock,
+fixing the issue of not unlocking when calling cpuhp_setup_state()
+fails.
 
-The SW_RESET definition was incorrectly assigned to bit 14, which is the
-Digital Restart bit according to the datasheet. This commit corrects
-SW_RESET to bit 15 and assigns DIG_RESTART to bit 14 as per the
-datasheet specifications.
+Fixes smatch warning:
 
-The SW_RESET define is only used in the phy_reset function, which fully
-re-initializes the PHY after the reset is performed. The change in the
-bit definitions should not have any negative impact on the functionality
-of the PHY.
+kernel/trace/fgraph.c:1317 register_ftrace_graph() warn: inconsistent returns '&ftrace_lock'.
 
-v2:
-- added Fixes tag
-- improved commit message
-
-Cc: stable@vger.kernel.org
-Fixes: 5dc39fd5ef35 ("net: phy: DP83822: Add ability to advertise Fiber connection")
-Signed-off-by: Alex Michel <alex.michel@wiedemann-group.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Message-ID: <AS1P250MB0608A798661549BF83C4B43EA9462@AS1P250MB0608.EURP250.PROD.OUTLOOK.COM>
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/20241024155917.1019580-1-lihuafei1@huawei.com
+Fixes: 2c02f7375e65 ("fgraph: Use CPU hotplug mechanism to initialize idle shadow stacks")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202410220121.wxg0olfd-lkp@intel.com/
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Li Huafei <lihuafei1@huawei.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/dp83822.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/trace/fgraph.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
---- a/drivers/net/phy/dp83822.c
-+++ b/drivers/net/phy/dp83822.c
-@@ -40,8 +40,8 @@
- /* Control Register 2 bits */
- #define DP83822_FX_ENABLE	BIT(14)
+diff --git a/kernel/trace/fgraph.c b/kernel/trace/fgraph.c
+index 41e7a15dcb50c..cd1c2946018c8 100644
+--- a/kernel/trace/fgraph.c
++++ b/kernel/trace/fgraph.c
+@@ -1252,7 +1252,7 @@ int register_ftrace_graph(struct fgraph_ops *gops)
+ 	int ret = 0;
+ 	int i = -1;
  
--#define DP83822_HW_RESET	BIT(15)
--#define DP83822_SW_RESET	BIT(14)
-+#define DP83822_SW_RESET	BIT(15)
-+#define DP83822_DIG_RESTART	BIT(14)
+-	mutex_lock(&ftrace_lock);
++	guard(mutex)(&ftrace_lock);
  
- /* PHY STS bits */
- #define DP83822_PHYSTS_DUPLEX			BIT(2)
+ 	if (!fgraph_initialized) {
+ 		ret = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "fgraph_idle_init",
+@@ -1273,10 +1273,8 @@ int register_ftrace_graph(struct fgraph_ops *gops)
+ 	}
+ 
+ 	i = fgraph_lru_alloc_index();
+-	if (i < 0 || WARN_ON_ONCE(fgraph_array[i] != &fgraph_stub)) {
+-		ret = -ENOSPC;
+-		goto out;
+-	}
++	if (i < 0 || WARN_ON_ONCE(fgraph_array[i] != &fgraph_stub))
++		return -ENOSPC;
+ 	gops->idx = i;
+ 
+ 	ftrace_graph_active++;
+@@ -1313,8 +1311,6 @@ int register_ftrace_graph(struct fgraph_ops *gops)
+ 		gops->saved_func = NULL;
+ 		fgraph_lru_release_index(i);
+ 	}
+-out:
+-	mutex_unlock(&ftrace_lock);
+ 	return ret;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
