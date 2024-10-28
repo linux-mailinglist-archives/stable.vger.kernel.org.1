@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-88522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 749DC9B2659
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C4A9B276C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:48:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 358D128228C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 050731C211FE
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F71018F2D4;
-	Mon, 28 Oct 2024 06:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D8A18DF80;
+	Mon, 28 Oct 2024 06:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0zMB5O7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0GrxK/fj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17D518EFDC;
-	Mon, 28 Oct 2024 06:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D960718A922;
+	Mon, 28 Oct 2024 06:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097524; cv=none; b=XDjwvgP0kiqDDGYyg0HA+NM37k3CxAPvicmSanY4IQbc3LD4MlJDfn0EOAfCfOnok4JAITKoosdj69d8fUX63Pwu3ZDBjF5YPozmvoreLPDz2CzBMabztbqI8AGQrWBRI321LIEWGCLoAlJNgZVy4ZLJPd7FiRrW+b/6kJ/ry9I=
+	t=1730098083; cv=none; b=Wya0yEB4HwNz9nbHfmXueRwhAycwruEOGhKJA5gJ7IFtCkMtqmGuN/T4ZrDL6pONisKZHKvKaeQ20UMcGLeVJSn5W40c3C8BNHrJUdX8mWBWM+SRXOlqD7PubzrV1k7MttmSM9dfPqrvI98mSsy2zWXJZ3aYbdd8ozRsWd5OE3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097524; c=relaxed/simple;
-	bh=OXKOodLnDBehiB0OFSjYFO+DwwQQz9F5a62t/30Gf10=;
+	s=arc-20240116; t=1730098083; c=relaxed/simple;
+	bh=I0lsKYOQLYyAS/Wa8JCISoGAm+J4SjFvocSeOUPoICg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BkniQ/YL1NSpGhJfq0UQxxSLyWI4qOz8cD2/0iTwYoUSa38ehGp5kYnco3GUU3RjqTHBM9lgvr7BRBNu5RIEG64ppUnRLH1lIdX1E/6aiZ+QprBRxxkrcSKvFQr7TGIrwdmZhpvikH1jUAtxBDwGdHIixUMNY1uMmO6KdQ3QWdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0zMB5O7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF38C4CEC7;
-	Mon, 28 Oct 2024 06:38:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Z+9vT8+2k4dDCmKFSVSGSKnzXO8MQwnMcJrKDdLDxbyeScCgR8OV1aibcBpM+/MKud5y2DU5fMxKnNStqHyi8lDkGF2s5TcKeDOg7PWHbGX3wAUoVZ88f8ECgOQ1vyuxKtNUJDtZ/3oxp3V+je84uOtKPcPZm3RFbajsn5VHVVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0GrxK/fj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F3A2C4CEC3;
+	Mon, 28 Oct 2024 06:48:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097523;
-	bh=OXKOodLnDBehiB0OFSjYFO+DwwQQz9F5a62t/30Gf10=;
+	s=korg; t=1730098083;
+	bh=I0lsKYOQLYyAS/Wa8JCISoGAm+J4SjFvocSeOUPoICg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A0zMB5O7KdaYZeu429tQSnJ4VJkQLgjude5vWE2JWikDaeCpJZrJobobVoxdU7+Pw
-	 G+Zsg7xLytHNoMiHOd3XhPFROPYd/mt8dmkEo19iu6ocakR/8LQ89AOc4SgtE4rM5z
-	 gfkDp7li3Ej0wUc1xR/NuVdwkgA+DRR1WoqXX+Z4=
+	b=0GrxK/fj84m5W8rdpvdoTbv6/oLbscjtgt3B+QiBChv5Ls6R9Q1t1BhQ20kJq5puL
+	 QnRYiXc+3+LrFEMJi7vsE7etI6GYV1zSaOOkXl/o3vnlYr4cqw7qAuZzake90ZpIsX
+	 et24Ruym7kG809qNo1b+NlrKDmC/JTLJxAwkEOYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Bart Van Assche <bvanassche@acm.org>,
+	Wang Hai <wanghai38@huawei.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/208] RDMA/srpt: Make slab cache names unique
-Date: Mon, 28 Oct 2024 07:23:31 +0100
-Message-ID: <20241028062307.425274378@linuxfoundation.org>
+Subject: [PATCH 6.11 070/261] net: ethernet: rtsn: fix potential memory leak in rtsn_start_xmit()
+Date: Mon, 28 Oct 2024 07:23:32 +0100
+Message-ID: <20241028062313.786058856@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,199 +62,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit 4d784c042d164f10fc809e2338457036cd7c653d ]
+[ Upstream commit c186b7a7f2387d9e09ad408420570be025b187c5 ]
 
-Since commit 4c39529663b9 ("slab: Warn on duplicate cache names when
-DEBUG_VM=y"), slab complains about duplicate cache names. Hence this
-patch. The approach is as follows:
-- Maintain an xarray with the slab size as index and a reference count
-  and a kmem_cache pointer as contents. Use srpt-${slab_size} as kmem
-  cache name.
-- Use 512-byte alignment for all slabs instead of only for some of the
-  slabs.
-- Increment the reference count instead of calling kmem_cache_create().
-- Decrement the reference count instead of calling kmem_cache_destroy().
+The rtsn_start_xmit() returns NETDEV_TX_OK without freeing skb
+in case of skb->len being too long, add dev_kfree_skb_any() to fix it.
 
-Fixes: 5dabcd0456d7 ("RDMA/srpt: Add support for immediate data")
-Link: https://patch.msgid.link/r/20241009210048.4122518-1-bvanassche@acm.org
-Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Closes: https://lore.kernel.org/linux-block/xpe6bea7rakpyoyfvspvin2dsozjmjtjktpph7rep3h25tv7fb@ooz4cu5z6bq6/
-Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: b0d3969d2b4d ("net: ethernet: rtsn: Add support for Renesas Ethernet-TSN")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241014144250.38802-1-wanghai38@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/srpt/ib_srpt.c | 80 +++++++++++++++++++++++----
- 1 file changed, 68 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/renesas/rtsn.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
-index 45547bf281e31..4bebc34a2929b 100644
---- a/drivers/infiniband/ulp/srpt/ib_srpt.c
-+++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
-@@ -68,6 +68,8 @@ MODULE_LICENSE("Dual BSD/GPL");
- static u64 srpt_service_guid;
- static DEFINE_SPINLOCK(srpt_dev_lock);	/* Protects srpt_dev_list. */
- static LIST_HEAD(srpt_dev_list);	/* List of srpt_device structures. */
-+static DEFINE_MUTEX(srpt_mc_mutex);	/* Protects srpt_memory_caches. */
-+static DEFINE_XARRAY(srpt_memory_caches); /* See also srpt_memory_cache_entry */
+diff --git a/drivers/net/ethernet/renesas/rtsn.c b/drivers/net/ethernet/renesas/rtsn.c
+index 0e6cea42f0077..da90adef6b2b7 100644
+--- a/drivers/net/ethernet/renesas/rtsn.c
++++ b/drivers/net/ethernet/renesas/rtsn.c
+@@ -1057,6 +1057,7 @@ static netdev_tx_t rtsn_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+ 	if (skb->len >= TX_DS) {
+ 		priv->stats.tx_dropped++;
+ 		priv->stats.tx_errors++;
++		dev_kfree_skb_any(skb);
+ 		goto out;
+ 	}
  
- static unsigned srp_max_req_size = DEFAULT_MAX_REQ_SIZE;
- module_param(srp_max_req_size, int, 0444);
-@@ -105,6 +107,63 @@ static void srpt_recv_done(struct ib_cq *cq, struct ib_wc *wc);
- static void srpt_send_done(struct ib_cq *cq, struct ib_wc *wc);
- static void srpt_process_wait_list(struct srpt_rdma_ch *ch);
- 
-+/* Type of the entries in srpt_memory_caches. */
-+struct srpt_memory_cache_entry {
-+	refcount_t ref;
-+	struct kmem_cache *c;
-+};
-+
-+static struct kmem_cache *srpt_cache_get(unsigned int object_size)
-+{
-+	struct srpt_memory_cache_entry *e;
-+	char name[32];
-+	void *res;
-+
-+	guard(mutex)(&srpt_mc_mutex);
-+	e = xa_load(&srpt_memory_caches, object_size);
-+	if (e) {
-+		refcount_inc(&e->ref);
-+		return e->c;
-+	}
-+	snprintf(name, sizeof(name), "srpt-%u", object_size);
-+	e = kmalloc(sizeof(*e), GFP_KERNEL);
-+	if (!e)
-+		return NULL;
-+	refcount_set(&e->ref, 1);
-+	e->c = kmem_cache_create(name, object_size, /*align=*/512, 0, NULL);
-+	if (!e->c)
-+		goto free_entry;
-+	res = xa_store(&srpt_memory_caches, object_size, e, GFP_KERNEL);
-+	if (xa_is_err(res))
-+		goto destroy_cache;
-+	return e->c;
-+
-+destroy_cache:
-+	kmem_cache_destroy(e->c);
-+
-+free_entry:
-+	kfree(e);
-+	return NULL;
-+}
-+
-+static void srpt_cache_put(struct kmem_cache *c)
-+{
-+	struct srpt_memory_cache_entry *e = NULL;
-+	unsigned long object_size;
-+
-+	guard(mutex)(&srpt_mc_mutex);
-+	xa_for_each(&srpt_memory_caches, object_size, e)
-+		if (e->c == c)
-+			break;
-+	if (WARN_ON_ONCE(!e))
-+		return;
-+	if (!refcount_dec_and_test(&e->ref))
-+		return;
-+	WARN_ON_ONCE(xa_erase(&srpt_memory_caches, object_size) != e);
-+	kmem_cache_destroy(e->c);
-+	kfree(e);
-+}
-+
- /*
-  * The only allowed channel state changes are those that change the channel
-  * state into a state with a higher numerical value. Hence the new > prev test.
-@@ -2119,13 +2178,13 @@ static void srpt_release_channel_work(struct work_struct *w)
- 			     ch->sport->sdev, ch->rq_size,
- 			     ch->rsp_buf_cache, DMA_TO_DEVICE);
- 
--	kmem_cache_destroy(ch->rsp_buf_cache);
-+	srpt_cache_put(ch->rsp_buf_cache);
- 
- 	srpt_free_ioctx_ring((struct srpt_ioctx **)ch->ioctx_recv_ring,
- 			     sdev, ch->rq_size,
- 			     ch->req_buf_cache, DMA_FROM_DEVICE);
- 
--	kmem_cache_destroy(ch->req_buf_cache);
-+	srpt_cache_put(ch->req_buf_cache);
- 
- 	kref_put(&ch->kref, srpt_free_ch);
- }
-@@ -2245,8 +2304,7 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
- 	INIT_LIST_HEAD(&ch->cmd_wait_list);
- 	ch->max_rsp_size = ch->sport->port_attrib.srp_max_rsp_size;
- 
--	ch->rsp_buf_cache = kmem_cache_create("srpt-rsp-buf", ch->max_rsp_size,
--					      512, 0, NULL);
-+	ch->rsp_buf_cache = srpt_cache_get(ch->max_rsp_size);
- 	if (!ch->rsp_buf_cache)
- 		goto free_ch;
- 
-@@ -2280,8 +2338,7 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
- 		alignment_offset = round_up(imm_data_offset, 512) -
- 			imm_data_offset;
- 		req_sz = alignment_offset + imm_data_offset + srp_max_req_size;
--		ch->req_buf_cache = kmem_cache_create("srpt-req-buf", req_sz,
--						      512, 0, NULL);
-+		ch->req_buf_cache = srpt_cache_get(req_sz);
- 		if (!ch->req_buf_cache)
- 			goto free_rsp_ring;
- 
-@@ -2478,7 +2535,7 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
- 			     ch->req_buf_cache, DMA_FROM_DEVICE);
- 
- free_recv_cache:
--	kmem_cache_destroy(ch->req_buf_cache);
-+	srpt_cache_put(ch->req_buf_cache);
- 
- free_rsp_ring:
- 	srpt_free_ioctx_ring((struct srpt_ioctx **)ch->ioctx_ring,
-@@ -2486,7 +2543,7 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
- 			     ch->rsp_buf_cache, DMA_TO_DEVICE);
- 
- free_rsp_cache:
--	kmem_cache_destroy(ch->rsp_buf_cache);
-+	srpt_cache_put(ch->rsp_buf_cache);
- 
- free_ch:
- 	if (rdma_cm_id)
-@@ -3055,7 +3112,7 @@ static void srpt_free_srq(struct srpt_device *sdev)
- 	srpt_free_ioctx_ring((struct srpt_ioctx **)sdev->ioctx_ring, sdev,
- 			     sdev->srq_size, sdev->req_buf_cache,
- 			     DMA_FROM_DEVICE);
--	kmem_cache_destroy(sdev->req_buf_cache);
-+	srpt_cache_put(sdev->req_buf_cache);
- 	sdev->srq = NULL;
- }
- 
-@@ -3082,8 +3139,7 @@ static int srpt_alloc_srq(struct srpt_device *sdev)
- 	pr_debug("create SRQ #wr= %d max_allow=%d dev= %s\n", sdev->srq_size,
- 		 sdev->device->attrs.max_srq_wr, dev_name(&device->dev));
- 
--	sdev->req_buf_cache = kmem_cache_create("srpt-srq-req-buf",
--						srp_max_req_size, 0, 0, NULL);
-+	sdev->req_buf_cache = srpt_cache_get(srp_max_req_size);
- 	if (!sdev->req_buf_cache)
- 		goto free_srq;
- 
-@@ -3105,7 +3161,7 @@ static int srpt_alloc_srq(struct srpt_device *sdev)
- 	return 0;
- 
- free_cache:
--	kmem_cache_destroy(sdev->req_buf_cache);
-+	srpt_cache_put(sdev->req_buf_cache);
- 
- free_srq:
- 	ib_destroy_srq(srq);
 -- 
 2.43.0
 
