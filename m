@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-88468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E62D9B261A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:37:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 067219B258B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:32:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5938B20CBF
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF6C0281211
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6CC18F2EF;
-	Mon, 28 Oct 2024 06:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F40C718E03A;
+	Mon, 28 Oct 2024 06:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="024QJC9J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pr3w9TD+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB6B18E744;
-	Mon, 28 Oct 2024 06:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22EC15B10D;
+	Mon, 28 Oct 2024 06:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097400; cv=none; b=bly0dedPJKOkbuEK6PlU3lI5Ct9kZBvLpRp09LLVii67S7mifGEb2pBpWR1e7qPxnSDrRB2F6FYzM79appjdbvSh+wz4z8CcyBTva3T4zs6XeWviy3wx9+hPHbMWEaDRcpD8EBRbCGefHm8WrIXFRK5LqJfExf2AfNqRkISzgok=
+	t=1730097137; cv=none; b=RZCgebcc2lJrgLLocKBNxJzcbJlaQE6IS7GzUx/cF0GcSUJUk+AYU+iRA/lgEhJ4cqn3/oVfjBWSR6/FBS2buhYI0ZwjLKrYq06cho/aFIsWqX7yg+zQEBmCBNis58OJxV+jzrLTSTHpul0rlNUQcTgBqDhpIrpRkxu4nfgPegI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097400; c=relaxed/simple;
-	bh=qcoOVpAUIz0Eam5d4BSnw1O3RGaf1KtdjTLIWqmOMD8=;
+	s=arc-20240116; t=1730097137; c=relaxed/simple;
+	bh=00P6b4bql9zn1pHxMaDEa6uhkZLxbiPiCDEkZiDkNoo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B0/tEeqCZT41Ig9qKJJB7XYPuEkwzAxRZLOgpl9gx3wLcanwGUZszFH+25yX8x5+BbImGOVyI35yz9wJx3OieHgbVnHrLtIbNs0QqOh+fXArhIzDxZHBSGJxgWRIedj62Y7Nu647t0+nBNhdEcM2aRWgqqp3VW/DAjLQMptePPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=024QJC9J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B91EC4CEC3;
-	Mon, 28 Oct 2024 06:36:40 +0000 (UTC)
+	 MIME-Version; b=owQ9lEVWymdrADmlkvQPyV/3XhQRKSe2Q7y9wN5KGmneYKBTGYD2pJZUpt9bguL2rdQcPLv7OZi1bllI/ERmrycV3YVnwZXLCHjmk2pucB+Dlz7WbUPnkBvuRookHAGlotHIElemOwGPzMl87rw5nxeYlpsayxMy6+tyC4EH5IU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pr3w9TD+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50114C4CEC7;
+	Mon, 28 Oct 2024 06:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097400;
-	bh=qcoOVpAUIz0Eam5d4BSnw1O3RGaf1KtdjTLIWqmOMD8=;
+	s=korg; t=1730097137;
+	bh=00P6b4bql9zn1pHxMaDEa6uhkZLxbiPiCDEkZiDkNoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=024QJC9J61S4ds73sVstybgWRHOHDZ7Tc5Jqv/+nRL2D3kY4kIK4e1s/Z/NRE0UoE
-	 HmMXGJYTdm9mBQf2sO8S3jgIVslHo/JRjZkS9p00dL+rja2tQ2nKasf2VniYcwpc3m
-	 WfE13qtbsw21G5fc8YLoE9SB1C1S//52YuIsYAw4=
+	b=pr3w9TD+4DmUhk//48aZjezBfujdvKAXSP/baSK8stuG8Ls2IWFHk3qkMqqmcb4SW
+	 sl8n/o+Qz7FbTDmn14Rf141/DmyC7xyeBemCyQDpAnqMaPBWRCDjGmuyNtCUajh3Bw
+	 uWNAid+AMVPm6Jq9S1Zne5oGxAIzdlnUS1bjioEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Yue Haibing <yuehaibing@huawei.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 115/137] btrfs: fix passing 0 to ERR_PTR in btrfs_search_dir_index_item()
+	Aleksa Sarai <cyphar@cyphar.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.15 72/80] openat2: explicitly return -E2BIG for (usize > PAGE_SIZE)
 Date: Mon, 28 Oct 2024 07:25:52 +0100
-Message-ID: <20241028062301.924208050@linuxfoundation.org>
+Message-ID: <20241028062254.609419406@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Aleksa Sarai <cyphar@cyphar.com>
 
-commit 75f49c3dc7b7423d3734f2e4dabe3dac8d064338 upstream.
+commit f92f0a1b05698340836229d791b3ffecc71b265a upstream.
 
-The ret may be zero in btrfs_search_dir_index_item() and should not
-passed to ERR_PTR(). Now btrfs_unlink_subvol() is the only caller to
-this, reconstructed it to check ERR_PTR(-ENOENT) while ret >= 0.
+While we do currently return -EFAULT in this case, it seems prudent to
+follow the behaviour of other syscalls like clone3. It seems quite
+unlikely that anyone depends on this error code being EFAULT, but we can
+always revert this if it turns out to be an issue.
 
-This fixes smatch warnings:
-
-fs/btrfs/dir-item.c:353
-  btrfs_search_dir_index_item() warn: passing zero to 'ERR_PTR'
-
-Fixes: 9dcbe16fccbb ("btrfs: use btrfs_for_each_slot in btrfs_search_dir_index_item")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org # v5.6+
+Fixes: fddb5d430ad9 ("open: introduce openat2(2) syscall")
+Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+Link: https://lore.kernel.org/r/20241010-extensible-structs-check_fields-v3-3-d2833dfe6edd@cyphar.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/dir-item.c |    4 ++--
- fs/btrfs/inode.c    |    7 ++-----
- 2 files changed, 4 insertions(+), 7 deletions(-)
+ fs/open.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/btrfs/dir-item.c
-+++ b/fs/btrfs/dir-item.c
-@@ -341,8 +341,8 @@ btrfs_search_dir_index_item(struct btrfs
- 			return di;
- 	}
- 	/* Adjust return code if the key was not found in the next leaf. */
--	if (ret > 0)
--		ret = 0;
-+	if (ret >= 0)
-+		ret = -ENOENT;
+--- a/fs/open.c
++++ b/fs/open.c
+@@ -1296,6 +1296,8 @@ SYSCALL_DEFINE4(openat2, int, dfd, const
  
- 	return ERR_PTR(ret);
- }
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4532,11 +4532,8 @@ static int btrfs_unlink_subvol(struct bt
- 	 */
- 	if (btrfs_ino(inode) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID) {
- 		di = btrfs_search_dir_index_item(root, path, dir_ino, &fname.disk_name);
--		if (IS_ERR_OR_NULL(di)) {
--			if (!di)
--				ret = -ENOENT;
--			else
--				ret = PTR_ERR(di);
-+		if (IS_ERR(di)) {
-+			ret = PTR_ERR(di);
- 			btrfs_abort_transaction(trans, ret);
- 			goto out;
- 		}
+ 	if (unlikely(usize < OPEN_HOW_SIZE_VER0))
+ 		return -EINVAL;
++	if (unlikely(usize > PAGE_SIZE))
++		return -E2BIG;
+ 
+ 	err = copy_struct_from_user(&tmp, sizeof(tmp), how, usize);
+ 	if (err)
 
 
 
