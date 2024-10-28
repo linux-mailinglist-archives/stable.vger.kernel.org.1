@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-88958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E1A99B2839
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:55:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DD509B271D
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:45:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA4521F21E5C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:55:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED6D91F21E2F
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C08C18E77D;
-	Mon, 28 Oct 2024 06:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D4A17109B;
+	Mon, 28 Oct 2024 06:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OOM3g/k+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNgKf2Pi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD10824A3;
-	Mon, 28 Oct 2024 06:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31BF18837;
+	Mon, 28 Oct 2024 06:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098507; cv=none; b=t2r1BAdlscFZ86VDWAABJT6WnDyZKOoj1beNBDLMLvlM77PG4WhjKUWyIUTl+6+7y28a6LoPyYjFJpiJlDU6dFWEDhOrZpxfzm9tmNbB+URIWTXWPDV1NheiRwkNCTGiYHmtMsg0UnjoaVwzzmH5N6YWn/CUkqaIPtvU1YfO5FQ=
+	t=1730097932; cv=none; b=uV25bFVms8YCfgSd3Kq9+KeBCMSGIawTIZz9p5J5+OcpyM5C3p8ERIm8wu+vAqcipqL75RC44jobI48U2pASeDfYs/kq7LfJdke4PCOdP8N43SxLm4tACqgY99JrrbesuEWXROTO9y4wDrQKCNVshprI7ajO4A1qnlBrfVrCrbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098507; c=relaxed/simple;
-	bh=FLH89bAsf3F1POgn74lv1tDhwfjbdqELHKv+j27Rv/Y=;
+	s=arc-20240116; t=1730097932; c=relaxed/simple;
+	bh=zUCn558kPo7zellLIxqarRHK8DX9AOzcA4dukhVivlE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HnaPzakNy8nqPp27+7JUva1xcyhuhrcKeyDiiMDQ86vwK9fugJuUQ0+J4E2OX/dSuC3xswkvLxYxDfVa80sL3RbYjj6HFrvOOG1+6oN6KQOfz9gU0+yynmlXabiXU+064J/z9DSCxipCxNXprQJr2XMmCPecg7XWJgwDuVXbN6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OOM3g/k+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01B8C4CEC3;
-	Mon, 28 Oct 2024 06:55:06 +0000 (UTC)
+	 MIME-Version; b=LCw2zhx8HAUeanR67LTOQI9uocLG+ZAw239wXJf+B6Zuici9dqTAMKXGQ7mx2ba803mNwib+gS6atthCv6+f+bPBmFs6DN1fuKC2NgXMyWpBgqelPKFmGnHtH/TUpAdAHfWJmv6/XQIopc3sdXMXxGPcF7GLU4fzSI2a0cMyrbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNgKf2Pi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67895C4CEC7;
+	Mon, 28 Oct 2024 06:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098507;
-	bh=FLH89bAsf3F1POgn74lv1tDhwfjbdqELHKv+j27Rv/Y=;
+	s=korg; t=1730097931;
+	bh=zUCn558kPo7zellLIxqarRHK8DX9AOzcA4dukhVivlE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OOM3g/k+xakJD5+09ETR48WrSqUUTlrh5Wo+9dGWGbSywCdu8H4PyHxyE1xGgZEYY
-	 LaLX1oJDKJaVjHvqkSwMJdOh9B2sabK8qqtleGHYkzbMD3TGvwQx1LtjYWDbyhDBzh
-	 7e20UEpDNQ5t9d215n9k/6lJa3oyi6P0mNgk9GGI=
+	b=eNgKf2PiYwtUp34QrjWi8qUYQYvfmXW4PQ/1RsRFrRLagg2LzetAgMdcQ2v1cFXlN
+	 a1Lv4XV9zzB2EFFhdeGnIk4sTAIZ+Ou3kHKpdLky+K4lE1ueiVknM/vUI8EArgL4l4
+	 5XZPquMD44HaLNs9Qj2SgTmpYe19vJBzprB/ZH28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gavin Shan <gshan@redhat.com>,
-	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.11 220/261] KVM: arm64: Fix shift-out-of-bounds bug
+	Shubham Panwar <shubiisp8@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 182/208] ACPI: button: Add DMI quirk for Samsung Galaxy Book2 to fix initial lid detection issue
 Date: Mon, 28 Oct 2024 07:26:02 +0100
-Message-ID: <20241028062317.621461783@linuxfoundation.org>
+Message-ID: <20241028062311.112559024@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+From: Shubham Panwar <shubiisp8@gmail.com>
 
-commit c6c167afa090ea0451f91814e1318755a8fb8bb9 upstream.
+commit 8fa73ee44daefc884c53a25158c25a4107eb5a94 upstream.
 
-Fix a shift-out-of-bounds bug reported by UBSAN when running
-VM with MTE enabled host kernel.
+Add a DMI quirk for Samsung Galaxy Book2 to fix an initial lid state
+detection issue.
 
-UBSAN: shift-out-of-bounds in arch/arm64/kvm/sys_regs.c:1988:14
-shift exponent 33 is too large for 32-bit type 'int'
-CPU: 26 UID: 0 PID: 7629 Comm: qemu-kvm Not tainted 6.12.0-rc2 #34
-Hardware name: IEI NF5280R7/Mitchell MB, BIOS 00.00. 2024-10-12 09:28:54 10/14/2024
-Call trace:
- dump_backtrace+0xa0/0x128
- show_stack+0x20/0x38
- dump_stack_lvl+0x74/0x90
- dump_stack+0x18/0x28
- __ubsan_handle_shift_out_of_bounds+0xf8/0x1e0
- reset_clidr+0x10c/0x1c8
- kvm_reset_sys_regs+0x50/0x1c8
- kvm_reset_vcpu+0xec/0x2b0
- __kvm_vcpu_set_target+0x84/0x158
- kvm_vcpu_set_target+0x138/0x168
- kvm_arch_vcpu_ioctl_vcpu_init+0x40/0x2b0
- kvm_arch_vcpu_ioctl+0x28c/0x4b8
- kvm_vcpu_ioctl+0x4bc/0x7a8
- __arm64_sys_ioctl+0xb4/0x100
- invoke_syscall+0x70/0x100
- el0_svc_common.constprop.0+0x48/0xf0
- do_el0_svc+0x24/0x38
- el0_svc+0x3c/0x158
- el0t_64_sync_handler+0x120/0x130
- el0t_64_sync+0x194/0x198
+The _LID device incorrectly returns the lid status as "closed" during
+boot, causing the system to enter a suspend loop right after booting.
 
-Fixes: 7af0c2534f4c ("KVM: arm64: Normalize cache configuration")
-Cc: stable@vger.kernel.org
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20241017025701.67936-1-ilkka@os.amperecomputing.com
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+The quirk ensures that the correct lid state is reported initially,
+preventing the system from immediately suspending after startup.  It
+only addresses the initial lid state detection and ensures proper
+system behavior upon boot.
+
+Signed-off-by: Shubham Panwar <shubiisp8@gmail.com>
+Link: https://patch.msgid.link/20241020095045.6036-2-shubiisp8@gmail.com
+[ rjw: Changelog edits ]
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/sys_regs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/button.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -1977,7 +1977,7 @@ static u64 reset_clidr(struct kvm_vcpu *
- 	 * one cache line.
- 	 */
- 	if (kvm_has_mte(vcpu->kvm))
--		clidr |= 2 << CLIDR_TTYPE_SHIFT(loc);
-+		clidr |= 2ULL << CLIDR_TTYPE_SHIFT(loc);
- 
- 	__vcpu_sys_reg(vcpu, r->reg) = clidr;
+--- a/drivers/acpi/button.c
++++ b/drivers/acpi/button.c
+@@ -130,6 +130,17 @@ static const struct dmi_system_id dmi_li
+ 		},
+ 		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
+ 	},
++	{
++		/*
++		 * Samsung galaxybook2 ,initial _LID device notification returns
++		 * lid closed.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "SAMSUNG ELECTRONICS CO., LTD."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "750XED"),
++		},
++		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
++	},
+ 	{}
+ };
  
 
 
