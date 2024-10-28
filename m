@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82FE89B26F4
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 325EE9B2805
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:53:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D842EB2128A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBFF828641C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:53:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767D118EFEB;
-	Mon, 28 Oct 2024 06:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F26118E368;
+	Mon, 28 Oct 2024 06:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbC+fiIk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6RH8RZB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D2718E37C;
-	Mon, 28 Oct 2024 06:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6B78837;
+	Mon, 28 Oct 2024 06:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097842; cv=none; b=dC3xKXP+RChGYrII/6j3eI40/1A34vGp59q+dBQTkF4rroQjMRTMg7lQM3TiBKzFZVjAL59LDViCp1XiVq9IDlqt/awW3XNohl6C1oTuyD5AFP8JUoN25a1PO8eZfT8ZrWj+jP+oZcrTahq6V74qFOX5gxwb3I8j5V9BdISeLCI=
+	t=1730098399; cv=none; b=I65IuL52g8vjuOJO5s02HiHb+KpZoZeAmrm1qPyu8rfJpt6480jQIEisrbaROnttYhc1y2ofUu5tT46e1Yb/H+Y3+ci0WWf/OyFhBQ1PlkIGeSt6Sg8RL+w7AcTaQ32RRLZsfGjteh4svAmWKAiAXeRGK2FqLQpLPfuW5nZtxO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097842; c=relaxed/simple;
-	bh=ycUkMyPh9Ds/OsqYMVRp2aPF5OMUPwZ/8wxW3+3K07Q=;
+	s=arc-20240116; t=1730098399; c=relaxed/simple;
+	bh=OvCboykDMl2+X6Fay/3eR9CCoNWmGnZtLyRJ1NxwZW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GmnF52zM37IxksVVoXVqKqZOt0FzSS4ywaWIHGDE6d5M9aYtoxPNVFPKy5VEI6uRSndG1XhYfyegakhaugNHlhiTlSR+QRt4TEk9YazPF14F8JFsP6T8cRyIsSv7CayKx9CSkZK5mLtEbvg27VokVieSgYvHrgZJzXkg0q+csRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbC+fiIk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB56EC4CEC3;
-	Mon, 28 Oct 2024 06:44:01 +0000 (UTC)
+	 MIME-Version; b=IHybxPOZOQOSUZvYHl3i6LWbDTD7Z+t2exrZgZPCrWZNK7mbwGXzR8hXLKoGFXpD0yOiOw+KYbZFd3lOYsmwVDQKoSbxFTGfB78HkVq51dhBoe5OIExrOGHe0/oVssi9WQ2XtpuH+KM+piDUAj9zwBzlcP4AMvF8zLPQVuJa1Co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6RH8RZB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEB24C4CEC3;
+	Mon, 28 Oct 2024 06:53:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097842;
-	bh=ycUkMyPh9Ds/OsqYMVRp2aPF5OMUPwZ/8wxW3+3K07Q=;
+	s=korg; t=1730098399;
+	bh=OvCboykDMl2+X6Fay/3eR9CCoNWmGnZtLyRJ1NxwZW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BbC+fiIkApjYstNERYZJ55mqgIJpj/1q8punLT6jYeqGqH2awCCIe9etBu2/JndZW
-	 F4hAzboKdOVvFRTWcOjVbyRsiyGwPDcwzkWBYBXOLpnNE0e7nhV6JptPBhFIl87X4S
-	 y8EV55EMLIbWATWdNK8Kx6pM4izsCzid3qcRgyUA=
+	b=d6RH8RZBSsq7vOp90PjoEGPdBsu7csZe/YMX479ZS+3CTua+PkDUiohDYrRC13gT9
+	 /RFwRmPlgwOqKWLSapqQcQGaFhnKAXIMywZPrk7XzVdJEEfCDc68wMHJc77LlZgz5/
+	 rsHPFw9IQHckUtPOTMR3rR0od1P2UGVTAIKwyNh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Shumilin <shum.sdl@nppct.ru>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 170/208] ALSA: firewire-lib: Avoid division by zero in apply_constraint_to_size()
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.11 208/261] btrfs: zoned: fix zone unusable accounting for freed reserved extent
 Date: Mon, 28 Oct 2024 07:25:50 +0100
-Message-ID: <20241028062310.817157134@linuxfoundation.org>
+Message-ID: <20241028062317.287656615@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Shumilin <shum.sdl@nppct.ru>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit 72cafe63b35d06b5cfbaf807e90ae657907858da ]
+commit bf9821ba4792a0d9a2e72803ae7b4341faf3d532 upstream.
 
-The step variable is initialized to zero. It is changed in the loop,
-but if it's not changed it will remain zero. Add a variable check
-before the division.
+When btrfs reserves an extent and does not use it (e.g, by an error), it
+calls btrfs_free_reserved_extent() to free the reserved extent. In the
+process, it calls btrfs_add_free_space() and then it accounts the region
+bytes as block_group->zone_unusable.
 
-The observed behavior was introduced by commit 826b5de90c0b
-("ALSA: firewire-lib: fix insufficient PCM rule for period/buffer size"),
-and it is difficult to show that any of the interval parameters will
-satisfy the snd_interval_test() condition with data from the
-amdtp_rate_table[] table.
+However, it leaves the space_info->bytes_zone_unusable side not updated. As
+a result, ENOSPC can happen while a space_info reservation succeeded. The
+reservation is fine because the freed region is not added in
+space_info->bytes_zone_unusable, leaving that space as "free". OTOH,
+corresponding block group counts it as zone_unusable and its allocation
+pointer is not rewound, we cannot allocate an extent from that block group.
+That will also negate space_info's async/sync reclaim process, and cause an
+ENOSPC error from the extent allocation process.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Fix that by returning the space to space_info->bytes_zone_unusable.
+Ideally, since a bio is not submitted for this reserved region, we should
+return the space to free space and rewind the allocation pointer. But, it
+needs rework on extent allocation handling, so let it work in this way for
+now.
 
-Fixes: 826b5de90c0b ("ALSA: firewire-lib: fix insufficient PCM rule for period/buffer size")
-Signed-off-by: Andrey Shumilin <shum.sdl@nppct.ru>
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Link: https://patch.msgid.link/20241018060018.1189537-1-shum.sdl@nppct.ru
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 169e0da91a21 ("btrfs: zoned: track unusable bytes for zones")
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/firewire/amdtp-stream.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/btrfs/block-group.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/firewire/amdtp-stream.c b/sound/firewire/amdtp-stream.c
-index 5f0f8d9c08d1e..8c6254ff143eb 100644
---- a/sound/firewire/amdtp-stream.c
-+++ b/sound/firewire/amdtp-stream.c
-@@ -172,6 +172,9 @@ static int apply_constraint_to_size(struct snd_pcm_hw_params *params,
- 			step = max(step, amdtp_syt_intervals[i]);
- 	}
- 
-+	if (step == 0)
-+		return -EINVAL;
-+
- 	t.min = roundup(s->min, step);
- 	t.max = rounddown(s->max, step);
- 	t.integer = 1;
--- 
-2.43.0
-
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -3819,6 +3819,8 @@ void btrfs_free_reserved_bytes(struct bt
+ 	spin_lock(&cache->lock);
+ 	if (cache->ro)
+ 		space_info->bytes_readonly += num_bytes;
++	else if (btrfs_is_zoned(cache->fs_info))
++		space_info->bytes_zone_unusable += num_bytes;
+ 	cache->reserved -= num_bytes;
+ 	space_info->bytes_reserved -= num_bytes;
+ 	space_info->max_extent_size = 0;
 
 
 
