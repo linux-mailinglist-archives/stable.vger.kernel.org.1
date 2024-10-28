@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A3F29B262D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:37:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0060B9B2705
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C42D22822A5
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:37:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31F101C214B5
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF0218E350;
-	Mon, 28 Oct 2024 06:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520C818E77B;
+	Mon, 28 Oct 2024 06:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pF5t4Lbr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/QZ4HnW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD1B15B10D;
-	Mon, 28 Oct 2024 06:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEEF18E368;
+	Mon, 28 Oct 2024 06:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097442; cv=none; b=BkCOjnopNhRCtMZFe2O+C4LS1Vrey1jFGZThhiKUQq8FLx9ScjaCiuk10Xm6qRutwLIkinIPRJd9wxG0TRjFir13MF440ExoeantAATi8a907YcJ9Pzfi75pCF2VTIJ+AiOTl5mSKrI3k4IPrlB//ZsUyywxH55A9Os7wb1eya4=
+	t=1730097878; cv=none; b=UO7hAtR9UUnKLVkmUY8Vug7x8e4/zKGTytJjeXZ1dwg7tcQWD6vSiL4+VUs9oegQdYDPWcUZuIwticBhqeUQqp2tAa1ZNluH2JGq3RQeluhjETr9hXwb7K4Lv1JHHe9zxw6dde318d4/GVv+7Gg5qNJBimSZGM2ot2ZfyzgW6PU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097442; c=relaxed/simple;
-	bh=Bh+Csoz2sM1MgOkkd/nEGTYP7EJ5KPtc6uCWneGoYS8=;
+	s=arc-20240116; t=1730097878; c=relaxed/simple;
+	bh=qlSABWMnpy5qWfXktyRat+PJoaYRq+zhqxFETLonDR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kz9KBWrsLqyGfy+jbEFh0LGTlV1agSl7zKClfyDDmlMYyoZSA6LFzxRE9c8NAb3aLJ1LtkRPZ2EUjSYXAdr1NuksKNRjHqCW4lXoShPWRK+ZndWdMkrjt3VLtet4q+XAipAmbqUYkuqSMrCzNmGoZl6/XQ2i30XcImzB0UsspBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pF5t4Lbr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70403C4CEC3;
-	Mon, 28 Oct 2024 06:37:22 +0000 (UTC)
+	 MIME-Version; b=ooGKvtLFNhSv06Hf1lD0k8xS1fLSftdS75wU7cyjnbYLD2mHGhVHPG1LSlp8xHjGXSJRCL7golcZcNpNU1U6A9CJylk2dIT19PmpGLGWqs1fQbv0hIc8cme4gKJm3oQbyuIcYRzlt1XGwA/hd15IY2pXmGaVUP+uY9woMLePnv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/QZ4HnW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1E88C4CEC3;
+	Mon, 28 Oct 2024 06:44:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097442;
-	bh=Bh+Csoz2sM1MgOkkd/nEGTYP7EJ5KPtc6uCWneGoYS8=;
+	s=korg; t=1730097877;
+	bh=qlSABWMnpy5qWfXktyRat+PJoaYRq+zhqxFETLonDR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pF5t4LbrfRB1JOtJdn0JZ2GyacFHdra/pPfhsTYfXpvuwz9Gqg6qfjMsTrVKprXdv
-	 qJosPJtVnNKqnnQfSYPK2awCOjziSg/iauUfHo6GSu+5rbLlcOhMXwbdZqwrgjO07g
-	 2weQosfHCwXFUHXSNchV1PDHDftfUgbC8qEwcNl8=
+	b=y/QZ4HnWfNCfFDpHhvK2EmHuxs9PZKhLFHEFt5cgK5gtoqz4nJgChdl8vsR9+hkHO
+	 MObbs02Fqusz+LhRu61EnJLwpygN6xDibezWsfMvkUG0LUqooTaHqtVFHyhsf+nHIG
+	 DIp7WVorh9BRqbo8U4yzjIoWJI+hW1t2KPlc0e1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Peter Hurley <peter@hurleysoftware.com>,
-	Tomas Krcka <krckatom@amazon.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 131/137] serial: protect uart_port_dtr_rts() in uart_shutdown() too
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCH 6.6 188/208] x86/lam: Disable ADDRESS_MASKING in most cases
 Date: Mon, 28 Oct 2024 07:26:08 +0100
-Message-ID: <20241028062302.364261299@linuxfoundation.org>
+Message-ID: <20241028062311.259897247@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-[ Upstream commit 602babaa84d627923713acaf5f7e9a4369e77473 ]
+commit 3267cb6d3a174ff83d6287dcd5b0047bbd912452 upstream.
 
-Commit af224ca2df29 (serial: core: Prevent unsafe uart port access, part
-3) added few uport == NULL checks. It added one to uart_shutdown(), so
-the commit assumes, uport can be NULL in there. But right after that
-protection, there is an unprotected "uart_port_dtr_rts(uport, false);"
-call. That is invoked only if HUPCL is set, so I assume that is the
-reason why we do not see lots of these reports.
+Linear Address Masking (LAM) has a weakness related to transient
+execution as described in the SLAM paper[1]. Unless Linear Address
+Space Separation (LASS) is enabled this weakness may be exploitable.
 
-Or it cannot be NULL at this point at all for some reason :P.
+Until kernel adds support for LASS[2], only allow LAM for COMPILE_TEST,
+or when speculation mitigations have been disabled at compile time,
+otherwise keep LAM disabled.
 
-Until the above is investigated, stay on the safe side and move this
-dereference to the if too.
+There are no processors in market that support LAM yet, so currently
+nobody is affected by this issue.
 
-I got this inconsistency from Coverity under CID 1585130. Thanks.
+[1] SLAM: https://download.vusec.net/papers/slam_sp24.pdf
+[2] LASS: https://lore.kernel.org/lkml/20230609183632.48706-1-alexander.shishkin@linux.intel.com/
 
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Cc: Peter Hurley <peter@hurleysoftware.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20240805102046.307511-3-jirislaby@kernel.org
+[ dhansen: update SPECULATION_MITIGATIONS -> CPU_MITIGATIONS ]
+
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/5373262886f2783f054256babdf5a98545dc986b.1706068222.git.pawan.kumar.gupta%40linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Adapted over commit 5701cb8bf50e ("tty: Call ->dtr_rts() parameter
-active consistently") not in the tree]
-Signed-off-by: Tomas Krcka <krckatom@amazon.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/serial_core.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ arch/x86/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-index c91e3195dc207..19a53801ff9ee 100644
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -339,14 +339,16 @@ static void uart_shutdown(struct tty_struct *tty, struct uart_state *state)
- 		/*
- 		 * Turn off DTR and RTS early.
- 		 */
--		if (uport && uart_console(uport) && tty) {
--			uport->cons->cflag = tty->termios.c_cflag;
--			uport->cons->ispeed = tty->termios.c_ispeed;
--			uport->cons->ospeed = tty->termios.c_ospeed;
--		}
-+		if (uport) {
-+			if (uart_console(uport) && tty) {
-+				uport->cons->cflag = tty->termios.c_cflag;
-+				uport->cons->ispeed = tty->termios.c_ispeed;
-+				uport->cons->ospeed = tty->termios.c_ospeed;
-+			}
- 
--		if (!tty || C_HUPCL(tty))
--			uart_port_dtr_rts(uport, 0);
-+			if (!tty || C_HUPCL(tty))
-+				uart_port_dtr_rts(uport, 0);
-+		}
- 
- 		uart_port_shutdown(port);
- 	}
--- 
-2.43.0
-
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2217,6 +2217,7 @@ config RANDOMIZE_MEMORY_PHYSICAL_PADDING
+ config ADDRESS_MASKING
+ 	bool "Linear Address Masking support"
+ 	depends on X86_64
++	depends on COMPILE_TEST || !CPU_MITIGATIONS # wait for LASS
+ 	help
+ 	  Linear Address Masking (LAM) modifies the checking that is applied
+ 	  to 64-bit linear addresses, allowing software to use of the
 
 
 
