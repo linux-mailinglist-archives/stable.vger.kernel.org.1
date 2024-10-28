@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-88509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71DDE9B264A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:38:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B41259B2767
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:47:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0678C282283
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:38:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E64901C213F4
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16CBF18E35B;
-	Mon, 28 Oct 2024 06:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA57818E35B;
+	Mon, 28 Oct 2024 06:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="upbHpgQz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLk3K2VH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C931718C03D;
-	Mon, 28 Oct 2024 06:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84568837;
+	Mon, 28 Oct 2024 06:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097494; cv=none; b=rEa4CQN2ELG+22bix3JrAxNAj0aKrIdaacPtjK7vl5igbgXWTkUtCje4Whlv9+mGUIUcQDRs+/xharNDT4t14nWMssCU7437zhfTFE3sxdH9y/7Fq3nI0/aBrS5K6jK9G4upmvVhpxibtHmtDbrMlV+lLBOUI0EBDAi58AWd9Ps=
+	t=1730098072; cv=none; b=XVFHiB5DBpsZLzV3BdwcNueRuPDH73bZVlfbQpLUncZpWvIL66mfEBEA7DIQAkCW9wbPx4Npm2MhoVJBvWXi+jOVXHaUDEwPALlMB9aZ6s7gHJCIORccKOsrF/tS0EkLTToBAj42ZiAWuKofoJbEV58+e7ICKYjrQSzbWUEdg7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097494; c=relaxed/simple;
-	bh=IUTJuy0oKF4zadomhRmma5b4cW7K3VU9glhG2Wn187I=;
+	s=arc-20240116; t=1730098072; c=relaxed/simple;
+	bh=7Qe93v79hXWRCuHyAiSlnT4kO9FtzFg3MbmA236Eye4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u56ye+MAU0Z7xFV4PnL6qabtJlGJ3sLnv8vI61kg21nupU10yxVMf91ZLIYPrCjq/Sm+eiQicSYzlC4hAj8tL2qU8SODEd70/YL5xRr+JBUej0IfDJ0IZLrpFeX5c0XuCj7JRfQrZeJDq1jjPYTAxmg4+ne96vwme9za3oVehso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=upbHpgQz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FEBFC4CEC3;
-	Mon, 28 Oct 2024 06:38:14 +0000 (UTC)
+	 MIME-Version; b=YGtMU1qhRIiWXVsOowCNacs5TFcZ1KWrz4ojdDPokk/ga9SWsZhYNIbWeSNlm7OVoDZMHJqCbgHplv8GP6bj6yOiDPkryf9wmpFkKGUoEM5+VWZSK56FLuc3iRHb4N8ax7nwuWaRyU+C4T4f+mBqNmdWAtuKEEPDM+u6gy500Sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLk3K2VH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4589BC4CEC3;
+	Mon, 28 Oct 2024 06:47:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097494;
-	bh=IUTJuy0oKF4zadomhRmma5b4cW7K3VU9glhG2Wn187I=;
+	s=korg; t=1730098072;
+	bh=7Qe93v79hXWRCuHyAiSlnT4kO9FtzFg3MbmA236Eye4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=upbHpgQzPAOv+vIDeqCnAzDtYpfypaRDh4yH9x21Pkd/DzBC74xSyZu7hYkZkxKYg
-	 Huz8AnHX5Nu2UZ/+W9MPPzoYD5AZzIrzhRRX8p5SD/8eL/4zlyNW+qyUYM4MmfwVDR
-	 J1ZsC2L0skdwJVF9kxeEt30b+nEsjefvKiwcWrd0=
+	b=eLk3K2VHYWKkM1CdlFPCacXYwSSlWXTTJdopcxmSkr/0IhXY3IVeyZctMxFDKKH+7
+	 RynHsPOxTDNf3K0rfVEt9xN0fYl8pZ4m+7avKBRjXKRgY84UCb7TDxKFIQr2e6FfEr
+	 CrrAh/ydhfU0I6xKd6ROw4Re5c913UD2H0AupvSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tyrone Wu <wudevelops@gmail.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Justin Chen <justin.chen@broadcom.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 018/208] selftests/bpf: fix perf_event link info name_len assertion
-Date: Mon, 28 Oct 2024 07:23:18 +0100
-Message-ID: <20241028062307.106549131@linuxfoundation.org>
+Subject: [PATCH 6.11 057/261] firmware: arm_scmi: Queue in scmi layer for mailbox implementation
+Date: Mon, 28 Oct 2024 07:23:19 +0100
+Message-ID: <20241028062313.450279205@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tyrone Wu <wudevelops@gmail.com>
+From: Justin Chen <justin.chen@broadcom.com>
 
-[ Upstream commit 4538a38f654a1c292fe489a9b66179262bfed088 ]
+[ Upstream commit da1642bc97c4ef67f347edcd493bd0a52f88777b ]
 
-Fix `name_len` field assertions in `bpf_link_info.perf_event` for
-kprobe/uprobe/tracepoint to validate correct name size instead of 0.
+send_message() does not block in the MBOX implementation. This is
+because the mailbox layer has its own queue. However, this confuses
+the per xfer timeouts as they all start their timeout ticks in
+parallel.
 
-Fixes: 23cf7aa539dc ("selftests/bpf: Add selftest for fill_link_info")
-Signed-off-by: Tyrone Wu <wudevelops@gmail.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Yafang Shao <laoar.shao@gmail.com>
-Link: https://lore.kernel.org/r/20241008164312.46269-2-wudevelops@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Consider a case where the xfer timeout is 30ms and a SCMI transaction
+takes 25ms:
+
+  | 0ms: Message #0 is queued in mailbox layer and sent out, then sits
+  |      at scmi_wait_for_message_response() with a timeout of 30ms
+  | 1ms: Message #1 is queued in mailbox layer but not sent out yet.
+  |      Since send_message() doesn't block, it also sits at
+  |      scmi_wait_for_message_response() with a timeout of 30ms
+  |  ...
+  | 25ms: Message #0 is completed, txdone is called and message #1 is sent
+  | 31ms: Message #1 times out since the count started at 1ms. Even though
+  |       it has only been inflight for 6ms.
+
+Fixes: 5c8a47a5a91d ("firmware: arm_scmi: Make scmi core independent of the transport type")
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Message-Id: <20241014160717.1678953-1-justin.chen@broadcom.com>
+Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
+Tested-by: Cristian Marussi <cristian.marussi@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/fill_link_info.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/firmware/arm_scmi/mailbox.c | 32 +++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 11 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/fill_link_info.c b/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
-index 9eb93258614f9..5b0c6a04cdbfe 100644
---- a/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
-+++ b/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
-@@ -65,8 +65,9 @@ static int verify_perf_link_info(int fd, enum bpf_perf_event_type type, long add
+diff --git a/drivers/firmware/arm_scmi/mailbox.c b/drivers/firmware/arm_scmi/mailbox.c
+index 0219a12e3209a..06087cb785f36 100644
+--- a/drivers/firmware/arm_scmi/mailbox.c
++++ b/drivers/firmware/arm_scmi/mailbox.c
+@@ -24,6 +24,7 @@
+  * @chan_platform_receiver: Optional Platform Receiver mailbox unidirectional channel
+  * @cinfo: SCMI channel info
+  * @shmem: Transmit/Receive shared memory area
++ * @chan_lock: Lock that prevents multiple xfers from being queued
+  */
+ struct scmi_mailbox {
+ 	struct mbox_client cl;
+@@ -32,6 +33,7 @@ struct scmi_mailbox {
+ 	struct mbox_chan *chan_platform_receiver;
+ 	struct scmi_chan_info *cinfo;
+ 	struct scmi_shared_mem __iomem *shmem;
++	struct mutex chan_lock;
+ };
  
- 		ASSERT_EQ(info.perf_event.kprobe.cookie, PERF_EVENT_COOKIE, "kprobe_cookie");
+ #define client_to_scmi_mailbox(c) container_of(c, struct scmi_mailbox, cl)
+@@ -255,6 +257,7 @@ static int mailbox_chan_setup(struct scmi_chan_info *cinfo, struct device *dev,
  
-+		ASSERT_EQ(info.perf_event.kprobe.name_len, strlen(KPROBE_FUNC) + 1,
-+				  "name_len");
- 		if (!info.perf_event.kprobe.func_name) {
--			ASSERT_EQ(info.perf_event.kprobe.name_len, 0, "name_len");
- 			info.perf_event.kprobe.func_name = ptr_to_u64(&buf);
- 			info.perf_event.kprobe.name_len = sizeof(buf);
- 			goto again;
-@@ -77,8 +78,9 @@ static int verify_perf_link_info(int fd, enum bpf_perf_event_type type, long add
- 		ASSERT_EQ(err, 0, "cmp_kprobe_func_name");
- 		break;
- 	case BPF_PERF_EVENT_TRACEPOINT:
-+		ASSERT_EQ(info.perf_event.tracepoint.name_len, strlen(TP_NAME) + 1,
-+				  "name_len");
- 		if (!info.perf_event.tracepoint.tp_name) {
--			ASSERT_EQ(info.perf_event.tracepoint.name_len, 0, "name_len");
- 			info.perf_event.tracepoint.tp_name = ptr_to_u64(&buf);
- 			info.perf_event.tracepoint.name_len = sizeof(buf);
- 			goto again;
-@@ -94,8 +96,9 @@ static int verify_perf_link_info(int fd, enum bpf_perf_event_type type, long add
- 	case BPF_PERF_EVENT_URETPROBE:
- 		ASSERT_EQ(info.perf_event.uprobe.offset, offset, "uprobe_offset");
+ 	cinfo->transport_info = smbox;
+ 	smbox->cinfo = cinfo;
++	mutex_init(&smbox->chan_lock);
  
-+		ASSERT_EQ(info.perf_event.uprobe.name_len, strlen(UPROBE_FILE) + 1,
-+				  "name_len");
- 		if (!info.perf_event.uprobe.file_name) {
--			ASSERT_EQ(info.perf_event.uprobe.name_len, 0, "name_len");
- 			info.perf_event.uprobe.file_name = ptr_to_u64(&buf);
- 			info.perf_event.uprobe.name_len = sizeof(buf);
- 			goto again;
+ 	return 0;
+ }
+@@ -284,13 +287,23 @@ static int mailbox_send_message(struct scmi_chan_info *cinfo,
+ 	struct scmi_mailbox *smbox = cinfo->transport_info;
+ 	int ret;
+ 
+-	ret = mbox_send_message(smbox->chan, xfer);
++	/*
++	 * The mailbox layer has its own queue. However the mailbox queue
++	 * confuses the per message SCMI timeouts since the clock starts when
++	 * the message is submitted into the mailbox queue. So when multiple
++	 * messages are queued up the clock starts on all messages instead of
++	 * only the one inflight.
++	 */
++	mutex_lock(&smbox->chan_lock);
+ 
+-	/* mbox_send_message returns non-negative value on success, so reset */
+-	if (ret > 0)
+-		ret = 0;
++	ret = mbox_send_message(smbox->chan, xfer);
++	/* mbox_send_message returns non-negative value on success */
++	if (ret < 0) {
++		mutex_unlock(&smbox->chan_lock);
++		return ret;
++	}
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static void mailbox_mark_txdone(struct scmi_chan_info *cinfo, int ret,
+@@ -298,13 +311,10 @@ static void mailbox_mark_txdone(struct scmi_chan_info *cinfo, int ret,
+ {
+ 	struct scmi_mailbox *smbox = cinfo->transport_info;
+ 
+-	/*
+-	 * NOTE: we might prefer not to need the mailbox ticker to manage the
+-	 * transfer queueing since the protocol layer queues things by itself.
+-	 * Unfortunately, we have to kick the mailbox framework after we have
+-	 * received our message.
+-	 */
+ 	mbox_client_txdone(smbox->chan, ret);
++
++	/* Release channel */
++	mutex_unlock(&smbox->chan_lock);
+ }
+ 
+ static void mailbox_fetch_response(struct scmi_chan_info *cinfo,
 -- 
 2.43.0
 
