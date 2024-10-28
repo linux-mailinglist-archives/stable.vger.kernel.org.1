@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-88588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D00069B269E
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:41:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B73009B25C6
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:34:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7B101C2139A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7477328184B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B57F18E37C;
-	Mon, 28 Oct 2024 06:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAEEE18EFEB;
+	Mon, 28 Oct 2024 06:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrZQ8o3I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+1w0BFF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3FF2C697;
-	Mon, 28 Oct 2024 06:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775CD18EFC9;
+	Mon, 28 Oct 2024 06:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097671; cv=none; b=p9xe8rcELa98+CVaCNWwRrNs+Aco0/4NVwIKmf0m9gNb22jmq0/q9XO8xulx/rlE0vCwxLkFTwmmhH07B8iTgVr9JIIH8bM6yduDFCiMW/Rh7lF8eJjYB9QOxdiCJEzirSnkkN+HiwZue+bIaXDu5Mk8CS1pv63qE1gd8N0ISnU=
+	t=1730097224; cv=none; b=dregtdXk4ZU/1iyY2qNBxicX8jIyJBKXvFflqpQQNTuMbi/BI94Ft6GGIH+YRwfE8J6XH0aZBg8awt0Ku8oYfoowijWMJ68OAnNhyrDkESl4stzzaBIPirDOvDQHJNVa1fwKrNnwd+hVi1A7nIVQOBN1PW6VlNGao1tVZX7lGYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097671; c=relaxed/simple;
-	bh=a/Nuco4UeBNLm6kVnFxAJfBiGTTxVaQG1Oh+F6cy/vI=;
+	s=arc-20240116; t=1730097224; c=relaxed/simple;
+	bh=qSfZWW1Ti0VJtdTZnQB0+OquBJikqJ2G1Ste6aRjZs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IH9PutMMgh+KOMbXPekPP0okaa2qdkVrLR6iAyxWstAIPZ1ZpKGW8fLuW7gWAWSQvrSjZIrbqipmS4zBaPvfFvlwwPmPPSVUkftV//6N+rbwGr1V2AUgChhSKXT/yx/l+pkbGCaqx2kaDxioaKE7P13aB1dKWz99vxZjGDDq0fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrZQ8o3I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D1A8C4CEC3;
-	Mon, 28 Oct 2024 06:41:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kEfY2xJy+tVKyAMb/dY6ThnNVrj2nGyotOAuxSOAbxc9KRE1Hm+isOwvb8UYBOroMw53DyDYeTUFFq2zwJUH0N3RgHNsWquOlXTCngc76w1BzGpwNM5fOVBegsOezoZNW25aktL4stg/rO4uk9trrp5G3yVPoru+tUiNO37n1OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+1w0BFF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C9DC4CEC7;
+	Mon, 28 Oct 2024 06:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097671;
-	bh=a/Nuco4UeBNLm6kVnFxAJfBiGTTxVaQG1Oh+F6cy/vI=;
+	s=korg; t=1730097224;
+	bh=qSfZWW1Ti0VJtdTZnQB0+OquBJikqJ2G1Ste6aRjZs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BrZQ8o3IGJg8IHvBawjUcwOIuGdGrEVMKLPa0gdVS+Cc6fa1Fsqs3ML7Jl1FbLYMq
-	 5Qi/2zTBCslkVAzXtsZ3H4LRoudiqQFOusM2731U3NpsErjH7iW3/xQCzEtthNxkHN
-	 c3Z/B6UfyeBR3nRc/QHZdrOF15X/zWVUtoVXWHWo=
+	b=I+1w0BFFH+j8q4/LBqBVZUzSXHRFVsugg2wTD9G3j9GWASMzF0wpSC2EVbWMlZT24
+	 P762WN8wjoS0oSvhVzkSdmer/WwA9Jv+ce5661HRV+Yt+OtzlSgDznCxXz57T3FJiV
+	 Dpq3t3wmOUQFC2vCNhvvw0KDyYZ7zNvQolruk/XM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 095/208] khugepaged: convert alloc_charge_hpage to alloc_charge_folio
+Subject: [PATCH 6.1 038/137] irqchip/renesas-rzg2l: Add support for suspend to RAM
 Date: Mon, 28 Oct 2024 07:24:35 +0100
-Message-ID: <20241028062308.997780887@linuxfoundation.org>
+Message-ID: <20241028062259.785700498@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,103 +60,210 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit d5ab50b9412c0bba750eef5a34fd2937de1aee55 ]
+[ Upstream commit 74d2ef5f6f4b2437e6292ab2502400e8048db4aa ]
 
-Both callers want to deal with a folio, so return a folio from this
-function.
+The irqchip-renesas-rzg2l driver is used on RZ/G3S SoC. RZ/G3S can go into
+deep sleep states where power to different SoC's parts is cut off and RAM
+is switched to self-refresh. The resume from these states is done with the
+help of the bootloader.
 
-Link: https://lkml.kernel.org/r/20240403171838.1445826-3-willy@infradead.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 37f0b47c5143 ("mm: khugepaged: fix the arguments order in khugepaged_collapse_file trace point")
+The IA55 IRQ controller needs to be reconfigured when resuming from deep
+sleep state. For this the IA55 registers are cached in suspend and restored
+in resume.
+
+The IA55 IRQ controller is connected to GPIO controller and GIC as follows:
+
+                                      ┌──────────┐          ┌──────────┐
+                                      │          │ SPIX     │          │
+                                      │          ├─────────►│          │
+                                      │          │          │          │
+                                      │          │          │          │
+              ┌────────┐IRQ0-7        │  IA55    │          │  GIC     │
+ Pin0 ───────►│        ├─────────────►│          │          │          │
+              │        │              │          │ PPIY     │          │
+ ...          │  GPIO  │              │          ├─────────►│          │
+              │        │GPIOINT0-127  │          │          │          │
+ PinN ───────►│        ├─────────────►│          │          │          │
+              └────────┘              └──────────┘          └──────────┘
+
+where:
+  - Pin0 is the first GPIO controller pin
+  - PinN is the last GPIO controller pin
+
+  - SPIX is the SPI interrupt with identifier X
+  - PPIY is the PPI interrupt with identifier Y
+
+Implement suspend/resume functionality with syscore_ops to be able to
+cache/restore the registers after/before the GPIO controller suspend/resume
+functions are invoked.
+
+As the syscore_ops suspend/resume functions do not take any argument make
+the driver private data static so it can be accessed from the
+suspend/resume functions.
+
+The IA55 interrupt controller is resumed before the GPIO controller. As
+GPIO pins could be in an a state which causes spurious interrupts, the
+reconfiguration of the interrupt controller is restricted to restore the
+interrupt type and leave them disabled.
+
+An eventually required interrupt enable operation will be done as part of
+the GPIO controller resume function after restoring the GPIO state.
+
+[ tglx: Massaged changelog ]
+
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20231120111820.87398-8-claudiu.beznea.uj@bp.renesas.com
+Stable-dep-of: d038109ac1c6 ("irqchip/renesas-rzg2l: Fix missing put_device")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/khugepaged.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/irqchip/irq-renesas-rzg2l.c | 68 ++++++++++++++++++++++++-----
+ 1 file changed, 57 insertions(+), 11 deletions(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index d0fcfa47085b4..b197323450b5a 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1041,7 +1041,7 @@ static int __collapse_huge_page_swapin(struct mm_struct *mm,
- 	return result;
- }
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index 61502a81dbb54..6905f78855ffa 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -18,6 +18,7 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/reset.h>
+ #include <linux/spinlock.h>
++#include <linux/syscore_ops.h>
  
--static int alloc_charge_hpage(struct page **hpage, struct mm_struct *mm,
-+static int alloc_charge_folio(struct folio **foliop, struct mm_struct *mm,
- 			      struct collapse_control *cc)
+ #define IRQC_IRQ_START			1
+ #define IRQC_IRQ_COUNT			8
+@@ -55,17 +56,29 @@
+ #define TINT_EXTRACT_HWIRQ(x)           FIELD_GET(GENMASK(15, 0), (x))
+ #define TINT_EXTRACT_GPIOINT(x)         FIELD_GET(GENMASK(31, 16), (x))
+ 
++/**
++ * struct rzg2l_irqc_reg_cache - registers cache (necessary for suspend/resume)
++ * @iitsr: IITSR register
++ * @titsr: TITSR registers
++ */
++struct rzg2l_irqc_reg_cache {
++	u32	iitsr;
++	u32	titsr[2];
++};
++
+ /**
+  * struct rzg2l_irqc_priv - IRQ controller private data structure
+  * @base:	Controller's base address
+  * @fwspec:	IRQ firmware specific data
+  * @lock:	Lock to serialize access to hardware registers
++ * @cache:	Registers cache for suspend/resume
+  */
+-struct rzg2l_irqc_priv {
++static struct rzg2l_irqc_priv {
+ 	void __iomem			*base;
+ 	struct irq_fwspec		fwspec[IRQC_NUM_IRQ];
+ 	raw_spinlock_t			lock;
+-};
++	struct rzg2l_irqc_reg_cache	cache;
++} *rzg2l_irqc_data;
+ 
+ static struct rzg2l_irqc_priv *irq_data_to_priv(struct irq_data *data)
  {
- 	gfp_t gfp = (cc->is_khugepaged ? alloc_hugepage_khugepaged_gfpmask() :
-@@ -1051,7 +1051,7 @@ static int alloc_charge_hpage(struct page **hpage, struct mm_struct *mm,
- 
- 	folio = __folio_alloc(gfp, HPAGE_PMD_ORDER, node, &cc->alloc_nmask);
- 	if (!folio) {
--		*hpage = NULL;
-+		*foliop = NULL;
- 		count_vm_event(THP_COLLAPSE_ALLOC_FAILED);
- 		return SCAN_ALLOC_HUGE_PAGE_FAIL;
- 	}
-@@ -1059,13 +1059,13 @@ static int alloc_charge_hpage(struct page **hpage, struct mm_struct *mm,
- 	count_vm_event(THP_COLLAPSE_ALLOC);
- 	if (unlikely(mem_cgroup_charge(folio, mm, gfp))) {
- 		folio_put(folio);
--		*hpage = NULL;
-+		*foliop = NULL;
- 		return SCAN_CGROUP_CHARGE_FAIL;
- 	}
- 
- 	count_memcg_folio_events(folio, THP_COLLAPSE_ALLOC, 1);
- 
--	*hpage = folio_page(folio, 0);
-+	*foliop = folio;
- 	return SCAN_SUCCEED;
+@@ -282,6 +295,38 @@ static int rzg2l_irqc_set_type(struct irq_data *d, unsigned int type)
+ 	return irq_chip_set_type_parent(d, IRQ_TYPE_LEVEL_HIGH);
  }
  
-@@ -1094,7 +1094,8 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
- 	 */
- 	mmap_read_unlock(mm);
++static int rzg2l_irqc_irq_suspend(void)
++{
++	struct rzg2l_irqc_reg_cache *cache = &rzg2l_irqc_data->cache;
++	void __iomem *base = rzg2l_irqc_data->base;
++
++	cache->iitsr = readl_relaxed(base + IITSR);
++	for (u8 i = 0; i < 2; i++)
++		cache->titsr[i] = readl_relaxed(base + TITSR(i));
++
++	return 0;
++}
++
++static void rzg2l_irqc_irq_resume(void)
++{
++	struct rzg2l_irqc_reg_cache *cache = &rzg2l_irqc_data->cache;
++	void __iomem *base = rzg2l_irqc_data->base;
++
++	/*
++	 * Restore only interrupt type. TSSRx will be restored at the
++	 * request of pin controller to avoid spurious interrupts due
++	 * to invalid PIN states.
++	 */
++	for (u8 i = 0; i < 2; i++)
++		writel_relaxed(cache->titsr[i], base + TITSR(i));
++	writel_relaxed(cache->iitsr, base + IITSR);
++}
++
++static struct syscore_ops rzg2l_irqc_syscore_ops = {
++	.suspend	= rzg2l_irqc_irq_suspend,
++	.resume		= rzg2l_irqc_irq_resume,
++};
++
+ static const struct irq_chip irqc_chip = {
+ 	.name			= "rzg2l-irqc",
+ 	.irq_eoi		= rzg2l_irqc_eoi,
+@@ -366,7 +411,6 @@ static int rzg2l_irqc_init(struct device_node *node, struct device_node *parent)
+ 	struct irq_domain *irq_domain, *parent_domain;
+ 	struct platform_device *pdev;
+ 	struct reset_control *resetn;
+-	struct rzg2l_irqc_priv *priv;
+ 	int ret;
  
--	result = alloc_charge_hpage(&hpage, mm, cc);
-+	result = alloc_charge_folio(&folio, mm, cc);
-+	hpage = &folio->page;
- 	if (result != SCAN_SUCCEED)
- 		goto out_nolock;
+ 	pdev = of_find_device_by_node(node);
+@@ -379,15 +423,15 @@ static int rzg2l_irqc_init(struct device_node *node, struct device_node *parent)
+ 		return -ENODEV;
+ 	}
  
-@@ -1197,7 +1198,6 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
- 	if (unlikely(result != SCAN_SUCCEED))
- 		goto out_up_write;
+-	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+-	if (!priv)
++	rzg2l_irqc_data = devm_kzalloc(&pdev->dev, sizeof(*rzg2l_irqc_data), GFP_KERNEL);
++	if (!rzg2l_irqc_data)
+ 		return -ENOMEM;
  
--	folio = page_folio(hpage);
- 	/*
- 	 * The smp_wmb() inside __folio_mark_uptodate() ensures the
- 	 * copy_huge_page writes become visible before the set_pmd_at()
-@@ -1786,7 +1786,7 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
- 	struct page *hpage;
- 	struct page *page;
- 	struct page *tmp;
--	struct folio *folio;
-+	struct folio *folio, *new_folio;
- 	pgoff_t index = 0, end = start + HPAGE_PMD_NR;
- 	LIST_HEAD(pagelist);
- 	XA_STATE_ORDER(xas, &mapping->i_pages, start, HPAGE_PMD_ORDER);
-@@ -1797,7 +1797,8 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
- 	VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
- 	VM_BUG_ON(start & (HPAGE_PMD_NR - 1));
+-	priv->base = devm_of_iomap(&pdev->dev, pdev->dev.of_node, 0, NULL);
+-	if (IS_ERR(priv->base))
+-		return PTR_ERR(priv->base);
++	rzg2l_irqc_data->base = devm_of_iomap(&pdev->dev, pdev->dev.of_node, 0, NULL);
++	if (IS_ERR(rzg2l_irqc_data->base))
++		return PTR_ERR(rzg2l_irqc_data->base);
  
--	result = alloc_charge_hpage(&hpage, mm, cc);
-+	result = alloc_charge_folio(&new_folio, mm, cc);
-+	hpage = &new_folio->page;
- 	if (result != SCAN_SUCCEED)
- 		goto out;
+-	ret = rzg2l_irqc_parse_interrupts(priv, node);
++	ret = rzg2l_irqc_parse_interrupts(rzg2l_irqc_data, node);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "cannot parse interrupts: %d\n", ret);
+ 		return ret;
+@@ -410,17 +454,19 @@ static int rzg2l_irqc_init(struct device_node *node, struct device_node *parent)
+ 		goto pm_disable;
+ 	}
  
+-	raw_spin_lock_init(&priv->lock);
++	raw_spin_lock_init(&rzg2l_irqc_data->lock);
+ 
+ 	irq_domain = irq_domain_add_hierarchy(parent_domain, 0, IRQC_NUM_IRQ,
+ 					      node, &rzg2l_irqc_domain_ops,
+-					      priv);
++					      rzg2l_irqc_data);
+ 	if (!irq_domain) {
+ 		dev_err(&pdev->dev, "failed to add irq domain\n");
+ 		ret = -ENOMEM;
+ 		goto pm_put;
+ 	}
+ 
++	register_syscore_ops(&rzg2l_irqc_syscore_ops);
++
+ 	return 0;
+ 
+ pm_put:
 -- 
 2.43.0
 
