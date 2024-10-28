@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0C419B2660
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40F699B2773
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:48:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FD581C208BE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72FF91C21246
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA70218E740;
-	Mon, 28 Oct 2024 06:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C093F18A924;
+	Mon, 28 Oct 2024 06:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AwqIHCge"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5zRC47q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85A718E374;
-	Mon, 28 Oct 2024 06:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5612AF07;
+	Mon, 28 Oct 2024 06:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097539; cv=none; b=Us23SCw/+5FGvvSFGN1fZqR3Fx8whfTmbaj1qgMlHJJ39+dbGJRE7uqOp62X5iuFZdCoO2PJVmVieIlDKCSyw4DrsYa9RTgU7QaYVnSurMpwd88byjqQPEGxGTdjR1+FmJ7xzOpDk21BRl1AqOWt6A/QRoQsEJUqB1pPVtudCoY=
+	t=1730098099; cv=none; b=rHMU+t5KIaEHvLJRPIMSg+DMfOYiG/XyJ10UxU9KUxzJsvsHcznU/Hy1HeX8vM9wElL5bxpSjf/D2geVNP535y41Kwj9OsHqnyRM3flxE+1gqm2pp+qacdZGXb+g1R5V4cyqRUBybw3eifOz+icv888rjCi+Ky49NvGlVQqX+hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097539; c=relaxed/simple;
-	bh=dAHsVwIExMj+qovwNmNgDTVZqi/CNjeZXd9TcszxMVo=;
+	s=arc-20240116; t=1730098099; c=relaxed/simple;
+	bh=+UQ+9PrSwJ3M4ePU9w+awWNiwmyGJOkJ24A0NpB/Ips=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TM9DnD4gCTxRLejsjpZiU0oK8wRpT0u/81z70tJqHgt0jN3sknW1k8PB4sHWM9aFBUVVhic21nmelfxPwNXMXoqFLZfpiFIkV+1ctOdfC1WGBe1TuiwG1hD241PcfoFxH1xpbanYCGbehzaReOMJFThGVFBY43BzXoTB6+lWeDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AwqIHCge; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C45C4CEC3;
-	Mon, 28 Oct 2024 06:38:59 +0000 (UTC)
+	 MIME-Version; b=hQ57cfMPtfT1AXC4lRuvx0b/BeQEAe4baG7rTd8ud8Ao1aj3hBW03BxpZw/xlL78LrydQa00ZwfxONVYxsoSdmSMLz5HuEbIKdRLsVwxFoDl0OC1DZcQVuPHsTdWCOa0xHb/gFjgc9CeAOaDkTRBd0Z18xEfNgPqavlZ4ybiYRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5zRC47q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA0BC4CEC7;
+	Mon, 28 Oct 2024 06:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097539;
-	bh=dAHsVwIExMj+qovwNmNgDTVZqi/CNjeZXd9TcszxMVo=;
+	s=korg; t=1730098099;
+	bh=+UQ+9PrSwJ3M4ePU9w+awWNiwmyGJOkJ24A0NpB/Ips=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AwqIHCgeUOnyUGGE/h0u2COBnztMfO32tx8flQPHpkQoMNUG8H/fEWOcWYEz6DGBY
-	 wHQhOLcq7ED1YPaku5MsR0xYpbkjetbHR9yzylWlx3rLB29tVs7ACE00StyM40HWiQ
-	 l7LmnzJqvmAmPZIdVxsmiznHHZpL9VZtigVpfMto=
+	b=E5zRC47qAh0d7BL+0PPWxCL0wsQfw0G8+dxRAlpL6XAnQTIPd5nMagz6vDPk6uGCC
+	 COOuh1lEdnql/dIA5czC/IStohi3QHLHikjBjpsW0hUZlEZwc8zB9yl62arz2IcleT
+	 pDt1StEybVP7WZ/GOHGqMEm+mxYvkxRoJkbcy2hI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Wang Hai <wanghai38@huawei.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/208] RDMA/bnxt_re: Update the BAR offsets
+Subject: [PATCH 6.11 076/261] net: bcmasp: fix potential memory leak in bcmasp_xmit()
 Date: Mon, 28 Oct 2024 07:23:38 +0100
-Message-ID: <20241028062307.594717787@linuxfoundation.org>
+Message-ID: <20241028062313.933890997@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvin Xavier <selvin.xavier@broadcom.com>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit a62d685814416647fbb28b3eb2617744adef2d4f ]
+[ Upstream commit fed07d3eb8a8d9fcc0e455175a89bc6445d6faed ]
 
-Update the BAR offsets for handling GenP7 adapters.
-Use the values populated by L2 driver for getting the
-Doorbell offsets.
+The bcmasp_xmit() returns NETDEV_TX_OK without freeing skb
+in case of mapping fails, add dev_kfree_skb() to fix it.
 
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://lore.kernel.org/r/1701946060-13931-3-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: dc5006cfcf62 ("RDMA/bnxt_re: Fix the GID table length")
+Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20241014145901.48940-1-wanghai38@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/main.c     | 21 +++++++--------------
- drivers/infiniband/hw/bnxt_re/qplib_sp.c |  5 +++--
- 2 files changed, 10 insertions(+), 16 deletions(-)
+ drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/main.c b/drivers/infiniband/hw/bnxt_re/main.c
-index 594cc6aa7b79d..607293794b924 100644
---- a/drivers/infiniband/hw/bnxt_re/main.c
-+++ b/drivers/infiniband/hw/bnxt_re/main.c
-@@ -107,8 +107,11 @@ static void bnxt_re_set_db_offset(struct bnxt_re_dev *rdev)
- 		dev_info(rdev_to_dev(rdev),
- 			 "Couldn't get DB bar size, Low latency framework is disabled\n");
- 	/* set register offsets for both UC and WC */
--	res->dpi_tbl.ucreg.offset = res->is_vf ? BNXT_QPLIB_DBR_VF_DB_OFFSET :
--						 BNXT_QPLIB_DBR_PF_DB_OFFSET;
-+	if (bnxt_qplib_is_chip_gen_p7(cctx))
-+		res->dpi_tbl.ucreg.offset = offset;
-+	else
-+		res->dpi_tbl.ucreg.offset = res->is_vf ? BNXT_QPLIB_DBR_VF_DB_OFFSET :
-+							 BNXT_QPLIB_DBR_PF_DB_OFFSET;
- 	res->dpi_tbl.wcreg.offset = res->dpi_tbl.ucreg.offset;
- 
- 	/* If WC mapping is disabled by L2 driver then en_dev->l2_db_size
-@@ -1070,16 +1073,6 @@ static int bnxt_re_cqn_handler(struct bnxt_qplib_nq *nq,
- 	return 0;
- }
- 
--#define BNXT_RE_GEN_P5_PF_NQ_DB		0x10000
--#define BNXT_RE_GEN_P5_VF_NQ_DB		0x4000
--static u32 bnxt_re_get_nqdb_offset(struct bnxt_re_dev *rdev, u16 indx)
--{
--	return bnxt_qplib_is_chip_gen_p5_p7(rdev->chip_ctx) ?
--		(rdev->is_virtfn ? BNXT_RE_GEN_P5_VF_NQ_DB :
--				   BNXT_RE_GEN_P5_PF_NQ_DB) :
--				   rdev->en_dev->msix_entries[indx].db_offset;
--}
--
- static void bnxt_re_cleanup_res(struct bnxt_re_dev *rdev)
- {
- 	int i;
-@@ -1100,7 +1093,7 @@ static int bnxt_re_init_res(struct bnxt_re_dev *rdev)
- 	bnxt_qplib_init_res(&rdev->qplib_res);
- 
- 	for (i = 1; i < rdev->num_msix ; i++) {
--		db_offt = bnxt_re_get_nqdb_offset(rdev, i);
-+		db_offt = rdev->en_dev->msix_entries[i].db_offset;
- 		rc = bnxt_qplib_enable_nq(rdev->en_dev->pdev, &rdev->nq[i - 1],
- 					  i - 1, rdev->en_dev->msix_entries[i].vector,
- 					  db_offt, &bnxt_re_cqn_handler,
-@@ -1511,7 +1504,7 @@ static int bnxt_re_dev_init(struct bnxt_re_dev *rdev, u8 wqe_mode)
- 		ibdev_err(&rdev->ibdev, "Failed to allocate CREQ: %#x\n", rc);
- 		goto free_rcfw;
- 	}
--	db_offt = bnxt_re_get_nqdb_offset(rdev, BNXT_RE_AEQ_IDX);
-+	db_offt = rdev->en_dev->msix_entries[BNXT_RE_AEQ_IDX].db_offset;
- 	vid = rdev->en_dev->msix_entries[BNXT_RE_AEQ_IDX].vector;
- 	rc = bnxt_qplib_enable_rcfw_channel(&rdev->rcfw,
- 					    vid, db_offt,
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-index 2b73bb433b88c..7e550432ccb14 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-@@ -153,8 +153,9 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
- 	attr->max_srq_sges = sb->max_srq_sge;
- 	attr->max_pkey = 1;
- 	attr->max_inline_data = le32_to_cpu(sb->max_inline_data);
--	attr->l2_db_size = (sb->l2_db_space_size + 1) *
--			    (0x01 << RCFW_DBR_BASE_PAGE_SHIFT);
-+	if (!bnxt_qplib_is_chip_gen_p7(rcfw->res->cctx))
-+		attr->l2_db_size = (sb->l2_db_space_size + 1) *
-+				    (0x01 << RCFW_DBR_BASE_PAGE_SHIFT);
- 	attr->max_sgid = BNXT_QPLIB_NUM_GIDS_SUPPORTED;
- 	attr->dev_cap_flags = le16_to_cpu(sb->dev_cap_flags);
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+index 82768b0e90262..9ea16ef4139d3 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+@@ -322,6 +322,7 @@ static netdev_tx_t bcmasp_xmit(struct sk_buff *skb, struct net_device *dev)
+ 			}
+ 			/* Rewind so we do not have a hole */
+ 			spb_index = intf->tx_spb_index;
++			dev_kfree_skb(skb);
+ 			return NETDEV_TX_OK;
+ 		}
  
 -- 
 2.43.0
