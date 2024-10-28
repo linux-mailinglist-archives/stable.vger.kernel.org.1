@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-88766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 284879B2768
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:47:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB25C9B267B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:40:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D267E1F247CA
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:47:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16DE41C2138C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:40:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7554818DF7D;
-	Mon, 28 Oct 2024 06:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E10C18E35B;
+	Mon, 28 Oct 2024 06:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uln6mjq9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6uSz0LY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FC618E05D;
-	Mon, 28 Oct 2024 06:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E048F18DF68;
+	Mon, 28 Oct 2024 06:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098075; cv=none; b=iEzlnPjO8Y3cxqgYcYtXZ9+0TtqbiL1BXSeS1fpNqF/LtBCgJ/BgKnxjjRdk2ckNerY7qBchrhiHWUaNoD+SBfizEQoTUl1Gylhs8kZXMP84hYd2TpJ7G0fbLwc51dhUZO2sS4BqwUS7vx1g8E/N4/h+czCDCB0rbf9RF7zmGRE=
+	t=1730097600; cv=none; b=dTdYVCX9iqelz5I7LxQOyuq0hBr+2g8OaTqZYT2mRA5/QBIPs3ENfiLUZgn78PHiKvGGyP8ZMvwBbE3eOx8O24FG5IbZJ9wYnOwX8gEJNKpf7u7mjtB6lveoKu/bImgBUke3vt8OjRhtMQPcFRP3PDRhMZg+ACqjHpUW8dDWZCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098075; c=relaxed/simple;
-	bh=PJI16U6Gt0ZHdLo/QWJ901ezQec7yQlVH1hPzmPkpVQ=;
+	s=arc-20240116; t=1730097600; c=relaxed/simple;
+	bh=js6IpsfXmfW55lfxrc8XU0K27GGjIDJCTwGZHxvt84k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=td3UqOqEjbpizVn8Hnh3g2snihoH11I60sp1DEZYwWUUxFy+UObzHmSQNThuZqn7wKXiC/IK5iJMF6Q66S3Zn+xVVFw+ZiS7pbJ2R4VQFQdNe6FqK5zbzDo/fJDL6FmvkCTShYYKr1FSAhspkxdFuEnVeRSofUTYVXSkH+T0p6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uln6mjq9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB2EC4CEC3;
-	Mon, 28 Oct 2024 06:47:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CW8lktq47jyDp8hIdldMXIcJH5jPVzERjlHQ7Rw8oWR5qnWvHmSvr9KiFN5ZUS5te5aszrmg+xpQ7wTQuiD+D2mgLqJCeY0HKqUVgXl2RRs5mNzx8N6bocESymAGwqPq92/fYziPzp8bR5/Bqnj+cRBvGfP4wnhfta64+Q35O6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6uSz0LY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822BAC4CEC3;
+	Mon, 28 Oct 2024 06:39:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098074;
-	bh=PJI16U6Gt0ZHdLo/QWJ901ezQec7yQlVH1hPzmPkpVQ=;
+	s=korg; t=1730097599;
+	bh=js6IpsfXmfW55lfxrc8XU0K27GGjIDJCTwGZHxvt84k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uln6mjq96nDz2bZ9V0cHQWizGgXSOAVCtbKTpEZ1FaLuefWpgJObEvW2P9lKag11A
-	 vEd9IOAr3UEGYAUSClMUDgKWZsoTnTDBs3TmB6jTdPzFu4YjjHnl9q5t9DEecYiZN+
-	 3oJ0tMJJzOsIf+b1Xzoc9MOr4Vy/6IoiMkrYPg/M=
+	b=o6uSz0LYgrfddgAQh2ueiVT6i4SjzAQs3Wypmo7IBpJgMzpIyPYXChyPlNCyV8CCE
+	 r6GrhMp0MpGmBzjdORLtF6SchrPv784LjgVO5BzrNOi7K/WhxIlGcViPOuQO5WMIQ4
+	 cq9gCKIdAgYpdBUq9UoznQodN2xEMeXrfnEDoJH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d383dc9579a76f56c251@syzkaller.appspotmail.com,
-	syzbot+c596faae21a68bf7afd0@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Su Hui <suhui@nfschina.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 066/261] netdevsim: use cond_resched() in nsim_dev_trap_report_work()
+Subject: [PATCH 6.6 028/208] firmware: arm_scmi: Fix the double free in scmi_debugfs_common_setup()
 Date: Mon, 28 Oct 2024 07:23:28 +0100
-Message-ID: <20241028062313.687214789@linuxfoundation.org>
+Message-ID: <20241028062307.349276373@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,115 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit a1494d532e28598bde7a5544892ef9c7dbfafa93 ]
+[ Upstream commit 39b13dce1a91cdfc3bec9238f9e89094551bd428 ]
 
-I am still seeing many syzbot reports hinting that syzbot
-might fool nsim_dev_trap_report_work() with hundreds of ports [1]
+Clang static checker(scan-build) throws below warning：
+  |  drivers/firmware/arm_scmi/driver.c:line 2915, column 2
+  |        Attempt to free released memory.
 
-Lets use cond_resched(), and system_unbound_wq
-instead of implicit system_wq.
+When devm_add_action_or_reset() fails, scmi_debugfs_common_cleanup()
+will run twice which causes double free of 'dbg->name'.
 
-[1]
-INFO: task syz-executor:20633 blocked for more than 143 seconds.
-      Not tainted 6.12.0-rc2-syzkaller-00205-g1d227fcc7222 #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor    state:D stack:25856 pid:20633 tgid:20633 ppid:1      flags:0x00004006
-...
-NMI backtrace for cpu 1
-CPU: 1 UID: 0 PID: 16760 Comm: kworker/1:0 Not tainted 6.12.0-rc2-syzkaller-00205-g1d227fcc7222 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Workqueue: events nsim_dev_trap_report_work
- RIP: 0010:__sanitizer_cov_trace_pc+0x0/0x70 kernel/kcov.c:210
-Code: 89 fb e8 23 00 00 00 48 8b 3d 04 fb 9c 0c 48 89 de 5b e9 c3 c7 5d 00 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 <f3> 0f 1e fa 48 8b 04 24 65 48 8b 0c 25 c0 d7 03 00 65 8b 15 60 f0
-RSP: 0018:ffffc90000a187e8 EFLAGS: 00000246
-RAX: 0000000000000100 RBX: ffffc90000a188e0 RCX: ffff888027d3bc00
-RDX: ffff888027d3bc00 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffff88804a2e6000 R08: ffffffff8a4bc495 R09: ffffffff89da3577
-R10: 0000000000000004 R11: ffffffff8a4bc2b0 R12: dffffc0000000000
-R13: ffff88806573b503 R14: dffffc0000000000 R15: ffff8880663cca00
-FS:  0000000000000000(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fc90a747f98 CR3: 000000000e734000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 000000000000002b DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000400
-Call Trace:
- <NMI>
- </NMI>
- <TASK>
-  __local_bh_enable_ip+0x1bb/0x200 kernel/softirq.c:382
-  spin_unlock_bh include/linux/spinlock.h:396 [inline]
-  nsim_dev_trap_report drivers/net/netdevsim/dev.c:820 [inline]
-  nsim_dev_trap_report_work+0x75d/0xaa0 drivers/net/netdevsim/dev.c:850
-  process_one_work kernel/workqueue.c:3229 [inline]
-  process_scheduled_works+0xa63/0x1850 kernel/workqueue.c:3310
-  worker_thread+0x870/0xd30 kernel/workqueue.c:3391
-  kthread+0x2f0/0x390 kernel/kthread.c:389
-  ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
+Remove the redundant scmi_debugfs_common_cleanup() to fix this problem.
 
-Fixes: ba5e1272142d ("netdevsim: avoid potential loop in nsim_dev_trap_report_work()")
-Reported-by: syzbot+d383dc9579a76f56c251@syzkaller.appspotmail.com
-Reported-by: syzbot+c596faae21a68bf7afd0@syzkaller.appspotmail.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Jiri Pirko <jiri@nvidia.com>
-Link: https://patch.msgid.link/20241012094230.3893510-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c3d4aed763ce ("firmware: arm_scmi: Populate a common SCMI debugfs root")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
+Message-Id: <20241011104001.1546476-1-suhui@nfschina.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netdevsim/dev.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/firmware/arm_scmi/driver.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
-index 92a7a36b93ac0..3e0b61202f0c9 100644
---- a/drivers/net/netdevsim/dev.c
-+++ b/drivers/net/netdevsim/dev.c
-@@ -836,7 +836,8 @@ static void nsim_dev_trap_report_work(struct work_struct *work)
- 	nsim_dev = nsim_trap_data->nsim_dev;
+diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
+index 87383c05424bd..3962683e2af9d 100644
+--- a/drivers/firmware/arm_scmi/driver.c
++++ b/drivers/firmware/arm_scmi/driver.c
+@@ -2603,10 +2603,8 @@ static struct scmi_debug_info *scmi_debugfs_common_setup(struct scmi_info *info)
+ 	dbg->top_dentry = top_dentry;
  
- 	if (!devl_trylock(priv_to_devlink(nsim_dev))) {
--		schedule_delayed_work(&nsim_dev->trap_data->trap_report_dw, 1);
-+		queue_delayed_work(system_unbound_wq,
-+				   &nsim_dev->trap_data->trap_report_dw, 1);
- 		return;
- 	}
+ 	if (devm_add_action_or_reset(info->dev,
+-				     scmi_debugfs_common_cleanup, dbg)) {
+-		scmi_debugfs_common_cleanup(dbg);
++				     scmi_debugfs_common_cleanup, dbg))
+ 		return NULL;
+-	}
  
-@@ -848,11 +849,12 @@ static void nsim_dev_trap_report_work(struct work_struct *work)
- 			continue;
- 
- 		nsim_dev_trap_report(nsim_dev_port);
-+		cond_resched();
- 	}
- 	devl_unlock(priv_to_devlink(nsim_dev));
--
--	schedule_delayed_work(&nsim_dev->trap_data->trap_report_dw,
--			      msecs_to_jiffies(NSIM_TRAP_REPORT_INTERVAL_MS));
-+	queue_delayed_work(system_unbound_wq,
-+			   &nsim_dev->trap_data->trap_report_dw,
-+			   msecs_to_jiffies(NSIM_TRAP_REPORT_INTERVAL_MS));
+ 	return dbg;
  }
- 
- static int nsim_dev_traps_init(struct devlink *devlink)
-@@ -907,8 +909,9 @@ static int nsim_dev_traps_init(struct devlink *devlink)
- 
- 	INIT_DELAYED_WORK(&nsim_dev->trap_data->trap_report_dw,
- 			  nsim_dev_trap_report_work);
--	schedule_delayed_work(&nsim_dev->trap_data->trap_report_dw,
--			      msecs_to_jiffies(NSIM_TRAP_REPORT_INTERVAL_MS));
-+	queue_delayed_work(system_unbound_wq,
-+			   &nsim_dev->trap_data->trap_report_dw,
-+			   msecs_to_jiffies(NSIM_TRAP_REPORT_INTERVAL_MS));
- 
- 	return 0;
- 
 -- 
 2.43.0
 
