@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-88525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DAD09B265C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10B049B276F
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:48:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1375D2823DE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93CD5B2125B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:48:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D6518F2EA;
-	Mon, 28 Oct 2024 06:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6DC818A922;
+	Mon, 28 Oct 2024 06:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYs3lGp6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s7REGWcZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A5C18E348;
-	Mon, 28 Oct 2024 06:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37A08837;
+	Mon, 28 Oct 2024 06:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097530; cv=none; b=T1jDuAtXcsVEqcN+pSXzumfL8U/S7xgKCbZRSn97SiVGNuCN1a+rKLXSi8FEYXiYVjax/GuzGGyGoW9XHpSba4dU5rN2mX8e7yJkDobHQA0whxMaXT/rOvPFuonH7f3mE7A1fGygFmh4/AlpsuokJWi1g83rMTNUhDX9B2yC2So=
+	t=1730098090; cv=none; b=dQhD+nhIKZV7QiwYik1u8JpPEYYZ+yKlX2ZcmlTWSM+jUjiuYv3aolXaHyKYjw/4D9blg7bTm1TZjfVCxx6DdrmCS+jEyoLswSj5xjwqtm9/MSRjotL3zNi+Y5wmsJkEfdwN2Sn68/MDaFB2kjaJCVmYTicklWI6T55jTQIYHXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097530; c=relaxed/simple;
-	bh=kM4MaeJsJ0JB223SQATlCmbi+bgLQMkB0YVDgvo7BH8=;
+	s=arc-20240116; t=1730098090; c=relaxed/simple;
+	bh=YyHjvEWTsByn7U1KgT+CmSarySK2q3NWgeoVo6qteqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ULvA84ywLUCdu+CFIRhlP4CJRN/tkIpcYkMgUHat4fu/UDP0xOwd0c2P4GWRMea1JCmeD22DEGVo/WyAoOhVcWjt6p84CK5kynlOeA+exWRDNWIicnbJZRd0nq87zMe7p7W4X/Duf+bGVnHTA/4USh1mv4GdcrmgHf0Zsotp4k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYs3lGp6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3638CC4CEC3;
-	Mon, 28 Oct 2024 06:38:50 +0000 (UTC)
+	 MIME-Version; b=nNOMm+DiAoivY5tlLtlEBmGNfsoQgcztKt2y6gPK72jgIYgUkPEGHeqwl8TDpiyK1gFLQHyqbNKCE7SFa5GWeFdJNhDiNj+erv23wijjOuOdJ9dd9mQ9zjH16ogCc0cbaXuaWnTvO2UrHNo1NXhxG0v7ks/o7aaRFTjIgo9KpI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s7REGWcZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ADB4C4CEC3;
+	Mon, 28 Oct 2024 06:48:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097530;
-	bh=kM4MaeJsJ0JB223SQATlCmbi+bgLQMkB0YVDgvo7BH8=;
+	s=korg; t=1730098090;
+	bh=YyHjvEWTsByn7U1KgT+CmSarySK2q3NWgeoVo6qteqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dYs3lGp6yTN3fm0xuqHJ3UdVoKpyXhfnYhD/5rMNcZ1qw/TXBFNL3Stkoz0dmjyra
-	 dOxzQMgs+hhytICUC4FmKEtQel3MZOrPZgBdQkymrSrjn9XCR086ZqROt78zHfLduM
-	 Be3jwmEud/9v2i/3WxvJLvemjhm8SpfdLCrvbtsY=
+	b=s7REGWcZWWt9hgKhjr5nHjz6uZsVh/h2qKKAehP0dpAHDHMT+CdSThHXWXdh4tza2
+	 UXh1x/rV5SS25V4OlBzVIQSzF7ey0OqBtRlcb3n8fknlR2bt6aOZsNCVRNqZjUhkeI
+	 2cHLopQmsY2tFCUQKjMF+gpvn7h4IOTzOcnq1VwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhishek Mohapatra <abhishek.mohapatra@broadcom.com>,
-	Chandramohan Akula <chandramohan.akula@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 034/208] RDMA/bnxt_re: Fix the max CQ WQEs for older adapters
-Date: Mon, 28 Oct 2024 07:23:34 +0100
-Message-ID: <20241028062307.496930419@linuxfoundation.org>
+Subject: [PATCH 6.11 073/261] irqchip/renesas-rzg2l: Fix missing put_device
+Date: Mon, 28 Oct 2024 07:23:35 +0100
+Message-ID: <20241028062313.858771596@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhishek Mohapatra <abhishek.mohapatra@broadcom.com>
+From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
 
-[ Upstream commit ac6df53738b465053d38d491fff87bd7d37fdc07 ]
+[ Upstream commit d038109ac1c6bf619473dda03a16a6de58170f7f ]
 
-Older adapters doesn't support the MAX CQ WQEs reported by older FW. So
-restrict the value reported to 1M always for older adapters.
+rzg2l_irqc_common_init() calls of_find_device_by_node(), but the
+corresponding put_device() call is missing.  This also gets reported by
+make coccicheck.
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Link: https://patch.msgid.link/r/1728373302-19530-2-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Abhishek Mohapatra<abhishek.mohapatra@broadcom.com>
-Reviewed-by: Chandramohan Akula <chandramohan.akula@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Make use of the cleanup interfaces from cleanup.h to call into
+__free_put_device(), which in turn calls into put_device when leaving
+function rzg2l_irqc_common_init() and variable "dev" goes out of scope.
+
+To prevent that the device is put on successful completion, assign NULL to
+"dev" to prevent __free_put_device() from calling into put_device() within
+the successful path.
+
+"make coccicheck" will still complain about missing put_device() calls,
+but those are false positives now.
+
+Fixes: 3fed09559cd8 ("irqchip: Add RZ/G2L IA55 Interrupt Controller driver")
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20241011172003.1242841-1-fabrizio.castro.jz@renesas.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_sp.c | 2 ++
- drivers/infiniband/hw/bnxt_re/qplib_sp.h | 1 +
- 2 files changed, 3 insertions(+)
+ drivers/irqchip/irq-renesas-rzg2l.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-index c580bf78d4c13..2b73bb433b88c 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-@@ -137,6 +137,8 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
- 			    6 : sb->max_sge;
- 	attr->max_cq = le32_to_cpu(sb->max_cq);
- 	attr->max_cq_wqes = le32_to_cpu(sb->max_cqe);
-+	if (!bnxt_qplib_is_chip_gen_p7(rcfw->res->cctx))
-+		attr->max_cq_wqes = min_t(u32, BNXT_QPLIB_MAX_CQ_WQES, attr->max_cq_wqes);
- 	attr->max_cq_sges = attr->max_qp_sges;
- 	attr->max_mr = le32_to_cpu(sb->max_mr);
- 	attr->max_mw = le32_to_cpu(sb->max_mw);
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.h b/drivers/infiniband/hw/bnxt_re/qplib_sp.h
-index d33c78b96217a..755765e68eaab 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_sp.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.h
-@@ -55,6 +55,7 @@ struct bnxt_qplib_dev_attr {
- 	u32				max_qp_wqes;
- 	u32				max_qp_sges;
- 	u32				max_cq;
-+#define BNXT_QPLIB_MAX_CQ_WQES          0xfffff
- 	u32				max_cq_wqes;
- 	u32				max_cq_sges;
- 	u32				max_mr;
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index 693ff285ca2c6..99e27e01b0b19 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -8,6 +8,7 @@
+  */
+ 
+ #include <linux/bitfield.h>
++#include <linux/cleanup.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
+ #include <linux/io.h>
+@@ -530,12 +531,12 @@ static int rzg2l_irqc_parse_interrupts(struct rzg2l_irqc_priv *priv,
+ static int rzg2l_irqc_common_init(struct device_node *node, struct device_node *parent,
+ 				  const struct irq_chip *irq_chip)
+ {
++	struct platform_device *pdev = of_find_device_by_node(node);
++	struct device *dev __free(put_device) = pdev ? &pdev->dev : NULL;
+ 	struct irq_domain *irq_domain, *parent_domain;
+-	struct platform_device *pdev;
+ 	struct reset_control *resetn;
+ 	int ret;
+ 
+-	pdev = of_find_device_by_node(node);
+ 	if (!pdev)
+ 		return -ENODEV;
+ 
+@@ -591,6 +592,17 @@ static int rzg2l_irqc_common_init(struct device_node *node, struct device_node *
+ 
+ 	register_syscore_ops(&rzg2l_irqc_syscore_ops);
+ 
++	/*
++	 * Prevent the cleanup function from invoking put_device by assigning
++	 * NULL to dev.
++	 *
++	 * make coccicheck will complain about missing put_device calls, but
++	 * those are false positives, as dev will be automatically "put" via
++	 * __free_put_device on the failing path.
++	 * On the successful path we don't actually want to "put" dev.
++	 */
++	dev = NULL;
++
+ 	return 0;
+ 
+ pm_put:
 -- 
 2.43.0
 
