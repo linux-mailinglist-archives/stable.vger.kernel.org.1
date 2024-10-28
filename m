@@ -1,135 +1,89 @@
-Return-Path: <stable+bounces-89065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 841B49B304D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 13:32:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FDDC9B2FD8
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 13:11:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A10B280FA0
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 12:32:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 725FE1C240A5
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 12:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8301922DA;
-	Mon, 28 Oct 2024 12:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A1D1DCB0D;
+	Mon, 28 Oct 2024 12:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BOW9gIE4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EDlL1ozw"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3252B1D0DF7
-	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 12:31:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF8F1DA2FD;
+	Mon, 28 Oct 2024 12:10:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730118722; cv=none; b=Sq8Nm2hBt3DTAiPN4ZMO6xhJOrQE8cUB8l8p5n5ENxKFl0KLegxj0BPwbe+VU6Wr5mowJmLi3awqJUsoxa8yR3V+wkx4yvp3Vb84Juaq84R2XpnzcLh/Tqo1WYCcjdS4WJTEnB0wHOQLnSnlMwM6SaNVne+jVNNeKLfhDTALoYQ=
+	t=1730117412; cv=none; b=O9MBP0ZS4vi16aZIUEi96+SyQeklOk+czvOcLG9cmmR+Y++vshMn/FZcb16WHgtvASbANgQn/jFUdgv/7On5nOdaRHp9EW/fvQE6AGYU3Wel19S2k9+oEmtLcNg6czFPRdtPO3Q2QxdrXFNEGHyVrghz4/49RFMqvwNk+KoUQ84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730118722; c=relaxed/simple;
-	bh=SwUes2GvGHzIL5xi0/1bEwB79YJaUeHlpCxCCFod4v8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fCDtgLQboBUNr/mZ/3wW8wOBqfw57JbVomLRFmMWD0pyAkGJwy4MdXCRUjcEtElJC1XISYgG7Na5+fJWWwzvIAlmKhEdZx0v2w5ACEOuka2oplDv7PLljYNnFk/lDIGpCv6Y7MvoB5J+IBTZD0m8+QFXXojBApLtAmhDWFIojV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BOW9gIE4; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730118720; x=1761654720;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=SwUes2GvGHzIL5xi0/1bEwB79YJaUeHlpCxCCFod4v8=;
-  b=BOW9gIE42NRs58kccaami3GlSUzxoodZYknZCCQoyFtul4esXbwXL86U
-   FQGDg/czptwlzeXUB6FGLegXZKI9UAyKpAhUQYqSWXzj4qH37NQk6ACJf
-   mmE8AuaJr4BGhmsYaU2BoKPiRxuCGwH9DoRh7pxs01Vge0jsiRwepExR1
-   uysUiHmf38hA4yBlN+vCMzWR2Lu+NXfyULbNif3gKiyJ5WLev+3GObKmL
-   sxFWIi+aHsKTPc0WV5rDs5apwfr/5SRbXSxDvThWflJQyKMcUPbgnCD5u
-   D8EJxG5wkR5Y+2W10tFXPnFdJwHjqPPNoaEz0Lol9cvaOsQTVWcBwi1CU
-   w==;
-X-CSE-ConnectionGUID: RCWP83a4RjW4nhw6hxGwAQ==
-X-CSE-MsgGUID: lCMzLMhVRdGh0E57Z81/SA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11238"; a="29821263"
-X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
-   d="scan'208";a="29821263"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 05:31:59 -0700
-X-CSE-ConnectionGUID: UJMFz/+WSa+LKsgJJnrh2w==
-X-CSE-MsgGUID: 9xrWKv3TRkGkZmMXqf/vlw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
-   d="scan'208";a="86179149"
-Received: from nirmoyda-desk.igk.intel.com ([10.102.138.190])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 05:31:57 -0700
-From: Nirmoy Das <nirmoy.das@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: Nirmoy Das <nirmoy.das@intel.com>,
-	Badal Nilawar <badal.nilawar@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	stable@vger.kernel.org,
-	Matthew Brost <matthew.brost@intel.com>
-Subject: [PATCH v3] drm/xe/ufence: Flush xe ordered_wq in case of ufence timeout
-Date: Mon, 28 Oct 2024 12:49:56 +0100
-Message-ID: <20241028114956.2184923-1-nirmoy.das@intel.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1730117412; c=relaxed/simple;
+	bh=l5qalQPiwCYhTC3zWpqOzDEvbB3Z5puNHOvHklAezwA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Gry9jjep4+PKEJUXfUh5uWwKRGwsAsRxNX4DNdaQA3ZDXGq44ePiqrHeQdSttw7KH3FUL9nAt/OV0V/VpD8Vu4ShInmjXLl3KkOWCxS5gk57gQKcmOye6rrPvbKGeZSQ8K1xM00YRUGoVFLjtwpo4Hte9u6Ry2DiKo+vH+NSWXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EDlL1ozw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A34DC4CEE4;
+	Mon, 28 Oct 2024 12:10:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730117411;
+	bh=l5qalQPiwCYhTC3zWpqOzDEvbB3Z5puNHOvHklAezwA=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=EDlL1ozw1Wu3K3uSzBJ5adQi8VkhBdNP+GTmcAI/b+yah183t8I4np5OzbcAJy5HM
+	 PR1241pJnh4SP1Rx8700JfmXBeGRiRvLQjKX4fWkmGPbzYaBSL1apxUfDTQPhMbGHJ
+	 FSxFkDUUM8zHl7ZztgEAptrbCryJbM2r769Wd1xo1i6ykZeiblrYfQMbZB325/Nsdc
+	 tZuhY+xSlwRZeU1Jnh0LskNp3cIYO2zJSbclbnuKbJ+4zHegJfrPVZZgIGJ6O+snwO
+	 pAbXn1ZDfvq+LayFD6CyXYiB9TmG7aNHSZxQzk5lQZnsf7eRj52RyMPDytNPZ6Wcr8
+	 sa6cgOWVPuYKQ==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Organization: Intel Deutschland GmbH, Registered Address: Am Campeon 10, 85579 Neubiberg, Germany, Commercial Register: Amtsgericht Muenchen HRB 186928
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 28 Oct 2024 14:10:07 +0200
+Message-Id: <D57FFOHZQDUV.QA3SZQSP63Q2@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, "David Howells" <dhowells@redhat.com>,
+ "Mimi Zohar" <zohar@linux.ibm.com>, "Roberto Sassu"
+ <roberto.sassu@huawei.com>, "Stefan Berger" <stefanb@linux.ibm.com>, "Paul
+ Moore" <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "Serge E.
+ Hallyn" <serge@hallyn.com>, "Dmitry Kasatkin" <dmitry.kasatkin@gmail.com>,
+ "Eric Snowberg" <eric.snowberg@oracle.com>, <keyrings@vger.kernel.org>,
+ <linux-security-module@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH v8 2/3] tpm: Rollback tpm2_load_null()
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Paul Menzel" <pmenzel@molgen.mpg.de>,
+ <linux-integrity@vger.kernel.org>, "Peter Huewe" <peterhuewe@gmx.de>,
+ "Jason Gunthorpe" <jgg@ziepe.ca>, "James Bottomley"
+ <James.Bottomley@HansenPartnership.com>
+X-Mailer: aerc 0.18.2
+References: <20241028055007.1708971-1-jarkko@kernel.org>
+ <20241028055007.1708971-3-jarkko@kernel.org>
+ <88bfa0f8-4900-4c56-bd23-14d3b3c7de85@molgen.mpg.de>
+In-Reply-To: <88bfa0f8-4900-4c56-bd23-14d3b3c7de85@molgen.mpg.de>
 
-Flush xe ordered_wq in case of ufence timeout which is observed
-on LNL and that points to recent scheduling issue with E-cores.
+On Mon Oct 28, 2024 at 8:13 AM EET, Paul Menzel wrote:
+> Dear Jarkko,
+>
+>
+> Thank you for your patch.
+>
+> Am 28.10.24 um 06:50 schrieb Jarkko Sakkinen:
+> > Do not continue on tpm2_create_primary() failure in tpm2_load_null().
+>
+> Could you please elaborate, why this is done, that means the motivation=
+=20
+> for your change?
 
-This is similar to the recent fix:
-commit e51527233804 ("drm/xe/guc/ct: Flush g2h worker in case of g2h
-response timeout") and should be removed once there is a E-core
-scheduling fix for LNL.
+Which part of "not properly handling a return value" I should explain?
 
-v2: Add platform check(Himal)
-    s/__flush_workqueue/flush_workqueue(Jani)
-v3: Remove gfx platform check as the issue related to cpu
-    platform(John)
-
-Cc: Badal Nilawar <badal.nilawar@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: <stable@vger.kernel.org> # v6.11+
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2754
-Suggested-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
----
- drivers/gpu/drm/xe/xe_wait_user_fence.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/drivers/gpu/drm/xe/xe_wait_user_fence.c b/drivers/gpu/drm/xe/xe_wait_user_fence.c
-index f5deb81eba01..886c9862d89c 100644
---- a/drivers/gpu/drm/xe/xe_wait_user_fence.c
-+++ b/drivers/gpu/drm/xe/xe_wait_user_fence.c
-@@ -155,6 +155,17 @@ int xe_wait_user_fence_ioctl(struct drm_device *dev, void *data,
- 		}
- 
- 		if (!timeout) {
-+			/*
-+			 * This is analogous to e51527233804 ("drm/xe/guc/ct: Flush g2h worker
-+			 * in case of g2h response timeout")
-+			 *
-+			 * TODO: Drop this change once workqueue scheduling delay issue is
-+			 * fixed on LNL Hybrid CPU.
-+			 */
-+			flush_workqueue(xe->ordered_wq);
-+			err = do_compare(addr, args->value, args->mask, args->op);
-+			if (err <= 0)
-+				break;
- 			err = -ETIME;
- 			break;
- 		}
--- 
-2.46.0
-
+BR, Jarkko
 
