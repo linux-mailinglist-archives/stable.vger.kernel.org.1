@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-88637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DC379B26D6
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:43:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA3289B25DA
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:35:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADFCF1F23A8A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:43:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 791F4B20B14
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C94218E77D;
-	Mon, 28 Oct 2024 06:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4E3E18F2C5;
+	Mon, 28 Oct 2024 06:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/wU22q2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5nuHllb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A10B18E778;
-	Mon, 28 Oct 2024 06:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92499190685;
+	Mon, 28 Oct 2024 06:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097784; cv=none; b=dFNFyen0C/FwuSIT8QJnMWVaBdim6d87vCyj3gCsVhqw3S/KMlMc9g47wiY6yfrMfxC+cYzXB6b2YYUzFJ0d15R7qmrWi2hPYveYdv9xINg0voJADNcsa8bjdqHbnGji1FUI4j+ac2P4WBMEvdJ5YKaCu7+G5id7lFpaBKghsQ4=
+	t=1730097256; cv=none; b=qVQI3f46Fwow8DXwZw27ClvFE7eP3OVRA2q39tniv1pG9HDJ8OpJl3a+qw8dmAEGYz/BLJ9oRwFJpKjSfPi9oonuQnc2retOgaG6SJuv6bVEdlaEFn3Bh75d3byECvFIRi0KUxiTE+MWZqWDSQhwkyrToQK73Z8AWPWU0ok0bSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097784; c=relaxed/simple;
-	bh=g1P1hnOvFz0Uz7ulPqsLAkzChOCKVgbFh0VphGcICoQ=;
+	s=arc-20240116; t=1730097256; c=relaxed/simple;
+	bh=ukxpretWohzrP+ZUhnz8ImkjyPU0LZtZHb8kfcvmIOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nSNmeYFNu0iVBEemfBXmKr011pxnr5VV4Cs+qx8XNSdf1h6JbhZRAPJn9wU8WStHiQe9Mu0IiHEfSja2oGtahh1hBDdsV36WuEWVzHAGf+77uk6vrG9i6N5Vkh9sB1IXP8zqtoi3FRmQg6+hN8giiw08JJjaI4d5TFO74OCL0FM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/wU22q2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994A7C4CEC3;
-	Mon, 28 Oct 2024 06:43:03 +0000 (UTC)
+	 MIME-Version; b=K9TueUVQKzFafBQbFNkLFBdBQzV7/MFW3i5m26AG7l4zASxgoupVdjRpV4SndBPbMlVJCCgCj6P6tDJcPgl7oC13FCPneorIuKqgMldxbYaF+uGezud4t7SiVJRHn1ZLAWcWZabZEdHKVA7E6GOUFV/rZ+i+g/E5Owm6pdJVrdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q5nuHllb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E653C4CEE3;
+	Mon, 28 Oct 2024 06:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097783;
-	bh=g1P1hnOvFz0Uz7ulPqsLAkzChOCKVgbFh0VphGcICoQ=;
+	s=korg; t=1730097256;
+	bh=ukxpretWohzrP+ZUhnz8ImkjyPU0LZtZHb8kfcvmIOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N/wU22q2wnaU/j4vjzFBE9RJoajkCR4mPWJ3hu7c0MijYMee1rfc1KG9R49bGFPs1
-	 ASpPfIjaiVHlTMCOI1CEFW0IpDvqpBb+DomwFKpD0AX3i6hSu4HY+1OL1cI340lK2g
-	 pMSzk3G55MKcZfFDJtdn3MRNzcREsBRVSDvV4qbc=
+	b=q5nuHllb+hjbi19DmGV2WA5n55GcXAm2fdGhY0svtUYJLxTjZ5TGaV23oAauzrkOk
+	 S6S1xh3xFY9KJ4RWxADen61W+nCtbQrn26wRF/wZhzeJRILatxgYD/JO70zHNJAGcO
+	 rdTgCPuKs+KTU52tSH5S55BEkltL4xQO4DJzQDD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Shay Drory <shayd@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 108/208] tracing/probes: cleanup: Set trace_probe::nr_args at trace_probe_init
+Subject: [PATCH 6.1 051/137] net/mlx5: Remove redundant cmdif revision check
 Date: Mon, 28 Oct 2024 07:24:48 +0100
-Message-ID: <20241028062309.318962661@linuxfoundation.org>
+Message-ID: <20241028062300.153487433@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,133 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit 035ba76014c096316fa809a46ce0a1b9af1cde0d ]
+[ Upstream commit 0714ec9ea1f291447a925657e0808f34b8fbce2b ]
 
-Instead of incrementing the trace_probe::nr_args, init it at
-trace_probe_init(). Without this change, there is no way to get the number
-of trace_probe arguments while parsing it.
-This is a cleanup, so the behavior is not changed.
+mlx5 is checking the cmdif revision twice, for no reason.
+Remove the latter check.
 
-Link: https://lore.kernel.org/all/170952363585.229804.13060759900346411951.stgit@devnote2/
-
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Stable-dep-of: 373b9338c972 ("uprobe: avoid out-of-bounds memory access of fetching args")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Stable-dep-of: d62b14045c65 ("net/mlx5: Fix command bitmask initialization")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_eprobe.c |  2 +-
- kernel/trace/trace_fprobe.c |  2 +-
- kernel/trace/trace_kprobe.c |  2 +-
- kernel/trace/trace_probe.c  | 10 ++++++----
- kernel/trace/trace_probe.h  |  2 +-
- kernel/trace/trace_uprobe.c |  2 +-
- 6 files changed, 11 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/kernel/trace/trace_eprobe.c b/kernel/trace/trace_eprobe.c
-index 72714cbf475c7..42b76f02e57a9 100644
---- a/kernel/trace/trace_eprobe.c
-+++ b/kernel/trace/trace_eprobe.c
-@@ -220,7 +220,7 @@ static struct trace_eprobe *alloc_event_probe(const char *group,
- 	if (!ep->event_system)
- 		goto error;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+index 465d2adbf3c00..2269f5e0e3c75 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+@@ -2216,16 +2216,15 @@ int mlx5_cmd_init(struct mlx5_core_dev *dev)
+ 	int align = roundup_pow_of_two(size);
+ 	struct mlx5_cmd *cmd = &dev->cmd;
+ 	u32 cmd_h, cmd_l;
+-	u16 cmd_if_rev;
+ 	int err;
+ 	int i;
  
--	ret = trace_probe_init(&ep->tp, this_event, group, false);
-+	ret = trace_probe_init(&ep->tp, this_event, group, false, nargs);
- 	if (ret < 0)
- 		goto error;
- 
-diff --git a/kernel/trace/trace_fprobe.c b/kernel/trace/trace_fprobe.c
-index 3ccef4d822358..5109650b0d82d 100644
---- a/kernel/trace/trace_fprobe.c
-+++ b/kernel/trace/trace_fprobe.c
-@@ -389,7 +389,7 @@ static struct trace_fprobe *alloc_trace_fprobe(const char *group,
- 	tf->tpoint = tpoint;
- 	tf->fp.nr_maxactive = maxactive;
- 
--	ret = trace_probe_init(&tf->tp, event, group, false);
-+	ret = trace_probe_init(&tf->tp, event, group, false, nargs);
- 	if (ret < 0)
- 		goto error;
- 
-diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
-index 52f8b537dd0a0..d1a7c876e4198 100644
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -290,7 +290,7 @@ static struct trace_kprobe *alloc_trace_kprobe(const char *group,
- 	INIT_HLIST_NODE(&tk->rp.kp.hlist);
- 	INIT_LIST_HEAD(&tk->rp.kp.list);
- 
--	ret = trace_probe_init(&tk->tp, event, group, false);
-+	ret = trace_probe_init(&tk->tp, event, group, false, nargs);
- 	if (ret < 0)
- 		goto error;
- 
-diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
-index ae162ba36a480..5d6c6c105f3cd 100644
---- a/kernel/trace/trace_probe.c
-+++ b/kernel/trace/trace_probe.c
-@@ -1383,9 +1383,6 @@ int traceprobe_parse_probe_arg(struct trace_probe *tp, int i, const char *arg,
- 	struct probe_arg *parg = &tp->args[i];
- 	const char *body;
- 
--	/* Increment count for freeing args in error case */
--	tp->nr_args++;
--
- 	body = strchr(arg, '=');
- 	if (body) {
- 		if (body - arg > MAX_ARG_NAME_LEN) {
-@@ -1770,7 +1767,7 @@ void trace_probe_cleanup(struct trace_probe *tp)
- }
- 
- int trace_probe_init(struct trace_probe *tp, const char *event,
--		     const char *group, bool alloc_filter)
-+		     const char *group, bool alloc_filter, int nargs)
- {
- 	struct trace_event_call *call;
- 	size_t size = sizeof(struct trace_probe_event);
-@@ -1806,6 +1803,11 @@ int trace_probe_init(struct trace_probe *tp, const char *event,
- 		goto error;
+ 	memset(cmd, 0, sizeof(*cmd));
+-	cmd_if_rev = cmdif_rev(dev);
+-	if (cmd_if_rev != CMD_IF_REV) {
++	cmd->vars.cmdif_rev = cmdif_rev(dev);
++	if (cmd->vars.cmdif_rev != CMD_IF_REV) {
+ 		mlx5_core_err(dev,
+ 			      "Driver cmdif rev(%d) differs from firmware's(%d)\n",
+-			      CMD_IF_REV, cmd_if_rev);
++			      CMD_IF_REV, cmd->vars.cmdif_rev);
+ 		return -EINVAL;
  	}
  
-+	tp->nr_args = nargs;
-+	/* Make sure pointers in args[] are NULL */
-+	if (nargs)
-+		memset(tp->args, 0, sizeof(tp->args[0]) * nargs);
-+
- 	return 0;
+@@ -2258,14 +2257,6 @@ int mlx5_cmd_init(struct mlx5_core_dev *dev)
+ 	cmd->vars.max_reg_cmds = (1 << cmd->vars.log_sz) - 1;
+ 	cmd->vars.bitmask = (1UL << cmd->vars.max_reg_cmds) - 1;
  
- error:
-diff --git a/kernel/trace/trace_probe.h b/kernel/trace/trace_probe.h
-index c1877d0182691..ed8d1052f8a78 100644
---- a/kernel/trace/trace_probe.h
-+++ b/kernel/trace/trace_probe.h
-@@ -338,7 +338,7 @@ static inline bool trace_probe_has_single_file(struct trace_probe *tp)
- }
- 
- int trace_probe_init(struct trace_probe *tp, const char *event,
--		     const char *group, bool alloc_filter);
-+		     const char *group, bool alloc_filter, int nargs);
- void trace_probe_cleanup(struct trace_probe *tp);
- int trace_probe_append(struct trace_probe *tp, struct trace_probe *to);
- void trace_probe_unlink(struct trace_probe *tp);
-diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
-index 99c051de412af..49d9af6d446e9 100644
---- a/kernel/trace/trace_uprobe.c
-+++ b/kernel/trace/trace_uprobe.c
-@@ -337,7 +337,7 @@ alloc_trace_uprobe(const char *group, const char *event, int nargs, bool is_ret)
- 	if (!tu)
- 		return ERR_PTR(-ENOMEM);
- 
--	ret = trace_probe_init(&tu->tp, event, group, true);
-+	ret = trace_probe_init(&tu->tp, event, group, true, nargs);
- 	if (ret < 0)
- 		goto error;
- 
+-	cmd->vars.cmdif_rev = ioread32be(&dev->iseg->cmdif_rev_fw_sub) >> 16;
+-	if (cmd->vars.cmdif_rev > CMD_IF_REV) {
+-		mlx5_core_err(dev, "driver does not support command interface version. driver %d, firmware %d\n",
+-			      CMD_IF_REV, cmd->vars.cmdif_rev);
+-		err = -EOPNOTSUPP;
+-		goto err_free_page;
+-	}
+-
+ 	spin_lock_init(&cmd->alloc_lock);
+ 	spin_lock_init(&cmd->token_lock);
+ 	for (i = 0; i < MLX5_CMD_OP_MAX; i++)
 -- 
 2.43.0
 
