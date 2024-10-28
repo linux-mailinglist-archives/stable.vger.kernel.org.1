@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-88441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FA7F9B25FF
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B4B69B26FA
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2C3828225C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94BB8280C15
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB98618FC8C;
-	Mon, 28 Oct 2024 06:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E6018E743;
+	Mon, 28 Oct 2024 06:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pXD96YPM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qt2Aw2k2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770F318E34F;
-	Mon, 28 Oct 2024 06:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215D615B10D;
+	Mon, 28 Oct 2024 06:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097339; cv=none; b=a/640+HtNDGpkvtjFKmx+bigbrZo2mBwuRWpWTrBZBtBMrhbeTFNqDRWoy6WEW24QNGSsN267B1S8/VkXZliipXvI3nNgDKnLYg+DLEZX44fykxEDzCAHVn6lolu/fm3dxayMnt1rch1rFrooNlKYYJfd3adc+zBlEzjomAy7+c=
+	t=1730097860; cv=none; b=mZIuPP06aud2keWj4WHs/uLTiFY+48tcUCaqlEqWXSdGMfEKz+R1OYhOtUchZbEuDD5BfQrJwC2EXCpNeeH0BpHPNWqTHH9tGnt26+nwdvvAS2Uxf2gldx2vySu0riKppu5BgLq7aotX4PMZTV1G+v+BAkC4jADkZZrYF5LYU1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097339; c=relaxed/simple;
-	bh=wMakWQJavgKPlPTC9KqLs7DrL90LEKEcy9XPPOPn5Es=;
+	s=arc-20240116; t=1730097860; c=relaxed/simple;
+	bh=26pFqjS20SOREnwjZ+XOU230K/vZJXRFGd3DtaRRXOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dC3mmb782FALeXRewsU+5YO/Occ5zgQDnf/HxN9pdqGMOPm2Z7OWMKJuebwS5ySfonUEkHP6//vQ/6uxoCbzb6RiCgs6wYt0On02B+5ih9v68x0kkSKfVHrb3MbnwzSR6JZvoF49NVgDX5EROXfXhKslmZNCPP8zSfotjSX6qZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pXD96YPM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1746EC4CEC3;
-	Mon, 28 Oct 2024 06:35:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aZyg2x2xsit5r7ko1sxHE+arR3DZ2IYwETPXbwABtMH0O2v1D32pqyRTwu6Iv72X2kx5DeYqNNyaBoCvRb7FOqoJrsMNMCT3yhip/HVchnPnwFonwrDtM7T+fugqVBeZLgBaD/KOHxMmH6oU1k4WN8kxAIVMrw7g5Y4KcGSOdxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qt2Aw2k2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2D73C4CEC3;
+	Mon, 28 Oct 2024 06:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097339;
-	bh=wMakWQJavgKPlPTC9KqLs7DrL90LEKEcy9XPPOPn5Es=;
+	s=korg; t=1730097860;
+	bh=26pFqjS20SOREnwjZ+XOU230K/vZJXRFGd3DtaRRXOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pXD96YPMs0DGttplWO9I4KYSr2wdb/Rj/xB+6ZJs07WBEgYr1AD4AbDYmawrSMAqy
-	 hFh7GVnpP30BQpV5yFBKKfcKzAc8R56MWuYts4J5JqW7uWSi3Y/xcZIttDg90S9wIS
-	 brtJzfc7FoKyP3y+HccI2LQXxQWOHjf6vRknwXxo=
+	b=qt2Aw2k2AhsO3ZCjVG7NCbsyWLPLrqjfp7jHsW7YvG2JsqJIi2s8t1UV4gPebOMJM
+	 qpl8j+6PNYMkm7ClT8XVbehTmEg7EtD0BmW1MIv1zfHvnXE3NTyuM66WZS1PyJX+PA
+	 56J6HUqslQb0h9hAaI2wNMPeB2hjtvIgg9VduNXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eyal Birger <eyal.birger@gmail.com>,
-	Antony Antony <antony.antony@secunet.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Ilya Katsnelson <me@0upti.me>,
+	=?UTF-8?q?Krzysztof=20Ol=C4=99dzki?= <ole@ans.pl>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/137] xfrm: respect ip protocols rules criteria when performing dst lookups
+Subject: [PATCH 6.6 144/208] netfilter: xtables: fix typo causing some targets not to load on IPv6
 Date: Mon, 28 Oct 2024 07:25:24 +0100
-Message-ID: <20241028062301.158898207@linuxfoundation.org>
+Message-ID: <20241028062310.178366177@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,103 +62,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eyal Birger <eyal.birger@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit b8469721034300bbb6dec5b4bf32492c95e16a0c ]
+[ Upstream commit 306ed1728e8438caed30332e1ab46b28c25fe3d8 ]
 
-The series in the "fixes" tag added the ability to consider L4 attributes
-in routing rules.
+- There is no NFPROTO_IPV6 family for mark and NFLOG.
+- TRACE is also missing module autoload with NFPROTO_IPV6.
 
-The dst lookup on the outer packet of encapsulated traffic in the xfrm
-code was not adapted to this change, thus routing behavior that relies
-on L4 information is not respected.
+This results in ip6tables failing to restore a ruleset. This issue has been
+reported by several users providing incomplete patches.
 
-Pass the ip protocol information when performing dst lookups.
+Very similar to Ilya Katsnelson's patch including a missing chunk in the
+TRACE extension.
 
-Fixes: a25724b05af0 ("Merge branch 'fib_rules-support-sport-dport-and-proto-match'")
-Signed-off-by: Eyal Birger <eyal.birger@gmail.com>
-Tested-by: Antony Antony <antony.antony@secunet.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: 0bfcb7b71e73 ("netfilter: xtables: avoid NFPROTO_UNSPEC where needed")
+Reported-by: Ignat Korchagin <ignat@cloudflare.com>
+Reported-by: Ilya Katsnelson <me@0upti.me>
+Reported-by: Krzysztof Olędzki <ole@ans.pl>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/xfrm.h      |  2 ++
- net/ipv4/xfrm4_policy.c |  2 ++
- net/ipv6/xfrm6_policy.c |  3 +++
- net/xfrm/xfrm_policy.c  | 15 +++++++++++++++
- 4 files changed, 22 insertions(+)
+ net/netfilter/xt_NFLOG.c | 2 +-
+ net/netfilter/xt_TRACE.c | 1 +
+ net/netfilter/xt_mark.c  | 2 +-
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index 55ea15ccd5327..bf670929622dc 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -333,6 +333,8 @@ struct xfrm_dst_lookup_params {
- 	xfrm_address_t *saddr;
- 	xfrm_address_t *daddr;
- 	u32 mark;
-+	__u8 ipproto;
-+	union flowi_uli uli;
+diff --git a/net/netfilter/xt_NFLOG.c b/net/netfilter/xt_NFLOG.c
+index d80abd6ccaf8f..6dcf4bc7e30b2 100644
+--- a/net/netfilter/xt_NFLOG.c
++++ b/net/netfilter/xt_NFLOG.c
+@@ -79,7 +79,7 @@ static struct xt_target nflog_tg_reg[] __read_mostly = {
+ 	{
+ 		.name       = "NFLOG",
+ 		.revision   = 0,
+-		.family     = NFPROTO_IPV4,
++		.family     = NFPROTO_IPV6,
+ 		.checkentry = nflog_tg_check,
+ 		.destroy    = nflog_tg_destroy,
+ 		.target     = nflog_tg,
+diff --git a/net/netfilter/xt_TRACE.c b/net/netfilter/xt_TRACE.c
+index f3fa4f11348cd..a642ff09fc8e8 100644
+--- a/net/netfilter/xt_TRACE.c
++++ b/net/netfilter/xt_TRACE.c
+@@ -49,6 +49,7 @@ static struct xt_target trace_tg_reg[] __read_mostly = {
+ 		.target		= trace_tg,
+ 		.checkentry	= trace_tg_check,
+ 		.destroy	= trace_tg_destroy,
++		.me		= THIS_MODULE,
+ 	},
+ #endif
  };
- 
- struct net_device;
-diff --git a/net/ipv4/xfrm4_policy.c b/net/ipv4/xfrm4_policy.c
-index 9ac9ed9738068..76f3f38b110f2 100644
---- a/net/ipv4/xfrm4_policy.c
-+++ b/net/ipv4/xfrm4_policy.c
-@@ -30,6 +30,8 @@ static struct dst_entry *__xfrm4_dst_lookup(struct flowi4 *fl4,
- 	fl4->flowi4_mark = params->mark;
- 	if (params->saddr)
- 		fl4->saddr = params->saddr->a4;
-+	fl4->flowi4_proto = params->ipproto;
-+	fl4->uli = params->uli;
- 
- 	rt = __ip_route_output_key(params->net, fl4);
- 	if (!IS_ERR(rt))
-diff --git a/net/ipv6/xfrm6_policy.c b/net/ipv6/xfrm6_policy.c
-index 6e3e0f1bd81c9..8c1092ff3fe2e 100644
---- a/net/ipv6/xfrm6_policy.c
-+++ b/net/ipv6/xfrm6_policy.c
-@@ -37,6 +37,9 @@ static struct dst_entry *xfrm6_dst_lookup(const struct xfrm_dst_lookup_params *p
- 	if (params->saddr)
- 		memcpy(&fl6.saddr, params->saddr, sizeof(fl6.saddr));
- 
-+	fl6.flowi4_proto = params->ipproto;
-+	fl6.uli = params->uli;
-+
- 	dst = ip6_route_output(params->net, NULL, &fl6);
- 
- 	err = dst->error;
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index adb12f428be30..a022f49846879 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -296,6 +296,21 @@ static inline struct dst_entry *xfrm_dst_lookup(struct xfrm_state *x,
- 	params.tos = tos;
- 	params.oif = oif;
- 	params.mark = mark;
-+	params.ipproto = x->id.proto;
-+	if (x->encap) {
-+		switch (x->encap->encap_type) {
-+		case UDP_ENCAP_ESPINUDP:
-+			params.ipproto = IPPROTO_UDP;
-+			params.uli.ports.sport = x->encap->encap_sport;
-+			params.uli.ports.dport = x->encap->encap_dport;
-+			break;
-+		case TCP_ENCAP_ESPINTCP:
-+			params.ipproto = IPPROTO_TCP;
-+			params.uli.ports.sport = x->encap->encap_sport;
-+			params.uli.ports.dport = x->encap->encap_dport;
-+			break;
-+		}
-+	}
- 
- 	dst = __xfrm_dst_lookup(family, &params);
- 
+diff --git a/net/netfilter/xt_mark.c b/net/netfilter/xt_mark.c
+index f76fe04fc9a4e..65b965ca40ea7 100644
+--- a/net/netfilter/xt_mark.c
++++ b/net/netfilter/xt_mark.c
+@@ -62,7 +62,7 @@ static struct xt_target mark_tg_reg[] __read_mostly = {
+ 	{
+ 		.name           = "MARK",
+ 		.revision       = 2,
+-		.family         = NFPROTO_IPV4,
++		.family         = NFPROTO_IPV6,
+ 		.target         = mark_tg,
+ 		.targetsize     = sizeof(struct xt_mark_tginfo2),
+ 		.me             = THIS_MODULE,
 -- 
 2.43.0
 
