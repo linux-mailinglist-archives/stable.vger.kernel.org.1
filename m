@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-88293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2293E9B2550
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:27:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0D0C9B26BE
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:42:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC98F282133
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:27:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 683E11F23500
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B4A18E04F;
-	Mon, 28 Oct 2024 06:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF5218E749;
+	Mon, 28 Oct 2024 06:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hqTcTMKG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cb1XruAZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88A718CC1F;
-	Mon, 28 Oct 2024 06:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2A415B10D;
+	Mon, 28 Oct 2024 06:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730096870; cv=none; b=M+hLGWwQ/DeBn63AJa0Ghb2ohw9De1CHEud4RhVy9Sz8/tmTMiqs+NnPtiwbUgjoU2suY9Dk7aHLwnaFqw4IuYcS3RAjFz0FuLW81w7N5W1xxP4otpEUQ8MGTFcr4ejIVh2+ynNbQTQBS5fkn1k/L2yEtf1ZyEMMCWfMQ7ha/tw=
+	t=1730097732; cv=none; b=kIAiVAcpAGfWsoLdSnPckB+PLPOuydYgP95fGbaB+8xwib+zJhx4jZyoaT0hyn2alwDcs7DHbhGkkqVlTY/v+qj2537fRH4vpTWo9hBuVk+sLMB2v6dorwCTdK9dBI7IEPLcp7iz4t1bSxME8z4+pRnBWDNJcvdvjtpu504Llvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730096870; c=relaxed/simple;
-	bh=OTg1FSPhUpvXbrU8mKBnPjOwidET5ae9dO129vDptyE=;
+	s=arc-20240116; t=1730097732; c=relaxed/simple;
+	bh=Hrr+IzxSyYa1ziVBP/cTGUGLL/jgO9w48/trRYFU8P4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iCiv0D/oWH3M6KH+euWhLv1agyWqAbj1l3ZDz7Ixq57ZKjZo+APeo/2wqacmCxKkRgJ8pwFWcDEGLCynqRZRdFfPbOxeRv/72fC3ivlGXT5IfyyCpAYMP0YCo1BJITfmpwUADXETz1ITflgHp8W29EI95SUvhe3i3J+iXswwEQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hqTcTMKG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BFE9C4CEC3;
-	Mon, 28 Oct 2024 06:27:49 +0000 (UTC)
+	 MIME-Version; b=DdZV0oYGsqPEmVUtvErsIzQWYknY6qeMNs/atEaYQeHkkvcUTwbCYIpt3AVigsGFcrTGR77mkWUyKQ8l6jpM1m/t8ATKc7ShRZuuY3HrnTB1lydnRL9f1+zr9R5XHyP+QQTkVndmC2ZfDwZ8de3xxu4pfo5rfR4T7pXbNeoWR14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cb1XruAZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B585C4CEC3;
+	Mon, 28 Oct 2024 06:42:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730096870;
-	bh=OTg1FSPhUpvXbrU8mKBnPjOwidET5ae9dO129vDptyE=;
+	s=korg; t=1730097732;
+	bh=Hrr+IzxSyYa1ziVBP/cTGUGLL/jgO9w48/trRYFU8P4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hqTcTMKGlOJbmwsWoPLG+aaulYJSfzGMlAUGCOqgNqy57SPYVTMzMcvdThGSZue7D
-	 ytARr77bO1J4HY0onQEqnoXHSOTreb86HALCoBKFM6TNgYWlm7a7Z+xOD3uzZ5p3DL
-	 B9m71kF3zFg2LP0DdeKh5gqeBfA5bjvz6Cfdmr7g=
+	b=Cb1XruAZYRi125jn1GUz2JGobG+dViQVGIKdvH8Lb9yaKJ6h68+ve6Swe5zJu/1Ca
+	 /4M/xp/jwmEMY/6x0MvSSHMEq6PwOZvy5XhXlcstc8p1JtDc/fBpSOUx1NHtyEPJrO
+	 StI8DoX1wB8Ve6e8smhg03nPXVFccd+4vyxHLk7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Hai <wanghai38@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+8901c4560b7ab5c2f9df@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.com>,
+	Gianfranco Trad <gianf.trad@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 22/80] net: systemport: fix potential memory leak in bcm_sysport_xmit()
-Date: Mon, 28 Oct 2024 07:25:02 +0100
-Message-ID: <20241028062253.244130316@linuxfoundation.org>
+Subject: [PATCH 6.6 123/208] udf: fix uninit-value use in udf_get_fileshortad
+Date: Mon, 28 Oct 2024 07:25:03 +0100
+Message-ID: <20241028062309.676313212@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Hai <wanghai38@huawei.com>
+From: Gianfranco Trad <gianf.trad@gmail.com>
 
-[ Upstream commit c401ed1c709948e57945485088413e1bb5e94bd1 ]
+[ Upstream commit 264db9d666ad9a35075cc9ed9ec09d021580fbb1 ]
 
-The bcm_sysport_xmit() returns NETDEV_TX_OK without freeing skb
-in case of dma_map_single() fails, add dev_kfree_skb() to fix it.
+Check for overflow when computing alen in udf_current_aext to mitigate
+later uninit-value use in udf_get_fileshortad KMSAN bug[1].
+After applying the patch reproducer did not trigger any issue[2].
 
-Fixes: 80105befdb4b ("net: systemport: add Broadcom SYSTEMPORT Ethernet MAC driver")
-Signed-off-by: Wang Hai <wanghai38@huawei.com>
-Link: https://patch.msgid.link/20241014145115.44977-1-wanghai38@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[1] https://syzkaller.appspot.com/bug?extid=8901c4560b7ab5c2f9df
+[2] https://syzkaller.appspot.com/x/log.txt?x=10242227980000
+
+Reported-by: syzbot+8901c4560b7ab5c2f9df@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=8901c4560b7ab5c2f9df
+Tested-by: syzbot+8901c4560b7ab5c2f9df@syzkaller.appspotmail.com
+Suggested-by: Jan Kara <jack@suse.com>
+Signed-off-by: Gianfranco Trad <gianf.trad@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240925074613.8475-3-gianf.trad@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bcmsysport.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/udf/inode.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
-index 93c965bcdb6cf..8962bd6349d4b 100644
---- a/drivers/net/ethernet/broadcom/bcmsysport.c
-+++ b/drivers/net/ethernet/broadcom/bcmsysport.c
-@@ -1348,6 +1348,7 @@ static netdev_tx_t bcm_sysport_xmit(struct sk_buff *skb,
- 		netif_err(priv, tx_err, dev, "DMA map failed at %p (len=%d)\n",
- 			  skb->data, skb_len);
- 		ret = NETDEV_TX_OK;
-+		dev_kfree_skb_any(skb);
- 		goto out;
+diff --git a/fs/udf/inode.c b/fs/udf/inode.c
+index 37fa27136fafb..e98c198f85b96 100644
+--- a/fs/udf/inode.c
++++ b/fs/udf/inode.c
+@@ -2255,12 +2255,15 @@ int udf_current_aext(struct inode *inode, struct extent_position *epos,
+ 		alen = udf_file_entry_alloc_offset(inode) +
+ 							iinfo->i_lenAlloc;
+ 	} else {
++		struct allocExtDesc *header =
++			(struct allocExtDesc *)epos->bh->b_data;
++
+ 		if (!epos->offset)
+ 			epos->offset = sizeof(struct allocExtDesc);
+ 		ptr = epos->bh->b_data + epos->offset;
+-		alen = sizeof(struct allocExtDesc) +
+-			le32_to_cpu(((struct allocExtDesc *)epos->bh->b_data)->
+-							lengthAllocDescs);
++		if (check_add_overflow(sizeof(struct allocExtDesc),
++				le32_to_cpu(header->lengthAllocDescs), &alen))
++			return -1;
  	}
  
+ 	switch (iinfo->i_alloc_type) {
 -- 
 2.43.0
 
