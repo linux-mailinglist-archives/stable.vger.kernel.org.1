@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-89018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 374419B2DC3
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 12:01:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E1F19B2DC5
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 12:01:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFBA5281024
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:01:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FA461C219D5
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:01:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4DD1DFE13;
-	Mon, 28 Oct 2024 10:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60251DFE27;
+	Mon, 28 Oct 2024 10:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ia6A0Wjn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="scLm5Aji"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE02F1D90D4;
-	Mon, 28 Oct 2024 10:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FEB51D9662;
+	Mon, 28 Oct 2024 10:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730112749; cv=none; b=Qv2gahSoEbp0XaBLq/U4dBurO1auj86b4wz/Yz4z3PnT0sQjsmmZpUCiQUiyyOeQ5sm2QtrrYYYf/Mp4BSYQw42IW7SgRRRP64btB38zaVG1gDePmZHBhDdTQ1554v3sysGu0ZQUDQNwjXMC8PTiDejJjqTHTVZZgjgk23bzCKY=
+	t=1730112750; cv=none; b=vGh9oEg2AQuz/3CaTZFojCj4A/JjgGX9PYKvENTzddIm1sv0tosQZI1j0Jl+u7FM/d+874U+dGhuekrG8iq8LDJ+YC+gKtn2SDGJKbQcEqlW/kFITCtxJmZ8o0Ld4CiG+cXnIuH+/IgChrvo16wY+8jugq7TmVGBaQBCoQIvsJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730112749; c=relaxed/simple;
-	bh=r5uSrvFvlRLlxIaGnygJzMmBoDijBxhldhloJYf3bAk=;
+	s=arc-20240116; t=1730112750; c=relaxed/simple;
+	bh=arMwxinWHAgbPzKFM5f5eoyycVjW9OhBsBK9DIjViqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Su22kBC69aig2ORmcYvVSV5nFpb76Houz13xAM9paCXJPE3oMK3lr0dt/8Cd27eQXk1nnFpFddNONtwnSMTXNss9FGM2Wlwg9PB1GQMDGAimFuzsgbys0w6kMUp2Cchd5M7MihNbdHKk/tMhJ1BAKMCP/CmGIzO+7JiuSA6xrRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ia6A0Wjn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14164C4CEC3;
-	Mon, 28 Oct 2024 10:52:26 +0000 (UTC)
+	 MIME-Version; b=iLMi7bJDVirvxoQSv47Tv8o/zjwJG7VZOwFPmvSBI4Wp14O/pbIq5Ee7atpBN5RdNYqIauW3mh64va63ZBLCo0JTLP3MVdTfgRnfDpJZWymOUiXx2ixor5weVk0G9OuRTrInJLZEEERcK909nVQQGCoURLUyJjQ7WOZK7xRGKD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=scLm5Aji; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0CDAC4CEE7;
+	Mon, 28 Oct 2024 10:52:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730112748;
-	bh=r5uSrvFvlRLlxIaGnygJzMmBoDijBxhldhloJYf3bAk=;
+	s=k20201202; t=1730112750;
+	bh=arMwxinWHAgbPzKFM5f5eoyycVjW9OhBsBK9DIjViqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ia6A0WjnH9HP4dWJuQCW1uYHhGu0YHEzSoajTAgSoIVOvtz6Yvwg8URSL2GvwUshG
-	 OfjphSkEZ2V+J0OsxUfORLUfxedZXQR2wCcEvWH/o1fs6wgmIqowhMe4cLLVMaNetD
-	 fTTXahib+KUE8zM2+plEhXf2i9Brkkg3QzLMQLkW7VUpqYdpVfhsLgQXpxtp6kbw8Z
-	 q8UxTuaGeYNW65CeyLJvnLOZ4GeZ6n1yE0wybhoLocX3QQVhtP+ZUB4PjyoePDkWo8
-	 lTE30pUI8H6xUPF/VyvoMspvNr22Nz+vXfm4vdemCAuqYC7jVS7JGknBkQlgYSYy5x
-	 iwtIXttoa4mTw==
+	b=scLm5AjixamLqZr+WlVPGYusQs/ii9Y9scD0TMklDYMf+FCPHmaV7JiZnNJP4cNzd
+	 s59+8ZJ4pEg3VrOTTGEBSHgghpj6TBuIVx+NKWgd3kYeUzueMYB744XfYNk3hbWGG0
+	 ueQs0GnC9vdIzfD+cvFYvGW0e6RGP4+YoVtDOC5UyyDKw798bcECP3E380TJ5dS6ot
+	 I6we+a8ibY3GfmyNIretDoBoMQmqwRNnZIDUtj5sNFKy6VBzG0/UdmqbfOehUZjVVY
+	 +0IftKMw6b1rRK5rykeP5/eTcXcL2/1muTJ1HK3/J/Jntrolh6l1hdkhxFXx2RloTy
+	 TWMS2SqZFwtRg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ilya Dudikov <ilyadud@mail.ru>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Alessandro Zanni <alessandro.zanni87@gmail.com>,
+	syzbot+6c55f725d1bdc8c52058@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	mario.limonciello@amd.com,
-	me@jwang.link,
-	end.to.start@mail.ru,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 04/15] ASoC: amd: yc: Fix non-functional mic on ASUS E1404FA
-Date: Mon, 28 Oct 2024 06:52:00 -0400
-Message-ID: <20241028105218.3559888-4-sashal@kernel.org>
+	mark@fasheh.com,
+	jlbec@evilplan.org,
+	joseph.qi@linux.alibaba.com,
+	ocfs2-devel@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.6 05/15] fs: Fix uninitialized value issue in from_kuid and from_kgid
+Date: Mon, 28 Oct 2024 06:52:01 -0400
+Message-ID: <20241028105218.3559888-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241028105218.3559888-1-sashal@kernel.org>
 References: <20241028105218.3559888-1-sashal@kernel.org>
@@ -71,38 +70,47 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.58
 Content-Transfer-Encoding: 8bit
 
-From: Ilya Dudikov <ilyadud@mail.ru>
+From: Alessandro Zanni <alessandro.zanni87@gmail.com>
 
-[ Upstream commit b0867999e3282378a0b26a7ad200233044d31eca ]
+[ Upstream commit 15f34347481648a567db67fb473c23befb796af5 ]
 
-ASUS Vivobook E1404FA needs a quirks-table entry for the internal microphone to function properly.
+ocfs2_setattr() uses attr->ia_mode, attr->ia_uid and attr->ia_gid in
+a trace point even though ATTR_MODE, ATTR_UID and ATTR_GID aren't set.
 
-Signed-off-by: Ilya Dudikov <ilyadud@mail.ru>
-Link: https://patch.msgid.link/20241016034038.13481-1-ilyadud25@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Initialize all fields of newattrs to avoid uninitialized variables, by
+checking if ATTR_MODE, ATTR_UID, ATTR_GID are initialized, otherwise 0.
+
+Reported-by: syzbot+6c55f725d1bdc8c52058@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6c55f725d1bdc8c52058
+Signed-off-by: Alessandro Zanni <alessandro.zanni87@gmail.com>
+Link: https://lore.kernel.org/r/20241017120553.55331-1-alessandro.zanni87@gmail.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/ocfs2/file.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index d03e95844c3a8..859161194af10 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -325,6 +325,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "M6500RC"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "E1404FA"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+diff --git a/fs/ocfs2/file.c b/fs/ocfs2/file.c
+index 8bbe4a2b48a2a..4ee2f109b9e59 100644
+--- a/fs/ocfs2/file.c
++++ b/fs/ocfs2/file.c
+@@ -1128,9 +1128,12 @@ int ocfs2_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+ 	trace_ocfs2_setattr(inode, dentry,
+ 			    (unsigned long long)OCFS2_I(inode)->ip_blkno,
+ 			    dentry->d_name.len, dentry->d_name.name,
+-			    attr->ia_valid, attr->ia_mode,
+-			    from_kuid(&init_user_ns, attr->ia_uid),
+-			    from_kgid(&init_user_ns, attr->ia_gid));
++			    attr->ia_valid,
++				attr->ia_valid & ATTR_MODE ? attr->ia_mode : 0,
++				attr->ia_valid & ATTR_UID ?
++					from_kuid(&init_user_ns, attr->ia_uid) : 0,
++				attr->ia_valid & ATTR_GID ?
++					from_kgid(&init_user_ns, attr->ia_gid) : 0);
+ 
+ 	/* ensuring we don't even attempt to truncate a symlink */
+ 	if (S_ISLNK(inode->i_mode))
 -- 
 2.43.0
 
