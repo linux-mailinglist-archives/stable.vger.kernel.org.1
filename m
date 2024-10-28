@@ -1,76 +1,74 @@
-Return-Path: <stable+bounces-89131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91C199B3DD0
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 23:35:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7675D9B3DEA
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 23:40:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1565E1F22397
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 22:35:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D726CB21618
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 22:40:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD4F1F9406;
-	Mon, 28 Oct 2024 22:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE05918E05D;
+	Mon, 28 Oct 2024 22:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hFiWZcGp"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NsIQYmj/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4311F12E1;
-	Mon, 28 Oct 2024 22:34:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700C41D88D7
+	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 22:40:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730154880; cv=none; b=fCBSn9PEqGY53CGY/cNqG5+VoK/iAazVt6dK+fewGNTusFIVX5M7bIClsI4e1rOy/0aYr5+r2czmOX9Bx+0+1iyET/Yh3CWiLI4DHlqUHN7420PHT3Y1/oNo5ogbj6u2wJeM0Mo16qyub5ODaUDt6SMSRiz+HX3hiGR7S3VNfSw=
+	t=1730155203; cv=none; b=LZU6BxENWbHi2/iJ+wJ3F6OKk/pBJyN55cuSqBAweYzzPz5IR6niXs2mAyTvlDLiwA9BikL9uJzZqAdUctZNEXj7Porvp7g9932GalLyIYmA7Y/NtIBflaP0MT45si74eibeJdcC899TbqrZGg09bRKateIac9wJhw//PbKnP70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730154880; c=relaxed/simple;
-	bh=gKmGr/5ZnbM158J5N7jUh0J54APzNpxKlRD/E0i5/nw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=O/Kd3BfuBoF600dmjuQ3YLA+p8GiUmFZC/Z3KIwoqbfzmgJvmp4T50aHMX7AI6l49gCZrcvCWS7CxNLTF+RXDPiRXv9vmge1uAubKjYnwNfz26vyFU6c8XJJLlsZmA6GzMq8/G7BSFTbK2210cuAFCiVnyTriEBkZKKwmYEXzq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hFiWZcGp; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-431ac30d379so11923165e9.1;
-        Mon, 28 Oct 2024 15:34:37 -0700 (PDT)
+	s=arc-20240116; t=1730155203; c=relaxed/simple;
+	bh=g2kBDlv/Ae+cxd/EcWrksl+RYNV6wyTAfhIwWRiTdoc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jwRtzanU4Cqn5U6uSSV3UN8/mXBn+//y6ou6xsiJOwil0+U7UkonxegzBklSnF4HlBCsCU7g9Ce7R6XbXH1y6rinmWkzZKemZdv81hT8lMCLAZaYrjEmgEfYrL3UAh9P7gJ8ZTOVFik0ykvaHzQoqaDjeU/RmCZcAZkGjSc289I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NsIQYmj/; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2fb4ec17f5cso43211031fa.3
+        for <stable@vger.kernel.org>; Mon, 28 Oct 2024 15:40:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730154876; x=1730759676; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=K3K5jfKAz+0lJ+9yVU83P5b7BV0bnKpsmzNSdRQX9b8=;
-        b=hFiWZcGp9ArTLdPCCUYnxmLRaib/xbsFbIbh6sLiM27K2XMRxocYeuRMBYEdOlRWNP
-         ywXefwYklsLhpMDRW2DJUUL04fhlHg0HeQtbvFybWC/SsSCxXatAV1ltps24ZfmAkm+2
-         wMnyD95qbhLeZsHI3yCa3I0Di7rQujalYnazo98vH1taUA4uZRGWGWJpWwuZdSAZd5kf
-         sxk3QWjqPsk5TRfjm+B6peoMG7YMaqnknQMhoIZX+q1Nn5oFVa0VBKH4Apc64stAYmi1
-         bVlfzXbv+/YHw6v7fcu09MUos4JN60h8BqT70pBSZAWQCaE7VkHOA4W1+2K3IBdwq2qd
-         tS+A==
+        d=linaro.org; s=google; t=1730155199; x=1730759999; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9wXo63O32Tj8mL4S2l9hFvzU6LzT7SmxiJkM8pmk0Yk=;
+        b=NsIQYmj/9VHmEq/9b4l+PdQG6wYjmx9s5iaI/pCtYGDLtvP2c+WZ8TIQpDsLn43fIB
+         2bQz1ZZfZrKfzM0TkFbiE0lTBsNYm/9LK56HuOBu1fT691vUY4aNwSMTCVL97/l/tAHS
+         Gc0GZ1/q0Vf1yX4Xr0E8Mffm05AeGOI8ULp4o1RKPLtPGcyvgYAT2fbGL2Jyd6riAj9Y
+         UPHWB72qGHDa98aTvX0GYQhm9HbXZ+PrvGbnuOGrVzMVpw5K9zLYNmnCbvEjgukJQcll
+         gA1WZCr1F4ZMpfTuI7UPCP2xRQAEytS9qf4d+mEtAdrkxlaxtJFEOKVTjdDWjlq+jh1t
+         1d7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730154876; x=1730759676;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=K3K5jfKAz+0lJ+9yVU83P5b7BV0bnKpsmzNSdRQX9b8=;
-        b=TmtnezuYBKBJ5989kEogjWs6p+7XQIhcDRahPhX42qglpBk6y4dZOnnz17AudKmMmI
-         hRB8R4XnF29Pmbjxe0aqdQ8lA5Mk+PISwJ/avPxCE8D6iOGREAD14Yn0SRWv8LjvCjeh
-         WsoG0jn2iaH4v6RVquKYRp51Lad4A45lLyVXnpus4SU/1RTdtKKhcUUIxA1X4RvvFNDg
-         O5bTh/C3NycqkkeAj3MsXkrU/pAOK2Ep4F1MMGuaht7Vo8GNg+wB/dWu2RvWeluKHDtB
-         0iN7uaxr0VQza5gXgqSGtNZglJzSym0dQmh2THEgvS/hRs0mVVZpKjrJZyLFPLpBLSw1
-         2Vzw==
-X-Forwarded-Encrypted: i=1; AJvYcCVYg7EYJTxy9szONmu+9yP3Fv7YkOMWoGRZZoYbCO7edPDqT4/0yNNeAnhma1rA9JdayOar9KwRnvCO9lQ=@vger.kernel.org, AJvYcCWAQj6uRw+Ct6h1BlVXwMf1O5ucG+OM9o0JGjfVwKquekn95C7YQ89xs1c4aQcr/Cewej4eQJ7H@vger.kernel.org, AJvYcCWviXEBQTaCb3FBn8yxWsSX+UKbRIHvpCTi+nDBeG8ZrvCwIO//uZ0BqD43pxpa6UfWfS1Uob4SofLhNNI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9sHiX4CuCvLiXy8NDOORPaa9vvmJeFiPTMKwpvMBAPEuMDxAL
-	4KDdrgcJYuCrhk1iF/RF1ZVdKklrfpbGyMD5EIisS8tdEh3qq39kUQTwlxtC
-X-Google-Smtp-Source: AGHT+IEde5iw0He7F0LFyazRrBmm2/W/T0eRjGPmeLjtvDNEqAOpB5BmIqMtQsyL281eqhTV69MTow==
-X-Received: by 2002:a05:600c:1390:b0:431:5d4f:73a3 with SMTP id 5b1f17b1804b1-4319acb226amr63557385e9.18.1730154875937;
-        Mon, 28 Oct 2024 15:34:35 -0700 (PDT)
-Received: from [127.0.1.1] (2a02-8389-41cf-e200-b273-88b2-f83b-5936.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:b273:88b2:f83b:5936])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431935f7213sm123899495e9.32.2024.10.28.15.34.34
+        d=1e100.net; s=20230601; t=1730155199; x=1730759999;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9wXo63O32Tj8mL4S2l9hFvzU6LzT7SmxiJkM8pmk0Yk=;
+        b=mRKMm/HyW7s74g81cp2DqL3qgTQoxVHHoYUF34cut21gkh08jBnL6+/vO9NObB4sNy
+         P5FVMqhbYe8HYQSW0RFD4bJGqvZ1GdFRuW9N7qxk852n/REH1u7fL9fapw2g/Kg5iReZ
+         SblaIRKhG24nILe5yvLKid1siSvf44WWGIb3oblueGhW2Kp9k2iEvIpjY4AXW2CWLaef
+         m4jiyjSKWLChqaRAwV0tUq7qIuClI5H8SOeCKyV72scp01qwOce70CIb1pQlC1fe1CWk
+         rm9uLYg5ohuhIO9KvxKXaWtlKhqzCgmEZ7zqDDmW06ZfNq9FjOjqCLIc/lL6P9ISJS80
+         U4cQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUUutGikFjpV9FCHLJp19W924y3MmDvryBzBs6nIzUokfI6T/v+HePxbFu6VeH5g0jHOMjkyKY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYA9x/nEYs0XGmYWfRGt/Pz9Ndusocg+6cvHM5/NKEsc/lMDcr
+	gliGXZIQQZvMeY52TuD/lEdctnm731mCQarVx7z3wKraY6HgeR3StN9IhWXcscc=
+X-Google-Smtp-Source: AGHT+IFw8S9GXzhKxxjCAvfQuZXm713onz2offOHHcQy90zHeXKFAxWbIRDYgwZ/jZYdTjDeJs6JGw==
+X-Received: by 2002:a2e:a9a0:0:b0:2fb:6465:3183 with SMTP id 38308e7fff4ca-2fcbdf5eab0mr42659151fa.3.1730155199410;
+        Mon, 28 Oct 2024 15:39:59 -0700 (PDT)
+Received: from lino.lan ([85.235.12.238])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2fcb451caa2sm12648561fa.36.2024.10.28.15.39.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Oct 2024 15:34:35 -0700 (PDT)
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Mon, 28 Oct 2024 23:33:59 +0100
-Subject: [PATCH 2/2] phy: tegra: xusb: fix device node release in
- tegra210_xusb_padctl_probe
+        Mon, 28 Oct 2024 15:39:59 -0700 (PDT)
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 0/2] Expand comment
+Date: Mon, 28 Oct 2024 23:39:57 +0100
+Message-Id: <20241028-comments-in-switch-to-v1-0-7280d09671a8@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,53 +77,30 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241028-phy-tegra-xusb-tegra210-put_device-v1-2-28f74368c9ba@gmail.com>
-References: <20241028-phy-tegra-xusb-tegra210-put_device-v1-0-28f74368c9ba@gmail.com>
-In-Reply-To: <20241028-phy-tegra-xusb-tegra210-put_device-v1-0-28f74368c9ba@gmail.com>
-To: JC Kuo <jckuo@nvidia.com>, Vinod Koul <vkoul@kernel.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, 
- Thierry Reding <thierry.reding@gmail.com>, 
- Jonathan Hunter <jonathanh@nvidia.com>
-Cc: Thierry Reding <treding@nvidia.com>, linux-phy@lists.infradead.org, 
- linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1730154870; l=944;
- i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=gKmGr/5ZnbM158J5N7jUh0J54APzNpxKlRD/E0i5/nw=;
- b=KpcDPrw47pH11bD3BEXoFXs1mAg0X+fkMwnitv4El8oVws91tHTegbMBR8eatX78+ife0YUKS
- wYuBrsZ6YOlCVGkVRhAhsdX9BmDmUtpEHYFJGUsxyFE6FVqn5E5TqYm
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
+X-B4-Tracking: v=1; b=H4sIAL0SIGcC/x3MQQqAIBBA0avErBtQMbCuEi3CppqFGo5UEN09a
+ fkW/z8glJkEhuaBTCcLp1ih2wb8PseNkJdqMMpYrYxDn0KgWAQ5olxc/I4loSJjrVPkbN9BbY9
+ MK9//d5ze9wNfxHZaZwAAAA==
+To: Russell King <linux@armlinux.org.uk>, Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, 
+ Linus Walleij <linus.walleij@linaro.org>, stable@vger.kernel.org, 
+ Clement LE GOFFIC <clement.legoffic@foss.st.com>, 
+ Mark Rutland <mark.rutland@arm.com>
+X-Mailer: b4 0.14.0
 
-A device_node acquired via of_parse_phandle() needs a call to
-of_node_put() when the it is no longer required to decrement its
-refcount and avoid leaking the resource.
-
-Add the missing call to of_node_put() as soon as 'np' is no longer
-required.
-
-Cc: stable@vger.kernel.org
-Fixes: 2d1021487273 ("phy: tegra: xusb: Add wake/sleepwalk for Tegra210")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/phy/tegra/xusb-tegra210.c | 1 +
- 1 file changed, 1 insertion(+)
+Linus Walleij (2):
+      ARM: entry: Do a dummy read from VMAP shadow
+      ARM: entry: expand comment in __switch_to
 
-diff --git a/drivers/phy/tegra/xusb-tegra210.c b/drivers/phy/tegra/xusb-tegra210.c
-index 9c7fdd29b7c4..a77127d6c4fa 100644
---- a/drivers/phy/tegra/xusb-tegra210.c
-+++ b/drivers/phy/tegra/xusb-tegra210.c
-@@ -3164,6 +3164,7 @@ tegra210_xusb_padctl_probe(struct device *dev,
- 	}
- 
- 	pdev = of_find_device_by_node(np);
-+	of_node_put(np);
- 	if (!pdev) {
- 		dev_warn(dev, "PMC device is not available\n");
- 		goto out;
+ arch/arm/kernel/entry-armv.S | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
+---
+base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
+change-id: 20241028-comments-in-switch-to-0e24480e8495
 
+Best regards,
 -- 
-2.43.0
+Linus Walleij <linus.walleij@linaro.org>
 
 
