@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-88651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 928679B26E5
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:43:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E2CF9B2615
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E7E9B2108C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:43:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC9311F21E48
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F6D18E37C;
-	Mon, 28 Oct 2024 06:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB75918F2C4;
+	Mon, 28 Oct 2024 06:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxF0a5bW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tUU4ACR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C2515B10D;
-	Mon, 28 Oct 2024 06:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C9618F2CF;
+	Mon, 28 Oct 2024 06:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097815; cv=none; b=Ymxf1t0LKoUhSaqBfi+Qxbn9AlkNqbA6ASGzKICE5DmddJ+OsT6xIFDg4WsCpK5mY6bL8AkfekoXTbI9LbWO77VGA6UZSCcr36sSiGItK9hrRQCkQg1iIKc3Se84kIfAvTijkZ9YMibGQ/UiU9tQn4Yqr3f0MntFRE4k/2itk4c=
+	t=1730097389; cv=none; b=L8SxNrMZK8YIu9lmg6V966jnoVKGKv82G9lKsC8yY/jDMRSEFyU5CfjzFSMvAtaW36WfUqJ6itWtOZa/wLBCfismCfjGAicrhP7De6huG3/5nMeZ6EJhKOaBUHPJ4b2tPBkRqO1UkxUnyUFHCG/N9YASo55JjJ4rutdTHZFD4Cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097815; c=relaxed/simple;
-	bh=2ZPZwM0AfavPZ0KmV4B5yIGJI1uA9DLGBbket/wUzwI=;
+	s=arc-20240116; t=1730097389; c=relaxed/simple;
+	bh=v5cUK1lp2s0RrMqhLSf7NZUUlvdO7rC50x//51HxHAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fRRxGXxKCWeBMQTFrs+yRzqQsYg+S1Q1jhClB44A3Ln0RxIjs++3lFdJZXPRsYC7frPDiI4Q1IdsyCW2JHUFcNutfpy5I3HxGOe3e/O1eym40ofC/S0kCbOuABV/BzBTyI0cIsQQah+Gkmzo6BMn9g88YS10HDNKjsF/TcARupE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxF0a5bW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9EF1C4CEC3;
-	Mon, 28 Oct 2024 06:43:34 +0000 (UTC)
+	 MIME-Version; b=ssZYI/QAwLYn0KQJ1Z3O1u6ehcesRXjTRwXigBxULf7oDQEPechzJPiIvNI5gt/eCGs/S3bJJS+gDn+R8s48Ausam9P6C7Rqg4sentLb207CqAQWITlcoY7PC/TWpx+uIkswS6+h7fnjp8cbRibQa7F2NX9wc2lloq45kew/2yY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tUU4ACR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB21C4CEC3;
+	Mon, 28 Oct 2024 06:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097815;
-	bh=2ZPZwM0AfavPZ0KmV4B5yIGJI1uA9DLGBbket/wUzwI=;
+	s=korg; t=1730097389;
+	bh=v5cUK1lp2s0RrMqhLSf7NZUUlvdO7rC50x//51HxHAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lxF0a5bWyXnADUL/35eGmjtq7/LsHf/uTodjkznAN0k1hWj2db/ofKPwaJhBb7kma
-	 q0nSiyMhapBrYgEbcfKwW2huzxhIDFDBD3XsjPu3ImwWyMCfuZP11Qx/4DPU2ASenV
-	 UomYivAbm/XkqJYAepTJGcA9KoRXVjrKc95o/uN4=
+	b=2tUU4ACRqV09OHmHwx3yv4gR75d4rw2YkkOa8M3Ikb8plnv8ztjDAh0E9UFW/Dymh
+	 0KoOXYXSqjlWlpjkyFlYOy4kIGVSbjy60x6csLxluQwRBM2K4LDd9ZJa6JnlqJ7DYc
+	 dVhA9xhF3qZ7nxVKNWHbPdcS8nddwVn4WHXc6O6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	syzbot+b65e0af58423fc8a73aa@syzkaller.appspotmail.com,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 159/208] Bluetooth: ISO: Fix UAF on iso_sock_timeout
+Subject: [PATCH 6.1 102/137] net: sched: fix use-after-free in taprio_change()
 Date: Mon, 28 Oct 2024 07:25:39 +0100
-Message-ID: <20241028062310.543954228@linuxfoundation.org>
+Message-ID: <20241028062301.574814796@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 246b435ad668596aa0e2bbb9d491b6413861211a ]
+[ Upstream commit f504465970aebb2467da548f7c1efbbf36d0f44b ]
 
-conn->sk maybe have been unlinked/freed while waiting for iso_conn_lock
-so this checks if the conn->sk is still valid by checking if it part of
-iso_sk_list.
+In 'taprio_change()', 'admin' pointer may become dangling due to sched
+switch / removal caused by 'advance_sched()', and critical section
+protected by 'q->current_entry_lock' is too small to prevent from such
+a scenario (which causes use-after-free detected by KASAN). Fix this
+by prefer 'rcu_replace_pointer()' over 'rcu_assign_pointer()' to update
+'admin' immediately before an attempt to schedule freeing.
 
-Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: a3d43c0d56f1 ("taprio: Add support adding an admin schedule")
+Reported-by: syzbot+b65e0af58423fc8a73aa@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b65e0af58423fc8a73aa
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://patch.msgid.link/20241018051339.418890-1-dmantipov@yandex.ru
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/iso.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ net/sched/sch_taprio.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index 9b365fb44fac6..c2c80d6000836 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -90,6 +90,16 @@ static struct sock *iso_get_sock_listen(bdaddr_t *src, bdaddr_t *dst,
- #define ISO_CONN_TIMEOUT	(HZ * 40)
- #define ISO_DISCONN_TIMEOUT	(HZ * 2)
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 07f6f5343dd71..212fef2b72f50 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -1681,7 +1681,8 @@ static int taprio_change(struct Qdisc *sch, struct nlattr *opt,
  
-+static struct sock *iso_sock_hold(struct iso_conn *conn)
-+{
-+	if (!conn || !bt_sock_linked(&iso_sk_list, conn->sk))
-+		return NULL;
-+
-+	sock_hold(conn->sk);
-+
-+	return conn->sk;
-+}
-+
- static void iso_sock_timeout(struct work_struct *work)
- {
- 	struct iso_conn *conn = container_of(work, struct iso_conn,
-@@ -97,9 +107,7 @@ static void iso_sock_timeout(struct work_struct *work)
- 	struct sock *sk;
+ 		taprio_start_sched(sch, start, new_admin);
  
- 	iso_conn_lock(conn);
--	sk = conn->sk;
--	if (sk)
--		sock_hold(sk);
-+	sk = iso_sock_hold(conn);
- 	iso_conn_unlock(conn);
+-		rcu_assign_pointer(q->admin_sched, new_admin);
++		admin = rcu_replace_pointer(q->admin_sched, new_admin,
++					    lockdep_rtnl_is_held());
+ 		if (admin)
+ 			call_rcu(&admin->rcu, taprio_free_sched_cb);
  
- 	if (!sk)
-@@ -217,9 +225,7 @@ static void iso_conn_del(struct hci_conn *hcon, int err)
- 
- 	/* Kill socket */
- 	iso_conn_lock(conn);
--	sk = conn->sk;
--	if (sk)
--		sock_hold(sk);
-+	sk = iso_sock_hold(conn);
- 	iso_conn_unlock(conn);
- 
- 	if (sk) {
 -- 
 2.43.0
 
