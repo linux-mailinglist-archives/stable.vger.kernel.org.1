@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BAD89B25F3
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AAA19B2582
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:31:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0863E1F210BE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F23D28188C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F9418F2EA;
-	Mon, 28 Oct 2024 06:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3CB518D629;
+	Mon, 28 Oct 2024 06:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GT3wysFQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wEDAhkxM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DFB18EFF9;
-	Mon, 28 Oct 2024 06:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F5015B10D;
+	Mon, 28 Oct 2024 06:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097316; cv=none; b=VIWR9I6ToQLlgKhJPqBkcY+RnlNBx6wqSTmrWlcZaYktw4WyW17V93bkeNRRmhbxLndsQqD7+CecVCDU73Dg/6vTuapPlBjlRCUT+gdmZBftWKJlS1O99pzZQZv5xNgLi+KSywu7s9+SRnDWMrsruKDbfFsUCM2Ni6SqvRpmxJY=
+	t=1730097115; cv=none; b=Yai5/AQ9vlqSaRbFmjrtixyJrayTicdypPMgaUJS0MjYc9sXovHaNUS8CVf85o6poJnXYAc887xLj6/3YVkywm+eR7VNEKX/SH4/1j9rw9mc5JFBKdhwu72iVwxg78kR9zVfYQi0nMP1kZY6dpr21McgsToURUoGUuq+KENGWQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097316; c=relaxed/simple;
-	bh=94bVQFD41BAwdb4KSkYZq4SDExo+n1UmHdcYZUZujhA=;
+	s=arc-20240116; t=1730097115; c=relaxed/simple;
+	bh=3uJX5ZDW7EvJMIORmvyTYYmcBufgdWfvjZWi71uOj7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HmMwiS2+qJ/6kru1DVLa7GkOgxuEP88wFOQqUpMLiEAPDtzrlfzgRZ0qS70gy2uqZOUtQQVGV0FZAfMuDNnfN73KbZAdxqJtRU0vD0vaDy3j8CjANz/vBZDyJb+SOp16ifs0R/wDIjrJC5kMlYZ79XyPBZ60Lh/wx2xSIhCkihM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GT3wysFQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66AA7C4CEC3;
-	Mon, 28 Oct 2024 06:35:16 +0000 (UTC)
+	 MIME-Version; b=khWAV83eX7vqVY6fJKV+BuTb7fEZLzXwZN0R/ks1dW1sQC7lL9YsibtD3lR5rnTrKCpefypRttisLm6qc4UhXrMjFudubYhlStktPLbwVM9wKw76tDoFYfE9UjOZFpgrPbIDjtDhu6C1oX2+f5zo41GurU/L3h54G42ux6mF03o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEDAhkxM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF2FC4CEC7;
+	Mon, 28 Oct 2024 06:31:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097316;
-	bh=94bVQFD41BAwdb4KSkYZq4SDExo+n1UmHdcYZUZujhA=;
+	s=korg; t=1730097115;
+	bh=3uJX5ZDW7EvJMIORmvyTYYmcBufgdWfvjZWi71uOj7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GT3wysFQutZ+DDz6/TE/gY22LO3FyIgynLph+TjUHvVOYLNoil46O14R5O6w2QM5x
-	 2t+G4daXYF8EPlTR73vnnY2OzCFMPID9OjuEQaBgO3kNNO6Fwf65tbSDJ4W5cCwUh/
-	 +2El8pnxcFabvZB4j12/1UuDGRNHqvxZcQUwDSeM=
+	b=wEDAhkxMCaXjezqQTeYwYjCnoDkboVFKs3WEZQBMQGOetvg/S/QLgXwRNYytomiNz
+	 LQigsfcL5OiheTLDcx64Usmf3TK0jL3mrBmZzGJGhjGXualtG9aIw2q0KmxfbuDeow
+	 XsWNBRGnw4HBgO5577NvFYaaF+kHO48nVNplCsbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhao Mengmeng <zhaomengmeng@kylinos.cn>,
-	Jan Kara <jack@suse.cz>,
+	Nico Boehr <nrb@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 078/137] udf: refactor udf_current_aext() to handle error
+Subject: [PATCH 5.15 35/80] KVM: s390: gaccess: Check if guest address is in memslot
 Date: Mon, 28 Oct 2024 07:25:15 +0100
-Message-ID: <20241028062300.915856329@linuxfoundation.org>
+Message-ID: <20241028062253.598820123@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,189 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
+From: Nico Boehr <nrb@linux.ibm.com>
 
-[ Upstream commit ee703a7068f95764cfb62b57db1d36e465cb9b26 ]
+[ Upstream commit e8061f06185be0a06a73760d6526b8b0feadfe52 ]
 
-As Jan suggested in links below, refactor udf_current_aext() to
-differentiate between error, hit EOF and success, it now takes pointer to
-etype to store the extent type, return 1 when getting etype success,
-return 0 when hitting EOF and return -errno when err.
+Previously, access_guest_page() did not check whether the given guest
+address is inside of a memslot. This is not a problem, since
+kvm_write_guest_page/kvm_read_guest_page return -EFAULT in this case.
 
-Link: https://lore.kernel.org/all/20240912111235.6nr3wuqvktecy3vh@quack3/
-Signed-off-by: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20241001115425.266556-2-zhaomzhao@126.com
+However, -EFAULT is also returned when copy_to/from_user fails.
+
+When emulating a guest instruction, the address being outside a memslot
+usually means that an addressing exception should be injected into the
+guest.
+
+Failure in copy_to/from_user however indicates that something is wrong
+in userspace and hence should be handled there.
+
+To be able to distinguish these two cases, return PGM_ADDRESSING in
+access_guest_page() when the guest address is outside guest memory. In
+access_guest_real(), populate vcpu->arch.pgm.code such that
+kvm_s390_inject_prog_cond() can be used in the caller for injecting into
+the guest (if applicable).
+
+Since this adds a new return value to access_guest_page(), we need to make
+sure that other callers are not confused by the new positive return value.
+
+There are the following users of access_guest_page():
+- access_guest_with_key() does the checking itself (in
+  guest_range_to_gpas()), so this case should never happen. Even if, the
+  handling is set up properly.
+- access_guest_real() just passes the return code to its callers, which
+  are:
+    - read_guest_real() - see below
+    - write_guest_real() - see below
+
+There are the following users of read_guest_real():
+- ar_translation() in gaccess.c which already returns PGM_*
+- setup_apcb10(), setup_apcb00(), setup_apcb11() in vsie.c which always
+  return -EFAULT on read_guest_read() nonzero return - no change
+- shadow_crycb(), handle_stfle() always present this as validity, this
+  could be handled better but doesn't change current behaviour - no change
+
+There are the following users of write_guest_real():
+- kvm_s390_store_status_unloaded() always returns -EFAULT on
+  write_guest_real() failure.
+
+Fixes: 2293897805c2 ("KVM: s390: add architecture compliant guest access functions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240917151904.74314-2-nrb@linux.ibm.com
+Acked-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/inode.c    | 40 ++++++++++++++++++++++++++--------------
- fs/udf/truncate.c | 10 ++++++++--
- fs/udf/udfdecl.h  |  5 +++--
- 3 files changed, 37 insertions(+), 18 deletions(-)
+ arch/s390/kvm/gaccess.c |  4 ++++
+ arch/s390/kvm/gaccess.h | 14 ++++++++------
+ 2 files changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/fs/udf/inode.c b/fs/udf/inode.c
-index 77471e33ccf75..fac28caca356a 100644
---- a/fs/udf/inode.c
-+++ b/fs/udf/inode.c
-@@ -1838,6 +1838,7 @@ int udf_setup_indirect_aext(struct inode *inode, udf_pblk_t block,
- 	struct extent_position nepos;
- 	struct kernel_lb_addr neloc;
- 	int ver, adsize;
-+	int err = 0;
+diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
+index 4460808c3b9a0..98979db1cde76 100644
+--- a/arch/s390/kvm/gaccess.c
++++ b/arch/s390/kvm/gaccess.c
+@@ -873,6 +873,8 @@ static int access_guest_page(struct kvm *kvm, enum gacc_mode mode, gpa_t gpa,
+ 	const gfn_t gfn = gpa_to_gfn(gpa);
+ 	int rc;
  
- 	if (UDF_I(inode)->i_alloc_type == ICBTAG_FLAG_AD_SHORT)
- 		adsize = sizeof(struct short_ad);
-@@ -1882,10 +1883,12 @@ int udf_setup_indirect_aext(struct inode *inode, udf_pblk_t block,
- 	if (epos->offset + adsize > sb->s_blocksize) {
- 		struct kernel_lb_addr cp_loc;
- 		uint32_t cp_len;
--		int cp_type;
-+		int8_t cp_type;
- 
- 		epos->offset -= adsize;
--		cp_type = udf_current_aext(inode, epos, &cp_loc, &cp_len, 0);
-+		err = udf_current_aext(inode, epos, &cp_loc, &cp_len, &cp_type, 0);
-+		if (err <= 0)
-+			goto err_out;
- 		cp_len |= ((uint32_t)cp_type) << 30;
- 
- 		__udf_add_aext(inode, &nepos, &cp_loc, cp_len, 1);
-@@ -1900,6 +1903,9 @@ int udf_setup_indirect_aext(struct inode *inode, udf_pblk_t block,
- 	*epos = nepos;
- 
- 	return 0;
-+err_out:
-+	brelse(bh);
-+	return err;
- }
- 
- /*
-@@ -2050,9 +2056,12 @@ int8_t udf_next_aext(struct inode *inode, struct extent_position *epos,
- {
- 	int8_t etype;
- 	unsigned int indirections = 0;
-+	int ret = 0;
- 
--	while ((etype = udf_current_aext(inode, epos, eloc, elen, inc)) ==
--	       (EXT_NEXT_EXTENT_ALLOCDESCS >> 30)) {
-+	while ((ret = udf_current_aext(inode, epos, eloc, elen,
-+				       &etype, inc)) > 0) {
-+		if (etype != (EXT_NEXT_EXTENT_ALLOCDESCS >> 30))
-+			break;
- 		udf_pblk_t block;
- 
- 		if (++indirections > UDF_MAX_INDIR_EXTS) {
-@@ -2073,14 +2082,17 @@ int8_t udf_next_aext(struct inode *inode, struct extent_position *epos,
- 		}
- 	}
- 
--	return etype;
-+	return ret > 0 ? etype : -1;
- }
- 
--int8_t udf_current_aext(struct inode *inode, struct extent_position *epos,
--			struct kernel_lb_addr *eloc, uint32_t *elen, int inc)
-+/*
-+ * Returns 1 on success, -errno on error, 0 on hit EOF.
-+ */
-+int udf_current_aext(struct inode *inode, struct extent_position *epos,
-+		     struct kernel_lb_addr *eloc, uint32_t *elen, int8_t *etype,
-+		     int inc)
- {
- 	int alen;
--	int8_t etype;
- 	uint8_t *ptr;
- 	struct short_ad *sad;
- 	struct long_ad *lad;
-@@ -2107,8 +2119,8 @@ int8_t udf_current_aext(struct inode *inode, struct extent_position *epos,
- 	case ICBTAG_FLAG_AD_SHORT:
- 		sad = udf_get_fileshortad(ptr, alen, &epos->offset, inc);
- 		if (!sad)
--			return -1;
--		etype = le32_to_cpu(sad->extLength) >> 30;
-+			return 0;
-+		*etype = le32_to_cpu(sad->extLength) >> 30;
- 		eloc->logicalBlockNum = le32_to_cpu(sad->extPosition);
- 		eloc->partitionReferenceNum =
- 				iinfo->i_location.partitionReferenceNum;
-@@ -2117,17 +2129,17 @@ int8_t udf_current_aext(struct inode *inode, struct extent_position *epos,
- 	case ICBTAG_FLAG_AD_LONG:
- 		lad = udf_get_filelongad(ptr, alen, &epos->offset, inc);
- 		if (!lad)
--			return -1;
--		etype = le32_to_cpu(lad->extLength) >> 30;
-+			return 0;
-+		*etype = le32_to_cpu(lad->extLength) >> 30;
- 		*eloc = lelb_to_cpu(lad->extLocation);
- 		*elen = le32_to_cpu(lad->extLength) & UDF_EXTENT_LENGTH_MASK;
- 		break;
- 	default:
- 		udf_debug("alloc_type = %u unsupported\n", iinfo->i_alloc_type);
--		return -1;
-+		return -EINVAL;
- 	}
- 
--	return etype;
-+	return 1;
- }
- 
- static int udf_insert_aext(struct inode *inode, struct extent_position epos,
-diff --git a/fs/udf/truncate.c b/fs/udf/truncate.c
-index 036ebd892b852..f0de6e106ce65 100644
---- a/fs/udf/truncate.c
-+++ b/fs/udf/truncate.c
-@@ -192,6 +192,7 @@ int udf_truncate_extents(struct inode *inode)
- 	loff_t byte_offset;
- 	int adsize;
- 	struct udf_inode_info *iinfo = UDF_I(inode);
-+	int ret = 0;
- 
- 	if (iinfo->i_alloc_type == ICBTAG_FLAG_AD_SHORT)
- 		adsize = sizeof(struct short_ad);
-@@ -221,8 +222,8 @@ int udf_truncate_extents(struct inode *inode)
++	if (!gfn_to_memslot(kvm, gfn))
++		return PGM_ADDRESSING;
+ 	if (mode == GACC_STORE)
+ 		rc = kvm_write_guest_page(kvm, gfn, data, offset, len);
  	else
- 		lenalloc -= sizeof(struct allocExtDesc);
- 
--	while ((etype = udf_current_aext(inode, &epos, &eloc,
--					 &elen, 0)) != -1) {
-+	while ((ret = udf_current_aext(inode, &epos, &eloc,
-+				       &elen, &etype, 0)) > 0) {
- 		if (etype == (EXT_NEXT_EXTENT_ALLOCDESCS >> 30)) {
- 			udf_write_aext(inode, &epos, &neloc, nelen, 0);
- 			if (indirect_ext_len) {
-@@ -257,6 +258,11 @@ int udf_truncate_extents(struct inode *inode)
- 		}
+@@ -936,6 +938,8 @@ int access_guest_real(struct kvm_vcpu *vcpu, unsigned long gra,
+ 		gra += fragment_len;
+ 		data += fragment_len;
  	}
++	if (rc > 0)
++		vcpu->arch.pgm.code = rc;
+ 	return rc;
+ }
  
-+	if (ret < 0) {
-+		brelse(epos.bh);
-+		return ret;
-+	}
-+
- 	if (indirect_ext_len) {
- 		BUG_ON(!epos.bh);
- 		udf_free_blocks(sb, NULL, &epos.block, 0, indirect_ext_len);
-diff --git a/fs/udf/udfdecl.h b/fs/udf/udfdecl.h
-index d35aa42bb5777..1d19434d4a47c 100644
---- a/fs/udf/udfdecl.h
-+++ b/fs/udf/udfdecl.h
-@@ -174,8 +174,9 @@ extern void udf_write_aext(struct inode *, struct extent_position *,
- extern int8_t udf_delete_aext(struct inode *, struct extent_position);
- extern int8_t udf_next_aext(struct inode *, struct extent_position *,
- 			    struct kernel_lb_addr *, uint32_t *, int);
--extern int8_t udf_current_aext(struct inode *, struct extent_position *,
--			       struct kernel_lb_addr *, uint32_t *, int);
-+extern int udf_current_aext(struct inode *inode, struct extent_position *epos,
-+			    struct kernel_lb_addr *eloc, uint32_t *elen,
-+			    int8_t *etype, int inc);
- extern void udf_update_extra_perms(struct inode *inode, umode_t mode);
- 
- /* misc.c */
+diff --git a/arch/s390/kvm/gaccess.h b/arch/s390/kvm/gaccess.h
+index 7c72a5e3449f8..8ed2d6c7404ff 100644
+--- a/arch/s390/kvm/gaccess.h
++++ b/arch/s390/kvm/gaccess.h
+@@ -344,11 +344,12 @@ int read_guest_abs(struct kvm_vcpu *vcpu, unsigned long gpa, void *data,
+  * @len: number of bytes to copy
+  *
+  * Copy @len bytes from @data (kernel space) to @gra (guest real address).
+- * It is up to the caller to ensure that the entire guest memory range is
+- * valid memory before calling this function.
+  * Guest low address and key protection are not checked.
+  *
+- * Returns zero on success or -EFAULT on error.
++ * Returns zero on success, -EFAULT when copying from @data failed, or
++ * PGM_ADRESSING in case @gra is outside a memslot. In this case, pgm check info
++ * is also stored to allow injecting into the guest (if applicable) using
++ * kvm_s390_inject_prog_cond().
+  *
+  * If an error occurs data may have been copied partially to guest memory.
+  */
+@@ -367,11 +368,12 @@ int write_guest_real(struct kvm_vcpu *vcpu, unsigned long gra, void *data,
+  * @len: number of bytes to copy
+  *
+  * Copy @len bytes from @gra (guest real address) to @data (kernel space).
+- * It is up to the caller to ensure that the entire guest memory range is
+- * valid memory before calling this function.
+  * Guest key protection is not checked.
+  *
+- * Returns zero on success or -EFAULT on error.
++ * Returns zero on success, -EFAULT when copying to @data failed, or
++ * PGM_ADRESSING in case @gra is outside a memslot. In this case, pgm check info
++ * is also stored to allow injecting into the guest (if applicable) using
++ * kvm_s390_inject_prog_cond().
+  *
+  * If an error occurs data may have been copied partially to kernel space.
+  */
 -- 
 2.43.0
 
