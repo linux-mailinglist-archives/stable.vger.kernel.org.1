@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-88918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C39BF9B280F
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:53:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FB6C9B2600
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 014A91C20E3F
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:53:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9DB3282274
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88FC518EFEB;
-	Mon, 28 Oct 2024 06:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF7718FC6B;
+	Mon, 28 Oct 2024 06:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UOffi0CH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z735+V+G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4535118D649;
-	Mon, 28 Oct 2024 06:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDDB18E34F;
+	Mon, 28 Oct 2024 06:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098417; cv=none; b=nwTa+e7EgOxwxWTHftNTgXopSmJkkXkGGlxsldc03caiVkDHf+wbGFbtd1df16wMEARsJFIC3HuunCARKcaYztOOXHeohZ/DlXfX8jPlgNjTkGDSzsFmQHb4sTOTwxHpAl4JK5xlKRX5DmSMjZr70CurefQOsxPyfI1ck14mnIM=
+	t=1730097341; cv=none; b=MLLVubjzFgbz3k6r/tf5IJ9fPwzS4EIoIUliNP/rlOo6HLrZJYDT2c072KV6A9tP7mIZh8SzlbGzv8ldTSSsl/caAFen8TDBF2+DPM4hiSf0fM/sqLz3i0axNPIuWr3Jdk1OkseQhScT+kpRKYtXJxInfVmqpouykHQ9RFnxoJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098417; c=relaxed/simple;
-	bh=/LgpQsWwDUjXDyozNJpSHK/TWWJpdUTRh4u5OYXdlA0=;
+	s=arc-20240116; t=1730097341; c=relaxed/simple;
+	bh=4V3+6i/GAgxmXZmD4f8ZhnPCfe75uFpd+qoyeBis4bM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X+jt0iXhU2a8ueSZo4bIYq6zw+/ajzbk7XkaSJlP6HeABCik1dtY2WvLFktK6GwvP2CwHX7N8RJDZ7OgMohRygL1IssjEojlnjAZzXvbp2EHJOdg2/Dn9db45UewADW+FiicLVT1VK51L6t7Cky13BBFB6ssIuTyIg/rv4XtJXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UOffi0CH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9628C4CEC3;
-	Mon, 28 Oct 2024 06:53:36 +0000 (UTC)
+	 MIME-Version; b=Mc7BHlQ7rDLU5mH3oAxurkH+2+mIH0ZjzIurruIfEDrej6Ugqp8w1DMju9qC/7Dxlzo8BHDqw717km9hvx1H5I+fPkTyHeVKo5rmOt6G1p5TRSon06Wq1SJo3xQoUYI4sVx2yIfXNeZsfrvLkIryxoeJ9wncSYQu0hFFuOGudIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z735+V+G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DEBDC4CEC3;
+	Mon, 28 Oct 2024 06:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098417;
-	bh=/LgpQsWwDUjXDyozNJpSHK/TWWJpdUTRh4u5OYXdlA0=;
+	s=korg; t=1730097341;
+	bh=4V3+6i/GAgxmXZmD4f8ZhnPCfe75uFpd+qoyeBis4bM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UOffi0CHYInyoXDqnnWPFfH/+hKCwWtngL6q62J8MrSv54GtimFxz/gZ/nHnGOkwh
-	 n/ZQxy5qvS4Xv5Jk67JNvTl+iHw7lfJyfchUQNDVY4vhhbhl4gbeKvjQW5IarGyqAD
-	 wKjyUtKvCaFRuafLfWir+31DA+vt+eOzh/nNuUXM=
+	b=Z735+V+GmvusFUme7LaXTgAUrogtzFyyX8Y/QOCaqKRzBMzY0diGOtvILmf4A5LOM
+	 EfoEHiOWfe9HGCci0YKbXtGAqG260epqDOzJjaA3n42mSYvehZv3x8A0+YyDM7dkAT
+	 fVlg4JaHfxc/r8w54tc1Ol+NhfLbwAJEY5Hkmukw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Wang Hai <wanghai38@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 182/261] ASoC: dt-bindings: davinci-mcasp: Fix interrupt properties
-Date: Mon, 28 Oct 2024 07:25:24 +0100
-Message-ID: <20241028062316.567898795@linuxfoundation.org>
+Subject: [PATCH 6.1 088/137] net/sun3_82586: fix potential memory leak in sun3_82586_send_packet()
+Date: Mon, 28 Oct 2024 07:25:25 +0100
+Message-ID: <20241028062301.184393139@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit 8380dbf1b9ef66e3ce6c1d660fd7259637c2a929 ]
+[ Upstream commit 2cb3f56e827abb22c4168ad0c1bbbf401bb2f3b8 ]
 
-Combinations of "tx" alone, "rx" alone and "tx", "rx" together are
-supposedly valid (see link below), which is not the case today as "rx"
-alone is not accepted by the current binding.
+The sun3_82586_send_packet() returns NETDEV_TX_OK without freeing skb
+in case of skb->len being too long, add dev_kfree_skb() to fix it.
 
-Let's rework the two interrupt properties to expose all correct
-possibilities.
-
-Cc: Péter Ujfalusi <peter.ujfalusi@gmail.com>
-Link: https://lore.kernel.org/linux-sound/20241003102552.2c11840e@xps-13/T/#m277fce1d49c50d94e071f7890aed472fa2c64052
-Fixes: 8be90641a0bb ("ASoC: dt-bindings: davinci-mcasp: convert McASP bindings to yaml schema")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20241003083611.461894-1-miquel.raynal@bootlin.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Message-ID: <20241015144148.7918-1-wanghai38@huawei.com>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../bindings/sound/davinci-mcasp-audio.yaml    | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/i825xx/sun3_82586.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/sound/davinci-mcasp-audio.yaml b/Documentation/devicetree/bindings/sound/davinci-mcasp-audio.yaml
-index ab3206ffa4af8..beef193aaaeba 100644
---- a/Documentation/devicetree/bindings/sound/davinci-mcasp-audio.yaml
-+++ b/Documentation/devicetree/bindings/sound/davinci-mcasp-audio.yaml
-@@ -102,21 +102,21 @@ properties:
-     default: 2
+diff --git a/drivers/net/ethernet/i825xx/sun3_82586.c b/drivers/net/ethernet/i825xx/sun3_82586.c
+index 72d3b5328ebb4..54c83e66bf78b 100644
+--- a/drivers/net/ethernet/i825xx/sun3_82586.c
++++ b/drivers/net/ethernet/i825xx/sun3_82586.c
+@@ -1011,6 +1011,7 @@ sun3_82586_send_packet(struct sk_buff *skb, struct net_device *dev)
+ 	if(skb->len > XMIT_BUFF_SIZE)
+ 	{
+ 		printk("%s: Sorry, max. framelength is %d bytes. The length of your frame is %d bytes.\n",dev->name,XMIT_BUFF_SIZE,skb->len);
++		dev_kfree_skb(skb);
+ 		return NETDEV_TX_OK;
+ 	}
  
-   interrupts:
--    oneOf:
--      - minItems: 1
--        items:
--          - description: TX interrupt
--          - description: RX interrupt
--      - items:
--          - description: common/combined interrupt
-+    minItems: 1
-+    maxItems: 2
- 
-   interrupt-names:
-     oneOf:
--      - minItems: 1
-+      - description: TX interrupt
-+        const: tx
-+      - description: RX interrupt
-+        const: rx
-+      - description: TX and RX interrupts
-         items:
-           - const: tx
-           - const: rx
--      - const: common
-+      - description: Common/combined interrupt
-+        const: common
- 
-   fck_parent:
-     $ref: /schemas/types.yaml#/definitions/string
 -- 
 2.43.0
 
