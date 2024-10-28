@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-88536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EFF49B2667
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E9039B2779
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:48:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 563761C21347
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80C5D1C214C5
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:48:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC4418E778;
-	Mon, 28 Oct 2024 06:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1AA18A922;
+	Mon, 28 Oct 2024 06:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AY45ste9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="piyUNpix"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDB118E35B;
-	Mon, 28 Oct 2024 06:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9D48837;
+	Mon, 28 Oct 2024 06:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097555; cv=none; b=WwNDKWLutrQdRr26WxJJYHfgXB3xfSbWZ857NaSyYYkJMIAPt87zmXCjo1EeasPQcFpSkhXS3NieJTA2e6sAyMT1po80YKnG6/wmnn+96/MBztIEO6flK9tddsHVor6ko7CcdWqFW3RSsXxhMU+aZgODMEj5vLwkpEbvzB7HF7Q=
+	t=1730098113; cv=none; b=c1XpO3tLkjusQsIN9eBhtzZIzYEc/9cYPkLwLcupd3D+9VXYKA0p1UmMXxkEU5BBi8SYALlRVju+ahwlflnDW3Bd3bcTQXiLmW+5+UzKtJ2Gb3LchlfGDKS9NT1BBP6Koyqgu3VdlyXPgMc9kz/33EPlmh2fOISFlat7DhKIy4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097555; c=relaxed/simple;
-	bh=kq1uyohoiNf2MX+6XsaXI2n683vj9cCx22vUCg+6/qM=;
+	s=arc-20240116; t=1730098113; c=relaxed/simple;
+	bh=NOTCRZUKBM5Z9uqP35LnREhMt6AGNl4ZoV5Fo7YqLyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=birNHeqlGOrHzDVPEpo3pbT+efnDOE2Ec7LJ0WQu9mXl66mHxn231SofEMN2kroQr9JIaHw027ExigGvCL2rZ5HIACGG4ENQwCCHE8HmZIT/suLE9IwozEqyVf+RDIxuHfK3V1nmRd3wY9h+8X3Gdj+/I5LcUrrZHAar/HhH34E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AY45ste9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D78C4CEC3;
-	Mon, 28 Oct 2024 06:39:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CTwx8QD99l25+nIbaQbso0lzBT4BTA94Pv+e7IUxIh/yXbT7OPho/CnIK71xjNhq2L0TRmJw4VWhPksjXC2e0GeJpx2JnkLa6jmZqJdtj8j/qZmrdAz3gJaM90d7NLE8CGst+eiZg2dMOtMVgSsH6i/boNFr2Jb1VFZlNBEYaKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=piyUNpix; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6DC9C4CEC3;
+	Mon, 28 Oct 2024 06:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097555;
-	bh=kq1uyohoiNf2MX+6XsaXI2n683vj9cCx22vUCg+6/qM=;
+	s=korg; t=1730098112;
+	bh=NOTCRZUKBM5Z9uqP35LnREhMt6AGNl4ZoV5Fo7YqLyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AY45ste9CqiL3UQZqk4fIYVou7vdrmZYuE0FwEWYtcphD+pJstSlQQmi/8gbJAB/n
-	 giykb/W0S8PS0c8H87TLBN6X1V5kL7tgob1Zih/65lO/CE22nJAh/hb+JuMf8qZMto
-	 ZXheZa6gaQ7Q2m/+R5tw8ovwrshF8hKpS9Zp6xE0=
+	b=piyUNpixoKKYaDVyQ7A8emv80h9mB560e9yG0Snl+QLQSdkzbV5McD9Ysj6U4myhr
+	 NE+F6IN3NTee7Pweu7v4I3CVMVTPTWt7G/nXsaGCRQJqQI4CbPDNUQAN63dnvXrgVc
+	 eNaiD2Q8WS/y8SVF8D4z0psfTqvfMmkvP9usxENo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Marek <jonathan@marek.ca>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Paul Barker <paul.barker.ct@bp.renesas.com>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/208] drm/msm/dsi: fix 32-bit signed integer extension in pclk_rate calculation
+Subject: [PATCH 6.11 082/261] net: ravb: Only advertise Rx/Tx timestamps if hardware supports it
 Date: Mon, 28 Oct 2024 07:23:44 +0100
-Message-ID: <20241028062307.741769872@linuxfoundation.org>
+Message-ID: <20241028062314.085203120@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Marek <jonathan@marek.ca>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-[ Upstream commit 358b762400bd94db2a14a72dfcef74c7da6bd845 ]
+[ Upstream commit 126e799602f45e9ce1ded03ee9eadda68bf470e0 ]
 
-When (mode->clock * 1000) is larger than (1<<31), int to unsigned long
-conversion will sign extend the int to 64 bits and the pclk_rate value
-will be incorrect.
+Recent work moving the reporting of Rx software timestamps to the core
+[1] highlighted an issue where hardware time stamping was advertised
+for the platforms where it is not supported.
 
-Fix this by making the result of the multiplication unsigned.
+Fix this by covering advertising support for hardware timestamps only if
+the hardware supports it. Due to the Tx implementation in RAVB software
+Tx timestamping is also only considered if the hardware supports
+hardware timestamps. This should be addressed in future, but this fix
+only reflects what the driver currently implements.
 
-Note that above (1<<32) would still be broken and require more changes, but
-its unlikely anyone will need that anytime soon.
+1. Commit 277901ee3a26 ("ravb: Remove setting of RX software timestamp")
 
-Fixes: c4d8cfe516dc ("drm/msm/dsi: add implementation for helper functions")
-Signed-off-by: Jonathan Marek <jonathan@marek.ca>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/618434/
-Link: https://lore.kernel.org/r/20241007050157.26855-2-jonathan@marek.ca
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Fixes: 7e09a052dc4e ("ravb: Exclude gPTP feature support for RZ/G2L")
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Paul Barker <paul.barker.ct@bp.renesas.com>
+Tested-by: Paul Barker <paul.barker.ct@bp.renesas.com>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://patch.msgid.link/20241014124343.3875285-1-niklas.soderlund+renesas@ragnatech.se
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_host.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 25 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
-index fcfe612416b0b..f920329fe2e09 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_host.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-@@ -545,7 +545,7 @@ static unsigned long dsi_get_pclk_rate(const struct drm_display_mode *mode,
- {
- 	unsigned long pclk_rate;
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index d2a6518532f37..907af4651c553 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1750,20 +1750,19 @@ static int ravb_get_ts_info(struct net_device *ndev,
+ 	struct ravb_private *priv = netdev_priv(ndev);
+ 	const struct ravb_hw_info *hw_info = priv->info;
  
--	pclk_rate = mode->clock * 1000;
-+	pclk_rate = mode->clock * 1000u;
+-	info->so_timestamping =
+-		SOF_TIMESTAMPING_TX_SOFTWARE |
+-		SOF_TIMESTAMPING_TX_HARDWARE |
+-		SOF_TIMESTAMPING_RX_HARDWARE |
+-		SOF_TIMESTAMPING_RAW_HARDWARE;
+-	info->tx_types = (1 << HWTSTAMP_TX_OFF) | (1 << HWTSTAMP_TX_ON);
+-	info->rx_filters =
+-		(1 << HWTSTAMP_FILTER_NONE) |
+-		(1 << HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
+-		(1 << HWTSTAMP_FILTER_ALL);
+-	if (hw_info->gptp || hw_info->ccc_gac)
++	if (hw_info->gptp || hw_info->ccc_gac) {
++		info->so_timestamping =
++			SOF_TIMESTAMPING_TX_SOFTWARE |
++			SOF_TIMESTAMPING_TX_HARDWARE |
++			SOF_TIMESTAMPING_RX_HARDWARE |
++			SOF_TIMESTAMPING_RAW_HARDWARE;
++		info->tx_types = (1 << HWTSTAMP_TX_OFF) | (1 << HWTSTAMP_TX_ON);
++		info->rx_filters =
++			(1 << HWTSTAMP_FILTER_NONE) |
++			(1 << HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
++			(1 << HWTSTAMP_FILTER_ALL);
+ 		info->phc_index = ptp_clock_index(priv->ptp.clock);
+-	else
+-		info->phc_index = 0;
++	}
  
- 	if (dsc)
- 		pclk_rate = dsi_adjust_pclk_for_compression(mode, dsc);
+ 	return 0;
+ }
 -- 
 2.43.0
 
