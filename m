@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-88247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 827A49B2190
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 01:32:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 792FD9B2192
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 01:41:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4057B28131C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 00:32:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0FB7B20BBD
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 00:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD002CA7;
-	Mon, 28 Oct 2024 00:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B18A3A1BF;
+	Mon, 28 Oct 2024 00:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJlHl3ti"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VefZzwbb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9989C23D2
-	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 00:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A58EEA8
+	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 00:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730075521; cv=none; b=qyc+541OTLHHIefJ6DhoC+zdBmTHjKjHv34fKPCXZO+33+3PGMJ4eWV6SExPQFoZlgMMFcxKQywWKvk3BVbRmGJQMPYD6EcaiYIahpmNc5LJiNKFdNOYgmdEag/q6vxKS7iyeWtuQt9DwgUoQX3obYRzHVtBjP3ncETN+9I9p3Y=
+	t=1730076105; cv=none; b=GPVEqRsSzcIPJeJRFqVMfBba/RVNPoBV0v80bFZHP6LBnTvJQcy+RGEDuOpy9gHPwJWAB/QHkEaEwLqnTjLEtnQkGB1J3JFNxagihGR0K2oDXZ2OSSG16+2UvDm2LEEMDsTMul/0DeUCjUhRHLfiDg14vLrjJoIGAlfzuo/XrOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730075521; c=relaxed/simple;
-	bh=8BGu+8C7xg8zjcnFJ+cjYFfCda8SqnkBL7PhIYqCuoY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=O4MtOn19yYWzdhetdVTvvtMSlRSsSc/5VuRc5T1HYU0xQW08lgS9044NZUaLMSKY7/YJn02ZfBlWyLsibL0L3FEfoebkFMClzQanff1QS0Ltrt9t5NWIpWlxehZdjjoPXm/0U3WkYUyWh9krTr/AkCmCsYlJyY0oM7V1ck7oNK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KJlHl3ti; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F24ABC4CEC3;
-	Mon, 28 Oct 2024 00:32:00 +0000 (UTC)
+	s=arc-20240116; t=1730076105; c=relaxed/simple;
+	bh=mgKaLjJogM+iT5JlgrHH37ye8SGLIyvph7TVQHUIcEA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=p5wH2Wf9t2uGxUKMBNZMaEdZQUab14PQwuhpOWy8KHjE56ZCTpr53Tzn8NBGznTpKLP47ZcnudvV1EkVW78W8u+TaDC7b/lRR4uhT0rXEIEHS9tgb1E7U6VCrjTH72H+N6rMCwMc9MRTO9KnvJgBug0JVDzcJMuCvELXZe5fUqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VefZzwbb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EBD3C4CEC3;
+	Mon, 28 Oct 2024 00:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730075521;
-	bh=8BGu+8C7xg8zjcnFJ+cjYFfCda8SqnkBL7PhIYqCuoY=;
+	s=korg; t=1730076105;
+	bh=mgKaLjJogM+iT5JlgrHH37ye8SGLIyvph7TVQHUIcEA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=KJlHl3ti5+pfzj2+lIq9DPY4o78CJImfMIWdA7Dy/r8WztNJdVNy4dZ1JMsW84dNq
-	 oMj/t7WNRqP1SgOrESYPE3BniOo6YSZQ17J4avUB9twnjQmGK3lBS8ONPSJhhdagaI
-	 s/0GkKkdTqXsyE2hsDXZT4IO1eQtxLZ3qOAU8QVY=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: fix random data corruption for sdma 7" failed to apply to 6.11-stable tree
-To: Frank.Min@amd.com,alexander.deucher@amd.com
+	b=VefZzwbbzE1awi0k+Jew2ZkamrAuv6Qz/Qquax44kNRQHZ5WM3f/zFB0sSYk29NkO
+	 6qFSgsYl1M4naFlv4xH/KccFHyabMG5odRkdKGedtZ39iY39hJEGyAEj+d+sMBCfdk
+	 zLCrONlTzi4YzUYr8kyDNsTVxANC73XQr/5FFMvI=
+Subject: FAILED: patch "[PATCH] nfsd: fix race between laundromat and free_stateid" failed to apply to 6.6-stable tree
+To: okorniev@redhat.com,chuck.lever@oracle.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 28 Oct 2024 01:31:49 +0100
-Message-ID: <2024102849-flannels-ashy-e1bf@gregkh>
+Date: Mon, 28 Oct 2024 01:41:32 +0100
+Message-ID: <2024102832-murky-pasty-feca@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.11-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.11.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 108bc59fe817686a59d2008f217bad38a5cf4427
+git cherry-pick -x 8dd91e8d31febf4d9cca3ae1bb4771d33ae7ee5a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024102849-flannels-ashy-e1bf@gregkh' --subject-prefix 'PATCH 6.11.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024102832-murky-pasty-feca@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,48 +77,194 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 108bc59fe817686a59d2008f217bad38a5cf4427 Mon Sep 17 00:00:00 2001
-From: Frank Min <Frank.Min@amd.com>
-Date: Thu, 10 Oct 2024 16:41:32 +0800
-Subject: [PATCH] drm/amdgpu: fix random data corruption for sdma 7
+From 8dd91e8d31febf4d9cca3ae1bb4771d33ae7ee5a Mon Sep 17 00:00:00 2001
+From: Olga Kornievskaia <okorniev@redhat.com>
+Date: Fri, 18 Oct 2024 15:24:58 -0400
+Subject: [PATCH] nfsd: fix race between laundromat and free_stateid
 
-There is random data corruption caused by const fill, this is caused by
-write compression mode not correctly configured.
+There is a race between laundromat handling of revoked delegations
+and a client sending free_stateid operation. Laundromat thread
+finds that delegation has expired and needs to be revoked so it
+marks the delegation stid revoked and it puts it on a reaper list
+but then it unlock the state lock and the actual delegation revocation
+happens without the lock. Once the stid is marked revoked a racing
+free_stateid processing thread does the following (1) it calls
+list_del_init() which removes it from the reaper list and (2) frees
+the delegation stid structure. The laundromat thread ends up not
+calling the revoke_delegation() function for this particular delegation
+but that means it will no release the lock lease that exists on
+the file.
 
-So correct compression mode for const fill.
+Now, a new open for this file comes in and ends up finding that
+lease list isn't empty and calls nfsd_breaker_owns_lease() which ends
+up trying to derefence a freed delegation stateid. Leading to the
+followint use-after-free KASAN warning:
 
-Signed-off-by: Frank Min <Frank.Min@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 75400f8d6e36afc88d59db8a1f3e4b7d90d836ad)
-Cc: stable@vger.kernel.org # 6.11.x
+kernel: ==================================================================
+kernel: BUG: KASAN: slab-use-after-free in nfsd_breaker_owns_lease+0x140/0x160 [nfsd]
+kernel: Read of size 8 at addr ffff0000e73cd0c8 by task nfsd/6205
+kernel:
+kernel: CPU: 2 UID: 0 PID: 6205 Comm: nfsd Kdump: loaded Not tainted 6.11.0-rc7+ #9
+kernel: Hardware name: Apple Inc. Apple Virtualization Generic Platform, BIOS 2069.0.0.0.0 08/03/2024
+kernel: Call trace:
+kernel: dump_backtrace+0x98/0x120
+kernel: show_stack+0x1c/0x30
+kernel: dump_stack_lvl+0x80/0xe8
+kernel: print_address_description.constprop.0+0x84/0x390
+kernel: print_report+0xa4/0x268
+kernel: kasan_report+0xb4/0xf8
+kernel: __asan_report_load8_noabort+0x1c/0x28
+kernel: nfsd_breaker_owns_lease+0x140/0x160 [nfsd]
+kernel: nfsd_file_do_acquire+0xb3c/0x11d0 [nfsd]
+kernel: nfsd_file_acquire_opened+0x84/0x110 [nfsd]
+kernel: nfs4_get_vfs_file+0x634/0x958 [nfsd]
+kernel: nfsd4_process_open2+0xa40/0x1a40 [nfsd]
+kernel: nfsd4_open+0xa08/0xe80 [nfsd]
+kernel: nfsd4_proc_compound+0xb8c/0x2130 [nfsd]
+kernel: nfsd_dispatch+0x22c/0x718 [nfsd]
+kernel: svc_process_common+0x8e8/0x1960 [sunrpc]
+kernel: svc_process+0x3d4/0x7e0 [sunrpc]
+kernel: svc_handle_xprt+0x828/0xe10 [sunrpc]
+kernel: svc_recv+0x2cc/0x6a8 [sunrpc]
+kernel: nfsd+0x270/0x400 [nfsd]
+kernel: kthread+0x288/0x310
+kernel: ret_from_fork+0x10/0x20
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/sdma_v7_0.c b/drivers/gpu/drm/amd/amdgpu/sdma_v7_0.c
-index a8763496aed3..9288f37a3cc5 100644
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v7_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v7_0.c
-@@ -51,6 +51,12 @@ MODULE_FIRMWARE("amdgpu/sdma_7_0_1.bin");
- #define SDMA0_HYP_DEC_REG_END 0x589a
- #define SDMA1_HYP_DEC_REG_OFFSET 0x20
+This patch proposes a fixed that's based on adding 2 new additional
+stid's sc_status values that help coordinate between the laundromat
+and other operations (nfsd4_free_stateid() and nfsd4_delegreturn()).
+
+First to make sure, that once the stid is marked revoked, it is not
+removed by the nfsd4_free_stateid(), the laundromat take a reference
+on the stateid. Then, coordinating whether the stid has been put
+on the cl_revoked list or we are processing FREE_STATEID and need to
+make sure to remove it from the list, each check that state and act
+accordingly. If laundromat has added to the cl_revoke list before
+the arrival of FREE_STATEID, then nfsd4_free_stateid() knows to remove
+it from the list. If nfsd4_free_stateid() finds that operations arrived
+before laundromat has placed it on cl_revoke list, it marks the state
+freed and then laundromat will no longer add it to the list.
+
+Also, for nfsd4_delegreturn() when looking for the specified stid,
+we need to access stid that are marked removed or freeable, it means
+the laundromat has started processing it but hasn't finished and this
+delegreturn needs to return nfserr_deleg_revoked and not
+nfserr_bad_stateid. The latter will not trigger a FREE_STATEID and the
+lack of it will leave this stid on the cl_revoked list indefinitely.
+
+Fixes: 2d4a532d385f ("nfsd: ensure that clp->cl_revoked list is protected by clp->cl_lock")
+CC: stable@vger.kernel.org
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 56b261608af4..d1a2c677be7e 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -1359,21 +1359,47 @@ static void destroy_delegation(struct nfs4_delegation *dp)
+ 		destroy_unhashed_deleg(dp);
+ }
  
-+/*define for compression field for sdma7*/
-+#define SDMA_PKT_CONSTANT_FILL_HEADER_compress_offset 0
-+#define SDMA_PKT_CONSTANT_FILL_HEADER_compress_mask   0x00000001
-+#define SDMA_PKT_CONSTANT_FILL_HEADER_compress_shift  16
-+#define SDMA_PKT_CONSTANT_FILL_HEADER_COMPRESS(x) (((x) & SDMA_PKT_CONSTANT_FILL_HEADER_compress_mask) << SDMA_PKT_CONSTANT_FILL_HEADER_compress_shift)
-+
- static const struct amdgpu_hwip_reg_entry sdma_reg_list_7_0[] = {
- 	SOC15_REG_ENTRY_STR(GC, 0, regSDMA0_STATUS_REG),
- 	SOC15_REG_ENTRY_STR(GC, 0, regSDMA0_STATUS1_REG),
-@@ -1724,7 +1730,8 @@ static void sdma_v7_0_emit_fill_buffer(struct amdgpu_ib *ib,
- 				       uint64_t dst_offset,
- 				       uint32_t byte_count)
++/**
++ * revoke_delegation - perform nfs4 delegation structure cleanup
++ * @dp: pointer to the delegation
++ *
++ * This function assumes that it's called either from the administrative
++ * interface (nfsd4_revoke_states()) that's revoking a specific delegation
++ * stateid or it's called from a laundromat thread (nfsd4_landromat()) that
++ * determined that this specific state has expired and needs to be revoked
++ * (both mark state with the appropriate stid sc_status mode). It is also
++ * assumed that a reference was taken on the @dp state.
++ *
++ * If this function finds that the @dp state is SC_STATUS_FREED it means
++ * that a FREE_STATEID operation for this stateid has been processed and
++ * we can proceed to removing it from recalled list. However, if @dp state
++ * isn't marked SC_STATUS_FREED, it means we need place it on the cl_revoked
++ * list and wait for the FREE_STATEID to arrive from the client. At the same
++ * time, we need to mark it as SC_STATUS_FREEABLE to indicate to the
++ * nfsd4_free_stateid() function that this stateid has already been added
++ * to the cl_revoked list and that nfsd4_free_stateid() is now responsible
++ * for removing it from the list. Inspection of where the delegation state
++ * in the revocation process is protected by the clp->cl_lock.
++ */
+ static void revoke_delegation(struct nfs4_delegation *dp)
  {
--	ib->ptr[ib->length_dw++] = SDMA_PKT_COPY_LINEAR_HEADER_OP(SDMA_OP_CONST_FILL);
-+	ib->ptr[ib->length_dw++] = SDMA_PKT_CONSTANT_FILL_HEADER_OP(SDMA_OP_CONST_FILL) |
-+		SDMA_PKT_CONSTANT_FILL_HEADER_COMPRESS(1);
- 	ib->ptr[ib->length_dw++] = lower_32_bits(dst_offset);
- 	ib->ptr[ib->length_dw++] = upper_32_bits(dst_offset);
- 	ib->ptr[ib->length_dw++] = src_data;
+ 	struct nfs4_client *clp = dp->dl_stid.sc_client;
+ 
+ 	WARN_ON(!list_empty(&dp->dl_recall_lru));
++	WARN_ON_ONCE(!(dp->dl_stid.sc_status &
++		     (SC_STATUS_REVOKED | SC_STATUS_ADMIN_REVOKED)));
+ 
+ 	trace_nfsd_stid_revoke(&dp->dl_stid);
+ 
+-	if (dp->dl_stid.sc_status &
+-	    (SC_STATUS_REVOKED | SC_STATUS_ADMIN_REVOKED)) {
+-		spin_lock(&clp->cl_lock);
+-		refcount_inc(&dp->dl_stid.sc_count);
+-		list_add(&dp->dl_recall_lru, &clp->cl_revoked);
+-		spin_unlock(&clp->cl_lock);
++	spin_lock(&clp->cl_lock);
++	if (dp->dl_stid.sc_status & SC_STATUS_FREED) {
++		list_del_init(&dp->dl_recall_lru);
++		goto out;
+ 	}
++	list_add(&dp->dl_recall_lru, &clp->cl_revoked);
++	dp->dl_stid.sc_status |= SC_STATUS_FREEABLE;
++out:
++	spin_unlock(&clp->cl_lock);
+ 	destroy_unhashed_deleg(dp);
+ }
+ 
+@@ -1780,6 +1806,7 @@ void nfsd4_revoke_states(struct net *net, struct super_block *sb)
+ 					mutex_unlock(&stp->st_mutex);
+ 					break;
+ 				case SC_TYPE_DELEG:
++					refcount_inc(&stid->sc_count);
+ 					dp = delegstateid(stid);
+ 					spin_lock(&state_lock);
+ 					if (!unhash_delegation_locked(
+@@ -6545,6 +6572,7 @@ nfs4_laundromat(struct nfsd_net *nn)
+ 		dp = list_entry (pos, struct nfs4_delegation, dl_recall_lru);
+ 		if (!state_expired(&lt, dp->dl_time))
+ 			break;
++		refcount_inc(&dp->dl_stid.sc_count);
+ 		unhash_delegation_locked(dp, SC_STATUS_REVOKED);
+ 		list_add(&dp->dl_recall_lru, &reaplist);
+ 	}
+@@ -7157,7 +7185,9 @@ nfsd4_free_stateid(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 			s->sc_status |= SC_STATUS_CLOSED;
+ 			spin_unlock(&s->sc_lock);
+ 			dp = delegstateid(s);
+-			list_del_init(&dp->dl_recall_lru);
++			if (s->sc_status & SC_STATUS_FREEABLE)
++				list_del_init(&dp->dl_recall_lru);
++			s->sc_status |= SC_STATUS_FREED;
+ 			spin_unlock(&cl->cl_lock);
+ 			nfs4_put_stid(s);
+ 			ret = nfs_ok;
+@@ -7487,7 +7517,9 @@ nfsd4_delegreturn(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	if ((status = fh_verify(rqstp, &cstate->current_fh, S_IFREG, 0)))
+ 		return status;
+ 
+-	status = nfsd4_lookup_stateid(cstate, stateid, SC_TYPE_DELEG, 0, &s, nn);
++	status = nfsd4_lookup_stateid(cstate, stateid, SC_TYPE_DELEG,
++				      SC_STATUS_REVOKED | SC_STATUS_FREEABLE,
++				      &s, nn);
+ 	if (status)
+ 		goto out;
+ 	dp = delegstateid(s);
+diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
+index 79c743c01a47..35b3564c065f 100644
+--- a/fs/nfsd/state.h
++++ b/fs/nfsd/state.h
+@@ -114,6 +114,8 @@ struct nfs4_stid {
+ /* For a deleg stateid kept around only to process free_stateid's: */
+ #define SC_STATUS_REVOKED	BIT(1)
+ #define SC_STATUS_ADMIN_REVOKED	BIT(2)
++#define SC_STATUS_FREEABLE	BIT(3)
++#define SC_STATUS_FREED		BIT(4)
+ 	unsigned short		sc_status;
+ 
+ 	struct list_head	sc_cp_list;
 
 
