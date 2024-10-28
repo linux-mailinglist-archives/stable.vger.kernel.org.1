@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-88380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E33B9B25B0
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:33:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A67869B27B6
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:50:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8EA81F21549
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:33:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45D85B21048
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA9118E348;
-	Mon, 28 Oct 2024 06:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCFFD18DF7D;
+	Mon, 28 Oct 2024 06:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4gmrw84"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lAeDGoZE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CBC818DF88;
-	Mon, 28 Oct 2024 06:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B45A2AF07;
+	Mon, 28 Oct 2024 06:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097199; cv=none; b=mjN9E4t/HbbwhsZFhEZxVyyq2OC2qw0FLO5EtrK49b5gUBWecpqa0lqZqXSXFEARYIROqKG2+rQrcgc/iiiUdmiXCHr6xV2NzkTUTMQ8zWbs7PdBWBbhSIdhD3IT9bLtX0hQtWf5yGZIsm5I1WzdZK+hNSUUAl4mIczCssfEcuk=
+	t=1730098236; cv=none; b=aE6jNp6vklyt/tUMsF221yw9SpaPGdAaotzAyjbOh3+F243F4bCX8D0tbzQfX2cr0WLzBVUz9X3SkUNXvz1eGoAlKFTQswscULpX83L45zHrrSZAbIofcNOvRPAyuSjitrfIWAoOQOJwaRMibWKNDrObLJkmA9gKy5A2Mvjti+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097199; c=relaxed/simple;
-	bh=jiPzlCCrxkyM7+CgJfEWdFAViLnJ/hVGFD9NgXUnpmQ=;
+	s=arc-20240116; t=1730098236; c=relaxed/simple;
+	bh=v0ZXueXPDSINQpjeRAHVbe66Z2sGg3pEl3kh8ro5FRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oGTJ2KEOJysgeZw0KY7Jf7FXV+FNS/DJ/zI2FVunXlRjHuYL9tmt5VEownzUwGg0t3VblSaN7xc2E5MEzHOwImqlkdtScElJ1bm9+GJUNMtDvJNaaumZr9k77x0vAy5Nwd0kQ4E3w8ffyACKBBrnM8fexjWvwfelOM0pRzIq6xI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4gmrw84; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8467C4CEC7;
-	Mon, 28 Oct 2024 06:33:18 +0000 (UTC)
+	 MIME-Version; b=KjjxvSA/6UXUe2SW875vrDU4IO2yuiVgH9OhocdMB/zKBTmu9aVortILU291xHiOxqM57a6EOJF3nOOti2HQgHchMVKf9ZdVvOsPD86dt4YcpK4fzdgpQx9mZv20kn9ha5Uuhwkse7cyyDNon0uT6o/bHTQWBeqaR+CPs9El74M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lAeDGoZE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0873C4CEC7;
+	Mon, 28 Oct 2024 06:50:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097199;
-	bh=jiPzlCCrxkyM7+CgJfEWdFAViLnJ/hVGFD9NgXUnpmQ=;
+	s=korg; t=1730098236;
+	bh=v0ZXueXPDSINQpjeRAHVbe66Z2sGg3pEl3kh8ro5FRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v4gmrw84XsCDXyPZZpqOfBWzV/UYETa7sHKiMpdojgh8F6+FuOtycMAWG067K7t9d
-	 JHxiZCo3UOGgkKLRoIokEoWPj63C+T/l0svMDQBsskcvIjIPzX27rHos76qpLwbgjT
-	 3J2tfgeb69s+EqMLnC/QuCxj/XVDNGeoDeaGFMFk=
+	b=lAeDGoZEcL2Q2a7rTS2WNKTa69hLrRpS6RA8XRUJzdYjOTIJ+6PoC0qXsBlvfJna8
+	 PtjjqlMHM/xNZOgDVnkL6/wpWRaUbGKq7U1NYFny5ESjpxCEqaIvxJlS3GwlmIlYdP
+	 IAdjeNwATzR2KZMSbzjrysXq61zfAG1Dbe3oAW/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Chandramohan Akula <chandramohan.akula@broadcom.com>,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Michal Luczaj <mhal@rbox.co>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 006/137] RDMA/bnxt_re: Fix incorrect AVID type in WQE structure
-Date: Mon, 28 Oct 2024 07:24:03 +0100
-Message-ID: <20241028062258.884479024@linuxfoundation.org>
+Subject: [PATCH 6.11 102/261] bpf, sockmap: SK_DROP on attempted redirects of unsupported af_vsock
+Date: Mon, 28 Oct 2024 07:24:04 +0100
+Message-ID: <20241028062314.585877627@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,49 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit 9ab20f76ae9fad55ebaf36bdff04aea1c2552374 ]
+[ Upstream commit 9c5bd93edf7b8834aecaa7c340b852d5990d7c78 ]
 
-Driver uses internal data structure to construct WQE frame.
-It used avid type as u16 which can accommodate up to 64K AVs.
-When outstanding AVID crosses 64K, driver truncates AVID and
-hence it uses incorrect AVID to WR. This leads to WR failure
-due to invalid AV ID and QP is moved to error state with reason
-set to 19 (INVALID AVID). When RDMA CM path is used, this issue
-hits QP1 and it is moved to error state
+Don't mislead the callers of bpf_{sk,msg}_redirect_{map,hash}(): make sure
+to immediately and visibly fail the forwarding of unsupported af_vsock
+packets.
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Link: https://patch.msgid.link/r/1726715161-18941-3-git-send-email-selvin.xavier@broadcom.com
-Reviewed-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Reviewed-by: Chandramohan Akula <chandramohan.akula@broadcom.com>
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 634f1a7110b4 ("vsock: support sockmap")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/bpf/20241013-vsock-fixes-for-redir-v2-1-d6577bbfe742@rbox.co
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/sock.h  | 5 +++++
+ net/core/sock_map.c | 8 ++++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-index 4f1a845f9be6c..57a3dae87f659 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-@@ -169,7 +169,7 @@ struct bnxt_qplib_swqe {
- 			};
- 			u32		q_key;
- 			u32		dst_qp;
--			u16		avid;
-+			u32		avid;
- 		} send;
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 2d4149075091b..f127fc268a5ef 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2715,6 +2715,11 @@ static inline bool sk_is_stream_unix(const struct sock *sk)
+ 	return sk->sk_family == AF_UNIX && sk->sk_type == SOCK_STREAM;
+ }
  
- 		/* Send Raw Ethernet and QP1 */
++static inline bool sk_is_vsock(const struct sock *sk)
++{
++	return sk->sk_family == AF_VSOCK;
++}
++
+ /**
+  * sk_eat_skb - Release a skb if it is no longer needed
+  * @sk: socket to eat this skb from
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index 724b6856fcc3e..219fd8f1ca2a4 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -656,6 +656,8 @@ BPF_CALL_4(bpf_sk_redirect_map, struct sk_buff *, skb,
+ 	sk = __sock_map_lookup_elem(map, key);
+ 	if (unlikely(!sk || !sock_map_redirect_allowed(sk)))
+ 		return SK_DROP;
++	if ((flags & BPF_F_INGRESS) && sk_is_vsock(sk))
++		return SK_DROP;
+ 
+ 	skb_bpf_set_redir(skb, sk, flags & BPF_F_INGRESS);
+ 	return SK_PASS;
+@@ -684,6 +686,8 @@ BPF_CALL_4(bpf_msg_redirect_map, struct sk_msg *, msg,
+ 		return SK_DROP;
+ 	if (!(flags & BPF_F_INGRESS) && !sk_is_tcp(sk))
+ 		return SK_DROP;
++	if (sk_is_vsock(sk))
++		return SK_DROP;
+ 
+ 	msg->flags = flags;
+ 	msg->sk_redir = sk;
+@@ -1258,6 +1262,8 @@ BPF_CALL_4(bpf_sk_redirect_hash, struct sk_buff *, skb,
+ 	sk = __sock_hash_lookup_elem(map, key);
+ 	if (unlikely(!sk || !sock_map_redirect_allowed(sk)))
+ 		return SK_DROP;
++	if ((flags & BPF_F_INGRESS) && sk_is_vsock(sk))
++		return SK_DROP;
+ 
+ 	skb_bpf_set_redir(skb, sk, flags & BPF_F_INGRESS);
+ 	return SK_PASS;
+@@ -1286,6 +1292,8 @@ BPF_CALL_4(bpf_msg_redirect_hash, struct sk_msg *, msg,
+ 		return SK_DROP;
+ 	if (!(flags & BPF_F_INGRESS) && !sk_is_tcp(sk))
+ 		return SK_DROP;
++	if (sk_is_vsock(sk))
++		return SK_DROP;
+ 
+ 	msg->flags = flags;
+ 	msg->sk_redir = sk;
 -- 
 2.43.0
 
