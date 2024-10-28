@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-88417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C010A9B25E7
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 812139B27A7
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:50:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85795280DD7
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:35:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 295911F2246C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:50:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9912019048D;
-	Mon, 28 Oct 2024 06:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89DA18E35B;
+	Mon, 28 Oct 2024 06:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/87lgH/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHMRxR6I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C2C18E778;
-	Mon, 28 Oct 2024 06:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8537C2AF07;
+	Mon, 28 Oct 2024 06:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097284; cv=none; b=SuaKWC2Bieux2bDAuUzfzFAWWy9b/Gi3l1cLbFtlVIgIvzPTijdkD3jn+B8Dev0F79omkL4WBNMUgwIQK8icyPYYjhDVFKLi2YtADSujptTRdrxzaZqeuC3SfXqOQx9ksKktAKSylGG56lRvkVtlJk4Nzj/1dvlbJG3b9y0CNgM=
+	t=1730098202; cv=none; b=HAmhx+voTf7/LOIt32fXLgRMC/SR19lmY8h6gYtD/BTkGsl9EqMFBalFCXmv9DbapfIEL4OQ5nHIDKUIxgrMsckQWz0cMEt1Ff+wAnaw/3zA8g3mKPIY16EIAz4b4f3CiUfFbLH4jPo1ME7weNluuYG0Jxtz6shjXlS9HO1QVv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097284; c=relaxed/simple;
-	bh=JFCj0FQxO/I67ZlNjlT9LnZmt4ddTAk4b16pKiSpAwM=;
+	s=arc-20240116; t=1730098202; c=relaxed/simple;
+	bh=MlLIcKMUewYmcAZDyck0vGE/nhqhk1EsuZ1agaguik4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PQ/RweonUXCEmR4C+uFg+ypHVrwC6p8oTNM2ZxugTDnYLNgG7tGj8Qcul06cLKaCgEjiw1V3s3WmmFQeVXOzdOJHQLipcjFd2cDyyLwUy+wIoPQCk/5gvblibyWncOB+3LADHX8biCnzShdlmawfOXvRvyX+XrdHaaV6q5tfIHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/87lgH/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2B0C4CEC3;
-	Mon, 28 Oct 2024 06:34:43 +0000 (UTC)
+	 MIME-Version; b=tiuliZM2+1lXZz8OStGA8gBGtb+HoOpQ6SrjOKUtxQA6grT0vTm+1+PM6k1/hhsyMZMp3+h0lc7Es3rBcO+3n0bvfp1bnPQ4CUHvgXD5MfxkNH8PvN5TnWT8c7cXsgSSyRsapnmCyX9aLFdfDxTA/bGWCpaU3EPBHahTZZGWudI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHMRxR6I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25DDEC4CEC3;
+	Mon, 28 Oct 2024 06:50:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097284;
-	bh=JFCj0FQxO/I67ZlNjlT9LnZmt4ddTAk4b16pKiSpAwM=;
+	s=korg; t=1730098202;
+	bh=MlLIcKMUewYmcAZDyck0vGE/nhqhk1EsuZ1agaguik4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i/87lgH/2FbkZDvcfcXjwGm7qlSHNu2laV+RUsgiwpB6JJhySHZMQSO8l+XHRebEW
-	 Uj3mdxoUKWZ7RDwWlvE4B4c4YM+4qgn9mDtB2s9XN5pupACBTtIwmA9KjePB+EfFwl
-	 y0Ltr6kD0tkZ0JCdq58uyS4C9LBCUdu2KeP2xNWw=
+	b=YHMRxR6I4qyMaUtP0cr9DE0zRWMFgQE8iFPgpRUSw6i+6YsPyNtqloVo7TNWJP7aP
+	 jtMSgueSXcFb5ib/T/zyxpT/sgXLBkWuI2dCxYDse+UKAQec4DbsHwgOgfG1c27yAq
+	 C2xUuZYJCD22+OQMjNKYxO/iJjIAD6eTSyACOQeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 027/137] net: usb: usbnet: fix race in probe failure
+Subject: [PATCH 6.11 122/261] drm/vboxvideo: Replace fake VLA at end of vbva_mouse_pointer_shape with real VLA
 Date: Mon, 28 Oct 2024 07:24:24 +0100
-Message-ID: <20241028062259.478996683@linuxfoundation.org>
+Message-ID: <20241028062315.089216440@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit b62f4c186c70aa235fef2da68d07325d85ca3ade ]
+[ Upstream commit d92b90f9a54d9300a6e883258e79f36dab53bfae ]
 
-The same bug as in the disconnect code path also exists
-in the case of a failure late during the probe process.
-The flag must also be set.
+Replace the fake VLA at end of the vbva_mouse_pointer_shape shape with
+a real VLA to fix a "memcpy: detected field-spanning write error" warning:
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Link: https://patch.msgid.link/20241010131934.1499695-1-oneukum@suse.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[   13.319813] memcpy: detected field-spanning write (size 16896) of single field "p->data" at drivers/gpu/drm/vboxvideo/hgsmi_base.c:154 (size 4)
+[   13.319841] WARNING: CPU: 0 PID: 1105 at drivers/gpu/drm/vboxvideo/hgsmi_base.c:154 hgsmi_update_pointer_shape+0x192/0x1c0 [vboxvideo]
+[   13.320038] Call Trace:
+[   13.320173]  hgsmi_update_pointer_shape [vboxvideo]
+[   13.320184]  vbox_cursor_atomic_update [vboxvideo]
+
+Note as mentioned in the added comment it seems the original length
+calculation for the allocated and send hgsmi buffer is 4 bytes too large.
+Changing this is not the goal of this patch, so this behavior is kept.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240827104523.17442-1-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/usbnet.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/vboxvideo/hgsmi_base.c | 10 +++++++++-
+ drivers/gpu/drm/vboxvideo/vboxvideo.h  |  4 +---
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index bd0b807db751d..ce587a12b894c 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1869,6 +1869,7 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
- 	 * may trigger an error resubmitting itself and, worse,
- 	 * schedule a timer. So we kill it all just in case.
+diff --git a/drivers/gpu/drm/vboxvideo/hgsmi_base.c b/drivers/gpu/drm/vboxvideo/hgsmi_base.c
+index 8c041d7ce4f1b..87dccaecc3e57 100644
+--- a/drivers/gpu/drm/vboxvideo/hgsmi_base.c
++++ b/drivers/gpu/drm/vboxvideo/hgsmi_base.c
+@@ -139,7 +139,15 @@ int hgsmi_update_pointer_shape(struct gen_pool *ctx, u32 flags,
+ 		flags |= VBOX_MOUSE_POINTER_VISIBLE;
+ 	}
+ 
+-	p = hgsmi_buffer_alloc(ctx, sizeof(*p) + pixel_len, HGSMI_CH_VBVA,
++	/*
++	 * The 4 extra bytes come from switching struct vbva_mouse_pointer_shape
++	 * from having a 4 bytes fixed array at the end to using a proper VLA
++	 * at the end. These 4 extra bytes were not subtracted from sizeof(*p)
++	 * before the switch to the VLA, so this way the behavior is unchanged.
++	 * Chances are these 4 extra bytes are not necessary but they are kept
++	 * to avoid regressions.
++	 */
++	p = hgsmi_buffer_alloc(ctx, sizeof(*p) + pixel_len + 4, HGSMI_CH_VBVA,
+ 			       VBVA_MOUSE_POINTER_SHAPE);
+ 	if (!p)
+ 		return -ENOMEM;
+diff --git a/drivers/gpu/drm/vboxvideo/vboxvideo.h b/drivers/gpu/drm/vboxvideo/vboxvideo.h
+index f60d82504da02..79ec8481de0e4 100644
+--- a/drivers/gpu/drm/vboxvideo/vboxvideo.h
++++ b/drivers/gpu/drm/vboxvideo/vboxvideo.h
+@@ -351,10 +351,8 @@ struct vbva_mouse_pointer_shape {
+ 	 * Bytes in the gap between the AND and the XOR mask are undefined.
+ 	 * XOR mask scanlines have no gap between them and size of XOR mask is:
+ 	 * xor_len = width * 4 * height.
+-	 *
+-	 * Preallocate 4 bytes for accessing actual data as p->data.
  	 */
-+	usbnet_mark_going_away(dev);
- 	cancel_work_sync(&dev->kevent);
- 	del_timer_sync(&dev->delay);
- 	free_percpu(net->tstats);
+-	u8 data[4];
++	u8 data[];
+ } __packed;
+ 
+ /* pointer is visible */
 -- 
 2.43.0
 
