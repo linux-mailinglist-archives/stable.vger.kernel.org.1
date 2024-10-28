@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-88688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EBBE9B270E
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:45:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 283BD9B258A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:32:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F3B11F21F68
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:45:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C84371F2178F
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B1918E35B;
-	Mon, 28 Oct 2024 06:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B802918DF68;
+	Mon, 28 Oct 2024 06:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aW+pDGVX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0GsQFALv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263862C697;
-	Mon, 28 Oct 2024 06:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C84186E52;
+	Mon, 28 Oct 2024 06:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097898; cv=none; b=Yx1lapzUYV855XROVitR7qx49uW7F0XEFzsfi+efD3Ky7jBHEBQ7ADmbMGDPpmiQhi9W22KcxiiJZZJeLAkFVyHX6Al83cejeXvHRGXsM6SMCIxmkUICTAaY1u3ZEBGtCB6fYbiVgMN1abH0BlufHge3wCuJ2/R22Fw/tzOHXMI=
+	t=1730097135; cv=none; b=XOmyk3FhacxYVuy8xHlkwp36RaqqCvgHbYPGKetDExXq6TMzvHVlo/+1Ey4LU6Mu2VuP2x+RF0kR3M1kTde5kgAAji/7jg1mK1YjLO14ekOuUakinvyK50CYiFR/5srcWdxhfjqMekkZW1dyei08UX15QlP4AJdLRE+r2mxoJxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097898; c=relaxed/simple;
-	bh=IcBIbVcDK8XSdlKOSU9kXVpuSnCoqjuAP59P0+xvsJM=;
+	s=arc-20240116; t=1730097135; c=relaxed/simple;
+	bh=7HYYwKAlb3pd7afBRSm1CD6arKP3iQnCELi+mDEoKyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q3MBZRWlPlOFRxztpPbYQ69RGKbib301POZPeaxSFSZTarH2DMEyDQwqVxr3ta73UmzuOOwriUsrcWoC4HugzuXMrx0PrfwfJYBMyIu32M76q8gHHx0q1lSUWwZNzeTc2yvAK5iMDlwyBYj09VeHI2fSBJJAmNu7TLNL2i0Iipk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aW+pDGVX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE106C4CEC3;
-	Mon, 28 Oct 2024 06:44:57 +0000 (UTC)
+	 MIME-Version; b=A5Jpuw5kJMWohf7jiegbA97/UaWWLbrLouo6iK75Rzsz3NlpWaUS3uztpoH2O+Ed5peykpVXd6t3cngu10Gz0rkJXQyJi102XyvsEslzxtPtSURPhrv8kwqpQb//wlNdhCk1nq2L42c/qKjgAGJhSY/wUo2L/si2o/mIn9g7b6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0GsQFALv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1400AC4CEC7;
+	Mon, 28 Oct 2024 06:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097898;
-	bh=IcBIbVcDK8XSdlKOSU9kXVpuSnCoqjuAP59P0+xvsJM=;
+	s=korg; t=1730097135;
+	bh=7HYYwKAlb3pd7afBRSm1CD6arKP3iQnCELi+mDEoKyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aW+pDGVXl4zDC3r8Ze0Mrc4utBFYsVrUb37Il90+uIbm/U63pCX0hab/NkxuFE8xF
-	 1gOGsgq7zWrt/0g/FfyU6DIYv4yrpME+5t7noj0fgrRF0ZbkvHYuUUpfZpwIoAK08/
-	 UlZfMvJ4dEkxpAwOYURnne3uO3SN+S2qZx1tF/pQ=
+	b=0GsQFALvmHu+BN3k2Q9bWgF7tzzOeT7KyOnqAWSrFq2IavalngH/c8EE84uIkB7d1
+	 lOKuL2jNcuIo0mhfwlXhHC2MUjmBJEWeCHeIn+cwCoSL3TdDMrJo5XlYFy0rPJWacv
+	 VcZhFObWMwFcv1WrDjHqt7vJHMPhJZC+b6GfInw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.6 179/208] drm/amd: Guard against bad data for ATIF ACPI method
-Date: Mon, 28 Oct 2024 07:25:59 +0100
-Message-ID: <20241028062311.042423916@linuxfoundation.org>
+	Zichen Xie <zichenxie0106@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 80/80] ASoC: qcom: Fix NULL Dereference in asoc_qcom_lpass_cpu_platform_probe()
+Date: Mon, 28 Oct 2024 07:26:00 +0100
+Message-ID: <20241028062254.833111825@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Zichen Xie <zichenxie0106@gmail.com>
 
-commit bf58f03931fdcf7b3c45cb76ac13244477a60f44 upstream.
+commit 49da1463c9e3d2082276c3e0e2a8b65a88711cd2 upstream.
 
-If a BIOS provides bad data in response to an ATIF method call
-this causes a NULL pointer dereference in the caller.
+A devm_kzalloc() in asoc_qcom_lpass_cpu_platform_probe() could
+possibly return NULL pointer. NULL Pointer Dereference may be
+triggerred without addtional check.
+Add a NULL check for the returned pointer.
 
-```
-? show_regs (arch/x86/kernel/dumpstack.c:478 (discriminator 1))
-? __die (arch/x86/kernel/dumpstack.c:423 arch/x86/kernel/dumpstack.c:434)
-? page_fault_oops (arch/x86/mm/fault.c:544 (discriminator 2) arch/x86/mm/fault.c:705 (discriminator 2))
-? do_user_addr_fault (arch/x86/mm/fault.c:440 (discriminator 1) arch/x86/mm/fault.c:1232 (discriminator 1))
-? acpi_ut_update_object_reference (drivers/acpi/acpica/utdelete.c:642)
-? exc_page_fault (arch/x86/mm/fault.c:1542)
-? asm_exc_page_fault (./arch/x86/include/asm/idtentry.h:623)
-? amdgpu_atif_query_backlight_caps.constprop.0 (drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c:387 (discriminator 2)) amdgpu
-? amdgpu_atif_query_backlight_caps.constprop.0 (drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c:386 (discriminator 1)) amdgpu
-```
-
-It has been encountered on at least one system, so guard for it.
-
-Fixes: d38ceaf99ed0 ("drm/amdgpu: add core driver (v4)")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit c9b7c809b89f24e9372a4e7f02d64c950b07fdee)
+Fixes: b5022a36d28f ("ASoC: qcom: lpass: Use regmap_field for i2sctl and dmactl registers")
 Cc: stable@vger.kernel.org
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+Link: https://patch.msgid.link/20241006205737.8829-1-zichenxie0106@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ sound/soc/qcom/lpass-cpu.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-@@ -147,6 +147,7 @@ static union acpi_object *amdgpu_atif_ca
- 					   struct acpi_buffer *params)
- {
- 	acpi_status status;
-+	union acpi_object *obj;
- 	union acpi_object atif_arg_elements[2];
- 	struct acpi_object_list atif_arg;
- 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
-@@ -169,16 +170,24 @@ static union acpi_object *amdgpu_atif_ca
+--- a/sound/soc/qcom/lpass-cpu.c
++++ b/sound/soc/qcom/lpass-cpu.c
+@@ -975,6 +975,8 @@ int asoc_qcom_lpass_cpu_platform_probe(s
+ 	/* Allocation for i2sctl regmap fields */
+ 	drvdata->i2sctl = devm_kzalloc(&pdev->dev, sizeof(struct lpaif_i2sctl),
+ 					GFP_KERNEL);
++	if (!drvdata->i2sctl)
++		return -ENOMEM;
  
- 	status = acpi_evaluate_object(atif->handle, NULL, &atif_arg,
- 				      &buffer);
-+	obj = (union acpi_object *)buffer.pointer;
- 
--	/* Fail only if calling the method fails and ATIF is supported */
-+	/* Fail if calling the method fails and ATIF is supported */
- 	if (ACPI_FAILURE(status) && status != AE_NOT_FOUND) {
- 		DRM_DEBUG_DRIVER("failed to evaluate ATIF got %s\n",
- 				 acpi_format_exception(status));
--		kfree(buffer.pointer);
-+		kfree(obj);
- 		return NULL;
- 	}
- 
--	return buffer.pointer;
-+	if (obj->type != ACPI_TYPE_BUFFER) {
-+		DRM_DEBUG_DRIVER("bad object returned from ATIF: %d\n",
-+				 obj->type);
-+		kfree(obj);
-+		return NULL;
-+	}
-+
-+	return obj;
- }
- 
- /**
+ 	/* Initialize bitfields for dai I2SCTL register */
+ 	ret = lpass_cpu_init_i2sctl_bitfields(dev, drvdata->i2sctl,
 
 
 
