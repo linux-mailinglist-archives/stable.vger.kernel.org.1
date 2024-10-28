@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-88555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6A969B267A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 284879B2768
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:47:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04EFC1C2139A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D267E1F247CA
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7C2B18E36D;
-	Mon, 28 Oct 2024 06:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7554818DF7D;
+	Mon, 28 Oct 2024 06:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3qPsiwh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uln6mjq9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A527618DF68;
-	Mon, 28 Oct 2024 06:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FC618E05D;
+	Mon, 28 Oct 2024 06:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097597; cv=none; b=jDTugB9dt8MjddZHPiSFoHWy5rQvvN9nbfiX2RhyDCLwwqL31Tiikds4nn5rzrCr41nUBll8wurKINaab7fSHqi0l+KKz4aX7HlG0NoYMhGdmd4CwRJxBqg7ihc++kN7Ru370am6e6TzdG9Qpz42g3U2ViRWBaDNscBwjYTgXqE=
+	t=1730098075; cv=none; b=iEzlnPjO8Y3cxqgYcYtXZ9+0TtqbiL1BXSeS1fpNqF/LtBCgJ/BgKnxjjRdk2ckNerY7qBchrhiHWUaNoD+SBfizEQoTUl1Gylhs8kZXMP84hYd2TpJ7G0fbLwc51dhUZO2sS4BqwUS7vx1g8E/N4/h+czCDCB0rbf9RF7zmGRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097597; c=relaxed/simple;
-	bh=lWMV+jzZacoBFR1wI2JwTvsJVoEp0+YrepVzi9LAKW0=;
+	s=arc-20240116; t=1730098075; c=relaxed/simple;
+	bh=PJI16U6Gt0ZHdLo/QWJ901ezQec7yQlVH1hPzmPkpVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rNshKvGkJnuQdzIiKgKabHj9TeBRCKF9VffaX6SMBZpkTD79fJLkrj4lPJ25y+Ye45utHA4L2QrGmcvWrg+Ld9mcK9kZGOR3f0m/MRC/4ybALY/EbeNeh9sF1pigCrqMDkN0+eXRcfV2sf3yRGABd2efB0jS9XFSLtb57CC6v9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3qPsiwh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46928C4CEC3;
-	Mon, 28 Oct 2024 06:39:57 +0000 (UTC)
+	 MIME-Version; b=td3UqOqEjbpizVn8Hnh3g2snihoH11I60sp1DEZYwWUUxFy+UObzHmSQNThuZqn7wKXiC/IK5iJMF6Q66S3Zn+xVVFw+ZiS7pbJ2R4VQFQdNe6FqK5zbzDo/fJDL6FmvkCTShYYKr1FSAhspkxdFuEnVeRSofUTYVXSkH+T0p6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uln6mjq9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB2EC4CEC3;
+	Mon, 28 Oct 2024 06:47:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097597;
-	bh=lWMV+jzZacoBFR1wI2JwTvsJVoEp0+YrepVzi9LAKW0=;
+	s=korg; t=1730098074;
+	bh=PJI16U6Gt0ZHdLo/QWJ901ezQec7yQlVH1hPzmPkpVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d3qPsiwhT76C/hMQKD6yVQN/o1CZp5+u0bHoj2OCbdT91vLYOcMVT3xJeXoSOZEnW
-	 YZ3nfEUcMlmpaWlM5BoCDo3U/N08/8Vdrk6TYCsKVmUOcTsPeLXJlZNLjyyBms6M+O
-	 /gBUo+9SrvzSyOd8139v42g9SErlk7tbLFkL/fAA=
+	b=uln6mjq96nDz2bZ9V0cHQWizGgXSOAVCtbKTpEZ1FaLuefWpgJObEvW2P9lKag11A
+	 vEd9IOAr3UEGYAUSClMUDgKWZsoTnTDBs3TmB6jTdPzFu4YjjHnl9q5t9DEecYiZN+
+	 3oJ0tMJJzOsIf+b1Xzoc9MOr4Vy/6IoiMkrYPg/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@maxima.ru>,
-	Takashi Iwai <tiwai@suse.de>,
+	syzbot+d383dc9579a76f56c251@syzkaller.appspotmail.com,
+	syzbot+c596faae21a68bf7afd0@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/208] ALSA: hda/cs8409: Fix possible NULL dereference
-Date: Mon, 28 Oct 2024 07:23:27 +0100
-Message-ID: <20241028062307.325354615@linuxfoundation.org>
+Subject: [PATCH 6.11 066/261] netdevsim: use cond_resched() in nsim_dev_trap_report_work()
+Date: Mon, 28 Oct 2024 07:23:28 +0100
+Message-ID: <20241028062313.687214789@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +65,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@maxima.ru>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit c9bd4a82b4ed32c6d1c90500a52063e6e341517f ]
+[ Upstream commit a1494d532e28598bde7a5544892ef9c7dbfafa93 ]
 
-If snd_hda_gen_add_kctl fails to allocate memory and returns NULL, then
-NULL pointer dereference will occur in the next line.
+I am still seeing many syzbot reports hinting that syzbot
+might fool nsim_dev_trap_report_work() with hundreds of ports [1]
 
-Since dolphin_fixups function is a hda_fixup function which is not supposed
-to return any errors, add simple check before dereference, ignore the fail.
+Lets use cond_resched(), and system_unbound_wq
+instead of implicit system_wq.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+[1]
+INFO: task syz-executor:20633 blocked for more than 143 seconds.
+      Not tainted 6.12.0-rc2-syzkaller-00205-g1d227fcc7222 #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:syz-executor    state:D stack:25856 pid:20633 tgid:20633 ppid:1      flags:0x00004006
+...
+NMI backtrace for cpu 1
+CPU: 1 UID: 0 PID: 16760 Comm: kworker/1:0 Not tainted 6.12.0-rc2-syzkaller-00205-g1d227fcc7222 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Workqueue: events nsim_dev_trap_report_work
+ RIP: 0010:__sanitizer_cov_trace_pc+0x0/0x70 kernel/kcov.c:210
+Code: 89 fb e8 23 00 00 00 48 8b 3d 04 fb 9c 0c 48 89 de 5b e9 c3 c7 5d 00 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 <f3> 0f 1e fa 48 8b 04 24 65 48 8b 0c 25 c0 d7 03 00 65 8b 15 60 f0
+RSP: 0018:ffffc90000a187e8 EFLAGS: 00000246
+RAX: 0000000000000100 RBX: ffffc90000a188e0 RCX: ffff888027d3bc00
+RDX: ffff888027d3bc00 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffff88804a2e6000 R08: ffffffff8a4bc495 R09: ffffffff89da3577
+R10: 0000000000000004 R11: ffffffff8a4bc2b0 R12: dffffc0000000000
+R13: ffff88806573b503 R14: dffffc0000000000 R15: ffff8880663cca00
+FS:  0000000000000000(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fc90a747f98 CR3: 000000000e734000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 000000000000002b DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000400
+Call Trace:
+ <NMI>
+ </NMI>
+ <TASK>
+  __local_bh_enable_ip+0x1bb/0x200 kernel/softirq.c:382
+  spin_unlock_bh include/linux/spinlock.h:396 [inline]
+  nsim_dev_trap_report drivers/net/netdevsim/dev.c:820 [inline]
+  nsim_dev_trap_report_work+0x75d/0xaa0 drivers/net/netdevsim/dev.c:850
+  process_one_work kernel/workqueue.c:3229 [inline]
+  process_scheduled_works+0xa63/0x1850 kernel/workqueue.c:3310
+  worker_thread+0x870/0xd30 kernel/workqueue.c:3391
+  kthread+0x2f0/0x390 kernel/kthread.c:389
+  ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
 
-Fixes: 20e507724113 ("ALSA: hda/cs8409: Add support for dolphin")
-Signed-off-by: Murad Masimov <m.masimov@maxima.ru>
-Link: https://patch.msgid.link/20241010221649.1305-1-m.masimov@maxima.ru
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: ba5e1272142d ("netdevsim: avoid potential loop in nsim_dev_trap_report_work()")
+Reported-by: syzbot+d383dc9579a76f56c251@syzkaller.appspotmail.com
+Reported-by: syzbot+c596faae21a68bf7afd0@syzkaller.appspotmail.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Jiri Pirko <jiri@nvidia.com>
+Link: https://patch.msgid.link/20241012094230.3893510-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_cs8409.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/netdevsim/dev.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/sound/pci/hda/patch_cs8409.c b/sound/pci/hda/patch_cs8409.c
-index e41316e2e9833..892223d9e64ab 100644
---- a/sound/pci/hda/patch_cs8409.c
-+++ b/sound/pci/hda/patch_cs8409.c
-@@ -1411,8 +1411,9 @@ void dolphin_fixups(struct hda_codec *codec, const struct hda_fixup *fix, int ac
- 		kctrl = snd_hda_gen_add_kctl(&spec->gen, "Line Out Playback Volume",
- 					     &cs42l42_dac_volume_mixer);
- 		/* Update Line Out kcontrol template */
--		kctrl->private_value = HDA_COMPOSE_AMP_VAL_OFS(DOLPHIN_HP_PIN_NID, 3, CS8409_CODEC1,
--				       HDA_OUTPUT, CS42L42_VOL_DAC) | HDA_AMP_VAL_MIN_MUTE;
-+		if (kctrl)
-+			kctrl->private_value = HDA_COMPOSE_AMP_VAL_OFS(DOLPHIN_HP_PIN_NID, 3, CS8409_CODEC1,
-+					       HDA_OUTPUT, CS42L42_VOL_DAC) | HDA_AMP_VAL_MIN_MUTE;
- 		cs8409_enable_ur(codec, 0);
- 		snd_hda_codec_set_name(codec, "CS8409/CS42L42");
- 		break;
+diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
+index 92a7a36b93ac0..3e0b61202f0c9 100644
+--- a/drivers/net/netdevsim/dev.c
++++ b/drivers/net/netdevsim/dev.c
+@@ -836,7 +836,8 @@ static void nsim_dev_trap_report_work(struct work_struct *work)
+ 	nsim_dev = nsim_trap_data->nsim_dev;
+ 
+ 	if (!devl_trylock(priv_to_devlink(nsim_dev))) {
+-		schedule_delayed_work(&nsim_dev->trap_data->trap_report_dw, 1);
++		queue_delayed_work(system_unbound_wq,
++				   &nsim_dev->trap_data->trap_report_dw, 1);
+ 		return;
+ 	}
+ 
+@@ -848,11 +849,12 @@ static void nsim_dev_trap_report_work(struct work_struct *work)
+ 			continue;
+ 
+ 		nsim_dev_trap_report(nsim_dev_port);
++		cond_resched();
+ 	}
+ 	devl_unlock(priv_to_devlink(nsim_dev));
+-
+-	schedule_delayed_work(&nsim_dev->trap_data->trap_report_dw,
+-			      msecs_to_jiffies(NSIM_TRAP_REPORT_INTERVAL_MS));
++	queue_delayed_work(system_unbound_wq,
++			   &nsim_dev->trap_data->trap_report_dw,
++			   msecs_to_jiffies(NSIM_TRAP_REPORT_INTERVAL_MS));
+ }
+ 
+ static int nsim_dev_traps_init(struct devlink *devlink)
+@@ -907,8 +909,9 @@ static int nsim_dev_traps_init(struct devlink *devlink)
+ 
+ 	INIT_DELAYED_WORK(&nsim_dev->trap_data->trap_report_dw,
+ 			  nsim_dev_trap_report_work);
+-	schedule_delayed_work(&nsim_dev->trap_data->trap_report_dw,
+-			      msecs_to_jiffies(NSIM_TRAP_REPORT_INTERVAL_MS));
++	queue_delayed_work(system_unbound_wq,
++			   &nsim_dev->trap_data->trap_report_dw,
++			   msecs_to_jiffies(NSIM_TRAP_REPORT_INTERVAL_MS));
+ 
+ 	return 0;
+ 
 -- 
 2.43.0
 
