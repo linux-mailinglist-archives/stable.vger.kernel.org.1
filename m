@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB809B2555
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5D809B27DA
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:51:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 290DF1C20FC1
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40709B213B3
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:51:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AFEC18CC1F;
-	Mon, 28 Oct 2024 06:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE77D18F2DD;
+	Mon, 28 Oct 2024 06:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUjGIH0e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0djluqxX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA81118DF8B;
-	Mon, 28 Oct 2024 06:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEA418F2C3;
+	Mon, 28 Oct 2024 06:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730096882; cv=none; b=Hn0NXKMo+EFaBCcPupLLnnMtj/73T8Rz2V6Nvip7+OuYEsKXbUep8OuxTFVRjisLS1THNKQUfedB00rsDgfeC1jUZuIi86HZzzcNHy2VEOb4RFDC5GwuMZsdGFLxoTgqwgmyXssL4obZKNQy2deqkbDo3xDLsDKFzeRc/EfViaI=
+	t=1730098301; cv=none; b=EjZmlzuv2qPRbvNtbt9zWfvrwTmvR9GhNYPQbGE0Bxu3CQHgu6AXJboFcEVRWs3EkN6Yg5+ZFOo2ZZjdlydagTAPlkUlt1IUknv+dPhHhKZJthOvnbnb49XyDnsAPxqAtN9J5aO0WJwBmaFN1KL7I1BjP9bnKOJbzg1lL1GgfPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730096882; c=relaxed/simple;
-	bh=b957jsAtOrzbi2mXsA5t2nymv9BwP0RjJS3B5s7ibN0=;
+	s=arc-20240116; t=1730098301; c=relaxed/simple;
+	bh=3UeIMF9JVQv7KhXZ7s7O9tw/nvjKldOAYBv9vmZABa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oEU5OwC6irKd3wUCzCf4OUSGHlw0+yZT7OBB0wKGVHSZXDMLLuf8gAhkdwfibdXmu3ADTRxxnYMwUaOYzOiPTTZbZ1S9vgcKHvsm0EUGlg9rmY3yo6ZvRCuZKXI9rMhOmlmXurAFx4IniFntM9qBclCWEapzJvDvnVTmUqfBCa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FUjGIH0e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AAACC4CEC3;
-	Mon, 28 Oct 2024 06:28:01 +0000 (UTC)
+	 MIME-Version; b=I18CSkdsAbdksndlw7/TMc0rM3xwSp0Cry5cFYl4jGsGjnP5ucv8ePi7FnZ5TSPzidSgR/lQ2h3CbH8uI31b19jsNfSuIHzKd3apBB+R3+fTP/Oqq66Y1TZ4EFU04lnaJ5UGwqKRiKtSCvoJtWH0ECatmFuA/ZqYC4DK2+iCwYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0djluqxX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF154C4CEC3;
+	Mon, 28 Oct 2024 06:51:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730096881;
-	bh=b957jsAtOrzbi2mXsA5t2nymv9BwP0RjJS3B5s7ibN0=;
+	s=korg; t=1730098301;
+	bh=3UeIMF9JVQv7KhXZ7s7O9tw/nvjKldOAYBv9vmZABa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FUjGIH0eiTGNRqz8feBPQ1CCCxDZ0/n73AEQ0yKJbLAeHM9TnDKZISzQIW7PhA5wN
-	 v/y7kCOYBCSpRrNlqQmXuu0zzS5PWVZHIc2yuJdSVFtEkJ+sK1CISHBHe8pGNXTSYf
-	 iJ7fd2E5jR2untHEmcOi5jGTaT2GBSt93zNeNq2o=
+	b=0djluqxXfVD+jsAOQrYOC6btU8BTZ3l+JMR9YlNG5Fki896BVLPGiRP+qynRZN42m
+	 5KyVVvcFsyQ9CIuXp1XwfQkH25jHASl84f6Sh8nKHa7I9bJIjMisv8sigONKWD72Wz
+	 ZgWTo0I+Skcgk0wqzWYQCmm1x8piV/LJWu9d3HiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 27/80] usb: typec: altmode should keep reference to parent
+Subject: [PATCH 6.11 165/261] bpf: Remove MEM_UNINIT from skb/xdp MTU helpers
 Date: Mon, 28 Oct 2024 07:25:07 +0100
-Message-ID: <20241028062253.384970437@linuxfoundation.org>
+Message-ID: <20241028062316.136031992@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,132 +63,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit befab3a278c59db0cc88c8799638064f6d3fd6f8 ]
+[ Upstream commit 14a3d3ef02ba53447d5112a2641aac0d10dc994f ]
 
-The altmode device release refers to its parent device, but without keeping
-a reference to it.
+We can now undo parts of 4b3786a6c539 ("bpf: Zero former ARG_PTR_TO_{LONG,INT}
+args in case of error") as discussed in [0].
 
-When registering the altmode, get a reference to the parent and put it in
-the release function.
+Given the BPF helpers now have MEM_WRITE tag, the MEM_UNINIT can be cleared.
 
-Before this fix, when using CONFIG_DEBUG_KOBJECT_RELEASE, we see issues
-like this:
+The mtu_len is an input as well as output argument, meaning, the BPF program
+has to set it to something. It cannot be uninitialized. Therefore, allowing
+uninitialized memory and zeroing it on error would be odd. It was done as
+an interim step in 4b3786a6c539 as the desired behavior could not have been
+expressed before the introduction of MEM_WRITE tag.
 
-[   43.572860] kobject: 'port0.0' (ffff8880057ba008): kobject_release, parent 0000000000000000 (delayed 3000)
-[   43.573532] kobject: 'port0.1' (ffff8880057bd008): kobject_release, parent 0000000000000000 (delayed 1000)
-[   43.574407] kobject: 'port0' (ffff8880057b9008): kobject_release, parent 0000000000000000 (delayed 3000)
-[   43.575059] kobject: 'port1.0' (ffff8880057ca008): kobject_release, parent 0000000000000000 (delayed 4000)
-[   43.575908] kobject: 'port1.1' (ffff8880057c9008): kobject_release, parent 0000000000000000 (delayed 4000)
-[   43.576908] kobject: 'typec' (ffff8880062dbc00): kobject_release, parent 0000000000000000 (delayed 4000)
-[   43.577769] kobject: 'port1' (ffff8880057bf008): kobject_release, parent 0000000000000000 (delayed 3000)
-[   46.612867] ==================================================================
-[   46.613402] BUG: KASAN: slab-use-after-free in typec_altmode_release+0x38/0x129
-[   46.614003] Read of size 8 at addr ffff8880057b9118 by task kworker/2:1/48
-[   46.614538]
-[   46.614668] CPU: 2 UID: 0 PID: 48 Comm: kworker/2:1 Not tainted 6.12.0-rc1-00138-gedbae730ad31 #535
-[   46.615391] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-[   46.616042] Workqueue: events kobject_delayed_cleanup
-[   46.616446] Call Trace:
-[   46.616648]  <TASK>
-[   46.616820]  dump_stack_lvl+0x5b/0x7c
-[   46.617112]  ? typec_altmode_release+0x38/0x129
-[   46.617470]  print_report+0x14c/0x49e
-[   46.617769]  ? rcu_read_unlock_sched+0x56/0x69
-[   46.618117]  ? __virt_addr_valid+0x19a/0x1ab
-[   46.618456]  ? kmem_cache_debug_flags+0xc/0x1d
-[   46.618807]  ? typec_altmode_release+0x38/0x129
-[   46.619161]  kasan_report+0x8d/0xb4
-[   46.619447]  ? typec_altmode_release+0x38/0x129
-[   46.619809]  ? process_scheduled_works+0x3cb/0x85f
-[   46.620185]  typec_altmode_release+0x38/0x129
-[   46.620537]  ? process_scheduled_works+0x3cb/0x85f
-[   46.620907]  device_release+0xaf/0xf2
-[   46.621206]  kobject_delayed_cleanup+0x13b/0x17a
-[   46.621584]  process_scheduled_works+0x4f6/0x85f
-[   46.621955]  ? __pfx_process_scheduled_works+0x10/0x10
-[   46.622353]  ? hlock_class+0x31/0x9a
-[   46.622647]  ? lock_acquired+0x361/0x3c3
-[   46.622956]  ? move_linked_works+0x46/0x7d
-[   46.623277]  worker_thread+0x1ce/0x291
-[   46.623582]  ? __kthread_parkme+0xc8/0xdf
-[   46.623900]  ? __pfx_worker_thread+0x10/0x10
-[   46.624236]  kthread+0x17e/0x190
-[   46.624501]  ? kthread+0xfb/0x190
-[   46.624756]  ? __pfx_kthread+0x10/0x10
-[   46.625015]  ret_from_fork+0x20/0x40
-[   46.625268]  ? __pfx_kthread+0x10/0x10
-[   46.625532]  ret_from_fork_asm+0x1a/0x30
-[   46.625805]  </TASK>
-[   46.625953]
-[   46.626056] Allocated by task 678:
-[   46.626287]  kasan_save_stack+0x24/0x44
-[   46.626555]  kasan_save_track+0x14/0x2d
-[   46.626811]  __kasan_kmalloc+0x3f/0x4d
-[   46.627049]  __kmalloc_noprof+0x1bf/0x1f0
-[   46.627362]  typec_register_port+0x23/0x491
-[   46.627698]  cros_typec_probe+0x634/0xbb6
-[   46.628026]  platform_probe+0x47/0x8c
-[   46.628311]  really_probe+0x20a/0x47d
-[   46.628605]  device_driver_attach+0x39/0x72
-[   46.628940]  bind_store+0x87/0xd7
-[   46.629213]  kernfs_fop_write_iter+0x1aa/0x218
-[   46.629574]  vfs_write+0x1d6/0x29b
-[   46.629856]  ksys_write+0xcd/0x13b
-[   46.630128]  do_syscall_64+0xd4/0x139
-[   46.630420]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[   46.630820]
-[   46.630946] Freed by task 48:
-[   46.631182]  kasan_save_stack+0x24/0x44
-[   46.631493]  kasan_save_track+0x14/0x2d
-[   46.631799]  kasan_save_free_info+0x3f/0x4d
-[   46.632144]  __kasan_slab_free+0x37/0x45
-[   46.632474]  kfree+0x1d4/0x252
-[   46.632725]  device_release+0xaf/0xf2
-[   46.633017]  kobject_delayed_cleanup+0x13b/0x17a
-[   46.633388]  process_scheduled_works+0x4f6/0x85f
-[   46.633764]  worker_thread+0x1ce/0x291
-[   46.634065]  kthread+0x17e/0x190
-[   46.634324]  ret_from_fork+0x20/0x40
-[   46.634621]  ret_from_fork_asm+0x1a/0x30
-
-Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241004123738.2964524-1-cascardo@igalia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4b3786a6c539 ("bpf: Zero former ARG_PTR_TO_{LONG,INT} args in case of error")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/a86eb76d-f52f-dee4-e5d2-87e45de3e16f@iogearbox.net [0]
+Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20241021152809.33343-3-daniel@iogearbox.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/class.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/core/filter.c | 42 +++++++++++++++---------------------------
+ 1 file changed, 15 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
-index 173d86d120daf..af75911899f53 100644
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -501,6 +501,7 @@ static void typec_altmode_release(struct device *dev)
- 		typec_altmode_put_partner(alt);
+diff --git a/net/core/filter.c b/net/core/filter.c
+index ddcf35e91a5e4..b2b551401bc29 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -6263,24 +6263,16 @@ BPF_CALL_5(bpf_skb_check_mtu, struct sk_buff *, skb,
+ {
+ 	int ret = BPF_MTU_CHK_RET_FRAG_NEEDED;
+ 	struct net_device *dev = skb->dev;
+-	int skb_len, dev_len;
+-	int mtu = 0;
++	int mtu, dev_len, skb_len;
  
- 	altmode_id_remove(alt->adev.dev.parent, alt->id);
-+	put_device(alt->adev.dev.parent);
- 	kfree(alt);
- }
+-	if (unlikely(flags & ~(BPF_MTU_CHK_SEGS))) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
+-
+-	if (unlikely(flags & BPF_MTU_CHK_SEGS && (len_diff || *mtu_len))) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
++	if (unlikely(flags & ~(BPF_MTU_CHK_SEGS)))
++		return -EINVAL;
++	if (unlikely(flags & BPF_MTU_CHK_SEGS && (len_diff || *mtu_len)))
++		return -EINVAL;
  
-@@ -550,6 +551,8 @@ typec_register_altmode(struct device *parent,
- 	alt->adev.dev.type = &typec_altmode_dev_type;
- 	dev_set_name(&alt->adev.dev, "%s.%u", dev_name(parent), id);
+ 	dev = __dev_via_ifindex(dev, ifindex);
+-	if (unlikely(!dev)) {
+-		ret = -ENODEV;
+-		goto out;
+-	}
++	if (unlikely(!dev))
++		return -ENODEV;
  
-+	get_device(alt->adev.dev.parent);
+ 	mtu = READ_ONCE(dev->mtu);
+ 	dev_len = mtu + dev->hard_header_len;
+@@ -6315,19 +6307,15 @@ BPF_CALL_5(bpf_xdp_check_mtu, struct xdp_buff *, xdp,
+ 	struct net_device *dev = xdp->rxq->dev;
+ 	int xdp_len = xdp->data_end - xdp->data;
+ 	int ret = BPF_MTU_CHK_RET_SUCCESS;
+-	int mtu = 0, dev_len;
++	int mtu, dev_len;
+ 
+ 	/* XDP variant doesn't support multi-buffer segment check (yet) */
+-	if (unlikely(flags)) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
++	if (unlikely(flags))
++		return -EINVAL;
+ 
+ 	dev = __dev_via_ifindex(dev, ifindex);
+-	if (unlikely(!dev)) {
+-		ret = -ENODEV;
+-		goto out;
+-	}
++	if (unlikely(!dev))
++		return -ENODEV;
+ 
+ 	mtu = READ_ONCE(dev->mtu);
+ 	dev_len = mtu + dev->hard_header_len;
+@@ -6339,7 +6327,7 @@ BPF_CALL_5(bpf_xdp_check_mtu, struct xdp_buff *, xdp,
+ 	xdp_len += len_diff; /* minus result pass check */
+ 	if (xdp_len > dev_len)
+ 		ret = BPF_MTU_CHK_RET_FRAG_NEEDED;
+-out:
 +
- 	/* Link partners and plugs with the ports */
- 	if (!is_port)
- 		typec_altmode_set_partner(alt);
+ 	*mtu_len = mtu;
+ 	return ret;
+ }
+@@ -6350,7 +6338,7 @@ static const struct bpf_func_proto bpf_skb_check_mtu_proto = {
+ 	.ret_type	= RET_INTEGER,
+ 	.arg1_type      = ARG_PTR_TO_CTX,
+ 	.arg2_type      = ARG_ANYTHING,
+-	.arg3_type      = ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
++	.arg3_type      = ARG_PTR_TO_FIXED_SIZE_MEM | MEM_WRITE | MEM_ALIGNED,
+ 	.arg3_size	= sizeof(u32),
+ 	.arg4_type      = ARG_ANYTHING,
+ 	.arg5_type      = ARG_ANYTHING,
+@@ -6362,7 +6350,7 @@ static const struct bpf_func_proto bpf_xdp_check_mtu_proto = {
+ 	.ret_type	= RET_INTEGER,
+ 	.arg1_type      = ARG_PTR_TO_CTX,
+ 	.arg2_type      = ARG_ANYTHING,
+-	.arg3_type      = ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
++	.arg3_type      = ARG_PTR_TO_FIXED_SIZE_MEM | MEM_WRITE | MEM_ALIGNED,
+ 	.arg3_size	= sizeof(u32),
+ 	.arg4_type      = ARG_ANYTHING,
+ 	.arg5_type      = ARG_ANYTHING,
 -- 
 2.43.0
 
