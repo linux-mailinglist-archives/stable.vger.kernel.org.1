@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-88659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C5D99B26ED
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:43:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 873989B257F
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:31:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21EFD28256A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:43:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3358A1F214EB
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B168018E374;
-	Mon, 28 Oct 2024 06:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF9B18E03A;
+	Mon, 28 Oct 2024 06:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOyjQBCR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rj09ps4C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F35E15B10D;
-	Mon, 28 Oct 2024 06:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D2615B10D;
+	Mon, 28 Oct 2024 06:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097833; cv=none; b=u/GmgHejCDJzNMnBhKUB1ZgXw9s3SwZLJ3Zt8+LwblJfs9Ooq+aqRBS7zD21khkCC/kkW/cOdUhKQZTN8S0q/vWZILxLQGwyWoISUvIin1O1cSaYxHbhZAu7pJnAK/LGZgufrzPZ2y82cMpwlOru+bVTzI08aBQiO42SfsS6BM0=
+	t=1730097110; cv=none; b=GbJ8FYjJ0paWKc4LRDpV/Zi93s39AB1zYF4Ix+SXvQF1q4ZhxZYINRv8lZGfQDd8rDpG22VH0VX8PNIGiH68VTFt38LIrUUQWUCw5o3wL6aFPnQFjC3muXndASCLqij69xDwd53fIL5zOMNtDa2Z1+1TwS8RTC9elS062DLq6Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097833; c=relaxed/simple;
-	bh=41pd/TX5w1BeD8oVe9UZzDTWm3ePC73hBpxzaq0Y8R0=;
+	s=arc-20240116; t=1730097110; c=relaxed/simple;
+	bh=GSymZeRmLYM/1Tv/lBu6QLfd+to9oHTQtY6/k9IZ52o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RJ9D2uUHab/XY0/yqTgbPJ8w9C/frvuPu3QGcVpeS8QMcny5O1X4I2YipwxV7exwkWoidi8GWwOobJEwEZq7HHshwjr2nrR/xVOaM7pP4v3v5pQNDk675ZkeSWva6bsn5ftSboDLtl0EHVyGGE4dvOHBkfaEe9iotnS88qJHIO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOyjQBCR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE35AC4CEE3;
-	Mon, 28 Oct 2024 06:43:52 +0000 (UTC)
+	 MIME-Version; b=Ijc3UsaLV3MaxXceKaya8kcha6BjAvTWp6jkdZj+mup5nEFiClD3RdI8zAtKnPJhbuyOD71IeZk+tDN0CuB67dRd1hMuhmj6cqTzPKAcQy7JbUB6+w4PShAmFWS1dBhLnsu40WlrNasK0G+EUM+EnrxAKd5v02L+bWNCvyWpu20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rj09ps4C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BFDC4CEC7;
+	Mon, 28 Oct 2024 06:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097833;
-	bh=41pd/TX5w1BeD8oVe9UZzDTWm3ePC73hBpxzaq0Y8R0=;
+	s=korg; t=1730097110;
+	bh=GSymZeRmLYM/1Tv/lBu6QLfd+to9oHTQtY6/k9IZ52o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HOyjQBCRpQPaf1eKBpMNWkOJ0oaMJx2ypvpfOC1DYCApHvgnPgLXzDlwWv3TfIVax
-	 vOPwNhNGdi/2GL84jT+plh5MQKXlKFVk5yyAzJPtWjH7J7c2cxQRZ6mLMhmAx63Ub1
-	 6aEEpABF/0LO/WdOsWXfBcqUniDizOZw9d1s/rUc=
+	b=rj09ps4CXOZUK8x0hZmAR9iyFR59NikZYXJ9iOTaoaEePzbnNzkR4t8kY077G5OWE
+	 hgrzlo95AtJd6RKZpN9TYcdtCATqsHtug683rFWQWz7spCbjzEg5jlpU36gwLwmYMi
+	 ggdfiniOs5sYRczj9qZU/Y7drJZF4jW9LCxPC/hI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 167/208] ASoC: max98388: Fix missing increment of variable slot_found
-Date: Mon, 28 Oct 2024 07:25:47 +0100
-Message-ID: <20241028062310.743628718@linuxfoundation.org>
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 5.15 68/80] drm/amd: Guard against bad data for ATIF ACPI method
+Date: Mon, 28 Oct 2024 07:25:48 +0100
+Message-ID: <20241028062254.501790493@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit ca2803fadfd239abf155ef4a563b22a9507ee4b2 ]
+commit bf58f03931fdcf7b3c45cb76ac13244477a60f44 upstream.
 
-The variable slot_found is being initialized to zero and inside
-a for-loop is being checked if it's reached MAX_NUM_CH, however,
-this is currently impossible since slot_found is never changed.
-In a previous loop a similar coding pattern is used and slot_found
-is being incremented. It appears the increment of slot_found is
-missing from the loop, so fix the code by adding in the increment.
+If a BIOS provides bad data in response to an ATIF method call
+this causes a NULL pointer dereference in the caller.
 
-Fixes: 6a8e1d46f062 ("ASoC: max98388: add amplifier driver")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Link: https://patch.msgid.link/20241010182032.776280-1-colin.i.king@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+```
+? show_regs (arch/x86/kernel/dumpstack.c:478 (discriminator 1))
+? __die (arch/x86/kernel/dumpstack.c:423 arch/x86/kernel/dumpstack.c:434)
+? page_fault_oops (arch/x86/mm/fault.c:544 (discriminator 2) arch/x86/mm/fault.c:705 (discriminator 2))
+? do_user_addr_fault (arch/x86/mm/fault.c:440 (discriminator 1) arch/x86/mm/fault.c:1232 (discriminator 1))
+? acpi_ut_update_object_reference (drivers/acpi/acpica/utdelete.c:642)
+? exc_page_fault (arch/x86/mm/fault.c:1542)
+? asm_exc_page_fault (./arch/x86/include/asm/idtentry.h:623)
+? amdgpu_atif_query_backlight_caps.constprop.0 (drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c:387 (discriminator 2)) amdgpu
+? amdgpu_atif_query_backlight_caps.constprop.0 (drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c:386 (discriminator 1)) amdgpu
+```
+
+It has been encountered on at least one system, so guard for it.
+
+Fixes: d38ceaf99ed0 ("drm/amdgpu: add core driver (v4)")
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit c9b7c809b89f24e9372a4e7f02d64c950b07fdee)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/max98388.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/codecs/max98388.c b/sound/soc/codecs/max98388.c
-index cde5e85946cb8..87386404129d9 100644
---- a/sound/soc/codecs/max98388.c
-+++ b/sound/soc/codecs/max98388.c
-@@ -764,6 +764,7 @@ static int max98388_dai_tdm_slot(struct snd_soc_dai *dai,
- 			addr = MAX98388_R2044_PCM_TX_CTRL1 + (cnt / 8);
- 			bits = cnt % 8;
- 			regmap_update_bits(max98388->regmap, addr, bits, bits);
-+			slot_found++;
- 			if (slot_found >= MAX_NUM_CH)
- 				break;
- 		}
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+@@ -108,6 +108,7 @@ static union acpi_object *amdgpu_atif_ca
+ 					   struct acpi_buffer *params)
+ {
+ 	acpi_status status;
++	union acpi_object *obj;
+ 	union acpi_object atif_arg_elements[2];
+ 	struct acpi_object_list atif_arg;
+ 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+@@ -130,16 +131,24 @@ static union acpi_object *amdgpu_atif_ca
+ 
+ 	status = acpi_evaluate_object(atif->handle, NULL, &atif_arg,
+ 				      &buffer);
++	obj = (union acpi_object *)buffer.pointer;
+ 
+-	/* Fail only if calling the method fails and ATIF is supported */
++	/* Fail if calling the method fails and ATIF is supported */
+ 	if (ACPI_FAILURE(status) && status != AE_NOT_FOUND) {
+ 		DRM_DEBUG_DRIVER("failed to evaluate ATIF got %s\n",
+ 				 acpi_format_exception(status));
+-		kfree(buffer.pointer);
++		kfree(obj);
+ 		return NULL;
+ 	}
+ 
+-	return buffer.pointer;
++	if (obj->type != ACPI_TYPE_BUFFER) {
++		DRM_DEBUG_DRIVER("bad object returned from ATIF: %d\n",
++				 obj->type);
++		kfree(obj);
++		return NULL;
++	}
++
++	return obj;
+ }
+ 
+ /**
 
 
 
