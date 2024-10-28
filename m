@@ -1,56 +1,65 @@
-Return-Path: <stable+bounces-88568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9C659B268B
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:40:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A7029B279D
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:49:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C2A328170E
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:40:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2D0F1F24865
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12C1918E740;
-	Mon, 28 Oct 2024 06:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 560C618E36C;
+	Mon, 28 Oct 2024 06:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6GIoxPd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XuA2RxkU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5301189BAF;
-	Mon, 28 Oct 2024 06:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E1218A922;
+	Mon, 28 Oct 2024 06:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097626; cv=none; b=JG+3KIKHiFLLqsXH5gS24HLTxBQxqJJfowcDt3/8oLWiAt86d+1YI1Yg42AzMvtoWiO+2VcdNmXS+Sg1ou44qwik8c2soGOEMQZT0bofHEJ0Q1qK3CZKOeY6Wd++aMkUuuio+fDe7dByqItir9HOTeZPZoI886sLJTS7LfWaW/o=
+	t=1730098185; cv=none; b=KkFY2JKoWPK2WTQD6qIt8tu/1QNF8RLJe3RyD3pm/U6DR5VXZrfAZJiNyWhUBtN0kupMrgaRhv+5h3KcCfWcdSeU4ZuawbJlYG3YBGQ4OrQXikrrZZ7BNDKiXm7D2OyPIHvP6gB/I8ijn8ChZX2J8yaTtpTvoKLg+GJZAm/+7WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097626; c=relaxed/simple;
-	bh=01kdWEBSGeHePP+2fe5plsumIpacsOdT/QQ/5k1VuAw=;
+	s=arc-20240116; t=1730098185; c=relaxed/simple;
+	bh=UaCo9UmhU4EYUByOTDVYPfwv5BDayQS8t4QH7eJKb1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ht+ckPO7BX876b9Br8nKIZCwhKf3WOgi7gAfiYv3tuUZxItGadR2UwsZU8thNu0XVp6mdC/Tg8Tqx5KxbZ/9o9nKQ6a4Wc3tWZeuEGvd0pQH14HM99lKfBfRQDjHvsub97mSABhijm0eATGyIRFnzAqYUCDfiQop6dPey22NWUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6GIoxPd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65302C4CEC3;
-	Mon, 28 Oct 2024 06:40:26 +0000 (UTC)
+	 MIME-Version; b=m+QHAZBy6iHpxjZ2BY+fuHhiZJSDtCib+BPcQQsnCIpE23bBNmUI3YZCw3je6C6TmI5/k6ZZMyYsPbg7Hka6ANjkIP31mS6LqFu+4KjMdwG+ek6zTP0va3txmllMsfIr4m1k4Ym9CxWn0SmwEpb+OANATfjSwHonXGgk0xiHf0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XuA2RxkU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42149C4CEC3;
+	Mon, 28 Oct 2024 06:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097626;
-	bh=01kdWEBSGeHePP+2fe5plsumIpacsOdT/QQ/5k1VuAw=;
+	s=korg; t=1730098184;
+	bh=UaCo9UmhU4EYUByOTDVYPfwv5BDayQS8t4QH7eJKb1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x6GIoxPdnNrEHSprlLok26c5yUYx1Byit60ognfHgq89FEhGrRhgM9ruz6L5A0Neh
-	 VzGUrFfV1EgqgWJnmwterrdMm9jhoy0x7eF8pIZpNMW0r+ySOVCV1GJeDb6Ze1bxPi
-	 sJehnJYgmTr5pNhHR1QZzdIIgEuYnk8D0c7kmjOg=
+	b=XuA2RxkUqfV/jED6Mfgg4qK2wseJKfyUhq7Ji578ZLfI6tmZvrI3EpRHZqVKLXgeJ
+	 +cZ8mr8gbL3J9zb0yG5h4kWZ7N23hrhhi2TWMDVURZFhEvwzRWekRoiW5LJDD2inIo
+	 Pig+A0/LM65rWcbkElWEuxYQ/wJ6zMSFV3phCCOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	David Hildenbrand <david@redhat.com>,
+	Leo Fu <bfu@redhat.com>,
+	Thomas Huth <thuth@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Hugh Dickins <hughd@google.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/208] Bluetooth: bnep: fix wild-memory-access in proto_unregister
+Subject: [PATCH 6.11 115/261] mm: huge_memory: add vma_thp_disabled() and thp_disabled_by_hw()
 Date: Mon, 28 Oct 2024 07:24:17 +0100
-Message-ID: <20241028062308.541880720@linuxfoundation.org>
+Message-ID: <20241028062314.911195962@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +71,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
 
-[ Upstream commit 64a90991ba8d4e32e3173ddd83d0b24167a5668c ]
+[ Upstream commit 963756aac1f011d904ddd9548ae82286d3a91f96 ]
 
-There's issue as follows:
-  KASAN: maybe wild-memory-access in range [0xdead...108-0xdead...10f]
-  CPU: 3 UID: 0 PID: 2805 Comm: rmmod Tainted: G        W
-  RIP: 0010:proto_unregister+0xee/0x400
-  Call Trace:
-   <TASK>
-   __do_sys_delete_module+0x318/0x580
-   do_syscall_64+0xc1/0x1d0
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Patch series "mm: don't install PMD mappings when THPs are disabled by the
+hw/process/vma".
 
-As bnep_init() ignore bnep_sock_init()'s return value, and bnep_sock_init()
-will cleanup all resource. Then when remove bnep module will call
-bnep_sock_cleanup() to cleanup sock's resource.
-To solve above issue just return bnep_sock_init()'s return value in
-bnep_exit().
+During testing, it was found that we can get PMD mappings in processes
+where THP (and more precisely, PMD mappings) are supposed to be disabled.
+While it works as expected for anon+shmem, the pagecache is the
+problematic bit.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+For s390 KVM this currently means that a VM backed by a file located on
+filesystem with large folio support can crash when KVM tries accessing the
+problematic page, because the readahead logic might decide to use a
+PMD-sized THP and faulting it into the page tables will install a PMD
+mapping, something that s390 KVM cannot tolerate.
+
+This might also be a problem with HW that does not support PMD mappings,
+but I did not try reproducing it.
+
+Fix it by respecting the ways to disable THPs when deciding whether we can
+install a PMD mapping.  khugepaged should already be taking care of not
+collapsing if THPs are effectively disabled for the hw/process/vma.
+
+This patch (of 2):
+
+Add vma_thp_disabled() and thp_disabled_by_hw() helpers to be shared by
+shmem_allowable_huge_orders() and __thp_vma_allowable_orders().
+
+[david@redhat.com: rename to vma_thp_disabled(), split out thp_disabled_by_hw() ]
+Link: https://lkml.kernel.org/r/20241011102445.934409-2-david@redhat.com
+Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reported-by: Leo Fu <bfu@redhat.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Boqiao Fu <bfu@redhat.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Janosch Frank <frankja@linux.ibm.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 2b0f922323cc ("mm: don't install PMD mappings when THPs are disabled by the hw/process/vma")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/bnep/core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ include/linux/huge_mm.h | 18 ++++++++++++++++++
+ mm/huge_memory.c        | 13 +------------
+ mm/shmem.c              |  7 +------
+ 3 files changed, 20 insertions(+), 18 deletions(-)
 
-diff --git a/net/bluetooth/bnep/core.c b/net/bluetooth/bnep/core.c
-index a660c428e2207..38f542665f196 100644
---- a/net/bluetooth/bnep/core.c
-+++ b/net/bluetooth/bnep/core.c
-@@ -745,8 +745,7 @@ static int __init bnep_init(void)
- 	if (flt[0])
- 		BT_INFO("BNEP filters: %s", flt);
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index e25d9ebfdf89a..6d334c211176c 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -308,6 +308,24 @@ static inline void count_mthp_stat(int order, enum mthp_stat_item item)
+ 	(transparent_hugepage_flags &					\
+ 	 (1<<TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG))
  
--	bnep_sock_init();
--	return 0;
-+	return bnep_sock_init();
- }
++static inline bool vma_thp_disabled(struct vm_area_struct *vma,
++		unsigned long vm_flags)
++{
++	/*
++	 * Explicitly disabled through madvise or prctl, or some
++	 * architectures may disable THP for some mappings, for
++	 * example, s390 kvm.
++	 */
++	return (vm_flags & VM_NOHUGEPAGE) ||
++	       test_bit(MMF_DISABLE_THP, &vma->vm_mm->flags);
++}
++
++static inline bool thp_disabled_by_hw(void)
++{
++	/* If the hardware/firmware marked hugepage support disabled. */
++	return transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_UNSUPPORTED);
++}
++
+ unsigned long thp_get_unmapped_area(struct file *filp, unsigned long addr,
+ 		unsigned long len, unsigned long pgoff, unsigned long flags);
+ unsigned long thp_get_unmapped_area_vmflags(struct file *filp, unsigned long addr,
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index d12ec1c8c7f07..e44508e46e897 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -106,18 +106,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+ 	if (!vma->vm_mm)		/* vdso */
+ 		return 0;
  
- static void __exit bnep_exit(void)
+-	/*
+-	 * Explicitly disabled through madvise or prctl, or some
+-	 * architectures may disable THP for some mappings, for
+-	 * example, s390 kvm.
+-	 * */
+-	if ((vm_flags & VM_NOHUGEPAGE) ||
+-	    test_bit(MMF_DISABLE_THP, &vma->vm_mm->flags))
+-		return 0;
+-	/*
+-	 * If the hardware/firmware marked hugepage support disabled.
+-	 */
+-	if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_UNSUPPORTED))
++	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vm_flags))
+ 		return 0;
+ 
+ 	/* khugepaged doesn't collapse DAX vma, but page fault is fine. */
+diff --git a/mm/shmem.c b/mm/shmem.c
+index a332323eea0b9..27f496d6e43eb 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1642,12 +1642,7 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
+ 	loff_t i_size;
+ 	int order;
+ 
+-	if (vma && ((vm_flags & VM_NOHUGEPAGE) ||
+-	    test_bit(MMF_DISABLE_THP, &vma->vm_mm->flags)))
+-		return 0;
+-
+-	/* If the hardware/firmware marked hugepage support disabled. */
+-	if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_UNSUPPORTED))
++	if (thp_disabled_by_hw() || (vma && vma_thp_disabled(vma, vm_flags)))
+ 		return 0;
+ 
+ 	global_huge = shmem_huge_global_enabled(inode, index, shmem_huge_force,
 -- 
 2.43.0
 
