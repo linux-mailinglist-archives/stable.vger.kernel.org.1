@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-88755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 209269B275F
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:47:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC4A9B2647
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:38:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BAE9B212CA
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:47:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F70F1C21331
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3EB218E748;
-	Mon, 28 Oct 2024 06:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7219F18EFD6;
+	Mon, 28 Oct 2024 06:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0H6CxnS6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BB+Q9ySS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7506217109B;
-	Mon, 28 Oct 2024 06:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3018518DF68;
+	Mon, 28 Oct 2024 06:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098047; cv=none; b=um45WNgkfXz3NNJGp/0Eu6Nv8mEUyHP6KmXWrAawEhaVh96KWzgDpXWIFaqNqQhhZ9e6Q4z1dFDO2WJKPP+DTQ3NzASGKQjAZADyqe+f5tdw2D2qDl2iENveuht/eDpwmixymFECODphsHbY/do5Q7uHc4W0MeAlO2y415ZwC9s=
+	t=1730097488; cv=none; b=YFt7C4O6QCTlNSs3ekFRW2LewByxkvuUiG+Khv7Ai0N+NqPUyrsXXH6SWYxMxyqBk7LgiYseMm77aajcWazFtC9lAPCZtf7LEhAfEW1fQdn3hFI9cfjnqBPLYJE5LSNcD3R9g8mw85nUf1xUqDwLCEBcAhDqg2QkiHgWJh+ufB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098047; c=relaxed/simple;
-	bh=M8inTOKqkacgbDrWmHhjPH/S0vHs9DFFq5EbAAMIqAY=;
+	s=arc-20240116; t=1730097488; c=relaxed/simple;
+	bh=rlLpASJxwf2vnndc4uZWy61h0eTWXMuUNT4c7nPNyN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dDiDH5RJDZ1mfDhqUdbbJxzJItm/ZzqgPdBlUkxgUDQpoxmhQNWEHrOJeJWj0FNxR73X4kCSUZlODBlEs5KuTKDKDPXqmlzC/yEex4ABy2VDDUx1R6qqzKGc+AwIXBrJBIX5MNtfU3SS/qsT243WTH4it6tcRuTqqZJEmWUMof4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0H6CxnS6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094ECC4CEC3;
-	Mon, 28 Oct 2024 06:47:26 +0000 (UTC)
+	 MIME-Version; b=XYjZw9h0wRVmDitCEwpeUIqMP4at0d8VQAD3D3qsgu48Rul7XmI3dA5ymoQWYksrF1dmkCaQqpCe35TsyzlVxRBpjJjEeEFSfTTD2Xhe7k2rosYjr9Ebb0lnrV0DIGMXW0mawNzIMkf8oodqzPKB7e2QniWsEFQ7ZZRnQ8HOSPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BB+Q9ySS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A33C4CEC3;
+	Mon, 28 Oct 2024 06:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098047;
-	bh=M8inTOKqkacgbDrWmHhjPH/S0vHs9DFFq5EbAAMIqAY=;
+	s=korg; t=1730097487;
+	bh=rlLpASJxwf2vnndc4uZWy61h0eTWXMuUNT4c7nPNyN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0H6CxnS6fUcGOtoKFIHY/eiCXRhnIZhXfDuDyXBDaMIfyRSWZxXjNzTOct8CK8LqS
-	 jlqfGgu4rUGdtQnXl43J0Gr76shUdZhHvnUUXEBL5gGRiPNYh2S8JZbJn1hwwmCvwY
-	 udnNakz79NlU8+TskRYvxZtN9t/I/AD9/bgqYvOc=
+	b=BB+Q9ySSuBqqMGirp5XLl1mUBx/ITCtgYtFAtoA/Si5611blDxYaurFCmgLKyXmuz
+	 d5ii5LqMGUYMpu8CGL9pWEBq6L9XDidE0++UO3LU23KhXgt27J1O+hZpMovlTjSKoF
+	 toATSNSl7NPwSWNc5uHO7iy/h3OfyM/ApH53r7rE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Marek <jonathan@marek.ca>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Tyrone Wu <wudevelops@gmail.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 053/261] drm/msm/dsi: improve/fix dsc pclk calculation
+Subject: [PATCH 6.6 015/208] bpf: fix unpopulated name_len field in perf_event link info
 Date: Mon, 28 Oct 2024 07:23:15 +0100
-Message-ID: <20241028062313.345327657@linuxfoundation.org>
+Message-ID: <20241028062307.033315165@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Marek <jonathan@marek.ca>
+From: Tyrone Wu <wudevelops@gmail.com>
 
-[ Upstream commit 24436a540d16ca6a523b8e5441180001c31b6b35 ]
+[ Upstream commit 4deecdd29cf29844c7bd164d72dc38d2e672f64e ]
 
-drm_mode_vrefresh() can introduce a large rounding error, avoid it.
+Previously when retrieving `bpf_link_info.perf_event` for
+kprobe/uprobe/tracepoint, the `name_len` field was not populated by the
+kernel, leaving it to reflect the value initially set by the user. This
+behavior was inconsistent with how other input/output string buffer
+fields function (e.g. `raw_tracepoint.tp_name_len`).
 
-Fixes: 7c9e4a554d4a ("drm/msm/dsi: Reduce pclk rate for compression")
-Signed-off-by: Jonathan Marek <jonathan@marek.ca>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/618432/
-Link: https://lore.kernel.org/r/20241007050157.26855-1-jonathan@marek.ca
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+This patch fills `name_len` with the actual size of the string name.
+
+Fixes: 1b715e1b0ec5 ("bpf: Support ->fill_link_info for perf_event")
+Signed-off-by: Tyrone Wu <wudevelops@gmail.com>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Yafang Shao <laoar.shao@gmail.com>
+Link: https://lore.kernel.org/r/20241008164312.46269-1-wudevelops@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_host.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/syscall.c | 29 ++++++++++++++++++++++-------
+ 1 file changed, 22 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
-index 185d7de0bf376..1205aa398e445 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_host.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-@@ -542,7 +542,7 @@ static unsigned long dsi_adjust_pclk_for_compression(const struct drm_display_mo
- 
- 	int new_htotal = mode->htotal - mode->hdisplay + new_hdisplay;
- 
--	return new_htotal * mode->vtotal * drm_mode_vrefresh(mode);
-+	return mult_frac(mode->clock * 1000u, new_htotal, mode->htotal);
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 1d04d098f57db..b43302c80cac5 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -3442,15 +3442,16 @@ static void bpf_perf_link_dealloc(struct bpf_link *link)
  }
  
- static unsigned long dsi_get_pclk_rate(const struct drm_display_mode *mode,
+ static int bpf_perf_link_fill_common(const struct perf_event *event,
+-				     char __user *uname, u32 ulen,
++				     char __user *uname, u32 *ulenp,
+ 				     u64 *probe_offset, u64 *probe_addr,
+ 				     u32 *fd_type, unsigned long *missed)
+ {
+ 	const char *buf;
+-	u32 prog_id;
++	u32 prog_id, ulen;
+ 	size_t len;
+ 	int err;
+ 
++	ulen = *ulenp;
+ 	if (!ulen ^ !uname)
+ 		return -EINVAL;
+ 
+@@ -3458,10 +3459,17 @@ static int bpf_perf_link_fill_common(const struct perf_event *event,
+ 				      probe_offset, probe_addr, missed);
+ 	if (err)
+ 		return err;
++
++	if (buf) {
++		len = strlen(buf);
++		*ulenp = len + 1;
++	} else {
++		*ulenp = 1;
++	}
+ 	if (!uname)
+ 		return 0;
++
+ 	if (buf) {
+-		len = strlen(buf);
+ 		err = bpf_copy_to_user(uname, buf, ulen, len);
+ 		if (err)
+ 			return err;
+@@ -3486,7 +3494,7 @@ static int bpf_perf_link_fill_kprobe(const struct perf_event *event,
+ 
+ 	uname = u64_to_user_ptr(info->perf_event.kprobe.func_name);
+ 	ulen = info->perf_event.kprobe.name_len;
+-	err = bpf_perf_link_fill_common(event, uname, ulen, &offset, &addr,
++	err = bpf_perf_link_fill_common(event, uname, &ulen, &offset, &addr,
+ 					&type, &missed);
+ 	if (err)
+ 		return err;
+@@ -3494,7 +3502,7 @@ static int bpf_perf_link_fill_kprobe(const struct perf_event *event,
+ 		info->perf_event.type = BPF_PERF_EVENT_KRETPROBE;
+ 	else
+ 		info->perf_event.type = BPF_PERF_EVENT_KPROBE;
+-
++	info->perf_event.kprobe.name_len = ulen;
+ 	info->perf_event.kprobe.offset = offset;
+ 	info->perf_event.kprobe.missed = missed;
+ 	if (!kallsyms_show_value(current_cred()))
+@@ -3516,7 +3524,7 @@ static int bpf_perf_link_fill_uprobe(const struct perf_event *event,
+ 
+ 	uname = u64_to_user_ptr(info->perf_event.uprobe.file_name);
+ 	ulen = info->perf_event.uprobe.name_len;
+-	err = bpf_perf_link_fill_common(event, uname, ulen, &offset, &addr,
++	err = bpf_perf_link_fill_common(event, uname, &ulen, &offset, &addr,
+ 					&type, NULL);
+ 	if (err)
+ 		return err;
+@@ -3525,6 +3533,7 @@ static int bpf_perf_link_fill_uprobe(const struct perf_event *event,
+ 		info->perf_event.type = BPF_PERF_EVENT_URETPROBE;
+ 	else
+ 		info->perf_event.type = BPF_PERF_EVENT_UPROBE;
++	info->perf_event.uprobe.name_len = ulen;
+ 	info->perf_event.uprobe.offset = offset;
+ 	info->perf_event.uprobe.cookie = event->bpf_cookie;
+ 	return 0;
+@@ -3550,12 +3559,18 @@ static int bpf_perf_link_fill_tracepoint(const struct perf_event *event,
+ {
+ 	char __user *uname;
+ 	u32 ulen;
++	int err;
+ 
+ 	uname = u64_to_user_ptr(info->perf_event.tracepoint.tp_name);
+ 	ulen = info->perf_event.tracepoint.name_len;
++	err = bpf_perf_link_fill_common(event, uname, &ulen, NULL, NULL, NULL, NULL);
++	if (err)
++		return err;
++
+ 	info->perf_event.type = BPF_PERF_EVENT_TRACEPOINT;
++	info->perf_event.tracepoint.name_len = ulen;
+ 	info->perf_event.tracepoint.cookie = event->bpf_cookie;
+-	return bpf_perf_link_fill_common(event, uname, ulen, NULL, NULL, NULL, NULL);
++	return 0;
+ }
+ 
+ static int bpf_perf_link_fill_perf_event(const struct perf_event *event,
 -- 
 2.43.0
 
