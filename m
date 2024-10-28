@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C79369B27FE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:53:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AEBD9B26EA
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:43:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89057286408
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:53:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51AE3282335
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C533B18EFC8;
-	Mon, 28 Oct 2024 06:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B806318E374;
+	Mon, 28 Oct 2024 06:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yum2DKGD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKoDW7y7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A398837;
-	Mon, 28 Oct 2024 06:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755F415B10D;
+	Mon, 28 Oct 2024 06:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098383; cv=none; b=LBUw6LeUXqvHbPvF5c1e4UoxNVrI0jrtdWiOUWlKLNJx96bATdRAa7ROtARoJ62Ct8/YMs6jVv926LEq77OSuBqxu7OBxc94pZQ6a5vXOe3E7vqp/VdHbpNKcZfKplYBJLpv4PJ5aLAe1EaLhjoJmo426xapjjvLHswgeURGxI0=
+	t=1730097826; cv=none; b=srBwCiUCYJ2IigQ6yruiz5ylfmE5t+e24z1OSSxVNtV0QUuayN4gqptc5k5KeWenfQjDqWCU+q50DZUVThuTTwAWGABYmuxoriqUXX9UmYrQWsGeo/kgYUb2UXvHhtv10zoW8wStQzNMmIfyTwKRafG824FoLSmrxQoKe9ZeOng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098383; c=relaxed/simple;
-	bh=LwvZ+n65uKRjcaxDjt/JHN+RVeD9OtITbEj0nrRQQ74=;
+	s=arc-20240116; t=1730097826; c=relaxed/simple;
+	bh=lFZk5nyrAzYOzqw6KF5Bh4mqdkOXkXaYCiPga1Yt4BY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ty2N0IvpbP46poxXMjAgEyigfTdxBRY4lDbPgt9mzphMNjDA8mVE/usdi2BmE3UXLemdpJASH9ck5FsGF14EUmeVYYJ/yP0BF+CHZKW6oEEGsUchjEULlp66y83gDeXVXL1EFjLF5wnlMMsMpVV4FtndrJ0CMSgayzLInrfRRDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yum2DKGD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22883C4CEC7;
-	Mon, 28 Oct 2024 06:53:03 +0000 (UTC)
+	 MIME-Version; b=j4UiZbqFRTmXndfXAMia2CsaFbgshE+frHWjk5NfeGJaSvChVCiL+LmmvY9C2BBuloJln6mpDDWugdxZCqtMroYgrh+zbQNiBxZv/B6gwwzM2xQIuS9sXvEmGKxm2D6i/C6Prug/j3fTSaydbR2SqtyxAwS318RaESe3LvLfmEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKoDW7y7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B0AC4CEC3;
+	Mon, 28 Oct 2024 06:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098383;
-	bh=LwvZ+n65uKRjcaxDjt/JHN+RVeD9OtITbEj0nrRQQ74=;
+	s=korg; t=1730097826;
+	bh=lFZk5nyrAzYOzqw6KF5Bh4mqdkOXkXaYCiPga1Yt4BY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yum2DKGDDecIWKvOxVsMNDYNskjkfI4LhX+5Ya/V7KdjJXweUGfOwtgm7rsR82at1
-	 InItXdJD5LlBp+gco63H/ThdftxAQxv4sUz5Yi/GHDtK7loWQscPgDKajaR0tBkm3S
-	 6//t6mEtrXYnIDSEO/umaCg4dgbeZktyytv8sM04=
+	b=wKoDW7y7rEMH5SQ+OCzs1F/MMhjEc+97q6AlY32KYQ/KK/AomD8wB6FAL5jJTaga7
+	 XoodHDQa223M5baETM3HKBQETLycwGL+sZsZZA0sdUDnAr5Gd2wAE7O+fNWOv6dppF
+	 hjZ7OPRMIq/qJFti4XouKjB3HEz95UEajiPjLwO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Mamedov <rm@romanrm.net>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.11 202/261] btrfs: clear force-compress on remount when compress mount option is given
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 164/208] ASoC: dt-bindings: davinci-mcasp: Fix interrupts property
 Date: Mon, 28 Oct 2024 07:25:44 +0100
-Message-ID: <20241028062317.120060647@linuxfoundation.org>
+Message-ID: <20241028062310.668861945@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit 3510e684b8f6a569c2f8b86870da116e2ffeec2d upstream.
+[ Upstream commit 17d8adc4cd5181c13c1041b197b76efc09eaf8a8 ]
 
-After the migration to use fs context for processing mount options we had
-a slight change in the semantics for remounting a filesystem that was
-mounted with compress-force. Before we could clear compress-force by
-passing only "-o compress[=algo]" during a remount, but after that change
-that does not work anymore, force-compress is still present and one needs
-to pass "-o compress-force=no,compress[=algo]" to the mount command.
+My understanding of the interrupts property is that it can either be:
+1/ - TX
+2/ - TX
+   - RX
+3/ - Common/combined.
 
-Example, when running on a kernel 6.8+:
+There are very little chances that either:
+   - TX
+   - Common/combined
+or even
+   - TX
+   - RX
+   - Common/combined
+could be a thing.
 
-  $ mount -o compress-force=zlib:9 /dev/sdi /mnt/sdi
-  $ mount | grep sdi
-  /dev/sdi on /mnt/sdi type btrfs (rw,relatime,compress-force=zlib:9,discard=async,space_cache=v2,subvolid=5,subvol=/)
+Looking at the interrupt-names definition (which uses oneOf instead of
+anyOf), it makes indeed little sense to use anyOf in the interrupts
+definition. I believe this is just a mistake, hence let's fix it.
 
-  $ mount -o remount,compress=zlib:5 /mnt/sdi
-  $ mount | grep sdi
-  /dev/sdi on /mnt/sdi type btrfs (rw,relatime,compress-force=zlib:5,discard=async,space_cache=v2,subvolid=5,subvol=/)
-
-On a 6.7 kernel (or older):
-
-  $ mount -o compress-force=zlib:9 /dev/sdi /mnt/sdi
-  $ mount | grep sdi
-  /dev/sdi on /mnt/sdi type btrfs (rw,relatime,compress-force=zlib:9,discard=async,space_cache=v2,subvolid=5,subvol=/)
-
-  $ mount -o remount,compress=zlib:5 /mnt/sdi
-  $ mount | grep sdi
-  /dev/sdi on /mnt/sdi type btrfs (rw,relatime,compress=zlib:5,discard=async,space_cache=v2,subvolid=5,subvol=/)
-
-So update btrfs_parse_param() to clear "compress-force" when "compress" is
-given, providing the same semantics as kernel 6.7 and older.
-
-Reported-by: Roman Mamedov <rm@romanrm.net>
-Link: https://lore.kernel.org/linux-btrfs/20241014182416.13d0f8b0@nvm/
-CC: stable@vger.kernel.org # 6.8+
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8be90641a0bb ("ASoC: dt-bindings: davinci-mcasp: convert McASP bindings to yaml schema")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20241001204749.390054-1-miquel.raynal@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/super.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ .../devicetree/bindings/sound/davinci-mcasp-audio.yaml          | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/super.c b/fs/btrfs/super.c
-index 98fa0f382480..3f8673f97432 100644
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -340,6 +340,15 @@ static int btrfs_parse_param(struct fs_context *fc, struct fs_parameter *param)
- 		fallthrough;
- 	case Opt_compress:
- 	case Opt_compress_type:
-+		/*
-+		 * Provide the same semantics as older kernels that don't use fs
-+		 * context, specifying the "compress" option clears
-+		 * "force-compress" without the need to pass
-+		 * "compress-force=[no|none]" before specifying "compress".
-+		 */
-+		if (opt != Opt_compress_force && opt != Opt_compress_force_type)
-+			btrfs_clear_opt(ctx->mount_opt, FORCE_COMPRESS);
-+
- 		if (opt == Opt_compress || opt == Opt_compress_force) {
- 			ctx->compress_type = BTRFS_COMPRESS_ZLIB;
- 			ctx->compress_level = BTRFS_ZLIB_DEFAULT_LEVEL;
+diff --git a/Documentation/devicetree/bindings/sound/davinci-mcasp-audio.yaml b/Documentation/devicetree/bindings/sound/davinci-mcasp-audio.yaml
+index 7735e08d35ba1..ab3206ffa4af8 100644
+--- a/Documentation/devicetree/bindings/sound/davinci-mcasp-audio.yaml
++++ b/Documentation/devicetree/bindings/sound/davinci-mcasp-audio.yaml
+@@ -102,7 +102,7 @@ properties:
+     default: 2
+ 
+   interrupts:
+-    anyOf:
++    oneOf:
+       - minItems: 1
+         items:
+           - description: TX interrupt
 -- 
-2.47.0
+2.43.0
 
 
 
