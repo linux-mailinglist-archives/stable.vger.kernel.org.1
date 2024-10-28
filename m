@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A1C89B2612
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68D3A9B26C2
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:42:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 206D92822A0
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 145C31F235E5
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:42:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5460118EFF1;
-	Mon, 28 Oct 2024 06:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE9918E368;
+	Mon, 28 Oct 2024 06:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fl1+n+8E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4Y+ScZz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A7F15B10D;
-	Mon, 28 Oct 2024 06:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28AFB18E04F;
+	Mon, 28 Oct 2024 06:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097383; cv=none; b=lHtUEUj1+6u31bgjb9jbLl8RN0erdjPJYVgufQfukPHMoIBJJ+Hy9/YXnrX0IWfJDyPMAfl12yxluycGpYDIDTivoIVI6TCCZtZ0WWT7nDZoMmMC3OM9ju+In48SH2eGsf0t+sTrSVoHpAhLLamhaCgpNHSbumluEt9rtfUeL5o=
+	t=1730097742; cv=none; b=DXKtnShjXlYHMD3VSh0EwMYmbRVPBnOj59ax1d5b592mnmZCcxolfuTSDbolZdiKS82+o52f1tWtABOyEMJsMMfv+SgG1/9CRvLwENZgmSNAiAaJ3R0hnl8I/B6a0nt7gFvF/cwrdhfjInO3sArSds8GokkXLQvMTYRfCjGX/h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097383; c=relaxed/simple;
-	bh=hnjfmTAALp/TBvv7X4yK89F56VJ15pRw8n9fSHGiz8E=;
+	s=arc-20240116; t=1730097742; c=relaxed/simple;
+	bh=Hy2LOGRGU2WUAdVPDiOiSHhLK+U4f74ep2hdMtGqckg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pi88nGnMMiWdpwBuyggOC0ShbvKuLVIo1wBLPvmwUhvm0gYsxpg2WVmGJwulAElnUU8xC2Df4L4NEuES+QeLcM3idhJBfm7eTFRCVZiMDyoxEev/TQhXqWwdFKW2l9dKqVVEhyvUqOVRRGGXz4tz6MH+dPMY1a+ATQDuFz2sz5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fl1+n+8E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1EAC4CEC3;
-	Mon, 28 Oct 2024 06:36:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZAJ3cTYjr2Z4gMAyBn6Uf820zo+HDUwgWQ38/s+D3mcMowdu9tZwTpKIIU8I6VYrkG+kb2xlqSfcIrF/ATYq8+Ua7LKGtSlo4DnzUuukzCT/h2D3r2MytrnlLbxXYhuz40gY6R6xm1fcxpROQqkQBLZh8C2H+l9S0VlBX0Py//I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4Y+ScZz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F7EFC4CEC3;
+	Mon, 28 Oct 2024 06:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097382;
-	bh=hnjfmTAALp/TBvv7X4yK89F56VJ15pRw8n9fSHGiz8E=;
+	s=korg; t=1730097741;
+	bh=Hy2LOGRGU2WUAdVPDiOiSHhLK+U4f74ep2hdMtGqckg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fl1+n+8EwtHxswAaa0hVczeKNID5GLLGT5okJIrS7UTHwCrTEOdSEuguPopkYbjqW
-	 cRfxlgFoMmKze4vO2eFG74Z5wwYGOLUqyBOd2eSsKvuVCs+1Vy47CtSoCiYp3UnkAl
-	 ovwIkhncu9xwbK9hQFv2MrOLeVwnbBAv1DUVWQ6U=
+	b=V4Y+ScZzTfAvxdHJAoa8qe9BIl/UmaMUdGRyl7uArQEifxC5LQwqKR2eM3MYh5O8g
+	 EOkjNOQ8tGdHsPaJo9BKK1DIGVsLx2TM3IOmRI0uGUKqhoj/jup20P1Q4lQBGeXHaA
+	 XmA7NRqt9pcys850Qvyh9Y6D78ewwR8DugYZ4el0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Esben Haabendal <esben@geanix.com>,
-	Marek Vasut <marex@denx.de>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 070/137] serial: imx: Update mctrl old_status on RTSD interrupt
+Subject: [PATCH 6.6 127/208] LoongArch: Dont crash in stack_top() for tasks without vDSO
 Date: Mon, 28 Oct 2024 07:25:07 +0100
-Message-ID: <20241028062300.696270787@linuxfoundation.org>
+Message-ID: <20241028062309.770191983@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,93 +60,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 40d7903386df4d18f04d90510ba90eedee260085 ]
+[ Upstream commit 134475a9ab8487527238d270639a8cb74c10aab2 ]
 
-When sending data using DMA at high baudrate (4 Mbdps in local test case) to
-a device with small RX buffer which keeps asserting RTS after every received
-byte, it is possible that the iMX UART driver would not recognize the falling
-edge of RTS input signal and get stuck, unable to transmit any more data.
+Not all tasks have a vDSO mapped, for example kthreads never do. If such
+a task ever ends up calling stack_top(), it will derefence the NULL vdso
+pointer and crash.
 
-This condition happens when the following sequence of events occur:
-- imx_uart_mctrl_check() is called at some point and takes a snapshot of UART
-  control signal status into sport->old_status using imx_uart_get_hwmctrl().
-  The RTSS/TIOCM_CTS bit is of interest here (*).
-- DMA transfer occurs, the remote device asserts RTS signal after each byte.
-  The i.MX UART driver recognizes each such RTS signal change, raises an
-  interrupt with USR1 register RTSD bit set, which leads to invocation of
-  __imx_uart_rtsint(), which calls uart_handle_cts_change().
-  - If the RTS signal is deasserted, uart_handle_cts_change() clears
-    port->hw_stopped and unblocks the port for further data transfers.
-  - If the RTS is asserted, uart_handle_cts_change() sets port->hw_stopped
-    and blocks the port for further data transfers. This may occur as the
-    last interrupt of a transfer, which means port->hw_stopped remains set
-    and the port remains blocked (**).
-- Any further data transfer attempts will trigger imx_uart_mctrl_check(),
-  which will read current status of UART control signals by calling
-  imx_uart_get_hwmctrl() (***) and compare it with sport->old_status .
-  - If current status differs from sport->old_status for RTS signal,
-    uart_handle_cts_change() is called and possibly unblocks the port
-    by clearing port->hw_stopped .
-  - If current status does not differ from sport->old_status for RTS
-    signal, no action occurs. This may occur in case prior snapshot (*)
-    was taken before any transfer so the RTS is deasserted, current
-    snapshot (***) was taken after a transfer and therefore RTS is
-    deasserted again, which means current status and sport->old_status
-    are identical. In case (**) triggered when RTS got asserted, and
-    made port->hw_stopped set, the port->hw_stopped will remain set
-    because no change on RTS line is recognized by this driver and
-    uart_handle_cts_change() is not called from here to unblock the
-    port->hw_stopped.
+This can for example happen when using kunit:
 
-Update sport->old_status in __imx_uart_rtsint() accordingly to make
-imx_uart_mctrl_check() detect such RTS change. Note that TIOCM_CAR
-and TIOCM_RI bits in sport->old_status do not suffer from this problem.
+	[<9000000000203874>] stack_top+0x58/0xa8
+	[<90000000002956cc>] arch_pick_mmap_layout+0x164/0x220
+	[<90000000003c284c>] kunit_vm_mmap_init+0x108/0x12c
+	[<90000000003c1fbc>] __kunit_add_resource+0x38/0x8c
+	[<90000000003c2704>] kunit_vm_mmap+0x88/0xc8
+	[<9000000000410b14>] usercopy_test_init+0xbc/0x25c
+	[<90000000003c1db4>] kunit_try_run_case+0x5c/0x184
+	[<90000000003c3d54>] kunit_generic_run_threadfn_adapter+0x24/0x48
+	[<900000000022e4bc>] kthread+0xc8/0xd4
+	[<9000000000200ce8>] ret_from_kernel_thread+0xc/0xa4
 
-Fixes: ceca629e0b48 ("[ARM] 2971/1: i.MX uart handle rts irq")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Esben Haabendal <esben@geanix.com>
-Signed-off-by: Marek Vasut <marex@denx.de>
-Link: https://lore.kernel.org/r/20241002184133.19427-1-marex@denx.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 803b0fc5c3f2 ("LoongArch: Add process management")
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/imx.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/loongarch/kernel/process.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index bba54ad0d434d..94e0781e00e80 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -801,6 +801,21 @@ static irqreturn_t __imx_uart_rtsint(int irq, void *dev_id)
+diff --git a/arch/loongarch/kernel/process.c b/arch/loongarch/kernel/process.c
+index f2ff8b5d591e4..6e58f65455c7c 100644
+--- a/arch/loongarch/kernel/process.c
++++ b/arch/loongarch/kernel/process.c
+@@ -293,13 +293,15 @@ unsigned long stack_top(void)
+ {
+ 	unsigned long top = TASK_SIZE & PAGE_MASK;
  
- 	imx_uart_writel(sport, USR1_RTSD, USR1);
- 	usr1 = imx_uart_readl(sport, USR1) & USR1_RTSS;
-+	/*
-+	 * Update sport->old_status here, so any follow-up calls to
-+	 * imx_uart_mctrl_check() will be able to recognize that RTS
-+	 * state changed since last imx_uart_mctrl_check() call.
-+	 *
-+	 * In case RTS has been detected as asserted here and later on
-+	 * deasserted by the time imx_uart_mctrl_check() was called,
-+	 * imx_uart_mctrl_check() can detect the RTS state change and
-+	 * trigger uart_handle_cts_change() to unblock the port for
-+	 * further TX transfers.
-+	 */
-+	if (usr1 & USR1_RTSS)
-+		sport->old_status |= TIOCM_CTS;
-+	else
-+		sport->old_status &= ~TIOCM_CTS;
- 	uart_handle_cts_change(&sport->port, usr1);
- 	wake_up_interruptible(&sport->port.state->port.delta_msr_wait);
+-	/* Space for the VDSO & data page */
+-	top -= PAGE_ALIGN(current->thread.vdso->size);
+-	top -= VVAR_SIZE;
+-
+-	/* Space to randomize the VDSO base */
+-	if (current->flags & PF_RANDOMIZE)
+-		top -= VDSO_RANDOMIZE_SIZE;
++	if (current->thread.vdso) {
++		/* Space for the VDSO & data page */
++		top -= PAGE_ALIGN(current->thread.vdso->size);
++		top -= VVAR_SIZE;
++
++		/* Space to randomize the VDSO base */
++		if (current->flags & PF_RANDOMIZE)
++			top -= VDSO_RANDOMIZE_SIZE;
++	}
  
+ 	return top;
+ }
 -- 
 2.43.0
 
