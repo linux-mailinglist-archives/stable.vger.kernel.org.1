@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-88457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5353A9B2611
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AB399B27D3
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:51:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86D34B20EA6
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C6A01C215DE
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5931018EFD4;
-	Mon, 28 Oct 2024 06:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A17C18E77D;
+	Mon, 28 Oct 2024 06:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QuutkKt8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8ziw9hv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1761A15B10D;
-	Mon, 28 Oct 2024 06:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391778837;
+	Mon, 28 Oct 2024 06:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097376; cv=none; b=SLSi12Irt89ITkb59H8MVrz9m45/9TJmwCyA39Gj6//huO0CYE1WxqSu4Rqu2fRzxATOsAbM2AgMxZkjnk+g9D1WGL8DyCBjUsgdgPPnVhxJuHj8P/Hs6eOdxjAdBwG4Tp+Cf31H9QelbnEzIb3C07038bnSx2Q7FVAkqWLC41I=
+	t=1730098292; cv=none; b=NJOSAlC9JjK2poU5X5oQvjZWLHmNyo7hW+oiYLgfck07Is2ud0DcJx8k/PLkWAD2RKrSNJs4ljI2D3bjEIxE6FUzYILdGo78Bfnh2EsQ+M9RsWxtOh7Y2CE9YkLQQ3CFFEVtvd840ybCnUsLCNs66TVT5nPPcWGPtPHhjWawV2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097376; c=relaxed/simple;
-	bh=r0s4idhQwps+BkQso/Ih/uY+yQVJ2b4VLZoa9SlwWW4=;
+	s=arc-20240116; t=1730098292; c=relaxed/simple;
+	bh=GHReMO6uX46rL/aD4K8jRohsyMJoQmkH4QZiYovfi2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gmHZ8aSPkE0okKFdVGDzGN5SKIvEO2UNpmKfwq1PqgONKI/6yWovFAzVbJt01ICM6YmeVgLe+B/eVe+pAlvL6ufBGrYn6dq84Mn26FKXc2idkIZ/Cz7zm4oOpRNYaRkP5UpwizUQPHUCMaEd8BcU9E7K4oHIcjP98ONmHasDStk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QuutkKt8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE71C4CEC3;
-	Mon, 28 Oct 2024 06:36:15 +0000 (UTC)
+	 MIME-Version; b=LzfIosK6lUcrIr2JHr0KBDjPIH+zNOxzSLxn4msgic1TbzAISEMxPith2aBlGw/QzOQDUK3hcp5MKJYrumOC5HiokYkLbaYROMxEXzhga9R6nO5AiS7HepeEnqZOm+TIIyCbjnNg9xPbyJ27eYbbwXbFFaCDVHvRkhgKN6mMR8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8ziw9hv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE005C4CEC3;
+	Mon, 28 Oct 2024 06:51:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097376;
-	bh=r0s4idhQwps+BkQso/Ih/uY+yQVJ2b4VLZoa9SlwWW4=;
+	s=korg; t=1730098292;
+	bh=GHReMO6uX46rL/aD4K8jRohsyMJoQmkH4QZiYovfi2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QuutkKt8/nL7GT41ceCwEWcwggUAhiu/QHoBlM/KPNGGRbuY1PCjL3Yw2cyhuK5gU
-	 g+jMsfN51ygMUNa4osxsHjDOtrjRys7v88NGDeXIgZnkI0zx31Yg8a2KGdEVrgCEV6
-	 H29L8gUrGiqW8VwXsy0kPuw+t6j5jG1Ht6jAhVqM=
+	b=d8ziw9hvNhtRatnt4svx2sQJHqFxzjGWJAGrqhM6ZdRH9cfru9YL0yrsTuF6KpcHb
+	 6niyQWZ6gHW32cZtWmzVClLm7pWzzkvNFoGvouMPCBOqDN5Dv1D70RKeT5FzNX0UIK
+	 TF7fIFlnsMYTHoSZIaYiz/t/t+MZe8Glms4mjdYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	Dhruva Gole <d-gole@ti.com>,
+	Hou Tao <houtao1@huawei.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/137] usb: dwc3: core: Fix system suspend on TI AM62 platforms
+Subject: [PATCH 6.11 162/261] bpf: Preserve param->string when parsing mount options
 Date: Mon, 28 Oct 2024 07:25:04 +0100
-Message-ID: <20241028062300.610615270@linuxfoundation.org>
+Message-ID: <20241028062316.064975538@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,113 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roger Quadros <rogerq@kernel.org>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 705e3ce37bccdf2ed6f848356ff355f480d51a91 ]
+[ Upstream commit 1f97c03f43fadc407de5b5cb01c07755053e1c22 ]
 
-Since commit 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init"),
-system suspend is broken on AM62 TI platforms.
+In bpf_parse_param(), keep the value of param->string intact so it can
+be freed later. Otherwise, the kmalloc area pointed to by param->string
+will be leaked as shown below:
 
-Before that commit, both DWC3_GUSB3PIPECTL_SUSPHY and DWC3_GUSB2PHYCFG_SUSPHY
-bits (hence forth called 2 SUSPHY bits) were being set during core
-initialization and even during core re-initialization after a system
-suspend/resume.
+unreferenced object 0xffff888118c46d20 (size 8):
+  comm "new_name", pid 12109, jiffies 4295580214
+  hex dump (first 8 bytes):
+    61 6e 79 00 38 c9 5c 7e                          any.8.\~
+  backtrace (crc e1b7f876):
+    [<00000000c6848ac7>] kmemleak_alloc+0x4b/0x80
+    [<00000000de9f7d00>] __kmalloc_node_track_caller_noprof+0x36e/0x4a0
+    [<000000003e29b886>] memdup_user+0x32/0xa0
+    [<0000000007248326>] strndup_user+0x46/0x60
+    [<0000000035b3dd29>] __x64_sys_fsconfig+0x368/0x3d0
+    [<0000000018657927>] x64_sys_call+0xff/0x9f0
+    [<00000000c0cabc95>] do_syscall_64+0x3b/0xc0
+    [<000000002f331597>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-These bits are required to be set for system suspend/resume to work correctly
-on AM62 platforms.
-
-Since that commit, the 2 SUSPHY bits are not set for DEVICE/OTG mode if gadget
-driver is not loaded and started.
-For Host mode, the 2 SUSPHY bits are set before the first system suspend but
-get cleared at system resume during core re-init and are never set again.
-
-This patch resovles these two issues by ensuring the 2 SUSPHY bits are set
-before system suspend and restored to the original state during system resume.
-
-Cc: stable@vger.kernel.org # v6.9+
-Fixes: 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init")
-Link: https://lore.kernel.org/all/1519dbe7-73b6-4afc-bfe3-23f4f75d772f@kernel.org/
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Tested-by: Markus Schneider-Pargmann <msp@baylibre.com>
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Link: https://lore.kernel.org/r/20241011-am62-lpm-usb-v3-1-562d445625b5@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6c1752e0b6ca ("bpf: Support symbolic BPF FS delegation mount options")
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/bpf/20241022130133.3798232-1-houtao@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/core.c | 19 +++++++++++++++++++
- drivers/usb/dwc3/core.h |  3 +++
- 2 files changed, 22 insertions(+)
+ kernel/bpf/inode.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index c191716896fc4..22edd8d451da0 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -2131,6 +2131,11 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
- {
- 	u32 reg;
+diff --git a/kernel/bpf/inode.c b/kernel/bpf/inode.c
+index af5d2ffadd70b..00b8dc8ef7385 100644
+--- a/kernel/bpf/inode.c
++++ b/kernel/bpf/inode.c
+@@ -880,7 +880,7 @@ static int bpf_parse_param(struct fs_context *fc, struct fs_parameter *param)
+ 		const struct btf_type *enum_t;
+ 		const char *enum_pfx;
+ 		u64 *delegate_msk, msk = 0;
+-		char *p;
++		char *p, *str;
+ 		int val;
  
-+	dwc->susphy_state = (dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
-+			    DWC3_GUSB2PHYCFG_SUSPHY) ||
-+			    (dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0)) &
-+			    DWC3_GUSB3PIPECTL_SUSPHY);
-+
- 	switch (dwc->current_dr_role) {
- 	case DWC3_GCTL_PRTCAP_DEVICE:
- 		if (pm_runtime_suspended(dwc->dev))
-@@ -2178,6 +2183,15 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
- 		break;
- 	}
+ 		/* ignore errors, fallback to hex */
+@@ -911,7 +911,8 @@ static int bpf_parse_param(struct fs_context *fc, struct fs_parameter *param)
+ 			return -EINVAL;
+ 		}
  
-+	if (!PMSG_IS_AUTO(msg)) {
-+		/*
-+		 * TI AM62 platform requires SUSPHY to be
-+		 * enabled for system suspend to work.
-+		 */
-+		if (!dwc->susphy_state)
-+			dwc3_enable_susphy(dwc, true);
-+	}
-+
- 	return 0;
- }
- 
-@@ -2240,6 +2254,11 @@ static int dwc3_resume_common(struct dwc3 *dwc, pm_message_t msg)
- 		break;
- 	}
- 
-+	if (!PMSG_IS_AUTO(msg)) {
-+		/* restore SUSPHY state to that before system suspend. */
-+		dwc3_enable_susphy(dwc, dwc->susphy_state);
-+	}
-+
- 	return 0;
- }
- 
-diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
-index e733835c41222..1b496c8e7b809 100644
---- a/drivers/usb/dwc3/core.h
-+++ b/drivers/usb/dwc3/core.h
-@@ -1118,6 +1118,8 @@ struct dwc3_scratchpad_array {
-  * @dis_metastability_quirk: set to disable metastability quirk.
-  * @dis_split_quirk: set to disable split boundary.
-  * @suspended: set to track suspend event due to U3/L2.
-+ * @susphy_state: state of DWC3_GUSB2PHYCFG_SUSPHY + DWC3_GUSB3PIPECTL_SUSPHY
-+ *		  before PM suspend.
-  * @imod_interval: set the interrupt moderation interval in 250ns
-  *			increments or 0 to disable.
-  * @max_cfg_eps: current max number of IN eps used across all USB configs.
-@@ -1341,6 +1343,7 @@ struct dwc3 {
- 	unsigned		dis_split_quirk:1;
- 	unsigned		async_callbacks:1;
- 	unsigned		suspended:1;
-+	unsigned		susphy_state:1;
- 
- 	u16			imod_interval;
- 
+-		while ((p = strsep(&param->string, ":"))) {
++		str = param->string;
++		while ((p = strsep(&str, ":"))) {
+ 			if (strcmp(p, "any") == 0) {
+ 				msk |= ~0ULL;
+ 			} else if (find_btf_enum_const(info.btf, enum_t, enum_pfx, p, &val)) {
 -- 
 2.43.0
 
