@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-89032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F216B9B2DEE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 12:04:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB6F9B2DF0
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 12:04:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5160282FAB
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:04:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE9C01F223B0
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071871FB886;
-	Mon, 28 Oct 2024 10:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220D51FCF49;
+	Mon, 28 Oct 2024 10:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PuyIm70h"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pEwNWQZP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75F01FAF17;
-	Mon, 28 Oct 2024 10:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06141FC7C7;
+	Mon, 28 Oct 2024 10:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730112779; cv=none; b=F2RSr65dYVkAPJ+7/zCST6UV46hBbUWwzv9d6elSTr9Hde8IdesDvKPxhiIruQAY62+eChtUQSogsd+brVuIr+xrTJfrfb0T9cupw52NwddHzz3gRm9SI/Pm+0K27voL1z9rli9gz8mVX1heiJNNltrKG0G9xyLvv8kuUoLUoqM=
+	t=1730112780; cv=none; b=LHFdf7k01lZkEpyh8JvBx38iE+5KlUiLX2bFcbDIhttFBznCF6xtrW26Nsod/CAzB6ROMNienz105SnyQlsY6kWjyxJ3MNNGuvd1pKaJn9ponG0Z/piYqDRKcaw8R5j3N5HQyPV1KQPCzTfrpj622bBnkurian7BxNCw5BeS6bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730112779; c=relaxed/simple;
-	bh=dCkTMusFHGqhHmNia7+KA2uBQORiyhj/Ukzp/dcBfa4=;
+	s=arc-20240116; t=1730112780; c=relaxed/simple;
+	bh=f0WiIDz9o9IIBjCw/P/9Q2bibhLXoMOiZhNT77Arnu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DJvA+ckH/wvIkY3sfN6IJuOVwqTBDFwX1qs5Pi8JtVI8RTLo9YyNf8INpYrv9Vc4XEWDWi10kw3+MBpmS+3bjgpsoeJkwdmwWjqO/048LKwNY8ITsjCDrHm7mbPaoj2lX1mXr6vs1cAGFbeeEW7HCAaok5sP5p9JyO3PSvu74Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PuyIm70h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDBBBC4CEC3;
-	Mon, 28 Oct 2024 10:52:57 +0000 (UTC)
+	 MIME-Version; b=P/CEF47v+RwcwhCE0bi98hn8SdcCosZVAZfH7vF8BUuB6srCYci67o7HgISBJh7DQ8x8fWZFRpBEddgoyKiYeK3GSjUnLow/AAADgHN4XLOD/fPXsrPxA6qRmifjMr1gX7h4IehTh+gBcDyX7O5RECwGMvfb5hWQboGzkhMgL0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pEwNWQZP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD4DC4CEE4;
+	Mon, 28 Oct 2024 10:52:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730112779;
-	bh=dCkTMusFHGqhHmNia7+KA2uBQORiyhj/Ukzp/dcBfa4=;
+	s=k20201202; t=1730112780;
+	bh=f0WiIDz9o9IIBjCw/P/9Q2bibhLXoMOiZhNT77Arnu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PuyIm70hSnr5USnhCmhndEw0nbm21CDyS2OdP783sZU+1saZIHZCYlilvQEW8FsLi
-	 mQgfV75BCROb2pkoJaox6XRPC6/mHD2XPYq4kEhn0LMri0O45D1EOdKueu5a+pTllh
-	 ibrfDHQWtJ84kpIc87e98FkT88u7CEt3Gp9JF14kzIQfGo96NQyWiiyLWlAMHoQ5ZO
-	 3ldf97flcheeXQrwtbCFXJT0Yx/elX3QvGhD1AiOhEoTxrMHEZZ+48sJd3/bggym0j
-	 MOUcEMGQwQKNW8+7wpcghWAhMT5FQ2FA9xIGAqe2ePutjkmClrfgU3JGladYfFjHbJ
-	 2WnApmdbJa3iQ==
+	b=pEwNWQZPlsjifM51rC8kRRdrnB50s/U/WoPHnNV7YkGs8iRhah1I5bZUr+LOJpGgi
+	 oIr86DTNwRIe2xlMynUDFMX1fSBPLcn0cqxNUo59JzgsK6omNibX04edlucsV3az9G
+	 4OpjPw5ztZ9OOM+vL6obLOXQ8syTf6hi2rwQa3asPvn15iY8zUhP8iKu9GkK9bi+pU
+	 owInmWEYbjplwtSUPsWltxQtNyYQksy/ngV9TLEMVThcCeG6FxMHJ1Y5FCalamOpFn
+	 SR2SkFK51pQy+NCpHmHTtM+etAC67rHRIGCwwe3EVqOzAgEdSRCY3/svhnRcE7AVex
+	 cJTlyjFxGfyeQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alessandro Zanni <alessandro.zanni87@gmail.com>,
-	syzbot+6c55f725d1bdc8c52058@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Kenneth Albanowski <kenalba@chromium.org>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mark@fasheh.com,
-	jlbec@evilplan.org,
-	joseph.qi@linux.alibaba.com,
-	ocfs2-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.1 3/8] fs: Fix uninitialized value issue in from_kuid and from_kgid
-Date: Mon, 28 Oct 2024 06:52:44 -0400
-Message-ID: <20241028105252.3560220-3-sashal@kernel.org>
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 4/8] HID: multitouch: Add quirk for Logitech Bolt receiver w/ Casa touchpad
+Date: Mon, 28 Oct 2024 06:52:45 -0400
+Message-ID: <20241028105252.3560220-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241028105252.3560220-1-sashal@kernel.org>
 References: <20241028105252.3560220-1-sashal@kernel.org>
@@ -70,47 +67,55 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.114
 Content-Transfer-Encoding: 8bit
 
-From: Alessandro Zanni <alessandro.zanni87@gmail.com>
+From: Kenneth Albanowski <kenalba@chromium.org>
 
-[ Upstream commit 15f34347481648a567db67fb473c23befb796af5 ]
+[ Upstream commit 526748b925185e95f1415900ee13c2469d4b64cc ]
 
-ocfs2_setattr() uses attr->ia_mode, attr->ia_uid and attr->ia_gid in
-a trace point even though ATTR_MODE, ATTR_UID and ATTR_GID aren't set.
+The Logitech Casa Touchpad does not reliably send touch release signals
+when communicating through the Logitech Bolt wireless-to-USB receiver.
 
-Initialize all fields of newattrs to avoid uninitialized variables, by
-checking if ATTR_MODE, ATTR_UID, ATTR_GID are initialized, otherwise 0.
+Adjusting the device class to add MT_QUIRK_NOT_SEEN_MEANS_UP to make
+sure that no touches become stuck, MT_QUIRK_FORCE_MULTI_INPUT is not
+needed, but harmless.
 
-Reported-by: syzbot+6c55f725d1bdc8c52058@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6c55f725d1bdc8c52058
-Signed-off-by: Alessandro Zanni <alessandro.zanni87@gmail.com>
-Link: https://lore.kernel.org/r/20241017120553.55331-1-alessandro.zanni87@gmail.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Linux does not have information on which devices are connected to the
+Bolt receiver, so we have to enable this for the entire device.
+
+Signed-off-by: Kenneth Albanowski <kenalba@chromium.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/file.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/hid/hid-ids.h        | 1 +
+ drivers/hid/hid-multitouch.c | 4 ++++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/fs/ocfs2/file.c b/fs/ocfs2/file.c
-index f502bb2ce2ea7..cac806174d10c 100644
---- a/fs/ocfs2/file.c
-+++ b/fs/ocfs2/file.c
-@@ -1129,9 +1129,12 @@ int ocfs2_setattr(struct user_namespace *mnt_userns, struct dentry *dentry,
- 	trace_ocfs2_setattr(inode, dentry,
- 			    (unsigned long long)OCFS2_I(inode)->ip_blkno,
- 			    dentry->d_name.len, dentry->d_name.name,
--			    attr->ia_valid, attr->ia_mode,
--			    from_kuid(&init_user_ns, attr->ia_uid),
--			    from_kgid(&init_user_ns, attr->ia_gid));
-+			    attr->ia_valid,
-+				attr->ia_valid & ATTR_MODE ? attr->ia_mode : 0,
-+				attr->ia_valid & ATTR_UID ?
-+					from_kuid(&init_user_ns, attr->ia_uid) : 0,
-+				attr->ia_valid & ATTR_GID ?
-+					from_kgid(&init_user_ns, attr->ia_gid) : 0);
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index f3b183a7b7fa4..f1c106f5e90b9 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -859,6 +859,7 @@
+ #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1	0xc539
+ #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1_1	0xc53f
+ #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_POWERPLAY	0xc53a
++#define USB_DEVICE_ID_LOGITECH_BOLT_RECEIVER	0xc548
+ #define USB_DEVICE_ID_SPACETRAVELLER	0xc623
+ #define USB_DEVICE_ID_SPACENAVIGATOR	0xc626
+ #define USB_DEVICE_ID_DINOVO_DESKTOP	0xc704
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index e7199ae2e3d91..8800893b098bf 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2131,6 +2131,10 @@ static const struct hid_device_id mt_devices[] = {
+ 		HID_DEVICE(BUS_BLUETOOTH, HID_GROUP_MULTITOUCH_WIN_8,
+ 			USB_VENDOR_ID_LOGITECH,
+ 			USB_DEVICE_ID_LOGITECH_CASA_TOUCHPAD) },
++	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
++		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
++			USB_VENDOR_ID_LOGITECH,
++			USB_DEVICE_ID_LOGITECH_BOLT_RECEIVER) },
  
- 	/* ensuring we don't even attempt to truncate a symlink */
- 	if (S_ISLNK(inode->i_mode))
+ 	/* MosArt panels */
+ 	{ .driver_data = MT_CLS_CONFIDENCE_MINUS_ONE,
 -- 
 2.43.0
 
