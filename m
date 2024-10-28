@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-88768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF3E9B276A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:48:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 853A69B267D
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:40:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 546D1283C38
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:48:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A45E282366
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:40:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEF918DF7D;
-	Mon, 28 Oct 2024 06:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C0718E36D;
+	Mon, 28 Oct 2024 06:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gi3gporc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y6tYjI/j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69EB82AF07;
-	Mon, 28 Oct 2024 06:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F24318DF68;
+	Mon, 28 Oct 2024 06:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098079; cv=none; b=sUFkDlcVRwBAwg/4h5mJX/Q+OVUWi+U0TFN5fq8dctsmmrv3gFlBT5FvK2p9g+y5/1U7v4d6rlq6mKUrWcXn1DmAEgvQ/GbvFO11C3XX7SN2T0K1DTeHnxpIIkojPJeCMpx0NeA4LGnG54Ey04JAIkk/G73kLSLsYa9kRKKopRU=
+	t=1730097604; cv=none; b=eqCax5Ol8uFgTbmqQ/Lxbnc2ubbU/cYozm/5GCnHzo8emSaId7nVtSjk07WZ2qni+7Atv5av4STYfzJ3tVESoa0ApUHW437XdVWWil7wNRVVRiyzl2JO88/+BQqc3pQw+RKWfonA1RF0wdfRHg+9k6Q6vooVpgREwkoVsbBtPdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098079; c=relaxed/simple;
-	bh=6xkcYmchiQZMy2jilZ8+4UxyTrq4FrODIrmnzXE3Ia4=;
+	s=arc-20240116; t=1730097604; c=relaxed/simple;
+	bh=yE4mg2BrzJlY/xYUY9Ci360gTt/bfjlgQfVuU/b3ugs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+nQCZqXagrzlSodUfwHvcyGdPeu4Ze1sHQNRoZZSYtGVYJPT5T5WzrjA96UwIGCvFEsGBPcTS9kNM/wZLlg6CyUeH3PAioca0/ihC0rYDYUz91o73fPeGSNoigMvGBdJuJxVyShhrv9jNsqEH3iQySSXGUBwCOOxmSaorDkjIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gi3gporc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A3FC4CEC3;
-	Mon, 28 Oct 2024 06:47:58 +0000 (UTC)
+	 MIME-Version; b=RICuEusK+TlClDnr1yd2xVxBX6fzmGmkNGlfKzpxV/bYKJSV0d+BhaHwNrp+moskOykzppDyKIq42qjn6kZoHrqVRUk1iv5CdhV704jo2RiH9lIsHcwMjOKHja+uE9+K7wkr/Ytb6zYpkcsCl8zgLxbwJwgjNJlAAkNuCU2Qd3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y6tYjI/j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF8A5C4CEC3;
+	Mon, 28 Oct 2024 06:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098079;
-	bh=6xkcYmchiQZMy2jilZ8+4UxyTrq4FrODIrmnzXE3Ia4=;
+	s=korg; t=1730097604;
+	bh=yE4mg2BrzJlY/xYUY9Ci360gTt/bfjlgQfVuU/b3ugs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gi3gporcRr7s0hnAIF2cFLcfTAOIoVOd4JWXF+MH8L9z2emBDyBN/SR6s6fGsNdlw
-	 FI3u0PmzeM8C9NOw8WLy3K4qIKxMD2CuZrVAUxMjT7wYcxHTcBuREUfCig9B2m+eFp
-	 v1hVk/bGgC+f+VX27cndQ8yhVpH3oo82ODGI4LAc=
+	b=Y6tYjI/j7xR2BvfT9fjo33PCscGbVUMgIAbdg+dUMdNlZCoKI7UWd54xQAo98G+/I
+	 kakHuKVZa0giIqBS9ZwWO+I3zHZ2cm1Wh/knp7HbxeZpnNAEFSMKb/eoRuqt9z1C/V
+	 22KFK1oDG/YJyFmVOQz+BKpss4g4PSkbUfDY99HU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	Li RongQing <lirongqing@baidu.com>,
-	Simon Horman <horms@kernel.org>,
-	Gerd Bayer <gbayer@linux.ibm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Zubkov <green@qrator.net>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 068/261] net/smc: Fix searching in list of known pnetids in smc_pnet_add_pnetid
+Subject: [PATCH 6.6 030/208] RDMA/irdma: Fix misspelling of "accept*"
 Date: Mon, 28 Oct 2024 07:23:30 +0100
-Message-ID: <20241028062313.737264311@linuxfoundation.org>
+Message-ID: <20241028062307.400913318@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,42 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li RongQing <lirongqing@baidu.com>
+From: Alexander Zubkov <green@qrator.net>
 
-[ Upstream commit 82ac39ebd6db0c9f7a97a934bda1e3e101a9d201 ]
+[ Upstream commit 8cddfa535c931b8d8110c73bfed7354a94cbf891 ]
 
-pnetid of pi (not newly allocated pe) should be compared
+There is "accept*" misspelled as "accpet*" in the comments.  Fix the
+spelling.
 
-Fixes: e888a2e8337c ("net/smc: introduce list of pnetids for Ethernet devices")
-Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
-Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
-Link: https://patch.msgid.link/20241014115321.33234-1-lirongqing@baidu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 146b9756f14c ("RDMA/irdma: Add connection manager")
+Link: https://patch.msgid.link/r/20241008161913.19965-1-green@qrator.net
+Signed-off-by: Alexander Zubkov <green@qrator.net>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_pnet.c | 2 +-
+ drivers/infiniband/hw/irdma/cm.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/smc/smc_pnet.c b/net/smc/smc_pnet.c
-index 2adb92b8c4699..dbcc72b43d0c0 100644
---- a/net/smc/smc_pnet.c
-+++ b/net/smc/smc_pnet.c
-@@ -753,7 +753,7 @@ static int smc_pnet_add_pnetid(struct net *net, u8 *pnetid)
- 
- 	write_lock(&sn->pnetids_ndev.lock);
- 	list_for_each_entry(pi, &sn->pnetids_ndev.list, list) {
--		if (smc_pnet_match(pnetid, pe->pnetid)) {
-+		if (smc_pnet_match(pnetid, pi->pnetid)) {
- 			refcount_inc(&pi->refcnt);
- 			kfree(pe);
- 			goto unlock;
+diff --git a/drivers/infiniband/hw/irdma/cm.c b/drivers/infiniband/hw/irdma/cm.c
+index 42d1e97710669..1916daa8c3323 100644
+--- a/drivers/infiniband/hw/irdma/cm.c
++++ b/drivers/infiniband/hw/irdma/cm.c
+@@ -3630,7 +3630,7 @@ void irdma_free_lsmm_rsrc(struct irdma_qp *iwqp)
+ /**
+  * irdma_accept - registered call for connection to be accepted
+  * @cm_id: cm information for passive connection
+- * @conn_param: accpet parameters
++ * @conn_param: accept parameters
+  */
+ int irdma_accept(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
+ {
 -- 
 2.43.0
 
