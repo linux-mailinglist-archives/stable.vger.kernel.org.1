@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-89042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F03FE9B2E0B
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 12:07:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 910519B2E0E
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 12:07:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B393328131C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:07:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C31231C22F95
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:07:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D682022E2;
-	Mon, 28 Oct 2024 10:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6952022F8;
+	Mon, 28 Oct 2024 10:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R0ZbTQYD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dj3m275c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEAD2022D7;
-	Mon, 28 Oct 2024 10:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0715D2022FD;
+	Mon, 28 Oct 2024 10:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730112801; cv=none; b=Pcw1DjCHpSYrJE9qX9EWI2fwuSexvY6yL0FKLe9uaaSAcbxa+7kVPZs+3B57AsWJpcsx+idIm9QiUosc5WsuTxOUz9QxAeESZ0L5D7/n6LU1XaQAC4ry9AkAoMYOeoZH9eZ+K8WHB3kqnSh5y8kMmFChQV5QOUtty0X5SUTeC68=
+	t=1730112803; cv=none; b=Vj90s/z+RCiz+wZB3LrMHYsF4ShFq95DyqgyK4CKsFOChqFmRCEEz3Vy8Esuhb6qELKMli17vr6cWQix7g+OGHiVu7N5vnzfDApZYakV0e5sYZWpKfMRsoxoN5byf4FDVsTGGeBXEJZlr48yyy3qgz6CYZClgv9zvXThUiORZO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730112801; c=relaxed/simple;
-	bh=NMNLN7sXc/om2JXSwuJhk7kn87fYGuE/7xqufaL4Q8Q=;
+	s=arc-20240116; t=1730112803; c=relaxed/simple;
+	bh=VYqLdh0SrCfBhnzcPJjG59pEAxcMxbvyfIIXODPpQHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=itE1EbmKHzwKwJ7q5h5fNftosmZLMHp92ehr5QlIBC2dw2phVwBpEccCSaj8L3UU2eci/F7w3+DcfNy1On3wClQwBh0ZBknQVdH4EXYtkPo6GU+Yy4CuwTeELgtQbi3vWtdDE7I+p6qptJ7bAfvnk6+jOU7e0/8FmIt7QdMCtEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R0ZbTQYD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A70C4CEC3;
-	Mon, 28 Oct 2024 10:53:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kRX2H7sciSmmh9lBwqJJ96VYTpmI6JG603vOVrQwLKbn5M1EOJZKeENAPgHRBeRCiMmqoBrOmHZT38nzytMEkIC0tTiTYhvwI9fmvz0cJ43gxdh4EoTUuPnQwVkXJ/TTKGnmHmLAu6sQtgeuhbMF/6NrqW/Y8eZy0x6Eax40NFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dj3m275c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE44C4CEC3;
+	Mon, 28 Oct 2024 10:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730112801;
-	bh=NMNLN7sXc/om2JXSwuJhk7kn87fYGuE/7xqufaL4Q8Q=;
+	s=k20201202; t=1730112802;
+	bh=VYqLdh0SrCfBhnzcPJjG59pEAxcMxbvyfIIXODPpQHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R0ZbTQYDaPIbb59LrSVbiFr479RNeOsqrJczeeM840eIv1Y1TzYthQdepFWdvLHcW
-	 nqwGgLt7beLrH2eZb7pSbEHEJXHCY4wQkFKQwKcY3vPuhXprn41zpDJlGSn8zH25zd
-	 Q6dMzTsx8GPO/TKQBqKS9tKPPrXGH32rM6W5Hj2ozF0JhFCa5sMk+gWHVZqmBwhvcL
-	 ulPaTxm9i9xcsj+jyMdIlRn8z5NBKeVFAU6IOZsVQJbEuYuyJM748cQi8mhNwqf3zH
-	 S2kZqRmn5V5vJaqGPnWzxNrdNZX2XabLeVC/hWoS7TrHG+L+tRTnev8TxGyx/oFiPQ
-	 ZGzXZf9af057Q==
+	b=dj3m275c1A5aqf37Be0R8DdGD8XJcOaYv6wM016H9gkba7BXBjxOFdo9KMz8KUFNc
+	 LcK+m5CQfMAzzYggylDSubZFKsoT8WibOo2DwAf5TH2B8la1IY3mZ6D61HWQSlvmMR
+	 mZ3lkv5sOCCCy1ShIbMiVqY4pJ03ShCK865rWQ8KkdsAhsK/Y0fa1nJkBoXHUHIyVy
+	 LwJH1y42Ze3C2WTSUTl3IgwgU+WgGdz52Qy7q65n+WN6JnpFAvtwrtAqquiNqtDQ+v
+	 WMgV3PXjWtaRYUUHj4ge+v0KBRvMMpV9beW0kztzk33W7X4/+lP91ws1tVw90qBQ7D
+	 Z6uA08miZTznw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Izhar Firdaus <izhar@fedoraproject.org>,
-	Jiri Kosina <jkosina@suse.com>,
+Cc: Armin Wolf <W_Armin@gmx.de>,
+	siddharth.manthan@gmail.com,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	bentiss@kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 5/7] HID: lenovo: Add support for Thinkpad X1 Tablet Gen 3 keyboard
-Date: Mon, 28 Oct 2024 06:53:07 -0400
-Message-ID: <20241028105311.3560419-5-sashal@kernel.org>
+	mjg59@srcf.ucam.org,
+	ilpo.jarvinen@linux.intel.com,
+	platform-driver-x86@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 6/7] platform/x86: dell-wmi: Ignore suspend notifications
+Date: Mon, 28 Oct 2024 06:53:08 -0400
+Message-ID: <20241028105311.3560419-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241028105311.3560419-1-sashal@kernel.org>
 References: <20241028105311.3560419-1-sashal@kernel.org>
@@ -63,90 +64,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.169
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 51268879eb2bfc563a91cdce69362d9dbf707e7e ]
+[ Upstream commit a7990957fa53326fe9b47f0349373ed99bb69aaa ]
 
-The Thinkpad X1 Tablet Gen 3 keyboard has the same Lenovo specific quirks
-as the original  Thinkpad X1 Tablet keyboard.
+Some machines like the Dell G15 5155 emit WMI events when
+suspending/resuming. Ignore those WMI events.
 
-Add the PID for the "Thinkpad X1 Tablet Gen 3 keyboard" to the hid-lenovo
-driver to fix the FnLock, Mute and media buttons not working.
-
-Suggested-by: Izhar Firdaus <izhar@fedoraproject.org>
-Closes https://bugzilla.redhat.com/show_bug.cgi?id=2315395
+Tested-by: siddharth.manthan@gmail.com
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Acked-by: Pali Rohár <pali@kernel.org>
+Link: https://lore.kernel.org/r/20241014220529.397390-1-W_Armin@gmx.de
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-lenovo.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/platform/x86/dell/dell-wmi-base.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/hid/hid-lenovo.c b/drivers/hid/hid-lenovo.c
-index 44fd4a05ace38..9536f468b42c5 100644
---- a/drivers/hid/hid-lenovo.c
-+++ b/drivers/hid/hid-lenovo.c
-@@ -343,6 +343,7 @@ static int lenovo_input_mapping(struct hid_device *hdev,
- 		return lenovo_input_mapping_tp10_ultrabook_kbd(hdev, hi, field,
- 							       usage, bit, max);
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		return lenovo_input_mapping_x1_tab_kbd(hdev, hi, field, usage, bit, max);
- 	default:
- 		return 0;
-@@ -431,6 +432,7 @@ static ssize_t attr_fn_lock_store(struct device *dev,
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		ret = lenovo_led_set_tp10ubkbd(hdev, TP10UBKBD_FN_LOCK_LED, value);
- 		if (ret)
- 			return ret;
-@@ -614,6 +616,7 @@ static int lenovo_event(struct hid_device *hdev, struct hid_field *field,
- 		return lenovo_event_cptkbd(hdev, field, usage, value);
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		return lenovo_event_tp10ubkbd(hdev, field, usage, value);
- 	default:
- 		return 0;
-@@ -896,6 +899,7 @@ static int lenovo_led_brightness_set(struct led_classdev *led_cdev,
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		ret = lenovo_led_set_tp10ubkbd(hdev, tp10ubkbd_led[led_nr], value);
- 		break;
- 	}
-@@ -1136,6 +1140,7 @@ static int lenovo_probe(struct hid_device *hdev,
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		ret = lenovo_probe_tp10ubkbd(hdev);
- 		break;
- 	default:
-@@ -1202,6 +1207,7 @@ static void lenovo_remove(struct hid_device *hdev)
- 		break;
- 	case USB_DEVICE_ID_LENOVO_TP10UBKBD:
- 	case USB_DEVICE_ID_LENOVO_X1_TAB:
-+	case USB_DEVICE_ID_LENOVO_X1_TAB3:
- 		lenovo_remove_tp10ubkbd(hdev);
- 		break;
- 	}
-@@ -1247,6 +1253,8 @@ static const struct hid_device_id lenovo_devices[] = {
- 	 */
- 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
- 		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB) },
-+	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
-+		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X1_TAB3) },
- 	{ }
- };
+diff --git a/drivers/platform/x86/dell/dell-wmi-base.c b/drivers/platform/x86/dell/dell-wmi-base.c
+index b83d6fa6e39b3..b12e6ebd10dd6 100644
+--- a/drivers/platform/x86/dell/dell-wmi-base.c
++++ b/drivers/platform/x86/dell/dell-wmi-base.c
+@@ -263,6 +263,15 @@ static const struct key_entry dell_wmi_keymap_type_0010[] = {
+ 	/*Speaker Mute*/
+ 	{ KE_KEY, 0x109, { KEY_MUTE} },
+ 
++	/* S2Idle screen off */
++	{ KE_IGNORE, 0x120, { KEY_RESERVED }},
++
++	/* Leaving S4 or S2Idle suspend */
++	{ KE_IGNORE, 0x130, { KEY_RESERVED }},
++
++	/* Entering S2Idle suspend */
++	{ KE_IGNORE, 0x140, { KEY_RESERVED }},
++
+ 	/* Mic mute */
+ 	{ KE_KEY, 0x150, { KEY_MICMUTE } },
  
 -- 
 2.43.0
