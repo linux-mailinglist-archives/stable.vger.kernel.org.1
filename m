@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-88843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 343BE9B27BE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:50:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A66B9B26A0
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:41:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C59E6285931
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:50:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CB081C21395
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A334D18A924;
-	Mon, 28 Oct 2024 06:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6577718E36D;
+	Mon, 28 Oct 2024 06:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pBctouQ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z4puHSCe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC038837;
-	Mon, 28 Oct 2024 06:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21285189BAF;
+	Mon, 28 Oct 2024 06:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098247; cv=none; b=Mjh6GAYg6vt2Y4DcFlPcufmJlXziPFxE4MZEgjLe5S691Q/48V15iX1pHJHpObigFJj6Q8QKEJLp1hMkrPZiUrUDVYvyo6GsahUVrOny67SWKV+qMBiB7ldznRaD+9OtX39A4YNh/DGol2bL+KGbyb2xRiViXXFvj6mWq3G8sag=
+	t=1730097676; cv=none; b=UHAtO/V4SXN8QqX7kzcVV8/kyurTUeZollRd1EIS0uVlufgBfXm3KqJn3gnBWPM1MiHYxMhsPciXwfPNYSvd/+O3LON/sVy5GKDeu+H/ep8nNJV3agIrI+LFyAUhJht7tHnxZKd77KXSM0WBbi98MPwM80AlZfqXLv+ipQi6/GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098247; c=relaxed/simple;
-	bh=257HunH8HrP1LIwaqAt/8FOINRRfp6LAU7mhSwtscl8=;
+	s=arc-20240116; t=1730097676; c=relaxed/simple;
+	bh=m8kM/Q/MMD75W6NQwySbYS5xNwowsN9lnrp6Sk75QTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GP/qtqa48t/HvoYQB438brZ5q5KZu+/X/voWlCzwyDlhGepgzC7Fh4Nhhmx8/Y8VVmMRg24BkJou+b+RM0OmXdCHJzuEWLTcbRXKYUIPwEo9X0O4aDhUNbCX8LgBO2HTKVN7uY71c+kPHW3vTQwpD6g57nO2DgAFsMWIiL+Ia6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pBctouQ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F367CC4CECD;
-	Mon, 28 Oct 2024 06:50:46 +0000 (UTC)
+	 MIME-Version; b=cLxXXFaVVbxv8ewitsKV34YcvwYg7oKnsi7UYN5eQHApKpqHrIeZJB4QcOovuR1Vdp55925WJ+UR6xG0ZE1Sykj6+fPkyS7DHpavxK94UQ/vAcOpumodR+G95VCSJcqu9TMJJchAMNqMKuHFhr86JnTQKvhBcr4IPrKEWuhAphc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z4puHSCe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6189C4CEC3;
+	Mon, 28 Oct 2024 06:41:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098247;
-	bh=257HunH8HrP1LIwaqAt/8FOINRRfp6LAU7mhSwtscl8=;
+	s=korg; t=1730097676;
+	bh=m8kM/Q/MMD75W6NQwySbYS5xNwowsN9lnrp6Sk75QTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pBctouQ41I7WJI2kI1a0y1/2n9BIV2Hzs/lpiS84QiuUPy9qtZ571MpjXCpIvM+ou
-	 URub0ahezkemAwC08ARBE1ZSYGhI1fFCZ6xzTrL1zSyeoFggSF8TPXlRyaRrOA9qoP
-	 Am+TiUNj34tKqcXYagg6+h9JoEJe9bPWWYSXnp8A=
+	b=z4puHSCed4YkkwYDe1ckKWSXE3at2iXEs4WHh7y+2fi7DkZwETPlUW/LAC+CglHZI
+	 T5m0GMybW7T59UOEx+XJLju676sQOHbYAiugA43l+b7mz+ThZXf4pFz54cVUyz6t03
+	 wlUNqH+2GXD4OtqHbbtL0rVBF/zEaEgsH5NPvTsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Crag Wang <crag_wang@dell.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Gautam Menghani <gautammenghani201@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 135/261] platform/x86: dell-sysman: add support for alienware products
+Subject: [PATCH 6.6 097/208] mm: khugepaged: fix the arguments order in khugepaged_collapse_file trace point
 Date: Mon, 28 Oct 2024 07:24:37 +0100
-Message-ID: <20241028062315.426067037@linuxfoundation.org>
+Message-ID: <20241028062309.047432663@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +64,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Crag Wang <crag_wang@dell.com>
+From: Yang Shi <yang@os.amperecomputing.com>
 
-[ Upstream commit a561509b4187a8908eb7fbb2d1bf35bbc20ec74b ]
+[ Upstream commit 37f0b47c5143c2957909ced44fc09ffb118c99f7 ]
 
-Alienware supports firmware-attributes and has its own OEM string.
+The "addr" and "is_shmem" arguments have different order in TP_PROTO and
+TP_ARGS.  This resulted in the incorrect trace result:
 
-Signed-off-by: Crag Wang <crag_wang@dell.com>
-Link: https://lore.kernel.org/r/20241004152826.93992-1-crag_wang@dell.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+text-hugepage-644429 [276] 392092.878683: mm_khugepaged_collapse_file:
+mm=0xffff20025d52c440, hpage_pfn=0x200678c00, index=512, addr=1, is_shmem=0,
+filename=text-hugepage, nr=512, result=failed
+
+The value of "addr" is wrong because it was treated as bool value, the
+type of is_shmem.
+
+Fix the order in TP_PROTO to keep "addr" is before "is_shmem" since the
+original patch review suggested this order to achieve best packing.
+
+And use "lx" for "addr" instead of "ld" in TP_printk because address is
+typically shown in hex.
+
+After the fix, the trace result looks correct:
+
+text-hugepage-7291  [004]   128.627251: mm_khugepaged_collapse_file:
+mm=0xffff0001328f9500, hpage_pfn=0x20016ea00, index=512, addr=0x400000,
+is_shmem=0, filename=text-hugepage, nr=512, result=failed
+
+Link: https://lkml.kernel.org/r/20241012011702.1084846-1-yang@os.amperecomputing.com
+Fixes: 4c9473e87e75 ("mm/khugepaged: add tracepoint to collapse_file()")
+Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
+Cc: Gautam Menghani <gautammenghani201@gmail.com>
+Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: <stable@vger.kernel.org>    [6.2+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell-wmi-sysman/sysman.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/trace/events/huge_memory.h | 4 ++--
+ mm/khugepaged.c                    | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-index 9def7983d7d66..40ddc6eb75624 100644
---- a/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-+++ b/drivers/platform/x86/dell/dell-wmi-sysman/sysman.c
-@@ -521,6 +521,7 @@ static int __init sysman_init(void)
- 	int ret = 0;
+diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
+index dc6eeef2d3dac..37f2443b3cdb0 100644
+--- a/include/trace/events/huge_memory.h
++++ b/include/trace/events/huge_memory.h
+@@ -208,7 +208,7 @@ TRACE_EVENT(mm_khugepaged_scan_file,
  
- 	if (!dmi_find_device(DMI_DEV_TYPE_OEM_STRING, "Dell System", NULL) &&
-+	    !dmi_find_device(DMI_DEV_TYPE_OEM_STRING, "Alienware", NULL) &&
- 	    !dmi_find_device(DMI_DEV_TYPE_OEM_STRING, "www.dell.com", NULL)) {
- 		pr_err("Unable to run on non-Dell system\n");
- 		return -ENODEV;
+ TRACE_EVENT(mm_khugepaged_collapse_file,
+ 	TP_PROTO(struct mm_struct *mm, struct folio *new_folio, pgoff_t index,
+-			bool is_shmem, unsigned long addr, struct file *file,
++			unsigned long addr, bool is_shmem, struct file *file,
+ 			int nr, int result),
+ 	TP_ARGS(mm, new_folio, index, addr, is_shmem, file, nr, result),
+ 	TP_STRUCT__entry(
+@@ -233,7 +233,7 @@ TRACE_EVENT(mm_khugepaged_collapse_file,
+ 		__entry->result = result;
+ 	),
+ 
+-	TP_printk("mm=%p, hpage_pfn=0x%lx, index=%ld, addr=%ld, is_shmem=%d, filename=%s, nr=%d, result=%s",
++	TP_printk("mm=%p, hpage_pfn=0x%lx, index=%ld, addr=%lx, is_shmem=%d, filename=%s, nr=%d, result=%s",
+ 		__entry->mm,
+ 		__entry->hpfn,
+ 		__entry->index,
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 4b00592548f59..a87cfe1d4b7be 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2203,7 +2203,7 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
+ 	folio_put(new_folio);
+ out:
+ 	VM_BUG_ON(!list_empty(&pagelist));
+-	trace_mm_khugepaged_collapse_file(mm, new_folio, index, is_shmem, addr, file, HPAGE_PMD_NR, result);
++	trace_mm_khugepaged_collapse_file(mm, new_folio, index, addr, is_shmem, file, HPAGE_PMD_NR, result);
+ 	return result;
+ }
+ 
 -- 
 2.43.0
 
