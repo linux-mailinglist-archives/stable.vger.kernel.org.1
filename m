@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A46D9B268D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:40:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27CE19B27B4
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:50:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF05B28247A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:40:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B7C1B21048
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF3018E350;
-	Mon, 28 Oct 2024 06:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159F518E368;
+	Mon, 28 Oct 2024 06:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JtMmE+To"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JBDFT/5V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF17718E368;
-	Mon, 28 Oct 2024 06:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88852AF07;
+	Mon, 28 Oct 2024 06:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097634; cv=none; b=H3Y2Q7JA/lqx0DMfuspvCm0bckQ3aMu5/C92qfuQMwU23Mup6dlVlHy8/6HElxcLJhZm1+hYacNof3leQ7tvlsWEH6RVoXrw3fpt7DiSOBx2ZSMip/j7lXUnlP1/WtfsaeqMbtqo04nYh0GD5JCogK0P4akMCcztF3VYIVrIfqE=
+	t=1730098231; cv=none; b=BjVL8U+J+nA4MRTbr4iE+N355XwZkdopU6FB/0C4FujjPiyswJ6qM2qbjfNVmv8xE8iqX4Qz+48EI5/l5ekjdAY/Kyji9X7oQ+8UchKoObmz9Uq6cKqEiG1E1+eA0J3PcfFs6kBzcM8XraCT1qNDbblcKmkJ83SmA/ghiD9/42Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097634; c=relaxed/simple;
-	bh=FujOfzzIYUMJVb9//MFLafzvwpHSKhXoPiZFNwaVrWU=;
+	s=arc-20240116; t=1730098231; c=relaxed/simple;
+	bh=hJjhPWi1zgMVCiYZn5gNRtDVs/V4UJ/Fm5PCN8jbwg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iGXbsKv6tky+URXNqgbwdMjZthqPiSS5uF7WmktKjZw7FV7ocaCOuI2IrkriZ7UYrKhlhTZ/vVw3yS0lnFTPkvhSsnxr0/L30OmlSiiL0kbEHIwQgSlrXVSV7tmrfi9AH0N9qtLBlmZ7TOoywSq6ODozxZIqJL0+ri1mv6w7E8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JtMmE+To; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5226EC4CEC3;
-	Mon, 28 Oct 2024 06:40:33 +0000 (UTC)
+	 MIME-Version; b=YQ0SOpX73jgIQ02JNS6aPusvVND4F3MfGuI86J1NhG8Wi6JB22vw/a+AFJHT4p8ZErld3n2fyyjiPk/ROaRfD6XTbV5vLyPTHMlsgp4+hrYvGQWLnEtuJzvGXil2ydJi9HBSYhB1ZS4k0+pMkdQNdaqbiWk35F25VGW4A1kPZbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JBDFT/5V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6797FC4CEC3;
+	Mon, 28 Oct 2024 06:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097633;
-	bh=FujOfzzIYUMJVb9//MFLafzvwpHSKhXoPiZFNwaVrWU=;
+	s=korg; t=1730098231;
+	bh=hJjhPWi1zgMVCiYZn5gNRtDVs/V4UJ/Fm5PCN8jbwg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JtMmE+TohZ7NLUyASJ0ioSHtBsw6AJznInQOikWZdGsfVspqb619dfsYI0gdLhNRG
-	 9nSgczna/XVsLxGTLpCPNgr6g/zJjTDvZECHyZPAl8vkX2+9V+la7NqPxqSASlu/aI
-	 DM5pXSWbfmYvSj5HvRtyOtGo4qu8Rp8W/2/V5i/o=
+	b=JBDFT/5Vv6PS3j7gUALdLIdWo8psaUkToM5HjXNFNOcvqA/yW9tj0cDiU5wXigvHO
+	 LMLMJ2KmnkCf4rlPemhp5zpiLk+PaJe3/ellD4QHXbLa0+lCDwXG+sylDZ23DJh2OK
+	 swFFS+sHxxJGolvCU6ke+JXyK5p8tGwCL8yb8XT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 062/208] irqchip/renesas-rzg2l: Add support for suspend to RAM
+Subject: [PATCH 6.11 100/261] net/mlx5: Unregister notifier on eswitch init failure
 Date: Mon, 28 Oct 2024 07:24:02 +0100
-Message-ID: <20241028062308.181976283@linuxfoundation.org>
+Message-ID: <20241028062314.536616473@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,210 +61,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-[ Upstream commit 74d2ef5f6f4b2437e6292ab2502400e8048db4aa ]
+[ Upstream commit 1da9cfd6c41c2e6bbe624d0568644e1521c33e12 ]
 
-The irqchip-renesas-rzg2l driver is used on RZ/G3S SoC. RZ/G3S can go into
-deep sleep states where power to different SoC's parts is cut off and RAM
-is switched to self-refresh. The resume from these states is done with the
-help of the bootloader.
+It otherwise remains registered and a subsequent attempt at eswitch
+enabling might trigger warnings of the sort:
 
-The IA55 IRQ controller needs to be reconfigured when resuming from deep
-sleep state. For this the IA55 registers are cached in suspend and restored
-in resume.
+[  682.589148] ------------[ cut here ]------------
+[  682.590204] notifier callback eswitch_vport_event [mlx5_core] already registered
+[  682.590256] WARNING: CPU: 13 PID: 2660 at kernel/notifier.c:31 notifier_chain_register+0x3e/0x90
+[...snipped]
+[  682.610052] Call Trace:
+[  682.610369]  <TASK>
+[  682.610663]  ? __warn+0x7c/0x110
+[  682.611050]  ? notifier_chain_register+0x3e/0x90
+[  682.611556]  ? report_bug+0x148/0x170
+[  682.611977]  ? handle_bug+0x36/0x70
+[  682.612384]  ? exc_invalid_op+0x13/0x60
+[  682.612817]  ? asm_exc_invalid_op+0x16/0x20
+[  682.613284]  ? notifier_chain_register+0x3e/0x90
+[  682.613789]  atomic_notifier_chain_register+0x25/0x40
+[  682.614322]  mlx5_eswitch_enable_locked+0x1d4/0x3b0 [mlx5_core]
+[  682.614965]  mlx5_eswitch_enable+0xc9/0x100 [mlx5_core]
+[  682.615551]  mlx5_device_enable_sriov+0x25/0x340 [mlx5_core]
+[  682.616170]  mlx5_core_sriov_configure+0x50/0x170 [mlx5_core]
+[  682.616789]  sriov_numvfs_store+0xb0/0x1b0
+[  682.617248]  kernfs_fop_write_iter+0x117/0x1a0
+[  682.617734]  vfs_write+0x231/0x3f0
+[  682.618138]  ksys_write+0x63/0xe0
+[  682.618536]  do_syscall_64+0x4c/0x100
+[  682.618958]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-The IA55 IRQ controller is connected to GPIO controller and GIC as follows:
-
-                                      ┌──────────┐          ┌──────────┐
-                                      │          │ SPIX     │          │
-                                      │          ├─────────►│          │
-                                      │          │          │          │
-                                      │          │          │          │
-              ┌────────┐IRQ0-7        │  IA55    │          │  GIC     │
- Pin0 ───────►│        ├─────────────►│          │          │          │
-              │        │              │          │ PPIY     │          │
- ...          │  GPIO  │              │          ├─────────►│          │
-              │        │GPIOINT0-127  │          │          │          │
- PinN ───────►│        ├─────────────►│          │          │          │
-              └────────┘              └──────────┘          └──────────┘
-
-where:
-  - Pin0 is the first GPIO controller pin
-  - PinN is the last GPIO controller pin
-
-  - SPIX is the SPI interrupt with identifier X
-  - PPIY is the PPI interrupt with identifier Y
-
-Implement suspend/resume functionality with syscore_ops to be able to
-cache/restore the registers after/before the GPIO controller suspend/resume
-functions are invoked.
-
-As the syscore_ops suspend/resume functions do not take any argument make
-the driver private data static so it can be accessed from the
-suspend/resume functions.
-
-The IA55 interrupt controller is resumed before the GPIO controller. As
-GPIO pins could be in an a state which causes spurious interrupts, the
-reconfiguration of the interrupt controller is restricted to restore the
-interrupt type and leave them disabled.
-
-An eventually required interrupt enable operation will be done as part of
-the GPIO controller resume function after restoring the GPIO state.
-
-[ tglx: Massaged changelog ]
-
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20231120111820.87398-8-claudiu.beznea.uj@bp.renesas.com
-Stable-dep-of: d038109ac1c6 ("irqchip/renesas-rzg2l: Fix missing put_device")
+Fixes: 7624e58a8b3a ("net/mlx5: E-switch, register event handler before arming the event")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-renesas-rzg2l.c | 68 ++++++++++++++++++++++++-----
- 1 file changed, 57 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/eswitch.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index ac925da17876c..00688043697f0 100644
---- a/drivers/irqchip/irq-renesas-rzg2l.c
-+++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -18,6 +18,7 @@
- #include <linux/pm_runtime.h>
- #include <linux/reset.h>
- #include <linux/spinlock.h>
-+#include <linux/syscore_ops.h>
- 
- #define IRQC_IRQ_START			1
- #define IRQC_IRQ_COUNT			8
-@@ -55,17 +56,29 @@
- #define TINT_EXTRACT_HWIRQ(x)           FIELD_GET(GENMASK(15, 0), (x))
- #define TINT_EXTRACT_GPIOINT(x)         FIELD_GET(GENMASK(31, 16), (x))
- 
-+/**
-+ * struct rzg2l_irqc_reg_cache - registers cache (necessary for suspend/resume)
-+ * @iitsr: IITSR register
-+ * @titsr: TITSR registers
-+ */
-+struct rzg2l_irqc_reg_cache {
-+	u32	iitsr;
-+	u32	titsr[2];
-+};
-+
- /**
-  * struct rzg2l_irqc_priv - IRQ controller private data structure
-  * @base:	Controller's base address
-  * @fwspec:	IRQ firmware specific data
-  * @lock:	Lock to serialize access to hardware registers
-+ * @cache:	Registers cache for suspend/resume
-  */
--struct rzg2l_irqc_priv {
-+static struct rzg2l_irqc_priv {
- 	void __iomem			*base;
- 	struct irq_fwspec		fwspec[IRQC_NUM_IRQ];
- 	raw_spinlock_t			lock;
--};
-+	struct rzg2l_irqc_reg_cache	cache;
-+} *rzg2l_irqc_data;
- 
- static struct rzg2l_irqc_priv *irq_data_to_priv(struct irq_data *data)
- {
-@@ -282,6 +295,38 @@ static int rzg2l_irqc_set_type(struct irq_data *d, unsigned int type)
- 	return irq_chip_set_type_parent(d, IRQ_TYPE_LEVEL_HIGH);
- }
- 
-+static int rzg2l_irqc_irq_suspend(void)
-+{
-+	struct rzg2l_irqc_reg_cache *cache = &rzg2l_irqc_data->cache;
-+	void __iomem *base = rzg2l_irqc_data->base;
-+
-+	cache->iitsr = readl_relaxed(base + IITSR);
-+	for (u8 i = 0; i < 2; i++)
-+		cache->titsr[i] = readl_relaxed(base + TITSR(i));
-+
-+	return 0;
-+}
-+
-+static void rzg2l_irqc_irq_resume(void)
-+{
-+	struct rzg2l_irqc_reg_cache *cache = &rzg2l_irqc_data->cache;
-+	void __iomem *base = rzg2l_irqc_data->base;
-+
-+	/*
-+	 * Restore only interrupt type. TSSRx will be restored at the
-+	 * request of pin controller to avoid spurious interrupts due
-+	 * to invalid PIN states.
-+	 */
-+	for (u8 i = 0; i < 2; i++)
-+		writel_relaxed(cache->titsr[i], base + TITSR(i));
-+	writel_relaxed(cache->iitsr, base + IITSR);
-+}
-+
-+static struct syscore_ops rzg2l_irqc_syscore_ops = {
-+	.suspend	= rzg2l_irqc_irq_suspend,
-+	.resume		= rzg2l_irqc_irq_resume,
-+};
-+
- static const struct irq_chip irqc_chip = {
- 	.name			= "rzg2l-irqc",
- 	.irq_eoi		= rzg2l_irqc_eoi,
-@@ -366,7 +411,6 @@ static int rzg2l_irqc_init(struct device_node *node, struct device_node *parent)
- 	struct irq_domain *irq_domain, *parent_domain;
- 	struct platform_device *pdev;
- 	struct reset_control *resetn;
--	struct rzg2l_irqc_priv *priv;
- 	int ret;
- 
- 	pdev = of_find_device_by_node(node);
-@@ -379,15 +423,15 @@ static int rzg2l_irqc_init(struct device_node *node, struct device_node *parent)
- 		return -ENODEV;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+index 17f78091ad30e..7aef30dbd82d6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+@@ -1489,7 +1489,7 @@ int mlx5_eswitch_enable_locked(struct mlx5_eswitch *esw, int num_vfs)
  	}
  
--	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
--	if (!priv)
-+	rzg2l_irqc_data = devm_kzalloc(&pdev->dev, sizeof(*rzg2l_irqc_data), GFP_KERNEL);
-+	if (!rzg2l_irqc_data)
- 		return -ENOMEM;
+ 	if (err)
+-		goto abort;
++		goto err_esw_enable;
  
--	priv->base = devm_of_iomap(&pdev->dev, pdev->dev.of_node, 0, NULL);
--	if (IS_ERR(priv->base))
--		return PTR_ERR(priv->base);
-+	rzg2l_irqc_data->base = devm_of_iomap(&pdev->dev, pdev->dev.of_node, 0, NULL);
-+	if (IS_ERR(rzg2l_irqc_data->base))
-+		return PTR_ERR(rzg2l_irqc_data->base);
+ 	esw->fdb_table.flags |= MLX5_ESW_FDB_CREATED;
  
--	ret = rzg2l_irqc_parse_interrupts(priv, node);
-+	ret = rzg2l_irqc_parse_interrupts(rzg2l_irqc_data, node);
- 	if (ret) {
- 		dev_err(&pdev->dev, "cannot parse interrupts: %d\n", ret);
- 		return ret;
-@@ -410,17 +454,19 @@ static int rzg2l_irqc_init(struct device_node *node, struct device_node *parent)
- 		goto pm_disable;
- 	}
+@@ -1503,7 +1503,8 @@ int mlx5_eswitch_enable_locked(struct mlx5_eswitch *esw, int num_vfs)
  
--	raw_spin_lock_init(&priv->lock);
-+	raw_spin_lock_init(&rzg2l_irqc_data->lock);
- 
- 	irq_domain = irq_domain_add_hierarchy(parent_domain, 0, IRQC_NUM_IRQ,
- 					      node, &rzg2l_irqc_domain_ops,
--					      priv);
-+					      rzg2l_irqc_data);
- 	if (!irq_domain) {
- 		dev_err(&pdev->dev, "failed to add irq domain\n");
- 		ret = -ENOMEM;
- 		goto pm_put;
- 	}
- 
-+	register_syscore_ops(&rzg2l_irqc_syscore_ops);
-+
  	return 0;
  
- pm_put:
+-abort:
++err_esw_enable:
++	mlx5_eq_notifier_unregister(esw->dev, &esw->nb);
+ 	mlx5_esw_acls_ns_cleanup(esw);
+ 	return err;
+ }
 -- 
 2.43.0
 
