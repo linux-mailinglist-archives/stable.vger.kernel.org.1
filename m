@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5179E9B27D4
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:51:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2689B260F
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7571A1C215B6
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:51:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFDF61C2082C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53F918E368;
-	Mon, 28 Oct 2024 06:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9247618EFCD;
+	Mon, 28 Oct 2024 06:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xeuTBNlj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVtxj/tf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E238837;
-	Mon, 28 Oct 2024 06:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBE815B10D;
+	Mon, 28 Oct 2024 06:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098294; cv=none; b=j62I0Ypv5LpADt/smF93jbT8SZPciDlcwrChOnt1A0IxqkyZ0GK8vdN4cKc5p9gbK+KL+e8V50bElvBf1P90pTUrPc1ob0/AFVIP5k92qbx1Ly2mTxy6P5GGAPJBtkLl0I32HgWGsdZlVMy3gyUKY+ZO+hMCB7tUz4sWB63FRmQ=
+	t=1730097378; cv=none; b=WOVYDiHVX6jTPXoL/Mke4fQH43w9dBn8kgb6GzUio9fwyYqdaAoNYrKVGAwhpMivnDx1Q9SYKs4/5IH2USnM1CE5PBEx+pxK6YMIyiIwAinln1sPZ2EBp+knorO2r+dbf7VFyre7xgeIzin60klQdvou7co3TW2OnBdR+OEAlis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098294; c=relaxed/simple;
-	bh=NCNaqjxE8R0AzQBZ/JdEG7jAo12ifSprXNtOKzSnxNg=;
+	s=arc-20240116; t=1730097378; c=relaxed/simple;
+	bh=cN4sYPa8hUgVdF1/VRTh+rqa2ID8sAboKJjkjMI5eg0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bOqpiB6Brykk4fAhWpcmHcpHFgClUYXnVFmRumvEx8pY4Hi4fsChhQgJqbpR2Ekdof/lGSNSF2c4a6DI+2ACqjActJsXJG3kh5vKKZkNUNGCFmoLUDGwwf1T5cz7gXqAUXR1lHVK1gcnk/NUNieU2N35o0Ve68AZGntaHgvi6k4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xeuTBNlj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B04C4CEC3;
-	Mon, 28 Oct 2024 06:51:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XZMjNgTwwAH/Svoq50I9iO58kBk+cOi+G/FLL4WX/311BoUNhIePoKPsPuBIP/SDfNPgFZoJAxt22Mm55eevZTtiUqsqDWwL4ug3iRrToBX3D4zVw0uxlPXcIF0aMT9fUUwTGbEnywZ40P4MqKXCyukPocpu4pCDHVfbyzn0roQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HVtxj/tf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5CEC4CEC3;
+	Mon, 28 Oct 2024 06:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098294;
-	bh=NCNaqjxE8R0AzQBZ/JdEG7jAo12ifSprXNtOKzSnxNg=;
+	s=korg; t=1730097378;
+	bh=cN4sYPa8hUgVdF1/VRTh+rqa2ID8sAboKJjkjMI5eg0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xeuTBNljhZ/hboSD2cBwADsJ+z5EQo+YHuXQPArNuVYVWYkyHdwxoBFcWavxRlf6/
-	 lZk8ekfrI+NiQ6wFutxA1RRMqVy9weBE9oMqXpSfIiomi/TxuCNQ73N5QBEV5b654r
-	 6EFx6eZDPNeX8ln3r3YIisxHlJepZ7BSyKe/hP8Y=
+	b=HVtxj/tf418vH87ZNV9PNpop3R36sPJTeVJnO+z2U0YSLmF5LxtVmcm6QEk2Fj1ed
+	 0T77WF2sdW4DIvCyfL+afQwOnEEsVLymxWd81h+WfYAZxw9qAoC30JzuawwSaqvH2U
+	 zWxyu6Gd9P4yHcCUUfOs1rLz5OW7sjbINyoJVawA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Rodolfo Giometti <giometti@enneenne.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 163/261] bpf: Add MEM_WRITE attribute
+Subject: [PATCH 6.1 068/137] tty/serial: Make ->dcd_change()+uart_handle_dcd_change() status bool active
 Date: Mon, 28 Oct 2024 07:25:05 +0100
-Message-ID: <20241028062316.087813289@linuxfoundation.org>
+Message-ID: <20241028062300.638911047@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,201 +61,172 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 6fad274f06f038c29660aa53fbad14241c9fd976 ]
+[ Upstream commit 0388a152fc5544be82e736343496f99c4eef8d62 ]
 
-Add a MEM_WRITE attribute for BPF helper functions which can be used in
-bpf_func_proto to annotate an argument type in order to let the verifier
-know that the helper writes into the memory passed as an argument. In
-the past MEM_UNINIT has been (ab)used for this function, but the latter
-merely tells the verifier that the passed memory can be uninitialized.
+Convert status parameter for ->dcd_change() and
+uart_handle_dcd_change() to bool which matches to how the parameter is
+used.
 
-There have been bugs with overloading the latter but aside from that
-there are also cases where the passed memory is read + written which
-currently cannot be expressed, see also 4b3786a6c539 ("bpf: Zero former
-ARG_PTR_TO_{LONG,INT} args in case of error").
+Rename status to active to better describe what the parameter means.
 
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20241021152809.33343-1-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: 8ea607330a39 ("bpf: Fix overloading of MEM_UNINIT's meaning")
+Acked-by: Rodolfo Giometti <giometti@enneenne.com>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20230117090358.4796-9-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 40d7903386df ("serial: imx: Update mctrl old_status on RTSD interrupt")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h      | 14 +++++++++++---
- kernel/bpf/helpers.c     | 10 +++++-----
- kernel/bpf/ringbuf.c     |  2 +-
- kernel/bpf/syscall.c     |  2 +-
- kernel/trace/bpf_trace.c |  4 ++--
- net/core/filter.c        |  4 ++--
- 6 files changed, 22 insertions(+), 14 deletions(-)
+ drivers/pps/clients/pps-ldisc.c  | 6 +++---
+ drivers/tty/serial/serial_core.c | 8 ++++----
+ drivers/tty/serial/sunhv.c       | 8 ++++----
+ include/linux/serial_core.h      | 3 +--
+ include/linux/tty_ldisc.h        | 4 ++--
+ 5 files changed, 14 insertions(+), 15 deletions(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index f3e5ce397b8ef..eb1d3a2fe3339 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -635,6 +635,7 @@ enum bpf_type_flag {
- 	 */
- 	PTR_UNTRUSTED		= BIT(6 + BPF_BASE_TYPE_BITS),
+diff --git a/drivers/pps/clients/pps-ldisc.c b/drivers/pps/clients/pps-ldisc.c
+index d73c4c2ed4e13..443d6bae19d14 100644
+--- a/drivers/pps/clients/pps-ldisc.c
++++ b/drivers/pps/clients/pps-ldisc.c
+@@ -13,7 +13,7 @@
+ #include <linux/pps_kernel.h>
+ #include <linux/bug.h>
  
-+	/* MEM can be uninitialized. */
- 	MEM_UNINIT		= BIT(7 + BPF_BASE_TYPE_BITS),
+-static void pps_tty_dcd_change(struct tty_struct *tty, unsigned int status)
++static void pps_tty_dcd_change(struct tty_struct *tty, bool active)
+ {
+ 	struct pps_device *pps;
+ 	struct pps_event_time ts;
+@@ -29,11 +29,11 @@ static void pps_tty_dcd_change(struct tty_struct *tty, unsigned int status)
+ 		return;
  
- 	/* DYNPTR points to memory local to the bpf program. */
-@@ -700,6 +701,13 @@ enum bpf_type_flag {
- 	 */
- 	MEM_ALIGNED		= BIT(17 + BPF_BASE_TYPE_BITS),
+ 	/* Now do the PPS event report */
+-	pps_event(pps, &ts, status ? PPS_CAPTUREASSERT :
++	pps_event(pps, &ts, active ? PPS_CAPTUREASSERT :
+ 			PPS_CAPTURECLEAR, NULL);
  
-+	/* MEM is being written to, often combined with MEM_UNINIT. Non-presence
-+	 * of MEM_WRITE means that MEM is only being read. MEM_WRITE without the
-+	 * MEM_UNINIT means that memory needs to be initialized since it is also
-+	 * read.
-+	 */
-+	MEM_WRITE		= BIT(18 + BPF_BASE_TYPE_BITS),
-+
- 	__BPF_TYPE_FLAG_MAX,
- 	__BPF_TYPE_LAST_FLAG	= __BPF_TYPE_FLAG_MAX - 1,
- };
-@@ -758,10 +766,10 @@ enum bpf_arg_type {
- 	ARG_PTR_TO_SOCKET_OR_NULL	= PTR_MAYBE_NULL | ARG_PTR_TO_SOCKET,
- 	ARG_PTR_TO_STACK_OR_NULL	= PTR_MAYBE_NULL | ARG_PTR_TO_STACK,
- 	ARG_PTR_TO_BTF_ID_OR_NULL	= PTR_MAYBE_NULL | ARG_PTR_TO_BTF_ID,
--	/* pointer to memory does not need to be initialized, helper function must fill
--	 * all bytes or clear them in error case.
-+	/* Pointer to memory does not need to be initialized, since helper function
-+	 * fills all bytes or clears them in error case.
- 	 */
--	ARG_PTR_TO_UNINIT_MEM		= MEM_UNINIT | ARG_PTR_TO_MEM,
-+	ARG_PTR_TO_UNINIT_MEM		= MEM_UNINIT | MEM_WRITE | ARG_PTR_TO_MEM,
- 	/* Pointer to valid memory of size known at compile time. */
- 	ARG_PTR_TO_FIXED_SIZE_MEM	= MEM_FIXED_SIZE | ARG_PTR_TO_MEM,
+ 	dev_dbg(pps->dev, "PPS %s at %lu\n",
+-			status ? "assert" : "clear", jiffies);
++			active ? "assert" : "clear", jiffies);
+ }
  
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index c9e235807caca..cc8c00864a680 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -111,7 +111,7 @@ const struct bpf_func_proto bpf_map_pop_elem_proto = {
- 	.gpl_only	= false,
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type	= ARG_CONST_MAP_PTR,
--	.arg2_type	= ARG_PTR_TO_MAP_VALUE | MEM_UNINIT,
-+	.arg2_type	= ARG_PTR_TO_MAP_VALUE | MEM_UNINIT | MEM_WRITE,
- };
+ static int (*alias_n_tty_open)(struct tty_struct *tty);
+diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+index 58e857fb8deeb..e6994f40974ed 100644
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -3290,11 +3290,11 @@ EXPORT_SYMBOL(uart_match_port);
+ /**
+  * uart_handle_dcd_change - handle a change of carrier detect state
+  * @uport: uart_port structure for the open port
+- * @status: new carrier detect status, nonzero if active
++ * @active: new carrier detect status
+  *
+  * Caller must hold uport->lock.
+  */
+-void uart_handle_dcd_change(struct uart_port *uport, unsigned int status)
++void uart_handle_dcd_change(struct uart_port *uport, bool active)
+ {
+ 	struct tty_port *port = &uport->state->port;
+ 	struct tty_struct *tty = port->tty;
+@@ -3306,7 +3306,7 @@ void uart_handle_dcd_change(struct uart_port *uport, unsigned int status)
+ 		ld = tty_ldisc_ref(tty);
+ 		if (ld) {
+ 			if (ld->ops->dcd_change)
+-				ld->ops->dcd_change(tty, status);
++				ld->ops->dcd_change(tty, active);
+ 			tty_ldisc_deref(ld);
+ 		}
+ 	}
+@@ -3314,7 +3314,7 @@ void uart_handle_dcd_change(struct uart_port *uport, unsigned int status)
+ 	uport->icount.dcd++;
  
- BPF_CALL_2(bpf_map_peek_elem, struct bpf_map *, map, void *, value)
-@@ -124,7 +124,7 @@ const struct bpf_func_proto bpf_map_peek_elem_proto = {
- 	.gpl_only	= false,
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type	= ARG_CONST_MAP_PTR,
--	.arg2_type	= ARG_PTR_TO_MAP_VALUE | MEM_UNINIT,
-+	.arg2_type	= ARG_PTR_TO_MAP_VALUE | MEM_UNINIT | MEM_WRITE,
- };
+ 	if (uart_dcd_enabled(uport)) {
+-		if (status)
++		if (active)
+ 			wake_up_interruptible(&port->open_wait);
+ 		else if (tty)
+ 			tty_hangup(tty);
+diff --git a/drivers/tty/serial/sunhv.c b/drivers/tty/serial/sunhv.c
+index 1938ba5e98c0e..f0408a4d91ecf 100644
+--- a/drivers/tty/serial/sunhv.c
++++ b/drivers/tty/serial/sunhv.c
+@@ -89,10 +89,10 @@ static int receive_chars_getchar(struct uart_port *port)
  
- BPF_CALL_3(bpf_map_lookup_percpu_elem, struct bpf_map *, map, void *, key, u32, cpu)
-@@ -539,7 +539,7 @@ const struct bpf_func_proto bpf_strtol_proto = {
- 	.arg1_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
- 	.arg2_type	= ARG_CONST_SIZE,
- 	.arg3_type	= ARG_ANYTHING,
--	.arg4_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_ALIGNED,
-+	.arg4_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
- 	.arg4_size	= sizeof(s64),
- };
+ 		if (c == CON_HUP) {
+ 			hung_up = 1;
+-			uart_handle_dcd_change(port, 0);
++			uart_handle_dcd_change(port, false);
+ 		} else if (hung_up) {
+ 			hung_up = 0;
+-			uart_handle_dcd_change(port, 1);
++			uart_handle_dcd_change(port, true);
+ 		}
  
-@@ -569,7 +569,7 @@ const struct bpf_func_proto bpf_strtoul_proto = {
- 	.arg1_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
- 	.arg2_type	= ARG_CONST_SIZE,
- 	.arg3_type	= ARG_ANYTHING,
--	.arg4_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_ALIGNED,
-+	.arg4_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
- 	.arg4_size	= sizeof(u64),
- };
+ 		if (port->state == NULL) {
+@@ -135,7 +135,7 @@ static int receive_chars_read(struct uart_port *port)
+ 				bytes_read = 1;
+ 			} else if (stat == CON_HUP) {
+ 				hung_up = 1;
+-				uart_handle_dcd_change(port, 0);
++				uart_handle_dcd_change(port, false);
+ 				continue;
+ 			} else {
+ 				/* HV_EWOULDBLOCK, etc.  */
+@@ -145,7 +145,7 @@ static int receive_chars_read(struct uart_port *port)
  
-@@ -1745,7 +1745,7 @@ static const struct bpf_func_proto bpf_dynptr_from_mem_proto = {
- 	.arg1_type	= ARG_PTR_TO_UNINIT_MEM,
- 	.arg2_type	= ARG_CONST_SIZE_OR_ZERO,
- 	.arg3_type	= ARG_ANYTHING,
--	.arg4_type	= ARG_PTR_TO_DYNPTR | DYNPTR_TYPE_LOCAL | MEM_UNINIT,
-+	.arg4_type	= ARG_PTR_TO_DYNPTR | DYNPTR_TYPE_LOCAL | MEM_UNINIT | MEM_WRITE,
- };
+ 		if (hung_up) {
+ 			hung_up = 0;
+-			uart_handle_dcd_change(port, 1);
++			uart_handle_dcd_change(port, true);
+ 		}
  
- BPF_CALL_5(bpf_dynptr_read, void *, dst, u32, len, const struct bpf_dynptr_kern *, src,
-diff --git a/kernel/bpf/ringbuf.c b/kernel/bpf/ringbuf.c
-index de3b681d1d13d..e1cfe890e0be6 100644
---- a/kernel/bpf/ringbuf.c
-+++ b/kernel/bpf/ringbuf.c
-@@ -632,7 +632,7 @@ const struct bpf_func_proto bpf_ringbuf_reserve_dynptr_proto = {
- 	.arg1_type	= ARG_CONST_MAP_PTR,
- 	.arg2_type	= ARG_ANYTHING,
- 	.arg3_type	= ARG_ANYTHING,
--	.arg4_type	= ARG_PTR_TO_DYNPTR | DYNPTR_TYPE_RINGBUF | MEM_UNINIT,
-+	.arg4_type	= ARG_PTR_TO_DYNPTR | DYNPTR_TYPE_RINGBUF | MEM_UNINIT | MEM_WRITE,
- };
+ 		if (port->sysrq != 0 &&  *con_read_page) {
+diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
+index 1c9b3f27f2d36..9b6d91430d3b3 100644
+--- a/include/linux/serial_core.h
++++ b/include/linux/serial_core.h
+@@ -890,8 +890,7 @@ static inline bool uart_softcts_mode(struct uart_port *uport)
+  * The following are helper functions for the low level drivers.
+  */
  
- BPF_CALL_2(bpf_ringbuf_submit_dynptr, struct bpf_dynptr_kern *, ptr, u64, flags)
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index 26e69d4fc3dad..19b590b5aaec9 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -5973,7 +5973,7 @@ static const struct bpf_func_proto bpf_kallsyms_lookup_name_proto = {
- 	.arg1_type	= ARG_PTR_TO_MEM,
- 	.arg2_type	= ARG_CONST_SIZE_OR_ZERO,
- 	.arg3_type	= ARG_ANYTHING,
--	.arg4_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_ALIGNED,
-+	.arg4_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
- 	.arg4_size	= sizeof(u64),
- };
+-extern void uart_handle_dcd_change(struct uart_port *uport,
+-		unsigned int status);
++extern void uart_handle_dcd_change(struct uart_port *uport, bool active);
+ extern void uart_handle_cts_change(struct uart_port *uport,
+ 		unsigned int status);
  
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index d9bc5ef1cafc3..50c0b1088a9eb 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -1226,7 +1226,7 @@ static const struct bpf_func_proto bpf_get_func_arg_proto = {
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type	= ARG_PTR_TO_CTX,
- 	.arg2_type	= ARG_ANYTHING,
--	.arg3_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_ALIGNED,
-+	.arg3_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
- 	.arg3_size	= sizeof(u64),
- };
- 
-@@ -1243,7 +1243,7 @@ static const struct bpf_func_proto bpf_get_func_ret_proto = {
- 	.func		= get_func_ret,
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type	= ARG_PTR_TO_CTX,
--	.arg2_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_ALIGNED,
-+	.arg2_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
- 	.arg2_size	= sizeof(u64),
- };
- 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index b7a5f525e65b8..ddcf35e91a5e4 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -6350,7 +6350,7 @@ static const struct bpf_func_proto bpf_skb_check_mtu_proto = {
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type      = ARG_PTR_TO_CTX,
- 	.arg2_type      = ARG_ANYTHING,
--	.arg3_type      = ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_ALIGNED,
-+	.arg3_type      = ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
- 	.arg3_size	= sizeof(u32),
- 	.arg4_type      = ARG_ANYTHING,
- 	.arg5_type      = ARG_ANYTHING,
-@@ -6362,7 +6362,7 @@ static const struct bpf_func_proto bpf_xdp_check_mtu_proto = {
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type      = ARG_PTR_TO_CTX,
- 	.arg2_type      = ARG_ANYTHING,
--	.arg3_type      = ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_ALIGNED,
-+	.arg3_type      = ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
- 	.arg3_size	= sizeof(u32),
- 	.arg4_type      = ARG_ANYTHING,
- 	.arg5_type      = ARG_ANYTHING,
+diff --git a/include/linux/tty_ldisc.h b/include/linux/tty_ldisc.h
+index dcb61ec11424a..49dc172dedc7f 100644
+--- a/include/linux/tty_ldisc.h
++++ b/include/linux/tty_ldisc.h
+@@ -170,7 +170,7 @@ int ldsem_down_write_nested(struct ld_semaphore *sem, int subclass,
+  *	send, please arise a tasklet or workqueue to do the real data transfer.
+  *	Do not send data in this hook, it may lead to a deadlock.
+  *
+- * @dcd_change: [DRV] ``void ()(struct tty_struct *tty, unsigned int status)``
++ * @dcd_change: [DRV] ``void ()(struct tty_struct *tty, bool active)``
+  *
+  *	Tells the discipline that the DCD pin has changed its status. Used
+  *	exclusively by the %N_PPS (Pulse-Per-Second) line discipline.
+@@ -238,7 +238,7 @@ struct tty_ldisc_ops {
+ 	void	(*receive_buf)(struct tty_struct *tty, const unsigned char *cp,
+ 			       const char *fp, int count);
+ 	void	(*write_wakeup)(struct tty_struct *tty);
+-	void	(*dcd_change)(struct tty_struct *tty, unsigned int status);
++	void	(*dcd_change)(struct tty_struct *tty, bool active);
+ 	int	(*receive_buf2)(struct tty_struct *tty, const unsigned char *cp,
+ 				const char *fp, int count);
+ 	void	(*lookahead_buf)(struct tty_struct *tty, const unsigned char *cp,
 -- 
 2.43.0
 
