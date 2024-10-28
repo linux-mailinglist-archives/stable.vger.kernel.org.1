@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 146979B26B5
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:42:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA8849B254A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:27:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDA66282471
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1816A1C210B8
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DFBC18E368;
-	Mon, 28 Oct 2024 06:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653DC18E047;
+	Mon, 28 Oct 2024 06:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mALnjI+d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ld8D0GTg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE0615B10D;
-	Mon, 28 Oct 2024 06:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FF218CC1F;
+	Mon, 28 Oct 2024 06:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097719; cv=none; b=mNxWPHhFTfUtLQletaQSmvuwFNUrGEu4u3lkdJNjV+XdY+Gi0rGhZ4lnRNUJMRpyqVgKHMvxMESiG/KTH6NkGxd6RKjJVxwoQSMVFVguBp3iwNcYsluOWnycrPunPpAnK1p8TdcYJwhBVXeCOReNja2ShDUsNmNUFZQ9OXlmtnA=
+	t=1730096859; cv=none; b=k8hMwJ/iCd7MwBBNjYfbs9DS6aDzYL+ebRbY43drEHnmFJtDi3RC44ZyMtxtKcmNInL8FD4a7sDgT985hKytGdsjuyuDVs4Pgwx56srl4no+jVD6Hr4GlB++4kkWcHipJEqPq0AhXxo3XvkwFE0BNkcgy5V6jh7Vui1zCFgN5n4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097719; c=relaxed/simple;
-	bh=ooKqB93+vL7HTfyInkwELPUbBkZZSTt7jtp4RXZE8/Q=;
+	s=arc-20240116; t=1730096859; c=relaxed/simple;
+	bh=F0e148qrELx/aGs77fFTLtuvDEndNm34Ji2p6OSWv4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qrNcAcMTkzBYDfsc1bIYH+XhyAUspAipWYzyT6EPsLdywBBYsC2GjOEGbZWuZpxWhH0XtGkTO8PSXffDP0U6bDsfzIQFdmA1WXo6T/IxduSxHz7DAWwIVcFd7HXttLD8vrUZ8W/Z2jgepfRSvrUCg9kDHCV8YE8JqWHfhAJV/Wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mALnjI+d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4723C4CEC3;
-	Mon, 28 Oct 2024 06:41:58 +0000 (UTC)
+	 MIME-Version; b=E1W92UaMegQQ8AbY0P+c3X1rLJMit3wdrqMumgcUANpSYHL8PbVnjZphBR91ql4Fv1N/eGcmX6zA3AgpLOyFYhqselqMlWqL83Rb46WNEekGHnhJ1CPNY7tXYWsBXURkRwVLUeWGeon/XWVxiGik4MIS0ZvEfFZdS31poTeqImA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ld8D0GTg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63EE1C4CEC3;
+	Mon, 28 Oct 2024 06:27:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097718;
-	bh=ooKqB93+vL7HTfyInkwELPUbBkZZSTt7jtp4RXZE8/Q=;
+	s=korg; t=1730096858;
+	bh=F0e148qrELx/aGs77fFTLtuvDEndNm34Ji2p6OSWv4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mALnjI+dEO2f2a7/NYZg+KNpk4ZQYuvM2oxoeC6cQvKDEfN8ukbRuuCcAMBSmfbcU
-	 HQFbgUG1RuAtkGSQ68VCIh1nlEC6vmxvO4G0HDpExb+1ArDU3l151QlgdAQ1liz/Gl
-	 uYlkDCdb/chlLgFL+e/rgF1JcX/5GeUboCnLPiu4=
+	b=Ld8D0GTgXQkjiKi642DKMCk7sbZGASG6RBJ+97gaSIxwk0FOyaac7J59jWTRaBqwu
+	 ps5+xc+0NXA/17Ci/YUrP3q8tUmBoEmgPLyRYFa8/K4oS15GLZj/4P+EHQpsI44J6K
+	 ai3BTUyW3KOaZWqpt3+lRwju9tVCdYzO54KQXkoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 118/208] ASoC: fsl_sai: Enable FIFO continue on error FCONT bit
+Subject: [PATCH 5.15 18/80] macsec: dont increment counters for an unrelated SA
 Date: Mon, 28 Oct 2024 07:24:58 +0100
-Message-ID: <20241028062309.560381497@linuxfoundation.org>
+Message-ID: <20241028062253.127949267@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 72455e33173c1a00c0ce93d2b0198eb45d5f4195 ]
+[ Upstream commit cf58aefb1332db322060cad4a330d5f9292b0f41 ]
 
-FCONT=1 means On FIFO error, the SAI will continue from the
-same word that caused the FIFO error to set after the FIFO
-warning flag has been cleared.
+On RX, we shouldn't be incrementing the stats for an arbitrary SA in
+case the actual SA hasn't been set up. Those counters are intended to
+track packets for their respective AN when the SA isn't currently
+configured. Due to the way MACsec is implemented, we don't keep
+counters unless the SA is configured, so we can't track those packets,
+and those counters will remain at 0.
 
-Set FCONT bit in control register to avoid the channel swap
-issue after SAI xrun.
+The RXSC's stats keeps track of those packets without telling us which
+AN they belonged to. We could add counters for non-existent SAs, and
+then find a way to integrate them in the dump to userspace, but I
+don't think it's worth the effort.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/1727676508-22830-1-git-send-email-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 91ec9bd57f35 ("macsec: Fix traffic counters/statistics")
+Reported-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/f5ac92aaa5b89343232615f4c03f9f95042c6aa0.1728657709.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_sai.c | 5 ++++-
- sound/soc/fsl/fsl_sai.h | 1 +
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/macsec.c | 18 ------------------
+ 1 file changed, 18 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 3d202398c5411..aa15f56ca139d 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -604,6 +604,9 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
+index ab134fe1fda62..a91c409958ff2 100644
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -160,19 +160,6 @@ static struct macsec_rx_sa *macsec_rxsa_get(struct macsec_rx_sa __rcu *ptr)
+ 	return sa;
+ }
  
- 	val_cr4 |= FSL_SAI_CR4_FRSZ(slots);
+-static struct macsec_rx_sa *macsec_active_rxsa_get(struct macsec_rx_sc *rx_sc)
+-{
+-	struct macsec_rx_sa *sa = NULL;
+-	int an;
+-
+-	for (an = 0; an < MACSEC_NUM_AN; an++)	{
+-		sa = macsec_rxsa_get(rx_sc->sa[an]);
+-		if (sa)
+-			break;
+-	}
+-	return sa;
+-}
+-
+ static void free_rx_sc_rcu(struct rcu_head *head)
+ {
+ 	struct macsec_rx_sc *rx_sc = container_of(head, struct macsec_rx_sc, rcu_head);
+@@ -1192,15 +1179,12 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
+ 		/* If validateFrames is Strict or the C bit in the
+ 		 * SecTAG is set, discard
+ 		 */
+-		struct macsec_rx_sa *active_rx_sa = macsec_active_rxsa_get(rx_sc);
+ 		if (hdr->tci_an & MACSEC_TCI_C ||
+ 		    secy->validate_frames == MACSEC_VALIDATE_STRICT) {
+ 			u64_stats_update_begin(&rxsc_stats->syncp);
+ 			rxsc_stats->stats.InPktsNotUsingSA++;
+ 			u64_stats_update_end(&rxsc_stats->syncp);
+ 			DEV_STATS_INC(secy->netdev, rx_errors);
+-			if (active_rx_sa)
+-				this_cpu_inc(active_rx_sa->stats->InPktsNotUsingSA);
+ 			goto drop_nosa;
+ 		}
  
-+	/* Set to avoid channel swap */
-+	val_cr4 |= FSL_SAI_CR4_FCONT;
-+
- 	/* Set to output mode to avoid tri-stated data pins */
- 	if (tx)
- 		val_cr4 |= FSL_SAI_CR4_CHMOD;
-@@ -690,7 +693,7 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+@@ -1210,8 +1194,6 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
+ 		u64_stats_update_begin(&rxsc_stats->syncp);
+ 		rxsc_stats->stats.InPktsUnusedSA++;
+ 		u64_stats_update_end(&rxsc_stats->syncp);
+-		if (active_rx_sa)
+-			this_cpu_inc(active_rx_sa->stats->InPktsUnusedSA);
+ 		goto deliver;
+ 	}
  
- 	regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx, ofs),
- 			   FSL_SAI_CR4_SYWD_MASK | FSL_SAI_CR4_FRSZ_MASK |
--			   FSL_SAI_CR4_CHMOD_MASK,
-+			   FSL_SAI_CR4_CHMOD_MASK | FSL_SAI_CR4_FCONT_MASK,
- 			   val_cr4);
- 	regmap_update_bits(sai->regmap, FSL_SAI_xCR5(tx, ofs),
- 			   FSL_SAI_CR5_WNW_MASK | FSL_SAI_CR5_W0W_MASK |
-diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
-index 550df87b6a068..eba465c2387b6 100644
---- a/sound/soc/fsl/fsl_sai.h
-+++ b/sound/soc/fsl/fsl_sai.h
-@@ -137,6 +137,7 @@
- 
- /* SAI Transmit and Receive Configuration 4 Register */
- 
-+#define FSL_SAI_CR4_FCONT_MASK	BIT(28)
- #define FSL_SAI_CR4_FCONT	BIT(28)
- #define FSL_SAI_CR4_FCOMB_SHIFT BIT(26)
- #define FSL_SAI_CR4_FCOMB_SOFT  BIT(27)
 -- 
 2.43.0
 
