@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-88809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EE399B2797
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:49:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC8509B259B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:32:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 201281F248D2
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:49:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09DEE1C20E77
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2BA18EFF1;
-	Mon, 28 Oct 2024 06:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0EA618E37C;
+	Mon, 28 Oct 2024 06:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aMh/l3ch"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRhZKrTE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14292AF07;
-	Mon, 28 Oct 2024 06:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5942018E35B;
+	Mon, 28 Oct 2024 06:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098171; cv=none; b=pt3t0poGEiCzBV6FKbdqSXEXGrARWYBrrAgj3ursft/u1ii9wnTneMTqCTxhd88H0aqVvjWQD/9wOGGtlULsMpX5ji13ZHfmYvDVW/5IrWZ6CnAfBD3aT/wppHh/aNpj7KEaZASD9uwjL/y5nAQjr7WEgen7Q4D19MjqM+9FvaU=
+	t=1730097172; cv=none; b=TPVhuwsqMrHqP6xNg2WrCqr1CP0uohbjGECHiRjR62oz2NtdZiW5HjZ/N5ptnO03QymDJ4Io3edW4MNrg6Ypu+o+JnMbHk/3ud8AONd/PldQS40f0YuVLXU3Fdff0CKlX4ruOJWKepo/1asWF0SYvHGz90j7cmMs1NEkI9XJdSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098171; c=relaxed/simple;
-	bh=Ubc6YwivSYrDJeADpxk0mcg6YN36sZ2IcwftC+uFcQA=;
+	s=arc-20240116; t=1730097172; c=relaxed/simple;
+	bh=iwQ8mBaV1ZGjSeFerRx7Lgbp8o7hqaWc0hDlh6ptZrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qne+OcKuJmJV9iCQURkf378FrsUqx2rq7ReDYO7WdOEPlS+Lr56bxfOwA12KGToNy12IeOdsSSD5BGgxQFp0g/LqHqWjyt6LlyJ86r9G7TMDPK+Xos/gb+pxSfgUpYUQImui7+ai0Du2prtaiJ4yRXawja1dgAL/eIE2I1hBEcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aMh/l3ch; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1631BC4CEC3;
-	Mon, 28 Oct 2024 06:49:30 +0000 (UTC)
+	 MIME-Version; b=MXxaAK5uXXRX/DihZYtLFBx8ZzaL5KZ/n5SfRH/9a/SxpsbMvs0wFs1QWvQmLoxmnCcOLeKeo4DEG4t/QypZLzy82anWNmaU3ksFH06gOE5AxtLQzKfWsFZ5qmZh/mf2Mja6oJOQHJEGFsEFT5CM4S5QTY4F7W5U8uBLy4u9KbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRhZKrTE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2690C4CEC7;
+	Mon, 28 Oct 2024 06:32:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098171;
-	bh=Ubc6YwivSYrDJeADpxk0mcg6YN36sZ2IcwftC+uFcQA=;
+	s=korg; t=1730097172;
+	bh=iwQ8mBaV1ZGjSeFerRx7Lgbp8o7hqaWc0hDlh6ptZrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aMh/l3chQWHc5/CN78a7pM6cjE/nH4upuiNTuQfe7qK4/YAxUGd0V/5vBfQxyYBTL
-	 Nf5RSFqXuAVzDBu67aXsPWE+0CpEneuMptul3Ia/VPjQ9MFmukTGrbGXX4JKdg11fC
-	 0Y79SoDCImcJ/u8Pw8/ZoXFCGoBeAIx1iLHA9GDk=
+	b=mRhZKrTEHuypsvl1N4PQm7EPyU3lvmUOCt271CbVd5ViJIEUYAokCPHDrroALAvZE
+	 H67dxNf7QQqBeEUMNFUfge5/p7nfpBJ1piO9AtYCd5kON2xG3vwp/k70VwMmSNgFqe
+	 2CjbB9RRJW9Yj6oo+Uwjj6JhCYw8XQ2oI1FACs4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathaniel Theis <nathaniel.theis@nccgroup.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
 	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 109/261] bpf: Fix incorrect delta propagation between linked registers
-Date: Mon, 28 Oct 2024 07:24:11 +0100
-Message-ID: <20241028062314.759011171@linuxfoundation.org>
+Subject: [PATCH 6.1 015/137] selftests/bpf: Fix cross-compiling urandom_read
+Date: Mon, 28 Oct 2024 07:24:12 +0100
+Message-ID: <20241028062259.148686932@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,116 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 3878ae04e9fc24dacb77a1d32bd87e7d8108599e ]
+[ Upstream commit fd526e121c4d6f71aed82d21a8b8277b03e60b43 ]
 
-Nathaniel reported a bug in the linked scalar delta tracking, which can lead
-to accepting a program with OOB access. The specific code is related to the
-sync_linked_regs() function and the BPF_ADD_CONST flag, which signifies a
-constant offset between two scalar registers tracked by the same register id.
+Linking of urandom_read and liburandom_read.so prefers LLVM's 'ld.lld' but
+falls back to using 'ld' if unsupported. However, this fallback discards
+any existing makefile macro for LD and can break cross-compilation.
 
-The verifier attempts to track "similar" scalars in order to propagate bounds
-information learned about one scalar to others. For instance, if r1 and r2
-are known to contain the same value, then upon encountering 'if (r1 != 0x1234)
-goto xyz', not only does it know that r1 is equal to 0x1234 on the path where
-that conditional jump is not taken, it also knows that r2 is.
+Fix by changing the fallback to use the target linker $(LD), passed via
+'-fuse-ld=' using an absolute path rather than a linker "flavour".
 
-Additionally, with env->bpf_capable set, the verifier will track scalars
-which should be a constant delta apart (if r1 is known to be one greater than
-r2, then if r1 is known to be equal to 0x1234, r2 must be equal to 0x1233.)
-The code path for the latter in adjust_reg_min_max_vals() is reached when
-processing both 32 and 64-bit addition operations. While adjust_reg_min_max_vals()
-knows whether dst_reg was produced by a 32 or a 64-bit addition (based on the
-alu32 bool), the only information saved in dst_reg is the id of the source
-register (reg->id, or'ed by BPF_ADD_CONST) and the value of the constant
-offset (reg->off).
-
-Later, the function sync_linked_regs() will attempt to use this information
-to propagate bounds information from one register (known_reg) to others,
-meaning, for all R in linked_regs, it copies known_reg range (and possibly
-adjusting delta) into R for the case of R->id == known_reg->id.
-
-For the delta adjustment, meaning, matching reg->id with BPF_ADD_CONST, the
-verifier adjusts the register as reg = known_reg; reg += delta where delta
-is computed as (s32)reg->off - (s32)known_reg->off and placed as a scalar
-into a fake_reg to then simulate the addition of reg += fake_reg. This is
-only correct, however, if the value in reg was created by a 64-bit addition.
-When reg contains the result of a 32-bit addition operation, its upper 32
-bits will always be zero. sync_linked_regs() on the other hand, may cause
-the verifier to believe that the addition between fake_reg and reg overflows
-into those upper bits. For example, if reg was generated by adding the
-constant 1 to known_reg using a 32-bit alu operation, then reg->off is 1
-and known_reg->off is 0. If known_reg is known to be the constant 0xFFFFFFFF,
-sync_linked_regs() will tell the verifier that reg is equal to the constant
-0x100000000. This is incorrect as the actual value of reg will be 0, as the
-32-bit addition will wrap around.
-
-Example:
-
-  0: (b7) r0 = 0;             R0_w=0
-  1: (18) r1 = 0x80000001;    R1_w=0x80000001
-  3: (37) r1 /= 1;            R1_w=scalar()
-  4: (bf) r2 = r1;            R1_w=scalar(id=1) R2_w=scalar(id=1)
-  5: (bf) r4 = r1;            R1_w=scalar(id=1) R4_w=scalar(id=1)
-  6: (04) w2 += 2147483647;   R2_w=scalar(id=1+2147483647,smin=0,smax=umax=0xffffffff,var_off=(0x0; 0xffffffff))
-  7: (04) w4 += 0 ;           R4_w=scalar(id=1+0,smin=0,smax=umax=0xffffffff,var_off=(0x0; 0xffffffff))
-  8: (15) if r2 == 0x0 goto pc+1
- 10: R0=0 R1=0xffffffff80000001 R2=0x7fffffff R4=0xffffffff80000001 R10=fp0
-
-What can be seen here is that r1 is copied to r2 and r4, such that {r1,r2,r4}.id
-are all the same which later lets sync_linked_regs() to be invoked. Then, in
-a next step constants are added with alu32 to r2 and r4, setting their ->off,
-as well as id |= BPF_ADD_CONST. Next, the conditional will bind r2 and
-propagate ranges to its linked registers. The verifier now believes the upper
-32 bits of r4 are r4=0xffffffff80000001, while actually r4=r1=0x80000001.
-
-One approach for a simple fix suitable also for stable is to limit the constant
-delta tracking to only 64-bit alu addition. If necessary at some later point,
-BPF_ADD_CONST could be split into BPF_ADD_CONST64 and BPF_ADD_CONST32 to avoid
-mixing the two under the tradeoff to further complicate sync_linked_regs().
-However, none of the added tests from dedf56d775c0 ("selftests/bpf: Add tests
-for add_const") make this necessary at this point, meaning, BPF CI also passes
-with just limiting tracking to 64-bit alu addition.
-
-Fixes: 98d7ca374ba4 ("bpf: Track delta between "linked" registers.")
-Reported-by: Nathaniel Theis <nathaniel.theis@nccgroup.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Fixes: 08c79c9cd67f ("selftests/bpf: Don't force lld on non-x86 architectures")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
 Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/bpf/20241016134913.32249-1-daniel@iogearbox.net
+Link: https://lore.kernel.org/bpf/20241009040720.635260-1-tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ tools/testing/selftests/bpf/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 42d6bc5392757..5b8b1d0e76cf1 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -14136,12 +14136,13 @@ static int adjust_reg_min_max_vals(struct bpf_verifier_env *env,
- 	 * r1 += 0x1
- 	 * if r2 < 1000 goto ...
- 	 * use r1 in memory access
--	 * So remember constant delta between r2 and r1 and update r1 after
--	 * 'if' condition.
-+	 * So for 64-bit alu remember constant delta between r2 and r1 and
-+	 * update r1 after 'if' condition.
- 	 */
--	if (env->bpf_capable && BPF_OP(insn->code) == BPF_ADD &&
--	    dst_reg->id && is_reg_const(src_reg, alu32)) {
--		u64 val = reg_const_value(src_reg, alu32);
-+	if (env->bpf_capable &&
-+	    BPF_OP(insn->code) == BPF_ADD && !alu32 &&
-+	    dst_reg->id && is_reg_const(src_reg, false)) {
-+		u64 val = reg_const_value(src_reg, false);
+diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
+index 3b57fbf8fff4a..b09205d925114 100644
+--- a/tools/testing/selftests/bpf/Makefile
++++ b/tools/testing/selftests/bpf/Makefile
+@@ -171,7 +171,7 @@ $(OUTPUT)/%:%.c
+ ifeq ($(SRCARCH),x86)
+ LLD := lld
+ else
+-LLD := ld
++LLD := $(shell command -v $(LD))
+ endif
  
- 		if ((dst_reg->id & BPF_ADD_CONST) ||
- 		    /* prevent overflow in find_equal_scalars() later */
+ # Filter out -static for liburandom_read.so and its dependent targets so that static builds
 -- 
 2.43.0
 
