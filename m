@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-88619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68D3A9B26C2
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:42:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB06D9B27DB
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:51:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 145C31F235E5
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:42:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE1401C21607
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:51:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE9918E368;
-	Mon, 28 Oct 2024 06:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16A618FC81;
+	Mon, 28 Oct 2024 06:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4Y+ScZz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EupDubIJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28AFB18E04F;
-	Mon, 28 Oct 2024 06:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D51518FC7B;
+	Mon, 28 Oct 2024 06:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097742; cv=none; b=DXKtnShjXlYHMD3VSh0EwMYmbRVPBnOj59ax1d5b592mnmZCcxolfuTSDbolZdiKS82+o52f1tWtABOyEMJsMMfv+SgG1/9CRvLwENZgmSNAiAaJ3R0hnl8I/B6a0nt7gFvF/cwrdhfjInO3sArSds8GokkXLQvMTYRfCjGX/h0=
+	t=1730098303; cv=none; b=Pkqr48kQ9tM/X8KkZBQRY/83npL147FNc552IkKCGOmET1AKooLmnrk6rEUQ42kSwQ6bO8lipWEY44gy2ZnPdO/2QFlyt67CHeRwNET8FH/wTnV6gs7xPFOfEK909sqhlxV9z7HhrZItU8fAEP2Nu2B0lB727DRzeVnhcCUCWf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097742; c=relaxed/simple;
-	bh=Hy2LOGRGU2WUAdVPDiOiSHhLK+U4f74ep2hdMtGqckg=;
+	s=arc-20240116; t=1730098303; c=relaxed/simple;
+	bh=lcvZ+hIJuAVy1SaDr9cHikETuCeLz1CwwdWr6lMmxWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZAJ3cTYjr2Z4gMAyBn6Uf820zo+HDUwgWQ38/s+D3mcMowdu9tZwTpKIIU8I6VYrkG+kb2xlqSfcIrF/ATYq8+Ua7LKGtSlo4DnzUuukzCT/h2D3r2MytrnlLbxXYhuz40gY6R6xm1fcxpROQqkQBLZh8C2H+l9S0VlBX0Py//I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4Y+ScZz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F7EFC4CEC3;
-	Mon, 28 Oct 2024 06:42:20 +0000 (UTC)
+	 MIME-Version; b=ExeZjhe+VmndJAiIJSh2LAo7otX28y54We/40BbRlmHMdBr1dQuXg8RyKKpiCEQv5jYzdYKpJDQusTclhgAnTkohB9uTiJbVDqAvU1KgVuczfZthFq/CqLDc+s7xHugI+x8pXTR+eMexgkIa+rzZfDqslqPKDOwDqARrcQpYTeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EupDubIJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F24F3C4CEC3;
+	Mon, 28 Oct 2024 06:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097741;
-	bh=Hy2LOGRGU2WUAdVPDiOiSHhLK+U4f74ep2hdMtGqckg=;
+	s=korg; t=1730098303;
+	bh=lcvZ+hIJuAVy1SaDr9cHikETuCeLz1CwwdWr6lMmxWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V4Y+ScZzTfAvxdHJAoa8qe9BIl/UmaMUdGRyl7uArQEifxC5LQwqKR2eM3MYh5O8g
-	 EOkjNOQ8tGdHsPaJo9BKK1DIGVsLx2TM3IOmRI0uGUKqhoj/jup20P1Q4lQBGeXHaA
-	 XmA7NRqt9pcys850Qvyh9Y6D78ewwR8DugYZ4el0=
+	b=EupDubIJPDubIoyEAijPgfEbsRyGyY/IC+B98eOphNm/GAS/o5HgkSMHjStDpQTr0
+	 EicP/yAkpEq4HXE0Ml53ZMpRsx+G/C9Ok+p2XW60Z2WMgrKGdZxC9y+zyLJa4N6lDr
+	 R80q/aw2EGUec1vPlR9n7Xu201Bi41um2b2hOD4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 127/208] LoongArch: Dont crash in stack_top() for tasks without vDSO
-Date: Mon, 28 Oct 2024 07:25:07 +0100
-Message-ID: <20241028062309.770191983@linuxfoundation.org>
+Subject: [PATCH 6.11 166/261] net/sched: act_api: deny mismatched skip_sw/skip_hw flags for actions created by classifiers
+Date: Mon, 28 Oct 2024 07:25:08 +0100
+Message-ID: <20241028062316.161547109@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +62,138 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 134475a9ab8487527238d270639a8cb74c10aab2 ]
+[ Upstream commit 34d35b4edbbe890a91bec939bfd29ad92517a52b ]
 
-Not all tasks have a vDSO mapped, for example kthreads never do. If such
-a task ever ends up calling stack_top(), it will derefence the NULL vdso
-pointer and crash.
+tcf_action_init() has logic for checking mismatches between action and
+filter offload flags (skip_sw/skip_hw). AFAIU, this is intended to run
+on the transition between the new tc_act_bind(flags) returning true (aka
+now gets bound to classifier) and tc_act_bind(act->tcfa_flags) returning
+false (aka action was not bound to classifier before). Otherwise, the
+check is skipped.
 
-This can for example happen when using kunit:
+For the case where an action is not standalone, but rather it was
+created by a classifier and is bound to it, tcf_action_init() skips the
+check entirely, and this means it allows mismatched flags to occur.
 
-	[<9000000000203874>] stack_top+0x58/0xa8
-	[<90000000002956cc>] arch_pick_mmap_layout+0x164/0x220
-	[<90000000003c284c>] kunit_vm_mmap_init+0x108/0x12c
-	[<90000000003c1fbc>] __kunit_add_resource+0x38/0x8c
-	[<90000000003c2704>] kunit_vm_mmap+0x88/0xc8
-	[<9000000000410b14>] usercopy_test_init+0xbc/0x25c
-	[<90000000003c1db4>] kunit_try_run_case+0x5c/0x184
-	[<90000000003c3d54>] kunit_generic_run_threadfn_adapter+0x24/0x48
-	[<900000000022e4bc>] kthread+0xc8/0xd4
-	[<9000000000200ce8>] ret_from_kernel_thread+0xc/0xa4
+Taking the matchall classifier code path as an example (with mirred as
+an action), the reason is the following:
 
-Fixes: 803b0fc5c3f2 ("LoongArch: Add process management")
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+ 1 | mall_change()
+ 2 | -> mall_replace_hw_filter()
+ 3 |   -> tcf_exts_validate_ex()
+ 4 |      -> flags |= TCA_ACT_FLAGS_BIND;
+ 5 |      -> tcf_action_init()
+ 6 |         -> tcf_action_init_1()
+ 7 |            -> a_o->init()
+ 8 |               -> tcf_mirred_init()
+ 9 |                  -> tcf_idr_create_from_flags()
+10 |                     -> tcf_idr_create()
+11 |                        -> p->tcfa_flags = flags;
+12 |         -> tc_act_bind(flags))
+13 |         -> tc_act_bind(act->tcfa_flags)
+
+When invoked from tcf_exts_validate_ex() like matchall does (but other
+classifiers validate their extensions as well), tcf_action_init() runs
+in a call path where "flags" always contains TCA_ACT_FLAGS_BIND (set by
+line 4). So line 12 is always true, and line 13 is always true as well.
+No transition ever takes place, and the check is skipped.
+
+The code was added in this form in commit c86e0209dc77 ("flow_offload:
+validate flags of filter and actions"), but I'm attributing the blame
+even earlier in that series, to when TCA_ACT_FLAGS_SKIP_HW and
+TCA_ACT_FLAGS_SKIP_SW were added to the UAPI.
+
+Following the development process of this change, the check did not
+always exist in this form. A change took place between v3 [1] and v4 [2],
+AFAIU due to review feedback that it doesn't make sense for action flags
+to be different than classifier flags. I think I agree with that
+feedback, but it was translated into code that omits enforcing this for
+"classic" actions created at the same time with the filters themselves.
+
+There are 3 more important cases to discuss. First there is this command:
+
+$ tc qdisc add dev eth0 clasct
+$ tc filter add dev eth0 ingress matchall skip_sw \
+	action mirred ingress mirror dev eth1
+
+which should be allowed, because prior to the concept of dedicated
+action flags, it used to work and it used to mean the action inherited
+the skip_sw/skip_hw flags from the classifier. It's not a mismatch.
+
+Then we have this command:
+
+$ tc qdisc add dev eth0 clasct
+$ tc filter add dev eth0 ingress matchall skip_sw \
+	action mirred ingress mirror dev eth1 skip_hw
+
+where there is a mismatch and it should be rejected.
+
+Finally, we have:
+
+$ tc qdisc add dev eth0 clasct
+$ tc filter add dev eth0 ingress matchall skip_sw \
+	action mirred ingress mirror dev eth1 skip_sw
+
+where the offload flags coincide, and this should be treated the same as
+the first command based on inheritance, and accepted.
+
+[1]: https://lore.kernel.org/netdev/20211028110646.13791-9-simon.horman@corigine.com/
+[2]: https://lore.kernel.org/netdev/20211118130805.23897-10-simon.horman@corigine.com/
+Fixes: 7adc57651211 ("flow_offload: add skip_hw and skip_sw to control if offload the action")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20241017161049.3570037-1-vladimir.oltean@nxp.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/process.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ net/sched/act_api.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/kernel/process.c b/arch/loongarch/kernel/process.c
-index f2ff8b5d591e4..6e58f65455c7c 100644
---- a/arch/loongarch/kernel/process.c
-+++ b/arch/loongarch/kernel/process.c
-@@ -293,13 +293,15 @@ unsigned long stack_top(void)
- {
- 	unsigned long top = TASK_SIZE & PAGE_MASK;
+diff --git a/net/sched/act_api.c b/net/sched/act_api.c
+index 2714c4ed928e5..eecad65fec92c 100644
+--- a/net/sched/act_api.c
++++ b/net/sched/act_api.c
+@@ -1498,8 +1498,29 @@ int tcf_action_init(struct net *net, struct tcf_proto *tp, struct nlattr *nla,
+ 			bool skip_sw = tc_skip_sw(fl_flags);
+ 			bool skip_hw = tc_skip_hw(fl_flags);
  
--	/* Space for the VDSO & data page */
--	top -= PAGE_ALIGN(current->thread.vdso->size);
--	top -= VVAR_SIZE;
--
--	/* Space to randomize the VDSO base */
--	if (current->flags & PF_RANDOMIZE)
--		top -= VDSO_RANDOMIZE_SIZE;
-+	if (current->thread.vdso) {
-+		/* Space for the VDSO & data page */
-+		top -= PAGE_ALIGN(current->thread.vdso->size);
-+		top -= VVAR_SIZE;
+-			if (tc_act_bind(act->tcfa_flags))
++			if (tc_act_bind(act->tcfa_flags)) {
++				/* Action is created by classifier and is not
++				 * standalone. Check that the user did not set
++				 * any action flags different than the
++				 * classifier flags, and inherit the flags from
++				 * the classifier for the compatibility case
++				 * where no flags were specified at all.
++				 */
++				if ((tc_act_skip_sw(act->tcfa_flags) && !skip_sw) ||
++				    (tc_act_skip_hw(act->tcfa_flags) && !skip_hw)) {
++					NL_SET_ERR_MSG(extack,
++						       "Mismatch between action and filter offload flags");
++					err = -EINVAL;
++					goto err;
++				}
++				if (skip_sw)
++					act->tcfa_flags |= TCA_ACT_FLAGS_SKIP_SW;
++				if (skip_hw)
++					act->tcfa_flags |= TCA_ACT_FLAGS_SKIP_HW;
+ 				continue;
++			}
 +
-+		/* Space to randomize the VDSO base */
-+		if (current->flags & PF_RANDOMIZE)
-+			top -= VDSO_RANDOMIZE_SIZE;
-+	}
- 
- 	return top;
- }
++			/* Action is standalone */
+ 			if (skip_sw != tc_act_skip_sw(act->tcfa_flags) ||
+ 			    skip_hw != tc_act_skip_hw(act->tcfa_flags)) {
+ 				NL_SET_ERR_MSG(extack,
 -- 
 2.43.0
 
