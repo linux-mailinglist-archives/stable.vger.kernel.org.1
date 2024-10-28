@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-88314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33F49B2566
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FA7F9B25FF
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10F1D1C20EC5
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2C3828225C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D16018E049;
-	Mon, 28 Oct 2024 06:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB98618FC8C;
+	Mon, 28 Oct 2024 06:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NcUSoVOd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pXD96YPM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581BF18E04F;
-	Mon, 28 Oct 2024 06:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770F318E34F;
+	Mon, 28 Oct 2024 06:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730096918; cv=none; b=k7yXDtCBnZofT/0YgUllZqlF2lDtB3ta/F1l4KhMNKbmY0kuQ0FS5N1m3OGudNMQ7aM6AzrZ7avcrCXNTSubz6ymXMnuSUTbaUw2MBozafD5SVRg9yYI2ejrwCw2e3944x4Adsuqoy8wgGmKS9gfyfdb2tScbZWSIPBK7h92Igs=
+	t=1730097339; cv=none; b=a/640+HtNDGpkvtjFKmx+bigbrZo2mBwuRWpWTrBZBtBMrhbeTFNqDRWoy6WEW24QNGSsN267B1S8/VkXZliipXvI3nNgDKnLYg+DLEZX44fykxEDzCAHVn6lolu/fm3dxayMnt1rch1rFrooNlKYYJfd3adc+zBlEzjomAy7+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730096918; c=relaxed/simple;
-	bh=pXChInKFqMsnvunToDVllVVcDoQkSAw9G/QlM+hU3b8=;
+	s=arc-20240116; t=1730097339; c=relaxed/simple;
+	bh=wMakWQJavgKPlPTC9KqLs7DrL90LEKEcy9XPPOPn5Es=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IwshK/kC1gu8ZquMxERBJL2nvkwDwOUYMGrt4F2ncbpvuwOHgLk+CrSmLX9OJ1IWcu6empGZNdfajx5t9WCJ0gbf5NZ993aJ040fTWmcm9pfmoNt3qgJr+wV4ZB4ZRSYLsa63EDD2I1bYBoRZ/fYrQHZXZsE+cy0vJfCeHMm1Xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NcUSoVOd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E99EFC4CEC3;
-	Mon, 28 Oct 2024 06:28:37 +0000 (UTC)
+	 MIME-Version; b=dC3mmb782FALeXRewsU+5YO/Occ5zgQDnf/HxN9pdqGMOPm2Z7OWMKJuebwS5ySfonUEkHP6//vQ/6uxoCbzb6RiCgs6wYt0On02B+5ih9v68x0kkSKfVHrb3MbnwzSR6JZvoF49NVgDX5EROXfXhKslmZNCPP8zSfotjSX6qZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pXD96YPM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1746EC4CEC3;
+	Mon, 28 Oct 2024 06:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730096918;
-	bh=pXChInKFqMsnvunToDVllVVcDoQkSAw9G/QlM+hU3b8=;
+	s=korg; t=1730097339;
+	bh=wMakWQJavgKPlPTC9KqLs7DrL90LEKEcy9XPPOPn5Es=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NcUSoVOd72AhBrhpaCbjraC7NGsOKyuLkTb/Ipcy7VFNi6mJeJTiLCZqrqEMI8kX7
-	 UtbHPNVVVHLcC35daqfkyiN2yvWa5hbyzsbWsc9phArm/radAfiZt+LxYka6QSVZic
-	 m43T33nwBbmOJWVC8tVeG4cRcC/3u7N8ko90PJfw=
+	b=pXD96YPMs0DGttplWO9I4KYSr2wdb/Rj/xB+6ZJs07WBEgYr1AD4AbDYmawrSMAqy
+	 hFh7GVnpP30BQpV5yFBKKfcKzAc8R56MWuYts4J5JqW7uWSi3Y/xcZIttDg90S9wIS
+	 brtJzfc7FoKyP3y+HccI2LQXxQWOHjf6vRknwXxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Eyal Birger <eyal.birger@gmail.com>,
+	Antony Antony <antony.antony@secunet.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 44/80] arm64: Force position-independent veneers
+Subject: [PATCH 6.1 087/137] xfrm: respect ip protocols rules criteria when performing dst lookups
 Date: Mon, 28 Oct 2024 07:25:24 +0100
-Message-ID: <20241028062253.845471398@linuxfoundation.org>
+Message-ID: <20241028062301.158898207@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,115 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Eyal Birger <eyal.birger@gmail.com>
 
-[ Upstream commit 9abe390e689f4f5c23c5f507754f8678431b4f72 ]
+[ Upstream commit b8469721034300bbb6dec5b4bf32492c95e16a0c ]
 
-Certain portions of code always need to be position-independent
-regardless of CONFIG_RELOCATABLE, including code which is executed in an
-idmap or which is executed before relocations are applied. In some
-kernel configurations the LLD linker generates position-dependent
-veneers for such code, and when executed these result in early boot-time
-failures.
+The series in the "fixes" tag added the ability to consider L4 attributes
+in routing rules.
 
-Marc Zyngier encountered a boot failure resulting from this when
-building a (particularly cursed) configuration with LLVM, as he reported
-to the list:
+The dst lookup on the outer packet of encapsulated traffic in the xfrm
+code was not adapted to this change, thus routing behavior that relies
+on L4 information is not respected.
 
-  https://lore.kernel.org/linux-arm-kernel/86wmjwvatn.wl-maz@kernel.org/
+Pass the ip protocol information when performing dst lookups.
 
-In Marc's kernel configuration, the .head.text and .rodata.text sections
-end up more than 128MiB apart, requiring a veneer to branch between the
-two:
-
-| [mark@lakrids:~/src/linux]% usekorg 14.1.0 aarch64-linux-objdump -t vmlinux | grep -w _text
-| ffff800080000000 g       .head.text     0000000000000000 _text
-| [mark@lakrids:~/src/linux]% usekorg 14.1.0 aarch64-linux-objdump -t vmlinux | grep -w primary_entry
-| ffff8000889df0e0 g       .rodata.text   000000000000006c primary_entry,
-
-... consequently, LLD inserts a position-dependent veneer for the branch
-from _stext (in .head.text) to primary_entry (in .rodata.text):
-
-| ffff800080000000 <_text>:
-| ffff800080000000:       fa405a4d        ccmp    x18, #0x0, #0xd, pl     // pl = nfrst
-| ffff800080000004:       14003fff        b       ffff800080010000 <__AArch64AbsLongThunk_primary_entry>
-...
-| ffff800080010000 <__AArch64AbsLongThunk_primary_entry>:
-| ffff800080010000:       58000050        ldr     x16, ffff800080010008 <__AArch64AbsLongThunk_primary_entry+0x8>
-| ffff800080010004:       d61f0200        br      x16
-| ffff800080010008:       889df0e0        .word   0x889df0e0
-| ffff80008001000c:       ffff8000        .word   0xffff8000
-
-... and as this is executed early in boot before the kernel is mapped in
-TTBR1 this results in a silent boot failure.
-
-Fix this by passing '--pic-veneer' to the linker, which will cause the
-linker to use position-independent veneers, e.g.
-
-| ffff800080000000 <_text>:
-| ffff800080000000:       fa405a4d        ccmp    x18, #0x0, #0xd, pl     // pl = nfrst
-| ffff800080000004:       14003fff        b       ffff800080010000 <__AArch64ADRPThunk_primary_entry>
-...
-| ffff800080010000 <__AArch64ADRPThunk_primary_entry>:
-| ffff800080010000:       f004e3f0        adrp    x16, ffff800089c8f000 <__idmap_text_start>
-| ffff800080010004:       91038210        add     x16, x16, #0xe0
-| ffff800080010008:       d61f0200        br      x16
-
-I've opted to pass '--pic-veneer' unconditionally, as:
-
-* In addition to solving the boot failure, these sequences are generally
-  nicer as they require fewer instructions and don't need to perform
-  data accesses.
-
-* While the position-independent veneer sequences have a limited +/-2GiB
-  range, this is not a new restriction. Even kernels built with
-  CONFIG_RELOCATABLE=n are limited to 2GiB in size as we have several
-  structues using 32-bit relative offsets and PPREL32 relocations, which
-  are similarly limited to +/-2GiB in range. These include extable
-  entries, jump table entries, and alt_instr entries.
-
-* GNU LD defaults to using position-independent veneers, and supports
-  the same '--pic-veneer' option, so this change is not expected to
-  adversely affect GNU LD.
-
-I've tested with GNU LD 2.30 to 2.42 inclusive and LLVM 13.0.1 to 19.1.0
-inclusive, using the kernel.org binaries from:
-
-* https://mirrors.edge.kernel.org/pub/tools/crosstool/
-* https://mirrors.edge.kernel.org/pub/tools/llvm/
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Reported-by: Marc Zyngier <maz@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Will Deacon <will@kernel.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20240927101838.3061054-1-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: a25724b05af0 ("Merge branch 'fib_rules-support-sport-dport-and-proto-match'")
+Signed-off-by: Eyal Birger <eyal.birger@gmail.com>
+Tested-by: Antony Antony <antony.antony@secunet.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/xfrm.h      |  2 ++
+ net/ipv4/xfrm4_policy.c |  2 ++
+ net/ipv6/xfrm6_policy.c |  3 +++
+ net/xfrm/xfrm_policy.c  | 15 +++++++++++++++
+ 4 files changed, 22 insertions(+)
 
-diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-index c744b1e7b3569..29eed96fe0e72 100644
---- a/arch/arm64/Makefile
-+++ b/arch/arm64/Makefile
-@@ -10,7 +10,7 @@
- #
- # Copyright (C) 1995-2001 by Russell King
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index 55ea15ccd5327..bf670929622dc 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -333,6 +333,8 @@ struct xfrm_dst_lookup_params {
+ 	xfrm_address_t *saddr;
+ 	xfrm_address_t *daddr;
+ 	u32 mark;
++	__u8 ipproto;
++	union flowi_uli uli;
+ };
  
--LDFLAGS_vmlinux	:=--no-undefined -X
-+LDFLAGS_vmlinux	:=--no-undefined -X --pic-veneer
+ struct net_device;
+diff --git a/net/ipv4/xfrm4_policy.c b/net/ipv4/xfrm4_policy.c
+index 9ac9ed9738068..76f3f38b110f2 100644
+--- a/net/ipv4/xfrm4_policy.c
++++ b/net/ipv4/xfrm4_policy.c
+@@ -30,6 +30,8 @@ static struct dst_entry *__xfrm4_dst_lookup(struct flowi4 *fl4,
+ 	fl4->flowi4_mark = params->mark;
+ 	if (params->saddr)
+ 		fl4->saddr = params->saddr->a4;
++	fl4->flowi4_proto = params->ipproto;
++	fl4->uli = params->uli;
  
- ifeq ($(CONFIG_RELOCATABLE), y)
- # Pass --no-apply-dynamic-relocs to restore pre-binutils-2.27 behaviour
+ 	rt = __ip_route_output_key(params->net, fl4);
+ 	if (!IS_ERR(rt))
+diff --git a/net/ipv6/xfrm6_policy.c b/net/ipv6/xfrm6_policy.c
+index 6e3e0f1bd81c9..8c1092ff3fe2e 100644
+--- a/net/ipv6/xfrm6_policy.c
++++ b/net/ipv6/xfrm6_policy.c
+@@ -37,6 +37,9 @@ static struct dst_entry *xfrm6_dst_lookup(const struct xfrm_dst_lookup_params *p
+ 	if (params->saddr)
+ 		memcpy(&fl6.saddr, params->saddr, sizeof(fl6.saddr));
+ 
++	fl6.flowi4_proto = params->ipproto;
++	fl6.uli = params->uli;
++
+ 	dst = ip6_route_output(params->net, NULL, &fl6);
+ 
+ 	err = dst->error;
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index adb12f428be30..a022f49846879 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -296,6 +296,21 @@ static inline struct dst_entry *xfrm_dst_lookup(struct xfrm_state *x,
+ 	params.tos = tos;
+ 	params.oif = oif;
+ 	params.mark = mark;
++	params.ipproto = x->id.proto;
++	if (x->encap) {
++		switch (x->encap->encap_type) {
++		case UDP_ENCAP_ESPINUDP:
++			params.ipproto = IPPROTO_UDP;
++			params.uli.ports.sport = x->encap->encap_sport;
++			params.uli.ports.dport = x->encap->encap_dport;
++			break;
++		case TCP_ENCAP_ESPINTCP:
++			params.ipproto = IPPROTO_TCP;
++			params.uli.ports.sport = x->encap->encap_sport;
++			params.uli.ports.dport = x->encap->encap_dport;
++			break;
++		}
++	}
+ 
+ 	dst = __xfrm_dst_lookup(family, &params);
+ 
 -- 
 2.43.0
 
