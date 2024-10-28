@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30E3E9B25E9
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EE089B2693
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:40:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2C04B20C80
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 318061C21380
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D859F18FDD8;
-	Mon, 28 Oct 2024 06:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 736122C697;
+	Mon, 28 Oct 2024 06:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDXxGf42"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VauEwr87"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B2019048F;
-	Mon, 28 Oct 2024 06:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCB718E350;
+	Mon, 28 Oct 2024 06:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097286; cv=none; b=jlJTsKqItUB8C7IM10RsXK0sb+tvOYTjSmvGtimnLGOTBY2v/Qt/zTDgyaN5VUNfhcpMAWmn12H6v201Syo69mo9nqlxPJV5bm+OCe2VDjgYz6NZGDwNHMFM1spOn9747Bqt9KhoTGilFnbY5REKMIwzZqcEfQnE0jfLogjNpVU=
+	t=1730097647; cv=none; b=mZpl/OAdyhMbUyJb/uBKwaVOm6LJf6fcDqbmVhoji0b0ql+Dl9gPG3dcwtDEGctwDsDiu7AGwGW9dQTGRLqszEfo3nJh1LgIIsV9PLjcNQbYo/79Q23p0JHS31cRSAeZJlv/siB5ewTBccR0kYvwkWYAfiOc3Z2Deb9U9qt1G5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097286; c=relaxed/simple;
-	bh=hpxTOt3YQ3IxwawnAJ4KCYYJD7a/HzNy5lgESytHT8I=;
+	s=arc-20240116; t=1730097647; c=relaxed/simple;
+	bh=RQuHn53MK7qMSyRZJ0dbU+D31qrfcBDbc84t2i9cYl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O2G7lX+8qlZyc5lIl8p7tNqGIOhseDxPxw5hlgai4yLNmz3vqEXEVIwCDbFFctYG/U9KZyYbjsmdRWRyxlCbv8KVT3qzUA+DNZj+I6P8g0bIWn988p/vKhk5m45uC//7HIumCj5VUD5Mi4glw3vMnVuO4tUSlgnJSjJiGRmtpHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDXxGf42; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D28DC4CEC3;
-	Mon, 28 Oct 2024 06:34:46 +0000 (UTC)
+	 MIME-Version; b=EPj9kvHcBLVUDaVcwPJyLON6822m4srtrjDFRtw4lG0aA7qOMtR1AZ0XnWpMFKOkN8u9MQ/z6Jk3fIUDBEW7DIzGmDDqV/E7jYR1q5aE3R1LGAhEpCn24qPbMjU9AQrnZ7e0FBU5Q7tQQ9ab3DP3CRHVN+exNunfj8z96BrkDls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VauEwr87; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6548C4CEC3;
+	Mon, 28 Oct 2024 06:40:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097286;
-	bh=hpxTOt3YQ3IxwawnAJ4KCYYJD7a/HzNy5lgESytHT8I=;
+	s=korg; t=1730097647;
+	bh=RQuHn53MK7qMSyRZJ0dbU+D31qrfcBDbc84t2i9cYl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NDXxGf42x5CYVrLhxBohrW+NWvtGUimBg0smzYmWdtiVd3rW8FMRRuFU/xILeYb7r
-	 3w1KLPhgtXG3iWK0iyh6+C//+mvgoLf0wk6FDQxz3Xmp7fCKIePB2NH3TpXySO4yly
-	 bkaVFdqAkH+xyhlXWxhaBnCFvZV0r3XGVZxsxjCs=
+	b=VauEwr87u9lmvrTtaRahwGGcXF4wlmKkTI0ifBff1n3X3c6zwEsFGPBoNszdkkDDv
+	 yV+mpt2RLhUzKpwECpEuZ4WLdBhT1uUHI3DnIwNMhyl0Mh1e+lnukCPhS5kKI0DNdN
+	 aCtJWc/VCBDCD5ic23IHcchdzBrG3rYR2dYFjf3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 028/137] octeontx2-af: Fix potential integer overflows on integer shifts
+Subject: [PATCH 6.6 085/208] bpf, vsock: Drop static vsock_bpf_prot initialization
 Date: Mon, 28 Oct 2024 07:24:25 +0100
-Message-ID: <20241028062259.510080245@linuxfoundation.org>
+Message-ID: <20241028062308.747788544@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit 637c4f6fe40befa04f19c38b5d15429cbb9191d9 ]
+[ Upstream commit 19039f279797efbe044cae41ee216c5fe481fc33 ]
 
-The left shift int 32 bit integer constants 1 is evaluated using 32 bit
-arithmetic and then assigned to a 64 bit unsigned integer. In the case
-where the shift is 32 or more this can lead to an overflow. Avoid this
-by shifting using the BIT_ULL macro instead.
+vsock_bpf_prot is set up at runtime. Remove the superfluous init.
 
-Fixes: 019aba04f08c ("octeontx2-af: Modify SMQ flush sequence to drop packets")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20241010154519.768785-1-colin.i.king@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+No functional change intended.
+
+Fixes: 634f1a7110b4 ("vsock: support sockmap")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/bpf/20241013-vsock-fixes-for-redir-v2-4-d6577bbfe742@rbox.co
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/vmw_vsock/vsock_bpf.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 7ed0eb9bd4ed2..95a8ccd18a4f7 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -2279,7 +2279,7 @@ static int nix_smq_flush(struct rvu *rvu, int blkaddr,
- 				 NIX_AF_TL3_TL2X_LINKX_CFG(tl2_tl3_link_schq, link));
- 		if (!(cfg & BIT_ULL(12)))
- 			continue;
--		bmap |= (1 << i);
-+		bmap |= BIT_ULL(i);
- 		cfg &= ~BIT_ULL(12);
- 		rvu_write64(rvu, blkaddr,
- 			    NIX_AF_TL3_TL2X_LINKX_CFG(tl2_tl3_link_schq, link), cfg);
-@@ -2300,7 +2300,7 @@ static int nix_smq_flush(struct rvu *rvu, int blkaddr,
+diff --git a/net/vmw_vsock/vsock_bpf.c b/net/vmw_vsock/vsock_bpf.c
+index c42c5cc18f324..4aa6e74ec2957 100644
+--- a/net/vmw_vsock/vsock_bpf.c
++++ b/net/vmw_vsock/vsock_bpf.c
+@@ -114,14 +114,6 @@ static int vsock_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
+ 	return copied;
+ }
  
- 	/* Set NIX_AF_TL3_TL2_LINKX_CFG[ENA] for the TL3/TL2 queue */
- 	for (i = 0; i < (rvu->hw->cgx_links + rvu->hw->lbk_links); i++) {
--		if (!(bmap & (1 << i)))
-+		if (!(bmap & BIT_ULL(i)))
- 			continue;
- 		cfg = rvu_read64(rvu, blkaddr,
- 				 NIX_AF_TL3_TL2X_LINKX_CFG(tl2_tl3_link_schq, link));
+-/* Copy of original proto with updated sock_map methods */
+-static struct proto vsock_bpf_prot = {
+-	.close = sock_map_close,
+-	.recvmsg = vsock_bpf_recvmsg,
+-	.sock_is_readable = sk_msg_is_readable,
+-	.unhash = sock_map_unhash,
+-};
+-
+ static void vsock_bpf_rebuild_protos(struct proto *prot, const struct proto *base)
+ {
+ 	*prot        = *base;
 -- 
 2.43.0
 
