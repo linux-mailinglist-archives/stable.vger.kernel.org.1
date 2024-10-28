@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-88707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC529B2721
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:45:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC1309B2629
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:37:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0D4B1C214A8
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:45:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1D0C281B57
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:37:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6D416F8EF;
-	Mon, 28 Oct 2024 06:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 348CA18E368;
+	Mon, 28 Oct 2024 06:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSCqOImi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YIYdpSba"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D021DFFD;
-	Mon, 28 Oct 2024 06:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6EF318C03D;
+	Mon, 28 Oct 2024 06:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097940; cv=none; b=IfzQmvd4UKr9zxxN+yPJ+uuqax6NC1MPfWwYhpNm16UFIa49lSu0CEPKEQrYf5xzj8suly1OklMCwlywHtKfj5i9ZVqmhrH6SgNfl/OkmnBmbmXPxcKndMs/Q8rZfO4THqy9O+9uQcIUtfK6fCZsJ8IcgQBPoDIPsubxssKNd78=
+	t=1730097434; cv=none; b=NfSAuGnkrKfBsMZyYVSUPNdZclCxG1q6OmnWvK9bDXYsxfIGduhtqkaDwxwcDebujUplYIewduNtdtQGaMyd4cphGM33PYbssoa1DzbvxQIVwNqdRQNSeKJHVr+AkW9xjI79poQqsgJ/YAIpLu4oJroZgCKXcuIKr2kELSId7B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097940; c=relaxed/simple;
-	bh=m4DwvkyxeExhhvsLTj9hiPBRFBYqsFIHkD3ViVaKa2w=;
+	s=arc-20240116; t=1730097434; c=relaxed/simple;
+	bh=Wv0Mnb8r9igyGWwlwzJk8yWyuRY+vT2A3UvW1mXsYao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqE30VCfSg8TA9YHEF1uROVYpBWKYe2pFvBoRW7CeI48C7mcp8ZBABq5tuGF5qREcY37kA07TKHDklxCY10pINJgpIm9Dl9CFX2Z9NneCsS2RHbMLx71qSNiA5mjvR6eULjMzRkINY8rXLMXV6l/lHf9hCHXNaqvrPi3rmaAzq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSCqOImi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49526C4CEC3;
-	Mon, 28 Oct 2024 06:45:40 +0000 (UTC)
+	 MIME-Version; b=flE+YqqkWr0MKT1TYR8ev4zoiz0Pkpe3MjexbfZVuoRg5Mm+iuWqD7+KWrG7LHGsIdeeaHQE0kUyTrK7tCP1mxNDkfG6K7ihk8W6Y7xjdPTPiaHqTVXaSaWCo5e0aq9ApYx1joNPSaeSTskXXtyYCuVIggGvLvHjmY8/glcwMrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YIYdpSba; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F07C4CEC3;
+	Mon, 28 Oct 2024 06:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097940;
-	bh=m4DwvkyxeExhhvsLTj9hiPBRFBYqsFIHkD3ViVaKa2w=;
+	s=korg; t=1730097433;
+	bh=Wv0Mnb8r9igyGWwlwzJk8yWyuRY+vT2A3UvW1mXsYao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VSCqOImi66Y4kuZdMqA55tGsJRAt79hV5sOFeZK70v8A/xI3idUZyl54WEF3ZUrcU
-	 7AD+wDFJ5RpiYsTuiqNxY0qQxfknqUhI4q4Y6taWcTMSdxrXWo/7+VQ6M8deXr4de/
-	 PLq4hxXXibzWNoLKs0nhm+N9nwdL6uUT0gB/5UkI=
+	b=YIYdpSbaXwN8qq52v/XGhALOVeCHjU1QNDWHl1RzzthL8z+FVB0u21TNC03NLhtBC
+	 vvdhTlN5Ig7nyILA1oPXl5dE8RFE2l+6Zkx0RkpwKPvueLrwJuGJEYXzXzQEu+DLwF
+	 vm33dSfSYhZlSTkM5/UPNxTqcl3lG4aOeT2UkJe8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gavin Shan <gshan@redhat.com>,
-	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.6 186/208] KVM: arm64: Fix shift-out-of-bounds bug
+	Marc Rossi <Marc.Rossi@amd.com>,
+	Hamza Mahfooz <Hamza.Mahfooz@amd.com>,
+	Leo Li <sunpeng.li@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 129/137] drm/amd/display: Disable PSR-SU on Parade 08-01 TCON too
 Date: Mon, 28 Oct 2024 07:26:06 +0100
-Message-ID: <20241028062311.208631928@linuxfoundation.org>
+Message-ID: <20241028062302.306589299@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit c6c167afa090ea0451f91814e1318755a8fb8bb9 upstream.
+commit ba1959f71117b27f3099ee789e0815360b4081dd upstream.
 
-Fix a shift-out-of-bounds bug reported by UBSAN when running
-VM with MTE enabled host kernel.
+Stuart Hayhurst has found that both at bootup and fullscreen VA-API video
+is leading to black screens for around 1 second and kernel WARNING [1] traces
+when calling dmub_psr_enable() with Parade 08-01 TCON.
 
-UBSAN: shift-out-of-bounds in arch/arm64/kvm/sys_regs.c:1988:14
-shift exponent 33 is too large for 32-bit type 'int'
-CPU: 26 UID: 0 PID: 7629 Comm: qemu-kvm Not tainted 6.12.0-rc2 #34
-Hardware name: IEI NF5280R7/Mitchell MB, BIOS 00.00. 2024-10-12 09:28:54 10/14/2024
-Call trace:
- dump_backtrace+0xa0/0x128
- show_stack+0x20/0x38
- dump_stack_lvl+0x74/0x90
- dump_stack+0x18/0x28
- __ubsan_handle_shift_out_of_bounds+0xf8/0x1e0
- reset_clidr+0x10c/0x1c8
- kvm_reset_sys_regs+0x50/0x1c8
- kvm_reset_vcpu+0xec/0x2b0
- __kvm_vcpu_set_target+0x84/0x158
- kvm_vcpu_set_target+0x138/0x168
- kvm_arch_vcpu_ioctl_vcpu_init+0x40/0x2b0
- kvm_arch_vcpu_ioctl+0x28c/0x4b8
- kvm_vcpu_ioctl+0x4bc/0x7a8
- __arm64_sys_ioctl+0xb4/0x100
- invoke_syscall+0x70/0x100
- el0_svc_common.constprop.0+0x48/0xf0
- do_el0_svc+0x24/0x38
- el0_svc+0x3c/0x158
- el0t_64_sync_handler+0x120/0x130
- el0t_64_sync+0x194/0x198
+These symptoms all go away with PSR-SU disabled for this TCON, so disable
+it for now while DMUB traces [2] from the failure can be analyzed and the failure
+state properly root caused.
 
-Fixes: 7af0c2534f4c ("KVM: arm64: Normalize cache configuration")
+Cc: Marc Rossi <Marc.Rossi@amd.com>
+Cc: Hamza Mahfooz <Hamza.Mahfooz@amd.com>
+Link: https://gitlab.freedesktop.org/drm/amd/uploads/a832dd515b571ee171b3e3b566e99a13/dmesg.log [1]
+Link: https://gitlab.freedesktop.org/drm/amd/uploads/8f13ff3b00963c833e23e68aa8116959/output.log [2]
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2645
+Reviewed-by: Leo Li <sunpeng.li@amd.com>
+Link: https://lore.kernel.org/r/20240205211233.2601-1-mario.limonciello@amd.com
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit afb634a6823d8d9db23c5fb04f79c5549349628b)
 Cc: stable@vger.kernel.org
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20241017025701.67936-1-ilkka@os.amperecomputing.com
-Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/sys_regs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/modules/power/power_helpers.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -1708,7 +1708,7 @@ static u64 reset_clidr(struct kvm_vcpu *
- 	 * one cache line.
- 	 */
- 	if (kvm_has_mte(vcpu->kvm))
--		clidr |= 2 << CLIDR_TTYPE_SHIFT(loc);
-+		clidr |= 2ULL << CLIDR_TTYPE_SHIFT(loc);
- 
- 	__vcpu_sys_reg(vcpu, r->reg) = clidr;
- 
+--- a/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
++++ b/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
+@@ -818,6 +818,8 @@ bool is_psr_su_specific_panel(struct dc_
+ 				isPSRSUSupported = false;
+ 			else if (dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x03)
+ 				isPSRSUSupported = false;
++			else if (dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x01)
++				isPSRSUSupported = false;
+ 			else if (dpcd_caps->psr_info.force_psrsu_cap == 0x1)
+ 				isPSRSUSupported = true;
+ 		}
 
 
 
