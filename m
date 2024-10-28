@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-88399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 045EA9B25CF
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:35:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA03E9B27E6
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E06C1F21BD8
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:35:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B230B213B3
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51DD318EFF3;
-	Mon, 28 Oct 2024 06:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74DA18EFCD;
+	Mon, 28 Oct 2024 06:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgnCQjGf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bzjqg1t/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1F918C03D;
-	Mon, 28 Oct 2024 06:34:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6963918D65C;
+	Mon, 28 Oct 2024 06:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097243; cv=none; b=Fz3FZ2sTVYPb2lbnNeW26LDZEmhtWIqmN+dvOjRtBVCHjRj8Cxyzpyhec5guLl+SHP+aYvcQfFapzFvOPzvDbNf7893UfpJtBktcZWFkzkkq0tuazDuvXyq7/aoKVlv118Gb5RjaBG5SECsI1Y5pnqqaMKb/FY78k5BtzjokSkM=
+	t=1730098323; cv=none; b=EyitFsZa+kCs2J8bCgpW1wKCftzGOd0WyV6OruKl8hkVJVaR2Vh1NQ3QfMFivaiCTxrIfSBOo6CiAQVybAmcasU+FuR6uJ/3egD4195/nu+kInKiTxYpEAoFIHC6p7n7tYp8w9/VxY6WI8MoJijlEvsRluCA/myg+gpKnyD30U0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097243; c=relaxed/simple;
-	bh=OgrRwVJduXMH0kPanKrVzVr/QDjxPqubsyZXJfYlWEo=;
+	s=arc-20240116; t=1730098323; c=relaxed/simple;
+	bh=wZyshJHjBFgu8d1AlN6n7LlHpjKElPi4sJG9tQ+dRpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BjYzCm/mWkyJ8nifz7dHA78HMzOaJrF3DCtuvnghD1smdRe7FzQrwVl1odqSaJVbxnl+P+ITh71hZ/30FCKpzLbVbc4zrgsw+gr9wS4VqoEI3AHYYd9ZzUIgPwj+6X2IHCysKHt6dwfs0SJ3VTOZXgQ1Udj2OnhIuc9FM/CwgKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgnCQjGf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4E8C4CEC7;
-	Mon, 28 Oct 2024 06:34:02 +0000 (UTC)
+	 MIME-Version; b=MHnY/0HU1kjOH4dAVJ8CiQASH8tnrgshXo+lqZbzmvqPhoT54bXBcDfJObTrDPLBTPTNq65VlW7S4uh/rMg+6UdJEnPR+lL1k+rvQKU58JmXTmcBCMX8yqcDaRo7CYPIHH6mFKDyE3alw+TV6TcuAkn5+UfnWkJdCq5axn4piz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bzjqg1t/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F369BC4CEC3;
+	Mon, 28 Oct 2024 06:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097242;
-	bh=OgrRwVJduXMH0kPanKrVzVr/QDjxPqubsyZXJfYlWEo=;
+	s=korg; t=1730098323;
+	bh=wZyshJHjBFgu8d1AlN6n7LlHpjKElPi4sJG9tQ+dRpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MgnCQjGfw1iNeqdu0z7DzLS2CdSU6Q4Bw6/b4eHH8w0o127thuc5yMDMBMJA8r7L2
-	 W5ZLrAzrd0TUVtOcoGYBaAM3PzmV6jgMVCyhwBYQKnVJijL3qvKdm70TqeNA4mJuC3
-	 MgpAS2HNtKIcJtQ899fB+mWYfsUnIpOvXvEOrr4w=
+	b=bzjqg1t/q06j+Pjs2T/VH7WTfQFjbGi/9EDZRCARm4vkdoSoyz2ll9UlicQA4dkf7
+	 qETwQ+81tlPoMORTPQHJ6FCEuMTYqn0atSBid4xTcMgcMD+y47N5bTPFlB2QPSlH1x
+	 iYf21FzHjsw+cB7xyZDSJciN+6Llobk54g4eNGbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Paul Barker <paul.barker.ct@bp.renesas.com>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Leo Yan <leo.yan@arm.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 045/137] net: ravb: Only advertise Rx/Tx timestamps if hardware supports it
+Subject: [PATCH 6.11 140/261] tracing: Consider the NULL character when validating the event length
 Date: Mon, 28 Oct 2024 07:24:42 +0100
-Message-ID: <20241028062259.986112302@linuxfoundation.org>
+Message-ID: <20241028062315.551585027@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 126e799602f45e9ce1ded03ee9eadda68bf470e0 ]
+[ Upstream commit 0b6e2e22cb23105fcb171ab92f0f7516c69c8471 ]
 
-Recent work moving the reporting of Rx software timestamps to the core
-[1] highlighted an issue where hardware time stamping was advertised
-for the platforms where it is not supported.
+strlen() returns a string length excluding the null byte. If the string
+length equals to the maximum buffer length, the buffer will have no
+space for the NULL terminating character.
 
-Fix this by covering advertising support for hardware timestamps only if
-the hardware supports it. Due to the Tx implementation in RAVB software
-Tx timestamping is also only considered if the hardware supports
-hardware timestamps. This should be addressed in future, but this fix
-only reflects what the driver currently implements.
+This commit checks this condition and returns failure for it.
 
-1. Commit 277901ee3a26 ("ravb: Remove setting of RX software timestamp")
+Link: https://lore.kernel.org/all/20241007144724.920954-1-leo.yan@arm.com/
 
-Fixes: 7e09a052dc4e ("ravb: Exclude gPTP feature support for RZ/G2L")
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Paul Barker <paul.barker.ct@bp.renesas.com>
-Tested-by: Paul Barker <paul.barker.ct@bp.renesas.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://patch.msgid.link/20241014124343.3875285-1-niklas.soderlund+renesas@ragnatech.se
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: dec65d79fd26 ("tracing/probe: Check event name length correctly")
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 25 ++++++++++++------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ kernel/trace/trace_probe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 96467b8d48b00..705010ea1d568 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -1689,20 +1689,19 @@ static int ravb_get_ts_info(struct net_device *ndev,
- 	struct ravb_private *priv = netdev_priv(ndev);
- 	const struct ravb_hw_info *hw_info = priv->info;
- 
--	info->so_timestamping =
--		SOF_TIMESTAMPING_TX_SOFTWARE |
--		SOF_TIMESTAMPING_TX_HARDWARE |
--		SOF_TIMESTAMPING_RX_HARDWARE |
--		SOF_TIMESTAMPING_RAW_HARDWARE;
--	info->tx_types = (1 << HWTSTAMP_TX_OFF) | (1 << HWTSTAMP_TX_ON);
--	info->rx_filters =
--		(1 << HWTSTAMP_FILTER_NONE) |
--		(1 << HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
--		(1 << HWTSTAMP_FILTER_ALL);
--	if (hw_info->gptp || hw_info->ccc_gac)
-+	if (hw_info->gptp || hw_info->ccc_gac) {
-+		info->so_timestamping =
-+			SOF_TIMESTAMPING_TX_SOFTWARE |
-+			SOF_TIMESTAMPING_TX_HARDWARE |
-+			SOF_TIMESTAMPING_RX_HARDWARE |
-+			SOF_TIMESTAMPING_RAW_HARDWARE;
-+		info->tx_types = (1 << HWTSTAMP_TX_OFF) | (1 << HWTSTAMP_TX_ON);
-+		info->rx_filters =
-+			(1 << HWTSTAMP_FILTER_NONE) |
-+			(1 << HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
-+			(1 << HWTSTAMP_FILTER_ALL);
- 		info->phc_index = ptp_clock_index(priv->ptp.clock);
--	else
--		info->phc_index = 0;
-+	}
- 
- 	return 0;
- }
+diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
+index 39877c80d6cb9..16a5e368e7b77 100644
+--- a/kernel/trace/trace_probe.c
++++ b/kernel/trace/trace_probe.c
+@@ -276,7 +276,7 @@ int traceprobe_parse_event_name(const char **pevent, const char **pgroup,
+ 		}
+ 		trace_probe_log_err(offset, NO_EVENT_NAME);
+ 		return -EINVAL;
+-	} else if (len > MAX_EVENT_NAME_LEN) {
++	} else if (len >= MAX_EVENT_NAME_LEN) {
+ 		trace_probe_log_err(offset, EVENT_TOO_LONG);
+ 		return -EINVAL;
+ 	}
 -- 
 2.43.0
 
