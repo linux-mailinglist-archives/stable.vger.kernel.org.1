@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-88696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEF559B2716
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:45:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB28E9B282B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:54:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C4B81C21461
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:45:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7214B2829F6
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:54:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B5718D65C;
-	Mon, 28 Oct 2024 06:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D4418E35B;
+	Mon, 28 Oct 2024 06:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WmFQ6XBd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WhPn+C6U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252A08837;
-	Mon, 28 Oct 2024 06:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42AA18D649;
+	Mon, 28 Oct 2024 06:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097916; cv=none; b=eX7SSBGXnIWujiRRmNRsHyYX9EGeR81dDUS5kmqAvX07Gp6+OCH1TqwftXsDrSFs+HalYUmysE54iTzq5hZsawnLsnOV5E7gN6C6S38nHclVyOKv11kS+PC+ZxCFDcwec8jzAdQHvVV3VRlUKlLdGFpLHOD2qWanqRXTKTGsTk4=
+	t=1730098475; cv=none; b=bMwvxNnfvKr43/dNKkMazsNR4Z6QqyWXU60dDUdXN4BFt3KGurKPjWDu4dGG3Jxs7H1GedYRhx4JHpBj+nNOP76fMf1FiuWiHgXP1FZIdDJ/23Hv4Lp1IaXDqWLlOiOiompTuScBnZkiigDz0enhxsSSJrTF455VcZ8b3bJyNPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097916; c=relaxed/simple;
-	bh=Lf/pva2e3SehLq6MTANTeS8ZZJZf/Q0i9/rixAV/cgI=;
+	s=arc-20240116; t=1730098475; c=relaxed/simple;
+	bh=9VlHY3OfG/hlftpgKumvvr5VsGMV8HZy/9EuH7x270E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IQxCXWSuKEC/YG4PjTvp7e/OEpZtBkphVEfwWVQUNiiUUUYjLFokuggDNR0tvW2ErtV2uKlFWgUqiugAddgRsJwcPdnADQPrLSforG+xSqCxB/3763Zkc1WC8PBzgeM+aKwxxshsbbPczuZILPKh61lT6ND8OroF8hntESfl394=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WmFQ6XBd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9723EC4CEC3;
-	Mon, 28 Oct 2024 06:45:15 +0000 (UTC)
+	 MIME-Version; b=VMJYECiZVG9yR+UJRgzvz+2tpCApxJD0EKQxoQgqvw6P9kO5YzMYdrOCHRnOc6ELviUD4AltswBuEghtU3xEIKl/2XZIDLmi2KCqmIB+i+zUy+EHqamGWldZPtYccA8LA/4u/LSHTS3bwHI8LGgUE7lIpDE19uMsyRA2o/6jDfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WhPn+C6U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C472C4CEC3;
+	Mon, 28 Oct 2024 06:54:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097916;
-	bh=Lf/pva2e3SehLq6MTANTeS8ZZJZf/Q0i9/rixAV/cgI=;
+	s=korg; t=1730098475;
+	bh=9VlHY3OfG/hlftpgKumvvr5VsGMV8HZy/9EuH7x270E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WmFQ6XBdN7NzO6ipYrQfUTVHBaequx+1+DeTi18cxgh3MS6ZugPM1NJiE4+HIyZHi
-	 4O87Y1Wo/ntojeAwUSqVOgMjIEwAvRYRZIwpee08AjWVfQEQjaQmjDFVn8+564BalX
-	 U7+HsvhvQLPkzlf14zzMGPPechzzGzOYoRxoJtfI=
+	b=WhPn+C6UE1HuidifMowFqscEJnb5llLUVaKHF7x/AGe6HWdpXOcWZ00bl18VQhBKf
+	 xoM1rM3akZ9ms0Mol7f8Z0eX2j+GI3eU0t4p0PxHeDY2ERp91gqmzwm6lys8Rj7DQ9
+	 g1Pc6pNqgC47Mdr0JrhbwM1d5p1oyy7u5CO8Oopc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 6.6 204/208] RDMA/bnxt_re: Fix the offset for GenP7 adapters for user applications
+	"Lai, Yi" <yi1.lai@linux.intel.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.11 242/261] ata: libata: Set DID_TIME_OUT for commands that actually timed out
 Date: Mon, 28 Oct 2024 07:26:24 +0100
-Message-ID: <20241028062311.669136451@linuxfoundation.org>
+Message-ID: <20241028062318.179040106@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvin Xavier <selvin.xavier@broadcom.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit 9248f363d0791a548a9c7711365b8be4c70bd375 upstream.
+commit 8e59a2a5459fd9840dbe2cbde85fe154b11e1727 upstream.
 
-User Doorbell page indexes start at an offset for GenP7 adapters.
-Fix the offset that will be used for user doorbell page indexes.
+When ata_qc_complete() schedules a command for EH using
+ata_qc_schedule_eh(), blk_abort_request() will be called, which leads to
+req->q->mq_ops->timeout() / scsi_timeout() being called.
 
-Fixes: a62d68581441 ("RDMA/bnxt_re: Update the BAR offsets")
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://lore.kernel.org/r/1702987900-5363-1-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+scsi_timeout(), if the LLDD has no abort handler (libata has no abort
+handler), will set host byte to DID_TIME_OUT, and then call
+scsi_eh_scmd_add() to add the command to EH.
+
+Thus, when commands first enter libata's EH strategy_handler, all the
+commands that have been added to EH will have DID_TIME_OUT set.
+
+Commit e5dd410acb34 ("ata: libata: Clear DID_TIME_OUT for ATA PT commands
+with sense data") clears this bogus DID_TIME_OUT flag for all commands
+that reached libata's EH strategy_handler.
+
+libata has its own flag (AC_ERR_TIMEOUT), that it sets for commands that
+have not received a completion at the time of entering EH.
+
+ata_eh_worth_retry() has no special handling for AC_ERR_TIMEOUT, so by
+default timed out commands will get flag ATA_QCFLAG_RETRY set, and will be
+retried after the port has been reset (ata_eh_link_autopsy() always
+triggers a port reset if any command has AC_ERR_TIMEOUT set).
+
+For a command that has ATA_QCFLAG_RETRY set, while also having an error
+flag set (e.g. AC_ERR_TIMEOUT), ata_eh_finish() will not increment
+scmd->allowed, so the command will at most be retried scmd->allowed number
+of times (which by default is set to 3).
+
+However, scsi_eh_flush_done_q() will only retry commands for which
+scsi_noretry_cmd() returns false.
+
+For a command that has DID_TIME_OUT set, while also having either the
+FAILFAST flag set, or the command being a passthrough command,
+scsi_noretry_cmd() will return true. Thus, such a command will never be
+retried.
+
+Thus, make sure that libata sets SCSI's DID_TIME_OUT flag for commands that
+actually timed out (libata's AC_ERR_TIMEOUT flag), such that timed out
+commands will once again not be retried if they are also a FAILFAST or
+passthrough command.
+
+Cc: stable@vger.kernel.org
+Fixes: e5dd410acb34 ("ata: libata: Clear DID_TIME_OUT for ATA PT commands with sense data")
+Reported-by: Lai, Yi <yi1.lai@linux.intel.com>
+Closes: https://lore.kernel.org/linux-ide/ZxYz871I3Blsi30F@ly-workstation/
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20241023105540.1070012-2-cassel@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/main.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/ata/libata-eh.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/infiniband/hw/bnxt_re/main.c
-+++ b/drivers/infiniband/hw/bnxt_re/main.c
-@@ -107,12 +107,14 @@ static void bnxt_re_set_db_offset(struct
- 		dev_info(rdev_to_dev(rdev),
- 			 "Couldn't get DB bar size, Low latency framework is disabled\n");
- 	/* set register offsets for both UC and WC */
--	if (bnxt_qplib_is_chip_gen_p7(cctx))
-+	if (bnxt_qplib_is_chip_gen_p7(cctx)) {
- 		res->dpi_tbl.ucreg.offset = offset;
--	else
-+		res->dpi_tbl.wcreg.offset = en_dev->l2_db_size;
-+	} else {
- 		res->dpi_tbl.ucreg.offset = res->is_vf ? BNXT_QPLIB_DBR_VF_DB_OFFSET :
- 							 BNXT_QPLIB_DBR_PF_DB_OFFSET;
--	res->dpi_tbl.wcreg.offset = res->dpi_tbl.ucreg.offset;
-+		res->dpi_tbl.wcreg.offset = res->dpi_tbl.ucreg.offset;
-+	}
- 
- 	/* If WC mapping is disabled by L2 driver then en_dev->l2_db_size
- 	 * is equal to the DB-Bar actual size. This indicates that L2
+--- a/drivers/ata/libata-eh.c
++++ b/drivers/ata/libata-eh.c
+@@ -648,6 +648,7 @@ void ata_scsi_cmd_error_handler(struct S
+ 			/* the scmd has an associated qc */
+ 			if (!(qc->flags & ATA_QCFLAG_EH)) {
+ 				/* which hasn't failed yet, timeout */
++				set_host_byte(scmd, DID_TIME_OUT);
+ 				qc->err_mask |= AC_ERR_TIMEOUT;
+ 				qc->flags |= ATA_QCFLAG_EH;
+ 				nr_timedout++;
 
 
 
