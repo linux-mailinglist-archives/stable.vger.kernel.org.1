@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-88633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 238C59B26D0
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:42:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A56D89B255A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD43F2824EF
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:42:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D64A11C208EE
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291B718E04F;
-	Mon, 28 Oct 2024 06:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 187DE18E340;
+	Mon, 28 Oct 2024 06:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrHXy2/T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1gRcRpw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D341815B10D;
-	Mon, 28 Oct 2024 06:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95D018E05A;
+	Mon, 28 Oct 2024 06:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097774; cv=none; b=V+b2RDsH/wtF58950B5Djh1wVeIXCDIGmSFE+1gtgQcPRa16wo9enO+vSfKDIXKoVBrboYb5iSlvMOesVkk3kvkB+/nyErtAHNQBbM1C34Htiw28vYzDmFg60xR98cIgk5/IE9jl2kN8JRpIJPlNIyLtzatZsIDPQGpX0+XkzoI=
+	t=1730096895; cv=none; b=mvVR9SMN/CecuaYou3hUXMnh3FiQces88parBmwf0iFwGHY1SCIBuCyiyqPWPKNd5v3q7WtMCZ5ndBlzroMRvQL/J+cVLXa1g5k2d6gRz0j11DdCFudRKW8zsU2J1/HD3mUrTawohR0BMBJ6rqXEwXA5NKiNazil2HkgfHZJfUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097774; c=relaxed/simple;
-	bh=qBncWh9pN0menQ+SXVucsX1E4A4Fnzuew+R50KOHbzY=;
+	s=arc-20240116; t=1730096895; c=relaxed/simple;
+	bh=AOaJgxinwtsoGAn2grr4Leha/dNW8X+TTpVIouMqzWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h0ttsjuoAgbMTFm9TBara3d6RzwelQm9/1iLkZ9R8jAg4usv+S0hU2rSJ9o6cBSJt7L7ZadCq6gc4gOEPMV+v//riEOuvhMwSslKH88rq06agrl533bjjeC6T06rpL+3FejTbsCdXaY2iNeqCjgy959Men5qqBVxhUpjjP+tdn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrHXy2/T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72424C4CEC3;
-	Mon, 28 Oct 2024 06:42:54 +0000 (UTC)
+	 MIME-Version; b=Zi/QwTFfWzX5/CllKDfZ2B3tTXXUILO3CC7p7849P7ekOhvSE9DkMeB76lEFYFyc0FyHHKsBNCgpRBZ/ABaqf+uslD/MHM2EqVBun0DXOvfC1ZjKBA6OYtpdflhoZUsCKW5c7A6IRBl7swB4Zeu+AbmsJSBsob/TBAKFuQrWCVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1gRcRpw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6798EC4CEC3;
+	Mon, 28 Oct 2024 06:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097774;
-	bh=qBncWh9pN0menQ+SXVucsX1E4A4Fnzuew+R50KOHbzY=;
+	s=korg; t=1730096895;
+	bh=AOaJgxinwtsoGAn2grr4Leha/dNW8X+TTpVIouMqzWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nrHXy2/T8mhuyIEBMrmyZ6YjwVkMHAGF5XUOcjo1QEhOsX5mlrzhhR8BM8WlHrKka
-	 2pjGeu68v3pMLQ3hX2Ros4CKgI0XaFVrUdvD3IuHX5COvwHPhmt1AIM5fovkxg/Jx3
-	 JGfQQ621ueEg/ShER/l8xq3qFAlSit3NFgeU+sy8=
+	b=e1gRcRpwWrEdqETphm/VKxP/DyB61yEkA+t+PJtIQDIYJFj4SALFhkvPpVW4RGpcp
+	 1zfZFP0qIL5mSIPyNSdNnYgKo76CUQA3CDg7HqIUZO3SaQiItKhRX3+Z0Wcs7NvUT9
+	 5lcsfFKaWCWL4g9ORGtm7qd16GHlhdXXS1IZD87c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kevin Groeneveld <kgroeneveld@lenbrook.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Martin Kletzander <nert.pinx@gmail.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Tony Luck <tony.luck@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 104/208] usb: gadget: f_uac2: fix return value for UAC2_ATTRIBUTE_STRING store
-Date: Mon, 28 Oct 2024 07:24:44 +0100
-Message-ID: <20241028062309.220437978@linuxfoundation.org>
+Subject: [PATCH 5.15 05/80] x86/resctrl: Avoid overflow in MB settings in bw_validate()
+Date: Mon, 28 Oct 2024 07:24:45 +0100
+Message-ID: <20241028062252.769431599@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +64,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Groeneveld <kgroeneveld@lenbrook.com>
+From: Martin Kletzander <nert.pinx@gmail.com>
 
-[ Upstream commit 9499327714de7bc5cf6c792112c1474932d8ad31 ]
+[ Upstream commit 2b5648416e47933939dc310c4ea1e29404f35630 ]
 
-The configfs store callback should return the number of bytes consumed
-not the total number of bytes we actually stored. These could differ if
-for example the passed in string had a newline we did not store.
+The resctrl schemata file supports specifying memory bandwidth associated with
+the Memory Bandwidth Allocation (MBA) feature via a percentage (this is the
+default) or bandwidth in MiBps (when resctrl is mounted with the "mba_MBps"
+option).
 
-If the returned value does not match the number of bytes written the
-writer might assume a failure or keep trying to write the remaining bytes.
+The allowed range for the bandwidth percentage is from
+/sys/fs/resctrl/info/MB/min_bandwidth to 100, using a granularity of
+/sys/fs/resctrl/info/MB/bandwidth_gran. The supported range for the MiBps
+bandwidth is 0 to U32_MAX.
 
-For example the following command will hang trying to write the final
-newline over and over again (tested on bash 2.05b):
+There are two issues with parsing of MiBps memory bandwidth:
 
-  echo foo > function_name
+* The user provided MiBps is mistakenly rounded up to the granularity
+  that is unique to percentage input.
 
-Fixes: 993a44fa85c1 ("usb: gadget: f_uac2: allow changing interface name via configfs")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kevin Groeneveld <kgroeneveld@lenbrook.com>
-Link: https://lore.kernel.org/r/20241006232637.4267-1-kgroeneveld@lenbrook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+* The user provided MiBps is parsed using unsigned long (thus accepting
+  values up to ULONG_MAX), and then assigned to u32 that could result in
+  overflow.
+
+Do not round up the MiBps value and parse user provided bandwidth as the u32
+it is intended to be. Use the appropriate kstrtou32() that can detect out of
+range values.
+
+Fixes: 8205a078ba78 ("x86/intel_rdt/mba_sc: Add schemata support")
+Fixes: 6ce1560d35f6 ("x86/resctrl: Switch over to the resctrl mbps_val list")
+Co-developed-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Martin Kletzander <nert.pinx@gmail.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_uac2.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kernel/cpu/resctrl/ctrlmondata.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/f_uac2.c b/drivers/usb/gadget/function/f_uac2.c
-index 79d1f87c6cc59..b3dc5f5164f42 100644
---- a/drivers/usb/gadget/function/f_uac2.c
-+++ b/drivers/usb/gadget/function/f_uac2.c
-@@ -2052,7 +2052,7 @@ static ssize_t f_uac2_opts_##name##_store(struct config_item *item,	\
- 					  const char *page, size_t len)	\
- {									\
- 	struct f_uac2_opts *opts = to_f_uac2_opts(item);		\
--	int ret = 0;							\
-+	int ret = len;							\
- 									\
- 	mutex_lock(&opts->lock);					\
- 	if (opts->refcnt) {						\
-@@ -2063,8 +2063,8 @@ static ssize_t f_uac2_opts_##name##_store(struct config_item *item,	\
- 	if (len && page[len - 1] == '\n')				\
- 		len--;							\
- 									\
--	ret = scnprintf(opts->name, min(sizeof(opts->name), len + 1),	\
--			"%s", page);					\
-+	scnprintf(opts->name, min(sizeof(opts->name), len + 1),		\
-+		  "%s", page);						\
- 									\
- end:									\
- 	mutex_unlock(&opts->lock);					\
+diff --git a/arch/x86/kernel/cpu/resctrl/ctrlmondata.c b/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
+index 000e1467b4cde..d00909428b435 100644
+--- a/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
++++ b/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
+@@ -27,10 +27,10 @@
+  * hardware. The allocated bandwidth percentage is rounded to the next
+  * control step available on the hardware.
+  */
+-static bool bw_validate(char *buf, unsigned long *data, struct rdt_resource *r)
++static bool bw_validate(char *buf, u32 *data, struct rdt_resource *r)
+ {
+-	unsigned long bw;
+ 	int ret;
++	u32 bw;
+ 
+ 	/*
+ 	 * Only linear delay values is supported for current Intel SKUs.
+@@ -40,16 +40,21 @@ static bool bw_validate(char *buf, unsigned long *data, struct rdt_resource *r)
+ 		return false;
+ 	}
+ 
+-	ret = kstrtoul(buf, 10, &bw);
++	ret = kstrtou32(buf, 10, &bw);
+ 	if (ret) {
+-		rdt_last_cmd_printf("Non-decimal digit in MB value %s\n", buf);
++		rdt_last_cmd_printf("Invalid MB value %s\n", buf);
+ 		return false;
+ 	}
+ 
+-	if ((bw < r->membw.min_bw || bw > r->default_ctrl) &&
+-	    !is_mba_sc(r)) {
+-		rdt_last_cmd_printf("MB value %ld out of range [%d,%d]\n", bw,
+-				    r->membw.min_bw, r->default_ctrl);
++	/* Nothing else to do if software controller is enabled. */
++	if (is_mba_sc(r)) {
++		*data = bw;
++		return true;
++	}
++
++	if (bw < r->membw.min_bw || bw > r->default_ctrl) {
++		rdt_last_cmd_printf("MB value %u out of range [%d,%d]\n",
++				    bw, r->membw.min_bw, r->default_ctrl);
+ 		return false;
+ 	}
+ 
+@@ -62,7 +67,7 @@ int parse_bw(struct rdt_parse_data *data, struct resctrl_schema *s,
+ {
+ 	struct resctrl_staged_config *cfg;
+ 	struct rdt_resource *r = s->res;
+-	unsigned long bw_val;
++	u32 bw_val;
+ 
+ 	cfg = &d->staged_config[s->conf_type];
+ 	if (cfg->have_new_ctrl) {
 -- 
 2.43.0
 
