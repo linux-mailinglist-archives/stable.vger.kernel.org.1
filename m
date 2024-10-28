@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-88855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84FF19B27CB
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:51:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE799B2549
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:27:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30B0D1F2246B
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:51:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5FD7282009
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD1518E368;
-	Mon, 28 Oct 2024 06:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C8818E047;
+	Mon, 28 Oct 2024 06:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oy2DWKXI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2P2tFnY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5CF8837;
-	Mon, 28 Oct 2024 06:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3169318CC1F;
+	Mon, 28 Oct 2024 06:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098274; cv=none; b=j42yke2pw/97mKvHzn44O6Uf12rlxT17I//385rQP4EnJt+ntxKTV1V/FkeSelXl3KB3ZSppmzoB+o3L3bnjCvLATHJEV0xAmFxvQcnPMjLQSMLuEVIM5FC7vt/cn3QjkJzXVFmOqjQzH7gPAN9KQpf/0xqUb/aIK/as87PMwcY=
+	t=1730096854; cv=none; b=kiKCqkfU9HC9Yg0HhnmzZeM+9oq+rOq47A2sbHqMN71C5GqjXZ4zS7U6dmTQE9asMqp/wsB2OjafV+jS2QoQFTq+IPJaVSmyKUztkNBL87XYq1O5aRJwQ/est9IEoZ1B7zgggyAXGc34Q0bLEq/y66zjoBS5Y1vqgExLBvTyMmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098274; c=relaxed/simple;
-	bh=k/fQ9dY/j4Wc077EZFnPVIBTLzvMIBkYAhnHhdoL1As=;
+	s=arc-20240116; t=1730096854; c=relaxed/simple;
+	bh=XOf4maPFu9aecT3xdfC3PCeCiztJJ62zfUNKpwsHLdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EpLxtEhmLc9BrYOVfseXFBha1OfvPCK8CzEEpgGMth741zV1FyPQA3L7BDXJu5TeoyvIGGWGhIXhZhQac9fr+WqmDRTW7h6VsamywBaIA6SUo8TjFamOBR1Y0VQJ4vO/lsJ48Oy8TopOhSjqVhXnNBeRFONlBQDB6gIu9GDa2lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oy2DWKXI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE473C4CEC3;
-	Mon, 28 Oct 2024 06:51:13 +0000 (UTC)
+	 MIME-Version; b=JpVPg/GP7ea229eim9xijwBLieAQ0fTrD9s7vqTRh7CXIl4g7PGO2HzyQEqkx2j3iYjTIBdM3y6Co6IM8FT60fUxn1UuUpHjFM2YIBCkCSpWnFHBYsCaJCacB3XVtYfqWsPhaO8C1zzLBpmo6UlqVd0JoBpXipOd0zaGqDGEd5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2P2tFnY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C40D8C4CEC3;
+	Mon, 28 Oct 2024 06:27:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098274;
-	bh=k/fQ9dY/j4Wc077EZFnPVIBTLzvMIBkYAhnHhdoL1As=;
+	s=korg; t=1730096854;
+	bh=XOf4maPFu9aecT3xdfC3PCeCiztJJ62zfUNKpwsHLdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oy2DWKXIrlFr5vYNMUAZqrs/DOX/DBntclpaWn+yGELKeH1CoP094OcBAw3L0SYS0
-	 Ju5fDewMxClAb9K6Bnq/uzxhelvqQ0R2iKmsEdfquNHZYuU9EtR0v8VuVe8N1cB+io
-	 WPbWEZ7f7l9SEwsNUKapwL9yLBI0OeiPGkY7wl7A=
+	b=P2P2tFnYElFkBXJGD1KOmx3tqli8kiQFrwcxqB2Y/FCvcWp+GJqMPHu2WAj4v5vNx
+	 EPolQiLA++NBHa2+mwR+L5bIg7b2kwhXKMk6jQOCB9WBftiD0IOUWWnp/ZaCDHUalG
+	 4F7Vel0E0Hv1rZCc86jK6ZBzIYloxqIwoZRTAn2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
+	Oliver Neukum <oneukum@suse.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 154/261] fsl/fman: Save device references taken in mac_probe()
+Subject: [PATCH 5.15 16/80] net: usb: usbnet: fix race in probe failure
 Date: Mon, 28 Oct 2024 07:24:56 +0100
-Message-ID: <20241028062315.885527922@linuxfoundation.org>
+Message-ID: <20241028062253.070646518@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit efeddd552ec6767e4c8884caa516ac80b65f8823 ]
+[ Upstream commit b62f4c186c70aa235fef2da68d07325d85ca3ade ]
 
-In mac_probe() there are calls to of_find_device_by_node() which takes
-references to of_dev->dev. These references are not saved and not released
-later on error path in mac_probe() and in mac_remove().
+The same bug as in the disconnect code path also exists
+in the case of a failure late during the probe process.
+The flag must also be set.
 
-Add new fields into mac_device structure to save references taken for
-future use in mac_probe() and mac_remove().
-
-This is a preparation for further reference leaks fix.
-
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Link: https://patch.msgid.link/20241010131934.1499695-1-oneukum@suse.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 1dec67e0d9fb ("fsl/fman: Fix refcount handling of fman-related devices")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fman/mac.c | 6 ++++--
- drivers/net/ethernet/freescale/fman/mac.h | 6 +++++-
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/usb/usbnet.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/freescale/fman/mac.c b/drivers/net/ethernet/freescale/fman/mac.c
-index 9767586b4eb32..9b863db0bf087 100644
---- a/drivers/net/ethernet/freescale/fman/mac.c
-+++ b/drivers/net/ethernet/freescale/fman/mac.c
-@@ -197,6 +197,7 @@ static int mac_probe(struct platform_device *_of_dev)
- 		err = -EINVAL;
- 		goto _return_of_node_put;
- 	}
-+	mac_dev->fman_dev = &of_dev->dev;
- 
- 	/* Get the FMan cell-index */
- 	err = of_property_read_u32(dev_node, "cell-index", &val);
-@@ -208,7 +209,7 @@ static int mac_probe(struct platform_device *_of_dev)
- 	/* cell-index 0 => FMan id 1 */
- 	fman_id = (u8)(val + 1);
- 
--	priv->fman = fman_bind(&of_dev->dev);
-+	priv->fman = fman_bind(mac_dev->fman_dev);
- 	if (!priv->fman) {
- 		dev_err(dev, "fman_bind(%pOF) failed\n", dev_node);
- 		err = -ENODEV;
-@@ -284,8 +285,9 @@ static int mac_probe(struct platform_device *_of_dev)
- 			err = -EINVAL;
- 			goto _return_of_node_put;
- 		}
-+		mac_dev->fman_port_devs[i] = &of_dev->dev;
- 
--		mac_dev->port[i] = fman_port_bind(&of_dev->dev);
-+		mac_dev->port[i] = fman_port_bind(mac_dev->fman_port_devs[i]);
- 		if (!mac_dev->port[i]) {
- 			dev_err(dev, "dev_get_drvdata(%pOF) failed\n",
- 				dev_node);
-diff --git a/drivers/net/ethernet/freescale/fman/mac.h b/drivers/net/ethernet/freescale/fman/mac.h
-index fe747915cc737..8b5b43d50f8ef 100644
---- a/drivers/net/ethernet/freescale/fman/mac.h
-+++ b/drivers/net/ethernet/freescale/fman/mac.h
-@@ -19,12 +19,13 @@
- struct fman_mac;
- struct mac_priv_s;
- 
-+#define PORT_NUM 2
- struct mac_device {
- 	void __iomem		*vaddr;
- 	struct device		*dev;
- 	struct resource		*res;
- 	u8			 addr[ETH_ALEN];
--	struct fman_port	*port[2];
-+	struct fman_port	*port[PORT_NUM];
- 	struct phylink		*phylink;
- 	struct phylink_config	phylink_config;
- 	phy_interface_t		phy_if;
-@@ -52,6 +53,9 @@ struct mac_device {
- 
- 	struct fman_mac		*fman_mac;
- 	struct mac_priv_s	*priv;
-+
-+	struct device		*fman_dev;
-+	struct device		*fman_port_devs[PORT_NUM];
- };
- 
- static inline struct mac_device
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 47a587dae7463..2945e336505bf 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1872,6 +1872,7 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
+ 	 * may trigger an error resubmitting itself and, worse,
+ 	 * schedule a timer. So we kill it all just in case.
+ 	 */
++	usbnet_mark_going_away(dev);
+ 	cancel_work_sync(&dev->kevent);
+ 	del_timer_sync(&dev->delay);
+ 	free_percpu(net->tstats);
 -- 
 2.43.0
 
