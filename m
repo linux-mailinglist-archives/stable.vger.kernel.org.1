@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C48C99B25ED
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96D729B27A1
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:49:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A37D1F21E9A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C88341C214CC
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:49:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999F018E34E;
-	Mon, 28 Oct 2024 06:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5969918A924;
+	Mon, 28 Oct 2024 06:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ldeet0Vo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aCr6zb//"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E17718EFD6;
-	Mon, 28 Oct 2024 06:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FC12AF07;
+	Mon, 28 Oct 2024 06:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097298; cv=none; b=PjEuKvmC93Euf+hMWGYViUIp3R6KNqBxdr5NhfEjPO7Y+YHuOQ/EDNEDKrWXp+eYzboxTKAv674nRDLMddaA+B++nNi1C69kEuNy3A3dDslk/h6fJjcpNIzu3GapLPPkBI6hdO9dcV68UbeoZVInAwhRKVQnva9W3y55z3On9sU=
+	t=1730098194; cv=none; b=VeR2N/lkvQeAjXOezSZpPecE2zsUSdbJyipfDdGL/ONDyUuMEBWGVrtvVr+iXjIwneLhjhoLnU/ikzAa355CSqXYlAyq0/ny8dfd2RyR7qMNyo+RwH6DVbtnHtKH6kI2KiJt/zN08UW0+OIERGV1BP2lp2pdLbGU6u/OnCOq+1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097298; c=relaxed/simple;
-	bh=O49dpKvS64nT1RBjfHt/N4EquhI1cwiLeclxc0w/jac=;
+	s=arc-20240116; t=1730098194; c=relaxed/simple;
+	bh=Y7ZjMiapGG1bHLQr8lLVDs0fMGvnyOJfaTOenx17yYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sMlyhYRwEP5MpVrbIfXWSoMzYZ6k9eLTpZe+5QV1G987USEOPbFZ9yYwEpSB4jJu2+tHO5btvCgHpnthyAopGJvu+FYp0arsvJw8Qm3eXwz03zLl30fBYOanEdcxmKIVUERY7V9dJxHY3Pjg6rsJxZ6VV/ygvLt0M4aNvKnmCcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ldeet0Vo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02C2C4CEC3;
-	Mon, 28 Oct 2024 06:34:57 +0000 (UTC)
+	 MIME-Version; b=mgWa9PfK+9cMq6XP/WNw905QoTnKHPSElObm4xUbjY8UhuZ90WFkHWX2rUlBnxuUGiLGbnhIiJDW9BtgNj+Wf8IA759nR42u7U0CtxpHSGN6+hDigP4d9lswcxQBfRu19+drIiDhHgtqn9dfWP8tVUNCJsLrZsOxEOngCT5UD7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aCr6zb//; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439C3C4CEC3;
+	Mon, 28 Oct 2024 06:49:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097298;
-	bh=O49dpKvS64nT1RBjfHt/N4EquhI1cwiLeclxc0w/jac=;
+	s=korg; t=1730098193;
+	bh=Y7ZjMiapGG1bHLQr8lLVDs0fMGvnyOJfaTOenx17yYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ldeet0Vo7kXS1Km2POklyfTEtOwHf120SgKvIFAyXXUMvRq7ComhG+VRJnIea2Ivc
-	 NJOtexxyOuHP9PNPkJA0n8xqEKYGmKW5PpEKBHDUEcUJganhUbUo102x+vwjvSRd/K
-	 os9DR3UVvKFfGIzfIH8OWQBePwEyWU8sDrU5RShE=
+	b=aCr6zb//PKexMjVLblWdxr0PbE/Ksseau4MtCb4Vp6QDWoFuMdB1t340Hqznig49b
+	 Jx5bh2A2ZhUhLDXYeaJpbhUBtS+mBWYUa+5hIsqlWlUdJgz0jqCVbrquo7os2zBOfq
+	 d+VlCDb6ICY8UKufiME/sveq6X5S15nbi2DHQfzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Mathias Nyman <mathias.nyman@intel.com>,
+	linux-usb@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 023/137] drm/msm/dpu: make sure phys resources are properly initialized
+Subject: [PATCH 6.11 118/261] xhci: dbgtty: remove kfifo_out() wrapper
 Date: Mon, 28 Oct 2024 07:24:20 +0100
-Message-ID: <20241028062259.371035325@linuxfoundation.org>
+Message-ID: <20241028062314.987043179@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit bfecbc2cfba9b06d67d9d249c33d92e570e2fa70 ]
+[ Upstream commit 2b217514436744dd98c4d9fa48d60610f9f67d61 ]
 
-The commit b954fa6baaca ("drm/msm/dpu: Refactor rm iterator") removed
-zero-init of the hw_ctl array, but didn't change the error condition,
-that checked for hw_ctl[i] being NULL. At the same time because of the
-early returns in case of an error dpu_encoder_phys might be left with
-the resources assigned in the previous state. Rework assigning of hw_pp
-/ hw_ctl to the dpu_encoder_phys in order to make sure they are always
-set correctly.
+There is no need to check against kfifo_len() before kfifo_out(). Just
+ask the latter for data and it tells how much it retrieved. Or returns 0
+in case there are no more.
 
-Fixes: b954fa6baaca ("drm/msm/dpu: Refactor rm iterator")
-Suggested-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/612233/
-Link: https://lore.kernel.org/r/20240903-dpu-mode-config-width-v6-1-617e1ecc4b7a@linaro.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Cc: Mathias Nyman <mathias.nyman@intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-usb@vger.kernel.org
+Link: https://lore.kernel.org/r/20240808103549.429349-5-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 30c9ae5ece8e ("xhci: dbc: honor usb transfer size boundaries.")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/usb/host/xhci-dbgtty.c | 15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-index 1bf41a82cd0f9..ba8f2ba046298 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-@@ -1106,21 +1106,20 @@ static void dpu_encoder_virt_atomic_mode_set(struct drm_encoder *drm_enc,
- 	for (i = 0; i < dpu_enc->num_phys_encs; i++) {
- 		struct dpu_encoder_phys *phys = dpu_enc->phys_encs[i];
+diff --git a/drivers/usb/host/xhci-dbgtty.c b/drivers/usb/host/xhci-dbgtty.c
+index b74e98e943932..64ea964949975 100644
+--- a/drivers/usb/host/xhci-dbgtty.c
++++ b/drivers/usb/host/xhci-dbgtty.c
+@@ -24,19 +24,6 @@ static inline struct dbc_port *dbc_to_port(struct xhci_dbc *dbc)
+ 	return dbc->priv;
+ }
  
--		if (!dpu_enc->hw_pp[i]) {
-+		phys->hw_pp = dpu_enc->hw_pp[i];
-+		if (!phys->hw_pp) {
- 			DPU_ERROR_ENC(dpu_enc,
- 				"no pp block assigned at idx: %d\n", i);
- 			return;
- 		}
- 
--		if (!hw_ctl[i]) {
-+		phys->hw_ctl = i < num_ctl ? to_dpu_hw_ctl(hw_ctl[i]) : NULL;
-+		if (!phys->hw_ctl) {
- 			DPU_ERROR_ENC(dpu_enc,
- 				"no ctl block assigned at idx: %d\n", i);
- 			return;
- 		}
- 
--		phys->hw_pp = dpu_enc->hw_pp[i];
--		phys->hw_ctl = to_dpu_hw_ctl(hw_ctl[i]);
+-static unsigned int
+-dbc_send_packet(struct dbc_port *port, char *packet, unsigned int size)
+-{
+-	unsigned int		len;
 -
- 		phys->cached_mode = crtc_state->adjusted_mode;
- 		if (phys->ops.atomic_mode_set)
- 			phys->ops.atomic_mode_set(phys, crtc_state, conn_state);
+-	len = kfifo_len(&port->write_fifo);
+-	if (len < size)
+-		size = len;
+-	if (size != 0)
+-		size = kfifo_out(&port->write_fifo, packet, size);
+-	return size;
+-}
+-
+ static int dbc_start_tx(struct dbc_port *port)
+ 	__releases(&port->port_lock)
+ 	__acquires(&port->port_lock)
+@@ -49,7 +36,7 @@ static int dbc_start_tx(struct dbc_port *port)
+ 
+ 	while (!list_empty(pool)) {
+ 		req = list_entry(pool->next, struct dbc_request, list_pool);
+-		len = dbc_send_packet(port, req->buf, DBC_MAX_PACKET);
++		len = kfifo_out(&port->write_fifo, req->buf, DBC_MAX_PACKET);
+ 		if (len == 0)
+ 			break;
+ 		do_tty_wake = true;
 -- 
 2.43.0
 
