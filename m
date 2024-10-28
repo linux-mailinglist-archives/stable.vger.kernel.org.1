@@ -1,100 +1,85 @@
-Return-Path: <stable+bounces-89067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 587229B30A7
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 13:44:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 009A99B30AB
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 13:45:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60F361C21D96
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 12:44:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FE50B232F7
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 12:45:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 609451DBB2C;
-	Mon, 28 Oct 2024 12:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C07D1DE4EA;
+	Mon, 28 Oct 2024 12:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A9MqfW95"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X3qzsgTl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0722F1DC046;
-	Mon, 28 Oct 2024 12:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9EC1DE4E9;
+	Mon, 28 Oct 2024 12:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730119335; cv=none; b=FMuBtB28/ZZPpFnOviRx9FAIbXYC7SVyGUVRo6tICT+xUc0shssxGn+KYs5njQYMJsPPXTiCkWMC+sR8lMpYvcAhDWf07oV4hJloJR7k+vmFznuAq6iIGt5+XH21oRoz/OIR8o0wivevRBNr3WNSd25GX1IPiK2tmleEVSw31EQ=
+	t=1730119337; cv=none; b=XRUtP+W1yfNkiCPgMM/sGwD2uGzXBeypIneBDwGdctR5FVK85f47Fr43DCfVJ9uggPF2bigvX2axkvNOv2QEk1+thZDUstMJb9hZDA1ymMP9nWzp3yJDyncDGt1nBmmsHT2BXmw3GjN5AFfzaMZfmetaRtndf+M/jIE/0E9u4wY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730119335; c=relaxed/simple;
-	bh=yzOI+0XcZK+dILGOdMbfvaqHyZ/6pBLQQ1bn1noFbaE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=BQQdzbKDg6VzkA8nKDL7IN06RX8NRQZGkVuOB2BXuWwCvHo3I78ucrfX/CuEoR50l/GzXSqxovGqQBrDEQyB/jWn4ZSkFXO89Pb2uWpAbg/u50o05D10R2Tkfgzoyz4v/OGaqI+w7W/tyBSi6ftTF79xOgnNpsRK5RZFkGq46cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A9MqfW95; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E5AC4CEE4;
-	Mon, 28 Oct 2024 12:42:13 +0000 (UTC)
+	s=arc-20240116; t=1730119337; c=relaxed/simple;
+	bh=r2wydnfVm8v4NwIeVCJc9UK8GtaBZ4LbV6yLNH7jT/I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i2wJi9SKsPD8oOQLGL+4mcQ/xSbCMWVI9xcRPAgoce3gHhlQRFQVYBmjKEc8s57+7U66mQZ6oBEJHErVZErsMgokj3R2iva9okWgRkQ3W81NERgDd7t84SfKN7Jv0F2l9V99y8PLEE0KDQcoIqITpO4T0IHueWyS4moFEwNr9QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X3qzsgTl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BCF9C4CEE7;
+	Mon, 28 Oct 2024 12:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730119334;
-	bh=yzOI+0XcZK+dILGOdMbfvaqHyZ/6pBLQQ1bn1noFbaE=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=A9MqfW95W2xN+1gPg/R6kjFvo6Fdjumbpp4WzxYP75kaP5YvSj/BUb649TJMNNVOV
-	 /gYzMSkCrEtO6cX8wG898kzOZURDue3YZI+Zkq+ZvgBIg/pS0i0DqyajVhGxydpyYq
-	 pASb6j1RJJJEfI7Pwz8f1EANSO5yJbdmszgYUveb7LWiVNnjdqBmr+KMS6l4AHx8nv
-	 C7pirwl9dscoDF1wMWWiBhBP2QNPkVb8PGULbpdfFVjqBBpsajzC2F92avg2OVwKWM
-	 CrBXv3uDfQ0aJR869aZn3c0KJX9B8KLPG/blP/XNyoSbH/Tf6aKzHJeMHwv8hkKzzT
-	 KAwKJZINEgIvA==
+	s=k20201202; t=1730119337;
+	bh=r2wydnfVm8v4NwIeVCJc9UK8GtaBZ4LbV6yLNH7jT/I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=X3qzsgTlGPvQK0RJf9MbQDN5tw0I7yVVfv9VkigUXrGxwr27ciuThvkcTAfAII0PK
+	 a2h/4igxEdU+WA46KXg7TvKgZnfv7ZNRsW5b4HC0PWB/ka+YfqZDPkUeGyuDP3RT1s
+	 IR+0p2hF43XYgVIi2f8c4cbQeya7RUfvctTN7sigJkJr4jRvFGz3oZ7p2KTfbayKWx
+	 fD9W0P5j/cVItyz54WtScM0IJP3bnjA0ASDhWUOYdA58uZcQp7HxZjbFsNhIu1fcLc
+	 1mqwTP4EaEjogsa8nhYsWS+Y7pI455dOj7fT0dxwMqVrbeweKKtiNMbxi2ZaKmj+yT
+	 57ZowrmnRHojg==
+Date: Mon, 28 Oct 2024 08:42:15 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Antony Antony <antony.antony@secunet.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Sabrina Dubroca <sd@queasysnail.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: Re: [PATCH 6.6 133/208] xfrm: Add Direction to the SA in or out
+Message-ID: <Zx-Gp8f9jjxmDsIe@sashalap>
+References: <20241028062306.649733554@linuxfoundation.org>
+ <20241028062309.914261564@linuxfoundation.org>
+ <Zx9wp6atLMR1UcCL@moon.secunet.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 28 Oct 2024 14:42:10 +0200
-Message-Id: <D57G47THRYCG.217GTO2ZF5333@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, "David Howells" <dhowells@redhat.com>,
- "Mimi Zohar" <zohar@linux.ibm.com>, "Roberto Sassu"
- <roberto.sassu@huawei.com>, "Stefan Berger" <stefanb@linux.ibm.com>, "Paul
- Moore" <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "Serge E.
- Hallyn" <serge@hallyn.com>, "Dmitry Kasatkin" <dmitry.kasatkin@gmail.com>,
- "Eric Snowberg" <eric.snowberg@oracle.com>, <keyrings@vger.kernel.org>,
- <linux-security-module@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v8 2/3] tpm: Rollback tpm2_load_null()
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Paul Menzel" <pmenzel@molgen.mpg.de>,
- <linux-integrity@vger.kernel.org>, "Peter Huewe" <peterhuewe@gmx.de>,
- "Jason Gunthorpe" <jgg@ziepe.ca>, "James Bottomley"
- <James.Bottomley@HansenPartnership.com>
-X-Mailer: aerc 0.18.2
-References: <20241028055007.1708971-1-jarkko@kernel.org>
- <20241028055007.1708971-3-jarkko@kernel.org>
- <88bfa0f8-4900-4c56-bd23-14d3b3c7de85@molgen.mpg.de>
- <D57FFOHZQDUV.QA3SZQSP63Q2@kernel.org>
- <abc37c7f-b069-4272-956d-77e099cadf11@molgen.mpg.de>
-In-Reply-To: <abc37c7f-b069-4272-956d-77e099cadf11@molgen.mpg.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <Zx9wp6atLMR1UcCL@moon.secunet.de>
 
-On Mon Oct 28, 2024 at 2:38 PM EET, Paul Menzel wrote:
-> Dear Jarkko,
+On Mon, Oct 28, 2024 at 12:08:23PM +0100, Antony Antony wrote:
+>On Mon, Oct 28, 2024 at 07:25:13 +0100, Greg Kroah-Hartman wrote:
+>> 6.6-stable review patch.  If anyone has any objections, please let me know.
 >
+>Hi Greg,
 >
-> Am 28.10.24 um 13:10 schrieb Jarkko Sakkinen:
-> > On Mon Oct 28, 2024 at 8:13 AM EET, Paul Menzel wrote:
->
-> >> Am 28.10.24 um 06:50 schrieb Jarkko Sakkinen:
-> >>> Do not continue on tpm2_create_primary() failure in tpm2_load_null().
-> >>
-> >> Could you please elaborate, why this is done, that means the motivatio=
-n
-> >> for your change?
-> >=20
-> > Which part of "not properly handling a return value" I should explain?
->
-> Sorry, where is your quote from?
->
-> Anyway, maybe explaining why a successful call to tpm2_create_primary()=
-=20
-> is needed to continue would at least help me.
+>This patch is a part of a new feature SA direction and it appears the auto
+>patch selector picked one patch out of patch set?
+>I think this patch alone should not be applied to older stable kernel.
 
-It's not a void function.
+It was picked up as a dependency:
 
-BR, Jarkko
+>> Stable-dep-of: 3f0ab59e6537 ("xfrm: validate new SA's prefixlen using SA family when sel.family is unset")
+
+We can drop it, and the netfilter folks can provide us a backport of the
+fix above?
+
+-- 
+Thanks,
+Sasha
 
