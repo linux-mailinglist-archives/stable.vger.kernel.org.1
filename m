@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-88489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9333F9B2630
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:37:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C531C9B2709
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5895A2822A5
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:37:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CAD4B21284
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9DC618E35B;
-	Mon, 28 Oct 2024 06:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02CD42C697;
+	Mon, 28 Oct 2024 06:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2lciAVMM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDC8o3k/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F2B15B10D;
-	Mon, 28 Oct 2024 06:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B3F15B10D;
+	Mon, 28 Oct 2024 06:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097449; cv=none; b=A7gcxK0l5NtypEUU9zhuApgyj75r1n9y8NlZSS/trs8x3jNJUQkxqe3FRcXsQeYiaSyQmlBkEJBsVtK/TGE/EwcblUJKuJFQ1joWbh/DAMD96hZC+ROCdzbSQGP1jht3+5KcNVN5kyzeD3DzGcK5/o9QAsnsJkF8rlJ2ZORihcg=
+	t=1730097884; cv=none; b=bzmW2I4D800T39yty2YULmK1zF8ZIWlU6UHNeiFV4mEyMDzxp8MQH9vl1Q8pQbhFVvYwE1To0VvDhMf1UmskD7TQumljynrW7BEA8a20DJHuUpb3cTqHqCYkKE/YtpXvBduiPCVKa34O5mmByHN0cG/NIUcyEZ6g+dvyPIm14kY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097449; c=relaxed/simple;
-	bh=k9cEccWXsKDg3cxjVZvEQECl07FchFIofOnzMsp4BNw=;
+	s=arc-20240116; t=1730097884; c=relaxed/simple;
+	bh=0Q4flkUCATTTqcxLc4Rl42dDo/ANYRe/8VceqEYXhVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JXV0nJji1E2lpfPrHBHB2RE/VeZe0n6GjllZ+UeW7KSNtqklzfy9mvXcYdmDiWhpT469tGKK6XrvKFZPG6yG2eR/CD2W9Mp7vBhZJ9cWZuWlMP83ZxQ8pZj47SpAhBFkT9ck44ck+SPRav+gI1zAEwnlc1R/3MuXAiL/PrnIncw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lciAVMM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17262C4CEC3;
-	Mon, 28 Oct 2024 06:37:28 +0000 (UTC)
+	 MIME-Version; b=AYGEM5abrPa/wt/LtdGkmaHediPnR94lAdrlSenn5H70hZ/qjvkFjl9sM+g2EBo57CPQ1JXHgyprTLmrbmsqTtyc0tcWvRek+1DXCnYnkWyTkBMmoa/IgiEFg1m90ubEvzwtZmxpIPPSEZSZ8rxxpOzwEZnJseHLFonQChekZFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDC8o3k/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51EEBC4CEC3;
+	Mon, 28 Oct 2024 06:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097449;
-	bh=k9cEccWXsKDg3cxjVZvEQECl07FchFIofOnzMsp4BNw=;
+	s=korg; t=1730097884;
+	bh=0Q4flkUCATTTqcxLc4Rl42dDo/ANYRe/8VceqEYXhVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2lciAVMMlOq2cOvg+wlbRad+ggZveSYYkIEc+PQGzsFS3maJePE3c7bTop266uR6e
-	 tpxLeyWzNOq3suHN7nFBfBZa8GSqZEJLys9rJoay3FzY7wUpeB4DHPMWnai/unK2Wg
-	 cKAvzhXurHOTSlsq5qNGynXP9UHpwcx298PF4pIo=
+	b=QDC8o3k/GqVxyYH0j9Ag2KYgO19F43/J3j5dzqS1xCZb0gqRlVV1IVDAvZwAmK1et
+	 odbXXWoU+yQ/f46OMzode7kR04Boi8mA0iQyDmStEo+lllegvYwcpER5oUTc+qh6q2
+	 YAakxYPWnPBDqPbA3JWqIpW+IdjfmrmNCSBVPBnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zichen Xie <zichenxie0106@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 134/137] ASoC: qcom: Fix NULL Dereference in asoc_qcom_lpass_cpu_platform_probe()
+	Chao Li <lichao@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 191/208] LoongArch: Get correct cores_per_package for SMT systems
 Date: Mon, 28 Oct 2024 07:26:11 +0100
-Message-ID: <20241028062302.446492638@linuxfoundation.org>
+Message-ID: <20241028062311.335376401@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zichen Xie <zichenxie0106@gmail.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 49da1463c9e3d2082276c3e0e2a8b65a88711cd2 upstream.
+commit b7296f9d5bf99330063d4bbecc43c9b33fed0137 upstream.
 
-A devm_kzalloc() in asoc_qcom_lpass_cpu_platform_probe() could
-possibly return NULL pointer. NULL Pointer Dereference may be
-triggerred without addtional check.
-Add a NULL check for the returned pointer.
+In loongson_sysconf, The "core" of cores_per_node and cores_per_package
+stands for a logical core, which means in a SMT system it stands for a
+thread indeed. This information is gotten from SMBIOS Type4 Structure,
+so in order to get a correct cores_per_package for both SMT and non-SMT
+systems in parse_cpu_table() we should use SMBIOS_THREAD_PACKAGE_OFFSET
+instead of SMBIOS_CORE_PACKAGE_OFFSET.
 
-Fixes: b5022a36d28f ("ASoC: qcom: lpass: Use regmap_field for i2sctl and dmactl registers")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
-Link: https://patch.msgid.link/20241006205737.8829-1-zichenxie0106@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: Chao Li <lichao@loongson.cn>
+Tested-by: Chao Li <lichao@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/lpass-cpu.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/loongarch/include/asm/bootinfo.h |    4 ++++
+ arch/loongarch/kernel/setup.c         |    3 ++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
---- a/sound/soc/qcom/lpass-cpu.c
-+++ b/sound/soc/qcom/lpass-cpu.c
-@@ -1236,6 +1236,8 @@ int asoc_qcom_lpass_cpu_platform_probe(s
- 	/* Allocation for i2sctl regmap fields */
- 	drvdata->i2sctl = devm_kzalloc(&pdev->dev, sizeof(struct lpaif_i2sctl),
- 					GFP_KERNEL);
-+	if (!drvdata->i2sctl)
-+		return -ENOMEM;
+--- a/arch/loongarch/include/asm/bootinfo.h
++++ b/arch/loongarch/include/asm/bootinfo.h
+@@ -24,6 +24,10 @@ struct loongson_board_info {
+ 	const char *board_vendor;
+ };
  
- 	/* Initialize bitfields for dai I2SCTL register */
- 	ret = lpass_cpu_init_i2sctl_bitfields(dev, drvdata->i2sctl,
++/*
++ * The "core" of cores_per_node and cores_per_package stands for a
++ * logical core, which means in a SMT system it stands for a thread.
++ */
+ struct loongson_system_configuration {
+ 	int nr_cpus;
+ 	int nr_nodes;
+--- a/arch/loongarch/kernel/setup.c
++++ b/arch/loongarch/kernel/setup.c
+@@ -55,6 +55,7 @@
+ #define SMBIOS_FREQHIGH_OFFSET		0x17
+ #define SMBIOS_FREQLOW_MASK		0xFF
+ #define SMBIOS_CORE_PACKAGE_OFFSET	0x23
++#define SMBIOS_THREAD_PACKAGE_OFFSET	0x25
+ #define LOONGSON_EFI_ENABLE		(1 << 3)
+ 
+ #ifdef CONFIG_EFI
+@@ -129,7 +130,7 @@ static void __init parse_cpu_table(const
+ 	cpu_clock_freq = freq_temp * 1000000;
+ 
+ 	loongson_sysconf.cpuname = (void *)dmi_string_parse(dm, dmi_data[16]);
+-	loongson_sysconf.cores_per_package = *(dmi_data + SMBIOS_CORE_PACKAGE_OFFSET);
++	loongson_sysconf.cores_per_package = *(dmi_data + SMBIOS_THREAD_PACKAGE_OFFSET);
+ 
+ 	pr_info("CpuClock = %llu\n", cpu_clock_freq);
+ }
 
 
 
