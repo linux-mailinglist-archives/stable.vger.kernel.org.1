@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-88911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF1989B2809
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:53:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B12AF9B2619
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFF611C214EE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:53:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2E271C20F7E
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1E662AF07;
-	Mon, 28 Oct 2024 06:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100FB18F2DF;
+	Mon, 28 Oct 2024 06:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhGA2OgW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HmUV8kU3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC6118FC75;
-	Mon, 28 Oct 2024 06:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C218A18EFC8;
+	Mon, 28 Oct 2024 06:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098401; cv=none; b=OZsQg5g+fWIY0jwnU1BQyKbDcxTz72yOP6tEybbti3FwSqk0xB3ONTcsOXeQp6kgb/b5VbpO9aWTA3bgOIhPD2PcSWZFjkAXYKL39xGlKkSmAYbwO02+wfuwELsaRXNWnUwBruM6PYuA/lywddRb7o3/+xpUxqYPTGMyTXzm+C0=
+	t=1730097398; cv=none; b=pSu8tL7Z2JT424YylnRpB4W+RAKkPv4fhxk2cumqmz9fIVlsZZZH9ryjQM2COmZMxKnqv32GMZ5rGCWWx+1WNC7fgUvqnbNmTY9UgqBN0tB6NQq29iLXGHcp8cEfv8q0X1UH405w7s/80n2cHlun0ONOU9LFxtq+j5k/nDkpUwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098401; c=relaxed/simple;
-	bh=CvhKbypc4yuQLXrGP/z1TU9WavEnE4XrbaE2SG2I3A4=;
+	s=arc-20240116; t=1730097398; c=relaxed/simple;
+	bh=8k8AAvvMdiGoDU6bz5QtfHPANWAilmrIJ56rSQrO8dg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DdGW2KVdQpUHexda5zxNycFBi9rQrzQEw9TB9SwbJWaN1zAWh07l/DzB4LW4wsVjGVfriuoE2wSbdeKFjBTZ507b+qKmA7aMfgr+OnhXJV0spjs8LGrMhjx4BxgBZsh0/hC9sQXebPX/2ITZJEo1BeTPwAV7sH6J9N5UOFC8F1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LhGA2OgW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB5EC4CEC3;
-	Mon, 28 Oct 2024 06:53:21 +0000 (UTC)
+	 MIME-Version; b=Ksv3pyHlrxhas/GtXUm/QVK299dEDyQPZxL+g5lmmZv0NK7v0tlaJxMJtOSQ+DuHZTYukR1xqQpeoJaRjgvr4bRgPj57qJzPrGOX3djhcetE1Tui/i+WLek3XpoXE2LiHhS3GTTiqweH7tQm7OwTzbeWWZMEeLN6k8eh2517l9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HmUV8kU3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F839C4CEC3;
+	Mon, 28 Oct 2024 06:36:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098401;
-	bh=CvhKbypc4yuQLXrGP/z1TU9WavEnE4XrbaE2SG2I3A4=;
+	s=korg; t=1730097398;
+	bh=8k8AAvvMdiGoDU6bz5QtfHPANWAilmrIJ56rSQrO8dg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LhGA2OgWB/YXCtUyIOLWnsQFxLMxdynFqU/7byXQPnaHlSNVZBXqnOqoCpyAoMF/L
-	 9KCh7TU9HsLvVOygtq0bKlY1LL6U+QuBn7zmL3tRSWbIt4NeuKFsXNKXXRGlaen65u
-	 pnOGlquAHrjTLbZw+LpvNb1hTEZdImK0IwF4/W5c=
+	b=HmUV8kU30N0U2GSuHvYYWJYPhXzTFebCeQuGCW9ptKsY2cktTL8MMnumzyzpgkiGN
+	 r/29XiGGpfwkN1R/pdU5t+Xvzd7qQNFj6ZiUYd2utmnIe36b73gLbAjMHAbgeKEOVW
+	 Qre99yc/BRW2zS58yichY9edLLiHDXgRXkTM6358=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	Omar Sandoval <osandov@fb.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.11 209/261] btrfs: fix read corruption due to race with extent map merging
+	liwei <liwei728@huawei.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 114/137] cpufreq: CPPC: fix perf_to_khz/khz_to_perf conversion exception
 Date: Mon, 28 Oct 2024 07:25:51 +0100
-Message-ID: <20241028062317.314861262@linuxfoundation.org>
+Message-ID: <20241028062301.897548374@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,117 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: liwei <liwei728@huawei.com>
 
-commit 7a2339058ed71f54c1e12e1b3c25aab1b1ba7943 upstream.
+[ Upstream commit d93df29bdab133b85e94b3c328e7fe26a0ebd56c ]
 
-In debugging some corrupt squashfs files, we observed symptoms of
-corrupt page cache pages but correct on-disk contents. Further
-investigation revealed that the exact symptom was a correct page
-followed by an incorrect, duplicate, page. This got us thinking about
-extent maps.
+When the nominal_freq recorded by the kernel is equal to the lowest_freq,
+and the frequency adjustment operation is triggered externally, there is
+a logic error in cppc_perf_to_khz()/cppc_khz_to_perf(), resulting in perf
+and khz conversion errors.
 
-commit ac05ca913e9f ("Btrfs: fix race between using extent maps and merging them")
-enforces a reference count on the primary `em` extent_map being merged,
-as that one gets modified.
+Fix this by adding a branch processing logic when nominal_freq is equal
+to lowest_freq.
 
-However, since,
-commit 3d2ac9922465 ("btrfs: introduce new members for extent_map")
-both 'em' and 'merge' get modified, which started modifying 'merge'
-and thus introduced the same race.
-
-We were able to reproduce this by looping the affected squashfs workload
-in parallel on a bunch of separate btrfs-es while also dropping caches.
-We are still working on a simple enough reproducer to make into an fstest.
-
-The simplest fix is to stop modifying 'merge', which is not essential,
-as it is dropped immediately after the merge. This behavior is simply
-a consequence of the order of the two extent maps being important in
-computing the new values. Modify merge_ondisk_extents to take prev and
-next by const* and also take a third merged parameter that it puts the
-results in. Note that this introduces the rather odd behavior of passing
-'em' to merge_ondisk_extents as a const * and as a regular ptr.
-
-Fixes: 3d2ac9922465 ("btrfs: introduce new members for extent_map")
-CC: stable@vger.kernel.org # 6.11+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Omar Sandoval <osandov@fb.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ec1c7ad47664 ("cpufreq: CPPC: Fix performance/frequency conversion")
+Signed-off-by: liwei <liwei728@huawei.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://patch.msgid.link/20241024022952.2627694-1-liwei728@huawei.com
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent_map.c |   31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ drivers/acpi/cppc_acpi.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
---- a/fs/btrfs/extent_map.c
-+++ b/fs/btrfs/extent_map.c
-@@ -240,13 +240,19 @@ static bool mergeable_maps(const struct
- /*
-  * Handle the on-disk data extents merge for @prev and @next.
-  *
-+ * @prev:    left extent to merge
-+ * @next:    right extent to merge
-+ * @merged:  the extent we will not discard after the merge; updated with new values
-+ *
-+ * After this, one of the two extents is the new merged extent and the other is
-+ * removed from the tree and likely freed. Note that @merged is one of @prev/@next
-+ * so there is const/non-const aliasing occurring here.
-+ *
-  * Only touches disk_bytenr/disk_num_bytes/offset/ram_bytes.
-  * For now only uncompressed regular extent can be merged.
-- *
-- * @prev and @next will be both updated to point to the new merged range.
-- * Thus one of them should be removed by the caller.
-  */
--static void merge_ondisk_extents(struct extent_map *prev, struct extent_map *next)
-+static void merge_ondisk_extents(const struct extent_map *prev, const struct extent_map *next,
-+				 struct extent_map *merged)
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index 8d4b72488eb5e..3d9326172af49 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -1718,9 +1718,15 @@ unsigned int cppc_perf_to_khz(struct cppc_perf_caps *caps, unsigned int perf)
+ 	u64 mul, div;
+ 
+ 	if (caps->lowest_freq && caps->nominal_freq) {
+-		mul = caps->nominal_freq - caps->lowest_freq;
++		/* Avoid special case when nominal_freq is equal to lowest_freq */
++		if (caps->lowest_freq == caps->nominal_freq) {
++			mul = caps->nominal_freq;
++			div = caps->nominal_perf;
++		} else {
++			mul = caps->nominal_freq - caps->lowest_freq;
++			div = caps->nominal_perf - caps->lowest_perf;
++		}
+ 		mul *= KHZ_PER_MHZ;
+-		div = caps->nominal_perf - caps->lowest_perf;
+ 		offset = caps->nominal_freq * KHZ_PER_MHZ -
+ 			 div64_u64(caps->nominal_perf * mul, div);
+ 	} else {
+@@ -1741,11 +1747,17 @@ unsigned int cppc_khz_to_perf(struct cppc_perf_caps *caps, unsigned int freq)
  {
- 	u64 new_disk_bytenr;
- 	u64 new_disk_num_bytes;
-@@ -281,15 +287,10 @@ static void merge_ondisk_extents(struct
- 			     new_disk_bytenr;
- 	new_offset = prev->disk_bytenr + prev->offset - new_disk_bytenr;
+ 	s64 retval, offset = 0;
+ 	static u64 max_khz;
+-	u64  mul, div;
++	u64 mul, div;
  
--	prev->disk_bytenr = new_disk_bytenr;
--	prev->disk_num_bytes = new_disk_num_bytes;
--	prev->ram_bytes = new_disk_num_bytes;
--	prev->offset = new_offset;
--
--	next->disk_bytenr = new_disk_bytenr;
--	next->disk_num_bytes = new_disk_num_bytes;
--	next->ram_bytes = new_disk_num_bytes;
--	next->offset = new_offset;
-+	merged->disk_bytenr = new_disk_bytenr;
-+	merged->disk_num_bytes = new_disk_num_bytes;
-+	merged->ram_bytes = new_disk_num_bytes;
-+	merged->offset = new_offset;
- }
- 
- static void dump_extent_map(struct btrfs_fs_info *fs_info, const char *prefix,
-@@ -358,7 +359,7 @@ static void try_merge_map(struct btrfs_i
- 			em->generation = max(em->generation, merge->generation);
- 
- 			if (em->disk_bytenr < EXTENT_MAP_LAST_BYTE)
--				merge_ondisk_extents(merge, em);
-+				merge_ondisk_extents(merge, em, em);
- 			em->flags |= EXTENT_FLAG_MERGED;
- 
- 			validate_extent_map(fs_info, em);
-@@ -375,7 +376,7 @@ static void try_merge_map(struct btrfs_i
- 	if (rb && can_merge_extent_map(merge) && mergeable_maps(em, merge)) {
- 		em->len += merge->len;
- 		if (em->disk_bytenr < EXTENT_MAP_LAST_BYTE)
--			merge_ondisk_extents(em, merge);
-+			merge_ondisk_extents(em, merge, em);
- 		validate_extent_map(fs_info, em);
- 		rb_erase(&merge->rb_node, &tree->root);
- 		RB_CLEAR_NODE(&merge->rb_node);
+ 	if (caps->lowest_freq && caps->nominal_freq) {
+-		mul = caps->nominal_perf - caps->lowest_perf;
+-		div = caps->nominal_freq - caps->lowest_freq;
++		/* Avoid special case when nominal_freq is equal to lowest_freq */
++		if (caps->lowest_freq == caps->nominal_freq) {
++			mul = caps->nominal_perf;
++			div = caps->nominal_freq;
++		} else {
++			mul = caps->nominal_perf - caps->lowest_perf;
++			div = caps->nominal_freq - caps->lowest_freq;
++		}
+ 		/*
+ 		 * We don't need to convert to kHz for computing offset and can
+ 		 * directly use nominal_freq and lowest_freq as the div64_u64
+-- 
+2.43.0
+
 
 
 
