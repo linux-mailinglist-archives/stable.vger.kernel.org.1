@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-88518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C2E09B2654
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:38:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B41B99B2757
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:47:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12B201F21D30
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:38:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5D541C2150A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:47:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0EA18E74C;
-	Mon, 28 Oct 2024 06:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7049C18FC7E;
+	Mon, 28 Oct 2024 06:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0O6fdC9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1RVUfU/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB1618E350;
-	Mon, 28 Oct 2024 06:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F24718DF7D;
+	Mon, 28 Oct 2024 06:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097514; cv=none; b=kfmYmQP6fFHvs2cMmXdwSAglcIyUNsgcsbFBCOVAIRAotBrB2eEVRA8L2OTDUdrFSX+gYLvbBelg92oAkLX+4Rwpev8cigcHhdQ9PVhicq58Pzn5jZf+ZI4m9g/8dqDUcz+Ya6OtsJR9MWrJVrcX1zQ/86l9THjhHGlawEJ0AFQ=
+	t=1730098034; cv=none; b=fYMvfQteDX2H2/hpWk6utlJ913cNhrSwKc9rCJfR6ICQ3+ERYTXSYuTfKgsyvWr8kgkdDarVMUe9/ESQhdob2VnKrrz3O0hBVjynPXXb1ZzNA+yVJ1zOurj28wD0Pgz6LNPZxeSy7yxUIaKUpa5fy6z0FGm1pKUQ/ihfbOTSzEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097514; c=relaxed/simple;
-	bh=AHTBypOv4snPwgS/aXzp2uDZ8JQKAPJ4RAVMALkOt/U=;
+	s=arc-20240116; t=1730098034; c=relaxed/simple;
+	bh=BANr4PTN2X2P5mRazVknbw+AbONfWE0SawxQTuqBLKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WeRiaGoMo8eaEY8GLnU/Bp8aCLPv28B0Ycv9dPJzOFgYxAbCEs+f7kVN5sH548GA4+7Nlh6vQNjTWfK3Fu18JyCcuzRxCfD5U8biEFfCy80/Hzl6D3hQ5FU6jOfOo/CJEsTptDapvitY99SBuJbwecuuNxqCWmjWcVi/k0a+Roc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0O6fdC9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7D0C4CEC3;
-	Mon, 28 Oct 2024 06:38:34 +0000 (UTC)
+	 MIME-Version; b=nVGZ5RnloxRZhycRdNENUZD2df9CA6CdEZ1I09mS4bKSnO4PirDX1mOItEUuVhT5frIvD6vdeursaQSNfO2co35ANHWghRXqcGS39ZOFotYtGW0KJxkLkXMNBS0hllLJxF1w+v1FYZhaV9qxF8oGGhT9MN0ubH2WZhkEujuPR54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1RVUfU/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9461C4CEC3;
+	Mon, 28 Oct 2024 06:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097514;
-	bh=AHTBypOv4snPwgS/aXzp2uDZ8JQKAPJ4RAVMALkOt/U=;
+	s=korg; t=1730098034;
+	bh=BANr4PTN2X2P5mRazVknbw+AbONfWE0SawxQTuqBLKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U0O6fdC9fhScdOc4S7WjenxPcBSVwh5IF/NIfxT9PxJEEJfN3HCuaherioISbpSbf
-	 4B/kET+EeqEhDesyOaIC0/31F0CsRxCfThv+IaDOwb+guDEyLGw0ECd+VdaOyrt7er
-	 VYp4AuVGBUDVjA0FseQkI6jPUyZD4ySpti4NnFD8=
+	b=A1RVUfU/6B7vhcq6MXmKxolQdqbLiAy7clbAmcBdzhUPvo3UteFNB7caUuN/oH55v
+	 SlyH0sKzggN6eHk5g9X9kldnaftQbC4gHXkULELmyyKtkIYP2al8pemQawL74rgtSV
+	 GkPriPhoKFj4V4dbEB3eKZhBtV5jeJFzDfa36GxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Chandramohan Akula <chandramohan.akula@broadcom.com>,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
 	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
 	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 008/208] RDMA/bnxt_re: Fix incorrect AVID type in WQE structure
-Date: Mon, 28 Oct 2024 07:23:08 +0100
-Message-ID: <20241028062306.861241881@linuxfoundation.org>
+Subject: [PATCH 6.11 047/261] RDMA/bnxt_re: Fix the GID table length
+Date: Mon, 28 Oct 2024 07:23:09 +0100
+Message-ID: <20241028062313.190656657@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,49 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit 9ab20f76ae9fad55ebaf36bdff04aea1c2552374 ]
+[ Upstream commit dc5006cfcf62bea88076a587344ba5e00e66d1c6 ]
 
-Driver uses internal data structure to construct WQE frame.
-It used avid type as u16 which can accommodate up to 64K AVs.
-When outstanding AVID crosses 64K, driver truncates AVID and
-hence it uses incorrect AVID to WR. This leads to WR failure
-due to invalid AV ID and QP is moved to error state with reason
-set to 19 (INVALID AVID). When RDMA CM path is used, this issue
-hits QP1 and it is moved to error state
+GID table length is reported by FW. The gid index which is passed to the
+driver during modify_qp/create_ah is restricted by the sgid_index field of
+struct ib_global_route.  sgid_index is u8 and the max sgid possible is
+256.
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Link: https://patch.msgid.link/r/1726715161-18941-3-git-send-email-selvin.xavier@broadcom.com
-Reviewed-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Reviewed-by: Chandramohan Akula <chandramohan.akula@broadcom.com>
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Each GID entry in HW will have 2 GID entries in the kernel gid table.  So
+we can support twice the gid table size reported by FW. Also, restrict the
+max GID to 256 also.
+
+Fixes: 847b97887ed4 ("RDMA/bnxt_re: Restrict the max_gids to 256")
+Link: https://patch.msgid.link/r/1728373302-19530-11-git-send-email-selvin.xavier@broadcom.com
 Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
 Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/qplib_sp.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-index a6f38d8f12efe..56ddff96b5083 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-@@ -169,7 +169,7 @@ struct bnxt_qplib_swqe {
- 			};
- 			u32		q_key;
- 			u32		dst_qp;
--			u16		avid;
-+			u32		avid;
- 		} send;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+index 8e59422dd137e..420f8613bcd51 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+@@ -156,7 +156,14 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
+ 	if (!bnxt_qplib_is_chip_gen_p7(rcfw->res->cctx))
+ 		attr->l2_db_size = (sb->l2_db_space_size + 1) *
+ 				    (0x01 << RCFW_DBR_BASE_PAGE_SHIFT);
+-	attr->max_sgid = BNXT_QPLIB_NUM_GIDS_SUPPORTED;
++	/*
++	 * Read the max gid supported by HW.
++	 * For each entry in HW  GID in HW table, we consume 2
++	 * GID entries in the kernel GID table.  So max_gid reported
++	 * to stack can be up to twice the value reported by the HW, up to 256 gids.
++	 */
++	attr->max_sgid = le32_to_cpu(sb->max_gid);
++	attr->max_sgid = min_t(u32, BNXT_QPLIB_NUM_GIDS_SUPPORTED, 2 * attr->max_sgid);
+ 	attr->dev_cap_flags = le16_to_cpu(sb->dev_cap_flags);
+ 	attr->dev_cap_flags2 = le16_to_cpu(sb->dev_cap_ext_flags_2);
  
- 		/* Send Raw Ethernet and QP1 */
 -- 
 2.43.0
 
