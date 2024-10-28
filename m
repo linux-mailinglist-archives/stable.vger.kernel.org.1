@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-88804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C878D9B2791
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:49:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71DDE9B264A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:38:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06F841C2156A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:49:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0678C282283
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7059B18EFC9;
-	Mon, 28 Oct 2024 06:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16CBF18E35B;
+	Mon, 28 Oct 2024 06:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDZrXqh5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="upbHpgQz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED4418E368;
-	Mon, 28 Oct 2024 06:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C931718C03D;
+	Mon, 28 Oct 2024 06:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098160; cv=none; b=iTVDfPkQu27tAAu15CRfp/Y2w2SoaNQAbyLzCMttPHYFiWqXSHR1c+H2U4QmrXW2j0pfxowACjwnaE+5OtH6ReWG8hMixEVKs+50AFcMspOfNvXlxJe9Hxv0/poiNYsjSd7zL1oHikn6yS/ca2RbsNokkg3sKqklhWE4tAG4bng=
+	t=1730097494; cv=none; b=rEa4CQN2ELG+22bix3JrAxNAj0aKrIdaacPtjK7vl5igbgXWTkUtCje4Whlv9+mGUIUcQDRs+/xharNDT4t14nWMssCU7437zhfTFE3sxdH9y/7Fq3nI0/aBrS5K6jK9G4upmvVhpxibtHmtDbrMlV+lLBOUI0EBDAi58AWd9Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098160; c=relaxed/simple;
-	bh=uMdTrMAmAacO/ZFV+XIz80fDnj3L/BPrb+miaxZ77SU=;
+	s=arc-20240116; t=1730097494; c=relaxed/simple;
+	bh=IUTJuy0oKF4zadomhRmma5b4cW7K3VU9glhG2Wn187I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mOkzCXJ1bMD5DAEPco9MzszwKerCptwX7bG8vRvOsXYfqQhbXuhRwldpAoDEkgD8+ixsoHjKPFA1nKmp0hBeYS0CbLkWNnFKmK8sn/Ow+riM0YTu/hUa3ffpguVVyYR5PpzKmGUlkapoZjaCy7Xpn2/Kxvw33tXkSyfmKsTnqlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDZrXqh5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16CAC4CEC3;
-	Mon, 28 Oct 2024 06:49:19 +0000 (UTC)
+	 MIME-Version; b=u56ye+MAU0Z7xFV4PnL6qabtJlGJ3sLnv8vI61kg21nupU10yxVMf91ZLIYPrCjq/Sm+eiQicSYzlC4hAj8tL2qU8SODEd70/YL5xRr+JBUej0IfDJ0IZLrpFeX5c0XuCj7JRfQrZeJDq1jjPYTAxmg4+ne96vwme9za3oVehso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=upbHpgQz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FEBFC4CEC3;
+	Mon, 28 Oct 2024 06:38:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098160;
-	bh=uMdTrMAmAacO/ZFV+XIz80fDnj3L/BPrb+miaxZ77SU=;
+	s=korg; t=1730097494;
+	bh=IUTJuy0oKF4zadomhRmma5b4cW7K3VU9glhG2Wn187I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uDZrXqh51+aenqmtGkQASks7H80VykPiZN9/gCKl853UBNCxrFVNGZk/jO/+4u6Wj
-	 EizKNdyNCW8CzjfuzeGZMgmZD8TxzAGJx0q7d6bOjMOyrPoibP8HhbC6lcGEMRrMpS
-	 VmIssqg+OyJhxgp2VQ8ZFuET7goXB8HFnOWAFHsM=
+	b=upbHpgQzPAOv+vIDeqCnAzDtYpfypaRDh4yH9x21Pkd/DzBC74xSyZu7hYkZkxKYg
+	 Huz8AnHX5Nu2UZ/+W9MPPzoYD5AZzIrzhRRX8p5SD/8eL/4zlyNW+qyUYM4MmfwVDR
+	 J1ZsC2L0skdwJVF9kxeEt30b+nEsjefvKiwcWrd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Tyrone Wu <wudevelops@gmail.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 056/261] drm/msm: Allocate memory for disp snapshot with kvzalloc()
+Subject: [PATCH 6.6 018/208] selftests/bpf: fix perf_event link info name_len assertion
 Date: Mon, 28 Oct 2024 07:23:18 +0100
-Message-ID: <20241028062313.422204265@linuxfoundation.org>
+Message-ID: <20241028062307.106549131@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Tyrone Wu <wudevelops@gmail.com>
 
-[ Upstream commit e4a45582db1b792c57bdb52c45958264f7fcfbdc ]
+[ Upstream commit 4538a38f654a1c292fe489a9b66179262bfed088 ]
 
-With the "drm/msm: add a display mmu fault handler" series [1] we saw
-issues in the field where memory allocation was failing when
-allocating space for registers in msm_disp_state_dump_regs().
-Specifically we were seeing an order 5 allocation fail. It's not
-surprising that order 5 allocations will sometimes fail after the
-system has been up and running for a while.
+Fix `name_len` field assertions in `bpf_link_info.perf_event` for
+kprobe/uprobe/tracepoint to validate correct name size instead of 0.
 
-There's no need here for contiguous memory. Change the allocation to
-kvzalloc() which should make it much less likely to fail.
-
-[1] https://lore.kernel.org/r/20240628214848.4075651-1-quic_abhinavk@quicinc.com/
-
-Fixes: 98659487b845 ("drm/msm: add support to take dpu snapshot")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/619658/
-Link: https://lore.kernel.org/r/20241014093605.2.I72441365ffe91f3dceb17db0a8ec976af8139590@changeid
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Fixes: 23cf7aa539dc ("selftests/bpf: Add selftest for fill_link_info")
+Signed-off-by: Tyrone Wu <wudevelops@gmail.com>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Yafang Shao <laoar.shao@gmail.com>
+Link: https://lore.kernel.org/r/20241008164312.46269-2-wudevelops@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/fill_link_info.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
-index bb149281d31fa..4d55e3cf570f0 100644
---- a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
-+++ b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
-@@ -26,7 +26,7 @@ static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *b
- 	end_addr = base_addr + aligned_len;
+diff --git a/tools/testing/selftests/bpf/prog_tests/fill_link_info.c b/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
+index 9eb93258614f9..5b0c6a04cdbfe 100644
+--- a/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
++++ b/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
+@@ -65,8 +65,9 @@ static int verify_perf_link_info(int fd, enum bpf_perf_event_type type, long add
  
- 	if (!(*reg))
--		*reg = kzalloc(len_padded, GFP_KERNEL);
-+		*reg = kvzalloc(len_padded, GFP_KERNEL);
+ 		ASSERT_EQ(info.perf_event.kprobe.cookie, PERF_EVENT_COOKIE, "kprobe_cookie");
  
- 	if (*reg)
- 		dump_addr = *reg;
-@@ -162,7 +162,7 @@ void msm_disp_state_free(void *data)
++		ASSERT_EQ(info.perf_event.kprobe.name_len, strlen(KPROBE_FUNC) + 1,
++				  "name_len");
+ 		if (!info.perf_event.kprobe.func_name) {
+-			ASSERT_EQ(info.perf_event.kprobe.name_len, 0, "name_len");
+ 			info.perf_event.kprobe.func_name = ptr_to_u64(&buf);
+ 			info.perf_event.kprobe.name_len = sizeof(buf);
+ 			goto again;
+@@ -77,8 +78,9 @@ static int verify_perf_link_info(int fd, enum bpf_perf_event_type type, long add
+ 		ASSERT_EQ(err, 0, "cmp_kprobe_func_name");
+ 		break;
+ 	case BPF_PERF_EVENT_TRACEPOINT:
++		ASSERT_EQ(info.perf_event.tracepoint.name_len, strlen(TP_NAME) + 1,
++				  "name_len");
+ 		if (!info.perf_event.tracepoint.tp_name) {
+-			ASSERT_EQ(info.perf_event.tracepoint.name_len, 0, "name_len");
+ 			info.perf_event.tracepoint.tp_name = ptr_to_u64(&buf);
+ 			info.perf_event.tracepoint.name_len = sizeof(buf);
+ 			goto again;
+@@ -94,8 +96,9 @@ static int verify_perf_link_info(int fd, enum bpf_perf_event_type type, long add
+ 	case BPF_PERF_EVENT_URETPROBE:
+ 		ASSERT_EQ(info.perf_event.uprobe.offset, offset, "uprobe_offset");
  
- 	list_for_each_entry_safe(block, tmp, &disp_state->blocks, node) {
- 		list_del(&block->node);
--		kfree(block->state);
-+		kvfree(block->state);
- 		kfree(block);
- 	}
- 
++		ASSERT_EQ(info.perf_event.uprobe.name_len, strlen(UPROBE_FILE) + 1,
++				  "name_len");
+ 		if (!info.perf_event.uprobe.file_name) {
+-			ASSERT_EQ(info.perf_event.uprobe.name_len, 0, "name_len");
+ 			info.perf_event.uprobe.file_name = ptr_to_u64(&buf);
+ 			info.perf_event.uprobe.name_len = sizeof(buf);
+ 			goto again;
 -- 
 2.43.0
 
