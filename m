@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-88854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F2D9B27CA
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:51:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB7869B25C9
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:34:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FF0F1F223D4
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:51:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 081971C20F45
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACCB118D65C;
-	Mon, 28 Oct 2024 06:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B03D190667;
+	Mon, 28 Oct 2024 06:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rd+yZnlh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/xunpH4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB9B8837;
-	Mon, 28 Oct 2024 06:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5626018EFC9;
+	Mon, 28 Oct 2024 06:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098272; cv=none; b=BV1u8uH/1i7GYs8SP3JVfsnGrlsqvoFDa0zw5/ZGO+D33ntprhdTPwoubtZtdQStCedJB2CImBVQh8MzKAL7GRSQGA7AMiCDay4o6OLrDpz29OWi2OQCx4FcjUn/PJhxpLfGDoGKxXX17nrYxwzcgs+QnZ3Yl/XMQhJkRmLIigg=
+	t=1730097231; cv=none; b=tu+yH+edR9JKUowK7lSYnaK7niehakbOeGnHR9dzocBLVM4qIAkkfJ7KmFcReaRH/KU1CE3bFOI+CCS810DxzdaiKDcr0vBI+lH8f8+fEbx7NvhQ1hH5c6kj+Hk5rILxXopRlyvFczGaJfrSEVFAoS75ednwIXadfp6Qk7jNwus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098272; c=relaxed/simple;
-	bh=1LDit7OxT6lI63a/+PTgkbJSjdijO6eTCOzlCKIyBNM=;
+	s=arc-20240116; t=1730097231; c=relaxed/simple;
+	bh=cy5zIdtL1eoFZ2EMbvck4gAalv3mTtoyXCGjAmY5YoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ny6kFy7mgKd+8RGGd1wIjvYEQYvQFQRxddyeEUIvlHxN4lpIDN6prdB5Hkbtz0/wW9OvwDmMqmAE2jh4o1QFpD9ajeFWr97s/mu7atSpMmKixEBusopiAmu3JXCAW2pBw2HmuOx2NqrdYKtHCMz/U2krsBsfh66eEFGGbWZMfWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rd+yZnlh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4410C4CEC3;
-	Mon, 28 Oct 2024 06:51:11 +0000 (UTC)
+	 MIME-Version; b=Mj6nu0WrI1SgBmr/QdRrIfMkpsd2LkbDsuxVzPDGP+yzVT2PQaH5YimFg4GrWLIrhobGmQJKSIOnwHcvFHyKxWpX09YTB4QKcZ44TqOuJ0bHHs/wYFQSms3arjfrs8dSv3Em+ocIjc6ROKutnKruXfmJWejVolpjIFT82Jsw8YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/xunpH4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1835C4CEC7;
+	Mon, 28 Oct 2024 06:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098272;
-	bh=1LDit7OxT6lI63a/+PTgkbJSjdijO6eTCOzlCKIyBNM=;
+	s=korg; t=1730097231;
+	bh=cy5zIdtL1eoFZ2EMbvck4gAalv3mTtoyXCGjAmY5YoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rd+yZnlhaoKaElFJsP3gKJRK7+W34fbqNzzyngMUEb4fDc58ioKYTstireTkQFSSp
-	 ZYsPd6tHS4V0f3wzUCCC0BpeDrQY2RfLXdEs40K5ZBbEfFJtQoy439c/HUMdp56rHC
-	 jr/7tDa5D0sYFF0g/aG909Ulcv+v5+OxzLvJLPtc=
+	b=1/xunpH4Dl/lrj5SwXxpQTijf/A9eMMujhx+1quNUVCkdAc8ciWDRh4VI1ddQmYtJ
+	 4U5Tm1h/bdlzqYTZzAsRBb7NfPkj3RiRoFeB8LeXMaw56s51j9YHGL4LtgmgADVGKk
+	 LK4pZ9vZy6nBSFiJFJbi+qE9Et9LDaj/mRKrSugw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 136/261] LoongArch: Dont crash in stack_top() for tasks without vDSO
+Subject: [PATCH 6.1 041/137] drm/msm/dpu: dont always program merge_3d block
 Date: Mon, 28 Oct 2024 07:24:38 +0100
-Message-ID: <20241028062315.452761145@linuxfoundation.org>
+Message-ID: <20241028062259.871777508@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
 
-[ Upstream commit 134475a9ab8487527238d270639a8cb74c10aab2 ]
+[ Upstream commit f87f3b80abaf7949e638dd17dfdc267066eb52d5 ]
 
-Not all tasks have a vDSO mapped, for example kthreads never do. If such
-a task ever ends up calling stack_top(), it will derefence the NULL vdso
-pointer and crash.
+Only program the merge_3d block for the video phys encoder when the 3d
+blend mode is not NONE
 
-This can for example happen when using kunit:
-
-	[<9000000000203874>] stack_top+0x58/0xa8
-	[<90000000002956cc>] arch_pick_mmap_layout+0x164/0x220
-	[<90000000003c284c>] kunit_vm_mmap_init+0x108/0x12c
-	[<90000000003c1fbc>] __kunit_add_resource+0x38/0x8c
-	[<90000000003c2704>] kunit_vm_mmap+0x88/0xc8
-	[<9000000000410b14>] usercopy_test_init+0xbc/0x25c
-	[<90000000003c1db4>] kunit_try_run_case+0x5c/0x184
-	[<90000000003c3d54>] kunit_generic_run_threadfn_adapter+0x24/0x48
-	[<900000000022e4bc>] kthread+0xc8/0xd4
-	[<9000000000200ce8>] ret_from_kernel_thread+0xc/0xa4
-
-Fixes: 803b0fc5c3f2 ("LoongArch: Add process management")
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 3e79527a33a8 ("drm/msm/dpu: enable merge_3d support on sm8150/sm8250")
+Suggested-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/619095/
+Link: https://lore.kernel.org/r/20241009-merge3d-fix-v1-1-0d0b6f5c244e@quicinc.com
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/process.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/kernel/process.c b/arch/loongarch/kernel/process.c
-index f2ff8b5d591e4..6e58f65455c7c 100644
---- a/arch/loongarch/kernel/process.c
-+++ b/arch/loongarch/kernel/process.c
-@@ -293,13 +293,15 @@ unsigned long stack_top(void)
- {
- 	unsigned long top = TASK_SIZE & PAGE_MASK;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
+index 9232c646747dc..aba2488c32fa1 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
+@@ -277,7 +277,7 @@ static void dpu_encoder_phys_vid_setup_timing_engine(
+ 	intf_cfg.stream_sel = 0; /* Don't care value for video mode */
+ 	intf_cfg.mode_3d = dpu_encoder_helper_get_3d_blend_mode(phys_enc);
+ 	intf_cfg.dsc = dpu_encoder_helper_get_dsc(phys_enc);
+-	if (phys_enc->hw_pp->merge_3d)
++	if (intf_cfg.mode_3d && phys_enc->hw_pp->merge_3d)
+ 		intf_cfg.merge_3d = phys_enc->hw_pp->merge_3d->idx;
  
--	/* Space for the VDSO & data page */
--	top -= PAGE_ALIGN(current->thread.vdso->size);
--	top -= VVAR_SIZE;
--
--	/* Space to randomize the VDSO base */
--	if (current->flags & PF_RANDOMIZE)
--		top -= VDSO_RANDOMIZE_SIZE;
-+	if (current->thread.vdso) {
-+		/* Space for the VDSO & data page */
-+		top -= PAGE_ALIGN(current->thread.vdso->size);
-+		top -= VVAR_SIZE;
-+
-+		/* Space to randomize the VDSO base */
-+		if (current->flags & PF_RANDOMIZE)
-+			top -= VDSO_RANDOMIZE_SIZE;
-+	}
- 
- 	return top;
- }
+ 	spin_lock_irqsave(phys_enc->enc_spinlock, lock_flags);
 -- 
 2.43.0
 
