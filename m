@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98C189B2580
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:31:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82FE89B26F4
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5011A1F21831
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:31:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D842EB2128A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3591B18E348;
-	Mon, 28 Oct 2024 06:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767D118EFEB;
+	Mon, 28 Oct 2024 06:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6TI8KoQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbC+fiIk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D2F15B10D;
-	Mon, 28 Oct 2024 06:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D2718E37C;
+	Mon, 28 Oct 2024 06:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097113; cv=none; b=DKWN/gjUQvdxWvURMlKaAg5zEMWu8TcSWBrdmInrb2ZuAybGgWyQGrdyG9JMKp1iT8m40if6sz1tUCeukdBCJgubdLI/YQtHo9I7yQKEXKXtsAG3TnUkkR90LFYpoIh8JO7B44B9rY9YiC7pHSwxFqxY9u6NSO0q4fS/uU8yrLQ=
+	t=1730097842; cv=none; b=dC3xKXP+RChGYrII/6j3eI40/1A34vGp59q+dBQTkF4rroQjMRTMg7lQM3TiBKzFZVjAL59LDViCp1XiVq9IDlqt/awW3XNohl6C1oTuyD5AFP8JUoN25a1PO8eZfT8ZrWj+jP+oZcrTahq6V74qFOX5gxwb3I8j5V9BdISeLCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097113; c=relaxed/simple;
-	bh=1o3Um/3Z7OL/2b5+/P6zKyqYPXrCEjd1AGKtkAulcPY=;
+	s=arc-20240116; t=1730097842; c=relaxed/simple;
+	bh=ycUkMyPh9Ds/OsqYMVRp2aPF5OMUPwZ/8wxW3+3K07Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DhA73hlD87bI2Frid+A4ra2O6k2mmz0H66FT59jUyMMK9ydjMRQ5OQDGtF7a0S1gtIy/3gwZLoPHrbAo87feGjMWB28YF7jaL44lOB+LodAezIGYHaRGoG0CiJu+70mIjj5W+qJq7EJUhe9d2VK//pSidIcu8CRTWb2og+NH1Ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6TI8KoQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73CBEC4CEC7;
-	Mon, 28 Oct 2024 06:31:52 +0000 (UTC)
+	 MIME-Version; b=GmnF52zM37IxksVVoXVqKqZOt0FzSS4ywaWIHGDE6d5M9aYtoxPNVFPKy5VEI6uRSndG1XhYfyegakhaugNHlhiTlSR+QRt4TEk9YazPF14F8JFsP6T8cRyIsSv7CayKx9CSkZK5mLtEbvg27VokVieSgYvHrgZJzXkg0q+csRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbC+fiIk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB56EC4CEC3;
+	Mon, 28 Oct 2024 06:44:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097112;
-	bh=1o3Um/3Z7OL/2b5+/P6zKyqYPXrCEjd1AGKtkAulcPY=;
+	s=korg; t=1730097842;
+	bh=ycUkMyPh9Ds/OsqYMVRp2aPF5OMUPwZ/8wxW3+3K07Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t6TI8KoQ229PiZN52sFtFcNQKPDmy9l2Z5jOKEfCyyUWgW4MjzZLwGn2Y3oWR/Grd
-	 Fe2PX4gwSlGGjCvcBAoi2zdDY4dZSvbbuIcufe4BerjihFdHO2lcjFz7MYuTqkV22+
-	 EzG2hOMIFi23P7dvSCSp+X3hjTuw0g2t/di5f5cw=
+	b=BbC+fiIkApjYstNERYZJ55mqgIJpj/1q8punLT6jYeqGqH2awCCIe9etBu2/JndZW
+	 F4hAzboKdOVvFRTWcOjVbyRsiyGwPDcwzkWBYBXOLpnNE0e7nhV6JptPBhFIl87X4S
+	 y8EV55EMLIbWATWdNK8Kx6pM4izsCzid3qcRgyUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dirk Holten <dirk.holten@gmx.de>,
-	Christian Heusel <christian@heusel.eu>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.15 69/80] ACPI: resource: Add LG 16T90SP to irq1_level_low_skip_override[]
-Date: Mon, 28 Oct 2024 07:25:49 +0100
-Message-ID: <20241028062254.528167591@linuxfoundation.org>
+	Andrey Shumilin <shum.sdl@nppct.ru>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 170/208] ALSA: firewire-lib: Avoid division by zero in apply_constraint_to_size()
+Date: Mon, 28 Oct 2024 07:25:50 +0100
+Message-ID: <20241028062310.817157134@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Heusel <christian@heusel.eu>
+From: Andrey Shumilin <shum.sdl@nppct.ru>
 
-commit 53f1a907d36fb3aa02a4d34073bcec25823a6c74 upstream.
+[ Upstream commit 72cafe63b35d06b5cfbaf807e90ae657907858da ]
 
-The LG Gram Pro 16 2-in-1 (2024) the 16T90SP has its keybopard IRQ (1)
-described as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh
-which breaks the keyboard.
+The step variable is initialized to zero. It is changed in the loop,
+but if it's not changed it will remain zero. Add a variable check
+before the division.
 
-Add the 16T90SP to the irq1_level_low_skip_override[] quirk table to fix
-this.
+The observed behavior was introduced by commit 826b5de90c0b
+("ALSA: firewire-lib: fix insufficient PCM rule for period/buffer size"),
+and it is difficult to show that any of the interval parameters will
+satisfy the snd_interval_test() condition with data from the
+amdtp_rate_table[] table.
 
-Reported-by: Dirk Holten <dirk.holten@gmx.de>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219382
-Cc: All applicable <stable@vger.kernel.org>
-Suggested-by: Dirk Holten <dirk.holten@gmx.de>
-Signed-off-by: Christian Heusel <christian@heusel.eu>
-Link: https://patch.msgid.link/20241017-lg-gram-pro-keyboard-v2-1-7c8fbf6ff718@heusel.eu
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 826b5de90c0b ("ALSA: firewire-lib: fix insufficient PCM rule for period/buffer size")
+Signed-off-by: Andrey Shumilin <shum.sdl@nppct.ru>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Link: https://patch.msgid.link/20241018060018.1189537-1-shum.sdl@nppct.ru
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/firewire/amdtp-stream.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -505,6 +505,13 @@ static const struct dmi_system_id tongfa
- 			DMI_MATCH(DMI_BOARD_NAME, "GMxRGxx"),
- 		},
- 	},
-+	{
-+		/* LG Electronics 16T90SP */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LG Electronics"),
-+			DMI_MATCH(DMI_BOARD_NAME, "16T90SP"),
-+		},
-+	},
- 	{ }
- };
+diff --git a/sound/firewire/amdtp-stream.c b/sound/firewire/amdtp-stream.c
+index 5f0f8d9c08d1e..8c6254ff143eb 100644
+--- a/sound/firewire/amdtp-stream.c
++++ b/sound/firewire/amdtp-stream.c
+@@ -172,6 +172,9 @@ static int apply_constraint_to_size(struct snd_pcm_hw_params *params,
+ 			step = max(step, amdtp_syt_intervals[i]);
+ 	}
  
++	if (step == 0)
++		return -EINVAL;
++
+ 	t.min = roundup(s->min, step);
+ 	t.max = rounddown(s->max, step);
+ 	t.integer = 1;
+-- 
+2.43.0
+
 
 
 
