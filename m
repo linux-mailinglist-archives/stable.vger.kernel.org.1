@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C8AD9B27DF
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F11309B26CA
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:42:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EB371C215BF
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B403928252D
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B92C18F2CF;
-	Mon, 28 Oct 2024 06:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1DA18E35B;
+	Mon, 28 Oct 2024 06:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KyKv2yok"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RnCNnUlI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A9318DF7D;
-	Mon, 28 Oct 2024 06:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9BD15B10D;
+	Mon, 28 Oct 2024 06:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098317; cv=none; b=sczTMENC7ba0ZvsL+psq1UFy+aXnfUsax18qjm/AwFPxjayz1Sv4br4fVk1RerPTV2/BvPOB5gxPXhDHWNI8Ba5Vl7T/lC2vX6/DAkc2jdnZLH5bBh8N2HkAdTVKlhUFRVS9szf9y7wBM6aVfz+JG+8ny0CHrpnJLafuExCrj7M=
+	t=1730097761; cv=none; b=rKDLeyJcyWTzUYNwiPKjAM3DbTT+cBxoydqMbOZ6hc033UYlJXyW+b0Mt/9kjLyocYE3AHMJezmLvGXj6Dabhnf4AAA4GtlLXtwqkNgIXkyu+8l9GJnJix1NpvipEZlJeaxewCXqVQxmrmRAE8tIq/KQBm2JTz158ippEDnVJ8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098317; c=relaxed/simple;
-	bh=FBzZgnNsRRFtBGxOPrNtyod0X7MuWJCtUILmVY+UF/M=;
+	s=arc-20240116; t=1730097761; c=relaxed/simple;
+	bh=OBO6Y+axA7OLHasVgrRtBlJGMdN/HfSt1Yki2AENKL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V9AnCsv/V3StRQbJt7CAjUFXiiGFJOqedr2K3hlCUF+ua4PKORxjPrODSaFn0Fyigzo78yKcDeJKd0IU1dEDHXAkNuwCrzJ9UtqjJI+2BKfqVtqErjK+qF3FpXLVg1mhGDjkFHm45m5O3DLU2Jr6F7q3qbzVLnP1aPcUls8wF4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KyKv2yok; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CB2C4CEC3;
-	Mon, 28 Oct 2024 06:51:56 +0000 (UTC)
+	 MIME-Version; b=Q+u/KcwehsSJ7ESNr74VIJn4WxRJfPcKEgeaCYUWmuG/ntUhEzBiyL6qv9I75aSKGsZGc4Z/O3PGQEoT1o2Jr/RFMlqci++4GoEcnRFKfExGtnmWJAVpDDHMBxa3VDB5KecytRDrKkr6cDeSdoDudZCYtJRIICKPffai0+Ijo1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RnCNnUlI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DDE2C4CEC3;
+	Mon, 28 Oct 2024 06:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098316;
-	bh=FBzZgnNsRRFtBGxOPrNtyod0X7MuWJCtUILmVY+UF/M=;
+	s=korg; t=1730097761;
+	bh=OBO6Y+axA7OLHasVgrRtBlJGMdN/HfSt1Yki2AENKL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KyKv2yok+zU6dJZNn3RpOfA10/wspRKBu4bVQVPmgZvtEWXbSP+TFHZ1vgQnLLFvR
-	 Uj/i3LQNycXEAIaojd92hZE7lhyLDxtW3UwPrLCbtHQhnxBEA53SN9Oqs+1pWE2jH6
-	 mOp3Vupl58eTyFFEZROqEEjEhsDVWgty9yyV9Ij0=
+	b=RnCNnUlIbQ++KZE9bBUADZMGHFGJUGfIz1ptBPYsItR7KLQE6VutwO3VYdsA1RKKE
+	 rriOH/OLALm6Po8TUWEAHdthoILQqJzbPLDKN5AuxxPChP5p+F5n2PKQcNagJCND5D
+	 7SpXGJ+2+8Zpkhdd3U4B/c+0HUBWCjIPZtjzN7jU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4c0d0c4cde787116d465@syzkaller.appspotmail.com,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	syzbot+cc39f136925517aed571@syzkaller.appspotmail.com,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 172/261] Bluetooth: SCO: Fix UAF on sco_sock_timeout
+Subject: [PATCH 6.6 134/208] xfrm: validate new SAs prefixlen using SA family when sel.family is unset
 Date: Mon, 28 Oct 2024 07:25:14 +0100
-Message-ID: <20241028062316.304914995@linuxfoundation.org>
+Message-ID: <20241028062309.939580777@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 1bf4470a3939c678fb822073e9ea77a0560bc6bb ]
+[ Upstream commit 3f0ab59e6537c6a8f9e1b355b48f9c05a76e8563 ]
 
-conn->sk maybe have been unlinked/freed while waiting for sco_conn_lock
-so this checks if the conn->sk is still valid by checking if it part of
-sco_sk_list.
+This expands the validation introduced in commit 07bf7908950a ("xfrm:
+Validate address prefix lengths in the xfrm selector.")
 
-Reported-by: syzbot+4c0d0c4cde787116d465@syzkaller.appspotmail.com
-Tested-by: syzbot+4c0d0c4cde787116d465@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4c0d0c4cde787116d465
-Fixes: ba316be1b6a0 ("Bluetooth: schedule SCO timeouts with delayed_work")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+syzbot created an SA with
+    usersa.sel.family = AF_UNSPEC
+    usersa.sel.prefixlen_s = 128
+    usersa.family = AF_INET
+
+Because of the AF_UNSPEC selector, verify_newsa_info doesn't put
+limits on prefixlen_{s,d}. But then copy_from_user_state sets
+x->sel.family to usersa.family (AF_INET). Do the same conversion in
+verify_newsa_info before validating prefixlen_{s,d}, since that's how
+prefixlen is going to be used later on.
+
+Reported-by: syzbot+cc39f136925517aed571@syzkaller.appspotmail.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/bluetooth.h |  1 +
- net/bluetooth/af_bluetooth.c      | 22 ++++++++++++++++++++++
- net/bluetooth/sco.c               | 18 ++++++++++++------
- 3 files changed, 35 insertions(+), 6 deletions(-)
+ net/xfrm/xfrm_user.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
-index 5d655e109b2c0..f66bc85c6411d 100644
---- a/include/net/bluetooth/bluetooth.h
-+++ b/include/net/bluetooth/bluetooth.h
-@@ -403,6 +403,7 @@ int  bt_sock_register(int proto, const struct net_proto_family *ops);
- void bt_sock_unregister(int proto);
- void bt_sock_link(struct bt_sock_list *l, struct sock *s);
- void bt_sock_unlink(struct bt_sock_list *l, struct sock *s);
-+bool bt_sock_linked(struct bt_sock_list *l, struct sock *s);
- struct sock *bt_sock_alloc(struct net *net, struct socket *sock,
- 			   struct proto *prot, int proto, gfp_t prio, int kern);
- int  bt_sock_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
-diff --git a/net/bluetooth/af_bluetooth.c b/net/bluetooth/af_bluetooth.c
-index e39fba5565c5d..0b4d0a8bd3614 100644
---- a/net/bluetooth/af_bluetooth.c
-+++ b/net/bluetooth/af_bluetooth.c
-@@ -185,6 +185,28 @@ void bt_sock_unlink(struct bt_sock_list *l, struct sock *sk)
- }
- EXPORT_SYMBOL(bt_sock_unlink);
- 
-+bool bt_sock_linked(struct bt_sock_list *l, struct sock *s)
-+{
-+	struct sock *sk;
-+
-+	if (!l || !s)
-+		return false;
-+
-+	read_lock(&l->lock);
-+
-+	sk_for_each(sk, &l->head) {
-+		if (s == sk) {
-+			read_unlock(&l->lock);
-+			return true;
-+		}
-+	}
-+
-+	read_unlock(&l->lock);
-+
-+	return false;
-+}
-+EXPORT_SYMBOL(bt_sock_linked);
-+
- void bt_accept_enqueue(struct sock *parent, struct sock *sk, bool bh)
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 4328e81ea6a31..12e9d0e703e70 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -201,6 +201,7 @@ static int verify_newsa_info(struct xfrm_usersa_info *p,
  {
- 	const struct cred *old_cred;
-diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
-index a5ac160c592eb..1c7252a368669 100644
---- a/net/bluetooth/sco.c
-+++ b/net/bluetooth/sco.c
-@@ -76,6 +76,16 @@ struct sco_pinfo {
- #define SCO_CONN_TIMEOUT	(HZ * 40)
- #define SCO_DISCONN_TIMEOUT	(HZ * 2)
+ 	int err;
+ 	u8 sa_dir = attrs[XFRMA_SA_DIR] ? nla_get_u8(attrs[XFRMA_SA_DIR]) : 0;
++	u16 family = p->sel.family;
  
-+static struct sock *sco_sock_hold(struct sco_conn *conn)
-+{
-+	if (!conn || !bt_sock_linked(&sco_sk_list, conn->sk))
-+		return NULL;
-+
-+	sock_hold(conn->sk);
-+
-+	return conn->sk;
-+}
-+
- static void sco_sock_timeout(struct work_struct *work)
- {
- 	struct sco_conn *conn = container_of(work, struct sco_conn,
-@@ -87,9 +97,7 @@ static void sco_sock_timeout(struct work_struct *work)
- 		sco_conn_unlock(conn);
- 		return;
+ 	err = -EINVAL;
+ 	switch (p->family) {
+@@ -221,7 +222,10 @@ static int verify_newsa_info(struct xfrm_usersa_info *p,
+ 		goto out;
  	}
--	sk = conn->sk;
--	if (sk)
--		sock_hold(sk);
-+	sk = sco_sock_hold(conn);
- 	sco_conn_unlock(conn);
  
- 	if (!sk)
-@@ -194,9 +202,7 @@ static void sco_conn_del(struct hci_conn *hcon, int err)
+-	switch (p->sel.family) {
++	if (!family && !(p->flags & XFRM_STATE_AF_UNSPEC))
++		family = p->family;
++
++	switch (family) {
+ 	case AF_UNSPEC:
+ 		break;
  
- 	/* Kill socket */
- 	sco_conn_lock(conn);
--	sk = conn->sk;
--	if (sk)
--		sock_hold(sk);
-+	sk = sco_sock_hold(conn);
- 	sco_conn_unlock(conn);
- 
- 	if (sk) {
 -- 
 2.43.0
 
