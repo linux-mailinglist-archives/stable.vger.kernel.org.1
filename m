@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-88421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8775E9B25EC
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 831199B2697
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:40:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0768AB20BEE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC341B20A93
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6DCF18EFEB;
-	Mon, 28 Oct 2024 06:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F3518E374;
+	Mon, 28 Oct 2024 06:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smbsL8rJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSSe8uKJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E1018EFD4;
-	Mon, 28 Oct 2024 06:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67BD189BAF;
+	Mon, 28 Oct 2024 06:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097293; cv=none; b=gne4vG/eK5+JpYGfJlnvpjNLPAzh8vdTLuN/NadqrfOLrRanGHesZ+3gcDJJ4FIwt5+ByA/TM4TyoEmHXtIYF0MuaxXSlPNsj5doMJ/DpaWpV9xkHOIlbvb8karWwmQ4MZ9FQoX4jPhuNT3EXyQM877uctlWw++3TxaY4/2r5/Q=
+	t=1730097653; cv=none; b=u8sRuebyQHkCQFJgesl2E0KdOoveo9oh+ksfwMr1IQsxUnGbEj4LqLl6ag9XASSrHeYpBAZwtq/wT8YkpjI7JbrwIGC75yc2irk9RE/osmNxfa/Bbwk3S89G5z5abU/06e1FsU0U5SqefRMtJH5SG4d/X5pXvFbO8WDzyOOPSh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097293; c=relaxed/simple;
-	bh=hIY1hJPjFQ5zzqM3OiESWMU9OBelnpEzYJg6QmwXF2g=;
+	s=arc-20240116; t=1730097653; c=relaxed/simple;
+	bh=fsXKBYOXQVVMhUcn1ZjmeVDt0ykyj97QAAHiVdjcU34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oDI0jGGiXN7RNACHYVuC2PUobX2DxqVQ7Hm0oyqYBJT0AWT7CAkhfT5e3L0kdT1RvoSxzghmNpgF/xsnCRTV/IuRAmt/vyrD2RlWqB975kxgUQ40uz0YPj1bFeYpMaJQdVzlWlElrJ9EMUpHhbiHYDu1GDIkpLg/+I0fcG5LVow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smbsL8rJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22295C4CEC3;
-	Mon, 28 Oct 2024 06:34:53 +0000 (UTC)
+	 MIME-Version; b=tLiXYTYhfvyt6dDkbhkrrG2KI+U7oIVj/1yqdSdOYDOSgFCyRezWbrJZgJMYeaxd0gZ2yMFKbioJ8D2Q4XNoapNpectGtysm3tu5s+HU5JRXQwhALU3ToWpOTA9Isp6rAMOGXvwcDpkdL41uQ9sK71HIn9BgvoZc6PfVpnyJFeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSSe8uKJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F04EC4CEC3;
+	Mon, 28 Oct 2024 06:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097293;
-	bh=hIY1hJPjFQ5zzqM3OiESWMU9OBelnpEzYJg6QmwXF2g=;
+	s=korg; t=1730097653;
+	bh=fsXKBYOXQVVMhUcn1ZjmeVDt0ykyj97QAAHiVdjcU34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=smbsL8rJ8FmPzrwvMuve9fy99rmhaHpr+nJrIp9tWmqZ8AY0+lpesQQ8hujHdy0hH
-	 vpTnsMKs4MxY2MDMI0aSyExlXpr9/S2XvwHeNDUmjnrO5K5HUxHUtN+k13JAk6leDm
-	 ZUN+NgkzYGV7pmERoiX7We1Cu8qS3b+j+jL9Bl/k=
+	b=HSSe8uKJMx4Wzwj091CsfzcRwKYZ8L7JMhAFzMnVWQHsj6ape4oJSIbA6fRw+tOBK
+	 1+TwYOfdQl8T8ZgeCHfO/7qcdWSdhNsRcGxmwQiO6Ry2yD8D/39Ktb4DOIKtshT+6b
+	 wl+wBS16GAQptLE2LANveeEM9wYqTBIihbJ4u7Co=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d383dc9579a76f56c251@syzkaller.appspotmail.com,
-	syzbot+c596faae21a68bf7afd0@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yi Zhang <yi.zhang@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 031/137] netdevsim: use cond_resched() in nsim_dev_trap_report_work()
+Subject: [PATCH 6.6 088/208] nvme-pci: fix race condition between reset and nvme_dev_disable()
 Date: Mon, 28 Oct 2024 07:24:28 +0100
-Message-ID: <20241028062259.595319020@linuxfoundation.org>
+Message-ID: <20241028062308.817644636@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,113 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit a1494d532e28598bde7a5544892ef9c7dbfafa93 ]
+[ Upstream commit 26bc0a81f64ce00fc4342c38eeb2eddaad084dd2 ]
 
-I am still seeing many syzbot reports hinting that syzbot
-might fool nsim_dev_trap_report_work() with hundreds of ports [1]
+nvme_dev_disable() modifies the dev->online_queues field, therefore
+nvme_pci_update_nr_queues() should avoid racing against it, otherwise
+we could end up passing invalid values to blk_mq_update_nr_hw_queues().
 
-Lets use cond_resched(), and system_unbound_wq
-instead of implicit system_wq.
+ WARNING: CPU: 39 PID: 61303 at drivers/pci/msi/api.c:347
+          pci_irq_get_affinity+0x187/0x210
+ Workqueue: nvme-reset-wq nvme_reset_work [nvme]
+ RIP: 0010:pci_irq_get_affinity+0x187/0x210
+ Call Trace:
+  <TASK>
+  ? blk_mq_pci_map_queues+0x87/0x3c0
+  ? pci_irq_get_affinity+0x187/0x210
+  blk_mq_pci_map_queues+0x87/0x3c0
+  nvme_pci_map_queues+0x189/0x460 [nvme]
+  blk_mq_update_nr_hw_queues+0x2a/0x40
+  nvme_reset_work+0x1be/0x2a0 [nvme]
 
-[1]
-INFO: task syz-executor:20633 blocked for more than 143 seconds.
-      Not tainted 6.12.0-rc2-syzkaller-00205-g1d227fcc7222 #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor    state:D stack:25856 pid:20633 tgid:20633 ppid:1      flags:0x00004006
-...
-NMI backtrace for cpu 1
-CPU: 1 UID: 0 PID: 16760 Comm: kworker/1:0 Not tainted 6.12.0-rc2-syzkaller-00205-g1d227fcc7222 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Workqueue: events nsim_dev_trap_report_work
- RIP: 0010:__sanitizer_cov_trace_pc+0x0/0x70 kernel/kcov.c:210
-Code: 89 fb e8 23 00 00 00 48 8b 3d 04 fb 9c 0c 48 89 de 5b e9 c3 c7 5d 00 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 <f3> 0f 1e fa 48 8b 04 24 65 48 8b 0c 25 c0 d7 03 00 65 8b 15 60 f0
-RSP: 0018:ffffc90000a187e8 EFLAGS: 00000246
-RAX: 0000000000000100 RBX: ffffc90000a188e0 RCX: ffff888027d3bc00
-RDX: ffff888027d3bc00 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffff88804a2e6000 R08: ffffffff8a4bc495 R09: ffffffff89da3577
-R10: 0000000000000004 R11: ffffffff8a4bc2b0 R12: dffffc0000000000
-R13: ffff88806573b503 R14: dffffc0000000000 R15: ffff8880663cca00
-FS:  0000000000000000(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fc90a747f98 CR3: 000000000e734000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 000000000000002b DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000400
-Call Trace:
- <NMI>
- </NMI>
- <TASK>
-  __local_bh_enable_ip+0x1bb/0x200 kernel/softirq.c:382
-  spin_unlock_bh include/linux/spinlock.h:396 [inline]
-  nsim_dev_trap_report drivers/net/netdevsim/dev.c:820 [inline]
-  nsim_dev_trap_report_work+0x75d/0xaa0 drivers/net/netdevsim/dev.c:850
-  process_one_work kernel/workqueue.c:3229 [inline]
-  process_scheduled_works+0xa63/0x1850 kernel/workqueue.c:3310
-  worker_thread+0x870/0xd30 kernel/workqueue.c:3391
-  kthread+0x2f0/0x390 kernel/kthread.c:389
-  ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
+Fix the bug by locking the shutdown_lock mutex before using
+dev->online_queues. Give up if nvme_dev_disable() is running or if
+it has been executed already.
 
-Fixes: ba5e1272142d ("netdevsim: avoid potential loop in nsim_dev_trap_report_work()")
-Reported-by: syzbot+d383dc9579a76f56c251@syzkaller.appspotmail.com
-Reported-by: syzbot+c596faae21a68bf7afd0@syzkaller.appspotmail.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Jiri Pirko <jiri@nvidia.com>
-Link: https://patch.msgid.link/20241012094230.3893510-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 949928c1c731 ("NVMe: Fix possible queue use after freed")
+Tested-by: Yi Zhang <yi.zhang@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netdevsim/dev.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/nvme/host/pci.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
-index f3fa4bd121169..cdf7a70d66591 100644
---- a/drivers/net/netdevsim/dev.c
-+++ b/drivers/net/netdevsim/dev.c
-@@ -836,7 +836,8 @@ static void nsim_dev_trap_report_work(struct work_struct *work)
- 	nsim_dev = nsim_trap_data->nsim_dev;
- 
- 	if (!devl_trylock(priv_to_devlink(nsim_dev))) {
--		schedule_delayed_work(&nsim_dev->trap_data->trap_report_dw, 1);
-+		queue_delayed_work(system_unbound_wq,
-+				   &nsim_dev->trap_data->trap_report_dw, 1);
- 		return;
- 	}
- 
-@@ -848,11 +849,12 @@ static void nsim_dev_trap_report_work(struct work_struct *work)
- 			continue;
- 
- 		nsim_dev_trap_report(nsim_dev_port);
-+		cond_resched();
- 	}
- 	devl_unlock(priv_to_devlink(nsim_dev));
--
--	schedule_delayed_work(&nsim_dev->trap_data->trap_report_dw,
--			      msecs_to_jiffies(NSIM_TRAP_REPORT_INTERVAL_MS));
-+	queue_delayed_work(system_unbound_wq,
-+			   &nsim_dev->trap_data->trap_report_dw,
-+			   msecs_to_jiffies(NSIM_TRAP_REPORT_INTERVAL_MS));
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 61c9b175e035f..b701969cf1c2a 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2469,17 +2469,29 @@ static unsigned int nvme_pci_nr_maps(struct nvme_dev *dev)
+ 	return 1;
  }
  
- static int nsim_dev_traps_init(struct devlink *devlink)
-@@ -907,8 +909,9 @@ static int nsim_dev_traps_init(struct devlink *devlink)
+-static void nvme_pci_update_nr_queues(struct nvme_dev *dev)
++static bool nvme_pci_update_nr_queues(struct nvme_dev *dev)
+ {
+ 	if (!dev->ctrl.tagset) {
+ 		nvme_alloc_io_tag_set(&dev->ctrl, &dev->tagset, &nvme_mq_ops,
+ 				nvme_pci_nr_maps(dev), sizeof(struct nvme_iod));
+-		return;
++		return true;
++	}
++
++	/* Give up if we are racing with nvme_dev_disable() */
++	if (!mutex_trylock(&dev->shutdown_lock))
++		return false;
++
++	/* Check if nvme_dev_disable() has been executed already */
++	if (!dev->online_queues) {
++		mutex_unlock(&dev->shutdown_lock);
++		return false;
+ 	}
  
- 	INIT_DELAYED_WORK(&nsim_dev->trap_data->trap_report_dw,
- 			  nsim_dev_trap_report_work);
--	schedule_delayed_work(&nsim_dev->trap_data->trap_report_dw,
--			      msecs_to_jiffies(NSIM_TRAP_REPORT_INTERVAL_MS));
-+	queue_delayed_work(system_unbound_wq,
-+			   &nsim_dev->trap_data->trap_report_dw,
-+			   msecs_to_jiffies(NSIM_TRAP_REPORT_INTERVAL_MS));
+ 	blk_mq_update_nr_hw_queues(&dev->tagset, dev->online_queues - 1);
+ 	/* free previously allocated queues that are no longer usable */
+ 	nvme_free_queues(dev, dev->online_queues);
++	mutex_unlock(&dev->shutdown_lock);
++	return true;
+ }
  
- 	return 0;
- 
+ static int nvme_pci_enable(struct nvme_dev *dev)
+@@ -2760,7 +2772,8 @@ static void nvme_reset_work(struct work_struct *work)
+ 		nvme_dbbuf_set(dev);
+ 		nvme_unquiesce_io_queues(&dev->ctrl);
+ 		nvme_wait_freeze(&dev->ctrl);
+-		nvme_pci_update_nr_queues(dev);
++		if (!nvme_pci_update_nr_queues(dev))
++			goto out;
+ 		nvme_unfreeze(&dev->ctrl);
+ 	} else {
+ 		dev_warn(dev->ctrl.device, "IO queues lost\n");
 -- 
 2.43.0
 
