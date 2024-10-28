@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-88432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E42FE9B25F6
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07E4C9B26CC
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:42:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28257280F7A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0A81282516
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F0718FC75;
-	Mon, 28 Oct 2024 06:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A8018E354;
+	Mon, 28 Oct 2024 06:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZmGKMfM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SEZ7S0nb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F7318F2FD;
-	Mon, 28 Oct 2024 06:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0324115B10D;
+	Mon, 28 Oct 2024 06:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097319; cv=none; b=QntlNBx0vqnbwwNLa7tAJvLAF2Im8VV0D7mDXRccicwdKDz0D5AkNm0lSbe56Am8cpC9/Y03jmXTlXYx944KaEHYM8UbMxjdUkqCbcPkoqmKPLHZRQZn+6Nq+XnZo7UB2xqS2/e/WTG2Qu6eV+Rh0piWhLUWl/O24k04S4HUbrM=
+	t=1730097766; cv=none; b=CowRQtAyKHs2KS5+v8wuLMx4kacUtTurFNJxZYzleE6OzcATLBtWntdvlr8lYxS52wuNalv2flEbjcJbzI9NqbcWuj9BxRNrooHP4XTo7FTlB+IzL1lmPk5wXcQg3hGtTRYcAlqF7iOEEDoSVYBPoMTOnX39H+cMcZtIvyzkkCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097319; c=relaxed/simple;
-	bh=YLh2/V7y3hSvFwXOyx04GL5/eh2U1NxgyYhUQaV3u5c=;
+	s=arc-20240116; t=1730097766; c=relaxed/simple;
+	bh=CtvkeXdPq1eoeh6xEKTH4BZ1E2rK4+9rsbbz7NN4if0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tj8AqdaEjX0r2ZurGTqnzV6bUy26f25O/CWvJMxWXGDc1ZqmISdBvldkUOIjrVXMlifIrd/NH+QciW7TsvkmFv0bCxEA/7nhP8m/N8Cvj8trQyDIrWlolRtli2TCKR0J9yCOeNs3j5LjGMouGOfRk3DgZ5MIA/V8iLvy9u9AYdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZmGKMfM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F2BC4CEC3;
-	Mon, 28 Oct 2024 06:35:18 +0000 (UTC)
+	 MIME-Version; b=nKkMGrGDJyXa3ITCA8RD9OQ4vxpD4gXQMq4AuxSntwoDqaeJaHQKA31JvamVc/i2K8jJ9Io07jpusRHwKK8TZJEi1P/lGFZTp+GVXbgj2sEVbW253ArDHCHkZwd3stFAWZUWaR2gW/i/RAyYvH38/enAqlWCYLh2gS+zs2Z2VCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SEZ7S0nb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B47C4CEC3;
+	Mon, 28 Oct 2024 06:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097318;
-	bh=YLh2/V7y3hSvFwXOyx04GL5/eh2U1NxgyYhUQaV3u5c=;
+	s=korg; t=1730097765;
+	bh=CtvkeXdPq1eoeh6xEKTH4BZ1E2rK4+9rsbbz7NN4if0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VZmGKMfMvvR2yJX+4NT0NGifE+tjAV3rDBdhCvvguPs9QgklRsQJqmE137tNAOP+J
-	 sr9m9i/J8uYFVzlzcTnrxufdhqcfGlxOOtz4tsO8xy1aTwUZRBIYR3us756GoF2HjR
-	 8igdg2KF9gmYfM61y8yYFcSY4UA+DXH0TpHwBSLM=
+	b=SEZ7S0nbwXz0uaiERvCjbU3kuaTVpW9PsI5KPkahy+Znqv3pk/+q4jFdyc8cFqds5
+	 iC2V+eLvfok+qWtdAkQlyDcTHpSK8DbjjwqAd0kxXgfbcYmPC65ADYkXSBYpPbl/0p
+	 YPG0j3P2Je5gKK7BbY/v2lJuZvnGGXiobzpCgf14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8901c4560b7ab5c2f9df@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.com>,
-	Gianfranco Trad <gianf.trad@gmail.com>,
-	Jan Kara <jack@suse.cz>,
+	Wang Hai <wanghai38@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 079/137] udf: fix uninit-value use in udf_get_fileshortad
+Subject: [PATCH 6.6 136/208] net/sun3_82586: fix potential memory leak in sun3_82586_send_packet()
 Date: Mon, 28 Oct 2024 07:25:16 +0100
-Message-ID: <20241028062300.944460806@linuxfoundation.org>
+Message-ID: <20241028062309.987798292@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gianfranco Trad <gianf.trad@gmail.com>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit 264db9d666ad9a35075cc9ed9ec09d021580fbb1 ]
+[ Upstream commit 2cb3f56e827abb22c4168ad0c1bbbf401bb2f3b8 ]
 
-Check for overflow when computing alen in udf_current_aext to mitigate
-later uninit-value use in udf_get_fileshortad KMSAN bug[1].
-After applying the patch reproducer did not trigger any issue[2].
+The sun3_82586_send_packet() returns NETDEV_TX_OK without freeing skb
+in case of skb->len being too long, add dev_kfree_skb() to fix it.
 
-[1] https://syzkaller.appspot.com/bug?extid=8901c4560b7ab5c2f9df
-[2] https://syzkaller.appspot.com/x/log.txt?x=10242227980000
-
-Reported-by: syzbot+8901c4560b7ab5c2f9df@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=8901c4560b7ab5c2f9df
-Tested-by: syzbot+8901c4560b7ab5c2f9df@syzkaller.appspotmail.com
-Suggested-by: Jan Kara <jack@suse.com>
-Signed-off-by: Gianfranco Trad <gianf.trad@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240925074613.8475-3-gianf.trad@gmail.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Message-ID: <20241015144148.7918-1-wanghai38@huawei.com>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/inode.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/i825xx/sun3_82586.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/udf/inode.c b/fs/udf/inode.c
-index fac28caca356a..d7d6ccd0af064 100644
---- a/fs/udf/inode.c
-+++ b/fs/udf/inode.c
-@@ -2107,12 +2107,15 @@ int udf_current_aext(struct inode *inode, struct extent_position *epos,
- 		alen = udf_file_entry_alloc_offset(inode) +
- 							iinfo->i_lenAlloc;
- 	} else {
-+		struct allocExtDesc *header =
-+			(struct allocExtDesc *)epos->bh->b_data;
-+
- 		if (!epos->offset)
- 			epos->offset = sizeof(struct allocExtDesc);
- 		ptr = epos->bh->b_data + epos->offset;
--		alen = sizeof(struct allocExtDesc) +
--			le32_to_cpu(((struct allocExtDesc *)epos->bh->b_data)->
--							lengthAllocDescs);
-+		if (check_add_overflow(sizeof(struct allocExtDesc),
-+				le32_to_cpu(header->lengthAllocDescs), &alen))
-+			return -1;
+diff --git a/drivers/net/ethernet/i825xx/sun3_82586.c b/drivers/net/ethernet/i825xx/sun3_82586.c
+index f2d4669c81cf2..58a3d28d938c3 100644
+--- a/drivers/net/ethernet/i825xx/sun3_82586.c
++++ b/drivers/net/ethernet/i825xx/sun3_82586.c
+@@ -1012,6 +1012,7 @@ sun3_82586_send_packet(struct sk_buff *skb, struct net_device *dev)
+ 	if(skb->len > XMIT_BUFF_SIZE)
+ 	{
+ 		printk("%s: Sorry, max. framelength is %d bytes. The length of your frame is %d bytes.\n",dev->name,XMIT_BUFF_SIZE,skb->len);
++		dev_kfree_skb(skb);
+ 		return NETDEV_TX_OK;
  	}
  
- 	switch (iinfo->i_alloc_type) {
 -- 
 2.43.0
 
