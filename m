@@ -1,98 +1,86 @@
-Return-Path: <stable+bounces-89137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D0D79B3E2E
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 00:00:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9029C9B3E5D
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 00:23:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E4761C222E9
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 23:00:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54A5E2834A2
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 23:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AD181F81AF;
-	Mon, 28 Oct 2024 23:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FEE61F7081;
+	Mon, 28 Oct 2024 23:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AzO9N6g9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fj6HdWsv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318691F4FA9;
-	Mon, 28 Oct 2024 23:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3811865E3;
+	Mon, 28 Oct 2024 23:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730156426; cv=none; b=g92tE+fXXat+Cp3hfcW4XlJIDC6HA7jXbZH9kO0BwGsAHtNtQQ9WWEOo+iqf6yC3mbs/RjSomBX7wQGXrod4vLUfECm3uchs+qAzjngbdct5V59m2jvVsYo8BlIfPvNQs27b7oDpyb76p2uIL18CsCAYP/PwK+sKOrWLWh53lIg=
+	t=1730157779; cv=none; b=Kppg90rFylxc5KFPMAsI5zD7AtFtbCnZxygf43EQnN4FH6XYwrFsXf7cn3jhoJIn8XtV1RkOLtVGOv7pNKAPnRXn9yhK8m+fPRTXF9tvnmEn/rwcBotiLcXVAhEvQBR1BzqCHt4RoIJ+HFQItSLnyLAxhKmTYqX9GGKPv47QIBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730156426; c=relaxed/simple;
-	bh=cg9CZXqHngvKMWowCf81kXPpkp+T2UCnj7qICB56XI0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=kSUoSk2xo2Jp6TGTdZynshfdCxzhlLznslYfInuASdGJZz6DQyYrQXf/RWAxWVfU+rBAElDfpHjJpq7KWIapu/hCy9gFv6Uonai2PWNrFQjLS/Y4Duu0Tlo1EzQV8RA10kNYdMMdMTWuPk9x5gKxkbVx7/CzCHz26wZxMj++KqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AzO9N6g9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C096EC4CEC3;
-	Mon, 28 Oct 2024 23:00:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730156425;
-	bh=cg9CZXqHngvKMWowCf81kXPpkp+T2UCnj7qICB56XI0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=AzO9N6g9xskN/S0YcPwYiu08rM+y7jxPahRx3MAioobtQU+jZMuJdb5F+xdZmeBcp
-	 k1Fu+zXFQqGQlmcB2fOTG464Qt4PyLGPqpCqKH/9mW5hYYLauYPYsjmzTv7v7vQocv
-	 I7Lo6sDsEXGnSzKgSYjuIKwh531clJmSrt7jgNI9T2dyHf3MNwaVjFRiguKF/m1o9b
-	 gGBGarLYZ0tU2aHIr0ZfOI9+WBGRMu//++R7THijbg4F/RinlClLuqPWsPOkWXcZbP
-	 VOOlu3fMmOwel23FWCPR4LHXxKefe3YnX+dErH+cQy3vNHVSPo2Hbdp/qDm6odxumH
-	 D138uoxCN6Sng==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7100A380AC1C;
-	Mon, 28 Oct 2024 23:00:34 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1730157779; c=relaxed/simple;
+	bh=clcnLITg0dyXfdxuOg7CzAxWSBbASftx2mnw/aAekpM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kf/BBqU4r29koy2Htz08ZNuSTRHhiedIEvBEbEWv6nDJcAU6GqfmYjbwhtbBlSYUQU8yYw4RygMvJ3JQuEbq8x8WB7lBAhYuT4rfj5xPr2wkvQXI+VL4IbGb3EjsgcmLE+lIniJlG4MV+TsdpNDA6XInI/2Zzfw7qon9IQcf6GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fj6HdWsv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2DC4C4CEC3;
+	Mon, 28 Oct 2024 23:22:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1730157778;
+	bh=clcnLITg0dyXfdxuOg7CzAxWSBbASftx2mnw/aAekpM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Fj6HdWsvXIvmvz1wkZaB/Q+gax/NIkUEdVrXQUMUdGCb2Y0Cb6b9x0ZLnbddsX+g0
+	 cuZmZv6vxSnl7MgwntAVA58ygox3YJiFsV0TU2b2lcuYSbCnhuaKihXEXteNYMKwPt
+	 4e8MfnzaDP7UI0riB7VSPuNL1YuU9F74tvxApwak=
+Date: Tue, 29 Oct 2024 00:22:44 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Thorsten Leemhuis <linux@leemhuis.info>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: latest stable-rc tarballs missing? (was: Re: [PATCH 6.11
+ 000/261] 6.11.6-rc1 review)
+Message-ID: <2024102920-crib-poking-50d5@gregkh>
+References: <20241028062312.001273460@linuxfoundation.org>
+ <b1675bcb-41bd-41ab-8e10-ab80943b1ff8@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/3] mptcp: sched: fix some lock issues
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173015643324.206744.11515451937132958633.git-patchwork-notify@kernel.org>
-Date: Mon, 28 Oct 2024 23:00:33 +0000
-References: <20241021-net-mptcp-sched-lock-v1-0-637759cf061c@kernel.org>
-In-Reply-To: <20241021-net-mptcp-sched-lock-v1-0-637759cf061c@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, gregory.detal@gmail.com, shuah@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b1675bcb-41bd-41ab-8e10-ab80943b1ff8@leemhuis.info>
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 21 Oct 2024 12:25:25 +0200 you wrote:
-> Two small fixes related to the MPTCP packets scheduler:
+On Mon, Oct 28, 2024 at 11:02:37AM +0100, Thorsten Leemhuis wrote:
+> On 28.10.24 07:22, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.11.6 release.
+> > There are 261 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Wed, 30 Oct 2024 06:22:39 +0000.
+> > Anything received after that time might be too late.
+> > 
+> > The whole patch series can be found in one patch at:
+> > 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.11.6-rc1.gz
 > 
-> - Patch 1: add missing rcu_read_(un)lock(). A fix for >= 6.6.
-> 
-> - Patch 2: remove unneeded lock when listing packets schedulers. A fix
->   for >= 6.10.
-> 
-> [...]
+> I don't care much, but TWIMC: that URL gives a 404 here. Not idea if
+> that is a issue with the local mirror or if the upload went sideways.
 
-Here is the summary with links:
-  - [net,1/3] mptcp: init: protect sched with rcu_read_lock
-    https://git.kernel.org/netdev/net/c/3deb12c788c3
-  - [net,2/3] mptcp: remove unneeded lock when listing scheds
-    (no matching commit)
-  - [net,3/3] selftests: mptcp: list sysctl data
-    https://git.kernel.org/netdev/net/c/5513dc1d8fec
+Sorry, this was my fault, new laptop and I forgot to install the
+perl-simple-config package that kup requires.  Should now be fixed.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+greg k-h
 
