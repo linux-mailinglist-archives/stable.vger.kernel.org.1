@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EE089B2693
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:40:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E9669B27A8
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:50:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 318061C21380
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:40:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B5411F220BD
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:50:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 736122C697;
-	Mon, 28 Oct 2024 06:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C9218E77D;
+	Mon, 28 Oct 2024 06:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VauEwr87"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eoGN8Cgs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCB718E350;
-	Mon, 28 Oct 2024 06:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B317B2AF07;
+	Mon, 28 Oct 2024 06:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097647; cv=none; b=mZpl/OAdyhMbUyJb/uBKwaVOm6LJf6fcDqbmVhoji0b0ql+Dl9gPG3dcwtDEGctwDsDiu7AGwGW9dQTGRLqszEfo3nJh1LgIIsV9PLjcNQbYo/79Q23p0JHS31cRSAeZJlv/siB5ewTBccR0kYvwkWYAfiOc3Z2Deb9U9qt1G5Y=
+	t=1730098204; cv=none; b=RYLr610KFwb4GZtslNUF31D5K5vvjGeCnXGHje23ZBXZKUGtAvU+BG5gUwA97Efj5SryFQqdDjhjNvj5sIIVkouJ6ieGdknwy6GSjXtuZUe1Yfw4FsWseo1/1kJatGPam17YAjUnx/FtxWeuxoZZGqB8My8vvjDum1Xbo0O4L+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097647; c=relaxed/simple;
-	bh=RQuHn53MK7qMSyRZJ0dbU+D31qrfcBDbc84t2i9cYl0=;
+	s=arc-20240116; t=1730098204; c=relaxed/simple;
+	bh=t9gQCdFhqq6u1yxcHmSHqMDNWBPI0dUHn4wJWsJeS+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EPj9kvHcBLVUDaVcwPJyLON6822m4srtrjDFRtw4lG0aA7qOMtR1AZ0XnWpMFKOkN8u9MQ/z6Jk3fIUDBEW7DIzGmDDqV/E7jYR1q5aE3R1LGAhEpCn24qPbMjU9AQrnZ7e0FBU5Q7tQQ9ab3DP3CRHVN+exNunfj8z96BrkDls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VauEwr87; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6548C4CEC3;
-	Mon, 28 Oct 2024 06:40:46 +0000 (UTC)
+	 MIME-Version; b=c7F9jhfPvuVnjxs6RdD/gctLoX7qe9lG6YnbxTSTuWwZo0vmKEr3qUWEvk3JnKNWE2pD4i4M/iVltpgdI7IjDVfQWnciN1zb5cbItRke3MzSzdO6BVAKZTgmHumwJegGfVoOFtRek/T/h3rjzkBAhVmlOgIWukUXUBB8nMCTNcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eoGN8Cgs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5333FC4CEC3;
+	Mon, 28 Oct 2024 06:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097647;
-	bh=RQuHn53MK7qMSyRZJ0dbU+D31qrfcBDbc84t2i9cYl0=;
+	s=korg; t=1730098204;
+	bh=t9gQCdFhqq6u1yxcHmSHqMDNWBPI0dUHn4wJWsJeS+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VauEwr87u9lmvrTtaRahwGGcXF4wlmKkTI0ifBff1n3X3c6zwEsFGPBoNszdkkDDv
-	 yV+mpt2RLhUzKpwECpEuZ4WLdBhT1uUHI3DnIwNMhyl0Mh1e+lnukCPhS5kKI0DNdN
-	 aCtJWc/VCBDCD5ic23IHcchdzBrG3rYR2dYFjf3g=
+	b=eoGN8CgsTmSgmOjoT7AugGo8WSiiVuQyZmbtQQNxaU4wPQYt/RIYBJS4w/QMup6Sz
+	 w+QeD68rs4LDtQg8yxdm3RqT2OEYatEkB2ZTsot27oRl20FK8Ns8qJyXA/QTpxATmu
+	 63lnYJO19RBlkrlHgjq4fuF6dEunbuHTyckwTzQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
+	David Lawrence Glanzman <davidglanzman@yahoo.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 085/208] bpf, vsock: Drop static vsock_bpf_prot initialization
+Subject: [PATCH 6.11 123/261] ASoC: amd: yc: Add quirk for HP Dragonfly pro one
 Date: Mon, 28 Oct 2024 07:24:25 +0100
-Message-ID: <20241028062308.747788544@linuxfoundation.org>
+Message-ID: <20241028062315.115343017@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: David Lawrence Glanzman <davidglanzman@yahoo.com>
 
-[ Upstream commit 19039f279797efbe044cae41ee216c5fe481fc33 ]
+[ Upstream commit 84e8d59651879b2ff8499bddbbc9549b7f1a646b ]
 
-vsock_bpf_prot is set up at runtime. Remove the superfluous init.
+Adds a quirk entry to enable the mic on HP Dragonfly pro one laptop
 
-No functional change intended.
-
-Fixes: 634f1a7110b4 ("vsock: support sockmap")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/20241013-vsock-fixes-for-redir-v2-4-d6577bbfe742@rbox.co
+Signed-off-by: David Lawrence Glanzman <davidglanzman@yahoo.com>
+Link: https://patch.msgid.link/1249c09bd6bf696b59d087a4f546ae397828656c.camel@yahoo.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/vsock_bpf.c | 8 --------
- 1 file changed, 8 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/vmw_vsock/vsock_bpf.c b/net/vmw_vsock/vsock_bpf.c
-index c42c5cc18f324..4aa6e74ec2957 100644
---- a/net/vmw_vsock/vsock_bpf.c
-+++ b/net/vmw_vsock/vsock_bpf.c
-@@ -114,14 +114,6 @@ static int vsock_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
- 	return copied;
- }
- 
--/* Copy of original proto with updated sock_map methods */
--static struct proto vsock_bpf_prot = {
--	.close = sock_map_close,
--	.recvmsg = vsock_bpf_recvmsg,
--	.sock_is_readable = sk_msg_is_readable,
--	.unhash = sock_map_unhash,
--};
--
- static void vsock_bpf_rebuild_protos(struct proto *prot, const struct proto *base)
- {
- 	*prot        = *base;
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index 06349bf0b6587..ace6328e91e31 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -444,6 +444,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "8A3E"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
++			DMI_MATCH(DMI_BOARD_NAME, "8A7F"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.43.0
 
