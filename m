@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-88799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10DF49B2788
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:49:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93DD69B2663
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8A8C1C214F3
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:49:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59E112823B8
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1751F18DF7D;
-	Mon, 28 Oct 2024 06:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02AE818E74D;
+	Mon, 28 Oct 2024 06:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LKYjyIG3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7iU+9+p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91902AF07;
-	Mon, 28 Oct 2024 06:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36EE18E35B;
+	Mon, 28 Oct 2024 06:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098148; cv=none; b=UpU2/oZq/AJkMLiSc/6HlXCA5hCY6minaewVnFrsqAPK91r4MJ8egNaxYikTkIwEUhtC/Ht72bgqDhKVkcvzVym8YMfvjVQsQvANxAleiTv0DqStB4MsYKM3F+IYeqPnF2y0ytW9f0p8LFBwl/iU40WSfwQEOtatXqIG6m46bIk=
+	t=1730097546; cv=none; b=d1mt48tkZt4qTLMQinw8mUoBtkgISkPpbhxSC5O3dj//Dc3SUYO2agvyMks+7hS8wpjn7xSDGoZRWRbRmQkk0KWJkbtzLeLhyOHNG/luOAQ0075/+AQ/Ma6Wz8tKpqYg7c6M+mh7xcfxfpefEOckATuFy5GvAGf0uS8TyNR1lxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098148; c=relaxed/simple;
-	bh=qdv3MrGmrzToV/C9onyWWxQQeZjTOl8abDpeGuOggT8=;
+	s=arc-20240116; t=1730097546; c=relaxed/simple;
+	bh=WWqebvW1HvtKaaoHISb1DV77DeTin/xj3r8Eyv1PBlE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XrEbF5/qblUa9B+Dp1vk0qpZIUlYzbuQZ3I2dMaqJcHxhDEAEJ6QjRCl+hfAHXbIXuyV4mafTqlQoy+Qu72DIBWFPfPagc+zW0RNfvUvoNFb6a/voTND/Dk35qBVfCPrHVIHDV9sNey0SJML6N48Z117trC7kwwzw3Q5QM+Mrhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LKYjyIG3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 671AEC4CEC3;
-	Mon, 28 Oct 2024 06:49:08 +0000 (UTC)
+	 MIME-Version; b=BjKqMu1EucI1LI+b77dUrCFpkHSArNBvmHrzBSqAojrlD0sOM5NPKRNPfNcEuIwsgPhUy0i1MyhffCOc6xoSfXCnl7pBz8kQZI/T8DDI+fEWaKd1Z5oeirkA3Lq9eXaVtm2m9cF96e6GoQ1UEMmLcj9DLXfTAM/x79jKQ/oeyX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7iU+9+p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A73C4CEC3;
+	Mon, 28 Oct 2024 06:39:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098148;
-	bh=qdv3MrGmrzToV/C9onyWWxQQeZjTOl8abDpeGuOggT8=;
+	s=korg; t=1730097546;
+	bh=WWqebvW1HvtKaaoHISb1DV77DeTin/xj3r8Eyv1PBlE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LKYjyIG3+tWsxHpuP69qulotB3Beq6MEQby8npHzWs5Awl4PGsSX+067D8jp8cctF
-	 FDynhlh2D6rMN0y+auaEfDHqi2ye9ve2KydZqt+QdhNqkIg2EEPybYTFT1CRgqMkrG
-	 9s+0cFEa5CtvuiSPiK9G3BQX77J3IURWa9Xvnqsk=
+	b=r7iU+9+p1A2sTrGWt2OHtAgiIzFlIji+8EbhfSH55lZcJTeRRchOtLTjbk+yKUxqH
+	 EjC56l2hcobzJsDXr5dVEpsV5VMu0J9l9xz9pNlJCAOLornIcI8wUhwsBmgVzM1Brq
+	 RkxlzmGXRDxLmvZ77e+XVq9XXvyT8qJTiq1had48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paritosh Dixit <paritoshd@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Martin Krastev <martin.krastev@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 061/261] net: stmmac: dwmac-tegra: Fix link bring-up sequence
+Subject: [PATCH 6.6 023/208] drm/vmwgfx: Handle possible ENOMEM in vmw_stdu_connector_atomic_check
 Date: Mon, 28 Oct 2024 07:23:23 +0100
-Message-ID: <20241028062313.558202569@linuxfoundation.org>
+Message-ID: <20241028062307.227165939@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paritosh Dixit <paritoshd@nvidia.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit 1cff6ff302f5703a627f9ee1d99131161ea2683e ]
+[ Upstream commit 4809a017a2bc42ff239d53ade4b2e70f2fe81348 ]
 
-The Tegra MGBE driver sometimes fails to initialize, reporting the
-following error, and as a result, it is unable to acquire an IP
-address with DHCP:
+Handle unlikely ENOMEN condition and other errors in
+vmw_stdu_connector_atomic_check.
 
- tegra-mgbe 6800000.ethernet: timeout waiting for link to become ready
-
-As per the recommendation from the Tegra hardware design team, fix this
-issue by:
-- clearing the PHY_RDY bit before setting the CDR_RESET bit and then
-setting PHY_RDY bit before clearing CDR_RESET bit. This ensures valid
-data is present at UPHY RX inputs before starting the CDR lock.
-- adding the required delays when bringing up the UPHY lane. Note we
-need to use delays here because there is no alternative, such as
-polling, for these cases. Using the usleep_range() instead of ndelay()
-as sleeping is preferred over busy wait loop.
-
-Without this change we would see link failures on boot sometimes as
-often as 1 in 5 boots. With this fix we have not observed any failures
-in over 1000 boots.
-
-Fixes: d8ca113724e7 ("net: stmmac: tegra: Add MGBE support")
-Signed-off-by: Paritosh Dixit <paritoshd@nvidia.com>
-Link: https://patch.msgid.link/20241010142908.602712-1-paritoshd@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: 75c3e8a26a35 ("drm/vmwgfx: Trigger a modeset when the screen moves")
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240809183756.27283-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
-index 362f85136c3ef..6fdd94c8919ec 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
-@@ -127,10 +127,12 @@ static int mgbe_uphy_lane_bringup_serdes_up(struct net_device *ndev, void *mgbe_
- 	value &= ~XPCS_WRAP_UPHY_RX_CONTROL_AUX_RX_IDDQ;
- 	writel(value, mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
+index b22ae25db4e17..52ea0c50c852c 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
+@@ -881,6 +881,10 @@ static int vmw_stdu_connector_atomic_check(struct drm_connector *conn,
+ 	struct drm_crtc_state *new_crtc_state;
  
-+	usleep_range(10, 20);  /* 50ns min delay needed as per HW design */
- 	value = readl(mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
- 	value &= ~XPCS_WRAP_UPHY_RX_CONTROL_RX_SLEEP;
- 	writel(value, mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
- 
-+	usleep_range(10, 20);  /* 500ns min delay needed as per HW design */
- 	value = readl(mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
- 	value |= XPCS_WRAP_UPHY_RX_CONTROL_RX_CAL_EN;
- 	writel(value, mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
-@@ -143,22 +145,30 @@ static int mgbe_uphy_lane_bringup_serdes_up(struct net_device *ndev, void *mgbe_
- 		return err;
- 	}
- 
-+	usleep_range(10, 20);  /* 50ns min delay needed as per HW design */
- 	value = readl(mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
- 	value |= XPCS_WRAP_UPHY_RX_CONTROL_RX_DATA_EN;
- 	writel(value, mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
- 
- 	value = readl(mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
--	value |= XPCS_WRAP_UPHY_RX_CONTROL_RX_CDR_RESET;
-+	value &= ~XPCS_WRAP_UPHY_RX_CONTROL_RX_PCS_PHY_RDY;
- 	writel(value, mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
- 
-+	usleep_range(10, 20);  /* 50ns min delay needed as per HW design */
- 	value = readl(mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
--	value &= ~XPCS_WRAP_UPHY_RX_CONTROL_RX_CDR_RESET;
-+	value |= XPCS_WRAP_UPHY_RX_CONTROL_RX_CDR_RESET;
- 	writel(value, mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
- 
-+	usleep_range(10, 20);  /* 50ns min delay needed as per HW design */
- 	value = readl(mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
- 	value |= XPCS_WRAP_UPHY_RX_CONTROL_RX_PCS_PHY_RDY;
- 	writel(value, mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
- 
-+	msleep(30);  /* 30ms delay needed as per HW design */
-+	value = readl(mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
-+	value &= ~XPCS_WRAP_UPHY_RX_CONTROL_RX_CDR_RESET;
-+	writel(value, mgbe->xpcs + XPCS_WRAP_UPHY_RX_CONTROL);
+ 	conn_state = drm_atomic_get_connector_state(state, conn);
 +
- 	err = readl_poll_timeout(mgbe->xpcs + XPCS_WRAP_IRQ_STATUS, value,
- 				 value & XPCS_WRAP_IRQ_STATUS_PCS_LINK_STS,
- 				 500, 500 * 2000);
++	if (IS_ERR(conn_state))
++		return PTR_ERR(conn_state);
++
+ 	du = vmw_connector_to_stdu(conn);
+ 
+ 	if (!conn_state->crtc)
 -- 
 2.43.0
 
