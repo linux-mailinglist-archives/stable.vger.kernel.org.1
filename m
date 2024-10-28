@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E8E69B2662
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B04879B2774
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:48:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF4DEB21107
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8F131C21357
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:48:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ADA018E779;
-	Mon, 28 Oct 2024 06:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 121A118DF7D;
+	Mon, 28 Oct 2024 06:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fG/7kgJU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d+4GJ90p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E912418E374;
-	Mon, 28 Oct 2024 06:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D792AF07;
+	Mon, 28 Oct 2024 06:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097542; cv=none; b=lbIUgdKIUlFmKoyCeMChOBwvKzk5JXNLHpelkPTWKIVCdoYklIINErBMdcg+a1YU5SpZbAH/EUe0oZQDACyXY284mcJfR3AO08BsSofRfCuDyX3of48vLWhRBtanCezprY9LG/fYyaGsDqM2pYVCUzXgFvhUous/8jVkwFrCJ9k=
+	t=1730098101; cv=none; b=OCvrNGqfCWS64DDLerVXuIWjAcoum3oNbuX2Q0le7ZcPldTMYkDRKZY4Xo6LUOV58bZSTuLUJVGXl1VOxcFN5N6e24+QINfYN3igYclAonUcBmsu/brwoSM3Zv27NW0xpm1+KiNSkcF9yF2MSmhfnlrD9PrDZKbqQaD3Kv0ErNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097542; c=relaxed/simple;
-	bh=ez1WNUYACjktdwux6bMcW5zH2b5lfzrWa52tcwYazbg=;
+	s=arc-20240116; t=1730098101; c=relaxed/simple;
+	bh=YkXVeWMHCeIHIqIfoXclAzodVsZw6nQ7kJdhZmL8Vvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DWA0fKIogLi0hXMTv1UIkVG5ynKpgSF5AkEUjpNFsmt60T8lw4NunZMDI3HJ7VWWXqvdRlKNQVShEbnDa4rqAnLUj9e2SVhUVkoc16q+hAjSueQ/d5LkZAosTiV/SaVu2LrB0n1L4yPjWsOYyXIsop1uCeSdF9ll/YYsoqO9glk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fG/7kgJU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89BBCC4CEC3;
-	Mon, 28 Oct 2024 06:39:01 +0000 (UTC)
+	 MIME-Version; b=nJ0eZQrO+1ihUYQ5G+qlsHjGSuegv4ilxLV/PDs7pi3gC43LDzDK7eogII38kN+x5A+VMobiNr4HktvbOphpbdsv1TOan1hZIUW+5iHHJAuwa6NWK9ReASUJRwi4467QXGWKn9AZWmJY2odSWFh7CF0MsOJogZPOIwshUUvTGWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d+4GJ90p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DBEEC4CEE8;
+	Mon, 28 Oct 2024 06:48:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097541;
-	bh=ez1WNUYACjktdwux6bMcW5zH2b5lfzrWa52tcwYazbg=;
+	s=korg; t=1730098101;
+	bh=YkXVeWMHCeIHIqIfoXclAzodVsZw6nQ7kJdhZmL8Vvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fG/7kgJUqX8MnLodEoDcWrJokQJ18XkJfUUPQlJTU6UBQr+RUKGzu30Nmk4ZcPZC6
-	 09LKifrFCqsCH+UI8zy2pB5ersLJOyvPG5KvVOwFhnoyTc6bD9N/irrcdchGcCtkuf
-	 KjAlc2NWwKLJUUW86EeKvCiCQn9CoTjrAHULWFGE=
+	b=d+4GJ90p4tqv18VVIg9PnZkBao8tTYOwxVbhl+JJCrQaPpgLjXIVXyeMKk5GinLTX
+	 /QQ7v2UbMEMZHBPwUtRRF2j0yKsBfcx8jYpMUvINqaCg73zFc5OklP2ucvn/4Kgn2n
+	 mWUSTDXIGH5jpWa0x6/4ha0ib5dwfxl3DwR8+BJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Rob Clark <robdclark@chromium.org>,
+	Akhil P Oommen <quic_akhilpo@quicinc.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/208] RDMA/bnxt_re: Fix the GID table length
+Subject: [PATCH 6.11 077/261] drm/msm/a6xx+: Insert a fence wait before SMMU table update
 Date: Mon, 28 Oct 2024 07:23:39 +0100
-Message-ID: <20241028062307.618627672@linuxfoundation.org>
+Message-ID: <20241028062313.958456272@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit dc5006cfcf62bea88076a587344ba5e00e66d1c6 ]
+[ Upstream commit 77ad507dbb7ec1ecd60fc081d03616960ef596fd ]
 
-GID table length is reported by FW. The gid index which is passed to the
-driver during modify_qp/create_ah is restricted by the sgid_index field of
-struct ib_global_route.  sgid_index is u8 and the max sgid possible is
-256.
+The CP_SMMU_TABLE_UPDATE _should_ be waiting for idle, but on some
+devices (x1-85, possibly others), it seems to pass that barrier while
+there are still things in the event completion FIFO waiting to be
+written back to memory.
 
-Each GID entry in HW will have 2 GID entries in the kernel gid table.  So
-we can support twice the gid table size reported by FW. Also, restrict the
-max GID to 256 also.
+Work around that by adding a fence wait before context switch.  The
+CP_EVENT_WRITE that writes the fence is the last write from a submit,
+so seeing this value hit memory is a reliable indication that it is
+safe to proceed with the context switch.
 
-Fixes: 847b97887ed4 ("RDMA/bnxt_re: Restrict the max_gids to 256")
-Link: https://patch.msgid.link/r/1728373302-19530-11-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+v2: Only emit CP_WAIT_TIMESTAMP on a7xx, as it is not supported on a6xx.
+    Conversely, I've not been able to reproduce this issue on a6xx, so
+    hopefully it is limited to a7xx, or perhaps just certain a7xx
+    devices.
+
+Fixes: af66706accdf ("drm/msm/a6xx: Add skeleton A7xx support")
+Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/63
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Reviewed-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_sp.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-index 7e550432ccb14..0b98577cd7082 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-@@ -156,7 +156,14 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
- 	if (!bnxt_qplib_is_chip_gen_p7(rcfw->res->cctx))
- 		attr->l2_db_size = (sb->l2_db_space_size + 1) *
- 				    (0x01 << RCFW_DBR_BASE_PAGE_SHIFT);
--	attr->max_sgid = BNXT_QPLIB_NUM_GIDS_SUPPORTED;
-+	/*
-+	 * Read the max gid supported by HW.
-+	 * For each entry in HW  GID in HW table, we consume 2
-+	 * GID entries in the kernel GID table.  So max_gid reported
-+	 * to stack can be up to twice the value reported by the HW, up to 256 gids.
-+	 */
-+	attr->max_sgid = le32_to_cpu(sb->max_gid);
-+	attr->max_sgid = min_t(u32, BNXT_QPLIB_NUM_GIDS_SUPPORTED, 2 * attr->max_sgid);
- 	attr->dev_cap_flags = le16_to_cpu(sb->dev_cap_flags);
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index bcaec86ac67a5..89b379060596d 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -101,9 +101,10 @@ static void get_stats_counter(struct msm_ringbuffer *ring, u32 counter,
+ }
  
- 	bnxt_qplib_query_version(rcfw, attr->fw_ver);
+ static void a6xx_set_pagetable(struct a6xx_gpu *a6xx_gpu,
+-		struct msm_ringbuffer *ring, struct msm_file_private *ctx)
++		struct msm_ringbuffer *ring, struct msm_gem_submit *submit)
+ {
+ 	bool sysprof = refcount_read(&a6xx_gpu->base.base.sysprof_active) > 1;
++	struct msm_file_private *ctx = submit->queue->ctx;
+ 	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
+ 	phys_addr_t ttbr;
+ 	u32 asid;
+@@ -115,6 +116,15 @@ static void a6xx_set_pagetable(struct a6xx_gpu *a6xx_gpu,
+ 	if (msm_iommu_pagetable_params(ctx->aspace->mmu, &ttbr, &asid))
+ 		return;
+ 
++	if (adreno_gpu->info->family >= ADRENO_7XX_GEN1) {
++		/* Wait for previous submit to complete before continuing: */
++		OUT_PKT7(ring, CP_WAIT_TIMESTAMP, 4);
++		OUT_RING(ring, 0);
++		OUT_RING(ring, lower_32_bits(rbmemptr(ring, fence)));
++		OUT_RING(ring, upper_32_bits(rbmemptr(ring, fence)));
++		OUT_RING(ring, submit->seqno - 1);
++	}
++
+ 	if (!sysprof) {
+ 		if (!adreno_is_a7xx(adreno_gpu)) {
+ 			/* Turn off protected mode to write to special registers */
+@@ -193,7 +203,7 @@ static void a6xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
+ 	struct msm_ringbuffer *ring = submit->ring;
+ 	unsigned int i, ibs = 0;
+ 
+-	a6xx_set_pagetable(a6xx_gpu, ring, submit->queue->ctx);
++	a6xx_set_pagetable(a6xx_gpu, ring, submit);
+ 
+ 	get_stats_counter(ring, REG_A6XX_RBBM_PERFCTR_CP(0),
+ 		rbmemptr_stats(ring, index, cpcycles_start));
+@@ -283,7 +293,7 @@ static void a7xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
+ 	OUT_PKT7(ring, CP_THREAD_CONTROL, 1);
+ 	OUT_RING(ring, CP_THREAD_CONTROL_0_SYNC_THREADS | CP_SET_THREAD_BR);
+ 
+-	a6xx_set_pagetable(a6xx_gpu, ring, submit->queue->ctx);
++	a6xx_set_pagetable(a6xx_gpu, ring, submit);
+ 
+ 	get_stats_counter(ring, REG_A7XX_RBBM_PERFCTR_CP(0),
+ 		rbmemptr_stats(ring, index, cpcycles_start));
 -- 
 2.43.0
 
