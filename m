@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-88953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC8D9B2834
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:54:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 459149B261F
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:37:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DC861C215F7
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:54:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E60BE1F21E08
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:37:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D53818E368;
-	Mon, 28 Oct 2024 06:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 245D018E74D;
+	Mon, 28 Oct 2024 06:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IAS+Cht2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSpfEb+j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8B72AF07;
-	Mon, 28 Oct 2024 06:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BF518E350;
+	Mon, 28 Oct 2024 06:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098496; cv=none; b=g63MWFJCrUt+9c0Bow0C46Grqi6gEJwG3HPak9zPrK9HxHodw6lNp0xlJh0AAHMyKLF0lTErumNVPtPenvMgdZGmUU7qOYCB5I7ZyVUw8N9lSKcj8tQLHGzvo1p//Y3Yf22WYHhF+HNp+MjmNYl5UDVLnX1kNqKR0zgiJlsed1Y=
+	t=1730097411; cv=none; b=KQRPX795L7Kgzkc9CeIiga9CREaUpsX8N1nA14iO5KLYuYYA1qWNEgT0KphR4p/umHwZNlYI+JzyRoURnsXnk/y48jnnRokthuf/YXOLiJIIMZ5BCOsSwwdEXOTjivSSAkZ5RQYxiXBdDGWnT9cRj3T0Gv9/9omk63baYB2YJVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098496; c=relaxed/simple;
-	bh=SHrWFhB8H0KrJIHY8brPWEeQTdm2j1fTqFJjBKq/nUg=;
+	s=arc-20240116; t=1730097411; c=relaxed/simple;
+	bh=GdMDz6dahbLFR8TywUAXvmjSZfFtDdTp9AGv8Ooo0f8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=smwaIE/ZiAxo7N/YkQLW3E2Zc04e7pjHFuQ6LxBWOxRkvoYb7vPm+Zwa7MhnY/XGkUC4s/wTdc4UvUFkNMBaFj7PGybcIpxi0OSHSa8lSpCs0JW3N7kVSRNNXj68RdgfzbVPpE4WX+Z/wVz/3E+k3yUrVePmvJkZFElt9MonCzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAS+Cht2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94CECC4CEC3;
-	Mon, 28 Oct 2024 06:54:55 +0000 (UTC)
+	 MIME-Version; b=Dj4OuMBPUe+bjTzDAdmTSn42P7H+NnahJG9JfZHX2FjSWZ1NtKZpEsMkiacA+TL9pqPzfgLnKAxVTRRmfTQ040QLYP8dtr1giVMUlTqOx/qPb8bIy6LrnsubhuZA/0Bxr8F2pP6JY+T9T79W/iJPDxxL2x83mSYv1yjskW/+c+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSpfEb+j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77CB3C4CEC3;
+	Mon, 28 Oct 2024 06:36:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098495;
-	bh=SHrWFhB8H0KrJIHY8brPWEeQTdm2j1fTqFJjBKq/nUg=;
+	s=korg; t=1730097411;
+	bh=GdMDz6dahbLFR8TywUAXvmjSZfFtDdTp9AGv8Ooo0f8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IAS+Cht2Zb3+Coise9MtcSK+MvmqyZzAQWE/vHM11595pU1uzbECv4tVoEw0Y/c+K
-	 0Z4zLeeRI1fZMGsbsKCUuB/KgP1tI5Gl7OW8HBnCyV7a9ptTHXi7+yXK/UDU1dqYsd
-	 Qj67flKDP9DjmfgMoCKVDKZxKVXAkTEJ61ha2YWc=
+	b=QSpfEb+j9qTR5i6co0KuXHkKhNFEtVJXokjJ2MgpnZVCLuqrEDUrmoCeyyrt8xCN0
+	 rKLgndEMhF4NmVY8UE4VBxjOX7ctXyalve+ns4SK5DJqB5yDvDuxdkVzpjye39GYSE
+	 QCCcnuIWhGWAMseOcQpsUcS2jeAZwFOdg1ZL9ATE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brad Spengler <spender@grsecurity.net>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.11 215/261] fs: dont try and remove empty rbtree node
+	Shubham Panwar <shubiisp8@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.1 120/137] ACPI: button: Add DMI quirk for Samsung Galaxy Book2 to fix initial lid detection issue
 Date: Mon, 28 Oct 2024 07:25:57 +0100
-Message-ID: <20241028062317.480482748@linuxfoundation.org>
+Message-ID: <20241028062302.064171942@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Shubham Panwar <shubiisp8@gmail.com>
 
-commit 229fd15908fe1f99b1de4cde3326e62d1e892611 upstream.
+commit 8fa73ee44daefc884c53a25158c25a4107eb5a94 upstream.
 
-When copying a namespace we won't have added the new copy into the
-namespace rbtree until after the copy succeeded. Calling free_mnt_ns()
-will try to remove the copy from the rbtree which is invalid. Simply
-free the namespace skeleton directly.
+Add a DMI quirk for Samsung Galaxy Book2 to fix an initial lid state
+detection issue.
 
-Link: https://lore.kernel.org/r/20241016-adapter-seilwinde-83c508a7bde1@brauner
-Fixes: 1901c92497bd ("fs: keep an index of current mount namespaces")
-Tested-by: Brad Spengler <spender@grsecurity.net>
-Cc: stable@vger.kernel.org # v6.11+
-Reported-by: Brad Spengler <spender@grsecurity.net>
-Suggested-by: Brad Spengler <spender@grsecurity.net>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+The _LID device incorrectly returns the lid status as "closed" during
+boot, causing the system to enter a suspend loop right after booting.
+
+The quirk ensures that the correct lid state is reported initially,
+preventing the system from immediately suspending after startup.  It
+only addresses the initial lid state detection and ensures proper
+system behavior upon boot.
+
+Signed-off-by: Shubham Panwar <shubiisp8@gmail.com>
+Link: https://patch.msgid.link/20241020095045.6036-2-shubiisp8@gmail.com
+[ rjw: Changelog edits ]
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/namespace.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/acpi/button.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -3917,7 +3917,9 @@ struct mnt_namespace *copy_mnt_ns(unsign
- 	new = copy_tree(old, old->mnt.mnt_root, copy_flags);
- 	if (IS_ERR(new)) {
- 		namespace_unlock();
--		free_mnt_ns(new_ns);
-+		ns_free_inum(&new_ns->ns);
-+		dec_mnt_namespaces(new_ns->ucounts);
-+		mnt_ns_release(new_ns);
- 		return ERR_CAST(new);
- 	}
- 	if (user_ns != ns->user_ns) {
+--- a/drivers/acpi/button.c
++++ b/drivers/acpi/button.c
+@@ -121,6 +121,17 @@ static const struct dmi_system_id dmi_li
+ 		},
+ 		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
+ 	},
++	{
++		/*
++		 * Samsung galaxybook2 ,initial _LID device notification returns
++		 * lid closed.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "SAMSUNG ELECTRONICS CO., LTD."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "750XED"),
++		},
++		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
++	},
+ 	{}
+ };
+ 
 
 
 
