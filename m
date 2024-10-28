@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 842DB9B25CB
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:34:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA959B268F
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:40:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A7FE1F21172
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:34:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 643CF282417
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B57418E743;
-	Mon, 28 Oct 2024 06:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B380A18E04F;
+	Mon, 28 Oct 2024 06:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ie21xRup"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8lR41zq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA69318C03D;
-	Mon, 28 Oct 2024 06:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B2718E36D;
+	Mon, 28 Oct 2024 06:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097236; cv=none; b=Bk5VtUqbRp5vM+tvr3N75A6K4YMdfxkdWX083v7QqAPpjGIeql0bO5SCLyC87IS2vDoEPJpiDmzZ6fXmpu/GG6aKBbKD4Kf3VLBO8bVO/nOk7E1PDkPBYgNvssilbntGyRx8S9QNKBlYUvkMGoXpyTyxMcfxXg/jQM/xuu/0wXg=
+	t=1730097640; cv=none; b=E4i/Wsz7Bh56sdAO7WDo+JXfoDXmSXN+1rkWf+ldjWKAZYJCfC+t6d7x8IXTzltVfKIreVROJGXO5/1pXfQqp1n7akLwxzNcUdddj9aa1n6UfqL0QdLrnlRPvDIub1xD1lLVFBW0gmpYg8OyBExb+hymToEukttBI36pWqyidvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097236; c=relaxed/simple;
-	bh=x0KqzL+V/M8oBEIaDtn6ZepLIrRLF3o7wRxHYiBK1vs=;
+	s=arc-20240116; t=1730097640; c=relaxed/simple;
+	bh=jJTlhGtjZPB503612moJTmmYBaXz/tIOUPr63ew1IWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r4AFlwhoWHLjl5+IIWUU261HlPkN1kbIDtzAYc8ki0EFx+t6itaDbDn/voJUtOHdi1zSv55RyF2eEVhV4BU/EdjC9YSn5d5JpctljEhAckYoz4mD36h0ZuM3pCu8cbtn0h6m5218sEOXVSi1tz7lOVBvBls6n579Z8OrACBnL+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ie21xRup; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87776C4CEC7;
-	Mon, 28 Oct 2024 06:33:55 +0000 (UTC)
+	 MIME-Version; b=pWN0HkibivF4YAwAINKuEe0rm9PkViJViSlhjbPPKRzWVBDQrRG+o/zhpVFSCHzciwpuL6ogsT5wFQX4wQJB8q+DksqMM9oeH9CGmXSWnvKuK2gcQeRPzpl3t85lySwzCnrY1Dw5Wipk6UEpd8r5f2z4xeqfWwmLGNuGCAJOD5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8lR41zq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 115B6C4CEC3;
+	Mon, 28 Oct 2024 06:40:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097235;
-	bh=x0KqzL+V/M8oBEIaDtn6ZepLIrRLF3o7wRxHYiBK1vs=;
+	s=korg; t=1730097640;
+	bh=jJTlhGtjZPB503612moJTmmYBaXz/tIOUPr63ew1IWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ie21xRuphD8o6I0NTvAbJOE3TtOqOa8B6d4EUyKfGARI+v/dEevU08a9g43Ph76Y6
-	 t5J9HCeRtWqblWtOv6TUmK2GWF+1xTSn0zFxAklSAa7XzsVgkFhA5C4/VoWHi86t+V
-	 W2BHVQWUERY6w6QH0wPZTx6DY0JsxtbLEa1JHdP4=
+	b=j8lR41zqAUO8aeGUltUFwFgKLDpLwC66z2pcxVsqoKbKoTJWW/SX0LKgKRaSRmcX7
+	 IYOq8VCUAd/+aGIFj2NuPngmIlJs6NBApfkUAx0TEck3EGYWWJ3lNXRPAVYPv8F8zG
+	 YR+depwKsu3JBZuqutkpvfxrimljEj7XGkt8b1kg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 025/137] drm/msm: Avoid NULL dereference in msm_disp_state_print_regs()
+Subject: [PATCH 6.6 082/208] bpf, sockmap: SK_DROP on attempted redirects of unsupported af_vsock
 Date: Mon, 28 Oct 2024 07:24:22 +0100
-Message-ID: <20241028062259.422801686@linuxfoundation.org>
+Message-ID: <20241028062308.666927351@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit 293f53263266bc4340d777268ab4328a97f041fa ]
+[ Upstream commit 9c5bd93edf7b8834aecaa7c340b852d5990d7c78 ]
 
-If the allocation in msm_disp_state_dump_regs() failed then
-`block->state` can be NULL. The msm_disp_state_print_regs() function
-_does_ have code to try to handle it with:
+Don't mislead the callers of bpf_{sk,msg}_redirect_{map,hash}(): make sure
+to immediately and visibly fail the forwarding of unsupported af_vsock
+packets.
 
-  if (*reg)
-    dump_addr = *reg;
-
-...but since "dump_addr" is initialized to NULL the above is actually
-a noop. The code then goes on to dereference `dump_addr`.
-
-Make the function print "Registers not stored" when it sees a NULL to
-solve this. Since we're touching the code, fix
-msm_disp_state_print_regs() not to pointlessly take a double-pointer
-and properly mark the pointer as `const`.
-
-Fixes: 98659487b845 ("drm/msm: add support to take dpu snapshot")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/619657/
-Link: https://lore.kernel.org/r/20241014093605.1.Ia1217cecec9ef09eb3c6d125360cc6c8574b0e73@changeid
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Fixes: 634f1a7110b4 ("vsock: support sockmap")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/bpf/20241013-vsock-fixes-for-redir-v2-1-d6577bbfe742@rbox.co
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ include/net/sock.h  | 5 +++++
+ net/core/sock_map.c | 8 ++++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
-index add72bbc28b17..bb149281d31fa 100644
---- a/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
-+++ b/drivers/gpu/drm/msm/disp/msm_disp_snapshot_util.c
-@@ -48,20 +48,21 @@ static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *b
- 	}
+diff --git a/include/net/sock.h b/include/net/sock.h
+index c3961050b8e39..e0be8bd983960 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2826,6 +2826,11 @@ static inline bool sk_is_stream_unix(const struct sock *sk)
+ 	return sk->sk_family == AF_UNIX && sk->sk_type == SOCK_STREAM;
  }
  
--static void msm_disp_state_print_regs(u32 **reg, u32 len, void __iomem *base_addr,
--		struct drm_printer *p)
-+static void msm_disp_state_print_regs(const u32 *dump_addr, u32 len,
-+		void __iomem *base_addr, struct drm_printer *p)
- {
- 	int i;
--	u32 *dump_addr = NULL;
- 	void __iomem *addr;
- 	u32 num_rows;
- 
-+	if (!dump_addr) {
-+		drm_printf(p, "Registers not stored\n");
-+		return;
-+	}
++static inline bool sk_is_vsock(const struct sock *sk)
++{
++	return sk->sk_family == AF_VSOCK;
++}
 +
- 	addr = base_addr;
- 	num_rows = len / REG_DUMP_ALIGN;
+ /**
+  * sk_eat_skb - Release a skb if it is no longer needed
+  * @sk: socket to eat this skb from
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index 2afac40bb83ca..2da881a8e7983 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -644,6 +644,8 @@ BPF_CALL_4(bpf_sk_redirect_map, struct sk_buff *, skb,
+ 	sk = __sock_map_lookup_elem(map, key);
+ 	if (unlikely(!sk || !sock_map_redirect_allowed(sk)))
+ 		return SK_DROP;
++	if ((flags & BPF_F_INGRESS) && sk_is_vsock(sk))
++		return SK_DROP;
  
--	if (*reg)
--		dump_addr = *reg;
--
- 	for (i = 0; i < num_rows; i++) {
- 		drm_printf(p, "0x%lx : %08x %08x %08x %08x\n",
- 				(unsigned long)(addr - base_addr),
-@@ -89,7 +90,7 @@ void msm_disp_state_print(struct msm_disp_state *state, struct drm_printer *p)
+ 	skb_bpf_set_redir(skb, sk, flags & BPF_F_INGRESS);
+ 	return SK_PASS;
+@@ -672,6 +674,8 @@ BPF_CALL_4(bpf_msg_redirect_map, struct sk_msg *, msg,
+ 		return SK_DROP;
+ 	if (!(flags & BPF_F_INGRESS) && !sk_is_tcp(sk))
+ 		return SK_DROP;
++	if (sk_is_vsock(sk))
++		return SK_DROP;
  
- 	list_for_each_entry_safe(block, tmp, &state->blocks, node) {
- 		drm_printf(p, "====================%s================\n", block->name);
--		msm_disp_state_print_regs(&block->state, block->size, block->base_addr, p);
-+		msm_disp_state_print_regs(block->state, block->size, block->base_addr, p);
- 	}
+ 	msg->flags = flags;
+ 	msg->sk_redir = sk;
+@@ -1246,6 +1250,8 @@ BPF_CALL_4(bpf_sk_redirect_hash, struct sk_buff *, skb,
+ 	sk = __sock_hash_lookup_elem(map, key);
+ 	if (unlikely(!sk || !sock_map_redirect_allowed(sk)))
+ 		return SK_DROP;
++	if ((flags & BPF_F_INGRESS) && sk_is_vsock(sk))
++		return SK_DROP;
  
- 	drm_printf(p, "===================dpu drm state================\n");
+ 	skb_bpf_set_redir(skb, sk, flags & BPF_F_INGRESS);
+ 	return SK_PASS;
+@@ -1274,6 +1280,8 @@ BPF_CALL_4(bpf_msg_redirect_hash, struct sk_msg *, msg,
+ 		return SK_DROP;
+ 	if (!(flags & BPF_F_INGRESS) && !sk_is_tcp(sk))
+ 		return SK_DROP;
++	if (sk_is_vsock(sk))
++		return SK_DROP;
+ 
+ 	msg->flags = flags;
+ 	msg->sk_redir = sk;
 -- 
 2.43.0
 
