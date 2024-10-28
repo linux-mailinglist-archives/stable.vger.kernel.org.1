@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-88586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 199AA9B269C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:41:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CAE69B25C4
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:34:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D213B282497
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C2271C20F31
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C5C018E368;
-	Mon, 28 Oct 2024 06:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C8E190660;
+	Mon, 28 Oct 2024 06:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LvfeMxgu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8rCs/RK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B06D2C697;
-	Mon, 28 Oct 2024 06:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88CA18E37C;
+	Mon, 28 Oct 2024 06:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097667; cv=none; b=gZNGJ9vkHEd0YpMm6ccRzhmaSouhxohmwE9cUUkCkkR+K/q/T2zBW5kQBnUaqdUnVgJh1Z8kS9rGuaY+wMlEXREiiISOr6mavmLaO5y4Y0OEgac/LJO9qwx0xG7A+vmGj7lGQ92ODx8w7UbzCGDratJVxGY7J0j5Ks8WPs1/n7E=
+	t=1730097219; cv=none; b=N5Ax/gef6pudfrq2vjrsMcT+8H9gKnfQ98vX8o3cvzhDUbgf9KR11Pc7dLritcz6+slKiU62HpB1x8FwM5t6Z/LYC0s3gGafZUX9gO89QY8z9JfeK44boQYtw8s1jPQe/eQDP0JPSHQuXzcJRz5yRlmlz1+lPUUVR6+DGKeDVcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097667; c=relaxed/simple;
-	bh=6/48O118OMVNVVYXmEwj8p1EtnspjVaJGaZ3rM4fPz8=;
+	s=arc-20240116; t=1730097219; c=relaxed/simple;
+	bh=YUcrdvQjPTAmtmQxoYiE7PWc0DMWJYq0r+JLMxmyDRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WeoJmi5KDBdeRIRo11RZ7C4fYAEZRom2R8F8LKiamQYPJ4a5EI1wnINvtCKfFVc9gEFTOAIn/IN5uz0o557XxMgfyC3KKEybhQnMPbUs/ubv9zsIU2rQ7GC1ok2nZwc1j+haneJwau7G4Mlpa4KbzXEAM/PsVy4YsyvTmiMlYbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LvfeMxgu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCAEFC4CEC3;
-	Mon, 28 Oct 2024 06:41:06 +0000 (UTC)
+	 MIME-Version; b=cEhjQ/gviRQZ52StDMX3HqpU54nKFXC82BBhydfoNWeYSmAObyH75YXB+Vow7o0U4P0lZ7bNNT6jwJPgWispfTTzHNkh+xVjGaFHl55dKywsxNMecjIY93Ys0ZkWzEfY3irJDiA8KEAfluWIg4rbvpbMMnrCtLMClSX+X/WiyfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8rCs/RK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 754D2C4CEC7;
+	Mon, 28 Oct 2024 06:33:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097667;
-	bh=6/48O118OMVNVVYXmEwj8p1EtnspjVaJGaZ3rM4fPz8=;
+	s=korg; t=1730097219;
+	bh=YUcrdvQjPTAmtmQxoYiE7PWc0DMWJYq0r+JLMxmyDRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LvfeMxgukbqRzr1EBfJu3ewFAhPtICuHWyYtfHnr2VaXA/OVDXCLzm9OlJSTwAGZD
-	 hitKjJsVRXvg5JVXCh9gRJCP2XSUB9uvkYKY/9AmREEsCBgoghKTKZwjnSkacNcyrl
-	 aBvP9sMGQu+5Tmpq7PUC1XFIU/4HSCObG94NXt9s=
+	b=n8rCs/RKEDSW2E5wHe7WOOlurPqA7m3j89ts0y5jh1fixu9w5ayRkwkBo2RhAC6Kj
+	 SfbkjlRg0QC5EdCC/MsFNhI1ljJp3ykKZzUcwpbhFD9Koi/AZfuDUM5jHwIp+I7ECR
+	 L0rAXKK8HUtyAd6Ll+H7+1Xy4lkIrT/Bxn2ubuyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 093/208] mm/khugepaged: use a folio more in collapse_file()
+Subject: [PATCH 6.1 036/137] irqchip/renesas-rzg2l: Align struct member names to tabs
 Date: Mon, 28 Oct 2024 07:24:33 +0100
-Message-ID: <20241028062308.946053707@linuxfoundation.org>
+Message-ID: <20241028062259.733443782@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit b54d60b18e850561e8bdb4264ae740676c3b7658 ]
+[ Upstream commit 02f6507640173addeeb3af035d2c6f0b3cff1567 ]
 
-This function is not yet fully converted to the folio API, but this
-removes a few uses of old APIs.
+Align struct member names to tabs to follow the requirements from
+maintainer-tip file. 3 tabs were used at the moment as the next commits
+will add a new member which requires 3 tabs for a better view.
 
-Link: https://lkml.kernel.org/r/20231228085748.1083901-6-willy@infradead.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 37f0b47c5143 ("mm: khugepaged: fix the arguments order in khugepaged_collapse_file trace point")
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20231120111820.87398-4-claudiu.beznea.uj@bp.renesas.com
+Stable-dep-of: d038109ac1c6 ("irqchip/renesas-rzg2l: Fix missing put_device")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/khugepaged.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/irqchip/irq-renesas-rzg2l.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 24d05e0a672dc..cb6a243688045 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2124,23 +2124,23 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
- 		xas_lock_irq(&xas);
- 	}
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index 70279ca7e6278..884379f207d50 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -56,9 +56,9 @@
+ #define TINT_EXTRACT_GPIOINT(x)         FIELD_GET(GENMASK(31, 16), (x))
  
--	nr = thp_nr_pages(hpage);
-+	folio = page_folio(hpage);
-+	nr = folio_nr_pages(folio);
- 	if (is_shmem)
--		__mod_lruvec_page_state(hpage, NR_SHMEM_THPS, nr);
-+		__lruvec_stat_mod_folio(folio, NR_SHMEM_THPS, nr);
- 	else
--		__mod_lruvec_page_state(hpage, NR_FILE_THPS, nr);
-+		__lruvec_stat_mod_folio(folio, NR_FILE_THPS, nr);
+ struct rzg2l_irqc_priv {
+-	void __iomem *base;
+-	struct irq_fwspec fwspec[IRQC_NUM_IRQ];
+-	raw_spinlock_t lock;
++	void __iomem			*base;
++	struct irq_fwspec		fwspec[IRQC_NUM_IRQ];
++	raw_spinlock_t			lock;
+ };
  
- 	if (nr_none) {
--		__mod_lruvec_page_state(hpage, NR_FILE_PAGES, nr_none);
-+		__lruvec_stat_mod_folio(folio, NR_FILE_PAGES, nr_none);
- 		/* nr_none is always 0 for non-shmem. */
--		__mod_lruvec_page_state(hpage, NR_SHMEM, nr_none);
-+		__lruvec_stat_mod_folio(folio, NR_SHMEM, nr_none);
- 	}
- 
- 	/*
- 	 * Mark hpage as uptodate before inserting it into the page cache so
- 	 * that it isn't mistaken for an fallocated but unwritten page.
- 	 */
--	folio = page_folio(hpage);
- 	folio_mark_uptodate(folio);
- 	folio_ref_add(folio, HPAGE_PMD_NR - 1);
- 
-@@ -2150,7 +2150,7 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
- 
- 	/* Join all the small entries into a single multi-index entry. */
- 	xas_set_order(&xas, start, HPAGE_PMD_ORDER);
--	xas_store(&xas, hpage);
-+	xas_store(&xas, folio);
- 	WARN_ON_ONCE(xas_error(&xas));
- 	xas_unlock_irq(&xas);
- 
-@@ -2161,7 +2161,7 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
- 	retract_page_tables(mapping, start);
- 	if (cc && !cc->is_khugepaged)
- 		result = SCAN_PTE_MAPPED_HUGEPAGE;
--	unlock_page(hpage);
-+	folio_unlock(folio);
- 
- 	/*
- 	 * The collapse has succeeded, so free the old pages.
+ static struct rzg2l_irqc_priv *irq_data_to_priv(struct irq_data *data)
 -- 
 2.43.0
 
