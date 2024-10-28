@@ -1,134 +1,389 @@
-Return-Path: <stable+bounces-88982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C5729B2C35
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:02:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70A9E9B2D54
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 11:51:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F9881C21893
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 10:02:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F8DA2813E3
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 10:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A731922EF;
-	Mon, 28 Oct 2024 10:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5AF1D5AC2;
+	Mon, 28 Oct 2024 10:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="dhLuGOvb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KujC+W+j"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94DC8472;
-	Mon, 28 Oct 2024 10:02:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D50518800D;
+	Mon, 28 Oct 2024 10:50:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730109768; cv=none; b=XmdTIL/oDAPVoWZdNulOwqruvsMFBQnVpI6xoC2NZ4Ay6jDLuh5+WzfSj/xQZsfD9qOO0N/72tUznz8muzspDRahJ1PVPE37AefMMYkIpsiUgh71HpvcFSfrXxK3vy5Tpj2XCWI5Ip5UynzqFeojpZL+5mA9ToU3SUq8lf+eT+Y=
+	t=1730112654; cv=none; b=FNBpYwhFw2kjf3qmZOaYCJu4faXijmFCXhs+xlGa/FKEejxd56MEjNM/577phEJ20lsL8RbYNXraS3G9LUFCfi/onJhzWkqrt6sBmJmSdiyGuRFoEZC6+D/sP93sv5Abrz9mcTTLjIcg6YQ1EI0NXaoPimqb0j8wU/7wM+/ItjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730109768; c=relaxed/simple;
-	bh=iv8JLu4WApAgyhbJH9xRaotZ5a8y4aYD9wpmNwPuv+w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CfTulNb/BztLERILVRfN5dBukrGhgzuPV1CIWu36O3N3R6DS/sDpERcmWFUVhWaRPpMlgThj01ak2CHzSPbANUiOD1vHI84JtvbodpVBMXyPbo4SFlMdMaObOlnXRO0OkMm1b5gu3nM5O9lwPaky4sJE3aqdc/Rj+WamzGpOCAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=dhLuGOvb; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=SnTIxToI00wx2bd48HW2rv0VU4fhPD6eP8i48CIPUs0=; t=1730109766;
-	x=1730541766; b=dhLuGOvbksvnjIL5EoOJxMRxfw97wtGHBYb9BUaOzMB9UgAB3pRV4Laxkyas/
-	xA/gLWg37TimP5n/pXZlhlJIsusveQb7cJrUQR9+txw+6h5FBRI9fXm6o8hXbalhrIJp/Vrm2ueRQ
-	9ToPQBRVox5ay+EqhzhMtLfkdG2xVL50PAR9S7NbYZjxMf179Xu2Q4vhl7FmgtS5rhcWGbaLUKQrZ
-	WhdzrJIX0s6Gvxa97HnKVhelO1Z1CnJ0lIvg6Cpju+EDp3F2lRXpg9G/pjleNJak9Cj8+ZO1Xomou
-	AFrHFp5XVxMODB6qgZeiQ6uRI5dIMSfmoRwhYsfjos3mt01W+Q==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1t5Ma6-0005fN-8v; Mon, 28 Oct 2024 11:02:38 +0100
-Message-ID: <b1675bcb-41bd-41ab-8e10-ab80943b1ff8@leemhuis.info>
-Date: Mon, 28 Oct 2024 11:02:37 +0100
+	s=arc-20240116; t=1730112654; c=relaxed/simple;
+	bh=yxc88EGY8BTq6kA+t7l3aV10CWSV+eLxY7Brsmkf3NI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EhMfiA7oFf0bZY1hqUUCqjlmHtQqjufvQ93o1lVwrKscekPbsVR1yZiQwPFFMz2Vooo/5v65UHD5t1KRXk3Q5PKr0jbPtVsZv5qlmI6Qyq/RZ0AJ6Z/uIGQJz4olHeX3yh28YkBcOJNDlMqS1WkE3vRlIxV8MDDcG6CYqnFZFpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KujC+W+j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B376C4CEC3;
+	Mon, 28 Oct 2024 10:50:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730112653;
+	bh=yxc88EGY8BTq6kA+t7l3aV10CWSV+eLxY7Brsmkf3NI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=KujC+W+jI+fo3ZgrJZ+VMTUb/6llnBL/WsBAvdIM/5ionUS+BZLu3MaA/qQFC3DG3
+	 NPqK/m14H2QcljxWMiyqFrFIzIDygbrDDoZZhJ8Xx/U6E8kbcychdhytgtTwYrYLl+
+	 SlaKVW26mUrqvFRZ2VWvBcdANmUINJlVMDGVNgFQV8+AZAM2RJ19N2dBcp5st48EJV
+	 emS3MJ6oEVPg5tzhfXyNsRerLTKBXFYINF8BgwkZayZPxJ4S4WYCZ/RQhUZEwvsDKq
+	 KMyR8aWq7YFJcSV96ol+RJoS0vy98jbRTSKP7p/BS+dLbkD78Vk8K8v09qNTK6HrgA
+	 m+1w2DVKmFtpA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Eyal Birger <eyal.birger@gmail.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	dsahern@kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 01/32] xfrm: extract dst lookup parameters into a struct
+Date: Mon, 28 Oct 2024 06:49:43 -0400
+Message-ID: <20241028105050.3559169-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: latest stable-rc tarballs missing? (was: Re: [PATCH 6.11 000/261]
- 6.11.6-rc1 review)
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20241028062312.001273460@linuxfoundation.org>
-From: Thorsten Leemhuis <linux@leemhuis.info>
-Content-Language: en-US, de-DE
-Autocrypt: addr=linux@leemhuis.info; keydata=
- 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 n7RI
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1730109766;1c2905aa;
-X-HE-SMSGID: 1t5Ma6-0005fN-8v
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.11.5
+Content-Transfer-Encoding: 8bit
 
-On 28.10.24 07:22, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.11.6 release.
-> There are 261 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 30 Oct 2024 06:22:39 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.11.6-rc1.gz
+From: Eyal Birger <eyal.birger@gmail.com>
 
-I don't care much, but TWIMC: that URL gives a 404 here. Not idea if
-that is a issue with the local mirror or if the upload went sideways.
+[ Upstream commit e509996b16728e37d5a909a5c63c1bd64f23b306 ]
 
-Ciao, Thorsten
+Preparation for adding more fields to dst lookup functions without
+changing their signatures.
+
+Signed-off-by: Eyal Birger <eyal.birger@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/net/xfrm.h      | 26 +++++++++++++-------------
+ net/ipv4/xfrm4_policy.c | 38 ++++++++++++++++----------------------
+ net/ipv6/xfrm6_policy.c | 28 +++++++++++++---------------
+ net/xfrm/xfrm_device.c  | 11 ++++++++---
+ net/xfrm/xfrm_policy.c  | 35 +++++++++++++++++++++++------------
+ 5 files changed, 73 insertions(+), 65 deletions(-)
+
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index 54cef89f6c1ec..0f49f70dfd141 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -349,20 +349,23 @@ struct xfrm_if_cb {
+ void xfrm_if_register_cb(const struct xfrm_if_cb *ifcb);
+ void xfrm_if_unregister_cb(void);
+ 
++struct xfrm_dst_lookup_params {
++	struct net *net;
++	int tos;
++	int oif;
++	xfrm_address_t *saddr;
++	xfrm_address_t *daddr;
++	u32 mark;
++};
++
+ struct net_device;
+ struct xfrm_type;
+ struct xfrm_dst;
+ struct xfrm_policy_afinfo {
+ 	struct dst_ops		*dst_ops;
+-	struct dst_entry	*(*dst_lookup)(struct net *net,
+-					       int tos, int oif,
+-					       const xfrm_address_t *saddr,
+-					       const xfrm_address_t *daddr,
+-					       u32 mark);
+-	int			(*get_saddr)(struct net *net, int oif,
+-					     xfrm_address_t *saddr,
+-					     xfrm_address_t *daddr,
+-					     u32 mark);
++	struct dst_entry	*(*dst_lookup)(const struct xfrm_dst_lookup_params *params);
++	int			(*get_saddr)(xfrm_address_t *saddr,
++					     const struct xfrm_dst_lookup_params *params);
+ 	int			(*fill_dst)(struct xfrm_dst *xdst,
+ 					    struct net_device *dev,
+ 					    const struct flowi *fl);
+@@ -1735,10 +1738,7 @@ static inline int xfrm_user_policy(struct sock *sk, int optname,
+ }
+ #endif
+ 
+-struct dst_entry *__xfrm_dst_lookup(struct net *net, int tos, int oif,
+-				    const xfrm_address_t *saddr,
+-				    const xfrm_address_t *daddr,
+-				    int family, u32 mark);
++struct dst_entry *__xfrm_dst_lookup(int family, const struct xfrm_dst_lookup_params *params);
+ 
+ struct xfrm_policy *xfrm_policy_alloc(struct net *net, gfp_t gfp);
+ 
+diff --git a/net/ipv4/xfrm4_policy.c b/net/ipv4/xfrm4_policy.c
+index 0294fef577fab..ac1a28ef0c560 100644
+--- a/net/ipv4/xfrm4_policy.c
++++ b/net/ipv4/xfrm4_policy.c
+@@ -17,47 +17,41 @@
+ #include <net/ip.h>
+ #include <net/l3mdev.h>
+ 
+-static struct dst_entry *__xfrm4_dst_lookup(struct net *net, struct flowi4 *fl4,
+-					    int tos, int oif,
+-					    const xfrm_address_t *saddr,
+-					    const xfrm_address_t *daddr,
+-					    u32 mark)
++static struct dst_entry *__xfrm4_dst_lookup(struct flowi4 *fl4,
++					    const struct xfrm_dst_lookup_params *params)
+ {
+ 	struct rtable *rt;
+ 
+ 	memset(fl4, 0, sizeof(*fl4));
+-	fl4->daddr = daddr->a4;
+-	fl4->flowi4_tos = tos;
+-	fl4->flowi4_l3mdev = l3mdev_master_ifindex_by_index(net, oif);
+-	fl4->flowi4_mark = mark;
+-	if (saddr)
+-		fl4->saddr = saddr->a4;
+-
+-	rt = __ip_route_output_key(net, fl4);
++	fl4->daddr = params->daddr->a4;
++	fl4->flowi4_tos = params->tos;
++	fl4->flowi4_l3mdev = l3mdev_master_ifindex_by_index(params->net,
++							    params->oif);
++	fl4->flowi4_mark = params->mark;
++	if (params->saddr)
++		fl4->saddr = params->saddr->a4;
++
++	rt = __ip_route_output_key(params->net, fl4);
+ 	if (!IS_ERR(rt))
+ 		return &rt->dst;
+ 
+ 	return ERR_CAST(rt);
+ }
+ 
+-static struct dst_entry *xfrm4_dst_lookup(struct net *net, int tos, int oif,
+-					  const xfrm_address_t *saddr,
+-					  const xfrm_address_t *daddr,
+-					  u32 mark)
++static struct dst_entry *xfrm4_dst_lookup(const struct xfrm_dst_lookup_params *params)
+ {
+ 	struct flowi4 fl4;
+ 
+-	return __xfrm4_dst_lookup(net, &fl4, tos, oif, saddr, daddr, mark);
++	return __xfrm4_dst_lookup(&fl4, params);
+ }
+ 
+-static int xfrm4_get_saddr(struct net *net, int oif,
+-			   xfrm_address_t *saddr, xfrm_address_t *daddr,
+-			   u32 mark)
++static int xfrm4_get_saddr(xfrm_address_t *saddr,
++			   const struct xfrm_dst_lookup_params *params)
+ {
+ 	struct dst_entry *dst;
+ 	struct flowi4 fl4;
+ 
+-	dst = __xfrm4_dst_lookup(net, &fl4, 0, oif, NULL, daddr, mark);
++	dst = __xfrm4_dst_lookup(&fl4, params);
+ 	if (IS_ERR(dst))
+ 		return -EHOSTUNREACH;
+ 
+diff --git a/net/ipv6/xfrm6_policy.c b/net/ipv6/xfrm6_policy.c
+index b1d81c4270ab3..fc3f5eec68985 100644
+--- a/net/ipv6/xfrm6_policy.c
++++ b/net/ipv6/xfrm6_policy.c
+@@ -23,23 +23,21 @@
+ #include <net/ip6_route.h>
+ #include <net/l3mdev.h>
+ 
+-static struct dst_entry *xfrm6_dst_lookup(struct net *net, int tos, int oif,
+-					  const xfrm_address_t *saddr,
+-					  const xfrm_address_t *daddr,
+-					  u32 mark)
++static struct dst_entry *xfrm6_dst_lookup(const struct xfrm_dst_lookup_params *params)
+ {
+ 	struct flowi6 fl6;
+ 	struct dst_entry *dst;
+ 	int err;
+ 
+ 	memset(&fl6, 0, sizeof(fl6));
+-	fl6.flowi6_l3mdev = l3mdev_master_ifindex_by_index(net, oif);
+-	fl6.flowi6_mark = mark;
+-	memcpy(&fl6.daddr, daddr, sizeof(fl6.daddr));
+-	if (saddr)
+-		memcpy(&fl6.saddr, saddr, sizeof(fl6.saddr));
++	fl6.flowi6_l3mdev = l3mdev_master_ifindex_by_index(params->net,
++							   params->oif);
++	fl6.flowi6_mark = params->mark;
++	memcpy(&fl6.daddr, params->daddr, sizeof(fl6.daddr));
++	if (params->saddr)
++		memcpy(&fl6.saddr, params->saddr, sizeof(fl6.saddr));
+ 
+-	dst = ip6_route_output(net, NULL, &fl6);
++	dst = ip6_route_output(params->net, NULL, &fl6);
+ 
+ 	err = dst->error;
+ 	if (dst->error) {
+@@ -50,15 +48,14 @@ static struct dst_entry *xfrm6_dst_lookup(struct net *net, int tos, int oif,
+ 	return dst;
+ }
+ 
+-static int xfrm6_get_saddr(struct net *net, int oif,
+-			   xfrm_address_t *saddr, xfrm_address_t *daddr,
+-			   u32 mark)
++static int xfrm6_get_saddr(xfrm_address_t *saddr,
++			   const struct xfrm_dst_lookup_params *params)
+ {
+ 	struct dst_entry *dst;
+ 	struct net_device *dev;
+ 	struct inet6_dev *idev;
+ 
+-	dst = xfrm6_dst_lookup(net, 0, oif, NULL, daddr, mark);
++	dst = xfrm6_dst_lookup(params);
+ 	if (IS_ERR(dst))
+ 		return -EHOSTUNREACH;
+ 
+@@ -68,7 +65,8 @@ static int xfrm6_get_saddr(struct net *net, int oif,
+ 		return -EHOSTUNREACH;
+ 	}
+ 	dev = idev->dev;
+-	ipv6_dev_get_saddr(dev_net(dev), dev, &daddr->in6, 0, &saddr->in6);
++	ipv6_dev_get_saddr(dev_net(dev), dev, &params->daddr->in6, 0,
++			   &saddr->in6);
+ 	dst_release(dst);
+ 	return 0;
+ }
+diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
+index 9a44d363ba620..fcd67fdfe79bd 100644
+--- a/net/xfrm/xfrm_device.c
++++ b/net/xfrm/xfrm_device.c
+@@ -269,6 +269,8 @@ int xfrm_dev_state_add(struct net *net, struct xfrm_state *x,
+ 
+ 	dev = dev_get_by_index(net, xuo->ifindex);
+ 	if (!dev) {
++		struct xfrm_dst_lookup_params params;
++
+ 		if (!(xuo->flags & XFRM_OFFLOAD_INBOUND)) {
+ 			saddr = &x->props.saddr;
+ 			daddr = &x->id.daddr;
+@@ -277,9 +279,12 @@ int xfrm_dev_state_add(struct net *net, struct xfrm_state *x,
+ 			daddr = &x->props.saddr;
+ 		}
+ 
+-		dst = __xfrm_dst_lookup(net, 0, 0, saddr, daddr,
+-					x->props.family,
+-					xfrm_smark_get(0, x));
++		memset(&params, 0, sizeof(params));
++		params.net = net;
++		params.saddr = saddr;
++		params.daddr = daddr;
++		params.mark = xfrm_smark_get(0, x);
++		dst = __xfrm_dst_lookup(x->props.family, &params);
+ 		if (IS_ERR(dst))
+ 			return (is_packet_offload) ? -EINVAL : 0;
+ 
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index c56c61b0c12ef..1025b5b3a1dd6 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -267,10 +267,8 @@ static const struct xfrm_if_cb *xfrm_if_get_cb(void)
+ 	return rcu_dereference(xfrm_if_cb);
+ }
+ 
+-struct dst_entry *__xfrm_dst_lookup(struct net *net, int tos, int oif,
+-				    const xfrm_address_t *saddr,
+-				    const xfrm_address_t *daddr,
+-				    int family, u32 mark)
++struct dst_entry *__xfrm_dst_lookup(int family,
++				    const struct xfrm_dst_lookup_params *params)
+ {
+ 	const struct xfrm_policy_afinfo *afinfo;
+ 	struct dst_entry *dst;
+@@ -279,7 +277,7 @@ struct dst_entry *__xfrm_dst_lookup(struct net *net, int tos, int oif,
+ 	if (unlikely(afinfo == NULL))
+ 		return ERR_PTR(-EAFNOSUPPORT);
+ 
+-	dst = afinfo->dst_lookup(net, tos, oif, saddr, daddr, mark);
++	dst = afinfo->dst_lookup(params);
+ 
+ 	rcu_read_unlock();
+ 
+@@ -293,6 +291,7 @@ static inline struct dst_entry *xfrm_dst_lookup(struct xfrm_state *x,
+ 						xfrm_address_t *prev_daddr,
+ 						int family, u32 mark)
+ {
++	struct xfrm_dst_lookup_params params;
+ 	struct net *net = xs_net(x);
+ 	xfrm_address_t *saddr = &x->props.saddr;
+ 	xfrm_address_t *daddr = &x->id.daddr;
+@@ -307,7 +306,14 @@ static inline struct dst_entry *xfrm_dst_lookup(struct xfrm_state *x,
+ 		daddr = x->coaddr;
+ 	}
+ 
+-	dst = __xfrm_dst_lookup(net, tos, oif, saddr, daddr, family, mark);
++	params.net = net;
++	params.saddr = saddr;
++	params.daddr = daddr;
++	params.tos = tos;
++	params.oif = oif;
++	params.mark = mark;
++
++	dst = __xfrm_dst_lookup(family, &params);
+ 
+ 	if (!IS_ERR(dst)) {
+ 		if (prev_saddr != saddr)
+@@ -2440,15 +2446,15 @@ int __xfrm_sk_clone_policy(struct sock *sk, const struct sock *osk)
+ }
+ 
+ static int
+-xfrm_get_saddr(struct net *net, int oif, xfrm_address_t *local,
+-	       xfrm_address_t *remote, unsigned short family, u32 mark)
++xfrm_get_saddr(unsigned short family, xfrm_address_t *saddr,
++	       const struct xfrm_dst_lookup_params *params)
+ {
+ 	int err;
+ 	const struct xfrm_policy_afinfo *afinfo = xfrm_policy_get_afinfo(family);
+ 
+ 	if (unlikely(afinfo == NULL))
+ 		return -EINVAL;
+-	err = afinfo->get_saddr(net, oif, local, remote, mark);
++	err = afinfo->get_saddr(saddr, params);
+ 	rcu_read_unlock();
+ 	return err;
+ }
+@@ -2477,9 +2483,14 @@ xfrm_tmpl_resolve_one(struct xfrm_policy *policy, const struct flowi *fl,
+ 			remote = &tmpl->id.daddr;
+ 			local = &tmpl->saddr;
+ 			if (xfrm_addr_any(local, tmpl->encap_family)) {
+-				error = xfrm_get_saddr(net, fl->flowi_oif,
+-						       &tmp, remote,
+-						       tmpl->encap_family, 0);
++				struct xfrm_dst_lookup_params params;
++
++				memset(&params, 0, sizeof(params));
++				params.net = net;
++				params.oif = fl->flowi_oif;
++				params.daddr = remote;
++				error = xfrm_get_saddr(tmpl->encap_family, &tmp,
++						       &params);
+ 				if (error)
+ 					goto fail;
+ 				local = &tmp;
+-- 
+2.43.0
+
 
