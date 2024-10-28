@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F4FC9B2702
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C56CC9B2591
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:32:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 668AE2821E5
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C51B1F21AE6
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:32:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6BF918CBE8;
-	Mon, 28 Oct 2024 06:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A1F18E348;
+	Mon, 28 Oct 2024 06:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jAvcbJBe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2u+rZHqE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C0D189BAF;
-	Mon, 28 Oct 2024 06:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69DC15B10D;
+	Mon, 28 Oct 2024 06:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097873; cv=none; b=gGJhhV4CyEylsXFtEKeZLU0Nrsv/8jLlH4AxBdU3cWs15C7M0mgIpXlkCMcTQlKvHL3lxpPkERZumLIa0xM4k0Q7mwm44xmR6B0cwkKN30l7kDYvMq9kQczm9/JiT3Z03VoofUI8H7BA0CxHcVaMvYvTVYooZgMAAw6r4rYcmfw=
+	t=1730097151; cv=none; b=NKesNn63r/q1mSqp+5E+Ab4IPbZtSTgfg8r8bxMQPXJwoNTqJrNZ9iHUVGz6E/X0Mo1zSPu3wLpe1oJWikilyL5wkOpdRVUyNaNpf5CoJ7YaviKFk1vdFxUJo0PK7Z7Pmr58IFzFev/PzkrLeBPip/wGbQnSKT6xNDO9imcAb2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097873; c=relaxed/simple;
-	bh=dsWio33Drwzik5WnpTYz9YagzYTn66G2otewksKRuWc=;
+	s=arc-20240116; t=1730097151; c=relaxed/simple;
+	bh=3LbHKOzjn+E+Iikhs/9g4QPRBLzxv/wJjGdQFic9D9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V2dZAFeEFaS0KircQb5oXr8XTUZtFO40hM3kGCL3s3DQQs4rn9v2s37eNIks5JNEn/ambVN6jyzgWFVb+pbA7ormKK/jrEKNbrLirLUI/0meAEAjir1Eai0uLUueZuuscjDnV6bsZ+XW8r+bK//9/SJz/p1fXaUGy9ZLeOBoRKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jAvcbJBe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2538CC4CEC3;
-	Mon, 28 Oct 2024 06:44:33 +0000 (UTC)
+	 MIME-Version; b=Xwu1f8KjQ81Mh/RT+s0WWIKPZD+jBzo2IGBuKBHiCbxuPAxYNqGiI1ehto4sxorqcP2XZ/C1edI91K1iqrVZ82VSnV9A+Hax3jsR0GULjJO1u8GxLMEruV5kT5vCJY3NpajiA0tRZOm5myC16Ra61wbYthj/cA8zs6kDyHt+WEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2u+rZHqE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB3DC4CEC7;
+	Mon, 28 Oct 2024 06:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097873;
-	bh=dsWio33Drwzik5WnpTYz9YagzYTn66G2otewksKRuWc=;
+	s=korg; t=1730097151;
+	bh=3LbHKOzjn+E+Iikhs/9g4QPRBLzxv/wJjGdQFic9D9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jAvcbJBeJybDTq3scuR0+M0eOml2jhdeezE8kS0NPYUZulHokhhM2xesA84Xtce1D
-	 TKcptzIe5ADUfxkvPhvKtENRcTNwAsJUIMAAZ9EXX+GGt7b7Z0pd4LT6hpurbm4RRK
-	 7VoOW9MlwEbxdSvA+bkZmyQjoA83kl7NGC8B/AmE=
+	b=2u+rZHqETKGRysIaOfrr87PE64fUWv4c9+le7U2/Qjfhp/W5pojRS+LO1fcHHo0zc
+	 3R2KwOjTMIL0qRtKn8jXsYy0LgoDUUsxcm3/x3+z4V+5aJ6RfN6gyyx62Rov+xjVcx
+	 hOZIpZ0xb2s6l6R6kA515RkETH9xgAhGtEyBVuC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 178/208] btrfs: zoned: fix zone unusable accounting for freed reserved extent
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Peter Hurley <peter@hurleysoftware.com>,
+	Tomas Krcka <krckatom@amazon.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 78/80] serial: protect uart_port_dtr_rts() in uart_shutdown() too
 Date: Mon, 28 Oct 2024 07:25:58 +0100
-Message-ID: <20241028062311.014402404@linuxfoundation.org>
+Message-ID: <20241028062254.777163787@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-commit bf9821ba4792a0d9a2e72803ae7b4341faf3d532 upstream.
+[ Upstream commit 602babaa84d627923713acaf5f7e9a4369e77473 ]
 
-When btrfs reserves an extent and does not use it (e.g, by an error), it
-calls btrfs_free_reserved_extent() to free the reserved extent. In the
-process, it calls btrfs_add_free_space() and then it accounts the region
-bytes as block_group->zone_unusable.
+Commit af224ca2df29 (serial: core: Prevent unsafe uart port access, part
+3) added few uport == NULL checks. It added one to uart_shutdown(), so
+the commit assumes, uport can be NULL in there. But right after that
+protection, there is an unprotected "uart_port_dtr_rts(uport, false);"
+call. That is invoked only if HUPCL is set, so I assume that is the
+reason why we do not see lots of these reports.
 
-However, it leaves the space_info->bytes_zone_unusable side not updated. As
-a result, ENOSPC can happen while a space_info reservation succeeded. The
-reservation is fine because the freed region is not added in
-space_info->bytes_zone_unusable, leaving that space as "free". OTOH,
-corresponding block group counts it as zone_unusable and its allocation
-pointer is not rewound, we cannot allocate an extent from that block group.
-That will also negate space_info's async/sync reclaim process, and cause an
-ENOSPC error from the extent allocation process.
+Or it cannot be NULL at this point at all for some reason :P.
 
-Fix that by returning the space to space_info->bytes_zone_unusable.
-Ideally, since a bio is not submitted for this reserved region, we should
-return the space to free space and rewind the allocation pointer. But, it
-needs rework on extent allocation handling, so let it work in this way for
-now.
+Until the above is investigated, stay on the safe side and move this
+dereference to the if too.
 
-Fixes: 169e0da91a21 ("btrfs: zoned: track unusable bytes for zones")
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+I got this inconsistency from Coverity under CID 1585130. Thanks.
+
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Cc: Peter Hurley <peter@hurleysoftware.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240805102046.307511-3-jirislaby@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Adapted over commit 5701cb8bf50e ("tty: Call ->dtr_rts() parameter
+active consistently") not in the tree]
+Signed-off-by: Tomas Krcka <krckatom@amazon.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/block-group.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/serial/serial_core.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -3794,6 +3794,8 @@ void btrfs_free_reserved_bytes(struct bt
- 	spin_lock(&cache->lock);
- 	if (cache->ro)
- 		space_info->bytes_readonly += num_bytes;
-+	else if (btrfs_is_zoned(cache->fs_info))
-+		space_info->bytes_zone_unusable += num_bytes;
- 	cache->reserved -= num_bytes;
- 	space_info->bytes_reserved -= num_bytes;
- 	space_info->max_extent_size = 0;
+diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+index 7cd12ea88c0b0..404354727d194 100644
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -286,14 +286,16 @@ static void uart_shutdown(struct tty_struct *tty, struct uart_state *state)
+ 		/*
+ 		 * Turn off DTR and RTS early.
+ 		 */
+-		if (uport && uart_console(uport) && tty) {
+-			uport->cons->cflag = tty->termios.c_cflag;
+-			uport->cons->ispeed = tty->termios.c_ispeed;
+-			uport->cons->ospeed = tty->termios.c_ospeed;
+-		}
++		if (uport) {
++			if (uart_console(uport) && tty) {
++				uport->cons->cflag = tty->termios.c_cflag;
++				uport->cons->ispeed = tty->termios.c_ispeed;
++				uport->cons->ospeed = tty->termios.c_ospeed;
++			}
+ 
+-		if (!tty || C_HUPCL(tty))
+-			uart_port_dtr_rts(uport, 0);
++			if (!tty || C_HUPCL(tty))
++				uart_port_dtr_rts(uport, 0);
++		}
+ 
+ 		uart_port_shutdown(port);
+ 	}
+-- 
+2.43.0
+
 
 
 
