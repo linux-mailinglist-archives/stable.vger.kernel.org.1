@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-88929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2954A9B281B
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:54:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9333F9B2630
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:37:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA5B51F21E1E
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:54:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5895A2822A5
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4304D18E368;
-	Mon, 28 Oct 2024 06:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9DC618E35B;
+	Mon, 28 Oct 2024 06:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7FF4Yg+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2lciAVMM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40232AF07;
-	Mon, 28 Oct 2024 06:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F2B15B10D;
+	Mon, 28 Oct 2024 06:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098442; cv=none; b=CC6uvorv8O/g0bkHn9VacfgYIq6igeiI7iaDTeOoq1uzu4NHCni2Nwj0gQIv2npEHD21BW5r4sRSTEn8i1FzF1vjm7iEnIrGflZuZtWlhNNxjba+L6Qn4CyclN6eKZd38vp7/65M/WQDspquJCgZnhrgAo16v/oHTezGVcgLwhE=
+	t=1730097449; cv=none; b=A7gcxK0l5NtypEUU9zhuApgyj75r1n9y8NlZSS/trs8x3jNJUQkxqe3FRcXsQeYiaSyQmlBkEJBsVtK/TGE/EwcblUJKuJFQ1joWbh/DAMD96hZC+ROCdzbSQGP1jht3+5KcNVN5kyzeD3DzGcK5/o9QAsnsJkF8rlJ2ZORihcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098442; c=relaxed/simple;
-	bh=FHs/J0EKQEXvxNFfbVPalYoYztR9TpXRWoP8TNLVGSM=;
+	s=arc-20240116; t=1730097449; c=relaxed/simple;
+	bh=k9cEccWXsKDg3cxjVZvEQECl07FchFIofOnzMsp4BNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=quPv6w3wjYz2NmKG+7QiPbEtYQ0voBiTL3U9QLKtlsqhObcnvJa0F10QPAXII7mI0Y2VApdiGZ93187E1EVC62fQI5hPtAcvxjM38wJfB9sFOsa/h8lEzOT50nv51AabcnM1/r8IOrYAj1bLnu7mEph/WtpVLQZE7x8JrbX/Ho0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7FF4Yg+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92EA1C4CEC3;
-	Mon, 28 Oct 2024 06:54:01 +0000 (UTC)
+	 MIME-Version; b=JXV0nJji1E2lpfPrHBHB2RE/VeZe0n6GjllZ+UeW7KSNtqklzfy9mvXcYdmDiWhpT469tGKK6XrvKFZPG6yG2eR/CD2W9Mp7vBhZJ9cWZuWlMP83ZxQ8pZj47SpAhBFkT9ck44ck+SPRav+gI1zAEwnlc1R/3MuXAiL/PrnIncw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lciAVMM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17262C4CEC3;
+	Mon, 28 Oct 2024 06:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098441;
-	bh=FHs/J0EKQEXvxNFfbVPalYoYztR9TpXRWoP8TNLVGSM=;
+	s=korg; t=1730097449;
+	bh=k9cEccWXsKDg3cxjVZvEQECl07FchFIofOnzMsp4BNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P7FF4Yg+OE3AhMH5TLpp6aYeItuQjBFaMVA+sBkxE5RdlYeiMKMjqN1XQX+5YWmsE
-	 9q03phq+Jadkfr0mHazt74QVkLFmRvFkuKeS4F7qCsKdMMCz/+T1o06K8KA97+mvQx
-	 Z0ApjWcwnED0iVPsgBdliEXEn7/GMt/l23adnsKk=
+	b=2lciAVMMlOq2cOvg+wlbRad+ggZveSYYkIEc+PQGzsFS3maJePE3c7bTop266uR6e
+	 tpxLeyWzNOq3suHN7nFBfBZa8GSqZEJLys9rJoay3FzY7wUpeB4DHPMWnai/unK2Wg
+	 cKAvzhXurHOTSlsq5qNGynXP9UHpwcx298PF4pIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kanglong Wang <wangkanglong@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.11 229/261] LoongArch: Make KASAN usable for variable cpu_vabits
+	Zichen Xie <zichenxie0106@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 134/137] ASoC: qcom: Fix NULL Dereference in asoc_qcom_lpass_cpu_platform_probe()
 Date: Mon, 28 Oct 2024 07:26:11 +0100
-Message-ID: <20241028062317.854209753@linuxfoundation.org>
+Message-ID: <20241028062302.446492638@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Zichen Xie <zichenxie0106@gmail.com>
 
-commit 3c252263be801f937f56b4bcd8e8e2b5307c1ce5 upstream.
+commit 49da1463c9e3d2082276c3e0e2a8b65a88711cd2 upstream.
 
-Currently, KASAN on LoongArch assume the CPU VA bits is 48, which is
-true for Loongson-3 series, but not for Loongson-2 series (only 40 or
-lower), this patch fix that issue and make KASAN usable for variable
-cpu_vabits.
+A devm_kzalloc() in asoc_qcom_lpass_cpu_platform_probe() could
+possibly return NULL pointer. NULL Pointer Dereference may be
+triggerred without addtional check.
+Add a NULL check for the returned pointer.
 
-Solution is very simple: Just define XRANGE_SHADOW_SHIFT which means
-valid address length from VA_BITS to min(cpu_vabits, VA_BITS).
-
+Fixes: b5022a36d28f ("ASoC: qcom: lpass: Use regmap_field for i2sctl and dmactl registers")
 Cc: stable@vger.kernel.org
-Signed-off-by: Kanglong Wang <wangkanglong@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+Link: https://patch.msgid.link/20241006205737.8829-1-zichenxie0106@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/kasan.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/qcom/lpass-cpu.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/loongarch/include/asm/kasan.h
-+++ b/arch/loongarch/include/asm/kasan.h
-@@ -16,7 +16,7 @@
- #define XRANGE_SHIFT (48)
+--- a/sound/soc/qcom/lpass-cpu.c
++++ b/sound/soc/qcom/lpass-cpu.c
+@@ -1236,6 +1236,8 @@ int asoc_qcom_lpass_cpu_platform_probe(s
+ 	/* Allocation for i2sctl regmap fields */
+ 	drvdata->i2sctl = devm_kzalloc(&pdev->dev, sizeof(struct lpaif_i2sctl),
+ 					GFP_KERNEL);
++	if (!drvdata->i2sctl)
++		return -ENOMEM;
  
- /* Valid address length */
--#define XRANGE_SHADOW_SHIFT	(PGDIR_SHIFT + PAGE_SHIFT - 3)
-+#define XRANGE_SHADOW_SHIFT	min(cpu_vabits, VA_BITS)
- /* Used for taking out the valid address */
- #define XRANGE_SHADOW_MASK	GENMASK_ULL(XRANGE_SHADOW_SHIFT - 1, 0)
- /* One segment whole address space size */
+ 	/* Initialize bitfields for dai I2SCTL register */
+ 	ret = lpass_cpu_init_i2sctl_bitfields(dev, drvdata->i2sctl,
 
 
 
