@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAAC49B2669
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB5C9B277C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:48:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1E9E1F2121F
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6F411F248AD
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57ED218F2CF;
-	Mon, 28 Oct 2024 06:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA8918DF80;
+	Mon, 28 Oct 2024 06:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L92kkh0n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O2AmiaIb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139C518E743;
-	Mon, 28 Oct 2024 06:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28DC68837;
+	Mon, 28 Oct 2024 06:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097562; cv=none; b=dFmwsqbkE7DJRYuMgcrgzfptW45AgwbyizaulJibGT62QIoVmK7WKsdB2JXeWQCAusnkJxIMxUVBpjqIJw7ioMQUQUBnJxuesP3N/I613iydc6tApy3FFlSZUtOeU4uH16pOj6aOdyrOwroW+BBjS1Ix4gPevewTXw81g/plPlo=
+	t=1730098120; cv=none; b=hgAy4FG0qMb4wb+iSQDPOWP3M6GXFwLNKMXt8KscDncoBoT35OqvheBKQ6xCRsmuKc6RpI3Um6IJG8NIsNu2EOabeHZ38A47QzRiopADGD3l6GxUJlafkvDeko9HIMe+S5ksOnWOTkdzWgkpdNOOUXLUcFClGo4BXvybrDKUxpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097562; c=relaxed/simple;
-	bh=g/MntaLC9FW/hHVOcqasxsgoz1V58k5hMvIARZrnloQ=;
+	s=arc-20240116; t=1730098120; c=relaxed/simple;
+	bh=vvrcydDbCGySxa1mwBuiicBUm5nmY+4No7ZECmP0lyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M9RdQ/XBqTmEqleS9BLQdaqXj3kKWuGpjM0DGNOWcJvRh1tqbalk0qnY6dVU00UWtnNgZHGCx88tIcHttxqHIzD1tSAbEx538otxDpne642Kc0PTI8y4qpLq8W/1orf378OPTj775kmxv3uWQ+h/c/9HXRg1bd6Xnp5veoHParY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L92kkh0n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A82E1C4CEC3;
-	Mon, 28 Oct 2024 06:39:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SkyJTPzxTYJi/WDG3oQWsKmAHF7oZRNceD7eb2OKiQ6j1Pf8LVbw3rHQllHLztk3PWt1aeKYGAuuaqd8Ty89dKaOjjg5sErRokAelJTnHaaSTIFN/F+DSlH6MG2aMbqu9XPQzo5sht798VQjOXFanpjAibCE7CXR0QSBnOj3NuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O2AmiaIb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6278EC4CEC3;
+	Mon, 28 Oct 2024 06:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097562;
-	bh=g/MntaLC9FW/hHVOcqasxsgoz1V58k5hMvIARZrnloQ=;
+	s=korg; t=1730098119;
+	bh=vvrcydDbCGySxa1mwBuiicBUm5nmY+4No7ZECmP0lyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L92kkh0nPWJrizGieqJyUqCLpkNyNm9bX6Kw1cWnKo0B9gHXUVLi6+aeikEmxQutR
-	 PL+K/aXHNEzOVrAJJEfj9RrRBKRN6wv95jYpmqCClDaWJrOgNt1+1WLfI7n0B17yxb
-	 C0h9rDCkrxb51yLxKuOMuVFmbLIUWhXrO/IHAQUI=
+	b=O2AmiaIbqiNmO6oz7Et7pVBq/GrZtKRrVXsd9x4+nErG1fX9wCO5tBF+atoOvAV0r
+	 WCo7QIpWQFgTixKqcXefnknmTvqUZ6NYD7PehMsYfKBaacqGpeK2VBT4GZJAbtNeG9
+	 MYyHHcqG7PqP3h4MGXzAPUPxFFDNxsU19U+dHxV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Chen <justin.chen@broadcom.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Su Hui <suhui@nfschina.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 047/208] firmware: arm_scmi: Queue in scmi layer for mailbox implementation
+Subject: [PATCH 6.11 085/261] smb: client: fix possible double free in smb2_set_ea()
 Date: Mon, 28 Oct 2024 07:23:47 +0100
-Message-ID: <20241028062307.816879774@linuxfoundation.org>
+Message-ID: <20241028062314.163914109@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,119 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Chen <justin.chen@broadcom.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit da1642bc97c4ef67f347edcd493bd0a52f88777b ]
+[ Upstream commit 19ebc1e6cab334a8193398d4152deb76019b5d34 ]
 
-send_message() does not block in the MBOX implementation. This is
-because the mailbox layer has its own queue. However, this confuses
-the per xfer timeouts as they all start their timeout ticks in
-parallel.
+Clang static checker(scan-build) warning：
+fs/smb/client/smb2ops.c:1304:2: Attempt to free released memory.
+ 1304 |         kfree(ea);
+      |         ^~~~~~~~~
 
-Consider a case where the xfer timeout is 30ms and a SCMI transaction
-takes 25ms:
+There is a double free in such case:
+'ea is initialized to NULL' -> 'first successful memory allocation for
+ea' -> 'something failed, goto sea_exit' -> 'first memory release for ea'
+-> 'goto replay_again' -> 'second goto sea_exit before allocate memory
+for ea' -> 'second memory release for ea resulted in double free'.
 
-  | 0ms: Message #0 is queued in mailbox layer and sent out, then sits
-  |      at scmi_wait_for_message_response() with a timeout of 30ms
-  | 1ms: Message #1 is queued in mailbox layer but not sent out yet.
-  |      Since send_message() doesn't block, it also sits at
-  |      scmi_wait_for_message_response() with a timeout of 30ms
-  |  ...
-  | 25ms: Message #0 is completed, txdone is called and message #1 is sent
-  | 31ms: Message #1 times out since the count started at 1ms. Even though
-  |       it has only been inflight for 6ms.
+Re-initialie 'ea' to NULL near to the replay_again label, it can fix this
+double free problem.
 
-Fixes: 5c8a47a5a91d ("firmware: arm_scmi: Make scmi core independent of the transport type")
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Message-Id: <20241014160717.1678953-1-justin.chen@broadcom.com>
-Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-Tested-by: Cristian Marussi <cristian.marussi@arm.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: 4f1fffa23769 ("cifs: commands that are retried should have replay flag set")
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/mailbox.c | 32 +++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+ fs/smb/client/smb2ops.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_scmi/mailbox.c b/drivers/firmware/arm_scmi/mailbox.c
-index b8d470417e8f9..8e513f70b75d4 100644
---- a/drivers/firmware/arm_scmi/mailbox.c
-+++ b/drivers/firmware/arm_scmi/mailbox.c
-@@ -23,6 +23,7 @@
-  * @chan_receiver: Optional Receiver mailbox unidirectional channel
-  * @cinfo: SCMI channel info
-  * @shmem: Transmit/Receive shared memory area
-+ * @chan_lock: Lock that prevents multiple xfers from being queued
-  */
- struct scmi_mailbox {
- 	struct mbox_client cl;
-@@ -30,6 +31,7 @@ struct scmi_mailbox {
- 	struct mbox_chan *chan_receiver;
- 	struct scmi_chan_info *cinfo;
- 	struct scmi_shared_mem __iomem *shmem;
-+	struct mutex chan_lock;
- };
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index e9be7b43bb6b8..b9e332443b0d9 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -1156,7 +1156,7 @@ smb2_set_ea(const unsigned int xid, struct cifs_tcon *tcon,
+ 	struct cifs_fid fid;
+ 	unsigned int size[1];
+ 	void *data[1];
+-	struct smb2_file_full_ea_info *ea = NULL;
++	struct smb2_file_full_ea_info *ea;
+ 	struct smb2_query_info_rsp *rsp;
+ 	int rc, used_len = 0;
+ 	int retries = 0, cur_sleep = 1;
+@@ -1177,6 +1177,7 @@ smb2_set_ea(const unsigned int xid, struct cifs_tcon *tcon,
+ 	if (!utf16_path)
+ 		return -ENOMEM;
  
- #define client_to_scmi_mailbox(c) container_of(c, struct scmi_mailbox, cl)
-@@ -228,6 +230,7 @@ static int mailbox_chan_setup(struct scmi_chan_info *cinfo, struct device *dev,
- 
- 	cinfo->transport_info = smbox;
- 	smbox->cinfo = cinfo;
-+	mutex_init(&smbox->chan_lock);
- 
- 	return 0;
- }
-@@ -255,13 +258,23 @@ static int mailbox_send_message(struct scmi_chan_info *cinfo,
- 	struct scmi_mailbox *smbox = cinfo->transport_info;
- 	int ret;
- 
--	ret = mbox_send_message(smbox->chan, xfer);
-+	/*
-+	 * The mailbox layer has its own queue. However the mailbox queue
-+	 * confuses the per message SCMI timeouts since the clock starts when
-+	 * the message is submitted into the mailbox queue. So when multiple
-+	 * messages are queued up the clock starts on all messages instead of
-+	 * only the one inflight.
-+	 */
-+	mutex_lock(&smbox->chan_lock);
- 
--	/* mbox_send_message returns non-negative value on success, so reset */
--	if (ret > 0)
--		ret = 0;
-+	ret = mbox_send_message(smbox->chan, xfer);
-+	/* mbox_send_message returns non-negative value on success */
-+	if (ret < 0) {
-+		mutex_unlock(&smbox->chan_lock);
-+		return ret;
-+	}
- 
--	return ret;
-+	return 0;
- }
- 
- static void mailbox_mark_txdone(struct scmi_chan_info *cinfo, int ret,
-@@ -269,13 +282,10 @@ static void mailbox_mark_txdone(struct scmi_chan_info *cinfo, int ret,
- {
- 	struct scmi_mailbox *smbox = cinfo->transport_info;
- 
--	/*
--	 * NOTE: we might prefer not to need the mailbox ticker to manage the
--	 * transfer queueing since the protocol layer queues things by itself.
--	 * Unfortunately, we have to kick the mailbox framework after we have
--	 * received our message.
--	 */
- 	mbox_client_txdone(smbox->chan, ret);
-+
-+	/* Release channel */
-+	mutex_unlock(&smbox->chan_lock);
- }
- 
- static void mailbox_fetch_response(struct scmi_chan_info *cinfo,
++	ea = NULL;
+ 	resp_buftype[0] = resp_buftype[1] = resp_buftype[2] = CIFS_NO_BUFFER;
+ 	vars = kzalloc(sizeof(*vars), GFP_KERNEL);
+ 	if (!vars) {
 -- 
 2.43.0
 
