@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-88892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39F849B27F4
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BD209B26DE
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:43:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAE6FB21350
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E86F91F23C72
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:43:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7F618E35B;
-	Mon, 28 Oct 2024 06:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D6315B10D;
+	Mon, 28 Oct 2024 06:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Se0q4Nu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpbTq5Cm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE708837;
-	Mon, 28 Oct 2024 06:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D318B18E35B;
+	Mon, 28 Oct 2024 06:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098358; cv=none; b=QBNL7CtNn3jKPKK4z7Ck25CasXUcmYc8LCd5O0xqh+GgGCw1gm/wA0RQ7FWZyUhMKGlCaC2ZvS3JZQOIn4cYzItbOsxGqzo4Q2yU7Sq4aRiLhTURzeOB/seDOJCMPZ+BeOnJRMGpufnNUbeRwdFPTSFuOS3v0LLYBU65HDHgy0w=
+	t=1730097801; cv=none; b=X/0k8qSk0uKE0L2xBFbnlC+Uj6anDQuK6ZtrAtAqw7/fcXn/fRw5EncdojRmxu0KzQ+VA5LWJb9nOFgyw3ZgKb/eGy3KhMujWeCrtiFWf7gzq4mdVaS9kJAZ3quqv1q+KAGpV6dP7HHfIo3o5cwzvDnkkNi3ZdImFPDP6s72UfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098358; c=relaxed/simple;
-	bh=SoP9QrcbI2mTgZ8pUsH5Ejy1moyqJRvgtYDuuhbAkgw=;
+	s=arc-20240116; t=1730097801; c=relaxed/simple;
+	bh=Y9CjdeMoP0McwqqNtxgNy7xRfuOCdG2QVEusfj+Yzeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sxObQ7f0HDsyZii0bpyxQ/JFkG22/DZnsD1oLwr5EfoRJqfT68tdoMHpL/DVCYk63et4maRywl1mOjbBypj5ndiJKADj5RAMIZcOw3OMYnSwZZeg5DokeawJnJ6PuE7FUW3+6nKDW0Icog0eEY3VeokCCjaQFS+WW/GcyFuKbTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Se0q4Nu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34585C4CEC3;
-	Mon, 28 Oct 2024 06:52:37 +0000 (UTC)
+	 MIME-Version; b=GLO95eYTOmNhWWoCj+9oUBvMqX6Mb97it9j6rXntaOKhsa9n3yNT3MAZDMfFgpZGL1rUFvHZoyMTPv4mFeCrIWL7h7X3vzVqftxj3UVetO1/a6Cis3fC3boWAVGp6hCx3iYGLsqik9bRuDI7LiUrlVVo7oByyBRuvAAU0Nq5Ufs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpbTq5Cm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732A3C4CEC3;
+	Mon, 28 Oct 2024 06:43:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098358;
-	bh=SoP9QrcbI2mTgZ8pUsH5Ejy1moyqJRvgtYDuuhbAkgw=;
+	s=korg; t=1730097801;
+	bh=Y9CjdeMoP0McwqqNtxgNy7xRfuOCdG2QVEusfj+Yzeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Se0q4NuaHv2YkkNR/Q8Y76SWNmQLH7ATkQ1mGW/3s51+nzIjWSSoPwdMarp78raX
-	 8JjPIzDnuPJzrIRJfO05vsAyT3od7DRrJjClnWJ9yotaAsR+DfXOi11+gVBymyt4ki
-	 6LGDzvs8R/6ARoYbdzuin1UoV3mdpHbvG8Jrh62s=
+	b=fpbTq5CmZt9JxOHG31/9CWcV6xYVkpN5YwOTZHY5WkTWVWTczSSCNSMh+mo/JiUN8
+	 QQ0lOQSwT0qbsH6oC5Tm5WjkFp4pM0/woriQmQ/UQPl8ST2zCGZ1nig91B6AZ2prAx
+	 kKVdFCB9MugZyUPyjkLIeg39qd+pOMq8o+I7Uqa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Helge Deller <deller@gmx.de>,
+	syzbot+b65e0af58423fc8a73aa@syzkaller.appspotmail.com,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 192/261] fbdev: wm8505fb: select CONFIG_FB_IOMEM_FOPS
+Subject: [PATCH 6.6 154/208] net: sched: fix use-after-free in taprio_change()
 Date: Mon, 28 Oct 2024 07:25:34 +0100
-Message-ID: <20241028062316.838444519@linuxfoundation.org>
+Message-ID: <20241028062310.417646682@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 51521d2e2c35959cc70a62ccddf694965e29c950 ]
+[ Upstream commit f504465970aebb2467da548f7c1efbbf36d0f44b ]
 
-The fb_io_mmap() function is used in the file operations but
-not enabled in all configurations unless FB_IOMEM_FOPS gets
-selected:
+In 'taprio_change()', 'admin' pointer may become dangling due to sched
+switch / removal caused by 'advance_sched()', and critical section
+protected by 'q->current_entry_lock' is too small to prevent from such
+a scenario (which causes use-after-free detected by KASAN). Fix this
+by prefer 'rcu_replace_pointer()' over 'rcu_assign_pointer()' to update
+'admin' immediately before an attempt to schedule freeing.
 
-ld.lld-20: error: undefined symbol: fb_io_mmap
-   referenced by wm8505fb.c
-   drivers/video/fbdev/wm8505fb.o:(wm8505fb_ops) in archive vmlinux.a
-
-Fixes: 11754a504608 ("fbdev/wm8505fb: Initialize fb_ops to fbdev I/O-memory helpers")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: a3d43c0d56f1 ("taprio: Add support adding an admin schedule")
+Reported-by: syzbot+b65e0af58423fc8a73aa@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b65e0af58423fc8a73aa
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://patch.msgid.link/20241018051339.418890-1-dmantipov@yandex.ru
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ net/sched/sch_taprio.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index ea36c6956bf36..1af0ccf7967ab 100644
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -1374,6 +1374,7 @@ config FB_VT8500
- config FB_WM8505
- 	bool "Wondermedia WM8xxx-series frame buffer support"
- 	depends on (FB = y) && HAS_IOMEM && (ARCH_VT8500 || COMPILE_TEST)
-+	select FB_IOMEM_FOPS
- 	select FB_SYS_FILLRECT if (!FB_WMT_GE_ROPS)
- 	select FB_SYS_COPYAREA if (!FB_WMT_GE_ROPS)
- 	select FB_SYS_IMAGEBLIT
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 87090d6790362..bc8e55c6d63d1 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -1988,7 +1988,8 @@ static int taprio_change(struct Qdisc *sch, struct nlattr *opt,
+ 
+ 		taprio_start_sched(sch, start, new_admin);
+ 
+-		rcu_assign_pointer(q->admin_sched, new_admin);
++		admin = rcu_replace_pointer(q->admin_sched, new_admin,
++					    lockdep_rtnl_is_held());
+ 		if (admin)
+ 			call_rcu(&admin->rcu, taprio_free_sched_cb);
+ 
 -- 
 2.43.0
 
