@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07E4C9B26CC
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:42:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42DAD9B2583
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:31:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0A81282516
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:42:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED3AA1F2187D
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:31:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A8018E354;
-	Mon, 28 Oct 2024 06:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D96118DF68;
+	Mon, 28 Oct 2024 06:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SEZ7S0nb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0QYcAij"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0324115B10D;
-	Mon, 28 Oct 2024 06:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5657115B10D;
+	Mon, 28 Oct 2024 06:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097766; cv=none; b=CowRQtAyKHs2KS5+v8wuLMx4kacUtTurFNJxZYzleE6OzcATLBtWntdvlr8lYxS52wuNalv2flEbjcJbzI9NqbcWuj9BxRNrooHP4XTo7FTlB+IzL1lmPk5wXcQg3hGtTRYcAlqF7iOEEDoSVYBPoMTOnX39H+cMcZtIvyzkkCs=
+	t=1730097117; cv=none; b=opmqdjl5+yJuHAh/ro7+LFtQb2mq0ixJRrNK5qB1F+XwD4RrECgoBxP143npqIFR2Vx8zUFk6P6a5T8Ilfnw8op1CByyMBY4W45E+A26BhlL7xdZDCF7aFuwk4tVnQlUjCS+4CgkvkTbfVuLi7EreADtVkVASi69WHqdr7MFD2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097766; c=relaxed/simple;
-	bh=CtvkeXdPq1eoeh6xEKTH4BZ1E2rK4+9rsbbz7NN4if0=;
+	s=arc-20240116; t=1730097117; c=relaxed/simple;
+	bh=ZCUsB4ur38sytrwyAG2BghZ/1xKLJ0M4pz6vpla9O5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nKkMGrGDJyXa3ITCA8RD9OQ4vxpD4gXQMq4AuxSntwoDqaeJaHQKA31JvamVc/i2K8jJ9Io07jpusRHwKK8TZJEi1P/lGFZTp+GVXbgj2sEVbW253ArDHCHkZwd3stFAWZUWaR2gW/i/RAyYvH38/enAqlWCYLh2gS+zs2Z2VCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SEZ7S0nb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B47C4CEC3;
-	Mon, 28 Oct 2024 06:42:45 +0000 (UTC)
+	 MIME-Version; b=BCL/N1uLKYoQtfuLVIP4JUgqBZIAl/rQ1LeVPcUCE7osE6DKfYeG8QeQcUKiv7i1l1XYUzj8uiIcF7pBVsqdbE7mcuuQBTqnsq1OslznN5jB4LUus0QyZrgkDU8HJ0K6WKVWc/juhvooOiresrngE7hyIB1GbN/KYAEV+EZ2TdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0QYcAij; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA078C4CEC7;
+	Mon, 28 Oct 2024 06:31:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097765;
-	bh=CtvkeXdPq1eoeh6xEKTH4BZ1E2rK4+9rsbbz7NN4if0=;
+	s=korg; t=1730097117;
+	bh=ZCUsB4ur38sytrwyAG2BghZ/1xKLJ0M4pz6vpla9O5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SEZ7S0nbwXz0uaiERvCjbU3kuaTVpW9PsI5KPkahy+Znqv3pk/+q4jFdyc8cFqds5
-	 iC2V+eLvfok+qWtdAkQlyDcTHpSK8DbjjwqAd0kxXgfbcYmPC65ADYkXSBYpPbl/0p
-	 YPG0j3P2Je5gKK7BbY/v2lJuZvnGGXiobzpCgf14=
+	b=f0QYcAijb+Ze7PAdE5B//7uzg57HhV8Skt22gsRqoRSBej0xHeN1VzPKvoOoetSIh
+	 65BBHaKWLR9aR/Q5eybjcmX7l/4pjODuSputiq7sfORMpoDeOEo8W0D+eXMu3WZZc6
+	 ePhCiLbWXpT4lmWckv4Z8x1HF17NJUiVKp1dh4aA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Hai <wanghai38@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Elson Roy Serrao <quic_eserrao@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 136/208] net/sun3_82586: fix potential memory leak in sun3_82586_send_packet()
+Subject: [PATCH 5.15 36/80] usb: gadget: Add function wakeup support
 Date: Mon, 28 Oct 2024 07:25:16 +0100
-Message-ID: <20241028062309.987798292@linuxfoundation.org>
+Message-ID: <20241028062253.627919704@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Hai <wanghai38@huawei.com>
+From: Elson Roy Serrao <quic_eserrao@quicinc.com>
 
-[ Upstream commit 2cb3f56e827abb22c4168ad0c1bbbf401bb2f3b8 ]
+[ Upstream commit f0db885fb05d35befa81896db6b19eb3ee9ccdfe ]
 
-The sun3_82586_send_packet() returns NETDEV_TX_OK without freeing skb
-in case of skb->len being too long, add dev_kfree_skb() to fix it.
+USB3.2 spec section 9.2.5.4 quotes that a function may signal that
+it wants to exit from Function Suspend by sending a Function
+Wake Notification to the host if it is enabled for function
+remote wakeup. Add an api in composite layer that can be used
+by the function drivers to support this feature. Also expose
+a gadget op so that composite layer can trigger a wakeup request
+to the UDC driver.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Wang Hai <wanghai38@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Message-ID: <20241015144148.7918-1-wanghai38@huawei.com>
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
+Link: https://lore.kernel.org/r/1679694482-16430-4-git-send-email-quic_eserrao@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 705e3ce37bcc ("usb: dwc3: core: Fix system suspend on TI AM62 platforms")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/i825xx/sun3_82586.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/gadget/composite.c | 40 ++++++++++++++++++++++++++++++++++
+ include/linux/usb/composite.h  |  6 +++++
+ include/linux/usb/gadget.h     |  1 +
+ 3 files changed, 47 insertions(+)
 
-diff --git a/drivers/net/ethernet/i825xx/sun3_82586.c b/drivers/net/ethernet/i825xx/sun3_82586.c
-index f2d4669c81cf2..58a3d28d938c3 100644
---- a/drivers/net/ethernet/i825xx/sun3_82586.c
-+++ b/drivers/net/ethernet/i825xx/sun3_82586.c
-@@ -1012,6 +1012,7 @@ sun3_82586_send_packet(struct sk_buff *skb, struct net_device *dev)
- 	if(skb->len > XMIT_BUFF_SIZE)
- 	{
- 		printk("%s: Sorry, max. framelength is %d bytes. The length of your frame is %d bytes.\n",dev->name,XMIT_BUFF_SIZE,skb->len);
-+		dev_kfree_skb(skb);
- 		return NETDEV_TX_OK;
- 	}
+diff --git a/drivers/usb/gadget/composite.c b/drivers/usb/gadget/composite.c
+index 3f035e905b242..1052ca4e29bc1 100644
+--- a/drivers/usb/gadget/composite.c
++++ b/drivers/usb/gadget/composite.c
+@@ -477,6 +477,46 @@ int usb_interface_id(struct usb_configuration *config,
+ }
+ EXPORT_SYMBOL_GPL(usb_interface_id);
  
++/**
++ * usb_func_wakeup - sends function wake notification to the host.
++ * @func: function that sends the remote wakeup notification.
++ *
++ * Applicable to devices operating at enhanced superspeed when usb
++ * functions are put in function suspend state and armed for function
++ * remote wakeup. On completion, function wake notification is sent. If
++ * the device is in low power state it tries to bring the device to active
++ * state before sending the wake notification. Since it is a synchronous
++ * call, caller must take care of not calling it in interrupt context.
++ * For devices operating at lower speeds  returns negative errno.
++ *
++ * Returns zero on success, else negative errno.
++ */
++int usb_func_wakeup(struct usb_function *func)
++{
++	struct usb_gadget	*gadget = func->config->cdev->gadget;
++	int			id;
++
++	if (!gadget->ops->func_wakeup)
++		return -EOPNOTSUPP;
++
++	if (!func->func_wakeup_armed) {
++		ERROR(func->config->cdev, "not armed for func remote wakeup\n");
++		return -EINVAL;
++	}
++
++	for (id = 0; id < MAX_CONFIG_INTERFACES; id++)
++		if (func->config->interface[id] == func)
++			break;
++
++	if (id == MAX_CONFIG_INTERFACES) {
++		ERROR(func->config->cdev, "Invalid function\n");
++		return -EINVAL;
++	}
++
++	return gadget->ops->func_wakeup(gadget, id);
++}
++EXPORT_SYMBOL_GPL(usb_func_wakeup);
++
+ static u8 encode_bMaxPower(enum usb_device_speed speed,
+ 		struct usb_configuration *c)
+ {
+diff --git a/include/linux/usb/composite.h b/include/linux/usb/composite.h
+index 0399d1226323b..456fca4d6a253 100644
+--- a/include/linux/usb/composite.h
++++ b/include/linux/usb/composite.h
+@@ -163,6 +163,9 @@ struct usb_os_desc_table {
+  *	GetStatus() request when the recipient is Interface.
+  * @func_suspend: callback to be called when
+  *	SetFeature(FUNCTION_SUSPEND) is reseived
++ * @func_suspended: Indicates whether the function is in function suspend state.
++ * @func_wakeup_armed: Indicates whether the function is armed by the host for
++ *	wakeup signaling.
+  *
+  * A single USB function uses one or more interfaces, and should in most
+  * cases support operation at both full and high speeds.  Each function is
+@@ -233,6 +236,8 @@ struct usb_function {
+ 	int			(*get_status)(struct usb_function *);
+ 	int			(*func_suspend)(struct usb_function *,
+ 						u8 suspend_opt);
++	bool			func_suspended;
++	bool			func_wakeup_armed;
+ 	/* private: */
+ 	/* internals */
+ 	struct list_head		list;
+@@ -254,6 +259,7 @@ int config_ep_by_speed_and_alt(struct usb_gadget *g, struct usb_function *f,
+ 
+ int config_ep_by_speed(struct usb_gadget *g, struct usb_function *f,
+ 			struct usb_ep *_ep);
++int usb_func_wakeup(struct usb_function *func);
+ 
+ #define	MAX_CONFIG_INTERFACES		16	/* arbitrary; max 255 */
+ 
+diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
+index c5bc739266ed6..e4feeaa8bab30 100644
+--- a/include/linux/usb/gadget.h
++++ b/include/linux/usb/gadget.h
+@@ -311,6 +311,7 @@ struct usb_udc;
+ struct usb_gadget_ops {
+ 	int	(*get_frame)(struct usb_gadget *);
+ 	int	(*wakeup)(struct usb_gadget *);
++	int	(*func_wakeup)(struct usb_gadget *gadget, int intf_id);
+ 	int	(*set_remote_wakeup)(struct usb_gadget *, int set);
+ 	int	(*set_selfpowered) (struct usb_gadget *, int is_selfpowered);
+ 	int	(*vbus_session) (struct usb_gadget *, int is_active);
 -- 
 2.43.0
 
