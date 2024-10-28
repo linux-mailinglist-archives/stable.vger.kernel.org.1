@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-88871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66E1E9B27DE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0288E9B25F1
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C67D286398
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1CA31F21D30
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9270218EFDC;
-	Mon, 28 Oct 2024 06:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D787818EFE6;
+	Mon, 28 Oct 2024 06:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ypo3vZoZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7Wz361d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF2D18D65C;
-	Mon, 28 Oct 2024 06:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952C018C03D;
+	Mon, 28 Oct 2024 06:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098310; cv=none; b=VLBNbljc5o6YtcptQ2Vf2H6o6/MSw+vSP2hlfA9RTXOYVQs7OZP7Uu5y1lhm3KABJVrjkQ4DgG/ByljiNIhd8PYUKJEKyF0SOwsrMFLZSycswKZ+r1+zDuux6XtIvcqwKARjNocX5G9M3FCktMK2oaxHgceBsOjoORqQvvRanL8=
+	t=1730097307; cv=none; b=jfISwRee/eE3Gq1EuxoHAeSspGaZM85Q2SroDUs3Q0VhtFWuSGaBh9K9gFSWRMBtdEtltjb4lZr17wjcyXqRgicu/befyTtrNc8SGme6h501bAqdTvpgOSHt1N1O9PmmHntWkzdvD+lB4fKLf++8f0/qyZqKV+22rGMlRga0xgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098310; c=relaxed/simple;
-	bh=3klC5ehf8vSbc3RgE58UgbgupuuekroJuWp7bbQ8w0A=;
+	s=arc-20240116; t=1730097307; c=relaxed/simple;
+	bh=qbFmKmNuH8YZtUNLAezEytdkgaGT0XFSIojLRFUfekQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MpWA5FC651bWZjZLpshPtr/IwWDysk/plAVKcJELfA8wQixBRNVezJuq5bTHJxFXVJxAynusAjy5Jzx6DWwKX0a+mERL+sxnHuprCo42Si+A+4mR/rNilgp06o+KW7OEE0POiMepBaXRe0QRZwzO3ykfyQD06R+7TiRPMaJnfrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ypo3vZoZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C54C4CEC3;
-	Mon, 28 Oct 2024 06:51:49 +0000 (UTC)
+	 MIME-Version; b=shMhODTsdmWwe4Hyjs6tiqAf74Pwd+hz+cP2sEEabdu8OUxv0212/rqKULGS4aSJcje3rT5KsgPE0/Bo+CSaom5GtrIat9NXhPtKaCiQ3c81y+juSe+JW6BDAmB8MIj44fRBkoW4wPoHD8EWch9u8jHYMsQgTZ9Vx+NXzlO4ba0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7Wz361d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35824C4CEC3;
+	Mon, 28 Oct 2024 06:35:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098309;
-	bh=3klC5ehf8vSbc3RgE58UgbgupuuekroJuWp7bbQ8w0A=;
+	s=korg; t=1730097307;
+	bh=qbFmKmNuH8YZtUNLAezEytdkgaGT0XFSIojLRFUfekQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ypo3vZoZnVVUVaQbn119CQP4CYQXYY9pwmZxBSr4H86F5tZaSiDBWB4VfE6bx//bo
-	 b2PMSnFEL8/NH+6DCg4WKEnvTaVH2W+fst01/nHB4kwqz9s956cNS0Q0LfboH7M0jG
-	 cXEwkBdroWPP9S1/0e51Foy3Xae8tR6AEIpwAg7g=
+	b=N7Wz361dM6sgsYAOMt4yp+04H/BFRG8D2A3rZNMy7G2gtB3oazNwGRYdYsLV1DWKI
+	 W23I1cQzgDHcfEEeN4nZg178SK4GsiN1RcT37Mnhf/TkIVneyvcI/iIy9pGzaJ2Z6G
+	 VHe88q3Kr1pIioWL63EbqNfcm3Tb2etfoDsiJyZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Atlas Yu <atlas.yu@canonical.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 169/261] r8169: avoid unsolicited interrupts
+Subject: [PATCH 6.1 074/137] drm/vboxvideo: Replace fake VLA at end of vbva_mouse_pointer_shape with real VLA
 Date: Mon, 28 Oct 2024 07:25:11 +0100
-Message-ID: <20241028062316.232732979@linuxfoundation.org>
+Message-ID: <20241028062300.805081066@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 10ce0db787004875f4dba068ea952207d1d8abeb ]
+[ Upstream commit d92b90f9a54d9300a6e883258e79f36dab53bfae ]
 
-It was reported that after resume from suspend a PCI error is logged
-and connectivity is broken. Error message is:
-PCI error (cmd = 0x0407, status_errs = 0x0000)
-The message seems to be a red herring as none of the error bits is set,
-and the PCI command register value also is normal. Exception handling
-for a PCI error includes a chip reset what apparently brakes connectivity
-here. The interrupt status bit triggering the PCI error handling isn't
-actually used on PCIe chip versions, so it's not clear why this bit is
-set by the chip. Fix this by ignoring this bit on PCIe chip versions.
+Replace the fake VLA at end of the vbva_mouse_pointer_shape shape with
+a real VLA to fix a "memcpy: detected field-spanning write error" warning:
 
-Fixes: 0e4851502f84 ("r8169: merge with version 8.001.00 of Realtek's r8168 driver")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219388
-Tested-by: Atlas Yu <atlas.yu@canonical.com>
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/78e2f535-438f-4212-ad94-a77637ac6c9c@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[   13.319813] memcpy: detected field-spanning write (size 16896) of single field "p->data" at drivers/gpu/drm/vboxvideo/hgsmi_base.c:154 (size 4)
+[   13.319841] WARNING: CPU: 0 PID: 1105 at drivers/gpu/drm/vboxvideo/hgsmi_base.c:154 hgsmi_update_pointer_shape+0x192/0x1c0 [vboxvideo]
+[   13.320038] Call Trace:
+[   13.320173]  hgsmi_update_pointer_shape [vboxvideo]
+[   13.320184]  vbox_cursor_atomic_update [vboxvideo]
+
+Note as mentioned in the added comment it seems the original length
+calculation for the allocated and send hgsmi buffer is 4 bytes too large.
+Changing this is not the goal of this patch, so this behavior is kept.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240827104523.17442-1-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/vboxvideo/hgsmi_base.c | 10 +++++++++-
+ drivers/gpu/drm/vboxvideo/vboxvideo.h  |  4 +---
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 01e18f645c0ed..91a8c62b180ae 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4669,7 +4669,9 @@ static irqreturn_t rtl8169_interrupt(int irq, void *dev_instance)
- 	if ((status & 0xffff) == 0xffff || !(status & tp->irq_mask))
- 		return IRQ_NONE;
- 
--	if (unlikely(status & SYSErr)) {
-+	/* At least RTL8168fp may unexpectedly set the SYSErr bit */
-+	if (unlikely(status & SYSErr &&
-+	    tp->mac_version <= RTL_GIGA_MAC_VER_06)) {
- 		rtl8169_pcierr_interrupt(tp->dev);
- 		goto out;
+diff --git a/drivers/gpu/drm/vboxvideo/hgsmi_base.c b/drivers/gpu/drm/vboxvideo/hgsmi_base.c
+index 8c041d7ce4f1b..87dccaecc3e57 100644
+--- a/drivers/gpu/drm/vboxvideo/hgsmi_base.c
++++ b/drivers/gpu/drm/vboxvideo/hgsmi_base.c
+@@ -139,7 +139,15 @@ int hgsmi_update_pointer_shape(struct gen_pool *ctx, u32 flags,
+ 		flags |= VBOX_MOUSE_POINTER_VISIBLE;
  	}
+ 
+-	p = hgsmi_buffer_alloc(ctx, sizeof(*p) + pixel_len, HGSMI_CH_VBVA,
++	/*
++	 * The 4 extra bytes come from switching struct vbva_mouse_pointer_shape
++	 * from having a 4 bytes fixed array at the end to using a proper VLA
++	 * at the end. These 4 extra bytes were not subtracted from sizeof(*p)
++	 * before the switch to the VLA, so this way the behavior is unchanged.
++	 * Chances are these 4 extra bytes are not necessary but they are kept
++	 * to avoid regressions.
++	 */
++	p = hgsmi_buffer_alloc(ctx, sizeof(*p) + pixel_len + 4, HGSMI_CH_VBVA,
+ 			       VBVA_MOUSE_POINTER_SHAPE);
+ 	if (!p)
+ 		return -ENOMEM;
+diff --git a/drivers/gpu/drm/vboxvideo/vboxvideo.h b/drivers/gpu/drm/vboxvideo/vboxvideo.h
+index f60d82504da02..79ec8481de0e4 100644
+--- a/drivers/gpu/drm/vboxvideo/vboxvideo.h
++++ b/drivers/gpu/drm/vboxvideo/vboxvideo.h
+@@ -351,10 +351,8 @@ struct vbva_mouse_pointer_shape {
+ 	 * Bytes in the gap between the AND and the XOR mask are undefined.
+ 	 * XOR mask scanlines have no gap between them and size of XOR mask is:
+ 	 * xor_len = width * 4 * height.
+-	 *
+-	 * Preallocate 4 bytes for accessing actual data as p->data.
+ 	 */
+-	u8 data[4];
++	u8 data[];
+ } __packed;
+ 
+ /* pointer is visible */
 -- 
 2.43.0
 
