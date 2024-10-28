@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-88288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA8849B254A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:27:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6315C9B26B8
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:42:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1816A1C210B8
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:27:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28ED82824AA
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:42:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653DC18E047;
-	Mon, 28 Oct 2024 06:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF2018E354;
+	Mon, 28 Oct 2024 06:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ld8D0GTg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RRFOAngY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FF218CC1F;
-	Mon, 28 Oct 2024 06:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DBE15B10D;
+	Mon, 28 Oct 2024 06:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730096859; cv=none; b=k8hMwJ/iCd7MwBBNjYfbs9DS6aDzYL+ebRbY43drEHnmFJtDi3RC44ZyMtxtKcmNInL8FD4a7sDgT985hKytGdsjuyuDVs4Pgwx56srl4no+jVD6Hr4GlB++4kkWcHipJEqPq0AhXxo3XvkwFE0BNkcgy5V6jh7Vui1zCFgN5n4=
+	t=1730097723; cv=none; b=qyWw+SVXM1Hb6sTmGkjS/wtwO0HpQdFvOC8pv+s7RnzwexNtQmpyBY41slnct7TjLi9kdapsSKmUg7AX2WzACuAGhZkH8kEX24ncc6J1u0LWslYFTWT6f8YqQGuFkfwP21akVTcuTCy3MvnTw1c+McrywCWDfDOynea8cG1GrWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730096859; c=relaxed/simple;
-	bh=F0e148qrELx/aGs77fFTLtuvDEndNm34Ji2p6OSWv4g=;
+	s=arc-20240116; t=1730097723; c=relaxed/simple;
+	bh=KDCZy1JaavHoVfHOi6xNb3bikkNzg5Wd3B2z2ICinz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E1W92UaMegQQ8AbY0P+c3X1rLJMit3wdrqMumgcUANpSYHL8PbVnjZphBR91ql4Fv1N/eGcmX6zA3AgpLOyFYhqselqMlWqL83Rb46WNEekGHnhJ1CPNY7tXYWsBXURkRwVLUeWGeon/XWVxiGik4MIS0ZvEfFZdS31poTeqImA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ld8D0GTg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63EE1C4CEC3;
-	Mon, 28 Oct 2024 06:27:38 +0000 (UTC)
+	 MIME-Version; b=WdSCmY23EXt2O2ngauLUnop4G2d8cp/+hZH+/GD+cEMJSrTCOccxpvQYNtuLpuudSVHJcxmasqweUNpuILZZM2uuyd7qpX+vOAr42ERwOVmH26oBVn5WrUQXIP0W+FEElx6eS+olTDZHbJLT8z2gt70NY6uoOlpzAf4iVfbAuOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RRFOAngY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2075EC4CEC7;
+	Mon, 28 Oct 2024 06:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730096858;
-	bh=F0e148qrELx/aGs77fFTLtuvDEndNm34Ji2p6OSWv4g=;
+	s=korg; t=1730097723;
+	bh=KDCZy1JaavHoVfHOi6xNb3bikkNzg5Wd3B2z2ICinz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ld8D0GTgXQkjiKi642DKMCk7sbZGASG6RBJ+97gaSIxwk0FOyaac7J59jWTRaBqwu
-	 ps5+xc+0NXA/17Ci/YUrP3q8tUmBoEmgPLyRYFa8/K4oS15GLZj/4P+EHQpsI44J6K
-	 ai3BTUyW3KOaZWqpt3+lRwju9tVCdYzO54KQXkoQ=
+	b=RRFOAngYeKIcZOj8j9IYlYYjuzdggtoe01EezS/sC7nzL1XSeF4n5iAGIEyL00xao
+	 FM1eq1zpVnn7ITacvLbcZrKCZpQ/7rULAc6DM1wTX9oEdsQAvI7BqsKurog2xDBxaR
+	 7P7QF2aKHvBohsqBN+okgGGKBtK02XzUbwKCJsJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 18/80] macsec: dont increment counters for an unrelated SA
-Date: Mon, 28 Oct 2024 07:24:58 +0100
-Message-ID: <20241028062253.127949267@linuxfoundation.org>
+Subject: [PATCH 6.6 119/208] arm64: Force position-independent veneers
+Date: Mon, 28 Oct 2024 07:24:59 +0100
+Message-ID: <20241028062309.583865140@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +67,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit cf58aefb1332db322060cad4a330d5f9292b0f41 ]
+[ Upstream commit 9abe390e689f4f5c23c5f507754f8678431b4f72 ]
 
-On RX, we shouldn't be incrementing the stats for an arbitrary SA in
-case the actual SA hasn't been set up. Those counters are intended to
-track packets for their respective AN when the SA isn't currently
-configured. Due to the way MACsec is implemented, we don't keep
-counters unless the SA is configured, so we can't track those packets,
-and those counters will remain at 0.
+Certain portions of code always need to be position-independent
+regardless of CONFIG_RELOCATABLE, including code which is executed in an
+idmap or which is executed before relocations are applied. In some
+kernel configurations the LLD linker generates position-dependent
+veneers for such code, and when executed these result in early boot-time
+failures.
 
-The RXSC's stats keeps track of those packets without telling us which
-AN they belonged to. We could add counters for non-existent SAs, and
-then find a way to integrate them in the dump to userspace, but I
-don't think it's worth the effort.
+Marc Zyngier encountered a boot failure resulting from this when
+building a (particularly cursed) configuration with LLVM, as he reported
+to the list:
 
-Fixes: 91ec9bd57f35 ("macsec: Fix traffic counters/statistics")
-Reported-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/f5ac92aaa5b89343232615f4c03f9f95042c6aa0.1728657709.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  https://lore.kernel.org/linux-arm-kernel/86wmjwvatn.wl-maz@kernel.org/
+
+In Marc's kernel configuration, the .head.text and .rodata.text sections
+end up more than 128MiB apart, requiring a veneer to branch between the
+two:
+
+| [mark@lakrids:~/src/linux]% usekorg 14.1.0 aarch64-linux-objdump -t vmlinux | grep -w _text
+| ffff800080000000 g       .head.text     0000000000000000 _text
+| [mark@lakrids:~/src/linux]% usekorg 14.1.0 aarch64-linux-objdump -t vmlinux | grep -w primary_entry
+| ffff8000889df0e0 g       .rodata.text   000000000000006c primary_entry,
+
+... consequently, LLD inserts a position-dependent veneer for the branch
+from _stext (in .head.text) to primary_entry (in .rodata.text):
+
+| ffff800080000000 <_text>:
+| ffff800080000000:       fa405a4d        ccmp    x18, #0x0, #0xd, pl     // pl = nfrst
+| ffff800080000004:       14003fff        b       ffff800080010000 <__AArch64AbsLongThunk_primary_entry>
+...
+| ffff800080010000 <__AArch64AbsLongThunk_primary_entry>:
+| ffff800080010000:       58000050        ldr     x16, ffff800080010008 <__AArch64AbsLongThunk_primary_entry+0x8>
+| ffff800080010004:       d61f0200        br      x16
+| ffff800080010008:       889df0e0        .word   0x889df0e0
+| ffff80008001000c:       ffff8000        .word   0xffff8000
+
+... and as this is executed early in boot before the kernel is mapped in
+TTBR1 this results in a silent boot failure.
+
+Fix this by passing '--pic-veneer' to the linker, which will cause the
+linker to use position-independent veneers, e.g.
+
+| ffff800080000000 <_text>:
+| ffff800080000000:       fa405a4d        ccmp    x18, #0x0, #0xd, pl     // pl = nfrst
+| ffff800080000004:       14003fff        b       ffff800080010000 <__AArch64ADRPThunk_primary_entry>
+...
+| ffff800080010000 <__AArch64ADRPThunk_primary_entry>:
+| ffff800080010000:       f004e3f0        adrp    x16, ffff800089c8f000 <__idmap_text_start>
+| ffff800080010004:       91038210        add     x16, x16, #0xe0
+| ffff800080010008:       d61f0200        br      x16
+
+I've opted to pass '--pic-veneer' unconditionally, as:
+
+* In addition to solving the boot failure, these sequences are generally
+  nicer as they require fewer instructions and don't need to perform
+  data accesses.
+
+* While the position-independent veneer sequences have a limited +/-2GiB
+  range, this is not a new restriction. Even kernels built with
+  CONFIG_RELOCATABLE=n are limited to 2GiB in size as we have several
+  structues using 32-bit relative offsets and PPREL32 relocations, which
+  are similarly limited to +/-2GiB in range. These include extable
+  entries, jump table entries, and alt_instr entries.
+
+* GNU LD defaults to using position-independent veneers, and supports
+  the same '--pic-veneer' option, so this change is not expected to
+  adversely affect GNU LD.
+
+I've tested with GNU LD 2.30 to 2.42 inclusive and LLVM 13.0.1 to 19.1.0
+inclusive, using the kernel.org binaries from:
+
+* https://mirrors.edge.kernel.org/pub/tools/crosstool/
+* https://mirrors.edge.kernel.org/pub/tools/llvm/
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Reported-by: Marc Zyngier <maz@kernel.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Will Deacon <will@kernel.org>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20240927101838.3061054-1-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macsec.c | 18 ------------------
- 1 file changed, 18 deletions(-)
+ arch/arm64/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index ab134fe1fda62..a91c409958ff2 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -160,19 +160,6 @@ static struct macsec_rx_sa *macsec_rxsa_get(struct macsec_rx_sa __rcu *ptr)
- 	return sa;
- }
+diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
+index 9a2d3723cd0fa..11782860717fa 100644
+--- a/arch/arm64/Makefile
++++ b/arch/arm64/Makefile
+@@ -10,7 +10,7 @@
+ #
+ # Copyright (C) 1995-2001 by Russell King
  
--static struct macsec_rx_sa *macsec_active_rxsa_get(struct macsec_rx_sc *rx_sc)
--{
--	struct macsec_rx_sa *sa = NULL;
--	int an;
--
--	for (an = 0; an < MACSEC_NUM_AN; an++)	{
--		sa = macsec_rxsa_get(rx_sc->sa[an]);
--		if (sa)
--			break;
--	}
--	return sa;
--}
--
- static void free_rx_sc_rcu(struct rcu_head *head)
- {
- 	struct macsec_rx_sc *rx_sc = container_of(head, struct macsec_rx_sc, rcu_head);
-@@ -1192,15 +1179,12 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 		/* If validateFrames is Strict or the C bit in the
- 		 * SecTAG is set, discard
- 		 */
--		struct macsec_rx_sa *active_rx_sa = macsec_active_rxsa_get(rx_sc);
- 		if (hdr->tci_an & MACSEC_TCI_C ||
- 		    secy->validate_frames == MACSEC_VALIDATE_STRICT) {
- 			u64_stats_update_begin(&rxsc_stats->syncp);
- 			rxsc_stats->stats.InPktsNotUsingSA++;
- 			u64_stats_update_end(&rxsc_stats->syncp);
- 			DEV_STATS_INC(secy->netdev, rx_errors);
--			if (active_rx_sa)
--				this_cpu_inc(active_rx_sa->stats->InPktsNotUsingSA);
- 			goto drop_nosa;
- 		}
+-LDFLAGS_vmlinux	:=--no-undefined -X
++LDFLAGS_vmlinux	:=--no-undefined -X --pic-veneer
  
-@@ -1210,8 +1194,6 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 		u64_stats_update_begin(&rxsc_stats->syncp);
- 		rxsc_stats->stats.InPktsUnusedSA++;
- 		u64_stats_update_end(&rxsc_stats->syncp);
--		if (active_rx_sa)
--			this_cpu_inc(active_rx_sa->stats->InPktsUnusedSA);
- 		goto deliver;
- 	}
- 
+ ifeq ($(CONFIG_RELOCATABLE), y)
+ # Pass --no-apply-dynamic-relocs to restore pre-binutils-2.27 behaviour
 -- 
 2.43.0
 
