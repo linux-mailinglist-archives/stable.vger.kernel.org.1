@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-88473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 459149B261F
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:37:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFD0E9B2722
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:45:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E60BE1F21E08
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:37:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D9EF1C214CD
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 245D018E74D;
-	Mon, 28 Oct 2024 06:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3010C18A924;
+	Mon, 28 Oct 2024 06:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSpfEb+j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ak0ddDhe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BF518E350;
-	Mon, 28 Oct 2024 06:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CFB1DFFD;
+	Mon, 28 Oct 2024 06:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097411; cv=none; b=KQRPX795L7Kgzkc9CeIiga9CREaUpsX8N1nA14iO5KLYuYYA1qWNEgT0KphR4p/umHwZNlYI+JzyRoURnsXnk/y48jnnRokthuf/YXOLiJIIMZ5BCOsSwwdEXOTjivSSAkZ5RQYxiXBdDGWnT9cRj3T0Gv9/9omk63baYB2YJVc=
+	t=1730097943; cv=none; b=nP21Z1x5Z9xhlUV5hLENyQG/23+kJmxtVquc2GaNh62iVB+itIqQtrNShIdzFpmrviHEIlJ34sldb7DyN5QCm7s1NLLGaJhagxUcH/Mn2eEE/Qiq4Tush4zXv2thhOZcot+ZMMnwO6fT0W4XI7CXCk+QYHxumHETZUOcAKBqnb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097411; c=relaxed/simple;
-	bh=GdMDz6dahbLFR8TywUAXvmjSZfFtDdTp9AGv8Ooo0f8=;
+	s=arc-20240116; t=1730097943; c=relaxed/simple;
+	bh=7/RdZDKxC1Geh7+z08M0JPT7HP7o2VAkPOssVdU9fyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dj4OuMBPUe+bjTzDAdmTSn42P7H+NnahJG9JfZHX2FjSWZ1NtKZpEsMkiacA+TL9pqPzfgLnKAxVTRRmfTQ040QLYP8dtr1giVMUlTqOx/qPb8bIy6LrnsubhuZA/0Bxr8F2pP6JY+T9T79W/iJPDxxL2x83mSYv1yjskW/+c+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSpfEb+j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77CB3C4CEC3;
-	Mon, 28 Oct 2024 06:36:51 +0000 (UTC)
+	 MIME-Version; b=SRJQGqUpZbPTM8JcHX65HENZhjFS8FqlK48vCzR9MCTD0WKgFi2jTZO++qEyO0CBF0nq2UqpziA/S1s2qZ573X4n8D9f8K/Fjt2xdYEGQ7rGt0E2KlP0/9LiQEbRXwV5XBB6Pjq6/q3ELSQJh0eRDE1WX053guSZcfFwwNkJbMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ak0ddDhe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8216FC4CEC3;
+	Mon, 28 Oct 2024 06:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097411;
-	bh=GdMDz6dahbLFR8TywUAXvmjSZfFtDdTp9AGv8Ooo0f8=;
+	s=korg; t=1730097942;
+	bh=7/RdZDKxC1Geh7+z08M0JPT7HP7o2VAkPOssVdU9fyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QSpfEb+j9qTR5i6co0KuXHkKhNFEtVJXokjJ2MgpnZVCLuqrEDUrmoCeyyrt8xCN0
-	 rKLgndEMhF4NmVY8UE4VBxjOX7ctXyalve+ns4SK5DJqB5yDvDuxdkVzpjye39GYSE
-	 QCCcnuIWhGWAMseOcQpsUcS2jeAZwFOdg1ZL9ATE=
+	b=ak0ddDheqgmgzWNVbeubfCRFtz3IneFWYfc4jecxBpi4H6LvEUGEEzNw498BkB2nn
+	 ZLoBOGrbm4QNxf3sfCQY3JoV0q/cKSPy6Z0HeyXwGbtd0vXjAxffu77EEeDe8kYmtF
+	 bLHR7UJ6quICLQBJcFUgm0gPFJXNHFLMMLadZtMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shubham Panwar <shubiisp8@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.1 120/137] ACPI: button: Add DMI quirk for Samsung Galaxy Book2 to fix initial lid detection issue
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Yue Haibing <yuehaibing@huawei.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 177/208] btrfs: fix passing 0 to ERR_PTR in btrfs_search_dir_index_item()
 Date: Mon, 28 Oct 2024 07:25:57 +0100
-Message-ID: <20241028062302.064171942@linuxfoundation.org>
+Message-ID: <20241028062310.989949923@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shubham Panwar <shubiisp8@gmail.com>
+From: Yue Haibing <yuehaibing@huawei.com>
 
-commit 8fa73ee44daefc884c53a25158c25a4107eb5a94 upstream.
+commit 75f49c3dc7b7423d3734f2e4dabe3dac8d064338 upstream.
 
-Add a DMI quirk for Samsung Galaxy Book2 to fix an initial lid state
-detection issue.
+The ret may be zero in btrfs_search_dir_index_item() and should not
+passed to ERR_PTR(). Now btrfs_unlink_subvol() is the only caller to
+this, reconstructed it to check ERR_PTR(-ENOENT) while ret >= 0.
 
-The _LID device incorrectly returns the lid status as "closed" during
-boot, causing the system to enter a suspend loop right after booting.
+This fixes smatch warnings:
 
-The quirk ensures that the correct lid state is reported initially,
-preventing the system from immediately suspending after startup.  It
-only addresses the initial lid state detection and ensures proper
-system behavior upon boot.
+fs/btrfs/dir-item.c:353
+  btrfs_search_dir_index_item() warn: passing zero to 'ERR_PTR'
 
-Signed-off-by: Shubham Panwar <shubiisp8@gmail.com>
-Link: https://patch.msgid.link/20241020095045.6036-2-shubiisp8@gmail.com
-[ rjw: Changelog edits ]
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 9dcbe16fccbb ("btrfs: use btrfs_for_each_slot in btrfs_search_dir_index_item")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/button.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/btrfs/dir-item.c |    4 ++--
+ fs/btrfs/inode.c    |    7 ++-----
+ 2 files changed, 4 insertions(+), 7 deletions(-)
 
---- a/drivers/acpi/button.c
-+++ b/drivers/acpi/button.c
-@@ -121,6 +121,17 @@ static const struct dmi_system_id dmi_li
- 		},
- 		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
- 	},
-+	{
-+		/*
-+		 * Samsung galaxybook2 ,initial _LID device notification returns
-+		 * lid closed.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "SAMSUNG ELECTRONICS CO., LTD."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "750XED"),
-+		},
-+		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
-+	},
- 	{}
- };
+--- a/fs/btrfs/dir-item.c
++++ b/fs/btrfs/dir-item.c
+@@ -347,8 +347,8 @@ btrfs_search_dir_index_item(struct btrfs
+ 			return di;
+ 	}
+ 	/* Adjust return code if the key was not found in the next leaf. */
+-	if (ret > 0)
+-		ret = 0;
++	if (ret >= 0)
++		ret = -ENOENT;
  
+ 	return ERR_PTR(ret);
+ }
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -4293,11 +4293,8 @@ static int btrfs_unlink_subvol(struct bt
+ 	 */
+ 	if (btrfs_ino(inode) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID) {
+ 		di = btrfs_search_dir_index_item(root, path, dir_ino, &fname.disk_name);
+-		if (IS_ERR_OR_NULL(di)) {
+-			if (!di)
+-				ret = -ENOENT;
+-			else
+-				ret = PTR_ERR(di);
++		if (IS_ERR(di)) {
++			ret = PTR_ERR(di);
+ 			btrfs_abort_transaction(trans, ret);
+ 			goto out;
+ 		}
 
 
 
