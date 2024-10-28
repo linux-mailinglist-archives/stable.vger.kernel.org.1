@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B04879B2774
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:48:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E49B9B2661
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8F131C21357
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:48:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3620D1F21F75
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 121A118DF7D;
-	Mon, 28 Oct 2024 06:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76E9F18DF68;
+	Mon, 28 Oct 2024 06:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d+4GJ90p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a++TJgP8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D792AF07;
-	Mon, 28 Oct 2024 06:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338CE18E04F;
+	Mon, 28 Oct 2024 06:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098101; cv=none; b=OCvrNGqfCWS64DDLerVXuIWjAcoum3oNbuX2Q0le7ZcPldTMYkDRKZY4Xo6LUOV58bZSTuLUJVGXl1VOxcFN5N6e24+QINfYN3igYclAonUcBmsu/brwoSM3Zv27NW0xpm1+KiNSkcF9yF2MSmhfnlrD9PrDZKbqQaD3Kv0ErNA=
+	t=1730097544; cv=none; b=cXYNNmzKEpLn3lMoLoUkI5LdPc/LiYg52HfcpoDfHx+VawNb9ivLo0GMzC38BqEVFlUsO6S5lo+xP0em+marsleOkbW4zYGn92XguU07Nn9ASkfLk5pQ8RQQ0ZaW5viOvpkhu2M22GuTJLVT6ey/wbDUr72/bAvmwW67NYoYa0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098101; c=relaxed/simple;
-	bh=YkXVeWMHCeIHIqIfoXclAzodVsZw6nQ7kJdhZmL8Vvs=;
+	s=arc-20240116; t=1730097544; c=relaxed/simple;
+	bh=pMu1mvjmnEadDio9bHurn5x9SAyXm79DJKRrH1I2pJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nJ0eZQrO+1ihUYQ5G+qlsHjGSuegv4ilxLV/PDs7pi3gC43LDzDK7eogII38kN+x5A+VMobiNr4HktvbOphpbdsv1TOan1hZIUW+5iHHJAuwa6NWK9ReASUJRwi4467QXGWKn9AZWmJY2odSWFh7CF0MsOJogZPOIwshUUvTGWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d+4GJ90p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DBEEC4CEE8;
-	Mon, 28 Oct 2024 06:48:21 +0000 (UTC)
+	 MIME-Version; b=Z6wZiWl8xbayLLDXYVfUlZ1OPj/nAow+55/LcrAmrh1ZHQ7eRxMFu7Au+F9HH+0sDR3Cxj7YCBuxfuZDASELaO7KMKjYPluJ0sUay16Zk/A1dqgqNzWt6CUOY5Xcuy1wAG2c7a+GD9sVPpGM1JD7TzmseKcXuZLTSRC0cojowiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a++TJgP8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C825CC4CEC3;
+	Mon, 28 Oct 2024 06:39:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098101;
-	bh=YkXVeWMHCeIHIqIfoXclAzodVsZw6nQ7kJdhZmL8Vvs=;
+	s=korg; t=1730097544;
+	bh=pMu1mvjmnEadDio9bHurn5x9SAyXm79DJKRrH1I2pJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d+4GJ90p4tqv18VVIg9PnZkBao8tTYOwxVbhl+JJCrQaPpgLjXIVXyeMKk5GinLTX
-	 /QQ7v2UbMEMZHBPwUtRRF2j0yKsBfcx8jYpMUvINqaCg73zFc5OklP2ucvn/4Kgn2n
-	 mWUSTDXIGH5jpWa0x6/4ha0ib5dwfxl3DwR8+BJM=
+	b=a++TJgP81M6uEM2dNo5cippG7URYO6VI3yRW36T96vkwpQitEnTvK4E302pl8LkaQ
+	 OXEefST/u21oGYbWyv8uPFF5lacQlhU6sxEQvIaedvAKIREZ9kJv9flDLXnkHkQqBI
+	 dbtZsLjGO+TeJusYsxlu6LOG7j3Qdb26VwtWY6MI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@chromium.org>,
-	Akhil P Oommen <quic_akhilpo@quicinc.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 077/261] drm/msm/a6xx+: Insert a fence wait before SMMU table update
-Date: Mon, 28 Oct 2024 07:23:39 +0100
-Message-ID: <20241028062313.958456272@linuxfoundation.org>
+Subject: [PATCH 6.6 040/208] accel/qaic: Fix the for loop used to walk SG table
+Date: Mon, 28 Oct 2024 07:23:40 +0100
+Message-ID: <20241028062307.642498376@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>
 
-[ Upstream commit 77ad507dbb7ec1ecd60fc081d03616960ef596fd ]
+[ Upstream commit c5e8e93897b7bb0a336bf3332f82f8d9f2b33f14 ]
 
-The CP_SMMU_TABLE_UPDATE _should_ be waiting for idle, but on some
-devices (x1-85, possibly others), it seems to pass that barrier while
-there are still things in the event completion FIFO waiting to be
-written back to memory.
+Only for_each_sgtable_dma_sg() should be used to walk through a SG table
+to grab correct bus address and length pair after calling DMA MAP API on
+a SG table as DMA MAP APIs updates the SG table and for_each_sgtable_sg()
+walks through the original SG table.
 
-Work around that by adding a fence wait before context switch.  The
-CP_EVENT_WRITE that writes the fence is the last write from a submit,
-so seeing this value hit memory is a reliable indication that it is
-safe to proceed with the context switch.
-
-v2: Only emit CP_WAIT_TIMESTAMP on a7xx, as it is not supported on a6xx.
-    Conversely, I've not been able to reproduce this issue on a6xx, so
-    hopefully it is limited to a7xx, or perhaps just certain a7xx
-    devices.
-
-Fixes: af66706accdf ("drm/msm/a6xx: Add skeleton A7xx support")
-Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/63
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Fixes: ff13be830333 ("accel/qaic: Add datapath")
+Fixes: 129776ac2e38 ("accel/qaic: Add control path")
+Signed-off-by: Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241004193252.3888544-1-quic_jhugo@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/accel/qaic/qaic_control.c | 2 +-
+ drivers/accel/qaic/qaic_data.c    | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-index bcaec86ac67a5..89b379060596d 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -101,9 +101,10 @@ static void get_stats_counter(struct msm_ringbuffer *ring, u32 counter,
- }
+diff --git a/drivers/accel/qaic/qaic_control.c b/drivers/accel/qaic/qaic_control.c
+index 388abd40024ba..f3db3fa91dd52 100644
+--- a/drivers/accel/qaic/qaic_control.c
++++ b/drivers/accel/qaic/qaic_control.c
+@@ -496,7 +496,7 @@ static int encode_addr_size_pairs(struct dma_xfer *xfer, struct wrapper_list *wr
+ 	nents = sgt->nents;
+ 	nents_dma = nents;
+ 	*size = QAIC_MANAGE_EXT_MSG_LENGTH - msg_hdr_len - sizeof(**out_trans);
+-	for_each_sgtable_sg(sgt, sg, i) {
++	for_each_sgtable_dma_sg(sgt, sg, i) {
+ 		*size -= sizeof(*asp);
+ 		/* Save 1K for possible follow-up transactions. */
+ 		if (*size < SZ_1K) {
+diff --git a/drivers/accel/qaic/qaic_data.c b/drivers/accel/qaic/qaic_data.c
+index ed1a5af434f24..d2f8c70a77a5b 100644
+--- a/drivers/accel/qaic/qaic_data.c
++++ b/drivers/accel/qaic/qaic_data.c
+@@ -177,7 +177,7 @@ static int clone_range_of_sgt_for_slice(struct qaic_device *qdev, struct sg_tabl
+ 	nents = 0;
  
- static void a6xx_set_pagetable(struct a6xx_gpu *a6xx_gpu,
--		struct msm_ringbuffer *ring, struct msm_file_private *ctx)
-+		struct msm_ringbuffer *ring, struct msm_gem_submit *submit)
- {
- 	bool sysprof = refcount_read(&a6xx_gpu->base.base.sysprof_active) > 1;
-+	struct msm_file_private *ctx = submit->queue->ctx;
- 	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
- 	phys_addr_t ttbr;
- 	u32 asid;
-@@ -115,6 +116,15 @@ static void a6xx_set_pagetable(struct a6xx_gpu *a6xx_gpu,
- 	if (msm_iommu_pagetable_params(ctx->aspace->mmu, &ttbr, &asid))
- 		return;
+ 	size = size ? size : PAGE_SIZE;
+-	for (sg = sgt_in->sgl; sg; sg = sg_next(sg)) {
++	for_each_sgtable_dma_sg(sgt_in, sg, j) {
+ 		len = sg_dma_len(sg);
  
-+	if (adreno_gpu->info->family >= ADRENO_7XX_GEN1) {
-+		/* Wait for previous submit to complete before continuing: */
-+		OUT_PKT7(ring, CP_WAIT_TIMESTAMP, 4);
-+		OUT_RING(ring, 0);
-+		OUT_RING(ring, lower_32_bits(rbmemptr(ring, fence)));
-+		OUT_RING(ring, upper_32_bits(rbmemptr(ring, fence)));
-+		OUT_RING(ring, submit->seqno - 1);
-+	}
-+
- 	if (!sysprof) {
- 		if (!adreno_is_a7xx(adreno_gpu)) {
- 			/* Turn off protected mode to write to special registers */
-@@ -193,7 +203,7 @@ static void a6xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
- 	struct msm_ringbuffer *ring = submit->ring;
- 	unsigned int i, ibs = 0;
+ 		if (!len)
+@@ -214,7 +214,7 @@ static int clone_range_of_sgt_for_slice(struct qaic_device *qdev, struct sg_tabl
  
--	a6xx_set_pagetable(a6xx_gpu, ring, submit->queue->ctx);
-+	a6xx_set_pagetable(a6xx_gpu, ring, submit);
- 
- 	get_stats_counter(ring, REG_A6XX_RBBM_PERFCTR_CP(0),
- 		rbmemptr_stats(ring, index, cpcycles_start));
-@@ -283,7 +293,7 @@ static void a7xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
- 	OUT_PKT7(ring, CP_THREAD_CONTROL, 1);
- 	OUT_RING(ring, CP_THREAD_CONTROL_0_SYNC_THREADS | CP_SET_THREAD_BR);
- 
--	a6xx_set_pagetable(a6xx_gpu, ring, submit->queue->ctx);
-+	a6xx_set_pagetable(a6xx_gpu, ring, submit);
- 
- 	get_stats_counter(ring, REG_A7XX_RBBM_PERFCTR_CP(0),
- 		rbmemptr_stats(ring, index, cpcycles_start));
+ 	/* copy relevant sg node and fix page and length */
+ 	sgn = sgf;
+-	for_each_sgtable_sg(sgt, sg, j) {
++	for_each_sgtable_dma_sg(sgt, sg, j) {
+ 		memcpy(sg, sgn, sizeof(*sg));
+ 		if (sgn == sgf) {
+ 			sg_dma_address(sg) += offf;
+@@ -294,7 +294,7 @@ static int encode_reqs(struct qaic_device *qdev, struct bo_slice *slice,
+ 	 * fence.
+ 	 */
+ 	dev_addr = req->dev_addr;
+-	for_each_sgtable_sg(slice->sgt, sg, i) {
++	for_each_sgtable_dma_sg(slice->sgt, sg, i) {
+ 		slice->reqs[i].cmd = cmd;
+ 		slice->reqs[i].src_addr = cpu_to_le64(slice->dir == DMA_TO_DEVICE ?
+ 						      sg_dma_address(sg) : dev_addr);
 -- 
 2.43.0
 
