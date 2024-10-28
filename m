@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-88426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A509B25F0
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66E1E9B27DE
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C79871C211BE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C67D286398
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982BC18E748;
-	Mon, 28 Oct 2024 06:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9270218EFDC;
+	Mon, 28 Oct 2024 06:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XRk6Hh+L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ypo3vZoZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2FE18DF68;
-	Mon, 28 Oct 2024 06:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF2D18D65C;
+	Mon, 28 Oct 2024 06:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097305; cv=none; b=UnFCdMtMz4OfoY1vLbOMgseguL8I62J5fcJ1A/2Nsa94sJoVEaxLqRQeUv8NsSfoM4ADZmPG0EXeixNvOXhIlpSCGmGLqdAgvGiYVeAFPCusp8av/Q9fQr+nLeRu6nMofGieDQ/2rolnhnNfXnU5drtYZi5AUDSMleCVxEpCXxo=
+	t=1730098310; cv=none; b=VLBNbljc5o6YtcptQ2Vf2H6o6/MSw+vSP2hlfA9RTXOYVQs7OZP7Uu5y1lhm3KABJVrjkQ4DgG/ByljiNIhd8PYUKJEKyF0SOwsrMFLZSycswKZ+r1+zDuux6XtIvcqwKARjNocX5G9M3FCktMK2oaxHgceBsOjoORqQvvRanL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097305; c=relaxed/simple;
-	bh=y8MSHOYx24aZ3HiP5q8cLqWcSAOsTCk4gmAfUg9g8Q0=;
+	s=arc-20240116; t=1730098310; c=relaxed/simple;
+	bh=3klC5ehf8vSbc3RgE58UgbgupuuekroJuWp7bbQ8w0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gg/9O3GsJeBzc4cjuhF/C6vNAgIC6iNL5zn2Mgw5pMWt6mVUxR0u5cI2hjNahNQ9xJPyBw6ABVWMgosD/R40M9yI/tSNuaCQIr9YrLUJySUlfJnhw8xj8NQXfNmNhL2rT3HDBhiq3k44CBJVuO/OG+k1FgpLmuEb2UYOJQciHbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XRk6Hh+L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2CD0C4CEC3;
-	Mon, 28 Oct 2024 06:35:04 +0000 (UTC)
+	 MIME-Version; b=MpWA5FC651bWZjZLpshPtr/IwWDysk/plAVKcJELfA8wQixBRNVezJuq5bTHJxFXVJxAynusAjy5Jzx6DWwKX0a+mERL+sxnHuprCo42Si+A+4mR/rNilgp06o+KW7OEE0POiMepBaXRe0QRZwzO3ykfyQD06R+7TiRPMaJnfrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ypo3vZoZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C54C4CEC3;
+	Mon, 28 Oct 2024 06:51:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097305;
-	bh=y8MSHOYx24aZ3HiP5q8cLqWcSAOsTCk4gmAfUg9g8Q0=;
+	s=korg; t=1730098309;
+	bh=3klC5ehf8vSbc3RgE58UgbgupuuekroJuWp7bbQ8w0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XRk6Hh+Lm2o7CpiU5nYCIUCxEpKrt0Buz5/B0dBTH/yO1rEM+Pt/E7uuxdBoRBD8x
-	 4qKNsZOVmBsGOapp7ScbrgOUWcptij5ecozZ4RiY9j/wk952K1jB1mKnTjgxNN1zHD
-	 wtzINLwfJBJBPtWASZqJgFzB9EIoOzIbTxXR/Iw0=
+	b=ypo3vZoZnVVUVaQbn119CQP4CYQXYY9pwmZxBSr4H86F5tZaSiDBWB4VfE6bx//bo
+	 b2PMSnFEL8/NH+6DCg4WKEnvTaVH2W+fst01/nHB4kwqz9s956cNS0Q0LfboH7M0jG
+	 cXEwkBdroWPP9S1/0e51Foy3Xae8tR6AEIpwAg7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Xiangyu Chen <xiangyu.chen@windriver.com>,
+	Atlas Yu <atlas.yu@canonical.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/137] fs/ntfs3: Add more attributes checks in mi_enum_attr()
-Date: Mon, 28 Oct 2024 07:25:10 +0100
-Message-ID: <20241028062300.776820907@linuxfoundation.org>
+Subject: [PATCH 6.11 169/261] r8169: avoid unsolicited interrupts
+Date: Mon, 28 Oct 2024 07:25:11 +0100
+Message-ID: <20241028062316.232732979@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,150 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 013ff63b649475f0ee134e2c8d0c8e65284ede50 ]
+[ Upstream commit 10ce0db787004875f4dba068ea952207d1d8abeb ]
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-CVE: CVE-2023-45896
-Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+It was reported that after resume from suspend a PCI error is logged
+and connectivity is broken. Error message is:
+PCI error (cmd = 0x0407, status_errs = 0x0000)
+The message seems to be a red herring as none of the error bits is set,
+and the PCI command register value also is normal. Exception handling
+for a PCI error includes a chip reset what apparently brakes connectivity
+here. The interrupt status bit triggering the PCI error handling isn't
+actually used on PCIe chip versions, so it's not clear why this bit is
+set by the chip. Fix this by ignoring this bit on PCIe chip versions.
+
+Fixes: 0e4851502f84 ("r8169: merge with version 8.001.00 of Realtek's r8168 driver")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219388
+Tested-by: Atlas Yu <atlas.yu@canonical.com>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/78e2f535-438f-4212-ad94-a77637ac6c9c@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/record.c | 67 ++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 54 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/record.c b/fs/ntfs3/record.c
-index 1351fb02e1401..7ab4527105729 100644
---- a/fs/ntfs3/record.c
-+++ b/fs/ntfs3/record.c
-@@ -193,8 +193,9 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
- {
- 	const struct MFT_REC *rec = mi->mrec;
- 	u32 used = le32_to_cpu(rec->used);
--	u32 t32, off, asize;
-+	u32 t32, off, asize, prev_type;
- 	u16 t16;
-+	u64 data_size, alloc_size, tot_size;
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 01e18f645c0ed..91a8c62b180ae 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4669,7 +4669,9 @@ static irqreturn_t rtl8169_interrupt(int irq, void *dev_instance)
+ 	if ((status & 0xffff) == 0xffff || !(status & tp->irq_mask))
+ 		return IRQ_NONE;
  
- 	if (!attr) {
- 		u32 total = le32_to_cpu(rec->total);
-@@ -213,6 +214,7 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
- 		if (!is_rec_inuse(rec))
- 			return NULL;
- 
-+		prev_type = 0;
- 		attr = Add2Ptr(rec, off);
- 	} else {
- 		/* Check if input attr inside record. */
-@@ -226,6 +228,11 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
- 			return NULL;
- 		}
- 
-+		/* Overflow check. */
-+		if (off + asize < off)
-+			return NULL;
-+
-+		prev_type = le32_to_cpu(attr->type);
- 		attr = Add2Ptr(attr, asize);
- 		off += asize;
+-	if (unlikely(status & SYSErr)) {
++	/* At least RTL8168fp may unexpectedly set the SYSErr bit */
++	if (unlikely(status & SYSErr &&
++	    tp->mac_version <= RTL_GIGA_MAC_VER_06)) {
+ 		rtl8169_pcierr_interrupt(tp->dev);
+ 		goto out;
  	}
-@@ -245,7 +252,11 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
- 
- 	/* 0x100 is last known attribute for now. */
- 	t32 = le32_to_cpu(attr->type);
--	if ((t32 & 0xf) || (t32 > 0x100))
-+	if (!t32 || (t32 & 0xf) || (t32 > 0x100))
-+		return NULL;
-+
-+	/* attributes in record must be ordered by type */
-+	if (t32 < prev_type)
- 		return NULL;
- 
- 	/* Check overflow and boundary. */
-@@ -254,16 +265,15 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
- 
- 	/* Check size of attribute. */
- 	if (!attr->non_res) {
-+		/* Check resident fields. */
- 		if (asize < SIZEOF_RESIDENT)
- 			return NULL;
- 
- 		t16 = le16_to_cpu(attr->res.data_off);
--
- 		if (t16 > asize)
- 			return NULL;
- 
--		t32 = le32_to_cpu(attr->res.data_size);
--		if (t16 + t32 > asize)
-+		if (t16 + le32_to_cpu(attr->res.data_size) > asize)
- 			return NULL;
- 
- 		if (attr->name_len &&
-@@ -274,21 +284,52 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
- 		return attr;
- 	}
- 
--	/* Check some nonresident fields. */
--	if (attr->name_len &&
--	    le16_to_cpu(attr->name_off) + sizeof(short) * attr->name_len >
--		    le16_to_cpu(attr->nres.run_off)) {
-+	/* Check nonresident fields. */
-+	if (attr->non_res != 1)
- 		return NULL;
--	}
- 
--	if (attr->nres.svcn || !is_attr_ext(attr)) {
-+	t16 = le16_to_cpu(attr->nres.run_off);
-+	if (t16 > asize)
-+		return NULL;
-+
-+	t32 = sizeof(short) * attr->name_len;
-+	if (t32 && le16_to_cpu(attr->name_off) + t32 > t16)
-+		return NULL;
-+
-+	/* Check start/end vcn. */
-+	if (le64_to_cpu(attr->nres.svcn) > le64_to_cpu(attr->nres.evcn) + 1)
-+		return NULL;
-+
-+	data_size = le64_to_cpu(attr->nres.data_size);
-+	if (le64_to_cpu(attr->nres.valid_size) > data_size)
-+		return NULL;
-+
-+	alloc_size = le64_to_cpu(attr->nres.alloc_size);
-+	if (data_size > alloc_size)
-+		return NULL;
-+
-+	t32 = mi->sbi->cluster_mask;
-+	if (alloc_size & t32)
-+		return NULL;
-+
-+	if (!attr->nres.svcn && is_attr_ext(attr)) {
-+		/* First segment of sparse/compressed attribute */
-+		if (asize + 8 < SIZEOF_NONRESIDENT_EX)
-+			return NULL;
-+
-+		tot_size = le64_to_cpu(attr->nres.total_size);
-+		if (tot_size & t32)
-+			return NULL;
-+
-+		if (tot_size > alloc_size)
-+			return NULL;
-+	} else {
- 		if (asize + 8 < SIZEOF_NONRESIDENT)
- 			return NULL;
- 
- 		if (attr->nres.c_unit)
- 			return NULL;
--	} else if (asize + 8 < SIZEOF_NONRESIDENT_EX)
--		return NULL;
-+	}
- 
- 	return attr;
- }
 -- 
 2.43.0
 
