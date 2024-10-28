@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D9F39B26E9
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:43:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62C699B2636
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:37:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 487B01F23E64
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:43:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EC7B1F20F97
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A33718E37F;
-	Mon, 28 Oct 2024 06:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47DDD18E348;
+	Mon, 28 Oct 2024 06:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZG/IWK9G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lLibwTfX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3741615B10D;
-	Mon, 28 Oct 2024 06:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F318C15B10D;
+	Mon, 28 Oct 2024 06:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097824; cv=none; b=L6/uol4p/rC5eZSez33WoeAW2suNdy+52/qviyC2278BYjAxHgIcn/t8nTHbVQIlr1lZnAxi9nMyGNcuJGZD24CetSIQ0cTGheLkEl4a7RejE/wOishredYnc3VQ7n98E3cbeDxafttu9ZBKfsMvdLCm475xJ4f+mNddXY8Gr4s=
+	t=1730097463; cv=none; b=Z9wxgq8kJXBX5BxQck3OuQ292im3nbCbWoUQclXpfsju/vfinjUoRwbLxInXmn+AUTxRrWGGJtz4EofJw7xBBNvUb0pnPab3hV+PItOMc15uMIuiyzhdC2VMW7dJ9P/P6tV8LksxbOOB31brAfssZriwgv7HafeKIoq0hyquiCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097824; c=relaxed/simple;
-	bh=N1ITCPry7ETEQiqUWd1ZXfBqtIvCIN/xQwoHz9WMJXQ=;
+	s=arc-20240116; t=1730097463; c=relaxed/simple;
+	bh=T7y5af1uAyjpEfREG+/TLgvR9pPdCFhiWtsBM7E37EE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XH+Vcy1G+laGTIQHmklGN3uyWco5o8ddsQ1wzlBLdp43xSeeEjJ+gQtkXFyzbzzi1t/dOnslKvnGmz+KMKhPB/CAnqybRhi2fT9+ReL6RDS8ysd8Dz9VoT+hc1HRYwyVj6kFSnOn0WjmABjoF6un0e6KoU7mbVf7MgnjcRkJOnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZG/IWK9G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC95EC4CEC3;
-	Mon, 28 Oct 2024 06:43:43 +0000 (UTC)
+	 MIME-Version; b=OhrG3A4Pic4BqALmgPjNkIfNL7vCUTJuhDVaR/Qd/zmoF5S9b52MaPGKzI0mEolpupW71f5pdmw3jnGjb1hS/5wXX4vOEWB4Bp4mPd9QtIfoklPIndF3+Jo691irfMoZvUHX0LAneDvdyG1De86xx86b/Vz2CWjb1Nc4/2D8VxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lLibwTfX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94342C4CEC3;
+	Mon, 28 Oct 2024 06:37:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097824;
-	bh=N1ITCPry7ETEQiqUWd1ZXfBqtIvCIN/xQwoHz9WMJXQ=;
+	s=korg; t=1730097462;
+	bh=T7y5af1uAyjpEfREG+/TLgvR9pPdCFhiWtsBM7E37EE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZG/IWK9G3GjwHEyIwGgVP78kTBJaVq7BL2PVW6H/5zrm3ti7Hb0TQVr/zoqthA8Ho
-	 25GESHhHWoalO3y8BSB+1FcRIkIPuL55zKF951u5myt/vgQGhTKBFsjwJmMO6eJCyk
-	 rRUHaDxNNI7KWesykr62ItMNIiaa0zyUu4So2bOo=
+	b=lLibwTfXAUzQDSbBAkO0HdZhpRRveko5adUO5FhprwvgWLKuyWEEzizGXSqRG4Pfb
+	 gLrsQjZ7sCFHgs1r5EHGuMeRlSNDAfSwN0pGefK+8ws8hLPQCgjUXingYHLK963rZ7
+	 M2ncnC16QIrbbDFPVGJaqUryju7vXe9EoSUmoztQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenghao Yang <me@shenghaoyang.info>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 163/208] net: dsa: mv88e6xxx: support 4000ps cycle counter period
-Date: Mon, 28 Oct 2024 07:25:43 +0100
-Message-ID: <20241028062310.643281527@linuxfoundation.org>
+Subject: [PATCH 6.1 107/137] bpf,perf: Fix perf_event_detach_bpf_prog error handling
+Date: Mon, 28 Oct 2024 07:25:44 +0100
+Message-ID: <20241028062301.708317392@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenghao Yang <me@shenghaoyang.info>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit 3e65ede526cf4f95636dbc835598d100c7668ab3 ]
+[ Upstream commit 0ee288e69d033850bc87abe0f9cc3ada24763d7f ]
 
-The MV88E6393X family of devices can run its cycle counter off
-an internal 250MHz clock instead of an external 125MHz one.
+Peter reported that perf_event_detach_bpf_prog might skip to release
+the bpf program for -ENOENT error from bpf_prog_array_copy.
 
-Add support for this cycle counter period by adding another set
-of coefficients and lowering the periodic cycle counter read interval
-to compensate for faster overflows at the increased frequency.
+This can't happen because bpf program is stored in perf event and is
+detached and released only when perf event is freed.
 
-Otherwise, the PHC runs at 2x real time in userspace and cannot be
-synchronized.
+Let's drop the -ENOENT check and make sure the bpf program is released
+in any case.
 
-Fixes: de776d0d316f ("net: dsa: mv88e6xxx: add support for mv88e6393x family")
-Signed-off-by: Shenghao Yang <me@shenghaoyang.info>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 170a7e3ea070 ("bpf: bpf_prog_array_copy() should return -ENOENT if exclude_prog not found")
+Reported-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241023200352.3488610-1-jolsa@kernel.org
+
+Closes: https://lore.kernel.org/lkml/20241022111638.GC16066@noisy.programming.kicks-ass.net/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/ptp.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ kernel/trace/bpf_trace.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/ptp.c b/drivers/net/dsa/mv88e6xxx/ptp.c
-index a62b4ce7ff61d..5980bb4ce43e0 100644
---- a/drivers/net/dsa/mv88e6xxx/ptp.c
-+++ b/drivers/net/dsa/mv88e6xxx/ptp.c
-@@ -40,7 +40,7 @@ static const struct mv88e6xxx_cc_coeffs mv88e6xxx_cc_10ns_coeffs = {
- 	.cc_mult_dem = 3125ULL,
- };
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 3fdde232eaa92..583961a9e539a 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -2179,8 +2179,6 @@ void perf_event_detach_bpf_prog(struct perf_event *event)
  
--/* Other families:
-+/* Other families except MV88E6393X in internal clock mode:
-  * Raw timestamps are in units of 8-ns clock periods.
-  *
-  * clkadj = scaled_ppm * 8*2^28 / (10^6 * 2^16)
-@@ -55,6 +55,21 @@ static const struct mv88e6xxx_cc_coeffs mv88e6xxx_cc_8ns_coeffs = {
- 	.cc_mult_dem = 15625ULL
- };
- 
-+/* Family MV88E6393X using internal clock:
-+ * Raw timestamps are in units of 4-ns clock periods.
-+ *
-+ * clkadj = scaled_ppm * 4*2^28 / (10^6 * 2^16)
-+ * simplifies to
-+ * clkadj = scaled_ppm * 2^8 / 5^6
-+ */
-+#define MV88E6XXX_CC_4NS_SHIFT 28
-+static const struct mv88e6xxx_cc_coeffs mv88e6xxx_cc_4ns_coeffs = {
-+	.cc_shift = MV88E6XXX_CC_4NS_SHIFT,
-+	.cc_mult = 4 << MV88E6XXX_CC_4NS_SHIFT,
-+	.cc_mult_num = 1 << 8,
-+	.cc_mult_dem = 15625ULL
-+};
-+
- #define TAI_EVENT_WORK_INTERVAL msecs_to_jiffies(100)
- 
- #define cc_to_chip(cc) container_of(cc, struct mv88e6xxx_chip, tstamp_cc)
-@@ -110,6 +125,8 @@ mv88e6xxx_cc_coeff_get(struct mv88e6xxx_chip *chip)
- 	}
- 
- 	switch (period_ps) {
-+	case 4000:
-+		return &mv88e6xxx_cc_4ns_coeffs;
- 	case 8000:
- 		return &mv88e6xxx_cc_8ns_coeffs;
- 	case 10000:
-@@ -479,10 +496,10 @@ static u64 mv88e6xxx_ptp_clock_read(const struct cyclecounter *cc)
- 	return 0;
- }
- 
--/* With a 125MHz input clock, the 32-bit timestamp counter overflows in ~34.3
-+/* With a 250MHz input clock, the 32-bit timestamp counter overflows in ~17.2
-  * seconds; this task forces periodic reads so that we don't miss any.
-  */
--#define MV88E6XXX_TAI_OVERFLOW_PERIOD (HZ * 16)
-+#define MV88E6XXX_TAI_OVERFLOW_PERIOD (HZ * 8)
- static void mv88e6xxx_ptp_overflow_check(struct work_struct *work)
- {
- 	struct delayed_work *dw = to_delayed_work(work);
+ 	old_array = bpf_event_rcu_dereference(event->tp_event->prog_array);
+ 	ret = bpf_prog_array_copy(old_array, event->prog, NULL, 0, &new_array);
+-	if (ret == -ENOENT)
+-		goto unlock;
+ 	if (ret < 0) {
+ 		bpf_prog_array_delete_safe(old_array, event->prog);
+ 	} else {
 -- 
 2.43.0
 
