@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-88305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA2659B255C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C5F09B27C1
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:51:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FFB12820BE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4036285A51
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE3718E049;
-	Mon, 28 Oct 2024 06:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A48D18EFF3;
+	Mon, 28 Oct 2024 06:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cw18Kcom"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cy5HKxhq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A93018CC1F;
-	Mon, 28 Oct 2024 06:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D154418EFEB;
+	Mon, 28 Oct 2024 06:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730096898; cv=none; b=kfKgkldLzmBhz95cwjjCtMZ58snOJZjfNjen7ajzxg656OCs4euJs0ZqT5mPfpJkFQfd1oTfHzv6koqNge7P2v21NEVB0INDF6bzYnM8kwP4CyKSIBF7PEvcc/jczurbbsHaBclAL3eU4LXCHmUy2Obo7cqfGNUENzcdYLu4gyI=
+	t=1730098251; cv=none; b=jP005ejFkMRLFYdvCoThJJBmxkWS9e9VYaIwg2Iue4gXSRGJLfY6Xt94aaMgfHAYcN4OPOwOdAo8z4NAUeN2k8pN2Xoo+m0u/JbrIiS10JjHjfE8gWjSk78A2TfoHWxbDQG0YS58990LAemu9/NXQEDEMLWDlvMqe5i7g0CAujM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730096898; c=relaxed/simple;
-	bh=Yr6DWXQBVtdHrMHD5FwVR/siImqdBSYt+GuRshyycRs=;
+	s=arc-20240116; t=1730098251; c=relaxed/simple;
+	bh=1Oie/kzVbXHtEDXHaZGLeevzTIJwsWWma02i9FQvjC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jXL78MUN93+PFUMLVUAUuEYxu4RiyHD0Bo8wcQDqC2DOH/2UMG1XDKx24sdcyJM3kqxD1n00fNOOD19GkgBIFdOf2afrSaVqPvuwxuVvtkJX7jevFhTdspC79uAEIEEcjyT+AxdpKuBhqChONrnETa1VH1NY3pgCqqQzE3GL3BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cw18Kcom; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19F7C4CEC3;
-	Mon, 28 Oct 2024 06:28:17 +0000 (UTC)
+	 MIME-Version; b=P8vVrIwUCkPFusxMdmdSD0bj0UG9yAKp4p5UgqRqhMHs3FowEYE/2TFxlbP0b5gbpQyE4dHDvmOG8d9nWdp8uxMy/iNLgIuQMiKXCQ/Z2/IC02MB1PHKp+I3Y2h4sy1bL4EkERwITNdV5kC+wfZzp8zOz8AI9MhlHhjSekjS6No=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cy5HKxhq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72DE6C4CEC3;
+	Mon, 28 Oct 2024 06:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730096897;
-	bh=Yr6DWXQBVtdHrMHD5FwVR/siImqdBSYt+GuRshyycRs=;
+	s=korg; t=1730098251;
+	bh=1Oie/kzVbXHtEDXHaZGLeevzTIJwsWWma02i9FQvjC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cw18KcomZ4wCkoJMfpEO/Ww0o93+lX59/zwfbAjbPnomvfwrqo2rwvr3w988utm8P
-	 64s3qvFpuAUV/FTiT4cezuXLDGTLn9/1Y8kBpkGIg6RvWlvZULTVDiaTjqFmMfbC62
-	 Y4rp4DX7rkJ6ysGB84WT/V8tG6ZowcnB1jvzlbzE=
+	b=cy5HKxhqZ3Y6tNQq+Ak6kBt++k+E09XCInLDXsEOwxKA8S+LLjkueeSxIZHudmIjX
+	 MWQoyxOrtVRvH5pWzSMLJ2ZKYloujdJ5guL10TzrKnF1WpvdLHdgSWEvAeU+uj2hBB
+	 GKfbkBMWGbrSiiH1epZMTVpAQDBjrPjiNf3vfx7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Klink <flokli@flokli.de>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Simon Horman <horms@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 06/80] ARM: dts: bcm2837-rpi-cm3-io3: Fix HDMI hpd-gpio pin
-Date: Mon, 28 Oct 2024 07:24:46 +0100
-Message-ID: <20241028062252.797327256@linuxfoundation.org>
+Subject: [PATCH 6.11 145/261] net: pse-pd: Fix out of bound for loop
+Date: Mon, 28 Oct 2024 07:24:47 +0100
+Message-ID: <20241028062315.678055234@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Klink <flokli@flokli.de>
+From: Kory Maincent <kory.maincent@bootlin.com>
 
-[ Upstream commit dc7785e4723510616d776862ddb4c08857a1bdb2 ]
+[ Upstream commit f2767a41959e60763949c73ee180e40c686e807e ]
 
-HDMI_HPD_N_1V8 is connected to GPIO pin 0, not 1.
+Adjust the loop limit to prevent out-of-bounds access when iterating over
+PI structures. The loop should not reach the index pcdev->nr_lines since
+we allocate exactly pcdev->nr_lines number of PI structures. This fix
+ensures proper bounds are maintained during iterations.
 
-This fixes HDMI hotplug/output detection.
-
-See https://datasheets.raspberrypi.com/cm/cm3-schematics.pdf
-
-Signed-off-by: Florian Klink <flokli@flokli.de>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20240715230311.685641-1-flokli@flokli.de
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Fixes: a54fe8a6cf66 ("ARM: dts: add Raspberry Pi Compute Module 3 and IO board")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: 9be9567a7c59 ("net: pse-pd: Add support for PSE PIs")
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Message-ID: <20241015130255.125508-1-kory.maincent@bootlin.com>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/bcm2837-rpi-cm3-io3.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/pse-pd/pse_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/bcm2837-rpi-cm3-io3.dts b/arch/arm/boot/dts/bcm2837-rpi-cm3-io3.dts
-index 3dfce4312dfc4..a2ef43c2105aa 100644
---- a/arch/arm/boot/dts/bcm2837-rpi-cm3-io3.dts
-+++ b/arch/arm/boot/dts/bcm2837-rpi-cm3-io3.dts
-@@ -77,7 +77,7 @@
- };
+diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+index f8e6854781e6e..2906ce173f66c 100644
+--- a/drivers/net/pse-pd/pse_core.c
++++ b/drivers/net/pse-pd/pse_core.c
+@@ -113,7 +113,7 @@ static void pse_release_pis(struct pse_controller_dev *pcdev)
+ {
+ 	int i;
  
- &hdmi {
--	hpd-gpios = <&expgpio 1 GPIO_ACTIVE_LOW>;
-+	hpd-gpios = <&expgpio 0 GPIO_ACTIVE_LOW>;
- 	power-domains = <&power RPI_POWER_DOMAIN_HDMI>;
- 	status = "okay";
- };
+-	for (i = 0; i <= pcdev->nr_lines; i++) {
++	for (i = 0; i < pcdev->nr_lines; i++) {
+ 		of_node_put(pcdev->pi[i].pairset[0].np);
+ 		of_node_put(pcdev->pi[i].pairset[1].np);
+ 		of_node_put(pcdev->pi[i].np);
+@@ -647,7 +647,7 @@ static int of_pse_match_pi(struct pse_controller_dev *pcdev,
+ {
+ 	int i;
+ 
+-	for (i = 0; i <= pcdev->nr_lines; i++) {
++	for (i = 0; i < pcdev->nr_lines; i++) {
+ 		if (pcdev->pi[i].np == np)
+ 			return i;
+ 	}
 -- 
 2.43.0
 
