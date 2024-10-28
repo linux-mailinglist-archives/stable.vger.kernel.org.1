@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4969E9B2800
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:53:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A17B99B263B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:37:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA0F81F217FE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:53:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58E581F21E86
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49ED118E748;
-	Mon, 28 Oct 2024 06:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B9318EFD8;
+	Mon, 28 Oct 2024 06:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lp3CtdmF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6OwVKc0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CBF8837;
-	Mon, 28 Oct 2024 06:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380BF18E36C;
+	Mon, 28 Oct 2024 06:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098388; cv=none; b=rUF3VtufbAvCgFlHsl//XXdmBwbKxk7tGTk4iqjJRJCUcYRSJ8lJJAMdZaY7mWF45Ct0uEijRnLT7iRV4f2/4KVSSgHDWEHqyM/YwG883l6DMtwswO3aN+OV08OA0hCVMmEQvBjpch8o6ofxMHnybPQtlSbgJZ+0fIH3LRTTViU=
+	t=1730097465; cv=none; b=APuuN7sQvvoTESaz1JB/CDrSv64GqP3sztmj5eZ0/T8miNN03bFB+QFmCAHYPAORZ/903GEskQQJ4wUvnnWAUCq+lY8rLt0sL7naX6Yg/rFNEG5x3kgYXCgQn4tkh7iSLgtkFWQVwpeRzPY45ifCqAQoW2zzLDaWtlfS2jrB9Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098388; c=relaxed/simple;
-	bh=GR/4BtaI4GkR5hVpXhWQdaCSZ83i1z/MUI4iBJCIvzI=;
+	s=arc-20240116; t=1730097465; c=relaxed/simple;
+	bh=MLoETPwR2ZUmvN+qd4iAQ2bEbPTpXIAxn4Rv8aAPKOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B50TSCIAu/6xEGDrRrhzOg/+H2I/YPBkV0bztwxP86KdSng3pCKUlSRYR8IjFMEB5bw5fOrFGpgUk4zDJAY+KZ6dsscDG/WXvYatqgrluqOVCP/Fqjo0p3qeX21YzzyqF3TvdytXbQMDDT1IzalQwnJpkkZvDrEQqS7yV+IInfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lp3CtdmF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D13BC4CEC3;
-	Mon, 28 Oct 2024 06:53:07 +0000 (UTC)
+	 MIME-Version; b=cTS1/vVMA9bCcQu1YFJXuGcImV4MuXli0NDLnKCry532Q9HzFSk/SnRqTZ8PBknUKhfNqh81dWOXk+QaiSNdPNi1iHg0QZgoyZepBwm++EwD1nBa27ScZmY4r96cJMFE7Ao0aovJeA7H6zfotz7Wv/H5kALHaihZK6P5CVKGxyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6OwVKc0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB5A4C4CEE8;
+	Mon, 28 Oct 2024 06:37:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098387;
-	bh=GR/4BtaI4GkR5hVpXhWQdaCSZ83i1z/MUI4iBJCIvzI=;
+	s=korg; t=1730097465;
+	bh=MLoETPwR2ZUmvN+qd4iAQ2bEbPTpXIAxn4Rv8aAPKOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lp3CtdmFGaLGMs/uUbgh+XyI5E29K5+laPLL3aILRMQy+UJ63CbKqXBez3GVH5gv4
-	 4cTjQovurprGvFom4ao4fJ5X2OVpoHlY0+2YxJfTtsMU6dW8x5WU7DoFLe5vAAFInH
-	 Li2G20pqSDTUmHRGEkxOjLPOUmMOi1DJqrTVaoRI=
+	b=e6OwVKc0qiSWtuvO7hxA5urhFSoSNGilPWWoWmDYdkvzSVCKhvAfU4UODRutPF/Yd
+	 yonn4T/1gNrQVVzOTUniBUcHGq46c652olnBUBojRq91ZrPvt7CBAvEbnYcEtYNmXX
+	 /qHKAk0peTn7RIlFyJe/0zmm9mqT+FlEesYMz5SY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Yue Haibing <yuehaibing@huawei.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.11 203/261] btrfs: fix passing 0 to ERR_PTR in btrfs_search_dir_index_item()
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 108/137] ASoC: dt-bindings: davinci-mcasp: Fix interrupts property
 Date: Mon, 28 Oct 2024 07:25:45 +0100
-Message-ID: <20241028062317.148706679@linuxfoundation.org>
+Message-ID: <20241028062301.734503334@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit 75f49c3dc7b7423d3734f2e4dabe3dac8d064338 upstream.
+[ Upstream commit 17d8adc4cd5181c13c1041b197b76efc09eaf8a8 ]
 
-The ret may be zero in btrfs_search_dir_index_item() and should not
-passed to ERR_PTR(). Now btrfs_unlink_subvol() is the only caller to
-this, reconstructed it to check ERR_PTR(-ENOENT) while ret >= 0.
+My understanding of the interrupts property is that it can either be:
+1/ - TX
+2/ - TX
+   - RX
+3/ - Common/combined.
 
-This fixes smatch warnings:
+There are very little chances that either:
+   - TX
+   - Common/combined
+or even
+   - TX
+   - RX
+   - Common/combined
+could be a thing.
 
-fs/btrfs/dir-item.c:353
-  btrfs_search_dir_index_item() warn: passing zero to 'ERR_PTR'
+Looking at the interrupt-names definition (which uses oneOf instead of
+anyOf), it makes indeed little sense to use anyOf in the interrupts
+definition. I believe this is just a mistake, hence let's fix it.
 
-Fixes: 9dcbe16fccbb ("btrfs: use btrfs_for_each_slot in btrfs_search_dir_index_item")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8be90641a0bb ("ASoC: dt-bindings: davinci-mcasp: convert McASP bindings to yaml schema")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20241001204749.390054-1-miquel.raynal@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/dir-item.c |    4 ++--
- fs/btrfs/inode.c    |    7 ++-----
- 2 files changed, 4 insertions(+), 7 deletions(-)
+ .../devicetree/bindings/sound/davinci-mcasp-audio.yaml          | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/dir-item.c
-+++ b/fs/btrfs/dir-item.c
-@@ -347,8 +347,8 @@ btrfs_search_dir_index_item(struct btrfs
- 			return di;
- 	}
- 	/* Adjust return code if the key was not found in the next leaf. */
--	if (ret > 0)
--		ret = 0;
-+	if (ret >= 0)
-+		ret = -ENOENT;
+diff --git a/Documentation/devicetree/bindings/sound/davinci-mcasp-audio.yaml b/Documentation/devicetree/bindings/sound/davinci-mcasp-audio.yaml
+index f46c66bc6b2d8..b181f7481a951 100644
+--- a/Documentation/devicetree/bindings/sound/davinci-mcasp-audio.yaml
++++ b/Documentation/devicetree/bindings/sound/davinci-mcasp-audio.yaml
+@@ -102,7 +102,7 @@ properties:
+     default: 2
  
- 	return ERR_PTR(ret);
- }
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4339,11 +4339,8 @@ static int btrfs_unlink_subvol(struct bt
- 	 */
- 	if (btrfs_ino(inode) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID) {
- 		di = btrfs_search_dir_index_item(root, path, dir_ino, &fname.disk_name);
--		if (IS_ERR_OR_NULL(di)) {
--			if (!di)
--				ret = -ENOENT;
--			else
--				ret = PTR_ERR(di);
-+		if (IS_ERR(di)) {
-+			ret = PTR_ERR(di);
- 			btrfs_abort_transaction(trans, ret);
- 			goto out;
- 		}
+   interrupts:
+-    anyOf:
++    oneOf:
+       - minItems: 1
+         items:
+           - description: TX interrupt
+-- 
+2.43.0
+
 
 
 
