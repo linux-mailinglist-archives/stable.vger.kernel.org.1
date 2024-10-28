@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 344C69B27BF
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:50:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AE689B26A5
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:41:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C088CB20ECE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:50:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 517C8282459
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3357E18EFC8;
-	Mon, 28 Oct 2024 06:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9687918E744;
+	Mon, 28 Oct 2024 06:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="czhMt+mF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qk7iv2Jk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68E58837;
-	Mon, 28 Oct 2024 06:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EDE18E350;
+	Mon, 28 Oct 2024 06:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098243; cv=none; b=WaNrjQDqYMExWULJoFf6iVO4N+MEe47j7Og1sBuvw7nUa1empN2adJ8UFIbhnvzKPfbeaVDp08oJCdURrdvBQw/SRsH25Ju4tL5UZVO1NXdMrSWAI4roIB038mI4K4QSuM9DhH6TMRc3todjvOD6hK7nh6L0Qo9YC3j8w0zbNG4=
+	t=1730097687; cv=none; b=FBl/eSpKsFp6CvLIQ1qfRqGqkKdAT1I2diOA9ucAChTJrVRfUGFDNuPyHjN0DpDC5OBTfm6/TnQ4pXXpNZQ3f4fFH+OGh6TTFbkwzvdfbmgr9n3TGhTf0qK/pno1bCelC6U4zixrqpL2C4i7X0hb/OI9O3/qc9k77QkN7eBDkak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098243; c=relaxed/simple;
-	bh=UuNVwSe8M0zAxTUW1c/LzZErDzg9g/5U8RrYXbz9Tok=;
+	s=arc-20240116; t=1730097687; c=relaxed/simple;
+	bh=ClrYG14wb2W/fHr5fgQj5+AuO1bwdmfqI6FnZo+EbWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h32MzrUOrPxAjFVspQwnfOcjUK5bpvSYLXz8VedrsExJngqQJDdNPmaSMSBn+D0E1RbTdw9FRHkwSeXiWp+HQQ6woFNrBb3ZirLx9r+kftVqlvY0rJ3pYtuvjiwF7rznwZqnCKTkViDrXcNiS0+2akUa/QTm8YYibvzCVzfMCvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=czhMt+mF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8087CC4CEC3;
-	Mon, 28 Oct 2024 06:50:42 +0000 (UTC)
+	 MIME-Version; b=XFeGvaXhBxpBIH2ihZsDeAWOtTQ9kDgcLjewNdtd68vGOl2qNDMeLtInztE1U2+BuehHsKSs/M1ZRpwLpvRzPMKkToSRMZnlq48b2HozQEJeq3nNXIoLsqPMh5RTrYnEzrE0Z33CxRhDnY/8+mQxf187VJpHvj3PF4wvclX3ybg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qk7iv2Jk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA62AC4CEC3;
+	Mon, 28 Oct 2024 06:41:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098242;
-	bh=UuNVwSe8M0zAxTUW1c/LzZErDzg9g/5U8RrYXbz9Tok=;
+	s=korg; t=1730097687;
+	bh=ClrYG14wb2W/fHr5fgQj5+AuO1bwdmfqI6FnZo+EbWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=czhMt+mFBjdT2sdJ8oDWoLJAont78imTfw1D1nTTsjecU2FOfr+b/weqGTWOx9Rro
-	 dHIzo9xGb0MAXgVACuunvCXR3eyNVDdUEof2KP1BEdts5Mocntiaj1lTtBcK/uHcGt
-	 1Rz6YjWTvAdadJ9cexUUOKUkMGWk/HNYm7I2W9v8=
+	b=qk7iv2JkCaQRSqT3o8nCwPbuoKJoIOoPZzyBCTQaAqFG2pEJR33x7o54k0sKlrnZV
+	 aTBS7XZwvgS4PWHgHtKyAzaSygtyO7KxUa8CD2Hok0LGO4o/uaax+2CmBNOdq+Fyff
+	 FrwkMYS8bvb9Me/mWcVHcPBUSqDJt7RQG8d4hu1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
+	Peter Rashleigh <peter@rashleigh.ca>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 105/261] bpf, vsock: Drop static vsock_bpf_prot initialization
+Subject: [PATCH 6.6 067/208] net: dsa: mv88e6xxx: Fix the max_vid definition for the MV88E6361
 Date: Mon, 28 Oct 2024 07:24:07 +0100
-Message-ID: <20241028062314.662139213@linuxfoundation.org>
+Message-ID: <20241028062308.302407872@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Peter Rashleigh <peter@rashleigh.ca>
 
-[ Upstream commit 19039f279797efbe044cae41ee216c5fe481fc33 ]
+[ Upstream commit 1833d8a26f057128fd63e126b4428203ece84684 ]
 
-vsock_bpf_prot is set up at runtime. Remove the superfluous init.
+According to the Marvell datasheet the 88E6361 has two VTU pages
+(4k VIDs per page) so the max_vid should be 8191, not 4095.
 
-No functional change intended.
+In the current implementation mv88e6xxx_vtu_walk() gives unexpected
+results because of this error. I verified that mv88e6xxx_vtu_walk()
+works correctly on the MV88E6361 with this patch in place.
 
-Fixes: 634f1a7110b4 ("vsock: support sockmap")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/20241013-vsock-fixes-for-redir-v2-4-d6577bbfe742@rbox.co
+Fixes: 12899f299803 ("net: dsa: mv88e6xxx: enable support for 88E6361 switch")
+Signed-off-by: Peter Rashleigh <peter@rashleigh.ca>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20241014204342.5852-1-peter@rashleigh.ca
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/vsock_bpf.c | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/net/dsa/mv88e6xxx/chip.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/vmw_vsock/vsock_bpf.c b/net/vmw_vsock/vsock_bpf.c
-index c42c5cc18f324..4aa6e74ec2957 100644
---- a/net/vmw_vsock/vsock_bpf.c
-+++ b/net/vmw_vsock/vsock_bpf.c
-@@ -114,14 +114,6 @@ static int vsock_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
- 	return copied;
- }
- 
--/* Copy of original proto with updated sock_map methods */
--static struct proto vsock_bpf_prot = {
--	.close = sock_map_close,
--	.recvmsg = vsock_bpf_recvmsg,
--	.sock_is_readable = sk_msg_is_readable,
--	.unhash = sock_map_unhash,
--};
--
- static void vsock_bpf_rebuild_protos(struct proto *prot, const struct proto *base)
- {
- 	*prot        = *base;
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 3877744193e2a..062bcbe6255cf 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -6208,7 +6208,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.invalid_port_mask = BIT(1) | BIT(2) | BIT(8),
+ 		.num_internal_phys = 5,
+ 		.internal_phys_offset = 3,
+-		.max_vid = 4095,
++		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+ 		.phy_base_addr = 0x0,
 -- 
 2.43.0
 
