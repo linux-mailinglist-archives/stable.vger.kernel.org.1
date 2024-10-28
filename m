@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-88607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6929B26B4
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:41:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84FF19B27CB
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:51:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61F661F230C0
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30B0D1F2246B
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:51:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6DE18E37C;
-	Mon, 28 Oct 2024 06:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD1518E368;
+	Mon, 28 Oct 2024 06:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5hYNMSW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oy2DWKXI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E85615B10D;
-	Mon, 28 Oct 2024 06:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5CF8837;
+	Mon, 28 Oct 2024 06:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097714; cv=none; b=bg+VcfB62fAlHC0LTrmHfWPUS58Spmj5gmQRxvcCo6VfTD0qP7KTX5mJLLtWxFrYN5tstAuipgIAw18wir0HqwA8CwBA9+NUT3RbigKDyB88+AYkBV38v69XFDcQcifMNj2gIIazm9paOkUJEbeC/3nCj5N3YO3W0SsP5G4vqsM=
+	t=1730098274; cv=none; b=j42yke2pw/97mKvHzn44O6Uf12rlxT17I//385rQP4EnJt+ntxKTV1V/FkeSelXl3KB3ZSppmzoB+o3L3bnjCvLATHJEV0xAmFxvQcnPMjLQSMLuEVIM5FC7vt/cn3QjkJzXVFmOqjQzH7gPAN9KQpf/0xqUb/aIK/as87PMwcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097714; c=relaxed/simple;
-	bh=GL6Ai4ymTdrmM8vI01obQovrdjZDwPNV3CbwuYNmRD8=;
+	s=arc-20240116; t=1730098274; c=relaxed/simple;
+	bh=k/fQ9dY/j4Wc077EZFnPVIBTLzvMIBkYAhnHhdoL1As=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dvcu9CVx5OTWruKbpImLPc0Ocj6id0XD1PZlC0ULL2KAdEv5ypTgH++DFdI3yD5PfY237pEjqyZODpmL/b43tfIKGCwwQbnD2o8wP2lOSm7owpE9uwTixuoMemuO4jV4wVYVifs9wsd96AAzj/Sq1WOMnpoAPZpZYuxa3/sYV6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5hYNMSW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D88C4CEC3;
-	Mon, 28 Oct 2024 06:41:54 +0000 (UTC)
+	 MIME-Version; b=EpLxtEhmLc9BrYOVfseXFBha1OfvPCK8CzEEpgGMth741zV1FyPQA3L7BDXJu5TeoyvIGGWGhIXhZhQac9fr+WqmDRTW7h6VsamywBaIA6SUo8TjFamOBR1Y0VQJ4vO/lsJ48Oy8TopOhSjqVhXnNBeRFONlBQDB6gIu9GDa2lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oy2DWKXI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE473C4CEC3;
+	Mon, 28 Oct 2024 06:51:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097714;
-	bh=GL6Ai4ymTdrmM8vI01obQovrdjZDwPNV3CbwuYNmRD8=;
+	s=korg; t=1730098274;
+	bh=k/fQ9dY/j4Wc077EZFnPVIBTLzvMIBkYAhnHhdoL1As=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c5hYNMSWs6KjyPfCso4g9bpKIuJMJ6ILzfpWllR4HnornUvWCEzoUHP/GiYXJnt5Y
-	 ZDIK1775eQxpkvLw6JKQe/WdPbu3hihKq8UjoWB74Xt2C3GyQz7cmYuNyChk0MfzDC
-	 19jh6HXkAoAvKPw+/fUW90f+hfPL852Gxd4NfsK4=
+	b=Oy2DWKXIrlFr5vYNMUAZqrs/DOX/DBntclpaWn+yGELKeH1CoP094OcBAw3L0SYS0
+	 Ju5fDewMxClAb9K6Bnq/uzxhelvqQ0R2iKmsEdfquNHZYuU9EtR0v8VuVe8N1cB+io
+	 WPbWEZ7f7l9SEwsNUKapwL9yLBI0OeiPGkY7wl7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lawrence Glanzman <davidglanzman@yahoo.com>,
-	Mark Brown <broonie@kernel.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 116/208] ASoC: amd: yc: Add quirk for HP Dragonfly pro one
+Subject: [PATCH 6.11 154/261] fsl/fman: Save device references taken in mac_probe()
 Date: Mon, 28 Oct 2024 07:24:56 +0100
-Message-ID: <20241028062309.513652858@linuxfoundation.org>
+Message-ID: <20241028062315.885527922@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lawrence Glanzman <davidglanzman@yahoo.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 84e8d59651879b2ff8499bddbbc9549b7f1a646b ]
+[ Upstream commit efeddd552ec6767e4c8884caa516ac80b65f8823 ]
 
-Adds a quirk entry to enable the mic on HP Dragonfly pro one laptop
+In mac_probe() there are calls to of_find_device_by_node() which takes
+references to of_dev->dev. These references are not saved and not released
+later on error path in mac_probe() and in mac_remove().
 
-Signed-off-by: David Lawrence Glanzman <davidglanzman@yahoo.com>
-Link: https://patch.msgid.link/1249c09bd6bf696b59d087a4f546ae397828656c.camel@yahoo.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Add new fields into mac_device structure to save references taken for
+future use in mac_probe() and mac_remove().
+
+This is a preparation for further reference leaks fix.
+
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 1dec67e0d9fb ("fsl/fman: Fix refcount handling of fman-related devices")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/freescale/fman/mac.c | 6 ++++--
+ drivers/net/ethernet/freescale/fman/mac.h | 6 +++++-
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 248e3bcbf386b..76f5d926d1eac 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -444,6 +444,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "8A3E"),
+diff --git a/drivers/net/ethernet/freescale/fman/mac.c b/drivers/net/ethernet/freescale/fman/mac.c
+index 9767586b4eb32..9b863db0bf087 100644
+--- a/drivers/net/ethernet/freescale/fman/mac.c
++++ b/drivers/net/ethernet/freescale/fman/mac.c
+@@ -197,6 +197,7 @@ static int mac_probe(struct platform_device *_of_dev)
+ 		err = -EINVAL;
+ 		goto _return_of_node_put;
+ 	}
++	mac_dev->fman_dev = &of_dev->dev;
+ 
+ 	/* Get the FMan cell-index */
+ 	err = of_property_read_u32(dev_node, "cell-index", &val);
+@@ -208,7 +209,7 @@ static int mac_probe(struct platform_device *_of_dev)
+ 	/* cell-index 0 => FMan id 1 */
+ 	fman_id = (u8)(val + 1);
+ 
+-	priv->fman = fman_bind(&of_dev->dev);
++	priv->fman = fman_bind(mac_dev->fman_dev);
+ 	if (!priv->fman) {
+ 		dev_err(dev, "fman_bind(%pOF) failed\n", dev_node);
+ 		err = -ENODEV;
+@@ -284,8 +285,9 @@ static int mac_probe(struct platform_device *_of_dev)
+ 			err = -EINVAL;
+ 			goto _return_of_node_put;
  		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
-+			DMI_MATCH(DMI_BOARD_NAME, "8A7F"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
++		mac_dev->fman_port_devs[i] = &of_dev->dev;
+ 
+-		mac_dev->port[i] = fman_port_bind(&of_dev->dev);
++		mac_dev->port[i] = fman_port_bind(mac_dev->fman_port_devs[i]);
+ 		if (!mac_dev->port[i]) {
+ 			dev_err(dev, "dev_get_drvdata(%pOF) failed\n",
+ 				dev_node);
+diff --git a/drivers/net/ethernet/freescale/fman/mac.h b/drivers/net/ethernet/freescale/fman/mac.h
+index fe747915cc737..8b5b43d50f8ef 100644
+--- a/drivers/net/ethernet/freescale/fman/mac.h
++++ b/drivers/net/ethernet/freescale/fman/mac.h
+@@ -19,12 +19,13 @@
+ struct fman_mac;
+ struct mac_priv_s;
+ 
++#define PORT_NUM 2
+ struct mac_device {
+ 	void __iomem		*vaddr;
+ 	struct device		*dev;
+ 	struct resource		*res;
+ 	u8			 addr[ETH_ALEN];
+-	struct fman_port	*port[2];
++	struct fman_port	*port[PORT_NUM];
+ 	struct phylink		*phylink;
+ 	struct phylink_config	phylink_config;
+ 	phy_interface_t		phy_if;
+@@ -52,6 +53,9 @@ struct mac_device {
+ 
+ 	struct fman_mac		*fman_mac;
+ 	struct mac_priv_s	*priv;
++
++	struct device		*fman_dev;
++	struct device		*fman_port_devs[PORT_NUM];
+ };
+ 
+ static inline struct mac_device
 -- 
 2.43.0
 
