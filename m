@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-88753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 205DF9B275C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:47:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 094D09B2645
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:38:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 065E0B2127D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:47:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D63A1C2124C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C0E18E74D;
-	Mon, 28 Oct 2024 06:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97BF118EFDC;
+	Mon, 28 Oct 2024 06:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="alkbqw2q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k7i+aIog"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D0B18E748;
-	Mon, 28 Oct 2024 06:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549F518DF68;
+	Mon, 28 Oct 2024 06:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098043; cv=none; b=NUFOuaS4UzrSxUNoXeBWMCoE7orgvKR8Vxv/TRjaAZVYN77dWoVEreJyvLwUuWDsX0jE+pQV5b+B9MCEsmO7xEN9b4G2Lqje8DYHq8jJNIkz2GmtDe0y62BRuAv5oSj0lZsZp8C7W68fjKIW3/6tG1Mx4Ck/MWNCa3xqnP71Ack=
+	t=1730097483; cv=none; b=ZxVUz3OfUAkbudyJo/lyzMjH80rIeTpf5xKAfRjW5DpRXvqEENyiAw7sPquzZoHK72ruDNqKg7NZFVwXoYmDv+WxT3ILtPg6qqHOWDZS/DxqrKZJOND/c4TajMYkvMyodvHarCFtUvdF/jnsahcKIi/nV0hDpmsQlCfXlch5JAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098043; c=relaxed/simple;
-	bh=wN4D2ugmnuiXKJJD44rkoDARM2kYUPKe+ylv+c8U3c0=;
+	s=arc-20240116; t=1730097483; c=relaxed/simple;
+	bh=g/TZYnw5ET0gr5mNpc1qUsDcqsE2UnnMRafEkQDW63k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E3nd6EIkBKG0auFzUvOBdbV7LhaaRIGnTJ/7bwvU//SKtVPlqG19SRjsIL6s7zyuwShc5QN8TPJOZPy8seCtBr4EcQSHcn/5EdzUEWZHOPehbMUI7lz1SOzgozRbvZPmYp/gGw7Rnyl7Y5gFZi3RMdE/H9AtA04gL+AzBFSvYQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=alkbqw2q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A11C4CEC3;
-	Mon, 28 Oct 2024 06:47:22 +0000 (UTC)
+	 MIME-Version; b=oQlCF8wOzRUWxaQcBPQISTdjGvrdLNHUxmol+2DCWzJ2jE0EKOp5Kq1OIWL3VqXfrxtRveAwyRBN8Vi2sBxlKm6lD+8kNpTywWe31D/m4EYED2+i1OGXQExryt3daFHAN+Ilmn9qWClcQYkyd5qVmXy8WUauDqfQskvhC5kv7Rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k7i+aIog; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E72F4C4CEC3;
+	Mon, 28 Oct 2024 06:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098042;
-	bh=wN4D2ugmnuiXKJJD44rkoDARM2kYUPKe+ylv+c8U3c0=;
+	s=korg; t=1730097483;
+	bh=g/TZYnw5ET0gr5mNpc1qUsDcqsE2UnnMRafEkQDW63k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=alkbqw2qq3dIi0gnKh+VnKFAVjKuO+qOQMfBKqWSvuK8t4utqqEDAOlg34mG7566p
-	 MskYEd8/smNnMwKR38zu8APIY8M5r99tEe1ypZa9A4aY4UjV+VJEJbd15kLLNUdxR3
-	 bPUu7LbYL1a0uB1hPkVFGcVM8q8481WwQO0XTUcg=
+	b=k7i+aIoghnJKn9hfB3Vyeoo4EtTu7kJOWtpHt9L3Q+Gqs6AuQCYpsxh4LkaNQB2Df
+	 XigA116IZ6K6aGYuWXf3ngEDDZ4PDxLUa00gml9YjiaZv8sj0r+O/gqfkjevkNYgtH
+	 HkxyB8IkIhoIkQ+cUelxTQ4jm5nYzpvRifavZ8AI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 051/261] drm/msm/dpu: move CRTC resource assignment to dpu_encoder_virt_atomic_check
+Subject: [PATCH 6.6 013/208] bpf: Add missed value to kprobe perf link info
 Date: Mon, 28 Oct 2024 07:23:13 +0100
-Message-ID: <20241028062313.292204210@linuxfoundation.org>
+Message-ID: <20241028062306.985158201@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,154 +62,232 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit 3ae133b0192b9b0c9f560bbc096887053150195f ]
+[ Upstream commit 3acf8ace68230e9558cf916847f1cc9f208abdf1 ]
 
-Historically CRTC resources (LMs and CTLs) were assigned in
-dpu_crtc_atomic_begin(). The commit 9222cdd27e82 ("drm/msm/dpu: move hw
-resource tracking to crtc state") simply moved resources to
-struct dpu_crtc_state, without changing the code sequence. Later on the
-commit b107603b4ad0 ("drm/msm/dpu: map mixer/ctl hw blocks in encoder
-modeset") rearanged the code, but still kept the cstate->num_mixers
-assignment to happen during commit phase. This makes dpu_crtc_state
-inconsistent between consequent atomic_check() calls.
+Add missed value to kprobe attached through perf link info to
+hold the stats of missed kprobe handler execution.
 
-Move CRTC resource assignment to happen at the end of
-dpu_encoder_virt_atomic_check().
+The kprobe's missed counter gets incremented when kprobe handler
+is not executed due to another kprobe running on the same cpu.
 
-Fixes: b107603b4ad0 ("drm/msm/dpu: map mixer/ctl hw blocks in encoder modeset")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/612235/
-Link: https://lore.kernel.org/r/20240903-dpu-mode-config-width-v6-2-617e1ecc4b7a@linaro.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20230920213145.1941596-4-jolsa@kernel.org
+Stable-dep-of: 4deecdd29cf2 ("bpf: fix unpopulated name_len field in perf_event link info")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c    |  3 --
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 59 +++++++++++++--------
- 2 files changed, 38 insertions(+), 24 deletions(-)
+ include/linux/trace_events.h   |  6 ++++--
+ include/uapi/linux/bpf.h       |  1 +
+ kernel/bpf/syscall.c           | 14 ++++++++------
+ kernel/trace/bpf_trace.c       |  5 +++--
+ kernel/trace/trace_kprobe.c    | 14 +++++++++++---
+ tools/include/uapi/linux/bpf.h |  1 +
+ 6 files changed, 28 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
-index 4c1be2f0555f7..e81feb0d67f3e 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
-@@ -1091,9 +1091,6 @@ static void dpu_crtc_disable(struct drm_crtc *crtc,
+diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
+index cb8bd759e8005..9d799777c333c 100644
+--- a/include/linux/trace_events.h
++++ b/include/linux/trace_events.h
+@@ -765,7 +765,8 @@ struct bpf_raw_event_map *bpf_get_raw_tracepoint(const char *name);
+ void bpf_put_raw_tracepoint(struct bpf_raw_event_map *btp);
+ int bpf_get_perf_event_info(const struct perf_event *event, u32 *prog_id,
+ 			    u32 *fd_type, const char **buf,
+-			    u64 *probe_offset, u64 *probe_addr);
++			    u64 *probe_offset, u64 *probe_addr,
++			    unsigned long *missed);
+ int bpf_kprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *prog);
+ int bpf_uprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *prog);
+ #else
+@@ -805,7 +806,7 @@ static inline void bpf_put_raw_tracepoint(struct bpf_raw_event_map *btp)
+ static inline int bpf_get_perf_event_info(const struct perf_event *event,
+ 					  u32 *prog_id, u32 *fd_type,
+ 					  const char **buf, u64 *probe_offset,
+-					  u64 *probe_addr)
++					  u64 *probe_addr, unsigned long *missed)
+ {
+ 	return -EOPNOTSUPP;
+ }
+@@ -880,6 +881,7 @@ extern void perf_kprobe_destroy(struct perf_event *event);
+ extern int bpf_get_kprobe_info(const struct perf_event *event,
+ 			       u32 *fd_type, const char **symbol,
+ 			       u64 *probe_offset, u64 *probe_addr,
++			       unsigned long *missed,
+ 			       bool perf_type_tracepoint);
+ #endif
+ #ifdef CONFIG_UPROBE_EVENTS
+diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+index 4bb38409b26ad..6ea588d1ae149 100644
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -6562,6 +6562,7 @@ struct bpf_link_info {
+ 					__u32 name_len;
+ 					__u32 offset; /* offset from func_name */
+ 					__u64 addr;
++					__u64 missed;
+ 				} kprobe; /* BPF_PERF_EVENT_KPROBE, BPF_PERF_EVENT_KRETPROBE */
+ 				struct {
+ 					__aligned_u64 tp_name;   /* in/out */
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index b1933d074f051..9c76f21f187f6 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -3444,7 +3444,7 @@ static void bpf_perf_link_dealloc(struct bpf_link *link)
+ static int bpf_perf_link_fill_common(const struct perf_event *event,
+ 				     char __user *uname, u32 ulen,
+ 				     u64 *probe_offset, u64 *probe_addr,
+-				     u32 *fd_type)
++				     u32 *fd_type, unsigned long *missed)
+ {
+ 	const char *buf;
+ 	u32 prog_id;
+@@ -3455,7 +3455,7 @@ static int bpf_perf_link_fill_common(const struct perf_event *event,
+ 		return -EINVAL;
  
- 	dpu_core_perf_crtc_update(crtc, 0);
+ 	err = bpf_get_perf_event_info(event, &prog_id, fd_type, &buf,
+-				      probe_offset, probe_addr);
++				      probe_offset, probe_addr, missed);
+ 	if (err)
+ 		return err;
+ 	if (!uname)
+@@ -3478,6 +3478,7 @@ static int bpf_perf_link_fill_common(const struct perf_event *event,
+ static int bpf_perf_link_fill_kprobe(const struct perf_event *event,
+ 				     struct bpf_link_info *info)
+ {
++	unsigned long missed;
+ 	char __user *uname;
+ 	u64 addr, offset;
+ 	u32 ulen, type;
+@@ -3486,7 +3487,7 @@ static int bpf_perf_link_fill_kprobe(const struct perf_event *event,
+ 	uname = u64_to_user_ptr(info->perf_event.kprobe.func_name);
+ 	ulen = info->perf_event.kprobe.name_len;
+ 	err = bpf_perf_link_fill_common(event, uname, ulen, &offset, &addr,
+-					&type);
++					&type, &missed);
+ 	if (err)
+ 		return err;
+ 	if (type == BPF_FD_TYPE_KRETPROBE)
+@@ -3495,6 +3496,7 @@ static int bpf_perf_link_fill_kprobe(const struct perf_event *event,
+ 		info->perf_event.type = BPF_PERF_EVENT_KPROBE;
  
--	memset(cstate->mixers, 0, sizeof(cstate->mixers));
--	cstate->num_mixers = 0;
--
- 	/* disable clk & bw control until clk & bw properties are set */
- 	cstate->bw_control = false;
- 	cstate->bw_split_vote = false;
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-index 949ebda2fa829..bd3698bf0cf74 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-@@ -624,6 +624,40 @@ static struct msm_display_topology dpu_encoder_get_topology(
- 	return topology;
+ 	info->perf_event.kprobe.offset = offset;
++	info->perf_event.kprobe.missed = missed;
+ 	if (!kallsyms_show_value(current_cred()))
+ 		addr = 0;
+ 	info->perf_event.kprobe.addr = addr;
+@@ -3514,7 +3516,7 @@ static int bpf_perf_link_fill_uprobe(const struct perf_event *event,
+ 	uname = u64_to_user_ptr(info->perf_event.uprobe.file_name);
+ 	ulen = info->perf_event.uprobe.name_len;
+ 	err = bpf_perf_link_fill_common(event, uname, ulen, &offset, &addr,
+-					&type);
++					&type, NULL);
+ 	if (err)
+ 		return err;
+ 
+@@ -3550,7 +3552,7 @@ static int bpf_perf_link_fill_tracepoint(const struct perf_event *event,
+ 	uname = u64_to_user_ptr(info->perf_event.tracepoint.tp_name);
+ 	ulen = info->perf_event.tracepoint.name_len;
+ 	info->perf_event.type = BPF_PERF_EVENT_TRACEPOINT;
+-	return bpf_perf_link_fill_common(event, uname, ulen, NULL, NULL, NULL);
++	return bpf_perf_link_fill_common(event, uname, ulen, NULL, NULL, NULL, NULL);
  }
  
-+static void dpu_encoder_assign_crtc_resources(struct dpu_kms *dpu_kms,
-+					      struct drm_encoder *drm_enc,
-+					      struct dpu_global_state *global_state,
-+					      struct drm_crtc_state *crtc_state)
+ static int bpf_perf_link_fill_perf_event(const struct perf_event *event,
+@@ -4897,7 +4899,7 @@ static int bpf_task_fd_query(const union bpf_attr *attr,
+ 
+ 		err = bpf_get_perf_event_info(event, &prog_id, &fd_type,
+ 					      &buf, &probe_offset,
+-					      &probe_addr);
++					      &probe_addr, NULL);
+ 		if (!err)
+ 			err = bpf_task_fd_query_copy(attr, uattr, prog_id,
+ 						     fd_type, buf,
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index eca858bde8047..bbdc4199748bd 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -2389,7 +2389,8 @@ int bpf_probe_unregister(struct bpf_raw_event_map *btp, struct bpf_prog *prog)
+ 
+ int bpf_get_perf_event_info(const struct perf_event *event, u32 *prog_id,
+ 			    u32 *fd_type, const char **buf,
+-			    u64 *probe_offset, u64 *probe_addr)
++			    u64 *probe_offset, u64 *probe_addr,
++			    unsigned long *missed)
+ {
+ 	bool is_tracepoint, is_syscall_tp;
+ 	struct bpf_prog *prog;
+@@ -2424,7 +2425,7 @@ int bpf_get_perf_event_info(const struct perf_event *event, u32 *prog_id,
+ #ifdef CONFIG_KPROBE_EVENTS
+ 		if (flags & TRACE_EVENT_FL_KPROBE)
+ 			err = bpf_get_kprobe_info(event, fd_type, buf,
+-						  probe_offset, probe_addr,
++						  probe_offset, probe_addr, missed,
+ 						  event->attr.type == PERF_TYPE_TRACEPOINT);
+ #endif
+ #ifdef CONFIG_UPROBE_EVENTS
+diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
+index 47812aa16bb57..52f8b537dd0a0 100644
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -1249,6 +1249,12 @@ static const struct file_operations kprobe_events_ops = {
+ 	.write		= probes_write,
+ };
+ 
++static unsigned long trace_kprobe_missed(struct trace_kprobe *tk)
 +{
-+	struct dpu_crtc_state *cstate;
-+	struct dpu_hw_blk *hw_ctl[MAX_CHANNELS_PER_ENC];
-+	struct dpu_hw_blk *hw_lm[MAX_CHANNELS_PER_ENC];
-+	struct dpu_hw_blk *hw_dspp[MAX_CHANNELS_PER_ENC];
-+	int num_lm, num_ctl, num_dspp, i;
-+
-+	cstate = to_dpu_crtc_state(crtc_state);
-+
-+	memset(cstate->mixers, 0, sizeof(cstate->mixers));
-+
-+	num_ctl = dpu_rm_get_assigned_resources(&dpu_kms->rm, global_state,
-+		drm_enc->base.id, DPU_HW_BLK_CTL, hw_ctl, ARRAY_SIZE(hw_ctl));
-+	num_lm = dpu_rm_get_assigned_resources(&dpu_kms->rm, global_state,
-+		drm_enc->base.id, DPU_HW_BLK_LM, hw_lm, ARRAY_SIZE(hw_lm));
-+	num_dspp = dpu_rm_get_assigned_resources(&dpu_kms->rm, global_state,
-+		drm_enc->base.id, DPU_HW_BLK_DSPP, hw_dspp,
-+		ARRAY_SIZE(hw_dspp));
-+
-+	for (i = 0; i < num_lm; i++) {
-+		int ctl_idx = (i < num_ctl) ? i : (num_ctl-1);
-+
-+		cstate->mixers[i].hw_lm = to_dpu_hw_mixer(hw_lm[i]);
-+		cstate->mixers[i].lm_ctl = to_dpu_hw_ctl(hw_ctl[ctl_idx]);
-+		cstate->mixers[i].hw_dspp = i < num_dspp ? to_dpu_hw_dspp(hw_dspp[i]) : NULL;
-+	}
-+
-+	cstate->num_mixers = num_lm;
++	return trace_kprobe_is_return(tk) ?
++		tk->rp.kp.nmissed + tk->rp.nmissed : tk->rp.kp.nmissed;
 +}
 +
- static int dpu_encoder_virt_atomic_check(
- 		struct drm_encoder *drm_enc,
- 		struct drm_crtc_state *crtc_state,
-@@ -692,6 +726,9 @@ static int dpu_encoder_virt_atomic_check(
- 		if (!crtc_state->active_changed || crtc_state->enable)
- 			ret = dpu_rm_reserve(&dpu_kms->rm, global_state,
- 					drm_enc, crtc_state, topology);
-+		if (!ret)
-+			dpu_encoder_assign_crtc_resources(dpu_kms, drm_enc,
-+							  global_state, crtc_state);
- 	}
+ /* Probes profiling interfaces */
+ static int probes_profile_seq_show(struct seq_file *m, void *v)
+ {
+@@ -1260,8 +1266,7 @@ static int probes_profile_seq_show(struct seq_file *m, void *v)
+ 		return 0;
  
- 	trace_dpu_enc_atomic_check_flags(DRMID(drm_enc), adj_mode->flags);
-@@ -1093,14 +1130,11 @@ static void dpu_encoder_virt_atomic_mode_set(struct drm_encoder *drm_enc,
- 	struct dpu_encoder_virt *dpu_enc;
- 	struct msm_drm_private *priv;
- 	struct dpu_kms *dpu_kms;
--	struct dpu_crtc_state *cstate;
- 	struct dpu_global_state *global_state;
- 	struct dpu_hw_blk *hw_pp[MAX_CHANNELS_PER_ENC];
- 	struct dpu_hw_blk *hw_ctl[MAX_CHANNELS_PER_ENC];
--	struct dpu_hw_blk *hw_lm[MAX_CHANNELS_PER_ENC];
--	struct dpu_hw_blk *hw_dspp[MAX_CHANNELS_PER_ENC] = { NULL };
- 	struct dpu_hw_blk *hw_dsc[MAX_CHANNELS_PER_ENC];
--	int num_lm, num_ctl, num_pp, num_dsc;
-+	int num_ctl, num_pp, num_dsc;
- 	unsigned int dsc_mask = 0;
- 	int i;
+ 	tk = to_trace_kprobe(ev);
+-	nmissed = trace_kprobe_is_return(tk) ?
+-		tk->rp.kp.nmissed + tk->rp.nmissed : tk->rp.kp.nmissed;
++	nmissed = trace_kprobe_missed(tk);
+ 	seq_printf(m, "  %-44s %15lu %15lu\n",
+ 		   trace_probe_name(&tk->tp),
+ 		   trace_kprobe_nhit(tk),
+@@ -1607,7 +1612,8 @@ NOKPROBE_SYMBOL(kretprobe_perf_func);
  
-@@ -1129,11 +1163,6 @@ static void dpu_encoder_virt_atomic_mode_set(struct drm_encoder *drm_enc,
- 		ARRAY_SIZE(hw_pp));
- 	num_ctl = dpu_rm_get_assigned_resources(&dpu_kms->rm, global_state,
- 		drm_enc->base.id, DPU_HW_BLK_CTL, hw_ctl, ARRAY_SIZE(hw_ctl));
--	num_lm = dpu_rm_get_assigned_resources(&dpu_kms->rm, global_state,
--		drm_enc->base.id, DPU_HW_BLK_LM, hw_lm, ARRAY_SIZE(hw_lm));
--	dpu_rm_get_assigned_resources(&dpu_kms->rm, global_state,
--		drm_enc->base.id, DPU_HW_BLK_DSPP, hw_dspp,
--		ARRAY_SIZE(hw_dspp));
- 
- 	for (i = 0; i < MAX_CHANNELS_PER_ENC; i++)
- 		dpu_enc->hw_pp[i] = i < num_pp ? to_dpu_hw_pingpong(hw_pp[i])
-@@ -1159,18 +1188,6 @@ static void dpu_encoder_virt_atomic_mode_set(struct drm_encoder *drm_enc,
- 		dpu_enc->cur_master->hw_cdm = hw_cdm ? to_dpu_hw_cdm(hw_cdm) : NULL;
- 	}
- 
--	cstate = to_dpu_crtc_state(crtc_state);
--
--	for (i = 0; i < num_lm; i++) {
--		int ctl_idx = (i < num_ctl) ? i : (num_ctl-1);
--
--		cstate->mixers[i].hw_lm = to_dpu_hw_mixer(hw_lm[i]);
--		cstate->mixers[i].lm_ctl = to_dpu_hw_ctl(hw_ctl[ctl_idx]);
--		cstate->mixers[i].hw_dspp = to_dpu_hw_dspp(hw_dspp[i]);
--	}
--
--	cstate->num_mixers = num_lm;
--
- 	for (i = 0; i < dpu_enc->num_phys_encs; i++) {
- 		struct dpu_encoder_phys *phys = dpu_enc->phys_encs[i];
- 
+ int bpf_get_kprobe_info(const struct perf_event *event, u32 *fd_type,
+ 			const char **symbol, u64 *probe_offset,
+-			u64 *probe_addr, bool perf_type_tracepoint)
++			u64 *probe_addr, unsigned long *missed,
++			bool perf_type_tracepoint)
+ {
+ 	const char *pevent = trace_event_name(event->tp_event);
+ 	const char *group = event->tp_event->class->system;
+@@ -1626,6 +1632,8 @@ int bpf_get_kprobe_info(const struct perf_event *event, u32 *fd_type,
+ 	*probe_addr = kallsyms_show_value(current_cred()) ?
+ 		      (unsigned long)tk->rp.kp.addr : 0;
+ 	*symbol = tk->symbol;
++	if (missed)
++		*missed = trace_kprobe_missed(tk);
+ 	return 0;
+ }
+ #endif	/* CONFIG_PERF_EVENTS */
+diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
+index ba6e346c8d669..acda713f8b4d1 100644
+--- a/tools/include/uapi/linux/bpf.h
++++ b/tools/include/uapi/linux/bpf.h
+@@ -6565,6 +6565,7 @@ struct bpf_link_info {
+ 					__u32 name_len;
+ 					__u32 offset; /* offset from func_name */
+ 					__u64 addr;
++					__u64 missed;
+ 				} kprobe; /* BPF_PERF_EVENT_KPROBE, BPF_PERF_EVENT_KRETPROBE */
+ 				struct {
+ 					__aligned_u64 tp_name;   /* in/out */
 -- 
 2.43.0
 
