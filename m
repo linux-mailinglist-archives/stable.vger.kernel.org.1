@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-88397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90AB59B25CC
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:34:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0519B26AB
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:41:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 209F91F211A5
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:34:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 067651F22DCD
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8005618F2D8;
-	Mon, 28 Oct 2024 06:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951C518E03A;
+	Mon, 28 Oct 2024 06:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzp64bdd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkmVeF+5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E57218C03D;
-	Mon, 28 Oct 2024 06:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506DE15B10D;
+	Mon, 28 Oct 2024 06:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097238; cv=none; b=URsTsR3iJhX1QfTfdLzQeI9RVAcE4XKnxriiyp+1bzZ7lRBzAjs/ujgb/XB1RP8nuWCImxCEbUqYJwbhj0gD8N4RBJ91NJdzW8RwG63ctfq/+LwUfcIzDTSqORtt34aHCbiclBg4BleE5A5GC4gb9GTFtyfZwCCfkJ7f2H7yjxg=
+	t=1730097696; cv=none; b=GASmBNTNY3S+xO/Yvj3ilrHJPNWgF49zfwdvFM9AcCYIenZ5IqrvW8DjUmSW7KyIkEnnJyHbe45R+AeipdJa3GSqy78ksnNb3mTiNjf8DRH1pVk2iDrEGd2QczL6MuaCWHw6F/T1obvXUr80RzO6/kGQ3Ib8CHSKBEfGEGfR/Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097238; c=relaxed/simple;
-	bh=5mpGks4iYhHcBAuHgLo9SAqXCJc+UKoVTwRY4R/DkYU=;
+	s=arc-20240116; t=1730097696; c=relaxed/simple;
+	bh=Bcx5vrtubHsJSZKsJ6QFfLuaip7w7moM0PTTYyZYtao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f0JvpBa8a6YzYhsQxmjSCg9inUSo+mpQiSw1NDHD2luUb7/YaXkLXTjiYOVSFvlZlDSwNI1pFQ0tn596hJ82pLtmMufzI9bHqC9ScfyKj/lrVn1tgqAXOXJUIj7nuJaG/PoryLpPoQubUoDCRuX+owa3m/+w+YhgcwPK6t5HrOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzp64bdd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02E8C4CEC7;
-	Mon, 28 Oct 2024 06:33:57 +0000 (UTC)
+	 MIME-Version; b=AFpr3tdK+Oqus0uUpEC5sXYvweAjjgXM2c0JX9KU7wmucZOowiet9Pgb1q9Q8alLK7gUvsLso5rCQUX87Qzobi3Qyv7k67iZyU6eYLeqJ/KGy8O1oOL+c5sZx+m5oKvvYdoDtnoBBZ13HZO6lg/ZWCv5LWTswO5busVJ9GyHDV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkmVeF+5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53ABC4CEC3;
+	Mon, 28 Oct 2024 06:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097238;
-	bh=5mpGks4iYhHcBAuHgLo9SAqXCJc+UKoVTwRY4R/DkYU=;
+	s=korg; t=1730097696;
+	bh=Bcx5vrtubHsJSZKsJ6QFfLuaip7w7moM0PTTYyZYtao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xzp64bddrQ5WL/qtOCojChYhXckfghKWMND+jTKzI72vpdUva6IQ5JuFilXa18IU9
-	 oHGgNnDhDdrZyBJXDmQDgw5msCoAhQtOp3bp5L1f6mT/NaY9QpoonOriBkbUSzgvSe
-	 yeyZd/5itsLZW3VznB23t8gllG5rYxW9E7wLQYMk=
+	b=FkmVeF+57PWa+EWqtgorQlAhF16oOdSNAJ/FrFH9fO08WdwIhJB/D0LxuhMve0nK7
+	 dX1dCnIOYqp+8oyNVPZTMA+LIuOuq2XWX0dT9YyAJK9Hl8kxdtVNFDH2AaRXV1MR35
+	 iyGfFT2HJv2JK7SKh7RBHRI6oZj+OnnDqbF8D/ZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	James Chapman <jchapman@katalix.com>,
-	Tom Parkin <tparkin@katalix.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Mathias Nyman <mathias.nyman@intel.com>,
+	linux-usb@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/137] genetlink: hold RCU in genlmsg_mcast()
+Subject: [PATCH 6.6 100/208] xhci: dbgtty: use kfifo from tty_port struct
 Date: Mon, 28 Oct 2024 07:24:40 +0100
-Message-ID: <20241028062259.927721984@linuxfoundation.org>
+Message-ID: <20241028062309.121888362@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,244 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit 56440d7ec28d60f8da3bfa09062b3368ff9b16db ]
+[ Upstream commit 866025f0237609532bc8e4af5ef4d7252d3b55b6 ]
 
-While running net selftests with CONFIG_PROVE_RCU_LIST=y I saw
-one lockdep splat [1].
+There is no need to define one in a custom structure. The tty_port one
+is free to use.
 
-genlmsg_mcast() uses for_each_net_rcu(), and must therefore hold RCU.
-
-Instead of letting all callers guard genlmsg_multicast_allns()
-with a rcu_read_lock()/rcu_read_unlock() pair, do it in genlmsg_mcast().
-
-This also means the @flags parameter is useless, we need to always use
-GFP_ATOMIC.
-
-[1]
-[10882.424136] =============================
-[10882.424166] WARNING: suspicious RCU usage
-[10882.424309] 6.12.0-rc2-virtme #1156 Not tainted
-[10882.424400] -----------------------------
-[10882.424423] net/netlink/genetlink.c:1940 RCU-list traversed in non-reader section!!
-[10882.424469]
-other info that might help us debug this:
-
-[10882.424500]
-rcu_scheduler_active = 2, debug_locks = 1
-[10882.424744] 2 locks held by ip/15677:
-[10882.424791] #0: ffffffffb6b491b0 (cb_lock){++++}-{3:3}, at: genl_rcv (net/netlink/genetlink.c:1219)
-[10882.426334] #1: ffffffffb6b49248 (genl_mutex){+.+.}-{3:3}, at: genl_rcv_msg (net/netlink/genetlink.c:61 net/netlink/genetlink.c:57 net/netlink/genetlink.c:1209)
-[10882.426465]
-stack backtrace:
-[10882.426805] CPU: 14 UID: 0 PID: 15677 Comm: ip Not tainted 6.12.0-rc2-virtme #1156
-[10882.426919] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[10882.427046] Call Trace:
-[10882.427131]  <TASK>
-[10882.427244] dump_stack_lvl (lib/dump_stack.c:123)
-[10882.427335] lockdep_rcu_suspicious (kernel/locking/lockdep.c:6822)
-[10882.427387] genlmsg_multicast_allns (net/netlink/genetlink.c:1940 (discriminator 7) net/netlink/genetlink.c:1977 (discriminator 7))
-[10882.427436] l2tp_tunnel_notify.constprop.0 (net/l2tp/l2tp_netlink.c:119) l2tp_netlink
-[10882.427683] l2tp_nl_cmd_tunnel_create (net/l2tp/l2tp_netlink.c:253) l2tp_netlink
-[10882.427748] genl_family_rcv_msg_doit (net/netlink/genetlink.c:1115)
-[10882.427834] genl_rcv_msg (net/netlink/genetlink.c:1195 net/netlink/genetlink.c:1210)
-[10882.427877] ? __pfx_l2tp_nl_cmd_tunnel_create (net/l2tp/l2tp_netlink.c:186) l2tp_netlink
-[10882.427927] ? __pfx_genl_rcv_msg (net/netlink/genetlink.c:1201)
-[10882.427959] netlink_rcv_skb (net/netlink/af_netlink.c:2551)
-[10882.428069] genl_rcv (net/netlink/genetlink.c:1220)
-[10882.428095] netlink_unicast (net/netlink/af_netlink.c:1332 net/netlink/af_netlink.c:1357)
-[10882.428140] netlink_sendmsg (net/netlink/af_netlink.c:1901)
-[10882.428210] ____sys_sendmsg (net/socket.c:729 (discriminator 1) net/socket.c:744 (discriminator 1) net/socket.c:2607 (discriminator 1))
-
-Fixes: 33f72e6f0c67 ("l2tp : multicast notification to the registered listeners")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: James Chapman <jchapman@katalix.com>
-Cc: Tom Parkin <tparkin@katalix.com>
-Cc: Johannes Berg <johannes.berg@intel.com>
-Link: https://patch.msgid.link/20241011171217.3166614-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Cc: Mathias Nyman <mathias.nyman@intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-usb@vger.kernel.org
+Link: https://lore.kernel.org/r/20240808103549.429349-6-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 30c9ae5ece8e ("xhci: dbc: honor usb transfer size boundaries.")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_user.c |  2 +-
- include/net/genetlink.h           |  3 +--
- net/l2tp/l2tp_netlink.c           |  4 ++--
- net/netlink/genetlink.c           | 28 ++++++++++++++--------------
- net/wireless/nl80211.c            |  8 ++------
- 5 files changed, 20 insertions(+), 25 deletions(-)
+ drivers/usb/host/xhci-dbgcap.h |  1 -
+ drivers/usb/host/xhci-dbgtty.c | 17 +++++++++--------
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
-index 2940559c30860..adf68323d0d68 100644
---- a/drivers/target/target_core_user.c
-+++ b/drivers/target/target_core_user.c
-@@ -2130,7 +2130,7 @@ static int tcmu_netlink_event_send(struct tcmu_dev *udev,
+diff --git a/drivers/usb/host/xhci-dbgcap.h b/drivers/usb/host/xhci-dbgcap.h
+index 51a7ab3ba0cac..54fafebb7bd1f 100644
+--- a/drivers/usb/host/xhci-dbgcap.h
++++ b/drivers/usb/host/xhci-dbgcap.h
+@@ -108,7 +108,6 @@ struct dbc_port {
+ 	struct tasklet_struct		push;
+ 
+ 	struct list_head		write_pool;
+-	struct kfifo			write_fifo;
+ 
+ 	bool				registered;
+ };
+diff --git a/drivers/usb/host/xhci-dbgtty.c b/drivers/usb/host/xhci-dbgtty.c
+index 64ea964949975..881f5a7e6e0e1 100644
+--- a/drivers/usb/host/xhci-dbgtty.c
++++ b/drivers/usb/host/xhci-dbgtty.c
+@@ -36,7 +36,7 @@ static int dbc_start_tx(struct dbc_port *port)
+ 
+ 	while (!list_empty(pool)) {
+ 		req = list_entry(pool->next, struct dbc_request, list_pool);
+-		len = kfifo_out(&port->write_fifo, req->buf, DBC_MAX_PACKET);
++		len = kfifo_out(&port->port.xmit_fifo, req->buf, DBC_MAX_PACKET);
+ 		if (len == 0)
+ 			break;
+ 		do_tty_wake = true;
+@@ -203,7 +203,7 @@ static ssize_t dbc_tty_write(struct tty_struct *tty, const u8 *buf,
+ 
+ 	spin_lock_irqsave(&port->port_lock, flags);
+ 	if (count)
+-		count = kfifo_in(&port->write_fifo, buf, count);
++		count = kfifo_in(&port->port.xmit_fifo, buf, count);
+ 	dbc_start_tx(port);
+ 	spin_unlock_irqrestore(&port->port_lock, flags);
+ 
+@@ -217,7 +217,7 @@ static int dbc_tty_put_char(struct tty_struct *tty, u8 ch)
+ 	int			status;
+ 
+ 	spin_lock_irqsave(&port->port_lock, flags);
+-	status = kfifo_put(&port->write_fifo, ch);
++	status = kfifo_put(&port->port.xmit_fifo, ch);
+ 	spin_unlock_irqrestore(&port->port_lock, flags);
+ 
+ 	return status;
+@@ -240,7 +240,7 @@ static unsigned int dbc_tty_write_room(struct tty_struct *tty)
+ 	unsigned int		room;
+ 
+ 	spin_lock_irqsave(&port->port_lock, flags);
+-	room = kfifo_avail(&port->write_fifo);
++	room = kfifo_avail(&port->port.xmit_fifo);
+ 	spin_unlock_irqrestore(&port->port_lock, flags);
+ 
+ 	return room;
+@@ -253,7 +253,7 @@ static unsigned int dbc_tty_chars_in_buffer(struct tty_struct *tty)
+ 	unsigned int		chars;
+ 
+ 	spin_lock_irqsave(&port->port_lock, flags);
+-	chars = kfifo_len(&port->write_fifo);
++	chars = kfifo_len(&port->port.xmit_fifo);
+ 	spin_unlock_irqrestore(&port->port_lock, flags);
+ 
+ 	return chars;
+@@ -411,7 +411,8 @@ static int xhci_dbc_tty_register_device(struct xhci_dbc *dbc)
+ 		goto err_idr;
  	}
  
- 	ret = genlmsg_multicast_allns(&tcmu_genl_family, skb, 0,
--				      TCMU_MCGRP_CONFIG, GFP_KERNEL);
-+				      TCMU_MCGRP_CONFIG);
+-	ret = kfifo_alloc(&port->write_fifo, DBC_WRITE_BUF_SIZE, GFP_KERNEL);
++	ret = kfifo_alloc(&port->port.xmit_fifo, DBC_WRITE_BUF_SIZE,
++			  GFP_KERNEL);
+ 	if (ret)
+ 		goto err_exit_port;
  
- 	/* Wait during an add as the listener may not be up yet */
- 	if (ret == 0 ||
-diff --git a/include/net/genetlink.h b/include/net/genetlink.h
-index b9e5a22ae3ff9..b39d06bbb8390 100644
---- a/include/net/genetlink.h
-+++ b/include/net/genetlink.h
-@@ -355,13 +355,12 @@ static inline int genlmsg_multicast(const struct genl_family *family,
-  * @skb: netlink message as socket buffer
-  * @portid: own netlink portid to avoid sending to yourself
-  * @group: offset of multicast group in groups array
-- * @flags: allocation flags
-  *
-  * This function must hold the RTNL or rcu_read_lock().
-  */
- int genlmsg_multicast_allns(const struct genl_family *family,
- 			    struct sk_buff *skb, u32 portid,
--			    unsigned int group, gfp_t flags);
-+			    unsigned int group);
+@@ -440,7 +441,7 @@ static int xhci_dbc_tty_register_device(struct xhci_dbc *dbc)
+ 	xhci_dbc_free_requests(&port->read_pool);
+ 	xhci_dbc_free_requests(&port->write_pool);
+ err_free_fifo:
+-	kfifo_free(&port->write_fifo);
++	kfifo_free(&port->port.xmit_fifo);
+ err_exit_port:
+ 	idr_remove(&dbc_tty_minors, port->minor);
+ err_idr:
+@@ -465,7 +466,7 @@ static void xhci_dbc_tty_unregister_device(struct xhci_dbc *dbc)
+ 	idr_remove(&dbc_tty_minors, port->minor);
+ 	mutex_unlock(&dbc_tty_minors_lock);
  
- /**
-  * genlmsg_unicast - unicast a netlink message
-diff --git a/net/l2tp/l2tp_netlink.c b/net/l2tp/l2tp_netlink.c
-index a901fd14fe3bf..e27e00cb16c6b 100644
---- a/net/l2tp/l2tp_netlink.c
-+++ b/net/l2tp/l2tp_netlink.c
-@@ -115,7 +115,7 @@ static int l2tp_tunnel_notify(struct genl_family *family,
- 				  NLM_F_ACK, tunnel, cmd);
- 
- 	if (ret >= 0) {
--		ret = genlmsg_multicast_allns(family, msg, 0, 0, GFP_ATOMIC);
-+		ret = genlmsg_multicast_allns(family, msg, 0, 0);
- 		/* We don't care if no one is listening */
- 		if (ret == -ESRCH)
- 			ret = 0;
-@@ -143,7 +143,7 @@ static int l2tp_session_notify(struct genl_family *family,
- 				   NLM_F_ACK, session, cmd);
- 
- 	if (ret >= 0) {
--		ret = genlmsg_multicast_allns(family, msg, 0, 0, GFP_ATOMIC);
-+		ret = genlmsg_multicast_allns(family, msg, 0, 0);
- 		/* We don't care if no one is listening */
- 		if (ret == -ESRCH)
- 			ret = 0;
-diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
-index 505d3b910cc29..fd3c1f1ca6ea6 100644
---- a/net/netlink/genetlink.c
-+++ b/net/netlink/genetlink.c
-@@ -1147,15 +1147,11 @@ static int genl_ctrl_event(int event, const struct genl_family *family,
- 	if (IS_ERR(msg))
- 		return PTR_ERR(msg);
- 
--	if (!family->netnsok) {
-+	if (!family->netnsok)
- 		genlmsg_multicast_netns(&genl_ctrl, &init_net, msg, 0,
- 					0, GFP_KERNEL);
--	} else {
--		rcu_read_lock();
--		genlmsg_multicast_allns(&genl_ctrl, msg, 0,
--					0, GFP_ATOMIC);
--		rcu_read_unlock();
--	}
-+	else
-+		genlmsg_multicast_allns(&genl_ctrl, msg, 0, 0);
- 
- 	return 0;
- }
-@@ -1500,23 +1496,23 @@ static int __init genl_init(void)
- 
- core_initcall(genl_init);
- 
--static int genlmsg_mcast(struct sk_buff *skb, u32 portid, unsigned long group,
--			 gfp_t flags)
-+static int genlmsg_mcast(struct sk_buff *skb, u32 portid, unsigned long group)
- {
- 	struct sk_buff *tmp;
- 	struct net *net, *prev = NULL;
- 	bool delivered = false;
- 	int err;
- 
-+	rcu_read_lock();
- 	for_each_net_rcu(net) {
- 		if (prev) {
--			tmp = skb_clone(skb, flags);
-+			tmp = skb_clone(skb, GFP_ATOMIC);
- 			if (!tmp) {
- 				err = -ENOMEM;
- 				goto error;
- 			}
- 			err = nlmsg_multicast(prev->genl_sock, tmp,
--					      portid, group, flags);
-+					      portid, group, GFP_ATOMIC);
- 			if (!err)
- 				delivered = true;
- 			else if (err != -ESRCH)
-@@ -1525,27 +1521,31 @@ static int genlmsg_mcast(struct sk_buff *skb, u32 portid, unsigned long group,
- 
- 		prev = net;
- 	}
-+	err = nlmsg_multicast(prev->genl_sock, skb, portid, group, GFP_ATOMIC);
-+
-+	rcu_read_unlock();
- 
--	err = nlmsg_multicast(prev->genl_sock, skb, portid, group, flags);
- 	if (!err)
- 		delivered = true;
- 	else if (err != -ESRCH)
- 		return err;
- 	return delivered ? 0 : -ESRCH;
-  error:
-+	rcu_read_unlock();
-+
- 	kfree_skb(skb);
- 	return err;
- }
- 
- int genlmsg_multicast_allns(const struct genl_family *family,
- 			    struct sk_buff *skb, u32 portid,
--			    unsigned int group, gfp_t flags)
-+			    unsigned int group)
- {
- 	if (WARN_ON_ONCE(group >= family->n_mcgrps))
- 		return -EINVAL;
- 
- 	group = family->mcgrp_offset + group;
--	return genlmsg_mcast(skb, portid, group, flags);
-+	return genlmsg_mcast(skb, portid, group);
- }
- EXPORT_SYMBOL(genlmsg_multicast_allns);
- 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 4df7a285a7de3..3e1c4e23484dc 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -17616,10 +17616,8 @@ void nl80211_common_reg_change_event(enum nl80211_commands cmd_id,
- 
- 	genlmsg_end(msg, hdr);
- 
--	rcu_read_lock();
- 	genlmsg_multicast_allns(&nl80211_fam, msg, 0,
--				NL80211_MCGRP_REGULATORY, GFP_ATOMIC);
--	rcu_read_unlock();
-+				NL80211_MCGRP_REGULATORY);
- 
- 	return;
- 
-@@ -18237,10 +18235,8 @@ void nl80211_send_beacon_hint_event(struct wiphy *wiphy,
- 
- 	genlmsg_end(msg, hdr);
- 
--	rcu_read_lock();
- 	genlmsg_multicast_allns(&nl80211_fam, msg, 0,
--				NL80211_MCGRP_REGULATORY, GFP_ATOMIC);
--	rcu_read_unlock();
-+				NL80211_MCGRP_REGULATORY);
- 
- 	return;
- 
+-	kfifo_free(&port->write_fifo);
++	kfifo_free(&port->port.xmit_fifo);
+ 	xhci_dbc_free_requests(&port->read_pool);
+ 	xhci_dbc_free_requests(&port->read_queue);
+ 	xhci_dbc_free_requests(&port->write_pool);
 -- 
 2.43.0
 
