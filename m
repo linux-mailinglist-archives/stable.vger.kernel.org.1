@@ -1,119 +1,109 @@
-Return-Path: <stable+bounces-89078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ACFA9B3222
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 14:50:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 863269B32ED
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 15:14:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB05A28222C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 13:50:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FFFE1C21D18
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 14:14:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702661DB92A;
-	Mon, 28 Oct 2024 13:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D381DDA17;
+	Mon, 28 Oct 2024 14:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mrOASrr6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ljbiRyat"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC481D54CF
-	for <stable@vger.kernel.org>; Mon, 28 Oct 2024 13:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C6F63C;
+	Mon, 28 Oct 2024 14:14:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730123399; cv=none; b=Spxk/BlcYlpW44oDS4weNmenesM4G6ckCNT2yXnTxRhvOujjy6HoQrE2wC7BGxJmZJQ1kKCXS//TN9Op3Qq+saxHrC/mGNWYLlwyaAAUg2I0JPOS7dfqeXQ0jvz8fqdPiZ+aJh0uhTjcQ+zrZGltvuJJ/Hc2TeD0Xnq09F+oGDw=
+	t=1730124868; cv=none; b=ErAgC6T+t4GFIBYeE1dgPcvjjIYPrZqrAkpl9uXWsTqawN/nV7IbKqNr8N7nRWpBV+g/UyAVlEehSGwV2stvaAjJOdlRWpplwBKyO9qqfzJXmzKu4BPKVL5f6/ypLtx+JdzbSjDENXk5FdAxrM79AKtF8b39e/J0YkGRVswSSrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730123399; c=relaxed/simple;
-	bh=6Mj1VRgXnG+nvybtv+ZC4oMxMVCimRwftrC4glOVmPk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dJ+TkoGxGTg3iX9Di987DYRM/9sOMAfU5gxYIiaQJGODagF4cjdgqZf6cRwwH3VyZG/Sns3MkqAMfmS4B+3dmWEG7RBtFMA8mgrnL7uDEJYT4hrXcKDBmpYiAwF9v3p+BBK2pRkcX74tOWd7mwIpFYL4gB67SA63uQDe5RcIRLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mrOASrr6; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-37d50fad249so3266391f8f.1
-        for <stable@vger.kernel.org>; Mon, 28 Oct 2024 06:49:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730123395; x=1730728195; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=a/p3KIuaZuZhHqqQdmdj5IlyJ0aVNyH0A6LgRHkyb/Y=;
-        b=mrOASrr6ouUPvMQ7XM/AdYaGGjITszpUbzeJWt6SYZDPPs/C3Kk+V59MRCpc5TGwAG
-         0OABVyTNOHYji56eVX8jYmO02hBLLG0d4tItvczmlbHgl4Vd7n8cTSLD8LlvGQAal+xW
-         dHpzFg/xgQ45KALdDdpD6ZD3dyN75/QdTPn88SgeL2x7ZG/q4NpApGDNXxOwDtB++Dai
-         C2E7yTo5RyXoybpARdGqcAEKR8tuzKo1mQQRZ7eZzK3cSy3mPBXG5b+kHigSOYiwsZ4y
-         Jvs4r11/tAAGR4fPF4M8tFMZaUgOq8LMhOOsw8+HcdgdFywhKjyBu93qew0V0VzBrQDI
-         hLCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730123395; x=1730728195;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=a/p3KIuaZuZhHqqQdmdj5IlyJ0aVNyH0A6LgRHkyb/Y=;
-        b=QYLNdGwBhsRso78GQIaMap1GFzMQ5dCdIrDgasSF+pSTjYN8slsnz1t9UhGXiJfFLB
-         L0CEQYsP989K7QqlMFa6A2WWmdoS0yPNotwUcMfTJCT95JQAvatIxTUq3JUzjjGn8rNk
-         nJIu3O2Lj9aF+gRAdxd5xgEsnQB1w5why0bY8eVeCKfMIxXdLm8JsHNrQYl7Iq6/r5Ms
-         WkdN84aIZ9rpfRQrjaNaSJREtIfffYriiO18Wc3rWyap/KlqZkIG4CCFOcWUgGO9iVd+
-         zfxyrAFEsz3NOSI+9YI+M5nF2oJUka41IsFpLm1RzPXUAdy46vhTBgl18WaOPn7Lr8La
-         Chxg==
-X-Forwarded-Encrypted: i=1; AJvYcCUkYsuzy5ZkBzTFsKAfKnEV2blil44AP2AFfNGtZNk6p4MyU/i4okr+HeaQucNDQY49iT28jkg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxBPE0ORefcVuuGoKdCAPOpPbRfGHyB/gweEJ/hdkJMIPZSNPG
-	inWWduYffJYNMm7tbH9vDNkTZVKvz5nETqJ2Z+iUfj/x413mN9hh/ihDXw5ZTOvG2OiHBykIr5J
-	0
-X-Google-Smtp-Source: AGHT+IG0JhYIpcvY1BRr3C+OP/h8ZDpapwg1W+exN7ZHkKKqyPSQaMfnJyOqZXo3BznfrRGV4btjLg==
-X-Received: by 2002:a05:6000:1e46:b0:37d:4f1b:35b with SMTP id ffacd0b85a97d-38061162ab4mr6678395f8f.34.1730123395463;
-        Mon, 28 Oct 2024 06:49:55 -0700 (PDT)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-38058b1c3absm9589325f8f.21.2024.10.28.06.49.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Oct 2024 06:49:55 -0700 (PDT)
-Message-ID: <317073eb-769c-442d-915c-d803c2960f3e@linaro.org>
-Date: Mon, 28 Oct 2024 14:49:54 +0100
+	s=arc-20240116; t=1730124868; c=relaxed/simple;
+	bh=uUkjiW3ieirbS6YNuwJO2MWW+78ISJdxJh/yYlhJbyM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qUpZQmn3PHMj8Xy3mUc8c9NSM6L+xIFA0Ag/iE6/VnrmDvZQPZGULxZzJZ8p3sEs55j9DlpuO8V0009OjIf8LwB/yU4YFNuZoWxYEisyT/TdgZMrkPkNQ/CqWrGmGCxjX9ZPCm33tnVML9N/QhuR5zflcJD943Hvghvy9JNLtkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ljbiRyat; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB5EC4CECD;
+	Mon, 28 Oct 2024 14:14:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730124867;
+	bh=uUkjiW3ieirbS6YNuwJO2MWW+78ISJdxJh/yYlhJbyM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ljbiRyatUhdjoe4e8gVfxWIBSnHOfJWx7eF1TmMGjSgSiuzx+1vOSp1/P8BTHIOuc
+	 fMW/M3EAnxqWbmAO54/WODlFmmutNXtUroiWeJtAisgOtTIUOWsyBPPTYsmFowuX2w
+	 wdwNgz8meXp9tYYNziGtQ/P3GW4OmpOALc+hcEDfWyQKbIdRsuHlfmsj4WnEU8JRJe
+	 9FyOea+TljjlpquVZEVBn5xgh73wiNW9OTClVDxJurlgaNEUp7E4Q6ahSKkvHuxhDL
+	 24DhZbcT3MLp1yBEreMl9WxfMih56XAsVBT1wSGbL8WdM3qJW0Lxt2ay3JxZ+HmwYH
+	 NO6pKOyh6XuZA==
+Date: Mon, 28 Oct 2024 14:14:20 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com,
+	Marc Zyngier <maz@kernel.org>, Eric Auger <eauger@redhat.com>
+Subject: Re: [PATCH 6.11 000/261] 6.11.6-rc1 review
+Message-ID: <b7b10796-5bbb-4cd3-b66b-64eb80208c49@sirena.org.uk>
+References: <20241028062312.001273460@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] clocksource/drivers/timer-ti-dm: fix child node refcount
- handling
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>, Tony Lindgren <tony@atomide.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20241013-timer-ti-dm-systimer-of_node_put-v1-1-0cf0c9a37684@gmail.com>
- <5a535983-6a78-4449-b57b-176869fd55d8@linaro.org>
- <e7ca7a5d-749d-40c1-893f-da3d593eb4d4@gmail.com>
-Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <e7ca7a5d-749d-40c1-893f-da3d593eb4d4@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-
-On 28/10/2024 13:26, Javier Carrasco wrote:
-
-[ ... ]
-
-> Hi Daniel, thanks for your feedback.
-> 
-> Actually, if we are going to refactor the code, we would not need the
-> extra variable or even the call to of_node_put(), since we could use the
-> __free() macro. That would be a second patch after the fix, which could
-> stay as it is without refactoring, because it is only to backport the
-> missing calls to of_node_put().
-> 
-> I can send a v2 with the extra patch leaving this one as it is, or if
-> really desired, with the available variable.
-
-V2 with __free is fine
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="tvPZucr4J+gWp7S6"
+Content-Disposition: inline
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+X-Cookie: Remember the... the... uhh.....
 
 
+--tvPZucr4J+gWp7S6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+On Mon, Oct 28, 2024 at 07:22:22AM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.11.6 release.
+> There are 261 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+The KVM vgic_init selftest has started failing on all the stables that
+"KVM: arm64: Don't eagerly teardown the vgic on init error" has been
+backported to.  This also happens upstream, as discussed in the thread
+there:
+
+   https://lore.kernel.org/linux-arm-kernel/20241009183603.3221824-1-maz@kernel.org/
+
+this is a testsuite issue rather than an issue with the change itself.
+Other than that things look good:
+
+Tested-by: Mark Brown <broonie@kernel.org>
+
+--tvPZucr4J+gWp7S6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcfnDwACgkQJNaLcl1U
+h9BaJQf/QTTf6k6tCWxSgHmMRBn8k89lHPr84RJyxWkK6Nt6x81yk97XHOn11g+n
+SPbZNqYiVjjTxHF5JXY0GWQebxyOoBbejis+pwvWUxgUkC8opEp+FyOHjrsCfaJK
++ZEk3pdo+DUiAWBj+bZB0cjTAZ2JGe1O1wicWAm44IBR5d89kuEuX7gbaKLOm77X
+Wxc2FJxh8MlXHKl8DELaQUEbFVpLsI0PNHj0m6EvVTuDdx9Z45Zkmedg6N1V1i8v
+D3N5O+LJ2vIcQ5FPnZYlYxnbb8mwLLhUvi/fQZFEf1bWRLt/o7Fq8BgTJNm6xH5D
+tdYsCkvZ4aa/w+mgIzt9Vqn2rQja8w==
+=xRCX
+-----END PGP SIGNATURE-----
+
+--tvPZucr4J+gWp7S6--
 
