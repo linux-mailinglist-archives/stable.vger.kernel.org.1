@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A69D9B25EB
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 830859B2696
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:40:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3849E2815FF
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4462C1C21386
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B4018EFEC;
-	Mon, 28 Oct 2024 06:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EFB018E368;
+	Mon, 28 Oct 2024 06:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9bmMlm6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iTCetCvf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0564E18DF68;
-	Mon, 28 Oct 2024 06:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CCF4189BAF;
+	Mon, 28 Oct 2024 06:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097296; cv=none; b=gMB2aaB/1EaGg2i6KGqlRMAE0ZW7hIlMvTcf+oJbeVZfQodEcbCyk+wA8gp+sFcmArf2j/nGPjjWNb/vSmyVYZSxcqptD2Q6HGDIsh725bjrr5e1E4GoSwNIG1q5Fb9v06TpDWYI8JyU1jnuwVu9DBHoVp71AbXHGBoNQWzYy1I=
+	t=1730097656; cv=none; b=f24jTSzOKwIXqk4NLc0L86iSLWiEZSeszPCheDRGCtTzk0DH1L3MFjUt5qVaaf2LF4puDmcbx1MPQ1PvbFXjuLWaNKg1rCqKLdRDQeXzalfQG74U+wjDtCc8JlxLECI4sHzlvzbdRTqA5fb/eEfDfPegN6GCKQiKOBozw3WetNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097296; c=relaxed/simple;
-	bh=wQIAhnmpdCSCifRrHAhbN1cyPTo5U830+0uefNcVe2Q=;
+	s=arc-20240116; t=1730097656; c=relaxed/simple;
+	bh=CeuZXRyP7Tpk5eWInQpkw0HHhP5d0BOIIN6DH/GtZo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qmN0J2RzmqGH76eUIZWj5/WU+aQlL99ay4tBDtGwGIsVcjHJIiHAUsbQV5XKt0OE8qOtoRkimptB1+2LzjfgHVC4kanDcmazMUslfpZ/MsYIPnw3GBxSyEuTJ7gwbXgmo0nI/kJ4CAQB/7HvuEtPHCddMDobRQDAJ4iGVQhTcnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9bmMlm6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E2C1C4CEC3;
-	Mon, 28 Oct 2024 06:34:55 +0000 (UTC)
+	 MIME-Version; b=IpoUHQyXLFTPsoJMtKg6F+ScYT9uNHQzDHfia0rFLvo1M1G9cQBAhd+taoJ2WYDSDJtHbzCgauf3tpXPGbguCzyAmybXyPzwWTDCeSjwjSZXYiQ1QcQycmqnPumQKmeswoKJT5qECxyLpiLkkT3NfPJycajhz9v7j8ZNCis1Hu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iTCetCvf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B084AC4CEC3;
+	Mon, 28 Oct 2024 06:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097295;
-	bh=wQIAhnmpdCSCifRrHAhbN1cyPTo5U830+0uefNcVe2Q=;
+	s=korg; t=1730097656;
+	bh=CeuZXRyP7Tpk5eWInQpkw0HHhP5d0BOIIN6DH/GtZo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T9bmMlm67es35HlLTqYgnsTNhjboDVJtGJtSrn+cZdZW07jjypBu4bNksXMb80IL7
-	 ERYqbI2UFV294ubQw+2JTo49+GMRWkkOKkJhEbi8fMZ4PBNCY7LG8QpUj5MvSuSkhK
-	 ZlCOjxDoAfoX9FAxc+Jmaz32KnXznOeBe+GZUbX8=
+	b=iTCetCvfjqWZN2BptDGWqNfahhdyQEzrX/2xkdomZUr98GACHWy0C207m1XHrEJdo
+	 aM7w1aQZ1PUYk6+vs9it6jP7baHijYFXku9s7Olhyk+apy/9N/C+BJCwsWCO86W5o6
+	 qnTTW/Gse727cpOgLIMjVL+vcbi2+q8ILKoJ+VuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Hai <wanghai38@huawei.com>,
-	Gerhard Engleder <gerhard@engleder-embedded.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jordan Rome <linux@jordanrome.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 032/137] net: ethernet: aeroflex: fix potential memory leak in greth_start_xmit_gbit()
+Subject: [PATCH 6.6 089/208] bpf: Fix iter/task tid filtering
 Date: Mon, 28 Oct 2024 07:24:29 +0100
-Message-ID: <20241028062259.621729363@linuxfoundation.org>
+Message-ID: <20241028062308.840521568@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Hai <wanghai38@huawei.com>
+From: Jordan Rome <linux@jordanrome.com>
 
-[ Upstream commit cf57b5d7a2aad456719152ecd12007fe031628a3 ]
+[ Upstream commit 9495a5b731fcaf580448a3438d63601c88367661 ]
 
-The greth_start_xmit_gbit() returns NETDEV_TX_OK without freeing skb
-in case of skb->len being too long, add dev_kfree_skb() to fix it.
+In userspace, you can add a tid filter by setting
+the "task.tid" field for "bpf_iter_link_info".
+However, `get_pid_task` when called for the
+`BPF_TASK_ITER_TID` type should have been using
+`PIDTYPE_PID` (tid) instead of `PIDTYPE_TGID` (pid).
 
-Fixes: d4c41139df6e ("net: Add Aeroflex Gaisler 10/100/1G Ethernet MAC driver")
-Signed-off-by: Wang Hai <wanghai38@huawei.com>
-Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
-Link: https://patch.msgid.link/20241012110434.49265-1-wanghai38@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f0d74c4da1f0 ("bpf: Parameterize task iterators.")
+Signed-off-by: Jordan Rome <linux@jordanrome.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241016210048.1213935-1-linux@jordanrome.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/aeroflex/greth.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/bpf/task_iter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/aeroflex/greth.c b/drivers/net/ethernet/aeroflex/greth.c
-index aa0d2f3aaeaaa..f7a44d8541a02 100644
---- a/drivers/net/ethernet/aeroflex/greth.c
-+++ b/drivers/net/ethernet/aeroflex/greth.c
-@@ -484,7 +484,7 @@ greth_start_xmit_gbit(struct sk_buff *skb, struct net_device *dev)
- 
- 	if (unlikely(skb->len > MAX_FRAME_SIZE)) {
- 		dev->stats.tx_errors++;
--		goto out;
-+		goto len_error;
- 	}
- 
- 	/* Save skb pointer. */
-@@ -575,6 +575,7 @@ greth_start_xmit_gbit(struct sk_buff *skb, struct net_device *dev)
- map_error:
- 	if (net_ratelimit())
- 		dev_warn(greth->dev, "Could not create TX DMA mapping\n");
-+len_error:
- 	dev_kfree_skb(skb);
- out:
- 	return err;
+diff --git a/kernel/bpf/task_iter.c b/kernel/bpf/task_iter.c
+index c4ab9d6cdbe9c..f7ef58090c7d0 100644
+--- a/kernel/bpf/task_iter.c
++++ b/kernel/bpf/task_iter.c
+@@ -119,7 +119,7 @@ static struct task_struct *task_seq_get_next(struct bpf_iter_seq_task_common *co
+ 		rcu_read_lock();
+ 		pid = find_pid_ns(common->pid, common->ns);
+ 		if (pid) {
+-			task = get_pid_task(pid, PIDTYPE_TGID);
++			task = get_pid_task(pid, PIDTYPE_PID);
+ 			*tid = common->pid;
+ 		}
+ 		rcu_read_unlock();
 -- 
 2.43.0
 
