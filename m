@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-88587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 847649B269D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:41:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13EC79B27B2
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:50:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49641282448
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 375CC1C2154C
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A57F818E36D;
-	Mon, 28 Oct 2024 06:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C74118E37F;
+	Mon, 28 Oct 2024 06:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbaBAQC9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXjExNcF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CF92C697;
-	Mon, 28 Oct 2024 06:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BF32AF07;
+	Mon, 28 Oct 2024 06:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097669; cv=none; b=TnOxxDbYpTn3Mk0Tsh0SMzQKBInEkFxveWH6FMDW8JoqvEF0TJPgZsPGisSbQP9kKkJTzuG/cPdloJd9Iu//ydzD9hSgO98nQaHIUcmtBMUnSeBQmDUjys9Yo9HORlaXI1EQmrh710sD58wZpr5m87KZ0eVQLW8Z9KoQ34C5sNA=
+	t=1730098227; cv=none; b=p9Qv7sr9gmxhO+BZbvN9lsqpLG9feqol6TopOrGBoALYEyuext1r59mwNPeHBPXoO6HocP1N3iYApTOfhnDHa1okZFRKVEtftvrBg+Uc77+9wZ//IY1907svtmsUZkwjyGvvCH/kWtHBxPYY06k+eVH1hTtKdMPI4K5vg6bJ2Wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097669; c=relaxed/simple;
-	bh=StoG53KJ3PP/AU3n5Fe3jQlKMElG7r9CdLAKYnHJj1U=;
+	s=arc-20240116; t=1730098227; c=relaxed/simple;
+	bh=6spZfGpXXVuJ//jq4YMYaJ7i06lQRFjGvBGLK7Hiogg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WxURy5LX3KPWjAFeZ84YrYVnKJhVWfJZOUQAsTX+iyx53N/WccY0IGYVMV7+SlrNebAgQIGPGh3q9yER0zD5Ufle8zvKNuQHzvbxeMUKzpdpHSvDLDs7zvShN5ttKXAe78fUHUAL42ZVpszlJFToxxzR1FhLuXgALxIAMSYkZiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbaBAQC9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01457C4CEC3;
-	Mon, 28 Oct 2024 06:41:08 +0000 (UTC)
+	 MIME-Version; b=tx8jxefwcCFCD+uJC27LHZKWOIeDD3AJfZZZ1kiVOCluzJt1eB6aRGeMNH+S7cmM835sewj6X2i+y35aUYU0L5IsCAOOTmGaYXJm7ekFap2BIFzshrokXDi30B/y9bpg8/ocx8m1pvry8uyFniDxTBBL8liVRW7HlOxw4W7Foyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXjExNcF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB47C4CEC3;
+	Mon, 28 Oct 2024 06:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097669;
-	bh=StoG53KJ3PP/AU3n5Fe3jQlKMElG7r9CdLAKYnHJj1U=;
+	s=korg; t=1730098227;
+	bh=6spZfGpXXVuJ//jq4YMYaJ7i06lQRFjGvBGLK7Hiogg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FbaBAQC9yozCor9snzvuxwRYKwYjO83RI5n9cwjCHYzJ+K/C6m9KwJ3A34Hku+ure
-	 oTAlhJ4hh1qI3NAASGHfWn9p9EaxQdqtzulzEgcir5lrWw7JVPhOiEqfFk3qvQLcEl
-	 tAvgQBQqXFTdoA4SpubJmhqS7rVv6upNOMVr1TSc=
+	b=AXjExNcFukyI8+gv5bfwl3Py3vbblcEyvUchyj51o+UrIlpFUEfRUdxoyurgrFhRs
+	 j6Yasvs4KZDjbKHTb+/JwRRqfV8C+o07OkuhT+ayla1jOaRDWE6zUxk87aubYWCEjF
+	 6ljBnBjBW8Q1GARod7p6iSJcbGU2dWzrJrSxlfuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	syzbot+701037856c25b143f1ad@syzkaller.appspotmail.com,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Jan Kara <jack@suse.cz>,
+	Josef Bacik <josef@toxicpanda.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 094/208] khugepaged: inline hpage_collapse_alloc_folio()
+Subject: [PATCH 6.11 132/261] fsnotify: Avoid data race between fsnotify_recalc_mask() and fsnotify_object_watched()
 Date: Mon, 28 Oct 2024 07:24:34 +0100
-Message-ID: <20241028062308.972084113@linuxfoundation.org>
+Message-ID: <20241028062315.351258709@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +64,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 4746f5ce0fa52e21b5fe432970fe9516d1a45ebc ]
+[ Upstream commit 35ceae44742e1101f9d20adadbbbd92c05d7d659 ]
 
-Patch series "khugepaged folio conversions".
+When __fsnotify_recalc_mask() recomputes the mask on the watched object,
+the compiler can "optimize" the code to perform partial updates to the
+mask (including zeroing it at the beginning). Thus places checking
+the object mask without conn->lock such as fsnotify_object_watched()
+could see invalid states of the mask. Make sure the mask update is
+performed by one memory store using WRITE_ONCE().
 
-We've been kind of hacking piecemeal at converting khugepaged to use
-folios instead of compound pages, and so this patchset is a little larger
-than it should be as I undo some of our wrong moves in the past.  In
-particular, collapse_file() now consistently uses 'new_folio' for the
-freshly allocated folio and 'folio' for the one that's currently in use.
-
-This patch (of 7):
-
-This function has one caller, and the combined function is simpler to
-read, reason about and modify.
-
-Link: https://lkml.kernel.org/r/20240403171838.1445826-1-willy@infradead.org
-Link: https://lkml.kernel.org/r/20240403171838.1445826-2-willy@infradead.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 37f0b47c5143 ("mm: khugepaged: fix the arguments order in khugepaged_collapse_file trace point")
+Reported-by: syzbot+701037856c25b143f1ad@syzkaller.appspotmail.com
+Reported-by: Dmitry Vyukov <dvyukov@google.com>
+Link: https://lore.kernel.org/all/CACT4Y+Zk0ohwwwHSD63U2-PQ=UuamXczr1mKBD6xtj2dyYKBvA@mail.gmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Link: https://patch.msgid.link/20240717140623.27768-1-jack@suse.cz
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/khugepaged.c | 19 ++++---------------
- 1 file changed, 4 insertions(+), 15 deletions(-)
+ fs/notify/fsnotify.c             | 21 ++++++++++++---------
+ fs/notify/inotify/inotify_user.c |  2 +-
+ fs/notify/mark.c                 |  8 ++++++--
+ 3 files changed, 19 insertions(+), 12 deletions(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index cb6a243688045..d0fcfa47085b4 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -887,20 +887,6 @@ static int hpage_collapse_find_target_node(struct collapse_control *cc)
+diff --git a/fs/notify/fsnotify.c b/fs/notify/fsnotify.c
+index 272c8a1dab3c2..82ae8254c068b 100644
+--- a/fs/notify/fsnotify.c
++++ b/fs/notify/fsnotify.c
+@@ -183,8 +183,10 @@ static bool fsnotify_event_needs_parent(struct inode *inode, __u32 mnt_mask,
+ 	BUILD_BUG_ON(FS_EVENTS_POSS_ON_CHILD & ~FS_EVENTS_POSS_TO_PARENT);
+ 
+ 	/* Did either inode/sb/mount subscribe for events with parent/name? */
+-	marks_mask |= fsnotify_parent_needed_mask(inode->i_fsnotify_mask);
+-	marks_mask |= fsnotify_parent_needed_mask(inode->i_sb->s_fsnotify_mask);
++	marks_mask |= fsnotify_parent_needed_mask(
++				READ_ONCE(inode->i_fsnotify_mask));
++	marks_mask |= fsnotify_parent_needed_mask(
++				READ_ONCE(inode->i_sb->s_fsnotify_mask));
+ 	marks_mask |= fsnotify_parent_needed_mask(mnt_mask);
+ 
+ 	/* Did they subscribe for this event with parent/name info? */
+@@ -195,8 +197,8 @@ static bool fsnotify_event_needs_parent(struct inode *inode, __u32 mnt_mask,
+ static inline bool fsnotify_object_watched(struct inode *inode, __u32 mnt_mask,
+ 					   __u32 mask)
+ {
+-	__u32 marks_mask = inode->i_fsnotify_mask | mnt_mask |
+-			   inode->i_sb->s_fsnotify_mask;
++	__u32 marks_mask = READ_ONCE(inode->i_fsnotify_mask) | mnt_mask |
++			   READ_ONCE(inode->i_sb->s_fsnotify_mask);
+ 
+ 	return mask & marks_mask & ALL_FSNOTIFY_EVENTS;
  }
- #endif
+@@ -213,7 +215,8 @@ int __fsnotify_parent(struct dentry *dentry, __u32 mask, const void *data,
+ 		      int data_type)
+ {
+ 	const struct path *path = fsnotify_data_path(data, data_type);
+-	__u32 mnt_mask = path ? real_mount(path->mnt)->mnt_fsnotify_mask : 0;
++	__u32 mnt_mask = path ?
++		READ_ONCE(real_mount(path->mnt)->mnt_fsnotify_mask) : 0;
+ 	struct inode *inode = d_inode(dentry);
+ 	struct dentry *parent;
+ 	bool parent_watched = dentry->d_flags & DCACHE_FSNOTIFY_PARENT_WATCHED;
+@@ -557,13 +560,13 @@ int fsnotify(__u32 mask, const void *data, int data_type, struct inode *dir,
+ 	    (!inode2 || !inode2->i_fsnotify_marks))
+ 		return 0;
  
--static bool hpage_collapse_alloc_folio(struct folio **folio, gfp_t gfp, int node,
--				      nodemask_t *nmask)
--{
--	*folio = __folio_alloc(gfp, HPAGE_PMD_ORDER, node, nmask);
--
--	if (unlikely(!*folio)) {
--		count_vm_event(THP_COLLAPSE_ALLOC_FAILED);
--		return false;
--	}
--
--	count_vm_event(THP_COLLAPSE_ALLOC);
--	return true;
--}
--
- /*
-  * If mmap_lock temporarily dropped, revalidate vma
-  * before taking mmap_lock.
-@@ -1063,11 +1049,14 @@ static int alloc_charge_hpage(struct page **hpage, struct mm_struct *mm,
- 	int node = hpage_collapse_find_target_node(cc);
- 	struct folio *folio;
+-	marks_mask = sb->s_fsnotify_mask;
++	marks_mask = READ_ONCE(sb->s_fsnotify_mask);
+ 	if (mnt)
+-		marks_mask |= mnt->mnt_fsnotify_mask;
++		marks_mask |= READ_ONCE(mnt->mnt_fsnotify_mask);
+ 	if (inode)
+-		marks_mask |= inode->i_fsnotify_mask;
++		marks_mask |= READ_ONCE(inode->i_fsnotify_mask);
+ 	if (inode2)
+-		marks_mask |= inode2->i_fsnotify_mask;
++		marks_mask |= READ_ONCE(inode2->i_fsnotify_mask);
  
--	if (!hpage_collapse_alloc_folio(&folio, gfp, node, &cc->alloc_nmask)) {
-+	folio = __folio_alloc(gfp, HPAGE_PMD_ORDER, node, &cc->alloc_nmask);
-+	if (!folio) {
- 		*hpage = NULL;
-+		count_vm_event(THP_COLLAPSE_ALLOC_FAILED);
- 		return SCAN_ALLOC_HUGE_PAGE_FAIL;
+ 
+ 	/*
+diff --git a/fs/notify/inotify/inotify_user.c b/fs/notify/inotify/inotify_user.c
+index 4ffc30606e0b9..e163a4b790224 100644
+--- a/fs/notify/inotify/inotify_user.c
++++ b/fs/notify/inotify/inotify_user.c
+@@ -569,7 +569,7 @@ static int inotify_update_existing_watch(struct fsnotify_group *group,
+ 		/* more bits in old than in new? */
+ 		int dropped = (old_mask & ~new_mask);
+ 		/* more bits in this fsn_mark than the inode's mask? */
+-		int do_inode = (new_mask & ~inode->i_fsnotify_mask);
++		int do_inode = (new_mask & ~READ_ONCE(inode->i_fsnotify_mask));
+ 
+ 		/* update the inode with this new fsn_mark */
+ 		if (dropped || do_inode)
+diff --git a/fs/notify/mark.c b/fs/notify/mark.c
+index 5e170e7130886..c45b222cf9c11 100644
+--- a/fs/notify/mark.c
++++ b/fs/notify/mark.c
+@@ -128,7 +128,7 @@ __u32 fsnotify_conn_mask(struct fsnotify_mark_connector *conn)
+ 	if (WARN_ON(!fsnotify_valid_obj_type(conn->type)))
+ 		return 0;
+ 
+-	return *fsnotify_conn_mask_p(conn);
++	return READ_ONCE(*fsnotify_conn_mask_p(conn));
+ }
+ 
+ static void fsnotify_get_sb_watched_objects(struct super_block *sb)
+@@ -245,7 +245,11 @@ static void *__fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
+ 		    !(mark->flags & FSNOTIFY_MARK_FLAG_NO_IREF))
+ 			want_iref = true;
  	}
+-	*fsnotify_conn_mask_p(conn) = new_mask;
++	/*
++	 * We use WRITE_ONCE() to prevent silly compiler optimizations from
++	 * confusing readers not holding conn->lock with partial updates.
++	 */
++	WRITE_ONCE(*fsnotify_conn_mask_p(conn), new_mask);
  
-+	count_vm_event(THP_COLLAPSE_ALLOC);
- 	if (unlikely(mem_cgroup_charge(folio, mm, gfp))) {
- 		folio_put(folio);
- 		*hpage = NULL;
+ 	return fsnotify_update_iref(conn, want_iref);
+ }
 -- 
 2.43.0
 
