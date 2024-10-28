@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-88387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6230D9B25C2
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:34:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B20599B27AF
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:50:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 212DE281CEE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:34:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77B80285254
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:50:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91EEC18E35B;
-	Mon, 28 Oct 2024 06:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 201B518E05D;
+	Mon, 28 Oct 2024 06:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NVGt0pAq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wUnD8ust"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9A4190063;
-	Mon, 28 Oct 2024 06:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C4C2AF07;
+	Mon, 28 Oct 2024 06:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097215; cv=none; b=YiQhvcg1ZLjbfYK/1LJJxGHseA6cKVEqkygXGfpH5Tn6c+2ZNP6aJfb6FbL8uIzsMy+eV/gy2WKy+Kj5QOGOCrQtVj+R5k+ccZfkxxmJkrOy8s9pPMthoEx7Ses/OJwyaN+z7u9sPMrfCLY0lZl1cu0fU5DUB+VP/IfVfLDUa6I=
+	t=1730098222; cv=none; b=Dgjt2ozi+7C7a+NN3DvCGYEEnywnhZh3w8PItBPki8VBOfM7zi4ru/bNeOSp2rZ6A+mcdu+h0bWITtskBZrFtM8RIEovebw3McLzEgfmmuF9QJB9Cv76W/gI6qUxa8LwVnTMX2zAmSwk1QhLvtBU306oft/7sauq+Fmmxvj1dzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097215; c=relaxed/simple;
-	bh=4D+oZXQBQPqpTMbwIifq7WhMs3bXpkFFzfosPBgq3tY=;
+	s=arc-20240116; t=1730098222; c=relaxed/simple;
+	bh=2adRbBkWn+2e8Rlhhw7fh65RDkLDSxRV3FRmcevKoec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bMDRAQV9kqEdveM85RSA3v4Q8gpl8af7MnqmQDeAn+k7a9cjXRwfRnxd+ejmniLWdNpT8+yPcV3B9Kk0exuWTS3JrgGDt6pj6xZyacMNwhwln10v4H6XvG0eZcOolnk2WVMQ3mhdt3ZNxeecWqewA6Ghemmih8uwVacNAmkFec8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NVGt0pAq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCDF8C4CECD;
-	Mon, 28 Oct 2024 06:33:34 +0000 (UTC)
+	 MIME-Version; b=MY0QSJyuhvdSN7nxNiWEqaAhW5HMN+h5FFOgubQgwLa8sBV5d6/SwIV8xeZWKrO3z3be24ky0pPIt3Jm8EO7/gXZaRIZrhkDWaa0AoR8RcaWuagFJrrk1H/t+BkP/Cke1+uGfG691VFucg/j81wCmN84/a++e/okdgxkU57odJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wUnD8ust; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE10C4CEC3;
+	Mon, 28 Oct 2024 06:50:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097215;
-	bh=4D+oZXQBQPqpTMbwIifq7WhMs3bXpkFFzfosPBgq3tY=;
+	s=korg; t=1730098222;
+	bh=2adRbBkWn+2e8Rlhhw7fh65RDkLDSxRV3FRmcevKoec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NVGt0pAqxVSecB9aCGctD5GlpSvjlOHQaxHIhSLMYe9QBDJ/hZienv913uDaJOnG4
-	 GnQHBoU9xY/x4JLGcHtGEuzx6ufRPzBMHecJcsdHl4rG9vP9ZZsAytcMIe0ST5XDdJ
-	 AA0qEzsWsuniSIBhfCr488OIzn0LdF4ikHa6yqM4=
+	b=wUnD8usthRKFcFU1EOwSfRO+OnzEhMtEXu74PbGZ4lF7Un5gloRGTozT+pkzjSU8/
+	 qzuD0rRWtoFre+E5Xd5Y/MaH0kP0wgwkk/CV7XiXddf8RpvSAufiZlF+RCXanYg4jf
+	 61R2XjZYfbT9Wcj/xDvTuBHlhC1V8QVGrUhKAyp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Hai <wanghai38@huawei.com>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+8901c4560b7ab5c2f9df@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.com>,
+	Gianfranco Trad <gianf.trad@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 034/137] net: xilinx: axienet: fix potential memory leak in axienet_start_xmit()
-Date: Mon, 28 Oct 2024 07:24:31 +0100
-Message-ID: <20241028062259.677416194@linuxfoundation.org>
+Subject: [PATCH 6.11 130/261] udf: fix uninit-value use in udf_get_fileshortad
+Date: Mon, 28 Oct 2024 07:24:32 +0100
+Message-ID: <20241028062315.296380430@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Hai <wanghai38@huawei.com>
+From: Gianfranco Trad <gianf.trad@gmail.com>
 
-[ Upstream commit 99714e37e8333bbc22496fe80f241d5b35380e83 ]
+[ Upstream commit 264db9d666ad9a35075cc9ed9ec09d021580fbb1 ]
 
-The axienet_start_xmit() returns NETDEV_TX_OK without freeing skb
-in case of dma_map_single() fails, add dev_kfree_skb_any() to fix it.
+Check for overflow when computing alen in udf_current_aext to mitigate
+later uninit-value use in udf_get_fileshortad KMSAN bug[1].
+After applying the patch reproducer did not trigger any issue[2].
 
-Fixes: 71791dc8bdea ("net: axienet: Check for DMA mapping errors")
-Signed-off-by: Wang Hai <wanghai38@huawei.com>
-Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Link: https://patch.msgid.link/20241014143704.31938-1-wanghai38@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[1] https://syzkaller.appspot.com/bug?extid=8901c4560b7ab5c2f9df
+[2] https://syzkaller.appspot.com/x/log.txt?x=10242227980000
+
+Reported-by: syzbot+8901c4560b7ab5c2f9df@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=8901c4560b7ab5c2f9df
+Tested-by: syzbot+8901c4560b7ab5c2f9df@syzkaller.appspotmail.com
+Suggested-by: Jan Kara <jack@suse.com>
+Signed-off-by: Gianfranco Trad <gianf.trad@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240925074613.8475-3-gianf.trad@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/udf/inode.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 0b6f0908f3e1c..ce0dd78826af0 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -844,6 +844,7 @@ axienet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 		if (net_ratelimit())
- 			netdev_err(ndev, "TX DMA mapping error\n");
- 		ndev->stats.tx_dropped++;
-+		dev_kfree_skb_any(skb);
- 		return NETDEV_TX_OK;
+diff --git a/fs/udf/inode.c b/fs/udf/inode.c
+index 80dae442ecd72..53511c726d575 100644
+--- a/fs/udf/inode.c
++++ b/fs/udf/inode.c
+@@ -2257,12 +2257,15 @@ int udf_current_aext(struct inode *inode, struct extent_position *epos,
+ 		alen = udf_file_entry_alloc_offset(inode) +
+ 							iinfo->i_lenAlloc;
+ 	} else {
++		struct allocExtDesc *header =
++			(struct allocExtDesc *)epos->bh->b_data;
++
+ 		if (!epos->offset)
+ 			epos->offset = sizeof(struct allocExtDesc);
+ 		ptr = epos->bh->b_data + epos->offset;
+-		alen = sizeof(struct allocExtDesc) +
+-			le32_to_cpu(((struct allocExtDesc *)epos->bh->b_data)->
+-							lengthAllocDescs);
++		if (check_add_overflow(sizeof(struct allocExtDesc),
++				le32_to_cpu(header->lengthAllocDescs), &alen))
++			return -1;
  	}
- 	desc_set_phys_addr(lp, phys, cur_p);
-@@ -864,6 +865,7 @@ axienet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 			ndev->stats.tx_dropped++;
- 			axienet_free_tx_chain(lp, orig_tail_ptr, ii + 1,
- 					      true, NULL, 0);
-+			dev_kfree_skb_any(skb);
- 			return NETDEV_TX_OK;
- 		}
- 		desc_set_phys_addr(lp, phys, cur_p);
+ 
+ 	switch (iinfo->i_alloc_type) {
 -- 
 2.43.0
 
