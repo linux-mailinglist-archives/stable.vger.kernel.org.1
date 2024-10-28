@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-88687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5010A9B270D
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:45:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 929749B2821
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:54:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C435DB20C80
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3135CB20FF5
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:54:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2340018E03A;
-	Mon, 28 Oct 2024 06:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49BA18E368;
+	Mon, 28 Oct 2024 06:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uISEKRGM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N6TwftR5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E61189BAF;
-	Mon, 28 Oct 2024 06:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63902824A3;
+	Mon, 28 Oct 2024 06:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097895; cv=none; b=d2c0mZhIWBfpWBHs3eOBSWwhTs8sr60bjrFw7Iv+g/2+jXXn+TYU4tJzxgfb7mDDPV+xQqs/f6GhwtnuPaFlZAxytI1q/dknNDg7ygv5qy9XuuhvoIHY6+n7fb4u1J/SvZKSHIGqILUoIXSPxcVXK3ea4wEQNuoeDRfIL6X5yKo=
+	t=1730098455; cv=none; b=HzfuUjsvTFB/1Hxw+sgeQGp+nvL4v6ZSacJx9hpc1CYUljAfYa2o/Rfcm5rn+C7lynDgCD7BHd3T0F5T9X+w6QU4wsZeV4ozWuCh6vLvCgRy//JI3DiGF4biy7pgcGleKk4bEkS4D9+uMvMwFPe0RZLbvCwfK+VxvswGCK5BO7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097895; c=relaxed/simple;
-	bh=h5YxB7mVN/KBiqd8adQ31bkbmD4b5u2EWs/YSPWkAL4=;
+	s=arc-20240116; t=1730098455; c=relaxed/simple;
+	bh=mmvsrBpc3QOo9mRCFBsqhn95Kx6CMxjEoDnin5iLriQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=llRAMTY5OlFToH/DrfpLM7zjGcxStf7uXMNJtQRkpT/kB+1S16XADyyhugcCqV7em9HxKogcjn3BLGzaxrqxMQHY5QDDKEwfpcrdzyM6GArUPgqOzsAGxJLBTMnJxKDSwdo+Cm826RqFssjWsKVYOKWXjj9XGylkbVGE01vcPXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uISEKRGM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 721F4C4CEC3;
-	Mon, 28 Oct 2024 06:44:55 +0000 (UTC)
+	 MIME-Version; b=egNeh0dsZAE7vhVADulmdMlUw5sXtyph/XVcrPYrdkZaQ/oHUsb5kCwKFQDFPjvZoffzujzNaEG5rBS6lHc2dYpEH5j1byUlWMbmlsDutD4m+GvNY7tDvsVTXXk2dYa4/ZOG/SgPMcTeDYYTlVmpAw7sW/YubNcUTlUnQ2pSfeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N6TwftR5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0265DC4CEC3;
+	Mon, 28 Oct 2024 06:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097895;
-	bh=h5YxB7mVN/KBiqd8adQ31bkbmD4b5u2EWs/YSPWkAL4=;
+	s=korg; t=1730098455;
+	bh=mmvsrBpc3QOo9mRCFBsqhn95Kx6CMxjEoDnin5iLriQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uISEKRGMrD8JrijqTOSO/wl4/GAqc1Nv/FbdqWlSo2oI0Q9ycCVV6hqM7JMl6b26W
-	 1gN68VBT4Vm60iZXB8F8360e0JLEauN/qzY5hObTrjPDRisX1dfEDXIYc6UD20vVne
-	 fADw+82N+L81YZahKPKdp3tvEU+LLJAqjk+ofCf8=
+	b=N6TwftR5OV42YkQ93UMoI1+GpX/jxIR/MuB/kZA7yk/p+8O+l3D4oBLT6FSDOV6fe
+	 xkydpNgGEq/PuqW+H6Mg0NVjTz2KlUR3ZckiYGnZPxF8pskSSujbYsZwx7qhVk9qHa
+	 efaMK+JGgewkMJZtMrGmjJq5TBLSzCoBjw97HQW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Leo Li <sunpeng.li@amd.com>,
 	Mario Limonciello <mario.limonciello@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 196/208] drm/amd/display: Disable PSR-SU on Parade 08-01 TCON too
+Subject: [PATCH 6.11 234/261] drm/amd/display: Disable PSR-SU on Parade 08-01 TCON too
 Date: Mon, 28 Oct 2024 07:26:16 +0100
-Message-ID: <20241028062311.461856106@linuxfoundation.org>
+Message-ID: <20241028062317.983568665@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
