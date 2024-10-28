@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B73009B25C6
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:34:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F27F9B27E8
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7477328184B
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:34:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BF9A1F22025
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAEEE18EFEB;
-	Mon, 28 Oct 2024 06:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40A418E748;
+	Mon, 28 Oct 2024 06:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+1w0BFF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1ujzd7t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775CD18EFC9;
-	Mon, 28 Oct 2024 06:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716298837;
+	Mon, 28 Oct 2024 06:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097224; cv=none; b=dregtdXk4ZU/1iyY2qNBxicX8jIyJBKXvFflqpQQNTuMbi/BI94Ft6GGIH+YRwfE8J6XH0aZBg8awt0Ku8oYfoowijWMJ68OAnNhyrDkESl4stzzaBIPirDOvDQHJNVa1fwKrNnwd+hVi1A7nIVQOBN1PW6VlNGao1tVZX7lGYs=
+	t=1730098332; cv=none; b=cnOYXSWpVJfM7McjY4Q1+p1Gk94twAH1rZ4HUuDyU8xuh6PzoDUXgxzQWYbsFNiDli9pP/By7Wv1v4k/URZ2zOrq05KHhdkYkm4U8JiFfnNGHCcxD3nx69PHdhPJJdTqHQf5M/Nn0jq+SeBD80gfnc2DkaI5okFUf2UcrN0Y70w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097224; c=relaxed/simple;
-	bh=qSfZWW1Ti0VJtdTZnQB0+OquBJikqJ2G1Ste6aRjZs0=;
+	s=arc-20240116; t=1730098332; c=relaxed/simple;
+	bh=fODLZpMmttmYPCf8AhVs5HJpCUbn2uO9gIGq7htEQKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kEfY2xJy+tVKyAMb/dY6ThnNVrj2nGyotOAuxSOAbxc9KRE1Hm+isOwvb8UYBOroMw53DyDYeTUFFq2zwJUH0N3RgHNsWquOlXTCngc76w1BzGpwNM5fOVBegsOezoZNW25aktL4stg/rO4uk9trrp5G3yVPoru+tUiNO37n1OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+1w0BFF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C9DC4CEC7;
-	Mon, 28 Oct 2024 06:33:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=k+Ij57mUW0zefWMVq3nwPBK1peZcm5gFlUNgd0Z0SMjWsTUPFbJslWfPh2v3LxgRYY4ggMFYcZv1YFE/59EkyUGyWSfUuQf8hQqX+Nh2pgTT0+2jKoDWJYkfwVs5mGJ+NxZquTFEngnqtTZpkdDIQC3amomqNmGC5hOp9FHDfA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1ujzd7t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F1D0C4CEC3;
+	Mon, 28 Oct 2024 06:52:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097224;
-	bh=qSfZWW1Ti0VJtdTZnQB0+OquBJikqJ2G1Ste6aRjZs0=;
+	s=korg; t=1730098332;
+	bh=fODLZpMmttmYPCf8AhVs5HJpCUbn2uO9gIGq7htEQKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I+1w0BFFH+j8q4/LBqBVZUzSXHRFVsugg2wTD9G3j9GWASMzF0wpSC2EVbWMlZT24
-	 P762WN8wjoS0oSvhVzkSdmer/WwA9Jv+ce5661HRV+Yt+OtzlSgDznCxXz57T3FJiV
-	 Dpq3t3wmOUQFC2vCNhvvw0KDyYZ7zNvQolruk/XM=
+	b=E1ujzd7timzRq/p0w/fmJi1G77OJiHrEsks0NU+Dtsq9fYtk3djjfz6pL5j/VupVM
+	 oIXfhlDvPsen2EdRf1GFvv2IQPgMq2cqYyM3UnodBl3ik8QroTIC2SxrPHwhZ2eau4
+	 6I5+tiYgmiHEYCZq+izS1IoyiiSi/K+n3GXMm/cA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/137] irqchip/renesas-rzg2l: Add support for suspend to RAM
-Date: Mon, 28 Oct 2024 07:24:35 +0100
-Message-ID: <20241028062259.785700498@linuxfoundation.org>
+Subject: [PATCH 6.11 134/261] cifs: Validate content of NFS reparse point buffer
+Date: Mon, 28 Oct 2024 07:24:36 +0100
+Message-ID: <20241028062315.401367597@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,207 +64,75 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 74d2ef5f6f4b2437e6292ab2502400e8048db4aa ]
+[ Upstream commit 556ac52bb1e76cc28fd30aa117b42989965b3efd ]
 
-The irqchip-renesas-rzg2l driver is used on RZ/G3S SoC. RZ/G3S can go into
-deep sleep states where power to different SoC's parts is cut off and RAM
-is switched to self-refresh. The resume from these states is done with the
-help of the bootloader.
+Symlink target location stored in DataBuffer is encoded in UTF-16. So check
+that symlink DataBuffer length is non-zero and even number. And check that
+DataBuffer does not contain UTF-16 null codepoint because Linux cannot
+process symlink with null byte.
 
-The IA55 IRQ controller needs to be reconfigured when resuming from deep
-sleep state. For this the IA55 registers are cached in suspend and restored
-in resume.
+DataBuffer for char and block devices is 8 bytes long as it contains two
+32-bit numbers (major and minor). Add check for this.
 
-The IA55 IRQ controller is connected to GPIO controller and GIC as follows:
+DataBuffer buffer for sockets and fifos zero-length. Add checks for this.
 
-                                      ┌──────────┐          ┌──────────┐
-                                      │          │ SPIX     │          │
-                                      │          ├─────────►│          │
-                                      │          │          │          │
-                                      │          │          │          │
-              ┌────────┐IRQ0-7        │  IA55    │          │  GIC     │
- Pin0 ───────►│        ├─────────────►│          │          │          │
-              │        │              │          │ PPIY     │          │
- ...          │  GPIO  │              │          ├─────────►│          │
-              │        │GPIOINT0-127  │          │          │          │
- PinN ───────►│        ├─────────────►│          │          │          │
-              └────────┘              └──────────┘          └──────────┘
-
-where:
-  - Pin0 is the first GPIO controller pin
-  - PinN is the last GPIO controller pin
-
-  - SPIX is the SPI interrupt with identifier X
-  - PPIY is the PPI interrupt with identifier Y
-
-Implement suspend/resume functionality with syscore_ops to be able to
-cache/restore the registers after/before the GPIO controller suspend/resume
-functions are invoked.
-
-As the syscore_ops suspend/resume functions do not take any argument make
-the driver private data static so it can be accessed from the
-suspend/resume functions.
-
-The IA55 interrupt controller is resumed before the GPIO controller. As
-GPIO pins could be in an a state which causes spurious interrupts, the
-reconfiguration of the interrupt controller is restricted to restore the
-interrupt type and leave them disabled.
-
-An eventually required interrupt enable operation will be done as part of
-the GPIO controller resume function after restoring the GPIO state.
-
-[ tglx: Massaged changelog ]
-
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20231120111820.87398-8-claudiu.beznea.uj@bp.renesas.com
-Stable-dep-of: d038109ac1c6 ("irqchip/renesas-rzg2l: Fix missing put_device")
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-renesas-rzg2l.c | 68 ++++++++++++++++++++++++-----
- 1 file changed, 57 insertions(+), 11 deletions(-)
+ fs/smb/client/reparse.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index 61502a81dbb54..6905f78855ffa 100644
---- a/drivers/irqchip/irq-renesas-rzg2l.c
-+++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -18,6 +18,7 @@
- #include <linux/pm_runtime.h>
- #include <linux/reset.h>
- #include <linux/spinlock.h>
-+#include <linux/syscore_ops.h>
+diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
+index ad0e0de9a165d..7429b96a6ae5e 100644
+--- a/fs/smb/client/reparse.c
++++ b/fs/smb/client/reparse.c
+@@ -330,6 +330,18 @@ static int parse_reparse_posix(struct reparse_posix_data *buf,
  
- #define IRQC_IRQ_START			1
- #define IRQC_IRQ_COUNT			8
-@@ -55,17 +56,29 @@
- #define TINT_EXTRACT_HWIRQ(x)           FIELD_GET(GENMASK(15, 0), (x))
- #define TINT_EXTRACT_GPIOINT(x)         FIELD_GET(GENMASK(31, 16), (x))
- 
-+/**
-+ * struct rzg2l_irqc_reg_cache - registers cache (necessary for suspend/resume)
-+ * @iitsr: IITSR register
-+ * @titsr: TITSR registers
-+ */
-+struct rzg2l_irqc_reg_cache {
-+	u32	iitsr;
-+	u32	titsr[2];
-+};
-+
- /**
-  * struct rzg2l_irqc_priv - IRQ controller private data structure
-  * @base:	Controller's base address
-  * @fwspec:	IRQ firmware specific data
-  * @lock:	Lock to serialize access to hardware registers
-+ * @cache:	Registers cache for suspend/resume
-  */
--struct rzg2l_irqc_priv {
-+static struct rzg2l_irqc_priv {
- 	void __iomem			*base;
- 	struct irq_fwspec		fwspec[IRQC_NUM_IRQ];
- 	raw_spinlock_t			lock;
--};
-+	struct rzg2l_irqc_reg_cache	cache;
-+} *rzg2l_irqc_data;
- 
- static struct rzg2l_irqc_priv *irq_data_to_priv(struct irq_data *data)
- {
-@@ -282,6 +295,38 @@ static int rzg2l_irqc_set_type(struct irq_data *d, unsigned int type)
- 	return irq_chip_set_type_parent(d, IRQ_TYPE_LEVEL_HIGH);
- }
- 
-+static int rzg2l_irqc_irq_suspend(void)
-+{
-+	struct rzg2l_irqc_reg_cache *cache = &rzg2l_irqc_data->cache;
-+	void __iomem *base = rzg2l_irqc_data->base;
-+
-+	cache->iitsr = readl_relaxed(base + IITSR);
-+	for (u8 i = 0; i < 2; i++)
-+		cache->titsr[i] = readl_relaxed(base + TITSR(i));
-+
-+	return 0;
-+}
-+
-+static void rzg2l_irqc_irq_resume(void)
-+{
-+	struct rzg2l_irqc_reg_cache *cache = &rzg2l_irqc_data->cache;
-+	void __iomem *base = rzg2l_irqc_data->base;
-+
-+	/*
-+	 * Restore only interrupt type. TSSRx will be restored at the
-+	 * request of pin controller to avoid spurious interrupts due
-+	 * to invalid PIN states.
-+	 */
-+	for (u8 i = 0; i < 2; i++)
-+		writel_relaxed(cache->titsr[i], base + TITSR(i));
-+	writel_relaxed(cache->iitsr, base + IITSR);
-+}
-+
-+static struct syscore_ops rzg2l_irqc_syscore_ops = {
-+	.suspend	= rzg2l_irqc_irq_suspend,
-+	.resume		= rzg2l_irqc_irq_resume,
-+};
-+
- static const struct irq_chip irqc_chip = {
- 	.name			= "rzg2l-irqc",
- 	.irq_eoi		= rzg2l_irqc_eoi,
-@@ -366,7 +411,6 @@ static int rzg2l_irqc_init(struct device_node *node, struct device_node *parent)
- 	struct irq_domain *irq_domain, *parent_domain;
- 	struct platform_device *pdev;
- 	struct reset_control *resetn;
--	struct rzg2l_irqc_priv *priv;
- 	int ret;
- 
- 	pdev = of_find_device_by_node(node);
-@@ -379,15 +423,15 @@ static int rzg2l_irqc_init(struct device_node *node, struct device_node *parent)
- 		return -ENODEV;
- 	}
- 
--	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
--	if (!priv)
-+	rzg2l_irqc_data = devm_kzalloc(&pdev->dev, sizeof(*rzg2l_irqc_data), GFP_KERNEL);
-+	if (!rzg2l_irqc_data)
- 		return -ENOMEM;
- 
--	priv->base = devm_of_iomap(&pdev->dev, pdev->dev.of_node, 0, NULL);
--	if (IS_ERR(priv->base))
--		return PTR_ERR(priv->base);
-+	rzg2l_irqc_data->base = devm_of_iomap(&pdev->dev, pdev->dev.of_node, 0, NULL);
-+	if (IS_ERR(rzg2l_irqc_data->base))
-+		return PTR_ERR(rzg2l_irqc_data->base);
- 
--	ret = rzg2l_irqc_parse_interrupts(priv, node);
-+	ret = rzg2l_irqc_parse_interrupts(rzg2l_irqc_data, node);
- 	if (ret) {
- 		dev_err(&pdev->dev, "cannot parse interrupts: %d\n", ret);
- 		return ret;
-@@ -410,17 +454,19 @@ static int rzg2l_irqc_init(struct device_node *node, struct device_node *parent)
- 		goto pm_disable;
- 	}
- 
--	raw_spin_lock_init(&priv->lock);
-+	raw_spin_lock_init(&rzg2l_irqc_data->lock);
- 
- 	irq_domain = irq_domain_add_hierarchy(parent_domain, 0, IRQC_NUM_IRQ,
- 					      node, &rzg2l_irqc_domain_ops,
--					      priv);
-+					      rzg2l_irqc_data);
- 	if (!irq_domain) {
- 		dev_err(&pdev->dev, "failed to add irq domain\n");
- 		ret = -ENOMEM;
- 		goto pm_put;
- 	}
- 
-+	register_syscore_ops(&rzg2l_irqc_syscore_ops);
-+
- 	return 0;
- 
- pm_put:
+ 	switch ((type = le64_to_cpu(buf->InodeType))) {
+ 	case NFS_SPECFILE_LNK:
++		if (len == 0 || (len % 2)) {
++			cifs_dbg(VFS, "srv returned malformed nfs symlink buffer\n");
++			return -EIO;
++		}
++		/*
++		 * Check that buffer does not contain UTF-16 null codepoint
++		 * because Linux cannot process symlink with null byte.
++		 */
++		if (UniStrnlen((wchar_t *)buf->DataBuffer, len/2) != len/2) {
++			cifs_dbg(VFS, "srv returned null byte in nfs symlink target location\n");
++			return -EIO;
++		}
+ 		data->symlink_target = cifs_strndup_from_utf16(buf->DataBuffer,
+ 							       len, true,
+ 							       cifs_sb->local_nls);
+@@ -340,8 +352,19 @@ static int parse_reparse_posix(struct reparse_posix_data *buf,
+ 		break;
+ 	case NFS_SPECFILE_CHR:
+ 	case NFS_SPECFILE_BLK:
++		/* DataBuffer for block and char devices contains two 32-bit numbers */
++		if (len != 8) {
++			cifs_dbg(VFS, "srv returned malformed nfs buffer for type: 0x%llx\n", type);
++			return -EIO;
++		}
++		break;
+ 	case NFS_SPECFILE_FIFO:
+ 	case NFS_SPECFILE_SOCK:
++		/* DataBuffer for fifos and sockets is empty */
++		if (len != 0) {
++			cifs_dbg(VFS, "srv returned malformed nfs buffer for type: 0x%llx\n", type);
++			return -EIO;
++		}
+ 		break;
+ 	default:
+ 		cifs_dbg(VFS, "%s: unhandled inode type: 0x%llx\n",
 -- 
 2.43.0
 
