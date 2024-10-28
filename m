@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-88353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC0BF9B258E
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:32:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E621B9B2812
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:53:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81EA5281795
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:32:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23FE11C215DE
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1E918DF8B;
-	Mon, 28 Oct 2024 06:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0832918F2C5;
+	Mon, 28 Oct 2024 06:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o3nGZpTI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D570pZuT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C56515B10D;
-	Mon, 28 Oct 2024 06:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B830318E35B;
+	Mon, 28 Oct 2024 06:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097142; cv=none; b=kuT/a49kcHxNqcPwVkBFjmLLp15fPE3/zxvnx3gE8q34J/9od5BwAXjXCYLEFhbbQF/jSE7XTND8Qp9w3AnN8j8RSQFgD+PTXRIOxbYi9zyfWkp9ReBu7irYRTDYYAZmk3gGHshAe+DZxR15BrZjE9gsWysOrduQE4upP6qUKeM=
+	t=1730098421; cv=none; b=jDurJjN32xUazkrrUNenwP2ElxVIdL2vj+/gx1JgWUWnSALq+/r4CHXpYYlxvRyWTS4KwDluu3L4DWWh8ZFtA7/l8Zd1ocMUIU37/UTfDqcQ/Th4ccVu+dSk+UhsEF+gCymHQXXyfXna+Uk9MUAlL6gN10hFcC5RkNzodMCwrTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097142; c=relaxed/simple;
-	bh=pgNThje12XToHy9TlCGoCtTCDVNY5+Sc9aXYO9Nt44A=;
+	s=arc-20240116; t=1730098421; c=relaxed/simple;
+	bh=6ah3P2m9d9HOtSM7IFMOZUH6C8s3mM3ExWkR0MkcDiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hx2Ue493DLVaST1x//FzUeoyRcL3IUguskLDItn1qxMALml6B/6jO3TZJCDe4+0zkeFm1fIL4G8QVyYXw49KOwbT/5G3qIkRGIIJC+ywDrOAjd+NhMdVl5TdJ9YOShRUaP+S3CXCENOtQYwSJ7DgZ1xfaauxUJyS0MNYGMfe2t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o3nGZpTI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E2FC4CEC7;
-	Mon, 28 Oct 2024 06:32:21 +0000 (UTC)
+	 MIME-Version; b=g9u/nR0Uw1paU3F40vllWJ5paP4xDFLeiyrrBjtK/bGT1V/qnOQZ5ecfxBrDnkWYaQ5TuM47VazeMSpkTrxL8L0jDBypDXydJRkWk/SlPmwc8p91Xo7RjoChRTs46hmxigtsfnciBiesaaP/KhU7W8KbOx0lE8LO/GjxHLX7f6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D570pZuT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5442FC4CEC3;
+	Mon, 28 Oct 2024 06:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097142;
-	bh=pgNThje12XToHy9TlCGoCtTCDVNY5+Sc9aXYO9Nt44A=;
+	s=korg; t=1730098421;
+	bh=6ah3P2m9d9HOtSM7IFMOZUH6C8s3mM3ExWkR0MkcDiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o3nGZpTI9n2tx9I563rA6R99heV0Hag9oJUC34TSX/VA8t/AGhHG5pj6We80Z6Tik
-	 4rKy3JlbnPlqo+lFYdc9xW9U2Ru0JqcIstBYVzMwCd6x+WJSPIJh/DepRde8iA3x64
-	 z6gzDAgds8Mfj7lhrXLlH/3T8P2na7YKFyDCs/L8=
+	b=D570pZuTwoQv/YbmvGGQ1pT4bXM3X0R/bEnPHm8IZ+DlgX5RtZ72gFYSTn74e6mV2
+	 SQ2a6KL1GVxpTTIXL41zaGb3zJuaLuG6JH64vVrdbveBxAG7FfpnNlE0M35aGPZCEw
+	 r0eU87rIMg2brMODHfMTz75EaakOxYQoV/8oIyK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jos=C3=A9=20Relvas?= <josemonsantorelvas@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 74/80] ALSA: hda/realtek: Add subwoofer quirk for Acer Predator G9-593
+	Koba Ko <kobak@nvidia.com>,
+	"Matthew R. Ochs" <mochs@nvidia.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.11 212/261] ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM handler and context
 Date: Mon, 28 Oct 2024 07:25:54 +0100
-Message-ID: <20241028062254.666910937@linuxfoundation.org>
+Message-ID: <20241028062317.398516177@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,76 +62,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: José Relvas <josemonsantorelvas@gmail.com>
+From: Koba Ko <kobak@nvidia.com>
 
-commit 35fdc6e1c16099078bcbd73a6c8f1733ae7f1909 upstream.
+commit 088984c8d54c0053fc4ae606981291d741c5924b upstream.
 
-The Acer Predator G9-593 has a 2+1 speaker system which isn't probed
-correctly.
-This patch adds a quirk with the proper pin connections.
+PRMT needs to find the correct type of block to translate the PA-VA
+mapping for EFI runtime services.
 
-Note that I do not own this laptop, so I cannot guarantee that this
-fixes the issue.
-Testing was done by other users here:
-https://discussion.fedoraproject.org/t/-/118482
+The issue arises because the PRMT is finding a block of type
+EFI_CONVENTIONAL_MEMORY, which is not appropriate for runtime services
+as described in Section 2.2.2 (Runtime Services) of the UEFI
+Specification [1]. Since the PRM handler is a type of runtime service,
+this causes an exception when the PRM handler is called.
 
-This model appears to have two different dev IDs...
+    [Firmware Bug]: Unable to handle paging request in EFI runtime service
+    WARNING: CPU: 22 PID: 4330 at drivers/firmware/efi/runtime-wrappers.c:341
+        __efi_queue_work+0x11c/0x170
+    Call trace:
 
-- 0x1177 (as seen on the forum link above)
-- 0x1178 (as seen on https://linux-hardware.org/?probe=127df9999f)
+Let PRMT find a block with EFI_MEMORY_RUNTIME for PRM handler and PRM
+context.
 
-I don't think the audio system was changed between model revisions, so
-the patch applies for both IDs.
+If no suitable block is found, a warning message will be printed, but
+the procedure continues to manage the next PRM handler.
 
-Signed-off-by: José Relvas <josemonsantorelvas@gmail.com>
-Link: https://patch.msgid.link/20241020102756.225258-1-josemonsantorelvas@gmail.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+However, if the PRM handler is actually called without proper allocation,
+it would result in a failure during error handling.
+
+By using the correct memory types for runtime services, ensure that the
+PRM handler and the context are properly mapped in the virtual address
+space during runtime, preventing the paging request error.
+
+The issue is really that only memory that has been remapped for runtime
+by the firmware can be used by the PRM handler, and so the region needs
+to have the EFI_MEMORY_RUNTIME attribute.
+
+Link: https://uefi.org/sites/default/files/resources/UEFI_Spec_2_10_Aug29.pdf # [1]
+Fixes: cefc7ca46235 ("ACPI: PRM: implement OperationRegion handler for the PlatformRtMechanism subtype")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Koba Ko <kobak@nvidia.com>
+Reviewed-by: Matthew R. Ochs <mochs@nvidia.com>
+Reviewed-by: Zhang Rui <rui.zhang@intel.com>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://patch.msgid.link/20241012205010.4165798-1-kobak@nvidia.com
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/acpi/prmt.c |   27 ++++++++++++++++++++++-----
+ 1 file changed, 22 insertions(+), 5 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7024,6 +7024,7 @@ enum {
- 	ALC286_FIXUP_ACER_AIO_HEADSET_MIC,
- 	ALC256_FIXUP_ASUS_HEADSET_MIC,
- 	ALC256_FIXUP_ASUS_MIC_NO_PRESENCE,
-+	ALC255_FIXUP_PREDATOR_SUBWOOFER,
- 	ALC299_FIXUP_PREDATOR_SPK,
- 	ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE,
- 	ALC289_FIXUP_DELL_SPK2,
-@@ -8259,6 +8260,13 @@ static const struct hda_fixup alc269_fix
- 		.chained = true,
- 		.chain_id = ALC256_FIXUP_ASUS_HEADSET_MODE
- 	},
-+	[ALC255_FIXUP_PREDATOR_SUBWOOFER] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x17, 0x90170151 }, /* use as internal speaker (LFE) */
-+			{ 0x1b, 0x90170152 } /* use as internal speaker (back) */
+--- a/drivers/acpi/prmt.c
++++ b/drivers/acpi/prmt.c
+@@ -72,17 +72,21 @@ struct prm_module_info {
+ 	struct prm_handler_info handlers[] __counted_by(handler_count);
+ };
+ 
+-static u64 efi_pa_va_lookup(u64 pa)
++static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
+ {
+ 	efi_memory_desc_t *md;
+ 	u64 pa_offset = pa & ~PAGE_MASK;
+ 	u64 page = pa & PAGE_MASK;
+ 
+ 	for_each_efi_memory_desc(md) {
+-		if (md->phys_addr < pa && pa < md->phys_addr + PAGE_SIZE * md->num_pages)
++		if ((md->attribute & EFI_MEMORY_RUNTIME) &&
++		    (md->phys_addr < pa && pa < md->phys_addr + PAGE_SIZE * md->num_pages)) {
+ 			return pa_offset + md->virt_addr + page - md->phys_addr;
 +		}
-+	},
- 	[ALC299_FIXUP_PREDATOR_SPK] = {
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = (const struct hda_pintbl[]) {
-@@ -8997,6 +9005,8 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1025, 0x110e, "Acer Aspire ES1-432", ALC255_FIXUP_ACER_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1025, 0x1166, "Acer Veriton N4640G", ALC269_FIXUP_LIFEBOOK),
- 	SND_PCI_QUIRK(0x1025, 0x1167, "Acer Veriton N6640G", ALC269_FIXUP_LIFEBOOK),
-+	SND_PCI_QUIRK(0x1025, 0x1177, "Acer Predator G9-593", ALC255_FIXUP_PREDATOR_SUBWOOFER),
-+	SND_PCI_QUIRK(0x1025, 0x1178, "Acer Predator G9-593", ALC255_FIXUP_PREDATOR_SUBWOOFER),
- 	SND_PCI_QUIRK(0x1025, 0x1246, "Acer Predator Helios 500", ALC299_FIXUP_PREDATOR_SPK),
- 	SND_PCI_QUIRK(0x1025, 0x1247, "Acer vCopperbox", ALC269VC_FIXUP_ACER_VCOPPERBOX_PINS),
- 	SND_PCI_QUIRK(0x1025, 0x1248, "Acer Veriton N4660G", ALC269VC_FIXUP_ACER_MIC_NO_PRESENCE),
+ 	}
+ 
++	pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa);
++
+ 	return 0;
+ }
+ 
+@@ -148,9 +152,15 @@ acpi_parse_prmt(union acpi_subtable_head
+ 		th = &tm->handlers[cur_handler];
+ 
+ 		guid_copy(&th->guid, (guid_t *)handler_info->handler_guid);
+-		th->handler_addr = (void *)efi_pa_va_lookup(handler_info->handler_address);
+-		th->static_data_buffer_addr = efi_pa_va_lookup(handler_info->static_data_buffer_address);
+-		th->acpi_param_buffer_addr = efi_pa_va_lookup(handler_info->acpi_param_buffer_address);
++		th->handler_addr =
++			(void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
++
++		th->static_data_buffer_addr =
++			efi_pa_va_lookup(&th->guid, handler_info->static_data_buffer_address);
++
++		th->acpi_param_buffer_addr =
++			efi_pa_va_lookup(&th->guid, handler_info->acpi_param_buffer_address);
++
+ 	} while (++cur_handler < tm->handler_count && (handler_info = get_next_handler(handler_info)));
+ 
+ 	return 0;
+@@ -253,6 +263,13 @@ static acpi_status acpi_platformrt_space
+ 		if (!handler || !module)
+ 			goto invalid_guid;
+ 
++		if (!handler->handler_addr ||
++		    !handler->static_data_buffer_addr ||
++		    !handler->acpi_param_buffer_addr) {
++			buffer->prm_status = PRM_HANDLER_ERROR;
++			return AE_OK;
++		}
++
+ 		ACPI_COPY_NAMESEG(context.signature, "PRMC");
+ 		context.revision = 0x0;
+ 		context.reserved = 0x0;
 
 
 
