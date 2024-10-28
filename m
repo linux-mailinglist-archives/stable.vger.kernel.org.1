@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-88352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 709329B258C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:32:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE58C9B261D
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:37:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 139751F21A7C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:32:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47D1BB20D77
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:37:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4573418E348;
-	Mon, 28 Oct 2024 06:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689B418C03D;
+	Mon, 28 Oct 2024 06:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TrqZfSNn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVMW5wkg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FA015B10D;
-	Mon, 28 Oct 2024 06:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2720418E350;
+	Mon, 28 Oct 2024 06:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097140; cv=none; b=ImG/5uNgmtjeOOYPNsxc3oQzLC47HyeT8ta7U1tCIrjKA6e3r/qSd3YVVrXsYdKa8ylWPv9bLCZ0kFebXEMCJAtOl+g3wGbRkPLjkLk1yxq2QafTAIQ4Gk6IX/2DU1vHYCn4ScOHiY/QkdDFNYg3foPjv7fyuSRMNmJAgIjPceM=
+	t=1730097405; cv=none; b=jk0bHCw5BQQ1jnn+uQrH7DNyiHS3HvwoHaIVeOB+mq+wJeLLaWZQvn3qWzCExMxMii0p2zPZFLh1wDJYO46L1Widex2yN9o1EbBUJ56lXLW0KpzZl+fyUtllojUHEWDxxur84TDr15E8Hdog6qTE2uafq6ofrtqPS5O1NQnxbJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097140; c=relaxed/simple;
-	bh=832vqsWvf3xEtaFUYueKQhbmtwptwaFMDFaNB8XU9qs=;
+	s=arc-20240116; t=1730097405; c=relaxed/simple;
+	bh=hc0kMHJXMg+NdRR1n2DbW5z65MNzAUnc0aDariZfwSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hHrOmgYVo7zFILdkehzJzRTaKBPGiUzN+ZHEC5zpnb/bfhBi24KLXf7IjsDmwft5npNStnmSl6TeMjtq4B9FI4C4VSAKYBk8dmy2qhwD7rRAHzSMPD/FpBmyi+tJrBqEK0KiLSnekEhXtOQQCWZ58jynsWR7JC53BQ3s9TPygzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrqZfSNn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE6FC4CEC7;
-	Mon, 28 Oct 2024 06:32:19 +0000 (UTC)
+	 MIME-Version; b=F5YuYMw0JU+Nd7QDGDb/sLX1LzshHyZVlGnqTzZOY1ebCCRQewu463O6VTw3vCFgZJJOcmxYOqZS//n4yEB2nheGJcfsn9dkQ1gLOK3x9WPpVYlpxEdjhdyoMzdkSTVQL6eAfQnp4al+LUeW9bzDlk9j7CXTPoPg1A0QfZRBt+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IVMW5wkg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB1C9C4CEC3;
+	Mon, 28 Oct 2024 06:36:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097139;
-	bh=832vqsWvf3xEtaFUYueKQhbmtwptwaFMDFaNB8XU9qs=;
+	s=korg; t=1730097405;
+	bh=hc0kMHJXMg+NdRR1n2DbW5z65MNzAUnc0aDariZfwSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TrqZfSNndpyq84I5p9O5rHd55JcUOl8o9jZ7ESGDIF/5YVMTaGTwYorEuK1nsNt9V
-	 33df1fbWM68DQZxnH9r31A6+mbeqysK3ebC8fnfyk7/JNAAlUQCFucEVkX3Gn9Y7Nm
-	 7SW9qjTxPmYfMppX8fiK+vv5DllusVXkoEyQMNzc=
+	b=IVMW5wkgyRjUmq4flpabqyqIfQZ/HLhyezebPymxqI+yQx88ypNYeOlnLEOBQeKBV
+	 4lcBFNW9BKwny7LIZPrYQL75Z7tLItl/KnTVStiJvCXCeJiwZK94kOAKPc9kK1GKic
+	 J61DmsiQ4rTpEhjwQuLDBPIl5Tf6Bx3ZYMJV3OHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kirk Swidowski <swidowski@google.com>,
-	Andy Nguyen <theflow@google.com>,
-	3pvd <3pvd@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 5.15 73/80] KVM: nSVM: Ignore nCR3[4:0] when loading PDPTEs from memory
-Date: Mon, 28 Oct 2024 07:25:53 +0100
-Message-ID: <20241028062254.637693813@linuxfoundation.org>
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.1 117/137] drm/amd: Guard against bad data for ATIF ACPI method
+Date: Mon, 28 Oct 2024 07:25:54 +0100
+Message-ID: <20241028062301.984538419@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit f559b2e9c5c5308850544ab59396b7d53cfc67bd upstream.
+commit bf58f03931fdcf7b3c45cb76ac13244477a60f44 upstream.
 
-Ignore nCR3[4:0] when loading PDPTEs from memory for nested SVM, as bits
-4:0 of CR3 are ignored when PAE paging is used, and thus VMRUN doesn't
-enforce 32-byte alignment of nCR3.
+If a BIOS provides bad data in response to an ATIF method call
+this causes a NULL pointer dereference in the caller.
 
-In the absolute worst case scenario, failure to ignore bits 4:0 can result
-in an out-of-bounds read, e.g. if the target page is at the end of a
-memslot, and the VMM isn't using guard pages.
+```
+? show_regs (arch/x86/kernel/dumpstack.c:478 (discriminator 1))
+? __die (arch/x86/kernel/dumpstack.c:423 arch/x86/kernel/dumpstack.c:434)
+? page_fault_oops (arch/x86/mm/fault.c:544 (discriminator 2) arch/x86/mm/fault.c:705 (discriminator 2))
+? do_user_addr_fault (arch/x86/mm/fault.c:440 (discriminator 1) arch/x86/mm/fault.c:1232 (discriminator 1))
+? acpi_ut_update_object_reference (drivers/acpi/acpica/utdelete.c:642)
+? exc_page_fault (arch/x86/mm/fault.c:1542)
+? asm_exc_page_fault (./arch/x86/include/asm/idtentry.h:623)
+? amdgpu_atif_query_backlight_caps.constprop.0 (drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c:387 (discriminator 2)) amdgpu
+? amdgpu_atif_query_backlight_caps.constprop.0 (drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c:386 (discriminator 1)) amdgpu
+```
 
-Per the APM:
+It has been encountered on at least one system, so guard for it.
 
-  The CR3 register points to the base address of the page-directory-pointer
-  table. The page-directory-pointer table is aligned on a 32-byte boundary,
-  with the low 5 address bits 4:0 assumed to be 0.
-
-And the SDM's much more explicit:
-
-  4:0    Ignored
-
-Note, KVM gets this right when loading PDPTRs, it's only the nSVM flow
-that is broken.
-
-Fixes: e4e517b4be01 ("KVM: MMU: Do not unconditionally read PDPTE from guest memory")
-Reported-by: Kirk Swidowski <swidowski@google.com>
-Cc: Andy Nguyen <theflow@google.com>
-Cc: 3pvd <3pvd@google.com>
+Fixes: d38ceaf99ed0 ("drm/amdgpu: add core driver (v4)")
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit c9b7c809b89f24e9372a4e7f02d64c950b07fdee)
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20241009140838.1036226-1-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -77,8 +77,12 @@ static u64 nested_svm_get_tdp_pdptr(stru
- 	u64 pdpte;
- 	int ret;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+@@ -107,6 +107,7 @@ static union acpi_object *amdgpu_atif_ca
+ 					   struct acpi_buffer *params)
+ {
+ 	acpi_status status;
++	union acpi_object *obj;
+ 	union acpi_object atif_arg_elements[2];
+ 	struct acpi_object_list atif_arg;
+ 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+@@ -129,16 +130,24 @@ static union acpi_object *amdgpu_atif_ca
  
-+	/*
-+	 * Note, nCR3 is "assumed" to be 32-byte aligned, i.e. the CPU ignores
-+	 * nCR3[4:0] when loading PDPTEs from memory.
-+	 */
- 	ret = kvm_vcpu_read_guest_page(vcpu, gpa_to_gfn(cr3), &pdpte,
--				       offset_in_page(cr3) + index * 8, 8);
-+				       (cr3 & GENMASK(11, 5)) + index * 8, 8);
- 	if (ret)
- 		return 0;
- 	return pdpte;
+ 	status = acpi_evaluate_object(atif->handle, NULL, &atif_arg,
+ 				      &buffer);
++	obj = (union acpi_object *)buffer.pointer;
+ 
+-	/* Fail only if calling the method fails and ATIF is supported */
++	/* Fail if calling the method fails and ATIF is supported */
+ 	if (ACPI_FAILURE(status) && status != AE_NOT_FOUND) {
+ 		DRM_DEBUG_DRIVER("failed to evaluate ATIF got %s\n",
+ 				 acpi_format_exception(status));
+-		kfree(buffer.pointer);
++		kfree(obj);
+ 		return NULL;
+ 	}
+ 
+-	return buffer.pointer;
++	if (obj->type != ACPI_TYPE_BUFFER) {
++		DRM_DEBUG_DRIVER("bad object returned from ATIF: %d\n",
++				 obj->type);
++		kfree(obj);
++		return NULL;
++	}
++
++	return obj;
+ }
+ 
+ /**
 
 
 
