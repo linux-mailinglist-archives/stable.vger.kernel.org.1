@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-88437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9810E9B25F9
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 962929B2563
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7D8E1C21033
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 562C62821E2
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C5318FC8F;
-	Mon, 28 Oct 2024 06:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE04118E778;
+	Mon, 28 Oct 2024 06:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yd6DetGw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ExMTBdDd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BED18FC65;
-	Mon, 28 Oct 2024 06:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BECB18E357;
+	Mon, 28 Oct 2024 06:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097330; cv=none; b=nUZzNGyk2s1ZEI6WD6oX3oYvxigz6S8A1kfT05E6uIQX6Sz4Gh7GfxywiDC6YS6i76ebldRni/8aTlv8BluPnv255U/zo5JPbkHGcV7xiPWbd9YbHNwVYoULjbSR5NKfmx9mYbgIufA/rC3PREbD4J2hL5btsxwQ407bO5pYA6I=
+	t=1730096911; cv=none; b=D8rEtxuV/vpq2j8ME9yXcSx50VEf49omtu7GEeJZt8IET0sELT5x+6MB/b4oc0VslfwBEQ8POH4dtKvAlkLYeh1ugLfjH1J15SHAUmRZ5+h9d8iTJojDtAR+tvnCJkJRvmc3NYznYptQ3TUu0Aei8DQp0iWfMr/GKcIxHGfz5cE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097330; c=relaxed/simple;
-	bh=l58fGSZBVrYzpiN4IAhgiv2fOqekJTL1qAVsgxgK2/E=;
+	s=arc-20240116; t=1730096911; c=relaxed/simple;
+	bh=KFPi8Zmpmjwp692CLvc5tcOIGDDLe1RoKKkd3mQEyUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MLz2JbBG2RLq3So4PW24WoUfaXagJ6Uvh5HrjtjTQIoMTuFGtSAhTzp6TrqQuMhzU7cW1SzQbdDBfTbgBOoCW9aKLNaSnNhMKibpUslq/5d4BYuztt1V83fqe93Lz7uLfV9CVjesX2tXe2w856btVIE8tCof/Y342Ofk39cF+IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yd6DetGw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8FD6C4CEC3;
-	Mon, 28 Oct 2024 06:35:29 +0000 (UTC)
+	 MIME-Version; b=D8wZynlCFxVtEuePAvgAPOgRVnZuVCI9Nql39awJ/g2a0N6sKLJltrPookLAOb2I7rotSq2dW1JLDBFHAva9DaPHFFHrUJSGhCI8e2oh0oD0+jQSEXeA5gUBHxWYIgEooxE4yJqpqj1Q/8Tsyj1K3JRW3VTcgSCcTlmiXkN001g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ExMTBdDd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 145FAC4CEC7;
+	Mon, 28 Oct 2024 06:28:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097330;
-	bh=l58fGSZBVrYzpiN4IAhgiv2fOqekJTL1qAVsgxgK2/E=;
+	s=korg; t=1730096911;
+	bh=KFPi8Zmpmjwp692CLvc5tcOIGDDLe1RoKKkd3mQEyUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yd6DetGwOZY7GDDBivTsuXdwqUkwmJM2Melo0w0jopDxGT7GWMABTUovOIEDODvEm
-	 y3qiRGgb05N1RcFRU9EOkMVPXEenE0x6fzn5zuL2BjjOoryPgIHx4apCnvR5OSrDjq
-	 opMwqhF7nBps2ZR1hV4xuJxEnJEfxG6bZo5K4zC8=
+	b=ExMTBdDd9ZRv/Pgizy2487V2/X5Sw0VjVno41CDTBKdksl+E2HE/17plzBOqr8q5S
+	 agSlZ75/EQAZiONNo6GvAxQ/nBhEu8zmYmApw8uyLW1D/45mq9kAGK8eq5SWB5DQRc
+	 4loiDVv27R8vgKo6e+bWeB+E1qyWnCBxg3a8tOKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 083/137] LoongArch: Dont crash in stack_top() for tasks without vDSO
-Date: Mon, 28 Oct 2024 07:25:20 +0100
-Message-ID: <20241028062301.054498754@linuxfoundation.org>
+Subject: [PATCH 5.15 41/80] drm/vboxvideo: Replace fake VLA at end of vbva_mouse_pointer_shape with real VLA
+Date: Mon, 28 Oct 2024 07:25:21 +0100
+Message-ID: <20241028062253.761877036@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +60,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 134475a9ab8487527238d270639a8cb74c10aab2 ]
+[ Upstream commit d92b90f9a54d9300a6e883258e79f36dab53bfae ]
 
-Not all tasks have a vDSO mapped, for example kthreads never do. If such
-a task ever ends up calling stack_top(), it will derefence the NULL vdso
-pointer and crash.
+Replace the fake VLA at end of the vbva_mouse_pointer_shape shape with
+a real VLA to fix a "memcpy: detected field-spanning write error" warning:
 
-This can for example happen when using kunit:
+[   13.319813] memcpy: detected field-spanning write (size 16896) of single field "p->data" at drivers/gpu/drm/vboxvideo/hgsmi_base.c:154 (size 4)
+[   13.319841] WARNING: CPU: 0 PID: 1105 at drivers/gpu/drm/vboxvideo/hgsmi_base.c:154 hgsmi_update_pointer_shape+0x192/0x1c0 [vboxvideo]
+[   13.320038] Call Trace:
+[   13.320173]  hgsmi_update_pointer_shape [vboxvideo]
+[   13.320184]  vbox_cursor_atomic_update [vboxvideo]
 
-	[<9000000000203874>] stack_top+0x58/0xa8
-	[<90000000002956cc>] arch_pick_mmap_layout+0x164/0x220
-	[<90000000003c284c>] kunit_vm_mmap_init+0x108/0x12c
-	[<90000000003c1fbc>] __kunit_add_resource+0x38/0x8c
-	[<90000000003c2704>] kunit_vm_mmap+0x88/0xc8
-	[<9000000000410b14>] usercopy_test_init+0xbc/0x25c
-	[<90000000003c1db4>] kunit_try_run_case+0x5c/0x184
-	[<90000000003c3d54>] kunit_generic_run_threadfn_adapter+0x24/0x48
-	[<900000000022e4bc>] kthread+0xc8/0xd4
-	[<9000000000200ce8>] ret_from_kernel_thread+0xc/0xa4
+Note as mentioned in the added comment it seems the original length
+calculation for the allocated and send hgsmi buffer is 4 bytes too large.
+Changing this is not the goal of this patch, so this behavior is kept.
 
-Fixes: 803b0fc5c3f2 ("LoongArch: Add process management")
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240827104523.17442-1-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/process.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/vboxvideo/hgsmi_base.c | 10 +++++++++-
+ drivers/gpu/drm/vboxvideo/vboxvideo.h  |  4 +---
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/arch/loongarch/kernel/process.c b/arch/loongarch/kernel/process.c
-index 51176e5ecee59..4561bc81c0639 100644
---- a/arch/loongarch/kernel/process.c
-+++ b/arch/loongarch/kernel/process.c
-@@ -271,13 +271,15 @@ unsigned long stack_top(void)
- {
- 	unsigned long top = TASK_SIZE & PAGE_MASK;
+diff --git a/drivers/gpu/drm/vboxvideo/hgsmi_base.c b/drivers/gpu/drm/vboxvideo/hgsmi_base.c
+index 8c041d7ce4f1b..87dccaecc3e57 100644
+--- a/drivers/gpu/drm/vboxvideo/hgsmi_base.c
++++ b/drivers/gpu/drm/vboxvideo/hgsmi_base.c
+@@ -139,7 +139,15 @@ int hgsmi_update_pointer_shape(struct gen_pool *ctx, u32 flags,
+ 		flags |= VBOX_MOUSE_POINTER_VISIBLE;
+ 	}
  
--	/* Space for the VDSO & data page */
--	top -= PAGE_ALIGN(current->thread.vdso->size);
--	top -= VVAR_SIZE;
--
--	/* Space to randomize the VDSO base */
--	if (current->flags & PF_RANDOMIZE)
--		top -= VDSO_RANDOMIZE_SIZE;
-+	if (current->thread.vdso) {
-+		/* Space for the VDSO & data page */
-+		top -= PAGE_ALIGN(current->thread.vdso->size);
-+		top -= VVAR_SIZE;
-+
-+		/* Space to randomize the VDSO base */
-+		if (current->flags & PF_RANDOMIZE)
-+			top -= VDSO_RANDOMIZE_SIZE;
-+	}
+-	p = hgsmi_buffer_alloc(ctx, sizeof(*p) + pixel_len, HGSMI_CH_VBVA,
++	/*
++	 * The 4 extra bytes come from switching struct vbva_mouse_pointer_shape
++	 * from having a 4 bytes fixed array at the end to using a proper VLA
++	 * at the end. These 4 extra bytes were not subtracted from sizeof(*p)
++	 * before the switch to the VLA, so this way the behavior is unchanged.
++	 * Chances are these 4 extra bytes are not necessary but they are kept
++	 * to avoid regressions.
++	 */
++	p = hgsmi_buffer_alloc(ctx, sizeof(*p) + pixel_len + 4, HGSMI_CH_VBVA,
+ 			       VBVA_MOUSE_POINTER_SHAPE);
+ 	if (!p)
+ 		return -ENOMEM;
+diff --git a/drivers/gpu/drm/vboxvideo/vboxvideo.h b/drivers/gpu/drm/vboxvideo/vboxvideo.h
+index a5de40fe1a76a..bed285fe083c8 100644
+--- a/drivers/gpu/drm/vboxvideo/vboxvideo.h
++++ b/drivers/gpu/drm/vboxvideo/vboxvideo.h
+@@ -351,10 +351,8 @@ struct vbva_mouse_pointer_shape {
+ 	 * Bytes in the gap between the AND and the XOR mask are undefined.
+ 	 * XOR mask scanlines have no gap between them and size of XOR mask is:
+ 	 * xor_len = width * 4 * height.
+-	 *
+-	 * Preallocate 4 bytes for accessing actual data as p->data.
+ 	 */
+-	u8 data[4];
++	u8 data[];
+ } __packed;
  
- 	return top;
- }
+ /* pointer is visible */
 -- 
 2.43.0
 
