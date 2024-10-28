@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E2B9B2753
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:47:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3B0E9B2651
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:38:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7458B21026
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:47:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AE871F21F66
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01EA918EFCD;
-	Mon, 28 Oct 2024 06:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA5318F2C4;
+	Mon, 28 Oct 2024 06:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvoAp3ul"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZN0+tE6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56B118DF7D;
-	Mon, 28 Oct 2024 06:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5642A18E744;
+	Mon, 28 Oct 2024 06:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098020; cv=none; b=fnsrDfLQMSNB/6poZlxCxYNndjt+95ymGkXg63EyjzT4F5I4/LnFemyUS66VcPDglMZ+UMLHlLF5An7AJOrt5ob2RrViAlXe+6ICvbWL++ONTtDJumCO7WNZidoXzb+sJO7vFiQe0OfvGQXHyT0libimeRMebhqFzVXrK9NKIF0=
+	t=1730097508; cv=none; b=hA6aj8BLynhq2Vm9WgNxuE7RM4ObLAzca/pRVMl6psDTHkDZZRLoHPuNQFyB/WppXxoM4uSqwBFBtot42YRy7OzD126eRemiNBkGe0ooqjZOHHzUKN5vwHFXzhybc2+za73xDENz+Dgowi2ApbRbDyII30q49FuJQIaIvKbFw3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098020; c=relaxed/simple;
-	bh=GXXh1N0JmRg0qxpfZ7D7vUuK/mfSuebfBHuWSklQapE=;
+	s=arc-20240116; t=1730097508; c=relaxed/simple;
+	bh=IdhbfHUeaSPL0ygznV58QODOdlrHs4gWglBUd9/Ni7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P0fpfo3R6RRZYROVYytt3qAIADkI6SiCANQLhi0fBL4ktGfTKcplRGZpOYUaDj1PXHuPGv/vQV+pjSTZKybZIEy1bosvJgZJFiBZiUR7mXNHclTmxkuDcrngHcNoZsjKam/lBoihjMBd/h1srAONPvS0PMaL+blkbZu7DvmTB3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvoAp3ul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D4CC4CEC3;
-	Mon, 28 Oct 2024 06:47:00 +0000 (UTC)
+	 MIME-Version; b=V5zVpfhodszlJBs2pwxcgWWI9a9K9F758J6KzGX5OZf19qZ1qbiILfpZJxmLRsYI/9+ohSBNuanLliawhAEBE1tJCsBtPSv478Vhgbiija9lnBNuAl4VRkfkB5rCGn8/kRwyvjBhGmCXrbgH/vveuOTwA25s1+Hsdw4BPsa/+2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZN0+tE6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3773C4CECD;
+	Mon, 28 Oct 2024 06:38:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098020;
-	bh=GXXh1N0JmRg0qxpfZ7D7vUuK/mfSuebfBHuWSklQapE=;
+	s=korg; t=1730097507;
+	bh=IdhbfHUeaSPL0ygznV58QODOdlrHs4gWglBUd9/Ni7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hvoAp3ulMRI0cb+0l/gw/42IRf6QsQBa3BesNvVVIG8JsT6dP0ctI2kO2TNwsyhpy
-	 4N4MdoWU5SRpqU3o7C2Z2kUwzYcEoH2++/eIg/NKYiqDiDxdrBtajD7XlpLuFYzvau
-	 5/caEDiHb2umtNMbAxwe+pnxoPOXqbLvPHTBNp6A=
+	b=TZN0+tE6Vu81xfwsNGJANBzENprSOCkHxVdwIPjDPWhOGiZnhyR25rzEgofnvjWDL
+	 +TFW6l80RTj1SNKE8mw4kBlaq7RTX5RxdYuF582dB6nzMuTFaR/iuzV25NQ1fYnbet
+	 KmPJfafqy5l0TVxBM9cglPAswwBL1201vWr/gjvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Timo Grautstueck <timo.grautstueck@web.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 042/261] RDMA/bnxt_re: Return more meaningful error
-Date: Mon, 28 Oct 2024 07:23:04 +0100
-Message-ID: <20241028062313.062974215@linuxfoundation.org>
+Subject: [PATCH 6.6 005/208] lib/Kconfig.debug: fix grammar in RUST_BUILD_ASSERT_ALLOW
+Date: Mon, 28 Oct 2024 07:23:05 +0100
+Message-ID: <20241028062306.787637477@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Timo Grautstueck <timo.grautstueck@web.de>
 
-[ Upstream commit 98647df0178df215b8239c5c365537283b2852a6 ]
+[ Upstream commit ab8851431bef5cc44f0f3f0da112e883fd4d0df5 ]
 
-When the HWRM command fails, driver currently returns -EFAULT(Bad
-address). This does not look correct.
+Just a grammar fix in lib/Kconfig.debug, under the config option
+RUST_BUILD_ASSERT_ALLOW.
 
-Modified to return -EIO(I/O error).
-
-Fixes: cc1ec769b87c ("RDMA/bnxt_re: Fixing the Control path command and response handling")
-Fixes: 65288a22ddd8 ("RDMA/bnxt_re: use shadow qd while posting non blocking rcfw command")
-Link: https://patch.msgid.link/r/1728373302-19530-5-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reported-by: Miguel Ojeda <ojeda@kernel.org>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1006
+Fixes: ecaa6ddff2fd ("rust: add `build_error` crate")
+Signed-off-by: Timo Grautstueck <timo.grautstueck@web.de>
+Link: https://lore.kernel.org/r/20241006140244.5509-1-timo.grautstueck@web.de
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 2 +-
+ lib/Kconfig.debug | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-index 3ffaef0c26519..7294221b3316c 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-@@ -525,7 +525,7 @@ static int __bnxt_qplib_rcfw_send_message(struct bnxt_qplib_rcfw *rcfw,
- 		/* failed with status */
- 		dev_err(&rcfw->pdev->dev, "cmdq[%#x]=%#x status %#x\n",
- 			cookie, opcode, evnt->status);
--		rc = -EFAULT;
-+		rc = -EIO;
- 	}
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index da5513cfc1258..f94c3e957b829 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -2999,7 +2999,7 @@ config RUST_BUILD_ASSERT_ALLOW
+ 	bool "Allow unoptimized build-time assertions"
+ 	depends on RUST
+ 	help
+-	  Controls how are `build_error!` and `build_assert!` handled during build.
++	  Controls how `build_error!` and `build_assert!` are handled during the build.
  
- 	return rc;
+ 	  If calls to them exist in the binary, it may indicate a violated invariant
+ 	  or that the optimizer failed to verify the invariant during compilation.
 -- 
 2.43.0
 
