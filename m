@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-88748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ABE29B2755
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:47:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A62AF9B2762
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:47:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 312432836C5
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:47:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51C8EB212C7
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:47:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B42A18FC75;
-	Mon, 28 Oct 2024 06:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A44618D65C;
+	Mon, 28 Oct 2024 06:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="htKt6P5H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9YL9Neh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2A618E36C;
-	Mon, 28 Oct 2024 06:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A1F16F8EF;
+	Mon, 28 Oct 2024 06:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098032; cv=none; b=RZ6i5qC9mbfeAranem1/7fx/daXQz/dWmbQ50011QkAGludIRIVLiC8Ph585WmWx8k/NCqptjY3ZtAUiiINTvFyNBcZnPFhJtTYsuiZGW5+67QVm2txsBwJUsS452W2N8mo4PY4Sqa3OhcnHmrTPXuLIdYaxd2+t2uprJ74L+vs=
+	t=1730098056; cv=none; b=ed48WmQ84tqx0BkWCZ50Q6jvlv5TcwekILROp6jVaboqVYbMu9+GVxOBE3Hrgf0AbWYUnlM4jDLu4rW36fP+8gsvTCzYtQ8Qnt6KMTm7a6gPLJYf48EdgnI3BVAGd93RZMd25hXgSoORMtzmJnsjGvt77gyHf0/K+FydOIP4yQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098032; c=relaxed/simple;
-	bh=t0un3LxbGJVzqeRlx9eC67V+Yv68WhZkn/B66Kko31c=;
+	s=arc-20240116; t=1730098056; c=relaxed/simple;
+	bh=n1cbzfZ/Fnl7XBL3aryZrJkdAadiNllM1dScZTUXXZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jP322hH+l4iUZXnY66xujzy8UczSB/bfYzePKwl4pJ/OahOlzgT4+iVMJbgm0oj0D3KYRhoYkvXwo1pwNGfnI9kp8AxSDmeykdYxwFGFpi1XxIUPTQjnCd4jpXRzZ4jnsYXiolUw29t1X6dDc0zpHn9fyo6fnZh2yYdXbwWRz0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=htKt6P5H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A89EC4CEC3;
-	Mon, 28 Oct 2024 06:47:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tXraj0zyqfGxYFvtL34w51n5wym9TI7YpcbqsJx5Itf2e6iSLjBKaa5hXj88s6Gqkz4SFisjonWDXu/2nIr6Wy5mOrH30goCSl02TTqUscW4ZrQfvboT/px0b/HzPkkLa85peB7VNTODTtvu/53Ik5wwPhnTTs9Q3tLyfThojJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9YL9Neh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3B7C4CEC3;
+	Mon, 28 Oct 2024 06:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098031;
-	bh=t0un3LxbGJVzqeRlx9eC67V+Yv68WhZkn/B66Kko31c=;
+	s=korg; t=1730098056;
+	bh=n1cbzfZ/Fnl7XBL3aryZrJkdAadiNllM1dScZTUXXZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=htKt6P5He+VeAucSXMeIXEzaKfIiTUwY8xjpOMT5Bqkhzzg1LKnQD3QDZNLCB31po
-	 32FyV7kEAnkebG5bTW+J4z1b3wnBEcXneiRfS06J3pBJZG0nQwRRD2Qdxe2mexbkp2
-	 ZxVoH+RxIBZCCD+3dJgKn4Me8IyEEumlZ/gfPLCw=
+	b=P9YL9NehKVIpHhU9ebVajaj8BvJDkQ6+G5hbIs5nG0Ss7qjSOgwhE+tiE3v360d8q
+	 /13042qbGbgPttQAa4VvP0xVUuTA19JsgzTKTlcIGbxJIaaLk0ibhEIyXMw4xW7oIE
+	 u+/1B3HDKsJ/Wao7DqOp81YYbJGEsSyJKFrl9His=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tyrone Wu <wudevelops@gmail.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Yafang Shao <laoar.shao@gmail.com>,
+	Pu Lehui <pulehui@huawei.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 020/261] selftests/bpf: fix perf_event link info name_len assertion
-Date: Mon, 28 Oct 2024 07:22:42 +0100
-Message-ID: <20241028062312.518863457@linuxfoundation.org>
+Subject: [PATCH 6.11 021/261] riscv, bpf: Fix possible infinite tailcall when CONFIG_CFI_CLANG is enabled
+Date: Mon, 28 Oct 2024 07:22:43 +0100
+Message-ID: <20241028062312.543684002@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
 References: <20241028062312.001273460@linuxfoundation.org>
@@ -62,67 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tyrone Wu <wudevelops@gmail.com>
+From: Pu Lehui <pulehui@huawei.com>
 
-[ Upstream commit 4538a38f654a1c292fe489a9b66179262bfed088 ]
+[ Upstream commit 30a59cc79754fd9ff3f41b7ee2eb21da85988548 ]
 
-Fix `name_len` field assertions in `bpf_link_info.perf_event` for
-kprobe/uprobe/tracepoint to validate correct name size instead of 0.
+When CONFIG_CFI_CLANG is enabled, the number of prologue instructions
+skipped by tailcall needs to include the kcfi instruction, otherwise the
+TCC will be initialized every tailcall is called, which may result in
+infinite tailcalls.
 
-Fixes: 23cf7aa539dc ("selftests/bpf: Add selftest for fill_link_info")
-Signed-off-by: Tyrone Wu <wudevelops@gmail.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Yafang Shao <laoar.shao@gmail.com>
-Link: https://lore.kernel.org/r/20241008164312.46269-2-wudevelops@gmail.com
+Fixes: e63985ecd226 ("bpf, riscv64/cfi: Support kCFI + BPF on riscv64")
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Acked-by: Björn Töpel <bjorn@kernel.org>
+Link: https://lore.kernel.org/r/20241008124544.171161-1-pulehui@huaweicloud.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/fill_link_info.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/riscv/net/bpf_jit_comp64.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/fill_link_info.c b/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
-index f3932941bbaaf..745c5ada4c4bf 100644
---- a/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
-+++ b/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
-@@ -67,8 +67,9 @@ static int verify_perf_link_info(int fd, enum bpf_perf_event_type type, long add
+diff --git a/arch/riscv/net/bpf_jit_comp64.c b/arch/riscv/net/bpf_jit_comp64.c
+index 99f34409fb60f..91bd5082c4d8e 100644
+--- a/arch/riscv/net/bpf_jit_comp64.c
++++ b/arch/riscv/net/bpf_jit_comp64.c
+@@ -18,6 +18,7 @@
+ #define RV_MAX_REG_ARGS 8
+ #define RV_FENTRY_NINSNS 2
+ #define RV_FENTRY_NBYTES (RV_FENTRY_NINSNS * 4)
++#define RV_KCFI_NINSNS (IS_ENABLED(CONFIG_CFI_CLANG) ? 1 : 0)
+ /* imm that allows emit_imm to emit max count insns */
+ #define RV_MAX_COUNT_IMM 0x7FFF7FF7FF7FF7FF
  
- 		ASSERT_EQ(info.perf_event.kprobe.cookie, PERF_EVENT_COOKIE, "kprobe_cookie");
+@@ -271,7 +272,8 @@ static void __build_epilogue(bool is_tail_call, struct rv_jit_context *ctx)
+ 	if (!is_tail_call)
+ 		emit_addiw(RV_REG_A0, RV_REG_A5, 0, ctx);
+ 	emit_jalr(RV_REG_ZERO, is_tail_call ? RV_REG_T3 : RV_REG_RA,
+-		  is_tail_call ? (RV_FENTRY_NINSNS + 1) * 4 : 0, /* skip reserved nops and TCC init */
++		  /* kcfi, fentry and TCC init insns will be skipped on tailcall */
++		  is_tail_call ? (RV_KCFI_NINSNS + RV_FENTRY_NINSNS + 1) * 4 : 0,
+ 		  ctx);
+ }
  
-+		ASSERT_EQ(info.perf_event.kprobe.name_len, strlen(KPROBE_FUNC) + 1,
-+				  "name_len");
- 		if (!info.perf_event.kprobe.func_name) {
--			ASSERT_EQ(info.perf_event.kprobe.name_len, 0, "name_len");
- 			info.perf_event.kprobe.func_name = ptr_to_u64(&buf);
- 			info.perf_event.kprobe.name_len = sizeof(buf);
- 			goto again;
-@@ -79,8 +80,9 @@ static int verify_perf_link_info(int fd, enum bpf_perf_event_type type, long add
- 		ASSERT_EQ(err, 0, "cmp_kprobe_func_name");
- 		break;
- 	case BPF_PERF_EVENT_TRACEPOINT:
-+		ASSERT_EQ(info.perf_event.tracepoint.name_len, strlen(TP_NAME) + 1,
-+				  "name_len");
- 		if (!info.perf_event.tracepoint.tp_name) {
--			ASSERT_EQ(info.perf_event.tracepoint.name_len, 0, "name_len");
- 			info.perf_event.tracepoint.tp_name = ptr_to_u64(&buf);
- 			info.perf_event.tracepoint.name_len = sizeof(buf);
- 			goto again;
-@@ -96,8 +98,9 @@ static int verify_perf_link_info(int fd, enum bpf_perf_event_type type, long add
- 	case BPF_PERF_EVENT_URETPROBE:
- 		ASSERT_EQ(info.perf_event.uprobe.offset, offset, "uprobe_offset");
- 
-+		ASSERT_EQ(info.perf_event.uprobe.name_len, strlen(UPROBE_FILE) + 1,
-+				  "name_len");
- 		if (!info.perf_event.uprobe.file_name) {
--			ASSERT_EQ(info.perf_event.uprobe.name_len, 0, "name_len");
- 			info.perf_event.uprobe.file_name = ptr_to_u64(&buf);
- 			info.perf_event.uprobe.name_len = sizeof(buf);
- 			goto again;
 -- 
 2.43.0
 
