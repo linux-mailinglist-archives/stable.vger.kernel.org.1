@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-88408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B04A9B25D9
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:35:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 435B49B26B0
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:41:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6E021F21BCE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:35:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DFD0B20F0A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B637D18FDC2;
-	Mon, 28 Oct 2024 06:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A1A18E368;
+	Mon, 28 Oct 2024 06:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0NHkw6Fw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WxYhmt+r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7355918E04F;
-	Mon, 28 Oct 2024 06:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23FE18E04F;
+	Mon, 28 Oct 2024 06:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097263; cv=none; b=fPQezciPO3BXSuhCnXI07IrCYz7rM+pm9XjvjAAUpBoM52/UgNDlQqaqDAEOFAhDuETXnaZGQYwYHWahHbcqp1Dgu8VkWENm4EeHeC457cZ9ZcRalS0UU5Wa/T58ykKMFqh3YsbVyuQLdv/MFJ1r0LjqwXdwyFRl8HH82GJ4Rxs=
+	t=1730097701; cv=none; b=qROVDroXyOTqnwWASHKrBm+2gg9Arm16C8X4yphFiMUik+8r78PMqzY38NpXdorPJoLYNdUswRBECbFrD911NgMqeqQFAO1FbGV93xgFUvty4GYYTRsnN+IHqBJTa8xZwb3bmT6gz52KWUitHzq7KYDyV+iPJFAhyIjlS4Yr35Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097263; c=relaxed/simple;
-	bh=/6Be8YVJdAR8RkqasctKNJ1ZVSY86SnnSfEYvMXQp44=;
+	s=arc-20240116; t=1730097701; c=relaxed/simple;
+	bh=W3urXZBcaIi9AEenuT/etlqPa6OmxHGRLUTBKLfYpfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=piBiEWNusEYxod76UcCFi6Nik9coVIblugLE8Z615MYI5942hPK+6XEkAE+YgRIwKRcqmKZDqZ2f2LnFI4dqzd10MMukVBe/9bDaGy/d1YFmZCllCT8AQLrVIuSiN67YK+mjryyhizCv7ZrmLodc8LTxTSFldmf6iYaleSY2XQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0NHkw6Fw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA01C4CEC7;
-	Mon, 28 Oct 2024 06:34:22 +0000 (UTC)
+	 MIME-Version; b=XLy7xNPvCqhriyCmeQKzQYLq5ZrxqLuAK7XCzeRypE7Zm6An+XMQjwR5munTmHJkasHw9N3Qd7HgV+2Sa/TnuWDXcgtCJXV/Mpj6fdGsNPk4rdwtomoiujEKZeIbZc1p53Lu3RR+o1u06QbzzEaN+uPjykrNZ2gAHiAqtQze5bM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WxYhmt+r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92207C4CEC3;
+	Mon, 28 Oct 2024 06:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097263;
-	bh=/6Be8YVJdAR8RkqasctKNJ1ZVSY86SnnSfEYvMXQp44=;
+	s=korg; t=1730097700;
+	bh=W3urXZBcaIi9AEenuT/etlqPa6OmxHGRLUTBKLfYpfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0NHkw6Fwd8fdDNIwuITDRZaxm5q6UWi4DY/q3155dJ4uby9rMCE4m9rm+F29RkQ6h
-	 pEuDnY566T2jF6kUFDeBiEF9fV5V91TvwrAqFX84/7wc3pr7R8y8ZM4uO5xM1egR7I
-	 AdnusmUYmchWoFqWwoBFX25v9ed24fYarng1wbBg=
+	b=WxYhmt+rvwhDsqYCcYqLn2vcrWIwUPIf3Q245ieLK2AtgQRYlUF0C/+RryZFG7nyi
+	 u9N1pxIlz+m//qwIqRkkP83PPIAKPKAMRoq8msPQhxT/3AvUEqHclm5NwJcCP7UaZp
+	 natzyXMg/Y/Km8JFuHi54VJxp4jS8Ijphhg0XmfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 053/137] net/mlx5: Fix command bitmask initialization
+Subject: [PATCH 6.6 110/208] uprobes: encapsulate preparation of uprobe args buffer
 Date: Mon, 28 Oct 2024 07:24:50 +0100
-Message-ID: <20241028062300.210543223@linuxfoundation.org>
+Message-ID: <20241028062309.368306926@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,102 +63,259 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit d62b14045c6511a7b2d4948d1a83a4e592deeb05 ]
+[ Upstream commit 3eaea21b4d27cff0017c20549aeb53034c58fc23 ]
 
-Command bitmask have a dedicated bit for MANAGE_PAGES command, this bit
-isn't Initialize during command bitmask Initialization, only during
-MANAGE_PAGES.
+Move the logic of fetching temporary per-CPU uprobe buffer and storing
+uprobes args into it to a new helper function. Store data size as part
+of this buffer, simplifying interfaces a bit, as now we only pass single
+uprobe_cpu_buffer reference around, instead of pointer + dsize.
 
-In addition, mlx5_cmd_trigger_completions() is trying to trigger
-completion for MANAGE_PAGES command as well.
+This logic was duplicated across uprobe_dispatcher and uretprobe_dispatcher,
+and now will be centralized. All this is also in preparation to make
+this uprobe_cpu_buffer handling logic optional in the next patch.
 
-Hence, in case health error occurred before any MANAGE_PAGES command
-have been invoke (for example, during mlx5_enable_hca()),
-mlx5_cmd_trigger_completions() will try to trigger completion for
-MANAGE_PAGES command, which will result in null-ptr-deref error.[1]
+Link: https://lore.kernel.org/all/20240318181728.2795838-2-andrii@kernel.org/
+[Masami: update for v6.9-rc3 kernel]
 
-Fix it by Initialize command bitmask correctly.
-
-While at it, re-write the code for better understanding.
-
-[1]
-BUG: KASAN: null-ptr-deref in mlx5_cmd_trigger_completions+0x1db/0x600 [mlx5_core]
-Write of size 4 at addr 0000000000000214 by task kworker/u96:2/12078
-CPU: 10 PID: 12078 Comm: kworker/u96:2 Not tainted 6.9.0-rc2_for_upstream_debug_2024_04_07_19_01 #1
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-Workqueue: mlx5_health0000:08:00.0 mlx5_fw_fatal_reporter_err_work [mlx5_core]
-Call Trace:
- <TASK>
- dump_stack_lvl+0x7e/0xc0
- kasan_report+0xb9/0xf0
- kasan_check_range+0xec/0x190
- mlx5_cmd_trigger_completions+0x1db/0x600 [mlx5_core]
- mlx5_cmd_flush+0x94/0x240 [mlx5_core]
- enter_error_state+0x6c/0xd0 [mlx5_core]
- mlx5_fw_fatal_reporter_err_work+0xf3/0x480 [mlx5_core]
- process_one_work+0x787/0x1490
- ? lockdep_hardirqs_on_prepare+0x400/0x400
- ? pwq_dec_nr_in_flight+0xda0/0xda0
- ? assign_work+0x168/0x240
- worker_thread+0x586/0xd30
- ? rescuer_thread+0xae0/0xae0
- kthread+0x2df/0x3b0
- ? kthread_complete_and_exit+0x20/0x20
- ret_from_fork+0x2d/0x70
- ? kthread_complete_and_exit+0x20/0x20
- ret_from_fork_asm+0x11/0x20
- </TASK>
-
-Fixes: 9b98d395b85d ("net/mlx5: Start health poll at earlier stage of driver load")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Stable-dep-of: 373b9338c972 ("uprobe: avoid out-of-bounds memory access of fetching args")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ kernel/trace/trace_uprobe.c | 78 +++++++++++++++++++------------------
+ 1 file changed, 41 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-index c6ddf51818efe..4a1eb6cd699cb 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-@@ -1755,6 +1755,10 @@ static void mlx5_cmd_comp_handler(struct mlx5_core_dev *dev, u64 vec, bool force
- 	}
+diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
+index 78d76d74f45bc..58506c9632eae 100644
+--- a/kernel/trace/trace_uprobe.c
++++ b/kernel/trace/trace_uprobe.c
+@@ -854,6 +854,7 @@ static const struct file_operations uprobe_profile_ops = {
+ struct uprobe_cpu_buffer {
+ 	struct mutex mutex;
+ 	void *buf;
++	int dsize;
+ };
+ static struct uprobe_cpu_buffer __percpu *uprobe_cpu_buffer;
+ static int uprobe_buffer_refcnt;
+@@ -943,9 +944,26 @@ static void uprobe_buffer_put(struct uprobe_cpu_buffer *ucb)
+ 	mutex_unlock(&ucb->mutex);
  }
  
-+#define MLX5_MAX_MANAGE_PAGES_CMD_ENT 1
-+#define MLX5_CMD_MASK ((1UL << (cmd->vars.max_reg_cmds + \
-+			   MLX5_MAX_MANAGE_PAGES_CMD_ENT)) - 1)
++static struct uprobe_cpu_buffer *prepare_uprobe_buffer(struct trace_uprobe *tu,
++						       struct pt_regs *regs)
++{
++	struct uprobe_cpu_buffer *ucb;
++	int dsize, esize;
 +
- static void mlx5_cmd_trigger_completions(struct mlx5_core_dev *dev)
++	esize = SIZEOF_TRACE_ENTRY(is_ret_probe(tu));
++	dsize = __get_data_size(&tu->tp, regs, NULL);
++
++	ucb = uprobe_buffer_get();
++	ucb->dsize = tu->tp.size + dsize;
++
++	store_trace_args(ucb->buf, &tu->tp, regs, NULL, esize, dsize);
++
++	return ucb;
++}
++
+ static void __uprobe_trace_func(struct trace_uprobe *tu,
+ 				unsigned long func, struct pt_regs *regs,
+-				struct uprobe_cpu_buffer *ucb, int dsize,
++				struct uprobe_cpu_buffer *ucb,
+ 				struct trace_event_file *trace_file)
  {
- 	struct mlx5_cmd *cmd = &dev->cmd;
-@@ -1766,7 +1770,7 @@ static void mlx5_cmd_trigger_completions(struct mlx5_core_dev *dev)
- 	/* wait for pending handlers to complete */
- 	mlx5_eq_synchronize_cmd_irq(dev);
- 	spin_lock_irqsave(&dev->cmd.alloc_lock, flags);
--	vector = ~dev->cmd.vars.bitmask & ((1ul << (1 << dev->cmd.vars.log_sz)) - 1);
-+	vector = ~dev->cmd.vars.bitmask & MLX5_CMD_MASK;
- 	if (!vector)
- 		goto no_trig;
+ 	struct uprobe_trace_entry_head *entry;
+@@ -956,14 +974,14 @@ static void __uprobe_trace_func(struct trace_uprobe *tu,
  
-@@ -2301,7 +2305,7 @@ int mlx5_cmd_enable(struct mlx5_core_dev *dev)
+ 	WARN_ON(call != trace_file->event_call);
  
- 	cmd->state = MLX5_CMDIF_STATE_DOWN;
- 	cmd->vars.max_reg_cmds = (1 << cmd->vars.log_sz) - 1;
--	cmd->vars.bitmask = (1UL << cmd->vars.max_reg_cmds) - 1;
-+	cmd->vars.bitmask = MLX5_CMD_MASK;
+-	if (WARN_ON_ONCE(tu->tp.size + dsize > PAGE_SIZE))
++	if (WARN_ON_ONCE(ucb->dsize > PAGE_SIZE))
+ 		return;
  
- 	sema_init(&cmd->vars.sem, cmd->vars.max_reg_cmds);
- 	sema_init(&cmd->vars.pages_sem, 1);
+ 	if (trace_trigger_soft_disabled(trace_file))
+ 		return;
+ 
+ 	esize = SIZEOF_TRACE_ENTRY(is_ret_probe(tu));
+-	size = esize + tu->tp.size + dsize;
++	size = esize + ucb->dsize;
+ 	entry = trace_event_buffer_reserve(&fbuffer, trace_file, size);
+ 	if (!entry)
+ 		return;
+@@ -977,14 +995,14 @@ static void __uprobe_trace_func(struct trace_uprobe *tu,
+ 		data = DATAOF_TRACE_ENTRY(entry, false);
+ 	}
+ 
+-	memcpy(data, ucb->buf, tu->tp.size + dsize);
++	memcpy(data, ucb->buf, ucb->dsize);
+ 
+ 	trace_event_buffer_commit(&fbuffer);
+ }
+ 
+ /* uprobe handler */
+ static int uprobe_trace_func(struct trace_uprobe *tu, struct pt_regs *regs,
+-			     struct uprobe_cpu_buffer *ucb, int dsize)
++			     struct uprobe_cpu_buffer *ucb)
+ {
+ 	struct event_file_link *link;
+ 
+@@ -993,7 +1011,7 @@ static int uprobe_trace_func(struct trace_uprobe *tu, struct pt_regs *regs,
+ 
+ 	rcu_read_lock();
+ 	trace_probe_for_each_link_rcu(link, &tu->tp)
+-		__uprobe_trace_func(tu, 0, regs, ucb, dsize, link->file);
++		__uprobe_trace_func(tu, 0, regs, ucb, link->file);
+ 	rcu_read_unlock();
+ 
+ 	return 0;
+@@ -1001,13 +1019,13 @@ static int uprobe_trace_func(struct trace_uprobe *tu, struct pt_regs *regs,
+ 
+ static void uretprobe_trace_func(struct trace_uprobe *tu, unsigned long func,
+ 				 struct pt_regs *regs,
+-				 struct uprobe_cpu_buffer *ucb, int dsize)
++				 struct uprobe_cpu_buffer *ucb)
+ {
+ 	struct event_file_link *link;
+ 
+ 	rcu_read_lock();
+ 	trace_probe_for_each_link_rcu(link, &tu->tp)
+-		__uprobe_trace_func(tu, func, regs, ucb, dsize, link->file);
++		__uprobe_trace_func(tu, func, regs, ucb, link->file);
+ 	rcu_read_unlock();
+ }
+ 
+@@ -1335,7 +1353,7 @@ static bool uprobe_perf_filter(struct uprobe_consumer *uc,
+ 
+ static void __uprobe_perf_func(struct trace_uprobe *tu,
+ 			       unsigned long func, struct pt_regs *regs,
+-			       struct uprobe_cpu_buffer *ucb, int dsize)
++			       struct uprobe_cpu_buffer *ucb)
+ {
+ 	struct trace_event_call *call = trace_probe_event_call(&tu->tp);
+ 	struct uprobe_trace_entry_head *entry;
+@@ -1356,7 +1374,7 @@ static void __uprobe_perf_func(struct trace_uprobe *tu,
+ 
+ 	esize = SIZEOF_TRACE_ENTRY(is_ret_probe(tu));
+ 
+-	size = esize + tu->tp.size + dsize;
++	size = esize + ucb->dsize;
+ 	size = ALIGN(size + sizeof(u32), sizeof(u64)) - sizeof(u32);
+ 	if (WARN_ONCE(size > PERF_MAX_TRACE_SIZE, "profile buffer not large enough"))
+ 		return;
+@@ -1379,13 +1397,10 @@ static void __uprobe_perf_func(struct trace_uprobe *tu,
+ 		data = DATAOF_TRACE_ENTRY(entry, false);
+ 	}
+ 
+-	memcpy(data, ucb->buf, tu->tp.size + dsize);
++	memcpy(data, ucb->buf, ucb->dsize);
+ 
+-	if (size - esize > tu->tp.size + dsize) {
+-		int len = tu->tp.size + dsize;
+-
+-		memset(data + len, 0, size - esize - len);
+-	}
++	if (size - esize > ucb->dsize)
++		memset(data + ucb->dsize, 0, size - esize - ucb->dsize);
+ 
+ 	perf_trace_buf_submit(entry, size, rctx, call->event.type, 1, regs,
+ 			      head, NULL);
+@@ -1395,21 +1410,21 @@ static void __uprobe_perf_func(struct trace_uprobe *tu,
+ 
+ /* uprobe profile handler */
+ static int uprobe_perf_func(struct trace_uprobe *tu, struct pt_regs *regs,
+-			    struct uprobe_cpu_buffer *ucb, int dsize)
++			    struct uprobe_cpu_buffer *ucb)
+ {
+ 	if (!uprobe_perf_filter(&tu->consumer, 0, current->mm))
+ 		return UPROBE_HANDLER_REMOVE;
+ 
+ 	if (!is_ret_probe(tu))
+-		__uprobe_perf_func(tu, 0, regs, ucb, dsize);
++		__uprobe_perf_func(tu, 0, regs, ucb);
+ 	return 0;
+ }
+ 
+ static void uretprobe_perf_func(struct trace_uprobe *tu, unsigned long func,
+ 				struct pt_regs *regs,
+-				struct uprobe_cpu_buffer *ucb, int dsize)
++				struct uprobe_cpu_buffer *ucb)
+ {
+-	__uprobe_perf_func(tu, func, regs, ucb, dsize);
++	__uprobe_perf_func(tu, func, regs, ucb);
+ }
+ 
+ int bpf_get_uprobe_info(const struct perf_event *event, u32 *fd_type,
+@@ -1475,10 +1490,8 @@ static int uprobe_dispatcher(struct uprobe_consumer *con, struct pt_regs *regs)
+ 	struct trace_uprobe *tu;
+ 	struct uprobe_dispatch_data udd;
+ 	struct uprobe_cpu_buffer *ucb;
+-	int dsize, esize;
+ 	int ret = 0;
+ 
+-
+ 	tu = container_of(con, struct trace_uprobe, consumer);
+ 	tu->nhit++;
+ 
+@@ -1490,18 +1503,14 @@ static int uprobe_dispatcher(struct uprobe_consumer *con, struct pt_regs *regs)
+ 	if (WARN_ON_ONCE(!uprobe_cpu_buffer))
+ 		return 0;
+ 
+-	dsize = __get_data_size(&tu->tp, regs, NULL);
+-	esize = SIZEOF_TRACE_ENTRY(is_ret_probe(tu));
+-
+-	ucb = uprobe_buffer_get();
+-	store_trace_args(ucb->buf, &tu->tp, regs, NULL, esize, dsize);
++	ucb = prepare_uprobe_buffer(tu, regs);
+ 
+ 	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
+-		ret |= uprobe_trace_func(tu, regs, ucb, dsize);
++		ret |= uprobe_trace_func(tu, regs, ucb);
+ 
+ #ifdef CONFIG_PERF_EVENTS
+ 	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
+-		ret |= uprobe_perf_func(tu, regs, ucb, dsize);
++		ret |= uprobe_perf_func(tu, regs, ucb);
+ #endif
+ 	uprobe_buffer_put(ucb);
+ 	return ret;
+@@ -1513,7 +1522,6 @@ static int uretprobe_dispatcher(struct uprobe_consumer *con,
+ 	struct trace_uprobe *tu;
+ 	struct uprobe_dispatch_data udd;
+ 	struct uprobe_cpu_buffer *ucb;
+-	int dsize, esize;
+ 
+ 	tu = container_of(con, struct trace_uprobe, consumer);
+ 
+@@ -1525,18 +1533,14 @@ static int uretprobe_dispatcher(struct uprobe_consumer *con,
+ 	if (WARN_ON_ONCE(!uprobe_cpu_buffer))
+ 		return 0;
+ 
+-	dsize = __get_data_size(&tu->tp, regs, NULL);
+-	esize = SIZEOF_TRACE_ENTRY(is_ret_probe(tu));
+-
+-	ucb = uprobe_buffer_get();
+-	store_trace_args(ucb->buf, &tu->tp, regs, NULL, esize, dsize);
++	ucb = prepare_uprobe_buffer(tu, regs);
+ 
+ 	if (trace_probe_test_flag(&tu->tp, TP_FLAG_TRACE))
+-		uretprobe_trace_func(tu, func, regs, ucb, dsize);
++		uretprobe_trace_func(tu, func, regs, ucb);
+ 
+ #ifdef CONFIG_PERF_EVENTS
+ 	if (trace_probe_test_flag(&tu->tp, TP_FLAG_PROFILE))
+-		uretprobe_perf_func(tu, func, regs, ucb, dsize);
++		uretprobe_perf_func(tu, func, regs, ucb);
+ #endif
+ 	uprobe_buffer_put(ucb);
+ 	return 0;
 -- 
 2.43.0
 
