@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-88716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 408899B272B
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:46:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB3869B2766
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:47:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD9AEB20EB9
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:46:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECE941C2133A
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290B718D65C;
-	Mon, 28 Oct 2024 06:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB8CB18D65C;
+	Mon, 28 Oct 2024 06:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aw+QPyP8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tP5O6Nun"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB48BA47;
-	Mon, 28 Oct 2024 06:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7C61DFFD;
+	Mon, 28 Oct 2024 06:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097960; cv=none; b=qRUGnjiTUWcMZZlOB7DEbF4f9OAxXVncyJ7dQjKCoBLpg+JZ/adsehJXQIfY8YZMiRnofme3AI6ejkK90XvxXI1mZYf2YdHO7zQ381NlW997CeyCxyjt89mAGHut3gO33xxSMMsYWiMkJImuAx/Gm5Utd3/YNPe9Fqa407BoZeo=
+	t=1730098070; cv=none; b=qscvekm5NvnuFp8MkSiY4BbMCrlRoJs1XX6AOKqFQ/8SB4qQtIfA+NKPdYHc0Ht7IVW1WR2Oxy1Ey++jDNh9gN9lyChYei2R1/xdfhsIbBHsllGED8HUvLfdxXMwnLZqqeiE3lPGSFyDE6C6xcA8+MblxdTRYYvw9pkT7teQoiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097960; c=relaxed/simple;
-	bh=3NXZAmOy1J3+nhYFBV1pNHu00WMFYlXhluiIA1dQbxE=;
+	s=arc-20240116; t=1730098070; c=relaxed/simple;
+	bh=fwkkrNV3Ygw2uaCO0hNj3BXp8K/t6LDXL7Mr69HHV8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IavMjMWS9Lz+5qSQNj13fxP9OgBnucQ7ra5vjWwmCZt/evXkDr1L1Gh4ZQcf1LgBdto9/SwSvnuEaZpnUWcXB/SxJEarTbDDJxo2Sm7uf2DSRQFFxB8JXD5c5FKviJXzw6gxLOKgFnpT0GxHK0mgq7/CQOZTxrBYu+lBRMCaIuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aw+QPyP8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41B42C4CEC3;
-	Mon, 28 Oct 2024 06:46:00 +0000 (UTC)
+	 MIME-Version; b=CAyzBAvgqvQcM/DF71XPjeV64Vt96Q4wdJata+WJ+/g1OxdyqcqetNYK+HhcoRf5iOgLP30DT6QXIWNnATOOdrQMkDWhVOlO4SN0x0wOfM5Tx5eror2fofBGI7hjLZr3YGj3GOjlGYiARye0jas6DzFMjbkA6rtZOBzIlrNFo60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tP5O6Nun; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B16C4CEC3;
+	Mon, 28 Oct 2024 06:47:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097960;
-	bh=3NXZAmOy1J3+nhYFBV1pNHu00WMFYlXhluiIA1dQbxE=;
+	s=korg; t=1730098070;
+	bh=fwkkrNV3Ygw2uaCO0hNj3BXp8K/t6LDXL7Mr69HHV8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aw+QPyP8tL59mhK1qK7oNO9JfMNPHSfXSc5tfBiwKryruaju2Q3PX7isYFoiRisNb
-	 ej1UrHwDIk6hf54OtwI9bqABMbWmALxn8naeLEJxj0NftN5aK+NlNExr/8WNFqkXnh
-	 303NoTMoaR2sHuXsHzfWfvGr5qL7BmB8mZA6rDEw=
+	b=tP5O6NunsRMAszeOsEPJbnER2ZORziy8CaUN5vBLFESvdxWT1ukGEZglvyzY3ewdA
+	 HpwOO7E3XxYJgTce5NzHnApf9f8HKASOkxH4xGPG1ydJTmzuTf0moSQlUqCudK3K2W
+	 nxO08z5OLHR3fFZUVh0G3Be2h4WlPzJRPJI6BSHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Klink <flokli@flokli.de>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Yao Zi <ziyao@disroot.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 016/261] ARM: dts: bcm2837-rpi-cm3-io3: Fix HDMI hpd-gpio pin
-Date: Mon, 28 Oct 2024 07:22:38 +0100
-Message-ID: <20241028062312.419412679@linuxfoundation.org>
+Subject: [PATCH 6.11 017/261] clk: rockchip: fix finding of maximum clock ID
+Date: Mon, 28 Oct 2024 07:22:39 +0100
+Message-ID: <20241028062312.443996951@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
 References: <20241028062312.001273460@linuxfoundation.org>
@@ -67,40 +68,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Florian Klink <flokli@flokli.de>
+From: Yao Zi <ziyao@disroot.org>
 
-[ Upstream commit dc7785e4723510616d776862ddb4c08857a1bdb2 ]
+[ Upstream commit ad1081a0da2744141d12e94ff816ac91feb871ca ]
 
-HDMI_HPD_N_1V8 is connected to GPIO pin 0, not 1.
+If an ID of a branch's child is greater than current maximum, we should
+set new maximum to the child's ID, instead of its parent's.
 
-This fixes HDMI hotplug/output detection.
-
-See https://datasheets.raspberrypi.com/cm/cm3-schematics.pdf
-
-Signed-off-by: Florian Klink <flokli@flokli.de>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20240715230311.685641-1-flokli@flokli.de
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Fixes: a54fe8a6cf66 ("ARM: dts: add Raspberry Pi Compute Module 3 and IO board")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: 2dc66a5ab2c6 ("clk: rockchip: rk3588: fix CLK_NR_CLKS usage")
+Signed-off-by: Yao Zi <ziyao@disroot.org>
+Link: https://lore.kernel.org/r/20240912133204.29089-2-ziyao@disroot.org
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/broadcom/bcm2837-rpi-cm3-io3.dts | 2 +-
+ drivers/clk/rockchip/clk.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/broadcom/bcm2837-rpi-cm3-io3.dts b/arch/arm/boot/dts/broadcom/bcm2837-rpi-cm3-io3.dts
-index 72d26d130efaa..85f54fa595aa8 100644
---- a/arch/arm/boot/dts/broadcom/bcm2837-rpi-cm3-io3.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm2837-rpi-cm3-io3.dts
-@@ -77,7 +77,7 @@
- };
+diff --git a/drivers/clk/rockchip/clk.c b/drivers/clk/rockchip/clk.c
+index 2fa7253c73b2c..88629a9abc9c9 100644
+--- a/drivers/clk/rockchip/clk.c
++++ b/drivers/clk/rockchip/clk.c
+@@ -439,7 +439,7 @@ unsigned long rockchip_clk_find_max_clk_id(struct rockchip_clk_branch *list,
+ 		if (list->id > max)
+ 			max = list->id;
+ 		if (list->child && list->child->id > max)
+-			max = list->id;
++			max = list->child->id;
+ 	}
  
- &hdmi {
--	hpd-gpios = <&expgpio 1 GPIO_ACTIVE_LOW>;
-+	hpd-gpios = <&expgpio 0 GPIO_ACTIVE_LOW>;
- 	power-domains = <&power RPI_POWER_DOMAIN_HDMI>;
- 	status = "okay";
- };
+ 	return max;
 -- 
 2.43.0
 
