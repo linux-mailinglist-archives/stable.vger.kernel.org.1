@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-88661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623239B26F0
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:44:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 634049B2810
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:53:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 271B8282581
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:44:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC0D2B2110F
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF20718E354;
-	Mon, 28 Oct 2024 06:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E4518F2D8;
+	Mon, 28 Oct 2024 06:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PnpM+k7m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2inBFvG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC1D18E779;
-	Mon, 28 Oct 2024 06:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D51118E368;
+	Mon, 28 Oct 2024 06:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097837; cv=none; b=j6gU9jVlje2Z/E31XdrbKgntmyxOSW1q4pL4djtN+e95QxzC7C9/NE72Z1oFl4i8AP1iGyudJYyNMS6+Y7Z3Ulqkd629TAUdTUGZDni8HakARbfk1sUh5Z6NUXPzpqRXRWQP43I5L2DPZBQIvezxObP+vxqwZ7ne4k3e5qdQB6w=
+	t=1730098413; cv=none; b=gS+tRrgho7oeerYkoe/0utZx7MZTU8oSefoXfl2QV9XDhXSBQW1wZKNUKpeFhpsfH8zEFL+HAqPlPTpvWYzajiblSjtOPIMW59dh6dT6eqSRN+fyIGxpjQeXwugrKGfA6im1pmvksay+7waGgsilgU5sWRgaaobPLaqPepHkAro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097837; c=relaxed/simple;
-	bh=dBzZx1wITAc54GpB65+c6eQmygu1ya4I2/33tDtqdDo=;
+	s=arc-20240116; t=1730098413; c=relaxed/simple;
+	bh=UWeaIFBhrfTWww6R6OQg/bzI2Jc63iGINTDckm2UD2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KS2F2okTvdf92Bd6IvL0GQXJx9BIOM+L4+x3jz4M3DkywFzmu5rY6/1t1NIMp3NzE3wLNAD94CMxqnXkbR5gndMcOydS6ILv8eYxyfLG/Mbq4NuWJnOWFtTS6reOBS9OM20lB9UdU3zafOCx4+AnRnkX+bg1Uqp4O5uNQYpkC4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnpM+k7m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E25DC4CEE8;
-	Mon, 28 Oct 2024 06:43:57 +0000 (UTC)
+	 MIME-Version; b=pV7B5Q42Hva1yJmLfPqJmYdtM8YOlO61voOp8vvS1zdnD95DpDzKuu3HgSdp9K/w+CLnromdtAOfrzw2RubvDlj4D/HDIMWDZBMzRm8AVsLLw9DLzSwOnrpzszJATQ0ti+oMa6oaUhuXOTPY2pF+/4EMIMsxllhH5EMmNPSvvzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2inBFvG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C40C4CEC3;
+	Mon, 28 Oct 2024 06:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097837;
-	bh=dBzZx1wITAc54GpB65+c6eQmygu1ya4I2/33tDtqdDo=;
+	s=korg; t=1730098412;
+	bh=UWeaIFBhrfTWww6R6OQg/bzI2Jc63iGINTDckm2UD2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PnpM+k7mh8ZjrDlArbeJqM6zc6v62ld3GoFu+NN5o0DQuEumK63iyS0pNAhBoSqHg
-	 8CvFTACWjJZf/BYEHRVkLat6v6tchhl9H8b+dKauNFiYJqSKMPZmSPmwyEVBX56RfG
-	 zNYJA7MyuA6YJ57GMrhNqjKAGscZjCuSFtnR+QYA=
+	b=v2inBFvGxe1amNaR72dTAQyw6o1Z9jTYqOlSSiUWHXQdktbesWCSIhSxhIM8yUB29
+	 OTH5dfjKWuNG1FK2Je5VyTd2yBYqQco5pT5AFF04xP6cq4QfppOxd0KT2UK/Dly2qw
+	 P/oMzsBuvxHR9LFk+zKDBOPmdCp2a33M1RKe3uCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Hou Tao <houtao1@huawei.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 142/208] fsl/fman: Save device references taken in mac_probe()
+Subject: [PATCH 6.11 180/261] bpf: Add the missing BPF_LINK_TYPE invocation for sockmap
 Date: Mon, 28 Oct 2024 07:25:22 +0100
-Message-ID: <20241028062310.130358813@linuxfoundation.org>
+Message-ID: <20241028062316.517508516@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit efeddd552ec6767e4c8884caa516ac80b65f8823 ]
+[ Upstream commit c2f803052bc7a7feb2e03befccc8e49b6ff1f5f5 ]
 
-In mac_probe() there are calls to of_find_device_by_node() which takes
-references to of_dev->dev. These references are not saved and not released
-later on error path in mac_probe() and in mac_remove().
+There is an out-of-bounds read in bpf_link_show_fdinfo() for the sockmap
+link fd. Fix it by adding the missing BPF_LINK_TYPE invocation for
+sockmap link
 
-Add new fields into mac_device structure to save references taken for
-future use in mac_probe() and mac_remove().
+Also add comments for bpf_link_type to prevent missing updates in the
+future.
 
-This is a preparation for further reference leaks fix.
-
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 1dec67e0d9fb ("fsl/fman: Fix refcount handling of fman-related devices")
+Fixes: 699c23f02c65 ("bpf: Add bpf_link support for sk_msg and sk_skb progs")
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241024013558.1135167-2-houtao@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fman/mac.c | 6 ++++--
- drivers/net/ethernet/freescale/fman/mac.h | 6 +++++-
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ include/linux/bpf_types.h      | 1 +
+ include/uapi/linux/bpf.h       | 3 +++
+ tools/include/uapi/linux/bpf.h | 3 +++
+ 3 files changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/fman/mac.c b/drivers/net/ethernet/freescale/fman/mac.c
-index 9767586b4eb32..9b863db0bf087 100644
---- a/drivers/net/ethernet/freescale/fman/mac.c
-+++ b/drivers/net/ethernet/freescale/fman/mac.c
-@@ -197,6 +197,7 @@ static int mac_probe(struct platform_device *_of_dev)
- 		err = -EINVAL;
- 		goto _return_of_node_put;
- 	}
-+	mac_dev->fman_dev = &of_dev->dev;
+diff --git a/include/linux/bpf_types.h b/include/linux/bpf_types.h
+index 9f2a6b83b49e1..fa78f49d4a9a6 100644
+--- a/include/linux/bpf_types.h
++++ b/include/linux/bpf_types.h
+@@ -146,6 +146,7 @@ BPF_LINK_TYPE(BPF_LINK_TYPE_XDP, xdp)
+ BPF_LINK_TYPE(BPF_LINK_TYPE_NETFILTER, netfilter)
+ BPF_LINK_TYPE(BPF_LINK_TYPE_TCX, tcx)
+ BPF_LINK_TYPE(BPF_LINK_TYPE_NETKIT, netkit)
++BPF_LINK_TYPE(BPF_LINK_TYPE_SOCKMAP, sockmap)
+ #endif
+ #ifdef CONFIG_PERF_EVENTS
+ BPF_LINK_TYPE(BPF_LINK_TYPE_PERF_EVENT, perf)
+diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+index fea4bca4066c1..b44b3b6c6a8f4 100644
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -1121,6 +1121,9 @@ enum bpf_attach_type {
  
- 	/* Get the FMan cell-index */
- 	err = of_property_read_u32(dev_node, "cell-index", &val);
-@@ -208,7 +209,7 @@ static int mac_probe(struct platform_device *_of_dev)
- 	/* cell-index 0 => FMan id 1 */
- 	fman_id = (u8)(val + 1);
+ #define MAX_BPF_ATTACH_TYPE __MAX_BPF_ATTACH_TYPE
  
--	priv->fman = fman_bind(&of_dev->dev);
-+	priv->fman = fman_bind(mac_dev->fman_dev);
- 	if (!priv->fman) {
- 		dev_err(dev, "fman_bind(%pOF) failed\n", dev_node);
- 		err = -ENODEV;
-@@ -284,8 +285,9 @@ static int mac_probe(struct platform_device *_of_dev)
- 			err = -EINVAL;
- 			goto _return_of_node_put;
- 		}
-+		mac_dev->fman_port_devs[i] = &of_dev->dev;
++/* Add BPF_LINK_TYPE(type, name) in bpf_types.h to keep bpf_link_type_strs[]
++ * in sync with the definitions below.
++ */
+ enum bpf_link_type {
+ 	BPF_LINK_TYPE_UNSPEC = 0,
+ 	BPF_LINK_TYPE_RAW_TRACEPOINT = 1,
+diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
+index 35bcf52dbc652..cf9b43b872f9d 100644
+--- a/tools/include/uapi/linux/bpf.h
++++ b/tools/include/uapi/linux/bpf.h
+@@ -1121,6 +1121,9 @@ enum bpf_attach_type {
  
--		mac_dev->port[i] = fman_port_bind(&of_dev->dev);
-+		mac_dev->port[i] = fman_port_bind(mac_dev->fman_port_devs[i]);
- 		if (!mac_dev->port[i]) {
- 			dev_err(dev, "dev_get_drvdata(%pOF) failed\n",
- 				dev_node);
-diff --git a/drivers/net/ethernet/freescale/fman/mac.h b/drivers/net/ethernet/freescale/fman/mac.h
-index fe747915cc737..8b5b43d50f8ef 100644
---- a/drivers/net/ethernet/freescale/fman/mac.h
-+++ b/drivers/net/ethernet/freescale/fman/mac.h
-@@ -19,12 +19,13 @@
- struct fman_mac;
- struct mac_priv_s;
+ #define MAX_BPF_ATTACH_TYPE __MAX_BPF_ATTACH_TYPE
  
-+#define PORT_NUM 2
- struct mac_device {
- 	void __iomem		*vaddr;
- 	struct device		*dev;
- 	struct resource		*res;
- 	u8			 addr[ETH_ALEN];
--	struct fman_port	*port[2];
-+	struct fman_port	*port[PORT_NUM];
- 	struct phylink		*phylink;
- 	struct phylink_config	phylink_config;
- 	phy_interface_t		phy_if;
-@@ -52,6 +53,9 @@ struct mac_device {
- 
- 	struct fman_mac		*fman_mac;
- 	struct mac_priv_s	*priv;
-+
-+	struct device		*fman_dev;
-+	struct device		*fman_port_devs[PORT_NUM];
- };
- 
- static inline struct mac_device
++/* Add BPF_LINK_TYPE(type, name) in bpf_types.h to keep bpf_link_type_strs[]
++ * in sync with the definitions below.
++ */
+ enum bpf_link_type {
+ 	BPF_LINK_TYPE_UNSPEC = 0,
+ 	BPF_LINK_TYPE_RAW_TRACEPOINT = 1,
 -- 
 2.43.0
 
