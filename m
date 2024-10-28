@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-88969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9A849B2844
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:55:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD909B283D
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:55:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBB061C2165C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:55:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C86E4B20E82
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:55:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D2618E05D;
-	Mon, 28 Oct 2024 06:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A407824A3;
+	Mon, 28 Oct 2024 06:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DudSR2Kw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBAzuo58"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC05D2AF07;
-	Mon, 28 Oct 2024 06:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D0F2AF07;
+	Mon, 28 Oct 2024 06:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098531; cv=none; b=EvAF46N2bqcS4BQe/J+574+D56UWP/JEuZCcT5ylAbqWyokl69E14dKjhSBW0yNEOBubuEBcEonuECW8t/UbYJEAgFqMmtx4RlOyRO44s6OMB7mccrispQsGW0up+/WWSl+EVsJ2E/BUG91c2+CJuzaUOmrFvgmyK02PYpY/n+I=
+	t=1730098513; cv=none; b=sFLuXXtJetxDFAACgTn4Ic+6Oi5RqW3Sg+ydssLod9yDXAuCnFMOugjXCl+dc/NezOzK4DULllkJWbgKap9akU44oiCf+Y25hs7GT50ZTu69Cl50Iv7s5NMxPM0ED9t31vHduZa0nOPN40Qp3qchHc9enrb/32XBwdzmM9u54YE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098531; c=relaxed/simple;
-	bh=0eUDzmZGO9wBABBmpogxcI0Ml249NI+USiMOEQCD4Ns=;
+	s=arc-20240116; t=1730098513; c=relaxed/simple;
+	bh=ypXm9Ud+ZwbKuI4aKS5Dw50Jw71+SRm2ZiuXfOmahjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kmHGQ7KhguAnIT42SAPrLuniq/cdeMNjH6nuvI3WfSpzTUkFMlUchJWLIXOjrI5XhKRmiR6GmwKj5knJcWGRUpr1SgYL6jQiVWos2Jwl8TpuAXwAL56Ymmn+6yethyhgRowUbDaNprqXTITSSlOwt4cp2D+y00OI0gvnMXgQdpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DudSR2Kw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D868C4CEC3;
-	Mon, 28 Oct 2024 06:55:31 +0000 (UTC)
+	 MIME-Version; b=NwcSUy9PmbhyAr3xIHs3k/ctIEQn8b72p6Ifkq+hfM5doagX8prFC1I0jtD4/GISv2Bf6gZZWU2soGeZURcnLDi4qg5zcw0HR+l+gv7bFp477NUt8j4s3PXTK2of0LsLLpclsqZ87R7z4M1J4TYO62M0FSbCudj/gDVFFtzE9jE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HBAzuo58; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C6BC4CEC3;
+	Mon, 28 Oct 2024 06:55:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098531;
-	bh=0eUDzmZGO9wBABBmpogxcI0Ml249NI+USiMOEQCD4Ns=;
+	s=korg; t=1730098513;
+	bh=ypXm9Ud+ZwbKuI4aKS5Dw50Jw71+SRm2ZiuXfOmahjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DudSR2KwF2jrUfI7bKKiqgESJOPzeUEyC1vXUNz0eQARQA9SmHp6LfEfynFiQg59f
-	 xhDZmtJBWZi0pjE6hkOrfWek7UDVs5uIi+SbLD1/WG58C04E4rmARLfRkJqIHADK2n
-	 fm4t7/8xSOClk54HWab82CSX5k6UCAKDisoVtM2Q=
+	b=HBAzuo58OZGVre+LxaA0cJbILU7sIZcAfWbTekGbCQJoExh/RlzjJy1+5H+bIGSA3
+	 I0LOnoLIQLdDonmyqyElrMED8QE7prQK+ZE7iLbaVitGfPTPcTJJB6dmZM1M8ntUgN
+	 Zwes4Rm8lPHIY93NQ6A4TckbK+OiWKsuEjMnkh/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.11 260/261] ACPI: PRM: Clean up guid type in struct prm_handler_info
-Date: Mon, 28 Oct 2024 07:26:42 +0100
-Message-ID: <20241028062318.600323300@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.11 261/261] ASoC: qcom: Select missing common Soundwire module code on SDM845
+Date: Mon, 28 Oct 2024 07:26:43 +0100
+Message-ID: <20241028062318.622277699@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
 References: <20241028062312.001273460@linuxfoundation.org>
@@ -68,56 +65,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 3d1c651272cf1df8aac7d9b6d92d836d27bed50f upstream.
+commit b930d8647869802a0d430aae6b1b05c3acb24a41 upstream.
 
-Clang 19 prints a warning when we pass &th->guid to efi_pa_va_lookup():
+SDM845 sound card driver uses qcom_snd_sdw_startup() from the common
+Soundwire module, so select it to fix build failures:
 
-drivers/acpi/prmt.c:156:29: error: passing 1-byte aligned argument to
-4-byte aligned parameter 1 of 'efi_pa_va_lookup' may result in an
-unaligned pointer access [-Werror,-Walign-mismatch]
-  156 |                         (void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
-      |                                                  ^
+  ERROR: modpost: "qcom_snd_sdw_startup" [sound/soc/qcom/snd-soc-sdm845.ko] undefined!
 
-The problem is that efi_pa_va_lookup() takes a efi_guid_t and &th->guid
-is a regular guid_t.  The difference between the two types is the
-alignment.  efi_guid_t is a typedef.
-
-	typedef guid_t efi_guid_t __aligned(__alignof__(u32));
-
-It's possible that this a bug in Clang 19.  Even though the alignment of
-&th->guid is not explicitly specified, it will still end up being aligned
-at 4 or 8 bytes.
-
-Anyway, as Ard points out, it's cleaner to change guid to efi_guid_t type
-and that also makes the warning go away.
-
-Fixes: 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM handler and context")
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Suggested-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://patch.msgid.link/3777d71b-9e19-45f4-be4e-17bf4fa7a834@stanley.mountain
-[ rjw: Subject edit ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: d0e806b0cc62 ("ASoC: qcom: sdm845: add missing soundwire runtime stream alloc")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20241012100957.129103-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/prmt.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/qcom/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/acpi/prmt.c
-+++ b/drivers/acpi/prmt.c
-@@ -52,7 +52,7 @@ struct prm_context_buffer {
- static LIST_HEAD(prm_module_list);
- 
- struct prm_handler_info {
--	guid_t guid;
-+	efi_guid_t guid;
- 	efi_status_t (__efiapi *handler_addr)(u64, void *);
- 	u64 static_data_buffer_addr;
- 	u64 acpi_param_buffer_addr;
+--- a/sound/soc/qcom/Kconfig
++++ b/sound/soc/qcom/Kconfig
+@@ -157,6 +157,7 @@ config SND_SOC_SDM845
+ 	depends on COMMON_CLK
+ 	select SND_SOC_QDSP6
+ 	select SND_SOC_QCOM_COMMON
++	select SND_SOC_QCOM_SDW
+ 	select SND_SOC_RT5663
+ 	select SND_SOC_MAX98927
+ 	imply SND_SOC_CROS_EC_CODEC
 
 
 
