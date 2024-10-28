@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-88335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F249B257B
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:31:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D9F39B26E9
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:43:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44B621C20F69
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:31:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 487B01F23E64
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD85F18D629;
-	Mon, 28 Oct 2024 06:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A33718E37F;
+	Mon, 28 Oct 2024 06:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbmpGuk5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZG/IWK9G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB8015B10D;
-	Mon, 28 Oct 2024 06:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3741615B10D;
+	Mon, 28 Oct 2024 06:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097099; cv=none; b=VfLKZ/i54KdYxWQulk2VH8WgQ4gpng6PQ0KhAlTulK4O3oIfXUicIye+qZdX+W2AQDv+4x9OgkYtc1dRoMgYzzIi7RJgeiHWbB84rfCxrEmZ+kXmvvnZOUhrSIvNsFUiY1ZFD6aVxhqfWGtZwD1350X5d6B60+h0RjBzs8tKyQw=
+	t=1730097824; cv=none; b=L6/uol4p/rC5eZSez33WoeAW2suNdy+52/qviyC2278BYjAxHgIcn/t8nTHbVQIlr1lZnAxi9nMyGNcuJGZD24CetSIQ0cTGheLkEl4a7RejE/wOishredYnc3VQ7n98E3cbeDxafttu9ZBKfsMvdLCm475xJ4f+mNddXY8Gr4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097099; c=relaxed/simple;
-	bh=9AZpJ8n94KusZ1rpejlXBF3ooo+HMB1xe4s+dTnK+RM=;
+	s=arc-20240116; t=1730097824; c=relaxed/simple;
+	bh=N1ITCPry7ETEQiqUWd1ZXfBqtIvCIN/xQwoHz9WMJXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ViE6voZWHaHEg2LK2LKeB1fjLqqEyNFxNOI552kzFdFyHwlDcERJ04CdCciljkaRVBU78w/yY6wgSPGn1eVwW1a3LDE54wSQLySXZL4KwozNBMvmuyvp1wftX55EARfuhBWEs6A3jpZ4C6ZlMVw2bkIEmyObd/0/hw+qpkuwIgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbmpGuk5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB2B4C4CEC7;
-	Mon, 28 Oct 2024 06:31:38 +0000 (UTC)
+	 MIME-Version; b=XH+Vcy1G+laGTIQHmklGN3uyWco5o8ddsQ1wzlBLdp43xSeeEjJ+gQtkXFyzbzzi1t/dOnslKvnGmz+KMKhPB/CAnqybRhi2fT9+ReL6RDS8ysd8Dz9VoT+hc1HRYwyVj6kFSnOn0WjmABjoF6un0e6KoU7mbVf7MgnjcRkJOnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZG/IWK9G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC95EC4CEC3;
+	Mon, 28 Oct 2024 06:43:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097099;
-	bh=9AZpJ8n94KusZ1rpejlXBF3ooo+HMB1xe4s+dTnK+RM=;
+	s=korg; t=1730097824;
+	bh=N1ITCPry7ETEQiqUWd1ZXfBqtIvCIN/xQwoHz9WMJXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fbmpGuk5UpA3MiwsbMdFeVWPgHDYCA+UmUCG9d3yWXeQHLmffzliD9GgO2H8L98d+
-	 w23HixW6547yLTakRrfORPjaj3l30MeeRZmh9GqbdZzZDMyQprGu6X8o/S/bayra0Z
-	 Q25nHlLrLBrQrNhClkdGvav/pnqt1D+IwQu7wrQI=
+	b=ZG/IWK9G3GjwHEyIwGgVP78kTBJaVq7BL2PVW6H/5zrm3ti7Hb0TQVr/zoqthA8Ho
+	 25GESHhHWoalO3y8BSB+1FcRIkIPuL55zKF951u5myt/vgQGhTKBFsjwJmMO6eJCyk
+	 rRUHaDxNNI7KWesykr62ItMNIiaa0zyUu4So2bOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Shenghao Yang <me@shenghaoyang.info>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 63/80] posix-clock: posix-clock: Fix unbalanced locking in pc_clock_settime()
+Subject: [PATCH 6.6 163/208] net: dsa: mv88e6xxx: support 4000ps cycle counter period
 Date: Mon, 28 Oct 2024 07:25:43 +0100
-Message-ID: <20241028062254.365037065@linuxfoundation.org>
+Message-ID: <20241028062310.643281527@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Shenghao Yang <me@shenghaoyang.info>
 
-[ Upstream commit 6e62807c7fbb3c758d233018caf94dfea9c65dbd ]
+[ Upstream commit 3e65ede526cf4f95636dbc835598d100c7668ab3 ]
 
-If get_clock_desc() succeeds, it calls fget() for the clockid's fd,
-and get the clk->rwsem read lock, so the error path should release
-the lock to make the lock balance and fput the clockid's fd to make
-the refcount balance and release the fd related resource.
+The MV88E6393X family of devices can run its cycle counter off
+an internal 250MHz clock instead of an external 125MHz one.
 
-However the below commit left the error path locked behind resulting in
-unbalanced locking. Check timespec64_valid_strict() before
-get_clock_desc() to fix it, because the "ts" is not changed
-after that.
+Add support for this cycle counter period by adding another set
+of coefficients and lowering the periodic cycle counter read interval
+to compensate for faster overflows at the increased frequency.
 
-Fixes: d8794ac20a29 ("posix-clock: Fix missing timespec64 check in pc_clock_settime()")
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Acked-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-[pabeni@redhat.com: fixed commit message typo]
+Otherwise, the PHC runs at 2x real time in userspace and cannot be
+synchronized.
+
+Fixes: de776d0d316f ("net: dsa: mv88e6xxx: add support for mv88e6393x family")
+Signed-off-by: Shenghao Yang <me@shenghaoyang.info>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/posix-clock.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/dsa/mv88e6xxx/ptp.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/time/posix-clock.c b/kernel/time/posix-clock.c
-index 8127673bfc45e..05e73d209aa87 100644
---- a/kernel/time/posix-clock.c
-+++ b/kernel/time/posix-clock.c
-@@ -290,6 +290,9 @@ static int pc_clock_settime(clockid_t id, const struct timespec64 *ts)
- 	struct posix_clock_desc cd;
- 	int err;
+diff --git a/drivers/net/dsa/mv88e6xxx/ptp.c b/drivers/net/dsa/mv88e6xxx/ptp.c
+index a62b4ce7ff61d..5980bb4ce43e0 100644
+--- a/drivers/net/dsa/mv88e6xxx/ptp.c
++++ b/drivers/net/dsa/mv88e6xxx/ptp.c
+@@ -40,7 +40,7 @@ static const struct mv88e6xxx_cc_coeffs mv88e6xxx_cc_10ns_coeffs = {
+ 	.cc_mult_dem = 3125ULL,
+ };
  
-+	if (!timespec64_valid_strict(ts))
-+		return -EINVAL;
+-/* Other families:
++/* Other families except MV88E6393X in internal clock mode:
+  * Raw timestamps are in units of 8-ns clock periods.
+  *
+  * clkadj = scaled_ppm * 8*2^28 / (10^6 * 2^16)
+@@ -55,6 +55,21 @@ static const struct mv88e6xxx_cc_coeffs mv88e6xxx_cc_8ns_coeffs = {
+ 	.cc_mult_dem = 15625ULL
+ };
+ 
++/* Family MV88E6393X using internal clock:
++ * Raw timestamps are in units of 4-ns clock periods.
++ *
++ * clkadj = scaled_ppm * 4*2^28 / (10^6 * 2^16)
++ * simplifies to
++ * clkadj = scaled_ppm * 2^8 / 5^6
++ */
++#define MV88E6XXX_CC_4NS_SHIFT 28
++static const struct mv88e6xxx_cc_coeffs mv88e6xxx_cc_4ns_coeffs = {
++	.cc_shift = MV88E6XXX_CC_4NS_SHIFT,
++	.cc_mult = 4 << MV88E6XXX_CC_4NS_SHIFT,
++	.cc_mult_num = 1 << 8,
++	.cc_mult_dem = 15625ULL
++};
 +
- 	err = get_clock_desc(id, &cd);
- 	if (err)
- 		return err;
-@@ -299,9 +302,6 @@ static int pc_clock_settime(clockid_t id, const struct timespec64 *ts)
- 		goto out;
+ #define TAI_EVENT_WORK_INTERVAL msecs_to_jiffies(100)
+ 
+ #define cc_to_chip(cc) container_of(cc, struct mv88e6xxx_chip, tstamp_cc)
+@@ -110,6 +125,8 @@ mv88e6xxx_cc_coeff_get(struct mv88e6xxx_chip *chip)
  	}
  
--	if (!timespec64_valid_strict(ts))
--		return -EINVAL;
--
- 	if (cd.clk->ops.clock_settime)
- 		err = cd.clk->ops.clock_settime(cd.clk, ts);
- 	else
+ 	switch (period_ps) {
++	case 4000:
++		return &mv88e6xxx_cc_4ns_coeffs;
+ 	case 8000:
+ 		return &mv88e6xxx_cc_8ns_coeffs;
+ 	case 10000:
+@@ -479,10 +496,10 @@ static u64 mv88e6xxx_ptp_clock_read(const struct cyclecounter *cc)
+ 	return 0;
+ }
+ 
+-/* With a 125MHz input clock, the 32-bit timestamp counter overflows in ~34.3
++/* With a 250MHz input clock, the 32-bit timestamp counter overflows in ~17.2
+  * seconds; this task forces periodic reads so that we don't miss any.
+  */
+-#define MV88E6XXX_TAI_OVERFLOW_PERIOD (HZ * 16)
++#define MV88E6XXX_TAI_OVERFLOW_PERIOD (HZ * 8)
+ static void mv88e6xxx_ptp_overflow_check(struct work_struct *work)
+ {
+ 	struct delayed_work *dw = to_delayed_work(work);
 -- 
 2.43.0
 
