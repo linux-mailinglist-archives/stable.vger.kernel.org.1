@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-88301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95DC39B2558
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EF629B25CE
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:35:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7E2D1C20F9E
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33D62280BEC
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 341DF18E049;
-	Mon, 28 Oct 2024 06:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9140418F2EF;
+	Mon, 28 Oct 2024 06:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFABQS+A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1n75o0a/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74A018CC1F;
-	Mon, 28 Oct 2024 06:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E7DF18F2C5;
+	Mon, 28 Oct 2024 06:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730096889; cv=none; b=Xpew0BCVXMQNLO+f/xCU4dZTxOOnDsFt2S+17Azks7ZEaWy/VAjzpqc6+CGWuI/MPkMiHVPiQrJknlGGvsZgwK1qLHdn4kn3/gzSuvpXSkGf+xdszozu0PHB2XsiV1lpD+gvGMlC9bSPYNwXkbGSk/mRTVvlePT2bzx3QU4LKR4=
+	t=1730097245; cv=none; b=bAgae8/SMepafDnN/phk3qQNQZnuFfwZ+v5gDdmwpRI6VT46ZBeXaFrmKsEEiWIGCbSnuassi3DBd2HPvWDxVpEXQx3PAUfWfwYWjWXIS2tDUxl6Pcu7mtM3WxzFMf32SjhFGBn1ovQGi+/kh5f2e6Y3khYgpk3m1LNapHnwWVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730096889; c=relaxed/simple;
-	bh=2Mp+f1Ue9vbC1lqLZlvzi9g6eMK5Qw7gD5HRmHP3IVA=;
+	s=arc-20240116; t=1730097245; c=relaxed/simple;
+	bh=HPBP/lznW4bHmralzpO83mQtJG8Gqd7ZjoQbnNryO84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WgmPBh4XxrMDJ69NlNIHvFgoxfxNCmMc2g9IGhWEMEebOtk5bv5T97EsbKdGexcptPgAls5SVNSnWKT0BKLCR7jpbxo5ypCsP26uMIWUhNA2i2fGKQnlHvyZfbGABzvCPnXa6SxR4mj1DahCxtOpuamIhMsHVNyJ14ZRiIyjX4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFABQS+A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A7EC4CEC3;
-	Mon, 28 Oct 2024 06:28:08 +0000 (UTC)
+	 MIME-Version; b=WAqi74Epp6JM3D8h7ze677hH596NFHqAwXbE1tX2OPb0ENJ/pXyzut/nid65kBSOD05ppg03w3LchSpJV2GCowKYXeVp5rhyLYqLdK/qOn75JkkhLPO+k5ieiivjK+Hk32ORKawcpNDfxsnjAZW1dcMuxL/kW2tqRZazjqn320Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1n75o0a/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B2FC4CEC7;
+	Mon, 28 Oct 2024 06:34:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730096888;
-	bh=2Mp+f1Ue9vbC1lqLZlvzi9g6eMK5Qw7gD5HRmHP3IVA=;
+	s=korg; t=1730097244;
+	bh=HPBP/lznW4bHmralzpO83mQtJG8Gqd7ZjoQbnNryO84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lFABQS+APyC8fK1+cJ+f2hcclMm/Uc453egPS4wGSFC4n+x4alF4yWSbJ1S5lkGiv
-	 v+kqKezNkEAZCJDR8KtueUWmNY5m1NnTTGzwykOqDShDMNYTxe/15T8ynrtEWunTH8
-	 80k0ELagodKNIomxLFE7lP+9iHvwdOVAi2+Es5Qc=
+	b=1n75o0a/tcAW2FREFgKwiGN77HvpzslJiIIFASdKJSqjsBgNqH0BepJ9YfRVpnWmW
+	 xQpxUju/a0zxyesRTRw81ELUtu3Wk514S+WPlXWnYwDkrHUH8PlfTmDsLO1/m3JVdZ
+	 nc8Nvj2hfoX0gqjO/NrR2gcNhV13qQCfm7h6/jwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Chandramohan Akula <chandramohan.akula@broadcom.com>,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Wang Hai <wanghai38@huawei.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 03/80] RDMA/bnxt_re: Fix incorrect AVID type in WQE structure
+Subject: [PATCH 6.1 046/137] scsi: target: core: Fix null-ptr-deref in target_alloc_device()
 Date: Mon, 28 Oct 2024 07:24:43 +0100
-Message-ID: <20241028062252.711491268@linuxfoundation.org>
+Message-ID: <20241028062300.015037350@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,49 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit 9ab20f76ae9fad55ebaf36bdff04aea1c2552374 ]
+[ Upstream commit fca6caeb4a61d240f031914413fcc69534f6dc03 ]
 
-Driver uses internal data structure to construct WQE frame.
-It used avid type as u16 which can accommodate up to 64K AVs.
-When outstanding AVID crosses 64K, driver truncates AVID and
-hence it uses incorrect AVID to WR. This leads to WR failure
-due to invalid AV ID and QP is moved to error state with reason
-set to 19 (INVALID AVID). When RDMA CM path is used, this issue
-hits QP1 and it is moved to error state
+There is a null-ptr-deref issue reported by KASAN:
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Link: https://patch.msgid.link/r/1726715161-18941-3-git-send-email-selvin.xavier@broadcom.com
-Reviewed-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Reviewed-by: Chandramohan Akula <chandramohan.akula@broadcom.com>
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+BUG: KASAN: null-ptr-deref in target_alloc_device+0xbc4/0xbe0 [target_core_mod]
+...
+ kasan_report+0xb9/0xf0
+ target_alloc_device+0xbc4/0xbe0 [target_core_mod]
+ core_dev_setup_virtual_lun0+0xef/0x1f0 [target_core_mod]
+ target_core_init_configfs+0x205/0x420 [target_core_mod]
+ do_one_initcall+0xdd/0x4e0
+...
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+In target_alloc_device(), if allocing memory for dev queues fails, then
+dev will be freed by dev->transport->free_device(), but dev->transport
+is not initialized at that time, which will lead to a null pointer
+reference problem.
+
+Fixing this bug by freeing dev with hba->backend->ops->free_device().
+
+Fixes: 1526d9f10c61 ("scsi: target: Make state_list per CPU")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Link: https://lore.kernel.org/r/20241011113444.40749-1-wanghai38@huawei.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.h | 2 +-
+ drivers/target/target_core_device.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-index 4f1a845f9be6c..57a3dae87f659 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-@@ -169,7 +169,7 @@ struct bnxt_qplib_swqe {
- 			};
- 			u32		q_key;
- 			u32		dst_qp;
--			u16		avid;
-+			u32		avid;
- 		} send;
+diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
+index 13558cbd9b82e..7be48bfbd42e4 100644
+--- a/drivers/target/target_core_device.c
++++ b/drivers/target/target_core_device.c
+@@ -733,7 +733,7 @@ struct se_device *target_alloc_device(struct se_hba *hba, const char *name)
  
- 		/* Send Raw Ethernet and QP1 */
+ 	dev->queues = kcalloc(nr_cpu_ids, sizeof(*dev->queues), GFP_KERNEL);
+ 	if (!dev->queues) {
+-		dev->transport->free_device(dev);
++		hba->backend->ops->free_device(dev);
+ 		return NULL;
+ 	}
+ 
 -- 
 2.43.0
 
