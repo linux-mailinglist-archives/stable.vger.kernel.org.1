@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-88691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C69C59B2711
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:45:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CED99B2825
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:54:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E31B1F247FA
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:45:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0961B21165
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:54:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF1E18EFD6;
-	Mon, 28 Oct 2024 06:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7871718E03D;
+	Mon, 28 Oct 2024 06:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O4GfYUr9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0aU5m4/I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF32C2AF07;
-	Mon, 28 Oct 2024 06:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E042AF07;
+	Mon, 28 Oct 2024 06:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097904; cv=none; b=Mc8cQk/xqzuuFrDF7BvmngBnbp3bmdCuGazJkcRlKY9AfUZcyZxpXUxR+7ffLifKVLLfDqaL8b4iLYvFJ2WT3Zvl0llOSXF/I/NpYA507oOYS47vbY62dNl2qLKmUPDU3VgrpaZkB2i1uzTuAZWsUdqzOBQlYXziNSkAXl50SvY=
+	t=1730098462; cv=none; b=R7A4BRZ9ibaRrh9hQiw0wVMmr5isyoD2KX2tlxFdRhTwoCGiT+s15i0Z1KcYkzQQ5nqAsPm5tLq3YgFT9021lBWxBa1Lt7vsLFlV7Gw3fn1FTl1ewKVY+6iYTkuztKiDh6Vloh4+EQdfhGRqGFpCdGxr5HhJBH60n9F8gfq+XPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097904; c=relaxed/simple;
-	bh=SiD7FJhfgW+qhc7xzHxZ4BiFPXIgKHALW5X5uO4qjQU=;
+	s=arc-20240116; t=1730098462; c=relaxed/simple;
+	bh=SuTpHmX6G3XYhQztPJVPFVGiKEM88DsUP9VOcJhPk/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YJWJKClFCFPLH5rWPJtvlFQYiOiH0anzYoPKjmgELSYTCVJXTOkSU5yeJWJ5vh0uNe5Nq8RnqIrklzFh034EvP3pDRRDFW6Xkk23XMBI+8O6JK1+UtJDkmHziWLa+5nrQb89CJI0BUmYlNGRDSAJAqfv7PIrLRJOGtvLt3RzzgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O4GfYUr9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB29C4CEC3;
-	Mon, 28 Oct 2024 06:45:04 +0000 (UTC)
+	 MIME-Version; b=VbVYk0Yql66HUZhlfwYy+uF53LAvuK015uVGkAn5ld/XwiYn0L77uDFKvNYvotktQe5Wag8dwKfrwL7UvbNwBcbT2/epWhamS3EoW8U8hKr8+hcYXgckeAOuP6EewHrMFVg/+eGeT5rGAUu2n3AeOdWUqLTHjaDlD+OH7Y4FYPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0aU5m4/I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A52C4CEC3;
+	Mon, 28 Oct 2024 06:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097904;
-	bh=SiD7FJhfgW+qhc7xzHxZ4BiFPXIgKHALW5X5uO4qjQU=;
+	s=korg; t=1730098462;
+	bh=SuTpHmX6G3XYhQztPJVPFVGiKEM88DsUP9VOcJhPk/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O4GfYUr9aSNewyDeysiYMyizW0pvLHlLeMf1fB3Yb58t8qJ7rENWQ97mei4GhzfGS
-	 TVVgD51OiRkcczNCNJZWpgELNWodS4/vsUUTOWsN7/qjHJjEal2CKF3K+JuUz1NYnt
-	 0YyO4RWvdvmWCC+ATldKFBfi38Kc1I1NGp7G7Y8s=
+	b=0aU5m4/IdTnDAfzdSl3VYTE3ZbZUZaZpza2FgFbI0pnbivdyysyY98yJgQO/0sVSb
+	 lF+f70UKOn2Yjh5erPU+ciBqu9V70x0hG1GgWyMKX/ksduixYZliVo5bl29xDRBtN2
+	 PcaGoaiyN3ZfxkShroj8ij5RY+taAN1b1ZTluSvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xinyu Zhang <xizhang@purestorage.com>,
-	Uday Shankar <ushankar@purestorage.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 199/208] block: fix sanity checks in blk_rq_map_user_bvec
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 237/261] fgraph: Change the name of cpuhp state to "fgraph:online"
 Date: Mon, 28 Oct 2024 07:26:19 +0100
-Message-ID: <20241028062311.538282727@linuxfoundation.org>
+Message-ID: <20241028062318.058301006@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xinyu Zhang <xizhang@purestorage.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 2ff949441802a8d076d9013c7761f63e8ae5a9bd upstream.
+[ Upstream commit a574e7f80e86c740e241c762923f50077b2c2a30 ]
 
-blk_rq_map_user_bvec contains a check bytes + bv->bv_len > nr_iter which
-causes unnecessary failures in NVMe passthrough I/O, reproducible as
-follows:
+The cpuhp state name given to cpuhp_setup_state() is "fgraph_idle_init"
+which doesn't really conform to the names that are used for cpu hotplug
+setups. Instead rename it to "fgraph:online" to be in line with other
+states.
 
-- register a 2 page, page-aligned buffer against a ring
-- use that buffer to do a 1 page io_uring NVMe passthrough read
-
-The second (i = 1) iteration of the loop in blk_rq_map_user_bvec will
-then have nr_iter == 1 page, bytes == 1 page, bv->bv_len == 1 page, so
-the check bytes + bv->bv_len > nr_iter will succeed, causing the I/O to
-fail. This failure is unnecessary, as when the check succeeds, it means
-we've checked the entire buffer that will be used by the request - i.e.
-blk_rq_map_user_bvec should complete successfully. Therefore, terminate
-the loop early and return successfully when the check bytes + bv->bv_len
-> nr_iter succeeds.
-
-While we're at it, also remove the check that all segments in the bvec
-are single-page. While this seems to be true for all users of the
-function, it doesn't appear to be required anywhere downstream.
-
-CC: stable@vger.kernel.org
-Signed-off-by: Xinyu Zhang <xizhang@purestorage.com>
-Co-developed-by: Uday Shankar <ushankar@purestorage.com>
-Signed-off-by: Uday Shankar <ushankar@purestorage.com>
-Fixes: 37987547932c ("block: extend functionality to map bvec iterator")
-Link: https://lore.kernel.org/r/20241023211519.4177873-1-ushankar@purestorage.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/20241024222944.473d88c5@rorschach.local.home
+Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
+Fixes: 2c02f7375e658 ("fgraph: Use CPU hotplug mechanism to initialize idle shadow stacks")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-map.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ kernel/trace/fgraph.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/block/blk-map.c
-+++ b/block/blk-map.c
-@@ -600,9 +600,7 @@ static int blk_rq_map_user_bvec(struct r
- 		if (nsegs >= nr_segs || bytes > UINT_MAX - bv->bv_len)
- 			goto put_bio;
- 		if (bytes + bv->bv_len > nr_iter)
--			goto put_bio;
--		if (bv->bv_offset + bv->bv_len > PAGE_SIZE)
--			goto put_bio;
-+			break;
+diff --git a/kernel/trace/fgraph.c b/kernel/trace/fgraph.c
+index cd1c2946018c8..69e226a48daa9 100644
+--- a/kernel/trace/fgraph.c
++++ b/kernel/trace/fgraph.c
+@@ -1255,7 +1255,7 @@ int register_ftrace_graph(struct fgraph_ops *gops)
+ 	guard(mutex)(&ftrace_lock);
  
- 		nsegs++;
- 		bytes += bv->bv_len;
+ 	if (!fgraph_initialized) {
+-		ret = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "fgraph_idle_init",
++		ret = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "fgraph:online",
+ 					fgraph_cpu_init, NULL);
+ 		if (ret < 0) {
+ 			pr_warn("fgraph: Error to init cpu hotplug support\n");
+-- 
+2.43.0
+
 
 
 
