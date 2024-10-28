@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5B569B27E3
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D711D9B25D1
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:35:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65BF128630C
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F32C280298
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:35:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E259818E748;
-	Mon, 28 Oct 2024 06:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB4418FC75;
+	Mon, 28 Oct 2024 06:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZMWajGTc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gooYz9PR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEA818DF7D;
-	Mon, 28 Oct 2024 06:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A94018FC67;
+	Mon, 28 Oct 2024 06:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098325; cv=none; b=jR5u45I7FcOWY1M3Rh2+XxlxQ+HSspke/grvyrbDs2LU3qf7CEIdDnG9vQvkycw+Hsu7Kf9d1MuabCFCwcaLIdDhdGaIJ+BTyaK5JsNLW0qBaoesW7rJPOkiqxzIpFnjmJBz28spRA6zwju4qhcn0f4RvJsje3cMz14vfDvv2hk=
+	t=1730097247; cv=none; b=V6FowA8H/IjIR2xtv0WiZYjbaxB1xLN+E98nk9YI3ctjiMTUW+FOfcbOEgpJaYCZWpaQEoU4ISus9eIeoohfMu+eJMLLw8veGbdvrfrDE0HO1NF5ye7stlTD4u9qzCq0700gguMPfU+iLTtKyQw9OrUHQY8/tg/+SVDoj2OD31c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098325; c=relaxed/simple;
-	bh=k4Ncvd0UzJxCI4voiD/Gheb5z3uvGvCFUVqyd0N9XQA=;
+	s=arc-20240116; t=1730097247; c=relaxed/simple;
+	bh=uUOBnS7jSR/TUR4uQc5bnHOyPz1WPy1oeMHy6XGnr1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y9SubrrnsUfJR/kq6/E6eh0CdvS9RYK+8YAZVco2/sAs48985r7kVuWaK295MHKCFF3IzQySmgejA/ZyazksJ5mhvtzkYkJGruJNuUaDnNyL6t9tl72B9gnQ4KQ5yLBi20FzGSeyLuPZxQ2ler2G6W3UP38SGdiIpNlojomFxoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZMWajGTc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0C4C4CEC3;
-	Mon, 28 Oct 2024 06:52:05 +0000 (UTC)
+	 MIME-Version; b=VbtKjLyiLJ6qrcRfnyalu9WXHX8ENY51M4It7xWfrutWmKjjBekeL0QcaGbB25ysdEqxAHU3TJ6HAqP2+p9AiiyrqVIJ8lORBqgiNHkNc1t3wJcIa4caYLfDK14vjKudrWmXZt9azL9EvpIQ/iSZsu3VRO6VrIok81mq7k5q/Pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gooYz9PR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0E9C4CEC7;
+	Mon, 28 Oct 2024 06:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098325;
-	bh=k4Ncvd0UzJxCI4voiD/Gheb5z3uvGvCFUVqyd0N9XQA=;
+	s=korg; t=1730097247;
+	bh=uUOBnS7jSR/TUR4uQc5bnHOyPz1WPy1oeMHy6XGnr1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZMWajGTctzwCtrnyquGYovOUCl5Ank+i9/Yg4SHI5EqTr5Gl4t758bSWEl5ACukgq
-	 nNbkdYOwgHW7Lw/KCOtrPYBn0TotllzS4hnV6/6fnz2jmGCRMIHonmwwsYkjdhs/Bd
-	 VPoHogztUwAS/ooTE4hvv6Dl8tUg9TWnRXpuA7pw=
+	b=gooYz9PRBtJlivVo+i3+Qjfl8kfs12W0CnKRw/OXAh7GI7t8QJeexQS03gdYvCnsP
+	 CMYNkQj7ci9cZNscOT5YITFr5K+8qRzWl80AS2BQFC1m1pNJpTnUEttf/1DEutEIjw
+	 9fcxMELU12BhXEs/7nDEyd290N3+0GaZdrjWOmJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eyal Birger <eyal.birger@gmail.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	David Howells <dhowells@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 141/261] xfrm: extract dst lookup parameters into a struct
-Date: Mon, 28 Oct 2024 07:24:43 +0100
-Message-ID: <20241028062315.575467604@linuxfoundation.org>
+Subject: [PATCH 6.1 047/137] smb: client: fix OOBs when building SMB2_IOCTL request
+Date: Mon, 28 Oct 2024 07:24:44 +0100
+Message-ID: <20241028062300.043368747@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,327 +63,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eyal Birger <eyal.birger@gmail.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit e509996b16728e37d5a909a5c63c1bd64f23b306 ]
+[ Upstream commit 1ab60323c5201bef25f2a3dc0ccc404d9aca77f1 ]
 
-Preparation for adding more fields to dst lookup functions without
-changing their signatures.
+When using encryption, either enforced by the server or when using
+'seal' mount option, the client will squash all compound request buffers
+down for encryption into a single iov in smb2_set_next_command().
 
-Signed-off-by: Eyal Birger <eyal.birger@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Stable-dep-of: b84697210343 ("xfrm: respect ip protocols rules criteria when performing dst lookups")
+SMB2_ioctl_init() allocates a small buffer (448 bytes) to hold the
+SMB2_IOCTL request in the first iov, and if the user passes an input
+buffer that is greater than 328 bytes, smb2_set_next_command() will
+end up writing off the end of @rqst->iov[0].iov_base as shown below:
+
+  mount.cifs //srv/share /mnt -o ...,seal
+  ln -s $(perl -e "print('a')for 1..1024") /mnt/link
+
+  BUG: KASAN: slab-out-of-bounds in
+  smb2_set_next_command.cold+0x1d6/0x24c [cifs]
+  Write of size 4116 at addr ffff8881148fcab8 by task ln/859
+
+  CPU: 1 UID: 0 PID: 859 Comm: ln Not tainted 6.12.0-rc3 #1
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
+  1.16.3-2.fc40 04/01/2014
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x5d/0x80
+   ? smb2_set_next_command.cold+0x1d6/0x24c [cifs]
+   print_report+0x156/0x4d9
+   ? smb2_set_next_command.cold+0x1d6/0x24c [cifs]
+   ? __virt_addr_valid+0x145/0x310
+   ? __phys_addr+0x46/0x90
+   ? smb2_set_next_command.cold+0x1d6/0x24c [cifs]
+   kasan_report+0xda/0x110
+   ? smb2_set_next_command.cold+0x1d6/0x24c [cifs]
+   kasan_check_range+0x10f/0x1f0
+   __asan_memcpy+0x3c/0x60
+   smb2_set_next_command.cold+0x1d6/0x24c [cifs]
+   smb2_compound_op+0x238c/0x3840 [cifs]
+   ? kasan_save_track+0x14/0x30
+   ? kasan_save_free_info+0x3b/0x70
+   ? vfs_symlink+0x1a1/0x2c0
+   ? do_symlinkat+0x108/0x1c0
+   ? __pfx_smb2_compound_op+0x10/0x10 [cifs]
+   ? kmem_cache_free+0x118/0x3e0
+   ? cifs_get_writable_path+0xeb/0x1a0 [cifs]
+   smb2_get_reparse_inode+0x423/0x540 [cifs]
+   ? __pfx_smb2_get_reparse_inode+0x10/0x10 [cifs]
+   ? rcu_is_watching+0x20/0x50
+   ? __kmalloc_noprof+0x37c/0x480
+   ? smb2_create_reparse_symlink+0x257/0x490 [cifs]
+   ? smb2_create_reparse_symlink+0x38f/0x490 [cifs]
+   smb2_create_reparse_symlink+0x38f/0x490 [cifs]
+   ? __pfx_smb2_create_reparse_symlink+0x10/0x10 [cifs]
+   ? find_held_lock+0x8a/0xa0
+   ? hlock_class+0x32/0xb0
+   ? __build_path_from_dentry_optional_prefix+0x19d/0x2e0 [cifs]
+   cifs_symlink+0x24f/0x960 [cifs]
+   ? __pfx_make_vfsuid+0x10/0x10
+   ? __pfx_cifs_symlink+0x10/0x10 [cifs]
+   ? make_vfsgid+0x6b/0xc0
+   ? generic_permission+0x96/0x2d0
+   vfs_symlink+0x1a1/0x2c0
+   do_symlinkat+0x108/0x1c0
+   ? __pfx_do_symlinkat+0x10/0x10
+   ? strncpy_from_user+0xaa/0x160
+   __x64_sys_symlinkat+0xb9/0xf0
+   do_syscall_64+0xbb/0x1d0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  RIP: 0033:0x7f08d75c13bb
+
+Reported-by: David Howells <dhowells@redhat.com>
+Fixes: e77fe73c7e38 ("cifs: we can not use small padding iovs together with encryption")
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/xfrm.h      | 26 +++++++++++++-------------
- net/ipv4/xfrm4_policy.c | 38 ++++++++++++++++----------------------
- net/ipv6/xfrm6_policy.c | 28 +++++++++++++---------------
- net/xfrm/xfrm_device.c  | 11 ++++++++---
- net/xfrm/xfrm_policy.c  | 35 +++++++++++++++++++++++------------
- 5 files changed, 73 insertions(+), 65 deletions(-)
+ fs/smb/client/smb2pdu.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index 54cef89f6c1ec..0f49f70dfd141 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -349,20 +349,23 @@ struct xfrm_if_cb {
- void xfrm_if_register_cb(const struct xfrm_if_cb *ifcb);
- void xfrm_if_unregister_cb(void);
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index 992ac7d20e5eb..9975711236b26 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -3131,6 +3131,15 @@ SMB2_ioctl_init(struct cifs_tcon *tcon, struct TCP_Server_Info *server,
+ 		return rc;
  
-+struct xfrm_dst_lookup_params {
-+	struct net *net;
-+	int tos;
-+	int oif;
-+	xfrm_address_t *saddr;
-+	xfrm_address_t *daddr;
-+	u32 mark;
-+};
+ 	if (indatalen) {
++		unsigned int len;
 +
- struct net_device;
- struct xfrm_type;
- struct xfrm_dst;
- struct xfrm_policy_afinfo {
- 	struct dst_ops		*dst_ops;
--	struct dst_entry	*(*dst_lookup)(struct net *net,
--					       int tos, int oif,
--					       const xfrm_address_t *saddr,
--					       const xfrm_address_t *daddr,
--					       u32 mark);
--	int			(*get_saddr)(struct net *net, int oif,
--					     xfrm_address_t *saddr,
--					     xfrm_address_t *daddr,
--					     u32 mark);
-+	struct dst_entry	*(*dst_lookup)(const struct xfrm_dst_lookup_params *params);
-+	int			(*get_saddr)(xfrm_address_t *saddr,
-+					     const struct xfrm_dst_lookup_params *params);
- 	int			(*fill_dst)(struct xfrm_dst *xdst,
- 					    struct net_device *dev,
- 					    const struct flowi *fl);
-@@ -1735,10 +1738,7 @@ static inline int xfrm_user_policy(struct sock *sk, int optname,
- }
- #endif
- 
--struct dst_entry *__xfrm_dst_lookup(struct net *net, int tos, int oif,
--				    const xfrm_address_t *saddr,
--				    const xfrm_address_t *daddr,
--				    int family, u32 mark);
-+struct dst_entry *__xfrm_dst_lookup(int family, const struct xfrm_dst_lookup_params *params);
- 
- struct xfrm_policy *xfrm_policy_alloc(struct net *net, gfp_t gfp);
- 
-diff --git a/net/ipv4/xfrm4_policy.c b/net/ipv4/xfrm4_policy.c
-index 0294fef577fab..ac1a28ef0c560 100644
---- a/net/ipv4/xfrm4_policy.c
-+++ b/net/ipv4/xfrm4_policy.c
-@@ -17,47 +17,41 @@
- #include <net/ip.h>
- #include <net/l3mdev.h>
- 
--static struct dst_entry *__xfrm4_dst_lookup(struct net *net, struct flowi4 *fl4,
--					    int tos, int oif,
--					    const xfrm_address_t *saddr,
--					    const xfrm_address_t *daddr,
--					    u32 mark)
-+static struct dst_entry *__xfrm4_dst_lookup(struct flowi4 *fl4,
-+					    const struct xfrm_dst_lookup_params *params)
- {
- 	struct rtable *rt;
- 
- 	memset(fl4, 0, sizeof(*fl4));
--	fl4->daddr = daddr->a4;
--	fl4->flowi4_tos = tos;
--	fl4->flowi4_l3mdev = l3mdev_master_ifindex_by_index(net, oif);
--	fl4->flowi4_mark = mark;
--	if (saddr)
--		fl4->saddr = saddr->a4;
--
--	rt = __ip_route_output_key(net, fl4);
-+	fl4->daddr = params->daddr->a4;
-+	fl4->flowi4_tos = params->tos;
-+	fl4->flowi4_l3mdev = l3mdev_master_ifindex_by_index(params->net,
-+							    params->oif);
-+	fl4->flowi4_mark = params->mark;
-+	if (params->saddr)
-+		fl4->saddr = params->saddr->a4;
-+
-+	rt = __ip_route_output_key(params->net, fl4);
- 	if (!IS_ERR(rt))
- 		return &rt->dst;
- 
- 	return ERR_CAST(rt);
- }
- 
--static struct dst_entry *xfrm4_dst_lookup(struct net *net, int tos, int oif,
--					  const xfrm_address_t *saddr,
--					  const xfrm_address_t *daddr,
--					  u32 mark)
-+static struct dst_entry *xfrm4_dst_lookup(const struct xfrm_dst_lookup_params *params)
- {
- 	struct flowi4 fl4;
- 
--	return __xfrm4_dst_lookup(net, &fl4, tos, oif, saddr, daddr, mark);
-+	return __xfrm4_dst_lookup(&fl4, params);
- }
- 
--static int xfrm4_get_saddr(struct net *net, int oif,
--			   xfrm_address_t *saddr, xfrm_address_t *daddr,
--			   u32 mark)
-+static int xfrm4_get_saddr(xfrm_address_t *saddr,
-+			   const struct xfrm_dst_lookup_params *params)
- {
- 	struct dst_entry *dst;
- 	struct flowi4 fl4;
- 
--	dst = __xfrm4_dst_lookup(net, &fl4, 0, oif, NULL, daddr, mark);
-+	dst = __xfrm4_dst_lookup(&fl4, params);
- 	if (IS_ERR(dst))
- 		return -EHOSTUNREACH;
- 
-diff --git a/net/ipv6/xfrm6_policy.c b/net/ipv6/xfrm6_policy.c
-index b1d81c4270ab3..fc3f5eec68985 100644
---- a/net/ipv6/xfrm6_policy.c
-+++ b/net/ipv6/xfrm6_policy.c
-@@ -23,23 +23,21 @@
- #include <net/ip6_route.h>
- #include <net/l3mdev.h>
- 
--static struct dst_entry *xfrm6_dst_lookup(struct net *net, int tos, int oif,
--					  const xfrm_address_t *saddr,
--					  const xfrm_address_t *daddr,
--					  u32 mark)
-+static struct dst_entry *xfrm6_dst_lookup(const struct xfrm_dst_lookup_params *params)
- {
- 	struct flowi6 fl6;
- 	struct dst_entry *dst;
- 	int err;
- 
- 	memset(&fl6, 0, sizeof(fl6));
--	fl6.flowi6_l3mdev = l3mdev_master_ifindex_by_index(net, oif);
--	fl6.flowi6_mark = mark;
--	memcpy(&fl6.daddr, daddr, sizeof(fl6.daddr));
--	if (saddr)
--		memcpy(&fl6.saddr, saddr, sizeof(fl6.saddr));
-+	fl6.flowi6_l3mdev = l3mdev_master_ifindex_by_index(params->net,
-+							   params->oif);
-+	fl6.flowi6_mark = params->mark;
-+	memcpy(&fl6.daddr, params->daddr, sizeof(fl6.daddr));
-+	if (params->saddr)
-+		memcpy(&fl6.saddr, params->saddr, sizeof(fl6.saddr));
- 
--	dst = ip6_route_output(net, NULL, &fl6);
-+	dst = ip6_route_output(params->net, NULL, &fl6);
- 
- 	err = dst->error;
- 	if (dst->error) {
-@@ -50,15 +48,14 @@ static struct dst_entry *xfrm6_dst_lookup(struct net *net, int tos, int oif,
- 	return dst;
- }
- 
--static int xfrm6_get_saddr(struct net *net, int oif,
--			   xfrm_address_t *saddr, xfrm_address_t *daddr,
--			   u32 mark)
-+static int xfrm6_get_saddr(xfrm_address_t *saddr,
-+			   const struct xfrm_dst_lookup_params *params)
- {
- 	struct dst_entry *dst;
- 	struct net_device *dev;
- 	struct inet6_dev *idev;
- 
--	dst = xfrm6_dst_lookup(net, 0, oif, NULL, daddr, mark);
-+	dst = xfrm6_dst_lookup(params);
- 	if (IS_ERR(dst))
- 		return -EHOSTUNREACH;
- 
-@@ -68,7 +65,8 @@ static int xfrm6_get_saddr(struct net *net, int oif,
- 		return -EHOSTUNREACH;
- 	}
- 	dev = idev->dev;
--	ipv6_dev_get_saddr(dev_net(dev), dev, &daddr->in6, 0, &saddr->in6);
-+	ipv6_dev_get_saddr(dev_net(dev), dev, &params->daddr->in6, 0,
-+			   &saddr->in6);
- 	dst_release(dst);
- 	return 0;
- }
-diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
-index 9a44d363ba620..fcd67fdfe79bd 100644
---- a/net/xfrm/xfrm_device.c
-+++ b/net/xfrm/xfrm_device.c
-@@ -269,6 +269,8 @@ int xfrm_dev_state_add(struct net *net, struct xfrm_state *x,
- 
- 	dev = dev_get_by_index(net, xuo->ifindex);
- 	if (!dev) {
-+		struct xfrm_dst_lookup_params params;
-+
- 		if (!(xuo->flags & XFRM_OFFLOAD_INBOUND)) {
- 			saddr = &x->props.saddr;
- 			daddr = &x->id.daddr;
-@@ -277,9 +279,12 @@ int xfrm_dev_state_add(struct net *net, struct xfrm_state *x,
- 			daddr = &x->props.saddr;
- 		}
- 
--		dst = __xfrm_dst_lookup(net, 0, 0, saddr, daddr,
--					x->props.family,
--					xfrm_smark_get(0, x));
-+		memset(&params, 0, sizeof(params));
-+		params.net = net;
-+		params.saddr = saddr;
-+		params.daddr = daddr;
-+		params.mark = xfrm_smark_get(0, x);
-+		dst = __xfrm_dst_lookup(x->props.family, &params);
- 		if (IS_ERR(dst))
- 			return (is_packet_offload) ? -EINVAL : 0;
- 
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index c56c61b0c12ef..1025b5b3a1dd6 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -267,10 +267,8 @@ static const struct xfrm_if_cb *xfrm_if_get_cb(void)
- 	return rcu_dereference(xfrm_if_cb);
- }
- 
--struct dst_entry *__xfrm_dst_lookup(struct net *net, int tos, int oif,
--				    const xfrm_address_t *saddr,
--				    const xfrm_address_t *daddr,
--				    int family, u32 mark)
-+struct dst_entry *__xfrm_dst_lookup(int family,
-+				    const struct xfrm_dst_lookup_params *params)
- {
- 	const struct xfrm_policy_afinfo *afinfo;
- 	struct dst_entry *dst;
-@@ -279,7 +277,7 @@ struct dst_entry *__xfrm_dst_lookup(struct net *net, int tos, int oif,
- 	if (unlikely(afinfo == NULL))
- 		return ERR_PTR(-EAFNOSUPPORT);
- 
--	dst = afinfo->dst_lookup(net, tos, oif, saddr, daddr, mark);
-+	dst = afinfo->dst_lookup(params);
- 
- 	rcu_read_unlock();
- 
-@@ -293,6 +291,7 @@ static inline struct dst_entry *xfrm_dst_lookup(struct xfrm_state *x,
- 						xfrm_address_t *prev_daddr,
- 						int family, u32 mark)
- {
-+	struct xfrm_dst_lookup_params params;
- 	struct net *net = xs_net(x);
- 	xfrm_address_t *saddr = &x->props.saddr;
- 	xfrm_address_t *daddr = &x->id.daddr;
-@@ -307,7 +306,14 @@ static inline struct dst_entry *xfrm_dst_lookup(struct xfrm_state *x,
- 		daddr = x->coaddr;
- 	}
- 
--	dst = __xfrm_dst_lookup(net, tos, oif, saddr, daddr, family, mark);
-+	params.net = net;
-+	params.saddr = saddr;
-+	params.daddr = daddr;
-+	params.tos = tos;
-+	params.oif = oif;
-+	params.mark = mark;
-+
-+	dst = __xfrm_dst_lookup(family, &params);
- 
- 	if (!IS_ERR(dst)) {
- 		if (prev_saddr != saddr)
-@@ -2440,15 +2446,15 @@ int __xfrm_sk_clone_policy(struct sock *sk, const struct sock *osk)
- }
- 
- static int
--xfrm_get_saddr(struct net *net, int oif, xfrm_address_t *local,
--	       xfrm_address_t *remote, unsigned short family, u32 mark)
-+xfrm_get_saddr(unsigned short family, xfrm_address_t *saddr,
-+	       const struct xfrm_dst_lookup_params *params)
- {
- 	int err;
- 	const struct xfrm_policy_afinfo *afinfo = xfrm_policy_get_afinfo(family);
- 
- 	if (unlikely(afinfo == NULL))
- 		return -EINVAL;
--	err = afinfo->get_saddr(net, oif, local, remote, mark);
-+	err = afinfo->get_saddr(saddr, params);
- 	rcu_read_unlock();
- 	return err;
- }
-@@ -2477,9 +2483,14 @@ xfrm_tmpl_resolve_one(struct xfrm_policy *policy, const struct flowi *fl,
- 			remote = &tmpl->id.daddr;
- 			local = &tmpl->saddr;
- 			if (xfrm_addr_any(local, tmpl->encap_family)) {
--				error = xfrm_get_saddr(net, fl->flowi_oif,
--						       &tmp, remote,
--						       tmpl->encap_family, 0);
-+				struct xfrm_dst_lookup_params params;
-+
-+				memset(&params, 0, sizeof(params));
-+				params.net = net;
-+				params.oif = fl->flowi_oif;
-+				params.daddr = remote;
-+				error = xfrm_get_saddr(tmpl->encap_family, &tmp,
-+						       &params);
- 				if (error)
- 					goto fail;
- 				local = &tmp;
++		if (WARN_ON_ONCE(smb3_encryption_required(tcon) &&
++				 (check_add_overflow(total_len - 1,
++						     ALIGN(indatalen, 8), &len) ||
++				  len > MAX_CIFS_SMALL_BUFFER_SIZE))) {
++			cifs_small_buf_release(req);
++			return -EIO;
++		}
+ 		/*
+ 		 * indatalen is usually small at a couple of bytes max, so
+ 		 * just allocate through generic pool
 -- 
 2.43.0
 
