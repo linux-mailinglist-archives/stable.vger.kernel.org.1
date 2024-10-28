@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-88318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 636DF9B256A
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C38B49B27ED
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:52:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 287D22821E1
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FF16B2110F
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:52:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE3018E34D;
-	Mon, 28 Oct 2024 06:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C389718DF7D;
+	Mon, 28 Oct 2024 06:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4hlGBBM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HKIFJW5Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A562A18E05D;
-	Mon, 28 Oct 2024 06:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812318837;
+	Mon, 28 Oct 2024 06:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730096927; cv=none; b=ICa7/dNBTOYhhyMCG8FN2mX6cTqa6rSpiba4quJ5pgvx9YyncKwOwoaHHD11eCE5caW9GOoswns39k7yWpn8jK0alUMghWMtQT03afp4RLeYH/EuE/dBnOjpGBm1yOUe7d2lN3dRNAaJdJrXBeN41aN6W4RdqusJ2t4c5cQpUKg=
+	t=1730098343; cv=none; b=jerz9z9hhiFCfz3CP7zwD6ES1UMKB2szAtpxSzAjINfx+4TIEcRQErKKMRgpYT5t94M8JVXoMXoC3sr+MnA3G4VdBFvRjOB7Fp+9gNjTZloWW30ldid6P7PK9N5oRxOm38bjMKu4gvQx/2Bee8HDHEgT2XEhXb+AikirWPusVNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730096927; c=relaxed/simple;
-	bh=uYUZZm2SaEgQea7FLjH+OO2GBecPGulA7E6RdLkYnj8=;
+	s=arc-20240116; t=1730098343; c=relaxed/simple;
+	bh=DSLMIBITShn+0TBF0ugID2Ki7F964EZPZFYkVK7kFJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cmiKxu8TrjOSk7GeRd/yTefUuUhUjTpWKGgmNWt2lkcG0qAZclKdq7yrG9AfUw8sMBP+fslHKlV2WhIjI55AkAIYXCI9EpjfLBDFVAJ6Aykec+aTutq73jEj6U4gganEaYhe7iRBUaFsqv5aBli/t698bhnrEx+tW6ZMeeKK7Mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4hlGBBM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01F66C4CEC3;
-	Mon, 28 Oct 2024 06:28:46 +0000 (UTC)
+	 MIME-Version; b=WXsH/fLgd11UUfDSigf1qk6xEs91slE+att+uISRVRQyLGb2L/3dJhXWMZerVqbHSjXH/KzfDIX0Ln+hTqhwm5EpAqCs7TJivvr7f9I0ucfIw6d1AQ174fzn7qmDvR7fX9fnqBV0yy3rqXFAmah7lxTCDoFpzIMKKYcJKZNzCPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HKIFJW5Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2324FC4CEC3;
+	Mon, 28 Oct 2024 06:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730096927;
-	bh=uYUZZm2SaEgQea7FLjH+OO2GBecPGulA7E6RdLkYnj8=;
+	s=korg; t=1730098343;
+	bh=DSLMIBITShn+0TBF0ugID2Ki7F964EZPZFYkVK7kFJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V4hlGBBMdQsDhQsacc4FMXTo99mE+1Ag7F2vcPqWs0Xj0FTDaFRoZ7SFLjaVDgle9
-	 2yiiqlKWGfJS/yfDFgWuJzbto0BTuVCzGOqcZPLmmPwk0AbGbj+AY7tbe0rr2/jUf6
-	 d/wvJiiadzHeQebrbApSSKq/aRpjAASNEvJd0U9E=
+	b=HKIFJW5Q+4J9VCdI3qg61qcSATpoAAaJHVfgrIh+6SS3RvcAtgszF7it9ZV67+KIy
+	 Tk2pxcR35C07swga1n+4ep++lU8Fr6mzlSmr1nv7qVxdjGa6Yaxa+DPUh/ipgW48ZI
+	 i9uKpXJAB1KchV83ifLYH1OFTdmSrsIe2W4SDFYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Klimov <alexey.klimov@linaro.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 48/80] ASoC: qcom: sm8250: add qrb4210-rb2-sndcard compatible string
+Subject: [PATCH 6.11 186/261] ASoC: rsnd: Fix probe failure on HiHope boards due to endpoint parsing
 Date: Mon, 28 Oct 2024 07:25:28 +0100
-Message-ID: <20241028062253.953262972@linuxfoundation.org>
+Message-ID: <20241028062316.675342489@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Klimov <alexey.klimov@linaro.org>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit b97bc0656a66f89f78098d4d72dc04fa9518ab11 ]
+[ Upstream commit 9b064d200aa8fee9d1d7ced05d8a617e45966715 ]
 
-Add "qcom,qrb4210-rb2-sndcard" to the list of recognizable
-devices.
+On the HiHope boards, we have a single port with a single endpoint defined
+as below:
+....
+        rsnd_port: port {
+                rsnd_endpoint: endpoint {
+                        remote-endpoint = <&dw_hdmi0_snd_in>;
 
-Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-Link: https://patch.msgid.link/20241002022015.867031-3-alexey.klimov@linaro.org
+                        dai-format = "i2s";
+                        bitclock-master = <&rsnd_endpoint>;
+                        frame-master = <&rsnd_endpoint>;
+
+                        playback = <&ssi2>;
+                };
+        };
+....
+
+With commit 547b02f74e4a ("ASoC: rsnd: enable multi Component support for
+Audio Graph Card/Card2"), support for multiple ports was added. This caused
+probe failures on HiHope boards, as the endpoint could not be retrieved due
+to incorrect device node pointers being used.
+
+This patch fixes the issue by updating the `rsnd_dai_of_node()` and
+`rsnd_dai_probe()` functions to use the correct device node pointers based
+on the port names ('port' or 'ports'). It ensures that the endpoint is
+properly parsed for both single and multi-port configurations, restoring
+compatibility with HiHope boards.
+
+Fixes: 547b02f74e4a ("ASoC: rsnd: enable multi Component support for Audio Graph Card/Card2")
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/20241010141432.716868-1-prabhakar.mahadev-lad.rj@bp.renesas.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/sm8250.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/sh/rcar/core.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/qcom/sm8250.c b/sound/soc/qcom/sm8250.c
-index feb6589171ca7..a38a741ace379 100644
---- a/sound/soc/qcom/sm8250.c
-+++ b/sound/soc/qcom/sm8250.c
-@@ -211,6 +211,7 @@ static int sm8250_platform_probe(struct platform_device *pdev)
- 
- static const struct of_device_id snd_sm8250_dt_match[] = {
- 	{.compatible = "qcom,sm8250-sndcard"},
-+	{.compatible = "qcom,qrb4210-rb2-sndcard"},
- 	{.compatible = "qcom,qrb5165-rb5-sndcard"},
- 	{}
- };
+diff --git a/sound/soc/sh/rcar/core.c b/sound/soc/sh/rcar/core.c
+index 63b3c8bf0fdef..eda8de2264395 100644
+--- a/sound/soc/sh/rcar/core.c
++++ b/sound/soc/sh/rcar/core.c
+@@ -1298,7 +1298,9 @@ static int rsnd_dai_of_node(struct rsnd_priv *priv, int *is_graph)
+ 		if (!of_node_name_eq(ports, "ports") &&
+ 		    !of_node_name_eq(ports, "port"))
+ 			continue;
+-		priv->component_dais[i] = of_graph_get_endpoint_count(ports);
++		priv->component_dais[i] =
++			of_graph_get_endpoint_count(of_node_name_eq(ports, "ports") ?
++						    ports : np);
+ 		nr += priv->component_dais[i];
+ 		i++;
+ 		if (i >= RSND_MAX_COMPONENT) {
+@@ -1510,7 +1512,8 @@ static int rsnd_dai_probe(struct rsnd_priv *priv)
+ 			if (!of_node_name_eq(ports, "ports") &&
+ 			    !of_node_name_eq(ports, "port"))
+ 				continue;
+-			for_each_endpoint_of_node(ports, dai_np) {
++			for_each_endpoint_of_node(of_node_name_eq(ports, "ports") ?
++						  ports : np, dai_np) {
+ 				__rsnd_dai_probe(priv, dai_np, dai_np, 0, dai_i);
+ 				if (!rsnd_is_gen1(priv) && !rsnd_is_gen2(priv)) {
+ 					rdai = rsnd_rdai_get(priv, dai_i);
 -- 
 2.43.0
 
