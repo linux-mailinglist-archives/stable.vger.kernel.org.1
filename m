@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-88785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10F0F9B277B
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:48:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAAC49B2669
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:39:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B10431F248B0
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:48:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1E9E1F2121F
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 235CC18D65C;
-	Mon, 28 Oct 2024 06:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57ED218F2CF;
+	Mon, 28 Oct 2024 06:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7Jxe6b3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L92kkh0n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43118837;
-	Mon, 28 Oct 2024 06:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139C518E743;
+	Mon, 28 Oct 2024 06:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098117; cv=none; b=sRh0h83WIR6Ezcb5j3h5yxxvtKgIEoT0/hITEAUQ96gLQTFJXqTbCsGpfYP4O5/+PWPfaO3dCuxcbbqSR7Jx62EnxnA4XZPUpgoZGnGawyGlC2cHIM9kJ/6+yZouOhZyqKwTxes3TGLO/yRZvTPDLxz0sIzLb0RPT4f7/985/no=
+	t=1730097562; cv=none; b=dFmwsqbkE7DJRYuMgcrgzfptW45AgwbyizaulJibGT62QIoVmK7WKsdB2JXeWQCAusnkJxIMxUVBpjqIJw7ioMQUQUBnJxuesP3N/I613iydc6tApy3FFlSZUtOeU4uH16pOj6aOdyrOwroW+BBjS1Ix4gPevewTXw81g/plPlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098117; c=relaxed/simple;
-	bh=zaz8JUkGDmW+EstlLit+I5j/1zpzG0IYb/0l/9PucdY=;
+	s=arc-20240116; t=1730097562; c=relaxed/simple;
+	bh=g/MntaLC9FW/hHVOcqasxsgoz1V58k5hMvIARZrnloQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrenEFtJIPjSIgY6NzVT7EG6Mm3TgRy9kCqRvRxgclmdIRzXWEJdD63rZ0soIjVWoRJoscwHq+q4Mp6WMPIG/fB9EtKwLS/AO4vDW1jCprHDuES/C9P7yeWHq4eiTuhHAoqZ+zEPnXy5Uhj6YFSrQII9Qh8pBASKteIzHf2sexk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7Jxe6b3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F0B6C4CEC3;
-	Mon, 28 Oct 2024 06:48:36 +0000 (UTC)
+	 MIME-Version; b=M9RdQ/XBqTmEqleS9BLQdaqXj3kKWuGpjM0DGNOWcJvRh1tqbalk0qnY6dVU00UWtnNgZHGCx88tIcHttxqHIzD1tSAbEx538otxDpne642Kc0PTI8y4qpLq8W/1orf378OPTj775kmxv3uWQ+h/c/9HXRg1bd6Xnp5veoHParY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L92kkh0n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A82E1C4CEC3;
+	Mon, 28 Oct 2024 06:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730098117;
-	bh=zaz8JUkGDmW+EstlLit+I5j/1zpzG0IYb/0l/9PucdY=;
+	s=korg; t=1730097562;
+	bh=g/MntaLC9FW/hHVOcqasxsgoz1V58k5hMvIARZrnloQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h7Jxe6b3ayWYsCTWkIX5LDIcIMNed4GWchWtxIhIU5ds9vxl+b7qu+E1n+ZWVIxHK
-	 UpAg5k/+OxecNSIRJkwT6AqLIPP1o2tnkPR/jscHvma7/rMNrw6H9331l2Ze4WbhnA
-	 M9VVEYYNbsBOV76HT6trApyMWQ8v4lK9l6FtY6Dg=
+	b=L92kkh0nPWJrizGieqJyUqCLpkNyNm9bX6Kw1cWnKo0B9gHXUVLi6+aeikEmxQutR
+	 PL+K/aXHNEzOVrAJJEfj9RrRBKRN6wv95jYpmqCClDaWJrOgNt1+1WLfI7n0B17yxb
+	 C0h9rDCkrxb51yLxKuOMuVFmbLIUWhXrO/IHAQUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Hai <wanghai38@huawei.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Justin Chen <justin.chen@broadcom.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 084/261] scsi: target: core: Fix null-ptr-deref in target_alloc_device()
-Date: Mon, 28 Oct 2024 07:23:46 +0100
-Message-ID: <20241028062314.137836212@linuxfoundation.org>
+Subject: [PATCH 6.6 047/208] firmware: arm_scmi: Queue in scmi layer for mailbox implementation
+Date: Mon, 28 Oct 2024 07:23:47 +0100
+Message-ID: <20241028062307.816879774@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
+References: <20241028062306.649733554@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Hai <wanghai38@huawei.com>
+From: Justin Chen <justin.chen@broadcom.com>
 
-[ Upstream commit fca6caeb4a61d240f031914413fcc69534f6dc03 ]
+[ Upstream commit da1642bc97c4ef67f347edcd493bd0a52f88777b ]
 
-There is a null-ptr-deref issue reported by KASAN:
+send_message() does not block in the MBOX implementation. This is
+because the mailbox layer has its own queue. However, this confuses
+the per xfer timeouts as they all start their timeout ticks in
+parallel.
 
-BUG: KASAN: null-ptr-deref in target_alloc_device+0xbc4/0xbe0 [target_core_mod]
-...
- kasan_report+0xb9/0xf0
- target_alloc_device+0xbc4/0xbe0 [target_core_mod]
- core_dev_setup_virtual_lun0+0xef/0x1f0 [target_core_mod]
- target_core_init_configfs+0x205/0x420 [target_core_mod]
- do_one_initcall+0xdd/0x4e0
-...
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Consider a case where the xfer timeout is 30ms and a SCMI transaction
+takes 25ms:
 
-In target_alloc_device(), if allocing memory for dev queues fails, then
-dev will be freed by dev->transport->free_device(), but dev->transport
-is not initialized at that time, which will lead to a null pointer
-reference problem.
+  | 0ms: Message #0 is queued in mailbox layer and sent out, then sits
+  |      at scmi_wait_for_message_response() with a timeout of 30ms
+  | 1ms: Message #1 is queued in mailbox layer but not sent out yet.
+  |      Since send_message() doesn't block, it also sits at
+  |      scmi_wait_for_message_response() with a timeout of 30ms
+  |  ...
+  | 25ms: Message #0 is completed, txdone is called and message #1 is sent
+  | 31ms: Message #1 times out since the count started at 1ms. Even though
+  |       it has only been inflight for 6ms.
 
-Fixing this bug by freeing dev with hba->backend->ops->free_device().
-
-Fixes: 1526d9f10c61 ("scsi: target: Make state_list per CPU")
-Signed-off-by: Wang Hai <wanghai38@huawei.com>
-Link: https://lore.kernel.org/r/20241011113444.40749-1-wanghai38@huawei.com
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 5c8a47a5a91d ("firmware: arm_scmi: Make scmi core independent of the transport type")
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Message-Id: <20241014160717.1678953-1-justin.chen@broadcom.com>
+Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
+Tested-by: Cristian Marussi <cristian.marussi@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_device.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/arm_scmi/mailbox.c | 32 +++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
-index bf4892544cfdb..bb84d304b07e5 100644
---- a/drivers/target/target_core_device.c
-+++ b/drivers/target/target_core_device.c
-@@ -691,7 +691,7 @@ struct se_device *target_alloc_device(struct se_hba *hba, const char *name)
+diff --git a/drivers/firmware/arm_scmi/mailbox.c b/drivers/firmware/arm_scmi/mailbox.c
+index b8d470417e8f9..8e513f70b75d4 100644
+--- a/drivers/firmware/arm_scmi/mailbox.c
++++ b/drivers/firmware/arm_scmi/mailbox.c
+@@ -23,6 +23,7 @@
+  * @chan_receiver: Optional Receiver mailbox unidirectional channel
+  * @cinfo: SCMI channel info
+  * @shmem: Transmit/Receive shared memory area
++ * @chan_lock: Lock that prevents multiple xfers from being queued
+  */
+ struct scmi_mailbox {
+ 	struct mbox_client cl;
+@@ -30,6 +31,7 @@ struct scmi_mailbox {
+ 	struct mbox_chan *chan_receiver;
+ 	struct scmi_chan_info *cinfo;
+ 	struct scmi_shared_mem __iomem *shmem;
++	struct mutex chan_lock;
+ };
  
- 	dev->queues = kcalloc(nr_cpu_ids, sizeof(*dev->queues), GFP_KERNEL);
- 	if (!dev->queues) {
--		dev->transport->free_device(dev);
-+		hba->backend->ops->free_device(dev);
- 		return NULL;
- 	}
+ #define client_to_scmi_mailbox(c) container_of(c, struct scmi_mailbox, cl)
+@@ -228,6 +230,7 @@ static int mailbox_chan_setup(struct scmi_chan_info *cinfo, struct device *dev,
  
+ 	cinfo->transport_info = smbox;
+ 	smbox->cinfo = cinfo;
++	mutex_init(&smbox->chan_lock);
+ 
+ 	return 0;
+ }
+@@ -255,13 +258,23 @@ static int mailbox_send_message(struct scmi_chan_info *cinfo,
+ 	struct scmi_mailbox *smbox = cinfo->transport_info;
+ 	int ret;
+ 
+-	ret = mbox_send_message(smbox->chan, xfer);
++	/*
++	 * The mailbox layer has its own queue. However the mailbox queue
++	 * confuses the per message SCMI timeouts since the clock starts when
++	 * the message is submitted into the mailbox queue. So when multiple
++	 * messages are queued up the clock starts on all messages instead of
++	 * only the one inflight.
++	 */
++	mutex_lock(&smbox->chan_lock);
+ 
+-	/* mbox_send_message returns non-negative value on success, so reset */
+-	if (ret > 0)
+-		ret = 0;
++	ret = mbox_send_message(smbox->chan, xfer);
++	/* mbox_send_message returns non-negative value on success */
++	if (ret < 0) {
++		mutex_unlock(&smbox->chan_lock);
++		return ret;
++	}
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static void mailbox_mark_txdone(struct scmi_chan_info *cinfo, int ret,
+@@ -269,13 +282,10 @@ static void mailbox_mark_txdone(struct scmi_chan_info *cinfo, int ret,
+ {
+ 	struct scmi_mailbox *smbox = cinfo->transport_info;
+ 
+-	/*
+-	 * NOTE: we might prefer not to need the mailbox ticker to manage the
+-	 * transfer queueing since the protocol layer queues things by itself.
+-	 * Unfortunately, we have to kick the mailbox framework after we have
+-	 * received our message.
+-	 */
+ 	mbox_client_txdone(smbox->chan, ret);
++
++	/* Release channel */
++	mutex_unlock(&smbox->chan_lock);
+ }
+ 
+ static void mailbox_fetch_response(struct scmi_chan_info *cinfo,
 -- 
 2.43.0
 
