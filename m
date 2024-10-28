@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-88322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C66AF9B256E
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:28:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CED99B2607
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 737141F21333
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:28:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF8331C211F2
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD7BF18E049;
-	Mon, 28 Oct 2024 06:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C3118FDDA;
+	Mon, 28 Oct 2024 06:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWB9vBPO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ETsWgJ2w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3ED152E1C;
-	Mon, 28 Oct 2024 06:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7D318FDD2;
+	Mon, 28 Oct 2024 06:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730096936; cv=none; b=QYGrZMRu+Nr3XP5pdUI7w0KzF/l/s7uslVqBsCV0z/Id3+d5Wg51r2+L9519OH/cArb8U8xQfeRKIBYTVYjHG8l3HCKWbgoEUw04unp23NtMZKYblX2Vq54maLi5G7pVJDTO2HS0jbcJG1z98+t71HvIHKv2+ugk4zP+g5Ba4CU=
+	t=1730097357; cv=none; b=Ko08fhEKq8ds1ifk2NF7S3t7+iRfWGIWiUnK5/F53Yc2T7nRD77zX1yXsj9SkfGQXC9ayC8yvXGudEp8uuUa1qNLQ1LBU8+PjmBItmVZYpIv4iqCj0eZCseJQ5anJfEac64dnz7svVENAzBai2K6DASyJF3jAtjiAOvOBK+r8z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730096936; c=relaxed/simple;
-	bh=mWRD+SQQH0lMagaQn+Pk5scPTy2nvXs4frGsO0H9Tvo=;
+	s=arc-20240116; t=1730097357; c=relaxed/simple;
+	bh=zKM1BipH0DXY4+T8/fl260zaKE97dpPXjyfMLlXRb6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IiJ6xTcQOnPm7pG1FYkT8r9ZxQ1J2NcwXDahQgH6g1tpY5PXAGCfK492uSzCE8yFGpbYfirbRR4ThYrQTrZel8wgZDOgkPgAhPnFe3DtA+oVNGzWNebN3bbmGXZZtxYdJ5QkKkvks9rgyi2xFqjaeWyRpJdKhMYrpW0pDIa4Ozk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWB9vBPO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13664C4CEC3;
-	Mon, 28 Oct 2024 06:28:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ld19Ch2dEh9N4xqH6Tx2OSgjkqeQ17r3pWcZzwweVQEJAP0ytUOTTJ/WnqUmjEwPhpONzXGGAt8KJyGW3cXhSNCCTx8KmX5300r+LWLJyHhYRtCng6ue6iYws+c9qLoJ8N3WG7FRuEQ6tMV9BDVTvLNQQ0wor8EVCP5GavMAFGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ETsWgJ2w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A1A5C4CEC3;
+	Mon, 28 Oct 2024 06:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730096936;
-	bh=mWRD+SQQH0lMagaQn+Pk5scPTy2nvXs4frGsO0H9Tvo=;
+	s=korg; t=1730097357;
+	bh=zKM1BipH0DXY4+T8/fl260zaKE97dpPXjyfMLlXRb6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lWB9vBPO9raLSwACb03kz3mi/ejEqrjRHs0A6AAdBmzvYUD31GUCx+kLakgjY5UTa
-	 jBnqCGPSPu1m5s6RSzWSoXGQ1c7dcXX1KPeS1JkeRRiPhmUJdEWjkz7ccVFVg0xLdQ
-	 bdR6Id5jSjYodQZ8quCtl0JKPFot0tjPPlvE7LdU=
+	b=ETsWgJ2wSVNcGdWtWMtvishcEB/II/wZ8MJ5g1Gru3rad/VmLr3mlvJXyrzK8z9Lo
+	 15TMr0wZrD/292d0pwIPF+Vv8aR2NrEU8KwS7ncSaEaX/HsX/Wf5+45OZe1viNSwqI
+	 0MRapzxmKHsKqrT6OwtiAHZJjGpxa3ZRgXwqMZ9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Ilya Katsnelson <me@0upti.me>,
+	=?UTF-8?q?Krzysztof=20Ol=C4=99dzki?= <ole@ans.pl>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 51/80] tracing: Consider the NULL character when validating the event length
+Subject: [PATCH 6.1 094/137] netfilter: xtables: fix typo causing some targets not to load on IPv6
 Date: Mon, 28 Oct 2024 07:25:31 +0100
-Message-ID: <20241028062254.035649848@linuxfoundation.org>
+Message-ID: <20241028062301.355239940@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-References: <20241028062252.611837461@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 0b6e2e22cb23105fcb171ab92f0f7516c69c8471 ]
+[ Upstream commit 306ed1728e8438caed30332e1ab46b28c25fe3d8 ]
 
-strlen() returns a string length excluding the null byte. If the string
-length equals to the maximum buffer length, the buffer will have no
-space for the NULL terminating character.
+- There is no NFPROTO_IPV6 family for mark and NFLOG.
+- TRACE is also missing module autoload with NFPROTO_IPV6.
 
-This commit checks this condition and returns failure for it.
+This results in ip6tables failing to restore a ruleset. This issue has been
+reported by several users providing incomplete patches.
 
-Link: https://lore.kernel.org/all/20241007144724.920954-1-leo.yan@arm.com/
+Very similar to Ilya Katsnelson's patch including a missing chunk in the
+TRACE extension.
 
-Fixes: dec65d79fd26 ("tracing/probe: Check event name length correctly")
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 0bfcb7b71e73 ("netfilter: xtables: avoid NFPROTO_UNSPEC where needed")
+Reported-by: Ignat Korchagin <ignat@cloudflare.com>
+Reported-by: Ilya Katsnelson <me@0upti.me>
+Reported-by: Krzysztof Olędzki <ole@ans.pl>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_probe.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/xt_NFLOG.c | 2 +-
+ net/netfilter/xt_TRACE.c | 1 +
+ net/netfilter/xt_mark.c  | 2 +-
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
-index 0888f0644d257..d2a1b7f030685 100644
---- a/kernel/trace/trace_probe.c
-+++ b/kernel/trace/trace_probe.c
-@@ -261,7 +261,7 @@ int traceprobe_parse_event_name(const char **pevent, const char **pgroup,
- 	if (len == 0) {
- 		trace_probe_log_err(offset, NO_EVENT_NAME);
- 		return -EINVAL;
--	} else if (len > MAX_EVENT_NAME_LEN) {
-+	} else if (len >= MAX_EVENT_NAME_LEN) {
- 		trace_probe_log_err(offset, EVENT_TOO_LONG);
- 		return -EINVAL;
- 	}
+diff --git a/net/netfilter/xt_NFLOG.c b/net/netfilter/xt_NFLOG.c
+index d80abd6ccaf8f..6dcf4bc7e30b2 100644
+--- a/net/netfilter/xt_NFLOG.c
++++ b/net/netfilter/xt_NFLOG.c
+@@ -79,7 +79,7 @@ static struct xt_target nflog_tg_reg[] __read_mostly = {
+ 	{
+ 		.name       = "NFLOG",
+ 		.revision   = 0,
+-		.family     = NFPROTO_IPV4,
++		.family     = NFPROTO_IPV6,
+ 		.checkentry = nflog_tg_check,
+ 		.destroy    = nflog_tg_destroy,
+ 		.target     = nflog_tg,
+diff --git a/net/netfilter/xt_TRACE.c b/net/netfilter/xt_TRACE.c
+index f3fa4f11348cd..a642ff09fc8e8 100644
+--- a/net/netfilter/xt_TRACE.c
++++ b/net/netfilter/xt_TRACE.c
+@@ -49,6 +49,7 @@ static struct xt_target trace_tg_reg[] __read_mostly = {
+ 		.target		= trace_tg,
+ 		.checkentry	= trace_tg_check,
+ 		.destroy	= trace_tg_destroy,
++		.me		= THIS_MODULE,
+ 	},
+ #endif
+ };
+diff --git a/net/netfilter/xt_mark.c b/net/netfilter/xt_mark.c
+index f76fe04fc9a4e..65b965ca40ea7 100644
+--- a/net/netfilter/xt_mark.c
++++ b/net/netfilter/xt_mark.c
+@@ -62,7 +62,7 @@ static struct xt_target mark_tg_reg[] __read_mostly = {
+ 	{
+ 		.name           = "MARK",
+ 		.revision       = 2,
+-		.family         = NFPROTO_IPV4,
++		.family         = NFPROTO_IPV6,
+ 		.target         = mark_tg,
+ 		.targetsize     = sizeof(struct xt_mark_tginfo2),
+ 		.me             = THIS_MODULE,
 -- 
 2.43.0
 
