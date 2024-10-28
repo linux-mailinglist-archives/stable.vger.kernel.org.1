@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-88645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BD209B26DE
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:43:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED169B2571
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:29:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E86F91F23C72
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:43:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 506D81C20FE8
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D6315B10D;
-	Mon, 28 Oct 2024 06:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ABA418E04F;
+	Mon, 28 Oct 2024 06:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpbTq5Cm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVf5+5Qk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D318B18E35B;
-	Mon, 28 Oct 2024 06:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1A6152E1C;
+	Mon, 28 Oct 2024 06:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097801; cv=none; b=X/0k8qSk0uKE0L2xBFbnlC+Uj6anDQuK6ZtrAtAqw7/fcXn/fRw5EncdojRmxu0KzQ+VA5LWJb9nOFgyw3ZgKb/eGy3KhMujWeCrtiFWf7gzq4mdVaS9kJAZ3quqv1q+KAGpV6dP7HHfIo3o5cwzvDnkkNi3ZdImFPDP6s72UfY=
+	t=1730096943; cv=none; b=YBJhFrIrxJJMNP/T7iNsBNFKgMjj4gyuw4EKPK28g0Mi9o4fNDKb69NCPJlqAN5z8R/jB4ueefWO8UIZOEAhiNe4+OkRfHs8YlYFYDljoqB0/TsfTS8VZrkH1RXE7p0VI8ZDnC9cdi1OYHiT6fvrrx8b/G6AQEf81e2TqU7OYNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097801; c=relaxed/simple;
-	bh=Y9CjdeMoP0McwqqNtxgNy7xRfuOCdG2QVEusfj+Yzeo=;
+	s=arc-20240116; t=1730096943; c=relaxed/simple;
+	bh=PVIPg16dHLN4vu4mMY2wc1WGEg1xEHSwcidGEL2NpQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GLO95eYTOmNhWWoCj+9oUBvMqX6Mb97it9j6rXntaOKhsa9n3yNT3MAZDMfFgpZGL1rUFvHZoyMTPv4mFeCrIWL7h7X3vzVqftxj3UVetO1/a6Cis3fC3boWAVGp6hCx3iYGLsqik9bRuDI7LiUrlVVo7oByyBRuvAAU0Nq5Ufs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpbTq5Cm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732A3C4CEC3;
-	Mon, 28 Oct 2024 06:43:21 +0000 (UTC)
+	 MIME-Version; b=UHsVOXT0Wb6rxhspZsUrPoUsPIWasLPtHJLIGAwWowrA75uNUtycf4mTiE8c4zWIqP5vR4AuwZkeRNLowUODdEx+f06IqCkQSFRFY7Grw02qshZWIxX73ILRQ3WobGSS5pRMa7OeOjRWyFs3gJErA38ipNz8/blILGgd1xwQfGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVf5+5Qk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE74EC4CEC3;
+	Mon, 28 Oct 2024 06:29:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097801;
-	bh=Y9CjdeMoP0McwqqNtxgNy7xRfuOCdG2QVEusfj+Yzeo=;
+	s=korg; t=1730096943;
+	bh=PVIPg16dHLN4vu4mMY2wc1WGEg1xEHSwcidGEL2NpQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fpbTq5CmZt9JxOHG31/9CWcV6xYVkpN5YwOTZHY5WkTWVWTczSSCNSMh+mo/JiUN8
-	 QQ0lOQSwT0qbsH6oC5Tm5WjkFp4pM0/woriQmQ/UQPl8ST2zCGZ1nig91B6AZ2prAx
-	 kKVdFCB9MugZyUPyjkLIeg39qd+pOMq8o+I7Uqa4=
+	b=jVf5+5QkCw5sle2xUtm/bc4u4X5XcvZamQKcubpFj6tmKAM4FsAvln136d8VG+V+G
+	 IBD2HFr9bcwFVfnyq+1kNEXubGYUD7MS54/ksO7r6ZsPAXA9N7SR3C0o2vnU+YPYuk
+	 u0h6TMyLjyma+gGpkKdpaXGAaVxxj+X4J3+QI4NQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b65e0af58423fc8a73aa@syzkaller.appspotmail.com,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Wang Hai <wanghai38@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 154/208] net: sched: fix use-after-free in taprio_change()
+Subject: [PATCH 5.15 54/80] net/sun3_82586: fix potential memory leak in sun3_82586_send_packet()
 Date: Mon, 28 Oct 2024 07:25:34 +0100
-Message-ID: <20241028062310.417646682@linuxfoundation.org>
+Message-ID: <20241028062254.117882374@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
+References: <20241028062252.611837461@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit f504465970aebb2467da548f7c1efbbf36d0f44b ]
+[ Upstream commit 2cb3f56e827abb22c4168ad0c1bbbf401bb2f3b8 ]
 
-In 'taprio_change()', 'admin' pointer may become dangling due to sched
-switch / removal caused by 'advance_sched()', and critical section
-protected by 'q->current_entry_lock' is too small to prevent from such
-a scenario (which causes use-after-free detected by KASAN). Fix this
-by prefer 'rcu_replace_pointer()' over 'rcu_assign_pointer()' to update
-'admin' immediately before an attempt to schedule freeing.
+The sun3_82586_send_packet() returns NETDEV_TX_OK without freeing skb
+in case of skb->len being too long, add dev_kfree_skb() to fix it.
 
-Fixes: a3d43c0d56f1 ("taprio: Add support adding an admin schedule")
-Reported-by: syzbot+b65e0af58423fc8a73aa@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b65e0af58423fc8a73aa
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://patch.msgid.link/20241018051339.418890-1-dmantipov@yandex.ru
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Message-ID: <20241015144148.7918-1-wanghai38@huawei.com>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_taprio.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/i825xx/sun3_82586.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 87090d6790362..bc8e55c6d63d1 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -1988,7 +1988,8 @@ static int taprio_change(struct Qdisc *sch, struct nlattr *opt,
- 
- 		taprio_start_sched(sch, start, new_admin);
- 
--		rcu_assign_pointer(q->admin_sched, new_admin);
-+		admin = rcu_replace_pointer(q->admin_sched, new_admin,
-+					    lockdep_rtnl_is_held());
- 		if (admin)
- 			call_rcu(&admin->rcu, taprio_free_sched_cb);
+diff --git a/drivers/net/ethernet/i825xx/sun3_82586.c b/drivers/net/ethernet/i825xx/sun3_82586.c
+index 6c89aa7eaa222..95a6bbfa013e1 100644
+--- a/drivers/net/ethernet/i825xx/sun3_82586.c
++++ b/drivers/net/ethernet/i825xx/sun3_82586.c
+@@ -1012,6 +1012,7 @@ sun3_82586_send_packet(struct sk_buff *skb, struct net_device *dev)
+ 	if(skb->len > XMIT_BUFF_SIZE)
+ 	{
+ 		printk("%s: Sorry, max. framelength is %d bytes. The length of your frame is %d bytes.\n",dev->name,XMIT_BUFF_SIZE,skb->len);
++		dev_kfree_skb(skb);
+ 		return NETDEV_TX_OK;
+ 	}
  
 -- 
 2.43.0
