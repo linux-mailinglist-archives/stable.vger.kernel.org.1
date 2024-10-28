@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-88389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CAE69B25C4
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:34:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F7C59B27B1
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:50:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C2271C20F31
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:34:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAE671F22356
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C8E190660;
-	Mon, 28 Oct 2024 06:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584FE18E368;
+	Mon, 28 Oct 2024 06:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8rCs/RK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NpPU+/R5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88CA18E37C;
-	Mon, 28 Oct 2024 06:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1713A2AF07;
+	Mon, 28 Oct 2024 06:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097219; cv=none; b=N5Ax/gef6pudfrq2vjrsMcT+8H9gKnfQ98vX8o3cvzhDUbgf9KR11Pc7dLritcz6+slKiU62HpB1x8FwM5t6Z/LYC0s3gGafZUX9gO89QY8z9JfeK44boQYtw8s1jPQe/eQDP0JPSHQuXzcJRz5yRlmlz1+lPUUVR6+DGKeDVcg=
+	t=1730098225; cv=none; b=pe5Yh4eiTB8kZOCd1o9lu1Uge2bgpaK7wtuMHaWB5XRCn0wj1Kgq3Z4QNJR2M14XdzqNjINBg2Pax+0QYIQtelE0jwjz+HBkRAjy3Ml5lbvtACNKEWrYvgZevcTzcVtevBmNL3Z6U6rrN4W6WZHexFPUzaDyaGjUVHaT6pvDRNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097219; c=relaxed/simple;
-	bh=YUcrdvQjPTAmtmQxoYiE7PWc0DMWJYq0r+JLMxmyDRU=;
+	s=arc-20240116; t=1730098225; c=relaxed/simple;
+	bh=j7Tww9gcGjvVlVljyZLnCnyLgZ3PREsU7rvqOd1Q3l0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cEhjQ/gviRQZ52StDMX3HqpU54nKFXC82BBhydfoNWeYSmAObyH75YXB+Vow7o0U4P0lZ7bNNT6jwJPgWispfTTzHNkh+xVjGaFHl55dKywsxNMecjIY93Ys0ZkWzEfY3irJDiA8KEAfluWIg4rbvpbMMnrCtLMClSX+X/WiyfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8rCs/RK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 754D2C4CEC7;
-	Mon, 28 Oct 2024 06:33:39 +0000 (UTC)
+	 MIME-Version; b=lD9oq10S4WCtupnMjgGMjVZ1yOm0N2d+f6q5Tu/1tmfeQyARoI1M2jZ7cZyWfgcS3w3guFIiFmyNTdh6PyEI1VkENtrjk3M++qA2AJD9ldB8mkF2RjcrNX8IalGLFvMTZqSwMzRxFLOdqYK3qj/BfddnkUHJBFC0fJC/O4XvTdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NpPU+/R5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF56C4CEC3;
+	Mon, 28 Oct 2024 06:50:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097219;
-	bh=YUcrdvQjPTAmtmQxoYiE7PWc0DMWJYq0r+JLMxmyDRU=;
+	s=korg; t=1730098225;
+	bh=j7Tww9gcGjvVlVljyZLnCnyLgZ3PREsU7rvqOd1Q3l0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n8rCs/RKEDSW2E5wHe7WOOlurPqA7m3j89ts0y5jh1fixu9w5ayRkwkBo2RhAC6Kj
-	 SfbkjlRg0QC5EdCC/MsFNhI1ljJp3ykKZzUcwpbhFD9Koi/AZfuDUM5jHwIp+I7ECR
-	 L0rAXKK8HUtyAd6Ll+H7+1Xy4lkIrT/Bxn2ubuyI=
+	b=NpPU+/R53zp8oZ8ZoUseJb0Gbzl3J2cgRB58/BZ4Vn2/h+zCOHgb+av27btNnEk59
+	 Vn38dyLEtFX/nt3jv3DQtBJESj0L9stKByZozG3Gdtj4fC/JgJEZMtMWZ4Px8r+5hf
+	 RQGxwiFoVrrmanONe7sOhQzjPs4ZrEKMi+N+Z/IE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/137] irqchip/renesas-rzg2l: Align struct member names to tabs
+Subject: [PATCH 6.11 131/261] ASoC: qcom: sm8250: add qrb4210-rb2-sndcard compatible string
 Date: Mon, 28 Oct 2024 07:24:33 +0100
-Message-ID: <20241028062259.733443782@linuxfoundation.org>
+Message-ID: <20241028062315.322192372@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
-References: <20241028062258.708872330@linuxfoundation.org>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+References: <20241028062312.001273460@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Alexey Klimov <alexey.klimov@linaro.org>
 
-[ Upstream commit 02f6507640173addeeb3af035d2c6f0b3cff1567 ]
+[ Upstream commit b97bc0656a66f89f78098d4d72dc04fa9518ab11 ]
 
-Align struct member names to tabs to follow the requirements from
-maintainer-tip file. 3 tabs were used at the moment as the next commits
-will add a new member which requires 3 tabs for a better view.
+Add "qcom,qrb4210-rb2-sndcard" to the list of recognizable
+devices.
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20231120111820.87398-4-claudiu.beznea.uj@bp.renesas.com
-Stable-dep-of: d038109ac1c6 ("irqchip/renesas-rzg2l: Fix missing put_device")
+Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
+Link: https://patch.msgid.link/20241002022015.867031-3-alexey.klimov@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-renesas-rzg2l.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/soc/qcom/sm8250.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index 70279ca7e6278..884379f207d50 100644
---- a/drivers/irqchip/irq-renesas-rzg2l.c
-+++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -56,9 +56,9 @@
- #define TINT_EXTRACT_GPIOINT(x)         FIELD_GET(GENMASK(31, 16), (x))
+diff --git a/sound/soc/qcom/sm8250.c b/sound/soc/qcom/sm8250.c
+index a15dafb99b337..50e175fd521ce 100644
+--- a/sound/soc/qcom/sm8250.c
++++ b/sound/soc/qcom/sm8250.c
+@@ -166,6 +166,7 @@ static int sm8250_platform_probe(struct platform_device *pdev)
  
- struct rzg2l_irqc_priv {
--	void __iomem *base;
--	struct irq_fwspec fwspec[IRQC_NUM_IRQ];
--	raw_spinlock_t lock;
-+	void __iomem			*base;
-+	struct irq_fwspec		fwspec[IRQC_NUM_IRQ];
-+	raw_spinlock_t			lock;
+ static const struct of_device_id snd_sm8250_dt_match[] = {
+ 	{.compatible = "qcom,sm8250-sndcard"},
++	{.compatible = "qcom,qrb4210-rb2-sndcard"},
+ 	{.compatible = "qcom,qrb5165-rb5-sndcard"},
+ 	{}
  };
- 
- static struct rzg2l_irqc_priv *irq_data_to_priv(struct irq_data *data)
 -- 
 2.43.0
 
