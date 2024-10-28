@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-88576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-88417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EC3C9B2692
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:40:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C010A9B25E7
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 07:36:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07EC61F22934
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:40:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85795280DD7
+	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 06:35:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B6A418E36D;
-	Mon, 28 Oct 2024 06:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9912019048D;
+	Mon, 28 Oct 2024 06:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RkAK/k8s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/87lgH/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1E72C697;
-	Mon, 28 Oct 2024 06:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C2C18E778;
+	Mon, 28 Oct 2024 06:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730097645; cv=none; b=DetfHQc8BJWmGFvLQ18O+eRLjRQ8ffYj1DOXRUvotFtp1XMdWwYIRAh2iDR7PEgduYqMLUvry7+oTKwG+fm/rVPyfAfx+S/4bILWdoxGy5zgwetdLJGi9x0K76vTMssEHoiMWSG+sAABa8nl6mIBFodV3ch5lAA6S9MqqCngn1Y=
+	t=1730097284; cv=none; b=SuaKWC2Bieux2bDAuUzfzFAWWy9b/Gi3l1cLbFtlVIgIvzPTijdkD3jn+B8Dev0F79omkL4WBNMUgwIQK8icyPYYjhDVFKLi2YtADSujptTRdrxzaZqeuC3SfXqOQx9ksKktAKSylGG56lRvkVtlJk4Nzj/1dvlbJG3b9y0CNgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730097645; c=relaxed/simple;
-	bh=uHw7fOuWqbJrVFfmRzZj0rFcw2EnxtL1gblFk0QaFdg=;
+	s=arc-20240116; t=1730097284; c=relaxed/simple;
+	bh=JFCj0FQxO/I67ZlNjlT9LnZmt4ddTAk4b16pKiSpAwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cmb5UxLeHgxh+whbuWX6+Mv1H2fuVOtTul+isJOY90iUmjvEqpUCPUgPhGzsgY9ThsDcXwV8oF8xeNUstNIYl13OaD4O9IZfHluJWLe3enWEF/qvZgEOOsoZzkUTSOMnVv2FveN3EtALjwSYTZWJRdR6uPg+sAdIl9J8yfzCYaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RkAK/k8s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DE4FC4CEC3;
-	Mon, 28 Oct 2024 06:40:44 +0000 (UTC)
+	 MIME-Version; b=PQ/RweonUXCEmR4C+uFg+ypHVrwC6p8oTNM2ZxugTDnYLNgG7tGj8Qcul06cLKaCgEjiw1V3s3WmmFQeVXOzdOJHQLipcjFd2cDyyLwUy+wIoPQCk/5gvblibyWncOB+3LADHX8biCnzShdlmawfOXvRvyX+XrdHaaV6q5tfIHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/87lgH/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2B0C4CEC3;
+	Mon, 28 Oct 2024 06:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730097644;
-	bh=uHw7fOuWqbJrVFfmRzZj0rFcw2EnxtL1gblFk0QaFdg=;
+	s=korg; t=1730097284;
+	bh=JFCj0FQxO/I67ZlNjlT9LnZmt4ddTAk4b16pKiSpAwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RkAK/k8sPeG31lcWsreGamVMu5ayHygvOG1rzUYzlyxL4vOBn65sda0sUglSS1lWk
-	 CjNzuyzNGfeelQlEcUivMxURvNLmOFe90DQUvpLrbwZ5DNemLs6nY1b0woiu8Bd9Uh
-	 MKtjLRmwoSYv1JMJBKaz5yOe9mp0WFCttTNeeVv4=
+	b=i/87lgH/2FbkZDvcfcXjwGm7qlSHNu2laV+RUsgiwpB6JJhySHZMQSO8l+XHRebEW
+	 Uj3mdxoUKWZ7RDwWlvE4B4c4YM+4qgn9mDtB2s9XN5pupACBTtIwmA9KjePB+EfFwl
+	 y0Ltr6kD0tkZ0JCdq58uyS4C9LBCUdu2KeP2xNWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	John Fastabend <john.fastabend@gmail.com>,
+	Oliver Neukum <oneukum@suse.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/208] vsock: Update msg_count on read_skb()
+Subject: [PATCH 6.1 027/137] net: usb: usbnet: fix race in probe failure
 Date: Mon, 28 Oct 2024 07:24:24 +0100
-Message-ID: <20241028062308.717401928@linuxfoundation.org>
+Message-ID: <20241028062259.478996683@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241028062306.649733554@linuxfoundation.org>
-References: <20241028062306.649733554@linuxfoundation.org>
+In-Reply-To: <20241028062258.708872330@linuxfoundation.org>
+References: <20241028062258.708872330@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 6dafde852df8de3617d4b9f835b629aaeaccd01d ]
+[ Upstream commit b62f4c186c70aa235fef2da68d07325d85ca3ade ]
 
-Dequeuing via vsock_transport::read_skb() left msg_count outdated, which
-then confused SOCK_SEQPACKET recv(). Decrease the counter.
+The same bug as in the disconnect code path also exists
+in the case of a failure late during the probe process.
+The flag must also be set.
 
-Fixes: 634f1a7110b4 ("vsock: support sockmap")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/20241013-vsock-fixes-for-redir-v2-3-d6577bbfe742@rbox.co
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Link: https://patch.msgid.link/20241010131934.1499695-1-oneukum@suse.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport_common.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/usb/usbnet.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 072878012b51e..78b5f4f8808b9 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1524,6 +1524,9 @@ int virtio_transport_read_skb(struct vsock_sock *vsk, skb_read_actor_t recv_acto
- 	}
- 
- 	hdr = virtio_vsock_hdr(skb);
-+	if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOM)
-+		vvs->msg_count--;
-+
- 	virtio_transport_dec_rx_pkt(vvs, le32_to_cpu(hdr->len));
- 	spin_unlock_bh(&vvs->rx_lock);
- 
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index bd0b807db751d..ce587a12b894c 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1869,6 +1869,7 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
+ 	 * may trigger an error resubmitting itself and, worse,
+ 	 * schedule a timer. So we kill it all just in case.
+ 	 */
++	usbnet_mark_going_away(dev);
+ 	cancel_work_sync(&dev->kevent);
+ 	del_timer_sync(&dev->delay);
+ 	free_percpu(net->tstats);
 -- 
 2.43.0
 
