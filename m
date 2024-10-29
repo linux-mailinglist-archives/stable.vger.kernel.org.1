@@ -1,113 +1,145 @@
-Return-Path: <stable+bounces-89232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A46509B5021
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 18:07:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C2A49B5031
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 18:16:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 697962841FC
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 17:07:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA3531F23B93
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 17:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416F01DA0E0;
-	Tue, 29 Oct 2024 17:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0611193407;
+	Tue, 29 Oct 2024 17:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="DAVKcMtS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RbLGFvba"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006671DBB0D
-	for <stable@vger.kernel.org>; Tue, 29 Oct 2024 17:07:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDE42107
+	for <stable@vger.kernel.org>; Tue, 29 Oct 2024 17:15:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730221636; cv=none; b=S4skZbkrojC72AGMK9jXx0gCPj5opn2P72adxx0SJPKeqrv8YnMpO/WbpygX9sGF3O8EXVAZEMcK3l7a9ki6vQ/a9ot96G9Vk1ZBEGl4d7qKzAhQ4ddcKN3tvDrJ5SeTzbu7X3lqzXBT4TEUuCot2rlyjSeFcCP1ShvJ15Y5u1k=
+	t=1730222157; cv=none; b=Qhv10fQwXYaCsN6i5fiS2sH1lsDzy1U4JilFDCGup6wIt/9/8TTR0F3eGU4VAJSy0DuQY6bqadQiNlVtgXhnI6S+yfmfhI3LryePUfbNKYRjX3SeItweRgq54gnNGeVdn1XkwYgxUAepdrzQVnZ/oELAr0dKbUDjwxBU+OTUxsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730221636; c=relaxed/simple;
-	bh=HIAt7Xdq33eEcSF47rRGWWp8L+H3VMAAWWAYqZoatgo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VcNfNp3aBpHpqOsx+cPN++6Pi8/+PAITZzBryjVHcbUrNfYGuiwQQssAD9I4fzoEOIXFawoYGKHTMUamVO8DQPo00IlhE+xaj2sDBfqbOGF4KPHdUxCuAu1DfEReVY6VsSm000noFDRtkgX0omRPfY15ZWak0xQvw7BRkS3DQrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=DAVKcMtS; arc=none smtp.client-ip=209.85.166.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-3a5e0bfc7fdso1672535ab.1
-        for <stable@vger.kernel.org>; Tue, 29 Oct 2024 10:07:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1730221632; x=1730826432; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=prNOXuzq2k9yHwgN9GjPKL//CDayG10KbbsLQkFhgd0=;
-        b=DAVKcMtSJt2Brj4Rc72qMB/vQh0i9ntbDU4KNo/TaMxI+ZqoNQV21BBGN8o0fLqkmc
-         3aOMVxAZvwMzHktylxXkv4mne1EAYRCv2827JQLFOW5ExlyE8H9+Z3u/7jcuj7sPEMj5
-         GJRbIvkRje3Nl1tbs+/kJ+OQstl+Nuq546Al0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730221632; x=1730826432;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=prNOXuzq2k9yHwgN9GjPKL//CDayG10KbbsLQkFhgd0=;
-        b=fAgM+fDseQV+s55Y9XRRpp4eav+PhFiNfIV91qyTj1STWUR2Q3QEJqLANOegPoXqrW
-         NHm7EOuy0VaBeoaeDf2bCrNMgy4LVA2IBAeP7GHsoMHHpW+PCNbUqHpynDuvZrgtqF4F
-         GZXtn40nxGAPKXg3R7QwNyvySgW/NFX6jDSPCy90joVauO7mvjq7mIXMmbq8cQBuSZGB
-         c92WTsM/fQ5NZNNurGi2goCZ5xBameW+rC8oV7FfN6n+4gT/hcRNaRmlKoraD9RuHzFw
-         9tcxqa6FF3+zOPtX5xV+dPC56giUmHjahzfSyflLG0SX2woGnBvhDHE65HTQoQ07KPYN
-         0hhQ==
-X-Gm-Message-State: AOJu0YyxHSl38hWBHuNeENnwiPHM0DxFbl63RpI8YucYHV+bHVp/rIxL
-	giW6ysGQaIt8hNPQSUojD/ohrPJP+47eGAqfn0T+BGbaxByscj5/LBD56colQQ==
-X-Google-Smtp-Source: AGHT+IGN9Ci4Y8VOHnsfF3L5QUISAu+V1eVqvAiXjJUJFmaZ1nzDtFq+vrmYfNB8DmH4n9y6WW09Ow==
-X-Received: by 2002:a92:cd82:0:b0:3a4:d9d0:55a6 with SMTP id e9e14a558f8ab-3a4ed2f4ad5mr120407025ab.19.1730221631706;
-        Tue, 29 Oct 2024 10:07:11 -0700 (PDT)
-Received: from fedora64.linuxtx.org ([72.42.103.70])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4dc727b245fsm2480505173.179.2024.10.29.10.07.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Oct 2024 10:07:11 -0700 (PDT)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Tue, 29 Oct 2024 11:07:09 -0600
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.11 000/261] 6.11.6-rc1 review
-Message-ID: <ZyEWPUUCBMQArAP_@fedora64.linuxtx.org>
-References: <20241028062312.001273460@linuxfoundation.org>
+	s=arc-20240116; t=1730222157; c=relaxed/simple;
+	bh=F1ejSdSbYOl/2gaEyfMAiuQUNXpuAxf8FcidA+2eR0o=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LdTilbFmzKTnUGfeawbOtkjLC/s4JMH6ZPqi8uJha4r/x3o/d4Sl7d1lCCRfiI3RUaxlQrhaO1Le6z8F7QIhHwtEDj42eZkJdYpNNTKRymAVf1kb7kDi8qb8PSHHiZ7HAe9omj1Ixwl51MSJ3qUgJYl3++Xl0ShwHt8OXgP6NbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RbLGFvba; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730222155; x=1761758155;
+  h=date:message-id:from:to:cc:subject:in-reply-to:
+   references:mime-version;
+  bh=F1ejSdSbYOl/2gaEyfMAiuQUNXpuAxf8FcidA+2eR0o=;
+  b=RbLGFvbaLTJr1lUVTiN1oRm7UQ2vW0uAzldACwRS0RZKr67QOm3AC3oo
+   vsdy3vCF765L20LmHDEx3P2MRbgLqQwEkWXF1s38p6neYwqvSIaZDXxuZ
+   LL4sqNXF61ExLITdbYuqEUIbN8qWZ7hak0hi4B2HBcdNZUBqQ/eNpfkJs
+   0y/OOEzv9BoVPpGy0va2vXrNsGUs9qgqV1Bed4v++kirkkKm6U3CVxqcD
+   SCNLdeZ3CwIEUmS9ck/iSWK2/PGBcJv7ot5+aBoMrmHTmfOphcQmVBIF0
+   D5A9c7bagAlNOmwhM1LtniNqHFVLuq3w/rMBJjG/NZl6I0y71wXTuJS31
+   A==;
+X-CSE-ConnectionGUID: rDCJHHGGRUOWi8uvm0E2Ow==
+X-CSE-MsgGUID: VvNMcG4xQJO3mX1bmynBjw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11240"; a="29993780"
+X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; 
+   d="scan'208";a="29993780"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2024 10:15:54 -0700
+X-CSE-ConnectionGUID: Dy921Ny7R+eF3uBwMcBQ3w==
+X-CSE-MsgGUID: ac+l93g3Q6OgQG5zx7OmOw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; 
+   d="scan'208";a="82101376"
+Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com) ([10.165.21.142])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2024 10:15:54 -0700
+Date: Tue, 29 Oct 2024 10:15:54 -0700
+Message-ID: <854j4uzv79.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>, <intel-xe@lists.freedesktop.org>,
+ <saurabhg.gupta@intel.com>, <alex.zuo@intel.com>, <umesh.nerlige.ramappa@intel.com>,
+ <john.c.harrison@intel.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH v3] drm/xe/xe_guc_ads: save/restore OA registers
+In-Reply-To: <pug6v3ckrvxd7hkrfmppwxck7nxz3ta36sorzcekpzdwgk5ljt@4hxdgwvuctwj>
+References: <20241023200716.82624-1-jonathan.cavitt@intel.com>	<pug6v3ckrvxd7hkrfmppwxck7nxz3ta36sorzcekpzdwgk5ljt@4hxdgwvuctwj>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 
-On Mon, Oct 28, 2024 at 07:22:22AM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.11.6 release.
-> There are 261 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 30 Oct 2024 06:22:39 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.11.6-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.11.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Tue, 29 Oct 2024 09:23:49 -0700, Lucas De Marchi wrote:
+>
+> On Wed, Oct 23, 2024 at 08:07:15PM +0000, Jonathan Cavitt wrote:
+> > Several OA registers and allowlist registers were missing from the
+> > save/restore list for GuC and could be lost during an engine reset.  Add
+> > them to the list.
+> >
+> > v2:
+> > - Fix commit message (Umesh)
+> > - Add missing closes (Ashutosh)
+> >
+> > v3:
+> > - Add missing fixes (Ashutosh)
+> >
+> > Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2249
+> > Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+> > Suggested-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> > Suggested-by: John Harrison <john.c.harrison@intel.com>
+> > Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> > CC: stable@vger.kernel.org # v6.11+
+> > Acked-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> > Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> > ---
+> > drivers/gpu/drm/xe/xe_guc_ads.c | 14 ++++++++++++++
+> > 1 file changed, 14 insertions(+)
+> >
+> > diff --git a/drivers/gpu/drm/xe/xe_guc_ads.c b/drivers/gpu/drm/xe/xe_guc_ads.c
+> > index 4e746ae98888..a196c4fb90fc 100644
+> > --- a/drivers/gpu/drm/xe/xe_guc_ads.c
+> > +++ b/drivers/gpu/drm/xe/xe_guc_ads.c
+> > @@ -15,6 +15,7 @@
+> > #include "regs/xe_engine_regs.h"
+> > #include "regs/xe_gt_regs.h"
+> > #include "regs/xe_guc_regs.h"
+> > +#include "regs/xe_oa_regs.h"
+> > #include "xe_bo.h"
+> > #include "xe_gt.h"
+> > #include "xe_gt_ccs_mode.h"
+> > @@ -740,6 +741,11 @@ static unsigned int guc_mmio_regset_write(struct xe_guc_ads *ads,
+> >		guc_mmio_regset_write_one(ads, regset_map, e->reg, count++);
+> >	}
+> >
+> > +	for (i = 0; i < RING_MAX_NONPRIV_SLOTS; i++)
+> > +		guc_mmio_regset_write_one(ads, regset_map,
+> > +					  RING_FORCE_TO_NONPRIV(hwe->mmio_base, i),
+> > +					  count++);
+>
+> this is not the proper place. See drivers/gpu/drm/xe/xe_reg_whitelist.c.
 
-Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+Yikes, this got merged yesterday.
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+>
+> The loop just before these added lines should be sufficient to go over
+> all engine save/restore register and give them to guc.
+
+You probably mean this one?
+
+	xa_for_each(&hwe->reg_sr.xa, idx, entry)
+		guc_mmio_regset_write_one(ads, regset_map, entry->reg, count++);
+
+But then how come this patch fixed GL #2249?
+
+Ashutosh
 
