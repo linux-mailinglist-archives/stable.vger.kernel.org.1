@@ -1,102 +1,80 @@
-Return-Path: <stable+bounces-89227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C9529B4F96
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 17:39:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B64869B4FF9
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 17:59:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4103128843B
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 16:39:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 739AE284AE4
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 16:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADDD819A298;
-	Tue, 29 Oct 2024 16:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CC3B1D9665;
+	Tue, 29 Oct 2024 16:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p3Y9M/8l"
+	dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b="Kaqmlo1B"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from antaris-organics.com (mail.antaris-organics.com [91.227.220.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA821CC16A;
-	Tue, 29 Oct 2024 16:39:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1F15C96;
+	Tue, 29 Oct 2024 16:59:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.227.220.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730219942; cv=none; b=XRYPE3m3zhIzK54o9zZwXVS5q9CD5Q9cwLP7ka79QeQSPRrb/0IdpMueDDMwH5WdqiT0ms04o7YsqvULxak90hHZLG5NrlF6qF90cebWs1OrjJSt6JIxihEKC4GINb3ZLmm3/9O/g7/nYJBlASgCH6Ip3wnuxfwWAkvTJUvBDNQ=
+	t=1730221172; cv=none; b=Q+WP3Lrvg2xM7ul3adlxm+GC/HnbAQIPgzi5LXH9NaoDOxZeTkCQWK6KobQvj0Y6bM5pS93cNdUJB0sGwtb67NfJ8keUwrFem/QvgfAPS5Rd+VD8Ke+3XPhE1D2vCwgttwrZZXsPeDOgt0wnyZSKb7DfLCZ7MJ199bmX9aBKmo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730219942; c=relaxed/simple;
-	bh=FgFt+nUEU5jTtnV7+2px6chrOJx6kodCC14Li0aeAnY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ofi/WEG1hl9FLNIDjX+Q+djYmIG5ybAJVYh19utCOYbYbHltFwTROCfdm9500McaeXJkEqDCZNkqj5ig0dN88Ylcp95UkQ8ScFvjGVl2jokA8IlzSn7hUfAriEVUZEdyo63akYXk1IOa7jMOyiUxVTcMPdwaCGCJkUsaEYSnlNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p3Y9M/8l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7D97C4CECD;
-	Tue, 29 Oct 2024 16:39:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730219941;
-	bh=FgFt+nUEU5jTtnV7+2px6chrOJx6kodCC14Li0aeAnY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=p3Y9M/8lI4PqiizhCf46Mkk7w5tJJBDDoIV+7kAyFipfTcZdcNUBsep2Ex6Y+dU04
-	 /RzCN9wo9Vt9o0R+J5ZBw9Im9D1GWop47zFy8f4MXMJxf+aODpnU5UnPlFJnVCB9i5
-	 /1olrGUrMllFFCXWssN3XISX2gHzJI/OUlJrBET0ZS6tsbl7PSPu2nhdydq9EZs8vR
-	 9f1y3vSP9/5ClNQ7YI2UiduTPXcwOIIENkT9tfr3TxBYi30asMkCKkprgis5ZMZL6e
-	 dp39yuIuu8GIFwd1qbntx1UAm7hxJOzS6k5IpVJTnJRaCcwyZROyFuPXO2dVNXuvhK
-	 406tHJ5svioRQ==
-Date: Tue, 29 Oct 2024 12:38:59 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Antony Antony <antony.antony@secunet.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, Sabrina Dubroca <sd@queasysnail.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: Re: [PATCH 6.6 133/208] xfrm: Add Direction to the SA in or out
-Message-ID: <ZyEPo8A7LREpkkhQ@sashalap>
-References: <20241028062306.649733554@linuxfoundation.org>
- <20241028062309.914261564@linuxfoundation.org>
- <Zx9wp6atLMR1UcCL@moon.secunet.de>
- <Zx-Gp8f9jjxmDsIe@sashalap>
- <ZyC2Ow9usJkkpxjU@moon.secunet.de>
+	s=arc-20240116; t=1730221172; c=relaxed/simple;
+	bh=xkjDFKEopMFw1/gKXwiPhb7Aogn2Cgx5LOdrbCbNtHk=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UYpPOY6DaQmNUNC6uzRz9OAal3zRJZhiSlsFSAEX4jptqg4W9So+yYqquqQYzPhFRtjrDfZObHfD9B3I4GtlkLAGp2P6R0HS89XEkB2OiM/L/oxzsgQd/l6HKcMfUO3NnEZCzm1dRF1SvW0jjnxpwW1gunQboBqAm9iYBoH35Lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com; spf=pass smtp.mailfrom=mareichelt.com; dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b=Kaqmlo1B; arc=none smtp.client-ip=91.227.220.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mareichelt.com
+Date: Tue, 29 Oct 2024 17:51:44 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mareichelt.com;
+	s=202107; t=1730220705;
+	bh=xkjDFKEopMFw1/gKXwiPhb7Aogn2Cgx5LOdrbCbNtHk=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:In-Reply-To:Cc:Cc:content-type:content-type:date:date:
+	 From:from:in-reply-to:in-reply-to:message-id:mime-version:
+	 references:reply-to:Sender:Subject:Subject:To:To;
+	b=Kaqmlo1Bvv6wD1wJfblGoV/kf2gdsmFB2tpfJQnIX/uPHYvljMYuwhmW3rx3Kl8jj
+	 xeMsC8t0bbPu0ReALMb6jDpdX49+sHpDg86rBtw9PF0DJWr4Jsu1LwFLEg4XKT7qn8
+	 RxGFnX4FubP+c7kJevIjiEez8Dt2V50rCYp5iglzErzbrqDwcXSsPH6U2B5w6yM80x
+	 iPlWYWg6vUHLE3uOo+0taR5ht50mACRc62Zq4p67YTempP51HbL+RHpJOeWLWTNJ86
+	 Vt1xMBmBeOC80Hf1uDlDtwVqlzKzakc3ty/ZRRVh3O2EVboF0JlzV7LQ/zPUCPbSjs
+	 /5GfEJsjsbIEw==
+From: Markus Reichelt <lkt+2023@mareichelt.com>
+To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.11 000/261] 6.11.6-rc1 review
+Message-ID: <20241029165144.GA20438@pc21.mareichelt.com>
+Mail-Followup-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20241028062312.001273460@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZyC2Ow9usJkkpxjU@moon.secunet.de>
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
 
-On Tue, Oct 29, 2024 at 11:18:04AM +0100, Antony Antony wrote:
->On Mon, Oct 28, 2024 at 08:42:15 -0400, Sasha Levin wrote:
->> On Mon, Oct 28, 2024 at 12:08:23PM +0100, Antony Antony wrote:
->> > On Mon, Oct 28, 2024 at 07:25:13 +0100, Greg Kroah-Hartman wrote:
->> > > 6.6-stable review patch.  If anyone has any objections, please let me know.
->> >
->> > Hi Greg,
->> >
->> > This patch is a part of a new feature SA direction and it appears the auto
->> > patch selector picked one patch out of patch set?
->> > I think this patch alone should not be applied to older stable kernel.
->>
->> It was picked up as a dependency:
->
->I understand how it got selected, however, please drop
->a4a87fa4e96c ("xfrm: Add Direction to the SA in or out") from backports.
->
->>
->> > > Stable-dep-of: 3f0ab59e6537 ("xfrm: validate new SA's prefixlen using SA family when sel.family is unset")
->
->this is good fix to have in stable kernels
->
->>
->> We can drop it, and the netfilter folks can provide us a backport of the
->> fix above?
->
->It is an ipsec sub system patch.
->Here is a backport. I compile tested it on 6.6. It will also apply to linx-6.1.y
->To apply to older ones kernels, use -3.
+* Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-I've replaced what we had in the queue with your backport, thanks!
+> This is the start of the stable review cycle for the 6.11.6 release.
+> There are 261 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 30 Oct 2024 06:22:39 +0000.
+> Anything received after that time might be too late.
 
--- 
-Thanks,
-Sasha
+Hi Greg
+
+6.11.6-rc1 compiles, boots and runs here on x86_64
+(AMD Ryzen 5 PRO 4650G, Slackware64-15.0)
+
+Tested-by: Markus Reichelt <lkt+2023@mareichelt.com>
 
