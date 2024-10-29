@@ -1,103 +1,92 @@
-Return-Path: <stable+bounces-89252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 605C89B53B8
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 21:32:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A1109B543F
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 21:45:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E1C12869AE
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 20:32:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B516D1F240CF
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 20:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12DEB20A5EA;
-	Tue, 29 Oct 2024 20:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741D020A5FF;
+	Tue, 29 Oct 2024 20:42:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="nLCG8YOx"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904C9207A05;
-	Tue, 29 Oct 2024 20:29:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C2A20A5EF;
+	Tue, 29 Oct 2024 20:42:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730233755; cv=none; b=Lp4azBqYGoXSsC4EXvML0uKkd7ltpnC8yeH9pYc0j7hurUCZYc+s42TDPR8/xHOfQuFeN3MrFa6Jt1ATfdSqJb7/9Bw2LebJamejMRHonJBtII5cFJPmtdLxNt+FS5o4xSn5b964jJ1u8DaVRPzBniyJPoLelFr5/h2JXoBaevs=
+	t=1730234527; cv=none; b=fRoMZfOwpu1DB+hXjh0v3fBGOplHWRwMEreZfylxpWJ9pFChh7i/itKjYR0Uyqg7BIGD9XhPRtwaKeSc8j7A0wJU41BeFfaEkDCxF3tq6sClbfxyWaDmT+Ol/LIkt4BLnn2DeLhKbfGf3E9IlI1Dgt/5heJbDwx+5+hz2o9Sre0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730233755; c=relaxed/simple;
-	bh=X9amSME64Aubj6meV8ZaWlOmLqO5bfIO8YgAkHvGW/8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cvJ4dKi8xfZdY1QcWPkZA/WDZEhP+ZHkxXKkm8/bcQDXC59Tt9oKQq+P2Wzqh6F1Rf6wCAx6IA+yQaWhx0VWdFVAPZNnFCHFB0aCWIkjEcWl0tCZwny3xBAl1FobqhkHBFUsMqqW52pIz8CKGWYK/7TVfLBLHXwNvZUQR6iElmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 0BBAA1C00CF; Tue, 29 Oct 2024 21:29:12 +0100 (CET)
-Date: Tue, 29 Oct 2024 21:29:11 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.11 000/261] 6.11.6-rc1 review
-Message-ID: <ZyFFl/TQeQHfprd5@duo.ucw.cz>
-References: <20241028062312.001273460@linuxfoundation.org>
+	s=arc-20240116; t=1730234527; c=relaxed/simple;
+	bh=5vxa+Okx7IWKyZj5IBgn5D0sddHA16KpsHwM84srM9k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UKwz8SJ6bDBilV68h0hd71RTkzxUREi9X/qwdkYyuXYzFUbokg071p7wupljFA5Fq8G3Vc/qTX0CWFetxNV+fEBLzZHihNqjOaY/oXfLgpmBaNJUNmuxdsdkOZq9evLOhuIJYzvwEu+hI3NEDzAB4Fd2PbxlC7W1ldCkzs916F8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=nLCG8YOx; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from fpc.intra.ispras.ru (unknown [10.10.165.10])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 066A440F1DD4;
+	Tue, 29 Oct 2024 20:42:01 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 066A440F1DD4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1730234521;
+	bh=5vxa+Okx7IWKyZj5IBgn5D0sddHA16KpsHwM84srM9k=;
+	h=From:To:Cc:Subject:Date:From;
+	b=nLCG8YOxrIYNFlR1s/F2uD9474hPpzJTkG3l3QlaZ/dsp1IjYNH3HvjCpyurRmGgV
+	 ivvegsS2Yh0E+Ng0V0iQ5P770Oru8ZYNBNhFPQ1KGzo17sP1AgbuFAGxH/zr5EYN91
+	 EqDHbiZCcC0X3vrSJQR14QRdCUrd5eThIvN7+BJs=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Sasha Levin <sashal@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Pavel Machek <pavel@ucw.cz>,
+	Lee Jones <lee@kernel.org>,
+	linux-leds@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Stefan Kalscheuer <stefan@stklcode.de>,
+	lvc-project@linuxtesting.org
+Subject: [PATCH 0/2] leds: spi-byte: fix regression introduced in stable kernels
+Date: Tue, 29 Oct 2024 23:41:26 +0300
+Message-Id: <20241029204128.527033-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="7XXbQHsdIGhFzM7t"
-Content-Disposition: inline
-In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
 
+Upstream commit 7f9ab862e05c ("leds: spi-byte: Call of_node_put() on error path")
+after being backported to 5.10/5.15/6.1/6.6 stable kernels introduced an
+access-before-initialization error - it will most likely lead to a crash
+in the probe function of the driver if there is no default zero
+initialization for the stack values.
 
---7XXbQHsdIGhFzM7t
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The commit moved the initialization of `struct device_node *child` lower
+in code, while in stable kernels its value is used in between those places.
+Git context of the patch does not cover the situation so it was applied
+without any failures.
 
-Hi!
+Upstream commit which removed that intermediate access to the variable is
+ccc35ff2fd29 ("leds: spi-byte: Use devm_led_classdev_register_ext()").
 
-> This is the start of the stable review cycle for the 6.11.6 release.
-> There are 261 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+I think it's worth a backport, too. The patches for the corresponding
+stable trees follow in this thread.
 
-CIP testing did not find any problems here:
+Judging by Documentation/devicetree/bindings/leds/common.yaml, "label"
+leds property is deprecated at least since the start of 2020. So there
+should be no problem with switching from "label" to "function"+"color"
+device name generation in kernels down to 5.10.y.
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.11.y
-
-6.6, 5.15 pass our testing, too:
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.6.y
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-5.15.y
-
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>
-
-Best regards,
-                                                                Pavel
-
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---7XXbQHsdIGhFzM7t
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZyFFlwAKCRAw5/Bqldv6
-8lE9AJ9b34rY8AOwfe6diU/jgrSb6MgRZQCZAQLpy8S/o+aHHyfhbvZIBE7+CWY=
-=wRYo
------END PGP SIGNATURE-----
-
---7XXbQHsdIGhFzM7t--
+--
+Fedor
 
