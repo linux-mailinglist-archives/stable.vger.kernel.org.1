@@ -1,115 +1,118 @@
-Return-Path: <stable+bounces-89240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66C479B5247
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 19:59:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 334AC9B5270
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 20:10:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC3181F23903
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 18:59:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1A841F235E5
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 19:10:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB05205ADF;
-	Tue, 29 Oct 2024 18:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B91206E92;
+	Tue, 29 Oct 2024 19:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="E/RvTDA7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gGsqxFfw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12545205142
-	for <stable@vger.kernel.org>; Tue, 29 Oct 2024 18:58:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD961FBF50;
+	Tue, 29 Oct 2024 19:10:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730228335; cv=none; b=U7c5r7gxrcWeJ7kpMWuL8KcWmUisMcqyCH/7P6SfOLe8TKXoRhzfCuFdzApCazRCrji7LWJRmGVCEeSmNM/OvpPti+FaBdPvr+4buEVoAYiW6ZcV1J2DCxetLrN8VuJP/OTpk5Q6+EgmJXyLB0YwD9HCMDUGOx84nSuSy4mEvRw=
+	t=1730229030; cv=none; b=qE9uHnHQjuk5charl+JRw0zYVXkfWmxbwA5bvOBaWNMrFn3PrvWsZie0dSZynh6Ny7qmAK2hpHCyHziqDI+1UIAicT/s2yHjrau7N4LZlLb/o0/oUD3tcmdlJHjl1+w0gFD+GHr4DyinEAPyLFsFnH+mzZ7P02Gw1TzMA71NDH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730228335; c=relaxed/simple;
-	bh=aWkTZc8Y+jqPDPjDkS4QGc/InSEpbKXcGRwTvfpXufY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WwrsjNXgmSW3QUZAsz8VYxY1M01xWvK7/tX371IZwwL95LrmBPRhoMCwfceVa8uIz8cn1Rnt/lFoBfltsJqbCOJkLVluGsekhNEJjNUibLasaac1Ug4uTuqJgWjJXBgGc/CVPinHdvEkqsWDgwcwTTbzM5/L7K0s99p4I471zOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=E/RvTDA7; arc=none smtp.client-ip=209.85.221.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-50d4797098dso1855320e0c.3
-        for <stable@vger.kernel.org>; Tue, 29 Oct 2024 11:58:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1730228332; x=1730833132; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aWkTZc8Y+jqPDPjDkS4QGc/InSEpbKXcGRwTvfpXufY=;
-        b=E/RvTDA7e+r2g/3q72W8M+2QMcK38f62r0U4zlGN800/eZToamgcZHFSZ/hnxGLB93
-         weqZUxL06Z9M+S19TV2tbvR9rgbtPegQaPmuT4e4L569yr5Gr7qmKxbxq4sU11BAdaw+
-         n4PllCQcj67G+G3sD6cCc0biSad2YAqzJNyHU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730228332; x=1730833132;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aWkTZc8Y+jqPDPjDkS4QGc/InSEpbKXcGRwTvfpXufY=;
-        b=V/zAZyPxKkPM8Ft0iuTEB1JmV+9DNFeYi/SYfsCN0H0b8bXkkkclHSLJtylbXN/pNu
-         KiMcFztVtuCD+7b5L7xOvrG719vmKSjewrxhx5cTIT1+SrjIt7yxTey2V9GjgsfHHZ7m
-         Ol6DkeEWh0Jb/ADkXtQm5v20VE0Vyh/+xcUrRNwg6YZ99XnmSKAO4NsTNiQuaDW07vcA
-         ceM/VyQp3ns/TN0iXM2FkcdtOvO3w/dONDWOErjbG598UAOLizigKZlHvL7ErskGHIHG
-         T4DC4LG5eFeuKvzLmDqLpr+TnuMV0vFdshRgX6iJ6kGuE8Fe6ic/yZvsNRE3d2tL2xUI
-         ER5w==
-X-Forwarded-Encrypted: i=1; AJvYcCWwIH9MfXm08NqloH7EwT1L6FMtQB3xOYahzINehG3nmSPnlwrsHDLPSRDyeP3MfVV1PuXZsng=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyP8JDWyMxCiKK31GJEmSCkJwXsLr5RmioFwWeKLYLHqAbYrza6
-	xi/IchT7ULZJpa6Btqmx5FPpAy3TRVUdeI0c2XJKf4GxHAcr0c9qQJJNZt0YlLQUAQHxb6foQ1f
-	ROT3eKFDvj9s5Wzd1mvEuDntLqTZ5wYLSZWnZ
-X-Google-Smtp-Source: AGHT+IHNQarJDeF6ZTczXA6wAeLI1sDCSh6JY57hkDajWvrF0A7cvL2N28vNjvcVfNW7OPsHHTypPQAdAONKz15iu68=
-X-Received: by 2002:a05:6122:17a9:b0:50d:57df:1522 with SMTP id
- 71dfb90a1353d-5101502d48bmr9286161e0c.6.1730228331903; Tue, 29 Oct 2024
- 11:58:51 -0700 (PDT)
+	s=arc-20240116; t=1730229030; c=relaxed/simple;
+	bh=HFiLuGlngAfz+xf8i/WvPUJKfDvtzPbIjebkk6c4+Hc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uD/qVI0FQN9PaXKULVbVV2+89tqj1xTZG9VrbWlkIC/Q8uPuTdveG16pgoS/pcXDqD7YQE8DQsFEGTRnP229TN7yrg1sgzteYLi5oXZk5MX+F2OB/598Emdtb3R1RrfUceYprDB+O7zvFfnmaDgfFk+4EtXAOZeBfZg4YGSrIEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gGsqxFfw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA14C4CECD;
+	Tue, 29 Oct 2024 19:10:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730229030;
+	bh=HFiLuGlngAfz+xf8i/WvPUJKfDvtzPbIjebkk6c4+Hc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=gGsqxFfwL1x5C8hV42EFGSrG9tP9C4I0MnqdKQhhPe5RE1ZK25Y+voaXvECNt3Orf
+	 aKx/EBosNl6MBzcg3kMCbQM0IdxKEZmL2I/PdH68D+ICAPWuoGpw2ns06v/Rmdf/rR
+	 O0Q5UBu2KwZLvDNIGF/okDZsZlwMz7FnQC8+dASVOeQL7WzKKQ11ATerUxYh1VTdC/
+	 vecdWVTHukOX50AMJtLpmDOPAPz6Fp+dqIy/Arv044NGvNsvqDl1vyP4EBuaEyx2aW
+	 OIJ05gT3u33J7mu8DoVbwYozhZkTm16l4xOhQ1oofv81OLaD2CrlBEEaymLlLokLu0
+	 9PG1ueZgrETSg==
+Date: Tue, 29 Oct 2024 12:10:28 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Stefan Wahren <wahrenst@gmx.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Dan Carpenter <dan.carpenter@linaro.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net] net: vertexcom: mse102x: Fix possible double free
+ of TX skb
+Message-ID: <20241029121028.127f89b3@kernel.org>
+In-Reply-To: <20241022155242.33729-1-wahrenst@gmx.net>
+References: <20241022155242.33729-1-wahrenst@gmx.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <191e7126880.114951a532011899.3321332904343010318@collabora.com>
- <20241029024236.2702721-1-gwendal@chromium.org> <20241029074117.GB22316@lst.de>
-In-Reply-To: <20241029074117.GB22316@lst.de>
-From: Gwendal Grignou <gwendal@chromium.org>
-Date: Tue, 29 Oct 2024 11:58:40 -0700
-Message-ID: <CAPUE2uvUs5dGGmovvHVPdsthKT37tJCK5jDXPMgP18VKhm5qTA@mail.gmail.com>
-Subject: Re: [PATCH] nvme-pci: Remove O2 Queue Depth quirk
-To: Christoph Hellwig <hch@lst.de>
-Cc: bob.beckett@collabora.com, kbusch@kernel.org, kbusch@meta.com, 
-	linux-nvme@lists.infradead.org, sagi@grimberg.me, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 29, 2024 at 12:41=E2=80=AFAM Christoph Hellwig <hch@lst.de> wro=
-te:
->
-> On Mon, Oct 28, 2024 at 07:42:36PM -0700, Gwendal Grignou wrote:
-> > PCI_DEVICE(0x1217, 0x8760) (O2 Micro, Inc. FORESEE E2M2 NVMe SSD)
-> > is a NMVe to eMMC bridge, that can be used with different eMMC
-> > memory devices.
->
-> Holy f**k, what an awful idea..
->
-> > The NVMe device name contains the eMMC device name, for instance:
-> > `BAYHUB SanDisk-DA4128-91904055-128GB`
-> >
-> > The bridge is known to work with many eMMC devices, we need to limit
-> > the queue depth once we know which eMMC device is behind the bridge.
->
-> Please work with Tobert to quirk based on the identify data for "his"
-> device to keep it quirked instead of regressing it.
+On Tue, 22 Oct 2024 17:52:42 +0200 Stefan Wahren wrote:
+> -static int mse102x_tx_frame_spi(struct mse102x_net *mse, struct sk_buff *txp,
+> +static int mse102x_tx_frame_spi(struct mse102x_net *mse, struct sk_buff **txp,
+>  				unsigned int pad)
+>  {
+>  	struct mse102x_net_spi *mses = to_mse102x_spi(mse);
+> @@ -226,29 +226,29 @@ static int mse102x_tx_frame_spi(struct mse102x_net *mse, struct sk_buff *txp,
+>  	int ret;
+> 
+>  	netif_dbg(mse, tx_queued, mse->ndev, "%s: skb %p, %d@%p\n",
+> -		  __func__, txp, txp->len, txp->data);
+> +		  __func__, *txp, (*txp)->len, (*txp)->data);
+> 
+> -	if ((skb_headroom(txp) < DET_SOF_LEN) ||
+> -	    (skb_tailroom(txp) < DET_DFT_LEN + pad)) {
+> -		tskb = skb_copy_expand(txp, DET_SOF_LEN, DET_DFT_LEN + pad,
+> +	if ((skb_headroom(*txp) < DET_SOF_LEN) ||
+> +	    (skb_tailroom(*txp) < DET_DFT_LEN + pad)) {
+> +		tskb = skb_copy_expand(*txp, DET_SOF_LEN, DET_DFT_LEN + pad,
+>  				       GFP_KERNEL);
+>  		if (!tskb)
+>  			return -ENOMEM;
+> 
+> -		dev_kfree_skb(txp);
+> -		txp = tskb;
+> +		dev_kfree_skb(*txp);
+> +		*txp = tskb;
+>  	}
+> 
+> -	mse102x_push_header(txp);
+> +	mse102x_push_header(*txp);
+> 
+>  	if (pad)
+> -		skb_put_zero(txp, pad);
+> +		skb_put_zero(*txp, pad);
+> 
+> -	mse102x_put_footer(txp);
+> +	mse102x_put_footer(*txp);
+> 
+> -	xfer->tx_buf = txp->data;
+> +	xfer->tx_buf = (*txp)->data;
+>  	xfer->rx_buf = NULL;
+> -	xfer->len = txp->len;
+> +	xfer->len = (*txp)->len;
+> 
+>  	ret = spi_sync(mses->spidev, msg);
+>  	if (ret < 0) {
+> @@ -368,7 +368,7 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
+>  	mse->ndev->stats.rx_bytes += rxlen;
 
-The issue is we would need to base the quirk on the model name
-(subsys->model) that is not available in `nvme_id_table`. Beside,
-`q_depth` is set in `nvme_pci_enable`, called at probe time before
-calling `nvme_init_ctrl_finish` that will indirectly populate
-`subsys`.
-
-Bob, to address the data corruption problem from user space, adding a
-udev rule to set `queue/nr_requests` to 1 when `device/model` matches
-the device used in the Steam Deck would most likely be too late in the
-boot process, wouldn't it?
-
-Gwendal.
+Isn't it easier to change this function to free the copy rather than
+the original? That way the original will remain valid for the callers.
 
