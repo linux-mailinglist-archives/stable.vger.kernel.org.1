@@ -1,97 +1,114 @@
-Return-Path: <stable+bounces-89238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AFAF9B51D2
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 19:30:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDDB59B5209
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 19:47:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13ADA1F21913
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 18:30:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B36E1C22C25
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 18:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FBE8201020;
-	Tue, 29 Oct 2024 18:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C3D7200C85;
+	Tue, 29 Oct 2024 18:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ECkJE7Lo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ly2eFgGI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08386200C8B;
-	Tue, 29 Oct 2024 18:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA6A2F56;
+	Tue, 29 Oct 2024 18:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730226629; cv=none; b=jGLm7cNKWEjP+XlnhumbwsJs6WbKM6fNnxVOg42O4HB8VJm/DkBY59Tc+vHFfsnGVc7EpQgxe6jlMhU7ZK1ugBrjTCRKi7lM649LVlYI4IrUi7X8zwv+vqi0dG7wkmH2VxeCG3AmRQEPX29rPLCqoiWhpmhH4jQsaOF1T6qLm7U=
+	t=1730227652; cv=none; b=uuxpjoZk6D1o6CMR1b4KJSCI0mvWfkpui9EGXERD8m0SD+7jLk2E0XIdINGQmbKVJjpOp1kiyiup/LuyyIETzv3nqLa2GyGcmjGa7eafO8N0fvb5oV+FVPlk1dkOX4GIjg8EKxYGDINyFrAMQiBOuZ9/6uK76BzHq/AwjNw1vnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730226629; c=relaxed/simple;
-	bh=U8F/e4YgpC/1gKny5fehwNCkkiJxiDhEwiTjIwvI2mo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=EF1l5GI1Em2nkWUs1eE4Vv8BTOOebD4myN462y0gSJGT98gyU+Pf9kQm3Rwimruh1ShSfnjGk2e+CbUd4Po9S2wHHtYocmYykxfn3fry8qjkwbdQzR6iMd8L3EN1RXedpdDE84RdDvNsBeSObCFFHnrSeJ/FU0BLOvws/G1VEd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ECkJE7Lo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8627C4CECD;
-	Tue, 29 Oct 2024 18:30:28 +0000 (UTC)
+	s=arc-20240116; t=1730227652; c=relaxed/simple;
+	bh=S8+gRCQ82buuid7niivRW0sZNsV61zi3mxR5t/hggD0=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jKzoE751oiuUFyNKl5s2ZKqWg7iXyXbFuf61Q+9E/iADAFIN3LS5PRjZS7QZV3EeaeCcl+KmllCvyOgqOMU1utaxNKXxQymu9/N7w+cEhjV7lDB9pLmS122zw3f441/K+xYCeiYmScGa174RdK5t/bIJ+2VFe5k9BTQ7QKv4fDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ly2eFgGI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B90FC4CECD;
+	Tue, 29 Oct 2024 18:47:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730226628;
-	bh=U8F/e4YgpC/1gKny5fehwNCkkiJxiDhEwiTjIwvI2mo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ECkJE7Loyau09Zm+yTIXbAx3IatjQrT/lp3GVTXf/e8dz+GArqwr+fgY1mxZwFzTq
-	 nxL92ex6O7N3vQTC7/6B+tY90xm+GyXX+bbfaekSk6DagkNa3gaURra99TVUq0+zIX
-	 KMvNMdb03GNu20DN5KEUMip/4xLp1RyzrDEKU0pFuzsl5FUpga0ngoy1Yc0rR/ETbh
-	 mfss5imgK9ErF04722VbCWzu8be+o6A62Qxm94YO8a4LUPWAZRgBqZ6ZG+bWdZgEdt
-	 Lp1WlZPqRSEZoHI8MBWftFExGXpMlb6oZzB4NHKoUUGwLbXaEjzCdFqwl7jYBsZWxJ
-	 PdLJflzTls6fQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE23F380AC08;
-	Tue, 29 Oct 2024 18:30:37 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1730227651;
+	bh=S8+gRCQ82buuid7niivRW0sZNsV61zi3mxR5t/hggD0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Ly2eFgGIN5rXRS0uoyRdB4tj/P6vCWubBcamm2P4jnc/VzNl4fH9KHdRZa5/Sn2x/
+	 AQaVD/rBsxaAkpSgL77uRuf8YCnkJRip5u+8Kc2//ku+AvD9P5VcVZO05MSKri9zrV
+	 gmdZv9HoPAzDdrAcAncmXQCRfpAa5yya5wn6cnco32NKllGIN7gdkTSbbiz2LQ/cV+
+	 aaivwg1tayAFHQQ5eQW/TXPcQi//XtAYbRPqB8nqfmn66OC6THRCTC5+rGUrtS8pGL
+	 f2bLOyPOHd2VVb9AlQGEsv1Of/tP7ALvFYPbGGsxo2GbZCyup0oMOjqZ4YhnXORh1f
+	 0h6YuRwo3U8/A==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1t5rFZ-0081Xu-Cc;
+	Tue, 29 Oct 2024 18:47:29 +0000
+Date: Tue, 29 Oct 2024 18:47:29 +0000
+Message-ID: <865xpa3fwe.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Raghavendra Rao Ananta <rananta@google.com>
+Cc: Oliver Upton <oliver.upton@linux.dev>,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	stable@vger.kernel.org,
+	syzbot <syzkaller@googlegroups.com>
+Subject: Re: [PATCH v2] KVM: arm64: Get rid of userspace_irqchip_in_use
+In-Reply-To: <CAJHc60x3sGdi2_mg_9uxecPYwZMBR11m1oEKPEH4RTYaF8eHdQ@mail.gmail.com>
+References: <20241028234533.942542-1-rananta@google.com>
+	<868qu63mdo.wl-maz@kernel.org>
+	<CAJHc60x3sGdi2_mg_9uxecPYwZMBR11m1oEKPEH4RTYaF8eHdQ@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] mctp i2c: handle NULL header address
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173022663648.781637.16899989912077374720.git-patchwork-notify@kernel.org>
-Date: Tue, 29 Oct 2024 18:30:36 +0000
-References: <20241022-mctp-i2c-null-dest-v3-1-e929709956c5@codeconstruct.com.au>
-In-Reply-To: <20241022-mctp-i2c-null-dest-v3-1-e929709956c5@codeconstruct.com.au>
-To: Matt Johnston <matt@codeconstruct.com.au>
-Cc: jk@codeconstruct.com.au, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch, wsa@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- dung@os.amperecomputing.com
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: rananta@google.com, oliver.upton@linux.dev, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, stable@vger.kernel.org, syzkaller@googlegroups.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Hello:
+On Tue, 29 Oct 2024 17:06:09 +0000,
+Raghavendra Rao Ananta <rananta@google.com> wrote:
+>=20
+> On Tue, Oct 29, 2024 at 9:27=E2=80=AFAM Marc Zyngier <maz@kernel.org> wro=
+te:
+> >
+> > On Mon, 28 Oct 2024 23:45:33 +0000,
+> > Raghavendra Rao Ananta <rananta@google.com> wrote:
+> > >
+> > Did you have a chance to check whether this had any negative impact on
+> > actual workloads? Since the entry/exit code is a bit of a hot spot,
+> > I'd like to make sure we're not penalising the common case (I only
+> > wrote this patch while waiting in an airport, and didn't test it at
+> > all).
+> >
+> I ran the kvm selftests, kvm-unit-tests and booted a linux guest to
+> test the change and noticed no failures.
+> Any specific test you want to try out?
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+My question is not about failures (I didn't expect any), but
+specifically about *performance*, and whether checking the flag
+without a static key can lead to any performance drop on the hot path.
 
-On Tue, 22 Oct 2024 18:25:14 +0800 you wrote:
-> daddr can be NULL if there is no neighbour table entry present,
-> in that case the tx packet should be dropped.
-> 
-> saddr will usually be set by MCTP core, but check for NULL in case a
-> packet is transmitted by a different protocol.
-> 
-> Fixes: f5b8abf9fc3d ("mctp i2c: MCTP I2C binding driver")
-> Cc: stable@vger.kernel.org
-> Reported-by: Dung Cao <dung@os.amperecomputing.com>
-> Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
-> 
-> [...]
+Can you please run an exit-heavy workload (such as hackbench, for
+example), and report any significant delta you could measure?
 
-Here is the summary with links:
-  - [net,v3] mctp i2c: handle NULL header address
-    https://git.kernel.org/netdev/net/c/01e215975fd8
+Thanks,
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+	M.
 
-
+--=20
+Without deviation from the norm, progress is not possible.
 
