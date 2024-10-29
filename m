@@ -1,157 +1,135 @@
-Return-Path: <stable+bounces-89186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E34A29B4865
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 12:34:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B604D9B4872
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 12:37:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8861C28393D
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 11:34:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1242B22FE5
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 11:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB66205152;
-	Tue, 29 Oct 2024 11:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D82C205AB8;
+	Tue, 29 Oct 2024 11:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sigma-star.at header.i=@sigma-star.at header.b="ap/W9MXz"
+	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="a3uzFKdp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3507E7464
-	for <stable@vger.kernel.org>; Tue, 29 Oct 2024 11:34:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5251D20514E;
+	Tue, 29 Oct 2024 11:37:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730201666; cv=none; b=X6HeLGf4SVMOrnXQMilbmro9gxnR4EPcvmqy1qLjud/3HC5IsFAYqsBc3Ej4rjAH3PSeKvpqp8SpkO3qyINW5A9OiMWfN238/qasQf2+HW3gI0RkoBqvBVrl/OkOUZb9xP5785OkBhU1+YhviVyrEIY9tSIhJNDYJNlL5fsuiQE=
+	t=1730201851; cv=none; b=L3+52HnCCpAbxMxhGiCEnIyu7gZF3HqFgwmKXfZ8EtZ4BSaZfTk6GTFDJazxkSuNiSRfqZah4eUcovo6VStQ7uMuQxThPHiKIVc6vwL9rcCDXbQ8HSs14BeoSGy7V+r5LbU5oX76+T3v1FlSdgU8oqa+YZE1S/M4ED/QQtqVeLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730201666; c=relaxed/simple;
-	bh=cPKEJ4jerXa/h6ueOtoFqHZZD6u7n4AElLCBfDVkuAw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z90EgBJsaJmmF+95pzKYQB3Iu0Y2nah3kicV7DuSbbq9ZaWigqWO+KFJLjvU3Mh7hwxPZ0kFVhg0fTdLVLjQEMLxFKY7rEWdP7VRLTn0GfeYx8HmV0iIdRCdBgv2ECWVUqj2xc9hspfXipPcXE39K/oz/8Wy/PAN2UQnc4AzSZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigma-star.at; spf=pass smtp.mailfrom=sigma-star.at; dkim=pass (2048-bit key) header.d=sigma-star.at header.i=@sigma-star.at header.b=ap/W9MXz; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigma-star.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigma-star.at
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-37ed7eb07a4so4194101f8f.2
-        for <stable@vger.kernel.org>; Tue, 29 Oct 2024 04:34:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sigma-star.at; s=google; t=1730201660; x=1730806460; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xUO11C/JRTs4GKxfufQ6dUqgB6gKo2LmLUMdUeU8K1k=;
-        b=ap/W9MXzkQRzXylxlEwl9vrjtn4+mVxv5Dln5/HFOmSJtI2c1uJDvPw+iTmPDB6+NM
-         ogtZzXTUR0mOpR4sKySkHlXlwfGp2SVUCRPOWNM934bn42MyKO/j0AW86OTPImOeKcq7
-         ehYDhB6SbvxWHr9PZ28OxYEKvyioWUz4eLZ/5aury1TZa0G8wEIFXfyBVnFG3G3b49Fc
-         yvQor9LnoJhhJm1sQuR5nd2A4XENxUIpsZmMuH9+JWbDWzpK+sdTL7FO501zS3pi1YGL
-         IyEyu9Xgun/pPgBSnura1G3Q6dHNJA6h6E0XPPz8roSsapXM/Ya/tjj9PPS0qtJsY3y3
-         hjAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730201660; x=1730806460;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xUO11C/JRTs4GKxfufQ6dUqgB6gKo2LmLUMdUeU8K1k=;
-        b=k+O37GU1auZuzNN9KhymeoIYIZNzLFG5LUVtp5YlFUqTiY9k2qAow6SbTJ2zE73ZbZ
-         aMl320wnQHmjO7Itat1sTtYzqS0iLIT2D3J/cu6drNZVdrNGzceSvF6bE4M1r/6kjXLA
-         f3bOCzURLo8dcy5T5ggxQKi7v6AarXW4ELw1TVWtaIEJXno/zKp6tBIBF18j+CwVSnAX
-         4rWoPzzncaWKXFuoiayEbXgzQEIlmGDl2bC4Q+ITAjZIWtil5sOQ8oehwS8OjybXpVau
-         /rvkIg3Lv+rNVr1wblHaPUBShZBR+U5UOV4gJqot+R8vAVMTt8d3CoyK8r8zhDpgvqVd
-         tASQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX9SSLomK031FIcInd98Kvusa4WFP0mkxAzMq5X+ksTZxN7qRmyD/DxBWarFh8d0PRRYW03Qks=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjxYwWyNBW4QmRBw4g5DMhuP3wZwRUMfwSQoI6tg+KzsZcDn7u
-	cIbmOGT7mJ+FU68hqSdOr5C2azAoT6TwIlDtVTzHY3piPy5vUSXtHu/R2zflPWg=
-X-Google-Smtp-Source: AGHT+IFJoyZ6NxzI4ys9GDFWfJixnTkKlsJEMZbZjWGrqOc2/MIuNQIrRuJSwDRXg2rPjjIDI76/9g==
-X-Received: by 2002:adf:fdc9:0:b0:37d:43e5:a013 with SMTP id ffacd0b85a97d-380610f49e4mr7243573f8f.8.1730201660311;
-        Tue, 29 Oct 2024 04:34:20 -0700 (PDT)
-Received: from localhost ([82.150.214.1])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-38058b47952sm12152755f8f.48.2024.10.29.04.34.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Oct 2024 04:34:20 -0700 (PDT)
-From: David Gstir <david@sigma-star.at>
-To: parthiban@linumiz.com,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>
-Cc: sigma star Kernel Team <upstream+dcp@sigma-star.at>,
-	linux-integrity@vger.kernel.org,
-	keyrings@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	David Gstir <david@sigma-star.at>,
-	stable@vger.kernel.org
-Subject: [PATCH] KEYS: trusted: dcp: fix NULL dereference in AEAD crypto operation
-Date: Tue, 29 Oct 2024 12:34:01 +0100
-Message-ID: <20241029113401.90539-1-david@sigma-star.at>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <254d3bb1-6dbc-48b4-9c08-77df04baee2f@linumiz.com>
-References: <254d3bb1-6dbc-48b4-9c08-77df04baee2f@linumiz.com>
+	s=arc-20240116; t=1730201851; c=relaxed/simple;
+	bh=o2E1FQYdtO20CbBV3qYSi9WtW0hUwUhugtlkNPHSqD4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dGFa5WfA7M1lvDMpjUmfiQllWhseMFhhfAsIdjcuF/wFQtGwPbisbAnpJh1b0j5qKq06pI3+RwzVQHi1Wr8gYbm7vvuRsxoiG8OmPfr88OrQg7ewPb58XvcnFyt2WR4SZ1njB6FXVsydMJbEvaWy2e7ht/XbUSM9wx3UKwYsGnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=a3uzFKdp; arc=none smtp.client-ip=212.227.126.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
+	s=s1-ionos; t=1730201801; x=1730806601; i=christian@heusel.eu;
+	bh=uPx/693D1KOpsC75//Rzve20O6pDdXOCslY44UXj3UY=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:In-Reply-To:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=a3uzFKdpOOt14foID4PhT1BsUt5A0v8QljsNVCUuy1AG/+rBtwZM3Vqfsf8P8D8B
+	 /oHKm0lPhAyB7QH6smn8ACK0XEZ7+kVknYY1FMkXHo2AiUFKOZoSnlT2YlAkav5BW
+	 xfbQKaRGSsOs9basaTQkICnL5pXZ2lqsRro4W/LDKnp2XZKKpM774nP3AZqYbzTEV
+	 r8FETuy/+O2oLrC8FUFCSMOTiWyxH6SDwjgOiU+H4XDgNnBkCP07iNr14Z7JtgcZN
+	 n+MG21EvdV8HoXDs8Ik83RlydH7Zs2DXRxbh4OvCX3/ybhWTPiQKSTdZ5jGSs87c4
+	 0rzlsLa1rJJKI2J4VQ==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from localhost ([141.70.80.5]) by mrelayeu.kundenserver.de (mreue009
+ [212.227.15.167]) with ESMTPSA (Nemesis) id 1MfYHQ-1tlPw91vJY-00jaHv; Tue, 29
+ Oct 2024 12:36:41 +0100
+Date: Tue, 29 Oct 2024 12:36:39 +0100
+From: Christian Heusel <christian@heusel.eu>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
+	allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.11 000/261] 6.11.6-rc1 review
+Message-ID: <dc2297a1-aa4e-410c-b4a8-ded53a4a96a1@heusel.eu>
+References: <20241028062312.001273460@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="25aaetkewxcot6dh"
+Content-Disposition: inline
+In-Reply-To: <20241028062312.001273460@linuxfoundation.org>
+X-Provags-ID: V03:K1:WIuvLVObM+VfqWn6SLKPhk5tdVFYSxFfqVmKE3oroCCtr5V3KKh
+ RBBt5nPhCgyoXyaWF56Zh3v+KHwP4IV7bNMCGJTky/XCVzUb4BAYNij6bOlrxOuoS5nt2cB
+ u5HNxu1kQpHkFPFDx2ZXff+xIt/DtvnRVfQoquYzUqmjJW+/mlV5YTogimmNVtBq0kOiV7m
+ A6at6VnFVliIsRYIxHGeg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:63jAJymAGVo=;2PI09+GH+HHCSVCrYKZBEPwt33F
+ oAHeoHmQK7dN4VZj2n/Lx9oPVyiXwk/oKv3PQVSKqdRabohlXS9tUx+MIrIE9RfgTiceVqI8I
+ zoqh/DrTK35IgnSpCR/LCs0Zl1ui09Qy8h7HGT7ucJvvxhxXGPvvGAEOOMi7wqdpRNLkwSwwn
+ w5n6QyJrhpOtq9SwkSRBwlqHWlYVXjuzixsujAYkUFZ0q+XaEn6/biS+6sQS2WShgA5LD9e1D
+ fDTLzHRM1D725Qn4Uf238rIstYWj5FyuCz2++O3hlauckD8Ie69d5Wf/cz/2aeWO+ffklC0Me
+ 2P0nnI5wwK+q/3Rv3z10riEhD9zmhGVOYi9rHetHScusVje833lduudZLSEhmCIDOPnOnywbI
+ RQUkXiOEbsZu1FQ07YZffbjNQFihWpbYE4u+7TndaaHcBQF99Hb16RWaXZSYyHPRE1sUPTvjg
+ OJOH8IK9MrgaUCRQ05DV9ty/bBr0DfW6ETjR6mojuSLsNIF8j7oLOWqDe9RLYQDGkuM1RRwD+
+ cZm+EEYxyh4Tlcon5ItsQga+67nWqksWNTg5IZ+LhIWD0NSQHe/X/IiMfrolokq4wXA8Nsfp+
+ nd1rmM/BdBpHXdU9R+VR7uh1w1ON2Lo0bZGjBKp4epp4FQDKBa7TovZflKDX4eDm2C0yKHsLD
+ Nfas25zj0enoJ2x0hs5ulduXOHfHFw+Ei3J5EaRb0IaiZ/TiuMqeupF8lTihi8+rKuwXyyysv
+ 6OAH6Fg8H9mKwvbDf5V75cJnAKtcxY5zg==
 
-When sealing or unsealing a key blob we currently do not wait for
-the AEAD cipher operation to finish and simply return after submitting
-the request. If there is some load on the system we can exit before
-the cipher operation is done and the buffer we read from/write to
-is already removed from the stack. This will e.g. result in NULL
-pointer dereference errors in the DCP driver during blob creation.
 
-Fix this by waiting for the AEAD cipher operation to finish before
-resuming the seal and unseal calls.
+--25aaetkewxcot6dh
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 6.11 000/261] 6.11.6-rc1 review
+MIME-Version: 1.0
 
-Cc: stable@vger.kernel.org # v6.10+
-Fixes: 0e28bf61a5f9 ("KEYS: trusted: dcp: fix leak of blob encryption key")
-Reported-by: Parthiban N <parthiban@linumiz.com>
-Closes: https://lore.kernel.org/keyrings/254d3bb1-6dbc-48b4-9c08-77df04baee2f@linumiz.com/
-Signed-off-by: David Gstir <david@sigma-star.at>
----
- security/keys/trusted-keys/trusted_dcp.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+On 24/10/28 07:22AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.11.6 release.
+> There are 261 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 30 Oct 2024 06:22:39 +0000.
+> Anything received after that time might be too late.
+>
 
-diff --git a/security/keys/trusted-keys/trusted_dcp.c b/security/keys/trusted-keys/trusted_dcp.c
-index 4edc5bbbcda3..e908c53a803c 100644
---- a/security/keys/trusted-keys/trusted_dcp.c
-+++ b/security/keys/trusted-keys/trusted_dcp.c
-@@ -133,6 +133,7 @@ static int do_aead_crypto(u8 *in, u8 *out, size_t len, u8 *key, u8 *nonce,
- 	struct scatterlist src_sg, dst_sg;
- 	struct crypto_aead *aead;
- 	int ret;
-+	DECLARE_CRYPTO_WAIT(wait);
- 
- 	aead = crypto_alloc_aead("gcm(aes)", 0, CRYPTO_ALG_ASYNC);
- 	if (IS_ERR(aead)) {
-@@ -163,8 +164,8 @@ static int do_aead_crypto(u8 *in, u8 *out, size_t len, u8 *key, u8 *nonce,
- 	}
- 
- 	aead_request_set_crypt(aead_req, &src_sg, &dst_sg, len, nonce);
--	aead_request_set_callback(aead_req, CRYPTO_TFM_REQ_MAY_SLEEP, NULL,
--				  NULL);
-+	aead_request_set_callback(aead_req, CRYPTO_TFM_REQ_MAY_SLEEP,
-+				  crypto_req_done, &wait);
- 	aead_request_set_ad(aead_req, 0);
- 
- 	if (crypto_aead_setkey(aead, key, AES_KEYSIZE_128)) {
-@@ -174,9 +175,9 @@ static int do_aead_crypto(u8 *in, u8 *out, size_t len, u8 *key, u8 *nonce,
- 	}
- 
- 	if (do_encrypt)
--		ret = crypto_aead_encrypt(aead_req);
-+		ret = crypto_wait_req(crypto_aead_encrypt(aead_req), &wait);
- 	else
--		ret = crypto_aead_decrypt(aead_req);
-+		ret = crypto_wait_req(crypto_aead_decrypt(aead_req), &wait);
- 
- free_req:
- 	aead_request_free(aead_req);
--- 
-2.47.0
+Tested-by: Christian Heusel <christian@heusel.eu>
 
+Tested on a ThinkPad E14 Gen 3 with a AMD Ryzen 5 5500U CPU and on the
+Steam Deck (LCD variant).=20
+
+--25aaetkewxcot6dh
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmcgyMcACgkQwEfU8yi1
+JYUrxw//aTJQRwtT6aLo2u3LUsuB4oC24QnzP0j6S8npCogqDQPFrTFLvBTdf1Sj
+Kg+BDVwShNg5Nc3pNG4VABEsVmrOWGhyZ9OaCZfPI+XXwuTJu/HWMCE1ja/3flo1
+maIEY9QBVRyjmvJH5jgD3h+q4VIYLUJ0h8oJDgrAudxOMPsQFOxpZqmgaGtUnOQM
+b+ngYsV0fifzyiL3BwpHAt+EDtE+qLx8KQaKI0os8S1bbSBESGFvK624rlmZLVzS
+TQsSGu+eOBqhGPgv8DwZ7AlIegw8MkTkToKTDW/MUVJ3m9dx+KOWUScN3qvZgFB7
+ycTl+hS174+9XrJRaS0pXBAe5kry8c2xrnzjQ1p6xoWnICTC+x0IGy9lhXi7nO16
+GYSfvhE5103WcMkXiLlvIPo1pUcKLv2JuKd/RLe+/LjzSeqDeK0BSSQwWDK6vJ4s
+QlmLtqpNNID+GaZNcs819yzxqpW2hOdqTQirLvX8LUJAUJeZqSGaJ/y0Om1RAvyh
+C7mUGzqzT1lTfezFk/Ug1Wct2tx9IAYwPaKbit644ACElqDVMA0dyOl+7Y4BFCEY
+7kBFv2yyRM3rCdzpNJskWmbuXDD+YK1hXSpbfPBBMNbm9vYNzweqO4+90KrGmUFm
+m/WpbaL2Fxy03m9JWwZ1gqZpIV6ZI/Vu0OqFo5U+MMYk71WdcEs=
+=41HY
+-----END PGP SIGNATURE-----
+
+--25aaetkewxcot6dh--
 
