@@ -1,118 +1,191 @@
-Return-Path: <stable+bounces-89256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55AAC9B54CB
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 22:14:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E81F19B54CE
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 22:15:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06E921F23A4E
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 21:14:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1742B1C226BF
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 21:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD66E207A3A;
-	Tue, 29 Oct 2024 21:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D17FE209664;
+	Tue, 29 Oct 2024 21:15:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="f+8cK0yC"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D6120721D;
-	Tue, 29 Oct 2024 21:14:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEACC183CD1;
+	Tue, 29 Oct 2024 21:15:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730236493; cv=none; b=pf5yV+w8kzZy3AdjKRn66yNMXsxx46rG+1xkH4///3ny+dOjqY7TfBDM6B4KxjqzHLIEnsAjD9/cMcdhRWIIYlTYbqtA/p6ZAY91HwOiHrVTk6keStx5N9/QqQiYL+aEesYGFMIv5HqKxtsQBvXaBufN4HzwGVoIoYoXaPmQKEI=
+	t=1730236533; cv=none; b=YQiI48TekZv3NXETC6boManY+z1XkwOWKQZHULfw+SV6WslXaYc+vo8Djzmst7w0VvptLgFK4LQwUDjDgAO9I0Pw1rTA2l1Q9hhspwfLXcwMcSAmrJu2E2fqy9ysHTX2E5lFeRmJ3QYBdeKPMpq5EMLzd2mDvY1y9Eh5tDDHZh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730236493; c=relaxed/simple;
-	bh=0Hmfu0Dmd+ONojT8fbkDPeqhboxJBVmLmMSWyx58uPM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B8UjwCwZ3P8lDl92Z9eE/OhrS1rIqcKAkOrYmHuyWAkWlBvxU4It3xD+RNFbTO2wkqbMOt9K8ATVAv8TX4P8f2UYtWCKkf+8R89oxFjci/yA/Hdvggw2ScU2QJkpXOO2cUTjeqqJrnfeHf3eL5Z99uRZPTHkCQQGSoVxoBpSkh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49THNuUr024976;
-	Tue, 29 Oct 2024 21:14:29 GMT
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 42gqd8m43p-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 29 Oct 2024 21:14:29 +0000 (GMT)
-Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Tue, 29 Oct 2024 14:14:28 -0700
-Received: from pop-os.wrs.com (172.25.44.6) by ala-exchng01.corp.ad.wrs.com
- (147.11.82.252) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Tue, 29 Oct 2024 14:14:27 -0700
-From: <Randy.MacLeod@windriver.com>
-To: <sherry.yang@oracle.com>
-CC: <bridge@lists.linux-foundation.org>, <davem@davemloft.net>,
-        <gregkh@linuxfoundation.org>, <kuba@kernel.org>,
-        <netdev@vger.kernel.org>, <nikolay@nvidia.com>, <roopa@nvidia.com>,
-        <sashal@kernel.org>, <stable@vger.kernel.org>,
-        <randy.macleod@windriver.com>
-Subject: [PATCH 5.15.y] net: bridge: xmit: make sure we have at least eth header len bytes
-Date: Tue, 29 Oct 2024 17:14:26 -0400
-Message-ID: <20241029211426.3046219-1-Randy.MacLeod@windriver.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241004170328.10819-3-sherry.yang@oracle.com>
-References: <20241004170328.10819-3-sherry.yang@oracle.com>
+	s=arc-20240116; t=1730236533; c=relaxed/simple;
+	bh=g1jEdbLV6aZ5vrSeCtCKjDXncliCBAz1Tl/5g483z48=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bTw+/K5MomQ74q3a1hAFlMw2tnTP0EWypHCdVEjJJGEGQi0l3BUAIUwxJJpuqnpUbBXY+Iqb6rnjGeaITdoZDrxsN6vaEaLSupTTNDuZ2CX7qoHPdawH12dsOB3twfXi+Gt6Rd90ZlJ4ex7zgbGNy3ZlW6rPhUFOcvP0qeWGvRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=f+8cK0yC; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1730236516; x=1730841316; i=wahrenst@gmx.net;
+	bh=RG1i4lQ78d9OJfsfAWh3U/u88YT5CuUOUixW0R8cyLM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=f+8cK0yCVZKsJX1GXHavfPT1wHTqSbqYIk4txHriKUic6jDUvXT2fhr/EnwwEKu5
+	 KwTSfaYt5tYSyMyJVPXSNGaY1+4Zt+Fsm0T90EAkopF8iAX+He7H7f63FBUAtL2wc
+	 3frMksd17zJxY6QnDVkZfTJXLG/A94GLCl3S8EKiZgjoZ4N7BhL/t2IJ5Z05x9msg
+	 OGBvDCS4gYY+gLgwA+TOExD0wieaSCGpVbrnUyI3mgqoDrXOCCjprUtE/VoXKUU3F
+	 W+ySUeobKh8BwJiU9/7X4uyyUe9/dwlChIXg9dpKRZw3k9zX51OBecmtjTs7nT8Hm
+	 rTJz6CUzQTcOLu27/w==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.105] ([37.4.248.43]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MvK4Z-1twUFB377B-00wRP9; Tue, 29
+ Oct 2024 22:15:16 +0100
+Message-ID: <10adcc89-6039-4b68-9206-360b7c3fff52@gmx.net>
+Date: Tue, 29 Oct 2024 22:15:15 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: I5g67KRVeGwd-XnB4L0ZUcMFU6Y4VrpW
-X-Authority-Analysis: v=2.4 cv=dKj0m/Zb c=1 sm=1 tr=0 ts=67215035 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=eMPNgDwjIQXpT8XC:21 a=DAUX931o1VcA:10 a=t7CeM3EgAAAA:8 a=hSkVLCK3AAAA:8 a=edf1wS77AAAA:8 a=IJ2IFIBGmV0-FWXsoRQA:9
- a=FdTzh2GWekK77mhwV6Dw:22 a=cQPPKAXgyycSBL8etih5:22 a=DcSpbTIhAlouE1Uv7lRv:22
-X-Proofpoint-GUID: I5g67KRVeGwd-XnB4L0ZUcMFU6Y4VrpW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-29_16,2024-10-29_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- priorityscore=1501 lowpriorityscore=0 phishscore=0 mlxlogscore=999
- adultscore=0 impostorscore=0 malwarescore=0 bulkscore=0 clxscore=1011
- spamscore=0 mlxscore=0 classifier=spam authscore=0 adjust=0 reason=mlx
- scancount=1 engine=8.21.0-2409260000 definitions=main-2410290159
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: vertexcom: mse102x: Fix possible double free of
+ TX skb
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Dan Carpenter <dan.carpenter@linaro.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Simon Horman <horms@kernel.org>
+References: <20241022155242.33729-1-wahrenst@gmx.net>
+ <20241029121028.127f89b3@kernel.org>
+Content-Language: en-US
+From: Stefan Wahren <wahrenst@gmx.net>
+In-Reply-To: <20241029121028.127f89b3@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:2s+4FthblCjweeWPqCC45CSJDqCnUnZMCKae43F6COH6ujmDsym
+ ETdXlHwLPPOX0katbq7gMXVcqsDCnXzBHiWhoHEHIwWJ6rP+6StOgE+GtqRhNx9AW8JiBB6
+ McYXzapF/WBv8Gw8B1hjLCz6Q7IFXYVa6ZLqCRYYWcbzMTVoE3dEFqxfUVE9Atjd9Srmu9s
+ Tqqlw1sFFEmGFwQm2/S6w==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:1zR6FLu8518=;y+ZgU9K3lvgFmd+wvm6BnsFGbVI
+ rGMizsMW0tk2jMSHmXBvDpEjt3P1pVujhV2ORkyt9DnKv7cQKMMuxDGoGO2yMU/xRNlUaDV5k
+ alEqCL9DojWxWkmUJlbFX1II1nJnT1xlG4l84EDFENI4mSt1mTMuIEl0eOKXd4ytxuL2NFrcO
+ iJd4EsCb8Yjl6Ke7X/rogb6wi6i3iTtbwsJaJAM2U6p2hwaxzmB5VFp5uQyIlMt8xep0QDUkN
+ BK1vsXNQ/SPdHv4ShVq64DBTPPg875RX2E7tnF9s7Cknz/MqqWg9PQ0G+gF0MiKQ22HWXN99Z
+ lPo3V37fvgfsxCQp5nWHoKJUWLNo2IUrD3sFDAQCMSQalj1O1CFP5XHxLGPduFTMyUgsZ+ruO
+ G80WSplaOeLESpTjt7FEnL/0ZZZCWf9wBUv3dIJP32OL4GXpHjjsIAyQRVEG3SGSUAEbUVeah
+ 6bYXOp0w3XFX28RsIwXMEwI3VfosM8atXsn2S3bTmeEwvkDlpfQH1l9dM8VeZifWpbpVns3mB
+ ZWMtU+VUUvJqryHx7c02tYD2w0p4G4bwIqFLO2wBoOLtfqiW2bN9OcUXghuwOinfEs4AAIdYy
+ t5AMucH4MYfawI3xW/3h1uYUtuCaikPWejt9avbNihHa4nEubRAR4x+UNhWD/ae6IMlelJmIx
+ sVH6rbZcZ6FXZEPTDB3c6sVH+nf+M/WBldZrIYg6LWqa+jtPsXpRzllpm5OH7eYhYh9LOvxzM
+ hACW2iCl92oe30kdEYcpgkEIdOsDS0dknJBuppRqK5t9bcAD1s8BJ+B6gDwYR3jlkYHaM+Jmt
+ P2LCcHQtwQyXDO/aCSO29SQQ==
 
-From: Randy MacLeod <Randy.MacLeod@windriver.com>
+Hi Jakub,
 
-[ Upstream commit 8bd67ebb50c0145fd2ca8681ab65eb7e8cde1afc ]
+Am 29.10.24 um 20:10 schrieb Jakub Kicinski:
+> On Tue, 22 Oct 2024 17:52:42 +0200 Stefan Wahren wrote:
+>> -static int mse102x_tx_frame_spi(struct mse102x_net *mse, struct sk_buf=
+f *txp,
+>> +static int mse102x_tx_frame_spi(struct mse102x_net *mse, struct sk_buf=
+f **txp,
+>>   				unsigned int pad)
+>>   {
+>>   	struct mse102x_net_spi *mses =3D to_mse102x_spi(mse);
+>> @@ -226,29 +226,29 @@ static int mse102x_tx_frame_spi(struct mse102x_ne=
+t *mse, struct sk_buff *txp,
+>>   	int ret;
+>>
+>>   	netif_dbg(mse, tx_queued, mse->ndev, "%s: skb %p, %d@%p\n",
+>> -		  __func__, txp, txp->len, txp->data);
+>> +		  __func__, *txp, (*txp)->len, (*txp)->data);
+>>
+>> -	if ((skb_headroom(txp) < DET_SOF_LEN) ||
+>> -	    (skb_tailroom(txp) < DET_DFT_LEN + pad)) {
+>> -		tskb =3D skb_copy_expand(txp, DET_SOF_LEN, DET_DFT_LEN + pad,
+>> +	if ((skb_headroom(*txp) < DET_SOF_LEN) ||
+>> +	    (skb_tailroom(*txp) < DET_DFT_LEN + pad)) {
+>> +		tskb =3D skb_copy_expand(*txp, DET_SOF_LEN, DET_DFT_LEN + pad,
+>>   				       GFP_KERNEL);
+>>   		if (!tskb)
+>>   			return -ENOMEM;
+>>
+>> -		dev_kfree_skb(txp);
+>> -		txp =3D tskb;
+>> +		dev_kfree_skb(*txp);
+>> +		*txp =3D tskb;
+>>   	}
+>>
+>> -	mse102x_push_header(txp);
+>> +	mse102x_push_header(*txp);
+>>
+>>   	if (pad)
+>> -		skb_put_zero(txp, pad);
+>> +		skb_put_zero(*txp, pad);
+>>
+>> -	mse102x_put_footer(txp);
+>> +	mse102x_put_footer(*txp);
+>>
+>> -	xfer->tx_buf =3D txp->data;
+>> +	xfer->tx_buf =3D (*txp)->data;
+>>   	xfer->rx_buf =3D NULL;
+>> -	xfer->len =3D txp->len;
+>> +	xfer->len =3D (*txp)->len;
+>>
+>>   	ret =3D spi_sync(mses->spidev, msg);
+>>   	if (ret < 0) {
+>> @@ -368,7 +368,7 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *=
+mse)
+>>   	mse->ndev->stats.rx_bytes +=3D rxlen;
+> Isn't it easier to change this function to free the copy rather than
+> the original? That way the original will remain valid for the callers.
+You mean something like this?
 
-Based on above commit but simplified since pskb_may_pull_reason()
-does not exist until 6.1.
+diff --git a/drivers/net/ethernet/vertexcom/mse102x.c
+b/drivers/net/ethernet/vertexcom/mse102x.c
+index a04d4073def9..2c37957478fb 100644
+=2D-- a/drivers/net/ethernet/vertexcom/mse102x.c
++++ b/drivers/net/ethernet/vertexcom/mse102x.c
+@@ -222,7 +222,7 @@ static int mse102x_tx_frame_spi(struct mse102x_net
+*mse, struct sk_buff *txp,
+ =C2=A0=C2=A0=C2=A0=C2=A0 struct mse102x_net_spi *mses =3D to_mse102x_spi(=
+mse);
+ =C2=A0=C2=A0=C2=A0=C2=A0 struct spi_transfer *xfer =3D &mses->spi_xfer;
+ =C2=A0=C2=A0=C2=A0=C2=A0 struct spi_message *msg =3D &mses->spi_msg;
+-=C2=A0=C2=A0=C2=A0 struct sk_buff *tskb;
++=C2=A0=C2=A0=C2=A0 struct sk_buff *tskb =3D NULL;
+ =C2=A0=C2=A0=C2=A0=C2=A0 int ret;
 
-syzbot triggered an uninit value[1] error in bridge device's xmit path
-by sending a short (less than ETH_HLEN bytes) skb. To fix it check if
-we can actually pull that amount instead of assuming.
+ =C2=A0=C2=A0=C2=A0=C2=A0 netif_dbg(mse, tx_queued, mse->ndev, "%s: skb %p=
+, %d@%p\n",
+@@ -235,7 +235,6 @@ static int mse102x_tx_frame_spi(struct mse102x_net
+*mse, struct sk_buff *txp,
+ =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 if (!tskb)
+ =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 return -EN=
+OMEM;
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+a63a1f6a062033cf0f40@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a63a1f6a062033cf0f40
-Signed-off-by: Randy MacLeod <Randy.MacLeod@windriver.com>
----
- net/bridge/br_device.c | 5 +++++
- 1 file changed, 5 insertions(+)
+-=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 dev_kfree_skb(txp);
+ =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 txp =3D tskb;
+ =C2=A0=C2=A0=C2=A0=C2=A0 }
 
-diff --git a/net/bridge/br_device.c b/net/bridge/br_device.c
-index 8d6bab244c4a..b2fa4ca28102 100644
---- a/net/bridge/br_device.c
-+++ b/net/bridge/br_device.c
-@@ -38,6 +38,11 @@ netdev_tx_t br_dev_xmit(struct sk_buff *skb, struct net_device *dev)
- 	const unsigned char *dest;
- 	u16 vid = 0;
- 
-+	if (unlikely(!pskb_may_pull(skb, ETH_HLEN))) {
-+		kfree_skb(skb);
-+		return NETDEV_TX_OK;
-+	}
+@@ -257,6 +256,8 @@ static int mse102x_tx_frame_spi(struct mse102x_net
+*mse, struct sk_buff *txp,
+ =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 mse->stats.xfer_err++;
+ =C2=A0=C2=A0=C2=A0=C2=A0 }
+
++=C2=A0=C2=A0=C2=A0 dev_kfree_skb(tskb);
 +
- 	memset(skb->cb, 0, sizeof(struct br_input_skb_cb));
- 
- 	rcu_read_lock();
--- 
-2.34.1
-
+ =C2=A0=C2=A0=C2=A0=C2=A0 return ret;
+ =C2=A0}
 
