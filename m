@@ -1,144 +1,76 @@
-Return-Path: <stable+bounces-89140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F8B9B3EAE
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 00:52:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCEDB9B3EDE
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 01:10:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 499681C221A3
-	for <lists+stable@lfdr.de>; Mon, 28 Oct 2024 23:52:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 489AB283910
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 00:10:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471901F4272;
-	Mon, 28 Oct 2024 23:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F64D28F4;
+	Tue, 29 Oct 2024 00:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="cfzYzDj1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uC5CjPaH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E4B1D5171;
-	Mon, 28 Oct 2024 23:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE4A2119
+	for <stable@vger.kernel.org>; Tue, 29 Oct 2024 00:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730159533; cv=none; b=R6VM0qCeSjXU4Gq9QISAwAjBJS8+rQyVKJN+ZqC/P9/8oF1pbxrws1ampKRKvlCYeGb1lQwskEaaTYQoLYplvpRvhiITO7nCgsbskWTS05FDL4Q3ikRaGAR4/2XAgybqsDUC0/b8u45L1uoM2SsIhpOv7WajNRNQqYTuX3bYRE4=
+	t=1730160601; cv=none; b=AaVzIgz433S64gpDBmI8iJ7dGYsL0w7SN8rY6VSuiy0UKmJFn0iVPzyTM3LWE8QTE1QmLKrP+AW9czHGKftfsV/1Xks/7TOZJBBDyRXT2e8XGW/F3FQ4KYUiP4WjpcZqYBNpfLkvqnX7Ebl8C617aD7zQ9WIj22agorbiQG/ayw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730159533; c=relaxed/simple;
-	bh=JQ/lrItjqcXm/4ktsrc19zrWcrH8BaO6JqbI7d3GTnQ=;
-	h=Date:To:From:Subject:Message-Id; b=Nl5meNuvXebNbrYOPo2yd0J6DQCrbamOd68ToC67uktVY1bZorVHTZWWlIjBZDxGNI9yuuH/0S1FucQP/Sy/H16jQKHRYdyWg/Xt0ESIDOzzmZOckbJCUHTg+57RgBJD6LfedZdIdwRPs2Q2X7S6Pd2ZUy96gH3Qt/XW4hBTcv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=cfzYzDj1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42146C4CEC3;
-	Mon, 28 Oct 2024 23:52:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1730159532;
-	bh=JQ/lrItjqcXm/4ktsrc19zrWcrH8BaO6JqbI7d3GTnQ=;
-	h=Date:To:From:Subject:From;
-	b=cfzYzDj1taYm1kyUe7izTNFgapsvhMD7OuYgFrHmBt+fkk/Ke5bjbFkdkOAeDsvLY
-	 RgqwL2YmQenFXDTZp5DNcoCCJa9mSpNd0j1scP8bZwEb+TruJdmPdeXjaIFH4okXGM
-	 1xWZ1eX+S+MjKd6DqZ8wAHHFXkYLhOY3lJM5bXzY=
-Date: Mon, 28 Oct 2024 16:52:11 -0700
-To: mm-commits@vger.kernel.org,ying.huang@intel.com,weixugc@google.com,stable@vger.kernel.org,shy828301@gmail.com,osalvador@suse.de,dave.hansen@linux.intel.com,gourry@gourry.net,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + vmscanmigrate-fix-double-decrement-on-node-stats-when-demoting-pages.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241028235212.42146C4CEC3@smtp.kernel.org>
+	s=arc-20240116; t=1730160601; c=relaxed/simple;
+	bh=uOtS9YRTg5Bz6lgWGo5/X9y10X3xUNfq6F3RbNVisN4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=too2Mj+Hlb7Z8dUm6wLTAVelXthtODN05watUk8wSrieNSsHjC/ronzuMAHq+S11g3399R76J60GkP4pOdBXhiA6B8m6PzpC4BP/9IsvMXU5yM38Z0w0K58+qodsfDE2dLjtAzWE7wlLdDwr9o0DpFbVF5tcnqALMmX8PRk4EkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uC5CjPaH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B70E1C4CEC3;
+	Tue, 29 Oct 2024 00:10:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1730160601;
+	bh=uOtS9YRTg5Bz6lgWGo5/X9y10X3xUNfq6F3RbNVisN4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uC5CjPaHKLcFPfuBYTRmRXmlvv5NAr+eT1wyuvw9ZzCUOWuj+yDiu7ChUP2zibumT
+	 TCXAFKuP9B2OenZENbJvz98LWpKWd0RLiZWzh/VNeOAxY9jWTuhK4CVD2ZcMWu0UE3
+	 Xp2M6GxA9aol4LM8/lluw9b01qsW1CBFausilfEk=
+Date: Tue, 29 Oct 2024 01:09:48 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Uday Shankar <ushankar@purestorage.com>
+Cc: Jens Axboe <axboe@kernel.dk>, Xinyu Zhang <xizhang@purestorage.com>,
+	Christoph Hellwig <hch@lst.de>, stable@vger.kernel.org
+Subject: Re: Remove "block: fix sanity checks in blk_rq_map_user_bvec" from
+ all stable queues
+Message-ID: <2024102930-chowder-chooser-bdd5@gregkh>
+References: <Zx/XVRgyeCeaKrj+@dev-ushankar.dev.purestorage.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zx/XVRgyeCeaKrj+@dev-ushankar.dev.purestorage.com>
 
+On Mon, Oct 28, 2024 at 12:26:29PM -0600, Uday Shankar wrote:
+> Please remove the following patch from all stable queues:
+> 
+> 2ff949441802 ("block: fix sanity checks in blk_rq_map_user_bvec")
+> 
+> The above patch should not go into any stable tree unless accompanied by
+> its (currently inflight) fix:
+> 
+> https://lore.kernel.org/linux-block/20241028090840.446180-1-hch@lst.de/
 
-The patch titled
-     Subject: vmscan,migrate: fix page count imbalance on node stats when demoting pages
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     vmscanmigrate-fix-double-decrement-on-node-stats-when-demoting-pages.patch
+Ok, now dropped from all queues.  When this fix lands, please let us
+know so that we can pick up both changes.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/vmscanmigrate-fix-double-decrement-on-node-stats-when-demoting-pages.patch
+thanks,
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Gregory Price <gourry@gourry.net>
-Subject: vmscan,migrate: fix page count imbalance on node stats when demoting pages
-Date: Fri, 25 Oct 2024 10:17:24 -0400
-
-When numa balancing is enabled with demotion, vmscan will call
-migrate_pages when shrinking LRUs.  migrate_pages will decrement the
-the node's isolated page count, leading to an imbalanced count when
-invoked from (MG)LRU code.
-
-The result is dmesg output like such:
-
-$ cat /proc/sys/vm/stat_refresh
-
-[77383.088417] vmstat_refresh: nr_isolated_anon -103212
-[77383.088417] vmstat_refresh: nr_isolated_file -899642
-
-This negative value may impact compaction and reclaim throttling.
-
-The following path produces the decrement:
-
-shrink_folio_list
-  demote_folio_list
-    migrate_pages
-      migrate_pages_batch
-        migrate_folio_move
-          migrate_folio_done
-            mod_node_page_state(-ve) <- decrement
-
-This path happens for SUCCESSFUL migrations, not failures.  Typically
-callers to migrate_pages are required to handle putback/accounting for
-failures, but this is already handled in the shrink code.
-
-When accounting for migrations, instead do not decrement the count when
-the migration reason is MR_DEMOTION.  As of v6.11, this demotion logic
-is the only source of MR_DEMOTION.
-
-Link: https://lkml.kernel.org/r/20241025141724.17927-1-gourry@gourry.net
-Fixes: 26aa2d199d6f ("mm/migrate: demote pages during reclaim")
-Signed-off-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Yang Shi <shy828301@gmail.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Huang Ying <ying.huang@intel.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Wei Xu <weixugc@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/migrate.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/mm/migrate.c~vmscanmigrate-fix-double-decrement-on-node-stats-when-demoting-pages
-+++ a/mm/migrate.c
-@@ -1178,7 +1178,7 @@ static void migrate_folio_done(struct fo
- 	 * not accounted to NR_ISOLATED_*. They can be recognized
- 	 * as __folio_test_movable
- 	 */
--	if (likely(!__folio_test_movable(src)))
-+	if (likely(!__folio_test_movable(src)) && reason != MR_DEMOTION)
- 		mod_node_page_state(folio_pgdat(src), NR_ISOLATED_ANON +
- 				    folio_is_file_lru(src), -folio_nr_pages(src));
- 
-_
-
-Patches currently in -mm which might be from gourry@gourry.net are
-
-vmscanmigrate-fix-double-decrement-on-node-stats-when-demoting-pages.patch
-
+greg k-h
 
