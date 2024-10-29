@@ -1,99 +1,138 @@
-Return-Path: <stable+bounces-89236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 621309B517A
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 18:59:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72DBB9B51AB
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 19:16:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93C771C2302C
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 17:59:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 270301F216D1
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 18:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5D91DD529;
-	Tue, 29 Oct 2024 17:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C1A1DB37A;
+	Tue, 29 Oct 2024 18:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="ZW7g7A7f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YRnBadkG"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DA51DC05F;
-	Tue, 29 Oct 2024 17:58:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAE6143C69;
+	Tue, 29 Oct 2024 18:16:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730224738; cv=none; b=q43z774V08GX8FbQwn1J118r7S3pw6aVZ3kr2bmVzuLGH+Y1jJ0ruUPZI0Pa4hQL8wv7BCtIt/9nrqSsfSintS2I+fOq4i3JAs7lmv8N30M/d4h7L+7y5JRRK/BX6ccq6RTWY+phiHD5XcGHMiXG89fODfGB9V6HgVZdnpFA9yw=
+	t=1730225780; cv=none; b=ohsyelU66HHnwyle7bdTPFET4EGtdNfKFMXYOiAAS7HK8F4IGDQbQdkRr4co+faaD+A85i/qi5cHDHSo8r5RV2Pd/RGpNSRZ34iRqECS+xgH3Xeti1L4fljXVLUhRbZoFwUlw5wKGwB43wmS9wpv7pdLJhwRpy20gM87vDsKOfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730224738; c=relaxed/simple;
-	bh=s/u8pPWMC3pbZzSIZknK0FhGVvT9Ea35bWwGGdoY6I8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iJtkP55v4kvP5q9ZkdkD9aEZz9FzMVBiBc2qSt9ns8yeK6BXN083aYXo3obHapr65avIpoPM3Kk7f1KdG1iZpWohLqwWFjHcgg5JUearKJ1OopVpl1MkL4tvTldeBq8pZ0z932e5/dqYs6XmP0NTIPHt67OxD9CdUF3Ut3wVIU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=ZW7g7A7f; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=WEPme5oYRYRSsuylMXdLZT71KCEZcWHqld3pfio5ORs=; b=ZW7g7A7fhcAdPHrNRRm6x4lcEJ
-	N1AC4hg3eHNot9HXU82AS3Yuatqq6o6cx0yp53DrICalsmuTcBViNz3nw1ZBOiianeQkAv9hNGymx
-	QFx3P0s43A0l43j9XOcQBgzuqUhYEwfevBIvez64FynE0HNFFoRcS6dSld/ryKiHRCMqFEomBSAai
-	zR913skQZ8cXU64awnT2RB3we332Lr2MaXlZDERtauY9s3JN/3jRr4NXZg8WHRHtvNG4pUxijE7zh
-	NPRfdjTYMBPz63l6uuLkYBH9Kr95IRtBIdhx/bxDGrIEEDoHcBD+pNYJAIJYrWHBWy+/i+LpQjUzr
-	RaQIMRlA==;
-Received: from [189.79.117.125] (helo=[192.168.1.60])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1t5qUP-00GjvG-Qd; Tue, 29 Oct 2024 18:58:46 +0100
-Message-ID: <984038be-6cc2-3acc-8ab0-5720a79dbf07@igalia.com>
-Date: Tue, 29 Oct 2024 14:58:40 -0300
+	s=arc-20240116; t=1730225780; c=relaxed/simple;
+	bh=h/W+10MsplW2v1+o0mJGvMzXwQ1SiArm3GGYR2TcSz0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oUfvclhqFg/ddIQ/eR0oBQgmQHnNENB9g7kz93nctwN+FO4A2fsmsK1fYUIMiOpfDD02tXth/6ilLLIn9kxBxReg9j2bygVjhj+UQbJEGDqa3JJks90K0FBcO/glZHcUqY9iVadofbewb6ntwZDwC3kP0rEoIfeKBC/SlGF/j6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YRnBadkG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84350C4CECD;
+	Tue, 29 Oct 2024 18:16:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730225779;
+	bh=h/W+10MsplW2v1+o0mJGvMzXwQ1SiArm3GGYR2TcSz0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YRnBadkGj/UfYKc4eZD1UvrqnXfGSBc1jHPSFAijs7IL4izeg/gEfntn9KldBFgDs
+	 kZEiXAXLHalZ/LW/Yvtt5BLh2Ap0haJiVpoIhxlkv1AGFmrtm8hBi3ntsygY4CXUf1
+	 y1lbm8BAYdPIvyrNG6bGDaAyj7hUpZg9CxjMFOC0zl7lspyJ0plkOyM2O11XnXAS9k
+	 81NMaO/fnX1fZsEF04oDosNXSr0bjREyIcJDGqLXpUIrFak1w/yAOSh7czfZNKMdN7
+	 ksIAwT37MCB4ovok+6dmBSxCvXDzjoipX2074HJ2aoFxqsq4G1Em3ntkLshsipbzuz
+	 54s40WihhAMZA==
+Date: Tue, 29 Oct 2024 14:16:17 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Rodolfo Giometti <giometti@enneenne.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: Re: [PATCH 6.1 068/137] tty/serial: Make
+ ->dcd_change()+uart_handle_dcd_change() status bool active
+Message-ID: <ZyEmce1_x7tiEdF_@sashalap>
+References: <20241028062258.708872330@linuxfoundation.org>
+ <20241028062300.638911047@linuxfoundation.org>
+ <b80395aa-5e1a-4f9c-b801-34d0e1f96977@kernel.org>
+ <ZyDGgPiAJBVWNJ18@sashalap>
+ <ba1da208-22d8-4145-826f-9cfdc5c18eee@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] wifi: rtlwifi: Drastically reduce the attempts to read
- efuse bytes in case of failures
-Content-Language: en-US
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
- Ping-Ke Shih <pkshih@realtek.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "kvalo@kernel.org" <kvalo@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
- "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com"
- <syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com>
-References: <20241025150226.896613-1-gpiccoli@igalia.com>
- <ed8114c231d1423893d3c90c458f35f3@realtek.com>
- <61aae4ff-8f80-252e-447a-cd8a51a325a1@igalia.com>
- <c93c8e9c109b444b91489ac0e88b987c@realtek.com>
- <14c3164c-0e1e-4d9d-89d9-28d3240861c6@gmail.com>
- <d6e01e56-51e7-cbb2-024a-c7db86dc70fb@igalia.com>
- <baf6d88e-e753-4aaf-a340-991373d77fa8@gmail.com>
-From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <baf6d88e-e753-4aaf-a340-991373d77fa8@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ba1da208-22d8-4145-826f-9cfdc5c18eee@kernel.org>
 
-On 29/10/2024 13:55, Bitterblue Smith wrote:
-> [...]
-> 
-> I tested your patch. Both my devices can still read the efuse.
-> 
+On Tue, Oct 29, 2024 at 12:40:54PM +0100, Jiri Slaby wrote:
+>On 29. 10. 24, 12:26, Sasha Levin wrote:
+>>On Tue, Oct 29, 2024 at 06:59:55AM +0100, Jiri Slaby wrote:
+>>>On 28. 10. 24, 7:25, Greg Kroah-Hartman wrote:
+>>>>6.1-stable review patch.  If anyone has any objections, please 
+>>>>let me know.
+>>>>
+>>>>------------------
+>>>>
+>>>>From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+>>>>
+>>>>[ Upstream commit 0388a152fc5544be82e736343496f99c4eef8d62 ]
+>>>>
+>>>>Convert status parameter for ->dcd_change() and
+>>>>uart_handle_dcd_change() to bool which matches to how the parameter is
+>>>>used.
+>>>>
+>>>>Rename status to active to better describe what the parameter means.
+>>>>
+>>>>Acked-by: Rodolfo Giometti <giometti@enneenne.com>
+>>>>Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+>>>>Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+>>>>Link: https://lore.kernel.org/r/20230117090358.4796-9- 
+>>>>ilpo.jarvinen@linux.intel.com
+>>>>Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>>>>Stable-dep-of: 40d7903386df ("serial: imx: Update mctrl 
+>>>>old_status on RTSD interrupt")
+>>>
+>>>As I wrote earlier, why is this Stable-dep-of that one?
+>>
+>>Here's the dependency chain:
+>>
+>>40d7903386df ("serial: imx: Update mctrl old_status on RTSD interrupt")
+>>968d64578ec9 ("serial: Make uart_handle_cts_change() status param 
+>>bool active")
+>>0388a152fc55 ("tty/serial: Make 
+>>->dcd_change()+uart_handle_dcd_change() status bool active")
+>>
+>>If you go to 6.1.y, and try to apply them in that order you'll see that
+>>it applies cleanly. If you try to apply just the last one you'll hit a
+>>conflict.
+>
+>Oh, well, so instead of taking two irrelevant and potentially 
+>dangerous patches (0388a152fc55 + 968d64578ec9), this simple context 
+>fix should have been in place:
+>-       uart_handle_cts_change(&sport->port, !!usr1);
+>+       uart_handle_cts_change(&sport->port, usr1);
+>
+>Right?
 
-This is super great, thank you! Would you like to have a Tested-by on
-that? If so, just send the name / email of your preference and I can add
-it to the V2. I'll implement the PCI guard and re-submit, thanks again!
+No :)
 
-Cheers,
+1. If we make changes like the above, future patches that touch that
+code simply fail to backport, no one cares enough to fix them up, and
+older trees stop getting those fixes. Staying aligned with upstream
+means less work in the longer term.
 
+2. Is that everything that's needed for the fix? Maybe? I don't know...
+I'm not a TTY expert, I'm not sure that that fix is correct, nor do I
+have no way to test that. Do you really trust me that much around your
+subsystem? :)
 
-Guilherme
+3. We simply don't scale to doing this for every conflict over the (too
+many) trees we support. At some point we need to trust our automation,
+CI, and testers to catch issues with the "extra" patches we backport.
+
+-- 
+Thanks,
+Sasha
 
