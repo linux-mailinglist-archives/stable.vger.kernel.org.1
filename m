@@ -1,121 +1,141 @@
-Return-Path: <stable+bounces-89217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 944669B4DA8
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 16:22:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6D2B9B4DB0
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 16:23:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F0A9B258C4
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 15:22:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E4921F212AF
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 15:23:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB8419342D;
-	Tue, 29 Oct 2024 15:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F5B192D83;
+	Tue, 29 Oct 2024 15:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ajC2I0Ul"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="Hn7PH2id"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from qs51p00im-qukt01072702.me.com (qs51p00im-qukt01072702.me.com [17.57.155.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9CA8192B73;
-	Tue, 29 Oct 2024 15:22:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0056192B77
+	for <stable@vger.kernel.org>; Tue, 29 Oct 2024 15:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.57.155.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730215352; cv=none; b=baBSYgFbt/BXkxkyGKGAiuT5w3eGtRmcYFlkGkjelf0Bl3WqzyaMQ/4PYAxqqA6gNo5W94TwdTuA0tRBEGdHYMXqxedBh7RepPkyk9fYt4lWOdC34lWpGuPp0Ww/KxgsrLdKc2axx+1cBLESHbcQ7XwYYEJJMMGErKVtImLq6P4=
+	t=1730215381; cv=none; b=mKY1Z4RDJyvB0rm8pyKg/lcwnYoUvAyTwdNzr7GBDknSwcog1sDRln1/76H5bbelpCSBW4ufLzVl5FVBkxiMfy36wTfFu5/F3j0ihmFG5dmKQ0LzdLF4pjErxl8RcRuNd8Xj9i405zMYQp1K2k3subi8ie5nK6wKjcw4qAeqO9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730215352; c=relaxed/simple;
-	bh=fjjB39Gd7OtzC1AMtJMBwpe/HfzjmD6zgnb9K/eiouQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=K01OaCiGHDhWwloCH/NdCyAhbUM/X0NrL/ifHggVlACyOPdCstqXXlf3Q/TEPN6ggfNmTuNY6DkCcwROAsgDnpDYCyo0BUtWxUQ5gHx5AVU5eVs/n8kCcAK6WFkME46R2pSJaYOaUiU/4ish0Sn2p0/wC2pvG+okoPApulnm24E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ajC2I0Ul; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4315abed18aso53021565e9.2;
-        Tue, 29 Oct 2024 08:22:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730215349; x=1730820149; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=awcNgOinq9mb8rRdpT9oztyZ0WKNu1hzxPR/YyKgUD0=;
-        b=ajC2I0Ul6Zr5F+8TCm9HeBhycFQd8YCYa3WZL8b2df3tmuQ1GOGaUugN9RN9MUU+GQ
-         z66m1yFlNmodjH2kcX1WZLiE0dLX1vy5saPalwIs9IxJekuohp4nKgtvbfqX2HtXsba/
-         OPUccnnKXS3vW7FTn+gw6f1xb9YiwS1z2dRAhUl/lB0awlQfyVLzZGAehi9n18jhe0G0
-         WiVoV9eN+j9KqMhtolNF61u1vELdrWTqoQ7s7FKm+CL8S8phDfglsKqtOejM3/6tZjJ1
-         3YAZamnnoNhliqXaZ1kq+AFqU+6tv8RzmRsLyRlA4eyBRpxW6oklrgoTyOL1mYh0ENMD
-         L9TA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730215349; x=1730820149;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=awcNgOinq9mb8rRdpT9oztyZ0WKNu1hzxPR/YyKgUD0=;
-        b=wUIWFAPut6oGPA0Wj0/WdCXC4tVMeTMFa68OKQhbZOJu/BQw1/Dq0VTsBETRi0j8qR
-         StiOfAoQLcpb7AEvhVXIz52tgqiswyWqFDqFN9TfCE6l0Wp3df9cNtGFWbGHLE9RzT+3
-         Ig/NglOkq1BN3X8g1tzvxwgZKQIPzMx1wdeAIxWU8LUsHE3t1Qz5wyedCCteyB1NMAG3
-         8yDkWi+/Ji4tk4ot41S9p4W1r+8iEeFNIXhchlbWkyJTOH5vvpD/IVxZm4kluS/XGfrg
-         z6Y5PupDwPNqqhaUcRR8lbZE9fdgaIzVKRSGJn15gtYRWOQi4jXfHLqPG34CEoUJiKal
-         zcxg==
-X-Forwarded-Encrypted: i=1; AJvYcCVcWEs2BSy5u1FxcUg2x603HN7oGkiDYiCi+VsSpVKz20aXnQCFzPRR91zZrUbD5rLx04QcND36@vger.kernel.org, AJvYcCXgS4kOD20fmjEwquJ6CZGE2ar6YMv5uoNWjQpkc4U1L5zHSyHOrQQBkkJv+ym+HclM/c88K+GjCg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHXoQP0tJ4FuNMm41ODhiwyGlyZxRQ1+IZ/i2ghkF0h4XvgYiG
-	MkW6XR30OAw8W4x6kkkZT+ugRcrMQtrjx/hXqScz5mmeIJ4Y+XX3
-X-Google-Smtp-Source: AGHT+IE9vFhqscMH2XH7WucYsm+7424jo51krLCV1bd7E3yubxSEK7J2dRuiCubpICZLlhVPhD3R8w==
-X-Received: by 2002:a05:600c:3593:b0:431:4f29:9542 with SMTP id 5b1f17b1804b1-4319ac77f6amr85365695e9.6.1730215348801;
-        Tue, 29 Oct 2024 08:22:28 -0700 (PDT)
-Received: from localhost ([194.120.133.34])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4318b54303fsm177639455e9.7.2024.10.29.08.22.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Oct 2024 08:22:28 -0700 (PDT)
-From: Colin Ian King <colin.i.king@gmail.com>
-To: Markus Mayer <mmayer@broadcom.com>,
-	bcm-kernel-feedback-list@broadcom.com,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	linux-pm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] Revert "cpufreq: brcmstb-avs-cpufreq: Fix initial command check"
-Date: Tue, 29 Oct 2024 15:22:27 +0000
-Message-Id: <20241029152227.3037833-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1730215381; c=relaxed/simple;
+	bh=aK14jjJrUM9yqTtPk5MuYvytwMRLlOrdHUoMfN/DzUE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sJq4sHasPxmD7XTcLBwY5bS2jm5fRR0N9ezYnaeNZW4Hjv7r2umBNh0UdHMZQOhiRtD8R5abX+A7v+8sJNKJLNDwCsd96cNx90WPHaPYtKpi2P0QWnil5NC0Di/g147q56sTkeemR4xl2GXLFaQR73od+FoA5HnxX1fOiL1PfI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=Hn7PH2id; arc=none smtp.client-ip=17.57.155.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; t=1730215378;
+	bh=wbQ0FfkPPBr1JdDLuso918FJA3/rnwBd3dOT7ZpkweE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	b=Hn7PH2idmhzclOu0iT5pY4qGuyP6wn+wA9HqDVj8dTU02iaaX+J1Nh+WVYiXnnnEP
+	 yq8aidIEpmQ/vaYg6edUYjPdZ6enVO/Fy5FFlYqPMXWQJi4QfzKXn2sB/16klLM3yS
+	 rmc8rfzE1VZqMMDyqEYxJASwl+bCqE/ap4Atdh5ZWEI2RbR297+jk3S0meYa6565fk
+	 1NHCYOgB9boc+8B+yRrk75tFqZtEQwgQt+33gMtC5ZicxdyshfbkohYgUAPh7jJfu5
+	 MYfyAMKk8OuD1mP/ebheCNhVLBK03Tq8bYmfYN/THufezlyhieoGQ5enTmef5kyMqT
+	 veWEmpkMm8efA==
+Received: from [192.168.1.26] (qs51p00im-dlb-asmtp-mailmevip.me.com [17.57.155.28])
+	by qs51p00im-qukt01072702.me.com (Postfix) with ESMTPSA id 5FE3116804E5;
+	Tue, 29 Oct 2024 15:22:50 +0000 (UTC)
+Message-ID: <e40e8451-9672-4423-bcab-8e0cc6ff3624@icloud.com>
+Date: Tue, 29 Oct 2024 23:22:44 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/6] phy: core: Fix that API devm_phy_put() fails to
+ release the phy
+To: Johan Hovold <johan@kernel.org>
+Cc: Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I
+ <kishon@kernel.org>, Felipe Balbi <balbi@ti.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Rob Herring <robh@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Lee Jones <lee@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>, stable@vger.kernel.org,
+ linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Zijun Hu <quic_zijuhu@quicinc.com>
+References: <20241024-phy_core_fix-v2-0-fc0c63dbfcf3@quicinc.com>
+ <20241024-phy_core_fix-v2-1-fc0c63dbfcf3@quicinc.com>
+ <ZyDlsWaA5aiRa_ry@hovoldconsulting.com>
+Content-Language: en-US
+From: Zijun Hu <zijun_hu@icloud.com>
+In-Reply-To: <ZyDlsWaA5aiRa_ry@hovoldconsulting.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: dbUSnKj2WHhcUGiHrlHH5FpZ0NcN0xRt
+X-Proofpoint-ORIG-GUID: dbUSnKj2WHhcUGiHrlHH5FpZ0NcN0xRt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-29_10,2024-10-29_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=0
+ clxscore=1015 mlxscore=0 phishscore=0 malwarescore=0 mlxlogscore=999
+ bulkscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2410290117
 
-Currently the condition ((rc != -ENOTSUPP) || (rc != -EINVAL)) is always
-true because rc cannot be equal to two different values at the same time,
-so it must be not equal to at least one of them. Fix the original commit
-that introduced the issue.
+On 2024/10/29 21:40, Johan Hovold wrote:
+> On Thu, Oct 24, 2024 at 10:39:26PM +0800, Zijun Hu wrote:
+>> From: Zijun Hu <quic_zijuhu@quicinc.com>
+>>
+>> For devm_phy_put(), its comment says it needs to invoke phy_put() to
+>> release the phy, but it does not invoke the function actually since
+>> devres_destroy() will not call devm_phy_release() at all which will
+>> call the function, and the missing phy_put() call will cause:
+> 
+> Please split the above up in at least two sentences to make it easier to
+> parse. Split it after devm_phy_release() and rephrase the latter part
+> (e.g. by dropping "at all which will call the function").
+>  
 
-This reverts commit 22a26cc6a51ef73dcfeb64c50513903f6b2d53d8.
+thank you for code review.
+will take your suggestions and send v2 (^^).
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/cpufreq/brcmstb-avs-cpufreq.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/cpufreq/brcmstb-avs-cpufreq.c b/drivers/cpufreq/brcmstb-avs-cpufreq.c
-index 5d03a295a085..2fd0f6be6fa3 100644
---- a/drivers/cpufreq/brcmstb-avs-cpufreq.c
-+++ b/drivers/cpufreq/brcmstb-avs-cpufreq.c
-@@ -474,8 +474,8 @@ static bool brcm_avs_is_firmware_loaded(struct private_data *priv)
- 	rc = brcm_avs_get_pmap(priv, NULL);
- 	magic = readl(priv->base + AVS_MBOX_MAGIC);
- 
--	return (magic == AVS_FIRMWARE_MAGIC) && ((rc != -ENOTSUPP) ||
--		(rc != -EINVAL));
-+	return (magic == AVS_FIRMWARE_MAGIC) && (rc != -ENOTSUPP) &&
-+		(rc != -EINVAL);
- }
- 
- static unsigned int brcm_avs_cpufreq_get(unsigned int cpu)
--- 
-2.39.5
+>> - The phy fails to be released.
+>> - devm_phy_put() can not fully undo what API devm_phy_get() does.
+>> - Leak refcount of both the module and device for below typical usage:
+>>
+>>   devm_phy_get(); // or its variant
+>>   ...
+>>   err = do_something();
+>>   if (err)
+>>       goto err_out;
+>>   ...
+>>   err_out:
+>>   devm_phy_put();
+>>
+>>   The file(s) affected by this issue are shown below since they have such
+>>   typical usage.
+>>   drivers/pci/controller/cadence/pcie-cadence.c
+>>   drivers/net/ethernet/ti/am65-cpsw-nuss.c
+>>
+>> Fixed by using devres_release() instead of devres_destroy() within the API
+>>
+>> Fixes: ff764963479a ("drivers: phy: add generic PHY framework")
+>> Cc: stable@vger.kernel.org
+>> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+>> Cc: "Krzysztof Wilczyński" <kw@linux.com>
+>> Cc: Bjorn Helgaas <bhelgaas@google.com>
+>> Cc: "David S. Miller" <davem@davemloft.net>
+>> Cc: Eric Dumazet <edumazet@google.com>
+>> Cc: Jakub Kicinski <kuba@kernel.org>
+>> Cc: Paolo Abeni <pabeni@redhat.com>
+>> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+> 
+> Diff itself looks good. Nice find.
+> 
+> Johan
 
 
