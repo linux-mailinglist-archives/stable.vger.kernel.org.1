@@ -1,164 +1,150 @@
-Return-Path: <stable+bounces-89188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1F1D9B4878
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 12:41:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6209F9B49ED
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 13:43:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41EA1B2165D
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 11:41:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 937091C2228E
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 12:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3CFB204F70;
-	Tue, 29 Oct 2024 11:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C04BA2D;
+	Tue, 29 Oct 2024 12:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ceOJa5Oq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VsX6PXNV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD227464;
-	Tue, 29 Oct 2024 11:40:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F11621
+	for <stable@vger.kernel.org>; Tue, 29 Oct 2024 12:43:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730202058; cv=none; b=HUMoQMh7v9GX50WyqVstqddNpPVveLkFgYwQ4NYGFswK14u5v0xH2pT4P+1wYP5A9oGNlB0dg/InYEfWkFGIwuGSj6Bgwnh+gfGcelp8E1Y4cIug+JT3qcOi+cOmTr80w2eK0C2BciGZFRI6JFGK/4A/W0LoaYWeMsE6P348CXc=
+	t=1730205803; cv=none; b=crQyY7An2u3DSMy7tCpm0i92AdDaKbwn4K1LMgcVPVQg2eaWxBz0XS7ctd/AHfri99+tXnPcjTrE2+PBdi+7RnyW1JBQzYKor2+rcRyzzlRHEgUFC8TO74OWaA4NnuhvZN52WuQNxUBaSMeZnLFE0FUUHDJZbiRZnhyQL8e2HcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730202058; c=relaxed/simple;
-	bh=381JEAKnbz7sVs3cmaS/BOoExIQYQV7M+X2a2z7oSf0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bClMRZCvQJpG1GJCN0k5sIwqIqXFYGo6yFjKm1V27ztJTeo05B3gSVObO3ozwIpPAcx/78LQne6kACrwKWZbFkSghkMZScJhNMv5Jh09mSYb/MKruwCwuOW1ROt5B32KMP+GimHtZ9Swdmo22069RodDaqu8FQj+/yLciKgRUJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ceOJa5Oq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5512C4CEE5;
-	Tue, 29 Oct 2024 11:40:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730202058;
-	bh=381JEAKnbz7sVs3cmaS/BOoExIQYQV7M+X2a2z7oSf0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ceOJa5OqAk9v0O7BRbX7XvvM2t7ozx0pxI7UjPZPlw5AtIomgQHTkqj59fODoUurx
-	 zzXL+zt1f9R62r5OkLys8jq4cQwTLGA5BdJ4/8snf29Om4ymB4H1OV7rG4g7WX+Pzd
-	 9nq9HC2Zx9w/1qy+38UNzjsBuWwnRqh6jgTCqg3lf3YZG5nKOMbu7059QWk0R5SDgS
-	 33CCRS3owTTU/vl6At+LM5VZrtZusiIqHA7LjbUdqJ03BM0Zxc0RsUzQfHaIq4/UZ6
-	 Lptbf/jeMVMkgQQck+HPJYWAumpVKMme2DjPHqAUs3TJTOOKmYE5XTzw8DBgrcvpUI
-	 5Swl0tmXRXimA==
-Message-ID: <ba1da208-22d8-4145-826f-9cfdc5c18eee@kernel.org>
-Date: Tue, 29 Oct 2024 12:40:54 +0100
+	s=arc-20240116; t=1730205803; c=relaxed/simple;
+	bh=vlKSY1y59Sqpv1vl/FPzCY5JNU57Elu0X3S9Izh3sMI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h2KUsgJe9NghMLHMqBz66OCZpXf6vuM0y86aGaQOodarwTrjMAQY4RKWWEGOqErQTEapZqg14wt6BJIWCrqEhRtA5T2iKjUDczwdT4QHjyaLILZuOf+PPkMATZhdGZtqWWV+O41nzYdB9V/92XFDJ0rMVMhjsA+4x0LK2naZnNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VsX6PXNV; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730205801; x=1761741801;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=vlKSY1y59Sqpv1vl/FPzCY5JNU57Elu0X3S9Izh3sMI=;
+  b=VsX6PXNV0D9I8Ii17didU2z0lCD5AtqyM6x5wqYcfu7rzAj1fpI50AlV
+   JgIpIqTb5qFBRFUaqXEC3uKAkauq37salViZPFAhNVw1KWt7kOFSeBKre
+   qZsRZz+kiU3kqhIWGXkmP8l9bHfTFsuGhFzP8SbRMBbXFrvfpf5rB9dKh
+   P9AqK8WHKF7JzZuumMxVIQKDgBREtPC6VLIduqcJNfkK7SU5kMwaOvdvz
+   yPVncDN6TEYtf1G7RBUr9mpU/qHqGtV3FC4+8CeJDz82sKjdVTv6qD+4h
+   cuGY4DavQEWz6XW6KyZ+TQCevLcpMfmTN4eBkedJ/ZSjDcbdCRWSzW+4G
+   Q==;
+X-CSE-ConnectionGUID: WpzcsmLJTpi6I9LtxFzoaQ==
+X-CSE-MsgGUID: 7viE4PxVQn6J3TMfi3W0+A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11240"; a="29950432"
+X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; 
+   d="scan'208";a="29950432"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2024 05:43:21 -0700
+X-CSE-ConnectionGUID: oyYB0bgBSIihEbWb5WDMHg==
+X-CSE-MsgGUID: W7I3Tn+0S+iI/cKGrEdQnA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; 
+   d="scan'208";a="82021945"
+Received: from nirmoyda-desk.igk.intel.com ([10.102.138.190])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2024 05:43:19 -0700
+From: Nirmoy Das <nirmoy.das@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Nirmoy Das <nirmoy.das@intel.com>,
+	Badal Nilawar <badal.nilawar@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	stable@vger.kernel.org,
+	John Harrison <John.C.Harrison@Intel.com>
+Subject: [PATCH v5 1/3] drm/xe: Move LNL scheduling WA to xe_device.h
+Date: Tue, 29 Oct 2024 13:01:15 +0100
+Message-ID: <20241029120117.449694-1-nirmoy.das@intel.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 068/137] tty/serial: Make
- ->dcd_change()+uart_handle_dcd_change() status bool active
-To: Sasha Levin <sashal@kernel.org>, Jiri Slaby <jirislaby@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
- patches@lists.linux.dev, Rodolfo Giometti <giometti@enneenne.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-References: <20241028062258.708872330@linuxfoundation.org>
- <20241028062300.638911047@linuxfoundation.org>
- <b80395aa-5e1a-4f9c-b801-34d0e1f96977@kernel.org> <ZyDGgPiAJBVWNJ18@sashalap>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <ZyDGgPiAJBVWNJ18@sashalap>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Organization: Intel Deutschland GmbH, Registered Address: Am Campeon 10, 85579 Neubiberg, Germany, Commercial Register: Amtsgericht Muenchen HRB 186928
 Content-Transfer-Encoding: 8bit
 
-On 29. 10. 24, 12:26, Sasha Levin wrote:
-> On Tue, Oct 29, 2024 at 06:59:55AM +0100, Jiri Slaby wrote:
->> On 28. 10. 24, 7:25, Greg Kroah-Hartman wrote:
->>> 6.1-stable review patch.  If anyone has any objections, please let me 
->>> know.
->>>
->>> ------------------
->>>
->>> From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
->>>
->>> [ Upstream commit 0388a152fc5544be82e736343496f99c4eef8d62 ]
->>>
->>> Convert status parameter for ->dcd_change() and
->>> uart_handle_dcd_change() to bool which matches to how the parameter is
->>> used.
->>>
->>> Rename status to active to better describe what the parameter means.
->>>
->>> Acked-by: Rodolfo Giometti <giometti@enneenne.com>
->>> Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
->>> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
->>> Link: https://lore.kernel.org/r/20230117090358.4796-9- 
->>> ilpo.jarvinen@linux.intel.com
->>> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->>> Stable-dep-of: 40d7903386df ("serial: imx: Update mctrl old_status on 
->>> RTSD interrupt")
->>
->> As I wrote earlier, why is this Stable-dep-of that one?
-> 
-> Here's the dependency chain:
-> 
-> 40d7903386df ("serial: imx: Update mctrl old_status on RTSD interrupt")
-> 968d64578ec9 ("serial: Make uart_handle_cts_change() status param bool 
-> active")
-> 0388a152fc55 ("tty/serial: Make ->dcd_change()+uart_handle_dcd_change() 
-> status bool active")
-> 
-> If you go to 6.1.y, and try to apply them in that order you'll see that
-> it applies cleanly. If you try to apply just the last one you'll hit a
-> conflict.
+Move LNL scheduling WA to xe_device.h so this can be used in other
+places without needing keep the same comment about removal of this WA
+in the future. The WA, which flushes work or workqueues, is now wrapped
+in macros and can be reused wherever needed.
 
-Oh, well, so instead of taking two irrelevant and potentially dangerous 
-patches (0388a152fc55 + 968d64578ec9), this simple context fix should 
-have been in place:
--       uart_handle_cts_change(&sport->port, !!usr1);
-+       uart_handle_cts_change(&sport->port, usr1);
+Cc: Badal Nilawar <badal.nilawar@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+cc: <stable@vger.kernel.org> # v6.11+
+Suggested-by: John Harrison <John.C.Harrison@Intel.com>
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+---
+ drivers/gpu/drm/xe/xe_device.h | 14 ++++++++++++++
+ drivers/gpu/drm/xe/xe_guc_ct.c | 11 +----------
+ 2 files changed, 15 insertions(+), 10 deletions(-)
 
-Right?
-
-thanks,
+diff --git a/drivers/gpu/drm/xe/xe_device.h b/drivers/gpu/drm/xe/xe_device.h
+index 4c3f0ebe78a9..f1fbfe916867 100644
+--- a/drivers/gpu/drm/xe/xe_device.h
++++ b/drivers/gpu/drm/xe/xe_device.h
+@@ -191,4 +191,18 @@ void xe_device_declare_wedged(struct xe_device *xe);
+ struct xe_file *xe_file_get(struct xe_file *xef);
+ void xe_file_put(struct xe_file *xef);
+ 
++/*
++ * Occasionally it is seen that the G2H worker starts running after a delay of more than
++ * a second even after being queued and activated by the Linux workqueue subsystem. This
++ * leads to G2H timeout error. The root cause of issue lies with scheduling latency of
++ * Lunarlake Hybrid CPU. Issue disappears if we disable Lunarlake atom cores from BIOS
++ * and this is beyond xe kmd.
++ *
++ * TODO: Drop this change once workqueue scheduling delay issue is fixed on LNL Hybrid CPU.
++ */
++#define LNL_FLUSH_WORKQUEUE(wq__) \
++	flush_workqueue(wq__)
++#define LNL_FLUSH_WORK(wrk__) \
++	flush_work(wrk__)
++
+ #endif
+diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
+index 1b5d8fb1033a..703b44b257a7 100644
+--- a/drivers/gpu/drm/xe/xe_guc_ct.c
++++ b/drivers/gpu/drm/xe/xe_guc_ct.c
+@@ -1018,17 +1018,8 @@ static int guc_ct_send_recv(struct xe_guc_ct *ct, const u32 *action, u32 len,
+ 
+ 	ret = wait_event_timeout(ct->g2h_fence_wq, g2h_fence.done, HZ);
+ 
+-	/*
+-	 * Occasionally it is seen that the G2H worker starts running after a delay of more than
+-	 * a second even after being queued and activated by the Linux workqueue subsystem. This
+-	 * leads to G2H timeout error. The root cause of issue lies with scheduling latency of
+-	 * Lunarlake Hybrid CPU. Issue dissappears if we disable Lunarlake atom cores from BIOS
+-	 * and this is beyond xe kmd.
+-	 *
+-	 * TODO: Drop this change once workqueue scheduling delay issue is fixed on LNL Hybrid CPU.
+-	 */
+ 	if (!ret) {
+-		flush_work(&ct->g2h_worker);
++		LNL_FLUSH_WORK(&ct->g2h_worker);
+ 		if (g2h_fence.done) {
+ 			xe_gt_warn(gt, "G2H fence %u, action %04x, done\n",
+ 				   g2h_fence.seqno, action[0]);
 -- 
-js
-suse labs
+2.46.0
 
 
