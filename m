@@ -1,125 +1,89 @@
-Return-Path: <stable+bounces-89159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF5599B40C5
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 04:11:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 885219B40FA
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 04:22:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AEA91C22061
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 03:11:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B89D91C2202F
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 03:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0361EF959;
-	Tue, 29 Oct 2024 03:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC4C1F7565;
+	Tue, 29 Oct 2024 03:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISUZ9K6l"
-X-Original-To: Stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RY/y2lLM"
+X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D3F149C4F
-	for <Stable@vger.kernel.org>; Tue, 29 Oct 2024 03:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582651D5AC7;
+	Tue, 29 Oct 2024 03:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730171485; cv=none; b=WRX7XFIBSRLZsUj9I7NWmYsi57UmVjRpcnKerTjDTDHz7kwrFH8bnCKYvMgzOjAS+7/i8jUfH8nB5Wc+3b+V+0upK3m40sp6rkYwjaTZlaPeSaCL5TGy+nwSLkP6h/qBqLrwIyPF7jdNGD6WFPUZ97x2CEjFfeOYyTlwZ0uAXmw=
+	t=1730172158; cv=none; b=iqHf0cm3cj8s/DYr5IrvU+2q5Mg2nWjXfJdiWbEnfyhM1GetrBsMzaxLoeGy5vjxcbXbmU9hxGFXKRdlirOEpXOM7lvo5znPpK7buK5prsZP4gvOZWlzVjRi3A4Ip7zfcRRBhQH7NrEYNzZsn3Ql1oUNlZmLlcEq/L+MPy7mxfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730171485; c=relaxed/simple;
-	bh=D9ryF+icLynAqmJ5hcP+6RCGBgSPeRAITsYWNqyzLQk=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=R5AkWAHNZnO9IIaQ6ar73FNdaE12gT01d3LNEhjeuM95r/K31kaXXLkWRkXcnyp6ltS+wNUgmNK8GajndkZGcMBQqUaxW6wsS8UITP8VOuu2yb+PV5+MNsCxKIS+LovOSGa9fF70JmUJ1zMDOftEAtzJaBJwh/gNKvfaDDIa1A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ISUZ9K6l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C4CC4CECD;
-	Tue, 29 Oct 2024 03:11:24 +0000 (UTC)
+	s=arc-20240116; t=1730172158; c=relaxed/simple;
+	bh=/k/tpgMgvcJK0qeXQprTVVufODiHHKeph0BM3eC9Tfs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QN1LowXk8TPI96gwEXdI7ScNv/ChgZnMERSXafT9uK9J0sk66l+MILn7w1gqSTBpBAJzImoNSQWmRQFjHNWAjt+JdZ/NH1E+7oijuH48Olv8ZvZze2z+9LDuWd5b+dBTmXhjh88Pz6xXd16sBkZS7kPID0M52I43baAXdPmvpv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RY/y2lLM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F48C4CECD;
+	Tue, 29 Oct 2024 03:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730171485;
-	bh=D9ryF+icLynAqmJ5hcP+6RCGBgSPeRAITsYWNqyzLQk=;
-	h=Subject:To:From:Date:From;
-	b=ISUZ9K6lQKfb7dmVusyjC4E2yYcL3tShNithryeo5kBWnUbYhjMPi4wTLVQ4rUl3p
-	 QX9GdurntncgpWbSQRiPO9MELKkFqmUTLvbsg54yKtwDZJ8g9qy9NsdEDaGz0ee/v4
-	 AwncYgIcTIw/rkvRbAP7pDiw9FMfq9OyPgPyckm8=
-Subject: patch "docs: iio: ad7380: fix supply for ad7380-4" added to char-misc-linus
-To: jstephan@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,dlechner@baylibre.com
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 29 Oct 2024 04:10:54 +0100
-Message-ID: <2024102953-gentile-lavender-297e@gregkh>
+	s=korg; t=1730172158;
+	bh=/k/tpgMgvcJK0qeXQprTVVufODiHHKeph0BM3eC9Tfs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RY/y2lLMIv5dOcsiGpbxRVCNeVJM4e6Qm3kTuCcrHdViD1efMSTylLiYbkogSscak
+	 s/g++Ffyg6Y/aFpTO1V3H/C800mQOtJ5bzjmEtxl/7pZFpxfEe/k8dUzk1uV62zDwc
+	 P4UkTMYjKhlxHRD6USSa/02tW8p9mWOl6iP6CAcU=
+Date: Tue, 29 Oct 2024 04:22:25 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Mathias Nyman <mathias.nyman@linux.intel.com>
+Cc: Faisal Hassan <quic_faisalh@quicinc.com>,
+	Mathias Nyman <mathias.nyman@intel.com>, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3] xhci: Fix Link TRB DMA in command ring stopped
+ completion event
+Message-ID: <2024102918-visiting-oboe-dc64@gregkh>
+References: <20241022155631.1185-1-quic_faisalh@quicinc.com>
+ <f9a2eb47-512e-4718-a83a-4742e09be85b@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f9a2eb47-512e-4718-a83a-4742e09be85b@linux.intel.com>
 
+On Thu, Oct 24, 2024 at 05:06:44PM +0300, Mathias Nyman wrote:
+> On 22.10.2024 18.56, Faisal Hassan wrote:
+> > During the aborting of a command, the software receives a command
+> > completion event for the command ring stopped, with the TRB pointing
+> > to the next TRB after the aborted command.
+> > 
+> > If the command we abort is located just before the Link TRB in the
+> > command ring, then during the 'command ring stopped' completion event,
+> > the xHC gives the Link TRB in the event's cmd DMA, which causes a
+> > mismatch in handling command completion event.
+> > 
+> > To address this situation, move the 'command ring stopped' completion
+> > event check slightly earlier, since the specific command it stopped
+> > on isn't of significant concern.
+> > 
+> > Fixes: 7f84eef0dafb ("USB: xhci: No-op command queueing and irq handler.")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Faisal Hassan <quic_faisalh@quicinc.com>
+> 
+> Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+> 
+> Greg, would you like to take this directly to usb-linus (6.12)?
+> If not I'll send it as part of series to usb-next later
 
-This is a note to let you know that I've just added the patch titled
+Sure, I'll take it now, thanks.
 
-    docs: iio: ad7380: fix supply for ad7380-4
-
-to my char-misc git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
-in the char-misc-linus branch.
-
-The patch will show up in the next release of the linux-next tree
-(usually sometime within the next 24 hours during the week.)
-
-The patch will hopefully also be merged in Linus's tree for the
-next -rc kernel release.
-
-If you have any questions about this process, please let me know.
-
-
-From 795114e849ddfd48150eb0135d04748a8c81cec5 Mon Sep 17 00:00:00 2001
-From: Julien Stephan <jstephan@baylibre.com>
-Date: Tue, 22 Oct 2024 15:22:40 +0200
-Subject: docs: iio: ad7380: fix supply for ad7380-4
-
-ad7380-4 is the only device from ad738x family that doesn't have an
-internal reference. Moreover it's external reference is called REFIN in
-the datasheet while all other use REFIO as an optional external
-reference. Update documentation to highlight this.
-
-Fixes: 3e82dfc82f38 ("docs: iio: new docs for ad7380 driver")
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Julien Stephan <jstephan@baylibre.com>
-Link: https://patch.msgid.link/20241022-ad7380-fix-supplies-v3-5-f0cefe1b7fa6@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- Documentation/iio/ad7380.rst | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/iio/ad7380.rst b/Documentation/iio/ad7380.rst
-index 9c784c1e652e..6f70b49b9ef2 100644
---- a/Documentation/iio/ad7380.rst
-+++ b/Documentation/iio/ad7380.rst
-@@ -41,13 +41,22 @@ supports only 1 SDO line.
- Reference voltage
- -----------------
- 
--2 possible reference voltage sources are supported:
-+ad7380-4
-+~~~~~~~~
-+
-+ad7380-4 supports only an external reference voltage (2.5V to 3.3V). It must be
-+declared in the device tree as ``refin-supply``.
-+
-+All other devices from ad738x family
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+All other devices from ad738x support 2 possible reference voltage sources:
- 
- - Internal reference (2.5V)
- - External reference (2.5V to 3.3V)
- 
- The source is determined by the device tree. If ``refio-supply`` is present,
--then the external reference is used, else the internal reference is used.
-+then it is used as external reference, else the internal reference is used.
- 
- Oversampling and resolution boost
- ---------------------------------
--- 
-2.47.0
-
-
+greg k-h
 
