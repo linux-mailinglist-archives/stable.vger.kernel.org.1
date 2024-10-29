@@ -1,105 +1,181 @@
-Return-Path: <stable+bounces-89144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3378E9B3F5A
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 01:51:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A75B79B3F63
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 01:58:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BA561C21141
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 00:51:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D981C1C21143
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 00:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FFBD12E5B;
-	Tue, 29 Oct 2024 00:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F1E168B1;
+	Tue, 29 Oct 2024 00:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="ntRXFOKX"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="MXP99Dmh"
 X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9004A8F5E;
-	Tue, 29 Oct 2024 00:50:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB292BAF9;
+	Tue, 29 Oct 2024 00:58:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730163048; cv=none; b=lcU8fOXqdSev+plQVTZlhmX3HU72nGgRH3s1/9LZWupeCfNVaz8mWGRCvnd6v1P0s1OB6P274RyHnqq2aBMeekSwdqbVSbXWOA2BZkcpnWN0gytNpYtHrPS4sAdCgPuApYp0iWZIAOgfdDpRf2f+xtnX0gGENYmLI25UlOoU7+s=
+	t=1730163486; cv=none; b=HRnGH0kl6sYVeEYWRXYDJkej1UqyX0HgNf+YrfXJ+HGuQPPweVbfWPk977PMniKGrw+rW/NHFxOyNDLuJW8dOnr5E+HK/E1cNlI5FfDuqaGNT4mjnO7E5d9UA28GcKcohy9gyRtUKI/4Webug1B7Y0iARnaNQAZquXtf2YcUEOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730163048; c=relaxed/simple;
-	bh=H4nwA7e+xEkSfJPqmB8gh8xD9ruUFmIIQOVLUDjhB8M=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=t2X/Vjff4IdH/RclcZhZoY2ToHgySYl2U6llW+WHGIAAfbVqg53QcI0d2/Leh/KbR3C7a2L16UHExIkO1ZDmui8BEhSu4Ipnh+VftWMB/Lrzv9H8wUNBjL5nms30j60TRhPHvBoGW8m6puVg7jdCoxhkREKPNZLVVQ7D4K8bu9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=ntRXFOKX; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49T0oBs951580349, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1730163011; bh=H4nwA7e+xEkSfJPqmB8gh8xD9ruUFmIIQOVLUDjhB8M=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=ntRXFOKXHQkjQNJIAKi950F03TIH48qHf/bIr7/6E0AJ0KJJdkJZW7B6/zO867tPJ
-	 M1YRhHIKaoIA3HTFZchDpb/SeQmfqUbe6KKgC2VfqG+3gZBnUl0f/plffWtC/kVFxY
-	 YEHWp89CLVo3t5+b0xtgXeQSYS5tttJ3x2FTJl8KvxiofExsWaIVYtpq8M9sF8ZcU1
-	 C8dTNy9Fb5FanOqX5OfeZjqC+HyqOBwZeCJZKSZkEx3bp0DVmG1Ssf+6tnS01Anu8D
-	 AFKl+rz32zriS2JiUVpOl9VUOy8fRkgWLOyskP3XLqUlT2lfjpRIGDnbqp9Oh0AE5G
-	 iVrFbvH7TPKog==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49T0oBs951580349
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 29 Oct 2024 08:50:11 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 29 Oct 2024 08:50:12 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 29 Oct 2024 08:50:12 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Tue, 29 Oct 2024 08:50:12 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
-        "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
-        "stable@vger.kernel.org"
-	<stable@vger.kernel.org>,
-        "syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com"
-	<syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com>,
-        Bitterblue Smith
-	<rtl8821cerfe2@gmail.com>
-Subject: RE: [PATCH] wifi: rtlwifi: Drastically reduce the attempts to read efuse bytes in case of failures
-Thread-Topic: [PATCH] wifi: rtlwifi: Drastically reduce the attempts to read
- efuse bytes in case of failures
-Thread-Index: AQHbJu7zUNmA/HJ3BESmyQL846u6pbKbY+MggABWlQCAAS+FcA==
-Date: Tue, 29 Oct 2024 00:50:11 +0000
-Message-ID: <c93c8e9c109b444b91489ac0e88b987c@realtek.com>
-References: <20241025150226.896613-1-gpiccoli@igalia.com>
- <ed8114c231d1423893d3c90c458f35f3@realtek.com>
- <61aae4ff-8f80-252e-447a-cd8a51a325a1@igalia.com>
-In-Reply-To: <61aae4ff-8f80-252e-447a-cd8a51a325a1@igalia.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1730163486; c=relaxed/simple;
+	bh=la4JUGIrjRPsfL/hd6gTQpOEO0qZV8/H3WHRzJr5VHA=;
+	h=Date:To:From:Subject:Message-Id; b=sQqzbt01Isy5qPKQeyrPmvXBURT1NILpElDBR7915bKqZu8pu06OtjYSzy83K7gwQG0RnC7HdlOFOJ0LvM1QQzOoMAcAFYW9N15OyDCQgKbDqJKX+nnE2IjwUYiJ5CxQJg9kw+c0Wxyjk1XqCnnmBdhlDCLdLJewnPovnf5oCXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=MXP99Dmh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BEF2C4CEC3;
+	Tue, 29 Oct 2024 00:58:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1730163485;
+	bh=la4JUGIrjRPsfL/hd6gTQpOEO0qZV8/H3WHRzJr5VHA=;
+	h=Date:To:From:Subject:From;
+	b=MXP99DmhLNqjS9mTxHyvZb+hDv7Vwkr4pWpR8dsKP8kuDqFltbpPSsiFS2SWFPGkj
+	 EQehsA1hUtXTMn4jbQKzTwBxSRjoKPRNU4pLpNtDEYgqJR/XHvibtiMCkeF3rkBFcB
+	 BU+iPUZRP6oKPgFM6r1wk9LDcYZbISrhmI5I7Txk=
+Date: Mon, 28 Oct 2024 17:58:05 -0700
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,rientjes@google.com,linkl@google.com,yuzhao@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-page_alloc-keep-track-of-free-highatomic.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241029005805.9BEF2C4CEC3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
 
-PiANCj4gQnV0IGNhbiB5b3UgaGVscCBtZSBvbiBmaW5kaW5nIGEgVVNCIGFkYXB0ZXIgdGhhdCBy
-dW5zIHRoaXMgcGF0aD8gSWYgeW91DQo+IGtub3cgYSBjb21tb2RpdHkgbW9kZWwgdGhhdCB1c2Vz
-IHRoaXMgc3BlY2lmaWMgZHJpdmVyLCBjb3VsZCB5b3UgcG9pbnQNCj4gbWUgc28gSSBjYW4gYnV5
-IG9uZSBmb3IgdGVzdGluZz8NCj4gDQoNCkkgZG9uJ3Qga25vdyB0aGF0LiBNYXliZSwgQml0dGVy
-Ymx1ZSBTbWl0aCAoQ2MnZCkgY2FuIHNoYXJlIGhvdy93aGVyZSBoZSBnb3QNClVTQiBhZGFwdGVy
-cy4gDQoNCg0K
+
+The patch titled
+     Subject: mm/page_alloc: keep track of free highatomic
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-page_alloc-keep-track-of-free-highatomic.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-page_alloc-keep-track-of-free-highatomic.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Yu Zhao <yuzhao@google.com>
+Subject: mm/page_alloc: keep track of free highatomic
+Date: Mon, 28 Oct 2024 12:26:53 -0600
+
+OOM kills due to vastly overestimated free highatomic reserves were
+observed:
+
+  ... invoked oom-killer: gfp_mask=0x100cca(GFP_HIGHUSER_MOVABLE), order=0 ...
+  Node 0 Normal free:1482936kB boost:0kB min:410416kB low:739404kB high:1068392kB reserved_highatomic:1073152KB ...
+  Node 0 Normal: 1292*4kB (ME) 1920*8kB (E) 383*16kB (UE) 220*32kB (ME) 340*64kB (E) 2155*128kB (UE) 3243*256kB (UE) 615*512kB (U) 1*1024kB (M) 0*2048kB 0*4096kB = 1477408kB
+
+The second line above shows that the OOM kill was due to the following
+condition:
+
+  free (1482936kB) - reserved_highatomic (1073152kB) = 409784KB < min (410416kB)
+
+And the third line shows there were no free pages in any
+MIGRATE_HIGHATOMIC pageblocks, which otherwise would show up as type 'H'. 
+Therefore __zone_watermark_unusable_free() underestimated the usable free
+memory by over 1GB, which resulted in the unnecessary OOM kill above.
+
+The comments in __zone_watermark_unusable_free() warns about the potential
+risk, i.e.,
+
+  If the caller does not have rights to reserves below the min
+  watermark then subtract the high-atomic reserves. This will
+  over-estimate the size of the atomic reserve but it avoids a search.
+
+However, it is possible to keep track of free pages in reserved highatomic
+pageblocks with a new per-zone counter nr_free_highatomic protected by the
+zone lock, to avoid a search when calculating the usable free memory.  And
+the cost would be minimal, i.e., simple arithmetics in the highatomic
+alloc/free/move paths.
+
+Note that since nr_free_highatomic can be relatively small, using a
+per-cpu counter might cause too much drift and defeat its purpose, in
+addition to the extra memory overhead.
+
+Link: https://lkml.kernel.org/r/20241028182653.3420139-1-yuzhao@google.com
+Signed-off-by: Yu Zhao <yuzhao@google.com>
+Reported-by: Link Lin <linkl@google.com>
+Acked-by: David Rientjes <rientjes@google.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>	[6.12+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/mmzone.h |    1 +
+ mm/page_alloc.c        |   10 +++++++---
+ 2 files changed, 8 insertions(+), 3 deletions(-)
+
+--- a/include/linux/mmzone.h~mm-page_alloc-keep-track-of-free-highatomic
++++ a/include/linux/mmzone.h
+@@ -823,6 +823,7 @@ struct zone {
+ 	unsigned long watermark_boost;
+ 
+ 	unsigned long nr_reserved_highatomic;
++	unsigned long nr_free_highatomic;
+ 
+ 	/*
+ 	 * We don't know if the memory that we're going to allocate will be
+--- a/mm/page_alloc.c~mm-page_alloc-keep-track-of-free-highatomic
++++ a/mm/page_alloc.c
+@@ -635,6 +635,8 @@ compaction_capture(struct capture_contro
+ static inline void account_freepages(struct zone *zone, int nr_pages,
+ 				     int migratetype)
+ {
++	lockdep_assert_held(&zone->lock);
++
+ 	if (is_migrate_isolate(migratetype))
+ 		return;
+ 
+@@ -642,6 +644,9 @@ static inline void account_freepages(str
+ 
+ 	if (is_migrate_cma(migratetype))
+ 		__mod_zone_page_state(zone, NR_FREE_CMA_PAGES, nr_pages);
++
++	if (is_migrate_highatomic(migratetype))
++		WRITE_ONCE(zone->nr_free_highatomic, zone->nr_free_highatomic + nr_pages);
+ }
+ 
+ /* Used for pages not on another list */
+@@ -3081,11 +3086,10 @@ static inline long __zone_watermark_unus
+ 
+ 	/*
+ 	 * If the caller does not have rights to reserves below the min
+-	 * watermark then subtract the high-atomic reserves. This will
+-	 * over-estimate the size of the atomic reserve but it avoids a search.
++	 * watermark then subtract the free pages reserved for highatomic.
+ 	 */
+ 	if (likely(!(alloc_flags & ALLOC_RESERVES)))
+-		unusable_free += z->nr_reserved_highatomic;
++		unusable_free += READ_ONCE(z->nr_free_highatomic);
+ 
+ #ifdef CONFIG_CMA
+ 	/* If allocation can't use CMA areas don't use free CMA pages */
+_
+
+Patches currently in -mm which might be from yuzhao@google.com are
+
+mm-allow-set-clear-page_type-again.patch
+mm-multi-gen-lru-remove-mm_leaf_old-and-mm_nonleaf_total-stats.patch
+mm-multi-gen-lru-use-pteppmdp_clear_young_notify.patch
+mm-page_alloc-keep-track-of-free-highatomic.patch
+
 
