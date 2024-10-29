@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-89255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81FD29B5446
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 21:45:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55AAC9B54CB
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 22:14:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0830FB23658
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 20:45:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06E921F23A4E
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 21:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5461020B1EE;
-	Tue, 29 Oct 2024 20:42:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="UURkd/Ca"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD66E207A3A;
+	Tue, 29 Oct 2024 21:14:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D90B20A5FD;
-	Tue, 29 Oct 2024 20:42:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D6120721D;
+	Tue, 29 Oct 2024 21:14:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730234529; cv=none; b=hY/sJGGMjR6hH/ISmUFU97pSE/eWQEWGoYhj7UlUmHm7gr0PS5rx7LX2tEAjaBi6xVZmz1t9teMfkwqypweMFSwu1KAK5LNjQfxoLxV+MzoWYslYZPh0AzNyh+e+o8+d+Z6NysKIOF/VvlhBEdRsTI876B/Z5OR9fV03sh1AA1o=
+	t=1730236493; cv=none; b=pf5yV+w8kzZy3AdjKRn66yNMXsxx46rG+1xkH4///3ny+dOjqY7TfBDM6B4KxjqzHLIEnsAjD9/cMcdhRWIIYlTYbqtA/p6ZAY91HwOiHrVTk6keStx5N9/QqQiYL+aEesYGFMIv5HqKxtsQBvXaBufN4HzwGVoIoYoXaPmQKEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730234529; c=relaxed/simple;
-	bh=vnvjVIYZ5Jk96fuS8ZrfsZP/5C/OXW8jIVfasEfcWb8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ApWsivu+Mp+0EHGzSE4x8v+ovqMPCIGsVWhtI0FMalXNJTArXoeNwk23d5MdkjS29kTJgSqGZK0jnYAvGAi5XFUHF3Snhtr7Fb/rwwC8Grth+3WwUgt69Zo/2C4iSSx48TUmDR1UlVqUSc5ChU4nFiVtr+E73ePBdp8Hehbdl+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=UURkd/Ca; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from fpc.intra.ispras.ru (unknown [10.10.165.10])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 160CE40F1DF3;
-	Tue, 29 Oct 2024 20:42:04 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 160CE40F1DF3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1730234524;
-	bh=36OTyILlgVD62XFWhCMCt1bV5vEU6WF/FyC9megsOw8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UURkd/CaEAAUwNXE+WpO1+xCjvNZPnUwlqQ967qyjGtDyiLKS0w/cKnbWIZIfvxeb
-	 SKFVjBA53STm+TTGps46j3vPIYMIlvn/0+yW2J1yE5wRpn8xHGQvzivd1YMqcu0oiq
-	 pEZ5C0mAIQCVNs67w8clTjoI18ugscqYzbGqcCXA=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Sasha Levin <sashal@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Pavel Machek <pavel@ucw.cz>,
-	Lee Jones <lee@kernel.org>,
-	linux-leds@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Stefan Kalscheuer <stefan@stklcode.de>,
-	lvc-project@linuxtesting.org
-Subject: [PATCH 5.10/5.15/6.1 2/2] leds: spi-byte: Use devm_led_classdev_register_ext()
-Date: Tue, 29 Oct 2024 23:41:28 +0300
-Message-Id: <20241029204128.527033-3-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241029204128.527033-1-pchelkin@ispras.ru>
-References: <20241029204128.527033-1-pchelkin@ispras.ru>
+	s=arc-20240116; t=1730236493; c=relaxed/simple;
+	bh=0Hmfu0Dmd+ONojT8fbkDPeqhboxJBVmLmMSWyx58uPM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=B8UjwCwZ3P8lDl92Z9eE/OhrS1rIqcKAkOrYmHuyWAkWlBvxU4It3xD+RNFbTO2wkqbMOt9K8ATVAv8TX4P8f2UYtWCKkf+8R89oxFjci/yA/Hdvggw2ScU2QJkpXOO2cUTjeqqJrnfeHf3eL5Z99uRZPTHkCQQGSoVxoBpSkh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49THNuUr024976;
+	Tue, 29 Oct 2024 21:14:29 GMT
+Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 42gqd8m43p-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Tue, 29 Oct 2024 21:14:29 +0000 (GMT)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 29 Oct 2024 14:14:28 -0700
+Received: from pop-os.wrs.com (172.25.44.6) by ala-exchng01.corp.ad.wrs.com
+ (147.11.82.252) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Tue, 29 Oct 2024 14:14:27 -0700
+From: <Randy.MacLeod@windriver.com>
+To: <sherry.yang@oracle.com>
+CC: <bridge@lists.linux-foundation.org>, <davem@davemloft.net>,
+        <gregkh@linuxfoundation.org>, <kuba@kernel.org>,
+        <netdev@vger.kernel.org>, <nikolay@nvidia.com>, <roopa@nvidia.com>,
+        <sashal@kernel.org>, <stable@vger.kernel.org>,
+        <randy.macleod@windriver.com>
+Subject: [PATCH 5.15.y] net: bridge: xmit: make sure we have at least eth header len bytes
+Date: Tue, 29 Oct 2024 17:14:26 -0400
+Message-ID: <20241029211426.3046219-1-Randy.MacLeod@windriver.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241004170328.10819-3-sherry.yang@oracle.com>
+References: <20241004170328.10819-3-sherry.yang@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,63 +63,56 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: I5g67KRVeGwd-XnB4L0ZUcMFU6Y4VrpW
+X-Authority-Analysis: v=2.4 cv=dKj0m/Zb c=1 sm=1 tr=0 ts=67215035 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=eMPNgDwjIQXpT8XC:21 a=DAUX931o1VcA:10 a=t7CeM3EgAAAA:8 a=hSkVLCK3AAAA:8 a=edf1wS77AAAA:8 a=IJ2IFIBGmV0-FWXsoRQA:9
+ a=FdTzh2GWekK77mhwV6Dw:22 a=cQPPKAXgyycSBL8etih5:22 a=DcSpbTIhAlouE1Uv7lRv:22
+X-Proofpoint-GUID: I5g67KRVeGwd-XnB4L0ZUcMFU6Y4VrpW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-29_16,2024-10-29_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ priorityscore=1501 lowpriorityscore=0 phishscore=0 mlxlogscore=999
+ adultscore=0 impostorscore=0 malwarescore=0 bulkscore=0 clxscore=1011
+ spamscore=0 mlxscore=0 classifier=spam authscore=0 adjust=0 reason=mlx
+ scancount=1 engine=8.21.0-2409260000 definitions=main-2410290159
 
-From: Stefan Kalscheuer <stefan@stklcode.de>
+From: Randy MacLeod <Randy.MacLeod@windriver.com>
 
-commit ccc35ff2fd2911986b716a87fe65e03fac2312c9 upstream.
+[ Upstream commit 8bd67ebb50c0145fd2ca8681ab65eb7e8cde1afc ]
 
-Use extended classdev registration to generate generic device names from
-color and function enums instead of reading only the label from the
-device tree.
+Based on above commit but simplified since pskb_may_pull_reason()
+does not exist until 6.1.
 
-Signed-off-by: Stefan Kalscheuer <stefan@stklcode.de>
-Link: https://lore.kernel.org/r/20240204150726.29783-1-stefan@stklcode.de
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+syzbot triggered an uninit value[1] error in bridge device's xmit path
+by sending a short (less than ETH_HLEN bytes) skb. To fix it check if
+we can actually pull that amount instead of assuming.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+a63a1f6a062033cf0f40@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a63a1f6a062033cf0f40
+Signed-off-by: Randy MacLeod <Randy.MacLeod@windriver.com>
 ---
- drivers/leds/leds-spi-byte.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ net/bridge/br_device.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/leds/leds-spi-byte.c b/drivers/leds/leds-spi-byte.c
-index 6883d3ba382f..eb6481df5997 100644
---- a/drivers/leds/leds-spi-byte.c
-+++ b/drivers/leds/leds-spi-byte.c
-@@ -83,7 +83,7 @@ static int spi_byte_probe(struct spi_device *spi)
- 	struct device_node *child;
- 	struct device *dev = &spi->dev;
- 	struct spi_byte_led *led;
--	const char *name = "leds-spi-byte::";
-+	struct led_init_data init_data = {};
- 	const char *state;
- 	int ret;
+diff --git a/net/bridge/br_device.c b/net/bridge/br_device.c
+index 8d6bab244c4a..b2fa4ca28102 100644
+--- a/net/bridge/br_device.c
++++ b/net/bridge/br_device.c
+@@ -38,6 +38,11 @@ netdev_tx_t br_dev_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	const unsigned char *dest;
+ 	u16 vid = 0;
  
-@@ -96,12 +96,9 @@ static int spi_byte_probe(struct spi_device *spi)
- 	if (!led)
- 		return -ENOMEM;
- 
--	of_property_read_string(child, "label", &name);
--	strlcpy(led->name, name, sizeof(led->name));
- 	led->spi = spi;
- 	mutex_init(&led->mutex);
- 	led->cdef = device_get_match_data(dev);
--	led->ldev.name = led->name;
- 	led->ldev.brightness = LED_OFF;
- 	led->ldev.max_brightness = led->cdef->max_value - led->cdef->off_value;
- 	led->ldev.brightness_set_blocking = spi_byte_brightness_set_blocking;
-@@ -121,7 +118,11 @@ static int spi_byte_probe(struct spi_device *spi)
- 	spi_byte_brightness_set_blocking(&led->ldev,
- 					 led->ldev.brightness);
- 
--	ret = devm_led_classdev_register(&spi->dev, &led->ldev);
-+	init_data.fwnode = of_fwnode_handle(child);
-+	init_data.devicename = "leds-spi-byte";
-+	init_data.default_label = ":";
++	if (unlikely(!pskb_may_pull(skb, ETH_HLEN))) {
++		kfree_skb(skb);
++		return NETDEV_TX_OK;
++	}
 +
-+	ret = devm_led_classdev_register_ext(&spi->dev, &led->ldev, &init_data);
- 	if (ret) {
- 		of_node_put(child);
- 		mutex_destroy(&led->mutex);
+ 	memset(skb->cb, 0, sizeof(struct br_input_skb_cb));
+ 
+ 	rcu_read_lock();
 -- 
-2.39.5
+2.34.1
 
 
