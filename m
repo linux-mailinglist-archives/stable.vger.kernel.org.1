@@ -1,161 +1,102 @@
-Return-Path: <stable+bounces-89226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EBB09B4F48
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 17:27:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C9529B4F96
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 17:39:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 801A01C212B0
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 16:27:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4103128843B
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 16:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92D01991D2;
-	Tue, 29 Oct 2024 16:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADDD819A298;
+	Tue, 29 Oct 2024 16:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="urbEN6hN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p3Y9M/8l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798BA2107;
-	Tue, 29 Oct 2024 16:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA821CC16A;
+	Tue, 29 Oct 2024 16:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730219254; cv=none; b=U+tIofre2W1tNIXuKNsC2KRSDY6KlpLwl0sPHfEAKu09UjQbSZzTRf2RawY6zvVT9DI1/uzlWy3nQGqUoeRk0OM9Q2ijr91oxGMjdPYwqLupVQaxYaxj9NCxfsAyxlHKzt8JOsmlpS9tcQpNQhqu+RYT50lbNQGv4F2b5OF4B+0=
+	t=1730219942; cv=none; b=XRYPE3m3zhIzK54o9zZwXVS5q9CD5Q9cwLP7ka79QeQSPRrb/0IdpMueDDMwH5WdqiT0ms04o7YsqvULxak90hHZLG5NrlF6qF90cebWs1OrjJSt6JIxihEKC4GINb3ZLmm3/9O/g7/nYJBlASgCH6Ip3wnuxfwWAkvTJUvBDNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730219254; c=relaxed/simple;
-	bh=Z3N4p1dwXhBN00KOleOrbra5ELWKA6izVcLKfEwUA6c=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EKjWmTXe04/57oc7MPhHZexABGuMichi6i9tdoXuGlJrZQ+GqEUV4lvd2vD/uz1/Whv89HgB5CG+ubl7yHhIz7LVdwVWEnK/wfHoOYMgUZMUyJjc5kIO77BQ+IeEt7mDmiL6zr/T0dFMUzoBgv0QbJQKlNTnW25XPrriWsF3RDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=urbEN6hN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF11EC4CEE4;
-	Tue, 29 Oct 2024 16:27:33 +0000 (UTC)
+	s=arc-20240116; t=1730219942; c=relaxed/simple;
+	bh=FgFt+nUEU5jTtnV7+2px6chrOJx6kodCC14Li0aeAnY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ofi/WEG1hl9FLNIDjX+Q+djYmIG5ybAJVYh19utCOYbYbHltFwTROCfdm9500McaeXJkEqDCZNkqj5ig0dN88Ylcp95UkQ8ScFvjGVl2jokA8IlzSn7hUfAriEVUZEdyo63akYXk1IOa7jMOyiUxVTcMPdwaCGCJkUsaEYSnlNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p3Y9M/8l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7D97C4CECD;
+	Tue, 29 Oct 2024 16:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730219253;
-	bh=Z3N4p1dwXhBN00KOleOrbra5ELWKA6izVcLKfEwUA6c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=urbEN6hNzPqi50TUyCRNw61epjyTQT3YPQmW5yrOe5jO+DwS/+lgpRI2cqFKO9aG6
-	 Tpj1T/xg6ZozpcDEl7bBQMK2X7sOdaEBneyvCIyXryQOP++9U80LeA7l42oOj+pkT8
-	 6cE/IqUz/1R4Ag4cqlzcMruzENyFyNbd7MfJscoCVnAKwYUVB84oKPPa7Ql16tXKUK
-	 z9Y+Bri390dmftkG15PvWU+h0y9tA1SDDv09NpRhzJigMSUi0Lmz8GfSzztArAJAa3
-	 1DhC4k7vUUVWQEbnEA5YIMAoS1pM04G/7l5OlC8meIxRBb4YcnT/VAZUnRNMueaHZ+
-	 GKfjubpSsnUfw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1t5p47-007z9Y-LO;
-	Tue, 29 Oct 2024 16:27:31 +0000
-Date: Tue, 29 Oct 2024 16:27:31 +0000
-Message-ID: <868qu63mdo.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Raghavendra Rao Ananta <rananta@google.com>
-Cc: Oliver Upton <oliver.upton@linux.dev>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	stable@vger.kernel.org,
-	syzbot <syzkaller@googlegroups.com>
-Subject: Re: [PATCH v2] KVM: arm64: Get rid of userspace_irqchip_in_use
-In-Reply-To: <20241028234533.942542-1-rananta@google.com>
-References: <20241028234533.942542-1-rananta@google.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20201202; t=1730219941;
+	bh=FgFt+nUEU5jTtnV7+2px6chrOJx6kodCC14Li0aeAnY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=p3Y9M/8lI4PqiizhCf46Mkk7w5tJJBDDoIV+7kAyFipfTcZdcNUBsep2Ex6Y+dU04
+	 /RzCN9wo9Vt9o0R+J5ZBw9Im9D1GWop47zFy8f4MXMJxf+aODpnU5UnPlFJnVCB9i5
+	 /1olrGUrMllFFCXWssN3XISX2gHzJI/OUlJrBET0ZS6tsbl7PSPu2nhdydq9EZs8vR
+	 9f1y3vSP9/5ClNQ7YI2UiduTPXcwOIIENkT9tfr3TxBYi30asMkCKkprgis5ZMZL6e
+	 dp39yuIuu8GIFwd1qbntx1UAm7hxJOzS6k5IpVJTnJRaCcwyZROyFuPXO2dVNXuvhK
+	 406tHJ5svioRQ==
+Date: Tue, 29 Oct 2024 12:38:59 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Antony Antony <antony.antony@secunet.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Sabrina Dubroca <sd@queasysnail.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: Re: [PATCH 6.6 133/208] xfrm: Add Direction to the SA in or out
+Message-ID: <ZyEPo8A7LREpkkhQ@sashalap>
+References: <20241028062306.649733554@linuxfoundation.org>
+ <20241028062309.914261564@linuxfoundation.org>
+ <Zx9wp6atLMR1UcCL@moon.secunet.de>
+ <Zx-Gp8f9jjxmDsIe@sashalap>
+ <ZyC2Ow9usJkkpxjU@moon.secunet.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: rananta@google.com, oliver.upton@linux.dev, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, stable@vger.kernel.org, syzkaller@googlegroups.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <ZyC2Ow9usJkkpxjU@moon.secunet.de>
 
-On Mon, 28 Oct 2024 23:45:33 +0000,
-Raghavendra Rao Ananta <rananta@google.com> wrote:
-> 
-> Improper use of userspace_irqchip_in_use led to syzbot hitting the
-> following WARN_ON() in kvm_timer_update_irq():
-> 
-> WARNING: CPU: 0 PID: 3281 at arch/arm64/kvm/arch_timer.c:459
-> kvm_timer_update_irq+0x21c/0x394
-> Call trace:
->   kvm_timer_update_irq+0x21c/0x394 arch/arm64/kvm/arch_timer.c:459
->   kvm_timer_vcpu_reset+0x158/0x684 arch/arm64/kvm/arch_timer.c:968
->   kvm_reset_vcpu+0x3b4/0x560 arch/arm64/kvm/reset.c:264
->   kvm_vcpu_set_target arch/arm64/kvm/arm.c:1553 [inline]
->   kvm_arch_vcpu_ioctl_vcpu_init arch/arm64/kvm/arm.c:1573 [inline]
->   kvm_arch_vcpu_ioctl+0x112c/0x1b3c arch/arm64/kvm/arm.c:1695
->   kvm_vcpu_ioctl+0x4ec/0xf74 virt/kvm/kvm_main.c:4658
->   vfs_ioctl fs/ioctl.c:51 [inline]
->   __do_sys_ioctl fs/ioctl.c:907 [inline]
->   __se_sys_ioctl fs/ioctl.c:893 [inline]
->   __arm64_sys_ioctl+0x108/0x184 fs/ioctl.c:893
->   __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
->   invoke_syscall+0x78/0x1b8 arch/arm64/kernel/syscall.c:49
->   el0_svc_common+0xe8/0x1b0 arch/arm64/kernel/syscall.c:132
->   do_el0_svc+0x40/0x50 arch/arm64/kernel/syscall.c:151
->   el0_svc+0x54/0x14c arch/arm64/kernel/entry-common.c:712
->   el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
->   el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
-> 
-> The following sequence led to the scenario:
->  - Userspace creates a VM and a vCPU.
->  - The vCPU is initialized with KVM_ARM_VCPU_PMU_V3 during
->    KVM_ARM_VCPU_INIT.
->  - Without any other setup, such as vGIC or vPMU, userspace issues
->    KVM_RUN on the vCPU. Since the vPMU is requested, but not setup,
->    kvm_arm_pmu_v3_enable() fails in kvm_arch_vcpu_run_pid_change().
->    As a result, KVM_RUN returns after enabling the timer, but before
->    incrementing 'userspace_irqchip_in_use':
->    kvm_arch_vcpu_run_pid_change()
->        ret = kvm_arm_pmu_v3_enable()
->            if (!vcpu->arch.pmu.created)
->                return -EINVAL;
->        if (ret)
->            return ret;
->        [...]
->        if (!irqchip_in_kernel(kvm))
->            static_branch_inc(&userspace_irqchip_in_use);
->  - Userspace ignores the error and issues KVM_ARM_VCPU_INIT again.
->    Since the timer is already enabled, control moves through the
->    following flow, ultimately hitting the WARN_ON():
->    kvm_timer_vcpu_reset()
->        if (timer->enabled)
->           kvm_timer_update_irq()
->               if (!userspace_irqchip())
->                   ret = kvm_vgic_inject_irq()
->                       ret = vgic_lazy_init()
->                           if (unlikely(!vgic_initialized(kvm)))
->                               if (kvm->arch.vgic.vgic_model !=
->                                   KVM_DEV_TYPE_ARM_VGIC_V2)
->                                       return -EBUSY;
->                   WARN_ON(ret);
-> 
-> Theoretically, since userspace_irqchip_in_use's functionality can be
+On Tue, Oct 29, 2024 at 11:18:04AM +0100, Antony Antony wrote:
+>On Mon, Oct 28, 2024 at 08:42:15 -0400, Sasha Levin wrote:
+>> On Mon, Oct 28, 2024 at 12:08:23PM +0100, Antony Antony wrote:
+>> > On Mon, Oct 28, 2024 at 07:25:13 +0100, Greg Kroah-Hartman wrote:
+>> > > 6.6-stable review patch.  If anyone has any objections, please let me know.
+>> >
+>> > Hi Greg,
+>> >
+>> > This patch is a part of a new feature SA direction and it appears the auto
+>> > patch selector picked one patch out of patch set?
+>> > I think this patch alone should not be applied to older stable kernel.
+>>
+>> It was picked up as a dependency:
+>
+>I understand how it got selected, however, please drop
+>a4a87fa4e96c ("xfrm: Add Direction to the SA in or out") from backports.
+>
+>>
+>> > > Stable-dep-of: 3f0ab59e6537 ("xfrm: validate new SA's prefixlen using SA family when sel.family is unset")
+>
+>this is good fix to have in stable kernels
+>
+>>
+>> We can drop it, and the netfilter folks can provide us a backport of the
+>> fix above?
+>
+>It is an ipsec sub system patch.
+>Here is a backport. I compile tested it on 6.6. It will also apply to linx-6.1.y
+>To apply to older ones kernels, use -3.
 
-nit: this isn't theoretical at all.
-
-> simply replaced by '!irqchip_in_kernel()', get rid of the static key
-> to avoid the mismanagement, which also helps with the syzbot issue.
-
-Did you have a chance to check whether this had any negative impact on
-actual workloads? Since the entry/exit code is a bit of a hot spot,
-I'd like to make sure we're not penalising the common case (I only
-wrote this patch while waiting in an airport, and didn't test it at
-all).
-
-Any such data about it would be very welcome in the commit message.
-
-Thanks,
-
-	M.
+I've replaced what we had in the queue with your backport, thanks!
 
 -- 
-Without deviation from the norm, progress is not possible.
+Thanks,
+Sasha
 
