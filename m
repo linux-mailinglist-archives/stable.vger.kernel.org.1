@@ -1,132 +1,143 @@
-Return-Path: <stable+bounces-89198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A44179B4ACC
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 14:20:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BAF99B4AD8
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 14:22:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50BFA1F2300A
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 13:20:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E464228457C
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 13:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD0BB206046;
-	Tue, 29 Oct 2024 13:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F12206055;
+	Tue, 29 Oct 2024 13:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QoNBmOBG"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yEsamKzE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D79204013;
-	Tue, 29 Oct 2024 13:20:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657B320262A
+	for <stable@vger.kernel.org>; Tue, 29 Oct 2024 13:22:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730208018; cv=none; b=oQkjrcPYfi3M+32TP+96yRJXL9SSfnUdQzXe8242DTlCjQ8kB8r/ijqlCQT+q1GMr58ekqcrlZjWin6MEk81DOcPYw1JpfCbeZE+g7XJtCtSsRZuwyuPl8WTcAI4itQZkvuNmlOmf4gs6lqLCfZBQacpUwPuEsGDEJHz0eBGd/4=
+	t=1730208149; cv=none; b=V4q/kHSZDqhGozfnVJbAjC0PKs9ymMrxJYCd291j4ntjlH5Y/mt4Yfi5/cvK9HdyCRVla+vy0TnEfsM7jdBoET42kypxXxyvW15FA23P13ckMkNZ8oG5/5FoDs80oUIEThxz/cSu4PKMG3wWJbjqWEQ2eHQ3bFOo7lu/4f2gGMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730208018; c=relaxed/simple;
-	bh=Nxl2dUZ/hQzuO7aiKZsu3S4MKYp9aE1j6RkycrXwFwg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LOf8u+rVad5ueDU1K04QQYwIIp30KtSJrH1dVco5z6jDWXk1aCKn9d3dfCliTaitBbwcN9lbFVOGSdts4Zvft+7s7N7b0TrxSwVLD8VN4B/Y+144o1SIQUig7n53UUCtcq4w9zBl486sU/D25087no2H5tT0GT8q+QzIvHdkyGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QoNBmOBG; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43155afca99so44318145e9.1;
-        Tue, 29 Oct 2024 06:20:16 -0700 (PDT)
+	s=arc-20240116; t=1730208149; c=relaxed/simple;
+	bh=ChSlnsIaEJyE5TQiMvP4Xs35+QG7nfcXjtPvtlTkbVk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=DDl+WFF3Rk97Zqjilr1UGH0YEsr69m25E9I63DyfxKIgSqUyoXzBd4chYO8svS4/mvoHEfXgmib5cXRAzCiL1s5jGCWrrnp/Gm/dTOjlr79u9e6YI6sPR2E0a3gQ9YZzSO1Yf+mmREBu1a34HbBrW4nBSXANPIAVemZH9CqQ3eI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yEsamKzE; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-37ed7eb07a4so4278331f8f.2
+        for <stable@vger.kernel.org>; Tue, 29 Oct 2024 06:22:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730208015; x=1730812815; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=t2lAHyAlERYWmRIkmnxQFe8GGe97yMGstwaP2vMtsNs=;
-        b=QoNBmOBGX2BBHpnLaLKhQJ6YYIH3YNKWyBhprER3B41IbOaILffwX5TiPcoOIRg9JY
-         MUiK28KLbEMr0uJS6cpQE8CocB66rEP/7GxXEfMnEYbJUjmY96Y6SUct1mRnt9tC1fkr
-         3RRRNPn3wSapx5GPhs2j/k9EDEXBL9Z3OeDyejotRfgf9u0QjFZlW08DDvchIFXm9ml7
-         /QGDGdMwKJYwo2JOb1ssJa/39gm4h5PwJXDbbDxXPkt90EwoxoqY1LRC3cVAWsw/d4LN
-         6BXwMJ/1fmixqIadQO+fHrmQJ/q8ZjMrhM8EkL89fGkPfmRT1XGiyHmF9L6eNwZ4+53t
-         FLpA==
+        d=google.com; s=20230601; t=1730208146; x=1730812946; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TmivirZP7oi5XcfMsLlW/n+BvvctncTBddPvnaQEmE8=;
+        b=yEsamKzEo/YD9AMmpZ00ZVkOmRdiIb1hx08l4mx3ZBXaN5gGQ+R90Kbv7cqE86fTs7
+         SH2w7cgspOWsNEOxir7whZIzFZNrTphRokCpPxQ3AO+0iCnnqDu6TJx5KldBNPNyqLHp
+         5cyRhBNV2Eh4JNx95dL/MeW81uiKdpLfjXJPmqvdlKYbgDgsbKxfzX2f/ziFkEbTjxXA
+         a7lWk8aUEWqjFWh7g5yWpM0Y5ejQ2WWvAUJENBSKXQaPLODljCATwJ0p2tmlvrPOG+Xs
+         AfQ2ctzDIkH2z2ji2giXr4fWgmMHShoUdDNmlPN1p8ojj5Crk6gEiG2kNa18VHF4Qc3k
+         KRZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730208015; x=1730812815;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=t2lAHyAlERYWmRIkmnxQFe8GGe97yMGstwaP2vMtsNs=;
-        b=HCyqqVqE0TK+5UwCzAqJTuQrUQzxOJcgxzTJoVpO3sXs/fAPLd3l8k8RVy5S9y1mvC
-         dfqYXsSKgaoS4ToMHdTLIlZkb5uIUsEt7/oJ7YfNW0zorzrf86NLQVoYylChLXNEDPuf
-         tzdexGLA+Merq9zA36Akrzxp+9zQLc/UMRZ7T/v08fnKY8Pxn4KbCRY9NPUX27Qvz3f+
-         +GbiDtlswYfMfwWDBTZi5osvz3rTt7Jfqowjf8bw6InXG+8Jes28A47S9wR8x0+J43hh
-         D1funS3d6z+M1OHgqoxyJPB5aiSYqRcTIsMyXkLToP5rouCwRoL19XC9kwPwDoL6+A80
-         b98w==
-X-Forwarded-Encrypted: i=1; AJvYcCVtJeYD1FisK1osNv0UD180Ww3R0GGwTn0OCGg5F0Ne8i8qmF8sFIm9V2JhnwCz5QJrV2gbUGCW@vger.kernel.org, AJvYcCXdMukq4G7F+DgFIKXCHoaWhT7DLEVzpXqWRWF4P5fp3KigMpJUYeEROlM9C6z8Fvy60VyGev7BFs1R/Zc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNt4fiI4DIeLZSiOTDKC54QsKstvOO2l3pFSaelIoxOHcgwLdI
-	hB8cDy1CGevmR9AAMTWtNjmu3ShjJ5O+teCYPlEpKtR3I/kwUflCI1w+1w==
-X-Google-Smtp-Source: AGHT+IFFLzBuHzf002XUNntKaCdWplad9gWsC99BpmYqcoUrhRgiYAzllmbhX1sXf4KKPgbFJ7N83g==
-X-Received: by 2002:a05:600c:3594:b0:431:9340:77e0 with SMTP id 5b1f17b1804b1-431b5727b99mr19343585e9.9.1730208014536;
-        Tue, 29 Oct 2024 06:20:14 -0700 (PDT)
-Received: from [192.168.1.50] ([79.113.150.231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4318b567e18sm172490005e9.26.2024.10.29.06.20.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Oct 2024 06:20:14 -0700 (PDT)
-Message-ID: <14c3164c-0e1e-4d9d-89d9-28d3240861c6@gmail.com>
-Date: Tue, 29 Oct 2024 15:20:12 +0200
+        d=1e100.net; s=20230601; t=1730208146; x=1730812946;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TmivirZP7oi5XcfMsLlW/n+BvvctncTBddPvnaQEmE8=;
+        b=pdhEc6wQXXNNAwgSO6Qpjo4wkXm4/14a7l+goSjmzbArcz34ZIC/0XjNIitg7+4hCs
+         e7QgM6tuV8m4+Wfc5yYqa89H2HX69zGTcU2x9DuE7Ih1HcASboosUqEqGPLjJsoG3kPs
+         dTTqrazD/zJtFvv+LeWO1NnEOY6GK9ZYnm3+Ku+cPqVcKhr9XrDwk1A2qYeqe2/bQaaW
+         Ro3K0YpLso25F65Bopw5CP9lJKTzmvc4pOA5L/ho4sPewgUZbn6oZpY6FroXqjf9jl5M
+         q+/P2+F2TDcV9C95cWCwU197hlDb4qUKCvu2SdBbdkXfgG2NycHhkJi7cITFsLxRNzwU
+         dZ2A==
+X-Forwarded-Encrypted: i=1; AJvYcCWQQVKA/5Y3iAS3Z87/kCb4pdcSExvVabTs93nT6TLKACJuIPlCawzjDeyiBlK2fk8c7EBQet8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx99Qsgu3gr09rmRU5g08uOV39tVUhGnDfnB6hHD5ZXSP/umxDb
+	1+0eCcQv/LpjOgJ5IURf3qXvsKjt2efQamN94xyDZ8QI2W2b1hQ6ICXyu0P8Vg==
+X-Google-Smtp-Source: AGHT+IFNju1UNn9Y+9Asqmg8PGyztzLGMJa4AE6L7cP0Oa7tzLJFgRDefug/KVTmU2scx5IEYk1I7A==
+X-Received: by 2002:adf:fb48:0:b0:37c:d276:f04 with SMTP id ffacd0b85a97d-3806120086cmr8303886f8f.45.1730208145659;
+        Tue, 29 Oct 2024 06:22:25 -0700 (PDT)
+Received: from localhost (65.0.187.35.bc.googleusercontent.com. [35.187.0.65])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b49d20sm12407112f8f.62.2024.10.29.06.22.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Oct 2024 06:22:25 -0700 (PDT)
+From: Aleksei Vetrov <vvvvvv@google.com>
+Date: Tue, 29 Oct 2024 13:22:11 +0000
+Subject: [PATCH v2] wifi: nl80211: fix bounds checker error in
+ nl80211_parse_sched_scan
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: rtlwifi: Drastically reduce the attempts to read
- efuse bytes in case of failures
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "kvalo@kernel.org" <kvalo@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
- "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com"
- <syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com>
-References: <20241025150226.896613-1-gpiccoli@igalia.com>
- <ed8114c231d1423893d3c90c458f35f3@realtek.com>
- <61aae4ff-8f80-252e-447a-cd8a51a325a1@igalia.com>
- <c93c8e9c109b444b91489ac0e88b987c@realtek.com>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <c93c8e9c109b444b91489ac0e88b987c@realtek.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20241029-nl80211_parse_sched_scan-bounds-checker-fix-v2-1-c804b787341f@google.com>
+X-B4-Tracking: v=1; b=H4sIAILhIGcC/52NQQ6CMBBFr0Jm7Zi2VmxccQ9DCC0DNGJLOko0h
+ LtbOYKbn7y3+G8FpuSJ4VqskGjx7GPIoA4FuLENA6HvMoMSSkuhDIbJCCVlM7eJqWE3Upe3DWj
+ jK3SMWbg7Jez9G93ZaNVraU15gvw4J8p6r93qzKPnZ0yfPb7In/2vs0iUaG2phSVB1l6qIcZho
+ qOLD6i3bfsCJRP5IOcAAAA=
+X-Change-ID: 20241028-nl80211_parse_sched_scan-bounds-checker-fix-c5842f41b863
+To: Johannes Berg <johannes@sipsolutions.net>, Kees Cook <kees@kernel.org>, 
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+ Dmitry Antipov <dmantipov@yandex.ru>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-hardening@vger.kernel.org, stable@vger.kernel.org, 
+ Aleksei Vetrov <vvvvvv@google.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1730208141; l=1602;
+ i=vvvvvv@google.com; s=20241028; h=from:subject:message-id;
+ bh=ChSlnsIaEJyE5TQiMvP4Xs35+QG7nfcXjtPvtlTkbVk=;
+ b=Og5XeuaTfjSAXJ6W0QqYgXHvcHPaCDcuHiTceteHDnvKLY+bGPJ5jfBwN4DTbliVwXWzJBkkq
+ W1Kr/9C8eyBDHA7V8zd4wg2QCycwQogpxb0L1dZtqCxkvYe13MLqh2t
+X-Developer-Key: i=vvvvvv@google.com; a=ed25519;
+ pk=b4c4Uc4EKDS3ie6P4xhkyobon88ZGFLMHyo8kw1IuM4=
 
-On 29/10/2024 02:50, Ping-Ke Shih wrote:
->>
->> But can you help me on finding a USB adapter that runs this path? If you
->> know a commodity model that uses this specific driver, could you point
->> me so I can buy one for testing?
->>
-> 
-> I don't know that. Maybe, Bitterblue Smith (Cc'd) can share how/where he got
-> USB adapters. 
-> 
-> 
+The channels array in the cfg80211_scan_request has a __counted_by
+attribute attached to it, which points to the n_channels variable. This
+attribute is used in bounds checking, and if it is not set before the
+array is filled, then the bounds sanitizer will issue a warning or a
+kernel panic if CONFIG_UBSAN_TRAP is set.
 
-I got them from Aliexpress. Both listings are gone now, but I still
-see others:
+This patch sets the size of allocated memory as the initial value for
+n_channels. It is updated with the actual number of added elements after
+the array is filled.
 
-https://www.aliexpress.com/item/1005007655660231.html
-https://www.aliexpress.com/item/1005007688991958.html
+Fixes: aa4ec06c455d ("wifi: cfg80211: use __counted_by where appropriate")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aleksei Vetrov <vvvvvv@google.com>
+---
+Changes in v2:
+- Added Fixes tag and added stable to CC
+- Link to v1: https://lore.kernel.org/r/20241028-nl80211_parse_sched_scan-bounds-checker-fix-v1-1-bb640be0ebb7@google.com
+---
+ net/wireless/nl80211.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Mine was only 6 USD in March 2023. I don't know why this obsolete
-product got so expensive.
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index d7d099f7118ab5d5c745905abdea85d246c2b7b2..9b1b9dc5a7eb2a864da7b0212bc6a156b7757a9d 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -9776,6 +9776,7 @@ nl80211_parse_sched_scan(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 	request = kzalloc(size, GFP_KERNEL);
+ 	if (!request)
+ 		return ERR_PTR(-ENOMEM);
++	request->n_channels = n_channels;
+ 
+ 	if (n_ssids)
+ 		request->ssids = (void *)request +
 
-For RTL8192DU only modules are available:
+---
+base-commit: 81983758430957d9a5cb3333fe324fd70cf63e7e
+change-id: 20241028-nl80211_parse_sched_scan-bounds-checker-fix-c5842f41b863
 
-https://www.aliexpress.com/item/4000191417711.html
-https://www.aliexpress.com/item/1005007343563100.html
+Best regards,
+-- 
+Aleksei Vetrov <vvvvvv@google.com>
 
-Someone gave me this link (I didn't buy):
-https://www.amazon.com/Netis-Wireless-Raspberry-Windows-RTL8188CUS/dp/B008O2AL0K
-
-Note that the Netis WF2120 can have newer chips inside which will
-not use this driver.
 
