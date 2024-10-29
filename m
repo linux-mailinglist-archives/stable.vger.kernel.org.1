@@ -1,166 +1,149 @@
-Return-Path: <stable+bounces-89269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D94579B55E9
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 23:43:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B5E9B5682
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 00:08:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EE7B1F23A5B
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 22:43:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16ACFB21694
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 23:08:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AAC220A5CF;
-	Tue, 29 Oct 2024 22:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5668220C03E;
+	Tue, 29 Oct 2024 23:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MZlPtZGR"
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="MaN2mMHf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C89199FBB;
-	Tue, 29 Oct 2024 22:43:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E90B20C33B;
+	Tue, 29 Oct 2024 23:07:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730241799; cv=none; b=s1swfRcftJe/Yb0m9EM5TK4sdoFoCmdQ+ZoAG38JNQJ7tDQL2fTSsuL6+edhO2zbJVxiyPyp00tIrb3I+kc4eFC7Eznq85K+QtSzE/NPZU3gHotI2QSqffraRXwqVQYLLc0COy4AeSswYdmb+qEeYl7t6GZIVveuKY28ds6GgWc=
+	t=1730243228; cv=none; b=cJM506wIMatalKOsV+tRO1gL0xRRwk6yGpCQIwb/DaQED/QeTCudlYXD1ZSfmIqYOS/gGtMjw86gtDMu9oyQQk6tqPK1E2IhoAnVZQY/cjCOwPtxXUaFl/HtfJCI6Cga9t77VB75hoFocmG5gm4qiDG7L+d40px7MFUmB9W1prQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730241799; c=relaxed/simple;
-	bh=xBy/03HYfBlb70X4LjELrQm6dmLET2cm759oyRzlIKg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qA1Lep6UdLsKdPTaJI4a4Go9EJoLUK4ls7/GIycKR5a1fuohjruBgk84MSoTLiL5ikQTOLXplcRWHHZleT9GS5VO5cjrvtstN2WrJu6t8d2JUd+UrTGCkCLf3/ZuwX7sBuVdvYEYYlQJoSkJNnA7Fyj3DKvTZm/ftNSfkxxXhUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MZlPtZGR; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4315e62afe0so60954045e9.1;
-        Tue, 29 Oct 2024 15:43:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730241795; x=1730846595; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=NpE1d0EoW69nYU3J7zp+HGEmecn3oGwA/5+kV7hcNXc=;
-        b=MZlPtZGR9zg3AmAQvEzFDIe6gnaMidqrBqHP34F7OHN6VOZNqcmuezsxYaGq9xEnMj
-         S0W14RTpU7d867OLqLZ/SA6gOYmPmYDwWc83kCdcDdH4FaQRo9Th7cQG2wrbp4zhXe4L
-         15l1IkScD9ICT8kcIQVMY1ddbV/h1WuogoWy+62wZfK8H88Hf+scypWiOvt5EoI0i0Xz
-         ASOrXlHIAxJf3ErYegNIfIuR2Uu3vLQlcrNo9j1tmLbfQEHoCiapwYzV1u7snJpjdJck
-         Z8DTgX2mmdC16cMkQZzVHDLHTycbvhUelXbSRQyDPGEg29hRoYzxF+VBvUCSMvBTlyic
-         H4kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730241795; x=1730846595;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NpE1d0EoW69nYU3J7zp+HGEmecn3oGwA/5+kV7hcNXc=;
-        b=M2xoDWRvAo0YC9hzYTjx62HgtLT5BvwdtPzhRzUT6teoLVSFWrzXodNs411JVd8+Yl
-         5vfATANFHH6emYXySSJUSI2NKINbbNDHzYKgNil9mQJu6wMirZPA/dfk885u/wOefc18
-         4LitizLg7EzDXD4E22eSIsAX5/0Py0QN+AUJlJEI+Pyy9vDSy8BOHEaHIKJ/5Jd3EUGj
-         fVY+pTddxHPT8HbEmG+3cGKyvzecgSWm8yB1rPix7+Ga0ql4N8vvRVvh5XUqyJtPsPfk
-         UXdh5/nY4e3U9cp5BleYOEcAw/QcpGjbyvJUFEN23pqRxqQHgDDzgYM58S6roJhK+KZs
-         XxCw==
-X-Forwarded-Encrypted: i=1; AJvYcCUc0bnNNCdshTvDD3YO5eYRt/C5ikcSbGT4k32czcM9awvt3EggwmHyOsYvjwQc56d/d76SusoLTkXzE1g=@vger.kernel.org, AJvYcCXilSI8Gu1pJCPnh0HLbeyelsCZKKLzW2xgo63m0ZQwQuTl+WMaLZb8N5m0I1xhKwEOvOq7LY8o@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcpFoSzE6+i8aPCjcrgjHD9TIjPFGy5nKGHD/mC1VgH+irJOJ9
-	aT48X0CkNJuQVIYYqMTRpmputgETbvfbrgSx+uUHQ27+pYAkUuUv
-X-Google-Smtp-Source: AGHT+IFK9fk5eMXXFOs6cc2VOy6ViQTADXNGFL9a2kyUdP69q3i86yTHcyTIUMuBDor6JBl+F+zQDA==
-X-Received: by 2002:a05:6000:eca:b0:37d:4a16:81d6 with SMTP id ffacd0b85a97d-38061141921mr10080745f8f.24.1730241794879;
-        Tue, 29 Oct 2024 15:43:14 -0700 (PDT)
-Received: from dev7.kernelcare.com ([2a01:4f8:201:23::2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b13251sm13747192f8f.6.2024.10.29.15.43.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Oct 2024 15:43:14 -0700 (PDT)
-From: Andrew Kanner <andrew.kanner@gmail.com>
-To: mark@fasheh.com,
-	jlbec@evilplan.org,
-	joseph.qi@linux.alibaba.com
-Cc: ocfs2-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Andrew Kanner <andrew.kanner@gmail.com>,
-	stable@vger.kernel.org,
-	syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com
-Subject: [PATCH] ocfs2: remove entry once instead of null-ptr-dereference in ocfs2_xa_remove()
-Date: Tue, 29 Oct 2024 23:43:05 +0100
-Message-ID: <20241029224304.2169092-2-andrew.kanner@gmail.com>
-X-Mailer: git-send-email 2.43.5
+	s=arc-20240116; t=1730243228; c=relaxed/simple;
+	bh=LS0YRJHu3A8iH7JzTPwiZAZ+EhA61ZxRflL9vEOtVmM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fJhEZmP7VsgyYQRk0yxmRyuma1Htytfnnrb43NJ6L0K5+WXl+tinvcVMnpRKSJv3cAIh2vOIrpaBfsVWk4H16udY+gM/OwkyqmPF6du2UBL6B1YLMJXTcG7wUOinwpaZBYgudCYeaBg+EquIRJudAIRJqzQ3LFI6UuINRTBE9n8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=MaN2mMHf; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1730243208; x=1730848008; i=wahrenst@gmx.net;
+	bh=r+KwVTsesl4ttQu80egOPD9HHxdn/eJS50zewzoUDf8=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=MaN2mMHfFFdIHzCmLobfG4sbJyNOlWbv3oiH8f+sBpVdKyQS60fStgoPs0EqcdVK
+	 G/2E72tOav65bAUoHJe8/US0PbnJBLr9c1/+PF2pIRxG+h+sd0HM8IibwpCwR4N1G
+	 lge0D0J8JNIuHBTU/WHp5w20gogn7ATDqMLCaaHARdoVveurCh4d9ySoKGb33ZmiR
+	 4UGPzSgjlo8USJLsh8M+OnWEfX5rx7CQhffJRYA5Owno6+hzvXuCgzLTpgsxnuwYU
+	 5WXEyO3IY9CB/l+nuS/OcFCbBgX/NnS8FGtBvw0XGOVic8XJaQGBXAbPHVTDVJ0wm
+	 czerNiy99uy4kKSA6Q==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.105] ([37.4.248.43]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M26r3-1t7qAj1INt-00FTPv; Wed, 30
+ Oct 2024 00:06:48 +0100
+Message-ID: <ea4842c2-7c65-4d45-9964-1a1274d29ea4@gmx.net>
+Date: Wed, 30 Oct 2024 00:06:46 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: vertexcom: mse102x: Fix possible double free of
+ TX skb
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Dan Carpenter <dan.carpenter@linaro.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Simon Horman <horms@kernel.org>
+References: <20241022155242.33729-1-wahrenst@gmx.net>
+ <20241029121028.127f89b3@kernel.org>
+ <10adcc89-6039-4b68-9206-360b7c3fff52@gmx.net>
+ <20241029150137.20dc8aab@kernel.org>
+Content-Language: en-US
+From: Stefan Wahren <wahrenst@gmx.net>
+In-Reply-To: <20241029150137.20dc8aab@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:RbgypJ/eQcQqQ2v+0ap98pZEGXQnozJHh8a24hlbBKSR4BLY30d
+ B+G9k5qumGJD52gYrEJWV/jrPwUhaWZrSgp/QyivUhCacfXIGKbQCnWo92EP/SLmJNTBtQH
+ kliMHveXFX+a6x3Jc5pm1Mr/ijjIP2xlkuRicB0jYNea5KceHPeRVvIBFQUTpRdkFEYkbpq
+ pB0R+xiDiK/Dmmxn3MOLA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:ejx3F0vDcbI=;jcDdBVKAqfs4nq8UddL/nwcw0p1
+ qRYSGBqZh9o3aNt94olvvGpJVm9L0HX8gtK8ktRqsI+2EdUJh8DBguFqkKM/gSKj9Xxbv4cRz
+ XkHR5KmGn9K34bN5b/ErnaUUMkInAI7Suv9xapvQvpvcIQE9Zh8rzP/B1PPdWxudgiAbjSXxi
+ OtEOiFWEaIaqtGLlr4gHv4XtXsaz8n2sg1TSs6gMRtEA0fjmU8gkhDg2P3D5pF0n7zcOGdoPU
+ hpcsa5PpKsA5R5Bck71lx/0e+WKXCFkjzGDglH2FltbR77+E6i4sYxrBeD43+jAVOoZ2S8713
+ O6h8JVJII7XINH7iaUNMfjJfh2zVpH8c7dz2vRD4CGS/yQ+Zk4dOg5bmppyF8gQeQFaZsrJnP
+ 0l2JspNkTy7TeMQkL2pGjfblk7lY2tPfx8lmpN3YUfKv6Hp83G8yyn0ibvDSHnUDBBwOvgqh2
+ D5tpqIb9xtF3Sg6bRU5YB11eWTfhWz5Q3BGHGYuBVNWyPU1Lgw9ZEE+2mo/gka9TQR6Aw3ccx
+ QAuue+pcD/AKDjMXo8s1tKg1rkkW3Iik2e1HC+kZjYqCouldEo12K2ORS10nd6tYnjIUqBc7c
+ kaMEGI5i7JIovjsUoVsIJpslKCy8VmjObBnMShg4qxDW9aGAH0ctuGu2X/xPsnKwwtjl7D5JY
+ Nv70jap6YmKs9lUqtV7VRl0kIRAGxpO3dblHHpNhazoJJGdZLThYkR34ohwtQQUCl59L85qOK
+ xP84xBat15/Sl913s7DoEylb4Ee1uIcK3kGEkQBEOkNKWRM2iNUNHrImRqRpPJEhV5DmHBE08
+ hOKnFQH1up4Z4X/xlI7yJ1XA==
 
-Syzkaller is able to provoke null-ptr-dereference in ocfs2_xa_remove():
+Am 29.10.24 um 23:01 schrieb Jakub Kicinski:
+> On Tue, 29 Oct 2024 22:15:15 +0100 Stefan Wahren wrote:
+>>> Isn't it easier to change this function to free the copy rather than
+>>> the original? That way the original will remain valid for the callers.
+>> You mean something like this?
+>>
+>> diff --git a/drivers/net/ethernet/vertexcom/mse102x.c
+>> b/drivers/net/ethernet/vertexcom/mse102x.c
+>> index a04d4073def9..2c37957478fb 100644
+>> --- a/drivers/net/ethernet/vertexcom/mse102x.c
+>> +++ b/drivers/net/ethernet/vertexcom/mse102x.c
+>> @@ -222,7 +222,7 @@ static int mse102x_tx_frame_spi(struct mse102x_net
+>> *mse, struct sk_buff *txp,
+>>   =C2=A0=C2=A0=C2=A0=C2=A0 struct mse102x_net_spi *mses =3D to_mse102x_=
+spi(mse);
+>>   =C2=A0=C2=A0=C2=A0=C2=A0 struct spi_transfer *xfer =3D &mses->spi_xfe=
+r;
+>>   =C2=A0=C2=A0=C2=A0=C2=A0 struct spi_message *msg =3D &mses->spi_msg;
+>> -=C2=A0=C2=A0=C2=A0 struct sk_buff *tskb;
+>> +=C2=A0=C2=A0=C2=A0 struct sk_buff *tskb =3D NULL;
+>>   =C2=A0=C2=A0=C2=A0=C2=A0 int ret;
+>>
+>>   =C2=A0=C2=A0=C2=A0=C2=A0 netif_dbg(mse, tx_queued, mse->ndev, "%s: sk=
+b %p, %d@%p\n",
+>> @@ -235,7 +235,6 @@ static int mse102x_tx_frame_spi(struct mse102x_net
+>> *mse, struct sk_buff *txp,
+>>   =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 if (!tskb)
+>>   =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 return=
+ -ENOMEM;
+>>
+>> -=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 dev_kfree_skb(txp);
+>>   =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 txp =3D tskb;
+>>   =C2=A0=C2=A0=C2=A0=C2=A0 }
+>>
+>> @@ -257,6 +256,8 @@ static int mse102x_tx_frame_spi(struct mse102x_net
+>> *mse, struct sk_buff *txp,
+>>   =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 mse->stats.xfer_err++;
+>>   =C2=A0=C2=A0=C2=A0=C2=A0 }
+>>
+>> +=C2=A0=C2=A0=C2=A0 dev_kfree_skb(tskb);
+>> +
+>>   =C2=A0=C2=A0=C2=A0=C2=A0 return ret;
+>>   =C2=A0}
+> Exactly, I think it would work and it feels simpler.
+I didn't test it yet, i need access to evaluation board before. But this
+change will behave differently regarding stats of tx_bytes [1]. The
+first version will include the padding, while the second does not.
 
-[   57.319872] (a.out,1161,7):ocfs2_xa_remove:2028 ERROR: status = -12
-[   57.320420] (a.out,1161,7):ocfs2_xa_cleanup_value_truncate:1999 ERROR: Partial truncate while removing xattr overlay.upper.  Leaking 1 clusters and removing the entry
-[   57.321727] BUG: kernel NULL pointer dereference, address: 0000000000000004
-[...]
-[   57.325727] RIP: 0010:ocfs2_xa_block_wipe_namevalue+0x2a/0xc0
-[...]
-[   57.331328] Call Trace:
-[   57.331477]  <TASK>
-[...]
-[   57.333511]  ? do_user_addr_fault+0x3e5/0x740
-[   57.333778]  ? exc_page_fault+0x70/0x170
-[   57.334016]  ? asm_exc_page_fault+0x2b/0x30
-[   57.334263]  ? __pfx_ocfs2_xa_block_wipe_namevalue+0x10/0x10
-[   57.334596]  ? ocfs2_xa_block_wipe_namevalue+0x2a/0xc0
-[   57.334913]  ocfs2_xa_remove_entry+0x23/0xc0
-[   57.335164]  ocfs2_xa_set+0x704/0xcf0
-[   57.335381]  ? _raw_spin_unlock+0x1a/0x40
-[   57.335620]  ? ocfs2_inode_cache_unlock+0x16/0x20
-[   57.335915]  ? trace_preempt_on+0x1e/0x70
-[   57.336153]  ? start_this_handle+0x16c/0x500
-[   57.336410]  ? preempt_count_sub+0x50/0x80
-[   57.336656]  ? _raw_read_unlock+0x20/0x40
-[   57.336906]  ? start_this_handle+0x16c/0x500
-[   57.337162]  ocfs2_xattr_block_set+0xa6/0x1e0
-[   57.337424]  __ocfs2_xattr_set_handle+0x1fd/0x5d0
-[   57.337706]  ? ocfs2_start_trans+0x13d/0x290
-[   57.337971]  ocfs2_xattr_set+0xb13/0xfb0
-[   57.338207]  ? dput+0x46/0x1c0
-[   57.338393]  ocfs2_xattr_trusted_set+0x28/0x30
-[   57.338665]  ? ocfs2_xattr_trusted_set+0x28/0x30
-[   57.338948]  __vfs_removexattr+0x92/0xc0
-[   57.339182]  __vfs_removexattr_locked+0xd5/0x190
-[   57.339456]  ? preempt_count_sub+0x50/0x80
-[   57.339705]  vfs_removexattr+0x5f/0x100
-[...]
-
-Reproducer uses faultinject facility to fail ocfs2_xa_remove() ->
-ocfs2_xa_value_truncate() with -ENOMEM.
-
-In this case the comment mentions that we can return 0 if
-ocfs2_xa_cleanup_value_truncate() is going to wipe the entry
-anyway. But the following 'rc' check is wrong and execution flow do
-'ocfs2_xa_remove_entry(loc);' twice:
-* 1st: in ocfs2_xa_cleanup_value_truncate();
-* 2nd: returning back to ocfs2_xa_remove() instead of going to 'out'.
-
-Fix this by skipping the 2nd removal of the same entry and making
-syzkaller repro happy.
-
-Cc: stable@vger.kernel.org
-Fixes: 399ff3a748cf ("ocfs2: Handle errors while setting external xattr values.")
-Reported-by: syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/671e13ab.050a0220.2b8c0f.01d0.GAE@google.com/T/
-Tested-by: syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com
-Signed-off-by: Andrew Kanner <andrew.kanner@gmail.com>
----
- fs/ocfs2/xattr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
-index dd0a05365e79..5bc4d660e15a 100644
---- a/fs/ocfs2/xattr.c
-+++ b/fs/ocfs2/xattr.c
-@@ -2036,7 +2036,7 @@ static int ocfs2_xa_remove(struct ocfs2_xa_loc *loc,
- 				rc = 0;
- 			ocfs2_xa_cleanup_value_truncate(loc, "removing",
- 							orig_clusters);
--			if (rc)
-+			if (rc == 0)
- 				goto out;
- 		}
- 	}
--- 
-2.43.5
+[1] -
+https://elixir.bootlin.com/linux/v6.12-rc5/source/drivers/net/ethernet/ver=
+texcom/mse102x.c#L445
 
 
