@@ -1,124 +1,197 @@
-Return-Path: <stable+bounces-89179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87CA39B4654
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 11:02:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 846649B468E
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 11:18:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 355391F238FA
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 10:02:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7E301C2267E
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 10:18:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5450204034;
-	Tue, 29 Oct 2024 10:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C23204098;
+	Tue, 29 Oct 2024 10:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="YILfGrWY"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="mgqKvZeI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D43A204085
+	for <stable@vger.kernel.org>; Tue, 29 Oct 2024 10:18:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730197103; cv=none; b=jc4c7hjnpIK6lUMp6BrClmF/dRKfu6i6xt1iwyoz9PWvqcfZO04mZpOwl77pb78Mf4ukgWjmBIyO3BfpirBdFhq8MEb+qCNCqjvFND/Ume9ellZvRJdmCGayjyB7Easgb5g9xfwFpe8GULOTRvaE2kwCWIQKX2Fn+qKHiQLJzxc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730197103; c=relaxed/simple;
+	bh=chy4K3lAqu9T3cNWx7PQ01IEpmqlKtiZaveYDTJB5Wc=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NexP6FULGjnOyOYGkkzOWioXbv3y6FVZehWk3cViKafR5wZae8auFG6uKEmysEKniSwIqnoGNZG0FJ8Dcy5eok0OyujQDNXhNEhV9iJjJa/T8z5uwRtTpC2VqoJgif/j2v1JN/2epjzBFbazrmtV6mDPfeXkrxantG5ZozHeiEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=mgqKvZeI; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+Received: from localhost (localhost [127.0.0.1])
+	by a.mx.secunet.com (Postfix) with ESMTP id 48F6320872;
+	Tue, 29 Oct 2024 11:18:17 +0100 (CET)
+X-Virus-Scanned: by secunet
+Received: from a.mx.secunet.com ([127.0.0.1])
+	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id HqVcEP6qFQOD; Tue, 29 Oct 2024 11:18:16 +0100 (CET)
+Received: from cas-essen-02.secunet.de (rl2.secunet.de [10.53.40.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F52187FE0
-	for <stable@vger.kernel.org>; Tue, 29 Oct 2024 10:02:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730196153; cv=none; b=oFUefNpidUuac5dUsWLI60aIe4xcExoF3MdukaS7tI8x6a+6GuN1k5kG8MNivjxmO6Xm4yBSMhZ24BC+qRGBpe9OdVo4zasM4uf7HSfw/djY6AJmZtzBBrMmemLIw372+QQncLvxXCY46N/6nXg1X2sbgx51rWR1+wbjFPF09h8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730196153; c=relaxed/simple;
-	bh=V9yrLlvpjMhAOtTUuzUbS/PuBDjwNV+agqaeXIEXbGs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ht18nceSuxFL1moyGqBCCiOhF6+15T8BC3vY5CqrCJAAzDqoWaOFFx2YPvoyUWH8oGYYPVqVdt8wZBXPRU+lRx4l6qi49XORSnMTEAj2ghsXjwBX3vUpmCsKmV09YVT/C9skL9WEFLAfl8ZNKQpVB3Hdoe/gtnxV/aMi67VBYyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=YILfGrWY; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-20e576dbc42so52887645ad.0
-        for <stable@vger.kernel.org>; Tue, 29 Oct 2024 03:02:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1730196151; x=1730800951; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dP0KAMyVWS6Yj9qu9bHMDh95jkCq6kFe5y2/InwDUyI=;
-        b=YILfGrWY7CaTHRKCIRw5iDpaRqxT0fAn2HQ59GqNawfk/lOIz4lBD7RUcGIrGt6W4g
-         bj/nEROdOS5UCy+rQFPY566tNNFFg6pvrUSlD9YxqklHX95BqgmxC97Ymm/F49wza42d
-         34TqaH1mXPKoIgrQOCnMXoE+7WwSuPOirLiQg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730196151; x=1730800951;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dP0KAMyVWS6Yj9qu9bHMDh95jkCq6kFe5y2/InwDUyI=;
-        b=EH1XK038pzYIGKjw1l/SEe20yjyRrt8IKdB5lS90OtRBbVdowjNcxQo8DLWzAQRgZt
-         SMOPK3joKhuaTwXFLr+DSrXfu5LU5ERqr42fRmftFvuiaEosS68p3oYGwGMdZBoRC2JH
-         0/D6wAhUXVBp/d0LwneWQH0bTeKp5HXmEE53dHA+w6PD0b7G1DJ8w0RPLchP979BFeQv
-         s9vZW0Se1EMR1is++jH10PXnNoWUTbUEKXWIhBnOAIaj/UW8HnDlRIcKAO+TS/VVh8Oq
-         E++tRTrMpu54FQe8JDUJcMOPlvnoc9XMy6xePBpTXkWnDNoknYfyzkYOBwiI+ewfl5vX
-         15tw==
-X-Forwarded-Encrypted: i=1; AJvYcCXjHuZ2vBlJjKHGDsQfxFPpx9clRwIbn7Q4DDTP/GCVsuaCfvdJfv+Dh4tg3g8iG+ejQJeCSfY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YznFtyRj6lGSAxC7pkncL+b96OlfC58XylIPMi08plU0zv6moE6
-	JpNB6v8T4ZhERXqkn0mE6YgHe2gWaqfNvTkD1uwyTbv509557fTiduXDZr/p/g==
-X-Google-Smtp-Source: AGHT+IEVCUvA4kLgKRzZ3vDr/KBHeqsWpmQJtKxeUYRTf/PK4hHx+6K7t3YF7nEmIdBRHb+IdCV2Zw==
-X-Received: by 2002:a17:902:c411:b0:202:28b1:9f34 with SMTP id d9443c01a7336-210c6d3c766mr153604875ad.56.1730196150884;
-        Tue, 29 Oct 2024 03:02:30 -0700 (PDT)
-Received: from wenstp920.tpe.corp.google.com ([2401:fa00:1:10:1fef:f494:7cba:476])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-210bc04532csm62785665ad.254.2024.10.29.03.02.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Oct 2024 03:02:30 -0700 (PDT)
-From: Chen-Yu Tsai <wenst@chromium.org>
-To: Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Chen-Yu Tsai <wenst@chromium.org>,
-	devicetree@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] arm64: dts: mediatek: mt8186-corsola: Fix IT6505 reset line polarity
-Date: Tue, 29 Oct 2024 18:02:25 +0800
-Message-ID: <20241029100226.660263-1-wenst@chromium.org>
-X-Mailer: git-send-email 2.47.0.163.g1226f6d8fa-goog
+	by a.mx.secunet.com (Postfix) with ESMTPS id F0AEB20891;
+	Tue, 29 Oct 2024 11:18:15 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com F0AEB20891
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1730197096;
+	bh=fQrW1pDY7CtPwXrG2SJfo8HyNFzWqBd0Ybbdidl1pQA=;
+	h=Date:From:To:CC:Subject:Reply-To:References:In-Reply-To:From;
+	b=mgqKvZeIj3Zjqptb/vh7BSDuMrenukgHcwMjloLYj+HOMzb/oYaG4twU4mooSYWn4
+	 mfeW45/eiQk7rb9zwNGyPUBBXJBFIY9kjtXpdka4FwWfDrXzK7kPg2tCALZfs1m/dE
+	 1CWem7iHoSU38XtbjizIAARcK8geriVCpjQ4qB7I2Obz1qd1AKqqMfHfWoE9nE08GH
+	 y2dgKgw8ZJB2+ijkfEYSgtqc/UHS6WEpBtsJ8waKkZ40Jc+rp60RzLiTz4RiXfK/Dp
+	 FlVCkf8n6sKItGUdBoIwC9wRGbT0+/vceuq1Wi7tc2Dr1YJojIFcYlJzEAqCToSQ+/
+	 chOq84QPDnyxg==
+Received: from mbx-essen-01.secunet.de (10.53.40.197) by
+ cas-essen-02.secunet.de (10.53.40.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 29 Oct 2024 11:18:15 +0100
+Received: from moon.secunet.de (172.18.149.1) by mbx-essen-01.secunet.de
+ (10.53.40.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 29 Oct
+ 2024 11:18:15 +0100
+Date: Tue, 29 Oct 2024 11:18:04 +0100
+From: Antony Antony <antony.antony@secunet.com>
+To: Sasha Levin <sashal@kernel.org>
+CC: Antony Antony <antony.antony@secunet.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, <stable@vger.kernel.org>,
+	<patches@lists.linux.dev>, Sabrina Dubroca <sd@queasysnail.net>, "Steffen
+ Klassert" <steffen.klassert@secunet.com>
+Subject: Re: [PATCH 6.6 133/208] xfrm: Add Direction to the SA in or out
+Message-ID: <ZyC2Ow9usJkkpxjU@moon.secunet.de>
+Reply-To: <antony.antony@secunet.com>
+References: <20241028062306.649733554@linuxfoundation.org>
+ <20241028062309.914261564@linuxfoundation.org>
+ <Zx9wp6atLMR1UcCL@moon.secunet.de>
+ <Zx-Gp8f9jjxmDsIe@sashalap>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed; boundary="kEvXCRMXLtCk+Dwf"
+Content-Disposition: inline
+In-Reply-To: <Zx-Gp8f9jjxmDsIe@sashalap>
+Precedence: first-class
+Priority: normal
+Organization: secunet
+X-ClientProxiedBy: cas-essen-02.secunet.de (10.53.40.202) To
+ mbx-essen-01.secunet.de (10.53.40.197)
+X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 
-The reset line of the IT6505 bridge chip is active low, not active high.
-It was incorrectly inverted in the device tree as the implementation at
-the time incorrectly inverted the polarity in its driver, due to a prior
-device having an inline inverting level shifter.
+--kEvXCRMXLtCk+Dwf
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
 
-Fix the polarity now while the external display pipeline is incomplete,
-thereby avoiding any impact to running systems.
+On Mon, Oct 28, 2024 at 08:42:15 -0400, Sasha Levin wrote:
+> On Mon, Oct 28, 2024 at 12:08:23PM +0100, Antony Antony wrote:
+> > On Mon, Oct 28, 2024 at 07:25:13 +0100, Greg Kroah-Hartman wrote:
+> > > 6.6-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > Hi Greg,
+> > 
+> > This patch is a part of a new feature SA direction and it appears the auto
+> > patch selector picked one patch out of patch set?
+> > I think this patch alone should not be applied to older stable kernel.
+> 
+> It was picked up as a dependency:
 
-A matching fix for the driver should be included if this change is
-backported.
+I understand how it got selected, however, please drop
+a4a87fa4e96c ("xfrm: Add Direction to the SA in or out") from backports.
 
-Fixes: 8855d01fb81f ("arm64: dts: mediatek: Add MT8186 Krabby platform based Tentacruel / Tentacool")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+> 
+> > > Stable-dep-of: 3f0ab59e6537 ("xfrm: validate new SA's prefixlen using SA family when sel.family is unset")
+
+this is good fix to have in stable kernels
+
+> 
+> We can drop it, and the netfilter folks can provide us a backport of the
+> fix above?
+
+It is an ipsec sub system patch.
+Here is a backport. I compile tested it on 6.6. It will also apply to linx-6.1.y
+To apply to older ones kernels, use -3. 
+
+
+regards,
+-antony
+
+--kEvXCRMXLtCk+Dwf
+Content-Type: text/x-diff; charset="us-ascii"
+Content-Disposition: attachment;
+	filename="0001-xfrm-validate-new-SA-s-prefixlen-using-SA-family-whe.patch"
+
+From 728db0e41ea88d26198c14c383489c6f8509edee Mon Sep 17 00:00:00 2001
+From: Sabrina Dubroca <sd@queasysnail.net>
+Date: Tue, 1 Oct 2024 18:48:14 +0200
+Subject: [PATCH] xfrm: validate new SA's prefixlen using SA family when
+ sel.family is unset
+
+[ Upstream commit 3f0ab59e6537c6a8f9e1b355b48f9c05a76e8563 ]
+
+This expands the validation introduced in commit 07bf7908950a ("xfrm:
+Validate address prefix lengths in the xfrm selector.")
+
+syzbot created an SA with
+    usersa.sel.family = AF_UNSPEC
+    usersa.sel.prefixlen_s = 128
+    usersa.family = AF_INET
+
+Because of the AF_UNSPEC selector, verify_newsa_info doesn't put
+limits on prefixlen_{s,d}. But then copy_from_user_state sets
+x->sel.family to usersa.family (AF_INET). Do the same conversion in
+verify_newsa_info before validating prefixlen_{s,d}, since that's how
+prefixlen is going to be used later on.
+
+Reported-by: syzbot+cc39f136925517aed571@syzkaller.appspotmail.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Antony Antony <antony.antony@secunet.com>
 ---
-The matching driver change can be found at
+ net/xfrm/xfrm_user.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-    https://lore.kernel.org/all/20241029095411.657616-1-wenst@chromium.org/
-
- arch/arm64/boot/dts/mediatek/mt8186-corsola.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm64/boot/dts/mediatek/mt8186-corsola.dtsi b/arch/arm64/boot/dts/mediatek/mt8186-corsola.dtsi
-index e3b58641f2c9..43c83620e479 100644
---- a/arch/arm64/boot/dts/mediatek/mt8186-corsola.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8186-corsola.dtsi
-@@ -422,7 +422,7 @@ it6505dptx: dp-bridge@5c {
- 		#sound-dai-cells = <0>;
- 		ovdd-supply = <&mt6366_vsim2_reg>;
- 		pwr18-supply = <&pp1800_dpbrdg_dx>;
--		reset-gpios = <&pio 177 GPIO_ACTIVE_HIGH>;
-+		reset-gpios = <&pio 177 GPIO_ACTIVE_LOW>;
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 979f23cded40..b8f8d3066eb4 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -176,6 +176,7 @@ static int verify_newsa_info(struct xfrm_usersa_info *p,
+ 			     struct netlink_ext_ack *extack)
+ {
+ 	int err;
++	u16 family = p->sel.family;
  
- 		ports {
- 			#address-cells = <1>;
+ 	err = -EINVAL;
+ 	switch (p->family) {
+@@ -196,7 +197,10 @@ static int verify_newsa_info(struct xfrm_usersa_info *p,
+ 		goto out;
+ 	}
+ 
+-	switch (p->sel.family) {
++	if (!family && !(p->flags & XFRM_STATE_AF_UNSPEC))
++		family = p->family;
++
++	switch (family) {
+ 	case AF_UNSPEC:
+ 		break;
+ 
 -- 
-2.47.0.163.g1226f6d8fa-goog
+2.30.2
 
+
+--kEvXCRMXLtCk+Dwf--
 
