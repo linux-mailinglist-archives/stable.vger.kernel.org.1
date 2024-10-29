@@ -1,144 +1,150 @@
-Return-Path: <stable+bounces-89213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84DF39B4CD7
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 16:04:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A4139B4D1D
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 16:10:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D18FDB218AD
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 15:04:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F159285CFE
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 15:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB1118E379;
-	Tue, 29 Oct 2024 15:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F913192B96;
+	Tue, 29 Oct 2024 15:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="hZ3d57Iq"
+	dkim=pass (2048-bit key) header.d=toblux-com.20230601.gappssmtp.com header.i=@toblux-com.20230601.gappssmtp.com header.b="utgnz4zF"
 X-Original-To: stable@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94DC10F7
-	for <stable@vger.kernel.org>; Tue, 29 Oct 2024 15:03:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466E119258A
+	for <stable@vger.kernel.org>; Tue, 29 Oct 2024 15:10:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730214223; cv=none; b=firERzdGFqEDXDFiCZSrqRdTA7KX4aZNPot3wlOPLdFdGQ/srrsvBVeqAn4/kjMiQg9QB5UCJDjVh6xTyiPWuNwcUaAYzwqnoW6l8vr6bc2Aex9VGb0M/qPOBAviUE9JIIAzGfohJqeFxtgq8Rn81V89T1wXH5O8hckSP3el4ZY=
+	t=1730214649; cv=none; b=lt7A14Byu3MQepHZBwQLlvIoMoIYPENV4mA4BIJf9s0ZR3xyGLTiNB1EzVuhpQWGl4MW43WCN6Lg68TWJEVnng+8OeWn1gBVTy7Gt6hi7q0nU0lo3aM04EHLh+IGPCUdwwqBfUPccwFvnRB3BUrTLeUgfjVwL1OvFFtrU12yIS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730214223; c=relaxed/simple;
-	bh=qcYDPc3x+a7SroXNUz/3qq/KEvMPTw5Uzgor0XjGkLc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=TUTIZttfY6yauhLYkSUmJzCz6Rr8oMkV5vxRS5D6ut9csb6xmPzD7sMNL7sSuFCYHjm2/P5Ylx9UgDE7PoQQxmm/rZCzhu6sgrfAWe9OrnqCDR9hkhDMTUsrvWz10y+R8Fz3917trMJSjNMPuPVB7g9SSyfejNm5g2CFVkuTJnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=hZ3d57Iq; arc=none smtp.client-ip=91.207.212.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49TCVZdE022650;
-	Tue, 29 Oct 2024 16:02:54 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	UqeRlTfozsVN09UU+kff1ZF8lDSMEDqo8CyqaqZhk/Y=; b=hZ3d57IqasGvvdZG
-	lWbshJF//k5Qp/RAFozM5AQPJ4Ekhf0hoiwUGjy29Wfkcxg3/vzFmJA+3+P8ZsZa
-	9Djk1AvxpBqIY2aVpicVA1gxUHfqIomXXRUgJrJTj8IxmmUeGZ/oKutp3r/3Mxu4
-	madaH5mK5nf9oBePt5CvuI58AZYFa4tHNQaqkcsEEn7d644OK9i+rjCXW+h1VE3D
-	k5gu7aZOYhyaVdmGgutqS0SzmWRYEYK18VyVPknvc/4vGH1mIpvl0pvo0VZRbN0W
-	s5KlL+gO64njEl9kYiNuey/0+eI7N8ugDWqh8Ru7Qtd89cQqqca3afuH86kR40Fk
-	zkflvQ==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 42gnj4ff7u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Oct 2024 16:02:54 +0100 (CET)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 7183B4002D;
-	Tue, 29 Oct 2024 16:01:12 +0100 (CET)
-Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 1A45E26702B;
-	Tue, 29 Oct 2024 16:00:04 +0100 (CET)
-Received: from [10.48.86.107] (10.48.86.107) by SHFDAG1NODE2.st.com
- (10.75.129.70) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Tue, 29 Oct
- 2024 16:00:03 +0100
-Message-ID: <aeef0000-2b08-4fd5-b834-0ead5c122223@foss.st.com>
-Date: Tue, 29 Oct 2024 16:00:02 +0100
+	s=arc-20240116; t=1730214649; c=relaxed/simple;
+	bh=pClzO/h/JROTqlyb6Hk2ZQp5fgFIM9FnfxbvzImRHqc=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=WYPTxYdRYtnqt2LjCK/Csfqktfaw1AB7eoAITK+izxOytJz8WFED5T3d5sf2WrGzIVoa30q7up8trfH+MvnnQEOYY2xUGsRIsM09AqHI/p6uao5npJRSx5f0f8BTJaJu/7eQTlripVGIsKwxnPEBFO9cmh3mSEVYcetFaYrquS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toblux.com; spf=none smtp.mailfrom=toblux.com; dkim=pass (2048-bit key) header.d=toblux-com.20230601.gappssmtp.com header.i=@toblux-com.20230601.gappssmtp.com header.b=utgnz4zF; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toblux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=toblux.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-37d4ee8d15aso570722f8f.2
+        for <stable@vger.kernel.org>; Tue, 29 Oct 2024 08:10:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toblux-com.20230601.gappssmtp.com; s=20230601; t=1730214645; x=1730819445; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pClzO/h/JROTqlyb6Hk2ZQp5fgFIM9FnfxbvzImRHqc=;
+        b=utgnz4zFdhOy+7YMXbpmLXje74h8m4lx6u2cnRXuc5S/at09whA4C9h2KfYMSv1JD9
+         juWl5Pjp680KnOnpL68XpitftNI24T3uHHls3B6h8LS6+4jOYJhRQG6LghZqE5vofUcx
+         QYKmbFMV273ySUzS8eRqM6w0RGwzVk0pirsZamw+23DTNK7+xYE4rIfP3kWowGS5ZNxA
+         RkN5LeevWUDzCbTB12hmkt6Cr1vKvfRSpWIeVx02CP9WxlkfjJKZLlT4lEemTONphmFn
+         EguMZ5QUpGQtQcHsLIxOvIzRgJg1/76kVc08+ckJ/jnnM+ZZIrXcXqLf0cihOaQMlqmb
+         bRQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730214645; x=1730819445;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pClzO/h/JROTqlyb6Hk2ZQp5fgFIM9FnfxbvzImRHqc=;
+        b=g6xBVI1N2V4aGWdQhwcq0SMb7CEmh9GcmgExqQ6yqNvBsJqei60aWThVp2Z77OdkE8
+         krad8ACpoT/P84Lp2AXOPxJ3KoC9hop5mEA2QjX66BQbudkgJr6afSVxerbolBJqeW7z
+         0N4qtQfxlGmnrQEYMR6/yv54fqPJgyITcBJW5vWr921FGPTYF3875lBug+pT+4UeZPJG
+         Q+Xn0Jc/3t82s9MpzkSkkv8rXzVqmS9a8rDTv+EuaKCH8KQTchGBzE1L6LpfOwYuceBv
+         iNP33MEwGyHutwlOTIZd7pQoPapN+KSNE9/egIUzOc5RrJo0CVFBCpWAKG4RH/is2uaO
+         i/VA==
+X-Forwarded-Encrypted: i=1; AJvYcCV8OaRFpYblH8U8qRygVBgB/9+opSREQx8KnhOou73c58TY+uUJXennjYG8AKbHBekaEZMVa2k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtOBy6AUpfgxssvMKrnMyViAUSle7jPa3u8HolEQOScbt5DNI/
+	HsH3MTzDhkARBFyLmOnVC6d1K60O7319NNGjLe2mXb6kLc4qw9JSHqJlq5AxW8A=
+X-Google-Smtp-Source: AGHT+IHpB0gsXiLgIYq0IllOpj0RLaS+RFkgWPXNM/xk1DTGgHY978z6z+pWhDKYuiUIrS2oulAcag==
+X-Received: by 2002:a5d:6d86:0:b0:374:cd01:8b72 with SMTP id ffacd0b85a97d-380611fe6dcmr4253149f8f.9.1730214644521;
+        Tue, 29 Oct 2024 08:10:44 -0700 (PDT)
+Received: from smtpclient.apple ([2001:a61:a4f:301:c1bf:2b25:a6db:6ae3])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b713fbsm12813482f8f.88.2024.10.29.08.10.43
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 29 Oct 2024 08:10:44 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] ARM: ioremap: Sync PGDs for VMALLOC shadow
-To: Linus Walleij <linus.walleij@linaro.org>
-CC: Ard Biesheuvel <ardb@kernel.org>,
-        Andrey Ryabinin
-	<ryabinin.a.a@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Andrey
- Konovalov <andreyknvl@gmail.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        kasan-dev
-	<kasan-dev@googlegroups.com>,
-        Russell King <linux@armlinux.org.uk>, Kees Cook
-	<kees@kernel.org>,
-        AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>,
-        Mark Brown <broonie@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-        Antonio Borneo
-	<antonio.borneo@foss.st.com>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <stable@vger.kernel.org>
-References: <20241017-arm-kasan-vmalloc-crash-v3-0-d2a34cd5b663@linaro.org>
- <20241017-arm-kasan-vmalloc-crash-v3-1-d2a34cd5b663@linaro.org>
- <69f71ac8-4ba6-46ed-b2ab-e575dcada47b@foss.st.com>
- <CACRpkdYvgZj1R4gAmzFhf4GmFOxZXhpHVTOio+hVP52OBAJP0A@mail.gmail.com>
- <46336aba-e7dd-49dd-aa1c-c5f765006e3c@foss.st.com>
- <CACRpkdY2=qdY_0GA1gB03yHODPEvxum+4YBjzsXRVnhLaf++6Q@mail.gmail.com>
- <f3856158-10e6-4ee8-b4d5-b7f2fe6d1097@foss.st.com>
- <CACRpkdZa5x6NvUg0kU6F0+HaFhKhVswvK2WaaCSBx3-JCVFcag@mail.gmail.com>
- <CACRpkdYtG3ObRCghte2D0UgeZxkOC6oEUg39uRs+Z0nXiPhUTA@mail.gmail.com>
-Content-Language: en-US
-From: Clement LE GOFFIC <clement.legoffic@foss.st.com>
-In-Reply-To: <CACRpkdYtG3ObRCghte2D0UgeZxkOC6oEUg39uRs+Z0nXiPhUTA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE2.st.com
- (10.75.129.70)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.1\))
+Subject: Re: [PATCH 1/1] Compiler Attributes: disable __counted_by for clang <
+ 19.1.3
+From: Thorsten Blum <thorsten.blum@toblux.com>
+In-Reply-To: <20241029140036.577804-2-kernel@jfarr.cc>
+Date: Tue, 29 Oct 2024 16:10:32 +0100
+Cc: kees@kernel.org,
+ nathan@kernel.org,
+ ojeda@kernel.org,
+ ndesaulniers@google.com,
+ morbo@google.com,
+ justinstitt@google.com,
+ ardb@kernel.org,
+ oliver.sang@intel.com,
+ gustavoars@kernel.org,
+ kent.overstreet@linux.dev,
+ arnd@arndb.de,
+ gregkh@linuxfoundation.org,
+ akpm@linux-foundation.org,
+ tavianator@tavianator.com,
+ linux-hardening@vger.kernel.org,
+ llvm@lists.linux.dev,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <3ADD56B1-9BBF-48CD-81C7-53E10675F566@toblux.com>
+References: <20241029140036.577804-1-kernel@jfarr.cc>
+ <20241029140036.577804-2-kernel@jfarr.cc>
+To: Jan Hendrik Farr <kernel@jfarr.cc>
+X-Mailer: Apple Mail (2.3776.700.51.11.1)
 
-On 10/25/24 22:57, Linus Walleij wrote:
->> What happens if you just
->>
->> git checkout b6506981f880^
->>
->> And build and boot that? It's just running the commit right before the
->> unwinding patch.
-> 
-> Another thing you can test is to disable vmap:ed stacks and see
-> what happens. (General architecture-dependent options uncheck
-> "Use a virtually-mapped stack".)
+On 29. Oct 2024, at 15:00, Jan Hendrik Farr wrote:
+>=20
+> This patch disables __counted_by for clang versions < 19.1.3 because
+> of the two issues listed below. It does this by introducing
+> CONFIG_CC_HAS_COUNTED_BY.
+>=20
+> 1. clang < 19.1.2 has a bug that can lead to __bdos returning 0:
+> https://github.com/llvm/llvm-project/pull/110497
+>=20
+> 2. clang < 19.1.3 has a bug that can lead to __bdos being off by 4:
+> https://github.com/llvm/llvm-project/pull/112636
+>=20
+> Fixes: c8248faf3ca2 ("Compiler Attributes: counted_by: Adjust name and =
+identifier expansion")
+> Cc: stable@vger.kernel.org # 6.6.x: 16c31dd7fdf6: Compiler Attributes: =
+counted_by: bump min gcc version
+> Cc: stable@vger.kernel.org # 6.6.x: 2993eb7a8d34: Compiler Attributes: =
+counted_by: fixup clang URL
+> Cc: stable@vger.kernel.org # 6.6.x: 231dc3f0c936: lkdtm/bugs: Improve =
+warning message for compilers without counted_by support
+> Cc: stable@vger.kernel.org # 6.6.x
+> Reported-by: Nathan Chancellor <nathan@kernel.org>
+> Closes: =
+https://lore.kernel.org/all/20240913164630.GA4091534@thelio-3990X/
+> Reported-by: kernel test robot <oliver.sang@intel.com>
+> Closes: =
+https://lore.kernel.org/oe-lkp/202409260949.a1254989-oliver.sang@intel.com=
 
-Hi Linus,
+> Link: =
+https://lore.kernel.org/all/Zw8iawAF5W2uzGuh@archlinux/T/#m204c09f63c07658=
+6a02d194b87dffc7e81b8de7b
+> Suggested-by: Nathan Chancellor <nathan@kernel.org>
+> Signed-off-by: Jan Hendrik Farr <kernel@jfarr.cc>
+> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+> Tested-by: Nathan Chancellor <nathan@kernel.org>
+> Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
 
-I have tested your patches against few kernel versions without 
-reproducing the issue.
-- b6506981f880^
-- v6.6.48
-- v6.12-rc4
-I didn't touch to CONFIG_VMAP_STACK though.
+Thanks for fixing this and your work on the Clang issues. Feel free to =
+add:
 
-The main difference from my crash report is my test environment which 
-was a downstream one.
+Reviewed-by: Thorsten Blum <thorsten.blum@linux.dev>
 
-So it seems related to ST downstream kernel version based on a v6.6.48.
-Even though the backtrace was talking about unwinding and kasan.
-
-I will continue to investigate on my side in the next weeks but I don't 
-want to block the patch integration process if I was.
-
-Best regards,
-
-Clément
 
