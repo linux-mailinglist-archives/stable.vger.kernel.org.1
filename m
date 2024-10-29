@@ -1,51 +1,84 @@
-Return-Path: <stable+bounces-89216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844649B4D46
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 16:14:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 944669B4DA8
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 16:22:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E962B23EF9
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 15:14:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F0A9B258C4
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 15:22:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F294192D83;
-	Tue, 29 Oct 2024 15:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB8419342D;
+	Tue, 29 Oct 2024 15:22:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="ZwPdPdb+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ajC2I0Ul"
 X-Original-To: stable@vger.kernel.org
-Received: from pv50p00im-zteg10021301.me.com (pv50p00im-zteg10021301.me.com [17.58.6.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B67C19258A
-	for <stable@vger.kernel.org>; Tue, 29 Oct 2024 15:14:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9CA8192B73;
+	Tue, 29 Oct 2024 15:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730214843; cv=none; b=feBkozwUxLnyXlXK3M9h/RFWgKvEl2FDhJeiRUqjywQjMPYcXjc+gvy5tw17Wo+yfvvCFXroCXCBmjt6NCT+Elh9TCsks9bMjqWiIjH1GK2ApYs3aKKGWf+jaKqdyt8q53rfHpujcayaZvabHDWW9nerwObDVVmljJ4FBpz1SHU=
+	t=1730215352; cv=none; b=baBSYgFbt/BXkxkyGKGAiuT5w3eGtRmcYFlkGkjelf0Bl3WqzyaMQ/4PYAxqqA6gNo5W94TwdTuA0tRBEGdHYMXqxedBh7RepPkyk9fYt4lWOdC34lWpGuPp0Ww/KxgsrLdKc2axx+1cBLESHbcQ7XwYYEJJMMGErKVtImLq6P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730214843; c=relaxed/simple;
-	bh=36nprHPkH6oU4PmId9qb+SWEjSQYJw7oxeUHfCaKhCg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=A8nsN9SkFfK2PJRsagCj7DIi+dDCyUSr+sI50l3mDsIqPDh484bNnl9qijx+j6srIDq9sKrv3l+xOLDw5ZtI30A0ig2d6cmgyVuS2ERFGzsVYOno6/2tDDAai0CCrWQQw0Rco2Wv1M/GIQhbwRLu6HfgqxBipX/cMQop4Spaxmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=ZwPdPdb+; arc=none smtp.client-ip=17.58.6.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1730214840;
-	bh=m0RPAITzRHsXZ5OofhylNXltQHUN+yHYntp1o/XyG/M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To;
-	b=ZwPdPdb+lL8xoHbcZxk7RKv9WXJXTl3gMLYqI5pPQ/o+upMs9Sh91F16y69ETq7Nh
-	 +CSujS9Cqu05y0OBMPUwGQgh18FVigj0Y/TAuSTGHAWVO4woyqmZhZ8J02yzO74zgH
-	 51hNbYbV7P5cc63gqIPqZI5UBr0hTV7ZoH3FVhClmsn/aW8jb4jRhMCzdxrCksEodw
-	 0KJ7R9SJm5od5EHCEVbbLIXIPWO2RAxpeh3C0CeFs6sqbgNdA8kKeH+UpxCmX5IVYJ
-	 tuWswcdudWsSblO4XTyslg93asjskfxSQ7TXP5L+wDkwADU/INdy+Nit2DF4tUQkT5
-	 HjJkjqFi8U4ZA==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-zteg10021301.me.com (Postfix) with ESMTPSA id B28925003C7;
-	Tue, 29 Oct 2024 15:13:54 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Tue, 29 Oct 2024 23:13:38 +0800
-Subject: [PATCH] usb: musb: sunxi: Fix accessing an released usb phy
+	s=arc-20240116; t=1730215352; c=relaxed/simple;
+	bh=fjjB39Gd7OtzC1AMtJMBwpe/HfzjmD6zgnb9K/eiouQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=K01OaCiGHDhWwloCH/NdCyAhbUM/X0NrL/ifHggVlACyOPdCstqXXlf3Q/TEPN6ggfNmTuNY6DkCcwROAsgDnpDYCyo0BUtWxUQ5gHx5AVU5eVs/n8kCcAK6WFkME46R2pSJaYOaUiU/4ish0Sn2p0/wC2pvG+okoPApulnm24E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ajC2I0Ul; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4315abed18aso53021565e9.2;
+        Tue, 29 Oct 2024 08:22:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730215349; x=1730820149; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=awcNgOinq9mb8rRdpT9oztyZ0WKNu1hzxPR/YyKgUD0=;
+        b=ajC2I0Ul6Zr5F+8TCm9HeBhycFQd8YCYa3WZL8b2df3tmuQ1GOGaUugN9RN9MUU+GQ
+         z66m1yFlNmodjH2kcX1WZLiE0dLX1vy5saPalwIs9IxJekuohp4nKgtvbfqX2HtXsba/
+         OPUccnnKXS3vW7FTn+gw6f1xb9YiwS1z2dRAhUl/lB0awlQfyVLzZGAehi9n18jhe0G0
+         WiVoV9eN+j9KqMhtolNF61u1vELdrWTqoQ7s7FKm+CL8S8phDfglsKqtOejM3/6tZjJ1
+         3YAZamnnoNhliqXaZ1kq+AFqU+6tv8RzmRsLyRlA4eyBRpxW6oklrgoTyOL1mYh0ENMD
+         L9TA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730215349; x=1730820149;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=awcNgOinq9mb8rRdpT9oztyZ0WKNu1hzxPR/YyKgUD0=;
+        b=wUIWFAPut6oGPA0Wj0/WdCXC4tVMeTMFa68OKQhbZOJu/BQw1/Dq0VTsBETRi0j8qR
+         StiOfAoQLcpb7AEvhVXIz52tgqiswyWqFDqFN9TfCE6l0Wp3df9cNtGFWbGHLE9RzT+3
+         Ig/NglOkq1BN3X8g1tzvxwgZKQIPzMx1wdeAIxWU8LUsHE3t1Qz5wyedCCteyB1NMAG3
+         8yDkWi+/Ji4tk4ot41S9p4W1r+8iEeFNIXhchlbWkyJTOH5vvpD/IVxZm4kluS/XGfrg
+         z6Y5PupDwPNqqhaUcRR8lbZE9fdgaIzVKRSGJn15gtYRWOQi4jXfHLqPG34CEoUJiKal
+         zcxg==
+X-Forwarded-Encrypted: i=1; AJvYcCVcWEs2BSy5u1FxcUg2x603HN7oGkiDYiCi+VsSpVKz20aXnQCFzPRR91zZrUbD5rLx04QcND36@vger.kernel.org, AJvYcCXgS4kOD20fmjEwquJ6CZGE2ar6YMv5uoNWjQpkc4U1L5zHSyHOrQQBkkJv+ym+HclM/c88K+GjCg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHXoQP0tJ4FuNMm41ODhiwyGlyZxRQ1+IZ/i2ghkF0h4XvgYiG
+	MkW6XR30OAw8W4x6kkkZT+ugRcrMQtrjx/hXqScz5mmeIJ4Y+XX3
+X-Google-Smtp-Source: AGHT+IE9vFhqscMH2XH7WucYsm+7424jo51krLCV1bd7E3yubxSEK7J2dRuiCubpICZLlhVPhD3R8w==
+X-Received: by 2002:a05:600c:3593:b0:431:4f29:9542 with SMTP id 5b1f17b1804b1-4319ac77f6amr85365695e9.6.1730215348801;
+        Tue, 29 Oct 2024 08:22:28 -0700 (PDT)
+Received: from localhost ([194.120.133.34])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4318b54303fsm177639455e9.7.2024.10.29.08.22.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Oct 2024 08:22:28 -0700 (PDT)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Markus Mayer <mmayer@broadcom.com>,
+	bcm-kernel-feedback-list@broadcom.com,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	linux-pm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] Revert "cpufreq: brcmstb-avs-cpufreq: Fix initial command check"
+Date: Tue, 29 Oct 2024 15:22:27 +0000
+Message-Id: <20241029152227.3037833-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,80 +86,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241029-sunxi_fix-v1-1-9431ed2ab826@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAKH7IGcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxNDAyNL3eLSvIrM+LTMCl0D87RUQwsjIwtzY2MloPqColSgMNis6NjaWgD
- YrKlkWwAAAA==
-To: Bin Liu <b-liu@ti.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, Jonathan Liu <net147@gmail.com>
-Cc: Zijun Hu <zijun_hu@icloud.com>, linux-usb@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
- linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.1
-X-Proofpoint-GUID: A52_arbNQN9AMkzMRMQ8e3GA-Vxpu0ol
-X-Proofpoint-ORIG-GUID: A52_arbNQN9AMkzMRMQ8e3GA-Vxpu0ol
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-29_10,2024-10-29_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011 malwarescore=0
- bulkscore=0 mlxscore=0 mlxlogscore=658 suspectscore=0 phishscore=0
- adultscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2410290116
-X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+Currently the condition ((rc != -ENOTSUPP) || (rc != -EINVAL)) is always
+true because rc cannot be equal to two different values at the same time,
+so it must be not equal to at least one of them. Fix the original commit
+that introduced the issue.
 
-Commit 6ed05c68cbca ("usb: musb: sunxi: Explicitly release USB PHY on
-exit") will cause that usb phy @glue->xceiv is accessed after released.
+This reverts commit 22a26cc6a51ef73dcfeb64c50513903f6b2d53d8.
 
-1) register platform driver @sunxi_musb_driver
-// get the usb phy @glue->xceiv
-sunxi_musb_probe() -> devm_usb_get_phy().
-
-2) register and unregister platform driver @musb_driver
-musb_probe() -> sunxi_musb_init()
-use the phy here
-//the phy is released here
-musb_remove() -> sunxi_musb_exit() -> devm_usb_put_phy()
-
-3) register @musb_driver again
-musb_probe() -> sunxi_musb_init()
-use the phy here but the phy has been released at 2).
-...
-
-Fixed by reverting the commit, namely, removing devm_usb_put_phy()
-from sunxi_musb_exit().
-
-Fixes: 6ed05c68cbca ("usb: musb: sunxi: Explicitly release USB PHY on exit")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 ---
- drivers/usb/musb/sunxi.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/cpufreq/brcmstb-avs-cpufreq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/musb/sunxi.c b/drivers/usb/musb/sunxi.c
-index d54283fd026b..05b6e7e52e02 100644
---- a/drivers/usb/musb/sunxi.c
-+++ b/drivers/usb/musb/sunxi.c
-@@ -293,8 +293,6 @@ static int sunxi_musb_exit(struct musb *musb)
- 	if (test_bit(SUNXI_MUSB_FL_HAS_SRAM, &glue->flags))
- 		sunxi_sram_release(musb->controller->parent);
+diff --git a/drivers/cpufreq/brcmstb-avs-cpufreq.c b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+index 5d03a295a085..2fd0f6be6fa3 100644
+--- a/drivers/cpufreq/brcmstb-avs-cpufreq.c
++++ b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+@@ -474,8 +474,8 @@ static bool brcm_avs_is_firmware_loaded(struct private_data *priv)
+ 	rc = brcm_avs_get_pmap(priv, NULL);
+ 	magic = readl(priv->base + AVS_MBOX_MAGIC);
  
--	devm_usb_put_phy(glue->dev, glue->xceiv);
--
- 	return 0;
+-	return (magic == AVS_FIRMWARE_MAGIC) && ((rc != -ENOTSUPP) ||
+-		(rc != -EINVAL));
++	return (magic == AVS_FIRMWARE_MAGIC) && (rc != -ENOTSUPP) &&
++		(rc != -EINVAL);
  }
  
-
----
-base-commit: afb92ad8733ef0a2843cc229e4d96aead80bc429
-change-id: 20241029-sunxi_fix-07fe18228733
-
-Best regards,
+ static unsigned int brcm_avs_cpufreq_get(unsigned int cpu)
 -- 
-Zijun Hu <quic_zijuhu@quicinc.com>
+2.39.5
 
 
