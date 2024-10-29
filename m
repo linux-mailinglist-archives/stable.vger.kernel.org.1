@@ -1,136 +1,166 @@
-Return-Path: <stable+bounces-89268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE7FF9B55E2
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 23:38:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D94579B55E9
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 23:43:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59542B222BF
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 22:38:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EE7B1F23A5B
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 22:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147D520ADE5;
-	Tue, 29 Oct 2024 22:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AAC220A5CF;
+	Tue, 29 Oct 2024 22:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OMsD5nO4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MZlPtZGR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC89208230;
-	Tue, 29 Oct 2024 22:38:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C89199FBB;
+	Tue, 29 Oct 2024 22:43:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730241503; cv=none; b=tAHJ9NJsN00O4MZLw+uQ84KEzsYVOvl8AmIyalLbmpEic6uMVzOlegXUsJ7If+xGzutHxMAMAytics9OkDOf2el27FZ9pH1yTBwddk0Wy1CmDyu+60AXsDstr2AoSlbD14GAo9kPi8dK8haqjszEhvXq5un+3dxtbxH24dlyb84=
+	t=1730241799; cv=none; b=s1swfRcftJe/Yb0m9EM5TK4sdoFoCmdQ+ZoAG38JNQJ7tDQL2fTSsuL6+edhO2zbJVxiyPyp00tIrb3I+kc4eFC7Eznq85K+QtSzE/NPZU3gHotI2QSqffraRXwqVQYLLc0COy4AeSswYdmb+qEeYl7t6GZIVveuKY28ds6GgWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730241503; c=relaxed/simple;
-	bh=n/rSFNWJKAdBA4Z/FVlAhcvjy5j1KGuh21dTEV1TsMs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=ooIk07Mehw7KLwb3BGKQzGFqX3QeWCbVDjXdFCH4Un1JYb4VTRPb+urYzllla7f2DfF09lC3a6fzwxst4HPUYAhhKCSanJX9Sl8BzNsq7fmlZvFSz1CrrA9FDoc81SxtXwQlrZyvpZQ5Hf7Isa6lYcOmnWYaoth9d/qj2Dq8CdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OMsD5nO4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC239C4CECD;
-	Tue, 29 Oct 2024 22:38:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730241503;
-	bh=n/rSFNWJKAdBA4Z/FVlAhcvjy5j1KGuh21dTEV1TsMs=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=OMsD5nO4r3rNh1ofk2Im9EJRGZiEl34DpXqpHuuZxjFrX3a4Yg6kyhplmC8tfxG7o
-	 nOF3fRxlx3I70uZOmFg1hFNFXVQsBnEEgAi+cNcJm689YLBqyqroByTN3fnhfrKgQp
-	 slOCp/XKLylfLLJpyKRj5yOwVNWieZZA1SCTN5JhG4EObm+Xq5nKi4TtH35Gtxx8fV
-	 mEIdhYX3u7+zUlwFI/WlaTC7HvIU0BUJ4aZWld3+oVlW9G1XaPshbmxDfqEzlh9q2t
-	 otOwFiP1Baw5tDV+DqzlEG7+cw3VbJiKB1ccpbLD6cqOkeQPflM6wOqGIbLFr7DhCA
-	 xiJs3HVnM43LA==
+	s=arc-20240116; t=1730241799; c=relaxed/simple;
+	bh=xBy/03HYfBlb70X4LjELrQm6dmLET2cm759oyRzlIKg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qA1Lep6UdLsKdPTaJI4a4Go9EJoLUK4ls7/GIycKR5a1fuohjruBgk84MSoTLiL5ikQTOLXplcRWHHZleT9GS5VO5cjrvtstN2WrJu6t8d2JUd+UrTGCkCLf3/ZuwX7sBuVdvYEYYlQJoSkJNnA7Fyj3DKvTZm/ftNSfkxxXhUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MZlPtZGR; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4315e62afe0so60954045e9.1;
+        Tue, 29 Oct 2024 15:43:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730241795; x=1730846595; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NpE1d0EoW69nYU3J7zp+HGEmecn3oGwA/5+kV7hcNXc=;
+        b=MZlPtZGR9zg3AmAQvEzFDIe6gnaMidqrBqHP34F7OHN6VOZNqcmuezsxYaGq9xEnMj
+         S0W14RTpU7d867OLqLZ/SA6gOYmPmYDwWc83kCdcDdH4FaQRo9Th7cQG2wrbp4zhXe4L
+         15l1IkScD9ICT8kcIQVMY1ddbV/h1WuogoWy+62wZfK8H88Hf+scypWiOvt5EoI0i0Xz
+         ASOrXlHIAxJf3ErYegNIfIuR2Uu3vLQlcrNo9j1tmLbfQEHoCiapwYzV1u7snJpjdJck
+         Z8DTgX2mmdC16cMkQZzVHDLHTycbvhUelXbSRQyDPGEg29hRoYzxF+VBvUCSMvBTlyic
+         H4kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730241795; x=1730846595;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NpE1d0EoW69nYU3J7zp+HGEmecn3oGwA/5+kV7hcNXc=;
+        b=M2xoDWRvAo0YC9hzYTjx62HgtLT5BvwdtPzhRzUT6teoLVSFWrzXodNs411JVd8+Yl
+         5vfATANFHH6emYXySSJUSI2NKINbbNDHzYKgNil9mQJu6wMirZPA/dfk885u/wOefc18
+         4LitizLg7EzDXD4E22eSIsAX5/0Py0QN+AUJlJEI+Pyy9vDSy8BOHEaHIKJ/5Jd3EUGj
+         fVY+pTddxHPT8HbEmG+3cGKyvzecgSWm8yB1rPix7+Ga0ql4N8vvRVvh5XUqyJtPsPfk
+         UXdh5/nY4e3U9cp5BleYOEcAw/QcpGjbyvJUFEN23pqRxqQHgDDzgYM58S6roJhK+KZs
+         XxCw==
+X-Forwarded-Encrypted: i=1; AJvYcCUc0bnNNCdshTvDD3YO5eYRt/C5ikcSbGT4k32czcM9awvt3EggwmHyOsYvjwQc56d/d76SusoLTkXzE1g=@vger.kernel.org, AJvYcCXilSI8Gu1pJCPnh0HLbeyelsCZKKLzW2xgo63m0ZQwQuTl+WMaLZb8N5m0I1xhKwEOvOq7LY8o@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcpFoSzE6+i8aPCjcrgjHD9TIjPFGy5nKGHD/mC1VgH+irJOJ9
+	aT48X0CkNJuQVIYYqMTRpmputgETbvfbrgSx+uUHQ27+pYAkUuUv
+X-Google-Smtp-Source: AGHT+IFK9fk5eMXXFOs6cc2VOy6ViQTADXNGFL9a2kyUdP69q3i86yTHcyTIUMuBDor6JBl+F+zQDA==
+X-Received: by 2002:a05:6000:eca:b0:37d:4a16:81d6 with SMTP id ffacd0b85a97d-38061141921mr10080745f8f.24.1730241794879;
+        Tue, 29 Oct 2024 15:43:14 -0700 (PDT)
+Received: from dev7.kernelcare.com ([2a01:4f8:201:23::2])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b13251sm13747192f8f.6.2024.10.29.15.43.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Oct 2024 15:43:14 -0700 (PDT)
+From: Andrew Kanner <andrew.kanner@gmail.com>
+To: mark@fasheh.com,
+	jlbec@evilplan.org,
+	joseph.qi@linux.alibaba.com
+Cc: ocfs2-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Andrew Kanner <andrew.kanner@gmail.com>,
+	stable@vger.kernel.org,
+	syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com
+Subject: [PATCH] ocfs2: remove entry once instead of null-ptr-dereference in ocfs2_xa_remove()
+Date: Tue, 29 Oct 2024 23:43:05 +0100
+Message-ID: <20241029224304.2169092-2-andrew.kanner@gmail.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 30 Oct 2024 00:38:19 +0200
-Message-Id: <D58NF7GGPID7.1AIU8KVZVY4WC@kernel.org>
-Subject: Re: [PATCH] KEYS: trusted: dcp: fix NULL dereference in AEAD crypto
- operation
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "David Gstir" <david@sigma-star.at>, <parthiban@linumiz.com>, "James
- Bottomley" <James.Bottomley@HansenPartnership.com>, "Mimi Zohar"
- <zohar@linux.ibm.com>, "David Howells" <dhowells@redhat.com>, "Paul Moore"
- <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "Serge E.
- Hallyn" <serge@hallyn.com>
-Cc: "sigma star Kernel Team" <upstream+dcp@sigma-star.at>,
- <linux-integrity@vger.kernel.org>, <keyrings@vger.kernel.org>,
- <linux-security-module@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>
-X-Mailer: aerc 0.18.2
-References: <254d3bb1-6dbc-48b4-9c08-77df04baee2f@linumiz.com>
- <20241029113401.90539-1-david@sigma-star.at>
-In-Reply-To: <20241029113401.90539-1-david@sigma-star.at>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue Oct 29, 2024 at 1:34 PM EET, David Gstir wrote:
-> When sealing or unsealing a key blob we currently do not wait for
-> the AEAD cipher operation to finish and simply return after submitting
-> the request. If there is some load on the system we can exit before
-> the cipher operation is done and the buffer we read from/write to
-> is already removed from the stack. This will e.g. result in NULL
-> pointer dereference errors in the DCP driver during blob creation.
->
-> Fix this by waiting for the AEAD cipher operation to finish before
-> resuming the seal and unseal calls.
->
-> Cc: stable@vger.kernel.org # v6.10+
-> Fixes: 0e28bf61a5f9 ("KEYS: trusted: dcp: fix leak of blob encryption key=
-")
-> Reported-by: Parthiban N <parthiban@linumiz.com>
-> Closes: https://lore.kernel.org/keyrings/254d3bb1-6dbc-48b4-9c08-77df04ba=
-ee2f@linumiz.com/
-> Signed-off-by: David Gstir <david@sigma-star.at>
-> ---
->  security/keys/trusted-keys/trusted_dcp.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
->
-> diff --git a/security/keys/trusted-keys/trusted_dcp.c b/security/keys/tru=
-sted-keys/trusted_dcp.c
-> index 4edc5bbbcda3..e908c53a803c 100644
-> --- a/security/keys/trusted-keys/trusted_dcp.c
-> +++ b/security/keys/trusted-keys/trusted_dcp.c
-> @@ -133,6 +133,7 @@ static int do_aead_crypto(u8 *in, u8 *out, size_t len=
-, u8 *key, u8 *nonce,
->  	struct scatterlist src_sg, dst_sg;
->  	struct crypto_aead *aead;
->  	int ret;
-> +	DECLARE_CRYPTO_WAIT(wait);
-> =20
->  	aead =3D crypto_alloc_aead("gcm(aes)", 0, CRYPTO_ALG_ASYNC);
->  	if (IS_ERR(aead)) {
-> @@ -163,8 +164,8 @@ static int do_aead_crypto(u8 *in, u8 *out, size_t len=
-, u8 *key, u8 *nonce,
->  	}
-> =20
->  	aead_request_set_crypt(aead_req, &src_sg, &dst_sg, len, nonce);
-> -	aead_request_set_callback(aead_req, CRYPTO_TFM_REQ_MAY_SLEEP, NULL,
-> -				  NULL);
-> +	aead_request_set_callback(aead_req, CRYPTO_TFM_REQ_MAY_SLEEP,
-> +				  crypto_req_done, &wait);
->  	aead_request_set_ad(aead_req, 0);
-> =20
->  	if (crypto_aead_setkey(aead, key, AES_KEYSIZE_128)) {
-> @@ -174,9 +175,9 @@ static int do_aead_crypto(u8 *in, u8 *out, size_t len=
-, u8 *key, u8 *nonce,
->  	}
-> =20
->  	if (do_encrypt)
-> -		ret =3D crypto_aead_encrypt(aead_req);
-> +		ret =3D crypto_wait_req(crypto_aead_encrypt(aead_req), &wait);
->  	else
-> -		ret =3D crypto_aead_decrypt(aead_req);
-> +		ret =3D crypto_wait_req(crypto_aead_decrypt(aead_req), &wait);
-> =20
->  free_req:
->  	aead_request_free(aead_req);
+Syzkaller is able to provoke null-ptr-dereference in ocfs2_xa_remove():
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+[   57.319872] (a.out,1161,7):ocfs2_xa_remove:2028 ERROR: status = -12
+[   57.320420] (a.out,1161,7):ocfs2_xa_cleanup_value_truncate:1999 ERROR: Partial truncate while removing xattr overlay.upper.  Leaking 1 clusters and removing the entry
+[   57.321727] BUG: kernel NULL pointer dereference, address: 0000000000000004
+[...]
+[   57.325727] RIP: 0010:ocfs2_xa_block_wipe_namevalue+0x2a/0xc0
+[...]
+[   57.331328] Call Trace:
+[   57.331477]  <TASK>
+[...]
+[   57.333511]  ? do_user_addr_fault+0x3e5/0x740
+[   57.333778]  ? exc_page_fault+0x70/0x170
+[   57.334016]  ? asm_exc_page_fault+0x2b/0x30
+[   57.334263]  ? __pfx_ocfs2_xa_block_wipe_namevalue+0x10/0x10
+[   57.334596]  ? ocfs2_xa_block_wipe_namevalue+0x2a/0xc0
+[   57.334913]  ocfs2_xa_remove_entry+0x23/0xc0
+[   57.335164]  ocfs2_xa_set+0x704/0xcf0
+[   57.335381]  ? _raw_spin_unlock+0x1a/0x40
+[   57.335620]  ? ocfs2_inode_cache_unlock+0x16/0x20
+[   57.335915]  ? trace_preempt_on+0x1e/0x70
+[   57.336153]  ? start_this_handle+0x16c/0x500
+[   57.336410]  ? preempt_count_sub+0x50/0x80
+[   57.336656]  ? _raw_read_unlock+0x20/0x40
+[   57.336906]  ? start_this_handle+0x16c/0x500
+[   57.337162]  ocfs2_xattr_block_set+0xa6/0x1e0
+[   57.337424]  __ocfs2_xattr_set_handle+0x1fd/0x5d0
+[   57.337706]  ? ocfs2_start_trans+0x13d/0x290
+[   57.337971]  ocfs2_xattr_set+0xb13/0xfb0
+[   57.338207]  ? dput+0x46/0x1c0
+[   57.338393]  ocfs2_xattr_trusted_set+0x28/0x30
+[   57.338665]  ? ocfs2_xattr_trusted_set+0x28/0x30
+[   57.338948]  __vfs_removexattr+0x92/0xc0
+[   57.339182]  __vfs_removexattr_locked+0xd5/0x190
+[   57.339456]  ? preempt_count_sub+0x50/0x80
+[   57.339705]  vfs_removexattr+0x5f/0x100
+[...]
 
-BR, Jarkko
+Reproducer uses faultinject facility to fail ocfs2_xa_remove() ->
+ocfs2_xa_value_truncate() with -ENOMEM.
+
+In this case the comment mentions that we can return 0 if
+ocfs2_xa_cleanup_value_truncate() is going to wipe the entry
+anyway. But the following 'rc' check is wrong and execution flow do
+'ocfs2_xa_remove_entry(loc);' twice:
+* 1st: in ocfs2_xa_cleanup_value_truncate();
+* 2nd: returning back to ocfs2_xa_remove() instead of going to 'out'.
+
+Fix this by skipping the 2nd removal of the same entry and making
+syzkaller repro happy.
+
+Cc: stable@vger.kernel.org
+Fixes: 399ff3a748cf ("ocfs2: Handle errors while setting external xattr values.")
+Reported-by: syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/671e13ab.050a0220.2b8c0f.01d0.GAE@google.com/T/
+Tested-by: syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com
+Signed-off-by: Andrew Kanner <andrew.kanner@gmail.com>
+---
+ fs/ocfs2/xattr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
+index dd0a05365e79..5bc4d660e15a 100644
+--- a/fs/ocfs2/xattr.c
++++ b/fs/ocfs2/xattr.c
+@@ -2036,7 +2036,7 @@ static int ocfs2_xa_remove(struct ocfs2_xa_loc *loc,
+ 				rc = 0;
+ 			ocfs2_xa_cleanup_value_truncate(loc, "removing",
+ 							orig_clusters);
+-			if (rc)
++			if (rc == 0)
+ 				goto out;
+ 		}
+ 	}
+-- 
+2.43.5
+
 
