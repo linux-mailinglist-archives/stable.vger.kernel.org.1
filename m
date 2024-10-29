@@ -1,139 +1,123 @@
-Return-Path: <stable+bounces-89221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17DCD9B4E47
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 16:42:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 654F59B4E7D
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 16:49:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D13532834F0
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 15:42:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B35B1C22304
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 15:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2615194AE6;
-	Tue, 29 Oct 2024 15:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB7BA198A05;
+	Tue, 29 Oct 2024 15:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="dK3dMChy"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="nSl9gSkq"
 X-Original-To: stable@vger.kernel.org
-Received: from pv50p00im-tydg10011801.me.com (pv50p00im-tydg10011801.me.com [17.58.6.52])
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02BA194A44
-	for <stable@vger.kernel.org>; Tue, 29 Oct 2024 15:41:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46CA195FE8;
+	Tue, 29 Oct 2024 15:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730216516; cv=none; b=Hg6+Ckkfm3PkCRj6RDI/rfkvKLvR1crZ6xND1zEPNmimsUZ1XlauAneNXyFuQ82raDib3WJSEMypcUKOr4slRBepsqKtTBfXxYIoixtCaUyFa95C5FglL9WyWiJ0Wkmoh7LxL29g7K2sLgbdTqHWpslYaPNKJ+VR1yBZDF5n7ec=
+	t=1730216932; cv=none; b=rLAsVbb5GWJlVQV6ujk52tRZD57grGesn1SfSPyCqmE5Vq4OagdrIp/WkgL7VHaLxTS4a04GWa4oP22NuwuqRalYSh3zoiZSp3KDqA1Tl1i6O1nxXna2MpczQLR3n89sHsl+kpuyNcj6FbBwEemN60SNd2adVzLevIbjn1UJdqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730216516; c=relaxed/simple;
-	bh=tAEGwxf6Wm3OUZPiEfocRLxgrOqKQsYU4fNVjxfAAzg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=prqAwXeuQp54th75QgLbsr9+bZ92TWG2X/aw1Y17HNvD+zEd9wMjcu7NtrsyOEti6NmxsGN7m91qhrDHxetbpGftQbUFErzy3OqsKpPJ+HEockI17m+zuoKShzf7wEsX5NpBeEDwwSve6Lslt36JATuXDVwlo9Do0yRZPomtyWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=dK3dMChy; arc=none smtp.client-ip=17.58.6.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1730216514;
-	bh=2T9klOPnu2KdY6zwuhVfSQ5C8cDsFs4HRhNmLFusli0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	b=dK3dMChyBUvej/LwJmH3r2B4RTyi+AFoFPFo3mkfI4rKKuBPQC1oxW3iGN+OWbUgl
-	 0mt5bh81zqnoKs0QcMGMKf7xX1bOoZwOGtJqXyhpoc8KdI5MDQ6MwpEoLqSqeCeKVK
-	 cKp5+JW4/TIyGBpaGdMsWE5UV45bZ/+T1B/UBXJr+3ID9XY54H5GqqkzWlOOb6C6+o
-	 O+kElmhVoWWhX7+S4HieTSw0BDj5ja5Rk54g7WUj5U4HcSJLmqhuHlHDf2D6pI66tw
-	 UDDYlQcix4O+W1QXT0jXica5yLHBFj/bbQhMTRgG3bLeUrMrvTYNSJ6wApsl4dul+A
-	 NUYVr73LrttLA==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-tydg10011801.me.com (Postfix) with ESMTPSA id 5A03A80010A;
-	Tue, 29 Oct 2024 15:41:44 +0000 (UTC)
-Message-ID: <9ddb14c5-b425-474a-9a53-d34a414c3d17@icloud.com>
-Date: Tue, 29 Oct 2024 23:41:41 +0800
+	s=arc-20240116; t=1730216932; c=relaxed/simple;
+	bh=kw2yodzahR4uHkOkyff2pWOUVqNC1JdECsR5WBbYPJs=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=crCRIr2VQGi9Rogrqc+tXMQMqJKCcATk+FLBOZQOBcfa/3/hYM4sNYEl0CRHlFY7aIqcpC9mSyBUGRYOJTTrypYVuQ/MdbLUFOq8g4ZZsV6dGvZv1CqKRmJMe5Bg7az7x/C2x9beB4seSDWZeCDFvj3ySCqtnzYY2FvbP18PD9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=nSl9gSkq; arc=none smtp.client-ip=198.47.23.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 49TFmdPF107514;
+	Tue, 29 Oct 2024 10:48:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1730216919;
+	bh=rK9KU0J4YBmBr2lXi0vOCehw2awpCqHpg0XfEgjmMBs=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=nSl9gSkqEODdPb8fmlrdbqEKb3w7zncAK33mCZ5x3mzyT9MS+NXXJF+CCtnyoBXQf
+	 NfTas3Z2DQeSzVOUn25Ies0uOA6c1nVGlbluqAfUtYu4HFvBVa315rLVkmWotKsncE
+	 Yjw6nsJHYSI0qwLPbIaTGD7/VkVeOuc/yWeRtfo0=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 49TFmdHR010720
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 29 Oct 2024 10:48:39 -0500
+Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 29
+ Oct 2024 10:48:38 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 29 Oct 2024 10:48:38 -0500
+Received: from uda0132425.dhcp.ti.com (uda0132425.dhcp.ti.com [172.24.227.94])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 49TFmYeL084360;
+	Tue, 29 Oct 2024 10:48:35 -0500
+From: Vignesh Raghavendra <vigneshr@ti.com>
+To: Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>,
+        Rob Herring
+	<robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+	<conor+dt@kernel.org>,
+        Francesco Dolcini <francesco@dolcini.it>
+CC: Vignesh Raghavendra <vigneshr@ti.com>,
+        Francesco Dolcini
+	<francesco.dolcini@toradex.com>,
+        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH v1] arm64: dts: ti: k3-am62-verdin: Fix SD regulator startup delay
+Date: Tue, 29 Oct 2024 21:18:32 +0530
+Message-ID: <173021674664.3859929.14957336677514636431.b4-ty@ti.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241024130628.49650-1-francesco@dolcini.it>
+References: <20241024130628.49650-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/6] phy: core: Fix an OF node refcount leakage in
- _of_phy_get()
-To: Johan Hovold <johan@kernel.org>
-Cc: Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I
- <kishon@kernel.org>, Felipe Balbi <balbi@ti.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Rob Herring <robh@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Lee Jones <lee@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
- Bjorn Helgaas <bhelgaas@google.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>, stable@vger.kernel.org,
- linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org,
- Zijun Hu <quic_zijuhu@quicinc.com>
-References: <20241024-phy_core_fix-v2-0-fc0c63dbfcf3@quicinc.com>
- <20241024-phy_core_fix-v2-4-fc0c63dbfcf3@quicinc.com>
- <ZyDnc7HpMTnwEs-2@hovoldconsulting.com>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <ZyDnc7HpMTnwEs-2@hovoldconsulting.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: 9cGynE53Sln1BWunVrvjJpHU5b_1TIuj
-X-Proofpoint-ORIG-GUID: 9cGynE53Sln1BWunVrvjJpHU5b_1TIuj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-29_11,2024-10-29_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0 adultscore=0
- spamscore=0 mlxscore=0 suspectscore=0 clxscore=1015 phishscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2410290120
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On 2024/10/29 21:47, Johan Hovold wrote:
-> On Thu, Oct 24, 2024 at 10:39:29PM +0800, Zijun Hu wrote:
->> From: Zijun Hu <quic_zijuhu@quicinc.com>
->>
->> It will leak refcount of OF node @args.np for _of_phy_get() not to
->> decrease refcount increased by previous of_parse_phandle_with_args()
->> when returns due to of_device_is_compatible() error.
->>
->> Fix by adding of_node_put() before the error return.
->>
->> Fixes: b7563e2796f8 ("phy: work around 'phys' references to usb-nop-xceiv devices")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
->> ---
->>  drivers/phy/phy-core.c | 5 ++++-
->>  1 file changed, 4 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
->> index 52ca590a58b9..967878b78797 100644
->> --- a/drivers/phy/phy-core.c
->> +++ b/drivers/phy/phy-core.c
->> @@ -629,8 +629,11 @@ static struct phy *_of_phy_get(struct device_node *np, int index)
->>  		return ERR_PTR(-ENODEV);
->>  
->>  	/* This phy type handled by the usb-phy subsystem for now */
->> -	if (of_device_is_compatible(args.np, "usb-nop-xceiv"))
->> +	if (of_device_is_compatible(args.np, "usb-nop-xceiv")) {
->> +		/* Put refcount above of_parse_phandle_with_args() got */
+Hi Francesco Dolcini,
+
+On Thu, 24 Oct 2024 15:06:28 +0200, Francesco Dolcini wrote:
+> The power switch used to power the SD card interface might have
+> more than 2ms turn-on time, increase the startup delay to 20ms to
+> prevent failures.
 > 
-> No need for a comment as this is already handled in the later paths.
 > 
 
-will remove it within v3
+I have applied the following to branch ti-k3-dts-next on [1].
+Thank you!
 
->> +		of_node_put(args.np);
-> 
-> For that reason you should probably initialise ret and add a new label
-> out_put_node that you jump to here instead.
-> 
+[1/1] arm64: dts: ti: k3-am62-verdin: Fix SD regulator startup delay
+      commit: 2213ca51998fef61d3df4ca156054cdcc37c42b8
 
-will try  to do it within v3.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent up the chain during
+the next merge window (or sooner if it is a relevant bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
->>  		return ERR_PTR(-ENODEV);
->> +	}
->>  
->>  	mutex_lock(&phy_provider_mutex);
->>  	phy_provider = of_phy_provider_lookup(args.np);
-> 
-> Johan
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
+--
+Vignesh
 
 
