@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-89205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46A979B4B1F
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 14:45:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC7EC9B4B2B
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 14:47:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1F931F23805
-	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 13:45:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A881283D21
+	for <lists+stable@lfdr.de>; Tue, 29 Oct 2024 13:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7008120696B;
-	Tue, 29 Oct 2024 13:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C442C206056;
+	Tue, 29 Oct 2024 13:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B7tB+boD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bJkp2CJY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A046206964;
-	Tue, 29 Oct 2024 13:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FAB91E480;
+	Tue, 29 Oct 2024 13:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730209497; cv=none; b=gqOZSSb214p8VGBA+/iOQqNLv11VxgIw+dlFQRb6x7pYVEweOB35xkYqYHILMYCJXuhcrdgnVHg1hnukxRtH1kCQDZAzn1dO6lVV/xuzu/p0BR9RALvKvYyp+P6PJ4J54T5eLXtlsjGIn8GlMvdZGho6SO1mw2WeZcI4jkfluxY=
+	t=1730209632; cv=none; b=djmfAiGINlgi6b7+q4eTNFIdgCczymRUajI/k+bB1ZA2rJpClSmM8POm6LpOQ3+6q3pjkvQRWT9MsGgRubwjGQnfFJ3PN7P2h+VOUbTNB+GU4qA6vaJG/Y/DQqIdrmLiZpao0/SygmE9qgt88dwMIkUThDOWQsfyhUMRJX4hJDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730209497; c=relaxed/simple;
-	bh=pQHEsCEbFi1AN2z1gIf0oXg2/Tu/i0UAAIzrBe5f5TY=;
+	s=arc-20240116; t=1730209632; c=relaxed/simple;
+	bh=KEQem3GuAcK/dyUVeI9paTDkYNzz2c637THBwlYhUd8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qtrTj4oqAjKHyRnedfVXe1VMOM7ipViQeOPm58codXdZksF1AkEstn38Mi5Geo/TVCyO0ncmqpEVTbh2hTBWNUahCXlDOfzj/FgnVL2bc9Ofnza5BqUmxfGti7PeANJ5iULSyyNaa0H7M79jM0bcF/J4AdSHrEs77SWSfYRJPJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B7tB+boD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93DABC4CEE6;
-	Tue, 29 Oct 2024 13:44:56 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=QyGSuk/Pyfd6bg4O7AObDbTbcXHhzU6fAz0GyU/GXn3rbHLkOaKQPLyOq9xrxeYYczmCtfKJUsm1rlpM1SHwAFHj2meztnXMUvTtTW4yiIBJz0Vk0CxyEXl+PJKsMEIsHK16BqWme86jzSo30Aa3WUYQBGJFvw5QfhrAz3CL9B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bJkp2CJY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E1EC4CECD;
+	Tue, 29 Oct 2024 13:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730209496;
-	bh=pQHEsCEbFi1AN2z1gIf0oXg2/Tu/i0UAAIzrBe5f5TY=;
+	s=k20201202; t=1730209632;
+	bh=KEQem3GuAcK/dyUVeI9paTDkYNzz2c637THBwlYhUd8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B7tB+boDnrw9L2Q977u1NOCl3LMbfGWMiT4lAcGj8LXUHSJ4ji2FBayaUzrwc9e1t
-	 Tg9eef2JjVN+IuAOwIicmBh3lWYtt8iCuohllyQ6a8t1rfia5mUSZKAtedgvAJOUc2
-	 mklFwQ/BeN36/aYXEYUfGe8NICAvW9mXIwVWvRPSpAwAAiw/lyn8QhGuMmqajs8NiC
-	 rnYxHmHsTIGNFlfpkUjnY8akJ/Se0RcaIcOwa1mZTuAGKVv05A06WEM4We/kDFyPf6
-	 qPnjJf1RGSudjJ3v/RVTHOeZzvlNorO+xseZsKn9NBe0dC0gR6yiabNq0odPbF7lYw
-	 ie790g6yPPYTA==
+	b=bJkp2CJYS4BqKoZSVbPb8U9xdsDI5BZ0ocj+JkurZSYlkp9bbpzg0xL02GrK/3QuP
+	 1jatkq9w62FKp/NAECrxdp1olj8GcYLaQqincZ86b/wDa3/kbqqFTsCJo90e4Mmab3
+	 SYsQf7apzYVGzIW8TtkXjYI8gIsHbGZcf7pKW/OkHSLwyLjlyibQ0yPoB8ZcM9ubdc
+	 GU5KkUKxKqXR7VOpkuHCD/7xrDKLwwwqusMrTKqXVgC9SLiDQXpMSVtcKRphycLAr7
+	 T6HijRH5UfsLYVq0UKuWKFSntaxmxZ+uxnn251AW222Dutzrh+QQSGX4BMCkZtL3Bz
+	 pkdGEmjRamRIg==
 Received: from johan by xi.lan with local (Exim 4.97.1)
 	(envelope-from <johan@kernel.org>)
-	id 1t5mX6-0000000031G-0m5y;
-	Tue, 29 Oct 2024 14:45:16 +0100
-Date: Tue, 29 Oct 2024 14:45:16 +0100
+	id 1t5mZH-0000000034N-2ieg;
+	Tue, 29 Oct 2024 14:47:31 +0100
+Date: Tue, 29 Oct 2024 14:47:31 +0100
 From: Johan Hovold <johan@kernel.org>
 To: Zijun Hu <zijun_hu@icloud.com>
 Cc: Vinod Koul <vkoul@kernel.org>,
@@ -63,11 +63,11 @@ Cc: Vinod Koul <vkoul@kernel.org>,
 	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
 	stable@vger.kernel.org, linux-phy@lists.infradead.org,
 	linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>
-Subject: Re: [PATCH v2 3/6] phy: core: Fix that API devm_phy_destroy() fails
- to destroy the phy
-Message-ID: <ZyDm7IMUBYkiHPyp@hovoldconsulting.com>
+Subject: Re: [PATCH v2 4/6] phy: core: Fix an OF node refcount leakage in
+ _of_phy_get()
+Message-ID: <ZyDnc7HpMTnwEs-2@hovoldconsulting.com>
 References: <20241024-phy_core_fix-v2-0-fc0c63dbfcf3@quicinc.com>
- <20241024-phy_core_fix-v2-3-fc0c63dbfcf3@quicinc.com>
+ <20241024-phy_core_fix-v2-4-fc0c63dbfcf3@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,29 +76,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241024-phy_core_fix-v2-3-fc0c63dbfcf3@quicinc.com>
+In-Reply-To: <20241024-phy_core_fix-v2-4-fc0c63dbfcf3@quicinc.com>
 
-On Thu, Oct 24, 2024 at 10:39:28PM +0800, Zijun Hu wrote:
+On Thu, Oct 24, 2024 at 10:39:29PM +0800, Zijun Hu wrote:
 > From: Zijun Hu <quic_zijuhu@quicinc.com>
 > 
-> For devm_phy_destroy(), its comment says it needs to invoke phy_destroy()
-> to destroy the phy, but it does not invoke the function actually since
-> devres_destroy() will not call devm_phy_consume() at all which will call
-> the function, and the missing phy_destroy() call will case that the phy
-> fails to be destroyed.
-
-Here too, split in at least two sentences.
- 
-> Fixed by using devres_release() instead of devres_destroy() within the API.
-
-And add a comment about there not being any in-tree users of the
-interface.
-
-And consider dropping it.
-
-> Fixes: ff764963479a ("drivers: phy: add generic PHY framework")
+> It will leak refcount of OF node @args.np for _of_phy_get() not to
+> decrease refcount increased by previous of_parse_phandle_with_args()
+> when returns due to of_device_is_compatible() error.
+> 
+> Fix by adding of_node_put() before the error return.
+> 
+> Fixes: b7563e2796f8 ("phy: work around 'phys' references to usb-nop-xceiv devices")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+> ---
+>  drivers/phy/phy-core.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
+> index 52ca590a58b9..967878b78797 100644
+> --- a/drivers/phy/phy-core.c
+> +++ b/drivers/phy/phy-core.c
+> @@ -629,8 +629,11 @@ static struct phy *_of_phy_get(struct device_node *np, int index)
+>  		return ERR_PTR(-ENODEV);
+>  
+>  	/* This phy type handled by the usb-phy subsystem for now */
+> -	if (of_device_is_compatible(args.np, "usb-nop-xceiv"))
+> +	if (of_device_is_compatible(args.np, "usb-nop-xceiv")) {
+> +		/* Put refcount above of_parse_phandle_with_args() got */
+
+No need for a comment as this is already handled in the later paths.
+
+> +		of_node_put(args.np);
+
+For that reason you should probably initialise ret and add a new label
+out_put_node that you jump to here instead.
+
+>  		return ERR_PTR(-ENODEV);
+> +	}
+>  
+>  	mutex_lock(&phy_provider_mutex);
+>  	phy_provider = of_phy_provider_lookup(args.np);
 
 Johan
 
