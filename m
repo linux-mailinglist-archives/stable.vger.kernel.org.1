@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-89366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62C6D9B6E1D
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 21:50:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E52909B6E1E
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 21:50:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6191B2334D
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 20:50:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A036A2810D2
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 20:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3FE820E31C;
-	Wed, 30 Oct 2024 20:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8058C2144CA;
+	Wed, 30 Oct 2024 20:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n/1jmtKz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L3liUFqP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EEE11EF94E;
-	Wed, 30 Oct 2024 20:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311E8213EF6;
+	Wed, 30 Oct 2024 20:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730321386; cv=none; b=lRqZhx8aP8OcyUzNMuK099ThdfNAABkqvs0ulFVhACwHaGRM0CWSXh0tyJxJXLEBfcxdv4n+JJP1l1jmOUlHT4g6qzCPRBq6SWjdlPS5dCv97Z9J0RfvXORRuFuuNPIQ2K4v7MYzNpXbuHJ71SRRyEHkiN6Ycv4PYMLgwQshayQ=
+	t=1730321388; cv=none; b=mL1tSgu6GA9ZSHFGFgIwN0UNne7hMk5+kEuvtKSu7HF617VnBeALFHXrejYYW58sd9k4gPkiSdEhZ/TcrYMfOTdO2dmMlFS0rvxs5iaRwFsPsOHhW6MOGesKrH4qUBH3YhYmH0VVzbMy8HonKzP4+ZSmvi70bj7OesLAD09Ba/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730321386; c=relaxed/simple;
-	bh=+yvwE337Qdag2rGuNvdsfIda3dNqnIov5peBktID6b0=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=e9KqJS7JvgyDxNjNZlp6Vp9QSAFh4MHL+ZxiaUSdxmgBuefFY0AyMNJl7if9j/gYy9srFV2Veuj4/nAKpvimgEDgPcLwBcGUw/+3MvjU33iQblKKwTQ4e/kd+J6cGbohXhY4hFwAWhFqaauWTg3pFjVT2k343MN/jORwILCFL54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n/1jmtKz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 804A3C4CECE;
-	Wed, 30 Oct 2024 20:49:44 +0000 (UTC)
+	s=arc-20240116; t=1730321388; c=relaxed/simple;
+	bh=dLqAw4xy5/KKmZNX6yrvJQT14/QmwjMru+J+jwCboHM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=dpEC6NtAoH6V3Z0PXSvSPou/YQRhCfvjBAPqACj32v5eeEI5S9tfta+IcNRLgrA+rTVFqbCS6lg91gEBK+uaRUm16ea1KPbGwRTHjLM7TG0rt9wejkq9CiGdFbljnzu/66xaGMoXRJlDqKVchnmxvHgm/Cc9KFFaD+JoAowqI0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L3liUFqP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F76C4CED1;
+	Wed, 30 Oct 2024 20:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730321385;
-	bh=+yvwE337Qdag2rGuNvdsfIda3dNqnIov5peBktID6b0=;
-	h=From:Subject:Date:To:Cc:From;
-	b=n/1jmtKzwNjxrgBgr0XHhgb5joWzPDKskC4fLKe8EGDkTBSzI/HcVjnV0CDBIxCtl
-	 B+9fZMh4aMIaW6aHFZPAcBqfGLorbZmaAD60I3yJPVQ0Fi8MRqDz9w9UEK4iI7eqBY
-	 X7Bf36R90rtMJVzm1LXgDWU8DxSXHENUszkIF0CEnf/1MXrGrk4TiD9Fx0VfKlJXb9
-	 hOAOoy2mhUuTflyScniRBSJu3Lx0/QosykyAgjDEHQH2KDJJhnNm6tckVDim2UYTBq
-	 CUn/R91nby6UcRpNXcub5SHAqgKJmGpzdfrpcaDyRBndP2ODXxulftFVazu/r2DTnv
-	 fOXpyYsn1vDog==
+	s=k20201202; t=1730321387;
+	bh=dLqAw4xy5/KKmZNX6yrvJQT14/QmwjMru+J+jwCboHM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=L3liUFqPA1FyGPmrsabDM7RM3yowwAs/TK5/9jJzyFy28OJVRxyIUqjPYZKPn4ZUz
+	 3RUExHjQimbeOiymBXIpzpXPql8nYLS4cyZqcuiMdUJ09q0i20Q4j0X5d2KorWC6S4
+	 cNkb1sT4Vr3OJStwGC7HQr48rWrj4Jbd1Ui3QbzTg2xH7VQBzM35KTVCZAVRd3DeNP
+	 PhNMYGGIJXhsH8I75Jits6FqjnwrHcOppfVuP7mTGRmWlvY7Q+QTa2UCU4SF53Idlr
+	 mZbNq/SXiVs+lYKImCLH9f8PBHrsyXS1s6MzHGX4qrI6UuWUtcWm6hd+zsuQwLJQ0f
+	 JOE9Xl6P8csOA==
 From: Mark Brown <broonie@kernel.org>
-Subject: [PATCH 0/2] arm64/fp: Fix missing invalidation when working with
- in memory FP state
-Date: Wed, 30 Oct 2024 20:23:49 +0000
-Message-Id: <20241030-arm64-fpsimd-foreign-flush-v1-0-bd7bd66905a2@kernel.org>
+Date: Wed, 30 Oct 2024 20:23:50 +0000
+Subject: [PATCH 1/2] arm64/sve: Flush foreign register state in
+ sve_init_regs()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,52 +53,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANaVImcC/x3MQQqEMAwAwK9IzgbaWgT9injo2lQDWiVBWZD+f
- cse5zIvKAmTwti8IPSw8pkrbNvAsoW8EnKsBmect6YzGOToPaZL+YiYTiFeM6b91g37wXYhOL/
- E4QM1uIQSf//5NJfyA/2/8d5sAAAA
-X-Change-ID: 20241030-arm64-fpsimd-foreign-flush-6913aa24cd9b
+Message-Id: <20241030-arm64-fpsimd-foreign-flush-v1-1-bd7bd66905a2@kernel.org>
+References: <20241030-arm64-fpsimd-foreign-flush-v1-0-bd7bd66905a2@kernel.org>
+In-Reply-To: <20241030-arm64-fpsimd-foreign-flush-v1-0-bd7bd66905a2@kernel.org>
 To: Catalin Marinas <catalin.marinas@arm.com>, 
  Will Deacon <will@kernel.org>
 Cc: Mark Rutland <mark.rutland@arm.com>, 
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.15-dev-9b746
-X-Developer-Signature: v=1; a=openpgp-sha256; l=978; i=broonie@kernel.org;
- h=from:subject:message-id; bh=+yvwE337Qdag2rGuNvdsfIda3dNqnIov5peBktID6b0=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBnIpvlHIiKxtAocRm8OBK6Yaj+uT1brtqrjz3czmlG
- kLb0yaGJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZyKb5QAKCRAk1otyXVSH0E5RB/
- 4s5DbIvSqJpDZMrMzsulo88M4R3g/tC8Nk8ioDiV9SYLMmPwAIr4PYSvIxaIga3ck4r80tFkT/bOqb
- LpEP72Ya7iAsBesvmh6McFvsRdqZ4rXzvlGOIIi7vjdmDU0NaqmPAp0m2MMkEa0U1BfzPYSkEQCQRr
- Who3UZks5d0DNAaDLUhP0rkTzrk9Mwz752Ut1Ngku9AtrRkQS32mjdw6ECjfIDM/LzsqkmleCrmp59
- LLc+z7IaJxSNnSZF7opBj++RRFKN8SdJHjwi6hCzgObDSerHDWbDXfkQvVVW6MkpRNKFsO6TtH+d4a
- JLZ6ytDa3w9bcJnTFUmO/79Tdkq3IY
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1381; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=dLqAw4xy5/KKmZNX6yrvJQT14/QmwjMru+J+jwCboHM=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBnIpvmTGqCbde0j16dyrk16BYTp5wddvqHWezRdera
+ 9Vfb+FyJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZyKb5gAKCRAk1otyXVSH0H4qB/
+ 9Yz+KS9YtbwvLFuU9RqjekMoIrPAkbHkjkUJCp/j9ZaBAf+7EZSNJogZcZXCuf2qUF7O1aV2sjaJ0j
+ C5Pt+hdLBwe5keWkhhyfktLONox4y/Lxg6/6r4lr+mdLXXpl4Nd8mfPjxlvR/ZRXz7y8SVBKtEktXY
+ nGjhnyAtXdxTLQJXaC/sEB67h0JSYbY0Tb0oul/FlC6ApE/qPfnPBmXaE8lLjCnHbkY8TJm6gjnsiO
+ J+T336OyWGJxiNLiJhCT4U2MwGvi4JZm+aBKoP4c2wD+zmKP5F+d+dSw6j+q8pUaXGjyn5qGN20kzN
+ 0csdyvYKeag2vaLE4eZ6AeWKXTnlj9
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Mark Rutland identified a repeated pattern where we update the in memory
-floating point state for tasks but do not invalidate the tracking of the
-last CPU that the task's state was loaded on, meaning that we can
-incorrectly fail to load the state from memory due to the checking in
-fpsimd_thread_switch().  When we change the in-memory state we need to
-also invalidate the last CPU information so that the state is corretly
-identified as needing to be reloaded from memory.
+When we update the in memory register state in sve_init_regs() we neglect
+to flush the task's CPU binding, meaning if the task is rescheduled to
+the last CPU it ran on it is possible for the check for current state in
+fpsimd_thread_switch() to falsely determine that up to date register
+state is present on the CPU.  This results in it incorrectly clearing
+TIF_FOREIGN_FPSTATE and suppress reloading.
 
-This series adds the missing invalidations.
+This will also suppress the sve_user_enable() done in
+fpsimd_bind_task_to_cpu() as part of return to userspace, causing
+spurious SVE access traps.
 
+Call fpsimd_flush_task_state() to invalidate the last loaded CPU
+recorded in the task.
+
+Fixes: cccb78ce89c4 ("arm64/sve: Rework SVE access trap to convert state in registers")
+Reported-by: Mark Rutlamd <mark.rutland@arm.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
 ---
-Mark Brown (2):
-      arm64/sve: Flush foreign register state in sve_init_regs()
-      arm64/sme: Flush foreign register state in do_sme_acc()
+ arch/arm64/kernel/fpsimd.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- arch/arm64/kernel/fpsimd.c | 3 +++
- 1 file changed, 3 insertions(+)
----
-base-commit: 8e929cb546ee42c9a61d24fae60605e9e3192354
-change-id: 20241030-arm64-fpsimd-foreign-flush-6913aa24cd9b
+diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+index 77006df20a75aee7c991cf116b6d06bfe953d1a4..6d21971ae5594f32947480cfa168db400a69a283 100644
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -1367,6 +1367,7 @@ static void sve_init_regs(void)
+ 	} else {
+ 		fpsimd_to_sve(current);
+ 		current->thread.fp_type = FP_STATE_SVE;
++		fpsimd_flush_task_state(current);
+ 	}
+ }
+ 
 
-Best regards,
 -- 
-Mark Brown <broonie@kernel.org>
+2.39.2
 
 
