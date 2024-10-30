@@ -1,149 +1,148 @@
-Return-Path: <stable+bounces-89344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42DD69B6848
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 16:48:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 084519B693D
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 17:32:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74E021C208A1
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 15:47:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F526B23145
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 16:32:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C8A213EEA;
-	Wed, 30 Oct 2024 15:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A05213EEC;
+	Wed, 30 Oct 2024 16:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="gFLIe5oG";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="gFLIe5oG"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="uvhIiQJx"
 X-Original-To: stable@vger.kernel.org
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1111F4292;
-	Wed, 30 Oct 2024 15:47:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73D81F131F
+	for <stable@vger.kernel.org>; Wed, 30 Oct 2024 16:32:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730303273; cv=none; b=rZ53NEPJnvKkYiI6/Voz8h2vfjY3DWjAPV+IJJZqDF36PAQVFdUxVMLxCkltZ4gqyUqOlXXpOKWQ0BOcHPhyf+0A8ojgv/M8hWfTo/KmEk9xYuMShaZxEW+ZIubQItET+yfebnd6dht39/uWzGShk0O4jJv4xbSZJWroxojnPqo=
+	t=1730305947; cv=none; b=FKiCz4q238+tZd+OVRVrRmkt+pLC6zqIjhQ1x/+JOKiGgcumdelOxheESeCo3eUzac840sjvum6O675KZ0gB1b1leF3wOIC49ltWpnRNUFYWapV1BJLQxvSo5CKQhWfDfjsLAfI6mNxbr+i9l6rkcAsdcUezgHNyN2mk9oaYbNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730303273; c=relaxed/simple;
-	bh=gLv7I3LQWoNpPdAjKDGzLZtcqN+O5sw62gfGdxNh4Rs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mjOVy8zO9enJHKRcjdtHhuq6g4Fx6KNW4gG0lBYlv+E4UFnhn6d0nNTZGaXlS/9qGHrpV/6z0WdGaMNDhQTmBwtX90CpqDr7QXf0GjebKnWdlZO5/4iJWw/Fc4J618Cid6nLG5qFU0EecZ542cPpeQ8iZH8sTn9s5xHQnbI0Ah0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=gFLIe5oG; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=gFLIe5oG; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1730303269;
-	bh=gLv7I3LQWoNpPdAjKDGzLZtcqN+O5sw62gfGdxNh4Rs=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=gFLIe5oGUl4XOWdBvWXxn4yBRHjPVm63LID7tWePrlIGMm2bt86q1ETvL6TvXxpUs
-	 AOe6MbaYg2/kKvnXhXKwY04cCHonjtalPjXbgSkJxU2m6bPwXqF6h5zQ6R8UFNXX6m
-	 ydEpspES2zdhipTuWdLQvOItZCg+ok4HjzTC9xrQ=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 870B71281DD4;
-	Wed, 30 Oct 2024 11:47:49 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id yTGeH0NvpN3p; Wed, 30 Oct 2024 11:47:49 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1730303269;
-	bh=gLv7I3LQWoNpPdAjKDGzLZtcqN+O5sw62gfGdxNh4Rs=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=gFLIe5oGUl4XOWdBvWXxn4yBRHjPVm63LID7tWePrlIGMm2bt86q1ETvL6TvXxpUs
-	 AOe6MbaYg2/kKvnXhXKwY04cCHonjtalPjXbgSkJxU2m6bPwXqF6h5zQ6R8UFNXX6m
-	 ydEpspES2zdhipTuWdLQvOItZCg+ok4HjzTC9xrQ=
-Received: from [10.250.250.46] (122x212x32x58.ap122.ftth.ucom.ne.jp [122.212.32.58])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 1865E1281A0B;
-	Wed, 30 Oct 2024 11:47:46 -0400 (EDT)
-Message-ID: <27e3ac1678bde5e107691e12c09fa470ab47a5b2.camel@HansenPartnership.com>
-Subject: Re: [PATCH v8 2/3] tpm: Rollback tpm2_load_null()
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org, 
-	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>, Mimi
- Zohar <zohar@linux.ibm.com>, Roberto Sassu <roberto.sassu@huawei.com>,
- Stefan Berger <stefanb@linux.ibm.com>, Paul Moore <paul@paul-moore.com>,
- James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, Eric Snowberg
- <eric.snowberg@oracle.com>, "open list:KEYS-TRUSTED"
- <keyrings@vger.kernel.org>, "open list:SECURITY SUBSYSTEM"
- <linux-security-module@vger.kernel.org>,  stable@vger.kernel.org
-Date: Thu, 31 Oct 2024 00:47:44 +0900
-In-Reply-To: <20241028055007.1708971-3-jarkko@kernel.org>
-References: <20241028055007.1708971-1-jarkko@kernel.org>
-	 <20241028055007.1708971-3-jarkko@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	s=arc-20240116; t=1730305947; c=relaxed/simple;
+	bh=pEPVRF5+DgnXnRZSZ1kKlI9RGplVRziuZFa2Pl+8l/U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MzNQrX3BbX6e0+avgEpWoVhV8y5pzZyKeh6Zrr0QF+uCQyl6ZQc4nuO2i07WCc2l5IvCUoKlgfbtdrC6s4oReeL0Rmxfz/Zykdh+PAx1+mpZibn9LTZarMR0gAzWkV2g6BYckVgh91hLtiOv+BwY2gGt1HHlrJDEXGsPJ2JUZx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=uvhIiQJx; arc=none smtp.client-ip=209.85.222.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7b13bf566c0so866585a.3
+        for <stable@vger.kernel.org>; Wed, 30 Oct 2024 09:32:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1730305945; x=1730910745; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fnMPV7W7l2RvnnW42qBLhLXVbPCvhd3V2TD3GpAwLro=;
+        b=uvhIiQJxhFDz1hh87cX7LNbYavIB5UJkWGG6BuIyzTTGE4ZWZru4AEjFVzFILU/i4t
+         oFtsYuh11e9L/3yO8b85+Z9B6ZTIHeEGTNZ/0VDpeTMKpMpVKRZqnS8eXLe7AzfEqDmt
+         MWpY3vtExCmbmDSpi+SaMVwUdsUY6pH7ITHL2RqVO0r8LV1hk/3iWyccKMUQeNbjQRym
+         GCBNXInQtuv2uRn8U75aOeEP0pQ7LZbwRuMCws0l9NcfnuhWbtwhMW3PcByrDJ2MNzeL
+         dy7ZmG8MNSQkH9D6MSGPC4KW+XXJj5IIKa31vdjWmweo4DYqdJk+50P74BNSN/ul+Lc/
+         yQuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730305945; x=1730910745;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fnMPV7W7l2RvnnW42qBLhLXVbPCvhd3V2TD3GpAwLro=;
+        b=b/2mFL35LiCkQGL8+9h/ee4eRzXMnvF3Hnc6vPHaIcxUbHEwyzfV6nH5+uR3W12l/l
+         hOrf3/8uycrWe5L8NKB+XBFAhWULfTTxdOTOyNgzk6QknCOLCTqgqDnokxql580kq816
+         Od7LbZpARK7/wocujEYH5V3yH1x+LdC760hFLeo2V8W3r1S4vrQxAjJ19rFlxezVVK//
+         I+AMN+KJu9pw6mJP7XDLawzCGZGkq9oSNiIqFRzqdL7atkriq25sXIKPo8RWmKbRW43o
+         M5cxLb3jJdx8AWf+/4NjXgouZdfn5k2wOTNNZpCewbQng8nVqszsoEC9EMEkjHa7eEz2
+         MQAw==
+X-Forwarded-Encrypted: i=1; AJvYcCU+uM/NWrdn0Z9W67A5RRINDVmK6272onhTijJXsN230LDdFQUX8urzXS7PjX6AnwA6/7xn0Fg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyqS7jH1QFYXoWO9IWRcOdeOzJh9J1Pw7JDZeg8VP0W6evteLKv
+	4eMNgNjLBqqE5CMCEZKnMPxkg74JjOmUSO+PAOXYHSGQlJYVtgnrGd0jfdru6YpgT1psIE9gZ1Q
+	v
+X-Google-Smtp-Source: AGHT+IHUGJKPPztjwHDZ1Fsm8kR2ulAQuHxmZmgEri6RNBQkQaPuB9irRDhhHGF1/Pcdxylx7HnUWA==
+X-Received: by 2002:a05:620a:2989:b0:79e:ff4b:3401 with SMTP id af79cd13be357-7b1aee75a24mr461410785a.66.1730305944807;
+        Wed, 30 Oct 2024 09:32:24 -0700 (PDT)
+Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b18d27911asm529745285a.26.2024.10.30.09.32.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Oct 2024 09:32:24 -0700 (PDT)
+Date: Wed, 30 Oct 2024 12:32:30 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>, Ard Biesheuvel <ardb+git@google.com>,
+	linux-efi@vger.kernel.org, stable@vger.kernel.org,
+	Breno Leitao <leitao@debian.org>,
+	Usama Arif <usamaarif642@gmail.com>
+Subject: Re: [PATCH] efistub/tpm: Use ACPI reclaim memory for event log to
+ avoid corruption
+Message-ID: <ZyJfnjj9lkd5MBQH@PC2K9PVX.TheFacebook.com>
+References: <20240912155159.1951792-2-ardb+git@google.com>
+ <ec7db629-61b0-49aa-a67d-df663f004cd0@kernel.org>
+ <29b39388-5848-4de0-9fcf-71427d10c3e8@kernel.org>
+ <58da4824-523c-4368-9da1-05984693c811@kernel.org>
+ <CAMj1kXHqgZ-fD=oSAr7E0h9kTj_yzDv=_o2ifCCD0cYNgXv9RQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXHqgZ-fD=oSAr7E0h9kTj_yzDv=_o2ifCCD0cYNgXv9RQ@mail.gmail.com>
 
-On Mon, 2024-10-28 at 07:50 +0200, Jarkko Sakkinen wrote:
-[...]
-> --- a/drivers/char/tpm/tpm2-sessions.c
-> +++ b/drivers/char/tpm/tpm2-sessions.c
-> @@ -915,33 +915,37 @@ static int tpm2_parse_start_auth_session(struct
-> tpm2_auth *auth,
->  
->  static int tpm2_load_null(struct tpm_chip *chip, u32 *null_key)
->  {
-> -       int rc;
->         unsigned int offset = 0; /* dummy offset for null seed
-> context */
->         u8 name[SHA256_DIGEST_SIZE + 2];
-> +       u32 tmp_null_key;
-> +       int rc;
->  
->         rc = tpm2_load_context(chip, chip->null_key_context, &offset,
-> -                              null_key);
-> -       if (rc != -EINVAL)
-> -               return rc;
-> +                              &tmp_null_key);
-> +       if (rc != -EINVAL) {
-> +               if (!rc)
-> +                       *null_key = tmp_null_key;
-> +               goto err;
-> +       }
->  
-> -       /* an integrity failure may mean the TPM has been reset */
-> -       dev_err(&chip->dev, "NULL key integrity failure!\n");
-> -       /* check the null name against what we know */
-> -       tpm2_create_primary(chip, TPM2_RH_NULL, NULL, name);
-> -       if (memcmp(name, chip->null_key_name, sizeof(name)) == 0)
-> -               /* name unchanged, assume transient integrity failure
-> */
-> -               return rc;
-> -       /*
-> -        * Fatal TPM failure: the NULL seed has actually changed, so
-> -        * the TPM must have been illegally reset.  All in-kernel TPM
-> -        * operations will fail because the NULL primary can't be
-> -        * loaded to salt the sessions, but disable the TPM anyway so
-> -        * userspace programmes can't be compromised by it.
-> -        */
-> -       dev_err(&chip->dev, "NULL name has changed, disabling TPM due
-> to interference\n");
-> +       /* Try to re-create null key, given the integrity failure: */
-> +       rc = tpm2_create_primary(chip, TPM2_RH_NULL, &tmp_null_key,
-> name);
-> +       if (rc)
-> +               goto err;
+On Fri, Oct 25, 2024 at 09:30:51AM +0200, Ard Biesheuvel wrote:
+> On Fri, 25 Oct 2024 at 07:09, Jiri Slaby <jirislaby@kernel.org> wrote:
+> >
+> > On 25. 10. 24, 7:07, Jiri Slaby wrote:
+> > > On 24. 10. 24, 18:20, Jiri Slaby wrote:
+> > >
+> > > ====
+> > > EFI_ACPI_RECLAIM_MEMORY
+> > >
+> > > This memory is to be preserved by the UEFI OS loader and OS until ACPI
+> > > is enabled. Once ACPI is enabled, the memory in this range is available
+> > > for general use.
+> > > ====
+> > >
+> > > BTW doesn't the above mean it is released by the time TPM actually reads
+> > > it?
+> > >
+> > > Isn't the proper fix to actually memblock_reserve() that TPM portion.
+> > > The same as memattr in efi_memattr_init()?
+> >
+> > And this is actually done in efi_tpm_eventlog_init().
+> >
+> 
+> EFI_ACPI_RECLAIM_MEMORY may be reclaimed by the OS, but we never
+> actually do that in Linux.
+> 
+> To me, it seems like the use of EFI_ACPI_RECLAIM_MEMORY in this case
+> simply tickles a bug in the firmware that causes it to corrupt the
+> memory attributes table. The fact that cold boot behaves differently
+> is a strong indicator here.
+> 
+> I didn't see the results of the memory attribute table dumps on the
+> bugzilla thread, but dumping this table from EFI is not very useful
+> because it will get regenerated/updated at ExitBootServices() time.
+> Unfortunately, that also takes away the console so capturing the state
+> of that table before the EFI stub boots the kernel is not an easy
+> thing to do.
+> 
+> Is the memattr table completely corrupted? It also has a version
+> field, and only versions 1 and 2 are defined so we might use that to
+> detect corruption.
 
-From a security point of view, this probably isn't such a good idea:
-the reason the context load failed above is likely the security
-condition we're checking for: the null seed changed because an
-interposer did a reset.  That means that if the interposer knows about
-this error leg, it would simply error out the create primary here and
-the TPM wouldn't be disabled.
+When we initially identified the TPM log corruption issue, I had a gut
+feeling we were about to discover a lot more corruption along the same
+lines.  It feels like e820 should have significantly more ACPI entries
+marked to avoid kexec from touching it - instead of just 1 or 2.
 
-Regards,
+Hopefully I'm wrong, I'll take a look at the raw memory attributes on
+a few systems and see if there's a disagreement between UEFI and e820.
 
-James
+Not looking forward to a thrilling game of whack-a-mole :[
 
+~Gregory
 
