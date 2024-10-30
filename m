@@ -1,48 +1,75 @@
-Return-Path: <stable+bounces-89316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 579BF9B630E
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 13:26:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37F399B6318
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 13:31:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16CDE282840
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 12:26:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E04D21F21AB0
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 12:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189171E7C37;
-	Wed, 30 Oct 2024 12:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 711861E1023;
+	Wed, 30 Oct 2024 12:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="fHp+Lzdj"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wJOAeuW+"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BF61D1E7A;
-	Wed, 30 Oct 2024 12:26:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50FD21E9061
+	for <stable@vger.kernel.org>; Wed, 30 Oct 2024 12:31:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730291189; cv=none; b=B8PS7lkvgNt0Y27v1TPfBt1cI8ZG+LoMedoJKP/vxiHjNdK9mawP1DDZCFn/9vk4p0tHoxi4a4FXoH1NqID6yncqZ3tTEW216XAHDZbnlOhlB0N8KlDZ3chTCnCGAKBGPXNR1Gm3EGGn9dPD39JM+Wc041i1ad9yx6zin7sW5as=
+	t=1730291494; cv=none; b=mO/nSDT19FjjXni6L+pCJ+EdfPQ6ZwcrTu8GeEU9BTIy8qAbhJFYZlkhmZHWXvMd+8iMfFEXjJTa+mKzz7IqE7uDdRwZKdXbVzsU2f3SUI46Gm6PvibpkWD643/Ia3HNCoocZCFKY+uk3uXsdSPvHYmhL/mEWwCXtKpZnDlYZYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730291189; c=relaxed/simple;
-	bh=C3H8s2PGsMMiN19Wbmgdjk6CP+0ff1UypI9GmyShyKc=;
+	s=arc-20240116; t=1730291494; c=relaxed/simple;
+	bh=c5UhKQdavJdtLfcrTrc0Pq+QbHSzwUAht7VSpXUFBO4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b7TTu6xwd4ntTRznjgUeA+lrKSA2/lGgaSkpFIgxf1IfiXG3ZrTYzQQsWkTdjP9OqoDvwZgDseNefPRDMj0GmBx/8FTukDNFvSe/BtpqDmxmZPdt3BoF+3f3wOI4auk4QWcVyXSJLffexlvYIppY68NKwC66OyzxMJmP+W8azKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=fHp+Lzdj; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [192.168.88.20] (91-157-155-49.elisa-laajakaista.fi [91.157.155.49])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 432F61083;
-	Wed, 30 Oct 2024 13:26:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1730291182;
-	bh=C3H8s2PGsMMiN19Wbmgdjk6CP+0ff1UypI9GmyShyKc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fHp+Lzdj+mYz50Jyess3c5qCEy30NbGSZ2JoJkYFouQZEThFajTyfC52kpA58zMFt
-	 IhCy/d4GTk+tTRkm4WCOTs/44mNydMyCBwfcGYpgVd/hQVBN/zsWPPva2JahyNn/7G
-	 +OFrALlzia2vf/fhj/hAWkQr1ab7f9K7Vjk1NS/E=
-Message-ID: <5b2b636e-f361-457e-8d19-9be6c237ef66@ideasonboard.com>
-Date: Wed, 30 Oct 2024 14:26:21 +0200
+	 In-Reply-To:Content-Type; b=j452lEj1Uo82IqY83uca8jpGhU4hHjZShNBXsc9h2FMjvJwH8YtUrZefd9KxyFBapDQcBw13KvJVYZPPzEc5tAvkqm2BMQc63N5ohi7vvybe1D1Cb1OCFqt5o1ueNGXlLSOzjbu8jxo8TxmlwCIW4/a5YPxsML/KgFcyE8p1bkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wJOAeuW+; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-539f0f9ee49so7073205e87.1
+        for <stable@vger.kernel.org>; Wed, 30 Oct 2024 05:31:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1730291489; x=1730896289; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=g2HB1B4iN3oWUrHv8ly8KNSVGjXRFIReK/a7cFEEc1o=;
+        b=wJOAeuW+dtoZXFHLxSEn9k/sKyJL505R0VNBz7W1P7TIjiAfgu5JeL4Fyh6Czefzfy
+         JgbsT9pqt4B9lJ42kLQzR8gu7+3nDh9kUt44+lDXS5LZ3B9Pu3X/w2xuQP+IsPtPydfq
+         j9jbir8eoCWLpWlbX3YcTJbICMdq2ZognTZrWILEOz7fxUx09q49fy/CdYqdE6pX00cs
+         CwTfjIl8dFDYU6e7IdMOKm04CDOzhYqvrlnXifmDKshWF/CfH9kOKKrbzBqjL2RU89T7
+         4I5untgoEb0fMRYcXExhHKuEpIVnT3QE1gh3LqDEaQuWlhV3+0FvIUddYUGQUyQllSVw
+         iPJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730291489; x=1730896289;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=g2HB1B4iN3oWUrHv8ly8KNSVGjXRFIReK/a7cFEEc1o=;
+        b=i7ZAiE/ZpC++RmxK44KSMWxIe75gPzi2wQkKx2PzeuiM0QhOg44sX4GK/mfZsWErbB
+         VlVIgKudCCzm1cMSMNf4PLG7NnEqgNkoZ4kWUwbeoQ3dxQoZbe5fU/9QTR3T0uGXv5jC
+         AcVqyT4LQExpZ8u0T334BwRZSrAXVbpmt1CQeHc4iLWT92BJMdVVVPwXhDefI4nCxgua
+         Iwj+VVJwBI8NQcPeccQ27mElVFHbxMdY46h+IJjzxvxMFTfnwS3RWfmE6v3fF0l6u5rI
+         Y2WmZ7roaMQpXLObMyeENwML3/htLyhhPoTChccmhIIIXnSMpHUY7roOcoXC/9Z1R0Yc
+         ++/g==
+X-Forwarded-Encrypted: i=1; AJvYcCVsW3FFN7RUSJTiLpj9tM1zTC+3nwxk6DoFcliqgxvD1XGJfuWHRUBYFNTPm1TwzkMqC1Z/BTE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQOry3b6tQ7Z3LzirzRRseSBY3vqbuIV86qPuQSSwflgN+/msL
+	UcI0BII/deFakFEK0cfsHYIyVAJOarD4Yy1Omq3beYGW+kex/JsaLTrnUw9TXty4XXxVEcAbXm7
+	RNNw=
+X-Google-Smtp-Source: AGHT+IHLsrclSbDZwTl8mE7Mv4WoPP51WcILZWPPR/8gPywvqqqPPStO6/6vIkVUcLPPU1u+wGiErQ==
+X-Received: by 2002:a05:6512:4022:b0:539:e333:1822 with SMTP id 2adb3069b0e04-53b348b7dc7mr7783566e87.4.1730291489365;
+        Wed, 30 Oct 2024 05:31:29 -0700 (PDT)
+Received: from [192.168.0.40] ([176.61.106.227])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd947d3csm20053725e9.11.2024.10.30.05.31.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Oct 2024 05:31:28 -0700 (PDT)
+Message-ID: <7446e285-f311-42bd-bf0c-a6fe54a862e0@linaro.org>
+Date: Wed, 30 Oct 2024 12:31:28 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,108 +77,67 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm: xlnx: zynqmp_dpsub: fix hotplug detection
-To: Steffen Dirkwinkel <lists@steffen.cc>, dri-devel@lists.freedesktop.org,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, stable@vger.kernel.org,
- Steffen Dirkwinkel <s.dirkwinkel@beckhoff.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Michal Simek <michal.simek@amd.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <f7fbd696-d739-457b-bebb-571b32ecc1d6@ideasonboard.com>
- <20241028134218.54727-1-lists@steffen.cc>
+Subject: Re: [PATCH v3] usb: typec: qcom-pmic: init value of hdr_len/txbuf_len
+ earlier
+To: Rex Nie <rex.nie@jaguarmicro.com>, heikki.krogerus@linux.intel.com
+Cc: gregkh@linuxfoundation.org, linux@roeck-us.net,
+ caleb.connolly@linaro.org, linux-arm-msm@vger.kernel.org,
+ linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+ angus.chen@jaguarmicro.com, stable@vger.kernel.org
+References: <20241030022753.2045-1-rex.nie@jaguarmicro.com>
+ <20241030103256.2087-1-rex.nie@jaguarmicro.com>
 Content-Language: en-US
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
- 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
-In-Reply-To: <20241028134218.54727-1-lists@steffen.cc>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <20241030103256.2087-1-rex.nie@jaguarmicro.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hi,
-
-On 28/10/2024 15:42, Steffen Dirkwinkel wrote:
-> From: Steffen Dirkwinkel <s.dirkwinkel@beckhoff.com>
+On 30/10/2024 10:32, Rex Nie wrote:
+> If the read of USB_PDPHY_RX_ACKNOWLEDGE_REG failed, then hdr_len and
+> txbuf_len are uninitialized. This commit stops to print uninitialized
+> value and misleading/false data.
 > 
-> drm_kms_helper_poll_init needs to be called after zynqmp_dpsub_kms_init.
-> zynqmp_dpsub_kms_init creates the connector and without it we don't
-> enable hotplug detection.
-> 
-> Fixes: eb2d64bfcc17 ("drm: xlnx: zynqmp_dpsub: Report HPD through the bridge")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Steffen Dirkwinkel <s.dirkwinkel@beckhoff.com>
 > ---
->   drivers/gpu/drm/xlnx/zynqmp_kms.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+> V2 -> V3:
+> - add changelog, add Fixes tag, add Cc stable ml. Thanks heikki
+> - Link to v2: https://lore.kernel.org/all/20241030022753.2045-1-rex.nie@jaguarmicro.com/
+> V1 -> V2:
+> - keep printout when data didn't transmit, thanks Bjorn, bod, greg k-h
+> - Links: https://lore.kernel.org/all/b177e736-e640-47ed-9f1e-ee65971dfc9c@linaro.org/
 > 
-> diff --git a/drivers/gpu/drm/xlnx/zynqmp_kms.c b/drivers/gpu/drm/xlnx/zynqmp_kms.c
-> index bd1368df7870..311397cee5ca 100644
-> --- a/drivers/gpu/drm/xlnx/zynqmp_kms.c
-> +++ b/drivers/gpu/drm/xlnx/zynqmp_kms.c
-> @@ -509,12 +509,12 @@ int zynqmp_dpsub_drm_init(struct zynqmp_dpsub *dpsub)
->   	if (ret)
->   		return ret;
+> Cc: stable@vger.kernel.org
+> Fixes: a4422ff22142 (" usb: typec: qcom: Add Qualcomm PMIC Type-C driver")
+> Signed-off-by: Rex Nie <rex.nie@jaguarmicro.com>
+> ---
+>   drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c
+> index 5b7f52b74a40..726423684bae 100644
+> --- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c
+> +++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c
+> @@ -227,6 +227,10 @@ qcom_pmic_typec_pdphy_pd_transmit_payload(struct pmic_typec_pdphy *pmic_typec_pd
 >   
-> -	drm_kms_helper_poll_init(drm);
-> -
->   	ret = zynqmp_dpsub_kms_init(dpsub);
->   	if (ret < 0)
->   		goto err_poll_fini;
+>   	spin_lock_irqsave(&pmic_typec_pdphy->lock, flags);
 >   
-> +	drm_kms_helper_poll_init(drm);
+> +	hdr_len = sizeof(msg->header);
+> +	txbuf_len = pd_header_cnt_le(msg->header) * 4;
+> +	txsize_len = hdr_len + txbuf_len - 1;
 > +
->   	/* Reset all components and register the DRM device. */
->   	drm_mode_config_reset(drm);
+>   	ret = regmap_read(pmic_typec_pdphy->regmap,
+>   			  pmic_typec_pdphy->base + USB_PDPHY_RX_ACKNOWLEDGE_REG,
+>   			  &val);
+> @@ -244,10 +248,6 @@ qcom_pmic_typec_pdphy_pd_transmit_payload(struct pmic_typec_pdphy *pmic_typec_pd
+>   	if (ret)
+>   		goto done;
 >   
-
-Thanks, will apply to drm-misc-next.
-
-Btw, don't send a fixed version with the same version number as the last 
-one. Tools get confused...
-
-  Tomi
+> -	hdr_len = sizeof(msg->header);
+> -	txbuf_len = pd_header_cnt_le(msg->header) * 4;
+> -	txsize_len = hdr_len + txbuf_len - 1;
+> -
+>   	/* Write message header sizeof(u16) to USB_PDPHY_TX_BUFFER_HDR_REG */
+>   	ret = regmap_bulk_write(pmic_typec_pdphy->regmap,
+>   				pmic_typec_pdphy->base + USB_PDPHY_TX_BUFFER_HDR_REG,
+Acked-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
 
