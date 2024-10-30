@@ -1,65 +1,48 @@
-Return-Path: <stable+bounces-89315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9333B9B6276
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 13:02:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 579BF9B630E
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 13:26:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C38121C20F53
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 12:02:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16CDE282840
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 12:26:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019841E7C37;
-	Wed, 30 Oct 2024 12:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189171E7C37;
+	Wed, 30 Oct 2024 12:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZrTi+1X9"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="fHp+Lzdj"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5871E7C12;
-	Wed, 30 Oct 2024 12:02:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BF61D1E7A;
+	Wed, 30 Oct 2024 12:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730289767; cv=none; b=JjMzd1OegCmammswND4rWEdlgEYa8jTKSUG/q3m3MpDHM71+/Em8HObkRPEH+iIYalh9c5bi/ZwNx0QJgxuEzRYv7LSXFPEY+RlO2aug+oFU8vzverQ66tksrjpXaZKQ8ViHySgfssAlnDNHZt1Y5AcQpey9gbJYfdo9ngmj0bU=
+	t=1730291189; cv=none; b=B8PS7lkvgNt0Y27v1TPfBt1cI8ZG+LoMedoJKP/vxiHjNdK9mawP1DDZCFn/9vk4p0tHoxi4a4FXoH1NqID6yncqZ3tTEW216XAHDZbnlOhlB0N8KlDZ3chTCnCGAKBGPXNR1Gm3EGGn9dPD39JM+Wc041i1ad9yx6zin7sW5as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730289767; c=relaxed/simple;
-	bh=gCZUhyMVNmBHmH6gwhWKgLqmPkMfLaznUvJP/f8cywk=;
+	s=arc-20240116; t=1730291189; c=relaxed/simple;
+	bh=C3H8s2PGsMMiN19Wbmgdjk6CP+0ff1UypI9GmyShyKc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p1E6l4GEpKMYPLtSxQKLwSuHahjFPYUlMF25WvkqH81Vz4wu9o4PxE+ETUs5HwvHT2rkXp26Sm89L6b7HE/+ofjse0nWBDObKkxMSz7dzuYMOV9XxaajwCVYMZi/Dikghnz6gum3s0J5SbBb9yDv6RjUdJRhFIvwfflPCq5+EGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZrTi+1X9; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730289765; x=1761825765;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=gCZUhyMVNmBHmH6gwhWKgLqmPkMfLaznUvJP/f8cywk=;
-  b=ZrTi+1X9jWfASJWICtuTqUJDsMkAq3TEQ25T3YzTP+Pfo+UUKPxZEuDp
-   l7TkTcOG4dYdq9oAb4PQCW3t/x5hWVnY0ugmqQnej2tpDi0l8LqkxKmAY
-   NQrSkXPXlEUmd63DePs6gndo2hb7/o7TNmIly2o/Ki38FObyfheNnYmIg
-   Zl5ShaI30L+ORHZxkTFcu2ilKI1+hnlsRYA3cVTo9QBfjZb/5OEovv83w
-   NkdApq71dtsPXkFfYo4BWYGqH9Cmf7WiRr3VyPto5qPBCisF9VjBe/urJ
-   KZdodlBhjYguAuAqoYtIuVb5R1xP/V94jymWWA5I8wy7UYSJZR/+FZ7Gs
-   w==;
-X-CSE-ConnectionGUID: NcU1L9XfROeECrpOBJ5cRg==
-X-CSE-MsgGUID: ihTzULlQTQGFhoLwe3PS4Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="40518456"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="40518456"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 05:02:45 -0700
-X-CSE-ConnectionGUID: pS07IeRBTEa/Ygowo09Vhw==
-X-CSE-MsgGUID: Cf7hSCFwRvG9bYDDwlGwPQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
-   d="scan'208";a="113097360"
-Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.199]) ([10.237.72.199])
-  by orviesa002.jf.intel.com with ESMTP; 30 Oct 2024 05:02:43 -0700
-Message-ID: <bceb89ce-7a4b-4447-8bd6-3129a37bfdb3@linux.intel.com>
-Date: Wed, 30 Oct 2024 14:04:56 +0200
+	 In-Reply-To:Content-Type; b=b7TTu6xwd4ntTRznjgUeA+lrKSA2/lGgaSkpFIgxf1IfiXG3ZrTYzQQsWkTdjP9OqoDvwZgDseNefPRDMj0GmBx/8FTukDNFvSe/BtpqDmxmZPdt3BoF+3f3wOI4auk4QWcVyXSJLffexlvYIppY68NKwC66OyzxMJmP+W8azKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=fHp+Lzdj; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [192.168.88.20] (91-157-155-49.elisa-laajakaista.fi [91.157.155.49])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 432F61083;
+	Wed, 30 Oct 2024 13:26:21 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1730291182;
+	bh=C3H8s2PGsMMiN19Wbmgdjk6CP+0ff1UypI9GmyShyKc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=fHp+Lzdj+mYz50Jyess3c5qCEy30NbGSZ2JoJkYFouQZEThFajTyfC52kpA58zMFt
+	 IhCy/d4GTk+tTRkm4WCOTs/44mNydMyCBwfcGYpgVd/hQVBN/zsWPPva2JahyNn/7G
+	 +OFrALlzia2vf/fhj/hAWkQr1ab7f9K7Vjk1NS/E=
+Message-ID: <5b2b636e-f361-457e-8d19-9be6c237ef66@ideasonboard.com>
+Date: Wed, 30 Oct 2024 14:26:21 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,53 +50,108 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] xhci: Combine two if statements for Etron xHCI
- host
-To: Kuangyi Chiang <ki.chiang65@gmail.com>, mathias.nyman@intel.com,
- gregkh@linuxfoundation.org
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20241028025337.6372-1-ki.chiang65@gmail.com>
- <20241028025337.6372-2-ki.chiang65@gmail.com>
+Subject: Re: [PATCH v2] drm: xlnx: zynqmp_dpsub: fix hotplug detection
+To: Steffen Dirkwinkel <lists@steffen.cc>, dri-devel@lists.freedesktop.org,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, stable@vger.kernel.org,
+ Steffen Dirkwinkel <s.dirkwinkel@beckhoff.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Michal Simek <michal.simek@amd.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <f7fbd696-d739-457b-bebb-571b32ecc1d6@ideasonboard.com>
+ <20241028134218.54727-1-lists@steffen.cc>
 Content-Language: en-US
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-In-Reply-To: <20241028025337.6372-2-ki.chiang65@gmail.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
+ 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
+In-Reply-To: <20241028134218.54727-1-lists@steffen.cc>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 28.10.2024 4.53, Kuangyi Chiang wrote:
-> Combine two if statements, because these hosts have the same
-> quirk flags applied.
+Hi,
+
+On 28/10/2024 15:42, Steffen Dirkwinkel wrote:
+> From: Steffen Dirkwinkel <s.dirkwinkel@beckhoff.com>
 > 
-> Fixes: 91f7a1524a92 ("xhci: Apply broken streams quirk to Etron EJ188 xHCI host")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
-
-Added to queue, but I removed the Fixes and stable tags as this is a small
-cleanup with no functional changes.
-
+> drm_kms_helper_poll_init needs to be called after zynqmp_dpsub_kms_init.
+> zynqmp_dpsub_kms_init creates the connector and without it we don't
+> enable hotplug detection.
+> 
+> Fixes: eb2d64bfcc17 ("drm: xlnx: zynqmp_dpsub: Report HPD through the bridge")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Steffen Dirkwinkel <s.dirkwinkel@beckhoff.com>
 > ---
->   drivers/usb/host/xhci-pci.c | 8 ++------
->   1 file changed, 2 insertions(+), 6 deletions(-)
+>   drivers/gpu/drm/xlnx/zynqmp_kms.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-> index 7e538194a0a4..33a6d99afc10 100644
-> --- a/drivers/usb/host/xhci-pci.c
-> +++ b/drivers/usb/host/xhci-pci.c
-> @@ -395,12 +395,8 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
->   		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
+> diff --git a/drivers/gpu/drm/xlnx/zynqmp_kms.c b/drivers/gpu/drm/xlnx/zynqmp_kms.c
+> index bd1368df7870..311397cee5ca 100644
+> --- a/drivers/gpu/drm/xlnx/zynqmp_kms.c
+> +++ b/drivers/gpu/drm/xlnx/zynqmp_kms.c
+> @@ -509,12 +509,12 @@ int zynqmp_dpsub_drm_init(struct zynqmp_dpsub *dpsub)
+>   	if (ret)
+>   		return ret;
 >   
->   	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
-> -			pdev->device == PCI_DEVICE_ID_EJ168) {
-> -		xhci->quirks |= XHCI_RESET_ON_RESUME;
-> -		xhci->quirks |= XHCI_BROKEN_STREAMS;
-> -	}
-> -	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
-> -			pdev->device == PCI_DEVICE_ID_EJ188) {
-> +	    (pdev->device == PCI_DEVICE_ID_EJ168 ||
-> +	     pdev->device == PCI_DEVICE_ID_EJ188)) {
->   		xhci->quirks |= XHCI_RESET_ON_RESUME;
->   		xhci->quirks |= XHCI_BROKEN_STREAMS;
->   	}
+> -	drm_kms_helper_poll_init(drm);
+> -
+>   	ret = zynqmp_dpsub_kms_init(dpsub);
+>   	if (ret < 0)
+>   		goto err_poll_fini;
+>   
+> +	drm_kms_helper_poll_init(drm);
+> +
+>   	/* Reset all components and register the DRM device. */
+>   	drm_mode_config_reset(drm);
+>   
+
+Thanks, will apply to drm-misc-next.
+
+Btw, don't send a fixed version with the same version number as the last 
+one. Tools get confused...
+
+  Tomi
 
 
