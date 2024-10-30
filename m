@@ -1,113 +1,105 @@
-Return-Path: <stable+bounces-89337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E72B9B6648
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 15:45:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 969749B6676
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 15:51:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7C68281935
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 14:45:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4172E1F210E7
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 14:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC28C1F12F5;
-	Wed, 30 Oct 2024 14:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C431E9071;
+	Wed, 30 Oct 2024 14:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I6tiHAYG"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hChgAx3v"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D17A26AD4;
-	Wed, 30 Oct 2024 14:45:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1611F4712
+	for <stable@vger.kernel.org>; Wed, 30 Oct 2024 14:49:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730299510; cv=none; b=T/gsmomAdlOe5d2Ev+pIkBN05KSiY5O97h8QYu3PXvJ7qyC9B5PN3EorOoV8QSXxMmFeckACzHEsLJ/KV1O5JJIA6syXBC9fX82dc3fp/RIm+Ex2CDtF/sWc4JR7SW84hcRKHDKnv+RMZ0HILzv/VLXYCFfq8ar6dxjcdIOoRIA=
+	t=1730299779; cv=none; b=ufd6jKQ0k4jdlRCjQFu2VuU7Ukn16pOjCgr6YOuknhGvZmqbxAi+eYmmayGwN7YjKSGYfg3RGNeV5pT/r+rGGWE0xOXkT4EpG8pRC01l6tzQypIpphoG6KfoIGYxA0vrZfDCS3IQJhd7uuqTksdJyv+0wtaajk/5YyDjRLLt8bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730299510; c=relaxed/simple;
-	bh=z8WrrbogaEylcqJjgys2QWCe65qdGnEJNaFj0WpQtd0=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=HHVlqgrt6948qeP/9UxnCrnNYPpZfU93K7E1FL/dNNScpbmHFivi/SzJSjEQo2hQDSmw9aW0c9mtDHt7h9noCeaI2bXqze6ziKjGFAhadAJ4gYERMxTcTTExhQUIy1H/9KWP7T8Ih+7+JbMbRpnfFVk7tgLq/Pdh3wBfo9FlrhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I6tiHAYG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA43EC4CECE;
-	Wed, 30 Oct 2024 14:45:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730299510;
-	bh=z8WrrbogaEylcqJjgys2QWCe65qdGnEJNaFj0WpQtd0=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=I6tiHAYGMTTFaAd5Au3dFvpmaqCTdxU2qYSYjlQiTkQsdVRaDtlxIWOc/Xm4XvJ+9
-	 xq9opcdJNNH6OFXtjQ2lI5t90VAnI/rsVUaLaN1HcvAxT9svBgAWbgPI/kqhPnrjQD
-	 7cXb4Ru+qaxZCk+FtC4vLXBqnU6rusNfhmVZs/KQuXxu2YdGbNXEFdyAatVsgInk4x
-	 kKLF5WMDXP9IvpQvOPE5rA1+LSEaVvDowBCBKqWUnbHE/Q3y6eolsYI6UKQ3KP2cm/
-	 xr/s0sSOKXuKtBbmjfuiPJYQQcaIjQ2Vd8PPn/TCEp/Y6uhNOYVVvnQk8hEvWxbYr/
-	 DWKFZv48I1lvg==
-Date: Wed, 30 Oct 2024 15:45:02 +0100 (GMT+01:00)
-From: Matthieu Baerts <matttbe@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: kuba@kernel.org, horms@kernel.org, davem@davemloft.net,
-	edumazet@google.com, pabeni@redhat.com,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, vlad.wing@gmail.com, max@kutsevol.com,
-	kernel-team@meta.com, aehkn@xenhub.one, stable@vger.kernel.org,
-	"open list:NETWORKING [MPTCP]" <mptcp@lists.linux.dev>
-Message-ID: <e891f590-7dd5-4207-adef-d90b90172aeb@kernel.org>
-In-Reply-To: <20241030140224.972565-1-leitao@debian.org>
-References: <20241030140224.972565-1-leitao@debian.org>
-Subject: Re: [PATCH net] mptcp: Ensure RCU read lock is held when calling
- mptcp_sched_find()
+	s=arc-20240116; t=1730299779; c=relaxed/simple;
+	bh=58fkI0DxBTuYu41ZNeXJTYW9hWb+IBRT0RkNSze6a4A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oqWbydVtRzBVO977u2i5+DCu02x0V1Z2yWynYWOEdk5soPlnkOeOCrfI3m8rhfoxEusnV5QvM/+e58m2/5fJDCdYNxxdCNdyyIROiL9NPnuSVQODB9olL8nAbimUdeU3Tj2fZxNSlcB+pS2SsNPklpmmH4K4aG34/AxW4+FraJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hChgAx3v; arc=none smtp.client-ip=95.215.58.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <230b5910-6790-44cb-90ed-222bee89054d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1730299774;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H1w/iqqQqeWdeidkDYmAvBZgSRrIyIu8DOwMPAJKc5Y=;
+	b=hChgAx3vpxAGTC+OhSh6VQuCWJeMJr+0JC1YgvQs6qW6kvU5WF6nXBZ98DDucWqYkFvPkT
+	F8TPGR9+POiRaVmvmQnWW3KABiWHhd2eHu0ra11vSqHySg4IdE4cMK03hMllBb4rkXzCm/
+	urjRWKw09rxXAhEPe72OlmQuYLc7t+M=
+Date: Wed, 30 Oct 2024 22:49:16 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Correlation-ID: <e891f590-7dd5-4207-adef-d90b90172aeb@kernel.org>
+Subject: Re: [PATCH v2] drm/bridge: Fix assignment of the of_node of the
+ parent to aux bridge
+To: Neil Armstrong <neil.armstrong@linaro.org>,
+ Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Abel Vesa <abel.vesa@linaro.org>
+Cc: Johan Hovold <johan@kernel.org>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20241018-drm-aux-bridge-mark-of-node-reused-v2-1-aeed1b445c7d@linaro.org>
+ <172951608323.1285208.3162107667310691864.b4-ty@linaro.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sui Jingfeng <sui.jingfeng@linux.dev>
+In-Reply-To: <172951608323.1285208.3162107667310691864.b4-ty@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-Hi Breno
+Hi,
 
-30 Oct 2024 15:02:45 Breno Leitao <leitao@debian.org>:
-
-> The mptcp_sched_find() function must be called with the RCU read lock
-> held, as it accesses RCU-protected data structures. This requirement was
-> not properly enforced in the mptcp_init_sock() function, leading to a
-> RCU list traversal in a non-reader section error when
-> CONFIG_PROVE_RCU_LIST is enabled.
+On 2024/10/21 21:08, Neil Armstrong wrote:
+> Hi,
 >
-> =C2=A0=C2=A0=C2=A0 net/mptcp/sched.c:44 RCU-list traversed in non-reader =
-section!!
+> On Fri, 18 Oct 2024 15:49:34 +0300, Abel Vesa wrote:
+>> The assignment of the of_node to the aux bridge needs to mark the
+>> of_node as reused as well, otherwise resource providers like pinctrl will
+>> report a gpio as already requested by a different device when both pinconf
+>> and gpios property are present.
+>> Fix that by using the device_set_of_node_from_dev() helper instead.
+>>
+>>
+>> [...]
+> Thanks, Applied to https://gitlab.freedesktop.org/drm/misc/kernel.git (drm-misc-fixes)
+
+
+It's quite impolite to force push patches that still under reviewing,
+this prevent us to know what exactly its solves.
+
+This also prevent us from finding a better solution.
+
+> [1/1] drm/bridge: Fix assignment of the of_node of the parent to aux bridge
+>        https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/85e444a68126a631221ae32c63fce882bb18a262
 >
-> Fix it by acquiring the RCU read lock before calling the
-> mptcp_sched_find() function. This ensures that the function is invoked
-> with the necessary RCU protection in place, as it accesses RCU-protected
-> data structures.
+-- 
+Best regards,
+Sui
 
-Thank you for having looked at that, but there is already a fix:
-
-https://lore.kernel.org/netdev/20241021-net-mptcp-sched-lock-v1-1-637759cf0=
-61c@kernel.org/
-
-This fix has even been applied in the net tree already:
-
-https://git.kernel.org/netdev/net/c/3deb12c788c3
-
-Did you not get conflicts when rebasing your branch on top of the
-latest version?
-
-> Additionally, the patch breaks down the mptcp_init_sched() call into
-> smaller parts, with the RCU read lock only covering the specific call to
-> mptcp_sched_find(). This helps minimize the critical section, reducing
-> the time during which RCU grace periods are blocked.
-
-I agree with Eric (thank you for the review!): this creates other issues.
-
-> The mptcp_sched_list_lock is not held in this case, and it is not clear
-> if it is necessary.
-
-It is not needed, the list is not modified, only read with RCU.
-
-Cheers,
-Matt
 
