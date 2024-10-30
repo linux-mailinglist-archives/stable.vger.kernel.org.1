@@ -1,181 +1,130 @@
-Return-Path: <stable+bounces-89273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A179B5873
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 01:17:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 394359B5898
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 01:29:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A3C41F2163D
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 00:17:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AA2A1C229FD
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 00:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FCA6C8CE;
-	Wed, 30 Oct 2024 00:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E461799F;
+	Wed, 30 Oct 2024 00:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="et+lIRlK"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zA7zIitO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D27F11CAF
-	for <stable@vger.kernel.org>; Wed, 30 Oct 2024 00:17:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435BF12E7E
+	for <stable@vger.kernel.org>; Wed, 30 Oct 2024 00:29:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730247425; cv=none; b=mFj3cswx3S3sGPi/md5tLRZ9t0Gdpmuk9gR2gqpc+krSQcxz5+9EdhPezLFH+MbLmVr3j7WJR6h19QgKWJ0fFROBhGtxES29bcmG9JLHxHy66cAD5g/B1j66JctLGwlYGMJl6iMPlHhdrGpRijOaQx6Nd3QTjSwO8vRvWkCTkHY=
+	t=1730248152; cv=none; b=JRqNFzK/+vTZ5po8msS23QyesHzrP4c9ofoe7uxoxP00fLhL4odW4182yXjkAZrI1yV0mODUSU9dq24HLb2qt0zzxzY81AoU0mK1kKXLOfuTD9YPOS1PWWq2eIJ/vwn2bNtJ4Xa59wvhIK+YDEKdwg37/RwsYRdUk+5CSDrvlZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730247425; c=relaxed/simple;
-	bh=kL+nSJs/k5eiTKkckVjqUhseoyaNVTxIYCNgVKz9HcE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OHezEeN7mvlyjbT+ldeOtJBX1GWo336SSX/4fF4DdePC4nTWldnw7ryMViI8GCEaHa6N+HdRKYBjlWu8r8ga84urfjwfWwXP6fL9F7wGq7MKCXvQh7xgjuascLaYgpbfz7wr3clvCsmfJmwQTOV/jlJ8IRXzgpbQ+WDOZhQ0Mko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=et+lIRlK; arc=none smtp.client-ip=209.85.160.180
+	s=arc-20240116; t=1730248152; c=relaxed/simple;
+	bh=V1iNnvuBm2oNPGSNfSGCVmkg1t1E6dTFsv0w9mlYepo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=TnvpKdiuY/TPE/sqpaVdcR+47Zoh6ZqRppPWU/o4khAM4icHR4GROjuyaw3MvhkC6xhqi/HR/0haqzFtrWTmKNzoNQocNQeIqz5M5iUqQ+C3wKgCFL1CqEXpK0E+PYDZMuSH+s+J5s30sTbIJ5BF356n99GLjgZZOD7h+RDNbzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ovt.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zA7zIitO; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4608dddaa35so81251cf.0
-        for <stable@vger.kernel.org>; Tue, 29 Oct 2024 17:17:03 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ovt.bounces.google.com
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-71e6d31b3bdso8509079b3a.2
+        for <stable@vger.kernel.org>; Tue, 29 Oct 2024 17:29:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730247422; x=1730852222; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RCmWu47sjTGX3jar/Dwdhp+9K5zVvqpEnsEiRnQbuZ4=;
-        b=et+lIRlKegBfC2h9/n31J6d8TJkbDu440N5TWTD2sNhhoMXP6vXEOMh/inA93j6+F4
-         3DKkwv73/9t3NJyDIhv7jzemF2eXJg52P1ihLT74+/JXi0mWUeMhWG6qc3u+23ST3ebS
-         U3OHCEnqPzwjWtDThAAH611SkFBuqkumpinc/ISUBCuOZu5yUTrNox1dpJ+4h0SbzhOS
-         +SX/RqoypTPdwbV49RETbQL/htObPWplcinnvwcrw8vwp4JP0FFTsS4veGJK59w8BCYr
-         wT0rwWxwDaw0dQ/Udb1H+q/AGncW8O2b+boe9voF0/54KyXRoNJ5CEOQw/sDUCzwhMe3
-         beGg==
+        d=google.com; s=20230601; t=1730248149; x=1730852949; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=/Ye+vbAHY2hoAlG8bCiiPKeIhcJVGNMWcPfmJps0LRM=;
+        b=zA7zIitO1JDLLMVh2tDpB/Ydm3JznmxluumgnAAQ6WMBUCseUBjDcmx2aSepa5iFMB
+         HSjvnGMHXxhkte8W0S3t+8vKStng2pG471DZjrS96ZBqOheyTx3r1Rmlzy9ULwDLiLcP
+         rQvGSbSa0ducNsfRQKEmE2TUXcWn2qhJz7Ijr2C7b+d83a8G8RMpNg3ah9kWp+Pcz5qW
+         cdo8gELtUl4Wk3KtB+s4mN8epfcU9wH1nPTQAiNSEEIrd8Wuj/mqguz1iTb45CPQLW+P
+         C7lfbQplOCBz2b19DtKVbwP4Av747A7OhYbFmQ3/RSxmDiI4l60Nw1afKIOU39hv1QIg
+         evBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730247422; x=1730852222;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RCmWu47sjTGX3jar/Dwdhp+9K5zVvqpEnsEiRnQbuZ4=;
-        b=gpyVyUemK/d98ki3dnjtBlvSCXCRlKASmrhHoE27qbSSnGpffkjELXb9nq5AoYqwqq
-         +NumKiN7psOKILJbXIhkXmJFq+FSHPhDvuTwY6rIrJAAwFhmLFL60iE6srFCZak7+x/k
-         MH01wNGxgZVxtbxzvBz/U/G/Uccoxt49He1QHCfnyAf5S8XtPSsxRWgqZ4KQhD0vlOQZ
-         xF8bEW3XeT4u/jM+Zbcbm21hXv7EZEPKYKeku0iu3tlHgetHPHN5SSoJK8l/8KpToTPQ
-         nGijXz6gmiAmNa/n4aIZNpxi/1y4hlCA0K8DWirvpF5BbDiS2EoaNyTjgdwqLnLd4PX2
-         xjVg==
-X-Forwarded-Encrypted: i=1; AJvYcCXN2zoW2rYhWj6PtnGP3AuEenR5FeqaoMyvDUKnUzQy4g/XcaIXiY+o8lMjyzauGjtbwIvpDQo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy188MjcnR83Mx7PhWO9EWL0UvvQKRmyVnvqKEqmYuKvSLOoy5U
-	NOC82tftUcegGYcIyqBp7JK1ubULyB1MbwaaNFIHbCiUpu3CFtJpc9dFvwavjRgHJf+RPf+LGwm
-	DAPqrP6aC2ZvbPY+g1YLcr/HAYxCM8RbWFzdH
-X-Gm-Gg: ASbGncsDk89owGHREubhyQIi1jxDLCA9aFSmb2ibbDyZ0V8kLzD0pcjiAAGrDb2HcoW
-	EBapjs8fvwTesdeO8orXvDdBOKhq9m45IBRgGjXDwu9XAPzWUvLfL+5rvUE8EuqCt
-X-Google-Smtp-Source: AGHT+IEaPibastFimQxIGHeancJlv6kb2dWI4ioRIOkCpZsX0edKkHwzu5czUo3lz8BTR5AsStAJ1WI8kMngUNb28NI=
-X-Received: by 2002:ac8:5d91:0:b0:460:48f1:5a49 with SMTP id
- d75a77b69052e-46164f057c4mr6157321cf.14.1730247422165; Tue, 29 Oct 2024
- 17:17:02 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1730248149; x=1730852949;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/Ye+vbAHY2hoAlG8bCiiPKeIhcJVGNMWcPfmJps0LRM=;
+        b=TwH/R++fafQIwOIVSfAvtfIaTb9T7vHn/H+PdsfPGtp/VTX8J0MUYYXzrlZwmYhVVf
+         Rv2vBSjolD9l4ip25nXUMw+gdUrw3BqPDBycd89O4YIXfn2snaI6HbO/mbxXxQVVeghd
+         7ynRPTPzWik+U344TNrXbw822M+DT3THX0nwc6MwzcH9aM9nuC2qM1Ma/0m/5uGukwpv
+         KKL7hpG0qXpOzkXj8/jcgogZGGrs/l7AqIgl+ug8+H7As6t69Uu2o3I2eRVHtNAXAug2
+         IJ+90TDjSqcm/d2oKnQTP2vNDBaAdWuC83xtyawHGg8UM4mLY9pJ53YMEgcuqBAi5Njj
+         tHzA==
+X-Forwarded-Encrypted: i=1; AJvYcCU8WxnaUuIT4Uqck+ni/IOhNwOcK/5NtG3aD0st/ScejGEb4OICOreYz5rzWtWtpbpAfDqrfdQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3AlMnM8kzhKRkLci8fV3o9ibgjsIUbtDi7F/gUeHfPlJzjG5B
+	wRPmVyC0ZmvUjxORlyZ04u/eI/qDltpKWZMsYBdoi2ItGrqs5X/eC4iVp0GNh3O8bQ==
+X-Google-Smtp-Source: AGHT+IFmIqfjPUXzygglv0CS5v98bbZvDbHPlRnqqpROK5kUQdzIOV0DEK16WsMTN1yt3vYZ1XyvGZ0=
+X-Received: from hmarynka.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:1148])
+ (user=ovt job=sendgmr) by 2002:a05:6a00:3c50:b0:71e:5d1d:350a with SMTP id
+ d2e1a72fcca58-72063089caamr24309b3a.3.1730248149442; Tue, 29 Oct 2024
+ 17:29:09 -0700 (PDT)
+Date: Wed, 30 Oct 2024 00:28:55 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241028234533.942542-1-rananta@google.com> <868qu63mdo.wl-maz@kernel.org>
- <CAJHc60x3sGdi2_mg_9uxecPYwZMBR11m1oEKPEH4RTYaF8eHdQ@mail.gmail.com> <865xpa3fwe.wl-maz@kernel.org>
-In-Reply-To: <865xpa3fwe.wl-maz@kernel.org>
-From: Raghavendra Rao Ananta <rananta@google.com>
-Date: Tue, 29 Oct 2024 17:16:48 -0700
-Message-ID: <CAJHc60xQNeTwSBuPhrKO_JBuikqZ7R=BM5rkWht3YwieVXwkHg@mail.gmail.com>
-Subject: Re: [PATCH v2] KVM: arm64: Get rid of userspace_irqchip_in_use
-To: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	stable@vger.kernel.org, syzbot <syzkaller@googlegroups.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.0.163.g1226f6d8fa-goog
+Message-ID: <20241030002856.2103752-1-ovt@google.com>
+Subject: [PATCH] ovl: properly handle large files in ovl_security_fileattr
+From: Oleksandr Tymoshenko <ovt@google.com>
+To: Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>
+Cc: ovt@google.com, stable@vger.kernel.org, 
+	Miklos Szeredi <mszeredi@redhat.com>, linux-unionfs@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 29, 2024 at 11:47=E2=80=AFAM Marc Zyngier <maz@kernel.org> wrot=
-e:
->
-> On Tue, 29 Oct 2024 17:06:09 +0000,
-> Raghavendra Rao Ananta <rananta@google.com> wrote:
-> >
-> > On Tue, Oct 29, 2024 at 9:27=E2=80=AFAM Marc Zyngier <maz@kernel.org> w=
-rote:
-> > >
-> > > On Mon, 28 Oct 2024 23:45:33 +0000,
-> > > Raghavendra Rao Ananta <rananta@google.com> wrote:
-> > > >
-> > > Did you have a chance to check whether this had any negative impact o=
-n
-> > > actual workloads? Since the entry/exit code is a bit of a hot spot,
-> > > I'd like to make sure we're not penalising the common case (I only
-> > > wrote this patch while waiting in an airport, and didn't test it at
-> > > all).
-> > >
-> > I ran the kvm selftests, kvm-unit-tests and booted a linux guest to
-> > test the change and noticed no failures.
-> > Any specific test you want to try out?
->
-> My question is not about failures (I didn't expect any), but
-> specifically about *performance*, and whether checking the flag
-> without a static key can lead to any performance drop on the hot path.
->
-> Can you please run an exit-heavy workload (such as hackbench, for
-> example), and report any significant delta you could measure?
+dentry_open in ovl_security_fileattr fails for any file
+larger than 2GB if open method of the underlying filesystem
+calls generic_file_open (e.g. fusefs).
 
-Oh, I see. I ran hackbench and micro-bench from kvm-unit-tests (which
-also causes a lot of entry/exits), on Ampere Altra with kernel at
-v6.12-rc1, and see no significant difference in perf.
+The issue can be reproduce using the following script:
+(passthrough_ll is an example app from libfuse).
 
-hackbench:
-=3D=3D=3D=3D=3D=3D=3D=3D=3D
-Ran on a guest with 64 vCPUs and backed by 8G of memory. The results
-are an average of 3 runs:
+  $ D=/opt/test/mnt
+  $ mkdir -p ${D}/{source,base,top/uppr,top/work,ovlfs}
+  $ dd if=/dev/zero of=${D}/source/zero.bin bs=1G count=2
+  $ passthrough_ll -o source=${D}/source ${D}/base
+  $ mount -t overlay overlay \
+      -olowerdir=${D}/base,upperdir=${D}/top/uppr,workdir=${D}/top/work \
+      ${D}/ovlfs
+  $ chmod 0777 ${D}/mnt/ovlfs/zero.bin
 
-Task groups | Baseline | Patch | Approx. entry/exits
-----------------|------------|--------- |------------------------
-100              | 0.154     | 0.164  | 150k
-250              | 0.456     | 0.458  | 500k
-500              | 0.851     | 0.826  | 920k
-(Total tasks for each row =3D=3D task groups * 40)
+Running this script results in "Value too large for defined data type"
+error message from chmod.
 
-kvm-unit-tests micro-bench
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Signed-off-by: Oleksandr Tymoshenko <ovt@google.com>
+Fixes: 72db82115d2b ("ovl: copy up sync/noatime fileattr flags")
+Cc: stable@vger.kernel.org # v5.15+
+---
+ fs/overlayfs/inode.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-The test causes ~530k entry/exits.
+diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
+index 35fd3e3e1778..baa54c718bd7 100644
+--- a/fs/overlayfs/inode.c
++++ b/fs/overlayfs/inode.c
+@@ -616,8 +616,13 @@ static int ovl_security_fileattr(const struct path *realpath, struct fileattr *f
+ 	struct file *file;
+ 	unsigned int cmd;
+ 	int err;
++	unsigned int flags;
++
++	flags = O_RDONLY;
++	if (force_o_largefile())
++		flags |= O_LARGEFILE;
+ 
+-	file = dentry_open(realpath, O_RDONLY, current_cred());
++	file = dentry_open(realpath, flags, current_cred());
+ 	if (IS_ERR(file))
+ 		return PTR_ERR(file);
+ 
+-- 
+2.47.0.163.g1226f6d8fa-goog
 
-Baseline:
-
-name                                    total ns                         av=
-g ns
----------------------------------------------------------------------------=
------------------
-hvc                                  20095360.0                          30=
-6.0
-mmio_read_user           110350040.0                         1683.0
-mmio_read_vgic              29572840.0                          451.0
-eoi                                        964080.0
-        14.0
-ipi                                   126236640.0                         1=
-926.0
-lpi                                   142848920.0                         2=
-179.0
-timer_10ms                          231040.0                          902.0
-
-
-Patch:
-
-name                                    total ns                         av=
-g ns
----------------------------------------------------------------------------=
------------------
-hvc                                  20067680.0                            =
-306.0
-mmio_read_user           109513800.0                         1671.0
-mmio_read_vgic              29190080.0                           445.0
-eoi                                       963400.0
-        14.0
-ipi                                  116481640.0                          1=
-777.0
-lpi                                  136556000.0                          2=
-083.0
-timer_10ms                         234120.0                            914.=
-0
-
-Thank you.
-Raghavendra
 
