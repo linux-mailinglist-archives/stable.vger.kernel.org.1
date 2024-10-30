@@ -1,48 +1,63 @@
-Return-Path: <stable+bounces-89288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 329529B5B32
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 06:25:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68C7C9B5B7F
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 06:55:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA5CD1F2340C
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 05:25:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87EB81C20EBD
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 05:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DCF6199926;
-	Wed, 30 Oct 2024 05:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A751D0E33;
+	Wed, 30 Oct 2024 05:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rqa9lkn8"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="kHGcqmDR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0838215B980;
-	Wed, 30 Oct 2024 05:25:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B7A199949;
+	Wed, 30 Oct 2024 05:55:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730265915; cv=none; b=Yqa+gz2MC5OeN6ybnbDyfQ7yr0uMoF4THV0l9x7oQY8YECzqFEx2WXwEaH3ygAGfwyafMzfkhSO6P2p0uq+nuXHyIROo9QBMiv4L9hHw8+DQqOxz9xBqyCoMQvYpG+f9FiaCF6412exrLge3cSnwJGp3GDf5YVVJIrsN1dBBQQQ=
+	t=1730267727; cv=none; b=XsCF36D7IlXjum8RxcGo2bkBvDXSN/fnZXrtx41JbZaVDR/XQHPa2IDZUtmKcjWI3JB/JBVftkmdcmvlPfpvo1dc/qcf8zOIBMbyDJCbX3wjosHUks9IQ2Lnsp9nxL2+/l1YlbbyULd4aaNcB9hNSaCofkMa4bn/eSSBh4ZYBC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730265915; c=relaxed/simple;
-	bh=3pxvVu1LcZtFf0OBJ0dZ3lWSrDnrJAieNPJtibI+UgU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qvGi381eL0CtJJIs69EQpKhoN8jji6w9sL/2YYWMxVfstrt9mRL0Fp+9yel/WZWYjsiv0wBF0CuQw3p0x5gcNxBthAIXe+hUs5LV06LYBkJZTLlBU6NUg/kBKvj2dkX+BXBDDEpETUaqvmPjOhQwbSsUaM2Ut9WLWqC3XBcalr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rqa9lkn8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A96EC4CEE4;
-	Wed, 30 Oct 2024 05:25:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730265914;
-	bh=3pxvVu1LcZtFf0OBJ0dZ3lWSrDnrJAieNPJtibI+UgU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Rqa9lkn8X2t4BVcjaEGeRtYJ44+sg+v5c0RqvbNK4zxtSXmweMfW+mI+9j3coJswE
-	 kqTYjNIUlzCOlAtplQAYZNLKLrkLSu1wL7i2LnkmZiP60T4qWCU/dNhCMpb/V5/dZe
-	 DB/Nyh5pmOtSvj5OwaZSfGXdAqJqOPAaKSi4iS9TNZ4CHzHsaMAOsBg21eJsvxjhnO
-	 hIibTqXlWOQwnWShMX2vxTOS6Nl6cqkRguM7fT+fQ76vu8GIJugKcHQ160HfcvXrW3
-	 sPA6gDpEj9sNwFvztj4m8oi2Z2xvdTBpezHK52OP9524SnfpfCHapHMRzuejI68mBS
-	 1tSq57jw/JjRg==
-Message-ID: <b7501b2c-d85f-40aa-9be5-f9e5c9608ae4@kernel.org>
-Date: Wed, 30 Oct 2024 06:25:11 +0100
+	s=arc-20240116; t=1730267727; c=relaxed/simple;
+	bh=NWD+81n0gt6UiKT+LFWmdI5wMpW4m6OsIQWgMh29+1E=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=Z7zHBmwZi7vu3m2NL3+Ut20rTPThxu+LAyPtAVZ5BfRCqZX82ddBlGqKoZphPCgnbyv0BCKENLpRPMyw9+M6K7yLY4nl/S/cPW2NJdcCT7zX+vV2E/meHvVaSRbi4O6nd3nuWnFfqVM54sXMB7wLsu2m2ONubjwjp3DQSmw3l9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=kHGcqmDR; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49TLjetW025437;
+	Wed, 30 Oct 2024 05:55:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	EdzhGzA2id7A/ZpD+TWeWQODIXZxwAyvIC+fzDbNVrU=; b=kHGcqmDRTeCjoT4b
+	r5fNCONUTqK/BQjTXBoZTCLwd2XhTNzbYNN5OGodWzUiv4xjttmChJ2fSkald0r5
+	EWH/ijF0P/GDZcvAt60vPTGAOssWU0A3Znro7jH0Kt4Ni+8IitI2SE6IyUrkEDVg
+	l81khw2do4GCt7MSmmp/6myN8Ca+hjU1RM50fFyt/NHkfeFHmGEG/HILdT67BXGw
+	l6KUw3+IbDmWW7BN6XLfECInnMzcijP/wmJzSK7cr3x5j8600kelk8I7BCfWW+YJ
+	Ir3yMib1iTdlXRoY1bRIKdh1QA0S04ys9wWMD/ZSDJrMGiooI3fdC6o2PTVRh2dT
+	nVRBSQ==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42gsq8jsgq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 30 Oct 2024 05:55:08 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49U5t7io027161
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 30 Oct 2024 05:55:08 GMT
+Received: from [10.239.29.179] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 29 Oct
+ 2024 22:55:02 -0700
+Message-ID: <250bce05-a095-4eb3-a445-70bbf4366526@quicinc.com>
+Date: Wed, 30 Oct 2024 13:54:59 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,153 +65,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] efistub/tpm: Use ACPI reclaim memory for event log to
- avoid corruption
-To: Usama Arif <usamaarif642@gmail.com>, Ard Biesheuvel
- <ardb+git@google.com>, linux-efi@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org,
- Breno Leitao <leitao@debian.org>
-References: <20240912155159.1951792-2-ardb+git@google.com>
- <ec7db629-61b0-49aa-a67d-df663f004cd0@kernel.org>
- <29b39388-5848-4de0-9fcf-71427d10c3e8@kernel.org>
- <58da4824-523c-4368-9da1-05984693c811@kernel.org>
- <899f209b-d4ec-4903-a3e6-88b570805499@gmail.com>
+Subject: Re: [PATCH v7 6/7] PCI: qcom: Disable ASPM L0s and remove BDF2SID
+ mapping config for X1E80100 SoC
+From: Qiang Yu <quic_qianyu@quicinc.com>
+To: Johan Hovold <johan@kernel.org>
+CC: <manivannan.sadhasivam@linaro.org>, <vkoul@kernel.org>,
+        <kishon@kernel.org>, <robh@kernel.org>, <andersson@kernel.org>,
+        <konradybcio@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+        <mturquette@baylibre.com>, <sboyd@kernel.org>, <abel.vesa@linaro.org>,
+        <quic_msarkar@quicinc.com>, <quic_devipriy@quicinc.com>,
+        <dmitry.baryshkov@linaro.org>, <kw@linux.com>, <lpieralisi@kernel.org>,
+        <neil.armstrong@linaro.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-phy@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-clk@vger.kernel.org>, <johan+linaro@kernel.org>,
+        <stable@vger.kernel.org>
+References: <20241017030412.265000-1-quic_qianyu@quicinc.com>
+ <20241017030412.265000-7-quic_qianyu@quicinc.com>
+ <ZxJrUQDGMDw3wI3Q@hovoldconsulting.com>
+ <91395c5e-22a0-4117-a4b5-4985284289ab@quicinc.com>
 Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <899f209b-d4ec-4903-a3e6-88b570805499@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-
-On 25. 10. 24, 15:27, Usama Arif wrote:
-> Could you share the e820 map, reserve setup_data and TPMEventLog address with and without the patch?
-> All of these should be just be in the dmesg.
-
-It's shared in the aforementioned bug [1] already.
-
-6.11.2 dmesg (bad run):
-https://bugzilla.suse.com/attachment.cgi?id=877874
-
-6.12-rc2 dmesg (good run):
-https://bugzilla.suse.com/attachment.cgi?id=877887
-
-FWIW from https://bugzilla.suse.com/attachment.cgi?id=878051:
-good TPMEventLog=0x682aa018
-bad  TPMEventLog=0x65a6b018
-
-[1] https://bugzilla.suse.com/show_bug.cgi?id=1231465
-
-wdiff of e820:
-wdiff -n bad good |colordiff
-BIOS-e820: [mem 0x0000000000000000-0x0000000000057fff] usable
-BIOS-e820: [mem 0x0000000000058000-0x0000000000058fff] reserved
-BIOS-e820: [mem 0x0000000000059000-0x000000000009efff] usable
-BIOS-e820: [mem 0x000000000009f000-0x00000000000fffff] reserved
-BIOS-e820: [mem [-0x0000000000100000-0x0000000065a6efff]-] 
-{+0x0000000000100000-0x00000000682abfff]+} usable
-BIOS-e820: [mem [-0x0000000065a6f000-0x0000000065a7dfff]-] 
-{+0x00000000682ac000-0x00000000682bafff]+} ACPI data
-BIOS-e820: [mem [-0x0000000065a7e000-0x000000006a5acfff]-] 
-{+0x00000000682bb000-0x000000006a5acfff]+} usable
-BIOS-e820: [mem 0x000000006a5ad000-0x000000006a5adfff] ACPI NVS
-BIOS-e820: [mem 0x000000006a5ae000-0x000000006a5aefff] reserved
-BIOS-e820: [mem 0x000000006a5af000-0x0000000079e83fff] usable
-BIOS-e820: [mem 0x0000000079e84000-0x000000007a246fff] reserved
-BIOS-e820: [mem 0x000000007a247000-0x000000007a28efff] ACPI data
-BIOS-e820: [mem 0x000000007a28f000-0x000000007abf0fff] ACPI NVS
-BIOS-e820: [mem 0x000000007abf1000-0x000000007b5fefff] reserved
-BIOS-e820: [mem 0x000000007b5ff000-0x000000007b5fffff] usable
-BIOS-e820: [mem 0x000000007b600000-0x000000007f7fffff] reserved
-BIOS-e820: [mem 0x00000000f0000000-0x00000000f7ffffff] reserved
-BIOS-e820: [mem 0x00000000fe000000-0x00000000fe010fff] reserved
-BIOS-e820: [mem 0x00000000fec00000-0x00000000fec00fff] reserved
-BIOS-e820: [mem 0x00000000fee00000-0x00000000fee00fff] reserved
-BIOS-e820: [mem 0x00000000ff000000-0x00000000ffffffff] reserved
-BIOS-e820: [mem 0x0000000100000000-0x000000087e7fffff] usable
-NX (Execute Disable) protection: active
-APIC: Static calls initialized
-e820: update [mem [-0x65a5e018-0x65a6e457]-] {+0x6829b018-0x682ab457]+} 
-usable ==> usable
-extended physical RAM map:
-reserve setup_data: [mem 0x0000000000000000-0x0000000000057fff] usable
-reserve setup_data: [mem 0x0000000000058000-0x0000000000058fff] reserved
-reserve setup_data: [mem 0x0000000000059000-0x000000000009efff] usable
-reserve setup_data: [mem 0x000000000009f000-0x00000000000fffff] reserved
-reserve setup_data: [mem [-0x0000000000100000-0x0000000065a5e017]-] 
-{+0x0000000000100000-0x000000006829b017]+} usable
-reserve setup_data: [mem [-0x0000000065a5e018-0x0000000065a6e457]-] 
-{+0x000000006829b018-0x00000000682ab457]+} usable
-reserve setup_data: [mem [-0x0000000065a6e458-0x0000000065a6efff]-] 
-{+0x00000000682ab458-0x00000000682abfff]+} usable
-reserve setup_data: [mem [-0x0000000065a6f000-0x0000000065a7dfff]-] 
-{+0x00000000682ac000-0x00000000682bafff]+} ACPI data
-reserve setup_data: [mem [-0x0000000065a7e000-0x000000006a5acfff]-] 
-{+0x00000000682bb000-0x000000006a5acfff]+} usable
-reserve setup_data: [mem 0x000000006a5ad000-0x000000006a5adfff] ACPI NVS
-reserve setup_data: [mem 0x000000006a5ae000-0x000000006a5aefff] reserved
-reserve setup_data: [mem 0x000000006a5af000-0x0000000079e83fff] usable
-reserve setup_data: [mem 0x0000000079e84000-0x000000007a246fff] reserved
-reserve setup_data: [mem 0x000000007a247000-0x000000007a28efff] ACPI data
-reserve setup_data: [mem 0x000000007a28f000-0x000000007abf0fff] ACPI NVS
-reserve setup_data: [mem 0x000000007abf1000-0x000000007b5fefff] reserved
-reserve setup_data: [mem 0x000000007b5ff000-0x000000007b5fffff] usable
-reserve setup_data: [mem 0x000000007b600000-0x000000007f7fffff] reserved
-reserve setup_data: [mem 0x00000000f0000000-0x00000000f7ffffff] reserved
-reserve setup_data: [mem 0x00000000fe000000-0x00000000fe010fff] reserved
-reserve setup_data: [mem 0x00000000fec00000-0x00000000fec00fff] reserved
-reserve setup_data: [mem 0x00000000fee00000-0x00000000fee00fff] reserved
-reserve setup_data: [mem 0x00000000ff000000-0x00000000ffffffff] reserved
-reserve setup_data: [mem 0x0000000100000000-0x000000087e7fffff] usable
-efi: EFI v2.6 by American Megatrends
-efi: ACPI=0x7a255000 ACPI 2.0=0x7a255000 SMBIOS=0x7b140000 SMBIOS 
-3.0=0x7b13f000 TPMFinalLog=0x7a892000 ESRT=0x7b0deb18 
-[-MEMATTR=0x77535018-] {+MEMATTR=0x77526018+} MOKvar=0x7b13e000 
-RNG=0x7a254018 [-TPMEventLog=0x65a6f018-] {+TPMEventLog=0x682ac018+}
+In-Reply-To: <91395c5e-22a0-4117-a4b5-4985284289ab@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 6otyPrzF45iN6J6U6RMBnPJR0HbuqtmZ
+X-Proofpoint-ORIG-GUID: 6otyPrzF45iN6J6U6RMBnPJR0HbuqtmZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 bulkscore=0
+ adultscore=0 mlxscore=0 priorityscore=1501 mlxlogscore=659 impostorscore=0
+ lowpriorityscore=0 malwarescore=0 clxscore=1015 spamscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2410300045
 
 
-thanks,
--- 
-js
-suse labs
+On 10/24/2024 2:42 PM, Qiang Yu wrote:
+>
+> On 10/18/2024 10:06 PM, Johan Hovold wrote:
+>> Please use a more concise subject (e.g. try to stay within 72 chars)
+>> than:
+>>
+>>     PCI: qcom: Disable ASPM L0s and remove BDF2SID mapping config for 
+>> X1E80100 SoC
+>>
+>> Here you could drop "SoC", maybe "ASPM" and "config" for example.
+>>
+>> On Wed, Oct 16, 2024 at 08:04:11PM -0700, Qiang Yu wrote:
+>>> Currently, the cfg_1_9_0 which is being used for X1E80100 has 
+>>> config_sid
+>>> callback in its ops and doesn't disable ASPM L0s. However, as same as
+>>> SC8280X, PCIe controllers on X1E80100 are connected to SMMUv3, hence 
+>>> don't
+>>> need config_sid() callback and hardware team has recommended to disable
+>>> L0s as it is broken in the controller. Hence reuse cfg_sc8280xp for
+>>> X1E80100.
+>> Since the x1e80100 dtsi, like sc8280xp, do not specify an iommu-map,
+>> that bit is effectively just a cleanup and all this patch does is to
+>> disable L0s.
+>>
+>> Please rephrase to make this clear. This will also allow you to make the
+>> Subject even shorter (no need to mention the SID bit in Subject).
+>>
+>> Also say something about how L0s is broken so that it is more clear what
+>> the effect of this patch is. On sc8280xp enabling L0s lead to
+>> correctable errors for example.
+> Need more time to confirm the exact reason about disabling L0s.
+> Will update if get any progress
+Hi Johan Hovold
+
+I confirmed with HW team and SW team. L0s is not supported on X1E80100, 
+it is not fully verified. So we don't want to enable it.
+
+Thanks,
+Qiang Yu
+>
+> Thanks,
+> Qiang
+>>
+>>> Fixes: 6d0c39324c5f ("PCI: qcom: Add X1E80100 PCIe support")
+>>> Cc: stable@vger.kernel.org
+>> Johan
 
