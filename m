@@ -1,136 +1,115 @@
-Return-Path: <stable+bounces-89361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FDDC9B6CF0
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 20:39:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95E139B6D0D
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 20:43:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE3161C20FDE
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 19:39:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DB1B1F2258B
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 19:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A3F1CC88D;
-	Wed, 30 Oct 2024 19:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E921D1310;
+	Wed, 30 Oct 2024 19:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="BaG/8wNw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qrspVtxc"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59631C3F06;
-	Wed, 30 Oct 2024 19:39:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFFD11CFEB0;
+	Wed, 30 Oct 2024 19:43:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730317180; cv=none; b=rmqGhSYg9cf4OmodJcT9tbcQAxvQZKc1Jo0v8mxO3yByTmf9WM12iQf/XcB+iYV9h/6RF1DdnlzMAl7dBIeEHQ1Xj9sm7ugOfD6yOM15GhAhQqy2lUnDHEqP3eDrsSiPzNCQtnZhJijVfqvlMlfa3cGVVO+nNhCDA7Tov6fN8Gw=
+	t=1730317395; cv=none; b=jy9df+qLiA2gXBuMf7KHKdD+rzwHH6qkSEeYAPRr984cxvPKXIqPjeBJwy347BRuhM9BWPLxxCERSWLVZsBDCv5c8AvayzWw4wBy3pYHNBMtpe0o8XVmQjqybfQxQ5kLOI9x0vOWetNeMG5VfjXfHLcfS9ydWXJYBPx2ss6sGl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730317180; c=relaxed/simple;
-	bh=0hN4Dxbc88JoFnTjDC6D8vcsDV41vBFTbn2UWygs4+w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D3PlErCUcFaBykgxA1Bt0NJg38Qc3hxotSO/1yo6vnslIFRpsnoXHE7Pjn9AMSFH5rfFPqA5uHO5Lc96N16WFdgkt87YA5k5qok0SJ5lxo5KKsbc21Ac8SWOir1ui/MDVYO5ZGM6tBb0rm5pgc6hZzCdjn9mIit2hZsTl7IbVwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=BaG/8wNw; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 307FBA8F;
-	Wed, 30 Oct 2024 20:39:32 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1730317172;
-	bh=0hN4Dxbc88JoFnTjDC6D8vcsDV41vBFTbn2UWygs4+w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BaG/8wNwxN5d0Z4/fRu0OKDMasM9ukvWucJhfwfasHvt3WCt9fQRc3mShkBSBVMmR
-	 uPFy+wL8R+2tpswHO2hn6kzkuF1g9/P80W3doG654t+RgUTHm6mPjQhWfoTVyXH54x
-	 qXvEJQrBg7UEVjsL5FbcbUVQQiXapjxsAr+iDdcQ=
-Date: Wed, 30 Oct 2024 21:39:28 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Sui Jingfeng <sui.jingfeng@linux.dev>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>, Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Johan Hovold <johan@kernel.org>, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] drm/bridge: Fix assignment of the of_node of the
- parent to aux bridge
-Message-ID: <20241030193928.GC920@pendragon.ideasonboard.com>
-References: <20241018-drm-aux-bridge-mark-of-node-reused-v2-1-aeed1b445c7d@linaro.org>
- <ux2lfkaeoyakulhllitxraduqjldtxrcmpgsis3us7msixiguq@ff5gfhtkakh2>
- <f2119a4d-7ba3-4f11-91d7-54aac51ef950@linux.dev>
+	s=arc-20240116; t=1730317395; c=relaxed/simple;
+	bh=S/8f/svQwtc3ttjndR66kZ+IeK+o+RZWRYVbwNGk2zw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JUlFTz+2Pccfp3LpGVVNMCx20lc+W0bUZzt33oRUyPGjbQLaBBArpiv6sBNYSqEDHIryCRMrHhoJydeD9EqEYr17vviHxePGKKxDbK5qbiEGZwkax2h62nGX/cUVxP7cD1F6mAD3kn05L1JDFGPwaIAVdkd+9utuOnovoQ00M54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qrspVtxc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A275C4CED3;
+	Wed, 30 Oct 2024 19:43:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730317394;
+	bh=S/8f/svQwtc3ttjndR66kZ+IeK+o+RZWRYVbwNGk2zw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=qrspVtxcSFjC4GsFuPgycBhygvYjeoRmE42utunbGEr1FgKLLsRadQtwV59sUVRYl
+	 4XvjTWXuLTNzBL5VWzaDGT08+KmTOfkxXU3JB917uuqD/AGp0Fw4EMJkpTZouXvX2C
+	 KcviWrDndhkVyuAqKfaDW9kt9GJ4bQxDgP4rm2MT3B3cdzdnC+sduJ0D7KXvqe8ieH
+	 p5SezR9s6N8psWhQKj8c64Ac39s5ErG7AgPCFIkOWBMzfI4YSeLjlFPBtgkDBQMkjE
+	 HttOwzl+lMxkL18NWSWvlOsJ8MfcSOLojZYVWSVPsAzwhYYnIyuwtLiSWnWrfjitNQ
+	 8opm0OoHtQ/Sw==
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2fb559b0b00so1520531fa.0;
+        Wed, 30 Oct 2024 12:43:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUKHZcLprlr8/MT+RhL0eRVsBVkpbFJ8C2REi7NZ7j9gAgly4P6Fuix7VgvPmn4fDGgfQmUqE2Q@vger.kernel.org, AJvYcCWpCq+TaKs70zbbhN4OH1/sBnaeibkuHsbROZljE2wmOad/sa6qwtPxH1jRA0Ozw3Xb68l+ebHsOs0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHwMPfSpZhqo+MWWGQa36SRjv+nT+51M/OJt5P7rVwj6mq+U/C
+	B8fbUPuADpwnkjjuZ/VPsu4xpX79ZjhLp+/FQ7kADbELQXN5zJihNDyjrNoCHyEp+2TNLYRqSdl
+	V6yVE7oIUe1FgA+bJFjYl01VLiA0=
+X-Google-Smtp-Source: AGHT+IGQ64FurlERG4cfcirG//LhB9wVC/DhHSjDHdYVZ5JLpFkzc1kIKzqqhpGu0woNb/Hkwyl6hv/1jzJj0kbHyG4=
+X-Received: by 2002:a05:651c:550:b0:2fa:c913:936 with SMTP id
+ 38308e7fff4ca-2fcbdf61bfcmr86034501fa.1.1730317392793; Wed, 30 Oct 2024
+ 12:43:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <f2119a4d-7ba3-4f11-91d7-54aac51ef950@linux.dev>
+References: <20240912155159.1951792-2-ardb+git@google.com> <ec7db629-61b0-49aa-a67d-df663f004cd0@kernel.org>
+ <29b39388-5848-4de0-9fcf-71427d10c3e8@kernel.org> <58da4824-523c-4368-9da1-05984693c811@kernel.org>
+ <899f209b-d4ec-4903-a3e6-88b570805499@gmail.com> <b7501b2c-d85f-40aa-9be5-f9e5c9608ae4@kernel.org>
+ <e42149a6-7c1f-48d1-be94-1c1082b450e0@gmail.com> <ZyJ6QHc9FetDckqo@PC2K9PVX.TheFacebook.com>
+In-Reply-To: <ZyJ6QHc9FetDckqo@PC2K9PVX.TheFacebook.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Wed, 30 Oct 2024 20:43:01 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXERg=g_G37uax7U6Pf_Umx_Tt9vABJoFHjXYAVaJ8AwPw@mail.gmail.com>
+Message-ID: <CAMj1kXERg=g_G37uax7U6Pf_Umx_Tt9vABJoFHjXYAVaJ8AwPw@mail.gmail.com>
+Subject: Re: [PATCH] efistub/tpm: Use ACPI reclaim memory for event log to
+ avoid corruption
+To: Gregory Price <gourry@gourry.net>
+Cc: Usama Arif <usamaarif642@gmail.com>, Jiri Slaby <jirislaby@kernel.org>, 
+	Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org, stable@vger.kernel.org, 
+	Breno Leitao <leitao@debian.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Oct 31, 2024 at 12:45:24AM +0800, Sui Jingfeng wrote:
-> Hi,
-> 
-> On 2024/10/18 23:43, Dmitry Baryshkov wrote:
-> > On Fri, Oct 18, 2024 at 03:49:34PM +0300, Abel Vesa wrote:
-> >> The assignment of the of_node to the aux bridge needs to mark the
-> >> of_node as reused as well, otherwise resource providers like pinctrl will
-> >> report a gpio as already requested by a different device when both pinconf
-> >> and gpios property are present.
-> >> Fix that by using the device_set_of_node_from_dev() helper instead.
-> >>
-> >> Fixes: 6914968a0b52 ("drm/bridge: properly refcount DT nodes in aux bridge drivers")
-> >> Cc: stable@vger.kernel.org      # 6.8
-> >> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> >> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-> >> ---
-> >> Changes in v2:
-> >> - Re-worded commit to be more explicit of what it fixes, as Johan suggested
-> >> - Used device_set_of_node_from_dev() helper, as per Johan's suggestion
-> >> - Added Fixes tag and cc'ed stable
-> >> - Link to v1: https://lore.kernel.org/r/20241017-drm-aux-bridge-mark-of-node-reused-v1-1-7cd5702bb4f2@linaro.org
-> >> ---
-> >>   drivers/gpu/drm/bridge/aux-bridge.c | 3 ++-
-> >>   1 file changed, 2 insertions(+), 1 deletion(-)
-> >>
-> > Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> 
-> Technically speaking, your driver just move the burden to its caller.
-> Because this driver requires its user call drm_aux_bridge_register()
-> to create an AUX child device manually, you need it call ida_alloc()
-> to generate a unique id.
+On Wed, 30 Oct 2024 at 19:26, Gregory Price <gourry@gourry.net> wrote:
+>
+> On Wed, Oct 30, 2024 at 05:13:14PM +0000, Usama Arif wrote:
+> >
+> >
+> > On 30/10/2024 05:25, Jiri Slaby wrote:
+> > > On 25. 10. 24, 15:27, Usama Arif wrote:
+> > >> Could you share the e820 map, reserve setup_data and TPMEventLog address with and without the patch?
+> > >> All of these should be just be in the dmesg.
+> > > efi: EFI v2.6 by American Megatrends
+>
+> Tossing in another observation - the AMI EFI we've been working with has been
+>
+> EFI v2.8 by American Megatrends
+> or
+> EFI v2.9 by American Megatrends
+>
+> We have not seen this particular behavior (cold boot corruption issues) on top
+> of these version.  Might be worth investigating this issue.
+>
+> you may also want to investigate this patch set:
+>
+> https://lore.kernel.org/all/20240913231954.20081-1-gourry@gourry.net/
+>
+> which I believe would have caught your "eat all memory" sign extention issue.
+>
+> This is queued up for v6.13 i think - but possibly 1/4 deserves a stable mark.
+>
 
-There's a relevant discussion for a ti-sn65dsi86 patch, see
-https://lore.kernel.org/r/20241030102846.GB14276@pendragon.ideasonboard.com
+To me, it does not seem obvious at all that the TPM code is the
+culprit here. The firmware produces a corrupted memory attributes
+table now that the EFI stub uses ACPI reclaim memory for the TPM event
+log, but to me, it smells like a firmware issue, not an issue in the
+EFI stub. (Pool allocations can trigger page allocations, affecting
+the layout of the EFI memory map).
 
-I agree it shouldn't be the responsibility of each caller to generate
-unique IDs.
-
-> Functions symbols still have to leak to other subsystems, which is
-> not really preserve coding sharing.
-> 
-> What's worse, the action that allocating unique device id traditionally
-> is the duty of driver core. Why breaks (so called) perfect device driver
-> model by moving that out of core. Especially in the DT world that the
-> core knows very well how to populate device instance and manage the
-> reference counter.
-> 
-> HPD handling is traditionally belongs to connector, create standalone
-> driver like this one *abuse* to both Maxime's simple bridge driver and
-> Laurent's display-connector bridge driver or drm_bridge_connector or
-> whatever. Why those work can't satisfy you? At least, their drivers
-> are able to passing the mode setting states to the next bridge.
-> 
-> Basically those AUX drivers implementation abusing the definition of
-> bridge, abusing the definition of connector and abusing the DT.
-> Its just manually populate instances across drivers.
-
--- 
-Regards,
-
-Laurent Pinchart
+So let's keep an open mind here, and not stare ourselves blind on the
+TPM event log code.
 
