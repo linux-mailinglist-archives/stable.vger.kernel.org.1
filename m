@@ -1,124 +1,135 @@
-Return-Path: <stable+bounces-89320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BF749B63E4
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 14:17:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF7979B63F1
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 14:20:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB58E1F221A0
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 13:17:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E28091C20EE4
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 13:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D2161FFE;
-	Wed, 30 Oct 2024 13:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7DD1E3DC5;
+	Wed, 30 Oct 2024 13:20:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UM8IIhHW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VdYFrGDW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1415A3D551;
-	Wed, 30 Oct 2024 13:17:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E8245023;
+	Wed, 30 Oct 2024 13:19:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730294262; cv=none; b=hq3/bXVhB/5wj+Uj1cLgxp5xTkNiIRk/SNoEDz0K/yDdCAlvytwlBYUJbv46KXR90ZdXGqhG/PGXxmuXgK44XFZ9G+OfX5zQUJ8BwGyLJ3mtJIdIDK1zDvDA0R36J7IjACF0Ux21VpOFeVFkSrCN8SolWkfKetR5KYL9zbRvZjY=
+	t=1730294400; cv=none; b=TzQwyaV3Lfih4aY7OS8PNAkYlClcKKsU4RxMb6lnxh1161M3fwpJUkFKJmTQBdW4mbYI3UqbePMovBa/7oUU7RpkHVbRzN2Vjmy7ieC3l49CUBZM2aXEZpiZNxb2tPiOR5LA2kvcV8G4Mml5lzmWnisc9GEVK3DxLencSsfW+Sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730294262; c=relaxed/simple;
-	bh=7LSgZxYpBGd1npYy4xgr5/IFiST5qDnV77eehbUTEDc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=px3KVHNwU6I/0/rOw0VsLPp8m6idJnOcagpRUqC/Qf/Ys8+dQwS543rrNpBHnpRH4+om54HeKk6ib4taXk6EjFNK2cIbPVrFftJzo6Ua9b2G//jS2a702UUeExRW0A5DCT256sw9zKk2CsNFWWWVL1zRlS6sFK7uPy/SWJ7KjDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UM8IIhHW; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a9a3dc089d8so990821766b.3;
-        Wed, 30 Oct 2024 06:17:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730294257; x=1730899057; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0gyxyoUviu6uqUWH/cy1i8mHHBIJcAPqfiqibX0KqM8=;
-        b=UM8IIhHWXPrgXvB6DFxfbO+hlcSp4QqmVJYWoxLw4RXa+/PLH3BsA1CZ+KHDzd1Iqy
-         p8XRmUBe+k0cVhHrlhUWAxaKE3thcoOgaoyq3KCKMG3vb3fESB//Su96NMeEIQdcXqqA
-         T0Wy9aPgxPi0DxUBb+OJSBI+GKAu073R9rw72+uRjlyfPeosUnF9DoFC3uYF1ZXCUl26
-         xd6I9jwwQC+Bs7b2gXYUulc2F2wKafUrDFtg0a1uVe/wKwH7iWoNSuZNiyNse9fu7t2t
-         5CrbbfXOVXeX189j3CCY88vinu6gP8b6YfGOgerdKOW94lgt0Y+Cd8MVpvizFDmqNmpf
-         migg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730294257; x=1730899057;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0gyxyoUviu6uqUWH/cy1i8mHHBIJcAPqfiqibX0KqM8=;
-        b=OP42+RMvt0MNQp9cD5Yq3T134Q4gv9fgEIQ1h5mFe5cMVKbCdI0vZuMOYaKoTIQ4rg
-         R9YT4eiJbF6CwwQSyhSec/R52YXtpLHCNzJs+w4Sxa/k9/NNGIJGIduMWzUowxYM+VDw
-         DOh+niSrdFq13LhsPznmVNuFBIP53jX0kZgj4TrqPhhHU/AZK7/T6C1519GDNqIGxr8M
-         wwhBTGl74MJMyPUW5ikiCNJA2UhP/ZKiLn9fqYzxFe+KELZ/uwjjLoZluINaOe1mQxjq
-         si6c3Y5CgGL+m2pFtm2igYiagE6xzjgU+3R2adWWXuxoDFLRCTJPXDjjUpeBGL0PZZhp
-         HIWA==
-X-Forwarded-Encrypted: i=1; AJvYcCUdJt/yY2QB9YjWv/b3+IGH4qJVB8bQsgSE/rJE3uHkeA4yYz9bK1+ZflgnkKF4tERTEZ2ow50sBh/hjY0=@vger.kernel.org, AJvYcCVnvpk4rIX+rLX99YL0k03Ahr6FvKF+Q349KTwfDKQfb6gbsE6Dbjq+aW9r5cFzUeQIyAlkRkHp@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/VpPLwskW/3j4uEugkGE+uX7aB2keWJVsn9RD5mSPRFmhbZGb
-	PqyfNskH6OWbDgz51+XwZUy/jR6ENXbRJ+xQSxFfpa2856SRkVmjTzaDBQ==
-X-Google-Smtp-Source: AGHT+IER/5f2G4la7GINKS4UizPtPjbUp+XOatRjnXnsYQvTjY1fbBAFhhk4Vr2lAow13dab+g1eBA==
-X-Received: by 2002:a17:907:3e20:b0:a99:d587:6045 with SMTP id a640c23a62f3a-a9de5d977b4mr1381667166b.19.1730294257251;
-        Wed, 30 Oct 2024 06:17:37 -0700 (PDT)
-Received: from [192.168.0.50] ([79.113.150.231])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b1dec7b59sm570613766b.44.2024.10.30.06.17.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Oct 2024 06:17:36 -0700 (PDT)
-Message-ID: <c47081db-4a7a-46df-bb4b-82f8dda94460@gmail.com>
-Date: Wed, 30 Oct 2024 15:17:34 +0200
+	s=arc-20240116; t=1730294400; c=relaxed/simple;
+	bh=9BXZE8ctKHlk8G6n9aKeSTsvv6Nq/CVpyvu2WPt6kpw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OSIvRNFrTtXPRqbGu1zh1AxvSnOgnDyPH98a14CYv39jhXP9ro1NlaFrBpb93qh1cFnhOykQV0ojJZ/PQLklHvlUVOb2VZQ64N2x5UKrZ/thyIMQhF6ay7ks6ni+sxBzm7P1pHsMiTqzb7KHUh34klZIGYtJ7hpZyEbj4kevv2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VdYFrGDW; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730294397; x=1761830397;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=9BXZE8ctKHlk8G6n9aKeSTsvv6Nq/CVpyvu2WPt6kpw=;
+  b=VdYFrGDWrUiNZxUI0ig54t88Ml1oEWE8TLCJe/t+EX8/GHUl+WRTsPPw
+   R2HwDF97JKcmbEgr4F5lLK7lTHS0Zws0dK/nrH3+ctNREB0VT1bgqXAUH
+   AdLbAvppkNYitognD7OgOxnA/bS8FalGJxL0quvV4C3vAJtoOI3Fiq0R9
+   t51qPtv/LzSaTla7uOJds2EkQ+Re8bMItN3XqAZYrA3FZiCTpVleHHEVJ
+   2vf6E1jokeLr9n104EeEGOq5I1sFDRGnoi4Av0Sw5M/b4Z6Ab+nSLDYcF
+   4T9M2zRBErSleyaOTdeZ4KVOcpOgVv0tBhZ2HRjktKLF6PsfRi3Xax/Gh
+   w==;
+X-CSE-ConnectionGUID: NrR09Pj7TE271B1/fVmbtA==
+X-CSE-MsgGUID: 1L275cuRRLy/2YgY8BsPzg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="47468611"
+X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
+   d="scan'208";a="47468611"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 06:19:56 -0700
+X-CSE-ConnectionGUID: nL7PYqFGSOm2vkyQGt6Ukw==
+X-CSE-MsgGUID: mdn5Rj3cSWqoqn1T8KKfMQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="87097344"
+Received: from kuha.fi.intel.com ([10.237.72.152])
+  by orviesa003.jf.intel.com with SMTP; 30 Oct 2024 06:19:52 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 30 Oct 2024 15:19:51 +0200
+Date: Wed, 30 Oct 2024 15:19:51 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Rex Nie <rex.nie@jaguarmicro.com>
+Cc: bryan.odonoghue@linaro.org, gregkh@linuxfoundation.org,
+	linux@roeck-us.net, caleb.connolly@linaro.org,
+	linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, angus.chen@jaguarmicro.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] usb: typec: qcom-pmic: init value of
+ hdr_len/txbuf_len earlier
+Message-ID: <ZyIyd3QmUxUCqglH@kuha.fi.intel.com>
+References: <20241030022753.2045-1-rex.nie@jaguarmicro.com>
+ <20241030103256.2087-1-rex.nie@jaguarmicro.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: rtlwifi: Drastically reduce the attempts to read
- efuse bytes in case of failures
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
- Ping-Ke Shih <pkshih@realtek.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "kvalo@kernel.org" <kvalo@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
- "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com"
- <syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com>
-References: <20241025150226.896613-1-gpiccoli@igalia.com>
- <ed8114c231d1423893d3c90c458f35f3@realtek.com>
- <61aae4ff-8f80-252e-447a-cd8a51a325a1@igalia.com>
- <c93c8e9c109b444b91489ac0e88b987c@realtek.com>
- <14c3164c-0e1e-4d9d-89d9-28d3240861c6@gmail.com>
- <d6e01e56-51e7-cbb2-024a-c7db86dc70fb@igalia.com>
- <baf6d88e-e753-4aaf-a340-991373d77fa8@gmail.com>
- <984038be-6cc2-3acc-8ab0-5720a79dbf07@igalia.com>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <984038be-6cc2-3acc-8ab0-5720a79dbf07@igalia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241030103256.2087-1-rex.nie@jaguarmicro.com>
 
-On 29/10/2024 19:58, Guilherme G. Piccoli wrote:
-> On 29/10/2024 13:55, Bitterblue Smith wrote:
->> [...]
->>
->> I tested your patch. Both my devices can still read the efuse.
->>
+On Wed, Oct 30, 2024 at 06:32:57PM +0800, Rex Nie wrote:
+> If the read of USB_PDPHY_RX_ACKNOWLEDGE_REG failed, then hdr_len and
+> txbuf_len are uninitialized. This commit stops to print uninitialized
+> value and misleading/false data.
 > 
-> This is super great, thank you! Would you like to have a Tested-by on
-> that? If so, just send the name / email of your preference and I can add
-> it to the V2. I'll implement the PCI guard and re-submit, thanks again!
+> ---
+> V2 -> V3:
+> - add changelog, add Fixes tag, add Cc stable ml. Thanks heikki
+> - Link to v2: https://lore.kernel.org/all/20241030022753.2045-1-rex.nie@jaguarmicro.com/
+> V1 -> V2:
+> - keep printout when data didn't transmit, thanks Bjorn, bod, greg k-h
+> - Links: https://lore.kernel.org/all/b177e736-e640-47ed-9f1e-ee65971dfc9c@linaro.org/
 > 
-> Cheers,
-> 
-> 
-> Guilherme
+> Cc: stable@vger.kernel.org
+> Fixes: a4422ff22142 (" usb: typec: qcom: Add Qualcomm PMIC Type-C driver")
+> Signed-off-by: Rex Nie <rex.nie@jaguarmicro.com>
 
-Sure,
+Sorry, but this is still broken.
 
-Tested-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Those tags need to come before the "---". Otherwise they will not
+end-up into the actual commit when this patch is applied.
+
+It should look something like this:
+
+        usb: typec: qcom-pmic: init value of hdr_len/txbuf_len earlier
+
+        If the read of USB_PDPHY_RX_ACKNOWLEDGE_REG failed, then hdr_len and
+        txbuf_len are uninitialized. This commit stops to print uninitialized
+        value and misleading/false data.
+
+        Cc: stable@vger.kernel.org
+        Fixes: a4422ff22142 (" usb: typec: qcom: Add Qualcomm PMIC Type-C driver")
+        Signed-off-by: Rex Nie <rex.nie@jaguarmicro.com>
+        ---
+        V2 -> V3:
+        - add changelog, add Fixes tag, add Cc stable ml. Thanks heikki
+        - Link to v2: https://lore.kernel.org/all/20241030022753.2045-1-rex.nie@jaguarmicro.com/
+        V1 -> V2:
+        - keep printout when data didn't transmit, thanks Bjorn, bod, greg k-h
+        - Links: https://lore.kernel.org/all/b177e736-e640-47ed-9f1e-ee65971dfc9c@linaro.org/
+
+         drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c | 8 ++++----
+         1 file changed, 4 insertions(+), 4 deletions(-)
+
+        diff --git a/drivers/usb/typec...
+
+thanks,
+
+-- 
+heikki
 
