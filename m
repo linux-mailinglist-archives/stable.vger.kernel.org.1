@@ -1,131 +1,127 @@
-Return-Path: <stable+bounces-89369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5960A9B6E66
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 22:08:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC6D9B7069
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 00:26:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B48D1C20BBF
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 21:07:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60D9A28261F
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 23:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80FD71EF940;
-	Wed, 30 Oct 2024 21:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996BE1E572F;
+	Wed, 30 Oct 2024 23:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a/HnXUdP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e6lXw5AF"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E9114F90
-	for <stable@vger.kernel.org>; Wed, 30 Oct 2024 21:07:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDDD1BD9E5;
+	Wed, 30 Oct 2024 23:26:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730322476; cv=none; b=c8yUD1w7RgbmYFd00fiGmrMJZi+2/R5kzAqPZe7HU6kP6JZ57zApcRMW43C+pVkrMUTHXEO5tU1Ths688tkoBF9CpJ1euh73uYdpQoeZkTNmCpsi3RLcxAGhbPDrXBCxRLuY3CIcHanunG0kCwWNOrS0WCpiMApTtIZ/qh2bXmo=
+	t=1730330765; cv=none; b=rggOkzjDAxebcWfGbNh3lofviW1iaDkDwPj8RhH0ylEjixGFuqbTYz0fE4sPmH5XygP2/QRn6lpc1xQQdmTJPIhC1t3BnwteqAJ7UEtWGt3Zb8aRwXLInFtO+A4Xs+m0sPJ4MFnpmhNYmiA6Wxal1T/t72JoBQjcn2/psC0spMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730322476; c=relaxed/simple;
-	bh=iyugDT8KwE3v90s8BHydvH0MvQMrAVgSaemFzpK91IE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TbPehYfwvYlaez5r+vwC1HenpUipWgWVK5iSUK1pu6gudfEfREIR0FweZquzd2iFzimxPHqXI/4iFBaxwg1QhYa4VMRRZANRl9klyDkoDYreORlZ7h0lpkToPrM4METFJYNC6RpwzYw4Pg6nj+FEmX1wUaGY6yZqmLG1DW/k7pM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a/HnXUdP; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730322474; x=1761858474;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=iyugDT8KwE3v90s8BHydvH0MvQMrAVgSaemFzpK91IE=;
-  b=a/HnXUdPvhV/XnV9g1e5QW4SD5a004eP/gIjds3rofJoPyJzV2QMQrqQ
-   JxPleiIOfFvZJT4bLb6HiuwfCKHbXmPivuaoHHbI2eVvVsDb8bpZc5bV5
-   Y+iGgGH7zOw2kDv2p5hJdiuzvs2+v1EMa0vcMAA44ZfwM+iFzNqlxH8dh
-   wMuAwmSpPL+i2hDQ6I13o1yE7W6Ku7zUkrUdRKUdXGInDdzbC/putWUSg
-   iMZcGVGyNuqGKBQn15e6rWETW4Qaq1Ce+vHKVwkqefHdX91CFFKV+2ARK
-   1KWXvOTuU+8zcQ5Uy5VlfwM50ZBYAD3qhMp6ulld13hgu8sMrHhuHxQvK
-   g==;
-X-CSE-ConnectionGUID: yO+O8ETRRdSM+sLDAApaaA==
-X-CSE-MsgGUID: JRgNj44CSoCf4VsQu/jqOA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="29490596"
-X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
-   d="scan'208";a="29490596"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 14:07:53 -0700
-X-CSE-ConnectionGUID: Yy0i89OwRJCBnWB8QphNOg==
-X-CSE-MsgGUID: w7XGJw3cQWi0mBcM4lLHLg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
-   d="scan'208";a="82550507"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
-  by fmviesa008.fm.intel.com with SMTP; 30 Oct 2024 14:07:51 -0700
-Received: by stinkbox (sSMTP sendmail emulation); Wed, 30 Oct 2024 23:07:50 +0200
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-To: intel-gfx@lists.freedesktop.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] drm/i915/color: Stop using non-posted DSB writes for legacy LUT
-Date: Wed, 30 Oct 2024 23:07:50 +0200
-Message-ID: <20241030210750.6550-1-ville.syrjala@linux.intel.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1730330765; c=relaxed/simple;
+	bh=ZJS3c9CIuIH5R8ZNBpllfZrelj8hlM7EAnSyODfN+Xs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=D485iSidTrahtgZ+6thWJ/OhTPmqPgjXF8qPjJsLidfJnHTsV3gpmafmCaE2zSb4rAOZlVpX9QiKQtCI8gYg8/oP22SWJhnCXLgOuu7ls53Te8EMx0SdVvhewGdecbZunq/Jo7KZD1B2A/3U/8x0rAIF9QGITgEZZK3DSZAZYgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e6lXw5AF; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43155abaf0bso2951895e9.0;
+        Wed, 30 Oct 2024 16:26:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730330761; x=1730935561; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ayf5CxyN8YABWU2vthcA1IIkJNbI0/ggxmpxkX56+Fo=;
+        b=e6lXw5AFzCpjCPcd+e8pz22vVt5XRatnWgpyMN2ct9FQGdLN1uOJP+fcFOGDvPYw+G
+         fDrOZ4BbOKBn63FOVtM2HO0WSRDumwLMP3pnxs5DbqL6/oFVwk+qMX8VT44Ng5Fy2BWs
+         O43qXBonK31zDe1p+3p4Ik/dPUacRUm3/DtC1hS9ZU9GozmxUHYpW6MsfPo3GJpO/6g0
+         A3BOl/tHimHA9Q2w8Z+9Yshcmnf09vtxr6bTwdckAoMXKXyHfgKJmjJxyS2w96LRmKaK
+         sLFWgY2jHYosmjnKt/KidxntqGSfKxuILWbcfRgGDC2YtJRu3m9uZD87va08/t19AumM
+         Wq9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730330761; x=1730935561;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ayf5CxyN8YABWU2vthcA1IIkJNbI0/ggxmpxkX56+Fo=;
+        b=O1Tt0dXm8z1vzL4mXXTpohWHyAmDGGRTdwYKJxM0YXzO6ZVhkOWb3ecCbnIarGv69e
+         BnLlh5Zu87IxDWdeUhiNUuOvloXJYMavCbrdXrOHDFmhwBgeNfdli1xMNzTTCXNNuMvw
+         Tw8RsIAtdI/mFBDeI+HEep2oj3GtgP5kDFA/zG7Y+mdpQmR6i7wAQUia0C0byNRaMQ7J
+         r8NFTqpSpfOQvyX3bTzOAJgsFUPEqQBOM5N2f+766kbm1LeOFzxWYvWpvZMCahJvHj3R
+         hBeW9RtaygTnHYxmGipKw9eQ2k4Wr+yVmm0atVtmIn4g+jDQBKTTV8xW9Vl+Yo5RK+Un
+         ko3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV/iqhWs2kyKJupVkTNrBEdAj0mKa7Vi/ioLjKSE5vzBl7+XqdVceRZBiw+2Fw/0UPaGmTHutk0@vger.kernel.org, AJvYcCVmv9ZIgydNwPk58VNlAZ7epHrYNNr5HwEJq/K/AxIBit4O8ZU/3iEtqnujVSl0SrOo7fm+nL5Mgj0=@vger.kernel.org, AJvYcCXtXyzeiG9jm6nnw9G3HrdE/U99xhL6K4BHPHr3foDDjSB5F41GXnSy19nGJ38dBMe6D3uXG5zpzf9UEwEk@vger.kernel.org
+X-Gm-Message-State: AOJu0YzB7ULEMdO3qu7ZerTui6wuRqm3Zlh0X5J3eYYQR0Q9NJST9Wfj
+	TuSfamIznlcvAGusGCLKCeMiwsgFd8y6rrsj1+4rsvgHMgbsNJGJB/LDcMDx
+X-Google-Smtp-Source: AGHT+IEz/U5uiaiXWQrWeP5TcNccKKF8dYFpWwG65GCrbRFPu/TD7aOJCsyOctmhAHuLNpJ4UY4Yeg==
+X-Received: by 2002:a05:600c:3c9a:b0:431:518a:683b with SMTP id 5b1f17b1804b1-4319acacb3cmr128581105e9.18.1730330761129;
+        Wed, 30 Oct 2024 16:26:01 -0700 (PDT)
+Received: from [127.0.1.1] (2a02-8389-41cf-e200-fbf3-0656-23c1-5ba1.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:fbf3:656:23c1:5ba1])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd947b2bsm35338395e9.25.2024.10.30.16.25.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Oct 2024 16:25:59 -0700 (PDT)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH 0/2] clk: renesas: cpg-mssr: fix 'soc' node handling and
+ automate cleanup
+Date: Thu, 31 Oct 2024 00:25:55 +0100
+Message-Id: <20241031-clk-renesas-cpg-mssr-cleanup-v1-0-628274ecbfcb@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIPAImcC/x3MwQqDMAyA4VcpOS9gWxm4V5EdaowubKslQRHEd
+ 7d4/P7Df4CxChu83AHKm5gsucI/HNAn5ZlRxmoITWh9Ez3S74vKmS0ZUpnxb6Y1csprQd/FOE7
+ POFBHUBdFeZL93vfv87wA60C6sW4AAAA=
+To: Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, 
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc: linux-renesas-soc@vger.kernel.org, linux-clk@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1730330758; l=1109;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=ZJS3c9CIuIH5R8ZNBpllfZrelj8hlM7EAnSyODfN+Xs=;
+ b=zbkW5IPndQg0IHbcwHCUulMZ8RjIO+7ZYUMR690sPby0fruKkFlwMpjo/PZdrLS5iF42tOc+h
+ 5m8s/x5H5moDp1DuMix1oXJU2LVNq2q+AVR+DoEiSNdKOG7W7YMFxN2
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+This series releases the 'soc' device_node when it is no longer required
+by adding the missing calls to of_node_put() to make the fix compatible
+with all affected stable kernels. Then, the more robust approach via
+cleanup attribute is used to simplify the handling and prevent issues if
+the loop gets new execution paths.
 
-Apparently using non-posted DSB writes to update the legacy
-LUT can cause CPU MMIO accesses to fail on TGL. Stop using
-them for the legacy LUT updates, and instead switch to using
-the double write approach (which is the other empirically
-found workaround for the issue of DSB failing to correctly
-update the legacy LUT).
+These issues were found while analyzing the code, and the patches have
+been successfully compiled, but not tested on real hardware as I don't
+have access to it. Any volunteering for testing is always more than
+welcome.
 
-Cc: stable@vger.kernel.org
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12494
-Fixes: 25ea3411bd23 ("drm/i915/dsb: Use non-posted register writes for legacy LUT")
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- drivers/gpu/drm/i915/display/intel_color.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+Javier Carrasco (2):
+      clk: renesas: cpg-mssr: fix 'soc' node handling in cpg_mssr_reserved_init()
+      clk: renesas: cpg-mssr: automate 'soc' node release in cpg_mssr_reserved_init()
 
-diff --git a/drivers/gpu/drm/i915/display/intel_color.c b/drivers/gpu/drm/i915/display/intel_color.c
-index 174753625bca..aa50ecaf368d 100644
---- a/drivers/gpu/drm/i915/display/intel_color.c
-+++ b/drivers/gpu/drm/i915/display/intel_color.c
-@@ -1357,19 +1357,19 @@ static void ilk_load_lut_8(const struct intel_crtc_state *crtc_state,
- 	lut = blob->data;
- 
- 	/*
--	 * DSB fails to correctly load the legacy LUT
--	 * unless we either write each entry twice,
--	 * or use non-posted writes
-+	 * DSB fails to correctly load the legacy LUT unless
-+	 * we either write each entry twice, or use non-posted
-+	 * writes. However using non-posted writes can cause
-+	 * CPU MMIO accesses to fail on TGL, so we choose to
-+	 * use the double write approach.
- 	 */
--	if (crtc_state->dsb_color_vblank)
--		intel_dsb_nonpost_start(crtc_state->dsb_color_vblank);
--
--	for (i = 0; i < 256; i++)
-+	for (i = 0; i < 256; i++) {
- 		ilk_lut_write(crtc_state, LGC_PALETTE(pipe, i),
- 			      i9xx_lut_8(&lut[i]));
--
--	if (crtc_state->dsb_color_vblank)
--		intel_dsb_nonpost_end(crtc_state->dsb_color_vblank);
-+		if (crtc_state->dsb_color_vblank)
-+			ilk_lut_write(crtc_state, LGC_PALETTE(pipe, i),
-+				      i9xx_lut_8(&lut[i]));
-+	}
- }
- 
- static void ilk_load_lut_10(const struct intel_crtc_state *crtc_state,
+ drivers/clk/renesas/renesas-cpg-mssr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+---
+base-commit: 86e3904dcdc7e70e3257fc1de294a1b75f3d8d04
+change-id: 20241031-clk-renesas-cpg-mssr-cleanup-1933df63bc9c
+
+Best regards,
 -- 
-2.45.2
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
 
