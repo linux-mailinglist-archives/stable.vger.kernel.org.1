@@ -1,139 +1,179 @@
-Return-Path: <stable+bounces-89309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D0F79B5D8D
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 09:22:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D1E99B5E6F
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 10:06:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACF571F228A3
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 08:22:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 616391C20A28
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 09:06:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2708D1E0E05;
-	Wed, 30 Oct 2024 08:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74301E1A37;
+	Wed, 30 Oct 2024 09:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EajETXJv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ELrbBiJw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94BA1DFE16;
-	Wed, 30 Oct 2024 08:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AD01E1C14;
+	Wed, 30 Oct 2024 09:06:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730276570; cv=none; b=cnZtMfaqlQ70GJfz+0rwe2uG5S4d+aYa8SahNuR/+2UtWjfv/jYEdbpfMCZNrqgy9TzMsrnZWots9XqWsqImDiq5AzLTxReols7Jak238y4i7sPi/myA95fUuF4Uo098MP10gSRuqldvzr0QtSmpplKsBe7xMjYk4E3DWUymeBM=
+	t=1730279191; cv=none; b=L1atPmcMcymWlpLoPlEyZRYobY3MY+spQHSdlkUq7f3iqIY4iONB4En0hCM4dw1zuzUCniQ4UsYoy/DBsOsn+9XQghzwSo5yTQ4zvPuKudyZiv/Bi0G8tGh7izSiYekcCv6AC8Xw8zofjben+X4OUU+9V0Kbb7uJIt+b3N4WjLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730276570; c=relaxed/simple;
-	bh=3M44dfapTogOZEkofhgJIny5tBNB1l5zW1bJlM7opcA=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hf+y1MIDu4HsJ2e54rOaN8dFnVkr0AELrkjXj6JYZqfX02iBahdvRdNRrZvXZ0pXnP0OW90Bw2DtP5BEBHBuDPx5WBVAQBuSHq/3WAxW+RpkJI0gB1toyb0SgsOc4JtENDxjoqySGbahCD6PJNDehbRn4x4XsV5kqD6AxlikFZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EajETXJv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B242C4CEE4;
-	Wed, 30 Oct 2024 08:22:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730276570;
-	bh=3M44dfapTogOZEkofhgJIny5tBNB1l5zW1bJlM7opcA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EajETXJv8qf83oZumJdFmDKi1YuSTYcVJboRizdPM4kOF08PVYpgHsDuiL2irCxT/
-	 BcSNBlc4YlEGpAEN/+4GoZlrBtwoH0KRLcyBjwsKvfuoaw/xsgo4owrb9KK8q+V/g6
-	 Z45ExAUnwgBqaTjQmEWR2ZhdSAHI7RtsctQYQwGBjmUns1pDAhXykzfVRm8LWniZyI
-	 X626kEDouUsB/m4IuSDkecMChNtbfRLZgDM1vSvW47yIMO4cscfzTXic4mVZysjNXP
-	 5e+zvgw2NDrdleYej6e4LakesMFMiEzkpUQhRvLmoQiGmmCM45+QhMVihPwfxm0t0d
-	 iXSaje5ZYKoFw==
-Received: from 82-132-233-180.dab.02.net ([82.132.233.180] helo=wait-a-minute.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1t63yZ-008Bje-9r;
-	Wed, 30 Oct 2024 08:22:47 +0000
-Date: Wed, 30 Oct 2024 08:22:39 +0000
-Message-ID: <87iktat2y8.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Raghavendra Rao Ananta <rananta@google.com>
-Cc: Oliver Upton <oliver.upton@linux.dev>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	stable@vger.kernel.org,
-	syzbot <syzkaller@googlegroups.com>
-Subject: Re: [PATCH v2] KVM: arm64: Get rid of userspace_irqchip_in_use
-In-Reply-To: <CAJHc60xQNeTwSBuPhrKO_JBuikqZ7R=BM5rkWht3YwieVXwkHg@mail.gmail.com>
-References: <20241028234533.942542-1-rananta@google.com>
-	<868qu63mdo.wl-maz@kernel.org>
-	<CAJHc60x3sGdi2_mg_9uxecPYwZMBR11m1oEKPEH4RTYaF8eHdQ@mail.gmail.com>
-	<865xpa3fwe.wl-maz@kernel.org>
-	<CAJHc60xQNeTwSBuPhrKO_JBuikqZ7R=BM5rkWht3YwieVXwkHg@mail.gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1730279191; c=relaxed/simple;
+	bh=UHAvCgWVJbo/IoGy4cfK+JVAwccuRu6Xu7KbTRA9d2I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sV3NnXFZX71BOwTjPddOqqouzJnTo4aZlgGno3jfzOzg2gE4mHJEgpoAChsB/U+4wIjA/N14ejD10GTRM64BJ5/qCniUdOqSLgtEjlrU6gV2fwx4jspbfm04tKmaSyjCR5+kF+1w+4Yln9qXeWsT0j5/A8Pmoj8DRf3IpKo26gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ELrbBiJw; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730279190; x=1761815190;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=UHAvCgWVJbo/IoGy4cfK+JVAwccuRu6Xu7KbTRA9d2I=;
+  b=ELrbBiJwOgKriQ+KgjaLtJc+h7uC8qZOlbWr0bMG8FntFOmoVOuQtm2v
+   57GbJ4Hd+eGcW+jXbhCOHMdinB+lsWcL8AufnAW2lm7Fv2Jdlva+scziK
+   dr1LVvfwXe4OAokwPlQnAh8mB4gW+dedHybODAipNqG6pY9q+cUUzITAB
+   NQAdolyfbw/bjVwC4fYicmLKZw+qoZqpBLVPbm/rXKrRK5jE5aRBN+nah
+   C6r3o+KVl57ww0dnd/ct0LMF05iJy7p3J8yFTia3ePIB1xCBmHWKaBOuM
+   gRTHcP2rtI5Piq1Wmt1PVH0hFxfSxXXaQ30TWPMny6zUJj4PwPrJ0+V6J
+   Q==;
+X-CSE-ConnectionGUID: O9sxnTjASROMvqKfih1mPA==
+X-CSE-MsgGUID: zD45V6riRTOHmPvj9GJHcw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30115594"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="30115594"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 02:06:29 -0700
+X-CSE-ConnectionGUID: aL85xrH/RWGgAivk+/lliA==
+X-CSE-MsgGUID: jFHHloDnTvmvKXlW9ep40g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,244,1725346800"; 
+   d="scan'208";a="86192087"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa003.fm.intel.com with ESMTP; 30 Oct 2024 02:06:26 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+	id 46F682C1; Wed, 30 Oct 2024 11:06:25 +0200 (EET)
+Date: Wed, 30 Oct 2024 11:06:25 +0200
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Rick <rick@581238.xyz>
+Cc: Mario Limonciello <mario.limonciello@amd.com>, Sanath.S@amd.com,
+	christian@heusel.eu, fabian@fstab.de, gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org, regressions@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: Dell WD19TB Thunderbolt Dock not working with kernel > 6.6.28-1
+Message-ID: <20241030090625.GS275077@black.fi.intel.com>
+References: <000f01db247b$d10e1520$732a3f60$@581238.xyz>
+ <96560f8e-ab9f-4036-9b4d-6ff327de5382@amd.com>
+ <22415e85-9397-42db-9030-43fc5f1c7b35@581238.xyz>
+ <20241022161055.GE275077@black.fi.intel.com>
+ <7f14476b-8084-4c43-81ec-e31ae3f7a3c6@581238.xyz>
+ <20241023061001.GF275077@black.fi.intel.com>
+ <4848c9fe-877f-4d73-84d6-e2249bb49840@581238.xyz>
+ <20241028081813.GN275077@black.fi.intel.com>
+ <2c27683e-aca8-48d0-9c63-f0771c6a7107@581238.xyz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-SA-Exim-Connect-IP: 82.132.233.180
-X-SA-Exim-Rcpt-To: rananta@google.com, oliver.upton@linux.dev, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, stable@vger.kernel.org, syzkaller@googlegroups.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2c27683e-aca8-48d0-9c63-f0771c6a7107@581238.xyz>
 
-On Wed, 30 Oct 2024 00:16:48 +0000,
-Raghavendra Rao Ananta <rananta@google.com> wrote:
->=20
-> On Tue, Oct 29, 2024 at 11:47=E2=80=AFAM Marc Zyngier <maz@kernel.org> wr=
-ote:
-> >
-> > On Tue, 29 Oct 2024 17:06:09 +0000,
-> > Raghavendra Rao Ananta <rananta@google.com> wrote:
-> > >
-> > > On Tue, Oct 29, 2024 at 9:27=E2=80=AFAM Marc Zyngier <maz@kernel.org>=
- wrote:
-> > > >
-> > > > On Mon, 28 Oct 2024 23:45:33 +0000,
-> > > > Raghavendra Rao Ananta <rananta@google.com> wrote:
-> > > > >
-> > > > Did you have a chance to check whether this had any negative impact=
- on
-> > > > actual workloads? Since the entry/exit code is a bit of a hot spot,
-> > > > I'd like to make sure we're not penalising the common case (I only
-> > > > wrote this patch while waiting in an airport, and didn't test it at
-> > > > all).
-> > > >
-> > > I ran the kvm selftests, kvm-unit-tests and booted a linux guest to
-> > > test the change and noticed no failures.
-> > > Any specific test you want to try out?
-> >
-> > My question is not about failures (I didn't expect any), but
-> > specifically about *performance*, and whether checking the flag
-> > without a static key can lead to any performance drop on the hot path.
-> >
-> > Can you please run an exit-heavy workload (such as hackbench, for
-> > example), and report any significant delta you could measure?
->=20
-> Oh, I see. I ran hackbench and micro-bench from kvm-unit-tests (which
-> also causes a lot of entry/exits), on Ampere Altra with kernel at
-> v6.12-rc1, and see no significant difference in perf.
+Hi Rick,
 
-Thanks for running this stuff.
+On Wed, Oct 30, 2024 at 08:11:30AM +0100, Rick wrote:
+> Hi Mika,
+> 
+> Thank you for your email.
+> 
+> On 28-10-2024 09:18, Mika Westerberg wrote:
+> > 
+> > I still see similar issue even with the v6.9 kernel. The link goes up an
+> > down unexpectly.
+> > 
+> > I wonder if you could try to take traces of the control channel traffic?
+> > I suggest to use v6.11 kernel because it should have all the tracing
+> > bits added then install tbtools [1] and follow the steps here:
+> > 
+> >    https://github.com/intel/tbtools?tab=readme-ov-file#tracing
+> > 
+> > Then provide both full dmesg and the trace output. That hopefully shows
+> > if some of the access we are doing in the Linux side is causing the link
+> > to to drop. Let me know if you need more detailed instructions.
+> > 
+> > Also please drop the "thunderbolt.host_reset=0" from the command line as
+> > that did not help, so it is not needed.
+> 
+> Dropped thank you.
+> 
+> > 
+> > [1] https://github.com/intel/tbtools
+> 
+> tbtrace on 6.11.5:
+> https://gist.github.com/ricklahaye/69776e9c39fd30a80e2adb6156bdb42d
+> dmesg on 6.11.5:
+> https://gist.github.com/ricklahaye/8588450725695a0bd45799d3d66c7aff
 
-> timer_10ms                          231040.0                          902=
-.0
-> timer_10ms                         234120.0                            91=
-4.0
+Thanks! I suspect there is something we do when we read the sideband
+that makes the device router to "timeout" and retry the link
+establishment. There is also the failure when USB 3.x tunnel is created
+but we can look that after we figure out the connection issue.
 
-This seems to be the only case were we are adversely affected by this
-change. In the grand scheme of thins, that's noise. But this gives us
-a clear line of sight for the removal of the in-kernel interrupts back
-to userspace.
+Looking at the trace we are still polling for retimers when we see the
+unplug:
 
-Thanks,
+[   48.684078] tb_tx Read Request Domain 0 Route 0 Adapter 3 / Lane
+               0x00/---- 0x00000000 0b00000000 00000000 00000000 00000000 .... Route String High
+               0x01/---- 0x00000000 0b00000000 00000000 00000000 00000000 .... Route String Low
+               0x02/---- 0x02182091 0b00000010 00011000 00100000 10010001 .... 
+                 [00:12]       0x91 Address
+                 [13:18]        0x1 Read Size
+                 [19:24]        0x3 Adapter Num
+                 [25:26]        0x1 Configuration Space (CS) → Adapter Configuration Space
+                 [27:28]        0x0 Sequence Number (SN)
+[   48.684339] tb_rx Read Response Domain 0 Route 0 Adapter 3 / Lane
+               0x00/---- 0x80000000 0b10000000 00000000 00000000 00000000 .... Route String High
+               0x01/---- 0x00000000 0b00000000 00000000 00000000 00000000 .... Route String Low
+               0x02/---- 0x02182091 0b00000010 00011000 00100000 10010001 .... 
+                 [00:12]       0x91 Address
+                 [13:18]        0x1 Read Size
+                 [19:24]        0x3 Adapter Num
+                 [25:26]        0x1 Configuration Space (CS) → Adapter Configuration Space
+                 [27:28]        0x0 Sequence Number (SN)
+               0x03/0091 0x81320408 0b10000001 00110010 00000100 00001000 .2.. PORT_CS_1
+                 [00:07]        0x8 Address
+                 [08:15]        0x4 Length
+                 [16:18]        0x2 Target
+                 [20:23]        0x3 Re-timer Index
+                 [24:24]        0x1 WnR
+                 [25:25]        0x0 No Response (NR)
+                 [26:26]        0x0 Result Code (RC)
+                 [31:31]        0x1 Pending (PND)
+[   48.691410] tb_event Hot Plug Event Packet Domain 0 Route 0 Adapter 3 / Lane
+               0x00/---- 0x80000000 0b10000000 00000000 00000000 00000000 .... Route String High
+               0x01/---- 0x00000000 0b00000000 00000000 00000000 00000000 .... Route String Low
+               0x02/---- 0x80000003 0b10000000 00000000 00000000 00000011 .... 
+                 [00:05]        0x3 Adapter Num
+                 [31:31]        0x1 UPG
+[   48.691414] thunderbolt 0000:00:0d.2: acking hot unplug event on 0:3
 
-	M.
+Taking this into account and also the fact that your previous email you
+say that v6.9 works and v6.10 does not, I wonder if you could first try
+just to revert:
 
---=20
-Without deviation from the norm, progress is not possible.
+  c6ca1ac9f472 ("thunderbolt: Increase sideband access polling delay")
+
+and see if that helps with the connection issue? If it does then can you
+take full dmesg and the trace again and with me so I can look at the USB
+tunnel issue too?
 
