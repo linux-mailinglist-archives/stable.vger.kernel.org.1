@@ -1,148 +1,189 @@
-Return-Path: <stable+bounces-89345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 084519B693D
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 17:32:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 171539B694B
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 17:36:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F526B23145
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 16:32:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39C231C21844
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 16:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A05213EEC;
-	Wed, 30 Oct 2024 16:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50DFF2144D7;
+	Wed, 30 Oct 2024 16:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="uvhIiQJx"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aSAPuoDz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73D81F131F
-	for <stable@vger.kernel.org>; Wed, 30 Oct 2024 16:32:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD942144CB
+	for <stable@vger.kernel.org>; Wed, 30 Oct 2024 16:36:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730305947; cv=none; b=FKiCz4q238+tZd+OVRVrRmkt+pLC6zqIjhQ1x/+JOKiGgcumdelOxheESeCo3eUzac840sjvum6O675KZ0gB1b1leF3wOIC49ltWpnRNUFYWapV1BJLQxvSo5CKQhWfDfjsLAfI6mNxbr+i9l6rkcAsdcUezgHNyN2mk9oaYbNo=
+	t=1730306194; cv=none; b=IOSy8RG7GMFrw0+EkYG275Wb4svGXYpkRL9KtMzQ1JqwDt7avZh4FrK/RCRQ5Dg97BxyWga8PNBk243zaAQ9J6o7csLJsu29tlCgjpV3wgo/DojOpffkJ/F/cu06tc6JAMGnIRXFNzZ4vCsLPcP5lYPj7Fv+DHFZuGoq7utIgQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730305947; c=relaxed/simple;
-	bh=pEPVRF5+DgnXnRZSZ1kKlI9RGplVRziuZFa2Pl+8l/U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MzNQrX3BbX6e0+avgEpWoVhV8y5pzZyKeh6Zrr0QF+uCQyl6ZQc4nuO2i07WCc2l5IvCUoKlgfbtdrC6s4oReeL0Rmxfz/Zykdh+PAx1+mpZibn9LTZarMR0gAzWkV2g6BYckVgh91hLtiOv+BwY2gGt1HHlrJDEXGsPJ2JUZx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=uvhIiQJx; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7b13bf566c0so866585a.3
-        for <stable@vger.kernel.org>; Wed, 30 Oct 2024 09:32:25 -0700 (PDT)
+	s=arc-20240116; t=1730306194; c=relaxed/simple;
+	bh=zCHrmiaT0aQkEzgBzKBRTHVHsnCbnwygmYP/jN0u0D8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PtlHaZrceBHfE3W9Z26x6YO8j4uhX/3OJy9VF3hISx60OJNMoZV9Hz7pWa2avUDOiJVBRqn+FPZtCfhR85o6Ks2b0uPaCM8uL0aZyQhQD5cg9ysPCcGHABGGRM6dC8cQYRZM0D8kWIqAAGyMhzDkGI6YUz+BhLVoi9cMA1KA2l8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aSAPuoDz; arc=none smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-460a8d1a9b7so338521cf.1
+        for <stable@vger.kernel.org>; Wed, 30 Oct 2024 09:36:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1730305945; x=1730910745; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fnMPV7W7l2RvnnW42qBLhLXVbPCvhd3V2TD3GpAwLro=;
-        b=uvhIiQJxhFDz1hh87cX7LNbYavIB5UJkWGG6BuIyzTTGE4ZWZru4AEjFVzFILU/i4t
-         oFtsYuh11e9L/3yO8b85+Z9B6ZTIHeEGTNZ/0VDpeTMKpMpVKRZqnS8eXLe7AzfEqDmt
-         MWpY3vtExCmbmDSpi+SaMVwUdsUY6pH7ITHL2RqVO0r8LV1hk/3iWyccKMUQeNbjQRym
-         GCBNXInQtuv2uRn8U75aOeEP0pQ7LZbwRuMCws0l9NcfnuhWbtwhMW3PcByrDJ2MNzeL
-         dy7ZmG8MNSQkH9D6MSGPC4KW+XXJj5IIKa31vdjWmweo4DYqdJk+50P74BNSN/ul+Lc/
-         yQuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730305945; x=1730910745;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1730306191; x=1730910991; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fnMPV7W7l2RvnnW42qBLhLXVbPCvhd3V2TD3GpAwLro=;
-        b=b/2mFL35LiCkQGL8+9h/ee4eRzXMnvF3Hnc6vPHaIcxUbHEwyzfV6nH5+uR3W12l/l
-         hOrf3/8uycrWe5L8NKB+XBFAhWULfTTxdOTOyNgzk6QknCOLCTqgqDnokxql580kq816
-         Od7LbZpARK7/wocujEYH5V3yH1x+LdC760hFLeo2V8W3r1S4vrQxAjJ19rFlxezVVK//
-         I+AMN+KJu9pw6mJP7XDLawzCGZGkq9oSNiIqFRzqdL7atkriq25sXIKPo8RWmKbRW43o
-         M5cxLb3jJdx8AWf+/4NjXgouZdfn5k2wOTNNZpCewbQng8nVqszsoEC9EMEkjHa7eEz2
-         MQAw==
-X-Forwarded-Encrypted: i=1; AJvYcCU+uM/NWrdn0Z9W67A5RRINDVmK6272onhTijJXsN230LDdFQUX8urzXS7PjX6AnwA6/7xn0Fg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqS7jH1QFYXoWO9IWRcOdeOzJh9J1Pw7JDZeg8VP0W6evteLKv
-	4eMNgNjLBqqE5CMCEZKnMPxkg74JjOmUSO+PAOXYHSGQlJYVtgnrGd0jfdru6YpgT1psIE9gZ1Q
-	v
-X-Google-Smtp-Source: AGHT+IHUGJKPPztjwHDZ1Fsm8kR2ulAQuHxmZmgEri6RNBQkQaPuB9irRDhhHGF1/Pcdxylx7HnUWA==
-X-Received: by 2002:a05:620a:2989:b0:79e:ff4b:3401 with SMTP id af79cd13be357-7b1aee75a24mr461410785a.66.1730305944807;
-        Wed, 30 Oct 2024 09:32:24 -0700 (PDT)
-Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b18d27911asm529745285a.26.2024.10.30.09.32.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Oct 2024 09:32:24 -0700 (PDT)
-Date: Wed, 30 Oct 2024 12:32:30 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>, Ard Biesheuvel <ardb+git@google.com>,
-	linux-efi@vger.kernel.org, stable@vger.kernel.org,
-	Breno Leitao <leitao@debian.org>,
-	Usama Arif <usamaarif642@gmail.com>
-Subject: Re: [PATCH] efistub/tpm: Use ACPI reclaim memory for event log to
- avoid corruption
-Message-ID: <ZyJfnjj9lkd5MBQH@PC2K9PVX.TheFacebook.com>
-References: <20240912155159.1951792-2-ardb+git@google.com>
- <ec7db629-61b0-49aa-a67d-df663f004cd0@kernel.org>
- <29b39388-5848-4de0-9fcf-71427d10c3e8@kernel.org>
- <58da4824-523c-4368-9da1-05984693c811@kernel.org>
- <CAMj1kXHqgZ-fD=oSAr7E0h9kTj_yzDv=_o2ifCCD0cYNgXv9RQ@mail.gmail.com>
+        bh=9ohhnavrPr5+YUgso4iG8u5sjXey4qTkemT4mrkrez4=;
+        b=aSAPuoDz0UR0ea5xI1iz5ZFeLgpnhvrv8xfS0PMaYhFKtGzucvKFkyxM30Hv5glE+b
+         qrQMC51Hn9aRaGxbfa8jF7zwMwzpgb++DucM7cN9+NZHybf1LujW06SHGmBvV8J45TUG
+         REgKSB4b6guIgeHM6LO7Vd5gnvwQ8nIIiYvCYVX6BpGK/5eRyAg1n80IzluKrTDdM4KM
+         tFtyyfx+Oq2dnCWv7TMT25zfkhldPSdUE23tntsTBhT75AxI2BfkKU4sLeyjWJMRWg4l
+         rGJpYUL/nxGDVjQkw+M7iFlv4vaviS7zJbibSgduVRoBOPNi0I0Ot7VPCF5IGx8gRYOc
+         6bwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730306191; x=1730910991;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9ohhnavrPr5+YUgso4iG8u5sjXey4qTkemT4mrkrez4=;
+        b=SES4Z4ZaX5vhVue79KKv9znFYdVA/ba+GTUsh1Dcl7RLATOlEXUMI+1uS95z+OzM4m
+         KREf8chND9rR8ReSRaltdjAOaiMSZk+OpD3CfF1e99y5kRxtehfwFXkoruqcBPlakyPD
+         V5sFKj64vw1pNSL05vpx6/ICYoJjKd04RtBT6ndGGZnQBpNCD9tR4WxX8p+i+Nclyu7w
+         N2BNciO+hoZKpl7hSiH1iPAxT5wEOxQygzh981uLP7N054LtOrlzCnD8/VF99aWME7a2
+         N61z/ab910fZeL9eN0k9C4lJTsHbYs/zy7Mqlz6weRkxWyFb5tVl0LggsLdaxP7JyDjK
+         ceoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXOuduGWIz96guBFzORlw7Y2K28/UHtIRPcCKiRiVQvuxs+DpXRmyknzJQMt4AJBnOo2l/KvYk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzu//AleSd7VgpHzxiM7QPGZw7EOVvCpttMDKYjgcXD1Yvq8OB9
+	eKKuCm/1fxzXPGbixIbV26qTAHx85USIeAPu7h8fOS2/362OUibNVQ9DPh10nvsEZyPelbmilGs
+	eUulZazpR2PiaXRzbuAVNuSlyND8idAJahrGyI6VClJ28kGsXzF/Ud3A=
+X-Gm-Gg: ASbGncvErB2ivGQZSQ/L2nXK1WQEio6g14e5nVqfVbAjs90EEvpo1PyPHSeMBJ8o9UE
+	keRi3mAvHKqm1RzwGu03j9UpHfvDgYBy7dJaBAcvYhJEVF0gSBFA7nL6Di2i4uQ==
+X-Google-Smtp-Source: AGHT+IFBqNAhnZpINWYimOajsOUR5Hu7mWheBmruaCmzYI1pEkwMAvJVmKH+JkRRcQ8aMk7aGSnF9I1hvN2lZQ7/bOk=
+X-Received: by 2002:a05:622a:cb:b0:461:3083:dbac with SMTP id
+ d75a77b69052e-46166cf428fmr8624631cf.5.1730306190820; Wed, 30 Oct 2024
+ 09:36:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXHqgZ-fD=oSAr7E0h9kTj_yzDv=_o2ifCCD0cYNgXv9RQ@mail.gmail.com>
+References: <20241028234533.942542-1-rananta@google.com> <868qu63mdo.wl-maz@kernel.org>
+ <CAJHc60x3sGdi2_mg_9uxecPYwZMBR11m1oEKPEH4RTYaF8eHdQ@mail.gmail.com>
+ <865xpa3fwe.wl-maz@kernel.org> <CAJHc60xQNeTwSBuPhrKO_JBuikqZ7R=BM5rkWht3YwieVXwkHg@mail.gmail.com>
+ <87iktat2y8.wl-maz@kernel.org>
+In-Reply-To: <87iktat2y8.wl-maz@kernel.org>
+From: Raghavendra Rao Ananta <rananta@google.com>
+Date: Wed, 30 Oct 2024 09:36:19 -0700
+Message-ID: <CAJHc60w7edpTSG2VA52m96BP6Eayg2jEc=9nt_b_kJFnOoQxfw@mail.gmail.com>
+Subject: Re: [PATCH v2] KVM: arm64: Get rid of userspace_irqchip_in_use
+To: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oliver.upton@linux.dev>, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	stable@vger.kernel.org, syzbot <syzkaller@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 25, 2024 at 09:30:51AM +0200, Ard Biesheuvel wrote:
-> On Fri, 25 Oct 2024 at 07:09, Jiri Slaby <jirislaby@kernel.org> wrote:
+On Wed, Oct 30, 2024 at 1:22=E2=80=AFAM Marc Zyngier <maz@kernel.org> wrote=
+:
+>
+> On Wed, 30 Oct 2024 00:16:48 +0000,
+> Raghavendra Rao Ananta <rananta@google.com> wrote:
 > >
-> > On 25. 10. 24, 7:07, Jiri Slaby wrote:
-> > > On 24. 10. 24, 18:20, Jiri Slaby wrote:
+> > On Tue, Oct 29, 2024 at 11:47=E2=80=AFAM Marc Zyngier <maz@kernel.org> =
+wrote:
 > > >
-> > > ====
-> > > EFI_ACPI_RECLAIM_MEMORY
+> > > On Tue, 29 Oct 2024 17:06:09 +0000,
+> > > Raghavendra Rao Ananta <rananta@google.com> wrote:
+> > > >
+> > > > On Tue, Oct 29, 2024 at 9:27=E2=80=AFAM Marc Zyngier <maz@kernel.or=
+g> wrote:
+> > > > >
+> > > > > On Mon, 28 Oct 2024 23:45:33 +0000,
+> > > > > Raghavendra Rao Ananta <rananta@google.com> wrote:
+> > > > > >
+> > > > > Did you have a chance to check whether this had any negative impa=
+ct on
+> > > > > actual workloads? Since the entry/exit code is a bit of a hot spo=
+t,
+> > > > > I'd like to make sure we're not penalising the common case (I onl=
+y
+> > > > > wrote this patch while waiting in an airport, and didn't test it =
+at
+> > > > > all).
+> > > > >
+> > > > I ran the kvm selftests, kvm-unit-tests and booted a linux guest to
+> > > > test the change and noticed no failures.
+> > > > Any specific test you want to try out?
 > > >
-> > > This memory is to be preserved by the UEFI OS loader and OS until ACPI
-> > > is enabled. Once ACPI is enabled, the memory in this range is available
-> > > for general use.
-> > > ====
+> > > My question is not about failures (I didn't expect any), but
+> > > specifically about *performance*, and whether checking the flag
+> > > without a static key can lead to any performance drop on the hot path=
+.
 > > >
-> > > BTW doesn't the above mean it is released by the time TPM actually reads
-> > > it?
-> > >
-> > > Isn't the proper fix to actually memblock_reserve() that TPM portion.
-> > > The same as memattr in efi_memattr_init()?
+> > > Can you please run an exit-heavy workload (such as hackbench, for
+> > > example), and report any significant delta you could measure?
 > >
-> > And this is actually done in efi_tpm_eventlog_init().
-> >
-> 
-> EFI_ACPI_RECLAIM_MEMORY may be reclaimed by the OS, but we never
-> actually do that in Linux.
-> 
-> To me, it seems like the use of EFI_ACPI_RECLAIM_MEMORY in this case
-> simply tickles a bug in the firmware that causes it to corrupt the
-> memory attributes table. The fact that cold boot behaves differently
-> is a strong indicator here.
-> 
-> I didn't see the results of the memory attribute table dumps on the
-> bugzilla thread, but dumping this table from EFI is not very useful
-> because it will get regenerated/updated at ExitBootServices() time.
-> Unfortunately, that also takes away the console so capturing the state
-> of that table before the EFI stub boots the kernel is not an easy
-> thing to do.
-> 
-> Is the memattr table completely corrupted? It also has a version
-> field, and only versions 1 and 2 are defined so we might use that to
-> detect corruption.
+> > Oh, I see. I ran hackbench and micro-bench from kvm-unit-tests (which
+> > also causes a lot of entry/exits), on Ampere Altra with kernel at
+> > v6.12-rc1, and see no significant difference in perf.
+>
+> Thanks for running this stuff.
+>
+> > timer_10ms                          231040.0                          9=
+02.0
+> > timer_10ms                         234120.0                            =
+914.0
+>
+> This seems to be the only case were we are adversely affected by this
+> change.
+Hmm, I'm not sure how much we want to trust this comparison. For
+instance, I just ran micro-bench again a few more times and here are
+the outcomes of timer_10ms for each try with the patch:
 
-When we initially identified the TPM log corruption issue, I had a gut
-feeling we were about to discover a lot more corruption along the same
-lines.  It feels like e820 should have significantly more ACPI entries
-marked to avoid kexec from touching it - instead of just 1 or 2.
+Tries                                             total ns
+               avg ns
+---------------------------------------------------------------------------=
+--------
+1_timer_10ms                             231840.0                          =
+905.0
+2_timer_10ms                             234560.0                          =
+916.0
+3_timer_10ms                             227440.0                          =
+888.0
+4_timer_10ms                             236640.0                          =
+924.0
+5_timer_10ms                             231200.0                          =
+903.0
 
-Hopefully I'm wrong, I'll take a look at the raw memory attributes on
-a few systems and see if there's a disagreement between UEFI and e820.
+Here's a few on the baseline:
 
-Not looking forward to a thrilling game of whack-a-mole :[
+Tries                                             total ns
+               avg ns
+---------------------------------------------------------------------------=
+--------
+1_timer_10ms                             231080.0                          =
+902.0
+2_timer_10ms                             238040.0                          =
+929.0
+3_timer_10ms                             231680.0                          =
+905.0
+4_timer_10ms                             229280.0                          =
+895.0
+5_timer_10ms                             228520.0                          =
+892.0
 
-~Gregory
+
+> In the grand scheme of thins, that's noise. But this gives us
+> a clear line of sight for the removal of the in-kernel interrupts back
+> to userspace.
+Sorry, I didn't follow you completely on this part.
+
+Thank you.
+Raghavendra
 
