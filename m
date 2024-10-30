@@ -1,195 +1,281 @@
-Return-Path: <stable+bounces-89351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF5DD9B6AD7
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 18:21:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00ACC9B6B13
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 18:34:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F0AA28159C
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 17:21:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4F00282122
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 17:34:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21544217912;
-	Wed, 30 Oct 2024 17:17:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GjEHV8hE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC87196C86;
+	Wed, 30 Oct 2024 17:34:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A46217905;
-	Wed, 30 Oct 2024 17:17:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8BB71BD9C1;
+	Wed, 30 Oct 2024 17:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730308645; cv=none; b=krb5NrpMkTOSbM85R0pTdfG6N4F3L0HQpT1UK1cngqlXO+Z89OowWCPcwHlbAObxudG7+2xH9qHh9opEnF5dsKebdlzQe+2Uz+OU7P2ZZE/U+6PxeRn2B46VpMOo+wx29EwKacBZRVyw1JWF0kfVp2slMP+YlK8niyfHcXu8Zk4=
+	t=1730309672; cv=none; b=cwfDQ5mFbvk9cZaBwFsucgN267lv/kMRbGYj+aPhFHC32PqB8eTY8d2Cxa+X74bYF4JsCoHxHRY976EhMYVULFFkhxE8xQEylkar7434lwCvfDy2ohSvPQlXy56/onjadN78PdAqW+4W923KrRcREqeUzsBs6ynP7hAEwBa0ITI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730308645; c=relaxed/simple;
-	bh=R0lo9oWGVBLN0YXsMNqJOsG7ZWORWoqF08fNhhQfIGs=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hzbkfc+ByLgP4woiW69zD6G68Mg8B2GdZ9/nl3BIIO6h4jYdjgwnXZ3s0YoULeJczyfb1ng7XNoHwrCZgY8uAnPhNkSkBs/voZ7WRHTnXihOzG9OnXM6TAAu6/nrmUXao9RLuxG1q3+rbkUXNvx4Szt1vP8WgZ0aumDT6q0+bgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GjEHV8hE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C97C4CECE;
-	Wed, 30 Oct 2024 17:17:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730308645;
-	bh=R0lo9oWGVBLN0YXsMNqJOsG7ZWORWoqF08fNhhQfIGs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GjEHV8hEc8KHnMa/pGa3h/xakH8Pv+dc1H9VSd+iTVBm61SjjJrHcCN/DyDuci4J7
-	 fCrK75OPZCwDRmaicsOSD43NmHE/wS20kdldoQ3w8Mj/n2OSt/4x2gMFjgjgreIdaC
-	 vl09obqk9MRFLS10KAf2a3vTCWzCuaWT4fYCm50iKlVx0ZY6gNW8ZC3nIoN2GYJz+m
-	 yVkjjUk9zXt5aZpD+/dvF7ZeQeQUrQRLUVJBHbSgyM5w306u/hrc+u+tjyWJ9zk4sR
-	 BF85UqcAc6Eb/siuw3Cr3pz+bVoSigpGVTxCdSIklnXn/bDBkESJ8PQMSqI3CUr3UE
-	 C2Qq7aYb1Iqcw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1t6CJv-008LDX-Dr;
-	Wed, 30 Oct 2024 17:17:23 +0000
-Date: Wed, 30 Oct 2024 17:17:23 +0000
-Message-ID: <86wmhp1pek.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Raghavendra Rao Ananta <rananta@google.com>
-Cc: Oliver Upton <oliver.upton@linux.dev>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	stable@vger.kernel.org,
-	syzbot <syzkaller@googlegroups.com>
-Subject: Re: [PATCH v2] KVM: arm64: Get rid of userspace_irqchip_in_use
-In-Reply-To: <CAJHc60w7edpTSG2VA52m96BP6Eayg2jEc=9nt_b_kJFnOoQxfw@mail.gmail.com>
-References: <20241028234533.942542-1-rananta@google.com>
-	<868qu63mdo.wl-maz@kernel.org>
-	<CAJHc60x3sGdi2_mg_9uxecPYwZMBR11m1oEKPEH4RTYaF8eHdQ@mail.gmail.com>
-	<865xpa3fwe.wl-maz@kernel.org>
-	<CAJHc60xQNeTwSBuPhrKO_JBuikqZ7R=BM5rkWht3YwieVXwkHg@mail.gmail.com>
-	<87iktat2y8.wl-maz@kernel.org>
-	<CAJHc60w7edpTSG2VA52m96BP6Eayg2jEc=9nt_b_kJFnOoQxfw@mail.gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1730309672; c=relaxed/simple;
+	bh=kMawLNH9aQV2M84jka7WgJJuF+vt/gGttx+f3HtUv+g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P7+liYrabIN8RFgIn6CIZX+XISy2gGCWRYJLO5SW+Bd7SpgzRNY7fbQFUnnn5TyboSBpccmmTMa3xikxlHLXUoOVwAOa81f72rNILb3K5pXPm4BQZmaYJxLAEKa1nNmN7rKITp3uuq+vkUftXTA45UERGQwK+t61AjCNlhzLChk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 51713113E;
+	Wed, 30 Oct 2024 10:34:57 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F0B983F66E;
+	Wed, 30 Oct 2024 10:34:25 -0700 (PDT)
+Date: Wed, 30 Oct 2024 17:34:16 +0000
+From: Mark Rutland <mark.rutland@arm.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Andre.Przywara@arm.com
+Subject: Re: [PATCH] arm64/signal: Avoid corruption of SME state when
+ entering signal handler
+Message-ID: <ZyJuEBC1wFPrTLAS@J2N7QTR9R3>
+References: <20241023-arm64-fp-sme-sigentry-v1-1-249ff7ec3ad0@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: rananta@google.com, oliver.upton@linux.dev, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, stable@vger.kernel.org, syzkaller@googlegroups.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241023-arm64-fp-sme-sigentry-v1-1-249ff7ec3ad0@kernel.org>
 
-On Wed, 30 Oct 2024 16:36:19 +0000,
-Raghavendra Rao Ananta <rananta@google.com> wrote:
->=20
-> On Wed, Oct 30, 2024 at 1:22=E2=80=AFAM Marc Zyngier <maz@kernel.org> wro=
-te:
-> >
-> > On Wed, 30 Oct 2024 00:16:48 +0000,
-> > Raghavendra Rao Ananta <rananta@google.com> wrote:
-> > >
-> > > On Tue, Oct 29, 2024 at 11:47=E2=80=AFAM Marc Zyngier <maz@kernel.org=
-> wrote:
-> > > >
-> > > > On Tue, 29 Oct 2024 17:06:09 +0000,
-> > > > Raghavendra Rao Ananta <rananta@google.com> wrote:
-> > > > >
-> > > > > On Tue, Oct 29, 2024 at 9:27=E2=80=AFAM Marc Zyngier <maz@kernel.=
-org> wrote:
-> > > > > >
-> > > > > > On Mon, 28 Oct 2024 23:45:33 +0000,
-> > > > > > Raghavendra Rao Ananta <rananta@google.com> wrote:
-> > > > > > >
-> > > > > > Did you have a chance to check whether this had any negative im=
-pact on
-> > > > > > actual workloads? Since the entry/exit code is a bit of a hot s=
-pot,
-> > > > > > I'd like to make sure we're not penalising the common case (I o=
-nly
-> > > > > > wrote this patch while waiting in an airport, and didn't test i=
-t at
-> > > > > > all).
-> > > > > >
-> > > > > I ran the kvm selftests, kvm-unit-tests and booted a linux guest =
-to
-> > > > > test the change and noticed no failures.
-> > > > > Any specific test you want to try out?
-> > > >
-> > > > My question is not about failures (I didn't expect any), but
-> > > > specifically about *performance*, and whether checking the flag
-> > > > without a static key can lead to any performance drop on the hot pa=
-th.
-> > > >
-> > > > Can you please run an exit-heavy workload (such as hackbench, for
-> > > > example), and report any significant delta you could measure?
-> > >
-> > > Oh, I see. I ran hackbench and micro-bench from kvm-unit-tests (which
-> > > also causes a lot of entry/exits), on Ampere Altra with kernel at
-> > > v6.12-rc1, and see no significant difference in perf.
-> >
-> > Thanks for running this stuff.
-> >
-> > > timer_10ms                          231040.0                         =
- 902.0
-> > > timer_10ms                         234120.0                          =
-  914.0
-> >
-> > This seems to be the only case were we are adversely affected by this
-> > change.
-> Hmm, I'm not sure how much we want to trust this comparison. For
-> instance, I just ran micro-bench again a few more times and here are
-> the outcomes of timer_10ms for each try with the patch:
->=20
-> Tries                                             total ns
->                avg ns
-> -------------------------------------------------------------------------=
-----------
-> 1_timer_10ms                             231840.0                        =
-  905.0
-> 2_timer_10ms                             234560.0                        =
-  916.0
-> 3_timer_10ms                             227440.0                        =
-  888.0
-> 4_timer_10ms                             236640.0                        =
-  924.0
-> 5_timer_10ms                             231200.0                        =
-  903.0
->=20
-> Here's a few on the baseline:
->=20
-> Tries                                             total ns
->                avg ns
-> -------------------------------------------------------------------------=
-----------
-> 1_timer_10ms                             231080.0                        =
-  902.0
-> 2_timer_10ms                             238040.0                        =
-  929.0
-> 3_timer_10ms                             231680.0                        =
-  905.0
-> 4_timer_10ms                             229280.0                        =
-  895.0
-> 5_timer_10ms                             228520.0                        =
-  892.0
+Hi Mark,
 
-OK, so this benchmark is all over the place, and we can't derive
-much from it.
+Thanks for this.
 
-> > In the grand scheme of thins, that's noise. But this gives us
-> > a clear line of sight for the removal of the in-kernel interrupts back
-> > to userspace.
-> Sorry, I didn't follow you completely on this part.
+I originally just had a few comments on the commit message, but I
+believe I've found a logic issue in this patch, and more general issue
+throughout our FPSIMD/SVE/SME manipulation -- more details below.
 
-Just me moaning. The code that was gated by the static key that you
-just removed is used to signal interrupts from the kernel back to
-userspace, and I'm resisting the urge to remove it altogether now.
+On Wed, Oct 23, 2024 at 10:31:24PM +0100, Mark Brown wrote:
+> When we enter a signal handler we exit streaming mode in order to ensure
+> that signal handlers can run normal FPSIMD code, and while we're at it we
+> also clear PSTATE.ZA. Currently the code in setup_return() updates both the
+> in memory copy of the state and the register state. Not only is this
+> redundant it can also lead to corruption if we are preempted.
 
-	M.
+It would be nice if we could be clearer regarding the implications, e.g.
+that this has no effect on tasks which only use plain FPSIMD or SVE.
 
---=20
-Without deviation from the norm, progress is not possible.
+How about:
+
+| We intend that signal handlers are entered with PSTATE.{SM,ZA}={0,0}.
+| The logic for this in setup_return() manipulates the saved state and
+| live CPU state in an unsafe manner, and consequently, when a task enters
+| a signal handler:
+| 
+| * The task entering the signal handler might not have its PSTATE.{SM,ZA}
+|   bits cleared, and other register state that is affected by changes to
+|   PSTATE.{SM,ZA} might not be zeroed as expected.
+| 
+| * An unrelated task might have its PSTATE.{SM,ZA} bits cleared
+|   unexpectedly, potentially zeroing other register state that is
+|   affected by changes to PSTATE.{SM,ZA}.
+| 
+|   Tasks which do not set PSTATE.{SM,ZA} (i.e. those only using plain
+|   FPSIMD or non-streaming SVE) are not affected, as there is no
+|   resulting change to PSTATE.{SM,ZA}.
+
+> Consider two tasks on one CPU:
+
+Minor nit, but can we say:
+
+| For example, consider two tasks on one CPU:
+
+... since there are other races possible.
+
+>  A: Begins signal entry in kernel mode, is preempted prior to SMSTOP.
+>  B: Using SM and/or ZA in userspace with register state current on the
+>     CPU, is preempted.
+>  A: Scheduled in, no register state changes made as in kernel mode.
+>  A: Executes SMSTOP, modifying live register state.
+>  A: Scheduled out.
+>  B: Scheduled in, fpsimd_thread_switch() sees the register state on the
+>     CPU is tracked as being that for task B so the state is not reloaded
+>     prior to returning to userspace.
+> 
+> Task B is now running with SM and ZA incorrectly cleared.
+
+[ moving the "Fix ..." later ]
+
+> This race has been observed intermittently with fp-stress, especially
+> with preempt disabled.
+
+It would be nice to have the signature of the failure as well, e.g.
+
+| This is intermittently detected by the fp-stress test, which
+| intermittently reports "ZA-VL-*-*: Bad SVCR: 0".
+
+> Fix this by check TIF_FOREIGN_FPSTATE and only updating one of the live
+> register context or the in memory copy when entering a signal handler.
+> Since this needs to happen atomically and all code that atomically
+> accesses FP state is in fpsimd.c also move the code there to ensure
+> consistency.
+
+How about:
+
+| Fix this by:
+| 
+| * Checking TIF_FOREIGN_FPSTATE, and only updating the saved or live
+|   state as appropriate.
+| 
+| * Using {get,put}_cpu_fpsimd_context() to ensure mutual exclusion
+|   against other code which manipulates this state. To allow their use,
+|   the logic is moved into a new fpsimd_enter_sighandler() helper in
+|   fpsimd.c.
+
+> Fixes: 40a8e87bb3285 ("arm64/sme: Disable ZA and streaming mode when handling signals")
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Cc: stable@vger.kernel.org
+> ---
+>  arch/arm64/include/asm/fpsimd.h |  1 +
+>  arch/arm64/kernel/fpsimd.c      | 30 ++++++++++++++++++++++++++++++
+>  arch/arm64/kernel/signal.c      | 19 +------------------
+>  3 files changed, 32 insertions(+), 18 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/fpsimd.h b/arch/arm64/include/asm/fpsimd.h
+> index f2a84efc361858d4deda99faf1967cc7cac386c1..09af7cfd9f6c2cec26332caa4c254976e117b1bf 100644
+> --- a/arch/arm64/include/asm/fpsimd.h
+> +++ b/arch/arm64/include/asm/fpsimd.h
+> @@ -76,6 +76,7 @@ extern void fpsimd_load_state(struct user_fpsimd_state *state);
+>  extern void fpsimd_thread_switch(struct task_struct *next);
+>  extern void fpsimd_flush_thread(void);
+>  
+> +extern void fpsimd_enter_sighandler(void);
+>  extern void fpsimd_signal_preserve_current_state(void);
+>  extern void fpsimd_preserve_current_state(void);
+>  extern void fpsimd_restore_current_state(void);
+> diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+> index 77006df20a75aee7c991cf116b6d06bfe953d1a4..e6b086dc09f21e7f30df32ab4f6875b53c4228fd 100644
+> --- a/arch/arm64/kernel/fpsimd.c
+> +++ b/arch/arm64/kernel/fpsimd.c
+> @@ -1693,6 +1693,36 @@ void fpsimd_signal_preserve_current_state(void)
+>  		sve_to_fpsimd(current);
+>  }
+>  
+> +/*
+> + * Called by the signal handling code when preparing current to enter
+> + * a signal handler. Currently this only needs to take care of exiting
+> + * streaming mode and clearing ZA on SME systems.
+> + */
+> +void fpsimd_enter_sighandler(void)
+> +{
+> +	if (!system_supports_sme())
+> +		return;
+> +
+> +	get_cpu_fpsimd_context();
+> +
+> +	if (test_thread_flag(TIF_FOREIGN_FPSTATE)) {
+> +		/* Exiting streaming mode zeros the FPSIMD state */
+> +		if (current->thread.svcr & SVCR_SM_MASK) {
+> +			memset(&current->thread.uw.fpsimd_state, 0,
+> +			       sizeof(current->thread.uw.fpsimd_state));
+> +			current->thread.fp_type = FP_STATE_FPSIMD;
+> +		}
+> +
+> +		current->thread.svcr &= ~(SVCR_ZA_MASK |
+> +					  SVCR_SM_MASK);
+> +	} else {
+> +		/* The register state is current, just update it. */
+> +		sme_smstop();
+> +	}
+> +
+> +	put_cpu_fpsimd_context();
+> +}
+
+I don't think this is correct in the TIF_FOREIGN_FPSTATE case. We don't
+unbind the saved state from another CPU it might still be resident on,
+and so IIUC there's a race whereby the updates to the saved state can
+end up discarded:
+
+	CPU 0				CPU 1
+
+	1. trap from user->kernel
+	   with live state.
+	2. context-switch out
+	   - fpsimd_thread_switch()
+	     saves the HW state
+					3. context-switch in.
+					   - fpsimd_thread_switch()
+					     sets TIF_FOREIGN_FPSTATE
+
+					4. fpsimd_enter_sighandler()
+					5. context-switch out
+					   - fpsimd_thread_switch() sees
+					     TIF_FOREIGN_FPSTATE, saves
+					     nothing
+
+	6. context-switch in
+	   - fpsimd_last_state.st is
+	     this task's state
+	   - this task's fpsimd_cIpu
+	     is CPU 0
+	   ... so fpsimd_thread_switch()
+	   clears TIF_FOREIGN_FPSTATE
+	
+	7. running with stale live
+	   state from step 1.
+
+... and either:
+
+* A subsequent return to userspace will see TIF_FOREIGN_FPSTATE is
+  clear and not restore the in-memory state.
+
+* A subsequent context-switch will see TIF_FOREIGN_FPSTATE is clear an 
+  save the (stale) HW state again.
+
+It looks like we have a similar pattern all over the place, e.g.  in
+do_sve_acc():
+
+void do_sve_acc(unsigned long esr, struct pt_regs *regs)
+{
+	...
+
+	<< preempt; migrate from CPU 0 to CPU 1 >>
+        
+        get_cpu_fpsimd_context();
+
+        if (test_and_set_thread_flag(TIF_SVE))
+                WARN_ON(1); /* SVE access shouldn't have trapped */
+
+        /*
+         * Even if the task can have used streaming mode we can only
+         * generate SVE access traps in normal SVE mode and
+         * transitioning out of streaming mode may discard any
+         * streaming mode state.  Always clear the high bits to avoid
+         * any potential errors tracking what is properly initialised.
+         */
+        sve_init_regs();
+
+        put_cpu_fpsimd_context();
+	
+	<< preempt; migrate from CPU 1 to CPU 0 >>
+
+	<< TIF_SVE is set, as above >>
+	<< TIF_FOREIGN_FPSTATE clear due to reusing old HW state >>
+	<< Old HW state has CPACR_EL1.ZEN set to trap SVE >>
+	<< Return to userapce won't reload HW state because >>
+}
+
+... which would explain the do_sve_acc() issue, and why it's so rare.
+
+This is going to need a careful audit and a proper series of
+fixes that can be backported to stable.
+
+Mark.
 
