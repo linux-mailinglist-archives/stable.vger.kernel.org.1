@@ -1,143 +1,244 @@
-Return-Path: <stable+bounces-89317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37F399B6318
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 13:31:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D6889B637D
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 13:56:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E04D21F21AB0
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 12:31:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A01181C2138D
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 12:56:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 711861E1023;
-	Wed, 30 Oct 2024 12:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC0321EC019;
+	Wed, 30 Oct 2024 12:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wJOAeuW+"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Bg20VppE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50FD21E9061
-	for <stable@vger.kernel.org>; Wed, 30 Oct 2024 12:31:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7A81EBA19;
+	Wed, 30 Oct 2024 12:55:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730291494; cv=none; b=mO/nSDT19FjjXni6L+pCJ+EdfPQ6ZwcrTu8GeEU9BTIy8qAbhJFYZlkhmZHWXvMd+8iMfFEXjJTa+mKzz7IqE7uDdRwZKdXbVzsU2f3SUI46Gm6PvibpkWD643/Ia3HNCoocZCFKY+uk3uXsdSPvHYmhL/mEWwCXtKpZnDlYZYk=
+	t=1730292951; cv=none; b=RLlREs6wTdo0wUIaIaU49SvhZ2Nf91nCa3yJgS7XIvj6g6gsFLFJ+eGqUbn3O8v26VYYiXBgwGZ+WXDN7TqAQ4BpSd1oz9h0jLroZjRorotiTAW119qY18IaiBFzk2VHnYO/wNOkZZ0ZJv/X17LuTj0QkZzSrRl4SN5s/s7eWhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730291494; c=relaxed/simple;
-	bh=c5UhKQdavJdtLfcrTrc0Pq+QbHSzwUAht7VSpXUFBO4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j452lEj1Uo82IqY83uca8jpGhU4hHjZShNBXsc9h2FMjvJwH8YtUrZefd9KxyFBapDQcBw13KvJVYZPPzEc5tAvkqm2BMQc63N5ohi7vvybe1D1Cb1OCFqt5o1ueNGXlLSOzjbu8jxo8TxmlwCIW4/a5YPxsML/KgFcyE8p1bkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wJOAeuW+; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-539f0f9ee49so7073205e87.1
-        for <stable@vger.kernel.org>; Wed, 30 Oct 2024 05:31:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730291489; x=1730896289; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=g2HB1B4iN3oWUrHv8ly8KNSVGjXRFIReK/a7cFEEc1o=;
-        b=wJOAeuW+dtoZXFHLxSEn9k/sKyJL505R0VNBz7W1P7TIjiAfgu5JeL4Fyh6Czefzfy
-         JgbsT9pqt4B9lJ42kLQzR8gu7+3nDh9kUt44+lDXS5LZ3B9Pu3X/w2xuQP+IsPtPydfq
-         j9jbir8eoCWLpWlbX3YcTJbICMdq2ZognTZrWILEOz7fxUx09q49fy/CdYqdE6pX00cs
-         CwTfjIl8dFDYU6e7IdMOKm04CDOzhYqvrlnXifmDKshWF/CfH9kOKKrbzBqjL2RU89T7
-         4I5untgoEb0fMRYcXExhHKuEpIVnT3QE1gh3LqDEaQuWlhV3+0FvIUddYUGQUyQllSVw
-         iPJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730291489; x=1730896289;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=g2HB1B4iN3oWUrHv8ly8KNSVGjXRFIReK/a7cFEEc1o=;
-        b=i7ZAiE/ZpC++RmxK44KSMWxIe75gPzi2wQkKx2PzeuiM0QhOg44sX4GK/mfZsWErbB
-         VlVIgKudCCzm1cMSMNf4PLG7NnEqgNkoZ4kWUwbeoQ3dxQoZbe5fU/9QTR3T0uGXv5jC
-         AcVqyT4LQExpZ8u0T334BwRZSrAXVbpmt1CQeHc4iLWT92BJMdVVVPwXhDefI4nCxgua
-         Iwj+VVJwBI8NQcPeccQ27mElVFHbxMdY46h+IJjzxvxMFTfnwS3RWfmE6v3fF0l6u5rI
-         Y2WmZ7roaMQpXLObMyeENwML3/htLyhhPoTChccmhIIIXnSMpHUY7roOcoXC/9Z1R0Yc
-         ++/g==
-X-Forwarded-Encrypted: i=1; AJvYcCVsW3FFN7RUSJTiLpj9tM1zTC+3nwxk6DoFcliqgxvD1XGJfuWHRUBYFNTPm1TwzkMqC1Z/BTE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQOry3b6tQ7Z3LzirzRRseSBY3vqbuIV86qPuQSSwflgN+/msL
-	UcI0BII/deFakFEK0cfsHYIyVAJOarD4Yy1Omq3beYGW+kex/JsaLTrnUw9TXty4XXxVEcAbXm7
-	RNNw=
-X-Google-Smtp-Source: AGHT+IHLsrclSbDZwTl8mE7Mv4WoPP51WcILZWPPR/8gPywvqqqPPStO6/6vIkVUcLPPU1u+wGiErQ==
-X-Received: by 2002:a05:6512:4022:b0:539:e333:1822 with SMTP id 2adb3069b0e04-53b348b7dc7mr7783566e87.4.1730291489365;
-        Wed, 30 Oct 2024 05:31:29 -0700 (PDT)
-Received: from [192.168.0.40] ([176.61.106.227])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd947d3csm20053725e9.11.2024.10.30.05.31.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Oct 2024 05:31:28 -0700 (PDT)
-Message-ID: <7446e285-f311-42bd-bf0c-a6fe54a862e0@linaro.org>
-Date: Wed, 30 Oct 2024 12:31:28 +0000
+	s=arc-20240116; t=1730292951; c=relaxed/simple;
+	bh=Q/IauaK/WG//j5kMAuS6rPBwXVVNP4nOebEiBM53LEA=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tUNMob6Hee5YRDsUQ97YJGiCgay6zHOhQ2/Ij0vrVDQdQ6OckF1bClLNkLJDKac5uhgQt7JwgPBfAHe2cL9M2fb0Dp8Fr3+rlqJcpTs0zrp27YM0e2EFezANEKqKaya2Q7zFZGQjnzA64WUEBxgOynLqSFQG6dmf1MYQmWIJXYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Bg20VppE; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49U9RSic025437;
+	Wed, 30 Oct 2024 12:55:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	AmMdiBqGxXHJ2RtZV+VXQAhbRxOF+HcER2r7krMw7hE=; b=Bg20VppER9MpLKPy
+	sNqI2u/68saKtjAAFu5ewmNqGPmmQxOMjOeeEeK5+iVzc9Uw2uL4/ZIhOcdeYqP4
+	eMUerclZMX9I1xKqahqckYGf0RE2C68vgDiDddyb/z/CKpVUoZ89rrfzBWD5V8fN
+	BpaEie+NQ+JULMZSi/bbSxrlsyrIehVQLlBIlPluNaX3B+0NmF7Zpb5vwh6Ixeg8
+	YWaWZjxtfZDYc7fu8bx+ws7RWkAvzQEK+cGiJ+J43oybtt1QUrse1s4QQVFcTkQV
+	8rHhe+fOofHmKS6a6hfee24qumLepjf/vXw5o1IfuXBC6JL65SJ/VLiiUYF0+EGu
+	J3hxCQ==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42gsq8m0ky-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 30 Oct 2024 12:55:38 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49UCtbOG026971
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 30 Oct 2024 12:55:37 GMT
+Received: from hu-sibis-blr.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 30 Oct 2024 05:55:31 -0700
+From: Sibi Sankar <quic_sibis@quicinc.com>
+To: <sudeep.holla@arm.com>, <cristian.marussi@arm.com>, <johan@kernel.org>,
+        <ulf.hansson@linaro.org>, <jassisinghbrar@gmail.com>,
+        <dmitry.baryshkov@linaro.org>
+CC: <linux-kernel@vger.kernel.org>, <arm-scmi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-arm-msm@vger.kernel.org>, <quic_sibis@quicinc.com>,
+        <konradybcio@kernel.org>, <linux-pm@vger.kernel.org>,
+        <tstrudel@google.com>, <rafael@kernel.org>, <stable@vger.kernel.org>,
+        Johan Hovold <johan+linaro@kernel.org>
+Subject: [PATCH V5 1/6] firmware: arm_scmi: Ensure that the message-id supports fastchannel
+Date: Wed, 30 Oct 2024 18:25:07 +0530
+Message-ID: <20241030125512.2884761-2-quic_sibis@quicinc.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241030125512.2884761-1-quic_sibis@quicinc.com>
+References: <20241030125512.2884761-1-quic_sibis@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] usb: typec: qcom-pmic: init value of hdr_len/txbuf_len
- earlier
-To: Rex Nie <rex.nie@jaguarmicro.com>, heikki.krogerus@linux.intel.com
-Cc: gregkh@linuxfoundation.org, linux@roeck-us.net,
- caleb.connolly@linaro.org, linux-arm-msm@vger.kernel.org,
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- angus.chen@jaguarmicro.com, stable@vger.kernel.org
-References: <20241030022753.2045-1-rex.nie@jaguarmicro.com>
- <20241030103256.2087-1-rex.nie@jaguarmicro.com>
-Content-Language: en-US
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20241030103256.2087-1-rex.nie@jaguarmicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 46bhYeiN227ZEQEpeNnU8Ayc2iXoGhzA
+X-Proofpoint-ORIG-GUID: 46bhYeiN227ZEQEpeNnU8Ayc2iXoGhzA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 bulkscore=0
+ adultscore=0 mlxscore=0 priorityscore=1501 mlxlogscore=999 impostorscore=0
+ lowpriorityscore=0 malwarescore=0 clxscore=1011 spamscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2410300101
 
-On 30/10/2024 10:32, Rex Nie wrote:
-> If the read of USB_PDPHY_RX_ACKNOWLEDGE_REG failed, then hdr_len and
-> txbuf_len are uninitialized. This commit stops to print uninitialized
-> value and misleading/false data.
-> 
-> ---
-> V2 -> V3:
-> - add changelog, add Fixes tag, add Cc stable ml. Thanks heikki
-> - Link to v2: https://lore.kernel.org/all/20241030022753.2045-1-rex.nie@jaguarmicro.com/
-> V1 -> V2:
-> - keep printout when data didn't transmit, thanks Bjorn, bod, greg k-h
-> - Links: https://lore.kernel.org/all/b177e736-e640-47ed-9f1e-ee65971dfc9c@linaro.org/
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: a4422ff22142 (" usb: typec: qcom: Add Qualcomm PMIC Type-C driver")
-> Signed-off-by: Rex Nie <rex.nie@jaguarmicro.com>
-> ---
->   drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c
-> index 5b7f52b74a40..726423684bae 100644
-> --- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c
-> +++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c
-> @@ -227,6 +227,10 @@ qcom_pmic_typec_pdphy_pd_transmit_payload(struct pmic_typec_pdphy *pmic_typec_pd
->   
->   	spin_lock_irqsave(&pmic_typec_pdphy->lock, flags);
->   
-> +	hdr_len = sizeof(msg->header);
-> +	txbuf_len = pd_header_cnt_le(msg->header) * 4;
-> +	txsize_len = hdr_len + txbuf_len - 1;
-> +
->   	ret = regmap_read(pmic_typec_pdphy->regmap,
->   			  pmic_typec_pdphy->base + USB_PDPHY_RX_ACKNOWLEDGE_REG,
->   			  &val);
-> @@ -244,10 +248,6 @@ qcom_pmic_typec_pdphy_pd_transmit_payload(struct pmic_typec_pdphy *pmic_typec_pd
->   	if (ret)
->   		goto done;
->   
-> -	hdr_len = sizeof(msg->header);
-> -	txbuf_len = pd_header_cnt_le(msg->header) * 4;
-> -	txsize_len = hdr_len + txbuf_len - 1;
-> -
->   	/* Write message header sizeof(u16) to USB_PDPHY_TX_BUFFER_HDR_REG */
->   	ret = regmap_bulk_write(pmic_typec_pdphy->regmap,
->   				pmic_typec_pdphy->base + USB_PDPHY_TX_BUFFER_HDR_REG,
-Acked-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Currently the perf and powercap protocol relies on the protocol domain
+attributes, which just ensures that one fastchannel per domain, before
+instantiating fastchannels for all possible message-ids. Fix this by
+ensuring that each message-id supports fastchannel before initialization.
+
+Logs:
+scmi: Failed to get FC for protocol 13 [MSG_ID:6 / RES_ID:0] - ret:-95. Using regular messaging.
+scmi: Failed to get FC for protocol 13 [MSG_ID:6 / RES_ID:1] - ret:-95. Using regular messaging.
+scmi: Failed to get FC for protocol 13 [MSG_ID:6 / RES_ID:2] - ret:-95. Using regular messaging.
+
+CC: stable@vger.kernel.org
+Reported-by: Johan Hovold <johan+linaro@kernel.org>
+Closes: https://lore.kernel.org/lkml/ZoQjAWse2YxwyRJv@hovoldconsulting.com/
+Fixes: 6f9ea4dabd2d ("firmware: arm_scmi: Generalize the fast channel support")
+Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+---
+
+v4:
+* Add cc stable and err logs to patch 1 commit message [Johan]
+
+ drivers/firmware/arm_scmi/driver.c    | 72 +++++++++++++++------------
+ drivers/firmware/arm_scmi/protocols.h |  2 +
+ 2 files changed, 41 insertions(+), 33 deletions(-)
+
+diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
+index 1f53ca1f87e3..55e496e78403 100644
+--- a/drivers/firmware/arm_scmi/driver.c
++++ b/drivers/firmware/arm_scmi/driver.c
+@@ -1698,6 +1698,39 @@ static int scmi_common_get_max_msg_size(const struct scmi_protocol_handle *ph)
+ 	return info->desc->max_msg_size;
+ }
+ 
++/**
++ * scmi_protocol_msg_check  - Check protocol message attributes
++ *
++ * @ph: A reference to the protocol handle.
++ * @message_id: The ID of the message to check.
++ * @attributes: A parameter to optionally return the retrieved message
++ *		attributes, in case of Success.
++ *
++ * An helper to check protocol message attributes for a specific protocol
++ * and message pair.
++ *
++ * Return: 0 on SUCCESS
++ */
++static int scmi_protocol_msg_check(const struct scmi_protocol_handle *ph,
++				   u32 message_id, u32 *attributes)
++{
++	int ret;
++	struct scmi_xfer *t;
++
++	ret = xfer_get_init(ph, PROTOCOL_MESSAGE_ATTRIBUTES,
++			    sizeof(__le32), 0, &t);
++	if (ret)
++		return ret;
++
++	put_unaligned_le32(message_id, t->tx.buf);
++	ret = do_xfer(ph, t);
++	if (!ret && attributes)
++		*attributes = get_unaligned_le32(t->rx.buf);
++	xfer_put(ph, t);
++
++	return ret;
++}
++
+ /**
+  * struct scmi_iterator  - Iterator descriptor
+  * @msg: A reference to the message TX buffer; filled by @prepare_message with
+@@ -1839,6 +1872,7 @@ scmi_common_fastchannel_init(const struct scmi_protocol_handle *ph,
+ 	int ret;
+ 	u32 flags;
+ 	u64 phys_addr;
++	u32 attributes;
+ 	u8 size;
+ 	void __iomem *addr;
+ 	struct scmi_xfer *t;
+@@ -1847,6 +1881,11 @@ scmi_common_fastchannel_init(const struct scmi_protocol_handle *ph,
+ 	struct scmi_msg_resp_desc_fc *resp;
+ 	const struct scmi_protocol_instance *pi = ph_to_pi(ph);
+ 
++	/* Check if the MSG_ID supports fastchannel */
++	ret = scmi_protocol_msg_check(ph, message_id, &attributes);
++	if (!ret && !MSG_SUPPORTS_FASTCHANNEL(attributes))
++		return;
++
+ 	if (!p_addr) {
+ 		ret = -EINVAL;
+ 		goto err_out;
+@@ -1974,39 +2013,6 @@ static void scmi_common_fastchannel_db_ring(struct scmi_fc_db_info *db)
+ #endif
+ }
+ 
+-/**
+- * scmi_protocol_msg_check  - Check protocol message attributes
+- *
+- * @ph: A reference to the protocol handle.
+- * @message_id: The ID of the message to check.
+- * @attributes: A parameter to optionally return the retrieved message
+- *		attributes, in case of Success.
+- *
+- * An helper to check protocol message attributes for a specific protocol
+- * and message pair.
+- *
+- * Return: 0 on SUCCESS
+- */
+-static int scmi_protocol_msg_check(const struct scmi_protocol_handle *ph,
+-				   u32 message_id, u32 *attributes)
+-{
+-	int ret;
+-	struct scmi_xfer *t;
+-
+-	ret = xfer_get_init(ph, PROTOCOL_MESSAGE_ATTRIBUTES,
+-			    sizeof(__le32), 0, &t);
+-	if (ret)
+-		return ret;
+-
+-	put_unaligned_le32(message_id, t->tx.buf);
+-	ret = do_xfer(ph, t);
+-	if (!ret && attributes)
+-		*attributes = get_unaligned_le32(t->rx.buf);
+-	xfer_put(ph, t);
+-
+-	return ret;
+-}
+-
+ static const struct scmi_proto_helpers_ops helpers_ops = {
+ 	.extended_name_get = scmi_common_extended_name_get,
+ 	.get_max_msg_size = scmi_common_get_max_msg_size,
+diff --git a/drivers/firmware/arm_scmi/protocols.h b/drivers/firmware/arm_scmi/protocols.h
+index aaee57cdcd55..d62c4469d1fd 100644
+--- a/drivers/firmware/arm_scmi/protocols.h
++++ b/drivers/firmware/arm_scmi/protocols.h
+@@ -31,6 +31,8 @@
+ 
+ #define SCMI_PROTOCOL_VENDOR_BASE	0x80
+ 
++#define MSG_SUPPORTS_FASTCHANNEL(x)	((x) & BIT(0))
++
+ enum scmi_common_cmd {
+ 	PROTOCOL_VERSION = 0x0,
+ 	PROTOCOL_ATTRIBUTES = 0x1,
+-- 
+2.34.1
 
 
