@@ -1,76 +1,75 @@
-Return-Path: <stable+bounces-89292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCEAB9B5BDA
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 07:39:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7292B9B5BEB
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 07:44:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEAE31C20B96
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 06:39:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4CB11C20B7C
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 06:44:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189BB1DE4FF;
-	Wed, 30 Oct 2024 06:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37E281D2F56;
+	Wed, 30 Oct 2024 06:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YZZKc345"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bJ9YwDfM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B211DD55B;
-	Wed, 30 Oct 2024 06:38:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E527C1D0DF4;
+	Wed, 30 Oct 2024 06:44:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730270340; cv=none; b=Qe0UiZsG6QU+5pLZUj05IilEt/3LuPZi0J1pIUZMWFhommejJYQPbWSOE8CARjTI5Dtei5B+en2ujsgt7mcNm+W2f21KcMuTxFy6nXGnAuwBzFPr2ygYPUPIU2SArnOx9PDOuVSwFunGTpmN/7ByXYqqGV2lBpyYuQ5TAISWqIE=
+	t=1730270664; cv=none; b=onQ5DAvlbslw0+5wIiiZvur4dGympmdnyAgk3IrlP22lQpsx2RM9trAvYg9acCyfr/WQspRPLgNwdwfZZVLilrW1esRCskkbxCVZ2Gt2CNhP8dBhGb3Gpyz23TOqso28GjAOQtXm0BU833RSDiZ/sQHhFwdLfFzJtz0Gsc52XsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730270340; c=relaxed/simple;
-	bh=rn+WiHtBQzRPif3GnE4mdaXXApuavu7ost5UpHXs+5A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hcRMtUECG8IIKkA2Khd7a+HEDb7ejWSWpLLZul9mwrH5Leqf5nFWvfAGrczTEjO9sIFaz8xKKBd9MCJvWbD7JU1CcJSfQpgk5vv7F9i0xGAOabQQ8AOAQelDhOhRW/YRRLRaTexWQS/YrD7U2Swfbjqz0K8ekaFJxWmEyXYVfK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YZZKc345; arc=none smtp.client-ip=209.85.208.44
+	s=arc-20240116; t=1730270664; c=relaxed/simple;
+	bh=BpGY/eDm3rqBN7WhGt8Gp/hzEZK3r2dryyGFB17Y+qg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ASmtVEq5b1Xg+k9kOsCnbYRKIEriEuRW3fhhD4e5rOsBiMSWbD40Epgt1plbPYGM4HIG2OwpDgisTZ98QkpYMSm2M2+4kd2McuAfS2f62DRVr9sMzRaWwCjpZIUXPNhI9Mpuz3cFsYYO4PMSmuhVrQN2dnX3IybvHn0O99Ke0QM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bJ9YwDfM; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5c99be0a4bbso8428538a12.2;
-        Tue, 29 Oct 2024 23:38:58 -0700 (PDT)
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4314c452180so3143435e9.0;
+        Tue, 29 Oct 2024 23:44:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730270337; x=1730875137; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fUpniwr1Q1kvW9+maEql1NLWyuJa7R2hiSy+rG+NqVY=;
-        b=YZZKc3453qDM3iIFv5VIqAB6y6vKuxGGoFWCMfFFYopoLrKIG0DrWkBYIk/iHhSf/6
-         V2DsA4Or+X1n58Q27xWlahE54I+5iFFrTI1QwSYZfwfYOIt+nwrPrbXVigJVtHrXe7pX
-         TnaBBY8Mr4baqBTjmOkcZV/LK0bCdEw9VrStLWuR8mrQWUcvjj2n3jAnrpLZFYuV3xPW
-         ssB6HJ453Lgn8dh6LYJJaao2g4S+XC43mZaiJftd7FQw6Lr0ex8dJ0fZCMG9PdF88gwh
-         0/Lbp8O2DILbTZi5vxGEw0glG0tKYGP8HxiWaqQfKFddJABJknuplVhuZ80viD7iaJPL
-         e4yQ==
+        d=gmail.com; s=20230601; t=1730270660; x=1730875460; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MmAW25Xq+08xhdq2HO0pkvHqB0sZSIrEGg3huWOKOV0=;
+        b=bJ9YwDfM9WR40TyHVxNQpul4GW63hPhQHNuzxU0Nob2RPPwrBBtMLOehci5CtLX6hk
+         yrw/7A3BqJDL1KQEwqJyg9EPgFXjGg5zxL6lruKoVrfDJgDpvNIo/rq+9dzP7pwzrU+9
+         S50/JMUdailKcdBMhLUTyswRMWqftefiKhG77GfaidlVq5yMice0/o3aHBHRzQNwFqDR
+         BF/mSx1yu2Tbj+zKp1T+GGchquBSfNFn/B3aDLsLEWugV9xaRVf1IbyD8xKkZLA7RyxJ
+         LZQjh4pZpOb8DD5MGOGt95P63N7GnQdJkOx9z5s7WbvnsgL1xjJP8+VMQE10pX1yVYFu
+         z3mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730270337; x=1730875137;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fUpniwr1Q1kvW9+maEql1NLWyuJa7R2hiSy+rG+NqVY=;
-        b=hp+Ab5+9s0ea1DhRy8PohO8kemQq4ZQ8YVoIP1Fuw6CX75iViyy+NdE44Xlfq61gVK
-         EJ7NPiP6U1WgoicIU+g2+ruV0cwxevOIpoRhgtex38jRs5IyC5lIb8VrbGAra4ARXM3x
-         +m5wsX6+DWTThRfA/sO6I/BY0Ku0XnDKLsNgz2NJGwDVtLfIIhX+suXfcg7uzCnH0fCy
-         cgNncq46XfOh7uAkCe9jxeSSHb7gJBBIH7ob89p2MRE6xivc2LPPUK2s/R/SdwkbMgjy
-         1QY9hkSRizsB96StKXmIF0zIKV53PODxzgAOZUgBZWsCYY2hxk/sUDEZnxiBmkiAlhNn
-         bLQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUmO0uS2l7E1Qe5SAOvaQk1xXSo9FEE2DnlKMe81s7yB2Zu49SqIq8NrHlDQAGsJ4dRLlhOSdCPoOY=@vger.kernel.org, AJvYcCV22XECFLIGWgdRtf65Rz2GKsqEmwupp5DJNfkmVdffZq0e0Hw7HGuRL2offkqc5SZDnsRhQQHG@vger.kernel.org, AJvYcCWt1Iv1pqzg4KsifNdat3p9V8oAIsFsxB65qk+Rew7DW+Fh1Qpptzq3EeEeog/o+mrP0IdOKZcTA7ImcGc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzrWL3eOz+ulqtmsxn+ApGuVFSthiMsFZoMEL44hEbDGE7N0qu
-	oUBPmJtItQeOYzeO0SQfbqg1pWfMeWOr9gPZLhLyIzKtXyguY8YP1VHoYg==
-X-Google-Smtp-Source: AGHT+IGqLn4VdKBvfhGFSf7hnR814/+H9k3X/r6fsN1s1vIfz4R4kf3bYxG/1eIRThWfb9gVLCpAfg==
-X-Received: by 2002:a05:6402:350e:b0:5c9:55a8:7e86 with SMTP id 4fb4d7f45d1cf-5cd54a83551mr1523466a12.8.1730270336996;
-        Tue, 29 Oct 2024 23:38:56 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1730270660; x=1730875460;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MmAW25Xq+08xhdq2HO0pkvHqB0sZSIrEGg3huWOKOV0=;
+        b=htbgSYkGt6ascaiyumS9kXLJ15OITP70mK1Es0YXVwqPNsYkIWANQvKVmdVMtNPB6f
+         S38ww5z+91Ug9k7MDaV7OyQW5Z1mk6tr2YsZTABwihSUKEoKborBjIkQ1alkJUg2hsbq
+         HNjqa6nC802M/M/MI3pZBMH2xL3Gt1TK0saHXOrX4+AG1Dwln6/O15wR2mIDatwTQMLI
+         CDdqB3f4TZNfVJAof5QPm4sM69BFqgkjWS0Nnox6N6AU6A/71p00cK4bNI4EqpQsM4+l
+         jk66E3pluvnH24T7ZmVkZk/+khKR2crhl3YS1lEZBbFXy6hCMHb4mHYBb293CO6ojbk2
+         4DXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU0GEealsU2l1C7C6jOijtAIW7GUrnoHJyMSgaVsEhg2p6NRUU9orX6GOJKyw7bMdUnXZj3/DFqhpA=@vger.kernel.org, AJvYcCWCF/6ZX6onaLWQnAinOtnaZFc/zGvVCQ7QXZYV3HG6WUtH/WLFk9zQuZJYrPwJedQWfbsmritI3z9HewE=@vger.kernel.org, AJvYcCWmBrYB7W/cnNpeoSM0RYfz7Lw8zBbHCB9/ktPSd0iy4zflbzyE9w4uZ3vpM7oAPABBbzCr/77/@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywsgdh0gs6VxV+P8S9MerLRbufDR+vVAG5opNFYZkNBSeBjw892
+	KiGMt6Quiu661VTotDyJPppUfHfy++F2E9muZBYviXx6FIF1Nun+5NRxweJs
+X-Google-Smtp-Source: AGHT+IE04UHobsipZRhjEUzyXYGDVgV5T/lYJ6JQc+mK46hY0hvvTcPS2K/ZH1cAZUvWtfyIwLDZ5A==
+X-Received: by 2002:a05:600c:1990:b0:42c:b826:a26c with SMTP id 5b1f17b1804b1-431bd703983mr8293365e9.8.1730270659725;
+        Tue, 29 Oct 2024 23:44:19 -0700 (PDT)
 Received: from [127.0.1.1] ([213.208.157.67])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cbb62c14c4sm4473498a12.44.2024.10.29.23.38.53
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd9ca704sm11249655e9.41.2024.10.29.23.44.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Oct 2024 23:38:55 -0700 (PDT)
+        Tue, 29 Oct 2024 23:44:19 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Wed, 30 Oct 2024 07:38:33 +0100
-Subject: [PATCH 2/2] cpuidle: qcom-spm: fix platform device release in
- spm_cpuidle_register
+Subject: [PATCH 0/2] cpuidle: riscv-sbi: fix device node release in early
+ exit of for_each_possible_cpu
+Date: Wed, 30 Oct 2024 07:44:08 +0100
+Message-Id: <20241030-cpuidle-riscv-sbi-cleanup-v1-0-5e08a22c9409@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,64 +78,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241030-cpuidle-qcom-spm-cleanup-v1-2-04416fcca7de@gmail.com>
-References: <20241030-cpuidle-qcom-spm-cleanup-v1-0-04416fcca7de@gmail.com>
-In-Reply-To: <20241030-cpuidle-qcom-spm-cleanup-v1-0-04416fcca7de@gmail.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>, 
+X-B4-Tracking: v=1; b=H4sIALjVIWcC/x3MQQqDMBBG4avIrDtgYhHiVUoXZvK3DkgaMiiCe
+ HdDl9/ivZMMVWE0dSdV7Gr6yw3u0ZEsc/6CNTWT7/3T9T6wlE3TCq5qsrNFZVkx560wQhwkhhF
+ uTNT6UvHR4/9+va/rBjbbwBRrAAAA
+To: Anup Patel <anup@brainfault.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
  Daniel Lezcano <daniel.lezcano@linaro.org>, 
- Bjorn Andersson <andersson@kernel.org>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>, 
- Stephan Gerhold <stephan@gerhold.net>
-Cc: linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Atish Patra <atishp@rivosinc.com>
+Cc: Palmer Dabbelt <palmer@rivosinc.com>, linux-pm@vger.kernel.org, 
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1730270327; l=1343;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1730270658; l=1106;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=rn+WiHtBQzRPif3GnE4mdaXXApuavu7ost5UpHXs+5A=;
- b=cNTzi4pD+41J945oUZsoziKX5PKyr6TYYG+pzATvaIiNnx4vJrLeQlroCI/a7soVKC1vlbiwJ
- b7+beIcSHgzAOKhEw2FsltKk/Xcjltoz50kbX2uCQFMKDKUni0zySsL
+ bh=BpGY/eDm3rqBN7WhGt8Gp/hzEZK3r2dryyGFB17Y+qg=;
+ b=Fi6G0zA8GxCLTTdxKa+iqQDjcH+qVUO0DqHCmAOYnKZNPnjqlM26MfkkjHWg5JOGPx43G+3hI
+ BaHi4Gjt/YkDDRSSo/e1d/N6fxTxCtY3SXoh1IxP9YGLfFYEhCmY8qE
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-A reference to a device obtained via of_find_device_by_node() requires
-explicit calls to put_device() when it is no longer required to avoid
-leaking the resource.
+This series releases the np device_node when it is no longer required by
+adding the missing calls to of_node_put() to make the fix compatible
+with all affected stable kernels. Then, the more robust approach via
+cleanup attribute is used to simplify the handling and prevent issues if
+the loop gets new execution paths.
 
-Add the missing calls to put_device(&pdev->dev) in the success path as
-well as in the only error path before the device is no longer required.
+These issues were found while analyzing the code, and the patches have
+been successfully compiled, but not tested on real hardware as I don't
+have access to it. Any volunteering for testing is always more than
+welcome.
 
-Note that the acquired device is neither assigned nor used to manage
-additional resources, and it can be released right after using it.
-
-Cc: stable@vger.kernel.org
-Fixes: 60f3692b5f0b ("cpuidle: qcom_spm: Detach state machine from main SPM handling")
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- drivers/cpuidle/cpuidle-qcom-spm.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Javier Carrasco (2):
+      cpuidle: riscv-sbi: fix device node release in early exit of for_each_possible_cpu
+      cpuidle: riscv-sbi: use cleanup attribute for np in for_each_possible_cpu
 
-diff --git a/drivers/cpuidle/cpuidle-qcom-spm.c b/drivers/cpuidle/cpuidle-qcom-spm.c
-index c9ab49b310fd..601aa81ffff3 100644
---- a/drivers/cpuidle/cpuidle-qcom-spm.c
-+++ b/drivers/cpuidle/cpuidle-qcom-spm.c
-@@ -106,10 +106,13 @@ static int spm_cpuidle_register(struct device *cpuidle_dev, int cpu)
- 		return -ENODEV;
- 
- 	data = devm_kzalloc(cpuidle_dev, sizeof(*data), GFP_KERNEL);
--	if (!data)
-+	if (!data) {
-+		put_device(&pdev->dev);
- 		return -ENOMEM;
-+	}
- 
- 	data->spm = dev_get_drvdata(&pdev->dev);
-+	put_device(&pdev->dev);
- 	if (!data->spm)
- 		return -EINVAL;
- 
+ drivers/cpuidle/cpuidle-riscv-sbi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+---
+base-commit: 6fb2fa9805c501d9ade047fc511961f3273cdcb5
+change-id: 20241029-cpuidle-riscv-sbi-cleanup-e9b3cb96e16d
 
+Best regards,
 -- 
-2.43.0
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
 
