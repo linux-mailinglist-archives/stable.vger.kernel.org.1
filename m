@@ -1,189 +1,132 @@
-Return-Path: <stable+bounces-89346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171539B694B
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 17:36:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FE249B6978
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 17:45:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39C231C21844
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 16:36:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 436FA1F20F23
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 16:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50DFF2144D7;
-	Wed, 30 Oct 2024 16:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DCD51F1310;
+	Wed, 30 Oct 2024 16:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aSAPuoDz"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nFJ/Pnzu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD942144CB
-	for <stable@vger.kernel.org>; Wed, 30 Oct 2024 16:36:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0478C1E8849
+	for <stable@vger.kernel.org>; Wed, 30 Oct 2024 16:45:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730306194; cv=none; b=IOSy8RG7GMFrw0+EkYG275Wb4svGXYpkRL9KtMzQ1JqwDt7avZh4FrK/RCRQ5Dg97BxyWga8PNBk243zaAQ9J6o7csLJsu29tlCgjpV3wgo/DojOpffkJ/F/cu06tc6JAMGnIRXFNzZ4vCsLPcP5lYPj7Fv+DHFZuGoq7utIgQw=
+	t=1730306743; cv=none; b=fQw9MEEzKYRSCuh3f6Q6xWv91ZkgVMYXOBlZA7lwzYtr3LSyyH1iPM0PAnyG0obbI7K0ooExBZ8fDlaCmAblXLuvGy9nUbowsBYi81VbuMCxlR1nspgpjBuoueX1YpGXjmbz8t5e+Jielc8q9eSdlE2WUgAYKHdRptjSbNO6Q6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730306194; c=relaxed/simple;
-	bh=zCHrmiaT0aQkEzgBzKBRTHVHsnCbnwygmYP/jN0u0D8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PtlHaZrceBHfE3W9Z26x6YO8j4uhX/3OJy9VF3hISx60OJNMoZV9Hz7pWa2avUDOiJVBRqn+FPZtCfhR85o6Ks2b0uPaCM8uL0aZyQhQD5cg9ysPCcGHABGGRM6dC8cQYRZM0D8kWIqAAGyMhzDkGI6YUz+BhLVoi9cMA1KA2l8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aSAPuoDz; arc=none smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-460a8d1a9b7so338521cf.1
-        for <stable@vger.kernel.org>; Wed, 30 Oct 2024 09:36:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730306191; x=1730910991; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9ohhnavrPr5+YUgso4iG8u5sjXey4qTkemT4mrkrez4=;
-        b=aSAPuoDz0UR0ea5xI1iz5ZFeLgpnhvrv8xfS0PMaYhFKtGzucvKFkyxM30Hv5glE+b
-         qrQMC51Hn9aRaGxbfa8jF7zwMwzpgb++DucM7cN9+NZHybf1LujW06SHGmBvV8J45TUG
-         REgKSB4b6guIgeHM6LO7Vd5gnvwQ8nIIiYvCYVX6BpGK/5eRyAg1n80IzluKrTDdM4KM
-         tFtyyfx+Oq2dnCWv7TMT25zfkhldPSdUE23tntsTBhT75AxI2BfkKU4sLeyjWJMRWg4l
-         rGJpYUL/nxGDVjQkw+M7iFlv4vaviS7zJbibSgduVRoBOPNi0I0Ot7VPCF5IGx8gRYOc
-         6bwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730306191; x=1730910991;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9ohhnavrPr5+YUgso4iG8u5sjXey4qTkemT4mrkrez4=;
-        b=SES4Z4ZaX5vhVue79KKv9znFYdVA/ba+GTUsh1Dcl7RLATOlEXUMI+1uS95z+OzM4m
-         KREf8chND9rR8ReSRaltdjAOaiMSZk+OpD3CfF1e99y5kRxtehfwFXkoruqcBPlakyPD
-         V5sFKj64vw1pNSL05vpx6/ICYoJjKd04RtBT6ndGGZnQBpNCD9tR4WxX8p+i+Nclyu7w
-         N2BNciO+hoZKpl7hSiH1iPAxT5wEOxQygzh981uLP7N054LtOrlzCnD8/VF99aWME7a2
-         N61z/ab910fZeL9eN0k9C4lJTsHbYs/zy7Mqlz6weRkxWyFb5tVl0LggsLdaxP7JyDjK
-         ceoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXOuduGWIz96guBFzORlw7Y2K28/UHtIRPcCKiRiVQvuxs+DpXRmyknzJQMt4AJBnOo2l/KvYk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzu//AleSd7VgpHzxiM7QPGZw7EOVvCpttMDKYjgcXD1Yvq8OB9
-	eKKuCm/1fxzXPGbixIbV26qTAHx85USIeAPu7h8fOS2/362OUibNVQ9DPh10nvsEZyPelbmilGs
-	eUulZazpR2PiaXRzbuAVNuSlyND8idAJahrGyI6VClJ28kGsXzF/Ud3A=
-X-Gm-Gg: ASbGncvErB2ivGQZSQ/L2nXK1WQEio6g14e5nVqfVbAjs90EEvpo1PyPHSeMBJ8o9UE
-	keRi3mAvHKqm1RzwGu03j9UpHfvDgYBy7dJaBAcvYhJEVF0gSBFA7nL6Di2i4uQ==
-X-Google-Smtp-Source: AGHT+IFBqNAhnZpINWYimOajsOUR5Hu7mWheBmruaCmzYI1pEkwMAvJVmKH+JkRRcQ8aMk7aGSnF9I1hvN2lZQ7/bOk=
-X-Received: by 2002:a05:622a:cb:b0:461:3083:dbac with SMTP id
- d75a77b69052e-46166cf428fmr8624631cf.5.1730306190820; Wed, 30 Oct 2024
- 09:36:30 -0700 (PDT)
+	s=arc-20240116; t=1730306743; c=relaxed/simple;
+	bh=hcFBMSRwI7XyLVXiwju9iNxMgHCXtPSFdswCTiWGT8A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Lf7eLnUv6wvi6BIa45XgsPSEoQdx+WdhTxPOMFT9vS6gUeoQvmQn3AuQ5eaqwb2PyIXOB2gcHLi69P6lGTkZSRPCxb1tuRx8lKdNZ/xtQLpf7WmIw2WU1rhsIFgcjBjdmn4gynqS3NbywuL/2JwCPmCAvmQ/ihTKkTgd/W2ODyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nFJ/Pnzu; arc=none smtp.client-ip=91.218.175.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <f2119a4d-7ba3-4f11-91d7-54aac51ef950@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1730306737;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2IImZ1cZVsIXJIGIFBIuoTjHne0xPtt9XDcxUzdxcbs=;
+	b=nFJ/PnzuiZtjPkvI0PKl64gdNlEDUbL7oSAq78a1QvDclqZGoe1La2Ah6XdSp1vzNooun7
+	bCwWvVAvHmL8gchTeI60zfM3b/WoGPP/2zLD0EmFLUI0Odu5eYChun3lBUKye2a73LAIIs
+	yadQopyWqNnFMUSZFHBPqPAtYd1KtN8=
+Date: Thu, 31 Oct 2024 00:45:24 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241028234533.942542-1-rananta@google.com> <868qu63mdo.wl-maz@kernel.org>
- <CAJHc60x3sGdi2_mg_9uxecPYwZMBR11m1oEKPEH4RTYaF8eHdQ@mail.gmail.com>
- <865xpa3fwe.wl-maz@kernel.org> <CAJHc60xQNeTwSBuPhrKO_JBuikqZ7R=BM5rkWht3YwieVXwkHg@mail.gmail.com>
- <87iktat2y8.wl-maz@kernel.org>
-In-Reply-To: <87iktat2y8.wl-maz@kernel.org>
-From: Raghavendra Rao Ananta <rananta@google.com>
-Date: Wed, 30 Oct 2024 09:36:19 -0700
-Message-ID: <CAJHc60w7edpTSG2VA52m96BP6Eayg2jEc=9nt_b_kJFnOoQxfw@mail.gmail.com>
-Subject: Re: [PATCH v2] KVM: arm64: Get rid of userspace_irqchip_in_use
-To: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	stable@vger.kernel.org, syzbot <syzkaller@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2] drm/bridge: Fix assignment of the of_node of the
+ parent to aux bridge
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Abel Vesa <abel.vesa@linaro.org>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Johan Hovold <johan@kernel.org>, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20241018-drm-aux-bridge-mark-of-node-reused-v2-1-aeed1b445c7d@linaro.org>
+ <ux2lfkaeoyakulhllitxraduqjldtxrcmpgsis3us7msixiguq@ff5gfhtkakh2>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sui Jingfeng <sui.jingfeng@linux.dev>
+In-Reply-To: <ux2lfkaeoyakulhllitxraduqjldtxrcmpgsis3us7msixiguq@ff5gfhtkakh2>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Wed, Oct 30, 2024 at 1:22=E2=80=AFAM Marc Zyngier <maz@kernel.org> wrote=
-:
->
-> On Wed, 30 Oct 2024 00:16:48 +0000,
-> Raghavendra Rao Ananta <rananta@google.com> wrote:
-> >
-> > On Tue, Oct 29, 2024 at 11:47=E2=80=AFAM Marc Zyngier <maz@kernel.org> =
-wrote:
-> > >
-> > > On Tue, 29 Oct 2024 17:06:09 +0000,
-> > > Raghavendra Rao Ananta <rananta@google.com> wrote:
-> > > >
-> > > > On Tue, Oct 29, 2024 at 9:27=E2=80=AFAM Marc Zyngier <maz@kernel.or=
-g> wrote:
-> > > > >
-> > > > > On Mon, 28 Oct 2024 23:45:33 +0000,
-> > > > > Raghavendra Rao Ananta <rananta@google.com> wrote:
-> > > > > >
-> > > > > Did you have a chance to check whether this had any negative impa=
-ct on
-> > > > > actual workloads? Since the entry/exit code is a bit of a hot spo=
-t,
-> > > > > I'd like to make sure we're not penalising the common case (I onl=
-y
-> > > > > wrote this patch while waiting in an airport, and didn't test it =
-at
-> > > > > all).
-> > > > >
-> > > > I ran the kvm selftests, kvm-unit-tests and booted a linux guest to
-> > > > test the change and noticed no failures.
-> > > > Any specific test you want to try out?
-> > >
-> > > My question is not about failures (I didn't expect any), but
-> > > specifically about *performance*, and whether checking the flag
-> > > without a static key can lead to any performance drop on the hot path=
-.
-> > >
-> > > Can you please run an exit-heavy workload (such as hackbench, for
-> > > example), and report any significant delta you could measure?
-> >
-> > Oh, I see. I ran hackbench and micro-bench from kvm-unit-tests (which
-> > also causes a lot of entry/exits), on Ampere Altra with kernel at
-> > v6.12-rc1, and see no significant difference in perf.
->
-> Thanks for running this stuff.
->
-> > timer_10ms                          231040.0                          9=
-02.0
-> > timer_10ms                         234120.0                            =
-914.0
->
-> This seems to be the only case were we are adversely affected by this
-> change.
-Hmm, I'm not sure how much we want to trust this comparison. For
-instance, I just ran micro-bench again a few more times and here are
-the outcomes of timer_10ms for each try with the patch:
+Hi,
 
-Tries                                             total ns
-               avg ns
----------------------------------------------------------------------------=
---------
-1_timer_10ms                             231840.0                          =
-905.0
-2_timer_10ms                             234560.0                          =
-916.0
-3_timer_10ms                             227440.0                          =
-888.0
-4_timer_10ms                             236640.0                          =
-924.0
-5_timer_10ms                             231200.0                          =
-903.0
-
-Here's a few on the baseline:
-
-Tries                                             total ns
-               avg ns
----------------------------------------------------------------------------=
---------
-1_timer_10ms                             231080.0                          =
-902.0
-2_timer_10ms                             238040.0                          =
-929.0
-3_timer_10ms                             231680.0                          =
-905.0
-4_timer_10ms                             229280.0                          =
-895.0
-5_timer_10ms                             228520.0                          =
-892.0
+On 2024/10/18 23:43, Dmitry Baryshkov wrote:
+> On Fri, Oct 18, 2024 at 03:49:34PM +0300, Abel Vesa wrote:
+>> The assignment of the of_node to the aux bridge needs to mark the
+>> of_node as reused as well, otherwise resource providers like pinctrl will
+>> report a gpio as already requested by a different device when both pinconf
+>> and gpios property are present.
+>> Fix that by using the device_set_of_node_from_dev() helper instead.
+>>
+>> Fixes: 6914968a0b52 ("drm/bridge: properly refcount DT nodes in aux bridge drivers")
+>> Cc: stable@vger.kernel.org      # 6.8
+>> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+>> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+>> ---
+>> Changes in v2:
+>> - Re-worded commit to be more explicit of what it fixes, as Johan suggested
+>> - Used device_set_of_node_from_dev() helper, as per Johan's suggestion
+>> - Added Fixes tag and cc'ed stable
+>> - Link to v1: https://lore.kernel.org/r/20241017-drm-aux-bridge-mark-of-node-reused-v1-1-7cd5702bb4f2@linaro.org
+>> ---
+>>   drivers/gpu/drm/bridge/aux-bridge.c | 3 ++-
+>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
 
-> In the grand scheme of thins, that's noise. But this gives us
-> a clear line of sight for the removal of the in-kernel interrupts back
-> to userspace.
-Sorry, I didn't follow you completely on this part.
+Technically speaking, your driver just move the burden to its caller.
+Because this driver requires its user call drm_aux_bridge_register()
+to create an AUX child device manually, you need it call ida_alloc()
+to generate a unique id.
 
-Thank you.
-Raghavendra
+Functions symbols still have to leak to other subsystems, which is
+not really preserve coding sharing.
+
+What's worse, the action that allocating unique device id traditionally
+is the duty of driver core. Why breaks (so called) perfect device driver
+model by moving that out of core. Especially in the DT world that the
+core knows very well how to populate device instance and manage the
+reference counter.
+
+HPD handling is traditionally belongs to connector, create standalone
+driver like this one *abuse* to both Maxime's simple bridge driver and
+Laurent's display-connector bridge driver or drm_bridge_connector or
+whatever. Why those work can't satisfy you? At least, their drivers
+are able to passing the mode setting states to the next bridge.
+
+Basically those AUX drivers implementation abusing the definition of
+bridge, abusing the definition of connector and abusing the DT.
+Its just manually populate instances across drivers.
+
+  
+
+-- 
+Best regards,
+Sui
+
 
