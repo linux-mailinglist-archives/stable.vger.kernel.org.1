@@ -1,131 +1,100 @@
-Return-Path: <stable+bounces-89284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2A179B598B
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 02:48:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E6659B5A29
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 04:02:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C09FB224E5
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 01:48:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABC4AB220DB
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 03:02:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28EC13BAE3;
-	Wed, 30 Oct 2024 01:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64FE84204F;
+	Wed, 30 Oct 2024 03:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="rC4A7Mfk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MK4RY6vQ"
 X-Original-To: stable@vger.kernel.org
-Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01BB194AFB
-	for <stable@vger.kernel.org>; Wed, 30 Oct 2024 01:46:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C57CDDC3
+	for <stable@vger.kernel.org>; Wed, 30 Oct 2024 03:02:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730252821; cv=none; b=dePD3z7RiWDoFiHeifoPc00X0uAUq9UCyvWWZ2btE1QjKM9/XXx+CY5w0wddXdrTqEkwHZJBfmrgd9LhlKqqZlfrdP6wJa33bYAc8meByvsT8H9VdfQGVtMiEfRPw5y1bqQKquQ/5204WmrAArHI/dL9YaQQW6KxBIxn0FU+dTQ=
+	t=1730257369; cv=none; b=i1/gbRsDM/L7YP4YO1G/ZWSMhnZCBIs0qZL792bO3PIPhzTgEmapOlTK1hYMvEjhth6ly75flyxRZqIQ7rb8eN3Es/0aotoay9f//6Qx7Km0/nA0sCi4m6/N00L6EdKh2jFqDSwA7wcJg3XhjgmLSL9DQ9MLUotihsb2+876oFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730252821; c=relaxed/simple;
-	bh=oObshbt1qkXuKG1U4M6y64p1E1ZQLclej2sD1aCjK1U=;
-	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
-	 MIME-Version:Content-Type; b=Ym/k466faIAQk8jxWqV/6wJe659voRFwHilthW9ug/yazirxrkE/sOtlzx0KR1/fFJ3qf7Yw6CWp1eoxolh7NwKB7pjiscgbh0PmDbOGEUZA6QqdaSKvnATuKirEpT7jcQLrEuRcI9xzKofj3qd+NkRtMi+it4bnrkvFUMvDSAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=rC4A7Mfk; arc=none smtp.client-ip=44.202.169.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-5008a.ext.cloudfilter.net ([10.0.29.246])
-	by cmsmtp with ESMTPS
-	id 5p9atJyN2iA195xnWtI1TC; Wed, 30 Oct 2024 01:46:58 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id 5xnVtAbzHO7uS5xnVt00NR; Wed, 30 Oct 2024 01:46:57 +0000
-X-Authority-Analysis: v=2.4 cv=Acy3HWXG c=1 sm=1 tr=0 ts=67219011
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=DAUX931o1VcA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=sWTCEjoW0PaFb5V99poA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=KVzQnrY4wTUwbzURtByjRl3jasMwB1tF7757AlHhlmg=; b=rC4A7MfkVNeGicpSHPRI3a+Uyv
-	b1jCCXIgtkW8XEYixqZAJDlAJC6mZT3D/l+33/XNsV3+LwX3yfPqpgQJcmrwAsKicIS+xo362na4j
-	h5bI0xpsMmarSyDWsk60S0kHxkMw8I1Z/1x/4i0fvMXiEqOE0QiMgo16jAfU3GzvJwy/62y7pdiVZ
-	eLc8xeSKsViCLdKzEfPYM38SwotDZ8q/X0J0ADMhvjQs7PMwOsTOjxS7XuKhRvI//u6Fjc+LsFUXt
-	SKulO7q2HEdOe8gs5fW5PY0uLWGVZ386A4XrTJ85A1A8PfMTgbopRshBg8PLXAZKYtCnqOJOvHYCY
-	uuiSQsww==;
-Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:36552 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1t5xnS-001M3g-2W;
-	Tue, 29 Oct 2024 19:46:54 -0600
-Subject: Re: [PATCH 5.15 00/80] 5.15.170-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20241028062252.611837461@linuxfoundation.org>
-In-Reply-To: <20241028062252.611837461@linuxfoundation.org>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <246d5cc8-fccc-c751-ed9f-401ba6ed5353@w6rz.net>
-Date: Tue, 29 Oct 2024 18:46:52 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	s=arc-20240116; t=1730257369; c=relaxed/simple;
+	bh=H52Js68gJpj0VbW1XPCHmaz35JKgV3UWxTdIySForcc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=leYIdVYS8dlNzMPo+SJ04J6XbJah5DJvm7oikO1vaVy62dZp1X4QuPl5PQvQcZElHm0MOmg/hvHNRoP14Gzqhsom7cboM7Sn2qM67bPp09FwozKk62UJe6/1auUJqgMQyjNyman7xqd5SafaZjXkPNl21X07xn/DUEOQF5CnKV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MK4RY6vQ; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730257366; x=1761793366;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=H52Js68gJpj0VbW1XPCHmaz35JKgV3UWxTdIySForcc=;
+  b=MK4RY6vQVtFCnVF+zkowyEWqnIQFdYasCPQV1FW7CQiNgSy/5FiIMsXS
+   qgC42/PpV6O5VXCb4BWBFCQ4iAhhmv8hELqDcebwI4DWSmenhhyt8+R4K
+   bUVNi2yalB1qBU7uaJTEJ3rv/MxFmy2izuZ4C6FeADCTkTiXJwc3tzsEH
+   cIuLMkbLyrQ6HMjaZIJpt5tKXhOcs0CA8w/PQCUp01aRqCNIQS3iycfqa
+   gf7QX37M9d/CC6DkXBwNf4NtNrppsZPjeYUVleX0JPU6MQSFIg8VZpedB
+   jUl7Pjd+Jqhcyelz3FIM9Hh40Xadla5IzDjb0+iMeMsw7rk3rg2AmQvfk
+   Q==;
+X-CSE-ConnectionGUID: Devt+dyHSTaQomXef9zNQQ==
+X-CSE-MsgGUID: NEFSeaiqToykfcawDX86Mw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11240"; a="47420038"
+X-IronPort-AV: E=Sophos;i="6.11,243,1725346800"; 
+   d="scan'208";a="47420038"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2024 20:02:46 -0700
+X-CSE-ConnectionGUID: qyicl1/NRVC7VjYeaptybw==
+X-CSE-MsgGUID: 4sfjVRObSLGloh7iSozT2A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,243,1725346800"; 
+   d="scan'208";a="82338032"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 29 Oct 2024 20:02:45 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t5yyo-000eRs-1C;
+	Wed, 30 Oct 2024 03:02:42 +0000
+Date: Wed, 30 Oct 2024 11:02:32 +0800
+From: kernel test robot <lkp@intel.com>
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] mm/gup: restore the ability to pin more than 2GB at a
+ time
+Message-ID: <ZyGhyDiXV1lIvIEe@433b1ac7a1a4>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.223.253.157
-X-Source-L: No
-X-Exim-ID: 1t5xnS-001M3g-2W
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:36552
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 59
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfP81q6Wu51ww3FNjNLScKlUuVo4LgSWWcG+Zk/mpUdIHdTx69+PZJdpuZRijeVEtPJNLKMTawfWi4/Iai4KeOBFY6mad3tGx6DLNccNEzESEjLqRcWsP
- IYm5SlccXTZ67SFWSWSk9GtZC1V1A9UqhUFHhVj/wztQg+hUb368S90ym9f2gs+I1HIXQmu1Qmw9Lw==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241030030116.670307-1-jhubbard@nvidia.com>
 
-On 10/27/24 11:24 PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.170 release.
-> There are 80 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 30 Oct 2024 06:22:39 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.170-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Hi,
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Thanks for your patch.
 
-Tested-by: Ron Economos <re@w6rz.net>
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] mm/gup: restore the ability to pin more than 2GB at a time
+Link: https://lore.kernel.org/stable/20241030030116.670307-1-jhubbard%40nvidia.com
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
