@@ -1,139 +1,137 @@
-Return-Path: <stable+bounces-89294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B07C69B5BEE
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 07:44:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD3969B5BFB
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 07:48:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26BF1B21F79
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 06:44:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CB7728458C
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 06:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 386C91DC1A2;
-	Wed, 30 Oct 2024 06:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 646681D27B9;
+	Wed, 30 Oct 2024 06:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MVzoA2ds"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BNYqlyk6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A521D0E27;
-	Wed, 30 Oct 2024 06:44:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5963B1D0E27;
+	Wed, 30 Oct 2024 06:48:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730270666; cv=none; b=losXVh7JeRVS1BF5QxEyyYiiNiNjpAD9MhAiGQDJfPUzgM/9uABFGjifRrXc5p36426b40RciHtWXlQ+yeU76nr0ZckyUIHl9TePlU7rYhFGC+GbkDPZV14fmdesTrDL2N4SvaeYqiHiBJmbVmxwoW+LWqTeau6wSsizeFA1gKY=
+	t=1730270916; cv=none; b=H8KiDluz7fLFAIsatdpGbOq4H5MF/X1S01WI+Fs57jrSPkuh2lXFrK/zLrDAyPMojcPWtediBDKqv1PvbX7MKTdN3rZJY1T5MOpZppLtfJdBiUU3UmXpOX+VSFTrYRihpcQhstK0ls2qTJslr/DW9D+ry+Zet5Jf14+6nc6eY+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730270666; c=relaxed/simple;
-	bh=BckDlgNxXN37WM9rRTU+h45QD44ycxfdprrjTJEpleg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YdGVUo9s6gFS2qGiOgEPtgAz7OM2eURmnZttIq74dt/lBK8oUR66+ce9r4Lx/4C/0bUalP4Au8PQb8sDK9m1r3S9YWwGwfahVxlcDZVeBKPWLlVbavfq/58sDVraoK0BnYUKx/rm96yQKQXKiVmMSQp3PDCA6r5Kmlm6vX5N1CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MVzoA2ds; arc=none smtp.client-ip=209.85.167.51
+	s=arc-20240116; t=1730270916; c=relaxed/simple;
+	bh=92RQnOORjAJsaNb2qDBDg22hmUK/J5GkQTPRwalOP1E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kNjy5bYkxfn7aR5R98TyZQLW3vRqmRrxQ4HBKHZ1tRkXRVFqWj5mdpd2HohaaNr6OQ0Ab4KWme+EmxZ4Fl+CF7uuhWXq6vhlqSUvtGafeKDWt6eL55XbwgL1nUSfiSchkZed1kAHjgBU/VSAJc8MhrSZw4Ey3LDcJJynUNx8KyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BNYqlyk6; arc=none smtp.client-ip=209.85.214.193
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-539d9fffea1so5854498e87.2;
-        Tue, 29 Oct 2024 23:44:23 -0700 (PDT)
+Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-20cd76c513cso58139485ad.3;
+        Tue, 29 Oct 2024 23:48:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730270662; x=1730875462; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=S8LuPiSu7wFtVCRkCbuWOFPZfKo40h92poaJRDjY0b8=;
-        b=MVzoA2dsF99t95Yv/Xz0FeQTqW9DT360JeMgJ0ueDzWvKObrySX+RVu0KW5N/u0gjz
-         V6q/RyLK4kmA1Ryn0AbBtrvk3bH0oH7mpFHG/IncfqMUrbGweiX7ZMKRSkXJHnNibMJE
-         Op0+9OjwyE4MdXoqvz1JDhy1XnRhdYooCBqTltaSjoi/GtoDjrLQ2dcCREjqCo7eQ8vu
-         2B6u1Fd7O/nEFOxmlz5Ei7ttq2dMDUDKQYoQXwnG6pWpI2IYIMoTQQ9K46fAYg+Mjtb3
-         JSw+O0+/b8Yg+7ls++lmX2fN+vCYsqFMFeQ4QucnDdGIHj321JrGP4Yrk5/pU5KAhpuX
-         JSug==
+        d=gmail.com; s=20230601; t=1730270914; x=1730875714; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NLH+mb52MPyjIXhx1azIc5EcwOmHKk4FSK5JYKVOnRs=;
+        b=BNYqlyk6wc11Ulx0Ks/DLx8q8tXwfw+W/ZCYu6h3AsIXQNkj8j/VHqb9AwHYc+KsFP
+         pzAWvRyX/FdR3fAVQrKAiwOet1gD0GXFcMsh/HEiCPch3eXiUXfQBbus3Y6Bh/iEzxLp
+         vr/SXemFdDI4EYtDzvxCqFg28LAdpoDQRLLF1W6yUlb8X1ABZ+ZIZ+P68NQCuWHuHJVS
+         lgaQLBVhSBGGpwhiwiUvJ9wz/BxkQDNGtRzpXeMpzpNa7JafKMyCY1nV3u01HBDswT3e
+         /WFIFQDxwt+bpl9rkZMBXoEfMYl3mDz+oa31KAtFA4AjhwfMTNdTTCJsKy5gCB1BtRzu
+         voxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730270662; x=1730875462;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=S8LuPiSu7wFtVCRkCbuWOFPZfKo40h92poaJRDjY0b8=;
-        b=qtTh+LrOtCOM6NJuFSzjplvI9Tljjq9DMzFTXhMsDbo4Ye/D1CbnQnw4ARpVSJdmmg
-         2dKYZDLgNKAlL2StFCTq1aj2sgSybS9TPXMJTQMIrZ+UmOQYo50u77YYMz9Ey+brTarw
-         NW+EGla+wQkqYUEvMz9l02gwztbw6J9H7TxFnKognQ36wk7Q56JzDidJWRFi0gPynWIy
-         H7vOkpQ1SN1JQ7et/tKrsID9x1VCuWeN9G9BqpD4oj1eYSUKneiQemcItikvtLgFek3p
-         RWsPv1p7xCAhMCs10ne/1ok78aSUf9WGyNsDXVp+nffW7vn0L1liTeBWziqUcQbhElQZ
-         2pWA==
-X-Forwarded-Encrypted: i=1; AJvYcCU1CCwkLJM0JyUFEhtcW7LQbDeGd712csZQpbGU3OcVECstHFu11TH1tEx6EDOuoe3GUHWyA1FJ@vger.kernel.org, AJvYcCU4S4VSmZUlPykf1EAGXwRXacUSZzu6/3EMiWizvTeweftneMwwxirzEHw05Bs2kvvEE4Y0agpzMnc=@vger.kernel.org, AJvYcCXOFmAhv3s/0V+H5pRB2wt6p9PFi+s1R8Vk7x0cMWEB96Il4ktaL111KVB5l7YqMZJ8MlOAdKRu+BygXSs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymjZX8evltyg4ZQ/KDE87HFU+kQE/4fFhA18EeTM+kbv5cu2+Q
-	iymxNMM5qLCj0xL77HkJbyE4FkTIxBi5VOrdCEx63gQewOjLAAsVfL4ZNKF2
-X-Google-Smtp-Source: AGHT+IGWhVQIhV4BdDIT9PkTI8qrQQX12NQPVSDcsmyAO931TnpfZkEuwVFFDyI12BadGeJMbiXo2g==
-X-Received: by 2002:a05:6512:3caa:b0:539:e88f:23a3 with SMTP id 2adb3069b0e04-53b34ca488fmr6256607e87.60.1730270661384;
-        Tue, 29 Oct 2024 23:44:21 -0700 (PDT)
-Received: from [127.0.1.1] ([213.208.157.67])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd9ca704sm11249655e9.41.2024.10.29.23.44.19
+        d=1e100.net; s=20230601; t=1730270914; x=1730875714;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NLH+mb52MPyjIXhx1azIc5EcwOmHKk4FSK5JYKVOnRs=;
+        b=Q+Ub3htES2dK+lDpSZEyT5vIUTWoJQ0s6kN9uL84MWA97GyrMk+4yEMve+aFOIgSbo
+         LjYMQww6L3+eiXlv3NUglt/B4Q1XW/rduPNNlTqhE24OU6t7T5P6+TY1Tn4oSYzDsa47
+         xuOFJ5qzGtSwtXdoWRVGR3fDkYMRSYiLvF3AbL3FCbmMEOFkXa/HoDR/UG8MSl8AuMgY
+         aIyMAptDqO8t3lKQx8/zLw7IICpHJMbkf5+oYJRjhi2eLWbbABXa88l/C1yB+O8DW9D/
+         MHr0t3UDG5dHESSjjUe1UIJBvMJiZPCl/rY13IuNcz99tQUuoG9T7aFEbsbOoCuQnFg0
+         /pVg==
+X-Forwarded-Encrypted: i=1; AJvYcCWTcsSLxMXHvQmTBdGknNKDz3hxI5/RFJHDjKEmrxAqWq+g1U//DsUsxhv72QifPaL7sIY2DyDC@vger.kernel.org, AJvYcCWZ+pAVU0nRx/pCsvtSiChBGDMyviPp219Uwlkfei69stcPvH6qgNad7ADoIqoM0Givsdqm5je93n9CdXw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLCPj1BwTQX/6P+5ZjIHo5iCtliD5R5s4PLX4JKu5L9qu6D2vy
+	mwarnhATUyxGuWBjndf9Cd/VT16vnmAf+0bJL0n1FyK2Sbn6j3VV
+X-Google-Smtp-Source: AGHT+IGbovcA7DAuva0hpZ5aQsAvIcP9p5SceqDodQnH5kIGmYD19P1JUT1Hv70RIaRgZNs/qLZ9dw==
+X-Received: by 2002:a17:902:e5cf:b0:20c:5bdc:c228 with SMTP id d9443c01a7336-210f7508efbmr27270015ad.13.1730270913549;
+        Tue, 29 Oct 2024 23:48:33 -0700 (PDT)
+Received: from tom-QiTianM540-A739.. ([106.39.42.118])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-210bbf43460sm75989155ad.23.2024.10.29.23.48.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Oct 2024 23:44:21 -0700 (PDT)
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Wed, 30 Oct 2024 07:44:09 +0100
-Subject: [PATCH 1/2] cpuidle: riscv-sbi: fix device node release in early
- exit of for_each_possible_cpu
+        Tue, 29 Oct 2024 23:48:33 -0700 (PDT)
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
+To: mchehab@kernel.org,
+	hverkuil-cisco@xs4all.nl,
+	allen.lkml@gmail.com
+Cc: linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com,
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH RESEND] drivers:media:radio: Fix atomicity violation in fmc_send_cmd()
+Date: Wed, 30 Oct 2024 14:48:24 +0800
+Message-Id: <20241030064824.6122-1-chenqiuji666@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241030-cpuidle-riscv-sbi-cleanup-v1-1-5e08a22c9409@gmail.com>
-References: <20241030-cpuidle-riscv-sbi-cleanup-v1-0-5e08a22c9409@gmail.com>
-In-Reply-To: <20241030-cpuidle-riscv-sbi-cleanup-v1-0-5e08a22c9409@gmail.com>
-To: Anup Patel <anup@brainfault.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Daniel Lezcano <daniel.lezcano@linaro.org>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Atish Patra <atishp@rivosinc.com>
-Cc: Palmer Dabbelt <palmer@rivosinc.com>, linux-pm@vger.kernel.org, 
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1730270658; l=1134;
- i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=BckDlgNxXN37WM9rRTU+h45QD44ycxfdprrjTJEpleg=;
- b=ujl2h06lGh4YP2Y79CiPlMHPbox7pBxEij20AzVxtyPJO6YkpF6IXkkR1VQPlWKQticw+fNHm
- BmWt+LqTvfWA8Vjuu0X/60D+gHiHeI69Qr32rb1foKW4ivVqq8FVgUK
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
+Content-Transfer-Encoding: 8bit
 
-The 'np' device_node is initialized via of_cpu_device_node_get(), which
-requires explicit calls to of_node_put() when it is no longer required
-to avoid leaking the resource.
+Atomicity violation occurs when the fmc_send_cmd() function is executed 
+simultaneously with the modification of the fmdev->resp_skb value. 
+Consider a scenario where, after passing the validity check within the 
+function, a non-null fmdev->resp_skb variable is assigned a null value. 
+This results in an invalid fmdev->resp_skb variable passing the validity 
+check. As seen in the later part of the function, skb = fmdev->resp_skb; 
+when the invalid fmdev->resp_skb passes the check, a null pointer 
+dereference error may occur at line 478, evt_hdr = (void *)skb->data;
 
-Add the missing calls to of_node_put(np) in all execution paths.
+To address this issue, it is recommended to include the validity check of 
+fmdev->resp_skb within the locked section of the function. This 
+modification ensures that the value of fmdev->resp_skb does not change 
+during the validation process, thereby maintaining its validity.
 
+This possible bug is found by an experimental static analysis tool
+developed by our team. This tool analyzes the locking APIs
+to extract function pairs that can be concurrently executed, and then
+analyzes the instructions in the paired functions to identify possible
+concurrency bugs including data races and atomicity violations.
+
+Fixes: e8454ff7b9a4 ("[media] drivers:media:radio: wl128x: FM Driver Common sources")
 Cc: stable@vger.kernel.org
-Fixes: 6abf32f1d9c5 ("cpuidle: Add RISC-V SBI CPU idle driver")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
 ---
- drivers/cpuidle/cpuidle-riscv-sbi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/media/radio/wl128x/fmdrv_common.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpuidle/cpuidle-riscv-sbi.c b/drivers/cpuidle/cpuidle-riscv-sbi.c
-index 14462c092039..2b3aec09b895 100644
---- a/drivers/cpuidle/cpuidle-riscv-sbi.c
-+++ b/drivers/cpuidle/cpuidle-riscv-sbi.c
-@@ -513,11 +513,14 @@ static int sbi_cpuidle_probe(struct platform_device *pdev)
- 		if (np &&
- 		    of_property_present(np, "power-domains") &&
- 		    of_property_present(np, "power-domain-names")) {
-+			of_node_put(np);
- 			continue;
- 		} else {
- 			sbi_cpuidle_use_osi = false;
-+			of_node_put(np);
- 			break;
- 		}
-+		of_node_put(np);
+diff --git a/drivers/media/radio/wl128x/fmdrv_common.c b/drivers/media/radio/wl128x/fmdrv_common.c
+index 3d36f323a8f8..4d032436691c 100644
+--- a/drivers/media/radio/wl128x/fmdrv_common.c
++++ b/drivers/media/radio/wl128x/fmdrv_common.c
+@@ -466,11 +466,12 @@ int fmc_send_cmd(struct fmdev *fmdev, u8 fm_op, u16 type, void *payload,
+ 			   jiffies_to_msecs(FM_DRV_TX_TIMEOUT) / 1000);
+ 		return -ETIMEDOUT;
  	}
- 
- 	/* Populate generic power domains from DT nodes */
-
++	spin_lock_irqsave(&fmdev->resp_skb_lock, flags);
+ 	if (!fmdev->resp_skb) {
++		spin_unlock_irqrestore(&fmdev->resp_skb_lock, flags);
+ 		fmerr("Response SKB is missing\n");
+ 		return -EFAULT;
+ 	}
+-	spin_lock_irqsave(&fmdev->resp_skb_lock, flags);
+ 	skb = fmdev->resp_skb;
+ 	fmdev->resp_skb = NULL;
+ 	spin_unlock_irqrestore(&fmdev->resp_skb_lock, flags);
 -- 
-2.43.0
+2.34.1
 
 
