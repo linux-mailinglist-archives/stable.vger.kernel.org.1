@@ -1,65 +1,74 @@
-Return-Path: <stable+bounces-89319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1C2D9B638F
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 13:58:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF749B63E4
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 14:17:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A76DA282D3E
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 12:58:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB58E1F221A0
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 13:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945AC1EB9E3;
-	Wed, 30 Oct 2024 12:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D2161FFE;
+	Wed, 30 Oct 2024 13:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WeCazum8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UM8IIhHW"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB991E908D;
-	Wed, 30 Oct 2024 12:56:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1415A3D551;
+	Wed, 30 Oct 2024 13:17:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730292998; cv=none; b=Ubn1YJFzTyKY/HSKk1aPoCDsmhqbFSHvwjWsH9Aa6fz0XwnMsDAP7XGgTEUOcBG2DOQP7cZDmoDI6PD8YWyZ257uc6jVK/7EdhR9SreNTXdv0an10ZLPO2uld6dsuGT9W+NbxIQ3/Ch6OQ4jWWrgDKlV5i+gX23DGrFfyMIHWCg=
+	t=1730294262; cv=none; b=hq3/bXVhB/5wj+Uj1cLgxp5xTkNiIRk/SNoEDz0K/yDdCAlvytwlBYUJbv46KXR90ZdXGqhG/PGXxmuXgK44XFZ9G+OfX5zQUJ8BwGyLJ3mtJIdIDK1zDvDA0R36J7IjACF0Ux21VpOFeVFkSrCN8SolWkfKetR5KYL9zbRvZjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730292998; c=relaxed/simple;
-	bh=/xSQm3Ad5+59O2YqtB1Q8gI6LHOFjk/qqc8juVXssSQ=;
+	s=arc-20240116; t=1730294262; c=relaxed/simple;
+	bh=7LSgZxYpBGd1npYy4xgr5/IFiST5qDnV77eehbUTEDc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t9ZxOmpCklj2LGm74NFaHkTA64WjR9OhgcB9XbMWN5TXClA/YzH0OfoBA8/pAbR/9Iq+ov4TkPSdIX46+YUNfmwu3oDnmTa2rGhRKR0IZyfCHTY7HESC22j1dFuyNlDmFQGdFb7W1yX4eg2cs01fC2q3xasK2TOO+Xwd129YFxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WeCazum8; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730292996; x=1761828996;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=/xSQm3Ad5+59O2YqtB1Q8gI6LHOFjk/qqc8juVXssSQ=;
-  b=WeCazum8DUmF2ODdzyueJkkY3Atcz11MLD4LBBUxj4Jk77yNximwXxL0
-   Y+C7Ysyy/y/x5aAbqeNjUfX/2tGfNIviG3tATXNcgjoEQWuLoIeqXUgVi
-   RYW/JpFkgNsyxysOoEkSdkvzBT4Vg8M87DCTKBh/FEfqmGG1pIPbk3PCM
-   TBXYSiW07zqzUKwBEKVQoM0JCioSbSmW8mLL02/gkXTd4JwPA5RfstdDv
-   AAzpJkS/XHd/q8bzABeooMRBAOcFd8eDWvZ9juW1K5JgIMvIEQi0gUFl5
-   pv7kMYq9zOZIvAsxW9b3NPUq9rRSD8kw6fFHcEYDeccR5wR9M28CXkA+L
-   Q==;
-X-CSE-ConnectionGUID: vsD/Q23WR4C5BDKcYyiYzA==
-X-CSE-MsgGUID: 0j7/DLt3RzWGKBc1XR226w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="30205718"
-X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
-   d="scan'208";a="30205718"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 05:56:36 -0700
-X-CSE-ConnectionGUID: sDXG5Jc7QyCsFsQD6L7aSA==
-X-CSE-MsgGUID: Y1uhV1WtSP+Vr6YcfwGkZA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
-   d="scan'208";a="105620775"
-Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.199]) ([10.237.72.199])
-  by fmviesa002.fm.intel.com with ESMTP; 30 Oct 2024 05:56:34 -0700
-Message-ID: <e156aec9-a30a-4f90-a158-634cb0ecea98@linux.intel.com>
-Date: Wed, 30 Oct 2024 14:58:47 +0200
+	 In-Reply-To:Content-Type; b=px3KVHNwU6I/0/rOw0VsLPp8m6idJnOcagpRUqC/Qf/Ys8+dQwS543rrNpBHnpRH4+om54HeKk6ib4taXk6EjFNK2cIbPVrFftJzo6Ua9b2G//jS2a702UUeExRW0A5DCT256sw9zKk2CsNFWWWVL1zRlS6sFK7uPy/SWJ7KjDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UM8IIhHW; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a9a3dc089d8so990821766b.3;
+        Wed, 30 Oct 2024 06:17:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730294257; x=1730899057; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0gyxyoUviu6uqUWH/cy1i8mHHBIJcAPqfiqibX0KqM8=;
+        b=UM8IIhHWXPrgXvB6DFxfbO+hlcSp4QqmVJYWoxLw4RXa+/PLH3BsA1CZ+KHDzd1Iqy
+         p8XRmUBe+k0cVhHrlhUWAxaKE3thcoOgaoyq3KCKMG3vb3fESB//Su96NMeEIQdcXqqA
+         T0Wy9aPgxPi0DxUBb+OJSBI+GKAu073R9rw72+uRjlyfPeosUnF9DoFC3uYF1ZXCUl26
+         xd6I9jwwQC+Bs7b2gXYUulc2F2wKafUrDFtg0a1uVe/wKwH7iWoNSuZNiyNse9fu7t2t
+         5CrbbfXOVXeX189j3CCY88vinu6gP8b6YfGOgerdKOW94lgt0Y+Cd8MVpvizFDmqNmpf
+         migg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730294257; x=1730899057;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0gyxyoUviu6uqUWH/cy1i8mHHBIJcAPqfiqibX0KqM8=;
+        b=OP42+RMvt0MNQp9cD5Yq3T134Q4gv9fgEIQ1h5mFe5cMVKbCdI0vZuMOYaKoTIQ4rg
+         R9YT4eiJbF6CwwQSyhSec/R52YXtpLHCNzJs+w4Sxa/k9/NNGIJGIduMWzUowxYM+VDw
+         DOh+niSrdFq13LhsPznmVNuFBIP53jX0kZgj4TrqPhhHU/AZK7/T6C1519GDNqIGxr8M
+         wwhBTGl74MJMyPUW5ikiCNJA2UhP/ZKiLn9fqYzxFe+KELZ/uwjjLoZluINaOe1mQxjq
+         si6c3Y5CgGL+m2pFtm2igYiagE6xzjgU+3R2adWWXuxoDFLRCTJPXDjjUpeBGL0PZZhp
+         HIWA==
+X-Forwarded-Encrypted: i=1; AJvYcCUdJt/yY2QB9YjWv/b3+IGH4qJVB8bQsgSE/rJE3uHkeA4yYz9bK1+ZflgnkKF4tERTEZ2ow50sBh/hjY0=@vger.kernel.org, AJvYcCVnvpk4rIX+rLX99YL0k03Ahr6FvKF+Q349KTwfDKQfb6gbsE6Dbjq+aW9r5cFzUeQIyAlkRkHp@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/VpPLwskW/3j4uEugkGE+uX7aB2keWJVsn9RD5mSPRFmhbZGb
+	PqyfNskH6OWbDgz51+XwZUy/jR6ENXbRJ+xQSxFfpa2856SRkVmjTzaDBQ==
+X-Google-Smtp-Source: AGHT+IER/5f2G4la7GINKS4UizPtPjbUp+XOatRjnXnsYQvTjY1fbBAFhhk4Vr2lAow13dab+g1eBA==
+X-Received: by 2002:a17:907:3e20:b0:a99:d587:6045 with SMTP id a640c23a62f3a-a9de5d977b4mr1381667166b.19.1730294257251;
+        Wed, 30 Oct 2024 06:17:37 -0700 (PDT)
+Received: from [192.168.0.50] ([79.113.150.231])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b1dec7b59sm570613766b.44.2024.10.30.06.17.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Oct 2024 06:17:36 -0700 (PDT)
+Message-ID: <c47081db-4a7a-46df-bb4b-82f8dda94460@gmail.com>
+Date: Wed, 30 Oct 2024 15:17:34 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,52 +76,49 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/5] xhci: Don't issue Reset Device command to Etron
- xHCI host
-To: Kuangyi Chiang <ki.chiang65@gmail.com>, mathias.nyman@intel.com,
- gregkh@linuxfoundation.org
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20241028025337.6372-1-ki.chiang65@gmail.com>
- <20241028025337.6372-3-ki.chiang65@gmail.com>
+Subject: Re: [PATCH] wifi: rtlwifi: Drastically reduce the attempts to read
+ efuse bytes in case of failures
+To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+ Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "kvalo@kernel.org" <kvalo@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
+ "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com"
+ <syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com>
+References: <20241025150226.896613-1-gpiccoli@igalia.com>
+ <ed8114c231d1423893d3c90c458f35f3@realtek.com>
+ <61aae4ff-8f80-252e-447a-cd8a51a325a1@igalia.com>
+ <c93c8e9c109b444b91489ac0e88b987c@realtek.com>
+ <14c3164c-0e1e-4d9d-89d9-28d3240861c6@gmail.com>
+ <d6e01e56-51e7-cbb2-024a-c7db86dc70fb@igalia.com>
+ <baf6d88e-e753-4aaf-a340-991373d77fa8@gmail.com>
+ <984038be-6cc2-3acc-8ab0-5720a79dbf07@igalia.com>
 Content-Language: en-US
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-In-Reply-To: <20241028025337.6372-3-ki.chiang65@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <984038be-6cc2-3acc-8ab0-5720a79dbf07@igalia.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 28.10.2024 4.53, Kuangyi Chiang wrote:
-> Sometimes the hub driver does not recognize the USB device connected
-> to the external USB2.0 hub when the system resumes from S4.
+On 29/10/2024 19:58, Guilherme G. Piccoli wrote:
+> On 29/10/2024 13:55, Bitterblue Smith wrote:
+>> [...]
+>>
+>> I tested your patch. Both my devices can still read the efuse.
+>>
 > 
-> After the SetPortFeature(PORT_RESET) request is completed, the hub
-> driver calls the HCD reset_device callback, which will issue a Reset
-> Device command and free all structures associated with endpoints
-> that were disabled.
+> This is super great, thank you! Would you like to have a Tested-by on
+> that? If so, just send the name / email of your preference and I can add
+> it to the V2. I'll implement the PCI guard and re-submit, thanks again!
 > 
-> This happens when the xHCI driver issue a Reset Device command to
-> inform the Etron xHCI host that the USB device associated with a
-> device slot has been reset. Seems that the Etron xHCI host can not
-> perform this command correctly, affecting the USB device.
+> Cheers,
 > 
-> To work around this, the xHCI driver should obtain a new device slot
-> with reference to commit 651aaf36a7d7 ("usb: xhci: Handle USB transaction
-> error on address command"), which is another way to inform the Etron
-> xHCI host that the USB device has been reset.
 > 
-> Add a new XHCI_ETRON_HOST quirk flag to invoke the workaround in
-> xhci_discover_or_reset_device().
-> 
-> Fixes: 2a8f82c4ceaf ("USB: xhci: Notify the xHC when a device is reset.")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+> Guilherme
 
-Ok, I see, this patch depends on previous one, that's why it had the tags
+Sure,
 
-Added this as well
-
-Thanks
-Mathias
-
-
+Tested-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
