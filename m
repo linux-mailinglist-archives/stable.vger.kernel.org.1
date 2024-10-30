@@ -1,63 +1,96 @@
-Return-Path: <stable+bounces-89307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B40E49B5D44
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 08:57:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0F709B5D86
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 09:21:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E58A51C20E80
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 07:57:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D654EB212B4
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 08:21:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A331E0B66;
-	Wed, 30 Oct 2024 07:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9DD21E0DFE;
+	Wed, 30 Oct 2024 08:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="NBKYc8AK"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Yd4hyVaa";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="B9HSIgTj";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Yd4hyVaa";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="B9HSIgTj"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02E21D9595;
-	Wed, 30 Oct 2024 07:57:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7530B1E0DD5;
+	Wed, 30 Oct 2024 08:21:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730275022; cv=none; b=EeTnxfRNu67MJ6ShrbZgbabMS1+3so2lHT2puvQIkBcav52wLOxAG29Fcxx07hphYYXc+bfQrE47iwVgEqpA6MW8VJQlOA3k0c5qh0RoTlXN8XJpgvYm5nYkKL2Hi6MguqRCCWTEtOf2Ola1gLJzOnQGFJNljI5bKQ9cLkTGxJc=
+	t=1730276505; cv=none; b=lkhUdmPteQvt1CO7IxSz8hRpVj/r5IA+TbdvO1Tsi45tKw0/uFbUw0zy2rO5hfJ6nXokhacNgHsDNcqEk9LfUoKNS3aAbiGlL1SQYUaaRXaVThaVaCKBPfJ/cZ/Bonu/CPglAQyu8T6a8VNO6S9NsVowW+eKWqDRxwHfc11tTNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730275022; c=relaxed/simple;
-	bh=jzy6NjUhpqgplvP6dO3x/nvFG3N0AVPu8SNofLcz4Hc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=RkoYf+UCgVyzFELalgMI0S0ufJgvhyF4SbiJ41osFH++1cZFJKNQdapxg6f30KP25ieoGjFf9Y9CDWYLMUQE7yBL8Sw7vWlW/mHdGsprJ+kTKxlgYEnMIsKmKj34ZeTKBozB7+aH9jlcHlo9djVlIVOP9JIG3hn/2EZYd3o2ncE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=NBKYc8AK; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49TLJk7B009006;
-	Wed, 30 Oct 2024 07:56:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	jzy6NjUhpqgplvP6dO3x/nvFG3N0AVPu8SNofLcz4Hc=; b=NBKYc8AKdAoc6cQb
-	m26okJRdHgGm2oHFADZdq1KTIfSvotELmMf4DftVqdtVGndYkbVMsz/6X3TMG/vL
-	Vy78aC8Or01vYeBUtK0B1TDbnrJxMGjpeBmFD68++PtYAc0wYUi5QeK2bLIHKhxo
-	McXw4coCS5p8Gt6GYWzhRd+iSc/k6TlQAlt1Bvg0K35klquE5ot/OLR5HvvttZ6r
-	CA0YdDuNfdrV2s247C1lkk7ZxsWVAmD+1htVqfauvyJP8s+LdE5YJ/IuH99gk6ha
-	D+lUTfjwA9XrODer/4WFCJgyn2DzzlAJrEqpuw8rtfS4tI5S7ADK2wnBm62nEAg1
-	o/G68A==
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42gsq8k41w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 30 Oct 2024 07:56:52 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49U7upce020939
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 30 Oct 2024 07:56:51 GMT
-Received: from [10.239.29.179] (10.80.80.8) by nasanex01b.na.qualcomm.com
- (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 30 Oct
- 2024 00:56:45 -0700
-Message-ID: <58e5dbbf-7c35-49ae-b2ff-954fc0e3fe48@quicinc.com>
-Date: Wed, 30 Oct 2024 15:56:42 +0800
+	s=arc-20240116; t=1730276505; c=relaxed/simple;
+	bh=BKYX6p0yBT07lshM2EhOPNbdjlB/2GPjKhgUKn2AUMw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cOOfBRTcg/iyusM4MX1U1BttdkyoE0gG7yUZ609oKXjQGw+e0Z3SIaLeipO2LYSvzywvYpI6qo4VWjiAiW38T8h+tFbcAfEQYp7ifqty+2kunbNpPclEMg4Ytmysb7Yqc2TLi+vYaoxodVDOMgN1yBD/PjanOZPxTqmjR0R8bDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Yd4hyVaa; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=B9HSIgTj; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Yd4hyVaa; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=B9HSIgTj; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6EC121FDC9;
+	Wed, 30 Oct 2024 08:21:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1730276501; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Rd5UicMFfeThj0XTZ2oP5Hs2cVkhYs5tjsowhwtUqw0=;
+	b=Yd4hyVaax5JepyZNMhibZrhzUw/5VH7ZVS02uHsJfo4FWk1ZEyHvvaDiKZZ1/lbHKJr+9i
+	krddh9k6mFj/LlUqYAmjyraTMETJ8mzRFr3FlwO0bd3sZRtGyrmdRIzrvzZ4HWokqzx1pt
+	2qDQ+n8ZC5ziF5YLefnxtOQL3VRSYeA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1730276501;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Rd5UicMFfeThj0XTZ2oP5Hs2cVkhYs5tjsowhwtUqw0=;
+	b=B9HSIgTjRqOkX2cGm8n4WkGZIH55m9682GFYrJBkJWS0rQLs40EEkLweKby3L9+E7pX8hH
+	eyorV37Q9xVg9iDA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Yd4hyVaa;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=B9HSIgTj
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1730276501; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Rd5UicMFfeThj0XTZ2oP5Hs2cVkhYs5tjsowhwtUqw0=;
+	b=Yd4hyVaax5JepyZNMhibZrhzUw/5VH7ZVS02uHsJfo4FWk1ZEyHvvaDiKZZ1/lbHKJr+9i
+	krddh9k6mFj/LlUqYAmjyraTMETJ8mzRFr3FlwO0bd3sZRtGyrmdRIzrvzZ4HWokqzx1pt
+	2qDQ+n8ZC5ziF5YLefnxtOQL3VRSYeA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1730276501;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Rd5UicMFfeThj0XTZ2oP5Hs2cVkhYs5tjsowhwtUqw0=;
+	b=B9HSIgTjRqOkX2cGm8n4WkGZIH55m9682GFYrJBkJWS0rQLs40EEkLweKby3L9+E7pX8hH
+	eyorV37Q9xVg9iDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 53554136A5;
+	Wed, 30 Oct 2024 08:21:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 6ULNE5XsIWf0DwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 30 Oct 2024 08:21:41 +0000
+Message-ID: <0d0ddb33-fcdc-43e2-801f-0c1df2031afb@suse.cz>
+Date: Wed, 30 Oct 2024 09:21:41 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,64 +98,114 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 6/7] PCI: qcom: Disable ASPM L0s and remove BDF2SID
- mapping config for X1E80100 SoC
-To: Johan Hovold <johan@kernel.org>,
-        Manivannan Sadhasivam
-	<manivannan.sadhasivam@linaro.org>
-CC: <vkoul@kernel.org>, <kishon@kernel.org>, <robh@kernel.org>,
-        <andersson@kernel.org>, <konradybcio@kernel.org>, <krzk+dt@kernel.org>,
-        <conor+dt@kernel.org>, <mturquette@baylibre.com>, <sboyd@kernel.org>,
-        <abel.vesa@linaro.org>, <quic_msarkar@quicinc.com>,
-        <quic_devipriy@quicinc.com>, <dmitry.baryshkov@linaro.org>,
-        <kw@linux.com>, <lpieralisi@kernel.org>, <neil.armstrong@linaro.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-phy@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-clk@vger.kernel.org>,
-        <johan+linaro@kernel.org>, <stable@vger.kernel.org>
-References: <20241017030412.265000-1-quic_qianyu@quicinc.com>
- <20241017030412.265000-7-quic_qianyu@quicinc.com>
- <ZxJrUQDGMDw3wI3Q@hovoldconsulting.com>
- <91395c5e-22a0-4117-a4b5-4985284289ab@quicinc.com>
- <250bce05-a095-4eb3-a445-70bbf4366526@quicinc.com>
- <ZyHc-TkRtKxLU5-p@hovoldconsulting.com>
- <20241030071851.sdm3fu6ecaddoiit@thinkpad>
- <ZyHjSCWGYLDu27ys@hovoldconsulting.com>
+Subject: Re: + mm-page_alloc-keep-track-of-free-highatomic.patch added to
+ mm-hotfixes-unstable branch
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: mm-commits@vger.kernel.org, stable@vger.kernel.org, rientjes@google.com,
+ linkl@google.com, yuzhao@google.com
+References: <20241029005805.9BEF2C4CEC3@smtp.kernel.org>
+ <cbbad18f-80ad-4283-b437-65f86411f803@suse.cz>
+ <20241029123046.b81890f3c5fa181d667cc4d4@linux-foundation.org>
 Content-Language: en-US
-From: Qiang Yu <quic_qianyu@quicinc.com>
-In-Reply-To: <ZyHjSCWGYLDu27ys@hovoldconsulting.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ EP+ylKVEKb0Q2A==
+In-Reply-To: <20241029123046.b81890f3c5fa181d667cc4d4@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: D5Cb7mxE4A_JpgHN_bxxcjll1VkaFGrq
-X-Proofpoint-ORIG-GUID: D5Cb7mxE4A_JpgHN_bxxcjll1VkaFGrq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 bulkscore=0
- adultscore=0 mlxscore=0 priorityscore=1501 mlxlogscore=865 impostorscore=0
- lowpriorityscore=0 malwarescore=0 clxscore=1015 spamscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2410300061
+X-Rspamd-Queue-Id: 6EC121FDC9
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,suse.cz:dkim,suse.cz:mid];
+	DKIM_TRACE(0.00)[suse.cz:+]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -4.51
+X-Spam-Flag: NO
 
+On 10/29/24 20:30, Andrew Morton wrote:
+> On Tue, 29 Oct 2024 10:05:43 +0100 Vlastimil Babka <vbabka@suse.cz> wrote:
+> 
+>> On 10/29/24 01:58, Andrew Morton wrote:
+>> > The patch titled
+>> >      Subject: mm/page_alloc: keep track of free highatomic
+>> > has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+>> >      mm-page_alloc-keep-track-of-free-highatomic.patch
+>> 
+>> In case of mm-hotfixes, the cc stable for 6.12 is unnecessary as it should
+>> make it there directly. Perhaps it's the best way, yeah.
+> 
+> Oh, yeah, right.  There's no Fixes:.  How do we know it's 6.12+?
 
-On 10/30/2024 3:42 PM, Johan Hovold wrote:
-> On Wed, Oct 30, 2024 at 12:48:51PM +0530, Manivannan Sadhasivam wrote:
->> On Wed, Oct 30, 2024 at 08:15:05AM +0100, Johan Hovold wrote:
->>> Also, are there any Qualcomm platforms that actually support L0s?
->>> Perhaps we should just disable it everywhere?
->> Most of the mobile chipsets from Qcom support L0s. It is not supported only on
->> the compute ones. So we cannot disable it everywhere.
->>
->> Again, it is not the hw issue but the PHY init sequence not tuned support L0s.
-> Right, this should be mentioned in the commit message.
-OK, I got it. Will write this into commit message.
+Fixes: 0aaa29a56e4f ("mm, page_alloc: reserve pageblocks for high-order
+atomic allocations on demand")
+Depends-on: e0932b6c1f94 ("mm: page_alloc: consolidate free page accounting")
 
-Thanks,
-Qiang Yu
->
-> Johan
+We've discussed [1] how this is not a good stable material due to the
+dependency from 6.10 and the problem is old and nobody has reported it yet,
+and also doesn't meet the stable kernel rules. But targetting 6.12 (which
+currently happens via the hotfixes branch) would make sense because it's
+most likely the next LTS and already has the dependency.
+
+So with the tags above we're not proposing it for stable backports
+ourselves, but anyone who considers to backport it should have sufficient
+information.
+
+[1] https://lore.kernel.org/all/afd9f99f-f49a-41c7-b987-9e59a9d296ad@suse.cz/
 
