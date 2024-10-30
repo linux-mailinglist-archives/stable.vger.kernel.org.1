@@ -1,139 +1,154 @@
-Return-Path: <stable+bounces-89371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 276499B706D
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 00:26:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A38A09B7093
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 00:36:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59F031C20D1F
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 23:26:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D592A1C20D20
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 23:36:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFF7217650;
-	Wed, 30 Oct 2024 23:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BCA01E3782;
+	Wed, 30 Oct 2024 23:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uwmhe9H7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SYMblBXG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBD71E3DDD;
-	Wed, 30 Oct 2024 23:26:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22551CCB53;
+	Wed, 30 Oct 2024 23:36:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730330767; cv=none; b=SbHQFOP0j4xyWh91AvoljNQdiY5JWFBrA7HN+FRlmYI8I16dbjkLj4DqCXkzGeQcbwRPB/5FXiqlvf0o22pV8xRf3c5Q1R+Ph8nEQxJqJrTBRwx8HESfTxE6shYIUnkq80v3KcydNBw2YdC3u81FvgoNYBOq3FtQD19VkasXwwQ=
+	t=1730331411; cv=none; b=izWW03q8IeSfQgkKAHk+K1TVZZY3YTIFNDZiKzEjU7PDifUq6JFYcWXZlKJEyXNXh+1mNaWjBfAiYAg+VEyIMgDaniAn3OfXMxvU4BFRFGxJpoo/Q6EYgD+G//dSj7tjKPt+hBLC7rYLEJAQzigfnysUKn+dKocCclxXbZuSKFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730330767; c=relaxed/simple;
-	bh=MCSmuEk4fzdFG0/fr1cFdVYK9Z+TAFWrcnZ1tpPDXpk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pC8707TFtlUuQH4NpwwfcR2RbH5H7VYPlQqd3DgOBzLyp7uLpUP7MHQ6w/QgqOssoU8AUjMDVfaFdSxS49uswf9vfae6oJUAv3+ctLgZhEbXbB/EFDHcv/jBwWznUyM5OBXCizXAEB7fRz1fn9GuGfzp1zZ5Tl6NCjEVb9q8la0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uwmhe9H7; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4316e9f4a40so2833895e9.2;
-        Wed, 30 Oct 2024 16:26:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730330763; x=1730935563; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YXareB8gROQQMlffCs1rrGjwMItPDqgeuEz/CInJUko=;
-        b=Uwmhe9H75wcbjFTBguKdJI4+m1/n2j8YiuehDANeY2euDGSOlgfEfuWFfUXqCW8SuM
-         Zo6Rfvh8VzDjOEBaRKUxEAf939CN9SV6pP64sNO223rGDjLimHFBBA2tJSP9Q3T2/PRF
-         BD9T8xKulgxH5hoS0zpGwpPg1YuHYY3gAufhzEc6i9/fUTxu+sFTO6+AsfHboEITvryK
-         Zq/vG/F/C+R5RekeMgqZmIxzOo8ubY5qOPJ/V0KqXJG5EeWlwYy9PdXCCrOVjWQOg+cm
-         MGGsoaX9o9GYG/egNyZkm8t0jCDSw1KkYEAmGZ9mdetwg6CfFZT3gQLkvQA19HqhOp4B
-         rRvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730330763; x=1730935563;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YXareB8gROQQMlffCs1rrGjwMItPDqgeuEz/CInJUko=;
-        b=xKnkUTqVhvPbHMxFRegSL2c5/FuZTka5yrtckWc3gkKlwcuvTyM+i1NQFwha4OYQ0o
-         TEAGyNdKUYy0aKZHrR0FojioEwh/sIGVQeSohbIa1UEbiaNwWURxH0NgzBZfPEnYiQp+
-         WqaRp0M4vjPgiZsJnZdP18/cg6aZ2ioLIqmzV6SXWEFxvT8h8zUPBcYwC7uRIwVZBBjy
-         LUgOaROwunamqFJcaYg0G8EQT1VunBPoo0JJtRZxVk1dorULblKGsmvEQfcThat/ZFRi
-         4bAk8JhvGu4phxLXs2T+cE+Pk+k7sEzKZ0hbOEOkl4CBYagw1uJV2M9QATnq+V0B1yEM
-         XsRg==
-X-Forwarded-Encrypted: i=1; AJvYcCUBo7vcmCd0b8flzei7vxzUSlHoegSAEqjcke4bbhQ2hZNVc7r1faMR/uaVosbkLuWJ9euWwS1wzG4=@vger.kernel.org, AJvYcCVBFIg07YPQDaQ46SXYow2GBVG//6ZvZOwpXY+TVniwv9Bk7gAusZyEBlsPwHw7Uze+bPaouOjH5DdUsy46@vger.kernel.org, AJvYcCWSaSPxkThcVVIyii1sETNjoqgzOzhwgKyz1hTKwXyis46ZCAvj67uPOzv4ASXjjP2yZSFVu1Mb@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQnynutvPZMD2L3CSyoIR5ZA03QVvh80HaOJZHMzqpz2bdVcFU
-	WbxpKd1K5+BUffyUj2HGMMIMfOrOLiUzjHAgWPB8BfWMLz/Lk/5UoLco7BuZ
-X-Google-Smtp-Source: AGHT+IErYXwmvTXC4B/LlkFNOwelPHOAQu/z3+IlX6nrzedWsMDSREVMl7lNnuvijDNJL8RQ7rVv0A==
-X-Received: by 2002:a05:600c:4e8b:b0:431:40ca:ce44 with SMTP id 5b1f17b1804b1-4319ad34a44mr140228715e9.30.1730330762889;
-        Wed, 30 Oct 2024 16:26:02 -0700 (PDT)
-Received: from [127.0.1.1] (2a02-8389-41cf-e200-fbf3-0656-23c1-5ba1.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:fbf3:656:23c1:5ba1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd947b2bsm35338395e9.25.2024.10.30.16.26.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Oct 2024 16:26:02 -0700 (PDT)
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Thu, 31 Oct 2024 00:25:56 +0100
-Subject: [PATCH 1/2] clk: renesas: cpg-mssr: fix 'soc' node handling in
- cpg_mssr_reserved_init()
+	s=arc-20240116; t=1730331411; c=relaxed/simple;
+	bh=unxNl6vAvsReQL1kX4mCDIAfvq/vFGNPbPnhztQp0U8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=DypWMfkko5O4kwS0ilWsw6aw7TYlquMqp7a1+4TZ2opdGewDH7D53NUjBtokUlfdqvPSFxDT9i0wPSeiI4qjbXpeE4oIgdIw1HzjE7XL8wD94V3s698nTsy5cbfdBgggD76p+uPgmI9i8lW4AaAo7WvZ/9497Qu1dSUlRJ7GB20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SYMblBXG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9B3C4DE02;
+	Wed, 30 Oct 2024 23:36:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730331411;
+	bh=unxNl6vAvsReQL1kX4mCDIAfvq/vFGNPbPnhztQp0U8=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=SYMblBXG3Fg0iTjimrACSgPftvaPXObEcSk982F3K6yMiU9g51FLgnHtrZAixyZjA
+	 ogvA5lWklolwwztI+axBO58hu9B1xL3jKAsY6chDYSgR8Lc35iAc0UTggvO+Q6qLdj
+	 USdhls2K8RO4pt9rMfc3mgIkR3aClxJNlBCRG06cvXU2bAT+0ybIxdGqQaytw0drqY
+	 4hcTQZR6Du9ncg1OoPijSrqfOBNiC5Rv0HjEdezIR61K6ZQXi5W2E4/GQOOkFIoXuY
+	 uHdN42LPtJ/cRr9jVh3pi/EiPCmD+X6kxyJpgR/9mAL0KHGo4ONGuH96unrzew1lth
+	 ks0z+IxI+0wUA==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241031-clk-renesas-cpg-mssr-cleanup-v1-1-628274ecbfcb@gmail.com>
-References: <20241031-clk-renesas-cpg-mssr-cleanup-v1-0-628274ecbfcb@gmail.com>
-In-Reply-To: <20241031-clk-renesas-cpg-mssr-cleanup-v1-0-628274ecbfcb@gmail.com>
-To: Geert Uytterhoeven <geert+renesas@glider.be>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, 
- Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Cc: linux-renesas-soc@vger.kernel.org, linux-clk@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1730330758; l=1293;
- i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=MCSmuEk4fzdFG0/fr1cFdVYK9Z+TAFWrcnZ1tpPDXpk=;
- b=dYQclrbQ6H4UBFuyauAWPvlbRxHC+/vw4xnNoQv4B1MEy3O5vAlEqNTAplUFFEYly85NckWtr
- eAkb1l8Zh8wDijCzGYKPBD99mT0KK+N/emSelbK/2tW9oNsrwhbd2wZ
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 31 Oct 2024 01:36:46 +0200
+Message-Id: <D59JAI6RR2CD.G5E5T4ZCZ49W@kernel.org>
+Cc: "Peter Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
+ <stable@vger.kernel.org>, "Mike Seo" <mikeseohyungjin@gmail.com>, "open
+ list:TPM DEVICE DRIVER" <linux-integrity@vger.kernel.org>, "open list"
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] tpm: set TPM_CHIP_FLAG_SUSPENDED early
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Jerry Snitselaar" <jsnitsel@redhat.com>
+X-Mailer: aerc 0.18.2
+References: <20241029223647.35209-1-jarkko@kernel.org>
+ <z4ggs22bzp76ire4yecy5cehlurlcll7hrf2bx4mksebtdmcmr@hpjardr6gwib>
+In-Reply-To: <z4ggs22bzp76ire4yecy5cehlurlcll7hrf2bx4mksebtdmcmr@hpjardr6gwib>
 
-A device_node reference obtained via of_find_node_by_path() requires
-explicit calls to of_node_put() after it is no longer required to avoid
-leaking the resource.
+On Wed Oct 30, 2024 at 10:09 PM EET, Jerry Snitselaar wrote:
+> On Wed, Oct 30, 2024 at 12:36:47AM +0200, Jarkko Sakkinen wrote:
+> > Setting TPM_CHIP_FLAG_SUSPENDED in the end of tpm_pm_suspend() can be r=
+acy
+> > according to the bug report, as this leaves window for tpm_hwrng_read()=
+ to
+> > be called while the operation is in progress. Move setting of the flag
+> > into the beginning.
+> >=20
+> > Cc: stable@vger.kernel.org # v6.4+
+> > Fixes: 99d464506255 ("tpm: Prevent hwrng from activating during resume"=
+)
+> > Reported-by: Mike Seo <mikeseohyungjin@gmail.com>
+> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219383
+> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> > ---
+> >  drivers/char/tpm/tpm-interface.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >=20
+> > diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/tpm-in=
+terface.c
+> > index 8134f002b121..3f96bc8b95df 100644
+> > --- a/drivers/char/tpm/tpm-interface.c
+> > +++ b/drivers/char/tpm/tpm-interface.c
+> > @@ -370,6 +370,8 @@ int tpm_pm_suspend(struct device *dev)
+> >  	if (!chip)
+> >  		return -ENODEV;
+> > =20
+> > +	chip->flags |=3D TPM_CHIP_FLAG_SUSPENDED;
+> > +
+> >  	if (chip->flags & TPM_CHIP_FLAG_ALWAYS_POWERED)
+> >  		goto suspended;
+> > =20
+> > @@ -390,8 +392,6 @@ int tpm_pm_suspend(struct device *dev)
+> >  	}
+> > =20
+> >  suspended:
+> > -	chip->flags |=3D TPM_CHIP_FLAG_SUSPENDED;
+> > -
+> >  	if (rc)
+> >  		dev_err(dev, "Ignoring error %d while suspending\n", rc);
+> >  	return 0;
+> > --=20
+> > 2.47.0
+> >=20
+>
+> Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
 
-Add the missing calls to of_node_put(soc) in all execution paths when
-'soc' is no longer required (one error path, and the success path).
+Thanks but I actually started to look at the function:
 
-Cc: stable@vger.kernel.org
-Fixes: 6aa175476490 ("clk: renesas: cpg-mssr: Ignore all clocks assigned to non-Linux system")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
----
- drivers/clk/renesas/renesas-cpg-mssr.c | 2 ++
- 1 file changed, 2 insertions(+)
+https://elixir.bootlin.com/linux/v6.11.5/source/drivers/char/tpm/tpm-interf=
+ace.c#L365
 
-diff --git a/drivers/clk/renesas/renesas-cpg-mssr.c b/drivers/clk/renesas/renesas-cpg-mssr.c
-index 79e7a90c3b1b..5dc89b1009fe 100644
---- a/drivers/clk/renesas/renesas-cpg-mssr.c
-+++ b/drivers/clk/renesas/renesas-cpg-mssr.c
-@@ -1022,6 +1022,7 @@ static int __init cpg_mssr_reserved_init(struct cpg_mssr_priv *priv,
- 
- 			ids = krealloc_array(ids, (num + 1), sizeof(*ids), GFP_KERNEL);
- 			if (!ids) {
-+				of_node_put(soc);
- 				of_node_put(it.node);
- 				return -ENOMEM;
- 			}
-@@ -1036,6 +1037,7 @@ static int __init cpg_mssr_reserved_init(struct cpg_mssr_priv *priv,
- 			num++;
- 		}
- 	}
-+	of_node_put(soc);
- 
- 	priv->num_reserved_ids	= num;
- 	priv->reserved_ids	= ids;
+The absolutely safe-play way considering concurrency would be
+to do tpm_try_get_ops() before checking any flags. That way
+tpm_hwrng_read() is guaranteed not conflict.
 
--- 
-2.43.0
+So the way I would fix this instead would be to (untested
+wrote inline here):
 
+int tpm_pm_suspend(struct device *dev)
+{
+	struct tpm_chip *chip =3D dev_get_drvdata(dev);
+	int rc =3D 0;
+
+	if (!chip)
+		return -ENODEV;
+
+	rc =3D tpm_try_get_ops(chip);
+	if (rc) {
+		chip->flags =3D |=3D TPM_CHIP_FLAG_SUSPENDED;
+		return rc;
+	}
+
+	/* ... */
+
+suspended:
+	chip->flags |=3D TPM_CHIP_FLAG_SUSPENDED;
+	tpm_put_ops(chip);
+
+It does not really affect performance but guarantees that
+tpm_hwrng_read() is guaranteed either fully finish or
+never happens given that both sides take chip->lock.
+
+So I'll put one more round of this and then this should be
+stable and fully fixed.
+
+BR, Jarkko
 
