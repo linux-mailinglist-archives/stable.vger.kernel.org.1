@@ -1,154 +1,77 @@
-Return-Path: <stable+bounces-89372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A38A09B7093
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 00:36:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C219B7096
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 00:38:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D592A1C20D20
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 23:36:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55740282653
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 23:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BCA01E3782;
-	Wed, 30 Oct 2024 23:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D0F1E3782;
+	Wed, 30 Oct 2024 23:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SYMblBXG"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="l87b7GwU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22551CCB53;
-	Wed, 30 Oct 2024 23:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7431CCB53;
+	Wed, 30 Oct 2024 23:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730331411; cv=none; b=izWW03q8IeSfQgkKAHk+K1TVZZY3YTIFNDZiKzEjU7PDifUq6JFYcWXZlKJEyXNXh+1mNaWjBfAiYAg+VEyIMgDaniAn3OfXMxvU4BFRFGxJpoo/Q6EYgD+G//dSj7tjKPt+hBLC7rYLEJAQzigfnysUKn+dKocCclxXbZuSKFg=
+	t=1730331507; cv=none; b=RydHX/AlXsYHDIgiAVVNs/cfs+jbyld5oHHHp8TFTXLUR214VyF8EIf8zTrG6wLA6mnE5Vu69riXtqajjRdSmknLgEdAcpujy8jy5HKehimGlw8QR/3c5RScmklI5Pe8TtaCzDnsYpQclZKG4RL+o+XMPwBAEesqxT/JYVVNTjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730331411; c=relaxed/simple;
-	bh=unxNl6vAvsReQL1kX4mCDIAfvq/vFGNPbPnhztQp0U8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=DypWMfkko5O4kwS0ilWsw6aw7TYlquMqp7a1+4TZ2opdGewDH7D53NUjBtokUlfdqvPSFxDT9i0wPSeiI4qjbXpeE4oIgdIw1HzjE7XL8wD94V3s698nTsy5cbfdBgggD76p+uPgmI9i8lW4AaAo7WvZ/9497Qu1dSUlRJ7GB20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SYMblBXG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9B3C4DE02;
-	Wed, 30 Oct 2024 23:36:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730331411;
-	bh=unxNl6vAvsReQL1kX4mCDIAfvq/vFGNPbPnhztQp0U8=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=SYMblBXG3Fg0iTjimrACSgPftvaPXObEcSk982F3K6yMiU9g51FLgnHtrZAixyZjA
-	 ogvA5lWklolwwztI+axBO58hu9B1xL3jKAsY6chDYSgR8Lc35iAc0UTggvO+Q6qLdj
-	 USdhls2K8RO4pt9rMfc3mgIkR3aClxJNlBCRG06cvXU2bAT+0ybIxdGqQaytw0drqY
-	 4hcTQZR6Du9ncg1OoPijSrqfOBNiC5Rv0HjEdezIR61K6ZQXi5W2E4/GQOOkFIoXuY
-	 uHdN42LPtJ/cRr9jVh3pi/EiPCmD+X6kxyJpgR/9mAL0KHGo4ONGuH96unrzew1lth
-	 ks0z+IxI+0wUA==
+	s=arc-20240116; t=1730331507; c=relaxed/simple;
+	bh=gYnge1uzbrUyb0Lr74j0FURoQ/0Focp1C5ih+ymsZUk=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=cKi0KkTw9v7a5n8dTUJZqRX218spfbzwlDbjgUgYaAOTygCbTrsYRO5sqsMJMdL3J8XB3QBk2zQRE5LSPBdN4Eg6HNuDoE4OWMmvd+SnXbcywJLMU3T6yXPUpAk3apaYXsmZe2TTgaMWttiFOA7jR83xXGPsiuE9xWX3X4e9xsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=l87b7GwU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B4FC4CEF0;
+	Wed, 30 Oct 2024 23:38:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1730331507;
+	bh=gYnge1uzbrUyb0Lr74j0FURoQ/0Focp1C5ih+ymsZUk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=l87b7GwUmJKcEp8krnLo/NekK+aH/aB/9xVG0W/vwRoaa1aLe92X1WamES5pp2i2Z
+	 XxBjh3WTSpkmM+bMXCw/U3s1gNReJswyLxnTHUhlBvHuJEQ6H0wWb/vUEoDpc8yMWx
+	 JQB295lDEmWCEGjKc64E6TpilCuzDYqyAfapplCU=
+Date: Wed, 30 Oct 2024 16:38:26 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: mm-commits@vger.kernel.org, vbabka@suse.cz, stable@vger.kernel.org,
+ Liam.Howlett@oracle.com, jannh@google.com, richard.weiyang@gmail.com
+Subject: Re: + mm-mlock-set-the-correct-prev-on-failure.patch added to
+ mm-unstable branch
+Message-Id: <20241030163826.e39b5618a92c5bc921d6bafd@linux-foundation.org>
+In-Reply-To: <11f2daed-05c7-4c96-9600-a37e6f81ea33@lucifer.local>
+References: <20241029041205.A0DEAC4CECD@smtp.kernel.org>
+	<11f2daed-05c7-4c96-9600-a37e6f81ea33@lucifer.local>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 31 Oct 2024 01:36:46 +0200
-Message-Id: <D59JAI6RR2CD.G5E5T4ZCZ49W@kernel.org>
-Cc: "Peter Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
- <stable@vger.kernel.org>, "Mike Seo" <mikeseohyungjin@gmail.com>, "open
- list:TPM DEVICE DRIVER" <linux-integrity@vger.kernel.org>, "open list"
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] tpm: set TPM_CHIP_FLAG_SUSPENDED early
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Jerry Snitselaar" <jsnitsel@redhat.com>
-X-Mailer: aerc 0.18.2
-References: <20241029223647.35209-1-jarkko@kernel.org>
- <z4ggs22bzp76ire4yecy5cehlurlcll7hrf2bx4mksebtdmcmr@hpjardr6gwib>
-In-Reply-To: <z4ggs22bzp76ire4yecy5cehlurlcll7hrf2bx4mksebtdmcmr@hpjardr6gwib>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed Oct 30, 2024 at 10:09 PM EET, Jerry Snitselaar wrote:
-> On Wed, Oct 30, 2024 at 12:36:47AM +0200, Jarkko Sakkinen wrote:
-> > Setting TPM_CHIP_FLAG_SUSPENDED in the end of tpm_pm_suspend() can be r=
-acy
-> > according to the bug report, as this leaves window for tpm_hwrng_read()=
- to
-> > be called while the operation is in progress. Move setting of the flag
-> > into the beginning.
-> >=20
-> > Cc: stable@vger.kernel.org # v6.4+
-> > Fixes: 99d464506255 ("tpm: Prevent hwrng from activating during resume"=
-)
-> > Reported-by: Mike Seo <mikeseohyungjin@gmail.com>
-> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219383
-> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > ---
-> >  drivers/char/tpm/tpm-interface.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/tpm-in=
-terface.c
-> > index 8134f002b121..3f96bc8b95df 100644
-> > --- a/drivers/char/tpm/tpm-interface.c
-> > +++ b/drivers/char/tpm/tpm-interface.c
-> > @@ -370,6 +370,8 @@ int tpm_pm_suspend(struct device *dev)
-> >  	if (!chip)
-> >  		return -ENODEV;
-> > =20
-> > +	chip->flags |=3D TPM_CHIP_FLAG_SUSPENDED;
-> > +
-> >  	if (chip->flags & TPM_CHIP_FLAG_ALWAYS_POWERED)
-> >  		goto suspended;
-> > =20
-> > @@ -390,8 +392,6 @@ int tpm_pm_suspend(struct device *dev)
-> >  	}
-> > =20
-> >  suspended:
-> > -	chip->flags |=3D TPM_CHIP_FLAG_SUSPENDED;
-> > -
-> >  	if (rc)
-> >  		dev_err(dev, "Ignoring error %d while suspending\n", rc);
-> >  	return 0;
-> > --=20
-> > 2.47.0
-> >=20
->
-> Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+On Wed, 30 Oct 2024 07:28:21 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
 
-Thanks but I actually started to look at the function:
+> On Mon, Oct 28, 2024 at 09:12:05PM -0700, Andrew Morton wrote:
+> >
+> > The patch titled
+> >      Subject: mm/mlock: set the correct prev on failure
+> > has been added to the -mm mm-unstable branch.  Its filename is
+> >      mm-mlock-set-the-correct-prev-on-failure.patch
+> 
+> Hi Andrew,
+> 
+> This patch needs to be applied as a hotfix as it fixes a bug in released
+> kernels.
 
-https://elixir.bootlin.com/linux/v6.11.5/source/drivers/char/tpm/tpm-interf=
-ace.c#L365
-
-The absolutely safe-play way considering concurrency would be
-to do tpm_try_get_ops() before checking any flags. That way
-tpm_hwrng_read() is guaranteed not conflict.
-
-So the way I would fix this instead would be to (untested
-wrote inline here):
-
-int tpm_pm_suspend(struct device *dev)
-{
-	struct tpm_chip *chip =3D dev_get_drvdata(dev);
-	int rc =3D 0;
-
-	if (!chip)
-		return -ENODEV;
-
-	rc =3D tpm_try_get_ops(chip);
-	if (rc) {
-		chip->flags =3D |=3D TPM_CHIP_FLAG_SUSPENDED;
-		return rc;
-	}
-
-	/* ... */
-
-suspended:
-	chip->flags |=3D TPM_CHIP_FLAG_SUSPENDED;
-	tpm_put_ops(chip);
-
-It does not really affect performance but guarantees that
-tpm_hwrng_read() is guaranteed either fully finish or
-never happens given that both sides take chip->lock.
-
-So I'll put one more round of this and then this should be
-stable and fully fixed.
-
-BR, Jarkko
+Done, thanks.
 
