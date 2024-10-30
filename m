@@ -1,130 +1,274 @@
-Return-Path: <stable+bounces-89274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 394359B5898
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 01:29:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3342B9B58AA
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 01:36:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AA2A1C229FD
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 00:29:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3A031F238C8
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 00:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E461799F;
-	Wed, 30 Oct 2024 00:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1FAD1803A;
+	Wed, 30 Oct 2024 00:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zA7zIitO"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="m/57lafW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435BF12E7E
-	for <stable@vger.kernel.org>; Wed, 30 Oct 2024 00:29:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871B411CAF;
+	Wed, 30 Oct 2024 00:36:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730248152; cv=none; b=JRqNFzK/+vTZ5po8msS23QyesHzrP4c9ofoe7uxoxP00fLhL4odW4182yXjkAZrI1yV0mODUSU9dq24HLb2qt0zzxzY81AoU0mK1kKXLOfuTD9YPOS1PWWq2eIJ/vwn2bNtJ4Xa59wvhIK+YDEKdwg37/RwsYRdUk+5CSDrvlZg=
+	t=1730248560; cv=none; b=W5OFFWz5RAB1R+yCvxsZyGZKJOIY69zZAw0W2ZWyKUP3BEX4GhCIc1mPeAtoob467mbfAXWEnkdqeSyIvefsfJq3i7Zza5DKWjFfltJqYhXbDZA3qsTZpiknToHG6pbgAZIDnxtbKTdJR6CtUAsG8rhXABvBejLDAfETlk404GI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730248152; c=relaxed/simple;
-	bh=V1iNnvuBm2oNPGSNfSGCVmkg1t1E6dTFsv0w9mlYepo=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=TnvpKdiuY/TPE/sqpaVdcR+47Zoh6ZqRppPWU/o4khAM4icHR4GROjuyaw3MvhkC6xhqi/HR/0haqzFtrWTmKNzoNQocNQeIqz5M5iUqQ+C3wKgCFL1CqEXpK0E+PYDZMuSH+s+J5s30sTbIJ5BF356n99GLjgZZOD7h+RDNbzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ovt.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zA7zIitO; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ovt.bounces.google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-71e6d31b3bdso8509079b3a.2
-        for <stable@vger.kernel.org>; Tue, 29 Oct 2024 17:29:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730248149; x=1730852949; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=/Ye+vbAHY2hoAlG8bCiiPKeIhcJVGNMWcPfmJps0LRM=;
-        b=zA7zIitO1JDLLMVh2tDpB/Ydm3JznmxluumgnAAQ6WMBUCseUBjDcmx2aSepa5iFMB
-         HSjvnGMHXxhkte8W0S3t+8vKStng2pG471DZjrS96ZBqOheyTx3r1Rmlzy9ULwDLiLcP
-         rQvGSbSa0ducNsfRQKEmE2TUXcWn2qhJz7Ijr2C7b+d83a8G8RMpNg3ah9kWp+Pcz5qW
-         cdo8gELtUl4Wk3KtB+s4mN8epfcU9wH1nPTQAiNSEEIrd8Wuj/mqguz1iTb45CPQLW+P
-         C7lfbQplOCBz2b19DtKVbwP4Av747A7OhYbFmQ3/RSxmDiI4l60Nw1afKIOU39hv1QIg
-         evBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730248149; x=1730852949;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/Ye+vbAHY2hoAlG8bCiiPKeIhcJVGNMWcPfmJps0LRM=;
-        b=TwH/R++fafQIwOIVSfAvtfIaTb9T7vHn/H+PdsfPGtp/VTX8J0MUYYXzrlZwmYhVVf
-         Rv2vBSjolD9l4ip25nXUMw+gdUrw3BqPDBycd89O4YIXfn2snaI6HbO/mbxXxQVVeghd
-         7ynRPTPzWik+U344TNrXbw822M+DT3THX0nwc6MwzcH9aM9nuC2qM1Ma/0m/5uGukwpv
-         KKL7hpG0qXpOzkXj8/jcgogZGGrs/l7AqIgl+ug8+H7As6t69Uu2o3I2eRVHtNAXAug2
-         IJ+90TDjSqcm/d2oKnQTP2vNDBaAdWuC83xtyawHGg8UM4mLY9pJ53YMEgcuqBAi5Njj
-         tHzA==
-X-Forwarded-Encrypted: i=1; AJvYcCU8WxnaUuIT4Uqck+ni/IOhNwOcK/5NtG3aD0st/ScejGEb4OICOreYz5rzWtWtpbpAfDqrfdQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3AlMnM8kzhKRkLci8fV3o9ibgjsIUbtDi7F/gUeHfPlJzjG5B
-	wRPmVyC0ZmvUjxORlyZ04u/eI/qDltpKWZMsYBdoi2ItGrqs5X/eC4iVp0GNh3O8bQ==
-X-Google-Smtp-Source: AGHT+IFmIqfjPUXzygglv0CS5v98bbZvDbHPlRnqqpROK5kUQdzIOV0DEK16WsMTN1yt3vYZ1XyvGZ0=
-X-Received: from hmarynka.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:1148])
- (user=ovt job=sendgmr) by 2002:a05:6a00:3c50:b0:71e:5d1d:350a with SMTP id
- d2e1a72fcca58-72063089caamr24309b3a.3.1730248149442; Tue, 29 Oct 2024
- 17:29:09 -0700 (PDT)
-Date: Wed, 30 Oct 2024 00:28:55 +0000
+	s=arc-20240116; t=1730248560; c=relaxed/simple;
+	bh=C5ZSmjO41zUtLpBUXQLf+XHWVzvhrdz+IexeV+b0XE4=;
+	h=Date:To:From:Subject:Message-Id; b=PDHIS0YzNgJqCBw0OwYjB80lLw/bK07xIuePDYgael58q/PvF9DjvxgB3QJqcXXxD5nwnynu+N3coFNagDszz1n2FiOvhV2KwKLMkDcyJ3cYXTvGtZug/DR4Wdwn5QeLmVAUStDfATDQvx+6F4G2aAuU7cIigEoJszUycu0AB2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=m/57lafW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CFA9C4CECD;
+	Wed, 30 Oct 2024 00:36:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1730248560;
+	bh=C5ZSmjO41zUtLpBUXQLf+XHWVzvhrdz+IexeV+b0XE4=;
+	h=Date:To:From:Subject:From;
+	b=m/57lafWRkrtn7djNCpDgEUd6eM+1lkd88Qx+aAaH4M2+yAhgxj2JV6bEOuBYabEG
+	 ARPo9NXgAx9rbzRYoad8B8EOP/XuWcDCqTKa8+7zhwTopIjeLaV9lBvMOOtey2X1+0
+	 rKJEPzncEDgVJeVzaZ6TUiPfXpA3lLwOBesFtxhY=
+Date: Tue, 29 Oct 2024 17:35:59 -0700
+To: mm-commits@vger.kernel.org,will@kernel.org,vbabka@suse.cz,torvalds@linux-foundation.org,stable@vger.kernel.org,peterx@redhat.com,Liam.Howlett@oracle.com,jannh@google.com,James.Bottomley@HansenPartnership.com,deller@gmx.de,davem@davemloft.net,catalin.marinas@arm.com,broonie@kernel.org,andreas@gaisler.com,lorenzo.stoakes@oracle.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-avoid-unsafe-vma-hook-invocation-when-error-arises-on-mmap-hook.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241030003600.1CFA9C4CECD@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.47.0.163.g1226f6d8fa-goog
-Message-ID: <20241030002856.2103752-1-ovt@google.com>
-Subject: [PATCH] ovl: properly handle large files in ovl_security_fileattr
-From: Oleksandr Tymoshenko <ovt@google.com>
-To: Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>
-Cc: ovt@google.com, stable@vger.kernel.org, 
-	Miklos Szeredi <mszeredi@redhat.com>, linux-unionfs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-dentry_open in ovl_security_fileattr fails for any file
-larger than 2GB if open method of the underlying filesystem
-calls generic_file_open (e.g. fusefs).
 
-The issue can be reproduce using the following script:
-(passthrough_ll is an example app from libfuse).
+The patch titled
+     Subject: mm: avoid unsafe VMA hook invocation when error arises on mmap hook
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-avoid-unsafe-vma-hook-invocation-when-error-arises-on-mmap-hook.patch
 
-  $ D=/opt/test/mnt
-  $ mkdir -p ${D}/{source,base,top/uppr,top/work,ovlfs}
-  $ dd if=/dev/zero of=${D}/source/zero.bin bs=1G count=2
-  $ passthrough_ll -o source=${D}/source ${D}/base
-  $ mount -t overlay overlay \
-      -olowerdir=${D}/base,upperdir=${D}/top/uppr,workdir=${D}/top/work \
-      ${D}/ovlfs
-  $ chmod 0777 ${D}/mnt/ovlfs/zero.bin
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-avoid-unsafe-vma-hook-invocation-when-error-arises-on-mmap-hook.patch
 
-Running this script results in "Value too large for defined data type"
-error message from chmod.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Signed-off-by: Oleksandr Tymoshenko <ovt@google.com>
-Fixes: 72db82115d2b ("ovl: copy up sync/noatime fileattr flags")
-Cc: stable@vger.kernel.org # v5.15+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: mm: avoid unsafe VMA hook invocation when error arises on mmap hook
+Date: Tue, 29 Oct 2024 18:11:44 +0000
+
+Patch series "fix error handling in mmap_region() and refactor
+(hotfixes)", v4.
+
+mmap_region() is somewhat terrifying, with spaghetti-like control flow and
+numerous means by which issues can arise and incomplete state, memory
+leaks and other unpleasantness can occur.
+
+A large amount of the complexity arises from trying to handle errors late
+in the process of mapping a VMA, which forms the basis of recently
+observed issues with resource leaks and observable inconsistent state.
+
+This series goes to great lengths to simplify how mmap_region() works and
+to avoid unwinding errors late on in the process of setting up the VMA for
+the new mapping, and equally avoids such operations occurring while the
+VMA is in an inconsistent state.
+
+The patches in this series comprise the minimal changes required to
+resolve existing issues in mmap_region() error handling, in order that
+they can be hotfixed and backported.  There is additionally a follow up
+series which goes further, separated out from the v1 series and sent and
+updated separately.
+
+
+This patch (of 5):
+
+After an attempted mmap() fails, we are no longer in a situation where we
+can safely interact with VMA hooks.  This is currently not enforced,
+meaning that we need complicated handling to ensure we do not incorrectly
+call these hooks.
+
+We can avoid the whole issue by treating the VMA as suspect the moment
+that the file->f_ops->mmap() function reports an error by replacing
+whatever VMA operations were installed with a dummy empty set of VMA
+operations.
+
+We do so through a new helper function internal to mm - mmap_file() -
+which is both more logically named than the existing call_mmap() function
+and correctly isolates handling of the vm_op reassignment to mm.
+
+All the existing invocations of call_mmap() outside of mm are ultimately
+nested within the call_mmap() from mm, which we now replace.
+
+It is therefore safe to leave call_mmap() in place as a convenience
+function (and to avoid churn).  The invokers are:
+
+     ovl_file_operations -> mmap -> ovl_mmap() -> backing_file_mmap()
+    coda_file_operations -> mmap -> coda_file_mmap()
+     shm_file_operations -> shm_mmap()
+shm_file_operations_huge -> shm_mmap()
+            dma_buf_fops -> dma_buf_mmap_internal -> i915_dmabuf_ops
+	                    -> i915_gem_dmabuf_mmap()
+
+None of these callers interact with vm_ops or mappings in a problematic
+way on error, quickly exiting out.
+
+Link: https://lkml.kernel.org/r/cover.1730224667.git.lorenzo.stoakes@oracle.com
+Link: https://lkml.kernel.org/r/d41fd763496fd0048a962f3fd9407dc72dd4fd86.1730224667.git.lorenzo.stoakes@oracle.com
+Fixes: deb0f6562884 ("mm/mmap: undo ->mmap() when arch_validate_flags() fails")
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reported-by: Jann Horn <jannh@google.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Jann Horn <jannh@google.com>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Helge Deller <deller@gmx.de>
+Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- fs/overlayfs/inode.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
-index 35fd3e3e1778..baa54c718bd7 100644
---- a/fs/overlayfs/inode.c
-+++ b/fs/overlayfs/inode.c
-@@ -616,8 +616,13 @@ static int ovl_security_fileattr(const struct path *realpath, struct fileattr *f
- 	struct file *file;
- 	unsigned int cmd;
- 	int err;
-+	unsigned int flags;
+ mm/internal.h |   27 +++++++++++++++++++++++++++
+ mm/mmap.c     |    6 +++---
+ mm/nommu.c    |    4 ++--
+ 3 files changed, 32 insertions(+), 5 deletions(-)
+
+--- a/mm/internal.h~mm-avoid-unsafe-vma-hook-invocation-when-error-arises-on-mmap-hook
++++ a/mm/internal.h
+@@ -108,6 +108,33 @@ static inline void *folio_raw_mapping(co
+ 	return (void *)(mapping & ~PAGE_MAPPING_FLAGS);
+ }
+ 
++/*
++ * This is a file-backed mapping, and is about to be memory mapped - invoke its
++ * mmap hook and safely handle error conditions. On error, VMA hooks will be
++ * mutated.
++ *
++ * @file: File which backs the mapping.
++ * @vma:  VMA which we are mapping.
++ *
++ * Returns: 0 if success, error otherwise.
++ */
++static inline int mmap_file(struct file *file, struct vm_area_struct *vma)
++{
++	int err = call_mmap(file, vma);
 +
-+	flags = O_RDONLY;
-+	if (force_o_largefile())
-+		flags |= O_LARGEFILE;
++	if (likely(!err))
++		return 0;
++
++	/*
++	 * OK, we tried to call the file hook for mmap(), but an error
++	 * arose. The mapping is in an inconsistent state and we most not invoke
++	 * any further hooks on it.
++	 */
++	vma->vm_ops = &vma_dummy_vm_ops;
++
++	return err;
++}
++
+ #ifdef CONFIG_MMU
  
--	file = dentry_open(realpath, O_RDONLY, current_cred());
-+	file = dentry_open(realpath, flags, current_cred());
- 	if (IS_ERR(file))
- 		return PTR_ERR(file);
+ /* Flags for folio_pte_batch(). */
+--- a/mm/mmap.c~mm-avoid-unsafe-vma-hook-invocation-when-error-arises-on-mmap-hook
++++ a/mm/mmap.c
+@@ -1422,7 +1422,7 @@ unsigned long mmap_region(struct file *f
+ 	/*
+ 	 * clear PTEs while the vma is still in the tree so that rmap
+ 	 * cannot race with the freeing later in the truncate scenario.
+-	 * This is also needed for call_mmap(), which is why vm_ops
++	 * This is also needed for mmap_file(), which is why vm_ops
+ 	 * close function is called.
+ 	 */
+ 	vms_clean_up_area(&vms, &mas_detach);
+@@ -1447,7 +1447,7 @@ unsigned long mmap_region(struct file *f
  
--- 
-2.47.0.163.g1226f6d8fa-goog
+ 	if (file) {
+ 		vma->vm_file = get_file(file);
+-		error = call_mmap(file, vma);
++		error = mmap_file(file, vma);
+ 		if (error)
+ 			goto unmap_and_free_vma;
+ 
+@@ -1470,7 +1470,7 @@ unsigned long mmap_region(struct file *f
+ 
+ 		vma_iter_config(&vmi, addr, end);
+ 		/*
+-		 * If vm_flags changed after call_mmap(), we should try merge
++		 * If vm_flags changed after mmap_file(), we should try merge
+ 		 * vma again as we may succeed this time.
+ 		 */
+ 		if (unlikely(vm_flags != vma->vm_flags && vmg.prev)) {
+--- a/mm/nommu.c~mm-avoid-unsafe-vma-hook-invocation-when-error-arises-on-mmap-hook
++++ a/mm/nommu.c
+@@ -885,7 +885,7 @@ static int do_mmap_shared_file(struct vm
+ {
+ 	int ret;
+ 
+-	ret = call_mmap(vma->vm_file, vma);
++	ret = mmap_file(vma->vm_file, vma);
+ 	if (ret == 0) {
+ 		vma->vm_region->vm_top = vma->vm_region->vm_end;
+ 		return 0;
+@@ -918,7 +918,7 @@ static int do_mmap_private(struct vm_are
+ 	 * happy.
+ 	 */
+ 	if (capabilities & NOMMU_MAP_DIRECT) {
+-		ret = call_mmap(vma->vm_file, vma);
++		ret = mmap_file(vma->vm_file, vma);
+ 		/* shouldn't return success if we're not sharing */
+ 		if (WARN_ON_ONCE(!is_nommu_shared_mapping(vma->vm_flags)))
+ 			ret = -ENOSYS;
+_
+
+Patches currently in -mm which might be from lorenzo.stoakes@oracle.com are
+
+mm-avoid-unsafe-vma-hook-invocation-when-error-arises-on-mmap-hook.patch
+mm-unconditionally-close-vmas-on-error.patch
+mm-refactor-map_deny_write_exec.patch
+mm-refactor-arch_calc_vm_flag_bits-and-arm64-mte-handling.patch
+mm-resolve-faulty-mmap_region-error-path-behaviour.patch
+selftests-mm-add-pkey_sighandler_xx-hugetlb_dio-to-gitignore.patch
+mm-refactor-mm_access-to-not-return-null.patch
+mm-refactor-mm_access-to-not-return-null-fix.patch
+mm-madvise-unrestrict-process_madvise-for-current-process.patch
+maple_tree-do-not-hash-pointers-on-dump-in-debug-mode.patch
+tools-testing-fix-phys_addr_t-size-on-64-bit-systems.patch
+tools-testing-fix-phys_addr_t-size-on-64-bit-systems-fix.patch
+tools-testing-add-additional-vma_internalh-stubs.patch
+mm-isolate-mmap-internal-logic-to-mm-vmac.patch
+mm-refactor-__mmap_region.patch
+mm-remove-unnecessary-reset-state-logic-on-merge-new-vma.patch
+mm-defer-second-attempt-at-merge-on-mmap.patch
+mm-defer-second-attempt-at-merge-on-mmap-fix.patch
+mm-pagewalk-add-the-ability-to-install-ptes.patch
+mm-add-pte_marker_guard-pte-marker.patch
+mm-madvise-implement-lightweight-guard-page-mechanism.patch
+tools-testing-update-tools-uapi-header-for-mman-commonh.patch
+selftests-mm-add-self-tests-for-guard-page-feature.patch
 
 
