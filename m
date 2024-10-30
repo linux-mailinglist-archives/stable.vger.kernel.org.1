@@ -1,179 +1,175 @@
-Return-Path: <stable+bounces-89310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D1E99B5E6F
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 10:06:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E94629B5E99
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 10:20:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 616391C20A28
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 09:06:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53EEBB212CD
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 09:20:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74301E1A37;
-	Wed, 30 Oct 2024 09:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DC21E201C;
+	Wed, 30 Oct 2024 09:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ELrbBiJw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iYYfgMv/"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AD01E1C14;
-	Wed, 30 Oct 2024 09:06:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C647C1CCEC2
+	for <stable@vger.kernel.org>; Wed, 30 Oct 2024 09:20:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730279191; cv=none; b=L1atPmcMcymWlpLoPlEyZRYobY3MY+spQHSdlkUq7f3iqIY4iONB4En0hCM4dw1zuzUCniQ4UsYoy/DBsOsn+9XQghzwSo5yTQ4zvPuKudyZiv/Bi0G8tGh7izSiYekcCv6AC8Xw8zofjben+X4OUU+9V0Kbb7uJIt+b3N4WjLQ=
+	t=1730280019; cv=none; b=ZYQ1+8wcNnp/BZCsSBWhwZN6h9PmxEijCenIkYqfmve5DEpFh7hf3tU3NOB/t90GPvmU/eNIL95x1fK1ohJbHzWKpbAHcStY3ZImMnx2NL8HS9hqcG/g+pEFoIBvDkz5gqlw66mZ1/dRkA3AVNHrjSa2lchaSxi84WSVvTbp5Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730279191; c=relaxed/simple;
-	bh=UHAvCgWVJbo/IoGy4cfK+JVAwccuRu6Xu7KbTRA9d2I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sV3NnXFZX71BOwTjPddOqqouzJnTo4aZlgGno3jfzOzg2gE4mHJEgpoAChsB/U+4wIjA/N14ejD10GTRM64BJ5/qCniUdOqSLgtEjlrU6gV2fwx4jspbfm04tKmaSyjCR5+kF+1w+4Yln9qXeWsT0j5/A8Pmoj8DRf3IpKo26gA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ELrbBiJw; arc=none smtp.client-ip=198.175.65.16
+	s=arc-20240116; t=1730280019; c=relaxed/simple;
+	bh=tzwzfPL6sDcM7hK/ZuZGsoyr5EDSuOQtW/1SYTG9TWk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fvZU/7hQFylHq+gId1k45F1w5BUvhllcXfVvPvTwVX6p35NoPBPdz73U0mhvL8meRfgVO8+6izqqfJ03KlYYuMISlvOF9X8IQIIqz0CWHS1eVTVtoWppoj89eCus7AUb9HCbPnrF8pohJ8QUMezE8P5Lr78suO4dXwTiRwuFJuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iYYfgMv/; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730279190; x=1761815190;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=UHAvCgWVJbo/IoGy4cfK+JVAwccuRu6Xu7KbTRA9d2I=;
-  b=ELrbBiJwOgKriQ+KgjaLtJc+h7uC8qZOlbWr0bMG8FntFOmoVOuQtm2v
-   57GbJ4Hd+eGcW+jXbhCOHMdinB+lsWcL8AufnAW2lm7Fv2Jdlva+scziK
-   dr1LVvfwXe4OAokwPlQnAh8mB4gW+dedHybODAipNqG6pY9q+cUUzITAB
-   NQAdolyfbw/bjVwC4fYicmLKZw+qoZqpBLVPbm/rXKrRK5jE5aRBN+nah
-   C6r3o+KVl57ww0dnd/ct0LMF05iJy7p3J8yFTia3ePIB1xCBmHWKaBOuM
-   gRTHcP2rtI5Piq1Wmt1PVH0hFxfSxXXaQ30TWPMny6zUJj4PwPrJ0+V6J
-   Q==;
-X-CSE-ConnectionGUID: O9sxnTjASROMvqKfih1mPA==
-X-CSE-MsgGUID: zD45V6riRTOHmPvj9GJHcw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30115594"
+  t=1730280017; x=1761816017;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=tzwzfPL6sDcM7hK/ZuZGsoyr5EDSuOQtW/1SYTG9TWk=;
+  b=iYYfgMv/aaMgd/2K45hAFxO7p0Hi+u6Z9yajT5TcjEF6HaLUwOFQTXmU
+   xmh1oxdviYBVGZNWrdsi+utC8t/EXuyloDVbtESzco/t7RW2h8JsjCnKv
+   1r9ERzoFnCFAZviuz74gDnJc9GHyCUJCDTrGxeEptt2fzox+rQLnbcLyt
+   1OqSd0jEJnaKEeebp/RFLjbfSjZQe2HyhoV3iWRVfDyvhGn+E3Zly018g
+   Y/zPP4P75cQHeTMZGekQdEnHl0FRegNyZ2jMSgGQ3h3sfHHtv22Dv8OhY
+   7zOUTwavHk12htUy/eCZqAx9niop0NHYAEsQ/QNbYXv4SGWjOZQaO6gr9
+   A==;
+X-CSE-ConnectionGUID: Dd1lCEgdQzKrsNnOzFH6Sw==
+X-CSE-MsgGUID: av0vQAAcQdeozEEIEn/dqg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29927145"
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="30115594"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 02:06:29 -0700
-X-CSE-ConnectionGUID: aL85xrH/RWGgAivk+/lliA==
-X-CSE-MsgGUID: jFHHloDnTvmvKXlW9ep40g==
+   d="scan'208";a="29927145"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 02:20:17 -0700
+X-CSE-ConnectionGUID: QG68GbR2SQWRujRd9rMGEg==
+X-CSE-MsgGUID: +Ff7mRYeRC68xJWHw60y4A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,244,1725346800"; 
-   d="scan'208";a="86192087"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa003.fm.intel.com with ESMTP; 30 Oct 2024 02:06:26 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id 46F682C1; Wed, 30 Oct 2024 11:06:25 +0200 (EET)
-Date: Wed, 30 Oct 2024 11:06:25 +0200
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Rick <rick@581238.xyz>
-Cc: Mario Limonciello <mario.limonciello@amd.com>, Sanath.S@amd.com,
-	christian@heusel.eu, fabian@fstab.de, gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org, regressions@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: Dell WD19TB Thunderbolt Dock not working with kernel > 6.6.28-1
-Message-ID: <20241030090625.GS275077@black.fi.intel.com>
-References: <000f01db247b$d10e1520$732a3f60$@581238.xyz>
- <96560f8e-ab9f-4036-9b4d-6ff327de5382@amd.com>
- <22415e85-9397-42db-9030-43fc5f1c7b35@581238.xyz>
- <20241022161055.GE275077@black.fi.intel.com>
- <7f14476b-8084-4c43-81ec-e31ae3f7a3c6@581238.xyz>
- <20241023061001.GF275077@black.fi.intel.com>
- <4848c9fe-877f-4d73-84d6-e2249bb49840@581238.xyz>
- <20241028081813.GN275077@black.fi.intel.com>
- <2c27683e-aca8-48d0-9c63-f0771c6a7107@581238.xyz>
+   d="scan'208";a="82356143"
+Received: from jcarrol-mobl.ger.corp.intel.com (HELO [10.245.85.88]) ([10.245.85.88])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 02:20:14 -0700
+Message-ID: <48b274ce-2c96-4827-8471-61575a107b1a@linux.intel.com>
+Date: Wed, 30 Oct 2024 10:20:12 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2c27683e-aca8-48d0-9c63-f0771c6a7107@581238.xyz>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] accel/ivpu: Fix NOC firewall interrupt handling
+To: dri-devel@lists.freedesktop.org
+Cc: oded.gabbay@gmail.com, quic_jhugo@quicinc.com,
+ Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>, stable@vger.kernel.org
+References: <20241017144958.79327-1-jacek.lawrynowicz@linux.intel.com>
+Content-Language: en-US
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20241017144958.79327-1-jacek.lawrynowicz@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Rick,
+Applied to drm-misc-fixes
 
-On Wed, Oct 30, 2024 at 08:11:30AM +0100, Rick wrote:
-> Hi Mika,
+On 10/17/2024 4:49 PM, Jacek Lawrynowicz wrote:
+> From: Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>
 > 
-> Thank you for your email.
+> The NOC firewall interrupt means that the HW prevented
+> unauthorized access to a protected resource, so there
+> is no need to trigger device reset in such case.
 > 
-> On 28-10-2024 09:18, Mika Westerberg wrote:
-> > 
-> > I still see similar issue even with the v6.9 kernel. The link goes up an
-> > down unexpectly.
-> > 
-> > I wonder if you could try to take traces of the control channel traffic?
-> > I suggest to use v6.11 kernel because it should have all the tracing
-> > bits added then install tbtools [1] and follow the steps here:
-> > 
-> >    https://github.com/intel/tbtools?tab=readme-ov-file#tracing
-> > 
-> > Then provide both full dmesg and the trace output. That hopefully shows
-> > if some of the access we are doing in the Linux side is causing the link
-> > to to drop. Let me know if you need more detailed instructions.
-> > 
-> > Also please drop the "thunderbolt.host_reset=0" from the command line as
-> > that did not help, so it is not needed.
+> To facilitate security testing add firewall_irq_counter
+> debugfs file that tracks firewall interrupts.
 > 
-> Dropped thank you.
+> Fixes: 8a27ad81f7d3 ("accel/ivpu: Split IP and buttress code")
+> Cc: <stable@vger.kernel.org> # v6.11+
+> Signed-off-by: Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>
+> Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+> ---
+>  drivers/accel/ivpu/ivpu_debugfs.c | 9 +++++++++
+>  drivers/accel/ivpu/ivpu_hw.c      | 1 +
+>  drivers/accel/ivpu/ivpu_hw.h      | 1 +
+>  drivers/accel/ivpu/ivpu_hw_ip.c   | 5 ++++-
+>  4 files changed, 15 insertions(+), 1 deletion(-)
 > 
-> > 
-> > [1] https://github.com/intel/tbtools
-> 
-> tbtrace on 6.11.5:
-> https://gist.github.com/ricklahaye/69776e9c39fd30a80e2adb6156bdb42d
-> dmesg on 6.11.5:
-> https://gist.github.com/ricklahaye/8588450725695a0bd45799d3d66c7aff
+> diff --git a/drivers/accel/ivpu/ivpu_debugfs.c b/drivers/accel/ivpu/ivpu_debugfs.c
+> index 8958145c49adb..8180b95ed69dc 100644
+> --- a/drivers/accel/ivpu/ivpu_debugfs.c
+> +++ b/drivers/accel/ivpu/ivpu_debugfs.c
+> @@ -116,6 +116,14 @@ static int reset_pending_show(struct seq_file *s, void *v)
+>  	return 0;
+>  }
+>  
+> +static int firewall_irq_counter_show(struct seq_file *s, void *v)
+> +{
+> +	struct ivpu_device *vdev = seq_to_ivpu(s);
+> +
+> +	seq_printf(s, "%d\n", atomic_read(&vdev->hw->firewall_irq_counter));
+> +	return 0;
+> +}
+> +
+>  static const struct drm_debugfs_info vdev_debugfs_list[] = {
+>  	{"bo_list", bo_list_show, 0},
+>  	{"fw_name", fw_name_show, 0},
+> @@ -125,6 +133,7 @@ static const struct drm_debugfs_info vdev_debugfs_list[] = {
+>  	{"last_bootmode", last_bootmode_show, 0},
+>  	{"reset_counter", reset_counter_show, 0},
+>  	{"reset_pending", reset_pending_show, 0},
+> +	{"firewall_irq_counter", firewall_irq_counter_show, 0},
+>  };
+>  
+>  static int dvfs_mode_get(void *data, u64 *dvfs_mode)
+> diff --git a/drivers/accel/ivpu/ivpu_hw.c b/drivers/accel/ivpu/ivpu_hw.c
+> index 09ada8b500b99..4e1054f3466e8 100644
+> --- a/drivers/accel/ivpu/ivpu_hw.c
+> +++ b/drivers/accel/ivpu/ivpu_hw.c
+> @@ -252,6 +252,7 @@ int ivpu_hw_init(struct ivpu_device *vdev)
+>  	platform_init(vdev);
+>  	wa_init(vdev);
+>  	timeouts_init(vdev);
+> +	atomic_set(&vdev->hw->firewall_irq_counter, 0);
+>  
+>  	return 0;
+>  }
+> diff --git a/drivers/accel/ivpu/ivpu_hw.h b/drivers/accel/ivpu/ivpu_hw.h
+> index dc5518248c405..fc4dbfc980c81 100644
+> --- a/drivers/accel/ivpu/ivpu_hw.h
+> +++ b/drivers/accel/ivpu/ivpu_hw.h
+> @@ -51,6 +51,7 @@ struct ivpu_hw_info {
+>  	int dma_bits;
+>  	ktime_t d0i3_entry_host_ts;
+>  	u64 d0i3_entry_vpu_ts;
+> +	atomic_t firewall_irq_counter;
+>  };
+>  
+>  int ivpu_hw_init(struct ivpu_device *vdev);
+> diff --git a/drivers/accel/ivpu/ivpu_hw_ip.c b/drivers/accel/ivpu/ivpu_hw_ip.c
+> index b9b16f4041434..029dd065614b2 100644
+> --- a/drivers/accel/ivpu/ivpu_hw_ip.c
+> +++ b/drivers/accel/ivpu/ivpu_hw_ip.c
+> @@ -1073,7 +1073,10 @@ static void irq_wdt_mss_handler(struct ivpu_device *vdev)
+>  
+>  static void irq_noc_firewall_handler(struct ivpu_device *vdev)
+>  {
+> -	ivpu_pm_trigger_recovery(vdev, "NOC Firewall IRQ");
+> +	atomic_inc(&vdev->hw->firewall_irq_counter);
+> +
+> +	ivpu_dbg(vdev, IRQ, "NOC Firewall interrupt detected, counter %d\n",
+> +		 atomic_read(&vdev->hw->firewall_irq_counter));
+>  }
+>  
+>  /* Handler for IRQs from NPU core */
 
-Thanks! I suspect there is something we do when we read the sideband
-that makes the device router to "timeout" and retry the link
-establishment. There is also the failure when USB 3.x tunnel is created
-but we can look that after we figure out the connection issue.
-
-Looking at the trace we are still polling for retimers when we see the
-unplug:
-
-[   48.684078] tb_tx Read Request Domain 0 Route 0 Adapter 3 / Lane
-               0x00/---- 0x00000000 0b00000000 00000000 00000000 00000000 .... Route String High
-               0x01/---- 0x00000000 0b00000000 00000000 00000000 00000000 .... Route String Low
-               0x02/---- 0x02182091 0b00000010 00011000 00100000 10010001 .... 
-                 [00:12]       0x91 Address
-                 [13:18]        0x1 Read Size
-                 [19:24]        0x3 Adapter Num
-                 [25:26]        0x1 Configuration Space (CS) → Adapter Configuration Space
-                 [27:28]        0x0 Sequence Number (SN)
-[   48.684339] tb_rx Read Response Domain 0 Route 0 Adapter 3 / Lane
-               0x00/---- 0x80000000 0b10000000 00000000 00000000 00000000 .... Route String High
-               0x01/---- 0x00000000 0b00000000 00000000 00000000 00000000 .... Route String Low
-               0x02/---- 0x02182091 0b00000010 00011000 00100000 10010001 .... 
-                 [00:12]       0x91 Address
-                 [13:18]        0x1 Read Size
-                 [19:24]        0x3 Adapter Num
-                 [25:26]        0x1 Configuration Space (CS) → Adapter Configuration Space
-                 [27:28]        0x0 Sequence Number (SN)
-               0x03/0091 0x81320408 0b10000001 00110010 00000100 00001000 .2.. PORT_CS_1
-                 [00:07]        0x8 Address
-                 [08:15]        0x4 Length
-                 [16:18]        0x2 Target
-                 [20:23]        0x3 Re-timer Index
-                 [24:24]        0x1 WnR
-                 [25:25]        0x0 No Response (NR)
-                 [26:26]        0x0 Result Code (RC)
-                 [31:31]        0x1 Pending (PND)
-[   48.691410] tb_event Hot Plug Event Packet Domain 0 Route 0 Adapter 3 / Lane
-               0x00/---- 0x80000000 0b10000000 00000000 00000000 00000000 .... Route String High
-               0x01/---- 0x00000000 0b00000000 00000000 00000000 00000000 .... Route String Low
-               0x02/---- 0x80000003 0b10000000 00000000 00000000 00000011 .... 
-                 [00:05]        0x3 Adapter Num
-                 [31:31]        0x1 UPG
-[   48.691414] thunderbolt 0000:00:0d.2: acking hot unplug event on 0:3
-
-Taking this into account and also the fact that your previous email you
-say that v6.9 works and v6.10 does not, I wonder if you could first try
-just to revert:
-
-  c6ca1ac9f472 ("thunderbolt: Increase sideband access polling delay")
-
-and see if that helps with the connection issue? If it does then can you
-take full dmesg and the trace again and with me so I can look at the USB
-tunnel issue too?
 
