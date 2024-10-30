@@ -1,87 +1,80 @@
-Return-Path: <stable+bounces-89357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E5CB9B6C0A
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 19:24:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0B929B6C11
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 19:26:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB5901F21E11
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 18:24:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 775A21F21BC1
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 18:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83D9C33E7;
-	Wed, 30 Oct 2024 18:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C0C1CB518;
+	Wed, 30 Oct 2024 18:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e+JchJUs"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="jztXfXL2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE621BD9DF;
-	Wed, 30 Oct 2024 18:24:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CED01CB333
+	for <stable@vger.kernel.org>; Wed, 30 Oct 2024 18:26:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730312669; cv=none; b=Yv45YavbUV8Gx2gighivtBA91x7Gf5/jk7LPQthgL3wMgffUUf9XUQjzbdsnqFBzmutrQHHQA8efEzw8h5pmzj0cV0DoEC95nbLfO4fqm406y7nRMW4l66IJL+hQSdJnDSVMJsmFtezcrTYlCKI2eWtKr9bNp6+0XUippNdblIc=
+	t=1730312765; cv=none; b=CYFx+ruzSHKHmT53Ue+AgCT/FpeICjBZ1qhHoipi2lcDMvjkLWrx0UCS1ZfkK57cEOxapJ3dVnHiikoP7/FLSn5yjebcS0PQEMc/FAzGspHToYcq4iFJY3g+MjdeZ+N87Lk5/w1sG4riWWD4bqbq4PGe9IMpYV0tqJlSb18p1rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730312669; c=relaxed/simple;
-	bh=G05/90DQz3OSIbUTMmUWfCp/U3U+pZF1D4h43q8+hn8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kArM9UIibFFIlCTJ4PTyGFbm4cfix7lN6639S7exbjJdW+23xy3WtRQZcVhLHohFFLRQHKmAdkqEutQgIfgQ0qyLESy6sJE8I6oW2XjLohd6WEjaaezZfvXkBqdSAzVoB6+fpNpnXntxq4fLo/Fc1fQO+S9jPvKDw4jm+vGdmOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e+JchJUs; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-37d473c4bb6so111083f8f.3;
-        Wed, 30 Oct 2024 11:24:25 -0700 (PDT)
+	s=arc-20240116; t=1730312765; c=relaxed/simple;
+	bh=G3YGB2i7Fqd9ihHSxO8Pi0dveD/nQZafEDr02VMTORQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pv7i4xZURoEhP5MlqV2A0z6OCtvrdqNlRwPQWq/cWfcHz3ceRDn0j/e76ldLx0CDbWJItAsidxSftS8JLIOZ26DOoA+NILlg5jiSUMgNnsaHunHyrAZj1udkuYoD6mcG8hOyKu/CI5c+yEPaL/oC6fJcxCEYsyspGeveH1JM2K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=jztXfXL2; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-460963d6233so1200521cf.2
+        for <stable@vger.kernel.org>; Wed, 30 Oct 2024 11:26:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730312664; x=1730917464; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=P/P07SRvG2cOwl8/ttJHJzaFtHcH1icuUS4rqrKr/98=;
-        b=e+JchJUsbKxV1GuQN736BTElKMKxhJaRIEarfFhMyRyXN24Purq4CSg0uPfxXpG8tG
-         6lqAfYV6UAqHzYftVRugckJZlJcLOMoAiApKst7ogUai0Ro0QlDY2/4kCBl8u+ipXQaK
-         0J2FymHc9jWS6S+BkCoDmDk3zCubM5Du5rQ5dm64iCtTg5/JbCmzNFATSNerNDJPYsnV
-         cxHSQkhTRK8q6oAiBJiVi8/DJlAcl8drbKqNV3vWZJSqaTAFHZF1wITEhilgwrOOAe7W
-         3ojQd1vfxkn/xp7qNZkwZ9IQ7lWQgDcAexrTQ2/SK6zKQ1Pr8xulbb2KWUlpD+U6oNQi
-         KgOg==
+        d=gourry.net; s=google; t=1730312762; x=1730917562; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DbjE0LVey+AU8nkE8GiAZE2/PJGlPEdVxDqptqhMLAI=;
+        b=jztXfXL2NFrCWvUzjZhCHvDX0JlqjFDX1+zqO0ZNzrhgBYvt//AOvLqle300cVLtTd
+         zDn2qhCRfH36OnGpDnnYp9Y65amjXRbITRBKDVw4sHfhmkbGg3fH/EujKrtntXEmHRbr
+         9X21j9FoRs+uHixntfxZiigg66F81eR0OFS6QTb9dV4y2q/4zVbATO+frXqwPP/D5Vf1
+         jc3pSpH35PiXFDGMup7/YCNFsTrtMo5BblgHwZJReQsmI+N2oAi5ZlM35pZFh4nGSh+o
+         heXHiawO0eObTA16OEOnvnLZqDB7WVmjdBHt829lES2ncRtia1RpoDyRT5RfX5jt5Bdy
+         mJQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730312664; x=1730917464;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=P/P07SRvG2cOwl8/ttJHJzaFtHcH1icuUS4rqrKr/98=;
-        b=gnTJ6E6YwmX5G4vjCNpXMg4mHShSinhjUg7ccS/nrmN3rUkE5q2jH4bSGYal63eD4f
-         bYiuuvdT0UT9F9dGeEspB3oRynwaOf1sDt1gPRsiw6XhKwpfTIjHV8FZ7aagLaoR/mM+
-         hsGpBfRFwLWxOIJaoZaDMsQcMXcgHAZMnKc247GcniALrJ8gQ/cud22YHvOQ2b8JxPO0
-         2yetbs1f/pWPUuyKLEWnC6KssxXAd7BOg8E/5qn1xCo+MHxhqjZzL3EWeizrNwsLWxIB
-         IMVYeVd/OFgEZUtb6V0isJNRxC2jg4MkQYT6rudZXgQpMOaN5s6HDgeK2bjq0oWDqMtl
-         zBOg==
-X-Forwarded-Encrypted: i=1; AJvYcCWyU3mFCbuW3KoYbeSNJUQl5gyYDyuwP5FMN8SlTB5FqeNmcf/BuIxmcQtK5Io1LSglB1czPkh0XD0=@vger.kernel.org, AJvYcCXZqY0dM5O2sjrw53z92DPDpdUNp3f9oDEivaT1Be90cLBxF7rpfs9ya5crZju3ggAmHgaDN9Fs@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSbxG5FJMVU4J7+C82/OKBUzvcLFn7RjZmc33q3BumD8jqrzSG
-	1AtRF4kdCWIWFR88QpOMClmYnanwSXkRBbCT51TeNS87ca9XwCf7
-X-Google-Smtp-Source: AGHT+IFTVm7uSbl5A61OL/0tG5zsjtNPDAEp/KInlE5iN6rCBBNknKQuvPfYYDMIlFV4LFcPwKez6Q==
-X-Received: by 2002:adf:f10a:0:b0:37d:4b26:54ca with SMTP id ffacd0b85a97d-38061171f6bmr15466933f8f.14.1730312664198;
-        Wed, 30 Oct 2024 11:24:24 -0700 (PDT)
-Received: from ?IPV6:2a02:6b67:d751:7400:c2b:f323:d172:e42a? ([2a02:6b67:d751:7400:c2b:f323:d172:e42a])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b3c1f7sm16021185f8f.43.2024.10.30.11.24.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Oct 2024 11:24:23 -0700 (PDT)
-Message-ID: <30899696-def7-4f1e-a54b-65fc6901a998@gmail.com>
-Date: Wed, 30 Oct 2024 18:24:23 +0000
-Precedence: bulk
-X-Mailing-List: stable@vger.kernel.org
-List-Id: <stable.vger.kernel.org>
-List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+        d=1e100.net; s=20230601; t=1730312762; x=1730917562;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DbjE0LVey+AU8nkE8GiAZE2/PJGlPEdVxDqptqhMLAI=;
+        b=DYKOJVQJaNvdHDqyG+wJAhp3xLHf2hl3MPfKQc/BggjqSoTxlzysDLGUDcEXYMVwGg
+         SX6Ok2l6cWCcC2++3857m5hvIbayUjlUReIYrC9IQz9Q+0BDioIZ8o73ES4FNV1xqtu9
+         XAo0Bbq3D9p6W1tE1+wsRhHS74yNRtxhLl7VDx4+mlYJwiNl1ziOWzYf6eqEtvy7rCwg
+         RhD/uVVjNLwN3E/FnaTvl9M/OG7wV+sPpKqYjxLLa0bhAaFpiXXQuhlkFq9jvJz+H4vx
+         OaCAP+yAHnWmPZ9WiHOOOEYGGcHB6VQhOtLxFQSViCCtJxQqRt8kgTUzQxMZNi2+Glom
+         CPfw==
+X-Forwarded-Encrypted: i=1; AJvYcCW9B9YrbMXM+evNk24vCAYQ9zlLM+JShmqHTPZN5AnKEzqssZ/LYhj97p/7/rRDlrGF9YbGWNQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/nJTv7H8wG0cmUJO84jzV/6EzS5kYOL7L+vXPuRZ8tw60612Z
+	aNKMksqIvf/LY8q3xfYRQrAIh1geJyktBh5WZbNqF/RAdif8LeCkEUmXX32EXzo=
+X-Google-Smtp-Source: AGHT+IFYDQQKS4cOudgXSyZkOKT8naielk8Nl7dGnc5cJxXyNsgI0H5LFNiELyY/pqK62ZdYy6tkVg==
+X-Received: by 2002:a05:622a:52:b0:461:43d4:fcb4 with SMTP id d75a77b69052e-462ab280929mr6249451cf.26.1730312762497;
+        Wed, 30 Oct 2024 11:26:02 -0700 (PDT)
+Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-461323a1fbesm56805021cf.82.2024.10.30.11.26.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Oct 2024 11:26:02 -0700 (PDT)
+Date: Wed, 30 Oct 2024 14:26:08 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Usama Arif <usamaarif642@gmail.com>
+Cc: Jiri Slaby <jirislaby@kernel.org>, Ard Biesheuvel <ardb+git@google.com>,
+	linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+	stable@vger.kernel.org, Breno Leitao <leitao@debian.org>
 Subject: Re: [PATCH] efistub/tpm: Use ACPI reclaim memory for event log to
  avoid corruption
-To: Gregory Price <gourry@gourry.net>, Jiri Slaby <jirislaby@kernel.org>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org,
- Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org,
- Breno Leitao <leitao@debian.org>
+Message-ID: <ZyJ6QHc9FetDckqo@PC2K9PVX.TheFacebook.com>
 References: <20240912155159.1951792-2-ardb+git@google.com>
  <ec7db629-61b0-49aa-a67d-df663f004cd0@kernel.org>
  <29b39388-5848-4de0-9fcf-71427d10c3e8@kernel.org>
@@ -89,94 +82,41 @@ References: <20240912155159.1951792-2-ardb+git@google.com>
  <899f209b-d4ec-4903-a3e6-88b570805499@gmail.com>
  <b7501b2c-d85f-40aa-9be5-f9e5c9608ae4@kernel.org>
  <e42149a6-7c1f-48d1-be94-1c1082b450e0@gmail.com>
- <ZyJ0r_zZ5UD8pvzX@PC2K9PVX.TheFacebook.com>
-Content-Language: en-US
-From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <ZyJ0r_zZ5UD8pvzX@PC2K9PVX.TheFacebook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Precedence: bulk
+X-Mailing-List: stable@vger.kernel.org
+List-Id: <stable.vger.kernel.org>
+List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e42149a6-7c1f-48d1-be94-1c1082b450e0@gmail.com>
 
-
-
-On 30/10/2024 18:02, Gregory Price wrote:
-> On Wed, Oct 30, 2024 at 05:13:14PM +0000, Usama Arif wrote:
->>
->>
->> On 30/10/2024 05:25, Jiri Slaby wrote:
->>> On 25. 10. 24, 15:27, Usama Arif wrote:
->>>> Could you share the e820 map, reserve setup_data and TPMEventLog address with and without the patch?
->>>> All of these should be just be in the dmesg.
->>>
->>> It's shared in the aforementioned bug [1] already.
->>>
->>> 6.11.2 dmesg (bad run):
->>> https://bugzilla.suse.com/attachment.cgi?id=877874
->>>
->>> 6.12-rc2 dmesg (good run):
->>> https://bugzilla.suse.com/attachment.cgi?id=877887
->>>
->>> FWIW from https://bugzilla.suse.com/attachment.cgi?id=878051:
->>> good TPMEventLog=0x682aa018
->>> bad  TPMEventLog=0x65a6b018
->>>
->>> [1] https://bugzilla.suse.com/show_bug.cgi?id=1231465
->>>
-> ... snip ...
->>> efi: EFI v2.6 by American Megatrends
->>> efi: ACPI=0x7a255000 ACPI 2.0=0x7a255000 SMBIOS=0x7b140000 SMBIOS 3.0=0x7b13f000 TPMFinalLog=0x7a892000 ESRT=0x7b0deb18 [-MEMATTR=0x77535018-] {+MEMATTR=0x77526018+} MOKvar=0x7b13e000 RNG=0x7a254018 [-TPMEventLog=0x65a6f018-] {+TPMEventLog=0x682ac018+}
->>>
->>>
->>> thanks,
->>
->> Thanks for sharing this.
->>
->> This looks a bit weird for me.
->>
->> The issue this patch was trying to fix was TPMEventLog being overwritten during kexec.
->> We are using efi libstub.
->> Without this patch we would see
->> BIOS-e820: [mem 0x0000000000100000-0x0000000064763fff] usable 
->> TPMEventLog=0x5ed47018
->> i.e. TPMEventLog was usable memory and therefore was prone to corruption during kexec.
->>
->> With this patch 
->> BIOS-e820: [mem 0x00000000a8c01000-0x00000000a8cebfff] ACPI data
->> TPMEventLog=0xa8ca8018 
->> i.e.  TPMEventLog is reserved as ACPI data, hence cant be corrupted during kexec.
->>
->>
->> In your case, from the logs you shared, good run without the patch:
->> [    0.000000] [      T0] BIOS-e820: [mem 0x0000000065a6f000-0x0000000065a7dfff] ACPI data
->> [    0.000000] [      T0] BIOS-e820: [mem 0x0000000065a7e000-0x000000006a5acfff] usable
->> [    0.000000] [      T0] BIOS-e820: [mem 0x000000006a5ad000-0x000000006a5adfff] ACPI NVS
->> TPMEventLog=0x65a6f018 
->> bad run with the patch:
->> [    0.000000] [      T0] BIOS-e820: [mem 0x00000000682ac000-0x00000000682bafff] ACPI data
->> [    0.000000] [      T0] BIOS-e820: [mem 0x00000000682bb000-0x000000006a5acfff] usable
->> [    0.000000] [      T0] BIOS-e820: [mem 0x000000006a5ad000-0x000000006a5adfff] ACPI NVS
->> TPMEventLog=0x682ac018
->> Both with and without the fix, the TPMEventLog is part of ACPI data.
->>
+On Wed, Oct 30, 2024 at 05:13:14PM +0000, Usama Arif wrote:
 > 
-> Just wondering - why would the TPM log move a total of ~40MB between COLD boots.
 > 
-> I would expect this location to be relatively fixed (give or take a small amount of
-> memory) - especially since it's so early in boot.
-> 
+> On 30/10/2024 05:25, Jiri Slaby wrote:
+> > On 25. 10. 24, 15:27, Usama Arif wrote:
+> >> Could you share the e820 map, reserve setup_data and TPMEventLog address with and without the patch?
+> >> All of these should be just be in the dmesg.
+> > efi: EFI v2.6 by American Megatrends
 
-This is a good point. I think if we suspect this patch, it would be good to compare
-dmesg of kernel cold boot with this patch vs the commit just before this patch, rather
-than comparing with 6.12.
+Tossing in another observation - the AMI EFI we've been working with has been
 
-Thanks
+EFI v2.8 by American Megatrends
+or 
+EFI v2.9 by American Megatrends
 
->> It means your firmware has already marked that area as ACPI data. Are you using efi/libstub?
->>
->> Thanks,
->> Usama
->>
->>
->>
->>
+We have not seen this particular behavior (cold boot corruption issues) on top
+of these version.  Might be worth investigating this issue.
 
+you may also want to investigate this patch set:
+
+https://lore.kernel.org/all/20240913231954.20081-1-gourry@gourry.net/
+
+which I believe would have caught your "eat all memory" sign extention issue.
+
+This is queued up for v6.13 i think - but possibly 1/4 deserves a stable mark.
+
+~Gregory
 
