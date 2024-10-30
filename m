@@ -1,184 +1,170 @@
-Return-Path: <stable+bounces-89354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57FE79B6B41
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 18:46:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80A6C9B6B8E
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 19:02:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D08C71F2222A
-	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 17:46:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A2E5282242
+	for <lists+stable@lfdr.de>; Wed, 30 Oct 2024 18:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF9B1BD9FE;
-	Wed, 30 Oct 2024 17:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C64EE1C460B;
+	Wed, 30 Oct 2024 18:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="vMnPQNLY"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="rOU83etl"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2065.outbound.protection.outlook.com [40.107.236.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3611BD9DD
-	for <stable@vger.kernel.org>; Wed, 30 Oct 2024 17:46:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730310407; cv=fail; b=T2K5BWfoKt5cSBSiPRfe8rJzJr5eRy/swlXznZPuUR4w3iq4kERL8Lzw0a7UMY/5slTDpbRZx8sZeJThw8zBwSSKa5oHn5bz9caTySa8xOdYcFT05QBsUduZXWb+COGAljk8fQf2r40wX0vBCiF+TohO2Jm1LmXWohLjEsxww8o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730310407; c=relaxed/simple;
-	bh=4xPKXaXZ6URHV5WtU8h2gkxuMXfv+/y1vHJlcwYqtAY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YYtp//capPxLCsL6ZuoG8EalcNv2fC29HBHrUr486XpyluOVZAl4AT7gmCtA8jCvJT5mAierDD2k421qgF7w2yefheQZGFF1jSza0bTYCruWxCx003kWk6Nqg8DIYLlYxoeHhuvYJgs34grfhsbgwLtXJoP4Lia45c713VZhxWk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=vMnPQNLY; arc=fail smtp.client-ip=40.107.236.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LKJnXFx9xHQa4F91u0uoTpDk9Q0btnMgiR2f6/iqbOCTArK0+2741tk74sXYA0SVpGII8g4c8hO3eshzvzFdx/1hIObpjZxY2+wRe4Rn6hrvG3wjq2uVUS8d7RIEyTp7HFkcs8DVvJGlB712hPebTw8Wp8tm8F3zxuVRA1NN0aN7RYff4Q8ls6Us+vNZC5vKUeykzb9AWe6aPeyY5YcdI29/vEnDLsDIcOD2eIKe6m6QdEjhVqNXS5xIBd1PnhK5B4IuP/lSUA/1NJp8HzaOjiD+nyJwYT0Yd650bjxsqdXWHbfvnx0MwrJ9MWTj9ui3ILaviz/jkHz6KVKDTU7MRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AoXQe3D4g/7Se0Ohh31OsY4ew08xd4d07V13V4i+FnM=;
- b=HOPCrmeYCjHsxjpvxkmRulKu6opWkgo92M3XEY5YxS+5QpZpXakjnna7ump1hUIeJMCQeijaVMBx+TZUPpjPoJacZOFH+EAlRJrh1BDROjSWcocNdXAKlgF8LLTUZLhtEStkBeqaekZDnuyfDBiCV61wfilTWU4ARkXNFMpeCSvdWybHdfO1+YJ3pHs5oRriZ168SSvBFxdc7frOjkIrn0n2WfhkB9rO4UBYmOUGxU+gtfYRX3OKC4A64Yxu3ZQ4CXmWXt48xVZPv+VF9PD1KJKuPE/2XL/oXXu4XhkFM64lHpTPhRkTTVyh9s+WSPNWJhF9tfMTEVa+hCEAB+bopQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AoXQe3D4g/7Se0Ohh31OsY4ew08xd4d07V13V4i+FnM=;
- b=vMnPQNLYH43naxDCRx+McQGZkOavsyH0nRC5Ma8qjaWrlxYLaY3JoRK2BY1S+ci55TphoWy06mSZ3c7Fb1B/u3Wljg/DJZfdRqMNwleHkDRMtxaVimovX/ftBPdO5dUXQkwvrJqSaLnrbcn+c8NWT9l7nYaCmMXrzIpAm/nnYiE=
-Received: from PH7PR17CA0032.namprd17.prod.outlook.com (2603:10b6:510:323::22)
- by LV8PR12MB9112.namprd12.prod.outlook.com (2603:10b6:408:184::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.32; Wed, 30 Oct
- 2024 17:46:42 +0000
-Received: from SN1PEPF000397B1.namprd05.prod.outlook.com
- (2603:10b6:510:323:cafe::aa) by PH7PR17CA0032.outlook.office365.com
- (2603:10b6:510:323::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.20 via Frontend
- Transport; Wed, 30 Oct 2024 17:46:41 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SN1PEPF000397B1.mail.protection.outlook.com (10.167.248.55) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8114.16 via Frontend Transport; Wed, 30 Oct 2024 17:46:41 +0000
-Received: from tr4.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 30 Oct
- 2024 12:46:40 -0500
-From: Alex Deucher <alexander.deucher@amd.com>
-To: <stable@vger.kernel.org>, <gregkh@linuxfoundation.org>,
-	<sashal@kernel.org>
-CC: <Frank.Min@amd.com>, Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH] drm/amdgpu: fix random data corruption for sdma 7
-Date: Wed, 30 Oct 2024 13:46:27 -0400
-Message-ID: <20241030174627.3215411-1-alexander.deucher@amd.com>
-X-Mailer: git-send-email 2.47.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DE712CDA5
+	for <stable@vger.kernel.org>; Wed, 30 Oct 2024 18:02:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730311341; cv=none; b=XtXtajjY2jke3xawf+qUDILuCpx4QIvPp4cpQw0USEp5oaSSU3rhoXcFXQwpXpzsv4ZPGAv191IVW75mvposKkS9zZtH7NDmR9v5AznNkjEkYouhHxS+K5tkg/c2daV/klHB0il//0+BWuSiFFwTVUXbQUSifCA1cU79wTSnoRI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730311341; c=relaxed/simple;
+	bh=EKlh2PNcustAN2BbV6glBzhNvINYFOpM3KHJCcAFnL4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HrUQfQOyrthUW++h8v6e1+iHI/C+QtjyJeqwBUDWU9y+jg2QYZEc6WTXPboM7TF8qXz04N8W2/fr9bVlk46bKib50Hl9zsVr/V14kap1qpFaCJ9rJLO+tVBC04Eup8Rlz+f03V1GxC15aaXfquvehDE4/R1O9X5NbSm7BHbPIIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=rOU83etl; arc=none smtp.client-ip=209.85.219.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6cc250bbc9eso803946d6.2
+        for <stable@vger.kernel.org>; Wed, 30 Oct 2024 11:02:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1730311338; x=1730916138; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=K17p/KYL7BaOYgmUduWmWY2xrt41oxSD9UX1LKxND/E=;
+        b=rOU83etlkq8cth7r/9dWnzEjfBRO26GPOLm0BPoEwGLApBxjGVihkyfMLXbPkCWqAk
+         i6XdaU/iUGAqvJ3M+DEsyYChNA+1ycwkd721tfs48hcep5QHl40sKjAlxX1Y2T8ZHJod
+         KB6Al1Xgr19OzCte4zoSaKOKoLpdZFuP+nHKauiDK8GBjdC0cKEt6Q9tXdKYXi80Ro2E
+         DP7KhRqgz82d5PPPSDbQmFcED/gNXcDUsd6TNQlNB3JtkmxV77uQcDyFEPFggIrJ2Ff+
+         5OjUeaLO3jFN+7c1chG2iAoyweOA0sg2eH18z8GFdRKRQGSEWlsCQYVIY2aM4dUuRDUr
+         Wo3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730311338; x=1730916138;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=K17p/KYL7BaOYgmUduWmWY2xrt41oxSD9UX1LKxND/E=;
+        b=lLbioB6gqSrB58HZ0pTY5wygbrXoUR6kPnxjjqqpdWqGur2hEYBRSju1qwzY0Hq4Y4
+         Z6ef8nmBPGkEBUiNnLmAE76R7fk7tZeyRfpMSR/3DBJQOrmPfAg2AqGiQByPZhnCMvsJ
+         d7GAegOKLW/JQTMamAqiOQhQdKTkX528fcH+VQvohuh4nblUEpjbqCNSnKtUHiClxzBy
+         wLL9YLZN9ByTbDlN3od1QZd3piFbXtdZEYtPcXUDwz8zyJilS466U2ejyNI2+TSuxMHr
+         vCGjzNkyETp2Jz54et5ZN7n9/hANcNG9XTxyrPVHt26627s+MJwa2e/JDoUoA1Js4H8V
+         r8cg==
+X-Forwarded-Encrypted: i=1; AJvYcCWxi7JC2XeXVYkPJbvvUUzQ//CHdnicp7LAk152VVpXTIVCvOM0jC5iuKHfQ+ZzEgzWPh3LF4E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywk8Kv0tIjyC48YcjgIeRZXawl0FjoOml9yzsXh5Nr+5P8oWcjo
+	yhcoaq9YpAHYzmOMkS1A1Txasvx/z73gTMEecwAaJ/2zPwxhJqSIws95eu9W6qCHxNR/g3najTi
+	F
+X-Google-Smtp-Source: AGHT+IEnMn7agR2PllR6wW47m9qx5f3YfAmEbuVpAerd5/uQy2NQAdmZHCs9WLK6x7WcGQGA/MTdvg==
+X-Received: by 2002:a05:6214:4890:b0:6cb:ece3:d923 with SMTP id 6a1803df08f44-6d351b25274mr6343746d6.42.1730311338234;
+        Wed, 30 Oct 2024 11:02:18 -0700 (PDT)
+Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d1798a8489sm54483756d6.37.2024.10.30.11.02.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Oct 2024 11:02:17 -0700 (PDT)
+Date: Wed, 30 Oct 2024 14:02:23 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Usama Arif <usamaarif642@gmail.com>
+Cc: Jiri Slaby <jirislaby@kernel.org>, Ard Biesheuvel <ardb+git@google.com>,
+	linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+	stable@vger.kernel.org, Breno Leitao <leitao@debian.org>
+Subject: Re: [PATCH] efistub/tpm: Use ACPI reclaim memory for event log to
+ avoid corruption
+Message-ID: <ZyJ0r_zZ5UD8pvzX@PC2K9PVX.TheFacebook.com>
+References: <20240912155159.1951792-2-ardb+git@google.com>
+ <ec7db629-61b0-49aa-a67d-df663f004cd0@kernel.org>
+ <29b39388-5848-4de0-9fcf-71427d10c3e8@kernel.org>
+ <58da4824-523c-4368-9da1-05984693c811@kernel.org>
+ <899f209b-d4ec-4903-a3e6-88b570805499@gmail.com>
+ <b7501b2c-d85f-40aa-9be5-f9e5c9608ae4@kernel.org>
+ <e42149a6-7c1f-48d1-be94-1c1082b450e0@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF000397B1:EE_|LV8PR12MB9112:EE_
-X-MS-Office365-Filtering-Correlation-Id: 33b99f9a-4ef1-4e61-d58d-08dcf90ad03a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|36860700013|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?odayQmcwyMhzvmYbQJ6R7+CS2qizhidM/PCKQ26/hg616R+58G4L9NUDNBvL?=
- =?us-ascii?Q?0ADPCVQTAnQUo6OttFo+RRlEgEqjsWNntrzSwlZFMTwP+blybbWLvDn0zQpR?=
- =?us-ascii?Q?f1GNvlgGYgf9uRHkbxAeFyP5/U+WbMIxPGOEf6OBXF3bbB8MEl3TzU+ILhB/?=
- =?us-ascii?Q?qZWpWhk71Rnh2m6pPy4s/3aR8fvemiALVXd9mzSqzQ0tyr/GjVEpuVAWq9G3?=
- =?us-ascii?Q?vNuSt8XPAqCvNpNe8p73xAnPIYZz7x866wRNLIiU1ZepKY0yf8FXFkSDzjh7?=
- =?us-ascii?Q?0M3TPruvSj/NvAjDNZOT4UUOSzipv+o6g06OJjJGx1JgCSyuzUm0adHWhZj+?=
- =?us-ascii?Q?mr93QkDREpNPrS2UllWlSKvQVSeGo4NPNEkHcs7CUyjkCZ6QhvzkFHzHcJ1Y?=
- =?us-ascii?Q?tjmOWB4Ovi8v9t+zSW3wsE5hF9UmMscNOGBwtvv0jK94NS1BKOgkyPgK5lS1?=
- =?us-ascii?Q?N/bACU7Nco0VIj3y0Hndx/gqFx8vr14JFNWyOs3+U8fZureoswO8OqEYeU2y?=
- =?us-ascii?Q?G4W1s0lRfDOFuISPHHkoobbfSEB7Bn31EzXZ4m8hG7koyaX0yJaig4+7AdPs?=
- =?us-ascii?Q?KMGq+3MksCpl5quCh5xLR/cI2Pa/qYKZmvnTcfsib56yqb4SID+lF/PVn5C6?=
- =?us-ascii?Q?Sd5TIA+DHc96xz0Wz+1L+LAxqVqK3brEB4ZlS/UOQ/nWrDmH9k0JEHmSXNVX?=
- =?us-ascii?Q?W/kvEn2TxVHZLpJBWRKR+oQ28v9Al7wnCQqC9Q4dWjDU4J3P3U65iAfRTz/o?=
- =?us-ascii?Q?yPMZcSlRmGqVdiDBTcypd7FHwT/mzsWnt4SJlgp1/eQLAIC0EAduzbozy+ma?=
- =?us-ascii?Q?dKTnG4yIn1qhUERpZZUFkZcbj6ZDmY4IRl3P6Mptsnog5futHMmUt7HvbtBW?=
- =?us-ascii?Q?xWxNB90tlJm/dGsC6UtUcRXEbWSqktrh0yfLmoS/Tic6NfrRLIAGQzy6FKIN?=
- =?us-ascii?Q?bgHKrvYpLecLUH6MkGGdkgBLfAQ7l7NeqWiltkJCRTkRlIgdJMCxc2vQ3BTT?=
- =?us-ascii?Q?8PVnCY4iAw+GAylRsax+W8kiVEL7dBKCaCWLcHPorNhAQ11twyFFdPqXYnzz?=
- =?us-ascii?Q?pPX9jFqVjbbeaNkmTpdQ+UZp+4y7192eOCvEOQtWkb32o0fsTTobd9e0UOfi?=
- =?us-ascii?Q?x9W4Uacx5l2kiVqL0vCvWd9WHrwukHB2w/u5i1DTAVGZ6HF1Pc4njben6+cl?=
- =?us-ascii?Q?it8HBGP0sdveTzYeHniA9euFaNGN6eY7dudaYsuGhTKgJYhLcadg2v+paaUc?=
- =?us-ascii?Q?Izx3XXzU6jfcREFjPKy6bm6hpTFQy/HieFov9F29cKrAuEfznJRAtqMswxXq?=
- =?us-ascii?Q?LVDFZrFpI5S9+a60gzajzDCC7SYP+gJYTxnp7vnhnBXHRqXcItWYSmXaN1ec?=
- =?us-ascii?Q?uttw1mfXG5k+ka9mJdyBlzg8KZ1SV9vaDrXwmr/zaKiB+sjbWg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2024 17:46:41.6867
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 33b99f9a-4ef1-4e61-d58d-08dcf90ad03a
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF000397B1.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9112
+In-Reply-To: <e42149a6-7c1f-48d1-be94-1c1082b450e0@gmail.com>
 
-From: Frank Min <Frank.Min@amd.com>
+On Wed, Oct 30, 2024 at 05:13:14PM +0000, Usama Arif wrote:
+> 
+> 
+> On 30/10/2024 05:25, Jiri Slaby wrote:
+> > On 25. 10. 24, 15:27, Usama Arif wrote:
+> >> Could you share the e820 map, reserve setup_data and TPMEventLog address with and without the patch?
+> >> All of these should be just be in the dmesg.
+> > 
+> > It's shared in the aforementioned bug [1] already.
+> > 
+> > 6.11.2 dmesg (bad run):
+> > https://bugzilla.suse.com/attachment.cgi?id=877874
+> > 
+> > 6.12-rc2 dmesg (good run):
+> > https://bugzilla.suse.com/attachment.cgi?id=877887
+> > 
+> > FWIW from https://bugzilla.suse.com/attachment.cgi?id=878051:
+> > good TPMEventLog=0x682aa018
+> > bad  TPMEventLog=0x65a6b018
+> > 
+> > [1] https://bugzilla.suse.com/show_bug.cgi?id=1231465
+> > 
+... snip ...
+> > efi: EFI v2.6 by American Megatrends
+> > efi: ACPI=0x7a255000 ACPI 2.0=0x7a255000 SMBIOS=0x7b140000 SMBIOS 3.0=0x7b13f000 TPMFinalLog=0x7a892000 ESRT=0x7b0deb18 [-MEMATTR=0x77535018-] {+MEMATTR=0x77526018+} MOKvar=0x7b13e000 RNG=0x7a254018 [-TPMEventLog=0x65a6f018-] {+TPMEventLog=0x682ac018+}
+> > 
+> > 
+> > thanks,
+> 
+> Thanks for sharing this.
+> 
+> This looks a bit weird for me.
+> 
+> The issue this patch was trying to fix was TPMEventLog being overwritten during kexec.
+> We are using efi libstub.
+> Without this patch we would see
+> BIOS-e820: [mem 0x0000000000100000-0x0000000064763fff] usable 
+> TPMEventLog=0x5ed47018
+> i.e. TPMEventLog was usable memory and therefore was prone to corruption during kexec.
+> 
+> With this patch 
+> BIOS-e820: [mem 0x00000000a8c01000-0x00000000a8cebfff] ACPI data
+> TPMEventLog=0xa8ca8018 
+> i.e.  TPMEventLog is reserved as ACPI data, hence cant be corrupted during kexec.
+> 
+> 
+> In your case, from the logs you shared, good run without the patch:
+> [    0.000000] [      T0] BIOS-e820: [mem 0x0000000065a6f000-0x0000000065a7dfff] ACPI data
+> [    0.000000] [      T0] BIOS-e820: [mem 0x0000000065a7e000-0x000000006a5acfff] usable
+> [    0.000000] [      T0] BIOS-e820: [mem 0x000000006a5ad000-0x000000006a5adfff] ACPI NVS
+> TPMEventLog=0x65a6f018 
+> bad run with the patch:
+> [    0.000000] [      T0] BIOS-e820: [mem 0x00000000682ac000-0x00000000682bafff] ACPI data
+> [    0.000000] [      T0] BIOS-e820: [mem 0x00000000682bb000-0x000000006a5acfff] usable
+> [    0.000000] [      T0] BIOS-e820: [mem 0x000000006a5ad000-0x000000006a5adfff] ACPI NVS
+> TPMEventLog=0x682ac018
+> Both with and without the fix, the TPMEventLog is part of ACPI data.
+> 
 
-There is random data corruption caused by const fill, this is caused by
-write compression mode not correctly configured.
+Just wondering - why would the TPM log move a total of ~40MB between COLD boots.
 
-So correct compression mode for const fill.
+I would expect this location to be relatively fixed (give or take a small amount of
+memory) - especially since it's so early in boot.
 
-Signed-off-by: Frank Min <Frank.Min@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 75400f8d6e36afc88d59db8a1f3e4b7d90d836ad)
-Cc: stable@vger.kernel.org # 6.11.x
-(cherry picked from commit 108bc59fe817686a59d2008f217bad38a5cf4427)
----
- drivers/gpu/drm/amd/amdgpu/sdma_v7_0.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/sdma_v7_0.c b/drivers/gpu/drm/amd/amdgpu/sdma_v7_0.c
-index 403c177f2434..bbf43e668c1c 100644
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v7_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v7_0.c
-@@ -51,6 +51,12 @@ MODULE_FIRMWARE("amdgpu/sdma_7_0_1.bin");
- #define SDMA0_HYP_DEC_REG_END 0x589a
- #define SDMA1_HYP_DEC_REG_OFFSET 0x20
- 
-+/*define for compression field for sdma7*/
-+#define SDMA_PKT_CONSTANT_FILL_HEADER_compress_offset 0
-+#define SDMA_PKT_CONSTANT_FILL_HEADER_compress_mask   0x00000001
-+#define SDMA_PKT_CONSTANT_FILL_HEADER_compress_shift  16
-+#define SDMA_PKT_CONSTANT_FILL_HEADER_COMPRESS(x) (((x) & SDMA_PKT_CONSTANT_FILL_HEADER_compress_mask) << SDMA_PKT_CONSTANT_FILL_HEADER_compress_shift)
-+
- static void sdma_v7_0_set_ring_funcs(struct amdgpu_device *adev);
- static void sdma_v7_0_set_buffer_funcs(struct amdgpu_device *adev);
- static void sdma_v7_0_set_vm_pte_funcs(struct amdgpu_device *adev);
-@@ -1611,7 +1617,8 @@ static void sdma_v7_0_emit_fill_buffer(struct amdgpu_ib *ib,
- 				       uint64_t dst_offset,
- 				       uint32_t byte_count)
- {
--	ib->ptr[ib->length_dw++] = SDMA_PKT_COPY_LINEAR_HEADER_OP(SDMA_OP_CONST_FILL);
-+	ib->ptr[ib->length_dw++] = SDMA_PKT_CONSTANT_FILL_HEADER_OP(SDMA_OP_CONST_FILL) |
-+		SDMA_PKT_CONSTANT_FILL_HEADER_COMPRESS(1);
- 	ib->ptr[ib->length_dw++] = lower_32_bits(dst_offset);
- 	ib->ptr[ib->length_dw++] = upper_32_bits(dst_offset);
- 	ib->ptr[ib->length_dw++] = src_data;
--- 
-2.47.0
-
+> It means your firmware has already marked that area as ACPI data. Are you using efi/libstub?
+> 
+> Thanks,
+> Usama
+> 
+> 
+> 
+> 
 
