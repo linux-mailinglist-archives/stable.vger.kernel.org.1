@@ -1,187 +1,99 @@
-Return-Path: <stable+bounces-89420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 933D49B7F7C
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 16:59:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7B799B7F83
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 17:00:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57953281EF9
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 15:59:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03B4B1C2449D
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 16:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6837D1A255C;
-	Thu, 31 Oct 2024 15:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B40E1A2C04;
+	Thu, 31 Oct 2024 16:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M6bUhdE0"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="fX6s+lSk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C95533F7;
-	Thu, 31 Oct 2024 15:59:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F641B5338;
+	Thu, 31 Oct 2024 16:00:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730390388; cv=none; b=K4NFSG3kd98VSEq0pdVeFaOl/+ZTbl45weAXmnUucQc7oONteG3nZ0p7dcZ70kjPxuB3t7ZL0qPfqyvhFxXFKTHZK7/f14FpCAzxytnfltJ2XpHX0lQfLaLgAk+ikq2r4QgyOGEi4FYvPmGNtcg4FZ9ayoXPIpB9X8clClj1MR0=
+	t=1730390432; cv=none; b=N6eyq97eZnT2q7tT6l9QMmpvY6VcgPlcLNQ7jxiO4m80fHqskXhGTRNz45x2tQXMaIkWqYux8sU2+tNi7OCxHna+K2YmlNoCYpQ9DcF3idgrItvbOJXncZM0LnZPo+xzNsl7MM0TQxPAiZzkW2wEwT6xe/MhlA10NdhHYQuiHqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730390388; c=relaxed/simple;
-	bh=tOO12zl0RJpVtTYagj3aN+QvKwGTYQJmTPx4jLOOHxg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=g8CUDTPl7Ozk0NWli0V29/Fuh5ZYfH6H+RTCWpFmi77AhBQDvtUj0YObbY2BOjLkXkOaPFxNtrnoeYADYnRaZXJktg1+7ewfaY59fiYMST5smVQB6yk2EUkZUOR9wJa8rLroJbqebJnYkiWMAto+DORCjcXcPZRhLiL+hn1qZOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M6bUhdE0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39986C567F2;
-	Thu, 31 Oct 2024 15:59:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730390387;
-	bh=tOO12zl0RJpVtTYagj3aN+QvKwGTYQJmTPx4jLOOHxg=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=M6bUhdE0HCz29KhcwN7FyCrOPaDlO/hgxjbmkwyvWlhgaWIN/bmV+Ir6h8hh4MqI6
-	 GL368qwJzmvfyikfoK1AMuiMNdDMn/pmhMF5/x+PkWNBe82zmjmNSEnOFjJefPiSbk
-	 46Ys9Gu6yBHCatM6+6bh6znWM/eSlC1Qx8Ltb3bnADGZ/EvW3KgeGH1jbbKHJe8ex8
-	 F93AxORwrGVwX5FX6/aPTutebG5NK+y9uT3IxRj+Cgez65GffgUQUnd8XuYdGUYom6
-	 QwbN8Y0UbVR3ro71EEwxAtIySLL3HxQBcizXUW12tN7ZjCJpKzMXw8QdYZ3vNSMr/Z
-	 0+kvuL56NeZkw==
+	s=arc-20240116; t=1730390432; c=relaxed/simple;
+	bh=xg053zDj0Ah4JZIrVRBSzRz2mRewoKq0digNZMauhYw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=a1wsy4RMj5fF0zWRZLHaTqF4oId2RQ5H2qdzcFCAAGkH3I388ffsGXdXfo7SIfnPP++/1OtAwWLBvAPG61ripX5N7vvsbHCcQZoeZ6azmm9BYpBXSJojxnkgrCsglB4gMdJLvCpWnsjeq3IWRbCgTMbptMdl4CjamdEiOlWixLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=fX6s+lSk; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=0zRf1fq4KFIpSta+3YgUbvDwfoh/0Y8tnW+G7EbvCh0=; b=fX6s+lSk9uN69VhHsO6GAMEtYV
+	Po0qvVK6AtmOhmu5nWWb9HosE2KQ7wNI3Laj8INzk3ItNzrcqSSLPVasAQ1+1+65DMkj9/B8VfiaV
+	sot3am6WwoNKmpYLdvXVuT5w+OCbCQxQB4JAC2c9ynnqzanM/7DPetu1Ik8nYGja+TxiYDTueih/l
+	A/5PdaxEp4ztccDORFSvQoA92gGriyN80zFrknKz+Lx5ns/NUDA6tuVbPADtrz9YCOzTCzLXEpU9w
+	zZrItdgki+DMC/OQbd0RkBPUAvdFH/6tUda93wh+0qpSXCq1BOVwaJvA6eDL/Ue/fXw+C/Upu6fES
+	3rjkzS/A==;
+Received: from [189.79.117.125] (helo=[192.168.1.60])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1t6Xaw-00059v-TI; Thu, 31 Oct 2024 17:00:23 +0100
+Message-ID: <fcd4858d-244a-d491-7c22-4231a654ca81@igalia.com>
+Date: Thu, 31 Oct 2024 13:00:16 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH V2] wifi: rtlwifi: Drastically reduce the attempts to read
+ efuse in case of failures
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "kvalo@kernel.org" <kvalo@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
+ "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com"
+ <syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com>
+References: <20241030141440.1153887-1-gpiccoli@igalia.com>
+ <4d9471f600224d23bb1f49a8ed4943c2@realtek.com>
+Content-Language: en-US
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <4d9471f600224d23bb1f49a8ed4943c2@realtek.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 31 Oct 2024 17:59:43 +0200
-Message-Id: <D5A473YHVE8A.W40YN3RC5BYN@kernel.org>
-Subject: Re: [PATCH] tpm: set TPM_CHIP_FLAG_SUSPENDED early
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Jerry Snitselaar" <jsnitsel@redhat.com>
-Cc: "Peter Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
- <stable@vger.kernel.org>, "Mike Seo" <mikeseohyungjin@gmail.com>, "open
- list:TPM DEVICE DRIVER" <linux-integrity@vger.kernel.org>, "open list"
- <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.18.2
-References: <20241029223647.35209-1-jarkko@kernel.org>
- <z4ggs22bzp76ire4yecy5cehlurlcll7hrf2bx4mksebtdmcmr@hpjardr6gwib>
- <D59JAI6RR2CD.G5E5T4ZCZ49W@kernel.org>
- <iq5qsrnu4v5hvndg5hxmsplyuqqgypgzqqyfa5kzsblkvr6mua@u572yggxguez>
- <cspzjpjurwlpgd7n45mt224saf5p3dq3nrhkmhbyhmnq7iky4q@ahc66xqfnnab>
-In-Reply-To: <cspzjpjurwlpgd7n45mt224saf5p3dq3nrhkmhbyhmnq7iky4q@ahc66xqfnnab>
+Content-Transfer-Encoding: 7bit
 
-On Thu Oct 31, 2024 at 5:28 PM EET, Jerry Snitselaar wrote:
-> On Thu, Oct 31, 2024 at 08:02:37AM -0700, Jerry Snitselaar wrote:
-> > On Thu, Oct 31, 2024 at 01:36:46AM +0200, Jarkko Sakkinen wrote:
-> > > On Wed Oct 30, 2024 at 10:09 PM EET, Jerry Snitselaar wrote:
-> > > > On Wed, Oct 30, 2024 at 12:36:47AM +0200, Jarkko Sakkinen wrote:
-> > > > > Setting TPM_CHIP_FLAG_SUSPENDED in the end of tpm_pm_suspend() ca=
-n be racy
-> > > > > according to the bug report, as this leaves window for tpm_hwrng_=
-read() to
-> > > > > be called while the operation is in progress. Move setting of the=
- flag
-> > > > > into the beginning.
-> > > > >=20
-> > > > > Cc: stable@vger.kernel.org # v6.4+
-> > > > > Fixes: 99d464506255 ("tpm: Prevent hwrng from activating during r=
-esume")
-> > > > > Reported-by: Mike Seo <mikeseohyungjin@gmail.com>
-> > > > > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219383
-> > > > > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > > > > ---
-> > > > >  drivers/char/tpm/tpm-interface.c | 4 ++--
-> > > > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > > > >=20
-> > > > > diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/=
-tpm-interface.c
-> > > > > index 8134f002b121..3f96bc8b95df 100644
-> > > > > --- a/drivers/char/tpm/tpm-interface.c
-> > > > > +++ b/drivers/char/tpm/tpm-interface.c
-> > > > > @@ -370,6 +370,8 @@ int tpm_pm_suspend(struct device *dev)
-> > > > >  	if (!chip)
-> > > > >  		return -ENODEV;
-> > > > > =20
-> > > > > +	chip->flags |=3D TPM_CHIP_FLAG_SUSPENDED;
-> > > > > +
-> > > > >  	if (chip->flags & TPM_CHIP_FLAG_ALWAYS_POWERED)
-> > > > >  		goto suspended;
-> > > > > =20
-> > > > > @@ -390,8 +392,6 @@ int tpm_pm_suspend(struct device *dev)
-> > > > >  	}
-> > > > > =20
-> > > > >  suspended:
-> > > > > -	chip->flags |=3D TPM_CHIP_FLAG_SUSPENDED;
-> > > > > -
-> > > > >  	if (rc)
-> > > > >  		dev_err(dev, "Ignoring error %d while suspending\n", rc);
-> > > > >  	return 0;
-> > > > > --=20
-> > > > > 2.47.0
-> > > > >=20
-> > > >
-> > > > Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
-> > >=20
-> > > Thanks but I actually started to look at the function:
-> > >=20
-> > > https://elixir.bootlin.com/linux/v6.11.5/source/drivers/char/tpm/tpm-=
-interface.c#L365
-> > >=20
-> > > The absolutely safe-play way considering concurrency would be
-> > > to do tpm_try_get_ops() before checking any flags. That way
-> > > tpm_hwrng_read() is guaranteed not conflict.
-> > >=20
-> > > So the way I would fix this instead would be to (untested
-> > > wrote inline here):
-> > >=20
-> > > int tpm_pm_suspend(struct device *dev)
-> > > {
-> > > 	struct tpm_chip *chip =3D dev_get_drvdata(dev);
-> > > 	int rc =3D 0;
-> > >=20
-> > > 	if (!chip)
-> > > 		return -ENODEV;
-> > >=20
-> > > 	rc =3D tpm_try_get_ops(chip);
-> > > 	if (rc) {
-> > > 		chip->flags =3D |=3D TPM_CHIP_FLAG_SUSPENDED;
-> > > 		return rc;
-> > > 	}
-> > >=20
-> > > 	/* ... */
-> > >=20
-> > > suspended:
-> > > 	chip->flags |=3D TPM_CHIP_FLAG_SUSPENDED;
-> > > 	tpm_put_ops(chip);
-> > >=20
-> > > It does not really affect performance but guarantees that
-> > > tpm_hwrng_read() is guaranteed either fully finish or
-> > > never happens given that both sides take chip->lock.
-> > >=20
-> > > So I'll put one more round of this and then this should be
-> > > stable and fully fixed.
-> > >=20
-> > > BR, Jarkko
-> >=20
-> > Ah, yeah better to set it while it has the mutex. That should still be
-> > 'if (!rc)' after the tpm_try_get_ops() right? (I'm assuming that is jus=
-t
-> > a transcription error).
-> >=20
-> > Regards,
-> > Jerry
-> >=20
->
-> It has been a while since I've looked at TPM code. Since
-> tpm_hwrng_read doesn't check the flag with the mutex held is there a
-> point later where it will bail out if the suspend has occurred? I'm
-> wondering if the check for the suspend flag in tpm_hwrng_read should
-> be after the tpm_find_get_ops in tpm_get_random.
+On 30/10/2024 23:15, Ping-Ke Shih wrote:
+> 
+>> diff --git a/drivers/net/wireless/realtek/rtlwifi/efuse.c b/drivers/net/wireless/realtek/rtlwifi/efuse.c
+>> index 82cf5fb5175f..f741066c06de 100644
+>> --- a/drivers/net/wireless/realtek/rtlwifi/efuse.c
+>> +++ b/drivers/net/wireless/realtek/rtlwifi/efuse.c
+>> @@ -164,7 +164,17 @@ void read_efuse_byte(struct ieee80211_hw *hw, u16 _offset, u8 *pbuf)
+>>         struct rtl_priv *rtlpriv = rtl_priv(hw);
+>>         u32 value32;
+>>         u8 readbyte;
+>> -       u16 retry;
+>> +       u16 retry, max_attempts;
+>> +
+> 
+> Declarations should be in reverse X'mas tree order.
+> Just add max_attempts to a new line at proper position. 
 
-Right, I ignored that side in v2. Yeah, I agree that in both cases
-it would be best that all checks are done when the lock is taken.
-
-It means open-coding tpm2_get_random() but I think it is anyway
-good idea (as tpm_get_random() is meant for outside callers).
-
-> Regards,
-> Jerry
-
-BR, Jarkko
+Thanks, V3 just sent:
+https://lore.kernel.org/r/20241031155731.1253259-1-gpiccoli@igalia.com/
 
