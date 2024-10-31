@@ -1,122 +1,114 @@
-Return-Path: <stable+bounces-89397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4A869B7706
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 10:04:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC4129B77EB
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 10:50:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 632891F24C9A
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 09:04:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D6A8B261CF
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 09:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 090F01891B8;
-	Thu, 31 Oct 2024 09:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5986198838;
+	Thu, 31 Oct 2024 09:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tvpcFSCh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BGLX1NZD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03FA1BD9ED;
-	Thu, 31 Oct 2024 09:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A26197A81;
+	Thu, 31 Oct 2024 09:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730365458; cv=none; b=i4KW4A0VzPNZdEcY82tTvuKJmqqm+ZEVbIHQrkFeLce/KFW5jyf+wnx6IoEvJUHom45jo+mC+nVNnzBl+Fx0fcGlaEMeXaPaXm4jhJCUr2rYdNnjkPKE6RJmQBdH31MAfjPuaklxaf1Aw7BphfHWXHH+hI6qAffuzu84JngsAsw=
+	t=1730368249; cv=none; b=Y/waqhqY76EGZWRSIWOpughdXTg3MLigktqt/W1RPbKIZc8gIKibHrd7AG9xZ4pthEO18VV1KcBDG/lHD5g7CPrfyZ3DNLuZNQUEMl0KpFQQisKSmq6hFadhRK8yiz/OJyNkTiqP6LCfhXjfyHmmmzXCRb027rlV0oVeavA59OY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730365458; c=relaxed/simple;
-	bh=rMmsPAoNj0T1N+l/5gpxXVO0BT9K5uhQHYV8kE0cJ70=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fK02IernB/9gmY2LgeJmb3R86XZiS6QREiwFmSIMEXpmJDaEy+5ulz9X7LoXdF4OHFkRULmud4gswq2BFUl2IK6lO4erJqS4o0oZxQaOGJAgmZdunlsN5yRdvwi32HW9z9CoqP1+/LvNB+dMd5lf3ZFEjbmQApuCaRNO9DW3WyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tvpcFSCh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47C61C4CED0;
-	Thu, 31 Oct 2024 09:04:18 +0000 (UTC)
+	s=arc-20240116; t=1730368249; c=relaxed/simple;
+	bh=1SfMoq9aQDPstkesMct3OWKZK5E4xbvfUSf6uoOtSq4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZF6doVD8ZHqtYFVeSw8Wj73GzSIT2boDj77sAWslyLb7RmT/IUXzL9+FfBCm/zDINN/HE4ZlNhK0Ii2dd1vHqktUQHOZRzXbHnOSY4yczXhKEjv7CdSqERVYpzW388GYqYEtD/sSO/n+u71GpIrKpV7GcqkFo33qASo2BlOIv3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BGLX1NZD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 996BAC4CED0;
+	Thu, 31 Oct 2024 09:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730365458;
-	bh=rMmsPAoNj0T1N+l/5gpxXVO0BT9K5uhQHYV8kE0cJ70=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=tvpcFSCh5n5OBqS4K8WTCFRIZwHV5YAAIXEg6BW7CRnS5as2PKEMei03IRBtvwD0e
-	 EIwm/VknrJ+rP5g58Ffhr3Ik/CMgigmF8IqC9vFHNiEbYnOi96kJsIcRshXqX0gbq7
-	 pCDzJHJoipkVae+1cP0YkSZJvYKn45qRLdYMFxd4bpM8Nun7OSKg52EJbHQ0rjVnFX
-	 zE8M4MpVoM1CtIVaMbL1+AjSrCVuDc2PIN9ieNKWDJawMu/pB5JF5TtFqKyXNZj7hY
-	 CVEuO+zhEZrGf27xqWDSWcnWDNDAlEofTM7kitqjDP2EmwOWJ/Xh6qxD+Ie0gMcMMQ
-	 R18MkltOchLyA==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2fb57f97d75so6169781fa.2;
-        Thu, 31 Oct 2024 02:04:18 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUIwrmscWqdKkzXmlAI5EL3QyyC0fQCzJqRzaFU0O7QSgcf8UqxQC1kP2Ik/AfTUpECnNpxws2xu7s=@vger.kernel.org, AJvYcCXx9odxyPMG2zumITmRZchlhdWfz5+6CzfvbMLqdD/1MPMnlBB9chnd0Wjpb3AjR6DjKAKXM7RZ@vger.kernel.org
-X-Gm-Message-State: AOJu0YylXSey/T/z2CtyW6ChxPt+P9+Zr1lGj8kYRGtndPSDRSW3XCUi
-	kFK+hb3bZrEE9dbdyfHqgUkOzCD5LOdOnQ/MUfrUCCI+JkoAjPE6nCQ9jP6Kd24MUsw/B9OpEaK
-	L9WFiDlgfiPUx2tkX7qbYbXxDWMU=
-X-Google-Smtp-Source: AGHT+IG7QBQVAG1QN+7HH/QUvI9Uk9k85ubl7PpKZYwi+Mf+MpFSDbMXLt2gTL++cPavCYwF/up0DfB2hjKRe82iSic=
-X-Received: by 2002:a05:651c:554:b0:2fa:c0df:3d7b with SMTP id
- 38308e7fff4ca-2fcbdfbb31cmr79419021fa.22.1730365456646; Thu, 31 Oct 2024
- 02:04:16 -0700 (PDT)
+	s=k20201202; t=1730368249;
+	bh=1SfMoq9aQDPstkesMct3OWKZK5E4xbvfUSf6uoOtSq4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BGLX1NZDTSK3O6Wl5vFevq5jODfed+vvbcU5URvZwVeqrPcjwu6K67yRvHmqZoIwd
+	 SQsirCaYnFCLHSeF3dx+7CSkkAmryh1EcrluFdTcgbDKtuPA0BSHk1E4mhalkd5M35
+	 utkXiYmujB+bOqBSDFC7tOVwY4u7J7YyFTPy0oY2/MXvz+v0/8VGhoTAAue50LvJxT
+	 gfNk+nNaYeB7EboaAFbajX+fyTIzQPoG1IjnnEZ2ZquhudSdyR+LLsSbHbKwg8ARfP
+	 Rm+hONCoiv9QrdkkiWYYF3PRhlUbPC38rrjLg+0F3wR0o/kq2m83HPfxqKlyihnoJI
+	 hd8YHmOJW6UoA==
+Date: Thu, 31 Oct 2024 10:50:44 +0100
+From: Alexey Gladkov <legion@kernel.org>
+To: Andrei Vagin <avagin@google.com>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>,
+	Kees Cook <kees@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] ucounts: fix counter leak in inc_rlimit_get_ucounts()
+Message-ID: <ZyNS9J7TOQ84AkYz@example.org>
+References: <20241031045602.309600-1-avagin@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240912155159.1951792-2-ardb+git@google.com> <ec7db629-61b0-49aa-a67d-df663f004cd0@kernel.org>
- <29b39388-5848-4de0-9fcf-71427d10c3e8@kernel.org> <58da4824-523c-4368-9da1-05984693c811@kernel.org>
- <CAMj1kXHqgZ-fD=oSAr7E0h9kTj_yzDv=_o2ifCCD0cYNgXv9RQ@mail.gmail.com> <9ce8eef8-592b-4170-adf9-a1906e008c5c@kernel.org>
-In-Reply-To: <9ce8eef8-592b-4170-adf9-a1906e008c5c@kernel.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 31 Oct 2024 10:04:05 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEKK2asZ8iT9+n6wz1yve2JY8U5Dd5+TriStuVssrG3UQ@mail.gmail.com>
-Message-ID: <CAMj1kXEKK2asZ8iT9+n6wz1yve2JY8U5Dd5+TriStuVssrG3UQ@mail.gmail.com>
-Subject: Re: [PATCH] efistub/tpm: Use ACPI reclaim memory for event log to
- avoid corruption
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org, stable@vger.kernel.org, 
-	Breno Leitao <leitao@debian.org>, Usama Arif <usamaarif642@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241031045602.309600-1-avagin@google.com>
 
-On Thu, 31 Oct 2024 at 08:55, Jiri Slaby <jirislaby@kernel.org> wrote:
->
-> On 25. 10. 24, 9:30, Ard Biesheuvel wrote:
-> > To me, it seems like the use of EFI_ACPI_RECLAIM_MEMORY in this case
-> > simply tickles a bug in the firmware that causes it to corrupt the
-> > memory attributes table. The fact that cold boot behaves differently
-> > is a strong indicator here.
-> >
-> > I didn't see the results of the memory attribute table dumps on the
-> > bugzilla thread, but dumping this table from EFI is not very useful
-> > because it will get regenerated/updated at ExitBootServices() time.
-> > Unfortunately, that also takes away the console so capturing the state
-> > of that table before the EFI stub boots the kernel is not an easy
-> > thing to do.
-> >
-> > Is the memattr table completely corrupted? It also has a version
-> > field, and only versions 1 and 2 are defined so we might use that to
-> > detect corruption.
->
-> So from a today test:
-> https://bugzilla.suse.com/attachment.cgi?id=878296
->
->  > efi: memattr: efi_memattr_init: tab=0x7752f018 ver=1
-> size=16+2*1705287680=0x00000000cb494010
->
-> version is NOT corrupted :).
->
+On Thu, Oct 31, 2024 at 04:56:01AM +0000, Andrei Vagin wrote:
+> The inc_rlimit_get_ucounts() increments the specified rlimit counter and
+> then checks its limit. If the value exceeds the limit, the function
+> returns an error without decrementing the counter.
+> 
+> Fixes: 15bc01effefe ("ucounts: Fix signal ucount refcounting")
+> Tested-by: Roman Gushchin <roman.gushchin@linux.dev>
+> Co-debugged-by: Roman Gushchin <roman.gushchin@linux.dev>
+> Cc: Kees Cook <kees@kernel.org>
+> Cc: Andrei Vagin <avagin@google.com>
+> Cc: "Eric W. Biederman" <ebiederm@xmission.com>
+> Cc: Alexey Gladkov <legion@kernel.org>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrei Vagin <avagin@google.com>
+> ---
+>  kernel/ucount.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/kernel/ucount.c b/kernel/ucount.c
+> index 8c07714ff27d..16c0ea1cb432 100644
+> --- a/kernel/ucount.c
+> +++ b/kernel/ucount.c
+> @@ -328,13 +328,12 @@ long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
+>  		if (new != 1)
+>  			continue;
+>  		if (!get_ucounts(iter))
+> -			goto dec_unwind;
+> +			goto unwind;
+>  	}
+>  	return ret;
+> -dec_unwind:
+> +unwind:
+>  	dec = atomic_long_sub_return(1, &iter->rlimit[type]);
+>  	WARN_ON_ONCE(dec < 0);
+> -unwind:
+>  	do_dec_rlimit_put_ucounts(ucounts, iter, type);
+>  	return 0;
+>  }
 
-OK, so the struct looks like this
+Agree. The do_dec_rlimit_put_ucounts() decreases rlimit up to iter but
+does not include it.
 
-typedef struct {
-        u32 version;
-        u32 num_entries;
-        u32 desc_size;
-        u32 flags;
-        efi_memory_desc_t entry[];
-} efi_memory_attributes_table_t;
+Except for a small NAK because the patch changes goto for get_ucounts()
+and not for rlimit overflow check.
 
-and in the correct case, num_entries == 45 and desc_size == 48.
+Acked-by: Alexey Gladkov <legion@kernel.org>
 
-It is quite easy to sanity check this structure: desc_size should be
-equal to the desc_size in the memory map, and num_entries can never
-exceed 2x the number of entries in the EFI memory map.
+-- 
+Rgrds, legion
 
-I'll go and implement something that performs the check right after
-ExitBootServices(), and just drops the table if it is bogus (it isn't
-that important anyway)
 
