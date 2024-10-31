@@ -1,122 +1,154 @@
-Return-Path: <stable+bounces-89391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 117D79B73F7
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 05:56:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C8709B749D
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 07:33:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB9EAB23075
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 04:56:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A02681C25223
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 06:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4892A13B590;
-	Thu, 31 Oct 2024 04:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EAF81448E6;
+	Thu, 31 Oct 2024 06:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YLRYp3mC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P3vkJS3t"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450F713174B
-	for <stable@vger.kernel.org>; Thu, 31 Oct 2024 04:56:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188477A15A;
+	Thu, 31 Oct 2024 06:33:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730350579; cv=none; b=VHl2ucEnmVKV1rV8sxxmHE1BDcnZkltkr5qtAYbQzJKew9eBJDr3pZZajQdBOmPkRLoW+Y+GRn69xjgVc/grRnAbd0f5bio4LHaand4olD2fme/V4ERZd6UFgn/NVIcRUVTMuoCz4fSSutlS9CJTKHRB1SLEfQMrrwcVQFvIEGA=
+	t=1730356419; cv=none; b=J9ndDoieTqyCklsCdO5lkeNjfky4Ts34BgzLyEGNUDGDbvYLXMrIP2XdwvvDR/IhBUaTgFGhWIkc0/PodpR+7/KCCbbsbz5d5wqWx56R8AshCi4kXO7GDmcUrX6CHfeuvTNuCC2EgXj775tsNE5FFOmv3zNh3EzGMCKcQ/8BZGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730350579; c=relaxed/simple;
-	bh=90DyzMh+3InP5LjjTqhduziKAJPe9dWWJgXzrPyn2vo=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=jcqf+XN7iwR+2f4vzbSyrYplT/BzC75CODsLZWdXQnc8r5DB4gkv3ksFK3CryDjzcWU749ziEXU+xQBOGZ9saFPg9qK/OfCq0cmct4PQ+RoRGUb/7LLaTTcVeWfFsJ/rbLND+o+OKfL9gBMScfZqzTPfJX77UkGoPv8s9NIZdmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--avagin.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YLRYp3mC; arc=none smtp.client-ip=209.85.128.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--avagin.bounces.google.com
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6e370d76c15so10016487b3.2
-        for <stable@vger.kernel.org>; Wed, 30 Oct 2024 21:56:17 -0700 (PDT)
+	s=arc-20240116; t=1730356419; c=relaxed/simple;
+	bh=h3A6usIImJggTbl8niN7j54dxWCAOrho3c/gOkpI1Us=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KrZl9EsXv9IRRQX7oaE66qUt7rhzjOH1Wq0h1cKluBsES5j/Vm0y5Dd+n6ox1zq4/KBrZCFyxnd6vOW46Hp3G7Ku+jnL10AvlWNXAAl7PrLhkXhnpUxmv2muYXxWAkyijoW4rIR/nChxSm+HjWGw41D67haGcpCO0dH32330Hk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P3vkJS3t; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a99cc265e0aso81174566b.3;
+        Wed, 30 Oct 2024 23:33:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730350576; x=1730955376; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=I97b63gkdmSBdnuB9dOGrYfy4ImSP9vTzH5ACLew3Zw=;
-        b=YLRYp3mC134cb6P7R/kcTiCDYR74LxToAxYKl45wNbdHPw58cVs/zHrrhF4pFC3+U4
-         f2fD30I2v7iboH/FcUVduNsxXPm+v7ppGXrWNaYPqKB6CNwGJ694Vg5+rbpkY5xQYQoo
-         Nr3d+VLcZ3x2dIDNLcClVysa8y2RW04NacOWqHUXrliFRXZPMizhi8NfMMNpj0hBr644
-         EWUth+za/EtXo5GDGYOxLjQUe8VNqAVS6jt09devo03DxIoV65Vf4BD2NgzxK2s8QpUT
-         uirA24R/Nxndz0tV0cVSlGvbJ/446WfEFPPxCAnFu1xt2KhmbTmM85jrNH6S+ljCF8PH
-         7Dcw==
+        d=gmail.com; s=20230601; t=1730356415; x=1730961215; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UK1H6ntBFGD6fnCHyPbd1B/5kd3XON3dNEEHD/SIHWc=;
+        b=P3vkJS3tdAj3RLaBLz49bcLtS3FXIy1BiABCEe0PPdsJCKZXmwAtWRigy9VADpSJon
+         vOiMbtF43vP2/bEHRHajS2GgAFaA94LHY4HGCgS9Mc4hDLS0As1KmDi4AB/Of0DSYkpr
+         HtBBn5nKjFg5jMFi5E6FkmeyyKSSQAeysbEgfg4t1drmWk4S+GrmiUuqVXeB8PmFWFII
+         YwMzaPkTGqi058wsFnvKCdwUh7/5xOiTv+cjh650De4NnHVh+kdExthfNwy3IoabbQAc
+         sqECzM86bkf1nenlBB494kDsZX6fQtXb+sq4/UxJ3QM/RH/wEwA41Fr9M16KGDJ4bnbi
+         LEBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730350576; x=1730955376;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=I97b63gkdmSBdnuB9dOGrYfy4ImSP9vTzH5ACLew3Zw=;
-        b=BuDRURhykEz6AD11i07I1HIIlwKboOU8B43HstqnQWUJ0g0g2I7cRpxKPux8DBEy6a
-         B31Bpnr0UTud1vywJ7UPqM7YrhZUkfoCOCQh5Fo7ieSX5F1MYpEfwOlqublu2A6vw6Xz
-         jqW0jt/ivyErPLH6Bw7j+CofwSrCSsVAFCwfCQRs63BEJczwzocmPgr8sDmUT+YSDyjY
-         yroIc+U9Kin+xnQgWbwOr7wY/JYh9iNwRisagYtx/swDL31gzpJpd/xyGkzylumU6yYU
-         lafqax44H2brNoKJ1uTSAqfapzVkJne2atjs8CqFsO1PSWuEfutDPXcxQt262pI8vdjd
-         MjWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX+vWdXQ8uMS/c2LSjk8NmBxQMcNzC/w57RAOERvJqn1+SalOV7i51ffexLHAt09/EipfJB14k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhG+hJmVqeq82ZIsbf01ZhqJeiJUJnE1zqjiofVdCC/kLz5NJI
-	KMlCqyhd2WHjULvaqO0jOacJp7oa4o89rPMj6NWTCz1I+vVdA1QqAv4CpzKTLLWyrHZ0LEZ5mo5
-	F3Q==
-X-Google-Smtp-Source: AGHT+IFDKij6GqUhNl2/DRmDfo7qXWmYSb2Sa5UFVNMcbiS21Jx6n2f7TRhyYY1CL5jEng9qhM8rjfAven0=
-X-Received: from avagin.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:b84])
- (user=avagin job=sendgmr) by 2002:a25:d8c9:0:b0:e30:c868:1eba with SMTP id
- 3f1490d57ef6-e30c868200cmr12089276.2.1730350576189; Wed, 30 Oct 2024 21:56:16
- -0700 (PDT)
-Date: Thu, 31 Oct 2024 04:56:01 +0000
+        d=1e100.net; s=20230601; t=1730356415; x=1730961215;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UK1H6ntBFGD6fnCHyPbd1B/5kd3XON3dNEEHD/SIHWc=;
+        b=Ur6tzNYJL+M1ETlTomgvqxoDpKv1WqMbDeseRyM8Idsy3eJaAiQ95XipF7zenpv4mV
+         Y05aJg0FUtyq1rL+dPEDEKxp4tuygF0ATLrn/nMdBdtFaAILBfaZ3Tz8SGt4vyAhuKDU
+         f7Dt7V02VR+T8/IZF4/lxezuE5qcr7ihw4OU9IWlv7avynKZOPV0DKRoR6I3UPcg9ePL
+         t2Qv9e+oGvRv0LN2YDZDh4WZn7jFBAgpqZJJw5hyiR+cXzvVv2MMHi9Et1hlsy/+/eQP
+         6f9DWoNfr/4LA8xmqUOdlhgwIWJXZKVyGoNWU1tWakwKByUh/wN/6E7CYot4CLKMGx1M
+         Z5Nw==
+X-Forwarded-Encrypted: i=1; AJvYcCU5R0yDImPWrRBlc8hnVtsLS3qLrLGzz6sf5apKL48h0eb3Rjm4ni07jOT0uWpF7okLeDvjlu6g@vger.kernel.org, AJvYcCWPsAOb/VSoUELO9UoitRcGmzq/jaYo2D3Z5urA274sHxc06nuPhUWV3IitxaCOP+LOqUvDYFxxGr0l7fHXtic=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlZ2RaHPcteoKJGqTvgJa/3jyM7qKpZrs7QSSSfIR12xCudXFF
+	aQlj1c24KU18A9PFzvhdiji6GbcnkSJAByLpbGE9tyJuct3fcGnIisigvlWB
+X-Google-Smtp-Source: AGHT+IEud6sFVvRQfjPRKYoT1QQQ7MC58Q7hm9R5LyKZCEEoGoTjBeuZh+oWNPsz07OaOLim9cB1lA==
+X-Received: by 2002:a17:907:7ba2:b0:a9a:2afc:e4e3 with SMTP id a640c23a62f3a-a9de61d5d26mr1793382666b.50.1730356415186;
+        Wed, 30 Oct 2024 23:33:35 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9e5664bb9dsm31886866b.161.2024.10.30.23.33.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Oct 2024 23:33:34 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id DED09BE2DE0; Thu, 31 Oct 2024 07:33:32 +0100 (CET)
+Date: Thu, 31 Oct 2024 07:33:32 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: Mike <user.service2016@gmail.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	linux-bluetooth@vger.kernel.org,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Sasha Levin <sashal@kernel.org>,
+	Jeremy =?iso-8859-1?Q?Lain=E9?= <jeremy.laine@m4x.org>,
+	Linux regressions mailing list <regressions@lists.linux.dev>,
+	Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: Bluetooth kernel BUG with Intel AX211 (regression in 6.1.83)
+Message-ID: <ZyMkvAkZXuoTHFtd@eldamar.lan>
+References: <30f4b18f-4b96-403c-a0ab-d81809d9888a@gmail.com>
+ <c09d4f5b-0c4b-4f57-8955-28a963cc7e16@leemhuis.info>
+ <2024061258-boxy-plaster-7219@gregkh>
+ <d5aa11c9-6326-4096-9c29-d9f0d11f83b4@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.47.0.163.g1226f6d8fa-goog
-Message-ID: <20241031045602.309600-1-avagin@google.com>
-Subject: [PATCH] ucounts: fix counter leak in inc_rlimit_get_ucounts()
-From: Andrei Vagin <avagin@google.com>
-To: "Eric W. Biederman" <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>, linux-kernel@vger.kernel.org, 
-	Andrei Vagin <avagin@google.com>, Alexey Gladkov <legion@kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d5aa11c9-6326-4096-9c29-d9f0d11f83b4@leemhuis.info>
 
-The inc_rlimit_get_ucounts() increments the specified rlimit counter and
-then checks its limit. If the value exceeds the limit, the function
-returns an error without decrementing the counter.
+Hi,
 
-Fixes: 15bc01effefe ("ucounts: Fix signal ucount refcounting")
-Tested-by: Roman Gushchin <roman.gushchin@linux.dev>
-Co-debugged-by: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Andrei Vagin <avagin@google.com>
-Cc: "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: Alexey Gladkov <legion@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrei Vagin <avagin@google.com>
----
- kernel/ucount.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+On Tue, Jun 18, 2024 at 12:30:18PM +0200, Thorsten Leemhuis wrote:
+> On 12.06.24 14:04, Greg KH wrote:
+> > On Thu, Jun 06, 2024 at 12:18:18PM +0200, Thorsten Leemhuis wrote:
+> >> On 03.06.24 22:03, Mike wrote:
+> >>> On 29.05.24 11:06, Thorsten Leemhuis wrote:
+> >>> [...]
+> >>> I understand that 6.9-rc5[1] worked fine, but I guess it will take some
+> >>> time to be
+> >>> included in Debian stable, so having a patch for 6.1.x will be much
+> >>> appreciated.
+> >>> I do not have the time to follow the vanilla (latest) release as is
+> >>> likely the case for
+> >>> many other Linux users.
+> >>>
+> >> Still no reaction from the bluetooth developers. Guess they are busy
+> >> and/or do not care about 6.1.y. In that case:
+> >>
+> >> @Greg: do you might have an idea how the 6.1.y commit a13f316e90fdb1
+> >> ("Bluetooth: hci_conn: Consolidate code for aborting connections") might
+> >> cause this or if it's missing some per-requisite? If not I wonder if
+> >> reverting that patch from 6.1.y might be the best move to resolve this
+> >> regression. Mike earlier in
+> >> https://lore.kernel.org/all/c947e600-e126-43ea-9530-0389206bef5e@gmail.com/
+> >> confirmed that this fixed the problem in tests. Jeremy (who started the
+> >> thread and afaics has the same problem) did not reply.
+> > 
+> > How was this reverted?  I get a bunch of conflicts as this commit was
+> > added as a dependency of a patch later in the series.
+> > 
+> > So if this wants to be reverted from 6.1.y, can someone send me the
+> > revert that has been tested to work?
+> 
+> Mike, can you help out here, as you apparently managed a revert earlier?
+> Without you or someone else submitting a revert I fear this won't be
+> resolved...
 
-diff --git a/kernel/ucount.c b/kernel/ucount.c
-index 8c07714ff27d..16c0ea1cb432 100644
---- a/kernel/ucount.c
-+++ b/kernel/ucount.c
-@@ -328,13 +328,12 @@ long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
- 		if (new != 1)
- 			continue;
- 		if (!get_ucounts(iter))
--			goto dec_unwind;
-+			goto unwind;
- 	}
- 	return ret;
--dec_unwind:
-+unwind:
- 	dec = atomic_long_sub_return(1, &iter->rlimit[type]);
- 	WARN_ON_ONCE(dec < 0);
--unwind:
- 	do_dec_rlimit_put_ucounts(ucounts, iter, type);
- 	return 0;
- }
--- 
-2.47.0.163.g1226f6d8fa-goog
+Trying to reboostrap this, as people running 6.1.112 based kernel
+seems still hitting the issue, but have not asked yet if it happens as
+well for 6.114.
 
+https://bugs.debian.org/1086447
+
+Mike, since I guess you are still as well affected as well, does the
+issue trigger on 6.1.114 for you and does reverting changes from
+a13f316e90fdb1 still fix the issue? Can you send your
+backport/changes?
+
+Regards,
+Salvatore
 
