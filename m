@@ -1,110 +1,136 @@
-Return-Path: <stable+bounces-89431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3242F9B8093
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 17:49:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F25169B80CA
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 18:03:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB1C6288D40
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 16:49:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5B86281814
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 17:03:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396921BD020;
-	Thu, 31 Oct 2024 16:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE361BDA85;
+	Thu, 31 Oct 2024 17:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PI/VjL3R"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="Z4jMgQG2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236F713AA2E
-	for <stable@vger.kernel.org>; Thu, 31 Oct 2024 16:48:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1441990AE
+	for <stable@vger.kernel.org>; Thu, 31 Oct 2024 17:02:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730393337; cv=none; b=t4z75AahoVIE3Tqtbf8COHG1AfzoRIuH35ceXP/2w1N3aV/ZqskUYSwg8EeXXtWX72c3s1yvIobmObyuEf1ZvOXtZBTQYMLO0w/hQ4wBePfNDxQMFASGQ47IoMc408pkmtKUGZ4fv1JlGZwVDKsmzMOT48R1tn+Uj8yS9Lu3lus=
+	t=1730394180; cv=none; b=Y+VIWVwA/SWp8v7jM2Zghx5dS+ZtnN5HY+rUc1ytVfcWCUFxgR0H9/UD33eE04WKd4YA680Wg7C+Mnlf33YCwt2ZtyKEwlQWyn/iNUouHZ+SiTkU1cX2L7Y3mXozGwoxUpaWaGus2/JU1A2wYWLPccVMXIrCRFh0U/yB1QCnCyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730393337; c=relaxed/simple;
-	bh=DyWph8UUJAkQclrw0BMcHAWESaNV8zNxbZmG/7+Hbk8=;
+	s=arc-20240116; t=1730394180; c=relaxed/simple;
+	bh=rkD19Bqc79gsPO5JVFTOqLgcccwuavxcVndttCcVjlg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UPOpnP5adZr+j3SP+9qR8uwnsXX+uNGzgaSCoeyRwDYXaDpQvsNvdyUdrTOWRQMWium5mia6bWyM5I3h7NrCffB0a0IpK2Yk5ALVc7kkCzJ0D43yj15iT6kX0bowlpywNTIHGDWAaAZxvPtca12o9x7I0vP1uYi/CTVA+jkGxas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PI/VjL3R; arc=none smtp.client-ip=209.85.219.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e2903a48ef7so1049155276.2
-        for <stable@vger.kernel.org>; Thu, 31 Oct 2024 09:48:54 -0700 (PDT)
+	 To:Cc:Content-Type; b=oysm2QFfXEB4NkdrMGKLplAwSF3nL7Zw7v1YOMzRE7ZJduZvJPfrL2ARtabByfLA4DY9kTCTiS9j98dge6OjKwWaqmDsXB7kuMXHfrAtffkJlF2I30Dou7JNsd7Er7DU0WmJ4e2n4NFygte4qsO7NXZiHr/CKxy6J1rjBls4sLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=Z4jMgQG2; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-539fb49c64aso1737874e87.0
+        for <stable@vger.kernel.org>; Thu, 31 Oct 2024 10:02:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730393334; x=1730998134; darn=vger.kernel.org;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1730394175; x=1730998975; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CCGIRPOYY6VkyMbSOzu8Bu46cDZwcKzHLqJf7pVc9Bc=;
-        b=PI/VjL3RWBuqHKME5Npp0/dRYasW0vQeUlJRWfFa74rH5L5aEyk7t3jAyXIkdjUnSQ
-         I69vCcN4RNhf2PvrYrlR4TDYdxgbQx5AdqxdJExnq1afnuF3DvaeAF5GGec8vJLxJYJq
-         C77cQpuW1j16/EfJM/PLOHA//0IP+27fgBZHfCUU2zNxq5Fl0nDFBPqUpvg3u4FyTxWV
-         WC11MgqZb1jFWD4/p/zySgsHRt+3Xa054hskmhQ1l6Wlxg2Ji30ANle+3q9OmYub9fdH
-         Z3VuEwG5kGkE+FrE84/7ZebHZF30GMqawkaeXKY/+pLpxO1LPCafZCjiVeZkP2090kCe
-         nCMA==
+        bh=itclNzkuhsNhu+rLimeOXz9VP4f+jH+BEVTSGay6rCw=;
+        b=Z4jMgQG22yeSNkBwV+gYoJ2j2ep0LXQMNzfTrLdGWKmj8a+HpKvCuPOEu74hahtPZC
+         yvCsrFpvieMYs/dm8OdTlW7WLWhRayqM8hcMBLYwPyteZnKBBFKs1kOzwPOvmbg9Zv1o
+         J3VeQ2TiNf7+Q0dVkmXESoODFZjeONZR5Qn9Q6Ao+RD+0A/QARduMBOdQDS0IZ8ifK91
+         JaxyduackvfjcGbX9DWTWHJkNHzERp5TQCG5YaVztfqiDAlyA1krBxQGxlzW8EjIqbEg
+         Hygc2TC4Fzw+2jbZ2+orotyviyL2tzEs0NHFb/9cgZwjQk4+vxNq3KFX7EeUxI+Q6l1m
+         aolA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730393334; x=1730998134;
+        d=1e100.net; s=20230601; t=1730394175; x=1730998975;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=CCGIRPOYY6VkyMbSOzu8Bu46cDZwcKzHLqJf7pVc9Bc=;
-        b=W7ZAcostMX+vdHdDFGtOcU19bsgBnohI1nQ90wjQ8BJRieTzpq/Jv7vSbBaRA+R3k0
-         1l+f/Q1y3h9DNXUNGX4v04WWeznpMncc+7ovm92uU4xwVp2SCDym2oE2se1RvM3hax7u
-         US4WDjcO28AZS01+aYsg9eUGLYKjxIDvzLYEtFC1PuWFVDrGH21K5sGx1toqdlBbWI9C
-         k11JD7bIIbBKoWKlJ7JlZCNWMhm8Yi/q8vRzWUWR2SW5UGPSzDfNFfKdvmFRPNy07ylx
-         CAoTeX4MDgwZrPLF9t+AZYYJOYOBeiZgy3iSr+R6S9mC8yup7J9u3zdwVdgqOiBqxEjN
-         oTqA==
-X-Forwarded-Encrypted: i=1; AJvYcCXzuChTBwxa3cawXNDW6qTYbEQN+3Bv/6HUCHA74BhiIXt0pneP0Lvkx/0nREOUR3xIbs1dhd4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9Z5UPqbTsYxm4GxfzuweEwVME1+q9eZmbiIatBwPZ3Ecs7uE/
-	v/8KyjViXO1AuCzIMjauKPTpKvKVP19x0o/+4uumQYtwd8SRhh7Gn+rM85N0jOpfeV0+zQRxEWC
-	NjxJmpEnjsBxU3igPAU8FER1BT8A+jh1AFFuN
-X-Google-Smtp-Source: AGHT+IFhxc21ZHz4vbc2RJxBu7ImVfd1dY7qdM5KSOEx184gZpnveCCVXiqO6RQl2JdhFA5FqtGx/OQa9HaAkqcLcjo=
-X-Received: by 2002:a05:6902:b08:b0:e25:d900:a0f8 with SMTP id
- 3f1490d57ef6-e30e5b57747mr2920629276.43.1730393334042; Thu, 31 Oct 2024
- 09:48:54 -0700 (PDT)
+        bh=itclNzkuhsNhu+rLimeOXz9VP4f+jH+BEVTSGay6rCw=;
+        b=mtX4B5m2Qrl1adRCdx0Ir5c9mpPd932N1BuBG4bt69UcS7yoKdKyAB7CXuLqOyPBrH
+         pFkt8vhGRO9Mjz0l4CHG26yYBS4cLk5pExizihsUetalHKYw3OpotenWB1XMw5i7a5Cf
+         +bkK9o6JikrOWo5tgCYRKHQfMfuI0ubmBgflo3j7ThJnYGlProUNWgAt6tjZLZTT6mza
+         9GmnabBhWE5wEcdxOsveSTR6PQWAgHPlKM71Zdns3EOVulBrsHmWJPk+jgG7bas84erG
+         SvVyFG5rBBQzMSfgxdUrzxd52EQyWKjFKdDr/oRy3YoRVqwNH3ZeyoiFtY4TBP5FOfpj
+         k75A==
+X-Forwarded-Encrypted: i=1; AJvYcCXUZvw0UMZ9VSwKlksHObbK7b5ofpsV1ubltdnNzRJtyZjPknwz+5hMQQp0ORjBGy1J3zIUlEE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVgZGta/NlCHGkjDoIUCerA+xQsPEHuYTKuAomLYBQ0llTz5bN
+	vA+joizzEI665CVqEaOINgbunF+bEeCcGdwsU4lCVZhFtOqxb+WxQks+3gYi4Pp0O3LnutyFyvd
+	+hrR9IkjVMsLdxF5OxVZ3woWlcxV5nRa8a9a3Tg==
+X-Google-Smtp-Source: AGHT+IFkGhs17fk1WNgW2Lc1+p4at0/K/jnNWJKMySLeyD5thsCli3RrFU2Jul/rDz+A9y3BBriis/mOAyCzaxsMr+U=
+X-Received: by 2002:a05:6512:3a8b:b0:539:89a8:600f with SMTP id
+ 2adb3069b0e04-53d65de5298mr761196e87.23.1730394174627; Thu, 31 Oct 2024
+ 10:02:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241031031517.3AE43C4CECE@smtp.kernel.org>
-In-Reply-To: <20241031031517.3AE43C4CECE@smtp.kernel.org>
-From: James Houghton <jthoughton@google.com>
-Date: Thu, 31 Oct 2024 09:48:16 -0700
-Message-ID: <CADrL8HXPjHDRAUmzLnSS0fqsw3Rt921EYm2KyEUqW-sPn15o5Q@mail.gmail.com>
-Subject: Re: [merged mm-hotfixes-stable] mm-multi-gen-lru-use-pteppmdp_clear_young_notify.patch
- removed from -mm tree
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: mm-commits@vger.kernel.org, weixugc@google.com, stevensd@google.com, 
-	stable@vger.kernel.org, seanjc@google.com, rientjes@google.com, 
-	pbonzini@redhat.com, oliver.upton@linux.dev, dmatlack@google.com, 
-	axelrasmussen@google.com, yuzhao@google.com
+References: <20241028125000.24051-1-johan+linaro@kernel.org> <20241028125000.24051-3-johan+linaro@kernel.org>
+In-Reply-To: <20241028125000.24051-3-johan+linaro@kernel.org>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Thu, 31 Oct 2024 18:02:43 +0100
+Message-ID: <CAMRc=Mf6yaZMsF5x=vPet=y9fa5ZTuWSAA=oi+Qw07TF8GEFbA@mail.gmail.com>
+Subject: Re: [PATCH 2/3] gpiolib: fix debugfs dangling chip separator
+To: Johan Hovold <johan+linaro@kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 30, 2024 at 8:15=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
+On Mon, Oct 28, 2024 at 1:50=E2=80=AFPM Johan Hovold <johan+linaro@kernel.o=
+rg> wrote:
 >
+> Add the missing newline after entries for recently removed gpio chips
+> so that the chip sections are separated by a newline as intended.
 >
-> The quilt patch titled
->      Subject: mm: multi-gen LRU: use {ptep,pmdp}_clear_young_notify()
-> has been removed from the -mm tree.  Its filename was
->      mm-multi-gen-lru-use-pteppmdp_clear_young_notify.patch
+> Fixes: e348544f7994 ("gpio: protect the list of GPIO devices with SRCU")
+> Cc: stable@vger.kernel.org      # 6.9
+> Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> ---
+>  drivers/gpio/gpiolib.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> This patch was dropped because it was merged into the mm-hotfixes-stable =
-branch
-> of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+> index e27488a90bc9..2b02655abb56 100644
+> --- a/drivers/gpio/gpiolib.c
+> +++ b/drivers/gpio/gpiolib.c
+> @@ -4971,7 +4971,7 @@ static int gpiolib_seq_show(struct seq_file *s, voi=
+d *v)
+>
+>         gc =3D srcu_dereference(gdev->chip, &gdev->srcu);
+>         if (!gc) {
+> -               seq_printf(s, "%s%s: (dangling chip)",
+> +               seq_printf(s, "%s%s: (dangling chip)\n",
+>                            priv->newline ? "\n" : "",
+>                            dev_name(&gdev->dev));
+>                 return 0;
+> --
+> 2.45.2
+>
 
-Hi Andrew,
+But with this change we go from an incorrect:
 
-I posted a fixup for this patch here[1]. It fixes builds for some
-configs but is otherwise a no-op. Could you apply it? (Do you need
-anything from me before you can apply it?)
+# cat /sys/kernel/debug/gpio
+gpiochip0: (dangling chip)
+gpiochip1: (dangling chip)
+gpiochip2: (dangling chip)root@qemux86-64:~#
 
-[1]: https://lore.kernel.org/linux-mm/20241025192106.957236-1-jthoughton@go=
-ogle.com/
+to still incorrect:
+
+# cat /sys/kernel/debug/gpio
+gpiochip0: (dangling chip)
+
+gpiochip1: (dangling chip)
+
+gpiochip2: (dangling chip)
+
+Bart
 
