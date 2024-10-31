@@ -1,124 +1,106 @@
-Return-Path: <stable+bounces-89445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1FE49B83A6
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 20:51:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 075999B83D9
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 20:57:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB63A1C20A0E
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 19:51:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39AC01C21157
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 19:57:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5227A1CB337;
-	Thu, 31 Oct 2024 19:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8415F1CCEF1;
+	Thu, 31 Oct 2024 19:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="sK2Mu5Uv"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="h0t050Bk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E53C1A2562;
-	Thu, 31 Oct 2024 19:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0856B1CB53C
+	for <stable@vger.kernel.org>; Thu, 31 Oct 2024 19:56:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730404286; cv=none; b=K7fpz2AePsRo/817FhXmFVji3kBByiFp+mkSgcgn4/uIo1KvQqhyW2h/K7yNoCklRWaDNQ2/J7oa+jmJqyvrxUulDvI0PGynT9bPxL/hEIr8DucyZCsWYy5x7/lqY5IQKnAEwN9q3zuye/22Fo6/4t5EcnAeJlRm1kjBaCPtyt8=
+	t=1730404607; cv=none; b=s30Byl7EhUYQCX2e8RWlRG16WH4+5xkZVY89eAphq8Q5UD0CNtMTPVqol6yvzScyl48+dQAGz+ByzKcGMYAd2R3Fnq3ZMWgqb52rqjWfXB2tbNclUAVHmA2wRDXca6obD6FMHIN5jC8NXMyKoo+qeFB9QnHsJRZlToT3gPe9n7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730404286; c=relaxed/simple;
-	bh=pWeTyJJNnr00Ds1a/IrE+1tdtM+/jzwGubwtgQ/p3RA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BRnnYqKCxMm9XQVAoYCduVfdkW3rlMID7LGWOhaQo2YiYyDAKjs/MJVM8lJJiSlW0A1soQVAzfw9WSXadcnAu9uBm5cnoJAJ+RUgOT4PRhLuKNSq9X75vxDx/7MS+cg1BpJ7/FjMEfEN5vnNI8lm1THR9Rrd0HP3MojyO2zRC0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=sK2Mu5Uv; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from fpc (unknown [10.10.165.3])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 61BCD40777DF;
-	Thu, 31 Oct 2024 19:51:13 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 61BCD40777DF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1730404273;
-	bh=ANbGFTkYcuHN9MP7yhDSsW9JkyY2aWF7v/pBJSBGoLc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sK2Mu5UvfLD+ZZnSKJGEh+JOx0In9VTgb+fmUGwhG0Xr6PTTb2L7Qp+4oDud+QgBx
-	 IS8U8Sgra+7jfgv5V6E+Ap4FBDBb/r610FIaUz7QBldHurlKqN9asHCMsrFwQy6+Ao
-	 cCTXHFvNDp1AEmwugIKBkM3/2EhQoyhKEdbauILY=
-Date: Thu, 31 Oct 2024 22:51:09 +0300
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: George Rurikov <grurikov@gmail.com>
-Cc: Robert Moore <robert.moore@intel.com>, lvc-project@linuxtesting.org,
-	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, linux-acpi@vger.kernel.org,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <lenb@kernel.org>
-Subject: Re: [PATCH] ACPICA: Fix dereference in
- acpi_ev_address_space_dispatch()
-Message-ID: <20241031-2f71908a9a589c4469480e73-pchelkin@ispras.ru>
-References: <20241031173146.1459-1-grurikov@gmail.com>
+	s=arc-20240116; t=1730404607; c=relaxed/simple;
+	bh=n42bIm0EJKSGiSdPBDn9xkTrd4XZQCY/ki0lBaAt+Bk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PB43wt9ML/fZtmdHeG6sknHRoo58raP7JKnwXPpdGzXa1+8gx3eNvtCqf7p3nlXi7pGC8EsFvJsuK6flP7QqG+c+MMBSTeLWGhc1FEyZnz7gtjBK++q6pKumXcZGsaPswrRFtEhke3q4OccoRx8xON2hxZ8Dbv+b1dN/x1D2zhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=h0t050Bk; arc=none smtp.client-ip=95.215.58.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1730404601;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ETPLCcFOzsbm2EUKzHQHpjrgkvcCKJmMREUbmAxMcBE=;
+	b=h0t050BkX3ihCZkm0W74a9hiZ/GkSTBi0EHcfzhpLzK/YJ1qkNFIaHnidJggXPZ2y98CAz
+	+QQQDV/z0K/cRFxB7iB9bC6zDRytorf1X/deRUGQClrGZKcG0MYC3n8M5EgSFI74RzFDRA
+	pJ2n8dZlCe24+bCRU88+I4G0KVC9jJs=
+From: Oliver Upton <oliver.upton@linux.dev>
+To: Marc Zyngier <maz@kernel.org>,
+	Raghavendra Rao Ananta <rananta@google.com>
+Cc: Oliver Upton <oliver.upton@linux.dev>,
+	linux-kernel@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	stable@vger.kernel.org,
+	kvm@vger.kernel.org,
+	syzbot <syzkaller@googlegroups.com>
+Subject: Re: [PATCH v2] KVM: arm64: Get rid of userspace_irqchip_in_use
+Date: Thu, 31 Oct 2024 19:56:28 +0000
+Message-ID: <173040458509.3411583.4399376120814266828.b4-ty@linux.dev>
+In-Reply-To: <20241028234533.942542-1-rananta@google.com>
+References: <20241028234533.942542-1-rananta@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241031173146.1459-1-grurikov@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, 31. Oct 20:31, George Rurikov wrote:
-> When support for  PCC Opregion was added, validation of field_obj
-> was missed.
-> Based on the acpi_ev_address_space_dispatch function description,
-> field_obj can be NULL, and also when acpi_ev_address_space_dispatch
-> is called in the acpi_ex_region_read() NULL is passed as field_obj.
+On Mon, 28 Oct 2024 23:45:33 +0000, Raghavendra Rao Ananta wrote:
+> Improper use of userspace_irqchip_in_use led to syzbot hitting the
+> following WARN_ON() in kvm_timer_update_irq():
 > 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> WARNING: CPU: 0 PID: 3281 at arch/arm64/kvm/arch_timer.c:459
+> kvm_timer_update_irq+0x21c/0x394
+> Call trace:
+>   kvm_timer_update_irq+0x21c/0x394 arch/arm64/kvm/arch_timer.c:459
+>   kvm_timer_vcpu_reset+0x158/0x684 arch/arm64/kvm/arch_timer.c:968
+>   kvm_reset_vcpu+0x3b4/0x560 arch/arm64/kvm/reset.c:264
+>   kvm_vcpu_set_target arch/arm64/kvm/arm.c:1553 [inline]
+>   kvm_arch_vcpu_ioctl_vcpu_init arch/arm64/kvm/arm.c:1573 [inline]
+>   kvm_arch_vcpu_ioctl+0x112c/0x1b3c arch/arm64/kvm/arm.c:1695
+>   kvm_vcpu_ioctl+0x4ec/0xf74 virt/kvm/kvm_main.c:4658
+>   vfs_ioctl fs/ioctl.c:51 [inline]
+>   __do_sys_ioctl fs/ioctl.c:907 [inline]
+>   __se_sys_ioctl fs/ioctl.c:893 [inline]
+>   __arm64_sys_ioctl+0x108/0x184 fs/ioctl.c:893
+>   __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+>   invoke_syscall+0x78/0x1b8 arch/arm64/kernel/syscall.c:49
+>   el0_svc_common+0xe8/0x1b0 arch/arm64/kernel/syscall.c:132
+>   do_el0_svc+0x40/0x50 arch/arm64/kernel/syscall.c:151
+>   el0_svc+0x54/0x14c arch/arm64/kernel/entry-common.c:712
+>   el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
+>   el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
 > 
-> Fixes: 0acf24ad7e10 ("ACPICA: Add support for PCC Opregion special context data")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: George Rurikov <grurikov@gmail.com>
-> ---
->  drivers/acpi/acpica/evregion.c | 18 +++++++++++-------
+> [...]
 
-Hi George,
+Applied to kvmarm/next, thanks!
 
-ACPICA patches go first via a separate Github project [1].
-[1]: https://github.com/acpica/acpica
+[1/1] KVM: arm64: Get rid of userspace_irqchip_in_use
+      https://git.kernel.org/kvmarm/kvmarm/c/e571ebcff926
 
-Please see [2] and [3] for more info:
-[2]: https://lore.kernel.org/acpica-devel/CAJZ5v0i7LYzF13M0qdeYWXZ7uO6HUpAS7pE5RJnOAJtKB8o88A@mail.gmail.com/
-[3]: https://docs.kernel.org/driver-api/acpi/linuxized-acpica.html
-
->  1 file changed, 11 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/acpi/acpica/evregion.c b/drivers/acpi/acpica/evregion.c
-> index cf53b9535f18..03e8b6f186af 100644
-> --- a/drivers/acpi/acpica/evregion.c
-> +++ b/drivers/acpi/acpica/evregion.c
-> @@ -164,13 +164,17 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
->  		}
->  
->  		if (region_obj->region.space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
-> -			struct acpi_pcc_info *ctx =
-> -			    handler_desc->address_space.context;
-> -
-> -			ctx->internal_buffer =
-> -			    field_obj->field.internal_pcc_buffer;
-> -			ctx->length = (u16)region_obj->region.length;
-> -			ctx->subspace_id = (u8)region_obj->region.address;
-> +			if (field_obj != NULL) {
-> +				struct acpi_pcc_info *ctx =
-> +					handler_desc->address_space.context;
-> +
-> +				ctx->internal_buffer =
-> +					field_obj->field.internal_pcc_buffer;
-> +				ctx->length = (u16)region_obj->region.length;
-> +				ctx->subspace_id = (u8)region_obj->region.address;
-> +			} else {
-> +				return_ACPI_STATUS(AE_ERROR);
-> +			}
->  		}
->  
->  		if (region_obj->region.space_id ==
-> -- 
-> 2.34.1
+--
+Best,
+Oliver
 
