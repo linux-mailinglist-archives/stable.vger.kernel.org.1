@@ -1,136 +1,125 @@
-Return-Path: <stable+bounces-89432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F25169B80CA
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 18:03:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B03029B80E0
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 18:08:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5B86281814
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 17:03:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6611D1F22370
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 17:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE361BDA85;
-	Thu, 31 Oct 2024 17:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F36C21C6F56;
+	Thu, 31 Oct 2024 17:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="Z4jMgQG2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mt44Bp8S"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1441990AE
-	for <stable@vger.kernel.org>; Thu, 31 Oct 2024 17:02:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D3E1BD4E5;
+	Thu, 31 Oct 2024 17:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730394180; cv=none; b=Y+VIWVwA/SWp8v7jM2Zghx5dS+ZtnN5HY+rUc1ytVfcWCUFxgR0H9/UD33eE04WKd4YA680Wg7C+Mnlf33YCwt2ZtyKEwlQWyn/iNUouHZ+SiTkU1cX2L7Y3mXozGwoxUpaWaGus2/JU1A2wYWLPccVMXIrCRFh0U/yB1QCnCyw=
+	t=1730394477; cv=none; b=TsYLw7bm88KfchRDC8x/jUwmRe8IZUFRBAmNVHVCO41mc1VJqmkOynDVE3vEQwjnLxE4mv8Nr4K861OFTI6+1ZwhK7nAF81y+C4bsEWoo4wFBouBEyBgEOf8Tfs1h3Qej8UZnoCMw67LtVvS4eqrtevEdqad4VWkl7Ztx9fP8B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730394180; c=relaxed/simple;
-	bh=rkD19Bqc79gsPO5JVFTOqLgcccwuavxcVndttCcVjlg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oysm2QFfXEB4NkdrMGKLplAwSF3nL7Zw7v1YOMzRE7ZJduZvJPfrL2ARtabByfLA4DY9kTCTiS9j98dge6OjKwWaqmDsXB7kuMXHfrAtffkJlF2I30Dou7JNsd7Er7DU0WmJ4e2n4NFygte4qsO7NXZiHr/CKxy6J1rjBls4sLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=Z4jMgQG2; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-539fb49c64aso1737874e87.0
-        for <stable@vger.kernel.org>; Thu, 31 Oct 2024 10:02:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1730394175; x=1730998975; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=itclNzkuhsNhu+rLimeOXz9VP4f+jH+BEVTSGay6rCw=;
-        b=Z4jMgQG22yeSNkBwV+gYoJ2j2ep0LXQMNzfTrLdGWKmj8a+HpKvCuPOEu74hahtPZC
-         yvCsrFpvieMYs/dm8OdTlW7WLWhRayqM8hcMBLYwPyteZnKBBFKs1kOzwPOvmbg9Zv1o
-         J3VeQ2TiNf7+Q0dVkmXESoODFZjeONZR5Qn9Q6Ao+RD+0A/QARduMBOdQDS0IZ8ifK91
-         JaxyduackvfjcGbX9DWTWHJkNHzERp5TQCG5YaVztfqiDAlyA1krBxQGxlzW8EjIqbEg
-         Hygc2TC4Fzw+2jbZ2+orotyviyL2tzEs0NHFb/9cgZwjQk4+vxNq3KFX7EeUxI+Q6l1m
-         aolA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730394175; x=1730998975;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=itclNzkuhsNhu+rLimeOXz9VP4f+jH+BEVTSGay6rCw=;
-        b=mtX4B5m2Qrl1adRCdx0Ir5c9mpPd932N1BuBG4bt69UcS7yoKdKyAB7CXuLqOyPBrH
-         pFkt8vhGRO9Mjz0l4CHG26yYBS4cLk5pExizihsUetalHKYw3OpotenWB1XMw5i7a5Cf
-         +bkK9o6JikrOWo5tgCYRKHQfMfuI0ubmBgflo3j7ThJnYGlProUNWgAt6tjZLZTT6mza
-         9GmnabBhWE5wEcdxOsveSTR6PQWAgHPlKM71Zdns3EOVulBrsHmWJPk+jgG7bas84erG
-         SvVyFG5rBBQzMSfgxdUrzxd52EQyWKjFKdDr/oRy3YoRVqwNH3ZeyoiFtY4TBP5FOfpj
-         k75A==
-X-Forwarded-Encrypted: i=1; AJvYcCXUZvw0UMZ9VSwKlksHObbK7b5ofpsV1ubltdnNzRJtyZjPknwz+5hMQQp0ORjBGy1J3zIUlEE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVgZGta/NlCHGkjDoIUCerA+xQsPEHuYTKuAomLYBQ0llTz5bN
-	vA+joizzEI665CVqEaOINgbunF+bEeCcGdwsU4lCVZhFtOqxb+WxQks+3gYi4Pp0O3LnutyFyvd
-	+hrR9IkjVMsLdxF5OxVZ3woWlcxV5nRa8a9a3Tg==
-X-Google-Smtp-Source: AGHT+IFkGhs17fk1WNgW2Lc1+p4at0/K/jnNWJKMySLeyD5thsCli3RrFU2Jul/rDz+A9y3BBriis/mOAyCzaxsMr+U=
-X-Received: by 2002:a05:6512:3a8b:b0:539:89a8:600f with SMTP id
- 2adb3069b0e04-53d65de5298mr761196e87.23.1730394174627; Thu, 31 Oct 2024
- 10:02:54 -0700 (PDT)
+	s=arc-20240116; t=1730394477; c=relaxed/simple;
+	bh=b58Q8LPqCMknW6TVeH8ostYyFsH+RiBUsC302ewOwxI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Af5jwveRy5L6LrE6btf1ovz2xhYgSa2knkpWeFhI4uLBrqF+vvwbHdvkX3BYyEOeftcZuCywYTBmCdmKfzCM6gNlx3av57jnSQONP9oPMUNY0HtlisMjgJ9dkGPiuoTW9DiY4bhGME2x6Cr1d0anCxiA3Cd8FByHeQ77yXAz+X8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mt44Bp8S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCDDC4CEC3;
+	Thu, 31 Oct 2024 17:07:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730394477;
+	bh=b58Q8LPqCMknW6TVeH8ostYyFsH+RiBUsC302ewOwxI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mt44Bp8SUtkUMRBYDbk4vB5xY1wmx2LJrOpsNF9PUPmXfFtxW6KYpDVBIWw8pUer5
+	 sZihVUTXgiKn+aXPRIsPF7g7zDedlTkcWU5E0isv3yVI4tSHUQ/8N7rtrZlTMB1ayu
+	 ufmSWXvAlj599o9NEWO8iiK5brAqO80cvfuUDjRHuL9vSOH1Nzuuj79/2qltyH+1Q7
+	 opf3r4xemqxPF9aCoeu7gdEK1H0WR4xPt6SriKqTn9qpLQRNrFJ1xV3DAYONmaH+GS
+	 tsEmMcvc/yU3yOPMlHqVvpW097jC/IlgT5MiInd0At4YjFWpHYCvFlJMu0IltTcXlj
+	 Pp5lrR/FD8eyw==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1t6YeJ-000000007ya-249B;
+	Thu, 31 Oct 2024 18:07:55 +0100
+Date: Thu, 31 Oct 2024 18:07:55 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Johan Hovold <johan+linaro@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH 2/3] gpiolib: fix debugfs dangling chip separator
+Message-ID: <ZyO5a85wq1fKD-ln@hovoldconsulting.com>
+References: <20241028125000.24051-1-johan+linaro@kernel.org>
+ <20241028125000.24051-3-johan+linaro@kernel.org>
+ <CAMRc=Mf6yaZMsF5x=vPet=y9fa5ZTuWSAA=oi+Qw07TF8GEFbA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241028125000.24051-1-johan+linaro@kernel.org> <20241028125000.24051-3-johan+linaro@kernel.org>
-In-Reply-To: <20241028125000.24051-3-johan+linaro@kernel.org>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Thu, 31 Oct 2024 18:02:43 +0100
-Message-ID: <CAMRc=Mf6yaZMsF5x=vPet=y9fa5ZTuWSAA=oi+Qw07TF8GEFbA@mail.gmail.com>
-Subject: Re: [PATCH 2/3] gpiolib: fix debugfs dangling chip separator
-To: Johan Hovold <johan+linaro@kernel.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMRc=Mf6yaZMsF5x=vPet=y9fa5ZTuWSAA=oi+Qw07TF8GEFbA@mail.gmail.com>
 
-On Mon, Oct 28, 2024 at 1:50=E2=80=AFPM Johan Hovold <johan+linaro@kernel.o=
-rg> wrote:
->
-> Add the missing newline after entries for recently removed gpio chips
-> so that the chip sections are separated by a newline as intended.
->
-> Fixes: e348544f7994 ("gpio: protect the list of GPIO devices with SRCU")
-> Cc: stable@vger.kernel.org      # 6.9
-> Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> ---
->  drivers/gpio/gpiolib.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-> index e27488a90bc9..2b02655abb56 100644
-> --- a/drivers/gpio/gpiolib.c
-> +++ b/drivers/gpio/gpiolib.c
-> @@ -4971,7 +4971,7 @@ static int gpiolib_seq_show(struct seq_file *s, voi=
-d *v)
->
->         gc =3D srcu_dereference(gdev->chip, &gdev->srcu);
->         if (!gc) {
-> -               seq_printf(s, "%s%s: (dangling chip)",
-> +               seq_printf(s, "%s%s: (dangling chip)\n",
->                            priv->newline ? "\n" : "",
->                            dev_name(&gdev->dev));
->                 return 0;
-> --
-> 2.45.2
->
+On Thu, Oct 31, 2024 at 06:02:43PM +0100, Bartosz Golaszewski wrote:
 
-But with this change we go from an incorrect:
+> But with this change we go from an incorrect:
+> 
+> # cat /sys/kernel/debug/gpio
+> gpiochip0: (dangling chip)
+> gpiochip1: (dangling chip)
+> gpiochip2: (dangling chip)root@qemux86-64:~#
+> 
+> to still incorrect:
+> 
+> # cat /sys/kernel/debug/gpio
+> gpiochip0: (dangling chip)
+> 
+> gpiochip1: (dangling chip)
+> 
+> gpiochip2: (dangling chip)
 
-# cat /sys/kernel/debug/gpio
-gpiochip0: (dangling chip)
-gpiochip1: (dangling chip)
-gpiochip2: (dangling chip)root@qemux86-64:~#
+Why do you think this is incorrect? Every chip section is separated by
+an empty line, just as it should be:
 
-to still incorrect:
+gpiochip0: GPIOs 512-517, parent: platform/c42d000.spmi:pmic@0:gpio@8800, c42d000.spmi:pmic@0:gpio@8800:
+ gpio1 : in   low  normal  vin-0 no pull                     push-pull  low     atest-1 dtest-0
+ gpio2 : in   low  normal  vin-0 no pull                     push-pull  low     atest-1 dtest-0
+ gpio3 : out  low  func1   vin-0 pull-down 10uA              push-pull  low     atest-1 dtest-0
+ gpio4 : in   low  normal  vin-0 pull-down 10uA              push-pull  low     atest-1 dtest-0
+ gpio5 : ---
+ gpio6 : in   high normal  vin-0 pull-up 30uA                push-pull  low     atest-1 dtest-0
 
-# cat /sys/kernel/debug/gpio
-gpiochip0: (dangling chip)
+gpiochip1: GPIOs 518-529, parent: platform/c42d000.spmi:pmic@1:gpio@8800, c42d000.spmi:pmic@1:gpio@8800:
+ gpio1 : in   low  normal  vin-0 pull-down 10uA              push-pull  low     atest-1 dtest-0
+ gpio2 : in   low  normal  vin-0 pull-down 10uA              push-pull  low     atest-1 dtest-0
+ gpio3 : ---
+ gpio4 : ---
+ gpio5 : in   high normal  vin-0 pull-up 30uA                push-pull  low     atest-1 dtest-0
+ gpio6 : in   high normal  vin-1 pull-up 30uA                push-pull  low     atest-1 dtest-0
+ gpio7 : out  high func1   vin-1 no pull                     push-pull  low     atest-1 dtest-0
+ gpio8 : in   low  normal  vin-0 pull-down 10uA              push-pull  low     atest-1 dtest-0
+ gpio9 : in   low  normal  vin-0 pull-down 10uA              push-pull  low     atest-1 dtest-0
+ gpio10: out  high normal  vin-1 no pull                     push-pull  low     atest-1 dtest-0
+ gpio11: out  high normal  vin-1 no pull                     push-pull  low     atest-1 dtest-0
+ gpio12: in   low  normal  vin-1 pull-down 10uA              push-pull  low     atest-1 dtest-0
 
-gpiochip1: (dangling chip)
+gpiochip2: GPIOs 530-537, parent: platform/c42d000.spmi:pmic@2:gpio@8800, c42d000.spmi:pmic@2:gpio@8800:
+ gpio1 : in   low  normal  vin-0 pull-down 10uA              push-pull  low     atest-1 dtest-0
+ gpio2 : in   low  normal  vin-0 pull-down 10uA              push-pull  low     atest-1 dtest-0
+ gpio3 : in   low  normal  vin-0 pull-down 10uA              push-pull  low     atest-1 dtest-0
+ gpio4 : out  high normal  vin-1 pull-down 10uA              push-pull  medium  atest-1 dtest-0
+ gpio5 : in   low  normal  vin-1 pull-down 10uA              push-pull  low     atest-1 dtest-0
+ gpio6 : out  high normal  vin-1 pull-down 10uA              push-pull  low     atest-1 dtest-0
+ gpio7 : in   low  normal  vin-0 pull-down 10uA              push-pull  low     atest-1 dtest-0
+ gpio8 : out  low  normal  vin-1 pull-down 10uA              push-pull  low     atest-1 dtest-0
 
-gpiochip2: (dangling chip)
-
-Bart
+Johan
 
