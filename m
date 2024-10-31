@@ -1,154 +1,196 @@
-Return-Path: <stable+bounces-89392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C8709B749D
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 07:33:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8538B9B74A2
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 07:35:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A02681C25223
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 06:33:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45F392854DD
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 06:35:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EAF81448E6;
-	Thu, 31 Oct 2024 06:33:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P3vkJS3t"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2349145A03;
+	Thu, 31 Oct 2024 06:35:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188477A15A;
-	Thu, 31 Oct 2024 06:33:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95FC126BF5;
+	Thu, 31 Oct 2024 06:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730356419; cv=none; b=J9ndDoieTqyCklsCdO5lkeNjfky4Ts34BgzLyEGNUDGDbvYLXMrIP2XdwvvDR/IhBUaTgFGhWIkc0/PodpR+7/KCCbbsbz5d5wqWx56R8AshCi4kXO7GDmcUrX6CHfeuvTNuCC2EgXj775tsNE5FFOmv3zNh3EzGMCKcQ/8BZGY=
+	t=1730356533; cv=none; b=jfyUOSSa6ymfrSJhh9Ana/UOCahag586rls8Q8AP4EG6B8AQ/lUkXZ0ZNUWcxBYidntil8LaO0vwd3zrf5cbbOBxiyjZr1+xEBIHVtsp24a1v/6nFcE/K3P+s7MdFoQvZH7j8A8BtHS5dJeCPtl+Wfd1+kUlXeUgTd8atH7tyYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730356419; c=relaxed/simple;
-	bh=h3A6usIImJggTbl8niN7j54dxWCAOrho3c/gOkpI1Us=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KrZl9EsXv9IRRQX7oaE66qUt7rhzjOH1Wq0h1cKluBsES5j/Vm0y5Dd+n6ox1zq4/KBrZCFyxnd6vOW46Hp3G7Ku+jnL10AvlWNXAAl7PrLhkXhnpUxmv2muYXxWAkyijoW4rIR/nChxSm+HjWGw41D67haGcpCO0dH32330Hk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P3vkJS3t; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a99cc265e0aso81174566b.3;
-        Wed, 30 Oct 2024 23:33:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730356415; x=1730961215; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UK1H6ntBFGD6fnCHyPbd1B/5kd3XON3dNEEHD/SIHWc=;
-        b=P3vkJS3tdAj3RLaBLz49bcLtS3FXIy1BiABCEe0PPdsJCKZXmwAtWRigy9VADpSJon
-         vOiMbtF43vP2/bEHRHajS2GgAFaA94LHY4HGCgS9Mc4hDLS0As1KmDi4AB/Of0DSYkpr
-         HtBBn5nKjFg5jMFi5E6FkmeyyKSSQAeysbEgfg4t1drmWk4S+GrmiUuqVXeB8PmFWFII
-         YwMzaPkTGqi058wsFnvKCdwUh7/5xOiTv+cjh650De4NnHVh+kdExthfNwy3IoabbQAc
-         sqECzM86bkf1nenlBB494kDsZX6fQtXb+sq4/UxJ3QM/RH/wEwA41Fr9M16KGDJ4bnbi
-         LEBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730356415; x=1730961215;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UK1H6ntBFGD6fnCHyPbd1B/5kd3XON3dNEEHD/SIHWc=;
-        b=Ur6tzNYJL+M1ETlTomgvqxoDpKv1WqMbDeseRyM8Idsy3eJaAiQ95XipF7zenpv4mV
-         Y05aJg0FUtyq1rL+dPEDEKxp4tuygF0ATLrn/nMdBdtFaAILBfaZ3Tz8SGt4vyAhuKDU
-         f7Dt7V02VR+T8/IZF4/lxezuE5qcr7ihw4OU9IWlv7avynKZOPV0DKRoR6I3UPcg9ePL
-         t2Qv9e+oGvRv0LN2YDZDh4WZn7jFBAgpqZJJw5hyiR+cXzvVv2MMHi9Et1hlsy/+/eQP
-         6f9DWoNfr/4LA8xmqUOdlhgwIWJXZKVyGoNWU1tWakwKByUh/wN/6E7CYot4CLKMGx1M
-         Z5Nw==
-X-Forwarded-Encrypted: i=1; AJvYcCU5R0yDImPWrRBlc8hnVtsLS3qLrLGzz6sf5apKL48h0eb3Rjm4ni07jOT0uWpF7okLeDvjlu6g@vger.kernel.org, AJvYcCWPsAOb/VSoUELO9UoitRcGmzq/jaYo2D3Z5urA274sHxc06nuPhUWV3IitxaCOP+LOqUvDYFxxGr0l7fHXtic=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxlZ2RaHPcteoKJGqTvgJa/3jyM7qKpZrs7QSSSfIR12xCudXFF
-	aQlj1c24KU18A9PFzvhdiji6GbcnkSJAByLpbGE9tyJuct3fcGnIisigvlWB
-X-Google-Smtp-Source: AGHT+IEud6sFVvRQfjPRKYoT1QQQ7MC58Q7hm9R5LyKZCEEoGoTjBeuZh+oWNPsz07OaOLim9cB1lA==
-X-Received: by 2002:a17:907:7ba2:b0:a9a:2afc:e4e3 with SMTP id a640c23a62f3a-a9de61d5d26mr1793382666b.50.1730356415186;
-        Wed, 30 Oct 2024 23:33:35 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9e5664bb9dsm31886866b.161.2024.10.30.23.33.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Oct 2024 23:33:34 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id DED09BE2DE0; Thu, 31 Oct 2024 07:33:32 +0100 (CET)
-Date: Thu, 31 Oct 2024 07:33:32 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: Mike <user.service2016@gmail.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	linux-bluetooth@vger.kernel.org,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
+	s=arc-20240116; t=1730356533; c=relaxed/simple;
+	bh=JcLQm5cN5XbuT6oX0Qh9tU7pY9cEpUHdv+lzKZYAUwE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WOBWhyhOvjJf3cW+nsp3IbYHrq3i/nCAy2ZH8NI3udCNj6yhIAfXCM4nJrWSQqDfgr7Stp/aVdkT8BkO7fiXeRaljUfeLpDtX3ovZxT5TnICqf0ihEsDm7HJb4N2ilbPI8i9i3dFb4LwSeubvGRJAR1Ngxk3UHIzb1oUUgFRxqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4XfDkg2QXRz4f3lfX;
+	Thu, 31 Oct 2024 14:35:07 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id DC8101A018C;
+	Thu, 31 Oct 2024 14:35:25 +0800 (CST)
+Received: from ultra.huawei.com (unknown [10.90.53.71])
+	by APP4 (Coremail) with SMTP id gCh0CgDnEIUsJSNnwi_BAQ--.1214S2;
+	Thu, 31 Oct 2024 14:35:25 +0800 (CST)
+From: Pu Lehui <pulehui@huaweicloud.com>
+To: stable@vger.kernel.org,
+	bpf@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	Jeremy =?iso-8859-1?Q?Lain=E9?= <jeremy.laine@m4x.org>,
-	Linux regressions mailing list <regressions@lists.linux.dev>,
-	Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: Bluetooth kernel BUG with Intel AX211 (regression in 6.1.83)
-Message-ID: <ZyMkvAkZXuoTHFtd@eldamar.lan>
-References: <30f4b18f-4b96-403c-a0ab-d81809d9888a@gmail.com>
- <c09d4f5b-0c4b-4f57-8955-28a963cc7e16@leemhuis.info>
- <2024061258-boxy-plaster-7219@gregkh>
- <d5aa11c9-6326-4096-9c29-d9f0d11f83b4@leemhuis.info>
+	Pu Lehui <pulehui@huawei.com>
+Subject: [PATCH 6.6] Revert "selftests/bpf: Implement get_hw_ring_size function to retrieve current and max interface size"
+Date: Thu, 31 Oct 2024 06:37:02 +0000
+Message-Id: <20241031063702.3256343-1-pulehui@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d5aa11c9-6326-4096-9c29-d9f0d11f83b4@leemhuis.info>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgDnEIUsJSNnwi_BAQ--.1214S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxXry3Xr4fuF1ftr4UtryrZwb_yoWrCry3pa
+	48A345t3yIqF17t3ZrJrW2gF4rKrs7WrWUGry0qw1UZr47Gr97Xr4xKr4jgF90grZ0qrs5
+	ZayIgr1rCr48ZrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUyCb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
+	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij
+	64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
+	8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE
+	2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42
+	xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF
+	7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jjVbkUUUUU=
+X-CM-SenderInfo: psxovxtxl6x35dzhxuhorxvhhfrp/
 
-Hi,
+From: Pu Lehui <pulehui@huawei.com>
 
-On Tue, Jun 18, 2024 at 12:30:18PM +0200, Thorsten Leemhuis wrote:
-> On 12.06.24 14:04, Greg KH wrote:
-> > On Thu, Jun 06, 2024 at 12:18:18PM +0200, Thorsten Leemhuis wrote:
-> >> On 03.06.24 22:03, Mike wrote:
-> >>> On 29.05.24 11:06, Thorsten Leemhuis wrote:
-> >>> [...]
-> >>> I understand that 6.9-rc5[1] worked fine, but I guess it will take some
-> >>> time to be
-> >>> included in Debian stable, so having a patch for 6.1.x will be much
-> >>> appreciated.
-> >>> I do not have the time to follow the vanilla (latest) release as is
-> >>> likely the case for
-> >>> many other Linux users.
-> >>>
-> >> Still no reaction from the bluetooth developers. Guess they are busy
-> >> and/or do not care about 6.1.y. In that case:
-> >>
-> >> @Greg: do you might have an idea how the 6.1.y commit a13f316e90fdb1
-> >> ("Bluetooth: hci_conn: Consolidate code for aborting connections") might
-> >> cause this or if it's missing some per-requisite? If not I wonder if
-> >> reverting that patch from 6.1.y might be the best move to resolve this
-> >> regression. Mike earlier in
-> >> https://lore.kernel.org/all/c947e600-e126-43ea-9530-0389206bef5e@gmail.com/
-> >> confirmed that this fixed the problem in tests. Jeremy (who started the
-> >> thread and afaics has the same problem) did not reply.
-> > 
-> > How was this reverted?  I get a bunch of conflicts as this commit was
-> > added as a dependency of a patch later in the series.
-> > 
-> > So if this wants to be reverted from 6.1.y, can someone send me the
-> > revert that has been tested to work?
-> 
-> Mike, can you help out here, as you apparently managed a revert earlier?
-> Without you or someone else submitting a revert I fear this won't be
-> resolved...
+This reverts commit c8c590f07ad7ffaa6ef11e90b81202212077497b which is
+commit 90a695c3d31e1c9f0adb8c4c80028ed4ea7ed5ab upstream.
 
-Trying to reboostrap this, as people running 6.1.112 based kernel
-seems still hitting the issue, but have not asked yet if it happens as
-well for 6.114.
+Commit c8c590f07ad7 ("selftests/bpf: Implement get_hw_ring_size function
+to retrieve current and max interface size") will cause the following
+bpf selftests compilation error in the 6.6 stable branch, and it is not
+the Stable-dep-of of commit 103c0431c7fb ("selftests/bpf: Drop unneeded
+error.h includes"). So let's revert commit c8c590f07ad7 to fix this
+compilation error.
 
-https://bugs.debian.org/1086447
+  ./network_helpers.h:66:43: error: 'struct ethtool_ringparam' declared
+    inside parameter list will not be visible outside of this definition or
+    declaration [-Werror]
+      66 | int get_hw_ring_size(char *ifname, struct ethtool_ringparam *ring_param);
 
-Mike, since I guess you are still as well affected as well, does the
-issue trigger on 6.1.114 for you and does reverting changes from
-a13f316e90fdb1 still fix the issue? Can you send your
-backport/changes?
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
+---
+ tools/testing/selftests/bpf/network_helpers.c | 24 -------------------
+ tools/testing/selftests/bpf/network_helpers.h |  4 ----
+ .../selftests/bpf/prog_tests/flow_dissector.c |  1 +
+ tools/testing/selftests/bpf/xdp_hw_metadata.c | 14 +++++++++++
+ 4 files changed, 15 insertions(+), 28 deletions(-)
 
-Regards,
-Salvatore
+diff --git a/tools/testing/selftests/bpf/network_helpers.c b/tools/testing/selftests/bpf/network_helpers.c
+index d2acc8875212..0877b60ec81f 100644
+--- a/tools/testing/selftests/bpf/network_helpers.c
++++ b/tools/testing/selftests/bpf/network_helpers.c
+@@ -465,27 +465,3 @@ int get_socket_local_port(int sock_fd)
+ 
+ 	return -1;
+ }
+-
+-int get_hw_ring_size(char *ifname, struct ethtool_ringparam *ring_param)
+-{
+-	struct ifreq ifr = {0};
+-	int sockfd, err;
+-
+-	sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+-	if (sockfd < 0)
+-		return -errno;
+-
+-	memcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
+-
+-	ring_param->cmd = ETHTOOL_GRINGPARAM;
+-	ifr.ifr_data = (char *)ring_param;
+-
+-	if (ioctl(sockfd, SIOCETHTOOL, &ifr) < 0) {
+-		err = errno;
+-		close(sockfd);
+-		return -err;
+-	}
+-
+-	close(sockfd);
+-	return 0;
+-}
+diff --git a/tools/testing/selftests/bpf/network_helpers.h b/tools/testing/selftests/bpf/network_helpers.h
+index 11cbe194769b..5eccc67d1a99 100644
+--- a/tools/testing/selftests/bpf/network_helpers.h
++++ b/tools/testing/selftests/bpf/network_helpers.h
+@@ -9,11 +9,8 @@ typedef __u16 __sum16;
+ #include <linux/if_packet.h>
+ #include <linux/ip.h>
+ #include <linux/ipv6.h>
+-#include <linux/ethtool.h>
+-#include <linux/sockios.h>
+ #include <netinet/tcp.h>
+ #include <bpf/bpf_endian.h>
+-#include <net/if.h>
+ 
+ #define MAGIC_VAL 0x1234
+ #define NUM_ITER 100000
+@@ -63,7 +60,6 @@ int make_sockaddr(int family, const char *addr_str, __u16 port,
+ 		  struct sockaddr_storage *addr, socklen_t *len);
+ char *ping_command(int family);
+ int get_socket_local_port(int sock_fd);
+-int get_hw_ring_size(char *ifname, struct ethtool_ringparam *ring_param);
+ 
+ struct nstoken;
+ /**
+diff --git a/tools/testing/selftests/bpf/prog_tests/flow_dissector.c b/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
+index 3171047414a7..b81046806579 100644
+--- a/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
++++ b/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
+@@ -2,6 +2,7 @@
+ #define _GNU_SOURCE
+ #include <test_progs.h>
+ #include <network_helpers.h>
++#include <linux/if.h>
+ #include <linux/if_tun.h>
+ #include <sys/uio.h>
+ 
+diff --git a/tools/testing/selftests/bpf/xdp_hw_metadata.c b/tools/testing/selftests/bpf/xdp_hw_metadata.c
+index 79f2da8f6ead..adb77c1a6a74 100644
+--- a/tools/testing/selftests/bpf/xdp_hw_metadata.c
++++ b/tools/testing/selftests/bpf/xdp_hw_metadata.c
+@@ -288,6 +288,20 @@ static int verify_metadata(struct xsk *rx_xsk, int rxq, int server_fd, clockid_t
+ 	return 0;
+ }
+ 
++struct ethtool_channels {
++	__u32	cmd;
++	__u32	max_rx;
++	__u32	max_tx;
++	__u32	max_other;
++	__u32	max_combined;
++	__u32	rx_count;
++	__u32	tx_count;
++	__u32	other_count;
++	__u32	combined_count;
++};
++
++#define ETHTOOL_GCHANNELS	0x0000003c /* Get no of channels */
++
+ static int rxq_num(const char *ifname)
+ {
+ 	struct ethtool_channels ch = {
+-- 
+2.34.1
+
 
