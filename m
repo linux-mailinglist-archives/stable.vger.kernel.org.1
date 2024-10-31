@@ -1,149 +1,95 @@
-Return-Path: <stable+bounces-89427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 102B79B7FCD
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 17:18:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E9A59B7FF5
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 17:23:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFF0E1F222E3
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 16:18:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 438F02814DC
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 16:23:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20161BC9F4;
-	Thu, 31 Oct 2024 16:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8B61B86E4;
+	Thu, 31 Oct 2024 16:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="m119S1B2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pC0YxoPp"
 X-Original-To: stable@vger.kernel.org
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EEE91BBBD4
-	for <stable@vger.kernel.org>; Thu, 31 Oct 2024 16:17:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD1719D082;
+	Thu, 31 Oct 2024 16:23:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730391467; cv=none; b=Fyil8HTQ3l6b4FEF+PqUvDUpouJC5SJ7G8uenItO0yx2//ER8zJpZzKICUF6rof/4Jc6sSmRWC8b/e+JewJy7OVeIS4ExoojVWwfh0h3zXdMpA53BtDb2R8o2/lrP/Jz7kvKs1BFS/GbEfVVHK9GL727WmPiGaIYwWdl9L+X/0A=
+	t=1730391813; cv=none; b=DZPws87EVUM6aEx6ycYkWyuDtZCLwpPpLjPJCx22+hvhfWs8AFyGfOUftxiMrpOPz51gFUDaEN2Q2dHJcdaeU/XHGC5+W/OLld6SmkbU4jcn7pwfSxyV1w8+Y8qA7f4/2rO4+7WrQffafitCyL+CNdUdmUafC9MRVHKn2jZH6Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730391467; c=relaxed/simple;
-	bh=iZF+mooExopyq0xzdO7CNurUgan6rIV70ohSFzoQHg8=;
+	s=arc-20240116; t=1730391813; c=relaxed/simple;
+	bh=RRfz1nNuXVubsejbLWVePhc2pbS8lDWqOzVyNPvpWwU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a8jmFJqh5c/80kE6NjoZy65F0+hcCO2XQP+PXtad+iBbwnVTLFAPMJBeol66s2dt+Osjax7xem2OKnbLUwH+75HhC/d4d+I4XjClPyFpbg2uMuWb8kUK9emNR47bWSdGD1lNyBUWlbUc2xwhEEueTLzHcU088O4fPUBJu93wPUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=m119S1B2; arc=none smtp.client-ip=91.218.175.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Thu, 31 Oct 2024 16:17:34 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1730391461;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Zz4c3x5dbiaQ/rDPEPHeqjhR4kVLEaCYKPw8Ka78Dic=;
-	b=m119S1B2eU/7eMmPJLPzLd++29ABneZsc3f3z1jyJr3d9Z5LwVwBljLq5+9XNmNxg85RP2
-	Qqn4Z39JN45Dil5xzv0t0Z43mdLhjn7zKFz+V/eWD8PZkSt8/D1LgUgxNa//ra9NUVQeCN
-	/B96m+63E/jYvsItFIvWzs5dbf+OHIc=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Andrei Vagin <avagin@google.com>
-Cc: Alexey Gladkov <legion@kernel.org>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=YEXoO7oMedjG0Ryy+pt4KZEXYIjR13laDDkLbA59yUxF2qQaNkKSYp0QNMPbDQYzumfzcTa7AlTSBkSXtRRXJJluV5//f+aYvZgfGIKoKX+4JZcrDOgZioC1MQS3u9C3spmSt2SddlVz47VkokfqUhNcJ1z+QorZk7tMPY6J59I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pC0YxoPp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5E5C4CEE5;
+	Thu, 31 Oct 2024 16:23:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730391813;
+	bh=RRfz1nNuXVubsejbLWVePhc2pbS8lDWqOzVyNPvpWwU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pC0YxoPpS80Zc6ELbbZ+TbDyuTkQF5d9e71F4HKlNzW2W5qbyi63uEr6B+nzSpCqS
+	 HZvpnlwAtKHP7VHI4ts0KMbHWGXKOuwgg4uaVeJoSKT3OrWCaXGQQ2fl7iJW0sUFAZ
+	 R0VTQd9ZBBclJFYoWcDRkwbtO+nuBzaOmPFPxikcr76JJcvqHfPiQ+Pd/Eqty3VlOo
+	 n5WEYqjCB665Kg/5OQh7wFyv7qM/i5BFjeSpn3TE+jGbjo3KvUuiNWtUsjTWSRiy48
+	 JhWd8JxHPXpOMRyOR/aOtWGRrE+x32N9+HXzMaf5ST5u3byA4fTIzzd0BA/TZjg6AV
+	 tTxirWOuo7fPQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1t6XxK-0000000076v-3Mgh;
+	Thu, 31 Oct 2024 17:23:31 +0100
+Date: Thu, 31 Oct 2024 17:23:30 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Sui Jingfeng <sui.jingfeng@linux.dev>
+Cc: neil.armstrong@linaro.org, Andrzej Hajda <andrzej.hajda@intel.com>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] ucounts: fix counter leak in inc_rlimit_get_ucounts()
-Message-ID: <ZyOtnhVpTgdmvaoM@google.com>
-References: <20241031045602.309600-1-avagin@google.com>
- <ZyNS9J7TOQ84AkYz@example.org>
- <CAEWA0a7W4u189wViEk2P9ZBgUe7DFGmSA8UKW0gKvCC8_pRiHw@mail.gmail.com>
+Subject: Re: [PATCH v2] drm/bridge: Fix assignment of the of_node of the
+ parent to aux bridge
+Message-ID: <ZyOvAqnuxbNnGWli@hovoldconsulting.com>
+References: <20241018-drm-aux-bridge-mark-of-node-reused-v2-1-aeed1b445c7d@linaro.org>
+ <172951608323.1285208.3162107667310691864.b4-ty@linaro.org>
+ <230b5910-6790-44cb-90ed-222bee89054d@linux.dev>
+ <c2a4cc3a-2ffc-46f3-8636-238cd561f7aa@linaro.org>
+ <751a4ab5-acbf-4e57-8cf4-51ab10206cc9@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEWA0a7W4u189wViEk2P9ZBgUe7DFGmSA8UKW0gKvCC8_pRiHw@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <751a4ab5-acbf-4e57-8cf4-51ab10206cc9@linux.dev>
 
-On Thu, Oct 31, 2024 at 08:43:22AM -0700, Andrei Vagin wrote:
-> On Thu, Oct 31, 2024 at 2:50 AM Alexey Gladkov <legion@kernel.org> wrote:
-> >
-> > On Thu, Oct 31, 2024 at 04:56:01AM +0000, Andrei Vagin wrote:
-> > > The inc_rlimit_get_ucounts() increments the specified rlimit counter and
-> > > then checks its limit. If the value exceeds the limit, the function
-> > > returns an error without decrementing the counter.
-> > >
-> > > Fixes: 15bc01effefe ("ucounts: Fix signal ucount refcounting")
-> > > Tested-by: Roman Gushchin <roman.gushchin@linux.dev>
-> > > Co-debugged-by: Roman Gushchin <roman.gushchin@linux.dev>
-> > > Cc: Kees Cook <kees@kernel.org>
-> > > Cc: Andrei Vagin <avagin@google.com>
-> > > Cc: "Eric W. Biederman" <ebiederm@xmission.com>
-> > > Cc: Alexey Gladkov <legion@kernel.org>
-> > > Cc: <stable@vger.kernel.org>
-> > > Signed-off-by: Andrei Vagin <avagin@google.com>
-> > > ---
-> > >  kernel/ucount.c | 5 ++---
-> > >  1 file changed, 2 insertions(+), 3 deletions(-)
-> > >
-> > > diff --git a/kernel/ucount.c b/kernel/ucount.c
-> > > index 8c07714ff27d..16c0ea1cb432 100644
-> > > --- a/kernel/ucount.c
-> > > +++ b/kernel/ucount.c
-> > > @@ -328,13 +328,12 @@ long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
-> > >               if (new != 1)
-> > >                       continue;
-> > >               if (!get_ucounts(iter))
-> > > -                     goto dec_unwind;
-> > > +                     goto unwind;
-> > >       }
-> > >       return ret;
-> > > -dec_unwind:
-> > > +unwind:
-> > >       dec = atomic_long_sub_return(1, &iter->rlimit[type]);
-> > >       WARN_ON_ONCE(dec < 0);
-> > > -unwind:
-> > >       do_dec_rlimit_put_ucounts(ucounts, iter, type);
-> > >       return 0;
-> > >  }
-> >
-> > Agree. The do_dec_rlimit_put_ucounts() decreases rlimit up to iter but
-> > does not include it.
-> >
-> > Except for a small NAK because the patch changes goto for get_ucounts()
-> > and not for rlimit overflow check.
-> 
-> Do you think it is better to rename the label and use dec_unwind? I don't
-> think it makes a big difference, but if you think it does, I can send
-> this version.
-> 
-> BTW, while investigating this, we found another one. Currently,
-> sigqueue_alloc enforces a counter limit even when override_rlimit is set
-> to true. This was introduced by commit f3791f4df569ea ("Fix
-> UCOUNT_RLIMIT_SIGPENDING counter leak"). This change in behavior has
-> introduced regressions, causing failures in applications that previously
-> functioned correctly.
-> 
-> For example, if the limit is reached and a process receives a SIGSEGV
-> signal, sigqueue_alloc fails to allocate the necessary resources for the
-> signal delivery, preventing the signal from being delivered with
-> siginfo. This prevents the process from correctly identifying the fault
-> address and handling the error. From the user-space perspective,
-> applications are unaware that the limit has been reached and that the
-> siginfo is effectively 'corrupted'. This can lead to unpredictable
-> behavior and crashes, as we observed with java applications.
-> 
-> To address this, we think to restore the original logic for
-> override_rlimit. This will ensure that kernel signals are always
-> delivered correctly, regardless of the counter limit.  Does this
-> approach seem reasonable? Do you have any concerns?
+On Thu, Oct 31, 2024 at 11:06:38PM +0800, Sui Jingfeng wrote:
 
-I think override_rlimit argument should be passed into inc_rlimit_get_ucounts()
-and be handled there properly by ignoring the comparison with max.
+> But I think Johan do need more times to understand what exactly
+> the real problem is. We do need times to investigate new method.
 
-I gonna prepare a patch later today, if there are no objections for this
-approach.
+No, I know perfectly well what the (immediate) problem is here (I was
+the one adding support for the of_node_reused flag some years back).
 
-Thanks!
+I just wanted to make sure that the commit message was correct and
+complete before merging (and also to figure out whether this particular
+patch needed to be backported).
+
+Johan
 
