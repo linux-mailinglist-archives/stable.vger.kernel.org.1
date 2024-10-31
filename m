@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-89385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 182F19B72CA
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 04:15:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 709DE9B72CB
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 04:15:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A39AE1F24F9E
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 03:15:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA3FC1F25025
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 03:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 051C413211C;
-	Thu, 31 Oct 2024 03:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A7D137747;
+	Thu, 31 Oct 2024 03:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Wva0j5uN"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="rRZXGLHW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54C31BD9E8;
-	Thu, 31 Oct 2024 03:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA0513699A;
+	Thu, 31 Oct 2024 03:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730344517; cv=none; b=g4Y3KCyD6IlhddwzqbKQyIO9hOLShvXb2UhVf0f1svZ93RAE7EiQ++JShtQghuAPcYUXATwPAZGKjTnsfZabeHkPyWtBysI77MIgs0Ep8wOl+8XFyxe9CuVFVcqctHP4eQN54LTnt4wOQjMuTjWmiLjNBkqtHFnBC+QEcbX8JI0=
+	t=1730344521; cv=none; b=lvBvw65PVx7xLeOnuOL2rUNxlCWDRYS0xJgbM5HMoJr5oecx1Ns8G1wdQvCU/LK0wtcmfhUdxDVISgHHn5BpAxvorJ4CSkZ++fyenVrNMIRtOHiuUhxzEvTY2IXhn4Qrn2zy7cLvuQYvqfDRa9u/grgxO0pxCrRxUb81ILUiHDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730344517; c=relaxed/simple;
-	bh=j8AYzqOTM3F/K0AcZw5m58b8uZQZ5JsZDlvII0C5T/8=;
-	h=Date:To:From:Subject:Message-Id; b=SAP0ngfuepxLNg/MrDGToU18h1Ep1heXv1zbzFopjbS8gGMt6iFf5ThuzP6ZsY2YqCiRfIlQ0f3HiwqzqluL6isgf5jyZWQsuS5IzOfynCnoUQUiySwM1USuvwXYtRfmHrf7xmY2YOBoK6txBghzbK7t1zxXHID3iWzFKNE/+iE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Wva0j5uN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AE43C4CECE;
-	Thu, 31 Oct 2024 03:15:17 +0000 (UTC)
+	s=arc-20240116; t=1730344521; c=relaxed/simple;
+	bh=6dhqCd17MZYjOxClJ9nHc+y0HjDN/59G1SIM7Oo9cH4=;
+	h=Date:To:From:Subject:Message-Id; b=sR4OZfyYo7MRVT1Gn3JdWit6o282TFSUs6Qb+TXiER4DQ7UES+0K1nlxUC83EVSLi9Wq3T1X7ZlqWhXNxTrkAQN7kEaw0mENPQlNEFpnC0bdsBd218rNFHOi8GSqA1mDFzeSejs4CoAR16FMC2q9xdANaj1T0vuUn3j4EXiLJ00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=rRZXGLHW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA392C4CECE;
+	Thu, 31 Oct 2024 03:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1730344517;
-	bh=j8AYzqOTM3F/K0AcZw5m58b8uZQZ5JsZDlvII0C5T/8=;
+	s=korg; t=1730344519;
+	bh=6dhqCd17MZYjOxClJ9nHc+y0HjDN/59G1SIM7Oo9cH4=;
 	h=Date:To:From:Subject:From;
-	b=Wva0j5uNMoP73+IH9EBGYcESrVKCT7V1ETB0xEdmU3p8GPuDVFYhpGY0UJ2JwwCF0
-	 ei9IpjFRFMGvjU3GRWjeOMlQO14p9/rFJwb5ZMbLVpmnMzJQ14sOwU3kGuOPWDfUNl
-	 yUWSWBTBrOfPd7ouLFOnUd0Yp2uxOAy0VrHr0LlQ=
-Date: Wed, 30 Oct 2024 20:15:16 -0700
-To: mm-commits@vger.kernel.org,weixugc@google.com,stevensd@google.com,stable@vger.kernel.org,seanjc@google.com,rientjes@google.com,pbonzini@redhat.com,oliver.upton@linux.dev,jthoughton@google.com,dmatlack@google.com,axelrasmussen@google.com,yuzhao@google.com,akpm@linux-foundation.org
+	b=rRZXGLHWpUdCFAta4wfRxlWc2VzrpTSmnp4Kx3lVu/2IqKaODfltNK7pj8JdngBxW
+	 31gF0o6oKJbI0nF5GXaMEEZ8/9MI/zZtkaKsaKfw3YeKznT4nonLO1fz2exB+bjaLk
+	 eNZYUH5lLOVg0DhnNwlE7rxuCp8jSYSq601tBdCU=
+Date: Wed, 30 Oct 2024 20:15:19 -0700
+To: mm-commits@vger.kernel.org,ying.huang@intel.com,weixugc@google.com,stable@vger.kernel.org,shy828301@gmail.com,shakeel.butt@linux.dev,osalvador@suse.de,dave@stgolabs.net,dave.hansen@linux.intel.com,gourry@gourry.net,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-multi-gen-lru-use-pteppmdp_clear_young_notify.patch removed from -mm tree
-Message-Id: <20241031031517.3AE43C4CECE@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] vmscanmigrate-fix-double-decrement-on-node-stats-when-demoting-pages.patch removed from -mm tree
+Message-Id: <20241031031519.DA392C4CECE@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,331 +50,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm: multi-gen LRU: use {ptep,pmdp}_clear_young_notify()
+     Subject: vmscan,migrate: fix page count imbalance on node stats when demoting pages
 has been removed from the -mm tree.  Its filename was
-     mm-multi-gen-lru-use-pteppmdp_clear_young_notify.patch
+     vmscanmigrate-fix-double-decrement-on-node-stats-when-demoting-pages.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Yu Zhao <yuzhao@google.com>
-Subject: mm: multi-gen LRU: use {ptep,pmdp}_clear_young_notify()
-Date: Sat, 19 Oct 2024 01:29:39 +0000
+From: Gregory Price <gourry@gourry.net>
+Subject: vmscan,migrate: fix page count imbalance on node stats when demoting pages
+Date: Fri, 25 Oct 2024 10:17:24 -0400
 
-When the MM_WALK capability is enabled, memory that is mostly accessed by
-a VM appears younger than it really is, therefore this memory will be less
-likely to be evicted.  Therefore, the presence of a running VM can
-significantly increase swap-outs for non-VM memory, regressing the
-performance for the rest of the system.
+When numa balancing is enabled with demotion, vmscan will call
+migrate_pages when shrinking LRUs.  migrate_pages will decrement the
+the node's isolated page count, leading to an imbalanced count when
+invoked from (MG)LRU code.
 
-Fix this regression by always calling {ptep,pmdp}_clear_young_notify()
-whenever we clear the young bits on PMDs/PTEs.
+The result is dmesg output like such:
 
-Link: https://lkml.kernel.org/r/20241019012940.3656292-3-jthoughton@google.com
-Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
-Signed-off-by: Yu Zhao <yuzhao@google.com>
-Signed-off-by: James Houghton <jthoughton@google.com>
-Reported-by: David Stevens <stevensd@google.com>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: David Matlack <dmatlack@google.com>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Oliver Upton <oliver.upton@linux.dev>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>
+$ cat /proc/sys/vm/stat_refresh
+
+[77383.088417] vmstat_refresh: nr_isolated_anon -103212
+[77383.088417] vmstat_refresh: nr_isolated_file -899642
+
+This negative value may impact compaction and reclaim throttling.
+
+The following path produces the decrement:
+
+shrink_folio_list
+  demote_folio_list
+    migrate_pages
+      migrate_pages_batch
+        migrate_folio_move
+          migrate_folio_done
+            mod_node_page_state(-ve) <- decrement
+
+This path happens for SUCCESSFUL migrations, not failures.  Typically
+callers to migrate_pages are required to handle putback/accounting for
+failures, but this is already handled in the shrink code.
+
+When accounting for migrations, instead do not decrement the count when
+the migration reason is MR_DEMOTION.  As of v6.11, this demotion logic
+is the only source of MR_DEMOTION.
+
+Link: https://lkml.kernel.org/r/20241025141724.17927-1-gourry@gourry.net
+Fixes: 26aa2d199d6f ("mm/migrate: demote pages during reclaim")
+Signed-off-by: Gregory Price <gourry@gourry.net>
+Reviewed-by: Yang Shi <shy828301@gmail.com>
+Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
 Cc: Wei Xu <weixugc@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/mmzone.h |    5 +-
- mm/rmap.c              |    9 +--
- mm/vmscan.c            |   91 +++++++++++++++++++++------------------
- 3 files changed, 55 insertions(+), 50 deletions(-)
+ mm/migrate.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/mmzone.h~mm-multi-gen-lru-use-pteppmdp_clear_young_notify
-+++ a/include/linux/mmzone.h
-@@ -555,7 +555,7 @@ struct lru_gen_memcg {
+--- a/mm/migrate.c~vmscanmigrate-fix-double-decrement-on-node-stats-when-demoting-pages
++++ a/mm/migrate.c
+@@ -1178,7 +1178,7 @@ static void migrate_folio_done(struct fo
+ 	 * not accounted to NR_ISOLATED_*. They can be recognized
+ 	 * as __folio_test_movable
+ 	 */
+-	if (likely(!__folio_test_movable(src)))
++	if (likely(!__folio_test_movable(src)) && reason != MR_DEMOTION)
+ 		mod_node_page_state(folio_pgdat(src), NR_ISOLATED_ANON +
+ 				    folio_is_file_lru(src), -folio_nr_pages(src));
  
- void lru_gen_init_pgdat(struct pglist_data *pgdat);
- void lru_gen_init_lruvec(struct lruvec *lruvec);
--void lru_gen_look_around(struct page_vma_mapped_walk *pvmw);
-+bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw);
- 
- void lru_gen_init_memcg(struct mem_cgroup *memcg);
- void lru_gen_exit_memcg(struct mem_cgroup *memcg);
-@@ -574,8 +574,9 @@ static inline void lru_gen_init_lruvec(s
- {
- }
- 
--static inline void lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
-+static inline bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
- {
-+	return false;
- }
- 
- static inline void lru_gen_init_memcg(struct mem_cgroup *memcg)
---- a/mm/rmap.c~mm-multi-gen-lru-use-pteppmdp_clear_young_notify
-+++ a/mm/rmap.c
-@@ -885,13 +885,10 @@ static bool folio_referenced_one(struct
- 			return false;
- 		}
- 
--		if (pvmw.pte) {
--			if (lru_gen_enabled() &&
--			    pte_young(ptep_get(pvmw.pte))) {
--				lru_gen_look_around(&pvmw);
-+		if (lru_gen_enabled() && pvmw.pte) {
-+			if (lru_gen_look_around(&pvmw))
- 				referenced++;
--			}
--
-+		} else if (pvmw.pte) {
- 			if (ptep_clear_flush_young_notify(vma, address,
- 						pvmw.pte))
- 				referenced++;
---- a/mm/vmscan.c~mm-multi-gen-lru-use-pteppmdp_clear_young_notify
-+++ a/mm/vmscan.c
-@@ -56,6 +56,7 @@
- #include <linux/khugepaged.h>
- #include <linux/rculist_nulls.h>
- #include <linux/random.h>
-+#include <linux/mmu_notifier.h>
- 
- #include <asm/tlbflush.h>
- #include <asm/div64.h>
-@@ -3294,7 +3295,8 @@ static bool get_next_vma(unsigned long m
- 	return false;
- }
- 
--static unsigned long get_pte_pfn(pte_t pte, struct vm_area_struct *vma, unsigned long addr)
-+static unsigned long get_pte_pfn(pte_t pte, struct vm_area_struct *vma, unsigned long addr,
-+				 struct pglist_data *pgdat)
- {
- 	unsigned long pfn = pte_pfn(pte);
- 
-@@ -3306,13 +3308,20 @@ static unsigned long get_pte_pfn(pte_t p
- 	if (WARN_ON_ONCE(pte_devmap(pte) || pte_special(pte)))
- 		return -1;
- 
-+	if (!pte_young(pte) && !mm_has_notifiers(vma->vm_mm))
-+		return -1;
-+
- 	if (WARN_ON_ONCE(!pfn_valid(pfn)))
- 		return -1;
- 
-+	if (pfn < pgdat->node_start_pfn || pfn >= pgdat_end_pfn(pgdat))
-+		return -1;
-+
- 	return pfn;
- }
- 
--static unsigned long get_pmd_pfn(pmd_t pmd, struct vm_area_struct *vma, unsigned long addr)
-+static unsigned long get_pmd_pfn(pmd_t pmd, struct vm_area_struct *vma, unsigned long addr,
-+				 struct pglist_data *pgdat)
- {
- 	unsigned long pfn = pmd_pfn(pmd);
- 
-@@ -3324,9 +3333,15 @@ static unsigned long get_pmd_pfn(pmd_t p
- 	if (WARN_ON_ONCE(pmd_devmap(pmd)))
- 		return -1;
- 
-+	if (!pmd_young(pmd) && !mm_has_notifiers(vma->vm_mm))
-+		return -1;
-+
- 	if (WARN_ON_ONCE(!pfn_valid(pfn)))
- 		return -1;
- 
-+	if (pfn < pgdat->node_start_pfn || pfn >= pgdat_end_pfn(pgdat))
-+		return -1;
-+
- 	return pfn;
- }
- 
-@@ -3335,10 +3350,6 @@ static struct folio *get_pfn_folio(unsig
- {
- 	struct folio *folio;
- 
--	/* try to avoid unnecessary memory loads */
--	if (pfn < pgdat->node_start_pfn || pfn >= pgdat_end_pfn(pgdat))
--		return NULL;
--
- 	folio = pfn_folio(pfn);
- 	if (folio_nid(folio) != pgdat->node_id)
- 		return NULL;
-@@ -3394,20 +3405,16 @@ restart:
- 		total++;
- 		walk->mm_stats[MM_LEAF_TOTAL]++;
- 
--		pfn = get_pte_pfn(ptent, args->vma, addr);
-+		pfn = get_pte_pfn(ptent, args->vma, addr, pgdat);
- 		if (pfn == -1)
- 			continue;
- 
--		if (!pte_young(ptent)) {
--			continue;
--		}
--
- 		folio = get_pfn_folio(pfn, memcg, pgdat, walk->can_swap);
- 		if (!folio)
- 			continue;
- 
--		if (!ptep_test_and_clear_young(args->vma, addr, pte + i))
--			VM_WARN_ON_ONCE(true);
-+		if (!ptep_clear_young_notify(args->vma, addr, pte + i))
-+			continue;
- 
- 		young++;
- 		walk->mm_stats[MM_LEAF_YOUNG]++;
-@@ -3473,21 +3480,22 @@ static void walk_pmd_range_locked(pud_t
- 		/* don't round down the first address */
- 		addr = i ? (*first & PMD_MASK) + i * PMD_SIZE : *first;
- 
--		pfn = get_pmd_pfn(pmd[i], vma, addr);
--		if (pfn == -1)
--			goto next;
--
--		if (!pmd_trans_huge(pmd[i])) {
--			if (!walk->force_scan && should_clear_pmd_young())
-+		if (pmd_present(pmd[i]) && !pmd_trans_huge(pmd[i])) {
-+			if (!walk->force_scan && should_clear_pmd_young() &&
-+			    !mm_has_notifiers(args->mm))
- 				pmdp_test_and_clear_young(vma, addr, pmd + i);
- 			goto next;
- 		}
- 
-+		pfn = get_pmd_pfn(pmd[i], vma, addr, pgdat);
-+		if (pfn == -1)
-+			goto next;
-+
- 		folio = get_pfn_folio(pfn, memcg, pgdat, walk->can_swap);
- 		if (!folio)
- 			goto next;
- 
--		if (!pmdp_test_and_clear_young(vma, addr, pmd + i))
-+		if (!pmdp_clear_young_notify(vma, addr, pmd + i))
- 			goto next;
- 
- 		walk->mm_stats[MM_LEAF_YOUNG]++;
-@@ -3545,24 +3553,18 @@ restart:
- 		}
- 
- 		if (pmd_trans_huge(val)) {
--			unsigned long pfn = pmd_pfn(val);
- 			struct pglist_data *pgdat = lruvec_pgdat(walk->lruvec);
-+			unsigned long pfn = get_pmd_pfn(val, vma, addr, pgdat);
- 
- 			walk->mm_stats[MM_LEAF_TOTAL]++;
- 
--			if (!pmd_young(val)) {
--				continue;
--			}
--
--			/* try to avoid unnecessary memory loads */
--			if (pfn < pgdat->node_start_pfn || pfn >= pgdat_end_pfn(pgdat))
--				continue;
--
--			walk_pmd_range_locked(pud, addr, vma, args, bitmap, &first);
-+			if (pfn != -1)
-+				walk_pmd_range_locked(pud, addr, vma, args, bitmap, &first);
- 			continue;
- 		}
- 
--		if (!walk->force_scan && should_clear_pmd_young()) {
-+		if (!walk->force_scan && should_clear_pmd_young() &&
-+		    !mm_has_notifiers(args->mm)) {
- 			if (!pmd_young(val))
- 				continue;
- 
-@@ -4036,13 +4038,13 @@ static void lru_gen_age_node(struct pgli
-  * the PTE table to the Bloom filter. This forms a feedback loop between the
-  * eviction and the aging.
-  */
--void lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
-+bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
- {
- 	int i;
- 	unsigned long start;
- 	unsigned long end;
- 	struct lru_gen_mm_walk *walk;
--	int young = 0;
-+	int young = 1;
- 	pte_t *pte = pvmw->pte;
- 	unsigned long addr = pvmw->address;
- 	struct vm_area_struct *vma = pvmw->vma;
-@@ -4058,12 +4060,15 @@ void lru_gen_look_around(struct page_vma
- 	lockdep_assert_held(pvmw->ptl);
- 	VM_WARN_ON_ONCE_FOLIO(folio_test_lru(folio), folio);
- 
-+	if (!ptep_clear_young_notify(vma, addr, pte))
-+		return false;
-+
- 	if (spin_is_contended(pvmw->ptl))
--		return;
-+		return true;
- 
- 	/* exclude special VMAs containing anon pages from COW */
- 	if (vma->vm_flags & VM_SPECIAL)
--		return;
-+		return true;
- 
- 	/* avoid taking the LRU lock under the PTL when possible */
- 	walk = current->reclaim_state ? current->reclaim_state->mm_walk : NULL;
-@@ -4071,6 +4076,9 @@ void lru_gen_look_around(struct page_vma
- 	start = max(addr & PMD_MASK, vma->vm_start);
- 	end = min(addr | ~PMD_MASK, vma->vm_end - 1) + 1;
- 
-+	if (end - start == PAGE_SIZE)
-+		return true;
-+
- 	if (end - start > MIN_LRU_BATCH * PAGE_SIZE) {
- 		if (addr - start < MIN_LRU_BATCH * PAGE_SIZE / 2)
- 			end = start + MIN_LRU_BATCH * PAGE_SIZE;
-@@ -4084,7 +4092,7 @@ void lru_gen_look_around(struct page_vma
- 
- 	/* folio_update_gen() requires stable folio_memcg() */
- 	if (!mem_cgroup_trylock_pages(memcg))
--		return;
-+		return true;
- 
- 	arch_enter_lazy_mmu_mode();
- 
-@@ -4094,19 +4102,16 @@ void lru_gen_look_around(struct page_vma
- 		unsigned long pfn;
- 		pte_t ptent = ptep_get(pte + i);
- 
--		pfn = get_pte_pfn(ptent, vma, addr);
-+		pfn = get_pte_pfn(ptent, vma, addr, pgdat);
- 		if (pfn == -1)
- 			continue;
- 
--		if (!pte_young(ptent))
--			continue;
--
- 		folio = get_pfn_folio(pfn, memcg, pgdat, can_swap);
- 		if (!folio)
- 			continue;
- 
--		if (!ptep_test_and_clear_young(vma, addr, pte + i))
--			VM_WARN_ON_ONCE(true);
-+		if (!ptep_clear_young_notify(vma, addr, pte + i))
-+			continue;
- 
- 		young++;
- 
-@@ -4136,6 +4141,8 @@ void lru_gen_look_around(struct page_vma
- 	/* feedback from rmap walkers to page table walkers */
- 	if (mm_state && suitable_to_scan(i, young))
- 		update_bloom_filter(mm_state, max_seq, pvmw->pmd);
-+
-+	return true;
- }
- 
- /******************************************************************************
 _
 
-Patches currently in -mm which might be from yuzhao@google.com are
+Patches currently in -mm which might be from gourry@gourry.net are
 
-mm-page_alloc-keep-track-of-free-highatomic.patch
 
 
