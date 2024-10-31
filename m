@@ -1,56 +1,77 @@
-Return-Path: <stable+bounces-89398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC4129B77EB
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 10:50:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E6C99B7924
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 11:56:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D6A8B261CF
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 09:50:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDC571F21F14
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 10:56:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5986198838;
-	Thu, 31 Oct 2024 09:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62ED5199FAF;
+	Thu, 31 Oct 2024 10:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BGLX1NZD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lIdPDcS9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A26197A81;
-	Thu, 31 Oct 2024 09:50:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951D51494AB;
+	Thu, 31 Oct 2024 10:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730368249; cv=none; b=Y/waqhqY76EGZWRSIWOpughdXTg3MLigktqt/W1RPbKIZc8gIKibHrd7AG9xZ4pthEO18VV1KcBDG/lHD5g7CPrfyZ3DNLuZNQUEMl0KpFQQisKSmq6hFadhRK8yiz/OJyNkTiqP6LCfhXjfyHmmmzXCRb027rlV0oVeavA59OY=
+	t=1730372169; cv=none; b=fyrKlSVS63SEMt76B8JD4e4pf1sjzvmjBcqwbsk1RxXhizC2avMuzuAUOT1T/IeKILZ35ps8QVgZDj4/hiHQCbhkwxR8EU3mLlAOp3quEkDUzV/gJ/dDhidFgI1fBceByaF1XZXn9oOIh1LHkN1UenvYx6ZNky7lkft3qcrECws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730368249; c=relaxed/simple;
-	bh=1SfMoq9aQDPstkesMct3OWKZK5E4xbvfUSf6uoOtSq4=;
+	s=arc-20240116; t=1730372169; c=relaxed/simple;
+	bh=MA12dVLrm+VqZ/ae3pjPtbILpAB3JA5KVkEPvjBUlMY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZF6doVD8ZHqtYFVeSw8Wj73GzSIT2boDj77sAWslyLb7RmT/IUXzL9+FfBCm/zDINN/HE4ZlNhK0Ii2dd1vHqktUQHOZRzXbHnOSY4yczXhKEjv7CdSqERVYpzW388GYqYEtD/sSO/n+u71GpIrKpV7GcqkFo33qASo2BlOIv3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BGLX1NZD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 996BAC4CED0;
-	Thu, 31 Oct 2024 09:50:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730368249;
-	bh=1SfMoq9aQDPstkesMct3OWKZK5E4xbvfUSf6uoOtSq4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BGLX1NZDTSK3O6Wl5vFevq5jODfed+vvbcU5URvZwVeqrPcjwu6K67yRvHmqZoIwd
-	 SQsirCaYnFCLHSeF3dx+7CSkkAmryh1EcrluFdTcgbDKtuPA0BSHk1E4mhalkd5M35
-	 utkXiYmujB+bOqBSDFC7tOVwY4u7J7YyFTPy0oY2/MXvz+v0/8VGhoTAAue50LvJxT
-	 gfNk+nNaYeB7EboaAFbajX+fyTIzQPoG1IjnnEZ2ZquhudSdyR+LLsSbHbKwg8ARfP
-	 Rm+hONCoiv9QrdkkiWYYF3PRhlUbPC38rrjLg+0F3wR0o/kq2m83HPfxqKlyihnoJI
-	 hd8YHmOJW6UoA==
-Date: Thu, 31 Oct 2024 10:50:44 +0100
-From: Alexey Gladkov <legion@kernel.org>
-To: Andrei Vagin <avagin@google.com>
-Cc: "Eric W. Biederman" <ebiederm@xmission.com>,
-	Kees Cook <kees@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] ucounts: fix counter leak in inc_rlimit_get_ucounts()
-Message-ID: <ZyNS9J7TOQ84AkYz@example.org>
-References: <20241031045602.309600-1-avagin@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=gMbuCce4qWU7loVzqY2i7VRCjCWRbH+V5Qt7k0tmns+PozY3AnnrFVVsND4T26q1XpmsrhZgja3oFX88cigTLxfbP+deWRMD4bPTJ76DeCEFStwntf740SMvbbyWa49dDwJAFxhFM2sHxQJn1DfquEG83TsH2APM/uLDU1ngBx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lIdPDcS9; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730372167; x=1761908167;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MA12dVLrm+VqZ/ae3pjPtbILpAB3JA5KVkEPvjBUlMY=;
+  b=lIdPDcS9U3VcNuj2INuN98I0Zj0S9aqku5ZeZFML+CpD5KVl69X+DLle
+   7VyzzK8W+wwJoAaZEK1R/PzLMwxrUGPmrFc+ct91oPq/bwWrgQQo6IKO8
+   oz92BKwaM1tkmY/qAZv6RN7o8rY3PC306Kabs9K6Vxb3sghBP6AsYNMUc
+   uP6lAd7QxLvqSZGSPCTVVnZliQdVJTkkRjANWz+LMZcEkiQRYPPhJCZkB
+   KZnSTof/03PLR1agf7h5S4+dVvBwz7yzSBgGjCLu71hBl8Oigh4ktiMLj
+   Ffla2qxNTTeUe1MAhKk75VPI7rJQacO1yU5Ll0/32XMgzdPSvAn0UPBmI
+   Q==;
+X-CSE-ConnectionGUID: 9Tf0XJjERCGaxilXzrvqnQ==
+X-CSE-MsgGUID: Z8SmUm50QraIjaRmjY0Crg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="41473384"
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; 
+   d="scan'208";a="41473384"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2024 03:56:06 -0700
+X-CSE-ConnectionGUID: 0kV5mYYyTy2NRvL6hEOUhw==
+X-CSE-MsgGUID: hnSDvds3SZmG+Nxh0hgtLQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; 
+   d="scan'208";a="82245396"
+Received: from kuha.fi.intel.com ([10.237.72.152])
+  by fmviesa007.fm.intel.com with SMTP; 31 Oct 2024 03:56:02 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Thu, 31 Oct 2024 12:56:01 +0200
+Date: Thu, 31 Oct 2024 12:56:01 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Rex Nie <rex.nie@jaguarmicro.com>
+Cc: bryan.odonoghue@linaro.org, gregkh@linuxfoundation.org,
+	linux@roeck-us.net, caleb.connolly@linaro.org,
+	linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, angus.chen@jaguarmicro.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4] usb: typec: qcom-pmic: init value of
+ hdr_len/txbuf_len earlier
+Message-ID: <ZyNiQUKPdUwE8EQZ@kuha.fi.intel.com>
+References: <20241030022753.2045-1-rex.nie@jaguarmicro.com>
+ <20241030133632.2116-1-rex.nie@jaguarmicro.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,56 +80,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241031045602.309600-1-avagin@google.com>
+In-Reply-To: <20241030133632.2116-1-rex.nie@jaguarmicro.com>
 
-On Thu, Oct 31, 2024 at 04:56:01AM +0000, Andrei Vagin wrote:
-> The inc_rlimit_get_ucounts() increments the specified rlimit counter and
-> then checks its limit. If the value exceeds the limit, the function
-> returns an error without decrementing the counter.
+On Wed, Oct 30, 2024 at 09:36:32PM +0800, Rex Nie wrote:
+> If the read of USB_PDPHY_RX_ACKNOWLEDGE_REG failed, then hdr_len and
+> txbuf_len are uninitialized. This commit stops to print uninitialized
+> value and misleading/false data.
 > 
-> Fixes: 15bc01effefe ("ucounts: Fix signal ucount refcounting")
-> Tested-by: Roman Gushchin <roman.gushchin@linux.dev>
-> Co-debugged-by: Roman Gushchin <roman.gushchin@linux.dev>
-> Cc: Kees Cook <kees@kernel.org>
-> Cc: Andrei Vagin <avagin@google.com>
-> Cc: "Eric W. Biederman" <ebiederm@xmission.com>
-> Cc: Alexey Gladkov <legion@kernel.org>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrei Vagin <avagin@google.com>
+> Cc: stable@vger.kernel.org
+> Fixes: a4422ff22142 (" usb: typec: qcom: Add Qualcomm PMIC Type-C driver")
+> Signed-off-by: Rex Nie <rex.nie@jaguarmicro.com>
+
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+
 > ---
->  kernel/ucount.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+> V2 -> V3:
+> - add changelog, add Fixes tag, add Cc stable ml. Thanks heikki
+> - Link to v2: https://lore.kernel.org/all/20241030022753.2045-1-rex.nie@jaguarmicro.com/
+> V1 -> V2:
+> - keep printout when data didn't transmit, thanks Bjorn, bod, greg k-h
+> - Links: https://lore.kernel.org/all/b177e736-e640-47ed-9f1e-ee65971dfc9c@linaro.org/
+> ---
+>  drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> diff --git a/kernel/ucount.c b/kernel/ucount.c
-> index 8c07714ff27d..16c0ea1cb432 100644
-> --- a/kernel/ucount.c
-> +++ b/kernel/ucount.c
-> @@ -328,13 +328,12 @@ long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
->  		if (new != 1)
->  			continue;
->  		if (!get_ucounts(iter))
-> -			goto dec_unwind;
-> +			goto unwind;
->  	}
->  	return ret;
-> -dec_unwind:
-> +unwind:
->  	dec = atomic_long_sub_return(1, &iter->rlimit[type]);
->  	WARN_ON_ONCE(dec < 0);
-> -unwind:
->  	do_dec_rlimit_put_ucounts(ucounts, iter, type);
->  	return 0;
->  }
-
-Agree. The do_dec_rlimit_put_ucounts() decreases rlimit up to iter but
-does not include it.
-
-Except for a small NAK because the patch changes goto for get_ucounts()
-and not for rlimit overflow check.
-
-Acked-by: Alexey Gladkov <legion@kernel.org>
+> diff --git a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c
+> index 5b7f52b74a40..726423684bae 100644
+> --- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c
+> +++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c
+> @@ -227,6 +227,10 @@ qcom_pmic_typec_pdphy_pd_transmit_payload(struct pmic_typec_pdphy *pmic_typec_pd
+>  
+>  	spin_lock_irqsave(&pmic_typec_pdphy->lock, flags);
+>  
+> +	hdr_len = sizeof(msg->header);
+> +	txbuf_len = pd_header_cnt_le(msg->header) * 4;
+> +	txsize_len = hdr_len + txbuf_len - 1;
+> +
+>  	ret = regmap_read(pmic_typec_pdphy->regmap,
+>  			  pmic_typec_pdphy->base + USB_PDPHY_RX_ACKNOWLEDGE_REG,
+>  			  &val);
+> @@ -244,10 +248,6 @@ qcom_pmic_typec_pdphy_pd_transmit_payload(struct pmic_typec_pdphy *pmic_typec_pd
+>  	if (ret)
+>  		goto done;
+>  
+> -	hdr_len = sizeof(msg->header);
+> -	txbuf_len = pd_header_cnt_le(msg->header) * 4;
+> -	txsize_len = hdr_len + txbuf_len - 1;
+> -
+>  	/* Write message header sizeof(u16) to USB_PDPHY_TX_BUFFER_HDR_REG */
+>  	ret = regmap_bulk_write(pmic_typec_pdphy->regmap,
+>  				pmic_typec_pdphy->base + USB_PDPHY_TX_BUFFER_HDR_REG,
+> -- 
+> 2.17.1
 
 -- 
-Rgrds, legion
-
+heikki
 
