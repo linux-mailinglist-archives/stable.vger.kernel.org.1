@@ -1,123 +1,147 @@
-Return-Path: <stable+bounces-89409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDB389B7D3C
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 15:46:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A265C9B7D89
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 16:01:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A2821C20D25
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 14:46:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5803A1F21DDA
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 15:01:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 956B319AD78;
-	Thu, 31 Oct 2024 14:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642C21B5ED8;
+	Thu, 31 Oct 2024 15:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EsUPYw+m"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RwsHdhjI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631295A79B;
-	Thu, 31 Oct 2024 14:46:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAE11A705C
+	for <stable@vger.kernel.org>; Thu, 31 Oct 2024 15:00:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730385987; cv=none; b=UM44zPmc5vU+T4KFIw9I9a7mS415d4PGVWboDZzAOVCWAyEKAuPQqb5HuGHGcStZ1wudkiQFikLhqk+j5hR7UnyeEb29XKL8ePajsP/+c5XfHDwjGpalCavL5HoPr9sMTJoI/v+DZIYiYiLY0FyturJ1uLkq0xuXcAwWCZQ+VkE=
+	t=1730386846; cv=none; b=rHLJAC+E5oIGmu8d02OAsN/zwYu5sJk/kxKLxGZbBI3A7n2KqCpLmoOg0KiJa0iGnHFvzvuJ2wJdKO0sT9AfYwJMKrADLG/JfubKK/ICJ4rXEllcqeVJFnuXIvM2dc7NgD/6CdRVo1cXF6WOuqAVoHZXv/wdSFQpVxHTwj53nuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730385987; c=relaxed/simple;
-	bh=G3k8YCPLvT/vD+woarb58oSt9eiPRkiyHHDZR/GB9XA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=e0wMu5AOEy8Ov2FZa+GSSVBF411B2OPfiFSSsQy+p9JxCvfltLtgPZrMX5M+hGTBxDVHEyznUI6FyeWWNncS7YWOI9SfflXld30mfnZQTD+4rCanFjFqHZMQedRHXDQJmwqcBIZ9recu0rmThaQ1h0ihXRUAYOxGjHz5EKfez9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EsUPYw+m; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-37d47eff9acso673304f8f.3;
-        Thu, 31 Oct 2024 07:46:25 -0700 (PDT)
+	s=arc-20240116; t=1730386846; c=relaxed/simple;
+	bh=xDtKwqvnqxZAQP4VrzospgjmeLcn8uf+9e8SZLyCgpY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UxbuLEkiNvtN36xfT+zK6nHjoEHKJ+EHST5XEGpZ/xJgvdKANqRnlBwvD6q2xINYmMwI+6Hm3F8DVYp7H5HfZs6nePdvQc3v8UiM3t6vh6HSA2unlE2tjcbtRcgPaOWJmSI8j9ueNwi8M3N4Jz0KL+EAIze7jMm/2mtxCbRbs/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RwsHdhjI; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4319399a411so9004005e9.2
+        for <stable@vger.kernel.org>; Thu, 31 Oct 2024 08:00:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730385984; x=1730990784; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=w+R2z2Hq8YdiXOzRMQtJlJNAR8ul2IAPxkBdT8ZGZaI=;
-        b=EsUPYw+mN7HRSE8C7FFLIkXqmtMGt7p7x8ZcG7V6w4vnAYG42sgL1VpABunm/yEjyG
-         qtfIeqp/Z5LCbpc0Tw5gfyO37Z/FgyOmba5BSlSBr3Pg793Pl85YM1HKEJjFnqEMX6Wy
-         9bHG7cieYCkcXi4o9RzY4nnTMZ97qTrIPQqmMvMKcqIj+ijmqyhNQ1Y7YBv01J+y4IUo
-         riTSWVQoZYcQZWLmONWhQvgI6rKQIAqgCrLaAAtQFs6mISHy5T9W9B2g86MoWhd/4fIE
-         fKOTkWB3nOo47JllPywCQzpzaHBk2xuZ6kPdo5CFVB+ebvTPu58ilGRYNy+ZI8ZLc5Os
-         233g==
+        d=linaro.org; s=google; t=1730386842; x=1730991642; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=usrOkYEIhJMHpNEH11NB+5bvhSO9JoP7forJzaG92bc=;
+        b=RwsHdhjIExPULOr8gokrXIL6m3DfiFvnZ/FHMDuA7Z3LVFvC/7zrMMeVVViBi8ieoK
+         9UcN7MsodWT0pitCRrwixcwafmaVdBFeN3OAj8CMvueOI62BF/32KUoyVM312Y6A+dH4
+         7jkTLib2OkQV15e894FzYUdqpfx9fF799RPdKQJ/gK3ZTl824CdGiJoM3dnCvYnj3L1D
+         TKuw4CCmzsfSw/Riw55VZBRhQxN92Dr1LzJ9JxnHwsfZLpz6r4GcwE1A3a6szUoUxPDv
+         dhhcMjs0HBgZUpcpRKWV6A4n99uFnfFt2ofLu7NC0Z4O+62zlUYVbjrCLb9T9bXXl5Md
+         9RSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730385984; x=1730990784;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=w+R2z2Hq8YdiXOzRMQtJlJNAR8ul2IAPxkBdT8ZGZaI=;
-        b=XGYYmy+AHN8v4FROaXMMKxrl+9GuTcFczyWRG6byLqnHrHBx93tWLDnNrLf8LNHhCV
-         APJiDbcdH7kmdO/YNJ+LfZNDAd18V8dDU5tvMJaxlP8CEUl1uzQozy+bBZTFOWlr8zmt
-         CfYt7ieRAAczl/hE+swHgVnKrtbM1MpTW2OK4w5RiZS0wT4pfWiMzr1mMU0dlD8l3PUv
-         lWMRojbKLf2/U4z0KCfBfVn109Rygo4Vyq7IyVdc1gZ+0IMgV/b0ntW9KMAi8d8H5ZLk
-         ixGTno7mV0m46eGeINTEm7KN90gNUncxdXNn4Fo42H4Qwfu5i0Hox1UnFQRK8ocoZZlE
-         N5/A==
-X-Forwarded-Encrypted: i=1; AJvYcCU6dVq0RmseTX2lFrm+jYmC/LJ8h/c6Ha+39XQJ44Pyan70g9e8BNXzFPEbwmFbZ5K1ItXSI0y1@vger.kernel.org, AJvYcCUMGPqMwFD3ux3D3u0gs1uey8yXxYtW1Qs+rWd17aGurcqZjOspELsSgKcLUXxsTf/ObYSqRD0X2cXSpoU=@vger.kernel.org, AJvYcCWIvQYLuzTrPQmlO+qLfkRJRDtOBrE5j+Pw7pFvfq+VnU/GvNwofHwarNNcX/Bo1gecLTNvvzHGiRHr30URyUg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzprEfrr9s8yakoeUj7YioPQrJ8JCNwsu3qZxPoohtsc2dZlWAT
-	f9Vb90cXajELKaAAoTAS5N7G27JW3gAYOn2b4duuZe+f+nXH542O
-X-Google-Smtp-Source: AGHT+IH9Re7qI11bFWjzdKhmKNOoTKp5aILEFXvdHmzSO7KktOHqim6bI57kv3Ke9l9/aFvrvDBnCQ==
-X-Received: by 2002:a5d:6da6:0:b0:37d:501f:483f with SMTP id ffacd0b85a97d-381c7ab2fb6mr155006f8f.44.1730385983595;
-        Thu, 31 Oct 2024 07:46:23 -0700 (PDT)
-Received: from ?IPV6:2a02:8389:41cf:e200:d7b9:afdb:c541:d023? (2a02-8389-41cf-e200-d7b9-afdb-c541-d023.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:d7b9:afdb:c541:d023])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c10d439esm2316878f8f.44.2024.10.31.07.46.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 31 Oct 2024 07:46:23 -0700 (PDT)
-Message-ID: <fc0657cd-083c-4abe-8f27-0b5a49cdd35a@gmail.com>
-Date: Thu, 31 Oct 2024 15:46:21 +0100
+        d=1e100.net; s=20230601; t=1730386842; x=1730991642;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=usrOkYEIhJMHpNEH11NB+5bvhSO9JoP7forJzaG92bc=;
+        b=P2JbND0O4gebaYQWlBPcNiH4NyCuU/hDNNJywbr1K+BvEO1xrmkmgL0bHTOHOhzyxI
+         j1rjosq/bhGeQNVnjzDHlYosH6+Mzo8HxKLOsvMTdEbF2SBAP6uwh8GZVEcmJ+18x1Ub
+         QwF8+j4i1aAaIIfrBO2BYEUTkUIOdQXEb+tHI3I3r6Qx9swlYsX89rLmyaJViv0hXQqj
+         SRXRKSco6zMN5ej5DjaazTahF+HnE4D7W13btfTYc1+9f3j/KgiFJUZSuiBuYdJYvqXF
+         tvSEnRrtPlJnXRBknABxU1B3eBW/zwYQgoeOv85eB+IjiX1GGJAQE4wPmasVSVqH+NnD
+         hdHg==
+X-Forwarded-Encrypted: i=1; AJvYcCUAFUQYnkLLERLZ+eI4l5jtPdCexMC/KkvSU0R/aiS9ZdXc748iqUzQBdAqhtvFt1El6+ygE+E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzU0OZGN2a1crYiuN2+bwCxvTyGQNNnxY6Jz44UW7wPqKaw9529
+	t5xLJyT7lv6v7tqvUP8TD2OjCRl0zI7Biy4oMrg9pdq8xUbfGoYi8ymAyCODj54=
+X-Google-Smtp-Source: AGHT+IE2nRqDWcprFbqsyiRnRrZSmdUyGUKgVh+UN0C5kREuaiIMyson1wnaLb7mms/VbQSk1nr2fA==
+X-Received: by 2002:a05:600c:4a88:b0:431:9397:9ac9 with SMTP id 5b1f17b1804b1-431aa292eb4mr115733635e9.15.1730386842144;
+        Thu, 31 Oct 2024 08:00:42 -0700 (PDT)
+Received: from gpeter-l.lan ([145.224.65.232])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd8e8524sm59163225e9.5.2024.10.31.08.00.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Oct 2024 08:00:41 -0700 (PDT)
+From: Peter Griffin <peter.griffin@linaro.org>
+To: alim.akhtar@samsung.com,
+	James.Bottomley@HansenPartnership.com,
+	martin.petersen@oracle.com,
+	avri.altman@wdc.com,
+	bvanassche@acm.org,
+	krzk@kernel.org
+Cc: tudor.ambarus@linaro.org,
+	ebiggers@kernel.org,
+	andre.draszik@linaro.org,
+	kernel-team@android.com,
+	willmcvicker@google.com,
+	linux-scsi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Peter Griffin <peter.griffin@linaro.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v3 04/14] scsi: ufs: exynos: add check inside exynos_ufs_config_smu()
+Date: Thu, 31 Oct 2024 15:00:23 +0000
+Message-ID: <20241031150033.3440894-5-peter.griffin@linaro.org>
+X-Mailer: git-send-email 2.47.0.163.g1226f6d8fa-goog
+In-Reply-To: <20241031150033.3440894-1-peter.griffin@linaro.org>
+References: <20241031150033.3440894-1-peter.griffin@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] wifi: brcmfmac: release 'root' node in all execution
- paths
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Arend van Spriel <arend.vanspriel@broadcom.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- Hector Martin <marcan@marcan.st>, =?UTF-8?Q?Alvin_=C5=A0ipraga?=
- <alsi@bang-olufsen.dk>, linux-wireless@vger.kernel.org,
- brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20241030-brcmfmac-of-cleanup-v1-1-0b90eefb4279@gmail.com>
- <173038429759.539202.17634636965892286169.kvalo@kernel.org>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <173038429759.539202.17634636965892286169.kvalo@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 31/10/2024 15:18, Kalle Valo wrote:
-> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
-> 
->> The fixed patch introduced an additional condition to enter the scope
->> where the 'root' device_node is released (!settings->board_type,
->> currently 'err'), which avoid decrementing the refcount with a call to
->> of_node_put() if that second condition is not satisfied.
->>
->> Move the call to of_node_put() to the point where 'root' is no longer
->> required to avoid leaking the resource if err is not zero.
->>
->> Cc: stable@vger.kernel.org
->> Fixes: 7682de8b3351 ("wifi: brcmfmac: of: Fetch Apple properties")
->> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> 
-> Wireless patches go to wireless trees, not net. But no need to resend because
-> of this. And I think wireless-next is approriate for this fix.
-> 
+Move the EXYNOS_UFS_OPT_UFSPR_SECURE check inside exynos_ufs_config_smu().
 
+This way all call sites will benefit from the check. This fixes a bug
+currently in the exynos_ufs_resume() path on gs101 as it calls
+exynos_ufs_config_smu() and we end up accessing registers that can only
+be accessed from secure world which results in a serror.
 
-Sorry, the second link from your signature explains very well what I
-should have done. I will keep that in mind for the next patch(es) to
-wireless.
+Fixes: d11e0a318df8 ("scsi: ufs: exynos: Add support for Tensor gs101 SoC")
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Cc: stable@vger.kernel.org
+---
+v3: CC stable and be more verbose in commit message (Tudor)
+---
+ drivers/ufs/host/ufs-exynos.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Thank you and best regards,
-Javier Carrasco
+diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
+index 33de7ff747a2..f4454e89040f 100644
+--- a/drivers/ufs/host/ufs-exynos.c
++++ b/drivers/ufs/host/ufs-exynos.c
+@@ -719,6 +719,9 @@ static void exynos_ufs_config_smu(struct exynos_ufs *ufs)
+ {
+ 	u32 reg, val;
+ 
++	if (ufs->opts & EXYNOS_UFS_OPT_UFSPR_SECURE)
++		return;
++
+ 	exynos_ufs_disable_auto_ctrl_hcc_save(ufs, &val);
+ 
+ 	/* make encryption disabled by default */
+@@ -1454,8 +1457,8 @@ static int exynos_ufs_init(struct ufs_hba *hba)
+ 	if (ret)
+ 		goto out;
+ 	exynos_ufs_specify_phy_time_attr(ufs);
+-	if (!(ufs->opts & EXYNOS_UFS_OPT_UFSPR_SECURE))
+-		exynos_ufs_config_smu(ufs);
++
++	exynos_ufs_config_smu(ufs);
+ 
+ 	hba->host->dma_alignment = DATA_UNIT_SIZE - 1;
+ 	return 0;
+-- 
+2.47.0.163.g1226f6d8fa-goog
+
 
