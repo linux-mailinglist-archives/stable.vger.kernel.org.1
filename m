@@ -1,109 +1,148 @@
-Return-Path: <stable+bounces-89379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFD6D9B726A
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 03:16:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 149F99B72C5
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 04:15:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2738D1C22DB4
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 02:16:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD3E7281DF3
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 03:15:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691B85A79B;
-	Thu, 31 Oct 2024 02:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E5D12FF9C;
+	Thu, 31 Oct 2024 03:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="ZQRg8/AO"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Ryinw+Ng"
 X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801082E401;
-	Thu, 31 Oct 2024 02:16:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D689130ADA;
+	Thu, 31 Oct 2024 03:15:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730340985; cv=none; b=GfCZB3+OWQEGGfjq5WMgLJxhhkyrPAImjIEN5pFMlsvh+2Djnl7jpFpwVWthiMtA/EuQn3A55C+Ro0bqBW8TFwuxnEISoL0uJxgetRUQGQ+9CD3Wjo5D7IPPRFFRsnXSkDy3olki6UwdRKF+HInm5zru7TSXLehtm+NaDgaFqkk=
+	t=1730344510; cv=none; b=f4xSXAKIk06OnePj9uvmYFV3NB5xVwL52cr3wpbVtXQS9szVg4QsDaz+K6CTIekU9b1Ze8rCbV/yRP/8nGGHn5CwUddi29MdzKzGGGP7J9oqrrxJrf+W4e+0LKfgr4rHx00lmXT4DoBI35SiU0HlcK2IYQFJAvrC8mCV4AyKSPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730340985; c=relaxed/simple;
-	bh=vhdnE9JA5pT9fw4J2PrJS8MGAPAdj0Foe/ClAeCnIHw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=XyOmrOp+/oc/SB3tJLQpzl7waaZ3wYhTTnD5jVc9NL5Xx2NFufeUtr8E7PCGO5CgPR+SXlMB9jvMBF6xmdfjzsvG1McOsa6OCJs+4Tqc3LFNaM8Ocnb+HnL5BdojwsnmATO4HthRzUp2k7ZbGivNbCopzuDkYRz9FnQcOxrQb/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=ZQRg8/AO; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49V2Fd382697773, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1730340939; bh=vhdnE9JA5pT9fw4J2PrJS8MGAPAdj0Foe/ClAeCnIHw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=ZQRg8/AO85UwWA3ecJ8u+bRapJZYuNJLVenU4VHcEL94itQGC8ceAqG/zQRQAoLSP
-	 StVYQ/GNYRF4nOeDbTbu5g9Q++a8GG9XzDx+qziz4WdUJXVknjHcq9n2TNIQk0FrBp
-	 t8mkfuBKktHaUSKJq8X3STyawXK4gmEv/hYAMBhQwAANnc2cPOsQbhfaCyG5P3TBgM
-	 c63zA0DOTLv4OH0Df24tbQlrgdvQKpl/+pZQgA7/6Nrgeda4Sjp5RPQXOht8q83rG7
-	 LxSzF4guIDltztjNfLIoVikuTU7DIBuVPwB4mliYWUrLNrUUsCe3/hDtwwi+iKmVRH
-	 3k1843z4AFf/w==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49V2Fd382697773
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 31 Oct 2024 10:15:39 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 31 Oct 2024 10:15:39 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 31 Oct 2024 10:15:38 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Thu, 31 Oct 2024 10:15:38 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: "kvalo@kernel.org" <kvalo@kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
-        "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
-        "rtl8821cerfe2@gmail.com"
-	<rtl8821cerfe2@gmail.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com"
-	<syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com>
-Subject: Re: [PATCH V2] wifi: rtlwifi: Drastically reduce the attempts to read efuse in case of failures
-Thread-Topic: [PATCH V2] wifi: rtlwifi: Drastically reduce the attempts to
- read efuse in case of failures
-Thread-Index: AQHbKtYZmZEqsJWd+ECeMgNDFqDflLKgHpmT
-Date: Thu, 31 Oct 2024 02:15:38 +0000
-Message-ID: <4d9471f600224d23bb1f49a8ed4943c2@realtek.com>
-References: <20241030141440.1153887-1-gpiccoli@igalia.com>
-In-Reply-To: <20241030141440.1153887-1-gpiccoli@igalia.com>
-Accept-Language: en-US, zh-TW
-Content-Language: en-US
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1730344510; c=relaxed/simple;
+	bh=RNun+1385dh78flomN1Zt3f4oyVNDz/i7DwlZO8blGA=;
+	h=Date:To:From:Subject:Message-Id; b=LX/wBOymzb1LWnUf4n+bnSkS+Y9DwLdxdPX3gUgeh0ROG7gJOZA1xCJ0+Pm4XN0S+NZM9CYzCF75vqlJiTkoI8I69PK6sqnzA6LQgbefFWzfwo6CRcQ3Mu2wX7ij7kzgdMbkObnW/FM8KcLzFP30tdNrbPsx9Mo3yN0ePtvQ+Aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Ryinw+Ng; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B691FC4CECE;
+	Thu, 31 Oct 2024 03:15:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1730344509;
+	bh=RNun+1385dh78flomN1Zt3f4oyVNDz/i7DwlZO8blGA=;
+	h=Date:To:From:Subject:From;
+	b=Ryinw+NgM/0gtI2jOUwD0Tw/Bn74LXORWvMrcuuJL6tqdKMTw6tzPsIaYlBFQROiT
+	 gQTo8SzhWMRuIY4b+8nxwAzHcO0OdKIu8VtHTmS2W9qvTwdYwHJHnsHnY/SLGgDv6c
+	 0HqaYEl13TYmeU+HBgKZ6FmY8XyjT5N60mDd1IpY=
+Date: Wed, 30 Oct 2024 20:15:09 -0700
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,herton@redhat.com,wladislav.kw@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] tools-mm-werror-fixes-in-page-types-slabinfo.patch removed from -mm tree
+Message-Id: <20241031031509.B691FC4CECE@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
 
 
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/efuse.c b/drivers/net/w=
-ireless/realtek/rtlwifi/efuse.c
-> index 82cf5fb5175f..f741066c06de 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/efuse.c
-> +++ b/drivers/net/wireless/realtek/rtlwifi/efuse.c
-> @@ -164,7 +164,17 @@ void read_efuse_byte(struct ieee80211_hw *hw, u16 _o=
-ffset, u8 *pbuf)
->         struct rtl_priv *rtlpriv =3D rtl_priv(hw);
->         u32 value32;
->         u8 readbyte;
-> -       u16 retry;
-> +       u16 retry, max_attempts;
-> +
+The quilt patch titled
+     Subject: tools/mm: -Werror fixes in page-types/slabinfo
+has been removed from the -mm tree.  Its filename was
+     tools-mm-werror-fixes-in-page-types-slabinfo.patch
 
-Declarations should be in reverse X'mas tree order.
-Just add max_attempts to a new line at proper position.=20
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+------------------------------------------------------
+From: Wladislav Wiebe <wladislav.kw@gmail.com>
+Subject: tools/mm: -Werror fixes in page-types/slabinfo
+Date: Tue, 22 Oct 2024 19:21:13 +0200
+
+Commit e6d2c436ff693 ("tools/mm: allow users to provide additional
+cflags/ldflags") passes now CFLAGS to Makefile.  With this, build systems
+with default -Werror enabled found:
+
+slabinfo.c:1300:25: error: ignoring return value of 'chdir'
+declared with attribute 'warn_unused_result' [-Werror=unused-result]
+                         chdir("..");
+                         ^~~~~~~~~~~
+page-types.c:397:35: error: format '%lu' expects argument of type
+'long unsigned int', but argument 2 has type 'uint64_t'
+{aka 'long long unsigned int'} [-Werror=format=]
+                         printf("%lu\t", mapcnt0);
+                                 ~~^     ~~~~~~~
+..
+
+Fix page-types by using PRIu64 for uint64_t prints and check in slabinfo
+for return code on chdir("..").
+
+Link: https://lkml.kernel.org/r/c1ceb507-94bc-461c-934d-c19b77edd825@gmail.com
+Fixes: e6d2c436ff69 ("tools/mm: allow users to provide additional cflags/ldflags")
+Signed-off-by: Wladislav Wiebe <wladislav.kw@gmail.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Herton R. Krzesinski <herton@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ tools/mm/page-types.c |    9 +++++----
+ tools/mm/slabinfo.c   |    4 +++-
+ 2 files changed, 8 insertions(+), 5 deletions(-)
+
+--- a/tools/mm/page-types.c~tools-mm-werror-fixes-in-page-types-slabinfo
++++ a/tools/mm/page-types.c
+@@ -22,6 +22,7 @@
+ #include <time.h>
+ #include <setjmp.h>
+ #include <signal.h>
++#include <inttypes.h>
+ #include <sys/types.h>
+ #include <sys/errno.h>
+ #include <sys/fcntl.h>
+@@ -391,9 +392,9 @@ static void show_page_range(unsigned lon
+ 		if (opt_file)
+ 			printf("%lx\t", voff);
+ 		if (opt_list_cgroup)
+-			printf("@%llu\t", (unsigned long long)cgroup0);
++			printf("@%" PRIu64 "\t", cgroup0);
+ 		if (opt_list_mapcnt)
+-			printf("%lu\t", mapcnt0);
++			printf("%" PRIu64 "\t", mapcnt0);
+ 		printf("%lx\t%lx\t%s\n",
+ 				index, count, page_flag_name(flags0));
+ 	}
+@@ -419,9 +420,9 @@ static void show_page(unsigned long voff
+ 	if (opt_file)
+ 		printf("%lx\t", voffset);
+ 	if (opt_list_cgroup)
+-		printf("@%llu\t", (unsigned long long)cgroup);
++		printf("@%" PRIu64 "\t", cgroup)
+ 	if (opt_list_mapcnt)
+-		printf("%lu\t", mapcnt);
++		printf("%" PRIu64 "\t", mapcnt);
+ 
+ 	printf("%lx\t%s\n", offset, page_flag_name(flags));
+ }
+--- a/tools/mm/slabinfo.c~tools-mm-werror-fixes-in-page-types-slabinfo
++++ a/tools/mm/slabinfo.c
+@@ -1297,7 +1297,9 @@ static void read_slab_dir(void)
+ 			slab->cpu_partial_free = get_obj("cpu_partial_free");
+ 			slab->alloc_node_mismatch = get_obj("alloc_node_mismatch");
+ 			slab->deactivate_bypass = get_obj("deactivate_bypass");
+-			chdir("..");
++			if (chdir(".."))
++				fatal("Unable to chdir from slab ../%s\n",
++				      slab->name);
+ 			if (slab->name[0] == ':')
+ 				alias_targets++;
+ 			slab++;
+_
+
+Patches currently in -mm which might be from wladislav.kw@gmail.com are
+
+
 
