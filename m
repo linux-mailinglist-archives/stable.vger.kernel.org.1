@@ -1,106 +1,149 @@
-Return-Path: <stable+bounces-89446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075999B83D9
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 20:57:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 015D29B841E
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 21:06:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39AC01C21157
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 19:57:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3425D1C221A2
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 20:06:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8415F1CCEF1;
-	Thu, 31 Oct 2024 19:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F3D1CC89A;
+	Thu, 31 Oct 2024 20:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="h0t050Bk"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MQkQ4vpj"
 X-Original-To: stable@vger.kernel.org
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0856B1CB53C
-	for <stable@vger.kernel.org>; Thu, 31 Oct 2024 19:56:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9083C1CC897
+	for <stable@vger.kernel.org>; Thu, 31 Oct 2024 20:05:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730404607; cv=none; b=s30Byl7EhUYQCX2e8RWlRG16WH4+5xkZVY89eAphq8Q5UD0CNtMTPVqol6yvzScyl48+dQAGz+ByzKcGMYAd2R3Fnq3ZMWgqb52rqjWfXB2tbNclUAVHmA2wRDXca6obD6FMHIN5jC8NXMyKoo+qeFB9QnHsJRZlToT3gPe9n7U=
+	t=1730405104; cv=none; b=F1yrL09JQasHCwgezf4ov9wKf/vSfHXLbMkY9oOIDhPkYyupWKVTvZAHvsnemCFY9E+fAzFNm2jVJOChGHA5CCszqihqSxlSk+Ds08xj4Rq+kpkdCgMG0CWjpNvCPuh0Yb/gex/4rdBnRDLteDtwhO0IexqlYoaSDPO1stcamWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730404607; c=relaxed/simple;
-	bh=n42bIm0EJKSGiSdPBDn9xkTrd4XZQCY/ki0lBaAt+Bk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PB43wt9ML/fZtmdHeG6sknHRoo58raP7JKnwXPpdGzXa1+8gx3eNvtCqf7p3nlXi7pGC8EsFvJsuK6flP7QqG+c+MMBSTeLWGhc1FEyZnz7gtjBK++q6pKumXcZGsaPswrRFtEhke3q4OccoRx8xON2hxZ8Dbv+b1dN/x1D2zhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=h0t050Bk; arc=none smtp.client-ip=95.215.58.174
+	s=arc-20240116; t=1730405104; c=relaxed/simple;
+	bh=fmvdPe7Xqvw35e8475LMA7hTK57Z/W159GPPmX2ajhE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EATjnzNBwmlJUSq6WIf6c8CSUyD4bUr5P+y+vk+qzeg8xYXXrr+2wYAHsm9Nm7YihdfZXlydqLXX+dveC3g/YRfIbppX3ZFI5lQHn5iQRjl6nTuIzppVkIGE6CjW/0oB5L4vZ+D9TOc3bDdr3mL5IbVA0M2xX/U1+5elDV/WPTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MQkQ4vpj; arc=none smtp.client-ip=95.215.58.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1730404601;
+	t=1730405099;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ETPLCcFOzsbm2EUKzHQHpjrgkvcCKJmMREUbmAxMcBE=;
-	b=h0t050BkX3ihCZkm0W74a9hiZ/GkSTBi0EHcfzhpLzK/YJ1qkNFIaHnidJggXPZ2y98CAz
-	+QQQDV/z0K/cRFxB7iB9bC6zDRytorf1X/deRUGQClrGZKcG0MYC3n8M5EgSFI74RzFDRA
-	pJ2n8dZlCe24+bCRU88+I4G0KVC9jJs=
-From: Oliver Upton <oliver.upton@linux.dev>
-To: Marc Zyngier <maz@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>
-Cc: Oliver Upton <oliver.upton@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org,
-	kvm@vger.kernel.org,
-	syzbot <syzkaller@googlegroups.com>
-Subject: Re: [PATCH v2] KVM: arm64: Get rid of userspace_irqchip_in_use
-Date: Thu, 31 Oct 2024 19:56:28 +0000
-Message-ID: <173040458509.3411583.4399376120814266828.b4-ty@linux.dev>
-In-Reply-To: <20241028234533.942542-1-rananta@google.com>
-References: <20241028234533.942542-1-rananta@google.com>
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=A7L9CUWVM54y7lE4x9OSE5ACsKWIejbvvXMBTey286M=;
+	b=MQkQ4vpjYQiUThJMXLRIiylukdNwdyqOgJtdP/0yxAInpg+9AIBY2k4JorbVzqwAoT6r4r
+	VzVn7LHW8uqOh/0MxrSCQrZRerwmZ8vY9evfC3VV5jSwLdAsFCT/lXhTIt5nyBcLKwQSjR
+	RAQJFloQgjZt5ZvD9VXfH9gopfnDRp0=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: linux-kernel@vger.kernel.org
+Cc: Roman Gushchin <roman.gushchin@linux.dev>,
+	Andrei Vagin <avagin@google.com>,
+	Kees Cook <kees@kernel.org>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Alexey Gladkov <legion@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] signal: restore the override_rlimit logic
+Date: Thu, 31 Oct 2024 20:04:38 +0000
+Message-ID: <20241031200438.2951287-1-roman.gushchin@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-On Mon, 28 Oct 2024 23:45:33 +0000, Raghavendra Rao Ananta wrote:
-> Improper use of userspace_irqchip_in_use led to syzbot hitting the
-> following WARN_ON() in kvm_timer_update_irq():
-> 
-> WARNING: CPU: 0 PID: 3281 at arch/arm64/kvm/arch_timer.c:459
-> kvm_timer_update_irq+0x21c/0x394
-> Call trace:
->   kvm_timer_update_irq+0x21c/0x394 arch/arm64/kvm/arch_timer.c:459
->   kvm_timer_vcpu_reset+0x158/0x684 arch/arm64/kvm/arch_timer.c:968
->   kvm_reset_vcpu+0x3b4/0x560 arch/arm64/kvm/reset.c:264
->   kvm_vcpu_set_target arch/arm64/kvm/arm.c:1553 [inline]
->   kvm_arch_vcpu_ioctl_vcpu_init arch/arm64/kvm/arm.c:1573 [inline]
->   kvm_arch_vcpu_ioctl+0x112c/0x1b3c arch/arm64/kvm/arm.c:1695
->   kvm_vcpu_ioctl+0x4ec/0xf74 virt/kvm/kvm_main.c:4658
->   vfs_ioctl fs/ioctl.c:51 [inline]
->   __do_sys_ioctl fs/ioctl.c:907 [inline]
->   __se_sys_ioctl fs/ioctl.c:893 [inline]
->   __arm64_sys_ioctl+0x108/0x184 fs/ioctl.c:893
->   __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
->   invoke_syscall+0x78/0x1b8 arch/arm64/kernel/syscall.c:49
->   el0_svc_common+0xe8/0x1b0 arch/arm64/kernel/syscall.c:132
->   do_el0_svc+0x40/0x50 arch/arm64/kernel/syscall.c:151
->   el0_svc+0x54/0x14c arch/arm64/kernel/entry-common.c:712
->   el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
->   el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
-> 
-> [...]
+Prior to commit d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of
+ucounts") UCOUNT_RLIMIT_SIGPENDING rlimit was not enforced for a class
+of signals. However now it's enforced unconditionally, even if
+override_rlimit is set. This behavior change caused production issues.
 
-Applied to kvmarm/next, thanks!
+For example, if the limit is reached and a process receives a SIGSEGV
+signal, sigqueue_alloc fails to allocate the necessary resources for the
+signal delivery, preventing the signal from being delivered with
+siginfo. This prevents the process from correctly identifying the fault
+address and handling the error. From the user-space perspective,
+applications are unaware that the limit has been reached and that the
+siginfo is effectively 'corrupted'. This can lead to unpredictable
+behavior and crashes, as we observed with java applications.
 
-[1/1] KVM: arm64: Get rid of userspace_irqchip_in_use
-      https://git.kernel.org/kvmarm/kvmarm/c/e571ebcff926
+Fix this by passing override_rlimit into inc_rlimit_get_ucounts() and
+skip the comparison to max there if override_rlimit is set. This
+effectively restores the old behavior.
 
---
-Best,
-Oliver
+Fixes: d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of ucounts")
+Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+Co-developed-by: Andrei Vagin <avagin@google.com>
+Signed-off-by: Andrei Vagin <avagin@google.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: Alexey Gladkov <legion@kernel.org>
+Cc: <stable@vger.kernel.org>
+---
+ include/linux/user_namespace.h | 3 ++-
+ kernel/signal.c                | 3 ++-
+ kernel/ucount.c                | 5 +++--
+ 3 files changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/include/linux/user_namespace.h b/include/linux/user_namespace.h
+index 3625096d5f85..7183e5aca282 100644
+--- a/include/linux/user_namespace.h
++++ b/include/linux/user_namespace.h
+@@ -141,7 +141,8 @@ static inline long get_rlimit_value(struct ucounts *ucounts, enum rlimit_type ty
+ 
+ long inc_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
+ bool dec_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
+-long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type);
++long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
++			    bool override_rlimit);
+ void dec_rlimit_put_ucounts(struct ucounts *ucounts, enum rlimit_type type);
+ bool is_rlimit_overlimit(struct ucounts *ucounts, enum rlimit_type type, unsigned long max);
+ 
+diff --git a/kernel/signal.c b/kernel/signal.c
+index 4344860ffcac..cbabb2d05e0a 100644
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -419,7 +419,8 @@ __sigqueue_alloc(int sig, struct task_struct *t, gfp_t gfp_flags,
+ 	 */
+ 	rcu_read_lock();
+ 	ucounts = task_ucounts(t);
+-	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING);
++	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING,
++					    override_rlimit);
+ 	rcu_read_unlock();
+ 	if (!sigpending)
+ 		return NULL;
+diff --git a/kernel/ucount.c b/kernel/ucount.c
+index 16c0ea1cb432..046b3d57ebb4 100644
+--- a/kernel/ucount.c
++++ b/kernel/ucount.c
+@@ -307,7 +307,8 @@ void dec_rlimit_put_ucounts(struct ucounts *ucounts, enum rlimit_type type)
+ 	do_dec_rlimit_put_ucounts(ucounts, NULL, type);
+ }
+ 
+-long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
++long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
++			    bool override_rlimit)
+ {
+ 	/* Caller must hold a reference to ucounts */
+ 	struct ucounts *iter;
+@@ -316,7 +317,7 @@ long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
+ 
+ 	for (iter = ucounts; iter; iter = iter->ns->ucounts) {
+ 		long new = atomic_long_add_return(1, &iter->rlimit[type]);
+-		if (new < 0 || new > max)
++		if (new < 0 || (!override_rlimit && (new > max)))
+ 			goto unwind;
+ 		if (iter == ucounts)
+ 			ret = new;
+-- 
+2.47.0.163.g1226f6d8fa-goog
+
 
