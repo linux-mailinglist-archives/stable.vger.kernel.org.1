@@ -1,87 +1,86 @@
-Return-Path: <stable+bounces-89436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E3709B814A
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 18:33:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBDF39B8152
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 18:34:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13F5B1F251A2
-	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 17:33:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EED41F25A8B
+	for <lists+stable@lfdr.de>; Thu, 31 Oct 2024 17:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF111BD515;
-	Thu, 31 Oct 2024 17:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9981BE239;
+	Thu, 31 Oct 2024 17:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bhAc81mS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eDcuvM5F"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9AD13A868;
-	Thu, 31 Oct 2024 17:32:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BAB1B6539;
+	Thu, 31 Oct 2024 17:33:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730395974; cv=none; b=k5j5dd2uqCEdKfROs0InwapU/nGgIku5C7TB7SPYA1D+otbOt8YN/Qax1RmmY+tGRciUHoe8NdN2+Q4yGF//Jb4umUn+pJ+Oev/I9o2UVKYzNUCh4K7DbJmx72XXds1k/ugbhN9J+Ny3Zwp0qENcl4bYojAeCZHkFS5GWX8veAM=
+	t=1730396029; cv=none; b=BpDJWCdsq45IRE6HQvCZes1G+YCCkbke5KOXqzxyDo9gBt3WKMOd7RsBdAEsv0YqPknBRzXqMGh6oEa8Jl+2/r8o/3hAORiiqPvn/cPDFtiSGpX5wrve951kFj0fysYsdUZozTD4nd8wapnqnTd5pdQ6aOTZB5aX30EqDQ6fFZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730395974; c=relaxed/simple;
-	bh=H9egTS5cdj/DUjMPa+j66rAN6GRfWc94gbp10M6jLQw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oKKkFqp8eNceuPL+XgbT7ECy4Wqz/PY36+rTebGpRSgTW0434v5+bOzM4SIYAbZBVm1mD5nHC343WRmvu1sYx4+w4FPfjl+wDVLBaov7dGglsPpfIDdZJfUhlJ/z2MZiIZtx2FSS4r7aj+ZjGSiGCF/NdmIU7sBIeYpYsZOdyhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bhAc81mS; arc=none smtp.client-ip=209.85.167.47
+	s=arc-20240116; t=1730396029; c=relaxed/simple;
+	bh=IGVolImcMlNftMI/RGRi+8yI+0ZXlL9lnQIjOFSHlak=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ojcVkLLTtP/yaMjfU4ScTXNOdfojUB/X/qYGJE1mKthaMUBz3/B5sbPR/C3BBOWK9u+49HUpMLS4ziuKfPeBdJU8Qmn1rWJzZtevohqFFBuplS67eRpe1k1/1xSZEFrf11hBHaFRpYhnAuMSYRssLYP8BdfDXfJfTkIiXU6+g2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eDcuvM5F; arc=none smtp.client-ip=209.85.167.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-539e4908837so153796e87.0;
-        Thu, 31 Oct 2024 10:32:52 -0700 (PDT)
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-539e4908837so153923e87.0;
+        Thu, 31 Oct 2024 10:33:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730395971; x=1731000771; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1730396026; x=1731000826; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ec1T8+HLYk9K7CxsA+5ASIChYKFZRfEvP+3PIbV3bb4=;
-        b=bhAc81mSWbahJ2Fe1rSGk77ZJLUlinEQv6V1YdEpiO3IAl0EysYsOZzh6jhv8edH3q
-         JXj8X0HXRl7Cl2TruOqOK6T/aDoQUVmnlAR/avWGjxNDpAwkNcP0xvQ2LiWhu7YjZNrL
-         jFNM7Lq9zGuHyJZFH/oUfpJ+ehiKdHN1WO8oJAzPFPtnFLebuVy//JtrVhQE4jTHeQwE
-         XgdCO6s8b/JXvhUS2EAIKyaGDFVP4Pc4fSQNzmpJhQvwX8nQUY6gohZ40iPX304ZK+zA
-         3TRDPnpLALGBntJ71L1v4CMqEYu6GIGYxdfilfAPS007WzGyVJUZrFeHU1nAMCdwyW6w
-         U+ew==
+        bh=LIXbyaTfssNAyjGRH62B+/Wf9jW1JYzFaYHYfgpeAWA=;
+        b=eDcuvM5FP2d/k4iRAcPtJ6I6xXZV8GAQraisbzy6Puqiyks0MzgKf157BWmmYser6x
+         2RBXyojhSlkd62W1+slDIHki4DfRSxnkccmQDRgJCYX0NtVl9XbZByO6kEScN1APQe17
+         qedbu80uOnkeXHr5KBVDEpdiQoZv9aHE4RoCsUIKsWiQp1J/f9bP75ZrX0zZKlS/Ajnf
+         MCVgRMSlRK7V4YBADMEG0+/vYTLXO08EAmeDqmhk5u9qrOQ4CO1GiHzSlO4BAuZF6bhc
+         Rjg6cYfIQpl16KV5XWjARaaFEg5XlFcmBkDEO8yGb9sWx6YquDK0khc2WVb+NgXZJCiV
+         rCxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730395971; x=1731000771;
+        d=1e100.net; s=20230601; t=1730396026; x=1731000826;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ec1T8+HLYk9K7CxsA+5ASIChYKFZRfEvP+3PIbV3bb4=;
-        b=uPmlzDtQNLD/a/SXUyaYI08Ycrmc8VUz91TGPexpK1xg3LX2c3hxa0YSVoo0pZYpny
-         CPyIE4mUTAaeo5t3V/uWPNuGHO0ecCWN8w058ybXbIErZkFltDlsyeOvy1UpB8QjB5y+
-         0TSj0UHhZH6G15/qCWDbF/eizQOskIHyhDMOqYQNhQydoH3JPOJD3hXcbMjgJuOXdYa5
-         Zm35e/ItvWZRtYobbVVZnpQGcEvV1ngjAogSL98ubuHCMN8IajoGNHm3Ra1qlyaAqNFD
-         Wvp611EorjdUGwn/HU5R2Qm/dhrGlEzEABpIwjvMGTnzH3I+S6NGJggUJY4sdtjtqsag
-         NaOA==
-X-Forwarded-Encrypted: i=1; AJvYcCVNrUUEGwXWU4ZqQQ4eb9s4H23HJVMJdXTbGVHc8ISTvXUrqPnmkgwK59SLTdxQqrtL0mgcO5rt@vger.kernel.org, AJvYcCVjVKExrZZM/ToWvS9rAKL+MpxBT3qTnWTsGeGppZTDJYRa/C7HxJCDXAncjC71iYUfq/uQ0hZKVTDJHv8=@vger.kernel.org, AJvYcCXTP9DXT7ohv3mUzRg23w/2dQbo39dSK7kztX3DyIiwKAsjxDBgjJavLjfPWXLeiiTtX6q5QsAI@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQqGLywOhpXZUZB5pI1OixpJ/ghQnVBLTYL4JRb8I6H4ds1JXH
-	PoWoYrkjcELqW5scuTUN0iw5H2Qzejrlu2jQuH31uA+yTpr6nBQO
-X-Google-Smtp-Source: AGHT+IF9lglkRiHtRRzWMjSjVY++Iu1RU3J1+yC8cX5VnV4C3sHOq7z3/ygm8UQCXCCr2P8HGEYbtg==
-X-Received: by 2002:a05:6512:138a:b0:53b:2121:e5f6 with SMTP id 2adb3069b0e04-53b34a31d9amr2969146e87.8.1730395970699;
-        Thu, 31 Oct 2024 10:32:50 -0700 (PDT)
+        bh=LIXbyaTfssNAyjGRH62B+/Wf9jW1JYzFaYHYfgpeAWA=;
+        b=EAjj8eJcNufVHXTYYkP6LoeXPCI//jx2lVlY9kujdnb8m3RJxiAo4pqYzw9oB5uBHQ
+         7ygTOZvfZrpj4CPR2+c6YK2BMWz56R0t0FLouTX8AmHywroIf0m/bLpb7DiJzoH0/qZE
+         FWhNF8uK8dtPCglWWjLI+z/vHbKihrU8px2Jdwj0p4iPaXdtW3vwIpPzMdxXLWHqf7Fr
+         m2XRYyTt0QO++a7eWLpBOiizHZ2EoDsczguUu1rlh5p75WOeIkPkiGrkz/6DHi8uB8i1
+         RiI1lhzBwfoIcKc3dgR18Z+/GQqgepXJqjr2M05tmT0k6b302LDp6H8pK61lonBJEapu
+         au5A==
+X-Forwarded-Encrypted: i=1; AJvYcCUVJKLQp52ZEqgKtcK8VAJMVy96wA45hkINZZcEHnv9NRSBv+oWkocgYNk4wYf2gT/s3NdZbq3B@vger.kernel.org, AJvYcCWmNTTRo9Wy+uzmNfbn0n7xx/lvYyvIIlzZyJS8O+ah0qZXSQ7qwdyipWnQ+STSQxm3qyEzXZoWnHM1cYQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxL9m6o0uDk6DiT8n9uqqQe/BPkf7s3vzGmiNO+2Ar3YuiF+txv
+	u/A1n+4h7KOgbuJzgqASSRMoPjBN3QDLofIlaaJRoZ1CqApK6pu3
+X-Google-Smtp-Source: AGHT+IHuM9wLydex6CXCJYt8RpMld+KpUmO1ocY+CUO2ZVzT1y6Hymj5lWWus0GILDLZ60xO3FUJdQ==
+X-Received: by 2002:ac2:4c52:0:b0:52f:287:a083 with SMTP id 2adb3069b0e04-53b34728fd9mr3123365e87.0.1730396025338;
+        Thu, 31 Oct 2024 10:33:45 -0700 (PDT)
 Received: from localhost.localdomain (109-252-121-216.nat.spd-mgts.ru. [109.252.121.216])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53c7bc95998sm273378e87.24.2024.10.31.10.32.49
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53c7bde09adsm272401e87.263.2024.10.31.10.33.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Oct 2024 10:32:50 -0700 (PDT)
+        Thu, 31 Oct 2024 10:33:44 -0700 (PDT)
 From: George Rurikov <grurikov@gmail.com>
-To: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Cc: George Rurikov <grurikov@gmail.com>,
-	Michael Chan <mchan@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nithin Nayak Sujir <nsujir@broadcom.com>,
-	netdev@vger.kernel.org,
+To: Christoph Hellwig <hch@lst.de>
+Cc: MrRurikov <grurikov@gmal.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Israel Rukshin <israelr@mellanox.com>,
+	Max Gurtovoy <maxg@mellanox.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	linux-nvme@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH] net: ethernet: broadcom: Fix uninitialized lockal variable
-Date: Thu, 31 Oct 2024 20:32:32 +0300
-Message-Id: <20241031173232.1776-1-grurikov@gmail.com>
+	stable@vger.kernel.org,
+	George Rurikov <g.ryurikov@securitycode.ru>
+Subject: [PATCH] nvme: rdma: Add check for queue in nvmet_rdma_cm_handler()
+Date: Thu, 31 Oct 2024 20:33:27 +0300
+Message-Id: <20241031173327.663-1-grurikov@gmail.com>
 X-Mailer: git-send-email 2.31.1.windows.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -91,36 +90,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-I can't find any reason why it won't happen.
-In SERDES_TG3_SGMII_MODE, when current_link_up == true and
-current_duplex == DUPLEX_FULL, program execution will be transferred
-using the goto fiber_setup_done, where the uninitialized remote_adv
-variable is passed as the second parameter to the
-tg3_setup_flow_control function.
+From: MrRurikov <grurikov@gmal.com>
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+After having been assigned to a NULL value at rdma.c:1758, pointer 'queue'
+is passed as 1st parameter in call to function
+'nvmet_rdma_queue_established' at rdma.c:1773, as 1st parameter in call
+to function 'nvmet_rdma_queue_disconnect' at rdma.c:1787 and as 2nd
+parameter in call to function 'nvmet_rdma_queue_connect_fail' at
+rdma.c:1800, where it is dereferenced.
 
-Fixes: 85730a631f0c ("tg3: Add SGMII phy support for 5719/5718 serdes")
+I understand, that driver is confident that the
+RDMA_CM_EVENT_CONNECT_REQUEST event will occur first and perform
+initialization, but maliciously prepared hardware could send events in
+violation of the protocol. Nothing guarantees that the sequence of events 
+will start with RDMA_CM_EVENT_CONNECT_REQUEST.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE
+
+Fixes: e1a2ee249b19 ("nvmet-rdma: Fix use after free in nvmet_rdma_cm_handler()")
 Cc: stable@vger.kernel.org
-Signed-off-by: George Rurikov <grurikov@gmail.com>
+Signed-off-by: George Rurikov <g.ryurikov@securitycode.ru>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/nvme/target/rdma.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index 378815917741..b1c60851c841 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -5802,7 +5802,8 @@ static int tg3_setup_fiber_mii_phy(struct tg3 *tp, bool force_reset)
- 	u32 current_speed = SPEED_UNKNOWN;
- 	u8 current_duplex = DUPLEX_UNKNOWN;
- 	bool current_link_up = false;
--	u32 local_adv, remote_adv, sgsr;
-+	u32 local_adv, sgsr;
-+	u32 remote_adv = 0;
- 
- 	if ((tg3_asic_rev(tp) == ASIC_REV_5719 ||
- 	     tg3_asic_rev(tp) == ASIC_REV_5720) &&
+diff --git a/drivers/nvme/target/rdma.c b/drivers/nvme/target/rdma.c
+index 1b6264fa5803..becebc95f349 100644
+--- a/drivers/nvme/target/rdma.c
++++ b/drivers/nvme/target/rdma.c
+@@ -1770,8 +1770,10 @@ static int nvmet_rdma_cm_handler(struct rdma_cm_id *cm_id,
+ 		ret = nvmet_rdma_queue_connect(cm_id, event);
+ 		break;
+ 	case RDMA_CM_EVENT_ESTABLISHED:
+-		nvmet_rdma_queue_established(queue);
+-		break;
++		if (!queue) {
++			nvmet_rdma_queue_established(queue);
++			break;
++		}
+ 	case RDMA_CM_EVENT_ADDR_CHANGE:
+ 		if (!queue) {
+ 			struct nvmet_rdma_port *port = cm_id->context;
+@@ -1782,8 +1784,10 @@ static int nvmet_rdma_cm_handler(struct rdma_cm_id *cm_id,
+ 		fallthrough;
+ 	case RDMA_CM_EVENT_DISCONNECTED:
+ 	case RDMA_CM_EVENT_TIMEWAIT_EXIT:
+-		nvmet_rdma_queue_disconnect(queue);
+-		break;
++		if (!queue) {
++			nvmet_rdma_queue_disconnect(queue);
++			break;
++		}
+ 	case RDMA_CM_EVENT_DEVICE_REMOVAL:
+ 		ret = nvmet_rdma_device_removal(cm_id, queue);
+ 		break;
+@@ -1793,8 +1797,10 @@ static int nvmet_rdma_cm_handler(struct rdma_cm_id *cm_id,
+ 		fallthrough;
+ 	case RDMA_CM_EVENT_UNREACHABLE:
+ 	case RDMA_CM_EVENT_CONNECT_ERROR:
+-		nvmet_rdma_queue_connect_fail(cm_id, queue);
+-		break;
++		if (!queue) {
++			nvmet_rdma_queue_connect_fail(cm_id, queue);
++			break;
++		}
+ 	default:
+ 		pr_err("received unrecognized RDMA CM event %d\n",
+ 			event->event);
 -- 
 2.34.1
 
