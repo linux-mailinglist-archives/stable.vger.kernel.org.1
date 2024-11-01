@@ -1,177 +1,207 @@
-Return-Path: <stable+bounces-89536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E18A9B9A22
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 22:22:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 845819B9A29
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 22:25:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5DF1281AFF
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 21:22:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4484B2811CE
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 21:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE421E2612;
-	Fri,  1 Nov 2024 21:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AD361E32BD;
+	Fri,  1 Nov 2024 21:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xC7btHVd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A9+AHDrb"
 X-Original-To: stable@vger.kernel.org
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644D41547DC
-	for <stable@vger.kernel.org>; Fri,  1 Nov 2024 21:22:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCEA01E282A;
+	Fri,  1 Nov 2024 21:25:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730496135; cv=none; b=bM2f7Ny7ZVaaJl2y5S3zAXe6qfovSDxyPJ29Szf3J27zaG74HxQu6272ckVaQcH0WxNuPKNXQ+gZod60iyrPaq0ojLdWfNqlWTSdFmVLloWWrdyc/m3gkFMRUdbqSJfJg/bmSZql61iCHGVCFlzTMBB6giSJskKHuNlWEMBtT4c=
+	t=1730496302; cv=none; b=ErFPbORJnUEbIb/Z3caTLYzpwk44IlDdu61YSMx09C2vYoB6RXgk/901E4Aqj5Ix8C4KuyR+hAAoSGp+XrlTtEzt7rKtnuLHgQ3pKfcIfv0ScNbBVQ2Z07LydZnkpUP4VHgDywUG7DtKM3Zbfwiby5IZ1N/7AMA10ePzjwxch/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730496135; c=relaxed/simple;
-	bh=1hlRSnBMxIgGnFT5nopO8avrxoyd9weX8/cYTA1zyms=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z0K3XaQkmERUVFF7re6KWhTuLg+nNpovwcfF0s1AfKeC4ge1QwVG258gp8ghJ0+Olaw9NLEmMjBS/J22CfX9cked6fXU/uY+0kG3C3nR0n28eXCfgI2yUviOh0HIP2+A7THqO2Kv6QeuVW5xaQ9g5R7tmSzMVgBYuWXwBZY0u0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xC7btHVd; arc=none smtp.client-ip=91.218.175.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Fri, 1 Nov 2024 21:21:38 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1730496129;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MJAt7BYdr1o1tGrdUqJzXzkGawN+UGekAKhugSDQTJU=;
-	b=xC7btHVdJ0oKc5X22DZvKst3vviBxs2uD97QbLxBHJDplTzJg9mAO2Mj8VFGgMxXzsID/W
-	wEmeD4iE79GKNpjfciYe0KwOvzrQjcn6viIw3nMcb2sZ0L7hIYaHqOrKk6wUmVDCTO4yoJ
-	r4Xd/85kAYOjA3ZBh2Q2wIzNMmUkZMg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: linux-kernel@vger.kernel.org, Andrei Vagin <avagin@google.com>,
-	Kees Cook <kees@kernel.org>, Alexey Gladkov <legion@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] signal: restore the override_rlimit logic
-Message-ID: <ZyVGYggBMa4KIG70@google.com>
-References: <20241031200438.2951287-1-roman.gushchin@linux.dev>
- <87zfmi3f8b.fsf@email.froward.int.ebiederm.org>
- <ZyU8UNKLNfAi-U8F@google.com>
- <87o72y3c4g.fsf@email.froward.int.ebiederm.org>
+	s=arc-20240116; t=1730496302; c=relaxed/simple;
+	bh=Qe4XvEAZM9xKaxt/DCYUEtueSQuxX7qKGNYJMTtf8nA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=iVoEMxkcKTCKCj2n4iC2YmCMCSt9p7F31IRLkpiwXsUKnpAMb2pMRmIX2rz3iWVeYbHPcxfZFtkoZjHUbiPO4vMQM/BPDqNuJsSIpCNjIilHOd0e9+J3nZnD2Ezl1wk7NSt8mjke9AiDLqOOfk0Z76/7rdYjDA1FZb9uhYeWed8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A9+AHDrb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF173C4CECD;
+	Fri,  1 Nov 2024 21:25:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730496302;
+	bh=Qe4XvEAZM9xKaxt/DCYUEtueSQuxX7qKGNYJMTtf8nA=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=A9+AHDrb7iEc06JOVyhKzUj3EhlyVYGIczbHYRs20n6DAC2LLbzD+qH+ADIa+OKIx
+	 1Sz6o023/Cg4+L9/IHKf98EkKhyA63vqlHbffpdA9xEQ3HMbxybTi3E+IG22+w/JM4
+	 2k1zUZO31oYc5XJqwkicZwsyBBWQXE7ImyjCvEcu6pfzwupQ6erFBVXhKlT9fmqkUT
+	 odjQJcF4KyRkdeOyvPvOSLyDjVSHMALfnia8ncVjpnNYg/og4d8elfFNoIj/jux5iM
+	 SW+D5P9sLrzk28SzvIkGZp75vqzEQlvRUhmztGhyH95yFNVC+ZcpUxl18XfnerPd/S
+	 /5W+faBwPQQQQ==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87o72y3c4g.fsf@email.froward.int.ebiederm.org>
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 01 Nov 2024 23:24:58 +0200
+Message-Id: <D5B5QOI1GA38.26CWPZMPXP6S9@kernel.org>
+Cc: "Peter Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
+ <stable@vger.kernel.org>, "Mike Seo" <mikeseohyungjin@gmail.com>, "open
+ list:TPM DEVICE DRIVER" <linux-integrity@vger.kernel.org>, "open list"
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3] tpm: Lock TPM chip in tpm_pm_suspend() first
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Jerry Snitselaar" <jsnitsel@redhat.com>
+X-Mailer: aerc 0.18.2
+References: <20241101002157.645874-1-jarkko@kernel.org>
+ <ke4tjq5p43g7z3dy4wowagwsf6tzfhecexkdmgkizvqu6n5tvl@op3zhjmplntw>
+ <D5B5D47GLWWS.119EDSKMMGFVF@kernel.org>
+ <7pc2uu52wamyvhzfc27qnws546yxt33utfibtsjd7uv2djfxdt@jlyn3n55qkfx>
+In-Reply-To: <7pc2uu52wamyvhzfc27qnws546yxt33utfibtsjd7uv2djfxdt@jlyn3n55qkfx>
 
-On Fri, Nov 01, 2024 at 03:58:07PM -0500, Eric W. Biederman wrote:
-> Roman Gushchin <roman.gushchin@linux.dev> writes:
-> 
-> > On Fri, Nov 01, 2024 at 02:51:00PM -0500, Eric W. Biederman wrote:
-> >> Roman Gushchin <roman.gushchin@linux.dev> writes:
-> >> 
-> >> > Prior to commit d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of
-> >> > ucounts") UCOUNT_RLIMIT_SIGPENDING rlimit was not enforced for a class
-> >> > of signals. However now it's enforced unconditionally, even if
-> >> > override_rlimit is set.
-> >> 
-> >> Not true.
-> >> 
-> >> It added a limit on the number of siginfo structures that
-> >> a container may allocate.  Have you tried not limiting your
-> >> container?
-> >> 
-> >> >This behavior change caused production issues.
-> >> 
-> >> > For example, if the limit is reached and a process receives a SIGSEGV
-> >> > signal, sigqueue_alloc fails to allocate the necessary resources for the
-> >> > signal delivery, preventing the signal from being delivered with
-> >> > siginfo. This prevents the process from correctly identifying the fault
-> >> > address and handling the error. From the user-space perspective,
-> >> > applications are unaware that the limit has been reached and that the
-> >> > siginfo is effectively 'corrupted'. This can lead to unpredictable
-> >> > behavior and crashes, as we observed with java applications.
-> >> 
-> >> Note.  There are always conditions when the allocation may fail.
-> >> The structure is allocated with __GFP_ATOMIC so it is much more likely
-> >> to fail than a typical kernel memory allocation.
-> >> 
-> >> But I agree it does look like there is a quality of implementation issue
-> >> here.
-> >> 
-> >> > Fix this by passing override_rlimit into inc_rlimit_get_ucounts() and
-> >> > skip the comparison to max there if override_rlimit is set. This
-> >> > effectively restores the old behavior.
-> >> 
-> >> Instead please just give the container and unlimited number of siginfo
-> >> structures it can play with.
-> >
-> > Well, personally I'd not use this limit too, but I don't think
-> > "it's broken, userspace shouldn't use it" argument is valid.
-> 
-> I said if you don't want the limit don't use it.
-> 
-> A version of "Doctor it hurts when I do this". To which the doctor
-> replies "Don't do that then".
-> 
-> I was also asking that you test with the limit disabled (at user
-> namespace creation time) so that you can verify that is problem.
-> 
-> >> The maximum for rlimit(RLIM_SIGPENDING) is the rlimit(RLIM_SIGPENDING)
-> >> value when the user namespace is created.
-> >> 
-> >> Given that it took 3 and half years to report this.  I am going to
-> >> say this really looks like a userspace bug.
-> >
-> > The trick here is another bug fixed by https://lkml.org/lkml/2024/10/31/185.
-> > Basically it's a leak of the rlimit value.
-> > If a limit is set and reached in the reality, all following signals
-> > will not have a siginfo attached, causing applications which depend on
-> > handling SIGSEGV to crash.
-> 
-> I will take a deeper look at the patch you are referring to.
-> 
-> >> Beyond that your patch is actually buggy, and should not be applied.
-> >> 
-> >> If we want to change the semantics and ignore the maximum number of
-> >> pending signals in a container (when override_rlimit is set) then
-> >> the code should change the computation of the max value (pegging it at
-> >> LONG_MAX) and not ignore it.
-> >
-> > Hm, isn't the unconditional (new < 0) enough to capture the overflow?
-> > Actually I'm not sure I understand how "long new" can be "> LONG_MAX"
-> > anyway.
-> 
-> Agreed "new < 0" should catch that, but still splitting the logic
-> between the calculation of max and the test of max is quite confusing.
-> It makes much more sense to put the logic into the calculate of max.
-
-You mean something like this?
-
-diff --git a/kernel/ucount.c b/kernel/ucount.c
-index 046b3d57ebb4..49fcec41e5b4 100644
---- a/kernel/ucount.c
-+++ b/kernel/ucount.c
-@@ -317,11 +317,12 @@ long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
-
-        for (iter = ucounts; iter; iter = iter->ns->ucounts) {
-                long new = atomic_long_add_return(1, &iter->rlimit[type]);
--               if (new < 0 || (!override_rlimit && (new > max)))
-+               if (new < 0 || new > max)
-                        goto unwind;
-                if (iter == ucounts)
-                        ret = new;
--               max = get_userns_rlimit_max(iter->ns, type);
-+               if (!override_rlimit)
-+                       max = get_userns_rlimit_max(iter->ns, type);
-                /*
-                 * Grab an extra ucount reference for the caller when
-                 * the rlimit count was previously 0.
-
---
-
-If you strongly prefer this version, I can send a v2. I like my original
-version slightly better, but not a strong preference. Please, let me know.
+On Fri Nov 1, 2024 at 11:09 PM EET, Jerry Snitselaar wrote:
+> On Fri, Nov 01, 2024 at 11:07:15PM +0200, Jarkko Sakkinen wrote:
+> > On Fri Nov 1, 2024 at 10:23 PM EET, Jerry Snitselaar wrote:
+> > > On Fri, Nov 01, 2024 at 02:21:56AM +0200, Jarkko Sakkinen wrote:
+> > > > Setting TPM_CHIP_FLAG_SUSPENDED in the end of tpm_pm_suspend() can =
+be racy
+> > > > according, as this leaves window for tpm_hwrng_read() to be called =
+while
+> > > > the operation is in progress. The recent bug report gives also evid=
+ence of
+> > > > this behaviour.
+> > > >=20
+> > > > Aadress this by locking the TPM chip before checking any chip->flag=
+s both
+> > > > in tpm_pm_suspend() and tpm_hwrng_read(). Move TPM_CHIP_FLAG_SUSPEN=
+DED
+> > > > check inside tpm_get_random() so that it will be always checked onl=
+y when
+> > > > the lock is reserved.
+> > > >=20
+> > > > Cc: stable@vger.kernel.org # v6.4+
+> > > > Fixes: 99d464506255 ("tpm: Prevent hwrng from activating during res=
+ume")
+> > > > Reported-by: Mike Seo <mikeseohyungjin@gmail.com>
+> > > > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219383
+> > > > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> > > > ---
+> > > > v3:
+> > > > - Check TPM_CHIP_FLAG_SUSPENDED inside tpm_get_random() so that it =
+is
+> > > >   also done under the lock (suggested by Jerry Snitselaar).
+> > > > v2:
+> > > > - Addressed my own remark:
+> > > >   https://lore.kernel.org/linux-integrity/D59JAI6RR2CD.G5E5T4ZCZ49W=
+@kernel.org/
+> > > > ---
+> > > >  drivers/char/tpm/tpm-chip.c      |  4 ----
+> > > >  drivers/char/tpm/tpm-interface.c | 32 ++++++++++++++++++++++------=
+----
+> > > >  2 files changed, 22 insertions(+), 14 deletions(-)
+> > > >=20
+> > > > diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chi=
+p.c
+> > > > index 1ff99a7091bb..7df7abaf3e52 100644
+> > > > --- a/drivers/char/tpm/tpm-chip.c
+> > > > +++ b/drivers/char/tpm/tpm-chip.c
+> > > > @@ -525,10 +525,6 @@ static int tpm_hwrng_read(struct hwrng *rng, v=
+oid *data, size_t max, bool wait)
+> > > >  {
+> > > >  	struct tpm_chip *chip =3D container_of(rng, struct tpm_chip, hwrn=
+g);
+> > > > =20
+> > > > -	/* Give back zero bytes, as TPM chip has not yet fully resumed: *=
+/
+> > > > -	if (chip->flags & TPM_CHIP_FLAG_SUSPENDED)
+> > > > -		return 0;
+> > > > -
+> > > >  	return tpm_get_random(chip, data, max);
+> > > >  }
+> > > > =20
+> > > > diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/tp=
+m-interface.c
+> > > > index 8134f002b121..b1daa0d7b341 100644
+> > > > --- a/drivers/char/tpm/tpm-interface.c
+> > > > +++ b/drivers/char/tpm/tpm-interface.c
+> > > > @@ -370,6 +370,13 @@ int tpm_pm_suspend(struct device *dev)
+> > > >  	if (!chip)
+> > > >  		return -ENODEV;
+> > > > =20
+> > > > +	rc =3D tpm_try_get_ops(chip);
+> > > > +	if (rc) {
+> > > > +		/* Can be safely set out of locks, as no action cannot race: */
+> > > > +		chip->flags |=3D TPM_CHIP_FLAG_SUSPENDED;
+> > > > +		goto out;
+> > > > +	}
+> > > > +
+> > > >  	if (chip->flags & TPM_CHIP_FLAG_ALWAYS_POWERED)
+> > > >  		goto suspended;
+> > > > =20
+> > > > @@ -377,21 +384,19 @@ int tpm_pm_suspend(struct device *dev)
+> > > >  	    !pm_suspend_via_firmware())
+> > > >  		goto suspended;
+> > > > =20
+> > > > -	rc =3D tpm_try_get_ops(chip);
+> > > > -	if (!rc) {
+> > > > -		if (chip->flags & TPM_CHIP_FLAG_TPM2) {
+> > > > -			tpm2_end_auth_session(chip);
+> > > > -			tpm2_shutdown(chip, TPM2_SU_STATE);
+> > > > -		} else {
+> > > > -			rc =3D tpm1_pm_suspend(chip, tpm_suspend_pcr);
+> > > > -		}
+> > > > -
+> > > > -		tpm_put_ops(chip);
+> > > > +	if (chip->flags & TPM_CHIP_FLAG_TPM2) {
+> > > > +		tpm2_end_auth_session(chip);
+> > > > +		tpm2_shutdown(chip, TPM2_SU_STATE);
+> > > > +		goto suspended;
+> > > >  	}
+> > > > =20
+> > > > +	rc =3D tpm1_pm_suspend(chip, tpm_suspend_pcr);
+> > > > +
+> > >
+> > >
+> > > I imagine the above still be wrapped in an else with the if (chip->fl=
+ags & TPM_CHIP_FLAG_TPM2)
+> > > otherwise it will call tpm1_pm_suspend for both tpm1 and tpm2 devices=
+, yes?
+> > >
+> > > So:
+> > >
+> > > 	if (chip->flags & TPM_CHIP_FLAG_TPM2) {
+> > > 		tpm2_end_auth_session(chip);
+> > > 		tpm2_shutdown(chip, TPM2_SU_STATE);
+> > > 		goto suspended;
+> > > 	} else {
+> > > 		rc =3D tpm1_pm_suspend(chip, tpm_suspend_pcr);
+> > > 	}
+> > >
+> > >
+> > > Other than that I think it looks good.
+> >=20
+> > It should be fine because after tpm2_shutdown() is called there is "got=
+o
+> > suspended;". This is IMHO more readable as it matches the structure of
+> > previous exits before it. In future if this needs to be improved it wil=
+l
+> > easier to move the logic to a helper function (e.g. __tpm_pm_suspend())
+> > where gotos are substituted with return-statements.
+> >=20
+> > BR, Jarkko
+> >=20
+>
+> Heh, yep.
+>
+> Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
 
 Thanks!
+
+BR, Jarkko
 
