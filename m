@@ -1,112 +1,129 @@
-Return-Path: <stable+bounces-89472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57EC9B8A1A
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 04:49:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13A119B8A37
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 05:23:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D73411C21BA9
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 03:49:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC9BB1F22893
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 04:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B16BB1459F7;
-	Fri,  1 Nov 2024 03:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 431CF146D45;
+	Fri,  1 Nov 2024 04:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Y++Ha3+I"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="b06df2ql"
 X-Original-To: stable@vger.kernel.org
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26FC13BC18;
-	Fri,  1 Nov 2024 03:49:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C727211C;
+	Fri,  1 Nov 2024 04:22:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730432962; cv=none; b=bZ1JQtBh/FmxTtfE9Q1EkXm9PhEsqm3u6Tg9DAyyAq5NNT7hL1wgaWNgiXV3ihFOm3cxmedhevNu+2BL5lR9HAjFE3QX0ZPaJqGxJlEgSeHP4GtmBf3iPAwCO4+j6S/KN2HsARYN1+/y1GwKtko1a3Pb7OwSRueIE8zcrD+wbjo=
+	t=1730434978; cv=none; b=F1yibXX0Kq8qoAsDIc0t788Aaiszag3dimCtLc34k0jvQLVrjYSPuGbfxLpzPwfmT2ZFpG2XNFJXmcfnLUTFjSptGSbg1eZM4vmZAqOIHn5JspdGxRB+GduxEMhpxgEwoI5zkcYQfGBg3CG7Amy9Bay7BrEBLMzqOQKns2Z8NFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730432962; c=relaxed/simple;
-	bh=ITlk7toW7r+/8ai/vHURhDUElQIuKW6j+3xWJJXBal4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LuJ81GOPJu18tcMpI2L7yNgSFfvPmzXsxwdDArdGGsaEuAk7qqtj74P3ayCN0QLIxzjuwovAKI95jqeIUKB9mi5V3gYv5v1OuTUjdR/1t0EcI0Vg1JujL2qCUszoakOHHRnqBgX3Qg0DI6t98yUs0+ALRVvMiAui1NAm8HVQwrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Y++Ha3+I; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <30fefafc-d19a-40cb-bcb1-3c586ba8e67e@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1730432957;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+aisCwM6KP9qhKb2kb76HEqZmfimYG5W48SHq8fMVq8=;
-	b=Y++Ha3+Inw7JOluD44nkAOSKEmpOHi1RI6ERF950vDTo2tE4evJIgqeCCjhUGWnS3wOJLE
-	KJLrcTTGP+Ayn1k31dYjysjoFgR/A1qCWb/jV/ZUx5Gngphix6NPathal7tWHsLdSmdcF/
-	QK6CmqO46uFanBZJj0jAq2gK7lGlG3c=
-Date: Fri, 1 Nov 2024 11:49:07 +0800
+	s=arc-20240116; t=1730434978; c=relaxed/simple;
+	bh=+R9vhprP6Pe387Q5ueLIl38bbj6vgw38MdtuxGVbax4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=L7+/qgp1c2WvUxJKFabj8Y4cK2vfoK/CVaG/BMY5I1wEPtqIvpcbkomJG2pYokfaWIvTmuTwoNjAYwx4nzgElvs0t4YPQVDiTis9tfjicFP2hsqjEahiDyvPHnY3AqaySKr1LxA5OtLvWCNf0dV+fG9GhnZy6LluLyO1i+B2SMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=b06df2ql; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4A14MJOf82509540, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1730434939; bh=+R9vhprP6Pe387Q5ueLIl38bbj6vgw38MdtuxGVbax4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=b06df2ql6dP0by1U8c3jHx/U9S6Qp0Ryu8CAR0u9OJBw8ulYZYN2Dze7myCFEzbFE
+	 IgnlmpGIKXj5rySbkgqYPKHE07agwDwb4EicBkYLcrjlmC7OVC18qHhpryfUQImsi2
+	 n4QLwS7ErFzwovEexr8JQr0/pZDfP74J1pHqXciEeiict0xX20J12IjyDaiyL4WY55
+	 BW2YUnyqu+JUGsma9xMQYyPt1wCPJ1azEbvOX90WH9MKw9fNqqI5gx7+MGo41FR3tq
+	 u48Gh+x2dN/hc7PCMNuQfF0GtZzSyRFdrl3jypqIdZQsH4wMdvoRmvPAmg/DQ4nd85
+	 512wP5cnF4uOg==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4A14MJOf82509540
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 1 Nov 2024 12:22:19 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 1 Nov 2024 12:22:20 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 1 Nov 2024 12:22:19 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Fri, 1 Nov 2024 12:22:19 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: "kvalo@kernel.org" <kvalo@kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
+        "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
+        "rtl8821cerfe2@gmail.com"
+	<rtl8821cerfe2@gmail.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com"
+	<syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com>
+Subject: RE: [PATCH V3] wifi: rtlwifi: Drastically reduce the attempts to read efuse in case of failures
+Thread-Topic: [PATCH V3] wifi: rtlwifi: Drastically reduce the attempts to
+ read efuse in case of failures
+Thread-Index: AQHbK62jzL4hMAZxOk2XHUy0QNETw7Kh0tAg
+Date: Fri, 1 Nov 2024 04:22:19 +0000
+Message-ID: <8363b94ee45c49c0996b12010c18b9f0@realtek.com>
+References: <20241031155731.1253259-1-gpiccoli@igalia.com>
+In-Reply-To: <20241031155731.1253259-1-gpiccoli@igalia.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] drm/bridge: Fix assignment of the of_node of the
- parent to aux bridge
-To: Johan Hovold <johan@kernel.org>
-Cc: neil.armstrong@linaro.org, Andrzej Hajda <andrzej.hajda@intel.com>,
- Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Abel Vesa <abel.vesa@linaro.org>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20241018-drm-aux-bridge-mark-of-node-reused-v2-1-aeed1b445c7d@linaro.org>
- <172951608323.1285208.3162107667310691864.b4-ty@linaro.org>
- <230b5910-6790-44cb-90ed-222bee89054d@linux.dev>
- <c2a4cc3a-2ffc-46f3-8636-238cd561f7aa@linaro.org>
- <751a4ab5-acbf-4e57-8cf4-51ab10206cc9@linux.dev>
- <ZyOvAqnuxbNnGWli@hovoldconsulting.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sui Jingfeng <sui.jingfeng@linux.dev>
-In-Reply-To: <ZyOvAqnuxbNnGWli@hovoldconsulting.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+
+Guilherme G. Piccoli <gpiccoli@igalia.com> wrote:
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/efuse.c
+> b/drivers/net/wireless/realtek/rtlwifi/efuse.c
+> index 82cf5fb5175f..0ff553f650f9 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/efuse.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/efuse.c
+> @@ -162,9 +162,19 @@ void efuse_write_1byte(struct ieee80211_hw *hw, u16 =
+address, u8 value)
+>  void read_efuse_byte(struct ieee80211_hw *hw, u16 _offset, u8 *pbuf)
+>  {
+>         struct rtl_priv *rtlpriv =3D rtl_priv(hw);
+> +       u16 retry, max_attempts;
+>         u32 value32;
+>         u8 readbyte;
+> -       u16 retry;
+> +
+> +       /*
+> +        * In case of USB devices, transfer speeds are limited, hence
+> +        * efuse I/O reads could be (way) slower. So, decrease (a lot)
+> +        * the read attempts in case of failures.
+> +        */
+> +       if (rtlpriv->rtlhal.interface =3D=3D INTF_PCI)
+> +               max_attempts =3D 10000;
+> +       else
+> +               max_attempts =3D 10;
+
+As your comment, setting max_atttempts to 10 under condition of INTF_USB wo=
+uld
+be more reasonable, like
+
+    u16 max_attempts =3D 10000;
+
+    if (rtlpriv->rtlhal.interface =3D=3D INTF_USB)
+        max_attempts =3D 10;
 
 
-On 2024/11/1 00:23, Johan Hovold wrote:
-> On Thu, Oct 31, 2024 at 11:06:38PM +0800, Sui Jingfeng wrote:
->
->> But I think Johan do need more times to understand what exactly
->> the real problem is. We do need times to investigate new method.
-> No, I know perfectly well what the (immediate) problem is here (I was
-> the one adding support for the of_node_reused flag some years back).
->
-> I just wanted to make sure that the commit message was correct and
-> complete before merging (and also to figure out whether this particular
-> patch needed to be backported).
-
-
-Well under such a design, having the child device sharing the 'OF' device
-node with it parent device means that one parent device can *only*
-create one AUX bridge child device.
-
-Since If you create two or more child AUX bridge, *all* of them will
-call devm_drm_of_get_bridge(&auxdev->dev, auxdev->dev.of_node, 0, 0),
-then we will *contend* the same next bridge resource.
-
-Because of the 'auxdev->dev.of_node' is same for all its instance.
-While other display bridges seems don't has such limitations.
-
-
-> Johan
-
--- 
-Best regards,
-Sui
 
 
