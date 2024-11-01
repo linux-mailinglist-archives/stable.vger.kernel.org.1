@@ -1,103 +1,145 @@
-Return-Path: <stable+bounces-89481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49D149B8E00
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 10:38:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FAB69B8E23
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 10:49:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A2D01C212C6
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 09:38:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F896281B5B
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 09:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F26158558;
-	Fri,  1 Nov 2024 09:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D57158870;
+	Fri,  1 Nov 2024 09:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b="WYKhduho";
-	dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b="IpSDNkeo"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KuZgXPJl"
 X-Original-To: stable@vger.kernel.org
-Received: from mta-03.yadro.com (mta-03.yadro.com [89.207.88.253])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E017115AAB6;
-	Fri,  1 Nov 2024 09:38:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.207.88.253
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E00157487
+	for <stable@vger.kernel.org>; Fri,  1 Nov 2024 09:49:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730453917; cv=none; b=Euz30xZ1AQNV2JLw5Ms4HMEKiAHiFEZIcoIwnbSBOPyK29CwrIyxeVlGuDk2PhGPkk8e8ngJJm4AW/nxrwvZd7NChJVH+QcpayokvKIawjT+AFCbQbTCNSBhtKAQcrwyqI7Th41xGpx5yJCT+44+QgJnH8P/haPQnPyC/8NmtGA=
+	t=1730454548; cv=none; b=cb1M2zLAOAGG3oglOPEfM9oD9l9VsWnHuUYaiqSMD7euTh6Y+sH2WMGXZx7/Ur320Yv4n2Ve1uHhS7BVRTYX0hYuwmez4RxP5q0gkJ7OYnKQ+uIevt/jSqW9PuA2aONtA6Q1rCw9xQoTC1fwSbIyXGUX4s8Sjmfsf0OjZ3dG4Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730453917; c=relaxed/simple;
-	bh=5UH5ZYO1q7g1Z8k4/mlpRUHrS+F7qL+lbeCgu/TgPZk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=jQmVBLzs3eE3AKBvoCK2gAVOBFa7Pnbd+yxFaMveGJnb9VH5koZ1T9Om7IKAYMSgXYicSuZE096U2uyMiTKke0ahE6+QTKT0BERLUekP2QujbKUmCf0ZkhBnT9DTyQYY/kLiNmT1TkkVcPQnDbTyM+tOxnaKyTOwy3eJsF0VYDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yadro.com; spf=pass smtp.mailfrom=yadro.com; dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b=WYKhduho; dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b=IpSDNkeo; arc=none smtp.client-ip=89.207.88.253
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yadro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yadro.com
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-03.yadro.com 6DD92E0002
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-04;
-	t=1730453901; bh=5UH5ZYO1q7g1Z8k4/mlpRUHrS+F7qL+lbeCgu/TgPZk=;
-	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:From;
-	b=WYKhduho3ag/SWd4IKqjFmP5Xen8eB8RGepp0pcrL7H+utEIRZQ74ly2LF5KeJ+sW
-	 880P9mLuBRoSI9ztW4JmJMYf+fR4lB/BgdAVpHJig2Ta3ud2lZSnnuBWRhS/+0YCWg
-	 c83/hlB2gpUtYuUdZe/LWQKs52G2nlavKo1YlCV/zBMpH7gzXvc7yqqAei++YW3CzM
-	 pQLVSLXS5Bf6r+ZiB7PleOmPsYunG008VBbcVVd0+DBd+tcF7uR/qUnzQMbaGmRKfN
-	 f8QkePiesdZt3MSRWJanzrrDMAkrzxS3jJ69yMfNQpGN0zXnJR6TdysjyqVdSAqT+u
-	 M6ho4E5NdmBHA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
-	t=1730453901; bh=5UH5ZYO1q7g1Z8k4/mlpRUHrS+F7qL+lbeCgu/TgPZk=;
-	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:From;
-	b=IpSDNkeoeYK2uEMJgfoSj8SIdfXHu5fi4gZP/j5YGdb1JNVTWj6zD2WmnJJu2Py6x
-	 tRnENn7aFHf2is4k5DYD501J74gtXaM1ktiTKYsEYbKUw4DYWrl9dMfJpxA7nrOfIx
-	 86+GnH8Eg5Y+EatVExHqYdUYC9H2vlog02D6LiThtZKgVZNvU4b26nAv1tYSyULSJ+
-	 RLWShKWl7ZKkwes1hZEgkM/nri9rJ40EXCKljvbVhNsA5dTWwMwMAgjjHE8LMJIXpu
-	 YRWBJ691MipvR80kgcpyeaO7le7VhRM/A6ytjBkH67qQk0OSrzrRD9ELLHWSTSeYdH
-	 pB52pYI+dHhkA==
-From: Anastasia Kovaleva <a.kovaleva@yadro.com>
-To: "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>
-CC: "njavali@marvell.com" <njavali@marvell.com>,
-	"GR-QLogic-Storage-Upstream@marvell.com"
-	<GR-QLogic-Storage-Upstream@marvell.com>,
-	"James.Bottomley@HansenPartnership.com"
-	<James.Bottomley@HansenPartnership.com>, "martin.petersen@oracle.com"
-	<martin.petersen@oracle.com>, "bvanassche@acm.org" <bvanassche@acm.org>,
-	"quinn.tran@cavium.com" <quinn.tran@cavium.com>,
-	"himanshu.madhani@oracle.com" <himanshu.madhani@oracle.com>,
-	"linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux@yadro.com" <linux@yadro.com>, "hare@suse.de" <hare@suse.de>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v3 0/3] Fix bugs in qla2xxx driver
-Thread-Topic: [PATCH v3 0/3] Fix bugs in qla2xxx driver
-Thread-Index: AQHbGzIvZMV/oTAyUkWQTinjaU2zibKiTS4A
-Date: Fri, 1 Nov 2024 09:38:20 +0000
-Message-ID: <93FA6AD1-9959-4E4C-A447-9CF694A6A024@yadro.com>
-References: <20241010163236.27969-1-a.kovaleva@yadro.com>
-In-Reply-To: <20241010163236.27969-1-a.kovaleva@yadro.com>
-Accept-Language: ru-RU, en-US
-Content-Language: en-GB
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <90F19368F5ECAC4B88EE53A71DD7A831@yadro.com>
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1730454548; c=relaxed/simple;
+	bh=I06E8a/JZI8ea7op3bUNVazLDBLCFDZCsUn3qnxWA3A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HEWqLbqcBtRk9mSwGqTK8pebS4lZmZHJwzLXRlZz3F+U0be03O4wXWXyHhnWKoRkD3oIX1i8T+TqUpMGbvJ8YMGTi8HIEhuRM4XL5L25z7Dd4J6YEPLmXQ1frKGDNcjhv5ORHdjgzWclPWdx2dPxEXKYF3ECjZjKWMGr4tSfWEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KuZgXPJl; arc=none smtp.client-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-539f76a6f0dso1683409e87.1
+        for <stable@vger.kernel.org>; Fri, 01 Nov 2024 02:49:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1730454544; x=1731059344; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Uxb5qd1QDIPM/jSC0SzZPLDKW9qNuQz8ACVJ5xEQ9Og=;
+        b=KuZgXPJluAGl8TnHLzcf6KvwvpPFeGAJQi5JEgDmThtFJEqrAgZCxUnQcUY8r6Yo0w
+         u7YnmaWQxJkZLZBnFS9KmncY4Ef1xfMvEE0UKiR7UwUaeIPZMTxsNK6P+X4bIK28Whdu
+         hN/6odbfaxTCAwqpdKnvjuscJu/nS3FJKIuKVzqgbC6zIL2ml/UHfPK2jBdTtgtU8+pX
+         YnGjPDLRGf6g7TRNIFsDGo4ohTv1dN8QLwxCaheylDFrTSm2TDpz6K+7AJRDRgTzsx2K
+         3QurqrERjVTweH9yJNU6MXaILAKS8KFKjqWVb8l87A7+NQN+146UoIZTtXoTppa0bGNv
+         m2XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730454544; x=1731059344;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Uxb5qd1QDIPM/jSC0SzZPLDKW9qNuQz8ACVJ5xEQ9Og=;
+        b=fQOFHIRJG5Pl4ttVGtxX+DMgZPNJ5phHjTbGoVGHv2T+a4cHcXtvwTO3yVesCUf5Q/
+         Gt4EV3pydxCUS3GdslkLR0TkGveuSPi2vZXiZiYhgvnjWGlf8bdN+BuR3QbmP2BHWXm/
+         mdpnUNUBlNx7KCwXeJs1h8MoyvEdxvKDbIvolcU4tLVlz0Rp081QoCChXZfrkG/P4e0S
+         rkqoCG6LdoWP0wLLDCl22XkA9w1eDF/Dam9VRAZhr9xSvML+WlSYJqF8d8ippUB7W9nz
+         c9ohY4tEnj8leoG98xLn277mEhMdBqfMLDGLZeDqW/q1KiIV2T7HZVzHJ1O7frRR/3E3
+         wLdw==
+X-Forwarded-Encrypted: i=1; AJvYcCX+1sDlZo8eOaQm1soyq406KVqTRiF65SRSKOqu61b0zR0me0da+a9+7VdeVFRJCW8qWFnQ6EI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYs5KMqpGyrH9UJIJM8CKWfKkgaoNCYqm9Qsdpg/RFWrJuc2Mc
+	THPxB4+XqVOktbqxSIH49QzD6JHMxAqnJhVtZGkjg2ZeBeNfWZ0MQa+GtIQa9fo=
+X-Google-Smtp-Source: AGHT+IFGmepb6pA/PhrFcsbK2sdy+T0CJMGpY3jWydPFArJbEEtCdrMr7FwLdSZhf8F/ntpQCdyxSQ==
+X-Received: by 2002:a05:6512:3195:b0:539:e023:8fce with SMTP id 2adb3069b0e04-53c79e15984mr3059817e87.12.1730454544173;
+        Fri, 01 Nov 2024 02:49:04 -0700 (PDT)
+Received: from linaro.org ([82.76.168.176])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4327d5bf447sm53365025e9.13.2024.11.01.02.49.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Nov 2024 02:49:03 -0700 (PDT)
+Date: Fri, 1 Nov 2024 11:49:02 +0200
+From: Abel Vesa <abel.vesa@linaro.org>
+To: Johan Hovold <johan@kernel.org>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] drm/bridge: Fix assignment of the of_node of the
+ parent to aux bridge
+Message-ID: <ZySkDgijDebz+6BA@linaro.org>
+References: <20241018-drm-aux-bridge-mark-of-node-reused-v2-1-aeed1b445c7d@linaro.org>
+ <ZxYBa11Ig_HHQngV@hovoldconsulting.com>
+ <ZyOOwEPB9NLNtL4N@hovoldconsulting.com>
+ <ZyOsuTr4XBU3ogRx@linaro.org>
+ <ZyOxX31QV2GA8Ef8@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZyOxX31QV2GA8Ef8@hovoldconsulting.com>
 
-T24gVGh1LCAxMCBPY3QgMjAyNCAxOTozMjozMyArMDMwMCwgQW5hc3Rhc2lhIEtvdmFsZXZhIHdy
-b3RlOg0KPiBUaGlzIHNlcmllcyBvZiBwYXRjaGVzIGNvbnRhaW5zIDMgc2VwYXJhdGUgY2hhbmdl
-cyB0aGF0IGZpeCBzb21lIGJ1Z3MgaW4NCj4gdGhlIHFsYTJ4eHggZHJpdmVyLg0KPiAtLS0NCj4g
-djM6DQo+IC0gRml4IGJ1aWxkIGlzc3VlIGluIHBhdGNoIDENCj4gdjI6DQo+IC0gQ2hhbmdlIGEg
-c3BpbmxvY2sgd3JhcCB0byBhIFdSSVRFX09OQ0UoKSBpbiBwYXRjaCAxDQo+IC0gQWRkIFJldmll
-d2VkLWJ5IHRhZ3Mgb24gcGF0Y2hlcyAyIGFuZCAzDQo+IC0tLQ0KPiBBbmFzdGFzaWEgS292YWxl
-dmEgKDMpOg0KPiAgICBzY3NpOiBxbGEyeHh4OiBEcm9wIHN0YXJ2YXRpb24gY291bnRlciBvbiBz
-dWNjZXNzDQo+ICAgIHNjc2k6IHFsYTJ4eHg6IE1ha2UgdGFyZ2V0IHNlbmQgY29ycmVjdCBMT0dP
-DQo+ICAgIHNjc2k6IHFsYTJ4eHg6IFJlbW92ZSBpbmNvcnJlY3QgdHJhcA0KPg0KPiAgIGRyaXZl
-cnMvc2NzaS9xbGEyeHh4L3FsYV9pb2NiLmMgICB8IDExICsrKysrKysrKysrDQo+ICAgZHJpdmVy
-cy9zY3NpL3FsYTJ4eHgvcWxhX2lzci5jICAgIHwgIDQgKysrKw0KPiAgIGRyaXZlcnMvc2NzaS9x
-bGEyeHh4L3FsYV90YXJnZXQuYyB8IDE2ICsrKysrKystLS0tLS0tLS0NCj4gICAzIGZpbGVzIGNo
-YW5nZWQsIDIyIGluc2VydGlvbnMoKyksIDkgZGVsZXRpb25zKC0pDQo+DQoNCkdlbnRsZSBwaW5n
-DQoNCg==
+On 24-10-31 17:33:35, Johan Hovold wrote:
+> On Thu, Oct 31, 2024 at 06:13:45PM +0200, Abel Vesa wrote:
+> > On 24-10-31 15:05:52, Johan Hovold wrote:
+> > > On Mon, Oct 21, 2024 at 09:23:24AM +0200, Johan Hovold wrote:
+> > > > On Fri, Oct 18, 2024 at 03:49:34PM +0300, Abel Vesa wrote:
+> 
+> > > > > Cc: stable@vger.kernel.org      # 6.8
+> > 
+> > > > I assume there are no existing devicetrees that need this since then we
+> > > > would have heard about it sooner. Do we still need to backport it?
+> > 
+> > None of the DTs I managed to scan seem to have this problem.
+> > 
+> > Maybe backporting it is not worth it then.
+> 
+> Thanks for confirming. Which (new) driver and DT are you seeing this
+> with?
+
+The Parade PS8830 retimer and its DT node. The v3 of that patchset
+will not trigger it unless the pinctrl properties are being added to the
+retimer node.
+
+> 
+> > > > When exactly are you hitting this?
+> > 
+> > Here is one of the examples.
+> > 
+> > [    5.768283] x1e80100-tlmm f100000.pinctrl: error -EINVAL: pin-185 (aux_bridge.aux_bridge.3)
+> > [    5.768289] x1e80100-tlmm f100000.pinctrl: error -EINVAL: could not request pin 185 (GPIO_185) from group gpio185 on device f100000.pinctrl
+> > [    5.768293] aux_bridge.aux_bridge aux_bridge.aux_bridge.3: Error applying setting, reverse things back
+> 
+> I meant with which driver and DT you hit this with.
+> 
+> > > Abel, even if Neil decided to give me the finger here, please answer the
+> > > above so that it's recorded in the archives at least.
+> 
+> > Sorry for not replying in time before the patch was merge.
+> 
+> That's not your fault.
+> 
+> Johan
+> 
 
