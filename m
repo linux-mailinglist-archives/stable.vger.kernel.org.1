@@ -1,113 +1,139 @@
-Return-Path: <stable+bounces-89519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77BCF9B984E
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 20:20:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99BD59B98A4
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 20:30:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C1CB28205F
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 19:20:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C0A11F25560
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 19:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738D31CEEA7;
-	Fri,  1 Nov 2024 19:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970561D0F4B;
+	Fri,  1 Nov 2024 19:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tITwQKZq"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="nI76WWIL"
 X-Original-To: stable@vger.kernel.org
-Received: from out-175.mta0.migadu.com (out-175.mta0.migadu.com [91.218.175.175])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B331CF2BB
-	for <stable@vger.kernel.org>; Fri,  1 Nov 2024 19:19:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2981CF5DE;
+	Fri,  1 Nov 2024 19:29:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730488801; cv=none; b=rGjnv9YLDMz9vHO2AVD85MieJJWx/xzYMd91z3gcdEZSHd8SeAqg1riR/2Stn7W+56x9rg0dkkMfHxEmizxwO/1xYFyG3uioKuWz2jukuPc7kpOe8NGV5ZwG19EC+Y6g9t+7WVWrKbPbbZs2LRY7eUo1FVPmdyrKIsGmnX3bA+s=
+	t=1730489402; cv=none; b=GE0vzkXZuNUBXZpiGI7ibUYEdWtpeTQT9nDAR6g2vYKhWbWMPzD2Y5aQYVHQfXumpftWTHJIga8MjVsM9FaTB75tF7MyVJD+xICEB1Fp6/Wg/AzMmwSLMQGnVFpJaGyYQ8UVof+Mwl37PXbAMIQL+D8sRZD0F7RDxMWJMr6Unac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730488801; c=relaxed/simple;
-	bh=sIXvOD3OZG6iRjOMU+KtarI1UnUvVaJqVcaWBqHgXqs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d4otNlfWnWZv49E+Ksythw3kD4zxlWQ7ommu9i949BPrH8/4349ntrJOtJ8bQYqO5BrUCtGCzglFytyFueWxa8d4q5ciSS1cfV4YnO6zkTn2Nf9sEihSy1Bugwvg5NSjDTKQ6F8rrOfuqv2XBZCINnaEWTPcN44sd7TOdxOw6UM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tITwQKZq; arc=none smtp.client-ip=91.218.175.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1730488796;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=qfMRzJmRTtk2n3vrWnRLlS39WI0LbCfZDKFxpKqV/OY=;
-	b=tITwQKZq3zSE+tEoz6oT7fXGkLs6SfFvec9LSklENAU0B4vTbCNON855CpTmb4ocnhukMs
-	GKeISR/YRDqyjwrbOCtCYacSn1cDM0CF6PGPuWuPA7H5MPkb1yTBKYitsVXtsYG26xuW+p
-	P9DFu1gYoKXFWK3HQYHymBGpnrJWkA0=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Andrei Vagin <avagin@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Alexey Gladkov <legion@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] ucounts: fix counter leak in inc_rlimit_get_ucounts()
-Date: Fri,  1 Nov 2024 19:19:40 +0000
-Message-ID: <20241101191940.3211128-1-roman.gushchin@linux.dev>
+	s=arc-20240116; t=1730489402; c=relaxed/simple;
+	bh=UHcOgKY60kHMORdxEhJ2bsmNACo25QXm+l4rjXj3v00=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ujLPzlcfNTtx7PBU5CeLAX1/cifTFMm8widJq+Bgn2KA0HEgIWNR9/+VzQsSmKsYhEbybTMcXYVuk7AjWKVALS5i9wtcdkwNAfTvt9j6R/0mv4TolQFwWGC1OcuUh4+JVI/NTEBzY0f8HhojgoaCLhPjtbeTLlID7KNQPpNvXUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=nI76WWIL; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=IeU8B7tRAGK68ZBx5T5o8+VaZhBGOgwk1ohdzdqEKIk=; b=nI76WWIL5gDscrNMeYsAedfhOY
+	cUGETXe0Al45QIZP2OONBkpsgWYWgSZ9P4f3uG9FK4LxWfUZk2ViKN7E/Cb3y47TyX8HTk1a+8onB
+	Hm+AB+zv6ceQx628ddbiMiNWeVKPrkzK3xIOzELjOGodBFa0rGuSt/pH7UxSHDvpGWzLYJW35u8Vx
+	fvyIa3tvgdedkXJ0rDyIT2YRifIErTID06Q9BsAjnKBaWwPks61hwI780pImyMY9tAg8iLSoJRUDN
+	75yZd+Chu/bjqGEYjShwLqVTdoDbI5MyzXgDCDQieSN+wxV9K9hvmtjI7ejWPF5AwapPr4u4u0Qlm
+	3DMfnweg==;
+Received: from [189.79.117.125] (helo=[192.168.1.60])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1t6xLA-000YRj-Bk; Fri, 01 Nov 2024 20:29:48 +0100
+Message-ID: <5f87f72b-8768-50bc-4c0e-44c8fc12f5c4@igalia.com>
+Date: Fri, 1 Nov 2024 16:29:41 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH V3] wifi: rtlwifi: Drastically reduce the attempts to read
+ efuse in case of failures
+Content-Language: en-US
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "kvalo@kernel.org" <kvalo@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
+ "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
+ "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com"
+ <syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <20241031155731.1253259-1-gpiccoli@igalia.com>
+ <ae95544aabe74d1da801fed6cc73896e@realtek.com>
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <ae95544aabe74d1da801fed6cc73896e@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Andrei Vagin <avagin@google.com>
+On 31/10/2024 23:26, Ping-Ke Shih wrote:
+>> [...]
+> Have you run checkpatch before submission? Above two information can be in
+> formal form as suggestions of checkpatch. 
 
-The inc_rlimit_get_ucounts() increments the specified rlimit counter and
-then checks its limit. If the value exceeds the limit, the function
-returns an error without decrementing the counter.
+Yes, I always do that! Happens that checkpatch sometimes provides good
+advice (or even point to genuine errors), but sometimes...it's OK to
+ignore the warnings, specially if we have a reason. Below I detail more
+about my reasons:
 
-v2: changed the goto label name [Roman]
 
-Fixes: 15bc01effefe ("ucounts: Fix signal ucount refcounting")
-Signed-off-by: Andrei Vagin <avagin@google.com>
-Co-developed-by: Roman Gushchin <roman.gushchin@linux.dev>
-Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-Tested-by: Roman Gushchin <roman.gushchin@linux.dev>
-Acked-by: Alexey Gladkov <legion@kernel.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Andrei Vagin <avagin@google.com>
-Cc: "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: Alexey Gladkov <legion@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: <stable@vger.kernel.org>
----
- kernel/ucount.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> WARNING: Prefer a maximum 75 chars per line (possible unwrapped commit description?)
+> #55:
 
-diff --git a/kernel/ucount.c b/kernel/ucount.c
-index 8c07714ff27d..9469102c5ac0 100644
---- a/kernel/ucount.c
-+++ b/kernel/ucount.c
-@@ -317,7 +317,7 @@ long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
- 	for (iter = ucounts; iter; iter = iter->ns->ucounts) {
- 		long new = atomic_long_add_return(1, &iter->rlimit[type]);
- 		if (new < 0 || new > max)
--			goto unwind;
-+			goto dec_unwind;
- 		if (iter == ucounts)
- 			ret = new;
- 		max = get_userns_rlimit_max(iter->ns, type);
-@@ -334,7 +334,6 @@ long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
- dec_unwind:
- 	dec = atomic_long_sub_return(1, &iter->rlimit[type]);
- 	WARN_ON_ONCE(dec < 0);
--unwind:
- 	do_dec_rlimit_put_ucounts(ucounts, iter, type);
- 	return 0;
- }
--- 
-2.47.0.163.g1226f6d8fa-goog
+It's like 76 long line, and helped readability on the commit message. In
+any case, I'll refactor this one in V4, but notice that it'll continue
+complaining because of point "[0]". That line has 80 or 81 chars, don't
+recall, but if I reduce it by removing the word "Commit", for example,
+checkpatch complains I'm writing a commit reference out of preferred
+format heh
 
+So, lose-lose scenario, I can't make the tool fully happy here xD
+
+
+> WARNING: Reported-by: should be immediately followed by Closes: with a URL to the report
+> #72:
+
+This advice would make sense..weren't it for the fact that this
+Syzkaller issue is already closed heh
+
+As I mentioned in the commit message, the main issue with this
+reproducer is a race in the uevent path vs driver shutdown, addressed by
+other commit, hence the Syzkaller report is fixed and closed.
+But...this patch fixes a secondary issue there, and pointing to the
+Syzkaller issue is useful first to give it credit, since both issues
+were found by the tool, but also to point to the reproducer, so I kept
+the Reported tag, but not the Closes one =)
+
+
+> WARNING: The commit message has 'syzkaller', perhaps it also needs a 'Fixes:' tag?
+> 
+
+The fixes tag would point to the driver addition, ~10y ago. Stable bots
+would attempt to backport it for all releases, which I think maybe is
+not necessary. This is a small issue restricted to (old?) USB devices
+and emulated devices (in reproducers), so in my commit message instead
+of adding a Fixes tag, I've added Cc to stable with my suggestion of the
+versions to backport (6.1.y and 6.6.y basically).
+
+That decision is up to you and other maintainers, so feel free to chime
+in if you prefer to backport to all releases or even *not* backport it
+at all, I just provided a suggestion based on my understanding about the
+issue and the relevance of this fix =]
+
+Cheers,
+
+
+Guilherme
 
