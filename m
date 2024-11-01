@@ -1,239 +1,232 @@
-Return-Path: <stable+bounces-89541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EEE59B9B11
-	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 00:01:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E52B9B9B19
+	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 00:08:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6102C1C210BB
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 23:01:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4723C282A9F
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 23:08:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D051D1E260F;
-	Fri,  1 Nov 2024 23:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A201E7C2B;
+	Fri,  1 Nov 2024 23:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jIzAwahp"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p6GKL8yJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076781D0E18
-	for <stable@vger.kernel.org>; Fri,  1 Nov 2024 23:01:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730502104; cv=fail; b=eCiP8sWHKHhdU3S88gfrxvYpjrQs4jbs1E/cU91Geh3ax8yKEHMBG0XK6PkSJAYsPnkMrq+wM8XlQZ1BURKhSPmq0KVZc+6KXzDh7XbFefpbl1kZq5iLeOugWGKauauOkhOtNVA/1TPEulfNpgXpwbKPs78smGs0G8c/EZ+AM8g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730502104; c=relaxed/simple;
-	bh=sukXPGEsV6iZZffz142O4iMmN45DvhPNlR2dL5dF8EM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ZqYbL/W+Ir0dm7MMT6RgbJxaOhZOMJV6TQWbVJ5F6PIFbIxmt4m4ny9csYOIQxdpnCsnamQ1CFXMvXV4emHo1A3cAIeSxocGuaEKg6dZpLLUp5+FZUksfbQM3v2Q2E0wmGjUFXsiK6QaThixgAs14G5VAmHpQkZoMfshYlYwf/8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jIzAwahp; arc=fail smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730502103; x=1762038103;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=sukXPGEsV6iZZffz142O4iMmN45DvhPNlR2dL5dF8EM=;
-  b=jIzAwahpWQRaQ2Y7YTKVvTzl0Zr/aNkQycGSaKnTYEUwEnB61+HjRL6U
-   FbHkaIcqWgXHXXxyf8M4wKZY7gzcvzdtjrJeUnu9KwRKsJnQ5mBGamNxE
-   iTafDLvWs/z3OMTfN/kEUn++zmg23OC4lyFgbvZFoe2tIgqOyzVM/BJmv
-   +o0NTdsGtG2FHaEsulMbDawamPpt82BDE+tHysHw+hbhBkthxUxPn7/1H
-   z9FbQ4gOSHLejAV/vP6k3nnZhWV8SqJu1xo+I7JyeUsbu21+GaasPkigV
-   O7DU7AS8ZAsXAwMFtDy6eRIz1QajUlY6ylFh9AnFcEH75Egmsi2XnYQKw
-   w==;
-X-CSE-ConnectionGUID: u4XknHzeSp2DrGlTJMop6g==
-X-CSE-MsgGUID: 3knq1R2LQ968j9CGDQoWZg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11243"; a="29696239"
-X-IronPort-AV: E=Sophos;i="6.11,251,1725346800"; 
-   d="scan'208";a="29696239"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2024 16:01:42 -0700
-X-CSE-ConnectionGUID: 29sGN0fKQsymuyqneHTBwA==
-X-CSE-MsgGUID: SfvA0ioxRvKuO9YYjVWiVw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,251,1725346800"; 
-   d="scan'208";a="83441916"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 01 Nov 2024 16:01:43 -0700
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 1 Nov 2024 16:01:42 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Fri, 1 Nov 2024 16:01:42 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.40) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 1 Nov 2024 16:01:41 -0700
-Received: from MW4PR11MB5911.namprd11.prod.outlook.com (2603:10b6:303:16b::16)
- by CH3PR11MB8592.namprd11.prod.outlook.com (2603:10b6:610:1b1::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.20; Fri, 1 Nov
- 2024 23:01:39 +0000
-Received: from MW4PR11MB5911.namprd11.prod.outlook.com
- ([fe80::1d00:286c:1800:c2f2]) by MW4PR11MB5911.namprd11.prod.outlook.com
- ([fe80::1d00:286c:1800:c2f2%4]) with mapi id 15.20.8114.020; Fri, 1 Nov 2024
- 23:01:39 +0000
-From: "Singh, Krishneil K" <krishneil.k.singh@intel.com>
-To: "Linga, Pavan Kumar" <pavan.kumar.linga@intel.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "horms@kernel.org"
-	<horms@kernel.org>, "Linga, Pavan Kumar" <pavan.kumar.linga@intel.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, "Singh, Tarun K"
-	<tarun.k.singh@intel.com>
-Subject: RE: [Intel-wired-lan] [PATCH iwl-net v2 1/2] idpf: avoid vport access
- in idpf_get_link_ksettings
-Thread-Topic: [Intel-wired-lan] [PATCH iwl-net v2 1/2] idpf: avoid vport
- access in idpf_get_link_ksettings
-Thread-Index: AQHbJw06PhawaN5PPka7PUE5UBoNmrKjFZfA
-Date: Fri, 1 Nov 2024 23:01:39 +0000
-Message-ID: <MW4PR11MB5911CC01EAA08BFD0E38F4A1BA562@MW4PR11MB5911.namprd11.prod.outlook.com>
-References: <20241025183843.34678-1-pavan.kumar.linga@intel.com>
- <20241025183843.34678-2-pavan.kumar.linga@intel.com>
-In-Reply-To: <20241025183843.34678-2-pavan.kumar.linga@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MW4PR11MB5911:EE_|CH3PR11MB8592:EE_
-x-ms-office365-filtering-correlation-id: 8a40e730-08c5-45f3-17fe-08dcfac924eb
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700018;
-x-microsoft-antispam-message-info: =?us-ascii?Q?PoFGK4yXp54sFSd1PY3ffdI86kEcnPKkHzC8deDhhIwdMytn5uAjlMJzukui?=
- =?us-ascii?Q?0K0PqPDqN90OHH3UgsfwX1MMoCsfE8ZnQ97Y2nP8DUdeoD9k0kEj9fT93VyW?=
- =?us-ascii?Q?tXPqzzoYkA+QjXNJrDikZECYsXMVCXlFtl0TGfdZIc6iSakvDFVhsoDp1l+N?=
- =?us-ascii?Q?4CNQwzi7jSCozcsvbAw9oAFdZ/0apxx9QtfuA2mZqhMhxqMdsagqdb16rvQe?=
- =?us-ascii?Q?xxGgpoaEReu9oM9COobMLke3Ma8aw9XTAJFc14lXV/E1EtbIUlNYPjISjRJd?=
- =?us-ascii?Q?85Pg3lzmVjIEmZb9P1wQ10ywa8D5mlxnpU6Iv4zy04SbZA8+3IkF92492inZ?=
- =?us-ascii?Q?pEJ/ZHSnZrFYiBbZfnrgei3GUJR+RcP+cPTNouHQWzgEmO+3/yhg9EGsj55G?=
- =?us-ascii?Q?df00cs1HJ2yJwC2qdPeHPZFJCnM85RKprs86jS5jdongBksXgLPERrckhI/w?=
- =?us-ascii?Q?wC+1UInerterR8PS+7LpwtVYRZjipPthA4pyDj4uuBxbeeI/2EbfYap8Hohn?=
- =?us-ascii?Q?Pzaa/VXvX469KJPJDqVlT2a6LcRTI6MTWQad64sY/TVJHf+yuYhaW9u0sb9A?=
- =?us-ascii?Q?8+m+EiojOVZMih8Al/5l92ucnwom9MjnlrVDAh3ykfUfwf9a1vgLS/8WANNj?=
- =?us-ascii?Q?VcUhB9q9PqFLij61mZU/KXI1xdmHTJpvz9VnaUHc70ruAP0Ju172TJZ3uLqf?=
- =?us-ascii?Q?l2oailHG+PAxGco5omI0nfNdYyp8TjbdePvD5Ha8HzrW+p5wwdLHIJ4zY0hl?=
- =?us-ascii?Q?Dy4VmCRkS3jB/x3iKWLRk8e1XFzZameBGrSgYdDDUiRsnrSg8BeyBRuM37Py?=
- =?us-ascii?Q?jDJTVVbcK8lXHy9tKzD1VCncb/b+RaGMQs2feYd/DgA9+AspFZ9+HXKSOSMt?=
- =?us-ascii?Q?hrOV2GRtquyS/0fEjjZSK/heitw6ImzXGpR37t+5jApZ8cAqz+IFrC4cMrFR?=
- =?us-ascii?Q?y3zLGbzvEj1IBX9D/0kFC/O4dyKN8IOECp0534DCWQhwzVSIoEboZl5ZW97/?=
- =?us-ascii?Q?IpahiQnFygdQ1N8qDZfCunuQ3J0nDC+FRJWipL/bN7gtfmIs9VS/N8+SfN6z?=
- =?us-ascii?Q?icySCsXxMLu6nqcC4bax2Gs3MCe6AJoi9uiLnLNTKwj65IIlUyW0yFllHFbR?=
- =?us-ascii?Q?lVtKGu4vDbzfkVjZMZqYm9CgIbDXXLDPtex8L3FNqUUnNL0sS0o4aj+Nt5d8?=
- =?us-ascii?Q?B68dc6Nzf/cPRtjAsCHj2ohSZhKlLgtbNzsuMffwRhzxM5Eml3oZnfF4DR3H?=
- =?us-ascii?Q?HPKgJMR20klIwB2IS1FL/5gAHyHvPKp7+ciB0lxrYi8xcV6+xMBMbhJ+jaoA?=
- =?us-ascii?Q?5q9+XKIPYeK8Lk6utW+0fx66MAqFI7NGlvuAeHX9dvVSOAW7Ce4QqeEyE9J6?=
- =?us-ascii?Q?nGmRoGU=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB5911.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?TUGzLerr0ZwdQR9Ao9dY8hMGGDbsD/489eagihiypeMjg4NSuwjb3XV59e1h?=
- =?us-ascii?Q?nY9iGbUilJmk72XAPIrf1PYq0txACIki4DzoL+UOS1+umMZSsO03GfhCuJpO?=
- =?us-ascii?Q?4bQSURBGk2ttnrcKUGLscM1axW4eUuMBfzc5Ag/eNWYrE/8iiY7k+K5uwspG?=
- =?us-ascii?Q?SGLU8UTIaBLfQ/qyP3XXuBBDzVZq8S4R6dvjKiznJh8KhVffWIzjpUxVXJOL?=
- =?us-ascii?Q?F9f5vTTPUsusvDXEwnyrrLU8KD2XL69FuUri8AKDTjringq6yAzDihNDs+yC?=
- =?us-ascii?Q?G/zAfHyvEBw+XqRAYH9nzv7qnScQ0jcmF9De9JFafOT6rSQ/2LXeh4DGCW8M?=
- =?us-ascii?Q?1/Vf54drIM716/cHlqKxcqgaWyg1xBV1ooVCiTqJgxM0v/J0nBNFMIPWgJFG?=
- =?us-ascii?Q?ouRcPQwb1c8JE9Jwq7eMtMYZ+WWub5IFwhaJYw3FvKWgOyqeM6SnwV2Amue5?=
- =?us-ascii?Q?XzzoB3uEC2WQ76XxIYT25jzNN1VmH4T65U9U0RWdv8sxRS9f0hW+SAvYOHmf?=
- =?us-ascii?Q?BRcYHIloh0MrBeCgMptSyezYJzQAm4FNgCMfUKlht5nXnGDME/x1JwjjW1iR?=
- =?us-ascii?Q?1gVUBBpsArc/c4Z70u7QG8MHZ+lJADgzAdQn1TI+VEzXLElwqg0wq4C5OuBS?=
- =?us-ascii?Q?PrIVHrzDPnR2Ax8nUTVgorlbYNp+li0DTYZqG5Ub6TPeLR+pv78km6DMAUAZ?=
- =?us-ascii?Q?YWuIO+qq2aYgxabrr4zORbf+WKIk2YrWtvaSX7S0tczaROfi3gsN2kt/AURB?=
- =?us-ascii?Q?3Uv/SswQcRuAhdJuHB6XV5qQBkVbfDcNTkO6boBst5xo1IkZte80Sywv+Pqc?=
- =?us-ascii?Q?LfWv/kbp1IR6cgKBCy03yslZmHbuzDYIYNhdkwI8zZPSlXZ5cVfjHq2/wH8b?=
- =?us-ascii?Q?ZaJTUs0acm4wKmouO5rS9i52xlK3eW5ehkbIEeiORF7HFNDlLMU9sIjmXrxz?=
- =?us-ascii?Q?lpOqgMIGihksarmzLkSwRRq+fDhqfCKAq0/yFAjXdaRizk/5OtLEyihYctcx?=
- =?us-ascii?Q?AgX/nZJy3LSkPUcSh3k3kNqs/1opJ7dfa9xUwGrfhR3Uxh8QxOulR94SCiKe?=
- =?us-ascii?Q?3gGw8+5JCP3U3msN1zIW1tzPP4oKFtlDmfQoeus/OYOBT6ERF2+1F3umaeHa?=
- =?us-ascii?Q?RZ3PZMRZeHQi3WRy8DOZ8d2ZCD568ct/fvHlvL4iQUKRIUxEe5AKmu41CVoY?=
- =?us-ascii?Q?UKYYTx2YsYSTV3QwqfwzcOluGrgjtaRWo2t8RrBtb5smhIgecLqAbB8ew5Ll?=
- =?us-ascii?Q?KHfeu2Fv6e45tR7hseNn0KEaAlQxdQH5pkgkkynd45NJsD8dHBJtFkAhDT6f?=
- =?us-ascii?Q?2p+6Wdrr237l4j+RuqV10Ea6RXTC6IpSyefN6Wen8Ox0zQBpIxsbsGIk8nfH?=
- =?us-ascii?Q?dfEaUfkHSRALYv17ApPQBRP0OVugrN9CF1DJH2ktctmFVytUvSGByF/ad2KC?=
- =?us-ascii?Q?CUNJOY/YSeaAzmdkpcaQB7Ag+lhaAk+4ufPbkVlKZK165lSynDJlpJniz6DL?=
- =?us-ascii?Q?xUzuQ6+zjW9V8YGurlUUXCx47L9mWLOJfF0LafGCh32Rg/PRLuuFTHpDQm/y?=
- =?us-ascii?Q?aqSE9B14zrmsHHuq0UiJjcZD9ANRQBt8H/4fmw8HYu6VrwdSWuWzL3jfizfj?=
- =?us-ascii?Q?Hg=3D=3D?=
-arc-seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=R2Jljb0VXxBpZjbgDPBkHqBagxhcQEObnSO6xAKC+RhpjNU+ga9M61wz4gj6hkYt8YZFW1Zw/jf3Oc9tKz1yieMTl5Qbrw2CQSbvQfDmNo33KpTVTdRRBETB9DjapwErBpo4INwt62m8m/YO9QlfMS4+6ThVymDpO2xH1MxOqBigbEG87qtLTbmm97KtuA7/fmFIMefYP10+356vetGx2nYKw4njGjcjoKUSIt3g1hV01jXQHPbETkRQ120w7ctcFLNX9AgiBnrgoUcmNpsNx2IjyFYEDm7hC+yqJO/gRnoVKwEj6UVlP1l5Cn/k/BdfjscguS7M80Bd5riNjy73TQ==
-arc-message-signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kYeJx3I0rUuvPJq4zB5QNZwB6VaCHyubzgFLR/uV6uE=;
- b=x2Zw3olioYvcF0cLSnk6FPf7KA7WuPX2hHtlxnJST+BUMJJcJareFBMmlxQGVXIJ7Bja+59KqIgRUizXk+k0LSigCC7+fSc6mrhiyjQDFHVJB4elyxA6JB37LTaaSmL96g1FizwK0gWo2C4/BrAsHXTJgRe0Z87zOeVboW6k6j/usvB7oGdVGs9EDMpC4hBAchp3B4JSsJGN0JURepj18ZFCp1yhey6f+oUJ9013KALzs9k3k+AbFgITqt1gLckdKj/h4hb971Jj3BAVK3vKuw50NV0RiSTMc8injAQHI0ZEF22TsDaR4ySc0y1vpXIrQQekOMcI1IofWj1i5z3v4g==
-arc-authentication-results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-x-ms-exchange-crosstenant-authas: Internal
-x-ms-exchange-crosstenant-authsource: MW4PR11MB5911.namprd11.prod.outlook.com
-x-ms-exchange-crosstenant-network-message-id: 8a40e730-08c5-45f3-17fe-08dcfac924eb
-x-ms-exchange-crosstenant-originalarrivaltime: 01 Nov 2024 23:01:39.4418 (UTC)
-x-ms-exchange-crosstenant-fromentityheader: Hosted
-x-ms-exchange-crosstenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-x-ms-exchange-crosstenant-mailboxtype: HOSTED
-x-ms-exchange-crosstenant-userprincipalname: ZH9W/XczofbXzPNzG85EavNZsewgvaSCpd+tzKy++thUW/wo1zyY9MCHQT0g899AJjnMHDSjDdF2NqSf/+jy79TmSwNANGOK0mmvO66yDLc=
-x-ms-exchange-transport-crosstenantheadersstamped: CH3PR11MB8592
-x-originatororg: intel.com
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28901E2846
+	for <stable@vger.kernel.org>; Fri,  1 Nov 2024 23:08:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730502521; cv=none; b=iog6LaKimLpfCI9FZfsEkoOs/DxYIPrHrSx9mmX6i3eGJZ7jJwqxePhV+5T/eTM8/OVA5tBhXb5v1wc81XlGzTDqd32myVq5JOarXdzfRJiwAsr/KxBwr+sudaT3U1R3rRb3vTSBb3QJknDMy/Jav3kmhxahGJJucfy+DUxroQU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730502521; c=relaxed/simple;
+	bh=8HtLBGMrxbf3R+JEfh2c7UtM0kENC5qMxOs5dYms2kU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jElRuTWkNcrQp+KtTxhKSUANV+JoiJzmoOuqQtTqpitkk9lTS8RTP3XecLvONN84NW0BWO01eXScGplKQUJKWRF4Y594YIHvlr0tG3hnftYFe7ZhIjLI2l0sF003tdNcEtnTxGRefdINlPgy+mkwsDa9o04EqKkT/ShDv9TOLLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p6GKL8yJ; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-20c693b68f5so26954035ad.1
+        for <stable@vger.kernel.org>; Fri, 01 Nov 2024 16:08:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1730502519; x=1731107319; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=A2VK9rpRjUDVc3dgLj7IbRkd7AQMzzJw9gi42KAkjK4=;
+        b=p6GKL8yJFQ/43J5w2ewoAXa8LGv+uF1YAaqAh30M9W/tXqZOqJMtwypqAPiYy66EsA
+         zH/lmpQXsnpxGRJzAWfjf2In/BIHLnCx9yp3FDH94WyJF2GKPinhHHrUsYfI13dl4NkR
+         1Z5xMovP4L9JHp8Kx6Y9RalSWALjs3+rD0LrkJYobcj5dkIv17UOMnog1MT1frK1uA61
+         KkWCTyfQxhD8GL8yaMAQ+Lm1OfpsHpPV14zdKjzd0uUEf/l0Bn0iYTifA45uQ+KNxbYB
+         3vCSeeJs4xwLYdaHMzm2PkH9Cmjs/Bu+30RRCELmLqvJt5HIDz+2QQJDe9Hbw82j0E4b
+         SfIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730502519; x=1731107319;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A2VK9rpRjUDVc3dgLj7IbRkd7AQMzzJw9gi42KAkjK4=;
+        b=fgICMbvBew7hYKfqfMa3Yc2poEvW5Mf3NazyixlRLQAg+a/fSAQ0AGUgoJ7MsI6QzK
+         VHUXZgecsC49OhFrfI7/JZYnGLMZdMIF8V7l9s4RCbtxH69h+x7R1FVYR58SKE6yrlXS
+         zPDIhXc/ZfqhrwUBZCR6ap91tMJC8cGN9HMbIYst2pF2d1j9qpMUte8ii634z1ggbJ/p
+         aXG77qA7E+tkQI0PiaLTDnZplj4riuhC1sDER5PGlPn3BaZaZ0AN8wX3goiFdqewGoRS
+         15w17m8zNECyiEuaFuqsaRRIMTp3BwSKs7DEjQvvO83g3m/tJ+liFNZVb3dk54ahkiN+
+         63Eg==
+X-Forwarded-Encrypted: i=1; AJvYcCVgc+0XnW4Rk9gMSbAXXOQG+gp02QNKwmCubFQk8qqBDZ8L8EwxEooax0USlN5nR5XzFnocmjs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXo4K6QY+ZMBlh+dKc5NRJBW6ILHfxXO2uKpINYxgkCGvrYyH1
+	3zw66dE5k7eZFGyAXb3bmBR4XOi6eJfVSbEb7FxAp/lU2UHc7Grg7gYh+wyisg==
+X-Google-Smtp-Source: AGHT+IHiSicuaWzRWdSxo5vFaFwO2XoBvjBBetkGaD/hMpauOfZ0WW9/tvooXwQneA/KyP9k1QkUHQ==
+X-Received: by 2002:a17:902:ec8e:b0:20c:bff7:2e5f with SMTP id d9443c01a7336-21103acc174mr117490335ad.13.1730502518543;
+        Fri, 01 Nov 2024 16:08:38 -0700 (PDT)
+Received: from google.com (128.65.83.34.bc.googleusercontent.com. [34.83.65.128])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211057a6592sm26350655ad.166.2024.11.01.16.08.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Nov 2024 16:08:38 -0700 (PDT)
+Date: Fri, 1 Nov 2024 16:08:33 -0700
+From: William McVicker <willmcvicker@google.com>
+To: Roger Quadros <rogerq@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>,
+	Santosh Shilimkar <ssantosh@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Dhruva Gole <d-gole@ti.com>, Vishal Mahaveer <vishalm@ti.com>,
+	msp@baylibre.com, srk@ti.com, linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-usb@vger.kernel.org, stable@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH v3] usb: dwc3: core: Fix system suspend on TI AM62
+ platforms
+Message-ID: <ZyVfcUuPq56R2m1Y@google.com>
+References: <20241011-am62-lpm-usb-v3-1-562d445625b5@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241011-am62-lpm-usb-v3-1-562d445625b5@kernel.org>
 
++linux-arm-msm@vger.kernel.org
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of
-> Pavan Kumar Linga
-> Sent: Friday, October 25, 2024 11:39 AM
-> To: intel-wired-lan@lists.osuosl.org
-> Cc: netdev@vger.kernel.org; horms@kernel.org; Linga, Pavan Kumar
-> <pavan.kumar.linga@intel.com>; stable@vger.kernel.org; Singh, Tarun K
-> <tarun.k.singh@intel.com>
-> Subject: [Intel-wired-lan] [PATCH iwl-net v2 1/2] idpf: avoid vport acces=
-s in
-> idpf_get_link_ksettings
->
-> When the device control plane is removed or the platform
-> running device control plane is rebooted, a reset is detected
-> on the driver. On driver reset, it releases the resources and
-> waits for the reset to complete. If the reset fails, it takes
-> the error path and releases the vport lock. At this time if the
-> monitoring tools tries to access link settings, it call traces
-> for accessing released vport pointer.
->
-> To avoid it, move link_speed_mbps to netdev_priv structure
-> which removes the dependency on vport pointer and the vport lock
-> in idpf_get_link_ksettings. Also use netif_carrier_ok()
-> to check the link status and adjust the offsetof to use link_up
-> instead of link_speed_mbps.
->
-> Fixes: 02cbfba1add5 ("idpf: add ethtool callbacks")
-> Cc: stable@vger.kernel.org # 6.7+
-> Reviewed-by: Tarun K Singh <tarun.k.singh@intel.com>
-> Signed-off-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
+Hi Roger,
+
+On 10/11/2024, Roger Quadros wrote:
+> Since commit 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init"),
+> system suspend is broken on AM62 TI platforms.
+> 
+> Before that commit, both DWC3_GUSB3PIPECTL_SUSPHY and DWC3_GUSB2PHYCFG_SUSPHY
+> bits (hence forth called 2 SUSPHY bits) were being set during core
+> initialization and even during core re-initialization after a system
+> suspend/resume.
+> 
+> These bits are required to be set for system suspend/resume to work correctly
+> on AM62 platforms.
+> 
+> Since that commit, the 2 SUSPHY bits are not set for DEVICE/OTG mode if gadget
+> driver is not loaded and started.
+> For Host mode, the 2 SUSPHY bits are set before the first system suspend but
+> get cleared at system resume during core re-init and are never set again.
+> 
+> This patch resovles these two issues by ensuring the 2 SUSPHY bits are set
+> before system suspend and restored to the original state during system resume.
+> 
+> Cc: stable@vger.kernel.org # v6.9+
+> Fixes: 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init")
+> Link: https://lore.kernel.org/all/1519dbe7-73b6-4afc-bfe3-23f4f75d772f@kernel.org/
+> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+> Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 > ---
->  drivers/net/ethernet/intel/idpf/idpf.h          |  4 ++--
->  drivers/net/ethernet/intel/idpf/idpf_ethtool.c  | 11 +++--------
->  drivers/net/ethernet/intel/idpf/idpf_lib.c      |  4 ++--
->  drivers/net/ethernet/intel/idpf/idpf_virtchnl.c |  2 +-
->  4 files changed, 8 insertions(+), 13 deletions(-)
->
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf.h
-> b/drivers/net/ethernet/intel/idpf/idpf.h
-> index 2c31ad87587a..66544faab710 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf.h
-> +++ b/drivers/net/ethernet/intel/idpf/idpf.h
+> Changes in v3:
+> - Fix single line comment style
+> - add DWC3_GUSB3PIPECTL_SUSPHY to documentation of susphy_state
+> - Added Acked-by tag
+> - Link to v2: https://lore.kernel.org/r/20241009-am62-lpm-usb-v2-1-da26c0cd2b1e@kernel.org
+> 
+> Changes in v2:
+> - Fix comment style
+> - Use both USB3 and USB2 SUSPHY bits to determine susphy_state during system suspend/resume.
+> - Restore SUSPHY bits at system resume regardless if it was set or cleared before system suspend.
+> - Link to v1: https://lore.kernel.org/r/20241001-am62-lpm-usb-v1-1-9916b71165f7@kernel.org
+> ---
+>  drivers/usb/dwc3/core.c | 19 +++++++++++++++++++
+>  drivers/usb/dwc3/core.h |  3 +++
+>  2 files changed, 22 insertions(+)
+> 
+> diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+> index 9eb085f359ce..ca77f0b186c4 100644
+> --- a/drivers/usb/dwc3/core.c
+> +++ b/drivers/usb/dwc3/core.c
+> @@ -2336,6 +2336,11 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+>  	u32 reg;
+>  	int i;
+>  
+> +	dwc->susphy_state = (dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
+> +			    DWC3_GUSB2PHYCFG_SUSPHY) ||
+> +			    (dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0)) &
+> +			    DWC3_GUSB3PIPECTL_SUSPHY);
+> +
 
-Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
+I'm running into an issue on my Pixel 6 device with this change when the
+dwc3-exynos device has runtime PM enabled. Basically, after the device boots up
+and I disconnect USB, the dwc3-exynos device enters runtime suspend followed by
+system suspend 15 seconds later. On system suspend, the clocks powering these
+dwc3 registers are off which results in an SError. I have verified that
+reverting this change fixes the issue.
+
+I noticed that dwc3-qcom.c also supports runtime PM for their dwc3 device and
+most likely is affected by this as well. It would be great if someone with a
+Qualcomm device could test out dwc3 suspend as well.
+
+Here is the crash stack:
+
+  SError Interrupt on CPU7, code 0x00000000be000011 -- SError
+  CPU: 7 UID: 1000 PID: 5661 Comm: binder:477_1 Tainted: G        W  OE      6.12.0-rc3-android16-0-maybe-dirty-4k #1 0439eacb3cff642033630df7ee2e250e0625f2f0
+  96 irq, BUS_DATA0 group, 0x0
+  Tainted: [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+  Hardware name: Raven DVT (DT)
+  pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : readl+0x40/0x80
+  lr : readl+0x38/0x80
+  sp : ffffffc08baa39a0
+  x29: ffffffc08baa39a0 x28: ffffffd4dd140000 x27: ffffffd4dd140d70
+  x26: ffffffd4dd2b2000 x25: ffffff800cef2410 x24: ffffff800cef24c0
+  x23: ffffffd4dd24e000 x22: ffffff887df59440 x21: ffffffc085298100
+  x20: ffffffd4db8acf60 x19: ffffffc085298200 x18: ffffffc091b730b0
+  x17: 000000002a703c0b x16: 000000002a703c0b x15: 0000000000953000
+  x14: 0000000000000000 x13: 0000000000000030 x12: 0101010101010101
+  x11: 7f7f7f7f7f7fffff x10: 0000000000000000 x9 : ffffffd4dc0d7d48
+  x8 : 0000000000000000 x7 : 0000000000008000 x6 : 0000000000000000
+  x5 : 500020737562ffff x4 : 500020737562ffff x3 : ffffffd4db8acf60
+  x2 : ffffffd4db8a7bac x1 : ffffffc085298200 x0 : 0000000000000020
+  Kernel panic - not syncing: Asynchronous SError Interrupt
+  CPU: 7 UID: 1000 PID: 5661 Comm: binder:477_1 Tainted: G        W  OE      6.12.0-rc3-android16-0-maybe-dirty-4k #1 0439eacb3cff642033630df7ee2e250e0625f2f0
+  Tainted: [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+  Hardware name: Raven DVT (DT)
+  Call trace:
+   dump_backtrace+0xec/0x128
+   show_stack+0x18/0x28
+   dump_stack_lvl+0x40/0x88
+   dump_stack+0x18/0x24
+   panic+0x134/0x45c
+   nmi_panic+0x3c/0x88
+   arm64_serror_panic+0x64/0x8c
+   do_serror+0xc4/0xc8
+   el1h_64_error_handler+0x34/0x48
+   el1h_64_error+0x68/0x6c
+   readl+0x40/0x80
+   dwc3_suspend_common+0x34/0x454
+   dwc3_suspend+0x20/0x40
+   platform_pm_suspend+0x40/0x90
+   dpm_run_callback+0x60/0x250
+   device_suspend+0x334/0x614
+   dpm_suspend+0xc4/0x368
+   dpm_suspend_start+0x90/0x100
+   suspend_devices_and_enter+0x128/0xad0
+   pm_suspend+0x354/0x650
+   state_store+0x104/0x144
+   kobj_attr_store+0x30/0x48
+   sysfs_kf_write+0x54/0x6c
+   kernfs_fop_write_iter+0x104/0x1e4
+   vfs_write+0x3bc/0x50c
+   ksys_write+0x78/0xe8
+   __arm64_sys_write+0x1c/0x2c
+   invoke_syscall+0x58/0x10c
+   el0_svc_common+0xa8/0xdc
+   do_el0_svc+0x1c/0x28
+   el0_svc+0x38/0x6c
+   el0t_64_sync_handler+0x70/0xbc
+   el0t_64_sync+0x1a8/0x1ac
+
+Thanks,
+Will
+
+<snip>
 
