@@ -1,212 +1,223 @@
-Return-Path: <stable+bounces-89534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 060A19B99E0
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 22:10:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 845809B99E6
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 22:11:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CDDA1F21837
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 21:10:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B77E1F21BDF
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 21:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67DDB1E2846;
-	Fri,  1 Nov 2024 21:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0441E2606;
+	Fri,  1 Nov 2024 21:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PE8BV9/G"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="LIdNM8u5"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazolkn19011034.outbound.protection.outlook.com [52.103.14.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F40B1E2007
-	for <stable@vger.kernel.org>; Fri,  1 Nov 2024 21:10:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730495403; cv=none; b=dmW6+npEK5/8c8KkxcWbEbHtK9mD0XBhRNd+0dtjC1lOLHi3HXQga1g7ot1dy0ijWNhpWdGa96WNI3cRIO/TKk+C8HU0JKYRjewWrrScVBlhTXakgjq9Fsg0tX7jTMhPS84JYMgIpSvprW1v/Ew+qCdzJXmJWWTeNQ9orRx7kAE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730495403; c=relaxed/simple;
-	bh=UqaIgFmRwGYnw2s4wgiUP+JiJGCbesQvUV8fxT7YXdA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=okqOy771wnjxdLRhGZyo5HzP+DMl/WcEWP+dydtxq/t3IGB2yNHF/FmTVx8kD6KcFW3QaZ4XSm1zsw7bl0fB0A2Na+F4nRil9hFleJvFasnQ91K3q6KRfVB9x56jb+05dSkyLagjoRWjL/RMqbqSKmSugrt/i/AyUX4PxKz01KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PE8BV9/G; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1730495399;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6ViADBAfeCQy887BpY4B8F4Smh6ejrIn6d6yqOg3Y6Q=;
-	b=PE8BV9/GC2GMUMQu6IErGzDD6730oh4f30fVkMwNRrCBPEz9L40XTKc+/e+fLijByAUrv4
-	06mQO/IygWigk7t+zN+6p5uqBxSG60at5BISYV07flUycdO/dZSFgVGs1J+eZ1SF3RYO3c
-	BCsi/IRI4aR1ApNUXJ0DpZdb3LRyGxc=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-10-9Wfj0MfGMD-DnFKaD1dhBg-1; Fri, 01 Nov 2024 17:09:58 -0400
-X-MC-Unique: 9Wfj0MfGMD-DnFKaD1dhBg-1
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7b14538be1eso337397485a.1
-        for <stable@vger.kernel.org>; Fri, 01 Nov 2024 14:09:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730495398; x=1731100198;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6ViADBAfeCQy887BpY4B8F4Smh6ejrIn6d6yqOg3Y6Q=;
-        b=FzXQMYfWkf6KcGIRrHwjYCYz0TwH7npBTP1BZXLDhE0ZLG2Qv/2mO0ci6F4QXdcZG9
-         FnFTYbyWa/iheGDfEoBv6ijXLuxrdcp0FDRRIl3yBNaZv5PynsIctFbGmlP1fn82PvlB
-         t4oAchnWD2L8s1jgMOHEbdy2D9anGW8VQyFJxN31nwNCmyQ4L7CqogonU6s24yD5Ot13
-         qaelnHmKjohRG0V1pSinPII/MIU//1XZLyRnfefr1Iv331djwfQsh2Nw3mvaJh9fyEFK
-         3RoUkz7JMh8n3nKP02JK4HuXzYMWh1o+DdMaOxFCbsLMkw3WXYPbwIz8yXCnJNNOmtD7
-         88BQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUKOeRHhuxkfCq/Jtp9W0W3fwBP5H3O1I5LsoT49uskFPaL5Rmg9+7RJrzk2Y0Mrd65PP53bXE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyixVpEKvNycClH1Lre3Cec48Kru4O3GcxGUsdxPdvXSZGI3IzR
-	haR2pxRlyK/uVGQYtr/v38eR0tm3nWL/DPfIowARON40vvPVAtXDLehqcEbaxsNGd3JX7o/HaH7
-	MmxaasbZoT3PfWrIc2Vgh2grHpdkfqRqP7Yc5n0YzEseDc1Nn4Gs0NQ==
-X-Received: by 2002:a05:620a:4005:b0:7af:ceed:1a38 with SMTP id af79cd13be357-7b2f2502bcamr1038219785a.39.1730495397914;
-        Fri, 01 Nov 2024 14:09:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF6C/WNB6/faSNGDPIGkq+M4CIuLUKXlUOKNwKJBPAvxr5YBJZnipWdj7MvPC+UpKK1KE6Ggw==
-X-Received: by 2002:a05:620a:4005:b0:7af:ceed:1a38 with SMTP id af79cd13be357-7b2f2502bcamr1038217285a.39.1730495397578;
-        Fri, 01 Nov 2024 14:09:57 -0700 (PDT)
-Received: from localhost (ip98-179-76-110.ph.ph.cox.net. [98.179.76.110])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b2f39f7b18sm206149185a.28.2024.11.01.14.09.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Nov 2024 14:09:57 -0700 (PDT)
-Date: Fri, 1 Nov 2024 14:09:55 -0700
-From: Jerry Snitselaar <jsnitsel@redhat.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	stable@vger.kernel.org, Mike Seo <mikeseohyungjin@gmail.com>, 
-	"open list:TPM DEVICE DRIVER" <linux-integrity@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3] tpm: Lock TPM chip in tpm_pm_suspend() first
-Message-ID: <7pc2uu52wamyvhzfc27qnws546yxt33utfibtsjd7uv2djfxdt@jlyn3n55qkfx>
-References: <20241101002157.645874-1-jarkko@kernel.org>
- <ke4tjq5p43g7z3dy4wowagwsf6tzfhecexkdmgkizvqu6n5tvl@op3zhjmplntw>
- <D5B5D47GLWWS.119EDSKMMGFVF@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE55C1581F8;
+	Fri,  1 Nov 2024 21:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.14.34
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730495464; cv=fail; b=nV009UmIJHHIidUmOPiQyd6L/sxJNlVlzHt5J0Ho240mJRBVtMJuWjvkhRYpDeSNWcFkAm8MgxEVNn5fyUJhQGuKQZyI+P4w2z3eI5v0wBXWldTrBTH8nvB0sncBmkyfO3cs6k6MbbVDivX9+cFX7Y1ICTxQE4WJ0WyHntv87NU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730495464; c=relaxed/simple;
+	bh=woUxSv7I3SsO8lYDWUYDSLsOsmM6zMqHRySqgGzd894=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=fYyrdqmcjVBB16hOZ6sSEBCyeaA+EwyspOzPRReY5MynCo3I8kJZ1akXh/Q6jgjRz9twZbNMeeX0RCirT40Hc1IojPidxpjZqrQRuQlhF+Nze64+D2wYpAcDbn0VwAvBLOKRluTajFPbLnipjjtA4O4Fb2AckfL930TSyb9aPtc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=LIdNM8u5; arc=fail smtp.client-ip=52.103.14.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NnvhxRWp6QbHloko2ZBTkITJh8f8zw2Zqijj1Hwipx15YNuKopK4DfIJTfBecTcnjMaRs2SHHpjiq7YjFGU9w713dpXr+fM+VWzFEGEiVHcfPBYnjth+zEQNuZnCSf2/5yJTJ7+x/9BBoCoBwxQ1uN4u7YBX69ZtXRaxIJYZTjlYE0T7K4e/s/88UBmUgN+/wHgmoz0xxRuf/FUyiqdYW6skRDxqiDdovdJWMWre2nXoymj7c5GaZvob2OeyiHUJBKa0JoFuu/iyz8mIPQU6fPg5+S5m2rOkcAAuq7a0P0P6Z4Pqzak4p7q+Mp59Evl50XrxzAN7VyL4+xVmDba7Nw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=12UdhKKr03t3j2AvC8E80IoXaxQ8Qe7z5ai+zzHFUaY=;
+ b=ciR6Qio9breCtWAm/4KKIShy07Jnz2R8+hDRinfzq55FEuo8g3ge0vpiplwxS9SLUxItosqM5uRSXIW7G+API/eqbXiBLOgPTUeQOMvjB3aQfDofCA8aWnCS1iAmnr5blqtzB0H2pQfZzq7DEQiB+H9Ohcn/7OutlvZsWM+DAbYGOtdKdL9d0lVNqJ1rp9ezS6ebYSW4WrQ2wzNJXAV+fOCHHaw9zhbGwUEptWvKRHSi0rXt1KIL0viNCzNpYK3Xt4Vth/LnSUJtHiQzXXQm+tcQDuUmlUuIUJc9gL7qpcfwohyJfOWlzCCG32AVJWkEKmrRBUvhYwH02nOD8X4DQA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=12UdhKKr03t3j2AvC8E80IoXaxQ8Qe7z5ai+zzHFUaY=;
+ b=LIdNM8u5ArSS+BSyBilnx8twJ/8EtVhBXSHf1GWR7cC4Dog96q00iLGkdIIN/VCdJfbk9QlodJfDFLJxVXw2PRCQPPb4MGuFeI+dNNxEDs8eSyOxm2y6+pqHtSQ04zLjohQJoRg/eh6Fo0Z/w4L5jwhRSWsnf9USAT4VJA3vxxc+mPpfU52KibhQtMTrrm1Ub8UyeizlRugYbF6I0BAhJ4dBrfpIDBYTbNC9bAOAneJAjvAJhEdh7VJXvuHX98njQVEZvtJAiM+hj04q1GR3xxD4DGHCSiQrAi0KD4nDMTg+I5IUqz9ULkmK0+oE14yMqcwOAVnDHtrF7cvFA3gBpA==
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
+ by SA3PR02MB10083.namprd02.prod.outlook.com (2603:10b6:806:3a0::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.20; Fri, 1 Nov
+ 2024 21:11:00 +0000
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::cedd:1e64:8f61:b9df]) by SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::cedd:1e64:8f61:b9df%4]) with mapi id 15.20.8114.015; Fri, 1 Nov 2024
+ 21:11:00 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: Dexuan Cui <decui@microsoft.com>, KY Srinivasan <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Vitaly
+ Kuznetsov <vkuznets@redhat.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, "open list:Hyper-V/Azure CORE AND DRIVERS"
+	<linux-hyperv@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+CC: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] Drivers: hv: kvp/vss: Avoid accessing a ringbuffer not
+ initialized yet
+Thread-Topic: [PATCH] Drivers: hv: kvp/vss: Avoid accessing a ringbuffer not
+ initialized yet
+Thread-Index:
+ AQHbAxLFR0Ovyi2Whk6CD70yxEN1m7KerxPQgAFHmYCAAFK20IABlxyAgAATwVCAAT5NAIAAC46g
+Date: Fri, 1 Nov 2024 21:11:00 +0000
+Message-ID:
+ <SN6PR02MB41570A66CB3660C803BB6063D4562@SN6PR02MB4157.namprd02.prod.outlook.com>
+References: <20240909164719.41000-1-decui@microsoft.com>
+ <SN6PR02MB4157630C523459A75C83C498D44B2@SN6PR02MB4157.namprd02.prod.outlook.com>
+ <SA1PR21MB131794D6AF620CB201958EFCBF542@SA1PR21MB1317.namprd21.prod.outlook.com>
+ <SN6PR02MB4157CDB89A61BA857E6FC0BFD4552@SN6PR02MB4157.namprd02.prod.outlook.com>
+ <SA1PR21MB1317A021B6C5D552B38C4368BF562@SA1PR21MB1317.namprd21.prod.outlook.com>
+ <SN6PR02MB4157D9B44F3B94E17993BB6DD4562@SN6PR02MB4157.namprd02.prod.outlook.com>
+ <SA1PR21MB13170389BCF4A5A05FE359EDBF562@SA1PR21MB1317.namprd21.prod.outlook.com>
+In-Reply-To:
+ <SA1PR21MB13170389BCF4A5A05FE359EDBF562@SA1PR21MB1317.namprd21.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=f2ddb8d8-b0cc-4ed7-8c4d-806213566d4b;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2024-10-30T18:35:53Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|SA3PR02MB10083:EE_
+x-ms-office365-filtering-correlation-id: cbcc57d9-d51e-41ac-ae52-08dcfab9af96
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|461199028|15080799006|8060799006|8062599003|19110799003|102099032|440099028|3412199025;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?SyCY65+8Z7xOd5Pd161EvrdWFqfgAD7TBw4RWIjnwD+zrp9nZ35hKWIJma4p?=
+ =?us-ascii?Q?/6xrrLe3iWnUSJh1U2oxnWctaMjCZdYdHtLxl1ZTCWFgOApFlLbdL1SBSV3E?=
+ =?us-ascii?Q?xcneclUAwtvsJpBDD68iQMTDyQOeaOBgqEh8s+3I7x2kqEEzert0ZiQKKweK?=
+ =?us-ascii?Q?uHmVlkOm4dGtfHzzYwqbQvQ+c9oVJVUab+LyEjG3eM/ZPNxGGGv3yKkZiamf?=
+ =?us-ascii?Q?Y/Z82UkkewP1qouNXfTjBozQombffbaVHk4ByNWIx1NgqY8c/a6IeWSc3zgO?=
+ =?us-ascii?Q?8DnztfZ+DmJEZEfywxv+yQ/ZFkYj745kwq4qBBGz3PW0U/uA11DH32ESwMos?=
+ =?us-ascii?Q?B0D6pTuuRYC2eESxsoTxbEKVhLplr5lSDpkfMQPuXbOFuHg2cP8qhjm03EbZ?=
+ =?us-ascii?Q?kgxVRMLxT9sZEK6qC1K7iWHm0dXYJZwubX+ytQOIhvTKlILepdCjnULV5NNS?=
+ =?us-ascii?Q?RjFXNLYbtoO0JwI9ifo8VSKUNU15rxu2JdP5MHG0vQSAdYvpjiVlgCYc1yO8?=
+ =?us-ascii?Q?jbV82mVSezlgCFC9bE4bzri1mWNMdBea2laG9PcOAfOnmt0zZvyzEMtfqGfe?=
+ =?us-ascii?Q?9aLXEz1v+9gxQprf2/beHHYj6qFI4isdUquBeuPJB4sCt6/VdLNIAPWMdN3x?=
+ =?us-ascii?Q?bh+H4XsLuyntlxUyxFi++ciuOHcQxpUgWYNgL5msIkQ7qkI7Xlbq0Q+7x3/7?=
+ =?us-ascii?Q?7I2Huq0TuYPZcKtMUfiMq6QITHGOiiEbIyuF6SJIqnrR0l0FXxrCkkRvEHbr?=
+ =?us-ascii?Q?U6GV8wJXFEp/N5W6LWlKZgGd74vvDCdK1onRcoYyhsQ05hCbqlsZsfDFlqgK?=
+ =?us-ascii?Q?Wd13oqHV+e095uedFMf6fnv0KYNfEfx/k9hu5FO0u3I3m1ucx4hBeo9xy/YY?=
+ =?us-ascii?Q?1lkMGJP06brwF8eaxeOI4TZgL/a/KeWcqM4YCQTrEShhyBkxt3HoLg0lmUbW?=
+ =?us-ascii?Q?0/hWm5O/FvUGTNscQT5PP9nzaTHS7R3mPr3QqCqdWuX8pxWuraHSWro++V7t?=
+ =?us-ascii?Q?hKdB?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?Av+iITcMNP/leDybrTCAuxRtCuoCKTPW85xsidc9mnIp/zN02d5SgDaDBk7t?=
+ =?us-ascii?Q?WvxrPUds6Qx61rc4qX+6EHag3KmkrPHv0o8lsw8jVb0xxv9vaoBhmvyy8pEZ?=
+ =?us-ascii?Q?pt7374nrxsTHN39HM65Dj0ca08Yj1l47RbVxyp8P7O9zJ5P7XJpuPhyqDTlZ?=
+ =?us-ascii?Q?/pqIIlhpm6am6orLEM83FoUzD5TuXFQdbkvATjptdXppgR+uB0QH3mjeCAxL?=
+ =?us-ascii?Q?ehx9KoM7fVVhu8wq2yPh8VOy86hCeumCq4iFhPyCVdVVOh0JlCApMiVVsgLB?=
+ =?us-ascii?Q?p39nRmO7NWeaeXhZJO5jY34yuFBJU2Iv8DdMUcF/EpbIoq/kpNXAQ+ohDsff?=
+ =?us-ascii?Q?WO21nDw9mtIzVTw4ZLIVdPAJhVAejXOh+L3GqwvMvST6ftQ2EYdrcULShHpu?=
+ =?us-ascii?Q?Lv3pVViE69FSp9EkuTxkR//EGmAetcH/L3mZb8h/lTRdiswQwjmlit25EhWT?=
+ =?us-ascii?Q?Tg1FuEcq/4tjuhhYgUESRbf7HS32tajGwKXj+xOF53Y2kUXo5m20EG7XPozK?=
+ =?us-ascii?Q?0juupdsjZUbGdxqGHHY2bwT5NDa1GTu1d4x+IcA2N/QmEmm4+tBzQGvnnnwk?=
+ =?us-ascii?Q?teh8qoC4/gw2TZOhvFNHba//30a3ARQCSXrtTynozGc835KxyUd0A4nCoywj?=
+ =?us-ascii?Q?RMUZfv4D+qTMI3XB8cXRdp/u4+DJ5NCBLFh8VJWrXuoazvdGyRqkta8KKMEE?=
+ =?us-ascii?Q?csfuFskCSNqGetfWzrHRCSA04dmTV5k1JTROYIZr8ftk+k23t4EX3Xvu4biF?=
+ =?us-ascii?Q?ysaooWvWeQZqU/n0P0xBg6eRlTJ1eGaRs2ZJt7lac4aNznJNzosKw15saeNQ?=
+ =?us-ascii?Q?JgmFpNgya0txT2kBe6y8KOZFZN3kwDCyGKbedrB/9ReIT+C6iuA5FgUNLZyH?=
+ =?us-ascii?Q?0WykVJRYL13SPQh/wfgxxpm6v8yrHLCx9y0eIMCWDE9aqXjkvHV/0qRJOOke?=
+ =?us-ascii?Q?0t1MVHvSF1iIErwbse8Q5j279yKOxAQfQYmrOS1lDNIXaTa/ktNH5vx43GsX?=
+ =?us-ascii?Q?5e3Y+eDersmyc87wDvw+b+0T11QYp1VYI3uYHsh3shKHHvi1/p23DeEMoVex?=
+ =?us-ascii?Q?pUFRn5in4Gt6B7exahpNUYYizvK22o3byGenO0T871fZBAUDmYphJLY7jbcI?=
+ =?us-ascii?Q?q1KUonK6IYSdQWbGaZn+/JnNF4igkWEpP/p6hH9S5ApGt4w+EM/NaFJiw6XP?=
+ =?us-ascii?Q?8V4oMmPOE9oY3ETJkPNfZ1qOTSOJg99eocBjdYB6jlfN7+dSbhTSRYbVbTA?=
+ =?us-ascii?Q?=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <D5B5D47GLWWS.119EDSKMMGFVF@kernel.org>
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: cbcc57d9-d51e-41ac-ae52-08dcfab9af96
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Nov 2024 21:11:00.1333
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR02MB10083
 
-On Fri, Nov 01, 2024 at 11:07:15PM +0200, Jarkko Sakkinen wrote:
-> On Fri Nov 1, 2024 at 10:23 PM EET, Jerry Snitselaar wrote:
-> > On Fri, Nov 01, 2024 at 02:21:56AM +0200, Jarkko Sakkinen wrote:
-> > > Setting TPM_CHIP_FLAG_SUSPENDED in the end of tpm_pm_suspend() can be racy
-> > > according, as this leaves window for tpm_hwrng_read() to be called while
-> > > the operation is in progress. The recent bug report gives also evidence of
-> > > this behaviour.
-> > > 
-> > > Aadress this by locking the TPM chip before checking any chip->flags both
-> > > in tpm_pm_suspend() and tpm_hwrng_read(). Move TPM_CHIP_FLAG_SUSPENDED
-> > > check inside tpm_get_random() so that it will be always checked only when
-> > > the lock is reserved.
-> > > 
-> > > Cc: stable@vger.kernel.org # v6.4+
-> > > Fixes: 99d464506255 ("tpm: Prevent hwrng from activating during resume")
-> > > Reported-by: Mike Seo <mikeseohyungjin@gmail.com>
-> > > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219383
-> > > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > > ---
-> > > v3:
-> > > - Check TPM_CHIP_FLAG_SUSPENDED inside tpm_get_random() so that it is
-> > >   also done under the lock (suggested by Jerry Snitselaar).
-> > > v2:
-> > > - Addressed my own remark:
-> > >   https://lore.kernel.org/linux-integrity/D59JAI6RR2CD.G5E5T4ZCZ49W@kernel.org/
-> > > ---
-> > >  drivers/char/tpm/tpm-chip.c      |  4 ----
-> > >  drivers/char/tpm/tpm-interface.c | 32 ++++++++++++++++++++++----------
-> > >  2 files changed, 22 insertions(+), 14 deletions(-)
-> > > 
-> > > diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
-> > > index 1ff99a7091bb..7df7abaf3e52 100644
-> > > --- a/drivers/char/tpm/tpm-chip.c
-> > > +++ b/drivers/char/tpm/tpm-chip.c
-> > > @@ -525,10 +525,6 @@ static int tpm_hwrng_read(struct hwrng *rng, void *data, size_t max, bool wait)
-> > >  {
-> > >  	struct tpm_chip *chip = container_of(rng, struct tpm_chip, hwrng);
-> > >  
-> > > -	/* Give back zero bytes, as TPM chip has not yet fully resumed: */
-> > > -	if (chip->flags & TPM_CHIP_FLAG_SUSPENDED)
-> > > -		return 0;
-> > > -
-> > >  	return tpm_get_random(chip, data, max);
-> > >  }
-> > >  
-> > > diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/tpm-interface.c
-> > > index 8134f002b121..b1daa0d7b341 100644
-> > > --- a/drivers/char/tpm/tpm-interface.c
-> > > +++ b/drivers/char/tpm/tpm-interface.c
-> > > @@ -370,6 +370,13 @@ int tpm_pm_suspend(struct device *dev)
-> > >  	if (!chip)
-> > >  		return -ENODEV;
-> > >  
-> > > +	rc = tpm_try_get_ops(chip);
-> > > +	if (rc) {
-> > > +		/* Can be safely set out of locks, as no action cannot race: */
-> > > +		chip->flags |= TPM_CHIP_FLAG_SUSPENDED;
-> > > +		goto out;
-> > > +	}
-> > > +
-> > >  	if (chip->flags & TPM_CHIP_FLAG_ALWAYS_POWERED)
-> > >  		goto suspended;
-> > >  
-> > > @@ -377,21 +384,19 @@ int tpm_pm_suspend(struct device *dev)
-> > >  	    !pm_suspend_via_firmware())
-> > >  		goto suspended;
-> > >  
-> > > -	rc = tpm_try_get_ops(chip);
-> > > -	if (!rc) {
-> > > -		if (chip->flags & TPM_CHIP_FLAG_TPM2) {
-> > > -			tpm2_end_auth_session(chip);
-> > > -			tpm2_shutdown(chip, TPM2_SU_STATE);
-> > > -		} else {
-> > > -			rc = tpm1_pm_suspend(chip, tpm_suspend_pcr);
-> > > -		}
-> > > -
-> > > -		tpm_put_ops(chip);
-> > > +	if (chip->flags & TPM_CHIP_FLAG_TPM2) {
-> > > +		tpm2_end_auth_session(chip);
-> > > +		tpm2_shutdown(chip, TPM2_SU_STATE);
-> > > +		goto suspended;
-> > >  	}
-> > >  
-> > > +	rc = tpm1_pm_suspend(chip, tpm_suspend_pcr);
-> > > +
-> >
-> >
-> > I imagine the above still be wrapped in an else with the if (chip->flags & TPM_CHIP_FLAG_TPM2)
-> > otherwise it will call tpm1_pm_suspend for both tpm1 and tpm2 devices, yes?
-> >
-> > So:
-> >
-> > 	if (chip->flags & TPM_CHIP_FLAG_TPM2) {
-> > 		tpm2_end_auth_session(chip);
-> > 		tpm2_shutdown(chip, TPM2_SU_STATE);
-> > 		goto suspended;
-> > 	} else {
-> > 		rc = tpm1_pm_suspend(chip, tpm_suspend_pcr);
-> > 	}
-> >
-> >
-> > Other than that I think it looks good.
-> 
-> It should be fine because after tpm2_shutdown() is called there is "goto
-> suspended;". This is IMHO more readable as it matches the structure of
-> previous exits before it. In future if this needs to be improved it will
-> easier to move the logic to a helper function (e.g. __tpm_pm_suspend())
-> where gotos are substituted with return-statements.
-> 
-> BR, Jarkko
-> 
+From: Dexuan Cui <decui@microsoft.com> Sent: Friday, November 1, 2024 1:27 =
+PM
+>=20
+> > From: Michael Kelley <mhklinux@outlook.com>
+> > Sent: Thursday, October 31, 2024 6:39 PM
+> > > > From: Michael Kelley <mhklinux@outlook.com>
+> > > > Sent: Wednesday, October 30, 2024 5:12 PM
+> > > > [...]
+> > > > What do you think about this (compile tested only), which splits th=
+e
+> > > > "init" function into two parts for devices that have char devs? I'm
+> > > > trying to avoid adding yet another synchronization point by just
+> > > > doing the init operations in the right order -- i.e., don't create =
+the
+> > > > user space /dev entry until the VMBus channel is ready.
+> > > >
+> > > > Michael
+> > >
+> > > Thanks, I think this works! This is a better fix.
+>=20
+> Michael, will you post a formal patch or want me to do it?
+> Either works for me.
 
-Heh, yep.
+I can do it. You probably have more pressing issues to keep
+you busy .... :-)
 
-Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+>=20
+> > > > +	if (srv->util_init_transport) {
+> > > > +		ret =3D srv->util_init_transport();
+> > > > +		if (ret) {
+> > > > +			ret =3D -ENODEV;
+> > > IMO we don't need the line above, since the 'ret' from
+> > > srv->util_init_transport()  is already a standard error code.
+> >
+> > I was just now looking at call_driver_probe(), and it behaves
+> > slightly differently for ENODEV and ENXIO vs. other error
+> > codes. ENODEV and ENXIO don't output a message to the
+> > console unless debugging is enabled, while other error codes
+> > always output a message to the console. Forcing the error to
+> > ENODEV has been there since the util_probe() code came out
+> > of staging in year 2011. But I don't really have a preference
+> > either way.
+>=20
+> util_probe() is called by vmbus_probe(), which uses pr_err() to print
+> the 'ret'. If the 'ret' is forced to ENODEV, the message in vmbus_probe()
+> may be a little misleading since the real error code is hidden,
+> especially when srv->util_init_transport() doesn't print any error
+> message.
+>=20
+> vmbus_probe() is called by call_driver_probe. I guess originally
+> KY wanted to use ENODEV to avoid the extra message for the util
+> devices in call_driver_probe() in non-debugging mode, but the other
+> VSC drivers don't follow this usage.
+>=20
+> util_probe() can return a non-ENODEV error code anyway, e.g.
+> ENOMEM and whatever error code from vmbus_open(). IMO,
+> srv->util_init and srv->util_init_transport should not be treated
+> specially.
+>=20
+> IMO it's better to not add new code to force the 'ret' to
+> ENODEV, and we'd want to clean up the existing use of ENODEV
+> in util_probe().
+>=20
 
+Fair enough. I'll do it that way.
+
+Michael
 
