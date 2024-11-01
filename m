@@ -1,73 +1,58 @@
-Return-Path: <stable+bounces-89501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA40B9B9489
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 16:37:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA9B29B94AC
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 16:45:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67E661F21DE9
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 15:37:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37444B217A7
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 15:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640751C75EC;
-	Fri,  1 Nov 2024 15:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66941C7B9C;
+	Fri,  1 Nov 2024 15:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U9RH/af0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rticl3aU"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1821CB530
-	for <stable@vger.kernel.org>; Fri,  1 Nov 2024 15:36:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FEB24B34;
+	Fri,  1 Nov 2024 15:45:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730475417; cv=none; b=bnCwy7YCB5ttceDrWfApnjVz+iLejnPI0lc24pD82byMz0/zJHLNN/Dkv0McqbHLoBHiYzt9mivxawgUJfjgXtnhWr7oKAsZmvJQoeic1nSpkqBt4q4wgJAYPZjAfsbnnfR/KpmXxxoUTBER7DbRBd4n7U1CFYEHgmsaHPhQLCU=
+	t=1730475915; cv=none; b=Tpx3jMtWNZZrqlUwr3XyY8gQccPDmIi0mS50fH5NzaEEXXbSybQEdh33mUNBHbY2/ZY1Ed+0XJdWm6t1yjC/Zg2YhehxbjtHlPwlS+6Rla9pNOvvqHPiYJEhwDUY5qsoAEE+3N21CsA5OEerK9JcwsQTJMlV/dAbm0gZhQmQ7mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730475417; c=relaxed/simple;
-	bh=jOOyAjCPm76NGvajEHMJrmQl40qqao5bcxtd0CGZbwg=;
+	s=arc-20240116; t=1730475915; c=relaxed/simple;
+	bh=3vulanNLtTjI+wiz2l4SFzXx/jfbPRTrULNZ2xQqFK4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bFny73HdZPFbAhV9nJB2OgRyysff00dSNwKVvuQo80L2BaQaIzSFNxcWJTerhDjYo7GJTczo0p+hj7TXb06SzYiRgnCjYbboF9AnxutxAQOdfZAXB6O+fWN8xxOyEnPTJmT7iIyN+It/QwLEJjQWEPoDW5vQT0TMzWEtERXmbR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U9RH/af0; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730475414; x=1762011414;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jOOyAjCPm76NGvajEHMJrmQl40qqao5bcxtd0CGZbwg=;
-  b=U9RH/af0iLTWcrQd4hXlPIAO0EDoOyyfQftofKKjS3nblF7vE2j+OeCz
-   L5WJap+auy+P8BmHaEnAw9a3rEJUTzl1YfLmwQ1vxWuaEbgesJP20mDgC
-   DjjOv8nhieZmM4sFw9n8IIteoC7JzjLqKRZffaOxPPRznTpg0mHIjpESX
-   wrKIXjuVhORKCZhSu0La2UbY9z7KGaJkXEcIdpuBv/EkbIG/lE5m66MXU
-   5pU+8l8OBotnrOCWzJ+56tZT5EIlzJN4y6mSSgR6L3DYE7nimlwoLkWIs
-   QL24M18ReEdoHDMxIATDDAs0mXYN7hciCZ1Y5H7sGvdcCyenhcB7PTHhv
-   Q==;
-X-CSE-ConnectionGUID: A6d4FwGvSPO9rCmUeRKsJg==
-X-CSE-MsgGUID: ndH2jT7eSki9lwUfp1Mutg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11243"; a="34039331"
-X-IronPort-AV: E=Sophos;i="6.11,250,1725346800"; 
-   d="scan'208";a="34039331"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2024 08:36:54 -0700
-X-CSE-ConnectionGUID: p4XD9EuBQMaBZ3TUf2GNkg==
-X-CSE-MsgGUID: Pim9jKrDQjSsXhdWxaXmrQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,250,1725346800"; 
-   d="scan'208";a="88119724"
-Received: from rrashetn-mobl.amr.corp.intel.com (HELO desk) ([10.125.146.178])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2024 08:36:53 -0700
-Date: Fri, 1 Nov 2024 08:36:47 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Xiongfeng Wang <wangxiongfeng2@huawei.com>
-Cc: stable@vger.kernel.org, andrew.cooper3@citrix.com,
-	dave.hansen@linux.intel.com, gregkh@linuxfoundation.org,
-	xiexiuqi@huawei.com
-Subject: Re: [PATCH stable 5.10.y] x86/bugs: Use code segment selector for
- VERW operand
-Message-ID: <20241101152917.qmkdj4nxpangvgzp@desk>
-References: <20241101102609.187566-1-wangxiongfeng2@huawei.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=tP/JCfEq9jhc09W+6Pmk9uhsu5nggBHorTZe4/DJ0jbJexNySTzPojTTnSWiBiT5hMdhv2MDhKN/EQjpbDfRHWUSkTgPuu2uQpj4Jrzf3rZxJRK1JnFhQXWkHGwXghNUy2B+c4QMPOHG3ScoSFjFd6U0OXMylkOLV146Z5tYsqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rticl3aU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DEECC4CECD;
+	Fri,  1 Nov 2024 15:45:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730475915;
+	bh=3vulanNLtTjI+wiz2l4SFzXx/jfbPRTrULNZ2xQqFK4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Rticl3aUoGUST6XxG+48LKqrFksdNO96HR0AOdHnQeeU6J9IyeI/Eq9UrxCXd/PN7
+	 Jtiv5onuq9eCgsel7erep/lKdXVt4Ob0W3vtGhkP8Fge+EdM34+tOs0xf3xt87fGEi
+	 GqCzg3JX861IkOsBTt/MEZORG67m0VVCxj03hex/xgzrlHcgl/HffSrp26XvPoPWci
+	 rgUshTB2Ow3DrQwjwFn6lcanDaiFZgP8PwniYMRG3ptTGAqyyqA+b1ZcZ1o6FaOSGA
+	 JkBABXwdqLTp27HGTKHLKdZyCKLH0Exj6h4WfuFgVZ21ZT1H5xIPG1EX1SE5e+8z2i
+	 fSFJBKRqBU61Q==
+Date: Fri, 1 Nov 2024 10:45:12 -0500
+From: Bjorn Andersson <andersson@kernel.org>
+To: Rex Nie <rex.nie@jaguarmicro.com>
+Cc: bryan.odonoghue@linaro.org, heikki.krogerus@linux.intel.com, 
+	gregkh@linuxfoundation.org, linux@roeck-us.net, caleb.connolly@linaro.org, 
+	linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	angus.chen@jaguarmicro.com, stable@vger.kernel.org
+Subject: Re: [PATCH v4] usb: typec: qcom-pmic: init value of
+ hdr_len/txbuf_len earlier
+Message-ID: <cmudnqum4qaec6hjoxj7wxfkdui65nkij4q2fziihf7tsmg7ry@qa3lkf4g7npw>
+References: <20241030022753.2045-1-rex.nie@jaguarmicro.com>
+ <20241030133632.2116-1-rex.nie@jaguarmicro.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,91 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241101102609.187566-1-wangxiongfeng2@huawei.com>
+In-Reply-To: <20241030133632.2116-1-rex.nie@jaguarmicro.com>
 
-On Fri, Nov 01, 2024 at 06:26:09PM +0800, Xiongfeng Wang wrote:
-> From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+On Wed, Oct 30, 2024 at 09:36:32PM GMT, Rex Nie wrote:
+> If the read of USB_PDPHY_RX_ACKNOWLEDGE_REG failed, then hdr_len and
+> txbuf_len are uninitialized. This commit stops to print uninitialized
+> value and misleading/false data.
 > 
-> commit e4d2102018542e3ae5e297bc6e229303abff8a0f upstream.
-> 
-> Robert Gill reported below #GP in 32-bit mode when dosemu software was
-> executing vm86() system call:
-> 
->   general protection fault: 0000 [#1] PREEMPT SMP
->   CPU: 4 PID: 4610 Comm: dosemu.bin Not tainted 6.6.21-gentoo-x86 #1
->   Hardware name: Dell Inc. PowerEdge 1950/0H723K, BIOS 2.7.0 10/30/2010
->   EIP: restore_all_switch_stack+0xbe/0xcf
->   EAX: 00000000 EBX: 00000000 ECX: 00000000 EDX: 00000000
->   ESI: 00000000 EDI: 00000000 EBP: 00000000 ESP: ff8affdc
->   DS: 0000 ES: 0000 FS: 0000 GS: 0033 SS: 0068 EFLAGS: 00010046
->   CR0: 80050033 CR2: 00c2101c CR3: 04b6d000 CR4: 000406d0
->   Call Trace:
->    show_regs+0x70/0x78
->    die_addr+0x29/0x70
->    exc_general_protection+0x13c/0x348
->    exc_bounds+0x98/0x98
->    handle_exception+0x14d/0x14d
->    exc_bounds+0x98/0x98
->    restore_all_switch_stack+0xbe/0xcf
->    exc_bounds+0x98/0x98
->    restore_all_switch_stack+0xbe/0xcf
-> 
-> This only happens in 32-bit mode when VERW based mitigations like MDS/RFDS
-> are enabled. This is because segment registers with an arbitrary user value
-> can result in #GP when executing VERW. Intel SDM vol. 2C documents the
-> following behavior for VERW instruction:
-> 
->   #GP(0) - If a memory operand effective address is outside the CS, DS, ES,
-> 	   FS, or GS segment limit.
-> 
-> CLEAR_CPU_BUFFERS macro executes VERW instruction before returning to user
-> space. Use %cs selector to reference VERW operand. This ensures VERW will
-> not #GP for an arbitrary user %ds.
-> 
-> [ mingo: Fixed the SOB chain. ]
-> 
-> Fixes: a0e2dab44d22 ("x86/entry_32: Add VERW just before userspace transition")
-> Reported-by: Robert Gill <rtgill82@gmail.com>
-> Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
-> Cc: stable@vger.kernel.org # 5.10+
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218707
-> Closes: https://lore.kernel.org/all/8c77ccfd-d561-45a1-8ed5-6b75212c7a58@leemhuis.info/
-> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Suggested-by: Brian Gerst <brgerst@gmail.com>
-> Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Signed-off-by: Ingo Molnar <mingo@kernel.org>
-> [xiongfeng: fix conflicts caused by the runtime patch jmp]
-> Signed-off-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+> Cc: stable@vger.kernel.org
+> Fixes: a4422ff22142 (" usb: typec: qcom: Add Qualcomm PMIC Type-C driver")
+> Signed-off-by: Rex Nie <rex.nie@jaguarmicro.com>
+
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+
+Nice job. Next time, please don't use In-Reply-To between patch
+versions.
+
+Regards,
+Bjorn
+
 > ---
->  arch/x86/include/asm/nospec-branch.h | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
+> V2 -> V3:
+> - add changelog, add Fixes tag, add Cc stable ml. Thanks heikki
+> - Link to v2: https://lore.kernel.org/all/20241030022753.2045-1-rex.nie@jaguarmicro.com/
+> V1 -> V2:
+> - keep printout when data didn't transmit, thanks Bjorn, bod, greg k-h
+> - Links: https://lore.kernel.org/all/b177e736-e640-47ed-9f1e-ee65971dfc9c@linaro.org/
+> ---
+>  drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-> index 87e1ff064025..7978d5fe1ce6 100644
-> --- a/arch/x86/include/asm/nospec-branch.h
-> +++ b/arch/x86/include/asm/nospec-branch.h
-> @@ -199,7 +199,16 @@
->   */
->  .macro CLEAR_CPU_BUFFERS
->  	ALTERNATIVE "jmp .Lskip_verw_\@", "", X86_FEATURE_CLEAR_CPU_BUF
-> -	verw _ASM_RIP(mds_verw_sel)
-> +#ifdef CONFIG_X86_64
-> +	verw mds_verw_sel(%rip)
-> +#else
-> +	/*
-> +	 * In 32bit mode, the memory operand must be a %cs reference. The data
-> +	 * segments may not be usable (vm86 mode), and the stack segment may not
-> +	 * be flat (ESPFIX32).
-> +	 */
-> +	verw %cs:mds_verw_sel
-> +#endif
->  .Lskip_verw_\@:
->  .endm
-
-I sent these backports sometime back, seems they were not picked:
-
-5.10: https://lore.kernel.org/stable/f9c84ff992511890556cd52c19c2875b440b98c6.1729538774.git.pawan.kumar.gupta@linux.intel.com/
-5.15: https://lore.kernel.org/stable/d2fca828795e4980e0708a179bd60b2a89bc8089.1729538132.git.pawan.kumar.gupta@linux.intel.com/
-6.1:  https://lore.kernel.org/stable/7aad4bddc4cf131ee88657da20960c4a714aa756.1729536596.git.pawan.kumar.gupta@linux.intel.com/
+> diff --git a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c
+> index 5b7f52b74a40..726423684bae 100644
+> --- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c
+> +++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c
+> @@ -227,6 +227,10 @@ qcom_pmic_typec_pdphy_pd_transmit_payload(struct pmic_typec_pdphy *pmic_typec_pd
+>  
+>  	spin_lock_irqsave(&pmic_typec_pdphy->lock, flags);
+>  
+> +	hdr_len = sizeof(msg->header);
+> +	txbuf_len = pd_header_cnt_le(msg->header) * 4;
+> +	txsize_len = hdr_len + txbuf_len - 1;
+> +
+>  	ret = regmap_read(pmic_typec_pdphy->regmap,
+>  			  pmic_typec_pdphy->base + USB_PDPHY_RX_ACKNOWLEDGE_REG,
+>  			  &val);
+> @@ -244,10 +248,6 @@ qcom_pmic_typec_pdphy_pd_transmit_payload(struct pmic_typec_pdphy *pmic_typec_pd
+>  	if (ret)
+>  		goto done;
+>  
+> -	hdr_len = sizeof(msg->header);
+> -	txbuf_len = pd_header_cnt_le(msg->header) * 4;
+> -	txsize_len = hdr_len + txbuf_len - 1;
+> -
+>  	/* Write message header sizeof(u16) to USB_PDPHY_TX_BUFFER_HDR_REG */
+>  	ret = regmap_bulk_write(pmic_typec_pdphy->regmap,
+>  				pmic_typec_pdphy->base + USB_PDPHY_TX_BUFFER_HDR_REG,
+> -- 
+> 2.17.1
+> 
+> 
 
