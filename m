@@ -1,94 +1,225 @@
-Return-Path: <stable+bounces-89509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 451CC9B9719
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 19:07:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CA199B972A
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 19:13:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08D72281F0D
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 18:07:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B945282F73
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 18:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 773D21CDA3C;
-	Fri,  1 Nov 2024 18:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCDC01CDFC0;
+	Fri,  1 Nov 2024 18:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I2wKpG88"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UHetmEKU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1241CDA27;
-	Fri,  1 Nov 2024 18:07:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134E11CDA35;
+	Fri,  1 Nov 2024 18:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730484465; cv=none; b=Am0ZUs51OKpinQJ9arpsbW0iy/rUEiy1CTiAFdkUU55Y6czEC6pCAbXlL39/zWAKAkY1Iw5t7KllFGAWDjzUbwxBPvzLXXE/F0r5xZ2dTA7jVZSaiMcwAXNDtzortqRxlbXc+EL6wOcppVzVA32I9R10C44J5BHMqZmfa3BzMHk=
+	t=1730484790; cv=none; b=H9HxCLwBhqJiVcQrP9Esit2ZBtMfAwcfIVLDV96bkVmZg7oFQETHpqcV8Y1rVa0ymcSyFvCE3PUzjbM56Jx2nvNzxzpq5d67hO72fsClC7iZonSX1UwFoz60EDdkBE9SttDCjG1CzDOHqj0vpHTNNsB4AyyPPMT48YWW/hWhUsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730484465; c=relaxed/simple;
-	bh=4ht9G50SlYlr7BPTCuy+KjNotHQlLEXbSKghIYlF3TI=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:Cc:To; b=f4u33muNSuOUb3YTcPh2CCT1M+OVB8xdHT59LrIh/Xw1yjZNT3qWXqFkurxHM0+LDTUYKPdNXY2Y6RFEUO5DgxVVCCezDhqxf+vUzzCPGf7I/ZijOziV+ubIWKXuvnLM9/ar3J0YKEWj1hhyJBWkaA/jSl6xdzQqHqJIZDU3F7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I2wKpG88; arc=none smtp.client-ip=209.85.218.41
+	s=arc-20240116; t=1730484790; c=relaxed/simple;
+	bh=NmGNWEO778eZ5xMOzouTP+rKGh09L8t95Tna+go8GGY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=It7/GQ6kWE8tBtB/b8hsBrjEZStd47fZcS0NK5Fn0QlFDUUjXc7YEtGudLL3HK7MF07yS5nCn/tQfYDcotUXftZyqcsle/uRbH940LuoaCL+DP41xYc8YanqUjh2xEwGurzvNSOl/7e+5VONQTNMJ1psXfOWH1FzAHmrElo6DSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UHetmEKU; arc=none smtp.client-ip=209.85.210.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a99cc265e0aso348052566b.3;
-        Fri, 01 Nov 2024 11:07:43 -0700 (PDT)
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-720cb6ac25aso1091299b3a.3;
+        Fri, 01 Nov 2024 11:13:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730484462; x=1731089262; darn=vger.kernel.org;
-        h=to:cc:message-id:date:subject:mime-version:from
-         :content-transfer-encoding:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4ht9G50SlYlr7BPTCuy+KjNotHQlLEXbSKghIYlF3TI=;
-        b=I2wKpG88RDQGuvx94kP0ySA7RO3v3ZLTlz+BMcabYqz4KNHqUiPSLdnsobnxC3oI9a
-         1lRUi1rpzGOfk0jcFzqK0nnMNqLDDtdsQWBeqh2kinVIcUDPbkuIdJoUBA/Jv5EwPWk7
-         lRSQ/WZZ4mNtcKdKOlkmGP2sswVex51euUUt785XklqllFs93t0XXaR7nRs/ypoMlh4j
-         sunW/jW1O37VPAmbzMNfxaSgeughf4Jyqp5/u8NfHq+IERos3fdXK8HE7PndFxiZC1f5
-         JGxMUUEYZuB3kKBp5xA6mS9Qk4EWVIoikKkm2a20Tv+9rSRtxH9iz9pzlPzhlev+OoYW
-         gvJw==
+        d=gmail.com; s=20230601; t=1730484788; x=1731089588; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PiW9SEzE14uWJXxy3FOB2Ud96GmiPqBall1rSE+SePk=;
+        b=UHetmEKUqtmkHAIWZDHjCu97GsC+K0ipogPE6US5QyYqvT3XwOmquIsDKnNmGPCHEC
+         4wRMRV0N8Fjf5j3BFkBNxffS3b1y08siN8s0LOno3sjEDrT50gRr7RmzE6WIdueJe7Tv
+         psM/2WXGbHlPIdr/0HjmdNeDy2eDL7kk7DXgxZV8W9hnwMXm85ff6PAa+Ac3cUxTT6vF
+         XIFVZDPFDcx6dXTXqaZ/At6r1J5DJkBbr0BcSTCqIF5V6il9IziCGgCus2ykWwySwCTw
+         ZGgJ8KgeExJd676x4ndagCT2OyIXfIVc6ukZVh4HExrekX2j59VeFhAIU99r5dwsep4o
+         UZMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730484462; x=1731089262;
-        h=to:cc:message-id:date:subject:mime-version:from
-         :content-transfer-encoding:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=4ht9G50SlYlr7BPTCuy+KjNotHQlLEXbSKghIYlF3TI=;
-        b=H2rjhZLfH5K2sFASxi7n5ByFckScIDKKZUGthx8YWHDVgJBCSawpJ01hl7phM9B4d3
-         Qg6oSe/P/Q2zkg1cRcd2dzovY/V4jMuRIfC2N/d3MCT1zYOCyz3KESdL492rZftiKhtq
-         FEb7xwjtxzPRNjK18I7yJ0lZcfpBV9NVg8oQODHBaQjdW2uazsH2zQ3Ze4oJxXcNcfRF
-         jvbs+hGW9QKJcL6TsvQXqrUKTSKwO1SDWMCo2kRiHPoEtV1VrUv7Vir6IMaoJLkkn6Yg
-         jR8F/F5C0u35Jna7fWH72V/BnfT8Z8Z4zY3H7VazH/2liXrshIRyuEcSe4kV+DAZBrtU
-         dkRw==
-X-Forwarded-Encrypted: i=1; AJvYcCWojaRg6VBNC0LpNq/ekOThLo1bQq6kXYL4gST4TxrV8d1ZREcwDqmIvlZe4dJfylzKgue9bjxRWSrcF44=@vger.kernel.org, AJvYcCXXXDpsBFtoAeWXeRxgbO0Bcd6gPv3WwwDDcewrpvy4WxpG9lmjfb7tyJbVSPCksa5M4ijfwXt5@vger.kernel.org
-X-Gm-Message-State: AOJu0YzzTMaoqVXUUUxDfCkElP9Q2MqAlpPdIXc+Q3uHVFHKbITzuXq8
-	7UIUZi67cId6VBAArYCasml+K17X+7onZcNXvgtgbu+qzPzXmYl/
-X-Google-Smtp-Source: AGHT+IGIND0a2w6FiSMiKhuFQgaTuS9zBQtQXZDnUefy8qn1grI0b0CwYI+KoEZhLJXD0lzwYEpKAQ==
-X-Received: by 2002:a17:907:8686:b0:a99:4615:f58c with SMTP id a640c23a62f3a-a9de5d6eb9emr2496049866b.2.1730484461854;
-        Fri, 01 Nov 2024 11:07:41 -0700 (PDT)
-Received: from smtpclient.apple ([102.209.109.30])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9e56494052sm211690766b.29.2024.11.01.11.07.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Nov 2024 11:07:41 -0700 (PDT)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-From: Ivan Fay <ivanfay99@gmail.com>
+        d=1e100.net; s=20230601; t=1730484788; x=1731089588;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PiW9SEzE14uWJXxy3FOB2Ud96GmiPqBall1rSE+SePk=;
+        b=bozwg0HpvuAnACzgf7INJkagNPKsy1+kUin5HJeQvTwYbA/E6njqepe0wq4NXbLs40
+         1yMDQlIzByRrJ99hTDcV8QHuK4r3aqH27VFwj9AXei+oS+kocqsFzkOIEqbD+nzdHb4C
+         QZbtycHwGNMi96AQaO7n19DfohQWlqj2cwRSulLFT/MQqAEIOn7EmaZ8/PjOdVBX/4uJ
+         ZV8HJotn2KDli5D/MZ/imxwkMU4J/iHlGzndxMruIEU5h91MOEcOycAUS5csydMtYFa/
+         bRiNHYX4NiIBToBe2ni9vFtRQduPVg6P2Ka5OM/6RA8rNEmmEp78fsq22mXKpU+bZQVQ
+         cOPg==
+X-Forwarded-Encrypted: i=1; AJvYcCVUbpOobXIw8OKFfZle1Sta9vEWWCvCp9gSZc/cbsL6DzPmzlboiw3lQTivH8jvXvxfVke5tXCl@vger.kernel.org, AJvYcCXPK9vvCSdEf9naV4xMCoNLCjWI9ioRNLVl/cRTxdNk2aX4513Ig8aowEwv15CobPKmyA4Mncir/Fg7JD1m2w==@vger.kernel.org, AJvYcCXaPzJsjurkTXbJ+7p+UnFydc5zZHwR5fEudFn14SPQBFbbxL2Cnl5sVYY5arSOJD9B/x4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YztsWxqcgbX5+TZuIFGoHGRBy328djVkxNF7iXqHKCKEYnvo1g1
+	ks1W3wR9NuMlTx2ficFSS29xybShUTfRHV/sgGTzYNsKDJ13JhaIQalGNlJP1ZQZTo2/9gFKR/s
+	IZcIm0vvALwuGvFE++eSSX2IvVxo=
+X-Google-Smtp-Source: AGHT+IEk5xx3/JFmK3SmabSdACLb2Y3za3f+3kE6RcmNc7n4e0XhM9sTxifeXbsjGY0xW5T523PyYTIoJXLl8NRIFS0=
+X-Received: by 2002:a05:6a21:78c:b0:1d9:261c:5942 with SMTP id
+ adf61e73a8af0-1d9a8403ce0mr30567357637.28.1730484788340; Fri, 01 Nov 2024
+ 11:13:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH 6.6 000/213] 6.6.57-rc1 review
-Date: Fri, 1 Nov 2024 21:07:39 +0300
-Message-Id: <D1C54175-3397-4EB5-9130-8D4889D4818D@gmail.com>
-Cc: akpm@linux-foundation.org, allen.lkml@gmail.com, broonie@kernel.org,
- conor@kernel.org, f.fainelli@gmail.com, jonathanh@nvidia.com,
- linux-kernel@vger.kernel.org, linux@roeck-us.net,
- lkft-triage@lists.linaro.org, patches@kernelci.org, patches@lists.linux.dev,
- pavel@denx.de, rwarsow@gmx.de, shuah@kernel.org, srw@sladewatkins.net,
- stable@vger.kernel.org, sudipm.mukherjee@gmail.com,
- torvalds@linux-foundation.org
-To: gregkh@linuxfoundation.org
-X-Mailer: iPhone Mail (20H350)
+MIME-Version: 1.0
+References: <20240829174232.3133883-1-andrii@kernel.org> <20240829174232.3133883-2-andrii@kernel.org>
+ <ZyTde66MF0GUqbvB@krava>
+In-Reply-To: <ZyTde66MF0GUqbvB@krava>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Fri, 1 Nov 2024 11:12:55 -0700
+Message-ID: <CAEf4BzaFd2G0HqXLSd5JbQ4HYwzTzAsAskQJNbE9hb8KuTEWTg@mail.gmail.com>
+Subject: Re: [PATCH v7 bpf-next 01/10] lib/buildid: harden build ID parsing logic
+To: Jiri Olsa <olsajiri@gmail.com>
+Cc: Andrii Nakryiko <andrii@kernel.org>, bpf@vger.kernel.org, linux-mm@kvack.org, 
+	akpm@linux-foundation.org, adobriyan@gmail.com, shakeel.butt@linux.dev, 
+	hannes@cmpxchg.org, ak@linux.intel.com, osandov@osandov.com, song@kernel.org, 
+	jannh@google.com, linux-fsdevel@vger.kernel.org, willy@infradead.org, 
+	stable@vger.kernel.org, Eduard Zingerman <eddyz87@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, Nov 1, 2024 at 6:54=E2=80=AFAM Jiri Olsa <olsajiri@gmail.com> wrote=
+:
+>
+> On Thu, Aug 29, 2024 at 10:42:23AM -0700, Andrii Nakryiko wrote:
+> > Harden build ID parsing logic, adding explicit READ_ONCE() where it's
+> > important to have a consistent value read and validated just once.
+> >
+> > Also, as pointed out by Andi Kleen, we need to make sure that entire EL=
+F
+> > note is within a page bounds, so move the overflow check up and add an
+> > extra note_size boundaries validation.
+> >
+> > Fixes tag below points to the code that moved this code into
+> > lib/buildid.c, and then subsequently was used in perf subsystem, making
+> > this code exposed to perf_event_open() users in v5.12+.
+> >
+> > Cc: stable@vger.kernel.org
+> > Reviewed-by: Eduard Zingerman <eddyz87@gmail.com>
+> > Reviewed-by: Jann Horn <jannh@google.com>
+> > Suggested-by: Andi Kleen <ak@linux.intel.com>
+> > Fixes: bd7525dacd7e ("bpf: Move stack_map_get_build_id into lib")
+> > Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+> > ---
+> >  lib/buildid.c | 76 +++++++++++++++++++++++++++++----------------------
+> >  1 file changed, 44 insertions(+), 32 deletions(-)
+> >
+> > diff --git a/lib/buildid.c b/lib/buildid.c
+> > index e02b5507418b..26007cc99a38 100644
+> > --- a/lib/buildid.c
+> > +++ b/lib/buildid.c
+> > @@ -18,31 +18,37 @@ static int parse_build_id_buf(unsigned char *build_=
+id,
+> >                             const void *note_start,
+> >                             Elf32_Word note_size)
+> >  {
+> > -     Elf32_Word note_offs =3D 0, new_offs;
+> > -
+> > -     while (note_offs + sizeof(Elf32_Nhdr) < note_size) {
+> > -             Elf32_Nhdr *nhdr =3D (Elf32_Nhdr *)(note_start + note_off=
+s);
+> > +     const char note_name[] =3D "GNU";
+> > +     const size_t note_name_sz =3D sizeof(note_name);
+> > +     u64 note_off =3D 0, new_off, name_sz, desc_sz;
+> > +     const char *data;
+> > +
+> > +     while (note_off + sizeof(Elf32_Nhdr) < note_size &&
+> > +            note_off + sizeof(Elf32_Nhdr) > note_off /* overflow */) {
+> > +             Elf32_Nhdr *nhdr =3D (Elf32_Nhdr *)(note_start + note_off=
+);
+> > +
+> > +             name_sz =3D READ_ONCE(nhdr->n_namesz);
+> > +             desc_sz =3D READ_ONCE(nhdr->n_descsz);
+> > +
+> > +             new_off =3D note_off + sizeof(Elf32_Nhdr);
+> > +             if (check_add_overflow(new_off, ALIGN(name_sz, 4), &new_o=
+ff) ||
+> > +                 check_add_overflow(new_off, ALIGN(desc_sz, 4), &new_o=
+ff) ||
+> > +                 new_off > note_size)
+> > +                     break;
+> >
+> >               if (nhdr->n_type =3D=3D BUILD_ID &&
+> > -                 nhdr->n_namesz =3D=3D sizeof("GNU") &&
+> > -                 !strcmp((char *)(nhdr + 1), "GNU") &&
+> > -                 nhdr->n_descsz > 0 &&
+> > -                 nhdr->n_descsz <=3D BUILD_ID_SIZE_MAX) {
+> > -                     memcpy(build_id,
+> > -                            note_start + note_offs +
+> > -                            ALIGN(sizeof("GNU"), 4) + sizeof(Elf32_Nhd=
+r),
+> > -                            nhdr->n_descsz);
+> > -                     memset(build_id + nhdr->n_descsz, 0,
+> > -                            BUILD_ID_SIZE_MAX - nhdr->n_descsz);
+> > +                 name_sz =3D=3D note_name_sz &&
+> > +                 memcmp(nhdr + 1, note_name, note_name_sz) =3D=3D 0 &&
+> > +                 desc_sz > 0 && desc_sz <=3D BUILD_ID_SIZE_MAX) {
+> > +                     data =3D note_start + note_off + ALIGN(note_name_=
+sz, 4);
+> > +                     memcpy(build_id, data, desc_sz);
+> > +                     memset(build_id + desc_sz, 0, BUILD_ID_SIZE_MAX -=
+ desc_sz);
+> >                       if (size)
+> > -                             *size =3D nhdr->n_descsz;
+> > +                             *size =3D desc_sz;
+> >                       return 0;
+> >               }
+>
+> hi,
+> this fix is causing stable kernels to return wrong build id,
+> the change below seems to fix that (based on 6.6 stable)
+>
+> if we agree on the fix I'll send it to all affected stable trees
+>
+> jirka
+>
+>
+> ---
+> The parse_build_id_buf does not account Elf32_Nhdr header size
+> when getting the build id data pointer and returns wrong build
+> id data as result.
+>
+> This is problem only stable trees that merged c83a80d8b84f fix,
+> the upstream build id code was refactored and returns proper
+> build id.
+>
+> Fixes: c83a80d8b84f ("lib/buildid: harden build ID parsing logic")
+> Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+> ---
+>  lib/buildid.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/lib/buildid.c b/lib/buildid.c
+> index d3bc3d0528d5..9fc46366597e 100644
+> --- a/lib/buildid.c
+> +++ b/lib/buildid.c
+> @@ -40,7 +40,7 @@ static int parse_build_id_buf(unsigned char *build_id,
+>                     name_sz =3D=3D note_name_sz &&
+>                     memcmp(nhdr + 1, note_name, note_name_sz) =3D=3D 0 &&
+>                     desc_sz > 0 && desc_sz <=3D BUILD_ID_SIZE_MAX) {
+> -                       data =3D note_start + note_off + ALIGN(note_name_=
+sz, 4);
+> +                       data =3D note_start + note_off + sizeof(Elf32_Nhd=
+r) + ALIGN(note_name_sz, 4);
 
+ah, my screw up, sorry. LGTM
 
-Sent from my iPhone
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+
+>                         memcpy(build_id, data, desc_sz);
+>                         memset(build_id + desc_sz, 0, BUILD_ID_SIZE_MAX -=
+ desc_sz);
+>                         if (size)
+> --
+> 2.47.0
+>
 
