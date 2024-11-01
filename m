@@ -1,201 +1,141 @@
-Return-Path: <stable+bounces-89494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E582B9B92BC
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 15:02:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F9059B9375
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 15:39:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 546A71F21E78
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 14:02:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03C2C282A85
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 14:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF4619DF8E;
-	Fri,  1 Nov 2024 14:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7341A76BB;
+	Fri,  1 Nov 2024 14:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e3yl7GYz"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VPZB/+CB"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863724436E;
-	Fri,  1 Nov 2024 14:02:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7379849620
+	for <stable@vger.kernel.org>; Fri,  1 Nov 2024 14:39:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730469767; cv=none; b=tJMIP2cSrwTNnG8iKia9jz87A3xUbA3rWzZ7KDgDT+SuYbv0oTneLc3dnCBXv5+axxc3hxS8+MQQlYDnn87j8cmkKSIDiRSASp4xa1HG/pxbdaUYP7AduZ0112/vxXNE8tJqClmjAEXhwlh86YZ9yI/jbGWp1c+p++4vLuaWD8o=
+	t=1730471945; cv=none; b=gQwUKQuO2YNbpJjzM56jKvRao/id0Uk4ZyO/h78k1Ce4B7eO3C0OCJrCTAF55x6XgVEb+zgKuxwlCZBUF4DcL/coQbEx+Y/42zXv0BvMhPn/9NR6Y80V9y0mzeYbw7r4O0x5stipFSMZpS28BrQ6QH+X5VjyQfRoS9pwF6+PvcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730469767; c=relaxed/simple;
-	bh=MsQ9V3sf5ngVZOnd60/14YeNO9J7P5KfgVF/8fNfJW0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TEtc8vDFdlfeIIywHrARk+5hSBQ3XM4zqJkKPhGpq3tI451Y6Y22sJeUv2flRnve6c6ed5yp7rmrNJRaw/4NziEPOR9Um7bX55h/oBkUMW0e3IAgvBkf8EfNZpnrK21/v0JpPQAxmFXOYmpvBHLrSwpsacAdq0uca5vAqCX4cVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e3yl7GYz; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730469765; x=1762005765;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MsQ9V3sf5ngVZOnd60/14YeNO9J7P5KfgVF/8fNfJW0=;
-  b=e3yl7GYzZDTrshHQsLu+eX05qlDTqNZB1/MWLnPvyCmyFIeOnf11olOh
-   h3Qs/hs+4AGuL/IJRH9QovpuEfabxQLpF8gzo7hjTYID1a20bB5Ka7pXR
-   qcXosoeASWeyuVXViAHBoEeYzdDQIr/M0H+V3lEFSGim9GjPZqcnEUnuT
-   KG7nPnr9Htw5Z23OREMx4yKDJmfXjNcs6vmOaSk5FfqgYu+LIGQw6aI8w
-   FwAGm0XyrLh/rWoIm8IsQwWs/h532meApljnlP7pjqDkHj/ghrJ9zirhL
-   KtpVfJqpzDoepxQ5GbCtqBzXAt+nGSx49cL9z/a/T0zlH2hlMiQQB5aZ/
-   g==;
-X-CSE-ConnectionGUID: JrZKD7WyRQa+L+u91lg1KQ==
-X-CSE-MsgGUID: MbjjSyGrTRqMTwLXtS/ZdA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11243"; a="29654125"
-X-IronPort-AV: E=Sophos;i="6.11,250,1725346800"; 
-   d="scan'208";a="29654125"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2024 07:02:44 -0700
-X-CSE-ConnectionGUID: rFT8x/NOQPa4sxUhjtTxQg==
-X-CSE-MsgGUID: UjNqDcWDTKClZxEyenorSQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="87767855"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 01 Nov 2024 07:02:41 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t6sEX-000hcH-2j;
-	Fri, 01 Nov 2024 14:02:37 +0000
-Date: Fri, 1 Nov 2024 22:02:09 +0800
-From: kernel test robot <lkp@intel.com>
-To: George Rurikov <grurikov@gmail.com>, Christoph Hellwig <hch@lst.de>
-Cc: oe-kbuild-all@lists.linux.dev, MrRurikov <grurikov@gmal.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Israel Rukshin <israelr@mellanox.com>,
-	Max Gurtovoy <maxg@mellanox.com>, Jens Axboe <axboe@kernel.dk>,
-	linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, George Rurikov <g.ryurikov@securitycode.ru>
-Subject: Re: [PATCH] nvme: rdma: Add check for queue in
- nvmet_rdma_cm_handler()
-Message-ID: <202411012136.hoMlvrTF-lkp@intel.com>
-References: <20241031173327.663-1-grurikov@gmail.com>
+	s=arc-20240116; t=1730471945; c=relaxed/simple;
+	bh=Y38QQrJXyIzC27Zb5Y70kq+LVb66PlU9agQi+H5nsOU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EIfnDD+NfnaLHFjz+ZQFQtN9do9eLaZhVKUZucEwnnBYB2NS8Aa1+54R9JV/mEynHUKAZOtAe3En2pg+5ZNMAYM0AGG3o9v2JDh4M/hjHtXup6p1wVL+GUL13rDKCr6ScH4DDQkGpFf6V9CN/d8stW8eXIATTFpZoFP6QgNBDgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VPZB/+CB; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730471942;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PjBxXqU+pM0vC60LmXgGLO5qOIRdoqxNpK1lcWYvr1A=;
+	b=VPZB/+CBjWU1arZWB0e1/jbDloEb09zyWaBKJS8wZmK0SWmgpbvCSRBECsMEMrouZeLHLE
+	jrRbOSsEUv9jkn2e54a2CFbWfi2QN+u8LryaLl4QdcuM9nk+EUFzMvQyLbR6niUdutRSqk
+	/Ega1XNreZxEpYb8QBSRLjnlGhN0eE0=
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com
+ [209.85.166.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-307-XNHpDlb5MySlClJCLwfeIA-1; Fri, 01 Nov 2024 10:38:59 -0400
+X-MC-Unique: XNHpDlb5MySlClJCLwfeIA-1
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3a3f496232bso1748875ab.2
+        for <stable@vger.kernel.org>; Fri, 01 Nov 2024 07:38:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730471938; x=1731076738;
+        h=content-transfer-encoding:mime-version:organization:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PjBxXqU+pM0vC60LmXgGLO5qOIRdoqxNpK1lcWYvr1A=;
+        b=p37AFf5z+CH8X8PPq/TocNX2H2N4wS+n6J9uMHlxzpiweKX/SF8Vek1/UQJfpdPGlw
+         qUUDjGhuX98xiSGGAJZF609FnK7GL0dG7p8ZpQe1lNwG96lbBcauE19NrKMDRnCAEV1s
+         JJS3eFu1tcUblJWvgEXxUgCuCpmUZa3DuAgP1ZHadHuEKftVwpIxQoMe84EqrbcD60ln
+         /wIMsebPKsG58PDqB1jZfh7zMpfd4rlmBk4lN9gaN7x/xJUlTOHkZ2qJeWyHCwWWNEnk
+         ae1tq+Ab/WfyQuZFG1F7z+H16pgULfi15zyGN0/1XBo6tqV8DM/DursLx6Jm/bk75W4/
+         hPUw==
+X-Forwarded-Encrypted: i=1; AJvYcCU80QA28X68yq5JphIWbNWjgVXtPRyFfrmURuOzyuTH/cOptFKGU309pBIk6RKCaJbjVLyBKGs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVG19SbS1IoVJ0LIF+xJewQZeIAadgNpo1shL+HH0vEMmnhx8I
+	CcREmscXM9lxSJ6xx731xtWr1Z1SUqiqmBzrpTt3M8noFlpXxFqU6oCASAijqWjA5EvbC+sPp55
+	0DWr2UsmSHPG7OPiN8s1fZg1Fhy5d4Wy8xejqEYg/kTGNcdLrXHTzJQ==
+X-Received: by 2002:a92:c264:0:b0:3a3:b4ec:b3fe with SMTP id e9e14a558f8ab-3a4ed30ccaamr64455395ab.5.1730471938350;
+        Fri, 01 Nov 2024 07:38:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE7nZwd4QYd2Kqt6n+Vk5UKw8q+RJ0a/CtlOIPXX1gGRhLlpcRjOUVpYuIqY4BAyZdXiPM68A==
+X-Received: by 2002:a92:c264:0:b0:3a3:b4ec:b3fe with SMTP id e9e14a558f8ab-3a4ed30ccaamr64455235ab.5.1730471937957;
+        Fri, 01 Nov 2024 07:38:57 -0700 (PDT)
+Received: from redhat.com ([38.15.36.11])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4de04acaa2csm748195173.172.2024.11.01.07.38.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Nov 2024 07:38:57 -0700 (PDT)
+Date: Fri, 1 Nov 2024 08:38:55 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Cc: jgg@ziepe.ca, yishaih@nvidia.com, shameerali.kolothum.thodi@huawei.com,
+ kevin.tian@intel.com, xin.zeng@intel.com, kvm@vger.kernel.org,
+ qat-linux@intel.com, stable@vger.kernel.org, Zijie Zhao <zzjas98@gmail.com>
+Subject: Re: [PATCH] vfio/qat: fix overflow check in qat_vf_resume_write()
+Message-ID: <20241101083855.233afee0.alex.williamson@redhat.com>
+In-Reply-To: <20241021123843.42979-1-giovanni.cabiddu@intel.com>
+References: <20241021123843.42979-1-giovanni.cabiddu@intel.com>
+Organization: Red Hat
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241031173327.663-1-grurikov@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi George,
+On Mon, 21 Oct 2024 13:37:53 +0100
+Giovanni Cabiddu <giovanni.cabiddu@intel.com> wrote:
 
-kernel test robot noticed the following build warnings:
+> The unsigned variable `size_t len` is cast to the signed type `loff_t`
+> when passed to the function check_add_overflow(). This function considers
+> the type of the destination, which is of type loff_t (signed),
+> potentially leading to an overflow. This issue is similar to the one
+> described in the link below.
+> 
+> Remove the cast.
+> 
+> Note that even if check_add_overflow() is bypassed, by setting `len` to
+> a value that is greater than LONG_MAX (which is considered as a negative
+> value after the cast), the function copy_from_user(), invoked a few lines
+> later, will not perform any copy and return `len` as (len > INT_MAX)
+> causing qat_vf_resume_write() to fail with -EFAULT.
+> 
+> Fixes: bb208810b1ab ("vfio/qat: Add vfio_pci driver for Intel QAT SR-IOV VF devices")
+> CC: stable@vger.kernel.org # 6.10+
+> Link: https://lore.kernel.org/all/138bd2e2-ede8-4bcc-aa7b-f3d9de167a37@moroto.mountain
+> Reported-by: Zijie Zhao <zzjas98@gmail.com>
+> Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+> Reviewed-by: Xin Zeng <xin.zeng@intel.com>
+> ---
+>  drivers/vfio/pci/qat/main.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/vfio/pci/qat/main.c b/drivers/vfio/pci/qat/main.c
+> index e36740a282e7..1e3563fe7cab 100644
+> --- a/drivers/vfio/pci/qat/main.c
+> +++ b/drivers/vfio/pci/qat/main.c
+> @@ -305,7 +305,7 @@ static ssize_t qat_vf_resume_write(struct file *filp, const char __user *buf,
+>  	offs = &filp->f_pos;
+>  
+>  	if (*offs < 0 ||
+> -	    check_add_overflow((loff_t)len, *offs, &end))
+> +	    check_add_overflow(len, *offs, &end))
+>  		return -EOVERFLOW;
+>  
+>  	if (end > mig_dev->state_size)
 
-[auto build test WARNING on linus/master]
-[also build test WARNING on v6.12-rc5 next-20241101]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Applied to vfio next branch for v6.13.  Thanks,
 
-url:    https://github.com/intel-lab-lkp/linux/commits/George-Rurikov/nvme-rdma-Add-check-for-queue-in-nvmet_rdma_cm_handler/20241101-013611
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20241031173327.663-1-grurikov%40gmail.com
-patch subject: [PATCH] nvme: rdma: Add check for queue in nvmet_rdma_cm_handler()
-config: x86_64-rhel-8.3-func (https://download.01.org/0day-ci/archive/20241101/202411012136.hoMlvrTF-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241101/202411012136.hoMlvrTF-lkp@intel.com/reproduce)
+Alex
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202411012136.hoMlvrTF-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   drivers/nvme/target/rdma.c: In function 'nvmet_rdma_cm_handler':
->> drivers/nvme/target/rdma.c:1771:20: warning: this statement may fall through [-Wimplicit-fallthrough=]
-    1771 |                 if (!queue) {
-         |                    ^
-   drivers/nvme/target/rdma.c:1775:9: note: here
-    1775 |         case RDMA_CM_EVENT_ADDR_CHANGE:
-         |         ^~~~
-   drivers/nvme/target/rdma.c:1785:20: warning: this statement may fall through [-Wimplicit-fallthrough=]
-    1785 |                 if (!queue) {
-         |                    ^
-   drivers/nvme/target/rdma.c:1789:9: note: here
-    1789 |         case RDMA_CM_EVENT_DEVICE_REMOVAL:
-         |         ^~~~
-   drivers/nvme/target/rdma.c:1798:20: warning: this statement may fall through [-Wimplicit-fallthrough=]
-    1798 |                 if (!queue) {
-         |                    ^
-   drivers/nvme/target/rdma.c:1802:9: note: here
-    1802 |         default:
-         |         ^~~~~~~
-
-
-vim +1771 drivers/nvme/target/rdma.c
-
-  1752	
-  1753	static int nvmet_rdma_cm_handler(struct rdma_cm_id *cm_id,
-  1754			struct rdma_cm_event *event)
-  1755	{
-  1756		struct nvmet_rdma_queue *queue = NULL;
-  1757		int ret = 0;
-  1758	
-  1759		if (cm_id->qp)
-  1760			queue = cm_id->qp->qp_context;
-  1761	
-  1762		pr_debug("%s (%d): status %d id %p\n",
-  1763			rdma_event_msg(event->event), event->event,
-  1764			event->status, cm_id);
-  1765	
-  1766		switch (event->event) {
-  1767		case RDMA_CM_EVENT_CONNECT_REQUEST:
-  1768			ret = nvmet_rdma_queue_connect(cm_id, event);
-  1769			break;
-  1770		case RDMA_CM_EVENT_ESTABLISHED:
-> 1771			if (!queue) {
-  1772				nvmet_rdma_queue_established(queue);
-  1773				break;
-  1774			}
-  1775		case RDMA_CM_EVENT_ADDR_CHANGE:
-  1776			if (!queue) {
-  1777				struct nvmet_rdma_port *port = cm_id->context;
-  1778	
-  1779				queue_delayed_work(nvmet_wq, &port->repair_work, 0);
-  1780				break;
-  1781			}
-  1782			fallthrough;
-  1783		case RDMA_CM_EVENT_DISCONNECTED:
-  1784		case RDMA_CM_EVENT_TIMEWAIT_EXIT:
-  1785			if (!queue) {
-  1786				nvmet_rdma_queue_disconnect(queue);
-  1787				break;
-  1788			}
-  1789		case RDMA_CM_EVENT_DEVICE_REMOVAL:
-  1790			ret = nvmet_rdma_device_removal(cm_id, queue);
-  1791			break;
-  1792		case RDMA_CM_EVENT_REJECTED:
-  1793			pr_debug("Connection rejected: %s\n",
-  1794				 rdma_reject_msg(cm_id, event->status));
-  1795			fallthrough;
-  1796		case RDMA_CM_EVENT_UNREACHABLE:
-  1797		case RDMA_CM_EVENT_CONNECT_ERROR:
-  1798			if (!queue) {
-  1799				nvmet_rdma_queue_connect_fail(cm_id, queue);
-  1800				break;
-  1801			}
-  1802		default:
-  1803			pr_err("received unrecognized RDMA CM event %d\n",
-  1804				event->event);
-  1805			break;
-  1806		}
-  1807	
-  1808		return ret;
-  1809	}
-  1810	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
