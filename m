@@ -1,153 +1,150 @@
-Return-Path: <stable+bounces-89453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C9229B87AC
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 01:26:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A79849B87B1
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 01:27:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F34C1C2156B
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 00:26:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D3DF1F22B4F
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 00:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D2E4EB45;
-	Fri,  1 Nov 2024 00:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F9831CA81;
+	Fri,  1 Nov 2024 00:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="t1UHqIfR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gVGqTw4y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACEBF9D9;
-	Fri,  1 Nov 2024 00:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED121C687;
+	Fri,  1 Nov 2024 00:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730420725; cv=none; b=k6ptJPZ6Ed7KsbV+q3ZIwN2dYpiYlTtI9/JJDAoSPmibnO2Aw0ZQPwMmaRYqh+247y45vRecOyFiqzxA9xBa29ZlOenZ+Rum9a7A5QchIvFlPMc6GPOYP1SwBF6hvUot8BEig4aW9L/DuGsQiB0AYBBydZKSv+ldURQK/kReauI=
+	t=1730420740; cv=none; b=cgJvT2AvKELAM6zojRkKk9Pxrg4kP91Rf49AAOJlHzkNN25E4I1f8rN9cbsq8YfEY4eMPHQMyXubZAyi7miivnLNR5XV8/DzsxejaP/FPE4YO1I7yT4ZvL+/4fXK1cG6iljclajmXSq1He6nrqku4ez7VxUNNwh3QCnjWF2gLZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730420725; c=relaxed/simple;
-	bh=pvDk1rl72iEa2RQgiczHayeM9CkrAV0+3yzUQur/0Js=;
-	h=Date:To:From:Subject:Message-Id; b=PYX6LWxLeiWwP1qcUxw6DZEM/l54RP3DZZ1OKuAkRE9E4ze3lrZoBZsX13ZMKCcrkZG3Zf9P04KXdOgDRRl52yQFqFRStsZnidvjJVI7joLicjvmvzWPeDFXjFKm6gaPk90i7iglQ/HSTV648npndX73kWkmzigzBa28kTyiUQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=t1UHqIfR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E76F7C4CEDA;
-	Fri,  1 Nov 2024 00:25:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1730420725;
-	bh=pvDk1rl72iEa2RQgiczHayeM9CkrAV0+3yzUQur/0Js=;
-	h=Date:To:From:Subject:From;
-	b=t1UHqIfRJfMnCFhr4NvmqEog8QjcDjX7xZwTtiY6bLksKSjy2TU2cnCIpHr2MRG4H
-	 zH0l/HsC+n0w+gU4mAwqsoByQx2YxGlY4z5Kfs5hVluNwwZHrwVvqadtZNthhJBR3K
-	 hhVKFtHWUnfByoQXkUpeFJXYIOaBoBnpwdXgdTyM=
-Date: Thu, 31 Oct 2024 17:25:24 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-core-handle-zero-schemes-apply-interval.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241101002524.E76F7C4CEDA@smtp.kernel.org>
+	s=arc-20240116; t=1730420740; c=relaxed/simple;
+	bh=HJNwLXRR6CKaw7dE7e3OpVGIzJityYG4sPpHMr7s/VM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=RX5Dyy0xBX/EAiu+8zRIF0EFK50BGmo/nQWSZ/K8ff4KQYoLpUwKSQfF4W8eAs22hhgJXi5HGgM8l3ANK91vyZEvAjV1c8Yxeq3BAHgbxk/Dv7YAmvEZSCLT5sXPbawgsAsHnlHfZrteTg5RHGDY88xY7gMW6MapTA4mLuWeiuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gVGqTw4y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 086A4C4CEC3;
+	Fri,  1 Nov 2024 00:25:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730420739;
+	bh=HJNwLXRR6CKaw7dE7e3OpVGIzJityYG4sPpHMr7s/VM=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=gVGqTw4yA82KeFP1YBXOU/hTaqHk24n7Mi6Cm+4wphOCyn3+vjMg+/rleCgS2E9m9
+	 okdoOAxFvL+9o+fDaQBoIOlf8X7QpQCdBw1zjYJwUkrtCzIqh28otESx4GBGdyh8/K
+	 xyNFwBwGIhG2fpe6wbEt6IgnfOS69NS+sBd9wz7d//RvxhzMLOt4pjeV7PA18nYSOJ
+	 BWaqGdBaZ6L7gSHxUYxYvWrMyk1/0pqM3bhDO2vp9GOjSLhmw/KqZH5QbyG8TGwVKQ
+	 0kTQRttrl68/m9j1VzrdHfiSnKTjk2w2uZoTzjNKQ7qzhrf5wzkd9JEelo6kHP7m+E
+	 80X3ndgW0SbKw==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 01 Nov 2024 02:25:35 +0200
+Message-Id: <D5AEYFC1VUYN.24WN7GVHN1MDU@kernel.org>
+Cc: <stable@vger.kernel.org>, "Mike Seo" <mikeseohyungjin@gmail.com>, "open
+ list:TPM DEVICE DRIVER" <linux-integrity@vger.kernel.org>, "open list"
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3] tpm: Lock TPM chip in tpm_pm_suspend() first
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Jarkko Sakkinen" <jarkko@kernel.org>, "Peter Huewe"
+ <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>, "Jerry Snitselaar"
+ <jsnitsel@redhat.com>
+X-Mailer: aerc 0.18.2
+References: <20241101002157.645874-1-jarkko@kernel.org>
+In-Reply-To: <20241101002157.645874-1-jarkko@kernel.org>
 
+On Fri Nov 1, 2024 at 2:21 AM EET, Jarkko Sakkinen wrote:
+> Setting TPM_CHIP_FLAG_SUSPENDED in the end of tpm_pm_suspend() can be rac=
+y
+> according, as this leaves window for tpm_hwrng_read() to be called while
+> the operation is in progress. The recent bug report gives also evidence o=
+f
+> this behaviour.
+>
+> Aadress this by locking the TPM chip before checking any chip->flags both
+> in tpm_pm_suspend() and tpm_hwrng_read(). Move TPM_CHIP_FLAG_SUSPENDED
+> check inside tpm_get_random() so that it will be always checked only when
+> the lock is reserved.
+>
+> Cc: stable@vger.kernel.org # v6.4+
+> Fixes: 99d464506255 ("tpm: Prevent hwrng from activating during resume")
+> Reported-by: Mike Seo <mikeseohyungjin@gmail.com>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219383
+> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-The patch titled
-     Subject: mm/damon/core: handle zero schemes apply interval
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-damon-core-handle-zero-schemes-apply-interval.patch
+A basic smoke test in QEMU:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-core-handle-zero-schemes-apply-interval.patch
+# rtcwake -m mem -s 15
+rtcwake -m mem -s 15
+rtcwake: assuming RTC uses UTC ...
+rtcwake: wakeup from "mem" using /dev/rtc0 at Fri Nov  1 02:21:06 2024
+PM: suspend entry (deep)
+Filesystems sync: 0.017 seconds
+Freezing user space processes
+Freezing user space processes completed (elapsed 0.004 seconds)
+OOM killer disabled.
+Freezing remaining freezable tasks
+Freezing remaining freezable tasks completed (elapsed 0.004 seconds)
+printk: Suspending console(s) (use no_console_suspend to debug)
+ata2.00: Check power mode failed (err_mask=3D0x1)
+ACPI: PM: Preparing to enter system sleep state S3
+ACPI: PM: Saving platform NVS memory
+Disabling non-boot CPUs ...
+ACPI: PM: Low-level resume complete
+ACPI: PM: Restoring platform NVS memory
+ACPI: PM: Waking up from system sleep state S3
+pci 0000:00:01.0: PIIX3: Enabling Passive Release
+virtio_blk virtio1: 1/0/0 default/read/poll queues
+OOM killer enabled.
+Restarting tasks ... done.
+random: crng reseeded on system resumption
+PM: suspend exit
+# ata2: found unknown device (class 0)
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+# dmesg|tail -20
+dmesg|tail -20
+[   28.199150] Freezing user space processes
+[   28.205393] Freezing user space processes completed (elapsed 0.004
+seconds)
+[   28.206780] OOM killer disabled.
+[   28.207858] Freezing remaining freezable tasks
+[   28.213224] Freezing remaining freezable tasks completed (elapsed
+0.004 seconds)
+[   28.214591] printk: Suspending console(s) (use no_console_suspend to
+debug)
+[   28.222203] ata2.00: Check power mode failed (err_mask=3D0x1)
+[   28.240808] ACPI: PM: Preparing to enter system sleep state S3
+[   28.241218] ACPI: PM: Saving platform NVS memory
+[   28.241390] Disabling non-boot CPUs ...
+[   28.243011] ACPI: PM: Low-level resume complete
+[   28.243273] ACPI: PM: Restoring platform NVS memory
+[   28.246191] ACPI: PM: Waking up from system sleep state S3
+[   28.250415] pci 0000:00:01.0: PIIX3: Enabling Passive Release
+[   28.256539] virtio_blk virtio1: 1/0/0 default/read/poll queues
+[   28.280715] OOM killer enabled.
+[   28.281766] Restarting tasks ... done.
+[   28.287096] random: crng reseeded on system resumption
+[   28.288181] PM: suspend exit
+[   28.410073] ata2: found unknown device (class 0)
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Testing done with https://codeberg.org/jarkko/linux-tpmdd-test
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+cmake -Bbuild -Dbuildroot_defconfig=3Dbusybox_x86_64_defconfig && make -Cbu=
+ild buildroot-prepare
+make -Cbuild/buildroot/build
+pushd build/buildroot/build
+images/run-qemu.sh &
+socat - UNIX-CONNECT:images/serial.sock
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/core: handle zero schemes apply interval
-Date: Thu, 31 Oct 2024 11:37:57 -0700
-
-DAMON's logics to determine if this is the time to apply damos schemes
-assumes next_apply_sis is always set larger than current
-passed_sample_intervals.  And therefore assume continuously incrementing
-passed_sample_intervals will make it reaches to the next_apply_sis in
-future.  The logic hence does apply the scheme and update next_apply_sis
-only if passed_sample_intervals is same to next_apply_sis.
-
-If Schemes apply interval is set as zero, however, next_apply_sis is set
-same to current passed_sample_intervals, respectively.  And
-passed_sample_intervals is incremented before doing the next_apply_sis
-check.  Hence, next_apply_sis becomes larger than next_apply_sis, and the
-logic says it is not the time to apply schemes and update next_apply_sis. 
-In other words, DAMON stops applying schemes until passed_sample_intervals
-overflows.
-
-Based on the documents and the common sense, a reasonable behavior for
-such inputs would be applying the schemes for every sampling interval. 
-Handle the case by removing the assumption.
-
-Link: https://lkml.kernel.org/r/20241031183757.49610-3-sj@kernel.org
-Fixes: 42f994b71404 ("mm/damon/core: implement scheme-specific apply interval")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.7.x]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/damon/core.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
---- a/mm/damon/core.c~mm-damon-core-handle-zero-schemes-apply-interval
-+++ a/mm/damon/core.c
-@@ -1412,7 +1412,7 @@ static void damon_do_apply_schemes(struc
- 	damon_for_each_scheme(s, c) {
- 		struct damos_quota *quota = &s->quota;
- 
--		if (c->passed_sample_intervals != s->next_apply_sis)
-+		if (c->passed_sample_intervals < s->next_apply_sis)
- 			continue;
- 
- 		if (!s->wmarks.activated)
-@@ -1622,7 +1622,7 @@ static void kdamond_apply_schemes(struct
- 	bool has_schemes_to_apply = false;
- 
- 	damon_for_each_scheme(s, c) {
--		if (c->passed_sample_intervals != s->next_apply_sis)
-+		if (c->passed_sample_intervals < s->next_apply_sis)
- 			continue;
- 
- 		if (!s->wmarks.activated)
-@@ -1642,9 +1642,9 @@ static void kdamond_apply_schemes(struct
- 	}
- 
- 	damon_for_each_scheme(s, c) {
--		if (c->passed_sample_intervals != s->next_apply_sis)
-+		if (c->passed_sample_intervals < s->next_apply_sis)
- 			continue;
--		s->next_apply_sis +=
-+		s->next_apply_sis = c->passed_sample_intervals +
- 			(s->apply_interval_us ? s->apply_interval_us :
- 			 c->attrs.aggr_interval) / sample_interval;
- 	}
-_
-
-Patches currently in -mm which might be from sj@kernel.org are
-
-mm-damon-core-handle-zero-aggregationops_update-intervals.patch
-mm-damon-core-handle-zero-schemes-apply-interval.patch
-selftests-damon-huge_count_read_write-remove-unnecessary-debugging-message.patch
-selftests-damon-_debugfs_common-hide-expected-error-message-from-test_write_result.patch
-selftests-damon-debugfs_duplicate_context_creation-hide-errors-from-expected-file-write-failures.patch
-mm-damon-kconfig-update-dbgfs_kunit-prompt-copy-for-sysfs_kunit.patch
-mm-damon-tests-dbgfs-kunit-fix-the-header-double-inclusion-guarding-ifdef-comment.patch
-
+BR, Jarkko
 
