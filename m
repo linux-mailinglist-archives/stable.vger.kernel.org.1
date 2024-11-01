@@ -1,132 +1,127 @@
-Return-Path: <stable+bounces-89529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C7419B9990
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 21:38:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 812C69B99B6
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 21:55:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20A102824E2
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 20:38:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A3E91C226C0
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 20:55:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE11E1D9588;
-	Fri,  1 Nov 2024 20:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20241E2604;
+	Fri,  1 Nov 2024 20:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hTJPHP6h"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="vX8Rsziq"
 X-Original-To: stable@vger.kernel.org
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429501D0F77
-	for <stable@vger.kernel.org>; Fri,  1 Nov 2024 20:38:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE37E1E0DE9
+	for <stable@vger.kernel.org>; Fri,  1 Nov 2024 20:55:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730493531; cv=none; b=D4Yw4jKSawTC9bxvUTonE6wO09ZPvAmG0/EgCJ/ofxcdTrG7w5JxGDvDmuwiMi3S916hZPXvaz0U5B7KFWcbi6hMH2S3MgZcHqy7c/yjV7bX95/rPcjikJQCDvhxgbR2N45PSQLQRUYVV6UveStELFkmmxWgFqDOTILGXjGuPiA=
+	t=1730494504; cv=none; b=A4JBEQRHcPgs/XyEswmLaXu42OLgbm6qSuiZvYPIHy34ORe/gSHGGEjxxmTVpLS7++LSfye5sXLouomBBrOfuDMZVM+3qVYkMdIIMleZ8TpnwVh89foaLjRSMA05+NiTzAiP6M0wFuWWH7hSQlFkcX6cFTeNkeY9fMNtA9MvnTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730493531; c=relaxed/simple;
-	bh=NCS2luq8mYhP/9G3a2do+e48ZgCc1j3lR8FK24tvkQ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P4/Ep0RXminvRnExQDfrJD5ir6AukbqF+URPwxvx/Ev3UQKrgCjA1PvF2mv2j9MXGSN24NBPyGqo/68jZOqV/C03PrjN+YMpQJnrECUcqCG+CR969GR8ylPF9CL8YfFGNoGPk/gN18VKOnp5e3EgpoWGT9O4x17h6rtd6Vm7OcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hTJPHP6h; arc=none smtp.client-ip=95.215.58.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Fri, 1 Nov 2024 20:38:40 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1730493526;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ms/9TQIzfqjeevMFuhJ63c3HeS+oXiwuqUvr6GFnvY4=;
-	b=hTJPHP6hZkpZzYxX1DQnWugFXcjksyxYGgdBhJ+h3jVEFFTgWUNMGAFh3dEDqZztAS/Mny
-	TVvTdtLH9x2I3MtefRr4+vbAljEH/KiE90wW6xoZHhlfk4SfxWfEd+B0YNgT70e8co+FWC
-	gNF8oWloytHmi+zJyb8tMvMRv1LJU2Q=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: linux-kernel@vger.kernel.org, Andrei Vagin <avagin@google.com>,
-	Kees Cook <kees@kernel.org>, Alexey Gladkov <legion@kernel.org>,
+	s=arc-20240116; t=1730494504; c=relaxed/simple;
+	bh=4RROoxRB8fpvFTHrKZ9NejmpNSX4yec1eT70eaOuSC4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XPxU7oZ5iHf+jV+V9+iICtL9eaohFbwd8J1KhxGfFYHvCvC/pia5SAdkcu17rR994LuNlwUwuUzQy6K3Ao3047wXi8APjLXzoozKy9Q1ykAn+jWNsAKRFqmE0PpyRtODnNp1WYbsV9nW9Elm9BeAsujLbiD/V/NwhSz6MumTxUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=vX8Rsziq; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4315baec69eso20064565e9.2
+        for <stable@vger.kernel.org>; Fri, 01 Nov 2024 13:55:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1730494500; x=1731099300; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jLTdEDXvDx6C1+kdRWN0DBnWkM5vnWkdpplvs2TB8+4=;
+        b=vX8RsziqWL/e7Ct70aTRl07kmCtIghKq7bQ46IWWc+WBabbjSOAbSUsG4CvlKzJ+G0
+         KLtTJXY+5sfXVsISW22XNeDwbOSuIQgllkok1jePycHTJircSuXVmUCPnsvZt8M2wrgj
+         Ojb/Asq98n4VFs8bIW2kf228G0hw7OBp6CAnckOwiiI2ud5Ba2hoUBtCvnV4QLWh0yU0
+         IGUWczfA43tY5tur24rX6G/IlDyqBlYyhqwfo1XD6rq7Icyva/4lcJQvEbnRrdD379rw
+         uJ0tZrlWgyMqf54aB0M7X7jNT6lH4KqYy2T1sdF9HtgpTQ3+/SNG2N2u6kIBF5qeFHZH
+         BRfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730494500; x=1731099300;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jLTdEDXvDx6C1+kdRWN0DBnWkM5vnWkdpplvs2TB8+4=;
+        b=tIWnj3hsLdtp+anLOdEY5OhnE2cf4ljMnQpbgEN3BsqTZY9n6MWozxn/GC4EuDqn5v
+         LveiiSM3cBbWTxUMq96Lep5mGOy9JLpw4AZNiv9QwEPWKKCjBiBlHlzx/SDizulPrcsq
+         UfGxJoHH4jOBn4h8NY+ykhA0ncVxL4v7ua1CI080BXYWpvwAyWaZlWQUAaHtcbLDPFli
+         cr6JomykagtQU9HwbEVW0L35dKpkycd54JaNPogZzNwTKqq2YSHzZDyqdxY9xsBoRdAZ
+         /REp8+PVgBFN0c1MlRIKWz4nbJ1x57J5fLd+utXkxUosHAHf30bt3mZlnd+Lmd6nZ6Ul
+         q3pQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW9L/9IAzj8f0xJXW5L/Hlq0vrRd+UyMzsuPLTpJdGgL7hWXXF347tB4VjFQAl7TRbly2zj1Rc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTTng7jYoVfGn9H52CENVbIab2/3GOj8Ed7F5t14NZbSnRmNz2
+	+uCs6/6KTwwExjg/YsmVxNWZLn+PutwGcBl3SkLG9J90Vb1E9ctiQElOkF3lGH4=
+X-Google-Smtp-Source: AGHT+IF9SJTbl/9ym3H2HLLhqsElg5KmBrO4oJDVweH5FkNcn4aOm7mRNyiEG2gDz6qmQ/+JagSV1Q==
+X-Received: by 2002:a5d:59c7:0:b0:37d:4fb1:4fab with SMTP id ffacd0b85a97d-381c7ab739cmr4123785f8f.57.1730494499960;
+        Fri, 01 Nov 2024 13:54:59 -0700 (PDT)
+Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:7e52:b53c:229:e024])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c116af7esm6153480f8f.103.2024.11.01.13.54.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Nov 2024 13:54:59 -0700 (PDT)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: Kees Cook <kees@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: linux-hardening@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] signal: restore the override_rlimit logic
-Message-ID: <ZyU8UNKLNfAi-U8F@google.com>
-References: <20241031200438.2951287-1-roman.gushchin@linux.dev>
- <87zfmi3f8b.fsf@email.froward.int.ebiederm.org>
+Subject: [PATCH v2] lib: string_helpers: silence snprintf() output truncation warning
+Date: Fri,  1 Nov 2024 21:54:53 +0100
+Message-ID: <20241101205453.9353-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87zfmi3f8b.fsf@email.froward.int.ebiederm.org>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 01, 2024 at 02:51:00PM -0500, Eric W. Biederman wrote:
-> Roman Gushchin <roman.gushchin@linux.dev> writes:
-> 
-> > Prior to commit d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of
-> > ucounts") UCOUNT_RLIMIT_SIGPENDING rlimit was not enforced for a class
-> > of signals. However now it's enforced unconditionally, even if
-> > override_rlimit is set.
-> 
-> Not true.
-> 
-> It added a limit on the number of siginfo structures that
-> a container may allocate.  Have you tried not limiting your
-> container?
-> 
-> >This behavior change caused production issues.
-> 
-> > For example, if the limit is reached and a process receives a SIGSEGV
-> > signal, sigqueue_alloc fails to allocate the necessary resources for the
-> > signal delivery, preventing the signal from being delivered with
-> > siginfo. This prevents the process from correctly identifying the fault
-> > address and handling the error. From the user-space perspective,
-> > applications are unaware that the limit has been reached and that the
-> > siginfo is effectively 'corrupted'. This can lead to unpredictable
-> > behavior and crashes, as we observed with java applications.
-> 
-> Note.  There are always conditions when the allocation may fail.
-> The structure is allocated with __GFP_ATOMIC so it is much more likely
-> to fail than a typical kernel memory allocation.
-> 
-> But I agree it does look like there is a quality of implementation issue
-> here.
-> 
-> > Fix this by passing override_rlimit into inc_rlimit_get_ucounts() and
-> > skip the comparison to max there if override_rlimit is set. This
-> > effectively restores the old behavior.
-> 
-> Instead please just give the container and unlimited number of siginfo
-> structures it can play with.
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-Well, personally I'd not use this limit too, but I don't think
-"it's broken, userspace shouldn't use it" argument is valid.
+The output of ".%03u" with the unsigned int in range [0, 4294966295] may
+get truncated if the target buffer is not 12 bytes. This can't really
+happen here as the 'remainder' variable cannot exceed 999 but the
+compiler doesn't know it. To make it happy just increase the buffer to
+where the warning goes away.
 
-> 
-> The maximum for rlimit(RLIM_SIGPENDING) is the rlimit(RLIM_SIGPENDING)
-> value when the user namespace is created.
-> 
-> Given that it took 3 and half years to report this.  I am going to
-> say this really looks like a userspace bug.
+Fixes: 3c9f3681d0b4 ("[SCSI] lib: add generic helper to print sizes rounded to the correct SI range")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+Changes in v2:
+- improve the commit message
 
-The trick here is another bug fixed by https://lkml.org/lkml/2024/10/31/185.
-Basically it's a leak of the rlimit value.
-If a limit is set and reached in the reality, all following signals
-will not have a siginfo attached, causing applications which depend on
-handling SIGSEGV to crash.
+ lib/string_helpers.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> Beyond that your patch is actually buggy, and should not be applied.
-> 
-> If we want to change the semantics and ignore the maximum number of
-> pending signals in a container (when override_rlimit is set) then
-> the code should change the computation of the max value (pegging it at
-> LONG_MAX) and not ignore it.
+diff --git a/lib/string_helpers.c b/lib/string_helpers.c
+index 4f887aa62fa0..91fa37b5c510 100644
+--- a/lib/string_helpers.c
++++ b/lib/string_helpers.c
+@@ -57,7 +57,7 @@ int string_get_size(u64 size, u64 blk_size, const enum string_size_units units,
+ 	static const unsigned int rounding[] = { 500, 50, 5 };
+ 	int i = 0, j;
+ 	u32 remainder = 0, sf_cap;
+-	char tmp[8];
++	char tmp[12];
+ 	const char *unit;
+ 
+ 	tmp[0] = '\0';
+-- 
+2.45.2
 
-Hm, isn't the unconditional (new < 0) enough to capture the overflow?
-Actually I'm not sure I understand how "long new" can be "> LONG_MAX"
-anyway.
-
-Thanks!
 
