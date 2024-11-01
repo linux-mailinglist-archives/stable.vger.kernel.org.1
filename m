@@ -1,93 +1,138 @@
-Return-Path: <stable+bounces-89474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E915D9B8AC8
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 06:59:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9037D9B8B14
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 07:15:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62B14B21548
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 05:59:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B40EF1C20EDF
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 06:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D71514A4C6;
-	Fri,  1 Nov 2024 05:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152AC148308;
+	Fri,  1 Nov 2024 06:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nVh7VB2e"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="WmTczjPq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E088F36B;
-	Fri,  1 Nov 2024 05:59:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CEC2E62C
+	for <stable@vger.kernel.org>; Fri,  1 Nov 2024 06:15:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730440765; cv=none; b=CIjM47FwZQEuC5l3miRqtySz2132VNm5KiaXRsShdDBexWSKsOymXqW52RubnV/ZEJiWdYA+oSPj28uzSBUT5vdDd55poFGirgRAzQUiwPC5onNytuH66imC5KPxK2L65P5wJkBPamKjWHRVkYdIe7YMOWmTnzwRuOfJ+mtsfhM=
+	t=1730441744; cv=none; b=Gm/B23LvTUIrAWfri2ufUI2M5pWauCd7GMO/YQi+cffkv9GashutKQ9fuEeELLLJY6+P1EZ3MK/udX7WhRU350pCsiH2/8xQfGV1r/+k3b9Hv7B3Fe2aWZXJsd5kZRNqVHNAcKOv9PRPnN1CsIY823+YOM3bA6jKRkgUnrU2Ba0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730440765; c=relaxed/simple;
-	bh=bsORacs+XRwGPNAegb+drBs5u+8UfBOTbC/pTO7y+6M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BVm/Hyc1ZWBOGRKMZ/tPAj8ogg7bma9fKPIKkYqVLIA0gKDsT9DOyuBMbbP3a+bJv+ssxLr+JdQ/0sZG8cdKA2Y3cw7HpMkYiWTFV35GNBXHOeLKiY7tBesxke985o3ns+NLVH5OVre/1e8woRh71F15+FkNY9qG/NbXWKAS2zE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nVh7VB2e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FBCC4CECD;
-	Fri,  1 Nov 2024 05:59:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730440764;
-	bh=bsORacs+XRwGPNAegb+drBs5u+8UfBOTbC/pTO7y+6M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nVh7VB2enHZJz2ft2TzPQ6heULNsJCk/uXeTpmnaSnRpCSLN3C+NK1iX/bEEpFt6h
-	 2W87GxwcpSE6QV0JhzJLL4ZPyLIxWmPUk7IrZ91GhE+SvdErRpmR/bKPeYJBzVWBSF
-	 5nmnuQ13mIjRxAt+KZj4/QkjkcQmspvZyLu7/XXJPbnJHrzicUmDx00kFnWxVUVJj4
-	 LSTrz3fUPlaveJozHNHqe0b/UlpNOBQKepLyfu944Z3dH6lAnjZYmBry1ulIq0rRON
-	 sLVHcMBAgmPa9jd5wnj5e9StQtSQNO+qIdFGgclPRPr1SvHWBeC6itjriO85bJDkOQ
-	 tbuAf+2fGkghw==
-From: William Breathitt Gray <wbg@kernel.org>
-To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: William Breathitt Gray <wbg@kernel.org>,
-	William Breathitt Gray <william.gray@linaro.org>,
-	linux-iio@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] counter: stm32-timer-cnt: fix device_node handling in probe_encoder()
-Date: Fri,  1 Nov 2024 14:59:18 +0900
-Message-ID: <173044055547.648361.10787383264184720457.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241027-stm32-timer-cnt-of_node_put-v1-1-ebd903cdf7ac@gmail.com>
-References: <20241027-stm32-timer-cnt-of_node_put-v1-1-ebd903cdf7ac@gmail.com>
+	s=arc-20240116; t=1730441744; c=relaxed/simple;
+	bh=J+Jtl/wPq7/sIvq26Ag+Dyt1uGggkEqLX46l4Y0JFD4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Qfszy3eXq7d3R3IKbsZR0rlFkoN2MMNyOAPPURSpHzQHXX5NtmDNmVGWYXdCUWGoOujSYnbllp6TqRUv8G8tKmbylr0KES06Uh3E/uHjSZ/VSNCn1d+0ojZBVcNQPxditRKMfjzsVvyx8jXCAdEyxtYYNHNBmE7FXnOj48N7ZbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=WmTczjPq; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <ccffb15f-f63c-4d52-bb26-654916939cae@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1730441737;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4YC7POznpvjbkEo+eDdqRIo9I6A+2MKdx9zJLeweiyg=;
+	b=WmTczjPqopaNy5j6ftE2neyrwfWYCeF8n0cn9B1+25HUWPFYYbfLu56CNllPXWNMV30YJt
+	fGcowN+OVz142Bx2Ct3nkT0WBS/a+vxMK7mZcDMLTa2neKfflVDi2AD3qDIjXVr5NLnjEQ
+	8YeMnMPLNqfDYgBks3Q8A0o0KctVvRs=
+Date: Fri, 1 Nov 2024 14:15:28 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=663; i=wbg@kernel.org; h=from:subject:message-id; bh=MbN8O+C+5FEujeJNUwaWgYqQSEexIAnJ9ZIqUSvRh8g=; b=owGbwMvMwCW21SPs1D4hZW3G02pJDOkquc+e8rirfDxrXaT1uHa6lYSF0KIjb/autf6fMKMth bvYJflDRykLgxgXg6yYIkuv+dm7Dy6pavx4MX8bzBxWJpAhDFycAjCRdxMYGTamMhRzCfX8PB7v sq/R65r1lmq3+ZazZ4n3fSt9cnDGV1tGhpurmXXXnq+9fmCXyx7J5mUT/63wM+6aqJei7HLGaEV JIAsA
-X-Developer-Key: i=wbg@kernel.org; a=openpgp; fpr=8D37CDDDE0D22528F8E89FB6B54856CABE12232B
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2] drm/bridge: Fix assignment of the of_node of the
+ parent to aux bridge
+To: neil.armstrong@linaro.org, Andrzej Hajda <andrzej.hajda@intel.com>,
+ Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Abel Vesa <abel.vesa@linaro.org>
+Cc: Johan Hovold <johan@kernel.org>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20241018-drm-aux-bridge-mark-of-node-reused-v2-1-aeed1b445c7d@linaro.org>
+ <172951608323.1285208.3162107667310691864.b4-ty@linaro.org>
+ <230b5910-6790-44cb-90ed-222bee89054d@linux.dev>
+ <c2a4cc3a-2ffc-46f3-8636-238cd561f7aa@linaro.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sui Jingfeng <sui.jingfeng@linux.dev>
+In-Reply-To: <c2a4cc3a-2ffc-46f3-8636-238cd561f7aa@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
 
-On Sun, 27 Oct 2024 13:26:49 +0100, Javier Carrasco wrote:
-> Device nodes accessed via of_get_compatible_child() require
-> of_node_put() to be called when the node is no longer required to avoid
-> leaving a reference to the node behind, leaking the resource.
-> 
-> In this case, the usage of 'tnode' is straightforward and there are no
-> error paths, allowing for a single of_node_put() when 'tnode' is no
-> longer required.
-> 
-> [...]
+On 2024/10/31 20:31, Neil Armstrong wrote:
+> On 30/10/2024 15:49, Sui Jingfeng wrote:
+>> Hi,
+>>
+>> On 2024/10/21 21:08, Neil Armstrong wrote:
+>>> Hi,
+>>>
+>>> On Fri, 18 Oct 2024 15:49:34 +0300, Abel Vesa wrote:
+>>>> The assignment of the of_node to the aux bridge needs to mark the
+>>>> of_node as reused as well, otherwise resource providers like 
+>>>> pinctrl will
+>>>> report a gpio as already requested by a different device when both 
+>>>> pinconf
+>>>> and gpios property are present.
+>>>> Fix that by using the device_set_of_node_from_dev() helper instead.
+>>>>
+>>>>
+>>>> [...]
+>>> Thanks, Applied to 
+>>> https://gitlab.freedesktop.org/drm/misc/kernel.git (drm-misc-fixes)
+>>
+>>
+>> It's quite impolite to force push patches that still under reviewing,
+>> this prevent us to know what exactly its solves.
+>
+> It's quite explicit.
+>
 
-Applied, thanks!
+Auxiliary bus emphasis on *compartmentalize*, layer, and distribute
+domain-specific concerns via *Linux device-driver model*.
 
-[1/1] counter: stm32-timer-cnt: fix device_node handling in probe_encoder()
-      commit: 147359e23e5c9652ff8c5a98a51a7323bd51c94a
+Reusing(or sharing) of_node by multiple devices proved that the two
+subsystems are still tangled together somehow. Which is fundamentally
+violate the philosophy of compartmentalization.
 
-Best regards,
+The way that driver operated is not via Linux device-driver model either,
+lots of those kind things happens quite implicitly.
+
+But I think beautiful things associated behind this might also be voided,
+that's it.
+
+
+>>
+>> This also prevent us from finding a better solution.
+>
+> Better solution of ? This needed to be fixed and backported to stable,
+> if there's desire to redesign the driver, then it should be discussed 
+> in a separate thread.
+>
+>>
+>>> [1/1] drm/bridge: Fix assignment of the of_node of the parent to aux 
+>>> bridge
+>>> https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/85e444a68126a631221ae32c63fce882bb18a262
+>>>
+>
 -- 
-William Breathitt Gray <wbg@kernel.org>
+Best regards,
+Sui
+
 
