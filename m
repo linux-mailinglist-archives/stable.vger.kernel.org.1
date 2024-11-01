@@ -1,86 +1,82 @@
-Return-Path: <stable+bounces-89493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D3DF9B929A
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 14:54:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E582B9B92BC
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 15:02:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9B4BB20D62
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 13:54:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 546A71F21E78
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 14:02:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49DF11A0AFE;
-	Fri,  1 Nov 2024 13:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF4619DF8E;
+	Fri,  1 Nov 2024 14:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fo+gKCAO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e3yl7GYz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9371158DD0;
-	Fri,  1 Nov 2024 13:54:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863724436E;
+	Fri,  1 Nov 2024 14:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730469250; cv=none; b=LMztN6g7z7uck9+SmoNJzz+8ytCz/mDWhbEqZZVQZ5CPe7RhpMnsrelSvlCL+Z+RnTudXfISmIMUO+GA69/KOl57mV82KSi+DkjoaBuhfi6qXpQquPB8biYgedOihbvCJia7OJ/zaNkHfX50vbBD020Ps8XYxzsl9GNBMInm3Xw=
+	t=1730469767; cv=none; b=tJMIP2cSrwTNnG8iKia9jz87A3xUbA3rWzZ7KDgDT+SuYbv0oTneLc3dnCBXv5+axxc3hxS8+MQQlYDnn87j8cmkKSIDiRSASp4xa1HG/pxbdaUYP7AduZ0112/vxXNE8tJqClmjAEXhwlh86YZ9yI/jbGWp1c+p++4vLuaWD8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730469250; c=relaxed/simple;
-	bh=PFEIdZZLo0k4FF6Z9NJj8Z8lgjgbTVyqdSErTcLlc00=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p+SOUgAogjx7wgHP8Do+dCsEidfg7e+CXHHxO7V80n6vbE0GEBmJbZWvmnQSVzWQaEzpwZxfcr5LSynj4SeAq5LUUs9Q7aRAZhrOEkSRken6FjvtNtG+/aAPUlwqJIrj1yjgXucAgCbse4hK+4ycD+5b9UYY9MMQp7TYTPTgIq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fo+gKCAO; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-539f72c913aso3314042e87.1;
-        Fri, 01 Nov 2024 06:54:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730469246; x=1731074046; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4pGgo/9SWmpICBmZTu9VKnqkzR9z4AL22vX7/lGLfvM=;
-        b=fo+gKCAOzPiZxuY3neNkiQyxVH80tG3ybK4X4Z2sPzQ1jgwr/1emp/Jg7Bjwqe903I
-         60I5J1iZF2qascMk878Dn/J5J3mxDrFA4HHAxdm9frA2PPZDctpbuNg8MFYVZmeGZIRB
-         fzGV8k/p2jSm7V0HUZE46hOmPa6hgk0pQU3+WIWTpRgyLHh4uQTtVVX0Ms4bz76aSu9u
-         QSWrZJBXO6cPTJbNtoyHHtnpeYpb30jmZ5B+4MDcfZ7r8UZ3O1xWIHoIgl/YR13AIE6D
-         NtZJOFM/VBJQOFX2y839orvS1WKS/hvzYpYKQxhjvE1G2svwAD0EKvbaCSOtuVVIJ6NR
-         aM0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730469246; x=1731074046;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4pGgo/9SWmpICBmZTu9VKnqkzR9z4AL22vX7/lGLfvM=;
-        b=cFYMZX7bnog1qqizTX89Uale8TfR5fLrkJoVOdBwY3hewPJKk4J3NRyxlCl4ewOIaR
-         dsl4R+HTj9MivMpIvpn3xnxLHq0TQHhbERjXfrXoP/pEtOrRRrKF3NMVkRs6kJ8K5C9t
-         Phx8sJOTMTpUDDG9eKHsKWQ/LT1wtQDTw5uE19u/HkjBVBRPolyr+vj9AoQXvXnLQrfk
-         Jv37LDAHwxnev9qqgBjAZZxvOz5+/vRd768EWn1O617hffBFJzOdAg/+tuiXgJfcff1m
-         +uKg2Hn+GDA4GjIkVThZpm2MQfcJeTy8UPpI5dxYwDB3ZPrE+tGLBCtgWtP93LqMEfW1
-         u5rw==
-X-Forwarded-Encrypted: i=1; AJvYcCUJixJY+ibE5+XPb4VZa3gmIT7sakLNZfGb+PdLonV0c1T3Evzm1Q7ufJKs2sps8M86eB7HgUygx0dxmoVp@vger.kernel.org, AJvYcCX7wRUXHSPAYIvkXjfAqNaMQ5CRDf4+TD+m6AgC7jq2/uko7pLX2Py+8nvCEX5i8l/go9EoPyD/@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoLBLOQAsAhKNupBmkfPf1rgPs1iNS4j+lYKL/yfj0AL31aPY+
-	zooDnZFaswEZA8AfdcTXY0t5eoXO30Kerybitb4Is7uukTMHzqly
-X-Google-Smtp-Source: AGHT+IGzjkJaelXORK7vXOahgcQjA06uA3RsLsk5cKEhjwvSmF1MIC806x8nvpjeQ2fhpQ9G8ffYog==
-X-Received: by 2002:a05:6512:3d0c:b0:539:f8da:b466 with SMTP id 2adb3069b0e04-53b348c37cemr12134730e87.11.1730469245787;
-        Fri, 01 Nov 2024 06:54:05 -0700 (PDT)
-Received: from krava (2001-1ae9-1c2-4c00-726e-c10f-8833-ff22.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:726e:c10f:8833:ff22])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c10b7b32sm5318083f8f.18.2024.11.01.06.54.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Nov 2024 06:54:05 -0700 (PDT)
-From: Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Fri, 1 Nov 2024 14:54:03 +0100
-To: Andrii Nakryiko <andrii@kernel.org>
-Cc: bpf@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org,
-	adobriyan@gmail.com, shakeel.butt@linux.dev, hannes@cmpxchg.org,
-	ak@linux.intel.com, osandov@osandov.com, song@kernel.org,
-	jannh@google.com, linux-fsdevel@vger.kernel.org,
-	willy@infradead.org, stable@vger.kernel.org,
-	Eduard Zingerman <eddyz87@gmail.com>
-Subject: Re: [PATCH v7 bpf-next 01/10] lib/buildid: harden build ID parsing
- logic
-Message-ID: <ZyTde66MF0GUqbvB@krava>
-References: <20240829174232.3133883-1-andrii@kernel.org>
- <20240829174232.3133883-2-andrii@kernel.org>
+	s=arc-20240116; t=1730469767; c=relaxed/simple;
+	bh=MsQ9V3sf5ngVZOnd60/14YeNO9J7P5KfgVF/8fNfJW0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TEtc8vDFdlfeIIywHrARk+5hSBQ3XM4zqJkKPhGpq3tI451Y6Y22sJeUv2flRnve6c6ed5yp7rmrNJRaw/4NziEPOR9Um7bX55h/oBkUMW0e3IAgvBkf8EfNZpnrK21/v0JpPQAxmFXOYmpvBHLrSwpsacAdq0uca5vAqCX4cVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e3yl7GYz; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730469765; x=1762005765;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MsQ9V3sf5ngVZOnd60/14YeNO9J7P5KfgVF/8fNfJW0=;
+  b=e3yl7GYzZDTrshHQsLu+eX05qlDTqNZB1/MWLnPvyCmyFIeOnf11olOh
+   h3Qs/hs+4AGuL/IJRH9QovpuEfabxQLpF8gzo7hjTYID1a20bB5Ka7pXR
+   qcXosoeASWeyuVXViAHBoEeYzdDQIr/M0H+V3lEFSGim9GjPZqcnEUnuT
+   KG7nPnr9Htw5Z23OREMx4yKDJmfXjNcs6vmOaSk5FfqgYu+LIGQw6aI8w
+   FwAGm0XyrLh/rWoIm8IsQwWs/h532meApljnlP7pjqDkHj/ghrJ9zirhL
+   KtpVfJqpzDoepxQ5GbCtqBzXAt+nGSx49cL9z/a/T0zlH2hlMiQQB5aZ/
+   g==;
+X-CSE-ConnectionGUID: JrZKD7WyRQa+L+u91lg1KQ==
+X-CSE-MsgGUID: MbjjSyGrTRqMTwLXtS/ZdA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11243"; a="29654125"
+X-IronPort-AV: E=Sophos;i="6.11,250,1725346800"; 
+   d="scan'208";a="29654125"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2024 07:02:44 -0700
+X-CSE-ConnectionGUID: rFT8x/NOQPa4sxUhjtTxQg==
+X-CSE-MsgGUID: UjNqDcWDTKClZxEyenorSQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="87767855"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 01 Nov 2024 07:02:41 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t6sEX-000hcH-2j;
+	Fri, 01 Nov 2024 14:02:37 +0000
+Date: Fri, 1 Nov 2024 22:02:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: George Rurikov <grurikov@gmail.com>, Christoph Hellwig <hch@lst.de>
+Cc: oe-kbuild-all@lists.linux.dev, MrRurikov <grurikov@gmal.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Israel Rukshin <israelr@mellanox.com>,
+	Max Gurtovoy <maxg@mellanox.com>, Jens Axboe <axboe@kernel.dk>,
+	linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, George Rurikov <g.ryurikov@securitycode.ru>
+Subject: Re: [PATCH] nvme: rdma: Add check for queue in
+ nvmet_rdma_cm_handler()
+Message-ID: <202411012136.hoMlvrTF-lkp@intel.com>
+References: <20241031173327.663-1-grurikov@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,121 +85,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240829174232.3133883-2-andrii@kernel.org>
+In-Reply-To: <20241031173327.663-1-grurikov@gmail.com>
 
-On Thu, Aug 29, 2024 at 10:42:23AM -0700, Andrii Nakryiko wrote:
-> Harden build ID parsing logic, adding explicit READ_ONCE() where it's
-> important to have a consistent value read and validated just once.
-> 
-> Also, as pointed out by Andi Kleen, we need to make sure that entire ELF
-> note is within a page bounds, so move the overflow check up and add an
-> extra note_size boundaries validation.
-> 
-> Fixes tag below points to the code that moved this code into
-> lib/buildid.c, and then subsequently was used in perf subsystem, making
-> this code exposed to perf_event_open() users in v5.12+.
-> 
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Eduard Zingerman <eddyz87@gmail.com>
-> Reviewed-by: Jann Horn <jannh@google.com>
-> Suggested-by: Andi Kleen <ak@linux.intel.com>
-> Fixes: bd7525dacd7e ("bpf: Move stack_map_get_build_id into lib")
-> Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-> ---
->  lib/buildid.c | 76 +++++++++++++++++++++++++++++----------------------
->  1 file changed, 44 insertions(+), 32 deletions(-)
-> 
-> diff --git a/lib/buildid.c b/lib/buildid.c
-> index e02b5507418b..26007cc99a38 100644
-> --- a/lib/buildid.c
-> +++ b/lib/buildid.c
-> @@ -18,31 +18,37 @@ static int parse_build_id_buf(unsigned char *build_id,
->  			      const void *note_start,
->  			      Elf32_Word note_size)
->  {
-> -	Elf32_Word note_offs = 0, new_offs;
-> -
-> -	while (note_offs + sizeof(Elf32_Nhdr) < note_size) {
-> -		Elf32_Nhdr *nhdr = (Elf32_Nhdr *)(note_start + note_offs);
-> +	const char note_name[] = "GNU";
-> +	const size_t note_name_sz = sizeof(note_name);
-> +	u64 note_off = 0, new_off, name_sz, desc_sz;
-> +	const char *data;
-> +
-> +	while (note_off + sizeof(Elf32_Nhdr) < note_size &&
-> +	       note_off + sizeof(Elf32_Nhdr) > note_off /* overflow */) {
-> +		Elf32_Nhdr *nhdr = (Elf32_Nhdr *)(note_start + note_off);
-> +
-> +		name_sz = READ_ONCE(nhdr->n_namesz);
-> +		desc_sz = READ_ONCE(nhdr->n_descsz);
-> +
-> +		new_off = note_off + sizeof(Elf32_Nhdr);
-> +		if (check_add_overflow(new_off, ALIGN(name_sz, 4), &new_off) ||
-> +		    check_add_overflow(new_off, ALIGN(desc_sz, 4), &new_off) ||
-> +		    new_off > note_size)
-> +			break;
->  
->  		if (nhdr->n_type == BUILD_ID &&
-> -		    nhdr->n_namesz == sizeof("GNU") &&
-> -		    !strcmp((char *)(nhdr + 1), "GNU") &&
-> -		    nhdr->n_descsz > 0 &&
-> -		    nhdr->n_descsz <= BUILD_ID_SIZE_MAX) {
-> -			memcpy(build_id,
-> -			       note_start + note_offs +
-> -			       ALIGN(sizeof("GNU"), 4) + sizeof(Elf32_Nhdr),
-> -			       nhdr->n_descsz);
-> -			memset(build_id + nhdr->n_descsz, 0,
-> -			       BUILD_ID_SIZE_MAX - nhdr->n_descsz);
-> +		    name_sz == note_name_sz &&
-> +		    memcmp(nhdr + 1, note_name, note_name_sz) == 0 &&
-> +		    desc_sz > 0 && desc_sz <= BUILD_ID_SIZE_MAX) {
-> +			data = note_start + note_off + ALIGN(note_name_sz, 4);
-> +			memcpy(build_id, data, desc_sz);
-> +			memset(build_id + desc_sz, 0, BUILD_ID_SIZE_MAX - desc_sz);
->  			if (size)
-> -				*size = nhdr->n_descsz;
-> +				*size = desc_sz;
->  			return 0;
->  		}
+Hi George,
 
-hi,
-this fix is causing stable kernels to return wrong build id,
-the change below seems to fix that (based on 6.6 stable)
+kernel test robot noticed the following build warnings:
 
-if we agree on the fix I'll send it to all affected stable trees
+[auto build test WARNING on linus/master]
+[also build test WARNING on v6.12-rc5 next-20241101]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-jirka
+url:    https://github.com/intel-lab-lkp/linux/commits/George-Rurikov/nvme-rdma-Add-check-for-queue-in-nvmet_rdma_cm_handler/20241101-013611
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20241031173327.663-1-grurikov%40gmail.com
+patch subject: [PATCH] nvme: rdma: Add check for queue in nvmet_rdma_cm_handler()
+config: x86_64-rhel-8.3-func (https://download.01.org/0day-ci/archive/20241101/202411012136.hoMlvrTF-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241101/202411012136.hoMlvrTF-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411012136.hoMlvrTF-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/nvme/target/rdma.c: In function 'nvmet_rdma_cm_handler':
+>> drivers/nvme/target/rdma.c:1771:20: warning: this statement may fall through [-Wimplicit-fallthrough=]
+    1771 |                 if (!queue) {
+         |                    ^
+   drivers/nvme/target/rdma.c:1775:9: note: here
+    1775 |         case RDMA_CM_EVENT_ADDR_CHANGE:
+         |         ^~~~
+   drivers/nvme/target/rdma.c:1785:20: warning: this statement may fall through [-Wimplicit-fallthrough=]
+    1785 |                 if (!queue) {
+         |                    ^
+   drivers/nvme/target/rdma.c:1789:9: note: here
+    1789 |         case RDMA_CM_EVENT_DEVICE_REMOVAL:
+         |         ^~~~
+   drivers/nvme/target/rdma.c:1798:20: warning: this statement may fall through [-Wimplicit-fallthrough=]
+    1798 |                 if (!queue) {
+         |                    ^
+   drivers/nvme/target/rdma.c:1802:9: note: here
+    1802 |         default:
+         |         ^~~~~~~
 
 
----
-The parse_build_id_buf does not account Elf32_Nhdr header size
-when getting the build id data pointer and returns wrong build
-id data as result.
+vim +1771 drivers/nvme/target/rdma.c
 
-This is problem only stable trees that merged c83a80d8b84f fix,
-the upstream build id code was refactored and returns proper
-build id.
+  1752	
+  1753	static int nvmet_rdma_cm_handler(struct rdma_cm_id *cm_id,
+  1754			struct rdma_cm_event *event)
+  1755	{
+  1756		struct nvmet_rdma_queue *queue = NULL;
+  1757		int ret = 0;
+  1758	
+  1759		if (cm_id->qp)
+  1760			queue = cm_id->qp->qp_context;
+  1761	
+  1762		pr_debug("%s (%d): status %d id %p\n",
+  1763			rdma_event_msg(event->event), event->event,
+  1764			event->status, cm_id);
+  1765	
+  1766		switch (event->event) {
+  1767		case RDMA_CM_EVENT_CONNECT_REQUEST:
+  1768			ret = nvmet_rdma_queue_connect(cm_id, event);
+  1769			break;
+  1770		case RDMA_CM_EVENT_ESTABLISHED:
+> 1771			if (!queue) {
+  1772				nvmet_rdma_queue_established(queue);
+  1773				break;
+  1774			}
+  1775		case RDMA_CM_EVENT_ADDR_CHANGE:
+  1776			if (!queue) {
+  1777				struct nvmet_rdma_port *port = cm_id->context;
+  1778	
+  1779				queue_delayed_work(nvmet_wq, &port->repair_work, 0);
+  1780				break;
+  1781			}
+  1782			fallthrough;
+  1783		case RDMA_CM_EVENT_DISCONNECTED:
+  1784		case RDMA_CM_EVENT_TIMEWAIT_EXIT:
+  1785			if (!queue) {
+  1786				nvmet_rdma_queue_disconnect(queue);
+  1787				break;
+  1788			}
+  1789		case RDMA_CM_EVENT_DEVICE_REMOVAL:
+  1790			ret = nvmet_rdma_device_removal(cm_id, queue);
+  1791			break;
+  1792		case RDMA_CM_EVENT_REJECTED:
+  1793			pr_debug("Connection rejected: %s\n",
+  1794				 rdma_reject_msg(cm_id, event->status));
+  1795			fallthrough;
+  1796		case RDMA_CM_EVENT_UNREACHABLE:
+  1797		case RDMA_CM_EVENT_CONNECT_ERROR:
+  1798			if (!queue) {
+  1799				nvmet_rdma_queue_connect_fail(cm_id, queue);
+  1800				break;
+  1801			}
+  1802		default:
+  1803			pr_err("received unrecognized RDMA CM event %d\n",
+  1804				event->event);
+  1805			break;
+  1806		}
+  1807	
+  1808		return ret;
+  1809	}
+  1810	
 
-Fixes: c83a80d8b84f ("lib/buildid: harden build ID parsing logic")
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
----
- lib/buildid.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/lib/buildid.c b/lib/buildid.c
-index d3bc3d0528d5..9fc46366597e 100644
---- a/lib/buildid.c
-+++ b/lib/buildid.c
-@@ -40,7 +40,7 @@ static int parse_build_id_buf(unsigned char *build_id,
- 		    name_sz == note_name_sz &&
- 		    memcmp(nhdr + 1, note_name, note_name_sz) == 0 &&
- 		    desc_sz > 0 && desc_sz <= BUILD_ID_SIZE_MAX) {
--			data = note_start + note_off + ALIGN(note_name_sz, 4);
-+			data = note_start + note_off + sizeof(Elf32_Nhdr) + ALIGN(note_name_sz, 4);
- 			memcpy(build_id, data, desc_sz);
- 			memset(build_id + desc_sz, 0, BUILD_ID_SIZE_MAX - desc_sz);
- 			if (size)
 -- 
-2.47.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
