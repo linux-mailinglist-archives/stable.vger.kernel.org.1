@@ -1,167 +1,181 @@
-Return-Path: <stable+bounces-89511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F016B9B9752
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 19:21:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D09389B9794
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 19:33:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D06EB21679
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 18:21:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93F4F283A8E
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 18:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E41D1CDFD8;
-	Fri,  1 Nov 2024 18:21:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CjW+6dOz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6215914A629;
+	Fri,  1 Nov 2024 18:32:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5C61CDFCC;
-	Fri,  1 Nov 2024 18:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA001CDFCB;
+	Fri,  1 Nov 2024 18:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730485310; cv=none; b=FiwYD5nq8eeerBbK42PZq5bwBbKVi0IjHyfHtHl0XW/pe/ePf/HIFQWlAKyw5AmDnBHfxF1bf+qnW+zNgNbPrQQpS5r0WE20T5UbUGk4jJsH89v+TXbd2Pii4x48cMcRFomRRw/M/BxembfyzqOpXEMUUJ7T99xKjA0kDzL4oO0=
+	t=1730485977; cv=none; b=L+0bSm9D76NdREx61U1AX4TWU5kVTzmBD2xQRRKie52pC9fuS1RrjwFTGnudmV+Yr8+7/Y9YG0oX0v/2sbgYSFdT1NXR6r8cfvWakOUSsj0Pwoi9/f5FhaWj9Rr8gpyHud4IrDRgTZL7aD1zSctJKOqbc8LQ0yqQ0musybdwOcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730485310; c=relaxed/simple;
-	bh=1KDKzXlJPQ+weeLc7W4Ot4kX06EB1IRfuKm0Wpe40Sg=;
-	h=Date:To:From:Subject:Message-Id; b=bEcQVwfYGh6U5vJ5+VWCdZ8BIFT0BHVHhJLkXwiEcmWpUeQe2zyXEnF8SpvKU/rx4/Fqs21yoOPBXukE3ss+/5/EQ+0x7e5Sw5DyCsdw/AoLx8j23SvPAK+PBXwMmW8NaX44CJ2BqYy7dy+xwEu2eMKmCaDMQ/JX1WTs2lAwHRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CjW+6dOz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0A9C4CECD;
-	Fri,  1 Nov 2024 18:21:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1730485310;
-	bh=1KDKzXlJPQ+weeLc7W4Ot4kX06EB1IRfuKm0Wpe40Sg=;
-	h=Date:To:From:Subject:From;
-	b=CjW+6dOz7qGowtEPpR2apODr/YDQj3tKhA/oEd6YZC81rW3XJWJmf2F3EatBZmc6R
-	 91xwT84yiT4moCXI+4GlWMpWe8W+nEU7AjkwlY4ixXvtXiUp9Rx68XRy5ShrVx578J
-	 PO7q1DTUH3Az0FEYFch/gMUdp9S4pVfzPVgC2Pm0=
-Date: Fri, 01 Nov 2024 11:21:49 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,oleg@redhat.com,legion@kernel.org,kees@kernel.org,ebiederm@xmission.com,avagin@google.com,roman.gushchin@linux.dev,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + signal-restore-the-override_rlimit-logic.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241101182149.ED0A9C4CECD@smtp.kernel.org>
+	s=arc-20240116; t=1730485977; c=relaxed/simple;
+	bh=NG34A9Sh7NNpVGAXKxos3KmZWrxcYzJCmMqeulvMRx8=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=Ict2JkrznKAF0mtFd1K6MfKBmIlCqLjjKVXRsFWYaIo/p8GoUOYPIC5irtC1F/0BnDs1Pa5Ntk5cDjjw2AkeW9BlMunI+vqvqvptTRWGDywtrAZVmfqMHdmo9dhCEQId7/1navwlDjAvJ8z0CenUDSgDFFE5ag2rpf1L1cHX37M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0178C4CECD;
+	Fri,  1 Nov 2024 18:32:56 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.98)
+	(envelope-from <rostedt@goodmis.org>)
+	id 1t6wT5-00000005X40-2Wim;
+	Fri, 01 Nov 2024 14:33:55 -0400
+Message-ID: <20241101183355.468402456@goodmis.org>
+User-Agent: quilt/0.68
+Date: Fri, 01 Nov 2024 14:33:28 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Eric Sandeen <sandeen@redhat.com>,
+ Shuah Khan <shuah@kernel.org>,
+ Ali Zahraee <ahzahraee@gmail.com>,
+ Christian Brauner <brauner@kernel.org>,
+ David Howells <dhowells@redhat.com>,
+ stable@vger.kernel.org,
+ Kalesh Singh <kaleshsingh@google.com>
+Subject: [for-linus][PATCH 1/3] tracing: Fix tracefs mount options
+References: <20241101183327.693623203@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 
+From: Kalesh Singh <kaleshsingh@google.com>
 
-The patch titled
-     Subject: signal: restore the override_rlimit logic
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     signal-restore-the-override_rlimit-logic.patch
+Commit 78ff64081949 ("vfs: Convert tracefs to use the new mount API")
+converted tracefs to use the new mount APIs caused mount options
+(e.g. gid=<gid>) to not take effect.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/signal-restore-the-override_rlimit-logic.patch
+The tracefs superblock can be updated from multiple paths:
+    - on fs_initcall() to init_trace_printk_function_export()
+    - from a work queue to initialize eventfs
+      tracer_init_tracefs_work_func()
+    - fsconfig() syscall to mount or remount of tracefs
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+The tracefs superblock root inode gets created early on in
+init_trace_printk_function_export().
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+With the new mount API, tracefs effectively uses get_tree_single() instead
+of the old API mount_single().
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+Previously, mount_single() ensured that the options are always applied to
+the superblock root inode:
+    (1) If the root inode didn't exist, call fill_super() to create it
+        and apply the options.
+    (2) If the root inode exists, call reconfigure_single() which
+        effectively calls tracefs_apply_options() to parse and apply
+        options to the subperblock's fs_info and inode and remount
+        eventfs (if necessary)
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+On the other hand, get_tree_single() effectively calls vfs_get_super()
+which:
+    (3) If the root inode doesn't exists, calls fill_super() to create it
+        and apply the options.
+    (4) If the root inode already exists, updates the fs_context root
+        with the superblock's root inode.
 
-------------------------------------------------------
-From: Roman Gushchin <roman.gushchin@linux.dev>
-Subject: signal: restore the override_rlimit logic
-Date: Thu, 31 Oct 2024 20:04:38 +0000
+(4) above is always the case for tracefs mounts, since the super block's
+root inode will already be created by init_trace_printk_function_export().
 
-Prior to commit d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of
-ucounts") UCOUNT_RLIMIT_SIGPENDING rlimit was not enforced for a class of
-signals.  However now it's enforced unconditionally, even if
-override_rlimit is set.  This behavior change caused production issues.
+This means that the mount options get ignored:
+    - Since it isn't applied to the superblock's root inode, it doesn't
+      get inherited by the children.
+    - Since eventfs is initialized from a separate work queue and
+      before call to mount with the options, and it doesn't get remounted
+      for mount.
 
-For example, if the limit is reached and a process receives a SIGSEGV
-signal, sigqueue_alloc fails to allocate the necessary resources for the
-signal delivery, preventing the signal from being delivered with siginfo. 
-This prevents the process from correctly identifying the fault address and
-handling the error.  From the user-space perspective, applications are
-unaware that the limit has been reached and that the siginfo is
-effectively 'corrupted'.  This can lead to unpredictable behavior and
-crashes, as we observed with java applications.
+Ensure that the mount options are applied to the super block and eventfs
+is remounted to respect the mount options.
 
-Fix this by passing override_rlimit into inc_rlimit_get_ucounts() and skip
-the comparison to max there if override_rlimit is set.  This effectively
-restores the old behavior.
+To understand this better, if fstab has the following:
 
-Link: https://lkml.kernel.org/r/20241031200438.2951287-1-roman.gushchin@linux.dev
-Fixes: d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of ucounts")
-Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-Co-developed-by: Andrei Vagin <avagin@google.com>
-Signed-off-by: Andrei Vagin <avagin@google.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: Alexey Gladkov <legion@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+ tracefs  /sys/kernel/tracing  tracefs   nosuid,nodev,noexec,gid=tracing 0  0
+
+On boot up, permissions look like:
+
+ # ls -l /sys/kernel/tracing/trace
+ -rw-r----- 1 root root 0 Nov  1 08:37 /sys/kernel/tracing/trace
+
+When it should look like:
+
+ # ls -l /sys/kernel/tracing/trace
+ -rw-r----- 1 root tracing 0 Nov  1 08:37 /sys/kernel/tracing/trace
+
+Link: https://lore.kernel.org/r/536e99d3-345c-448b-adee-a21389d7ab4b@redhat.com/
+
+Cc: Eric Sandeen <sandeen@redhat.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Ali Zahraee <ahzahraee@gmail.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 78ff64081949 ("vfs: Convert tracefs to use the new mount API")
+Link: https://lore.kernel.org/20241030171928.4168869-2-kaleshsingh@google.com
+Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
+ fs/tracefs/inode.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
- include/linux/user_namespace.h |    3 ++-
- kernel/signal.c                |    3 ++-
- kernel/ucount.c                |    5 +++--
- 3 files changed, 7 insertions(+), 4 deletions(-)
-
---- a/include/linux/user_namespace.h~signal-restore-the-override_rlimit-logic
-+++ a/include/linux/user_namespace.h
-@@ -141,7 +141,8 @@ static inline long get_rlimit_value(stru
+diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
+index 1748dff58c3b..cfc614c638da 100644
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -392,6 +392,9 @@ static int tracefs_reconfigure(struct fs_context *fc)
+ 	struct tracefs_fs_info *sb_opts = sb->s_fs_info;
+ 	struct tracefs_fs_info *new_opts = fc->s_fs_info;
  
- long inc_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
- bool dec_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
--long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type);
-+long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
-+			    bool override_rlimit);
- void dec_rlimit_put_ucounts(struct ucounts *ucounts, enum rlimit_type type);
- bool is_rlimit_overlimit(struct ucounts *ucounts, enum rlimit_type type, unsigned long max);
++	if (!new_opts)
++		return 0;
++
+ 	sync_filesystem(sb);
+ 	/* structure copy of new mount options to sb */
+ 	*sb_opts = *new_opts;
+@@ -478,14 +481,17 @@ static int tracefs_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	sb->s_op = &tracefs_super_operations;
+ 	sb->s_d_op = &tracefs_dentry_operations;
  
---- a/kernel/signal.c~signal-restore-the-override_rlimit-logic
-+++ a/kernel/signal.c
-@@ -419,7 +419,8 @@ __sigqueue_alloc(int sig, struct task_st
- 	 */
- 	rcu_read_lock();
- 	ucounts = task_ucounts(t);
--	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING);
-+	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING,
-+					    override_rlimit);
- 	rcu_read_unlock();
- 	if (!sigpending)
- 		return NULL;
---- a/kernel/ucount.c~signal-restore-the-override_rlimit-logic
-+++ a/kernel/ucount.c
-@@ -307,7 +307,8 @@ void dec_rlimit_put_ucounts(struct ucoun
- 	do_dec_rlimit_put_ucounts(ucounts, NULL, type);
+-	tracefs_apply_options(sb, false);
+-
+ 	return 0;
  }
  
--long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
-+long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
-+			    bool override_rlimit)
+ static int tracefs_get_tree(struct fs_context *fc)
  {
- 	/* Caller must hold a reference to ucounts */
- 	struct ucounts *iter;
-@@ -316,7 +317,7 @@ long inc_rlimit_get_ucounts(struct ucoun
+-	return get_tree_single(fc, tracefs_fill_super);
++	int err = get_tree_single(fc, tracefs_fill_super);
++
++	if (err)
++		return err;
++
++	return tracefs_reconfigure(fc);
+ }
  
- 	for (iter = ucounts; iter; iter = iter->ns->ucounts) {
- 		long new = atomic_long_add_return(1, &iter->rlimit[type]);
--		if (new < 0 || new > max)
-+		if (new < 0 || (!override_rlimit && (new > max)))
- 			goto unwind;
- 		if (iter == ucounts)
- 			ret = new;
-_
+ static void tracefs_free_fc(struct fs_context *fc)
+-- 
+2.45.2
 
-Patches currently in -mm which might be from roman.gushchin@linux.dev are
-
-signal-restore-the-override_rlimit-logic.patch
 
 
