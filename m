@@ -1,225 +1,167 @@
-Return-Path: <stable+bounces-89510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CA199B972A
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 19:13:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F016B9B9752
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 19:21:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B945282F73
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 18:13:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D06EB21679
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 18:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCDC01CDFC0;
-	Fri,  1 Nov 2024 18:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E41D1CDFD8;
+	Fri,  1 Nov 2024 18:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UHetmEKU"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CjW+6dOz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134E11CDA35;
-	Fri,  1 Nov 2024 18:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5C61CDFCC;
+	Fri,  1 Nov 2024 18:21:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730484790; cv=none; b=H9HxCLwBhqJiVcQrP9Esit2ZBtMfAwcfIVLDV96bkVmZg7oFQETHpqcV8Y1rVa0ymcSyFvCE3PUzjbM56Jx2nvNzxzpq5d67hO72fsClC7iZonSX1UwFoz60EDdkBE9SttDCjG1CzDOHqj0vpHTNNsB4AyyPPMT48YWW/hWhUsE=
+	t=1730485310; cv=none; b=FiwYD5nq8eeerBbK42PZq5bwBbKVi0IjHyfHtHl0XW/pe/ePf/HIFQWlAKyw5AmDnBHfxF1bf+qnW+zNgNbPrQQpS5r0WE20T5UbUGk4jJsH89v+TXbd2Pii4x48cMcRFomRRw/M/BxembfyzqOpXEMUUJ7T99xKjA0kDzL4oO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730484790; c=relaxed/simple;
-	bh=NmGNWEO778eZ5xMOzouTP+rKGh09L8t95Tna+go8GGY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=It7/GQ6kWE8tBtB/b8hsBrjEZStd47fZcS0NK5Fn0QlFDUUjXc7YEtGudLL3HK7MF07yS5nCn/tQfYDcotUXftZyqcsle/uRbH940LuoaCL+DP41xYc8YanqUjh2xEwGurzvNSOl/7e+5VONQTNMJ1psXfOWH1FzAHmrElo6DSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UHetmEKU; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-720cb6ac25aso1091299b3a.3;
-        Fri, 01 Nov 2024 11:13:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730484788; x=1731089588; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PiW9SEzE14uWJXxy3FOB2Ud96GmiPqBall1rSE+SePk=;
-        b=UHetmEKUqtmkHAIWZDHjCu97GsC+K0ipogPE6US5QyYqvT3XwOmquIsDKnNmGPCHEC
-         4wRMRV0N8Fjf5j3BFkBNxffS3b1y08siN8s0LOno3sjEDrT50gRr7RmzE6WIdueJe7Tv
-         psM/2WXGbHlPIdr/0HjmdNeDy2eDL7kk7DXgxZV8W9hnwMXm85ff6PAa+Ac3cUxTT6vF
-         XIFVZDPFDcx6dXTXqaZ/At6r1J5DJkBbr0BcSTCqIF5V6il9IziCGgCus2ykWwySwCTw
-         ZGgJ8KgeExJd676x4ndagCT2OyIXfIVc6ukZVh4HExrekX2j59VeFhAIU99r5dwsep4o
-         UZMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730484788; x=1731089588;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PiW9SEzE14uWJXxy3FOB2Ud96GmiPqBall1rSE+SePk=;
-        b=bozwg0HpvuAnACzgf7INJkagNPKsy1+kUin5HJeQvTwYbA/E6njqepe0wq4NXbLs40
-         1yMDQlIzByRrJ99hTDcV8QHuK4r3aqH27VFwj9AXei+oS+kocqsFzkOIEqbD+nzdHb4C
-         QZbtycHwGNMi96AQaO7n19DfohQWlqj2cwRSulLFT/MQqAEIOn7EmaZ8/PjOdVBX/4uJ
-         ZV8HJotn2KDli5D/MZ/imxwkMU4J/iHlGzndxMruIEU5h91MOEcOycAUS5csydMtYFa/
-         bRiNHYX4NiIBToBe2ni9vFtRQduPVg6P2Ka5OM/6RA8rNEmmEp78fsq22mXKpU+bZQVQ
-         cOPg==
-X-Forwarded-Encrypted: i=1; AJvYcCVUbpOobXIw8OKFfZle1Sta9vEWWCvCp9gSZc/cbsL6DzPmzlboiw3lQTivH8jvXvxfVke5tXCl@vger.kernel.org, AJvYcCXPK9vvCSdEf9naV4xMCoNLCjWI9ioRNLVl/cRTxdNk2aX4513Ig8aowEwv15CobPKmyA4Mncir/Fg7JD1m2w==@vger.kernel.org, AJvYcCXaPzJsjurkTXbJ+7p+UnFydc5zZHwR5fEudFn14SPQBFbbxL2Cnl5sVYY5arSOJD9B/x4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztsWxqcgbX5+TZuIFGoHGRBy328djVkxNF7iXqHKCKEYnvo1g1
-	ks1W3wR9NuMlTx2ficFSS29xybShUTfRHV/sgGTzYNsKDJ13JhaIQalGNlJP1ZQZTo2/9gFKR/s
-	IZcIm0vvALwuGvFE++eSSX2IvVxo=
-X-Google-Smtp-Source: AGHT+IEk5xx3/JFmK3SmabSdACLb2Y3za3f+3kE6RcmNc7n4e0XhM9sTxifeXbsjGY0xW5T523PyYTIoJXLl8NRIFS0=
-X-Received: by 2002:a05:6a21:78c:b0:1d9:261c:5942 with SMTP id
- adf61e73a8af0-1d9a8403ce0mr30567357637.28.1730484788340; Fri, 01 Nov 2024
- 11:13:08 -0700 (PDT)
+	s=arc-20240116; t=1730485310; c=relaxed/simple;
+	bh=1KDKzXlJPQ+weeLc7W4Ot4kX06EB1IRfuKm0Wpe40Sg=;
+	h=Date:To:From:Subject:Message-Id; b=bEcQVwfYGh6U5vJ5+VWCdZ8BIFT0BHVHhJLkXwiEcmWpUeQe2zyXEnF8SpvKU/rx4/Fqs21yoOPBXukE3ss+/5/EQ+0x7e5Sw5DyCsdw/AoLx8j23SvPAK+PBXwMmW8NaX44CJ2BqYy7dy+xwEu2eMKmCaDMQ/JX1WTs2lAwHRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CjW+6dOz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0A9C4CECD;
+	Fri,  1 Nov 2024 18:21:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1730485310;
+	bh=1KDKzXlJPQ+weeLc7W4Ot4kX06EB1IRfuKm0Wpe40Sg=;
+	h=Date:To:From:Subject:From;
+	b=CjW+6dOz7qGowtEPpR2apODr/YDQj3tKhA/oEd6YZC81rW3XJWJmf2F3EatBZmc6R
+	 91xwT84yiT4moCXI+4GlWMpWe8W+nEU7AjkwlY4ixXvtXiUp9Rx68XRy5ShrVx578J
+	 PO7q1DTUH3Az0FEYFch/gMUdp9S4pVfzPVgC2Pm0=
+Date: Fri, 01 Nov 2024 11:21:49 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,oleg@redhat.com,legion@kernel.org,kees@kernel.org,ebiederm@xmission.com,avagin@google.com,roman.gushchin@linux.dev,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + signal-restore-the-override_rlimit-logic.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241101182149.ED0A9C4CECD@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240829174232.3133883-1-andrii@kernel.org> <20240829174232.3133883-2-andrii@kernel.org>
- <ZyTde66MF0GUqbvB@krava>
-In-Reply-To: <ZyTde66MF0GUqbvB@krava>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Fri, 1 Nov 2024 11:12:55 -0700
-Message-ID: <CAEf4BzaFd2G0HqXLSd5JbQ4HYwzTzAsAskQJNbE9hb8KuTEWTg@mail.gmail.com>
-Subject: Re: [PATCH v7 bpf-next 01/10] lib/buildid: harden build ID parsing logic
-To: Jiri Olsa <olsajiri@gmail.com>
-Cc: Andrii Nakryiko <andrii@kernel.org>, bpf@vger.kernel.org, linux-mm@kvack.org, 
-	akpm@linux-foundation.org, adobriyan@gmail.com, shakeel.butt@linux.dev, 
-	hannes@cmpxchg.org, ak@linux.intel.com, osandov@osandov.com, song@kernel.org, 
-	jannh@google.com, linux-fsdevel@vger.kernel.org, willy@infradead.org, 
-	stable@vger.kernel.org, Eduard Zingerman <eddyz87@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 1, 2024 at 6:54=E2=80=AFAM Jiri Olsa <olsajiri@gmail.com> wrote=
-:
->
-> On Thu, Aug 29, 2024 at 10:42:23AM -0700, Andrii Nakryiko wrote:
-> > Harden build ID parsing logic, adding explicit READ_ONCE() where it's
-> > important to have a consistent value read and validated just once.
-> >
-> > Also, as pointed out by Andi Kleen, we need to make sure that entire EL=
-F
-> > note is within a page bounds, so move the overflow check up and add an
-> > extra note_size boundaries validation.
-> >
-> > Fixes tag below points to the code that moved this code into
-> > lib/buildid.c, and then subsequently was used in perf subsystem, making
-> > this code exposed to perf_event_open() users in v5.12+.
-> >
-> > Cc: stable@vger.kernel.org
-> > Reviewed-by: Eduard Zingerman <eddyz87@gmail.com>
-> > Reviewed-by: Jann Horn <jannh@google.com>
-> > Suggested-by: Andi Kleen <ak@linux.intel.com>
-> > Fixes: bd7525dacd7e ("bpf: Move stack_map_get_build_id into lib")
-> > Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-> > ---
-> >  lib/buildid.c | 76 +++++++++++++++++++++++++++++----------------------
-> >  1 file changed, 44 insertions(+), 32 deletions(-)
-> >
-> > diff --git a/lib/buildid.c b/lib/buildid.c
-> > index e02b5507418b..26007cc99a38 100644
-> > --- a/lib/buildid.c
-> > +++ b/lib/buildid.c
-> > @@ -18,31 +18,37 @@ static int parse_build_id_buf(unsigned char *build_=
-id,
-> >                             const void *note_start,
-> >                             Elf32_Word note_size)
-> >  {
-> > -     Elf32_Word note_offs =3D 0, new_offs;
-> > -
-> > -     while (note_offs + sizeof(Elf32_Nhdr) < note_size) {
-> > -             Elf32_Nhdr *nhdr =3D (Elf32_Nhdr *)(note_start + note_off=
-s);
-> > +     const char note_name[] =3D "GNU";
-> > +     const size_t note_name_sz =3D sizeof(note_name);
-> > +     u64 note_off =3D 0, new_off, name_sz, desc_sz;
-> > +     const char *data;
-> > +
-> > +     while (note_off + sizeof(Elf32_Nhdr) < note_size &&
-> > +            note_off + sizeof(Elf32_Nhdr) > note_off /* overflow */) {
-> > +             Elf32_Nhdr *nhdr =3D (Elf32_Nhdr *)(note_start + note_off=
-);
-> > +
-> > +             name_sz =3D READ_ONCE(nhdr->n_namesz);
-> > +             desc_sz =3D READ_ONCE(nhdr->n_descsz);
-> > +
-> > +             new_off =3D note_off + sizeof(Elf32_Nhdr);
-> > +             if (check_add_overflow(new_off, ALIGN(name_sz, 4), &new_o=
-ff) ||
-> > +                 check_add_overflow(new_off, ALIGN(desc_sz, 4), &new_o=
-ff) ||
-> > +                 new_off > note_size)
-> > +                     break;
-> >
-> >               if (nhdr->n_type =3D=3D BUILD_ID &&
-> > -                 nhdr->n_namesz =3D=3D sizeof("GNU") &&
-> > -                 !strcmp((char *)(nhdr + 1), "GNU") &&
-> > -                 nhdr->n_descsz > 0 &&
-> > -                 nhdr->n_descsz <=3D BUILD_ID_SIZE_MAX) {
-> > -                     memcpy(build_id,
-> > -                            note_start + note_offs +
-> > -                            ALIGN(sizeof("GNU"), 4) + sizeof(Elf32_Nhd=
-r),
-> > -                            nhdr->n_descsz);
-> > -                     memset(build_id + nhdr->n_descsz, 0,
-> > -                            BUILD_ID_SIZE_MAX - nhdr->n_descsz);
-> > +                 name_sz =3D=3D note_name_sz &&
-> > +                 memcmp(nhdr + 1, note_name, note_name_sz) =3D=3D 0 &&
-> > +                 desc_sz > 0 && desc_sz <=3D BUILD_ID_SIZE_MAX) {
-> > +                     data =3D note_start + note_off + ALIGN(note_name_=
-sz, 4);
-> > +                     memcpy(build_id, data, desc_sz);
-> > +                     memset(build_id + desc_sz, 0, BUILD_ID_SIZE_MAX -=
- desc_sz);
-> >                       if (size)
-> > -                             *size =3D nhdr->n_descsz;
-> > +                             *size =3D desc_sz;
-> >                       return 0;
-> >               }
->
-> hi,
-> this fix is causing stable kernels to return wrong build id,
-> the change below seems to fix that (based on 6.6 stable)
->
-> if we agree on the fix I'll send it to all affected stable trees
->
-> jirka
->
->
-> ---
-> The parse_build_id_buf does not account Elf32_Nhdr header size
-> when getting the build id data pointer and returns wrong build
-> id data as result.
->
-> This is problem only stable trees that merged c83a80d8b84f fix,
-> the upstream build id code was refactored and returns proper
-> build id.
->
-> Fixes: c83a80d8b84f ("lib/buildid: harden build ID parsing logic")
-> Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-> ---
->  lib/buildid.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/lib/buildid.c b/lib/buildid.c
-> index d3bc3d0528d5..9fc46366597e 100644
-> --- a/lib/buildid.c
-> +++ b/lib/buildid.c
-> @@ -40,7 +40,7 @@ static int parse_build_id_buf(unsigned char *build_id,
->                     name_sz =3D=3D note_name_sz &&
->                     memcmp(nhdr + 1, note_name, note_name_sz) =3D=3D 0 &&
->                     desc_sz > 0 && desc_sz <=3D BUILD_ID_SIZE_MAX) {
-> -                       data =3D note_start + note_off + ALIGN(note_name_=
-sz, 4);
-> +                       data =3D note_start + note_off + sizeof(Elf32_Nhd=
-r) + ALIGN(note_name_sz, 4);
 
-ah, my screw up, sorry. LGTM
+The patch titled
+     Subject: signal: restore the override_rlimit logic
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     signal-restore-the-override_rlimit-logic.patch
 
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/signal-restore-the-override_rlimit-logic.patch
 
->                         memcpy(build_id, data, desc_sz);
->                         memset(build_id + desc_sz, 0, BUILD_ID_SIZE_MAX -=
- desc_sz);
->                         if (size)
-> --
-> 2.47.0
->
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Roman Gushchin <roman.gushchin@linux.dev>
+Subject: signal: restore the override_rlimit logic
+Date: Thu, 31 Oct 2024 20:04:38 +0000
+
+Prior to commit d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of
+ucounts") UCOUNT_RLIMIT_SIGPENDING rlimit was not enforced for a class of
+signals.  However now it's enforced unconditionally, even if
+override_rlimit is set.  This behavior change caused production issues.
+
+For example, if the limit is reached and a process receives a SIGSEGV
+signal, sigqueue_alloc fails to allocate the necessary resources for the
+signal delivery, preventing the signal from being delivered with siginfo. 
+This prevents the process from correctly identifying the fault address and
+handling the error.  From the user-space perspective, applications are
+unaware that the limit has been reached and that the siginfo is
+effectively 'corrupted'.  This can lead to unpredictable behavior and
+crashes, as we observed with java applications.
+
+Fix this by passing override_rlimit into inc_rlimit_get_ucounts() and skip
+the comparison to max there if override_rlimit is set.  This effectively
+restores the old behavior.
+
+Link: https://lkml.kernel.org/r/20241031200438.2951287-1-roman.gushchin@linux.dev
+Fixes: d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of ucounts")
+Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+Co-developed-by: Andrei Vagin <avagin@google.com>
+Signed-off-by: Andrei Vagin <avagin@google.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: Alexey Gladkov <legion@kernel.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/user_namespace.h |    3 ++-
+ kernel/signal.c                |    3 ++-
+ kernel/ucount.c                |    5 +++--
+ 3 files changed, 7 insertions(+), 4 deletions(-)
+
+--- a/include/linux/user_namespace.h~signal-restore-the-override_rlimit-logic
++++ a/include/linux/user_namespace.h
+@@ -141,7 +141,8 @@ static inline long get_rlimit_value(stru
+ 
+ long inc_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
+ bool dec_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
+-long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type);
++long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
++			    bool override_rlimit);
+ void dec_rlimit_put_ucounts(struct ucounts *ucounts, enum rlimit_type type);
+ bool is_rlimit_overlimit(struct ucounts *ucounts, enum rlimit_type type, unsigned long max);
+ 
+--- a/kernel/signal.c~signal-restore-the-override_rlimit-logic
++++ a/kernel/signal.c
+@@ -419,7 +419,8 @@ __sigqueue_alloc(int sig, struct task_st
+ 	 */
+ 	rcu_read_lock();
+ 	ucounts = task_ucounts(t);
+-	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING);
++	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING,
++					    override_rlimit);
+ 	rcu_read_unlock();
+ 	if (!sigpending)
+ 		return NULL;
+--- a/kernel/ucount.c~signal-restore-the-override_rlimit-logic
++++ a/kernel/ucount.c
+@@ -307,7 +307,8 @@ void dec_rlimit_put_ucounts(struct ucoun
+ 	do_dec_rlimit_put_ucounts(ucounts, NULL, type);
+ }
+ 
+-long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
++long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
++			    bool override_rlimit)
+ {
+ 	/* Caller must hold a reference to ucounts */
+ 	struct ucounts *iter;
+@@ -316,7 +317,7 @@ long inc_rlimit_get_ucounts(struct ucoun
+ 
+ 	for (iter = ucounts; iter; iter = iter->ns->ucounts) {
+ 		long new = atomic_long_add_return(1, &iter->rlimit[type]);
+-		if (new < 0 || new > max)
++		if (new < 0 || (!override_rlimit && (new > max)))
+ 			goto unwind;
+ 		if (iter == ucounts)
+ 			ret = new;
+_
+
+Patches currently in -mm which might be from roman.gushchin@linux.dev are
+
+signal-restore-the-override_rlimit-logic.patch
+
 
