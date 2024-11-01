@@ -1,130 +1,141 @@
-Return-Path: <stable+bounces-89470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 805E99B894F
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 03:27:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B45B59B8952
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 03:30:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45D94283261
-	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 02:27:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B0A11F22463
+	for <lists+stable@lfdr.de>; Fri,  1 Nov 2024 02:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25876137747;
-	Fri,  1 Nov 2024 02:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8147184D29;
+	Fri,  1 Nov 2024 02:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="VbuAIGfr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U6eiSZob"
 X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7258C13698E;
-	Fri,  1 Nov 2024 02:27:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB783200CB;
+	Fri,  1 Nov 2024 02:30:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730428066; cv=none; b=M6o6NTKvlIPYPyKlm8Cxy67ENsc0pHjsZKSEba/iGMk53GySj+QruhIcFFU/xWM4QNjvTyLTbmUUCQxiDsAV0wF3JR0TNFoaIqJTcx1j7NA4VeAjwcjIWNw2vOKfmBYw08OAjlZA29OoMgQvwj+YVHpY+VmZG9gPNR0SrLZng3Y=
+	t=1730428224; cv=none; b=PzEzP1GonX6iC87f9RrcF7dyZ6ienVGy7OvmX6ExwPXuNHtmBHdQrMXnFOzkwBzuuFV89mXousFPtssFIKoi1Rz/Pc96KLd9t/7BRtq9+bLNCIhJQpDEGeL5s/6heRd5fryumZD852mR+fdmRHaTPpQ29qmFIKnzGD4hIpUP+XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730428066; c=relaxed/simple;
-	bh=HpwZ5+wE8mAXiePj9iNiQVheI3qF36Rh4NC1/7WX7vo=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=siYrkFuXAxMpIM0ReSQYzGYtdWafk8OVzS6X5SErogQkLQJU4jS3VFP9PW7GAQZvAjTGka8tSyUAk5nj55w8ZL0bPUYrGCKah+27znQdynFR3FMtBD7r+VlCCnw/HTgJKKN85X2MNS6xeKUAwlKpL6bXvB1xSMkuhf33Y3KtNCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=VbuAIGfr; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4A12Qv4622375000, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1730428017; bh=HpwZ5+wE8mAXiePj9iNiQVheI3qF36Rh4NC1/7WX7vo=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=VbuAIGfrEgclMY2XBccXQFpMc1T3cUDhyVvPfvxbI7ZfYUN0TzKLKXc6ebZEMzaoK
-	 FSbW5WyZ7G3xU0VHli8D8VNF0uZFOMO/qRPWOb/tORisklNOEoBFvzh2nHr4m/GPwd
-	 pJKSLGKtQ1KMzpbkEwwmp4mbV880cJ9/Of+E+tDfJYBkzFYTMOzgbLbrS2FlQ1yApA
-	 xkok37NS7IfJaT2i5D8YBvBMcq6FpIByexe2qro6FrchWe73fi6nSeOts7Y/v+iY9a
-	 EQGim3SqJ96kFlbCs7Gu7QgmSZ1+oAWgvskfy9RJ+1H17mb/3qRqyzAKjcR4U4zwfw
-	 VTLFkXIywX7jQ==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4A12Qv4622375000
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 1 Nov 2024 10:26:57 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 1 Nov 2024 10:26:57 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 1 Nov 2024 10:26:57 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Fri, 1 Nov 2024 10:26:57 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: "kvalo@kernel.org" <kvalo@kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
-        "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
-        "rtl8821cerfe2@gmail.com"
-	<rtl8821cerfe2@gmail.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com"
-	<syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com>
-Subject: RE: [PATCH V3] wifi: rtlwifi: Drastically reduce the attempts to read efuse in case of failures
-Thread-Topic: [PATCH V3] wifi: rtlwifi: Drastically reduce the attempts to
- read efuse in case of failures
-Thread-Index: AQHbK62jzL4hMAZxOk2XHUy0QNETw7KhsrTQ
-Date: Fri, 1 Nov 2024 02:26:56 +0000
-Message-ID: <ae95544aabe74d1da801fed6cc73896e@realtek.com>
-References: <20241031155731.1253259-1-gpiccoli@igalia.com>
-In-Reply-To: <20241031155731.1253259-1-gpiccoli@igalia.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1730428224; c=relaxed/simple;
+	bh=qk3pVjM4j9p4R6OsPwAJ8dVXGT6jP0nT0Mfjm0PIrX0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EgYafyXgU0w5pUu0Y4kEM/QezW7iXqUkXFGeJFOG22GbMlRl4ASUv/6Y1ygtIKOBxKq+VsPcZ67y68PscpiiaREqdb6O+ELWEnXkYED0MRIeQDWv/JGjCm2mWQkFexZ8kQuBFLUEu7jNqHwH0XCmgIBsmsLddVLPXtwUamlh+v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U6eiSZob; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2e2dc61bc41so1103916a91.1;
+        Thu, 31 Oct 2024 19:30:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730428218; x=1731033018; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fnyjs9mZfz0IFsGTjdAXi5ZB7RMeF0PETouQsH0UHcE=;
+        b=U6eiSZob7CR/tNrSxOerPOmjtRK+oJOGsSp0nMEpk9gtTpoc1QMs41d/O8G7oQrNIx
+         QZywONdEFMIMwEt20So06Y69nMemceA3xrBVkVxiTfg9PiKug+KsJ5/qkeGji2K/ji5A
+         j+OgijQrzk3yWHF33i3VpFVjxIq1UVNVirv3xhrbcRU5sQ+WkaZ81j7W8uJQzJdjFOQP
+         bCcdNVZud4wC/BaK6g3LwtEq0dJZiF0XYiXyuDDnRynwhp21Bzb9IwY6hetovTwbXX6m
+         /04BSgJnQFTaSwf643yg8SoAsMdtK/K9m3aA7r/gHFWtD7XLBO20ej6uTKema2b3LNMv
+         YQCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730428218; x=1731033018;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fnyjs9mZfz0IFsGTjdAXi5ZB7RMeF0PETouQsH0UHcE=;
+        b=Q99hOr+mzumvphm/9uYTOuNh9D6erEWMpysdVBLuKdWGbx04h+GuMfdg2KXjYqnrAb
+         qU/VsfJeKipUIQvPiOw4WMHTPUDx4/Anfj09LuV7acaVeSVZcZV0x5hGwW7fMgouzQmc
+         BFFHteUGfdYYWUggueCBMqQwlZ9ZOqNwgKilcRhTav+mDovynFW/HDhhOazx0q2V/V0b
+         ZW6G1rGslGtLQdk6HR8zKeHdZXf4L0fyG/klpYLZbGNX8jSpjfhnlYRQ0cCyHjFvxilR
+         s1J0QolUh54rcjGxpz9b8WRsS3xu5rlDTVSrzagEXMejW87l+FchQw50EVxzf9s/zIK1
+         WJfw==
+X-Forwarded-Encrypted: i=1; AJvYcCWUZ5gco3XyRWh94ALxtf3P+EUSt6wMz8/lA0gEBFY3NjHzXdeajIQXAR6tzLjrQLTDoekAe/02EdLL@vger.kernel.org, AJvYcCX836GeTAVyevmkdvyHwRD8BYsmMWeT8Myw7kcr532E6JbcMDPK9qNBi/RPF5u5soLOHhU6xSON@vger.kernel.org, AJvYcCXGnWpkXUBYuRpovBtM5RBjUhamk7Pw7RZkX7ttRMM7ewuqpefKPftfIrg81sAZL31RWhRBo9ziXHq4WqA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzkPrPYcwcskqK9vRrMsHNY750u6AsL3SitojsiXrnzuF2YFGc/
+	wSgbrcp/XvFRGay+RA909MvGsZRLZ2n0VC8HBHtgYB35M3RThaQky5F9XAM6ZwnOwa07Sd6SZ4k
+	zHg0YF50pjODd+ZKgAqKMX2gv5Xg=
+X-Google-Smtp-Source: AGHT+IH6CwuFAuogBn3TuH9yoyjK1IF9VaMDPZudJbQuTXFL3Agi3fb+ynW2hbnGjFwmCycN+KMhplzkHCTn4N7jSCE=
+X-Received: by 2002:a17:90b:224c:b0:2e2:da8d:2098 with SMTP id
+ 98e67ed59e1d1-2e94c294fcemr2942926a91.2.1730428218001; Thu, 31 Oct 2024
+ 19:30:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20241028025337.6372-1-ki.chiang65@gmail.com> <20241028025337.6372-2-ki.chiang65@gmail.com>
+ <bceb89ce-7a4b-4447-8bd6-3129a37bfdb3@linux.intel.com>
+In-Reply-To: <bceb89ce-7a4b-4447-8bd6-3129a37bfdb3@linux.intel.com>
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
+Date: Fri, 1 Nov 2024 10:30:09 +0800
+Message-ID: <CAHN5xi2B5CcCKEsdQf1X7HD=8ZBAW66PefmO0ajvGCNdPOc-PA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] xhci: Combine two if statements for Etron xHCI host
+To: Mathias Nyman <mathias.nyman@linux.intel.com>
+Cc: mathias.nyman@intel.com, gregkh@linuxfoundation.org, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
->=20
-> [0] Commit 15fffc6a5624 ("driver core: Fix uevent_show() vs driver detach=
- race").
->=20
-> [1] A note about that: this syzkaller report presents multiple reproducer=
-s
-> that differs by the type of emulated USB device. For this specific case,
-> check the entry from 2024/08/08 06:23 in the list of crashes; the C repro
-> is available at https://syzkaller.appspot.com/text?tag=3DReproC&x=3D1521f=
-c83980000.
+Hi,
 
-Have you run checkpatch before submission? Above two information can be in
-formal form as suggestions of checkpatch.=20
+I noticed that one of the patches in your queue has a typo:
 
-WARNING: Prefer a maximum 75 chars per line (possible unwrapped commit desc=
-ription?)
-#55:
-in case of failures, restricted to USB devices (given that they're inherent=
-ly
+Commit 3456904e4bce ("xhci: pci: Use standard pattern for device IDs")
 
-WARNING: Reported-by: should be immediately followed by Closes: with a URL =
-to the report
-#72:
-Reported-by: syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+The Etron xHC device names are EJ168 and EJ188, not J168 and J188.
 
-WARNING: The commit message has 'syzkaller', perhaps it also needs a 'Fixes=
-:' tag?
+Thanks,
+Kuangyi Chiang
 
-total: 0 errors, 3 warnings, 0 checks, 28 lines checked
-
->=20
-> Cc: stable@vger.kernel.org # v6.1+
-> Reported-by: syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com
-> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-
-
-
+Mathias Nyman <mathias.nyman@linux.intel.com> =E6=96=BC 2024=E5=B9=B410=E6=
+=9C=8830=E6=97=A5 =E9=80=B1=E4=B8=89 =E4=B8=8B=E5=8D=888:02=E5=AF=AB=E9=81=
+=93=EF=BC=9A
+>
+> On 28.10.2024 4.53, Kuangyi Chiang wrote:
+> > Combine two if statements, because these hosts have the same
+> > quirk flags applied.
+> >
+> > Fixes: 91f7a1524a92 ("xhci: Apply broken streams quirk to Etron EJ188 x=
+HCI host")
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+>
+> Added to queue, but I removed the Fixes and stable tags as this is a smal=
+l
+> cleanup with no functional changes.
+>
+> > ---
+> >   drivers/usb/host/xhci-pci.c | 8 ++------
+> >   1 file changed, 2 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+> > index 7e538194a0a4..33a6d99afc10 100644
+> > --- a/drivers/usb/host/xhci-pci.c
+> > +++ b/drivers/usb/host/xhci-pci.c
+> > @@ -395,12 +395,8 @@ static void xhci_pci_quirks(struct device *dev, st=
+ruct xhci_hcd *xhci)
+> >               xhci->quirks |=3D XHCI_DEFAULT_PM_RUNTIME_ALLOW;
+> >
+> >       if (pdev->vendor =3D=3D PCI_VENDOR_ID_ETRON &&
+> > -                     pdev->device =3D=3D PCI_DEVICE_ID_EJ168) {
+> > -             xhci->quirks |=3D XHCI_RESET_ON_RESUME;
+> > -             xhci->quirks |=3D XHCI_BROKEN_STREAMS;
+> > -     }
+> > -     if (pdev->vendor =3D=3D PCI_VENDOR_ID_ETRON &&
+> > -                     pdev->device =3D=3D PCI_DEVICE_ID_EJ188) {
+> > +         (pdev->device =3D=3D PCI_DEVICE_ID_EJ168 ||
+> > +          pdev->device =3D=3D PCI_DEVICE_ID_EJ188)) {
+> >               xhci->quirks |=3D XHCI_RESET_ON_RESUME;
+> >               xhci->quirks |=3D XHCI_BROKEN_STREAMS;
+> >       }
+>
 
