@@ -1,88 +1,130 @@
-Return-Path: <stable+bounces-89564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0739BA08A
-	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 14:29:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A0CC9BA097
+	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 14:43:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 009581C2120F
-	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 13:29:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A299B1C20DB3
+	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 13:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6EF018A92E;
-	Sat,  2 Nov 2024 13:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FE3B198A3B;
+	Sat,  2 Nov 2024 13:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bLxkH6Wl"
+	dkim=pass (2048-bit key) header.d=conchuod.ie header.i=@conchuod.ie header.b="YBm1tuXO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108F31E515
-	for <stable@vger.kernel.org>; Sat,  2 Nov 2024 13:29:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28300198827
+	for <stable@vger.kernel.org>; Sat,  2 Nov 2024 13:42:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730554188; cv=none; b=lCDqTSv+05uaHulc2qDxplBRGJ4OpSDBuvAZMlZgvdHfIeB3gXEpDertVec4OFmeXjRIyAtweBRZcq6Hl6cJGtfzivXUScclE3pE3FHN9y9Gng+YBTX3z2UMSaYU1JbOMFffSXJLSFUfg4zgB4CbN7q1mHlvIpyYSizPI8r0ee4=
+	t=1730554977; cv=none; b=WMj1ceJeys96eimUd0RdeJcVDvT8ZM5J/DnIKH6FoMzNx5WnTQ2Vu5eKqqaYu1GwtQQNeKaFuBwIAQyDAmry0v/D95kINdrOTKWaWjud/NxxTGLe+jK61ZIiUDxHy136Dbxp5YdAj/ChIJYNjTOsCJcMWkYrA21u2UFGDtsPQCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730554188; c=relaxed/simple;
-	bh=YIqagV1NwTECAGQHhrIvxosUcV32d/Vxh+4ati1x+Gg=;
-	h=From:Message-ID:To:Subject:Date:MIME-Version:Content-Type; b=r9bVGypP0Vzk8TayzBe9HPbofud/RO6p09j/w/gGJtaKSYuViqVx6KNDar3d2tnoChgVoopuZNky3HABkRUL+NT7vkv8E5aLs0/p1WF+haswI+vyy2C7hYjGVFa4T6j/3D6K4L56ik/IG3JgJ1utAgLaPeIcH2BPQuZQIAUHkyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bLxkH6Wl; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a9aa8895facso466379466b.2
-        for <stable@vger.kernel.org>; Sat, 02 Nov 2024 06:29:46 -0700 (PDT)
+	s=arc-20240116; t=1730554977; c=relaxed/simple;
+	bh=+nP190fTcVJZ6KtvpJHylOAbl1kZxeNFaK2DoYuCVjg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e6UhRuw4OZs6B55O2a9qI1chbCra1nZKXigeT4PNJouYsYmj6Eno7lMrKg+I45JN+mjTuy8gyBjPAXoxgC99L2UbCo5syhL7oFG8PDWfym7dfJCCelihll6Zs3vziqevQhBz+sxtObYgDMCA6XM+I0Z3bWGASdvfXyskuURMPS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=conchuod.ie; spf=pass smtp.mailfrom=conchuod.ie; dkim=pass (2048-bit key) header.d=conchuod.ie header.i=@conchuod.ie header.b=YBm1tuXO; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=conchuod.ie
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=conchuod.ie
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-37d51055097so1775423f8f.3
+        for <stable@vger.kernel.org>; Sat, 02 Nov 2024 06:42:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730554185; x=1731158985; darn=vger.kernel.org;
-        h=mime-version:date:subject:to:reply-to:message-id:from:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YIqagV1NwTECAGQHhrIvxosUcV32d/Vxh+4ati1x+Gg=;
-        b=bLxkH6WliWFR04aZUf35ASuzmEBjDf+M306svSiAwTz34+xQA7YhUgvLxI1c+yjL4K
-         n/FBn+rktiJ8dIkwi+2Z4uZLhoXB0jd0XWSunIaFIEUrmdmclfG3FrzneqFzbAdrSAbc
-         X7XNavHJiUSkjWLcO9MJ/ZDSXYnIU78FfYvMJqmfP8COKfDDoNmkThpqUV7SBSgTxhtJ
-         ajyxHAD283IEvnJjJcWoejXCW9KIvwuNLAUahyXM8Q0HTDRHTE0hYonL4XDCj28gY510
-         jxVBo69tJKQGpeEncEWRIcc8wv2ABqIhk+2PJciSeGJ700wgyRFdSbIR2iS/Yst4uJWM
-         QveQ==
+        d=conchuod.ie; s=google; t=1730554973; x=1731159773; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=b/4ALDjW26fb+PpeY22UyTRtH0nvyjOpDSpJmdfXUgg=;
+        b=YBm1tuXO6YS1nWt80qVK34LQlM5i66AJYd9BZ9Zuu4Rh4ttrJnUmCKrsi0ExN8GHRb
+         7kRdwRzpzV0Kxv+rJ1kZm4RY3xFiGSLG9mio30mB18o0ZNu8E0R2833bTzxwmScuugXG
+         QeU+//t7FOUkMxEW57CqAXnLTbVCWCLJPAMktvepTipvyqmLzlJ/+xvlCWc6Mlv1wvXH
+         By2Vpdfa6TFhRLfXURU18rO3mJzejN0/vBYkY4t9H41OeODbVh4BItbC0UBgb4u8WDdG
+         OqCF46wJXaoowRO/FWaAypfWVvCLSqAvDZqHemdGrO7Eg0I08WP8PWkF/PiE27VUbeK9
+         JiTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730554185; x=1731158985;
-        h=mime-version:date:subject:to:reply-to:message-id:from
+        d=1e100.net; s=20230601; t=1730554973; x=1731159773;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YIqagV1NwTECAGQHhrIvxosUcV32d/Vxh+4ati1x+Gg=;
-        b=tR2O9mpRSmJFLjtk/O8Mp9OSzGx7vPecgXc34ZNjQhrzNpDZUgQbJ0IY/bi3UO6gPN
-         9GTVF+WeEqtnlKW4t2f44SRYpebIo8biMRbBc2EmUz5dLFEj8JVcWRMZrqshnfROjYWO
-         tCLp7epoUjnaSZp0AzJ/lV78mRv9WUUwR9/AENaDVLR4LfEQbIjEcwFk/CgptY6vzqWz
-         nBYJstCgG1+pQTR7pfjIEB/paC/1eRDR92mBKNZ2YAzQhNgw1uiNy7PQ0YTNvfJzGlgK
-         olwfgmrzGTfoZxSw4jvKLi+a5FisVhd8VVUhUsU7zpszBhCnmvmedcObsmHh0a+CH6yY
-         mfYw==
-X-Gm-Message-State: AOJu0Yx1/CO38VmHHkcRS1Il9aElyenFKFMsPRlQNCRfjdtKAgoOZR53
-	vd5ULP0YxPbKmwzndBnZHGouGXlZqS4vbgCiswiQh6pahL+Mdkccet0Gcg==
-X-Google-Smtp-Source: AGHT+IFjXaM3VBW+JfUoLwPkxYX3RrrBYx7/UndbFFphHva9WfPcUOfsIYsNjRvdwLFLLBrknjTVvw==
-X-Received: by 2002:a17:907:7f07:b0:a9a:2a56:91f with SMTP id a640c23a62f3a-a9de5d6ebcamr2657595466b.2.1730554184729;
-        Sat, 02 Nov 2024 06:29:44 -0700 (PDT)
-Received: from [87.120.84.56] ([87.120.84.56])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9e56643f70sm313382966b.173.2024.11.02.06.29.44
-        for <stable@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 02 Nov 2024 06:29:44 -0700 (PDT)
-From: William Cheung <rinky.khatun.doratana@gmail.com>
-X-Google-Original-From: William Cheung <info@gmail.com>
-Message-ID: <f1fd94db8273edf7d7eca5b00af97a8e7314a6c000a745020c6548e005f582d2@mx.google.com>
-Reply-To: willchg@hotmail.com
-To: stable@vger.kernel.org
-Subject: Proposal for you!
-Date: Sat, 02 Nov 2024 06:35:31 -0700
+        bh=b/4ALDjW26fb+PpeY22UyTRtH0nvyjOpDSpJmdfXUgg=;
+        b=t3BYDip9hloqjYdNTk4D5udJqVxect4jX8h/dtBpakwqCshioEw3t5CtpDy5KEb9jh
+         BYCigPpoRkzAN0b6V5lEf7YeKZbROXIJCYJMHT4OGqYpUGSozkgOTCR91n1DxwKbDwq+
+         If/WDQLt5rz2zRJuRP/4XylSnV1hBzs6/y6fzh/amR/PgTrhHyEoFblkJoiVphb8cmmJ
+         YpvlH44YO0c7sFh975Jhz8VMyExrTuIHs6hdaoOSMNtLYiC0Lk3YIZJePbXSFGmQml6Y
+         UmPGiQ9zmgzBVfkaCIGimLlEl73hdlJ4h/y74Hpp4rExrKmLn2TRvM5rK0vhun4nzAIT
+         qfvA==
+X-Gm-Message-State: AOJu0Yyuep/ZC/bQV1daEATwf7GdcvVsPu9veUT9bIOg0RGgsvUrtmYT
+	9TsivV9zTc4NxM28Cq1pFaiyOf7uV7PiPev5so0HxThnGy3bWD8Y1Z7fOlxBNgUX1I6bj7HXldF
+	g
+X-Google-Smtp-Source: AGHT+IGpkR1Krb2o9Uv2MTuPkph5mhMqPX0t2t+nST/D5tCfMgcEFkaoUysq3uHMbfMNKiwETTvsLg==
+X-Received: by 2002:a05:6000:1a89:b0:37c:cfbb:d356 with SMTP id ffacd0b85a97d-381c7a5e9camr4866906f8f.28.1730554972824;
+        Sat, 02 Nov 2024 06:42:52 -0700 (PDT)
+Received: from [192.168.2.9] ([109.78.175.179])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c10d40casm8159132f8f.27.2024.11.02.06.42.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 02 Nov 2024 06:42:52 -0700 (PDT)
+Message-ID: <61548681-29c3-4348-a048-658747c0212a@conchuod.ie>
+Date: Sat, 2 Nov 2024 13:42:51 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+User-Agent: Mozilla Thunderbird
+Subject: Re: Patch "dt-bindings: gpu: Convert Samsung Image Rotator to
+ dt-schema" has been added to the 5.4-stable tree
+To: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+ m.falkowski@samsung.com
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Inki Dae <inki.dae@samsung.com>
+References: <20241101192914.3854744-1-sashal@kernel.org>
+Content-Language: en-US
+From: Conor Dooley <mail@conchuod.ie>
+In-Reply-To: <20241101192914.3854744-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hello Dear,
+On 01/11/2024 19:29, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+> 
+>      dt-bindings: gpu: Convert Samsung Image Rotator to dt-schema
+> 
+> to the 5.4-stable tree which can be found at:
+>      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>       dt-bindings-gpu-convert-samsung-image-rotator-to-dt-.patch
+> and it can be found in the queue-5.4 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+> 
+> 
+> 
+> commit 25cb1f1f53fe137aefdc5e54bb1392098c4200ed
+> Author: Maciej Falkowski <m.falkowski@samsung.com>
+> Date:   Tue Sep 17 12:37:27 2019 +0200
+> 
+>      dt-bindings: gpu: Convert Samsung Image Rotator to dt-schema
+>      
+>      [ Upstream commit 6e3ffcd592060403ee2d956c9b1704775898db79 ]
+>      
+>      Convert Samsung Image Rotator to newer dt-schema format.
+>      
+>      Signed-off-by: Maciej Falkowski <m.falkowski@samsung.com>
+>      Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+>      Signed-off-by: Rob Herring <robh@kernel.org>
+>      Stable-dep-of: 338c4d3902fe ("igb: Disable threaded IRQ for igb_msix_other")
+>      Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-I have a lucratuve proposal for you, reply for more info.
-
-Thank you,
-William Cheung
+How is a binding conversion a dep for a one line driver patch that
+doesn't parse any new properties?
 
