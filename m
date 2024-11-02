@@ -1,100 +1,127 @@
-Return-Path: <stable+bounces-89555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F17A9B9C9E
-	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 04:57:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BACFA9B9D8B
+	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 08:00:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF0C11F2162A
-	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 03:57:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 543E91F20F57
+	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 07:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C1C12BEBB;
-	Sat,  2 Nov 2024 03:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CF39155330;
+	Sat,  2 Nov 2024 06:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GMBfBB4B"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="JdAC0uQY"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D31184F
-	for <stable@vger.kernel.org>; Sat,  2 Nov 2024 03:57:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88871DFEF
+	for <stable@vger.kernel.org>; Sat,  2 Nov 2024 06:59:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730519837; cv=none; b=HDWxNzqPZE0dLpdtEMW9Pb8JzIR+V3n+ew9Oytl25OiSK/d1PTXItw4vo3UQxYlwMQRvtwJUG33XP/LZ4FaQLTX0hu00CSPXXB3iIM+M3326drFagw4brQ3xdV+/JAyJ6GUAoICx+Wdrgv44n8lW5NJGlarE/ymoM+lcZQ4q5U8=
+	t=1730530797; cv=none; b=UsI2uRMcajbpp/i0VAea/kc7+HB56GsfNIGXMQPJYVQ4Dg0WJEqrfhSyFvDamJtvG0UOO3B0gaKCxQewm3vRm1Ijeq9J0ycACMNyT52rPElaHXXX+ryn7N4/z7lFCe+vveuRtjMCyje9B4raie6FErhZKZhtmSl8KvAl+TiTlQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730519837; c=relaxed/simple;
-	bh=4LMNQsmE74RT+GkZTBqPveMJMZBZ/AkE+2yCBDbm6UE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=IyeKLCCydXgnO36II4rwndk/7zCu73G3ZIDV2VwShtVTh1kJ136RU7wkdusR7VgLUdGMfcyB11p9i6dqmAma1FwtJPiX+RoaPa7dQJoyh4Vy35dBELkXOdg8RE5yzWjrOilokuZTFZFhzHWUThlFuofNKD8a65nx94CCzLFhZ0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GMBfBB4B; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730519836; x=1762055836;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=4LMNQsmE74RT+GkZTBqPveMJMZBZ/AkE+2yCBDbm6UE=;
-  b=GMBfBB4B5ZtBw8n4jej0KK6B0lDXChkhevQmdWMRvTQdS1vLCIKjmSl7
-   4APCS4ggGwpYbf3qKcq824yYoUMPsC7kqYAIiA6U6f+Vbg/jE78t34lqr
-   Zq4hLOIP07thkwkBJRzuC9yovai0aN94E3FaZVOD7fG33B6vvI4Yat7+3
-   MU3XktwMb/iZU2hzSML1M0iv3p37LMIVMFC3MQvE2bwCbSIzGpxlEPzfj
-   KUiuOfmORclCIeKexZFt19LBaox79gecfpyD+uYJtBZp3S7tY/ovLnPAM
-   uFHKW+gO3dSh4XLASzKtPGnSoQwhBnZSbEIaizd6FLw+yipJoILeULz8F
-   A==;
-X-CSE-ConnectionGUID: 8lYoP4LWQa6FObhJVECBZQ==
-X-CSE-MsgGUID: 2lk0vq3yRlmJBfBzweDonA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11243"; a="30507454"
-X-IronPort-AV: E=Sophos;i="6.11,251,1725346800"; 
-   d="scan'208";a="30507454"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2024 20:57:15 -0700
-X-CSE-ConnectionGUID: AHTzTXVXTJmP82cLEGdbZw==
-X-CSE-MsgGUID: MVTxw5gVQculOPAue9DPnA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,251,1725346800"; 
-   d="scan'208";a="113960901"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 01 Nov 2024 20:57:14 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t75GB-000iNv-2X;
-	Sat, 02 Nov 2024 03:57:11 +0000
-Date: Sat, 2 Nov 2024 11:57:03 +0800
-From: kernel test robot <lkp@intel.com>
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v4 6/6] phy: core: Simplify API of_phy_simple_xlate()
- implementation
-Message-ID: <ZyWjD7WrwSznjchj@ef09bd9f4a59>
+	s=arc-20240116; t=1730530797; c=relaxed/simple;
+	bh=3SuXeR3qMWVcCOwNqVRoMT2CToJnQUqGMezQTzGx7jY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UhlMvNS/56IIcpUYOrhPpEjitxBGSIYe5dkKttjrub3CoXF6gCfy7KHQJ3qZ5mI3ObuVzxGQqHJZzR/ABq6do4zho95/q9c7mSuYXgc8ViOBOKJn4XjLBP2xpoA8zQvDEr9kKtkrWPU3VOuAYdfjHyOp8K3kpZRdAgzvy6IU0FA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=JdAC0uQY; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 173C914C1E1;
+	Sat,  2 Nov 2024 07:52:40 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1730530362;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=1cqmhe98XHA5K4FIC4/cNhp8nkeCYpPnEJ2DFASqSP8=;
+	b=JdAC0uQYDjl0cpvyAFlMKCLUU1YjmGFWJ3GfsnmSNmRUSgEIzbruIi0l41a41IjUIJ1zVn
+	wLRXLzMC/d/ItCKvPF/Hz+SEwjfaVmm43Ced6febwqf0POlYEDrtxveHErn9hRpiZWgELh
+	S7eQDtqANmwHdUncVXw2A9drsBdgoJrSQlxB5y/B8j4EUl42v0c8W3O0HWByYGL5F9s23A
+	5m7UQa8nPHwKM96goN1O/+85yydI4HjCrX/hfn4bcZS3jupajbQkER6RtM3zaj1BqsNV08
+	zz2ebEo2CCCyZ+8KFuLwEuF0arlL7HxXpE9la8GB63nFE8j9S/0K4gbWBh3UvQ==
+Received: from gaia.codewreck.org (localhost.lan [::1])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTP id db38cc66;
+	Sat, 2 Nov 2024 06:52:39 +0000 (UTC)
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Christian Brauner <brauner@kernel.org>,
+	NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 6.6] SUNRPC: Remove BUG_ON call sites
+Date: Sat,  2 Nov 2024 15:52:03 +0900
+Message-ID: <20241102065203.13291-1-asmadeus@codewreck.org>
+X-Mailer: git-send-email 2.46.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241102-phy_core_fix-v4-6-4f06439f61b1@quicinc.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Chuck Lever <chuck.lever@oracle.com>
 
-Thanks for your patch.
+[ Upstream commit 789ce196a31dd13276076762204bee87df893e53 ]
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+There is no need to take down the whole system for these assertions.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+I'd rather not attempt a heroic save here, as some bug has occurred
+that has left the transport data structures in an unknown state.
+Just warn and then leak the left-over resources.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v4 6/6] phy: core: Simplify API of_phy_simple_xlate() implementation
-Link: https://lore.kernel.org/stable/20241102-phy_core_fix-v4-6-4f06439f61b1%40quicinc.com
+Acked-by: Christian Brauner <brauner@kernel.org>
+Reviewed-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+---
+I've hit this BUG at home when restarting the nfs-server service and
+while that didn't bring the whole system down it did kill a thread with
+the nfsd_mutex lock held, making exportfs & other related commands all
+hang in unkillable state trying to grab the lock.
 
+So this is purely selfish so that this won't happen again next time I
+upgrade :-)
+
+I'd like to say I have any idea why the bug hit on that 6.6.42 (the
+sv_permsocks one did) and help with the underlying issue, but I honestly
+didn't do anything fancy and don't have anything interesting in logs
+(except the bug itself, happy to forward it if someone cares); would
+have been possible to debug this if I had a crash dump but it's not
+setup on this machine and just having this down to WARN if probably
+good enough...
+
+Cheers,
+
+ net/sunrpc/svc.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
+index 029c49065016..b43dc8409b1f 100644
+--- a/net/sunrpc/svc.c
++++ b/net/sunrpc/svc.c
+@@ -577,11 +577,12 @@ svc_destroy(struct kref *ref)
+ 	timer_shutdown_sync(&serv->sv_temptimer);
+ 
+ 	/*
+-	 * The last user is gone and thus all sockets have to be destroyed to
+-	 * the point. Check this.
++	 * Remaining transports at this point are not expected.
+ 	 */
+-	BUG_ON(!list_empty(&serv->sv_permsocks));
+-	BUG_ON(!list_empty(&serv->sv_tempsocks));
++	WARN_ONCE(!list_empty(&serv->sv_permsocks),
++		  "SVC: permsocks remain for %s\n", serv->sv_program->pg_name);
++	WARN_ONCE(!list_empty(&serv->sv_tempsocks),
++		  "SVC: tempsocks remain for %s\n", serv->sv_program->pg_name);
+ 
+ 	cache_clean_deferred(serv);
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.46.1
 
 
