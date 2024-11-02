@@ -1,129 +1,106 @@
-Return-Path: <stable+bounces-89569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE2169BA0C4
-	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 15:27:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD8429BA164
+	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 17:26:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65C9B1F21A38
-	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 14:27:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72373281F8E
+	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 16:26:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5711D1A3AA9;
-	Sat,  2 Nov 2024 14:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A1E219E990;
+	Sat,  2 Nov 2024 16:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="td3vmpMy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C0+ngxKV"
 X-Original-To: stable@vger.kernel.org
-Received: from pv50p00im-hyfv10011601.me.com (pv50p00im-hyfv10011601.me.com [17.58.6.43])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A3819F13C
-	for <stable@vger.kernel.org>; Sat,  2 Nov 2024 14:26:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D432155336;
+	Sat,  2 Nov 2024 16:26:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730557614; cv=none; b=f5rF2/slphUPCeXaT/6dnCkuiXXBzNMB/vIySqgufiHanmI44jDjdrn+AejQeyG9sOZK78EsOt9cBCA+ytEeIw74buCmOr55hW+C+GExi5IappXafGByehdYKq8ZJDy4B4/0H/Em2RgD8poy63P/zzoP2fWVzwL/Msg4ptSQhsU=
+	t=1730564776; cv=none; b=YniJ1PTm97YB14eBQB1Twd7/GT8zcHk4u4tafa81wBYqji/5EYxn37O+miATXsRQTpvl50kMeCLLsv8lczI3bAiTEDShEX13bvCJdRj0lAV/aU/X0fe7VBhRpqTrgv7SfVypEEV8Ld/N04Rd/92g8HZjIup6RfODztg1XeR39Ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730557614; c=relaxed/simple;
-	bh=T6eBO5iVTcRI5KZzTMTJjHYTqiaf8JA8f7PAHq8h1mw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RTErstJCWSkoVjbDHX5FN5e2f3YYBa/jvPdrk80pDMcqHdWVBJpEb6+IXvly554HkvRtzV6eoaElXo8NRQ4J8xkCMozlWfT85h2h6GEWZScVECoF9Thz5KJu4UX0tXRWpcoQkghsZL7WZynTKS1gK+iTqQe7ZIppg1jQMJkm3Ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=td3vmpMy; arc=none smtp.client-ip=17.58.6.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1730557612;
-	bh=uKD823wbXW1lUHeTJ2B39H4c7+jz7b+f4lLA+PDf368=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:
-	 x-icloud-hme;
-	b=td3vmpMy0BbS+eYXRDoI6riefgrFTv9fRPDkZ/39BYDR5r3KocBQ1YkNUBDkXSh+6
-	 UiD4BXK6T6jjF8nG6OrKJuvxrDWC9n+iN2cmdx9J3SG4WQIdI9f86tnw3ZNzwem2JV
-	 D01uX3Z1JeHp7yZOBvn4p4q/LTx4OXEFC4ey1hSZvTsHKaSHuWe/0tL2sfBxKoDVBS
-	 Ue9HZ1muQJaPIdPctg+PZgsCtaiAOzwDAJoqpiiuxvwp7kI0wZRpHniP2gSJPhz/Wl
-	 IyJwdWpaDGeINpkeqv6odXgTFvai/3BHUFgBGX1pj/CBMB4YsR97lF7TVrRt9XCFAH
-	 Zm0c0rSEu0Q5w==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-hyfv10011601.me.com (Postfix) with ESMTPSA id 64D6FC8010E;
-	Sat,  2 Nov 2024 14:26:45 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Sat, 02 Nov 2024 22:26:15 +0800
-Subject: [PATCH RFC 2/2] PCI: endpoint: Fix that API pci_epc_remove_epf()
- cleans up wrong EPC of EPF
+	s=arc-20240116; t=1730564776; c=relaxed/simple;
+	bh=yunjkn+PFjU9Wb7inK50HBEHgmR/FimcMDdTBrVFDKs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KiDkZ7k1EsEv0HufTCrbRnA8Tp7ySanaZ42Lzv17SS6YM6BleY0H645jkt1cnfNeaE/6sgm8sKdZk1ocCahkJKdYzxxeXAqrCGgzrekv2UUQ97gQPMwKF34rWgZR9e/2SqHTjV+lDd0e9pY9SV68hDo41PDoV6aw2HlYjmDvaHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C0+ngxKV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2146CC4CEC3;
+	Sat,  2 Nov 2024 16:26:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730564775;
+	bh=yunjkn+PFjU9Wb7inK50HBEHgmR/FimcMDdTBrVFDKs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=C0+ngxKVAEauxsQ1pjt9EUyCMgJpzSjB/zSd3ES/aCU265VRhDFX1Ob1xtlBoDdR4
+	 yvRFHITu2g0/q4Nx6KcaciB3kjDzrntM+BfheZzLv+p4mYLgIo0RKGTXIv1HN2w4kz
+	 YkbnP/58doyXAukNY1ofYg1680+1zXuxf8uO30R/PY2vUXgUapcrL5PkJNNL/m28vg
+	 wAYjHjPaYRadCzKWgQ8Iwt2leuOmBPFTt/aY9popvKjugPKMgTk6xFxDo9lorXpYl+
+	 qKfhe7em3FM4HoLBMGN7wsWqENsHKakQvigfIQeDzW8nTJ2rcXEBEPeOtwE8m1+pZe
+	 V4cVM+qe0rWjg==
+Date: Sat, 2 Nov 2024 17:26:10 +0100
+From: Alexey Gladkov <legion@kernel.org>
+To: Andrei Vagin <avagin@google.com>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>, oleg@redhat.com,
+	linux-kernel@vger.kernel.org, Kees Cook <kees@kernel.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] signal: restore the override_rlimit logic
+Message-ID: <ZyZSotlacLgzWxUl@example.org>
+References: <20241031200438.2951287-1-roman.gushchin@linux.dev>
+ <87zfmi3f8b.fsf@email.froward.int.ebiederm.org>
+ <ZyU8UNKLNfAi-U8F@google.com>
+ <87o72y3c4g.fsf@email.froward.int.ebiederm.org>
+ <CAEWA0a4Kz9exk04Wgx9UZ9YFfURnS-=50TWyhPHm3i-N-D_8DA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241102-epc_rfc-v1-2-5026322df5bc@quicinc.com>
-References: <20241102-epc_rfc-v1-0-5026322df5bc@quicinc.com>
-In-Reply-To: <20241102-epc_rfc-v1-0-5026322df5bc@quicinc.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, 
- Bjorn Helgaas <bhelgaas@google.com>, Frank Li <Frank.Li@nxp.com>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Zijun Hu <zijun_hu@icloud.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.1
-X-Proofpoint-GUID: mMWpy04VA6p7kIxKb8cIQsZ1LBQzWOZt
-X-Proofpoint-ORIG-GUID: mMWpy04VA6p7kIxKb8cIQsZ1LBQzWOZt
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-11-02_12,2024-11-01_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 clxscore=1015
- adultscore=0 mlxscore=0 mlxlogscore=895 malwarescore=0 spamscore=0
- bulkscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2411020128
-X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAEWA0a4Kz9exk04Wgx9UZ9YFfURnS-=50TWyhPHm3i-N-D_8DA@mail.gmail.com>
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+On Fri, Nov 01, 2024 at 03:44:48PM -0700, Andrei Vagin wrote:
+> On Fri, Nov 1, 2024 at 1:58 PM Eric W. Biederman <ebiederm@xmission.com> wrote:
+> 
+> > > Well, personally I'd not use this limit too, but I don't think
+> > > "it's broken, userspace shouldn't use it" argument is valid.
+> >
+> > I said if you don't want the limit don't use it.
+> >
+> > A version of "Doctor it hurts when I do this". To which the doctor
+> > replies "Don't do that then".
+> 
+> Unfortunately, it isn't an option here. This is a non-root user that
+> creates a new user-namespace. It can't change RLIMIT_SIGPENDING
+> beyond the current limit.
+> 
+> We have to distinguish between two types of signals:
+> 
+> * Kernel signals: These are essential for proper application behavior.
+> If a user process triggers a memory fault, it gets SIGSEGV and it can’t
+> ignore it. The number of such signals is limited by one per user thread.
+> 
+> * User signals: These are sent by users and can be blocked by the
+> receiving process, potentially leading to a large queue of pending
+> signals. This is where the RLIMIT_SIGPENDING limit plays its role in
+> preventing excessive resource consumption.
+> 
+> New user namespaces inherit the current sigpending rlimit, so it is
+> expected that  the behavior of the user-namespace limit is aligned with
+> the overall RLIMIT_SIGPENDING mechanism.
 
-It is wrong for pci_epc_remove_epf(..., epf, SECONDARY_INTERFACE) to
-clean up @epf->epc.
+Hm. I think I understand the problem now.
 
-Fixed by cleaning up @epf->sec_epc instead of @epf->epc for
-SECONDARY_INTERFACE.
-
-Fixes: 63840ff53223 ("PCI: endpoint: Add support to associate secondary EPC with EPF")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
----
- drivers/pci/endpoint/pci-epc-core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/pci/endpoint/pci-epc-core.c b/drivers/pci/endpoint/pci-epc-core.c
-index bcc9bc3d6df5..62f7dff43730 100644
---- a/drivers/pci/endpoint/pci-epc-core.c
-+++ b/drivers/pci/endpoint/pci-epc-core.c
-@@ -660,18 +660,18 @@ void pci_epc_remove_epf(struct pci_epc *epc, struct pci_epf *epf,
- 	if (IS_ERR_OR_NULL(epc) || !epf)
- 		return;
- 
-+	mutex_lock(&epc->list_lock);
- 	if (type == PRIMARY_INTERFACE) {
- 		func_no = epf->func_no;
- 		list = &epf->list;
-+		epf->epc = NULL;
- 	} else {
- 		func_no = epf->sec_epc_func_no;
- 		list = &epf->sec_epc_list;
-+		epf->sec_epc = NULL;
- 	}
--
--	mutex_lock(&epc->list_lock);
- 	clear_bit(func_no, &epc->function_num_map);
- 	list_del(list);
--	epf->epc = NULL;
- 	mutex_unlock(&epc->list_lock);
- }
- EXPORT_SYMBOL_GPL(pci_epc_remove_epf);
++Cc Oleg Nesterov.
 
 -- 
-2.34.1
+Rgrds, legion
 
 
