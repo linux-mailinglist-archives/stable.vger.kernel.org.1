@@ -1,76 +1,140 @@
-Return-Path: <stable+bounces-89546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823D59B9C6F
-	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 04:04:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3707C9B9C89
+	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 04:36:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C12E1F229C3
-	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 03:04:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 428AC1C2167F
+	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 03:36:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD4E146D6B;
-	Sat,  2 Nov 2024 03:03:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AfHTBOcv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E66049659;
+	Sat,  2 Nov 2024 03:36:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA850146A9B
-	for <stable@vger.kernel.org>; Sat,  2 Nov 2024 03:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F263C3C;
+	Sat,  2 Nov 2024 03:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730516623; cv=none; b=CiIi449DD9UYnH2knWqgcm5x9RD4ipvbMfcDLzSqDaVQ/2xgrfvtrreswISDGFK0GYDuuQd0JASsSVtZSAXYL4q4f+BNx+YVuK7rAAttlZWReFuKudcN6qL7EP3Issz0o8ki7kql48lqDcT+5r4njocLo1AcfQE0J0knukOpUoQ=
+	t=1730518609; cv=none; b=UvK/Lmj+ETAzMEY1byX9oMfQk0S8BjBRGGM4CckRIwnQffbf1TXYi1KBL30eUYphjl6LyZDyWXYQsdp+NQjH+imaqdnJ1+dkh/9tUA4IjAlCgtR5kzPlOMdOn6PgoRHy09XBC9/k1y2vcs/xqU2QSNv0+OWn9cPhqIoD19JDFyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730516623; c=relaxed/simple;
-	bh=d2yRXSESl+Ba+LY6ivTIlaaO9WstofUVh8XYi9dMtAE=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=dDTqlShEc/HlijMYtAOJV/ygg7eFnpI86DiCPkDBuV9eFi8pMXCOD60blCtRorCHH6I9Vuc2vIKs8RdQUUWp6cL1CMUrvAxFZ0XESytCvzzE2PMv4IwQHsxq+2RFhXXwrtCI+FQNZrtLvMt9NSZ7AlVrvNfuyT74Uj+TDGmsKbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AfHTBOcv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269C0C4CECD
-	for <stable@vger.kernel.org>; Sat,  2 Nov 2024 03:03:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730516622;
-	bh=d2yRXSESl+Ba+LY6ivTIlaaO9WstofUVh8XYi9dMtAE=;
-	h=Date:To:From:Subject:From;
-	b=AfHTBOcvUloonWy2e9kXG8WJWSRJfJEk2vv3xdWHl6vfgu5FngF2Af1Qsg0uA7BXF
-	 kUzCt/hwgHtxNxCFJj4dRLgZ38WPgFxdBvcAsAgZ1Q7oAxl2Y80mTzd9IF/g6msWrK
-	 MazlI2BciE5w8rc3xSI3JakEiHO2Sx1vOVgVobUD/pQD3cS/qVHzbevg/Wc+b6oxbi
-	 S/oN7t2vrf4dAr80coaRnZbAb66ioC0CX7Fo/Xi0y4tntMgupDm94MNr2W22uYhGIT
-	 Q5oPVKt+Z4hz49Vl8eephnQfS9jQWOCOU2EZVEflfQ67FYbw7y7x0iHftVQZS9GhkF
-	 iwsWtDtvFmfeg==
-Message-ID: <94581271-d8f2-4c4a-8a62-961b78941f9a@kernel.org>
-Date: Fri, 1 Nov 2024 22:03:40 -0500
+	s=arc-20240116; t=1730518609; c=relaxed/simple;
+	bh=z7J2UcHSJYJwMGO1ve6dJe4n/NLLb3+32f+ayIMNZxA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=abAAkketefJFHvSKU/j7Lak+NwXlO21yGHotYZA+2fzgj5JSRgRDV0UIqLjivWBjG2dquaMGqmw2gIWUnMOfSqaWQkvBFnZe0NhrooCN+ZWtIXr/Se1T3rEwgj8IZhTAdnuI1SkQr5dvOm3yqhzz+jK1CQKSFu/wetgb/fKz+ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74880C4CEC3;
+	Sat,  2 Nov 2024 03:36:46 +0000 (UTC)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: Xuerui Wang <kernel@xen0n.name>,
+	loongarch@lists.linux.dev,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	stable@vger.kernel.org,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	linux-kernel@vger.kernel.org,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1.y] LoongArch: Fix build errors due to backported TIMENS
+Date: Sat,  2 Nov 2024 11:36:16 +0800
+Message-ID: <20241102033616.3517188-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: stable@vger.kernel.org
-From: Mario Limonciello <superm1@kernel.org>
-Subject: Default profile performance issue on Navi 3x
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Commit eb3710efffce1dcff83761db4615f91d93aabfcb ("LoongArch: Add support
+to clone a time namespace") backports the TIMENS support for LoongArch
+(corresponding upstream commit aa5e65dc0818bbf676bf06927368ec46867778fd)
+but causes build errors:
 
-A performance issue on AMD Navi3x dGPUs in 6.10.y and 6.11.y has been 
-improved by patches that landed in 6.12-rc.
+  CC      arch/loongarch/kernel/vdso.o
+arch/loongarch/kernel/vdso.c: In function ‘vvar_fault’:
+arch/loongarch/kernel/vdso.c:54:36: error: implicit declaration of
+function ‘find_timens_vvar_page’ [-Werror=implicit-function-declaration]
+   54 |         struct page *timens_page = find_timens_vvar_page(vma);
+      |                                    ^~~~~~~~~~~~~~~~~~~~~
+arch/loongarch/kernel/vdso.c:54:36: warning: initialization of ‘struct
+page *’ from ‘int’ makes pointer from integer without a cast
+[-Wint-conversion]
+arch/loongarch/kernel/vdso.c: In function ‘vdso_join_timens’:
+arch/loongarch/kernel/vdso.c:143:25: error: implicit declaration of
+function ‘zap_vma_pages’; did you mean ‘zap_vma_ptes’?
+[-Werror=implicit-function-declaration]
+  143 |                         zap_vma_pages(vma);
+      |                         ^~~~~~~~~~~~~
+      |                         zap_vma_ptes
+cc1: some warnings being treated as errors
 
-Can you please bring these 3 patches back to 6.11.y to help performance 
-there as well?
+Because in 6.1.y we should define find_timens_vvar_page() by ourselves
+and use zap_page_range() instead of zap_vma_pages(), so fix it.
 
-commit b932d5ad9257 ("drm/amdgpu/swsmu: fix ordering for setting 
-workload_mask")
-commit ec1aab7816b0 ("drm/amdgpu/swsmu: default to fullscreen 3D profile 
-for dGPUs")
-commit 7c210ca5a2d7 ("drm/amdgpu: handle default profile on on devices 
-without fullscreen 3D")
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+ arch/loongarch/kernel/vdso.c | 28 +++++++++++++++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
 
-Thanks!
+diff --git a/arch/loongarch/kernel/vdso.c b/arch/loongarch/kernel/vdso.c
+index 59aa9dd466e8..64eb5386e7b2 100644
+--- a/arch/loongarch/kernel/vdso.c
++++ b/arch/loongarch/kernel/vdso.c
+@@ -40,6 +40,8 @@ static struct page *vdso_pages[] = { NULL };
+ struct vdso_data *vdso_data = generic_vdso_data.data;
+ struct vdso_pcpu_data *vdso_pdata = loongarch_vdso_data.vdata.pdata;
+ 
++static struct page *find_timens_vvar_page(struct vm_area_struct *vma);
++
+ static int vdso_mremap(const struct vm_special_mapping *sm, struct vm_area_struct *new_vma)
+ {
+ 	current->mm->context.vdso = (void *)(new_vma->vm_start);
+@@ -139,13 +141,37 @@ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
+ 
+ 	mmap_read_lock(mm);
+ 	for_each_vma(vmi, vma) {
++		unsigned long size = vma->vm_end - vma->vm_start;
++
+ 		if (vma_is_special_mapping(vma, &vdso_info.data_mapping))
+-			zap_vma_pages(vma);
++			zap_page_range(vma, vma->vm_start, size);
+ 	}
+ 	mmap_read_unlock(mm);
+ 
+ 	return 0;
+ }
++
++static struct page *find_timens_vvar_page(struct vm_area_struct *vma)
++{
++	if (likely(vma->vm_mm == current->mm))
++		return current->nsproxy->time_ns->vvar_page;
++
++	/*
++	 * VM_PFNMAP | VM_IO protect .fault() handler from being called
++	 * through interfaces like /proc/$pid/mem or
++	 * process_vm_{readv,writev}() as long as there's no .access()
++	 * in special_mapping_vmops.
++	 * For more details check_vma_flags() and __access_remote_vm()
++	 */
++	WARN(1, "vvar_page accessed remotely");
++
++	return NULL;
++}
++#else
++static struct page *find_timens_vvar_page(struct vm_area_struct *vma)
++{
++	return NULL;
++}
+ #endif
+ 
+ static unsigned long vdso_base(void)
+-- 
+2.43.5
 
 
