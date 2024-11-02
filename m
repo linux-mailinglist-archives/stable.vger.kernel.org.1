@@ -1,147 +1,100 @@
-Return-Path: <stable+bounces-89554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A2429B9C9A
-	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 04:55:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F17A9B9C9E
+	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 04:57:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F59928214C
-	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 03:55:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF0C11F2162A
+	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 03:57:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 171E734CDD;
-	Sat,  2 Nov 2024 03:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C1C12BEBB;
+	Sat,  2 Nov 2024 03:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="COvujrbR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GMBfBB4B"
 X-Original-To: stable@vger.kernel.org
-Received: from pv50p00im-zteg10021401.me.com (pv50p00im-zteg10021401.me.com [17.58.6.47])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE02482DD
-	for <stable@vger.kernel.org>; Sat,  2 Nov 2024 03:55:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D31184F
+	for <stable@vger.kernel.org>; Sat,  2 Nov 2024 03:57:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730519739; cv=none; b=NAcg/tz0akhvB6l2BWk+rr8cMCINMxS6yqE5yz5nUAGFH9NHOt85frA6XJw0+MEnoGQx7kI1+KWejsIjtCbpQPk1hWeun5Bj+Sj3MDnMJeliywnpJ+ef6cReLQG4xg9MNRBgQaxbijwoC7RstALH4R8dBs61uqacCMIjp8Ay+uI=
+	t=1730519837; cv=none; b=HDWxNzqPZE0dLpdtEMW9Pb8JzIR+V3n+ew9Oytl25OiSK/d1PTXItw4vo3UQxYlwMQRvtwJUG33XP/LZ4FaQLTX0hu00CSPXXB3iIM+M3326drFagw4brQ3xdV+/JAyJ6GUAoICx+Wdrgv44n8lW5NJGlarE/ymoM+lcZQ4q5U8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730519739; c=relaxed/simple;
-	bh=zi+AC3aNmGewTjTQMimffXRimaWmbxs2lSQyYUeplow=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jEL+dfm92P1kqm4mSqK10dabjQiqHKW7QyU50GMvQWB2b0Bn7oRfJBNn8Fltvmt3nzfDPwk7BQMeLv+WNRQwBLqjLSl/V7l/un3hhbiLTYz7kn6xpU+MaqKjKJFXMCdtEDEMx9SvhM8784Xw0TaL6Ha7VIu74/09utEbiK3leWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=COvujrbR; arc=none smtp.client-ip=17.58.6.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1730519738;
-	bh=06XEXE3RdGyDqIVZgj7Hd7CzsKtHn4L7U6k0cu73Blg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:
-	 x-icloud-hme;
-	b=COvujrbRwoQZyFJcH82UdPbs47EQ+luVL7mkAfhryXRBczX/QWQRmgDECixzcxqRo
-	 1SlWhQeNOrCeNJ3hHTep0rEWseWyK79yQpNXSn0jj//D6IpsS8rFdg0WnNNRFWl/Ti
-	 Wct4fUKlINGdKRZzpsT1i6P7ztYIEEw7LyfCqy934fKFffDVEWZlrJ4ivYDWwJ/AN4
-	 LOfTS9tpSD0THAr0q87ppBFNJF19WkiugENQPD1MSAeYZSB/XnTR60T1Ap00I6G/G9
-	 HKgPOB5d3maht5SBOo82ePwGiz/lIPG8I+pqrdwrn6MMPvM6R0WbmqVe1WClcm6kqG
-	 hbQLd5tYdvv5g==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-zteg10021401.me.com (Postfix) with ESMTPSA id A67858E01B7;
-	Sat,  2 Nov 2024 03:55:27 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Sat, 02 Nov 2024 11:53:48 +0800
-Subject: [PATCH v4 6/6] phy: core: Simplify API of_phy_simple_xlate()
+	s=arc-20240116; t=1730519837; c=relaxed/simple;
+	bh=4LMNQsmE74RT+GkZTBqPveMJMZBZ/AkE+2yCBDbm6UE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=IyeKLCCydXgnO36II4rwndk/7zCu73G3ZIDV2VwShtVTh1kJ136RU7wkdusR7VgLUdGMfcyB11p9i6dqmAma1FwtJPiX+RoaPa7dQJoyh4Vy35dBELkXOdg8RE5yzWjrOilokuZTFZFhzHWUThlFuofNKD8a65nx94CCzLFhZ0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GMBfBB4B; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730519836; x=1762055836;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=4LMNQsmE74RT+GkZTBqPveMJMZBZ/AkE+2yCBDbm6UE=;
+  b=GMBfBB4B5ZtBw8n4jej0KK6B0lDXChkhevQmdWMRvTQdS1vLCIKjmSl7
+   4APCS4ggGwpYbf3qKcq824yYoUMPsC7kqYAIiA6U6f+Vbg/jE78t34lqr
+   Zq4hLOIP07thkwkBJRzuC9yovai0aN94E3FaZVOD7fG33B6vvI4Yat7+3
+   MU3XktwMb/iZU2hzSML1M0iv3p37LMIVMFC3MQvE2bwCbSIzGpxlEPzfj
+   KUiuOfmORclCIeKexZFt19LBaox79gecfpyD+uYJtBZp3S7tY/ovLnPAM
+   uFHKW+gO3dSh4XLASzKtPGnSoQwhBnZSbEIaizd6FLw+yipJoILeULz8F
+   A==;
+X-CSE-ConnectionGUID: 8lYoP4LWQa6FObhJVECBZQ==
+X-CSE-MsgGUID: 2lk0vq3yRlmJBfBzweDonA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11243"; a="30507454"
+X-IronPort-AV: E=Sophos;i="6.11,251,1725346800"; 
+   d="scan'208";a="30507454"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2024 20:57:15 -0700
+X-CSE-ConnectionGUID: AHTzTXVXTJmP82cLEGdbZw==
+X-CSE-MsgGUID: MVTxw5gVQculOPAue9DPnA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,251,1725346800"; 
+   d="scan'208";a="113960901"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 01 Nov 2024 20:57:14 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t75GB-000iNv-2X;
+	Sat, 02 Nov 2024 03:57:11 +0000
+Date: Sat, 2 Nov 2024 11:57:03 +0800
+From: kernel test robot <lkp@intel.com>
+To: Zijun Hu <zijun_hu@icloud.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v4 6/6] phy: core: Simplify API of_phy_simple_xlate()
  implementation
+Message-ID: <ZyWjD7WrwSznjchj@ef09bd9f4a59>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241102-phy_core_fix-v4-6-4f06439f61b1@quicinc.com>
-References: <20241102-phy_core_fix-v4-0-4f06439f61b1@quicinc.com>
-In-Reply-To: <20241102-phy_core_fix-v4-0-4f06439f61b1@quicinc.com>
-To: Vinod Koul <vkoul@kernel.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, Felipe Balbi <balbi@ti.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Rob Herring <robh@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
- Lee Jones <lee@kernel.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>, 
- Johan Hovold <johan@kernel.org>, Zijun Hu <zijun_hu@icloud.com>, 
- stable@vger.kernel.org, linux-phy@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>
-X-Mailer: b4 0.14.1
-X-Proofpoint-ORIG-GUID: QuSC-0nx-vVo5COz6hbbnQz0mp8EobP4
-X-Proofpoint-GUID: QuSC-0nx-vVo5COz6hbbnQz0mp8EobP4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-11-02_02,2024-11-01_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 clxscore=1015
- mlxlogscore=999 malwarescore=0 adultscore=0 mlxscore=0 phishscore=0
- suspectscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2411020032
-X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241102-phy_core_fix-v4-6-4f06439f61b1@quicinc.com>
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+Hi,
 
-Simplify of_phy_simple_xlate() implementation by API
-class_find_device_by_of_node().
+Thanks for your patch.
 
-Also correct comments to mark its parameter @dev as unused instead of
-@args in passing.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
----
- drivers/phy/phy-core.c | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
-index 9d4cc64a0865..39476ca9e51c 100644
---- a/drivers/phy/phy-core.c
-+++ b/drivers/phy/phy-core.c
-@@ -749,8 +749,8 @@ EXPORT_SYMBOL_GPL(devm_phy_put);
- 
- /**
-  * of_phy_simple_xlate() - returns the phy instance from phy provider
-- * @dev: the PHY provider device
-- * @args: of_phandle_args (not used here)
-+ * @dev: the PHY provider device (not used here)
-+ * @args: of_phandle_args
-  *
-  * Intended to be used by phy provider for the common case where #phy-cells is
-  * 0. For other cases where #phy-cells is greater than '0', the phy provider
-@@ -760,20 +760,14 @@ EXPORT_SYMBOL_GPL(devm_phy_put);
- struct phy *of_phy_simple_xlate(struct device *dev,
- 				const struct of_phandle_args *args)
- {
--	struct phy *phy;
--	struct class_dev_iter iter;
--
--	class_dev_iter_init(&iter, &phy_class, NULL, NULL);
--	while ((dev = class_dev_iter_next(&iter))) {
--		phy = to_phy(dev);
--		if (args->np != phy->dev.of_node)
--			continue;
-+	struct device *target_dev;
- 
--		class_dev_iter_exit(&iter);
--		return phy;
-+	target_dev = class_find_device_by_of_node(&phy_class, args->np);
-+	if (target_dev) {
-+		put_device(target_dev);
-+		return to_phy(target_dev);
- 	}
- 
--	class_dev_iter_exit(&iter);
- 	return ERR_PTR(-ENODEV);
- }
- EXPORT_SYMBOL_GPL(of_phy_simple_xlate);
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v4 6/6] phy: core: Simplify API of_phy_simple_xlate() implementation
+Link: https://lore.kernel.org/stable/20241102-phy_core_fix-v4-6-4f06439f61b1%40quicinc.com
 
 -- 
-2.34.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
