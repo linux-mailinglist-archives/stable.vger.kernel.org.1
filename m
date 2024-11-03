@@ -1,111 +1,123 @@
-Return-Path: <stable+bounces-89584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6FBA9BA568
-	for <lists+stable@lfdr.de>; Sun,  3 Nov 2024 13:27:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E6B59BA6B7
+	for <lists+stable@lfdr.de>; Sun,  3 Nov 2024 17:51:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E9A4B2126B
-	for <lists+stable@lfdr.de>; Sun,  3 Nov 2024 12:27:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52C9A281BAC
+	for <lists+stable@lfdr.de>; Sun,  3 Nov 2024 16:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427BE167D80;
-	Sun,  3 Nov 2024 12:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A0618859E;
+	Sun,  3 Nov 2024 16:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gRiQ51mk"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GGVIGzTg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA5915C13E;
-	Sun,  3 Nov 2024 12:26:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32965165EE8
+	for <stable@vger.kernel.org>; Sun,  3 Nov 2024 16:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730636815; cv=none; b=HmZSAOSq1HGR8EaSGJrpODyutRrKhn8hAV7cS3aEibeiYIiXndDtSCUIcEFZvQWjwm5l/1cwwNtEJ4v0+oGtH0veDj0uV5/XG/yuj55hVPuka/soIZUy0Lkqt1ijnROfIBz6L8js/00pC4+maZHljMHREkLLzdUvpcGwMo72+Bg=
+	t=1730652677; cv=none; b=hMI/flZXK4g7hGKMSN/7TTofVKNEyzAg6kqu3LwEdrRfGgr6F0x7Xks1XIfA0okMcApKLlwPbz036BUL8FkNEwbqNTcHkbMaeMG5YJn50x/K+qSd2j+yZWlWQQCt9ye0dcrS5leWFk2BMCpEPJZRVV9OctSlM2AO5nI0nVPGChA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730636815; c=relaxed/simple;
-	bh=CFu8EXuLeAPBM1k/RypaGR9NzCkA0Ja3O9xlJ7YHyvY=;
+	s=arc-20240116; t=1730652677; c=relaxed/simple;
+	bh=ZsSNw+9icvvVr1pjTy3qhV4A/3FHQpPNRzqxjXLdzes=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Mp5DMde/ZgqYruwhNyYvICU0b+RBPqLwYhwLeIaFHTwwXFo8HdPhdHGUqrgZUslDupSxwwlRmq1DjHUCA/6Dt5ZCoWZBGuPkGxeRsM3tCD4uilM0Alyth0gIAZUpUoyu9OSfE+0cu/Pyf74wI9xa0umvIbH1KIAoqWw8x8M6bxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gRiQ51mk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F14CC4CECD;
-	Sun,  3 Nov 2024 12:26:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730636814;
-	bh=CFu8EXuLeAPBM1k/RypaGR9NzCkA0Ja3O9xlJ7YHyvY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gRiQ51mkXxWXH284sUByo+95QkTDyW11VXe3jniA3KlZHBt2p2CjSIpcEaY+R6NFD
-	 l3tbDaeRMxhHnqIPqish1golipszPo+eKGATkcjZeB8xqnDu1SirTUYuc7z5B+EsnB
-	 P4nwwGJhONy4QwhZK5VcZ4Fy4RMeXVTblzoYyLUVgtsI6KDcQgiKgt/rFUFo0SRoOF
-	 guJ7uBmM1pZd9CsYR2vFCYxjR9Io4n9a/TuHxv+eydOxKbFRYthkSqaGEJxTJ9+6Rj
-	 CeZhLYfyBfT0mIpvybag3C0VUddwnZ/EXJyDP+JYIzVQNn1qiothy3Th6z9TCmpS2P
-	 2jBanTn4dhZyQ==
-Date: Sun, 3 Nov 2024 07:26:52 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: Conor Dooley <mail@conchuod.ie>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
-	m.falkowski@samsung.com,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Inki Dae <inki.dae@samsung.com>
-Subject: Re: Patch "dt-bindings: gpu: Convert Samsung Image Rotator to
- dt-schema" has been added to the 5.4-stable tree
-Message-ID: <ZydsDGB12rGQVB4r@sashalap>
-References: <20241101192914.3854744-1-sashal@kernel.org>
- <61548681-29c3-4348-a048-658747c0212a@conchuod.ie>
+	 Content-Type:Content-Disposition:In-Reply-To; b=dU5F2ohpK0wMDHu6tOyXThIkPIcWyz2PJMeiAXU904ofK6RIFcvj8BhYSQuvAWKf6SqCx0dDCUD/9iT16UbUycilXzohPlP4KnC3OpFL6CC2MJu8f07TpHNyTW11C+8MB+QU92SJqgZCeRbPi8BrPTEiXqlQ50Hdid5CHiBD9po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GGVIGzTg; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730652674;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ypFPoKgiYqq9zLFDMM1v1jWtbkTfe/etxTifSjr94PA=;
+	b=GGVIGzTgVCaU0JJB26wxM40ABuZVc7r2E/DqYbrjwFoB8SXwSYfpU7CyQKeZsRbadT5QMj
+	EtGQKJe+5R8n5qesvnib+3yitG/OSLdHcKPQ271TkS67Svbe/uP2Non1ImZ7n825Kmo3Pd
+	ePKm+lmRip/qzKlF8FzeNIBAuDla9Wk=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-491-XVBUbNQ2PpClkvWU62iKzQ-1; Sun,
+ 03 Nov 2024 11:51:12 -0500
+X-MC-Unique: XVBUbNQ2PpClkvWU62iKzQ-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A513A19560B1;
+	Sun,  3 Nov 2024 16:51:10 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.224.49])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id A6B4C19560A2;
+	Sun,  3 Nov 2024 16:51:07 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Sun,  3 Nov 2024 17:50:53 +0100 (CET)
+Date: Sun, 3 Nov 2024 17:50:49 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Alexey Gladkov <legion@kernel.org>
+Cc: Andrei Vagin <avagin@google.com>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	linux-kernel@vger.kernel.org, Kees Cook <kees@kernel.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] signal: restore the override_rlimit logic
+Message-ID: <20241103165048.GA11668@redhat.com>
+References: <20241031200438.2951287-1-roman.gushchin@linux.dev>
+ <87zfmi3f8b.fsf@email.froward.int.ebiederm.org>
+ <ZyU8UNKLNfAi-U8F@google.com>
+ <87o72y3c4g.fsf@email.froward.int.ebiederm.org>
+ <CAEWA0a4Kz9exk04Wgx9UZ9YFfURnS-=50TWyhPHm3i-N-D_8DA@mail.gmail.com>
+ <ZyZSotlacLgzWxUl@example.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <61548681-29c3-4348-a048-658747c0212a@conchuod.ie>
+In-Reply-To: <ZyZSotlacLgzWxUl@example.org>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Sat, Nov 02, 2024 at 01:42:51PM +0000, Conor Dooley wrote:
->On 01/11/2024 19:29, Sasha Levin wrote:
->>This is a note to let you know that I've just added the patch titled
->>
->>     dt-bindings: gpu: Convert Samsung Image Rotator to dt-schema
->>
->>to the 5.4-stable tree which can be found at:
->>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->>
->>The filename of the patch is:
->>      dt-bindings-gpu-convert-samsung-image-rotator-to-dt-.patch
->>and it can be found in the queue-5.4 subdirectory.
->>
->>If you, or anyone else, feels it should not be added to the stable tree,
->>please let <stable@vger.kernel.org> know about it.
->>
->>
->>
->>commit 25cb1f1f53fe137aefdc5e54bb1392098c4200ed
->>Author: Maciej Falkowski <m.falkowski@samsung.com>
->>Date:   Tue Sep 17 12:37:27 2019 +0200
->>
->>     dt-bindings: gpu: Convert Samsung Image Rotator to dt-schema
->>     [ Upstream commit 6e3ffcd592060403ee2d956c9b1704775898db79 ]
->>     Convert Samsung Image Rotator to newer dt-schema format.
->>     Signed-off-by: Maciej Falkowski <m.falkowski@samsung.com>
->>     Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
->>     Signed-off-by: Rob Herring <robh@kernel.org>
->>     Stable-dep-of: 338c4d3902fe ("igb: Disable threaded IRQ for igb_msix_other")
->>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+On 11/02, Alexey Gladkov wrote:
 >
->How is a binding conversion a dep for a one line driver patch that
->doesn't parse any new properties?
+> +Cc Oleg Nesterov.
 
-As a follow-up: this happened due to a toolchain upgrade to GCC 14.2.0,
-I'm looking into fixing it...
+Well, I tend to agree with Roman and his patch looks good to me.
 
--- 
-Thanks,
-Sasha
+But it seems that the change in inc_rlimit_get_ucounts() can be
+a bit simpler and more readable, see below.
+
+Oleg.
+---
+
+--- a/kernel/ucount.c
++++ b/kernel/ucount.c
+@@ -307,7 +307,8 @@ void dec_rlimit_put_ucounts(struct ucounts *ucounts, enum rlimit_type type)
+ 	do_dec_rlimit_put_ucounts(ucounts, NULL, type);
+ }
+ 
+-long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
++long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
++			    bool override_rlimit)
+ {
+ 	/* Caller must hold a reference to ucounts */
+ 	struct ucounts *iter;
+@@ -320,7 +321,8 @@ long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
+ 			goto unwind;
+ 		if (iter == ucounts)
+ 			ret = new;
+-		max = get_userns_rlimit_max(iter->ns, type);
++		if (!override_rlimit)
++			max = get_userns_rlimit_max(iter->ns, type);
+ 		/*
+ 		 * Grab an extra ucount reference for the caller when
+ 		 * the rlimit count was previously 0.
+
 
