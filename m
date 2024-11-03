@@ -1,66 +1,80 @@
-Return-Path: <stable+bounces-89579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79A679BA393
-	for <lists+stable@lfdr.de>; Sun,  3 Nov 2024 03:28:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BA959BA399
+	for <lists+stable@lfdr.de>; Sun,  3 Nov 2024 03:41:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFEE3B21DFA
-	for <lists+stable@lfdr.de>; Sun,  3 Nov 2024 02:28:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFA6C1F23029
+	for <lists+stable@lfdr.de>; Sun,  3 Nov 2024 02:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7710A70818;
-	Sun,  3 Nov 2024 02:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59F81F5E6;
+	Sun,  3 Nov 2024 02:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="JFHGXrMZ"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="orqjFAN3"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C4F67A0D
-	for <stable@vger.kernel.org>; Sun,  3 Nov 2024 02:28:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AB5C2FB
+	for <stable@vger.kernel.org>; Sun,  3 Nov 2024 02:41:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730600915; cv=none; b=iXjbeughaOu3ei6HhA4i3d4bt9v6d9rwY2NLYBlDjPfbcwrYwkbRTgNlCKnXZnS2S91U9BgAPmxRvKMhVJA7RvIE1My6j5LcPNSMQEqVzIBLXNKlK3txfct7Y2ka1X/vWV+zeQwtzwGn4Yy3gDF7SFN1vo7QRHGYmPJGvfZDUk4=
+	t=1730601685; cv=none; b=bTvsxddb9sn7MyevPsspAEg2oZoVsmeDocRg4IPT5CjaLxeV+yVvDihgkMqV8RkvQnUu0M+2Heuanm15wQiap5Oy9suGfxzSlgGP1lNgcWjV+HJRd1b4+ascz/prNW4gWarsU9HpEt3FZZ9tBPfLlwbGFK/aykzJ5SXhHw7d7no=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730600915; c=relaxed/simple;
-	bh=06J6/m0jnYRXz+yUUnXWy8Iz6RF6czQufXKFJgqWj9I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bPhq9Z/SL3t3AEXuSFyxjxuR8EO6I7d5rHpcsB3oFlPhJbbXjJNTei3GGW3/WS4qJc4Y4D8BDhbZ9MMKOCfxkXzsYi/Bq4ls0BfjgasifgTq4meak8nWd+wdRniTaP8rApa1dGk79ZWCB4Yvt1DMVMy0yVlwRJf34187uLAHY4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=JFHGXrMZ; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=9B4lvtXVj/PQ+0R5HZk+F2FoD9aZutv0ZXbyQAyP5Ao=; b=JFHGXrMZnUDiQLhfhARb7gE1ud
-	COg6zVJjMpXX7X0Wy2sV75jwyR1DhrwD1jMTDEKI1RtrnNKLzlqMYddwA2BWVG9EP55juZOOB76Mr
-	RxRfCdNpEV9cFQb/sl4gpQdeNSQLRXJNcbvUaH1oCiZDceVYVLpzHx0I4DEjtP9AD5hZGrkd9Fww+
-	Si6WqHV0+A3HmlVGaeU2o2Yn+bnVhgy6Lq9RWaPhCGNhFdIx1uPx6ImMF7dKbfcD252AwZFvlBwCu
-	qiBBM1sX0uGX8yUiJ8DZXOz7O4bZHEU88gwVwj2+H25srtGhH2LTFfZsYcyST1BRyUWDFeUNCL0j5
-	yQg7EUlQ==;
-Received: from [189.79.117.125] (helo=localhost)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1t7QLu-0010FE-UK; Sun, 03 Nov 2024 03:28:31 +0100
-From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-To: stable@vger.kernel.org
-Cc: sashal@kernel.org,
-	gregkh@linuxfoundation.org,
-	sylv@sylv.io,
-	andreyknvl@gmail.com,
-	stern@rowland.harvard.edu,
-	kernel@gpiccoli.net,
+	s=arc-20240116; t=1730601685; c=relaxed/simple;
+	bh=l7ZwXUghr6HCHIhy7JesiYkdZ50rzjv5qOuEExqaYTw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YApkFkMeYhfIDx7LBPXsPnEwED36xmS3trIoihVM+Oon3s91g/2IqNCSN28QiCpcaEwREsXZwwxw/RgHDCoq7G5uOnxw8z0UHEDdUx4Dl9VaCFSaPTJ/8RYzReHmCrl0S2DrkAcg9VU/kX7n2KUubBf1F1sB64YRYZRUew77HFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=orqjFAN3; arc=none smtp.client-ip=209.85.222.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7b154f71885so269930985a.0
+        for <stable@vger.kernel.org>; Sat, 02 Nov 2024 19:41:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1730601682; x=1731206482; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=G+i/lDylJ2UvitooQ4I9k4a3zfRj4ivl685Uy2oNNEw=;
+        b=orqjFAN3lkt7jSaEXzyTsCoW0d0ex1RdFQwhmVhxebDPEY7FvyoF2a/0zIuRdBISHP
+         hgoTws/E7ua33Ta00jCVfVdM2V32Tm+MAozlm8s2bvrXY5ZVXpfMsN0iYvcVmpolugRz
+         Wtd26W6t4sd5Z5+FIF6AvDSDPe9ce18mhHNml820BxyqbAY8z2tvZvY3fx43ZF276h3i
+         ZJ1JL1Eattoie2+FEzSm3Z86eTgbZdOKHuRV4seXrrruMe3bXAa9OcQVZNE0IzmMIo0p
+         qbZl0m/7DYB38MMAxsGmSPSkINTpubgGUoFDdd0RxOXigJV/7pkvGAXqlgto00do4AoY
+         aeNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730601682; x=1731206482;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=G+i/lDylJ2UvitooQ4I9k4a3zfRj4ivl685Uy2oNNEw=;
+        b=nPlEC+Id22QRYO6PGDqZi7y2dNZYC+WniCO1LMJUEc2ux1kzhvAZo9mkgmcK57hxvK
+         XNIx0VO0fD0cBY5D2b5C8lQ2FhFChcjSp7tZP7Fvf0LO2ybp7EmD3wxyKMXejpIkTykB
+         HUUr1WRaUGGyp9tDiOs+xQhbWfDQzKSX8HSQ1o4c+0XmQRrfOBZNplhU3Wd2EdJmV2yv
+         DR6N/Gm5RwNNLMHj29zA2qeeXlJXDXldTvqfkOT4nQAmi1fvDR3ocVngcb0qa0wLAJtd
+         bVURE1TyXaavz1EAk+5ep0E3Ou84OSJuwTXxbNSQNQf6JAyrE4f63pQPFU8eIFcK85IW
+         PsaQ==
+X-Gm-Message-State: AOJu0YyAdOwdP8zCg1HdPqyK6o7n+yAe8I6xh0D1wDv7NVuc8rEf3UzF
+	trGoaKEEPWrLSf8Bz/ElRyrF68tntHwxI59erLwqWgqvIvk6nGchMsXTP+GspV7So7bpks9I8Yk
+	=
+X-Google-Smtp-Source: AGHT+IHgOI3v8nN+o4RVbLuONx2AfdgVde3uk1rhC4DInmQlhwg9Q7umLpV66DdlJyuvaINYUn0OEg==
+X-Received: by 2002:a05:620a:f02:b0:7b1:4a48:56bb with SMTP id af79cd13be357-7b2fb9d8201mr1097008285a.56.1730601682548;
+        Sat, 02 Nov 2024 19:41:22 -0700 (PDT)
+Received: from rowland.harvard.edu ([2601:19b:681:fd10::9dc2])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-462b0d8faf1sm30934571cf.76.2024.11.02.19.41.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 02 Nov 2024 19:41:21 -0700 (PDT)
+Date: Sat, 2 Nov 2024 22:41:19 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc: stable@vger.kernel.org, sashal@kernel.org, gregkh@linuxfoundation.org,
+	sylv@sylv.io, andreyknvl@gmail.com, kernel@gpiccoli.net,
 	kernel-dev@igalia.com
-Subject: [PATCH 6.1.y / 6.6.y 4/4] USB: gadget: dummy-hcd: Fix "task hung" problem
-Date: Sat,  2 Nov 2024 23:13:53 -0300
-Message-ID: <20241103022812.1465647-5-gpiccoli@igalia.com>
-X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241103022812.1465647-1-gpiccoli@igalia.com>
+Subject: Re: [PATCH 6.1.y / 6.6.y 0/4] Backport fix(es) for dummy_hcd
+ transfer rate
+Message-ID: <3f678883-75e3-42b9-8f30-56b5b4c4379d@rowland.harvard.edu>
 References: <20241103022812.1465647-1-gpiccoli@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,125 +82,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241103022812.1465647-1-gpiccoli@igalia.com>
 
-From: Alan Stern <stern@rowland.harvard.edu>
+On Sat, Nov 02, 2024 at 11:13:49PM -0300, Guilherme G. Piccoli wrote:
+> Hi folks, here is a series with some fixes for dummy_hcd. First of all,
+> the reasoning behind it.
+> 
+> Syzkaller report [0] shows a hung task on uevent_show, and despite it was
+> fixed with a patch on drivers/base (a race between drivers shutdown and
+> uevent_show), another issue remains: a problem with Realtek emulated wifi
+> device [1]. While working the fix ([1]), we noticed that if it is
+> applied to recent kernels, all fine. But in v6.1.y and v6.6.y for example,
+> it didn't solve entirely the issue, and after some debugging, it was
+> narrowed to dummy_hcd transfer rates being waaay slower in such stable
+> versions.
+> 
+> The reason of such slowness is well-described in the first 2 patches of
+> this backport, but the thing is that these patches introduced subtle issues
+> as well, fixed in the other 2 patches. Hence, I decided to backport all of
+> them for the 2 latest LTS kernels.
+> 
+> Maybe this is not a good idea - I don't see a strong con, but who's
+> better to judge the benefits vs the risks than the patch authors,
+> reviewers, and the USB maintainer?! So, I've CCed Alan, Andrey, Greg and
+> Marcello here, and I thank you all in advance for reviews on this. And
+> my apologies for bothering you with the emails, I hope this is a simple
+> "OK, makes sense" or "Nah, doesn't worth it" situation =)
+> 
+> Cheers,
+> 
+> 
+> Guilherme
+> 
+> 
+> [0] https://syzkaller.appspot.com/bug?extid=edd9fe0d3a65b14588d5
+> [1] https://lore.kernel.org/r/20241101193412.1390391-1-gpiccoli@igalia.com/
+> 
+> 
+> Alan Stern (1):
+>   USB: gadget: dummy-hcd: Fix "task hung" problem
+> 
+> Andrey Konovalov (1):
+>   usb: gadget: dummy_hcd: execute hrtimer callback in softirq context
+> 
+> Marcello Sylvester Bauer (2):
+>   usb: gadget: dummy_hcd: Switch to hrtimer transfer scheduler
+>   usb: gadget: dummy_hcd: Set transfer interval to 1 microframe
+> 
+>  drivers/usb/gadget/udc/dummy_hcd.c | 57 ++++++++++++++++++++----------
+>  1 file changed, 38 insertions(+), 19 deletions(-)
 
-commit 5189df7b8088268012882c220d6aca4e64981348 upstream.
+I'm not aware of any reasons not to backport these commits to the stable 
+kernels, if they fix a real problem for you.
 
-The syzbot fuzzer has been encountering "task hung" problems ever
-since the dummy-hcd driver was changed to use hrtimers instead of
-regular timers.  It turns out that the problems are caused by a subtle
-difference between the timer_pending() and hrtimer_active() APIs.
+However, it probably wasn't necessary to post the patches explicitly.  
+(Not unless they required some modifications for the backports.)  I 
+should think all you really needed to do was ask the appropriate 
+maintainers to queue those commits for the stable kernels you listed.
 
-The changeover blindly replaced the first by the second.  However,
-timer_pending() returns True when the timer is queued but not when its
-callback is running, whereas hrtimer_active() returns True when the
-hrtimer is queued _or_ its callback is running.  This difference
-occasionally caused dummy_urb_enqueue() to think that the callback
-routine had not yet started when in fact it was almost finished.  As a
-result the hrtimer was not restarted, which made it impossible for the
-driver to dequeue later the URB that was just enqueued.  This caused
-usb_kill_urb() to hang, and things got worse from there.
-
-Since hrtimers have no API for telling when they are queued and the
-callback isn't running, the driver must keep track of this for itself.
-That's what this patch does, adding a new "timer_pending" flag and
-setting or clearing it at the appropriate times.
-
-Reported-by: syzbot+f342ea16c9d06d80b585@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/6709234e.050a0220.3e960.0011.GAE@google.com/
-Tested-by: syzbot+f342ea16c9d06d80b585@syzkaller.appspotmail.com
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Fixes: a7f3813e589f ("usb: gadget: dummy_hcd: Switch to hrtimer transfer scheduler")
-Cc: Marcello Sylvester Bauer <sylv@sylv.io>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/2dab644e-ef87-4de8-ac9a-26f100b2c609@rowland.harvard.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
----
- drivers/usb/gadget/udc/dummy_hcd.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/usb/gadget/udc/dummy_hcd.c b/drivers/usb/gadget/udc/dummy_hcd.c
-index ff7bee78bcc4..d5d89fadde43 100644
---- a/drivers/usb/gadget/udc/dummy_hcd.c
-+++ b/drivers/usb/gadget/udc/dummy_hcd.c
-@@ -254,6 +254,7 @@ struct dummy_hcd {
- 	u32				stream_en_ep;
- 	u8				num_stream[30 / 2];
- 
-+	unsigned			timer_pending:1;
- 	unsigned			active:1;
- 	unsigned			old_active:1;
- 	unsigned			resuming:1;
-@@ -1303,9 +1304,11 @@ static int dummy_urb_enqueue(
- 		urb->error_count = 1;		/* mark as a new urb */
- 
- 	/* kick the scheduler, it'll do the rest */
--	if (!hrtimer_active(&dum_hcd->timer))
-+	if (!dum_hcd->timer_pending) {
-+		dum_hcd->timer_pending = 1;
- 		hrtimer_start(&dum_hcd->timer, ns_to_ktime(DUMMY_TIMER_INT_NSECS),
- 				HRTIMER_MODE_REL_SOFT);
-+	}
- 
-  done:
- 	spin_unlock_irqrestore(&dum_hcd->dum->lock, flags);
-@@ -1324,9 +1327,10 @@ static int dummy_urb_dequeue(struct usb_hcd *hcd, struct urb *urb, int status)
- 	spin_lock_irqsave(&dum_hcd->dum->lock, flags);
- 
- 	rc = usb_hcd_check_unlink_urb(hcd, urb, status);
--	if (!rc && dum_hcd->rh_state != DUMMY_RH_RUNNING &&
--			!list_empty(&dum_hcd->urbp_list))
-+	if (rc == 0 && !dum_hcd->timer_pending) {
-+		dum_hcd->timer_pending = 1;
- 		hrtimer_start(&dum_hcd->timer, ns_to_ktime(0), HRTIMER_MODE_REL_SOFT);
-+	}
- 
- 	spin_unlock_irqrestore(&dum_hcd->dum->lock, flags);
- 	return rc;
-@@ -1813,6 +1817,7 @@ static enum hrtimer_restart dummy_timer(struct hrtimer *t)
- 
- 	/* look at each urb queued by the host side driver */
- 	spin_lock_irqsave(&dum->lock, flags);
-+	dum_hcd->timer_pending = 0;
- 
- 	if (!dum_hcd->udev) {
- 		dev_err(dummy_dev(dum_hcd),
-@@ -1994,8 +1999,10 @@ static enum hrtimer_restart dummy_timer(struct hrtimer *t)
- 	if (list_empty(&dum_hcd->urbp_list)) {
- 		usb_put_dev(dum_hcd->udev);
- 		dum_hcd->udev = NULL;
--	} else if (dum_hcd->rh_state == DUMMY_RH_RUNNING) {
-+	} else if (!dum_hcd->timer_pending &&
-+			dum_hcd->rh_state == DUMMY_RH_RUNNING) {
- 		/* want a 1 msec delay here */
-+		dum_hcd->timer_pending = 1;
- 		hrtimer_start(&dum_hcd->timer, ns_to_ktime(DUMMY_TIMER_INT_NSECS),
- 				HRTIMER_MODE_REL_SOFT);
- 	}
-@@ -2390,8 +2397,10 @@ static int dummy_bus_resume(struct usb_hcd *hcd)
- 	} else {
- 		dum_hcd->rh_state = DUMMY_RH_RUNNING;
- 		set_link_state(dum_hcd);
--		if (!list_empty(&dum_hcd->urbp_list))
-+		if (!list_empty(&dum_hcd->urbp_list)) {
-+			dum_hcd->timer_pending = 1;
- 			hrtimer_start(&dum_hcd->timer, ns_to_ktime(0), HRTIMER_MODE_REL_SOFT);
-+		}
- 		hcd->state = HC_STATE_RUNNING;
- 	}
- 	spin_unlock_irq(&dum_hcd->dum->lock);
-@@ -2522,6 +2531,7 @@ static void dummy_stop(struct usb_hcd *hcd)
- 	struct dummy_hcd	*dum_hcd = hcd_to_dummy_hcd(hcd);
- 
- 	hrtimer_cancel(&dum_hcd->timer);
-+	dum_hcd->timer_pending = 0;
- 	device_remove_file(dummy_dev(dum_hcd), &dev_attr_urbs);
- 	dev_info(dummy_dev(dum_hcd), "stopped\n");
- }
--- 
-2.46.2
-
+Alan Stern
 
