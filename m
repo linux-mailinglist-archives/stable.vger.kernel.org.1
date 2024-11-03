@@ -1,93 +1,120 @@
-Return-Path: <stable+bounces-89574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48EF09BA2BD
-	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 23:26:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 399259BA392
+	for <lists+stable@lfdr.de>; Sun,  3 Nov 2024 03:28:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5555C1C21846
-	for <lists+stable@lfdr.de>; Sat,  2 Nov 2024 22:26:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37398B21DAC
+	for <lists+stable@lfdr.de>; Sun,  3 Nov 2024 02:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF601684A1;
-	Sat,  2 Nov 2024 22:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D9470804;
+	Sun,  3 Nov 2024 02:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MUzFYvjT"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="MD3cbtQn"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE983157A6B
-	for <stable@vger.kernel.org>; Sat,  2 Nov 2024 22:26:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A69524B4
+	for <stable@vger.kernel.org>; Sun,  3 Nov 2024 02:28:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730586387; cv=none; b=FkPS8s6TCRveQKupSNFYrifT7pu5Puc6d6M8+h9hjw2sk92ticnFaXiD8mbjRjw+4zpCqvBoBNCjGYe1f7MKjiJBDF2rTjHW/rfnvnWv5WvI0tqMF3gm2zVZ2lnaHb/PqMt7MEOU4t1hmKVgE5IVyOOWQSfmP647uF3yTT9NoNA=
+	t=1730600910; cv=none; b=PyBHZk3EdFK9nI1Nmi8u6xEAnCpLmE3H4I7NsSwB19hKoqVroMhAz0HGOW8Z01sBLSuTzGow9n/Kiz+jpqG1I3M+4MYl5iPE707mum0WMsoRyw/5UJfLNCuKk/DHMHaFBcq8qjGlVrtZ/JEm2794Zdkgu6fmvx90BiQTsV33MxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730586387; c=relaxed/simple;
-	bh=nAQxc/PidVP50ELM/jHfGS68cE7nwN57aN0v/4rM31c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XuDOknS2ZPdvsIqvLiHy5PCUp3EHk8TG2lWEKO78AkigwaAJsznzXJ4XRT5XTsEFwlrJpG2QYjhpZHuRwzYwQ3Tta9iYYFxVmKqHvIpoWOanXMUeXX/YZKAO+dQaxsWmEllRFNntwO7I2W4cQxyhbvkwgfPcmjKecH4WjRTcXAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MUzFYvjT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CFFDC4CEC3;
-	Sat,  2 Nov 2024 22:26:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730586387;
-	bh=nAQxc/PidVP50ELM/jHfGS68cE7nwN57aN0v/4rM31c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MUzFYvjTzpX7AA+kuGc+qiB/GwE5bbhjxmkczT4whemtGNTpfmvgbtWRolVeRr8eL
-	 ao3Ch59Ga/rAGiaZoPL/pkcxXUQ33dAxYi1/20yak0xpTFtJHIHiq/WYc+3ywpHC2j
-	 /SUh2j+PFuV0acy93QY0RmErl0HLtnrqhSNOJJOOGa3eTFBAdgqYSMrd/oRO7GBFfp
-	 UhnrfA2S8uUBiHrHo83/rk/Ufl2UMwtKon17b67ttMC/FuBvZ/eJ38WpHFTt4PpaTJ
-	 iEC6RnSmPa84BuNJmNAyri4iOjpG93pr569uXKq2IBYs9O5xhV+sak2DiDgNDQwO/8
-	 fEPqXhJtKK5nw==
-Date: Sat, 2 Nov 2024 18:26:25 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Steve French <stfrench@microsoft.com>,
-	Paulo Alcantara <pc@manguebit.com>, stable@vger.kernel.org
-Subject: Re: Backport smb client char/block fixes
-Message-ID: <ZyanEXGIv7l48n04@sashalap>
-References: <20241028094339.zrywdlzguj6udyg7@pali>
- <20241101235645.yqwqqipzhzoyprch@pali>
+	s=arc-20240116; t=1730600910; c=relaxed/simple;
+	bh=u41Gvl98LHPXICHm/j2dNA7EZ6rHe6Cxsqoq1nRRQEc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DQx07NeSp9zIs5oq/lu/jfncGrbVJ6f81H+Xd+VorARu2QknA6EK5yMllcdYaeLESHrvkJ0TLG6qnb+nzcwmL2FGY85AqUZ/dkaWiUsMp04DuO3gOKs8NUlUEhy6k+qvOVTfFjnVIhDju3cvXodbsIaOQjBMfGZB22vLMfrxTa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=MD3cbtQn; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=/meVvvFxWleynxoR8tkdaNi4/E03EZykKGliLKX9ehI=; b=MD3cbtQnG8SLDJv8GKGZ1dV28z
+	G5trAu7VKXTWfw1n4jpp+bWUixbFWqG3s3UB2mOvkYVAAiUBbfXjK7qXOxVowOj3Dpi0qHKtIooBR
+	wOtyDr6LjrxYVk+YvQE/PwxU0X2V5OJlXmA1/WG/t6ACNmq/BWbssxHeW53zgw8MqbgaI4mJuZoRw
+	/Xjg8hFTlItg7ItOJHUwWegUnNe3zh/QFVQebcr9AM7nfSDbNeZJnjQlJ2bMQ81PXMA3pzEWbX54p
+	sRShoQLjfSnVSvkXGF7SWImJETfLu1M82vBUnAs+pgJZON0NS4wHH2RmGjpYBFXldY943i3PaCsPs
+	Lz69hsPA==;
+Received: from [189.79.117.125] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1t7QLg-0010En-DL; Sun, 03 Nov 2024 03:28:17 +0100
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+To: stable@vger.kernel.org
+Cc: sashal@kernel.org,
+	gregkh@linuxfoundation.org,
+	sylv@sylv.io,
+	andreyknvl@gmail.com,
+	stern@rowland.harvard.edu,
+	kernel@gpiccoli.net,
+	kernel-dev@igalia.com
+Subject: [PATCH 6.1.y / 6.6.y 0/4] Backport fix(es) for dummy_hcd transfer rate
+Date: Sat,  2 Nov 2024 23:13:49 -0300
+Message-ID: <20241103022812.1465647-1-gpiccoli@igalia.com>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241101235645.yqwqqipzhzoyprch@pali>
 
-On Sat, Nov 02, 2024 at 12:56:45AM +0100, Pali Rohár wrote:
->Hello Greg and Sasha, do you have any opinion about this?
->
->On Monday 28 October 2024 10:43:39 Pali Rohár wrote:
->> Hello,
->>
->> I would like to propose backporting these two commits into stable:
->> * 663f295e3559 ("smb: client: fix parsing of device numbers")
->> * a9de67336a4a ("smb: client: set correct device number on nfs reparse points")
->>
->> Linux SMB client without these two recent fixes swaps device major and
->> minor numbers, which makes basically char/block device nodes unusable.
->>
->> Commit 663f295e3559 ("smb: client: fix parsing of device numbers")
->> should have had following Fixes line:
->> Fixes: 45e724022e27 ("smb: client: set correct file type from NFS reparse points")
->>
->> And commit a9de67336a4a ("smb: client: set correct device number on nfs
->> reparse points") should have contained line:
->> Fixes: 102466f303ff ("smb: client: allow creating special files via reparse points")
->>
->> Pali
+Hi folks, here is a series with some fixes for dummy_hcd. First of all,
+the reasoning behind it.
 
-I'll queue both for 6.11 and 6.6, thanks!
+Syzkaller report [0] shows a hung task on uevent_show, and despite it was
+fixed with a patch on drivers/base (a race between drivers shutdown and
+uevent_show), another issue remains: a problem with Realtek emulated wifi
+device [1]. While working the fix ([1]), we noticed that if it is
+applied to recent kernels, all fine. But in v6.1.y and v6.6.y for example,
+it didn't solve entirely the issue, and after some debugging, it was
+narrowed to dummy_hcd transfer rates being waaay slower in such stable
+versions.
+
+The reason of such slowness is well-described in the first 2 patches of
+this backport, but the thing is that these patches introduced subtle issues
+as well, fixed in the other 2 patches. Hence, I decided to backport all of
+them for the 2 latest LTS kernels.
+
+Maybe this is not a good idea - I don't see a strong con, but who's
+better to judge the benefits vs the risks than the patch authors,
+reviewers, and the USB maintainer?! So, I've CCed Alan, Andrey, Greg and
+Marcello here, and I thank you all in advance for reviews on this. And
+my apologies for bothering you with the emails, I hope this is a simple
+"OK, makes sense" or "Nah, doesn't worth it" situation =)
+
+Cheers,
+
+
+Guilherme
+
+
+[0] https://syzkaller.appspot.com/bug?extid=edd9fe0d3a65b14588d5
+[1] https://lore.kernel.org/r/20241101193412.1390391-1-gpiccoli@igalia.com/
+
+
+Alan Stern (1):
+  USB: gadget: dummy-hcd: Fix "task hung" problem
+
+Andrey Konovalov (1):
+  usb: gadget: dummy_hcd: execute hrtimer callback in softirq context
+
+Marcello Sylvester Bauer (2):
+  usb: gadget: dummy_hcd: Switch to hrtimer transfer scheduler
+  usb: gadget: dummy_hcd: Set transfer interval to 1 microframe
+
+ drivers/usb/gadget/udc/dummy_hcd.c | 57 ++++++++++++++++++++----------
+ 1 file changed, 38 insertions(+), 19 deletions(-)
 
 -- 
-Thanks,
-Sasha
+2.46.2
+
 
