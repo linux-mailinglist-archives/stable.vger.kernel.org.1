@@ -1,162 +1,137 @@
-Return-Path: <stable+bounces-89760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 998D39BC04A
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 22:48:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDDEE9BC0A9
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 23:15:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25FF9B216B9
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 21:48:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A8781F229E7
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 22:15:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09951925B0;
-	Mon,  4 Nov 2024 21:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A1091FCF4D;
+	Mon,  4 Nov 2024 22:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BrGuTvCT"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="S6YNLvIL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C9218EB1;
-	Mon,  4 Nov 2024 21:48:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C1814B94F;
+	Mon,  4 Nov 2024 22:14:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730756884; cv=none; b=casjG3ec2mzcme8RwYOXm7T76/JmOcxNnYRBfnwZ6Sqtg5qvtFbJ3SyH1Yd3nnkkvMR741+h5ddpOvBiyrSw09iUqmq6xl6iQ5G2vEAMadxMTlsReE7hnEE8edrzbJGb7nmh1bKs9sIb8HERdD/cC4sb26+pzLjkNuATnJb2XKU=
+	t=1730758498; cv=none; b=ENaPCkCL0EmgfI6biuJ+ah7Q8CoyV/mISToaitho+hdMhLFFyLhZX4OuuRitGq38YAmurKl3pSR5v0tA8VP41qkNevs5l+N6MSwHtHFA2RctYF68zmfyAtHjT5MhhNjpnoaviDqstCq6QU9EicZUyJVBzhdMIVHVRCUvyaLg56E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730756884; c=relaxed/simple;
-	bh=z0z+VhjQxXwDo/BAhp8d3UQo5IF5+NwMLHi6UsNUgSw=;
+	s=arc-20240116; t=1730758498; c=relaxed/simple;
+	bh=8gNlAg/eMJYboTxrfuf5i9OgCOeeHHti/glrou6bBwM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZQurbh37gaWjHCL5Lk7Ee2B+i4a2t2Ce91lGhMST3mNsaqX5M3xTbn60L3v2UeIXADsMZobda2SkbjbYxs3VCdS07WS7SgNRFEjPz/eRNKMYEdlwgkjHndUaovAlqLTrdWGSmwYjjclVPYZoK3CvIMGE7lkfJscTB0ZWt+51qOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BrGuTvCT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68635C4CED1;
-	Mon,  4 Nov 2024 21:48:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730756883;
-	bh=z0z+VhjQxXwDo/BAhp8d3UQo5IF5+NwMLHi6UsNUgSw=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hj4qI3ZPNOJKZODNwe8HK9T18B2YqKvHMyWCAaH0zGGuZ6sQTqbs8VdC9jzLH4GTLiMUCVv+LXysrq8NQsaEyu2PIXaljHgxJNsw9hkPwnuH4GSGEwUNf+ONM9okuDiZS1MydlQzlicRUM9q9/Heu2+VzX84We8Rx3oROKaOnoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=S6YNLvIL; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id A4512526;
+	Mon,  4 Nov 2024 23:14:46 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1730758487;
+	bh=8gNlAg/eMJYboTxrfuf5i9OgCOeeHHti/glrou6bBwM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BrGuTvCTYJuIo1Jo7ImUNBx+XSuw3Zhr35UL3sC2CG6HK/VzEM8eBLkJfKO3JEWmN
-	 CJis85i9X7/cPd3y24nLsPPMtIOKevF+ilfLw3+7AyW9LhCt/TBAMfzKUQ9MqeT5Mu
-	 ZP0vplu6Q5/7JoCz94rGfSfa++XCtVANIjM0PCL0ShIyP86aVfdDs2tiv/n1JSv8yr
-	 hVR8Gl5WwCcl5msN568wXE2jmRtvqcp1P3EOzDsfGjmVmbe/NDx7MEPwk0fpAO35qF
-	 20000jsaqG1EtnV7EL6m8SnQwkLtSffLfKeD/yz6Kc06GTGF0TXH6xX79XyzNlXL48
-	 yAffCyEKFy1nw==
-Date: Mon, 4 Nov 2024 22:47:56 +0100
-From: Alexey Gladkov <legion@kernel.org>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-	Andrei Vagin <avagin@google.com>, Kees Cook <kees@kernel.org>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Oleg Nesterov <oleg@redhat.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] signal: restore the override_rlimit logic
-Message-ID: <ZylBDEjygL7meU4r@example.org>
-References: <20241104195419.3962584-1-roman.gushchin@linux.dev>
+	b=S6YNLvILfM8oY7VUpVMohLg6BVmDZA7cP1QxIDYySgOat6peEF8HrfEhs/pQM0p4L
+	 TQZaubJ/d0g110R/0KzJ65J7gQjecuyRB2a4LVj0Zk6Z5zMW/mr+/J0oB3shtNjwUp
+	 UIWdvqEhgj7WpPoJ+KiWuchgBFcdBB1rhooZ7mE0=
+Date: Tue, 5 Nov 2024 00:14:48 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] media: uvcvideo: Fix crash during unbind if gpio unit is
+ in use
+Message-ID: <20241104221448.GB19140@pendragon.ideasonboard.com>
+References: <20241031-uvc-crashrmmod-v1-1-059fe593b1e6@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241104195419.3962584-1-roman.gushchin@linux.dev>
+In-Reply-To: <20241031-uvc-crashrmmod-v1-1-059fe593b1e6@chromium.org>
 
-On Mon, Nov 04, 2024 at 07:54:19PM +0000, Roman Gushchin wrote:
-> Prior to commit d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of
-> ucounts") UCOUNT_RLIMIT_SIGPENDING rlimit was not enforced for a class
-> of signals. However now it's enforced unconditionally, even if
-> override_rlimit is set. This behavior change caused production issues.
-> 
-> For example, if the limit is reached and a process receives a SIGSEGV
-> signal, sigqueue_alloc fails to allocate the necessary resources for the
-> signal delivery, preventing the signal from being delivered with
-> siginfo. This prevents the process from correctly identifying the fault
-> address and handling the error. From the user-space perspective,
-> applications are unaware that the limit has been reached and that the
-> siginfo is effectively 'corrupted'. This can lead to unpredictable
-> behavior and crashes, as we observed with java applications.
-> 
-> Fix this by passing override_rlimit into inc_rlimit_get_ucounts() and
-> skip the comparison to max there if override_rlimit is set. This
-> effectively restores the old behavior.
-> 
-> v2: refactor to make the logic simpler (Eric, Oleg, Alexey)
-> 
-> Fixes: d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of ucounts")
-> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-> Co-developed-by: Andrei Vagin <avagin@google.com>
-> Signed-off-by: Andrei Vagin <avagin@google.com>
-> Cc: Kees Cook <kees@kernel.org>
-> Cc: "Eric W. Biederman" <ebiederm@xmission.com>
-> Cc: Alexey Gladkov <legion@kernel.org>
-> Cc: Oleg Nesterov <oleg@redhat.com>
-> Cc: <stable@vger.kernel.org>
+Hi Ricardo,
 
-Acked-by: Alexey Gladkov <legion@kernel.org>
+Thank you for the patch.
 
+On Thu, Oct 31, 2024 at 01:59:08PM +0000, Ricardo Ribalda wrote:
+> We used the wrong device for the device managed functions. We used the
+> usb device, when we should be using the interface device.
+> 
+> If we unbind the driver from the usb interface, the cleanup functions
+> are never called. In our case, the IRQ is never disabled.
+> 
+> If an IRQ is triggered, it will try to access memory sections that are
+> already free, causing an OOPS.
+> 
+> Luckily this bug has small impact, as it is only affected by devices
+> with gpio units and the user has to unbind the device, a disconnect will
+> not trigger this error.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 > ---
->  include/linux/user_namespace.h | 3 ++-
->  kernel/signal.c                | 3 ++-
->  kernel/ucount.c                | 6 ++++--
->  3 files changed, 8 insertions(+), 4 deletions(-)
+>  drivers/media/usb/uvc/uvc_driver.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/include/linux/user_namespace.h b/include/linux/user_namespace.h
-> index 3625096d5f85..7183e5aca282 100644
-> --- a/include/linux/user_namespace.h
-> +++ b/include/linux/user_namespace.h
-> @@ -141,7 +141,8 @@ static inline long get_rlimit_value(struct ucounts *ucounts, enum rlimit_type ty
+> diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+> index a96f6ca0889f..1100d3ed342e 100644
+> --- a/drivers/media/usb/uvc/uvc_driver.c
+> +++ b/drivers/media/usb/uvc/uvc_driver.c
+> @@ -1295,14 +1295,14 @@ static int uvc_gpio_parse(struct uvc_device *dev)
+>  	struct gpio_desc *gpio_privacy;
+>  	int irq;
 >  
->  long inc_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
->  bool dec_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
-> -long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type);
-> +long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
-> +			    bool override_rlimit);
->  void dec_rlimit_put_ucounts(struct ucounts *ucounts, enum rlimit_type type);
->  bool is_rlimit_overlimit(struct ucounts *ucounts, enum rlimit_type type, unsigned long max);
+> -	gpio_privacy = devm_gpiod_get_optional(&dev->udev->dev, "privacy",
+> +	gpio_privacy = devm_gpiod_get_optional(&dev->intf->dev, "privacy",
+>  					       GPIOD_IN);
+>  	if (IS_ERR_OR_NULL(gpio_privacy))
+>  		return PTR_ERR_OR_ZERO(gpio_privacy);
 >  
-> diff --git a/kernel/signal.c b/kernel/signal.c
-> index 4344860ffcac..cbabb2d05e0a 100644
-> --- a/kernel/signal.c
-> +++ b/kernel/signal.c
-> @@ -419,7 +419,8 @@ __sigqueue_alloc(int sig, struct task_struct *t, gfp_t gfp_flags,
->  	 */
->  	rcu_read_lock();
->  	ucounts = task_ucounts(t);
-> -	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING);
-> +	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING,
-> +					    override_rlimit);
->  	rcu_read_unlock();
->  	if (!sigpending)
->  		return NULL;
-> diff --git a/kernel/ucount.c b/kernel/ucount.c
-> index 16c0ea1cb432..49fcec41e5b4 100644
-> --- a/kernel/ucount.c
-> +++ b/kernel/ucount.c
-> @@ -307,7 +307,8 @@ void dec_rlimit_put_ucounts(struct ucounts *ucounts, enum rlimit_type type)
->  	do_dec_rlimit_put_ucounts(ucounts, NULL, type);
->  }
+>  	irq = gpiod_to_irq(gpio_privacy);
+>  	if (irq < 0)
+> -		return dev_err_probe(&dev->udev->dev, irq,
+> +		return dev_err_probe(&dev->intf->dev, irq,
+
+Not strictly needed, but it doesn't hurt.
+
+>  				     "No IRQ for privacy GPIO\n");
 >  
-> -long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
-> +long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
-> +			    bool override_rlimit)
->  {
->  	/* Caller must hold a reference to ucounts */
->  	struct ucounts *iter;
-> @@ -320,7 +321,8 @@ long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
->  			goto unwind;
->  		if (iter == ucounts)
->  			ret = new;
-> -		max = get_userns_rlimit_max(iter->ns, type);
-> +		if (!override_rlimit)
-> +			max = get_userns_rlimit_max(iter->ns, type);
->  		/*
->  		 * Grab an extra ucount reference for the caller when
->  		 * the rlimit count was previously 0.
-> -- 
-> 2.47.0.199.ga7371fff76-goog
+>  	unit = uvc_alloc_new_entity(dev, UVC_EXT_GPIO_UNIT,
+> @@ -1333,7 +1333,7 @@ static int uvc_gpio_init_irq(struct uvc_device *dev)
+>  	if (!unit || unit->gpio.irq < 0)
+>  		return 0;
+>  
+> -	return devm_request_threaded_irq(&dev->udev->dev, unit->gpio.irq, NULL,
+> +	return devm_request_threaded_irq(&dev->intf->dev, unit->gpio.irq, NULL,
+
+We still have an issue here. The IRQ can be triggered in the small time
+window between the point where the driver frees memory and the time the
+IRQ is disabled by devm after .remove() returns. Managing the IRQ
+manually would be a simple fix, there could be other options.
+
+>  					 uvc_gpio_irq,
+>  					 IRQF_ONESHOT | IRQF_TRIGGER_FALLING |
+>  					 IRQF_TRIGGER_RISING,
 > 
+> ---
+> base-commit: c7ccf3683ac9746b263b0502255f5ce47f64fe0a
+> change-id: 20241031-uvc-crashrmmod-666de3fc9141
 
 -- 
-Rgrds, legion
+Regards,
 
+Laurent Pinchart
 
