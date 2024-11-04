@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-89632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 833BC9BB1D0
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:56:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E20DF9BB1D3
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:56:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47DC02852E6
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 10:56:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A67682816E0
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 10:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED35D1B6CEA;
-	Mon,  4 Nov 2024 10:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E67761CACDB;
+	Mon,  4 Nov 2024 10:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WCycuRIY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YvjVUIn5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E891B5823;
-	Mon,  4 Nov 2024 10:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F89D1C9EDC;
+	Mon,  4 Nov 2024 10:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730717520; cv=none; b=s8urtekxZe8+8g+S8hW3swOfIOpGcCftR5mIV1gt9bJxtqrr7d+YgUFnegmn5wRFKTaX8+gaKVnwg4Qa3JQCrUL/pZV0oG1/FCLBgEFslCc1/VSTwTs3QjxIZNl/3v/cWCuhhgPUThGI9L9QB+BDCjMEn5yHYniBhNDC4plsqPw=
+	t=1730717522; cv=none; b=YaXaCV/7fbBh8NX7VyiMsnC739DNifP4jIgHHMmtV3I7QvQ6w70udLwVHYvVJrso49b9A29dMDZs8blDobgIIkSQUfpzIWhQvYgBSzwILOP9+5P7Gt6iQa11/Dt0+RIKaCSAOX8/X/SVhqviasfeODMrETchnmUnsjCD2f0Q/A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730717520; c=relaxed/simple;
-	bh=/p2glFF7I3gJGSr5pWrTAoJjyZVCFpFT4a3QZfUDKSE=;
+	s=arc-20240116; t=1730717522; c=relaxed/simple;
+	bh=SxhuDvpyLe08lQ2cNq/7Bt+sb16e8KR2Hp9PnBmPFoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kZqQfp9b4hqEKDLd7lh/2Lh+SimBLmGZWEzKNJOQOn7Z4eOuOGkYE36zE1CwhhUaIGyO74mRDJRSIRuvX0I8wnxcB9cuNfoon7RAKTANCKFpepsiVmD+HXFcKkdgj9RWq4KEgi4tU0wW4NL3hlNhvmkYsFYv2qMo4pb2C36+INA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WCycuRIY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15861C4CED1;
-	Mon,  4 Nov 2024 10:51:58 +0000 (UTC)
+	 MIME-Version; b=NOkAMhFXstoepMC2aRU5SRlTfqeVuxn/dEtydZIJGc76ggwwMPHeh2nQT2/Ldv86V2+XBDfqghJI2/3zGEKx891MiYwwmheeaGeBxBbEK5j1a+uM6SVJ72F8f5ViPBjh00q7xoFV2Ft1/sFber55gUcSy6ktUZODanfH0qPrBGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YvjVUIn5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22CBC4CED2;
+	Mon,  4 Nov 2024 10:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730717520;
-	bh=/p2glFF7I3gJGSr5pWrTAoJjyZVCFpFT4a3QZfUDKSE=;
+	s=k20201202; t=1730717522;
+	bh=SxhuDvpyLe08lQ2cNq/7Bt+sb16e8KR2Hp9PnBmPFoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WCycuRIYa9nFc+87+yhEjZ7DGTibpha3M8SXzKjZOPXAHP3AFj0n9J0QefbrIDFY/
-	 9SXWY6AqIDgCJjXRvd2YU9zc0IqbmQhcz+Mx6jP+tecNMJHwKO46vVMOH4qROqADYc
-	 I+4GApIZm4h0+OhnRWC3MvA8214WsyotuMa6hlljjXPEyzLaKV8McZNfvNNhxDqxgS
-	 6VU66yBIIx+0zjSC7YPbVIFD9AS/hgXX9TCUVy1H2U2kTYy6uAmy9udeyHLKdA3Lv0
-	 671GVdQik7zJKpAzpixuZfMgPFeeVzT/RjHCUf1/z1TXTbAQKyFnLBFwlXgnXAHCvx
-	 8TQOG7v2RU3jw==
+	b=YvjVUIn5BAq6WQIPIONyBf7Z5lRX+XW+YNYt0akaAfsEfulWE7pF1AjMikohY0khe
+	 FKMu4JLnktoW9S1msqTzEdmkDA2G5hZv0JnGgwaJ8vH1rsejy4eY6N6tetZ4agGHDo
+	 O8BH31FL4BWliNH/EuZhmHX0L+0SChOEefOZRlPFimBryemmO4PBSgeEDcskm8x9FX
+	 6If96hExdhmDNwLjn6aoHXYY89rpVA4LxHHyEpVvztkXhOybKL0Vc8Uf8zBuQ//nYN
+	 ns7+POATb4gLo2Nb8Cwq2JPdFSsySOUP6aTM40Fd2PfLviOUTOcQ/DMn9x9BiSGqkf
+	 giuikhbrQc16Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Borislav Petkov <bp@alien8.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+Cc: Jiayuan Chen <mrpre@163.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	bhelgaas@google.com,
-	mario.limonciello@amd.com,
-	yazen.ghannam@amd.com
-Subject: [PATCH AUTOSEL 6.11 19/21] x86/amd_nb: Fix compile-testing without CONFIG_AMD_NB
-Date: Mon,  4 Nov 2024 05:49:55 -0500
-Message-ID: <20241104105048.96444-19-sashal@kernel.org>
+	edumazet@google.com,
+	john.fastabend@gmail.com,
+	jakub@cloudflare.com,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 20/21] bpf: fix filed access without lock
+Date: Mon,  4 Nov 2024 05:49:56 -0500
+Message-ID: <20241104105048.96444-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241104105048.96444-1-sashal@kernel.org>
 References: <20241104105048.96444-1-sashal@kernel.org>
@@ -67,54 +68,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.6
 Content-Transfer-Encoding: 8bit
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jiayuan Chen <mrpre@163.com>
 
-[ Upstream commit fce9642c765a18abd1db0339a7d832c29b68456a ]
+[ Upstream commit a32aee8f0d987a7cba7fcc28002553361a392048 ]
 
-node_to_amd_nb() is defined to NULL in non-AMD configs:
+The tcp_bpf_recvmsg_parser() function, running in user context,
+retrieves seq_copied from tcp_sk without holding the socket lock, and
+stores it in a local variable seq. However, the softirq context can
+modify tcp_sk->seq_copied concurrently, for example, n tcp_read_sock().
 
-  drivers/platform/x86/amd/hsmp/plat.c: In function 'init_platform_device':
-  drivers/platform/x86/amd/hsmp/plat.c:165:68: error: dereferencing 'void *' pointer [-Werror]
-    165 |                 sock->root                      = node_to_amd_nb(i)->root;
-        |                                                                    ^~
-  drivers/platform/x86/amd/hsmp/plat.c:165:68: error: request for member 'root' in something not a structure or union
+As a result, the seq value is stale when it is assigned back to
+tcp_sk->copied_seq at the end of tcp_bpf_recvmsg_parser(), leading to
+incorrect behavior.
 
-Users of the interface who also allow COMPILE_TEST will cause the above build
-error so provide an inline stub to fix that.
+Due to concurrency, the copied_seq field in tcp_bpf_recvmsg_parser()
+might be set to an incorrect value (less than the actual copied_seq) at
+the end of function: 'WRITE_ONCE(tcp->copied_seq, seq)'. This causes the
+'offset' to be negative in tcp_read_sock()->tcp_recv_skb() when
+processing new incoming packets (sk->copied_seq - skb->seq becomes less
+than 0), and all subsequent packets will be dropped.
 
-  [ bp: Massage commit message. ]
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20241029092329.3857004-1-arnd@kernel.org
+Signed-off-by: Jiayuan Chen <mrpre@163.com>
+Link: https://lore.kernel.org/r/20241028065226.35568-1-mrpre@163.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/amd_nb.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/ipv4/tcp_bpf.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/amd_nb.h b/arch/x86/include/asm/amd_nb.h
-index 6f3b6aef47ba9..d0caac26533f2 100644
---- a/arch/x86/include/asm/amd_nb.h
-+++ b/arch/x86/include/asm/amd_nb.h
-@@ -116,7 +116,10 @@ static inline bool amd_gart_present(void)
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index fe6178715ba05..915286c3615a2 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -221,11 +221,11 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+ 				  int flags,
+ 				  int *addr_len)
+ {
+-	struct tcp_sock *tcp = tcp_sk(sk);
+ 	int peek = flags & MSG_PEEK;
+-	u32 seq = tcp->copied_seq;
+ 	struct sk_psock *psock;
++	struct tcp_sock *tcp;
+ 	int copied = 0;
++	u32 seq;
  
- #define amd_nb_num(x)		0
- #define amd_nb_has_feature(x)	false
--#define node_to_amd_nb(x)	NULL
-+static inline struct amd_northbridge *node_to_amd_nb(int node)
-+{
-+	return NULL;
-+}
- #define amd_gart_present(x)	false
+ 	if (unlikely(flags & MSG_ERRQUEUE))
+ 		return inet_recv_error(sk, msg, len, addr_len);
+@@ -238,7 +238,8 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+ 		return tcp_recvmsg(sk, msg, len, flags, addr_len);
  
- #endif
+ 	lock_sock(sk);
+-
++	tcp = tcp_sk(sk);
++	seq = tcp->copied_seq;
+ 	/* We may have received data on the sk_receive_queue pre-accept and
+ 	 * then we can not use read_skb in this context because we haven't
+ 	 * assigned a sk_socket yet so have no link to the ops. The work-around
 -- 
 2.43.0
 
