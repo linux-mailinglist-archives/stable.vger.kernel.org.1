@@ -1,60 +1,68 @@
-Return-Path: <stable+bounces-89619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECFEA9BB19C
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:52:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97A749BB1A0
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:52:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25EFB1C21AE8
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 10:52:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57E622822EF
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 10:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 614021B6D1D;
-	Mon,  4 Nov 2024 10:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D9C1BB6BA;
+	Mon,  4 Nov 2024 10:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VmzFaW8W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ikkd9HeP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1919B1B6D17;
-	Mon,  4 Nov 2024 10:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBA11B9835;
+	Mon,  4 Nov 2024 10:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730717462; cv=none; b=r/fhO1Cg/qbsWklQBhn+aRkpu0o22KKIS40cSqzqRhHNAAa/KwD51VHhr5ARAHbHSFOoht4yT3LvO+ny3RZdG/8XJFM0nQG7fYfbtSv18fEbBhN8GmbU69Dt9a1sIVESz5v575S8x8OK2C1v1a3OYQ0x5pOIWYhbBVUV/7ArBj4=
+	t=1730717465; cv=none; b=XrXGzVM+Kdca1h/yZshV3zEQyRUQAOm99U3wrxWX5A2SgIr01/MPRiAJD/LDzsvypCI2RlXCEEPWhTqyeNj69aJVNKhHVvd4QTzMCj0EtMozC61r+dchNfR/B6uN9juGLC52bAXTLPl9W/rSDI3XtKdpAT5zOt4OYVhJ1Vu3itk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730717462; c=relaxed/simple;
-	bh=iTGqIO9Es4XecuyLxjDR+ZPOneoUJN9I9mMLnY1w8JY=;
+	s=arc-20240116; t=1730717465; c=relaxed/simple;
+	bh=lL6mXjSjd898xb2vfgRX7EI4j+7rWrM/ViTiNlFpJII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PjAYmwFoqvu7Zp5Eq1QbTKYzX2lFKV+yzNZsHfKINKdWEv5BLRsb3uQsjzBKG3k7gz6gIMOQqP7Ds9UAfMkSng5CCcQOYgW0p2hJGsB+Ii0mFqFvWsnmXCRYwu/ZoPd+DBTNujG81XmpgjcMiIs5C7mTBigB2juUJUJnT/mLOWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VmzFaW8W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA338C4CED1;
-	Mon,  4 Nov 2024 10:51:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oFzj2dSWPPNwY1fmWKOuZM7fKZlo7/6AEq6F4ZnV7mby2UDchrB9sAf6ipp3BaMd446gYeLCjAEvD39unarXIs8w2t43LlnYW++yz1kTi1OmQYRqFzqhuaJdYNaurCXSUIZhOKkUuNdDtH6nu+8/IYzhMyZaoNifzxlzAi688o4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ikkd9HeP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C664C4CED5;
+	Mon,  4 Nov 2024 10:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730717461;
-	bh=iTGqIO9Es4XecuyLxjDR+ZPOneoUJN9I9mMLnY1w8JY=;
+	s=k20201202; t=1730717465;
+	bh=lL6mXjSjd898xb2vfgRX7EI4j+7rWrM/ViTiNlFpJII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VmzFaW8WzDHNcmx6GL9rpiIPTuABJIg63A50jb36S8MYlkW2OBcbth4UMMfoB3dC3
-	 hItUsPoGdp0yqvQQv2Z4AGgYD05l/Fa5Wmth2jgFhZxScd8OX13q9/8hyCrAwQW8ws
-	 rBporr4jMncVCwGgOyIVoqFahEVxHSodnMaSW0hgYo//GgkKPnlZB3LYur170UPAKJ
-	 QrntzWPcATFXH9F58XBADMT9qUVSu2CRsHbBC67PWpAjUoyTBDXFH24q9809Modfwt
-	 hpxTfekLntdpGTAXjaA/HxrTRFQEq5sngBBA+ho++DFbY+7MTU83JVExEB6H+uvg1d
-	 25Wme756zmOZw==
+	b=ikkd9HePx3FXHZlzIjjRN+N7z+fx6codO46B2zmcPuyUyxSo5XO443nUqXDz3UROY
+	 FXPhRxwuFhyzGxNYVxhc9uVJCgynSgbDWUcpyqtHLr5dPaq19G/JEKcNIbBfoJ65Q1
+	 lBlRFuMaaS1cseu/oKjBTne1lzNZ43j4d6Z1LJQ2FsUXjO2ZyXuZIb6YDL+eLpfjG3
+	 gd38eLNYkEQ/BgqDfcnWL5vttwI1KC4V0SGhqk4wTcEINKfotbmqpRUUhdyioJL/MY
+	 T87Fm7HwPPc8D6GQh1hEF0ZxhmiktUeTq4iMS2b8tL0l9WkRb49+fnjCtOW91Xg0Ei
+	 n27oY6Fp1oBew==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Hans de Goede <hdegoede@redhat.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	oder_chiou@realtek.com,
-	lgirdwood@gmail.com,
+	cezary.rojewski@intel.com,
+	liam.r.girdwood@linux.intel.com,
+	peter.ujfalusi@linux.intel.com,
+	yung-chuan.liao@linux.intel.com,
+	ranjani.sridharan@linux.intel.com,
+	kai.vehmanen@linux.intel.com,
 	perex@perex.cz,
 	tiwai@suse.com,
+	pierre-louis.bossart@linux.dev,
+	tomlohave@gmail.com,
+	u.kleine-koenig@baylibre.com,
+	alban.boye@protonmail.com,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 06/21] ASoC: codecs: rt5640: Always disable IRQs from rt5640_cancel_work()
-Date: Mon,  4 Nov 2024 05:49:42 -0500
-Message-ID: <20241104105048.96444-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.11 07/21] ASoC: Intel: bytcr_rt5640: Add support for non ACPI instantiated codec
+Date: Mon,  4 Nov 2024 05:49:43 -0500
+Message-ID: <20241104105048.96444-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241104105048.96444-1-sashal@kernel.org>
 References: <20241104105048.96444-1-sashal@kernel.org>
@@ -64,6 +72,7 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.6
@@ -71,100 +80,85 @@ Content-Transfer-Encoding: 8bit
 
 From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 032532f91a1d06d0750f16c49a9698ef5374a68f ]
+[ Upstream commit d48696b915527b5bcdd207a299aec03fb037eb17 ]
 
-Disable IRQs from rt5640_cancel_work(), this fixes a crash caused by
-the IRQ never getting freed when the driver is unbound from the i2c_client
-with jack-detection active:
+On some x86 Bay Trail tablets which shipped with Android as factory OS,
+the DSDT is so broken that the codec needs to be manually instantatiated
+by the special x86-android-tablets.ko "fixup" driver for cases like this.
 
-[  193.138780] rt5640 i2c-rt5640: ASoC: unknown pin LDO2
-[  193.138830] rt5640 i2c-rt5640: ASoC: unknown pin MICBIAS1
-[  193.671218] BUG: kernel NULL pointer dereference, address: 0000000000000078
-[  193.671239] #PF: supervisor read access in kernel mode
-[  193.671248] #PF: error_code(0x0000) - not-present page
-...
-[  193.671531]  ? asm_exc_page_fault+0x22/0x30
-[  193.671551]  ? rt5640_jack_inserted+0x10/0x80 [snd_soc_rt5640]
-[  193.671574]  rt5640_detect_headset+0x93/0x130 [snd_soc_rt5640]
-[  193.671596]  rt5640_jack_work+0x93/0x355 [snd_soc_rt5640]
+This means that the codec-dev cannot be retrieved through its ACPI fwnode,
+add support to the bytcr_rt5640 machine driver for such manually
+instantiated rt5640 i2c_clients.
+
+An example of a tablet which needs this is the Vexia EDU ATLA 10 tablet,
+which has been distributed to schools in the Spanish Andalucía region.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241024215612.92147-1-hdegoede@redhat.com
+Link: https://patch.msgid.link/20241024211615.79518-1-hdegoede@redhat.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5640.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ sound/soc/intel/boards/bytcr_rt5640.c | 33 ++++++++++++++++++++++++---
+ 1 file changed, 30 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/codecs/rt5640.c b/sound/soc/codecs/rt5640.c
-index 16f3425a3e35c..855139348edb4 100644
---- a/sound/soc/codecs/rt5640.c
-+++ b/sound/soc/codecs/rt5640.c
-@@ -2419,10 +2419,20 @@ static irqreturn_t rt5640_jd_gpio_irq(int irq, void *data)
- 	return IRQ_HANDLED;
- }
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index 4479825c08b5e..ba4293ae7c24f 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -17,6 +17,7 @@
+ #include <linux/acpi.h>
+ #include <linux/clk.h>
+ #include <linux/device.h>
++#include <linux/device/bus.h>
+ #include <linux/dmi.h>
+ #include <linux/gpio/consumer.h>
+ #include <linux/gpio/machine.h>
+@@ -32,6 +33,8 @@
+ #include "../atom/sst-atom-controls.h"
+ #include "../common/soc-intel-quirks.h"
  
--static void rt5640_cancel_work(void *data)
-+static void rt5640_disable_irq_and_cancel_work(void *data)
- {
- 	struct rt5640_priv *rt5640 = data;
- 
-+	if (rt5640->jd_gpio_irq_requested) {
-+		free_irq(rt5640->jd_gpio_irq, rt5640);
-+		rt5640->jd_gpio_irq_requested = false;
-+	}
++#define BYT_RT5640_FALLBACK_CODEC_DEV_NAME	"i2c-rt5640"
 +
-+	if (rt5640->irq_requested) {
-+		free_irq(rt5640->irq, rt5640);
-+		rt5640->irq_requested = false;
-+	}
+ enum {
+ 	BYT_RT5640_DMIC1_MAP,
+ 	BYT_RT5640_DMIC2_MAP,
+@@ -1698,9 +1701,33 @@ static int snd_byt_rt5640_mc_probe(struct platform_device *pdev)
+ 
+ 	codec_dev = acpi_get_first_physical_node(adev);
+ 	acpi_dev_put(adev);
+-	if (!codec_dev)
+-		return -EPROBE_DEFER;
+-	priv->codec_dev = get_device(codec_dev);
 +
- 	cancel_delayed_work_sync(&rt5640->jack_work);
- 	cancel_delayed_work_sync(&rt5640->bp_work);
- }
-@@ -2463,13 +2473,7 @@ static void rt5640_disable_jack_detect(struct snd_soc_component *component)
- 	if (!rt5640->jack)
- 		return;
++	if (codec_dev) {
++		priv->codec_dev = get_device(codec_dev);
++	} else {
++		/*
++		 * Special case for Android tablets where the codec i2c_client
++		 * has been manually instantiated by x86_android_tablets.ko due
++		 * to a broken DSDT.
++		 */
++		codec_dev = bus_find_device_by_name(&i2c_bus_type, NULL,
++					BYT_RT5640_FALLBACK_CODEC_DEV_NAME);
++		if (!codec_dev)
++			return -EPROBE_DEFER;
++
++		if (!i2c_verify_client(codec_dev)) {
++			dev_err(dev, "Error '%s' is not an i2c_client\n",
++				BYT_RT5640_FALLBACK_CODEC_DEV_NAME);
++			put_device(codec_dev);
++		}
++
++		/* fixup codec name */
++		strscpy(byt_rt5640_codec_name, BYT_RT5640_FALLBACK_CODEC_DEV_NAME,
++			sizeof(byt_rt5640_codec_name));
++
++		/* bus_find_device() returns a reference no need to get() */
++		priv->codec_dev = codec_dev;
++	}
  
--	if (rt5640->jd_gpio_irq_requested)
--		free_irq(rt5640->jd_gpio_irq, rt5640);
--
--	if (rt5640->irq_requested)
--		free_irq(rt5640->irq, rt5640);
--
--	rt5640_cancel_work(rt5640);
-+	rt5640_disable_irq_and_cancel_work(rt5640);
- 
- 	if (rt5640->jack->status & SND_JACK_MICROPHONE) {
- 		rt5640_disable_micbias1_ovcd_irq(component);
-@@ -2477,8 +2481,6 @@ static void rt5640_disable_jack_detect(struct snd_soc_component *component)
- 		snd_soc_jack_report(rt5640->jack, 0, SND_JACK_BTN_0);
- 	}
- 
--	rt5640->jd_gpio_irq_requested = false;
--	rt5640->irq_requested = false;
- 	rt5640->jd_gpio = NULL;
- 	rt5640->jack = NULL;
- }
-@@ -2798,7 +2800,8 @@ static int rt5640_suspend(struct snd_soc_component *component)
- 	if (rt5640->jack) {
- 		/* disable jack interrupts during system suspend */
- 		disable_irq(rt5640->irq);
--		rt5640_cancel_work(rt5640);
-+		cancel_delayed_work_sync(&rt5640->jack_work);
-+		cancel_delayed_work_sync(&rt5640->bp_work);
- 	}
- 
- 	snd_soc_component_force_bias_level(component, SND_SOC_BIAS_OFF);
-@@ -3032,7 +3035,7 @@ static int rt5640_i2c_probe(struct i2c_client *i2c)
- 	INIT_DELAYED_WORK(&rt5640->jack_work, rt5640_jack_work);
- 
- 	/* Make sure work is stopped on probe-error / remove */
--	ret = devm_add_action_or_reset(&i2c->dev, rt5640_cancel_work, rt5640);
-+	ret = devm_add_action_or_reset(&i2c->dev, rt5640_disable_irq_and_cancel_work, rt5640);
- 	if (ret)
- 		return ret;
- 
+ 	/*
+ 	 * swap SSP0 if bytcr is detected
 -- 
 2.43.0
 
