@@ -1,103 +1,168 @@
-Return-Path: <stable+bounces-89756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 690399BBEEA
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 21:42:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0980C9BBFC0
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 22:13:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2A3DB21C83
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 20:42:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 114201C224B0
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 21:13:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099F71F585D;
-	Mon,  4 Nov 2024 20:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD4B21FAC39;
+	Mon,  4 Nov 2024 21:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c62b0P+8"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="OWxByPZE"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5167D1E47D8
-	for <stable@vger.kernel.org>; Mon,  4 Nov 2024 20:42:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A481FA279;
+	Mon,  4 Nov 2024 21:08:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730752952; cv=none; b=V2+R7AGxSkSvsHhhG1yxqMeGh5jTUxZYtoAcmtJ8zJcG65j8HpCOqGJUzfTkihhlnNVDrWDTrJ/3ctUfQ9amaY8tY/QCH1YPHMhjnVbblZG6nfvG46CC14MSJ6nDdpDYWxlVlga3YOGhg9KdslOXN8tgs/DgR3ZmMO2kWd7Adn4=
+	t=1730754528; cv=none; b=M0abLYnWyoBieWXl1WZygnJLb1DULLp7WvZffrmy7a5P5WORkopIPOkseIIz7FKnouReFnRi5S5JADJORwVDDRZEFMI47k9kKmmKx+mUnVIzJRkH4GVRQRN2r7n8fvDTNyk8AMgRDYEMSKm8qEOEqdTje1ElHyE3kdhneG75PUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730752952; c=relaxed/simple;
-	bh=ix7Kqk7GQmr/xV7w8jeE+AQaNlvDZOuASROq2dm+eZU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d25aScoLGIEPtv+Hj2zBoVFXDPbDlW5z7CTiQW5wfnS3QOrdH+A/yTYT0h0LuIpW2IOM7NaanLKw41ZvPu+JFjJYgHWVwba1aKTfiGEAd9gdEtM4kDG4yUi22S73wiUEKrsLZ1yK/baBzcCqnaIjQvFc+os9VdQSPNnY7Kqh82I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c62b0P+8; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1730752950;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7sMUGsUyl1WIe7UvWFagXtO9/bnq4SlWJJ0dMGdfYUo=;
-	b=c62b0P+853z8mYlOOrHRpw2MQ7ujH9KZyrPsy4Oqn8P6qbmbA0kU1dv83rKFCFKlZQnrAg
-	BXcS9hUZWaW4Yka7Hns0QN6uqrZHK2J8LSGiY9qrhmyh+UWMw7sGFvU67yBGzawzTnu+JL
-	8YGkP3tahvZwD3cwENeCn6AuVj98qrE=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-303-VNIcwlUvNPOHCeqEUhnltA-1; Mon,
- 04 Nov 2024 15:42:27 -0500
-X-MC-Unique: VNIcwlUvNPOHCeqEUhnltA-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1B2211955EB3;
-	Mon,  4 Nov 2024 20:42:25 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.224.168])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id D3EC019560AA;
-	Mon,  4 Nov 2024 20:42:21 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Mon,  4 Nov 2024 21:42:07 +0100 (CET)
-Date: Mon, 4 Nov 2024 21:42:03 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-	Andrei Vagin <avagin@google.com>, Kees Cook <kees@kernel.org>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Alexey Gladkov <legion@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] signal: restore the override_rlimit logic
-Message-ID: <20241104204202.GB26235@redhat.com>
-References: <20241104195419.3962584-1-roman.gushchin@linux.dev>
+	s=arc-20240116; t=1730754528; c=relaxed/simple;
+	bh=4CP/SPWpIe8+pNFJp0NcSCvOLSXKbdMTShd9YwafYb0=;
+	h=Date:To:From:Subject:Message-Id; b=qFoYA0RdPRlq6zQvORw7bCHFVr8EyRejrTLKr/bwz8l5H2u6culWHbvz6dPlavQkVJ9+pssWnU1bT+MVuJozjiakUrsARRmqaPVw3uHxGOYaKP8sPG0E3/8m4fD0aA7W4E/naJhT26ofElEqjowqjzSXGy1DfwYM58oGgp6WGtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=OWxByPZE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA87C4CECE;
+	Mon,  4 Nov 2024 21:08:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1730754527;
+	bh=4CP/SPWpIe8+pNFJp0NcSCvOLSXKbdMTShd9YwafYb0=;
+	h=Date:To:From:Subject:From;
+	b=OWxByPZEsPJFL1Ba1kOFAZPS8w7T01kMe4MaxgRitNlVQNE1YdCfodua7P2uywdDR
+	 m+zE5NwrM3vtRVjtnvmAXJdTAOm3EIxTfgMgYre4DlDTjjy/y+qevy9ErHyRmt5xVR
+	 TUZBoaMIfssNKgvzV3VH7bX0juPcDjJwbMDI5Q2o=
+Date: Mon, 04 Nov 2024 13:08:47 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,oleg@redhat.com,legion@kernel.org,kees@kernel.org,ebiederm@xmission.com,avagin@google.com,roman.gushchin@linux.dev,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + signal-restore-the-override_rlimit-logic.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241104210847.CEA87C4CECE@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241104195419.3962584-1-roman.gushchin@linux.dev>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On 11/04, Roman Gushchin wrote:
->
-> -long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
-> +long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
-> +			    bool override_rlimit)
->  {
->  	/* Caller must hold a reference to ucounts */
->  	struct ucounts *iter;
-> @@ -320,7 +321,8 @@ long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
->  			goto unwind;
->  		if (iter == ucounts)
->  			ret = new;
-> -		max = get_userns_rlimit_max(iter->ns, type);
-> +		if (!override_rlimit)
-> +			max = get_userns_rlimit_max(iter->ns, type);
->  		/*
->  		 * Grab an extra ucount reference for the caller when
->  		 * the rlimit count was previously 0.
 
+The patch titled
+     Subject: signal: restore the override_rlimit logic
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     signal-restore-the-override_rlimit-logic.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/signal-restore-the-override_rlimit-logic.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Roman Gushchin <roman.gushchin@linux.dev>
+Subject: signal: restore the override_rlimit logic
+Date: Mon, 4 Nov 2024 19:54:19 +0000
+
+Prior to commit d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of
+ucounts") UCOUNT_RLIMIT_SIGPENDING rlimit was not enforced for a class of
+signals.  However now it's enforced unconditionally, even if
+override_rlimit is set.  This behavior change caused production issues.  
+
+For example, if the limit is reached and a process receives a SIGSEGV
+signal, sigqueue_alloc fails to allocate the necessary resources for the
+signal delivery, preventing the signal from being delivered with siginfo. 
+This prevents the process from correctly identifying the fault address and
+handling the error.  From the user-space perspective, applications are
+unaware that the limit has been reached and that the siginfo is
+effectively 'corrupted'.  This can lead to unpredictable behavior and
+crashes, as we observed with java applications.
+
+Fix this by passing override_rlimit into inc_rlimit_get_ucounts() and skip
+the comparison to max there if override_rlimit is set.  This effectively
+restores the old behavior.
+
+Link: https://lkml.kernel.org/r/20241104195419.3962584-1-roman.gushchin@linux.dev
+Fixes: d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of ucounts")
+Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+Co-developed-by: Andrei Vagin <avagin@google.com>
+Signed-off-by: Andrei Vagin <avagin@google.com>
 Acked-by: Oleg Nesterov <oleg@redhat.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: Alexey Gladkov <legion@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/user_namespace.h |    3 ++-
+ kernel/signal.c                |    3 ++-
+ kernel/ucount.c                |    6 ++++--
+ 3 files changed, 8 insertions(+), 4 deletions(-)
+
+--- a/include/linux/user_namespace.h~signal-restore-the-override_rlimit-logic
++++ a/include/linux/user_namespace.h
+@@ -141,7 +141,8 @@ static inline long get_rlimit_value(stru
+ 
+ long inc_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
+ bool dec_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
+-long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type);
++long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
++			    bool override_rlimit);
+ void dec_rlimit_put_ucounts(struct ucounts *ucounts, enum rlimit_type type);
+ bool is_rlimit_overlimit(struct ucounts *ucounts, enum rlimit_type type, unsigned long max);
+ 
+--- a/kernel/signal.c~signal-restore-the-override_rlimit-logic
++++ a/kernel/signal.c
+@@ -419,7 +419,8 @@ __sigqueue_alloc(int sig, struct task_st
+ 	 */
+ 	rcu_read_lock();
+ 	ucounts = task_ucounts(t);
+-	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING);
++	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING,
++					    override_rlimit);
+ 	rcu_read_unlock();
+ 	if (!sigpending)
+ 		return NULL;
+--- a/kernel/ucount.c~signal-restore-the-override_rlimit-logic
++++ a/kernel/ucount.c
+@@ -307,7 +307,8 @@ void dec_rlimit_put_ucounts(struct ucoun
+ 	do_dec_rlimit_put_ucounts(ucounts, NULL, type);
+ }
+ 
+-long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
++long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
++			    bool override_rlimit)
+ {
+ 	/* Caller must hold a reference to ucounts */
+ 	struct ucounts *iter;
+@@ -320,7 +321,8 @@ long inc_rlimit_get_ucounts(struct ucoun
+ 			goto dec_unwind;
+ 		if (iter == ucounts)
+ 			ret = new;
+-		max = get_userns_rlimit_max(iter->ns, type);
++		if (!override_rlimit)
++			max = get_userns_rlimit_max(iter->ns, type);
+ 		/*
+ 		 * Grab an extra ucount reference for the caller when
+ 		 * the rlimit count was previously 0.
+_
+
+Patches currently in -mm which might be from roman.gushchin@linux.dev are
+
+signal-restore-the-override_rlimit-logic.patch
 
 
