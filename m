@@ -1,137 +1,87 @@
-Return-Path: <stable+bounces-89761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDDEE9BC0A9
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 23:15:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9CEB9BC0C9
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 23:22:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A8781F229E7
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 22:15:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F2E82848B2
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 22:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A1091FCF4D;
-	Mon,  4 Nov 2024 22:14:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="S6YNLvIL"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A39B21FCF5F;
+	Mon,  4 Nov 2024 22:22:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C1814B94F;
-	Mon,  4 Nov 2024 22:14:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 752901FCC69;
+	Mon,  4 Nov 2024 22:22:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730758498; cv=none; b=ENaPCkCL0EmgfI6biuJ+ah7Q8CoyV/mISToaitho+hdMhLFFyLhZX4OuuRitGq38YAmurKl3pSR5v0tA8VP41qkNevs5l+N6MSwHtHFA2RctYF68zmfyAtHjT5MhhNjpnoaviDqstCq6QU9EicZUyJVBzhdMIVHVRCUvyaLg56E=
+	t=1730758962; cv=none; b=r1VgpINLAwIw1WaEpmLndCg6P8Fbvfk1At3D3peq/o0Z9B8CFBNLjPlg7XycmAXOXNXZDq4kE3KZRsa2zlC0LsV9ByIB5kk0fDj57fRrwaZ8dkojW9AcJMVGznaimwDWR0lZKb4z4iQCGE3w/S/Yfnq6a1UgsAG0ry9b+Ecatb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730758498; c=relaxed/simple;
-	bh=8gNlAg/eMJYboTxrfuf5i9OgCOeeHHti/glrou6bBwM=;
+	s=arc-20240116; t=1730758962; c=relaxed/simple;
+	bh=fQDuHF64QCcKGHlSWkxvwvE/0DUo+g/TMJYzEtZ3hKg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hj4qI3ZPNOJKZODNwe8HK9T18B2YqKvHMyWCAaH0zGGuZ6sQTqbs8VdC9jzLH4GTLiMUCVv+LXysrq8NQsaEyu2PIXaljHgxJNsw9hkPwnuH4GSGEwUNf+ONM9okuDiZS1MydlQzlicRUM9q9/Heu2+VzX84We8Rx3oROKaOnoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=S6YNLvIL; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id A4512526;
-	Mon,  4 Nov 2024 23:14:46 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1730758487;
-	bh=8gNlAg/eMJYboTxrfuf5i9OgCOeeHHti/glrou6bBwM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S6YNLvILfM8oY7VUpVMohLg6BVmDZA7cP1QxIDYySgOat6peEF8HrfEhs/pQM0p4L
-	 TQZaubJ/d0g110R/0KzJ65J7gQjecuyRB2a4LVj0Zk6Z5zMW/mr+/J0oB3shtNjwUp
-	 UIWdvqEhgj7WpPoJ+KiWuchgBFcdBB1rhooZ7mE0=
-Date: Tue, 5 Nov 2024 00:14:48 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>, linux-media@vger.kernel.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=tPEQU89UdZqgLMCfVRy7sjS0AUMf+d08C3osAUHWjLsl4V3CqOpiPP5/8YdqfBENpfU2HMiVIxciB/H+BbyKC2qF6/XVqeECNR8Z4ZZXbQVh/5qkQ4g5Figo9Y2blVbOgJwtxTERhy8UDciXUKnZRfx/NZYTlwFSECyeum6muKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B7ECC4CECE;
+	Mon,  4 Nov 2024 22:22:39 +0000 (UTC)
+Date: Mon, 4 Nov 2024 22:22:37 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Matthew Wilcox <willy@infradead.org>,
+	Koichiro Den <koichiro.den@gmail.com>,
+	Peter Collingbourne <pcc@google.com>, cl@linux.com,
+	penberg@kernel.org, rientjes@google.com, iamjoonsoo.kim@lge.com,
+	akpm@linux-foundation.org, roman.gushchin@linux.dev,
+	42.hyeyoo@gmail.com, kees@kernel.org, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] media: uvcvideo: Fix crash during unbind if gpio unit is
- in use
-Message-ID: <20241104221448.GB19140@pendragon.ideasonboard.com>
-References: <20241031-uvc-crashrmmod-v1-1-059fe593b1e6@chromium.org>
+Subject: Re: [PATCH] mm/slab: fix warning caused by duplicate kmem_cache
+ creation in kmem_buckets_create
+Message-ID: <ZylJLXSTAY8TLijb@arm.com>
+References: <20241104150837.2756047-1-koichiro.den@gmail.com>
+ <ZykLxG5Tyet5HcwL@casper.infradead.org>
+ <8202821f-05bc-41f8-9de3-bf78899a7c7b@suse.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241031-uvc-crashrmmod-v1-1-059fe593b1e6@chromium.org>
+In-Reply-To: <8202821f-05bc-41f8-9de3-bf78899a7c7b@suse.cz>
 
-Hi Ricardo,
-
-Thank you for the patch.
-
-On Thu, Oct 31, 2024 at 01:59:08PM +0000, Ricardo Ribalda wrote:
-> We used the wrong device for the device managed functions. We used the
-> usb device, when we should be using the interface device.
+On Mon, Nov 04, 2024 at 07:16:20PM +0100, Vlastimil Babka wrote:
+> On 11/4/24 19:00, Matthew Wilcox wrote:
+> > On Tue, Nov 05, 2024 at 12:08:37AM +0900, Koichiro Den wrote:
+> >> Commit b035f5a6d852 ("mm: slab: reduce the kmalloc() minimum alignment
+> >> if DMA bouncing possible") reduced ARCH_KMALLOC_MINALIGN to 8 on arm64.
+> >> However, with KASAN_HW_TAGS enabled, arch_slab_minalign() becomes 16.
+> >> This causes kmalloc_caches[*][8] to be aliased to kmalloc_caches[*][16],
+> >> resulting in kmem_buckets_create() attempting to create a kmem_cache for
+> >> size 16 twice. This duplication triggers warnings on boot:
+> > 
+> > Wouldn't this be easier?
 > 
-> If we unbind the driver from the usb interface, the cleanup functions
-> are never called. In our case, the IRQ is never disabled.
+> They wanted it to depend on actual HW capability / kernel parameter, see
+> d949a8155d13 ("mm: make minimum slab alignment a runtime property")
 > 
-> If an IRQ is triggered, it will try to access memory sections that are
-> already free, causing an OOPS.
-> 
-> Luckily this bug has small impact, as it is only affected by devices
-> with gpio units and the user has to unbind the device, a disconnect will
-> not trigger this error.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> ---
->  drivers/media/usb/uvc/uvc_driver.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-> index a96f6ca0889f..1100d3ed342e 100644
-> --- a/drivers/media/usb/uvc/uvc_driver.c
-> +++ b/drivers/media/usb/uvc/uvc_driver.c
-> @@ -1295,14 +1295,14 @@ static int uvc_gpio_parse(struct uvc_device *dev)
->  	struct gpio_desc *gpio_privacy;
->  	int irq;
->  
-> -	gpio_privacy = devm_gpiod_get_optional(&dev->udev->dev, "privacy",
-> +	gpio_privacy = devm_gpiod_get_optional(&dev->intf->dev, "privacy",
->  					       GPIOD_IN);
->  	if (IS_ERR_OR_NULL(gpio_privacy))
->  		return PTR_ERR_OR_ZERO(gpio_privacy);
->  
->  	irq = gpiod_to_irq(gpio_privacy);
->  	if (irq < 0)
-> -		return dev_err_probe(&dev->udev->dev, irq,
-> +		return dev_err_probe(&dev->intf->dev, irq,
+> Also Catalin's commit referenced above was part of the series that made the
+> alignment more dynamic for other cases IIRC. So I doubt we can simply reduce
+> it back to a build-time constant.
 
-Not strictly needed, but it doesn't hurt.
+I principle, I wouldn't reduce it back to constant though the 8 vs 16
+difference is not significant. It matter if one enables KASAN_HW_TAGS
+and wants to run it on hardware without MTE, getting the *-8 caches
+back.
 
->  				     "No IRQ for privacy GPIO\n");
->  
->  	unit = uvc_alloc_new_entity(dev, UVC_EXT_GPIO_UNIT,
-> @@ -1333,7 +1333,7 @@ static int uvc_gpio_init_irq(struct uvc_device *dev)
->  	if (!unit || unit->gpio.irq < 0)
->  		return 0;
->  
-> -	return devm_request_threaded_irq(&dev->udev->dev, unit->gpio.irq, NULL,
-> +	return devm_request_threaded_irq(&dev->intf->dev, unit->gpio.irq, NULL,
-
-We still have an issue here. The IRQ can be triggered in the small time
-window between the point where the driver frees memory and the time the
-IRQ is disabled by devm after .remove() returns. Managing the IRQ
-manually would be a simple fix, there could be other options.
-
->  					 uvc_gpio_irq,
->  					 IRQF_ONESHOT | IRQF_TRIGGER_FALLING |
->  					 IRQF_TRIGGER_RISING,
-> 
-> ---
-> base-commit: c7ccf3683ac9746b263b0502255f5ce47f64fe0a
-> change-id: 20241031-uvc-crashrmmod-666de3fc9141
+That said, I haven't managed to trigger this warning yet. Do I need
+other config options than KASAN_HW_TAGS and DEBUG_VM?
 
 -- 
-Regards,
-
-Laurent Pinchart
+Catalin
 
