@@ -1,146 +1,162 @@
-Return-Path: <stable+bounces-89759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D2D89BC047
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 22:46:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 998D39BC04A
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 22:48:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7312282B4C
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 21:46:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25FF9B216B9
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 21:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E8D1925B0;
-	Mon,  4 Nov 2024 21:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09951925B0;
+	Mon,  4 Nov 2024 21:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aqwh2TOQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BrGuTvCT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BC618EB1;
-	Mon,  4 Nov 2024 21:46:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C9218EB1;
+	Mon,  4 Nov 2024 21:48:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730756777; cv=none; b=GY3mCSQrzkOP+jmyD1ZhowrXw/fRZYT9brEyC3ORL9W7gfwrEmZKfoZr85Kncvd6WKIl05qtLkqM5Klf8jkiQk79Y4x4B2XdFnRoxUU8QM61zcrL9a4t4MLcM34wHISreGtBENPW9L0V7tFkpM63joUpQYgF3keJcuzny3xmB6E=
+	t=1730756884; cv=none; b=casjG3ec2mzcme8RwYOXm7T76/JmOcxNnYRBfnwZ6Sqtg5qvtFbJ3SyH1Yd3nnkkvMR741+h5ddpOvBiyrSw09iUqmq6xl6iQ5G2vEAMadxMTlsReE7hnEE8edrzbJGb7nmh1bKs9sIb8HERdD/cC4sb26+pzLjkNuATnJb2XKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730756777; c=relaxed/simple;
-	bh=jQrf2IzB+9baC2AWDlbIQ5Z/capJLji1JhAPGBzczZI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U9YOhQaXJGx7K6fw1+pcv5PXAMLlVBkuCCStIbB0tQIbLQ3wNvgM0KR7Q8cECoe9w48zcdgL9THH1HIZf1NWHcAXdZBYsDpC48gOd7tUvy3oJDUmPTb+VH6LJHJM1Y1tgqNgAcjH5Dc6eNQaq61yl0pvRc79jPaUI8SqvKRUY2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aqwh2TOQ; arc=none smtp.client-ip=209.85.219.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6cc03b649f2so34612056d6.3;
-        Mon, 04 Nov 2024 13:46:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730756775; x=1731361575; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oySQVcyxJVglp4lRm/JqHPvjAGIdg8A9FWd8akmI8B0=;
-        b=aqwh2TOQq7cq0BHPJfD5vRTRBiTYk8jbDaZIQE77BFJ0x0ho2+x33Cmsx3WJanMdTo
-         zBpNPEuYYZcjxDgtLP73h8iu03ySfkbRx2hkuPBNVB+p+GSMZC976MawmN1YmsFQzKy/
-         IfLqIcA6tJ3pziZI/lMbE9OVeaFG/gQvpcInson6HxfWURS6ywlpGKzUi9RZjYPjdWxw
-         ndPuU2CNocUKFIsDF0frLe0LjLlr75Hit8ZqHoRQQEPoeK86TE1whbovEe9+xg07A2mM
-         QxFkx2y75+O/cczcCeriW6M5PkCLXWJEpmebgmAepX522oWeRhgxhhriH/Knrcj0KctM
-         PADQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730756775; x=1731361575;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oySQVcyxJVglp4lRm/JqHPvjAGIdg8A9FWd8akmI8B0=;
-        b=gW7qCRh7p8ltB0bdUqcac2/xtXFmNVl3JUiwHzszQpWBhPltva/yVNHtsgqb88xTaq
-         TAnGuQwve5ZDovEUJOgd8QnT5/Zj7WB4XMgT3ICUsV5WtdKmSdhfJfXXuiNn+brgdQ7J
-         59Q7O8kO/BCT1xYsPNfc8ek8zxbYyFlP2IKOLSda5pxLi5J53aaGr7lEF7YBkktK5M2G
-         SURsu0/klNZcTj3peblNdlY7hXOo4ysgIRCXXSI9V/MCqXpIN/4qQuLHmzmf8zkPoHOX
-         QlZXmhjilLiBdnb4ltIh5HCbnPMpIzn3LoRW7Gn1o1lQu8xJMYSef37zEjamXh0TJn2/
-         VbAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUoflnJLFnUugmuqKhCob4JUsmh1197uakDWs7w2OMHdSxh4kdTa+DSLV2eBg4l/36eaj5CSxjgQLPc+c47lA==@vger.kernel.org, AJvYcCWNAZ/OI893IywAuMQNAsis4gcy8KPWrGv77rNysgsqd8Abd7aBP38tZTYKOLCx+zI67usyiZvUUZBI7co=@vger.kernel.org, AJvYcCXRKHhbXaaTOUYJnZSjPy+0qeMQhMQKDWx40bDb/6n634dxLOiRwiYSuP7mYn3+VNlN7Fq+HSnB@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLgurno9Llpl0A9G7StzB616LL3Z8SHTMdZ8boIwOzTSHjhMXT
-	Hjmp8iTPPyNe/gCDsDqeyjTpthsmeA4u50my3RKMEd/aC+fmvSfaxJcbC2twQOg6aQlLKMBC7G1
-	1A5UEU+pbqrwMiOsZlPwoh24cJEg=
-X-Google-Smtp-Source: AGHT+IGH1021JFcmTnLwpVIFDUO1OGNec/ftzrIXcEEuDIUhRueOKVPBg6x1N1AsqBoHeUJ/MvRTBIcKRX4KCon5N6A=
-X-Received: by 2002:a05:6214:459f:b0:6cb:460c:61dc with SMTP id
- 6a1803df08f44-6d351a935f3mr302531946d6.11.1730756775045; Mon, 04 Nov 2024
- 13:46:15 -0800 (PST)
+	s=arc-20240116; t=1730756884; c=relaxed/simple;
+	bh=z0z+VhjQxXwDo/BAhp8d3UQo5IF5+NwMLHi6UsNUgSw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZQurbh37gaWjHCL5Lk7Ee2B+i4a2t2Ce91lGhMST3mNsaqX5M3xTbn60L3v2UeIXADsMZobda2SkbjbYxs3VCdS07WS7SgNRFEjPz/eRNKMYEdlwgkjHndUaovAlqLTrdWGSmwYjjclVPYZoK3CvIMGE7lkfJscTB0ZWt+51qOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BrGuTvCT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68635C4CED1;
+	Mon,  4 Nov 2024 21:48:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730756883;
+	bh=z0z+VhjQxXwDo/BAhp8d3UQo5IF5+NwMLHi6UsNUgSw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BrGuTvCTYJuIo1Jo7ImUNBx+XSuw3Zhr35UL3sC2CG6HK/VzEM8eBLkJfKO3JEWmN
+	 CJis85i9X7/cPd3y24nLsPPMtIOKevF+ilfLw3+7AyW9LhCt/TBAMfzKUQ9MqeT5Mu
+	 ZP0vplu6Q5/7JoCz94rGfSfa++XCtVANIjM0PCL0ShIyP86aVfdDs2tiv/n1JSv8yr
+	 hVR8Gl5WwCcl5msN568wXE2jmRtvqcp1P3EOzDsfGjmVmbe/NDx7MEPwk0fpAO35qF
+	 20000jsaqG1EtnV7EL6m8SnQwkLtSffLfKeD/yz6Kc06GTGF0TXH6xX79XyzNlXL48
+	 yAffCyEKFy1nw==
+Date: Mon, 4 Nov 2024 22:47:56 +0100
+From: Alexey Gladkov <legion@kernel.org>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+	Andrei Vagin <avagin@google.com>, Kees Cook <kees@kernel.org>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Oleg Nesterov <oleg@redhat.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] signal: restore the override_rlimit logic
+Message-ID: <ZylBDEjygL7meU4r@example.org>
+References: <20241104195419.3962584-1-roman.gushchin@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241030002856.2103752-1-ovt@google.com>
-In-Reply-To: <20241030002856.2103752-1-ovt@google.com>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Mon, 4 Nov 2024 22:46:03 +0100
-Message-ID: <CAOQ4uxi_TxU2Kwa31h0LYYoMyUq2kpM0CGpfFd+0Yc158yDgzA@mail.gmail.com>
-Subject: Re: [PATCH] ovl: properly handle large files in ovl_security_fileattr
-To: Oleksandr Tymoshenko <ovt@google.com>
-Cc: Miklos Szeredi <miklos@szeredi.hu>, stable@vger.kernel.org, 
-	Miklos Szeredi <mszeredi@redhat.com>, linux-unionfs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241104195419.3962584-1-roman.gushchin@linux.dev>
 
-On Wed, Oct 30, 2024 at 1:29=E2=80=AFAM Oleksandr Tymoshenko <ovt@google.co=
-m> wrote:
->
-> dentry_open in ovl_security_fileattr fails for any file
-> larger than 2GB if open method of the underlying filesystem
-> calls generic_file_open (e.g. fusefs).
->
-> The issue can be reproduce using the following script:
-> (passthrough_ll is an example app from libfuse).
->
->   $ D=3D/opt/test/mnt
->   $ mkdir -p ${D}/{source,base,top/uppr,top/work,ovlfs}
->   $ dd if=3D/dev/zero of=3D${D}/source/zero.bin bs=3D1G count=3D2
->   $ passthrough_ll -o source=3D${D}/source ${D}/base
->   $ mount -t overlay overlay \
->       -olowerdir=3D${D}/base,upperdir=3D${D}/top/uppr,workdir=3D${D}/top/=
-work \
->       ${D}/ovlfs
->   $ chmod 0777 ${D}/mnt/ovlfs/zero.bin
->
-> Running this script results in "Value too large for defined data type"
-> error message from chmod.
->
-> Signed-off-by: Oleksandr Tymoshenko <ovt@google.com>
-> Fixes: 72db82115d2b ("ovl: copy up sync/noatime fileattr flags")
-> Cc: stable@vger.kernel.org # v5.15+
+On Mon, Nov 04, 2024 at 07:54:19PM +0000, Roman Gushchin wrote:
+> Prior to commit d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of
+> ucounts") UCOUNT_RLIMIT_SIGPENDING rlimit was not enforced for a class
+> of signals. However now it's enforced unconditionally, even if
+> override_rlimit is set. This behavior change caused production issues.
+> 
+> For example, if the limit is reached and a process receives a SIGSEGV
+> signal, sigqueue_alloc fails to allocate the necessary resources for the
+> signal delivery, preventing the signal from being delivered with
+> siginfo. This prevents the process from correctly identifying the fault
+> address and handling the error. From the user-space perspective,
+> applications are unaware that the limit has been reached and that the
+> siginfo is effectively 'corrupted'. This can lead to unpredictable
+> behavior and crashes, as we observed with java applications.
+> 
+> Fix this by passing override_rlimit into inc_rlimit_get_ucounts() and
+> skip the comparison to max there if override_rlimit is set. This
+> effectively restores the old behavior.
+> 
+> v2: refactor to make the logic simpler (Eric, Oleg, Alexey)
+> 
+> Fixes: d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of ucounts")
+> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+> Co-developed-by: Andrei Vagin <avagin@google.com>
+> Signed-off-by: Andrei Vagin <avagin@google.com>
+> Cc: Kees Cook <kees@kernel.org>
+> Cc: "Eric W. Biederman" <ebiederm@xmission.com>
+> Cc: Alexey Gladkov <legion@kernel.org>
+> Cc: Oleg Nesterov <oleg@redhat.com>
+> Cc: <stable@vger.kernel.org>
 
-Applied.
-
-Thanks,
-Amir,
+Acked-by: Alexey Gladkov <legion@kernel.org>
 
 > ---
->  fs/overlayfs/inode.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
->
-> diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
-> index 35fd3e3e1778..baa54c718bd7 100644
-> --- a/fs/overlayfs/inode.c
-> +++ b/fs/overlayfs/inode.c
-> @@ -616,8 +616,13 @@ static int ovl_security_fileattr(const struct path *=
-realpath, struct fileattr *f
->         struct file *file;
->         unsigned int cmd;
->         int err;
-> +       unsigned int flags;
-> +
-> +       flags =3D O_RDONLY;
-> +       if (force_o_largefile())
-> +               flags |=3D O_LARGEFILE;
->
-> -       file =3D dentry_open(realpath, O_RDONLY, current_cred());
-> +       file =3D dentry_open(realpath, flags, current_cred());
->         if (IS_ERR(file))
->                 return PTR_ERR(file);
->
-> --
-> 2.47.0.163.g1226f6d8fa-goog
->
+>  include/linux/user_namespace.h | 3 ++-
+>  kernel/signal.c                | 3 ++-
+>  kernel/ucount.c                | 6 ++++--
+>  3 files changed, 8 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/linux/user_namespace.h b/include/linux/user_namespace.h
+> index 3625096d5f85..7183e5aca282 100644
+> --- a/include/linux/user_namespace.h
+> +++ b/include/linux/user_namespace.h
+> @@ -141,7 +141,8 @@ static inline long get_rlimit_value(struct ucounts *ucounts, enum rlimit_type ty
+>  
+>  long inc_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
+>  bool dec_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
+> -long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type);
+> +long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
+> +			    bool override_rlimit);
+>  void dec_rlimit_put_ucounts(struct ucounts *ucounts, enum rlimit_type type);
+>  bool is_rlimit_overlimit(struct ucounts *ucounts, enum rlimit_type type, unsigned long max);
+>  
+> diff --git a/kernel/signal.c b/kernel/signal.c
+> index 4344860ffcac..cbabb2d05e0a 100644
+> --- a/kernel/signal.c
+> +++ b/kernel/signal.c
+> @@ -419,7 +419,8 @@ __sigqueue_alloc(int sig, struct task_struct *t, gfp_t gfp_flags,
+>  	 */
+>  	rcu_read_lock();
+>  	ucounts = task_ucounts(t);
+> -	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING);
+> +	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING,
+> +					    override_rlimit);
+>  	rcu_read_unlock();
+>  	if (!sigpending)
+>  		return NULL;
+> diff --git a/kernel/ucount.c b/kernel/ucount.c
+> index 16c0ea1cb432..49fcec41e5b4 100644
+> --- a/kernel/ucount.c
+> +++ b/kernel/ucount.c
+> @@ -307,7 +307,8 @@ void dec_rlimit_put_ucounts(struct ucounts *ucounts, enum rlimit_type type)
+>  	do_dec_rlimit_put_ucounts(ucounts, NULL, type);
+>  }
+>  
+> -long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
+> +long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
+> +			    bool override_rlimit)
+>  {
+>  	/* Caller must hold a reference to ucounts */
+>  	struct ucounts *iter;
+> @@ -320,7 +321,8 @@ long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
+>  			goto unwind;
+>  		if (iter == ucounts)
+>  			ret = new;
+> -		max = get_userns_rlimit_max(iter->ns, type);
+> +		if (!override_rlimit)
+> +			max = get_userns_rlimit_max(iter->ns, type);
+>  		/*
+>  		 * Grab an extra ucount reference for the caller when
+>  		 * the rlimit count was previously 0.
+> -- 
+> 2.47.0.199.ga7371fff76-goog
+> 
+
+-- 
+Rgrds, legion
+
 
