@@ -1,112 +1,100 @@
-Return-Path: <stable+bounces-89594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9249A9BAAF4
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 03:40:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F909BAAF9
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 03:42:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5323C28230F
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 02:40:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2D1B1C20B2D
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 02:42:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A852454723;
-	Mon,  4 Nov 2024 02:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB50315B987;
+	Mon,  4 Nov 2024 02:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="UHircWr8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vo8BDgS3"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12382F5A;
-	Mon,  4 Nov 2024 02:40:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A542F5A
+	for <stable@vger.kernel.org>; Mon,  4 Nov 2024 02:42:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730688021; cv=none; b=WY7D31Ub0CarOZwe/5ThDFHsw5MCBvwNr8hbOciAyDuHCabYQ2zWHdI1Hbe52lFVnbdMVygvycsuQfN0mjmBWl9Wzw/kHRuYNGjewPILqrTHD3rzXehWMpepLgTztMAbZm5kOW6iwtrJwBGYDcITdK3qb5cXSevkbBQRUB3UerI=
+	t=1730688155; cv=none; b=cT3AQVCTRBZNLSdHykFMEhraGT7IeNN0lyiH5wtngeJWXLY1d2GTQ82t2LSrTEsMeTIRjAvBdtBIxmEChWKZ4TYh5DwR+ilcYhyZJCMTyC2M2tXN9UPE3gNfrA1BOG9z/aiSAD5qRqXOCsrcLnF3vl98ieFSs7TUjV/NdlyeNnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730688021; c=relaxed/simple;
-	bh=4rckS7tjwf53kSMhsPL6nIZdmgsZ6iarLQSoBGFKFA4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=K1hQg4VtXG0gv0wjyfk8OG9lYpcMgDUnhDl6z0wcu1ysqft1t+DuUlEkOfl48rHfKilI4IWrp+cN5c5NihSiwWP39pze6DJ8G1l5/haAnykCBZyW9xQQl++J7kbZuFMOJs9VFBdErXJNbLgCXZtgkM8/Rp0EVR2QHXnXtuBQ64g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=UHircWr8; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=bOAOn
-	tMqhhUlsnWUH1umWGPy1fVxOXIy1Q1kVpQi95I=; b=UHircWr82DnRyeaHWv0cy
-	0LanU3oQyFJHhxrD1YRdydp3OagZJ52MGVkcQut1cSzpvz63Fch3SQvBAN7UurMR
-	/Z5Cw6oTob9ZU/CwU4OV5RwN8VuN6faGx7UBE4EdL37Yl1p5loFJxlNe+NQyYogY
-	fHsuda45++hW/obIQClC7U=
-Received: from localhost.localdomain (unknown [111.48.69.247])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wDXf5T2MyhnTib3Ag--.24033S2;
-	Mon, 04 Nov 2024 10:39:50 +0800 (CST)
-From: chenchangcheng <ccc194101@163.com>
-To: laurent.pinchart@ideasonboard.com,
-	mchehab@kernel.org
-Cc: linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	chenchangcheng <ccc194101@163.com>
-Subject: [PATCH] media: uvcvideo:Create input device for all uvc devices with status endpoints.
-Date: Mon,  4 Nov 2024 10:39:47 +0800
-Message-Id: <20241104023947.826707-1-ccc194101@163.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1730688155; c=relaxed/simple;
+	bh=DsBMO5PsU9G+AWKLnyFg8R/GdDfxg7/McvtsubaFLP8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=u6ZwAdqeA4F5mWtA9FaSvto/Q7NF48UpFbXWLZnTOVx4cg6Rq6cDX1dw1fb/fr1RkIko6K7+Cv9TBBf2Ba4jovAuDg36WO5Ex0PJXipytop1USE8rME5U0Q9ih+9/Lwv+tc7RjqgO7Hj4UTibY1ZEA7D1fbLE8FzUMBazkzySlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vo8BDgS3; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730688154; x=1762224154;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=DsBMO5PsU9G+AWKLnyFg8R/GdDfxg7/McvtsubaFLP8=;
+  b=Vo8BDgS34x1LCBYSzqc6w5N/fX8yKOJopOP7trIiehov5SPoS9a63VN+
+   u2Mw3AaZUOitpjvAaGGHW5e/hQoC6pAMC2YTuLfLvmBddNMVhE7e18VSw
+   DpO+JJUbTYh+VhJtzCy9R3mYyw+7l3IZ5X+RKqEhV5pG/4BGyif//UGoG
+   UBCVH6bRBtqkH0Kr8RKgpyWatuZpGFzTc+XD02xx1WVKYSCEgcUNzUzv3
+   tL5NIvHXVID6Wxj63DGRL580uOCAZ5424pGUMVsBQrUxsEncpJscllvKw
+   QR7BQmrPvApuhzgi2fu4OAeWnbJLsxg7TC2pwquMPj0OkXDT15vjl05JC
+   Q==;
+X-CSE-ConnectionGUID: Y4gHwnGhTk2Rm5EDvzpL1A==
+X-CSE-MsgGUID: ZzYmAdFLSYSMClfTPRdZpw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11245"; a="40948249"
+X-IronPort-AV: E=Sophos;i="6.11,256,1725346800"; 
+   d="scan'208";a="40948249"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2024 18:42:33 -0800
+X-CSE-ConnectionGUID: L8aHyAnRSmGs1zypEQu82A==
+X-CSE-MsgGUID: 7qzIzJuqROe4nl4CuSzmRg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,256,1725346800"; 
+   d="scan'208";a="87453763"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by fmviesa003.fm.intel.com with ESMTP; 03 Nov 2024 18:42:32 -0800
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t7n30-000kOL-11;
+	Mon, 04 Nov 2024 02:42:30 +0000
+Date: Mon, 4 Nov 2024 10:42:05 +0800
+From: kernel test robot <lkp@intel.com>
+To: chenchangcheng <ccc194101@163.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] media: uvcvideo:Create input device for all uvc devices
+ with status endpoints.
+Message-ID: <Zyg0ffucS8iMvjdl@18dc9bc60085>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDXf5T2MyhnTib3Ag--.24033S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Kr1Dur4xXF1DArW5Zw13Jwb_yoW8Aw4fpa
-	y5CayYyry5JF4rG3WDtw1q93W5Cws2y343tFyfG39YvFn8JF1FkFy5try0grn5Ja4kAF4j
-	qan0y34UCayUZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pi6wZ5UUUUU=
-X-CM-SenderInfo: 5fffimiurqiqqrwthudrp/1tbiZQWN3mcoL1uKCwAAsJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241104023947.826707-1-ccc194101@163.com>
 
-Some applications need to check if there is an input device on the camera
-before proceeding to the next step. When there is no input device,
-the application will report an error.
-Create input device for all uvc devices with status endpoints.
-and only when bTriggerSupport and bTriggerUsage are one are
-allowed to report camera button.
+Hi,
 
-Fixes: 3bc22dc66a4f ("media: uvcvideo: Only create input devs if hw supports it")
-Signed-off-by: chenchangcheng <ccc194101@163.com>
----
- drivers/media/usb/uvc/uvc_status.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+Thanks for your patch.
 
-diff --git a/drivers/media/usb/uvc/uvc_status.c b/drivers/media/usb/uvc/uvc_status.c
-index a78a88c710e2..177640c6a813 100644
---- a/drivers/media/usb/uvc/uvc_status.c
-+++ b/drivers/media/usb/uvc/uvc_status.c
-@@ -44,9 +44,6 @@ static int uvc_input_init(struct uvc_device *dev)
- 	struct input_dev *input;
- 	int ret;
- 
--	if (!uvc_input_has_button(dev))
--		return 0;
--
- 	input = input_allocate_device();
- 	if (input == NULL)
- 		return -ENOMEM;
-@@ -110,10 +107,12 @@ static void uvc_event_streaming(struct uvc_device *dev,
- 		if (len <= offsetof(struct uvc_status, streaming))
- 			return;
- 
--		uvc_dbg(dev, STATUS, "Button (intf %u) %s len %d\n",
--			status->bOriginator,
--			status->streaming.button ? "pressed" : "released", len);
--		uvc_input_report_key(dev, KEY_CAMERA, status->streaming.button);
-+		if (uvc_input_has_button(dev)) {
-+			uvc_dbg(dev, STATUS, "Button (intf %u) %s len %d\n",
-+				status->bOriginator,
-+				status->streaming.button ? "pressed" : "released", len);
-+			uvc_input_report_key(dev, KEY_CAMERA, status->streaming.button);
-+		}
- 	} else {
- 		uvc_dbg(dev, STATUS, "Stream %u error event %02x len %d\n",
- 			status->bOriginator, status->bEvent, len);
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] media: uvcvideo:Create input device for all uvc devices with status endpoints.
+Link: https://lore.kernel.org/stable/20241104023947.826707-1-ccc194101%40163.com
+
 -- 
-2.25.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
