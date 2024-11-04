@@ -1,95 +1,81 @@
-Return-Path: <stable+bounces-89713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0037C9BB921
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 16:40:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 631DC9BB934
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 16:42:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83AEE1F2267B
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 15:40:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BFF77B23709
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 15:42:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 542AE1BFE01;
-	Mon,  4 Nov 2024 15:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F2A1BF804;
+	Mon,  4 Nov 2024 15:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="KkXBae4R";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="r76XiQJV";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="KkXBae4R";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="r76XiQJV"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Fgiwbrpg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83EB81BF804;
-	Mon,  4 Nov 2024 15:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D951BF81B
+	for <stable@vger.kernel.org>; Mon,  4 Nov 2024 15:42:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730734818; cv=none; b=AxJBJS6B41ElnN00txHuEqmTqOmmLRTWYuik13ek3wOX1mvxupyQai+pLteD2c2Xiy3Z+LV3gSa4NYRS2gfyFn23IEX+SVc40ncSQpBdFCr5Bcyo06mVU2akus+CG8tORWGfhOSQAyQlvG/ID10Oj009TiH+aWBNE1wnFFLmNzs=
+	t=1730734930; cv=none; b=uMlBc6aX1GV47R21u8mjmKHn7LULSDTgDFHWzsbkvTrw3UZrRw85PQYrXa8Rcd+Fun8U15g1sBsff4HUIfBF2SBXIDh/R1mbWG8Vij2eDa5cepakvmFKhtm8fVck3VRMCq5S3XB8QMaxi6s0mOH1sAusQL9dbC0Bz/jIFn7nFiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730734818; c=relaxed/simple;
-	bh=HxuiUfcTqcifbxADkWP58bQBTki/pU9aORvUINBUQXU=;
+	s=arc-20240116; t=1730734930; c=relaxed/simple;
+	bh=bIH098YsMBdaowd9d01WNDbF0uwTPu4KB66QbbQtD3g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jbmb0GbE7GFuM0aSkMEXgMA2+Hkgqeqkb+8o5yE/foZi5p/U1FBcrDIjkR80oO5bDQZvaHzJgV+fyrkAT91hdWnJpwCR6v62ONKelcpVDLyO0Olri+LysrUYIsExN4nAhFYmR4q0aZxfZ7Ec5/VXRg9dR2LJJbHcHChLOel3kiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=KkXBae4R; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=r76XiQJV; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=KkXBae4R; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=r76XiQJV; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 9D0321F7F5;
-	Mon,  4 Nov 2024 15:40:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1730734812; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	 In-Reply-To:Content-Type; b=QyO3Ncfv+Fh27B9TdYLQNzPT+uQM5l98DaD7fxxi2Dv6PNrtZl+UbQoZmLgqzXAgH74S8QTmIhP9B91dhjapHTgC444ow/Jywvz4+PD4iHR1fRlACtPcXKtafaowLhcTZdyJHzkv0ZjrfzrqqjODX4RhB77HtFq1zmMdQSt/RxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Fgiwbrpg; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730734927;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=9FM42PMqwddbsYCWzllPenk1QdNSJ/UI80tDK+Ud65s=;
-	b=KkXBae4RhT7D9H+yB9xzy3Z6/fd7NjrQkk0CBlMIe1T07SbdZVdMKGjFGImju/lmJ5HwHA
-	TR8RKX/0NHRuvp10gHNwNI3FGquk2JF42/hZDvtSlR9OtgL/Ll++JiCbL6w1HeNO51h+Cq
-	1wjQHNJ/oCfM59OM8FXqgNE2xMDaQI8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1730734812;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=9FM42PMqwddbsYCWzllPenk1QdNSJ/UI80tDK+Ud65s=;
-	b=r76XiQJVBKknrSNlof6zf7osiwNaBVpXcu29ZsCtbVmI14fp5e5UaHK8VgXJ0HzMzOHduj
-	OhfrAeVqbvZjVeDg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1730734812; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=9FM42PMqwddbsYCWzllPenk1QdNSJ/UI80tDK+Ud65s=;
-	b=KkXBae4RhT7D9H+yB9xzy3Z6/fd7NjrQkk0CBlMIe1T07SbdZVdMKGjFGImju/lmJ5HwHA
-	TR8RKX/0NHRuvp10gHNwNI3FGquk2JF42/hZDvtSlR9OtgL/Ll++JiCbL6w1HeNO51h+Cq
-	1wjQHNJ/oCfM59OM8FXqgNE2xMDaQI8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1730734812;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=9FM42PMqwddbsYCWzllPenk1QdNSJ/UI80tDK+Ud65s=;
-	b=r76XiQJVBKknrSNlof6zf7osiwNaBVpXcu29ZsCtbVmI14fp5e5UaHK8VgXJ0HzMzOHduj
-	OhfrAeVqbvZjVeDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 804BA13503;
-	Mon,  4 Nov 2024 15:40:12 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id QX39HtzqKGfUGAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 04 Nov 2024 15:40:12 +0000
-Message-ID: <9e6fd342-ef7f-4648-afa3-bf704c87bf8f@suse.cz>
-Date: Mon, 4 Nov 2024 16:40:12 +0100
+	bh=dmLegGizt/84R+PLLKjjl/45WGBvm2sV2L0gRIZ3+3I=;
+	b=Fgiwbrpgmohsr3vaLF5V4MMWWYwuCrZTch3In0j7hRPBE7yAh5CasP9Mg01TbMLWo7ctYt
+	ZG096YVPdTygBCwCPCEj4RAf+3mldH8oyPTqHqfSL0BAk5cwpnqYk4dupsWnX/lZl4KnHX
+	g24dUQ9vC6dDfGiTEUfusD9zBHL6wRM=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-629-OpnyRjdhNkumeTpr0SyDSw-1; Mon, 04 Nov 2024 10:42:06 -0500
+X-MC-Unique: OpnyRjdhNkumeTpr0SyDSw-1
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-431673032e6so26483985e9.0
+        for <stable@vger.kernel.org>; Mon, 04 Nov 2024 07:42:06 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730734925; x=1731339725;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=dmLegGizt/84R+PLLKjjl/45WGBvm2sV2L0gRIZ3+3I=;
+        b=jemt2YCK69eqrQ91EmnUW9HOOgAL0iOAe9mz/eX+xEMpxM2ewHYadEtWTJZ9rzPGU/
+         flWIJWLrHw3KV/XN2UDRqn+FixbRNjTOa5dC7AicYybWNDvIAMfpex5B+QuBuBWAWJGi
+         Rr0I4798jHGSNDtqf+zeudk7p+uXQh8z0y96fUOp3JggG7H4GAG4vfKh6/x8SDf17j/h
+         FYEJBMILqWkAffrqzKds8eaulBxaZ4VOWjJfV5xfdoCbUVPnlvv/YJooMxOJLKJhmhuk
+         VmlE8R8dr8AnXNVqlIIBLaGIHMp+4eJUZOFWszQrIm+1xZu8n8hADvbU6OpMW2Rn2BG6
+         fcoQ==
+X-Gm-Message-State: AOJu0Yygvm/3XQxbYCDreeQqMxTMnqUtuhmdrqJ5NowSV1MYHpNS3BNw
+	WlQ3C97YT7U2KbvEIEOdo4ZWnIT14PS1jrJ/zqQc5BGTb8f8U6mqrw3pyR17nxa5S8990yy8+PH
+	Rt5vDh/WFo8HNCLrcb5+5+4voDAm8kVHnvNOcPGS4y5jvGwP1Qtx0r6d9JJhTIqiWd728iECuxI
+	TS+xa1RUuTGQsbCeR+fr5jI4pLE9+VZiwzomCo
+X-Received: by 2002:a05:600c:458f:b0:431:5ed4:7e7d with SMTP id 5b1f17b1804b1-4327a82f755mr164738585e9.18.1730734924992;
+        Mon, 04 Nov 2024 07:42:04 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH5i9TvBLV1uI2Udtc0CcceejgcZjNq3+tSBwVrOAfSDxYy6+5wmBLLMPTfyn+R+p719JUZ1A==
+X-Received: by 2002:a05:600c:458f:b0:431:5ed4:7e7d with SMTP id 5b1f17b1804b1-4327a82f755mr164738215e9.18.1730734924482;
+        Mon, 04 Nov 2024 07:42:04 -0800 (PST)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd8e8549sm190894735e9.10.2024.11.04.07.42.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Nov 2024 07:42:03 -0800 (PST)
+Message-ID: <0f306d3d-38e3-4ce3-a161-7695ea9392cd@redhat.com>
+Date: Mon, 4 Nov 2024 16:42:01 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,354 +83,149 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/slab: fix warning caused by duplicate kmem_cache
- creation in kmem_buckets_create
+Subject: Re: [PATCH 6.6.y] mm: don't install PMD mappings when THPs are
+ disabled by the hw/process/vma
+To: stable@vger.kernel.org
+Cc: Leo Fu <bfu@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, Hugh Dickins <hughd@google.com>,
+ Kefeng Wang <wangkefeng.wang@huawei.com>,
+ Greg KH <gregkh@linuxfoundation.org>
+References: <2024101842-empty-espresso-c8a3@gregkh>
+ <20241022090952.4101444-1-david@redhat.com>
+From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
-To: Koichiro Den <koichiro.den@gmail.com>
-Cc: cl@linux.com, penberg@kernel.org, rientjes@google.com,
- iamjoonsoo.kim@lge.com, akpm@linux-foundation.org, roman.gushchin@linux.dev,
- 42.hyeyoo@gmail.com, kees@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20241104150837.2756047-1-koichiro.den@gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- EP+ylKVEKb0Q2A==
-In-Reply-To: <20241104150837.2756047-1-koichiro.den@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20241022090952.4101444-1-david@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	ARC_NA(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[linux.com,kernel.org,google.com,lge.com,linux-foundation.org,linux.dev,gmail.com,kvack.org,vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[]
-X-Spam-Flag: NO
-X-Spam-Level: 
 
-On 11/4/24 16:08, Koichiro Den wrote:
-> Commit b035f5a6d852 ("mm: slab: reduce the kmalloc() minimum alignment
-> if DMA bouncing possible") reduced ARCH_KMALLOC_MINALIGN to 8 on arm64.
-> However, with KASAN_HW_TAGS enabled, arch_slab_minalign() becomes 16.
-> This causes kmalloc_caches[*][8] to be aliased to kmalloc_caches[*][16],
-> resulting in kmem_buckets_create() attempting to create a kmem_cache for
-> size 16 twice. This duplication triggers warnings on boot:
+Gentle ping, XEN PV users reported an issue fixed by this fix upstream.
+
+On 22.10.24 11:09, David Hildenbrand wrote:
+> We (or rather, readahead logic :) ) might be allocating a THP in the
+> pagecache and then try mapping it into a process that explicitly disabled
+> THP: we might end up installing PMD mappings.
 > 
-> [    2.325108] ------------[ cut here ]------------
-> [    2.325135] kmem_cache of name 'memdup_user-16' already exists
-> [    2.325783] WARNING: CPU: 0 PID: 1 at mm/slab_common.c:107 __kmem_cache_create_args+0xb8/0x3b0
-> [    2.327957] Modules linked in:
-> [    2.328550] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-rc5mm-unstable-arm64+ #12
-> [    2.328683] Hardware name: QEMU QEMU Virtual Machine, BIOS 2024.02-2 03/11/2024
-> [    2.328790] pstate: 61000009 (nZCv daif -PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-> [    2.328911] pc : __kmem_cache_create_args+0xb8/0x3b0
-> [    2.328930] lr : __kmem_cache_create_args+0xb8/0x3b0
-> [    2.328942] sp : ffff800083d6fc50
-> [    2.328961] x29: ffff800083d6fc50 x28: f2ff0000c1674410 x27: ffff8000820b0598
-> [    2.329061] x26: 000000007fffffff x25: 0000000000000010 x24: 0000000000002000
-> [    2.329101] x23: ffff800083d6fce8 x22: ffff8000832222e8 x21: ffff800083222388
-> [    2.329118] x20: f2ff0000c1674410 x19: f5ff0000c16364c0 x18: ffff800083d80030
-> [    2.329135] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
-> [    2.329152] x14: 0000000000000000 x13: 0a73747369786520 x12: 79646165726c6120
-> [    2.329169] x11: 656820747563205b x10: 2d2d2d2d2d2d2d2d x9 : 0000000000000000
-> [    2.329194] x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
-> [    2.329210] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
-> [    2.329226] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000000
-> [    2.329291] Call trace:
-> [    2.329407]  __kmem_cache_create_args+0xb8/0x3b0
-> [    2.329499]  kmem_buckets_create+0xfc/0x320
-> [    2.329526]  init_user_buckets+0x34/0x78
-> [    2.329540]  do_one_initcall+0x64/0x3c8
-> [    2.329550]  kernel_init_freeable+0x26c/0x578
-> [    2.329562]  kernel_init+0x3c/0x258
-> [    2.329574]  ret_from_fork+0x10/0x20
-> [    2.329698] ---[ end trace 0000000000000000 ]---
+> This is a problem for s390x KVM, which explicitly remaps all PMD-mapped
+> THPs to be PTE-mapped in s390_enable_sie()->thp_split_mm(), before
+> starting the VM.
 > 
-> [    2.403704] ------------[ cut here ]------------
-> [    2.404716] kmem_cache of name 'msg_msg-16' already exists
-> [    2.404801] WARNING: CPU: 2 PID: 1 at mm/slab_common.c:107 __kmem_cache_create_args+0xb8/0x3b0
-> [    2.404842] Modules linked in:
-> [    2.404971] CPU: 2 UID: 0 PID: 1 Comm: swapper/0 Tainted: G        W          6.12.0-rc5mm-unstable-arm64+ #12
-> [    2.405026] Tainted: [W]=WARN
-> [    2.405043] Hardware name: QEMU QEMU Virtual Machine, BIOS 2024.02-2 03/11/2024
-> [    2.405057] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> [    2.405079] pc : __kmem_cache_create_args+0xb8/0x3b0
-> [    2.405100] lr : __kmem_cache_create_args+0xb8/0x3b0
-> [    2.405111] sp : ffff800083d6fc50
-> [    2.405115] x29: ffff800083d6fc50 x28: fbff0000c1674410 x27: ffff8000820b0598
-> [    2.405135] x26: 000000000000ffd0 x25: 0000000000000010 x24: 0000000000006000
-> [    2.405153] x23: ffff800083d6fce8 x22: ffff8000832222e8 x21: ffff800083222388
-> [    2.405169] x20: fbff0000c1674410 x19: fdff0000c163d6c0 x18: ffff800083d80030
-> [    2.405185] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
-> [    2.405201] x14: 0000000000000000 x13: 0a73747369786520 x12: 79646165726c6120
-> [    2.405217] x11: 656820747563205b x10: 2d2d2d2d2d2d2d2d x9 : 0000000000000000
-> [    2.405233] x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
-> [    2.405248] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
-> [    2.405271] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000000
-> [    2.405287] Call trace:
-> [    2.405293]  __kmem_cache_create_args+0xb8/0x3b0
-> [    2.405305]  kmem_buckets_create+0xfc/0x320
-> [    2.405315]  init_msg_buckets+0x34/0x78
-> [    2.405326]  do_one_initcall+0x64/0x3c8
-> [    2.405337]  kernel_init_freeable+0x26c/0x578
-> [    2.405348]  kernel_init+0x3c/0x258
-> [    2.405360]  ret_from_fork+0x10/0x20
-> [    2.405370] ---[ end trace 0000000000000000 ]---
+> For example, starting a VM backed on a file system with large folios
+> supported makes the VM crash when the VM tries accessing such a mapping
+> using KVM.
 > 
-> To address this, alias kmem_cache for sizes smaller than min alignment
-> to the aligned sized kmem_cache, as done with the default system kmalloc
-> bucket.
+> Is it also a problem when the HW disabled THP using
+> TRANSPARENT_HUGEPAGE_UNSUPPORTED?  At least on x86 this would be the case
+> without X86_FEATURE_PSE.
 > 
-> Cc: <stable@vger.kernel.org> # 6.11.x
-> Fixes: b32801d1255b ("mm/slab: Introduce kmem_buckets_create() and family")
-> Signed-off-by: Koichiro Den <koichiro.den@gmail.com>
+> In the future, we might be able to do better on s390x and only disallow
+> PMD mappings -- what s390x and likely TRANSPARENT_HUGEPAGE_UNSUPPORTED
+> really wants.  For now, fix it by essentially performing the same check as
+> would be done in __thp_vma_allowable_orders() or in shmem code, where this
+> works as expected, and disallow PMD mappings, making us fallback to PTE
+> mappings.
+> 
+> Link: https://lkml.kernel.org/r/20241011102445.934409-3-david@redhat.com
+> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> Reported-by: Leo Fu <bfu@redhat.com>
+> Tested-by: Thomas Huth <thuth@redhat.com>
+> Cc: Thomas Huth <thuth@redhat.com>
+> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+> Cc: Janosch Frank <frankja@linux.ibm.com>
+> Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>
+> Cc: Hugh Dickins <hughd@google.com>
+> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> (cherry picked from commit 2b0f922323ccfa76219bcaacd35cd50aeaa13592)
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 > ---
-
-Thanks for catching this.
-Wonder if we could make this a lot simpler in kmem_buckets_create() by
-starting with the current:
-
-size = kmalloc_caches[KMALLOC_NORMAL][idx]->object_size;
-
-and adding:
-
-aligned_idx = __kmalloc_index(size, false);
-
-now the rest of the loop iteration would work with aligned_idx and if it
-differs from idx, we assign the cache pointer also to idx, etc.
-
-This should avoid duplicating the alignment calculation as we just extract
-from kmalloc_caches[] the result of what new_kmalloc_cache() already did?
-
-Vlastimil
-
-
->  mm/slab_common.c | 102 ++++++++++++++++++++++++++++-------------------
->  1 file changed, 62 insertions(+), 40 deletions(-)
 > 
-> diff --git a/mm/slab_common.c b/mm/slab_common.c
-> index 3d26c257ed8b..64140561dd0e 100644
-> --- a/mm/slab_common.c
-> +++ b/mm/slab_common.c
-> @@ -354,6 +354,38 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
->  }
->  EXPORT_SYMBOL(__kmem_cache_create_args);
->  
-> +static unsigned int __kmalloc_minalign(void)
-> +{
-> +	unsigned int minalign = dma_get_cache_alignment();
+> Minor contextual difference.
+> 
+> Note that the backport of 963756aac1f011d904ddd9548ae82286d3a91f96 is
+> required (send separately as reply to the "FAILED:" mail).
+> 
+> ---
+>   mm/memory.c | 9 +++++++++
+>   1 file changed, 9 insertions(+)
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index b6ddfe22c5d5..742c2f65c2c8 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4293,6 +4293,15 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct page *page)
+>   	pmd_t entry;
+>   	vm_fault_t ret = VM_FAULT_FALLBACK;
+>   
+> +	/*
+> +	 * It is too late to allocate a small folio, we already have a large
+> +	 * folio in the pagecache: especially s390 KVM cannot tolerate any
+> +	 * PMD mappings, but PTE-mapped THP are fine. So let's simply refuse any
+> +	 * PMD mappings if THPs are disabled.
+> +	 */
+> +	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vma->vm_flags))
+> +		return ret;
 > +
-> +	if (IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) &&
-> +	    is_swiotlb_allocated())
-> +		minalign = ARCH_KMALLOC_MINALIGN;
-> +
-> +	return max(minalign, arch_slab_minalign());
-> +}
-> +
-> +static unsigned int __kmalloc_aligned_size(unsigned int idx)
-> +{
-> +	unsigned int aligned_size = kmalloc_info[idx].size;
-> +	unsigned int minalign = __kmalloc_minalign();
-> +
-> +	if (minalign > ARCH_KMALLOC_MINALIGN)
-> +		aligned_size = ALIGN(aligned_size, minalign);
-> +
-> +	return aligned_size;
-> +}
-> +
-> +static unsigned int __kmalloc_aligned_idx(unsigned int idx)
-> +{
-> +	unsigned int minalign = __kmalloc_minalign();
-> +
-> +	if (minalign > ARCH_KMALLOC_MINALIGN)
-> +		return __kmalloc_index(__kmalloc_aligned_size(idx), false);
-> +
-> +	return idx;
-> +}
-> +
->  static struct kmem_cache *kmem_buckets_cache __ro_after_init;
->  
->  /**
-> @@ -381,7 +413,10 @@ kmem_buckets *kmem_buckets_create(const char *name, slab_flags_t flags,
->  				  void (*ctor)(void *))
->  {
->  	kmem_buckets *b;
-> -	int idx;
-> +	unsigned int idx;
-> +	unsigned long mask = 0;
-> +
-> +	BUILD_BUG_ON(ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]) > BITS_PER_LONG);
->  
->  	/*
->  	 * When the separate buckets API is not built in, just return
-> @@ -402,43 +437,47 @@ kmem_buckets *kmem_buckets_create(const char *name, slab_flags_t flags,
->  
->  	for (idx = 0; idx < ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]); idx++) {
->  		char *short_size, *cache_name;
-> +		unsigned int aligned_size = __kmalloc_aligned_size(idx);
-> +		unsigned int aligned_idx = __kmalloc_aligned_idx(idx);
->  		unsigned int cache_useroffset, cache_usersize;
-> -		unsigned int size;
->  
-> +		/* this might be an aliased kmem_cache */
->  		if (!kmalloc_caches[KMALLOC_NORMAL][idx])
->  			continue;
->  
-> -		size = kmalloc_caches[KMALLOC_NORMAL][idx]->object_size;
-> -		if (!size)
-> -			continue;
-> -
->  		short_size = strchr(kmalloc_caches[KMALLOC_NORMAL][idx]->name, '-');
->  		if (WARN_ON(!short_size))
->  			goto fail;
->  
-> -		cache_name = kasprintf(GFP_KERNEL, "%s-%s", name, short_size + 1);
-> -		if (WARN_ON(!cache_name))
-> -			goto fail;
-> -
-> -		if (useroffset >= size) {
-> +		if (useroffset >= aligned_size) {
->  			cache_useroffset = 0;
->  			cache_usersize = 0;
->  		} else {
->  			cache_useroffset = useroffset;
-> -			cache_usersize = min(size - cache_useroffset, usersize);
-> +			cache_usersize = min(aligned_size - cache_useroffset, usersize);
->  		}
-> -		(*b)[idx] = kmem_cache_create_usercopy(cache_name, size,
-> -					0, flags, cache_useroffset,
-> -					cache_usersize, ctor);
-> -		kfree(cache_name);
-> -		if (WARN_ON(!(*b)[idx]))
-> -			goto fail;
-> +
-> +		if (!(*b)[aligned_idx]) {
-> +			cache_name = kasprintf(GFP_KERNEL, "%s-%s", name, short_size + 1);
-> +			if (WARN_ON(!cache_name))
-> +				goto fail;
-> +			(*b)[aligned_idx] = kmem_cache_create_usercopy(cache_name, aligned_size,
-> +						0, flags, cache_useroffset,
-> +						cache_usersize, ctor);
-> +			if (WARN_ON(!(*b)[aligned_idx])) {
-> +				kfree(cache_name);
-> +				goto fail;
-> +			}
-> +			set_bit(aligned_idx, &mask);
-> +		}
-> +		if (idx != aligned_idx)
-> +			(*b)[idx] = (*b)[aligned_idx];
->  	}
->  
->  	return b;
->  
->  fail:
-> -	for (idx = 0; idx < ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]); idx++)
-> +	for_each_set_bit(idx, &mask, ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]))
->  		kmem_cache_destroy((*b)[idx]);
->  	kmem_cache_free(kmem_buckets_cache, b);
->  
-> @@ -871,24 +910,12 @@ void __init setup_kmalloc_cache_index_table(void)
->  	}
->  }
->  
-> -static unsigned int __kmalloc_minalign(void)
-> -{
-> -	unsigned int minalign = dma_get_cache_alignment();
-> -
-> -	if (IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) &&
-> -	    is_swiotlb_allocated())
-> -		minalign = ARCH_KMALLOC_MINALIGN;
-> -
-> -	return max(minalign, arch_slab_minalign());
-> -}
-> -
->  static void __init
-> -new_kmalloc_cache(int idx, enum kmalloc_cache_type type)
-> +new_kmalloc_cache(unsigned int idx, enum kmalloc_cache_type type)
->  {
->  	slab_flags_t flags = 0;
-> -	unsigned int minalign = __kmalloc_minalign();
-> -	unsigned int aligned_size = kmalloc_info[idx].size;
-> -	int aligned_idx = idx;
-> +	unsigned int aligned_size = __kmalloc_aligned_size(idx);
-> +	unsigned int aligned_idx = __kmalloc_aligned_idx(idx);
->  
->  	if ((KMALLOC_RECLAIM != KMALLOC_NORMAL) && (type == KMALLOC_RECLAIM)) {
->  		flags |= SLAB_RECLAIM_ACCOUNT;
-> @@ -914,11 +941,6 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_type type)
->  	if (IS_ENABLED(CONFIG_MEMCG) && (type == KMALLOC_NORMAL))
->  		flags |= SLAB_NO_MERGE;
->  
-> -	if (minalign > ARCH_KMALLOC_MINALIGN) {
-> -		aligned_size = ALIGN(aligned_size, minalign);
-> -		aligned_idx = __kmalloc_index(aligned_size, false);
-> -	}
-> -
->  	if (!kmalloc_caches[type][aligned_idx])
->  		kmalloc_caches[type][aligned_idx] = create_kmalloc_cache(
->  					kmalloc_info[aligned_idx].name[type],
-> @@ -934,7 +956,7 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_type type)
->   */
->  void __init create_kmalloc_caches(void)
->  {
-> -	int i;
-> +	unsigned int i;
->  	enum kmalloc_cache_type type;
->  
->  	/*
+>   	if (!transhuge_vma_suitable(vma, haddr))
+>   		return ret;
+>   
+
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
