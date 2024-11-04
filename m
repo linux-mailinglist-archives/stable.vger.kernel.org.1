@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-89698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F54A9BB4B4
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 13:32:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAFED9BB4B7
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 13:32:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE172B23D51
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 12:32:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87C4D282E74
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 12:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3201B85E2;
-	Mon,  4 Nov 2024 12:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 232781BC063;
+	Mon,  4 Nov 2024 12:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uGVtaJOm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ae89BToA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475BC469D;
-	Mon,  4 Nov 2024 12:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDA0469D;
+	Mon,  4 Nov 2024 12:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730723522; cv=none; b=H/D+70PVohk1XlMOpAprBaI9nc1MYivX/RXvhQN36ueWDzNXcYhT0N3zJ3gs0CLMUagi7WmAm4oQOGY5o6Y+nuBThtFat4H8v1kRs/DFFuaTCxTo1tOJyWTyvvVhFf1R748EpYcqyNlPvs7EqTLDJf2fjR0XVVPSEgFFn1lCVwY=
+	t=1730723525; cv=none; b=hLXbkRamVf/5JzgCkx78Wy60aAD4LUOiJvcnqvXYq9a5+440YmBGoiUnLkVrWroElFIgUsBPrAJXCfUoqBI/wHegXgNuxMF13bEpwSwdK5IxaQwO5Poetvqb/UaroAu4n1q4uEmnY1RU2ismIK5wfhHFCC3HyDE6XMWS7SzwXe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730723522; c=relaxed/simple;
-	bh=qb1Yw/hyudvrD5WUSCNH/6LxaTrdh4HS5CPv8u0Lw4s=;
+	s=arc-20240116; t=1730723525; c=relaxed/simple;
+	bh=ktXADb2L4YbquYcw8h41zKoCmTKGDsB6Exef3tr4tLk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cu1Zz8pXwdHHOY4Ubb+fD2l05ifbrNFh4GbD7FUvNIBHSGBqSpC9Eq/1AelK3t1q9P/IFvjnC0NkGXEHqWtuonjmB+UMtmIqkzlb3Ighk5ZK4eNZ/C4Jg3CUyTjtZInmMV0y+OXkTMM2x8vWkJV64yL4+J6wO1wmiQt7h36yvVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uGVtaJOm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B596C4CED1;
-	Mon,  4 Nov 2024 12:31:58 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=D7pYAb65AetgdxlSddPLZft9Y1X9TGqa3RrU/U5dOlJkE5cBYXpPotvHyjg+HidLG8OL7p0SjjHS0LFDpx0//X6SHrFgDr/m5ItimuSllTr3lZ+EGzMJD0+FXYG1JpzR5uUWhF61tIPv8J423ZSddhQdpQSMXB69I8nzvtjatig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ae89BToA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BAF2C4CECE;
+	Mon,  4 Nov 2024 12:32:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730723521;
-	bh=qb1Yw/hyudvrD5WUSCNH/6LxaTrdh4HS5CPv8u0Lw4s=;
+	s=k20201202; t=1730723525;
+	bh=ktXADb2L4YbquYcw8h41zKoCmTKGDsB6Exef3tr4tLk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=uGVtaJOmXxmCmnpA41QRtU6rnMcAx7N4PLueMqNj6jQ3q6dIkmwpr27jjHq02opQW
-	 VgGlrXbwPKbBEBy1a5pR9PUyaDd4MD3zrF9psBLJGg4cdu8W5drRX0KSCRnpQvZkBk
-	 CKrxHJru/Ij6eqj2me7geYo20jNM3a9SNRZTRb1v7b8A9sFF59Bx6+Q22+Vsh4p6ND
-	 cUr/HgRYjgVqlSn4bmUvkusI3WIMA+Ptg7mkpB3WtSxslhVGVP5S/4JbLWAJ/7eE4w
-	 Szkd5dFUMch8W3APKYJL1D+s6rp0JF0UbnrwKc+asPoUXHQq+s0vKEtXb6Xjglf4KH
-	 05ArRyUCSkt7Q==
+	b=ae89BToAhjCxhZwnie7U8CKIXAb+aphkCPoUny/eCKQLJTEpHipnqG8cPRKZY4LO5
+	 eCTSEO8ZddpISTZVXffrMaRTT4GteIITHMdUWEEj198//nYAdeMrCc0QT3FAlaD/Ke
+	 hrHiB2E4OklUnzcE3bhvUeXbgBFrZUWVkFoOLQ1o3IYAXalkiyy+6qgTIYYIFyNbhV
+	 M1BSUH1UdpSMHF2Yo2PHL2nuewkdvntl9GufcDu0TxHRa0Sszs7FtO1oyGMaaZfu/R
+	 BSAvyOl70Jxfvo6jCbP5c9p6tvCRD/MS0cp7PsiBeVFWlq41gkBlPppX0B5eBDiS+B
+	 kYs70ycntZ9vg==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Mon, 04 Nov 2024 13:31:41 +0100
-Subject: [PATCH net 1/2] mptcp: no admin perm to list endpoints
+Date: Mon, 04 Nov 2024 13:31:42 +0100
+Subject: [PATCH net 2/2] mptcp: use sock_kfree_s instead of kfree
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,7 +52,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241104-net-mptcp-misc-6-12-v1-1-c13f2ff1656f@kernel.org>
+Message-Id: <20241104-net-mptcp-misc-6-12-v1-2-c13f2ff1656f@kernel.org>
 References: <20241104-net-mptcp-misc-6-12-v1-0-c13f2ff1656f@kernel.org>
 In-Reply-To: <20241104-net-mptcp-misc-6-12-v1-0-c13f2ff1656f@kernel.org>
 To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
@@ -62,75 +62,64 @@ To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
  Donald Hunter <donald.hunter@gmail.com>, 
  Davide Caratti <dcaratti@redhat.com>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org, 
+ Geliang Tang <geliang@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2082; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=qb1Yw/hyudvrD5WUSCNH/6LxaTrdh4HS5CPv8u0Lw4s=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnKL67UQ+EOaWNU6EM+HxAIWVAJHOU9fiNVp17t
- Bsu49Pz+EaJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZyi+uwAKCRD2t4JPQmmg
- c8RbD/9uPo1eyKCzBkiwNCN3sMyhlCdxVJaQ9CM/iDw6PiNlndWgw1E0DLHv7mGWBbVHIgvAUtY
- t+c0E/EPF1YFZn7FURbe+6zEVZr8vMsbxDtlM/sHQ0DB+4u5SpM0XYQ2wBPQKyiJUGkJo6K7WJi
- ndBSfvrftPYLWjqHTof/pVbm8x4nudWM8whVdOHkrm1veZQCScRXhtfPJ48mkhbmlKY7No7RJ5o
- wkShEElozOCBPLi8dlJPz7azWpLGYxC6KItMY/G4VLpknTPPOIIRB69t70HaHllhEtkSHugOReU
- HoKM2rx9RS3KTgJm0gLDOyGtZdrKVQOF60qrxwCLgrzJRiTBXpLNIjLy+n5C2fTRma+VzFg1GV5
- 3PNEXkukQ/WiE65FIklj6j1ZIwAikUjK608J/wWtoYhlxeOU1IVCfpilGKZyLn591Q+xNm4oilb
- VOzYazUXAkuE1XVE8sp2l8kPrE0510Ll1JvRl6WMsFxtUWoYUXgQTFB1XjTSNEctVFnLEDBSVAb
- R4hNSgGNao2SCe54jVqq4zICKKDnuMxfZvRjUrwv3uzWBFwYlRFkaeDvvAujq7iM6Bg2wCAnS+S
- rOc1NZpMUjCKywflkY3rXSW4K3fMe3QNUcyFBYxQ8fg7E3MO5mHRwCW15g6yz5/rX7IKNM3a+EB
- VsizY5rudFGSlBQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1518; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=MQFc3/F65zsONOCIocs6pTTtcJR1zCiohpdkaVkUFOk=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnKL67mTM0SMEyipPfUKA+39u6cKCmZBPUVW7vG
+ sce1DgQCh6JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZyi+uwAKCRD2t4JPQmmg
+ c/dqEAC4H7P2/Z0jPo8xAQdMO1zwOF5GPe0kivOLAWHKj5OsFpu8oVnN00MqomMa8wIdooJYN9i
+ 7umbdsJj/GUOOyEYCDACG8RCCFcnJyV121msrD/3RsBXJlduOLYHiE3c4VMXdmsqRksh+Vei8AC
+ xo+BKBCOtCb1+APUSULhOlK+8c8Gck+6Jz8IjixW9WqU7JGbNx/dMoquBweuRu2ZTiSVQmS202U
+ Fht0RJgK9CTfiyyf4zYjkJAfw25fAM+B4HrUWOI7Y2rSIUrk4b9c2INeFEDW9itvkB/uYGPEVbd
+ wCQD9hBoGCAaAqP98xP7aQaTp0I9Hxo1hPbPCfHGFZOudZK8MtrD3kPcyd4xKhOLCdoxPHLCJ1F
+ xChp1Tse4lF68FnMgD9Ej0MikX15J/L+erkuSXWAWZ2YFYtidjJr+zOR0yMacq3IuVmr6aqzOlv
+ gMiUw56WJLotZGOtIDdalWKKZH6M/xva3S3VaTgQlUw/o0ev4DQvr12/FvAzSyPlGCruzbDF7Mm
+ nkmlmtq5bBhpqDm17asY7SHehVi7eRb7/OuUCpSK5ENEQ3fNOHr1W/csIy1q3kx/d53noneq9xc
+ m7OcWMkgu3dWTscLxSDUObWXbL1jHhpDp9K1K/hYZc0kVOWZzUDA5XySakHCvxUK0UKe4RsrhRz
+ lBUaVUlIpFYeUJQ==
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
  fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-During the switch to YNL, the command to list all endpoints has been
-accidentally restricted to users with admin permissions.
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-It looks like there are no reasons to have this restriction which makes
-it harder for a user to quickly check if the endpoint list has been
-correctly populated by an automated tool. Best to go back to the
-previous behaviour then.
+The local address entries on userspace_pm_local_addr_list are allocated
+by sock_kmalloc().
 
-mptcp_pm_gen.c has been modified using ynl-gen-c.py:
+It's then required to use sock_kfree_s() instead of kfree() to free
+these entries in order to adjust the allocated size on the sk side.
 
-   $ ./tools/net/ynl/ynl-gen-c.py --mode kernel \
-     --spec Documentation/netlink/specs/mptcp_pm.yaml --source \
-     -o net/mptcp/mptcp_pm_gen.c
-
-The header file doesn't need to be regenerated.
-
-Fixes: 1d0507f46843 ("net: mptcp: convert netlink from small_ops to ops")
+Fixes: 24430f8bf516 ("mptcp: add address into userspace pm list")
 Cc: stable@vger.kernel.org
-Reviewed-by: Davide Caratti <dcaratti@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- Documentation/netlink/specs/mptcp_pm.yaml | 1 -
- net/mptcp/mptcp_pm_gen.c                  | 1 -
- 2 files changed, 2 deletions(-)
+ net/mptcp/pm_userspace.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/netlink/specs/mptcp_pm.yaml b/Documentation/netlink/specs/mptcp_pm.yaml
-index 30d8342cacc8704c42b84c9e03f96c906e81733e..dc190bf838fec6add28b61e5e2cac8dee601b012 100644
---- a/Documentation/netlink/specs/mptcp_pm.yaml
-+++ b/Documentation/netlink/specs/mptcp_pm.yaml
-@@ -293,7 +293,6 @@ operations:
-       doc: Get endpoint information
-       attribute-set: attr
-       dont-validate: [ strict ]
--      flags: [ uns-admin-perm ]
-       do: &get-addr-attrs
-         request:
-           attributes:
-diff --git a/net/mptcp/mptcp_pm_gen.c b/net/mptcp/mptcp_pm_gen.c
-index c30a2a90a19252dd41a74109d5762a091129269d..bfb37c5a88c4ef90740699dfda345b52e206966b 100644
---- a/net/mptcp/mptcp_pm_gen.c
-+++ b/net/mptcp/mptcp_pm_gen.c
-@@ -112,7 +112,6 @@ const struct genl_ops mptcp_pm_nl_ops[11] = {
- 		.dumpit		= mptcp_pm_nl_get_addr_dumpit,
- 		.policy		= mptcp_pm_get_addr_nl_policy,
- 		.maxattr	= MPTCP_PM_ATTR_TOKEN,
--		.flags		= GENL_UNS_ADMIN_PERM,
- 	},
- 	{
- 		.cmd		= MPTCP_PM_CMD_FLUSH_ADDRS,
+diff --git a/net/mptcp/pm_userspace.c b/net/mptcp/pm_userspace.c
+index 2cceded3a83a211ffa83f5511fa16f153b49e6bf..56dfea9862b7b24dd0eaa8bbedcf22a7f6829ccf 100644
+--- a/net/mptcp/pm_userspace.c
++++ b/net/mptcp/pm_userspace.c
+@@ -91,6 +91,7 @@ static int mptcp_userspace_pm_delete_local_addr(struct mptcp_sock *msk,
+ 						struct mptcp_pm_addr_entry *addr)
+ {
+ 	struct mptcp_pm_addr_entry *entry, *tmp;
++	struct sock *sk = (struct sock *)msk;
+ 
+ 	list_for_each_entry_safe(entry, tmp, &msk->pm.userspace_pm_local_addr_list, list) {
+ 		if (mptcp_addresses_equal(&entry->addr, &addr->addr, false)) {
+@@ -98,7 +99,7 @@ static int mptcp_userspace_pm_delete_local_addr(struct mptcp_sock *msk,
+ 			 * be used multiple times (e.g. fullmesh mode).
+ 			 */
+ 			list_del_rcu(&entry->list);
+-			kfree(entry);
++			sock_kfree_s(sk, entry, sizeof(*entry));
+ 			msk->pm.local_addr_used--;
+ 			return 0;
+ 		}
 
 -- 
 2.45.2
