@@ -1,31 +1,31 @@
-Return-Path: <stable+bounces-89721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 738BA9BBAA4
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 17:55:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 882579BBBFA
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 18:32:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A35CC1C227CE
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 16:55:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CE60283FCE
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 17:32:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86A31C2DAE;
-	Mon,  4 Nov 2024 16:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1891C6F73;
+	Mon,  4 Nov 2024 17:31:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from www.kot-begemot.co.uk (ns1.kot-begemot.co.uk [217.160.28.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168831369B6;
-	Mon,  4 Nov 2024 16:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB77233FE;
+	Mon,  4 Nov 2024 17:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.160.28.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730739301; cv=none; b=ZGrvn/HMwNLE7QXEJEnUKzvEMhUGq/xc8k8K4xlFTGwFKJAIurccld7Kv/2asP5OYAe4xERv7NXF7ZLyprIK5JrzbGAwwV7bxw12lsGT3DxlzXWPuBnLeiyCjDWt3L8zp8PLQ4U4xiYM8sjgtoPcskxK5RdFytuOLDzfKDsdH+Y=
+	t=1730741509; cv=none; b=YYOLX/KgmdE1HEy04rglpOLskk4FDdDMgYPD8nEAlinY41FdCtnibqvB6cx0GZXgGNkvfQrmu/YHrdozyuidfpws1c9ptaPt1bC7n52HuEWbW6Tj5tl2gsnoBR7qbMKJsxZXJ7XIarUldjQ+60FbelnLkrSUoWBUSznvOqt+Pzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730739301; c=relaxed/simple;
-	bh=mABaa3vW6dCeP4mFUxmlF4lPXp0GY4zZWRcQ64jP/2Q=;
+	s=arc-20240116; t=1730741509; c=relaxed/simple;
+	bh=bMKNgS8MRRGLz3Iu/kx4/mnBaYv746t8xezU07ML2u0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NnAhcx7zc2GblhnQdEM945sTLULoTB6PbsFWhfPiNdWPP94IQrYTslfDBmpZpmSUU2/1pE/kgk414NoLcAgnW2darIa10bzxTs7J9zDDUFGyxEaBGJS14ArpG8y15FX2WxUxskixYY8k+cZtvGmrwEwjeEgFYK8CTaGV3CIUaJA=
+	 In-Reply-To:Content-Type; b=HSNS7Mbm6t2GS7N77HXVQRFppEWCPLBJ2ARRacLGuJNwjHzMP4cDgJxeEUIy4qK8Q7PpdsQiCiwuE2plHrancfXXSr6pf4JLsUhCs53WEUlDNPAgenvxYxgw9ZYEpeo5768cUlKzth/tjId3y5fazSik61QXnhlWsSZmqrowrg0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cambridgegreys.com; spf=pass smtp.mailfrom=cambridgegreys.com; arc=none smtp.client-ip=217.160.28.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cambridgegreys.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cambridgegreys.com
@@ -33,14 +33,14 @@ Received: from [192.168.17.6] (helo=jain.kot-begemot.co.uk)
 	by www.kot-begemot.co.uk with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <anton.ivanov@cambridgegreys.com>)
-	id 1t80Ln-00Dwhk-QZ; Mon, 04 Nov 2024 16:54:47 +0000
+	id 1t80L1-00DwhP-N2; Mon, 04 Nov 2024 16:54:00 +0000
 Received: from jain.kot-begemot.co.uk ([192.168.3.3])
 	by jain.kot-begemot.co.uk with esmtp (Exim 4.96)
 	(envelope-from <anton.ivanov@cambridgegreys.com>)
-	id 1t80Ll-00C1Sz-0H;
-	Mon, 04 Nov 2024 16:54:47 +0000
-Message-ID: <a764ef90-ca34-443b-978b-3af20dc76015@cambridgegreys.com>
-Date: Mon, 4 Nov 2024 16:54:44 +0000
+	id 1t80Ky-00C1PI-2W;
+	Mon, 04 Nov 2024 16:53:59 +0000
+Message-ID: <13c67624-ff65-47d1-b57b-88d94cbd3786@cambridgegreys.com>
+Date: Mon, 4 Nov 2024 16:53:55 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,16 +48,16 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] um: ubd: Do not use drvdata in release
+Subject: Re: [PATCH 4/4] um: vector: Do not use drvdata in release
 To: Tiwei Bie <tiwei.btw@antgroup.com>, richard@nod.at,
  johannes@sipsolutions.net
 Cc: linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
 References: <20241104163203.435515-1-tiwei.btw@antgroup.com>
- <20241104163203.435515-3-tiwei.btw@antgroup.com>
+ <20241104163203.435515-5-tiwei.btw@antgroup.com>
 Content-Language: en-US
 From: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-In-Reply-To: <20241104163203.435515-3-tiwei.btw@antgroup.com>
+In-Reply-To: <20241104163203.435515-5-tiwei.btw@antgroup.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Score: -1.0
@@ -68,72 +68,69 @@ X-Clacks-Overhead: GNU Terry Pratchett
 
 On 04/11/2024 16:32, Tiwei Bie wrote:
 > The drvdata is not available in release. Let's just use container_of()
-> to get the ubd instance. Otherwise, removing a ubd device will result
-> in a crash:
+> to get the vector_device instance. Otherwise, removing a vector device
+> will result in a crash:
 > 
-> RIP: 0033:blk_mq_free_tag_set+0x1f/0xba
-> RSP: 00000000e2083bf0  EFLAGS: 00010246
-> RAX: 000000006021463a RBX: 0000000000000348 RCX: 0000000062604d00
-> RDX: 0000000004208060 RSI: 00000000605241a0 RDI: 0000000000000348
-> RBP: 00000000e2083c10 R08: 0000000062414010 R09: 00000000601603f7
-> R10: 000000000000133a R11: 000000006038c4bd R12: 0000000000000000
-> R13: 0000000060213a5c R14: 0000000062405d20 R15: 00000000604f7aa0
+> RIP: 0033:vector_device_release+0xf/0x50
+> RSP: 00000000e187bc40  EFLAGS: 00010202
+> RAX: 0000000060028f61 RBX: 00000000600f1baf RCX: 00000000620074e0
+> RDX: 000000006220b9c0 RSI: 0000000060551c80 RDI: 0000000000000000
+> RBP: 00000000e187bc50 R08: 00000000603ad594 R09: 00000000e187bb70
+> R10: 000000000000135a R11: 00000000603ad422 R12: 00000000623ae028
+> R13: 000000006287a200 R14: 0000000062006d30 R15: 00000000623700b6
 > Kernel panic - not syncing: Segfault with no mm
-> CPU: 0 PID: 17 Comm: kworker/0:1 Not tainted 6.8.0-rc3-00107-gba3f67c11638 #1
+> CPU: 0 UID: 0 PID: 16 Comm: kworker/0:1 Not tainted 6.12.0-rc6-g59b723cd2adb #1
 > Workqueue: events mc_work_proc
 > Stack:
->   00000000 604f7ef0 62c5d000 62405d20
->   e2083c30 6002c776 6002c755 600e47ff
->   e2083c60 6025ffe3 04208060 603d36e0
+>   60028f61 623ae028 e187bc80 60276fcd
+>   6220b9c0 603f5820 623ae028 00000000
+>   e187bcb0 603a2bcd 623ae000 62370010
 > Call Trace:
->   [<6002c776>] ubd_device_release+0x21/0x55
->   [<6002c755>] ? ubd_device_release+0x0/0x55
->   [<600e47ff>] ? kfree+0x0/0x100
->   [<6025ffe3>] device_release+0x70/0xba
->   [<60381d6a>] kobject_put+0xb5/0xe2
->   [<6026027b>] put_device+0x19/0x1c
->   [<6026a036>] platform_device_put+0x26/0x29
->   [<6026ac5a>] platform_device_unregister+0x2c/0x2e
->   [<6002c52e>] ubd_remove+0xb8/0xd6
->   [<6002bb74>] ? mconsole_reply+0x0/0x50
->   [<6002b926>] mconsole_remove+0x160/0x1cc
->   [<6002bbbc>] ? mconsole_reply+0x48/0x50
->   [<6003379c>] ? um_set_signals+0x3b/0x43
->   [<60061c55>] ? update_min_vruntime+0x14/0x70
->   [<6006251f>] ? dequeue_task_fair+0x164/0x235
->   [<600620aa>] ? update_cfs_group+0x0/0x40
->   [<603a0e77>] ? __schedule+0x0/0x3ed
->   [<60033761>] ? um_set_signals+0x0/0x43
->   [<6002af6a>] mc_work_proc+0x77/0x91
->   [<600520b4>] process_scheduled_works+0x1af/0x2c3
->   [<6004ede3>] ? assign_work+0x0/0x58
->   [<600527a1>] worker_thread+0x2f7/0x37a
->   [<6004ee3b>] ? set_pf_worker+0x0/0x64
->   [<6005765d>] ? arch_local_irq_save+0x0/0x2d
->   [<60058e07>] ? kthread_exit+0x0/0x3a
->   [<600524aa>] ? worker_thread+0x0/0x37a
->   [<60058f9f>] kthread+0x130/0x135
->   [<6002068e>] new_thread_handler+0x85/0xb6
+>   [<60028f61>] ? vector_device_release+0x0/0x50
+>   [<60276fcd>] device_release+0x70/0xba
+>   [<603a2bcd>] kobject_put+0xba/0xe7
+>   [<60277265>] put_device+0x19/0x1c
+>   [<60281266>] platform_device_put+0x26/0x29
+>   [<60281e5f>] platform_device_unregister+0x2c/0x2e
+>   [<60029422>] vector_remove+0x52/0x58
+>   [<60031316>] ? mconsole_reply+0x0/0x50
+>   [<600310c8>] mconsole_remove+0x160/0x1cc
+>   [<603b19f4>] ? strlen+0x0/0x15
+>   [<60066611>] ? __dequeue_entity+0x1a9/0x206
+>   [<600666a7>] ? set_next_entity+0x39/0x63
+>   [<6006666e>] ? set_next_entity+0x0/0x63
+>   [<60038fa6>] ? um_set_signals+0x0/0x43
+>   [<6003070c>] mc_work_proc+0x77/0x91
+>   [<60057664>] process_scheduled_works+0x1b3/0x2dd
+>   [<60055f32>] ? assign_work+0x0/0x58
+>   [<60057f0a>] worker_thread+0x1e9/0x293
+>   [<6005406f>] ? set_pf_worker+0x0/0x64
+>   [<6005d65d>] ? arch_local_irq_save+0x0/0x2d
+>   [<6005d748>] ? kthread_exit+0x0/0x3a
+>   [<60057d21>] ? worker_thread+0x0/0x293
+>   [<6005dbf1>] kthread+0x126/0x12b
+>   [<600219c5>] new_thread_handler+0x85/0xb6
 > 
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
 > ---
->   arch/um/drivers/ubd_kern.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   arch/um/drivers/vector_kern.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/arch/um/drivers/ubd_kern.c b/arch/um/drivers/ubd_kern.c
-> index f19173da64d8..66c1a8835e36 100644
-> --- a/arch/um/drivers/ubd_kern.c
-> +++ b/arch/um/drivers/ubd_kern.c
-> @@ -779,7 +779,7 @@ static int ubd_open_dev(struct ubd *ubd_dev)
+> diff --git a/arch/um/drivers/vector_kern.c b/arch/um/drivers/vector_kern.c
+> index c992da83268d..64c09db392c1 100644
+> --- a/arch/um/drivers/vector_kern.c
+> +++ b/arch/um/drivers/vector_kern.c
+> @@ -815,7 +815,8 @@ static struct platform_driver uml_net_driver = {
 >   
->   static void ubd_device_release(struct device *dev)
+>   static void vector_device_release(struct device *dev)
 >   {
-> -	struct ubd *ubd_dev = dev_get_drvdata(dev);
-> +	struct ubd *ubd_dev = container_of(dev, struct ubd, pdev.dev);
+> -	struct vector_device *device = dev_get_drvdata(dev);
+> +	struct vector_device *device =
+> +		container_of(dev, struct vector_device, pdev.dev);
+>   	struct net_device *netdev = device->dev;
 >   
->   	blk_mq_free_tag_set(&ubd_dev->tag_set);
->   	*ubd_dev = ((struct ubd) DEFAULT_UBD);
+>   	list_del(&device->list);
 
 Acked-By: Anton Ivanov <anton.ivanov@cambridgegreys.com>
 
