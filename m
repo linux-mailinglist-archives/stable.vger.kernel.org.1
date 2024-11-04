@@ -1,107 +1,93 @@
-Return-Path: <stable+bounces-89609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 491DB9BB0A2
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:09:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C16A39BB0A5
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:10:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E66B280E3A
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 10:09:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8532D28293D
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 10:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 911C61AF4EE;
-	Mon,  4 Nov 2024 10:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BBC11AF4E2;
+	Mon,  4 Nov 2024 10:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Ic+9WT1M"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ZS8rdhD5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D7118C020
-	for <stable@vger.kernel.org>; Mon,  4 Nov 2024 10:09:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799D31ABEB1;
+	Mon,  4 Nov 2024 10:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730714983; cv=none; b=bOF29Qqw4RLkKO02JPVTCkHRACrFqgFBeAX6ylUZarHJ7W6psxnghrgWjzfY5nbqnjcHLaBdQXOmKo58PNGrGkAZs8FRRlskRqfbp64WTvtIL8hnBdnOWjB/yhTKL2nmvz/N4YDOfg0w/iRbojLJVi/rU+jXFtD20cDSO6GHN6w=
+	t=1730715008; cv=none; b=H6KvfzQrdto08Xsj9yDppks9syu09qisRhvyyLgReu8jictrQ0jcQWsPJ6T4cgcsQQcXKwsUhNfS5LbDmZB9AHCWTk+Cr8GNCClskz4ASE9mhHF1gAQPSLjePYG1CmQiwI8o3JmyZGl+ZBqLvqneNLFPAlxk1uCM4clTkrie4gU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730714983; c=relaxed/simple;
-	bh=/mA7xwO17nfudrwhrGynT4Jz/VBstxG5McmGQTgujIg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E1AWCNDikLkqv2KYybfiy4efIMMNrFd/W2DnadjIT/cFWA1FDWzcMaRCym+rE11X7eeqZ7AxQ5vEjuXQMhH55TW8Mpp4Ev0XFBhY7g+n4R2ukfIGjOC7Gv+PrKspdFjE1GvxnI9BW/apUd/z3vL/Q64T7EGYjuYjov16nJkHG6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Ic+9WT1M; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-20cf3e36a76so41764135ad.0
-        for <stable@vger.kernel.org>; Mon, 04 Nov 2024 02:09:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1730714981; x=1731319781; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2NTPtVJiGE7BPjeCGKQ0KHoPZRyzN7fNEfwB/yEgVkc=;
-        b=Ic+9WT1MdDZRXSb9qbdg8+dFPGxifYAIIgYH/FGAWZ21kRmTRI/M87PRIzAPP9rI5o
-         KHLpYiI0fl5lsp4s8ZOfd+y74H58dhQqlsCOlpSXo7SfWTohWfY8qvjwjTxq+J9AYqfC
-         oPwEtXelD8UKNJzv+MLctaZKBfIMF0TNrxsIU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730714981; x=1731319781;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2NTPtVJiGE7BPjeCGKQ0KHoPZRyzN7fNEfwB/yEgVkc=;
-        b=JXPEyUh3CT4ekeZVu3u5Hlkx8dAfBAkDRcGdINHJM8wX33IW4PHCVKpwJZAAG5BiTt
-         fCM6qGLx2NI4KVmbna0sAcMUbtbYF8UZ1gXuVVjma6ph0uMMJPUOGbPoX/bN1AYUFITc
-         q83w77YOtw0Mltql3af4Hr3fLatWaTqRwV/gJc0MwLRiBFwVlOPBU/7EWy88dQ6kQoK/
-         rr4IApQrKe1EjT4fEFKCjtpXGmvJ4H7KQkDbC27dFbMsGlrexgKi23jEAgwrzGRYZEHR
-         2FxhsEp2ym1CbjQi6bQHf/g5Cre1s11SFCfVheS+F/+lZfmVoHOeCVm6Ew+OK7s74NEX
-         m6iQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVj7HZjlI/XozPFOcda2m2Gq7buqhPFTKyCxRlQIjpAZkJzqnbmERrwS1RH+1fDF7r5ADqqkXw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhMzKzhNO0ztFtuwR/E1z5DFAw2+EO1ftTKOwPZeuF6LvaooDx
-	oXI3DipgUyP+odbLA3v+zOVi/94pdbdb3OmKjSDpl4m8e8L/yZxD1k39ZK3fLQ==
-X-Google-Smtp-Source: AGHT+IHYH3t7ESW1pbuyQj7zVT94C1I2YPmvGXz2YuPhNZlY1eftMl0pWbwj7PJh4W7mfbZkG/rDiA==
-X-Received: by 2002:a17:902:c40c:b0:20c:7d4c:64db with SMTP id d9443c01a7336-21103c7bfafmr208351825ad.49.1730714981357;
-        Mon, 04 Nov 2024 02:09:41 -0800 (PST)
-Received: from google.com ([2401:fa00:8f:203:313d:96c4:721d:a03b])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211056ed969sm57814635ad.1.2024.11.04.02.09.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Nov 2024 02:09:40 -0800 (PST)
-Date: Mon, 4 Nov 2024 19:09:36 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] media: uvcvideo: Fix crash during unbind if gpio unit is
- in use
-Message-ID: <20241104100936.GZ1279924@google.com>
-References: <20241031-uvc-crashrmmod-v1-1-059fe593b1e6@chromium.org>
+	s=arc-20240116; t=1730715008; c=relaxed/simple;
+	bh=lLbyBoAV8LAAMdgY2WJPPlbx5TE3cUhhNB8Q1ZTzIcA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=JrCz86GTF0YoyuVc5hEuGuSZS5/sRdlq/5za7eMzc8F+/BGg5z+2WRagzke7JAGXzCUqqxCtiAlbn6h+Cil1O6CXP3rOz3ndFI8UZD0SkSBJM6n6MSeKm8vXQfCi7UgbPEtDcT+ei+nDIiHKjsWozzonMHsuWDOMbB1D2GbKNbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ZS8rdhD5; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1730714998;
+	bh=lLbyBoAV8LAAMdgY2WJPPlbx5TE3cUhhNB8Q1ZTzIcA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=ZS8rdhD50IHxY+5Rbx8r7cZBPvPyB6xYWC2v/L0hAjlXLYIJaIQnpK/KX7TlVjHbz
+	 rHmHYWcyHxEAidWoqcfCp9gywzr/GbIR4VcnC7mr2ltpJ5s2zbtwWupskX1d5hEujo
+	 K9Fym5ilmXMygh31eFMLzJ3OCwI8JJj8aIlKX7Yfq/z22gyTWkJUX1Sll7LT4dukRI
+	 mTXSp0TUiBspnV5zj0kuQ44tOSav6QtX75717Ogobq1dcwpjcfL9DSlva3pEsy2UVN
+	 G/5sGyge0T6kjWHznZwdk1V2RkwSUH+vGWDq4zG68iPQ8VIRqX4FL7U35Eg9VtiE9v
+	 21dC8e2AFkipw==
+Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1451B17E14EF;
+	Mon,  4 Nov 2024 11:09:58 +0100 (CET)
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+To: Matthias Brugger <matthias.bgg@gmail.com>, 
+ Chen-Yu Tsai <wenst@chromium.org>
+Cc: devicetree@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+In-Reply-To: <20241029100226.660263-1-wenst@chromium.org>
+References: <20241029100226.660263-1-wenst@chromium.org>
+Subject: Re: [PATCH] arm64: dts: mediatek: mt8186-corsola: Fix IT6505 reset
+ line polarity
+Message-Id: <173071499802.113773.6669341556020572344.b4-ty@collabora.com>
+Date: Mon, 04 Nov 2024 11:09:58 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241031-uvc-crashrmmod-v1-1-059fe593b1e6@chromium.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 
-On (24/10/31 13:59), Ricardo Ribalda wrote:
-> We used the wrong device for the device managed functions. We used the
-> usb device, when we should be using the interface device.
+On Tue, 29 Oct 2024 18:02:25 +0800, Chen-Yu Tsai wrote:
+> The reset line of the IT6505 bridge chip is active low, not active high.
+> It was incorrectly inverted in the device tree as the implementation at
+> the time incorrectly inverted the polarity in its driver, due to a prior
+> device having an inline inverting level shifter.
 > 
-> If we unbind the driver from the usb interface, the cleanup functions
-> are never called. In our case, the IRQ is never disabled.
+> Fix the polarity now while the external display pipeline is incomplete,
+> thereby avoiding any impact to running systems.
 > 
-> If an IRQ is triggered, it will try to access memory sections that are
-> already free, causing an OOPS.
-> 
-> Luckily this bug has small impact, as it is only affected by devices
-> with gpio units and the user has to unbind the device, a disconnect will
-> not trigger this error.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> [...]
 
-FWIW,
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Applied to v6.12-next/dts64, thanks!
+
+[1/1] arm64: dts: mediatek: mt8186-corsola: Fix IT6505 reset line polarity
+      commit: fbcc95fceb6d179dd150df2dc613dfd9b013052c
+
+Cheers,
+Angelo
+
+
 
