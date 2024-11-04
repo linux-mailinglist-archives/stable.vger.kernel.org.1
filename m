@@ -1,171 +1,138 @@
-Return-Path: <stable+bounces-89719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA16C9BBA83
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 17:43:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D089BBAA1
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 17:54:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3EA75B214CA
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 16:43:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8CEF1F2243A
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 16:54:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4315E1C32E4;
-	Mon,  4 Nov 2024 16:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E24721C232D;
+	Mon,  4 Nov 2024 16:54:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from www.kot-begemot.co.uk (ns1.kot-begemot.co.uk [217.160.28.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53261C231D
-	for <stable@vger.kernel.org>; Mon,  4 Nov 2024 16:43:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA111C07EA;
+	Mon,  4 Nov 2024 16:54:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.160.28.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730738612; cv=none; b=G0ZlFOebSx/UQgzcSckxx3Y78+mIjhlMnl/+ZmIY+05BMMe9nubj+byZkOLz/VUdkzyp+wWPk2LMDzpzvfDbp6+/S7X176F1oPUcAEyRfsSRx5GewstE48nufl9ASk/5BfVTZQg/cPlmcG6nfyXGtb5twT6UZKxy08dAvzf3IPA=
+	t=1730739283; cv=none; b=tc4fvTeI2h97+rHMUXmUZ0bexAxTKYIJDyy6NruYTwZH1P/scWVFAt90kXwXuu4kKsaQxpukHkU34JJddMOqRkQssFPbXRopz+xrZjoIid/AzzCh6I3JqDeUAyRI5OdaYzNbvHPzc8OB9Qkj0f7LpQG6QeDHDkM9krvvdNpir9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730738612; c=relaxed/simple;
-	bh=63xFusTRsY1L/nYoLVzTZYDCcu+dflkbrtHdaafc8Ow=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PpFopAsnx4ztjbtZ7LQJCjHva/RK+Vib6uBTURv8Z1XHzaoPkN2eS60YotfVWjRabXvNAzHbe1VFXToW2BoCZsRZ9m1n5VMmnW5AqKrL6djZlXrXf9pap+qXHQHklQ8WRr+Pc2L1PH8KxfbkwF1g6hPjVPH4MiSgxyBjnM/MxGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t80Ao-0005Fk-6x
-	for stable@vger.kernel.org; Mon, 04 Nov 2024 17:43:26 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t80Ao-0020q2-02
-	for stable@vger.kernel.org;
-	Mon, 04 Nov 2024 17:43:26 +0100
-Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id B56E5367DFA
-	for <stable@vger.kernel.org>; Mon, 04 Nov 2024 16:43:25 +0000 (UTC)
-Received: from hardanger.blackshift.org (unknown [172.20.34.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 834B7367DF1;
-	Mon, 04 Nov 2024 16:43:23 +0000 (UTC)
-Received: from [172.20.34.65] (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id e44711e1;
-	Mon, 4 Nov 2024 16:43:22 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Mon, 04 Nov 2024 17:42:40 +0100
-Subject: [PATCH can v3] can: mcp251xfd: mcp251xfd_get_tef_len(): fix length
- calculation
+	s=arc-20240116; t=1730739283; c=relaxed/simple;
+	bh=xsxDHFnbfImmtC2rlnjfXAj+o2HkYwfXIviVbt9W8xM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Plfm7Anq+FokeoetrF5e2k6eT5L5yF+AFRhRSBweYr0YsTBEuNhQ2Pf7UZC6lqkwuktchJj051h/9j0trJKlcgpVazcjr4SlxUkkVzUgsW66EAqYhYoOGysXWy04v14Gb+E4tUdQSH2poHe2AFMbi8VIrFK2bY7+5jwsV2BThLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cambridgegreys.com; spf=pass smtp.mailfrom=cambridgegreys.com; arc=none smtp.client-ip=217.160.28.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cambridgegreys.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cambridgegreys.com
+Received: from [192.168.17.6] (helo=jain.kot-begemot.co.uk)
+	by www.kot-begemot.co.uk with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <anton.ivanov@cambridgegreys.com>)
+	id 1t80LU-00Dwha-O1; Mon, 04 Nov 2024 16:54:28 +0000
+Received: from jain.kot-begemot.co.uk ([192.168.3.3])
+	by jain.kot-begemot.co.uk with esmtp (Exim 4.96)
+	(envelope-from <anton.ivanov@cambridgegreys.com>)
+	id 1t80LR-00C1Rg-2Z;
+	Mon, 04 Nov 2024 16:54:28 +0000
+Message-ID: <54288e93-c389-444c-afe4-bd099523bfab@cambridgegreys.com>
+Date: Mon, 4 Nov 2024 16:54:25 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] um: net: Do not use drvdata in release
+To: Tiwei Bie <tiwei.btw@antgroup.com>, richard@nod.at,
+ johannes@sipsolutions.net
+Cc: linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20241104163203.435515-1-tiwei.btw@antgroup.com>
+ <20241104163203.435515-4-tiwei.btw@antgroup.com>
+Content-Language: en-US
+From: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+In-Reply-To: <20241104163203.435515-4-tiwei.btw@antgroup.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241104-mcp251xfd-fix-length-calculation-v3-1-608b6e7e2197@pengutronix.de>
-X-B4-Tracking: v=1; b=H4sIAH/5KGcC/42Nyw6DIBBFf8WwLg1Q8dFV/6PpgseoJBYNILEx/
- nsnrpp04/LO3HvORiIEB5Hci40EyC66yWO4XQpiBuV7oM5iJoKJkjPG6dvMQvK1s7RzKx3B92m
- gRo1mGVXCMWWtrozhTIFmBDFzAGweiicxypMXHgcX0xQ+hzbz43XekDnlVLaNLivJGlvxx4ylJ
- YXJu/Vq4TBk8UMV8gRVIBWUtLquG91K9kfd9/0LHtUS8zABAAA=
-X-Change-ID: 20241001-mcp251xfd-fix-length-calculation-09b6cc10aeb0
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- Thomas Kopp <thomas.kopp@microchip.com>, 
- Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
- Sven Schuchmann <schuchmann@schleissheimer.de>
-Cc: linux-can@vger.kernel.org, kernel@pengutronix.de, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>
-X-Mailer: b4 0.15-dev-dedf8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2880; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=63xFusTRsY1L/nYoLVzTZYDCcu+dflkbrtHdaafc8Ow=;
- b=owEBbQGS/pANAwAKASg4oj56LbxvAcsmYgBnKPmFN0MvQy+Sg3vSdfw3tywkkT9FJrkcQEQqe
- gWP0ISUzWeJATMEAAEKAB0WIQRQQLqG4LYE3Sm8Pl8oOKI+ei28bwUCZyj5hQAKCRAoOKI+ei28
- b/aTB/4tiMmTguV9zreuyT/rwm10dGSiYkqN2vMEjs770WOwPNxh+zX+pYyqt1llpm+U367uovF
- 59sgNZoY0x7CuT3xjrDOAuAyVB9ZsAf7rs+KgLPfu364rItSGUb+ByYWU3JwZKCfgc45MWtF6Xl
- b6o4+ZouLKt7QSRvwjL3N1OhZOxrbiGISx8sWgz6JYcCmIK6yxMr1bRU4kmP7Zw9vtxIw1kuj6k
- AVtwo9PjNtt66ZJcomC0rtRcLdMcQ7IPojctlSI9hyMHkt08agL/i9Zrvkfn7v4r8mM6aYLWNcG
- G2lQ7WeqcfzTeXaEFoRHJuJaxFTkLT1Im7GF9WKkkIexVrii
-X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
- fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spam-Score: -1.0
+X-Spam-Score: -1.0
+X-Clacks-Overhead: GNU Terry Pratchett
 
-Commit b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround
-broken TEF FIFO tail index erratum") introduced
-mcp251xfd_get_tef_len() to get the number of unhandled transmit events
-from the Transmit Event FIFO (TEF).
 
-As the TEF has no head pointer, the driver uses the TX FIFO's tail
-pointer instead, assuming that send frames are completed. However the
-check for the TEF being full was not correct. This leads to the driver
-stop working if the TEF is full.
 
-Fix the TEF full check by assuming that if, from the driver's point of
-view, there are no free TX buffers in the chip and the TX FIFO is
-empty, all messages must have been sent and the TEF must therefore be
-full.
-
-Reported-by: Sven Schuchmann <schuchmann@schleissheimer.de>
-Closes: https://patch.msgid.link/FR3P281MB155216711EFF900AD9791B7ED9692@FR3P281MB1552.DEUP281.PROD.OUTLOOK.COM
-Fixes: b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround broken TEF FIFO tail index erratum")
-Tested-by: Sven Schuchmann <schuchmann@schleissheimer.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
-Changes in v3:
-- add proper patch description
-- added Sven's Tested-by
-- Link to v2: https://patch.msgid.link/20241025-mcp251xfd-fix-length-calculation-v2-1-ea5db778b950@pengutronix.de
-
-Changes in v2:
-- mcp251xfd_tx_fifo_sta_empty(): fix check if TX-FIFO is empty
-- Link to RFC: https://patch.msgid.link/20241001-mcp251xfd-fix-length-calculation-v1-1-598b46508d61@pengutronix.de
----
- drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-index f732556d233a7be3b43f6f08e0b8f25732190104..d3ac865933fdf6c4ecdd80ad4d7accbff51eb0f8 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-@@ -16,9 +16,9 @@
- 
- #include "mcp251xfd.h"
- 
--static inline bool mcp251xfd_tx_fifo_sta_full(u32 fifo_sta)
-+static inline bool mcp251xfd_tx_fifo_sta_empty(u32 fifo_sta)
- {
--	return !(fifo_sta & MCP251XFD_REG_FIFOSTA_TFNRFNIF);
-+	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFERFFIF;
- }
- 
- static inline int
-@@ -122,7 +122,11 @@ mcp251xfd_get_tef_len(struct mcp251xfd_priv *priv, u8 *len_p)
- 	if (err)
- 		return err;
- 
--	if (mcp251xfd_tx_fifo_sta_full(fifo_sta)) {
-+	/* If the chip says the TX-FIFO is empty, but there are no TX
-+	 * buffers free in the ring, we assume all have been sent.
-+	 */
-+	if (mcp251xfd_tx_fifo_sta_empty(fifo_sta) &&
-+	    mcp251xfd_get_tx_free(tx_ring) == 0) {
- 		*len_p = tx_ring->obj_num;
- 		return 0;
- 	}
-
----
-base-commit: 5ccdcdf186aec6b9111845fd37e1757e9b413e2f
-change-id: 20241001-mcp251xfd-fix-length-calculation-09b6cc10aeb0
-
-Best regards,
+On 04/11/2024 16:32, Tiwei Bie wrote:
+> The drvdata is not available in release. Let's just use container_of()
+> to get the uml_net instance. Otherwise, removing a network device will
+> result in a crash:
+> 
+> RIP: 0033:net_device_release+0x10/0x6f
+> RSP: 00000000e20c7c40  EFLAGS: 00010206
+> RAX: 000000006002e4e7 RBX: 00000000600f1baf RCX: 00000000624074e0
+> RDX: 0000000062778000 RSI: 0000000060551c80 RDI: 00000000627af028
+> RBP: 00000000e20c7c50 R08: 00000000603ad594 R09: 00000000e20c7b70
+> R10: 000000000000135a R11: 00000000603ad422 R12: 0000000000000000
+> R13: 0000000062c7af00 R14: 0000000062406d60 R15: 00000000627700b6
+> Kernel panic - not syncing: Segfault with no mm
+> CPU: 0 UID: 0 PID: 29 Comm: kworker/0:2 Not tainted 6.12.0-rc6-g59b723cd2adb #1
+> Workqueue: events mc_work_proc
+> Stack:
+>   627af028 62c7af00 e20c7c80 60276fcd
+>   62778000 603f5820 627af028 00000000
+>   e20c7cb0 603a2bcd 627af000 62770010
+> Call Trace:
+>   [<60276fcd>] device_release+0x70/0xba
+>   [<603a2bcd>] kobject_put+0xba/0xe7
+>   [<60277265>] put_device+0x19/0x1c
+>   [<60281266>] platform_device_put+0x26/0x29
+>   [<60281e5f>] platform_device_unregister+0x2c/0x2e
+>   [<6002ec9c>] net_remove+0x63/0x69
+>   [<60031316>] ? mconsole_reply+0x0/0x50
+>   [<600310c8>] mconsole_remove+0x160/0x1cc
+>   [<60087d40>] ? __remove_hrtimer+0x38/0x74
+>   [<60087ff8>] ? hrtimer_try_to_cancel+0x8c/0x98
+>   [<6006b3cf>] ? dl_server_stop+0x3f/0x48
+>   [<6006b390>] ? dl_server_stop+0x0/0x48
+>   [<600672e8>] ? dequeue_entities+0x327/0x390
+>   [<60038fa6>] ? um_set_signals+0x0/0x43
+>   [<6003070c>] mc_work_proc+0x77/0x91
+>   [<60057664>] process_scheduled_works+0x1b3/0x2dd
+>   [<60055f32>] ? assign_work+0x0/0x58
+>   [<60057f0a>] worker_thread+0x1e9/0x293
+>   [<6005406f>] ? set_pf_worker+0x0/0x64
+>   [<6005d65d>] ? arch_local_irq_save+0x0/0x2d
+>   [<6005d748>] ? kthread_exit+0x0/0x3a
+>   [<60057d21>] ? worker_thread+0x0/0x293
+>   [<6005dbf1>] kthread+0x126/0x12b
+>   [<600219c5>] new_thread_handler+0x85/0xb6
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+> ---
+>   arch/um/drivers/net_kern.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/um/drivers/net_kern.c b/arch/um/drivers/net_kern.c
+> index 77c4afb8ab90..75d04fb4994a 100644
+> --- a/arch/um/drivers/net_kern.c
+> +++ b/arch/um/drivers/net_kern.c
+> @@ -336,7 +336,7 @@ static struct platform_driver uml_net_driver = {
+>   
+>   static void net_device_release(struct device *dev)
+>   {
+> -	struct uml_net *device = dev_get_drvdata(dev);
+> +	struct uml_net *device = container_of(dev, struct uml_net, pdev.dev);
+>   	struct net_device *netdev = device->dev;
+>   	struct uml_net_private *lp = netdev_priv(netdev);
+>   
+Acked-By: Anton Ivanov <anton.ivanov@cambridgegreys.com>
 -- 
-Marc Kleine-Budde <mkl@pengutronix.de>
-
-
+Anton R. Ivanov
+Cambridgegreys Limited. Registered in England. Company Number 10273661
+https://www.cambridgegreys.com/
 
