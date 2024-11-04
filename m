@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-89617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 146D99BB197
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:52:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC6369BB199
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:52:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61FD7B240F3
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 10:51:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD7931C21B0A
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 10:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11DD11B6556;
-	Mon,  4 Nov 2024 10:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07121B6D01;
+	Mon,  4 Nov 2024 10:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EkMozE8h"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AaYMsEHd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA661B21BE;
-	Mon,  4 Nov 2024 10:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC6F1B6CF9;
+	Mon,  4 Nov 2024 10:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730717458; cv=none; b=huWzWGo8PyItqrQHdEwctUbbqZ+j6qJaDpeyChUBdjKCsi+mD5yIAqwSfVbxpd8ekyl5JwR0fgdy/BMbHZ2x2NucyfiEcfUfB7y5dlCZ/CY7jSz+Sf9sCdIqKtgf00/K7+ID99oCYU4zoQ7w0k9gBy5NdIVnyHQNKOpe8D8R204=
+	t=1730717460; cv=none; b=WRBiRNXuZjMvxLsA1plXHuCPfxRmpFEq5XWv6++Aa8ZcX15WFTlVqnch5RLQqObYUG5mc9IVkZgsA/MW8dfM2g4elGhUE4QBtsXHBIPl7b88VZm6l5CzitJUjtylE45ISds52LbVpvd9dOV3+Wdcq0ka3a+hyFcu/l5jsKBKf1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730717458; c=relaxed/simple;
-	bh=OnlJrLERf88DH2l/8ZAe8lCpis5DgArRDiCCaz5bhns=;
+	s=arc-20240116; t=1730717460; c=relaxed/simple;
+	bh=zFX/x8ihpVgKkLrPR/NOpvs8U5Bnl1iPYEi4kaxTzUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SrL/ZXg9nUjy38rxX2IJfvaBe1MO9kl+OluBsqAODWIgxBWD9EZSwwfdplptB5DhEY5qrh/xtSvxscOfrYKfiXCs42NZPw3EYk/1y64t5gKtvpl6P7GN4FogsIInd7FKJgVU7p+mDGpFq5zt3ZD9Xf63DQfxjDZ1iCXZ6ELyuM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EkMozE8h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47253C4CED1;
-	Mon,  4 Nov 2024 10:50:57 +0000 (UTC)
+	 MIME-Version; b=GgfsFTDP9pFoM7duw1A2F3Lt8yjfvdSYUJa0mVSEYr9drbIHn9j/5gcRPnDvaCK7n9d/TF4pEMXTwa8vxECc1cuDbh0kAt77iVUX3l0xdfYK52teCQLQk/lKMNfnt4FP4Sq4eW5xjiLBsF8PdZXIcgoLiu8o57kJ3d8N/dXYSLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AaYMsEHd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8C1C4CED2;
+	Mon,  4 Nov 2024 10:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730717458;
-	bh=OnlJrLERf88DH2l/8ZAe8lCpis5DgArRDiCCaz5bhns=;
+	s=k20201202; t=1730717460;
+	bh=zFX/x8ihpVgKkLrPR/NOpvs8U5Bnl1iPYEi4kaxTzUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EkMozE8hLTavp8mBU6RcmLYBdbFuCAUFKobwyg9chddG0kRlfksyJbhzr2Fhs+P37
-	 aYV3P6Icj2ZAv2/VrZ6zLnu8FtVi2a7n5E9omT+ILtrJvYE9+RWPp1SDp7mrVw7iTy
-	 dT3cPDZnbjIDCFXmjsSxOoKLkXAZDwJVb4+neHNaYE27RXhNWSMSvWKDt6gHxxGhod
-	 Pbr1p9Mwo4MTKhi6kNA/aDrZhE8UETp2Q3iAOyKc4POyP5BAaAweSASo4II9C1/xgh
-	 p+9TfZbZjoYwfBrl0ZSqf/g1nmjd2cGP2cHvoiviDgBGZTkdfp03r9EBTTPaZNHGAG
-	 yg7ITzAsFcWXg==
+	b=AaYMsEHdUhfP+ru8PlIg+MjKg/1rkmzIPbJ91lyd43WXj+qAgtYsBZdnsKEqRq/qu
+	 csEQXH1vqPfv2HS0CDUiioJbpbzLTlrxXzQyKOq++Axi3VNwPVF6aZ3QFFoU//J2Ce
+	 2FFrhEZG5UMEqm9BQaxT1ouAsCIPtE/NTes0kZvRERg5eewBBMZEvSvAt8tHYXG4FM
+	 yz47eAh3iSYbc+sTErvn2/350w4ZP/SIV1oI9bHXYz+qW/HKoECkaTGFsnE6Tu44cn
+	 etBn/vNGm4jmu06uBCCexvt4oADJQSCC6053JXJYHKNslvbpK3ZZqxnJYYUzvAKEED
+	 LTIvHE/j8TT3w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Alain Volmat <alain.volmat@foss.st.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	stas.yakovlev@gmail.com,
-	ajay.kathat@microchip.com,
-	claudiu.beznea@tuxon.dev,
-	johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org,
-	libertas-dev@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.11 04/21] wifi: radiotap: Avoid -Wflex-array-member-not-at-end warnings
-Date: Mon,  4 Nov 2024 05:49:40 -0500
-Message-ID: <20241104105048.96444-4-sashal@kernel.org>
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	linux-spi@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.11 05/21] spi: stm32: fix missing device mode capability in stm32mp25
+Date: Mon,  4 Nov 2024 05:49:41 -0500
+Message-ID: <20241104105048.96444-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241104105048.96444-1-sashal@kernel.org>
 References: <20241104105048.96444-1-sashal@kernel.org>
@@ -71,225 +69,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.6
 Content-Transfer-Encoding: 8bit
 
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+From: Alain Volmat <alain.volmat@foss.st.com>
 
-[ Upstream commit 57be3d3562ca4aa62b8047bc681028cc402af8ce ]
+[ Upstream commit b5a468199b995bd8ee3c26f169a416a181210c9e ]
 
--Wflex-array-member-not-at-end was introduced in GCC-14, and we are
-getting ready to enable it, globally.
+The STM32MP25 SOC has capability to behave in device mode however
+missing .has_device_mode within its stm32mp25_spi_cfg structure leads
+to not being able to enable the device mode.
 
-So, in order to avoid ending up with a flexible-array member in the
-middle of multiple other structs, we use the `__struct_group()`
-helper to create a new tagged `struct ieee80211_radiotap_header_fixed`.
-This structure groups together all the members of the flexible
-`struct ieee80211_radiotap_header` except the flexible array.
-
-As a result, the array is effectively separated from the rest of the
-members without modifying the memory layout of the flexible structure.
-We then change the type of the middle struct members currently causing
-trouble from `struct ieee80211_radiotap_header` to `struct
-ieee80211_radiotap_header_fixed`.
-
-We also want to ensure that in case new members need to be added to the
-flexible structure, they are always included within the newly created
-tagged struct. For this, we use `static_assert()`. This ensures that the
-memory layout for both the flexible structure and the new tagged struct
-is the same after any changes.
-
-This approach avoids having to implement `struct ieee80211_radiotap_header_fixed`
-as a completely separate structure, thus preventing having to maintain
-two independent but basically identical structures, closing the door
-to potential bugs in the future.
-
-So, with these changes, fix the following warnings:
-drivers/net/wireless/ath/wil6210/txrx.c:309:50: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/intel/ipw2x00/ipw2100.c:2521:50: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/intel/ipw2x00/ipw2200.h:1146:42: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/intel/ipw2x00/libipw.h:595:36: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/marvell/libertas/radiotap.h:34:42: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/marvell/libertas/radiotap.h:5:42: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/microchip/wilc1000/mon.c:10:42: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/microchip/wilc1000/mon.c:15:42: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/virtual/mac80211_hwsim.c:758:42: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/virtual/mac80211_hwsim.c:767:42: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://patch.msgid.link/ZwBMtBZKcrzwU7l4@kspp
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Link: https://patch.msgid.link/20241009-spi-mp25-device-fix-v1-1-8e5ca7db7838@foss.st.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/wil6210/txrx.c       |  2 +-
- drivers/net/wireless/intel/ipw2x00/ipw2100.c  |  2 +-
- drivers/net/wireless/intel/ipw2x00/ipw2200.h  |  2 +-
- .../net/wireless/marvell/libertas/radiotap.h  |  4 +-
- drivers/net/wireless/microchip/wilc1000/mon.c |  4 +-
- drivers/net/wireless/virtual/mac80211_hwsim.c |  4 +-
- include/net/ieee80211_radiotap.h              | 43 +++++++++++--------
- 7 files changed, 33 insertions(+), 28 deletions(-)
+ drivers/spi/spi-stm32.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/wil6210/txrx.c b/drivers/net/wireless/ath/wil6210/txrx.c
-index f29ac6de71399..19702b6f09c32 100644
---- a/drivers/net/wireless/ath/wil6210/txrx.c
-+++ b/drivers/net/wireless/ath/wil6210/txrx.c
-@@ -306,7 +306,7 @@ static void wil_rx_add_radiotap_header(struct wil6210_priv *wil,
- 				       struct sk_buff *skb)
- {
- 	struct wil6210_rtap {
--		struct ieee80211_radiotap_header rthdr;
-+		struct ieee80211_radiotap_header_fixed rthdr;
- 		/* fields should be in the order of bits in rthdr.it_present */
- 		/* flags */
- 		u8 flags;
-diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2100.c b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-index b6636002c7d22..fe75941c584d1 100644
---- a/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-+++ b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-@@ -2518,7 +2518,7 @@ static void isr_rx_monitor(struct ipw2100_priv *priv, int i,
- 	 * to build this manually element by element, we can write it much
- 	 * more efficiently than we can parse it. ORDER MATTERS HERE */
- 	struct ipw_rt_hdr {
--		struct ieee80211_radiotap_header rt_hdr;
-+		struct ieee80211_radiotap_header_fixed rt_hdr;
- 		s8 rt_dbmsignal; /* signal in dbM, kluged to signed */
- 	} *ipw_rt;
- 
-diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.h b/drivers/net/wireless/intel/ipw2x00/ipw2200.h
-index 8ebf09121e173..226286cb7eb82 100644
---- a/drivers/net/wireless/intel/ipw2x00/ipw2200.h
-+++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.h
-@@ -1143,7 +1143,7 @@ struct ipw_prom_priv {
-  * structure is provided regardless of any bits unset.
-  */
- struct ipw_rt_hdr {
--	struct ieee80211_radiotap_header rt_hdr;
-+	struct ieee80211_radiotap_header_fixed rt_hdr;
- 	u64 rt_tsf;      /* TSF */	/* XXX */
- 	u8 rt_flags;	/* radiotap packet flags */
- 	u8 rt_rate;	/* rate in 500kb/s */
-diff --git a/drivers/net/wireless/marvell/libertas/radiotap.h b/drivers/net/wireless/marvell/libertas/radiotap.h
-index 1ed5608d353ff..d543bfe739dcb 100644
---- a/drivers/net/wireless/marvell/libertas/radiotap.h
-+++ b/drivers/net/wireless/marvell/libertas/radiotap.h
-@@ -2,7 +2,7 @@
- #include <net/ieee80211_radiotap.h>
- 
- struct tx_radiotap_hdr {
--	struct ieee80211_radiotap_header hdr;
-+	struct ieee80211_radiotap_header_fixed hdr;
- 	u8 rate;
- 	u8 txpower;
- 	u8 rts_retries;
-@@ -31,7 +31,7 @@ struct tx_radiotap_hdr {
- #define IEEE80211_FC_DSTODS          0x0300
- 
- struct rx_radiotap_hdr {
--	struct ieee80211_radiotap_header hdr;
-+	struct ieee80211_radiotap_header_fixed hdr;
- 	u8 flags;
- 	u8 rate;
- 	u8 antsignal;
-diff --git a/drivers/net/wireless/microchip/wilc1000/mon.c b/drivers/net/wireless/microchip/wilc1000/mon.c
-index 03b7229a0ff5a..c3d27aaec2974 100644
---- a/drivers/net/wireless/microchip/wilc1000/mon.c
-+++ b/drivers/net/wireless/microchip/wilc1000/mon.c
-@@ -7,12 +7,12 @@
- #include "cfg80211.h"
- 
- struct wilc_wfi_radiotap_hdr {
--	struct ieee80211_radiotap_header hdr;
-+	struct ieee80211_radiotap_header_fixed hdr;
- 	u8 rate;
- } __packed;
- 
- struct wilc_wfi_radiotap_cb_hdr {
--	struct ieee80211_radiotap_header hdr;
-+	struct ieee80211_radiotap_header_fixed hdr;
- 	u8 rate;
- 	u8 dump;
- 	u16 tx_flags;
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index 5fe9e4e261429..52468e16c3df6 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -763,7 +763,7 @@ static const struct rhashtable_params hwsim_rht_params = {
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index 4c4ff074e3f6f..fc72a89fb3a7b 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -2044,6 +2044,7 @@ static const struct stm32_spi_cfg stm32mp25_spi_cfg = {
+ 	.baud_rate_div_max = STM32H7_SPI_MBR_DIV_MAX,
+ 	.has_fifo = true,
+ 	.prevent_dma_burst = true,
++	.has_device_mode = true,
  };
  
- struct hwsim_radiotap_hdr {
--	struct ieee80211_radiotap_header hdr;
-+	struct ieee80211_radiotap_header_fixed hdr;
- 	__le64 rt_tsft;
- 	u8 rt_flags;
- 	u8 rt_rate;
-@@ -772,7 +772,7 @@ struct hwsim_radiotap_hdr {
- } __packed;
- 
- struct hwsim_radiotap_ack_hdr {
--	struct ieee80211_radiotap_header hdr;
-+	struct ieee80211_radiotap_header_fixed hdr;
- 	u8 rt_flags;
- 	u8 pad;
- 	__le16 rt_channel;
-diff --git a/include/net/ieee80211_radiotap.h b/include/net/ieee80211_radiotap.h
-index 91762faecc13d..1458d3695005a 100644
---- a/include/net/ieee80211_radiotap.h
-+++ b/include/net/ieee80211_radiotap.h
-@@ -24,25 +24,27 @@
-  * struct ieee80211_radiotap_header - base radiotap header
-  */
- struct ieee80211_radiotap_header {
--	/**
--	 * @it_version: radiotap version, always 0
--	 */
--	uint8_t it_version;
--
--	/**
--	 * @it_pad: padding (or alignment)
--	 */
--	uint8_t it_pad;
--
--	/**
--	 * @it_len: overall radiotap header length
--	 */
--	__le16 it_len;
--
--	/**
--	 * @it_present: (first) present word
--	 */
--	__le32 it_present;
-+	__struct_group(ieee80211_radiotap_header_fixed, hdr, __packed,
-+		/**
-+		 * @it_version: radiotap version, always 0
-+		 */
-+		uint8_t it_version;
-+
-+		/**
-+		 * @it_pad: padding (or alignment)
-+		 */
-+		uint8_t it_pad;
-+
-+		/**
-+		 * @it_len: overall radiotap header length
-+		 */
-+		__le16 it_len;
-+
-+		/**
-+		 * @it_present: (first) present word
-+		 */
-+		__le32 it_present;
-+	);
- 
- 	/**
- 	 * @it_optional: all remaining presence bitmaps
-@@ -50,6 +52,9 @@ struct ieee80211_radiotap_header {
- 	__le32 it_optional[];
- } __packed;
- 
-+static_assert(offsetof(struct ieee80211_radiotap_header, it_optional) == sizeof(struct ieee80211_radiotap_header_fixed),
-+	      "struct member likely outside of __struct_group()");
-+
- /* version is always 0 */
- #define PKTHDR_RADIOTAP_VERSION	0
- 
+ static const struct of_device_id stm32_spi_of_match[] = {
 -- 
 2.43.0
 
