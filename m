@@ -1,65 +1,72 @@
-Return-Path: <stable+bounces-89755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49CC19BBEB4
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 21:20:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 690399BBEEA
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 21:42:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 798661C214B2
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 20:20:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2A3DB21C83
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 20:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A511E231D;
-	Mon,  4 Nov 2024 20:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099F71F585D;
+	Mon,  4 Nov 2024 20:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EsfWxSZx"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c62b0P+8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B1A1E25F1;
-	Mon,  4 Nov 2024 20:20:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5167D1E47D8
+	for <stable@vger.kernel.org>; Mon,  4 Nov 2024 20:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730751611; cv=none; b=HYTTpfKyKv6BOJqq4dP526jDEOOS8jFr9aZSSqk6MACy+FASRHvxXjYw8ezhnGWSWY8kqqdU8Z59ujfGZg70hiGShY+LtdrrrANoQ+pWEyZy6kl+Rf6kETV+uSLUrbVQ7JJyFvWJHISfcsTPVES1QsE66M6MXvEhHIUxOWesOl0=
+	t=1730752952; cv=none; b=V2+R7AGxSkSvsHhhG1yxqMeGh5jTUxZYtoAcmtJ8zJcG65j8HpCOqGJUzfTkihhlnNVDrWDTrJ/3ctUfQ9amaY8tY/QCH1YPHMhjnVbblZG6nfvG46CC14MSJ6nDdpDYWxlVlga3YOGhg9KdslOXN8tgs/DgR3ZmMO2kWd7Adn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730751611; c=relaxed/simple;
-	bh=F35QXu0CPb2RNTi9cqqHOPETxQ69DznhMqoB8u7EK/k=;
+	s=arc-20240116; t=1730752952; c=relaxed/simple;
+	bh=ix7Kqk7GQmr/xV7w8jeE+AQaNlvDZOuASROq2dm+eZU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SRWhGUen4bT6GXg3eZhO1BQ4agN55/jZLrIHB1TYCn+YnND1iVrwCVEXgwTJFFHqEa0yMDi5C16wt9vl36CBiV836NhFmZUk7aq6BcaHby+0iVHYThxruflabKIN8p169uxwqjYmXDyL/5D+N5j71u/PZuVbINj9HGt3xQxPi1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EsfWxSZx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88909C4CECE;
-	Mon,  4 Nov 2024 20:20:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730751610;
-	bh=F35QXu0CPb2RNTi9cqqHOPETxQ69DznhMqoB8u7EK/k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EsfWxSZxcLob+OpZQ/6kbeznGeNpk12qsGwzGZQQkwQCFfQv4+n7/UuPxDhC8ZLuN
-	 LVONQaZrfhhnRtFu3RcJKdQ34vOBPhLr/g0U8Rcn/BW2RVHx2ZvRvgv0eXVGWGBVIC
-	 LojWYoLqFkP4jEiG53jwIwRW6Pl6QMy1U0/lKkAgs8E8PueJYc++VDvXYNBKz3ZFwe
-	 XuJI3NW2XZllYTLrRXChbGsMwwCiSrP8NcYu2bky7Kyla7nIacFa/ltzkhFWIBRJUu
-	 FnP40w1Bq37G4EPw8KAe5X6KjceW84wHqKVkTKJe7bRh7DriDS8p6bcWBJUk0aEQra
-	 c/rrnl387nMlg==
-Date: Mon, 4 Nov 2024 14:20:08 -0600
-From: Rob Herring <robh@kernel.org>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Lizhi Hou <lizhi.hou@amd.com>,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/6] PCI: of: Use device_{add,remove}_of_node() to attach
- of_node to existing device
-Message-ID: <20241104202008.GB361448-robh@kernel.org>
-References: <20241104172001.165640-1-herve.codina@bootlin.com>
- <20241104172001.165640-3-herve.codina@bootlin.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=d25aScoLGIEPtv+Hj2zBoVFXDPbDlW5z7CTiQW5wfnS3QOrdH+A/yTYT0h0LuIpW2IOM7NaanLKw41ZvPu+JFjJYgHWVwba1aKTfiGEAd9gdEtM4kDG4yUi22S73wiUEKrsLZ1yK/baBzcCqnaIjQvFc+os9VdQSPNnY7Kqh82I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c62b0P+8; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730752950;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7sMUGsUyl1WIe7UvWFagXtO9/bnq4SlWJJ0dMGdfYUo=;
+	b=c62b0P+853z8mYlOOrHRpw2MQ7ujH9KZyrPsy4Oqn8P6qbmbA0kU1dv83rKFCFKlZQnrAg
+	BXcS9hUZWaW4Yka7Hns0QN6uqrZHK2J8LSGiY9qrhmyh+UWMw7sGFvU67yBGzawzTnu+JL
+	8YGkP3tahvZwD3cwENeCn6AuVj98qrE=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-303-VNIcwlUvNPOHCeqEUhnltA-1; Mon,
+ 04 Nov 2024 15:42:27 -0500
+X-MC-Unique: VNIcwlUvNPOHCeqEUhnltA-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1B2211955EB3;
+	Mon,  4 Nov 2024 20:42:25 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.224.168])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id D3EC019560AA;
+	Mon,  4 Nov 2024 20:42:21 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Mon,  4 Nov 2024 21:42:07 +0100 (CET)
+Date: Mon, 4 Nov 2024 21:42:03 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+	Andrei Vagin <avagin@google.com>, Kees Cook <kees@kernel.org>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Alexey Gladkov <legion@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] signal: restore the override_rlimit logic
+Message-ID: <20241104204202.GB26235@redhat.com>
+References: <20241104195419.3962584-1-roman.gushchin@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,58 +75,29 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241104172001.165640-3-herve.codina@bootlin.com>
+In-Reply-To: <20241104195419.3962584-1-roman.gushchin@linux.dev>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On Mon, Nov 04, 2024 at 06:19:56PM +0100, Herve Codina wrote:
-> The commit 407d1a51921e ("PCI: Create device tree node for bridge")
-> creates of_node for PCI devices. The newly created of_node is attached
-> to an existing device. This is done setting directly pdev->dev.of_node
-> in the code.
-> 
-> Even if pdev->dev.of_node cannot be previously set, this doesn't handle
-> the fwnode field of the struct device. Indeed, this field needs to be
-> set if it hasn't already been set.
-> 
-> device_{add,remove}_of_node() have been introduced to handle this case.
-> 
-> Use them instead of the direct setting.
-> 
-> Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
-> Cc: stable@vger.kernel.org
+On 11/04, Roman Gushchin wrote:
+>
+> -long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
+> +long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
+> +			    bool override_rlimit)
+>  {
+>  	/* Caller must hold a reference to ucounts */
+>  	struct ucounts *iter;
+> @@ -320,7 +321,8 @@ long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
+>  			goto unwind;
+>  		if (iter == ucounts)
+>  			ret = new;
+> -		max = get_userns_rlimit_max(iter->ns, type);
+> +		if (!override_rlimit)
+> +			max = get_userns_rlimit_max(iter->ns, type);
+>  		/*
+>  		 * Grab an extra ucount reference for the caller when
+>  		 * the rlimit count was previously 0.
 
-I don't think this is stable material. What exactly would is broken 
-which would be fixed by just the first 2 patches?
+Acked-by: Oleg Nesterov <oleg@redhat.com>
 
-
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> ---
->  drivers/pci/of.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/pci/of.c b/drivers/pci/of.c
-> index dacea3fc5128..141ffbb1b3e6 100644
-> --- a/drivers/pci/of.c
-> +++ b/drivers/pci/of.c
-> @@ -655,8 +655,8 @@ void of_pci_remove_node(struct pci_dev *pdev)
->  	np = pci_device_to_OF_node(pdev);
->  	if (!np || !of_node_check_flag(np, OF_DYNAMIC))
->  		return;
-> -	pdev->dev.of_node = NULL;
->  
-> +	device_remove_of_node(&pdev->dev);
->  	of_changeset_revert(np->data);
->  	of_changeset_destroy(np->data);
->  	of_node_put(np);
-> @@ -713,7 +713,7 @@ void of_pci_make_dev_node(struct pci_dev *pdev)
->  		goto out_free_node;
->  
->  	np->data = cset;
-> -	pdev->dev.of_node = np;
-> +	device_add_of_node(&pdev->dev, np);
->  	kfree(name);
->  
->  	return;
-> -- 
-> 2.46.2
-> 
 
