@@ -1,67 +1,63 @@
-Return-Path: <stable+bounces-89639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C2669BB1E9
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:58:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C28D09BB1EC
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:58:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B05AF1C21AB0
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 10:58:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 868B22808DD
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 10:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D83B1D096F;
-	Mon,  4 Nov 2024 10:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 803A01D0E1F;
+	Mon,  4 Nov 2024 10:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fZbM6tDK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P7ZpSe9/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310441B86CC;
-	Mon,  4 Nov 2024 10:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3951A1B86CC;
+	Mon,  4 Nov 2024 10:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730717564; cv=none; b=fNmolqnBkmMqKmr8z/Yqmjplkktl9cVOwwgw2a6QnAT92/G7YXzNzDn0nkbNynTn7z2iZX3rSqgebK03bOAp1UAtprIrCulz/sT+DfZMmvlehx/W9w1TZze/RSWMUVdSXZlHnFi5L8DZ5UWWgGTmYlF53X2rRak8C79dy2nFahE=
+	t=1730717569; cv=none; b=sNoL7h3efpHGskLUUlwk7vbuya0iQnAi67dQbULlE0FiTJhMaURdS9KLg1KqPdDBa/1IbfvoWjf685azm5lrWg29rAfXyN5rje7VnOKq/7ijtXWdwcjRVjPKLdrdp70BrG4jHDTHFNYc+Si6IMrym0U5Zc8cAbR+90RI64XFH7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730717564; c=relaxed/simple;
-	bh=lPeDna9M3oHM6ZuSmc/fmvPvdn/xIwXzu0m4Hpr7x0o=;
+	s=arc-20240116; t=1730717569; c=relaxed/simple;
+	bh=MxfQoHMFK+WwVWQyVLXYG2MTtBcOuGGA3HeitR9zf3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aswou+izjYFClzIJJD9mZkUGGjfv6JTorPZJBISUY7sVeRGdHyr6gD/Fwufnmzx05zvAH9CrhWIrgiyr4/LCaCDrRqOcqhwvryc1sKCKhbcFS8LgDHNZ3dn0w1oz8tlmAFef0ZYKkqOwsE/HNYSBx49gYQv4I2Pa4zAWzoMoe0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fZbM6tDK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34876C4CED1;
-	Mon,  4 Nov 2024 10:52:42 +0000 (UTC)
+	 MIME-Version; b=jaARPW5LnWMcZzbLdERaOduzGYLkF6N+84eGL6HLNYdDbffKpgH8YzO7N1keX/1Q+reoQ1OqQmSVZ1CTANpl+l1VCH+ghzjPBZvxc5Z+6+g1dEe73YtLYXXfaXJNJ/sbNxs44e7539MO5FpD2xu7JxBkgHvtHSrcGpYdTYMl98w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P7ZpSe9/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EACCC4CECE;
+	Mon,  4 Nov 2024 10:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730717564;
-	bh=lPeDna9M3oHM6ZuSmc/fmvPvdn/xIwXzu0m4Hpr7x0o=;
+	s=k20201202; t=1730717568;
+	bh=MxfQoHMFK+WwVWQyVLXYG2MTtBcOuGGA3HeitR9zf3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fZbM6tDKtU2lK6OusHavMhEb33dIIZPyAqx9oiPvSE5/i67ZJN/JkOMn1eKN7H03F
-	 XFToiBesdtwIVdutDkQC/sV6zj1Ff3Vc/A/tp/A7mlVugV2XUP10ZqaZFgov8qeEno
-	 /2/VpyFyK6ITl5a1qdslBMhfbftBWtRPtDuLPydZCn74RoZ9OMLHi5u0VQSPorGFSW
-	 YczPoWepddlqQXcUNWfoVzcCMjb757e8BRKom/wjcUsjAKwXivk0rJ+YVjYRBBnHXM
-	 H+A1FPm1/bUHdiuHY0qwxoaGOXWWWRh7cUUWKsYyepqfwAYcebnvdRJZCetR66SBFF
-	 wNfE+P2P2OlJg==
+	b=P7ZpSe9/NRnn796p2dydGbBlV0th076lIRafztLzwDIN8XG8L0XgjatUm2ANI6RHT
+	 FPtnCtw/+04psLjaNw9n281kgVEKBzNLPazCz18Dk6tyNQLTCKi7HWX/pIdCNGvOZI
+	 Jsv22MpZVBaCg5BnMkP/Zu5fDsMoK31uE8+Wc59JqXpOcXZ65dYIOwUMtJATluI2bD
+	 V603MavQmrMbSimqSRm9LL2sK+fsUVNbBRACdinjYg0L8BcNlLJK7IKKxfBxVhr71i
+	 4ebvSTAYixvn9VIwLzkge5xGY7HH7aNM4qLJPj6yzRCFb0yoJ7bqZeBBQ6e9dvxSso
+	 yqUVYlxIqhlxQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Daniel Gabay <daniel.gabay@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	cezary.rojewski@intel.com,
-	liam.r.girdwood@linux.intel.com,
-	peter.ujfalusi@linux.intel.com,
-	yung-chuan.liao@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	kai.vehmanen@linux.intel.com,
-	pierre-louis.bossart@linux.dev,
-	amadeuszx.slawinski@linux.intel.com,
-	u.kleine-koenig@baylibre.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 05/14] ASoC: Intel: sst: Support LPE0F28 ACPI HID
-Date: Mon,  4 Nov 2024 05:51:57 -0500
-Message-ID: <20241104105228.97053-5-sashal@kernel.org>
+	kvalo@kernel.org,
+	shaul.triebitz@intel.com,
+	gregory.greenman@intel.com,
+	yedidya.ben.shimol@intel.com,
+	benjamin.berg@intel.com,
+	emmanuel.grumbach@intel.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 06/14] wifi: iwlwifi: mvm: Use the sync timepoint API in suspend
+Date: Mon,  4 Nov 2024 05:51:58 -0500
+Message-ID: <20241104105228.97053-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241104105228.97053-1-sashal@kernel.org>
 References: <20241104105228.97053-1-sashal@kernel.org>
@@ -71,147 +67,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.59
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Daniel Gabay <daniel.gabay@intel.com>
 
-[ Upstream commit 6668610b4d8ce9a3ee3ed61a9471f62fb5f05bf9 ]
+[ Upstream commit 9715246ca0bfc9feaec1b4ff5b3d38de65a7025d ]
 
-Some old Bay Trail tablets which shipped with Android as factory OS
-have the SST/LPE audio engine described by an ACPI device with a
-HID (Hardware-ID) of LPE0F28 instead of 80860F28.
+When starting the suspend flow, HOST_D3_START triggers an _async_
+firmware dump collection for debugging purposes. The async worker
+may race with suspend flow and fail to get NIC access, resulting in
+the following warning:
+"Timeout waiting for hardware access (CSR_GP_CNTRL 0xffffffff)"
 
-Add support for this. Note this uses a new sst_res_info for just
-the LPE0F28 case because it has a different layout for the IO-mem ACPI
-resources then the 80860F28.
+Fix this by switching to the sync version to ensure the dump
+completes before proceeding with the suspend flow, avoiding
+potential race issues.
 
-An example of a tablet which needs this is the Vexia EDU ATLA 10 tablet,
-which has been distributed to schools in the Spanish Andalucía region.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241025090221.52198-1-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20241010140328.9aae318cd593.I4b322009f39489c0b1d8893495c887870f73ed9c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/intel-dsp-config.c        |  4 ++
- sound/soc/intel/atom/sst/sst_acpi.c | 64 +++++++++++++++++++++++++----
- 2 files changed, 59 insertions(+), 9 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/init.c | 4 +++-
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c  | 2 ++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/sound/hda/intel-dsp-config.c b/sound/hda/intel-dsp-config.c
-index e7c2ef6c6b4cb..16a3e478e50b9 100644
---- a/sound/hda/intel-dsp-config.c
-+++ b/sound/hda/intel-dsp-config.c
-@@ -721,6 +721,10 @@ static const struct config_entry acpi_config_table[] = {
- #if IS_ENABLED(CONFIG_SND_SST_ATOM_HIFI2_PLATFORM_ACPI) || \
-     IS_ENABLED(CONFIG_SND_SOC_SOF_BAYTRAIL)
- /* BayTrail */
-+	{
-+		.flags = FLAG_SST_OR_SOF_BYT,
-+		.acpi_hid = "LPE0F28",
-+	},
- 	{
- 		.flags = FLAG_SST_OR_SOF_BYT,
- 		.acpi_hid = "80860F28",
-diff --git a/sound/soc/intel/atom/sst/sst_acpi.c b/sound/soc/intel/atom/sst/sst_acpi.c
-index 29d44c989e5fc..1f9bb1b84949d 100644
---- a/sound/soc/intel/atom/sst/sst_acpi.c
-+++ b/sound/soc/intel/atom/sst/sst_acpi.c
-@@ -125,6 +125,28 @@ static const struct sst_res_info bytcr_res_info = {
- 	.acpi_ipc_irq_index = 0
- };
- 
-+/* For "LPE0F28" ACPI device found on some Android factory OS models */
-+static const struct sst_res_info lpe8086_res_info = {
-+	.shim_offset = 0x140000,
-+	.shim_size = 0x000100,
-+	.shim_phy_addr = SST_BYT_SHIM_PHY_ADDR,
-+	.ssp0_offset = 0xa0000,
-+	.ssp0_size = 0x1000,
-+	.dma0_offset = 0x98000,
-+	.dma0_size = 0x4000,
-+	.dma1_offset = 0x9c000,
-+	.dma1_size = 0x4000,
-+	.iram_offset = 0x0c0000,
-+	.iram_size = 0x14000,
-+	.dram_offset = 0x100000,
-+	.dram_size = 0x28000,
-+	.mbox_offset = 0x144000,
-+	.mbox_size = 0x1000,
-+	.acpi_lpe_res_index = 1,
-+	.acpi_ddr_index = 0,
-+	.acpi_ipc_irq_index = 0
-+};
-+
- static struct sst_platform_info byt_rvp_platform_data = {
- 	.probe_data = &byt_fwparse_info,
- 	.ipc_info = &byt_ipc_info,
-@@ -268,10 +290,38 @@ static int sst_acpi_probe(struct platform_device *pdev)
- 		mach->pdata = &chv_platform_data;
- 	pdata = mach->pdata;
- 
--	ret = kstrtouint(id->id, 16, &dev_id);
--	if (ret < 0) {
--		dev_err(dev, "Unique device id conversion error: %d\n", ret);
--		return ret;
-+	if (!strcmp(id->id, "LPE0F28")) {
-+		struct resource *rsrc;
-+
-+		/* Use regular BYT SST PCI VID:PID */
-+		dev_id = 0x80860F28;
-+		byt_rvp_platform_data.res_info = &lpe8086_res_info;
-+
-+		/*
-+		 * The "LPE0F28" ACPI device has separate IO-mem resources for:
-+		 * DDR, SHIM, MBOX, IRAM, DRAM, CFG
-+		 * None of which covers the entire LPE base address range.
-+		 * lpe8086_res_info.acpi_lpe_res_index points to the SHIM.
-+		 * Patch this to cover the entire base address range as expected
-+		 * by sst_platform_get_resources().
-+		 */
-+		rsrc = platform_get_resource(pdev, IORESOURCE_MEM,
-+					     pdata->res_info->acpi_lpe_res_index);
-+		if (!rsrc) {
-+			dev_err(ctx->dev, "Invalid SHIM base\n");
-+			return -EIO;
-+		}
-+		rsrc->start -= pdata->res_info->shim_offset;
-+		rsrc->end = rsrc->start + 0x200000 - 1;
-+	} else {
-+		ret = kstrtouint(id->id, 16, &dev_id);
-+		if (ret < 0) {
-+			dev_err(dev, "Unique device id conversion error: %d\n", ret);
-+			return ret;
-+		}
-+
-+		if (soc_intel_is_byt_cr(pdev))
-+			byt_rvp_platform_data.res_info = &bytcr_res_info;
- 	}
- 
- 	dev_dbg(dev, "ACPI device id: %x\n", dev_id);
-@@ -280,11 +330,6 @@ static int sst_acpi_probe(struct platform_device *pdev)
- 	if (ret < 0)
- 		return ret;
- 
--	if (soc_intel_is_byt_cr(pdev)) {
--		/* override resource info */
--		byt_rvp_platform_data.res_info = &bytcr_res_info;
--	}
--
- 	/* update machine parameters */
- 	mach->mach_params.acpi_ipc_irq_index =
- 		pdata->res_info->acpi_ipc_irq_index;
-@@ -344,6 +389,7 @@ static void sst_acpi_remove(struct platform_device *pdev)
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/init.c b/drivers/net/wireless/intel/iwlwifi/fw/init.c
+index 135bd48bfe9fa..cf02a2afbee56 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/init.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/init.c
+@@ -39,10 +39,12 @@ void iwl_fw_runtime_init(struct iwl_fw_runtime *fwrt, struct iwl_trans *trans,
  }
+ IWL_EXPORT_SYMBOL(iwl_fw_runtime_init);
  
- static const struct acpi_device_id sst_acpi_ids[] = {
-+	{ "LPE0F28", (unsigned long)&snd_soc_acpi_intel_baytrail_machines},
- 	{ "80860F28", (unsigned long)&snd_soc_acpi_intel_baytrail_machines},
- 	{ "808622A8", (unsigned long)&snd_soc_acpi_intel_cherrytrail_machines},
- 	{ },
++/* Assumes the appropriate lock is held by the caller */
+ void iwl_fw_runtime_suspend(struct iwl_fw_runtime *fwrt)
+ {
+ 	iwl_fw_suspend_timestamp(fwrt);
+-	iwl_dbg_tlv_time_point(fwrt, IWL_FW_INI_TIME_POINT_HOST_D3_START, NULL);
++	iwl_dbg_tlv_time_point_sync(fwrt, IWL_FW_INI_TIME_POINT_HOST_D3_START,
++				    NULL);
+ }
+ IWL_EXPORT_SYMBOL(iwl_fw_runtime_suspend);
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+index 08d1fab7f53c3..592b9157d50c6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -1382,7 +1382,9 @@ int iwl_mvm_suspend(struct ieee80211_hw *hw, struct cfg80211_wowlan *wowlan)
+ 
+ 	iwl_mvm_pause_tcm(mvm, true);
+ 
++	mutex_lock(&mvm->mutex);
+ 	iwl_fw_runtime_suspend(&mvm->fwrt);
++	mutex_unlock(&mvm->mutex);
+ 
+ 	return __iwl_mvm_suspend(hw, wowlan, false);
+ }
 -- 
 2.43.0
 
