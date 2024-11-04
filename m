@@ -1,163 +1,117 @@
-Return-Path: <stable+bounces-89717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B35F9BB99C
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 16:59:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 021069BB9E0
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 17:11:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF6E6282A37
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 15:59:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B86652827EC
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 16:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1631C07D4;
-	Mon,  4 Nov 2024 15:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E001C1AA9;
+	Mon,  4 Nov 2024 16:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="Ba6U4nWj"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NJv5c9rP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14A41BF804
-	for <stable@vger.kernel.org>; Mon,  4 Nov 2024 15:58:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACEA1C07F6
+	for <stable@vger.kernel.org>; Mon,  4 Nov 2024 16:11:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730735940; cv=none; b=tzDbv07vd/tCCBiRjqCTSs4Y35TjzxFS4OR5CkgqXqQRMPiji6xx7+JgC1I5GTHuT5KZ5e9/4jlD2nBFmiBiQdlWQU4Wz2QG91l50+14VRuiKwjVXEHEvyRWcmrS+JDMCIyHgqhO4tlumm9B7bE8M6K0Yi/4HmM1do0Es2nWXGY=
+	t=1730736665; cv=none; b=U5B9P7pDtlqSDO9xgSVCdQWunaPhsZeVAdwbnUnvWL6xgJoQAM/CUgHUq9/YpepIVA/4vtteaXapUcVhh2BP6GQIccb/P3ZbGqVkMg7AIH3aL7M4UrpyxRMqG7bK3Pp43Bgb361frko2Gee+S5RPDpd0xhXdBx/EHBSY4X8kyAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730735940; c=relaxed/simple;
-	bh=NhaHiQLeeM5U8QY1u4TUnjkgyHHUp39DbT0trsmIeHs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oEdqOKcNGzZcyhv6Kwg2qYhOnChTzuGr46R3hfBBLqpH8n7PZgyPsXoG8MS2BldUZz1OXp6WRmAYTDhdHkYkwBp1eKL/tBX1bb1tBEGeadHnAVg8lw1eJTWVzvn2KmroOz0duP7hRcagBihju32RpUn9fnPu6TIlQ13/XOiqEU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=Ba6U4nWj; arc=none smtp.client-ip=209.85.166.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-io1-f52.google.com with SMTP id ca18e2360f4ac-83ac817aac3so172086039f.0
-        for <stable@vger.kernel.org>; Mon, 04 Nov 2024 07:58:57 -0800 (PST)
+	s=arc-20240116; t=1730736665; c=relaxed/simple;
+	bh=oq0MHL3CLJd8/YsJe7HnPmPURjUl2rwEZGr/iD/Sj00=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kc4s7/0Y6za0KewnyAV76Gob0PaG/qrTe+/5AbtJC4i3eSHlSIWzlUUf4sdjgiA85hJQBZ0SPUwfadvvpEinIweRYazUKhKD2VAo+sk5RkN2TEGigSzfu9pwhJI6EvvhmIiZiVHIT3jXaRUH+dhxfeF6BFfPRlcy4UlHg3XQg0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NJv5c9rP; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4315eac969aso26339875e9.1
+        for <stable@vger.kernel.org>; Mon, 04 Nov 2024 08:11:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1730735937; x=1731340737; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6e/nD16lDPHQ4FWyFr7ZRP80M+oYReyHPvPL/Qu3Gpc=;
-        b=Ba6U4nWjPdg/2Ud+VGDcC3g63KmznGYKUKDZgpCrPyiWGRviKNQZtLi0Q/hldik1c3
-         G4Vk9bftN5RhEWayvvsWgWwEU0iM4hh/6IXXu3rNLc1+cTifQ24HNHxTPjwft5Nt/16i
-         JARm7GW9Ze9bHG9P/H6S8YoPIBjK4W3pGtT28IEJ1ckyLZc8n+3wUeKAEvnQsDb2i4zm
-         G52hfvWOpGyat5TgiamO8azpJiiVCJeBw2dRc9X3S7mhggjCJhLeC/gdv0Dbje0qeOEV
-         P2a9Y9xCSrZ1PpX8MTuO7lUJGLjHHr78EXw4OsWPk4Lmy9wbGnVTOV3iR/+n/jtojMQP
-         BnXQ==
+        d=google.com; s=20230601; t=1730736662; x=1731341462; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LK0NvUMhsScOGKvQngx/j866I5wUItHfVHUyQMoJ0LQ=;
+        b=NJv5c9rPLVSBNwT7lgzB/7q4ZYyXHkobjwlZSEBwIix9qeXDjHcLBfrbx1wTwn6Rmp
+         cGnxZGCuBqK75uzjWl1BP+O3V5/cPVuGgKr/p0J6TF01fca/hdwily0jjJugZ4XOoY29
+         rvZybd4XP4LS1COe5+rpqrPNjk8vlmEB7nxI+qkVfPqRFVOdLBaw25lndVRl1zyt4aRS
+         UHtFsKyBwl5xt+DLrha7j8UiPad9FUUydWDafprWIUCvyKWeFp0XBgnnqiAclPrualsi
+         X4JZL1jyZXvrE3LKnZ/cc8lqKUENXM29I5bd69VWkqaH2/trH6cR9aC+jbHIcvGM7hdK
+         Rqag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730735937; x=1731340737;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6e/nD16lDPHQ4FWyFr7ZRP80M+oYReyHPvPL/Qu3Gpc=;
-        b=AoRaWVOQDIkIYIoWF3U/RRr2l3ni3utIjyy08ylrM//wgcpDqOQj6T3u8eKAstNclw
-         h85VMCxdGe75vgocb+plxQHJwK6WrKt7GBH+HTdr9WAlCFzfGtVm2uevRxpLQIOqprkC
-         3WTtR0PNp2CmLvQxLKD/3VBz/5vBy6wXypro+KEuYjHxL/0CWS74L+FuX1RFm/fedInM
-         aQX1UOgtUr6cGN8Fxs+hW2SfvPEaFxIv641s21oUiJVB2V2SJKnshH37ddcyPwVBasDr
-         0VcmIsSWnsO4goGKhxLjci8OeOXj14xYELDQ6olo7aDJLpUvT2pM4n7J9oJM9LJGtfx7
-         H2tA==
-X-Forwarded-Encrypted: i=1; AJvYcCV6v7Ax13cbo1b5JNEd3ZL2X0TSNLLqgucArgu86NUZiL6Zwof+8pvxX2tNsiagzHW+28cnVyc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxG/pyY0L5SgG2W+nYUsf79zkhMkB8Y3Gac70Fk73/ly6f9hzy
-	4jBTLCTZ8e8EZO7h5P4RoJs2/GlxZO+xC2WCbhOspdstXpVYWnwVBw3wKfouUtk=
-X-Google-Smtp-Source: AGHT+IFCIzXlcRK0iv0dqWzv0axbztsx3wQi11UA2IJi94+9Axq7TMobh1ZDbgrBwrebzDSPAn0Ieg==
-X-Received: by 2002:a05:6602:1592:b0:83a:b7a2:74e6 with SMTP id ca18e2360f4ac-83b56605610mr2554651839f.0.1730735937063;
-        Mon, 04 Nov 2024 07:58:57 -0800 (PST)
-Received: from [192.168.1.116] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4de048881e8sm1985667173.15.2024.11.04.07.58.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Nov 2024 07:58:56 -0800 (PST)
-Message-ID: <3282cea4-a47c-4e62-9d1f-5c0321676fd5@kernel.dk>
-Date: Mon, 4 Nov 2024 08:58:55 -0700
+        d=1e100.net; s=20230601; t=1730736662; x=1731341462;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LK0NvUMhsScOGKvQngx/j866I5wUItHfVHUyQMoJ0LQ=;
+        b=jruflYSaNL3bSDo+exSO63nhJ+1TOXoBVnxjfY/JifKUZJUb1H2ewPexmlh1D0CpUj
+         7xJRsAuyekoSyHMiF1D9ck4TyT3yie6+XduMGmXpW1IpshkbDIr6Fbtc+cwmYwmq/9mw
+         Dum5OK7G2+C2TbTomViFRIEXDf2ut1APGHWRYXfl8zJ7VPyMkVvgi9VARhy2+4OgAYzZ
+         YZuBC0xD3ksK7Md4udJHJn9HJ6Cdubps8pyxXW0CNWWNiu0gGre3p9P2OZyLknFrpdpk
+         ElBq7lMmN4D0Uw5dUc/OqOSdDKYmODVlY5d3u+CYAhCJVaxMcrL/a5hmvEj99bWhnB73
+         FtSw==
+X-Forwarded-Encrypted: i=1; AJvYcCXEnXG+57sR92cSe7bhK8eFkqw02MuQkpV1UAkwdIIZI2guH1RMBtVxsR911WSVRq3bB+aDFDU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJUQ6Ak8kRuIsWGaOC23AotPjMTcaXKJm/wTO+xjoTLcwLjjl+
+	MrZshH7Fh7uO4oXeOBqWvdg/lj33anhaRUfdVlREcl8MQ0v668ult4Vs4FrsRw==
+X-Google-Smtp-Source: AGHT+IFnfTERJ8sNYvRifaDxUJfUUFgMpJHz/8Iah/3cnyDZADJ91EdK72UhuSobXEs2DURC6NERzA==
+X-Received: by 2002:a05:600c:35c1:b0:42c:b826:a26c with SMTP id 5b1f17b1804b1-43282ff61d5mr100582645e9.8.1730736662302;
+        Mon, 04 Nov 2024 08:11:02 -0800 (PST)
+Received: from localhost (65.0.187.35.bc.googleusercontent.com. [35.187.0.65])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd910902sm191391705e9.14.2024.11.04.08.11.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Nov 2024 08:11:02 -0800 (PST)
+Date: Mon, 4 Nov 2024 16:10:58 +0000
+From: Aleksei Vetrov <vvvvvv@google.com>
+To: Johannes Berg <johannes@sipsolutions.net>, Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] wifi: nl80211: fix bounds checker error in
+ nl80211_parse_sched_scan
+Message-ID: <ZyjyEl4kzFXz7tTB@google.com>
+References: <20241029-nl80211_parse_sched_scan-bounds-checker-fix-v2-1-c804b787341f@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Stable backport (was "Re: PROBLEM: io_uring hang causing
- uninterruptible sleep state on 6.6.59")
-To: Andrew Marshall <andrew@johnandrewmarshall.com>,
- Keith Busch <kbusch@kernel.org>
-Cc: io-uring@vger.kernel.org, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, stable <stable@vger.kernel.org>
-References: <3d913aef-8c44-4f50-9bdf-7d9051b08941@app.fastmail.com>
- <cc8b92ba-2daa-49e3-abe6-39e7d79f213d@kernel.dk>
- <ZygO7O1Pm5lYbNkP@kbusch-mbp>
- <25c4c665-1a33-456c-93c7-8b7b56c0e6db@kernel.dk>
- <c34e6c38-ca47-439a-baf1-3489c05a65a8@kernel.dk>
- <98907a37-81dd-463e-b5ef-9190bf0f33be@app.fastmail.com>
- <23b02882-6f23-4b19-b39d-fd4ef09429ad@app.fastmail.com>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <23b02882-6f23-4b19-b39d-fd4ef09429ad@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241029-nl80211_parse_sched_scan-bounds-checker-fix-v2-1-c804b787341f@google.com>
 
-On 11/4/24 6:17 AM, Andrew Marshall wrote:
-> On Sun, Nov 3, 2024, at 23:25, Andrew Marshall wrote:
->> On Sun, Nov 3, 2024, at 21:38, Jens Axboe wrote:
->>> On 11/3/24 5:06 PM, Jens Axboe wrote:
->>>> On 11/3/24 5:01 PM, Keith Busch wrote:
->>>>> On Sun, Nov 03, 2024 at 04:53:27PM -0700, Jens Axboe wrote:
->>>>>> On 11/3/24 4:47 PM, Andrew Marshall wrote:
->>>>>>> I identified f4ce3b5d26ce149e77e6b8e8f2058aa80e5b034e as the likely
->>>>>>> problematic commit simply by browsing git log. As indicated above;
->>>>>>> reverting that atop 6.6.59 results in success. Since it is passing on
->>>>>>> 6.11.6, I suspect there is some missing backport to 6.6.x, or some
->>>>>>> other semantic merge conflict. Unfortunately I do not have a compact,
->>>>>>> minimal reproducer, but can provide my large one (it is testing a
->>>>>>> larger build process in a VM) if needed?there are some additional
->>>>>>> details in the above-linked downstream bug report, though. I hope that
->>>>>>> having identified the problematic commit is enough for someone with
->>>>>>> more context to go off of. Happy to provide more information if
->>>>>>> needed.
->>>>>>
->>>>>> Don't worry about not having a reproducer, having the backport commit
->>>>>> pin pointed will do just fine. I'll take a look at this.
->>>>>
->>>>> I think stable is missing:
->>>>>
->>>>>   6b231248e97fc3 ("io_uring: consolidate overflow flushing")
->>>>
->>>> I think you need to go back further than that, this one already
->>>> unconditionally holds ->uring_lock around overflow flushing...
->>>
->>> Took a look, it's this one:
->>>
->>> commit 8d09a88ef9d3cb7d21d45c39b7b7c31298d23998
->>> Author: Pavel Begunkov <asml.silence@gmail.com>
->>> Date:   Wed Apr 10 02:26:54 2024 +0100
->>>
->>>     io_uring: always lock __io_cqring_overflow_flush
->>>
->>> Greg/stable, can you pick this one for 6.6-stable? It picks
->>> cleanly.
->>>
->>> For 6.1, which is the other stable of that age that has the backport,
->>> the attached patch will do the trick.
->>>
->>> With that, I believe it should be sorted. Hopefully that can make
->>> 6.6.60 and 6.1.116.
->>>
->>> -- 
->>> Jens Axboe
->>> Attachments:
->>> * 0001-io_uring-always-lock-__io_cqring_overflow_flush.patch
->>
->> Cherry-picking 6b231248e97fc3 onto 6.6.59, I can confirm it passes my 
->> reproducer (run a few times). Your first quick patch also passed, for 
->> what it?s worth. Thanks for the quick responses!
+Hello everyone,
+
+On Tue, Oct 29, 2024 at 01:22:11PM +0000, Aleksei Vetrov wrote:
+> The channels array in the cfg80211_scan_request has a __counted_by
+> attribute attached to it, which points to the n_channels variable. This
+> attribute is used in bounds checking, and if it is not set before the
+> array is filled, then the bounds sanitizer will issue a warning or a
+> kernel panic if CONFIG_UBSAN_TRAP is set.
 > 
-> Correction: I cherry-picked and tested
-> 8d09a88ef9d3cb7d21d45c39b7b7c31298d23998 (which was the change you
-> identified), not 6b231248e97fc3. Apologies for any confusion.
+> This patch sets the size of allocated memory as the initial value for
+> n_channels. It is updated with the actual number of added elements after
+> the array is filled.
+> 
+> Fixes: aa4ec06c455d ("wifi: cfg80211: use __counted_by where appropriate")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Aleksei Vetrov <vvvvvv@google.com>
+> ---
+> Changes in v2:
+> - Added Fixes tag and added stable to CC
+> - Link to v1: https://lore.kernel.org/r/20241028-nl80211_parse_sched_scan-bounds-checker-fix-v1-1-bb640be0ebb7@google.com
 
-Thanks for clarifying, so it's as expected. Hopefully -stable can pick
-this backport up soonish, so the next stable release will be sorted.
-Thanks for reporting the issue!
+I would really appreciate it if someone take a look at this single line
+patch. It looks like v2 of this patch has slipped through the cracks...
 
--- 
-Jens Axboe
+Best regards,
+---
+Aleksei Vetrov
 
