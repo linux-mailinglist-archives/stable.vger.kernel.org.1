@@ -1,66 +1,57 @@
-Return-Path: <stable+bounces-89654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B81029BB222
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 12:03:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 116BF9BB226
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 12:03:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FE181F216C2
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:03:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9FB32812D4
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:03:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B2B01D5CFB;
-	Mon,  4 Nov 2024 10:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74361D63ED;
+	Mon,  4 Nov 2024 10:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HTPeUNQ2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yc7qSyOe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152501B3931;
-	Mon,  4 Nov 2024 10:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6106C1D63E2;
+	Mon,  4 Nov 2024 10:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730717626; cv=none; b=bA63E8/zJuugBAe61/O0bczZjVmIJ10O2RmcEjCazoec9ZHcCOm4/IrqpKF+H4qbZgIkYyAoZFXwlXHgxLIu9DnmrUwn9tzWTccsoDVMe2zOOMBjVuMc6ttgnPQEDPx21Ni4XXt/rnG3TK8oX+xreGMAshje1ex0zDAlJ8JCVLw=
+	t=1730717628; cv=none; b=mI1IdTuRKrP7kN2TO/QuB2yVSaw1fpYWFDlhxP2qZ4wBKiPzHu+ieZCsvw/PcKj8dcE/3ZQ3gOWPCnt7uikGA6TACDxljqsydy6qlikWN9Y7tiV4vRRh7UZflk4WF3lmDojVZFnOGFbaBqp0u8D/5UxC5A484Ff7qc50egSUz50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730717626; c=relaxed/simple;
-	bh=KizG53mSjVV9c+TAEcmOTJlBxB5Rta3JhTzUoOkOGsg=;
+	s=arc-20240116; t=1730717628; c=relaxed/simple;
+	bh=+yqfSSt6kLDRneh9fTkP2DWL8YT9Gj+cYVQcFnLkFkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XelFZWUAkeI2wYqvFkaiwNDBeYZ40pV7S59etjJa2ZaRcQ2eIYhcBg2gcKcyhsrUqg1EzLeUxprK3uJFwgm7ETJkeapMOnYNPTOHzG35r1b2uFvpdkY5uXIrLUY0+ddrt++pOzNayUOm8T+AGArM2SNFijAsa3jIqGG/OkFiyug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HTPeUNQ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E76ECC4CED1;
-	Mon,  4 Nov 2024 10:53:43 +0000 (UTC)
+	 MIME-Version; b=myCIEJVXOOYtnm9qN5LyG77rfttLL8dz9Gn81mMRioNfqnIUHhaEI4jvdKypjq/eJDt0JjY8UF1RSKoUN2qBpRAKqi5esWMCSDkrQGNjAgpFdib62LaKerE8Q3SAQC7jnpVixIV/VSXNoZtvWN9U3ehjlFNcIQF0sztkGvyzkDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yc7qSyOe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD83C4CED1;
+	Mon,  4 Nov 2024 10:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730717625;
-	bh=KizG53mSjVV9c+TAEcmOTJlBxB5Rta3JhTzUoOkOGsg=;
+	s=k20201202; t=1730717628;
+	bh=+yqfSSt6kLDRneh9fTkP2DWL8YT9Gj+cYVQcFnLkFkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HTPeUNQ22I6Zx4Pp3E+06BHa/OXBsa24e9vrulX9vHGzrIOYv2HWThmDNY5T4oEcq
-	 4q44+BOeBLddNK0GX2yZoIxBQlWyqjwBZ6hmtLaLSoQPfD+L3jfiO3aQ4yq1WYBRcJ
-	 Dyfx/mJgkaNS1dX8wFNtWx4aizsWlqqhNwOYUXGn7UXIWsZq2gslOEIKC/SpRrsSbX
-	 3yAw5UvqxoS+KGtinnXT5NY7XduN6ac05vieKwskb2eTQzYg//roxFIB+75ZYr8IKl
-	 8CZUWkuV8H9zCNVVHxvAgTiF0v5goYcLlpmvucNPlTtV26lNyb+WSSMUES1xlrwZLC
-	 5BnlhZDUjAI7A==
+	b=Yc7qSyOefwNgL7D/DT6xgZNNPMDo8b3LVu5wnHR+BQrjBZ2Jjl9PrRFRBTRdixPGQ
+	 c09bMq4/IJ+DBL/DH9owHYYWLh2js3/LLJvt603jv1JXn+9uX1K1YsCiH1eR1tO9er
+	 Ye7KRF2okPg6vFOKPNaLjPSxfn6oenYKjv6EIZThebn4/QKqneP6gaeu2ps5OD8muY
+	 m7IigU3lBIfqeVJIPZLTmhDXUIRnatuANCpIDUsNusrPnLapvyDNBh3ycv7GHuHNJQ
+	 W/UixAockAbZDKpMH6uy+SagJkKzDXGN2NmZjxZ6oDoOr2tIMdc0bc77RB/iFkFbw/
+	 U9iYHoo4kz+fg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Benjamin=20Gro=C3=9Fe?= <ste3ls@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Li Zhijian <lizhijian@fujitsu.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	hayeswang@realtek.com,
-	dianders@chromium.org,
-	grundler@chromium.org,
-	hkallweit1@gmail.com,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 06/11] usb: add support for new USB device ID 0x17EF:0x3098 for the r8152 driver
-Date: Mon,  4 Nov 2024 05:53:04 -0500
-Message-ID: <20241104105324.97393-6-sashal@kernel.org>
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 07/11] selftests/watchdog-test: Fix system accidentally reset after watchdog-test
+Date: Mon,  4 Nov 2024 05:53:05 -0500
+Message-ID: <20241104105324.97393-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241104105324.97393-1-sashal@kernel.org>
 References: <20241104105324.97393-1-sashal@kernel.org>
@@ -70,41 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.115
 Content-Transfer-Encoding: 8bit
 
-From: Benjamin Große <ste3ls@gmail.com>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-[ Upstream commit 94c11e852955b2eef5c4f0b36cfeae7dcf11a759 ]
+[ Upstream commit dc1308bee1ed03b4d698d77c8bd670d399dcd04d ]
 
-This patch adds support for another Lenovo Mini dock 0x17EF:0x3098 to the
-r8152 driver. The device has been tested on NixOS, hotplugging and sleep
-included.
+When running watchdog-test with 'make run_tests', the watchdog-test will
+be terminated by a timeout signal(SIGTERM) due to the test timemout.
 
-Signed-off-by: Benjamin Große <ste3ls@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241020174128.160898-1-ste3ls@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+And then, a system reboot would happen due to watchdog not stop. see
+the dmesg as below:
+```
+[ 1367.185172] watchdog: watchdog0: watchdog did not stop!
+```
+
+Fix it by registering more signals(including SIGTERM) in watchdog-test,
+where its signal handler will stop the watchdog.
+
+After that
+ # timeout 1 ./watchdog-test
+ Watchdog Ticking Away!
+ .
+ Stopping watchdog ticks...
+
+Link: https://lore.kernel.org/all/20241029031324.482800-1-lizhijian@fujitsu.com/
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/watchdog/watchdog-test.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 958a02b19554d..061a7a9afad04 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -9870,6 +9870,7 @@ static const struct usb_device_id rtl8152_table[] = {
- 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x3062) },
- 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x3069) },
- 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x3082) },
-+	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x3098) },
- 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x7205) },
- 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x720c) },
- 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x7214) },
+diff --git a/tools/testing/selftests/watchdog/watchdog-test.c b/tools/testing/selftests/watchdog/watchdog-test.c
+index f45e510500c0d..09773695d219f 100644
+--- a/tools/testing/selftests/watchdog/watchdog-test.c
++++ b/tools/testing/selftests/watchdog/watchdog-test.c
+@@ -242,7 +242,13 @@ int main(int argc, char *argv[])
+ 
+ 	printf("Watchdog Ticking Away!\n");
+ 
++	/*
++	 * Register the signals
++	 */
+ 	signal(SIGINT, term);
++	signal(SIGTERM, term);
++	signal(SIGKILL, term);
++	signal(SIGQUIT, term);
+ 
+ 	while (1) {
+ 		keep_alive();
 -- 
 2.43.0
 
