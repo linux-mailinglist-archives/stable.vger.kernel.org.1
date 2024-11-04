@@ -1,45 +1,46 @@
-Return-Path: <stable+bounces-89660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAB239BB23A
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 12:05:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC0889BB23C
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 12:05:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0FCE1C20FED
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:05:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8811E1F2109A
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E3C1B3946;
-	Mon,  4 Nov 2024 10:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2441C1AA9;
+	Mon,  4 Nov 2024 10:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BUUv5ouT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dlOHg/sP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE6F1B21AF;
-	Mon,  4 Nov 2024 10:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391661C1746;
+	Mon,  4 Nov 2024 10:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730717658; cv=none; b=IB7YiCsWCx84Lz+ppoVurowwxqsy88vrICXnEDzf0sztPDDcpAhoJC8KH94UJIVSN7h54EsTtGp5CgkTQvlmcGfIdZQPDuqBAF3gMo3EluzuiaWKZKGPsUG3PMs/PrrtD3CjD5pAyyWv1W0BHMp584oQiCOjFOp/6earlSkybp0=
+	t=1730717662; cv=none; b=n87lEwkosG6jN7mr0WkhQVvQ+Md6IlmKR9jjHgToR1OJ0Yvm8JNa9m99a5yFtQyIaOtw+SJm9pmiX7ghiyRHVcvZphXCObah7N023/mazITtkDPQdWge6WzUS95jUdOqaia/OnI1mn6ediiip7aHnSAF+nrZfaqHw6t3twg5chQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730717658; c=relaxed/simple;
-	bh=olo6eprQKwiH0qtFdCz7PVn2ZSidv6KVC1elYUD1bTQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jB9zIAR028YL3EfUHhzJB+XMvxZh6oE05ViIGYnou+rhwjPYUtwXpbJX7M6ArtE5raLbHKDPNfYdqVmNHM5EkXnG4Bu0bTKUTuBvOzmf54gr12Ix6HJ0iOta9tuacqyZ/hm1ZVEQsm5KGTnMXflp72cHypZOhHeV5iskY3OmC0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BUUv5ouT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5518EC4CED1;
-	Mon,  4 Nov 2024 10:54:16 +0000 (UTC)
+	s=arc-20240116; t=1730717662; c=relaxed/simple;
+	bh=a+bbiG3SFKj1AMAqvdZrshg2uoJeyHWsEIDh1NhuEWg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=o0JOkEkVggBtVi86MT0KjVMt5R77FP/KWPlqz2BXp6lQM7eqOXo+VFTM9GsjIf77dlJ1tbltMHQrjEOyHSjUNX1H8TCPg62hHrZZfXJZfwtcsjxMxgwz1QzyAAiwXdBe9stbpX679zDr65PCV50dFgD1B690diDPZ2FXU/tP2VA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dlOHg/sP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B27C4CECE;
+	Mon,  4 Nov 2024 10:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730717658;
-	bh=olo6eprQKwiH0qtFdCz7PVn2ZSidv6KVC1elYUD1bTQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=BUUv5ouT/ujvlSFuc1sxZh1xmhV94QJs/eFIaFukY80F9HYKi5/jbkxjbaBo6EXJW
-	 1a6nISwrGRChRqN5Sjc7/Lq3RcCblPt1JI12I7ZMlEbnM4UEmhdPpN9ERLvR1AC1ja
-	 aojuIXB6A3euhcrGOATBUbKuiPP5UupTpzg3KWz2AyRv5Ic0KrTp5kaRAuO39PrO2L
-	 onDsMXKA6e3noTLdfSskMpBVajj3PiTRHlMWwpN2FPvsWSdVbuplOwVyZndJI5oQKA
-	 hpWMfiAQQA5zirX+Yy2EmcYD6th0Aeim6v+8mfuyvYhNjJEEN+XDioFQp+tbSkAgVy
-	 SNTUGrLlGYuoQ==
+	s=k20201202; t=1730717661;
+	bh=a+bbiG3SFKj1AMAqvdZrshg2uoJeyHWsEIDh1NhuEWg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=dlOHg/sPSwtjXaeTsL2VGuw51kVihuNdTioj2au62xZhPAKFhZdCka5Enf+uX75Lz
+	 XMSY1CaAVgonaKFEKfDOk2vJdvPsOcvjijiiNbPTxPbkwV1nYuv7es6ZrSR7VWQvIi
+	 6mFe8KLiqlqmTh8lndH42Jkh8bD66JVZzHzjDIwyYqTUISWx7zWs/dMj8BuCRQyPZ/
+	 iypvmHIvgGM2gDi7XOzcKq/i+e4emY7DOb9a30u03G7HuotDdVMPXiw1Bb4JGqMv84
+	 J9iMTVrVH8wOKiAxi2bktWd9weoBKsa2d/KLTL97M+gESC1YE8815/i6SdnzNjTfe7
+	 6fSEJs7ZvmMow==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -56,20 +57,21 @@ Cc: Hans de Goede <hdegoede@redhat.com>,
 	tiwai@suse.com,
 	pierre-louis.bossart@linux.dev,
 	tomlohave@gmail.com,
-	u.kleine-koenig@baylibre.com,
 	alban.boye@protonmail.com,
+	u.kleine-koenig@baylibre.com,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 01/10] ASoC: Intel: bytcr_rt5640: Add support for non ACPI instantiated codec
-Date: Mon,  4 Nov 2024 05:53:50 -0500
-Message-ID: <20241104105414.97666-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 02/10] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Vexia Edu Atla 10 tablet
+Date: Mon,  4 Nov 2024 05:53:51 -0500
+Message-ID: <20241104105414.97666-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241104105414.97666-1-sashal@kernel.org>
+References: <20241104105414.97666-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.170
@@ -77,85 +79,49 @@ Content-Transfer-Encoding: 8bit
 
 From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit d48696b915527b5bcdd207a299aec03fb037eb17 ]
+[ Upstream commit 0107f28f135231da22a9ad5756bb16bd5cada4d5 ]
 
-On some x86 Bay Trail tablets which shipped with Android as factory OS,
-the DSDT is so broken that the codec needs to be manually instantatiated
-by the special x86-android-tablets.ko "fixup" driver for cases like this.
+The Vexia Edu Atla 10 tablet mostly uses the BYTCR tablet defaults,
+but as happens on more models it is using IN1 instead of IN3 for
+its internal mic and JD_SRC_JD2_IN4N instead of JD_SRC_JD1_IN4P
+for jack-detection.
 
-This means that the codec-dev cannot be retrieved through its ACPI fwnode,
-add support to the bytcr_rt5640 machine driver for such manually
-instantiated rt5640 i2c_clients.
-
-An example of a tablet which needs this is the Vexia EDU ATLA 10 tablet,
-which has been distributed to schools in the Spanish Andalucía region.
+Add a DMI quirk for this to fix the internal-mic and jack-detection.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241024211615.79518-1-hdegoede@redhat.com
+Link: https://patch.msgid.link/20241024211615.79518-2-hdegoede@redhat.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c | 33 ++++++++++++++++++++++++---
- 1 file changed, 30 insertions(+), 3 deletions(-)
+ sound/soc/intel/boards/bytcr_rt5640.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
 diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index 3d2a0e8cad9a5..899a8435a1eb8 100644
+index 899a8435a1eb8..8706fef8ccce8 100644
 --- a/sound/soc/intel/boards/bytcr_rt5640.c
 +++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -17,6 +17,7 @@
- #include <linux/acpi.h>
- #include <linux/clk.h>
- #include <linux/device.h>
-+#include <linux/device/bus.h>
- #include <linux/dmi.h>
- #include <linux/gpio/consumer.h>
- #include <linux/gpio/machine.h>
-@@ -32,6 +33,8 @@
- #include "../atom/sst-atom-controls.h"
- #include "../common/soc-intel-quirks.h"
- 
-+#define BYT_RT5640_FALLBACK_CODEC_DEV_NAME	"i2c-rt5640"
-+
- enum {
- 	BYT_RT5640_DMIC1_MAP,
- 	BYT_RT5640_DMIC2_MAP,
-@@ -1616,9 +1619,33 @@ static int snd_byt_rt5640_mc_probe(struct platform_device *pdev)
- 
- 	codec_dev = acpi_get_first_physical_node(adev);
- 	acpi_dev_put(adev);
--	if (!codec_dev)
--		return -EPROBE_DEFER;
--	priv->codec_dev = get_device(codec_dev);
-+
-+	if (codec_dev) {
-+		priv->codec_dev = get_device(codec_dev);
-+	} else {
-+		/*
-+		 * Special case for Android tablets where the codec i2c_client
-+		 * has been manually instantiated by x86_android_tablets.ko due
-+		 * to a broken DSDT.
-+		 */
-+		codec_dev = bus_find_device_by_name(&i2c_bus_type, NULL,
-+					BYT_RT5640_FALLBACK_CODEC_DEV_NAME);
-+		if (!codec_dev)
-+			return -EPROBE_DEFER;
-+
-+		if (!i2c_verify_client(codec_dev)) {
-+			dev_err(dev, "Error '%s' is not an i2c_client\n",
-+				BYT_RT5640_FALLBACK_CODEC_DEV_NAME);
-+			put_device(codec_dev);
-+		}
-+
-+		/* fixup codec name */
-+		strscpy(byt_rt5640_codec_name, BYT_RT5640_FALLBACK_CODEC_DEV_NAME,
-+			sizeof(byt_rt5640_codec_name));
-+
-+		/* bus_find_device() returns a reference no need to get() */
-+		priv->codec_dev = codec_dev;
-+	}
- 
- 	/*
- 	 * swap SSP0 if bytcr is detected
+@@ -1102,6 +1102,21 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_SSP0_AIF2 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
++	{	/* Vexia Edu Atla 10 tablet */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
++			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
++			/* Above strings are too generic, also match on BIOS date */
++			DMI_MATCH(DMI_BIOS_DATE, "08/25/2014"),
++		},
++		.driver_data = (void *)(BYT_RT5640_IN1_MAP |
++					BYT_RT5640_JD_SRC_JD2_IN4N |
++					BYT_RT5640_OVCD_TH_2000UA |
++					BYT_RT5640_OVCD_SF_0P75 |
++					BYT_RT5640_DIFF_MIC |
++					BYT_RT5640_SSP0_AIF2 |
++					BYT_RT5640_MCLK_EN),
++	},
+ 	{	/* Voyo Winpad A15 */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
 -- 
 2.43.0
 
