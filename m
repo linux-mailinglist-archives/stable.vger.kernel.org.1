@@ -1,93 +1,184 @@
-Return-Path: <stable+bounces-89610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C16A39BB0A5
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:10:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 207479BB146
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:38:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8532D28293D
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 10:10:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A39C5B24A70
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 10:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BBC11AF4E2;
-	Mon,  4 Nov 2024 10:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CECDF1B3926;
+	Mon,  4 Nov 2024 10:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ZS8rdhD5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z1LVi84e"
 X-Original-To: stable@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799D31ABEB1;
-	Mon,  4 Nov 2024 10:10:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7901B218D;
+	Mon,  4 Nov 2024 10:38:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730715008; cv=none; b=H6KvfzQrdto08Xsj9yDppks9syu09qisRhvyyLgReu8jictrQ0jcQWsPJ6T4cgcsQQcXKwsUhNfS5LbDmZB9AHCWTk+Cr8GNCClskz4ASE9mhHF1gAQPSLjePYG1CmQiwI8o3JmyZGl+ZBqLvqneNLFPAlxk1uCM4clTkrie4gU=
+	t=1730716711; cv=none; b=ios150jtFi+8bW4ZPpfVeTEJ7Ra6bRvNHsvLM8dw8XcJLZx8p/zguj6UP1glawcq4tjBEHjLfJc9MPUC4P8RKitK9BxBkLRCV/XAQyGxiah+73OLIDFz1wqvgqwK2kqUwlm1m+7mAyHXU8OUxh42AxBzFS2BMxwNvRNYC9csaXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730715008; c=relaxed/simple;
-	bh=lLbyBoAV8LAAMdgY2WJPPlbx5TE3cUhhNB8Q1ZTzIcA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=JrCz86GTF0YoyuVc5hEuGuSZS5/sRdlq/5za7eMzc8F+/BGg5z+2WRagzke7JAGXzCUqqxCtiAlbn6h+Cil1O6CXP3rOz3ndFI8UZD0SkSBJM6n6MSeKm8vXQfCi7UgbPEtDcT+ei+nDIiHKjsWozzonMHsuWDOMbB1D2GbKNbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ZS8rdhD5; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1730714998;
-	bh=lLbyBoAV8LAAMdgY2WJPPlbx5TE3cUhhNB8Q1ZTzIcA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=ZS8rdhD50IHxY+5Rbx8r7cZBPvPyB6xYWC2v/L0hAjlXLYIJaIQnpK/KX7TlVjHbz
-	 rHmHYWcyHxEAidWoqcfCp9gywzr/GbIR4VcnC7mr2ltpJ5s2zbtwWupskX1d5hEujo
-	 K9Fym5ilmXMygh31eFMLzJ3OCwI8JJj8aIlKX7Yfq/z22gyTWkJUX1Sll7LT4dukRI
-	 mTXSp0TUiBspnV5zj0kuQ44tOSav6QtX75717Ogobq1dcwpjcfL9DSlva3pEsy2UVN
-	 G/5sGyge0T6kjWHznZwdk1V2RkwSUH+vGWDq4zG68iPQ8VIRqX4FL7U35Eg9VtiE9v
-	 21dC8e2AFkipw==
-Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1451B17E14EF;
-	Mon,  4 Nov 2024 11:09:58 +0100 (CET)
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-To: Matthias Brugger <matthias.bgg@gmail.com>, 
- Chen-Yu Tsai <wenst@chromium.org>
-Cc: devicetree@vger.kernel.org, linux-mediatek@lists.infradead.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20241029100226.660263-1-wenst@chromium.org>
-References: <20241029100226.660263-1-wenst@chromium.org>
-Subject: Re: [PATCH] arm64: dts: mediatek: mt8186-corsola: Fix IT6505 reset
- line polarity
-Message-Id: <173071499802.113773.6669341556020572344.b4-ty@collabora.com>
-Date: Mon, 04 Nov 2024 11:09:58 +0100
+	s=arc-20240116; t=1730716711; c=relaxed/simple;
+	bh=vsEVitYVDMPQzYHhzzt87qZt//TgH2xF8Dsmgp1BRZ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VBw719dJPNNuLYhFv++NhXYjfFR2YUHs9gz1XtGBpl8TRXgonqVBfdCZbbIym2xRTfEZ1n9u7HdVNM1eiHbLQIryerDYnT3QQWuwHFFlhJ7Dbmylpf5IrLhlivTqBjLx7gw04yFRQz7UzblXos3zqoDBu+bU6YYsjuVu+yNfAh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z1LVi84e; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730716710; x=1762252710;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=vsEVitYVDMPQzYHhzzt87qZt//TgH2xF8Dsmgp1BRZ0=;
+  b=Z1LVi84eFyiWZ6HAOfpanU/c8ap47ACvKU0cyNWTQ9UCo3AK/3HnpZda
+   +7/E0/KlMZ4QIQukKfyvdxFACmd5SZuM59wAs9v3mIcVzDsw6XYCt0Tex
+   rBQXALQz6oJBPtXfMZ4GXNZJWdVPnHQP80516T+FI+DJsXtOLuRF4GmbB
+   MNWrZ01snnGlTx86DksVKPFrENi1elauf6zQbAwhGcSsIjBCUdXhgDYtO
+   v5+Tqna1S6OpQe8IenbyVT+5Ztq4AFsgliPKxs2XtJG2DKnXTvnKWsKeN
+   3UOjGUC9tl6XT4GdysM9uJ+mSglTcWGWHq14Zfy+Qkptvb7bsGD03pRFg
+   A==;
+X-CSE-ConnectionGUID: VDjkvv78TVKBSc1DfVSu7A==
+X-CSE-MsgGUID: THrUGAV6T0eSVK5idyIB5Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11245"; a="18024547"
+X-IronPort-AV: E=Sophos;i="6.11,256,1725346800"; 
+   d="scan'208";a="18024547"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2024 02:38:27 -0800
+X-CSE-ConnectionGUID: UWXFlgrpTVu4sxNNczPDQg==
+X-CSE-MsgGUID: UqKSmIsHQ1S1g38d4wGB6w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,256,1725346800"; 
+   d="scan'208";a="88438974"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa005.jf.intel.com with ESMTP; 04 Nov 2024 02:38:24 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 9BF54FD; Mon, 04 Nov 2024 12:38:23 +0200 (EET)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>
+Cc: linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Kai Huang <kai.huang@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCHv6, RESEND 1/4] x86/tdx: Introduce wrappers to read and write TD metadata
+Date: Mon,  4 Nov 2024 12:38:00 +0200
+Message-ID: <20241104103803.195705-2-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241104103803.195705-1-kirill.shutemov@linux.intel.com>
+References: <20241104103803.195705-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
 
-On Tue, 29 Oct 2024 18:02:25 +0800, Chen-Yu Tsai wrote:
-> The reset line of the IT6505 bridge chip is active low, not active high.
-> It was incorrectly inverted in the device tree as the implementation at
-> the time incorrectly inverted the polarity in its driver, due to a prior
-> device having an inline inverting level shifter.
-> 
-> Fix the polarity now while the external display pipeline is incomplete,
-> thereby avoiding any impact to running systems.
-> 
-> [...]
+The TDG_VM_WR TDCALL is used to ask the TDX module to change some
+TD-specific VM configuration. There is currently only one user in the
+kernel of this TDCALL leaf.  More will be added shortly.
 
-Applied to v6.12-next/dts64, thanks!
+Refactor to make way for more users of TDG_VM_WR who will need to modify
+other TD configuration values.
 
-[1/1] arm64: dts: mediatek: mt8186-corsola: Fix IT6505 reset line polarity
-      commit: fbcc95fceb6d179dd150df2dc613dfd9b013052c
+Add a wrapper for the TDG_VM_RD TDCALL that requests TD-specific
+metadata from the TDX module. There are currently no users for
+TDG_VM_RD. Mark it as __maybe_unused until the first user appears.
 
-Cheers,
-Angelo
+This is preparation for enumeration and enabling optional TD features.
 
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: stable@vger.kernel.org
+---
+ arch/x86/coco/tdx/tdx.c           | 32 ++++++++++++++++++++++++++-----
+ arch/x86/include/asm/shared/tdx.h |  1 +
+ 2 files changed, 28 insertions(+), 5 deletions(-)
+
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 327c45c5013f..c74bb9e7d7a3 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -78,6 +78,32 @@ static inline void tdcall(u64 fn, struct tdx_module_args *args)
+ 		panic("TDCALL %lld failed (Buggy TDX module!)\n", fn);
+ }
+ 
++/* Read TD-scoped metadata */
++static inline u64 __maybe_unused tdg_vm_rd(u64 field, u64 *value)
++{
++	struct tdx_module_args args = {
++		.rdx = field,
++	};
++	u64 ret;
++
++	ret = __tdcall_ret(TDG_VM_RD, &args);
++	*value = args.r8;
++
++	return ret;
++}
++
++/* Write TD-scoped metadata */
++static inline u64 tdg_vm_wr(u64 field, u64 value, u64 mask)
++{
++	struct tdx_module_args args = {
++		.rdx = field,
++		.r8 = value,
++		.r9 = mask,
++	};
++
++	return __tdcall(TDG_VM_WR, &args);
++}
++
+ /**
+  * tdx_mcall_get_report0() - Wrapper to get TDREPORT0 (a.k.a. TDREPORT
+  *                           subtype 0) using TDG.MR.REPORT TDCALL.
+@@ -929,10 +955,6 @@ static void tdx_kexec_finish(void)
+ 
+ void __init tdx_early_init(void)
+ {
+-	struct tdx_module_args args = {
+-		.rdx = TDCS_NOTIFY_ENABLES,
+-		.r9 = -1ULL,
+-	};
+ 	u64 cc_mask;
+ 	u32 eax, sig[3];
+ 
+@@ -951,7 +973,7 @@ void __init tdx_early_init(void)
+ 	cc_set_mask(cc_mask);
+ 
+ 	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
+-	tdcall(TDG_VM_WR, &args);
++	tdg_vm_wr(TDCS_NOTIFY_ENABLES, 0, -1ULL);
+ 
+ 	/*
+ 	 * All bits above GPA width are reserved and kernel treats shared bit
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index fdfd41511b02..7e12cfa28bec 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -16,6 +16,7 @@
+ #define TDG_VP_VEINFO_GET		3
+ #define TDG_MR_REPORT			4
+ #define TDG_MEM_PAGE_ACCEPT		6
++#define TDG_VM_RD			7
+ #define TDG_VM_WR			8
+ 
+ /* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
+-- 
+2.45.2
 
 
