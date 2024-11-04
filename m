@@ -1,31 +1,31 @@
-Return-Path: <stable+bounces-89751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C6FD9BBE6B
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 21:01:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FBBA9BBE71
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 21:02:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6012C282758
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 20:01:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 252DA1F225CD
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 20:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8160B1D45F0;
-	Mon,  4 Nov 2024 20:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97271D5147;
+	Mon,  4 Nov 2024 20:01:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9ED1D358B
-	for <stable@vger.kernel.org>; Mon,  4 Nov 2024 20:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C558F1D363A
+	for <stable@vger.kernel.org>; Mon,  4 Nov 2024 20:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730750490; cv=none; b=ZTDMTZODDzcQyk2kaFzQQdabpHFc8/1eZvMyqILZguyM/tEAteWPV64184SowQQBGfTB8nhG5ki317wM7/KvKMIBi3XOjsp9Ob8cGUzbhiYFI8x+zKM3b/48/MNPW9CWxQc0NPkIA+TEj37aN4dwcN2QcnEaaVNkn/A/cEDFTCg=
+	t=1730750491; cv=none; b=T6KPpVgUdfD4fDce84vwz3SSb9pqX0+iwNOhRjeKU7JuYou3jl+X9TMNWHcDlowI0VKInJk7+4V8I0f1KP54S2r4pNxvL7PxrHRALRBXMQvjBTKmc3c4kKhY0Ft3/yijmBU5EbFSlYfgCseVN2nyxGJ3fwrk2Kdj+bO1Co+I4eU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730750490; c=relaxed/simple;
-	bh=GZI/NOPHCzzHFVbi9dE9r52MjUL+Q82WO7D92MTiLbw=;
+	s=arc-20240116; t=1730750491; c=relaxed/simple;
+	bh=YnqhUsVRyg3UlxWtGIseNrn0TmeUDXq8EcmoB5ijOZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CR0DcpQF1URMWYyKoh68JYLp4Qaic2diAENsmt8gNTEdH+cw6ndUyozJfLt2Yjng/y9Htfe04flIDiVm0H4Clz7gMGC4J5yLw0xQ4RBItEyFWyd6W/R2W2MwiZjZgsAjMU4GbtvFX2Kh2VY6nGU8Ws6zQjmJvIfd89bONMjrnKk=
+	 MIME-Version; b=IAzKOsDtZQA8xMi0iwV6sYp9wDFQXWDL2Vdz/8VW4PwxOqI8ZPPwghmgfywrNSztpZunIUgBjn7qnXayj9pF9U9Jfy7bM+O3+aR0MATRtvYvMX+zUA6RBUhvYSSq1H+vnKQOliRnvbEDuPH3RAP7M1WHlUp/B86wyuEbex4ogJg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -33,26 +33,26 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1t83GQ-0001ZQ-Ce
-	for stable@vger.kernel.org; Mon, 04 Nov 2024 21:01:26 +0100
+	id 1t83GS-0001e4-0u
+	for stable@vger.kernel.org; Mon, 04 Nov 2024 21:01:28 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1t83GP-00225I-0F
+	id 1t83GQ-00226t-2n
 	for stable@vger.kernel.org;
-	Mon, 04 Nov 2024 21:01:25 +0100
+	Mon, 04 Nov 2024 21:01:26 +0100
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id BF1A6367F96
-	for <stable@vger.kernel.org>; Mon, 04 Nov 2024 20:01:24 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with SMTP id 83B0F367FAD
+	for <stable@vger.kernel.org>; Mon, 04 Nov 2024 20:01:26 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 6BC09367F63;
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id AAABB367F6B;
 	Mon, 04 Nov 2024 20:01:22 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 22a48971;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 4a511178;
 	Mon, 4 Nov 2024 20:01:21 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -61,12 +61,11 @@ Cc: davem@davemloft.net,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
 	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Simon Horman <horms@kernel.org>,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net 3/8] can: m_can: m_can_close(): don't call free_irq() for IRQ-less devices
-Date: Mon,  4 Nov 2024 20:53:26 +0100
-Message-ID: <20241104200120.393312-4-mkl@pengutronix.de>
+	stable@vger.kernel.org,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH net 7/8] can: mcp251xfd: mcp251xfd_ring_alloc(): fix coalescing configuration when switching CAN modes
+Date: Mon,  4 Nov 2024 20:53:30 +0100
+Message-ID: <20241104200120.393312-8-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241104200120.393312-1-mkl@pengutronix.de>
 References: <20241104200120.393312-1-mkl@pengutronix.de>
@@ -82,39 +81,66 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: stable@vger.kernel.org
 
-In commit b382380c0d2d ("can: m_can: Add hrtimer to generate software
-interrupt") support for IRQ-less devices was added. Instead of an
-interrupt, the interrupt routine is called by a hrtimer-based polling
-loop.
+Since commit 50ea5449c563 ("can: mcp251xfd: fix ring configuration
+when switching from CAN-CC to CAN-FD mode"), the current ring and
+coalescing configuration is passed to can_ram_get_layout(). That fixed
+the issue when switching between CAN-CC and CAN-FD mode with
+configured ring (rx, tx) and/or coalescing parameters (rx-frames-irq,
+tx-frames-irq).
 
-That patch forgot to change free_irq() to be only called for devices
-with IRQs. Fix this, by calling free_irq() conditionally only if an
-IRQ is available for the device (and thus has been requested
-previously).
+However 50ea5449c563 ("can: mcp251xfd: fix ring configuration when
+switching from CAN-CC to CAN-FD mode"), introduced a regression when
+switching CAN modes with disabled coalescing configuration: Even if
+the previous CAN mode has no coalescing configured, the new mode is
+configured with active coalescing. This leads to delayed receiving of
+CAN-FD frames.
 
-Fixes: b382380c0d2d ("can: m_can: Add hrtimer to generate software interrupt")
+This comes from the fact, that ethtool uses usecs = 0 and max_frames =
+1 to disable coalescing, however the driver uses internally
+priv->{rx,tx}_obj_num_coalesce_irq = 0 to indicate disabled
+coalescing.
+
+Fix the regression by assigning struct ethtool_coalesce
+ec->{rx,tx}_max_coalesced_frames_irq = 1 if coalescing is disabled in
+the driver as can_ram_get_layout() expects this.
+
+Reported-by: https://github.com/vdh-robothania
+Closes: https://github.com/raspberrypi/linux/issues/6407
+Fixes: 50ea5449c563 ("can: mcp251xfd: fix ring configuration when switching from CAN-CC to CAN-FD mode")
+Cc: stable@vger.kernel.org
 Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
-Link: https://patch.msgid.link/20240930-m_can-cleanups-v1-1-001c579cdee4@pengutronix.de
-Cc: <stable@vger.kernel.org> # v6.6+
+Link: https://patch.msgid.link/20241025-mcp251xfd-fix-coalesing-v1-1-9d11416de1df@pengutronix.de
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/m_can/m_can.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
-index a978b960f1f1..16e9e7d7527d 100644
---- a/drivers/net/can/m_can/m_can.c
-+++ b/drivers/net/can/m_can/m_can.c
-@@ -1765,7 +1765,8 @@ static int m_can_close(struct net_device *dev)
- 	netif_stop_queue(dev);
- 
- 	m_can_stop(dev);
--	free_irq(dev->irq, dev);
-+	if (dev->irq)
-+		free_irq(dev->irq, dev);
- 
- 	m_can_clean(dev);
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+index e684991fa391..7209a831f0f2 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+@@ -2,7 +2,7 @@
+ //
+ // mcp251xfd - Microchip MCP251xFD Family CAN controller driver
+ //
+-// Copyright (c) 2019, 2020, 2021 Pengutronix,
++// Copyright (c) 2019, 2020, 2021, 2024 Pengutronix,
+ //               Marc Kleine-Budde <kernel@pengutronix.de>
+ //
+ // Based on:
+@@ -483,9 +483,11 @@ int mcp251xfd_ring_alloc(struct mcp251xfd_priv *priv)
+ 		};
+ 		const struct ethtool_coalesce ec = {
+ 			.rx_coalesce_usecs_irq = priv->rx_coalesce_usecs_irq,
+-			.rx_max_coalesced_frames_irq = priv->rx_obj_num_coalesce_irq,
++			.rx_max_coalesced_frames_irq = priv->rx_obj_num_coalesce_irq == 0 ?
++				1 : priv->rx_obj_num_coalesce_irq,
+ 			.tx_coalesce_usecs_irq = priv->tx_coalesce_usecs_irq,
+-			.tx_max_coalesced_frames_irq = priv->tx_obj_num_coalesce_irq,
++			.tx_max_coalesced_frames_irq = priv->tx_obj_num_coalesce_irq == 0 ?
++				1 : priv->tx_obj_num_coalesce_irq,
+ 		};
+ 		struct can_ram_layout layout;
  
 -- 
 2.45.2
