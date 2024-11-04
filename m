@@ -1,184 +1,101 @@
-Return-Path: <stable+bounces-89746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C3D79BBDCC
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 20:10:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 873FA9BBDD1
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 20:14:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFE1F28325F
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 19:10:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD7561F23035
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 19:14:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804AE1C729B;
-	Mon,  4 Nov 2024 19:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3DC1CCB2E;
+	Mon,  4 Nov 2024 19:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="d2TFOJ1B"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="v73xZXuw"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8236AE552
-	for <stable@vger.kernel.org>; Mon,  4 Nov 2024 19:10:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F4A18C926;
+	Mon,  4 Nov 2024 19:14:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730747449; cv=none; b=AJw+HfeSc/3SAx4c43TATMVGGi2nla74mdBSZBxKVNu9iHwwZP+6DuPhfvwKIV8scrzwi0WGCn+N9WLjZxHK4i7pSNZ23DP2AoskovxZnsnWtsCiB7P6fH3TU8ssZfJ2ev1t4XiuaFT8ifVSPUEDs/XefEjTYJfV4bCQLZLuRKw=
+	t=1730747671; cv=none; b=YcFKPp5mkBy0xcQ3raiZT0/2LVxllOXxjCT9TRST4h6KWyGlyNGj0w0Z5w4fWqGEu9xkDV35F48xvmw20grOMHjRT5VF0PjXdFHCZ1wZpo531z7oI01jUCZCKQ/hlTUM/tCb3MKTaGGARiFoN8ydjZiw9uR5kda6NF5B4nNTyjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730747449; c=relaxed/simple;
-	bh=zXfsmTkvqZj9MdSZWjPrqBw0JZ9iLE7inWta0wsSuys=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=by6Hyo0SmHvOV8PuRcV9w/XBFXqU0Mr6oVvVDOMZ8F6RmS0R5QWX+yiBBastdldKHiYn35Ojovec9wbc4QvsSLu5ocNc/Yaw9lsgmO5NaSduWNY29YVxwG2sQJFaZfgWM2FIsY1xz5U8fKC4rH/96PKayp3aQS5p3InlmyCAPjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=d2TFOJ1B; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A4IMVM6004434;
-	Mon, 4 Nov 2024 19:10:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2023-11-20; bh=4ZZRS8dHCjLH4dXy/hPA0VAA1ekeT
-	9riEc6CLiyfZrU=; b=d2TFOJ1B0J47+aoYEBQYYGFfDHArARYLoutE9RXCHBgik
-	hJw9RH3bLFeYBRR8fx86HMUWvuIecGJmmU2Py48bngEIHm5w38h++PInZFr+bhS8
-	WFGCDvp7Q/1DVH0CErjpd0fQC4nVM+7fUTOv9D5TrA1T2zL+Kt5fnV1ssPKeiBPB
-	6ZefiK8H9uYqhUM+VZPv1IQTvVgSCKtuNHV/KU8q/CVjJFLLcnkVf+Lrk6qD4UOl
-	J+dE1t2s6C4BjvdDY/mw0I5vRj6u1clyJHp7S5pzMZ3AQ8hewXaILl7VWEdsDgSg
-	W+NAAVArFI25WDUIaDrhqI04Src7Errn3JGXJP5NQ==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42nanyundg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 04 Nov 2024 19:10:26 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 4A4Hu8Ma036171;
-	Mon, 4 Nov 2024 19:10:25 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 42nahcf29j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 04 Nov 2024 19:10:24 +0000
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4A4JAOGu013414;
-	Mon, 4 Nov 2024 19:10:24 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 42nahcf28e-1;
-	Mon, 04 Nov 2024 19:10:24 +0000
-From: Sherry Yang <sherry.yang@oracle.com>
-To: stable@vger.kernel.org, sashal@kernel.org, gregkh@linuxfoundation.org
-Cc: sherry.yang@oracle.com, jani.nikula@linux.intel.com,
-        joonas.lahtinen@linux.intel.com, rodrigo.vivi@intel.com,
-        airlied@linux.ie, daniel@ffwll.ch, tvrtko.ursulin@intel.com,
-        robdclark@chromium.org, chentao@kylinos.cn, chris@chris-wilson.co.uk,
-        mika.kuoppala@linux.intel.com, jason@jlekstrand.net,
-        aravind.iddamsetty@intel.com, umesh.nerlige.ramappa@intel.com,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: [PATCH 5.15.y] drm/i915: Fix potential context UAFs
-Date: Mon,  4 Nov 2024 11:10:21 -0800
-Message-ID: <20241104191021.3334875-1-sherry.yang@oracle.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1730747671; c=relaxed/simple;
+	bh=o4Q21EUOtQ5gP8TVU/SzyX8KbHV1rScUhI+UDQ2yHfc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MyFbNLI1CCZSRKTz2USS98tZP4rO4qUnPmHFwS1ZGp9+G/Pre40ho3KcMe6E1tOPH1CVlUQs62CQnyg5VuBf7Ft2hjmFjMh/b+yb/6tCsQ6zJAGTWixDcwedNgKVwi4JO662Us2bKF+erQBV0fllFayinmTbP5H00FIAiK61JE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=v73xZXuw; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=PljaPNPt6R2nYVku9vBFHgDoW/TWpHwXI6NoLjiVHnU=; b=v73xZXuwTsYAUpHnxPLfsov4D0
+	1OOd+L5YITYru9ut7DOvY9bNkEc2XKaSf730FSo76TcYGoTYxqFv1T5YFDB1kcL3H0UF2ELxgIwzv
+	fnXHRRoq7N5FvXRLQMQLF8YAEH+Zgd/vw/GSi3qALx+dLNqUWFiLtODMcq/vBL/RrItgZPQG3oPfe
+	nCTzMv4VJxUAmstFs6PFFgy2nsEZmKHIWqfrpa/qXakPaGxCWBrlXtWAR0nG4QYnza+Mbq/7wEXM0
+	8AZtOpmiiVrV0mnVj0YGmfalBdDjKNRUqQsN825VsP9zLVZiijB5DFoTaH+FP+6DpS8mzPP0Pknyd
+	RpYRZI/g==;
+Date: Mon, 4 Nov 2024 20:14:24 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Kevin Hilman <khilman@kernel.org>
+Cc: rafael@kernel.org, viresh.kumar@linaro.org, zhipeng.wang_1@nxp.com,
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-omap@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] cpufreq: fix using cpufreq-dt as module
+Message-ID: <20241104201424.2a42efdd@akair>
+In-Reply-To: <7httcmonip.fsf@baylibre.com>
+References: <20241103210251.762050-1-andreas@kemnade.info>
+	<7httcmonip.fsf@baylibre.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-11-04_17,2024-11-04_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- spamscore=0 mlxlogscore=999 mlxscore=0 phishscore=0 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2409260000 definitions=main-2411040157
-X-Proofpoint-ORIG-GUID: bYvtKvEXdYGJo-raSa0RreUwVVwTSiDS
-X-Proofpoint-GUID: bYvtKvEXdYGJo-raSa0RreUwVVwTSiDS
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Rob Clark <robdclark@chromium.org>
+Am Mon, 04 Nov 2024 10:35:26 -0800
+schrieb Kevin Hilman <khilman@kernel.org>:
 
-commit afce71ff6daa9c0f852df0727fe32c6fb107f0fa upstream.
+> Andreas Kemnade <andreas@kemnade.info> writes:
+> 
+> > E.g. omap2plus_defconfig compiles cpufreq-dt as module. As there is
+> > no module alias nor a module_init(), cpufreq-dt-platdev will not be
+> > used and therefore on several omap platforms there is no cpufreq.
+> >
+> > Enforce builtin compile of cpufreq-dt-platdev to make it effective.
+> >
+> > Fixes: 3b062a086984 ("cpufreq: dt-platdev: Support building as
+> > module") Cc: stable@vger.kernel.org
+> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>  
+> 
+> I'd much rather see this fixed to work as a module.  You already
+> hinted at the right way to do that, so please do that instead.
+> 
+no clear idea how. What aliases should I add? The cpufreq-dt-platdev is
+not a real driver, so I could not create mod_devicetable aliases to
+match a given device. It constructs a device under certain conditions
+depending on the board compatible, so no simple list of compatibles, it
+contains allow and blocklists.
 
-gem_context_register() makes the context visible to userspace, and which
-point a separate thread can trigger the I915_GEM_CONTEXT_DESTROY ioctl.
-So we need to ensure that nothing uses the ctx ptr after this.  And we
-need to ensure that adding the ctx to the xarray is the *last* thing
-that gem_context_register() does with the ctx pointer.
+cpufreq-dt then binds to that device and that one can be built as a
+module (which then made cpufreq-dt-platdev also a module, causing the
+trouble). I do not see any benefit from having cpufreq-dt-platdev as a
+module. ti-cpufreq has a similar role and is also just builtin.
+It does itself no real work but provides a device cpufreq-dt then binds
+to.
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Fixes: eb4dedae920a ("drm/i915/gem: Delay tracking the GEM context until it is registered")
-Fixes: a4c1cdd34e2c ("drm/i915/gem: Delay context creation (v3)")
-Fixes: 49bd54b390c2 ("drm/i915: Track all user contexts per client")
-Cc: <stable@vger.kernel.org> # v5.10+
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-[tursulin: Stable and fixes tags add/tidy.]
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230103234948.1218393-1-robdclark@gmail.com
-(cherry picked from commit bed4b455cf5374e68879be56971c1da563bcd90c)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Sherry: bp to fix CVE-2023-52913, ignore context conflicts due to
-missing commit 49bd54b390c2 "drm/i915: Track all user contexts per
-client")]
-Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
----
- drivers/gpu/drm/i915/gem/i915_gem_context.c | 24 +++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+Handling module removal would probably need to be added and tested. I
+feel not comfortable having such as a regression fix and for stable.
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_context.c b/drivers/gpu/drm/i915/gem/i915_gem_context.c
-index 0eb4a0739fa2..0a7c4548b77f 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_context.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_context.c
-@@ -1436,6 +1436,10 @@ void i915_gem_init__contexts(struct drm_i915_private *i915)
- 	init_contexts(&i915->gem.contexts);
- }
- 
-+/*
-+ * Note that this implicitly consumes the ctx reference, by placing
-+ * the ctx in the context_xa.
-+ */
- static void gem_context_register(struct i915_gem_context *ctx,
- 				 struct drm_i915_file_private *fpriv,
- 				 u32 id)
-@@ -1449,13 +1453,13 @@ static void gem_context_register(struct i915_gem_context *ctx,
- 	snprintf(ctx->name, sizeof(ctx->name), "%s[%d]",
- 		 current->comm, pid_nr(ctx->pid));
- 
--	/* And finally expose ourselves to userspace via the idr */
--	old = xa_store(&fpriv->context_xa, id, ctx, GFP_KERNEL);
--	WARN_ON(old);
--
- 	spin_lock(&i915->gem.contexts.lock);
- 	list_add_tail(&ctx->link, &i915->gem.contexts.list);
- 	spin_unlock(&i915->gem.contexts.lock);
-+
-+	/* And finally expose ourselves to userspace via the idr */
-+	old = xa_store(&fpriv->context_xa, id, ctx, GFP_KERNEL);
-+	WARN_ON(old);
- }
- 
- int i915_gem_context_open(struct drm_i915_private *i915,
-@@ -1932,14 +1936,22 @@ finalize_create_context_locked(struct drm_i915_file_private *file_priv,
- 	if (IS_ERR(ctx))
- 		return ctx;
- 
-+	/*
-+	 * One for the xarray and one for the caller.  We need to grab
-+	 * the reference *prior* to making the ctx visble to userspace
-+	 * in gem_context_register(), as at any point after that
-+	 * userspace can try to race us with another thread destroying
-+	 * the context under our feet.
-+	 */
-+	i915_gem_context_get(ctx);
-+
- 	gem_context_register(ctx, file_priv, id);
- 
- 	old = xa_erase(&file_priv->proto_context_xa, id);
- 	GEM_BUG_ON(old != pc);
- 	proto_context_close(pc);
- 
--	/* One for the xarray and one for the caller */
--	return i915_gem_context_get(ctx);
-+	return ctx;
- }
- 
- struct i915_gem_context *
--- 
-2.46.0
-
+Regards,
+Andreas
 
