@@ -1,114 +1,141 @@
-Return-Path: <stable+bounces-89707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA879BB7AD
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 15:25:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 784F59BB84D
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 15:55:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EC88285250
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 14:25:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E3181F22656
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 14:55:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F9118595F;
-	Mon,  4 Nov 2024 14:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659D21B78F3;
+	Mon,  4 Nov 2024 14:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="Wue59/qY"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="FqwULYlI"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4BFC178CDE
-	for <stable@vger.kernel.org>; Mon,  4 Nov 2024 14:25:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6E7469D;
+	Mon,  4 Nov 2024 14:55:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730730337; cv=none; b=BYRZIpgs1B/JFrCJ0YZVammouVwTrELxGLYbGSIWRRCR1GtlPkScTfN+de0n1fI4y8XbELrP+ZFlLs8k2AK2hxzLJG0ihF0inbLbWkVrWoFUuMOtzzMgF4ylPDyZt8LE7ssA1kWkGCPC7fIyIIkMksQEC47r2as1M+NtQZTa9Ss=
+	t=1730732150; cv=none; b=AoeUaJ2IXG2ac/1gQVbHg9Or/3xg/Z1BWoRzX3yyUFImvaMY1MAF+jaS0GkGT8zk2xmbyrQX8c5cyCanKvtmkD0QILj8TPR/bkP18OFU99du+escJh/CWhNtfvy8xk7HlzkQk7kMFt92qzy+EQD6EpbPChcsWMTCIFaSHxgHBeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730730337; c=relaxed/simple;
-	bh=3d4DcxhoRFU1jfPBuOL51gzs7SAFahe/Gt5ZXJAylPI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GyktoWe6227WhKvE2TGyVVKnVRfZqZBQZlV8zOBY6C/V7qQzz91iB5oorJqkxlxTL+gQt72nbXxNgLo3MhbYQ6dIAofySjonF+9fWASZCMIZWEK/WJc0HVwpF9Bs5BCTN0gqnXdkTXmzdFukarby0zypk3dUyYxuQM5TKbMIWR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=Wue59/qY; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=OrVCh3d8J09VhprTj1HmsplkajLcHY5tTARFV+ARm7c=; b=Wue59/qYJZl9oeLnljX9IvaFkS
-	TFgem5Dyhi0tPeU3PZdMDUqHdHB6ltNgpwmz22Nc1dHW55mAe6+nPCz6ubDRKvE8wuWEHGh22ORCq
-	ZEBc8nnubVHspmaTSLErXv0/v5YnL9vBA4YXdw/J4yowhS1x2aPoC/qhcoNpUy7Dv6kUQez/DXygZ
-	nPPqenh6ArXj8jAiRqeu9umCpqiDtpOkqSO/LQ554tB+t6Ez+6pFDUPZtZ7NtHT6ORISbjQ4/IiJD
-	mJ3fEACO4ELnz7YfBT0XXAwilXbtTfdGg60Gu+U1P1aKo1Q2OItPuVjQTZS6B0Pboy99GZHIUnmjN
-	Fd7gfz3Q==;
-Received: from [189.79.117.125] (helo=[192.168.1.60])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1t7y1C-001afi-9f; Mon, 04 Nov 2024 15:25:22 +0100
-Message-ID: <fd36621e-b6a4-78d1-34b4-832c16eb2a05@igalia.com>
-Date: Mon, 4 Nov 2024 11:25:14 -0300
+	s=arc-20240116; t=1730732150; c=relaxed/simple;
+	bh=V0jgllGgZmm6Kp+PmaD8+4sijmHzf3cLV8m5VMtEABU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=seO2OuGjhY4TUgEclTTvHk6By0p7PyGs5bMOOme6P78FIO8MnccDcIJ7fSmZCqsqWvlXgwKfpl9WjkHD9bR1z+JuapbTqHH0eVykr+pb6Vx8NcBmYs3KZfhrT40tM2p7jK1PQYoAQes9DlF4dG1xFz9BQAVAop8XD66ciufDSOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=FqwULYlI; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from fedor-21d0 (unknown [5.228.116.177])
+	by mail.ispras.ru (Postfix) with ESMTPSA id EDEAC4076195;
+	Mon,  4 Nov 2024 14:55:37 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru EDEAC4076195
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1730732138;
+	bh=CSbvc+gThKkBZ6ST0m7Xg9yF/waamWCgdZJDDqCcszU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FqwULYlIsQwt9sR/7oxHCSMAeLjwsdslWD/2WwY6beRZ2tQUaT8cNUhzWHqaKBwMp
+	 DuEVezOKbzAtX8NJEEr0ZdEuBensR4iOp5SQRHTBFErouDq6iFnlbf6vDtuL3NkE/c
+	 YFeeZT3goxzKermyi2KtNZdLd1bhbRi+zYwNxlLk=
+Date: Mon, 4 Nov 2024 17:55:28 +0300
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	stable@vger.kernel.org, Alex Deucher <alexander.deucher@amd.com>, 
+	Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>, 
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
+	"Pan, Xinhui" <Xinhui.Pan@amd.com>, David Airlie <airlied@gmail.com>, 
+	Daniel Vetter <daniel@ffwll.ch>, Fangzhi Zuo <Jerry.Zuo@amd.com>, Wayne Lin <wayne.lin@amd.com>, 
+	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	lvc-project@linuxtesting.org, Alexey Khoroshilov <khoroshilov@ispras.ru>, 
+	Mario Limonciello <mario.limonciello@amd.com>, Jonathan Gray <jsg@jsg.id.au>
+Subject: Re: [PATCH 0/1] On DRM -> stable process
+Message-ID: <20241104-61da90a19c561bb5ed63141b-pchelkin@ispras.ru>
+References: <20241029133141.45335-1-pchelkin@ispras.ru>
+ <ZyDvOdEuxYh7jK5l@sashalap>
+ <20241029-3ca95c1f41e96c39faf2e49a-pchelkin@ispras.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 6.1.y / 6.6.y 0/4] Backport fix(es) for dummy_hcd transfer
- rate
-Content-Language: en-US
-To: Andrey Konovalov <andreyknvl@gmail.com>, sashal@kernel.org,
- stern@rowland.harvard.edu
-Cc: stable@vger.kernel.org, gregkh@linuxfoundation.org, sylv@sylv.io,
- kernel@gpiccoli.net, kernel-dev@igalia.com
-References: <20241103022812.1465647-1-gpiccoli@igalia.com>
- <CA+fCnZdM2rjzJf7COAjDLvW6S0dDaSpPKgZfMvXXQ4i2_HL+Nw@mail.gmail.com>
-From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <CA+fCnZdM2rjzJf7COAjDLvW6S0dDaSpPKgZfMvXXQ4i2_HL+Nw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241029-3ca95c1f41e96c39faf2e49a-pchelkin@ispras.ru>
 
-On 03/11/2024 22:29, Andrey Konovalov wrote:
-> On Sun, Nov 3, 2024 at 3:28 AM Guilherme G. Piccoli <gpiccoli@igalia.com> wrote:
->>
->> Hi folks, here is a series with some fixes for dummy_hcd. First of all,
->> the reasoning behind it.
->>
->> Syzkaller report [0] shows a hung task on uevent_show, and despite it was
->> fixed with a patch on drivers/base (a race between drivers shutdown and
->> uevent_show), another issue remains: a problem with Realtek emulated wifi
->> device [1]. While working the fix ([1]), we noticed that if it is
->> applied to recent kernels, all fine. But in v6.1.y and v6.6.y for example,
->> it didn't solve entirely the issue, and after some debugging, it was
->> narrowed to dummy_hcd transfer rates being waaay slower in such stable
->> versions.
->>
->> The reason of such slowness is well-described in the first 2 patches of
->> this backport, but the thing is that these patches introduced subtle issues
->> as well, fixed in the other 2 patches. Hence, I decided to backport all of
->> them for the 2 latest LTS kernels.
->>
->> Maybe this is not a good idea - I don't see a strong con, but who's
->> better to judge the benefits vs the risks than the patch authors,
->> reviewers, and the USB maintainer?! So, I've CCed Alan, Andrey, Greg and
->> Marcello here, and I thank you all in advance for reviews on this. And
->> my apologies for bothering you with the emails, I hope this is a simple
->> "OK, makes sense" or "Nah, doesn't worth it" situation =)
+On Tue, 29. Oct 18:12, Fedor Pchelkin wrote:
+> On Tue, 29. Oct 10:20, Sasha Levin wrote:
+> > On Tue, Oct 29, 2024 at 04:31:40PM +0300, Fedor Pchelkin wrote:
+> > > BTW, a question to the stable-team: what Git magic (3-way-merge?) let the
+> > > duplicate patch be applied successfully? The patch context in stable trees
+> > > was different to that moment so should the duplicate have been expected to
+> > > fail to be applied?
+> > 
+> > Just plain git... Try it yourself :)
+> > 
+> > $ git checkout 282f0a482ee6
+> > HEAD is now at 282f0a482ee61 drm/amd/display: Skip Recompute DSC Params if no Stream on Link
+> > 
+> > $ git cherry-pick 7c887efda1
 > 
-> Sounds good to me, thank you!
+> 7c887efda1 is the commit backported to linux-6.1.y. Of course it will apply
+> there.
 > 
+> What I mean is that the upstream commit for 7c887efda1 is 8151a6c13111b465dbabe07c19f572f7cbd16fef.
+> 
+> And cherry-picking 8151a6c13111b465dbabe07c19f572f7cbd16fef to linux-6.1.y
+> on top of 282f0a482ee6 will not result in duplicating the change, at least
+> with my git configuration.
+> 
+> I just don't understand how a duplicating if-statement could be produced in
+> result of those cherry-pick'ings and how the content of 7c887efda1 was
+> generated.
+> 
+> $ git checkout 282f0a482ee6
+> HEAD is now at 282f0a482ee6 drm/amd/display: Skip Recompute DSC Params if no Stream on Link
+> 
+> $ git cherry-pick 8151a6c13111b465dbabe07c19f572f7cbd16fef
+> Auto-merging drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+> HEAD detached at 282f0a482ee6
+> You are currently cherry-picking commit 8151a6c13111.
+>   (all conflicts fixed: run "git cherry-pick --continue")
+>   (use "git cherry-pick --skip" to skip this patch)
+>   (use "git cherry-pick --abort" to cancel the cherry-pick operation)
+> The previous cherry-pick is now empty, possibly due to conflict resolution.
+> If you wish to commit it anyway, use:
+> 
+>     git commit --allow-empty
+> 
+> Otherwise, please use 'git cherry-pick --skip'
 
-Thanks a bunch to all of you folks! For the reviews and the suggestion
-about the commit-ids. I've always sent patches to stable this way, be it
-a backport or even a cherry-pick, but it's interesting and definitely
-easier to just mention the IDs and ask for merge - thanks for the
-suggestion, I'll do that in case of future clean cherry-picks =)
+Sasha,
 
-Cheers,
+my concern is that maybe there is some issue with the scripts used for the
+preparation of backport patches.
 
+There are two different upstream commits performing the exact same change:
+- 50e376f1fe3bf571d0645ddf48ad37eb58323919
+- 8151a6c13111b465dbabe07c19f572f7cbd16fef
 
-Guilherme
+50e376f1fe3bf571d0645ddf48ad37eb58323919 was backported to stable kernels
+at first. After that, attempts to backport 8151a6c13111b465dbabe07c19f572f7cbd16fef
+to those stables should be expected to fail, no? Git would have complained
+about this - the patch was already applied.
+
+It is just strange that the (exact same) change made by the commits is
+duplicated by backporting tools. As it is not the first case where DRM
+patches are involved per Greg's statement [1], I wonder if something can be
+done on stable-team's side to avoid such odd behavior in future.
+
+[1]: https://lore.kernel.org/stable/20241007035711.46624-1-jsg@jsg.id.au/T/#u
+
+--
+Thanks,
+Fedor
 
