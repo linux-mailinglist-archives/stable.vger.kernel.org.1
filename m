@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-89685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3AE19BB299
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 12:13:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E2E39BB29B
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 12:13:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D185B2783B
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:13:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7D7D28232C
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:13:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936A21F76CB;
-	Mon,  4 Nov 2024 10:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE691F80BA;
+	Mon,  4 Nov 2024 10:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oXV6m0t3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TEFMfQ0J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B3B1F76DB;
-	Mon,  4 Nov 2024 10:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEF31F80AD;
+	Mon,  4 Nov 2024 10:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730717749; cv=none; b=FE98HXNhMSpFby+/vUWRKp2Tt3VAr/oCYyzicWAV82O7UxplNZ104A4xhlIJd5BUGWScep9kSKFme2zopQMLv3ijg6EzzVtwYg3vUxwa3ce79UZTxxs1lSyDqYU2gyq4Vdv0w43FgkRq7L+fwAq7dkCdZDniCOLupa3gz+RozvA=
+	t=1730717751; cv=none; b=uwxdLL3zAHZOiY85QMxVjPdvZxzbQDntUfb6yXK6MJFT4clBU3apcHJA3FhpFTOg0VyovMpRPBfVXAybAIqOZDKKBVSJlh7oxsykbnpKfkX/Y9dLg+AKgd/oQhGwV9ATcfJ3GA2nptFkJXDrIQozo9iGu+OpyLolqwVtGe25M6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730717749; c=relaxed/simple;
-	bh=THidAdKtmYirQtE3VR5MA8+4VCQJIGVgy8vGyNjZ3Mk=;
+	s=arc-20240116; t=1730717751; c=relaxed/simple;
+	bh=XqKUWGODd1BS1i/68lrWqZSmXb6XqGiYNwan4uKrTNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XS8TW4T/BJTFUUE8JJKVqjxSnetua4sQGK6qchAepR8uHvk30xNmFSSCJ4PEJv7jHZDnyoyec2G270WeC5LsLNZj6b+XhqGJp87egQiUIyqfCukgMaepF9K9g8ddHkkp7wYJ/WDM/xfim+HPmd196TXuxrDLGc4d1UimvzruAvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oXV6m0t3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760EFC4CECE;
-	Mon,  4 Nov 2024 10:55:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X1gXGdquNqMQdclYZ/YNbZICdQs7NX38hRTWvy0u6RQZmNS3ZX+/XV6u+LCQFJJ1A/9wWGOOXBGABRh6ATjUQeuxV7RFkBEy6v4EYHinXecAgPj22yS6p2gFjff8bGepgUvrpZ89Hnp/jsj4ZZgxfyT2fXHDthKrNtptJC9i3hA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TEFMfQ0J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55BC9C4CED1;
+	Mon,  4 Nov 2024 10:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730717748;
-	bh=THidAdKtmYirQtE3VR5MA8+4VCQJIGVgy8vGyNjZ3Mk=;
+	s=k20201202; t=1730717750;
+	bh=XqKUWGODd1BS1i/68lrWqZSmXb6XqGiYNwan4uKrTNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oXV6m0t35T4k4X3kJMoUVwCxKjmNYXjk0BR1DDYeg23/YImgPgjLNmj1d5UdeyMAb
-	 Lkp2k0UQmEvUdp5YcIuUkhwm3i40lkSOMFoB+fVxusaFgcO+gcLdEbaWhdD3m1xghi
-	 0qJnuBCnb44CNt4x033Kjw7FY6MzI0vZrhxPHQXb6Z1oWtzjy5VXu7uUa/TWF5Inli
-	 N9XzH4oUt/H5IpYgSyFjFPSlpyakmiW3zlNtkMjZlP9gcJPvJo01zVpABrdOTHWgo2
-	 flVl5j4nkW0wlWglRd+vuINYbLNX2Uw9W2QWutNMHKpsk0tGgqCo3W0IE7SZIv+mAl
-	 A6f6URrG39WHw==
+	b=TEFMfQ0Ji/9MGVKO04vk+iiTAAB1F2RBbGF3/teiB2vc9+umru0KwEIWwNTnaERoT
+	 up1324Yspf7LRzw2t56YOGkDBl932TCJpUcxFcz2w6wNaQiG6HuaU8u217VXWvAj3q
+	 PCTjz0bi8THmRNtc9jCzo0SfR0qsFJf7VbYkJKTv57Ij3rpsKjP7glIx/RwxWIZGjU
+	 9b3Z1ThJ3Nm8W/IxzOoVRLzRspmb6TxScs1l8yUa/DSTmJ0WtU5u+XlZAAksUSzLj7
+	 EqllID7UzUuS3E/BjSjv4cuCWE1GhSIU65FUxjboEdruhNuC9kLFnU3Z7Y2VS0198F
+	 SFWWbAWdLZJrw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Borislav Petkov <bp@alien8.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+Cc: =?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	yazen.ghannam@amd.com,
-	rdunlap@infradead.org,
-	bhelgaas@google.com
-Subject: [PATCH AUTOSEL 4.19 4/5] x86/amd_nb: Fix compile-testing without CONFIG_AMD_NB
-Date: Mon,  4 Nov 2024 05:55:33 -0500
-Message-ID: <20241104105539.98219-4-sashal@kernel.org>
+	bjorn@mork.no,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 5/5] net: usb: qmi_wwan: add Quectel RG650V
+Date: Mon,  4 Nov 2024 05:55:34 -0500
+Message-ID: <20241104105539.98219-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241104105539.98219-1-sashal@kernel.org>
 References: <20241104105539.98219-1-sashal@kernel.org>
@@ -73,48 +73,60 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.322
 Content-Transfer-Encoding: 8bit
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Benoît Monin <benoit.monin@gmx.fr>
 
-[ Upstream commit fce9642c765a18abd1db0339a7d832c29b68456a ]
+[ Upstream commit 6b3f18a76be6bbd237c7594cf0bf2912b68084fe ]
 
-node_to_amd_nb() is defined to NULL in non-AMD configs:
+Add support for Quectel RG650V which is based on Qualcomm SDX65 chip.
+The composition is DIAG / NMEA / AT / AT / QMI.
 
-  drivers/platform/x86/amd/hsmp/plat.c: In function 'init_platform_device':
-  drivers/platform/x86/amd/hsmp/plat.c:165:68: error: dereferencing 'void *' pointer [-Werror]
-    165 |                 sock->root                      = node_to_amd_nb(i)->root;
-        |                                                                    ^~
-  drivers/platform/x86/amd/hsmp/plat.c:165:68: error: request for member 'root' in something not a structure or union
+T: Bus=02 Lev=01 Prnt=01 Port=03 Cnt=01 Dev#=  4 Spd=5000 MxCh= 0
+D: Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P: Vendor=2c7c ProdID=0122 Rev=05.15
+S: Manufacturer=Quectel
+S: Product=RG650V-EU
+S: SerialNumber=xxxxxxx
+C: #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=896mA
+I: If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E: Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E: Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I: If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E: Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I: If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E: Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E: Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=9ms
+I: If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E: Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E: Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=9ms
+I: If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E: Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E: Ad=87(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E: Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=9ms
 
-Users of the interface who also allow COMPILE_TEST will cause the above build
-error so provide an inline stub to fix that.
-
-  [ bp: Massage commit message. ]
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20241029092329.3857004-1-arnd@kernel.org
+Signed-off-by: Benoît Monin <benoit.monin@gmx.fr>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241024151113.53203-1-benoit.monin@gmx.fr
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/amd_nb.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/include/asm/amd_nb.h b/arch/x86/include/asm/amd_nb.h
-index fddb6d26239f5..7957ac2a643fd 100644
---- a/arch/x86/include/asm/amd_nb.h
-+++ b/arch/x86/include/asm/amd_nb.h
-@@ -115,7 +115,10 @@ static inline bool amd_gart_present(void)
- 
- #define amd_nb_num(x)		0
- #define amd_nb_has_feature(x)	false
--#define node_to_amd_nb(x)	NULL
-+static inline struct amd_northbridge *node_to_amd_nb(int node)
-+{
-+	return NULL;
-+}
- #define amd_gart_present(x)	false
- 
- #endif
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index bbd5183e5e635..d297352ab3d81 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1045,6 +1045,7 @@ static const struct usb_device_id products[] = {
+ 		USB_DEVICE_AND_INTERFACE_INFO(0x03f0, 0x581d, USB_CLASS_VENDOR_SPEC, 1, 7),
+ 		.driver_info = (unsigned long)&qmi_wwan_info,
+ 	},
++	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x0122)},	/* Quectel RG650V */
+ 	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x0125)},	/* Quectel EC25, EC20 R2.0  Mini PCIe */
+ 	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x0306)},	/* Quectel EP06/EG06/EM06 */
+ 	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x0512)},	/* Quectel EG12/EM12 */
 -- 
 2.43.0
 
