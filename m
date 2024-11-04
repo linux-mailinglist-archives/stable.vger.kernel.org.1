@@ -1,133 +1,130 @@
-Return-Path: <stable+bounces-89686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E2E39BB29B
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 12:13:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12EDF9BB2A0
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 12:13:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7D7D28232C
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:13:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 436EA1C21328
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:13:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE691F80BA;
-	Mon,  4 Nov 2024 10:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F9C1B393D;
+	Mon,  4 Nov 2024 10:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TEFMfQ0J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Df9dP2iH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEF31F80AD;
-	Mon,  4 Nov 2024 10:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E68B1B3724
+	for <stable@vger.kernel.org>; Mon,  4 Nov 2024 10:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730717751; cv=none; b=uwxdLL3zAHZOiY85QMxVjPdvZxzbQDntUfb6yXK6MJFT4clBU3apcHJA3FhpFTOg0VyovMpRPBfVXAybAIqOZDKKBVSJlh7oxsykbnpKfkX/Y9dLg+AKgd/oQhGwV9ATcfJ3GA2nptFkJXDrIQozo9iGu+OpyLolqwVtGe25M6Q=
+	t=1730717810; cv=none; b=VG1jyXEKPuRGb17gIfxSgFe0zaPBxUjQqqdt4vpa6DzZnj1hNs2TpYNx5d1OjyKs7nXhWoHaUHN6W1UfO4IdqqvyGhLNFhEZqpHwxvxO6ImESEtcsB9KSl8v9En2Tt0k8LT/OfwGqQHTxDM8YCILbkPiVIq1DJ72eWj+vmXTr5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730717751; c=relaxed/simple;
-	bh=XqKUWGODd1BS1i/68lrWqZSmXb6XqGiYNwan4uKrTNg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X1gXGdquNqMQdclYZ/YNbZICdQs7NX38hRTWvy0u6RQZmNS3ZX+/XV6u+LCQFJJ1A/9wWGOOXBGABRh6ATjUQeuxV7RFkBEy6v4EYHinXecAgPj22yS6p2gFjff8bGepgUvrpZ89Hnp/jsj4ZZgxfyT2fXHDthKrNtptJC9i3hA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TEFMfQ0J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55BC9C4CED1;
-	Mon,  4 Nov 2024 10:55:49 +0000 (UTC)
+	s=arc-20240116; t=1730717810; c=relaxed/simple;
+	bh=1TyfpMB49W7e6uhiaqD3fSYUNRWaPkxT0aDfpdYwK6s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H1heIgrFt58OlOjfOB2tIQNmYB9wVCweu7DEeLIFyg7kzsss7cX7ZeyrsPkNDgklvYWzYBBmMU+x9/dV+lRwt6CKte7Jy+4SVr0LjZbQzHaFAlOKGZFKO5FrUptjuzyRgaFZM3LA1Yh1nptxJ9UezUb0tBwlCDfJY9lKZnutUSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Df9dP2iH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DDD9C4CECE;
+	Mon,  4 Nov 2024 10:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730717750;
-	bh=XqKUWGODd1BS1i/68lrWqZSmXb6XqGiYNwan4uKrTNg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TEFMfQ0Ji/9MGVKO04vk+iiTAAB1F2RBbGF3/teiB2vc9+umru0KwEIWwNTnaERoT
-	 up1324Yspf7LRzw2t56YOGkDBl932TCJpUcxFcz2w6wNaQiG6HuaU8u217VXWvAj3q
-	 PCTjz0bi8THmRNtc9jCzo0SfR0qsFJf7VbYkJKTv57Ij3rpsKjP7glIx/RwxWIZGjU
-	 9b3Z1ThJ3Nm8W/IxzOoVRLzRspmb6TxScs1l8yUa/DSTmJ0WtU5u+XlZAAksUSzLj7
-	 EqllID7UzUuS3E/BjSjv4cuCWE1GhSIU65FUxjboEdruhNuC9kLFnU3Z7Y2VS0198F
-	 SFWWbAWdLZJrw==
+	s=k20201202; t=1730717810;
+	bh=1TyfpMB49W7e6uhiaqD3fSYUNRWaPkxT0aDfpdYwK6s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Df9dP2iHI6+vyMwjBeza4rXmGSfUWMD12N1S7TkZSoYB3WxGADb0K+DMXm9eerF2n
+	 DyJTbFVKX/It02XHtiMunEoVumA03StdZ9N89yUenwYCIrTtwIP++wi9fc3Svlhegl
+	 NNHzF8C0RNTXJXRrAdQDcj8iwHQJE42EPVwQZR42JPHmYkIMUY2vvsi9612mnSqPIi
+	 4BgyIQEayv7hsGRixjQep3GK2ilayodPLT/6mFJllJSq2RwpiC4h6EPxQHCFivfyWx
+	 5rcBTkQU80NOYt4MzpwEK9VghTlSO2hMDtqa6opVpclJEgUVVFa5jMiytU1zMQ/w9/
+	 IzjVgQJ1cPEFw==
+Date: Mon, 4 Nov 2024 05:56:48 -0500
 From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: =?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	bjorn@mork.no,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 5/5] net: usb: qmi_wwan: add Quectel RG650V
-Date: Mon,  4 Nov 2024 05:55:34 -0500
-Message-ID: <20241104105539.98219-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241104105539.98219-1-sashal@kernel.org>
-References: <20241104105539.98219-1-sashal@kernel.org>
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: "Guilherme G. Piccoli" <gpiccoli@igalia.com>, stable@vger.kernel.org,
+	gregkh@linuxfoundation.org, sylv@sylv.io, andreyknvl@gmail.com,
+	kernel@gpiccoli.net, kernel-dev@igalia.com
+Subject: Re: [PATCH 6.1.y / 6.6.y 0/4] Backport fix(es) for dummy_hcd
+ transfer rate
+Message-ID: <ZyiocGrNzElt0Kxi@sashalap>
+References: <20241103022812.1465647-1-gpiccoli@igalia.com>
+ <3f678883-75e3-42b9-8f30-56b5b4c4379d@rowland.harvard.edu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.322
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <3f678883-75e3-42b9-8f30-56b5b4c4379d@rowland.harvard.edu>
 
-From: Benoît Monin <benoit.monin@gmx.fr>
+On Sat, Nov 02, 2024 at 10:41:19PM -0400, Alan Stern wrote:
+>On Sat, Nov 02, 2024 at 11:13:49PM -0300, Guilherme G. Piccoli wrote:
+>> Hi folks, here is a series with some fixes for dummy_hcd. First of all,
+>> the reasoning behind it.
+>>
+>> Syzkaller report [0] shows a hung task on uevent_show, and despite it was
+>> fixed with a patch on drivers/base (a race between drivers shutdown and
+>> uevent_show), another issue remains: a problem with Realtek emulated wifi
+>> device [1]. While working the fix ([1]), we noticed that if it is
+>> applied to recent kernels, all fine. But in v6.1.y and v6.6.y for example,
+>> it didn't solve entirely the issue, and after some debugging, it was
+>> narrowed to dummy_hcd transfer rates being waaay slower in such stable
+>> versions.
+>>
+>> The reason of such slowness is well-described in the first 2 patches of
+>> this backport, but the thing is that these patches introduced subtle issues
+>> as well, fixed in the other 2 patches. Hence, I decided to backport all of
+>> them for the 2 latest LTS kernels.
+>>
+>> Maybe this is not a good idea - I don't see a strong con, but who's
+>> better to judge the benefits vs the risks than the patch authors,
+>> reviewers, and the USB maintainer?! So, I've CCed Alan, Andrey, Greg and
+>> Marcello here, and I thank you all in advance for reviews on this. And
+>> my apologies for bothering you with the emails, I hope this is a simple
+>> "OK, makes sense" or "Nah, doesn't worth it" situation =)
+>>
+>> Cheers,
+>>
+>>
+>> Guilherme
+>>
+>>
+>> [0] https://syzkaller.appspot.com/bug?extid=edd9fe0d3a65b14588d5
+>> [1] https://lore.kernel.org/r/20241101193412.1390391-1-gpiccoli@igalia.com/
+>>
+>>
+>> Alan Stern (1):
+>>   USB: gadget: dummy-hcd: Fix "task hung" problem
+>>
+>> Andrey Konovalov (1):
+>>   usb: gadget: dummy_hcd: execute hrtimer callback in softirq context
+>>
+>> Marcello Sylvester Bauer (2):
+>>   usb: gadget: dummy_hcd: Switch to hrtimer transfer scheduler
+>>   usb: gadget: dummy_hcd: Set transfer interval to 1 microframe
+>>
+>>  drivers/usb/gadget/udc/dummy_hcd.c | 57 ++++++++++++++++++++----------
+>>  1 file changed, 38 insertions(+), 19 deletions(-)
+>
+>I'm not aware of any reasons not to backport these commits to the stable
+>kernels, if they fix a real problem for you.
+>
+>However, it probably wasn't necessary to post the patches explicitly.
+>(Not unless they required some modifications for the backports.)  I
+>should think all you really needed to do was ask the appropriate
+>maintainers to queue those commits for the stable kernels you listed.
 
-[ Upstream commit 6b3f18a76be6bbd237c7594cf0bf2912b68084fe ]
+I've queued this up. And yes, giving us the IDs would be easier (which
+is what I ended up doing here).
 
-Add support for Quectel RG650V which is based on Qualcomm SDX65 chip.
-The composition is DIAG / NMEA / AT / AT / QMI.
+Thanks!
 
-T: Bus=02 Lev=01 Prnt=01 Port=03 Cnt=01 Dev#=  4 Spd=5000 MxCh= 0
-D: Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P: Vendor=2c7c ProdID=0122 Rev=05.15
-S: Manufacturer=Quectel
-S: Product=RG650V-EU
-S: SerialNumber=xxxxxxx
-C: #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=896mA
-I: If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E: Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E: Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I: If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E: Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I: If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E: Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E: Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=9ms
-I: If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E: Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E: Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=9ms
-I: If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E: Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E: Ad=87(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E: Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=9ms
-
-Signed-off-by: Benoît Monin <benoit.monin@gmx.fr>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241024151113.53203-1-benoit.monin@gmx.fr
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index bbd5183e5e635..d297352ab3d81 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1045,6 +1045,7 @@ static const struct usb_device_id products[] = {
- 		USB_DEVICE_AND_INTERFACE_INFO(0x03f0, 0x581d, USB_CLASS_VENDOR_SPEC, 1, 7),
- 		.driver_info = (unsigned long)&qmi_wwan_info,
- 	},
-+	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x0122)},	/* Quectel RG650V */
- 	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x0125)},	/* Quectel EC25, EC20 R2.0  Mini PCIe */
- 	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x0306)},	/* Quectel EP06/EG06/EM06 */
- 	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x0512)},	/* Quectel EG12/EM12 */
 -- 
-2.43.0
-
+Thanks,
+Sasha
 
