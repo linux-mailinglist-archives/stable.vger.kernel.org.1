@@ -1,57 +1,66 @@
-Return-Path: <stable+bounces-89664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C819BB24D
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 12:06:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18FAA9BB251
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 12:06:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB2101C21C35
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:06:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B32B1C21BE4
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67791E1A39;
-	Mon,  4 Nov 2024 10:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F101E285A;
+	Mon,  4 Nov 2024 10:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f86zL+EH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RmMyjcja"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED6A1E1027;
-	Mon,  4 Nov 2024 10:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E4C1B394D;
+	Mon,  4 Nov 2024 10:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730717672; cv=none; b=tNsAqYWICE06n5q3gpDtmMQRKCuk4t+UFv6VW6quCKys9mssKSl6iwh47eHFmQ6GV+N2n0mLncl4CDL5TivLCNvRPlbgN1ZrZuWVliPZSHeauctdi4eMI+Z+WmcHvHxOAb2nGE7G6YrTrXhu0FKvzrQtirUijClPhZVQjjY/OQI=
+	t=1730717676; cv=none; b=F8ZIE+T9qlUPbC3bevU//X3uH7vXhsV8ckkz7U5Pk9iaIncrg5lu5Kqy/lVHk6aIJXroOBUMQ8TuZG7Wxe6NgYDUwm5J6IoeKkvSDUfWHte83LWf5YHfH+8Lg4wivMw9L10SRc+r19buDhkgzSrlWw/zKzgTiq6JNYvLDxIv3rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730717672; c=relaxed/simple;
-	bh=IIw5YdDJ+qxZU7JKJPTnP36GO7gm14PlOZ1qDp0E0a8=;
+	s=arc-20240116; t=1730717676; c=relaxed/simple;
+	bh=JySOKYHLcoB8FEupEEITxbcmbNPZinGa0YHZsZnkWb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LKGKf1Bk3TAmaYuDHxyCzT7FgUjw2jQguo3XfKM83GaiajVGT4XXsShs2d1R7X0WN8uLYFyP3B2dHxrbUYus/ajG+uQjU3cMraJz17xZ44y7FAHAuUBy2WKwD5+kvaoyQ4k+FaqUJh4lYyqCFqzUpOiwQiTBhAG8Hw8A1qB6/XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f86zL+EH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A1F2C4CED5;
-	Mon,  4 Nov 2024 10:54:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=l1GgZLsCN19Rf/NXWzHIL++YvJ07ecY0xw40d3/uQhv760ktzyCS4erbIgZ3YBh5T5bqvzSUtpcW+ujuBzX3QeMECkyjTiU+ETBRc3axS/kEKqCXKm9Ur64MC29zmrJwd3dkD6QPlHZdY/M8U8QeuIv4wMudTUiMOAYTkevNMwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RmMyjcja; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16EACC4CED2;
+	Mon,  4 Nov 2024 10:54:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730717672;
-	bh=IIw5YdDJ+qxZU7JKJPTnP36GO7gm14PlOZ1qDp0E0a8=;
+	s=k20201202; t=1730717675;
+	bh=JySOKYHLcoB8FEupEEITxbcmbNPZinGa0YHZsZnkWb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f86zL+EHleGeYTkZ/qy44hM4YB5KdrXErni/69z2EHZ6clSlR04CQrVLGnMJ+aTo7
-	 AQ1ZHVcirPJ4IK8JZ3hyiCkCtYT2WXsPtC2rpBCw12dKyF171VBSfVu9bWuPtpRzaB
-	 xHsJvGU4/SrYOdm1O61cWIdV7QydbFBEgOgVSP5sFf90YMHl0gcF7DADXA5meuFoaZ
-	 wkHFleqL9IGufdBzYLykTXFp9W75Cj2gRKuP1CL2Cr254jBIxGNEkJToLgD0QvI7/9
-	 gncA49efjPQitNp0xGR2Piv8XC8BP8jxSGpRJwIfmlWtAranjCWra2g2s3pTPc68h9
-	 nediPaqICW0qw==
+	b=RmMyjcjaLcBLbN99Kkkqkr7KRbD6jIenVEPn2kqkyC0TqIypWcNTaPTDe0JPG8fBI
+	 95l1Kccs/2uLibyZAxA7MGSonOM2nR5I2oJD7j2njsfmXJxF7yuncfxsnwQr2pJX/6
+	 A5IdWuCwrdY7lVToDJ7tOJbFgcp7/AM7zbbGLXHW2ASLQLDnMync4dj0EwA2MXAlov
+	 fmgotFW4zFWZC6UW3zx2vqu6YDYjOpmeb2n9xhaXDoM1tv8GoZcjGkGQxZgG9L7D6c
+	 ayUj62JhU0lB3LCSkdReQ5t2gOzIb5Kr/026UUbKTrM/gqiNpLqehNU6WvHRT1yvgr
+	 cczrufHNzbGcQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ben Greear <greearb@candelatech.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: =?UTF-8?q?Benjamin=20Gro=C3=9Fe?= <ste3ls@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 05/10] mac80211: fix user-power when emulating chanctx
-Date: Mon,  4 Nov 2024 05:53:54 -0500
-Message-ID: <20241104105414.97666-5-sashal@kernel.org>
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	hayeswang@realtek.com,
+	dianders@chromium.org,
+	grundler@chromium.org,
+	hkallweit1@gmail.com,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 06/10] usb: add support for new USB device ID 0x17EF:0x3098 for the r8152 driver
+Date: Mon,  4 Nov 2024 05:53:55 -0500
+Message-ID: <20241104105414.97666-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241104105414.97666-1-sashal@kernel.org>
 References: <20241104105414.97666-1-sashal@kernel.org>
@@ -61,40 +70,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.170
 Content-Transfer-Encoding: 8bit
 
-From: Ben Greear <greearb@candelatech.com>
+From: Benjamin Große <ste3ls@gmail.com>
 
-[ Upstream commit 9b15c6cf8d2e82c8427cd06f535d8de93b5b995c ]
+[ Upstream commit 94c11e852955b2eef5c4f0b36cfeae7dcf11a759 ]
 
-ieee80211_calc_hw_conf_chan was ignoring the configured
-user_txpower.  If it is set, use it to potentially decrease
-txpower as requested.
+This patch adds support for another Lenovo Mini dock 0x17EF:0x3098 to the
+r8152 driver. The device has been tested on NixOS, hotplugging and sleep
+included.
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
-Link: https://patch.msgid.link/20241010203954.1219686-1-greearb@candelatech.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Benjamin Große <ste3ls@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241020174128.160898-1-ste3ls@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/usb/r8152.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 1c2cdaeb353b0..6253a89411cbe 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -144,6 +144,8 @@ static u32 ieee80211_hw_conf_chan(struct ieee80211_local *local)
- 	}
- 
- 	power = ieee80211_chandef_max_power(&chandef);
-+	if (local->user_power_level != IEEE80211_UNSET_POWER_LEVEL)
-+		power = min(local->user_power_level, power);
- 
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index e8fd743a1509d..abf4a488075ef 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -9843,6 +9843,7 @@ static const struct usb_device_id rtl8152_table[] = {
+ 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x3062) },
+ 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x3069) },
+ 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x3082) },
++	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x3098) },
+ 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x7205) },
+ 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x720c) },
+ 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x7214) },
 -- 
 2.43.0
 
