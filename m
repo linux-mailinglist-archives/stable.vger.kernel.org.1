@@ -1,186 +1,152 @@
-Return-Path: <stable+bounces-89703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36FF69BB692
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 14:43:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A7989BB6F7
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 15:01:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0FD11F23466
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 13:43:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2E6F284B93
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 14:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49626A33B;
-	Mon,  4 Nov 2024 13:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1936013B5B6;
+	Mon,  4 Nov 2024 14:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RZieaUKH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UX5LDSX4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038918BEE
-	for <stable@vger.kernel.org>; Mon,  4 Nov 2024 13:43:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3721CF8B;
+	Mon,  4 Nov 2024 14:00:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730727817; cv=none; b=rLvr1KLSXwmWs9qTMeHaXwGhOOubZI1e7NAl6cvSst6+ESFezrzko0DLmscrTVn8Tv4WYBXe7kJgal+Eq1M72qB0s5Ny6GzoQWEyatkF5JkzByqw2+kCd0yUr6xD2ENg7m35rhyJAo5hwujfw94t1JQZ4IxAn3keV0kVgCzfA9E=
+	t=1730728820; cv=none; b=EoCTmEP7QH8bbayLzgieOeyfyaxDUPQ9bWBimax/UUDzTIOC/dywB1vG28zWjrsmOrcUWzUGIDLDu1FD0YvZE6dLnVgacp1vNSqw9cKAqiWk0TVMknd837GPQubSYlTc6yD16NuU+REtrBL9o5UnaIiSp1W0sGiqZvztmQL2uRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730727817; c=relaxed/simple;
-	bh=4nsxE0zJBnfMaOT5zdVUiPyRYA3ahACMLCgNgO/61dE=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=lgj3fYO66ifcIHRUhmtZ+a4E0DiY6Qnqm0XqJA3vvWNYfYvXVTgK345WrhxJf0i0OxPgNwVFXTPoJ2f8Nie/xSaIw+Sx7kCwqCpv1znQx1wM5QZVYdGJGNIawi38VGeQ0FsctOh3r8RbACxJUjszNilg7iO4Xavw3kXJk0+IA+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RZieaUKH; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43167ff0f91so37346045e9.1
-        for <stable@vger.kernel.org>; Mon, 04 Nov 2024 05:43:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730727814; x=1731332614; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NNjkltu1YzUC3aRdfVm7mD8mGte+fZLAnIacrLlFn+g=;
-        b=RZieaUKHmlTHCycAIAm/G5fCEyemiczTkfDF23xsE8mrEzhh9yyrzuWwtdpz/LkVh8
-         W8DWyw8vGJI2mkXps4dXiiBcIDMCdmq3egj+FT1ga4HqgoASmq4GNs22CwfXVaNl+Fs6
-         LHd04fkv5SJ22itdSv3cm0kfUJrF2+sivwiFlEO85de3OO+ympEgZBiFRzwqqMF1dAhf
-         k9Z46dMe08ZP3caNg8NzHur8Oh2ObwWWg5DJ2p5h78E2vjoMcaMofxcsX/oF9tZDemds
-         tfKcyYsgwLTEnU0agrNcQU35yWh5d0FiBiuJGeZHgqRjLERAftqfYNpPPhTGemo6AZsZ
-         6IlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730727814; x=1731332614;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=NNjkltu1YzUC3aRdfVm7mD8mGte+fZLAnIacrLlFn+g=;
-        b=FhkHqKwRKQ3Q4uEnR/DlBE85h4Tsnr/m4zvzyv2z6ts4QBzZP6N++RIG0RNoGOWs6Q
-         MERJf4vYTFEMi+6WxMw9UTPuKprIhC6/RwJ13aQaaGmujSxGVCrArWrB26glgemI/5Oc
-         Ly77b6t1DZjpjMTTLXRwp8fykUOlfw6ky2FQVK68KLm1t5iBdMjdBaKHfadl39XzRoZH
-         GvJcdQW+M/IVa+Tmy1H6yRuA4/FUbXIRphwHe9m1OBuJmV1+OPEB2JUNqJAqTlDymYrz
-         KCkh1F0FwDhTWM3sar2aENJ/veSd19F3cY4ifUHVzdK4HH9c2Sw5CfttDqkFr4pbKpcf
-         XaNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVYMNxXO+zcDiBemCwMb9euJPzKgcGXmXf32VAG2TNbG2jFMOPyPgK+uIUWsPfWz08ghQKsLa4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmAlAl8AzQxlh/fBOhHaQfEHGrB+MBEJIBHp4JOhSg4l6x3cde
-	FalCShSn2WRIhfhdGUXCvGwkt3n28gAm/l6T2Cr1FCUlSUQBE8sfb3n58Es3iUs=
-X-Google-Smtp-Source: AGHT+IEed2JitaHA4d9lMoLwcdDd2R7X2lHOruaIu+gEcl2mSwdKfmp3De+9Vn93SoLYA8x9eAsCSw==
-X-Received: by 2002:a05:600c:4f8a:b0:431:51e5:2316 with SMTP id 5b1f17b1804b1-4327b822402mr132269895e9.34.1730727814373;
-        Mon, 04 Nov 2024 05:43:34 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:982:cbb0:5b00:c640:4c96:8a97? ([2a01:e0a:982:cbb0:5b00:c640:4c96:8a97])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4327d6848b5sm153584445e9.32.2024.11.04.05.43.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Nov 2024 05:43:33 -0800 (PST)
-Message-ID: <5a08460d-6907-41ad-b520-b191429a6eef@linaro.org>
-Date: Mon, 4 Nov 2024 14:43:31 +0100
+	s=arc-20240116; t=1730728820; c=relaxed/simple;
+	bh=P1k0MUVMq1QqUtbiW9xLpMKx1OZ1yhgJFMtdzOL+cGQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=IHfc65LNhJ5oF533hYGUoKeyP1W62qJUvSuehxXEnOCBgsDn9Dy8JL7Xr9eKh1NuJb2qCW59FHmWXlllcaqQ2SeSIHo8TvbyYTDBHOHRlqaYm37nKNtI9z8+tM8F/pNO3gLQqlLbkY6WQQBuZLDrEhNLA/pb8IbYxVHgrFGnhCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UX5LDSX4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42486C4CECE;
+	Mon,  4 Nov 2024 14:00:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730728820;
+	bh=P1k0MUVMq1QqUtbiW9xLpMKx1OZ1yhgJFMtdzOL+cGQ=;
+	h=From:Date:Subject:To:Cc:From;
+	b=UX5LDSX416ittxWJFLtIK3h56f2siL7MxHeSChZXP9Qgwq9nbSSSu7sZr22zxDe46
+	 tbb6L7Kfk3hOGu/V7w07bldevkpsUSCi1MOHyEUFAjUpM6Ml2/SS2Q4lg4SGJBXgE2
+	 gR0KLTDOW0OgbOA8kCRuGYn65ANrCO0im8qLV3uxxwc8NS55yGUdScn7ColA0oBmWo
+	 kYyGPVzWqgDTb9eXFDMprWOKfGFsIE8xg7KP/LGRfmoqhATCvNkPYvkqbFO8cf8k79
+	 d8wqtiwsxLhDC9X+/7wszbV+j+Ox+S4aoFeN64Ukoulmd6emJrZanEk0ysdObm8nYQ
+	 df6g80HzIErPw==
+From: Roger Quadros <rogerq@kernel.org>
+Date: Mon, 04 Nov 2024 16:00:11 +0200
+Subject: [PATCH] usb: dwc3: fix fault at system suspend if device was
+ already runtime suspended
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: neil.armstrong@linaro.org
-Subject: Re: [PATCH] scsi: ufs: Start the RTC update work later
-To: Bart Van Assche <bvanassche@acm.org>,
- "Martin K . Petersen" <martin.petersen@oracle.com>
-Cc: linux-scsi@vger.kernel.org, Bean Huo <beanhuo@micron.com>,
- stable@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Peter Wang <peter.wang@mediatek.com>, Avri Altman <avri.altman@wdc.com>,
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
- Maramaina Naresh <quic_mnaresh@quicinc.com>, Mike Bi <mikebi@micron.com>,
- =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
- Luca Porzio <lporzio@micron.com>
-References: <20241031212632.2799127-1-bvanassche@acm.org>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <20241031212632.2799127-1-bvanassche@acm.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20241104-am62-lpm-usb-fix-v1-1-e93df73a4f0d@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAGrTKGcC/x2MSQqAMAwAvyI5G2hqXfAr4qHaqAE3WhSh+HeLx
+ xmYiRDYCwdoswiebwly7Akoz2Bc7D4ziksMWmlDpDTardK4nhteYcBJHixM7VxTUVGOBCk7PSf
+ 9L7v+fT+6wuvMYgAAAA==
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Dhruva Gole <d-gole@ti.com>, sashal@kernel.org, 
+ William McVicker <willmcvicker@google.com>, 
+ Chris Morgan <macroalpha82@gmail.com>
+Cc: Vishal Mahaveer <vishalm@ti.com>, msp@baylibre.com, srk@ti.com, 
+ linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Roger Quadros <rogerq@kernel.org>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2168; i=rogerq@kernel.org;
+ h=from:subject:message-id; bh=P1k0MUVMq1QqUtbiW9xLpMKx1OZ1yhgJFMtdzOL+cGQ=;
+ b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBnKNNwkMQZtv8N51Zpfl0t+0+S1Q/Vqsv7isk4/
+ LM0GMkE07CJAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCZyjTcAAKCRDSWmvTvnYw
+ kwTFEACsBb0SZTJAsj7DWP3Ea2zc5LO6JpvWSA8jicrLPdp1JEYQUwf9yhvKod2c8Db/HhHwnva
+ fXGwGJrDFHL/v7Z51nNqd+pwWRWanFJux7e1LvClsgG/8URpA24qnHDZsWaV+3/gDmgw+NeUHmJ
+ 02G/id7VO1StoYkZGyQmUZVxcJEZaKRP2iAzGXpv+iyaV3TA4fn1P10rchq3TzililZr2oH2VCG
+ GOdKSf2bF/Ni1h35GptC//EkE0OQ/N6ykCMeABj1gEjUGJW1C6okJB+XYTx4HhPQGGrGGLzdIJw
+ kLEE5QpEvzHmTgh/E4rsCuFSPBNIQJLRfhZ9kz/s+BmF9+n09+ZrMl0rU+bdFcVAMhXtUK0uoQn
+ 8a64bstTlTNdu5FFxsVwNlruwUsxRIdKdr8AKh9Kd7DMpquJUNnEp9bxVtWUWqpCDFtjN/dE3mR
+ xcqvFfUS0g32OTROKX1lyvglvNrJya2DhwdHneNGIl1UwtaXF4ql0Yt976TqTM/esaCn1b86grS
+ 0L8/OoVGcdTxapmvmm9n0GjzrxwEKD6Exj2MvenXDo87QYxLJ5R3tmQsuqvQvurLRzn7uP/2QGx
+ k85c82RPh/hvRG7UOL5KDlPqXl4IVV7z1Qf1rXU0RbqgoxT+B3za1OEg3Owr6OsGNca1Ijm9jeZ
+ YIQHRfY6BMXB+fg==
+X-Developer-Key: i=rogerq@kernel.org; a=openpgp;
+ fpr=412165D44C9F52780FAB1058D25A6BD3BE763093
 
-On 31/10/2024 22:26, Bart Van Assche wrote:
-> The RTC update work involves runtime resuming the UFS controller. Hence,
-> only start the RTC update work after runtime power management in the UFS
-> driver has been fully initialized. This patch fixes the following kernel
-> crash:
-> 
-> Internal error: Oops: 0000000096000006 [#1] PREEMPT SMP
-> Workqueue: events ufshcd_rtc_work
-> Call trace:
->   _raw_spin_lock_irqsave+0x34/0x8c (P)
->   pm_runtime_get_if_active+0x24/0x9c (L)
->   pm_runtime_get_if_active+0x24/0x9c
->   ufshcd_rtc_work+0x138/0x1b4
->   process_one_work+0x148/0x288
->   worker_thread+0x2cc/0x3d4
->   kthread+0x110/0x114
->   ret_from_fork+0x10/0x20
-> 
-> Reported-by: Neil Armstrong <neil.armstrong@linaro.org>
-> Closes: https://lore.kernel.org/linux-scsi/0c0bc528-fdc2-4106-bc99-f23ae377f6f5@linaro.org/
-> Fixes: 6bf999e0eb41 ("scsi: ufs: core: Add UFS RTC support")
-> Cc: Bean Huo <beanhuo@micron.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-> ---
->   drivers/ufs/core/ufshcd.c | 10 ++++++++--
->   1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-> index 585557eaa9a2..ed82ff329314 100644
-> --- a/drivers/ufs/core/ufshcd.c
-> +++ b/drivers/ufs/core/ufshcd.c
-> @@ -8633,6 +8633,14 @@ static int ufshcd_add_lus(struct ufs_hba *hba)
->   		ufshcd_init_clk_scaling_sysfs(hba);
->   	}
->   
-> +	/*
-> +	 * The RTC update code accesses the hba->ufs_device_wlun->sdev_gendev
-> +	 * pointer and hence must only be started after the WLUN pointer has
-> +	 * been initialized by ufshcd_scsi_add_wlus().
-> +	 */
-> +	schedule_delayed_work(&hba->ufs_rtc_update_work,
-> +			      msecs_to_jiffies(UFS_RTC_UPDATE_INTERVAL_MS));
-> +
->   	ufs_bsg_probe(hba);
->   	scsi_scan_host(hba->host);
->   
-> @@ -8727,8 +8735,6 @@ static int ufshcd_post_device_init(struct ufs_hba *hba)
->   	ufshcd_force_reset_auto_bkops(hba);
->   
->   	ufshcd_set_timestamp_attr(hba);
-> -	schedule_delayed_work(&hba->ufs_rtc_update_work,
-> -			      msecs_to_jiffies(UFS_RTC_UPDATE_INTERVAL_MS));
->   
->   	if (!hba->max_pwr_info.is_valid)
->   		return 0;
+If the device was already runtime suspended then during system suspend
+we cannot access the device registers else it will crash.
 
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+Also we cannot access any registers after dwc3_core_exit() on some
+platforms so move the dwc3_enable_susphy() call to the top.
 
-Thanks!
-Neil
+Cc: stable@vger.kernel.org # v5.15+
+Reported-by: William McVicker <willmcvicker@google.com>
+Closes: https://lore.kernel.org/all/ZyVfcUuPq56R2m1Y@google.com
+Fixes: 705e3ce37bcc ("usb: dwc3: core: Fix system suspend on TI AM62 platforms")
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+---
+ drivers/usb/dwc3/core.c | 25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 427e5660f87c..98114c2827c0 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -2342,10 +2342,18 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+ 	u32 reg;
+ 	int i;
+ 
+-	dwc->susphy_state = (dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
+-			    DWC3_GUSB2PHYCFG_SUSPHY) ||
+-			    (dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0)) &
+-			    DWC3_GUSB3PIPECTL_SUSPHY);
++	if (!pm_runtime_suspended(dwc->dev) && !PMSG_IS_AUTO(msg)) {
++		dwc->susphy_state = (dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
++				    DWC3_GUSB2PHYCFG_SUSPHY) ||
++				    (dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0)) &
++				    DWC3_GUSB3PIPECTL_SUSPHY);
++		/*
++		 * TI AM62 platform requires SUSPHY to be
++		 * enabled for system suspend to work.
++		 */
++		if (!dwc->susphy_state)
++			dwc3_enable_susphy(dwc, true);
++	}
+ 
+ 	switch (dwc->current_dr_role) {
+ 	case DWC3_GCTL_PRTCAP_DEVICE:
+@@ -2398,15 +2406,6 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+ 		break;
+ 	}
+ 
+-	if (!PMSG_IS_AUTO(msg)) {
+-		/*
+-		 * TI AM62 platform requires SUSPHY to be
+-		 * enabled for system suspend to work.
+-		 */
+-		if (!dwc->susphy_state)
+-			dwc3_enable_susphy(dwc, true);
+-	}
+-
+ 	return 0;
+ }
+ 
+
+---
+base-commit: 42f7652d3eb527d03665b09edac47f85fb600924
+change-id: 20241102-am62-lpm-usb-fix-347dd86135c1
+
+Best regards,
+-- 
+Roger Quadros <rogerq@kernel.org>
+
 
