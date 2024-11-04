@@ -1,131 +1,171 @@
-Return-Path: <stable+bounces-89723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 874AF9BBB0F
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 18:06:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA16C9BBA83
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 17:43:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC141281376
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 17:06:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3EA75B214CA
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 16:43:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 459601D1E60;
-	Mon,  4 Nov 2024 17:03:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="jOH3dmFq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4315E1C32E4;
+	Mon,  4 Nov 2024 16:43:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out0-220.mail.aliyun.com (out0-220.mail.aliyun.com [140.205.0.220])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439481C82E3;
-	Mon,  4 Nov 2024 17:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.205.0.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53261C231D
+	for <stable@vger.kernel.org>; Mon,  4 Nov 2024 16:43:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730739799; cv=none; b=JBki0jogcnlW4rHdWm3z37I4aRWpip3nC6if9CKtdsrgVLMuRGNxaBWhFsT+W5G2zqxFPfesJsz+Xj7pK4KvKvBLc0BwZw30LfgzTfB+zTsmIJExUKV/7T2r/aUsm7e4LlO8J6QIRYDMjugNwSNxH9VsdlkY1XBKyrfPgIP6hmQ=
+	t=1730738612; cv=none; b=G0ZlFOebSx/UQgzcSckxx3Y78+mIjhlMnl/+ZmIY+05BMMe9nubj+byZkOLz/VUdkzyp+wWPk2LMDzpzvfDbp6+/S7X176F1oPUcAEyRfsSRx5GewstE48nufl9ASk/5BfVTZQg/cPlmcG6nfyXGtb5twT6UZKxy08dAvzf3IPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730739799; c=relaxed/simple;
-	bh=RD6ACfGQMfkzmvPFOmFJqfSuqq5hmkgyOO7L+g/02OI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pI+SVqT7TYZRpgUvAD6Ft/9N+lY/1OpNpqXiVfNe5VNCyPqlrz9k5+1USN29FgWHgL2HYJAIHwrzFLEDDD1E5Iup8ksv+NJf6EpzY69t1M7BTCkh+ObE+YGezVXdsYM1ZAZeTs7AS9e7p+vwqTslYp519O16hk/F7QevKpTP3VY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=jOH3dmFq; arc=none smtp.client-ip=140.205.0.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antgroup.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=antgroup.com; s=default;
-	t=1730739793; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=McKha1hmKH1clDOz2fCI8A4BsEcNH5WhtqM/+Bq5yME=;
-	b=jOH3dmFqM+Ir+b5ZM1Pk/gUNuPjx1bADUL2Pd9QgPe0or5WpJkABnpraMB659wQvwL234/DWRaCYKl/X6FAv2E7qqT6xLweAm5Nnvh8JCjDW+R9uItwvLetOCCuHoYb1kpnvqEGgP/nd0MoPK5MJBkrGGjXU8f7xjNHBb770tOc=
-Received: from ubuntu..(mailfrom:tiwei.btw@antgroup.com fp:SMTPD_---.a0U4bET_1730737936 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Tue, 05 Nov 2024 00:32:17 +0800
-From: "Tiwei Bie" <tiwei.btw@antgroup.com>
-To: richard@nod.at,
-	anton.ivanov@cambridgegreys.com,
-	johannes@sipsolutions.net
-Cc:  <linux-um@lists.infradead.org>,
-   <linux-kernel@vger.kernel.org>,
-  "Tiwei Bie" <tiwei.btw@antgroup.com>,
-   <stable@vger.kernel.org>
-Subject: [PATCH 4/4] um: vector: Do not use drvdata in release
-Date: Tue, 05 Nov 2024 00:32:03 +0800
-Message-Id: <20241104163203.435515-5-tiwei.btw@antgroup.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241104163203.435515-1-tiwei.btw@antgroup.com>
-References: <20241104163203.435515-1-tiwei.btw@antgroup.com>
+	s=arc-20240116; t=1730738612; c=relaxed/simple;
+	bh=63xFusTRsY1L/nYoLVzTZYDCcu+dflkbrtHdaafc8Ow=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PpFopAsnx4ztjbtZ7LQJCjHva/RK+Vib6uBTURv8Z1XHzaoPkN2eS60YotfVWjRabXvNAzHbe1VFXToW2BoCZsRZ9m1n5VMmnW5AqKrL6djZlXrXf9pap+qXHQHklQ8WRr+Pc2L1PH8KxfbkwF1g6hPjVPH4MiSgxyBjnM/MxGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1t80Ao-0005Fk-6x
+	for stable@vger.kernel.org; Mon, 04 Nov 2024 17:43:26 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1t80Ao-0020q2-02
+	for stable@vger.kernel.org;
+	Mon, 04 Nov 2024 17:43:26 +0100
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+	by bjornoya.blackshift.org (Postfix) with SMTP id B56E5367DFA
+	for <stable@vger.kernel.org>; Mon, 04 Nov 2024 16:43:25 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 834B7367DF1;
+	Mon, 04 Nov 2024 16:43:23 +0000 (UTC)
+Received: from [172.20.34.65] (localhost [::1])
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id e44711e1;
+	Mon, 4 Nov 2024 16:43:22 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Mon, 04 Nov 2024 17:42:40 +0100
+Subject: [PATCH can v3] can: mcp251xfd: mcp251xfd_get_tef_len(): fix length
+ calculation
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241104-mcp251xfd-fix-length-calculation-v3-1-608b6e7e2197@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAH/5KGcC/42Nyw6DIBBFf8WwLg1Q8dFV/6PpgseoJBYNILEx/
+ nsnrpp04/LO3HvORiIEB5Hci40EyC66yWO4XQpiBuV7oM5iJoKJkjPG6dvMQvK1s7RzKx3B92m
+ gRo1mGVXCMWWtrozhTIFmBDFzAGweiicxypMXHgcX0xQ+hzbz43XekDnlVLaNLivJGlvxx4ylJ
+ YXJu/Vq4TBk8UMV8gRVIBWUtLquG91K9kfd9/0LHtUS8zABAAA=
+X-Change-ID: 20241001-mcp251xfd-fix-length-calculation-09b6cc10aeb0
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ Thomas Kopp <thomas.kopp@microchip.com>, 
+ Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
+ Sven Schuchmann <schuchmann@schleissheimer.de>
+Cc: linux-can@vger.kernel.org, kernel@pengutronix.de, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>
+X-Mailer: b4 0.15-dev-dedf8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2880; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=63xFusTRsY1L/nYoLVzTZYDCcu+dflkbrtHdaafc8Ow=;
+ b=owEBbQGS/pANAwAKASg4oj56LbxvAcsmYgBnKPmFN0MvQy+Sg3vSdfw3tywkkT9FJrkcQEQqe
+ gWP0ISUzWeJATMEAAEKAB0WIQRQQLqG4LYE3Sm8Pl8oOKI+ei28bwUCZyj5hQAKCRAoOKI+ei28
+ b/aTB/4tiMmTguV9zreuyT/rwm10dGSiYkqN2vMEjs770WOwPNxh+zX+pYyqt1llpm+U367uovF
+ 59sgNZoY0x7CuT3xjrDOAuAyVB9ZsAf7rs+KgLPfu364rItSGUb+ByYWU3JwZKCfgc45MWtF6Xl
+ b6o4+ZouLKt7QSRvwjL3N1OhZOxrbiGISx8sWgz6JYcCmIK6yxMr1bRU4kmP7Zw9vtxIw1kuj6k
+ AVtwo9PjNtt66ZJcomC0rtRcLdMcQ7IPojctlSI9hyMHkt08agL/i9Zrvkfn7v4r8mM6aYLWNcG
+ G2lQ7WeqcfzTeXaEFoRHJuJaxFTkLT1Im7GF9WKkkIexVrii
+X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
+ fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-The drvdata is not available in release. Let's just use container_of()
-to get the vector_device instance. Otherwise, removing a vector device
-will result in a crash:
+Commit b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround
+broken TEF FIFO tail index erratum") introduced
+mcp251xfd_get_tef_len() to get the number of unhandled transmit events
+from the Transmit Event FIFO (TEF).
 
-RIP: 0033:vector_device_release+0xf/0x50
-RSP: 00000000e187bc40  EFLAGS: 00010202
-RAX: 0000000060028f61 RBX: 00000000600f1baf RCX: 00000000620074e0
-RDX: 000000006220b9c0 RSI: 0000000060551c80 RDI: 0000000000000000
-RBP: 00000000e187bc50 R08: 00000000603ad594 R09: 00000000e187bb70
-R10: 000000000000135a R11: 00000000603ad422 R12: 00000000623ae028
-R13: 000000006287a200 R14: 0000000062006d30 R15: 00000000623700b6
-Kernel panic - not syncing: Segfault with no mm
-CPU: 0 UID: 0 PID: 16 Comm: kworker/0:1 Not tainted 6.12.0-rc6-g59b723cd2adb #1
-Workqueue: events mc_work_proc
-Stack:
- 60028f61 623ae028 e187bc80 60276fcd
- 6220b9c0 603f5820 623ae028 00000000
- e187bcb0 603a2bcd 623ae000 62370010
-Call Trace:
- [<60028f61>] ? vector_device_release+0x0/0x50
- [<60276fcd>] device_release+0x70/0xba
- [<603a2bcd>] kobject_put+0xba/0xe7
- [<60277265>] put_device+0x19/0x1c
- [<60281266>] platform_device_put+0x26/0x29
- [<60281e5f>] platform_device_unregister+0x2c/0x2e
- [<60029422>] vector_remove+0x52/0x58
- [<60031316>] ? mconsole_reply+0x0/0x50
- [<600310c8>] mconsole_remove+0x160/0x1cc
- [<603b19f4>] ? strlen+0x0/0x15
- [<60066611>] ? __dequeue_entity+0x1a9/0x206
- [<600666a7>] ? set_next_entity+0x39/0x63
- [<6006666e>] ? set_next_entity+0x0/0x63
- [<60038fa6>] ? um_set_signals+0x0/0x43
- [<6003070c>] mc_work_proc+0x77/0x91
- [<60057664>] process_scheduled_works+0x1b3/0x2dd
- [<60055f32>] ? assign_work+0x0/0x58
- [<60057f0a>] worker_thread+0x1e9/0x293
- [<6005406f>] ? set_pf_worker+0x0/0x64
- [<6005d65d>] ? arch_local_irq_save+0x0/0x2d
- [<6005d748>] ? kthread_exit+0x0/0x3a
- [<60057d21>] ? worker_thread+0x0/0x293
- [<6005dbf1>] kthread+0x126/0x12b
- [<600219c5>] new_thread_handler+0x85/0xb6
+As the TEF has no head pointer, the driver uses the TX FIFO's tail
+pointer instead, assuming that send frames are completed. However the
+check for the TEF being full was not correct. This leads to the driver
+stop working if the TEF is full.
 
+Fix the TEF full check by assuming that if, from the driver's point of
+view, there are no free TX buffers in the chip and the TX FIFO is
+empty, all messages must have been sent and the TEF must therefore be
+full.
+
+Reported-by: Sven Schuchmann <schuchmann@schleissheimer.de>
+Closes: https://patch.msgid.link/FR3P281MB155216711EFF900AD9791B7ED9692@FR3P281MB1552.DEUP281.PROD.OUTLOOK.COM
+Fixes: b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround broken TEF FIFO tail index erratum")
+Tested-by: Sven Schuchmann <schuchmann@schleissheimer.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- arch/um/drivers/vector_kern.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Changes in v3:
+- add proper patch description
+- added Sven's Tested-by
+- Link to v2: https://patch.msgid.link/20241025-mcp251xfd-fix-length-calculation-v2-1-ea5db778b950@pengutronix.de
 
-diff --git a/arch/um/drivers/vector_kern.c b/arch/um/drivers/vector_kern.c
-index c992da83268d..64c09db392c1 100644
---- a/arch/um/drivers/vector_kern.c
-+++ b/arch/um/drivers/vector_kern.c
-@@ -815,7 +815,8 @@ static struct platform_driver uml_net_driver = {
+Changes in v2:
+- mcp251xfd_tx_fifo_sta_empty(): fix check if TX-FIFO is empty
+- Link to RFC: https://patch.msgid.link/20241001-mcp251xfd-fix-length-calculation-v1-1-598b46508d61@pengutronix.de
+---
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
+index f732556d233a7be3b43f6f08e0b8f25732190104..d3ac865933fdf6c4ecdd80ad4d7accbff51eb0f8 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
+@@ -16,9 +16,9 @@
  
- static void vector_device_release(struct device *dev)
+ #include "mcp251xfd.h"
+ 
+-static inline bool mcp251xfd_tx_fifo_sta_full(u32 fifo_sta)
++static inline bool mcp251xfd_tx_fifo_sta_empty(u32 fifo_sta)
  {
--	struct vector_device *device = dev_get_drvdata(dev);
-+	struct vector_device *device =
-+		container_of(dev, struct vector_device, pdev.dev);
- 	struct net_device *netdev = device->dev;
+-	return !(fifo_sta & MCP251XFD_REG_FIFOSTA_TFNRFNIF);
++	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFERFFIF;
+ }
  
- 	list_del(&device->list);
+ static inline int
+@@ -122,7 +122,11 @@ mcp251xfd_get_tef_len(struct mcp251xfd_priv *priv, u8 *len_p)
+ 	if (err)
+ 		return err;
+ 
+-	if (mcp251xfd_tx_fifo_sta_full(fifo_sta)) {
++	/* If the chip says the TX-FIFO is empty, but there are no TX
++	 * buffers free in the ring, we assume all have been sent.
++	 */
++	if (mcp251xfd_tx_fifo_sta_empty(fifo_sta) &&
++	    mcp251xfd_get_tx_free(tx_ring) == 0) {
+ 		*len_p = tx_ring->obj_num;
+ 		return 0;
+ 	}
+
+---
+base-commit: 5ccdcdf186aec6b9111845fd37e1757e9b413e2f
+change-id: 20241001-mcp251xfd-fix-length-calculation-09b6cc10aeb0
+
+Best regards,
 -- 
-2.34.1
+Marc Kleine-Budde <mkl@pengutronix.de>
+
 
 
