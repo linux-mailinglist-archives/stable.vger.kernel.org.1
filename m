@@ -1,94 +1,93 @@
-Return-Path: <stable+bounces-89734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B300A9BBC73
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 18:53:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A86DB9BBCB9
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 19:01:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ED561F23296
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 17:53:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DE4528329E
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 18:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5564D1CACD0;
-	Mon,  4 Nov 2024 17:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42861CB9E6;
+	Mon,  4 Nov 2024 18:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sTaMl1BE"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="OCVcJhXU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118D81C9ED1;
-	Mon,  4 Nov 2024 17:53:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74BE81C9DDF;
+	Mon,  4 Nov 2024 18:00:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730742815; cv=none; b=j43R6IndmT8qUJA1ultuWND/ZK0VrQ/Xm0pez6uPqi0Y3ETMBg9psdGMcAJ4BHo+EKI5iTenNvjbbcTK+l+7G4L+MntsrR7bs9rvMLXGKr1qZwYLloG8thvK9D8PccizdzpvtTkcv75SBnrpHjyQqFBmJYbd6zAz57ioMpv+jWA=
+	t=1730743248; cv=none; b=SGvcTnLEGLal5EP0ryIN3ffc1joFHlhZWN0LaytBH2PVQlTYO75VvsgdhL9A0jJaR4z3RNeUsFZQa2RbABL8gOCtHjLiwHA+IToGcs2bJL+A6ZqLeAu48x41R50XqHhj0C0+hbimL1wq+p6ZkSRCSPxDwutmU1Be//Wl10rX9zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730742815; c=relaxed/simple;
-	bh=mw2rwn+q9uVitr1d19uhuql+QGixsSd1sWtFZO10diA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l4itwXVL2mPA497zWPU9O35UVBW2Ced57+LkbPs/Cz0W54bvk1bvge8/wSc1kx8aPLcOfwxfgIEFjzr3kNdcNY0B06n631DkZWKrZ9ZC+khUiJo3oqxUN5mVU28BKR37deLN2+dlLrK2dj0WKRrU7lRLi0ItoTgPZI6PmWzxCNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sTaMl1BE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E560C4CED1;
-	Mon,  4 Nov 2024 17:53:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730742814;
-	bh=mw2rwn+q9uVitr1d19uhuql+QGixsSd1sWtFZO10diA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sTaMl1BEX5DNIgIRuweImV+fd+oxS2EZR/kuMtfMEdpyszA1mGHYUV9Lmu5u5ORUG
-	 g36kTbX1Sndk1TRN5vYDj1Ti6gXL66wTQljbWoaWdFtsJcTHHI3mILDp+wdkr0wTBj
-	 nsW+ObUaI4Dja6sGNSZA4X+khq+xRpCvFtFdhDOoQbYrZFtg39068Gi0Di1yV+NX4y
-	 mfvR8BCjOgOe2lhkWhaWW8Jjga/q17AAkofvBFNGgyzAXdtDN7y0ORYPJJyHaBSqZu
-	 6gdSU5At5Jlhokvc3xy/znE2pzYMxJGwCgFPqB0FYigj+1dypyUX4zahBc2qZ4p3+V
-	 tm8pdsK2+PXDg==
-From: Jiri Olsa <jolsa@kernel.org>
-To: stable@vger.kernel.org
-Cc: Andrii Nakryiko <andrii@kernel.org>,
-	bpf@vger.kernel.org,
-	Daniel Borkmann <daniel@iogearbox.net>
-Subject: [PATCH stable 6.11] lib/buildid: Fix build ID parsing logic
-Date: Mon,  4 Nov 2024 18:52:56 +0100
-Message-ID: <20241104175256.2327164-5-jolsa@kernel.org>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241104175256.2327164-1-jolsa@kernel.org>
-References: <20241104175256.2327164-1-jolsa@kernel.org>
+	s=arc-20240116; t=1730743248; c=relaxed/simple;
+	bh=B9jWPczjZgAONNpThKHexUQW24Xju40V9hSbN7FE1dw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PJlVRcz0xG7JdUbbBhbVepvBQWfCfxZuKP8SAD4mYts1WF91c0nLejOSjQlab0dLKi5n3U5xFIetB+Zlje6obece/eKak9lONwrNnN3Ed0GV8IGiZf1fhR0xL7WXNfPtZDuJtaXOEc/uaGKbCe26qClsQ+t0LyBYNX/65tbxhk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=OCVcJhXU; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=0KEUojX769cFGFmjiOJu9LFcNjv63c+8Mtn9KKoSfvQ=; b=OCVcJhXUUUxPqDlx3lGFnhCT0L
+	M5kJrwySKofGEFCLf8XdvyIbdHMy8vHdTTPP/gMM2LrzKhKR65E8zYdeYo5bCY+WjlV4Nf+66G/pD
+	hQD/cYTgGWXIFgt550GAATKhBmAXmYpN1b2WIjj3E8BWbAnc2Vbx415/UTg2URtFKpRFag12RuaHx
+	TcggLzHKnbQK5vjnfxxD5GTDmpA+rkcVoXhpsV542JItdJIL3deXSCmQNDEkRtAacNGhhn6WudeAJ
+	Fq1x8N6IXpomeov0dISYwozNLAL9s60AvFqqwqT13JZQ3QLJ5rQHsOTIFuQTV/EyWRlcUWCcJKBCv
+	nWFVznRQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1t81NV-00000001Qps-0up4;
+	Mon, 04 Nov 2024 18:00:37 +0000
+Date: Mon, 4 Nov 2024 18:00:36 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Koichiro Den <koichiro.den@gmail.com>
+Cc: vbabka@suse.cz, cl@linux.com, penberg@kernel.org, rientjes@google.com,
+	iamjoonsoo.kim@lge.com, akpm@linux-foundation.org,
+	roman.gushchin@linux.dev, 42.hyeyoo@gmail.com, kees@kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/slab: fix warning caused by duplicate kmem_cache
+ creation in kmem_buckets_create
+Message-ID: <ZykLxG5Tyet5HcwL@casper.infradead.org>
+References: <20241104150837.2756047-1-koichiro.den@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241104150837.2756047-1-koichiro.den@gmail.com>
 
-The parse_build_id_buf does not account Elf32_Nhdr header size
-when getting the build id data pointer and returns wrong build
-id data as result.
+On Tue, Nov 05, 2024 at 12:08:37AM +0900, Koichiro Den wrote:
+> Commit b035f5a6d852 ("mm: slab: reduce the kmalloc() minimum alignment
+> if DMA bouncing possible") reduced ARCH_KMALLOC_MINALIGN to 8 on arm64.
+> However, with KASAN_HW_TAGS enabled, arch_slab_minalign() becomes 16.
+> This causes kmalloc_caches[*][8] to be aliased to kmalloc_caches[*][16],
+> resulting in kmem_buckets_create() attempting to create a kmem_cache for
+> size 16 twice. This duplication triggers warnings on boot:
 
-This is problem only for stable trees that merged 768d731b8a0d
-fix, the upstream build id code was refactored and returns proper
-build id.
+Wouldn't this be easier?
 
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Fixes: 768d731b8a0d ("lib/buildid: harden build ID parsing logic")
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
----
- lib/buildid.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
++++ b/arch/arm64/include/asm/cache.h
+@@ -33,7 +33,11 @@
+  * the CPU.
+  */
+ #define ARCH_DMA_MINALIGN      (128)
++#ifdef CONFIG_KASAN_HW_TAGS
++#define ARCH_KMALLOC_MINALIGN  (16)
++#else
+ #define ARCH_KMALLOC_MINALIGN  (8)
++#endif
 
-diff --git a/lib/buildid.c b/lib/buildid.c
-index 26007cc99a38..aee749f2647d 100644
---- a/lib/buildid.c
-+++ b/lib/buildid.c
-@@ -40,7 +40,7 @@ static int parse_build_id_buf(unsigned char *build_id,
- 		    name_sz == note_name_sz &&
- 		    memcmp(nhdr + 1, note_name, note_name_sz) == 0 &&
- 		    desc_sz > 0 && desc_sz <= BUILD_ID_SIZE_MAX) {
--			data = note_start + note_off + ALIGN(note_name_sz, 4);
-+			data = note_start + note_off + sizeof(Elf32_Nhdr) + ALIGN(note_name_sz, 4);
- 			memcpy(build_id, data, desc_sz);
- 			memset(build_id + desc_sz, 0, BUILD_ID_SIZE_MAX - desc_sz);
- 			if (size)
--- 
-2.47.0
+ #ifndef __ASSEMBLY__
+
 
 
