@@ -1,58 +1,75 @@
-Return-Path: <stable+bounces-89749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 596C59BBE4B
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 20:55:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A25559BBEA0
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 21:11:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9D211C20D08
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 19:55:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C69B51C21BD3
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 20:11:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 902071CCB44;
-	Mon,  4 Nov 2024 19:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C921D54E1;
+	Mon,  4 Nov 2024 20:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="T5BCM6uy"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="Qi6x1LNX"
 X-Original-To: stable@vger.kernel.org
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8081CBA1B;
-	Mon,  4 Nov 2024 19:54:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11311D54C7;
+	Mon,  4 Nov 2024 20:11:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730750077; cv=none; b=XVZThmh2Shijuh5GCDYfmrSt1YHYVlUYDWSQ2Hl4aZlDQJcw9RgqdpbTV5y0gzLcw24MpmWjgBrT5VP+8hsmukct6Tfr0hWgRgifgbRH+Z4n4QqzTcBUHuueA+c9evXic5/DXgqFtuAjNBiWdz/AZPkgTKvmHZidAg0g4YXMyRo=
+	t=1730751103; cv=none; b=KFin2f2vSDevH20t3F07Ibdd1a2MWP/04W138KwTup7hqtOHZkoH8h7tDzGRzNpOn21LF8OhaUd3t5wY24GMSkcCswSUzRYbJT7yRpyU/01grCVXQuYn0UXQ+5914qJ1/bvHiIa+rOx8q8USlXvKS8gGzVgW2qLkqN5Bucvb3Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730750077; c=relaxed/simple;
-	bh=bUHxveBeRivLpx35ZHbUy8KNqWJ45SG6g4FgI31Ccik=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U6d/RVYt/C4DxQYx7nfPge0gYNCc3EWaY/a2j5pj8kvUQDyCLQJq040MPnDOKA6yT6kTluL2BKbWJedI1fVdSSnwwxX2VNkpt3s3aK5Rf3wHOb8GENKx3UJ9TGf4MJd5BV8IupUHBi2f0qlgKdH46/3RL7GUXrWJojF3YRdov98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=T5BCM6uy; arc=none smtp.client-ip=95.215.58.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1730750073;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=xUwadZKGltAbqzkspqGKUFSXPyFFcPTvrmzdfG7uL9A=;
-	b=T5BCM6uyYdId1euzQtmUJLZNa3H8N9S4jgH/dTNgQlDC3rJlpkpy/1KFewzBQhZ8yzSLDK
-	DJE3EwgtrmpVLVhf7tJpbkPXgkU/y0iKhs1Ybao8HtP1Et2/4YRECHdFRVk2nRETENSJxx
-	EBtZYQ9lw+h0ANjTEudzPs4qfAGAGcQ=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Andrei Vagin <avagin@google.com>,
-	Kees Cook <kees@kernel.org>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Alexey Gladkov <legion@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] signal: restore the override_rlimit logic
-Date: Mon,  4 Nov 2024 19:54:19 +0000
-Message-ID: <20241104195419.3962584-1-roman.gushchin@linux.dev>
+	s=arc-20240116; t=1730751103; c=relaxed/simple;
+	bh=QmNWoZaXuFn4JkH3GzRnV7mGtJa/tMkDMM1ext5agLI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UYzG4uOezLdVszG0Y0tw86rzUuoysQmN8GAm1Bp8Mdj44tat5WE4h7HrSg4NrjS75EEV2nrsPFlVc9/kijaK02kC6L6nHevVpMsv5y7yPeMguxexMEJqLCmzAVCe10W49dmX1xit7IrYbECkwVsMGucW1cqqKgCKgvb1PND1sHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Qi6x1LNX; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A4JtYBl012033;
+	Mon, 4 Nov 2024 20:11:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2023-11-20; bh=kuHh5IS/XsJULx5x8/jQiKV0KD4+W
+	+TJGCNFdeQMZjU=; b=Qi6x1LNXMdbPQmnZOE/dIK/kNHugg3lJ7b1HuJGQxF4K9
+	f7S4wFBpOTIAScBImkD7SRoJdUbRbSDMbdrPEz5Oub987oI2ZPVt/fzwfYJk4FA/
+	NQnZWITzOHPu0gELgqOR7kTgXDsCxOlr5d2DoTA9ipYVJ4mLZc/BN8Vjadx6k2O6
+	B5vV37q9EU1CkyDijOWLgES+DfvA5NjRhFATzkUW9RlfIFOchv+BZWOIAAwTGJMR
+	8afcVOFESuKA0QM3+fGTFGVtm8iEadT2iJ/ldBRh6gfSJvrvaRBAQ73lfyCLV+JN
+	mz26FFFl3A4QZMMlPjgqsi5VgKYDhhP4X52/Bpi/Q==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42nagc3rg7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 04 Nov 2024 20:11:29 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 4A4K9938031393;
+	Mon, 4 Nov 2024 20:11:18 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 42nah60cts-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 04 Nov 2024 20:11:18 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4A4KBHNv016149;
+	Mon, 4 Nov 2024 20:11:17 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 42nah60csx-1;
+	Mon, 04 Nov 2024 20:11:17 +0000
+From: Sherry Yang <sherry.yang@oracle.com>
+To: stable@vger.kernel.org, sashal@kernel.org, gregkh@linuxfoundation.org
+Cc: sherry.yang@oracle.com, jesse.brandeburg@intel.com,
+        anthony.l.nguyen@intel.com, davem@davemloft.net, kuba@kernel.org,
+        beilei.xing@intel.com, simei.su@intel.com, jia.guo@intel.com,
+        yahui.cao@intel.com, intel-wired-lan@lists.osuosl.org,
+        netdev@vger.kernel.org
+Subject: [PATCH 5.15.y] ice: Add a per-VF limit on number of FDIR filters
+Date: Mon,  4 Nov 2024 12:11:16 -0800
+Message-ID: <20241104201116.3339108-1-sherry.yang@oracle.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,96 +77,147 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-11-04_18,2024-11-04_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999 spamscore=0
+ phishscore=0 malwarescore=0 adultscore=0 suspectscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2409260000
+ definitions=main-2411040162
+X-Proofpoint-ORIG-GUID: m49ngCVy_gSjCfIhKROLEBg1SaccY4uJ
+X-Proofpoint-GUID: m49ngCVy_gSjCfIhKROLEBg1SaccY4uJ
 
-Prior to commit d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of
-ucounts") UCOUNT_RLIMIT_SIGPENDING rlimit was not enforced for a class
-of signals. However now it's enforced unconditionally, even if
-override_rlimit is set. This behavior change caused production issues.
+From: Ahmed Zaki <ahmed.zaki@intel.com>
 
-For example, if the limit is reached and a process receives a SIGSEGV
-signal, sigqueue_alloc fails to allocate the necessary resources for the
-signal delivery, preventing the signal from being delivered with
-siginfo. This prevents the process from correctly identifying the fault
-address and handling the error. From the user-space perspective,
-applications are unaware that the limit has been reached and that the
-siginfo is effectively 'corrupted'. This can lead to unpredictable
-behavior and crashes, as we observed with java applications.
+commit 6ebbe97a488179f5dc85f2f1e0c89b486e99ee97 upstream.
 
-Fix this by passing override_rlimit into inc_rlimit_get_ucounts() and
-skip the comparison to max there if override_rlimit is set. This
-effectively restores the old behavior.
+While the iavf driver adds a s/w limit (128) on the number of FDIR
+filters that the VF can request, a malicious VF driver can request more
+than that and exhaust the resources for other VFs.
 
-v2: refactor to make the logic simpler (Eric, Oleg, Alexey)
+Add a similar limit in ice.
 
-Fixes: d64696905554 ("Reimplement RLIMIT_SIGPENDING on top of ucounts")
-Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-Co-developed-by: Andrei Vagin <avagin@google.com>
-Signed-off-by: Andrei Vagin <avagin@google.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: Alexey Gladkov <legion@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: <stable@vger.kernel.org>
+CC: stable@vger.kernel.org
+Fixes: 1f7ea1cd6a37 ("ice: Enable FDIR Configure for AVF")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Suggested-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Sherry: bp to fix CVE-2024-42291. Ignore context change in ice_fdir.h
+to resolve conflicts.]
+Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
 ---
- include/linux/user_namespace.h | 3 ++-
- kernel/signal.c                | 3 ++-
- kernel/ucount.c                | 6 ++++--
- 3 files changed, 8 insertions(+), 4 deletions(-)
+ .../net/ethernet/intel/ice/ice_ethtool_fdir.c    |  2 +-
+ drivers/net/ethernet/intel/ice/ice_fdir.h        |  3 +++
+ .../net/ethernet/intel/ice/ice_virtchnl_fdir.c   | 16 ++++++++++++++++
+ .../net/ethernet/intel/ice/ice_virtchnl_fdir.h   |  1 +
+ 4 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/user_namespace.h b/include/linux/user_namespace.h
-index 3625096d5f85..7183e5aca282 100644
---- a/include/linux/user_namespace.h
-+++ b/include/linux/user_namespace.h
-@@ -141,7 +141,8 @@ static inline long get_rlimit_value(struct ucounts *ucounts, enum rlimit_type ty
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
+index 0106ea3519a0..b52b77579c7f 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
+@@ -456,7 +456,7 @@ ice_parse_rx_flow_user_data(struct ethtool_rx_flow_spec *fsp,
+  *
+  * Returns the number of available flow director filters to this VSI
+  */
+-static int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi)
++int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi)
+ {
+ 	u16 vsi_num = ice_get_hw_vsi_num(hw, vsi->idx);
+ 	u16 num_guar;
+diff --git a/drivers/net/ethernet/intel/ice/ice_fdir.h b/drivers/net/ethernet/intel/ice/ice_fdir.h
+index d2d40e18ae8a..32e9258d27d7 100644
+--- a/drivers/net/ethernet/intel/ice/ice_fdir.h
++++ b/drivers/net/ethernet/intel/ice/ice_fdir.h
+@@ -201,6 +201,8 @@ struct ice_fdir_base_pkt {
+ 	const u8 *tun_pkt;
+ };
  
- long inc_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
- bool dec_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
--long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type);
-+long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
-+			    bool override_rlimit);
- void dec_rlimit_put_ucounts(struct ucounts *ucounts, enum rlimit_type type);
- bool is_rlimit_overlimit(struct ucounts *ucounts, enum rlimit_type type, unsigned long max);
- 
-diff --git a/kernel/signal.c b/kernel/signal.c
-index 4344860ffcac..cbabb2d05e0a 100644
---- a/kernel/signal.c
-+++ b/kernel/signal.c
-@@ -419,7 +419,8 @@ __sigqueue_alloc(int sig, struct task_struct *t, gfp_t gfp_flags,
- 	 */
- 	rcu_read_lock();
- 	ucounts = task_ucounts(t);
--	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING);
-+	sigpending = inc_rlimit_get_ucounts(ucounts, UCOUNT_RLIMIT_SIGPENDING,
-+					    override_rlimit);
- 	rcu_read_unlock();
- 	if (!sigpending)
- 		return NULL;
-diff --git a/kernel/ucount.c b/kernel/ucount.c
-index 16c0ea1cb432..49fcec41e5b4 100644
---- a/kernel/ucount.c
-+++ b/kernel/ucount.c
-@@ -307,7 +307,8 @@ void dec_rlimit_put_ucounts(struct ucounts *ucounts, enum rlimit_type type)
- 	do_dec_rlimit_put_ucounts(ucounts, NULL, type);
++struct ice_vsi;
++
+ enum ice_status ice_alloc_fd_res_cntr(struct ice_hw *hw, u16 *cntr_id);
+ enum ice_status ice_free_fd_res_cntr(struct ice_hw *hw, u16 cntr_id);
+ enum ice_status
+@@ -214,6 +216,7 @@ enum ice_status
+ ice_fdir_get_gen_prgm_pkt(struct ice_hw *hw, struct ice_fdir_fltr *input,
+ 			  u8 *pkt, bool frag, bool tun);
+ int ice_get_fdir_cnt_all(struct ice_hw *hw);
++int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi);
+ bool ice_fdir_is_dup_fltr(struct ice_hw *hw, struct ice_fdir_fltr *input);
+ bool ice_fdir_has_frag(enum ice_fltr_ptype flow);
+ struct ice_fdir_fltr *
+diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
+index 412deb36b645..2ca8102e8f36 100644
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
+@@ -744,6 +744,8 @@ static void ice_vc_fdir_reset_cnt_all(struct ice_vf_fdir *fdir)
+ 		fdir->fdir_fltr_cnt[flow][0] = 0;
+ 		fdir->fdir_fltr_cnt[flow][1] = 0;
+ 	}
++
++	fdir->fdir_fltr_cnt_total = 0;
  }
  
--long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
-+long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
-+			    bool override_rlimit)
- {
- 	/* Caller must hold a reference to ucounts */
- 	struct ucounts *iter;
-@@ -320,7 +321,8 @@ long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type)
- 			goto unwind;
- 		if (iter == ucounts)
- 			ret = new;
--		max = get_userns_rlimit_max(iter->ns, type);
-+		if (!override_rlimit)
-+			max = get_userns_rlimit_max(iter->ns, type);
- 		/*
- 		 * Grab an extra ucount reference for the caller when
- 		 * the rlimit count was previously 0.
+ /**
+@@ -1837,6 +1839,7 @@ ice_vc_add_fdir_fltr_post(struct ice_vf *vf, struct ice_vf_fdir_ctx *ctx,
+ 	resp->status = status;
+ 	resp->flow_id = conf->flow_id;
+ 	vf->fdir.fdir_fltr_cnt[conf->input.flow_type][is_tun]++;
++	vf->fdir.fdir_fltr_cnt_total++;
+ 
+ 	ret = ice_vc_send_msg_to_vf(vf, ctx->v_opcode, v_ret,
+ 				    (u8 *)resp, len);
+@@ -1901,6 +1904,7 @@ ice_vc_del_fdir_fltr_post(struct ice_vf *vf, struct ice_vf_fdir_ctx *ctx,
+ 	resp->status = status;
+ 	ice_vc_fdir_remove_entry(vf, conf, conf->flow_id);
+ 	vf->fdir.fdir_fltr_cnt[conf->input.flow_type][is_tun]--;
++	vf->fdir.fdir_fltr_cnt_total--;
+ 
+ 	ret = ice_vc_send_msg_to_vf(vf, ctx->v_opcode, v_ret,
+ 				    (u8 *)resp, len);
+@@ -2065,6 +2069,7 @@ int ice_vc_add_fdir_fltr(struct ice_vf *vf, u8 *msg)
+ 	struct virtchnl_fdir_add *stat = NULL;
+ 	struct virtchnl_fdir_fltr_conf *conf;
+ 	enum virtchnl_status_code v_ret;
++	struct ice_vsi *vf_vsi;
+ 	struct device *dev;
+ 	struct ice_pf *pf;
+ 	int is_tun = 0;
+@@ -2073,6 +2078,17 @@ int ice_vc_add_fdir_fltr(struct ice_vf *vf, u8 *msg)
+ 
+ 	pf = vf->pf;
+ 	dev = ice_pf_to_dev(pf);
++	vf_vsi = ice_get_vf_vsi(vf);
++
++#define ICE_VF_MAX_FDIR_FILTERS	128
++	if (!ice_fdir_num_avail_fltr(&pf->hw, vf_vsi) ||
++	    vf->fdir.fdir_fltr_cnt_total >= ICE_VF_MAX_FDIR_FILTERS) {
++		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
++		dev_err(dev, "Max number of FDIR filters for VF %d is reached\n",
++			vf->vf_id);
++		goto err_exit;
++	}
++
+ 	ret = ice_vc_fdir_param_check(vf, fltr->vsi_id);
+ 	if (ret) {
+ 		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
+diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h
+index f4e629f4c09b..6258af1ff0aa 100644
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h
+@@ -28,6 +28,7 @@ struct ice_vf_fdir_ctx {
+ struct ice_vf_fdir {
+ 	u16 fdir_fltr_cnt[ICE_FLTR_PTYPE_MAX][ICE_FD_HW_SEG_MAX];
+ 	int prof_entry_cnt[ICE_FLTR_PTYPE_MAX][ICE_FD_HW_SEG_MAX];
++	u16 fdir_fltr_cnt_total;
+ 	struct ice_fd_hw_prof **fdir_prof;
+ 
+ 	struct idr fdir_rule_idr;
 -- 
-2.47.0.199.ga7371fff76-goog
+2.46.0
 
 
