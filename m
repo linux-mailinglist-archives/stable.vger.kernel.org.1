@@ -1,104 +1,184 @@
-Return-Path: <stable+bounces-89745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D366A9BBD9A
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 20:02:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C3D79BBDCC
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 20:10:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A16C8282FB6
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 19:02:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFE1F28325F
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 19:10:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4FF41C4A03;
-	Mon,  4 Nov 2024 19:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804AE1C729B;
+	Mon,  4 Nov 2024 19:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mwLHjLWo"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="d2TFOJ1B"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880EBE552;
-	Mon,  4 Nov 2024 19:02:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8236AE552
+	for <stable@vger.kernel.org>; Mon,  4 Nov 2024 19:10:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730746961; cv=none; b=RjEt4RgE6PrN6s0V9E1ViQGzhkD/o3ds1ehbxTSirVL8G/0Wr+0RX2o8RnBZUWZRnimfx36tqHdNitwnRNzqp4ShtTElYlQKEIEgj9t77IzpWnCf8Tf90WRmzFJphTcY4bJfiDyiyepDf9c0d6NasmpJHbNg5BsSzpdD2viNrSk=
+	t=1730747449; cv=none; b=AJw+HfeSc/3SAx4c43TATMVGGi2nla74mdBSZBxKVNu9iHwwZP+6DuPhfvwKIV8scrzwi0WGCn+N9WLjZxHK4i7pSNZ23DP2AoskovxZnsnWtsCiB7P6fH3TU8ssZfJ2ev1t4XiuaFT8ifVSPUEDs/XefEjTYJfV4bCQLZLuRKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730746961; c=relaxed/simple;
-	bh=y6B0iq3IlGbxWPuuUX1NOdOXo+3wsNpEGsISvxpuj6o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B+kRkywWdeeNHxBZnh0DtL+UnKStYwKrEJHMEdwk5a6evsMdh8pfSlSLqb3VLPxoWcAkUcbyV3X4GOPwNXdqVBrPTudSZGkU17twKArgK2N1LTfVDM2yq/xTYzxGNI+sfazX/+qXCRWZj0Ycl0c3iWZI8KPOgApcLRUaSJZEBjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mwLHjLWo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68053C4CECE;
-	Mon,  4 Nov 2024 19:02:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730746961;
-	bh=y6B0iq3IlGbxWPuuUX1NOdOXo+3wsNpEGsISvxpuj6o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mwLHjLWo4WwNMOAs5HED/NiNPDGI9opYahanawVZb248gHId4p9dAjUsbRJGUSn1k
-	 kEA9cVdayqRXOJslu41SQYKo5jMQFSp1BjIEnyNDU/WL+8agI6ii4+7IgrfIXtB8w4
-	 FEviOlA5VRNvfRfI2N4QRHRFNVlEq53Fnf0gZCdvV+YT16LG7G/Mvhs8JsdGftNE+p
-	 b6q9DVKgERZfm6UGw+5X215dZX9DhuGOo0V+9AQNYHApe9pfNUm6Myd2tN85UbWEqd
-	 ZPFctCYunpEYgkg87d6PW1oc7+QZIND9fbZqZmFxr+wbU0ch0cjrnu96/7LqcQJUu7
-	 bchT2/XOA1jfA==
-Date: Mon, 4 Nov 2024 20:02:35 +0100
-From: Alexey Gladkov <legion@kernel.org>
-To: Oleg Nesterov <oleg@redhat.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>,
-	Andrei Vagin <avagin@google.com>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	linux-kernel@vger.kernel.org, Kees Cook <kees@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] signal: restore the override_rlimit logic
-Message-ID: <ZykaS1arGZ3DMFkm@example.org>
-References: <20241031200438.2951287-1-roman.gushchin@linux.dev>
- <87zfmi3f8b.fsf@email.froward.int.ebiederm.org>
- <ZyU8UNKLNfAi-U8F@google.com>
- <87o72y3c4g.fsf@email.froward.int.ebiederm.org>
- <CAEWA0a4Kz9exk04Wgx9UZ9YFfURnS-=50TWyhPHm3i-N-D_8DA@mail.gmail.com>
- <ZyZSotlacLgzWxUl@example.org>
- <20241103165048.GA11668@redhat.com>
- <ZykQnp9mINnsPTg2@google.com>
- <20241104184442.GA26235@redhat.com>
+	s=arc-20240116; t=1730747449; c=relaxed/simple;
+	bh=zXfsmTkvqZj9MdSZWjPrqBw0JZ9iLE7inWta0wsSuys=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=by6Hyo0SmHvOV8PuRcV9w/XBFXqU0Mr6oVvVDOMZ8F6RmS0R5QWX+yiBBastdldKHiYn35Ojovec9wbc4QvsSLu5ocNc/Yaw9lsgmO5NaSduWNY29YVxwG2sQJFaZfgWM2FIsY1xz5U8fKC4rH/96PKayp3aQS5p3InlmyCAPjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=d2TFOJ1B; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A4IMVM6004434;
+	Mon, 4 Nov 2024 19:10:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2023-11-20; bh=4ZZRS8dHCjLH4dXy/hPA0VAA1ekeT
+	9riEc6CLiyfZrU=; b=d2TFOJ1B0J47+aoYEBQYYGFfDHArARYLoutE9RXCHBgik
+	hJw9RH3bLFeYBRR8fx86HMUWvuIecGJmmU2Py48bngEIHm5w38h++PInZFr+bhS8
+	WFGCDvp7Q/1DVH0CErjpd0fQC4nVM+7fUTOv9D5TrA1T2zL+Kt5fnV1ssPKeiBPB
+	6ZefiK8H9uYqhUM+VZPv1IQTvVgSCKtuNHV/KU8q/CVjJFLLcnkVf+Lrk6qD4UOl
+	J+dE1t2s6C4BjvdDY/mw0I5vRj6u1clyJHp7S5pzMZ3AQ8hewXaILl7VWEdsDgSg
+	W+NAAVArFI25WDUIaDrhqI04Src7Errn3JGXJP5NQ==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42nanyundg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 04 Nov 2024 19:10:26 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 4A4Hu8Ma036171;
+	Mon, 4 Nov 2024 19:10:25 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 42nahcf29j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 04 Nov 2024 19:10:24 +0000
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4A4JAOGu013414;
+	Mon, 4 Nov 2024 19:10:24 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 42nahcf28e-1;
+	Mon, 04 Nov 2024 19:10:24 +0000
+From: Sherry Yang <sherry.yang@oracle.com>
+To: stable@vger.kernel.org, sashal@kernel.org, gregkh@linuxfoundation.org
+Cc: sherry.yang@oracle.com, jani.nikula@linux.intel.com,
+        joonas.lahtinen@linux.intel.com, rodrigo.vivi@intel.com,
+        airlied@linux.ie, daniel@ffwll.ch, tvrtko.ursulin@intel.com,
+        robdclark@chromium.org, chentao@kylinos.cn, chris@chris-wilson.co.uk,
+        mika.kuoppala@linux.intel.com, jason@jlekstrand.net,
+        aravind.iddamsetty@intel.com, umesh.nerlige.ramappa@intel.com,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Subject: [PATCH 5.15.y] drm/i915: Fix potential context UAFs
+Date: Mon,  4 Nov 2024 11:10:21 -0800
+Message-ID: <20241104191021.3334875-1-sherry.yang@oracle.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241104184442.GA26235@redhat.com>
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-11-04_17,2024-11-04_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ spamscore=0 mlxlogscore=999 mlxscore=0 phishscore=0 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2409260000 definitions=main-2411040157
+X-Proofpoint-ORIG-GUID: bYvtKvEXdYGJo-raSa0RreUwVVwTSiDS
+X-Proofpoint-GUID: bYvtKvEXdYGJo-raSa0RreUwVVwTSiDS
 
-On Mon, Nov 04, 2024 at 07:44:43PM +0100, Oleg Nesterov wrote:
-> On 11/04, Roman Gushchin wrote:
-> >
-> > On Sun, Nov 03, 2024 at 05:50:49PM +0100, Oleg Nesterov wrote:
-> > >
-> > > But it seems that the change in inc_rlimit_get_ucounts() can be
-> > > a bit simpler and more readable, see below.
-> >
-> > Eric suggested the same approach earlier in this thread.
-> 
-> Ah, good, I didn't know ;)
-> 
-> > I personally
-> > don't have a strong preference here or actually I slightly prefer my
-> > own version because this comparison to LONG_MAX looks confusing to me.
-> > But if you have a strong preference, I'm happy to send out v2. Please,
-> > let me know.
-> 
-> Well, I won't insist.
-> 
-> To me the change proposed by Eric and me looks much more readable, but
-> of course this is subjective.
-> 
-> But you know, you can safely ignore me. Alexey and Eric understand this
-> code much better, so I leave this to you/Alexey/Eric.
+From: Rob Clark <robdclark@chromium.org>
 
-Personally, I like Oleg's patch more.
+commit afce71ff6daa9c0f852df0727fe32c6fb107f0fa upstream.
 
+gem_context_register() makes the context visible to userspace, and which
+point a separate thread can trigger the I915_GEM_CONTEXT_DESTROY ioctl.
+So we need to ensure that nothing uses the ctx ptr after this.  And we
+need to ensure that adding the ctx to the xarray is the *last* thing
+that gem_context_register() does with the ctx pointer.
+
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Fixes: eb4dedae920a ("drm/i915/gem: Delay tracking the GEM context until it is registered")
+Fixes: a4c1cdd34e2c ("drm/i915/gem: Delay context creation (v3)")
+Fixes: 49bd54b390c2 ("drm/i915: Track all user contexts per client")
+Cc: <stable@vger.kernel.org> # v5.10+
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+[tursulin: Stable and fixes tags add/tidy.]
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230103234948.1218393-1-robdclark@gmail.com
+(cherry picked from commit bed4b455cf5374e68879be56971c1da563bcd90c)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Sherry: bp to fix CVE-2023-52913, ignore context conflicts due to
+missing commit 49bd54b390c2 "drm/i915: Track all user contexts per
+client")]
+Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
+---
+ drivers/gpu/drm/i915/gem/i915_gem_context.c | 24 +++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_context.c b/drivers/gpu/drm/i915/gem/i915_gem_context.c
+index 0eb4a0739fa2..0a7c4548b77f 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_context.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_context.c
+@@ -1436,6 +1436,10 @@ void i915_gem_init__contexts(struct drm_i915_private *i915)
+ 	init_contexts(&i915->gem.contexts);
+ }
+ 
++/*
++ * Note that this implicitly consumes the ctx reference, by placing
++ * the ctx in the context_xa.
++ */
+ static void gem_context_register(struct i915_gem_context *ctx,
+ 				 struct drm_i915_file_private *fpriv,
+ 				 u32 id)
+@@ -1449,13 +1453,13 @@ static void gem_context_register(struct i915_gem_context *ctx,
+ 	snprintf(ctx->name, sizeof(ctx->name), "%s[%d]",
+ 		 current->comm, pid_nr(ctx->pid));
+ 
+-	/* And finally expose ourselves to userspace via the idr */
+-	old = xa_store(&fpriv->context_xa, id, ctx, GFP_KERNEL);
+-	WARN_ON(old);
+-
+ 	spin_lock(&i915->gem.contexts.lock);
+ 	list_add_tail(&ctx->link, &i915->gem.contexts.list);
+ 	spin_unlock(&i915->gem.contexts.lock);
++
++	/* And finally expose ourselves to userspace via the idr */
++	old = xa_store(&fpriv->context_xa, id, ctx, GFP_KERNEL);
++	WARN_ON(old);
+ }
+ 
+ int i915_gem_context_open(struct drm_i915_private *i915,
+@@ -1932,14 +1936,22 @@ finalize_create_context_locked(struct drm_i915_file_private *file_priv,
+ 	if (IS_ERR(ctx))
+ 		return ctx;
+ 
++	/*
++	 * One for the xarray and one for the caller.  We need to grab
++	 * the reference *prior* to making the ctx visble to userspace
++	 * in gem_context_register(), as at any point after that
++	 * userspace can try to race us with another thread destroying
++	 * the context under our feet.
++	 */
++	i915_gem_context_get(ctx);
++
+ 	gem_context_register(ctx, file_priv, id);
+ 
+ 	old = xa_erase(&file_priv->proto_context_xa, id);
+ 	GEM_BUG_ON(old != pc);
+ 	proto_context_close(pc);
+ 
+-	/* One for the xarray and one for the caller */
+-	return i915_gem_context_get(ctx);
++	return ctx;
+ }
+ 
+ struct i915_gem_context *
 -- 
-Rgrds, legion
+2.46.0
 
 
