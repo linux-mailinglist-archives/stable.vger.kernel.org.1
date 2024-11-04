@@ -1,113 +1,114 @@
-Return-Path: <stable+bounces-89688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B5209BB2EA
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 12:19:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE809BB363
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 12:32:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2096F284AA1
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:19:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 812DBB23726
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:25:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3C81C243C;
-	Mon,  4 Nov 2024 11:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E251BBBDD;
+	Mon,  4 Nov 2024 11:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0VN6SX/H";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vmlrtgcp"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lNo3qFND"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DA91C07DE;
-	Mon,  4 Nov 2024 11:07:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897AB1B0F15
+	for <stable@vger.kernel.org>; Mon,  4 Nov 2024 11:15:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730718433; cv=none; b=btVMVyfzpp2up3Tnl5bLBmmvLBej2LMnLfe1eI45bJOoL2cRPUSPQ5Tu4uL88TvfAq+eY7dflba2hlmbF/2PQSBy/xWOznYOV8tBpbDnn4FTQ88yG0I4BFKNdQeuJO+4Kto5TsAw/A/4ZacRpgdfO/55M9+yyheR1d2PVRHzyns=
+	t=1730718932; cv=none; b=uSRso4fDxWSaxjWnGePubAuOWbTWe/7IKtjqlrLbf5ECN4a+8mg20RKDEMHb5ZV4szrCs12YGUJWgGi0unVcIKllRuCpK0npEiZ3qVDQTwMQI2eVFaZPZMPYN/KODC8hX/d/Fj8Z1iToILFI+iIgWTjEHUTeIiumuO3dfWI09wU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730718433; c=relaxed/simple;
-	bh=6XwODjrOdcDVNzCFZZMMdhOhxxTW3MIA6P3Or5VJqUg=;
+	s=arc-20240116; t=1730718932; c=relaxed/simple;
+	bh=8Pb8sCWqVT78PKsPAopEAxFND+meVGRZNGnRJZybrj0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EjroGVkvXkuhnT/up6gPNd98szRq5pwCi48G43ojefHBiE5gcomyj+Sna3oh519QnIgEjj2W1lMFilHoZVU3GjapyuzVWyI4wEoWKosoac7cudXnctetVd7pWnqXtiv5BCZszxGx+ipRW+91X2oeHEl6lYHjCcmjWBJBn8IuBl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0VN6SX/H; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vmlrtgcp; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 4 Nov 2024 12:07:08 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1730718430;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yl6DSR79uyW/vGqRXqqsb6z9FEylh/TTsKeElRxkQ3k=;
-	b=0VN6SX/HWw3viDjut+P5LVEMYkQ5BW0MP9u4SwJ6vGoSd/+RjIdUKLKY1xPDpq5lXZYtHv
-	c9IpBwsB5eeBZE2p3IIyMVcBEqDCBHZX20chx4ewwlUeaO4UoKsnl0D1VaLtMWpdBqWcuG
-	dJTrRYiv9eDqHAhNQ1uJ2yM/wg8FMIioWQEwa+TpAKoktVeGDhdZcotCXIv001J6WU6yya
-	0Eds501Ek76R7NIdc5tJMrizmgyLmxZAp9BXQUi17CNT6tCHdbuf7u8s6qIPs84Sy4SsKy
-	5ZSOn5g2ppt0HdQ2oGhvttDnSktejomWpBOSdVcjsExY7oTvmOJxhHGWLN54mg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1730718430;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yl6DSR79uyW/vGqRXqqsb6z9FEylh/TTsKeElRxkQ3k=;
-	b=vmlrtgcpsUlGm0eyD+lQVfWNYZvRWb8c+np03+VqxuDBc6WdpRHxcRclyS03ADpAJ34vMk
-	n0o1mLOxJsSWhWAA==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: stable@vger.kernel.org
-Cc: stable-commits@vger.kernel.org, wander@redhat.com,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>, tglx@linutronix.de
-Subject: Re: Patch "igb: Disable threaded IRQ for igb_msix_other" has been
- added to the 6.11-stable tree
-Message-ID: <20241104110708.gFyxRFlC@linutronix.de>
-References: <20241101192124.3847972-1-sashal@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=tLDP9XwnhgKqHfUQ699se9Xp2mnLjka6ujBEqP21tfrN8dXneFDs2E8D34cgAi7hu7sOZbA7ThI5/im3UlWYj+Dap6OmtIU9/AIu/mzCOXDTBCEI9nT/kNGXt1BDH9unN9tAhhzQ5TEq0M4v+N4A612z3YmxxUe4w+LiURIHJVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lNo3qFND; arc=none smtp.client-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-539f72c8fc1so3040920e87.1
+        for <stable@vger.kernel.org>; Mon, 04 Nov 2024 03:15:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1730718929; x=1731323729; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xH9DoC23Bb2/vYAIB0rsuoA8K2PG80L2HkKuDb8tLsE=;
+        b=lNo3qFND51bxdP8OWa7VkbuldLEz45VHLKotjLuYucAcGPygm9IwFIGwDw1H6IVHoQ
+         gr9Fn9fvqkdpkvUV8cMeJS5Tz+3olNlf4H3wSSe16AtnEVyWkzeE1Qd5sIwG3lL9/WOH
+         VzxgTwQn/wKei/C6S4jFo/fiswOVM07RJS9LBL65+ZcwnPVjYvL0WR60SE1cHH3H3vI5
+         YSN4ctq9Tae9hpOCk5wQUSqBAkcCpVsEH4CSN/FCgSKSuCTrljQmRy/BeWwO2oLjAorD
+         i/SEz/QpkEekimVFUdF7K1pyVmszyLojiIrwijXGUXSQP4u0Ty7aWh5Y4mmuqmlNP97k
+         2Msg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730718929; x=1731323729;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xH9DoC23Bb2/vYAIB0rsuoA8K2PG80L2HkKuDb8tLsE=;
+        b=YtqBDQTrLP4OMJRl4k7uXl6UFPzLFu/9aKcRTop+hItLMTVWHPn+D0HCteZvUx0KLq
+         n9zvnfeNQPd99k273qcmCNcQPv3ZhKFDXKOnFXPt8TlBafEPhjXzVU9QuBHoQOaLCGL+
+         pR59JfE71u3DNLlyc4qSmglXyE1yzqYf8RuZh1AHv+mTgz/i4r1zLWRLq78OFJR509ar
+         u+g8QeFsaT/4dyaYMO4ZyDOFJN93c+f71EtfgGA9667Z7IzKCLMd4aA2GDHS2H3WMZkc
+         b4CPSTS4b5Q0aEulSKn3x56QKr8/hfqXMOGenzYEXkZ4LnAc+nyrqgzYljE5Gmj1Jn7e
+         Opdw==
+X-Forwarded-Encrypted: i=1; AJvYcCVT+zj5CEfzshLvUaWUduUnTRxsulJoj3pmCjPY508C9xJ5BM07d5LXlKCB3QrRtZWJG9JLXhc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCNNlXeYvHrqReZ/KOC2RhlcjsNCJVmMiu2G3b9yqeLpKzLiUq
+	qc3MG2Mr3n5NsXhKi4c42E8p4J9NJnqOFfajjuOtJYdWEfQedOgRZXNQO96knwI=
+X-Google-Smtp-Source: AGHT+IFEO+EDtDqFJQorDAHgKOspX3rc8SvNpXsw47ifoSIAuvGSd8clbgoZacNUkzbI2eHhD845gw==
+X-Received: by 2002:a05:6512:308a:b0:539:8d67:1b1b with SMTP id 2adb3069b0e04-53b7ecf1ff6mr10243566e87.26.1730718928569;
+        Mon, 04 Nov 2024 03:15:28 -0800 (PST)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53c7bc961dbsm1650852e87.43.2024.11.04.03.15.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Nov 2024 03:15:27 -0800 (PST)
+Date: Mon, 4 Nov 2024 13:15:24 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Cc: heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org, 
+	hdegoede@redhat.com, linux-usb@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] usb: typec: Drop reference to a fwnode
+Message-ID: <wygsgyxczjwr5mxrmqoqloww4dp5ac22bxkor2y2elbxi7ifvw@b2mb3woxye5y>
+References: <20241104083045.2101350-1-joe@pf.is.s.u-tokyo.ac.jp>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241101192124.3847972-1-sashal@kernel.org>
+In-Reply-To: <20241104083045.2101350-1-joe@pf.is.s.u-tokyo.ac.jp>
 
-On 2024-11-01 15:21:24 [-0400], Sasha Levin wrote:
-> commit 052382490ee4f0f6d783ddce02fe6f2d15e134b5
-> Author: Wander Lairson Costa <wander@redhat.com>
-> Date:   Mon Oct 21 16:26:24 2024 -0700
+On Mon, Nov 04, 2024 at 05:30:45PM +0900, Joe Hattori wrote:
+> In typec_port_register_altmodes(), the fwnode reference obtained by
+> device_get_named_child_node() is not dropped. This commit adds a call to
+> fwnode_handle_put() to fix the possible reference leak.
+
+Nit: s/This commit adds/Add/g , see
+Documentation/process/submitting-patches.rst
+
+
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+
+
 > 
->     igb: Disable threaded IRQ for igb_msix_other
->     
->     [ Upstream commit 338c4d3902feb5be49bfda530a72c7ab860e2c9f ]
->     
->     During testing of SR-IOV, Red Hat QE encountered an issue where the
->     ip link up command intermittently fails for the igbvf interfaces when
->     using the PREEMPT_RT variant. Investigation revealed that
->     e1000_write_posted_mbx returns an error due to the lack of an ACK
->     from e1000_poll_for_ack.
->     
->     The underlying issue arises from the fact that IRQs are threaded by
->     default under PREEMPT_RT. While the exact hardware details are not
->     available, it appears that the IRQ handled by igb_msix_other must
->     be processed before e1000_poll_for_ack times out. However,
->     e1000_write_posted_mbx is called with preemption disabled, leading
->     to a scenario where the IRQ is serviced only after the failure of
->     e1000_write_posted_mbx.
->     
->     To resolve this, we set IRQF_NO_THREAD for the affected interrupt,
->     ensuring that the kernel handles it immediately, thereby preventing
->     the aforementioned error.
+> Fixes: 7b458a4c5d73 ("usb: typec: Add typec_port_register_altmodes()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+> ---
+> Changes in v2:
+> - Add the Cc: stable@vger.kernel.org line.
+> ---
+>  drivers/usb/typec/class.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-Wander, please send a revert of this patch. The ISR (E1000_ICR_TS set)
-may invoke igb_msg_task(), ptp_clock_event(), igb_perout(), igb_extts()
-each of which acquire sleeping locks on PREEMPT_RT. Not sure if this
-improved the situation or not.
-
-Sebastian
+-- 
+With best wishes
+Dmitry
 
