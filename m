@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-89692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D5D89BB364
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 12:32:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B81279BB369
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 12:32:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 507201C2152B
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:32:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E0331F23176
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:32:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F3E1C0DF0;
-	Mon,  4 Nov 2024 11:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2017F1CACFA;
+	Mon,  4 Nov 2024 11:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="CpPx29cC"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="ZEi9BpRJ"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922E61BFE10;
-	Mon,  4 Nov 2024 11:27:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6BB11C07EC;
+	Mon,  4 Nov 2024 11:27:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730719678; cv=none; b=HpRjucJJBx9ta+tvBfvKIwfJijAfY/6lPfKWkN5ZPkfrkk6a5wRnENtfweFjr/mVV9TGHrmLNF8qbccUUWIVPuU6ewtY5mCkYx+ssvUs3poNdAgnCViI5Bvyi6z1HlN4cRAdmjFtaGtCgr1P3kLe+680+iKcx2nBTFd1P/poC9E=
+	t=1730719680; cv=none; b=b5vfRTHirM7zXZpjjWUJcVWvxO/d2guZ9vbhZotV6rVr+lynoux8eVHx8v0hbUVAYb6/18AR+8dVHcLelBZAZckbv0RI1qMS1jF0bwEZmnNeyEJbpWxwMVD3DppKkKs6V1ssQwNPlQib1zt8iov3zzVPxOkYKICPQ+59g5hOVSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730719678; c=relaxed/simple;
-	bh=DaSIEBgG2arTZrXAqthhtGFZjVD7oESyK8ikcDhZAaI=;
+	s=arc-20240116; t=1730719680; c=relaxed/simple;
+	bh=r04tfij5AvjHLqWSHMynEE+bUdin3ecVxudrG96bYJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DnSK8Gb7JrAjFeQvKf+g4uWUGrvjxGAwSPV63C8BycQYf93dsNdumKu8SuAymxbEF/qB0axwqU0LFaANEboPi2KUBpeItGKwAhYNFX0ep4hpTRpYiMKhAnqgjTYQmx44gkf3MZnA2ovaoSrQx3zQIFf8p73UrjrHOSERNwznxBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=CpPx29cC; arc=none smtp.client-ip=115.124.30.133
+	 MIME-Version; b=lWPpLeAtkg+HBRo2UO+vcevpNY+JCjHJebVF5HCfLOVZAtUFM85esdYoP0L+34c8qbbkXkQJvV7PW12O2RkyN93IID30JBPnCWQf+Nt1NiXv76wVP47rAAJ0gRIkaadZ9X/vdch6RejvBeCzx1ML+Bp9kbYHgCSoxWuHPghLrTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=ZEi9BpRJ; arc=none smtp.client-ip=115.124.30.97
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1730719673; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=Ymfli/aj8w7Alz6lpVhVsP42jBq57YRIsah1Dm91/4g=;
-	b=CpPx29cCDqPSflkKH30V52ycHYh8Cfpii3RL3o+KDAxyrTZGVhoIh+dfHsAQB8EK5fajjoz/wwLdPXft7BEAwjK8KrnDI0qztQm3osjx2wCV4XZEJncZo8fg8MZWlxMgVoN8oAeL9Kd9Fjc7XEp24YTmMAkHoKA9kYYzjWYTPvM=
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WIgekVk_1730719670 cluster:ay36)
+	t=1730719675; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=Wd2oxyb+vbPAQp/ebmoKg3Otxx3owYEaGtIP0qtImK4=;
+	b=ZEi9BpRJfLWElE9sLHw+D4Pku2FaJ/hBcQy34hIBs6w/fWxRILVBCWCtpC6DnP/yuDz0dhveH6gpOXbngBH7yV39Lb4skYwy0YHlAMeunstE84m95g6B5jcEQCjLGBH+L6wk1QFOUFYiY8UOc2cDSUICh3PY+6b7/eq/za+iuEY=
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WIgekWY_1730719672 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 04 Nov 2024 19:27:51 +0800
+          Mon, 04 Nov 2024 19:27:53 +0800
 From: Shuai Xue <xueshuai@linux.alibaba.com>
 To: stable@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -75,9 +75,9 @@ Cc: adrian.hunter@intel.com,
 	liam.howlett@oracle.com,
 	pbonzini@redhat.com,
 	jolsa@kernel.org
-Subject: [PATCH 5.10.y 1/2] Revert "perf hist: Add missing puts to hist__account_cycles"
-Date: Mon,  4 Nov 2024 19:27:35 +0800
-Message-ID: <20241104112736.28554-2-xueshuai@linux.alibaba.com>
+Subject: [PATCH 5.10.y 2/2] perf session: Add missing evlist__delete when deleting a session
+Date: Mon,  4 Nov 2024 19:27:36 +0800
+Message-ID: <20241104112736.28554-3-xueshuai@linux.alibaba.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20241104112736.28554-1-xueshuai@linux.alibaba.com>
 References: <20241104112736.28554-1-xueshuai@linux.alibaba.com>
@@ -89,105 +89,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Revert "perf hist: Add missing puts to hist__account_cycles"
+From: Riccardo Mancini <rickyman7@gmail.com>
 
-This reverts commit a83fc293acd5c5050a4828eced4a71d2b2fffdd3.
+commit cf96b8e45a9bf74d2a6f1e1f88a41b10e9357c6b upstream.
 
-On x86 platform, kernel v5.10.228, perf-report command aborts due to "free():
-invalid pointer" when perf-record command is run with taken branch stack
-sampling enabled. This regression can be reproduced with the following steps:
+ASan reports a memory leak caused by evlist not being deleted on exit in
+perf-report, perf-script and perf-data.
+The problem is caused by evlist->session not being deleted, which is
+allocated in perf_session__read_header, called in perf_session__new if
+perf_data is in read mode.
+In case of write mode, the session->evlist is filled by the caller.
+This patch solves the problem by calling evlist__delete in
+perf_session__delete if perf_data is in read mode.
 
-	- sudo perf record -b
-	- sudo perf report
+Changes in v2:
+ - call evlist__delete from within perf_session__delete
 
-The root cause is that bi[i].to.ms.maps does not always point to thread->maps,
-which is a buffer dynamically allocated by maps_new(). Instead, it may point to
-&machine->kmaps, while kmaps is not a pointer but a variable. The original
-upstream commit c1149037f65b ("perf hist: Add missing puts to
-hist__account_cycles") worked well because machine->kmaps had been refactored to
-a pointer by the previous commit 1a97cee604dc ("perf maps: Use a pointer for
-kmaps").
+v1: https://lore.kernel.org/lkml/20210621234317.235545-1-rickyman7@gmail.com/
 
-To this end, just revert commit a83fc293acd5c5050a4828eced4a71d2b2fffdd3.
+ASan report follows:
 
-It is worth noting that the memory leak issue, which the reverted patch intended
-to fix, has been solved by commit cf96b8e45a9b ("perf session: Add missing
-evlist__delete when deleting a session"). The root cause is that the evlist is
-not being deleted on exit in perf-report, perf-script, and perf-data.
-Consequently, the reference count of the thread increased by thread__get() in
-hist_entry__init() is not decremented in hist_entry__delete(). As a result,
-thread->maps is not properly freed.
+$ ./perf script report flamegraph
+=================================================================
+==227640==ERROR: LeakSanitizer: detected memory leaks
 
+<SNIP unrelated>
+
+Indirect leak of 2704 byte(s) in 1 object(s) allocated from:
+    #0 0x4f4137 in calloc (/home/user/linux/tools/perf/perf+0x4f4137)
+    #1 0xbe3d56 in zalloc /home/user/linux/tools/lib/perf/../../lib/zalloc.c:8:9
+    #2 0x7f999e in evlist__new /home/user/linux/tools/perf/util/evlist.c:77:26
+    #3 0x8ad938 in perf_session__read_header /home/user/linux/tools/perf/util/header.c:3797:20
+    #4 0x8ec714 in perf_session__open /home/user/linux/tools/perf/util/session.c:109:6
+    #5 0x8ebe83 in perf_session__new /home/user/linux/tools/perf/util/session.c:213:10
+    #6 0x60c6de in cmd_script /home/user/linux/tools/perf/builtin-script.c:3856:12
+    #7 0x7b2930 in run_builtin /home/user/linux/tools/perf/perf.c:313:11
+    #8 0x7b120f in handle_internal_command /home/user/linux/tools/perf/perf.c:365:8
+    #9 0x7b2493 in run_argv /home/user/linux/tools/perf/perf.c:409:2
+    #10 0x7b0c89 in main /home/user/linux/tools/perf/perf.c:539:3
+    #11 0x7f5260654b74  (/lib64/libc.so.6+0x27b74)
+
+Indirect leak of 568 byte(s) in 1 object(s) allocated from:
+    #0 0x4f4137 in calloc (/home/user/linux/tools/perf/perf+0x4f4137)
+    #1 0xbe3d56 in zalloc /home/user/linux/tools/lib/perf/../../lib/zalloc.c:8:9
+    #2 0x80ce88 in evsel__new_idx /home/user/linux/tools/perf/util/evsel.c:268:24
+    #3 0x8aed93 in evsel__new /home/user/linux/tools/perf/util/evsel.h:210:9
+    #4 0x8ae07e in perf_session__read_header /home/user/linux/tools/perf/util/header.c:3853:11
+    #5 0x8ec714 in perf_session__open /home/user/linux/tools/perf/util/session.c:109:6
+    #6 0x8ebe83 in perf_session__new /home/user/linux/tools/perf/util/session.c:213:10
+    #7 0x60c6de in cmd_script /home/user/linux/tools/perf/builtin-script.c:3856:12
+    #8 0x7b2930 in run_builtin /home/user/linux/tools/perf/perf.c:313:11
+    #9 0x7b120f in handle_internal_command /home/user/linux/tools/perf/perf.c:365:8
+    #10 0x7b2493 in run_argv /home/user/linux/tools/perf/perf.c:409:2
+    #11 0x7b0c89 in main /home/user/linux/tools/perf/perf.c:539:3
+    #12 0x7f5260654b74  (/lib64/libc.so.6+0x27b74)
+
+Indirect leak of 264 byte(s) in 1 object(s) allocated from:
+    #0 0x4f4137 in calloc (/home/user/linux/tools/perf/perf+0x4f4137)
+    #1 0xbe3d56 in zalloc /home/user/linux/tools/lib/perf/../../lib/zalloc.c:8:9
+    #2 0xbe3e70 in xyarray__new /home/user/linux/tools/lib/perf/xyarray.c:10:23
+    #3 0xbd7754 in perf_evsel__alloc_id /home/user/linux/tools/lib/perf/evsel.c:361:21
+    #4 0x8ae201 in perf_session__read_header /home/user/linux/tools/perf/util/header.c:3871:7
+    #5 0x8ec714 in perf_session__open /home/user/linux/tools/perf/util/session.c:109:6
+    #6 0x8ebe83 in perf_session__new /home/user/linux/tools/perf/util/session.c:213:10
+    #7 0x60c6de in cmd_script /home/user/linux/tools/perf/builtin-script.c:3856:12
+    #8 0x7b2930 in run_builtin /home/user/linux/tools/perf/perf.c:313:11
+    #9 0x7b120f in handle_internal_command /home/user/linux/tools/perf/perf.c:365:8
+    #10 0x7b2493 in run_argv /home/user/linux/tools/perf/perf.c:409:2
+    #11 0x7b0c89 in main /home/user/linux/tools/perf/perf.c:539:3
+    #12 0x7f5260654b74  (/lib64/libc.so.6+0x27b74)
+
+Indirect leak of 32 byte(s) in 1 object(s) allocated from:
+    #0 0x4f4137 in calloc (/home/user/linux/tools/perf/perf+0x4f4137)
+    #1 0xbe3d56 in zalloc /home/user/linux/tools/lib/perf/../../lib/zalloc.c:8:9
+    #2 0xbd77e0 in perf_evsel__alloc_id /home/user/linux/tools/lib/perf/evsel.c:365:14
+    #3 0x8ae201 in perf_session__read_header /home/user/linux/tools/perf/util/header.c:3871:7
+    #4 0x8ec714 in perf_session__open /home/user/linux/tools/perf/util/session.c:109:6
+    #5 0x8ebe83 in perf_session__new /home/user/linux/tools/perf/util/session.c:213:10
+    #6 0x60c6de in cmd_script /home/user/linux/tools/perf/builtin-script.c:3856:12
+    #7 0x7b2930 in run_builtin /home/user/linux/tools/perf/perf.c:313:11
+    #8 0x7b120f in handle_internal_command /home/user/linux/tools/perf/perf.c:365:8
+    #9 0x7b2493 in run_argv /home/user/linux/tools/perf/perf.c:409:2
+    #10 0x7b0c89 in main /home/user/linux/tools/perf/perf.c:539:3
+    #11 0x7f5260654b74  (/lib64/libc.so.6+0x27b74)
+
+Indirect leak of 7 byte(s) in 1 object(s) allocated from:
+    #0 0x4b8207 in strdup (/home/user/linux/tools/perf/perf+0x4b8207)
+    #1 0x8b4459 in evlist__set_event_name /home/user/linux/tools/perf/util/header.c:2292:16
+    #2 0x89d862 in process_event_desc /home/user/linux/tools/perf/util/header.c:2313:3
+    #3 0x8af319 in perf_file_section__process /home/user/linux/tools/perf/util/header.c:3651:9
+    #4 0x8aa6e9 in perf_header__process_sections /home/user/linux/tools/perf/util/header.c:3427:9
+    #5 0x8ae3e7 in perf_session__read_header /home/user/linux/tools/perf/util/header.c:3886:2
+    #6 0x8ec714 in perf_session__open /home/user/linux/tools/perf/util/session.c:109:6
+    #7 0x8ebe83 in perf_session__new /home/user/linux/tools/perf/util/session.c:213:10
+    #8 0x60c6de in cmd_script /home/user/linux/tools/perf/builtin-script.c:3856:12
+    #9 0x7b2930 in run_builtin /home/user/linux/tools/perf/perf.c:313:11
+    #10 0x7b120f in handle_internal_command /home/user/linux/tools/perf/perf.c:365:8
+    #11 0x7b2493 in run_argv /home/user/linux/tools/perf/perf.c:409:2
+    #12 0x7b0c89 in main /home/user/linux/tools/perf/perf.c:539:3
+    #13 0x7f5260654b74  (/lib64/libc.so.6+0x27b74)
+
+SUMMARY: AddressSanitizer: 3728 byte(s) leaked in 7 allocation(s).
+
+Signed-off-by: Riccardo Mancini <rickyman7@gmail.com>
+Acked-by: Ian Rogers <irogers@google.com>
+Acked-by: Jiri Olsa <jolsa@redhat.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc: Ian Rogers <irogers@google.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Leo Yan <leo.yan@linaro.org>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Sandipan Das <sandipan.das@amd.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: German Gomez <german.gomez@arm.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Nick Terrell <terrelln@fb.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Changbin Du <changbin.du@huawei.com>
-Cc: liuwenyu <liuwenyu7@huawei.com>
-Cc: Yang Jihong <yangjihong1@huawei.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: Song Liu <song@kernel.org>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Yanteng Si <siyanteng@loongson.cn>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
+Link: http://lore.kernel.org/lkml/20210624231926.212208-1-rickyman7@gmail.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Cc: stable@vger.kernel.org # 5.10.228
 Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
 ---
- tools/perf/util/hist.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ tools/perf/util/session.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/hist.c b/tools/perf/util/hist.c
-index c78d8813811c..8a793e4c9400 100644
---- a/tools/perf/util/hist.c
-+++ b/tools/perf/util/hist.c
-@@ -2624,6 +2624,8 @@ void hist__account_cycles(struct branch_stack *bs, struct addr_location *al,
+diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
+index 354e1e04a266..81b7ec2ae861 100644
+--- a/tools/perf/util/session.c
++++ b/tools/perf/util/session.c
+@@ -299,8 +299,11 @@ void perf_session__delete(struct perf_session *session)
+ 	perf_session__release_decomp_events(session);
+ 	perf_env__exit(&session->header.env);
+ 	machines__exit(&session->machines);
+-	if (session->data)
++	if (session->data) {
++		if (perf_data__is_read(session->data))
++			evlist__delete(session->evlist);
+ 		perf_data__close(session->data);
++	}
+ 	free(session);
+ }
  
- 	/* If we have branch cycles always annotate them. */
- 	if (bs && bs->nr && entries[0].flags.cycles) {
-+		int i;
-+
- 		bi = sample__resolve_bstack(sample, al);
- 		if (bi) {
- 			struct addr_map_symbol *prev = NULL;
-@@ -2638,7 +2640,7 @@ void hist__account_cycles(struct branch_stack *bs, struct addr_location *al,
- 			 * Note that perf stores branches reversed from
- 			 * program order!
- 			 */
--			for (int i = bs->nr - 1; i >= 0; i--) {
-+			for (i = bs->nr - 1; i >= 0; i--) {
- 				addr_map_symbol__account_cycles(&bi[i].from,
- 					nonany_branch_mode ? NULL : prev,
- 					bi[i].flags.cycles);
-@@ -2647,12 +2649,6 @@ void hist__account_cycles(struct branch_stack *bs, struct addr_location *al,
- 				if (total_cycles)
- 					*total_cycles += bi[i].flags.cycles;
- 			}
--			for (unsigned int i = 0; i < bs->nr; i++) {
--				map__put(bi[i].to.ms.map);
--				maps__put(bi[i].to.ms.maps);
--				map__put(bi[i].from.ms.map);
--				maps__put(bi[i].from.ms.maps);
--			}
- 			free(bi);
- 		}
- 	}
 -- 
 2.39.3
 
