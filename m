@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-89647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 032719BB20C
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 12:01:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 008F39BB210
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 12:01:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67B78B24352
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:01:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 315171C2236B
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:01:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACFB1D417C;
-	Mon,  4 Nov 2024 10:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3FEC1D47A2;
+	Mon,  4 Nov 2024 10:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e8WVVwx7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XBpLQas+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56021D415B;
-	Mon,  4 Nov 2024 10:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB811D45FE;
+	Mon,  4 Nov 2024 10:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730717586; cv=none; b=QNjOr3WaGuiJOOyFj2nwzD+5QxhZjqPYqOO9mlEylsYVzsm14JPsuqQsoldj+aNAj6VZCKxWY4qkg/Wq8yboa4zqyjxp9mvDtiN8I674Y8mcub2uPa5VrjmILiqAWczbND8qRlrJL3rQrF0PC3ONfOq1oHOIT48QqrN/mKqm/qE=
+	t=1730717588; cv=none; b=KvkWU0BlhyIruJBQHv1F82RMV59nMrWsx20qp26aCc93/5jYI/AC01dsLvc1s5Ojx4yatMB5CRNAPjU6ZQo9HVJrna1y5/UTQTTXnvVvTvQAATbX188JWP7pA86d6Ho79BAa/KZh+y85h/eqVx0YjzRNnAfu8qH9TcQPDknaiu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730717586; c=relaxed/simple;
-	bh=SxhuDvpyLe08lQ2cNq/7Bt+sb16e8KR2Hp9PnBmPFoE=;
+	s=arc-20240116; t=1730717588; c=relaxed/simple;
+	bh=D2bnAICpH5w/m2F+hbXh5PJUoLd2C/twiCxDE4eGzu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tMd8xUE6fq+C7r/M77j1TBVHVhl1+J3Zk59TqBB1XylJuC7nRhpYeZlIQwnkeSbQB1jWuDJPQAlAgHP0PHCdR7TEa74Od8vmjdfMUdQgm8deOu0G+x37krGyRWN2BZ7XBu2GHvMWIQM5KhLdHJbpKL9Lleh6cOd5xuUFFJbwGKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e8WVVwx7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1EA2C4CED1;
-	Mon,  4 Nov 2024 10:53:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EWKyPaPx6lvCf0bHL9+hgQMiuvhzc7U91x9naW+cnUstb6ItKW8F2g+qxVVpK6DjzrcgKio38CbNHXcVr51L6BAfQvGeu+Hagkqs7HMR1NhlCg6faTqzNgac1omU/LPeLR5ZdElJDS0dI7SdFNGKHYaGivGVqy6vcogKS8l1MFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XBpLQas+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC2F5C4CED6;
+	Mon,  4 Nov 2024 10:53:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730717586;
-	bh=SxhuDvpyLe08lQ2cNq/7Bt+sb16e8KR2Hp9PnBmPFoE=;
+	s=k20201202; t=1730717588;
+	bh=D2bnAICpH5w/m2F+hbXh5PJUoLd2C/twiCxDE4eGzu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e8WVVwx7PeH4Sc6raEOUzLUfqX43fun3eWWUyMLjdV2WcdGttO4O0FwvUs54qLLhC
-	 7FG7LnYdr6P1wRv0Flx66myVmgSRHlym/Md/TL+D9mdSqIvmRJA0LuKED7OoSN74Sn
-	 EquwnCPO4SOT/xTRNcGtB2DWPjiJgCi1SpWZAX1TzMjDREUifSqIDDQpup6n5hA/s3
-	 KBDTNfquiCFzA5r9R6FPeJsZ81TPn2h4NgYnbVg+8Jna3AsrTMUmJlvSANQ0GS+LS2
-	 3EMsKrchwwygh6NOo6tqhS20yiTBFCSeWEnlmHcnewAq81G7+nck4sLTocrL3IGuzE
-	 3YaWJIWxctmXQ==
+	b=XBpLQas+tY4dWEehLVtH/rC0l5fJfUOlU+smmgkxKI7RHAM+9XkcVtvI9KEqbZEH+
+	 SBOI2Cnf7rhIDXLVc1wKKHzHzKqWv1TnQGs+2oJKpzDiLyiYtOPT6Mt0HyQDF5jmjY
+	 +1A3muiCN11KopaddMwhbpJy8lmrguUS7sHXTos62G93H8QqMDFYclvBnY62PYCuzw
+	 /e8dACw8z8ZDLQ9vz2RjdaRrFz/mKmR+ASIdr4o8gRkI+08CVI9NRwWtfxxbcuL5cf
+	 YHS+gR6HTZUg5NkoaoZZTSKVNurLTGsucU/nhAjm7WVeMPijZDP1pLLaOvhMK44/mg
+	 AtunsLqfxaLSw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jiayuan Chen <mrpre@163.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+Cc: =?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	john.fastabend@gmail.com,
-	jakub@cloudflare.com,
-	edumazet@google.com,
+	bjorn@mork.no,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
-	dsahern@kernel.org,
-	kuba@kernel.org,
+	edumazet@google.com,
 	pabeni@redhat.com,
 	netdev@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 13/14] bpf: fix filed access without lock
-Date: Mon,  4 Nov 2024 05:52:05 -0500
-Message-ID: <20241104105228.97053-13-sashal@kernel.org>
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 14/14] net: usb: qmi_wwan: add Quectel RG650V
+Date: Mon,  4 Nov 2024 05:52:06 -0500
+Message-ID: <20241104105228.97053-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241104105228.97053-1-sashal@kernel.org>
 References: <20241104105228.97053-1-sashal@kernel.org>
@@ -68,67 +67,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.59
 Content-Transfer-Encoding: 8bit
 
-From: Jiayuan Chen <mrpre@163.com>
+From: Benoît Monin <benoit.monin@gmx.fr>
 
-[ Upstream commit a32aee8f0d987a7cba7fcc28002553361a392048 ]
+[ Upstream commit 6b3f18a76be6bbd237c7594cf0bf2912b68084fe ]
 
-The tcp_bpf_recvmsg_parser() function, running in user context,
-retrieves seq_copied from tcp_sk without holding the socket lock, and
-stores it in a local variable seq. However, the softirq context can
-modify tcp_sk->seq_copied concurrently, for example, n tcp_read_sock().
+Add support for Quectel RG650V which is based on Qualcomm SDX65 chip.
+The composition is DIAG / NMEA / AT / AT / QMI.
 
-As a result, the seq value is stale when it is assigned back to
-tcp_sk->copied_seq at the end of tcp_bpf_recvmsg_parser(), leading to
-incorrect behavior.
+T: Bus=02 Lev=01 Prnt=01 Port=03 Cnt=01 Dev#=  4 Spd=5000 MxCh= 0
+D: Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P: Vendor=2c7c ProdID=0122 Rev=05.15
+S: Manufacturer=Quectel
+S: Product=RG650V-EU
+S: SerialNumber=xxxxxxx
+C: #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=896mA
+I: If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E: Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E: Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I: If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E: Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I: If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E: Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E: Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=9ms
+I: If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E: Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E: Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=9ms
+I: If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E: Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E: Ad=87(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E: Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=9ms
 
-Due to concurrency, the copied_seq field in tcp_bpf_recvmsg_parser()
-might be set to an incorrect value (less than the actual copied_seq) at
-the end of function: 'WRITE_ONCE(tcp->copied_seq, seq)'. This causes the
-'offset' to be negative in tcp_read_sock()->tcp_recv_skb() when
-processing new incoming packets (sk->copied_seq - skb->seq becomes less
-than 0), and all subsequent packets will be dropped.
-
-Signed-off-by: Jiayuan Chen <mrpre@163.com>
-Link: https://lore.kernel.org/r/20241028065226.35568-1-mrpre@163.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Benoît Monin <benoit.monin@gmx.fr>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241024151113.53203-1-benoit.monin@gmx.fr
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_bpf.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-index fe6178715ba05..915286c3615a2 100644
---- a/net/ipv4/tcp_bpf.c
-+++ b/net/ipv4/tcp_bpf.c
-@@ -221,11 +221,11 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
- 				  int flags,
- 				  int *addr_len)
- {
--	struct tcp_sock *tcp = tcp_sk(sk);
- 	int peek = flags & MSG_PEEK;
--	u32 seq = tcp->copied_seq;
- 	struct sk_psock *psock;
-+	struct tcp_sock *tcp;
- 	int copied = 0;
-+	u32 seq;
- 
- 	if (unlikely(flags & MSG_ERRQUEUE))
- 		return inet_recv_error(sk, msg, len, addr_len);
-@@ -238,7 +238,8 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
- 		return tcp_recvmsg(sk, msg, len, flags, addr_len);
- 
- 	lock_sock(sk);
--
-+	tcp = tcp_sk(sk);
-+	seq = tcp->copied_seq;
- 	/* We may have received data on the sk_receive_queue pre-accept and
- 	 * then we can not use read_skb in this context because we haven't
- 	 * assigned a sk_socket yet so have no link to the ops. The work-around
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index 92c1500fa7c44..f88f7c972a9c0 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1084,6 +1084,7 @@ static const struct usb_device_id products[] = {
+ 		USB_DEVICE_AND_INTERFACE_INFO(0x03f0, 0x581d, USB_CLASS_VENDOR_SPEC, 1, 7),
+ 		.driver_info = (unsigned long)&qmi_wwan_info,
+ 	},
++	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x0122)},	/* Quectel RG650V */
+ 	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x0125)},	/* Quectel EC25, EC20 R2.0  Mini PCIe */
+ 	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x0306)},	/* Quectel EP06/EG06/EM06 */
+ 	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x0512)},	/* Quectel EG12/EM12 */
 -- 
 2.43.0
 
