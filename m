@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-89683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0AB19BB292
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 12:12:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECCD89BB296
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 12:12:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 583681F2159E
-	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:12:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98C351F2158C
+	for <lists+stable@lfdr.de>; Mon,  4 Nov 2024 11:12:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804B11F7563;
-	Mon,  4 Nov 2024 10:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B6F1F76BC;
+	Mon,  4 Nov 2024 10:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H8xHn0Rt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hmJ0QdO7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6DD1F755B;
-	Mon,  4 Nov 2024 10:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC421F76B5;
+	Mon,  4 Nov 2024 10:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730717744; cv=none; b=TKTqijK4D3WZY4ajedbmPjkbkgO20XQRtlymMcmkONtbDjvfeovQrfOoMRsVDlqoHXT4e/TYPY+towYZPDZS++oKxkwioyFYHz7YraPiXB5MuKnVp18Kj0eMnoGUcEvrbPfttN6JDA669AvjG9c8ATBHCpD+2j4ZW4fcvNLIH0k=
+	t=1730717746; cv=none; b=J6ambWyWcx3Iszx02ah+Scs/BGFJPUqOjwdrrLrfEdkpral1vAXUrEmH0T6sDayYAA44GIRaU7suLAXEqk+Doo9j2Ijlirq7CjkhbgVKv+QXMUD0JiOJ/RC6VA3GPooYLdgUQz7GrUTRb+rujyjLoSVA7KwLGHT2X39RIv39Bmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730717744; c=relaxed/simple;
-	bh=+OLKUtZuVadq41JrBY27nCN6auZO8OYRPVSmExa2HmA=;
+	s=arc-20240116; t=1730717746; c=relaxed/simple;
+	bh=Q2qs2fovbd8YHy9F9ziUFroX7H9CCmhCtSEAJKj5Z4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V+6G4qRjel1M6zPFjLku6lKvrBgGZ1xaTar94ll4DxTgAolGFyfaCnlFjLiQsBOrdnkpCSis8Z6JvpmCdVXEXYemeYc8NgoPHOsmtzbUiEXA9f2rQcwklolZGJGARqClJL5a2mY29Ijv2JXQUUsSpkn4uX6oucwskMpb6b0zzjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H8xHn0Rt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7921C4CECE;
-	Mon,  4 Nov 2024 10:55:42 +0000 (UTC)
+	 MIME-Version; b=btamiD89rqIAbncRbc2IXU/uXYiKl01EGyx1zd1pcewV2S+MmfsvEapIR4mHn+ux9Q5y3IR2gVEX1GnKU4ITBAIpmOWY6XVu7LvmA5ElUfnIcvQm2iiJwE4GBGHw05hz5/4r/mE+BGybS13EIr2cE8hoibxpD3P85KuzLQEUpk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hmJ0QdO7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C942C4CED1;
+	Mon,  4 Nov 2024 10:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730717743;
-	bh=+OLKUtZuVadq41JrBY27nCN6auZO8OYRPVSmExa2HmA=;
+	s=k20201202; t=1730717746;
+	bh=Q2qs2fovbd8YHy9F9ziUFroX7H9CCmhCtSEAJKj5Z4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H8xHn0RtCcssJw0lYJlIv2xDTJJvDw1NYE0Sq6/KhofiKc4FURav4Bs9TqDcc6My4
-	 blEa+qjuLVD/pKkDhlgnf22xANzw83vJequr1CgQ0R5+16G4BA8tO8NQoTwBcH0pAI
-	 VhqaS0ODsrCN5lCAp/URqL1A+DvZI+BNb7cCt4VnIrJ5h+w4OJ3APqldZdBrHugFgI
-	 +nETqJiGW07gm3AptBr7q+Mj2Fu9VeZKn2KCbJU7pr1JBX0CZlJhwAQaik2RYL5A6R
-	 O8KvqlkruNT4YxmViK8V+WA5SUMIU5jXO1MwpX77FQ4FzDIuseOvQLCDZ9ilEAHagZ
-	 8bVdx3NUwFdPg==
+	b=hmJ0QdO7oqnl9flAwJCZ9rtqXMfdTzWkFvvQTJ/3FaEucw44syZiKVvFBuxbjFBat
+	 kCXL73a1fm1M9hiNAwevHLOAa9iHy0NKW90tWgMIvM5899qKoUPsmqcOtVzm6/eGki
+	 qMqurbkcAduFbcOflB5zCPXooVe1JwyApUW9W511OI+Owra0oA4N7p14whUhVFqgpC
+	 1yg0/wy1gB+P2cWa5eAgUJ7KGkUCH6DmIEamKNJQjQWzG0ZpI51Eh6uS+bPptDdt7C
+	 uSo3gNF9TBptopMDTCEg/UhiuK951XrGgKRMc0k2X4vAI6HngBgUaGORe2y6DUguKd
+	 OZyJcYXMuXI3g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ben Greear <greearb@candelatech.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Li Zhijian <lizhijian@fujitsu.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 2/5] mac80211: fix user-power when emulating chanctx
-Date: Mon,  4 Nov 2024 05:55:31 -0500
-Message-ID: <20241104105539.98219-2-sashal@kernel.org>
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 3/5] selftests/watchdog-test: Fix system accidentally reset after watchdog-test
+Date: Mon,  4 Nov 2024 05:55:32 -0500
+Message-ID: <20241104105539.98219-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241104105539.98219-1-sashal@kernel.org>
 References: <20241104105539.98219-1-sashal@kernel.org>
@@ -66,35 +66,55 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.322
 Content-Transfer-Encoding: 8bit
 
-From: Ben Greear <greearb@candelatech.com>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-[ Upstream commit 9b15c6cf8d2e82c8427cd06f535d8de93b5b995c ]
+[ Upstream commit dc1308bee1ed03b4d698d77c8bd670d399dcd04d ]
 
-ieee80211_calc_hw_conf_chan was ignoring the configured
-user_txpower.  If it is set, use it to potentially decrease
-txpower as requested.
+When running watchdog-test with 'make run_tests', the watchdog-test will
+be terminated by a timeout signal(SIGTERM) due to the test timemout.
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
-Link: https://patch.msgid.link/20241010203954.1219686-1-greearb@candelatech.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+And then, a system reboot would happen due to watchdog not stop. see
+the dmesg as below:
+```
+[ 1367.185172] watchdog: watchdog0: watchdog did not stop!
+```
+
+Fix it by registering more signals(including SIGTERM) in watchdog-test,
+where its signal handler will stop the watchdog.
+
+After that
+ # timeout 1 ./watchdog-test
+ Watchdog Ticking Away!
+ .
+ Stopping watchdog ticks...
+
+Link: https://lore.kernel.org/all/20241029031324.482800-1-lizhijian@fujitsu.com/
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/watchdog/watchdog-test.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index e8c4e9c0c5a09..71d10bdee4309 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -140,6 +140,8 @@ static u32 ieee80211_hw_conf_chan(struct ieee80211_local *local)
- 	}
+diff --git a/tools/testing/selftests/watchdog/watchdog-test.c b/tools/testing/selftests/watchdog/watchdog-test.c
+index f1c6e025cbe54..561bcc253fb3e 100644
+--- a/tools/testing/selftests/watchdog/watchdog-test.c
++++ b/tools/testing/selftests/watchdog/watchdog-test.c
+@@ -152,7 +152,13 @@ int main(int argc, char *argv[])
  
- 	power = ieee80211_chandef_max_power(&chandef);
-+	if (local->user_power_level != IEEE80211_UNSET_POWER_LEVEL)
-+		power = min(local->user_power_level, power);
+ 	printf("Watchdog Ticking Away!\n");
  
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
++	/*
++	 * Register the signals
++	 */
+ 	signal(SIGINT, term);
++	signal(SIGTERM, term);
++	signal(SIGKILL, term);
++	signal(SIGQUIT, term);
+ 
+ 	while (1) {
+ 		keep_alive();
 -- 
 2.43.0
 
