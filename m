@@ -1,128 +1,162 @@
-Return-Path: <stable+bounces-89792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBC2F9BC715
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 08:31:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA3D39BC6BA
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 08:15:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 997C5281AF2
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 07:31:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC35A1C221E7
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 07:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3981FEFB1;
-	Tue,  5 Nov 2024 07:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EEDD1D3195;
+	Tue,  5 Nov 2024 07:15:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X62WKW/x"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2531FDF96
-	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 07:29:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA0318A6BA;
+	Tue,  5 Nov 2024 07:15:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730791779; cv=none; b=VgkvtbOWxpmZTzQD86UpW+usDTEKJDXJCo7j+xs0+JnxfFe8/VpQCxpuZib72q+Xeieepaw2O6xpoOGNoOSJY2FNhmdpUQesHq2xinXt81QnBoE/8L4I1oDrG6R0L9mnHch/1sbbEDo6UJz0FiJMYbqqlJFlsbR0tDj2QFUh5Xs=
+	t=1730790954; cv=none; b=YCRzKaJUF1ZHvYuo7xtZDaBrLjrENEtbWrB2/3EyQRmaVniNtTbv0Xcigq1nSsqT1akuWB+AOh2T5Q67YTdAZoo3RqbTC9m3KAqed1tzHwwVbKiOd0UtSbVAH98bcRg0PcmujJF8x/7rPXVyL1FzCF2eSzh8rz2+FQl0avR3r7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730791779; c=relaxed/simple;
-	bh=2DTOm74VCL3q3+8xZzASedg2vi0UOyqRKHEQI8llv6c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T+7diFLgENEkKaQIDScX/EYx/mxyjvgkXYJx3Vc1N66JYAxetGbUNQagIQHiq7ne0WQ0mR5x1fEjvQ0Xo9tmUZDVIJm+/m5+JT0Gs6Dd3kPbqEjlC9Z7ZYw/hJp+2HOhJphDjzckI4agR38jBCagTJgjgO9diO6s5VE9OcXr+4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t8E0C-0008Qr-BM; Tue, 05 Nov 2024 08:29:24 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t8E0B-0026lk-0k;
-	Tue, 05 Nov 2024 08:29:23 +0100
-Received: from pengutronix.de (unknown [IPv6:2a01:4f8:1c1c:29e9:22:41ff:fe00:1400])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id D5626369E37;
-	Tue, 05 Nov 2024 05:29:05 +0000 (UTC)
-Date: Tue, 5 Nov 2024 06:29:04 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, linux-can@vger.kernel.org, 
-	kernel@pengutronix.de, stable@vger.kernel.org, Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH net 7/8] can: mcp251xfd: mcp251xfd_ring_alloc(): fix
- coalescing configuration when switching CAN modes
-Message-ID: <20241105-jovial-unselfish-wombat-453fe9-mkl@pengutronix.de>
-References: <20241104200120.393312-1-mkl@pengutronix.de>
- <20241104200120.393312-8-mkl@pengutronix.de>
- <20241104174446.72a2d120@kernel.org>
+	s=arc-20240116; t=1730790954; c=relaxed/simple;
+	bh=bDChX5DkQVdrQna97kJP/N8tCEz8lU/2/PDbRrhKUGA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=g+IdRt9ApmVV0uaiopvaBvAKcNxbw6AZOkiUboE/+06BCqL/z5/LCZ8+qNew9By4+WZ6JQ/ZE4HwO40rnWVnopdobtyIutxGbpt5gPzeCBlVEU9UTktzKFebL3xuNMckcUHySxFwAeJ62tUIHHByQLDIBn3t2+lGCD/Q/GQgXho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X62WKW/x; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-7eda47b7343so3164916a12.0;
+        Mon, 04 Nov 2024 23:15:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730790953; x=1731395753; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iz/rHRFBcREQc4ZZLNXrKKaJvBiY7ob4s58NQYp/eAs=;
+        b=X62WKW/xRF7Nhmiu4Ls6VCX4TTpsqaVYP6ZERFQXQ2xRn+ADmCLiyNh+wXxXl1MmMt
+         NlXL2zBubd0IjJzvVq8NELz7qxRO836PfpxiwRG4Itzq806IMxH9f2H1oCnqIZRz70GB
+         LblkHgwCkjD7fHY/uyMd6Lvln5TaAyn5BoUQ9e6gM4OZQfIWcdb0LshJX6JsKyMUMxdC
+         weclit0A+hZcQCg24AzRSZ9sD+ydjvqkZfXIC+b9YcPeKKdjpLoWZWaoy+1wBM6XEwWm
+         P5x8HHIs3FPnftCnRdu/wgvIbAmb8FmxN4yieEv9hWr/t2hjWJfBoAUv7WCREzJhovYN
+         ZA3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730790953; x=1731395753;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iz/rHRFBcREQc4ZZLNXrKKaJvBiY7ob4s58NQYp/eAs=;
+        b=lMnrvlAEff3R5T0/9A4YNheOV0VlbU2u19BOVQxmKhXmfXSxlqkDQedSDg+2osUz/l
+         vkTK0D6tR6KcPaNJ1dr0NRx+o85tWyGXYPxBTkXgjZE9V+Ik4PHFw82MCSVo7zOf0Hf1
+         gtxFPf3fEET+qR4tzATsN2aKO/F5zPcuPZVWMWfsWqp+cwu6ah5COA/75ZYgDUrP8SBT
+         6GI3aGbuauKY8ypW2tidSpuLzZ8yj13O8BFL+fwo5Iok5IbMyYVSMhhe4lRv6YJabzrv
+         mtBytGa6AWBdxeN1L4B7z4Mmd/u/Xh1ngrlHlT2+IxrjQ7NNRm2NiGLmuyhVkOEPzwUU
+         SqtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWkrlvOOSTEKG65s7VsZggLi3gCRT8EO5JelKegWBiwrnR9c/OLYd9gsXXvSnFe1RuGoRpz/pX8AyFn@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCsm29GQbDpo8jql0fCr0PxSPKjuVLtnYe/I4m1hReqpug11o+
+	qNwObBCB4eN144zFgOVPceWpnSIw7UD9DgUsVnU9ET1+OU4y1fv0I6fuanfX
+X-Google-Smtp-Source: AGHT+IHryBz33ZfG+cGFeXdABWiRWMLtgcqure7yjXNkzz7ukZK3b3/ngIdIO0CJnk7GMr4cAnSsOA==
+X-Received: by 2002:a05:6a21:38c:b0:1cf:4ad8:83b9 with SMTP id adf61e73a8af0-1d9a8514112mr47980753637.43.1730790952603;
+        Mon, 04 Nov 2024 23:15:52 -0800 (PST)
+Received: from optiplex-5070.. ([182.66.67.80])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-720bbfc35b2sm8894190b3a.0.2024.11.04.23.15.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Nov 2024 23:15:52 -0800 (PST)
+From: Sai Kumar Cholleti <skmr537@gmail.com>
+To: andriy.shevchenko@linux.intel.com,
+	bgolaszewski@baylibre.com,
+	linux-gpio@vger.kernel.org,
+	mmcclain@noprivs.com,
+	skmr537@gmail.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH v3] gpio: exar: set value when external pull-up or pull-down is present
+Date: Tue,  5 Nov 2024 12:45:23 +0530
+Message-Id: <20241105071523.2372032-1-skmr537@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <ZykY251SaLeksh9T@smile.fi.intel.com>
+References: <ZykY251SaLeksh9T@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="qryq5ucgmrporour"
-Content-Disposition: inline
-In-Reply-To: <20241104174446.72a2d120@kernel.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+
+Setting GPIO direction = high, sometimes results in GPIO value = 0.
+
+If a GPIO is pulled high, the following construction results in the
+value being 0 when the desired value is 1:
+
+$ echo "high" > /sys/class/gpio/gpio336/direction
+$ cat /sys/class/gpio/gpio336/value
+0
+
+Before the GPIO direction is changed from an input to an output,
+exar_set_value() is called with value = 1, but since the GPIO is an
+input when exar_set_value() is called, _regmap_update_bits() reads a 1
+due to an external pull-up.  regmap_set_bits() sets force_write =
+false, so the value (1) is not written.  When the direction is then
+changed, the GPIO becomes an output with the value of 0 (the hardware
+default).
+
+regmap_write_bits() sets force_write = true, so the value is always
+written by exar_set_value() and an external pull-up doesn't affect the
+outcome of setting direction = high.
 
 
---qryq5ucgmrporour
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH net 7/8] can: mcp251xfd: mcp251xfd_ring_alloc(): fix
- coalescing configuration when switching CAN modes
-MIME-Version: 1.0
+The same can happen when a GPIO is pulled low, but the scenario is a
+little more complicated.
 
-On 04.11.2024 17:44:46, Jakub Kicinski wrote:
-> On Mon,  4 Nov 2024 20:53:30 +0100 Marc Kleine-Budde wrote:
-> > Reported-by: https://github.com/vdh-robothania
->=20
-> Did you do this because of a checkpatch warning or to give the person
-> credit? If the former ignore the warning, if the latter I think it's
-> better to mention their user name in the commit message and that's it.
+$ echo high > /sys/class/gpio/gpio351/direction
+$ cat /sys/class/gpio/gpio351/value
+1
 
-I added the link to their gh to credit them. Will @-mention github users
-without public email addresses in future commits.
+$ echo in > /sys/class/gpio/gpio351/direction
+$ cat /sys/class/gpio/gpio351/value
+0
 
-> IMO Reported-by should be a machine readable email address, in case we
-> need to CC the person and ask for testing.
+$ echo low > /sys/class/gpio/gpio351/direction
+$ cat /sys/class/gpio/gpio351/value
+1
 
-That makes sense.
+Fixes: 36fb7218e878 ("gpio: exar: switch to using regmap")
+Co-developed-by: Matthew McClain <mmcclain@noprivs.com>
+Signed-off-by: Matthew McClain <mmcclain@noprivs.com>
+Signed-off-by: Sai Kumar Cholleti <skmr537@gmail.com>
+Cc: <stable@vger.kernel.org>
+---
+ drivers/gpio/gpio-exar.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-> That's just my $.02 for future cases.
+diff --git a/drivers/gpio/gpio-exar.c b/drivers/gpio/gpio-exar.c
+index 5170fe7599cd..d5909a4f0433 100644
+--- a/drivers/gpio/gpio-exar.c
++++ b/drivers/gpio/gpio-exar.c
+@@ -99,11 +99,13 @@ static void exar_set_value(struct gpio_chip *chip, unsigned int offset,
+ 	struct exar_gpio_chip *exar_gpio = gpiochip_get_data(chip);
+ 	unsigned int addr = exar_offset_to_lvl_addr(exar_gpio, offset);
+ 	unsigned int bit = exar_offset_to_bit(exar_gpio, offset);
++	unsigned int bit_value = value ? BIT(bit) : 0;
+ 
+-	if (value)
+-		regmap_set_bits(exar_gpio->regmap, addr, BIT(bit));
+-	else
+-		regmap_clear_bits(exar_gpio->regmap, addr, BIT(bit));
++	/*
++	 * regmap_write_bits() forces value to be written when an external
++	 * pull up/down might otherwise indicate value was already set.
++	 */
++	regmap_write_bits(exar_gpio->regmap, addr, BIT(bit), bit_value);
+ }
+ 
+ static int exar_direction_output(struct gpio_chip *chip, unsigned int offset,
+-- 
+2.34.1
 
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---qryq5ucgmrporour
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmcprR0ACgkQKDiiPnot
-vG8qhAf/Rg6EYXIoAEJdQf6xmOHPL0M11ucskQNMBRPh0Tr6OjBxqImCBMs8EN0L
-np1bdyNZ25Wnf6QJMY5Fc5erPYrMvvbfTpwn99b60RCsWrC0e4tnsMFhrpnyheFc
-jnf2aoGe+e1R8yTqNn3rwDlibZHAywXvqOOdalLSDrdPMA3ADuKuINzHqVHGUt2t
-+hymZP7xvBk7pKdgW+eCwlQbKnt4gYbR5cFWIeE8atg2acyq0Hx9fyRvklfsX99P
-yyjpAqC3yU/CCqrVOQzV4ZFyNfVoEKtA0zVSzM2nZ6yCj1f/dWaLT64MKMqxKKkn
-HFW7xFk7xyhSh/4eYFqTKkJr+oj7wQ==
-=6tM2
------END PGP SIGNATURE-----
-
---qryq5ucgmrporour--
 
