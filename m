@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-89824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDFCC9BCB9B
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 12:23:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9DA69BCBD4
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 12:27:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D91C1C229DD
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 11:23:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AECB1F245AE
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 11:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426221D4355;
-	Tue,  5 Nov 2024 11:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1DB1D45F0;
+	Tue,  5 Nov 2024 11:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FTAjt54r"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vW3PXFcn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F621D414E
-	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 11:23:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60781D2232
+	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 11:27:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730805791; cv=none; b=bCWYZCR9rMYC4G8Fpp3Dwj/6P858E9DgttwChqBc5rtNOdKLJ5Yt40ShVVfV+HIdD9wsN1QtsZq8v/Gw00pQhkaUm3Zi7TDR5Nxcu/EYJqszbIA8Hfn1Mm/AeicnzxnZMijGqn2oe9VkQnvKApn7LatnpBIWRms2tRxk7HGBU0k=
+	t=1730806039; cv=none; b=k77tUSMGKnsk+DAx3QChzvhTo0tM3dMSQedyx2TYUJwMg4tky10jGzkSz5VlDUUHzIiA3elmKEHDiFSKKQWDAWEjJSTeHpe7loD5EeDA2W/kbRqJSLMwzmMwcxwJqqQhmJ6ShXA7fLlkOe7SJ8MXPUxgPDV6tXNBycn/zRplYUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730805791; c=relaxed/simple;
-	bh=gu5W4N3YVHoS/XkXUH6wLnC37EF1yQUgzdD/I/kxVHY=;
+	s=arc-20240116; t=1730806039; c=relaxed/simple;
+	bh=t+wcayOuOFWui3ZrTMmgaqfBOeZYb+S+1dfjI7oaAJM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gdEK0AFYGkSja7V7oUgTQYspJsHPvUL21krjm83ohXfEMZIplVs6jXKdmiMixbf5Qu1vRciWAgNKndgUNUx18TMrM/3DSHmzzEL8Mt+KrFt9h8LBYMTTtzAws5/18GRsVpyviS4MaRL1HjKgNr7jdPJ05tZ3jsQJuzrP9VBnrGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FTAjt54r; arc=none smtp.client-ip=209.85.208.171
+	 In-Reply-To:Content-Type; b=s1rb6SsqFM+PLmv3yWsK3C2oEM7qK3KcNE8wTO68rKOAdX8pZLnvJ/3tXEOopbRP0jwJT1t+RyEOrbVzP1wZpkxFn3tbbpZWYd6ejRmRkPSKs2Q9TsAxM9O1JXteKP7LTkvI7uH/Lisf8diqsqMRfLu7+UwU5SMTTg3uqjdbtyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vW3PXFcn; arc=none smtp.client-ip=209.85.167.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2fb5be4381dso49465991fa.2
-        for <stable@vger.kernel.org>; Tue, 05 Nov 2024 03:23:09 -0800 (PST)
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-53b34ed38easo5193986e87.0
+        for <stable@vger.kernel.org>; Tue, 05 Nov 2024 03:27:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730805787; x=1731410587; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1730806035; x=1731410835; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=kfRKb6qYv530q1n0OeScBq8hVcVdxnrfY7wSThB323A=;
-        b=FTAjt54rdB5e1X0ahTbHWJZSGvcSguumA/K6sRoBow4iT0pIXbpHYzvGPCanEe7CJS
-         oh16mYRnfoP0PiCuBoshV20/HPL24M+1FmUOeXl8Gh/6EzqiFOWERMXtiDCQ1nmXbfoA
-         Jr1jA7lMq1gnMeADUu1EdF4mmwPjtiTeteL4sNRPcXbWGa4N6UlLr/9NqVb5rdrzmg+h
-         ilxqTWALRnxeCODpM9i6EhjFfBqezPIhnN6S6CfV91JdhHc2fyAIPeDpYxsQbPo7IQK6
-         0X2ULYn7MTEC9FPihC0w2ulkXrKXrMVJ8GCAQF0UmzOBcS+a+dSaRZhKgwv2UUMqvxAb
-         DikQ==
+        bh=iD+xUYXyW3j/17XwwT1x0rwQmfQGKFXfNjXAKsnJrMQ=;
+        b=vW3PXFcnjsAEE2NJ2n353O9Kw/MMGQlrxEwR50DwbYySOfTLWFcefrRsAmPhRb5I5i
+         Z7/1xnSy2YsRYGq7PBh/1q9aPSjJKs7QfmhthM4TbYoRKuRfj65ckeG6G2QK6eYSZgWh
+         RQUsLSIAMIhEtLbVnBwDuxmFPFUl1+eGyUDM0ICkamJZbMLqyGGSJEdjIP58bS9VNmxs
+         ydiM3iULHE0imlBx9q5DCDQgjVuYnVj/IVHC03tim+MmLExiStAMA7ywkSTKBh98Seli
+         d4YfNMFp1JfP+F75J1hDKYltO9yxNM/5+irj9CDWA9LVpl7d4gg6z2S5f1ZjG8nObdAu
+         MxjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730805787; x=1731410587;
+        d=1e100.net; s=20230601; t=1730806035; x=1731410835;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kfRKb6qYv530q1n0OeScBq8hVcVdxnrfY7wSThB323A=;
-        b=Dxreev9vy1cXrEuzT5kr/ouI74ncLPTpySnoewFxc6ATdB0ymbkpcnKuAgO1417wew
-         DVNWSBIrpXJoTzCwMWrYB72Yqy219berp4W7hMIodqhT2ihFoGsboKvcwyPE/4Yk5f+M
-         xBUERHjsu4KFBFF37b8CVpKDeUzjn9cMSieTceu6jQv/YW2GIMSFNL8X+JK08u7N1m25
-         5vGzFJ2xe35sFQkNjLkg6DiOdvPzd3uC3jRxQI8eJ5XvlXkpfrcEdc7YmH6m1FYYMh+X
-         qtKnn9G14PCOz40p33r/Rg0mo6wyX/eC616YAZsryy8XNELjkn6TFwywnfvZL6OKtzS+
-         lLhw==
-X-Forwarded-Encrypted: i=1; AJvYcCXLbMd4z9jnSCTaOfkDYkPXlvbfgiTX+XKaouz9i3hJ14fkcWHM2R3aVz9Qrc41XUQTe7H+YXg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRj7Ok8aIlPdp1QvXcchss8PmGDmDa/zJoFI9UNO3/CQ54gB+g
-	XVPPWISiCOnaZnTKTvlpBqnFGNctBpIwbrWcljDypmXNAIBTppHck0Z5rvIhcTg=
-X-Google-Smtp-Source: AGHT+IEu79YGFxZM6Eecn6ewOoMwq28FlO/8LqwRJUbtDaL1h8BGJ+TOp/Y8iTBbhuCNrcvbQJTXBA==
-X-Received: by 2002:a05:651c:505:b0:2f5:abe:b6bd with SMTP id 38308e7fff4ca-2fcbe099636mr164756301fa.42.1730805787245;
-        Tue, 05 Nov 2024 03:23:07 -0800 (PST)
+        bh=iD+xUYXyW3j/17XwwT1x0rwQmfQGKFXfNjXAKsnJrMQ=;
+        b=W7Ql8Cu4zEWmxJcvW0cvXOavUIWj1hLWLll4Jrc5mLJ058Liqxm49u2k5UOcoFV+hm
+         Hix/ic1BWJuiDDBEbUrZZKHjSVmYBWyq1QxVIeMmum2aZ+ASYdCBFk8ZD+gAeENopfqX
+         Fh7uKymCdfhjR5JxITx5BCzR1xL7Kj0q/drkhsSsJYnNh8GGneuUVkrEIkgN+z9Oz9NS
+         FMQS9rK0xw98AQGsggNwgQPkhxMROHMtM3HGZSo1kEWLV6KTrhZmJOMMkfVng4Z+IFdt
+         rM47YFdBFv44KtO+38aMbZ7wX3r51YZGlUPofDyg/UI+QQz1t0MQnLpJugFWJWQzR5/T
+         Xecw==
+X-Forwarded-Encrypted: i=1; AJvYcCVtQsliY+CRnJ0xUGYvpBieow1iOX9HzSqtPWO5L2Nyp98hoV7xRdvS/AIZby5Ev5qwatkZYVQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCvhYDjBx4qRjIVYuf/2TRlPYlE3aBNU5sGFm9Ftld6MKsa0xz
+	y2FZ8CAdYQi1lYBJcmUW+eNMpzQP2dO38UqQKXh3mCuRTLw+MJkBMShS4neE+og=
+X-Google-Smtp-Source: AGHT+IGRLlDbqNxsoLi87Nc6zewG08qTiA2jLORs6DC+oWcOtwio/WsZTF9GgEWch9+RqZOZLvwHMg==
+X-Received: by 2002:a05:6512:1390:b0:539:e6bf:ca9a with SMTP id 2adb3069b0e04-53b348b7e12mr18452412e87.6.1730806034904;
+        Tue, 05 Nov 2024 03:27:14 -0800 (PST)
 Received: from [192.168.0.40] ([176.61.106.227])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4327d5ac002sm184409155e9.5.2024.11.05.03.23.06
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432a6b4fd08sm9096735e9.12.2024.11.05.03.27.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Nov 2024 03:23:06 -0800 (PST)
-Message-ID: <3ae9d07c-173e-4715-8cb5-f3d84de14f39@linaro.org>
-Date: Tue, 5 Nov 2024 11:23:05 +0000
+        Tue, 05 Nov 2024 03:27:14 -0800 (PST)
+Message-ID: <a71e75e2-14fb-449f-bb27-2770261708ea@linaro.org>
+Date: Tue, 5 Nov 2024 11:27:13 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,8 +76,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] media: venus: hfi: add check to handle incorrect
- queue size
+Subject: Re: [PATCH 4/4] media: venus: hfi: add a check to handle OOB in sfr
+ region
 To: Vikash Garodia <quic_vgarodia@quicinc.com>,
  Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
  Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
@@ -85,66 +85,55 @@ To: Vikash Garodia <quic_vgarodia@quicinc.com>,
 Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org
 References: <20241105-venus_oob-v1-0-8d4feedfe2bb@quicinc.com>
- <20241105-venus_oob-v1-3-8d4feedfe2bb@quicinc.com>
+ <20241105-venus_oob-v1-4-8d4feedfe2bb@quicinc.com>
 Content-Language: en-US
 From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20241105-venus_oob-v1-3-8d4feedfe2bb@quicinc.com>
+In-Reply-To: <20241105-venus_oob-v1-4-8d4feedfe2bb@quicinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 05/11/2024 08:54, Vikash Garodia wrote:
-> qsize represents size of shared queued between driver and video
-> firmware. Firmware can modify this value to an invalid large value. In
-> such situation, empty_space will be bigger than the space actually
-> available. Since new_wr_idx is not checked, so the following code will
-> result in an OOB write.
-> ...
-> qsize = qhdr->q_size
-> 
-> if (wr_idx >= rd_idx)
->   empty_space = qsize - (wr_idx - rd_idx)
-> ....
-> if (new_wr_idx < qsize) {
->   memcpy(wr_ptr, packet, dwords << 2) --> OOB write
-> 
-> Add check to ensure qsize is within the allocated size while
-> reading and writing packets into the queue.
+> sfr->buf_size is in shared memory and can be modified by malicious user.
+> OOB write is possible when the size is made higher than actual sfr data
+> buffer.
 > 
 > Cc: stable@vger.kernel.org
 > Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
 > Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
 > ---
->   drivers/media/platform/qcom/venus/hfi_venus.c | 6 ++++++
->   1 file changed, 6 insertions(+)
+>   drivers/media/platform/qcom/venus/hfi_venus.c | 9 +++++++--
+>   1 file changed, 7 insertions(+), 2 deletions(-)
 > 
 > diff --git a/drivers/media/platform/qcom/venus/hfi_venus.c b/drivers/media/platform/qcom/venus/hfi_venus.c
-> index f9437b6412b91c2483670a2b11f4fd43f3206404..50d92214190d88eff273a5ba3f95486f758bcc05 100644
+> index 50d92214190d88eff273a5ba3f95486f758bcc05..c19d6bf686d0f31c6a2f551de3f7eb08031bde85 100644
 > --- a/drivers/media/platform/qcom/venus/hfi_venus.c
 > +++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-> @@ -187,6 +187,9 @@ static int venus_write_queue(struct venus_hfi_device *hdev,
->   	/* ensure rd/wr indices's are read from memory */
->   	rmb();
+> @@ -1041,18 +1041,23 @@ static void venus_sfr_print(struct venus_hfi_device *hdev)
+>   {
+>   	struct device *dev = hdev->core->dev;
+>   	struct hfi_sfr *sfr = hdev->sfr.kva;
+> +	u32 size;
+>   	void *p;
 >   
-> +	if (qsize > IFACEQ_QUEUE_SIZE/4)
-> +		return -EINVAL;
+>   	if (!sfr)
+>   		return;
+>   
+> -	p = memchr(sfr->data, '\0', sfr->buf_size);
+> +	size = sfr->buf_size;
+> +	if (size > ALIGNED_SFR_SIZE)
+> +		return;
 > +
->   	if (wr_idx >= rd_idx)
->   		empty_space = qsize - (wr_idx - rd_idx);
->   	else
-> @@ -255,6 +258,9 @@ static int venus_read_queue(struct venus_hfi_device *hdev,
->   	wr_idx = qhdr->write_idx;
->   	qsize = qhdr->q_size;
+> +	p = memchr(sfr->data, '\0', size);
+>   	/*
+>   	 * SFR isn't guaranteed to be NULL terminated since SYS_ERROR indicates
+>   	 * that Venus is in the process of crashing.
+>   	 */
+>   	if (!p)
+> -		sfr->data[sfr->buf_size - 1] = '\0';
+> +		sfr->data[size - 1] = '\0';
 >   
-> +	if (qsize > IFACEQ_QUEUE_SIZE/4)
-> +		return -EINVAL;
-> +
->   	/* make sure data is valid before using it */
->   	rmb();
->   
+>   	dev_err_ratelimited(dev, "SFR message from FW: %s\n", sfr->data);
+>   }
 > 
-
-You have this same calculation in venus_set_qhdr_defaults() really needs 
-a macro or something to stop repeating the same code in another patch later.
-
 Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
