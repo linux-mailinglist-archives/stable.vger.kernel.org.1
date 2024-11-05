@@ -1,189 +1,170 @@
-Return-Path: <stable+bounces-89871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 096F99BD259
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 17:30:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0EA09BD25D
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 17:31:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88F431F21E14
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 16:30:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8D1D2867E8
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 16:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2BCE2D7B8;
-	Tue,  5 Nov 2024 16:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D48417BED0;
+	Tue,  5 Nov 2024 16:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eAe23Yo4"
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="qVaOjrcF"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8231D9350
-	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 16:30:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39B22C190;
+	Tue,  5 Nov 2024 16:31:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730824223; cv=none; b=uIJlafoURSeqc/iXPTKCh/UsB7NtL1VSwlRRJesrtxf9b5OMDn8NBEchwuirSCzWEebTBcXRl5juTvTpi2nWmQrjKUDCsaKjgiGy2ZqPEDuIB8ujvgus9tmBensJqZ8LGl1Y/5Lk0e9fL1aDzwo1oQPIayTD2i3W36HH78V/dFA=
+	t=1730824281; cv=none; b=EcuL4cywhAfpvl9D1Gp6G2NLUyINVRfo4XnAVivOpvhi5j4QUI8S6ziqGCAhB6lirQic4CVCna/77E0SxBUtYh2fKbMe9+X7zMhLZfO+BtC7QeEe+c97vb3rLZdLfslrPJI42yWkFP49bUBaayiJdbtRvdAQdKE99iewqv9gon4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730824223; c=relaxed/simple;
-	bh=H7qmEk3avcg08zmriG4XbBLbUQh8Am5LlN2ksrBRskk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E4ahkeqYHpg3XIcmGtw9HotJdoORAvqELWXvs7DSj0KIkPquFckz5i0E9CDuZN6c68IViSIOBXiv68uHhazGkMCFstpS5qYqzyWT6XJRtdnijepWp5ztma63jM2owNNNbtPGcF3qP9A0/YMxnAL8AXhZlfp7ZFuJaM0RgNW8FoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eAe23Yo4; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1730824220;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=cmF2F32cQBYdqH1CMO+4/wu9yKevhwL17uZmQcUKwfA=;
-	b=eAe23Yo40e3fOxMxplI1YpQPRBl5MbxfZIKI4Kv3x2AlsMIpqkld4lU0TE4hQ1kCh9YQf2
-	USUAPBiWVvNwwu8xVaxVdTTRa7yyxTEkyMtIehtDihppubUpfSLl8sQR7zXPWrZ48dshvc
-	kkLrdo/cZ5UTmybOCgvOzZaX4lUUzcQ=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-327-jMNbUmiPNcW6CEMtKk4ndA-1; Tue, 05 Nov 2024 11:30:19 -0500
-X-MC-Unique: jMNbUmiPNcW6CEMtKk4ndA-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4315c1b5befso35697815e9.1
-        for <stable@vger.kernel.org>; Tue, 05 Nov 2024 08:30:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730824218; x=1731429018;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=cmF2F32cQBYdqH1CMO+4/wu9yKevhwL17uZmQcUKwfA=;
-        b=H3g8YSOAexE4yz7YzLVEvaKc5NYLAyG3jI+xVTvfMx42UPVlMFRZqTpf6ASs7CuBLI
-         COcNIRi269d+4vZUCJgUPY2jha8Ru60lYWJaei3YVq7dtn0O7NKdkdLfsgvSMlerP949
-         1AClNFOf29WLZlotc+/TBAEXAenQnQllgV/3wOjsm3pe3izdosqraXdb4B11vHG/ypmq
-         N8ZTXx2x6vU7Q3CIYmg9AExIagXiIbtP9eikJKz/c4zvlvNDX+shOOyx5YLz1Lmjbwgt
-         wou0N31i2XhVWMUP6SlNgs5rqY0BNxhihb8FWZHRvL677TBSpwiL/ay7DQG9ymlMuX4h
-         v0sA==
-X-Gm-Message-State: AOJu0YwlSzybktMV+Uwq+j5wM9BG0hI6LZPR2PQkAiJHl3OxCkFCrVs3
-	5DntfppAEVhnvEzLBJCIPeHKtq16inLW15oOjWXYsvYGP+X/gQxJJ0i8Ujjgmd66NP5KFH2yf5+
-	LlbncO/lmaau19/7IPVHVJUWnfp52PO65Akj6vkFUj8PTlEVluXN+IA==
-X-Received: by 2002:a05:600c:1c01:b0:431:9a68:ec84 with SMTP id 5b1f17b1804b1-4319ad04780mr290512925e9.23.1730824218181;
-        Tue, 05 Nov 2024 08:30:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGT4eVurJ2u6Ud2KN30KWfMRzEmnXSLCa7AMoFtZNl7TnhZK5RjpOXUNiQD/hQhJFV0RLNv5Q==
-X-Received: by 2002:a05:600c:1c01:b0:431:9a68:ec84 with SMTP id 5b1f17b1804b1-4319ad04780mr290512625e9.23.1730824217719;
-        Tue, 05 Nov 2024 08:30:17 -0800 (PST)
-Received: from [192.168.3.141] (p4ff23a40.dip0.t-ipconnect.de. [79.242.58.64])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd9a9a3bsm221773615e9.36.2024.11.05.08.30.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Nov 2024 08:30:16 -0800 (PST)
-Message-ID: <26be0c08-1c83-451d-902b-a843b9ef4b0e@redhat.com>
-Date: Tue, 5 Nov 2024 17:30:14 +0100
+	s=arc-20240116; t=1730824281; c=relaxed/simple;
+	bh=MDmKggEi6kmApuIt6Yt8mPHClxb1p8lHzd+eGxHmbHI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=D7QnGFV2oNP6FITCWCAo8tPP+MV+Rjg5nyEHs2ZHW7hSJp1PiwP/fu0jJm2pQx7/ZElZYhq9TdK79/8JYIGzypQmCVUa22GCWaDe5Ry4CuTAL547s2mPRAEZDR5gkbgl9PqOz1qhTxQGhd89Hmyzc6ZE18PlbCQgJ92C63MAzB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=qVaOjrcF; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1730824263; x=1731429063; i=wahrenst@gmx.net;
+	bh=uZMKt13pgpTh6sAh8BdybJCwC1878gT2xjYhwHNe3gA=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=qVaOjrcFZrNaf+cL8MfrYvZPZizl863UFQ7ALzP7jbkaWmeSledl592a5OETRGXd
+	 GXGJeVDFKadlJoHUxO8C7uagjAUCtmiSqGScB0D09DunkYInEtOyfLPsB0qQ93+G9
+	 OwbtOomtAlnbFOdMQ4I/Bkl0W9AfIbqHUnLpLnbxU5pBZC74ihIr5dk8YD0F5PIZ6
+	 BRJtJa+wQeXe5ToQiIu0feKMbY6AzzYG/TQMBN1V1tiBBF7qTsvVbfeQ3RxjD50F2
+	 M7fy55gYLiBL433wYInqnVZhdX+hZEVBKpkPwSRrrOyImSCePcjD/HvOLZ7z7Mvv5
+	 /qJ74o4RAJUVdb4n6w==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from stefanw-SCHENKER ([37.4.248.43]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MN5if-1tRGss2Siz-00SA0u; Tue, 05
+ Nov 2024 17:31:03 +0100
+From: Stefan Wahren <wahrenst@gmx.net>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Stefan Wahren <wahrenst@gmx.net>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2 net V2] net: vertexcom: mse102x: Fix possible double free of TX skb
+Date: Tue,  5 Nov 2024 17:31:01 +0100
+Message-Id: <20241105163101.33216-1-wahrenst@gmx.net>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6.y] mm: huge_memory: add vma_thp_disabled() and
- thp_disabled_by_hw()
-To: =?UTF-8?Q?Petr_Van=C4=9Bk?= <arkamar@atlas.cz>
-Cc: stable@vger.kernel.org, Kefeng Wang <wangkefeng.wang@huawei.com>,
- Leo Fu <bfu@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>, Hugh Dickins <hughd@google.com>,
- Janosch Frank <frankja@linux.ibm.com>, Matthew Wilcox <willy@infradead.org>
-References: <2024101842-empty-espresso-c8a3@gregkh>
- <20241022090755.4097604-1-david@redhat.com>
- <2024115125648-ZyoWEF1F7lBRpXqH-arkamar@atlas.cz>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <2024115125648-ZyoWEF1F7lBRpXqH-arkamar@atlas.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:XOmPgdJnJw9hThL2W2DfrsocRWKKuXAA12CFCzpFkyf+cPMtIO2
+ QHKBs1yiBmnaITpQf+0rnpbY6U5l8lfkPnL9E/vTtz71BEypwDJKfARBVCm0BIbnzqW3Xdv
+ S5PMYHiwqGxRtKEB3CRSjkxBK/4N3oqBDoaALlU6kqbXjgfw7CW9/dLiqj85+r3EBqscHti
+ D9oQPloGIwR0qoBqa2h/Q==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:sFhgYPjpdIY=;hK9vljsUSLRNjW4hVeA57JWASOv
+ 3z6CKhwYYmWYmXOSISMxsJAIUG0Q8/Ao9I2whtNlkTF4ubUj3qus4x2fwhdO8ecyO3pzWS1FX
+ MK1rgAcxdCtPfwtzH9aTDw4PWapRKd9Ba+GD5aSmm7BKy5m/GZ++psx8uOtYBPxl2FYoCefHh
+ J1jhmT4MYmpZjbq3Lrrb/Aw3nTV2WtIFS/RwnidukVGCd2b1MY30poJzRAKbe+kA99EuH6Hcp
+ Mxa/XPPiL3mBTtpclsuKLlz+qvkng4MJy08Yhq8SpMGIMxnDK7kHYcsLCcVCjlpw+mjExY4hA
+ 6C4Cy5XINfsc5KoBcsbfeMMqVecZ9k1CP9LKkikEvC+iDS+kdcqyx+7tAQ0W7I4zmSQVDMNGj
+ I3uG94kRRZSRAn6+Zj44GrnK+edqljhoMAHF4g7GU4RI98I0UqNB6HV5A2HJo406Gsa2fESYD
+ Vhu1i42GrpiVaK77S3xOvUB9ywLpwho7vjAqoUiBN1U7sxxO2m3vcTfTDQzprvda+zmAKv+qX
+ 3u9s/i6dA0YF4TaRy6GGF9AIhKtC0Sww11AClea7uWX1L6nnIYitDYZS7Yv4QRAAJzbmK1xW7
+ hSBHX9DeGvLahLm1TSvp/3FBORB0OibyI04MkvsMzyr9VVHyoHEypYXZBJQQA32Vt9RmzB8F9
+ R3OgbhLJQoUNN+rqfOOE3JTrn6TQGcbkd2CFrGDkNVAR3OhxOSOp5FpoDwv4yl15K8QtGOaHp
+ 8/q5OQn8LsZeYH+z3ZJzPVos7gk8AdKVEypNTlh5xOaNVtZV6umZ0CbUWYkVL2nG0hU91NDTq
+ ihWA4X493x0v+vNsc2Nr6yHQ==
 
-On 05.11.24 13:56, Petr Vaněk wrote:
-> Hi David,
-> 
+The scope of the TX skb is wider than just mse102x_tx_frame_spi(),
+so in case the TX skb room needs to be expanded, we should free the
+the temporary skb instead of the original skb. Otherwise the original
+TX skb pointer would be freed again in mse102x_tx_work(), which leads
+to crashes:
 
-Hi Petr,
+  Internal error: Oops: 0000000096000004 [#2] PREEMPT SMP
+  CPU: 0 PID: 712 Comm: kworker/0:1 Tainted: G      D            6.6.23
+  Hardware name: chargebyte Charge SOM DC-ONE (DT)
+  Workqueue: events mse102x_tx_work [mse102x]
+  pstate: 20400009 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=3D--)
+  pc : skb_release_data+0xb8/0x1d8
+  lr : skb_release_data+0x1ac/0x1d8
+  sp : ffff8000819a3cc0
+  x29: ffff8000819a3cc0 x28: ffff0000046daa60 x27: ffff0000057f2dc0
+  x26: ffff000005386c00 x25: 0000000000000002 x24: 00000000ffffffff
+  x23: 0000000000000000 x22: 0000000000000001 x21: ffff0000057f2e50
+  x20: 0000000000000006 x19: 0000000000000000 x18: ffff00003fdacfcc
+  x17: e69ad452d0c49def x16: 84a005feff870102 x15: 0000000000000000
+  x14: 000000000000024a x13: 0000000000000002 x12: 0000000000000000
+  x11: 0000000000000400 x10: 0000000000000930 x9 : ffff00003fd913e8
+  x8 : fffffc00001bc008
+  x7 : 0000000000000000 x6 : 0000000000000008
+  x5 : ffff00003fd91340 x4 : 0000000000000000 x3 : 0000000000000009
+  x2 : 00000000fffffffe x1 : 0000000000000000 x0 : 0000000000000000
+  Call trace:
+   skb_release_data+0xb8/0x1d8
+   kfree_skb_reason+0x48/0xb0
+   mse102x_tx_work+0x164/0x35c [mse102x]
+   process_one_work+0x138/0x260
+   worker_thread+0x32c/0x438
+   kthread+0x118/0x11c
+   ret_from_fork+0x10/0x20
+  Code: aa1303e0 97fffab6 72001c1f 54000141 (f9400660)
 
-> On Tue, Oct 22, 2024 at 11:07:55AM +0200, David Hildenbrand wrote:
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 9aea11b1477c..dfd6577225d8 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -78,19 +78,8 @@ bool hugepage_vma_check(struct vm_area_struct *vma, unsigned long vm_flags,
->>   	if (!vma->vm_mm)		/* vdso */
->>   		return false;
->>   
->> -	/*
->> -	 * Explicitly disabled through madvise or prctl, or some
->> -	 * architectures may disable THP for some mappings, for
->> -	 * example, s390 kvm.
->> -	 * */
->> -	if ((vm_flags & VM_NOHUGEPAGE) ||
->> -	    test_bit(MMF_DISABLE_THP, &vma->vm_mm->flags))
->> -		return false;
->> -	/*
->> -	 * If the hardware/firmware marked hugepage support disabled.
->> -	 */
->> -	if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_UNSUPPORTED))
->> -		return false;
->> +	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vm_flags))
->> +		return 0;
-> 
-> Shouldn't this return false for consistency with the rest of the
-> function?
+Cc: stable@vger.kernel.org
+Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+=2D--
+ drivers/net/ethernet/vertexcom/mse102x.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Yes, that's better. Same applies to the 6.1.y backport of this.
+diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethern=
+et/vertexcom/mse102x.c
+index a04d4073def9..2c37957478fb 100644
+=2D-- a/drivers/net/ethernet/vertexcom/mse102x.c
++++ b/drivers/net/ethernet/vertexcom/mse102x.c
+@@ -222,7 +222,7 @@ static int mse102x_tx_frame_spi(struct mse102x_net *ms=
+e, struct sk_buff *txp,
+ 	struct mse102x_net_spi *mses =3D to_mse102x_spi(mse);
+ 	struct spi_transfer *xfer =3D &mses->spi_xfer;
+ 	struct spi_message *msg =3D &mses->spi_msg;
+-	struct sk_buff *tskb;
++	struct sk_buff *tskb =3D NULL;
+ 	int ret;
 
--- 
-Cheers,
+ 	netif_dbg(mse, tx_queued, mse->ndev, "%s: skb %p, %d@%p\n",
+@@ -235,7 +235,6 @@ static int mse102x_tx_frame_spi(struct mse102x_net *ms=
+e, struct sk_buff *txp,
+ 		if (!tskb)
+ 			return -ENOMEM;
 
-David / dhildenb
+-		dev_kfree_skb(txp);
+ 		txp =3D tskb;
+ 	}
+
+@@ -257,6 +256,8 @@ static int mse102x_tx_frame_spi(struct mse102x_net *ms=
+e, struct sk_buff *txp,
+ 		mse->stats.xfer_err++;
+ 	}
+
++	dev_kfree_skb(tskb);
++
+ 	return ret;
+ }
+
+=2D-
+2.34.1
 
 
