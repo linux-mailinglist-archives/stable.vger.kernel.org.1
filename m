@@ -1,108 +1,161 @@
-Return-Path: <stable+bounces-89860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45A899BD219
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 17:17:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 076F49BD21C
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 17:17:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F19111F21CF3
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 16:17:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF5871F218DE
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 16:17:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5511D17BB28;
-	Tue,  5 Nov 2024 16:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E7F1714B6;
+	Tue,  5 Nov 2024 16:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZfgdHdL0"
-X-Original-To: stable@vger.kernel.org
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttdfPDUE"
+X-Original-To: Stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD4513E3EF;
-	Tue,  5 Nov 2024 16:16:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5AF1170A2A
+	for <Stable@vger.kernel.org>; Tue,  5 Nov 2024 16:17:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730823422; cv=none; b=cs5u18JSxuUMblj948cBXm5auw/KiJakkd4CFho/YyW69mROSqALvdWvWhWxYuXlpJJv8Kh0xrPotph+s/huSfQbGMOn5tCf+p4OcGoQqOQ0bwGd2KAFlAaRdNl9ScHS+8vQi+jhMToB8zganCDgcspQixtZlDlZuizY0Mnn/Wk=
+	t=1730823442; cv=none; b=f8EKolu3Lj7THl3TQ84TXGfTqi4Ip6aHCWGhSfVuWiNpT7ZaGsKMPFrhKlNxMnwSBYEhtsmgjy2vDdTON4rPQv5wYszbuDRE3iHCpxUI3iisV7bET1abqP0zFP7CHVc4qxX5jcteCl/J2nB43VRfv2RRCHzYXyzBy3aVmNhij3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730823422; c=relaxed/simple;
-	bh=r1tcWWlCoiF7Her/h61mI6QbANQB+2UXYZ63skQz0jk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lJEUtP87VF0yUbrnjoxnOCn72oZOxJC8wQAUR2GhKWtL4nib5+S6LSQZulOQLcGIX804bCX562n4Mvs4S+HeI18/wOLhFqudpW1kjs05+xSKnktyUmcefE6F7QoRLnb5JpRouDlxyMI+gpgQbKEDJegzUMejXxL2aFGT95Mw1Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZfgdHdL0; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D741DC0002;
-	Tue,  5 Nov 2024 16:16:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1730823415;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b9i1yywh+snSHoIlcvM9qG34+tz1N/7OY25hu/QBJ3s=;
-	b=ZfgdHdL0YSm0aQHA/bZ2tNWpbxLtSOSTU1WoOJrA6XZOxkyL9kUpHIyR5/5Y8mM7jrCbz6
-	DbVC1Itgpu5qGotLJMyW5FJzO2bsi26OU7pRBWMucG0EWFiR+h4kggVoFA6JiwP1nCg4L3
-	+l08sMlkw45HFTOizi3s3ocrTuvv2G+FSFFu/zbCvlpxR82Gs17HUvvaadDBOjitqU+tqL
-	hckqk0cMESGnE9a81dF3cnPE4T4p5wcneVlU2yR6p0grolRNZWVRIHOXZJQCFx4Bbz4DlE
-	FgwGXgXqKZJGZu9AtprrgXcs08OBLCvqC8x0lmRdcu7muMLMWuMlA6FT/zpEDQ==
-Date: Tue, 5 Nov 2024 17:16:54 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Saravana Kannan <saravanak@google.com>, Bjorn Helgaas
- <bhelgaas@google.com>, Lizhi Hou <lizhi.hou@amd.com>,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- linux-pci@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>,
- Horatiu Vultur <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 2/6] PCI: of: Use device_{add,remove}_of_node() to
- attach of_node to existing device
-Message-ID: <20241105171654.3c45c80e@bootlin.com>
-In-Reply-To: <20241104202008.GB361448-robh@kernel.org>
-References: <20241104172001.165640-1-herve.codina@bootlin.com>
-	<20241104172001.165640-3-herve.codina@bootlin.com>
-	<20241104202008.GB361448-robh@kernel.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1730823442; c=relaxed/simple;
+	bh=hCdOCVlL3kMzhK4cBkaXvB4Xj5sfIJq4gRu/KYFbVv8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EDFpg5Y0vPLgtiJ2wGWQCA2prlQIAcYcNdoUo5N/B91HeK+F3Qdp43YWq/J2ACP2h5z7TKSyydWv5O5EMCY0KxUsTa3Q2CBU/bWx2c2qvRGn2Lt/U0gpOrMqfOqSGLdsWd2s138qSNEkadYljUP4BvRrt+8IiqFm/d8aFkGXNGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ttdfPDUE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC94C4CECF;
+	Tue,  5 Nov 2024 16:17:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1730823442;
+	bh=hCdOCVlL3kMzhK4cBkaXvB4Xj5sfIJq4gRu/KYFbVv8=;
+	h=Subject:To:Cc:From:Date:From;
+	b=ttdfPDUEluYsi3rB24VLoFX8valHFAq6XcjdLfteyQ6GTJjLS3Ozy7uteEE7e+khc
+	 HvGFOg69Vgd1qgUfOH/qXz5jNSrJgBgj1kjpp5Axuwse8kbWWGJ8DoSuVxhG3HkVxl
+	 pSqVNwZIgfT1NBqlVywrV0mUHfN1LC5/L/geL440=
+Subject: FAILED: patch "[PATCH] iio: adc: ad7380: fix supplies for ad7380-4" failed to apply to 6.11-stable tree
+To: jstephan@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,dlechner@baylibre.com,nuno.sa@analog.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 05 Nov 2024 17:17:04 +0100
+Message-ID: <2024110504-eloquent-stalling-91df@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
 
-Hi Rob,
 
-On Mon, 4 Nov 2024 14:20:08 -0600
-Rob Herring <robh@kernel.org> wrote:
+The patch below does not apply to the 6.11-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-> On Mon, Nov 04, 2024 at 06:19:56PM +0100, Herve Codina wrote:
-> > The commit 407d1a51921e ("PCI: Create device tree node for bridge")
-> > creates of_node for PCI devices. The newly created of_node is attached
-> > to an existing device. This is done setting directly pdev->dev.of_node
-> > in the code.
-> > 
-> > Even if pdev->dev.of_node cannot be previously set, this doesn't handle
-> > the fwnode field of the struct device. Indeed, this field needs to be
-> > set if it hasn't already been set.
-> > 
-> > device_{add,remove}_of_node() have been introduced to handle this case.
-> > 
-> > Use them instead of the direct setting.
-> > 
-> > Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
-> > Cc: stable@vger.kernel.org  
-> 
-> I don't think this is stable material. What exactly would is broken 
-> which would be fixed by just the first 2 patches?
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Hum indeed, I haven't observed a broken behavior in current kernel.
-I will remove Fixes and Cc in the next iteration.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.11.y
+git checkout FETCH_HEAD
+git cherry-pick -x 05f9c67179c9a8d66dee175fb4b17f380908a26f
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024110504-eloquent-stalling-91df@gregkh' --subject-prefix 'PATCH 6.11.y' HEAD^..
 
-Best regards,
-Hervé
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 05f9c67179c9a8d66dee175fb4b17f380908a26f Mon Sep 17 00:00:00 2001
+From: Julien Stephan <jstephan@baylibre.com>
+Date: Tue, 22 Oct 2024 15:22:39 +0200
+Subject: [PATCH] iio: adc: ad7380: fix supplies for ad7380-4
+
+ad7380-4 is the only device in the family that does not have an internal
+reference. It uses "refin" as a required external reference.
+All other devices in the family use "refio"" as an optional external
+reference.
+
+Fixes: 737413da8704 ("iio: adc: ad7380: add support for ad738x-4 4 channels variants")
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+Link: https://patch.msgid.link/20241022-ad7380-fix-supplies-v3-4-f0cefe1b7fa6@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
+index b107d8e97ab3..fb728570debe 100644
+--- a/drivers/iio/adc/ad7380.c
++++ b/drivers/iio/adc/ad7380.c
+@@ -89,6 +89,7 @@ struct ad7380_chip_info {
+ 	bool has_mux;
+ 	const char * const *supplies;
+ 	unsigned int num_supplies;
++	bool external_ref_only;
+ 	const char * const *vcm_supplies;
+ 	unsigned int num_vcm_supplies;
+ 	const unsigned long *available_scan_masks;
+@@ -431,6 +432,7 @@ static const struct ad7380_chip_info ad7380_4_chip_info = {
+ 	.num_simult_channels = 4,
+ 	.supplies = ad7380_supplies,
+ 	.num_supplies = ARRAY_SIZE(ad7380_supplies),
++	.external_ref_only = true,
+ 	.available_scan_masks = ad7380_4_channel_scan_masks,
+ 	.timing_specs = &ad7380_4_timing,
+ };
+@@ -1047,17 +1049,31 @@ static int ad7380_probe(struct spi_device *spi)
+ 				     "Failed to enable power supplies\n");
+ 	fsleep(T_POWERUP_US);
+ 
+-	/*
+-	 * If there is no REFIO supply, then it means that we are using
+-	 * the internal 2.5V reference, otherwise REFIO is reference voltage.
+-	 */
+-	ret = devm_regulator_get_enable_read_voltage(&spi->dev, "refio");
+-	if (ret < 0 && ret != -ENODEV)
+-		return dev_err_probe(&spi->dev, ret,
+-				     "Failed to get refio regulator\n");
++	if (st->chip_info->external_ref_only) {
++		ret = devm_regulator_get_enable_read_voltage(&spi->dev,
++							     "refin");
++		if (ret < 0)
++			return dev_err_probe(&spi->dev, ret,
++					     "Failed to get refin regulator\n");
+ 
+-	external_ref_en = ret != -ENODEV;
+-	st->vref_mv = external_ref_en ? ret / 1000 : AD7380_INTERNAL_REF_MV;
++		st->vref_mv = ret / 1000;
++
++		/* these chips don't have a register bit for this */
++		external_ref_en = false;
++	} else {
++		/*
++		 * If there is no REFIO supply, then it means that we are using
++		 * the internal reference, otherwise REFIO is reference voltage.
++		 */
++		ret = devm_regulator_get_enable_read_voltage(&spi->dev,
++							     "refio");
++		if (ret < 0 && ret != -ENODEV)
++			return dev_err_probe(&spi->dev, ret,
++					     "Failed to get refio regulator\n");
++
++		external_ref_en = ret != -ENODEV;
++		st->vref_mv = external_ref_en ? ret / 1000 : AD7380_INTERNAL_REF_MV;
++	}
+ 
+ 	if (st->chip_info->num_vcm_supplies > ARRAY_SIZE(st->vcm_mv))
+ 		return dev_err_probe(&spi->dev, -EINVAL,
+
 
