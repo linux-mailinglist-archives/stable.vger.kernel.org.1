@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-89807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2505B9BC92B
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 10:32:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E1D9BC94A
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 10:35:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD238280C19
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 09:32:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3831D282574
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 09:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801F21D014E;
-	Tue,  5 Nov 2024 09:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14691D2700;
+	Tue,  5 Nov 2024 09:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zm6ldfxw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEyEfIhK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E62C1CEAA0;
-	Tue,  5 Nov 2024 09:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB9A1D0E13;
+	Tue,  5 Nov 2024 09:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730799118; cv=none; b=WL5jFjv0qWXvnmHNQYKrdtdQBn757iPgd6tO5RLS6KDp1aFiAi0k0voeS06c9E0dVO7Iq2kgfaeSI6y+qO2xaYJke33aMwH9V1aXzVt3dDrNda0Ny0MLJZiswPrk7hT+xW9GugwM+YmHfQLA0HR+9h3NjCdd7KgUUdWFfZqOYVk=
+	t=1730799208; cv=none; b=LTvkuJfUyJse5NNJqz4vC+lNyEBYHfW9W+3mKknFSKxe8puPnULnfr8oby0XGYnYMs6qdNtQsBrZo/g5wsKACNTLgj40n6nHen2uS6Dn8IkG/SB3kT9tNPeLfraNctq/rL7Is9q2iGWQhq8yP2UoJpiRxd/IhSVb6e3q/tjl/ZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730799118; c=relaxed/simple;
-	bh=wPIGb8hV6N56iKxEiA9YRRsc4R1JZzDisefhuwIws1M=;
+	s=arc-20240116; t=1730799208; c=relaxed/simple;
+	bh=K9OCx9LNtrdZGJzEppAmA6jNl01dy5J7+Zp9gcGsYTg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WA1X+j8q16CWIADBVnhXSlfTUJmtDMRncwW9H01Gl87/6tww9RRU334X+a3qGGm222GVwaKsyoUEbNpZyuezH+LpAFvLkAxYMlNNp1LT2ZwhkE11kr6YZOCmuZ2pEF8b7gRx1LT1BIfSX3B1Xwwxxfr37Q6p9tqab+98qVNQb88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zm6ldfxw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 685E4C4CED0;
-	Tue,  5 Nov 2024 09:31:57 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=awdtvQQ0jKl9owPmgFxp/psQK/Iw25dogk9/5QsIVUnkL2Bwr/9QB709l8rfz+1jLaZGzWUEmbAb0I8kyUcYV0sz6LKHl9aiJ55SHoCw7fDhkV8gGrBDRnS10J9rBNaFbWW525Hj7QiGCGP65onk7R3xGSZG3xEd1vlPZaxvaEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEyEfIhK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71791C4CECF;
+	Tue,  5 Nov 2024 09:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730799117;
-	bh=wPIGb8hV6N56iKxEiA9YRRsc4R1JZzDisefhuwIws1M=;
+	s=korg; t=1730799205;
+	bh=K9OCx9LNtrdZGJzEppAmA6jNl01dy5J7+Zp9gcGsYTg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zm6ldfxwzvWdA9DaRFByGCE5HxEOdTjyVqD/s5bzYtAbw2MTb7z8DIthTVrdSg+CM
-	 QCge7X6VxjzgXzGtyBG7h0T/rSFYNDC6TQOJGhX3dGNlGIQYCmLPeD/ZEwVSOtnNWK
-	 j1v2sd0+zsYl+pp6TAhMmeKPhUUGk19QMeoNQjnc=
-Date: Tue, 5 Nov 2024 10:31:40 +0100
+	b=CEyEfIhK9AOvRh5qngG6kbxuo4g9VinrcmF2p5DlPh8ZgaQij75X4YNNRdvpYavti
+	 dhUh6CPRn/1Waj6lEB3rTy7ADxIEwnaQfyCSj63uF2IJuhv1sB7L92TwfbRBMIRcqv
+	 nzHzidKJyIaU3+vdNdugPgEGIQnH8w5J/wFh4YkM=
+Date: Tue, 5 Nov 2024 10:33:08 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Raju Rangoju <Raju.Rangoju@amd.com>
 Cc: linux-usb@vger.kernel.org, mathias.nyman@intel.com,
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Subject: Re: [PATCH] usb: xhci: quirk for data loss in ISOC transfers
-Message-ID: <2024110521-thwarting-imagines-567e@gregkh>
+Message-ID: <2024110557-trusting-dismount-1e27@gregkh>
 References: <20241105091850.3094-1-Raju.Rangoju@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -79,9 +79,48 @@ On Tue, Nov 05, 2024 at 02:48:50PM +0530, Raju Rangoju wrote:
 > 
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+> ---
+>  drivers/usb/host/xhci-mem.c |  5 +++++
+>  drivers/usb/host/xhci-pci.c | 14 ++++++++++++++
+>  drivers/usb/host/xhci.h     |  1 +
+>  3 files changed, 20 insertions(+)
+> 
+> diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+> index d2900197a49e..4892bb9afa6e 100644
+> --- a/drivers/usb/host/xhci-mem.c
+> +++ b/drivers/usb/host/xhci-mem.c
+> @@ -1426,6 +1426,11 @@ int xhci_endpoint_init(struct xhci_hcd *xhci,
+>  	/* Periodic endpoint bInterval limit quirk */
+>  	if (usb_endpoint_xfer_int(&ep->desc) ||
+>  	    usb_endpoint_xfer_isoc(&ep->desc)) {
+> +		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_9) &&
+> +		    usb_endpoint_xfer_int(&ep->desc) &&
+> +		    interval >= 9) {
+> +			interval = 8;
+> +		}
+>  		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_7) &&
+>  		    udev->speed >= USB_SPEED_HIGH &&
+>  		    interval >= 7) {
+> diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+> index cb07cee9ed0c..a078e2e5517d 100644
+> --- a/drivers/usb/host/xhci-pci.c
+> +++ b/drivers/usb/host/xhci-pci.c
+> @@ -284,6 +284,20 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
+>  	if (pdev->vendor == PCI_VENDOR_ID_NEC)
+>  		xhci->quirks |= XHCI_NEC_HOST;
+>  
+> +	if (pdev->vendor == PCI_VENDOR_ID_AMD &&
+> +	    (pdev->device == 0x13ed ||
+> +	     pdev->device == 0x13ee ||
+> +	     pdev->device == 0x148c ||
+> +	     pdev->device == 0x15d4 ||
+> +	     pdev->device == 0x15d5 ||
+> +	     pdev->device == 0x15e0 ||
+> +	     pdev->device == 0x15e1 ||
+> +	     pdev->device == 0x15e5))
 
-What commit id does this fix?  Should it go to stable kernels, and if
-so, how far back?
+Any need/want to name these pci devices with something we can refer to
+other than a hex value?
 
 thanks,
 
