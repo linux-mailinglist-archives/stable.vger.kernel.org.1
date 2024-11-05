@@ -1,115 +1,137 @@
-Return-Path: <stable+bounces-89929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A5629BD81D
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 23:06:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F1669BD903
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 23:48:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5F1F1F2410D
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 22:06:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16A4C1F23981
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 22:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FFF21503B;
-	Tue,  5 Nov 2024 22:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C79C21642A;
+	Tue,  5 Nov 2024 22:48:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DmaRe4vD"
+	dkim=pass (2048-bit key) header.d=alfmarius.net header.i=@alfmarius.net header.b="waeDF8k5";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="g9e3CEbU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405E21FF7AF;
-	Tue,  5 Nov 2024 22:06:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4144F216420
+	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 22:48:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730844405; cv=none; b=BNCYJfWCtpaQQT/J6YOBI44zH8moadZiuT7DWoykkX2bKaQm1sSDaO4fmcr3Yrgt8oj+4Hh00GPufjuGoYi4B4NFz8T/Ju8+th4JkstfC9CzWze/nlQvWm6bNp/VnllumeaXP6JqOwk8EU/6vukX9W8XuLMVOs5imfmCt2pBGIA=
+	t=1730846895; cv=none; b=kvMwKwPNxxiO40jdCbLeqGYYBC7a1yDTaNd9nbhDU1I3IpQI+v0aYRCYG0FJPmRZVmXSSub7XWrwA8KHbFR1SMnt/3SsC76LKuG9QXaysTlx1SQYsKAdXr8tVbinkZHcFmvUFv7cjs7LWOZYzdZP+KiPaXNqg22kgEv3Hl9ouC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730844405; c=relaxed/simple;
-	bh=dwqnO8/nIbNQ8/CW7G0lUHOeCwGPaeu58QibsucpppQ=;
-	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YRMOAsA3uCFDOBraBZrBHHQRTZQ+EEWUabt0TnJoIhhwcHuw7CN+EzbSz6nv27nRy3eL9TconWUgiGD6wkBzEIDItxyLa7xjlxu/3h+RrBBAvNXkfI4N+cIhPaIo3fbKB89UyTyh+PMqDEr+PkjfSft+xXXZbs+I1cTAOu/EOiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DmaRe4vD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18063C4CECF;
-	Tue,  5 Nov 2024 22:06:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730844405;
-	bh=dwqnO8/nIbNQ8/CW7G0lUHOeCwGPaeu58QibsucpppQ=;
-	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
-	b=DmaRe4vDOMg2AgPOsjI9Emrjp8HBeLbyfNCeChJeSByJrqYgUnK7u24ixMe8IGDWf
-	 hpUNZMRJ5GIpxnLaEs3DngedBxj9rJN8JUgWJgXNe/ZxyQuwJVR4waKt+kULOc+Jcc
-	 DlAqfuo6A8wnOh5orNAAJYXvHcHbM5M2MaCqGtR2obEgOJqxbo3UEyGkI8nBhvNq7p
-	 SJolnjyy0/taOs/1XttIKNgj0VydDMlHdFZ+YrEdyrd8MZJY70vn9m+Z1h+rYzufzq
-	 MIYbRkbkcsrwgr5IRuGSApQ4ZHlBdRGjXLEjBr/5U8jHaynPMFSCEMIGU2Nv5ypiDv
-	 pCcwCS98MZILA==
-Date: Tue, 05 Nov 2024 14:06:44 -0800
-Subject: [PATCH 01/23] xfs: fix simplify extent lookup in
- xfs_can_free_eofblocks
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: cem@kernel.org, djwong@kernel.org
-Cc: stable@vger.kernel.org, linux-xfs@vger.kernel.org
-Message-ID: <173084394467.1868694.16975664441483419125.stgit@frogsfrogsfrogs>
-In-Reply-To: <173084394391.1868694.10289808022146677978.stgit@frogsfrogsfrogs>
-References: <173084394391.1868694.10289808022146677978.stgit@frogsfrogsfrogs>
+	s=arc-20240116; t=1730846895; c=relaxed/simple;
+	bh=iW1tNc9O7uEvjUQwmdt1RUFW81Id0+IQ9wZ8Pyt34VM=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:Subject:Content-Type; b=c7cXahG1ckq59YO+RY7i9mtlCHLM9Z6PR1/TL90aDa9xIQmD1D8Kt27xhc00DBsnPE5yWt36xEYnQuEs7t5vQ6btRARHDEWtT6btnHcLYlBrJAYfTaBfcqHX6fduobO9z+aTMRMgNCrn0hzd5qryk9hwP86bvqYhED96faR+G5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alfmarius.net; spf=pass smtp.mailfrom=alfmarius.net; dkim=pass (2048-bit key) header.d=alfmarius.net header.i=@alfmarius.net header.b=waeDF8k5; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=g9e3CEbU; arc=none smtp.client-ip=202.12.124.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alfmarius.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alfmarius.net
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 39AFC2540160;
+	Tue,  5 Nov 2024 17:48:12 -0500 (EST)
+Received: from phl-imap-08 ([10.202.2.84])
+  by phl-compute-03.internal (MEProxy); Tue, 05 Nov 2024 17:48:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alfmarius.net;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:message-id:mime-version
+	:reply-to:subject:subject:to:to; s=fm3; t=1730846892; x=
+	1730933292; bh=RoPwgRrou0yJo6bFtd+HRP8JHVcoD8XHfthAs6rLsJg=; b=w
+	aeDF8k5qY+ondh/tCB92iLXE8d4ozutzyovOrR16PVtwfQd/4OnKeTidTxExdgYv
+	o718JYqiBPZaWDqV4j0venioR2D52g4KBBzVWQj6otGVLsLAq4UaRLNDJ+QfcMwS
+	MOlpDVTpwJwYkilmbwoW1JsyBPkjCEDqggow1BvBVvV4nIX9knvZDzM4PXJ2ELk9
+	oA5koaegs1BJl6GG+L5v7CWcBwpQ/QGZta0XaTr4RVPRN+HsYDoczY1zhe5bpvrZ
+	PJ6SPbuEQk38Ddt256K+1IwDkEyw/kl4dmIyOUiVBh/PcTbf+rUn5CdrD/pwMCA+
+	fq3e8KE8SGXmu1HsnMHqQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1730846892; x=1730933292; bh=RoPwgRrou0yJo6bFtd+HRP8JHVco
+	D8XHfthAs6rLsJg=; b=g9e3CEbUK9HPPvfU/KNzDlWFi/StOsLVs4+FRo674fC6
+	N1jA6y1oitkt/U2jOPzIJJww7nBhe2+OUA18mDRdXzlL/S54wwWMXkZ7GPKqvYa2
+	kclbte++zPuEwESEba/BgIIrGWbG0aaJ/WbCe8IwPub18sKP/KB/MFC1U7h+ZrRu
+	W0bKy/Sc6nW2YBjZnHa3t5AsNeE8i2R6O9Y98ykVeIwxVHWQ7L4D5Df3X5T5RIlZ
+	gmmjNcd+8lvx4eQWI1tuPUtSruzKFmg0FFbpShKpK7qOYGr/ZjRbUumA3h5jFTLk
+	BWbGj7sgWdNDwq/99Vv5OmU/7lBjMGifgNCcFKSMUw==
+X-ME-Sender: <xms:q6AqZ9VCkq_DLNM-6rpPlXe8dRajsl63jdwfvxt4HMn2LOFghgJs7g>
+    <xme:q6AqZ9nuo8OQr7-zLznfKwv4MgOx565qxsh2RVAmgCegwcbXFj9zWLn13xbu1dExg
+    V5lGXPUfAobZA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrtddugddtfecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpefoggffhffvvefkufgtgfesthejredtredttdenucfh
+    rhhomhepfdetlhhfucforghrihhushdfuceophhoshhtsegrlhhfmhgrrhhiuhhsrdhnvg
+    htqeenucggtffrrghtthgvrhhnpeegtdekvdejffffuddvgeektddtfeekheeigeegffei
+    udfgteeghfejudelgfduvdenucffohhmrghinheprghrtghhlhhinhhugidrohhrghdpgh
+    hithhhuhgsrdgtohhmpdhpkhhgsghuihhlugdrtghomhenucevlhhushhtvghrufhiiigv
+    pedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehpohhsthesrghlfhhmrghrihhushdrnh
+    gvthdpnhgspghrtghpthhtohepgedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohep
+    sggrthihihgvvhesghhmrghilhdrtghomhdprhgtphhtthhopehkvhgrlhhosehkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopehrvghgrhgvshhsihhonhhssehlihhsthhsrdhlihhn
+    uhigrdguvghvpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorh
+    hg
+X-ME-Proxy: <xmx:q6AqZ5YA0OrE8FoTdKh5wJ0juiptQhQcNg5VKbJtM5raIYfpfyjEWg>
+    <xmx:q6AqZwVwQr49VjsJmxTSdaecstGBTDJrNOswkF9pKT6Y3-Yfyf5hig>
+    <xmx:q6AqZ3n0zYliajz3ocPusEPqKE5vbXCU7Qys34LD1SYebkZcQPNP1Q>
+    <xmx:q6AqZ9dpyISGk_ymKrx0ARh0k1T6IR5Ca9nuHPCO3gIZkUEIJzwRBg>
+    <xmx:rKAqZ1iTTVLOb-k3zGqFvY4iid7X5d0wbTFLzvt9teFTJbobjQbbr8Fn>
+Feedback-ID: ib5844192:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 9D75418A0068; Tue,  5 Nov 2024 17:48:11 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Date: Tue, 05 Nov 2024 23:47:08 +0100
+From: "Alf Marius" <post@alfmarius.net>
+To: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev, "Andrii Batyiev" <batyiev@gmail.com>,
+ "Kalle Valo" <kvalo@kernel.org>
+Message-Id: <60f752e8-787e-44a8-92ae-48bdfc9b43e7@app.fastmail.com>
+Subject: [REGRESSION] The iwl4965 driver broke somewhere between 6.10.10 and 6.11.5
+ (probably 6.11rc)
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
-From: Darrick J. Wong <djwong@kernel.org>
+Hi,
+I recently installed Arch Linux on an old laptop (Fujitsu-Siemens AMILO Xi 2550) and noticed that:
 
-In commit 11f4c3a53adde, we tried to simplify the extent lookup in
-xfs_can_free_eofblocks so that it doesn't incur the overhead of all the
-extra stuff that xfs_bmapi_read does around the iext lookup.
+- when booting Linux from the Arch ISO (kernel version 6.10.10) WIFI is working fine
+- after installing Arch Linux from the ISO and booting (kernel version 6.11.5) WIFI was not working properly
 
-Unfortunately, this causes regressions on generic/603, xfs/108,
-generic/219, xfs/173, generic/694, xfs/052, generic/230, and xfs/441
-when always_cow is turned on.  In all cases, the regressions take the
-form of alwayscow files consuming rather more space than the golden
-output is expecting.  I observed that in all these cases, the cause of
-the excess space usage was due to CoW fork delalloc reservations that go
-beyond EOF.
+By "not working properly" I mean: 
+downloading small files or installing a few small packages was working ok, but when downloading larger files or installing larger packages with lots of dependencies, the connection would gradually slow down and eventually die.
 
-For alwayscow files we allow posteof delalloc CoW reservations because
-all writes go through the CoW fork.  Recall that all extents in the CoW
-fork are accounted for via i_delayed_blks, which means that prior to
-this patch, we'd invoke xfs_free_eofblocks on first close if anything
-was in the CoW fork.  Now we don't do that.
+I reported this on the Arch Linux forum (https://bbs.archlinux.org/viewtopic.php?pid=2206757)
+and some helpful memeber suggested that this might be the commit that broke things:
+https://github.com/torvalds/linux/commit/02b682d54598f61cbb7dbb14d98ec1801112b878
 
-Fix the problem by reverting the removal of the i_delayed_blks check.
+An Arch Linux packet manager (gromit) helped me debug this issue by building a couple of kernels that I tested.
 
-Cc: <stable@vger.kernel.org> # v6.12-rc1
-Fixes: 11f4c3a53adde ("xfs: simplify extent lookup in xfs_can_free_eofblocks")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
----
- fs/xfs/xfs_bmap_util.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+- https://pkgbuild.com/\~gromit/linux-bisection-kernels/linux-mainline-6.12rc5-1-x86_64.pkg.tar.zst
+- https://pkgbuild.com/\~gromit/linux-bisection-kernels/linux-mainline-6.12rc5-1.1-x86_64.pkg.tar.zst
 
+The first one didn't work, but the second (in which he reverted the commit linked above) did fix my problem.
+So, I guess this commit should be investigated by those in the know.
+Thats why I also added Andrii and Kalle to CC as they are listed in the commit message.
 
-diff --git a/fs/xfs/xfs_bmap_util.c b/fs/xfs/xfs_bmap_util.c
-index 4719ec90029cb7..edaf193dbd5ccc 100644
---- a/fs/xfs/xfs_bmap_util.c
-+++ b/fs/xfs/xfs_bmap_util.c
-@@ -546,10 +546,14 @@ xfs_can_free_eofblocks(
- 		return false;
- 
- 	/*
--	 * Check if there is an post-EOF extent to free.
-+	 * Check if there is an post-EOF extent to free.  If there are any
-+	 * delalloc blocks attached to the inode (data fork delalloc
-+	 * reservations or CoW extents of any kind), we need to free them so
-+	 * that inactivation doesn't fail to erase them.
- 	 */
- 	xfs_ilock(ip, XFS_ILOCK_SHARED);
--	if (xfs_iext_lookup_extent(ip, &ip->i_df, end_fsb, &icur, &imap))
-+	if (ip->i_delayed_blks ||
-+	    xfs_iext_lookup_extent(ip, &ip->i_df, end_fsb, &icur, &imap))
- 		found_blocks = true;
- 	xfs_iunlock(ip, XFS_ILOCK_SHARED);
- 	return found_blocks;
+My network controller: Intel corporation PRO/Wireless 4965 AG or AGN [Kedron] Network Connection (rev 61)
+Kernel driver in use: iwl4965
 
+This is my first kernel bug report, hope I did everything right :)
+I'm ofc willing to help provide more info and debug locally here to help solve this issue.
+
+Thanks and good night
+Alf :)
+-- 
+"The generation of random numbers is too important to be left to chance."
 
