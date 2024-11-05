@@ -1,84 +1,239 @@
-Return-Path: <stable+bounces-89809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A140C9BC97F
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 10:45:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75AED9BC9C2
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 10:57:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59AA61F227B4
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 09:45:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36062282CF8
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 09:57:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A801D14E3;
-	Tue,  5 Nov 2024 09:45:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pKMoeCJ/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 390C01D2202;
+	Tue,  5 Nov 2024 09:56:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11E41D0F4D;
-	Tue,  5 Nov 2024 09:45:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3151D1F70
+	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 09:56:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730799904; cv=none; b=DgKZPmpGjy4Y12XiKPgrxhrctHRWZi1MbO1NHCV1z9MLC6JFgcXPdWXBNVmkYFtgWrsYz+VD5K7G116Ep108CsQVgeDberrenSYcJgcyfa5ruVgjjmAiAxFgQ9TdR/cJXar8KYF0NZtltNjC5YOkDVllezqzUF0pRa1xIIk7VKA=
+	t=1730800613; cv=none; b=ZBXRunndjHObUklGGecPP8tOyMLorNmqpwXLEsYEmDPaIvUfigcTIPztdCq2/rfoOUJH1+4M8sXJOxE/PAByf7REo7XesZQYvSy856vwO8akbzpJkc9MY9YFBUSMuegf7K16w0iYmrw3dxgMBX6eR4XqWCCkIEWEuenVmZplLP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730799904; c=relaxed/simple;
-	bh=U0SRmOWr1U4JuEYg0qpGcM0a0ifCuVC2a3ZscCltcMY=;
+	s=arc-20240116; t=1730800613; c=relaxed/simple;
+	bh=DGzkJ9bxSDJAbftRPwpx0qNYcNwe6wGyzNFvTATs/BY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ea0bObK5+qy4NvB1NEvFPseOR3+vH94Uc8991Hdzfb2Zth6Q2w97ABAlQfLrBSyl1QmIuTu9iPKDL2qDDPdWenoOw/2iBg0gL8DOQH3QFAtO7HPsrAKUCwUtmRRNStYjHyhPzUQVSfytBYH7SE0AHRWsJqtbDpG0e8HMSZjnjgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pKMoeCJ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6C8C4CED0;
-	Tue,  5 Nov 2024 09:45:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730799904;
-	bh=U0SRmOWr1U4JuEYg0qpGcM0a0ifCuVC2a3ZscCltcMY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pKMoeCJ/ksCImGa9FGt2LA44fYGzW+q1Wl45GUX0yAOkAH7XWr6mmkJFOtlfpxDdJ
-	 HUbGD1mYiGWRnyJQ3wBSC2jrUK3h1hU6mcZOJMNmAvEkLGTYO3RZAenJPL5iUroJr9
-	 FVRYGa06AHORntRF7q9TbR/hr41JViy2XhPWMAI4=
-Date: Tue, 5 Nov 2024 10:44:46 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Calvin Owens <calvin@wbinvd.org>
-Cc: Rodolfo Giometti <giometti@enneenne.com>,
-	George Spelvin <linux@horizon.com>, linux-kernel@vger.kernel.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=Eq+Iaoz9hp9S+HFyxZmq7Z2T+fTzrHDL5X57B8dOo81Q+amug44hys/gfyHMjZI3QHAkvb/HmQR87PHmPPuDlnOGT/Wati1zlWQtpfTlwXjmsrfan3SEndVyZGou7qnAyonr5l55VvP1EF6XK24w6om+fU81SLtAfpMXsUNPmX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0E62811FB
+	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 01:57:20 -0800 (PST)
+Received: from e110455-lin.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 07CF03F66E
+	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 01:56:49 -0800 (PST)
+Date: Tue, 5 Nov 2024 09:56:44 +0000
+From: Liviu Dudau <liviu.dudau@arm.com>
+To: Jann Horn <jannh@google.com>
+Cc: Boris Brezillon <boris.brezillon@collabora.com>,
+	Steven Price <steven.price@arm.com>,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v3] pps: Fix a use-after-free
-Message-ID: <2024110551-fiction-casket-7597@gregkh>
-References: <2024101350-jinx-haggler-5aca@gregkh>
- <abc43b18f21379c21a4d2c63372a04b2746be665.1730792731.git.calvin@wbinvd.org>
+Subject: Re: [PATCH] drm/panthor: Be stricter about IO mapping flags
+Message-ID: <Zynr3DIY8u2c7wrB@e110455-lin.cambridge.arm.com>
+References: <20241105-panthor-flush-page-fixes-v1-1-829aaf37db93@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <abc43b18f21379c21a4d2c63372a04b2746be665.1730792731.git.calvin@wbinvd.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241105-panthor-flush-page-fixes-v1-1-829aaf37db93@google.com>
 
-On Mon, Nov 04, 2024 at 11:56:19PM -0800, Calvin Owens wrote:
-> -	dev_info(pps->dev, "removed\n");
-> +	dev_info(&pps->dev, "removed\n");
+On Tue, Nov 05, 2024 at 12:17:13AM +0100, Jann Horn wrote:
+> The current panthor_device_mmap_io() implementation has two issues:
+> 
+> 1. For mapping DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET,
+>    panthor_device_mmap_io() bails if VM_WRITE is set, but does not clear
+>    VM_MAYWRITE. That means userspace can use mprotect() to make the mapping
+>    writable later on. This is a classic Linux driver gotcha.
+>    I don't think this actually has any impact in practice:
+>    When the GPU is powered, writes to the FLUSH_ID seem to be ignored; and
+>    when the GPU is not powered, the dummy_latest_flush page provided by the
+>    driver is deliberately designed to not do any flushes, so the only thing
+>    writing to the dummy_latest_flush could achieve would be to make *more*
+>    flushes happen.
+> 
+> 2. panthor_device_mmap_io() does not block MAP_PRIVATE mappings (which are
+>    mappings without the VM_SHARED flag).
+>    MAP_PRIVATE in combination with VM_MAYWRITE indicates that the VMA has
+>    copy-on-write semantics, which for VM_PFNMAP are semi-supported but
+>    fairly cursed.
+>    In particular, in such a mapping, the driver can only install PTEs
+>    during mmap() by calling remap_pfn_range() (because remap_pfn_range()
+>    wants to **store the physical address of the mapped physical memory into
+>    the vm_pgoff of the VMA**); installing PTEs later on with a fault
+>    handler (as panthor does) is not supported in private mappings, and so
+>    if you try to fault in such a mapping, vmf_insert_pfn_prot() splats when
+>    it hits a BUG() check.
+> 
+> Fix it by clearing the VM_MAYWRITE flag (userspace writing to the FLUSH_ID
+> doesn't make sense) and requiring VM_SHARED (copy-on-write semantics for
+> the FLUSH_ID don't make sense).
+> 
+> Reproducers for both scenarios are in the notes of my patch on the mailing
+> list; I tested that these bugs exist on a Rock 5B machine.
+> 
+> Note that I only compile-tested the patch, I haven't tested it; I don't
+> have a working kernel build setup for the test machine yet. Please test it
+> before applying it.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 5fe909cae118 ("drm/panthor: Add the device logical block")
+> Signed-off-by: Jann Horn <jannh@google.com>
+> ---
+> First testcase (can write to the FLUSH_ID):
+> 
+> ```
+>
 
-Nit, when drivers work properly,  they are quiet, no need for these
-dev_info() calls.
+There is a missing line here, I guess is something like
 
->  static int pps_cdev_release(struct inode *inode, struct file *file)
+#define SYSCHK(x) ({  \
+
+
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+
+Best regards,
+Liviu
+
+
+>   typeof(x) __res = (x);      \
+>   if (__res == (typeof(x))-1) \
+>     err(1, "SYSCHK(" #x ")"); \
+>   __res;                      \
+> })
+> 
+> int main(void) {
+>   int fd = SYSCHK(open(GPU_PATH, O_RDWR));
+> 
+>   // sanity-check that PROT_WRITE+MAP_SHARED fails
+>   void *mmap_write_res = mmap(NULL, 0x1000, PROT_READ|PROT_WRITE,
+>       MAP_SHARED, fd, DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET);
+>   if (mmap_write_res == MAP_FAILED) {
+>     perror("mmap() with PROT_WRITE+MAP_SHARED failed as expected");
+>   } else {
+>     errx(1, "mmap() with PROT_WRITE+MAP_SHARED worked???");
+>   }
+> 
+>   // make a PROT_READ+MAP_SHARED mapping, and upgrade it to writable
+>   void *mmio_page = SYSCHK(mmap(NULL, 0x1000, PROT_READ, MAP_SHARED,
+>       fd, DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET));
+>   SYSCHK(mprotect(mmio_page, 0x1000, PROT_READ|PROT_WRITE));
+> 
+>   volatile uint32_t *flush_counter = (volatile uint32_t*)mmio_page;
+> 
+>   uint32_t last_old = -1;
+>   while (1) {
+>     uint32_t old_val = *flush_counter;
+>     *flush_counter = 1111;
+>     uint32_t new_val = *flush_counter;
+>     if (old_val != last_old)
+>       printf("flush counter: old=%u, new=%u\n", old_val, new_val);
+>     last_old = old_val;
+>   }
+> }
+> ```
+> 
+> Second testcase (triggers BUG() splat):
+> ```
+> 
+>   typeof(x) __res = (x);      \
+>   if (__res == (typeof(x))-1) \
+>     err(1, "SYSCHK(" #x ")"); \
+>   __res;                      \
+> })
+> 
+> int main(void) {
+>   int fd = SYSCHK(open(GPU_PATH, O_RDWR));
+> 
+>   // make a PROT_READ+**MAP_PRIVATE** mapping
+>   void *ptr = SYSCHK(mmap(NULL, 0x1000, PROT_READ, MAP_PRIVATE,
+>       fd, DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET));
+> 
+>   // trigger a read fault
+>   *(volatile char *)ptr;
+> }
+> ```
+> 
+> The second testcase splats like this:
+> ```
+> [ 2918.411814] ------------[ cut here ]------------
+> [ 2918.411857] kernel BUG at mm/memory.c:2220!
+> [ 2918.411955] Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
+> [...]
+> [ 2918.416147] CPU: 3 PID: 2934 Comm: private_user_fl Tainted: G           O       6.1.43-19-rk2312 #428a0a5e6
+> [ 2918.417043] Hardware name: Radxa ROCK 5B (DT)
+> [ 2918.417464] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> [ 2918.418119] pc : vmf_insert_pfn_prot+0x40/0xe4
+> [ 2918.418567] lr : panthor_mmio_vm_fault+0xb0/0x12c [panthor]
+> [...]
+> [ 2918.425746] Call trace:
+> [ 2918.425972]  vmf_insert_pfn_prot+0x40/0xe4
+> [ 2918.426342]  __do_fault+0x38/0x7c
+> [ 2918.426648]  __handle_mm_fault+0x404/0x6dc
+> [ 2918.427018]  handle_mm_fault+0x13c/0x18c
+> [ 2918.427374]  do_page_fault+0x194/0x33c
+> [ 2918.427716]  do_translation_fault+0x60/0x7c
+> [ 2918.428095]  do_mem_abort+0x44/0x90
+> [ 2918.428410]  el0_da+0x40/0x68
+> [ 2918.428685]  el0t_64_sync_handler+0x9c/0xf8
+> [ 2918.429067]  el0t_64_sync+0x174/0x178
+> ```
+> ---
+>  drivers/gpu/drm/panthor/panthor_device.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/panthor/panthor_device.c b/drivers/gpu/drm/panthor/panthor_device.c
+> index 4082c8f2951dfdace7f73a24d6fe34e9e7f920eb..6fbff516c1c1f047fcb4dee17b87d8263616dc0c 100644
+> --- a/drivers/gpu/drm/panthor/panthor_device.c
+> +++ b/drivers/gpu/drm/panthor/panthor_device.c
+> @@ -390,11 +390,15 @@ int panthor_device_mmap_io(struct panthor_device *ptdev, struct vm_area_struct *
 >  {
-> -	struct pps_device *pps = container_of(inode->i_cdev,
-> -						struct pps_device, cdev);
-> -	kobject_put(&pps->dev->kobj);
-> +	struct pps_device *pps = file->private_data;
+>  	u64 offset = (u64)vma->vm_pgoff << PAGE_SHIFT;
+>  
+> +	if ((vma->vm_flags & VM_SHARED) == 0)
+> +		return -EINVAL;
 > +
-> +	WARN_ON(pps->id != iminor(inode));
+>  	switch (offset) {
+>  	case DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET:
+>  		if (vma->vm_end - vma->vm_start != PAGE_SIZE ||
+>  		    (vma->vm_flags & (VM_WRITE | VM_EXEC)))
+>  			return -EINVAL;
+> +		vm_flags_clear(vma, VM_MAYWRITE);
+>  
+>  		break;
+>  
+> 
+> ---
+> base-commit: d78f0ee0406803cda8801fd5201746ccf89e5e4a
+> change-id: 20241104-panthor-flush-page-fixes-fe4202bb18c0
+> 
+> -- 
+> Jann Horn <jannh@google.com>
+> 
 
-If this can happen, handle it and move on.  Don't just reboot the
-machine if it's something that could be triggered (remember about
-panic-on-warn systems.)
-
-thanks,
-
-greg k-h
+-- 
+====================
+| I would like to |
+| fix the world,  |
+| but they're not |
+| giving me the   |
+ \ source code!  /
+  ---------------
+    ¯\_(ツ)_/¯
 
