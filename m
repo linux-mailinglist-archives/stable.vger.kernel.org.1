@@ -1,79 +1,125 @@
-Return-Path: <stable+bounces-89898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6621C9BD31A
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 18:11:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D1C9BD31E
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 18:11:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DE091C22350
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 17:11:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E321D1F233EF
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 17:11:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3301DE3C9;
-	Tue,  5 Nov 2024 17:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD9D1E1322;
+	Tue,  5 Nov 2024 17:11:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dy+zmAlA";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aJTvdAy5"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91BE1DD88D;
-	Tue,  5 Nov 2024 17:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED3A1DD88D;
+	Tue,  5 Nov 2024 17:11:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730826694; cv=none; b=luHolNTsGXlKlAazpW6Z4JMucuu0ModBbFESp+ui6BXUoq97ik6gLlE1hxSop+jKGB6WaYENczThqgArX9huHNCP/pJR90DwWVMehnyZdokDgbJoGN6nCoAj+NjBPeu6Ib0/x0nHpwogLlEDL36fagR8yLYnjsasslOEJuocPv8=
+	t=1730826698; cv=none; b=JHt/h24r2eCjzeBCBm2g+ZJiO1XBn2FUd3LyMsiFgLbVwPhqYjKqs/GHgkO0GaDgYZkxKBmThGYPl9v+8V2gBDdAtTJ7t/PBnjiWU1FHqnBIeubZG2xnF2hIytBB70t8uNwBbMqTO72VhoqGIgokesV/pJ5TjsorPh5qQPEYRL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730826694; c=relaxed/simple;
-	bh=k+13sDOUemdCoEV6fkj1PUKssHgSxnKjxUfr4Ze/nP8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aH41HDx8aCdSLBKFSoTndvFsXp8M6p3hY8neT0MlqJROo8Dz6xd51FW5kGWqAV7+UShIoufYsFHlmrvUabsytGLrf2tsGmETPZ0RobYqQClxZolBqCFQbykhgCCyTriTA448ejlP2qBvuGfKTD7Fi5yr4iHoK1WQzP9/86O7an0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 082ECFEC;
-	Tue,  5 Nov 2024 09:12:02 -0800 (PST)
-Received: from bogus (unknown [10.57.55.239])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 209EE3F6A8;
-	Tue,  5 Nov 2024 09:11:26 -0800 (PST)
-Date: Tue, 5 Nov 2024 17:11:13 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: George Rurikov <grurikov@gmail.com>
-Cc: Robert Moore <robert.moore@intel.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <lenb@kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"acpica-devel@lists.linux.dev" <acpica-devel@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] ACPICA: Fix dereference in
- acpi_ev_address_space_dispatch()
-Message-ID: <20241105171113.vifd2x2suoebpt3r@bogus>
-References: <20241031173146.1459-1-grurikov@gmail.com>
+	s=arc-20240116; t=1730826698; c=relaxed/simple;
+	bh=f89m6lFOvRMNPhbT9eRUs6Oj097Fi09Sr+vQs7Qi23U=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=dRXzOqF5ni9Mv0fJv77EGakAzAxjrdy5nqqyaq+I8EVwoAs0dHXK2dJ/fkOeh6VOrIWh3//4B6/inOr378SFWX3giMMnCYMgwCUpY7JmEEojd/aPq1eWtsYxsYaHizOxlguUsINiyzJdOW3OLzwjsH7XvGqv67bdprAeZIUcijY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dy+zmAlA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aJTvdAy5; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 05 Nov 2024 17:11:33 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1730826695;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=RcEGGPe/PUC/HcrVe2t78dT3wUi51psGgKqiD0q02WE=;
+	b=dy+zmAlAPCkgoLEUpdWIiN/nimzwo1xK+XI30ETMLuo8BvauEWDih7S2Q2qrFzJiVFKUGZ
+	NJFarDFuI4/D7kiGLFDgf70nc8PmatWMVhDpiqEetysgUifo27mDx9C72ZXZ91u0c5smq+
+	WL4tzsXJoYHhPcbgWkdIT+bn6jduLGQEL4y8sscDmNqBht241hqegsvOUtoeyFhPwVPvD+
+	aGZ/OpEeWzu4nVs5to+0TukNvwItXcTzNHqj/Sd8lKQfXeNAN1e6nqiCRKsAdSHfiRIoka
+	QhsUBAdMlHuHvSxleIIQ5LKNAYyZf181zeTfj0TttlLFO1ToL//3KzJ4RTotlQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1730826695;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=RcEGGPe/PUC/HcrVe2t78dT3wUi51psGgKqiD0q02WE=;
+	b=aJTvdAy5Ck0mRt2VRo3yIQToaaoecZmj3JQa/sT3w7F/ESQ2N+bpGgdhPOo1DKg24cT2TU
+	yhTr9HaqOYv062BA==
+From: "tip-bot2 for Mario Limonciello" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: x86/urgent] x86/CPU/AMD: Clear virtualized VMLOAD/VMSAVE on Zen4 client
+Cc: Mario Limonciello <mario.limonciello@amd.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241031173146.1459-1-grurikov@gmail.com>
+Message-ID: <173082669399.32228.18413426871343797924.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 31, 2024 at 05:31:46PM +0000, George Rurikov wrote:
-> * # Be careful, this email looks suspicious; * WARNING!  This email has multiple suspicious indicators that suggest it is malicious, please handle links and attachments with extreme care. *
-> When support for  PCC Opregion was added, validation of field_obj
-> was missed.
-> Based on the acpi_ev_address_space_dispatch function description,
-> field_obj can be NULL, and also when acpi_ev_address_space_dispatch
-> is called in the acpi_ex_region_read() NULL is passed as field_obj.
->
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->
+The following commit has been merged into the x86/urgent branch of tip:
 
-LGTM, please submit this to ACPICA project as specified in the documentation
-if not already done. Otherwise a reference to the merge request there would
-be good here.
+Commit-ID:     a5ca1dc46a6b610dd4627d8b633d6c84f9724ef0
+Gitweb:        https://git.kernel.org/tip/a5ca1dc46a6b610dd4627d8b633d6c84f9724ef0
+Author:        Mario Limonciello <mario.limonciello@amd.com>
+AuthorDate:    Tue, 05 Nov 2024 10:02:34 -06:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Tue, 05 Nov 2024 17:48:32 +01:00
 
---
-Regards,
-Sudeep
+x86/CPU/AMD: Clear virtualized VMLOAD/VMSAVE on Zen4 client
+
+A number of Zen4 client SoCs advertise the ability to use virtualized
+VMLOAD/VMSAVE, but using these instructions is reported to be a cause
+of a random host reboot.
+
+These instructions aren't intended to be advertised on Zen4 client
+so clear the capability.
+
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219009
+---
+ arch/x86/kernel/cpu/amd.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index fab5cae..823f44f 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -924,6 +924,17 @@ static void init_amd_zen4(struct cpuinfo_x86 *c)
+ {
+ 	if (!cpu_has(c, X86_FEATURE_HYPERVISOR))
+ 		msr_set_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT);
++
++	/*
++	 * These Zen4 SoCs advertise support for virtualized VMLOAD/VMSAVE
++	 * in some BIOS versions but they can lead to random host reboots.
++	 */
++	switch (c->x86_model) {
++	case 0x18 ... 0x1f:
++	case 0x60 ... 0x7f:
++		clear_cpu_cap(c, X86_FEATURE_V_VMSAVE_VMLOAD);
++		break;
++	}
+ }
+ 
+ static void init_amd_zen5(struct cpuinfo_x86 *c)
 
