@@ -1,74 +1,86 @@
-Return-Path: <stable+bounces-89818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E68E9BCB38
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 12:04:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD13D9BCB3F
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 12:06:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6028B1C21042
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 11:04:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D28EB2106F
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 11:06:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB1E1D1745;
-	Tue,  5 Nov 2024 11:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20BA61D3181;
+	Tue,  5 Nov 2024 11:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fe2VPpYm"
+	dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b="FS7idm6t"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from meesny.iki.fi (meesny.iki.fi [195.140.195.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C56D1D27A9
-	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 11:04:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730804667; cv=none; b=qXCvLNl3QyMJpx3E+nx7ypVEf8mqpKzrnpA8p/VzLxpt2j/XUvM/DYmUm8cQ7S9We6b6/6H8vyoQRyvQPo6OKmlIpRQ79jA4Y93dD6hSWWwTzLm4tE4K5UFIrKTlv+8QlyFYSb2hXz0uupaDK2v2x6s3XGCqcSeR6GsHV71Bdn0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730804667; c=relaxed/simple;
-	bh=Am2HiPzi+5I2f+M71/t6uKwmLB+b8/k2z9KBQhH7mP0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=YckNxwf0uohJXS9PBYY9jgK8fNnAhBc3oDRbfSkw2rwMrbCttqVeBcbxCesjiVhqUvLJ+Q8tdcjAJ4s44NsBPj5ISJ2BW+NiaSND++ImUUARSrDIv4StEy+lbhBXZy5ApfjuDt8znhuNrW/U0O27AhY8v1LfKZVGSxf6YaTMTgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fe2VPpYm; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730804665; x=1762340665;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=Am2HiPzi+5I2f+M71/t6uKwmLB+b8/k2z9KBQhH7mP0=;
-  b=fe2VPpYmHaKxP/gV3TACuX/nV0yxiNjLYP9h6E8XV+fId55AZsjZPDoK
-   nzmoJh9qp0J3/w5SchiM6tEna/8YVkzv+CuoQLPmnXhclSbJph36NzEQA
-   plPojCm1+vv0ueZjZOWVh+FiUCEH4F4jLWoNDBlXcKSwhILqHdU+qhU86
-   PbJDDAuPwqlIIFHEQKU+RSrzkXMCUtPHyAi1/D38NSLY6XnmJsncMq3uZ
-   NjLvTVeeyJJBSomYYKVEPGQUq03WoI8Qm3r3FfluEHPknzDFp5xxus88k
-   GsVoYDPl2LQHqgb/sjYPykvPe4QnE2x4wu8MOZiNRISs3qfm87iGgkOXQ
-   A==;
-X-CSE-ConnectionGUID: FnvAt0+MQUa2DMxv8j/bdQ==
-X-CSE-MsgGUID: MveEIALvRYONcQvkjZhOFQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30395527"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="30395527"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 03:04:25 -0800
-X-CSE-ConnectionGUID: FJUef2OISV2dnsaUOCra6w==
-X-CSE-MsgGUID: it7xsxM/R0KIQpA7Bhg9Sw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; 
-   d="scan'208";a="114758634"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 05 Nov 2024 03:04:24 -0800
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t8HMD-000lwp-14;
-	Tue, 05 Nov 2024 11:04:21 +0000
-Date: Tue, 5 Nov 2024 19:03:57 +0800
-From: kernel test robot <lkp@intel.com>
-To: Biju Das <biju.das.jz@bp.renesas.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 1/2] drm: adv7511: Fix use-after-free in
- adv7533_attach_dsi()
-Message-ID: <Zyn7ndiHqU80Froa@7f78dee4e976>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B27E1C07D9;
+	Tue,  5 Nov 2024 11:06:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=195.140.195.201
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730804779; cv=pass; b=R3o90gDgCJUMqLcsyBrU/w942tH1oeXacNw6qOqWPsA4Wzq30H1o/o25ljIl8PMWfSAUfFukxDUFQIYNsxFz1gvZpY7bmt1Khgy1CMbTdbsNpFaoyOHrT91iuaTk2uKdTLJ+UJBir0OfLipS42bjFstprrOQ9FkpEmAkkdF6vZU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730804779; c=relaxed/simple;
+	bh=wcrxuKn8K9LtTFViPP2HasRjlgD1Og0k6FcpW/UAaQU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R/AzL3XKB5w2qIH4BmLrgZDorKcsnLbmVaUNk32J7DWNRZ24pcYlUnxQKh8s+YWAJeOagUBUMPdmbD9JwGWIW4ECImPCpAKFUXM3H9A2iOScbph+P82q14DKa9TMMk0EvJDaOs0LRG7Bs2C2BrSnTjG52ZCmosZc/L97p2viGMU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b=FS7idm6t; arc=pass smtp.client-ip=195.140.195.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+Received: from hillosipuli.retiisi.eu (2a00-1190-d1dd-0-c641-1eff-feae-163c.v6.cust.suomicom.net [IPv6:2a00:1190:d1dd:0:c641:1eff:feae:163c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: sailus)
+	by meesny.iki.fi (Postfix) with ESMTPSA id 4XjQW271vPzyQq;
+	Tue,  5 Nov 2024 13:06:06 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
+	t=1730804767;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZjMpp85SscGqJYAZ8QaDaUQXw9fxMbO7dHkprU919mU=;
+	b=FS7idm6tET+pq9TX1kbag5vD/excqYpIWee9zjI1Xwt/K70uuZf8gfZSyEkgkyUBWF8FwE
+	k2F5qiLmw90bB0tHY6BMw+HXIaA2SUCOtCaxG299HU2ed1NziGLbLDl0Xdnxw/REfoPzmu
+	Jq/dr8ZZ6vrdWplDdytAd62bfrTxoWY=
+ARC-Seal: i=1; s=meesny; d=iki.fi; t=1730804767; a=rsa-sha256; cv=none;
+	b=I3qEo84SgP8hYdy/JJlzqpUddpSRFv/sWHW41fLNsEGZ43KbOerkQdecGCyX4IS5aozQel
+	yRDXGS05VESK0MB5PtJi+6CBId3DwUhdxY7JWu7i5KszA4leVRckIY/6XUHXGuUUq69Blf
+	nObKwvkY/Y7IvdC/gObfLQajfrTouqA=
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=sailus smtp.mailfrom=sakari.ailus@iki.fi
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=meesny; t=1730804767;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZjMpp85SscGqJYAZ8QaDaUQXw9fxMbO7dHkprU919mU=;
+	b=bTn4ycgM816GzJdlL4sujD/IsEgGytv4Zn9o8vTFD7Ktmp3E6h77XvTI3VMzbnzjd+TE/n
+	PI6xNqX5QjZLlKywP13fazQU2hQfJJFRVhFk8U0pv8QI4ojzwgI4Rj+VNlbiHYGZXnhlMh
+	YtPZq8EeEhURnIEk7stHd+xpUQMr8mw=
+Received: from valkosipuli.retiisi.eu (valkosipuli.localdomain [192.168.4.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by hillosipuli.retiisi.eu (Postfix) with ESMTPS id A22ED634C93;
+	Tue,  5 Nov 2024 13:06:05 +0200 (EET)
+Date: Tue, 5 Nov 2024 11:06:05 +0000
+From: Sakari Ailus <sakari.ailus@iki.fi>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: Re: [PATCH v2] media: uvcvideo: Fix crash during unbind if gpio unit
+ is in use
+Message-ID: <Zyn8HXh6oO-LG7od@valkosipuli.retiisi.eu>
+References: <20241105-uvc-crashrmmod-v2-1-547ce6a6962e@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,24 +89,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241105110236.112631-2-biju.das.jz@bp.renesas.com>
+In-Reply-To: <20241105-uvc-crashrmmod-v2-1-547ce6a6962e@chromium.org>
 
-Hi,
+Hi Ricardo,
 
-Thanks for your patch.
+Thanks for the update.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+On Tue, Nov 05, 2024 at 10:53:59AM +0000, Ricardo Ribalda wrote:
+> We used the wrong device for the device managed functions. We used the
+> usb device, when we should be using the interface device.
+> 
+> If we unbind the driver from the usb interface, the cleanup functions
+> are never called. In our case, the IRQ is never disabled.
+> 
+> If an IRQ is triggered, it will try to access memory sections that are
+> already free, causing an OOPS.
+> 
+> Luckily this bug has small impact, as it is only affected by devices
+> with gpio units and the user has to unbind the device, a disconnect will
+> not trigger this error.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
+> Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> ---
+> Changes in v2: Thanks to Laurent.
+> - The main structure is not allocated with devres so there is a small
+>   period of time where we can get an irq with the structure free. Do not
+>   use devres for the IRQ.
+> - Link to v1: https://lore.kernel.org/r/20241031-uvc-crashrmmod-v1-1-059fe593b1e6@chromium.org
+> ---
+>  drivers/media/usb/uvc/uvc_driver.c | 28 +++++++++++++++++++++-------
+>  drivers/media/usb/uvc/uvcvideo.h   |  1 +
+>  2 files changed, 22 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+> index a96f6ca0889f..af6aec27083c 100644
+> --- a/drivers/media/usb/uvc/uvc_driver.c
+> +++ b/drivers/media/usb/uvc/uvc_driver.c
+> @@ -1295,14 +1295,14 @@ static int uvc_gpio_parse(struct uvc_device *dev)
+>  	struct gpio_desc *gpio_privacy;
+>  	int irq;
+>  
+> -	gpio_privacy = devm_gpiod_get_optional(&dev->udev->dev, "privacy",
+> +	gpio_privacy = devm_gpiod_get_optional(&dev->intf->dev, "privacy",
+>  					       GPIOD_IN);
+>  	if (IS_ERR_OR_NULL(gpio_privacy))
+>  		return PTR_ERR_OR_ZERO(gpio_privacy);
+>  
+>  	irq = gpiod_to_irq(gpio_privacy);
+>  	if (irq < 0)
+> -		return dev_err_probe(&dev->udev->dev, irq,
+> +		return dev_err_probe(&dev->intf->dev, irq,
+>  				     "No IRQ for privacy GPIO\n");
+>  
+>  	unit = uvc_alloc_new_entity(dev, UVC_EXT_GPIO_UNIT,
+> @@ -1329,15 +1329,28 @@ static int uvc_gpio_parse(struct uvc_device *dev)
+>  static int uvc_gpio_init_irq(struct uvc_device *dev)
+>  {
+>  	struct uvc_entity *unit = dev->gpio_unit;
+> +	int ret;
+>  
+>  	if (!unit || unit->gpio.irq < 0)
+>  		return 0;
+>  
+> -	return devm_request_threaded_irq(&dev->udev->dev, unit->gpio.irq, NULL,
+> -					 uvc_gpio_irq,
+> -					 IRQF_ONESHOT | IRQF_TRIGGER_FALLING |
+> -					 IRQF_TRIGGER_RISING,
+> -					 "uvc_privacy_gpio", dev);
+> +	ret = request_threaded_irq(unit->gpio.irq, NULL, uvc_gpio_irq,
+> +				   IRQF_ONESHOT | IRQF_TRIGGER_FALLING |
+> +				   IRQF_TRIGGER_RISING,
+> +				   "uvc_privacy_gpio", dev);
+> +
+> +	if (!ret)
+> +		dev->gpio_unit->gpio.inited = true;
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+You could simply assign !ret to it as it's called once from probe.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH 1/2] drm: adv7511: Fix use-after-free in adv7533_attach_dsi()
-Link: https://lore.kernel.org/stable/20241105110236.112631-2-biju.das.jz%40bp.renesas.com
+> +
+> +	return ret;
+> +}
+> +
+> +static void uvc_gpio_cleanup(struct uvc_device *dev)
+> +{
+> +	if (!dev->gpio_unit || !dev->gpio_unit->gpio.inited)
+> +		return;
+> +
+> +	free_irq(dev->gpio_unit->gpio.irq, dev);
+>  }
+>  
+>  /* ------------------------------------------------------------------------
+> @@ -1880,6 +1893,7 @@ static void uvc_delete(struct kref *kref)
+>  	struct uvc_device *dev = container_of(kref, struct uvc_device, ref);
+>  	struct list_head *p, *n;
+>  
+> +	uvc_gpio_cleanup(dev);
+>  	uvc_status_cleanup(dev);
+>  	uvc_ctrl_cleanup_device(dev);
+>  
+> diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+> index 07f9921d83f2..376cd670539b 100644
+> --- a/drivers/media/usb/uvc/uvcvideo.h
+> +++ b/drivers/media/usb/uvc/uvcvideo.h
+> @@ -234,6 +234,7 @@ struct uvc_entity {
+>  			u8  *bmControls;
+>  			struct gpio_desc *gpio_privacy;
+>  			int irq;
+> +			bool inited;
+
+I'd call this "initialised".
+
+>  		} gpio;
+>  	};
+>  
+> 
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards,
 
-
-
+Sakari Ailus
 
