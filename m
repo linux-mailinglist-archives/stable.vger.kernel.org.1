@@ -1,157 +1,106 @@
-Return-Path: <stable+bounces-89888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AE6A9BD284
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 17:37:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 332AF9BD28D
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 17:38:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C6E91C219E3
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 16:37:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC18F2816BD
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 16:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61A461D89F3;
-	Tue,  5 Nov 2024 16:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8904E1DD0CF;
+	Tue,  5 Nov 2024 16:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tpH+KaHO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IcQsoc+Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0D717C7CE
-	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 16:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41AF71DC182;
+	Tue,  5 Nov 2024 16:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730824671; cv=none; b=q8Cp6hHa1/PeWlr8BsozOyFCgkLWVKb6ypagbu2sdyKMMzO5osuJRUw3N2lutTgx4y2oak80DInVLar9Nm7aDI0/lx3zt++FPkXmvb5zTkx+vZiJ1LCmu045HhTzzwv3Y9I7FZDklfNbn+6MSol16bQAPBYHn3L33ZpbRTtNNhU=
+	t=1730824698; cv=none; b=Xw2hvJyT2HgzEdw/z455U/Q2k6nQ2TEMSX2WhZ4a8732lBQEk1sSR6n4TJsy1L1Vi19wl7atE1HbaD7+/w6VHjQQ9dCqGoK/hMWUH4gdhf4Mfq8z0LmxZXip3CVBsvnHpPyR9wFJg/BFPpApIHlU03kKRSpL6NJJ3wzOxqo31f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730824671; c=relaxed/simple;
-	bh=tkNABRAnUSJHDOsH6KR9qu5hhsSYQ898jeL2mWKRexg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LKaVZvgaMQN8RyTzdOYfE620ByDmlOFu0PWe6UkP2dACKAr/HJ56Dz6SyD4jGZMKYVn24QeEmtVXP9ldWyY/2I4+N2/DNFocWBhIFJQtvj1x0uIGanh1emzYz7Fqqa/Rl/Bl/ZVtHjm2eHXdBiBNAQ4sDO+aTJ2/QREm/Q0ziXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tpH+KaHO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E29C4CECF;
-	Tue,  5 Nov 2024 16:37:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730824670;
-	bh=tkNABRAnUSJHDOsH6KR9qu5hhsSYQ898jeL2mWKRexg=;
-	h=Subject:To:Cc:From:Date:From;
-	b=tpH+KaHOWrOJRnVWZBK/ViNe7FTbOjxq3X4AysDRPsjxmHgpRz2crLn6IEMduxhvk
-	 oMjt/d6BmMfLokrKaa+Ma/L57oWYANbNabpgTGbXjCtR/ATKOnfcrLo/YQQ7TLSELd
-	 LMqHwg0iHO98PiOBJpPTWLAxVBgyvJHbGNH5Cf9s=
-Subject: FAILED: patch "[PATCH] mm: allow set/clear page_type again" failed to apply to 6.6-stable tree
-To: yuzhao@google.com,akpm@linux-foundation.org,muchun.song@linux.dev,stable@vger.kernel.org,willy@infradead.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 05 Nov 2024 17:37:25 +0100
-Message-ID: <2024110524-patience-rice-79e2@gregkh>
+	s=arc-20240116; t=1730824698; c=relaxed/simple;
+	bh=ORqsYWN5LTjtakU/Jqc07JENFyXvLrJpzmnmxASVu2s=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=jNgp1QsUP/Nh5+77GHlnQQYYd3EPCwYlvWwQtDKpxbo+YqjSrYuuZAX/Gly85HdH6X26ACD2dMDIM6WI8eZ1GLnqPQTWp/whBmzptOxLKERWi8BVrDoX6y9wEEZ//7iygj2FZvzJ8pcd2D0YWhdDaSiqPs1t3cUxlUl6P6N5bMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IcQsoc+Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08FC7C4CECF;
+	Tue,  5 Nov 2024 16:38:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730824697;
+	bh=ORqsYWN5LTjtakU/Jqc07JENFyXvLrJpzmnmxASVu2s=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=IcQsoc+ZlOob79/Aq4GrbYbKFOPUdjUPE6tvazHlPbhagLe5aA4F/23d/di/cpNmz
+	 2rrrPxUEVR6CSq3+7pZKQxMA5IVuQKZXpc7DE9m1G72rDWlxWw5dCGBgJ26fFvlj2/
+	 oMmt1H3JqxWlIAMkvZbUGg7N4ZjgF9CMgEoZIA6WU4VpRJS4w9KWl8hsH8RLRIVzI5
+	 mSukbLYLeoboLOXbkGgZ+gGFw98ve4gFfgycyPH6ewy030uakhHlscspqWaiB2pkUv
+	 dSsJNwhQI6L/4r8NOGKip0bqbWMw9DCstV3zRktQWujAXSyJuKjfPhkNN0PTDB9ZFi
+	 zwJ5sOi09HxYw==
+From: Mark Brown <broonie@kernel.org>
+To: support.opensource@diasemi.com, lgirdwood@gmail.com, perex@perex.cz, 
+ tiwai@suse.com, Qiu-ji Chen <chenqiuji666@gmail.com>
+Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ baijiaju1990@gmail.com, stable@vger.kernel.org
+In-Reply-To: <20240930101216.23723-1-chenqiuji666@gmail.com>
+References: <20240930101216.23723-1-chenqiuji666@gmail.com>
+Subject: Re: [PATCH] ASoC: codecs: Fix atomicity violation in
+ snd_soc_component_get_drvdata()
+Message-Id: <173082469577.77847.18367085097740716832.b4-ty@kernel.org>
+Date: Tue, 05 Nov 2024 16:38:15 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-9b746
 
+On Mon, 30 Sep 2024 18:12:16 +0800, Qiu-ji Chen wrote:
+> An atomicity violation occurs when the validity of the variables
+> da7219->clk_src and da7219->mclk_rate is being assessed. Since the entire
+> assessment is not protected by a lock, the da7219 variable might still be
+> in flux during the assessment, rendering this check invalid.
+> 
+> To fix this issue, we recommend adding a lock before the block
+> if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq)) so that
+> the legitimacy check for da7219->clk_src and da7219->mclk_rate is
+> protected by the lock, ensuring the validity of the check.
+> 
+> [...]
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Applied to
 
-To reproduce the conflict and resubmit, you may use the following commands:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 9d08ec41a0645283d79a2e642205d488feaceacf
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024110524-patience-rice-79e2@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+Thanks!
 
-Possible dependencies:
+[1/1] ASoC: codecs: Fix atomicity violation in snd_soc_component_get_drvdata()
+      commit: 1157733344651ca505e259d6554591ff156922fa
 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-thanks,
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-greg k-h
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
------------------- original commit in Linus's tree ------------------
-
-From 9d08ec41a0645283d79a2e642205d488feaceacf Mon Sep 17 00:00:00 2001
-From: Yu Zhao <yuzhao@google.com>
-Date: Sat, 19 Oct 2024 22:22:12 -0600
-Subject: [PATCH] mm: allow set/clear page_type again
-
-Some page flags (page->flags) were converted to page types
-(page->page_types).  A recent example is PG_hugetlb.
-
-From the exclusive writer's perspective, e.g., a thread doing
-__folio_set_hugetlb(), there is a difference between the page flag and
-type APIs: the former allows the same non-atomic operation to be repeated
-whereas the latter does not.  For example, calling __folio_set_hugetlb()
-twice triggers VM_BUG_ON_FOLIO(), since the second call expects the type
-(PG_hugetlb) not to be set previously.
-
-Using add_hugetlb_folio() as an example, it calls __folio_set_hugetlb() in
-the following error-handling path.  And when that happens, it triggers the
-aforementioned VM_BUG_ON_FOLIO().
-
-  if (folio_test_hugetlb(folio)) {
-    rc = hugetlb_vmemmap_restore_folio(h, folio);
-    if (rc) {
-      spin_lock_irq(&hugetlb_lock);
-      add_hugetlb_folio(h, folio, false);
-      ...
-
-It is possible to make hugeTLB comply with the new requirements from the
-page type API.  However, a straightforward fix would be to just allow the
-same page type to be set or cleared again inside the API, to avoid any
-changes to its callers.
-
-Link: https://lkml.kernel.org/r/20241020042212.296781-1-yuzhao@google.com
-Fixes: d99e3140a4d3 ("mm: turn folio_test_hugetlb into a PageType")
-Signed-off-by: Yu Zhao <yuzhao@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 1b3a76710487..cc839e4365c1 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -975,12 +975,16 @@ static __always_inline bool folio_test_##fname(const struct folio *folio) \
- }									\
- static __always_inline void __folio_set_##fname(struct folio *folio)	\
- {									\
-+	if (folio_test_##fname(folio))					\
-+		return;							\
- 	VM_BUG_ON_FOLIO(data_race(folio->page.page_type) != UINT_MAX,	\
- 			folio);						\
- 	folio->page.page_type = (unsigned int)PGTY_##lname << 24;	\
- }									\
- static __always_inline void __folio_clear_##fname(struct folio *folio)	\
- {									\
-+	if (folio->page.page_type == UINT_MAX)				\
-+		return;							\
- 	VM_BUG_ON_FOLIO(!folio_test_##fname(folio), folio);		\
- 	folio->page.page_type = UINT_MAX;				\
- }
-@@ -993,11 +997,15 @@ static __always_inline int Page##uname(const struct page *page)		\
- }									\
- static __always_inline void __SetPage##uname(struct page *page)		\
- {									\
-+	if (Page##uname(page))						\
-+		return;							\
- 	VM_BUG_ON_PAGE(data_race(page->page_type) != UINT_MAX, page);	\
- 	page->page_type = (unsigned int)PGTY_##lname << 24;		\
- }									\
- static __always_inline void __ClearPage##uname(struct page *page)	\
- {									\
-+	if (page->page_type == UINT_MAX)				\
-+		return;							\
- 	VM_BUG_ON_PAGE(!Page##uname(page), page);			\
- 	page->page_type = UINT_MAX;					\
- }
+Thanks,
+Mark
 
 
