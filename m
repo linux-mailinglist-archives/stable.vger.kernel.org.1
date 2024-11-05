@@ -1,196 +1,151 @@
-Return-Path: <stable+bounces-89786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D529A9BC45B
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 05:29:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A209BC571
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 07:31:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6468C1F2205E
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 04:29:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 873121F2180B
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 06:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC281126BEE;
-	Tue,  5 Nov 2024 04:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD0A1DB54C;
+	Tue,  5 Nov 2024 06:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b="ACni7COb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y/PN8GDK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B9719047D
-	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 04:29:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1B12A1A4;
+	Tue,  5 Nov 2024 06:31:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730780972; cv=none; b=eye6RdzzgisSYeECXK7cOX//A1ArA5U9jF+fk1/mrAJ3wYcX8fo9F7ba/Tks0kLclgjIdnaZbUsLMhGET6kReq987WR9Z23yu2FwzjC3aoGBBSgoucrLz8AFtsr3uQH4EKxfvRhBkKKzM9IovJbVyRwNvjg2Fvbq+YRI6Bdswvs=
+	t=1730788283; cv=none; b=TaxpzF8Ap/eVzvWnZga8r9c1uGvjOhf/oS9sZpj9OhnkueqG+9t80zP0dlnjhxGz9uHUuloTBs0xxuSHhEeAhAJ0yOG3vq8olFro+f4/jnZH7mP43kbR/RTXIDidYCZ2VkopM0+4CkHiceKXf+dXoH+efz9Aj2Nv2F5/KHgcSGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730780972; c=relaxed/simple;
-	bh=8SLmDpTRCFDajZT38/rFEX+2ka0yX2igg96h70rcUao=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Gca4iPxw60M3gPDSaiPsDvfRApy8Om1EEpvOiCpYYtjOAsHCnjS17Crosex3iOUO21hUZ4eQJmB9w9XsG06os5VNV9Ikn0lp9ML5U4v8bx3VIa3IvOBt8AyTmx7CmES7Hd4uzsLBGobldG0unrPp6beAawG6xsCrj71X5c9LYgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com; spf=pass smtp.mailfrom=mvista.com; dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b=ACni7COb; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mvista.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-20c9978a221so50691555ad.1
-        for <stable@vger.kernel.org>; Mon, 04 Nov 2024 20:29:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mvista.com; s=google; t=1730780970; x=1731385770; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XPgJOaKUw2i2yhBq0UrCbUBNmKfQYHEenFvmnag+ukI=;
-        b=ACni7CObMJc6Wy8I7q730yoCc9fiiDWImF4ZPtGKV3gLxvYxLPiMRhkjDLgJi+V7ba
-         eHakZFl4ZSfSfQmoAE7RJgtHVFFjnCRqa1eP/mhz0yFzaqY5SMVkthl/F7CBW0X68n4Q
-         o6RdbgdP0j3wa0JQoNL7fMSe4ad/9JWvVlyXc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730780970; x=1731385770;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XPgJOaKUw2i2yhBq0UrCbUBNmKfQYHEenFvmnag+ukI=;
-        b=i8uLZhkPCKH8BpdCCkgyKf+diFcHM8JpooJNl3/WV+SgxMNNu4jMrjoO6JbZJIFM8g
-         zVwLtW/c7RJocJroE3L+hzhqQA9rXQVFhNieuFKSTLArVkDZO2MbE379lSVhwQLUNDIp
-         wJJUmU4T6XCCexzomWJpD05Ox0NIattzcEqDihH1mmtBPlLWfS4vwT07Tb4eoADmt8wc
-         tsHoMMyEDyp7KPehl6/T3jQMk2F63yNdzlChlPM9p5pz3WdBo/fGlUcpe1StW4uopsft
-         ikIJY+0GQgRgIspj5f9co/uPj6jGHXHNBD+QHkHNIHL9z+MxztXCp1PWLnpzubClc8mk
-         TbjA==
-X-Gm-Message-State: AOJu0YyPW4iK0pNaSmXAmKtx9GToeQO2dvclCpf4fTnxEx8ricBdwcZs
-	AUDzW0/HVrccfc0it7wv74sFgA4m7e+PrUAgDZcwHOZQulwBMHmVa5X3UOM8WkYCN6SfClVvp+o
-	Z
-X-Google-Smtp-Source: AGHT+IFY9OIl5skQBRIO2pCUZzVxAmt0oAL+rH5hjwiRx9eykhnbWVyX5fzKpskOf4a4N7E57JH8CQ==
-X-Received: by 2002:a17:903:124d:b0:20c:5cb1:ddf0 with SMTP id d9443c01a7336-210c68a9c2bmr489805165ad.10.1730780969827;
-        Mon, 04 Nov 2024 20:29:29 -0800 (PST)
-Received: from jupiter.mvista.com ([182.74.28.237])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211056edc65sm69234575ad.10.2024.11.04.20.29.27
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 04 Nov 2024 20:29:29 -0800 (PST)
-From: Hardik Gohil <hgohil@mvista.com>
-To: stable@vger.kernel.org
-Cc: linux-spi@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>,
-	Hardik Gohil <hgohil@mvista.com>
-Subject: [PATCH v5.4.y v5.10.y] spi: Fix deadlock when adding SPI controllers on SPI buses
-Date: Tue,  5 Nov 2024 09:59:16 +0530
-Message-Id: <1730780956-13313-1-git-send-email-hgohil@mvista.com>
-X-Mailer: git-send-email 2.7.4
+	s=arc-20240116; t=1730788283; c=relaxed/simple;
+	bh=lZHQ6oeCo+3J52PhOs3n6tSzunx3c7YQEzTKcxRQXS8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BlY/vfqJp+0BXwqnYBuu/rpTgQev0Y82vtff3mkm5u37Y/RuN3XfXb/AyN2lk9XdNP/jx6vEONupo0vSEQ7oYxUVV/laXqBFsoX1+6kwojkLoZo0oXiVbeqkty3xC+1myTvyBcjl93b/D+E7zlwwkCy9N8emSMeDAticDXwe5Ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y/PN8GDK; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730788282; x=1762324282;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lZHQ6oeCo+3J52PhOs3n6tSzunx3c7YQEzTKcxRQXS8=;
+  b=Y/PN8GDKyZbn0mSk1ioOL5o90F817hl6mFBYc8sQp3WWSroxqehH+Z3M
+   6QU+HmyL1DYE+pZdBqebo+7Fb4CZMBkD0avjXnYgnXMS1FD65mQB+6VlV
+   wHY7oc65T9OBcxOnrkGFevRD+B1jygwrlKHfkgF9SnCSQom31d5sN3awC
+   RnPNlF2q/6EEl+XuUjFN0ZoVLjZQiBC1B/v45957PfskE0gWtsiurCUJH
+   0OHa0Lbps49fGW/E8FdsAQyTcpzQx74YoZfa2oLU258qMY1m9FkEo5Mum
+   6+kux6I1UGIXVv70WhfbA8OSMo4ZrVwn0zLeFsRm8ru2DAfgNckpQw+hO
+   w==;
+X-CSE-ConnectionGUID: W76ydK7XTzWs2uJIp73KdA==
+X-CSE-MsgGUID: lc8a/mdaQJShq2UwjJcgNA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11246"; a="34299444"
+X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; 
+   d="scan'208";a="34299444"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2024 22:31:22 -0800
+X-CSE-ConnectionGUID: aYmojHcwTECNv1lRRqwsOQ==
+X-CSE-MsgGUID: myFw6ZjFQImLl09u5VEoGw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; 
+   d="scan'208";a="83414035"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa006.fm.intel.com with ESMTP; 04 Nov 2024 22:31:19 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+	id 473CB1E0; Tue, 05 Nov 2024 08:31:18 +0200 (EET)
+Date: Tue, 5 Nov 2024 08:31:18 +0200
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Rick <rick@581238.xyz>
+Cc: Mario Limonciello <mario.limonciello@amd.com>, Sanath.S@amd.com,
+	christian@heusel.eu, fabian@fstab.de, gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org, regressions@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: Dell WD19TB Thunderbolt Dock not working with kernel > 6.6.28-1
+Message-ID: <20241105063118.GE275077@black.fi.intel.com>
+References: <20241022161055.GE275077@black.fi.intel.com>
+ <7f14476b-8084-4c43-81ec-e31ae3f7a3c6@581238.xyz>
+ <20241023061001.GF275077@black.fi.intel.com>
+ <4848c9fe-877f-4d73-84d6-e2249bb49840@581238.xyz>
+ <20241028081813.GN275077@black.fi.intel.com>
+ <2c27683e-aca8-48d0-9c63-f0771c6a7107@581238.xyz>
+ <20241030090625.GS275077@black.fi.intel.com>
+ <70d8b6b2-04b4-48a6-964d-a957b2766617@581238.xyz>
+ <20241104063656.GZ275077@black.fi.intel.com>
+ <effdfd51-66dd-44a4-968c-0f762ab8f93b@581238.xyz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <effdfd51-66dd-44a4-968c-0f762ab8f93b@581238.xyz>
 
-From: Mark Brown <broonie@kernel.org>
+Hi Rick,
 
-[ Upstream commit 6098475d4cb48d821bdf453c61118c56e26294f0 ]
+On Mon, Nov 04, 2024 at 07:04:08PM +0100, Rick wrote:
+> Hi Mika
+> 
+> On 04-11-2024 07:36, Mika Westerberg wrote:
+> > Hi Rick,
+> > 
+> > On Fri, Nov 01, 2024 at 01:57:50PM +0100, Rick wrote:
+> > > I compiled 6.12.0-rc5-00181-g6c52d4da1c74-dirty resulting in docking station
+> > > not working.
+> > > 
+> > > Then I compiled 6.12.0-rc5-00181-g6c52d4da1c74-dirty without commit
+> > > c6ca1ac9f472 (reverted), and now the docking station works correctly (as in
+> > > screen output + USBs + Ethernet)
+> > > 
+> > > So it seems c6ca1ac9f472 is causing issues for my setup.
+> > 
+> > Okay, thanks for testing!
+> > 
+> > It indeed looks like there is no any kind of link issues anymore with
+> > that one reverted. So my suspect is that we are taking too long before
+> > we enumerate the device router which makes it to reset the link.
+> > 
+> > Can you try the below patch too on top of v6.12-rcX (without the revert)
+> > and see if that still keeps it working? This one cuts down the delay to
+> > 1ms which I'm hoping is sufficient for the device. Can you share
+> > dmesg+trace from that test as well?
+> > 
+> > diff --git a/drivers/thunderbolt/usb4.c b/drivers/thunderbolt/usb4.c
+> > index c6dcc23e8c16..1b740d7fc7da 100644
+> > --- a/drivers/thunderbolt/usb4.c
+> > +++ b/drivers/thunderbolt/usb4.c
+> > @@ -48,7 +48,7 @@ enum usb4_ba_index {
+> >   /* Delays in us used with usb4_port_wait_for_bit() */
+> >   #define USB4_PORT_DELAY			50
+> > -#define USB4_PORT_SB_DELAY		5000
+> > +#define USB4_PORT_SB_DELAY		1000
+> >   static int usb4_native_switch_op(struct tb_switch *sw, u16 opcode,
+> >   				 u32 *metadata, u8 *status,
+> 
+> See below pasts without the revert, and with the above provided patch.
+> 
+> dmesg with patch (and without the revert):
+> https://gist.github.com/ricklahaye/8412af228063546dd8375ca796fffeef
+> tbtrace with patch (and without the revert):
+> https://gist.github.com/ricklahaye/4b9cbeeb36b546c6686ce79a044a2d61
+> 
+> Seems to be working correctly with the provided patch.
+> Thank you!
 
-Currently we have a global spi_add_lock which we take when adding new
-devices so that we can check that we're not trying to reuse a chip
-select that's already controlled.  This means that if the SPI device is
-itself a SPI controller and triggers the instantiation of further SPI
-devices we trigger a deadlock as we try to register and instantiate
-those devices while in the process of doing so for the parent controller
-and hence already holding the global spi_add_lock.  Since we only care
-about concurrency within a single SPI bus move the lock to be per
-controller, avoiding the deadlock.
+Thanks for testing! Yes, logs look good now.
 
-This can be easily triggered in the case of spi-mux.
+I will submit this fix upstream today then. Do you mind providing me your
+full name and email so that I can add tag like
 
-Reported-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Hardik Gohil <hgohil@mvista.com>
----
-This fix was not backported to v5.4 and v5.10
+Reported-by: Rick ...
 
-please also apply following fix on top of this
-
-spi: fix use-after-free of the add_lock mutex
-commit 6c53b45c71b4920b5e62f0ea8079a1da382b9434 upstream.
-
-Commit 6098475d4cb4 ("spi: Fix deadlock when adding SPI controllers on
-SPI buses") introduced a per-controller mutex. But mutex_unlock() of
-said lock is called after the controller is already freed:
-
- drivers/spi/spi.c       | 15 +++++----------
- include/linux/spi/spi.h |  3 +++
- 2 files changed, 8 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 0f9410e..58f1947 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -472,12 +472,6 @@ static LIST_HEAD(spi_controller_list);
-  */
- static DEFINE_MUTEX(board_lock);
- 
--/*
-- * Prevents addition of devices with same chip select and
-- * addition of devices below an unregistering controller.
-- */
--static DEFINE_MUTEX(spi_add_lock);
--
- /**
-  * spi_alloc_device - Allocate a new SPI device
-  * @ctlr: Controller to which device is connected
-@@ -580,7 +574,7 @@ int spi_add_device(struct spi_device *spi)
- 	 * chipselect **BEFORE** we call setup(), else we'll trash
- 	 * its configuration.  Lock against concurrent add() calls.
- 	 */
--	mutex_lock(&spi_add_lock);
-+	mutex_lock(&ctlr->add_lock);
- 
- 	status = bus_for_each_dev(&spi_bus_type, NULL, spi, spi_dev_check);
- 	if (status) {
-@@ -624,7 +618,7 @@ int spi_add_device(struct spi_device *spi)
- 	}
- 
- done:
--	mutex_unlock(&spi_add_lock);
-+	mutex_unlock(&ctlr->add_lock);
- 	return status;
- }
- EXPORT_SYMBOL_GPL(spi_add_device);
-@@ -2512,6 +2506,7 @@ int spi_register_controller(struct spi_controller *ctlr)
- 	spin_lock_init(&ctlr->bus_lock_spinlock);
- 	mutex_init(&ctlr->bus_lock_mutex);
- 	mutex_init(&ctlr->io_mutex);
-+	mutex_init(&ctlr->add_lock);
- 	ctlr->bus_lock_flag = 0;
- 	init_completion(&ctlr->xfer_completion);
- 	if (!ctlr->max_dma_len)
-@@ -2657,7 +2652,7 @@ void spi_unregister_controller(struct spi_controller *ctlr)
- 
- 	/* Prevent addition of new devices, unregister existing ones */
- 	if (IS_ENABLED(CONFIG_SPI_DYNAMIC))
--		mutex_lock(&spi_add_lock);
-+		mutex_lock(&ctlr->add_lock);
- 
- 	device_for_each_child(&ctlr->dev, NULL, __unregister);
- 
-@@ -2688,7 +2683,7 @@ void spi_unregister_controller(struct spi_controller *ctlr)
- 	mutex_unlock(&board_lock);
- 
- 	if (IS_ENABLED(CONFIG_SPI_DYNAMIC))
--		mutex_unlock(&spi_add_lock);
-+		mutex_unlock(&ctlr->add_lock);
- }
- EXPORT_SYMBOL_GPL(spi_unregister_controller);
- 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index ca39b33..1b9cb90 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -483,6 +483,9 @@ struct spi_controller {
- 	/* I/O mutex */
- 	struct mutex		io_mutex;
- 
-+	/* Used to avoid adding the same CS twice */
-+	struct mutex		add_lock;
-+
- 	/* lock and mutex for SPI bus locking */
- 	spinlock_t		bus_lock_spinlock;
- 	struct mutex		bus_lock_mutex;
--- 
-2.7.4
-
+in the commit message?
 
