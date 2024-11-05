@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-89823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2CAF9BCB68
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 12:15:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDFCC9BCB9B
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 12:23:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5CCB1C213FA
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 11:15:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D91C1C229DD
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 11:23:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3CE1D3181;
-	Tue,  5 Nov 2024 11:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426221D4355;
+	Tue,  5 Nov 2024 11:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="yCrfsbXo"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FTAjt54r"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE781D432F
-	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 11:15:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F621D414E
+	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 11:23:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730805323; cv=none; b=o9muVX2pGfwGuUz5rkOyfZ2wrcXmuQ1ghV0ZHMhWMW0CZbCbO8pjn987/PrWllcYrY0AlGtj8Dfyt3EmfETpRqFoOYII1OcPB+sGyHlc07187gzFvC0w9ovpPJgLxp4Cxf6lbVLT1LTXDB10LTZpxobCO0K4jEaYsRwVw31CPSQ=
+	t=1730805791; cv=none; b=bCWYZCR9rMYC4G8Fpp3Dwj/6P858E9DgttwChqBc5rtNOdKLJ5Yt40ShVVfV+HIdD9wsN1QtsZq8v/Gw00pQhkaUm3Zi7TDR5Nxcu/EYJqszbIA8Hfn1Mm/AeicnzxnZMijGqn2oe9VkQnvKApn7LatnpBIWRms2tRxk7HGBU0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730805323; c=relaxed/simple;
-	bh=k1//woTIU/hrkn6HxpkQgKFs3K74L+BoMNL8LPeXwjE=;
+	s=arc-20240116; t=1730805791; c=relaxed/simple;
+	bh=gu5W4N3YVHoS/XkXUH6wLnC37EF1yQUgzdD/I/kxVHY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pPTTNV7ZNoPHfVZ23kgRFvGUWrDTH6XNSFS0ZJRFlXyAs4Bqent22DpmAqHyzXJB6B2lSp0+LCtHVyeCHH49D/VkQxMvaKeO3rfoO9ZEcUhbC++3wglLOMRcdjRxI1J+FD/Q2ceXaTGSl6l5/2bGnFHJUsmjDX/fFYiwEdYJi5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=yCrfsbXo; arc=none smtp.client-ip=209.85.128.51
+	 In-Reply-To:Content-Type; b=gdEK0AFYGkSja7V7oUgTQYspJsHPvUL21krjm83ohXfEMZIplVs6jXKdmiMixbf5Qu1vRciWAgNKndgUNUx18TMrM/3DSHmzzEL8Mt+KrFt9h8LBYMTTtzAws5/18GRsVpyviS4MaRL1HjKgNr7jdPJ05tZ3jsQJuzrP9VBnrGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FTAjt54r; arc=none smtp.client-ip=209.85.208.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43158625112so46979645e9.3
-        for <stable@vger.kernel.org>; Tue, 05 Nov 2024 03:15:21 -0800 (PST)
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2fb5be4381dso49465991fa.2
+        for <stable@vger.kernel.org>; Tue, 05 Nov 2024 03:23:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730805320; x=1731410120; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1730805787; x=1731410587; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=XAUW7RPOeXwiKeLMnI883KAxUeeVxpO3A/xF2LaW6Sw=;
-        b=yCrfsbXoGEKGgxBeD3lEMN+OLnck8CJ6LyLPV6RG2HBe5AMaGWpghxI9yDtZS+CYcq
-         UG+qDTqK+vVBFzRO16CxKVdccznERUxkPYqjhZuz9NJZhk4gE+N/5XtCiDk0/j+78uV2
-         NOSJYVXiI35jf+xMiF8LcVR+1lm6Bsr6rhF6gIeXbeLvVWelFaLmMPoYSchYFOe7B0lP
-         DY5vta7VGoROpKS6r9Pb5Xsd9m9haErHcVcnmI+VB584F/+9JocIBf7/iJFPHfcPl9UJ
-         7qKI2nBMt3QtZfznIFW5nDht8sOpqQJGUD7WBkqPNN93mZaddovbfPgCLp9WAHbvNbFG
-         ckkg==
+        bh=kfRKb6qYv530q1n0OeScBq8hVcVdxnrfY7wSThB323A=;
+        b=FTAjt54rdB5e1X0ahTbHWJZSGvcSguumA/K6sRoBow4iT0pIXbpHYzvGPCanEe7CJS
+         oh16mYRnfoP0PiCuBoshV20/HPL24M+1FmUOeXl8Gh/6EzqiFOWERMXtiDCQ1nmXbfoA
+         Jr1jA7lMq1gnMeADUu1EdF4mmwPjtiTeteL4sNRPcXbWGa4N6UlLr/9NqVb5rdrzmg+h
+         ilxqTWALRnxeCODpM9i6EhjFfBqezPIhnN6S6CfV91JdhHc2fyAIPeDpYxsQbPo7IQK6
+         0X2ULYn7MTEC9FPihC0w2ulkXrKXrMVJ8GCAQF0UmzOBcS+a+dSaRZhKgwv2UUMqvxAb
+         DikQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730805320; x=1731410120;
+        d=1e100.net; s=20230601; t=1730805787; x=1731410587;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XAUW7RPOeXwiKeLMnI883KAxUeeVxpO3A/xF2LaW6Sw=;
-        b=IMuqP7QEmDojsShmm2FzMZXysUgkNKJQCJ4RRRZhppuxCyupChc9QU3k/aAb4aQ8i1
-         778vwajmbvb7U9qNb9FFN22JwZnLbqisNfG/QODZZIZ2BypbmqyHyxhUU4JP/T/v+41+
-         jvOhnXGYXjVkaU/khwm0ACRSv0K9aGszR9ct0Aa05yR6MusKOs4TXtdZyTVpzr06HQdY
-         kdaVzlQB2Le6AlBasPoqcdc3GXLpLkXVMxO5A3Gd3YfU/5GWrW3j35zvCUb2Pb8GfeLC
-         LzOpjmewjxgELM8SZtCucr+dRG32wN3QFc7ocoGLrbJGCMqPq93jlUobFjbrhEwj2/4J
-         k+SA==
-X-Forwarded-Encrypted: i=1; AJvYcCUHaBf6sRXOiakhj59xbG3qLEEYMXC5+7fNooYBOLRNgcovsSx2QykFXDMv6qFYsidBwN9V7zg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4T6J5fIVTu6yaLiVgsRRnhFimo0Xpy9E9RtYGJxINXPTVrQQk
-	T1NzSCTT3SNAYa+4p1WfpXuJD/y4RZ9lP8IdqlKG7iikgm9AS2X2BsnqbWUaHFQ=
-X-Google-Smtp-Source: AGHT+IFxj5fSafC8gyEjZqCHdS86tjb6pALa9TeX7VspQtKSyrZ7noAYA8Z/wRxw84X9ChaBBEOulg==
-X-Received: by 2002:a05:600c:3054:b0:431:44fe:fd9f with SMTP id 5b1f17b1804b1-4328327ec3cmr113149925e9.23.1730805320278;
-        Tue, 05 Nov 2024 03:15:20 -0800 (PST)
+        bh=kfRKb6qYv530q1n0OeScBq8hVcVdxnrfY7wSThB323A=;
+        b=Dxreev9vy1cXrEuzT5kr/ouI74ncLPTpySnoewFxc6ATdB0ymbkpcnKuAgO1417wew
+         DVNWSBIrpXJoTzCwMWrYB72Yqy219berp4W7hMIodqhT2ihFoGsboKvcwyPE/4Yk5f+M
+         xBUERHjsu4KFBFF37b8CVpKDeUzjn9cMSieTceu6jQv/YW2GIMSFNL8X+JK08u7N1m25
+         5vGzFJ2xe35sFQkNjLkg6DiOdvPzd3uC3jRxQI8eJ5XvlXkpfrcEdc7YmH6m1FYYMh+X
+         qtKnn9G14PCOz40p33r/Rg0mo6wyX/eC616YAZsryy8XNELjkn6TFwywnfvZL6OKtzS+
+         lLhw==
+X-Forwarded-Encrypted: i=1; AJvYcCXLbMd4z9jnSCTaOfkDYkPXlvbfgiTX+XKaouz9i3hJ14fkcWHM2R3aVz9Qrc41XUQTe7H+YXg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRj7Ok8aIlPdp1QvXcchss8PmGDmDa/zJoFI9UNO3/CQ54gB+g
+	XVPPWISiCOnaZnTKTvlpBqnFGNctBpIwbrWcljDypmXNAIBTppHck0Z5rvIhcTg=
+X-Google-Smtp-Source: AGHT+IEu79YGFxZM6Eecn6ewOoMwq28FlO/8LqwRJUbtDaL1h8BGJ+TOp/Y8iTBbhuCNrcvbQJTXBA==
+X-Received: by 2002:a05:651c:505:b0:2f5:abe:b6bd with SMTP id 38308e7fff4ca-2fcbe099636mr164756301fa.42.1730805787245;
+        Tue, 05 Nov 2024 03:23:07 -0800 (PST)
 Received: from [192.168.0.40] ([176.61.106.227])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd947c26sm218210655e9.26.2024.11.05.03.15.19
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4327d5ac002sm184409155e9.5.2024.11.05.03.23.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Nov 2024 03:15:19 -0800 (PST)
-Message-ID: <474d3c62-5747-45b9-b5c3-253607b0c17a@linaro.org>
-Date: Tue, 5 Nov 2024 11:15:19 +0000
+        Tue, 05 Nov 2024 03:23:06 -0800 (PST)
+Message-ID: <3ae9d07c-173e-4715-8cb5-f3d84de14f39@linaro.org>
+Date: Tue, 5 Nov 2024 11:23:05 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,8 +76,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] media: venus: hfi_parser: avoid OOB access beyond
- payload word count
+Subject: Re: [PATCH 3/4] media: venus: hfi: add check to handle incorrect
+ queue size
 To: Vikash Garodia <quic_vgarodia@quicinc.com>,
  Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
  Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
@@ -85,173 +85,66 @@ To: Vikash Garodia <quic_vgarodia@quicinc.com>,
 Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org
 References: <20241105-venus_oob-v1-0-8d4feedfe2bb@quicinc.com>
- <20241105-venus_oob-v1-2-8d4feedfe2bb@quicinc.com>
+ <20241105-venus_oob-v1-3-8d4feedfe2bb@quicinc.com>
 Content-Language: en-US
 From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20241105-venus_oob-v1-2-8d4feedfe2bb@quicinc.com>
+In-Reply-To: <20241105-venus_oob-v1-3-8d4feedfe2bb@quicinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 05/11/2024 08:54, Vikash Garodia wrote:
-> words_count denotes the number of words in total payload, while data
-> points to payload of various property within it. When words_count
-> reaches last word, data can access memory beyond the total payload.
-> Avoid this case by not allowing the loop for the last word count.
+> qsize represents size of shared queued between driver and video
+> firmware. Firmware can modify this value to an invalid large value. In
+> such situation, empty_space will be bigger than the space actually
+> available. Since new_wr_idx is not checked, so the following code will
+> result in an OOB write.
+> ...
+> qsize = qhdr->q_size
+> 
+> if (wr_idx >= rd_idx)
+>   empty_space = qsize - (wr_idx - rd_idx)
+> ....
+> if (new_wr_idx < qsize) {
+>   memcpy(wr_ptr, packet, dwords << 2) --> OOB write
+> 
+> Add check to ensure qsize is within the allocated size while
+> reading and writing packets into the queue.
 > 
 > Cc: stable@vger.kernel.org
-> Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
+> Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
 > Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
 > ---
->   drivers/media/platform/qcom/venus/hfi_parser.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   drivers/media/platform/qcom/venus/hfi_venus.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
 > 
-> diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c b/drivers/media/platform/qcom/venus/hfi_parser.c
-> index 27d0172294d5154f4839e8cef172f9a619dfa305..20d9ea3626e9c4468d5f7dbd678743135f027c86 100644
-> --- a/drivers/media/platform/qcom/venus/hfi_parser.c
-> +++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-> @@ -303,7 +303,7 @@ u32 hfi_parser(struct venus_core *core, struct venus_inst *inst, void *buf,
->   		memset(core->caps, 0, sizeof(core->caps));
->   	}
+> diff --git a/drivers/media/platform/qcom/venus/hfi_venus.c b/drivers/media/platform/qcom/venus/hfi_venus.c
+> index f9437b6412b91c2483670a2b11f4fd43f3206404..50d92214190d88eff273a5ba3f95486f758bcc05 100644
+> --- a/drivers/media/platform/qcom/venus/hfi_venus.c
+> +++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+> @@ -187,6 +187,9 @@ static int venus_write_queue(struct venus_hfi_device *hdev,
+>   	/* ensure rd/wr indices's are read from memory */
+>   	rmb();
 >   
-> -	while (words_count) {
-> +	while (words_count > 1) {
->   		data = word + 1;
+> +	if (qsize > IFACEQ_QUEUE_SIZE/4)
+> +		return -EINVAL;
+> +
+>   	if (wr_idx >= rd_idx)
+>   		empty_space = qsize - (wr_idx - rd_idx);
+>   	else
+> @@ -255,6 +258,9 @@ static int venus_read_queue(struct venus_hfi_device *hdev,
+>   	wr_idx = qhdr->write_idx;
+>   	qsize = qhdr->q_size;
 >   
->   		switch (*word) {
+> +	if (qsize > IFACEQ_QUEUE_SIZE/4)
+> +		return -EINVAL;
+> +
+>   	/* make sure data is valid before using it */
+>   	rmb();
+>   
 > 
 
-How is it the right thing to do to _not_ process the last u32 ?
+You have this same calculation in venus_set_qhdr_defaults() really needs 
+a macro or something to stop repeating the same code in another patch later.
 
-How does this overrun ? while (words_count) should be fine because it 
-decrements at the bottom of the loop...
-
-assuming your buffer is word aligned obvs
-
-=>
-
-#include <stdio.h>
-#include <stdint.h>
-
-char somebuf[64];
-
-void init(char *buf, int len)
-{
-         int i;
-         char c = 0;
-
-         for (i = 0; i < len; i++)
-                 buf[i] = c++;
-}
-
-int hfi_parser(void *buf, int size)
-{
-         int word_count = size >> 2;
-         uint32_t *my_word = (uint32_t*)buf;
-
-         printf("Size %d word_count %d\n", size, word_count);
-
-         while(word_count) {
-                 printf("Myword %d == 0x%08x\n", word_count, *my_word);
-                 my_word++;
-                 word_count--;
-         }
-}
-
-int main(int argc, char *argv[])
-{
-         int i;
-
-         init(somebuf, sizeof(somebuf));
-         for (i = 0; i < sizeof(somebuf); i++)
-                 printf("%x = %x\n", i, somebuf[i]);
-
-         hfi_parser(somebuf, sizeof(somebuf));
-
-         return 0;
-}
-
-0 = 0
-1 = 1
-2 = 2
-3 = 3
-4 = 4
-5 = 5
-6 = 6
-7 = 7
-8 = 8
-9 = 9
-a = a
-b = b
-c = c
-d = d
-e = e
-f = f
-10 = 10
-11 = 11
-12 = 12
-13 = 13
-14 = 14
-15 = 15
-16 = 16
-17 = 17
-18 = 18
-19 = 19
-1a = 1a
-1b = 1b
-1c = 1c
-1d = 1d
-1e = 1e
-1f = 1f
-20 = 20
-21 = 21
-22 = 22
-23 = 23
-24 = 24
-25 = 25
-26 = 26
-27 = 27
-28 = 28
-29 = 29
-2a = 2a
-2b = 2b
-2c = 2c
-2d = 2d
-2e = 2e
-2f = 2f
-30 = 30
-31 = 31
-32 = 32
-33 = 33
-34 = 34
-35 = 35
-36 = 36
-37 = 37
-38 = 38
-39 = 39
-3a = 3a
-3b = 3b
-3c = 3c
-3d = 3d
-3e = 3e
-3f = 3f
-Size 64 word_count 16
-Myword 16 == 0x03020100
-Myword 15 == 0x07060504
-Myword 14 == 0x0b0a0908
-Myword 13 == 0x0f0e0d0c
-Myword 12 == 0x13121110
-Myword 11 == 0x17161514
-Myword 10 == 0x1b1a1918
-Myword 9 == 0x1f1e1d1c
-Myword 8 == 0x23222120
-Myword 7 == 0x27262524
-Myword 6 == 0x2b2a2928
-Myword 5 == 0x2f2e2d2c
-Myword 4 == 0x33323130
-Myword 3 == 0x37363534
-Myword 2 == 0x3b3a3938
-Myword 1 == 0x3f3e3d3c
-
----
-bod
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
