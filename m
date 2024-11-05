@@ -1,170 +1,171 @@
-Return-Path: <stable+bounces-89872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0EA09BD25D
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 17:31:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB0339BD26F
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 17:36:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8D1D2867E8
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 16:31:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C0A31F2327A
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 16:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D48417BED0;
-	Tue,  5 Nov 2024 16:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DD2C1D90A4;
+	Tue,  5 Nov 2024 16:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="qVaOjrcF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2cq1LWtj"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39B22C190;
-	Tue,  5 Nov 2024 16:31:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44F51D89E5
+	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 16:36:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730824281; cv=none; b=EcuL4cywhAfpvl9D1Gp6G2NLUyINVRfo4XnAVivOpvhi5j4QUI8S6ziqGCAhB6lirQic4CVCna/77E0SxBUtYh2fKbMe9+X7zMhLZfO+BtC7QeEe+c97vb3rLZdLfslrPJI42yWkFP49bUBaayiJdbtRvdAQdKE99iewqv9gon4=
+	t=1730824565; cv=none; b=bqtUssw/z6ThuwsXG/gFalxrD7t50XYkLP1467ja9eBvq+cZ/6ZA4B2tlSTTVC6aFlYV1coCeNq8OYVFamIQilH9/ioDSWbqxFTwCP29J+sST2RZNDJnTVI2HRLgRbE5Z4yMBA46dMoC7CeVpyPE5CXCP/JfoI2ae5wmxRQ0tds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730824281; c=relaxed/simple;
-	bh=MDmKggEi6kmApuIt6Yt8mPHClxb1p8lHzd+eGxHmbHI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=D7QnGFV2oNP6FITCWCAo8tPP+MV+Rjg5nyEHs2ZHW7hSJp1PiwP/fu0jJm2pQx7/ZElZYhq9TdK79/8JYIGzypQmCVUa22GCWaDe5Ry4CuTAL547s2mPRAEZDR5gkbgl9PqOz1qhTxQGhd89Hmyzc6ZE18PlbCQgJ92C63MAzB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=qVaOjrcF; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1730824263; x=1731429063; i=wahrenst@gmx.net;
-	bh=uZMKt13pgpTh6sAh8BdybJCwC1878gT2xjYhwHNe3gA=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
-	 MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=qVaOjrcFZrNaf+cL8MfrYvZPZizl863UFQ7ALzP7jbkaWmeSledl592a5OETRGXd
-	 GXGJeVDFKadlJoHUxO8C7uagjAUCtmiSqGScB0D09DunkYInEtOyfLPsB0qQ93+G9
-	 OwbtOomtAlnbFOdMQ4I/Bkl0W9AfIbqHUnLpLnbxU5pBZC74ihIr5dk8YD0F5PIZ6
-	 BRJtJa+wQeXe5ToQiIu0feKMbY6AzzYG/TQMBN1V1tiBBF7qTsvVbfeQ3RxjD50F2
-	 M7fy55gYLiBL433wYInqnVZhdX+hZEVBKpkPwSRrrOyImSCePcjD/HvOLZ7z7Mvv5
-	 /qJ74o4RAJUVdb4n6w==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from stefanw-SCHENKER ([37.4.248.43]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MN5if-1tRGss2Siz-00SA0u; Tue, 05
- Nov 2024 17:31:03 +0100
-From: Stefan Wahren <wahrenst@gmx.net>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Stefan Wahren <wahrenst@gmx.net>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2 net V2] net: vertexcom: mse102x: Fix possible double free of TX skb
-Date: Tue,  5 Nov 2024 17:31:01 +0100
-Message-Id: <20241105163101.33216-1-wahrenst@gmx.net>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1730824565; c=relaxed/simple;
+	bh=FRUBLc9XwIwvwKoViBevKsXG4ZuvaTF1gm8NRRFmAaU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fezPtEiBnDhjbDz4wN3U5wdgfwc0Q4bGyuXYey2P8TrFz5AqvPY/ArPIMlzFIItUFxFslHyO5DJR9l08w7J262vJrn5LkdAOtwEOe1JxiVwgZDuhwp4mD7GzetuXn1xBvOoVrAUnd3zh2qNj8bwpkgkMGHkius7kUCKdpvVK9Oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2cq1LWtj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FBD6C4CECF;
+	Tue,  5 Nov 2024 16:36:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1730824565;
+	bh=FRUBLc9XwIwvwKoViBevKsXG4ZuvaTF1gm8NRRFmAaU=;
+	h=Subject:To:Cc:From:Date:From;
+	b=2cq1LWtjLSIeu4VpK62Pbl/jpyUQxE4wt6uLtgsX6VMNVTausIaBmFb43KfqoRlkB
+	 zyaed/qenwlSbuD8pQALCia71RmUysBS1fGnjRrFDHVtkR6oZ+WOsOS3W6NAgpqIb0
+	 tR9XysrhhRO/fJgt1OR9v2aZ4hozWd6sBPeGMIa0=
+Subject: FAILED: patch "[PATCH] mm: shmem: fix data-race in shmem_getattr()" failed to apply to 6.1-stable tree
+To: aha310510@gmail.com,akpm@linux-foundation.org,hughd@google.com,stable@vger.kernel.org,syzkaller@googlegroup.com,yuzhao@google.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 05 Nov 2024 17:35:47 +0100
+Message-ID: <2024110547-snooper-saint-e58c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:XOmPgdJnJw9hThL2W2DfrsocRWKKuXAA12CFCzpFkyf+cPMtIO2
- QHKBs1yiBmnaITpQf+0rnpbY6U5l8lfkPnL9E/vTtz71BEypwDJKfARBVCm0BIbnzqW3Xdv
- S5PMYHiwqGxRtKEB3CRSjkxBK/4N3oqBDoaALlU6kqbXjgfw7CW9/dLiqj85+r3EBqscHti
- D9oQPloGIwR0qoBqa2h/Q==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:sFhgYPjpdIY=;hK9vljsUSLRNjW4hVeA57JWASOv
- 3z6CKhwYYmWYmXOSISMxsJAIUG0Q8/Ao9I2whtNlkTF4ubUj3qus4x2fwhdO8ecyO3pzWS1FX
- MK1rgAcxdCtPfwtzH9aTDw4PWapRKd9Ba+GD5aSmm7BKy5m/GZ++psx8uOtYBPxl2FYoCefHh
- J1jhmT4MYmpZjbq3Lrrb/Aw3nTV2WtIFS/RwnidukVGCd2b1MY30poJzRAKbe+kA99EuH6Hcp
- Mxa/XPPiL3mBTtpclsuKLlz+qvkng4MJy08Yhq8SpMGIMxnDK7kHYcsLCcVCjlpw+mjExY4hA
- 6C4Cy5XINfsc5KoBcsbfeMMqVecZ9k1CP9LKkikEvC+iDS+kdcqyx+7tAQ0W7I4zmSQVDMNGj
- I3uG94kRRZSRAn6+Zj44GrnK+edqljhoMAHF4g7GU4RI98I0UqNB6HV5A2HJo406Gsa2fESYD
- Vhu1i42GrpiVaK77S3xOvUB9ywLpwho7vjAqoUiBN1U7sxxO2m3vcTfTDQzprvda+zmAKv+qX
- 3u9s/i6dA0YF4TaRy6GGF9AIhKtC0Sww11AClea7uWX1L6nnIYitDYZS7Yv4QRAAJzbmK1xW7
- hSBHX9DeGvLahLm1TSvp/3FBORB0OibyI04MkvsMzyr9VVHyoHEypYXZBJQQA32Vt9RmzB8F9
- R3OgbhLJQoUNN+rqfOOE3JTrn6TQGcbkd2CFrGDkNVAR3OhxOSOp5FpoDwv4yl15K8QtGOaHp
- 8/q5OQn8LsZeYH+z3ZJzPVos7gk8AdKVEypNTlh5xOaNVtZV6umZ0CbUWYkVL2nG0hU91NDTq
- ihWA4X493x0v+vNsc2Nr6yHQ==
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-The scope of the TX skb is wider than just mse102x_tx_frame_spi(),
-so in case the TX skb room needs to be expanded, we should free the
-the temporary skb instead of the original skb. Otherwise the original
-TX skb pointer would be freed again in mse102x_tx_work(), which leads
-to crashes:
 
-  Internal error: Oops: 0000000096000004 [#2] PREEMPT SMP
-  CPU: 0 PID: 712 Comm: kworker/0:1 Tainted: G      D            6.6.23
-  Hardware name: chargebyte Charge SOM DC-ONE (DT)
-  Workqueue: events mse102x_tx_work [mse102x]
-  pstate: 20400009 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=3D--)
-  pc : skb_release_data+0xb8/0x1d8
-  lr : skb_release_data+0x1ac/0x1d8
-  sp : ffff8000819a3cc0
-  x29: ffff8000819a3cc0 x28: ffff0000046daa60 x27: ffff0000057f2dc0
-  x26: ffff000005386c00 x25: 0000000000000002 x24: 00000000ffffffff
-  x23: 0000000000000000 x22: 0000000000000001 x21: ffff0000057f2e50
-  x20: 0000000000000006 x19: 0000000000000000 x18: ffff00003fdacfcc
-  x17: e69ad452d0c49def x16: 84a005feff870102 x15: 0000000000000000
-  x14: 000000000000024a x13: 0000000000000002 x12: 0000000000000000
-  x11: 0000000000000400 x10: 0000000000000930 x9 : ffff00003fd913e8
-  x8 : fffffc00001bc008
-  x7 : 0000000000000000 x6 : 0000000000000008
-  x5 : ffff00003fd91340 x4 : 0000000000000000 x3 : 0000000000000009
-  x2 : 00000000fffffffe x1 : 0000000000000000 x0 : 0000000000000000
-  Call trace:
-   skb_release_data+0xb8/0x1d8
-   kfree_skb_reason+0x48/0xb0
-   mse102x_tx_work+0x164/0x35c [mse102x]
-   process_one_work+0x138/0x260
-   worker_thread+0x32c/0x438
-   kthread+0x118/0x11c
-   ret_from_fork+0x10/0x20
-  Code: aa1303e0 97fffab6 72001c1f 54000141 (f9400660)
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Cc: stable@vger.kernel.org
-Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-=2D--
- drivers/net/ethernet/vertexcom/mse102x.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+To reproduce the conflict and resubmit, you may use the following commands:
 
-diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethern=
-et/vertexcom/mse102x.c
-index a04d4073def9..2c37957478fb 100644
-=2D-- a/drivers/net/ethernet/vertexcom/mse102x.c
-+++ b/drivers/net/ethernet/vertexcom/mse102x.c
-@@ -222,7 +222,7 @@ static int mse102x_tx_frame_spi(struct mse102x_net *ms=
-e, struct sk_buff *txp,
- 	struct mse102x_net_spi *mses =3D to_mse102x_spi(mse);
- 	struct spi_transfer *xfer =3D &mses->spi_xfer;
- 	struct spi_message *msg =3D &mses->spi_msg;
--	struct sk_buff *tskb;
-+	struct sk_buff *tskb =3D NULL;
- 	int ret;
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x d949d1d14fa281ace388b1de978e8f2cd52875cf
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024110547-snooper-saint-e58c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
- 	netif_dbg(mse, tx_queued, mse->ndev, "%s: skb %p, %d@%p\n",
-@@ -235,7 +235,6 @@ static int mse102x_tx_frame_spi(struct mse102x_net *ms=
-e, struct sk_buff *txp,
- 		if (!tskb)
- 			return -ENOMEM;
+Possible dependencies:
 
--		dev_kfree_skb(txp);
- 		txp =3D tskb;
- 	}
 
-@@ -257,6 +256,8 @@ static int mse102x_tx_frame_spi(struct mse102x_net *ms=
-e, struct sk_buff *txp,
- 		mse->stats.xfer_err++;
- 	}
 
-+	dev_kfree_skb(tskb);
-+
- 	return ret;
- }
+thanks,
 
-=2D-
-2.34.1
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From d949d1d14fa281ace388b1de978e8f2cd52875cf Mon Sep 17 00:00:00 2001
+From: Jeongjun Park <aha310510@gmail.com>
+Date: Mon, 9 Sep 2024 21:35:58 +0900
+Subject: [PATCH] mm: shmem: fix data-race in shmem_getattr()
+
+I got the following KCSAN report during syzbot testing:
+
+==================================================================
+BUG: KCSAN: data-race in generic_fillattr / inode_set_ctime_current
+
+write to 0xffff888102eb3260 of 4 bytes by task 6565 on cpu 1:
+ inode_set_ctime_to_ts include/linux/fs.h:1638 [inline]
+ inode_set_ctime_current+0x169/0x1d0 fs/inode.c:2626
+ shmem_mknod+0x117/0x180 mm/shmem.c:3443
+ shmem_create+0x34/0x40 mm/shmem.c:3497
+ lookup_open fs/namei.c:3578 [inline]
+ open_last_lookups fs/namei.c:3647 [inline]
+ path_openat+0xdbc/0x1f00 fs/namei.c:3883
+ do_filp_open+0xf7/0x200 fs/namei.c:3913
+ do_sys_openat2+0xab/0x120 fs/open.c:1416
+ do_sys_open fs/open.c:1431 [inline]
+ __do_sys_openat fs/open.c:1447 [inline]
+ __se_sys_openat fs/open.c:1442 [inline]
+ __x64_sys_openat+0xf3/0x120 fs/open.c:1442
+ x64_sys_call+0x1025/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:258
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+read to 0xffff888102eb3260 of 4 bytes by task 3498 on cpu 0:
+ inode_get_ctime_nsec include/linux/fs.h:1623 [inline]
+ inode_get_ctime include/linux/fs.h:1629 [inline]
+ generic_fillattr+0x1dd/0x2f0 fs/stat.c:62
+ shmem_getattr+0x17b/0x200 mm/shmem.c:1157
+ vfs_getattr_nosec fs/stat.c:166 [inline]
+ vfs_getattr+0x19b/0x1e0 fs/stat.c:207
+ vfs_statx_path fs/stat.c:251 [inline]
+ vfs_statx+0x134/0x2f0 fs/stat.c:315
+ vfs_fstatat+0xec/0x110 fs/stat.c:341
+ __do_sys_newfstatat fs/stat.c:505 [inline]
+ __se_sys_newfstatat+0x58/0x260 fs/stat.c:499
+ __x64_sys_newfstatat+0x55/0x70 fs/stat.c:499
+ x64_sys_call+0x141f/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:263
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+value changed: 0x2755ae53 -> 0x27ee44d3
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 UID: 0 PID: 3498 Comm: udevd Not tainted 6.11.0-rc6-syzkaller-00326-gd1f2d51b711a-dirty #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
+==================================================================
+
+When calling generic_fillattr(), if you don't hold read lock, data-race
+will occur in inode member variables, which can cause unexpected
+behavior.
+
+Since there is no special protection when shmem_getattr() calls
+generic_fillattr(), data-race occurs by functions such as shmem_unlink()
+or shmem_mknod(). This can cause unexpected results, so commenting it out
+is not enough.
+
+Therefore, when calling generic_fillattr() from shmem_getattr(), it is
+appropriate to protect the inode using inode_lock_shared() and
+inode_unlock_shared() to prevent data-race.
+
+Link: https://lkml.kernel.org/r/20240909123558.70229-1-aha310510@gmail.com
+Fixes: 44a30220bc0a ("shmem: recalculate file inode when fstat")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reported-by: syzbot <syzkaller@googlegroup.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/shmem.c b/mm/shmem.c
+index c5adb987b23c..4ba1d00fabda 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1166,7 +1166,9 @@ static int shmem_getattr(struct mnt_idmap *idmap,
+ 	stat->attributes_mask |= (STATX_ATTR_APPEND |
+ 			STATX_ATTR_IMMUTABLE |
+ 			STATX_ATTR_NODUMP);
++	inode_lock_shared(inode);
+ 	generic_fillattr(idmap, request_mask, inode, stat);
++	inode_unlock_shared(inode);
+ 
+ 	if (shmem_huge_global_enabled(inode, 0, 0, false, NULL, 0))
+ 		stat->blksize = HPAGE_PMD_SIZE;
 
 
