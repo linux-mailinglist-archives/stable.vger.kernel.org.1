@@ -1,169 +1,128 @@
-Return-Path: <stable+bounces-89780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A65609BC3A2
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 04:10:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B8A59BC3BD
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 04:19:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A6B51F21EA6
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 03:10:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF4801F22CBF
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 03:19:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D0B166F3D;
-	Tue,  5 Nov 2024 03:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D5F183CD6;
+	Tue,  5 Nov 2024 03:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="EvyAatJy"
+	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="VIw2w5sk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49FB156653;
-	Tue,  5 Nov 2024 03:09:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C916717E8E2;
+	Tue,  5 Nov 2024 03:19:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.147.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730776192; cv=none; b=l7p04RnGPNnRl1kHyJ/cOIhFJ1lxAUIFw7GiaT5mzTKd0zkgp/6Im5by/OOMOICeeJ5+ArVzp+eF8CNMfarznzOuqi/x/1/RreB5+5iRNf4ocXFzh0rLnTpmNKHx/h/LADLaAqzbiM+QAD2+I+E6/EyKTDAzB3xYaITFbGA3jyo=
+	t=1730776781; cv=none; b=AGIRnx3uFdoYHBcRskKaVVPQ9gvO0JGVfnNQXLbVxh7fjD2vaRIbSdnZqL9W+bzV96rc5HvEzIvpI4Is7Gxj0i5l8qwjN4ij6Roe6sVnaVEZQZ75fFTr7T3b2O8rSJKe4fmIEvbYsFtM/7QGgLhdkW406ivfODSZPaqvroAECac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730776192; c=relaxed/simple;
-	bh=OudbygbXI3Uc0+dr2OAiyMdf4/JuoLvEowybthCyl0Y=;
-	h=Date:To:From:Subject:Message-Id; b=LLL9Oc3tCdBXKQSm9SFfmrQopAT8JYZwKCg1c0Ear+3aZtt+JTFViKjuu3n1IcXU81wW86Xu1VEM4irVRyEhTWLwpfg9AJwQKKxLqP9Z6d7X5cXonnmRUBLZRnT7ZYk/qy74fGRe59bC6EbYmByNe8e8PfiUQjdpLjuzX3Whkoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=EvyAatJy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B95C4CECE;
-	Tue,  5 Nov 2024 03:09:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1730776192;
-	bh=OudbygbXI3Uc0+dr2OAiyMdf4/JuoLvEowybthCyl0Y=;
-	h=Date:To:From:Subject:From;
-	b=EvyAatJytOtQ4JJazgO7kzk3+aJ7J4Y6DtmtA4R46OAZVCNNclHPelK7zHcvMDdI+
-	 7myFFt+QYJ/Mm+l7Fz0oUzmXl1QMT7rr/i093ApcormRMNI491uT0aT2aYyV+amZS/
-	 OlOd/1EfsP56XI1Fp8sX+Di1emNB4uIumnJU+p5E=
-Date: Mon, 04 Nov 2024 19:09:51 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,ghe@suse.com,gechangwei@live.cn,andrew.kanner@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + ocfs2-remove-entry-once-instead-of-null-ptr-dereference-in-ocfs2_xa_remove.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241105030952.42B95C4CECE@smtp.kernel.org>
+	s=arc-20240116; t=1730776781; c=relaxed/simple;
+	bh=ZO4mZ6uDnQ4xgSBdcl2TmLImoFFrdOZgNandE9nq1hM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jjvm0hCdjEAKtD/os8FGY6O2yOyKHAgd1mswiyhs/QsiuH8u368jHBOgywmiMVUa0L5kN/UVrLZ5qR9LVwQ0/wxmvejsGWYyatDl6s0jid/B2jYcUqtW1LtYA+5RUuG4dhOTYE6DZ7F4IGNveGizTil8bfTRVHXMcQ5iNFA/2bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=VIw2w5sk; arc=none smtp.client-ip=148.163.147.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
+Received: from pps.filterd (m0134421.ppops.net [127.0.0.1])
+	by mx0b-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A4KtqhW022119;
+	Tue, 5 Nov 2024 03:19:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pps0720; bh=RLvlyd7j+M/HoXWqrm1jIxIlrb8ntzFqxgIsi
+	f42wOA=; b=VIw2w5skrOsvgULAD0vSl4XjsjJ5tZ4X57K7WssK3scIWUggHWICM
+	rxlkc++Yd4bRGFvEmIiKEaBXEEamWivKBzeCJlzvhcj818zRbgHDtH4CT1W5jgir
+	sCuLhYB6IE/FQQt73PaRB3fcs23kB9jdx8EpBQgGkM9JDPbmdkGujdxyeNXDza70
+	B9H5mK7TWuX1HnLKgxmcnCF0ZrgjhsoTPUxvXbB8bipBAqS55T7WIfaYXWRpmzHF
+	PyGUeL/jpdv+B/2R9s9y4Dhb0eLfXcfWt/LlHqCWgMxo2H/OnJY46HNgqJPtmoNE
+	/DH94lqu+x2qSe49C7sozKCwfWuOvL+yg==
+Received: from p1lg14878.it.hpe.com ([16.230.97.204])
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 42q5qqa95w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 Nov 2024 03:19:15 +0000 (GMT)
+Received: from localhost (unknown [192.58.206.35])
+	by p1lg14878.it.hpe.com (Postfix) with ESMTP id 9B9F52766C;
+	Tue,  5 Nov 2024 03:19:13 +0000 (UTC)
+From: Matt Muggeridge <Matt.Muggeridge@hpe.com>
+To: 
+Cc: Matt Muggeridge <Matt.Muggeridge@hpe.com>,
+        David Ahern <dsahern@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>, linux-api@vger.kernel.org,
+        stable@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH net 0/1] net/ipv6: Netlink flag for new IPv6 Default Routes
+Date: Mon,  4 Nov 2024 22:18:38 -0500
+Message-Id: <20241105031841.10730-1-Matt.Muggeridge@hpe.com>
+X-Mailer: git-send-email 2.35.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: 2ZpbU0J99SP4QRAkmWWubxBa3XzyO8KB
+X-Proofpoint-ORIG-GUID: 2ZpbU0J99SP4QRAkmWWubxBa3XzyO8KB
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-05_03,2024-10-04_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
+ spamscore=0 impostorscore=0 priorityscore=1501 lowpriorityscore=0
+ malwarescore=0 suspectscore=0 clxscore=1011 mlxlogscore=643 mlxscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411050024
+
+This is the cover letter and provides a brief overview of the change.
+
+Add a Netlink rtm_flag, RTM_F_RA_ROUTER for the RTM_NEWROUTE message.
+This allows an IPv6 Netlink client to indicate the default route came
+from an RA. This results in the kernel creating individual default
+routes, rather than coalescing multiple default routes into a single
+ECMP route.
+
+This change also needs to be reflected in the man7/rtnetlink.7 page. Below is
+the one-line addition to the man-pages git repo
+(https://git.kernel.org/pub/scm/docs/man-pages/man-pages.git):
+
+diff --git a/man/man7/rtnetlink.7 b/man/man7/rtnetlink.7
+index 86ed459bb..07c4ef0a8 100644
+--- a/man/man7/rtnetlink.7
++++ b/man/man7/rtnetlink.7
+@@ -295,6 +295,7 @@ if the route changes, notify the user via rtnetlink
+ T}
+ RTM_F_CLONED:route is cloned from another route
+ RTM_F_EQUALIZE:a multipath equalizer (not yet implemented)
++RTM_F_RA_ROUTER: the route is a default route from an RA
+ .TE
+ .IP
+ .I rtm_table
 
 
-The patch titled
-     Subject: ocfs2: remove entry once instead of null-ptr-dereference in ocfs2_xa_remove()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     ocfs2-remove-entry-once-instead-of-null-ptr-dereference-in-ocfs2_xa_remove.patch
+Signed-off-by: Matt Muggeridge <Matt.Muggeridge@hpe.com>
+Cc: David Ahern <dsahern@kernel.org>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: linux-api@vger.kernel.org
+Cc: stable@vger.kernel.org
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-remove-entry-once-instead-of-null-ptr-dereference-in-ocfs2_xa_remove.patch
+Matt Muggeridge (1):
+  net/ipv6: Netlink flag for new IPv6 Default Routes
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+ include/uapi/linux/rtnetlink.h | 9 +++++----
+ net/ipv6/route.c               | 3 +++
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Andrew Kanner <andrew.kanner@gmail.com>
-Subject: ocfs2: remove entry once instead of null-ptr-dereference in ocfs2_xa_remove()
-Date: Sun, 3 Nov 2024 20:38:45 +0100
-
-Syzkaller is able to provoke null-ptr-dereference in ocfs2_xa_remove():
-
-[   57.319872] (a.out,1161,7):ocfs2_xa_remove:2028 ERROR: status = -12
-[   57.320420] (a.out,1161,7):ocfs2_xa_cleanup_value_truncate:1999 ERROR: Partial truncate while removing xattr overlay.upper.  Leaking 1 clusters and removing the entry
-[   57.321727] BUG: kernel NULL pointer dereference, address: 0000000000000004
-[...]
-[   57.325727] RIP: 0010:ocfs2_xa_block_wipe_namevalue+0x2a/0xc0
-[...]
-[   57.331328] Call Trace:
-[   57.331477]  <TASK>
-[...]
-[   57.333511]  ? do_user_addr_fault+0x3e5/0x740
-[   57.333778]  ? exc_page_fault+0x70/0x170
-[   57.334016]  ? asm_exc_page_fault+0x2b/0x30
-[   57.334263]  ? __pfx_ocfs2_xa_block_wipe_namevalue+0x10/0x10
-[   57.334596]  ? ocfs2_xa_block_wipe_namevalue+0x2a/0xc0
-[   57.334913]  ocfs2_xa_remove_entry+0x23/0xc0
-[   57.335164]  ocfs2_xa_set+0x704/0xcf0
-[   57.335381]  ? _raw_spin_unlock+0x1a/0x40
-[   57.335620]  ? ocfs2_inode_cache_unlock+0x16/0x20
-[   57.335915]  ? trace_preempt_on+0x1e/0x70
-[   57.336153]  ? start_this_handle+0x16c/0x500
-[   57.336410]  ? preempt_count_sub+0x50/0x80
-[   57.336656]  ? _raw_read_unlock+0x20/0x40
-[   57.336906]  ? start_this_handle+0x16c/0x500
-[   57.337162]  ocfs2_xattr_block_set+0xa6/0x1e0
-[   57.337424]  __ocfs2_xattr_set_handle+0x1fd/0x5d0
-[   57.337706]  ? ocfs2_start_trans+0x13d/0x290
-[   57.337971]  ocfs2_xattr_set+0xb13/0xfb0
-[   57.338207]  ? dput+0x46/0x1c0
-[   57.338393]  ocfs2_xattr_trusted_set+0x28/0x30
-[   57.338665]  ? ocfs2_xattr_trusted_set+0x28/0x30
-[   57.338948]  __vfs_removexattr+0x92/0xc0
-[   57.339182]  __vfs_removexattr_locked+0xd5/0x190
-[   57.339456]  ? preempt_count_sub+0x50/0x80
-[   57.339705]  vfs_removexattr+0x5f/0x100
-[...]
-
-Reproducer uses faultinject facility to fail ocfs2_xa_remove() ->
-ocfs2_xa_value_truncate() with -ENOMEM.
-
-In this case the comment mentions that we can return 0 if
-ocfs2_xa_cleanup_value_truncate() is going to wipe the entry
-anyway. But the following 'rc' check is wrong and execution flow do
-'ocfs2_xa_remove_entry(loc);' twice:
-* 1st: in ocfs2_xa_cleanup_value_truncate();
-* 2nd: returning back to ocfs2_xa_remove() instead of going to 'out'.
-
-Fix this by skipping the 2nd removal of the same entry and making
-syzkaller repro happy.
-
-Link: https://lkml.kernel.org/r/20241103193845.2940988-1-andrew.kanner@gmail.com
-Fixes: 399ff3a748cf ("ocfs2: Handle errors while setting external xattr values.")
-Signed-off-by: Andrew Kanner <andrew.kanner@gmail.com>
-Reported-by: syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/671e13ab.050a0220.2b8c0f.01d0.GAE@google.com/T/
-Tested-by: syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/ocfs2/xattr.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
---- a/fs/ocfs2/xattr.c~ocfs2-remove-entry-once-instead-of-null-ptr-dereference-in-ocfs2_xa_remove
-+++ a/fs/ocfs2/xattr.c
-@@ -2036,8 +2036,7 @@ static int ocfs2_xa_remove(struct ocfs2_
- 				rc = 0;
- 			ocfs2_xa_cleanup_value_truncate(loc, "removing",
- 							orig_clusters);
--			if (rc)
--				goto out;
-+			goto out;
- 		}
- 	}
- 
-_
-
-Patches currently in -mm which might be from andrew.kanner@gmail.com are
-
-ocfs2-remove-entry-once-instead-of-null-ptr-dereference-in-ocfs2_xa_remove.patch
+base-commit: 5ccdcdf186aec6b9111845fd37e1757e9b413e2f
+-- 
+2.35.3
 
 
