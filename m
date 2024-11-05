@@ -1,146 +1,106 @@
-Return-Path: <stable+bounces-89904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB149BD33E
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 18:22:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0FAA9BD351
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 18:26:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F06128145C
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 17:22:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E9DF1C2270E
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 17:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08EDA1E04BD;
-	Tue,  5 Nov 2024 17:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D441E1308;
+	Tue,  5 Nov 2024 17:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gOvjE3kJ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KsKd7h9D"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6940414A09A;
-	Tue,  5 Nov 2024 17:21:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E7F1D90B4
+	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 17:26:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730827316; cv=none; b=ovD2EfZQtiFb0KgysjZf2cEMHgjFdxjseMfg+KQbboLHc3l7FWG3Vmkxl2zJuoGCW1kGugHVFsBBMZmLkSl+rF0z1cmq7BAxxQ6RbSzU6vQ7a78cAkMa/J3zar+8RkA04BrmlSg/ANc6qVp9W9eZtKMetF0DefSLm5habonOBBE=
+	t=1730827562; cv=none; b=Y37dwL3/roEKSJhl50345H6AlfADEDhU3Pu5J84r68DEgouzy5jC/Wwz1Zemetd3JBlihewk5Tn2jYfysx5TLrs3Rhf2hAtLZ1Ef1azicyIk0EPsO/ChojSHg5+uzi6rCWbtkB7YuX+tUf1v72UDXV2UJhpN2+h7B3Fljxw21N8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730827316; c=relaxed/simple;
-	bh=rOY59W2R/svFpNaHoVjE2EshezTg7g1VzmcV3p0Fjto=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vv8e2CAMnYopqt29Y93GB8r3cOl7b8kkd53nD5ipHE5nWyMwMGPy+X+ajvFwS0q4w6RgigMBhn2UrjdRWuYwZnv1bKvTNtjdvt/bBeuf8XVST97n0x7qY6qMXloY+/nUkBZLGQPmhpCcYBi/tin8nCbhufUkeGQCTK2NI+7Ajkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gOvjE3kJ; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730827314; x=1762363314;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rOY59W2R/svFpNaHoVjE2EshezTg7g1VzmcV3p0Fjto=;
-  b=gOvjE3kJ7a8ia/t3k4Fg2mqYREtDOWjRlmjAEy5bM/7kqbaVRz337PBS
-   8m9Svtmfqh/UBj9jmKxRuJ5rPOP6/2kfLwLz7UlOfhot7fbST2YDvpBwu
-   8kkKsCEcIR0Z5Rb9yo4vxRugO+nKuBtqD8EKVqvpxMcXehKODhmDIKliW
-   hMuNneFO1GGOHycfW8waB2Ym6wMemErdkPNicRCNzWC8Bp43yHIYtJlhA
-   R6tJVxYEf+uacS87UvWCrTCmgIetBpaOj2H4vZIczNaxMqnmXff6J6L6Z
-   4Pw6i8FsCD5e+i/gJ9+YNbldarw5bwZuWMGiw4NynGRLfSeiVg+ODnED9
-   w==;
-X-CSE-ConnectionGUID: SHryP5mDQy6Q+n6HltDtUw==
-X-CSE-MsgGUID: CdXx2pgfTh6Dl4CZrLc8Gg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11247"; a="34374971"
-X-IronPort-AV: E=Sophos;i="6.11,260,1725346800"; 
-   d="scan'208";a="34374971"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 09:21:42 -0800
-X-CSE-ConnectionGUID: l9pNMaMnSd2DO0y9u/S/3g==
-X-CSE-MsgGUID: tT/yi6oaR7OpOV+EOGw3mw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,260,1725346800"; 
-   d="scan'208";a="84487946"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 05 Nov 2024 09:21:40 -0800
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t8NFJ-000mHx-1j;
-	Tue, 05 Nov 2024 17:21:37 +0000
-Date: Wed, 6 Nov 2024 01:20:52 +0800
-From: kernel test robot <lkp@intel.com>
-To: Calvin Owens <calvin@wbinvd.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: oe-kbuild-all@lists.linux.dev, Rodolfo Giometti <giometti@enneenne.com>,
-	George Spelvin <linux@horizon.com>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] pps: Fix a use-after-free
-Message-ID: <202411060043.hC5KjYAw-lkp@intel.com>
-References: <abc43b18f21379c21a4d2c63372a04b2746be665.1730792731.git.calvin@wbinvd.org>
+	s=arc-20240116; t=1730827562; c=relaxed/simple;
+	bh=9CRlXKzX/vXmQpdQmYuu7NvoZFG+CP3Ic5QDcOzwx4g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=I9P29qeiRl9tecHC0h5RY2JY9hMR/MjAL9EvXG6NSkIc41R8u4zCtPqDsnLNATaoHR8J3gsvqVIXV1Zi+p7vf+oY6qpnslCWEMsdZr6dbE8wxO7/UxIErRjbmBJ5SN8L05hGr812r4FNablo9u/F3Hr7ugMWO9AJ4he/huE8o+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KsKd7h9D; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730827559;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ToefbGyR/yma5VyAmpuseCaNgrfSwuPwtORvozSJZs4=;
+	b=KsKd7h9DaJ0Aw8cJoRdlnCwLQMITctvgzzo2sLMNihFdu5N4MRYesPIq4wezzvEQjK+h4u
+	yvVXLVhe4eMbXK2t3wiuQvkr2L9zerdFKvgimN+kNTnWYQyJ3ySYtzRypqjbCGHuzV6j5E
+	KFBDLaITeHTRqFWuAVNnw1wQKE6Eh/c=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-106-cQyeVpHaOYyXv_jDHa88jA-1; Tue,
+ 05 Nov 2024 12:25:57 -0500
+X-MC-Unique: cQyeVpHaOYyXv_jDHa88jA-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5FB551955F33;
+	Tue,  5 Nov 2024 17:25:55 +0000 (UTC)
+Received: from t14s.redhat.com (unknown [10.22.88.242])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 69C5D19560AA;
+	Tue,  5 Nov 2024 17:25:52 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
+To: stable@vger.kernel.org
+Cc: =?UTF-8?q?Petr=20Van=C4=9Bk?= <arkamar@atlas.cz>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	David Hildenbrand <david@redhat.com>
+Subject: [PATCH 6.6.y 0/2] mm: don't install PMD mappings when THPs are disabled by the hw/process/vma
+Date: Tue,  5 Nov 2024 18:25:48 +0100
+Message-ID: <20241105172550.969951-1-david@redhat.com>
+In-Reply-To: <2024101842-empty-espresso-c8a3@gregkh>
+References: <2024101842-empty-espresso-c8a3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abc43b18f21379c21a4d2c63372a04b2746be665.1730792731.git.calvin@wbinvd.org>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-Hi Calvin,
+Resending both patches in one series now, easier for everybody that way.
 
-kernel test robot noticed the following build errors:
+Conflicts:
+* "mm: huge_memory: add vma_thp_disabled() and thp_disabled_by_hw()"
+ -> The change in mm/shmem.c does not exist yet.
+ -> Small contextual conflict.
+* "mm: don't install PMD mappings when THPs are disabled by the hw/process/vma"
+ -> Small contextual conflict.
 
-[auto build test ERROR on linus/master]
-[also build test ERROR on v6.12-rc6 next-20241105]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+v1 -> v2:
+* "mm: huge_memory: add vma_thp_disabled() and thp_disabled_by_hw()"
+ -> Keep using "return false;" instead of "return 0;"
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Calvin-Owens/pps-Fix-a-use-after-free/20241105-155819
-base:   linus/master
-patch link:    https://lore.kernel.org/r/abc43b18f21379c21a4d2c63372a04b2746be665.1730792731.git.calvin%40wbinvd.org
-patch subject: [PATCH v3] pps: Fix a use-after-free
-config: i386-buildonly-randconfig-004-20241105 (https://download.01.org/0day-ci/archive/20241106/202411060043.hC5KjYAw-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241106/202411060043.hC5KjYAw-lkp@intel.com/reproduce)
+David Hildenbrand (1):
+  mm: don't install PMD mappings when THPs are disabled by the
+    hw/process/vma
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202411060043.hC5KjYAw-lkp@intel.com/
+Kefeng Wang (1):
+  mm: huge_memory: add vma_thp_disabled() and thp_disabled_by_hw()
 
-All errors (new ones prefixed by >>):
-
-   drivers/ptp/ptp_ocp.c: In function 'ptp_ocp_complete':
->> drivers/ptp/ptp_ocp.c:4423:40: error: incompatible type for argument 2 of 'ptp_ocp_symlink'
-    4423 |                 ptp_ocp_symlink(bp, pps->dev, "pps");
-         |                                     ~~~^~~~~
-         |                                        |
-         |                                        struct device
-   drivers/ptp/ptp_ocp.c:4387:52: note: expected 'struct device *' but argument is of type 'struct device'
-    4387 | ptp_ocp_symlink(struct ptp_ocp *bp, struct device *child, const char *link)
-         |                                     ~~~~~~~~~~~~~~~^~~~~
-
-
-vim +/ptp_ocp_symlink +4423 drivers/ptp/ptp_ocp.c
-
-773bda96492153 Jonathan Lemon  2021-08-03  4411  
-773bda96492153 Jonathan Lemon  2021-08-03  4412  static int
-773bda96492153 Jonathan Lemon  2021-08-03  4413  ptp_ocp_complete(struct ptp_ocp *bp)
-773bda96492153 Jonathan Lemon  2021-08-03  4414  {
-773bda96492153 Jonathan Lemon  2021-08-03  4415  	struct pps_device *pps;
-773bda96492153 Jonathan Lemon  2021-08-03  4416  	char buf[32];
-d7875b4b078f7e Vadim Fedorenko 2024-08-29  4417  
-773bda96492153 Jonathan Lemon  2021-08-03  4418  	sprintf(buf, "ptp%d", ptp_clock_index(bp->ptp));
-773bda96492153 Jonathan Lemon  2021-08-03  4419  	ptp_ocp_link_child(bp, buf, "ptp");
-773bda96492153 Jonathan Lemon  2021-08-03  4420  
-773bda96492153 Jonathan Lemon  2021-08-03  4421  	pps = pps_lookup_dev(bp->ptp);
-773bda96492153 Jonathan Lemon  2021-08-03  4422  	if (pps)
-773bda96492153 Jonathan Lemon  2021-08-03 @4423  		ptp_ocp_symlink(bp, pps->dev, "pps");
-773bda96492153 Jonathan Lemon  2021-08-03  4424  
-f67bf662d2cffa Jonathan Lemon  2021-09-14  4425  	ptp_ocp_debugfs_add_device(bp);
-f67bf662d2cffa Jonathan Lemon  2021-09-14  4426  
-773bda96492153 Jonathan Lemon  2021-08-03  4427  	return 0;
-773bda96492153 Jonathan Lemon  2021-08-03  4428  }
-773bda96492153 Jonathan Lemon  2021-08-03  4429  
+ include/linux/huge_mm.h | 18 ++++++++++++++++++
+ mm/huge_memory.c        | 13 +------------
+ mm/memory.c             |  9 +++++++++
+ 3 files changed, 28 insertions(+), 12 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.47.0
+
 
