@@ -1,106 +1,112 @@
-Return-Path: <stable+bounces-89889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 332AF9BD28D
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 17:38:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E0B9BD29C
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 17:40:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC18F2816BD
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 16:38:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92159B22E08
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 16:39:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8904E1DD0CF;
-	Tue,  5 Nov 2024 16:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71171DC04D;
+	Tue,  5 Nov 2024 16:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IcQsoc+Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+4hhM3e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41AF71DC182;
-	Tue,  5 Nov 2024 16:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F231D9A62
+	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 16:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730824698; cv=none; b=Xw2hvJyT2HgzEdw/z455U/Q2k6nQ2TEMSX2WhZ4a8732lBQEk1sSR6n4TJsy1L1Vi19wl7atE1HbaD7+/w6VHjQQ9dCqGoK/hMWUH4gdhf4Mfq8z0LmxZXip3CVBsvnHpPyR9wFJg/BFPpApIHlU03kKRSpL6NJJ3wzOxqo31f8=
+	t=1730824726; cv=none; b=ghmvtVP747C+/aQmSTYPBdPt9h9cEWxXOZILt5UHTknZ2rbA5bA8+NcEOd7FqFMevD2gdEHVw3qLAd7zwM8Ga8FYOg8AmOBxBoYxX5IJg8ZSMllBSh3RV7QcZTnXhlFybilAn1EYWIROgIFKClruXF0+zPXSvAXGvEqfFWxRMqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730824698; c=relaxed/simple;
-	bh=ORqsYWN5LTjtakU/Jqc07JENFyXvLrJpzmnmxASVu2s=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=jNgp1QsUP/Nh5+77GHlnQQYYd3EPCwYlvWwQtDKpxbo+YqjSrYuuZAX/Gly85HdH6X26ACD2dMDIM6WI8eZ1GLnqPQTWp/whBmzptOxLKERWi8BVrDoX6y9wEEZ//7iygj2FZvzJ8pcd2D0YWhdDaSiqPs1t3cUxlUl6P6N5bMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IcQsoc+Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08FC7C4CECF;
-	Tue,  5 Nov 2024 16:38:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730824697;
-	bh=ORqsYWN5LTjtakU/Jqc07JENFyXvLrJpzmnmxASVu2s=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=IcQsoc+ZlOob79/Aq4GrbYbKFOPUdjUPE6tvazHlPbhagLe5aA4F/23d/di/cpNmz
-	 2rrrPxUEVR6CSq3+7pZKQxMA5IVuQKZXpc7DE9m1G72rDWlxWw5dCGBgJ26fFvlj2/
-	 oMmt1H3JqxWlIAMkvZbUGg7N4ZjgF9CMgEoZIA6WU4VpRJS4w9KWl8hsH8RLRIVzI5
-	 mSukbLYLeoboLOXbkGgZ+gGFw98ve4gFfgycyPH6ewy030uakhHlscspqWaiB2pkUv
-	 dSsJNwhQI6L/4r8NOGKip0bqbWMw9DCstV3zRktQWujAXSyJuKjfPhkNN0PTDB9ZFi
-	 zwJ5sOi09HxYw==
-From: Mark Brown <broonie@kernel.org>
-To: support.opensource@diasemi.com, lgirdwood@gmail.com, perex@perex.cz, 
- tiwai@suse.com, Qiu-ji Chen <chenqiuji666@gmail.com>
-Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
- baijiaju1990@gmail.com, stable@vger.kernel.org
-In-Reply-To: <20240930101216.23723-1-chenqiuji666@gmail.com>
-References: <20240930101216.23723-1-chenqiuji666@gmail.com>
-Subject: Re: [PATCH] ASoC: codecs: Fix atomicity violation in
- snd_soc_component_get_drvdata()
-Message-Id: <173082469577.77847.18367085097740716832.b4-ty@kernel.org>
-Date: Tue, 05 Nov 2024 16:38:15 +0000
+	s=arc-20240116; t=1730824726; c=relaxed/simple;
+	bh=k0zFIXSRiY0TqDbJn78MOkTzYaYke7ZqT6GlgPuzS4k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SZb4WrdOLiWgu7VwdI9elcyNPTPJ7ilPtmdxH8w5TJaKZAEgjAIMkltT4n10ki0Klu3tt2wpVGjLaFGojkghebIRWLFF9wSsZ48o0RM84MsC7XWAAL+iQ0vgj7zLEgs7Q233dxY4Twt2McuW0RM26BmufyTai0TGWphgM/UMm4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+4hhM3e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C75E1C4CECF;
+	Tue,  5 Nov 2024 16:38:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1730824726;
+	bh=k0zFIXSRiY0TqDbJn78MOkTzYaYke7ZqT6GlgPuzS4k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=e+4hhM3eosYbwNp4//g/hOcyaiLcd7UQMmwiwufZLc3biPfHrp9Fy2SXmGsKjrtVx
+	 OkrnQKEGsRkB8c/Zrw20MusOngtCcmXvq7aW9MCBSowM8EySvTO5819s1TLCECYr3K
+	 Dzg+LFwvhZAVTulC653TRMuVQliB9SfYSBzcaRmE=
+Date: Tue, 5 Nov 2024 17:38:28 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: Petr =?utf-8?B?VmFuxJtr?= <arkamar@atlas.cz>, stable@vger.kernel.org,
+	Kefeng Wang <wangkefeng.wang@huawei.com>, Leo Fu <bfu@redhat.com>,
+	Thomas Huth <thuth@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Hugh Dickins <hughd@google.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH 6.6.y] mm: huge_memory: add vma_thp_disabled() and
+ thp_disabled_by_hw()
+Message-ID: <2024110508-cascade-employed-e28f@gregkh>
+References: <2024101842-empty-espresso-c8a3@gregkh>
+ <20241022090755.4097604-1-david@redhat.com>
+ <2024115125648-ZyoWEF1F7lBRpXqH-arkamar@atlas.cz>
+ <26be0c08-1c83-451d-902b-a843b9ef4b0e@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-9b746
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <26be0c08-1c83-451d-902b-a843b9ef4b0e@redhat.com>
 
-On Mon, 30 Sep 2024 18:12:16 +0800, Qiu-ji Chen wrote:
-> An atomicity violation occurs when the validity of the variables
-> da7219->clk_src and da7219->mclk_rate is being assessed. Since the entire
-> assessment is not protected by a lock, the da7219 variable might still be
-> in flux during the assessment, rendering this check invalid.
+On Tue, Nov 05, 2024 at 05:30:14PM +0100, David Hildenbrand wrote:
+> On 05.11.24 13:56, Petr Vaněk wrote:
+> > Hi David,
+> > 
 > 
-> To fix this issue, we recommend adding a lock before the block
-> if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq)) so that
-> the legitimacy check for da7219->clk_src and da7219->mclk_rate is
-> protected by the lock, ensuring the validity of the check.
+> Hi Petr,
 > 
-> [...]
+> > On Tue, Oct 22, 2024 at 11:07:55AM +0200, David Hildenbrand wrote:
+> > > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> > > index 9aea11b1477c..dfd6577225d8 100644
+> > > --- a/mm/huge_memory.c
+> > > +++ b/mm/huge_memory.c
+> > > @@ -78,19 +78,8 @@ bool hugepage_vma_check(struct vm_area_struct *vma, unsigned long vm_flags,
+> > >   	if (!vma->vm_mm)		/* vdso */
+> > >   		return false;
+> > > -	/*
+> > > -	 * Explicitly disabled through madvise or prctl, or some
+> > > -	 * architectures may disable THP for some mappings, for
+> > > -	 * example, s390 kvm.
+> > > -	 * */
+> > > -	if ((vm_flags & VM_NOHUGEPAGE) ||
+> > > -	    test_bit(MMF_DISABLE_THP, &vma->vm_mm->flags))
+> > > -		return false;
+> > > -	/*
+> > > -	 * If the hardware/firmware marked hugepage support disabled.
+> > > -	 */
+> > > -	if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_UNSUPPORTED))
+> > > -		return false;
+> > > +	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vm_flags))
+> > > +		return 0;
+> > 
+> > Shouldn't this return false for consistency with the rest of the
+> > function?
+> 
+> Yes, that's better. Same applies to the 6.1.y backport of this.
 
-Applied to
+Ok, dropping this from the review queue, please resend the updated
+versions.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+thansk,
 
-Thanks!
-
-[1/1] ASoC: codecs: Fix atomicity violation in snd_soc_component_get_drvdata()
-      commit: 1157733344651ca505e259d6554591ff156922fa
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+greg k-h
 
