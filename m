@@ -1,137 +1,219 @@
-Return-Path: <stable+bounces-89840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 791A39BCED2
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 15:13:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE1E9BCF19
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 15:22:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 317681F23A68
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 14:13:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BE0E1C236DE
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 14:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEBDD1D88D5;
-	Tue,  5 Nov 2024 14:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B491DAC8D;
+	Tue,  5 Nov 2024 14:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="BY8VnCCf"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="N6mGU9fx"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72C51D88D0
-	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 14:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC461D6DB9
+	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 14:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730816027; cv=none; b=KYQux+/k2QeFsQ4c7CCD/Eutw1LKsJrRYwKVbH7xDvMzWMDeWg1g57UNVPLosg6PBU7lkRzsprr0K8KwQcQDNWGT7w8BZPFkFce8FYT4nMo5oJDhoaowUvTrPodrTyigeUfkTUow9bxYKmtX0sePH5RxOVd0HiOmDvNaJaDRq84=
+	t=1730816503; cv=none; b=TWEI+5Iu84w09zFwSko2ALXNs5HuQUUIqtiSht8+zO/N53iLidGR3sNyfA50u3Z1hTzYr7k19MGOuJpjNl3NPMg7/kSMjEXuIj4fmuIZRFZV9pyYXLFUmaTgd2s/KbYj/jatL+rOL778zAnG2Q0h1v6FD+C2wIeOgm9jMDuCSHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730816027; c=relaxed/simple;
-	bh=tounGA2esR/I0Qx0gP0xNm3ep/qLgCuQd4RYHr4tj0s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bk6D5tJl8ol54XvSc5Mst6nkz67c9EwThxjoH40bG9HLWcVGvEMp5397hhD5jcd+O8yE20lj4nIu8z5D2zAj1r0CmGr0rDaJAkOMghveX2R2bAhgzRkZ4CCTGjus3aEUWSlOEF1qysHOhcW2kZ7lmF66A0kychBtUVK+2cnNXrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=BY8VnCCf; arc=none smtp.client-ip=209.85.222.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7b14554468fso404450285a.1
-        for <stable@vger.kernel.org>; Tue, 05 Nov 2024 06:13:45 -0800 (PST)
+	s=arc-20240116; t=1730816503; c=relaxed/simple;
+	bh=+WeoblxcVi27gfW2V2SiOkOlm5SjuVVgD0/kYFf0aBI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=M1XqVS0dso7UDEUewLyntj3k1sNpcQ00uhqsGAPcxPR1V8bkHoxezEsOJW5IRcgNqUV5aaPhK+TxX4UmaODn0n+kcy1nPXKvZ+quGRDh3OANZzIhYUnI40LcrUXzDme02twOaWvvRlH83hDqGB2n3wWv23Rq7YHSB4mnhrZ+S3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=N6mGU9fx; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7b15d7b7a32so440138285a.1
+        for <stable@vger.kernel.org>; Tue, 05 Nov 2024 06:21:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1730816025; x=1731420825; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KDvNb87s9KcM7r3rmGm02Lgs00JVk1L5xBACfLVxSx8=;
-        b=BY8VnCCfAjHP0hMi+ft8oXBHiepkJcbfP8SYTvdbatCSpi1at4Oogk8jv78XkWASNR
-         QfzLhTLf7sY1W9bJSi49bbl+kEDFCKSJryIYZQjQnoeB+yJT379sKd2Wvmym9Cg+1x6j
-         L/7XXAaH/A/Ra5gnc3QLAkF/vRDMZWbJEmBHCSr2F0OgZg3y4rcTTy1Dvw1KXBHbdGKH
-         VH79ngMFUZA9g6WV4RfUmWM3tmcogsS7T1ellQ7n2qPVZd1pe39ZRpv5xQP4X09vB1GB
-         h+A8HIHjCcVb0EaR4+Oj35i1W2jW7bjEzr4xlFgjc7m6GV2lLiCEoWod+ckI68P0eyrB
-         bnOQ==
+        d=chromium.org; s=google; t=1730816500; x=1731421300; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dJDZZo4Ve4iYh3WFwxUk1X5fJAMiaOerhjZjpwZfd8g=;
+        b=N6mGU9fxuBEF39JNfkPSvuUDWb5h9/rLYxgLhoF/2SOPMHX0khevkFIcgH06eqfeYR
+         o8ZG4x818s2Mvo+yj1MuAK/nqIHRvY089v1pC6Qkh3JTlq0Ya2w5ZbH+lhopsISTPNHx
+         EfdVPIlkr4OdV50M+a9JH8t5vd7YHTj0XFjIs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730816025; x=1731420825;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KDvNb87s9KcM7r3rmGm02Lgs00JVk1L5xBACfLVxSx8=;
-        b=pV4KmFGrGAawZuqFFMjWS7WcdBAXjx6S8jRXJDUQ6Lgossc6t8WZNHYLQdN7jKbQuN
-         VjU9CxQEKVzGSKdUvQMJAqlcPf4laFmQnYHxxV348N36G1aitloEPTBlfBvBUfGTq+xG
-         g7gn2hz3SME/l6W8o6QI1L5bt3cr2wBPbEPbrGENxBu3edSBqo2NHHPD62tP0JaDQ/Ok
-         FovqvA39BcqRimCk90s+jU5BMCSbg5PzB29Cp1O4Bsj2zfqh8red17UqVGwH9GV9Mv3h
-         X947w/TUc1DbhUS7EX0zWQ9N5ATS6dgUGF/Oohm1XKeveutiCQQRmBJV/wcbh2LgP4d4
-         nIdA==
-X-Forwarded-Encrypted: i=1; AJvYcCWc95cdinFc85abj/f2Xo4SEQudniqQHRo8gq4CGjak2wBkU0RnVv8Fv9QHi2ZvakhkUDU1aOU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDXYAxKYs2SXt2MhRH4SuCd2lbbuNYisTcLHAPtDnkobVxMr5G
-	q44SDb9Y5sCkQDZ/Htgux06oe5+6Ow3HoZJW4oxFLHZ3BGZSGwg/xN56UHZbRQ==
-X-Google-Smtp-Source: AGHT+IEeS3YQUgZzUmSS5oJ/G5Rru+wFnAHqViIxjS3AoWTOSVHCZQPx2yiQXOuxQ7lVPzKmAArePw==
-X-Received: by 2002:a05:620a:1908:b0:7b1:5f49:6bf7 with SMTP id af79cd13be357-7b193f5bd5fmr4527852385a.56.1730816024762;
-        Tue, 05 Nov 2024 06:13:44 -0800 (PST)
-Received: from rowland.harvard.edu ([2601:19b:681:fd10::dc3c])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b2f39eb799sm522324485a.15.2024.11.05.06.13.43
+        d=1e100.net; s=20230601; t=1730816500; x=1731421300;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dJDZZo4Ve4iYh3WFwxUk1X5fJAMiaOerhjZjpwZfd8g=;
+        b=Y/RWyshBi9skNdl30buOTZ+7hjaVwWDOSECBR6RRahh5zfl1l1bOhbNrP5prMp+VdO
+         SKTjbiRPZegbrMx6pe4Pc7et7sklSXJVxpIpO9uhDuvUDTWK6LY/deR9Ddtahdf3LDEU
+         PHvsmDqw3UKWhvBdryIFnBoi4whEAmgPDCQh3CpvF81QbB1tlTWebPrSGJvK2hLfEnr9
+         2RQvRkqNktbxHtuFOjHKxE4fPBK1unkQforDu8oO5U5qQv15QP8tfKlTPs0uSbS1zEQy
+         8vJjMkiqRtfwu2KPee7BA1i92v79gZaYMrIpqiRf0nYg+QnMyxA/MT9HH6TZozxtQNko
+         mSBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX6fDuJTlaCCUd6S4llGrogiE1k7tznwsBE85l1FoELauhtmg6BrOPmbMP48oJw1rmTbFpGjuo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6EFZX+SpZG1m3BVQfx8sny3C8H1OS9CqMc2v3yCHvKXNm+WjM
+	EEu6CpnbZZ+7nT2hiAh3PfZxxCz6J/em8dVnOwxrgx49fJfrkQdP5GYzYmk4Tw==
+X-Google-Smtp-Source: AGHT+IET76wqGeZeiKOO0DDFoEAcw6qhsEUFzcltfZKRHsvnCaSVmQgqX4SOBZGzP4pWrL7tbrsm0A==
+X-Received: by 2002:a05:620a:3712:b0:7ac:dfed:65ee with SMTP id af79cd13be357-7b193ee170fmr5175922885a.3.1730816500369;
+        Tue, 05 Nov 2024 06:21:40 -0800 (PST)
+Received: from denia.c.googlers.com (189.216.85.34.bc.googleusercontent.com. [34.85.216.189])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b2f3a7139fsm521024685a.76.2024.11.05.06.21.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Nov 2024 06:13:44 -0800 (PST)
-Date: Tue, 5 Nov 2024 09:13:41 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Raju Rangoju <Raju.Rangoju@amd.com>
-Cc: linux-usb@vger.kernel.org, mathias.nyman@intel.com,
-	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] usb: xhci: quirk for data loss in ISOC transfers
-Message-ID: <9265b40f-b803-4dd7-b6df-3e8cb510b07b@rowland.harvard.edu>
-References: <20241105091850.3094-1-Raju.Rangoju@amd.com>
+        Tue, 05 Nov 2024 06:21:39 -0800 (PST)
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Tue, 05 Nov 2024 14:21:38 +0000
+Subject: [PATCH v5] media: uvcvideo: Fix crash during unbind if gpio unit
+ is in use
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241105091850.3094-1-Raju.Rangoju@amd.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241105-uvc-crashrmmod-v5-1-8623fa51a74f@chromium.org>
+X-B4-Tracking: v=1; b=H4sIAPEpKmcC/33Pyw7CIBCF4VcxrMUw3Fpc+R7GRYWhZdFiwBKN6
+ buLbky8Lf+TzJfMjWRMATPZrm4kYQk5xKmGWq+IHbqpRxpcbcIZl8AE0LlYalOXhzSO0VGttUP
+ hrQEJpB6dEvpweYL7Q+0h5HNM16df4LH+pApQoEwZj8qII6De2SHFMczjJqaePLTCXwIw9SHwK
+ ijZWNSdNprjF0H8F0QVLDPK2NYw7cQXQf4XJGW0/odKtp6ZpnsTlmW5AwqX/6V1AQAA
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Hans Verkuil <hverkuil@xs4all.nl>, linux-media@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ stable@vger.kernel.org, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+ Ricardo Ribalda <ribalda@chromium.org>
+X-Mailer: b4 0.13.0
 
-On Tue, Nov 05, 2024 at 02:48:50PM +0530, Raju Rangoju wrote:
-> During the High-Speed Isochronous Audio transfers, xHCI
-> controller on certain AMD platforms experiences momentary data
-> loss. This results in Missed Service Errors (MSE) being
-> generated by the xHCI.
-> 
-> The root cause of the MSE is attributed to the ISOC OUT endpoint
-> being omitted from scheduling. This can happen either when an IN
-> endpoint with a 64ms service interval is pre-scheduled prior to
-> the ISOC OUT endpoint or when the interval of the ISOC OUT
-> endpoint is shorter than that of the IN endpoint. Consequently,
-> the OUT service is neglected when an IN endpoint with a service
-> interval exceeding 32ms is scheduled concurrently (every 64ms in
-> this scenario).
-> 
-> This issue is particularly seen on certain older AMD platforms.
-> To mitigate this problem, it is recommended to adjust the service
-> interval of the IN endpoint to exceed 32ms (interval 8). This
+We used the wrong device for the device managed functions. We used the
+usb device, when we should be using the interface device.
 
-Do you mean "not to exceed 32 ms"?
+If we unbind the driver from the usb interface, the cleanup functions
+are never called. In our case, the IRQ is never disabled.
 
-> adjustment ensures that the OUT endpoint will not be bypassed,
-> even if a smaller interval value is utilized.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-> ---
->  drivers/usb/host/xhci-mem.c |  5 +++++
->  drivers/usb/host/xhci-pci.c | 14 ++++++++++++++
->  drivers/usb/host/xhci.h     |  1 +
->  3 files changed, 20 insertions(+)
-> 
-> diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-> index d2900197a49e..4892bb9afa6e 100644
-> --- a/drivers/usb/host/xhci-mem.c
-> +++ b/drivers/usb/host/xhci-mem.c
-> @@ -1426,6 +1426,11 @@ int xhci_endpoint_init(struct xhci_hcd *xhci,
->  	/* Periodic endpoint bInterval limit quirk */
->  	if (usb_endpoint_xfer_int(&ep->desc) ||
->  	    usb_endpoint_xfer_isoc(&ep->desc)) {
-> +		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_9) &&
-> +		    usb_endpoint_xfer_int(&ep->desc) &&
-> +		    interval >= 9) {
-> +			interval = 8;
-> +		}
+If an IRQ is triggered, it will try to access memory sections that are
+already free, causing an OOPS.
 
-This change ensures that the interval is <= 32 ms.
+We cannot use the function devm_request_threaded_irq here. The devm_*
+clean functions are called after the main structure is released by
+uvc_delete.
 
-Alan Stern
+Luckily this bug has small impact, as it is only affected by devices
+with gpio units and the user has to unbind the device, a disconnect will
+not trigger this error.
+
+Cc: stable@vger.kernel.org
+Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+---
+Changes in v5:
+- Revert non refcount, that belongs to a different set
+- Move cleanup to a different function
+- Link to v4: https://lore.kernel.org/r/20241105-uvc-crashrmmod-v4-0-410e548f097a@chromium.org
+
+Changes in v4: Thanks Laurent.
+- Remove refcounted cleaup to support devres.
+- Link to v3: https://lore.kernel.org/r/20241105-uvc-crashrmmod-v3-1-c0959c8906d3@chromium.org
+
+Changes in v3: Thanks Sakari.
+- Rename variable to initialized.
+- Other CodeStyle.
+- Link to v2: https://lore.kernel.org/r/20241105-uvc-crashrmmod-v2-1-547ce6a6962e@chromium.org
+
+Changes in v2: Thanks to Laurent.
+- The main structure is not allocated with devres so there is a small
+  period of time where we can get an irq with the structure free. Do not
+  use devres for the IRQ.
+- Link to v1: https://lore.kernel.org/r/20241031-uvc-crashrmmod-v1-1-059fe593b1e6@chromium.org
+---
+ drivers/media/usb/uvc/uvc_driver.c | 27 ++++++++++++++++++++-------
+ drivers/media/usb/uvc/uvcvideo.h   |  1 +
+ 2 files changed, 21 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index a96f6ca0889f..aa937f07b6b5 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -1295,14 +1295,14 @@ static int uvc_gpio_parse(struct uvc_device *dev)
+ 	struct gpio_desc *gpio_privacy;
+ 	int irq;
+ 
+-	gpio_privacy = devm_gpiod_get_optional(&dev->udev->dev, "privacy",
++	gpio_privacy = devm_gpiod_get_optional(&dev->intf->dev, "privacy",
+ 					       GPIOD_IN);
+ 	if (IS_ERR_OR_NULL(gpio_privacy))
+ 		return PTR_ERR_OR_ZERO(gpio_privacy);
+ 
+ 	irq = gpiod_to_irq(gpio_privacy);
+ 	if (irq < 0)
+-		return dev_err_probe(&dev->udev->dev, irq,
++		return dev_err_probe(&dev->intf->dev, irq,
+ 				     "No IRQ for privacy GPIO\n");
+ 
+ 	unit = uvc_alloc_new_entity(dev, UVC_EXT_GPIO_UNIT,
+@@ -1329,15 +1329,27 @@ static int uvc_gpio_parse(struct uvc_device *dev)
+ static int uvc_gpio_init_irq(struct uvc_device *dev)
+ {
+ 	struct uvc_entity *unit = dev->gpio_unit;
++	int ret;
+ 
+ 	if (!unit || unit->gpio.irq < 0)
+ 		return 0;
+ 
+-	return devm_request_threaded_irq(&dev->udev->dev, unit->gpio.irq, NULL,
+-					 uvc_gpio_irq,
+-					 IRQF_ONESHOT | IRQF_TRIGGER_FALLING |
+-					 IRQF_TRIGGER_RISING,
+-					 "uvc_privacy_gpio", dev);
++	ret = request_threaded_irq(unit->gpio.irq, NULL, uvc_gpio_irq,
++				   IRQF_ONESHOT | IRQF_TRIGGER_FALLING |
++				   IRQF_TRIGGER_RISING,
++				   "uvc_privacy_gpio", dev);
++
++	unit->gpio.initialized = !ret;
++
++	return ret;
++}
++
++static void uvc_gpio_cleanup(struct uvc_device *dev)
++{
++	if (!dev->gpio_unit || !dev->gpio_unit->gpio.initialized)
++		return;
++
++	free_irq(dev->gpio_unit->gpio.irq, dev);
+ }
+ 
+ /* ------------------------------------------------------------------------
+@@ -1982,6 +1994,7 @@ static void uvc_unregister_video(struct uvc_device *dev)
+ 	if (media_devnode_is_registered(dev->mdev.devnode))
+ 		media_device_unregister(&dev->mdev);
+ #endif
++	uvc_gpio_cleanup(dev);
+ }
+ 
+ int uvc_register_video_device(struct uvc_device *dev,
+diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+index 07f9921d83f2..965a789ed03e 100644
+--- a/drivers/media/usb/uvc/uvcvideo.h
++++ b/drivers/media/usb/uvc/uvcvideo.h
+@@ -234,6 +234,7 @@ struct uvc_entity {
+ 			u8  *bmControls;
+ 			struct gpio_desc *gpio_privacy;
+ 			int irq;
++			bool initialized;
+ 		} gpio;
+ 	};
+ 
+
+---
+base-commit: c7ccf3683ac9746b263b0502255f5ce47f64fe0a
+change-id: 20241031-uvc-crashrmmod-666de3fc9141
+
+Best regards,
+-- 
+Ricardo Ribalda <ribalda@chromium.org>
+
 
