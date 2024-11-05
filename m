@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-89877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DA6B9BD279
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 17:36:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7AD59BD27C
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 17:36:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 410961C21AC1
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 16:36:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E205B23140
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 16:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8759A1D9A4E;
-	Tue,  5 Nov 2024 16:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D7D1D9A6F;
+	Tue,  5 Nov 2024 16:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVVdMG3l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6INwPU3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462F31D3633
-	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 16:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141E91D95A4
+	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 16:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730824579; cv=none; b=iMbBSb+zl16MAv811zzo49m0wJhZx4vMDT+RdUmOggv/3j4jHr42wnblRrReH70s8fcN4OjeuF+Goicu76JoCtJe0EbZ8ZE0jzsZhmkMj5nu28OCG4pq/PMCKtXGcRTnxWfEgLqStjcl3N462oGAHKkHgbBc/83O7+TdxU1o43k=
+	t=1730824583; cv=none; b=vA0Z/rQevIK48QxXIUivipSG007aHZg2KYp342kqH5qImMEyrvKDbVGMocwlJ8/KMqFsni4CAR6uv9TFfz4lANocINdCPCnP52kYhovRjyQIGguYOCiQvHvsY8LyRZIpXBV336+mcjm2xsQKaYNyVT6hpMkXxwSsLFaU3y6Zdw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730824579; c=relaxed/simple;
-	bh=emuNtgjlzI8d6ITt9J0iB1gB+a8XjHW/z7zTLNR7xh4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Y+Fr2bSzXtApDxd6Yl/0MWTOG+QxKKxa2HYpudIyG0UNOIVy5dQAclWDIN8qLoAy38DTnwIu4+DENjn5EWuq0nWkUNPdItbu/OTNFLh3KQ8zlc3cgPx258EIMFsKNaJt/vEJ8TKosrJxpHCsOkAffjLXrcxYRCm3i4uo1q5ePg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVVdMG3l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C25C4CECF;
-	Tue,  5 Nov 2024 16:36:18 +0000 (UTC)
+	s=arc-20240116; t=1730824583; c=relaxed/simple;
+	bh=3QKuLCp7uVpa6vRmnSXefhMpHcx7a875KN1mWmBemKM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=P80pHD5BsyH8c+4S2LV7FL/lx9PIjVV0Gis89C2K637bF4YU+2BKAsPcBWya7o9ruZiNak0Aypl38v7l22n62eTR+iEwQEH4d9YNEGOUJmpkK3WI3Xw2bbJbytQDi1lHZgtWarFFo+4a8UJZ0mytjiSPwFdGwCxM9LPhqd8k+gI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6INwPU3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF2FC4CECF;
+	Tue,  5 Nov 2024 16:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730824578;
-	bh=emuNtgjlzI8d6ITt9J0iB1gB+a8XjHW/z7zTLNR7xh4=;
+	s=korg; t=1730824582;
+	bh=3QKuLCp7uVpa6vRmnSXefhMpHcx7a875KN1mWmBemKM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=aVVdMG3lz7WmRrvThJwE3vnv+WDiIXlqs9WGAETXSBHv9rWDjFY9d3Ffags8rwi4U
-	 RTX1eBmxEJi0tmwUqGod9wHTQsJfI1whnteyDlvA+VjQzTsXiit5XGd4amkZDn2vai
-	 vWDtds+pKN8j45tazRY/PopFmVYPFkkoPFwxwsYo=
-Subject: FAILED: patch "[PATCH] mm: shmem: fix data-race in shmem_getattr()" failed to apply to 4.19-stable tree
-To: aha310510@gmail.com,akpm@linux-foundation.org,hughd@google.com,stable@vger.kernel.org,syzkaller@googlegroup.com,yuzhao@google.com
+	b=U6INwPU3587QUCteO4leYkzzCFYCR3X0ItXHJO91sO/MZWM0mcCS889QDBiaOlrJE
+	 VLd8n36AQfY/+yb3XJAW4R4u9gr52KTyAw6yqP5bdi0R31rtZuTuFPQ5/btWu0DKYx
+	 NhcONxicjnyT/dqK0PtvTz6HuEdMWe+TBtiO9X5g=
+Subject: FAILED: patch "[PATCH] mm: avoid unconditional one-tick sleep when swapcache_prepare" failed to apply to 6.11-stable tree
+To: baohua@kernel.org,akpm@linux-foundation.org,chrisl@kernel.org,david@redhat.com,hannes@cmpxchg.org,hughd@google.com,kaleshsingh@google.com,kasong@tencent.com,liyangouwen1@oppo.com,mhocko@suse.com,minchan@kernel.org,sj@kernel.org,stable@vger.kernel.org,surenb@google.com,v-songbaohua@oppo.com,willy@infradead.org,ying.huang@intel.com,yosryahmed@google.com,yuzhao@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 05 Nov 2024 17:35:53 +0100
-Message-ID: <2024110553-blaming-ammonium-3ec5@gregkh>
+Date: Tue, 05 Nov 2024 17:36:04 +0100
+Message-ID: <2024110504-water-overarch-bbef@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.11-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.11.y
 git checkout FETCH_HEAD
-git cherry-pick -x d949d1d14fa281ace388b1de978e8f2cd52875cf
+git cherry-pick -x 01626a18230246efdcea322aa8f067e60ffe5ccd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024110553-blaming-ammonium-3ec5@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024110504-water-overarch-bbef@gregkh' --subject-prefix 'PATCH 6.11.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,95 +77,107 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d949d1d14fa281ace388b1de978e8f2cd52875cf Mon Sep 17 00:00:00 2001
-From: Jeongjun Park <aha310510@gmail.com>
-Date: Mon, 9 Sep 2024 21:35:58 +0900
-Subject: [PATCH] mm: shmem: fix data-race in shmem_getattr()
+From 01626a18230246efdcea322aa8f067e60ffe5ccd Mon Sep 17 00:00:00 2001
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 27 Sep 2024 09:19:36 +1200
+Subject: [PATCH] mm: avoid unconditional one-tick sleep when swapcache_prepare
+ fails
 
-I got the following KCSAN report during syzbot testing:
+Commit 13ddaf26be32 ("mm/swap: fix race when skipping swapcache")
+introduced an unconditional one-tick sleep when `swapcache_prepare()`
+fails, which has led to reports of UI stuttering on latency-sensitive
+Android devices.  To address this, we can use a waitqueue to wake up tasks
+that fail `swapcache_prepare()` sooner, instead of always sleeping for a
+full tick.  While tasks may occasionally be woken by an unrelated
+`do_swap_page()`, this method is preferable to two scenarios: rapid
+re-entry into page faults, which can cause livelocks, and multiple
+millisecond sleeps, which visibly degrade user experience.
 
-==================================================================
-BUG: KCSAN: data-race in generic_fillattr / inode_set_ctime_current
+Oven's testing shows that a single waitqueue resolves the UI stuttering
+issue.  If a 'thundering herd' problem becomes apparent later, a waitqueue
+hash similar to `folio_wait_table[PAGE_WAIT_TABLE_SIZE]` for page bit
+locks can be introduced.
 
-write to 0xffff888102eb3260 of 4 bytes by task 6565 on cpu 1:
- inode_set_ctime_to_ts include/linux/fs.h:1638 [inline]
- inode_set_ctime_current+0x169/0x1d0 fs/inode.c:2626
- shmem_mknod+0x117/0x180 mm/shmem.c:3443
- shmem_create+0x34/0x40 mm/shmem.c:3497
- lookup_open fs/namei.c:3578 [inline]
- open_last_lookups fs/namei.c:3647 [inline]
- path_openat+0xdbc/0x1f00 fs/namei.c:3883
- do_filp_open+0xf7/0x200 fs/namei.c:3913
- do_sys_openat2+0xab/0x120 fs/open.c:1416
- do_sys_open fs/open.c:1431 [inline]
- __do_sys_openat fs/open.c:1447 [inline]
- __se_sys_openat fs/open.c:1442 [inline]
- __x64_sys_openat+0xf3/0x120 fs/open.c:1442
- x64_sys_call+0x1025/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:258
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-read to 0xffff888102eb3260 of 4 bytes by task 3498 on cpu 0:
- inode_get_ctime_nsec include/linux/fs.h:1623 [inline]
- inode_get_ctime include/linux/fs.h:1629 [inline]
- generic_fillattr+0x1dd/0x2f0 fs/stat.c:62
- shmem_getattr+0x17b/0x200 mm/shmem.c:1157
- vfs_getattr_nosec fs/stat.c:166 [inline]
- vfs_getattr+0x19b/0x1e0 fs/stat.c:207
- vfs_statx_path fs/stat.c:251 [inline]
- vfs_statx+0x134/0x2f0 fs/stat.c:315
- vfs_fstatat+0xec/0x110 fs/stat.c:341
- __do_sys_newfstatat fs/stat.c:505 [inline]
- __se_sys_newfstatat+0x58/0x260 fs/stat.c:499
- __x64_sys_newfstatat+0x55/0x70 fs/stat.c:499
- x64_sys_call+0x141f/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:263
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-value changed: 0x2755ae53 -> 0x27ee44d3
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 UID: 0 PID: 3498 Comm: udevd Not tainted 6.11.0-rc6-syzkaller-00326-gd1f2d51b711a-dirty #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
-==================================================================
-
-When calling generic_fillattr(), if you don't hold read lock, data-race
-will occur in inode member variables, which can cause unexpected
-behavior.
-
-Since there is no special protection when shmem_getattr() calls
-generic_fillattr(), data-race occurs by functions such as shmem_unlink()
-or shmem_mknod(). This can cause unexpected results, so commenting it out
-is not enough.
-
-Therefore, when calling generic_fillattr() from shmem_getattr(), it is
-appropriate to protect the inode using inode_lock_shared() and
-inode_unlock_shared() to prevent data-race.
-
-Link: https://lkml.kernel.org/r/20240909123558.70229-1-aha310510@gmail.com
-Fixes: 44a30220bc0a ("shmem: recalculate file inode when fstat")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Reported-by: syzbot <syzkaller@googlegroup.com>
-Cc: Hugh Dickins <hughd@google.com>
+[v-songbaohua@oppo.com: wake_up only when swapcache_wq waitqueue is active]
+  Link: https://lkml.kernel.org/r/20241008130807.40833-1-21cnbao@gmail.com
+Link: https://lkml.kernel.org/r/20240926211936.75373-1-21cnbao@gmail.com
+Fixes: 13ddaf26be32 ("mm/swap: fix race when skipping swapcache")
+Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+Reported-by: Oven Liyang <liyangouwen1@oppo.com>
+Tested-by: Oven Liyang <liyangouwen1@oppo.com>
+Cc: Kairui Song <kasong@tencent.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
 Cc: Yu Zhao <yuzhao@google.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Yosry Ahmed <yosryahmed@google.com>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Kalesh Singh <kaleshsingh@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index c5adb987b23c..4ba1d00fabda 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1166,7 +1166,9 @@ static int shmem_getattr(struct mnt_idmap *idmap,
- 	stat->attributes_mask |= (STATX_ATTR_APPEND |
- 			STATX_ATTR_IMMUTABLE |
- 			STATX_ATTR_NODUMP);
-+	inode_lock_shared(inode);
- 	generic_fillattr(idmap, request_mask, inode, stat);
-+	inode_unlock_shared(inode);
+diff --git a/mm/memory.c b/mm/memory.c
+index 3ccee51adfbb..bdf77a3ec47b 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4187,6 +4187,8 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
+ }
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
  
- 	if (shmem_huge_global_enabled(inode, 0, 0, false, NULL, 0))
- 		stat->blksize = HPAGE_PMD_SIZE;
++static DECLARE_WAIT_QUEUE_HEAD(swapcache_wq);
++
+ /*
+  * We enter with non-exclusive mmap_lock (to exclude vma changes,
+  * but allow concurrent faults), and pte mapped but not yet locked.
+@@ -4199,6 +4201,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ {
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	struct folio *swapcache, *folio = NULL;
++	DECLARE_WAITQUEUE(wait, current);
+ 	struct page *page;
+ 	struct swap_info_struct *si = NULL;
+ 	rmap_t rmap_flags = RMAP_NONE;
+@@ -4297,7 +4300,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 					 * Relax a bit to prevent rapid
+ 					 * repeated page faults.
+ 					 */
++					add_wait_queue(&swapcache_wq, &wait);
+ 					schedule_timeout_uninterruptible(1);
++					remove_wait_queue(&swapcache_wq, &wait);
+ 					goto out_page;
+ 				}
+ 				need_clear_cache = true;
+@@ -4604,8 +4609,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 		pte_unmap_unlock(vmf->pte, vmf->ptl);
+ out:
+ 	/* Clear the swap cache pin for direct swapin after PTL unlock */
+-	if (need_clear_cache)
++	if (need_clear_cache) {
+ 		swapcache_clear(si, entry, nr_pages);
++		if (waitqueue_active(&swapcache_wq))
++			wake_up(&swapcache_wq);
++	}
+ 	if (si)
+ 		put_swap_device(si);
+ 	return ret;
+@@ -4620,8 +4628,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 		folio_unlock(swapcache);
+ 		folio_put(swapcache);
+ 	}
+-	if (need_clear_cache)
++	if (need_clear_cache) {
+ 		swapcache_clear(si, entry, nr_pages);
++		if (waitqueue_active(&swapcache_wq))
++			wake_up(&swapcache_wq);
++	}
+ 	if (si)
+ 		put_swap_device(si);
+ 	return ret;
 
 
