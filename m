@@ -1,172 +1,132 @@
-Return-Path: <stable+bounces-89850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D18399BD108
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 16:51:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E6C19BD128
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 16:55:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 615131F23B3B
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 15:51:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F8361C227ED
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 15:55:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BD1713B58D;
-	Tue,  5 Nov 2024 15:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E405C14E2D8;
+	Tue,  5 Nov 2024 15:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="MXmEB/Hb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u3ium1tQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4968913AD0F
-	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 15:50:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B7113D881;
+	Tue,  5 Nov 2024 15:55:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730821853; cv=none; b=Nn7vajLmDg3VywXgPoa6JqTwtRKKRf0oaZziKYVZEKGItTqZDnw/xEzVhDuae2XqWzrN3t7j5NYJ3fIrg5pSbH5sMNzIA1h6Fg81sjl8eX5/WC+a+P3rEZRYECt6NPcft4WIB7kvvcf6kBO3Gb9o1B0lfAza/PlKqJatme8pqsI=
+	t=1730822117; cv=none; b=X+E0uwGE599KGHI2LdbU8w58kK+oK4LzoYrWAPAEr+U4QS6BR2rRaFg0wdQwGMZm50rpSdbU5Ou1lOzhDfPrtaqMJeudOxUrAiE3uMx/O7qqiMyXT5E3M+ZUQKoH253AfAIssBdzLitJ1s0IZQTGaCIbq//44SsuuD7nP2vjmmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730821853; c=relaxed/simple;
-	bh=ElEk5zH/YcAznMTKwsEmNV3nLjVj4KEJi51ZOz/Bxp4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qeo+7VtOrVfa3lB5nwuk5gIcQp3oXUL32lg6TZITLhyXvYV88pIfVhMmb5gt7uRlSovUluNtHUPCLRW+zl2s0N83j//EvUEqt1Cxp8By5yHhceC2XeI7FoyreJRAPoN4WUp+uJE7Su4Ei5+oS0oF2IU78se9ucDNWnCQwi3ca0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=MXmEB/Hb; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A5DiYQV029653;
-	Tue, 5 Nov 2024 15:50:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2023-11-20; bh=+P0Mv
-	UmtvX+pdbAUezamlBg8piG53Ca6UVptHTajYJ8=; b=MXmEB/HbVWDlr4wdK74Kj
-	2QQX78MaLYq9xOWmsvGB/vC7LZavYWWx6P6wvAKAx7vkCf3Tnlc53CXsI4zq058l
-	CYwL9CrHRUTm+1dPeLxWv6XxsKfw89Lx5F7xjbhl3NtuOpekpkcibxMLo4uOuQpc
-	vJfw8ESYBDOGtN+VW0xMNpMz6hrstaNjniE7JVRnL69fq1LtkCBfh4S6konq3JZ1
-	vtpcNLKVgfJs5rE7yI96TQMwUHenq4ACAmIJZCfl2mmv1KxX6ChUieo/FK4gJ8y/
-	Eiv7jIHSof7qqd7a6lll1plPMLnVMPTZUaxHiOksg13BnSJ40sdJqB09KsySU0OC
-	Q==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42nc4bwqs5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 05 Nov 2024 15:50:46 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 4A5EUi9w035597;
-	Tue, 5 Nov 2024 15:50:46 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 42nahdkgkv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 05 Nov 2024 15:50:46 +0000
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4A5Foi0M028682;
-	Tue, 5 Nov 2024 15:50:45 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 42nahdkghq-3;
-	Tue, 05 Nov 2024 15:50:45 +0000
-From: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
-To: akpm@linux-foundation.org
-Cc: harshvardhan.j.jha@oracle.com, linux-mm@kvack.org, stable@vger.kernel.org
-Subject: [PATCH 5.10.y 2/2] mm: avoid leaving partial pfn mappings around in error case
-Date: Tue,  5 Nov 2024 07:50:42 -0800
-Message-ID: <20241105155042.288813-3-harshvardhan.j.jha@oracle.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20241105155042.288813-1-harshvardhan.j.jha@oracle.com>
-References: <20241105155042.288813-1-harshvardhan.j.jha@oracle.com>
+	s=arc-20240116; t=1730822117; c=relaxed/simple;
+	bh=geNXIOmFhjUV44xeJJLj1CXb6YjQiBsxZnVw4EaQ3a4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ud3L51ZJOfiRmwBy2OjV9kGpk1K1DRBfoDh7OWh+SVDcAeTd1amC5c1KZpuauuBri8qQWMa0NdXQSDFboYxi0zK3jEciYjklTuXrngnYLUMiiSEFlZum1bou8LpHT2ky0MJ9IJAivnYcm4tm5E8oquLrXZrwKQWAmxPXgYlOERg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u3ium1tQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C57E7C4CECF;
+	Tue,  5 Nov 2024 15:55:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730822117;
+	bh=geNXIOmFhjUV44xeJJLj1CXb6YjQiBsxZnVw4EaQ3a4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=u3ium1tQ4OrYGX9cs8sebcV86pFTUpuEmi/xq06tAxwG44Wf4fBqNl/2ZXimzpeTl
+	 E5hzBuZTXpgsXtnnXbZKQQZDd/7D+ICbBiB/Q7gYRY6BbGWub0pAgIgxPIem/7QIPF
+	 L8BvpGd11hjGXcfZsIryiQsmQkgDp2FaogxZ7aLLrVBFzLNJRvko+tlmgmnmidW+8s
+	 qDZISKEGjxk9P7qF+2z/rY7Rg3RKbGytVKH+wrAv/7m8Jiu5U84V/n4W4a/1wVtecc
+	 6rm25ErH7hceThPKadvYvo/Hap/GfVLAUoHFZOuIgXSVCb/gclVS01MzCVfpwct17H
+	 OlQ8zlYbkD/bw==
+Date: Tue, 5 Nov 2024 15:55:12 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] arm64/signal: Avoid corruption of SME state when
+ entering signal handler
+Message-ID: <709b6a9a-dcf1-46b9-ac81-e5093a9740f2@sirena.org.uk>
+References: <20241030-arm64-fp-sme-sigentry-v2-1-43ce805d1b20@kernel.org>
+ <Zyo3QU8aBGmtbTRo@J2N7QTR9R3.cambridge.arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-11-05_06,2024-11-05_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- spamscore=0 mlxlogscore=971 mlxscore=0 phishscore=0 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2409260000 definitions=main-2411050122
-X-Proofpoint-ORIG-GUID: y1O3ccfMcuZIrW3QjvrQnmENMAZREd1X
-X-Proofpoint-GUID: y1O3ccfMcuZIrW3QjvrQnmENMAZREd1X
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="/Y56n/3XFNEIyBPu"
+Content-Disposition: inline
+In-Reply-To: <Zyo3QU8aBGmtbTRo@J2N7QTR9R3.cambridge.arm.com>
+X-Cookie: Don't get mad, get interest.
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit 79a61cc3fc0466ad2b7b89618a6157785f0293b3 upstream.
+--/Y56n/3XFNEIyBPu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-As Jann points out, PFN mappings are special, because unlike normal
-memory mappings, there is no lifetime information associated with the
-mapping - it is just a raw mapping of PFNs with no reference counting of
-a 'struct page'.
+On Tue, Nov 05, 2024 at 03:18:33PM +0000, Mark Rutland wrote:
 
-That's all very much intentional, but it does mean that it's easy to
-mess up the cleanup in case of errors.  Yes, a failed mmap() will always
-eventually clean up any partial mappings, but without any explicit
-lifetime in the page table mapping itself, it's very easy to do the
-error handling in the wrong order.
+> I don't think that the foreign / non-foreign cases are equivalent. In
+> the foreign case we clear the entire fpsimd_state structure, i.e. all
+> of:
 
-In particular, it's easy to mistakenly free the physical backing store
-before the page tables are actually cleaned up and (temporarily) have
-stale dangling PTE entries.
+You're right, they're not - thanks for spotting this.
 
-To make this situation less error-prone, just make sure that any partial
-pfn mapping is torn down early, before any other error handling.
+> AFAICT either:
 
-Reported-and-tested-by: Jann Horn <jannh@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-(cherry picked from commit 5b2c8b34f6d76bfbd1dd4936eb8a0fbfb9af3959)
-Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
----
- mm/memory.c | 27 ++++++++++++++++++++++-----
- 1 file changed, 22 insertions(+), 5 deletions(-)
+> (a) Our intended ABI is that signal handlers are entered as-if an SMSTOP
+>     is executed to exit streaming mode and disable ZA storage.
+>=20
+>     In this case we'll need a more elaborate sequence here to simulate
+>     that effect.
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 40a6cc6df9003..29cce8aadb618 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2290,11 +2290,7 @@ static inline int remap_p4d_range(struct mm_struct *mm, pgd_t *pgd,
- 	return 0;
- }
- 
--/*
-- * Variant of remap_pfn_range that does not call track_pfn_remap.  The caller
-- * must have pre-validated the caching bits of the pgprot_t.
-- */
--int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
-+static int remap_pfn_range_internal(struct vm_area_struct *vma, unsigned long addr,
- 		unsigned long pfn, unsigned long size, pgprot_t prot)
- {
- 	pgd_t *pgd;
-@@ -2347,6 +2343,27 @@ int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
- 	return 0;
- }
- 
-+/*
-+ * Variant of remap_pfn_range that does not call track_pfn_remap.  The caller
-+ * must have pre-validated the caching bits of the pgprot_t.
-+ */
-+int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
-+		unsigned long pfn, unsigned long size, pgprot_t prot)
-+{
-+	int error = remap_pfn_range_internal(vma, addr, pfn, size, prot);
-+
-+	if (!error)
-+		return 0;
-+
-+	/*
-+	 * A partial pfn range mapping is dangerous: it does not
-+	 * maintain page reference counts, and callers may free
-+	 * pages due to the error. So zap it early.
-+	 */
-+	zap_page_range_single(vma, addr, size, NULL);
-+	return error;
-+}
-+
- /**
-  * remap_pfn_range - remap kernel memory to userspace
-  * @vma: user vma to map to
--- 
-2.46.0
+That's the intention, so we do need to just clear the vregs instead of
+the whole user_fpsimd_state and add clearing of FPMR.
 
+> ... the description of FPMR (which is not in the latest ARM ARM) says:
+
+> | On entry to or exit from Streaming SVE mode, FPMR is set to 0.
+
+> ... so we'd need code to clobber that.
+
+Right, that was missed with the addition of FPMR support.  We'll have
+the same thing in ptrace streaming mode enter/exits, FPCR and FPSR
+should be better there as in most cases register state is provided when
+changing mode.
+
+> Our documentation in Documentation/arch/arm64/sme.rst says:
+
+> | Signal handlers are invoked with streaming mode and ZA disabled.
+
+> ... and doesn't mention FPCR/FPMR/FPSR, so we could go either way,
+> though I suspect we intended case (a) ?
+
+Yes.  The the intended goal is literally just that, but if we accomplish
+it by issuing a SMSTOP in the live registers case (which is the only
+reasonable implementation) then we should obviously behave the same in
+the live memory case.  I'll add a patch which makes this explicit in the
+documentation.
+
+--/Y56n/3XFNEIyBPu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcqP+AACgkQJNaLcl1U
+h9AqDgf+PqN4Wj9YWUYWWu0trOvH3yqf++dzHWOidz87KPWWpOIWvLF3uL4rSYow
+fKMgrPnIVlv/pHdP4MiNSkWHmiUeodUcuaSTq4V7OqO2p8KXeTKvpb6AfnfB1IkI
+XQaeeclkboOBKyH4pP7SIpkB6PvsLU3cRxYHV5/ZbQesUZqIRgmzSBDRAxp9rKDV
+PcY5uFeqhFW8eXr7SS79bLYUiN2nfiTabXhPGBXapzoUsTctEVpzoD9C2GSuRmbv
+uoBgsv3bbABjRfA3tuA5HbUEARNNUw0Anq5KOyl75Rcb8RVE4rkF5GCy9sTtHsnT
+S/S2hG3y7xqCOFZleI5hBmrRtHu3OA==
+=ITo3
+-----END PGP SIGNATURE-----
+
+--/Y56n/3XFNEIyBPu--
 
