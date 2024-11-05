@@ -1,96 +1,136 @@
-Return-Path: <stable+bounces-89812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D65D79BCAC6
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 11:46:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 854369BCB01
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 11:51:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B0FD2823C1
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 10:46:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B73E11C223DC
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 10:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D2A1D2B10;
-	Tue,  5 Nov 2024 10:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6AA91D3633;
+	Tue,  5 Nov 2024 10:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="plUhP2C3"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ikfewV4C"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2453918DF89;
-	Tue,  5 Nov 2024 10:46:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB04B1D3195
+	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 10:51:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730803602; cv=none; b=YxfVsTKRjPtDi70AL6Qj+g1qyWdgoyxj46hznoXBhc/hkgEy3w6xsoJaEqzxnPq26vKw/TDiF3186zY+3PlBh15LTsDO+YAfZ1hDQU8VnAX+cHCacXI2TYT+SwqLKlnMcDLcnj1HU7ydGxySWu/RNSphYl/c5RqZQVQazBUmAc0=
+	t=1730803889; cv=none; b=Uz3KmZHNzgLev7nEtBqI8rTj/MMr9Drwnps+pVe5OnTxbDNhqPbFwtcwryA9TJu9lIwUr4DN8MRAfI3PU3qdT2R0CvHiJHOu2JJ+zCarqTClL1DQAWVtseRj3m4qpKYmgzTRlbxBluo8w52yT3Rcf4jAzIMsLLlqjtCLswt4iRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730803602; c=relaxed/simple;
-	bh=VdcGAmlztfS3pzAXrj9ZpjnvuwLT/ZrczgsQ13dzYRI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=qfKRl8VToytBMdyjy2ROcptGnZmPquf4kTx8WxbfAK51MY26rdHO7vGNbIZFGU3yiJjKQsWa8md3Kx4zU6JVusaF/HQOna/TlKRl29ezCGLxDNMFGtvGxioCmAfmjJbCX16CJHvOGN7lTAjDMgcesu8Bij1erp7MPZXiUQGqOj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=plUhP2C3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC8E1C4CED0;
-	Tue,  5 Nov 2024 10:46:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730803601;
-	bh=VdcGAmlztfS3pzAXrj9ZpjnvuwLT/ZrczgsQ13dzYRI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=plUhP2C3q5UJFvR7SkoJu0skGSKd3Zydrusbb4zLzR+s4Rf8ogXEU9j49UIMaeqAT
-	 E6/63KVyAaUfXUnDLAM2xfTyhdB26M18/lm4UFbtZahe//vqJzE9mL2xCYJ8GAP5Dg
-	 gn4AV/2elGkC+4ApsIZfZBqApkDCSQLpeh/21eq2LgPp2osoAh+g8XL7hfHMA0VWY9
-	 2UjJrvwguhT4/QsKvOmnSKOKrzelhb/JqkOJn4pVk1EM6aFtLbwKf6k5jdgiTULfM2
-	 egGuBN8evTv0xyIFhIYALu+zN4iA0Jlcsu89UJ/EGa0JavoI61bW2UUBiZoHxM0apB
-	 a8GVm2IjwY0Zw==
-From: Kalle Valo <kvalo@kernel.org>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Aleksei Vetrov <vvvvvv@google.com>,  Johannes Berg
- <johannes@sipsolutions.net>,  Kees Cook <kees@kernel.org>,  "Gustavo A. R.
- Silva" <gustavoars@kernel.org>,  Dmitry Antipov <dmantipov@yandex.ru>,
-  <linux-wireless@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-hardening@vger.kernel.org>,  <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] wifi: nl80211: fix bounds checker error in
- nl80211_parse_sched_scan
-References: <20241029-nl80211_parse_sched_scan-bounds-checker-fix-v2-1-c804b787341f@google.com>
-	<0bc2e4b0-4dad-4341-a41e-a98fbc4b1658@quicinc.com>
-Date: Tue, 05 Nov 2024 12:46:37 +0200
-In-Reply-To: <0bc2e4b0-4dad-4341-a41e-a98fbc4b1658@quicinc.com> (Jeff
-	Johnson's message of "Mon, 4 Nov 2024 09:12:09 -0800")
-Message-ID: <87ses6x8j6.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1730803889; c=relaxed/simple;
+	bh=HD+BgOOVBl5mx7chCMOpk4RtL2B+f8ert3pkr1zMpqA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QxGeur5hVIjd7bXciPrZWCum8RExpEey1PEhyS0mYnIfeJBRuYccL8sYyAoF1IZ1ju3BPfZUUAJVDMW6XctSgQ/eeQNHKMGsut34cVllB9JZ75C5mHER1CjW22hkeyw5S0kMIQHuLOyg8D5TWDIKr75f7/ITPLmPDH25+afwwYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ikfewV4C; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4315eeb2601so62766045e9.2
+        for <stable@vger.kernel.org>; Tue, 05 Nov 2024 02:51:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1730803886; x=1731408686; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8ATNs/B/w+2yp0EYeoeJF01EDXlRzVZxzeXpZEXEEfY=;
+        b=ikfewV4COefm9gwaIO0IxX3dbvV2S1d9cgPiGAJMVw2DFMm9voM9DE0lpEL+Me6AYl
+         j7akomgGodRuAvryorhtNuFXzdFfAOX4qxEdVl4vxynWy8V4QdZphz5bdDy8JKEoT8Me
+         ksWHuPDWGniPKqTT9/l2ekyjoxKwgLalxsLGfdlqAb5zNFwX+VMpVzsi/emgy9Jk+6dJ
+         7/zK+xbnfMIRTmSDPaW6sJiI7fDuTfzOUkXecz1UaQIy/JTTWeL9/ejQaG+FzJfUE8bd
+         Nfo49EWgcFAb701SbNqiUuTt2iT42xkfRk4Qy7GViIHP1q8Mls5yCRaUUlD3AR6ZPUNt
+         2Rig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730803886; x=1731408686;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8ATNs/B/w+2yp0EYeoeJF01EDXlRzVZxzeXpZEXEEfY=;
+        b=wCUc6EqiTa1ZnZy00WyHUjE6oNKy2Czs/P+Z+xll+25SFsLEnrxcmzcuCo1S9WSm3n
+         fHcnOYmNSQ3A2/RSi50sF3Li+mBAQNWuRjm85Yp6Vd2Jjuuizq6rV3ZBoN/F2Jwd04LU
+         rfNUbdEw9q1zFh5IPu4FiyAqHhaIy0kPmaBhDLy5vs28bIKGoUT3maG5aasajwEtwEhC
+         ce9/oSp4LLq/130R4tncjmgDNtWav7aNjEjapG0nYHlWRC8nKXrYGpdAxQwQvQZwzg6k
+         +VZvJBnvpxvvgfyMEFXKBOEchaJzG13opZYnHZaM3V5A4/2agtkZ9fZSHQsPdbdZmv6t
+         n4TA==
+X-Forwarded-Encrypted: i=1; AJvYcCUpQUSfCBWgdjxB51t7F6rcVpESyCG+UXdHx0kYFlvbzwZR0JQP4t1uqCMq0DsJRfrOeyNuvbg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnGQvMHidX1GN5AgX8mFmtB9Z2rsdCgFLA2MYiMRYiSOSRLs5b
+	FA4K3Oc6yIOoak0Ls9Eiw/5pTodQ65qqpNits72R3maJEllM86SKkQH74pvos4U=
+X-Google-Smtp-Source: AGHT+IH71ZuNZKuI+PZhGTdJo4OsIY4DbJKX5pqqVUQT1HsIyvod98087dQv/2ssVzIfDzdbe8PZUg==
+X-Received: by 2002:a05:600c:1d1e:b0:431:604d:b22 with SMTP id 5b1f17b1804b1-43283255922mr160211525e9.16.1730803884606;
+        Tue, 05 Nov 2024 02:51:24 -0800 (PST)
+Received: from [192.168.0.40] ([176.61.106.227])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c116af7esm15800883f8f.103.2024.11.05.02.51.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Nov 2024 02:51:24 -0800 (PST)
+Message-ID: <640fe933-078d-4bf5-815c-7db0eb8b9de4@linaro.org>
+Date: Tue, 5 Nov 2024 10:51:22 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] media: venus: hfi_parser: add check to avoid out of
+ bound access
+To: Vikash Garodia <quic_vgarodia@quicinc.com>,
+ Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20241105-venus_oob-v1-0-8d4feedfe2bb@quicinc.com>
+ <20241105-venus_oob-v1-1-8d4feedfe2bb@quicinc.com>
+Content-Language: en-US
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <20241105-venus_oob-v1-1-8d4feedfe2bb@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+On 05/11/2024 08:54, Vikash Garodia wrote:
+> There is a possibility that init_codecs is invoked multiple times during
+> manipulated payload from video firmware. In such case, if codecs_count
+> can get incremented to value more than MAX_CODEC_NUM, there can be OOB
+> access. Keep a check for max accessible memory before accessing it.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
+> Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+> ---
+>   drivers/media/platform/qcom/venus/hfi_parser.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c b/drivers/media/platform/qcom/venus/hfi_parser.c
+> index 3df241dc3a118bcdeb2c28a6ffdb907b644d5653..27d0172294d5154f4839e8cef172f9a619dfa305 100644
+> --- a/drivers/media/platform/qcom/venus/hfi_parser.c
+> +++ b/drivers/media/platform/qcom/venus/hfi_parser.c
+> @@ -23,6 +23,8 @@ static void init_codecs(struct venus_core *core)
+>   		return;
+>   
+>   	for_each_set_bit(bit, &core->dec_codecs, MAX_CODEC_NUM) {
+> +		if (core->codecs_count >= MAX_CODEC_NUM)
+> +			return;
+>   		cap = &caps[core->codecs_count++];
+>   		cap->codec = BIT(bit);
+>   		cap->domain = VIDC_SESSION_TYPE_DEC;
+> @@ -30,6 +32,8 @@ static void init_codecs(struct venus_core *core)
+>   	}
+>   
+>   	for_each_set_bit(bit, &core->enc_codecs, MAX_CODEC_NUM) {
+> +		if (core->codecs_count >= MAX_CODEC_NUM)
+> +			return;
+>   		cap = &caps[core->codecs_count++];
+>   		cap->codec = BIT(bit);
+>   		cap->domain = VIDC_SESSION_TYPE_ENC;
+> 
 
-> On 10/29/2024 6:22 AM, Aleksei Vetrov wrote:
->> The channels array in the cfg80211_scan_request has a __counted_by
->> attribute attached to it, which points to the n_channels variable. This
->> attribute is used in bounds checking, and if it is not set before the
->> array is filled, then the bounds sanitizer will issue a warning or a
->> kernel panic if CONFIG_UBSAN_TRAP is set.
->> 
->> This patch sets the size of allocated memory as the initial value for
->> n_channels. It is updated with the actual number of added elements after
->> the array is filled.
->> 
->> Fixes: aa4ec06c455d ("wifi: cfg80211: use __counted_by where appropriate")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Aleksei Vetrov <vvvvvv@google.com>
-> Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
->
-> And it is exactly this kind of issue why I'm not accepting any __counted_by()
-> changes in ath.git without actually testing the code that is modified.
+I don't see how codecs_count could be greater than the control, since 
+you increment by one on each loop but >= is fine too I suppose.
 
-That's a good rule. If we ever manage to write that "wireless cleanup
-policy" document this is something we should add there.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
