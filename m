@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-89808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E1D9BC94A
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 10:35:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A140C9BC97F
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 10:45:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3831D282574
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 09:35:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59AA61F227B4
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 09:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14691D2700;
-	Tue,  5 Nov 2024 09:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A801D14E3;
+	Tue,  5 Nov 2024 09:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEyEfIhK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pKMoeCJ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB9A1D0E13;
-	Tue,  5 Nov 2024 09:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11E41D0F4D;
+	Tue,  5 Nov 2024 09:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730799208; cv=none; b=LTvkuJfUyJse5NNJqz4vC+lNyEBYHfW9W+3mKknFSKxe8puPnULnfr8oby0XGYnYMs6qdNtQsBrZo/g5wsKACNTLgj40n6nHen2uS6Dn8IkG/SB3kT9tNPeLfraNctq/rL7Is9q2iGWQhq8yP2UoJpiRxd/IhSVb6e3q/tjl/ZM=
+	t=1730799904; cv=none; b=DgKZPmpGjy4Y12XiKPgrxhrctHRWZi1MbO1NHCV1z9MLC6JFgcXPdWXBNVmkYFtgWrsYz+VD5K7G116Ep108CsQVgeDberrenSYcJgcyfa5ruVgjjmAiAxFgQ9TdR/cJXar8KYF0NZtltNjC5YOkDVllezqzUF0pRa1xIIk7VKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730799208; c=relaxed/simple;
-	bh=K9OCx9LNtrdZGJzEppAmA6jNl01dy5J7+Zp9gcGsYTg=;
+	s=arc-20240116; t=1730799904; c=relaxed/simple;
+	bh=U0SRmOWr1U4JuEYg0qpGcM0a0ifCuVC2a3ZscCltcMY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=awdtvQQ0jKl9owPmgFxp/psQK/Iw25dogk9/5QsIVUnkL2Bwr/9QB709l8rfz+1jLaZGzWUEmbAb0I8kyUcYV0sz6LKHl9aiJ55SHoCw7fDhkV8gGrBDRnS10J9rBNaFbWW525Hj7QiGCGP65onk7R3xGSZG3xEd1vlPZaxvaEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEyEfIhK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71791C4CECF;
-	Tue,  5 Nov 2024 09:33:25 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=ea0bObK5+qy4NvB1NEvFPseOR3+vH94Uc8991Hdzfb2Zth6Q2w97ABAlQfLrBSyl1QmIuTu9iPKDL2qDDPdWenoOw/2iBg0gL8DOQH3QFAtO7HPsrAKUCwUtmRRNStYjHyhPzUQVSfytBYH7SE0AHRWsJqtbDpG0e8HMSZjnjgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pKMoeCJ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6C8C4CED0;
+	Tue,  5 Nov 2024 09:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730799205;
-	bh=K9OCx9LNtrdZGJzEppAmA6jNl01dy5J7+Zp9gcGsYTg=;
+	s=korg; t=1730799904;
+	bh=U0SRmOWr1U4JuEYg0qpGcM0a0ifCuVC2a3ZscCltcMY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CEyEfIhK9AOvRh5qngG6kbxuo4g9VinrcmF2p5DlPh8ZgaQij75X4YNNRdvpYavti
-	 dhUh6CPRn/1Waj6lEB3rTy7ADxIEwnaQfyCSj63uF2IJuhv1sB7L92TwfbRBMIRcqv
-	 nzHzidKJyIaU3+vdNdugPgEGIQnH8w5J/wFh4YkM=
-Date: Tue, 5 Nov 2024 10:33:08 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Raju Rangoju <Raju.Rangoju@amd.com>
-Cc: linux-usb@vger.kernel.org, mathias.nyman@intel.com,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] usb: xhci: quirk for data loss in ISOC transfers
-Message-ID: <2024110557-trusting-dismount-1e27@gregkh>
-References: <20241105091850.3094-1-Raju.Rangoju@amd.com>
+	b=pKMoeCJ/ksCImGa9FGt2LA44fYGzW+q1Wl45GUX0yAOkAH7XWr6mmkJFOtlfpxDdJ
+	 HUbGD1mYiGWRnyJQ3wBSC2jrUK3h1hU6mcZOJMNmAvEkLGTYO3RZAenJPL5iUroJr9
+	 FVRYGa06AHORntRF7q9TbR/hr41JViy2XhPWMAI4=
+Date: Tue, 5 Nov 2024 10:44:46 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Calvin Owens <calvin@wbinvd.org>
+Cc: Rodolfo Giometti <giometti@enneenne.com>,
+	George Spelvin <linux@horizon.com>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] pps: Fix a use-after-free
+Message-ID: <2024110551-fiction-casket-7597@gregkh>
+References: <2024101350-jinx-haggler-5aca@gregkh>
+ <abc43b18f21379c21a4d2c63372a04b2746be665.1730792731.git.calvin@wbinvd.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,73 +56,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241105091850.3094-1-Raju.Rangoju@amd.com>
+In-Reply-To: <abc43b18f21379c21a4d2c63372a04b2746be665.1730792731.git.calvin@wbinvd.org>
 
-On Tue, Nov 05, 2024 at 02:48:50PM +0530, Raju Rangoju wrote:
-> During the High-Speed Isochronous Audio transfers, xHCI
-> controller on certain AMD platforms experiences momentary data
-> loss. This results in Missed Service Errors (MSE) being
-> generated by the xHCI.
-> 
-> The root cause of the MSE is attributed to the ISOC OUT endpoint
-> being omitted from scheduling. This can happen either when an IN
-> endpoint with a 64ms service interval is pre-scheduled prior to
-> the ISOC OUT endpoint or when the interval of the ISOC OUT
-> endpoint is shorter than that of the IN endpoint. Consequently,
-> the OUT service is neglected when an IN endpoint with a service
-> interval exceeding 32ms is scheduled concurrently (every 64ms in
-> this scenario).
-> 
-> This issue is particularly seen on certain older AMD platforms.
-> To mitigate this problem, it is recommended to adjust the service
-> interval of the IN endpoint to exceed 32ms (interval 8). This
-> adjustment ensures that the OUT endpoint will not be bypassed,
-> even if a smaller interval value is utilized.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-> ---
->  drivers/usb/host/xhci-mem.c |  5 +++++
->  drivers/usb/host/xhci-pci.c | 14 ++++++++++++++
->  drivers/usb/host/xhci.h     |  1 +
->  3 files changed, 20 insertions(+)
-> 
-> diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-> index d2900197a49e..4892bb9afa6e 100644
-> --- a/drivers/usb/host/xhci-mem.c
-> +++ b/drivers/usb/host/xhci-mem.c
-> @@ -1426,6 +1426,11 @@ int xhci_endpoint_init(struct xhci_hcd *xhci,
->  	/* Periodic endpoint bInterval limit quirk */
->  	if (usb_endpoint_xfer_int(&ep->desc) ||
->  	    usb_endpoint_xfer_isoc(&ep->desc)) {
-> +		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_9) &&
-> +		    usb_endpoint_xfer_int(&ep->desc) &&
-> +		    interval >= 9) {
-> +			interval = 8;
-> +		}
->  		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_7) &&
->  		    udev->speed >= USB_SPEED_HIGH &&
->  		    interval >= 7) {
-> diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-> index cb07cee9ed0c..a078e2e5517d 100644
-> --- a/drivers/usb/host/xhci-pci.c
-> +++ b/drivers/usb/host/xhci-pci.c
-> @@ -284,6 +284,20 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
->  	if (pdev->vendor == PCI_VENDOR_ID_NEC)
->  		xhci->quirks |= XHCI_NEC_HOST;
->  
-> +	if (pdev->vendor == PCI_VENDOR_ID_AMD &&
-> +	    (pdev->device == 0x13ed ||
-> +	     pdev->device == 0x13ee ||
-> +	     pdev->device == 0x148c ||
-> +	     pdev->device == 0x15d4 ||
-> +	     pdev->device == 0x15d5 ||
-> +	     pdev->device == 0x15e0 ||
-> +	     pdev->device == 0x15e1 ||
-> +	     pdev->device == 0x15e5))
+On Mon, Nov 04, 2024 at 11:56:19PM -0800, Calvin Owens wrote:
+> -	dev_info(pps->dev, "removed\n");
+> +	dev_info(&pps->dev, "removed\n");
 
-Any need/want to name these pci devices with something we can refer to
-other than a hex value?
+Nit, when drivers work properly,  they are quiet, no need for these
+dev_info() calls.
+
+>  static int pps_cdev_release(struct inode *inode, struct file *file)
+>  {
+> -	struct pps_device *pps = container_of(inode->i_cdev,
+> -						struct pps_device, cdev);
+> -	kobject_put(&pps->dev->kobj);
+> +	struct pps_device *pps = file->private_data;
+> +
+> +	WARN_ON(pps->id != iminor(inode));
+
+If this can happen, handle it and move on.  Don't just reboot the
+machine if it's something that could be triggered (remember about
+panic-on-warn systems.)
 
 thanks,
 
