@@ -1,167 +1,138 @@
-Return-Path: <stable+bounces-89932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BDB59BD9E4
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 00:50:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9EBB9BDA00
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 00:57:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C46E1F21C16
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 23:50:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FF0D1F222D7
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 23:57:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81144216437;
-	Tue,  5 Nov 2024 23:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 170E2216A1A;
+	Tue,  5 Nov 2024 23:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JktmTDu8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dNgv1qiY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7EE149C53;
-	Tue,  5 Nov 2024 23:50:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7927321620A
+	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 23:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730850618; cv=none; b=GSpqT+dUHZ4uw6b6KaetmKm2+HtmKtPBQheGNHZtJ4benIDWyqQvv+izRuAEB3iPBldXKYA6nN7Fb5TjpbUkZwfLG+QMGIe53WJqod4HB3vNgTATFMoEjzcdTMgdXQ/ocCpcEfexw+/qKI8cUcMXjDG9Pa/5XrsJP2+ncpQQ/vA=
+	t=1730851021; cv=none; b=mkSXCriWzO7UNdpphGd9DblXyc9iV/ycBArwUNqrzeQGcxChHc/pg1JMPT50BnHUeDtktpGUPlea3alquZbiaX8sSPVXbJyal1TGV6on8ld+tUOm5qOwzL+NnzvRlTEICLfFTlomV50oa8BgUynBPz337gotsYj/pUSPzJvz3oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730850618; c=relaxed/simple;
-	bh=11QYskxSrOKpO01eCvEYDEOAEFwLKvxx51MElH/CaX8=;
-	h=Date:Subject:From:To:Cc:Message-ID:MIME-Version:In-Reply-To:
-	 References:Content-Type; b=GXmOmSGIGkgLfwVEgpUfV7rUVhSWhr0nw2ZOU4O8MAlEJ0a2ZDkpCyh4VZ2se5YcZUiBGFotUijYfBsXGep15vW9oaR508E/+OwfaTkvXi3IvsDiP+GaHV/VS0DghXfxXZ+04+izB6wzLJcS30B3bkzu7+bZXNTsou9vcPsFpOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JktmTDu8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAD4C4CECF;
-	Tue,  5 Nov 2024 23:50:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730850617;
-	bh=11QYskxSrOKpO01eCvEYDEOAEFwLKvxx51MElH/CaX8=;
-	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
-	b=JktmTDu8nTA6HU8XCHbNpcG0QZzdaJvXeZEYBayiOJwscHXvPNmmUchRYpq3ufOFD
-	 g7CASd88fQZRm1Q9E/6wm7h5dyOiipRemrOwOX9q0qg0OyPn/H1WcgTAD711+ENnIC
-	 jiqyfh4J4UisF3aMLbT1tWgBq9KlJ2Hp1Rcu5r+34/QRFAv35oKK9FOfwdyAC2h4LL
-	 qiM81I7hXH2j9qi8ECKJR09oKTKfGleTDRs5Wy0Vqdv5vyHKi8wXPIGV2xMYuabUZE
-	 N+yOqeJhKJwUzyoHindH6f7w29KYsZfsUFZS0uHNWElxrcOg6BgjZBc5bDEQAZ2XLO
-	 HReqN8PlRC0QQ==
-Date: Tue, 05 Nov 2024 15:50:17 -0800
-Subject: [GIT PULL 01/10] xfs: convert perag to use xarrays
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: cem@kernel.org, djwong@kernel.org
-Cc: hch@lst.de, linux-xfs@vger.kernel.org, stable@vger.kernel.org
-Message-ID: <173085053887.1980968.4568095337033968708.stg-ugh@frogsfrogsfrogs>
+	s=arc-20240116; t=1730851021; c=relaxed/simple;
+	bh=ZWS01Ixcff70Q8jYvnFnidhgGCGOCRhHbX90HbPP7FA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=aRk3mjt2mqSxVDzp9hPuEDPsoJNy2Lvyf3RhAx26c/RussVZFaNVURu4+hAEWW2ekE5vxtzD3tRY4F7olPPtDM5HosY+TCRZZiRVpUeCK4cyn3iMYL85SOPQBL6/hON+AXQG5UCS7H+9119EhMwamCixq+U/f6T3Iy0iDniy5do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dNgv1qiY; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-20ce65c8e13so69263665ad.1
+        for <stable@vger.kernel.org>; Tue, 05 Nov 2024 15:57:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730851019; x=1731455819; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=twoPyl0D4Xq+hzWr9lyXWIFOucklkcgjFX43EOeLLgA=;
+        b=dNgv1qiYb9rWZdCV7t/2tQVPuDYlYuP6uwUZn6kFxmUPLM//8KEnxh1ezGbdpP51aF
+         mXVFE+HhGvmgUrjmO16m//RDkHMMETX0CSzS8IPZSeQDE8s0XuusKJihg+USJwbU5dzA
+         e6HgFAIuSt1jD9OienpOQIP67RmJSvyZVb4HaC7jfXXIHzC5Sj4dSA2nrxDvp60FBp+2
+         sC6C0+Bg6sHz0nq5TvnaI1d6I3wHMtxE7/agBcKjfkjeQoTcgCQl3csqqMVFsRKQDoaH
+         jrcruVPVIt2X1Bl4mYOUt8wBzhIfBY6N7bg3P+muYvX1RQdloGBgx5CNkEjgHCaY3Gep
+         umZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730851019; x=1731455819;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=twoPyl0D4Xq+hzWr9lyXWIFOucklkcgjFX43EOeLLgA=;
+        b=ZKaGHvgwDbpth4h86Ozj45ZyNcLsMjn/VWm2TbBscKkyWJhV2E5AmxGQQNXMTqPf/t
+         0/bI6Z3eRfylK4TytPiPlHYnPUs5ECflI4KBUB29WZyavfo4NZJLQ4PkpIEwUPJWV/c7
+         tfiArM89ynJZu1UNS9RQ59uEsP8gNgcjRS6iV9Ku/mqe62An50MuSnOckTHJ8yzF5Gkj
+         6/DEMZULU6+/M0/VjV1IYn1k6DnCMAMMprzNB+0YJ7cgZhTjomt/BkWjnOydOVVqCgxS
+         gfMiUsRdeq7ZiERwJIwQMguKl919RvaC1I3FhAAtuk2pWRWHm/8K9KPpoKHah1mTPADd
+         OcTw==
+X-Gm-Message-State: AOJu0YxTe8FFvRiW0MXNVhk7ckG9zbTCBmezi8hjO2xJ2qv004x8xEmg
+	7zpfzligvEg6pV8mCeQqPGxPDjXRy34gtO/GLLFCiQiBRjaPWAvfkQZtjg==
+X-Google-Smtp-Source: AGHT+IHMPj0F0Q3NMQVyqAL3zMU2kFSf7Emrl9+kIJjNxBiwWo/BV5l2lBe63zKV0d9LxIC3NvZOyw==
+X-Received: by 2002:a17:902:cec9:b0:20c:f3be:2f82 with SMTP id d9443c01a7336-21103b2009cmr295292895ad.33.1730851019159;
+        Tue, 05 Nov 2024 15:56:59 -0800 (PST)
+Received: from carrot.. (i114-180-55-233.s42.a014.ap.plala.or.jp. [114.180.55.233])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211057a2e9fsm85000005ad.160.2024.11.05.15.56.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Nov 2024 15:56:58 -0800 (PST)
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 5.4 5.10 5.15 6.1 6.6] nilfs2: fix kernel bug due to missing clearing of checked flag
+Date: Wed,  6 Nov 2024 08:56:31 +0900
+Message-ID: <20241105235654.15044-1-konishi.ryusuke@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2024110529-clapper-deferred-1146@gregkh>
+References: <2024110529-clapper-deferred-1146@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20241105234839.GL2386201@frogsfrogsfrogs>
-References: <20241105234839.GL2386201@frogsfrogsfrogs>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Carlos,
+commit 41e192ad2779cae0102879612dfe46726e4396aa upstream.
 
-Please pull this branch with changes for xfs for 6.13-rc1.
+Syzbot reported that in directory operations after nilfs2 detects
+filesystem corruption and degrades to read-only,
+__block_write_begin_int(), which is called to prepare block writes, may
+fail the BUG_ON check for accesses exceeding the folio/page size,
+triggering a kernel bug.
 
-As usual, I did a test-merge with the main upstream branch as of a few
-minutes ago, and didn't see any conflicts.  Please let me know if you
-encounter any problems.
+This was found to be because the "checked" flag of a page/folio was not
+cleared when it was discarded by nilfs2's own routine, which causes the
+sanity check of directory entries to be skipped when the directory
+page/folio is reloaded.  So, fix that.
 
---D
+This was necessary when the use of nilfs2's own page discard routine was
+applied to more than just metadata files.
 
-The following changes since commit 59b723cd2adbac2a34fc8e12c74ae26ae45bf230:
+Link: https://lkml.kernel.org/r/20241017193359.5051-1-konishi.ryusuke@gmail.com
+Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+d6ca2daf692c7a82f959@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d6ca2daf692c7a82f959
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+Please apply this patch to the stable trees indicated by the subject
+prefix instead of the failed patches.
 
-Linux 6.12-rc6 (2024-11-03 14:05:52 -1000)
+This patch is tailored to take page/folio conversion into account.
+Compiled and tested successfully.
 
-are available in the Git repository at:
+Thanks,
+Ryusuke Konishi
 
-https://git.kernel.org/pub/scm/linux/kernel/git/djwong/xfs-linux.git tags/perag-xarray-6.13_2024-11-05
+ fs/nilfs2/page.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-for you to fetch changes up to d66496578b2a099ea453f56782f1cd2bf63a8029:
-
-xfs: insert the pag structures into the xarray later (2024-11-05 13:38:27 -0800)
-
-----------------------------------------------------------------
-xfs: convert perag to use xarrays [v5.5 01/10]
-
-Convert the xfs_mount perag tree to use an xarray instead of a radix
-tree.  There should be no functional changes here.
-
-With a bit of luck, this should all go splendidly.
-
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-
-----------------------------------------------------------------
-Christoph Hellwig (22):
-xfs: fix superfluous clearing of info->low in __xfs_getfsmap_datadev
-xfs: remove the unused pagb_count field in struct xfs_perag
-xfs: remove the unused pag_active_wq field in struct xfs_perag
-xfs: pass a pag to xfs_difree_inode_chunk
-xfs: remove the agno argument to xfs_free_ag_extent
-xfs: add xfs_agbno_to_fsb and xfs_agbno_to_daddr helpers
-xfs: add a xfs_agino_to_ino helper
-xfs: pass a pag to xfs_extent_busy_{search,reuse}
-xfs: keep a reference to the pag for busy extents
-xfs: remove the mount field from struct xfs_busy_extents
-xfs: remove the unused trace_xfs_iwalk_ag trace point
-xfs: remove the unused xrep_bmap_walk_rmap trace point
-xfs: constify pag arguments to trace points
-xfs: pass a perag structure to the xfs_ag_resv_init_error trace point
-xfs: pass objects to the xfs_irec_merge_{pre,post} trace points
-xfs: pass the iunlink item to the xfs_iunlink_update_dinode trace point
-xfs: pass objects to the xrep_ibt_walk_rmap tracepoint
-xfs: pass the pag to the trace_xrep_calc_ag_resblks{,_btsize} trace points
-xfs: pass the pag to the xrep_newbt_extent_class tracepoints
-xfs: convert remaining trace points to pass pag structures
-xfs: split xfs_initialize_perag
-xfs: insert the pag structures into the xarray later
-
-Darrick J. Wong (1):
-xfs: fix simplify extent lookup in xfs_can_free_eofblocks
-
-fs/xfs/libxfs/xfs_ag.c             | 135 ++++++++++++++------------
-fs/xfs/libxfs/xfs_ag.h             |  30 +++++-
-fs/xfs/libxfs/xfs_ag_resv.c        |   3 +-
-fs/xfs/libxfs/xfs_alloc.c          |  32 +++----
-fs/xfs/libxfs/xfs_alloc.h          |   5 +-
-fs/xfs/libxfs/xfs_alloc_btree.c    |   2 +-
-fs/xfs/libxfs/xfs_btree.c          |   7 +-
-fs/xfs/libxfs/xfs_ialloc.c         |  67 ++++++-------
-fs/xfs/libxfs/xfs_ialloc_btree.c   |   2 +-
-fs/xfs/libxfs/xfs_inode_util.c     |   4 +-
-fs/xfs/libxfs/xfs_refcount.c       |  11 +--
-fs/xfs/libxfs/xfs_refcount_btree.c |   3 +-
-fs/xfs/libxfs/xfs_rmap_btree.c     |   2 +-
-fs/xfs/scrub/agheader_repair.c     |  16 +---
-fs/xfs/scrub/alloc_repair.c        |  10 +-
-fs/xfs/scrub/bmap.c                |   5 +-
-fs/xfs/scrub/bmap_repair.c         |   4 +-
-fs/xfs/scrub/common.c              |   2 +-
-fs/xfs/scrub/cow_repair.c          |  18 ++--
-fs/xfs/scrub/ialloc.c              |   8 +-
-fs/xfs/scrub/ialloc_repair.c       |  25 ++---
-fs/xfs/scrub/newbt.c               |  46 ++++-----
-fs/xfs/scrub/reap.c                |   8 +-
-fs/xfs/scrub/refcount_repair.c     |   5 +-
-fs/xfs/scrub/repair.c              |  13 ++-
-fs/xfs/scrub/rmap_repair.c         |   9 +-
-fs/xfs/scrub/trace.h               | 161 +++++++++++++++----------------
-fs/xfs/xfs_bmap_util.c             |   8 +-
-fs/xfs/xfs_buf_item_recover.c      |   5 +-
-fs/xfs/xfs_discard.c               |  20 ++--
-fs/xfs/xfs_extent_busy.c           |  31 +++---
-fs/xfs/xfs_extent_busy.h           |  14 ++-
-fs/xfs/xfs_extfree_item.c          |   4 +-
-fs/xfs/xfs_filestream.c            |   5 +-
-fs/xfs/xfs_fsmap.c                 |  25 ++---
-fs/xfs/xfs_health.c                |   8 +-
-fs/xfs/xfs_inode.c                 |   5 +-
-fs/xfs/xfs_iunlink_item.c          |  13 ++-
-fs/xfs/xfs_iwalk.c                 |  17 ++--
-fs/xfs/xfs_log_cil.c               |   3 +-
-fs/xfs/xfs_log_recover.c           |   5 +-
-fs/xfs/xfs_trace.c                 |   1 +
-fs/xfs/xfs_trace.h                 | 191 ++++++++++++++++---------------------
-fs/xfs/xfs_trans.c                 |   2 +-
-44 files changed, 459 insertions(+), 531 deletions(-)
+diff --git a/fs/nilfs2/page.c b/fs/nilfs2/page.c
+index 36d29c183bb7..956c90700e15 100644
+--- a/fs/nilfs2/page.c
++++ b/fs/nilfs2/page.c
+@@ -405,6 +405,7 @@ void nilfs_clear_dirty_page(struct page *page, bool silent)
+ 
+ 	ClearPageUptodate(page);
+ 	ClearPageMappedToDisk(page);
++	ClearPageChecked(page);
+ 
+ 	if (page_has_buffers(page)) {
+ 		struct buffer_head *bh, *head;
+-- 
+2.43.5
 
 
