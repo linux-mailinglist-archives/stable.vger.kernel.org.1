@@ -1,239 +1,95 @@
-Return-Path: <stable+bounces-89810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75AED9BC9C2
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 10:57:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 748609BCA4F
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 11:22:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36062282CF8
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 09:57:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D06E1F22699
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 10:22:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 390C01D2202;
-	Tue,  5 Nov 2024 09:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7D71D1F76;
+	Tue,  5 Nov 2024 10:22:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dDFTa7jQ"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3151D1F70
-	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 09:56:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B191CC881;
+	Tue,  5 Nov 2024 10:22:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730800613; cv=none; b=ZBXRunndjHObUklGGecPP8tOyMLorNmqpwXLEsYEmDPaIvUfigcTIPztdCq2/rfoOUJH1+4M8sXJOxE/PAByf7REo7XesZQYvSy856vwO8akbzpJkc9MY9YFBUSMuegf7K16w0iYmrw3dxgMBX6eR4XqWCCkIEWEuenVmZplLP8=
+	t=1730802127; cv=none; b=QPJyVzcAdvCvpoxdJfams94NxC6Kpx2cI4pabyCnLYhdz9huCTMvZydar+/3YkFaHP2nVsRpB6xykNmFs75t7+qTueGoFpDFphN0ZVhMdPEbID7g5tqUrFxCDRQyIo1aP8/lWIhFL2Mf5We738fOcuD54e//aWxIEiv2/Ngipsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730800613; c=relaxed/simple;
-	bh=DGzkJ9bxSDJAbftRPwpx0qNYcNwe6wGyzNFvTATs/BY=;
+	s=arc-20240116; t=1730802127; c=relaxed/simple;
+	bh=6SST80Lrw52AOm8Di2WQBB2K9EII9rAmVpZEiIYk4tk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Eq+Iaoz9hp9S+HFyxZmq7Z2T+fTzrHDL5X57B8dOo81Q+amug44hys/gfyHMjZI3QHAkvb/HmQR87PHmPPuDlnOGT/Wati1zlWQtpfTlwXjmsrfan3SEndVyZGou7qnAyonr5l55VvP1EF6XK24w6om+fU81SLtAfpMXsUNPmX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0E62811FB
-	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 01:57:20 -0800 (PST)
-Received: from e110455-lin.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 07CF03F66E
-	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 01:56:49 -0800 (PST)
-Date: Tue, 5 Nov 2024 09:56:44 +0000
-From: Liviu Dudau <liviu.dudau@arm.com>
-To: Jann Horn <jannh@google.com>
-Cc: Boris Brezillon <boris.brezillon@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] drm/panthor: Be stricter about IO mapping flags
-Message-ID: <Zynr3DIY8u2c7wrB@e110455-lin.cambridge.arm.com>
-References: <20241105-panthor-flush-page-fixes-v1-1-829aaf37db93@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=M3i9Kv4AlBmgQpNlnrz+FQdCTVnZypqoFCObby5UPkQdYMaE0epKbel4zUxFvqvRU9cEEkkmqKJYJkNLL3s6mcfWw/eodhm4OSRdhzPNOvkOc1vA+OaLdhQui0z5AdZovb6nRj2tsRJX4wt68d4odwQonserVnSZOq/Z+2hdNnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dDFTa7jQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FBCDC4CECF;
+	Tue,  5 Nov 2024 10:22:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730802127;
+	bh=6SST80Lrw52AOm8Di2WQBB2K9EII9rAmVpZEiIYk4tk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dDFTa7jQAHkls4uub9hBXsRnvqXsNRjDmcS9+XvV8yu5YKcgZK6fqjRuvbSRY6e7v
+	 0Fz+dMSjfFWtoh5P4ErV04BPgvHX5McUJNvCXwkvbVtz2zMPTh/Qj95dUWAQ84Uq7v
+	 OZsq+wK1h85vkQ1PmtI7uGxeX9NUSKAL1cTd0nvTiWqmaS+VkgYXKLiyQGsNBuDsdI
+	 VeELPLOdsmILkT35JMkcLVyUeelwf1uNNwzyamFUM/egnpiNVSszp05eIWzQs3ALPF
+	 6h9cB9LdGwfAz7GLTXOO998YK0amoKLITrP5c6qJ/LUEzr8q65NsloC0U/kLFp53bC
+	 Du3jUmy77Kr6w==
+Date: Tue, 5 Nov 2024 05:22:04 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Jijie Shao <shaojijie@huawei.com>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+	shenjian15@huawei.com, Salil Mehta <salil.mehta@huawei.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: Patch "net: hns3: add sync command to sync io-pgtable" has been
+ added to the 6.11-stable tree
+Message-ID: <ZynxzJD7A6uBNrbA@sashalap>
+References: <20241101192250.3849110-1-sashal@kernel.org>
+ <8ce8ba06-acb9-400f-acee-ef0dbd023dc1@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241105-panthor-flush-page-fixes-v1-1-829aaf37db93@google.com>
+In-Reply-To: <8ce8ba06-acb9-400f-acee-ef0dbd023dc1@huawei.com>
 
-On Tue, Nov 05, 2024 at 12:17:13AM +0100, Jann Horn wrote:
-> The current panthor_device_mmap_io() implementation has two issues:
-> 
-> 1. For mapping DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET,
->    panthor_device_mmap_io() bails if VM_WRITE is set, but does not clear
->    VM_MAYWRITE. That means userspace can use mprotect() to make the mapping
->    writable later on. This is a classic Linux driver gotcha.
->    I don't think this actually has any impact in practice:
->    When the GPU is powered, writes to the FLUSH_ID seem to be ignored; and
->    when the GPU is not powered, the dummy_latest_flush page provided by the
->    driver is deliberately designed to not do any flushes, so the only thing
->    writing to the dummy_latest_flush could achieve would be to make *more*
->    flushes happen.
-> 
-> 2. panthor_device_mmap_io() does not block MAP_PRIVATE mappings (which are
->    mappings without the VM_SHARED flag).
->    MAP_PRIVATE in combination with VM_MAYWRITE indicates that the VMA has
->    copy-on-write semantics, which for VM_PFNMAP are semi-supported but
->    fairly cursed.
->    In particular, in such a mapping, the driver can only install PTEs
->    during mmap() by calling remap_pfn_range() (because remap_pfn_range()
->    wants to **store the physical address of the mapped physical memory into
->    the vm_pgoff of the VMA**); installing PTEs later on with a fault
->    handler (as panthor does) is not supported in private mappings, and so
->    if you try to fault in such a mapping, vmf_insert_pfn_prot() splats when
->    it hits a BUG() check.
-> 
-> Fix it by clearing the VM_MAYWRITE flag (userspace writing to the FLUSH_ID
-> doesn't make sense) and requiring VM_SHARED (copy-on-write semantics for
-> the FLUSH_ID don't make sense).
-> 
-> Reproducers for both scenarios are in the notes of my patch on the mailing
-> list; I tested that these bugs exist on a Rock 5B machine.
-> 
-> Note that I only compile-tested the patch, I haven't tested it; I don't
-> have a working kernel build setup for the test machine yet. Please test it
-> before applying it.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 5fe909cae118 ("drm/panthor: Add the device logical block")
-> Signed-off-by: Jann Horn <jannh@google.com>
-> ---
-> First testcase (can write to the FLUSH_ID):
-> 
-> ```
+On Tue, Nov 05, 2024 at 10:59:54AM +0800, Jijie Shao wrote:
 >
+>on 2024/11/2 3:22, Sasha Levin wrote:
+>>This is a note to let you know that I've just added the patch titled
+>>
+>>     net: hns3: add sync command to sync io-pgtable
+>>
+>>to the 6.11-stable tree which can be found at:
+>>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+>>
+>>The filename of the patch is:
+>>      net-hns3-add-sync-command-to-sync-io-pgtable.patch
+>>and it can be found in the queue-6.11 subdirectory.
+>>
+>>If you, or anyone else, feels it should not be added to the stable tree,
+>>please let <stable@vger.kernel.org> know about it.
+>
+>Hi:
+>This patch was reverted from netdev,
+>so, it also need be reverted from stable tree.
+>I am sorry for that.
 
-There is a missing line here, I guess is something like
-
-#define SYSCHK(x) ({  \
-
-
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-
-Best regards,
-Liviu
-
-
->   typeof(x) __res = (x);      \
->   if (__res == (typeof(x))-1) \
->     err(1, "SYSCHK(" #x ")"); \
->   __res;                      \
-> })
-> 
-> int main(void) {
->   int fd = SYSCHK(open(GPU_PATH, O_RDWR));
-> 
->   // sanity-check that PROT_WRITE+MAP_SHARED fails
->   void *mmap_write_res = mmap(NULL, 0x1000, PROT_READ|PROT_WRITE,
->       MAP_SHARED, fd, DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET);
->   if (mmap_write_res == MAP_FAILED) {
->     perror("mmap() with PROT_WRITE+MAP_SHARED failed as expected");
->   } else {
->     errx(1, "mmap() with PROT_WRITE+MAP_SHARED worked???");
->   }
-> 
->   // make a PROT_READ+MAP_SHARED mapping, and upgrade it to writable
->   void *mmio_page = SYSCHK(mmap(NULL, 0x1000, PROT_READ, MAP_SHARED,
->       fd, DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET));
->   SYSCHK(mprotect(mmio_page, 0x1000, PROT_READ|PROT_WRITE));
-> 
->   volatile uint32_t *flush_counter = (volatile uint32_t*)mmio_page;
-> 
->   uint32_t last_old = -1;
->   while (1) {
->     uint32_t old_val = *flush_counter;
->     *flush_counter = 1111;
->     uint32_t new_val = *flush_counter;
->     if (old_val != last_old)
->       printf("flush counter: old=%u, new=%u\n", old_val, new_val);
->     last_old = old_val;
->   }
-> }
-> ```
-> 
-> Second testcase (triggers BUG() splat):
-> ```
-> 
->   typeof(x) __res = (x);      \
->   if (__res == (typeof(x))-1) \
->     err(1, "SYSCHK(" #x ")"); \
->   __res;                      \
-> })
-> 
-> int main(void) {
->   int fd = SYSCHK(open(GPU_PATH, O_RDWR));
-> 
->   // make a PROT_READ+**MAP_PRIVATE** mapping
->   void *ptr = SYSCHK(mmap(NULL, 0x1000, PROT_READ, MAP_PRIVATE,
->       fd, DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET));
-> 
->   // trigger a read fault
->   *(volatile char *)ptr;
-> }
-> ```
-> 
-> The second testcase splats like this:
-> ```
-> [ 2918.411814] ------------[ cut here ]------------
-> [ 2918.411857] kernel BUG at mm/memory.c:2220!
-> [ 2918.411955] Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
-> [...]
-> [ 2918.416147] CPU: 3 PID: 2934 Comm: private_user_fl Tainted: G           O       6.1.43-19-rk2312 #428a0a5e6
-> [ 2918.417043] Hardware name: Radxa ROCK 5B (DT)
-> [ 2918.417464] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> [ 2918.418119] pc : vmf_insert_pfn_prot+0x40/0xe4
-> [ 2918.418567] lr : panthor_mmio_vm_fault+0xb0/0x12c [panthor]
-> [...]
-> [ 2918.425746] Call trace:
-> [ 2918.425972]  vmf_insert_pfn_prot+0x40/0xe4
-> [ 2918.426342]  __do_fault+0x38/0x7c
-> [ 2918.426648]  __handle_mm_fault+0x404/0x6dc
-> [ 2918.427018]  handle_mm_fault+0x13c/0x18c
-> [ 2918.427374]  do_page_fault+0x194/0x33c
-> [ 2918.427716]  do_translation_fault+0x60/0x7c
-> [ 2918.428095]  do_mem_abort+0x44/0x90
-> [ 2918.428410]  el0_da+0x40/0x68
-> [ 2918.428685]  el0t_64_sync_handler+0x9c/0xf8
-> [ 2918.429067]  el0t_64_sync+0x174/0x178
-> ```
-> ---
->  drivers/gpu/drm/panthor/panthor_device.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/panthor/panthor_device.c b/drivers/gpu/drm/panthor/panthor_device.c
-> index 4082c8f2951dfdace7f73a24d6fe34e9e7f920eb..6fbff516c1c1f047fcb4dee17b87d8263616dc0c 100644
-> --- a/drivers/gpu/drm/panthor/panthor_device.c
-> +++ b/drivers/gpu/drm/panthor/panthor_device.c
-> @@ -390,11 +390,15 @@ int panthor_device_mmap_io(struct panthor_device *ptdev, struct vm_area_struct *
->  {
->  	u64 offset = (u64)vma->vm_pgoff << PAGE_SHIFT;
->  
-> +	if ((vma->vm_flags & VM_SHARED) == 0)
-> +		return -EINVAL;
-> +
->  	switch (offset) {
->  	case DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET:
->  		if (vma->vm_end - vma->vm_start != PAGE_SIZE ||
->  		    (vma->vm_flags & (VM_WRITE | VM_EXEC)))
->  			return -EINVAL;
-> +		vm_flags_clear(vma, VM_MAYWRITE);
->  
->  		break;
->  
-> 
-> ---
-> base-commit: d78f0ee0406803cda8801fd5201746ccf89e5e4a
-> change-id: 20241104-panthor-flush-page-fixes-fe4202bb18c0
-> 
-> -- 
-> Jann Horn <jannh@google.com>
-> 
+I'll drop this and the other hns3 commits that were reverted. Thanks!
 
 -- 
-====================
-| I would like to |
-| fix the world,  |
-| but they're not |
-| giving me the   |
- \ source code!  /
-  ---------------
-    ¯\_(ツ)_/¯
+Thanks,
+Sasha
 
