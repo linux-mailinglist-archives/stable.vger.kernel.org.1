@@ -1,201 +1,139 @@
-Return-Path: <stable+bounces-89833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D0F9BCE18
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 14:39:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 211CA9BCE60
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 14:55:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5ED762835CC
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 13:39:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4D931F227AA
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 13:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE341D86C0;
-	Tue,  5 Nov 2024 13:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE691D6DDD;
+	Tue,  5 Nov 2024 13:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nOuwBvL5";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="8cUUe5jS";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nOuwBvL5";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="8cUUe5jS"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eqCYQvXe"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284241D7E46
-	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 13:38:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CBE81D6DA1
+	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 13:55:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730813937; cv=none; b=C4gwp1AV0fNwSn+DWY6tWj6hUPUuy87LTAEWZmmo5c/d2dGYfFlQZvAfU5CiX9PUSqWv/HZPCzs4liuaUN7CHfQ51r7SNWQtH8l5tjqWoqZ1vgJScp+1umkdccSNhzH15kwyH0YKyGBW6ebcmATAw3NFHwXjjtVT757LFpjeOhg=
+	t=1730814918; cv=none; b=aYYZXJSkQIGqByYVpR6Y6k5PNTauqBn8MJfIGtjVuea2UsWD5b6OTSU565OK37MqoyPWhz/lTFk2S91CLwg6rDvxDdb+MPE5RiIUdFpTJ8WGTCKurFoHGzlm907tnDjZATYLn8Z6EDMKsXswua0GUjdvaGfwX3tEIB82yXybzvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730813937; c=relaxed/simple;
-	bh=co2yjsek7uSCrxtBBWJwOiDDab0Pj7XiUZJstlKTF1g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JKCS9lU5U9xl62eEsGFHiod+RAzk8otu5NE/lHf6RGlGnJm2rTG8/6y0adwCwCgFN4lRP4DGafAwMYtchy9K8oUPzm5EbOxc5tnjmkpTaSat/nKiF+UE0j6X1Bz2fYNimq7jkxOt/SXM5zxgoVVIYyczSf99g6WfMtsmQNgtzVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=nOuwBvL5; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=8cUUe5jS; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=nOuwBvL5; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=8cUUe5jS; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1D3621FBB7;
-	Tue,  5 Nov 2024 13:38:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1730813933; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=jDTbP3fOcL51JRwWKzuxSqaxfANeDb0GcrNEPDR3wvk=;
-	b=nOuwBvL5K/lCDQnI/N1/mRbLRzzhXWQgb5qAwOeEznFiYqssnz3sJYjP8pB/2ZJbzI0Mw8
-	ub1PS+e2pktR/zrDZKDC1CUJ7M3i3ACQEhtTedIS0UP9MW+s1gaaZYc4KAgi7L9nPQGdVG
-	yA7zgD9MXR21iPh+6ntx7SA/OFAXFwQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1730813933;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=jDTbP3fOcL51JRwWKzuxSqaxfANeDb0GcrNEPDR3wvk=;
-	b=8cUUe5jSnqRzmRedg+YtmtB63W+fe91HG+PCahBKHkNSXve8vY3mP4rIVS+LmRPR1Fleu2
-	M0vnLYsCggVYFLAA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1730813933; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=jDTbP3fOcL51JRwWKzuxSqaxfANeDb0GcrNEPDR3wvk=;
-	b=nOuwBvL5K/lCDQnI/N1/mRbLRzzhXWQgb5qAwOeEznFiYqssnz3sJYjP8pB/2ZJbzI0Mw8
-	ub1PS+e2pktR/zrDZKDC1CUJ7M3i3ACQEhtTedIS0UP9MW+s1gaaZYc4KAgi7L9nPQGdVG
-	yA7zgD9MXR21iPh+6ntx7SA/OFAXFwQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1730813933;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=jDTbP3fOcL51JRwWKzuxSqaxfANeDb0GcrNEPDR3wvk=;
-	b=8cUUe5jSnqRzmRedg+YtmtB63W+fe91HG+PCahBKHkNSXve8vY3mP4rIVS+LmRPR1Fleu2
-	M0vnLYsCggVYFLAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AC5BF1394A;
-	Tue,  5 Nov 2024 13:38:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id C/ubKOwfKmcuEQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 05 Nov 2024 13:38:52 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: hjc@rock-chips.com,
-	heiko@sntech.de,
-	andy.yan@rock-chips.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	groeck@chromium.org,
-	zyw@rock-chips.com
-Cc: dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
+	s=arc-20240116; t=1730814918; c=relaxed/simple;
+	bh=q3GUUlKx9/4DSdIfudTo/BHl0hN1/E6WoZ6HBZQcFBQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sCLyLfx6sFUeF9yA/HmrxmVx8vRsjpqs8Kc1zgE43H33nH3GM8cXwW+t0nmH33TNJ7VL3d4DOiWWSatEki0nSAAJcGyhijZFxddcF66iQ074Q7gRGdLDKX/UCmCSlrYEkC6Z7e27bmee+Wi/DZKluJ3z5SwZFsoL98U6IchN/Ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eqCYQvXe; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-539eb97f26aso3369514e87.2
+        for <stable@vger.kernel.org>; Tue, 05 Nov 2024 05:55:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1730814915; x=1731419715; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JYPfDLl1JujNUnzUwabCMz6D5QPnpcJrxkCJPH1YFNY=;
+        b=eqCYQvXeHRGvRxdW7FlF+UFkmDn712x9y6/xZvjDPZW18kfuCoG1q4XMpfFuowGLJ3
+         F4XDD296dEQCO/C/iuKCwkPKErI9dBWhJeMFx7P1OgKY4ATUg2TphS3tzP4HaH1R8Wnv
+         NdDQpfhFnhQGsUmSUoENwpWmdBVFvf/Cy21ouNt4UfIBGfjWOkJQurqz1KdkNA9XjcD9
+         jaxq+uQ7keCMJb0qOYRURV/lqe50825ln2WjFyt9LUz93wFMC68s2UrY/OAb6F0zqxqX
+         WpvT0uTiRiHZjPBGrS+HytlrzdSBsJONgCnfOZ2PqtenqX+8PEqIpUkS6MofwR0bGT0R
+         2H6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730814915; x=1731419715;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JYPfDLl1JujNUnzUwabCMz6D5QPnpcJrxkCJPH1YFNY=;
+        b=RAwbNyblPE/FJ0EKkvCb4FYUTz/PMfApD94lNY08MFIUWBA61ejs8VQxISSqc7Dxd9
+         VfqWJd6On0UVN6wOKfwdP23uRjI3pgWKMAIorgWXEzJnWIJnkmzhOUWT1AgCwIo4AknX
+         shxNY2pSUN2HcuInpPtcxcn5Kqjd+PxM96RQRpgjRS1rXPs4raomD5u0ZvzvO+U0MDEG
+         DD6QoCpEHz6JCZWOBER0CrDLINyweF7UN/SheqhaXwP/WhYtvBcIgNzolXgzEp4kEJgt
+         lYeAPXUvhRYdiEvdbb4WyDFsZLygGpCY6NO3HekudsQx1itggOQ0pyCx+xnPsjyUXgRV
+         iMdg==
+X-Forwarded-Encrypted: i=1; AJvYcCXOT50t466+NRZNsrk+NMRZ5yzeZUD24/wW6MfDC+0+gZB/5shW6thNZmAhXheG99fHg9LT/5M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeWrmpBcSG9xxzUxIoZ1Lf4+LwWfMRa2XOeVFd52wSkBhZISQ2
+	z75jhQudg7diEUJIeV3MVZiwgRWicfesn9RpiVlSftLAUtUhKVbw7j+SalLmiPE=
+X-Google-Smtp-Source: AGHT+IEpdU8rDqLX+DIyNpSfiPybyrFjFo19IbFA9Zw/IdLK8a2VdSMO8JD0bOCCp6sr0LFzmU0S1w==
+X-Received: by 2002:a05:6512:e9b:b0:539:fbfd:fc74 with SMTP id 2adb3069b0e04-53b7ed185a8mr13160964e87.40.1730814914500;
+        Tue, 05 Nov 2024 05:55:14 -0800 (PST)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53c7bdcbfa6sm2103558e87.208.2024.11.05.05.55.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Nov 2024 05:55:13 -0800 (PST)
+Date: Tue, 5 Nov 2024 15:55:10 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Vikash Garodia <quic_vgarodia@quicinc.com>
+Cc: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>, 
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	stable@vger.kernel.org
-Subject: [PATCH] drm/rockchip: cdn-dp: Use drm_connector_helper_hpd_irq_event()
-Date: Tue,  5 Nov 2024 14:38:16 +0100
-Message-ID: <20241105133848.480407-1-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.47.0
+Subject: Re: [PATCH 1/4] media: venus: hfi_parser: add check to avoid out of
+ bound access
+Message-ID: <b2yvyaycylsxo2bmynlrqp3pzhge2tjvtvzhmpvon2lzyx3bb4@747g3erapcro>
+References: <20241105-venus_oob-v1-0-8d4feedfe2bb@quicinc.com>
+ <20241105-venus_oob-v1-1-8d4feedfe2bb@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -3.30
-X-Spamd-Result: default: False [-3.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[rock-chips.com,sntech.de,linux.intel.com,kernel.org,gmail.com,ffwll.ch,chromium.org];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email]
-X-Spam-Flag: NO
-X-Spam-Level: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241105-venus_oob-v1-1-8d4feedfe2bb@quicinc.com>
 
-The code for detecting and updating the connector status in
-cdn_dp_pd_event_work() has a number of problems.
+On Tue, Nov 05, 2024 at 02:24:54PM +0530, Vikash Garodia wrote:
+> There is a possibility that init_codecs is invoked multiple times during
+> manipulated payload from video firmware. In such case, if codecs_count
+> can get incremented to value more than MAX_CODEC_NUM, there can be OOB
+> access. Keep a check for max accessible memory before accessing it.
 
-- It does not aquire the locks to call the detect helper and update
-the connector status. These are struct drm_mode_config.connection_mutex
-and struct drm_mode_config.mutex.
+No. Please make sure that init_codecs() does a correct thing, so that
+core->codecs_count isn't incremented that much (or even better that
+init_codecs() doesn't do anything if it is executed second time).
 
-- It does not use drm_helper_probe_detect(), which helps with the
-details of locking and detection.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
+> Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+> ---
+>  drivers/media/platform/qcom/venus/hfi_parser.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c b/drivers/media/platform/qcom/venus/hfi_parser.c
+> index 3df241dc3a118bcdeb2c28a6ffdb907b644d5653..27d0172294d5154f4839e8cef172f9a619dfa305 100644
+> --- a/drivers/media/platform/qcom/venus/hfi_parser.c
+> +++ b/drivers/media/platform/qcom/venus/hfi_parser.c
+> @@ -23,6 +23,8 @@ static void init_codecs(struct venus_core *core)
+>  		return;
+>  
+>  	for_each_set_bit(bit, &core->dec_codecs, MAX_CODEC_NUM) {
+> +		if (core->codecs_count >= MAX_CODEC_NUM)
+> +			return;
+>  		cap = &caps[core->codecs_count++];
+>  		cap->codec = BIT(bit);
+>  		cap->domain = VIDC_SESSION_TYPE_DEC;
+> @@ -30,6 +32,8 @@ static void init_codecs(struct venus_core *core)
+>  	}
+>  
+>  	for_each_set_bit(bit, &core->enc_codecs, MAX_CODEC_NUM) {
+> +		if (core->codecs_count >= MAX_CODEC_NUM)
+> +			return;
+>  		cap = &caps[core->codecs_count++];
+>  		cap->codec = BIT(bit);
+>  		cap->domain = VIDC_SESSION_TYPE_ENC;
+> 
+> -- 
+> 2.34.1
+> 
 
-- It uses the connector's status field to determine a change to
-the connector status. The epoch_counter field is the correct one. The
-field signals a change even if the connector status' value did not
-change.
-
-Replace the code with a call to drm_connector_helper_hpd_irq_event(),
-which fixes all these problems.
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 81632df69772 ("drm/rockchip: cdn-dp: do not use drm_helper_hpd_irq_event")
-Cc: Chris Zhong <zyw@rock-chips.com>
-Cc: Guenter Roeck <groeck@chromium.org>
-Cc: Sandy Huang <hjc@rock-chips.com>
-Cc: "Heiko Stübner" <heiko@sntech.de>
-Cc: Andy Yan <andy.yan@rock-chips.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-rockchip@lists.infradead.org
-Cc: <stable@vger.kernel.org> # v4.11+
----
- drivers/gpu/drm/rockchip/cdn-dp-core.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
-
-diff --git a/drivers/gpu/drm/rockchip/cdn-dp-core.c b/drivers/gpu/drm/rockchip/cdn-dp-core.c
-index b04538907f95..f576b1aa86d1 100644
---- a/drivers/gpu/drm/rockchip/cdn-dp-core.c
-+++ b/drivers/gpu/drm/rockchip/cdn-dp-core.c
-@@ -947,9 +947,6 @@ static void cdn_dp_pd_event_work(struct work_struct *work)
- {
- 	struct cdn_dp_device *dp = container_of(work, struct cdn_dp_device,
- 						event_work);
--	struct drm_connector *connector = &dp->connector;
--	enum drm_connector_status old_status;
--
- 	int ret;
- 
- 	mutex_lock(&dp->lock);
-@@ -1009,11 +1006,7 @@ static void cdn_dp_pd_event_work(struct work_struct *work)
- 
- out:
- 	mutex_unlock(&dp->lock);
--
--	old_status = connector->status;
--	connector->status = connector->funcs->detect(connector, false);
--	if (old_status != connector->status)
--		drm_kms_helper_hotplug_event(dp->drm_dev);
-+	drm_connector_helper_hpd_irq_event(&dp->connector);
- }
- 
- static int cdn_dp_pd_event(struct notifier_block *nb,
 -- 
-2.47.0
-
+With best wishes
+Dmitry
 
