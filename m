@@ -1,238 +1,128 @@
-Return-Path: <stable+bounces-89799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D57C99BC7F6
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 09:25:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 118F59BC861
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 09:55:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95A922839F5
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 08:25:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6F281F2213A
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 08:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BE81C3050;
-	Tue,  5 Nov 2024 08:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 260B21CF2AD;
+	Tue,  5 Nov 2024 08:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="QcDHManh"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="AtI0hVUC"
 X-Original-To: stable@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88BC18CC1B;
-	Tue,  5 Nov 2024 08:25:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFE51C4A18;
+	Tue,  5 Nov 2024 08:55:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730795153; cv=none; b=P5VwK+mNpU+dNnEYQGjca5h81lQYFW5ybv0KRdOiAs+IW5Ow6ayM1lm/NfNOQMUbCMd7BSa1NRd5ts2RfWYS9zLTp/CNh/Z3hMKq1w5ciPMMaF89HsrmPvKT4mnKF8Q7oJpKonxpGMbrU9IZVk69sqAJKPm14tfYKU0Dp6M4x5A=
+	t=1730796944; cv=none; b=TCthl7wRUIMdkk4RzgsXyj//9LeeNXYE6vgFQmMUs/fCDGMTkAbZMvl8bXjvK8Pzh+1MPgBC6x71yWaPum93tbCNgBLktnApjUuxuSIu5/eWi2AJzmqxaeMH65YW+H4fkjQRwxqxpyWlfm5jlGQ0GlWHN5iS+6waArB6PtIBsVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730795153; c=relaxed/simple;
-	bh=8WJfZjEMb9mPRKNogJbIPOSjIWQQ5ZDrn+a7kIoFHVw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q+fIQQp8JcOxKp5rezXlXZeZXWsnGfPZRs2rqVFnAF+a1UkZ7tT/KAOFP9QYriIbDEfh8LjXXlVB0dkb6N8OYUde3+hZ4KDW39bE3kY0SJwQ0I44Xh/73yNy72XNZcCPyeqsvQdAOGNGMY/BPd+SLB53/uVpLYBvQaLAAFvXULU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=QcDHManh; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1730795148;
-	bh=8WJfZjEMb9mPRKNogJbIPOSjIWQQ5ZDrn+a7kIoFHVw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QcDHManhYpk915PpFdlCVajFRHYlt5BDAm+RPtWc4Xm76Mth3LiHbNw7e7dMCCWZ7
-	 6gnLjj3q3roZGAYgOdocGS+cBRS2JeOBgunGoA7ZBCxvaAeSw0UpbLZtqng5Ihhzl1
-	 B35UDSB8cfxCvSFe48S2HFeheM5CNeGTX4Go3IdITkWXYYx8ChBMzbHZQHswXGi7ze
-	 ZMlUbMiG8sS9R6tLKaEdS606AeoV/KJtQu+iC+nA0Jr6ewSi0oRwbqlW51Hro+kM6V
-	 d0WVm6ZbxnYANvVLZYXjOkGCi0gH+UqiwxnjmEUWDEZutYpMo3pREG8YGC4y0WPDl6
-	 iD5NO5KrSK6cw==
-Received: from localhost (unknown [IPv6:2a01:e0a:2c:6930:5cf4:84a1:2763:fe0d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 57D8717E1147;
-	Tue,  5 Nov 2024 09:25:48 +0100 (CET)
-Date: Tue, 5 Nov 2024 09:25:41 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Jann Horn <jannh@google.com>
-Cc: Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH] drm/panthor: Be stricter about IO mapping flags
-Message-ID: <20241105092541.4f253bc5@collabora.com>
-In-Reply-To: <20241105-panthor-flush-page-fixes-v1-1-829aaf37db93@google.com>
-References: <20241105-panthor-flush-page-fixes-v1-1-829aaf37db93@google.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1730796944; c=relaxed/simple;
+	bh=ua8pvqcIN/bZl62wHhay/Xzk9366GkXwCpzGSn0Di1s=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=CV9e/LNEDj8rt7Y7oEHNIOqUq1JPq92swFxEjIlfkiPxKLRBwEPR7gP/YpEwagG3SrPTA9UiXtGzHlYHdODXZvHOS9pty6bmbFOkeSwwve2ktyNF5AEF9NvqePPJLAqKaGa/yXe198pef/9hP6ZFWV0Lal8A/bVVqAFEGqCUB7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=AtI0hVUC; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A4LIiqX012116;
+	Tue, 5 Nov 2024 08:55:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=d18rLM6XakzduzpK2VtK7F
+	xAuIzXZYiwAnmo1UiY4WY=; b=AtI0hVUCECfxrcoCCWLxbZVN9rsBcgUggJYdK0
+	HCJQqim/0SZB6oDh1HhkXksqwYO/g480I01mLniVvPcrEdy+JHdlT1aHKli0TE9O
+	d6fJMWTKn1IwJ2pBqXXEp5jF6pxe21tWTuBHjveIBWlplnxUxNfH9h8bUqsMCTMw
+	v3fCJB9+0h5Bh1C2HO21Wr4ox0UiXMVLEA/DSTwqCBR7KPz/2nogc7lz5o1Eo+c9
+	VWZHQTB5Hi/D/rnFEJQD2V0bm+3tMTl2CmvyQQa6Dh1sPsyx3fI3lWmO1XR0rXst
+	UjM4c2APW8732Jn5e98bPM5cdRTlR4I0it2iVOZ38g7ov2zA==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42nd11y07x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 Nov 2024 08:55:38 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A58tbIi010038
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 5 Nov 2024 08:55:37 GMT
+Received: from hu-vgarodia-hyd.qualcomm.com (10.80.80.8) by
+ nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Tue, 5 Nov 2024 00:55:34 -0800
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
+Subject: [PATCH 0/4] Venus driver fixes to avoid possible OOB accesses
+Date: Tue, 5 Nov 2024 14:24:53 +0530
+Message-ID: <20241105-venus_oob-v1-0-8d4feedfe2bb@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAF3dKWcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxNDQwMT3bLUvNLi+Pz8JF0DYxPjJEMT4xQzwxQloPqCotS0zAqwWdGxtbU
+ AqmBmL1sAAAA=
+X-Change-ID: 20241104-venus_oob-0343b143d61d
+To: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+        Bryan O'Donoghue
+	<bryan.odonoghue@linaro.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>
+CC: <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Vikash Garodia <quic_vgarodia@quicinc.com>, <stable@vger.kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1730796934; l=973;
+ i=quic_vgarodia@quicinc.com; s=20241104; h=from:subject:message-id;
+ bh=ua8pvqcIN/bZl62wHhay/Xzk9366GkXwCpzGSn0Di1s=;
+ b=ykZVRd6+TLXIenHdx/GITCSeeq9scmh0cZBtVBnBlSkSZiWJHJz5TsVJn0v3Oz1afqW6ktfJk
+ QMKZTQqsikcC/fmJtPbIyJUujWxjhOTlM+PZTR7u9bLMc294q0NIN9K
+X-Developer-Key: i=quic_vgarodia@quicinc.com; a=ed25519;
+ pk=LY9Eqp4KiHWxzGNKGHbwRFEJOfRCSzG/rxQNmvZvaKE=
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 0hRzKNNXwILgoHQwPxSDvg4QMVmqHC9-
+X-Proofpoint-ORIG-GUID: 0hRzKNNXwILgoHQwPxSDvg4QMVmqHC9-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=682
+ mlxscore=0 clxscore=1011 lowpriorityscore=0 phishscore=0
+ priorityscore=1501 impostorscore=0 spamscore=0 bulkscore=0 suspectscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411050063
 
-On Tue, 05 Nov 2024 00:17:13 +0100
-Jann Horn <jannh@google.com> wrote:
+This series primarily adds check at relevant places in venus driver where there
+are possible OOB accesses due to unexpected payload from venus firmware. The
+patches describes the specific OOB possibility.
 
-> The current panthor_device_mmap_io() implementation has two issues:
-> 
-> 1. For mapping DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET,
->    panthor_device_mmap_io() bails if VM_WRITE is set, but does not clear
->    VM_MAYWRITE. That means userspace can use mprotect() to make the mapping
->    writable later on. This is a classic Linux driver gotcha.
->    I don't think this actually has any impact in practice:
->    When the GPU is powered, writes to the FLUSH_ID seem to be ignored; and
->    when the GPU is not powered, the dummy_latest_flush page provided by the
->    driver is deliberately designed to not do any flushes, so the only thing
->    writing to the dummy_latest_flush could achieve would be to make *more*
->    flushes happen.
-> 
-> 2. panthor_device_mmap_io() does not block MAP_PRIVATE mappings (which are
->    mappings without the VM_SHARED flag).
->    MAP_PRIVATE in combination with VM_MAYWRITE indicates that the VMA has
->    copy-on-write semantics, which for VM_PFNMAP are semi-supported but
->    fairly cursed.
->    In particular, in such a mapping, the driver can only install PTEs
->    during mmap() by calling remap_pfn_range() (because remap_pfn_range()
->    wants to **store the physical address of the mapped physical memory into
->    the vm_pgoff of the VMA**); installing PTEs later on with a fault
->    handler (as panthor does) is not supported in private mappings, and so
->    if you try to fault in such a mapping, vmf_insert_pfn_prot() splats when
->    it hits a BUG() check.
-> 
-> Fix it by clearing the VM_MAYWRITE flag (userspace writing to the FLUSH_ID
-> doesn't make sense) and requiring VM_SHARED (copy-on-write semantics for
-> the FLUSH_ID don't make sense).
-> 
-> Reproducers for both scenarios are in the notes of my patch on the mailing
-> list; I tested that these bugs exist on a Rock 5B machine.
-> 
-> Note that I only compile-tested the patch, I haven't tested it; I don't
-> have a working kernel build setup for the test machine yet. Please test it
-> before applying it.
+Please review and share your feedback.
 
-Sure, I'll test it before applying.
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+---
+Vikash Garodia (4):
+      media: venus: hfi_parser: add check to avoid out of bound access
+      media: venus: hfi_parser: avoid OOB access beyond payload word count
+      media: venus: hfi: add check to handle incorrect queue size
+      media: venus: hfi: add a check to handle OOB in sfr region
 
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 5fe909cae118 ("drm/panthor: Add the device logical block")
-> Signed-off-by: Jann Horn <jannh@google.com>
+ drivers/media/platform/qcom/venus/hfi_parser.c |  6 +++++-
+ drivers/media/platform/qcom/venus/hfi_venus.c  | 15 +++++++++++++--
+ 2 files changed, 18 insertions(+), 3 deletions(-)
+---
+base-commit: c7ccf3683ac9746b263b0502255f5ce47f64fe0a
+change-id: 20241104-venus_oob-0343b143d61d
 
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-
-> ---
-> First testcase (can write to the FLUSH_ID):
-> 
-> ```
-> 
->   typeof(x) __res = (x);      \
->   if (__res == (typeof(x))-1) \
->     err(1, "SYSCHK(" #x ")"); \
->   __res;                      \
-> })
-> 
-> int main(void) {
->   int fd = SYSCHK(open(GPU_PATH, O_RDWR));
-> 
->   // sanity-check that PROT_WRITE+MAP_SHARED fails
->   void *mmap_write_res = mmap(NULL, 0x1000, PROT_READ|PROT_WRITE,
->       MAP_SHARED, fd, DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET);
->   if (mmap_write_res == MAP_FAILED) {
->     perror("mmap() with PROT_WRITE+MAP_SHARED failed as expected");
->   } else {
->     errx(1, "mmap() with PROT_WRITE+MAP_SHARED worked???");
->   }
-> 
->   // make a PROT_READ+MAP_SHARED mapping, and upgrade it to writable
->   void *mmio_page = SYSCHK(mmap(NULL, 0x1000, PROT_READ, MAP_SHARED,
->       fd, DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET));
->   SYSCHK(mprotect(mmio_page, 0x1000, PROT_READ|PROT_WRITE));
-> 
->   volatile uint32_t *flush_counter = (volatile uint32_t*)mmio_page;
-> 
->   uint32_t last_old = -1;
->   while (1) {
->     uint32_t old_val = *flush_counter;
->     *flush_counter = 1111;
->     uint32_t new_val = *flush_counter;
->     if (old_val != last_old)
->       printf("flush counter: old=%u, new=%u\n", old_val, new_val);
->     last_old = old_val;
->   }
-> }
-> ```
-> 
-> Second testcase (triggers BUG() splat):
-> ```
-> 
->   typeof(x) __res = (x);      \
->   if (__res == (typeof(x))-1) \
->     err(1, "SYSCHK(" #x ")"); \
->   __res;                      \
-> })
-> 
-> int main(void) {
->   int fd = SYSCHK(open(GPU_PATH, O_RDWR));
-> 
->   // make a PROT_READ+**MAP_PRIVATE** mapping
->   void *ptr = SYSCHK(mmap(NULL, 0x1000, PROT_READ, MAP_PRIVATE,
->       fd, DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET));
-> 
->   // trigger a read fault
->   *(volatile char *)ptr;
-> }
-> ```
-> 
-> The second testcase splats like this:
-> ```
-> [ 2918.411814] ------------[ cut here ]------------
-> [ 2918.411857] kernel BUG at mm/memory.c:2220!
-> [ 2918.411955] Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
-> [...]
-> [ 2918.416147] CPU: 3 PID: 2934 Comm: private_user_fl Tainted: G           O       6.1.43-19-rk2312 #428a0a5e6
-> [ 2918.417043] Hardware name: Radxa ROCK 5B (DT)
-> [ 2918.417464] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> [ 2918.418119] pc : vmf_insert_pfn_prot+0x40/0xe4
-> [ 2918.418567] lr : panthor_mmio_vm_fault+0xb0/0x12c [panthor]
-> [...]
-> [ 2918.425746] Call trace:
-> [ 2918.425972]  vmf_insert_pfn_prot+0x40/0xe4
-> [ 2918.426342]  __do_fault+0x38/0x7c
-> [ 2918.426648]  __handle_mm_fault+0x404/0x6dc
-> [ 2918.427018]  handle_mm_fault+0x13c/0x18c
-> [ 2918.427374]  do_page_fault+0x194/0x33c
-> [ 2918.427716]  do_translation_fault+0x60/0x7c
-> [ 2918.428095]  do_mem_abort+0x44/0x90
-> [ 2918.428410]  el0_da+0x40/0x68
-> [ 2918.428685]  el0t_64_sync_handler+0x9c/0xf8
-> [ 2918.429067]  el0t_64_sync+0x174/0x178
-> ```
-> ---
->  drivers/gpu/drm/panthor/panthor_device.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/panthor/panthor_device.c b/drivers/gpu/drm/panthor/panthor_device.c
-> index 4082c8f2951dfdace7f73a24d6fe34e9e7f920eb..6fbff516c1c1f047fcb4dee17b87d8263616dc0c 100644
-> --- a/drivers/gpu/drm/panthor/panthor_device.c
-> +++ b/drivers/gpu/drm/panthor/panthor_device.c
-> @@ -390,11 +390,15 @@ int panthor_device_mmap_io(struct panthor_device *ptdev, struct vm_area_struct *
->  {
->  	u64 offset = (u64)vma->vm_pgoff << PAGE_SHIFT;
->  
-> +	if ((vma->vm_flags & VM_SHARED) == 0)
-> +		return -EINVAL;
-> +
->  	switch (offset) {
->  	case DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET:
->  		if (vma->vm_end - vma->vm_start != PAGE_SIZE ||
->  		    (vma->vm_flags & (VM_WRITE | VM_EXEC)))
->  			return -EINVAL;
-> +		vm_flags_clear(vma, VM_MAYWRITE);
->  
->  		break;
->  
-> 
-> ---
-> base-commit: d78f0ee0406803cda8801fd5201746ccf89e5e4a
-> change-id: 20241104-panthor-flush-page-fixes-fe4202bb18c0
-> 
+Best regards,
+-- 
+Vikash Garodia <quic_vgarodia@quicinc.com>
 
 
