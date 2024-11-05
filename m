@@ -1,209 +1,107 @@
-Return-Path: <stable+bounces-89920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D833C9BD5DF
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 20:31:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 506169BD5E2
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 20:31:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68A961F23395
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 19:31:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1644E284945
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 19:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 946252022FA;
-	Tue,  5 Nov 2024 19:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2879F20B208;
+	Tue,  5 Nov 2024 19:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hj0eMOvF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SdsDQ8Bo"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D4E201278;
-	Tue,  5 Nov 2024 19:30:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893BE20ADD3;
+	Tue,  5 Nov 2024 19:31:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730835057; cv=none; b=rG0yo2zE65g1jc5oQO1oY9/yn+8MS8vql/bAQn0sgsFW5EGtAgYkUfakjl66PxC53PyHn28ueEcZTMvAcGPj91FjJFr7qHo12BQXG4Od8epHiepCNvnlL4RakH0Xq4nUbgny8QhKK1Jn/nYE4+HI+X8R6wUKzvqALFnrNLeUuTA=
+	t=1730835107; cv=none; b=VJvQOFCtbduaNtEhRu5e9gRY5G55Re9jL6fgguPGS7hUrOkQrociY0YZBsHzsJK60MnKXgq9w12fQjA/sEaIFdh5om/2YHj+vwasmU0zq1XTKuKUia78pRjqJ4iGlWR/dunEHLmVH69F5eZRpdwOtb82mKXRbl8FHPu0D/nVv+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730835057; c=relaxed/simple;
-	bh=ZQOWG60wEyTniaPcAjViHBQcAhVnAgLXozzoU1MMhgc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nrbWMQR6nurF/UNSm/rmXkjIF1JadgASLu65vnUlXxuHe5/YluTjcDtw+/hjKMeA4PulwjKLNICpgYb7PHTSF8fI01YCSwrFXXXmVe5CwkgMf+6V0HCVzJEm7fVmbtrC3XQWKWUOZxFl1fUwa+CGuvgIfEtA5k4Z+PKxqdtSaiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hj0eMOvF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE1AC4CECF;
-	Tue,  5 Nov 2024 19:30:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730835056;
-	bh=ZQOWG60wEyTniaPcAjViHBQcAhVnAgLXozzoU1MMhgc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hj0eMOvF79w9Fgzm9nFH4KX8NCPfvOQ6upP+8rRKTm9KdzF0no1Mp2BhoSoNb3ye6
-	 FX4cyjUhhPKA9Q+LL9gTL8IvJenI8zdTZusRBd0C47q5AmXJB+H5cAceRxJLW6R8/Z
-	 FVw9m+O65PlxGjD2e7uA02mz4xUmsFDutz89nx9/pF7tPNfnpXCeID3TqXpgl/CoQQ
-	 mxSH+t04APPx1pGcgg4lCUG13rArOr64ySQjkh1Am8WgQpzCGpLUr8wXd24yVSRjhI
-	 XRo64XiJd4az5HsaKlxtBUNaZjLWxZoHchH77DIXsoQZ40c68CxOlGVwhtw9db8WSP
-	 V55oumlklOeIA==
-Date: Tue, 5 Nov 2024 12:30:54 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Brian Gerst <brgerst@gmail.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
-	Ingo Molnar <mingo@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>, Ard Biesheuvel <ardb@kernel.org>,
-	Uros Bizjak <ubizjak@gmail.com>, stable@vger.kernel.org,
-	Fangrui Song <i@maskray.me>, Andy Lutomirski <luto@kernel.org>
-Subject: Re: [PATCH v5 01/16] x86/stackprotector: Work around strict Clang
- TLS symbol requirements
-Message-ID: <20241105193054.GA927577@thelio-3990X>
-References: <20241105155801.1779119-1-brgerst@gmail.com>
- <20241105155801.1779119-2-brgerst@gmail.com>
+	s=arc-20240116; t=1730835107; c=relaxed/simple;
+	bh=+wo5a89XCfR+vllQwUd68ocwBNi2wyOV4mF7KfCALrI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sRLzzdvYdNZeNJUdqxDU/7vZVHey6ux/4gITKtSa3ZxFcWih/WM5qScxz7VCOO/Iu3Sg8FwLX9a3npYrrC5IuA0cZMGf1n7e/7gx53wh2ww7tP1QMKMfAZMt6VGrjznGTHB0/55MO31/SGHfnI3/TbfOBuUQEP6WRNbvfiW1waY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SdsDQ8Bo; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6e3c3da5bcdso53897317b3.2;
+        Tue, 05 Nov 2024 11:31:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730835105; x=1731439905; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=qx81oG6eFhFtkvLBZexdKBfFzUiItaWVe7s7qCD1UIs=;
+        b=SdsDQ8BofYbJIASHfrZQFTkL8eZbBNyxMSTUwnF1QerX6nIB/xwJZNOu9oqoS6dPRj
+         FW9WQceVU/ojB1X37ygqaLQ+zl5DcKdgXn4UUGRDg7GkdXzr8bvCJTdWqtNsUP5eHKP+
+         YIg7nsq0XMYJ0ptzgVS1WqRfgpUt9BNAK2VWHifLdUS98ICCwIcFI/rwkRy6IYZDBTjD
+         DUXJbd3BD4oU6xjjcfKHn4Pdix4bsNclbXhJX6KrQiqWGGrF+P70TVl/OOFSN4oxH5OR
+         QtJaSWrTyjAcYdZX+crzsZ9dvPFwFYkTOXZEV7AstkHN1lVC+EQqhD2pBwfY/LeTmT3h
+         4YFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730835105; x=1731439905;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qx81oG6eFhFtkvLBZexdKBfFzUiItaWVe7s7qCD1UIs=;
+        b=mLH+QnQ4vaNd1Ltjpp4ica5eOPmL0ZAO/rrAvM46NJJA8A9QV4Asm3axdDfNRZSgC3
+         mrDcRSFBRx/nIQ1XOIhWK+xdTO2cv/jm3NgcAVRkX5xD/qWzb+O1JQ7YAyWReXmlaJ9R
+         NMNQwSxVpYLFIRSFGNauLk6OUz4vZY9pt4hasN43aQAb3ohPlYhyx9wxfPtwLuzaSXZS
+         ZxPnde/T+xV3cP47CNtkUR58D/91fbk7M989lBRNnW8najjDJNX5zxxbzjKz4KxfSct6
+         w57FbyrfF/ncgJV6Y2GEU9tcYGCgzfKoN9AYjxMLPnOhJxRrZeU32XuxVFsJeVZdyNWv
+         bL8w==
+X-Forwarded-Encrypted: i=1; AJvYcCUFZ2es+7NypLgQ9o3oqTZy7fsAl152lK9t0LjUMjlZPUftloeSqcygb7JhpJRbXc4ukl3W5KTDrFor4Q==@vger.kernel.org, AJvYcCUNdMCasNIiZ2+IGi6Aqi4/s8L6WdlGg784QLA1kHojhgmwd4PvzNwj/bBENqHt2DmOq5qqG2gv@vger.kernel.org, AJvYcCVpPYEywwak+5SaGEYtlNnxmOlf9nqwCVzMCU/gEHPcAO+Iul96YW/HvY0OiKvyLTdpuCwdapK9F6cLJ1A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7bSVRvAu80YSo3Vvqgyug22H4H6T8wv6uxkShvdAFqFWesleO
+	w5zvTSoriEQTiB6W1llXEc4FstosU23GdEzWHrbt75VnzcJ0Qz8w1wCNvr0yDc97yVsAJFIBQQP
+	psIJCVKXwISq3TjmBCC7+OOMst4w=
+X-Google-Smtp-Source: AGHT+IHNxvK4el4AFjKkLHz4BPVUM4q40Bp+gu7JB/Ln2PRph4hXov1iTlfbIRpUX91XvZipJoIPoVqLssAXyosYFJI=
+X-Received: by 2002:a05:690c:2fca:b0:6e2:7dd:af66 with SMTP id
+ 00721157ae682-6ea3b8afecdmr182459867b3.19.1730835105542; Tue, 05 Nov 2024
+ 11:31:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241105155801.1779119-2-brgerst@gmail.com>
+References: <20241105130902.4603-1-chenqiuji666@gmail.com>
+In-Reply-To: <20241105130902.4603-1-chenqiuji666@gmail.com>
+From: Justin Tee <justintee8345@gmail.com>
+Date: Tue, 5 Nov 2024 11:31:39 -0800
+Message-ID: <CABPRKS_f1LvugQo2Hzs9q-ycAE5NyF6JxH4jS=UbyQqbhwt15A@mail.gmail.com>
+Subject: Re: [PATCH] scsi: lpfc: Fix improper handling of refcount in lpfc_bsg_hba_get_event()
+To: Qiu-ji Chen <chenqiuji666@gmail.com>
+Cc: Justin Tee <justin.tee@broadcom.com>, james.smart@broadcom.com, 
+	dick.kennedy@broadcom.com, James.Bottomley@hansenpartnership.com, 
+	martin.petersen@oracle.com, linux-scsi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, baijiaju1990@gmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Nov 05, 2024 at 10:57:46AM -0500, Brian Gerst wrote:
-> From: Ard Biesheuvel <ardb@kernel.org>
-> 
-> GCC and Clang both implement stack protector support based on Thread
-> Local Storage (TLS) variables, and this is used in the kernel to
-> implement per-task stack cookies, by copying a task's stack cookie into
-> a per-CPU variable every time it is scheduled in.
-> 
-> Both now also implement -mstack-protector-guard-symbol=, which permits
-> the TLS variable to be specified directly. This is useful because it
-> will allow us to move away from using a fixed offset of 40 bytes into
-> the per-CPU area on x86_64, which requires a lot of special handling in
-> the per-CPU code and the runtime relocation code.
-> 
-> However, while GCC is rather lax in its implementation of this command
-> line option, Clang actually requires that the provided symbol name
-> refers to a TLS variable (i.e., one declared with __thread), although it
-> also permits the variable to be undeclared entirely, in which case it
-> will use an implicit declaration of the right type.
-> 
-> The upshot of this is that Clang will emit the correct references to the
-> stack cookie variable in most cases, e.g.,
-> 
->    10d:       64 a1 00 00 00 00       mov    %fs:0x0,%eax
->                       10f: R_386_32   __stack_chk_guard
-> 
-> However, if a non-TLS definition of the symbol in question is visible in
-> the same compilation unit (which amounts to the whole of vmlinux if LTO
-> is enabled), it will drop the per-CPU prefix and emit a load from a
-> bogus address.
-> 
-> Work around this by using a symbol name that never occurs in C code, and
-> emit it as an alias in the linker script.
-> 
-> Fixes: 3fb0fdb3bbe7 ("x86/stackprotector/32: Make the canary into a regular percpu variable")
-> Cc: <stable@vger.kernel.org>
-> Cc: Fangrui Song <i@maskray.me>
-> Cc: Uros Bizjak <ubizjak@gmail.com>
-> Cc: Nathan Chancellor <nathan@kernel.org>
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Link: https://github.com/ClangBuiltLinux/linux/issues/1854
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> Signed-off-by: Brian Gerst <brgerst@gmail.com>
+Hi Qiu-ji,
 
-From https://lore.kernel.org/20241016021045.GA1000009@thelio-3990X/:
+Similar to the other suggested patch, this does not look logically
+correct.  if (evt_dat == NULL) evaluates to true, then that means the
+list_for_each_entry_safe(evt, evt_next, &phba->ct_ev_waiters, node)
+loop did not find an evt lpfc_bsg_event object of interest or that the
+phba->ct_ev_waiters list is empty.
 
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
+Why would this patch want to call lpfc_bsg_event_unref on an evt
+object that is not of specified interest indicated by the bsg
+event_req object?
 
-> ---
->  arch/x86/Makefile                     |  5 +++--
->  arch/x86/entry/entry.S                | 16 ++++++++++++++++
->  arch/x86/include/asm/asm-prototypes.h |  3 +++
->  arch/x86/kernel/cpu/common.c          |  2 ++
->  arch/x86/kernel/vmlinux.lds.S         |  3 +++
->  5 files changed, 27 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-> index cd75e78a06c1..5b773b34768d 100644
-> --- a/arch/x86/Makefile
-> +++ b/arch/x86/Makefile
-> @@ -142,9 +142,10 @@ ifeq ($(CONFIG_X86_32),y)
->  
->      ifeq ($(CONFIG_STACKPROTECTOR),y)
->          ifeq ($(CONFIG_SMP),y)
-> -			KBUILD_CFLAGS += -mstack-protector-guard-reg=fs -mstack-protector-guard-symbol=__stack_chk_guard
-> +            KBUILD_CFLAGS += -mstack-protector-guard-reg=fs \
-> +                             -mstack-protector-guard-symbol=__ref_stack_chk_guard
->          else
-> -			KBUILD_CFLAGS += -mstack-protector-guard=global
-> +            KBUILD_CFLAGS += -mstack-protector-guard=global
->          endif
->      endif
->  else
-> diff --git a/arch/x86/entry/entry.S b/arch/x86/entry/entry.S
-> index 324686bca368..b7ea3e8e9ecc 100644
-> --- a/arch/x86/entry/entry.S
-> +++ b/arch/x86/entry/entry.S
-> @@ -51,3 +51,19 @@ EXPORT_SYMBOL_GPL(mds_verw_sel);
->  .popsection
->  
->  THUNK warn_thunk_thunk, __warn_thunk
-> +
-> +#ifndef CONFIG_X86_64
-> +/*
-> + * Clang's implementation of TLS stack cookies requires the variable in
-> + * question to be a TLS variable. If the variable happens to be defined as an
-> + * ordinary variable with external linkage in the same compilation unit (which
-> + * amounts to the whole of vmlinux with LTO enabled), Clang will drop the
-> + * segment register prefix from the references, resulting in broken code. Work
-> + * around this by avoiding the symbol used in -mstack-protector-guard-symbol=
-> + * entirely in the C code, and use an alias emitted by the linker script
-> + * instead.
-> + */
-> +#ifdef CONFIG_STACKPROTECTOR
-> +EXPORT_SYMBOL(__ref_stack_chk_guard);
-> +#endif
-> +#endif
-> diff --git a/arch/x86/include/asm/asm-prototypes.h b/arch/x86/include/asm/asm-prototypes.h
-> index 25466c4d2134..3674006e3974 100644
-> --- a/arch/x86/include/asm/asm-prototypes.h
-> +++ b/arch/x86/include/asm/asm-prototypes.h
-> @@ -20,3 +20,6 @@
->  extern void cmpxchg8b_emu(void);
->  #endif
->  
-> +#if defined(__GENKSYMS__) && defined(CONFIG_STACKPROTECTOR)
-> +extern unsigned long __ref_stack_chk_guard;
-> +#endif
-> diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-> index 8f41ab219cf1..9d42bd15e06c 100644
-> --- a/arch/x86/kernel/cpu/common.c
-> +++ b/arch/x86/kernel/cpu/common.c
-> @@ -2091,8 +2091,10 @@ void syscall_init(void)
->  
->  #ifdef CONFIG_STACKPROTECTOR
->  DEFINE_PER_CPU(unsigned long, __stack_chk_guard);
-> +#ifndef CONFIG_SMP
->  EXPORT_PER_CPU_SYMBOL(__stack_chk_guard);
->  #endif
-> +#endif
->  
->  #endif	/* CONFIG_X86_64 */
->  
-> diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
-> index 410546bacc0f..d61c3584f3e6 100644
-> --- a/arch/x86/kernel/vmlinux.lds.S
-> +++ b/arch/x86/kernel/vmlinux.lds.S
-> @@ -468,6 +468,9 @@ SECTIONS
->  . = ASSERT((_end - LOAD_OFFSET <= KERNEL_IMAGE_SIZE),
->  	   "kernel image bigger than KERNEL_IMAGE_SIZE");
->  
-> +/* needed for Clang - see arch/x86/entry/entry.S */
-> +PROVIDE(__ref_stack_chk_guard = __stack_chk_guard);
-> +
->  #ifdef CONFIG_X86_64
->  /*
->   * Per-cpu symbols which need to be offset from __per_cpu_load
-> -- 
-> 2.47.0
-> 
+Even worse, as mentioned in the other email, this patch could kref_put
+on the phba->ct_ev_waiters head which is not a preallocated
+lpfc_bsg_event object leading to references on an uninitialized memory
+region.
+
+Sorry, but I cannot acknowledge this patch as well.
+
+Regards,
+Justin
 
