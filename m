@@ -1,169 +1,106 @@
-Return-Path: <stable+bounces-89847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA04B9BD03B
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 16:19:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C6339BD107
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 16:51:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBE1D1C21AE6
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 15:18:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5EE828452F
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 15:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD161D7E46;
-	Tue,  5 Nov 2024 15:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12A414D719;
+	Tue,  5 Nov 2024 15:50:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="CSdltS/7"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49463BB21;
-	Tue,  5 Nov 2024 15:18:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2131824BD
+	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 15:50:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730819934; cv=none; b=eeHVC65pk07lyyYeVxN00Ybrb8HOhcZXpegrHi9HVy0U0cpX7YguvtaYBqutBDvwSCsvlzWDl5SPdJNrQagX1BDHsoQFzz690ucRQzfjO7RLkybarWawlg0ROzKO0FDJi67UAau+ZbxqbXdACz0h4sweYoXawSBXxU4D8BN4+20=
+	t=1730821851; cv=none; b=hEb+x513W9BOCScf+oB5TJA6DlbPo2YKtkRz/yAyvrB3ttBfIF4cYU/WYHbpQnBTi3E4usTmOyjyEBVACnuR/fX+rsmOciii/+S5OL3+E4aHxeU5O93HbEIPtiDSnekXpfATfBxFVhtWwPRXuG+m4ljluT99rvgjKcheCpWDXQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730819934; c=relaxed/simple;
-	bh=oKUTKz7h6GjGrIClatLhORghr5XcUQQAikgrXqWv0o4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s94ReKYrhgm/H+22Iq2ehMAHPJRs5P9Oe5HYNnheYuHEQkPDZUURxwnk1yAHjuQRth01n/Psx8D4ftpv5tVDu1Jp2+qfNaF8KCDheNrI+bRggaf4RjNqi1UGX5EBqyXFI1lklJTjC64P/F876w5/pJLGQbmQ4EascfLRUIxfUD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 77145FEC;
-	Tue,  5 Nov 2024 07:19:15 -0800 (PST)
-Received: from J2N7QTR9R3.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 89A823F528;
-	Tue,  5 Nov 2024 07:18:44 -0800 (PST)
-Date: Tue, 5 Nov 2024 15:18:33 +0000
-From: Mark Rutland <mark.rutland@arm.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64/signal: Avoid corruption of SME state when
- entering signal handler
-Message-ID: <Zyo3QU8aBGmtbTRo@J2N7QTR9R3.cambridge.arm.com>
-References: <20241030-arm64-fp-sme-sigentry-v2-1-43ce805d1b20@kernel.org>
+	s=arc-20240116; t=1730821851; c=relaxed/simple;
+	bh=bdB0oX0h/gL1dMbHpe6fwOFkNEuwo0TZrK6SvbzVSc0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FGxgu3GQnUkH4ij06oHlKkoggIzhNlY+wFaNCMsQDir5m5MbDC6EQriLch8M2ULUZ00WaO+IDKp5SbVajKDrX+zhp7guE0dUv4tJPxNmL2+tgB0BHp12UCyrzDQIdNPpIr2EhmtCfl9Du4vz/N13gvd/VKrsIuavmR2O9xUvpaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=CSdltS/7; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A5DiWZr029632;
+	Tue, 5 Nov 2024 15:50:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2023-11-20; bh=hDfvvmkn+WM4kzM140c1dzl4702BP
+	VdljW2cm1N4eSw=; b=CSdltS/7+gdsTSoAypbrLFV03QA5xUYaDDnTYaPYATITR
+	R1yeACKTDpmB6PBHR+L348XMY1rcOo0rcOXEre6Ii9ixu5bgYSAPSF7AoYA8I2br
+	7GLDpuc9Rg+jxHYS4PBpIThdrlWmK/Z4no4jPNkYPtaqTUWUSnI9jNmx2r6Z+IcF
+	D+umVcS9FHpGaHvzw5pMPlKvb0Ui7pWr8mD6RlZL/dnCIwKStJYhG4KlosG2R5al
+	SS3Bl7r0TaP34B4a1lVnJGNdXZaTEVJ+G/0xvbL1h5bEcrJik8B6ymjr/WxH2LLl
+	vO7EuZAUKaYQjH9oM25JPR0AoFkKFszFnHgIBiYxQ==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42nc4bwqs1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 05 Nov 2024 15:50:45 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 4A5EIeWQ036298;
+	Tue, 5 Nov 2024 15:50:44 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 42nahdkgjj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 05 Nov 2024 15:50:44 +0000
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4A5Foi0I028682;
+	Tue, 5 Nov 2024 15:50:44 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 42nahdkghq-1;
+	Tue, 05 Nov 2024 15:50:44 +0000
+From: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+To: akpm@linux-foundation.org
+Cc: harshvardhan.j.jha@oracle.com, linux-mm@kvack.org, stable@vger.kernel.org
+Subject: [PATCH 5.10.y 0/2] Backport fix of CVE-2024-47674 to 5.10
+Date: Tue,  5 Nov 2024 07:50:40 -0800
+Message-ID: <20241105155042.288813-1-harshvardhan.j.jha@oracle.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241030-arm64-fp-sme-sigentry-v2-1-43ce805d1b20@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-11-05_06,2024-11-05_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ spamscore=0 mlxlogscore=728 mlxscore=0 phishscore=0 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2409260000 definitions=main-2411050122
+X-Proofpoint-ORIG-GUID: EaGGQYXg6UZlXYZJOUwaZtBb0CwnH4OL
+X-Proofpoint-GUID: EaGGQYXg6UZlXYZJOUwaZtBb0CwnH4OL
 
-On Wed, Oct 30, 2024 at 07:58:36PM +0000, Mark Brown wrote:
-> We intend that signal handlers are entered with PSTATE.{SM,ZA}={0,0}.
-> The logic for this in setup_return() manipulates the saved state and
-> live CPU state in an unsafe manner, and consequently, when a task enters
-> a signal handler:
+Following series is a backport of CVE-2024-47674 fix "mm: avoid leaving
+partial pfn mappings around in error case" to 5.10.
 
-Looking at this, I think there's a bigger question as to what we
-actually intend here; explanation below, with two possible answers at
-the end.
+This required an extra commit "mm: add remap_pfn_range_notrack" to make
+both picks clean. The patchset shows no regression compared to 5.10.228
+tag.
 
-[...] 
+Christoph Hellwig (1):
+  mm: add remap_pfn_range_notrack
 
-> +/*
-> + * Called by the signal handling code when preparing current to enter
-> + * a signal handler. Currently this only needs to take care of exiting
-> + * streaming mode and clearing ZA on SME systems.
-> + */
-> +void fpsimd_enter_sighandler(void)
-> +{
-> +	if (!system_supports_sme())
-> +		return;
-> +
-> +	get_cpu_fpsimd_context();
-> +
-> +	if (test_thread_flag(TIF_FOREIGN_FPSTATE)) {
-> +		/* Exiting streaming mode zeros the FPSIMD state */
-> +		if (current->thread.svcr & SVCR_SM_MASK) {
-> +			memset(&current->thread.uw.fpsimd_state, 0,
-> +			       sizeof(current->thread.uw.fpsimd_state));
-> +			current->thread.fp_type = FP_STATE_FPSIMD;
-> +		}
-> +
-> +		current->thread.svcr &= ~(SVCR_ZA_MASK |
-> +					  SVCR_SM_MASK);
-> +
-> +		/* Ensure any copies on other CPUs aren't reused */
-> +		fpsimd_flush_task_state(current);
-> +	} else {
-> +		/* The register state is current, just update it. */
-> +		sme_smstop();
-> +	}
+Linus Torvalds (1):
+  mm: avoid leaving partial pfn mappings around in error case
 
-I don't think that the foreign / non-foreign cases are equivalent. In
-the foreign case we clear the entire fpsimd_state structure, i.e. all
-of:
+ include/linux/mm.h |  2 ++
+ mm/memory.c        | 70 ++++++++++++++++++++++++++++++++--------------
+ 2 files changed, 51 insertions(+), 21 deletions(-)
 
-	struct user_fpsimd_state {
-		__uint128_t     vregs[32];
-		__u32           fpsr;
-		__u32           fpcr;
-		__u32           __reserved[2];
-	};
+-- 
+2.46.0
 
-Looking at the latest ARM ARM (ARM DDI 0487K.a):
-
-  https://developer.arm.com/documentation/ddi0487/ka/
-
-... the descriptions for FPSR and FPCR say nothing about exiting
-streaming mode, and rule RKFRQZ says:
-
-| When the Effective value of PSTATE.SM is changed by any method from 1
-| to 0, an exit from Streaming SVE mode is performed, and in the
-| newly-entered mode, all implemented bits of the SVE scalable vector
-| registers, SVE predicate registers, and FFR, are set to zero.	
-
-... which doesn't say anything about FPSR or FPCR, so from the ARM ARM
-it doesn't look like SMSTOP will clobber those.
-
-Looking at the latest "Arm A-profile Architecture Registers" document
-(ARM DDI 061 2024-09):
-
-  https://developer.arm.com/documentation/ddi0601/2024-09/
-
-... the description of FPCR says nothing about exiting streaming mode,
-so it appears to be preserved.
-
-... the description of FPMR (which is not in the latest ARM ARM) says:
-
-| On entry to or exit from Streaming SVE mode, FPMR is set to 0.
-
-... so we'd need code to clobber that.
-
-... and the description of FPSR says:
-
-| On entry to or exit from Streaming SVE mode, FPSR.{IOC, DZC, OFC, UFC,
-| IXC, IDC, QC} are set to 1 and the remaining bits are set to 0.
-
-... so we'd need something more elaborate.
-
-AFAICT either:
-
-(a) Our intended ABI is that signal handlers are entered as-if an SMSTOP
-    is executed to exit streaming mode and disable ZA storage.
-
-    In this case we'll need a more elaborate sequence here to simulate
-    that effect.
-
-(b) Our intended ABI is that signal handlers are entered with
-    PSTATE.{SM,ZA} cleared, FPSR cleared, FPCR cleared, and FPMR
-    preserved.
-
-    In this case we cannot use SMSTOP in the non-foreign case, and it
-    would be simplest to always save the value back to memory and
-    manipulate it there.
-
-Our documentation in Documentation/arch/arm64/sme.rst says:
-
-| Signal handlers are invoked with streaming mode and ZA disabled.
-
-... and doesn't mention FPCR/FPMR/FPSR, so we could go either way,
-though I suspect we intended case (a) ?
-
-Mark.
 
