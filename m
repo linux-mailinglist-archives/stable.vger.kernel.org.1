@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-89788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B9C9BC618
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 07:55:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE9469BC61B
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 07:56:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9593628342B
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 06:55:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 722D91F23034
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 06:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FC641FCC77;
-	Tue,  5 Nov 2024 06:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 511291DC074;
+	Tue,  5 Nov 2024 06:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1q+Ip/v0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sr3DHCoZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E521F5857;
-	Tue,  5 Nov 2024 06:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B77D1D5CFF
+	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 06:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730789707; cv=none; b=koBmnan9EvK+m45+186MTVpWLdRmzVHVTjDXpU4V+qS3gY/eBFbyXGRDhCzasmg1SPTUh+3CXUb+u7npOGhktZkxoWYLDTUsbi/CXsa4FBuE47lOkK0gLHnCnySrpL5dXxLam75LRhXM0MSx+7Al2e3BTqoO36Z0fGRKW4uTuEI=
+	t=1730789783; cv=none; b=jUR0bczaqO61cm4lDWgEO5RNA6Bfxxrg8Rxdlp8N7yZsrKGXmN7hFu/YJzF7/a5CaoHFb25xXVO9bREyzy3TlEjYFG4s/W2mpI/5qidBrBEyCLWShb9SGux5676y8xlFdi/MLMgRRpz1yS1HBH2GBX31taKHoeHZYwPa2fygWxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730789707; c=relaxed/simple;
-	bh=4vTPaPmuaaNrcMy/tfb4WIzJTT/0CeVPT8e97fnLOQU=;
+	s=arc-20240116; t=1730789783; c=relaxed/simple;
+	bh=Qjz5R+Jh2bPMzdB5lf4VVN+SG5soidsOQNA6wkymHkI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YOfEBZQ4b94h8mZ7ZcIJeDzkF9960CCeZmW2usvOEhv3CcnrH5cnfvbjirgcDdK6jrf5FXmlybOSxBSJC1kwUTQbr2gnkxsZRO1QpfXp1G/QBq3TPx9h1duoRLOzE2qSCTby0e3xU7EFCW3dWfo/qjG7E+myZd60R/LLJFyZmPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1q+Ip/v0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 040DBC4CECF;
-	Tue,  5 Nov 2024 06:55:05 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=QO7kpKQP6OcxN7chZ2LFVE//GJKA0LeC7opBXWpR+UnW0daXVnzk5sDQkKqONPMdwsyd0IwUwzvzoSazk8nw0vV37BCmv1YoeuNqOkIVSx/eC3BgTEaup6ArvFqiEMHWtbzPsumsDjN6k/WNrYhnhV2qFyaG2rKTEC/N991V65U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sr3DHCoZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31732C4CECF;
+	Tue,  5 Nov 2024 06:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730789706;
-	bh=4vTPaPmuaaNrcMy/tfb4WIzJTT/0CeVPT8e97fnLOQU=;
+	s=korg; t=1730789782;
+	bh=Qjz5R+Jh2bPMzdB5lf4VVN+SG5soidsOQNA6wkymHkI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1q+Ip/v0gpXJRuiLa4vQPiVMraG/xDRGieWtZR5qsVW1016Vl+jis9+SJ2bSSCMKh
-	 i1fV62sIkOpGcv+Nml+rgpSIhHOgbSp5gdqBBySjIalCTxScuq0PdKFlTzWoqyaQn8
-	 nary4t+vlh0oPsuQ45E876SN60we4EA657LyKcTY=
-Date: Tue, 5 Nov 2024 07:54:48 +0100
+	b=sr3DHCoZ47psz5c5bIcvQtoHSMDqpZziIILVlyIKoV97o2kDW2IcBVS9UrArdl6DN
+	 2/Hy00FPxtvkcMJC0eERAJD7BnP3zkGqm+FJjH0Kq/TWF+utuHkn1U9JeXP2mYrc9e
+	 2JTwdLFs1cjICySr2FcdYbYtaiKcOQ0IaMbWvN9E=
+Date: Tue, 5 Nov 2024 07:56:05 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Jiri Olsa <jolsa@kernel.org>
-Cc: stable@vger.kernel.org, bpf@vger.kernel.org,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>
-Subject: Re: Fix build ID parsing logic in stable trees
-Message-ID: <2024110536-agonizing-campus-21f0@gregkh>
-References: <20241104175256.2327164-1-jolsa@kernel.org>
+To: Hardik Gohil <hgohil@mvista.com>
+Cc: stable@vger.kernel.org
+Subject: Re: net: dpaa: Pad packets to ETH_ZLEN
+Message-ID: <2024110525-griminess-viability-f8ef@gregkh>
+References: <CAH+zgeH2Cjk3pjgrmZYN45VNa_9v8MA52QRjwdaS9hrKnaJUzw@mail.gmail.com>
+ <2024110444-napped-atonable-371b@gregkh>
+ <CAH+zgeECVc0soxeGAJq_SJb5e4vYLeDDS2gHi7ujJbOFGusYyA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,17 +55,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241104175256.2327164-1-jolsa@kernel.org>
+In-Reply-To: <CAH+zgeECVc0soxeGAJq_SJb5e4vYLeDDS2gHi7ujJbOFGusYyA@mail.gmail.com>
 
-On Mon, Nov 04, 2024 at 06:52:52PM +0100, Jiri Olsa wrote:
-> hi,
-> sending fix for buildid parsing that affects only stable trees
-> after merging upstream fix [1].
-> 
-> Upstream then factored out the whole buildid parsing code, so it
-> does not have the problem.
+On Mon, Nov 04, 2024 at 08:53:57PM +0530, Hardik Gohil wrote:
+> Greg when can we expect the v5.4.y release
 
-Why not just take those patches instead?
+No idea, why?  Should we do one sooner than expected?
 
 thanks,
 
