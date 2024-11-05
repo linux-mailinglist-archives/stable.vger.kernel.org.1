@@ -1,322 +1,196 @@
-Return-Path: <stable+bounces-89785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9796A9BC431
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 05:08:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D529A9BC45B
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 05:29:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8BFAB21475
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 04:08:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6468C1F2205E
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 04:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D6D18871D;
-	Tue,  5 Nov 2024 04:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC281126BEE;
+	Tue,  5 Nov 2024 04:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="QnQ37iTM"
+	dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b="ACni7COb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5349918EAD;
-	Tue,  5 Nov 2024 04:08:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B9719047D
+	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 04:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730779726; cv=none; b=DEZZzi49D4waUfCwB5jdmXzzwUlFztu9KXdUm40UckJ9ba3Lt2mrs6GqdXlKM44f0V0uhLTQ9Bbj4Q6hYXdYHftwCQzD0jwSvrSDaLTGQ4khmOc+znjCCgxWu/bm8bT7QExX90DdRQ0yZ32GvnxljiigkgOFyt0p3VbCSoFOfm0=
+	t=1730780972; cv=none; b=eye6RdzzgisSYeECXK7cOX//A1ArA5U9jF+fk1/mrAJ3wYcX8fo9F7ba/Tks0kLclgjIdnaZbUsLMhGET6kReq987WR9Z23yu2FwzjC3aoGBBSgoucrLz8AFtsr3uQH4EKxfvRhBkKKzM9IovJbVyRwNvjg2Fvbq+YRI6Bdswvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730779726; c=relaxed/simple;
-	bh=24kRrW8ID/qKNZKhjNJgZxAwpQ5Wo7eTmn9g6afYQ30=;
-	h=Date:To:From:Subject:Message-Id; b=atWQjw0Xd0OMjW7boOsGE+Ih/IN6QVqxYy091BMtPQKmGNeCaF68kLX7c+YoApq9B228Q/ANSboVh730WZgZJfzM1mioDeHgBCEJvqnvkW5OAgOXPsofa3Ihf6+QeIaeQFVS5I8ZPkNGXAHKtnO60LEJ/Cu5dRcXr+PTKzs+nQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=QnQ37iTM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACFDEC4CED2;
-	Tue,  5 Nov 2024 04:08:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1730779725;
-	bh=24kRrW8ID/qKNZKhjNJgZxAwpQ5Wo7eTmn9g6afYQ30=;
-	h=Date:To:From:Subject:From;
-	b=QnQ37iTMmNmO0JC7SvbEkCzwMEeOd1WrzJkuJj8nkt16r3JKfXg2K5J5NrZI/9qUJ
-	 tdUpIkwEutnwW0AVDkC6EwcGm1LJI2lGaU/BFbd8qWXczgtJSTkijEdslQtXZ2m/Yd
-	 ZuvzDemdoRcYjNxE4TXlrO12BF9SPRDVS+Jse23Q=
-Date: Mon, 04 Nov 2024 20:08:45 -0800
-To: mm-commits@vger.kernel.org,willy@infradead.org,vivek.kasireddy@intel.com,stable@vger.kernel.org,peterx@redhat.com,osalvador@suse.de,mike.kravetz@oracle.com,kraxel@redhat.com,junxiao.chang@intel.com,jgg@nvidia.com,hughd@google.com,hch@infradead.org,dongwon.kim@intel.com,david@redhat.com,daniel.vetter@ffwll.ch,arnd@arndb.de,airlied@redhat.com,jhubbard@nvidia.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-gup-avoid-an-unnecessary-allocation-call-for-foll_longterm-cases.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241105040845.ACFDEC4CED2@smtp.kernel.org>
+	s=arc-20240116; t=1730780972; c=relaxed/simple;
+	bh=8SLmDpTRCFDajZT38/rFEX+2ka0yX2igg96h70rcUao=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Gca4iPxw60M3gPDSaiPsDvfRApy8Om1EEpvOiCpYYtjOAsHCnjS17Crosex3iOUO21hUZ4eQJmB9w9XsG06os5VNV9Ikn0lp9ML5U4v8bx3VIa3IvOBt8AyTmx7CmES7Hd4uzsLBGobldG0unrPp6beAawG6xsCrj71X5c9LYgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com; spf=pass smtp.mailfrom=mvista.com; dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b=ACni7COb; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mvista.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-20c9978a221so50691555ad.1
+        for <stable@vger.kernel.org>; Mon, 04 Nov 2024 20:29:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mvista.com; s=google; t=1730780970; x=1731385770; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XPgJOaKUw2i2yhBq0UrCbUBNmKfQYHEenFvmnag+ukI=;
+        b=ACni7CObMJc6Wy8I7q730yoCc9fiiDWImF4ZPtGKV3gLxvYxLPiMRhkjDLgJi+V7ba
+         eHakZFl4ZSfSfQmoAE7RJgtHVFFjnCRqa1eP/mhz0yFzaqY5SMVkthl/F7CBW0X68n4Q
+         o6RdbgdP0j3wa0JQoNL7fMSe4ad/9JWvVlyXc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730780970; x=1731385770;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XPgJOaKUw2i2yhBq0UrCbUBNmKfQYHEenFvmnag+ukI=;
+        b=i8uLZhkPCKH8BpdCCkgyKf+diFcHM8JpooJNl3/WV+SgxMNNu4jMrjoO6JbZJIFM8g
+         zVwLtW/c7RJocJroE3L+hzhqQA9rXQVFhNieuFKSTLArVkDZO2MbE379lSVhwQLUNDIp
+         wJJUmU4T6XCCexzomWJpD05Ox0NIattzcEqDihH1mmtBPlLWfS4vwT07Tb4eoADmt8wc
+         tsHoMMyEDyp7KPehl6/T3jQMk2F63yNdzlChlPM9p5pz3WdBo/fGlUcpe1StW4uopsft
+         ikIJY+0GQgRgIspj5f9co/uPj6jGHXHNBD+QHkHNIHL9z+MxztXCp1PWLnpzubClc8mk
+         TbjA==
+X-Gm-Message-State: AOJu0YyPW4iK0pNaSmXAmKtx9GToeQO2dvclCpf4fTnxEx8ricBdwcZs
+	AUDzW0/HVrccfc0it7wv74sFgA4m7e+PrUAgDZcwHOZQulwBMHmVa5X3UOM8WkYCN6SfClVvp+o
+	Z
+X-Google-Smtp-Source: AGHT+IFY9OIl5skQBRIO2pCUZzVxAmt0oAL+rH5hjwiRx9eykhnbWVyX5fzKpskOf4a4N7E57JH8CQ==
+X-Received: by 2002:a17:903:124d:b0:20c:5cb1:ddf0 with SMTP id d9443c01a7336-210c68a9c2bmr489805165ad.10.1730780969827;
+        Mon, 04 Nov 2024 20:29:29 -0800 (PST)
+Received: from jupiter.mvista.com ([182.74.28.237])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211056edc65sm69234575ad.10.2024.11.04.20.29.27
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 04 Nov 2024 20:29:29 -0800 (PST)
+From: Hardik Gohil <hgohil@mvista.com>
+To: stable@vger.kernel.org
+Cc: linux-spi@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>,
+	Hardik Gohil <hgohil@mvista.com>
+Subject: [PATCH v5.4.y v5.10.y] spi: Fix deadlock when adding SPI controllers on SPI buses
+Date: Tue,  5 Nov 2024 09:59:16 +0530
+Message-Id: <1730780956-13313-1-git-send-email-hgohil@mvista.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+From: Mark Brown <broonie@kernel.org>
 
-The patch titled
-     Subject: mm/gup: avoid an unnecessary allocation call for FOLL_LONGTERM cases
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-gup-avoid-an-unnecessary-allocation-call-for-foll_longterm-cases.patch
+[ Upstream commit 6098475d4cb48d821bdf453c61118c56e26294f0 ]
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-gup-avoid-an-unnecessary-allocation-call-for-foll_longterm-cases.patch
+Currently we have a global spi_add_lock which we take when adding new
+devices so that we can check that we're not trying to reuse a chip
+select that's already controlled.  This means that if the SPI device is
+itself a SPI controller and triggers the instantiation of further SPI
+devices we trigger a deadlock as we try to register and instantiate
+those devices while in the process of doing so for the parent controller
+and hence already holding the global spi_add_lock.  Since we only care
+about concurrency within a single SPI bus move the lock to be per
+controller, avoiding the deadlock.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+This can be easily triggered in the case of spi-mux.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: John Hubbard <jhubbard@nvidia.com>
-Subject: mm/gup: avoid an unnecessary allocation call for FOLL_LONGTERM cases
-Date: Mon, 4 Nov 2024 19:29:44 -0800
-
-commit 53ba78de064b ("mm/gup: introduce
-check_and_migrate_movable_folios()") created a new constraint on the
-pin_user_pages*() API family: a potentially large internal allocation must
-now occur, for FOLL_LONGTERM cases.
-
-A user-visible consequence has now appeared: user space can no longer pin
-more than 2GB of memory anymore on x86_64.  That's because, on a 4KB
-PAGE_SIZE system, when user space tries to (indirectly, via a device
-driver that calls pin_user_pages()) pin 2GB, this requires an allocation
-of a folio pointers array of MAX_PAGE_ORDER size, which is the limit for
-kmalloc().
-
-In addition to the directly visible effect described above, there is also
-the problem of adding an unnecessary allocation.  The **pages array
-argument has already been allocated, and there is no need for a redundant
-**folios array allocation in this case.
-
-Fix this by avoiding the new allocation entirely.  This is done by
-referring to either the original page[i] within **pages, or to the
-associated folio.  Thanks to David Hildenbrand for suggesting this
-approach and for providing the initial implementation (which I've tested
-and adjusted slightly) as well.
-
-Link: https://lkml.kernel.org/r/20241105032944.141488-2-jhubbard@nvidia.com
-Fixes: 53ba78de064b ("mm/gup: introduce check_and_migrate_movable_folios()")
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Dongwon Kim <dongwon.kim@intel.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Junxiao Chang <junxiao.chang@intel.com>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Hardik Gohil <hgohil@mvista.com>
 ---
+This fix was not backported to v5.4 and v5.10
 
- mm/gup.c |  116 +++++++++++++++++++++++++++++++++++------------------
- 1 file changed, 77 insertions(+), 39 deletions(-)
+please also apply following fix on top of this
 
---- a/mm/gup.c~mm-gup-avoid-an-unnecessary-allocation-call-for-foll_longterm-cases
-+++ a/mm/gup.c
-@@ -2273,20 +2273,57 @@ struct page *get_dump_page(unsigned long
- #endif /* CONFIG_ELF_CORE */
- 
- #ifdef CONFIG_MIGRATION
-+
-+/*
-+ * An array of either pages or folios ("pofs"). Although it may seem tempting to
-+ * avoid this complication, by simply interpreting a list of folios as a list of
-+ * pages, that approach won't work in the longer term, because eventually the
-+ * layouts of struct page and struct folio will become completely different.
-+ * Furthermore, this pof approach avoids excessive page_folio() calls.
-+ */
-+struct pages_or_folios {
-+	union {
-+		struct page **pages;
-+		struct folio **folios;
-+		void **entries;
-+	};
-+	bool has_folios;
-+	long nr_entries;
-+};
-+
-+static struct folio *pofs_get_folio(struct pages_or_folios *pofs, long i)
-+{
-+	if (pofs->has_folios)
-+		return pofs->folios[i];
-+	return page_folio(pofs->pages[i]);
-+}
-+
-+static void pofs_clear_entry(struct pages_or_folios *pofs, long i)
-+{
-+	pofs->entries[i] = NULL;
-+}
-+
-+static void pofs_unpin(struct pages_or_folios *pofs)
-+{
-+	if (pofs->has_folios)
-+		unpin_folios(pofs->folios, pofs->nr_entries);
-+	else
-+		unpin_user_pages(pofs->pages, pofs->nr_entries);
-+}
-+
- /*
-  * Returns the number of collected folios. Return value is always >= 0.
+spi: fix use-after-free of the add_lock mutex
+commit 6c53b45c71b4920b5e62f0ea8079a1da382b9434 upstream.
+
+Commit 6098475d4cb4 ("spi: Fix deadlock when adding SPI controllers on
+SPI buses") introduced a per-controller mutex. But mutex_unlock() of
+said lock is called after the controller is already freed:
+
+ drivers/spi/spi.c       | 15 +++++----------
+ include/linux/spi/spi.h |  3 +++
+ 2 files changed, 8 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 0f9410e..58f1947 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -472,12 +472,6 @@ static LIST_HEAD(spi_controller_list);
   */
- static unsigned long collect_longterm_unpinnable_folios(
--					struct list_head *movable_folio_list,
--					unsigned long nr_folios,
--					struct folio **folios)
-+		struct list_head *movable_folio_list,
-+		struct pages_or_folios *pofs)
- {
- 	unsigned long i, collected = 0;
- 	struct folio *prev_folio = NULL;
- 	bool drain_allow = true;
+ static DEFINE_MUTEX(board_lock);
  
--	for (i = 0; i < nr_folios; i++) {
--		struct folio *folio = folios[i];
-+	for (i = 0; i < pofs->nr_entries; i++) {
-+		struct folio *folio = pofs_get_folio(pofs, i);
+-/*
+- * Prevents addition of devices with same chip select and
+- * addition of devices below an unregistering controller.
+- */
+-static DEFINE_MUTEX(spi_add_lock);
+-
+ /**
+  * spi_alloc_device - Allocate a new SPI device
+  * @ctlr: Controller to which device is connected
+@@ -580,7 +574,7 @@ int spi_add_device(struct spi_device *spi)
+ 	 * chipselect **BEFORE** we call setup(), else we'll trash
+ 	 * its configuration.  Lock against concurrent add() calls.
+ 	 */
+-	mutex_lock(&spi_add_lock);
++	mutex_lock(&ctlr->add_lock);
  
- 		if (folio == prev_folio)
- 			continue;
-@@ -2327,16 +2364,15 @@ static unsigned long collect_longterm_un
-  * Returns -EAGAIN if all folios were successfully migrated or -errno for
-  * failure (or partial success).
-  */
--static int migrate_longterm_unpinnable_folios(
--					struct list_head *movable_folio_list,
--					unsigned long nr_folios,
--					struct folio **folios)
-+static int
-+migrate_longterm_unpinnable_folios(struct list_head *movable_folio_list,
-+				   struct pages_or_folios *pofs)
- {
- 	int ret;
- 	unsigned long i;
- 
--	for (i = 0; i < nr_folios; i++) {
--		struct folio *folio = folios[i];
-+	for (i = 0; i < pofs->nr_entries; i++) {
-+		struct folio *folio = pofs_get_folio(pofs, i);
- 
- 		if (folio_is_device_coherent(folio)) {
- 			/*
-@@ -2344,7 +2380,7 @@ static int migrate_longterm_unpinnable_f
- 			 * convert the pin on the source folio to a normal
- 			 * reference.
- 			 */
--			folios[i] = NULL;
-+			pofs_clear_entry(pofs, i);
- 			folio_get(folio);
- 			gup_put_folio(folio, 1, FOLL_PIN);
- 
-@@ -2363,8 +2399,8 @@ static int migrate_longterm_unpinnable_f
- 		 * calling folio_isolate_lru() which takes a reference so the
- 		 * folio won't be freed if it's migrating.
- 		 */
--		unpin_folio(folios[i]);
--		folios[i] = NULL;
-+		unpin_folio(pofs_get_folio(pofs, i));
-+		pofs_clear_entry(pofs, i);
+ 	status = bus_for_each_dev(&spi_bus_type, NULL, spi, spi_dev_check);
+ 	if (status) {
+@@ -624,7 +618,7 @@ int spi_add_device(struct spi_device *spi)
  	}
  
- 	if (!list_empty(movable_folio_list)) {
-@@ -2387,12 +2423,26 @@ static int migrate_longterm_unpinnable_f
- 	return -EAGAIN;
- 
- err:
--	unpin_folios(folios, nr_folios);
-+	pofs_unpin(pofs);
- 	putback_movable_pages(movable_folio_list);
- 
- 	return ret;
+ done:
+-	mutex_unlock(&spi_add_lock);
++	mutex_unlock(&ctlr->add_lock);
+ 	return status;
  }
+ EXPORT_SYMBOL_GPL(spi_add_device);
+@@ -2512,6 +2506,7 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 	spin_lock_init(&ctlr->bus_lock_spinlock);
+ 	mutex_init(&ctlr->bus_lock_mutex);
+ 	mutex_init(&ctlr->io_mutex);
++	mutex_init(&ctlr->add_lock);
+ 	ctlr->bus_lock_flag = 0;
+ 	init_completion(&ctlr->xfer_completion);
+ 	if (!ctlr->max_dma_len)
+@@ -2657,7 +2652,7 @@ void spi_unregister_controller(struct spi_controller *ctlr)
  
-+static long
-+check_and_migrate_movable_pages_or_folios(struct pages_or_folios *pofs)
-+{
-+	LIST_HEAD(movable_folio_list);
-+	unsigned long collected;
-+
-+	collected =
-+		collect_longterm_unpinnable_folios(&movable_folio_list, pofs);
-+	if (!collected)
-+		return 0;
-+
-+	return migrate_longterm_unpinnable_folios(&movable_folio_list, pofs);
-+}
-+
- /*
-  * Check whether all folios are *allowed* to be pinned indefinitely (long term).
-  * Rather confusingly, all folios in the range are required to be pinned via
-@@ -2417,16 +2467,13 @@ err:
- static long check_and_migrate_movable_folios(unsigned long nr_folios,
- 					     struct folio **folios)
- {
--	unsigned long collected;
--	LIST_HEAD(movable_folio_list);
-+	struct pages_or_folios pofs = {
-+		.folios = folios,
-+		.has_folios = true,
-+		.nr_entries = nr_folios,
-+	};
+ 	/* Prevent addition of new devices, unregister existing ones */
+ 	if (IS_ENABLED(CONFIG_SPI_DYNAMIC))
+-		mutex_lock(&spi_add_lock);
++		mutex_lock(&ctlr->add_lock);
  
--	collected = collect_longterm_unpinnable_folios(&movable_folio_list,
--						       nr_folios, folios);
--	if (!collected)
--		return 0;
--
--	return migrate_longterm_unpinnable_folios(&movable_folio_list,
--						  nr_folios, folios);
-+	return check_and_migrate_movable_pages_or_folios(&pofs);
+ 	device_for_each_child(&ctlr->dev, NULL, __unregister);
+ 
+@@ -2688,7 +2683,7 @@ void spi_unregister_controller(struct spi_controller *ctlr)
+ 	mutex_unlock(&board_lock);
+ 
+ 	if (IS_ENABLED(CONFIG_SPI_DYNAMIC))
+-		mutex_unlock(&spi_add_lock);
++		mutex_unlock(&ctlr->add_lock);
  }
+ EXPORT_SYMBOL_GPL(spi_unregister_controller);
  
- /*
-@@ -2436,22 +2483,13 @@ static long check_and_migrate_movable_fo
- static long check_and_migrate_movable_pages(unsigned long nr_pages,
- 					    struct page **pages)
- {
--	struct folio **folios;
--	long i, ret;
--
--	folios = kmalloc_array(nr_pages, sizeof(*folios), GFP_KERNEL);
--	if (!folios) {
--		unpin_user_pages(pages, nr_pages);
--		return -ENOMEM;
--	}
--
--	for (i = 0; i < nr_pages; i++)
--		folios[i] = page_folio(pages[i]);
-+	struct pages_or_folios pofs = {
-+		.pages = pages,
-+		.has_folios = false,
-+		.nr_entries = nr_pages,
-+	};
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index ca39b33..1b9cb90 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -483,6 +483,9 @@ struct spi_controller {
+ 	/* I/O mutex */
+ 	struct mutex		io_mutex;
  
--	ret = check_and_migrate_movable_folios(nr_pages, folios);
--
--	kfree(folios);
--	return ret;
-+	return check_and_migrate_movable_pages_or_folios(&pofs);
- }
- #else
- static long check_and_migrate_movable_pages(unsigned long nr_pages,
-_
-
-Patches currently in -mm which might be from jhubbard@nvidia.com are
-
-mm-gup-avoid-an-unnecessary-allocation-call-for-foll_longterm-cases.patch
-kaslr-rename-physmem_end-and-physmem_end-to-direct_map_physmem_end.patch
++	/* Used to avoid adding the same CS twice */
++	struct mutex		add_lock;
++
+ 	/* lock and mutex for SPI bus locking */
+ 	spinlock_t		bus_lock_spinlock;
+ 	struct mutex		bus_lock_mutex;
+-- 
+2.7.4
 
 
