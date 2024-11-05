@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-89777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD4849BC372
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 03:55:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC239BC37D
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 04:00:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F8951F22C7B
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 02:55:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD2AB282B38
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 03:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E150B51C4A;
-	Tue,  5 Nov 2024 02:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB07225A8;
+	Tue,  5 Nov 2024 03:00:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC7A481A3;
-	Tue,  5 Nov 2024 02:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874DDA94A;
+	Tue,  5 Nov 2024 02:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730775343; cv=none; b=ZGYKB9oWeMDV2TEQ/JIMFg9TWnzJ9WoiTQtVx+RPRCRPKj4wupJgEqS4/9/56d+Pn+gZzhFClsRoEl5xrAcv4m1pOge2hVL08Dl1MMOz6jVtt3vIzvJbUd1BKqZZPj1aQuETgo6izUz7R30f9zIeJuM+r8bY0ROLhYbRXpmLVXM=
+	t=1730775601; cv=none; b=pzYSeFKSAHJXfcEU2apbzqMoenD1rzu5KVc0UOuG66gCCtM0g3vAQj/ySWfKuU7BGqeYifxzRvBKI0xxY31NF5/0e7NjAdlp76Fr0htA0ipbN5Zqq5l4nN9X3psNvYa14zr1DV5LIyOhYNC9rm0C84/kyquv4JQ/ZoUPH+gmzkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730775343; c=relaxed/simple;
-	bh=L1q/BU0LxaWh2tUcwu9Q99hm+1IOyr7ni0dACL0DnSY=;
+	s=arc-20240116; t=1730775601; c=relaxed/simple;
+	bh=qy0uecQsNj68BCutaQn17Ljsgqipg8+yC8nSYfWz4XE=;
 	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=rCvZW7TvEqdfqkjiIc9z3FJLMigzeF5Q233+ZmGOm97Ia6SCShizCevfokcHzNvHrRdfsu99MdgGG9VaUj7wmlHkeZXd3u2FF3sGsfWt0ET075zVfPkV2hco89AwIbdRGm5QSEjlPjx8tBhswu53DYbbEIj9p4lWxrzSDHFA0vI=
+	 In-Reply-To:Content-Type; b=tTEBQ29NJi1iygG3Ddc5vTYd/W8h0wdyy1R1L/IMJZylDnUWSMRCQVmCfvhV4PhEbGFtOf8m5FydyPXorjntbHZdTVSLH2RV6oAVYU0Q1RQrUA/oWiXE8nQepuheWj4AW68uRylp60oMi+x3dzb7R9aA+kjrfj98f1ytF/AQZNw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4XjCWr1BZNz1JB91;
-	Tue,  5 Nov 2024 10:51:04 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4XjCh83dNZz1jwcn;
+	Tue,  5 Nov 2024 10:58:16 +0800 (CST)
 Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id D0C5A1402E0;
-	Tue,  5 Nov 2024 10:55:38 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id A966C1A016C;
+	Tue,  5 Nov 2024 10:59:55 +0800 (CST)
 Received: from [10.67.120.192] (10.67.120.192) by
  kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 5 Nov 2024 10:55:38 +0800
-Message-ID: <65c41d94-8aca-4161-b81b-0e420cfe3694@huawei.com>
-Date: Tue, 5 Nov 2024 10:55:37 +0800
+ 15.2.1544.11; Tue, 5 Nov 2024 10:59:55 +0800
+Message-ID: <8ce8ba06-acb9-400f-acee-ef0dbd023dc1@huawei.com>
+Date: Tue, 5 Nov 2024 10:59:54 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,29 +53,29 @@ CC: <shaojijie@huawei.com>, Salil Mehta <salil.mehta@huawei.com>, Andrew Lunn
  Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
 	<pabeni@redhat.com>
 Subject: Re: Patch "net: hns3: add sync command to sync io-pgtable" has been
- added to the 6.6-stable tree
+ added to the 6.11-stable tree
 To: <stable@vger.kernel.org>, <stable-commits@vger.kernel.org>,
 	<shenjian15@huawei.com>
-References: <20241101192454.3850887-1-sashal@kernel.org>
+References: <20241101192250.3849110-1-sashal@kernel.org>
 From: Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <20241101192454.3850887-1-sashal@kernel.org>
+In-Reply-To: <20241101192250.3849110-1-sashal@kernel.org>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
  kwepemk100013.china.huawei.com (7.202.194.61)
 
 
-on 2024/11/2 3:24, Sasha Levin wrote:
+on 2024/11/2 3:22, Sasha Levin wrote:
 > This is a note to let you know that I've just added the patch titled
 >
 >      net: hns3: add sync command to sync io-pgtable
 >
-> to the 6.6-stable tree which can be found at:
+> to the 6.11-stable tree which can be found at:
 >      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 >
 > The filename of the patch is:
 >       net-hns3-add-sync-command-to-sync-io-pgtable.patch
-> and it can be found in the queue-6.6 subdirectory.
+> and it can be found in the queue-6.11 subdirectory.
 >
 > If you, or anyone else, feels it should not be added to the stable tree,
 > please let <stable@vger.kernel.org> know about it.
@@ -84,7 +84,7 @@ Hi:
 This patch was reverted from netdev,
 so, it also need be reverted from stable tree.
 I am sorry for that.
-  
+
 reverted link:
 https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=249cfa318fb1b77eb726c2ff4f74c9685f04e568
 
@@ -94,7 +94,7 @@ Jijie Shao
 >
 >
 >
-> commit 98cb88cce78da8a369cf780343d0280f9d3af4ca
+> commit 0ea8c71561bc40a678c7bf15e081737e1f2d15e2
 > Author: Jian Shen <shenjian15@huawei.com>
 > Date:   Fri Oct 25 17:29:31 2024 +0800
 >
@@ -124,7 +124,7 @@ Jijie Shao
 >      Signed-off-by: Sasha Levin <sashal@kernel.org>
 >
 > diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-> index 1f9bbf13214fb..bfcebf4e235ef 100644
+> index ac88e301f2211..8760b4e9ade6b 100644
 > --- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
 > +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
 > @@ -381,6 +381,24 @@ static const struct hns3_rx_ptype hns3_rx_ptype_tbl[] = {
