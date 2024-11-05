@@ -1,259 +1,232 @@
-Return-Path: <stable+bounces-89852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4FD69BD134
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 16:56:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E61059BD13E
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 16:58:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63A88281F40
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 15:56:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70B8D1F21DD5
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 15:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA9C914E2D8;
-	Tue,  5 Nov 2024 15:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304831547D7;
+	Tue,  5 Nov 2024 15:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="UTbf4NQE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J/AdAzqC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3B9824BD
-	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 15:56:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AD61384B3;
+	Tue,  5 Nov 2024 15:58:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730822202; cv=none; b=DoYicjtkfsXgi3q+fBowUwczrQs1uqXF5omB48T927HZPTc33/tgdMBmX3TJnPunPG0bCzcQPdHixo+oj5uwb+m4CcjsPWlVvcmobhIPygbypdCMeLZq0PCmBWfrLkhdZVZfo92O99LDODjhPaVy+IfZtokNQpu/qZYqWiL4WZs=
+	t=1730822298; cv=none; b=Yne7bSzBbpD88N46pppSMdWFhUM8cgr2WS0YJWV/5rCU6dT6evID6VLSFDH5eO41KQKAMF17ICbwwUCRYSIRHh+yONb4zamuSsi5iiJn6zb+79Fg7DLfLumDfTRxBmav6uBbBWZnt+Z3loosOg8bxANhoU6PSFL5OGg6PP0yIDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730822202; c=relaxed/simple;
-	bh=bz3e7dP1KeYuebRZGkFKNHi29d8JijMB5urnbXUCkJg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pnv/xDvWY/gYAGI60005s+CN9XTB33b7ztaC+gvz7YizfGJiNdQdB3iINeRWkarC9k2aZPwLVduGuc+NqyZbOqvv9Ei/QFQBUpXJLb8UzPOwZhBWDcax5wXN1R+qJcoz7sOQt93gqjr71DKhs36TEPn43DO2doayHY5PEo8L3Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=UTbf4NQE; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4316cce103dso66518335e9.3
-        for <stable@vger.kernel.org>; Tue, 05 Nov 2024 07:56:40 -0800 (PST)
+	s=arc-20240116; t=1730822298; c=relaxed/simple;
+	bh=NX7H3MvTsW9DRuBwQkrInDdn6GS/Et44Ott+QFyFoiY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Ui5geVrytqfh+h8MXtuqiG66lBcA8WQrDD2oVIeRcncNBJxSWXUC1ZHKXeSx/2DO3Qi7nWTZ5TC1dLc5q4ip0HKK2P38lS4YrDjsT95EG6qqlZRC32beMJKFpimU0gI1mrYqSTosM0vGHV2xsuEyfGhJqJL4GXyW3xzaoDTf98s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J/AdAzqC; arc=none smtp.client-ip=209.85.222.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7b15467f383so395769485a.3;
+        Tue, 05 Nov 2024 07:58:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1730822199; x=1731426999; darn=vger.kernel.org;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=bz3e7dP1KeYuebRZGkFKNHi29d8JijMB5urnbXUCkJg=;
-        b=UTbf4NQEc1qZN2uZkn/UbHYreyzJ+l2H90X3T1ztJ5sny1wnL690Mlt5Rge3WrHiJo
-         WXmLsxUa4uP2B57/VlRirU3ZrGu8iFlg6mTLNV4/FOvhLXfypnCC5fn3NJcMyGtf+0T8
-         QUWIGLQ5wn33unIvDqhX0ZcaV2nY32+dIvLIGW2TT+NkrScuUY1cLtmmfcIrlNGUKFWn
-         Pq1m7qUqe/n9j5XFr7tShanKV9oTUp4ICfMLY+7cTQmnBRMTcthQMLnbwoZ5alk3C0xe
-         qPXbMQoHSKm/Cs7Rp/vONSWb2NxP8pDvTXcs3KLECGmApTPPnI3dKklGUtvjuucEXwGW
-         sLgA==
+        d=gmail.com; s=20230601; t=1730822296; x=1731427096; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qSGF9RIONMCy+lm6lwN/0OP9d1KIw8FJWDz+4Vvo1qE=;
+        b=J/AdAzqCnJ9qVn4IyYKBuJ2T4Dwx/RQzrWNuRjCi5uJ1l4D3nYrUqOYA2KBBm8zxVF
+         KZJsgud7N5bX0CVwHZ8+AsHCHECa4QAgpSgNecWCq2obK+t4gHGF/14/bowyWy9PgbSQ
+         LR5NkqT9UCNul0Pn2gs2h0M1DVATvYqQIabjioQz1oYdfZPtRVbhFKVHbqpJVHfRhKX9
+         Kao3lCrh82HO3VEeRanjIk0Gz7kzLZk/Z7VmRyg7L7tKIsBLzad3KtUJnTx1EJq9H4yB
+         9xuvViseKSTb5zxVegbx6jdErxvRAzfzxWsiqaoonGw4XTkFZohBy3S0OiGTB6jGhtf5
+         rqnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730822199; x=1731426999;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bz3e7dP1KeYuebRZGkFKNHi29d8JijMB5urnbXUCkJg=;
-        b=t/B9T7EyI4ooLYI78vvz9MEJRwu03oN3nkwsX1gWVhsIGbcbFHBH2Og+h13FdJ+8cv
-         qN4nTQ0Y3dlEzT499NvHPb5wK3TdSQeAbSlh3ka/eHD8Z7AEQwZEzS22lfjz0BtWB03i
-         tYnPyUTeNCFDZF45L9pK7vrljF9139nXa0fsEETeUNZVm110m9K3XBV+k6m/2Co9+iaD
-         UIXySvMz8Vyia6qWg0hw1pOqD0MdRNK4cz8FkCeC9zngY8Nf5UQ5+zH/VEoX9aSej5W/
-         1VctHO4b55Ii5DdaF2XyE1EbUy0iR9/NsSQbyfmNEEymaVOGG/iQmVzcLCni7x0aloee
-         FryQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVQ8Q+ZttSztDkF0U6H5QvTtbkZBtxNG0sBid7YHvgvXgBRmEs4kTQ5Yk2aEaN7/OGuhL6IHvE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDc/nO+rqUK3ms8/PIxe6vFDa+o4VgTAqlETjUWRuHqwTFy7UV
-	Le4V+Kga6NM3EDn4Emp9FjLDkD/XBraK/W+d42BPYmW/Q89TAwxaV+FDB6z5CnM=
-X-Google-Smtp-Source: AGHT+IEScPUofJaERY2yiZU967o6GxVCJasBuDqbrT9wmPNg0fIR0y3JxAZ2piRjiLQoHXIs/cDqjQ==
-X-Received: by 2002:adf:e199:0:b0:37d:4eeb:7370 with SMTP id ffacd0b85a97d-381c7ae14bdmr17673662f8f.56.1730822198751;
-        Tue, 05 Nov 2024 07:56:38 -0800 (PST)
-Received: from ?IPV6:2003:e5:872e:b100:d3c7:e0c0:5e3b:aa1c? (p200300e5872eb100d3c7e0c05e3baa1c.dip0.t-ipconnect.de. [2003:e5:872e:b100:d3c7:e0c0:5e3b:aa1c])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9eb18140a6sm150564266b.195.2024.11.05.07.56.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Nov 2024 07:56:38 -0800 (PST)
-Message-ID: <79984ce2-98a2-42f4-85f8-fd53d71f10c7@suse.com>
-Date: Tue, 5 Nov 2024 16:56:37 +0100
+        d=1e100.net; s=20230601; t=1730822296; x=1731427096;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qSGF9RIONMCy+lm6lwN/0OP9d1KIw8FJWDz+4Vvo1qE=;
+        b=Bg293YVBCncqblGq7fNkft9zxH4iW7RPHXg7ZArlRiRs7GLiIyVSqD6TtflniKS7vW
+         AMrnGdZE4FAnkH6yqwps6F4U2ZpBov1tOpzOMlKLbQSyQWjRghLHNp2gxeBM+zBT5ald
+         SnRJFK07bWhSMxF+1OKGFa0Etlql4FBno4eODsOnI3+N7BJlelqOLiq5IqhiJUyb3Wxy
+         4dOwsgyw41MgYaJg93uhdiShZQIiIHvU5Lt86doq+CFlo44guWlpOcjzTmiUndXAp0QU
+         Apy2+Lm2qXQ8hnO6r/Z8mAIA04e62xoz6pBLfraia1iFDVS8qNlvEuEeyB5Yo8SJZTCE
+         x24w==
+X-Forwarded-Encrypted: i=1; AJvYcCU0lz5n4CFmSbXZB9aKBn67l2btMc+2ANqzqKOLLl1inQyZGToDSHRmFwDuO6LwJRd/cIwbgxY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEeunP4KFuVDw/Xn4eqn/ZtjdbPqvPhsLEdLayxwTbvNNOXDVd
+	OR0R/neoO2K48yYodrN9NOepjtzqRPz3wwk12AIm7Kx718v4dE54P9kI
+X-Google-Smtp-Source: AGHT+IF72m9JE3C6mYCC457d4K6hcqs2XKMqtnJi7ytPhEDIUKBZ/dL5xKmqM82I1eo3ZS58f4hvyw==
+X-Received: by 2002:a05:6214:2c10:b0:6d3:452d:e1a1 with SMTP id 6a1803df08f44-6d351ad3f37mr263141716d6.31.1730822295721;
+        Tue, 05 Nov 2024 07:58:15 -0800 (PST)
+Received: from citadel.lan ([2600:6c4a:4d3f:6d5c::1019])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d353fc6d07sm61710586d6.44.2024.11.05.07.58.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Nov 2024 07:58:15 -0800 (PST)
+From: Brian Gerst <brgerst@gmail.com>
+To: linux-kernel@vger.kernel.org,
+	x86@kernel.org
+Cc: Ingo Molnar <mingo@kernel.org>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Borislav Petkov <bp@alien8.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	stable@vger.kernel.org,
+	Fangrui Song <i@maskray.me>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Brian Gerst <brgerst@gmail.com>
+Subject: [PATCH v5 01/16] x86/stackprotector: Work around strict Clang TLS symbol requirements
+Date: Tue,  5 Nov 2024 10:57:46 -0500
+Message-ID: <20241105155801.1779119-2-brgerst@gmail.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241105155801.1779119-1-brgerst@gmail.com>
+References: <20241105155801.1779119-1-brgerst@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] xen: Fix the issue of resource not being properly
- released in xenbus_dev_probe()
-To: Qiu-ji Chen <chenqiuji666@gmail.com>, sstabellini@kernel.org,
- oleksandr_tyshchenko@epam.com, gregkh@linuxfoundation.org,
- sumit.garg@linaro.org, xin.wang2@amd.com
-Cc: xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
- baijiaju1990@gmail.com, stable@vger.kernel.org
-References: <20241105130919.4621-1-chenqiuji666@gmail.com>
-Content-Language: en-US
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-Autocrypt: addr=jgross@suse.com; keydata=
- xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
- ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
- dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
- NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
- XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
- AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
- mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
- G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
- kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
- Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
- RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
- vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
- sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
- aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
- w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
- auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
- 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
- fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
- HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
- QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
- ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-In-Reply-To: <20241105130919.4621-1-chenqiuji666@gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------eTdyGz0k450u4KZEC4Cbyb0S"
+Content-Transfer-Encoding: 8bit
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------eTdyGz0k450u4KZEC4Cbyb0S
-Content-Type: multipart/mixed; boundary="------------FTEVxyFrAV4twIPuT6CjSaEj";
- protected-headers="v1"
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-To: Qiu-ji Chen <chenqiuji666@gmail.com>, sstabellini@kernel.org,
- oleksandr_tyshchenko@epam.com, gregkh@linuxfoundation.org,
- sumit.garg@linaro.org, xin.wang2@amd.com
-Cc: xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
- baijiaju1990@gmail.com, stable@vger.kernel.org
-Message-ID: <79984ce2-98a2-42f4-85f8-fd53d71f10c7@suse.com>
-Subject: Re: [PATCH] xen: Fix the issue of resource not being properly
- released in xenbus_dev_probe()
-References: <20241105130919.4621-1-chenqiuji666@gmail.com>
-In-Reply-To: <20241105130919.4621-1-chenqiuji666@gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
---------------FTEVxyFrAV4twIPuT6CjSaEj
-Content-Type: multipart/mixed; boundary="------------PI0x0UKMcbQZcGfSxIk646iX"
+GCC and Clang both implement stack protector support based on Thread
+Local Storage (TLS) variables, and this is used in the kernel to
+implement per-task stack cookies, by copying a task's stack cookie into
+a per-CPU variable every time it is scheduled in.
 
---------------PI0x0UKMcbQZcGfSxIk646iX
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Both now also implement -mstack-protector-guard-symbol=, which permits
+the TLS variable to be specified directly. This is useful because it
+will allow us to move away from using a fixed offset of 40 bytes into
+the per-CPU area on x86_64, which requires a lot of special handling in
+the per-CPU code and the runtime relocation code.
 
-T24gMDUuMTEuMjQgMTQ6MDksIFFpdS1qaSBDaGVuIHdyb3RlOg0KPiBUaGlzIHBhdGNoIGZp
-eGVzIGFuIGlzc3VlIGluIHRoZSBmdW5jdGlvbiB4ZW5idXNfZGV2X3Byb2JlKCkuIEluIHRo
-ZQ0KPiB4ZW5idXNfZGV2X3Byb2JlKCkgZnVuY3Rpb24sIHdpdGhpbiB0aGUgaWYgKGVycikg
-YnJhbmNoIGF0IGxpbmUgMzEzLCB0aGUNCj4gcHJvZ3JhbSBpbmNvcnJlY3RseSByZXR1cm5z
-IGVyciBkaXJlY3RseSB3aXRob3V0IHJlbGVhc2luZyB0aGUgcmVzb3VyY2VzDQo+IGFsbG9j
-YXRlZCBieSBlcnIgPSBkcnYtPnByb2JlKGRldiwgaWQpLiBBcyB0aGUgcmV0dXJuIHZhbHVl
-IGlzIG5vbi16ZXJvLA0KPiB0aGUgdXBwZXIgbGF5ZXJzIGFzc3VtZSB0aGUgcHJvY2Vzc2lu
-ZyBsb2dpYyBoYXMgZmFpbGVkLiBIb3dldmVyLCB0aGUgcHJvYmUNCj4gb3BlcmF0aW9uIHdh
-cyBwZXJmb3JtZWQgZWFybGllciB3aXRob3V0IGEgY29ycmVzcG9uZGluZyByZW1vdmUgb3Bl
-cmF0aW9uLg0KPiBTaW5jZSB0aGUgcHJvYmUgYWN0dWFsbHkgYWxsb2NhdGVzIHJlc291cmNl
-cywgZmFpbGluZyB0byBwZXJmb3JtIHRoZSByZW1vdmUNCj4gb3BlcmF0aW9uIGNvdWxkIGxl
-YWQgdG8gcHJvYmxlbXMuDQo+IA0KPiBUbyBmaXggdGhpcyBpc3N1ZSwgd2UgZm9sbG93ZWQg
-dGhlIHJlc291cmNlIHJlbGVhc2UgbG9naWMgb2YgdGhlDQo+IHhlbmJ1c19kZXZfcmVtb3Zl
-KCkgZnVuY3Rpb24gYnkgYWRkaW5nIGEgbmV3IGJsb2NrIGZhaWxfcmVtb3ZlIGJlZm9yZSB0
-aGUNCj4gZmFpbF9wdXQgYmxvY2suIEFmdGVyIGVudGVyaW5nIHRoZSBicmFuY2ggaWYgKGVy
-cikgYXQgbGluZSAzMTMsIHRoZQ0KPiBmdW5jdGlvbiB3aWxsIHVzZSBhIGdvdG8gc3RhdGVt
-ZW50IHRvIGp1bXAgdG8gdGhlIGZhaWxfcmVtb3ZlIGJsb2NrLA0KPiBlbnN1cmluZyB0aGF0
-IHRoZSBwcmV2aW91c2x5IGFjcXVpcmVkIHJlc291cmNlcyBhcmUgY29ycmVjdGx5IHJlbGVh
-c2VkLA0KPiB0aHVzIHByZXZlbnRpbmcgdGhlIHJlZmVyZW5jZSBjb3VudCBsZWFrLg0KPiAN
-Cj4gVGhpcyBidWcgd2FzIGlkZW50aWZpZWQgYnkgYW4gZXhwZXJpbWVudGFsIHN0YXRpYyBh
-bmFseXNpcyB0b29sIGRldmVsb3BlZA0KPiBieSBvdXIgdGVhbS4gVGhlIHRvb2wgc3BlY2lh
-bGl6ZXMgaW4gYW5hbHl6aW5nIHJlZmVyZW5jZSBjb3VudCBvcGVyYXRpb25zDQo+IGFuZCBk
-ZXRlY3RpbmcgcG90ZW50aWFsIGlzc3VlcyB3aGVyZSByZXNvdXJjZXMgYXJlIG5vdCBwcm9w
-ZXJseSBtYW5hZ2VkLg0KPiBJbiB0aGlzIGNhc2UsIHRoZSB0b29sIGZsYWdnZWQgdGhlIG1p
-c3NpbmcgcmVsZWFzZSBvcGVyYXRpb24gYXMgYQ0KPiBwb3RlbnRpYWwgcHJvYmxlbSwgd2hp
-Y2ggbGVkIHRvIHRoZSBkZXZlbG9wbWVudCBvZiB0aGlzIHBhdGNoLg0KPiANCj4gRml4ZXM6
-IDRiYWMwN2M5OTNkMCAoInhlbjogYWRkIHRoZSBYZW5idXMgc3lzZnMgYW5kIHZpcnR1YWwg
-ZGV2aWNlIGhvdHBsdWcgZHJpdmVyIikNCj4gQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcN
-Cj4gU2lnbmVkLW9mZi1ieTogUWl1LWppIENoZW4gPGNoZW5xaXVqaTY2NkBnbWFpbC5jb20+
-DQoNClJldmlld2VkLWJ5OiBKdWVyZ2VuIEdyb3NzIDxqZ3Jvc3NAc3VzZS5jb20+DQoNCg0K
-SnVlcmdlbg0K
---------------PI0x0UKMcbQZcGfSxIk646iX
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+However, while GCC is rather lax in its implementation of this command
+line option, Clang actually requires that the provided symbol name
+refers to a TLS variable (i.e., one declared with __thread), although it
+also permits the variable to be undeclared entirely, in which case it
+will use an implicit declaration of the right type.
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+The upshot of this is that Clang will emit the correct references to the
+stack cookie variable in most cases, e.g.,
 
-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
-kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
-=3DeeAB
------END PGP PUBLIC KEY BLOCK-----
+   10d:       64 a1 00 00 00 00       mov    %fs:0x0,%eax
+                      10f: R_386_32   __stack_chk_guard
 
---------------PI0x0UKMcbQZcGfSxIk646iX--
+However, if a non-TLS definition of the symbol in question is visible in
+the same compilation unit (which amounts to the whole of vmlinux if LTO
+is enabled), it will drop the per-CPU prefix and emit a load from a
+bogus address.
 
---------------FTEVxyFrAV4twIPuT6CjSaEj--
+Work around this by using a symbol name that never occurs in C code, and
+emit it as an alias in the linker script.
 
---------------eTdyGz0k450u4KZEC4Cbyb0S
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+Fixes: 3fb0fdb3bbe7 ("x86/stackprotector/32: Make the canary into a regular percpu variable")
+Cc: <stable@vger.kernel.org>
+Cc: Fangrui Song <i@maskray.me>
+Cc: Uros Bizjak <ubizjak@gmail.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Link: https://github.com/ClangBuiltLinux/linux/issues/1854
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Brian Gerst <brgerst@gmail.com>
+---
+ arch/x86/Makefile                     |  5 +++--
+ arch/x86/entry/entry.S                | 16 ++++++++++++++++
+ arch/x86/include/asm/asm-prototypes.h |  3 +++
+ arch/x86/kernel/cpu/common.c          |  2 ++
+ arch/x86/kernel/vmlinux.lds.S         |  3 +++
+ 5 files changed, 27 insertions(+), 2 deletions(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index cd75e78a06c1..5b773b34768d 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -142,9 +142,10 @@ ifeq ($(CONFIG_X86_32),y)
+ 
+     ifeq ($(CONFIG_STACKPROTECTOR),y)
+         ifeq ($(CONFIG_SMP),y)
+-			KBUILD_CFLAGS += -mstack-protector-guard-reg=fs -mstack-protector-guard-symbol=__stack_chk_guard
++            KBUILD_CFLAGS += -mstack-protector-guard-reg=fs \
++                             -mstack-protector-guard-symbol=__ref_stack_chk_guard
+         else
+-			KBUILD_CFLAGS += -mstack-protector-guard=global
++            KBUILD_CFLAGS += -mstack-protector-guard=global
+         endif
+     endif
+ else
+diff --git a/arch/x86/entry/entry.S b/arch/x86/entry/entry.S
+index 324686bca368..b7ea3e8e9ecc 100644
+--- a/arch/x86/entry/entry.S
++++ b/arch/x86/entry/entry.S
+@@ -51,3 +51,19 @@ EXPORT_SYMBOL_GPL(mds_verw_sel);
+ .popsection
+ 
+ THUNK warn_thunk_thunk, __warn_thunk
++
++#ifndef CONFIG_X86_64
++/*
++ * Clang's implementation of TLS stack cookies requires the variable in
++ * question to be a TLS variable. If the variable happens to be defined as an
++ * ordinary variable with external linkage in the same compilation unit (which
++ * amounts to the whole of vmlinux with LTO enabled), Clang will drop the
++ * segment register prefix from the references, resulting in broken code. Work
++ * around this by avoiding the symbol used in -mstack-protector-guard-symbol=
++ * entirely in the C code, and use an alias emitted by the linker script
++ * instead.
++ */
++#ifdef CONFIG_STACKPROTECTOR
++EXPORT_SYMBOL(__ref_stack_chk_guard);
++#endif
++#endif
+diff --git a/arch/x86/include/asm/asm-prototypes.h b/arch/x86/include/asm/asm-prototypes.h
+index 25466c4d2134..3674006e3974 100644
+--- a/arch/x86/include/asm/asm-prototypes.h
++++ b/arch/x86/include/asm/asm-prototypes.h
+@@ -20,3 +20,6 @@
+ extern void cmpxchg8b_emu(void);
+ #endif
+ 
++#if defined(__GENKSYMS__) && defined(CONFIG_STACKPROTECTOR)
++extern unsigned long __ref_stack_chk_guard;
++#endif
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 8f41ab219cf1..9d42bd15e06c 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -2091,8 +2091,10 @@ void syscall_init(void)
+ 
+ #ifdef CONFIG_STACKPROTECTOR
+ DEFINE_PER_CPU(unsigned long, __stack_chk_guard);
++#ifndef CONFIG_SMP
+ EXPORT_PER_CPU_SYMBOL(__stack_chk_guard);
+ #endif
++#endif
+ 
+ #endif	/* CONFIG_X86_64 */
+ 
+diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+index 410546bacc0f..d61c3584f3e6 100644
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -468,6 +468,9 @@ SECTIONS
+ . = ASSERT((_end - LOAD_OFFSET <= KERNEL_IMAGE_SIZE),
+ 	   "kernel image bigger than KERNEL_IMAGE_SIZE");
+ 
++/* needed for Clang - see arch/x86/entry/entry.S */
++PROVIDE(__ref_stack_chk_guard = __stack_chk_guard);
++
+ #ifdef CONFIG_X86_64
+ /*
+  * Per-cpu symbols which need to be offset from __per_cpu_load
+-- 
+2.47.0
 
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmcqQDUFAwAAAAAACgkQsN6d1ii/Ey98
-oQf9G78mT3vg32/jkgPBfk3e87JtKYp0xwTMxC3WIEreRnKl5wfUPW4pOQqRyKj3NcoRy4hncQ5w
-Ez3viiQAAEOUokVzlsqR8pyBjw2QN3SN+/A32jc4VoCADjfGaPaV/OvkfXiSCF51yP4EO8Pso+1y
-h7p7EI+wG6Dh9iAEAf6AA6wj9rsuXvFIsdmJZEz8e3ObcUjAzyB96m7+JTm1lfuajvrrWu/HQJiU
-2G3TBJtluqKgbXcVp82pXPmMMBP2BUJgYYMtLBdIsSM4WLn35AJH/HSPJ5GbxmoVRu4uRZutSsJD
-JNGTUno81aAL1118XaOPfUW/EUC0bLqWOFAzkXZ9hA==
-=PTAO
------END PGP SIGNATURE-----
-
---------------eTdyGz0k450u4KZEC4Cbyb0S--
 
