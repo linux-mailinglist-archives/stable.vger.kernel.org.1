@@ -1,131 +1,240 @@
-Return-Path: <stable+bounces-89843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4725C9BCF97
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 15:39:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 667669BCFAE
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 15:47:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C8E51C257DA
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 14:39:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5BCE1F23312
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 14:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C45881D9580;
-	Tue,  5 Nov 2024 14:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56671D9588;
+	Tue,  5 Nov 2024 14:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Iq+/qsKa"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OvtRomnD"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0857033080;
-	Tue,  5 Nov 2024 14:39:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4381D933A
+	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 14:47:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730817584; cv=none; b=W1NuyASLU5fnNrPvKL1OhFML/ytCIjfzqdP4p8Gd/Ft/m0s3gRN2QNNesL3N8j4WwQIbMt4Lb7HJRvtAxUZmPgGU1JiPJHySGiFV59nZhJvkVikwu5Dhvxgo4V3FiaExbm6BlKe7kAVQziNbXiq4fMu9tTNroYytkvbMQYqys2Y=
+	t=1730818038; cv=none; b=bJwkJAZSDWqY2ejOeLS4VIk3yC5fNO0CaJiu173vyGpsDZKTWP9VO0Igbo6YkzsUSjaDUpFuAmGO+GYEw7/dcX2p2MzVh94zGI+4w7655tGX7cE4vFUYuaO2nVUr623C9+t7HdvrehztI8SvXX0ltG7XSRxymlmSs40LxPYIp4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730817584; c=relaxed/simple;
-	bh=2m/vcaMRZ9wSjJ1Z+5F0MvLfg8dFHQeTrXPjIHVm7ws=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DWJV9EL4Qp9hjGG+x0SIp8xOlSeMnSModB5OvISbmo9fsjYUWo0+6Q8HjMyadNIhHT33bng66ry/MYgIN7LFjuorcxPYEqnBSUlfxuDRAoJHwdq6sUlCclL4FXejbfEn2j7ztz028jPYiBQMxBc7Q+rmYjBpumzG27m0NpQBVLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Iq+/qsKa; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730817584; x=1762353584;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=2m/vcaMRZ9wSjJ1Z+5F0MvLfg8dFHQeTrXPjIHVm7ws=;
-  b=Iq+/qsKaDkJTcdeeDmwWi5sCfEkmm3rYTagiB3BUry7Rs8K6mkIojPwm
-   VmgL38C2jrLb45WPsywD5AvqividM8A7HL0ur+ycHd0kQTD5wCfyNDRGM
-   +lF3gzi+gftf9xLxMW6EIW/INv7BOvO/wwz5BfHBbldn34v+rS/QkKFdP
-   Oluol/ymq4iKXTobsQf2lePv9X0X4Ep+DvHu3bEMDFWOJYsFJOr5wLm6c
-   hvPYxU14t5LfRh5u1DCiLfgB1PXpu3KOZ/NpzRZNH7u3n5IcRpBKjja/O
-   dKeAhYmLOcG/Mc8GSqmC0Hau3eKvB3jm0SLfEkRAEza32vbgFN7R8a9LS
-   Q==;
-X-CSE-ConnectionGUID: akWqLfkhQd2u/OZrcjOudw==
-X-CSE-MsgGUID: 7xDATENVTCm4YwvR4XqZnA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="41115570"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="41115570"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 06:39:43 -0800
-X-CSE-ConnectionGUID: 9sw2g9MUQPm/QHgsQ7pVbw==
-X-CSE-MsgGUID: 1KsrsWqCTZGYgNPx0w+5/g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,260,1725346800"; 
-   d="scan'208";a="84164389"
-Received: from smile.fi.intel.com ([10.237.72.154])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 06:39:41 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1t8KiY-0000000BQve-221V;
-	Tue, 05 Nov 2024 16:39:38 +0200
-Date: Tue, 5 Nov 2024 16:39:38 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Sai Kumar Cholleti <skmr537@gmail.com>
-Cc: bgolaszewski@baylibre.com, linux-gpio@vger.kernel.org,
-	mmcclain@noprivs.com, stable@vger.kernel.org
-Subject: Re: [PATCH v3] gpio: exar: set value when external pull-up or
- pull-down is present
-Message-ID: <ZyouKu8_vfFs20CB@smile.fi.intel.com>
-References: <ZykY251SaLeksh9T@smile.fi.intel.com>
- <20241105071523.2372032-1-skmr537@gmail.com>
+	s=arc-20240116; t=1730818038; c=relaxed/simple;
+	bh=NUJeZp3Nw4C4ChRvfAMRe64rF+yZ4odrJKEqn8ZTWSQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Oh4iIHIMORPBf2xNW12zNqzql2hobVzTg/0cd7OXeoOO82YiSHbfPNttC6UPZ2XaQk9kKTGDUPgWmQA4vlGF/4wH+4Y07WkeDCbRhkmwu/K6DcgEFQZeWceNKHkmawiOBxPXg3P+qu7Lvmaozb+/oyz7SNgWVZS3CP9jPMKsv9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OvtRomnD; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-539e681ba70so22529e87.1
+        for <stable@vger.kernel.org>; Tue, 05 Nov 2024 06:47:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1730818035; x=1731422835; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/cagGAnxZqWV5y2Ato7lEE3OEZ0Tp2aD2OKM7V42p+E=;
+        b=OvtRomnDheX7eUtU+qmm3Sfu6P7CUs5nMGW8ymONtzYmKZl71PArglOxzEhUv0G0XX
+         MebGXCBVYTQQBWjsGUV6lupFS9syWAmuvtT+t5CXNpDKBVdQGSVcLEawtClTKlfA/bSN
+         mJ5xA3omzW/T6+yVFNROPt876gT0bTLiFP/leIYSIV9mgE6GvpRof8zStX1blwMkpVl9
+         /Gn2v30XfkfgJcrAKKWkKlHagr5FOwSSWpznDDe/792utbhGeVXGSjFqCy+NT8AD0QVe
+         PJ7FoYbDG8lkcTFRVlWqTfiCF1zsJvbIDWerILMR5Pe/jNjpL1T1t7vNVrAkvkhqRmMq
+         uaQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730818035; x=1731422835;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/cagGAnxZqWV5y2Ato7lEE3OEZ0Tp2aD2OKM7V42p+E=;
+        b=QdkyqNA4Ug+b/2od/txOn4s28vF2P5OUMZbaZrDg+RIHJkHGp8IjkG25objfWgjrhh
+         Vvf+O66S8PRpPUh9SzeuVPldFohMapFaaM346Fb0KWoz5BFzImgmj/UJl3/Y3YaQL40m
+         o26FUr54use0xX49AXC2IRcrU5OTtTHFIlRZHLBCwYNVjGiPkvOExJe/KcSHSlYyvt37
+         SJpOT82b297sndKeTIeQAUm2tPmdGT18Iaj7Lhbbkh3JvslpctyEAUkLrVybueF4AzDq
+         LjHiYhLB9j7BXEFXAkmnOZ24Jyjh4uMuPvyTiDIpzB3MVZV7/JcpcnHMeulbNlbw/ngM
+         sxBA==
+X-Forwarded-Encrypted: i=1; AJvYcCU/8ovfBg5ur8TB0W37gmxBnwd9OPLOn9tQGoF5jtc/1g4g76nUIwELVXZucpwgsDby71RF9Uk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1QU6jgaq8ZcxhwnjEHK3MomV+y3xNcA5/ndaPKXXLJ8932rNw
+	wDdCw8tfMGt2fXMdT2z4eqVLDiEg6BEn8jmZZECeENTF7PQjCyJx6nfx55TI8opFM8550vK2pRM
+	pKtMmddHEuCQtYkmwcL67p3zznkemEH1o+8ye
+X-Gm-Gg: ASbGncvrefeGwUWGRspg7zeIZpf5alKxvHlVGmddjALEExIp6rxwsieq9YNOnyRPcFp
+	dczOSywk6sKd4dX6fPVR0Wx0Ar5PAPK8HDnkxehqOoPFNTBW9Vrsuhh1Nkb8=
+X-Google-Smtp-Source: AGHT+IGCupuoPoa9Be9DIeC1oLOgRsCVHzJMID/6QbIJuejsA52V25UUPkdSQbFWB5lj7opODxhrEwcgb4shAr5+SOU=
+X-Received: by 2002:a05:6512:2243:b0:530:ae18:810e with SMTP id
+ 2adb3069b0e04-53d78c99ab2mr385358e87.5.1730818034320; Tue, 05 Nov 2024
+ 06:47:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241105071523.2372032-1-skmr537@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20241105-panthor-flush-page-fixes-v1-1-829aaf37db93@google.com> <Zynr3DIY8u2c7wrB@e110455-lin.cambridge.arm.com>
+In-Reply-To: <Zynr3DIY8u2c7wrB@e110455-lin.cambridge.arm.com>
+From: Jann Horn <jannh@google.com>
+Date: Tue, 5 Nov 2024 15:46:37 +0100
+Message-ID: <CAG48ez1YjoQMe-daQ8NSqN46STGw1UWygzU2-qo75FLBDBqaow@mail.gmail.com>
+Subject: Re: [PATCH] drm/panthor: Be stricter about IO mapping flags
+To: Liviu Dudau <liviu.dudau@arm.com>
+Cc: Boris Brezillon <boris.brezillon@collabora.com>, Steven Price <steven.price@arm.com>, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 05, 2024 at 12:45:23PM +0530, Sai Kumar Cholleti wrote:
-> Setting GPIO direction = high, sometimes results in GPIO value = 0.
-> 
-> If a GPIO is pulled high, the following construction results in the
-> value being 0 when the desired value is 1:
-> 
-> $ echo "high" > /sys/class/gpio/gpio336/direction
-> $ cat /sys/class/gpio/gpio336/value
-> 0
-> 
-> Before the GPIO direction is changed from an input to an output,
-> exar_set_value() is called with value = 1, but since the GPIO is an
-> input when exar_set_value() is called, _regmap_update_bits() reads a 1
-> due to an external pull-up.  regmap_set_bits() sets force_write =
-> false, so the value (1) is not written.  When the direction is then
-> changed, the GPIO becomes an output with the value of 0 (the hardware
-> default).
-> 
-> regmap_write_bits() sets force_write = true, so the value is always
-> written by exar_set_value() and an external pull-up doesn't affect the
-> outcome of setting direction = high.
-> 
-> 
-> The same can happen when a GPIO is pulled low, but the scenario is a
-> little more complicated.
-> 
-> $ echo high > /sys/class/gpio/gpio351/direction
-> $ cat /sys/class/gpio/gpio351/value
-> 1
-> 
-> $ echo in > /sys/class/gpio/gpio351/direction
-> $ cat /sys/class/gpio/gpio351/value
-> 0
-> 
-> $ echo low > /sys/class/gpio/gpio351/direction
-> $ cat /sys/class/gpio/gpio351/value
-> 1
+On Tue, Nov 5, 2024 at 10:56=E2=80=AFAM Liviu Dudau <liviu.dudau@arm.com> w=
+rote:
+> On Tue, Nov 05, 2024 at 12:17:13AM +0100, Jann Horn wrote:
+> > The current panthor_device_mmap_io() implementation has two issues:
+> >
+> > 1. For mapping DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET,
+> >    panthor_device_mmap_io() bails if VM_WRITE is set, but does not clea=
+r
+> >    VM_MAYWRITE. That means userspace can use mprotect() to make the map=
+ping
+> >    writable later on. This is a classic Linux driver gotcha.
+> >    I don't think this actually has any impact in practice:
+> >    When the GPU is powered, writes to the FLUSH_ID seem to be ignored; =
+and
+> >    when the GPU is not powered, the dummy_latest_flush page provided by=
+ the
+> >    driver is deliberately designed to not do any flushes, so the only t=
+hing
+> >    writing to the dummy_latest_flush could achieve would be to make *mo=
+re*
+> >    flushes happen.
+> >
+> > 2. panthor_device_mmap_io() does not block MAP_PRIVATE mappings (which =
+are
+> >    mappings without the VM_SHARED flag).
+> >    MAP_PRIVATE in combination with VM_MAYWRITE indicates that the VMA h=
+as
+> >    copy-on-write semantics, which for VM_PFNMAP are semi-supported but
+> >    fairly cursed.
+> >    In particular, in such a mapping, the driver can only install PTEs
+> >    during mmap() by calling remap_pfn_range() (because remap_pfn_range(=
+)
+> >    wants to **store the physical address of the mapped physical memory =
+into
+> >    the vm_pgoff of the VMA**); installing PTEs later on with a fault
+> >    handler (as panthor does) is not supported in private mappings, and =
+so
+> >    if you try to fault in such a mapping, vmf_insert_pfn_prot() splats =
+when
+> >    it hits a BUG() check.
+> >
+> > Fix it by clearing the VM_MAYWRITE flag (userspace writing to the FLUSH=
+_ID
+> > doesn't make sense) and requiring VM_SHARED (copy-on-write semantics fo=
+r
+> > the FLUSH_ID don't make sense).
+> >
+> > Reproducers for both scenarios are in the notes of my patch on the mail=
+ing
+> > list; I tested that these bugs exist on a Rock 5B machine.
+> >
+> > Note that I only compile-tested the patch, I haven't tested it; I don't
+> > have a working kernel build setup for the test machine yet. Please test=
+ it
+> > before applying it.
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 5fe909cae118 ("drm/panthor: Add the device logical block")
+> > Signed-off-by: Jann Horn <jannh@google.com>
+> > ---
+> > First testcase (can write to the FLUSH_ID):
+> >
+> > ```
+> >
+>
+> There is a missing line here, I guess is something like
+>
+> #define SYSCHK(x) ({  \
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Oops. Yes, sorry, the tool that I stored this comment message in
+interpreted all lines starting with "#" as comments... the proper
+versions:
 
--- 
-With Best Regards,
-Andy Shevchenko
+First testcase (can write to the FLUSH_ID):
 
+```
+#include <err.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdint.h>
+#include <sys/mman.h>
 
+#define SYSCHK(x) ({          \
+  typeof(x) __res =3D (x);      \
+  if (__res =3D=3D (typeof(x))-1) \
+    err(1, "SYSCHK(" #x ")"); \
+  __res;                      \
+})
+
+#define GPU_PATH "/dev/dri/by-path/platform-fb000000.gpu-card"
+#define DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET (1ull << 56)
+
+int main(void) {
+  int fd =3D SYSCHK(open(GPU_PATH, O_RDWR));
+
+  // sanity-check that PROT_WRITE+MAP_SHARED fails
+  void *mmap_write_res =3D mmap(NULL, 0x1000, PROT_READ|PROT_WRITE,
+      MAP_SHARED, fd, DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET);
+  if (mmap_write_res =3D=3D MAP_FAILED) {
+    perror("mmap() with PROT_WRITE+MAP_SHARED failed as expected");
+  } else {
+    errx(1, "mmap() with PROT_WRITE+MAP_SHARED worked???");
+  }
+
+  // make a PROT_READ+MAP_SHARED mapping, and upgrade it to writable
+  void *mmio_page =3D SYSCHK(mmap(NULL, 0x1000, PROT_READ, MAP_SHARED,
+      fd, DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET));
+  SYSCHK(mprotect(mmio_page, 0x1000, PROT_READ|PROT_WRITE));
+
+  volatile uint32_t *flush_counter =3D (volatile uint32_t*)mmio_page;
+
+  uint32_t last_old =3D -1;
+  while (1) {
+    uint32_t old_val =3D *flush_counter;
+    *flush_counter =3D 1111;
+    uint32_t new_val =3D *flush_counter;
+    if (old_val !=3D last_old)
+      printf("flush counter: old=3D%u, new=3D%u\n", old_val, new_val);
+    last_old =3D old_val;
+  }
+}
+```
+
+Second testcase (triggers BUG() splat):
+```
+#include <err.h>
+#include <fcntl.h>
+#include <stddef.h>
+#include <sys/mman.h>
+
+#define SYSCHK(x) ({          \
+  typeof(x) __res =3D (x);      \
+  if (__res =3D=3D (typeof(x))-1) \
+    err(1, "SYSCHK(" #x ")"); \
+  __res;                      \
+})
+
+#define GPU_PATH "/dev/dri/by-path/platform-fb000000.gpu-card"
+#define DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET (1ull << 56)
+
+int main(void) {
+  int fd =3D SYSCHK(open(GPU_PATH, O_RDWR));
+
+  // make a PROT_READ+**MAP_PRIVATE** mapping
+  void *ptr =3D SYSCHK(mmap(NULL, 0x1000, PROT_READ, MAP_PRIVATE,
+      fd, DRM_PANTHOR_USER_FLUSH_ID_MMIO_OFFSET));
+
+  // trigger a read fault
+  *(volatile char *)ptr;
+}
+```
 
