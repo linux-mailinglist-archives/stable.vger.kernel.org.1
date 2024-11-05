@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-89928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0A689BD80B
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 23:04:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A5629BD81D
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 23:06:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F25461C22C13
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 22:04:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5F1F1F2410D
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 22:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F63021219E;
-	Tue,  5 Nov 2024 22:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FFF21503B;
+	Tue,  5 Nov 2024 22:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G4FA0CfV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DmaRe4vD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CF11F667B;
-	Tue,  5 Nov 2024 22:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405E21FF7AF;
+	Tue,  5 Nov 2024 22:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730844249; cv=none; b=Z3tbtRxqYyndK3LlKQzUa/hxe89suDpTzU9JR8glchPnTpTnU0rXDnKASBKySq6Yj/Z3GY+XuK7uJmgcE7WqSt58/+9MCgAgEZ7nrDbQT1HRiugX3pt3S9j7d6FhHBXScxuKpwlTxyqJ5PrVprkIYkZPbD33hfKN9B+rZC5BK7o=
+	t=1730844405; cv=none; b=BNCYJfWCtpaQQT/J6YOBI44zH8moadZiuT7DWoykkX2bKaQm1sSDaO4fmcr3Yrgt8oj+4Hh00GPufjuGoYi4B4NFz8T/Ju8+th4JkstfC9CzWze/nlQvWm6bNp/VnllumeaXP6JqOwk8EU/6vukX9W8XuLMVOs5imfmCt2pBGIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730844249; c=relaxed/simple;
-	bh=TfFlfPMcy9z+1qeKYUsFwqpLE/B879o42/Qv09i/U4w=;
+	s=arc-20240116; t=1730844405; c=relaxed/simple;
+	bh=dwqnO8/nIbNQ8/CW7G0lUHOeCwGPaeu58QibsucpppQ=;
 	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CvM/JX4kkZWRvUbEl99exeDZW01b6wvT9thwGFxWYqNqiywWfhFjptaLX/Hztyku16j9hKBT4MfIW/Y/+8kl1Em1Exe38dCEtG605go8uJQMTKEBfOeugo061R0Am+jNalFZ/Wf5CC9iSMUT+7RVSYqq170qfeo+sm/XSkXQaJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G4FA0CfV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A11AFC4CECF;
-	Tue,  5 Nov 2024 22:04:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YRMOAsA3uCFDOBraBZrBHHQRTZQ+EEWUabt0TnJoIhhwcHuw7CN+EzbSz6nv27nRy3eL9TconWUgiGD6wkBzEIDItxyLa7xjlxu/3h+RrBBAvNXkfI4N+cIhPaIo3fbKB89UyTyh+PMqDEr+PkjfSft+xXXZbs+I1cTAOu/EOiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DmaRe4vD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18063C4CECF;
+	Tue,  5 Nov 2024 22:06:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730844248;
-	bh=TfFlfPMcy9z+1qeKYUsFwqpLE/B879o42/Qv09i/U4w=;
+	s=k20201202; t=1730844405;
+	bh=dwqnO8/nIbNQ8/CW7G0lUHOeCwGPaeu58QibsucpppQ=;
 	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
-	b=G4FA0CfVBoma12pn0ThcLfBRSS6mGmM3L4xuKT0CKYmXJ3mL3f/vIuJxJVVsuukXj
-	 sRSWWARoNLH0m6Efvn98kyo8XpXbPJqaxUoIID4xRsDhGc7kvdAPXByo4CZozufQb7
-	 tCIjEf+2VqXeukFYojpJ2ktQK+x9IWdlMO/6IM28tOSEbDNbOj9HoNDmrCuE0bs1dt
-	 HjooPjFywy2995jQ71nGcmqnws9Zns90N5TcelnJDBELv2/bK4gxg7Dev55HZ2m6Db
-	 tSbkwUg+7smYuh5AjfCwn1f7lUSHqOzfhASXM5H19GBXuyeAYoMMSHwhh+e+0os48y
-	 GWMN+wePKmCCA==
-Date: Tue, 05 Nov 2024 14:04:08 -0800
-Subject: [PATCHSET v5.5 01/10] xfs: convert perag to use xarrays
+	b=DmaRe4vDOMg2AgPOsjI9Emrjp8HBeLbyfNCeChJeSByJrqYgUnK7u24ixMe8IGDWf
+	 hpUNZMRJ5GIpxnLaEs3DngedBxj9rJN8JUgWJgXNe/ZxyQuwJVR4waKt+kULOc+Jcc
+	 DlAqfuo6A8wnOh5orNAAJYXvHcHbM5M2MaCqGtR2obEgOJqxbo3UEyGkI8nBhvNq7p
+	 SJolnjyy0/taOs/1XttIKNgj0VydDMlHdFZ+YrEdyrd8MZJY70vn9m+Z1h+rYzufzq
+	 MIYbRkbkcsrwgr5IRuGSApQ4ZHlBdRGjXLEjBr/5U8jHaynPMFSCEMIGU2Nv5ypiDv
+	 pCcwCS98MZILA==
+Date: Tue, 05 Nov 2024 14:06:44 -0800
+Subject: [PATCH 01/23] xfs: fix simplify extent lookup in
+ xfs_can_free_eofblocks
 From: "Darrick J. Wong" <djwong@kernel.org>
 To: cem@kernel.org, djwong@kernel.org
 Cc: stable@vger.kernel.org, linux-xfs@vger.kernel.org
-Message-ID: <173084394391.1868694.10289808022146677978.stgit@frogsfrogsfrogs>
-In-Reply-To: <20241105215840.GK2386201@frogsfrogsfrogs>
-References: <20241105215840.GK2386201@frogsfrogsfrogs>
+Message-ID: <173084394467.1868694.16975664441483419125.stgit@frogsfrogsfrogs>
+In-Reply-To: <173084394391.1868694.10289808022146677978.stgit@frogsfrogsfrogs>
+References: <173084394391.1868694.10289808022146677978.stgit@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,91 +59,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-Hi all,
+From: Darrick J. Wong <djwong@kernel.org>
 
-Convert the xfs_mount perag tree to use an xarray instead of a radix
-tree.  There should be no functional changes here.
+In commit 11f4c3a53adde, we tried to simplify the extent lookup in
+xfs_can_free_eofblocks so that it doesn't incur the overhead of all the
+extra stuff that xfs_bmapi_read does around the iext lookup.
 
-If you're going to start using this code, I strongly recommend pulling
-from my git trees, which are linked below.
+Unfortunately, this causes regressions on generic/603, xfs/108,
+generic/219, xfs/173, generic/694, xfs/052, generic/230, and xfs/441
+when always_cow is turned on.  In all cases, the regressions take the
+form of alwayscow files consuming rather more space than the golden
+output is expecting.  I observed that in all these cases, the cause of
+the excess space usage was due to CoW fork delalloc reservations that go
+beyond EOF.
 
-With a bit of luck, this should all go splendidly.
-Comments and questions are, as always, welcome.
+For alwayscow files we allow posteof delalloc CoW reservations because
+all writes go through the CoW fork.  Recall that all extents in the CoW
+fork are accounted for via i_delayed_blks, which means that prior to
+this patch, we'd invoke xfs_free_eofblocks on first close if anything
+was in the CoW fork.  Now we don't do that.
 
---D
+Fix the problem by reverting the removal of the i_delayed_blks check.
 
-kernel git tree:
-https://git.kernel.org/cgit/linux/kernel/git/djwong/xfs-linux.git/log/?h=perag-xarray-6.13
+Cc: <stable@vger.kernel.org> # v6.12-rc1
+Fixes: 11f4c3a53adde ("xfs: simplify extent lookup in xfs_can_free_eofblocks")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 ---
-Commits in this patchset:
- * xfs: fix simplify extent lookup in xfs_can_free_eofblocks
- * xfs: fix superfluous clearing of info->low in __xfs_getfsmap_datadev
- * xfs: remove the unused pagb_count field in struct xfs_perag
- * xfs: remove the unused pag_active_wq field in struct xfs_perag
- * xfs: pass a pag to xfs_difree_inode_chunk
- * xfs: remove the agno argument to xfs_free_ag_extent
- * xfs: add xfs_agbno_to_fsb and xfs_agbno_to_daddr helpers
- * xfs: add a xfs_agino_to_ino helper
- * xfs: pass a pag to xfs_extent_busy_{search,reuse}
- * xfs: keep a reference to the pag for busy extents
- * xfs: remove the mount field from struct xfs_busy_extents
- * xfs: remove the unused trace_xfs_iwalk_ag trace point
- * xfs: remove the unused xrep_bmap_walk_rmap trace point
- * xfs: constify pag arguments to trace points
- * xfs: pass a perag structure to the xfs_ag_resv_init_error trace point
- * xfs: pass objects to the xfs_irec_merge_{pre,post} trace points
- * xfs: pass the iunlink item to the xfs_iunlink_update_dinode trace point
- * xfs: pass objects to the xrep_ibt_walk_rmap tracepoint
- * xfs: pass the pag to the trace_xrep_calc_ag_resblks{,_btsize} trace points
- * xfs: pass the pag to the xrep_newbt_extent_class tracepoints
- * xfs: convert remaining trace points to pass pag structures
- * xfs: split xfs_initialize_perag
- * xfs: insert the pag structures into the xarray later
----
- fs/xfs/libxfs/xfs_ag.c             |  135 ++++++++++++++-----------
- fs/xfs/libxfs/xfs_ag.h             |   30 +++++-
- fs/xfs/libxfs/xfs_ag_resv.c        |    3 -
- fs/xfs/libxfs/xfs_alloc.c          |   32 +++---
- fs/xfs/libxfs/xfs_alloc.h          |    5 -
- fs/xfs/libxfs/xfs_alloc_btree.c    |    2 
- fs/xfs/libxfs/xfs_btree.c          |    7 +
- fs/xfs/libxfs/xfs_ialloc.c         |   67 ++++++-------
- fs/xfs/libxfs/xfs_ialloc_btree.c   |    2 
- fs/xfs/libxfs/xfs_inode_util.c     |    4 -
- fs/xfs/libxfs/xfs_refcount.c       |   11 +-
- fs/xfs/libxfs/xfs_refcount_btree.c |    3 -
- fs/xfs/libxfs/xfs_rmap_btree.c     |    2 
- fs/xfs/scrub/agheader_repair.c     |   16 +--
- fs/xfs/scrub/alloc_repair.c        |   10 +-
- fs/xfs/scrub/bmap.c                |    5 -
- fs/xfs/scrub/bmap_repair.c         |    4 -
- fs/xfs/scrub/common.c              |    2 
- fs/xfs/scrub/cow_repair.c          |   18 +--
- fs/xfs/scrub/ialloc.c              |    8 +-
- fs/xfs/scrub/ialloc_repair.c       |   25 ++---
- fs/xfs/scrub/newbt.c               |   46 ++++-----
- fs/xfs/scrub/reap.c                |    8 +-
- fs/xfs/scrub/refcount_repair.c     |    5 -
- fs/xfs/scrub/repair.c              |   13 +-
- fs/xfs/scrub/rmap_repair.c         |    9 +-
- fs/xfs/scrub/trace.h               |  161 ++++++++++++++----------------
- fs/xfs/xfs_bmap_util.c             |    8 +-
- fs/xfs/xfs_buf_item_recover.c      |    5 -
- fs/xfs/xfs_discard.c               |   20 ++--
- fs/xfs/xfs_extent_busy.c           |   31 ++----
- fs/xfs/xfs_extent_busy.h           |   14 +--
- fs/xfs/xfs_extfree_item.c          |    4 -
- fs/xfs/xfs_filestream.c            |    5 -
- fs/xfs/xfs_fsmap.c                 |   25 ++---
- fs/xfs/xfs_health.c                |    8 +-
- fs/xfs/xfs_inode.c                 |    5 -
- fs/xfs/xfs_iunlink_item.c          |   13 +-
- fs/xfs/xfs_iwalk.c                 |   17 ++-
- fs/xfs/xfs_log_cil.c               |    3 -
- fs/xfs/xfs_log_recover.c           |    5 -
- fs/xfs/xfs_trace.c                 |    1 
- fs/xfs/xfs_trace.h                 |  191 +++++++++++++++---------------------
- fs/xfs/xfs_trans.c                 |    2 
- 44 files changed, 459 insertions(+), 531 deletions(-)
+ fs/xfs/xfs_bmap_util.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+
+diff --git a/fs/xfs/xfs_bmap_util.c b/fs/xfs/xfs_bmap_util.c
+index 4719ec90029cb7..edaf193dbd5ccc 100644
+--- a/fs/xfs/xfs_bmap_util.c
++++ b/fs/xfs/xfs_bmap_util.c
+@@ -546,10 +546,14 @@ xfs_can_free_eofblocks(
+ 		return false;
+ 
+ 	/*
+-	 * Check if there is an post-EOF extent to free.
++	 * Check if there is an post-EOF extent to free.  If there are any
++	 * delalloc blocks attached to the inode (data fork delalloc
++	 * reservations or CoW extents of any kind), we need to free them so
++	 * that inactivation doesn't fail to erase them.
+ 	 */
+ 	xfs_ilock(ip, XFS_ILOCK_SHARED);
+-	if (xfs_iext_lookup_extent(ip, &ip->i_df, end_fsb, &icur, &imap))
++	if (ip->i_delayed_blks ||
++	    xfs_iext_lookup_extent(ip, &ip->i_df, end_fsb, &icur, &imap))
+ 		found_blocks = true;
+ 	xfs_iunlock(ip, XFS_ILOCK_SHARED);
+ 	return found_blocks;
 
 
