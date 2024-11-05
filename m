@@ -1,179 +1,169 @@
-Return-Path: <stable+bounces-89779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC239BC37D
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 04:00:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A65609BC3A2
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 04:10:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD2AB282B38
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 03:00:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A6B51F21EA6
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 03:10:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB07225A8;
-	Tue,  5 Nov 2024 03:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D0B166F3D;
+	Tue,  5 Nov 2024 03:09:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="EvyAatJy"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874DDA94A;
-	Tue,  5 Nov 2024 02:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49FB156653;
+	Tue,  5 Nov 2024 03:09:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730775601; cv=none; b=pzYSeFKSAHJXfcEU2apbzqMoenD1rzu5KVc0UOuG66gCCtM0g3vAQj/ySWfKuU7BGqeYifxzRvBKI0xxY31NF5/0e7NjAdlp76Fr0htA0ipbN5Zqq5l4nN9X3psNvYa14zr1DV5LIyOhYNC9rm0C84/kyquv4JQ/ZoUPH+gmzkE=
+	t=1730776192; cv=none; b=l7p04RnGPNnRl1kHyJ/cOIhFJ1lxAUIFw7GiaT5mzTKd0zkgp/6Im5by/OOMOICeeJ5+ArVzp+eF8CNMfarznzOuqi/x/1/RreB5+5iRNf4ocXFzh0rLnTpmNKHx/h/LADLaAqzbiM+QAD2+I+E6/EyKTDAzB3xYaITFbGA3jyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730775601; c=relaxed/simple;
-	bh=qy0uecQsNj68BCutaQn17Ljsgqipg8+yC8nSYfWz4XE=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=tTEBQ29NJi1iygG3Ddc5vTYd/W8h0wdyy1R1L/IMJZylDnUWSMRCQVmCfvhV4PhEbGFtOf8m5FydyPXorjntbHZdTVSLH2RV6oAVYU0Q1RQrUA/oWiXE8nQepuheWj4AW68uRylp60oMi+x3dzb7R9aA+kjrfj98f1ytF/AQZNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4XjCh83dNZz1jwcn;
-	Tue,  5 Nov 2024 10:58:16 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id A966C1A016C;
-	Tue,  5 Nov 2024 10:59:55 +0800 (CST)
-Received: from [10.67.120.192] (10.67.120.192) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 5 Nov 2024 10:59:55 +0800
-Message-ID: <8ce8ba06-acb9-400f-acee-ef0dbd023dc1@huawei.com>
-Date: Tue, 5 Nov 2024 10:59:54 +0800
+	s=arc-20240116; t=1730776192; c=relaxed/simple;
+	bh=OudbygbXI3Uc0+dr2OAiyMdf4/JuoLvEowybthCyl0Y=;
+	h=Date:To:From:Subject:Message-Id; b=LLL9Oc3tCdBXKQSm9SFfmrQopAT8JYZwKCg1c0Ear+3aZtt+JTFViKjuu3n1IcXU81wW86Xu1VEM4irVRyEhTWLwpfg9AJwQKKxLqP9Z6d7X5cXonnmRUBLZRnT7ZYk/qy74fGRe59bC6EbYmByNe8e8PfiUQjdpLjuzX3Whkoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=EvyAatJy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B95C4CECE;
+	Tue,  5 Nov 2024 03:09:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1730776192;
+	bh=OudbygbXI3Uc0+dr2OAiyMdf4/JuoLvEowybthCyl0Y=;
+	h=Date:To:From:Subject:From;
+	b=EvyAatJytOtQ4JJazgO7kzk3+aJ7J4Y6DtmtA4R46OAZVCNNclHPelK7zHcvMDdI+
+	 7myFFt+QYJ/Mm+l7Fz0oUzmXl1QMT7rr/i093ApcormRMNI491uT0aT2aYyV+amZS/
+	 OlOd/1EfsP56XI1Fp8sX+Di1emNB4uIumnJU+p5E=
+Date: Mon, 04 Nov 2024 19:09:51 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,ghe@suse.com,gechangwei@live.cn,andrew.kanner@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + ocfs2-remove-entry-once-instead-of-null-ptr-dereference-in-ocfs2_xa_remove.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241105030952.42B95C4CECE@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <shaojijie@huawei.com>, Salil Mehta <salil.mehta@huawei.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>
-Subject: Re: Patch "net: hns3: add sync command to sync io-pgtable" has been
- added to the 6.11-stable tree
-To: <stable@vger.kernel.org>, <stable-commits@vger.kernel.org>,
-	<shenjian15@huawei.com>
-References: <20241101192250.3849110-1-sashal@kernel.org>
-From: Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <20241101192250.3849110-1-sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemk100013.china.huawei.com (7.202.194.61)
 
 
-on 2024/11/2 3:22, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
->
->      net: hns3: add sync command to sync io-pgtable
->
-> to the 6.11-stable tree which can be found at:
->      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->
-> The filename of the patch is:
->       net-hns3-add-sync-command-to-sync-io-pgtable.patch
-> and it can be found in the queue-6.11 subdirectory.
->
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
+The patch titled
+     Subject: ocfs2: remove entry once instead of null-ptr-dereference in ocfs2_xa_remove()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     ocfs2-remove-entry-once-instead-of-null-ptr-dereference-in-ocfs2_xa_remove.patch
 
-Hi:
-This patch was reverted from netdev,
-so, it also need be reverted from stable tree.
-I am sorry for that.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-remove-entry-once-instead-of-null-ptr-dereference-in-ocfs2_xa_remove.patch
 
-reverted link:
-https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=249cfa318fb1b77eb726c2ff4f74c9685f04e568
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Thanks,
-Jijie Shao
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
->
->
->
-> commit 0ea8c71561bc40a678c7bf15e081737e1f2d15e2
-> Author: Jian Shen <shenjian15@huawei.com>
-> Date:   Fri Oct 25 17:29:31 2024 +0800
->
->      net: hns3: add sync command to sync io-pgtable
->      
->      [ Upstream commit f2c14899caba76da93ff3fff46b4d5a8f43ce07e ]
->      
->      To avoid errors in pgtable prefectch, add a sync command to sync
->      io-pagtable.
->      
->      This is a supplement for the previous patch.
->      We want all the tx packet can be handled with tx bounce buffer path.
->      But it depends on the remain space of the spare buffer, checked by the
->      hns3_can_use_tx_bounce(). In most cases, maybe 99.99%, it returns true.
->      But once it return false by no available space, the packet will be handled
->      with the former path, which will map/unmap the skb buffer.
->      Then the driver will face the smmu prefetch risk again.
->      
->      So add a sync command in this case to avoid smmu prefectch,
->      just protects corner scenes.
->      
->      Fixes: 295ba232a8c3 ("net: hns3: add device version to replace pci revision")
->      Signed-off-by: Jian Shen <shenjian15@huawei.com>
->      Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
->      Signed-off-by: Jijie Shao <shaojijie@huawei.com>
->      Signed-off-by: Paolo Abeni <pabeni@redhat.com>
->      Signed-off-by: Sasha Levin <sashal@kernel.org>
->
-> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-> index ac88e301f2211..8760b4e9ade6b 100644
-> --- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-> @@ -381,6 +381,24 @@ static const struct hns3_rx_ptype hns3_rx_ptype_tbl[] = {
->   #define HNS3_INVALID_PTYPE \
->   		ARRAY_SIZE(hns3_rx_ptype_tbl)
->   
-> +static void hns3_dma_map_sync(struct device *dev, unsigned long iova)
-> +{
-> +	struct iommu_domain *domain = iommu_get_domain_for_dev(dev);
-> +	struct iommu_iotlb_gather iotlb_gather;
-> +	size_t granule;
-> +
-> +	if (!domain || !iommu_is_dma_domain(domain))
-> +		return;
-> +
-> +	granule = 1 << __ffs(domain->pgsize_bitmap);
-> +	iova = ALIGN_DOWN(iova, granule);
-> +	iotlb_gather.start = iova;
-> +	iotlb_gather.end = iova + granule - 1;
-> +	iotlb_gather.pgsize = granule;
-> +
-> +	iommu_iotlb_sync(domain, &iotlb_gather);
-> +}
-> +
->   static irqreturn_t hns3_irq_handle(int irq, void *vector)
->   {
->   	struct hns3_enet_tqp_vector *tqp_vector = vector;
-> @@ -1728,7 +1746,9 @@ static int hns3_map_and_fill_desc(struct hns3_enet_ring *ring, void *priv,
->   				  unsigned int type)
->   {
->   	struct hns3_desc_cb *desc_cb = &ring->desc_cb[ring->next_to_use];
-> +	struct hnae3_handle *handle = ring->tqp->handle;
->   	struct device *dev = ring_to_dev(ring);
-> +	struct hnae3_ae_dev *ae_dev;
->   	unsigned int size;
->   	dma_addr_t dma;
->   
-> @@ -1760,6 +1780,13 @@ static int hns3_map_and_fill_desc(struct hns3_enet_ring *ring, void *priv,
->   		return -ENOMEM;
->   	}
->   
-> +	/* Add a SYNC command to sync io-pgtale to avoid errors in pgtable
-> +	 * prefetch
-> +	 */
-> +	ae_dev = hns3_get_ae_dev(handle);
-> +	if (ae_dev->dev_version >= HNAE3_DEVICE_VERSION_V3)
-> +		hns3_dma_map_sync(dev, dma);
-> +
->   	desc_cb->priv = priv;
->   	desc_cb->length = size;
->   	desc_cb->dma = dma;
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Andrew Kanner <andrew.kanner@gmail.com>
+Subject: ocfs2: remove entry once instead of null-ptr-dereference in ocfs2_xa_remove()
+Date: Sun, 3 Nov 2024 20:38:45 +0100
+
+Syzkaller is able to provoke null-ptr-dereference in ocfs2_xa_remove():
+
+[   57.319872] (a.out,1161,7):ocfs2_xa_remove:2028 ERROR: status = -12
+[   57.320420] (a.out,1161,7):ocfs2_xa_cleanup_value_truncate:1999 ERROR: Partial truncate while removing xattr overlay.upper.  Leaking 1 clusters and removing the entry
+[   57.321727] BUG: kernel NULL pointer dereference, address: 0000000000000004
+[...]
+[   57.325727] RIP: 0010:ocfs2_xa_block_wipe_namevalue+0x2a/0xc0
+[...]
+[   57.331328] Call Trace:
+[   57.331477]  <TASK>
+[...]
+[   57.333511]  ? do_user_addr_fault+0x3e5/0x740
+[   57.333778]  ? exc_page_fault+0x70/0x170
+[   57.334016]  ? asm_exc_page_fault+0x2b/0x30
+[   57.334263]  ? __pfx_ocfs2_xa_block_wipe_namevalue+0x10/0x10
+[   57.334596]  ? ocfs2_xa_block_wipe_namevalue+0x2a/0xc0
+[   57.334913]  ocfs2_xa_remove_entry+0x23/0xc0
+[   57.335164]  ocfs2_xa_set+0x704/0xcf0
+[   57.335381]  ? _raw_spin_unlock+0x1a/0x40
+[   57.335620]  ? ocfs2_inode_cache_unlock+0x16/0x20
+[   57.335915]  ? trace_preempt_on+0x1e/0x70
+[   57.336153]  ? start_this_handle+0x16c/0x500
+[   57.336410]  ? preempt_count_sub+0x50/0x80
+[   57.336656]  ? _raw_read_unlock+0x20/0x40
+[   57.336906]  ? start_this_handle+0x16c/0x500
+[   57.337162]  ocfs2_xattr_block_set+0xa6/0x1e0
+[   57.337424]  __ocfs2_xattr_set_handle+0x1fd/0x5d0
+[   57.337706]  ? ocfs2_start_trans+0x13d/0x290
+[   57.337971]  ocfs2_xattr_set+0xb13/0xfb0
+[   57.338207]  ? dput+0x46/0x1c0
+[   57.338393]  ocfs2_xattr_trusted_set+0x28/0x30
+[   57.338665]  ? ocfs2_xattr_trusted_set+0x28/0x30
+[   57.338948]  __vfs_removexattr+0x92/0xc0
+[   57.339182]  __vfs_removexattr_locked+0xd5/0x190
+[   57.339456]  ? preempt_count_sub+0x50/0x80
+[   57.339705]  vfs_removexattr+0x5f/0x100
+[...]
+
+Reproducer uses faultinject facility to fail ocfs2_xa_remove() ->
+ocfs2_xa_value_truncate() with -ENOMEM.
+
+In this case the comment mentions that we can return 0 if
+ocfs2_xa_cleanup_value_truncate() is going to wipe the entry
+anyway. But the following 'rc' check is wrong and execution flow do
+'ocfs2_xa_remove_entry(loc);' twice:
+* 1st: in ocfs2_xa_cleanup_value_truncate();
+* 2nd: returning back to ocfs2_xa_remove() instead of going to 'out'.
+
+Fix this by skipping the 2nd removal of the same entry and making
+syzkaller repro happy.
+
+Link: https://lkml.kernel.org/r/20241103193845.2940988-1-andrew.kanner@gmail.com
+Fixes: 399ff3a748cf ("ocfs2: Handle errors while setting external xattr values.")
+Signed-off-by: Andrew Kanner <andrew.kanner@gmail.com>
+Reported-by: syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/671e13ab.050a0220.2b8c0f.01d0.GAE@google.com/T/
+Tested-by: syzbot+386ce9e60fa1b18aac5b@syzkaller.appspotmail.com
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/ocfs2/xattr.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+--- a/fs/ocfs2/xattr.c~ocfs2-remove-entry-once-instead-of-null-ptr-dereference-in-ocfs2_xa_remove
++++ a/fs/ocfs2/xattr.c
+@@ -2036,8 +2036,7 @@ static int ocfs2_xa_remove(struct ocfs2_
+ 				rc = 0;
+ 			ocfs2_xa_cleanup_value_truncate(loc, "removing",
+ 							orig_clusters);
+-			if (rc)
+-				goto out;
++			goto out;
+ 		}
+ 	}
+ 
+_
+
+Patches currently in -mm which might be from andrew.kanner@gmail.com are
+
+ocfs2-remove-entry-once-instead-of-null-ptr-dereference-in-ocfs2_xa_remove.patch
+
 
