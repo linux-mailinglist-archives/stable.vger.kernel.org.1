@@ -1,266 +1,167 @@
-Return-Path: <stable+bounces-89931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B5C69BD982
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 00:12:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BDB59BD9E4
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 00:50:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DF1B2842FD
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 23:12:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C46E1F21C16
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 23:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A452D216454;
-	Tue,  5 Nov 2024 23:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81144216437;
+	Tue,  5 Nov 2024 23:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="xpWPIoT3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JktmTDu8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2201D270A;
-	Tue,  5 Nov 2024 23:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7EE149C53;
+	Tue,  5 Nov 2024 23:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730848323; cv=none; b=m63+6QoPEwhtmMYrs4M7cIDvGci3k8JwNv5iEAQbSFU34nmeioi6wKM+puLXHESi8+KlleECrMoazQRUX4hFVTbHcntw04krmL+6/YeW+l8bH+oilrvqK9j1kU6o9DSWGIBP2qIEAQWWxAfxsi3VH1L5FvNCMFV0GT1LA1k/C4g=
+	t=1730850618; cv=none; b=GSpqT+dUHZ4uw6b6KaetmKm2+HtmKtPBQheGNHZtJ4benIDWyqQvv+izRuAEB3iPBldXKYA6nN7Fb5TjpbUkZwfLG+QMGIe53WJqod4HB3vNgTATFMoEjzcdTMgdXQ/ocCpcEfexw+/qKI8cUcMXjDG9Pa/5XrsJP2+ncpQQ/vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730848323; c=relaxed/simple;
-	bh=tYeuqIN6ABGzW67RvPHRA9H0TABKa7wVpxmLpu0jWWk=;
-	h=Date:To:From:Subject:Message-Id; b=hG0VSUWdFhlMIA6U/em/3kiaplM9UwkA1iWUYoaM0n4m4E9BTfWWNowMPZVMyQVgD3g0G6FMw9Okri27kWdDof0SKlI7oHLwII3z/pb7esxHAPvG0oticfchrSST+QXh/6JIIoTEp9PgKJni3BhJd53NVz7ZskwN+6R/pRK9iVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=xpWPIoT3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC436C4CECF;
-	Tue,  5 Nov 2024 23:12:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1730848322;
-	bh=tYeuqIN6ABGzW67RvPHRA9H0TABKa7wVpxmLpu0jWWk=;
-	h=Date:To:From:Subject:From;
-	b=xpWPIoT3w2EAHnCQs/FwMBY/BPE3UwJe9IqSziT9fDEJiWKqjgh6c7m0rVNlCKfTM
-	 y+plMJuMyUX5lQBGCQvQHt7Krj5FM0u/mjRXOu6hS4rc8VlIKGoVacOU7KCyss+0VS
-	 JH4PDwkQaR3shrspa6OiqGgPcouWXkDas2D5P+9o=
-Date: Tue, 05 Nov 2024 15:12:02 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,gregkh@linuxfoundation.org,bartosz.golaszewski@linaro.org,aardelean@baylibre.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + util_macrosh-fix-rework-find_closest-macros.patch added to mm-nonmm-unstable branch
-Message-Id: <20241105231202.CC436C4CECF@smtp.kernel.org>
+	s=arc-20240116; t=1730850618; c=relaxed/simple;
+	bh=11QYskxSrOKpO01eCvEYDEOAEFwLKvxx51MElH/CaX8=;
+	h=Date:Subject:From:To:Cc:Message-ID:MIME-Version:In-Reply-To:
+	 References:Content-Type; b=GXmOmSGIGkgLfwVEgpUfV7rUVhSWhr0nw2ZOU4O8MAlEJ0a2ZDkpCyh4VZ2se5YcZUiBGFotUijYfBsXGep15vW9oaR508E/+OwfaTkvXi3IvsDiP+GaHV/VS0DghXfxXZ+04+izB6wzLJcS30B3bkzu7+bZXNTsou9vcPsFpOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JktmTDu8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAD4C4CECF;
+	Tue,  5 Nov 2024 23:50:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730850617;
+	bh=11QYskxSrOKpO01eCvEYDEOAEFwLKvxx51MElH/CaX8=;
+	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
+	b=JktmTDu8nTA6HU8XCHbNpcG0QZzdaJvXeZEYBayiOJwscHXvPNmmUchRYpq3ufOFD
+	 g7CASd88fQZRm1Q9E/6wm7h5dyOiipRemrOwOX9q0qg0OyPn/H1WcgTAD711+ENnIC
+	 jiqyfh4J4UisF3aMLbT1tWgBq9KlJ2Hp1Rcu5r+34/QRFAv35oKK9FOfwdyAC2h4LL
+	 qiM81I7hXH2j9qi8ECKJR09oKTKfGleTDRs5Wy0Vqdv5vyHKi8wXPIGV2xMYuabUZE
+	 N+yOqeJhKJwUzyoHindH6f7w29KYsZfsUFZS0uHNWElxrcOg6BgjZBc5bDEQAZ2XLO
+	 HReqN8PlRC0QQ==
+Date: Tue, 05 Nov 2024 15:50:17 -0800
+Subject: [GIT PULL 01/10] xfs: convert perag to use xarrays
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: cem@kernel.org, djwong@kernel.org
+Cc: hch@lst.de, linux-xfs@vger.kernel.org, stable@vger.kernel.org
+Message-ID: <173085053887.1980968.4568095337033968708.stg-ugh@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+In-Reply-To: <20241105234839.GL2386201@frogsfrogsfrogs>
+References: <20241105234839.GL2386201@frogsfrogsfrogs>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
+Hi Carlos,
 
-The patch titled
-     Subject: util_macros.h: fix/rework find_closest() macros
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     util_macrosh-fix-rework-find_closest-macros.patch
+Please pull this branch with changes for xfs for 6.13-rc1.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/util_macrosh-fix-rework-find_closest-macros.patch
+As usual, I did a test-merge with the main upstream branch as of a few
+minutes ago, and didn't see any conflicts.  Please let me know if you
+encounter any problems.
 
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+--D
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+The following changes since commit 59b723cd2adbac2a34fc8e12c74ae26ae45bf230:
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+Linux 6.12-rc6 (2024-11-03 14:05:52 -1000)
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+are available in the Git repository at:
 
-------------------------------------------------------
-From: Alexandru Ardelean <aardelean@baylibre.com>
-Subject: util_macros.h: fix/rework find_closest() macros
-Date: Tue, 5 Nov 2024 16:54:05 +0200
+https://git.kernel.org/pub/scm/linux/kernel/git/djwong/xfs-linux.git tags/perag-xarray-6.13_2024-11-05
 
-A bug was found in the find_closest() (find_closest_descending() is also
-affected after some testing), where for certain values with small
-progressions, the rounding (done by averaging 2 values) causes an
-incorrect index to be returned.  The rounding issues occur for
-progressions of 1, 2 and 3.  It goes away when the progression/interval
-between two values is 4 or larger.
+for you to fetch changes up to d66496578b2a099ea453f56782f1cd2bf63a8029:
 
-It's particularly bad for progressions of 1.  For example if there's an
-array of 'a = { 1, 2, 3 }', using 'find_closest(2, a ...)' would return 0
-(the index of '1'), rather than returning 1 (the index of '2').  This
-means that for exact values (with a progression of 1), find_closest() will
-misbehave and return the index of the value smaller than the one we're
-searching for.
+xfs: insert the pag structures into the xarray later (2024-11-05 13:38:27 -0800)
 
-For progressions of 2 and 3, the exact values are obtained correctly; but
-values aren't approximated correctly (as one would expect).  Starting with
-progressions of 4, all seems to be good (one gets what one would expect).
+----------------------------------------------------------------
+xfs: convert perag to use xarrays [v5.5 01/10]
 
-While one could argue that 'find_closest()' should not be used for arrays
-with progressions of 1 (i.e. '{1, 2, 3, ...}', the macro should still
-behave correctly.
+Convert the xfs_mount perag tree to use an xarray instead of a radix
+tree.  There should be no functional changes here.
 
-The bug was found while testing the 'drivers/iio/adc/ad7606.c',
-specifically the oversampling feature.
-For reference, the oversampling values are listed as:
-   static const unsigned int ad7606_oversampling_avail[7] = {
-          1, 2, 4, 8, 16, 32, 64,
-   };
+With a bit of luck, this should all go splendidly.
 
-When doing:
-  1. $ echo 1 > /sys/bus/iio/devices/iio\:device0/oversampling_ratio
-     $ cat /sys/bus/iio/devices/iio\:device0/oversampling_ratio
-     1  # this is fine
-  2. $ echo 2 > /sys/bus/iio/devices/iio\:device0/oversampling_ratio
-     $ cat /sys/bus/iio/devices/iio\:device0/oversampling_ratio
-     1  # this is wrong; 2 should be returned here
-  3. $ echo 3 > /sys/bus/iio/devices/iio\:device0/oversampling_ratio
-     $ cat /sys/bus/iio/devices/iio\:device0/oversampling_ratio
-     2  # this is fine
-  4. $ echo 4 > /sys/bus/iio/devices/iio\:device0/oversampling_ratio
-     $ cat /sys/bus/iio/devices/iio\:device0/oversampling_ratio
-     4  # this is fine
-And from here-on, the values are as correct (one gets what one would
-expect.)
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
 
-While writing a kunit test for this bug, a peculiar issue was found for the
-array in the 'drivers/hwmon/ina2xx.c' & 'drivers/iio/adc/ina2xx-adc.c'
-drivers. While running the kunit test (for 'ina226_avg_tab' from these
-drivers):
-  * idx = find_closest([-1 to 2], ina226_avg_tab, ARRAY_SIZE(ina226_avg_tab));
-    This returns idx == 0, so value.
-  * idx = find_closest(3, ina226_avg_tab, ARRAY_SIZE(ina226_avg_tab));
-    This returns idx == 0, value 1; and now one could argue whether 3 is
-    closer to 4 or to 1. This quirk only appears for value '3' in this
-    array, but it seems to be a another rounding issue.
-  * And from 4 onwards the 'find_closest'() works fine (one gets what one
-    would expect).
+----------------------------------------------------------------
+Christoph Hellwig (22):
+xfs: fix superfluous clearing of info->low in __xfs_getfsmap_datadev
+xfs: remove the unused pagb_count field in struct xfs_perag
+xfs: remove the unused pag_active_wq field in struct xfs_perag
+xfs: pass a pag to xfs_difree_inode_chunk
+xfs: remove the agno argument to xfs_free_ag_extent
+xfs: add xfs_agbno_to_fsb and xfs_agbno_to_daddr helpers
+xfs: add a xfs_agino_to_ino helper
+xfs: pass a pag to xfs_extent_busy_{search,reuse}
+xfs: keep a reference to the pag for busy extents
+xfs: remove the mount field from struct xfs_busy_extents
+xfs: remove the unused trace_xfs_iwalk_ag trace point
+xfs: remove the unused xrep_bmap_walk_rmap trace point
+xfs: constify pag arguments to trace points
+xfs: pass a perag structure to the xfs_ag_resv_init_error trace point
+xfs: pass objects to the xfs_irec_merge_{pre,post} trace points
+xfs: pass the iunlink item to the xfs_iunlink_update_dinode trace point
+xfs: pass objects to the xrep_ibt_walk_rmap tracepoint
+xfs: pass the pag to the trace_xrep_calc_ag_resblks{,_btsize} trace points
+xfs: pass the pag to the xrep_newbt_extent_class tracepoints
+xfs: convert remaining trace points to pass pag structures
+xfs: split xfs_initialize_perag
+xfs: insert the pag structures into the xarray later
 
-This change reworks the find_closest() macros to also check the difference
-between the left and right elements when 'x'. If the distance to the right
-is smaller (than the distance to the left), the index is incremented by 1.
-This also makes redundant the need for using the DIV_ROUND_CLOSEST() macro.
+Darrick J. Wong (1):
+xfs: fix simplify extent lookup in xfs_can_free_eofblocks
 
-In order to accommodate for any mix of negative + positive values, the
-internal variables '__fc_x', '__fc_mid_x', '__fc_left' & '__fc_right' are
-forced to 'long' type. This also addresses any potential bugs/issues with
-'x' being of an unsigned type. In those situations any comparison between
-signed & unsigned would be promoted to a comparison between 2 unsigned
-numbers; this is especially annoying when '__fc_left' & '__fc_right'
-underflow.
-
-The find_closest_descending() macro was also reworked and duplicated from
-the find_closest(), and it is being iterated in reverse. The main reason
-for this is to get the same indices as 'find_closest()' (but in reverse).
-The comparison for '__fc_right < __fc_left' favors going the array in
-ascending order.
-For example for array '{ 1024, 512, 256, 128, 64, 16, 4, 1 }' and x = 3, we
-get:
-    __fc_mid_x = 2
-    __fc_left = -1
-    __fc_right = -2
-    Then '__fc_right < __fc_left' evaluates to true and '__fc_i++' becomes 7
-    which is not quite incorrect, but 3 is closer to 4 than to 1.
-
-This change has been validated with the kunit from the next patch.
-
-Link: https://lkml.kernel.org/r/20241105145406.554365-1-aardelean@baylibre.com
-Fixes: 95d119528b0b ("util_macros.h: add find_closest() macro")
-Signed-off-by: Alexandru Ardelean <aardelean@baylibre.com>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/linux/util_macros.h |   56 ++++++++++++++++++++++++----------
- 1 file changed, 40 insertions(+), 16 deletions(-)
-
---- a/include/linux/util_macros.h~util_macrosh-fix-rework-find_closest-macros
-+++ a/include/linux/util_macros.h
-@@ -4,19 +4,6 @@
- 
- #include <linux/math.h>
- 
--#define __find_closest(x, a, as, op)					\
--({									\
--	typeof(as) __fc_i, __fc_as = (as) - 1;				\
--	typeof(x) __fc_x = (x);						\
--	typeof(*a) const *__fc_a = (a);					\
--	for (__fc_i = 0; __fc_i < __fc_as; __fc_i++) {			\
--		if (__fc_x op DIV_ROUND_CLOSEST(__fc_a[__fc_i] +	\
--						__fc_a[__fc_i + 1], 2))	\
--			break;						\
--	}								\
--	(__fc_i);							\
--})
--
- /**
-  * find_closest - locate the closest element in a sorted array
-  * @x: The reference value.
-@@ -25,8 +12,27 @@
-  * @as: Size of 'a'.
-  *
-  * Returns the index of the element closest to 'x'.
-+ * Note: If using an array of negative numbers (or mixed positive numbers),
-+ *       then be sure that 'x' is of a signed-type to get good results.
-  */
--#define find_closest(x, a, as) __find_closest(x, a, as, <=)
-+#define find_closest(x, a, as)						\
-+({									\
-+	typeof(as) __fc_i, __fc_as = (as) - 1;				\
-+	long __fc_mid_x, __fc_x = (x);					\
-+	long __fc_left, __fc_right;					\
-+	typeof(*a) const *__fc_a = (a);					\
-+	for (__fc_i = 0; __fc_i < __fc_as; __fc_i++) {			\
-+		__fc_mid_x = (__fc_a[__fc_i] + __fc_a[__fc_i + 1]) / 2;	\
-+		if (__fc_x <= __fc_mid_x) {				\
-+			__fc_left = __fc_x - __fc_a[__fc_i];		\
-+			__fc_right = __fc_a[__fc_i + 1] - __fc_x;	\
-+			if (__fc_right < __fc_left)			\
-+				__fc_i++;				\
-+			break;						\
-+		}							\
-+	}								\
-+	(__fc_i);							\
-+})
- 
- /**
-  * find_closest_descending - locate the closest element in a sorted array
-@@ -36,9 +42,27 @@
-  * @as: Size of 'a'.
-  *
-  * Similar to find_closest() but 'a' is expected to be sorted in descending
-- * order.
-+ * order. The iteration is done in reverse order, so that the comparison
-+ * of '__fc_right' & '__fc_left' also works for unsigned numbers.
-  */
--#define find_closest_descending(x, a, as) __find_closest(x, a, as, >=)
-+#define find_closest_descending(x, a, as)				\
-+({									\
-+	typeof(as) __fc_i, __fc_as = (as) - 1;				\
-+	long __fc_mid_x, __fc_x = (x);					\
-+	long __fc_left, __fc_right;					\
-+	typeof(*a) const *__fc_a = (a);					\
-+	for (__fc_i = __fc_as; __fc_i >= 1; __fc_i--) {			\
-+		__fc_mid_x = (__fc_a[__fc_i] + __fc_a[__fc_i - 1]) / 2;	\
-+		if (__fc_x <= __fc_mid_x) {				\
-+			__fc_left = __fc_x - __fc_a[__fc_i];		\
-+			__fc_right = __fc_a[__fc_i - 1] - __fc_x;	\
-+			if (__fc_right < __fc_left)			\
-+				__fc_i--;				\
-+			break;						\
-+		}							\
-+	}								\
-+	(__fc_i);							\
-+})
- 
- /**
-  * is_insidevar - check if the @ptr points inside the @var memory range.
-_
-
-Patches currently in -mm which might be from aardelean@baylibre.com are
-
-util_macrosh-fix-rework-find_closest-macros.patch
-lib-util_macros_kunit-add-kunit-test-for-util_macrosh.patch
+fs/xfs/libxfs/xfs_ag.c             | 135 ++++++++++++++------------
+fs/xfs/libxfs/xfs_ag.h             |  30 +++++-
+fs/xfs/libxfs/xfs_ag_resv.c        |   3 +-
+fs/xfs/libxfs/xfs_alloc.c          |  32 +++----
+fs/xfs/libxfs/xfs_alloc.h          |   5 +-
+fs/xfs/libxfs/xfs_alloc_btree.c    |   2 +-
+fs/xfs/libxfs/xfs_btree.c          |   7 +-
+fs/xfs/libxfs/xfs_ialloc.c         |  67 ++++++-------
+fs/xfs/libxfs/xfs_ialloc_btree.c   |   2 +-
+fs/xfs/libxfs/xfs_inode_util.c     |   4 +-
+fs/xfs/libxfs/xfs_refcount.c       |  11 +--
+fs/xfs/libxfs/xfs_refcount_btree.c |   3 +-
+fs/xfs/libxfs/xfs_rmap_btree.c     |   2 +-
+fs/xfs/scrub/agheader_repair.c     |  16 +---
+fs/xfs/scrub/alloc_repair.c        |  10 +-
+fs/xfs/scrub/bmap.c                |   5 +-
+fs/xfs/scrub/bmap_repair.c         |   4 +-
+fs/xfs/scrub/common.c              |   2 +-
+fs/xfs/scrub/cow_repair.c          |  18 ++--
+fs/xfs/scrub/ialloc.c              |   8 +-
+fs/xfs/scrub/ialloc_repair.c       |  25 ++---
+fs/xfs/scrub/newbt.c               |  46 ++++-----
+fs/xfs/scrub/reap.c                |   8 +-
+fs/xfs/scrub/refcount_repair.c     |   5 +-
+fs/xfs/scrub/repair.c              |  13 ++-
+fs/xfs/scrub/rmap_repair.c         |   9 +-
+fs/xfs/scrub/trace.h               | 161 +++++++++++++++----------------
+fs/xfs/xfs_bmap_util.c             |   8 +-
+fs/xfs/xfs_buf_item_recover.c      |   5 +-
+fs/xfs/xfs_discard.c               |  20 ++--
+fs/xfs/xfs_extent_busy.c           |  31 +++---
+fs/xfs/xfs_extent_busy.h           |  14 ++-
+fs/xfs/xfs_extfree_item.c          |   4 +-
+fs/xfs/xfs_filestream.c            |   5 +-
+fs/xfs/xfs_fsmap.c                 |  25 ++---
+fs/xfs/xfs_health.c                |   8 +-
+fs/xfs/xfs_inode.c                 |   5 +-
+fs/xfs/xfs_iunlink_item.c          |  13 ++-
+fs/xfs/xfs_iwalk.c                 |  17 ++--
+fs/xfs/xfs_log_cil.c               |   3 +-
+fs/xfs/xfs_log_recover.c           |   5 +-
+fs/xfs/xfs_trace.c                 |   1 +
+fs/xfs/xfs_trace.h                 | 191 ++++++++++++++++---------------------
+fs/xfs/xfs_trans.c                 |   2 +-
+44 files changed, 459 insertions(+), 531 deletions(-)
 
 
