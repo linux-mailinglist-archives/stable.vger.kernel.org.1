@@ -1,149 +1,117 @@
-Return-Path: <stable+bounces-89804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75B379BC870
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 09:56:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAE3B9BC8D6
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 10:15:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A757282DF9
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 08:56:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 938851F22140
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 09:15:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485DF1D1F72;
-	Tue,  5 Nov 2024 08:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A79E11CCB2D;
+	Tue,  5 Nov 2024 09:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="f9WIva65"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZCwyxRdm"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898D11D1E99;
-	Tue,  5 Nov 2024 08:55:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E5118953D;
+	Tue,  5 Nov 2024 09:15:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730796954; cv=none; b=naTQvQMZbiyO2RrsXUckvcgxXaMq7kwA8FXD6R29BSmyrwOtIyraOyEQd6T4ek5qsSoOz4ATUZKYONVeEJZaUQutZYbo1o67EJ1WWyolgRrkhlh/Wqhbx4B32aPfKK23B8Js6keIM0cltnM+xnwMVbN9PuyWwizvEJnyqXQ0y6A=
+	t=1730798110; cv=none; b=HJM7K6sdKwFY5h+zByMK40/W6LoIqKkxVjDPNbWfjdNq0xoMyqJuyHeEmZ1NRYgawWy07DeksKYv4kbDYcRy9y6Rm8VQ+mP/x8ttFuUlj2V8RI2tLNidzHIhjCytpcK1l14YkJFzoOUpQcoe7OF54SChnYzrjLDBNSjVQkegeUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730796954; c=relaxed/simple;
-	bh=iGPouEmRZkxRAybaw+1alorRqCjGkzNm0yXj2nsE44M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=YofQ5F6GTY4jIer72HdU8Xn9jt6P3hWdGb78q0FVPMHKt9ODtZmCyLujc4qsEmoD8xOW0TQ09EKe5tEOpkDLlTCePDJiHKuFppp+pu4dopGD151y3e9dnSMjGYt1SPQ2fRBJ0/fZfrpcCXNwKPnbmcmbmQw5aBRc7CM76ax1aNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=f9WIva65; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A4LIiad012119;
-	Tue, 5 Nov 2024 08:55:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	DIlIQ93Yx7bC1OfENFyyT9yNN8jknFcjVFrhZxojJSs=; b=f9WIva65JBvh9V6+
-	9EsiYyGWDnNCFtzEriDg2bmrViMSOnSxMLlFK7MfPX2NQyAYTB27pXYkNqwKuic4
-	qSMdJGT+H1mVN51N2dZ123iwXElrfRn5zToxK/ScnXE4mFYK/5IEcVW5fOqw+tmt
-	n8DeN7UmDMuoWrGov1bsMReKaVY7hE3jPwrWeDKjmWcwh+7k8zwdky6kDZ3pJx1U
-	QsOQeSxcSKqEjk09aKoK4S2e96WCyycBHwhdycY9mhjsjhGsjV0Miqh9CFoSLRRa
-	ZS/1pMkgK0zb05lb4na2xA5ZAOCXhSwEPlOFnzxkVsPzdSG/C2qp6EDclsSqPZaB
-	vANRyQ==
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42nd11y08e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 Nov 2024 08:55:48 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A58tlU1029707
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 5 Nov 2024 08:55:47 GMT
-Received: from hu-vgarodia-hyd.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 5 Nov 2024 00:55:45 -0800
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
-Date: Tue, 5 Nov 2024 14:24:57 +0530
-Subject: [PATCH 4/4] media: venus: hfi: add a check to handle OOB in sfr
- region
+	s=arc-20240116; t=1730798110; c=relaxed/simple;
+	bh=14CNKxktVrIXSvXhbiFpvz3Rf9GP+5/M/fSs3GIO6AI=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DB9A/y3mslF+VrENMgnarWjijEGhTTNStKG5F7OyPT5Dc+hX22cWJREUL8c8qx4wIL3a5PIDk5ui1za2qIrEcVJVtwZHDH2sVFIz2LCAWi8VLfjens6qycp++ZC8orIbOBcTwnkKZY3trDCLRAdqaea16beYyBUmgYoIxOmMd48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZCwyxRdm; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43155afca99so38054945e9.1;
+        Tue, 05 Nov 2024 01:15:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730798107; x=1731402907; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=tKl2auZ2E/RrfHwQmKMB0HALAZPgDwx6wHcuNMuoIGI=;
+        b=ZCwyxRdmhM2ZQKBzh5gfKQTUi3vBFNoJfbicMx0JZi/mvLR8Ugdi4SWq9Vx4whh+1v
+         vQPSXzjztS2EzsL0V29IAHa3DmMaBGW9DSo0Rx/i2lTd6UMKPWp+Zxvap26Uh6XuGkmh
+         hAeHOB4FeXbHS5mOHmUNBGSgvNW9EK43EEwREk+NCMW27B8yUdVVoWmZrjgrqGQY5Xe3
+         t3cI2TXMCNK7qVx/9c+QfGV2z/SJO5pJMEXAfbBT//IsCQnGTQNTtx1C+qMFrevS1iWg
+         7Q8fyyi+dKt5qPnBZY3J5TwmDZlLPG5jY9m8whGaqzTgvQuQ3x7xucvjME7YsrRmq6kZ
+         9mfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730798107; x=1731402907;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tKl2auZ2E/RrfHwQmKMB0HALAZPgDwx6wHcuNMuoIGI=;
+        b=Fon5gMkgI5vPns6AoUDw3diRI1Ha5+bB+SWgX8rFl1zZJnlESGj5/rGAFCdl8FD7iH
+         Q4kzWIolv0TngiL+vaElWQ2YkORkmjCSgNdmkgnGezgjPCv565swGO5z8BFvuAjKfP0e
+         VevoRRHTy53vT0DUUDbbJi+ZNzw/efACPLslHZmYMkCobo41IfH3tuTiUucyY/ZxLGds
+         h+XbQIVAOdruzM93jey1VzL7z0ibkcpxbzpPFlVd7pqbasv0js/H9VVoCyyC7yRgOUqw
+         7iuxJZTtK/qStC+buF3DagSAi5YLzInurj2j3QqCddwMaI1EDYYp0y3zDGlysWP1IC9h
+         2oFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXTLZ/BdY8q5c42ID5NmqL1zD4KoKrJaaY9CC3XtFKJoB0FiS3y3s1Tp1ztKDfxMHK3hLw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwYElrxDTEaAAP0fL3QXKkAJrK/V8lMAUZfTSDioH/I17ETz7M
+	g7uSTMXjleuczZMcVHpUyjjyvwKpir9AcCPZupJsEeYiryRmHFDH
+X-Google-Smtp-Source: AGHT+IHtJBIY/LRmN/ZDDuyyzGKSxGQfz1wGOcIiCPO0FyFJHteJeBQlYp40M64o3dqwMSLfd4hJ2g==
+X-Received: by 2002:a05:6000:401f:b0:37c:ccba:8c93 with SMTP id ffacd0b85a97d-381c145e818mr14681220f8f.11.1730798106475;
+        Tue, 05 Nov 2024 01:15:06 -0800 (PST)
+Received: from krava (2001-1ae9-1c2-4c00-726e-c10f-8833-ff22.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:726e:c10f:8833:ff22])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c113e69fsm15478097f8f.69.2024.11.05.01.15.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Nov 2024 01:15:06 -0800 (PST)
+From: Jiri Olsa <olsajiri@gmail.com>
+X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
+Date: Tue, 5 Nov 2024 10:15:04 +0100
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, bpf@vger.kernel.org,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>
+Subject: Re: Fix build ID parsing logic in stable trees
+Message-ID: <ZyniGMz5QLhGVWSY@krava>
+References: <20241104175256.2327164-1-jolsa@kernel.org>
+ <2024110536-agonizing-campus-21f0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20241105-venus_oob-v1-4-8d4feedfe2bb@quicinc.com>
-References: <20241105-venus_oob-v1-0-8d4feedfe2bb@quicinc.com>
-In-Reply-To: <20241105-venus_oob-v1-0-8d4feedfe2bb@quicinc.com>
-To: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-        Bryan O'Donoghue
-	<bryan.odonoghue@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>
-CC: <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Vikash Garodia <quic_vgarodia@quicinc.com>, <stable@vger.kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1730796934; l=1440;
- i=quic_vgarodia@quicinc.com; s=20241104; h=from:subject:message-id;
- bh=iGPouEmRZkxRAybaw+1alorRqCjGkzNm0yXj2nsE44M=;
- b=rLbc6Bfe3C74h4smkOpubA7BtYi2kaq5os4+rs0TiJWGM8MMkseIBgcRdyRqXTK/6qns2ab7L
- nWheDsumLi1Dxoo1CMX2n00VGojrfrt0+OTPvnFItm5yMqrnTJD5SLV
-X-Developer-Key: i=quic_vgarodia@quicinc.com; a=ed25519;
- pk=LY9Eqp4KiHWxzGNKGHbwRFEJOfRCSzG/rxQNmvZvaKE=
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 3S6C3G7qV9mkRoP5yUzZ8KFy-QCtXGNX
-X-Proofpoint-ORIG-GUID: 3S6C3G7qV9mkRoP5yUzZ8KFy-QCtXGNX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=760
- mlxscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
- priorityscore=1501 impostorscore=0 spamscore=0 bulkscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411050063
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2024110536-agonizing-campus-21f0@gregkh>
 
-sfr->buf_size is in shared memory and can be modified by malicious user.
-OOB write is possible when the size is made higher than actual sfr data
-buffer.
+On Tue, Nov 05, 2024 at 07:54:48AM +0100, Greg KH wrote:
+> On Mon, Nov 04, 2024 at 06:52:52PM +0100, Jiri Olsa wrote:
+> > hi,
+> > sending fix for buildid parsing that affects only stable trees
+> > after merging upstream fix [1].
+> > 
+> > Upstream then factored out the whole buildid parsing code, so it
+> > does not have the problem.
+> 
+> Why not just take those patches instead?
 
-Cc: stable@vger.kernel.org
-Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
----
- drivers/media/platform/qcom/venus/hfi_venus.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+I guess we could, but I thought it's too big for stable
 
-diff --git a/drivers/media/platform/qcom/venus/hfi_venus.c b/drivers/media/platform/qcom/venus/hfi_venus.c
-index 50d92214190d88eff273a5ba3f95486f758bcc05..c19d6bf686d0f31c6a2f551de3f7eb08031bde85 100644
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -1041,18 +1041,23 @@ static void venus_sfr_print(struct venus_hfi_device *hdev)
- {
- 	struct device *dev = hdev->core->dev;
- 	struct hfi_sfr *sfr = hdev->sfr.kva;
-+	u32 size;
- 	void *p;
- 
- 	if (!sfr)
- 		return;
- 
--	p = memchr(sfr->data, '\0', sfr->buf_size);
-+	size = sfr->buf_size;
-+	if (size > ALIGNED_SFR_SIZE)
-+		return;
-+
-+	p = memchr(sfr->data, '\0', size);
- 	/*
- 	 * SFR isn't guaranteed to be NULL terminated since SYS_ERROR indicates
- 	 * that Venus is in the process of crashing.
- 	 */
- 	if (!p)
--		sfr->data[sfr->buf_size - 1] = '\0';
-+		sfr->data[size - 1] = '\0';
- 
- 	dev_err_ratelimited(dev, "SFR message from FW: %s\n", sfr->data);
- }
+we'd need following 2 changes to fix the issue:
+  de3ec364c3c3 lib/buildid: add single folio-based file reader abstraction
+  60c845b4896b lib/buildid: take into account e_phoff when fetching program headers
 
--- 
-2.34.1
+and there's also few other follow ups:
+  5ac9b4e935df lib/buildid: Handle memfd_secret() files in build_id_parse()
+  cdbb44f9a74f lib/buildid: don't limit .note.gnu.build-id to the first page in ELF
+  ad41251c290d lib/buildid: implement sleepable build_id_parse() API
+  45b8fc309654 lib/buildid: rename build_id_parse() into build_id_parse_nofault()
+  4e9d360c4cdf lib/buildid: remove single-page limit for PHDR search
 
+which I guess are not strictly needed
+
+jirka
 
