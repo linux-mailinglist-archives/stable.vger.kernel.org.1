@@ -1,136 +1,137 @@
-Return-Path: <stable+bounces-89813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-89814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 854369BCB01
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 11:51:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2775B9BCB04
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 11:51:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B73E11C223DC
-	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 10:51:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 597E21C22521
+	for <lists+stable@lfdr.de>; Tue,  5 Nov 2024 10:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6AA91D3633;
-	Tue,  5 Nov 2024 10:51:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ikfewV4C"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A05A1D2F72;
+	Tue,  5 Nov 2024 10:51:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB04B1D3195
-	for <stable@vger.kernel.org>; Tue,  5 Nov 2024 10:51:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8111D2F48;
+	Tue,  5 Nov 2024 10:51:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730803889; cv=none; b=Uz3KmZHNzgLev7nEtBqI8rTj/MMr9Drwnps+pVe5OnTxbDNhqPbFwtcwryA9TJu9lIwUr4DN8MRAfI3PU3qdT2R0CvHiJHOu2JJ+zCarqTClL1DQAWVtseRj3m4qpKYmgzTRlbxBluo8w52yT3Rcf4jAzIMsLLlqjtCLswt4iRw=
+	t=1730803901; cv=none; b=AUlk42iFAI+rQq6tuUVm/gHvpqZCkf3ttQvjYXMvO8Xtkolpd/S8XRdtt8m1C5yey5SSAN1vyG0RVK07BQBYVY44wVSx+Ma+TUYifqySr/IE9GhetATgjrG1A3q52okX3sFvPFZrMyk36qq8eFiau+PJRDwipaDzYaxOeeHQt8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730803889; c=relaxed/simple;
-	bh=HD+BgOOVBl5mx7chCMOpk4RtL2B+f8ert3pkr1zMpqA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QxGeur5hVIjd7bXciPrZWCum8RExpEey1PEhyS0mYnIfeJBRuYccL8sYyAoF1IZ1ju3BPfZUUAJVDMW6XctSgQ/eeQNHKMGsut34cVllB9JZ75C5mHER1CjW22hkeyw5S0kMIQHuLOyg8D5TWDIKr75f7/ITPLmPDH25+afwwYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ikfewV4C; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4315eeb2601so62766045e9.2
-        for <stable@vger.kernel.org>; Tue, 05 Nov 2024 02:51:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730803886; x=1731408686; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8ATNs/B/w+2yp0EYeoeJF01EDXlRzVZxzeXpZEXEEfY=;
-        b=ikfewV4COefm9gwaIO0IxX3dbvV2S1d9cgPiGAJMVw2DFMm9voM9DE0lpEL+Me6AYl
-         j7akomgGodRuAvryorhtNuFXzdFfAOX4qxEdVl4vxynWy8V4QdZphz5bdDy8JKEoT8Me
-         ksWHuPDWGniPKqTT9/l2ekyjoxKwgLalxsLGfdlqAb5zNFwX+VMpVzsi/emgy9Jk+6dJ
-         7/zK+xbnfMIRTmSDPaW6sJiI7fDuTfzOUkXecz1UaQIy/JTTWeL9/ejQaG+FzJfUE8bd
-         Nfo49EWgcFAb701SbNqiUuTt2iT42xkfRk4Qy7GViIHP1q8Mls5yCRaUUlD3AR6ZPUNt
-         2Rig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730803886; x=1731408686;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8ATNs/B/w+2yp0EYeoeJF01EDXlRzVZxzeXpZEXEEfY=;
-        b=wCUc6EqiTa1ZnZy00WyHUjE6oNKy2Czs/P+Z+xll+25SFsLEnrxcmzcuCo1S9WSm3n
-         fHcnOYmNSQ3A2/RSi50sF3Li+mBAQNWuRjm85Yp6Vd2Jjuuizq6rV3ZBoN/F2Jwd04LU
-         rfNUbdEw9q1zFh5IPu4FiyAqHhaIy0kPmaBhDLy5vs28bIKGoUT3maG5aasajwEtwEhC
-         ce9/oSp4LLq/130R4tncjmgDNtWav7aNjEjapG0nYHlWRC8nKXrYGpdAxQwQvQZwzg6k
-         +VZvJBnvpxvvgfyMEFXKBOEchaJzG13opZYnHZaM3V5A4/2agtkZ9fZSHQsPdbdZmv6t
-         n4TA==
-X-Forwarded-Encrypted: i=1; AJvYcCUpQUSfCBWgdjxB51t7F6rcVpESyCG+UXdHx0kYFlvbzwZR0JQP4t1uqCMq0DsJRfrOeyNuvbg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnGQvMHidX1GN5AgX8mFmtB9Z2rsdCgFLA2MYiMRYiSOSRLs5b
-	FA4K3Oc6yIOoak0Ls9Eiw/5pTodQ65qqpNits72R3maJEllM86SKkQH74pvos4U=
-X-Google-Smtp-Source: AGHT+IH71ZuNZKuI+PZhGTdJo4OsIY4DbJKX5pqqVUQT1HsIyvod98087dQv/2ssVzIfDzdbe8PZUg==
-X-Received: by 2002:a05:600c:1d1e:b0:431:604d:b22 with SMTP id 5b1f17b1804b1-43283255922mr160211525e9.16.1730803884606;
-        Tue, 05 Nov 2024 02:51:24 -0800 (PST)
-Received: from [192.168.0.40] ([176.61.106.227])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c116af7esm15800883f8f.103.2024.11.05.02.51.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Nov 2024 02:51:24 -0800 (PST)
-Message-ID: <640fe933-078d-4bf5-815c-7db0eb8b9de4@linaro.org>
-Date: Tue, 5 Nov 2024 10:51:22 +0000
+	s=arc-20240116; t=1730803901; c=relaxed/simple;
+	bh=JCduaAp7dOeRgXy+BkzoDK46oi51ypHdAiEnxGSZR0k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jzr9rsJHXl9rBUO5b7gE4vEwNYT2zzSEEqe3p68QPWSmBuD/gBp99IgBjWlp0+PbgK1Hr/FeKyrRR8GSxa6bIpFLZifZxFFCWcDW6fYifhhqeDnSlWaK0bMnpqHx3KAF7Vnz5Pfrr4rIvnV9sN0/KLOUCpoHajEHzlRnEPbE+5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6DABC4CECF;
+	Tue,  5 Nov 2024 10:51:38 +0000 (UTC)
+Date: Tue, 5 Nov 2024 10:51:36 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Koichiro Den <koichiro.den@gmail.com>
+Cc: vbabka@suse.cz, cl@linux.com, penberg@kernel.org, rientjes@google.com,
+	iamjoonsoo.kim@lge.com, akpm@linux-foundation.org,
+	roman.gushchin@linux.dev, 42.hyeyoo@gmail.com, kees@kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/slab: fix warning caused by duplicate kmem_cache
+ creation in kmem_buckets_create
+Message-ID: <Zyn4uGY7pObMD14u@arm.com>
+References: <20241105022747.2819151-1-koichiro.den@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] media: venus: hfi_parser: add check to avoid out of
- bound access
-To: Vikash Garodia <quic_vgarodia@quicinc.com>,
- Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20241105-venus_oob-v1-0-8d4feedfe2bb@quicinc.com>
- <20241105-venus_oob-v1-1-8d4feedfe2bb@quicinc.com>
-Content-Language: en-US
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20241105-venus_oob-v1-1-8d4feedfe2bb@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241105022747.2819151-1-koichiro.den@gmail.com>
 
-On 05/11/2024 08:54, Vikash Garodia wrote:
-> There is a possibility that init_codecs is invoked multiple times during
-> manipulated payload from video firmware. In such case, if codecs_count
-> can get incremented to value more than MAX_CODEC_NUM, there can be OOB
-> access. Keep a check for max accessible memory before accessing it.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
-> Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-> ---
->   drivers/media/platform/qcom/venus/hfi_parser.c | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c b/drivers/media/platform/qcom/venus/hfi_parser.c
-> index 3df241dc3a118bcdeb2c28a6ffdb907b644d5653..27d0172294d5154f4839e8cef172f9a619dfa305 100644
-> --- a/drivers/media/platform/qcom/venus/hfi_parser.c
-> +++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-> @@ -23,6 +23,8 @@ static void init_codecs(struct venus_core *core)
->   		return;
->   
->   	for_each_set_bit(bit, &core->dec_codecs, MAX_CODEC_NUM) {
-> +		if (core->codecs_count >= MAX_CODEC_NUM)
-> +			return;
->   		cap = &caps[core->codecs_count++];
->   		cap->codec = BIT(bit);
->   		cap->domain = VIDC_SESSION_TYPE_DEC;
-> @@ -30,6 +32,8 @@ static void init_codecs(struct venus_core *core)
->   	}
->   
->   	for_each_set_bit(bit, &core->enc_codecs, MAX_CODEC_NUM) {
-> +		if (core->codecs_count >= MAX_CODEC_NUM)
-> +			return;
->   		cap = &caps[core->codecs_count++];
->   		cap->codec = BIT(bit);
->   		cap->domain = VIDC_SESSION_TYPE_ENC;
-> 
+On Tue, Nov 05, 2024 at 11:27:47AM +0900, Koichiro Den wrote:
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index 3d26c257ed8b..db6ffe53c23e 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -380,8 +380,11 @@ kmem_buckets *kmem_buckets_create(const char *name, slab_flags_t flags,
+>  				  unsigned int usersize,
+>  				  void (*ctor)(void *))
+>  {
+> +	unsigned long mask = 0;
+> +	unsigned int idx;
+>  	kmem_buckets *b;
+> -	int idx;
+> +
+> +	BUILD_BUG_ON(ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]) > BITS_PER_LONG);
+>  
+>  	/*
+>  	 * When the separate buckets API is not built in, just return
+> @@ -403,7 +406,7 @@ kmem_buckets *kmem_buckets_create(const char *name, slab_flags_t flags,
+>  	for (idx = 0; idx < ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]); idx++) {
+>  		char *short_size, *cache_name;
+>  		unsigned int cache_useroffset, cache_usersize;
+> -		unsigned int size;
+> +		unsigned int size, aligned_idx;
+>  
+>  		if (!kmalloc_caches[KMALLOC_NORMAL][idx])
+>  			continue;
+> @@ -416,10 +419,6 @@ kmem_buckets *kmem_buckets_create(const char *name, slab_flags_t flags,
+>  		if (WARN_ON(!short_size))
+>  			goto fail;
+>  
+> -		cache_name = kasprintf(GFP_KERNEL, "%s-%s", name, short_size + 1);
+> -		if (WARN_ON(!cache_name))
+> -			goto fail;
+> -
+>  		if (useroffset >= size) {
+>  			cache_useroffset = 0;
+>  			cache_usersize = 0;
+> @@ -427,18 +426,29 @@ kmem_buckets *kmem_buckets_create(const char *name, slab_flags_t flags,
+>  			cache_useroffset = useroffset;
+>  			cache_usersize = min(size - cache_useroffset, usersize);
+>  		}
+> -		(*b)[idx] = kmem_cache_create_usercopy(cache_name, size,
+> -					0, flags, cache_useroffset,
+> -					cache_usersize, ctor);
+> -		kfree(cache_name);
+> -		if (WARN_ON(!(*b)[idx]))
+> -			goto fail;
+> +
+> +		aligned_idx = __kmalloc_index(size, false);
+> +		if (!(*b)[aligned_idx]) {
+> +			cache_name = kasprintf(GFP_KERNEL, "%s-%s", name, short_size + 1);
+> +			if (WARN_ON(!cache_name))
+> +				goto fail;
+> +			(*b)[aligned_idx] = kmem_cache_create_usercopy(cache_name, size,
+> +						0, flags, cache_useroffset,
+> +						cache_usersize, ctor);
+> +			if (WARN_ON(!(*b)[aligned_idx])) {
+> +				kfree(cache_name);
+> +				goto fail;
+> +			}
+> +			set_bit(aligned_idx, &mask);
+> +		}
+> +		if (idx != aligned_idx)
+> +			(*b)[idx] = (*b)[aligned_idx];
+>  	}
 
-I don't see how codecs_count could be greater than the control, since 
-you increment by one on each loop but >= is fine too I suppose.
+It looks fine. This pretty much matches the logic in new_kmalloc_cache()
+(from commit 963e84b0f262).
 
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+>  	return b;
+>  
+>  fail:
+> -	for (idx = 0; idx < ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]); idx++)
+> +	for_each_set_bit(idx, &mask, ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]))
+>  		kmem_cache_destroy((*b)[idx]);
+>  	kmem_cache_free(kmem_buckets_cache, b);
+
+I gave this a try with swiotlb=noforce as well (which pushed the minimum
+alignment to 64). So:
+
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Tested-by: Catalin Marinas <catalin.marinas@arm.com>
 
