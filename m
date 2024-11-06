@@ -1,105 +1,115 @@
-Return-Path: <stable+bounces-91649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 976D19BEF3E
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:40:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E269BEF53
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 14:43:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 310DFB22B25
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:40:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95525285352
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05681F80C4;
-	Wed,  6 Nov 2024 13:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7101F9EBA;
+	Wed,  6 Nov 2024 13:43:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qfRrOfXm"
 X-Original-To: stable@vger.kernel.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD6438F82
-	for <stable@vger.kernel.org>; Wed,  6 Nov 2024 13:40:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.228.1.57
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D991F9EAB;
+	Wed,  6 Nov 2024 13:43:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730900418; cv=none; b=L7IC50nmSLEG5vop7IUJgokKmPQQ+objvgJHWeWeHasjc+NyiRpxoV4jjZhK5TyuEuuv7C+BPjxxw7YuzyPZ8AogFP+fONB/FAg6dlBkrBQlhPvge9DVzggc3PEw6kdC/IEL4Xua1K/dcy3+BCsFIkk/9BHclJ/mTdHkmjdE0FE=
+	t=1730900621; cv=none; b=Ba8EaKXXmZ21ZuZz100zAMfnCptiIGeW0/BfV8Qt0xKuUxNr9h5JPdr/JIFjYNPzd64MJR+Sytziyt8nhBn7LAYhvMKIsxLqGT5qJMDTk9sdtE3UfzT8XaJjKuVRMRjeO1C5PRLN50tfIesTxt+SjTnqAMRnDfZp6QSjKh7j9IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730900418; c=relaxed/simple;
-	bh=A4gbR+RkOu9mDrb8WX7Cq6hfSKoxr2wHINr+gQIjYCE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fwj3kiZvFY0pB7dEGEK8+8TZZGdQr1NuBHe6aOabJ8jfK/TXOY7BjbLAB39bHD6weUuQ6cz1uK56duRudLTw2t0DApDflErAMPCJrbTtGfYuiFHRShAEuZUinKVAbF/4cyQlAsdCR2tGc6G3W+0yJifdZtIsM/zpD5zraY26VhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org; spf=pass smtp.mailfrom=kernel.crashing.org; arc=none smtp.client-ip=63.228.1.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.crashing.org
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
-	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 4A6DbrZA029304;
-	Wed, 6 Nov 2024 07:37:53 -0600
-Received: (from segher@localhost)
-	by gate.crashing.org (8.14.1/8.14.1/Submit) id 4A6Dbqdj029302;
-	Wed, 6 Nov 2024 07:37:52 -0600
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date: Wed, 6 Nov 2024 07:37:52 -0600
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Nathan Chancellor <nathan@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
-        llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH] powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit files with clang
-Message-ID: <20241106133752.GG29862@gate.crashing.org>
-References: <20241030-powerpc-vdso-drop-stackp-flags-clang-v1-1-d95e7376d29c@kernel.org> <884cf694-09c7-4082-a6b1-6de987025bf8@csgroup.eu>
+	s=arc-20240116; t=1730900621; c=relaxed/simple;
+	bh=AvHJghciWDhD/x8KUXSpLz7qHkc2aFQiPOOMs5V1Fv0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F4dcQivjX19G5DWDcUjkdb8fqqx7RE9J0/tq1kHBzu18VGS4rwEJlHbUjyGsrTRBcUYq7v489Gwgh0OEz8BhUulzg3GA92Kl08em1JTTkFjOOYui2oEe8s1Fg9JZLNJvKbo9krA51SHgVRtYgy8AK3iGwB02UCc0NzSbkpNSwaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qfRrOfXm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69956C4CECD;
+	Wed,  6 Nov 2024 13:43:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730900621;
+	bh=AvHJghciWDhD/x8KUXSpLz7qHkc2aFQiPOOMs5V1Fv0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qfRrOfXmESwZyDQhPNkDJgGi8YWbap+zQSnnKTjNRq0K9d9rKEeLHS6ISBOc0j2kr
+	 T0QHzq7K9ZnLcN6d6mrBJQs6WBeU6BUvOvI/eGFXtWd9TAftn+cVheqed+TaW5m+CV
+	 +4GOrYK3gQL5KFhzalL9L/zI3KX4CE9yoQE/PygkdsjA1rOozplLuj2atjLsNY74RU
+	 BymKoASK8FGh9ttmyKOwg/REy7cughmQAKD0hJ1tXZl19CBJPWndXjjJ9UDHX3Ogy2
+	 GIxlLPsQIpKQyIWgT71PrAPTYYG03xd8zkC8uFT4SjN9JjkOjnwZVM8KoDdGea14Ou
+	 9k0LUcU284nkw==
+Date: Wed, 6 Nov 2024 13:43:33 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Claudiu <claudiu.beznea@tuxon.dev>
+Cc: geert+renesas@glider.be, mturquette@baylibre.com, sboyd@kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	biju.das.jz@bp.renesas.com, prabhakar.mahadev-lad.rj@bp.renesas.com,
+	lgirdwood@gmail.com, magnus.damm@gmail.com,
+	linus.walleij@linaro.org, support.opensource@diasemi.com,
+	perex@perex.cz, tiwai@suse.com, p.zabel@pengutronix.de,
+	Adam.Thomson.Opensource@diasemi.com,
+	linux-renesas-soc@vger.kernel.org, linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-sound@vger.kernel.org, linux-gpio@vger.kernel.org,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 22/31] ASoC: da7213: Populate max_register to
+ regmap_config
+Message-ID: <d3c28a8b-878c-4894-aa23-5b360153b85d@sirena.org.uk>
+References: <20241106081826.1211088-1-claudiu.beznea.uj@bp.renesas.com>
+ <20241106081826.1211088-23-claudiu.beznea.uj@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="qgBjwTwv0FsyKsIO"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <884cf694-09c7-4082-a6b1-6de987025bf8@csgroup.eu>
-User-Agent: Mutt/1.4.2.3i
-
-Hi!
-
-On Wed, Nov 06, 2024 at 09:55:58AM +0100, Christophe Leroy wrote:
-> Le 30/10/2024 à 19:41, Nathan Chancellor a écrit :
-> >Under certain conditions, the 64-bit '-mstack-protector-guard' flags may
-> >end up in the 32-bit vDSO flags, resulting in build failures due to the
-> >structure of clang's argument parsing of the stack protector options,
-> >which validates the arguments of the stack protector guard flags
-> >unconditionally in the frontend, choking on the 64-bit values when
-> >targeting 32-bit:
-> >
-> >   clang: error: invalid value 'r13' in 'mstack-protector-guard-reg=', 
-> >   expected one of: r2
-> >   clang: error: invalid value 'r13' in 'mstack-protector-guard-reg=', 
-> >   expected one of: r2
-> >   make[3]: *** [arch/powerpc/kernel/vdso/Makefile:85: 
-> >   arch/powerpc/kernel/vdso/vgettimeofday-32.o] Error 1
-> >   make[3]: *** [arch/powerpc/kernel/vdso/Makefile:87: 
-> >   arch/powerpc/kernel/vdso/vgetrandom-32.o] Error 1
-> >
-> >Remove these flags by adding them to the CC32FLAGSREMOVE variable, which
-> >already handles situations similar to this. Additionally, reformat and
-> >align a comment better for the expanding CONFIG_CC_IS_CLANG block.
-> 
-> Is the problem really exclusively for 32-bit VDSO on 64-bit kernel ?
-> In any case, it is just wrong to have anything related to stack 
-> protection in VDSO, for this reason we have the following in Makefile:
-> 
-> ccflags-y += $(call cc-option, -fno-stack-protector)
-> 
-> If it is not enough, should we have more complete ?
-
-The -mstack-protector-guard-reg= doesn't do anything if you aren't
-doing stack protection.  It allows any base register (so, r1..r31).
-Setting it to any valid reg should be fine and not do anything harmful,
-unless perhaps you *do* enable stack protector, then it better be the
-expected stuff ;-)
-
-Apparently clang does not implement it correctly?  This is just a clang
-bug, please report it with them?
-
-(r2 is the default for -m32, r13 is the default for -m64, it appears
-that clang does not implement this option at all, it simply checks if
-you set the default, and explodes if not).
+In-Reply-To: <20241106081826.1211088-23-claudiu.beznea.uj@bp.renesas.com>
+X-Cookie: Include me out.
 
 
-Segher
+--qgBjwTwv0FsyKsIO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Nov 06, 2024 at 10:18:17AM +0200, Claudiu wrote:
+> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>=20
+> On the Renesas RZ/G3S SMARC Carrier II board having a DA7212 codec (using
+> da7213 driver) connected to one SSIF-2 available on the Renesas RZ/G3S SoC
+> it has been discovered that using the runtime PM API for suspend/resume
+> (as will be proposed in the following commits) leads to the codec not
+> being propertly initialized after resume. This is because w/o
+> max_register populated to regmap_config the regcache_rbtree_sync()
+> breaks on base_reg > max condition and the regcache_sync_block() call is
+> skipped.
+>=20
+> Fixes: ef5c2eba2412 ("ASoC: codecs: Add da7213 codec")
+> Cc: stable@vger.kernel.org
+
+Why is this a stable fix when it only enables further work?
+
+--qgBjwTwv0FsyKsIO
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcrcoQACgkQJNaLcl1U
+h9B+uAf/T9UHiIXHURIt+YX7P9zWTkwxOYzQrVtIxV9Uz16GFNImxUT3T7ZkDJPm
+Erxp7p9mSMTejwQKY8qPBDBgFh00UE8ZNhdcb1PmRZTJ4DeK1mOmjl2SulAB/EM9
+v5g+3Cv95GmCpE0FfpsEwuhtz+wPWdJU3lqpG1rVtjMyXzuPqH5Ie4viG/I2pGO5
+RNoUFDOHu2pc7f3i3WzmmywjEDJIhOHXv/rQRy8ZG8TZyvNDDX0sP/+y0ElBUBsB
+81GcYxUjx+0h5uiE0XlXcfdemDG3L73XccwdWEJZ0xh+XKmrVLm1jFoJqLAiY7gM
+jGFGeURWY9VEnaDqJCf33O0nhkmAGQ==
+=RpAB
+-----END PGP SIGNATURE-----
+
+--qgBjwTwv0FsyKsIO--
 
