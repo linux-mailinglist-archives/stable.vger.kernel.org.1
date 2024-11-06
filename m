@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-90814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B9FF9BEB2D
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:57:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72B1C9BE86C
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:25:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D56A428442C
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:57:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37978284223
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D20701F6676;
-	Wed,  6 Nov 2024 12:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90E821E0086;
+	Wed,  6 Nov 2024 12:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sTWuKd/u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0Uh091i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8086A1F667E;
-	Wed,  6 Nov 2024 12:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1D41DFE27;
+	Wed,  6 Nov 2024 12:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896892; cv=none; b=YWazmjPUNOhpxVPvKpU42o3OT6bA+kkweISDdXWwhvZy/Nqdwzdq59bywFPC4pE56asyZhncR7U5B20/p0dPBDeD9pKtm6LgdbMhb/aTuRvDsOusc1SaZU8OAhzegPoHCSoE2IkK6FlqHAYK0YKSp1KdyPxzMSSlJtKWkb7fugU=
+	t=1730895827; cv=none; b=BFwz9t+J6Szb7KmZRT29VgtvYomWQTbDHiRSRh/cpb6KC7g6wKWmmIh/SCu56gr1dFgxNVToK5JFddfmzzJoXfsArBtcZzZfk4m08hjeYVPs8Q0KmhQWjGS1w9cacbfLriM2SIqUEm7LIZUq1UluuBAXGnU1ReatVze5PeB0BL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896892; c=relaxed/simple;
-	bh=gfLlThbJNrGIMTjYZ7GB32DMkWjX3+uaegcCrCY/GWE=;
+	s=arc-20240116; t=1730895827; c=relaxed/simple;
+	bh=cpLgVAzoVhe9Gk6/uWnMI/sBHkhBLn8AbpHbgXH7ncc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AQm/LVqL3uwofB+eyP675wb9qBlWxbhLc9d47IMcxAy7NCCG9yfMnmqvfrF6jsD29gqL/4zpjSchv+lhq4wUVZx5uZJN/UqRhK9+GFn20l3lLPp7gSkLKNN+DanCehe2os6Mq0YsuKlE8JKOIlcaEvxEYyMsfTDYm1hwMtBXtUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sTWuKd/u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05FACC4CECD;
-	Wed,  6 Nov 2024 12:41:31 +0000 (UTC)
+	 MIME-Version; b=FEKIfRr/0JsiDHabwMSh8jJFAaWhpAzWVbDtqnp1jIYRApsNctj3RV13w1gMpv0VLlAXun/4UvWiMNG809sNpIr/IxMXVNix5TvAH3IqP5F5L/PoO6IUAqW8KpM3lfkAR+iP07qEfOOUgxgW17yfMySqPTA149pLbWn/V+yGVCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0Uh091i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C95CC4CECD;
+	Wed,  6 Nov 2024 12:23:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730896892;
-	bh=gfLlThbJNrGIMTjYZ7GB32DMkWjX3+uaegcCrCY/GWE=;
+	s=korg; t=1730895826;
+	bh=cpLgVAzoVhe9Gk6/uWnMI/sBHkhBLn8AbpHbgXH7ncc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sTWuKd/u1F+M+MtftFqrWknvG+pv/t0/qHjJnrqA1r2A0xINBXVSZKVRFGo6Stf/+
-	 vWEbVx7nnTumw8AOgMFAx0BuQIG8WHOEY+znBWsYEPuXUF9LoGPr6V+bMVkhyWps4E
-	 aCbXr9tTYOgHxVtSaYU8y2W6b5QCYxRlglYjYRYc=
+	b=K0Uh091i5PLhsCfrDwHyi3PMs0eNR4gwV6SdNc9SgZ0f6OrPu5f8Vu8+XjqYCJ/wN
+	 wU7csgvIdP9Ft1L2M5VlvY+fCr7hRiJVBs8ETbc21zOWYCmeHUXpVtqk6TJ7xnkWUo
+	 7bKZEcBPmZK3gTAAai6bujTLYBtSUWnyeY884jpQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wander Lairson Costa <wander@redhat.com>,
-	Yuying Ma <yuma@redhat.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 070/110] igb: Disable threaded IRQ for igb_msix_other
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+d6ca2daf692c7a82f959@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 348/350] nilfs2: fix kernel bug due to missing clearing of checked flag
 Date: Wed,  6 Nov 2024 13:04:36 +0100
-Message-ID: <20241106120305.123658161@linuxfoundation.org>
+Message-ID: <20241106120329.276396047@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
-References: <20241106120303.135636370@linuxfoundation.org>
+In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
+References: <20241106120320.865793091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,84 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wander Lairson Costa <wander@redhat.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 338c4d3902feb5be49bfda530a72c7ab860e2c9f ]
+commit 41e192ad2779cae0102879612dfe46726e4396aa upstream.
 
-During testing of SR-IOV, Red Hat QE encountered an issue where the
-ip link up command intermittently fails for the igbvf interfaces when
-using the PREEMPT_RT variant. Investigation revealed that
-e1000_write_posted_mbx returns an error due to the lack of an ACK
-from e1000_poll_for_ack.
+Syzbot reported that in directory operations after nilfs2 detects
+filesystem corruption and degrades to read-only,
+__block_write_begin_int(), which is called to prepare block writes, may
+fail the BUG_ON check for accesses exceeding the folio/page size,
+triggering a kernel bug.
 
-The underlying issue arises from the fact that IRQs are threaded by
-default under PREEMPT_RT. While the exact hardware details are not
-available, it appears that the IRQ handled by igb_msix_other must
-be processed before e1000_poll_for_ack times out. However,
-e1000_write_posted_mbx is called with preemption disabled, leading
-to a scenario where the IRQ is serviced only after the failure of
-e1000_write_posted_mbx.
+This was found to be because the "checked" flag of a page/folio was not
+cleared when it was discarded by nilfs2's own routine, which causes the
+sanity check of directory entries to be skipped when the directory
+page/folio is reloaded.  So, fix that.
 
-To resolve this, we set IRQF_NO_THREAD for the affected interrupt,
-ensuring that the kernel handles it immediately, thereby preventing
-the aforementioned error.
+This was necessary when the use of nilfs2's own page discard routine was
+applied to more than just metadata files.
 
-Reproducer:
-
-    #!/bin/bash
-
-    # echo 2 > /sys/class/net/ens14f0/device/sriov_numvfs
-    ipaddr_vlan=3
-    nic_test=ens14f0
-    vf=${nic_test}v0
-
-    while true; do
-	    ip link set ${nic_test} mtu 1500
-	    ip link set ${vf} mtu 1500
-	    ip link set $vf up
-	    ip link set ${nic_test} vf 0 vlan ${ipaddr_vlan}
-	    ip addr add 172.30.${ipaddr_vlan}.1/24 dev ${vf}
-	    ip addr add 2021:db8:${ipaddr_vlan}::1/64 dev ${vf}
-	    if ! ip link show $vf | grep 'state UP'; then
-		    echo 'Error found'
-		    break
-	    fi
-	    ip link set $vf down
-    done
-
-Signed-off-by: Wander Lairson Costa <wander@redhat.com>
-Fixes: 9d5c824399de ("igb: PCI-Express 82575 Gigabit Ethernet driver")
-Reported-by: Yuying Ma <yuma@redhat.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20241017193359.5051-1-konishi.ryusuke@gmail.com
+Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+d6ca2daf692c7a82f959@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d6ca2daf692c7a82f959
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igb/igb_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/page.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index 17cdda3fe415a..e1936aa94077b 100644
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -936,7 +936,7 @@ static int igb_request_msix(struct igb_adapter *adapter)
- 	int i, err = 0, vector = 0, free_vector = 0;
+--- a/fs/nilfs2/page.c
++++ b/fs/nilfs2/page.c
+@@ -407,6 +407,7 @@ void nilfs_clear_dirty_page(struct page
  
- 	err = request_irq(adapter->msix_entries[vector].vector,
--			  igb_msix_other, 0, netdev->name, adapter);
-+			  igb_msix_other, IRQF_NO_THREAD, netdev->name, adapter);
- 	if (err)
- 		goto err_out;
+ 	ClearPageUptodate(page);
+ 	ClearPageMappedToDisk(page);
++	ClearPageChecked(page);
  
--- 
-2.43.0
-
+ 	if (page_has_buffers(page)) {
+ 		struct buffer_head *bh, *head;
 
 
 
