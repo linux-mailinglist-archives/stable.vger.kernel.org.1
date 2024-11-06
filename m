@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-90395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-90585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 537979BE814
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:20:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 416F19BE911
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 13:30:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77F731C23287
-	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:20:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5E3B1F21D07
+	for <lists+stable@lfdr.de>; Wed,  6 Nov 2024 12:30:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1B81DF73B;
-	Wed,  6 Nov 2024 12:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A4C1DF251;
+	Wed,  6 Nov 2024 12:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wuiit2vE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HKwKopyn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABF81D173F;
-	Wed,  6 Nov 2024 12:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C6A1DFD87;
+	Wed,  6 Nov 2024 12:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730895644; cv=none; b=jv7U8HqY6ZRWdVLOeuEO2jrDpahPQjZtz713FJE/XhWv5SZjhsfcGag08UYSjQx3tHIQib5MSuq4enIS0MhTnKC/QVuBVChfo+mE3vQeAonlktRbqJx7jrlcxkbzmNT8cZxfWq+wksFKKyhszx8yMezq9zSpqOpKBK8mPGgwrJI=
+	t=1730896209; cv=none; b=Z/GC+6uzQ4FB4jqoDZqARMbgNbGiRX8z9hGN05MXRAd2aLC5m1JT2ZsfpzZLNyAYwwp3fvdJfwY8l9Em+wzFhBub08GYucfd+4H4h1JJDFwYwk8BpJMhP+njIU3nI9MqnRamwWLZPoMH73EvFqsbu3Fnz7F3++ekXyFb97WF50c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730895644; c=relaxed/simple;
-	bh=X6GH1xi3XLqquZpfHulBjIinlwHYrOr1J8bNR0zcAGY=;
+	s=arc-20240116; t=1730896209; c=relaxed/simple;
+	bh=KAjCgcroxrBk+ExlUHExIq7JU6GkCrov3hqA2tP8cSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RQkAwU+6wJJFRlWEQdmXfIr/4jDKFTS8zPfZ+DZLsuevUClbAtuZR814A0V+/q1BNYOwRlKdxtI33+tqftwewAlG9YSnmVHpXyYShNdOjQnoDi7LgRJB9ycYb6l2gOr6/v4PkhI5SjdCnWz3GjLT7PIknAnb6ko8wo4ioY8YIuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wuiit2vE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 214F3C4CECD;
-	Wed,  6 Nov 2024 12:20:43 +0000 (UTC)
+	 MIME-Version; b=Pli4JmTE0t4hDouDh7bDe0nMibr46cCIHtOLJc4lWFRZT4+VesFCd7Wj+rTY8RFw8uKtCJhqO9l+7up4nwLkeKqeXQvBYB833U24ac68/Y+PAehPhaG/2xswpNA9g1txaAROmlQcVbmbSJqlCEB1XsucQfsxaFWNmdl9u/Gjkfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HKwKopyn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0C2C4CED3;
+	Wed,  6 Nov 2024 12:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730895644;
-	bh=X6GH1xi3XLqquZpfHulBjIinlwHYrOr1J8bNR0zcAGY=;
+	s=korg; t=1730896209;
+	bh=KAjCgcroxrBk+ExlUHExIq7JU6GkCrov3hqA2tP8cSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wuiit2vETDme1glYo/5tpBRpn1mDdeIdLzioKusmFS++8Vqcswy3rh0jF49hRQrIB
-	 sS//zEYjaDQR6QaCx8crixrwR4as0UKZAx3KeKDlPYEGyBU3Yq4RHAHGvh1Puwatgr
-	 SOnUKWnlNETIYbtbLQ7/bC0NgTK7s6pfirNwP64A=
+	b=HKwKopynNraX+3qUkTNg0FoGGU2sZBNmKP4GGiLtqT/MWa3UxPhOnWNAU40e94fzc
+	 5dVNmh6GFEmz8AXDVh5+jkX45uBSHrDeVgHYc4/gGfrtE9/YbUV5ypdfMvIKP3dK/J
+	 91BCs+RQAPBp9ECKnjBGGu0EyTajE06i5GF48/Pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Andy Roulin <aroulin@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 251/350] netfilter: br_netfilter: fix panic with metadata_dst skb
-Date: Wed,  6 Nov 2024 13:02:59 +0100
-Message-ID: <20241106120327.118433367@linuxfoundation.org>
+	Zicheng Qu <quzicheng@huawei.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.11 127/245] staging: iio: frequency: ad9832: fix division by zero in ad9832_calc_freqreg()
+Date: Wed,  6 Nov 2024 13:03:00 +0100
+Message-ID: <20241106120322.349590342@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120320.865793091@linuxfoundation.org>
-References: <20241106120320.865793091@linuxfoundation.org>
+In-Reply-To: <20241106120319.234238499@linuxfoundation.org>
+References: <20241106120319.234238499@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,184 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Roulin <aroulin@nvidia.com>
+From: Zicheng Qu <quzicheng@huawei.com>
 
-[ Upstream commit f9ff7665cd128012868098bbd07e28993e314fdb ]
+commit 6bd301819f8f69331a55ae2336c8b111fc933f3d upstream.
 
-Fix a kernel panic in the br_netfilter module when sending untagged
-traffic via a VxLAN device.
-This happens during the check for fragmentation in br_nf_dev_queue_xmit.
+In the ad9832_write_frequency() function, clk_get_rate() might return 0.
+This can lead to a division by zero when calling ad9832_calc_freqreg().
+The check if (fout > (clk_get_rate(st->mclk) / 2)) does not protect
+against the case when fout is 0. The ad9832_write_frequency() function
+is called from ad9832_write(), and fout is derived from a text buffer,
+which can contain any value.
 
-It is dependent on:
-1) the br_netfilter module being loaded;
-2) net.bridge.bridge-nf-call-iptables set to 1;
-3) a bridge with a VxLAN (single-vxlan-device) netdevice as a bridge port;
-4) untagged frames with size higher than the VxLAN MTU forwarded/flooded
-
-When forwarding the untagged packet to the VxLAN bridge port, before
-the netfilter hooks are called, br_handle_egress_vlan_tunnel is called and
-changes the skb_dst to the tunnel dst. The tunnel_dst is a metadata type
-of dst, i.e., skb_valid_dst(skb) is false, and metadata->dst.dev is NULL.
-
-Then in the br_netfilter hooks, in br_nf_dev_queue_xmit, there's a check
-for frames that needs to be fragmented: frames with higher MTU than the
-VxLAN device end up calling br_nf_ip_fragment, which in turns call
-ip_skb_dst_mtu.
-
-The ip_dst_mtu tries to use the skb_dst(skb) as if it was a valid dst
-with valid dst->dev, thus the crash.
-
-This case was never supported in the first place, so drop the packet
-instead.
-
-PING 10.0.0.2 (10.0.0.2) from 0.0.0.0 h1-eth0: 2000(2028) bytes of data.
-[  176.291791] Unable to handle kernel NULL pointer dereference at
-virtual address 0000000000000110
-[  176.292101] Mem abort info:
-[  176.292184]   ESR = 0x0000000096000004
-[  176.292322]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  176.292530]   SET = 0, FnV = 0
-[  176.292709]   EA = 0, S1PTW = 0
-[  176.292862]   FSC = 0x04: level 0 translation fault
-[  176.293013] Data abort info:
-[  176.293104]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-[  176.293488]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[  176.293787]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[  176.293995] user pgtable: 4k pages, 48-bit VAs, pgdp=0000000043ef5000
-[  176.294166] [0000000000000110] pgd=0000000000000000,
-p4d=0000000000000000
-[  176.294827] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-[  176.295252] Modules linked in: vxlan ip6_udp_tunnel udp_tunnel veth
-br_netfilter bridge stp llc ipv6 crct10dif_ce
-[  176.295923] CPU: 0 PID: 188 Comm: ping Not tainted
-6.8.0-rc3-g5b3fbd61b9d1 #2
-[  176.296314] Hardware name: linux,dummy-virt (DT)
-[  176.296535] pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS
-BTYPE=--)
-[  176.296808] pc : br_nf_dev_queue_xmit+0x390/0x4ec [br_netfilter]
-[  176.297382] lr : br_nf_dev_queue_xmit+0x2ac/0x4ec [br_netfilter]
-[  176.297636] sp : ffff800080003630
-[  176.297743] x29: ffff800080003630 x28: 0000000000000008 x27:
-ffff6828c49ad9f8
-[  176.298093] x26: ffff6828c49ad000 x25: 0000000000000000 x24:
-00000000000003e8
-[  176.298430] x23: 0000000000000000 x22: ffff6828c4960b40 x21:
-ffff6828c3b16d28
-[  176.298652] x20: ffff6828c3167048 x19: ffff6828c3b16d00 x18:
-0000000000000014
-[  176.298926] x17: ffffb0476322f000 x16: ffffb7e164023730 x15:
-0000000095744632
-[  176.299296] x14: ffff6828c3f1c880 x13: 0000000000000002 x12:
-ffffb7e137926a70
-[  176.299574] x11: 0000000000000001 x10: ffff6828c3f1c898 x9 :
-0000000000000000
-[  176.300049] x8 : ffff6828c49bf070 x7 : 0008460f18d5f20e x6 :
-f20e0100bebafeca
-[  176.300302] x5 : ffff6828c7f918fe x4 : ffff6828c49bf070 x3 :
-0000000000000000
-[  176.300586] x2 : 0000000000000000 x1 : ffff6828c3c7ad00 x0 :
-ffff6828c7f918f0
-[  176.300889] Call trace:
-[  176.301123]  br_nf_dev_queue_xmit+0x390/0x4ec [br_netfilter]
-[  176.301411]  br_nf_post_routing+0x2a8/0x3e4 [br_netfilter]
-[  176.301703]  nf_hook_slow+0x48/0x124
-[  176.302060]  br_forward_finish+0xc8/0xe8 [bridge]
-[  176.302371]  br_nf_hook_thresh+0x124/0x134 [br_netfilter]
-[  176.302605]  br_nf_forward_finish+0x118/0x22c [br_netfilter]
-[  176.302824]  br_nf_forward_ip.part.0+0x264/0x290 [br_netfilter]
-[  176.303136]  br_nf_forward+0x2b8/0x4e0 [br_netfilter]
-[  176.303359]  nf_hook_slow+0x48/0x124
-[  176.303803]  __br_forward+0xc4/0x194 [bridge]
-[  176.304013]  br_flood+0xd4/0x168 [bridge]
-[  176.304300]  br_handle_frame_finish+0x1d4/0x5c4 [bridge]
-[  176.304536]  br_nf_hook_thresh+0x124/0x134 [br_netfilter]
-[  176.304978]  br_nf_pre_routing_finish+0x29c/0x494 [br_netfilter]
-[  176.305188]  br_nf_pre_routing+0x250/0x524 [br_netfilter]
-[  176.305428]  br_handle_frame+0x244/0x3cc [bridge]
-[  176.305695]  __netif_receive_skb_core.constprop.0+0x33c/0xecc
-[  176.306080]  __netif_receive_skb_one_core+0x40/0x8c
-[  176.306197]  __netif_receive_skb+0x18/0x64
-[  176.306369]  process_backlog+0x80/0x124
-[  176.306540]  __napi_poll+0x38/0x17c
-[  176.306636]  net_rx_action+0x124/0x26c
-[  176.306758]  __do_softirq+0x100/0x26c
-[  176.307051]  ____do_softirq+0x10/0x1c
-[  176.307162]  call_on_irq_stack+0x24/0x4c
-[  176.307289]  do_softirq_own_stack+0x1c/0x2c
-[  176.307396]  do_softirq+0x54/0x6c
-[  176.307485]  __local_bh_enable_ip+0x8c/0x98
-[  176.307637]  __dev_queue_xmit+0x22c/0xd28
-[  176.307775]  neigh_resolve_output+0xf4/0x1a0
-[  176.308018]  ip_finish_output2+0x1c8/0x628
-[  176.308137]  ip_do_fragment+0x5b4/0x658
-[  176.308279]  ip_fragment.constprop.0+0x48/0xec
-[  176.308420]  __ip_finish_output+0xa4/0x254
-[  176.308593]  ip_finish_output+0x34/0x130
-[  176.308814]  ip_output+0x6c/0x108
-[  176.308929]  ip_send_skb+0x50/0xf0
-[  176.309095]  ip_push_pending_frames+0x30/0x54
-[  176.309254]  raw_sendmsg+0x758/0xaec
-[  176.309568]  inet_sendmsg+0x44/0x70
-[  176.309667]  __sys_sendto+0x110/0x178
-[  176.309758]  __arm64_sys_sendto+0x28/0x38
-[  176.309918]  invoke_syscall+0x48/0x110
-[  176.310211]  el0_svc_common.constprop.0+0x40/0xe0
-[  176.310353]  do_el0_svc+0x1c/0x28
-[  176.310434]  el0_svc+0x34/0xb4
-[  176.310551]  el0t_64_sync_handler+0x120/0x12c
-[  176.310690]  el0t_64_sync+0x190/0x194
-[  176.311066] Code: f9402e61 79402aa2 927ff821 f9400023 (f9408860)
-[  176.315743] ---[ end trace 0000000000000000 ]---
-[  176.316060] Kernel panic - not syncing: Oops: Fatal exception in
-interrupt
-[  176.316371] Kernel Offset: 0x37e0e3000000 from 0xffff800080000000
-[  176.316564] PHYS_OFFSET: 0xffff97d780000000
-[  176.316782] CPU features: 0x0,88000203,3c020000,0100421b
-[  176.317210] Memory Limit: none
-[  176.317527] ---[ end Kernel panic - not syncing: Oops: Fatal
-Exception in interrupt ]---\
-
-Fixes: 11538d039ac6 ("bridge: vlan dst_metadata hooks in ingress and egress paths")
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Andy Roulin <aroulin@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20241001154400.22787-2-aroulin@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/all/2024100904-CVE-2024-47663-9bdc@gregkh/
+Fixes: ea707584bac1 ("Staging: IIO: DDS: AD9832 / AD9835 driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20241022134354.574614-1-quzicheng@huawei.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_netfilter_hooks.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/staging/iio/frequency/ad9832.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
-index 35642dc96852a..75e35fae6f244 100644
---- a/net/bridge/br_netfilter_hooks.c
-+++ b/net/bridge/br_netfilter_hooks.c
-@@ -37,6 +37,7 @@
- #include <net/ip.h>
- #include <net/ipv6.h>
- #include <net/addrconf.h>
-+#include <net/dst_metadata.h>
- #include <net/route.h>
- #include <net/netfilter/br_netfilter.h>
- #include <net/netns/generic.h>
-@@ -737,6 +738,10 @@ static int br_nf_dev_queue_xmit(struct net *net, struct sock *sk, struct sk_buff
- 		return br_dev_queue_push_xmit(net, sk, skb);
- 	}
+--- a/drivers/staging/iio/frequency/ad9832.c
++++ b/drivers/staging/iio/frequency/ad9832.c
+@@ -129,12 +129,15 @@ static unsigned long ad9832_calc_freqreg
+ static int ad9832_write_frequency(struct ad9832_state *st,
+ 				  unsigned int addr, unsigned long fout)
+ {
++	unsigned long clk_freq;
+ 	unsigned long regval;
  
-+	/* Fragmentation on metadata/template dst is not supported */
-+	if (unlikely(!skb_valid_dst(skb)))
-+		goto drop;
+-	if (fout > (clk_get_rate(st->mclk) / 2))
++	clk_freq = clk_get_rate(st->mclk);
 +
- 	/* This is wrong! We should preserve the original fragment
- 	 * boundaries by preserving frag_list rather than refragmenting.
- 	 */
--- 
-2.43.0
-
++	if (!clk_freq || fout > (clk_freq / 2))
+ 		return -EINVAL;
+ 
+-	regval = ad9832_calc_freqreg(clk_get_rate(st->mclk), fout);
++	regval = ad9832_calc_freqreg(clk_freq, fout);
+ 
+ 	st->freq_data[0] = cpu_to_be16((AD9832_CMD_FRE8BITSW << CMD_SHIFT) |
+ 					(addr << ADD_SHIFT) |
 
 
 
